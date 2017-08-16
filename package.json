@@ -1,0 +1,12 @@
+{
+  "name": "@atlaskit/fabric",
+  "version": "0.0.0",
+  "description": "Fabric components for Atlassian's Atlaskit",
+  "main": "index.js",
+  "repository": "atlaskit/fabric",
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "jest": "^20.0.4"
+  }
+}
