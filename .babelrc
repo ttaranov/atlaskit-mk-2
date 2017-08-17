@@ -1,0 +1,13 @@
+{
+  "presets": [
+    ["env", {
+      "targets": {}
+    }],
+    "react",
+    "flow"
+  ],
+  "plugins": [
+    "transform-runtime",
+    "transform-class-properties"
+  ]
+}

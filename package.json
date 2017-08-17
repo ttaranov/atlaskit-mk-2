@@ -6,7 +6,36 @@
   "repository": "atlaskit/fabric",
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
+  "scripts": {
+    "build": "projector ./projector.js build",
+    "test": "projector ./projector.js test"
+  },
+  "pworkspaces": [
+    "build/*",
+    "utils/*",
+    "components/*",
+    "website"
+  ],
   "devDependencies": {
-    "jest": "^20.0.4"
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-react": "^6.24.1",
+    "enzyme": "^2.9.1",
+    "flow-bin": "^0.53.0",
+    "jest": "^20.0.4",
+    "projector-cli": "^3.0.1",
+    "projector-jest": "^1.0.1",
+    "projector-spawn": "^1.0.1"
+  },
+  "dependencies": {
+    "@atlaskit/theme": "^2.0.0",
+    "babel-runtime": "^6.26.0",
+    "prop-types": "^15.5.10",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "styled-components": "^1.4.3"
   }
 }

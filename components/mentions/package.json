@@ -1,7 +1,0 @@
-{
-  "name": "@atlaskit/mentions",
-  "version": "0.0.0",
-  "main": "index.js",
-  "repository": "atlaskit/fabric",
-  "license": "Apache-2.0"
-}

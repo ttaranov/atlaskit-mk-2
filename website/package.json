@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "@atlaskit/website",
+  "version": "1.0.0",
+  "description": "",
+  "license": "Apache-2.0",
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Jed W"
+  ],
+  "repository": "atlaskit/fabric"
+}

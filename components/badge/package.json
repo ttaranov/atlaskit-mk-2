@@ -1,0 +1,27 @@
+{
+  "name": "@atlaskit/badge",
+  "version": "6.0.0",
+  "description": "A React component that indicates values",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Sean C"
+  ],
+  "repository": "atlaskit/fabric",
+  "dependencies": {
+    "@atlaskit/theme": "^2.0.0",
+    "babel-runtime": "^6.26.0",
+    "prop-types": "^15.5.10",
+    "styled-components": "^1.4.3"
+  },
+  "peerDependencies": {
+    "react": "^15.6.1"
+  },
+  "devDependencies": {
+    "enzyme": "^2.9.1"
+  }
+}
