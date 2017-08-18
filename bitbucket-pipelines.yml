@@ -7,8 +7,8 @@ pipelines:
             - yarn global add pyarn
             - export PATH=$HOME/.yarn/bin:$PATH
             - pyarn install
-            - pyarn build
-            - pyarn test
+            - yarn build
+            - yarn test
   default:
     - step:
         script:
@@ -16,5 +16,5 @@ pipelines:
           - export PATH=$HOME/.yarn/bin:$PATH
           - yarn global add pyarn
           - pyarn install
-          - pyarn build
-          - pyarn test
+          - yarn build
+          - yarn test
