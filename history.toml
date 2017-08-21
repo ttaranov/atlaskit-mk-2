@@ -5,6 +5,15 @@
 last-release = "12345678"
 
 [[releases]]
+release = "releases/darkmode.md"
+commits = [
+  "12345678",
+]
+versions = [
+  "package-1@major",
+]
+
+[[releases]]
 commits = [
   "12345678",
   "12345678",
