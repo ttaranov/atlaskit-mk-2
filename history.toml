@@ -1,0 +1,29 @@
+# This document is used to track releases.
+# It can be editted manually, but it is reccomended you use the `yarn run version` command.
+
+# Hash of the last release from master
+last-release = "12345678"
+
+[[releases]]
+commits = [
+  "12345678",
+  "12345678",
+  "12345678"
+]
+versions = [
+  "package-1@major",
+  "package-2@minor",
+  "package-3@patch",
+]
+
+[[releases]]
+commits = [
+  "12345678",
+  "12345678",
+  "12345678",
+]
+versions = [
+  "package-1@major",
+  "package-2@minor",
+  "package-3@patch",
+]
