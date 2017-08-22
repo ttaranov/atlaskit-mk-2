@@ -1,6 +1,6 @@
 // @flow
 import { mount } from 'enzyme';
-import React from 'react';
+import * as React from 'react';
 
 import Badge from '../src';
 import { APPEARANCE_ENUM } from '../src/components/Badge';
@@ -65,7 +65,7 @@ describe('Badge', () => {
     });
 
     it('should revert to "default" when set to an invalid value', () => {
-      expect(mount(<Badge appearance="foo" />).find('BadgeElement').prop('appearance')).toBe('default');
+      expect(mount(<Badge appearance={("foo": any)} />).find('BadgeElement').prop('appearance')).toBe('default');
     });
   });
 });

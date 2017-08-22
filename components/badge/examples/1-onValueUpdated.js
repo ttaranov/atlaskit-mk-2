@@ -1,7 +1,12 @@
-import React from 'react';
+// @flow
+import * as React from 'react';
 import Badge from '@atlaskit/badge';
 
-export default class Component extends React.Component {
+type State = {
+  value: number,
+};
+
+export default class Component extends React.Component<void, State> {
   state = {
     value: 1,
   };
@@ -12,7 +17,7 @@ export default class Component extends React.Component {
     });
   };
 
-  handleValueUpdated = (detail) => {
+  handleValueUpdated = (detail: {}) => {
     console.log('onValueUpdated called with:', detail);
   };
 

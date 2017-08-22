@@ -1,7 +1,7 @@
 {
-  "name": "@atlaskit/badge",
-  "version": "6.0.0",
-  "description": "A React component that indicates values",
+  "name": "@atlaskit/lozenge",
+  "version": "3.4.2",
+  "description": "A React component that highlights status for quick recognition",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "files": [
@@ -13,7 +13,7 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
-    "@atlaskit/theme": "^2.0.0",
+    "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.26.0",
     "prop-types": "^15.5.10",
     "styled-components": "^1.4.3"

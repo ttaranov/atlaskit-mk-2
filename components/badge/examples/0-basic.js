@@ -1,4 +1,5 @@
-import React from 'react';
+// @flow
+import * as React from 'react';
 import Badge from '@atlaskit/badge';
 
 export default function Component() {
@@ -13,7 +14,7 @@ export default function Component() {
       <p>with a max value</p>
       <Badge max={99} value={500} />
 
-      <p>with value <= max value</p>
+      <p>with value &lt;= max value</p>
       <Badge max={99} value={50} />
 
       <p>with value === max value</p>
