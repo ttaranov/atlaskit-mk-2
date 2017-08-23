@@ -22,6 +22,7 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
+    "@atlaskit/docs": "^0.0.0",
     "enzyme": "^2.9.1",
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1"

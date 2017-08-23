@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import path from 'path';
-import { md, Example, Props } from 'website-display-thingy';
+import { md, Example, Props } from '@atlaskit/docs';
 
 export default md`
   Badges are visual indicators for numeric values such as tallies and scores.
