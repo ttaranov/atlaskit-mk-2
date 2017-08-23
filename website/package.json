@@ -8,5 +8,17 @@
   "maintainers": [
     "Jed W"
   ],
-  "repository": "atlaskit/fabric"
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server"
+  },
+  "repository": "atlaskit/fabric",
+  "devDependencies": {
+    "babel-loader": "^7.1.2",
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.26.0"
+  }
 }
