@@ -8,7 +8,10 @@
   "license": "Apache-2.0",
   "scripts": {
     "build": "projector ./projector.js build",
-    "test": "projector ./projector.js test"
+    "test": "projector ./projector.js test",
+    "version": "projector ./projector.js version",
+    "validate": "projector ./projector.js validate",
+    "log": "projector ./projector.js log"
   },
   "pworkspaces": [
     "build/*",
@@ -33,6 +36,9 @@
   "dependencies": {
     "@atlaskit/theme": "^2.0.0",
     "babel-runtime": "^6.26.0",
+    "glob": "^7.1.2",
+    "prompt-confirm": "^1.2.0",
+    "prompt-radio": "^1.2.1",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
