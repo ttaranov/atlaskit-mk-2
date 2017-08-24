@@ -8,26 +8,30 @@ last-release = "a54a8bf" # latest 0b2c18c
 name = "Dark Mode V1"
 release = "releases/darkmode.md"
 commits = [
-  "e4c1f4a",
+  "e4c1f4a"
 ]
 versions = [
-  "package-1@major",
+  "build/releases@major"
 ]
 
 [[releases]]
+# no name"
+# no release file
 commits = [
-  "6824ed7",
+  "6824ed7"
 ]
 versions = [
-  "package-1@major",
+  "package-1@major"
 ]
 
 [[releases]]
+# no name"
+# no release file
 commits = [
-  "94fd9de",
+  "94fd9de"
 ]
 versions = [
   "package-1@major",
   "package-2@minor",
-  "package-3@patch",
+  "package-3@patch"
 ]
