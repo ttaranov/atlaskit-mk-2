@@ -1,7 +1,7 @@
 {
-  "name": "@atlaskit/badge",
-  "version": "6.0.0",
-  "description": "A React component that indicates values",
+  "name": "@atlaskit/docs",
+  "version": "0.0.0",
+  "description": "Utilities for building documentation",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "files": [
@@ -9,19 +9,17 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Sean C"
+    "James K"
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
-    "@atlaskit/theme": "^2.0.0",
     "babel-runtime": "^6.26.0",
-    "styled-components": "^1.4.3"
+    "react-markings": "^1.0.1"
   },
   "peerDependencies": {
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^0.0.0",
     "enzyme": "^2.9.1",
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1"

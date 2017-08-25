@@ -8,10 +8,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "build": "projector ./projector.js build",
-    "test": "projector ./projector.js test",
-    "version": "projector ./projector.js version",
-    "validate": "projector ./projector.js validate",
-    "log": "projector ./projector.js log"
+    "test": "projector ./projector.js test"
   },
   "pworkspaces": [
     "build/*",
@@ -21,6 +18,7 @@
   ],
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.0",
@@ -31,17 +29,27 @@
     "jest": "^20.0.4",
     "projector-cli": "^3.0.1",
     "projector-jest": "^1.0.1",
-    "projector-spawn": "^1.0.1"
+    "projector-spawn": "^1.0.1",
+    "react-test-renderer": "^15.6.1",
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
+    "@atlaskit/avatar": "^8.0.0",
+    "@atlaskit/icon": "^8.0.1",
     "@atlaskit/theme": "^2.0.0",
+    "@atlaskit/util-common": "^1.5.2",
+    "@atlaskit/util-common-test": "^2.4.2",
+    "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.26.0",
+    "create-error": "^0.3.1",
+    "debug": "^2.2.0",
     "glob": "^7.1.2",
     "prompt-confirm": "^1.2.0",
     "prompt-radio": "^1.2.1",
-    "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-markings": "^1.0.1",
     "styled-components": "^1.4.3",
     "toml": "^2.3.2",
     "uuid": "^3.1.0"

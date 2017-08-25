@@ -6,5 +6,9 @@
 [libs]
 
 [options]
+module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/utils/\1/src/index'
+module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/build/\1/src/index'
+module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/components/\1/src/index'
 
 [lints]
+all=warn

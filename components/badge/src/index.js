@@ -1,2 +1,2 @@
 // @flow
-export { default } from './components/Badge';
+export * from './components/Badge';

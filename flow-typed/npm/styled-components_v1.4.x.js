@@ -9,7 +9,7 @@ type $npm$styledComponents$NameGenerator = (hash: number) => string
 type $npm$styledComponents$StyledComponent = (
   strings: Array<string>,
   ...interpolations: Array<$npm$styledComponents$Interpolation>
-) => ReactClass<*>;
+) => React$ComponentType<*> & { displayName: string };
 
 
 type $npm$styledComponents$Theme = {[key: string]: mixed};
@@ -20,9 +20,7 @@ type $npm$styledComponents$Component =
   | React$Component<*, *, *>
   | (props: *) => React$Element<*>;
 
-class Npm$StyledComponents$ThemeProvider extends React$Component {
-  props: $npm$styledComponents$ThemeProviderProps;
-}
+class Npm$StyledComponents$ThemeProvider extends React$Component<$npm$styledComponents$ThemeProviderProps> {}
 
 declare module 'styled-components' {
   declare type Interpolation = $npm$styledComponents$Interpolation;
