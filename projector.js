@@ -32,5 +32,28 @@ exports.build = async () => {
 exports.test = async () => {
   await jest.test({
     rootDir: __dirname,
+
+    transform: JSON.stringify({
+      '^.+\\.tsx?$': 'ts-jest/preprocessor',
+      '^.+\\.jsx?$': 'babel-jest'
+    }),
+
+    globals: JSON.stringify({
+      'ts-jest': {
+        tsConfigFile: path.join(__dirname, 'tsconfig.base.json'),
+        // we can safely disable babel for perf improvements since we don't use synthetic imports
+        // @see https://github.com/kulshekhar/ts-jest#supports-synthetic-modules
+        skipBabel: true,
+      }
+    }),
+
+    testRegex: '(/__tests__/.*|\\.(test|spec))\\.(tsx?|jsx?)$',
+
+    moduleFileExtensions: [
+      "js",
+      "jsx",
+      "ts",
+      "tsx",
+    ]
   });
 };
