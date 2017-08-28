@@ -2,8 +2,7 @@
 import * as React from 'react';
 import path from 'path';
 import { md, Example, Props } from '@atlaskit/docs';
-
-const BasicExample = require('../examples/0-basic.js').default;
+import BasicExample from '../examples/0-basic';
 
 export default md`
   Badges are visual indicators for numeric values such as tallies and scores.
@@ -18,5 +17,5 @@ export default md`
 
   ${<Example component={<BasicExample />}/>}
 
-  ${<Props src={path.join(__dirname, '../sråc/components/Badge.js')}/>}
+  ${<Props src={path.join(__dirname, '../src/components/Badge.js')}/>}
 `;

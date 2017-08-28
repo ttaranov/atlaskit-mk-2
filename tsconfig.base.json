@@ -8,7 +8,7 @@
     "jsx": "react",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "sourceMap": true,
@@ -21,7 +21,8 @@
       "es2015.collection",
       "es2015.symbol",
       "es2015.iterable",
-      "es2015.promise"
+      "es2015.promise",
+      "es6"
     ]
   }
 }
