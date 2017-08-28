@@ -24,6 +24,7 @@
     "@types/react": "^16.0.5",
     "@types/react-syntax-highlighter": "^0.0.3",
     "babel-cli": "^6.26.0",
+    "babel-jest": "^20.0.3",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.23.0",
@@ -38,6 +39,7 @@
     "projector-spawn": "^1.0.1",
     "projector-typescript": "projectorjs/projector-typescript#5fbe80a8ee62d1785a7f8a1f7ac4a4cc3a1e5f00",
     "react-test-renderer": "^15.6.1",
+    "ts-jest": "^20.0.10",
     "typescript": "^2.5.1",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1"
