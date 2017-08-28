@@ -1,9 +1,11 @@
 // @flow
 import * as React from 'react';
-import {render} from 'react-dom';
+import { render } from 'react-dom';
+
+import '@atlaskit/css-reset';
 
 function App() {
-  return <h1>Hello World</h1>;
+  return <h1>AtlasKit</h1>;
 }
 
-render(<App/>, document.getElementById('root'));
+render(<App />, document.getElementById('app'));

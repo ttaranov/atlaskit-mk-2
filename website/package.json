@@ -15,10 +15,13 @@
   "repository": "atlaskit/fabric",
   "devDependencies": {
     "babel-loader": "^7.1.2",
+    "css-loader": "^0.28.0",
+    "style-loader": "^0.16.1",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
+    "@atlaskit/css-reset": "^1.1.5",
     "babel-runtime": "^6.26.0"
   }
 }

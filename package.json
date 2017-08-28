@@ -8,7 +8,8 @@
   "license": "Apache-2.0",
   "scripts": {
     "build": "projector ./projector.js build",
-    "test": "projector ./projector.js test"
+    "test": "projector ./projector.js test",
+    "start": "cd website && yarn start"
   },
   "pworkspaces": [
     "build/*",
@@ -30,6 +31,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.0",
     "enzyme": "^2.9.1",
     "flow-bin": "^0.53.0",
     "jest": "^20.0.4",
@@ -38,12 +40,14 @@
     "projector-spawn": "^1.0.1",
     "projector-typescript": "projectorjs/projector-typescript#5fbe80a8ee62d1785a7f8a1f7ac4a4cc3a1e5f00",
     "react-test-renderer": "^15.6.1",
+    "style-loader": "^0.16.1",
     "typescript": "^2.5.1",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
     "@atlaskit/avatar": "^8.0.0",
+    "@atlaskit/css-reset": "^1.1.5",
     "@atlaskit/icon": "^8.0.1",
     "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-common": "^1.5.2",
