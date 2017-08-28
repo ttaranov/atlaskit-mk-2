@@ -24,6 +24,21 @@ module.exports = {
           cacheDirectory: true,
         },
       },
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        loader: require.resolve('ts-loader'),
+        options: {
+          cacheDirectory: true,
+        },
+      },
     ]
-  }
+  },
+  resolve: {
+    extensions: ['.js', '.ts', '.tsx'],
+    alias: {
+      '@atlaskit/badge': path.resolve(__dirname, '..', 'components', 'badge', 'src', 'index.js'),
+      '@atlaskit/code': path.resolve(__dirname, '..', 'components', 'code', 'src', 'index.ts')
+    },
+  },
 };

@@ -26,6 +26,10 @@ exports.build = async () => {
     cwd: component('badge'),
   });
 
+  await spawn('babel', ['src', '-d', 'dist/cjs'], {
+    cwd: path.join(__dirname, 'utils', 'docs'),
+  });
+
   await buildTSComponent('code');
 };
 
