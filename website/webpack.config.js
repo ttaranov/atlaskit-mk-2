@@ -25,5 +25,10 @@ module.exports = {
         },
       },
     ]
-  }
+  },
+  resolve: {
+    alias: {
+      '@atlaskit/badge': path.resolve(__dirname, '..', 'components', 'badge', 'src', 'index.js')
+    },
+  },
 };
