@@ -1,0 +1,15 @@
+{
+  "name": "@atlaskit/build-releases",
+  "version": "1.0.0",
+  "description": "Collection of scripts to used during the release process of AtlasKit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@atlaskit/eslint-config-base": "^2.0.7",
+    "enquirer": "^1.0.2"
+  }
+}

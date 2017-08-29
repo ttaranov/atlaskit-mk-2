@@ -4,6 +4,8 @@ const jest = require('projector-jest');
 const ts = require('projector-typescript');
 const path = require('path');
 
+const version = require('./build/releases/version');
+//const validateHistory = require('./build/releases/history-file');
 const component = name => path.join(__dirname, 'components', name);
 const buildTSComponent = async (name) => {
   const package = component(name);
@@ -59,5 +61,11 @@ exports.test = async () => {
       "ts",
       "tsx",
     ]
+  });
+};
+
+exports.version = async () => {
+  await version.run({
+    rootDir: __dirname,
   });
 };
