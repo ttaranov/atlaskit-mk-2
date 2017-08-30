@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React from 'react';
 import BadgeElement from '../styled/Badge';
 
 export const APPEARANCE_ENUM = {
@@ -39,7 +39,7 @@ type Props = {
   value: number,
 };
 
-export default class Badge extends React.PureComponent<Props> {
+export default class Badge extends React.PureComponent<{ value: number, max: number }> {
   static defaultProps = {
     appearance: 'default',
     max: 99,

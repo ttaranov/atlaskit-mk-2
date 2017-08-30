@@ -1,0 +1,37 @@
+# This document is used to track releases.
+# It can be editted manually, but it is reccomended you use the `yarn run version` command.
+
+# Hash of the last release from master
+last-release = "a54a8bf" # latest 0b2c18c
+
+[[releases]]
+name = "Dark Mode V1"
+release = "releases/darkmode.md"
+commits = [
+  "e4c1f4a"
+]
+versions = [
+  "build/releases@major"
+]
+
+[[releases]]
+# no name"
+# no release file
+commits = [
+  "6824ed7"
+]
+versions = [
+  "package-1@major"
+]
+
+[[releases]]
+# no name"
+# no release file
+commits = [
+  "94fd9de"
+]
+versions = [
+  "package-1@major",
+  "package-2@minor",
+  "package-3@patch"
+]

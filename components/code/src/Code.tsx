@@ -14,7 +14,7 @@ export interface CodeProps {
   theme?: Theme;
 }
 
-export default class Code extends PureComponent<CodeProps, {}> {
+export default class Code extends PureComponent<CodeProps> {
 
   static propTypes = {
     text: PropTypes.string.isRequired,

@@ -17,6 +17,8 @@
     "babel-loader": "^7.1.2",
     "css-loader": "^0.28.0",
     "style-loader": "^0.16.1",
+    "extract-react-types-loader": "^0.0.0",
+    "ts-loader": "^2.3.4",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1"
   },

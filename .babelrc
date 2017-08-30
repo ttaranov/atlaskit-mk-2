@@ -7,7 +7,7 @@
     "flow"
   ],
   "plugins": [
-    "transform-runtime",
+    // "transform-runtime",
     "transform-class-properties"
   ]
 }
