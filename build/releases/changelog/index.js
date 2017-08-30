@@ -43,22 +43,20 @@ async function main(listOfHistory, opts) {
     path: opts.path || __dirname,
   }
   const packageMap = groupByPackage(listOfHistory);
-  packageMap.forEach(async (package) => {
+  for (let [_, package] of packageMap) {
     const targetFile = `${opts.prefix}${package.name}.md`;
     const templateString = '\n' + template(package).trim('\n') + '\n';
     try {
       if (fs.existsSync(targetFile)) {
-        console.log('prepanding file');
         await prependFile(templateString, targetFile);
       } else {
-        console.log('writing to file directly');
         await writeFile(targetFile, templateString);
       }
     } catch(e) {
       console.log(e);
     }
     console.log(`Updated file ${targetFile}`);
-  });
+  }
 };
 
 /**
