@@ -1,4 +1,4 @@
 {
-  "extends": "../../build/tslint/base.json"
+  "extends": "../../tslint.base.json"
 }
 
