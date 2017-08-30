@@ -30,7 +30,7 @@ const lintTSComponent = async (name) => {
 
   await tslint.run({
     files,
-    configPath: './build/tslint/base.json',
+    configPath: './tslint.base.json',
     linterOptions: {
       formatter: 'stylish'
     }
