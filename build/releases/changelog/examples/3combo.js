@@ -17,7 +17,6 @@ module.exports = [
     ],
   },
   {
-    release: 'release-2.md',
     versions: [
       'lozenge@minor'
     ],
