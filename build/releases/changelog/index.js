@@ -3,12 +3,18 @@ const example = require('./examples/3combo');
 const fs = require('fs');
 const util = require('util');
 
-const writeFile = util.promisify(fs.writeFile);
-const rename = util.promisify(fs.rename);
+function writeFile(filePath, fileContents) {
+  return util.promisify(cb => fs.writeFile(filePath, fileContents, cb))();
+}
+
+function rename(oldPath, newPath) {
+  return util.promisify(cb => fs.rename(oldPath, newPath, cb))();
+}
+
 
 /**
  * 
- * @param {Object[]} listOfHistory 
+ * @param {Object[]} listOfHistory
  * @param {string} listOfHistory[].release
  * @param {string} listOfHistory[].summary
  * @param {string[]} listOfHistory[].versions
