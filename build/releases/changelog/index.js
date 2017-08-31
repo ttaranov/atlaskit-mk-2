@@ -1,8 +1,10 @@
 const template = require('./templates');
 const example = require('./examples/3combo');
 const fs = require('fs');
+const os = require('os');
 const util = require('util');
 const spawn = require('projector-spawn');
+const { sep } = require('path');
 
 function writeFile(filePath, fileContents) {
   return util.promisify(cb => fs.writeFile(filePath, fileContents, cb))();
@@ -10,6 +12,10 @@ function writeFile(filePath, fileContents) {
 
 function rename(oldPath, newPath) {
   return util.promisify(cb => fs.rename(oldPath, newPath, cb))();
+}
+
+function mkdtemp(prefix) {
+  return util.promisify(cb => fs.mkdtemp(prefix, cb))();
 }
 
 
@@ -75,16 +81,18 @@ async function updateChangeLog(listOfHistory, opts) {
  * the temp file will be renamed to replace the existing file.
  */
 async function prependFile(data, file) {
+  let tempDir = os.tmpdir();
+  tempDir = await mkdtemp(`${tempDir}${sep}`);
+  const tempFile = `${tempDir}${sep}${file}`;
   return new Promise((resolve, reject) => {
-    const tempFile = `${file}.temp`;
     const oldFileStream = fs.createReadStream(file, { encoding: 'utf-8' });
     const newFileStream = fs.createWriteStream(tempFile);
 
     oldFileStream.on('error', (err) => {
-      reject(`Failed to read file ${file}: ${err}`);
+      reject(new Error(`Failed to read file ${file}: ${err}`));
     });
     newFileStream.on('error', (err) => {
-      reject(`Failed to write to temp file ${tempFile}: ${err}`);
+      reject(new Error(`Failed to write to temp file ${tempFile}: ${err}`));
     });
     newFileStream.on('finish', async () => {
       await rename(tempFile, file);
