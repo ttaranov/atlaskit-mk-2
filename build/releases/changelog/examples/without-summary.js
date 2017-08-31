@@ -2,17 +2,11 @@ module.exports = [
   {
     release: 'release-1.md',
     versions: [
-      'badge@minor'
+      'badge@minor',
     ],
-    commits: [
-      {
-        message: 'A typo in function badge',
-        hash: '1-aaaaaaa',
-      },
-      {
-        message: 'Badge renders in IE6 correctly now',
-        hash: '1-bbbbbbb',
-      }
-    ],
+    commits: {
+      '5c2087f': 'A typo in function badge',
+      df16f8f: 'Badge renders in IE6 correctly now',
+    },
   },
 ];
