@@ -12,6 +12,7 @@
     "@atlaskit/eslint-config-base": "^2.0.7",
     "@atlaskit/build-utils": "^1.0.0",
     "chalk": "^2.1.0",
-    "pyarn": "^0.7.0"
+    "pyarn": "^0.7.0",
+    "semver": "^5.4.1"
   }
 }
