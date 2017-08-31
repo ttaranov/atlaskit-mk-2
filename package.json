@@ -11,12 +11,7 @@
     "test": "projector ./projector.js test",
     "start": "cd website && yarn start"
   },
-  "pworkspaces": [
-    "build/*",
-    "utils/*",
-    "components/*",
-    "website"
-  ],
+  "pworkspaces": ["build/*", "utils/*", "components/*", "website"],
   "devDependencies": {
     "@atlaskit/eslint-config-base": "^2.0.7",
     "@types/enzyme": "^2.8.6",
@@ -42,8 +37,10 @@
     "projector-cli": "^3.0.1",
     "projector-jest": "^1.0.1",
     "projector-spawn": "^1.0.1",
-    "projector-tslint": "projectorjs/projector-tslint#7dc5c8da55aacc55d10dbf34a363ec25f782bb5b",
-    "projector-typescript": "projectorjs/projector-typescript#5fbe80a8ee62d1785a7f8a1f7ac4a4cc3a1e5f00",
+    "projector-tslint":
+      "projectorjs/projector-tslint#7dc5c8da55aacc55d10dbf34a363ec25f782bb5b",
+    "projector-typescript":
+      "projectorjs/projector-typescript#5fbe80a8ee62d1785a7f8a1f7ac4a4cc3a1e5f00",
     "pyarn-query": "^1.0.0",
     "raw-loader": "^0.5.1",
     "react-test-renderer": "^15.6.1",
@@ -60,6 +57,7 @@
     "@atlaskit/avatar": "^8.0.0",
     "@atlaskit/css-reset": "^1.1.5",
     "@atlaskit/icon": "^8.0.1",
+    "@atlaskit/tag": "^2.6.0",
     "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-common-test": "^2.4.2",

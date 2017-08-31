@@ -1,11 +1,11 @@
 // @flow
 import * as React from 'react';
 import Tag from '@atlaskit/tag';
-import TagGroup from '@atlaskit/tag-group';
+import TagGroup from '../src';
 
 type Props = {
   alignment: 'start' | 'end',
-}
+};
 
 type State = {
   tags: Array<string>,
@@ -16,9 +16,7 @@ class MyTagGroup extends React.Component<Props, State> {
     tags: ['Candy canes', 'Tiramisu', 'Gummi bears', 'Wagon Wheels', 'Chupa Chups'],
   };
 
-  handleRemoveRequest = () => {
-    return true;
-  };
+  handleRemoveRequest = () => true;
 
   handleRemoveComplete = (text: string) => {
     this.setState({
@@ -42,11 +40,11 @@ class MyTagGroup extends React.Component<Props, State> {
       </TagGroup>
     );
   }
-};
+}
 
 export default () => {
   <div>
-    <MyTagGroup alignment="start"/>
-    <MyTagGroup alignment="end"/>
-  </div>
+    <MyTagGroup alignment="start" />
+    <MyTagGroup alignment="end" />
+  </div>;
 };
