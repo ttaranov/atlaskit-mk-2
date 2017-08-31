@@ -1,7 +1,7 @@
 {
-  "name": "@atlaskit/build-releases",
+  "name": "@atlaskit/build-utils",
   "version": "1.0.0",
-  "description": "This will definitely get split up at some point, just using for testing",
+  "description": "Collection of utilities to used during the release process of AtlasKit",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,8 +10,10 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@atlaskit/eslint-config-base": "^2.0.7",
-    "@atlaskit/build-utils": "^1.0.0",
     "chalk": "^2.1.0",
-    "pyarn": "^0.7.0"
+    "enquirer": "^1.0.2",
+    "enquirer-prompts": "^1.0.0",
+    "projector-spawn": "^1.0.1",
+    "uuid": "^3.1.0"
   }
 }
