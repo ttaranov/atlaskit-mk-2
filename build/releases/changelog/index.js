@@ -1,10 +1,20 @@
 const template = require('./templates');
 const example = require('./examples/3combo');
 const fs = require('fs');
+const util = require('util');
+
+function writeFile(filePath, fileContents) {
+  return util.promisify(cb => fs.writeFile(filePath, fileContents, cb))();
+}
+
+function rename(oldPath, newPath) {
+  return util.promisify(cb => fs.rename(oldPath, newPath, cb))();
+}
+
 
 /**
  * 
- * @param {Object[]} listOfHistory 
+ * @param {Object[]} listOfHistory
  * @param {string} listOfHistory[].release
  * @param {string} listOfHistory[].summary
  * @param {string[]} listOfHistory[].versions
@@ -33,20 +43,60 @@ const fs = require('fs');
  *   ]
  * }
  */
-function main(listOfHistory, opts) {
+async function main(listOfHistory, opts) {
   opts = {
     prefix: opts.prefix || '',
     path: opts.path || __dirname,
   }
   const packageMap = groupByPackage(listOfHistory);
-  packageMap.forEach((package) => {
-    const templateString = template(package);
-    fs.writeFile(`${opts.prefix}${package.name}.md`, templateString, (err) => {
-      if (err) throw err;
-      console.log(`The ${opts.prefix}${package.name}.md has been saved!`);
+  for (let [_, package] of packageMap) {
+    const targetFile = `${opts.prefix}${package.name}.md`;
+    const templateString = '\n' + template(package).trim('\n') + '\n';
+    try {
+      if (fs.existsSync(targetFile)) {
+        await prependFile(templateString, targetFile);
+      } else {
+        await writeFile(targetFile, templateString);
+      }
+    } catch(e) {
+      console.log(e);
+    }
+    console.log(`Updated file ${targetFile}`);
+  }
+};
+
+/**
+ * 
+ * @param {string} data - Data string
+ * @param {string} file - File path
+ * The process is pretty general. It would create a temp file and write the data
+ * into the file and then stream the existing file to the temp file. When it's done,
+ * the temp file will be renamed to replace the existing file.
+ */
+async function prependFile(data, file) {
+  return new Promise((resolve, reject) => {
+    const tempFile = `${file}.temp`;
+    const oldFileStream = fs.createReadStream(file, { encoding: 'utf-8' });
+    const newFileStream = fs.createWriteStream(tempFile);
+
+    oldFileStream.on('error', (err) => {
+      reject(`Failed to read file ${file}: ${err}`);
+    });
+    newFileStream.on('error', (err) => {
+      reject(`Failed to write to temp file ${tempFile}: ${err}`);
+    });
+    newFileStream.on('finish', async () => {
+      await rename(tempFile, file);
+      resolve(`Finished writing ${file}`);
+    })
+
+    // Write the content to an empty temp file first
+    // then stream the old file over
+    newFileStream.write(data, () => {
+      oldFileStream.pipe(newFileStream);
     });
   });
-};
+}
 
 function groupByPackage(listOfHistory) {
   return listOfHistory.reduce((map, history) => {
