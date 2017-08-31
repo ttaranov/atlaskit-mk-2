@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server --history-api-fallback"
+    "start": "webpack-dev-server"
   },
   "repository": "atlaskit/fabric",
   "devDependencies": {
@@ -19,6 +19,7 @@
     "style-loader": "^0.16.1",
     "extract-react-types-loader": "^0.0.0",
     "pyarn-query": "^1.0.0",
+    "raw-loader": "^0.5.1",
     "ts-loader": "^2.3.4",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1"

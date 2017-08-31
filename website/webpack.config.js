@@ -27,7 +27,9 @@ module.exports = async function () {
     packages: [],
   };
 
-  results.workspaces.map(workspace => {
+  const entries = {};
+
+  results.workspaces.forEach(workspace => {
     const docsDir = path.join(workspace.dir, 'docs');
     const docs = [];
 
@@ -37,6 +39,9 @@ module.exports = async function () {
         const relativePath = path.relative(docsDir, filePath);
         const name = sanitizeName(relativePath);
         docs.push({ name, filePath });
+
+        const bundleName = `${workspace.pkg.name}/docs/${name}`.replace(/\//g, '-');
+        entries[bundleName] = filePath;
       });
     }
 
@@ -46,11 +51,14 @@ module.exports = async function () {
     });
   });
 
+  entries.main = './src/index.js';
+
   return {
-    entry: './src/index.js',
+    entry: entries,
     output: {
-      filename: 'bundle.js',
+      filename: '[name].js',
       path: path.resolve(__dirname, 'dist'),
+      publicPath: '/',
     },
     devtool: 'cheap-source-map',
     devServer: {
@@ -131,6 +139,10 @@ module.exports = async function () {
         'process.env': {
           WEBSITE_DATA: JSON.stringify(data),
         },
+      }),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        // ...
       }),
     ],
   };

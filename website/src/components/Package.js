@@ -12,8 +12,22 @@ type PackageProps = {
   },
 };
 
-export default class Package extends React.PureComponent<PackageProps> {
+type PackageState = {
+  children?: React.Node,
+};
+
+export default class Package extends React.PureComponent<PackageProps, PackageState> {
+  state = { children: null };
   props: PackageProps;
+
+  componentDidMount() {
+    require.ensure(['../../../components/tag-group/docs/0-intro.js'], () => {
+      console.log('hi');
+      this.setState({
+        children: require('../../../components/tag-group/docs/0-intro.js').default,
+      });
+    });
+  }
 
   render() {
     const name = this.props.match.params.name;
@@ -26,6 +40,11 @@ export default class Package extends React.PureComponent<PackageProps> {
     return (
       <Page>
         <h1>{pkg.name}</h1>
+        {!this.state.children ? (
+          <div>Loading...</div>
+        ) : (
+          this.state.children
+        )}
       </Page>
     );
   }

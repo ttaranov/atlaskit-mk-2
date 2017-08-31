@@ -45,6 +45,7 @@
     "projector-tslint": "projectorjs/projector-tslint#7dc5c8da55aacc55d10dbf34a363ec25f782bb5b",
     "projector-typescript": "projectorjs/projector-typescript#5fbe80a8ee62d1785a7f8a1f7ac4a4cc3a1e5f00",
     "pyarn-query": "^1.0.0",
+    "raw-loader": "^0.5.1",
     "react-test-renderer": "^15.6.1",
     "style-loader": "^0.16.1",
     "ts-jest": "^20.0.10",

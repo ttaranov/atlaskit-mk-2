@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react';
-import path from 'path';
 import { md, Example, Props } from '@atlaskit/docs';
 
 export default md`
@@ -8,6 +7,7 @@ export default md`
   subtle lozenges by default and in instances where they may dominate the
   screen, such as in long tables.
 
-  ${<Example src={path.join(__dirname, '../examples/0-basic.js')}/>}
-  ${<Props src={path.join(__dirname, '../src/components/Badge.js')}/>}
+  ${<Example source={require('!!raw-loader!../examples/0-basic')} />}
+
+  ${<Props source={require('!!raw-loader!../src/Lozenge')} />}
 `;
