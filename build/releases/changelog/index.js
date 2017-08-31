@@ -2,6 +2,7 @@ const template = require('./templates');
 const example = require('./examples/3combo');
 const fs = require('fs');
 const util = require('util');
+const spawn = require('projector-spawn');
 
 function writeFile(filePath, fileContents) {
   return util.promisify(cb => fs.writeFile(filePath, fileContents, cb))();
@@ -43,7 +44,7 @@ function rename(oldPath, newPath) {
  *   ]
  * }
  */
-async function main(listOfHistory, opts) {
+async function updateChangeLog(listOfHistory, opts) {
   opts = {
     prefix: opts.prefix || '',
     path: opts.path || __dirname,
@@ -139,4 +140,6 @@ function groupByPackage(listOfHistory) {
   }, new Map());
 }
 
-module.exports = main;
+module.exports = {
+  updateChangeLog,
+};

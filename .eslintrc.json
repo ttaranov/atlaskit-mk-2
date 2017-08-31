@@ -5,5 +5,8 @@
     "max-len": ["error", 140],
     "import/no-extraneous-dependencies": ["off", "vscode"],
     "import/no-unresolved": ["off", "vscode"]
+  },
+  "env": {
+    "jest": true
   }
 }
