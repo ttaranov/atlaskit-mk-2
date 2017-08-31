@@ -10,7 +10,9 @@ export default md`
   > **Note:** Once a tag has been removed, there is nothing that you can pass
   > to it to make it re-render the tag.
 
-  ${<Example src={path.join(__dirname, '../examples/0-basic.js')}/>}
-  ${<Example src={path.join(__dirname, '../examples/1-colors.js')}/>}
-  ${<Props src={path.join(__dirname, '../src/components/Tag.js')}/>}
+  ${<Example source={require('!!raw-loader!../examples/0-basic')} />}
+
+  ${<Example source={require('!!raw-loader!../examples/1-colors')} />}
+
+  ${<Props source={require('!!raw-loader!../src/components/Tag')} />}
 `;

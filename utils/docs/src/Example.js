@@ -2,15 +2,16 @@
 import * as React from 'react';
 
 type ExampleProps = {
-  component: React.Node
+  source: string
 };
 
-export default class Example extends React.Component<ExampleProps> {
+export default class Example extends React.PureComponent<ExampleProps> {
+  props: ExampleProps;
   render() {
-    const {component} = this.props;
+    const { source } = this.props;
 
     return (
-      <div>{component}</div>
+      <pre><code>{source}</code></pre>
     );
   }
 }

@@ -7,15 +7,13 @@ const commitLink = require('./commitLink');
  * @param {string} doc - path to release doc
  */
 module.exports = (title, commits, version, doc) => {
-  const header = doc ? 
-    `- [Release] ${title} [${version}] [Read More](${doc})` :
-    `- [Release] ${title} [${version}]`
-  const commitList = commits ?
-    `  [ ${commits.map(e => commitLink(e)).join(', ')} ]` :
-    '';
-
-  return `
-${header}
-${commitList}
-`;
+  const result = [];
+  result.push(`- [${version}] ${title}`);
+  if (doc) {
+    result.push(`  - See [${doc}](${doc}) for more information`);
+  }
+  if (commits) {
+    result.push(`  - [ ${commits.map(e => commitLink(e)).join(', ')} ]`);
+  }
+  return result.join('\n');
 }

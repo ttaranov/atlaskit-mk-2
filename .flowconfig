@@ -10,5 +10,7 @@ module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/utils/\
 module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/build/\1/src/index'
 module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/components/\1/src/index'
 
+module.name_mapper='\!\!raw-loader\!.*' -> '<PROJECT_ROOT>/flow-stubs/raw-loader.js'
+
 [lints]
 all=warn
