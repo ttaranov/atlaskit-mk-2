@@ -5882,13 +5882,12 @@ react-dom@^15.6.1:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-react-markings@^1.0.1:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/react-markings/-/react-markings-1.1.0.tgz#69e2181427b7d8a00970667731eb03edc1b99340"
+react-markings@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-markings/-/react-markings-1.1.2.tgz#37f5c3ef645513d16e3524a9d28241ebde1ac51a"
   dependencies:
     commonmark "^0.27.0"
     commonmark-react-renderer "^4.3.3"
-    strip-indent "^2.0.0"
 
 react-router-dom@^4.2.2:
   version "4.2.2"
