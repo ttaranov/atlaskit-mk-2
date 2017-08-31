@@ -132,6 +132,7 @@ module.exports = async function () {
       alias: {
         '@atlaskit/badge': path.resolve(__dirname, '..', 'components', 'badge', 'src', 'index.js'),
         '@atlaskit/code': path.resolve(__dirname, '..', 'components', 'code', 'src', 'index.ts'),
+        '@atlaskit/docs': path.resolve(__dirname, '..', 'utils', 'docs', 'src', 'index.js')
       },
     },
     plugins: [
