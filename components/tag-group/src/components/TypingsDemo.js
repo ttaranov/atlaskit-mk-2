@@ -1,4 +1,9 @@
 // @flow
+/**
+ * Just a dummy component with different property definitions.
+ * Its helpful for test the <Props /> component.
+ * We will remove this file after make sure we cover all cases.
+ */
 import * as React from 'react';
 
 type A = {
@@ -16,7 +21,4 @@ type Props = {
 };
 
 export default class TagGroup extends React.PureComponent<Props> {
-  render() {
-
-  }
 }
