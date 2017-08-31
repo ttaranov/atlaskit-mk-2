@@ -1,8 +1,6 @@
 // @flow
 import * as React from 'react';
-import path from 'path';
 import { md, Example, Props } from '@atlaskit/docs';
-import BasicExample from '../examples/0-basic';
 
 export default md`
   Badges are visual indicators for numeric values such as tallies and scores.
@@ -15,7 +13,7 @@ export default md`
   - Use labels to call out tags and high-visibility attributes.
   - Use a tooltip if you want to indicate units.
 
-  ${<Example component={<BasicExample />}/>}
+  ${<Example source={require('!!raw-loader!../examples/0-basic')} />}
 
-  ${<Props src={path.join(__dirname, '../src/components/Badge.js')}/>}
+  ${<Props source={require('!!raw-loader!../src/components/Badge')} />}
 `;

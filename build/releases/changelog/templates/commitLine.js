@@ -7,6 +7,6 @@ const commitLink = require('./commitLink');
  */
 module.exports = (message, hash, version) => {
   return `
-- ${message} (${commitLink(hash)}) [${version}]
+- [${version}] ${message} (${commitLink(hash)})
 `;
 }

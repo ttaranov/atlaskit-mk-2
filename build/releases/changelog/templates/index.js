@@ -15,9 +15,16 @@ const commitLine = require('./commitLine');
  * @param {string} package.commits[].version
  */
 module.exports = (package) => {
+  const summaryBlocks = package.summaries.map((summary) => {
+    return releaseLine(summary.message, summary.commits, summary.version, summary.doc).trim('\n');
+  }).join('\n');
+  const commitList = package.commits.map((commit) => {
+    return commitLine(commit.message, commit.hash, commit.version).trim('\n');
+  }).join('\n');
+
   return `
 ## ${package.version}
-${package.summaries.map(e => releaseLine(e.message, e.commits, e.version, e.doc)).join('\n')}
-${package.commits.map(e => commitLine(e.message, e.hash, e.version)).join('\n')}
+${summaryBlocks}
+${commitList}
 `;
 }
