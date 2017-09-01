@@ -1,4 +1,6 @@
+const editor = require('editor');
 const Enquirer = require('enquirer');
+const fs = require('fs');
 const enquirerPrompts = require('enquirer-prompts');
 const uuid = require('uuid/v1');
 
@@ -39,9 +41,19 @@ async function askCheckbox(prompt, choices) {
     .then(responses => responses[questionKey]);
 }
 
+async function askEditor(pathToFile) {
+  return new Promise((resolve, reject) => {
+    editor(pathToFile, (code, sig) => {
+      console.log(code, sig);
+      resolve();
+    });
+  });
+}
+
 module.exports = {
   askQuestion,
   askConfirm,
   askList,
   askCheckbox,
+  askEditor,
 };

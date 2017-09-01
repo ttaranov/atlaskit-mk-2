@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "enquirer": "^1.0.2",
-    "enquirer-prompts": "^1.0.0"
-  }
-}
