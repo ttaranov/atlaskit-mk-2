@@ -6,36 +6,42 @@ describe('parseVersionCommit', () => {
     const commit = `
 Version: This is a super cool version
 Doc: doc.md
-Release:
+Releases:
   badge@minor
-  code@major
+Dependents:
+  code:badge
 `;
     const version = parseVersionCommit(commit.split('\n'));
     expect(version).toEqual({
       summary: 'This is a super cool version',
       doc: 'doc.md',
-      versions: [
+      releases: [
         'badge@minor',
-        'code@major',
       ],
+      dependents: {
+        code: 'badge',
+      },
     });
   });
 
   it('should parse a version commit without Doc', () => {
     const commit = `
 Version: This is a super cool version
-Release:
+Releases:
   badge@minor
-  code@major
+Dependents:
+  code:badge
 `;
     const version = parseVersionCommit(commit.split('\n'));
     expect(version).toEqual({
       summary: 'This is a super cool version',
       doc: '',
-      versions: [
+      releases: [
         'badge@minor',
-        'code@major',
       ],
+      dependents: {
+        code: 'badge',
+      },
     });
   });
 
@@ -48,11 +54,12 @@ Doc: doc.md
 
 
 
-Release:
+Releases:
 
   badge@minor
 
-  code@major
+Dependents:
+  code:badge
 
 
 `;
@@ -60,10 +67,12 @@ Release:
     expect(version).toEqual({
       summary: 'This is a super cool version',
       doc: 'doc.md',
-      versions: [
+      releases: [
         'badge@minor',
-        'code@major',
       ],
+      dependents: {
+        code: 'badge',
+      },
     });
   });
 
@@ -77,7 +86,8 @@ Release:
     expect(version).toEqual({
       summary: 'This is a super cool version',
       doc: 'doc.md',
-      versions: [],
+      releases: [],
+      dependents: {},
     });
   });
 
@@ -85,7 +95,7 @@ Release:
     const commit = `
 Version: This is a super cool version
 Doc: doc.md
-Release:
+Releases:
   badge@minor
   code@major
   shit!
@@ -95,10 +105,11 @@ Release:
     expect(version).toEqual({
       summary: 'This is a super cool version',
       doc: 'doc.md',
-      versions: [
+      releases: [
         'badge@minor',
         'code@major',
       ],
+      dependents: {},
     });
   });
 
@@ -106,18 +117,21 @@ Release:
     const commit = `
 Version: This is a super cool version
 Doc: doc.md
-Release:
-  @atlassian/badge@minor
-  @atlassian/code@major
+Releases:
+  @atlaskit/badge@minor
+Dependents:
+  @atlaskit/code:@atlaskit/badge
 `;
     const version = parseVersionCommit(commit.split('\n'));
     expect(version).toEqual({
       summary: 'This is a super cool version',
       doc: 'doc.md',
-      versions: [
-        '@atlassian/badge@minor',
-        '@atlassian/code@major',
+      releases: [
+        '@atlaskit/badge@minor',
       ],
+      dependents: {
+        '@atlaskit/code': '@atlaskit/badge',
+      },
     });
   });
 });
@@ -131,9 +145,9 @@ describe('groupByPackage', () => {
         releases: [
           '@atlaskit/badge@patch',
         ],
-        dependents: [
-          '@atlaskit/code@patch',
-        ],
+        dependents: {
+          '@atlaskit/code': '@atlaskit/badge',
+        },
       },
     ];
 
@@ -153,9 +167,8 @@ describe('groupByPackage', () => {
       name: '@atlaskit/code',
       releases: [
         {
-          versionType: 'dependent',
-          summary: 'We fix few bugs in badge.',
-          doc: 'release.md',
+          versionType: 'patch',
+          summary: 'Update dependency on @atlaskit/badge',
         },
       ],
     });
@@ -169,9 +182,9 @@ describe('groupByPackage', () => {
         releases: [
           'badge@patch',
         ],
-        dependents: [
-          'code@patch',
-        ],
+        dependents: {
+          code: 'badge',
+        },
       },
       {
         summary: 'A super nice feature in lozenge.',
@@ -179,9 +192,9 @@ describe('groupByPackage', () => {
         releases: [
           'lozenge@minor',
         ],
-        dependents: [
-          'badge@patch',
-        ],
+        dependents: {
+          badge: 'lozenge',
+        },
       },
     ];
 
@@ -195,9 +208,8 @@ describe('groupByPackage', () => {
           doc: 'release.md',
         },
         {
-          versionType: 'dependent',
-          summary: 'A super nice feature in lozenge.',
-          doc: 'release.md',
+          versionType: 'patch',
+          summary: 'Update dependency on lozenge',
         },
       ],
     });
@@ -206,9 +218,8 @@ describe('groupByPackage', () => {
       name: 'code',
       releases: [
         {
-          versionType: 'dependent',
-          summary: 'We fix few bugs in badge.',
-          doc: 'release.md',
+          versionType: 'patch',
+          summary: 'Update dependency on badge',
         },
       ],
     });
@@ -232,9 +243,9 @@ describe('groupByPackage', () => {
         releases: [
           '@atlaskit/badge@patch',
         ],
-        dependents: [
-          '@atlaskit/code@patch',
-        ],
+        dependents: {
+          '@atlaskit/code': '@atlaskit/badge',
+        },
       },
     ];
 
@@ -253,8 +264,8 @@ describe('groupByPackage', () => {
       name: '@atlaskit/code',
       releases: [
         {
-          versionType: 'dependent',
-          summary: 'We fix few bugs in badge.',
+          versionType: 'patch',
+          summary: 'Update dependency on @atlaskit/badge',
         },
       ],
     });
