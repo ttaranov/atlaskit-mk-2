@@ -1,4 +1,6 @@
 
+const releaseRegex = /(@?[\w\d-_/]+)@(major|minor|patch)$/i;
+
 /**
  *
  * @param {string[]} commitMsg
@@ -30,15 +32,49 @@ function parseVersionCommit(commitMsg) {
   return versionCommit;
 }
 
+function groupByPackage(listOfVersionCommitObject) {
+  return listOfVersionCommitObject.reduce((map, history) => {
+    history.releases.forEach((release) => {
+      const [, name, version] = release.match(releaseRegex);
+      const pkg = map.get(name) || {
+        name,
+        releases: [],
+      };
+      const releaseLine = {
+        versionType: version,
+        summary: history.summary,
+        doc: history.doc,
+      };
+      pkg.releases.push(releaseLine);
+      map.set(name, pkg);
+    });
+
+    history.dependents.forEach((dependent) => {
+      const [, name] = dependent.match(releaseRegex);
+      const pkg = map.get(name) || {
+        name,
+        releases: [],
+      };
+      const release = {
+        versionType: 'dependent',
+        summary: history.summary,
+        doc: history.doc,
+      };
+      pkg.releases.push(release);
+      map.set(name, pkg);
+    });
+    return map;
+  }, new Map());
+}
+
 /**
  *
  * @param {string[]} lines
  */
 function parseReleaseBlock(lines) {
-  const regx = /[\w\d-_]+@(major|minor|patch)$/i;
   const validLines = [];
   for (let i = 0; i < lines.length; i++) {
-    if (lines[i].trim().match(regx)) {
+    if (lines[i].trim().match(releaseRegex)) {
       validLines.push(lines[i].trim());
     } else {
       // As long as we find an invalid line, we don't keep looking
@@ -55,4 +91,5 @@ function parseDocLine(line) {
 
 module.exports = {
   parseVersionCommit,
+  groupByPackage,
 };
