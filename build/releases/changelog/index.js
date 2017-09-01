@@ -50,7 +50,7 @@ async function updateChangeLog(listOfHistory, opts) {
 
   // Updating ChangeLog files for each package
   for(const [, pkg] of packageMap) {
-    pkg.version = getPkgVersion(pkg, '../../../components');
+    pkg.version = getPkgVersion(pkg.name, '../../../components');
 
     const targetFile = `${options.prefix}${pkg.name}.md`;
     const templateString = `\n${generateMarkdownTemplate(pkg).trim('\n')}\n`;
