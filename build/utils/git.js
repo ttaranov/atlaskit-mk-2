@@ -1,6 +1,12 @@
 const spawn = require('projector-spawn');
 const path = require('path');
 
+// Parses lines that are in the form 'HASH message goes here'
+const parseCommitLine = line => {
+  const [_, hash, message] = line.match(/([^ ]+) (.+)/);
+  return { commit: hash, message };
+};
+
 async function getCommitsSince(ref) {
   const gitCmd = await spawn('git', ['rev-list', '--no-merges', '--abbrev-commit', `${ref}..HEAD`]);
   return gitCmd.stdout.trim().split('\n');
@@ -23,8 +29,48 @@ async function commit(message, opts) {
   return gitCmd.code === 0;
 }
 
-async function getLastPublishCommit() {
+async function getFullCommit(ref) {
+  const gitCmd = await spawn('git', ['show', ref]);
+  const lines = gitCmd.stdout.trim().split('\n');
 
+  const hash = lines.shift().replace('commit ', '');
+  const author = lines.shift().replace('Author: ', '');
+  const date = new Date(lines.shift().replace('Date: ', '').trim());
+
+  // remove the extra padding added by git show
+  const message = lines.map(line => line.replace('    ', ''))
+    .join('\n')
+    .trim(); // There is one more extra line added by git
+  return {
+    commit: hash,
+    author,
+    date,
+    message,
+  };
+}
+
+async function getLastPublishCommit() {
+  const isPublishCommit = msg => msg.startsWith('RELEASING: ');
+
+  const gitCmd = await spawn('git', ['log', '-n', 5, '--oneline']);
+  const result = gitCmd.stdout.trim().split('\n')
+    .map(line => parseCommitLine(line));
+  const latestPublishCommit = result.find(res => isPublishCommit(res.message));
+
+  return latestPublishCommit;
+}
+
+async function getVersionCommitsSince(ref) {
+  const isVersionCommit = msg => msg.startsWith('Version: ');
+  const lastPublishCommit = await getLastPublishCommit();
+
+  const gitCmd = await spawn('git', ['log', `${lastPublishCommit.commit}...`, '--oneline']);
+
+  const result = gitCmd.stdout.trim().split('\n')
+    .map(line => parseCommitLine(line));
+  const versionCommits = result.filter(res => isVersionCommit(res.message));
+
+  return versionCommits;
 }
 
 module.exports = {
@@ -32,4 +78,7 @@ module.exports = {
   getChangedFilesSince,
   getBranchName,
   commit,
+  getFullCommit,
+  getLastPublishCommit,
+  getVersionCommitsSince,
 };

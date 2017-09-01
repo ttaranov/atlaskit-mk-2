@@ -36,6 +36,7 @@ async function promptForNewVersion(changedPackages) {
     newVersion.doc = newReleasePath;
   }
 
+  newVersion.summary = summary;
   return newVersion;
 }
 
