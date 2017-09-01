@@ -1,9 +1,9 @@
 const chalk = require('chalk');
 const pyarn = require('pyarn');
 // TODO: Make these pull from the actual packages once we have a firm repo structure
-const cli = require('../utils/cli');
-const git = require('../utils/git');
-const history = require('./history');
+const cli = require('../../utils/cli');
+const git = require('../../utils/git');
+const history = require('../history');
 
 async function promptForNewVersion(changedPackages) {
   const bumpTypes = {};
@@ -47,6 +47,4 @@ async function run(opts) {
   console.log(newVersion);
 }
 
-module.exports = {
-  run,
-};
+module.exports = run;
