@@ -2,7 +2,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-const primitiveValues = ['string', 'number', 'boolean', 'any'];
+const primitiveValues = ['string', 'number', 'boolean', 'any', 'mixed'];
 
 const PropRequired = styled.span`
   color: #BF2600;
@@ -38,6 +38,16 @@ const renderProperty = (prop) => {
 
   if (value) {
     const {kind} = value;
+    if (kind === 'function') {
+      const returnType = value.returnType.kind;
+      const params = value.parameters.map(p => p.kind).join(', ');
+
+      propInfo = `(${params}) => ${returnType}`;
+    }
+
+    if (kind === 'nullable') {
+      // ...
+    }
 
     if (primitiveValues.includes(kind)) {
       propInfo = kind;

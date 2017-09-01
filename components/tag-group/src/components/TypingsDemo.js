@@ -17,7 +17,14 @@ type Props = {
   optionalProp?: number | string,
   alignment: 'start' | 'end',
   children: React.Node,
-  a: A
+  a: A,
+  prop: mixed,
+  bar: ?number,
+  v: void,
+  arr1: Array<string>,
+  arr2: Array<number | string>,
+  func1: (string, number) => string,
+  func2: (name: string, age: number) => void
 };
 
 export default class TagGroup extends React.PureComponent<Props> {
