@@ -22,7 +22,6 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
 
   componentDidMount() {
     require.ensure(['../../../components/tag-group/docs/0-intro.js'], () => {
-      console.log('hi');
       this.setState({
         children: require('../../../components/tag-group/docs/0-intro.js').default,
       });

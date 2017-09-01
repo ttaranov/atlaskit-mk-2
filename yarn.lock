@@ -1353,9 +1353,9 @@ babel-preset-react@^6.24.1:
     babel-plugin-transform-react-jsx-source "^6.22.0"
     babel-preset-flow "^6.23.0"
 
-babel-react-components@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/babel-react-components/-/babel-react-components-1.0.1.tgz#b3a81c8f6dc5edd3b3289f6b303f99f66e23bc1c"
+babel-react-components@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/babel-react-components/-/babel-react-components-1.1.0.tgz#3683490747259ea41cef734ceb9fc6098bc5dcd2"
 
 babel-register@^6.26.0:
   version "6.26.0"
@@ -2990,9 +2990,9 @@ extglob@^0.3.1:
   dependencies:
     is-extglob "^1.0.0"
 
-extract-react-types@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.1.0.tgz#66f1ebca66536e4b4b6f49e6b740ce00a0c5a891"
+extract-react-types@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.1.1.tgz#70a64c05bb86f29cd301cdc3b6bb938dba30fed2"
   dependencies:
     babel-core "^7.0.0-alpha.19"
     babel-errors "^1.1.1"
@@ -3001,7 +3001,7 @@ extract-react-types@^0.1.0:
     babel-flow-identifiers "^1.1.2"
     babel-flow-scope "^1.2.0"
     babel-identifiers "^1.0.0"
-    babel-react-components "^1.0.1"
+    babel-react-components "^1.1.0"
     babylon "^7.0.0-beta.22"
     babylon-options "^1.1.2"
 
