@@ -36,39 +36,6 @@ function parseVersionCommit(commitMsg) {
   return versionCommit;
 }
 
-function groupByPackage(listOfVersionCommitObject) {
-  return listOfVersionCommitObject.reduce((map, history) => {
-    history.releases.forEach((release) => {
-      const [, name, version] = release.match(releaseRegex);
-      const pkg = map.get(name) || {
-        name,
-        releases: [],
-      };
-      const releaseLine = {
-        versionType: version,
-        summary: history.summary,
-        doc: history.doc,
-      };
-      pkg.releases.push(releaseLine);
-      map.set(name, pkg);
-    });
-
-    Object.entries(history.dependents).forEach(([name, dependency]) => {
-      const pkg = map.get(name) || {
-        name,
-        releases: [],
-      };
-      const release = {
-        versionType: 'patch',
-        summary: `Update dependency on ${dependency}`,
-      };
-      pkg.releases.push(release);
-      map.set(name, pkg);
-    });
-    return map;
-  }, new Map());
-}
-
 /**
  * @param {string[]} lines
  */
@@ -109,5 +76,4 @@ function parseDocLine(line) {
 
 module.exports = {
   parseVersionCommit,
-  groupByPackage,
 };
