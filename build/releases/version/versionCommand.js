@@ -8,12 +8,16 @@ const history = require('../history');
 const createVersionCommitStr = require('./createVersionCommitStr');
 const createNewReleaseDoc = require('./createNewReleaseDoc');
 
-async function promptForNewVersion(changedPackages) {
+async function createVersionObject(changedPackages) {
   const newVersion = {
     summary: '',
     releases: {},
-    doc: '',
-    dependents: {},
+    releaseNotes: '',
+    // Hardcoded for now so we can see it's all working
+    dependents: {
+      'fake-dependent': ['fake-dependency', 'another-depdency'],
+      'another-dependent': ['fake-dependency'],
+    },
   };
 
   const packagesToInclude = await cli.askCheckbox('Which packages would you like to include?', changedPackages);
@@ -33,7 +37,7 @@ async function promptForNewVersion(changedPackages) {
     await cli.askConfirm('Create new release?'); // This is really just to let the user read the message above
     const newReleasePath = createNewReleaseDoc('new-release.md', summary); // hard-coding here, but we should prompt for it
     await cli.askEditor(newReleasePath);
-    newVersion.doc = newReleasePath;
+    newVersion.releaseNotes = newReleasePath;
   }
 
   newVersion.summary = summary;
@@ -58,7 +62,7 @@ async function getChangedPackages() {
 
 async function run(opts) {
   const changedPackages = await getChangedPackages();
-  const newVersion = await promptForNewVersion(changedPackages);
+  const newVersion = await createVersionObject(changedPackages);
   const versionCommitStr = createVersionCommitStr(newVersion);
 
   console.log(chalk.green('Creating new version commit...\n'));

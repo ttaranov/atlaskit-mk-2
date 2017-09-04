@@ -43,9 +43,9 @@ async function askCheckbox(prompt, choices) {
 
 async function askEditor(pathToFile) {
   return new Promise((resolve, reject) => {
-    editor(pathToFile, (code, sig) => {
-      console.log(code, sig);
-      resolve();
+    editor(pathToFile, (code) => {
+      if (code === 0) resolve();
+      reject();
     });
   });
 }
