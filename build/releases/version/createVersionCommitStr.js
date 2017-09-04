@@ -1,40 +1,31 @@
-/* Version Commit Message Format
+/* Returns a string in the form:
 
-Version: {truncated summary}
+Version: This is a truncated summary of the change....
 
-{Full summary}
-
-Release Notes: {path to release notes - This line can be missing}
-
-Releases:
-  {pkgName}@{bumpType}
-  {pkgName}@{bumpType}
-
-Dependents:
-  {pkgName}: {dependency}, {anotherDependency}
-
+---
+{
+  summary: 'This is the untruncated summary for the changeset',
+  releaseNotes?: 'path/to/release/notes.md',
+  releases {
+    'package-a': 'minor'
+  },
+  dependents: {
+    'package-c': ['package-a']
+    'package-b': ['package-a', 'package-c'],
+  }
+}
+---
 */
 
 function createVersionCommitStr(version) {
   const MAX_SUMMARY_LINE_LENTH = 100;
   const truncatedSummaryLine = `Version: ${version.summary}`.substring(0, MAX_SUMMARY_LINE_LENTH);
-  const releaseLines = Object.keys(version.releases)
-    .map(pkgName => `  ${pkgName}@${version.releases[pkgName]}`);
-  const dependentsLines = Object.entries(version.dependents)
-    .map(([dependent, dependencies]) => `  ${dependent}: ${dependencies.join(', ')}`);
 
   return `${truncatedSummaryLine}
 
-${version.summary}
-
-${version.releaseNotes ? `Release notes: ${version.releaseNotes}` : ''}
-
-Releases:
-${releaseLines.join('\n')}
-
-Dependents:
-${dependentsLines.join('\n')}
-`;
+---
+${JSON.stringify(version, null, 2)}
+---`;
 }
 
 module.exports = createVersionCommitStr;

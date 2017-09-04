@@ -1,4 +1,4 @@
-const flattenReleasedPackages = require('./flattenReleasedPackages');
+const createReleaseObject = require('./createReleaseObject');
 
 /** Publish commit message format
 
@@ -25,7 +25,7 @@ const flattenDependents = foo => ([{
 // Versions is an array of Version objects in the same form as we use in createVersionCommitStr
 // except it also has the commit hash from when the version was commited
 function createPublishCommitStr(versions) {
-  const releasedPackages = flattenReleasedPackages(versions);
+  const releasedPackages = createReleaseObject(versions);
   const dependents = flattenDependents(versions);
 
   const releaseLines = releasedPackages.map(release => `  ${release.name}@${release.version}`);

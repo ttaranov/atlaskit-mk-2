@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-function createNewReleaseDoc(fileName, summary) {
+function createReleaseNotesFile(fileName, summary) {
   const cwd = process.cwd();
   const newFilePath = path.join(cwd, 'releases', fileName);
 
@@ -23,4 +23,4 @@ You can add whatever information you need to about this release. Try to mention:
   return path.relative(cwd, newFilePath);
 }
 
-module.exports = createNewReleaseDoc;
+module.exports = createReleaseNotesFile;
