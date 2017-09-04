@@ -33,8 +33,6 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
     const pkg = getPackageByUnscopedName(name);
     const examples = getExamplesForUnscopedPackage(name);
 
-    console.log(examples);
-
     if (!pkg) {
       return <FourOhFour />;
     }
@@ -42,6 +40,10 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
     return (
       <Page>
         <h1>{pkg.name}</h1>
+        <p>{pkg.description}</p>
+        <h2>Examples</h2>
+        <ul>{examples.map(e => <li key={e}>{e}</li>)}</ul>
+        <hr />
         {!this.state.children ? <div>Loading...</div> : this.state.children}
       </Page>
     );
