@@ -38,9 +38,9 @@
     "projector-jest": "^1.0.1",
     "projector-spawn": "^1.0.1",
     "projector-tslint":
-      "projectorjs/projector-tslint#7dc5c8da55aacc55d10dbf34a363ec25f782bb5b",
+      "projectorjs/projector-tslint#a5a4c3715ad7b03a7234e5f558c83504f7291a8e",
     "projector-typescript":
-      "projectorjs/projector-typescript#5fbe80a8ee62d1785a7f8a1f7ac4a4cc3a1e5f00",
+      "projectorjs/projector-typescript#0623f742b216ec51d2e463a9779be9f4bd729dcc",
     "pyarn-query": "^1.0.0",
     "raw-loader": "^0.5.1",
     "react-test-renderer": "^15.6.1",
