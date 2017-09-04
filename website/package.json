@@ -5,9 +5,7 @@
   "description": "",
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
-  "maintainers": [
-    "Jed W"
-  ],
+  "maintainers": ["Jed W"],
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server"
@@ -25,6 +23,7 @@
     "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
+    "@atlaskit/badge": "6.0.0",
     "@atlaskit/css-reset": "^1.1.5",
     "babel-runtime": "^6.26.0",
     "react-router": "^4.2.0",

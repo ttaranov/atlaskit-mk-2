@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import Badge from '@atlaskit/badge';
+import Badge from '../src';
 
 type State = {
   value: number,
@@ -24,13 +24,8 @@ export default class Component extends React.Component<void, State> {
   render() {
     return (
       <div>
-        <Badge
-          onValueUpdated={this.handleValueUpdated}
-          value={this.state.value}
-        />
-        <button onClick={this.handleIncrement}>
-          Increment
-        </button>
+        <Badge onValueUpdated={this.handleValueUpdated} value={this.state.value} />
+        <button onClick={this.handleIncrement}>Increment</button>
       </div>
     );
   }

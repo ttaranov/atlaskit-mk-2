@@ -1,9 +1,9 @@
 // @flow
 import * as React from 'react';
-import Lozenge from '@atlaskit/lozenge';
+import Lozenge from '../src';
 
-export default () => {
-  return (
-    <Lozenge isBold appearance="new">lozenge</Lozenge>
-  );
-};
+export default () => (
+  <Lozenge isBold appearance="new">
+    lozenge
+  </Lozenge>
+);

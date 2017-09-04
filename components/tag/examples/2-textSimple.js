@@ -1,9 +1,5 @@
 // @flow
 import * as React from 'react';
-import Tag from '@atlaskit/tag';
+import Tag from '../src';
 
-export default () => {
-  return (
-    <Tag text="Marshmallow" />
-  );
-};
+export default () => <Tag text="Marshmallow" />;

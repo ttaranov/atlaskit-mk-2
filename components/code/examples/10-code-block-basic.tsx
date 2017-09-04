@@ -1,8 +1,7 @@
-import * as React from 'react';
-import { AkCodeBlock } from '@atlaskit/code';
+import * as React from "react";
+import { AkCodeBlock } from "../src";
 
-const exampleCodeBlock =
-  `// Create a map.
+const exampleCodeBlock = `// Create a map.
 final IntIntOpenHashMap map = new IntIntOpenHashMap();
 map.put(1, 2);
 map.put(2, 5);
@@ -19,7 +18,5 @@ int count = map.forEach(new IntIntProcedure()
 System.out.println("There are " + count + " values >= 5");`;
 
 export default function Component() {
-  return (
-    <AkCodeBlock language="java" text={exampleCodeBlock} />
-  );
+  return <AkCodeBlock language="java" text={exampleCodeBlock} />;
 }
