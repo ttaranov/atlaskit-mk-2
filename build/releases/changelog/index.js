@@ -2,9 +2,7 @@ const { generateMarkdownTemplate } = require('./template');
 const fs = require('fs');
 const os = require('os');
 const util = require('util');
-const path = require('path');
 const { sep } = require('path');
-const { groupByPackage } = require('./commit');
 
 function writeFile(filePath, fileContents) {
   return util.promisify(cb => fs.writeFile(filePath, fileContents, cb))();
@@ -41,19 +39,20 @@ function mkdtemp(prefix) {
  *   ]
  * }
  */
-async function updateChangeLog(listOfHistory, opts) {
+async function updateChangeLog(releaseObject, opts) {
   const options = {
     prefix: opts.prefix || '',
     path: opts.path || __dirname,
   };
-  const packageMap = groupByPackage(listOfHistory);
 
   // Updating ChangeLog files for each package
-  for(const [, pkg] of packageMap) {
-    pkg.version = getPkgVersion(pkg.name, '../../../components');
+  for (let i = 0; i < releaseObject.releases.length; i++) {
+    const release = releaseObject.releases[i];
+    const targetFile = `${options.prefix}${release.name}.md`;
 
-    const targetFile = `${options.prefix}${pkg.name}.md`;
-    const templateString = `\n${generateMarkdownTemplate(pkg).trim('\n')}\n`;
+    release.dependent = releaseObject.dependents.find((d) => d.name === release.name);
+
+    const templateString = `\n${generateMarkdownTemplate(release).trim('\n')}\n`;
     try {
       if (fs.existsSync(targetFile)) {
         await prependFile(templateString, targetFile);
@@ -65,10 +64,6 @@ async function updateChangeLog(listOfHistory, opts) {
     }
     console.log(`Updated file ${targetFile}`);
   }
-}
-
-function getPkgVersion(name, pkgPath) {
-  return require(path.join(pkgPath, name, 'package.json')).version;
 }
 
 /**
