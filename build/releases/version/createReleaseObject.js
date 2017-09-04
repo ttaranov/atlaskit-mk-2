@@ -131,9 +131,22 @@ function flattenDependents(changesets) {
 
 function createReleaseObject(changesets) {
   const flattenedReleases = flattenReleases(changesets);
+  // Todo, generate the dependents from the releases in the changesets instead
+  // I've also skipped getting the current versions for dependents because it will be rewritten once
+  // the above is done too
   const flattenedDependents = flattenDependents(changesets);
+
+  const finalReleases = flattenedReleases
+    // get the current versions
+    .map(release => ({ ...release, version: getCurrentVersion(release.name) }))
+    // now increment each to the new version
+    .map(release => {
+      const newVersion = semver.inc(release.version, release.type);
+      return { ...release, version: newVersion };
+    });
+
   return {
-    releases: flattenedReleases,
+    releases: finalReleases,
     dependents: flattenedDependents,
     changesets,
   };
