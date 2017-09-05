@@ -1,9 +1,10 @@
 /**
  *
- * @param {string[]} commitMsg
+ * @param {string} commitMsg
  */
 function parseChangeSetCommit(commitMsg) {
-  const lines = commitMsg.filter(line => typeof line === 'string' && line.trim().length !== 0);
+  const lines = commitMsg.split('\n')
+    .filter(line => typeof line === 'string' && line.trim().length !== 0);
 
   if (lines.length <= 0 && !lines.unshift().startsWith('Version:')) {
     // This is not a version commit, I don't care

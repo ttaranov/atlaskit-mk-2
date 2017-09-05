@@ -14,7 +14,7 @@ Version: This is a super cool version
 }
 ---
 `;
-    const version = parseChangeSetCommit(commit.split('\n'));
+    const version = parseChangeSetCommit(commit);
     expect(version).toEqual({
       summary: 'This is a super cool version',
       releaseNotes: 'doc.md',
@@ -40,7 +40,7 @@ Version: This is a super cool version
 }
 ---
 `;
-    const version = parseChangeSetCommit(commit.split('\n'));
+    const version = parseChangeSetCommit(commit);
     expect(version).toEqual({
       summary: 'This is a super cool version',
       releaseNotes: 'doc.md',
