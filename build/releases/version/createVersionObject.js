@@ -3,15 +3,20 @@ const chalk = require('chalk');
 const cli = require('../../utils/cli');
 const createReleaseNotesFile = require('./createReleaseNotesFile');
 
+/* Version object format (TODO: User flow!!!)
+  {
+    summary: 'This is the summary',
+    releaseNotes?: 'path/to/release/notes.md',   // optional
+    releases: {
+      pkgName: bumpType,
+    },
+  }
+*/
+
 async function createVersionObject(changedPackages) {
   const newVersion = {
     summary: '',
     releases: {},
-    // Hardcoded for now so we can see it's all working
-    dependents: {
-      'fake-dependent': ['fake-dependency', 'another-depdency'],
-      'another-dependent': ['fake-dependency'],
-    },
   };
 
   const packagesToInclude = await cli.askCheckbox('Which packages would you like to include?', changedPackages);
@@ -35,6 +40,7 @@ async function createVersionObject(changedPackages) {
   }
 
   newVersion.summary = summary;
+  console.log(newVersion);
   return newVersion;
 }
 
