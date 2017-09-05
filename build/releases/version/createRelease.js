@@ -4,24 +4,28 @@ const semver = require('semver');
   This flattens an array of Version objects into one object that can be used to create the changelogs
   and the publish commit messages.
 
+  Dependents will be calculated and added to releases, then final versions will be calculated.
+
   It's output will look like
 
   {
-    releases: [{                  // packages being released because of actual code changes
+    releases: [{
       name: 'package-a',
-      version: '1.1.0',           // actual version being released
-      changesets: [<Changeset>, ] // filtered to ones for this package (used in changelogs)
-    }]
-    dependents: [{                // packages that are being released because of deps changing
-      dependent: 'package-b',
+      version: '1.1.0',               // actual version being released
+      commits: ['fc4229d', 'aeb543f'] // filtered to ones for this package
+                                      // (used in changelogs)
+    },
+    {
+      name: 'package-b'
       version: '1.0.1',
-      dependencies: [
-        { name: 'package-a', version: '1.0.1', commits: ['d0a7ec0', 'ce21c8f'] },
-        { name: 'package-c', version: '1.0.1', commits: ['d0a7ec0', 'ce21c8f'] }
-      ],
-    }],
+      dependencies: ['package-a']     // release can include a list of dependencies
+                                      // that were bumped
+      commits: ['fc4229d', 'aeb543f'] // these would be the commits that caused bumps
+    }]
+
     changesets: [<Changeset>] // References to all the changesets used to build Release
-                              // Used only for the summaries in publish commits
+                              // to be able to look up summary and release notes
+                              // information when building changelogs
   }
 */
 
@@ -37,59 +41,40 @@ function maxBumpType(bumpA, bumpB) {
   return 'patch';
 }
 
-/*
-
-  flattenReleases
-    getRelevantChangesets
-    getMaxBumpType
-    getFinalVersion
-
-  flattenDependents
-    getRelevantChangset
-    getFinalVersion (check releases as well)
-    flattenAllDependencies
-      getFinalVersion
-      getRelevantCommits
-*/
-
 // Takes a Changeset object and returns an array of releaseInfo objects for each release it contains
-// i.e [ {name: 'foo', type: 'bump', changeset: {} } ] < -changeset is a reference to the original changeset
+// i.e [ {name: 'foo', type: 'bump', commit: 'd7964f4' } ]
 function flattenSingleChangeset(changeset) {
   const flattened = [];
 
   Object.entries(changeset.releases).forEach(([name, type]) => {
-    flattened.push({ name, type, changeset });
+    flattened.push({ name, type, commit: changeset.commit });
   });
 
   return flattened;
 }
 
-// Takes an array of releaseInfo objects and reduces them so that there is only one entry per package
-// and that only the highest bumptype remains (and all commits are stored)
-function flattenReleaseArray(releases) {
-  const flattened = [];
-
-  releases.forEach(release => {
-    const { name, type, changeset } = release;
-    const foundBefore = flattened.find(pkg => pkg.name === name);
-    if (!foundBefore) {
-      flattened.push({ name, type, changesets: [changeset] });
-    } else {
-      foundBefore.type = maxBumpType(foundBefore.type, type);
-      foundBefore.changesets.push(changeset);
-    }
-  });
-
-  return flattened;
-}
-
-// creates the 'releases' object for a Release by resolving maximum bump type and final version
+// Takes an array of Changesets and returns a flat list of actual releases with only one entry per
+// package. i.e [{ name:'', type:'', commits: ['', '']}, ]
 function flattenReleases(changesets) {
+  const flattened = [];
+  // split each changeset into muliple releases with only the relevant info
   const releases = changesets.map(changeset => flattenSingleChangeset(changeset))
     // reduce to a single array of release information by concatenating
     .reduce((cur, next) => cur.concat(next));
 
-  return flattenReleaseArray(releases);
+  // now flatten the releases so we only have one entry per package
+  releases.forEach(release => {
+    const { name, type, commit } = release;
+    const foundBefore = flattened.find(pkg => pkg.name === name);
+    if (!foundBefore) {
+      flattened.push({ name, type, commits: [commit] });
+    } else {
+      foundBefore.type = maxBumpType(foundBefore.type, type);
+      foundBefore.commits.push(commit);
+    }
+  });
+
+  return flattened;
 }
 
 /** Takes an array of Changeset and returns an array of dependentsInfo in the form
@@ -103,6 +88,7 @@ function flattenReleases(changesets) {
   }
 ] */
 function flattenDependents(changesets) {
+  // THIS WILL BE REFACTORED ONCE WE START PULLING DEPENDENTS
   const flattened = [];
 
   changesets.forEach(changeset => {
@@ -129,27 +115,21 @@ function flattenDependents(changesets) {
   return flattened;
 }
 
-function createReleaseObject(changesets) {
+function createRelease(changesets) {
+  // First, combine all the changeset.releases into one useful array
   const flattenedReleases = flattenReleases(changesets);
-  // Todo, generate the dependents from the releases in the changesets instead
-  // I've also skipped getting the current versions for dependents because it will be rewritten once
-  // the above is done too
-  const flattenedDependents = flattenDependents(changesets);
-
-  const finalReleases = flattenedReleases
-    // get the current versions
+  // Then add in the dependents to the releases
+  // const allReleases = addDependentReleases(flattenedReleases)
+  const allReleases = flattenedReleases
+    // get the current version for each package
     .map(release => ({ ...release, version: getCurrentVersion(release.name) }))
-    // now increment each to the new version
-    .map(release => {
-      const newVersion = semver.inc(release.version, release.type);
-      return { ...release, version: newVersion };
-    });
+    // update to new version for each package
+    .map(release => ({ ...release, version: semver.inc(release.version, release.type) }));
 
   return {
-    releases: finalReleases,
-    dependents: flattenedDependents,
+    releases: allReleases,
     changesets,
   };
 }
 
-module.exports = createReleaseObject;
+module.exports = createRelease;
