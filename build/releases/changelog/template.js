@@ -43,7 +43,7 @@ function generateMarkdownTemplate(pkg, changeSets) {
     return releaseLine(
       changeSet.summary,
       changeSet.releases[pkg.name],
-      changeSet.doc,
+      changeSet.releaseNotes,
       changeSet.commit
     ).trim('\n');
   }).join('\n');

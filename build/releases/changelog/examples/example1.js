@@ -1,24 +1,18 @@
 const changeSets = [
   {
     summary: 'We fix few bugs in badge.',
-    doc: 'release.md',
+    releaseNotes: 'release.md',
     commit: '63uyea9',
     releases: {
       badge: 'patch',
     },
-    dependents: {
-      code: 'badge',
-    },
   },
   {
     summary: 'We add in a new feature in lozenge',
-    doc: 'release.md',
+    releaseNotes: 'release.md',
     commit: '37uue06',
     releases: {
       lozenge: 'minor',
-    },
-    dependents: {
-      badge: 'lozenge',
     },
   },
 ];

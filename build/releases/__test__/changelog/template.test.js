@@ -34,7 +34,7 @@ describe('template', () => {
       changeSets: [
         {
           summary: 'We fix few bugs in badge.',
-          doc: 'release.md',
+          releaseNotes: 'release.md',
           commit: '496287c',
           releases: {
             '@atlaskit/badge': 'patch',
@@ -59,7 +59,7 @@ describe('template', () => {
       changeSets: [
         {
           summary: 'We fix few bugs in badge.',
-          doc: 'release.md',
+          releaseNotes: 'release.md',
           commit: '496287c',
           releases: {
             '@atlaskit/badge': 'patch',
@@ -67,7 +67,7 @@ describe('template', () => {
         },
         {
           summary: 'We added in a new feature in badge.',
-          doc: 'super.md',
+          releaseNotes: 'super.md',
           commit: '898739d',
           releases: {
             '@atlaskit/badge': 'minor',
@@ -105,7 +105,7 @@ describe('template', () => {
       changeSets: [
         {
           summary: 'We fix few bugs in badge.',
-          doc: 'release.md',
+          releaseNotes: 'release.md',
           commit: '496287c',
           releases: {
             '@atlaskit/badge': 'patch',
