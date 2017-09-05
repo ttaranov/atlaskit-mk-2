@@ -5,9 +5,15 @@
     "A React component used for grouping and controlling @atlskit/tag components",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
-  "files": ["dist"],
+  "src": "src/index.js",
+  "files": [
+    "dist"
+  ],
   "author": "Atlassian Pty Ltd",
-  "maintainers": ["Luke B", "Nadia M"],
+  "maintainers": [
+    "Luke B",
+    "Nadia M"
+  ],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/theme": "^2.0.0",
