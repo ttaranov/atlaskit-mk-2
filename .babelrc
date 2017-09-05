@@ -8,6 +8,7 @@
   ],
   "plugins": [
     // "transform-runtime",
-    "transform-class-properties"
+    "transform-class-properties",
+    "transform-object-rest-spread" // used in build, probably want to disable in components soon
   ]
 }

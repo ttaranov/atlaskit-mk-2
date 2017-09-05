@@ -118,13 +118,16 @@ function flattenDependents(changesets) {
 function createRelease(changesets) {
   // First, combine all the changeset.releases into one useful array
   const flattenedReleases = flattenReleases(changesets);
+
   // Then add in the dependents to the releases
   // const allReleases = addDependentReleases(flattenedReleases)
   const allReleases = flattenedReleases
     // get the current version for each package
     .map(release => ({ ...release, version: getCurrentVersion(release.name) }))
     // update to new version for each package
-    .map(release => ({ ...release, version: semver.inc(release.version, release.type) }));
+    .map(release => ({ ...release, version: semver.inc(release.version, release.type) }))
+    // stip out type field
+    .map(({ type, ...rest }) => rest);
 
   return {
     releases: allReleases,

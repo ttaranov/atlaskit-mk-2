@@ -15,7 +15,7 @@ const simpleRelease = {
 };
 
 describe('createReleaseCommit', () => {
-  it('should handle a single simple changeset', () => {
+  it('should handle a single simple releaseObject with one released package', () => {
     const commitStr = createReleaseCommit(simpleRelease);
     expect(commitStr).toEqual(`RELEASING: Releasing 1 packages
 
