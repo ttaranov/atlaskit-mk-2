@@ -40,7 +40,6 @@ async function createVersionObject(changedPackages) {
   }
 
   newVersion.summary = summary;
-  console.log(newVersion);
   return newVersion;
 }
 
