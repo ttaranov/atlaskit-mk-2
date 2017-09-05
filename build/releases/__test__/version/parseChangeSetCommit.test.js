@@ -10,9 +10,6 @@ Version: This is a super cool version
   "releaseNotes": "doc.md",
   "releases": {
     "badge": "minor"
-  },
-  "dependents": {
-    "code": ["badge"]
   }
 }
 ---
@@ -23,9 +20,6 @@ Version: This is a super cool version
       releaseNotes: 'doc.md',
       releases: {
         badge: 'minor',
-      },
-      dependents: {
-        code: ['badge'],
       },
     });
   });
@@ -42,9 +36,6 @@ Version: This is a super cool version
 
   "releases": {
     "badge": "minor"
-  },
-  "dependents": {
-    "code": ["badge"]
   }
 }
 ---
@@ -55,9 +46,6 @@ Version: This is a super cool version
       releaseNotes: 'doc.md',
       releases: {
         badge: 'minor',
-      },
-      dependents: {
-        code: ['badge'],
       },
     });
   });

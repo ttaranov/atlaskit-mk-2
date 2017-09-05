@@ -28,10 +28,7 @@ function dependencyLines(dependent) {
  * @param {Object} pkg
  * @param {string} pkg.name
  * @param {string} pkg.version - [major, minor, patch]
- * @param {Object[]} pkg.changeSets
- * @param {string} pkg.changeSets[].summary
- * @param {string} pkg.changeSets[].commit
- * @param {Object} pkg.changeSets[].releases
+ * @param {string[]} pkg.changeSets
  * @param {Object} pkg.dependent
  * @param {string} pkg.dependent.version
  * @param {Object[]} pkg.dependent.dependencies
@@ -39,16 +36,17 @@ function dependencyLines(dependent) {
  * @param {string} pkg.dependent.dependencies[].version
  * @param {string[]} pkg.dependent.dependencies[].commits
  */
-function generateMarkdownTemplate(pkg) {
+function generateMarkdownTemplate(pkg, changeSets) {
   const result = [`## ${pkg.version}`];
-  const releaseLines = pkg.changeSets.map((changeSet) =>
-    releaseLine(
+  const releaseLines = pkg.changeSets.map((commitHash) => {
+    const changeSet = changeSets.find(c => c.commit === commitHash);
+    return releaseLine(
       changeSet.summary,
       changeSet.releases[pkg.name],
       changeSet.doc,
       changeSet.commit
-    ).trim('\n')
-  ).join('\n');
+    ).trim('\n');
+  }).join('\n');
   result.push(releaseLines);
 
   if (pkg.dependent) {
