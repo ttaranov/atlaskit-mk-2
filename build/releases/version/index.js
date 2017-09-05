@@ -1,9 +1,9 @@
-const createVersionCommitStr = require('./createVersionCommitStr');
+const createChangesetCommit = require('./createChangesetCommit');
 const createPublishCommitStr = require('./createPublishCommitStr');
 const versionCommand = require('./versionCommand');
 
 module.exports = {
-  createVersionCommitStr,
+  createChangesetCommit,
   createPublishCommitStr,
   run: versionCommand,
 };

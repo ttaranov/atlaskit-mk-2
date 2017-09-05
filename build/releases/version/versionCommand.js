@@ -5,8 +5,8 @@ const pyarn = require('pyarn');
 const cli = require('../../utils/cli');
 const git = require('../../utils/git');
 const history = require('../history');
-const createVersionObject = require('./createVersionObject');
-const createVersionCommitStr = require('./createVersionCommitStr');
+const createChangeset = require('./createChangeset');
+const createChangesetCommit = require('./createChangesetCommit');
 
 async function getChangedPackages() {
   const lastRelease = history.getLastRelease();
@@ -26,8 +26,8 @@ async function getChangedPackages() {
 
 async function run(opts) {
   const changedPackages = await getChangedPackages();
-  const newVersion = await createVersionObject(changedPackages);
-  const versionCommitStr = createVersionCommitStr(newVersion);
+  const newVersion = await createChangeset(changedPackages);
+  const versionCommitStr = createChangesetCommit(newVersion);
 
   console.log(chalk.green('Creating new version commit...\n'));
   console.log(versionCommitStr);
