@@ -1,17 +1,15 @@
 // @flow
 import * as React from 'react';
 import Tag from '@atlaskit/tag';
-import TagGroup from '@atlaskit/tag-group';
+import TagGroup from '../src';
 
-export default () => {
-  return (
-    <div>
-      <p>Try tabbing :)</p>
-      <TagGroup>
-        <Tag href="http://www.cupcakeipsum.com/" removeButtonText="No sweets for you!" text="Danish chocolate" />
-        <Tag href="http://www.cupcakeipsum.com/" removeButtonText="No sweets for you!" text="Jelly beans" />
-        <Tag href="http://www.cupcakeipsum.com/" removeButtonText="No sweets for you!" text="Cheesecake" />
-      </TagGroup>
-    </div>
-  );
-};
+export default () => (
+  <div>
+    <p>Try tabbing :)</p>
+    <TagGroup>
+      <Tag href="http://www.cupcakeipsum.com/" removeButtonText="No sweets for you!" text="Danish chocolate" />
+      <Tag href="http://www.cupcakeipsum.com/" removeButtonText="No sweets for you!" text="Jelly beans" />
+      <Tag href="http://www.cupcakeipsum.com/" removeButtonText="No sweets for you!" text="Cheesecake" />
+    </TagGroup>
+  </div>
+);

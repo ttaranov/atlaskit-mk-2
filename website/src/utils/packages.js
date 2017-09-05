@@ -11,3 +11,7 @@ export function getUnscopedPkgName(name: string) {
 export function getPackageByUnscopedName(name: string) {
   return PACKAGES.find(pkg => getUnscopedPkgName(pkg.name) === name);
 }
+
+export function getExamplesForUnscopedPackage(name: string) {
+  return require.context('../../../components/', true, /.*\/examples\/.*\.js$/).filter(path => path.indexOf(name) > -1);
+}

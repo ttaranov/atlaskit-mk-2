@@ -4,19 +4,29 @@ This is a spike of the potential new build system to be shared by AtlasKit, Medi
 
 ## Getting started
 
-First you'll need `pyarn` installed.
+You'll need `node@8.1.4` with `yarn` and `pyarn` installed globally:
 
 ```
-yarn global add pyarn
+nvm install 8.1.4
 ```
 
-Now we can install the repo
+```
+npm i -g yarn pyarn
+```
+
+Then install dependencies for AtlasKit MK II:
 
 ```
 pyarn install
 ```
 
-You should now be able to run you normal commands
+## Developing
+
+```
+yarn start
+```
+
+This will start webpack and serve the website on [localhost:9000](http://localhost:9000/)
 
 ## Building
 

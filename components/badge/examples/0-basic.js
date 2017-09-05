@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import Badge from '@atlaskit/badge';
+import Badge from '../src';
 
 export default function Component() {
   return (
