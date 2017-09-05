@@ -3,8 +3,11 @@ const { generateMarkdownTemplate } = require('../../changelog/template');
 describe('template', () => {
   it('should generate template from a simple release object', () => {
     const input = {
-      name: '@atlaskit/badge',
-      version: 'v1.0.0',
+      release: {
+        name: '@atlaskit/badge',
+        version: 'v1.0.0',
+        changeSets: ['496287c'],
+      },
       changeSets: [
         {
           summary: 'We fix few bugs in badge.',
@@ -16,15 +19,18 @@ describe('template', () => {
       ],
     };
 
-    const output = generateMarkdownTemplate(input);
+    const output = generateMarkdownTemplate(input.release, input.changeSets);
     expect(output).toBe(`## v1.0.0
 - [patch] We fix few bugs in badge. [496287c](496287c)`);
   });
 
   it('should generate template from a release object with doc provided', () => {
     const input = {
-      name: '@atlaskit/badge',
-      version: 'v1.0.0',
+      release: {
+        name: '@atlaskit/badge',
+        version: 'v1.0.0',
+        changeSets: ['496287c'],
+      },
       changeSets: [
         {
           summary: 'We fix few bugs in badge.',
@@ -37,7 +43,7 @@ describe('template', () => {
       ],
     };
 
-    const output = generateMarkdownTemplate(input);
+    const output = generateMarkdownTemplate(input.release, input.changeSets);
     expect(output).toBe(`## v1.0.0
 - [patch] We fix few bugs in badge. [496287c](496287c)
   - See [release.md](release.md) for more information`);
@@ -45,8 +51,11 @@ describe('template', () => {
 
   it('should generate template from a release object with multiple changeSets', () => {
     const input = {
-      name: '@atlaskit/badge',
-      version: 'v1.0.0',
+      release: {
+        name: '@atlaskit/badge',
+        version: 'v1.0.0',
+        changeSets: ['496287c', '898739d'],
+      },
       changeSets: [
         {
           summary: 'We fix few bugs in badge.',
@@ -67,7 +76,7 @@ describe('template', () => {
       ],
     };
 
-    const output = generateMarkdownTemplate(input);
+    const output = generateMarkdownTemplate(input.release, input.changeSets);
     expect(output).toBe(`## v1.0.0
 - [patch] We fix few bugs in badge. [496287c](496287c)
   - See [release.md](release.md) for more information
@@ -77,8 +86,22 @@ describe('template', () => {
 
   it('should generate template from a release with dependent', () => {
     const input = {
-      name: '@atlaskit/badge',
-      version: 'v1.0.0',
+      release: {
+        name: '@atlaskit/badge',
+        version: 'v1.0.0',
+        changeSets: ['496287c'],
+        dependent: {
+          name: '@atlaskit/badge',
+          version: 'v1.0.0',
+          dependencies: [
+            {
+              name: '@atlaskit/code',
+              version: '0.9.0',
+              commits: ['63c5ea9', '63uyea9'],
+            },
+          ],
+        },
+      },
       changeSets: [
         {
           summary: 'We fix few bugs in badge.',
@@ -89,20 +112,9 @@ describe('template', () => {
           },
         },
       ],
-      dependent: {
-        name: '@atlaskit/badge',
-        version: 'v1.0.0',
-        dependencies: [
-          {
-            name: '@atlaskit/code',
-            version: '0.9.0',
-            commits: ['63c5ea9', '63uyea9'],
-          },
-        ],
-      },
     };
 
-    const output = generateMarkdownTemplate(input);
+    const output = generateMarkdownTemplate(input.release, input.changeSets);
     expect(output).toBe(`## v1.0.0
 - [patch] We fix few bugs in badge. [496287c](496287c)
   - See [release.md](release.md) for more information

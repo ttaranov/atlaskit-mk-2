@@ -28,12 +28,12 @@ module.exports = {
     {
       name: 'badge',
       version: 'v1.0.1',
-      changeSets: [changeSets[0]],
+      changeSets: [changeSets[0].commit],
     },
     {
       name: 'lozenge',
       version: 'v1.1.0',
-      changeSets: [changeSets[1]],
+      changeSets: [changeSets[1].commit],
     },
   ],
   dependents: [
