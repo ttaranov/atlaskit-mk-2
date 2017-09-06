@@ -83,6 +83,11 @@ module.exports = async function () {
     module: {
       rules: [
         {
+          test: /CHANGELOG\.md$/,
+          exclude: /node_modules/,
+          loader: 'changelog-md-loader',
+        },
+        {
           test: /\.js$/,
           exclude: /node_modules/,
           loader: require.resolve('babel-loader'),
@@ -138,6 +143,9 @@ module.exports = async function () {
         '@atlaskit/code': path.resolve(__dirname, '..', 'components', 'code', 'src', 'index.ts'),
         '@atlaskit/docs': path.resolve(__dirname, '..', 'utils', 'docs', 'src', 'index.js'),
       },
+    },
+    resolveLoader: {
+      modules: ['../build/', 'node_modules'],
     },
     plugins: [
       new webpack.DefinePlugin({

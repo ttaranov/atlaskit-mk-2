@@ -9,7 +9,6 @@ import Button from '@atlaskit/button';
 
 import Changelog, { NoMatch } from './ChangeLog';
 import Page from './Page';
-import data from '../../changelog/test.json';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
@@ -46,7 +45,13 @@ export default class ChangelogExplorer extends PureComponent {
 
   render() {
     const { component } = this.props.match.params;
-    const changelog = data;
+    let changelog = '';
+    try {
+      const reqCtx = require.context('../../../components/', true, /^\.\/[\w\d-_]+\/CHANGELOG\.md$/);
+      changelog = reqCtx(`./${component}/CHANGELOG.md`);
+    } catch (e) {
+      console.log(e);
+    }
     const { isInvalid, range } = this.state;
 
     return (

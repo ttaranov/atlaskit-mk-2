@@ -31,9 +31,9 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
   render() {
     const name = this.props.match.params.name;
     const pkg = getPackageByUnscopedName(name);
-    const examples = getExamplesForUnscopedPackage(name);
+    // const examples = getExamplesForUnscopedPackage(name);
 
-    console.log(examples);
+    // console.log(examples);
 
     if (!pkg) {
       return <FourOhFour />;
