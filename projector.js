@@ -7,6 +7,7 @@ const path = require('path');
 const glob = require('glob');
 const fs = require('fs');
 const version = require('./build/releases/version');
+const release = require('./build/releases/release');
 
 const buildTSComponent = async cwd => {
   // ES5
@@ -78,6 +79,12 @@ exports.test = async () => {
 
 exports.version = async () => {
   await version.run({
+    rootDir: __dirname,
+  });
+};
+
+exports.release = async () => {
+  await release.run({
     rootDir: __dirname,
   });
 };

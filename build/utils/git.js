@@ -33,7 +33,7 @@ async function getFullCommit(ref) {
   const gitCmd = await spawn('git', ['show', ref]);
   const lines = gitCmd.stdout.trim().split('\n');
 
-  const hash = lines.shift().replace('commit ', '');
+  const hash = lines.shift().replace('commit ', '').substring(0, 7);
   const author = lines.shift().replace('Author: ', '');
   const date = new Date(lines.shift().replace('Date: ', '').trim());
 
@@ -52,23 +52,23 @@ async function getFullCommit(ref) {
 async function getLastPublishCommit() {
   const isPublishCommit = msg => msg.startsWith('RELEASING: ');
 
-  const gitCmd = await spawn('git', ['log', '-n', 5, '--oneline']);
+  const gitCmd = await spawn('git', ['log', '-n', 50, '--oneline']);
   const result = gitCmd.stdout.trim().split('\n')
     .map(line => parseCommitLine(line));
   const latestPublishCommit = result.find(res => isPublishCommit(res.message));
 
-  return latestPublishCommit;
+  return latestPublishCommit.commit;
 }
 
-async function getVersionCommitsSince(ref) {
+async function getChangesetCommitsSince(ref) {
   const isVersionCommit = msg => msg.startsWith('Version: ');
-  const lastPublishCommit = await getLastPublishCommit();
 
-  const gitCmd = await spawn('git', ['log', `${lastPublishCommit.commit}...`, '--oneline']);
+  const gitCmd = await spawn('git', ['log', `${ref}...`, '--oneline']);
 
   const result = gitCmd.stdout.trim().split('\n')
     .map(line => parseCommitLine(line));
-  const versionCommits = result.filter(res => isVersionCommit(res.message));
+  const versionCommits = result.filter(res => isVersionCommit(res.message))
+    .map(res => res.commit);
 
   return versionCommits;
 }
@@ -80,5 +80,5 @@ module.exports = {
   commit,
   getFullCommit,
   getLastPublishCommit,
-  getVersionCommitsSince,
+  getChangesetCommitsSince,
 };

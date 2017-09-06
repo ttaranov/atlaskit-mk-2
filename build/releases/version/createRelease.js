@@ -1,4 +1,5 @@
 const semver = require('semver');
+const pyarn = require('pyarn');
 
 /*
   This flattens an array of Version objects into one object that can be used to create the changelogs
@@ -29,9 +30,8 @@ const semver = require('semver');
   }
 */
 
-// Hardcoding this function for now
-function getCurrentVersion(packageName) {
-  return '1.0.0';
+function getCurrentVersion(packageName, allPackages) {
+  return allPackages.find(pkg => pkg.name === packageName).config.version;
 }
 
 // returns which bump type is bigger (bumpA can be undefined)
@@ -115,7 +115,7 @@ function flattenDependents(changesets) {
   return flattened;
 }
 
-function createRelease(changesets) {
+function createRelease(changesets, allPackages) {
   // First, combine all the changeset.releases into one useful array
   const flattenedReleases = flattenReleases(changesets);
 
@@ -123,7 +123,7 @@ function createRelease(changesets) {
   // const allReleases = addDependentReleases(flattenedReleases)
   const allReleases = flattenedReleases
     // get the current version for each package
-    .map(release => ({ ...release, version: getCurrentVersion(release.name) }))
+    .map(release => ({ ...release, version: getCurrentVersion(release.name, allPackages) }))
     // update to new version for each package
     .map(release => ({ ...release, version: semver.inc(release.version, release.type) }))
     // stip out type field

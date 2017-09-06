@@ -39,7 +39,7 @@ function mkdtemp(prefix) {
  *   ]
  * }
  */
-async function updateChangeLog(releaseObject, opts) {
+async function updateChangeLog(releaseObject, opts = {}) {
   const options = {
     prefix: opts.prefix || '',
     path: opts.path || __dirname,

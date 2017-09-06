@@ -10,7 +10,8 @@
     "build": "projector ./projector.js build",
     "test": "projector ./projector.js test",
     "start": "cd website && yarn start",
-    "version": "projector ./projector version"
+    "version": "projector ./projector version",
+    "release": "projector ./projector release"
   },
   "pworkspaces": ["build/*", "utils/*", "components/*", "website"],
   "devDependencies": {
