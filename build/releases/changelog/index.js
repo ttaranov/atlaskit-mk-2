@@ -1,9 +1,7 @@
-const template = require('./templates');
-const example = require('./examples/3combo');
+const { generateMarkdownTemplate } = require('./template');
 const fs = require('fs');
 const os = require('os');
 const util = require('util');
-const spawn = require('projector-spawn');
 const { sep } = require('path');
 
 function writeFile(filePath, fileContents) {
@@ -18,9 +16,7 @@ function mkdtemp(prefix) {
   return util.promisify(cb => fs.mkdtemp(prefix, cb))();
 }
 
-
 /**
- * 
  * @param {Object[]} listOfHistory
  * @param {string} listOfHistory[].release
  * @param {string} listOfHistory[].summary
@@ -28,52 +24,49 @@ function mkdtemp(prefix) {
  * @param {Object[]} listOfHistory[].commits
  * @param {string} listOfHistory[].commits[].message
  * @param {string} listOfHistory[].commits[].hash
- * 
  * @param {object} opts
  * @param {string} opts.prefix
+ * @param {string} opts.path
  * The history object would looks like following
  * {
- *   release: "release.md",
  *   summary: "This is a summary",
- *   versions: [
- *     package-1@minor
+ *   doc: "release.md",
+ *   releases: [
+ *     '@atlaskit/code@minor'
  *   ],
- *   commits: [
- *     {
- *        message: 'commit message 1',
- *        hash: 'xxxxxx'
- *     },
- *     {
- *        message: 'commit messsage 2',
- *        hash: 'yyyyyyyy'
- *     }
+ *   dependents: [
+ *     '@atlaskit/badge@patch'
  *   ]
  * }
  */
-async function updateChangeLog(listOfHistory, opts) {
-  opts = {
+async function updateChangeLog(releaseObject, opts) {
+  const options = {
     prefix: opts.prefix || '',
     path: opts.path || __dirname,
-  }
-  const packageMap = groupByPackage(listOfHistory);
-  for (let [_, package] of packageMap) {
-    const targetFile = `${opts.prefix}${package.name}.md`;
-    const templateString = '\n' + template(package).trim('\n') + '\n';
+  };
+
+  // Updating ChangeLog files for each package
+  for (let i = 0; i < releaseObject.releases.length; i++) {
+    const release = releaseObject.releases[i];
+    const targetFile = `${options.prefix}${release.name}.md`;
+
+    release.dependent = releaseObject.dependents.find((d) => d.name === release.name);
+
+    const templateString = `\n${generateMarkdownTemplate(release, releaseObject.changeSets).trim('\n')}\n`;
     try {
       if (fs.existsSync(targetFile)) {
         await prependFile(templateString, targetFile);
       } else {
         await writeFile(targetFile, templateString);
       }
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
     console.log(`Updated file ${targetFile}`);
   }
-};
+}
 
 /**
- * 
  * @param {string} data - Data string
  * @param {string} file - File path
  * The process is pretty general. It would create a temp file and write the data
@@ -97,7 +90,7 @@ async function prependFile(data, file) {
     newFileStream.on('finish', async () => {
       await rename(tempFile, file);
       resolve(`Finished writing ${file}`);
-    })
+    });
 
     // Write the content to an empty temp file first
     // then stream the old file over
@@ -105,47 +98,6 @@ async function prependFile(data, file) {
       oldFileStream.pipe(newFileStream);
     });
   });
-}
-
-function groupByPackage(listOfHistory) {
-  return listOfHistory.reduce((map, history) => {
-    history.versions.forEach((element) => {
-      const [ name, version ] = element.split('@');
-      const package = map.get(name) || {
-        name,
-        releases: [],
-        summaries: [],
-        commits: [],
-      };
-      if (history.summary && history.summary.length > 0) {
-        package.summaries.push({
-          message: history.summary,
-          commits: history.commits.map(e => e.hash),
-          version,
-          doc: history.release,
-        })
-      } else {
-        if (history.release && history.release.length > 0) {
-          // If there is no summary section but a release doc section
-          package.summaries.push({
-            message: 'Release summary',
-            version,
-            doc: history.release,
-          });
-        } 
-        const commitWithVersion = history.commits.map((e) => {
-          return {
-            ...e,
-            version,
-          }
-        })
-        package.commits = package.commits.concat(commitWithVersion);
-      }
-      package.version = require(`../../../components/${name}/package.json`).version;
-      map.set(name, package);
-    });
-    return map;
-  }, new Map());
 }
 
 module.exports = {
