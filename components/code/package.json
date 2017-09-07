@@ -8,6 +8,7 @@
   "main": "dist/es5/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
+  "src": "src/index.ts",
   "files": [
     "dist",
     "src"

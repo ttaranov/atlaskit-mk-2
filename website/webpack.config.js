@@ -7,7 +7,10 @@ const pyarnQuery = require('pyarn-query');
 const ORDERED_FILE_PREFIX = /^[0-9]+-/;
 
 function sanitizeName(filePath) {
-  return filePath.split(path.sep).map(part => path.parse(part).name.replace(ORDERED_FILE_PREFIX, '')).join('/');
+  return filePath
+    .split(path.sep)
+    .map(part => path.parse(part).name.replace(ORDERED_FILE_PREFIX, ''))
+    .join('/');
 }
 
 module.exports = async function () {
@@ -28,10 +31,15 @@ module.exports = async function () {
   };
 
   const entries = {};
+  const aliases = {};
 
   results.workspaces.forEach(workspace => {
     const docsDir = path.join(workspace.dir, 'docs');
     const docs = [];
+
+    if (workspace.pkg.src) {
+      aliases[workspace.pkg.name] = path.resolve(workspace.dir, workspace.pkg.src);
+    }
 
     if (workspace.files.docs) {
       workspace.files.docs.forEach(doc => {
@@ -93,6 +101,7 @@ module.exports = async function () {
           loader: require.resolve('ts-loader'),
           options: {
             cacheDirectory: true,
+            transpileOnly: true,
           },
         },
         {
@@ -129,11 +138,7 @@ module.exports = async function () {
     },
     resolve: {
       extensions: ['.js', '.ts', '.tsx'],
-      alias: {
-        '@atlaskit/badge': path.resolve(__dirname, '..', 'components', 'badge', 'src', 'index.js'),
-        '@atlaskit/code': path.resolve(__dirname, '..', 'components', 'code', 'src', 'index.ts'),
-        '@atlaskit/docs': path.resolve(__dirname, '..', 'utils', 'docs', 'src', 'index.js')
-      },
+      alias: aliases,
     },
     plugins: [
       new webpack.DefinePlugin({
