@@ -52,7 +52,7 @@ async function updateChangeLog(releaseObject, opts) {
 
     release.dependent = releaseObject.dependents.find((d) => d.name === release.name);
 
-    const templateString = `\n${generateMarkdownTemplate(release, releaseObject.changeSets).trim('\n')}\n`;
+    const templateString = `\n${generateMarkdownTemplate(release, releaseObject).trim('\n')}\n`;
     try {
       if (fs.existsSync(targetFile)) {
         await prependFile(templateString, targetFile);
