@@ -1,42 +1,84 @@
+const outdent = require('outdent');
+const createRelease = require('../../version/createRelease');
 const createReleaseCommit = require('../../version/createReleaseCommit');
 
-const simpleRelease = {
+const fakeAllPackages = [
+  { name: 'package-a', config: { version: '1.0.0' } },
+  { name: 'package-b', config: { version: '1.0.0' } },
+];
+const simpleChangeset = {
   summary: 'This is a summary',
   releases: [
-    { name: 'package-a', version: '1.1.0', commits: ['63d27a9'] },
+    { name: 'package-a', type: 'minor' },
   ],
-  changesets: [{
-    summary: 'Adds a feature to package-a',
-    releases: {
-      'package-a': 'minor',
-    },
-    commit: '63d27a9',
-  }],
+  dependents: [],
+  commit: 'dec4a66',
+};
+const simpleChangeset2 = {
+  summary: 'This is another summary',
+  releases: [
+    { name: 'package-a', type: 'patch' },
+    { name: 'package-b', type: 'minor' },
+  ],
+  dependents: [],
+  commit: '695fad0',
 };
 
 describe('createReleaseCommit', () => {
   it('should handle a single simple releaseObject with one released package', () => {
-    const commitStr = createReleaseCommit(simpleRelease);
-    expect(commitStr).toEqual(`RELEASING: Releasing 1 packages
+    const releaseObj = createRelease([simpleChangeset], fakeAllPackages);
+    const commitStr = createReleaseCommit(releaseObj);
+    expect(commitStr).toEqual(outdent`
+      RELEASING: Releasing 1 package(s)
 
----
-{
-  "releases": [
-    {
-      "name": "package-a",
-      "version": "1.1.0",
-      "commits": [
-        "63d27a9"
-      ]
-    }
-  ],
-  "changesets": [
-    {
-      "commit": "63d27a9",
-      "summary": "Adds a feature to package-a"
-    }
-  ]
-}
----`);
+      Releases:
+        package-a@1.1.0
+
+      Dependents:
+        []
+
+      ---
+      {"releases":[{"name":"package-a","commits":["dec4a66"],"version":"1.1.0"}],"changesets":[{"commit":"dec4a66","summary":"This is a summary"}]}
+      ---
+    `);
+  });
+
+  it('should handle a multiple releases from one changeset', () => {
+    const releaseObj = createRelease([simpleChangeset2], fakeAllPackages);
+    const commitStr = createReleaseCommit(releaseObj);
+    expect(commitStr).toEqual(outdent`
+      RELEASING: Releasing 2 package(s)
+
+      Releases:
+        package-a@1.0.1
+        package-b@1.1.0
+
+      Dependents:
+        []
+
+      ---
+      {"releases":[{"name":"package-a","commits":["695fad0"],"version":"1.0.1"},{"name":"package-b","commits":["695fad0"],"version":"1.1.0"}],"changesets":[{"commit":"695fad0","summary":"This is another summary"}]}
+      ---
+    `);
+  });
+
+  it('should handle a merging releases from multiple changesets', () => {
+    const releaseObj = createRelease([simpleChangeset, simpleChangeset2], fakeAllPackages);
+    const commitStr = createReleaseCommit(releaseObj);
+
+    expect(commitStr).toEqual(outdent`
+      RELEASING: Releasing 2 package(s)
+
+      Releases:
+        package-a@1.1.0
+        package-b@1.1.0
+
+      Dependents:
+        []
+
+      ---
+      {"releases":[{"name":"package-a","commits":["dec4a66","695fad0"],"version":"1.1.0"},{"name":"package-b","commits":["695fad0"],"version":"1.1.0"}],"changesets":[{"commit":"dec4a66","summary":"This is a summary"},{"commit":"695fad0","summary":"This is another summary"}]}
+      ---
+    `);
   });
 });
