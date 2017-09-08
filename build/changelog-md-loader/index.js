@@ -27,7 +27,6 @@ module.exports = function loader(markdown) {
   this.cacheable();
 
   const changelog = getChangeLog(markdown);
-  console.log('Loading', markdown);
 
   return `module.exports = ${JSON.stringify(changelog)}`;
 };
