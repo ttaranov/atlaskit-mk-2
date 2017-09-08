@@ -13,5 +13,6 @@ export function getPackageByUnscopedName(name: string) {
 }
 
 export function getExamplesForUnscopedPackage(name: string) {
-  return require.context('../../../components/', true, /.*\/examples\/.*\.js$/).filter(path => path.indexOf(name) > -1);
+  const reqCtx = require.context('../../../components/', true, /^\.\/[\w\d-_]+\/examples\/.*\.js$/);
+  return reqCtx(`./${name}/examples`);
 }
