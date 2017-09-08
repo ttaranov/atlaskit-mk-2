@@ -1,7 +1,7 @@
 import sentenceCase from 'sentence-case';
 
-const requireContext = require.context('../../../components/', true, /.*\/examples\/.*\.js$/);
-const requireContextRaw = require.context('!raw-loader!../../../components/', true, /.*\/examples\/.*\.js$/);
+const requireContext = require.context('../../../components/', true, /^.\/[^/]+\/examples\/.*\.js$/);
+const requireContextRaw = require.context('!raw-loader!../../../components/', true, /^.\/[^/]+\/examples\/.*\.js$/);
 
 function basename(path) {
   return path.split('/').pop();
@@ -36,5 +36,5 @@ export function getExampleData(component, example) {
 }
 
 export function filterExamplesByPackage(name) {
-  return requireContext.keys().filter(e => e.indexOf(name) > -1);
+  return requireContext.keys().filter(e => e.indexOf(`/${name}/`) > -1);
 }

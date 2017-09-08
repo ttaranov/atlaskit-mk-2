@@ -12,12 +12,7 @@
     "start": "cd website && yarn start",
     "version": "projector ./projector version"
   },
-  "pworkspaces": [
-    "build/*",
-    "utils/*",
-    "components/*",
-    "website"
-  ],
+  "pworkspaces": ["build/*", "utils/*", "components/*", "website"],
   "devDependencies": {
     "@atlaskit/eslint-config-base": "^2.0.7",
     "@types/enzyme": "^2.8.6",
@@ -43,8 +38,10 @@
     "projector-cli": "^3.0.1",
     "projector-jest": "^1.0.1",
     "projector-spawn": "^1.0.1",
-    "projector-tslint": "projectorjs/projector-tslint#a5a4c3715ad7b03a7234e5f558c83504f7291a8e",
-    "projector-typescript": "projectorjs/projector-typescript#0623f742b216ec51d2e463a9779be9f4bd729dcc",
+    "projector-tslint":
+      "projectorjs/projector-tslint#a5a4c3715ad7b03a7234e5f558c83504f7291a8e",
+    "projector-typescript":
+      "projectorjs/projector-typescript#0623f742b216ec51d2e463a9779be9f4bd729dcc",
     "pyarn-query": "^1.0.0",
     "raw-loader": "^0.5.1",
     "react-test-renderer": "^15.6.1",
@@ -80,11 +77,12 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-markdown": "^2.5.0",
-    "react-markings": "^1.1.2",
+    "react-markings": "^1.1.4",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-syntax-highlighter": "^5.7.0",
     "semver": "^5.4.1",
+    "sentence-case": "^2.1.1",
     "styled-components": "^1.4.3",
     "toml": "^2.3.2",
     "tslib": "^1.7.1",
