@@ -2,9 +2,10 @@
 
 import * as React from 'react';
 import styled from 'styled-components';
+import Code from './Code';
+import Loading from './Loading';
 import Page from './Page';
-import FourOhFour from './FourOhFour';
-import { getExample, formatExampleName } from '../utils/examples';
+import { getExampleData, formatExampleName } from '../utils/examples';
 
 type PackageProps = {
   match: {
@@ -16,10 +17,11 @@ type PackageProps = {
 };
 
 type PackageState = {
-  children?: React.Node,
+  code?: string,
+  Component?: React.Node,
 };
 
-const Body = styled.div`margin-top: 20px;`;
+const Body = styled.div`margin: 20px 0;`;
 
 export default class Example extends React.PureComponent<PackageProps, PackageState> {
   state = { children: null };
@@ -27,18 +29,25 @@ export default class Example extends React.PureComponent<PackageProps, PackageSt
 
   componentDidMount() {
     const { component, example } = this.props.match.params;
-    this.setState({
-      children: new (getExample(component, example) || FourOhFour)(),
-    });
+    this.setState(getExampleData(component, example));
   }
 
   render() {
     const { example } = this.props.match.params;
-    const { children } = this.state;
+    const { code, Component } = this.state;
     return (
       <Page>
         <h1>{formatExampleName(example)}</h1>
-        <Body>{children || <div>Loading...</div>}</Body>
+        <Body>
+          {code ? (
+            <div>
+              <Component />
+              <Code>{code}</Code>
+            </div>
+          ) : (
+            <Loading />
+          )}
+        </Body>
       </Page>
     );
   }
