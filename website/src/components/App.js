@@ -6,6 +6,7 @@ import Nav from './Nav';
 import NavItem from './NavItem';
 import Home from './Home';
 import Package from './Package';
+import ChangeLogExplorer from './ChangeLogExplorer';
 import FourOhFour from './FourOhFour';
 import { PACKAGES } from '../constants';
 import { getUnscopedPkgName } from '../utils/packages';
@@ -77,6 +78,7 @@ export default class App extends React.PureComponent<AppProps> {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/packages/:name" component={Package} />
+              <Route path="/changelog/:component/:semver?" component={ChangeLogExplorer} />
               <Route component={FourOhFour} />
             </Switch>
           </AppContent>

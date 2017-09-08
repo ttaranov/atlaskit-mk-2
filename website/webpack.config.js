@@ -88,6 +88,11 @@ module.exports = async function () {
     module: {
       rules: [
         {
+          test: /CHANGELOG\.md$/,
+          exclude: /node_modules/,
+          loader: 'changelog-md-loader',
+        },
+        {
           test: /\.js$/,
           exclude: /node_modules/,
           loader: require.resolve('babel-loader'),
@@ -139,6 +144,9 @@ module.exports = async function () {
     resolve: {
       extensions: ['.js', '.ts', '.tsx'],
       alias: aliases,
+    },
+    resolveLoader: {
+      modules: ['../build/', 'node_modules'],
     },
     plugins: [
       new webpack.DefinePlugin({
