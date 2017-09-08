@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import styled from 'styled-components';
-import Lozenge from '../src';
+import { Lozenge } from '../src';
 
 const Heading = styled.h3`
   font-size: 14px;

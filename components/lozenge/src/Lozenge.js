@@ -20,7 +20,7 @@ type Props = {
   children?: React.Node,
 };
 
-export default class Lozenge extends React.PureComponent<Props> {
+export class Lozenge extends React.PureComponent<Props> {
   static defaultProps = {
     isBold: false,
     appearance: APPEARANCE_ENUM.defaultValue,
@@ -38,9 +38,7 @@ export default class Lozenge extends React.PureComponent<Props> {
 
     return (
       <Container appearance={this.validAppearance()} isBold={isBold}>
-        <Content>
-          {children}
-        </Content>
+        <Content>{children}</Content>
       </Container>
     );
   }

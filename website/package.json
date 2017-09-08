@@ -5,7 +5,9 @@
   "description": "",
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
-  "maintainers": ["Jed W"],
+  "maintainers": [
+    "Jed W"
+  ],
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server"
@@ -14,10 +16,10 @@
   "devDependencies": {
     "babel-loader": "^7.1.2",
     "css-loader": "^0.28.0",
-    "style-loader": "^0.16.1",
     "extract-react-types-loader": "^0.0.0",
     "pyarn-query": "^1.0.0",
     "raw-loader": "^0.5.1",
+    "style-loader": "^0.16.1",
     "ts-loader": "^2.3.4",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1"
@@ -27,6 +29,7 @@
     "@atlaskit/css-reset": "^1.1.5",
     "babel-runtime": "^6.26.0",
     "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2"
+    "react-router-dom": "^4.2.2",
+    "sentence-case": "^2.1.1"
   }
 }

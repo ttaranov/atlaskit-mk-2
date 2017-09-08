@@ -2,7 +2,9 @@
 import * as React from 'react';
 import Page from './Page';
 import FourOhFour from './FourOhFour';
-import { getExamplesForUnscopedPackage, getPackageByUnscopedName } from '../utils/packages';
+import { Link } from 'react-router-dom';
+import { getPackageByUnscopedName } from '../utils/packages';
+import { filterExamplesByPackage, formatExampleLink, formatExampleName } from '../utils/examples';
 
 type PackageProps = {
   match: {
@@ -29,9 +31,10 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
   }
 
   render() {
+    const { children } = this.state;
     const name = this.props.match.params.name;
     const pkg = getPackageByUnscopedName(name);
-    const examples = getExamplesForUnscopedPackage(name);
+    const examples = filterExamplesByPackage(name);
 
     if (!pkg) {
       return <FourOhFour />;
@@ -42,9 +45,15 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
         <h1>{pkg.name}</h1>
         <p>{pkg.description}</p>
         <h2>Examples</h2>
-        <ul>{examples.map(e => <li key={e}>{e}</li>)}</ul>
+        <ul>
+          {examples.map(e => (
+            <li key={e}>
+              <Link to={`/packages/${name}/examples/${formatExampleLink(e)}`}>{formatExampleName(e)}</Link>
+            </li>
+          ))}
+        </ul>
         <hr />
-        {!this.state.children ? <div>Loading...</div> : this.state.children}
+        {children || <div>Loading...</div>}
       </Page>
     );
   }

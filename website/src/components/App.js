@@ -2,11 +2,12 @@
 import * as React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import Home from './Home';
+import Example from './Example';
+import FourOhFour from './FourOhFour';
 import Nav from './Nav';
 import NavItem from './NavItem';
-import Home from './Home';
 import Package from './Package';
-import FourOhFour from './FourOhFour';
 import { PACKAGES } from '../constants';
 import { getUnscopedPkgName } from '../utils/packages';
 
@@ -76,6 +77,7 @@ export default class App extends React.PureComponent<AppProps> {
           <AppContent>
             <Switch>
               <Route exact path="/" component={Home} />
+              <Route path="/packages/:component/examples/:example" component={Example} />
               <Route path="/packages/:name" component={Package} />
               <Route component={FourOhFour} />
             </Switch>
