@@ -4,8 +4,10 @@ const spawn = require('projector-spawn');
 const jest = require('projector-jest');
 const ts = require('projector-typescript');
 const tslint = require('projector-tslint');
+const karma = require('projector-karma');
 const path = require('path');
 const glob = require('glob');
+const getKarmaConfig = require('./packages/build/karma-config');
 const release = require('./packages/build/releases/release');
 const version = require('./packages/build/releases/version');
 const query = require('pyarn-query');
@@ -48,6 +50,21 @@ const lintTSComponent = async cwd => {
   });
 };
 
+const browserTestComponent = async cwd => {
+  const files = glob.sync(`${cwd}/tests/browser/**/*.+(js|jsx|ts|tsx)`);
+  await karma.run({
+    files,
+    config: getKarmaConfig(),
+  });
+};
+
+exports.lint = async () => {
+  const components = ['code'];
+  for (const name of components) {
+    await lintTSComponent(path.join(__dirname, 'packages', 'fabric', name));
+  }
+};
+
 exports.build = async () => {
   const packages /* : WorkspaceQueryResult */ = await query({
     cwd: process.cwd(),
@@ -87,10 +104,15 @@ exports.test = async () => {
       },
     }),
 
-    testRegex: '(/__tests__/.*|\\.(test|spec))\\.(tsx?|jsx?)$',
+    testRegex: '(/__tests__/.*)\\.(test|spec)\\.(tsx?|jsx?)$',
 
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   });
+
+  const components = ['code'];
+  for (const name of components) {
+    await browserTestComponent(path.join(__dirname, 'packages', 'fabric', name));
+  }
 };
 
 exports.version = async () => {
