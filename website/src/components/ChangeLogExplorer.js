@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import BackIcon from '@atlaskit/icon/glyph/arrowleft';
+import BackIcon from '@atlaskit/icon/glyph/arrow-left';
 import TextField from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
 
@@ -41,7 +41,7 @@ export default class ChangelogExplorer extends PureComponent {
     if (/[a-z]/gi.test(range)) isInvalid = true;
 
     this.setState({ isInvalid, range });
-  }
+  };
 
   render() {
     const { component } = this.props.match.params;
@@ -68,16 +68,10 @@ export default class ChangelogExplorer extends PureComponent {
           value={range}
         />
         {isInvalid ? (
-          <NoMatch>
-            Invalid range; please try again.
-          </NoMatch>
+          <NoMatch>Invalid range; please try again.</NoMatch>
         ) : (
           <LogWrapper>
-            <Changelog
-              changelog={changelog}
-              range={range}
-              packageName={component}
-            />
+            <Changelog changelog={changelog} range={range} packageName={component} />
           </LogWrapper>
         )}
       </Page>
@@ -85,26 +79,15 @@ export default class ChangelogExplorer extends PureComponent {
   }
 }
 
-const Back = (
-  { children, to }:
-  { children?: Element | Node | string, to: string }
-) => (
-  <Button
-    appearance="link"
-    component={Link}
-    iconBefore={<BackIcon label="Back Icon" size="small" />}
-    spacing="none"
-    to={to}
-  >
-    <span style={{ paddingLeft: '0.5em' }}>
-      {children || 'Back to Docs'}
-    </span>
+const Back = ({ children, to }: { children?: Element | Node | string, to: string }) => (
+  <Button appearance="link" component={Link} iconBefore={<BackIcon label="Back Icon" size="small" />} spacing="none" to={to}>
+    <span style={{ paddingLeft: '0.5em' }}>{children || 'Back to Docs'}</span>
   </Button>
 );
 
 const LogWrapper = styled.div`
   margin-top: 2em;
   p {
-    display: none
+    display: none;
   }
 `;
