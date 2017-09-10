@@ -61,7 +61,7 @@ async function getLastPublishCommit() {
 }
 
 async function getChangesetCommitsSince(ref) {
-  const isVersionCommit = msg => msg.startsWith('Version: ');
+  const isVersionCommit = msg => msg.startsWith('CHANGESET: ');
 
   const gitCmd = await spawn('git', ['log', `${ref}...`, '--oneline']);
 

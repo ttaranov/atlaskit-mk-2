@@ -1,5 +1,6 @@
 const path = require('path');
 const pyarn = require('pyarn');
+const cli = require('../../utils/cli');
 const git = require('../../utils/git');
 const parseChangesetCommit = require('../version/parseChangeSetCommit');
 const createRelease = require('../version/createRelease');
@@ -13,7 +14,8 @@ async function bumpReleasedPackages(releaseObj, allPackages) {
     const pkgJson = JSON.parse(await fs.readFile(pkgJsonPath));
 
     pkgJson.version = release.version;
-    // await fs.writeFile(pkgJsonPath, JSON.stringify(pkgJson, null, 2));
+    const pkgJsonStr = `${JSON.stringify(pkgJson, null, 2)}\n`;
+    await fs.writeFile(pkgJsonPath, pkgJsonStr);
   }
 }
 
@@ -30,9 +32,14 @@ async function run() {
 
   const publishCommit = createReleaseCommit(releaseObj);
 
+  /** TODO: Update changelogs here */
   // changelog.updateChangeLog(releaseObj);
-  console.log(unreleasedChangesets);
+
   console.log(publishCommit);
+  const runPublish = await cli.askConfirm('Publish these packages?');
+  if (runPublish) {
+    pyarn.run('publish', { access: 'public' });
+  }
 }
 
 module.exports = {
