@@ -1,8 +1,14 @@
 // @flow
+
+type PyarnQueryFile = {
+  filePath: string,
+  fileContents: string,
+}
+
 type WebsiteData = {
   packages: Array<{
     name: string,
-    docs: Array<{}>,
+    docs: Array<PyarnQueryFile>,
   }>
 }
 

@@ -31,10 +31,15 @@ module.exports = async function () {
   };
 
   const entries = {};
+  const aliases = {};
 
   results.workspaces.forEach(workspace => {
     const docsDir = path.join(workspace.dir, 'docs');
     const docs = [];
+
+    if (workspace.pkg.src) {
+      aliases[workspace.pkg.name] = path.resolve(workspace.dir, workspace.pkg.src);
+    }
 
     if (workspace.files.docs) {
       workspace.files.docs.forEach(doc => {
@@ -82,6 +87,11 @@ module.exports = async function () {
     },
     module: {
       rules: [
+        {
+          test: /CHANGELOG\.md$/,
+          exclude: /node_modules/,
+          loader: 'changelog-md-loader',
+        },
         {
           test: /\.js$/,
           exclude: /node_modules/,
@@ -133,11 +143,10 @@ module.exports = async function () {
     },
     resolve: {
       extensions: ['.js', '.ts', '.tsx'],
-      alias: {
-        '@atlaskit/badge': path.resolve(__dirname, '..', 'components', 'badge', 'src', 'index.js'),
-        '@atlaskit/code': path.resolve(__dirname, '..', 'components', 'code', 'src', 'index.ts'),
-        '@atlaskit/docs': path.resolve(__dirname, '..', 'utils', 'docs', 'src', 'index.js'),
-      },
+      alias: aliases,
+    },
+    resolveLoader: {
+      modules: ['../build/', 'node_modules'],
     },
     plugins: [
       new webpack.DefinePlugin({

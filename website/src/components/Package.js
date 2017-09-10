@@ -20,10 +20,23 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
   state = { children: null };
   props: PackageProps;
 
-  componentDidMount() {
-    require.ensure(['../../../components/tag-group/docs/0-intro.js'], () => {
+  async componentDidMount() {
+    const { name } = this.props.match.params;
+    require.ensure([], (require) => {
       this.setState({
-        children: require('../../../components/tag-group/docs/0-intro.js').default,
+        children: require(`../../../components/${name}/docs/0-intro.js`).default,
+      });
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.match.params.name === this.props.match.params.name) {
+      return;
+    }
+    const { name } = nextProps.match.params;
+    require.ensure([], (require) => {
+      this.setState({
+        children: require(`../../../components/${name}/docs/0-intro.js`).default,
       });
     });
   }
@@ -31,9 +44,9 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
   render() {
     const name = this.props.match.params.name;
     const pkg = getPackageByUnscopedName(name);
-    const examples = getExamplesForUnscopedPackage(name);
+    // const examples = getExamplesForUnscopedPackage(name);
 
-    console.log(examples);
+    // console.log(examples);
 
     if (!pkg) {
       return <FourOhFour />;

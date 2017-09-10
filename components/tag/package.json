@@ -4,6 +4,7 @@
   "description": "This component displays as a tag with an optional link and/or button to remove the given tag.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
+  "src": "src/index.js",
   "files": [
     "dist"
   ],
@@ -14,7 +15,7 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
-    "@atlaskit/icon": "^8.0.1",
+    "@atlaskit/icon": "^8.1.0",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.26.0",
