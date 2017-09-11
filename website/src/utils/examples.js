@@ -27,10 +27,10 @@ export function formatExampleName(name) {
   return sentenceCase(removeLeadingNumber(removeSuffix(basename(name))));
 }
 
-export function getExampleData(component, example) {
-  const path = `./${component}/examples/${example}.js`;
+export function getExampleData(group, name, example) {
+  const path = `./${group}/${name}/examples/${example}.js`;
   return {
-    code: formatCodeImports(component, requireContextRaw(path)),
+    code: formatCodeImports(name, requireContextRaw(path)),
     Component: requireContext(path).default,
   };
 }
