@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Page from './Page';
 import FourOhFour from './FourOhFour';
-import { getPackageByUnscopedName } from '../utils/packages';
+import { getPackageByGroupAndName } from '../utils/packages';
 import { filterExamplesByPackage, formatExampleLink, formatExampleName } from '../utils/examples';
 
 type PackageProps = {
@@ -47,7 +47,7 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
   render() {
     const { children } = this.state;
     const { group, name } = this.props.match.params;
-    const pkg = getPackageByUnscopedName(name);
+    const pkg = getPackageByGroupAndName(group, name);
     const examples = filterExamplesByPackage(name);
 
     if (!pkg) {

@@ -8,6 +8,6 @@ export function getUnscopedPkgName(name: string) {
   return name;
 }
 
-export function getPackageByUnscopedName(name: string) {
-  return PACKAGES.find(pkg => getUnscopedPkgName(pkg.name) === name);
+export function getPackageByGroupAndName(group: string, name: string) {
+  return PACKAGES[group].find(pkg => pkg.name === name);
 }

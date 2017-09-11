@@ -5,7 +5,6 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import styled, { injectGlobal } from 'styled-components';
 
 import { PACKAGES } from '../constants';
-import { getUnscopedPkgName } from '../utils/packages';
 import ChangeLogExplorer from './ChangeLogExplorer';
 import Home from './Home';
 import Example from './Example';
@@ -70,7 +69,12 @@ export default class App extends React.PureComponent<AppProps> {
         <AppContainer>
           <AppNav>
             <Nav title="Packages">
-              {PACKAGES.map(pkg => (
+              {PACKAGES.elements.map(pkg => (
+                <NavItem key={pkg.name} to={`/packages/${pkg.group}/${pkg.name}`}>
+                  {pkg.name}
+                </NavItem>
+              ))}
+              {PACKAGES.fabric.map(pkg => (
                 <NavItem key={pkg.name} to={`/packages/${pkg.group}/${pkg.name}`}>
                   {pkg.name}
                 </NavItem>
