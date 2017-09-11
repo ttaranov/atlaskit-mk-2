@@ -1,5 +1,4 @@
 const semver = require('semver');
-const pyarn = require('pyarn');
 
 /*
   This flattens an array of Version objects into one object that can be used to create the changelogs
