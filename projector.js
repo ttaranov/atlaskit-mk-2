@@ -6,7 +6,7 @@ const tslint = require('projector-tslint');
 const path = require('path');
 const glob = require('glob');
 const fs = require('fs');
-const version = require('./build/releases/version');
+const version = require('./packages/build/releases/version');
 
 const buildTSComponent = async cwd => {
   // ES5

@@ -1,7 +1,7 @@
 import sentenceCase from 'sentence-case';
 
-const requireContext = require.context('../../../components/', true, /^.\/[^/]+\/examples\/.*\.js$/);
-const requireContextRaw = require.context('!raw-loader!../../../components/', true, /^.\/[^/]+\/examples\/.*\.js$/);
+const requireContext = require.context('../../../packages/', true, /^\.(\/[\w\d-_]+){2}\/examples\/.*\.js$/);
+const requireContextRaw = require.context('!raw-loader!../../../packages/', true, /^\.(\/[\w\d-_]+){2}\/examples\/.*\.js$/);
 
 function basename(path) {
   return path.split('/').pop();

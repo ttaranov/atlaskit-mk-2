@@ -12,7 +12,14 @@
     "start": "cd website && yarn start",
     "version": "projector ./projector version"
   },
-  "pworkspaces": ["build/*", "utils/*", "components/*", "website"],
+  "pworkspaces": [
+    "packages/build/*",
+    "packages/utils/*",
+    "packages/elements/*",
+    "packages/fabric/*",
+    "patterns/*",
+    "website"
+  ],
   "devDependencies": {
     "@atlaskit/eslint-config-base": "^2.0.7",
     "@types/enzyme": "^2.8.6",

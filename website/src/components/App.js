@@ -71,7 +71,7 @@ export default class App extends React.PureComponent<AppProps> {
           <AppNav>
             <Nav title="Packages">
               {PACKAGES.map(pkg => (
-                <NavItem key={pkg.name} to={`/packages/${getUnscopedPkgName(pkg.name)}`}>
+                <NavItem key={pkg.name} to={`/packages/${pkg.group}/${pkg.name}`}>
                   {pkg.name}
                 </NavItem>
               ))}
@@ -80,9 +80,9 @@ export default class App extends React.PureComponent<AppProps> {
           <AppContent>
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route path="/packages/:component/examples/:example" component={Example} />
-              <Route path="/packages/:name" component={Package} />
-              <Route path="/changelog/:component/:semver?" component={ChangeLogExplorer} />
+              <Route path="/packages/:group/:name/examples/:example" component={Example} />
+              <Route path="/packages/:group/:name" component={Package} />
+              <Route path="/changelog/:group/:name/:semver?" component={ChangeLogExplorer} />
               <Route component={FourOhFour} />
             </Switch>
           </AppContent>

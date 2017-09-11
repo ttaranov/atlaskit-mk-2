@@ -47,7 +47,7 @@ export default class ChangelogExplorer extends PureComponent {
     const { component } = this.props.match.params;
     let changelog = '';
     try {
-      const reqCtx = require.context('../../../components/', true, /^\.\/[\w\d-_]+\/CHANGELOG\.md$/);
+      const reqCtx = require.context('../../../packages/', true, /^\.(\/[\w\d-_]+){2}\/CHANGELOG\.md$/);
       changelog = reqCtx(`./${component}/CHANGELOG.md`);
     } catch (e) {
       console.log(e);
