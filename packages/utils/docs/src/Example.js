@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import {AkCodeBlock} from '@atlaskit/code';
+// import { AkCodeBlock } from '@atlaskit/code';
 
 type ExampleProps = {
   source: string,
@@ -13,10 +13,14 @@ export default class Example extends React.PureComponent<ExampleProps> {
     const { source, language } = this.props;
 
     return (
-      <AkCodeBlock
-        text={source}
-        language={language || 'javascript'}
-      />
+      // <AkCodeBlock
+      //   text={source}
+      //   language={language || 'javascript'}
+      // />
+      <div>
+        {language}:
+        <textarea>{source}</textarea>
+      </div>
     );
   }
 }

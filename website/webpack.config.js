@@ -26,14 +26,25 @@ module.exports = async function () {
     },
   });
 
+  // add workspace groups (i.e folders in the /packages directory) to the
+  // packages object here for them to be available in the webstie
   const data = {
-    packages: [],
+    packages: {
+      elements: [],
+      fabric: [],
+    },
   };
 
   const entries = {};
   const aliases = {};
 
   results.workspaces.forEach(workspace => {
+    const parts = workspace.dir.split('/');
+    const name = parts.pop();
+    const group = parts.pop();
+
+    if (!data.packages[group]) return;
+
     const docsDir = path.join(workspace.dir, 'docs');
     const docs = [];
 
@@ -45,16 +56,17 @@ module.exports = async function () {
       workspace.files.docs.forEach(doc => {
         const filePath = doc.filePath;
         const relativePath = path.relative(docsDir, filePath);
-        const name = sanitizeName(relativePath);
-        docs.push({ name, filePath });
+        const sanitisedName = sanitizeName(relativePath);
+        docs.push({ name: sanitisedName, filePath });
 
         const bundleName = `${workspace.pkg.name}/docs/${name}`.replace(/\//g, '-');
         entries[bundleName] = filePath;
       });
     }
 
-    data.packages.push({
-      name: workspace.pkg.name,
+    data.packages[group].push({
+      name,
+      group,
       docs,
     });
   });
@@ -146,7 +158,7 @@ module.exports = async function () {
       alias: aliases,
     },
     resolveLoader: {
-      modules: ['../build/', 'node_modules'],
+      modules: ['../packages/build/', 'node_modules'],
     },
     plugins: [
       new webpack.DefinePlugin({

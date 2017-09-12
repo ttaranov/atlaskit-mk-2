@@ -10,8 +10,9 @@ import { getExampleData, formatExampleName } from '../utils/examples';
 type PackageProps = {
   match: {
     params: {
-      component: string,
       example: string,
+      group: string,
+      name: string,
     },
   },
 };
@@ -28,8 +29,8 @@ export default class Example extends React.PureComponent<PackageProps, PackageSt
   props: PackageProps;
 
   componentDidMount() {
-    const { component, example } = this.props.match.params;
-    this.setState(getExampleData(component, example));
+    const { example, group, name } = this.props.match.params;
+    this.setState(getExampleData(group, name, example));
   }
 
   render() {

@@ -1,7 +1,7 @@
 import sentenceCase from 'sentence-case';
 
-const requireContext = require.context('../../../components/', true, /^.\/[^/]+\/examples\/.*\.js$/);
-const requireContextRaw = require.context('!raw-loader!../../../components/', true, /^.\/[^/]+\/examples\/.*\.js$/);
+const requireContext = require.context('../../../packages/', true, /^\.\/(elements|fabric)\/[\w\d-_]+\/examples\/.*\.js$/);
+const requireContextRaw = require.context('!raw-loader!../../../packages/', true, /^\.\/(elements|fabric)\/[\w\d-_]+\/examples\/.*\.js$/);
 
 function basename(path) {
   return path.split('/').pop();
@@ -27,10 +27,10 @@ export function formatExampleName(name) {
   return sentenceCase(removeLeadingNumber(removeSuffix(basename(name))));
 }
 
-export function getExampleData(component, example) {
-  const path = `./${component}/examples/${example}.js`;
+export function getExampleData(group, name, example) {
+  const path = `./${group}/${name}/examples/${example}.js`;
   return {
-    code: formatCodeImports(component, requireContextRaw(path)),
+    code: formatCodeImports(name, requireContextRaw(path)),
     Component: requireContext(path).default,
   };
 }

@@ -1,14 +1,15 @@
 // @flow
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import Page from './Page';
 import FourOhFour from './FourOhFour';
-import { Link } from 'react-router-dom';
-import { getPackageByUnscopedName } from '../utils/packages';
+import { getPackageByGroupAndName } from '../utils/packages';
 import { filterExamplesByPackage, formatExampleLink, formatExampleName } from '../utils/examples';
 
 type PackageProps = {
   match: {
     params: {
+      group: string,
       name: string,
     },
   },
@@ -23,10 +24,10 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
   props: PackageProps;
 
   async componentDidMount() {
-    const { name } = this.props.match.params;
+    const { group, name } = this.props.match.params;
     require.ensure([], (require) => {
       this.setState({
-        children: require(`../../../components/${name}/docs/0-intro.js`).default,
+        children: require(`../../../packages/${group}/${name}/docs/0-intro.js`).default,
       });
     });
   }
@@ -35,18 +36,18 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
     if (nextProps.match.params.name === this.props.match.params.name) {
       return;
     }
-    const { name } = nextProps.match.params;
+    const { group, name } = nextProps.match.params;
     require.ensure([], (require) => {
       this.setState({
-        children: require(`../../../components/${name}/docs/0-intro.js`).default,
+        children: require(`../../../packages/${group}/${name}/docs/0-intro.js`).default,
       });
     });
   }
 
   render() {
     const { children } = this.state;
-    const name = this.props.match.params.name;
-    const pkg = getPackageByUnscopedName(name);
+    const { group, name } = this.props.match.params;
+    const pkg = getPackageByGroupAndName(group, name);
     const examples = filterExamplesByPackage(name);
 
     if (!pkg) {
@@ -61,7 +62,7 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
         <ul>
           {examples.map(e => (
             <li key={e}>
-              <Link to={`/packages/${name}/examples/${formatExampleLink(e)}`}>{formatExampleName(e)}</Link>
+              <Link to={`/packages/${group}/${name}/examples/${formatExampleLink(e)}`}>{formatExampleName(e)}</Link>
             </li>
           ))}
         </ul>
