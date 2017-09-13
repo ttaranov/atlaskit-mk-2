@@ -8,11 +8,6 @@ export function getUnscopedPkgName(name: string) {
   return name;
 }
 
-export function getPackageByUnscopedName(name: string) {
-  return PACKAGES.find(pkg => getUnscopedPkgName(pkg.name) === name);
-}
-
-export function getExamplesForUnscopedPackage(name: string) {
-  const reqCtx = require.context('../../../components/', true, /^\.\/[\w\d-_]+\/examples\/.*\.js$/);
-  return reqCtx(`./${name}/examples`);
+export function getPackageByGroupAndName(group: string, name: string) {
+  return PACKAGES[group].find(pkg => pkg.name === name);
 }

@@ -1,15 +1,17 @@
 // @flow
+
 import * as React from 'react';
-import styled, { injectGlobal } from 'styled-components';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import styled, { injectGlobal } from 'styled-components';
+
+import { PACKAGES } from '../constants';
+import ChangeLogExplorer from './ChangeLogExplorer';
+import Home from './Home';
+import Example from './Example';
+import FourOhFour from './FourOhFour';
 import Nav from './Nav';
 import NavItem from './NavItem';
-import Home from './Home';
 import Package from './Package';
-import ChangeLogExplorer from './ChangeLogExplorer';
-import FourOhFour from './FourOhFour';
-import { PACKAGES } from '../constants';
-import { getUnscopedPkgName } from '../utils/packages';
 
 /* eslint-disable no-unused-expressions */
 injectGlobal`
@@ -67,8 +69,13 @@ export default class App extends React.PureComponent<AppProps> {
         <AppContainer>
           <AppNav>
             <Nav title="Packages">
-              {PACKAGES.map(pkg => (
-                <NavItem key={pkg.name} to={`/packages/${getUnscopedPkgName(pkg.name)}`}>
+              {PACKAGES.elements.map(pkg => (
+                <NavItem key={pkg.name} to={`/packages/${pkg.group}/${pkg.name}`}>
+                  {pkg.name}
+                </NavItem>
+              ))}
+              {PACKAGES.fabric.map(pkg => (
+                <NavItem key={pkg.name} to={`/packages/${pkg.group}/${pkg.name}`}>
                   {pkg.name}
                 </NavItem>
               ))}
@@ -77,8 +84,9 @@ export default class App extends React.PureComponent<AppProps> {
           <AppContent>
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route path="/packages/:name" component={Package} />
-              <Route path="/changelog/:component/:semver?" component={ChangeLogExplorer} />
+              <Route path="/packages/:group/:name/examples/:example" component={Example} />
+              <Route path="/packages/:group/:name" component={Package} />
+              <Route path="/changelog/:group/:name/:semver?" component={ChangeLogExplorer} />
               <Route component={FourOhFour} />
             </Switch>
           </AppContent>

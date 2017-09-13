@@ -6,7 +6,7 @@ type PyarnQueryFile = {
 }
 
 type WebsiteData = {
-  packages: Array<{
+  [string]: Array<{
     name: string,
     docs: Array<PyarnQueryFile>,
   }>

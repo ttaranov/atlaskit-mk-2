@@ -1,13 +1,27 @@
 // @flow
+
 const spawn = require('projector-spawn');
 const jest = require('projector-jest');
 const ts = require('projector-typescript');
 const tslint = require('projector-tslint');
 const path = require('path');
 const glob = require('glob');
-const fs = require('fs');
-const version = require('./build/releases/version');
-const release = require('./build/releases/release');
+const release = require('./packages/build/releases/release');
+const version = require('./packages/build/releases/version');
+const query = require('pyarn-query');
+
+/* ::
+type WorkspaceQueryResult = {
+  workspaces: Array<{
+    dir: string,
+    files: {
+      babel: Array<any>,
+      typescript: Array<any>,
+    },
+    pkg: Object,
+  }>,
+};
+*/
 
 const buildTSComponent = async cwd => {
   // ES5
@@ -35,22 +49,24 @@ const lintTSComponent = async cwd => {
 };
 
 exports.build = async () => {
-  const components = ['badge', 'code', 'lozenge', 'tag', 'tag-group'].map(name => path.join('components', name));
-  const utils = ['docs'].map(name => path.join('utils', name));
-
-  for (const relativePath of components.concat(utils)) {
-    const cwd = path.join(__dirname, relativePath);
-    if (fs.existsSync(path.join(cwd, 'tsconfig.json'))) {
-      await lintTSComponent(cwd);
-      await buildTSComponent(cwd);
-    } else {
-      await spawn('babel', ['src', '-d', 'dist/cjs'], { cwd });
-    }
-  }
-
-  await spawn('babel', ['src', '-d', 'dist/cjs'], {
-    cwd: path.join(__dirname, 'utils', 'docs'),
+  const packages /* : WorkspaceQueryResult */ = await query({
+    cwd: process.cwd(),
+    workspaceFiles: {
+      babel: 'src/index.js',
+      typescript: 'src/index.ts',
+    },
   });
+
+  await Promise.all(
+    packages.workspaces.filter(({ pkg }) => !pkg.private).map(async ({ dir, files }) => {
+      if (files.babel.length) {
+        return await spawn('babel', ['src', '-d', 'dist/cjs'], { cwd: dir });
+      } else if (files.typescript.length) {
+        return Promise.all([await lintTSComponent(dir), await buildTSComponent(dir)]);
+      }
+      return Promise.resolve();
+    })
+  );
 };
 
 exports.test = async () => {

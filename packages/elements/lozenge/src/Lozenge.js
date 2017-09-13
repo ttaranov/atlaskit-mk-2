@@ -38,9 +38,7 @@ export default class Lozenge extends React.PureComponent<Props> {
 
     return (
       <Container appearance={this.validAppearance()} isBold={isBold}>
-        <Content>
-          {children}
-        </Content>
+        <Content>{children}</Content>
       </Container>
     );
   }
