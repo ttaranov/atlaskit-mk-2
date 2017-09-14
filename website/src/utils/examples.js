@@ -1,7 +1,6 @@
 import sentenceCase from 'sentence-case';
 
-const requireContext = require.context('../../../packages/', true, /^\.\/(elements|fabric)\/[\w\d-_]+\/examples\/.*\.js$/);
-const requireContextRaw = require.context('!raw-loader!../../../packages/', true, /^\.\/(elements|fabric)\/[\w\d-_]+\/examples\/.*\.js$/);
+const examples = require('!pyarn-query-loader?{workspaceFiles:{examples:"examples/*.js"}}!');
 
 function basename(path) {
   return path.split('/').pop();
@@ -36,5 +35,5 @@ export function getExampleData(group, name, example) {
 }
 
 export function filterExamplesByPackage(name) {
-  return requireContext.keys().filter(e => e.indexOf(`/${name}/`) > -1);
+  return examples.workspaces.filter(w => w.pkg.name.split('/')[1] === name)[0].files.examples.map(e => e.filePath);
 }

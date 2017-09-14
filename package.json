@@ -79,6 +79,7 @@
     "editor": "^1.0.0",
     "enquirer-prompts": "^1.0.0",
     "glob": "^7.1.2",
+    "loader-utils": "^1.1.0",
     "prop-types": "^15.5.10",
     "pyarn": "^0.7.0",
     "react": "^15.6.1",
