@@ -1,27 +1,40 @@
 const createRelease = require('../../version/createRelease');
 
+const fakeAllPackages = [
+  { name: 'package-a', config: { version: '1.0.0' } },
+];
 const simpleChangeset = {
-  summary: 'Adds a feature to package-a',
-  releases: {
-    'package-a': 'minor',
-  },
-  commit: '63d27a9',
+  summary: 'This is a summary',
+  releases: [
+    { name: 'package-a', type: 'minor' },
+  ],
+  dependents: [],
+  commit: 'dec4a66',
+};
+const simpleChangeset2 = {
+  summary: 'This is another summary',
+  releases: [
+    { name: 'package-a', type: 'patch' },
+  ],
+  dependents: [],
+  commit: '695fad0',
 };
 
 describe('createRelease', () => {
   it('should handle a single simple changeset', () => {
-    const releaseObj = createRelease([simpleChangeset]);
+    const releaseObj = createRelease([simpleChangeset], fakeAllPackages);
     expect(releaseObj).toEqual({
-      releases: [
-        { name: 'package-a', version: '1.1.0', commits: ['63d27a9'] },
-      ],
-      changesets: [{
-        summary: 'Adds a feature to package-a',
-        releases: {
-          'package-a': 'minor',
-        },
-        commit: '63d27a9',
-      }],
+      releases: [{ name: 'package-a', commits: ['dec4a66'], version: '1.1.0' }],
+      changesets: [simpleChangeset],
+    });
+  });
+
+  it('should flatten flatten commits in two simple changesets', () => {
+    const releaseObj = createRelease([simpleChangeset, simpleChangeset2], fakeAllPackages);
+
+    expect(releaseObj).toEqual({
+      releases: [{ name: 'package-a', commits: ['dec4a66', '695fad0'], version: '1.1.0' }],
+      changesets: [simpleChangeset, simpleChangeset2],
     });
   });
 });

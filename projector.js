@@ -6,6 +6,7 @@ const ts = require('projector-typescript');
 const tslint = require('projector-tslint');
 const path = require('path');
 const glob = require('glob');
+const release = require('./packages/build/releases/release');
 const version = require('./packages/build/releases/version');
 const query = require('pyarn-query');
 
@@ -94,6 +95,12 @@ exports.test = async () => {
 
 exports.version = async () => {
   await version.run({
+    rootDir: __dirname,
+  });
+};
+
+exports.release = async () => {
+  await release.run({
     rootDir: __dirname,
   });
 };

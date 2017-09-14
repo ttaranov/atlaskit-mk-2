@@ -10,7 +10,8 @@
     "build": "projector ./projector.js build",
     "test": "projector ./projector.js test",
     "start": "cd website && yarn start",
-    "version": "projector ./projector version"
+    "version": "projector ./projector version",
+    "release": "projector ./projector release"
   },
   "pworkspaces": [
     "packages/build/*",
@@ -79,6 +80,7 @@
     "editor": "^1.0.0",
     "enquirer-prompts": "^1.0.0",
     "glob": "^7.1.2",
+    "outdent": "^0.3.0",
     "prop-types": "^15.5.10",
     "pyarn": "^0.7.0",
     "react": "^15.6.1",

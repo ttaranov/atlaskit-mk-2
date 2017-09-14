@@ -11,16 +11,22 @@ const semver = require('semver');
   {
     releases: [{
       name: 'package-a',
-      version: '1.1.0',               // actual version being released
-      commits: ['fc4229d', 'aeb543f'] // filtered to ones for this package
-                                      // (used in changelogs)
+      version: '2.0.0',                // actual version being released
+      commits: ['fc4229d'],            // filtered to ones for this pkg
+                                       // (used in changelogs)
+      dependencies: ['package-c']      // list of dependencies that will need to be updated
     },
     {
       name: 'package-b'
+      version: '1.1.0',
+      commits: ['fc4229d'],           // these would be the commits that caused bumps
+      dependencies: ['package-a']
+    },
+    {
+      name: 'package-c'
       version: '1.0.1',
-      dependencies: ['package-a']     // release can include a list of dependencies
-                                      // that were bumped
-      commits: ['fc4229d', 'aeb543f'] // these would be the commits that caused bumps
+      commits: ['fc4229d'],
+      dependencies: ['package-b']
     }]
 
     changesets: [<Changeset>] // References to all the changesets used to build Release
@@ -29,9 +35,8 @@ const semver = require('semver');
   }
 */
 
-// Hardcoding this function for now
-function getCurrentVersion(packageName) {
-  return '1.0.0';
+function getCurrentVersion(packageName, allPackages) {
+  return allPackages.find(pkg => pkg.name === packageName).config.version;
 }
 
 // returns which bump type is bigger (bumpA can be undefined)
@@ -41,31 +46,24 @@ function maxBumpType(bumpA, bumpB) {
   return 'patch';
 }
 
-// Takes a Changeset object and returns an array of releaseInfo objects for each release it contains
-// i.e [ {name: 'foo', type: 'bump', commit: 'd7964f4' } ]
-function flattenSingleChangeset(changeset) {
-  const flattened = [];
-
-  Object.entries(changeset.releases).forEach(([name, type]) => {
-    flattened.push({ name, type, commit: changeset.commit });
-  });
-
-  return flattened;
-}
-
 // Takes an array of Changesets and returns a flat list of actual releases with only one entry per
 // package. i.e [{ name:'', type:'', commits: ['', '']}, ]
 function flattenReleases(changesets) {
   const flattened = [];
-  // split each changeset into muliple releases with only the relevant info
-  const releases = changesets.map(changeset => flattenSingleChangeset(changeset))
+
+  // split each changeset into muliple release objects [{ name: '', type: '', commit: ''},]
+  const getReleases = (changeset) => changeset.releases
+    .map(release => ({ ...release, commit: changeset.commit }));
+
+  const releases = changesets.map(changeset => getReleases(changeset))
     // reduce to a single array of release information by concatenating
     .reduce((cur, next) => cur.concat(next));
 
-  // now flatten the releases so we only have one entry per package
+  // now merge the releases so we only have one entry per package
   releases.forEach(release => {
     const { name, type, commit } = release;
     const foundBefore = flattened.find(pkg => pkg.name === name);
+
     if (!foundBefore) {
       flattened.push({ name, type, commits: [commit] });
     } else {
@@ -115,15 +113,16 @@ function flattenDependents(changesets) {
   return flattened;
 }
 
-function createRelease(changesets) {
+function createRelease(changesets, allPackages) {
   // First, combine all the changeset.releases into one useful array
   const flattenedReleases = flattenReleases(changesets);
 
   // Then add in the dependents to the releases
   // const allReleases = addDependentReleases(flattenedReleases)
+
   const allReleases = flattenedReleases
     // get the current version for each package
-    .map(release => ({ ...release, version: getCurrentVersion(release.name) }))
+    .map(release => ({ ...release, version: getCurrentVersion(release.name, allPackages) }))
     // update to new version for each package
     .map(release => ({ ...release, version: semver.inc(release.version, release.type) }))
     // stip out type field

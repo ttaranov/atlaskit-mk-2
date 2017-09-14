@@ -7,24 +7,32 @@ const createReleaseNotesFile = require('./createReleaseNotesFile');
   {
     summary: 'This is the summary',
     releaseNotes?: 'path/to/release/notes.md',   // optional
-    releases: {
-      pkgName: bumpType,
-    },
+    releases: [
+      { name: pkgName, type: bumpType }
+    ],
+    dependents: [
+      { name: pkgName, type: bumpType, dependencies: ['pkg-a', 'pkg-b'] }
+    ]
   }
 */
 
 async function createVersionObject(changedPackages) {
   const newVersion = {
     summary: '',
-    releases: {},
+    releases: [],
+    dependents: [],
   };
 
   const packagesToInclude = await cli.askCheckbox('Which packages would you like to include?', changedPackages);
 
   for (const pkg of packagesToInclude) {
-    newVersion.releases[pkg] = await cli.askList(`What kind of change is this for ${chalk.green(pkg)}?`,
-      ['patch', 'minor', 'major']);
+    const bumpType = await cli.askList(`What kind of change is this for ${chalk.green(pkg)}?`, ['patch', 'minor', 'major']);
+    newVersion.releases.push({ name: pkg, type: bumpType });
   }
+
+  /**
+   *  Get all dependents and ask bump types
+   */
 
   console.log('Please enter a summary for this change (this will be in the changelogs)');
   const summary = await cli.askQuestion('Summary');
