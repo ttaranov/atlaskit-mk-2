@@ -7,7 +7,7 @@ type ExampleProps = {
   language: string,
 };
 
-export default class Example extends React.PureComponent<ExampleProps> {
+export default class Example extends React.Component<ExampleProps> {
   props: ExampleProps;
   render() {
     const { source, language } = this.props;
@@ -18,8 +18,8 @@ export default class Example extends React.PureComponent<ExampleProps> {
       //   language={language || 'javascript'}
       // />
       <div>
-        {language}:
-        <textarea>{source}</textarea>
+        {language ? `${language}:` : null }
+        <pre style={{ width: '100%', overflowX: 'scroll' }}>{source}</pre>
       </div>
     );
   }
