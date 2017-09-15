@@ -1,6 +1,6 @@
 // @flow
 
-import * as React from 'react';
+import React, { Component, Node } from 'react';
 import styled from 'styled-components';
 import Code from './Code';
 import Loading from './Loading';
@@ -19,18 +19,18 @@ type PackageProps = {
 
 type PackageState = {
   code?: string,
-  Component?: React.Node,
+  Component?: Node,
 };
 
 const Body = styled.div`margin: 20px 0;`;
 
-export default class Example extends React.PureComponent<PackageProps, PackageState> {
-  state = { children: null };
+export default class Example extends Component<PackageProps, PackageState> {
   props: PackageProps;
 
-  componentDidMount() {
+  // $FlowFixMe
+  async componentDidMount() {
     const { example, group, name } = this.props.match.params;
-    this.setState(getExampleData(group, name, example));
+    this.setState(await getExampleData(group, name, example));
   }
 
   render() {

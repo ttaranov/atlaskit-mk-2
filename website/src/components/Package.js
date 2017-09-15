@@ -25,7 +25,7 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
 
   async componentDidMount() {
     const { group, name } = this.props.match.params;
-    require.ensure([], (require) => {
+    require.ensure([], require => {
       this.setState({
         children: require(`../../../packages/${group}/${name}/docs/0-intro.js`).default,
       });
@@ -37,7 +37,7 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
       return;
     }
     const { group, name } = nextProps.match.params;
-    require.ensure([], (require) => {
+    require.ensure([], require => {
       this.setState({
         children: require(`../../../packages/${group}/${name}/docs/0-intro.js`).default,
       });
@@ -48,7 +48,7 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
     const { children } = this.state;
     const { group, name } = this.props.match.params;
     const pkg = getPackageByGroupAndName(group, name);
-    const examples = filterExamplesByPackage(name);
+    const examples = filterExamplesByPackage(group, name);
 
     if (!pkg) {
       return <FourOhFour />;

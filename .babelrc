@@ -1,11 +1,5 @@
 {
-  "presets": [
-    ["env", {
-      "targets": {}
-    }],
-    "react",
-    "flow"
-  ],
+  "presets": [["env", { "modules": false }], "react", "flow"],
   "plugins": [
     "transform-runtime",
     "transform-class-properties",
