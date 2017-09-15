@@ -20,7 +20,7 @@ async function bumpReleasedPackages(releaseObj, allPackages) {
 }
 
 async function run() {
-  const allPackages = await pyarn.getPackages();
+  const allPackages = await pyarn.getWorkspaces();
   const lastPublishCommit = await git.getLastPublishCommit();
   const unreleasedChangesetsPromises = (await git.getChangesetCommitsSince(lastPublishCommit))
     .map(commitHash => git.getFullCommit(commitHash));

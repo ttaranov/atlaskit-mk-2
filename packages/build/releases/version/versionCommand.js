@@ -11,7 +11,7 @@ const createChangesetCommit = require('./createChangesetCommit');
 async function getChangedPackages() {
   const lastRelease = history.getLastRelease();
   const changedFiles = await git.getChangedFilesSince(lastRelease, true);
-  const allPackages = (await pyarn.getPackages());
+  const allPackages = (await pyarn.getWorkspaces());
 
   const fileNameToPackage = fileName => allPackages.find(pkg => fileName.startsWith(pkg.dir));
   const fileExistsInPackage = fileName => !!fileNameToPackage(fileName);
