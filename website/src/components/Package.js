@@ -23,7 +23,7 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
   state = { children: null };
   props: PackageProps;
 
-  async componentDidMount() {
+  componentDidMount() {
     const { group, name } = this.props.match.params;
     require.ensure([], (require) => {
       this.setState({
