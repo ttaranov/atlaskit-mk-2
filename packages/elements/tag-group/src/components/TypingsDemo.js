@@ -8,6 +8,9 @@ import * as React from 'react';
 
 type A = {
   foo: any,
+  bar: {
+    baz: number
+  }
 };
 
 type Props = {
@@ -16,6 +19,13 @@ type Props = {
   isRequired: boolean,
   optionalProp?: number | string,
   alignment: 'start' | 'end',
+  size: 1 | 2 | '3' | string,
+  enum: {
+    Diamonds: 1,
+    Clubs: 2,
+    Hearts: 3,
+    Spades: 4
+  },
   children: React.Node,
   a: A,
   prop: mixed,

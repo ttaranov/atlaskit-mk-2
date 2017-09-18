@@ -1,7 +1,8 @@
 {
   "presets": [["env", { "modules": false }], "react", "flow"],
   "plugins": [
-    "transform-runtime",
+    // transform-runtime causes issues in badge's jest tests
+    // "transform-runtime",
     "transform-class-properties",
     "transform-object-rest-spread" // used in build, probably want to disable in components soon
   ]

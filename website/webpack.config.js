@@ -14,8 +14,9 @@ function sanitizeName(filePath) {
 }
 
 module.exports = async function () {
+  const basePath = path.join(__dirname, '..');
   const results = await pyarnQuery({
-    cwd: path.join(__dirname, '..'),
+    cwd: basePath,
     projectFiles: {
       releases: 'releases/*.md',
       patterns: 'patterns/**/*.{js,ts,tsx}',
@@ -68,6 +69,8 @@ module.exports = async function () {
       name,
       group,
       docs,
+      description: workspace.pkg.description,
+      relativePath: path.relative(basePath, workspace.dir),
     });
   });
 

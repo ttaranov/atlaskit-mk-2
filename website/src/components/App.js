@@ -3,6 +3,8 @@
 import * as React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import styled, { injectGlobal } from 'styled-components';
+import { Link } from 'react-router-dom';
+import { AkNavigationItem } from '@atlaskit/navigation';
 
 import { PACKAGES } from '../constants';
 import { getList as getPatternList } from '../utils/patterns';
@@ -60,6 +62,12 @@ const AppContent = styled.div`
   overflow: auto;
 `;
 
+const NavItemLink = styled(Link)`
+  &:hover {
+    text-decoration: none;
+  }
+`;
+
 export type AppProps = {};
 export default class App extends React.PureComponent<AppProps> {
   props: AppProps;
@@ -71,14 +79,14 @@ export default class App extends React.PureComponent<AppProps> {
           <AppNav>
             <Nav title="Packages">
               {PACKAGES.elements.map(pkg => (
-                <NavItem key={pkg.name} to={`/packages/${pkg.group}/${pkg.name}`}>
-                  {pkg.name}
-                </NavItem>
+                <NavItemLink key={pkg.name} to={`/packages/${pkg.group}/${pkg.name}`}>
+                  <AkNavigationItem text={pkg.name} />
+                </NavItemLink>
               ))}
               {PACKAGES.fabric.map(pkg => (
-                <NavItem key={pkg.name} to={`/packages/${pkg.group}/${pkg.name}`}>
-                  {pkg.name}
-                </NavItem>
+                <NavItemLink key={pkg.name} to={`/packages/${pkg.group}/${pkg.name}`}>
+                  <AkNavigationItem text={pkg.name} />
+                </NavItemLink>
               ))}
             </Nav>
             <Nav title="Patterns">

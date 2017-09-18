@@ -29,6 +29,7 @@
     "@atlaskit/field-text": "^4.0.0",
     "@atlaskit/lozenge": "^3.4.2",
     "@atlaskit/icon": "^8.1.0",
+    "@atlaskit/navigation": "^22.0.0",
     "@atlaskit/tag": "^2.6.0",
     "@atlaskit/tag-group": "^3.4.2",
     "@atlaskit/theme": "^2.0.0",

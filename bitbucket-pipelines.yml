@@ -17,4 +17,5 @@ pipelines:
           - yarn global add pyarn
           - pyarn install
           - yarn build
+          - yarn lint
           - yarn test
