@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import Page from './../Page';
 import FourOhFour from './../FourOhFour';
 import { getPackageByGroupAndName } from '../../utils/packages';
-import { filterExamplesByPackage, formatExampleLink, formatExampleName } from '../../utils/examples';
+import { getList as getExampleList, formatLink, formatName } from '../../utils/examples';
 import MetaData from './MetaData';
 
 type PackageProps = {
@@ -53,7 +53,7 @@ export const ExamplesList = (props) => {
       <ul>
         {examples.map(e => (
           <li key={e}>
-            <Link to={`/packages/${group}/${name}/examples/${formatExampleLink(e)}`}>{formatExampleName(e)}</Link>
+            <Link to={`/packages/${group}/${name}/examples/${formatLink(e)}`}>{formatName(e)}</Link>
           </li>
         ))}
       </ul>
@@ -99,7 +99,7 @@ export default class Package extends React.Component<PackageProps, PackageState>
     const { children } = this.state;
     const { name, group } = this.props.match.params;
     const pkg = getPackageByGroupAndName(group, name);
-    const examples = filterExamplesByPackage(name);
+    const examples = getExampleList(name);
 
     if (!pkg) {
       return <FourOhFour />;
