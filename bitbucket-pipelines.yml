@@ -8,7 +8,9 @@ pipelines:
             - export PATH=$HOME/.yarn/bin:$PATH
             - pyarn install
             - yarn build
+            - yarn lint
             - yarn test
+            - yarn release
   default:
     - step:
         script:
