@@ -13,7 +13,7 @@
     "@atlaskit/build-utils": "^1.0.0",
     "chalk": "^2.1.0",
     "outdent": "^0.3.0",
-    "pyarn": "^0.7.0",
+    "pyarn": "^0.8.0",
     "semver": "^5.4.1"
   }
 }

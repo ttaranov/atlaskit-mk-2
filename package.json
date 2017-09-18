@@ -92,7 +92,7 @@
     "outdent": "^0.3.0",
     "prop-types": "^15.5.10",
     "puppeteer": "^0.10.2",
-    "pyarn": "^0.7.0",
+    "pyarn": "^0.8.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-markdown": "^2.5.0",

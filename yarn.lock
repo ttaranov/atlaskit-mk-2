@@ -6662,9 +6662,9 @@ pyarn@^0.6.0:
     sort-object "^3.0.2"
     typeable-promisify "^2.0.1"
 
-pyarn@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/pyarn/-/pyarn-0.7.0.tgz#13ced9326ff1886087991b61c7c0f4bfc24fccf2"
+pyarn@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/pyarn/-/pyarn-0.8.0.tgz#68aab77b5c5fba9626f5e554c3b4570ef368f304"
   dependencies:
     babel-runtime "^6.25.0"
     chalk "^2.0.1"
