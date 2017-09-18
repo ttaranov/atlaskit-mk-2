@@ -6,8 +6,7 @@ module.exports = {
       'off',
       {
         object: 'React',
-        property: 'Component',
-        message: 'grrr',
+        property: 'Component'
       },
     ],
     'react/no-did-mount-set-state': 'off',
