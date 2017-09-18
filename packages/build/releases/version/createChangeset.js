@@ -92,7 +92,7 @@ async function createChangeset(changedPackages, opts = {}) {
 
   changeset.summary = summary;
   changeset.dependents = dependents;
-  logger.log(changeset);
+
   return changeset;
 }
 
