@@ -75,40 +75,8 @@ function flattenReleases(changesets) {
   return flattened;
 }
 
-/** Takes an array of Changeset and returns an array of dependentsInfo in the form
-// [
-  {
-    name: 'foo',                          // name of the dependent package
-    dependencies: [
-      name: 'bar',                        // name of dependency
-      commits: ['0e483e9', '83962c4']     // array of commits where this dependency was updated
-    ]
-  }
-] */
 function flattenDependents(changesets) {
-  // THIS WILL BE REFACTORED ONCE WE START PULLING DEPENDENTS
   const flattened = [];
-
-  changesets.forEach(changeset => {
-    Object.entries(changeset.dependents).forEach(([dependent, dependencies]) => {
-      const foundDependentBefore = flattened.find(pkg => pkg.name === dependent);
-      if (!foundDependentBefore) {
-        flattened.push({
-          name: dependent,
-          dependencies: dependencies.map(dep => ({ name: dep, commits: [changeset.commit] })),
-        });
-      } else {
-        dependencies.forEach(dep => {
-          const foundDependencyBefore = foundDependentBefore.dependencies.find(pkg => pkg.name === dep);
-          if (!foundDependencyBefore) {
-            foundDependentBefore.dependencies.push({ name: dep, commits: [changeset.commit] });
-          } else {
-            foundDependencyBefore.commits.push(changeset.commit);
-          }
-        });
-      }
-    });
-  });
 
   return flattened;
 }
@@ -116,6 +84,7 @@ function flattenDependents(changesets) {
 function createRelease(changesets, allPackages) {
   // First, combine all the changeset.releases into one useful array
   const flattenedReleases = flattenReleases(changesets);
+  const flattenedDependents = flattenDependents(changesets);
 
   // Then add in the dependents to the releases
   // const allReleases = addDependentReleases(flattenedReleases)
@@ -130,6 +99,7 @@ function createRelease(changesets, allPackages) {
 
   return {
     releases: allReleases,
+    dependents: [],
     changesets,
   };
 }

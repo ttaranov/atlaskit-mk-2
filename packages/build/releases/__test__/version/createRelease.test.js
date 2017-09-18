@@ -2,6 +2,7 @@ const createRelease = require('../../version/createRelease');
 
 const fakeAllPackages = [
   { name: 'package-a', config: { version: '1.0.0' } },
+  { name: 'package-b', config: { version: '1.0.0' } },
 ];
 const simpleChangeset = {
   summary: 'This is a summary',
@@ -20,11 +21,23 @@ const simpleChangeset2 = {
   commit: '695fad0',
 };
 
+const changesetWithDep = {
+  summary: 'This is another summary',
+  releases: [
+    { name: 'package-a', type: 'minor' },
+  ],
+  dependents: [
+    { name: 'package-b', type: 'patch', dependencies: ['package-a'] },
+  ],
+  commit: '695fad0',
+};
+
 describe('createRelease', () => {
   it('should handle a single simple changeset', () => {
     const releaseObj = createRelease([simpleChangeset], fakeAllPackages);
     expect(releaseObj).toEqual({
       releases: [{ name: 'package-a', commits: ['dec4a66'], version: '1.1.0' }],
+      dependents: [],
       changesets: [simpleChangeset],
     });
   });
@@ -34,7 +47,18 @@ describe('createRelease', () => {
 
     expect(releaseObj).toEqual({
       releases: [{ name: 'package-a', commits: ['dec4a66', '695fad0'], version: '1.1.0' }],
+      dependents: [],
       changesets: [simpleChangeset, simpleChangeset2],
+    });
+  });
+
+  it('should handle dependents', () => {
+    const releaseObj = createRelease([changesetWithDep], fakeAllPackages);
+
+    expect(releaseObj).toEqual({
+      releases: [{ name: 'package-a', commits: ['695fad0'], version: '1.1.0' }],
+      dependents: [{ name: 'package-b', version: '1.0.1', dependencies: ['package-a'] }],
+      changesets: [changesetWithDep],
     });
   });
 });

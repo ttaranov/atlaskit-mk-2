@@ -135,7 +135,6 @@ describe('running release', () => {
           cli.askConfirm.mockReturnValueOnce(Promise.resolve(false));
 
           await runRelease({ cwd });
-
           expect(pyarn.publish).not.toHaveBeenCalled();
         });
       });
