@@ -14,7 +14,14 @@
     "version": "projector ./projector version",
     "release": "projector ./projector release"
   },
-  "pworkspaces": ["packages/build/*", "packages/utils/*", "packages/elements/*", "packages/fabric/*", "patterns/*", "website"],
+  "pworkspaces": [
+    "packages/build/*",
+    "packages/utils/*",
+    "packages/elements/*",
+    "packages/fabric/*",
+    "patterns/*",
+    "website"
+  ],
   "devDependencies": {
     "@atlaskit/eslint-config-base": "^2.0.7",
     "@types/chai": "^4.0.4",
