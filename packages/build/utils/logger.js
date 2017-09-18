@@ -1,22 +1,30 @@
 // @flow
-import chalk from 'chalk';
+const chalk = require('chalk');
 
-export function log(message: string) {
+function log(message) {
   console.log(message);
 }
 
-export function info(message: string) {
+function info(message) {
   console.error(chalk.cyan('info'), message);
 }
 
-export function warn(message: string) {
+function warn(message) {
   console.error(chalk.yellow('warn'), message);
 }
 
-export function error(message: string) {
+function error(message) {
   console.error(chalk.red('error'), message);
 }
 
-export function success(message: string) {
+function success(message) {
   console.log(chalk.green('success'), message);
 }
+
+module.exports = {
+  log,
+  info,
+  warn,
+  error,
+  success,
+};
