@@ -5,7 +5,7 @@ import sentenceCase from 'sentence-case';
 import patterns from 'pyarn-query-loader?{workspaceFiles:{patterns:"pattern/index.js"}}!';
 import { removeNumericPrefix } from './path';
 
-import type { ExampleOrPattern } from './types';
+import type { ExampleOrPattern } from '../types';
 
 export function getKey(pattern: string) {
   return pattern.split('patterns/')[1].split('/')[0];

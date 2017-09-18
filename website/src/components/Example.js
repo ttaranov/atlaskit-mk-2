@@ -7,7 +7,7 @@ import Loading from './Loading';
 import Page from './Page';
 import { getData, formatName } from '../utils/examples';
 
-import type { ExampleOrPattern } from '../utils/types';
+import type { ExampleOrPattern } from '../types';
 
 type PackageProps = {
   match: {

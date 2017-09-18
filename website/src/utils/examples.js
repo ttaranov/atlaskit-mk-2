@@ -5,7 +5,7 @@ import sentenceCase from 'sentence-case';
 import examples from 'pyarn-query-loader?{workspaceFiles:{examples:"examples/*.js"}}!';
 import { basename, formatCodeImports, removeNumericPrefix, removeSuffix } from './path';
 
-import type { ExampleOrPattern } from './types';
+import type { ExampleOrPattern } from '../types';
 
 export function formatLink(name: string) {
   return basename(removeSuffix(name));
