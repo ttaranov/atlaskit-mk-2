@@ -1,49 +1,48 @@
 // @flow
 
-import React, { Component, Node } from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
 import Code from './Code';
 import Loading from './Loading';
 import Page from './Page';
 import { getExampleData, formatExampleName } from '../utils/examples';
 
-type PackageProps = {
-  match: {
-    params: {
-      example: string,
-      group: string,
-      name: string,
-    },
-  },
+import type { ExampleOrPattern } from '../utils/types';
+
+type Params = {
+  example: string,
+  group: string,
+  name: string,
 };
 
-type PackageState = {
-  code?: string,
-  Component?: Node,
+type PackageProps = {
+  match: {
+    params: Params,
+  },
 };
 
 const Body = styled.div`margin: 20px 0;`;
 
-export default class Example extends Component<PackageProps, PackageState> {
+export default class Example extends React.Component<PackageProps, ExampleOrPattern> {
   props: PackageProps;
+  state = {};
 
-  // $FlowFixMe
-  async componentDidMount() {
-    const { example, group, name } = this.props.match.params;
-    this.setState(await getExampleData(group, name, example));
+  componentDidMount() {
+    const { group, name, example } = this.props.match.params;
+    getExampleData(group, name, example).then(s => this.setState(s));
   }
 
   render() {
     const { example } = this.props.match.params;
-    const { code, Component } = this.state;
+    const { codeText, CodeNode } = this.state;
     return (
       <Page>
         <h1>{formatExampleName(example)}</h1>
         <Body>
-          {code ? (
+          {codeText ? (
             <div>
-              <Component />
-              <Code>{code}</Code>
+              <CodeNode />
+              <Code>{codeText}</Code>
             </div>
           ) : (
             <Loading />

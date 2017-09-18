@@ -1,8 +1,11 @@
 // @flow
 
 import sentenceCase from 'sentence-case';
+
 // $FlowFixMe
 import examples from 'pyarn-query-loader?{workspaceFiles:{examples:"examples/*.js"}}!';
+
+import type { ExampleOrPattern } from './types';
 
 function basename(path) {
   return path.split('/').pop();
@@ -28,14 +31,14 @@ export function formatExampleName(name /* : string */) {
   return sentenceCase(removeLeadingNumber(removeSuffix(basename(name))));
 }
 
-export async function getExampleData(group /* : string*/, name /* : string*/, example /* : string */) {
+export async function getExampleData(group: string, name: string, example: string): ExampleOrPattern {
   const key = `${group}/${name}/examples/${example}.js`;
   return {
-    code: formatCodeImports(name, examples.read[key]),
-    Component: (await examples.load[key]()).default,
+    codeText: formatCodeImports(name, examples.read[key]),
+    CodeNode: (await examples.load[key]()).default,
   };
 }
 
-export function filterExamplesByPackage(group /* : string */, name /* : string */) {
+export function filterExamplesByPackage(group: string, name: string) {
   return examples.data.workspaces.filter(w => w.dir.indexOf(`${group}/${name}`) > -1)[0].files.examples.map(e => e.filePath);
 }
