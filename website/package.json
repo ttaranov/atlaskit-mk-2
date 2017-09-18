@@ -5,7 +5,10 @@
   "description": "",
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
-  "maintainers": ["Jed W"],
+  "maintainers": [
+    "Jed W",
+    "Trey S"
+  ],
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server"
