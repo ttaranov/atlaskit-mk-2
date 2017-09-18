@@ -15,5 +15,8 @@
     "outdent": "^0.3.0",
     "pyarn": "^0.8.0",
     "semver": "^5.4.1"
+  },
+  "devDependencies": {
+    "jest-fixtures": "^0.3.2"
   }
 }

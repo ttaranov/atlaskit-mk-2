@@ -21,14 +21,14 @@ async function bumpReleasedPackages(releaseObj, allPackages) {
   }
 }
 
-async function run() {
-  const allPackages = await pyarn.getWorkspaces();
+async function run(opts) {
+  const cwd = opts.cwd || process.cwd;
+  const allPackages = await pyarn.getWorkspaces({ cwd });
   const lastPublishCommit = await git.getLastPublishCommit();
-  const unreleasedChangesetsPromises = (await git.getChangesetCommitsSince(lastPublishCommit))
-    .map(commitHash => git.getFullCommit(commitHash));
-  const unreleasedChangesets = (await Promise.all(unreleasedChangesetsPromises))
+  const unreleasedChangesetCommits = await git.getChangesetCommitsSince(lastPublishCommit);
+  const commits = await Promise.all(unreleasedChangesetCommits.map(commit => git.getFullCommit(commit)));
+  const unreleasedChangesets = commits
     .map(({ commit, message }) => ({ commit, ...parseChangesetCommit(message) }));
-
   if (unreleasedChangesets.length === 0) {
     logger.warn(`No unreleased changesets found since ${lastPublishCommit}. Exiting`);
     return;
@@ -47,7 +47,7 @@ async function run() {
   const runPublish = isRunningInPipelines() || await cli.askConfirm('Publish these packages?');
 
   if (runPublish) {
-    await pyarn.run(['publish'], { access: 'public' });
+    await pyarn.publish({ access: 'public' });
     git.commit(publishCommit);
     // git.push()
   }
