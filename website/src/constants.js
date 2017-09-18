@@ -8,6 +8,9 @@ type PyarnQueryFile = {
 type WebsiteData = {
   [string]: Array<{
     name: string,
+    description: string,
+    version: string,
+    relativePath: string,
     docs: Array<PyarnQueryFile>,
   }>
 }
