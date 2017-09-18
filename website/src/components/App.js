@@ -4,7 +4,7 @@ import * as React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import styled, { injectGlobal } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { AkNavigationItem } from '@atlaskit/navigation';
+import { AkNavigationItem, AkNavigationItemGroup } from '@atlaskit/navigation';
 
 import { PACKAGES } from '../constants';
 import { getList as getPatternList } from '../utils/patterns';
@@ -78,23 +78,25 @@ export default class App extends React.PureComponent<AppProps> {
         <AppContainer>
           <AppNav>
             <Nav title="Packages">
-              {PACKAGES.elements.map(pkg => (
-                <NavItemLink key={pkg.name} to={`/packages/${pkg.group}/${pkg.name}`}>
-                  <AkNavigationItem text={pkg.name} />
-                </NavItemLink>
-              ))}
-              {PACKAGES.fabric.map(pkg => (
-                <NavItemLink key={pkg.name} to={`/packages/${pkg.group}/${pkg.name}`}>
-                  <AkNavigationItem text={pkg.name} />
-                </NavItemLink>
-              ))}
-            </Nav>
-            <Nav title="Patterns">
-              {getPatternList().map(({ key, name }) => (
-                <NavItem key={key} to={`/patterns/${key}`}>
-                  {name}
-                </NavItem>
-              ))}
+              <AkNavigationItemGroup title="Packages">
+                {PACKAGES.elements.map(pkg => (
+                  <NavItemLink key={pkg.name} to={`/packages/${pkg.group}/${pkg.name}`}>
+                    <AkNavigationItem text={pkg.name} />
+                  </NavItemLink>
+                ))}
+                {PACKAGES.fabric.map(pkg => (
+                  <NavItemLink key={pkg.name} to={`/packages/${pkg.group}/${pkg.name}`}>
+                    <AkNavigationItem text={pkg.name} />
+                  </NavItemLink>
+                ))}
+              </AkNavigationItemGroup>
+              <AkNavigationItemGroup title="Patterns">
+                {getPatternList().map(({ key, name }) => (
+                  <NavItemLink key={key} to={`/patterns/${key}`}>
+                    <AkNavigationItem text={name} />
+                  </NavItemLink>
+                ))}
+              </AkNavigationItemGroup>
             </Nav>
           </AppNav>
           <AppContent>

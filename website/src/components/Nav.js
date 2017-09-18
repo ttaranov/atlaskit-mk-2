@@ -33,14 +33,10 @@ export default class Nav extends React.PureComponent<NavProps> {
     return (
       <Navigation
         globalPrimaryIcon={<AtlassianIcon size="xlarge" label="AtlasKit" />}
-        globalPrimaryItemHref="/components/navigation"
-        containerHeaderComponent={() => (
-          <AkContainerTitle icon={<AtlassianIcon label="AtlasKit" />} text={this.props.title} />
-        )}
+        globalPrimaryItemHref="/"
+        containerHeaderComponent={() => <AkContainerTitle icon={<AtlassianIcon label="AtlasKit" />} text={this.props.title} />}
       >
-        <AkNavigationItemGroup>
-          {this.props.children}
-        </AkNavigationItemGroup>
+        {this.props.children}
       </Navigation>
     );
   }
