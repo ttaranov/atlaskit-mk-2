@@ -5,6 +5,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import styled, { injectGlobal } from 'styled-components';
 
 import { PACKAGES } from '../constants';
+import { getList as getPatternList } from '../utils/patterns';
 import ChangeLogExplorer from './ChangeLogExplorer';
 import Home from './Home';
 import Example from './Example';
@@ -12,6 +13,7 @@ import FourOhFour from './FourOhFour';
 import Nav from './Nav';
 import NavItem from './NavItem';
 import Package from './Package';
+import Pattern from './Pattern';
 
 /* eslint-disable no-unused-expressions */
 injectGlobal`
@@ -59,7 +61,6 @@ const AppContent = styled.div`
 `;
 
 export type AppProps = {};
-
 export default class App extends React.PureComponent<AppProps> {
   props: AppProps;
 
@@ -80,12 +81,20 @@ export default class App extends React.PureComponent<AppProps> {
                 </NavItem>
               ))}
             </Nav>
+            <Nav title="Patterns">
+              {getPatternList().map(({ key, name }) => (
+                <NavItem key={key} to={`/patterns/${key}`}>
+                  {name}
+                </NavItem>
+              ))}
+            </Nav>
           </AppNav>
           <AppContent>
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/packages/:group/:name/examples/:example" component={Example} />
               <Route path="/packages/:group/:name" component={Package} />
+              <Route path="/patterns/:pattern" component={Pattern} />
               <Route path="/changelog/:group/:name/:semver?" component={ChangeLogExplorer} />
               <Route component={FourOhFour} />
             </Switch>

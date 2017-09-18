@@ -1,5 +1,6 @@
 module.exports = {
   rules: {
+    'import/extensions': 'off',
     'import/no-dynamic-require': 'off',
     'no-restricted-properties': [
       'off',

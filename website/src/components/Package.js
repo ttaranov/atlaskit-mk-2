@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Page from './Page';
 import FourOhFour from './FourOhFour';
 import { getPackageByGroupAndName } from '../utils/packages';
-import { filterExamplesByPackage, formatExampleLink, formatExampleName } from '../utils/examples';
+import { formatLink, formatName, getList } from '../utils/examples';
 
 type PackageProps = {
   match: {
@@ -48,7 +48,7 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
     const { children } = this.state;
     const { group, name } = this.props.match.params;
     const pkg = getPackageByGroupAndName(group, name);
-    const examples = filterExamplesByPackage(group, name);
+    const examples = getList(group, name);
 
     if (!pkg) {
       return <FourOhFour />;
@@ -62,7 +62,7 @@ export default class Package extends React.PureComponent<PackageProps, PackageSt
         <ul>
           {examples.map(e => (
             <li key={e}>
-              <Link to={`/packages/${group}/${name}/examples/${formatExampleLink(e)}`}>{formatExampleName(e)}</Link>
+              <Link to={`/packages/${group}/${name}/examples/${formatLink(e)}`}>{formatName(e)}</Link>
             </li>
           ))}
         </ul>

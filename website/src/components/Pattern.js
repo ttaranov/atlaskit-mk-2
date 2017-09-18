@@ -5,14 +5,12 @@ import styled from 'styled-components';
 import Code from './Code';
 import Loading from './Loading';
 import Page from './Page';
-import { getData, formatName } from '../utils/examples';
+import { getData, getName } from '../utils/patterns';
 
 import type { ExampleOrPattern } from '../utils/types';
 
 type Params = {
-  example: string,
-  group: string,
-  name: string,
+  pattern: string,
 };
 
 type PackageProps = {
@@ -28,16 +26,19 @@ export default class Example extends React.Component<PackageProps, ExampleOrPatt
   state = {};
 
   componentDidMount() {
-    const { group, name, example } = this.props.match.params;
-    getData(group, name, example).then(s => this.setState(s));
+    this.componentWillReceiveProps(this.props);
+  }
+
+  componentWillReceiveProps(props: PackageProps) {
+    getData(props.match.params.pattern).then(s => this.setState(s));
   }
 
   render() {
-    const { example } = this.props.match.params;
+    const { pattern } = this.props.match.params;
     const { codeText, CodeNode } = this.state;
     return (
       <Page>
-        <h1>{formatName(example)}</h1>
+        <h1>{getName(pattern)}</h1>
         <Body>
           {codeText ? (
             <div>
