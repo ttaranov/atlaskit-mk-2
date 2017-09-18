@@ -9,13 +9,11 @@ import { getData, getName } from '../utils/patterns';
 
 import type { ExampleOrPattern } from '../utils/types';
 
-type Params = {
-  pattern: string,
-};
-
 type PackageProps = {
   match: {
-    params: Params,
+    params: {
+      pattern: string,
+    },
   },
 };
 
