@@ -5,19 +5,21 @@ const createRelease = require('../../version/createRelease');
 const cli = require('../../../utils/cli');
 const git = require('../../../utils/git');
 const fs = require('../../../utils/fs');
+const isRunningInPipelines = require('../../../utils/isRunningInPipelines');
 const logger = require('../../../utils/logger');
 
 jest.mock('../../../utils/cli');
 jest.mock('../../../utils/git');
 jest.mock('../../../utils/fs');
+jest.mock('../../../utils/isRunningInPipelines');
 jest.mock('../../version/parseChangeSetCommit');
 jest.mock('../../version/createRelease');
 jest.mock('../../../utils/logger');
-// jest.mock('pyarn');
 
 git.getLastPublishCommit.mockImplementation(() => Promise.resolve('xxYYxxY'));
 git.getFullCommit.mockImplementation(() => Promise.resolve({}));
 fs.readFile.mockImplementation(() => Promise.resolve('{}'));
+pyarn.publish = jest.fn();
 
 const simpleReleaseObj = {
   releases: [{ name: 'pkg-a', commits: ['b8bb699'], version: '1.1.0' }],
@@ -50,9 +52,7 @@ const multipleReleaseObj = {
 describe('running release', () => {
   let cwd;
 
-  beforeEach(async () => {
-    // mock user response to "publish these packages?"
-    // cli.askConfirm.mockReturnValueOnce(Promise.resolve(true));
+  beforeAll(async () => {
     cwd = await getFixturePath(__dirname, 'simple-project');
   });
 
@@ -103,6 +103,64 @@ describe('running release', () => {
         expect(JSON.parse(fsWriteFileCalls[0][1])).toEqual({ version: '1.1.0' });
         // second should be a patch
         expect(JSON.parse(fsWriteFileCalls[1][1])).toEqual({ version: '1.0.1' });
+      });
+
+      describe('if not running in CI', () => {
+        beforeEach(() => {
+          isRunningInPipelines.mockReturnValueOnce(false);
+        });
+
+        it('should ask for user confirmation if not running in CI', async () => {
+          createRelease.mockImplementation(() => multipleReleaseObj);
+          cli.askConfirm.mockReturnValueOnce(Promise.resolve(true));
+
+          await runRelease({ cwd });
+
+          const confirmationCalls = cli.askConfirm.mock.calls;
+          expect(confirmationCalls.length).toEqual(1);
+          expect(confirmationCalls[0][0]).toEqual('Publish these packages?');
+        });
+
+        it('should run publish if user confirms', async () => {
+          createRelease.mockImplementation(() => multipleReleaseObj);
+          cli.askConfirm.mockReturnValueOnce(Promise.resolve(true));
+
+          await runRelease({ cwd });
+
+          expect(pyarn.publish).toHaveBeenCalled();
+        });
+
+        it('should not  run publish if user  doesnt confirms', async () => {
+          createRelease.mockImplementation(() => multipleReleaseObj);
+          cli.askConfirm.mockReturnValueOnce(Promise.resolve(false));
+
+          await runRelease({ cwd });
+
+          expect(pyarn.publish).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('if running in CI', () => {
+        beforeEach(() => {
+          isRunningInPipelines.mockReturnValueOnce(true);
+        });
+
+        it('should not ask for user confirmation', async () => {
+          createRelease.mockImplementation(() => multipleReleaseObj);
+
+          await runRelease({ cwd });
+
+          const confirmationCalls = cli.askConfirm.mock.calls;
+          expect(confirmationCalls.length).toEqual(0);
+        });
+
+        it('should run pyarn.publish', async () => {
+          createRelease.mockImplementation(() => multipleReleaseObj);
+
+          await runRelease({ cwd });
+
+          expect(pyarn.publish).toHaveBeenCalled();
+        });
       });
     });
   });

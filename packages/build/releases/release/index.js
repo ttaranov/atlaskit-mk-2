@@ -22,7 +22,7 @@ async function bumpReleasedPackages(releaseObj, allPackages) {
 }
 
 async function run(opts) {
-  const cwd = opts.cwd || process.cwd;
+  const cwd = opts.cwd || process.cwd();
   const allPackages = await pyarn.getWorkspaces({ cwd });
   const lastPublishCommit = await git.getLastPublishCommit();
   const unreleasedChangesetCommits = await git.getChangesetCommitsSince(lastPublishCommit);
