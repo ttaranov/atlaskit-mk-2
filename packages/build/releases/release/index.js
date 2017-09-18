@@ -1,7 +1,9 @@
 const path = require('path');
 const pyarn = require('pyarn');
 const cli = require('../../utils/cli');
+const logger = require('../../utils/logger');
 const git = require('../../utils/git');
+const isRunningInPipelines = require('../../utils/isRunningInPipelines');
 const parseChangesetCommit = require('../version/parseChangeSetCommit');
 const createRelease = require('../version/createRelease');
 const createReleaseCommit = require('../version/createReleaseCommit');
@@ -26,6 +28,11 @@ async function run() {
     .map(commitHash => git.getFullCommit(commitHash));
   const unreleasedChangesets = (await Promise.all(unreleasedChangesetsPromises))
     .map(({ commit, message }) => ({ commit, ...parseChangesetCommit(message) }));
+
+  if (unreleasedChangesets.length === 0) {
+    logger.warn(`No unreleased changesets found since ${lastPublishCommit}. Exiting`);
+    return;
+  }
   const releaseObj = createRelease(unreleasedChangesets, allPackages);
 
   await bumpReleasedPackages(releaseObj, allPackages);
@@ -35,10 +42,14 @@ async function run() {
   /** TODO: Update changelogs here */
   // changelog.updateChangeLog(releaseObj);
 
-  console.log(publishCommit);
-  const runPublish = await cli.askConfirm('Publish these packages?');
+  logger.log(publishCommit);
+
+  const runPublish = isRunningInPipelines() || await cli.askConfirm('Publish these packages?');
+
   if (runPublish) {
-    pyarn.run('publish', { access: 'public' });
+    await pyarn.run(['publish'], { access: 'public' });
+    git.commit(publishCommit);
+    // git.push()
   }
 }
 

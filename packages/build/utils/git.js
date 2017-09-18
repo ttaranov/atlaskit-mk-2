@@ -3,6 +3,7 @@ const path = require('path');
 
 // Parses lines that are in the form 'HASH message goes here'
 const parseCommitLine = line => {
+  // ignore first result, it is the whole pattern match
   const [_, hash, message] = line.match(/([^ ]+) (.+)/);
   return { commit: hash, message };
 };
@@ -61,16 +62,18 @@ async function getLastPublishCommit() {
 }
 
 async function getChangesetCommitsSince(ref) {
-  const isVersionCommit = msg => msg.startsWith('CHANGESET: ');
+  const isChangesetCommit = msg => msg.startsWith('CHANGESET: ');
 
   const gitCmd = await spawn('git', ['log', `${ref}...`, '--oneline']);
+  const result = gitCmd.stdout.trim();
 
-  const result = gitCmd.stdout.trim().split('\n')
-    .map(line => parseCommitLine(line));
-  const versionCommits = result.filter(res => isVersionCommit(res.message))
+  if (result.length === 0) return [];
+
+  const parsedResults = result.split('\n').map(line => parseCommitLine(line));
+  const changesetCommits = parsedResults.filter(res => isChangesetCommit(res.message))
     .map(res => res.commit);
 
-  return versionCommits;
+  return changesetCommits;
 }
 
 module.exports = {
