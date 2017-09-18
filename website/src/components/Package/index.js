@@ -99,7 +99,7 @@ export default class Package extends React.Component<PackageProps, PackageState>
     const { children } = this.state;
     const { name, group } = this.props.match.params;
     const pkg = getPackageByGroupAndName(group, name);
-    const examples = getExampleList(name);
+    const examples = getExampleList(group, name);
 
     if (!pkg) {
       return <FourOhFour />;
