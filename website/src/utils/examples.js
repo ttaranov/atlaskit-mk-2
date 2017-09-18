@@ -8,7 +8,7 @@ import { basename, removeNumericPrefix, removeSuffix } from './path';
 
 import type { Example } from '../types';
 
-type List = {
+export type List = {
   link: string,
   name: string,
 };

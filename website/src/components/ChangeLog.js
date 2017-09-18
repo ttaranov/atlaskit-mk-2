@@ -1,5 +1,5 @@
 // @flow
-import React, { Children, PureComponent } from 'react';
+import React, { Children, Component } from 'react';
 
 import ReactMarkdown from 'react-markdown';
 import semver from 'semver';
@@ -70,7 +70,7 @@ type Props = {
   packageName: string,
 };
 
-export default class ChangeLog extends PureComponent<Props> {
+export default class ChangeLog extends Component<Props> {
   props: Props; // eslint-disable-line react/sort-comp
   render() {
     const { changelog, packageName, range } = this.props;

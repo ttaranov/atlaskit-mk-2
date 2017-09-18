@@ -37,7 +37,9 @@ module.exports = async function createWebpackConfig() {
   };
 
   const entries = {};
-  const aliases = {};
+  const aliases = {
+    '@atlaskit/docs': path.join(__dirname, '..', 'packages', 'utils', 'docs', 'src', 'index.js'),
+  };
 
   results.workspaces.forEach(workspace => {
     const parts = workspace.dir.split('/');
@@ -89,6 +91,7 @@ module.exports = async function createWebpackConfig() {
       watchContentBase: true,
       compress: true,
       port: 9000,
+      lazy: true,
       historyApiFallback: true,
       overlay: true,
       stats: {
@@ -106,6 +109,11 @@ module.exports = async function createWebpackConfig() {
           test: /CHANGELOG\.md$/,
           exclude: /node_modules/,
           loader: 'changelog-md-loader',
+        },
+        {
+          test: /\.md$/,
+          exclude: /node_modules/,
+          loader: 'raw-loader',
         },
         {
           test: /\.js$/,

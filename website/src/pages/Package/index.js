@@ -1,12 +1,13 @@
 // @flow
+
 import React, { type Node } from 'react';
 import styled from 'styled-components';
 import { gridSize, colors, math } from '@atlaskit/theme';
 import { Link } from 'react-router-dom';
-import Page from './../Page';
-import FourOhFour from './../FourOhFour';
+import Page from '../../components/Page';
+import FourOhFour from '../FourOhFour';
 import { getPackageByGroupAndName } from '../../utils/packages';
-import { getList, formatLink, formatName } from '../../utils/examples';
+import { getList } from '../../utils/examples';
 import MetaData from './MetaData';
 import { join } from '../../utils/path';
 
@@ -45,9 +46,9 @@ export const ExamplesList = (props: ExamplesListProps) => {
       <Sep />
       <h2>Examples</h2>
       <ul>
-        {examples.map(e => (
-          <li key={e.name}>
-            <Link to={`/packages/${group}/${name}/examples/${e.link}`}>{e.name}</Link>
+        {examples.map(example => (
+          <li key={example.name}>
+            <Link to={`/packages/${group}/${name}/examples/${example.link}`}>{example.name}</Link>
           </li>
         ))}
       </ul>
@@ -103,15 +104,9 @@ export default class Package extends React.Component<PackageProps, PackageState>
 
     this.setState({ children: null }, () => {
       // $FlowFixMe
-      require.ensure([], require => {
-        let children;
-        try {
-          children = require(`../../../../packages/${group}/${name}/docs/0-intro`).default;
-          this.setState({ children });
-        } catch (e) {
-          this.setState({ children: <NoDocs name={pkg.name} /> });
-        }
-      });
+      import(`../../../../packages/${group}/${name}/docs/0-intro`)
+        .then((children: { default: Node }) => this.setState({ children: children.default }))
+        .catch(() => this.setState({ children: <NoDocs name={pkg.name} /> }));
     });
   }
 

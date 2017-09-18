@@ -1,9 +1,10 @@
 // @flow
+
 import React from 'react';
 import styled from 'styled-components';
-import Code from './Code';
-import Loading from './Loading';
-import Page from './Page';
+import Code from '../components/Code';
+import Loading from '../components/Loading';
+import Page from '../components/Page';
 import { getData, formatName } from '../utils/examples';
 import { join } from '../utils/path';
 

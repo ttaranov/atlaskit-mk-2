@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
 import styled from 'styled-components';
 
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
@@ -68,7 +67,7 @@ function print(type, depth = 1) {
   const Indent = ({ children }) => (
     <div style={{ paddingLeft: '1.3em' }}>{children}</div>
   );
-  Indent.propTypes = { children: PropTypes.node };
+  Indent.propTypes = { children: React.Node };
 
   if (type.kind === 'string' || type.kind === 'stringLiteral') {
     if (type.value) {
@@ -158,24 +157,19 @@ function print(type, depth = 1) {
   return <Invalid>{JSON.stringify(type)}</Invalid>;
 }
 
-export default class PrettyPropType extends Component {
-  static propTypes = {
-    type: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.object,
-    ]).isRequired,
-  }
-  state = {}
-  render() {
-    const { type } = this.props;
+export type PrettyPropTypeProps = {
+  type: string | Object
+}
 
-    if (SIMPLE_TYPES.includes(type.kind)) return null;
-    if (type.kind === 'nullable' && SIMPLE_TYPES.includes(type.arguments.kind)) return null;
+export default function PrettyPropType(props: PrettyPropTypeProps) {
+  const { type } = props;
 
-    return (
-      <Wrapper>
-        {print(type)}
-      </Wrapper>
-    );
-  }
+  if (SIMPLE_TYPES.includes(type.kind)) return null;
+  if (type.kind === 'nullable' && SIMPLE_TYPES.includes(type.arguments.kind)) return null;
+
+  return (
+    <Wrapper>
+      {print(type)}
+    </Wrapper>
+  );
 }
