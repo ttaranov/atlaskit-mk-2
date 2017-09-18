@@ -21,3 +21,4 @@ pipelines:
           - yarn build
           - yarn lint
           - yarn test
+          - yarn release
