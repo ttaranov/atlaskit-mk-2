@@ -37,7 +37,6 @@ describe('createRelease', () => {
     const releaseObj = createRelease([simpleChangeset], fakeAllPackages);
     expect(releaseObj).toEqual({
       releases: [{ name: 'package-a', commits: ['dec4a66'], version: '1.1.0' }],
-      dependents: [],
       changesets: [simpleChangeset],
     });
   });
@@ -47,7 +46,6 @@ describe('createRelease', () => {
 
     expect(releaseObj).toEqual({
       releases: [{ name: 'package-a', commits: ['dec4a66', '695fad0'], version: '1.1.0' }],
-      dependents: [],
       changesets: [simpleChangeset, simpleChangeset2],
     });
   });
@@ -56,8 +54,10 @@ describe('createRelease', () => {
     const releaseObj = createRelease([changesetWithDep], fakeAllPackages);
 
     expect(releaseObj).toEqual({
-      releases: [{ name: 'package-a', commits: ['695fad0'], version: '1.1.0' }],
-      dependents: [{ name: 'package-b', version: '1.0.1', dependencies: ['package-a'] }],
+      releases: [
+        { name: 'package-a', commits: ['695fad0'], version: '1.1.0' },
+        { name: 'package-b', commits: ['695fad0'], version: '1.0.1' },
+      ],
       changesets: [changesetWithDep],
     });
   });
