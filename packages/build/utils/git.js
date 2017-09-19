@@ -25,8 +25,18 @@ async function getBranchName() {
   return gitCmd.stdout.trim().split('\n');
 }
 
-async function commit(message, opts) {
+async function add(pathToFile) {
+  const gitCmd = await spawn('git', ['add', pathToFile]);
+  return gitCmd.code === 0;
+}
+
+async function commit(message) {
   const gitCmd = await spawn('git', ['commit', '-m', message, '--allow-empty']);
+  return gitCmd.code === 0;
+}
+
+async function push(args = []) {
+  const gitCmd = await spawn('git', ['push', ...args]);
   return gitCmd.code === 0;
 }
 
@@ -80,7 +90,9 @@ module.exports = {
   getCommitsSince,
   getChangedFilesSince,
   getBranchName,
+  add,
   commit,
+  push,
   getFullCommit,
   getLastPublishCommit,
   getChangesetCommitsSince,
