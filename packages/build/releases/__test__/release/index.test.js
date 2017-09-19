@@ -18,6 +18,7 @@ jest.mock('../../../utils/logger');
 
 git.getLastPublishCommit.mockImplementation(() => Promise.resolve('xxYYxxY'));
 git.getFullCommit.mockImplementation(() => Promise.resolve({}));
+git.add.mockImplementation(() => Promise.resolve(true));
 git.commit.mockImplementation(() => Promise.resolve(true));
 git.push.mockImplementation(() => Promise.resolve(true));
 fs.readFile.mockImplementation(() => Promise.resolve('{}'));

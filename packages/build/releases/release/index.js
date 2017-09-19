@@ -18,6 +18,7 @@ async function bumpReleasedPackages(releaseObj, allPackages) {
     pkgJson.version = release.version;
     const pkgJsonStr = `${JSON.stringify(pkgJson, null, 2)}\n`;
     await fs.writeFile(pkgJsonPath, pkgJsonStr);
+    await git.add(pkgJsonPath);
   }
 }
 
@@ -54,7 +55,12 @@ async function run(opts) {
     const pushed = committed && await git.push();
 
     if (pushed) {
-      await pyarn.publish({ access: 'public' });
+      const published = await pyarn.publish({ access: 'public' });
+      if (published) {
+        const releasedPackages = releaseObj.releases.map(r => `${r.name}@${r.version}`).join('\n');
+        logger.success('Successfully published:');
+        logger.success(releasedPackages);
+      }
     }
   }
 }
