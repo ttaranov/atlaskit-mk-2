@@ -52,8 +52,8 @@ async function run(opts) {
       [next.name]: next.version,
     }), {});
     // updated dependencies on those versions
-    await pyarn.updatePackageVersions(versionsToUpdate);
-    await git.add('.');
+    const updatedPackages = await pyarn.updatePackageVersions(versionsToUpdate);
+    await git.add(updatedPackages);
 
     logger.log('Committing changes...');
     const committed = await git.commit(publishCommit);
@@ -62,12 +62,12 @@ async function run(opts) {
     const pushed = committed && await git.push();
 
     if (pushed) {
-      const published = await pyarn.publish({ access: 'public' });
-      if (published) {
-        const releasedPackages = releaseObj.releases.map(r => `${r.name}@${r.version}`).join('\n');
-        logger.success('Successfully published:');
-        logger.success(releasedPackages);
-      }
+      // pyarn will throw if there is an error
+      await pyarn.publish({ access: 'public' });
+
+      const releasedPackages = releaseObj.releases.map(r => `${r.name}@${r.version}`).join('\n');
+      logger.success('Successfully published:');
+      logger.success(releasedPackages);
     }
   }
 }
