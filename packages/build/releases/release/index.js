@@ -35,9 +35,6 @@ async function run(opts) {
     return;
   }
   const releaseObj = createRelease(unreleasedChangesets, allPackages);
-
-  await bumpReleasedPackages(releaseObj, allPackages);
-
   const publishCommit = createReleaseCommit(releaseObj);
 
   /** TODO: Update changelogs here */
@@ -46,8 +43,13 @@ async function run(opts) {
   logger.log(publishCommit);
 
   const runPublish = isRunningInPipelines() || await cli.askConfirm('Publish these packages?');
-
   if (runPublish) {
+    // update package versions
+    await bumpReleasedPackages(releaseObj, allPackages);
+    // updated dependencies on those versions
+    await pyarn.updatePackageVersions(releaseObj.releases);
+    await git.add('.');
+
     logger.log('Committing changes...');
     const committed = await git.commit(publishCommit);
 
