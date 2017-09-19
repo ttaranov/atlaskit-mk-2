@@ -49,8 +49,10 @@ async function run(opts) {
   if (runPublish) {
     logger.log('Committing changes...');
     const committed = await git.commit(publishCommit);
+
     logger.log('Pushing back to origin...');
     const pushed = committed && await git.push();
+
     if (pushed) {
       await pyarn.publish({ access: 'public' });
     }

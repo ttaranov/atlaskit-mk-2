@@ -38,17 +38,21 @@ function createReleaseCommit(releaseObj) {
     .map(release => `  ${release.name}@${release.version}`)
     .join('\n') || '[]';
 
-  return `RELEASING: Releasing ${numPackagesReleased} package(s)
+  return outdent`
+    RELEASING: Releasing ${numPackagesReleased} package(s)
 
-Releases:
-${releasesLines}
+    Releases:
+    ${releasesLines}
 
-Dependents:
-  ${dependentsLines}
+    Dependents:
+      ${dependentsLines}
 
----
-${JSON.stringify(cleanReleaseObj)}
----`;
+    ---
+    ${JSON.stringify(cleanReleaseObj)}
+    ---
+
+    [skip ci]
+  `;
 }
 
 module.exports = createReleaseCommit;
