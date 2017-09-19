@@ -47,9 +47,11 @@ async function run(opts) {
   const runPublish = isRunningInPipelines() || await cli.askConfirm('Publish these packages?');
 
   if (runPublish) {
-    await pyarn.publish({ access: 'public' });
-    git.commit(publishCommit);
-    // git.push()
+    const comitted = await git.commit(publishCommit);
+    const pushed = comitted && await git.push();
+    if (pushed) {
+      await pyarn.publish({ access: 'public' });
+    }
   }
 }
 

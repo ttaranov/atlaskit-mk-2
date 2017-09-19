@@ -10,7 +10,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@atlaskit/eslint-config-base": "^2.0.7",
-    "@atlaskit/build-utils": "^1.0.0",
+    "@atlaskit/build-utils": "^1.2.0",
     "chalk": "^2.1.0",
     "outdent": "^0.3.0",
     "pyarn": "^0.9.0",
