@@ -14,6 +14,6 @@ git config --global push.default simple
 # $NPM_TOKEN is the auth token for the "atlaskit" user
 npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
 
-# This gives us colored output in Pipelines
+# Forces `chalk` to display colored output in pipelines
 export FORCE_COLOR=1
 yarn config set color always

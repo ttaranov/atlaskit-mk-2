@@ -52,8 +52,9 @@ async function run(opts) {
       [next.name]: next.version,
     }), {});
     // updated dependencies on those versions
-    const updatedPackages = await pyarn.updatePackageVersions(versionsToUpdate);
-    await git.add(updatedPackages);
+    await pyarn.updatePackageVersions(versionsToUpdate);
+    // TODO: get updatedPackages from pyarn.updatePackageVersions and only add those
+    await git.add('.');
 
     logger.log('Committing changes...');
     const committed = await git.commit(publishCommit);
