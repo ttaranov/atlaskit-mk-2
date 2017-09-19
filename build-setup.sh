@@ -16,3 +16,4 @@ npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
 
 # This gives us colored output in Pipelines
 export FORCE_COLOR=1
+yarn config set color always
