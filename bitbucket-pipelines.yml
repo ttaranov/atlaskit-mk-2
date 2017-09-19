@@ -16,7 +16,6 @@ pipelines:
     - step:
         script:
           - ./build-setup.sh
-          - mkdir -p packages/build/changelog-md-loader/node_modules/.bin
           - pyarn install
           - yarn build
           - yarn lint
