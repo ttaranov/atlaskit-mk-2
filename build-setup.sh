@@ -13,3 +13,6 @@ git config --global push.default simple
 
 # $NPM_TOKEN is the auth token for the "atlaskit" user
 npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+
+# This gives us colored output in Pipelines
+export FORCE_COLOR=1
