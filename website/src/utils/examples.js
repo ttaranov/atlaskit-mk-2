@@ -8,15 +8,20 @@ import { basename, removeNumericPrefix, removeSuffix } from './path';
 
 import type { Example } from '../types';
 
-export function formatCodeImports(packageName: string, code: string) {
+type List = {
+  link: string,
+  name: string,
+};
+
+export function formatCodeImports(packageName: string, code: string): string {
   return code.replace(/\.\.\/src/g, packageName);
 }
 
-export function formatLink(link: string) {
+export function formatLink(link: string): string {
   return basename(removeSuffix(link));
 }
 
-export function formatName(name: string) {
+export function formatName(name: string): string {
   return sentenceCase(removeNumericPrefix(removeSuffix(basename(name))));
 }
 
@@ -32,7 +37,7 @@ export async function getData(workspaceName: string, examplePath: string): Examp
   };
 }
 
-export function getList(workspaceName: string) {
+export function getList(workspaceName: string): Array<List> {
   return getWorkspace(workspaceName).files.examples.map(({ filePath }) => ({
     link: formatLink(filePath),
     name: formatName(filePath),
