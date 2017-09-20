@@ -14,11 +14,7 @@ pipelines:
   default:
     - step:
         script:
-          - echo "$PATH"
-          - which yarn
           - source ./build-setup.sh
-          - echo "$PATH"
-          - which yarn
           - pyarn install
           - yarn build
           - yarn lint
