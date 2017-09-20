@@ -1,6 +1,10 @@
 import { basename, join, removeNumericPrefix, removeSuffix } from '../path';
 
 describe('basename', () => {
+  it('no parts', () => {
+    expect(basename('')).toBe('');
+  });
+
   it('one part', () => {
     expect(basename('one.js')).toBe('one.js');
   });
@@ -9,12 +13,20 @@ describe('basename', () => {
     expect(basename('one/two/three.js')).toBe('three.js');
   });
 
-  it('empty parts', () => {
+  it('empty parts in between', () => {
     expect(basename('/two//four.js')).toBe('four.js');
   });
 });
 
 describe('join', () => {
+  it('no arguments', () => {
+    expect(join()).toBe('');
+  });
+
+  it('empty argument', () => {
+    expect(join('')).toBe('');
+  });
+
   it('single argument', () => {
     expect(join('one')).toBe('one');
   });
@@ -23,12 +35,20 @@ describe('join', () => {
     expect(join('one', 'two', 'three')).toBe('one/two/three');
   });
 
-  it('empty arguments', () => {
+  it('empty arguments in between', () => {
     expect(join('', 'two', '', 'four', '')).toBe('two/four');
   });
 });
 
 describe('removeNumericPrefix', () => {
+  it('no prefix', () => {
+    expect(removeNumericPrefix()).toBe('');
+  });
+
+  it('empty prefix', () => {
+    expect(removeNumericPrefix('')).toBe('');
+  });
+
   it('single prefix', () => {
     expect(removeNumericPrefix('1-test.js')).toBe('test.js');
   });
@@ -43,6 +63,14 @@ describe('removeNumericPrefix', () => {
 });
 
 describe('removeSuffix', () => {
+  it('no arguments', () => {
+    expect(removeSuffix()).toBe('');
+  });
+
+  it('empty argument', () => {
+    expect(removeSuffix('')).toBe('');
+  });
+
   it('no suffix', () => {
     expect(removeSuffix('test')).toBe('test');
   });
