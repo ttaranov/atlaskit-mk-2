@@ -7,9 +7,9 @@ const tslint = require('projector-tslint');
 const karma = require('projector-karma');
 const path = require('path');
 const glob = require('glob');
-const getKarmaConfig = require('./packages/build/karma-config');
-const release = require('./packages/build/releases/release');
-const version = require('./packages/build/releases/version');
+const getKarmaConfig = require('./build/karma-config');
+const release = require('./build/releases/release');
+const version = require('./build/releases/version');
 const query = require('pyarn-query');
 
 /* ::

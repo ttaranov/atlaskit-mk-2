@@ -68,7 +68,7 @@ async function run(opts) {
 
       const releasedPackages = releaseObj.releases.map(r => `${r.name}@${r.version}`).join('\n');
       logger.success('Successfully published:');
-      logger.success(releasedPackages);
+      logger.log(releasedPackages);
     }
   }
 }

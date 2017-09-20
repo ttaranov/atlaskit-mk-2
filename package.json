@@ -15,11 +15,11 @@
     "release": "projector ./projector release"
   },
   "pworkspaces": [
-    "packages/build/*",
     "packages/utils/*",
     "packages/elements/*",
     "packages/fabric/*",
     "patterns/*",
+    "build/*",
     "website"
   ],
   "devDependencies": {
