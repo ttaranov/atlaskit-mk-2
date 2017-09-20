@@ -13,5 +13,9 @@ export function removeNumericPrefix(path: string): string {
 }
 
 export function removeSuffix(path: string): string {
-  return path.replace('.js', '');
+  const parts = path.split('.');
+  if (parts.length > 1) {
+    parts.pop();
+  }
+  return parts.join('.');
 }
