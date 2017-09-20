@@ -1,5 +1,5 @@
 const outdent = require('outdent');
-const parseChangeSetCommit = require('../../changeset/parseChangeSetCommit');
+const parseChangesetCommit = require('../../changeset/parseChangesetCommit');
 const createChangesetCommit = require('../../changeset/createChangesetCommit');
 
 const simpleChangeset = {
@@ -11,7 +11,7 @@ const simpleChangeset = {
   commit: 'dec4a66',
 };
 
-describe('parseChangeSetCommit', () => {
+describe('parseChangesetCommit', () => {
   it('should be able to parse a commit message and return json', () => {
     const commitStr = outdent`
       CHANGESET: This is a summary
@@ -28,13 +28,13 @@ describe('parseChangeSetCommit', () => {
       ${JSON.stringify(simpleChangeset)}
       ---
     `;
-    const parsed = parseChangeSetCommit(commitStr);
+    const parsed = parseChangesetCommit(commitStr);
     expect(parsed).toEqual(simpleChangeset);
   });
 
   it('should return the same json used to create it in createChangesetCommit', () => {
     const commitStr = createChangesetCommit(simpleChangeset);
-    const parsed = parseChangeSetCommit(commitStr);
+    const parsed = parseChangesetCommit(commitStr);
     expect(parsed).toEqual(simpleChangeset);
   });
 
@@ -51,7 +51,7 @@ describe('parseChangeSetCommit', () => {
       {"summary": "This is a super cool version","releaseNotes": "doc.md","releases": [{"name": "package-a","type": "major"}],"dependents": [{"name": "package-b", "type": "minor", "dependencies": ["package-a"]},{"name": "package-c", "type": "patch", "dependencies": ["package-b"]},{"name": "package-a", "type": "patch", "dependencies": ["package-c"]}]}
       ---
     `;
-    const changeset = parseChangeSetCommit(commit);
+    const changeset = parseChangesetCommit(commit);
     expect(changeset).toEqual({
       summary: 'This is a super cool version',
       releaseNotes: 'doc.md',

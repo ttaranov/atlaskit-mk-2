@@ -12,7 +12,7 @@ jest.mock('../../../utils/cli');
 jest.mock('../../../utils/git');
 jest.mock('../../../utils/fs');
 jest.mock('../../../utils/isRunningInPipelines');
-jest.mock('../../changeset/parseChangeSetCommit');
+jest.mock('../../changeset/parseChangesetCommit');
 jest.mock('../../changeset/createRelease');
 jest.mock('../../../utils/logger');
 
