@@ -10,8 +10,7 @@ pipelines:
             - yarn lint
             - yarn test
             - yarn release
-          caches:
-            - node
+
   default:
     - step:
         script:
@@ -20,4 +19,4 @@ pipelines:
           - yarn build
           - yarn lint
           - yarn test
-          - yarn release
+
