@@ -9,7 +9,7 @@ const path = require('path');
 const glob = require('glob');
 const getKarmaConfig = require('./build/karma-config');
 const release = require('./build/releases/release');
-const version = require('./build/releases/changeset');
+const changeset = require('./build/releases/changeset');
 const query = require('pyarn-query');
 
 /* ::
@@ -116,8 +116,8 @@ exports.test = async () => {
   }
 };
 
-exports.version = async () => {
-  await version.run({
+exports.changeset = async () => {
+  await changeset.run({
     rootDir: __dirname,
   });
 };

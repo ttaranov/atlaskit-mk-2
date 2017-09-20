@@ -51,8 +51,8 @@ describe('parseChangeSetCommit', () => {
       {"summary": "This is a super cool version","releaseNotes": "doc.md","releases": [{"name": "package-a","type": "major"}],"dependents": [{"name": "package-b", "type": "minor", "dependencies": ["package-a"]},{"name": "package-c", "type": "patch", "dependencies": ["package-b"]},{"name": "package-a", "type": "patch", "dependencies": ["package-c"]}]}
       ---
     `;
-    const version = parseChangeSetCommit(commit);
-    expect(version).toEqual({
+    const changeset = parseChangeSetCommit(commit);
+    expect(changeset).toEqual({
       summary: 'This is a super cool version',
       releaseNotes: 'doc.md',
       releases: [
