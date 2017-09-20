@@ -18,7 +18,7 @@ async function bumpReleasedPackages(releaseObj, allPackages) {
     pkgJson.version = release.version;
     const pkgJsonStr = `${JSON.stringify(pkgJson, null, 2)}\n`;
     await fs.writeFile(pkgJsonPath, pkgJsonStr);
-    // await git.add(pkgJsonPath);
+    await git.add(pkgJsonPath);
   }
 }
 
@@ -46,12 +46,12 @@ async function run(opts) {
   if (runPublish) {
     // update package versions
     await bumpReleasedPackages(releaseObj, allPackages);
-    // Need to transform releases into a form for pyarn to updated dependencies
+    // Need to transform releases into a form for pyarn to update dependencies
     const versionsToUpdate = releaseObj.releases.reduce((cur, next) => ({
       ...cur,
       [next.name]: next.version,
     }), {});
-    // updated dependencies on those versions
+    // update dependencies on those versions
     await pyarn.updatePackageVersions(versionsToUpdate);
     // TODO: get updatedPackages from pyarn.updatePackageVersions and only add those
     await git.add('.');
