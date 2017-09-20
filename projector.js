@@ -9,7 +9,7 @@ const path = require('path');
 const glob = require('glob');
 const getKarmaConfig = require('./build/karma-config');
 const release = require('./build/releases/release');
-const version = require('./build/releases/version');
+const version = require('./build/releases/changeset');
 const query = require('pyarn-query');
 
 /* ::
