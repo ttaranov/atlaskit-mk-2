@@ -1,8 +1,12 @@
 // @flow
 
-const webpack = require('webpack');
+const { merge } = require('lodash');
+const fs = require('fs');
 const path = require('path');
 const pyarnQuery = require('pyarn-query');
+const webpack = require('webpack');
+
+const babelrc = JSON.parse(fs.readFileSync('../.babelrc').toString());
 
 const ORDERED_FILE_PREFIX = /^[0-9]+-/;
 
@@ -111,9 +115,13 @@ module.exports = async function () {
           test: /\.js$/,
           exclude: /node_modules/,
           loader: require.resolve('babel-loader'),
-          options: {
-            cacheDirectory: true,
-          },
+          options: merge(
+            {
+              cacheDirectory: true,
+              presets: [['env', { modules: false }]],
+            },
+            babelrc
+          ),
         },
         {
           test: /\.tsx?$/,
