@@ -4,9 +4,9 @@ const cli = require('../../utils/cli');
 const logger = require('../../utils/logger');
 const git = require('../../utils/git');
 const isRunningInPipelines = require('../../utils/isRunningInPipelines');
-const parseChangesetCommit = require('../version/parseChangeSetCommit');
-const createRelease = require('../version/createRelease');
-const createReleaseCommit = require('../version/createReleaseCommit');
+const parseChangesetCommit = require('../changeset/parseChangeSetCommit');
+const createRelease = require('../changeset/createRelease');
+const createReleaseCommit = require('../changeset/createReleaseCommit');
 const fs = require('../../utils/fs');
 
 async function bumpReleasedPackages(releaseObj, allPackages) {

@@ -1,5 +1,5 @@
 const outdent = require('outdent');
-const createChangesetCommit = require('../../version/createChangesetCommit');
+const createChangesetCommit = require('../../changeset/createChangesetCommit');
 
 describe('createChangesetCommit', () => {
   it('should create a valid changeset commit message', () => {

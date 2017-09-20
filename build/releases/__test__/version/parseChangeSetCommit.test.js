@@ -1,6 +1,6 @@
 const outdent = require('outdent');
-const parseChangeSetCommit = require('../../version/parseChangeSetCommit');
-const createChangesetCommit = require('../../version/createChangesetCommit');
+const parseChangeSetCommit = require('../../changeset/parseChangeSetCommit');
+const createChangesetCommit = require('../../changeset/createChangesetCommit');
 
 const simpleChangeset = {
   summary: 'This is a summary',

@@ -1,6 +1,6 @@
 const chalk = require('chalk');
 const pyarn = require('pyarn');
-const createChangeset = require('../../version/createChangeset');
+const createChangeset = require('../../changeset/createChangeset');
 const cli = require('../../../utils/cli');
 
 jest.mock('../../../utils/cli');
