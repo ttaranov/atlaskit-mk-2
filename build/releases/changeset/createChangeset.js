@@ -6,7 +6,7 @@ const cli = require('../../utils/cli');
 const logger = require('../../utils/logger');
 const createReleaseNotesFile = require('./createReleaseNotesFile');
 
-/* Version object format (TODO: User flow!!!)
+/* Changeset object format (TODO: User flow!!!)
   {
     summary: 'This is the summary',
     releaseNotes?: 'path/to/release/notes.md',   // optional
