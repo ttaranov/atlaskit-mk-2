@@ -19,7 +19,7 @@
     "packages/utils/*",
     "packages/elements/*",
     "packages/fabric/*",
-    "patterns/*",
+    "patterns",
     "website"
   ],
   "devDependencies": {

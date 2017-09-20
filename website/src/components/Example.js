@@ -6,8 +6,9 @@ import Code from './Code';
 import Loading from './Loading';
 import Page from './Page';
 import { getData, formatName } from '../utils/examples';
+import { join } from '../utils/path';
 
-import type { ExampleOrPattern } from '../types';
+import type { Example as ExampleType } from '../types';
 
 type PackageProps = {
   match: {
@@ -21,13 +22,13 @@ type PackageProps = {
 
 const Body = styled.div`margin: 20px 0;`;
 
-export default class Example extends React.Component<PackageProps, ExampleOrPattern> {
+export default class Example extends React.Component<PackageProps, ExampleType> {
   props: PackageProps;
   state = {};
 
   componentDidMount() {
     const { group, name, example } = this.props.match.params;
-    getData(group, name, example).then(s => this.setState(s));
+    getData(join(group, name), example).then(s => this.setState(s));
   }
 
   render() {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export type ExampleOrPattern = {
+export type Example = {
   codeText?: string,
   CodeNode?: React.Node,
 };

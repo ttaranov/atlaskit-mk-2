@@ -1,19 +1,17 @@
 // @flow
 
 import * as React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
 import styled, { injectGlobal } from 'styled-components';
-import { Link } from 'react-router-dom';
 import { AkNavigationItem, AkNavigationItemGroup } from '@atlaskit/navigation';
 
 import { PACKAGES } from '../constants';
-import { getList as getPatternList } from '../utils/patterns';
+import { getList as getExampleList } from '../utils/examples';
 import ChangeLogExplorer from './ChangeLogExplorer';
 import Home from './Home';
 import Example from './Example';
 import FourOhFour from './FourOhFour';
 import Nav from './Nav';
-import NavItem from './NavItem';
 import Package from './Package';
 import Pattern from './Pattern';
 
@@ -91,8 +89,8 @@ export default class App extends React.PureComponent<AppProps> {
                 ))}
               </AkNavigationItemGroup>
               <AkNavigationItemGroup title="Patterns">
-                {getPatternList().map(({ key, name }) => (
-                  <NavItemLink key={key} to={`/patterns/${key}`}>
+                {getExampleList('patterns').map(({ link, name }) => (
+                  <NavItemLink key={name} to={`/patterns/${link}`}>
                     <AkNavigationItem text={name} />
                   </NavItemLink>
                 ))}
@@ -104,7 +102,7 @@ export default class App extends React.PureComponent<AppProps> {
               <Route exact path="/" component={Home} />
               <Route path="/packages/:group/:name/examples/:example" component={Example} />
               <Route path="/packages/:group/:name" component={Package} />
-              <Route path="/patterns/:pattern" component={Pattern} />
+              <Route path="/patterns/:example" component={Pattern} />
               <Route path="/changelog/:group/:name/:semver?" component={ChangeLogExplorer} />
               <Route component={FourOhFour} />
             </Switch>

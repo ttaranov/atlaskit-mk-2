@@ -1,28 +1,40 @@
 // @flow
 
 import sentenceCase from 'sentence-case';
-// $FlowFixMe
-import examples from 'pyarn-query-loader?{workspaceFiles:{examples:"examples/*.js"}}!';
-import { basename, formatCodeImports, removeNumericPrefix, removeSuffix } from './path';
 
-import type { ExampleOrPattern } from '../types';
+import { EXAMPLES } from '../constants';
+import { getWorkspace } from './packages';
+import { basename, removeNumericPrefix, removeSuffix } from './path';
 
-export function formatLink(name: string) {
-  return basename(removeSuffix(name));
+import type { Example } from '../types';
+
+export function formatCodeImports(packageName: string, code: string) {
+  return code.replace(/\.\.\/src/g, packageName);
+}
+
+export function formatLink(link: string) {
+  return basename(removeSuffix(link));
 }
 
 export function formatName(name: string) {
   return sentenceCase(removeNumericPrefix(removeSuffix(basename(name))));
 }
 
-export async function getData(group: string, name: string, example: string): ExampleOrPattern {
-  const key = `${group}/${name}/examples/${example}.js`;
+export async function getData(workspaceName: string, examplePath: string): Example {
+  const workspace = getWorkspace(workspaceName);
+  const workspaceExample = workspace.files.examples.filter(e => new RegExp(`/${examplePath}.js$`).test(e.filePath))[0];
   return {
-    codeText: formatCodeImports(name, examples.read[key]),
-    CodeNode: (await examples.load[key]()).default,
+    ...workspaceExample,
+    ...{
+      codeText: formatCodeImports(workspace.pkg.name, workspaceExample.fileContents),
+      CodeNode: (await EXAMPLES.load[workspaceExample.filePath]()).default,
+    },
   };
 }
 
-export function getList(group: string, name: string) {
-  return examples.data.workspaces.filter(w => w.dir.indexOf(`${group}/${name}`) > -1)[0].files.examples.map(e => e.filePath);
+export function getList(workspaceName: string) {
+  return getWorkspace(workspaceName).files.examples.map(({ filePath }) => ({
+    link: formatLink(filePath),
+    name: formatName(filePath),
+  }));
 }
