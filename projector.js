@@ -4,10 +4,10 @@ const spawn = require('projector-spawn');
 const jest = require('projector-jest');
 const ts = require('projector-typescript');
 const tslint = require('projector-tslint');
-const karma = require('projector-karma');
+// const karma = require('projector-karma');
 const path = require('path');
 const glob = require('glob');
-const getKarmaConfig = require('./build/karma-config');
+// const getKarmaConfig = require('./build/karma-config');
 const release = require('./build/releases/release');
 const changeset = require('./build/releases/changeset');
 const query = require('pyarn-query');
@@ -50,13 +50,14 @@ const lintTSComponent = async cwd => {
   });
 };
 
-const browserTestComponent = async cwd => {
-  const files = glob.sync(`${cwd}/tests/browser/**/*.+(js|jsx|ts|tsx)`);
-  await karma.run({
-    files,
-    config: getKarmaConfig(),
-  });
-};
+// TODO uncomment when re-enable TS.
+// const browserTestComponent = async cwd => {
+//   const files = glob.sync(`${cwd}/tests/browser/**/*.+(js|jsx|ts|tsx)`);
+//   await karma.run({
+//     files,
+//     config: getKarmaConfig(),
+//   });
+// };
 
 exports.lint = async () => {
   const components = ['code'];
@@ -110,11 +111,11 @@ exports.test = async () => {
     // moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   });
 
-  const components = ['code'];
-  for (const name of components) {
-    // TODO: Look into failures on CI https://bitbucket.org/atlassian/atlaskit-mk-2/addon/pipelines/home#!/results/163
-    // await browserTestComponent(path.join(__dirname, 'packages', 'fabric', name));
-  }
+  // TODO: Look into failures on CI https://bitbucket.org/atlassian/atlaskit-mk-2/addon/pipelines/home#!/results/163
+  // const components = ['code'];
+  // for (const name of components) {
+  //   await browserTestComponent(path.join(__dirname, 'packages', 'fabric', name));
+  // }
 };
 
 exports.changeset = async () => {
