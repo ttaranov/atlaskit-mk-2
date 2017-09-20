@@ -1,6 +1,8 @@
 // @flow
 import * as React from 'react';
 import styled from 'styled-components';
+import Navigation, { AkNavigationItemGroup, AkNavigationItem, AkContainerTitle } from '@atlaskit/navigation';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
 const NavContainer = styled.nav`
   position: relative;
@@ -29,10 +31,17 @@ export default class Nav extends React.PureComponent<NavProps> {
   props: NavProps;
   render() {
     return (
-      <NavContainer>
-        <NavTitle>{this.props.title}</NavTitle>
-        {this.props.children}
-      </NavContainer>
+      <Navigation
+        globalPrimaryIcon={<AtlassianIcon size="xlarge" label="AtlasKit" />}
+        globalPrimaryItemHref="/components/navigation"
+        containerHeaderComponent={() => (
+          <AkContainerTitle icon={<AtlassianIcon label="AtlasKit" />} text={this.props.title} />
+        )}
+      >
+        <AkNavigationItemGroup>
+          {this.props.children}
+        </AkNavigationItemGroup>
+      </Navigation>
     );
   }
 }
