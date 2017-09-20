@@ -47,20 +47,30 @@ function maxBumpType(bumpA, bumpB) {
 }
 
 // Takes an array of Changesets and returns a flat list of actual releases with only one entry per
-// package. i.e [{ name:'', type:'', commits: ['', '']}, ]
+// package. i.e [{ name:'', type:'', commits: ['', ''], dependencies: []}, ]
 function flattenReleases(changesets) {
   const flattened = [];
+  const combined = [];
 
-  // split each changeset into muliple release objects [{ name: '', type: '', commit: ''},]
-  const getReleases = (changeset) => changeset.releases
-    .map(release => ({ ...release, commit: changeset.commit }));
+  changesets.forEach(changeset => {
+    changeset.releases.forEach(release => {
+      combined.push({
+        name: release.name,
+        type: release.type,
+        commit: changeset.commit,
+      });
+    });
 
-  const releases = changesets.map(changeset => getReleases(changeset))
-    // reduce to a single array of release information by concatenating
-    .reduce((cur, next) => cur.concat(next));
+    changeset.dependents.forEach(dependent => {
+      combined.push({
+        name: dependent.name,
+        type: dependent.type,
+        commit: changeset.commit,
+      });
+    });
+  });
 
-  // now merge the releases so we only have one entry per package
-  releases.forEach(release => {
+  combined.forEach(release => {
     const { name, type, commit } = release;
     const foundBefore = flattened.find(pkg => pkg.name === name);
 
@@ -70,44 +80,6 @@ function flattenReleases(changesets) {
       foundBefore.type = maxBumpType(foundBefore.type, type);
       foundBefore.commits.push(commit);
     }
-  });
-
-  return flattened;
-}
-
-/** Takes an array of Changeset and returns an array of dependentsInfo in the form
-// [
-  {
-    name: 'foo',                          // name of the dependent package
-    dependencies: [
-      name: 'bar',                        // name of dependency
-      commits: ['0e483e9', '83962c4']     // array of commits where this dependency was updated
-    ]
-  }
-] */
-function flattenDependents(changesets) {
-  // THIS WILL BE REFACTORED ONCE WE START PULLING DEPENDENTS
-  const flattened = [];
-
-  changesets.forEach(changeset => {
-    Object.entries(changeset.dependents).forEach(([dependent, dependencies]) => {
-      const foundDependentBefore = flattened.find(pkg => pkg.name === dependent);
-      if (!foundDependentBefore) {
-        flattened.push({
-          name: dependent,
-          dependencies: dependencies.map(dep => ({ name: dep, commits: [changeset.commit] })),
-        });
-      } else {
-        dependencies.forEach(dep => {
-          const foundDependencyBefore = foundDependentBefore.dependencies.find(pkg => pkg.name === dep);
-          if (!foundDependencyBefore) {
-            foundDependentBefore.dependencies.push({ name: dep, commits: [changeset.commit] });
-          } else {
-            foundDependencyBefore.commits.push(changeset.commit);
-          }
-        });
-      }
-    });
   });
 
   return flattened;

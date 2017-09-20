@@ -40,6 +40,8 @@ describe('createReleaseCommit', () => {
       ---
       {"releases":[{"name":"package-a","commits":["dec4a66"],"version":"1.1.0"}],"changesets":[{"commit":"dec4a66","summary":"This is a summary"}]}
       ---
+
+      [skip ci]
     `);
   });
 
@@ -59,6 +61,8 @@ describe('createReleaseCommit', () => {
       ---
       {"releases":[{"name":"package-a","commits":["695fad0"],"version":"1.0.1"},{"name":"package-b","commits":["695fad0"],"version":"1.1.0"}],"changesets":[{"commit":"695fad0","summary":"This is another summary"}]}
       ---
+
+      [skip ci]
     `);
   });
 
@@ -79,6 +83,8 @@ describe('createReleaseCommit', () => {
       ---
       {"releases":[{"name":"package-a","commits":["dec4a66","695fad0"],"version":"1.1.0"},{"name":"package-b","commits":["695fad0"],"version":"1.1.0"}],"changesets":[{"commit":"dec4a66","summary":"This is a summary"},{"commit":"695fad0","summary":"This is another summary"}]}
       ---
+
+      [skip ci]
     `);
   });
 });

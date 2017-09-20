@@ -4688,6 +4688,13 @@ jest-environment-node@^20.0.3:
     jest-mock "^20.0.3"
     jest-util "^20.0.3"
 
+jest-fixtures@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/jest-fixtures/-/jest-fixtures-0.3.2.tgz#204694429c1ac103fd35b6605c56e24c68d418de"
+  dependencies:
+    find-up "^2.1.0"
+    typeable-promisify "^2.0.1"
+
 jest-haste-map@^20.0.4:
   version "20.0.5"
   resolved "https://registry.yarnpkg.com/jest-haste-map/-/jest-haste-map-20.0.5.tgz#abad74efb1a005974a7b6517e11010709cab9112"
@@ -6778,9 +6785,9 @@ pyarn@^0.6.0:
     sort-object "^3.0.2"
     typeable-promisify "^2.0.1"
 
-pyarn@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/pyarn/-/pyarn-0.8.0.tgz#68aab77b5c5fba9626f5e554c3b4570ef368f304"
+pyarn@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/pyarn/-/pyarn-0.9.0.tgz#47ac8686719869ac1be6c20e9e0949ff100e41a4"
   dependencies:
     babel-runtime "^6.25.0"
     chalk "^2.0.1"

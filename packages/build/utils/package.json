@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/build-utils",
-  "version": "1.0.0",
+  "version": "1.11.0",
   "description": "Collection of utilities to used during the release process of AtlasKit",
   "main": "index.js",
   "scripts": {
