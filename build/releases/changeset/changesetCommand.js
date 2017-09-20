@@ -4,12 +4,11 @@ const pyarn = require('pyarn');
 // TODO: Make these pull from the actual packages once we have a firm repo structure
 const cli = require('../../utils/cli');
 const git = require('../../utils/git');
-const history = require('../history');
 const createChangeset = require('./createChangeset');
 const createChangesetCommit = require('./createChangesetCommit');
 
 async function getChangedPackages() {
-  const lastRelease = history.getLastRelease();
+  const lastRelease = await git.getLastPublishCommit();
   const changedFiles = await git.getChangedFilesSince(lastRelease, true);
   const allPackages = (await pyarn.getWorkspaces());
 
@@ -24,18 +23,18 @@ async function getChangedPackages() {
     .filter((pkgName, idx, packages) => packages.indexOf(pkgName) === idx);
 }
 
-async function run(opts) {
+async function run() {
   const changedPackages = await getChangedPackages();
-  const newVersion = await createChangeset(changedPackages);
-  const versionCommitStr = createChangesetCommit(newVersion);
+  const newChangeset = await createChangeset(changedPackages);
+  const changesetCommitStr = createChangesetCommit(newChangeset);
 
-  console.log(chalk.green('Creating new version commit...\n'));
-  console.log(versionCommitStr);
-  const confirmCommit = await cli.askConfirm('Commit this Version?');
+  console.log(chalk.green('Creating new Changeset commit...\n'));
+  console.log(changesetCommitStr);
+  const confirmCommit = await cli.askConfirm('Commit this Changeset?');
 
   if (confirmCommit) {
-    await git.commit(versionCommitStr);
-    console.log(chalk.green('Version committed!'));
+    await git.commit(changesetCommitStr);
+    console.log(chalk.green('Changeset committed!'));
   }
 }
 

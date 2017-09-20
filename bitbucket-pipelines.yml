@@ -4,7 +4,7 @@ pipelines:
     master:
       - step:
           script:
-            - ./build-setup.sh
+            - source ./build-setup.sh
             - pyarn install
             - yarn build
             - yarn lint
@@ -14,9 +14,8 @@ pipelines:
   default:
     - step:
         script:
-          - ./build-setup.sh
+          - source ./build-setup.sh
           - pyarn install
           - yarn build
           - yarn lint
           - yarn test
-

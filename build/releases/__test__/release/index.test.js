@@ -1,7 +1,7 @@
 const getFixturePath = require('jest-fixtures').getFixturePath;
 const pyarn = require('pyarn');
 const runRelease = require('../../release').run;
-const createRelease = require('../../version/createRelease');
+const createRelease = require('../../changeset/createRelease');
 const cli = require('../../../utils/cli');
 const git = require('../../../utils/git');
 const fs = require('../../../utils/fs');
@@ -12,8 +12,8 @@ jest.mock('../../../utils/cli');
 jest.mock('../../../utils/git');
 jest.mock('../../../utils/fs');
 jest.mock('../../../utils/isRunningInPipelines');
-jest.mock('../../version/parseChangeSetCommit');
-jest.mock('../../version/createRelease');
+jest.mock('../../changeset/parseChangesetCommit');
+jest.mock('../../changeset/createRelease');
 jest.mock('../../../utils/logger');
 
 git.getLastPublishCommit.mockImplementation(() => Promise.resolve('xxYYxxY'));
@@ -85,7 +85,8 @@ describe('running release', () => {
       });
 
       it('should bump releasedPackages', async () => {
-        createRelease.mockImplementation(() => simpleReleaseObj);
+        createRelease.mockImplementationOnce(() => simpleReleaseObj);
+        cli.askConfirm.mockReturnValueOnce(Promise.resolve(true));
 
         await runRelease({ cwd });
         const fsWriteFileCalls = fs.writeFile.mock.calls;
@@ -96,7 +97,8 @@ describe('running release', () => {
       });
 
       it('should bump multiple released packages if required', async () => {
-        createRelease.mockImplementation(() => multipleReleaseObj);
+        createRelease.mockImplementationOnce(() => multipleReleaseObj);
+        cli.askConfirm.mockReturnValueOnce(Promise.resolve(true));
 
         await runRelease({ cwd });
         const fsWriteFileCalls = fs.writeFile.mock.calls;
@@ -114,7 +116,7 @@ describe('running release', () => {
         });
 
         it('should ask for user confirmation if not running in CI', async () => {
-          createRelease.mockImplementation(() => multipleReleaseObj);
+          createRelease.mockImplementationOnce(() => multipleReleaseObj);
           cli.askConfirm.mockReturnValueOnce(Promise.resolve(true));
 
           await runRelease({ cwd });
@@ -125,7 +127,7 @@ describe('running release', () => {
         });
 
         it('should run publish if user confirms', async () => {
-          createRelease.mockImplementation(() => multipleReleaseObj);
+          createRelease.mockImplementationOnce(() => multipleReleaseObj);
           cli.askConfirm.mockReturnValueOnce(Promise.resolve(true));
 
           await runRelease({ cwd });
@@ -134,7 +136,7 @@ describe('running release', () => {
         });
 
         it('should not  run publish if user  doesnt confirms', async () => {
-          createRelease.mockImplementation(() => multipleReleaseObj);
+          createRelease.mockImplementationOnce(() => multipleReleaseObj);
           cli.askConfirm.mockReturnValueOnce(Promise.resolve(false));
 
           await runRelease({ cwd });
@@ -148,7 +150,7 @@ describe('running release', () => {
         });
 
         it('should not ask for user confirmation', async () => {
-          createRelease.mockImplementation(() => multipleReleaseObj);
+          createRelease.mockImplementationOnce(() => multipleReleaseObj);
 
           await runRelease({ cwd });
 
@@ -157,7 +159,7 @@ describe('running release', () => {
         });
 
         it('should run pyarn.publish', async () => {
-          createRelease.mockImplementation(() => multipleReleaseObj);
+          createRelease.mockImplementationOnce(() => multipleReleaseObj);
 
           await runRelease({ cwd });
 

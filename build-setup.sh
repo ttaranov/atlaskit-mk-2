@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# NOTE: the node image comes with a version of yarn installed already in /opt/yarn
+# We put our yarn path at the front of the PATH var so that we use our version instead of theirs
 curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 0.23.2
 export PATH=$HOME/.yarn/bin:$PATH
 

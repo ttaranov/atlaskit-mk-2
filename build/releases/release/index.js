@@ -4,9 +4,9 @@ const cli = require('../../utils/cli');
 const logger = require('../../utils/logger');
 const git = require('../../utils/git');
 const isRunningInPipelines = require('../../utils/isRunningInPipelines');
-const parseChangesetCommit = require('../version/parseChangeSetCommit');
-const createRelease = require('../version/createRelease');
-const createReleaseCommit = require('../version/createReleaseCommit');
+const parseChangesetCommit = require('../changeset/parseChangesetCommit');
+const createRelease = require('../changeset/createRelease');
+const createReleaseCommit = require('../changeset/createReleaseCommit');
 const fs = require('../../utils/fs');
 
 async function bumpReleasedPackages(releaseObj, allPackages) {
@@ -18,7 +18,7 @@ async function bumpReleasedPackages(releaseObj, allPackages) {
     pkgJson.version = release.version;
     const pkgJsonStr = `${JSON.stringify(pkgJson, null, 2)}\n`;
     await fs.writeFile(pkgJsonPath, pkgJsonStr);
-    // await git.add(pkgJsonPath);
+    await git.add(pkgJsonPath);
   }
 }
 
@@ -46,12 +46,12 @@ async function run(opts) {
   if (runPublish) {
     // update package versions
     await bumpReleasedPackages(releaseObj, allPackages);
-    // Need to transform releases into a form for pyarn to updated dependencies
+    // Need to transform releases into a form for pyarn to update dependencies
     const versionsToUpdate = releaseObj.releases.reduce((cur, next) => ({
       ...cur,
       [next.name]: next.version,
     }), {});
-    // updated dependencies on those versions
+    // update dependencies on those versions
     await pyarn.updatePackageVersions(versionsToUpdate);
     // TODO: get updatedPackages from pyarn.updatePackageVersions and only add those
     await git.add('.');
@@ -68,7 +68,7 @@ async function run(opts) {
 
       const releasedPackages = releaseObj.releases.map(r => `${r.name}@${r.version}`).join('\n');
       logger.success('Successfully published:');
-      logger.success(releasedPackages);
+      logger.log(releasedPackages);
     }
   }
 }

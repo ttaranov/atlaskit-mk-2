@@ -161,7 +161,7 @@ module.exports = async function () {
       alias: aliases,
     },
     resolveLoader: {
-      modules: ['../packages/build/', 'node_modules'],
+      modules: ['../build/', 'node_modules'],
     },
     plugins: [
       new webpack.DefinePlugin({

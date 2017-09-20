@@ -2,7 +2,7 @@
  *
  * @param {string} commitMsg
  */
-function parseChangeSetCommit(commitMsg) {
+function parseChangesetCommit(commitMsg) {
   const lines = commitMsg.split('\n');
   let curLine;
   let jsonStr = '';
@@ -23,4 +23,4 @@ function parseChangeSetCommit(commitMsg) {
   return JSON.parse(jsonStr);
 }
 
-module.exports = parseChangeSetCommit;
+module.exports = parseChangesetCommit;

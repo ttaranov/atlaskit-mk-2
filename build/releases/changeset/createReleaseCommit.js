@@ -14,6 +14,8 @@ const outdent = require('outdent');
   ---
   {releases:[{name:'package-a',version:'2.0.0',commits:['fc4229d'],dependencies:['package-c']},{name:'package-b'version:'1.1.0',commits:['fc4229d'],dependencies:['package-a']},{name:'package-c'version:'1.0.1',commits:['fc4229d'],dependencies:['package-b']}]changesets:[ < Changeset > ]}
   ---
+
+  [skip ci]
  *
  */
 

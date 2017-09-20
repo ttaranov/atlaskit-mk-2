@@ -11,15 +11,15 @@
     "test": "projector ./projector.js test",
     "lint": "projector ./projector.js lint",
     "start": "cd website && yarn start",
-    "version": "projector ./projector version",
+    "changeset": "projector ./projector changeset",
     "release": "projector ./projector release"
   },
   "pworkspaces": [
-    "packages/build/*",
     "packages/utils/*",
     "packages/elements/*",
     "packages/fabric/*",
     "patterns/*",
+    "build/*",
     "website"
   ],
   "devDependencies": {
