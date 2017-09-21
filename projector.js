@@ -88,6 +88,7 @@ exports.build = async () => {
 };
 
 exports.test = async () => {
+  // We must do this because when running jest-cli it doesn't go through the normal process that sets the NODE_ENV.
   process.env.NODE_ENV = 'test';
 
   // TODO: re-enable TS once the issue with Jest CLI config has been worked out.
