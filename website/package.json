@@ -6,7 +6,8 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Jed W"
+    "Jed W",
+    "Trey S"
   ],
   "scripts": {
     "build": "webpack",
@@ -18,6 +19,7 @@
     "css-loader": "^0.28.0",
     "extract-react-types-loader": "^0.0.0",
     "pyarn-query": "^1.0.0",
+    "pyarn-query-loader": "^0.0.0",
     "raw-loader": "^0.5.1",
     "style-loader": "^0.16.1",
     "ts-loader": "^2.3.4",
@@ -28,8 +30,11 @@
     "@atlaskit/badge": "6.0.0",
     "@atlaskit/css-reset": "^1.1.5",
     "@atlaskit/field-text": "^4.0.0",
+    "@atlaskit/lozenge": "^3.4.2",
     "@atlaskit/icon": "^8.1.0",
     "@atlaskit/navigation": "^22.0.0",
+    "@atlaskit/tag": "^2.6.0",
+    "@atlaskit/tag-group": "^3.4.2",
     "@atlaskit/theme": "^2.0.0",
     "babel-runtime": "^6.26.0",
     "react-markdown": "^2.5.0",

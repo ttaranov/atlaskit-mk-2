@@ -1,0 +1,9 @@
+{
+  "name": "pyarn-query-loader",
+  "version": "0.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "loader-utils": "^1.1.0",
+    "pyarn-query": "^1.0.0"
+  }
+}

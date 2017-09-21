@@ -6,8 +6,9 @@ import { Link } from 'react-router-dom';
 import Page from './../Page';
 import FourOhFour from './../FourOhFour';
 import { getPackageByGroupAndName } from '../../utils/packages';
-import { filterExamplesByPackage, formatExampleLink, formatExampleName } from '../../utils/examples';
+import { getList, formatLink, formatName } from '../../utils/examples';
 import MetaData from './MetaData';
+import { join } from '../../utils/path';
 
 type PackageProps = {
   match: {
@@ -31,7 +32,7 @@ export const Intro = styled.p`
 
 export const Sep = styled.hr`
   border: none;
-  border-top: 2px solid #EBECF0;
+  border-top: 2px solid #ebecf0;
   margin-bottom: ${math.multiply(gridSize, 1.5)}px;
   margin-top: ${math.multiply(gridSize, 1.5)}px;
 
@@ -41,7 +42,7 @@ export const Sep = styled.hr`
   }
 `;
 
-export const ExamplesList = (props) => {
+export const ExamplesList = props => {
   const { examples, name, group } = props;
 
   if (!examples || !examples.length) return null;
@@ -52,16 +53,16 @@ export const ExamplesList = (props) => {
       <h2>Examples</h2>
       <ul>
         {examples.map(e => (
-          <li key={e}>
-            <Link to={`/packages/${group}/${name}/examples/${formatExampleLink(e)}`}>{formatExampleName(e)}</Link>
+          <li key={e.name}>
+            <Link to={`/packages/${group}/${name}/examples/${e.link}`}>{e.name}</Link>
           </li>
         ))}
       </ul>
     </div>
   );
-}
+};
 
-export const NoDocs = (props) => <div>Component "{props.name}" doesn't have any docs.</div>;
+export const NoDocs = props => <div>Component "{props.name}" doesn't have any docs.</div>;
 
 export default class Package extends React.Component<PackageProps, PackageState> {
   state = { children: null };
@@ -83,7 +84,7 @@ export default class Package extends React.Component<PackageProps, PackageState>
   loadDoc(name, group) {
     const pkg = getPackageByGroupAndName(group, name);
     this.setState({ children: null }, () => {
-      require.ensure([], (require) => {
+      require.ensure([], require => {
         let children;
         try {
           children = require(`../../../../packages/${group}/${name}/docs/0-intro`).default;
@@ -99,7 +100,7 @@ export default class Package extends React.Component<PackageProps, PackageState>
     const { children } = this.state;
     const { name, group } = this.props.match.params;
     const pkg = getPackageByGroupAndName(group, name);
-    const examples = filterExamplesByPackage(name);
+    const examples = getList(join(group, name));
 
     if (!pkg) {
       return <FourOhFour />;
@@ -109,10 +110,7 @@ export default class Package extends React.Component<PackageProps, PackageState>
       <Page>
         <h1>{pkg.name}</h1>
         <Intro>{pkg.description}</Intro>
-        <MetaData
-          packageName={pkg.name}
-          packageSrc={`https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/${pkg.relativePath}`}
-        />
+        <MetaData packageName={pkg.name} packageSrc={`https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/${pkg.relativePath}`} />
         <ExamplesList name={name} group={group} examples={examples} />
         <Sep />
         {children || <div>Loading...</div>}

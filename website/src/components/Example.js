@@ -5,7 +5,10 @@ import styled from 'styled-components';
 import Code from './Code';
 import Loading from './Loading';
 import Page from './Page';
-import { getExampleData, formatExampleName } from '../utils/examples';
+import { getData, formatName } from '../utils/examples';
+import { join } from '../utils/path';
+
+import type { Example as ExampleType } from '../types';
 
 type PackageProps = {
   match: {
@@ -17,33 +20,28 @@ type PackageProps = {
   },
 };
 
-type PackageState = {
-  code?: string,
-  Component?: React.Node,
-};
-
 const Body = styled.div`margin: 20px 0;`;
 
-export default class Example extends React.PureComponent<PackageProps, PackageState> {
-  state = { children: null };
+export default class Example extends React.Component<PackageProps, ExampleType> {
   props: PackageProps;
+  state = {};
 
   componentDidMount() {
-    const { example, group, name } = this.props.match.params;
-    this.setState(getExampleData(group, name, example));
+    const { group, name, example } = this.props.match.params;
+    getData(join(group, name), example).then(s => this.setState(s));
   }
 
   render() {
     const { example } = this.props.match.params;
-    const { code, Component } = this.state;
+    const { codeText, CodeNode } = this.state;
     return (
       <Page>
-        <h1>{formatExampleName(example)}</h1>
+        <h1>{formatName(example)}</h1>
         <Body>
-          {code ? (
+          {codeText ? (
             <div>
-              <Component />
-              <Code>{code}</Code>
+              <CodeNode />
+              <Code>{codeText}</Code>
             </div>
           ) : (
             <Loading />

@@ -1,19 +1,19 @@
 // @flow
 
 import * as React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
 import styled, { injectGlobal } from 'styled-components';
-import { Link } from 'react-router-dom';
-import { AkNavigationItem } from '@atlaskit/navigation';
+import { AkNavigationItem, AkNavigationItemGroup } from '@atlaskit/navigation';
 
 import { PACKAGES } from '../constants';
+import { getList as getExampleList } from '../utils/examples';
 import ChangeLogExplorer from './ChangeLogExplorer';
 import Home from './Home';
 import Example from './Example';
 import FourOhFour from './FourOhFour';
 import Nav from './Nav';
-import NavItem from './NavItem';
 import Package from './Package';
+import Pattern from './Pattern';
 
 /* eslint-disable no-unused-expressions */
 injectGlobal`
@@ -67,7 +67,6 @@ const NavItemLink = styled(Link)`
 `;
 
 export type AppProps = {};
-
 export default class App extends React.PureComponent<AppProps> {
   props: AppProps;
 
@@ -77,16 +76,25 @@ export default class App extends React.PureComponent<AppProps> {
         <AppContainer>
           <AppNav>
             <Nav title="Packages">
-              {PACKAGES.elements.map(pkg => (
-                <NavItemLink key={pkg.name} to={`/packages/${pkg.group}/${pkg.name}`}>
-                  <AkNavigationItem text={pkg.name} />
-                </NavItemLink>
-              ))}
-              {PACKAGES.fabric.map(pkg => (
-                <NavItemLink key={pkg.name} to={`/packages/${pkg.group}/${pkg.name}`}>
-                  <AkNavigationItem text={pkg.name} />
-                </NavItemLink>
-              ))}
+              <AkNavigationItemGroup title="Packages">
+                {PACKAGES.elements.map(pkg => (
+                  <NavItemLink key={pkg.name} to={`/packages/${pkg.group}/${pkg.name}`}>
+                    <AkNavigationItem text={pkg.name} />
+                  </NavItemLink>
+                ))}
+                {PACKAGES.fabric.map(pkg => (
+                  <NavItemLink key={pkg.name} to={`/packages/${pkg.group}/${pkg.name}`}>
+                    <AkNavigationItem text={pkg.name} />
+                  </NavItemLink>
+                ))}
+              </AkNavigationItemGroup>
+              <AkNavigationItemGroup title="Patterns">
+                {getExampleList('patterns').map(({ link, name }) => (
+                  <NavItemLink key={name} to={`/patterns/${link}`}>
+                    <AkNavigationItem text={name} />
+                  </NavItemLink>
+                ))}
+              </AkNavigationItemGroup>
             </Nav>
           </AppNav>
           <AppContent>
@@ -94,6 +102,7 @@ export default class App extends React.PureComponent<AppProps> {
               <Route exact path="/" component={Home} />
               <Route path="/packages/:group/:name/examples/:example" component={Example} />
               <Route path="/packages/:group/:name" component={Package} />
+              <Route path="/patterns/:example" component={Pattern} />
               <Route path="/changelog/:group/:name/:semver?" component={ChangeLogExplorer} />
               <Route component={FourOhFour} />
             </Switch>

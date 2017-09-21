@@ -1,5 +1,5 @@
 // @flow
-import { PACKAGES } from '../constants';
+import { EXAMPLES, PACKAGES } from '../constants';
 
 export function getUnscopedPkgName(name: string) {
   if (name.indexOf('@') === 0) {
@@ -9,5 +9,10 @@ export function getUnscopedPkgName(name: string) {
 }
 
 export function getPackageByGroupAndName(group: string, name: string) {
+  // $FlowFixMe
   return PACKAGES[group].find(pkg => pkg.name === name);
+}
+
+export function getWorkspace(name: string) {
+  return EXAMPLES.data.workspaces.filter(w => new RegExp(`/${name}$`).test(w.dir))[0];
 }

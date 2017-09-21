@@ -1,15 +1,10 @@
 {
-  "presets": [
-    ["env", {
-      "targets": {}
-    }],
-    "react",
-    "flow"
-  ],
-  "plugins": [
-    // transform-runtime causes issues in badge's jest tests
-    // "transform-runtime",
-    "transform-class-properties",
-    "transform-object-rest-spread" // used in build, probably want to disable in components soon
-  ]
+  "presets": [["env", { "modules": false }], "react", "flow"],
+  "plugins": ["transform-class-properties", "transform-object-rest-spread"],
+  "env": {
+    "test": {
+      "presets": ["env", "react", "flow"],
+      "plugins": ["transform-class-properties", "transform-object-rest-spread"]
+    }
+  }
 }

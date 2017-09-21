@@ -15,11 +15,11 @@
     "release": "projector ./projector release"
   },
   "pworkspaces": [
+    "build/*",
     "packages/utils/*",
     "packages/elements/*",
     "packages/fabric/*",
-    "patterns/*",
-    "build/*",
+    "patterns",
     "website"
   ],
   "devDependencies": {
@@ -52,6 +52,7 @@
     "karma-mocha": "^1.3.0",
     "karma-mocha-reporter": "^2.2.4",
     "karma-webpack": "^2.0.4",
+    "loader-utils": "^1.1.0",
     "mocha": "^3.5.0",
     "projector-cli": "^3.0.1",
     "projector-jest": "^1.0.1",
@@ -109,5 +110,8 @@
     "tslib": "^1.7.1",
     "typestyle": "^1.3.8",
     "uuid": "^3.1.0"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": ["./node_modules"]
   }
 }

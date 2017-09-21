@@ -1,8 +1,8 @@
 // @flow
 
-const webpack = require('webpack');
 const path = require('path');
 const pyarnQuery = require('pyarn-query');
+const webpack = require('webpack');
 
 const ORDERED_FILE_PREFIX = /^[0-9]+-/;
 

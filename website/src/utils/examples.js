@@ -1,40 +1,45 @@
+// @flow
+
 import sentenceCase from 'sentence-case';
 
-const requireContext = require.context('../../../packages/', true, /^\.\/(elements|fabric)\/[\w\d-_]+\/examples\/.*\.js$/);
-const requireContextRaw = require.context('!raw-loader!../../../packages/', true, /^\.\/(elements|fabric)\/[\w\d-_]+\/examples\/.*\.js$/);
+import { EXAMPLES } from '../constants';
+import { getWorkspace } from './packages';
+import { basename, removeNumericPrefix, removeSuffix } from './path';
 
-function basename(path) {
-  return path.split('/').pop();
+import type { Example } from '../types';
+
+type List = {
+  link: string,
+  name: string,
+};
+
+export function formatCodeImports(packageName: string, code: string): string {
+  return code.replace(/\.\.\/src/g, packageName);
 }
 
-function removeLeadingNumber(path) {
-  return path.split('-')[1];
+export function formatLink(link: string): string {
+  return basename(removeSuffix(link));
 }
 
-function removeSuffix(path) {
-  return path.replace('.js', '');
+export function formatName(name: string): string {
+  return sentenceCase(removeNumericPrefix(removeSuffix(basename(name))));
 }
 
-function formatCodeImports(component, code) {
-  return code.replace(/\.\.\/src/g, `@atlaskit/${component}`);
-}
-
-export function formatExampleLink(name) {
-  return basename(removeSuffix(name));
-}
-
-export function formatExampleName(name) {
-  return sentenceCase(removeLeadingNumber(removeSuffix(basename(name))));
-}
-
-export function getExampleData(group, name, example) {
-  const path = `./${group}/${name}/examples/${example}.js`;
+export async function getData(workspaceName: string, examplePath: string): Example {
+  const workspace = getWorkspace(workspaceName);
+  const workspaceExample = workspace.files.examples.filter(e => new RegExp(`/${examplePath}.js$`).test(e.filePath))[0];
   return {
-    code: formatCodeImports(name, requireContextRaw(path)),
-    Component: requireContext(path).default,
+    ...workspaceExample,
+    ...{
+      codeText: formatCodeImports(workspace.pkg.name, workspaceExample.fileContents),
+      CodeNode: (await EXAMPLES.load[workspaceExample.filePath]()).default,
+    },
   };
 }
 
-export function filterExamplesByPackage(name) {
-  return requireContext.keys().filter(e => e.indexOf(`/${name}/`) > -1);
+export function getList(workspaceName: string): Array<List> {
+  return getWorkspace(workspaceName).files.examples.map(({ filePath }) => ({
+    link: formatLink(filePath),
+    name: formatName(filePath),
+  }));
 }
