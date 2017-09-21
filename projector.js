@@ -88,27 +88,25 @@ exports.build = async () => {
 };
 
 exports.test = async () => {
+  process.env.NODE_ENV = 'test';
+
   // TODO: re-enable TS once the issue with Jest CLI config has been worked out.
   await jest.test({
     rootDir: __dirname,
-
     transform: JSON.stringify({
-      // '^.+\\.tsx?$': 'ts-jest/preprocessor',
+      '^.+\\.tsx?$': 'ts-jest/preprocessor',
       '^.+\\.jsx?$': 'babel-jest',
     }),
-
     globals: JSON.stringify({
-      // 'ts-jest': {
-      //   tsConfigFile: path.join(__dirname, 'tsconfig.base.json'),
-      //   // we can safely disable babel for perf improvements since we don't use synthetic imports
-      //   // @see https://github.com/kulshekhar/ts-jest#supports-synthetic-modules
-      //   skipBabel: true,
-      // },
+      'ts-jest': {
+        tsConfigFile: path.join(__dirname, 'tsconfig.base.json'),
+        // we can safely disable babel for perf improvements since we don't use synthetic imports
+        // @see https://github.com/kulshekhar/ts-jest#supports-synthetic-modules
+        skipBabel: true,
+      },
     }),
-
-    // testRegex: '(/__tests__/.*)\\.(test|spec)\\.(tsx?|jsx?)$',
-    //
-    // moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
+    testRegex: '(/(__tests?__/.*)\\.?(test|spec)?\\.(t|j)sx?)$',
+    moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   });
 
   // TODO: Look into failures on CI https://bitbucket.org/atlassian/atlaskit-mk-2/addon/pipelines/home#!/results/163
