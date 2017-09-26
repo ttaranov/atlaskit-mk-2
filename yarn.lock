@@ -1781,9 +1781,9 @@ body-parser@^1.16.1:
     raw-body "~2.2.0"
     type-is "~1.6.15"
 
-bolt-query@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/bolt-query/-/bolt-query-1.1.0.tgz#24b2ba8760a05efe1ceee6892c10963fa784b5f5"
+bolt-query@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/bolt-query/-/bolt-query-1.1.2.tgz#bb22e379196104e984d9c659a0cfd84a0d073a91"
   dependencies:
     bolt "^0.12.0"
     globby "^6.1.0"
@@ -5469,7 +5469,7 @@ meow@^3.3.0, meow@^3.7.0:
     redent "^1.0.0"
     trim-newlines "^1.0.0"
 
-"meow@github:sindresorhus/meow#43401c3":
+meow@sindresorhus/meow#43401c3:
   version "3.6.0"
   resolved "https://codeload.github.com/sindresorhus/meow/tar.gz/43401c39ee442db308288f50d6f213cd0e6e602c"
   dependencies:
