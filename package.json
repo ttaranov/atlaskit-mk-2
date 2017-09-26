@@ -14,14 +14,16 @@
     "changeset": "projector ./projector changeset",
     "release": "projector ./projector release"
   },
-  "pworkspaces": [
-    "build/*",
-    "packages/utils/*",
-    "packages/elements/*",
-    "packages/fabric/*",
-    "patterns",
-    "website"
-  ],
+  "bolt": {
+    "workspaces": [
+      "build/*",
+      "packages/utils/*",
+      "packages/elements/*",
+      "packages/fabric/*",
+      "patterns",
+      "website"
+    ]
+  },
   "devDependencies": {
     "@atlaskit/eslint-config-base": "^2.0.7",
     "@types/chai": "^4.0.4",
@@ -60,7 +62,7 @@
     "projector-spawn": "^1.0.1",
     "projector-tslint": "projectorjs/projector-tslint#a5a4c3715ad7b03a7234e5f558c83504f7291a8e",
     "projector-typescript": "projectorjs/projector-typescript#0623f742b216ec51d2e463a9779be9f4bd729dcc",
-    "pyarn-query": "^1.0.0",
+    "bolt-query": "^1.1.0",
     "raw-loader": "^0.5.1",
     "react-test-renderer": "^15.6.1",
     "style-loader": "^0.16.1",
@@ -95,7 +97,7 @@
     "outdent": "^0.3.0",
     "prop-types": "^15.5.10",
     "puppeteer": "^0.10.2",
-    "pyarn": "^0.9.0",
+    "bolt": "^0.12.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-markdown": "^2.5.0",

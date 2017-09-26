@@ -5,7 +5,7 @@
 curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 0.23.2
 export PATH=$HOME/.yarn/bin:$PATH
 
-yarn global add pyarn
+yarn global add bolt
 
 # These are used to sign commits when pushing back to Bitbucket
 # No auth is required as we use ssh from pipelines instead

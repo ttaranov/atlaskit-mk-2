@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 const chalk = require('chalk');
-const pyarn = require('pyarn');
+const bolt = require('bolt');
 
 const cli = require('../../utils/cli');
 const logger = require('../../utils/logger');
@@ -23,7 +23,7 @@ const createReleaseNotesFile = require('./createReleaseNotesFile');
 async function getAllDependents(packagesToRelease, opts = {}) {
   const cwd = opts.cwd || process.cwd();
   const allDependents = [];
-  const dependentsGraph = await pyarn.getDependentsGraph(cwd);
+  const dependentsGraph = await bolt.getDependentsGraph(cwd);
   const dependenciesToCheck = [...packagesToRelease];
 
   while (dependenciesToCheck.length > 0) {

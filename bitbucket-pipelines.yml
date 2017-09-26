@@ -5,7 +5,7 @@ pipelines:
       - step:
           script:
             - source ./build-setup.sh
-            - pyarn install
+            - bolt install
             - yarn build
             - yarn lint
             - yarn test
@@ -15,7 +15,7 @@ pipelines:
     - step:
         script:
           - source ./build-setup.sh
-          - pyarn install
+          - bolt install
           - yarn build
           - yarn lint
           - yarn test

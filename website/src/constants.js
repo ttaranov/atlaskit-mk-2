@@ -1,6 +1,6 @@
 // @flow
 
-type PyarnQueryFile = {
+type BoltQueryFile = {
   filePath: string,
   fileContents: string,
 };
@@ -11,7 +11,7 @@ type WebsiteData = {
     description: string,
     version: string,
     relativePath: string,
-    docs: Array<PyarnQueryFile>,
+    docs: Array<BoltQueryFile>,
   }>,
 };
 
@@ -19,4 +19,4 @@ export const WEBSITE_DATA: WebsiteData = (process.env.WEBSITE_DATA: any);
 export const PACKAGES = WEBSITE_DATA.packages;
 
 // $FlowFixMe
-export { default as EXAMPLES } from 'pyarn-query-loader?{workspaceFiles:{examples:"examples/*.js"}}!';
+export { default as EXAMPLES } from 'bolt-query-loader?{workspaceFiles:{examples:"examples/*.js"}}!';

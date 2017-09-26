@@ -1,7 +1,7 @@
 // @flow
 
 const path = require('path');
-const pyarnQuery = require('pyarn-query');
+const boltQuery = require('bolt-query');
 const webpack = require('webpack');
 
 const ORDERED_FILE_PREFIX = /^[0-9]+-/;
@@ -15,7 +15,7 @@ function sanitizeName(filePath) {
 
 module.exports = async function () {
   const basePath = path.join(__dirname, '..');
-  const results = await pyarnQuery({
+  const results = await boltQuery({
     cwd: basePath,
     projectFiles: {
       releases: 'releases/*.md',

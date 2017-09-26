@@ -1,5 +1,5 @@
 const getFixturePath = require('jest-fixtures').getFixturePath;
-const pyarn = require('pyarn');
+const bolt = require('bolt');
 const runRelease = require('../../release').run;
 const createRelease = require('../../changeset/createRelease');
 const cli = require('../../../utils/cli');
@@ -22,7 +22,7 @@ git.add.mockImplementation(() => Promise.resolve(true));
 git.commit.mockImplementation(() => Promise.resolve(true));
 git.push.mockImplementation(() => Promise.resolve(true));
 fs.readFile.mockImplementation(() => Promise.resolve('{}'));
-pyarn.publish = jest.fn();
+bolt.publish = jest.fn();
 
 const simpleReleaseObj = {
   releases: [{ name: 'pkg-a', commits: ['b8bb699'], version: '1.1.0' }],
@@ -132,7 +132,7 @@ describe('running release', () => {
 
           await runRelease({ cwd });
 
-          expect(pyarn.publish).toHaveBeenCalled();
+          expect(bolt.publish).toHaveBeenCalled();
         });
 
         it('should not  run publish if user  doesnt confirms', async () => {
@@ -140,7 +140,7 @@ describe('running release', () => {
           cli.askConfirm.mockReturnValueOnce(Promise.resolve(false));
 
           await runRelease({ cwd });
-          expect(pyarn.publish).not.toHaveBeenCalled();
+          expect(bolt.publish).not.toHaveBeenCalled();
         });
       });
 
@@ -158,12 +158,12 @@ describe('running release', () => {
           expect(confirmationCalls.length).toEqual(0);
         });
 
-        it('should run pyarn.publish', async () => {
+        it('should run bolt.publish', async () => {
           createRelease.mockImplementationOnce(() => multipleReleaseObj);
 
           await runRelease({ cwd });
 
-          expect(pyarn.publish).toHaveBeenCalled();
+          expect(bolt.publish).toHaveBeenCalled();
         });
       });
     });

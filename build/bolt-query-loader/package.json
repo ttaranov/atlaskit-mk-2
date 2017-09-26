@@ -1,9 +1,9 @@
 {
-  "name": "pyarn-query-loader",
+  "name": "bolt-query-loader",
   "version": "0.0.0",
   "main": "index.js",
   "dependencies": {
     "loader-utils": "^1.1.0",
-    "pyarn-query": "^1.0.0"
+    "bolt-query": "^1.1.0"
   }
 }
