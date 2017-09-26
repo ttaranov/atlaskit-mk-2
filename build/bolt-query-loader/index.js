@@ -1,11 +1,11 @@
 // @flow
 
 const loaderUtils = require('loader-utils');
-const pyarnQuery = require('pyarn-query');
+const boltQuery = require('bolt-query');
 
 module.exports = async function extractReactTypesLoader() {
   const opts = loaderUtils.getOptions(this);
-  const data = await pyarnQuery(opts);
+  const data = await boltQuery(opts);
   const load = [];
   data.workspaces.forEach(({ files }) => {
     Object.keys(files).forEach(key => {

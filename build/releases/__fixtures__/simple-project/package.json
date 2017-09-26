@@ -3,7 +3,9 @@
   "name": "simple-project",
   "description": "simple project, just two workspaces, no dependencies",
   "version": "1.0.0",
-  "pworkspaces": [
-    "packages/*"
-  ]
+  "bolt": {
+    "workspaces": [
+      "packages/*"
+    ]
+  }
 }

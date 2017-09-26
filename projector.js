@@ -10,7 +10,7 @@ const glob = require('glob');
 // const getKarmaConfig = require('./build/karma-config');
 const release = require('./build/releases/release');
 const changeset = require('./build/releases/changeset');
-const query = require('pyarn-query');
+const query = require('bolt-query');
 
 /* ::
 type WorkspaceQueryResult = {

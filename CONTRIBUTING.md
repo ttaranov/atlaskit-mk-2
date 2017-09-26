@@ -33,17 +33,17 @@ brew install node yarn
 
 > **Note:** You must be on Node >=8.4 and Yarn >=1.0
 
-Then you can install [pyarn](https://github.com/pyarn/pyarn):
+Then you can install [Bolt](https://github.com/boltpkg/bolt):
 
 ```sh
-yarn global add pyarn
+yarn global add bolt
 ```
 
 Now that you have everything you need, you can bootstrap the Atlaskit repo:
 
 ```sh
 cd atlaskit-mk-2
-pyarn install
+bolt install
 ```
 
 This will take a minute or two the first time, but every subsequent run should
@@ -98,25 +98,25 @@ file conventions).
 
 ## Managing dependencies
 
-If you're inside of a package directory, you can use the pyarn versions of
+If you're inside of a package directory, you can use the Bolt versions of
 Yarn's existing add/upgrade/remove commands to modify the dependencies.
 
 ```sh
-pyarn add <dep>[@<version>] [--dev/peer/etc]
-pyarn upgrade <dep>[@<version>] [--dev/peer/etc]
-pyarn remove <dep>[@<version>] [--dev/peer/etc]
+bolt add <dep>[@<version>] [--dev/peer/etc]
+bolt upgrade <dep>[@<version>] [--dev/peer/etc]
+bolt remove <dep>[@<version>] [--dev/peer/etc]
 ```
 
 You can also manage dependencies for the project package, a specific workspace
 package, or across all workspaces:
 
 ```sh
-pyarn project <add/remove/upgrade> <dep>[@<version>] [--dev/peer/etc]
-pyarn workspace <pkg-name> <add/remove/upgrade> <dep>[@<version>] [--dev/peer/etc]
-pyarn workspaces <add/remove/upgrade> <dep>[@<version>] [--dev/peer/etc]
+bolt project <add/remove/upgrade> <dep>[@<version>] [--dev/peer/etc]
+bolt workspace <pkg-name> <add/remove/upgrade> <dep>[@<version>] [--dev/peer/etc]
+bolt workspaces <add/remove/upgrade> <dep>[@<version>] [--dev/peer/etc]
 ```
 
-> Note that there are additional restrictions to dependencies in pyarn than
+> Note that there are additional restrictions to dependencies in Bolt than
 > there are in Yarn, so you should not use `yarn` to manage dependencies.
 
 ## Unit testing your code
@@ -124,13 +124,13 @@ pyarn workspaces <add/remove/upgrade> <dep>[@<version>] [--dev/peer/etc]
 You can run the unit tests by running:
 
 ```sh
-pyarn test
+bolt test
 ```
 
 If you want to run them continuously, you can run:
 
 ```sh
-pyarn test --watch
+bolt test --watch
 ```
 
 ## Type checking your code
@@ -151,7 +151,7 @@ If you want to run both type checkers on all files from the command line you
 can run:
 
 ```sh
-pyarn check
+bolt check
 ```
 
 ## Linting your code
@@ -171,7 +171,7 @@ later on.
 If you want to run the linter on all files from the command line you can run:
 
 ```sh
-pyarn lint
+bolt lint
 ```
 
 ## Creating examples and patterns
@@ -210,7 +210,7 @@ export default function Example() {
 In order to view these examples within your browser, you can run:
 
 ```sh
-pyarn examples
+bolt examples
 ```
 
 ## Browser testing your code

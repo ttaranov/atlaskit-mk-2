@@ -1,5 +1,5 @@
 const path = require('path');
-const pyarn = require('pyarn');
+const bolt = require('bolt');
 const cli = require('../../utils/cli');
 const logger = require('../../utils/logger');
 const git = require('../../utils/git');
@@ -24,7 +24,7 @@ async function bumpReleasedPackages(releaseObj, allPackages) {
 
 async function run(opts) {
   const cwd = opts.cwd || process.cwd();
-  const allPackages = await pyarn.getWorkspaces({ cwd });
+  const allPackages = await bolt.getWorkspaces({ cwd });
   const lastPublishCommit = await git.getLastPublishCommit();
   const unreleasedChangesetCommits = await git.getChangesetCommitsSince(lastPublishCommit);
   const commits = await Promise.all(unreleasedChangesetCommits.map(commit => git.getFullCommit(commit)));
@@ -46,14 +46,14 @@ async function run(opts) {
   if (runPublish) {
     // update package versions
     await bumpReleasedPackages(releaseObj, allPackages);
-    // Need to transform releases into a form for pyarn to update dependencies
+    // Need to transform releases into a form for bolt to update dependencies
     const versionsToUpdate = releaseObj.releases.reduce((cur, next) => ({
       ...cur,
       [next.name]: next.version,
     }), {});
     // update dependencies on those versions
-    await pyarn.updatePackageVersions(versionsToUpdate);
-    // TODO: get updatedPackages from pyarn.updatePackageVersions and only add those
+    await bolt.updatePackageVersions(versionsToUpdate);
+    // TODO: get updatedPackages from bolt.updatePackageVersions and only add those
     await git.add('.');
 
     logger.log('Committing changes...');
@@ -63,8 +63,8 @@ async function run(opts) {
     const pushed = committed && await git.push();
 
     if (pushed) {
-      // pyarn will throw if there is an error
-      await pyarn.publish({ access: 'public' });
+      // bolt will throw if there is an error
+      await bolt.publish({ access: 'public' });
 
       const releasedPackages = releaseObj.releases.map(r => `${r.name}@${r.version}`).join('\n');
       logger.success('Successfully published:');

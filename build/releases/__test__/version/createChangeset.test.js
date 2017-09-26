@@ -1,11 +1,11 @@
 const chalk = require('chalk');
-const pyarn = require('pyarn');
+const bolt = require('bolt');
 const createChangeset = require('../../changeset/createChangeset');
 const cli = require('../../../utils/cli');
 
 jest.mock('../../../utils/cli');
 jest.mock('../../../utils/logger');
-jest.mock('pyarn');
+jest.mock('bolt');
 
 function assertPackagesPrompt(options) {
   const askPackagesCalls = cli.askCheckbox.mock.calls;
@@ -65,7 +65,7 @@ describe('createChangeset', () => {
 
     beforeEach(async () => {
       mockUserInput(releases, dependents, summary);
-      pyarn.getDependentsGraph.mockReturnValueOnce(Promise.resolve(new Map(dependentsGraph)));
+      bolt.getDependentsGraph.mockReturnValueOnce(Promise.resolve(new Map(dependentsGraph)));
     });
 
     it('should prompt for changed packages, bump type and summary', async () => {
@@ -100,7 +100,7 @@ describe('createChangeset', () => {
 
     beforeEach(async () => {
       mockUserInput(releases, dependents, summary);
-      pyarn.getDependentsGraph.mockReturnValueOnce(Promise.resolve(new Map(dependentsGraph)));
+      bolt.getDependentsGraph.mockReturnValueOnce(Promise.resolve(new Map(dependentsGraph)));
     });
 
     it('should prompt for changed packages, bump type and summary', async () => {
@@ -145,7 +145,7 @@ describe('createChangeset', () => {
 
     beforeEach(async () => {
       mockUserInput(releases, dependents, summary);
-      pyarn.getDependentsGraph.mockReturnValueOnce(Promise.resolve(new Map(dependentsGraph)));
+      bolt.getDependentsGraph.mockReturnValueOnce(Promise.resolve(new Map(dependentsGraph)));
     });
 
     it('should prompt for changed packages, bump type and summary', async () => {

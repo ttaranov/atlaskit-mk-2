@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 const chalk = require('chalk');
-const pyarn = require('pyarn');
+const bolt = require('bolt');
 // TODO: Make these pull from the actual packages once we have a firm repo structure
 const cli = require('../../utils/cli');
 const git = require('../../utils/git');
@@ -10,7 +10,7 @@ const createChangesetCommit = require('./createChangesetCommit');
 async function getChangedPackages() {
   const lastRelease = await git.getLastPublishCommit();
   const changedFiles = await git.getChangedFilesSince(lastRelease, true);
-  const allPackages = (await pyarn.getWorkspaces());
+  const allPackages = (await bolt.getWorkspaces());
 
   const fileNameToPackage = fileName => allPackages.find(pkg => fileName.startsWith(pkg.dir));
   const fileExistsInPackage = fileName => !!fileNameToPackage(fileName);
