@@ -54,7 +54,7 @@
     "css-loader": "^0.28.0",
     "enquirer": "^1.0.2",
     "enzyme": "^2.9.1",
-    "eslint": "^4.8.0",
+    "eslint": "^3.10.2",
     "extract-react-types": "^0.1.1",
     "flow-bin": "^0.53.0",
     "jest": "^20.0.4",
