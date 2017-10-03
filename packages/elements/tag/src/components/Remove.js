@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React from 'react';
 import RemoveIcon from '@atlaskit/icon/glyph/cross';
 import Button from '../styled/Remove';
 

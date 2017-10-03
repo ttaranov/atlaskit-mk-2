@@ -1,6 +1,7 @@
-import * as React from 'react';
+// @flow
+import React, { type Node } from 'react';
 
 export type Example = {
   codeText?: string,
-  CodeNode?: React.Node,
+  CodeNode?: Node,
 };

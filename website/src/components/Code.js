@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type Node } from 'react';
 import styled from 'styled-components';
 
 const Pre = styled.pre`
@@ -10,4 +10,4 @@ const Pre = styled.pre`
   padding: 20px;
 `;
 
-export default ({ children }: React.Node) => <Pre>{children}</Pre>;
+export default ({ children }: Node) => <Pre>{children}</Pre>;

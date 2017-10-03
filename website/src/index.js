@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React from 'react';
 import { render } from 'react-dom';
 import '@atlaskit/css-reset';
 import 'regenerator-runtime/runtime';

@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React, { type Node } from 'react';
 import styled from 'styled-components';
 import { gridSize, colors, math } from '@atlaskit/theme';
 import { Link } from 'react-router-dom';
@@ -20,7 +20,7 @@ type PackageProps = {
 };
 
 type PackageState = {
-  children?: React.Node,
+  children?: Node,
 };
 
 export const Intro = styled.p`

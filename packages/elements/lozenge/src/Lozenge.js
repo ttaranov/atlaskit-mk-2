@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React, { type Node } from 'react';
 import Container from './styled/Container';
 import Content from './styled/Content';
 
@@ -17,7 +17,7 @@ type Props = {
   appearance: Appearances,
   /** Elements to be rendered inside the lozenge. This should ideally be just
   a word or two. */
-  children?: React.Node,
+  children?: Node,
 };
 
 export default class Lozenge extends React.PureComponent<Props> {

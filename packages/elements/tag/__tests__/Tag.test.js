@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
 
 import Chrome from '../src/components/Chrome';

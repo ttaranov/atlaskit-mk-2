@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React from 'react';
 // import { AkCodeBlock } from '@atlaskit/code';
 
 type ExampleProps = {

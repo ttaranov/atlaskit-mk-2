@@ -4,7 +4,7 @@
  * Its helpful for test the <Props /> component.
  * We will remove this file after make sure we cover all cases.
  */
-import * as React from 'react';
+import React, { type Node } from 'react';
 
 type A = {
   foo: any,
@@ -26,7 +26,7 @@ type Props = {
     Hearts: 3,
     Spades: 4
   },
-  children: React.Node,
+  children: Node,
   a: A,
   prop: mixed,
   bar: ?number,

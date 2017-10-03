@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React, { type Node } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ const NavItemLink = styled(Link)`
 
 export type NavItemProps = {
   to: string,
-  children: React.Node,
+  children: Node,
 };
 
 export default class NavItem extends React.PureComponent<NavItemProps> {

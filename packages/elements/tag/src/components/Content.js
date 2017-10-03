@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React from 'react';
 import { Link, Text } from '../styled/Content';
 import type { ReactElement, tagColor } from '../types';
 

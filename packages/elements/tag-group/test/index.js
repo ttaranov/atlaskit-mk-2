@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Tag from '@atlaskit/tag';
 import TagGroup from '../src';

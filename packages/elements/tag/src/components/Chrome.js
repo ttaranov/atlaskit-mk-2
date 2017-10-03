@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React from 'react';
 import Span from '../styled/Chrome';
 import type { tagColor, ReactElement } from '../types';
 

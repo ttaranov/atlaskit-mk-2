@@ -1,6 +1,6 @@
 // @flow
 import { mount } from 'enzyme';
-import * as React from 'react';
+import React from 'react';
 
 import Badge from '../src';
 import { APPEARANCE_ENUM } from '../src/components/Badge';
