@@ -1,2 +1,2 @@
 // @flow
-module.exports = ({}: Object);
+declare module.exports: Object;

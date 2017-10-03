@@ -1,2 +1,2 @@
 // @flow
-module.exports = ('...': string);
+declare module.exports: string;

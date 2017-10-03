@@ -1,2 +1,2 @@
 // @flow
-module.exports = (content: string, typeSystem: 'flow' | 'typescript'): Object => ({});
+declare module.exports: (string, 'flow' | 'typescript') => Object;
