@@ -15,7 +15,6 @@ export interface CodeProps {
 }
 
 export default class Code extends PureComponent<CodeProps> {
-
   static propTypes = {
     text: PropTypes.string.isRequired,
     language: PropTypes.oneOf(languageList),

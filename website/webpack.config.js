@@ -13,7 +13,7 @@ function sanitizeName(filePath) {
     .join('/');
 }
 
-module.exports = async function () {
+module.exports = async function createWebpackConfig() {
   const basePath = path.join(__dirname, '..');
   const results = await boltQuery({
     cwd: basePath,

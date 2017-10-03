@@ -7,12 +7,20 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "scripts": {
-    "build": "projector ./projector.js build",
-    "test": "projector ./projector.js test",
-    "lint": "projector ./projector.js lint",
-    "start": "cd website && yarn start",
-    "changeset": "projector ./projector changeset",
-    "release": "projector ./projector release"
+    "build": "               run-p build:babel build:typescript --print-label --continue-on-error",
+    "build:babel": "         bolt workspaces exec --only-fs 'packages/{elements,utils}/**' -- babel src -d dist/cjs",
+    "build:typescript": "    bolt workspaces exec --only-fs 'packages/fabric/*' -- tsc",
+    "test": "                yarn run test:jest",
+    "test:jest": "           jest --coverage",
+    "lint": "                run-p lint:eslint lint:tslint --continue-on-error",
+    "lint:eslint": "         eslint **/*.js",
+    "lint:tslint": "         tslint -c ./tslint.json 'packages/*/*/src/**/*.+(ts|tsx)' --format stylish",
+    "typecheck": "           run-p typecheck:flow typecheck:typescript --aggregate-output --continue-on-error",
+    "typecheck:flow": "      flow check",
+    "typecheck:typescript": "tsc --noEmit",
+    "website:start": "       cd website && yarn start",
+    "changeset": "           projector ./projector changeset",
+    "release": "             projector ./projector release"
   },
   "bolt": {
     "workspaces": [
@@ -41,6 +49,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.24.1",
+    "bolt-query": "^1.1.2",
     "chai": "^4.1.2",
     "css-loader": "^0.28.0",
     "enquirer": "^1.0.2",
@@ -56,13 +65,9 @@
     "karma-webpack": "^2.0.4",
     "loader-utils": "^1.1.0",
     "mocha": "^3.5.0",
+    "npm-run-all": "^4.1.1",
     "projector-cli": "^3.0.1",
-    "projector-jest": "^1.0.1",
-    "projector-karma": "projectorjs/projector-karma#896e9a5fa1fb4bbb5201660a97de1e41e462a5f8",
     "projector-spawn": "^1.0.1",
-    "projector-tslint": "projectorjs/projector-tslint#a5a4c3715ad7b03a7234e5f558c83504f7291a8e",
-    "projector-typescript": "projectorjs/projector-typescript#0623f742b216ec51d2e463a9779be9f4bd729dcc",
-    "bolt-query": "^1.1.2",
     "raw-loader": "^0.5.1",
     "react-test-renderer": "^15.6.1",
     "style-loader": "^0.16.1",
@@ -87,6 +92,7 @@
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-runtime": "^6.26.0",
+    "bolt": "^0.12.0",
     "chalk": "^2.1.0",
     "create-error": "^0.3.1",
     "debug": "^2.2.0",
@@ -97,7 +103,6 @@
     "outdent": "^0.3.0",
     "prop-types": "^15.5.10",
     "puppeteer": "^0.10.2",
-    "bolt": "^0.12.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-markdown": "^2.5.0",
@@ -114,6 +119,24 @@
     "uuid": "^3.1.0"
   },
   "jest": {
-    "modulePathIgnorePatterns": ["./node_modules"]
+    "modulePathIgnorePatterns": [
+      "./node_modules"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest/preprocessor",
+      "^.+\\.js$": "babel-jest"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "./tsconfig.json",
+        "skipBabel": true
+      }
+    },
+    "testRegex": "(/(__tests?__/.*)\\.?(test|spec)?\\.(js|tsx?))$",
+    "moduleFileExtensions": [
+      "js",
+      "ts",
+      "tsx"
+    ]
   }
 }
