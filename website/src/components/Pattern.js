@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import Example from './example';
+import Example from './Example';
 
 type Props = {
   match: {
