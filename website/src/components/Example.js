@@ -9,7 +9,7 @@ import { join } from '../utils/path';
 
 import type { Example as ExampleType } from '../types';
 
-type PackageProps = {
+type ExampleProps = {
   match: {
     params: {
       example: string,
@@ -19,28 +19,40 @@ type PackageProps = {
   },
 };
 
-const Body = styled.div`margin: 20px 0;`;
+type ExampleState = {
+  codeText?: string,
+  CodeNode?: React.Component<any>,
+};
 
-export default class Example extends React.Component<PackageProps, ExampleType> {
-  props: PackageProps;
-  state = {};
+const Body = styled.div`
+  margin: 20px 0;
+`;
+
+export default class Example extends React.Component<ExampleProps, ExampleState> {
+  props: ExampleProps;
+  state: ExampleState = {};
 
   componentDidMount() {
     const { group, name, example } = this.props.match.params;
-    getData(join(group, name), example).then(s => this.setState(s));
+
+    getData(join(group, name), example).then(data => {
+      this.setState({
+        codeText: data.codeText,
+        CodeNode: data.CodeNode,
+      });
+    });
   }
 
   render() {
-    const { example } = this.props.match.params;
-    const { codeText, CodeNode } = this.state;
+    const CodeNode: any = this.state.CodeNode;
     return (
       <Page>
-        <h1>{formatName(example)}</h1>
+        <h1>{formatName(this.props.match.params.example)}</h1>
         <Body>
-          {codeText ? (
+          {this.state.codeText ? (
             <div>
-              <CodeNode />
-              <Code>{codeText}</Code>
+              {CodeNode && <CodeNode />}
+              <Code>{this.state.codeText}</Code>
             </div>
           ) : (
             <Loading />

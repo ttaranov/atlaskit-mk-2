@@ -1,24 +1,23 @@
+// @flow
 import React from 'react';
 import Example from './example';
 
 type Props = {
-  match: Object,
+  match: {
+    params: {
+      example: string,
+    },
+  },
 };
 
-export default ({ match }: Props) => (
-  <Example
-    match={{
-      ...match,
-      ...{
-        params: {
-          ...match.params,
-          ...{
-            group: '',
-            name: 'patterns',
-            example: match.params.example,
-          },
-        },
+export default function Pattern(props: Props) {
+  return (
+    <Example match={{
+      params: {
+        group: '',
+        name: 'patterns',
+        example: props.match.params.example,
       },
-    }}
-  />
-);
+    }}/>
+  );
+};

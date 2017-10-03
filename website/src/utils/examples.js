@@ -25,15 +25,21 @@ export function formatName(name: string): string {
   return sentenceCase(removeNumericPrefix(removeSuffix(basename(name))));
 }
 
-export async function getData(workspaceName: string, examplePath: string): Example {
+export async function getData(workspaceName: string, examplePath: string): Promise<Example> {
   const workspace = getWorkspace(workspaceName);
-  const workspaceExample = workspace.files.examples.filter(e => new RegExp(`/${examplePath}.js$`).test(e.filePath))[0];
+  const workspaceExamples = workspace.files.examples.filter(e => {
+    return new RegExp(`/${examplePath}.js$`).test(e.filePath);
+  });
+  const workspaceExample = workspaceExamples[0];
+
+  const exampleModule = await EXAMPLES.load[workspaceExample.filePath]();
+
+  const codeText = formatCodeImports(workspace.pkg.name, workspaceExample.fileContents);
+  const CodeNode = exampleModule.default;
+
   return {
-    ...workspaceExample,
-    ...{
-      codeText: formatCodeImports(workspace.pkg.name, workspaceExample.fileContents),
-      CodeNode: (await EXAMPLES.load[workspaceExample.filePath]()).default,
-    },
+    codeText,
+    CodeNode,
   };
 }
 

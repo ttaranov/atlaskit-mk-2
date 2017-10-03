@@ -1,7 +1,7 @@
 // @flow
-import React, { type Node } from 'react';
+import React, { type Element } from 'react';
 
 export type Example = {
   codeText?: string,
-  CodeNode?: Node,
+  CodeNode?: React.Component<any>,
 };

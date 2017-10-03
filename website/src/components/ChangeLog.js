@@ -70,9 +70,9 @@ type Props = {
   packageName: string,
 };
 
-export default class ChangeLog extends PureComponent {
+export default class ChangeLog extends PureComponent<Props> {
   props: Props; // eslint-disable-line react/sort-comp
-  render(): React.Element<any> {
+  render() {
     const { changelog, packageName, range } = this.props;
     const logs = range
       ? changelog.filter(e => semver.satisfies(e.version, range))

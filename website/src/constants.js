@@ -7,6 +7,7 @@ type BoltQueryFile = {
 
 type WebsiteData = {
   [string]: Array<{
+    group: string,
     name: string,
     description: string,
     version: string,
@@ -16,7 +17,7 @@ type WebsiteData = {
 };
 
 export const WEBSITE_DATA: WebsiteData = (process.env.WEBSITE_DATA: any);
-export const PACKAGES = WEBSITE_DATA.packages;
+export const PACKAGES = WEBSITE_DATA;
 
 // $FlowFixMe
 export { default as EXAMPLES } from 'bolt-query-loader?{workspaceFiles:{examples:"examples/*.js"}}!';

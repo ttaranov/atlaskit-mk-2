@@ -39,7 +39,7 @@ type Props = {
   value: number,
 };
 
-export default class Badge extends React.PureComponent<{ value: number, max: number }> {
+export default class Badge extends React.PureComponent<Props> {
   static defaultProps = {
     appearance: 'default',
     max: 99,

@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
@@ -7,6 +7,11 @@ import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 import Description from './Description';
 import { H2 } from './Heading';
 import PrettyPropType from './PrettyPropType';
+
+type ASTNode = {
+  kind: string,
+  [key: string]: any,
+};
 
 const Heading = styled.h3`
   border-bottom: 2px solid ${themed({ light: colors.N20, dark: colors.DN40 })};
@@ -16,12 +21,15 @@ const Heading = styled.h3`
   margin: 0 0 ${gridSize}px 0;
   padding-bottom: ${gridSize}px;
 `;
+
 const HeadingDefault = styled.code`
   color: ${themed({ light: colors.subtleText, dark: colors.subtleText })};
 `;
+
 const HeadingRequired = styled.span`
   color: ${themed({ light: colors.R500, dark: colors.R300 })};
 `;
+
 const HeadingType = styled.span`
   background: ${themed({ light: colors.B50, dark: colors.B500 })};
   border-radius: ${borderRadius}px;
@@ -29,6 +37,7 @@ const HeadingType = styled.span`
   display: inline-block;
   padding: 0 0.2em;
 `;
+
 const PropTypeWrapper = styled.div`
   margin-top: ${math.multiply(gridSize, 4)}px;
 `;
@@ -43,38 +52,44 @@ const Wrapper = styled.div`
   }
 `;
 
-// Disable prop types validation for internal functional components
-/* eslint-disable react/prop-types */
-
-const PageWrapper = ({ children }) => (
+const PageWrapper = ({ children }: { children: Node }) => (
   <Wrapper>
     <H2>Props</H2>
     {children}
   </Wrapper>
 );
 
-const PropTypeHeading = ({ defaultValue, name, required, type }) => {
-  let typeName = type.kind;
+type PropTypeHeadingProps = {
+  name: string,
+  required: boolean,
+  type: ASTNode,
+  defaultValue?: ASTNode,
+};
+
+const PropTypeHeading = (props: PropTypeHeadingProps) => {
+  let typeName = props.type.kind;
   if (typeName === 'nullable') {
-    typeName = `?${type.arguments.kind}`;
+    typeName = `?${props.type.arguments.kind}`;
   }
 
   return (<Heading>
     <code>
-      <HeadingType>{typeName}</HeadingType> {name}
-      {defaultValue ? <HeadingDefault> = {defaultValue.value}</HeadingDefault> : null}
-      {required ? <HeadingRequired> required</HeadingRequired> : null}
+      <HeadingType>{typeName}</HeadingType> {props.name}
+      {props.defaultValue ? <HeadingDefault> = {props.defaultValue.value}</HeadingDefault> : null}
+      {props.required ? <HeadingRequired> required</HeadingRequired> : null}
     </code>
   </Heading>);
 };
 
-/* eslint-enable react/prop-types */
+type DynamicPropsProps = {
+  props: {
+    classes: Array<{
+      props: Array<ASTNode>
+    }>
+  },
+};
 
-export default class DynamicProps extends Component {
-  static propTypes = {
-    props: PropTypes.Object,
-  }
-
+export default class DynamicProps extends Component<DynamicPropsProps> {
   render() {
     if (!this.props.props || !this.props.props.classes) return null;
 

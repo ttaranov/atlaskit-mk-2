@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ import Page from './Page';
 type Props = {
   match: {
     isExact: boolean,
-    params: { component?: string, semver?: string },
+    params: { component: string, semver?: string },
     path: string,
     url: string,
   },
@@ -23,7 +23,7 @@ type Props = {
 type State = { isInvalid: boolean, range: string };
 /* eslint-enable react/no-unused-prop-types */
 
-export default class ChangelogExplorer extends PureComponent {
+export default class ChangelogExplorer extends PureComponent<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
   state: State = { isInvalid: false, range: '' };
 
@@ -45,8 +45,9 @@ export default class ChangelogExplorer extends PureComponent {
 
   render() {
     const { component } = this.props.match.params;
-    let changelog = '';
+    let changelog = [];
     try {
+      // $FlowFixMe
       const reqCtx = require.context('../../../packages/', true, /^\.\/(elements|fabric)\/[\w\d-_]+\/CHANGELOG\.md$/);
       changelog = reqCtx(`./${component}/CHANGELOG.md`);
     } catch (e) {
@@ -79,7 +80,7 @@ export default class ChangelogExplorer extends PureComponent {
   }
 }
 
-const Back = ({ children, to }: { children?: Element | Node | string, to: string }) => (
+const Back = ({ children, to }: { children?: Node | string, to: string }) => (
   <Button appearance="link" component={Link} iconBefore={<BackIcon label="Back Icon" size="small" />} spacing="none" to={to}>
     <span style={{ paddingLeft: '0.5em' }}>{children || 'Back to Docs'}</span>
   </Button>

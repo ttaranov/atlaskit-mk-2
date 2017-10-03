@@ -10,19 +10,6 @@ import { getList, formatLink, formatName } from '../../utils/examples';
 import MetaData from './MetaData';
 import { join } from '../../utils/path';
 
-type PackageProps = {
-  match: {
-    params: {
-      name: string,
-      group: string,
-    },
-  },
-};
-
-type PackageState = {
-  children?: Node,
-};
-
 export const Intro = styled.p`
   color: ${colors.heading};
   font-size: ${math.multiply(gridSize, 2)}px;
@@ -42,7 +29,13 @@ export const Sep = styled.hr`
   }
 `;
 
-export const ExamplesList = props => {
+type ExamplesListProps = {
+  examples: Array<{ name: string, link: string }>,
+  group: string,
+  name: string,
+};
+
+export const ExamplesList = (props: ExamplesListProps) => {
   const { examples, name, group } = props;
 
   if (!examples || !examples.length) return null;
@@ -62,18 +55,41 @@ export const ExamplesList = props => {
   );
 };
 
-export const NoDocs = props => <div>Component "{props.name}" doesn't have any docs.</div>;
+type NoDocsProps = {
+  name: string,
+};
+
+export const NoDocs = (props: NoDocsProps) => {
+  return (
+    <div>Component "{props.name}" doesn't have any docs.</div>
+  );
+};
+
+type PackageProps = {
+  name: string,
+  group: string,
+  match: {
+    params: {
+      name: string,
+      group: string,
+    },
+  },
+};
+
+type PackageState = {
+  children?: Node,
+};
 
 export default class Package extends React.Component<PackageProps, PackageState> {
   state = { children: null };
   props: PackageProps;
 
-  async componentDidMount() {
+  componentDidMount() {
     const { name, group } = this.props.match.params;
     this.loadDoc(name, group);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: PackageProps) {
     if (nextProps.match.params.name === this.props.match.params.name) {
       return;
     }
@@ -81,9 +97,12 @@ export default class Package extends React.Component<PackageProps, PackageState>
     this.loadDoc(name, group);
   }
 
-  loadDoc(name, group) {
+  loadDoc(name: string, group: string) {
     const pkg = getPackageByGroupAndName(group, name);
+    if (!pkg) return;
+
     this.setState({ children: null }, () => {
+      // $FlowFixMe
       require.ensure([], require => {
         let children;
         try {

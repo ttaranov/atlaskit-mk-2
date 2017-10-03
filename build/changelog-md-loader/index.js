@@ -10,7 +10,8 @@ function getChangeLog(changelog) {
     .map((md) => {
       // This should only allow us to skip the first chunk which is the name, as
       // well as the unreleased section.
-      const version = md.match(/\d+\.\d+\.\d+/) ? md.match(/\d+\.\d+\.\d+/)[0] : null;
+      const match = md.match(/\d+\.\d+\.\d+/);
+      const version = match ? match[0] : null;
       if (!version) return null;
       return {
         version,
@@ -22,7 +23,7 @@ function getChangeLog(changelog) {
   return toReturn;
 }
 
-module.exports = function loader(markdown) {
+module.exports = function loader(markdown: string) {
   // merge params and default config
   this.cacheable();
 
