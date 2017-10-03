@@ -76,6 +76,7 @@
   },
   "dependencies": {
     "@atlaskit/avatar": "^8.0.0",
+    "@atlaskit/button": "^5.1.1",
     "@atlaskit/css-reset": "^1.1.5",
     "@atlaskit/field-text": "^4.0.0",
     "@atlaskit/icon": "^8.1.0",
@@ -87,6 +88,7 @@
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-runtime": "^6.26.0",
+    "calendar-base": "^0.3.0",
     "chalk": "^2.1.0",
     "create-error": "^0.3.1",
     "debug": "^2.2.0",
@@ -94,6 +96,7 @@
     "enquirer-prompts": "^1.0.0",
     "glob": "^7.1.2",
     "jest-fixtures": "^0.3.2",
+    "keycode": "^2.1.7",
     "outdent": "^0.3.0",
     "prop-types": "^15.5.10",
     "puppeteer": "^0.10.2",
