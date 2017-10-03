@@ -55,7 +55,7 @@
     "enquirer": "^1.0.2",
     "enzyme": "^2.9.1",
     "eslint": "^3.10.2",
-    "extract-react-types": "^0.1.1",
+    "extract-react-types": "^0.2.0",
     "flow-bin": "^0.53.0",
     "jest": "^20.0.4",
     "karma": "^1.7.1",

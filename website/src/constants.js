@@ -6,18 +6,20 @@ type BoltQueryFile = {
 };
 
 type WebsiteData = {
-  [string]: Array<{
-    group: string,
-    name: string,
-    description: string,
-    version: string,
-    relativePath: string,
-    docs: Array<BoltQueryFile>,
-  }>,
+  packages: {
+    [string]: Array<{
+      group: string,
+      name: string,
+      description: string,
+      version: string,
+      relativePath: string,
+      docs: Array<BoltQueryFile>,
+    }>,
+  },
 };
 
 export const WEBSITE_DATA: WebsiteData = (process.env.WEBSITE_DATA: any);
-export const PACKAGES = WEBSITE_DATA;
+export const PACKAGES = WEBSITE_DATA.packages;
 
 // $FlowFixMe
 export { default as EXAMPLES } from 'bolt-query-loader?{workspaceFiles:{examples:"examples/*.js"}}!';
