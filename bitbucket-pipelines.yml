@@ -6,16 +6,16 @@ pipelines:
           script:
             - source ./build-setup.sh
             - bolt install
-            - yarn build
-            - yarn lint
-            - yarn test
-            - yarn release
+            - bolt build
+            - bolt lint
+            - bolt test
+            - bolt release
 
   default:
     - step:
         script:
           - source ./build-setup.sh
           - bolt install
-          - yarn build
-          - yarn lint
-          - yarn test
+          - bolt build
+          - bolt lint
+          - bolt test

@@ -1,5 +1,6 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
+import { expect } from 'chai';
 import Code from '../../src/Code';
 
 const input = `

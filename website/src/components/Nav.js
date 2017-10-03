@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React, { type Node } from 'react';
 import styled from 'styled-components';
 import Navigation, { AkNavigationItemGroup, AkNavigationItem, AkContainerTitle } from '@atlaskit/navigation';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
@@ -24,7 +24,7 @@ const NavTitle = styled.div`
 
 export type NavProps = {
   title: string,
-  children: React.Node,
+  children: Node,
 };
 
 export default class Nav extends React.PureComponent<NavProps> {

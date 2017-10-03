@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React, { type Node } from 'react';
 import styled from 'styled-components';
 
 const PageContainer = styled.main`
@@ -9,7 +9,7 @@ const PageContainer = styled.main`
 `;
 
 type PageProps = {
-  children: React.Node,
+  children: Node,
 };
 
 export default class Page extends React.PureComponent<PageProps> {

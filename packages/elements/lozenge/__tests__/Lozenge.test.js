@@ -1,6 +1,6 @@
 // @flow
 import { mount } from 'enzyme';
-import * as React from 'react';
+import React from 'react';
 import Lozenge, { APPEARANCE_ENUM } from '../src/Lozenge';
 
 describe('Lozenge', () => {

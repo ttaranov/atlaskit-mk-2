@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React from 'react';
 
 import Chrome from './Chrome';
 import Content from './Content';

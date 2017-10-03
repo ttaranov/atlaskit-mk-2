@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React, { type Node } from 'react';
 import Container from '../styled/Container';
 
 const ALIGNMENT = {
@@ -11,7 +11,7 @@ type Props = {
   /** Whether the tags should be left-aligned or right-aligned. */
   alignment: 'start' | 'end',
   /** Tags to render within the tag group. */
-  children: React.Node,
+  children: Node,
 };
 
 export default class TagGroup extends React.PureComponent<Props> {

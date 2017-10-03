@@ -1,6 +1,5 @@
 // @flow
-
-import * as React from 'react';
+import React from 'react';
 import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
 import styled, { injectGlobal } from 'styled-components';
 import { AkNavigationItem, AkNavigationItemGroup } from '@atlaskit/navigation';

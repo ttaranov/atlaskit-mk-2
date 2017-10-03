@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React from 'react';
 import path from 'path';
 import { md, Example, Props } from '@atlaskit/docs';
 
