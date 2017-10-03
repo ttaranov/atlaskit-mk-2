@@ -1,18 +1,17 @@
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+// @flow
+
+import React, { type Node } from 'react';
 import Button from '@atlaskit/button';
 
-export default class extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-  }
+type Props = {
+  children: Node,
+};
+
+export default class extends React.Component<Props> {
+  props: Props;
   render() {
     return (
-      <Button
-        appearance="subtle"
-        spacing="none"
-        tabIndex={-1}
-      >
+      <Button appearance="subtle" spacing="none" tabIndex={-1}>
         {this.props.children}
       </Button>
     );

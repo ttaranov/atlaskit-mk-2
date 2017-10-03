@@ -1,3 +1,5 @@
+// @flow
+
 import { dateToString } from '../src/util';
 
 export const now = new Date();
@@ -9,7 +11,7 @@ export const notToday = today === 10 ? 11 : 10;
 export const notThisMonth = thisMonth === 10 ? 11 : 10;
 export const notThisYear = thisYear + 1;
 
-export function getDate(day = today) {
+export function getDate(day: number = today) {
   return dateToString({ day, month: thisMonth, year: thisYear });
 }
 
@@ -18,4 +20,4 @@ export function getDates() {
 }
 
 // eslint-disable-next-line
-export const action = (...args) => console.log.bind(console, ...args);
+export const action = (...args: Array<any>) => console.log.bind(console, ...args);

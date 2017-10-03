@@ -1,82 +1,76 @@
+// @flow
+
 import { Calendar } from 'calendar-base';
 import keycode from 'keycode';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-import {
-  dateToString,
-  getDayName,
-  makeArrayFromNumber,
-} from '../util';
+import React, { Component } from 'react';
+import { dateToString, getDayName, makeArrayFromNumber } from '../util';
 import DateComponent from './Date';
 import Heading from './Heading';
-import {
-  Announcer,
-  CalendarTable,
-  CalendarTbody,
-  CalendarTh,
-  CalendarThead,
-  Wrapper,
-} from '../styled/Calendar';
+import { Announcer, CalendarTable, CalendarTbody, CalendarTh, CalendarThead, Wrapper } from '../styled/Calendar';
+
+import type { EventChange } from '../types';
 
 const arrowKeys = [keycode('down'), keycode('left'), keycode('right'), keycode('up')];
 const daysPerWeek = 7;
 const monthsPerYear = 12;
 
-export default class CalendarStateless extends PureComponent {
-  static propTypes = {
-    /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates
-    provided are greyed out. This does not prevent these dates being selected. */
-    disabled: PropTypes.arrayOf(PropTypes.string),
-    /** The number of the date currently focused. Places border around the date.
-    0 highlights no date. */
-    focused: PropTypes.number,
-    /** The number of the month (from 1 to 12) which the calendar should be on. */
-    month: PropTypes.number,
-    /** Function which is called when the calendar is no longer focused. */
-    onBlur: PropTypes.func,
-    /** Function which is called when navigation within the calendar is called,
-    such as changing the month or year. Returns an object with day, month and
-    year properties, each as a number. These will be the currently selected values
-    with updates for if the change has been triggered internally by the forward and
-    back arrows for months. */
-    onChange: PropTypes.func,
-    /** Function called when a day is clicked on. Calls with an object that has
-    a day, month and week property as numbers, representing the date just clicked.
-    It also has an 'iso' property, which is a string of the selected date in the
-    format YYYY-MM-DD. */
-    onSelect: PropTypes.func,
-    /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates
-    provided are given a background color. */
-    previouslySelected: PropTypes.arrayOf(PropTypes.string),
-    /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates
-    provided are given a background color. */
-    selected: PropTypes.arrayOf(PropTypes.string),
-    /** Value of current day, as a string in the format 'YYYY-MM-DD'. */
-    today: PropTypes.string,
-    /** Year to display the calendar for. */
-    year: PropTypes.number,
-  }
+type Handler = (e: any) => void;
+type Props = {
+  /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates provided are greyed out.
+  This does not prevent these dates being selected. */
+  disabled: Array<string>,
+  /** The number of the date currently focused. Places border around the date. 0 highlights no date. */
+  focused: number,
+  /** The number of the month (from 1 to 12) which the calendar should be on. */
+  month: number,
+  /** Function which is called when the calendar is no longer focused. */
+  onBlur: Handler,
+  /** Function which is called when navigation within the calendar is called,
+  such as changing the month or year. Returns an object with day, month and
+  year properties, each as a number. These will be the currently selected values
+  with updates for if the change has been triggered internally by the forward and
+  back arrows for months. */
+  onChange: Handler,
+  /** Function called when a day is clicked on. Calls with an object that has
+  a day, month and week property as numbers, representing the date just clicked.
+  It also has an 'iso' property, which is a string of the selected date in the
+  format YYYY-MM-DD. */
+  onSelect: Handler,
+  /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates
+  provided are given a background color. */
+  previouslySelected: Array<string>,
+  /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates
+  provided are given a background color. */
+  selected: Array<string>,
+  /** Value of current day, as a string in the format 'YYYY-MM-DD'. */
+  today: string,
+  /** Year to display the calendar for. */
+  year: number,
+};
 
-  static get defaultProps() {
-    const now = new Date();
-    const day = now.getDate();
-    const month = now.getMonth() + 1;
-    const year = now.getFullYear();
-    return {
-      disabled: [],
-      focused: 0,
-      month,
-      onBlur() {},
-      onChange() {},
-      onSelect() {},
-      previouslySelected: [],
-      selected: [],
-      today: dateToString({ day, month, year }),
-      year,
-    };
-  }
+const now = new Date();
+const nowDay = now.getDate();
+const nowMonth = now.getMonth() + 1;
+const nowYear = now.getFullYear();
 
-  constructor(props) {
+export default class CalendarStateless extends Component<Props> {
+  calendar: Object;
+  props: Props;
+
+  static defaultProps = {
+    disabled: [],
+    focused: 0,
+    month: nowMonth,
+    onBlur() {},
+    onChange() {},
+    onSelect() {},
+    previouslySelected: [],
+    selected: [],
+    today: dateToString({ day: nowDay, month: nowMonth, year: nowYear }),
+    year: nowYear,
+  };
+
+  constructor(props: Props) {
     super(props);
     this.calendar = new Calendar({
       siblingMonths: true,
@@ -84,7 +78,7 @@ export default class CalendarStateless extends PureComponent {
     });
   }
 
-  handleKeyDown = (e) => {
+  handleKeyDown = (e: KeyboardEvent) => {
     const { focused, month, year } = this.props;
     const key = e.keyCode;
     const isArrowKey = arrowKeys.indexOf(key) > -1;
@@ -92,7 +86,7 @@ export default class CalendarStateless extends PureComponent {
 
     e.preventDefault();
     if (isInitialArrowKeyPress) {
-      this.triggerOnChange(year, month, 1);
+      this.triggerOnChange({ year, month, day: 1 });
       return;
     }
 
@@ -103,9 +97,9 @@ export default class CalendarStateless extends PureComponent {
 
       if (next > daysInMonth) {
         const { month: nextMonth, year: nextYear } = this.nextMonth();
-        this.triggerOnChange(nextYear, nextMonth, next - daysInMonth);
+        this.triggerOnChange({ year: nextYear, month: nextMonth, day: next - daysInMonth });
       } else {
-        this.triggerOnChange(year, month, next);
+        this.triggerOnChange({ year, month, day: next });
       }
     } else if (key === keycode('left')) {
       const prev = focused - 1;
@@ -113,9 +107,9 @@ export default class CalendarStateless extends PureComponent {
       if (prev < 1) {
         const { month: prevMonth, year: prevYear } = this.prevMonth();
         const prevDay = Calendar.daysInMonth(prevYear, prevMonth - 1);
-        this.triggerOnChange(prevYear, prevMonth, prevDay);
+        this.triggerOnChange({ year: prevYear, month: prevMonth, day: prevDay });
       } else {
-        this.triggerOnChange(year, month, prev);
+        this.triggerOnChange({ year, month, day: prev });
       }
     } else if (key === keycode('right')) {
       const next = focused + 1;
@@ -123,9 +117,9 @@ export default class CalendarStateless extends PureComponent {
 
       if (next > daysInMonth) {
         const { month: nextMonth, year: nextYear } = this.nextMonth();
-        this.triggerOnChange(nextYear, nextMonth, 1);
+        this.triggerOnChange({ year: nextYear, month: nextMonth, day: 1 });
       } else {
-        this.triggerOnChange(year, month, next);
+        this.triggerOnChange({ year, month, day: next });
       }
     } else if (key === keycode('up')) {
       const prev = focused - daysPerWeek;
@@ -133,39 +127,39 @@ export default class CalendarStateless extends PureComponent {
       if (prev < 1) {
         const { month: prevMonth, year: prevYear } = this.prevMonth();
         const prevDay = Calendar.daysInMonth(prevYear, prevMonth - 1) + prev;
-        this.triggerOnChange(prevYear, prevMonth, prevDay);
+        this.triggerOnChange({ year: prevYear, month: prevMonth, day: prevDay });
       } else {
-        this.triggerOnChange(year, month, prev);
+        this.triggerOnChange({ year, month, day: prev });
       }
     } else if (key === keycode('enter') || key === keycode('space')) {
       const { focused: selectFocused, month: selectMonth, year: selectYear } = this.props;
-      this.triggerOnSelect(selectYear, selectMonth, selectFocused);
+      this.triggerOnSelect({ year: selectYear, month: selectMonth, day: selectFocused });
     }
-  }
+  };
 
-  handleClickDay = ({ year, month, day }) => {
-    this.triggerOnSelect(year, month, day);
-  }
+  handleClickDay = ({ year, month, day }: EventChange) => {
+    this.triggerOnSelect({ year, month, day });
+  };
 
   handleClickNext = () => {
     const { focused: day, month, year } = { ...this.props, ...this.nextMonth() };
     this.props.onChange({ day, month, year });
-  }
+  };
 
   handleClickPrev = () => {
     const { focused: day, month, year } = { ...this.props, ...this.prevMonth() };
     this.props.onChange({ day, month, year });
-  }
+  };
 
-  triggerOnChange = (year, month, day) => {
+  triggerOnChange = ({ year, month, day }: EventChange) => {
     const iso = dateToString({ year, month, day });
     this.props.onChange({ day, month, year, iso });
-  }
+  };
 
-  triggerOnSelect = (year, month, day) => {
+  triggerOnSelect = ({ year, month, day }: EventChange) => {
     const iso = dateToString({ year, month, day });
     this.props.onSelect({ day, month, year, iso });
-  }
+  };
 
   nextMonth() {
     let { month, year } = this.props;
@@ -204,13 +198,14 @@ export default class CalendarStateless extends PureComponent {
       const sliceStart = lastDayIsSibling ? daysPerWeek : 0;
 
       calendar.push(
-        ...this.calendar.getCalendar(year, month)
+        ...this.calendar
+          .getCalendar(year, month)
           .slice(sliceStart, sliceStart + daysPerWeek)
           .map(e => ({ ...e, siblingMonth: true }))
       );
     }
 
-    calendar.forEach((date) => {
+    calendar.forEach(date => {
       const dateAsString = dateToString(date, { fixMonth: true });
       const week = date.weekDay === 0 ? [] : weeks[weeks.length - 1];
 
@@ -237,7 +232,9 @@ export default class CalendarStateless extends PureComponent {
           selected={isSelected}
           sibling={isSiblingMonth}
           year={date.year}
-        >{date.day}</DateComponent>
+        >
+          {date.day}
+        </DateComponent>
       );
     });
 
@@ -246,35 +243,17 @@ export default class CalendarStateless extends PureComponent {
       // that we can navigate the keyboard for them. The aria role of "grid" here will hint to
       // screen readers that it can be navigated with the keyboard, but the linter still fails.
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div
-        onBlur={this.props.onBlur}
-        onKeyDown={this.handleKeyDown}
-      >
+      <div onBlur={this.props.onBlur} onKeyDown={this.handleKeyDown}>
         <Announcer aria-live="assertive" aria-relevant="text">
           {new Date(year, month, focused).toString()}
         </Announcer>
-        <Wrapper
-          aria-label="calendar"
-          role="grid"
-          tabIndex={0}
-        >
-          <Heading
-            month={month}
-            year={year}
-            handleClickNext={this.handleClickNext}
-            handleClickPrev={this.handleClickPrev}
-          />
+        <Wrapper aria-label="calendar" role="grid" tabIndex={0}>
+          <Heading month={month} year={year} handleClickNext={this.handleClickNext} handleClickPrev={this.handleClickPrev} />
           <CalendarTable role="presentation">
             <CalendarThead>
-              <tr>
-                {makeArrayFromNumber(daysPerWeek).map(i =>
-                  <CalendarTh key={i}>{getDayName(i)}</CalendarTh>
-                )}
-              </tr>
+              <tr>{makeArrayFromNumber(daysPerWeek).map(i => <CalendarTh key={i}>{getDayName(i)}</CalendarTh>)}</tr>
             </CalendarThead>
-            <CalendarTbody style={{ border: 0 }}>
-              {weeks.map((week, i) => <tr key={i}>{week}</tr>)}
-            </CalendarTbody>
+            <CalendarTbody style={{ border: 0 }}>{weeks.map((week, i) => <tr key={i}>{week}</tr>)}</CalendarTbody>
           </CalendarTable>
         </Wrapper>
       </div>

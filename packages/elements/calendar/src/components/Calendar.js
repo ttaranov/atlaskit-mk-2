@@ -1,20 +1,29 @@
-import React, { PureComponent } from 'react';
+// @flow
+
+import React, { Component } from 'react';
 import CalendarStateless from './CalendarStateless';
 
-type Props = {|
+import type { EventChange, EventSelect } from '../types';
+
+type Props = {
   /** Function to be called when a select action occurs, called with the an ISO
   string of the date, aka YYYY-MM-DD */
-  onUpdate?: (event) => void;
-|}
+  onUpdate?: (event: any) => void,
+};
 
-export default class Calendar extends PureComponent {
-  props: Props // eslint-disable-line react/sort-comp
+type State = EventChange & {
+  focused: number,
+  selected: Array<string>,
+};
 
-  static defaultProps: {
+export default class Calendar extends Component<Props, State> {
+  props: Props;
+
+  static defaultProps = {
     onUpdate: () => {},
-  }
+  };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     const now = new Date();
     const today = now.getDate();
@@ -29,35 +38,29 @@ export default class Calendar extends PureComponent {
     };
   }
 
-  handleBlur = () => this.setState({
-    focused: 0,
-  })
+  handleBlur = () =>
+    this.setState({
+      focused: 0,
+    });
 
-  handleChange = ({ day, month, year }) => {
+  handleChange = ({ day, month, year }: EventChange) => {
     this.setState({
       focused: day,
       month,
       year,
     });
-  }
+  };
 
-  handleSelect = ({ iso, day }) => {
+  handleSelect = ({ iso, day }: EventSelect) => {
     const { selected } = this.state;
     if (selected.indexOf(iso) === -1) {
       this.setState({ selected: [iso], focused: day });
     } else {
       this.setState({ selected: [] });
     }
-  }
+  };
 
   render() {
-    return (
-      <CalendarStateless
-        onBlur={this.handleBlur}
-        onChange={this.handleChange}
-        onSelect={this.handleSelect}
-        {...this.state}
-      />
-    );
+    return <CalendarStateless onBlur={this.handleBlur} onChange={this.handleChange} onSelect={this.handleSelect} {...this.state} />;
   }
 }

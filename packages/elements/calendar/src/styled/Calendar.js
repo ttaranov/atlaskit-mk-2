@@ -1,3 +1,5 @@
+// @flow
+
 /* eslint no-confusing-arrow: 0 */
 
 import styled, { css } from 'styled-components';
