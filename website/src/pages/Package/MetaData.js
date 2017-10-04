@@ -2,7 +2,6 @@
 /* eslint-disable react/prop-types */
 
 import React, { Component, type Node } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { colors, gridSize, math } from '@atlaskit/theme';
 
@@ -22,12 +21,12 @@ const MetaItem = (props: MetaItemProps) => (
   </DI>
 );
 
-type Props = {
+export type MetaDataProps = {
   packageSrc: string,
-  packageName: string,
-};
+  packageName: string
+}
 
-export default class MetaData extends Component<Props> {
+export default class MetaData extends Component<MetaDataProps> {
   render() {
     const { packageSrc, packageName } = this.props;
 

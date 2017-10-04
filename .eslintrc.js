@@ -12,8 +12,10 @@ module.exports = {
       },
     ],
     'no-restricted-syntax': 'off',
+    'no-restricted-properties': 'off',
     'no-use-before-define': 'off',
     'react/sort-comp': 'off',
+    'react/prop-types': 'off'
   },
   env: {
     jest: true,
