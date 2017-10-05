@@ -8,6 +8,7 @@ import Page from '../../components/Page';
 import FourOhFour from '../FourOhFour';
 import { getPackageByGroupAndName } from '../../utils/packages';
 import { getList } from '../../utils/examples';
+import { isModuleNotFoundError } from '../../utils/errors';
 import MetaData from './MetaData';
 import { join } from '../../utils/path';
 
@@ -106,7 +107,13 @@ export default class Package extends React.Component<PackageProps, PackageState>
       // $FlowFixMe
       import(`../../../../packages/${group}/${name}/docs/0-intro`)
         .then((children: { default: Node }) => this.setState({ children: children.default }))
-        .catch(() => this.setState({ children: <NoDocs name={pkg.name} /> }));
+        .catch((e) => {
+          if (isModuleNotFoundError(e)) {
+            this.setState({ children: <NoDocs name={pkg.name} /> })
+          } else {
+            throw e;
+          }
+        });
     });
   }
 
