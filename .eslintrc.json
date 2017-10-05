@@ -30,7 +30,27 @@
     "jest/valid-expect": "error"
   },
   "env": {
-    "browser": true,
-    "jest": true
-  }
+    "browser": true
+  },
+  "overrides": [
+    {
+      "files": ["packages/*/*/examples/**/*.js"],
+      "rules": {
+        "no-console": "off"
+      }
+    },
+    {
+      "files": ["packages/*/*/docs/**/*.js"],
+      "rules": {
+        "global-require": "off",
+        "import/no-webpack-loader-syntax": "off"
+      }
+    },
+    {
+      "files": ["**/__tests__/**/*.js"],
+      "env": {
+        "jest": true
+      }
+    }
+  ]
 }
