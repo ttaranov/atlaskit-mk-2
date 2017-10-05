@@ -2,30 +2,26 @@
 import React from 'react';
 import Badge from '../src';
 
-export default function Component() {
+export default function Example() {
   return (
     <div>
-      <p>with no value</p>
-      <Badge />
+      <p>Default</p>
+      <Badge value={5} />
 
-      <p>with a negative value</p>
-      <Badge value={-5} />
-
-      <p>with a max value</p>
-      <Badge max={99} value={500} />
-
-      <p>with value &lt;= max value</p>
-      <Badge max={99} value={50} />
-
-      <p>with value === max value</p>
-      <Badge max={99} value={99} />
-
-      <p>with appearances</p>
+      <p>Primary</p>
       <Badge appearance="primary" value={-5} />
+
+      <p>Primary Inverted</p>
+      <Badge appearance="primaryInverted" value={-5} />
+
+      <p>Important</p>
       <Badge appearance="important" value={25} />
+
+      <p>Added (no theme change)</p>
       <Badge appearance="added" max={99} value={3000} />
+
+      <p>Removed (no theme change)</p>
       <Badge appearance="removed" />
-      <Badge appearance="default" theme="dark" />
     </div>
   );
 }

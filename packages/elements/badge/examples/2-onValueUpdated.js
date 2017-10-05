@@ -18,7 +18,7 @@ export default class Component extends React.Component<void, State> {
   };
 
   handleValueUpdated = (detail: {}) => {
-    console.log('onValueUpdated called with:', detail); // eslint-disable-line no-console
+    console.log('onValueUpdated called with:', detail);
   };
 
   render() {

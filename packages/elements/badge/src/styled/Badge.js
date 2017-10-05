@@ -14,6 +14,7 @@ const BadgeElement = styled.div`
   padding: 0.16666666666667em 0.5em;
   text-align: center;
 `;
+
 BadgeElement.displayName = 'BadgeElement';
 
 export default BadgeElement;

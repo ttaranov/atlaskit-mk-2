@@ -1,9 +1,9 @@
 // @flow
-import React from 'react';
+import React, { PureComponent } from 'react';
 import BadgeElement from '../styled/Badge';
 
 export const APPEARANCE_ENUM = {
-  values: ['default', 'primary', 'important', 'added', 'removed'],
+  values: ['default', 'primary', 'primaryInverted', 'important', 'added', 'removed'],
   defaultValue: 'default',
 };
 
@@ -28,20 +28,18 @@ function getValue(value, max) {
 
 type Props = {
   /** Affects the visual style of the badge */
-  appearance: 'default' | 'primary' | 'important' | 'added' | 'removed',
+  appearance: 'default' | 'primary' | 'primaryInverted' | 'important' | 'added' | 'removed',
   /** The maximum value to display. If value is 100, and max is 50,
       "50+" will be displayed */
   max: number,
   /** Handler function to be called when the value prop is changed.
       Called with fn({ oldValue, newValue }) */
-  onValueUpdated?: ({ oldValue: number, newValue: number }) => any, // eslint-disable-line react/require-default-props
+  onValueUpdated?: ({ oldValue: number, newValue: number }) => any,
   /** The value displayed within the badge. */
   value: number,
 };
 
-export default class Badge extends React.PureComponent<Props> {
-  props: Props;
-
+export default class Badge extends PureComponent<Props> {
   static defaultProps = {
     appearance: 'default',
     max: 99,
