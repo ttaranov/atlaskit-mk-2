@@ -3,12 +3,12 @@ import React from 'react';
 import Tag from '../src';
 
 function handleBeforeRemove() {
-  console.log('Oh you did not believe me did you !');
+  console.log('Oh you did not believe me did you !'); // eslint-disable-line no-console
   return false;
 }
 
 function handleAfterRemove() {
-  console.log('My last words!');
+  console.log('My last words!'); // eslint-disable-line no-console
 }
 
 export default () => (

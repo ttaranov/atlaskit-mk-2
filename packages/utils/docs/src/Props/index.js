@@ -1,17 +1,11 @@
 // @flow
-import React, { Component, type Node } from 'react';
-import PropTypes from 'prop-types';
+import React, { type Node } from 'react';
 import styled from 'styled-components';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
 import Description from './Description';
 import { H2 } from './Heading';
 import PrettyPropType from './PrettyPropType';
-
-type ASTNode = {
-  kind: string,
-  [key: string]: any,
-};
 
 const Heading = styled.h3`
   border-bottom: 2px solid ${themed({ light: colors.N20, dark: colors.DN40 })};
@@ -62,11 +56,11 @@ const PageWrapper = ({ children }: { children: Node }) => (
 type PropTypeHeadingProps = {
   name: string,
   required: boolean,
-  type: ASTNode,
-  defaultValue?: ASTNode,
+  type: any,
+  defaultValue?: any, // eslint-disable-line react/require-default-props
 };
 
-const PropTypeHeading = (props: PropTypeHeadingProps) => {
+function PropTypeHeading(props: PropTypeHeadingProps) {
   let typeName = props.type.kind;
   if (typeName === 'nullable') {
     typeName = `?${props.type.arguments.kind}`;
@@ -79,42 +73,44 @@ const PropTypeHeading = (props: PropTypeHeadingProps) => {
       {props.required ? <HeadingRequired> required</HeadingRequired> : null}
     </code>
   </Heading>);
-};
+}
 
 type DynamicPropsProps = {
   props: {
     classes: Array<{
-      props: Array<ASTNode>
+      props: Array<any>
     }>
   },
 };
 
-export default class DynamicProps extends Component<DynamicPropsProps> {
-  render() {
-    if (!this.props.props || !this.props.props.classes) return null;
+export default function DynamicProps(props: DynamicPropsProps) {
+  const classes = props.props && props.props.classes;
+  if (!classes) return null;
 
-    const props = this.props.props.classes[0].props;
+  const propTypes = classes[0] && classes[0].props;
+  if (!propTypes) return null;
 
-    return (
-      <PageWrapper>
-        {props.map((prop) => {
-          if (!prop.value) {
-            console.error(`Prop ${prop.key} has no type; this usually indicates invalid propType or defaultProps config`); // eslint-disable-line no-console
-            return null;
-          }
-          return (
-            <PropTypeWrapper key={prop.key}>
-              <PropTypeHeading
-                name={prop.key}
-                required={!prop.optional}
-                type={prop.value}
-              />
-              {prop.description && <Description>{prop.description}</Description>}
-              <PrettyPropType type={prop.value} />
-            </PropTypeWrapper>
+  return (
+    <PageWrapper>
+      {propTypes.map(propType => {
+        if (!propType.value) {
+          console.error( // eslint-disable-line no-console
+            `Prop ${propType.key} has no type; this usually indicates invalid propType or defaultProps config`,
           );
-        })}
-      </PageWrapper>
-    );
-  }
+          return null;
+        }
+        return (
+          <PropTypeWrapper key={propType.key}>
+            <PropTypeHeading
+              name={propType.key}
+              required={!propType.optional}
+              type={propType.value}
+            />
+            {propType.description && <Description>{propType.description}</Description>}
+            <PrettyPropType type={propType.value} />
+          </PropTypeWrapper>
+        );
+      })}
+    </PageWrapper>
+  );
 }

@@ -1,8 +1,7 @@
-/* @flow */
+// @flow
+import React, { type Node } from 'react';
 
-import * as React from 'react';
-
-export default function ReadmeDescription({ children }: { children: React.Node }) {
+export default function ReadmeDescription({ children }: { children: Node }) {
   const style = { marginTop: 12 };
 
   return typeof children === 'string'

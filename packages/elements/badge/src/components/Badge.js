@@ -34,12 +34,14 @@ type Props = {
   max: number,
   /** Handler function to be called when the value prop is changed.
       Called with fn({ oldValue, newValue }) */
-  onValueUpdated?: ({ oldValue: number, newValue: number }) => any,
+  onValueUpdated?: ({ oldValue: number, newValue: number }) => any, // eslint-disable-line react/require-default-props
   /** The value displayed within the badge. */
   value: number,
 };
 
 export default class Badge extends React.PureComponent<Props> {
+  props: Props;
+
   static defaultProps = {
     appearance: 'default',
     max: 99,

@@ -36,7 +36,7 @@ describe('Tag component', () => {
   it('onBeforeRemoveAction callback contract', () => {
     const onBeforeRemoveAction = jest.fn();
     const wrapper = mount(
-      <Tag text="test" removeButtonText="Remove" onBeforeRemoveAction={onBeforeRemoveAction} />
+      <Tag text="test" removeButtonText="Remove" onBeforeRemoveAction={onBeforeRemoveAction} />,
     );
     wrapper.find(Remove).simulate('click');
     expect(onBeforeRemoveAction).toHaveBeenCalledTimes(1);
@@ -45,7 +45,7 @@ describe('Tag component', () => {
   it('onAfterRemoveAction callback contract', () => {
     const onAfterRemoveAction = jest.fn();
     const wrapper = mount(
-      <Tag text="test" removeButtonText="Remove" onAfterRemoveAction={onAfterRemoveAction} />
+      <Tag text="test" removeButtonText="Remove" onAfterRemoveAction={onAfterRemoveAction} />,
     );
     wrapper.find(Remove).simulate('click');
     wrapper.find(Container).simulate('animationEnd');
@@ -60,7 +60,7 @@ describe('Tag component', () => {
         removeButtonText="Remove"
         onBeforeRemoveAction={() => false}
         onAfterRemoveAction={onAfterRemoveAction}
-      />
+      />,
     );
     wrapper.find(Remove).simulate('click');
     expect(onAfterRemoveAction).not.toHaveBeenCalled();

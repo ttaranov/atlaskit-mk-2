@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { type Node } from 'react';
 import styled from 'styled-components';
 import Tag from '../src';
 
@@ -9,16 +9,21 @@ const TableHeading = styled.th`
   font-weight: bold;
 `;
 
-const Row = props => {
+type RowProps = {
+  name: string,
+  children: Node,
+};
+
+function Row(props: RowProps) {
   return (
     <tr>
       <TableHeading>{props.name}</TableHeading>
       <td>{props.children}</td>
     </tr>
   );
-};
+}
 
-export default () => {
+export default function Table() {
   return (
     <table>
       <tbody>
@@ -50,4 +55,4 @@ export default () => {
       </tbody>
     </table>
   );
-};
+}

@@ -1,5 +1,5 @@
-/* @flow */
-import * as React from 'react';
+// @flow
+import React, { type Node } from 'react';
 
 const style = {
   h1: {
@@ -14,8 +14,8 @@ const style = {
 };
 
 export type HeadingProps = {
-  children: React.Node,
-  level?: number
+  children: Node,
+  level?: number, // eslint-disable-line react/require-default-props
 };
 
 export default function Heading({ children, level = 1 }: HeadingProps) {

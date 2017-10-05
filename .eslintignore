@@ -1,0 +1,10 @@
+node_modules
+coverage
+dist
+flow-typed
+
+
+
+# tmp
+build
+website

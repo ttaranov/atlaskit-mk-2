@@ -16,7 +16,7 @@ describe('Tag-group', () => {
     const wrapper = mount(
       <TagGroup>
         {tags.map(tagName => <Tag key={tagName} text={tagName} />)}
-      </TagGroup>
+      </TagGroup>,
     );
 
     expect(wrapper.text()).toBe(tags.join(''));
