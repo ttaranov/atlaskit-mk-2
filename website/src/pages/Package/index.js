@@ -6,11 +6,11 @@ import { gridSize, colors, math } from '@atlaskit/theme';
 import { Link } from 'react-router-dom';
 import Page from '../../components/Page';
 import FourOhFour from '../FourOhFour';
-import { getPackageByGroupAndName } from '../../utils/packages';
-import { getList } from '../../utils/examples';
 import { isModuleNotFoundError } from '../../utils/errors';
 import MetaData from './MetaData';
-import { join } from '../../utils/path';
+// import { join } from '../../utils/path';
+import type { Directory } from '../../types';
+import * as fs from '../../utils/fs';
 
 export const Intro = styled.p`
   color: ${colors.heading};
@@ -68,73 +68,94 @@ export const NoDocs = (props: NoDocsProps) => {
 };
 
 type PackageProps = {
-  name: string,
-  group: string,
-  match: {
-    params: {
-      name: string,
-      group: string,
-    },
-  },
+  packages: Directory,
+  groupId: string,
+  pkgId: string,
 };
 
 type PackageState = {
-  children?: Node,
+  pkg: mixed | null,
+  doc: Node,
+  missing: boolean,
 };
 
+function getPkg(packages, groupId, pkgId) {
+  let groups = fs.getDirectories(packages.children);
+  let group = fs.getById(groups, groupId);
+  let pkgs = fs.getDirectories(group.children);
+  let pkg = fs.getById(pkgs, pkgId);
+  return pkg;
+}
+
 export default class Package extends React.Component<PackageProps, PackageState> {
-  state = { children: null };
+  state = { pkg: null, doc: null, missing: false };
   props: PackageProps;
 
   componentDidMount() {
-    const { name, group } = this.props.match.params;
-    this.loadDoc(name, group);
+    this.loadDoc();
   }
 
   componentWillReceiveProps(nextProps: PackageProps) {
-    if (nextProps.match.params.name === this.props.match.params.name) {
+    if (
+      nextProps.groupId === this.props.groupId &&
+      nextProps.pkgId === this.props.pkgId
+    ) {
       return;
     }
-    const { name, group } = nextProps.match.params;
-    this.loadDoc(name, group);
+
+    this.loadDoc();
   }
 
-  loadDoc(name: string, group: string) {
-    const pkg = getPackageByGroupAndName(group, name);
-    if (!pkg) return;
+  loadDoc() {
+    this.setState({ pkg: null, doc: null, error: false }, () => {
+      let pkg = getPkg(this.props.packages, this.props.groupId, this.props.pkgId);
+      let dirs = fs.getDirectories(pkg.children);
+      let files = fs.getFiles(pkg.children);
 
-    this.setState({ children: null }, () => {
-      // $FlowFixMe
-      import(`../../../../packages/${group}/${name}/docs/0-intro`)
-        .then((children: { default: Node }) => this.setState({ children: children.default }))
-        .catch((e) => {
-          if (isModuleNotFoundError(e)) {
-            this.setState({ children: <NoDocs name={pkg.name} /> })
-          } else {
-            throw e;
-          }
-        });
+      let json = fs.getById(files, 'package.json');
+      let docs = fs.getById(dirs, 'docs');
+      let examples = fs.getById(dirs, 'examples');
+
+      Promise.all([
+        json.exports(),
+        docs.children[0] && docs.children[0].exports().then(mod => mod.default),
+      ]).then(([pkg, doc]) => {
+        this.setState({ pkg, doc });
+      }).catch(err => {
+        if (isModuleNotFoundError(err)) {
+          this.setState({ missing: true })
+        } else {
+          throw err;
+        }
+      });
     });
   }
 
   render() {
-    const { children } = this.state;
-    const { name, group } = this.props.match.params;
-    const pkg = getPackageByGroupAndName(group, name);
-    const examples = getList(join(group, name));
+    const { groupId, pkgId } = this.props;
+    const { pkg, doc, missing } = this.state;
+    // const examples = getList(join(group, name));
+
+    if (missing) {
+      return <FourOhFour />;
+    }
 
     if (!pkg) {
-      return <FourOhFour />;
+      return (
+        <Page>
+          <div>Loading...</div>
+        </Page>
+      );
     }
 
     return (
       <Page>
         <h1>{pkg.name}</h1>
         <Intro>{pkg.description}</Intro>
-        <MetaData packageName={pkg.name} packageSrc={`https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/${pkg.relativePath}`} />
-        <ExamplesList name={name} group={group} examples={examples} />
+        <MetaData packageName={pkg.name} packageSrc={`https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/packages/${groupId}/${pkgId}`} />
+        {/* <ExamplesList name={name} group={group} examples={examples} /> */}
         <Sep />
-        {children || <div>Loading...</div>}
+        {doc || <NoDocs name={pkgId} />}
       </Page>
     );
   }

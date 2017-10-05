@@ -1,16 +1,12 @@
 /* @flow */
 
 import React from 'react';
-import sentenceCase from 'sentence-case';
 import HomeFilledIcon from '@atlaskit/icon/glyph/home-filled';
 import ComponentIcon from '@atlaskit/icon/glyph/component';
 import PageIcon from '@atlaskit/icon/glyph/page';
-import type { Doc } from '../../../types';
-import { removeSuffix, removeNumericPrefix, basename } from '../../../utils/path';
+import type { Directory } from '../../../types';
+import * as fs from '../../../utils/fs';
 import renderNav from '../renderNav';
-import type { List } from '../../../utils/examples';
-
-const formatDocName = name => sentenceCase(removeSuffix(removeNumericPrefix(basename(name))));
 
 const defaultNavGroups = [
   {
@@ -29,35 +25,37 @@ const defaultNavGroups = [
   },
 ];
 
-export function processDocs(docs: Array<Doc>) {
+export function processDocs(docs: Directory) {
   return {
     title: 'Guides',
-    items: docs.map(item => {
-      const slug = item.filePath.split('docs/')[1];
+    items: fs.flatMap(docs, (file, filePath) => {
       return {
-        to: `/docs/${removeSuffix(slug)}`,
-        title: formatDocName(item.filePath),
-        icon: <PageIcon label={`${formatDocName(item.filePath)} icon`} />,
+        to: `/${fs.normalize(filePath)}`,
+        title: fs.titleize(file.id),
+        icon: <PageIcon label={`${fs.titleize(file.id)} icon`} />,
       };
     }),
   };
 }
 
-export function processPatterns(patterns: Array<List>) {
+export function processPatterns(patterns: Directory) {
   return {
     title: 'Patterns',
-    items: patterns.map(({ link, name }) => ({
-      to: `/patterns/${link}`,
-      title: name,
-    })),
+    items: fs.flatMap(patterns, (file, filePath) => {
+      if (filePath.endsWith('.json')) return null;
+      return {
+        to: `/patterns/${fs.normalize(file.id)}`,
+        title: fs.titleize(file.id),
+      };
+    }).filter(Boolean),
   };
 }
 
 export type DefaultNavProps = {
   pathname: string,
-  docs: Array<Doc>,
-  patterns: Array<List>
-}
+  docs: Directory,
+  patterns: Directory,
+};
 
 export default function DefaultNav(props: DefaultNavProps) {
   const groups = []

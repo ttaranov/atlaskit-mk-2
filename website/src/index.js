@@ -4,8 +4,9 @@ import { render } from 'react-dom';
 import '@atlaskit/css-reset';
 import 'regenerator-runtime/runtime';
 import App from './containers/App';
+import repo from './site';
 
 render(
-  <App />,
+  <App repo={repo} />,
   document.getElementById('app'),
 );

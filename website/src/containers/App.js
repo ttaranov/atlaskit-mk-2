@@ -3,10 +3,9 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import styled, { injectGlobal } from 'styled-components';
+import type { Directory } from '../types';
+import * as fs from '../utils/fs';
 
-import { getList as getExampleList } from '../utils/examples';
-import getDocs from '../utils/docs';
-import { PACKAGES } from '../constants';
 import Home from '../pages/Home';
 import ChangeLogExplorer from '../pages/ChangeLogExplorer';
 import Example from '../pages/Example';
@@ -14,7 +13,7 @@ import FourOhFour from '../pages/FourOhFour';
 import Pattern from '../pages/Pattern';
 import Package from '../pages/Package';
 import PackagesList from '../pages/PackagesList';
-import Doc from '../pages/Doc';
+import Document from '../pages/Document';
 import Nav from './Nav';
 
 // eslint-disable-next-line
@@ -53,23 +52,45 @@ const AppContent = styled.div`
   overflow: auto;
 `;
 
-export type AppProps = {};
+export type AppProps = {
+  repo: Directory,
+};
+
 export default class App extends React.PureComponent<AppProps> {
   props: AppProps;
 
   render() {
+    let dirs = fs.getDirectories(this.props.repo.children);
+
+    let docs = fs.getById(dirs, 'docs');
+    let packages = fs.getById(dirs, 'packages');
+    let patterns = fs.getById(dirs, 'patterns');
+
     return (
       <BrowserRouter>
         <AppContainer>
-          <Nav packages={PACKAGES} docs={getDocs()} patterns={getExampleList('patterns')} />
+          <Nav docs={docs} packages={packages} patterns={patterns} />
           <AppContent>
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route path="/docs/:group/:name?" component={Doc} />
-              <Route path="/patterns/:example" component={Pattern} />
+              <Route path="/docs/:docId*" render={props => (
+                <Document
+                  docs={docs}
+                  docId={props.match.params.docId} />
+              )} />
+              <Route path="/patterns/:patternId*" render={props => (
+                <Pattern
+                  patterns={patterns}
+                  patternId={props.match.params.patternId} />
+              )} />
               <Route path="/packages/:group/:name/examples/:example" component={Example} />
-              <Route path="/packages/:group/:name" component={Package} />
-              <Route path="/packages" render={() => <PackagesList packages={PACKAGES} />} />
+              <Route path="/packages/:group/:name" render={props => (
+                <Package
+                  packages={packages}
+                  groupId={props.match.params.group}
+                  pkgId={props.match.params.name} />
+              )} />
+              <Route path="/packages" render={() => <PackagesList packages={packages} />} />
               <Route path="/changelog/:group/:name/:semver?" component={ChangeLogExplorer} />
               <Route component={FourOhFour} />
             </Switch>

@@ -14,12 +14,12 @@ import PackagesNav from './navigations/Packages';
 
 import { RouterNavigationItem } from './linkComponents';
 import type { List } from '../../utils/examples';
-import type { Doc, Packages } from '../../types';
+import type { Directory } from '../../types';
 
 export type GroupsProps = {
-  docs: Array<Doc>,
-  patterns: Array<List>,
-  packages: Packages
+  docs: Directory,
+  patterns: Directory,
+  packages: Directory,
 }
 
 export type GroupsState = {
@@ -57,9 +57,9 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
       <Route path="/packages">
         <PackagesNav pathname={pathname} packages={this.props.packages} />
       </Route>,
-      <Route path="/changelog">
-        <PackagesNav pathname={pathname} packages={this.props.packages} />
-      </Route>,
+      // <Route path="/changelog">
+      //   <PackagesNav pathname={pathname} groups={this.props.groups} />
+      // </Route>,
     ];
 
     const stack = menus

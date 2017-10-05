@@ -23,7 +23,7 @@ function getChangeLog(changelog) {
   return toReturn;
 }
 
-module.exports = function loader(markdown: string) {
+module.exports = function loader(markdown /*: string */) {
   // merge params and default config
   this.cacheable();
 

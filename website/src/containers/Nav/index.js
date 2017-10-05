@@ -7,12 +7,12 @@ import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import atlasKitLogo from '../../assets/atlaskit-logo.png';
 import Groups from './Groups';
 import type { List } from '../../utils/examples';
-import type { Packages } from '../../types';
+import type { Directory } from '../../types';
 
 export type NavProps = {
-  docs: any,
-  packages: Packages,
-  patterns: Array<List>,
+  docs: Directory,
+  packages: Directory,
+  patterns: Directory,
 };
 
 export default function Nav(props: NavProps) {
@@ -28,7 +28,6 @@ export default function Nav(props: NavProps) {
         <Route
           render={({ location }) =>
             <Groups
-              pathname={location.pathname}
               docs={props.docs}
               packages={props.packages}
               patterns={props.patterns}
