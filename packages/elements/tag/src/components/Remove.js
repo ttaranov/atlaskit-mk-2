@@ -1,26 +1,27 @@
 // @flow
-import React from 'react';
+import React, { PureComponent } from 'react';
 import RemoveIcon from '@atlaskit/icon/glyph/cross';
 import Button from '../styled/Remove';
 
 type Props = {
   removeText: string,
-  isRounded?: bool,
-  onHoverChange?: (hovering: bool) => mixed,
+  isRounded?: boolean,
+  onHoverChange?: (hovering: boolean) => mixed,
   onRemoveAction?: () => mixed,
-}
+};
 
-export default class Remove extends React.PureComponent<Props> {
+export default class Remove extends PureComponent<Props> {
   onKeyPress = (e: KeyboardEvent) => {
     const spacebarOrEnter = (e.key === ' ' || e.key === 'Enter');
 
     if (spacebarOrEnter) {
       e.stopPropagation();
+
       if (this.props.onRemoveAction) {
         this.props.onRemoveAction();
       }
     }
-  }
+  };
 
   onMouseOver = () => {
     if (this.props.onHoverChange) this.props.onHoverChange(true);
@@ -28,7 +29,7 @@ export default class Remove extends React.PureComponent<Props> {
 
   onMouseOut = () => {
     if (this.props.onHoverChange) this.props.onHoverChange(false);
-  }
+  };
 
   render() {
     const { isRounded, onRemoveAction, removeText } = this.props;

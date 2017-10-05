@@ -13,7 +13,7 @@ type State = {
 
 class MyTagGroup extends React.Component<Props, State> {
   state = {
-    tags: ['Candy canes', 'Tiramisu', 'Gummi bears', 'Wagon Wheels', 'Chupa Chups'],
+    tags: ['Candy canes', 'Tiramisu', 'Gummi bears', 'Wagon Wheels'],
   };
 
   handleRemoveRequest = () => true;
@@ -22,7 +22,7 @@ class MyTagGroup extends React.Component<Props, State> {
     this.setState({
       tags: this.state.tags.filter(str => str !== text),
     });
-    console.log(`Removed ${text}.`); // eslint-disable-line no-console
+    console.log(`Removed ${text}.`);
   };
 
   render() {
@@ -42,11 +42,9 @@ class MyTagGroup extends React.Component<Props, State> {
   }
 }
 
-export default function Example() {
-  return (
-    <div>
-      <MyTagGroup alignment="start" />
-      <MyTagGroup alignment="end" />
-    </div>
-  );
-}
+export default () => (
+  <div>
+    <MyTagGroup alignment="start" />
+    <MyTagGroup alignment="end" />
+  </div>
+);

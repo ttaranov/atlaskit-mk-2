@@ -1,14 +1,12 @@
 // @flow
-import { akBorderRadius, akFontSizeDefault, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize, themed, colors } from '@atlaskit/theme';
 
-export const borderRadius = akBorderRadius;
-export const fontSize = akFontSizeDefault;
-
-export const tagHeightUnitless = 2.5 * akGridSizeUnitless;
+export const focusRingColor = themed({ light: colors.B100, dark: colors.B75 });
+export const tagHeightUnitless = 2.5 * gridSize();
 export const tagHeight = `${tagHeightUnitless}px`;
 export const buttonWidthUnitless = tagHeightUnitless; // button should be square
 export const buttonWidth = tagHeight; // button should be square
-export const maxWidthUnitless = 25 * akGridSizeUnitless;
+export const maxWidthUnitless = 25 * gridSize();
 export const maxWidth = `${maxWidthUnitless}px`;
 export const maxTextWidthUnitless = maxWidthUnitless - tagHeightUnitless;
 export const maxTextWidth = `${maxTextWidthUnitless}px`;

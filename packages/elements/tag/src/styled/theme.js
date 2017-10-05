@@ -1,220 +1,100 @@
 // @flow
-import {
-  akColorN800,
-  akColorG200,
-  akColorP100,
-  akColorT200,
-  akColorR100,
-  akColorB100,
-  akColorY200,
-  akColorN0,
-  akColorN500,
-  akColorG500,
-  akColorG100,
-  akColorP500,
-  akColorP75,
-  akColorT100,
-  akColorR75,
-  akColorB75,
-  akColorY100,
-  akColorN30,
-  akColorB500,
-  akColorB400,
-  akColorN50,
-  akColorP50,
-  akColorT75,
-  akColorB50,
-  akColorN700,
-  akColorG75,
-  akColorR50,
-  akColorY75,
-  akColorN20,
-} from '@atlaskit/util-shared-styles';
+import { colors, themed } from '@atlaskit/theme';
 
-type color = {|
-  normal: {
-    text: string,
-    background: string,
-  },
-  hover: {
-    text: string,
-    background: string,
-  }
-|}
+type Themes = {|
+  light: string,
+  dark: string,
+|};
 
-type tag = {|
-  green: color,
-  standard: color,
-  blue: color,
-  red: color,
-  purple: color,
-  grey: color,
-  teal: color,
-  yellow: color,
-  greenLight: color,
-  blueLight: color,
-  redLight: color,
-  purpleLight: color,
-  greyLight: color,
-  tealLight: color,
-  yellowLight: color,
-|}
+type Properties = {|
+  green: Themes,
+  standard: Themes,
+  blue: Themes,
+  red: Themes,
+  purple: Themes,
+  grey: Themes,
+  teal: Themes,
+  yellow: Themes,
+  greenLight: Themes,
+  blueLight: Themes,
+  redLight: Themes,
+  purpleLight: Themes,
+  greyLight: Themes,
+  tealLight: Themes,
+  yellowLight: Themes,
+|};
 
-const theme: { tag: tag } = {
-  tag: {
-    standard: {
-      normal: {
-        text: akColorN700,
-        background: akColorN20,
-      },
-      hover: {
-        text: akColorN700,
-        background: akColorN30,
-      },
-    },
-    green: {
-      normal: {
-        text: akColorN800,
-        background: akColorG200,
-      },
-      hover: {
-        text: akColorB400,
-        background: akColorG100,
-      },
+const textColors = themed('color', ({
+  standard: { light: colors.N700, dark: colors.DN600 },
+  green: { light: colors.N800, dark: colors.N800 },
+  purple: { light: colors.N800, dark: colors.N800 },
+  red: { light: colors.N800, dark: colors.N800 },
+  yellow: { light: colors.N800, dark: colors.N800 },
+  grey: { light: colors.N0, dark: colors.N0 },
+  teal: { light: colors.N800, dark: colors.N800 },
+  blue: { light: colors.N800, dark: colors.N800 },
+  tealLight: { light: colors.N500, dark: colors.N500 },
+  blueLight: { light: colors.B500, dark: colors.B500 },
+  greenLight: { light: colors.G500, dark: colors.G500 },
+  purpleLight: { light: colors.P500, dark: colors.P500 },
+  redLight: { light: colors.N500, dark: colors.N500 },
+  yellowLight: { light: colors.N500, dark: colors.N500 },
+  greyLight: { light: colors.N500, dark: colors.N500 },
+}: Properties));
 
-    },
-    purple: {
-      normal: {
-        text: akColorN800,
-        background: akColorP100,
-      },
-      hover: {
-        text: akColorB400,
-        background: akColorP75,
-      },
-    },
-    red: {
-      normal: {
-        text: akColorN800,
-        background: akColorR100,
-      },
-      hover: {
-        text: akColorB400,
-        background: akColorR75,
-      },
-    },
-    yellow: {
-      normal: {
-        text: akColorN800,
-        background: akColorY200,
-      },
-      hover: {
-        text: akColorB400,
-        background: akColorY100,
-      },
-    },
-    grey: {
-      normal: {
-        text: akColorN0,
-        background: akColorN500,
-      },
-      hover: {
-        text: akColorB400,
-        background: akColorN50,
-      },
-    },
-    teal: {
-      normal: {
-        text: akColorN800,
-        background: akColorT200,
-      },
-      hover: {
-        text: akColorB400,
-        background: akColorT100,
-      },
+const backgroundColors = themed('color', ({
+  standard: { light: colors.N20, dark: colors.DN100A },
+  green: { light: colors.G200, dark: colors.G200 },
+  purple: { light: colors.P100, dark: colors.P100 },
+  red: { light: colors.R100, dark: colors.R100 },
+  yellow: { light: colors.Y200, dark: colors.Y200 },
+  grey: { light: colors.N500, dark: colors.N500 },
+  teal: { light: colors.T200, dark: colors.T200 },
+  blue: { light: colors.B100, dark: colors.B100 },
+  tealLight: { light: colors.T100, dark: colors.T100 },
+  blueLight: { light: colors.B75, dark: colors.B75 },
+  greenLight: { light: colors.G100, dark: colors.G100 },
+  purpleLight: { light: colors.P75, dark: colors.P75 },
+  redLight: { light: colors.R75, dark: colors.R75 },
+  yellowLight: { light: colors.Y100, dark: colors.Y100 },
+  greyLight: { light: colors.N30, dark: colors.N30 },
+}: Properties));
 
-    },
-    blue: {
-      normal: {
-        text: akColorN800,
-        background: akColorB100,
-      },
-      hover: {
-        text: akColorB400,
-        background: akColorB75,
-      },
-    },
-    tealLight: {
-      normal: {
-        text: akColorN500,
-        background: akColorT100,
-      },
-      hover: {
-        text: akColorB400,
-        background: akColorT75,
-      },
-    },
-    blueLight: {
-      normal: {
-        text: akColorB500,
-        background: akColorB75,
-      },
-      hover: {
-        text: akColorB400,
-        background: akColorB50,
-      },
-    },
-    greenLight: {
-      normal: {
-        text: akColorG500,
-        background: akColorG100,
-      },
-      hover: {
-        text: akColorB400,
-        background: akColorG75,
-      },
-    },
-    purpleLight: {
-      normal: {
-        text: akColorP500,
-        background: akColorP75,
-      },
-      hover: {
-        text: akColorB400,
-        background: akColorP50,
-      },
-    },
-    redLight: {
-      normal: {
-        text: akColorN500,
-        background: akColorR75,
-      },
-      hover: {
-        text: akColorB400,
-        background: akColorR50,
-      },
-    },
-    yellowLight: {
-      normal: {
-        text: akColorN500,
-        background: akColorY100,
-      },
-      hover: {
-        text: akColorB400,
-        background: akColorY75,
-      },
-    },
-    greyLight: {
-      normal: {
-        text: akColorN500,
-        background: akColorN30,
-      },
-      hover: {
-        text: akColorB400,
-        background: akColorN20,
-      },
-    },
-  },
-};
+export const textColor = textColors;
+export const backgroundColor = backgroundColors;
 
-export default theme;
+export const textColorHover = themed('color', ({
+  standard: { light: colors.N700, dark: colors.B75 },
+  green: { light: colors.B400, dark: colors.B100 },
+  purple: { light: colors.B400, dark: colors.B100 },
+  red: { light: colors.B400, dark: colors.B100 },
+  yellow: { light: colors.B400, dark: colors.B100 },
+  grey: { light: colors.B400, dark: colors.B100 },
+  teal: { light: colors.B400, dark: colors.B100 },
+  blue: { light: colors.B400, dark: colors.B100 },
+  tealLight: { light: colors.B400, dark: colors.B100 },
+  blueLight: { light: colors.B400, dark: colors.B100 },
+  greenLight: { light: colors.B400, dark: colors.B100 },
+  purpleLight: { light: colors.B400, dark: colors.B100 },
+  redLight: { light: colors.B400, dark: colors.B100 },
+  yellowLight: { light: colors.B400, dark: colors.B100 },
+  greyLight: { light: colors.B400, dark: colors.B100 },
+}: Properties));
+
+export const backgroundColorHover = themed('color', ({
+  standard: { light: colors.N30, dark: colors.DN60 },
+  green: { light: colors.G100, dark: colors.DN60 },
+  purple: { light: colors.P75, dark: colors.DN60 },
+  red: { light: colors.R75, dark: colors.DN60 },
+  yellow: { light: colors.Y100, dark: colors.DN60 },
+  grey: { light: colors.N50, dark: colors.DN60 },
+  teal: { light: colors.T100, dark: colors.DN60 },
+  blue: { light: colors.B75, dark: colors.DN60 },
+  tealLight: { light: colors.T75, dark: colors.DN60 },
+  blueLight: { light: colors.B50, dark: colors.DN60 },
+  greenLight: { light: colors.G75, dark: colors.DN60 },
+  purpleLight: { light: colors.P50, dark: colors.DN60 },
+  redLight: { light: colors.R50, dark: colors.DN60 },
+  yellowLight: { light: colors.Y75, dark: colors.DN60 },
+  greyLight: { light: colors.N30, dark: colors.DN60 },
+}: Properties));

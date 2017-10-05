@@ -5,7 +5,7 @@ import Tag from '@atlaskit/tag';
 import TagGroup from '../src';
 import Container from '../src/styled/Container';
 
-describe('Tag-group', () => {
+describe('TagGroup', () => {
   it('should export a base component', () => {
     expect(shallow(<TagGroup><Tag text="test" /></TagGroup>)).toBeInstanceOf(Object);
   });

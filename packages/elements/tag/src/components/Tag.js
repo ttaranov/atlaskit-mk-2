@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { PureComponent, type Node } from 'react';
 
 import Chrome from './Chrome';
 import Content from './Content';
@@ -7,7 +7,7 @@ import Remove from './Remove';
 
 import Before from '../styled/Before';
 import Container from '../styled/Container';
-import type { appearanceType, tagColor, ReactElement } from '../types';
+import type { AppearanceType, TagColor } from '../types';
 
 const colorList = [
   'standard',
@@ -29,11 +29,11 @@ const colorList = [
 
 type Props = {
   /** Set whether tags should be rounded. */
-  appearance?: appearanceType,
+  appearance?: AppearanceType,
   /** The color theme to apply, setting both background and text color. */
-  color?: tagColor,
+  color?: TagColor,
   /** Component to be rendered before the Tag. */
-  elemBefore?: ReactElement,
+  elemBefore?: Node,
   /** Text to be displayed in the tag. */
   text: string,
   /** uri or path. If provided, the tag will be a link.  */
@@ -50,20 +50,20 @@ type Props = {
 };
 
 type State = {
-  isRemoving: bool,
-  isRemoved: bool,
-  markedForRemoval: bool,
-  isFocused: bool,
-}
+  isRemoving: boolean,
+  isRemoved: boolean,
+  markedForRemoval: boolean,
+  isFocused: boolean,
+};
 
-export default class Tag extends React.PureComponent<Props, State> {
+export default class Tag extends PureComponent<Props, State> {
   static defaultProps = {
     color: 'standard',
     appearance: 'default',
     elemBefore: null,
     onAfterRemoveAction: () => {},
     onBeforeRemoveAction: () => true,
-  }
+  };
 
   state = {
     isRemoving: false,
@@ -76,22 +76,22 @@ export default class Tag extends React.PureComponent<Props, State> {
     if (this.props.onBeforeRemoveAction && this.props.onBeforeRemoveAction()) {
       this.setState({ isRemoving: true, isRemoved: false });
     }
-  }
+  };
 
   handleRemoveComplete = () => {
     if (this.props.onAfterRemoveAction) {
       this.props.onAfterRemoveAction(this.props.text);
     }
     this.setState({ isRemoving: false, isRemoved: true });
-  }
+  };
 
   handleHoverChange = (hoverState: boolean) => {
     this.setState({ markedForRemoval: hoverState });
-  }
+  };
 
   handleFocusChange = (focusState: boolean) => {
     this.setState({ isFocused: focusState });
-  }
+  };
 
   render() {
     const { isFocused, isRemoved, isRemoving, markedForRemoval } = this.state;

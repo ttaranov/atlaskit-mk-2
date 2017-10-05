@@ -1,10 +1,10 @@
 // @flow
-import React from 'react';
+import React, { PureComponent, type Node } from 'react';
 import Span from '../styled/Chrome';
-import type { tagColor, ReactElement } from '../types';
+import type { TagColor } from '../types';
 
 type Props = {
-  children: Array<ReactElement>,
+  children: Node,
   isLink: bool,
   isRemovable: bool,
   isRemoved?: bool,
@@ -12,10 +12,10 @@ type Props = {
   isRounded?: bool,
   markedForRemoval: bool,
   onFocusChange: (focused: boolean) => mixed,
-  color: tagColor,
+  color: TagColor,
 };
 
-export default class Chrome extends React.PureComponent<Props> {
+export default class Chrome extends PureComponent<Props> {
   chromeRef: HTMLElement;
 
   handleKeyPress = (e: KeyboardEvent) => {
@@ -29,11 +29,11 @@ export default class Chrome extends React.PureComponent<Props> {
 
   handleBlur = () => {
     this.props.onFocusChange(false);
-  }
+  };
 
   handleFocus = (e: Event) => {
     if (e.target === this.chromeRef) this.props.onFocusChange(true);
-  }
+  };
 
   render() {
     const {

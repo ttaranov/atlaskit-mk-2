@@ -20,6 +20,7 @@ function getRemovedStyles({ isRemoved }) {
 
   return styles;
 }
+
 function getRemovingStyles({ isRemoving }) {
   let styles;
   if (isRemoving) styles = `animation: ${removeAnimation} 250ms forwards; will-change: width;`;
