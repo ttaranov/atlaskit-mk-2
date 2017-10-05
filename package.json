@@ -19,6 +19,7 @@
     "typecheck:flow": "      flow check",
     "typecheck:typescript": "tsc --noEmit",
     "website:start": "       cd website && yarn start",
+    "start": "               yarn run website:start",
     "changeset": "           projector ./projector changeset",
     "release": "             projector ./projector release"
   },
