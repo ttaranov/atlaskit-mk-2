@@ -6,5 +6,8 @@ export default md`
 
   ## Inline Code
 
-  ${<Example source={require('!!raw-loader!../examples/00-inline-code-basic')} />}
+  ${<Example
+    Component={require('../examples/00-inline-code-basic').default}
+    source={require('!!raw-loader!../examples/00-inline-code-basic')}
+  />}
 `;

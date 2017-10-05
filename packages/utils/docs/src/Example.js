@@ -1,24 +1,48 @@
 // @flow
-/* eslint-disable */
-import React from 'react';
-// import { AkCodeBlock } from '@atlaskit/code';
+import React, { type ComponentType } from 'react';
 
-type ExampleProps = {
-  source: string,
+type Props = {
+  Component: ComponentType<*>,
   language: string,
+  source: string,
 };
 
-export default function Example(props: ExampleProps) {
-  const { source, language } = this.props;
+type State = {
+  sourceIsVisible: boolean,
+};
 
-  return (
-    // <AkCodeBlock
-    //   text={source}
-    //   language={language || 'javascript'}
-    // />
-    <div>
-      {language ? `${language}:` : null }
-      <pre style={{ width: '100%', overflowX: 'scroll' }}>{source}</pre>
-    </div>
-  );
+export default class Example extends React.Component<Props, State> {
+  static defaultProps = {
+    language: 'javascript',
+  }
+  state = {
+    sourceIsVisible: false,
+  }
+
+  toggleSource = () => {
+    this.setState({
+      sourceIsVisible: !this.state.sourceIsVisible,
+    });
+  }
+
+  render() {
+    const { Component, language, source } = this.props;
+    const { sourceIsVisible } = this.state;
+    return (
+      <div>
+        <Component />
+        {sourceIsVisible ? (
+          <div>
+            {`${language}:`}
+            <pre style={{ width: '100%', overflowX: 'scroll' }}>{source}</pre>
+            <button onClick={this.toggleSource}>Hide Example Source</button>
+          </div>
+        ) : (
+          <div>
+            <button onClick={this.toggleSource}>Show Example Source</button>
+          </div>
+        )}
+      </div>
+    );
+  }
 }

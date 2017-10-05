@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable import/extensions, import/no-webpack-loader-syntax, global-require */
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example } from '@atlaskit/docs';
 
 export default md`
   Badges are visual indicators for numeric values such as tallies and scores.
@@ -14,7 +14,8 @@ export default md`
   - Use labels to call out tags and high-visibility attributes.
   - Use a tooltip if you want to indicate units.
 
-  ${<Example source={require('!!raw-loader!../examples/0-basic')} />}
-
-  ${<Props source={require('!!raw-loader!../src/components/Badge')} />}
+  ${<Example
+    Component={require('../examples/0-basic').default}
+    source={require('!!raw-loader!../examples/0-basic')}
+  />}
 `;
