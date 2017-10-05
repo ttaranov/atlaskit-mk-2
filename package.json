@@ -65,7 +65,7 @@
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-prefer-object-spread": "^1.2.1",
     "eslint-plugin-react": "^7.1.0",
-    "extract-react-types": "^0.2.1",
+    "extract-react-types": "^0.2.2",
     "file-loader": "^0.11.2",
     "flow-bin": "^0.53.0",
     "jest": "^20.0.4",
