@@ -1,7 +1,6 @@
 // @flow
-/* eslint-disable import/extensions, import/no-webpack-loader-syntax, global-require */
 import React from 'react';
-import { md, Example } from '@atlaskit/docs';
+import { md, Example, Props } from '@atlaskit/docs';
 
 export default md`
   Use lozenges to highlight an item's status for quick recognition. Use
@@ -12,4 +11,6 @@ export default md`
     Component={require('../examples/0-basic').default}
     source={require('!!raw-loader!../examples/0-basic')}
   />}
+
+  ${<Props props={require('!!extract-react-types-loader!../src/Lozenge')} />}
 `;
