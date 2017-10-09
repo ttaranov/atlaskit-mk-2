@@ -7,13 +7,8 @@ type Props = {
   children: Node,
 };
 
-export default class extends React.Component<Props> {
-  props: Props;
-  render() {
-    return (
-      <Button appearance="subtle" spacing="none" tabIndex={-1}>
-        {this.props.children}
-      </Button>
-    );
-  }
-}
+export default (props: Props) => (
+  <Button appearance="subtle" spacing="none" tabIndex={-1}>
+    {props.children}
+  </Button>
+);

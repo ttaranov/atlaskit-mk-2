@@ -3,7 +3,7 @@
 import ArrowleftIcon from '@atlaskit/icon/glyph/arrowleft';
 import ArrowrightIcon from '@atlaskit/icon/glyph/arrowright';
 import { colors } from '@atlaskit/theme';
-import React, { Component } from 'react';
+import React from 'react';
 import { getMonthName } from '../util';
 import Btn from './Btn';
 
@@ -16,25 +16,18 @@ type Props = {|
   handleClickPrev: () => void,
 |};
 
-export default class CalendarHeading extends Component<Props> {
-  props: Props;
-
-  render() {
-    const { month, year } = this.props;
-    return (
-      <Heading>
-        <div aria-hidden="true" onClick={this.props.handleClickPrev}>
-          <Btn>
-            <ArrowleftIcon label="Last month" size="medium" primaryColor={colors.N80} />
-          </Btn>
-        </div>
-        <MonthAndYear>{`${getMonthName(month)} ${year}`}</MonthAndYear>
-        <div aria-hidden="true" onClick={this.props.handleClickNext}>
-          <Btn>
-            <ArrowrightIcon label="Next month" size="medium" primaryColor={colors.N80} />
-          </Btn>
-        </div>
-      </Heading>
-    );
-  }
-}
+export default (props: Props) => (
+  <Heading>
+    <div aria-hidden="true" onClick={props.handleClickPrev}>
+      <Btn>
+        <ArrowleftIcon label="Last month" size="medium" primaryColor={colors.N80} />
+      </Btn>
+    </div>
+    <MonthAndYear>{`${getMonthName(props.month)} ${props.year}`}</MonthAndYear>
+    <div aria-hidden="true" onClick={props.handleClickNext}>
+      <Btn>
+        <ArrowrightIcon label="Next month" size="medium" primaryColor={colors.N80} />
+      </Btn>
+    </div>
+  </Heading>
+);

@@ -25,8 +25,10 @@ export default class extends Component<Props, State> {
   static defaultProps = {
     disabled: false,
     focused: false,
+    isToday: false,
     onClick() {},
     previouslySelected: false,
+    selected: false,
     sibling: false,
     today: '',
   };

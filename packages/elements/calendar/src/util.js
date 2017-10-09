@@ -36,7 +36,7 @@ export function dateToString(date: Date, { fixMonth }: DateToStringOptions = {})
 export function makeArrayFromNumber(i: number) {
   const arr = [];
   const num = Math.ceil(i);
-  for (let a = 0; a < num; a++) {
+  for (let a = 0; a < num; a += 1) {
     arr.push(a);
   }
   return arr;

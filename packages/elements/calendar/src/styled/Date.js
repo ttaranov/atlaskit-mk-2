@@ -21,15 +21,11 @@ const hoverBackground = themed({ light: colors.N30A, dark: colors.N900 });
 
 const getBackgroundColorSelectedAfter = themed({ light: colors.N700, dark: colors.N700 });
 
-const getBackgroundColorsAfter = props => (
-  props.selected ? getBackgroundColorSelectedAfter(props) : colors.primary(props)
-);
+const getBackgroundColorsAfter = props => (props.selected ? getBackgroundColorSelectedAfter(props) : colors.primary(props));
 
 const getBorderColorFocused = themed({ light: colors.B100, dark: colors.B75 });
 
-const getBorderColors = props => (
-  (props.focused && !props.selected) ? getBorderColorFocused(props) : getTransparent(props)
-);
+const getBorderColors = props => (props.focused && !props.selected ? getBorderColorFocused(props) : getTransparent(props));
 
 function getBackgroundColor(props) {
   if (props.selected) return selectedBackground(props);
@@ -46,7 +42,7 @@ function getColor(props) {
   return colors.text(props);
 }
 
-const getCursor = ({ disabled }) => disabled ? 'default' : 'pointer';
+const getCursor = ({ disabled }) => (disabled ? 'default' : 'pointer');
 
 function getHoverBackgroundColor(props) {
   if (props.previouslySelected) return hoverPreviouslySelectedBackground(props);
@@ -54,11 +50,8 @@ function getHoverBackgroundColor(props) {
   return hoverBackground(props);
 }
 
-const getHoverColor = (props) => (
-  (props.selected || props.previouslySelected || props.isActive)
-  ? textHoverSelected(props)
-  : colors.text(props)
-);
+const getHoverColor = props =>
+  props.selected || props.previouslySelected || props.isActive ? textHoverSelected(props) : colors.text(props);
 
 export const DateDiv = styled.div`
   background-color: ${getBackgroundColor};
@@ -71,21 +64,22 @@ export const DateDiv = styled.div`
   position: relative;
   text-align: center;
 
-  ${(props) => props.isToday ? css`
-    font-weight: bold;
-    &::after {
-      background-color: ${getBackgroundColorsAfter(props)};
-      bottom: 1px;
-      content: "";
-      display: block;
-      height: 1px;
-      left: 2px;
-      position: absolute;
-      right: 2px;
-    }
-  ` : ''}
-
-  &:hover {
+  ${props =>
+    props.isToday
+      ? css`
+          font-weight: bold;
+          &::after {
+            background-color: ${getBackgroundColorsAfter(props)};
+            bottom: 1px;
+            content: '';
+            display: block;
+            height: 1px;
+            left: 2px;
+            position: absolute;
+            right: 2px;
+          }
+        `
+      : ''} &:hover {
     background-color: ${getHoverBackgroundColor};
     color: ${getHoverColor};
   }

@@ -29,7 +29,7 @@ describe(name, () => {
         .find(MonthAndYear)
         .at(0)
         .text()
-        .includes(`${getMonthName(nowMonth)} ${nowYear}`)
+        .includes(`${getMonthName(nowMonth)} ${nowYear}`),
     ).toBe(true);
   });
 
@@ -45,7 +45,7 @@ describe(name, () => {
           expect(iso).toBe('2016-01-01');
           done();
         }}
-      />
+      />,
     );
     wrapper
       .find(DateComponent)
@@ -67,14 +67,14 @@ describe(name, () => {
       wrapper.find({
         children: 1,
         selected: true,
-      })
+      }),
     ).toHaveLength(1);
 
     expect(
       wrapper.find({
         children: 2,
         selected: true,
-      })
+      }),
     ).toHaveLength(1);
   });
 });

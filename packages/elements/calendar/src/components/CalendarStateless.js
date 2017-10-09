@@ -166,9 +166,9 @@ export default class CalendarStateless extends Component<Props> {
 
     if (month === monthsPerYear) {
       month = 1;
-      year++;
+      year += 1;
     } else {
-      month++;
+      month += 1;
     }
 
     return { month, year };
@@ -179,9 +179,9 @@ export default class CalendarStateless extends Component<Props> {
 
     if (month === 1) {
       month = monthsPerYear;
-      year--;
+      year -= 1;
     } else {
-      month--;
+      month -= 1;
     }
 
     return { month, year };
@@ -201,7 +201,7 @@ export default class CalendarStateless extends Component<Props> {
         ...this.calendar
           .getCalendar(year, month)
           .slice(sliceStart, sliceStart + daysPerWeek)
-          .map(e => ({ ...e, siblingMonth: true }))
+          .map(e => ({ ...e, siblingMonth: true })),
       );
     }
 
@@ -234,7 +234,7 @@ export default class CalendarStateless extends Component<Props> {
           year={date.year}
         >
           {date.day}
-        </DateComponent>
+        </DateComponent>,
       );
     });
 
@@ -253,7 +253,7 @@ export default class CalendarStateless extends Component<Props> {
             <CalendarThead>
               <tr>{makeArrayFromNumber(daysPerWeek).map(i => <CalendarTh key={i}>{getDayName(i)}</CalendarTh>)}</tr>
             </CalendarThead>
-            <CalendarTbody style={{ border: 0 }}>{weeks.map((week, i) => <tr key={i}>{week}</tr>)}</CalendarTbody>
+            <CalendarTbody style={{ border: 0 }}>{weeks.map(week => <tr>{week}</tr>)}</CalendarTbody>
           </CalendarTable>
         </Wrapper>
       </div>
