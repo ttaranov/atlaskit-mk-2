@@ -1,26 +1,32 @@
+// @flow
 /* eslint-disable react/prop-types */
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, type Node } from 'react';
 import styled from 'styled-components';
 import { colors, gridSize, math } from '@atlaskit/theme';
 
-const MetaItem = ({ href, label, summary }) => (
+type MetaItemProps = {
+  href?: string,
+  label: Node,
+  summary: Node,
+};
+
+const MetaItem = (props: MetaItemProps) => (
   <DI>
-    <DT>{label}</DT>
-    <DD>{href
-      ? <a href={href} target="_new">{summary}</a>
-      : summary
+    <DT>{props.label}</DT>
+    <DD>{props.href
+      ? <a href={props.href} target="_new">{props.summary}</a>
+      : props.summary
     }</DD>
   </DI>
 );
 
-export default class MetaData extends Component {
-  static propTypes = {
-    packageSrc: PropTypes.string,
-    packageName: PropTypes.string,
-  }
+export type MetaDataProps = {
+  packageSrc: string,
+  packageName: string
+}
 
+export default class MetaData extends Component<MetaDataProps> {
   render() {
     const { packageSrc, packageName } = this.props;
 
@@ -61,6 +67,7 @@ const Meta = styled.section`
     padding-top: ${math.multiply(gridSize, 3)}px;
   }
 `;
+
 const DI = styled.div`
   box-sizing: border-box;
   display: flex;
@@ -75,10 +82,12 @@ const DI = styled.div`
     flex-basis: 50%;
   }
 `;
+
 const DT = styled.div`
   color: ${colors.subtleText};
   flex-basis: 25%;
 `;
+
 const DD = styled.div`
   flex: 1 0 auto;
 `;

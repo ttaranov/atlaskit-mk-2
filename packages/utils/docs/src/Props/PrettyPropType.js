@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import React, { type Node } from 'react';
 import styled from 'styled-components';
 
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
@@ -11,13 +11,16 @@ const Wrapper = styled.code`
   margin-bottom: ${gridSize}px;
   margin-top: ${gridSize}px;
 `;
+
 const Block = styled.span`
   display: block;
 `;
+
 const TypeMinWidth = styled.span`
   display: inline-block;
   min-width: 60px;
 `;
+
 const Type = styled.span`
   background-color: ${themed({ light: colors.P50, dark: colors.P500 })};
   border-radius: ${borderRadius}px;
@@ -26,25 +29,34 @@ const Type = styled.span`
   margin: 2px 0;
   padding: 0 0.2em;
 `;
+
+// $FlowFixMe
 const TypeMeta = styled(Type)`
   background-color: ${themed({ light: colors.N20, dark: colors.DN50 })};
   color: ${themed({ light: colors.subtleText, dark: colors.subtleText })};
 `;
+
+// $FlowFixMe
 const StringType = styled(Type)`
   background-color: ${themed({ light: colors.G50, dark: colors.G500 })};
   color: ${themed({ light: colors.G500, dark: colors.G100 })};
 `;
+
+// $FlowFixMe
 const InstanceType = styled(Type)`
   background-color: ${themed({ light: colors.Y50, dark: colors.G500 })};
   color: ${themed({ light: colors.Y500, dark: colors.G100 })};
 `;
+
 const Required = styled.span`
   color: ${themed({ light: colors.R500, dark: colors.R300 })};
 `;
+
 const Outline = styled.span`
   color: ${themed({ light: colors.subtleText, dark: colors.subtleText })};
   line-height: 1;
 `;
+
 const Invalid = styled.span`
   color: ${themed({ light: colors.N80, dark: colors.DN80 })};
   margin: ${math.divide(gridSize, 2)}px;
@@ -64,12 +76,13 @@ function printComplexType(type) {
 /* eslint-enable no-use-before-define */
 /* eslint-enable prefer-rest-params */
 
-function print(type, depth = 1) {
-  const Indent = ({ children }) => (
-    <div style={{ paddingLeft: '1.3em' }}>{children}</div>
+function Indent(props: { children: Node }) {
+  return (
+    <div style={{ paddingLeft: '1.3em' }}>{props.children}</div>
   );
-  Indent.propTypes = { children: PropTypes.node };
+}
 
+function print(type, depth = 1) {
   if (type.kind === 'string' || type.kind === 'stringLiteral') {
     if (type.value) {
       return <StringType>{'"'}{type.value}{'"'}</StringType>;
@@ -101,7 +114,7 @@ function print(type, depth = 1) {
               <TypeMinWidth><Type>{prop.key}</Type></TypeMinWidth>
               {' '}{prop.value.kind}
               {prop.optional ? null : <Required> required</Required>}
-              {' '}{printComplexType(prop.value, depth + 1)}
+              {' '}{printComplexType(prop.value)}
             </div>
           ))}
         </Indent>
@@ -125,7 +138,7 @@ function print(type, depth = 1) {
         <TypeMeta>One of <Outline>{'('}</Outline></TypeMeta>
         <Indent>
           {Array.isArray(type.value)
-            ? type.value.map((v, i) => <Block key={i}>{print(v.value, depth + 1)}</Block>)
+            ? type.value.map((v, i) => <Block key={i}>{print(v.value, depth + 1)}</Block>) // eslint-disable-line react/no-array-index-key
             : print(type.value, depth + 1)}
         </Indent>
         <TypeMeta><Outline>{')'}</Outline></TypeMeta>
@@ -158,24 +171,17 @@ function print(type, depth = 1) {
   return <Invalid>{JSON.stringify(type)}</Invalid>;
 }
 
-export default class PrettyPropType extends Component {
-  static propTypes = {
-    type: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.object,
-    ]).isRequired,
-  }
-  state = {}
-  render() {
-    const { type } = this.props;
+type PrettyPropTypeProps = {
+  type: Object,
+};
 
-    if (SIMPLE_TYPES.includes(type.kind)) return null;
-    if (type.kind === 'nullable' && SIMPLE_TYPES.includes(type.arguments.kind)) return null;
+export default function PrettyPropType(props: PrettyPropTypeProps) {
+  if (SIMPLE_TYPES.includes(props.type.kind)) return null;
+  if (props.type.kind === 'nullable' && SIMPLE_TYPES.includes(props.type.arguments.kind)) return null;
 
-    return (
-      <Wrapper>
-        {print(type)}
-      </Wrapper>
-    );
-  }
+  return (
+    <Wrapper>
+      {print(props.type)}
+    </Wrapper>
+  );
 }

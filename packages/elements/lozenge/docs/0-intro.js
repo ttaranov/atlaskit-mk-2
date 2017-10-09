@@ -7,7 +7,10 @@ export default md`
   subtle lozenges by default and in instances where they may dominate the
   screen, such as in long tables.
 
-  ${<Example source={require('!!raw-loader!../examples/0-basic')} />}
+  ${<Example
+    Component={require('../examples/0-basic').default}
+    source={require('!!raw-loader!../examples/0-basic')}
+  />}
 
-  ${<Props source={require('!!raw-loader!../src/Lozenge')} />}
+  ${<Props props={require('!!extract-react-types-loader!../src/Lozenge')} />}
 `;

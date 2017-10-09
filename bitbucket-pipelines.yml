@@ -8,6 +8,7 @@ pipelines:
             - bolt install
             - bolt build
             - bolt lint
+            - bolt typecheck
             - bolt test
             - bolt release
 
@@ -18,4 +19,5 @@ pipelines:
           - bolt install
           - bolt build
           - bolt lint
+          - bolt typecheck
           - bolt test

@@ -1,27 +1,16 @@
 // @flow
+
 import React, { type Node } from 'react';
 import styled from 'styled-components';
 import { gridSize, colors, math } from '@atlaskit/theme';
 import { Link } from 'react-router-dom';
-import Page from './../Page';
-import FourOhFour from './../FourOhFour';
+import Page from '../../components/Page';
+import FourOhFour from '../FourOhFour';
 import { getPackageByGroupAndName } from '../../utils/packages';
-import { getList, formatLink, formatName } from '../../utils/examples';
+import { getList } from '../../utils/examples';
+import { isModuleNotFoundError } from '../../utils/errors';
 import MetaData from './MetaData';
 import { join } from '../../utils/path';
-
-type PackageProps = {
-  match: {
-    params: {
-      name: string,
-      group: string,
-    },
-  },
-};
-
-type PackageState = {
-  children?: Node,
-};
 
 export const Intro = styled.p`
   color: ${colors.heading};
@@ -42,7 +31,13 @@ export const Sep = styled.hr`
   }
 `;
 
-export const ExamplesList = props => {
+type ExamplesListProps = {
+  examples: Array<{ name: string, link: string }>,
+  group: string,
+  name: string,
+};
+
+export const ExamplesList = (props: ExamplesListProps) => {
   const { examples, name, group } = props;
 
   if (!examples || !examples.length) return null;
@@ -52,9 +47,9 @@ export const ExamplesList = props => {
       <Sep />
       <h2>Examples</h2>
       <ul>
-        {examples.map(e => (
-          <li key={e.name}>
-            <Link to={`/packages/${group}/${name}/examples/${e.link}`}>{e.name}</Link>
+        {examples.map(example => (
+          <li key={example.name}>
+            <Link to={`/packages/${group}/${name}/examples/${example.link}`}>{example.name}</Link>
           </li>
         ))}
       </ul>
@@ -62,18 +57,41 @@ export const ExamplesList = props => {
   );
 };
 
-export const NoDocs = props => <div>Component "{props.name}" doesn't have any docs.</div>;
+type NoDocsProps = {
+  name: string,
+};
+
+export const NoDocs = (props: NoDocsProps) => {
+  return (
+    <div>Component "{props.name}" doesn't have any docs.</div>
+  );
+};
+
+type PackageProps = {
+  name: string,
+  group: string,
+  match: {
+    params: {
+      name: string,
+      group: string,
+    },
+  },
+};
+
+type PackageState = {
+  children?: Node,
+};
 
 export default class Package extends React.Component<PackageProps, PackageState> {
   state = { children: null };
   props: PackageProps;
 
-  async componentDidMount() {
+  componentDidMount() {
     const { name, group } = this.props.match.params;
     this.loadDoc(name, group);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: PackageProps) {
     if (nextProps.match.params.name === this.props.match.params.name) {
       return;
     }
@@ -81,18 +99,21 @@ export default class Package extends React.Component<PackageProps, PackageState>
     this.loadDoc(name, group);
   }
 
-  loadDoc(name, group) {
+  loadDoc(name: string, group: string) {
     const pkg = getPackageByGroupAndName(group, name);
+    if (!pkg) return;
+
     this.setState({ children: null }, () => {
-      require.ensure([], require => {
-        let children;
-        try {
-          children = require(`../../../../packages/${group}/${name}/docs/0-intro`).default;
-          this.setState({ children });
-        } catch (e) {
-          this.setState({ children: <NoDocs name={pkg.name} /> });
-        }
-      });
+      // $FlowFixMe
+      import(`../../../../packages/${group}/${name}/docs/0-intro`)
+        .then((children: { default: Node }) => this.setState({ children: children.default }))
+        .catch((e) => {
+          if (isModuleNotFoundError(e)) {
+            this.setState({ children: <NoDocs name={pkg.name} /> })
+          } else {
+            throw e;
+          }
+        });
     });
   }
 

@@ -19,16 +19,16 @@ describe('Badge', () => {
       expect(mount(<Badge value={Infinity} max={Infinity} />).text()).toBe('∞');
     });
 
-    it('should trigger onValueUpdated when value prop changed with a number', (done) => {
+    it('should trigger onValueUpdated when value prop changed with a number', done => {
       const badge = mount(
         <Badge
           value={1}
-          onValueUpdated={(detail) => {
+          onValueUpdated={detail => {
             expect(detail.oldValue).toBe(1);
             expect(detail.newValue).toBe(20);
             done();
           }}
-        />
+        />,
       );
       badge.setProps({ value: 20 });
     });
@@ -59,13 +59,13 @@ describe('Badge', () => {
     });
 
     it('should change when set to an approved value', () => {
-      APPEARANCE_ENUM.values.forEach((value) => {
+      APPEARANCE_ENUM.values.forEach(value => {
         expect(mount(<Badge appearance={value} />).prop('appearance')).toBe(value);
       });
     });
 
     it('should revert to "default" when set to an invalid value', () => {
-      expect(mount(<Badge appearance={("foo": any)} />).find('BadgeElement').prop('appearance')).toBe('default');
+      expect(mount(<Badge appearance={('foo': any)} />).find('BadgeElement').prop('appearance')).toBe('default');
     });
   });
 });

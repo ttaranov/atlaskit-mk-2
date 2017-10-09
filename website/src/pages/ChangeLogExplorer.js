@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component, type Node } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -7,24 +7,23 @@ import BackIcon from '@atlaskit/icon/glyph/arrow-left';
 import TextField from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
 
-import Changelog, { NoMatch } from './ChangeLog';
-import Page from './Page';
+import Changelog, { NoMatch } from '../components/ChangeLog';
+import Page from '../components/Page';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
   match: {
     isExact: boolean,
-    params: { component?: string, semver?: string },
+    params: { component: string, semver?: string },
     path: string,
     url: string,
   },
   history: any,
 };
 type State = { isInvalid: boolean, range: string };
-/* eslint-enable react/no-unused-prop-types */
 
-export default class ChangelogExplorer extends PureComponent {
-  props: Props; // eslint-disable-line react/sort-comp
+export default class ChangelogExplorer extends Component<Props, State> {
+  props: Props;
   state: State = { isInvalid: false, range: '' };
 
   componentWillMount() {
@@ -44,13 +43,14 @@ export default class ChangelogExplorer extends PureComponent {
   };
 
   render() {
-    const { component } = this.props.match.params;
-    let changelog = '';
+    const { component = '' } = this.props.match.params;
+    let changelog = [];
     try {
+      // $FlowFixMe
       const reqCtx = require.context('../../../packages/', true, /^\.\/(elements|fabric)\/[\w\d-_]+\/CHANGELOG\.md$/);
       changelog = reqCtx(`./${component}/CHANGELOG.md`);
     } catch (e) {
-      console.log(e);
+      console.log(e); // eslint-disable-line
     }
     const { isInvalid, range } = this.state;
 
@@ -79,7 +79,7 @@ export default class ChangelogExplorer extends PureComponent {
   }
 }
 
-const Back = ({ children, to }: { children?: Element | Node | string, to: string }) => (
+const Back = ({ children, to }: { children?: Node | string, to: string }) => (
   <Button appearance="link" component={Link} iconBefore={<BackIcon label="Back Icon" size="small" />} spacing="none" to={to}>
     <span style={{ paddingLeft: '0.5em' }}>{children || 'Back to Docs'}</span>
   </Button>

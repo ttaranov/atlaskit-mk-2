@@ -53,4 +53,14 @@ const tagNames = [
   'wafer',
 ];
 
-export default () => <TagGroup>{tagNames.map((sweet, i) => <Tag href="http://www.cupcakeipsum.com/" key={i} text={sweet} />)}</TagGroup>;
+export default function Example() {
+  return (
+    <TagGroup>
+      {tagNames.map(sweet => {
+        return (
+          <Tag href="http://www.cupcakeipsum.com/" key={sweet} text={sweet} />
+        );
+      })}
+    </TagGroup>
+  );
+}

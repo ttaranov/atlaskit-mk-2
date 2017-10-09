@@ -1,6 +1,5 @@
 // @flow
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { type Node } from 'react';
 import styled from 'styled-components';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
@@ -16,12 +15,15 @@ const Heading = styled.h3`
   margin: 0 0 ${gridSize}px 0;
   padding-bottom: ${gridSize}px;
 `;
+
 const HeadingDefault = styled.code`
   color: ${themed({ light: colors.subtleText, dark: colors.subtleText })};
 `;
+
 const HeadingRequired = styled.span`
   color: ${themed({ light: colors.R500, dark: colors.R300 })};
 `;
+
 const HeadingType = styled.span`
   background: ${themed({ light: colors.B50, dark: colors.B500 })};
   border-radius: ${borderRadius}px;
@@ -29,6 +31,7 @@ const HeadingType = styled.span`
   display: inline-block;
   padding: 0 0.2em;
 `;
+
 const PropTypeWrapper = styled.div`
   margin-top: ${math.multiply(gridSize, 4)}px;
 `;
@@ -43,63 +46,71 @@ const Wrapper = styled.div`
   }
 `;
 
-// Disable prop types validation for internal functional components
-/* eslint-disable react/prop-types */
-
-const PageWrapper = ({ children }) => (
+const PageWrapper = ({ children }: { children: Node }) => (
   <Wrapper>
     <H2>Props</H2>
     {children}
   </Wrapper>
 );
 
-const PropTypeHeading = ({ defaultValue, name, required, type }) => {
-  let typeName = type.kind;
+type PropTypeHeadingProps = {
+  name: string,
+  required: boolean,
+  type: any,
+  defaultValue?: any, // eslint-disable-line react/require-default-props
+};
+
+function PropTypeHeading(props: PropTypeHeadingProps) {
+  let typeName = props.type.kind;
   if (typeName === 'nullable') {
-    typeName = `?${type.arguments.kind}`;
+    typeName = `?${props.type.arguments.kind}`;
   }
 
   return (<Heading>
     <code>
-      <HeadingType>{typeName}</HeadingType> {name}
-      {defaultValue ? <HeadingDefault> = {defaultValue.value}</HeadingDefault> : null}
-      {required ? <HeadingRequired> required</HeadingRequired> : null}
+      <HeadingType>{typeName}</HeadingType> {props.name}
+      {props.defaultValue ? <HeadingDefault> = {props.defaultValue.value}</HeadingDefault> : null}
+      {props.required ? <HeadingRequired> required</HeadingRequired> : null}
     </code>
   </Heading>);
+}
+
+type DynamicPropsProps = {
+  props: {
+    classes: Array<{
+      props: Array<any>
+    }>
+  },
 };
 
-/* eslint-enable react/prop-types */
+export default function DynamicProps(props: DynamicPropsProps) {
+  const classes = props.props && props.props.classes;
+  if (!classes) return null;
 
-export default class DynamicProps extends Component {
-  static propTypes = {
-    props: PropTypes.Object,
-  }
+  const propTypes = classes[0] && classes[0].props;
+  if (!propTypes) return null;
 
-  render() {
-    if (!this.props.props || !this.props.props.classes) return null;
-
-    const props = this.props.props.classes[0].props;
-
-    return (
-      <PageWrapper>
-        {props.map((prop) => {
-          if (!prop.value) {
-            console.error(`Prop ${prop.key} has no type; this usually indicates invalid propType or defaultProps config`); // eslint-disable-line no-console
-            return null;
-          }
-          return (
-            <PropTypeWrapper key={prop.key}>
-              <PropTypeHeading
-                name={prop.key}
-                required={!prop.optional}
-                type={prop.value}
-              />
-              {prop.description && <Description>{prop.description}</Description>}
-              <PrettyPropType type={prop.value} />
-            </PropTypeWrapper>
+  return (
+    <PageWrapper>
+      {propTypes.map(propType => {
+        if (!propType.value) {
+          console.error( // eslint-disable-line no-console
+            `Prop ${propType.key} has no type; this usually indicates invalid propType or defaultProps config`,
           );
-        })}
-      </PageWrapper>
-    );
-  }
+          return null;
+        }
+        return (
+          <PropTypeWrapper key={propType.key}>
+            <PropTypeHeading
+              name={propType.key}
+              required={!propType.optional}
+              type={propType.value}
+            />
+            {propType.description && <Description>{propType.description}</Description>}
+            <PrettyPropType type={propType.value} />
+          </PropTypeWrapper>
+        );
+      })}
+    </PageWrapper>
+  );
 }

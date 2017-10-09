@@ -1,3 +1,4 @@
+// @flow
 import React, { type Node } from 'react';
 import styled from 'styled-components';
 
@@ -10,4 +11,4 @@ const Pre = styled.pre`
   padding: 20px;
 `;
 
-export default ({ children }: Node) => <Pre>{children}</Pre>;
+export default ({ children }: { children: Node }) => <Pre>{children}</Pre>;

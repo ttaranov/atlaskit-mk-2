@@ -9,7 +9,6 @@ export function getUnscopedPkgName(name: string) {
 }
 
 export function getPackageByGroupAndName(group: string, name: string) {
-  // $FlowFixMe
   return PACKAGES[group].find(pkg => pkg.name === name);
 }
 

@@ -1,6 +1,7 @@
 // @flow
 import { mount } from 'enzyme';
 import React from 'react';
+
 import Lozenge, { APPEARANCE_ENUM } from '../src/Lozenge';
 
 describe('Lozenge', () => {
@@ -20,7 +21,7 @@ describe('Lozenge', () => {
     });
 
     it('should change when set to an approved value', () => {
-      APPEARANCE_ENUM.values.forEach((value) => {
+      APPEARANCE_ENUM.values.forEach(value => {
         expect(mount(<Lozenge appearance={value} />).prop('appearance')).toBe(value);
       });
     });

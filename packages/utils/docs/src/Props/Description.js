@@ -1,10 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import React, { type Node } from 'react';
 
-export default function ReadmeDescription(
-  { children }:
-  { children: PropTypes.node }
-) {
+export default function ReadmeDescription({ children }: { children: Node }) {
   const style = { marginTop: 12 };
 
   return typeof children === 'string'

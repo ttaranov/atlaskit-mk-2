@@ -1,0 +1,56 @@
+{
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "plugins": [
+    "flowtype",
+    "jest"
+  ],
+  "rules": {
+    "import/no-extraneous-dependencies": ["off", "vscode"],
+    "import/no-unresolved": ["off", "vscode"],
+    "max-len": ["error", 140],
+    "no-restricted-syntax": "off",
+    "no-use-before-define": "off",
+
+    "arrow-body-style": "off",
+    "arrow-parens": ["error", "as-needed"],
+
+    "spaced-comment": "off",
+
+    "no-await-in-loop": "off",
+
+    "react/sort-comp": "off",
+    "react/jsx-filename-extension": "off",
+
+    "flowtype/require-valid-file-annotation": [2, "always", { "annotationStyle": "line" }],
+
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/valid-expect": "error"
+  },
+  "env": {
+    "browser": true
+  },
+  "overrides": [
+    {
+      "files": ["packages/*/*/examples/**/*.js"],
+      "rules": {
+        "no-console": "off"
+      }
+    },
+    {
+      "files": ["packages/*/*/docs/**/*.js"],
+      "rules": {
+        "global-require": "off",
+        "import/no-webpack-loader-syntax": "off"
+      }
+    },
+    {
+      "files": ["**/__tests__/**/*.js"],
+      "env": {
+        "jest": true
+      }
+    }
+  ]
+}

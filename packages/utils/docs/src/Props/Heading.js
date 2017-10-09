@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import React, { type Node } from 'react';
 
 const style = {
   h1: {
@@ -13,13 +13,12 @@ const style = {
   },
 };
 
-export default function Heading(
-  { children, level = 1 }:
-  {
-    children: PropTypes.node.isRequired,
-    level: PropTypes.number,
-  }
-) {
+export type HeadingProps = {
+  children: Node,
+  level?: number, // eslint-disable-line react/require-default-props
+};
+
+export default function Heading({ children, level = 1 }: HeadingProps) {
   const Tag = `h${level}`;
 
   return (
@@ -29,6 +28,6 @@ export default function Heading(
   );
 }
 
-export const H1 = props => <Heading level={1} {...props} />;
-export const H2 = props => <Heading level={2} {...props} />;
-export const H3 = props => <Heading level={3} {...props} />;
+export const H1 = (props: HeadingProps) => <Heading level={1} {...props} />;
+export const H2 = (props: HeadingProps) => <Heading level={2} {...props} />;
+export const H3 = (props: HeadingProps) => <Heading level={3} {...props} />;

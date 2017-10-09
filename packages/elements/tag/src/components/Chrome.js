@@ -41,7 +41,7 @@ export default class Chrome extends React.PureComponent<Props> {
     } = this.props;
 
     const props = {
-      innerRef: r => (this.chromeRef = r),
+      innerRef: r => { this.chromeRef = r; },
       isRemovable,
       isRemoved,
       isRemoving,

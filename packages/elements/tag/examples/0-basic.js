@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import Tag from '../src';
 import Avatar from '@atlaskit/avatar';
+import Tag from '../src';
 
 export default () => (
   <div>
@@ -14,7 +14,7 @@ export default () => (
       text="Removal halted"
       removeButtonText="Aria label"
       onBeforeRemoveAction={() => {
-        console.log('Removal halted');
+        console.log('Removal halted'); // eslint-disable-line no-console
         return false;
       }}
     />
@@ -22,10 +22,10 @@ export default () => (
       text="Post Removal Hook"
       removeButtonText="Aria label"
       onBeforeRemoveAction={() => {
-        console.log('Before removal');
+        console.log('Before removal'); // eslint-disable-line no-console
         return true;
       }}
-      onAfterRemoveAction={e => console.log('After removal', e)}
+      onAfterRemoveAction={e => console.log('After removal', e)} // eslint-disable-line no-console
     />
   </div>
 );

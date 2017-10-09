@@ -22,7 +22,7 @@ class MyTagGroup extends React.Component<Props, State> {
     this.setState({
       tags: this.state.tags.filter(str => str !== text),
     });
-    console.log(`Removed ${text}.`);
+    console.log(`Removed ${text}.`); // eslint-disable-line no-console
   };
 
   render() {
@@ -42,9 +42,11 @@ class MyTagGroup extends React.Component<Props, State> {
   }
 }
 
-export default () => {
-  <div>
-    <MyTagGroup alignment="start" />
-    <MyTagGroup alignment="end" />
-  </div>;
-};
+export default function Example() {
+  return (
+    <div>
+      <MyTagGroup alignment="start" />
+      <MyTagGroup alignment="end" />
+    </div>
+  );
+}

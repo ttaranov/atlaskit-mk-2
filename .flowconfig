@@ -1,5 +1,7 @@
 [ignore]
 .*/node_modules/styled-components/.*
+.*/node_modules/raf-schd/test/.*
+.*/node_modules/extract-react-types/.*
 
 [include]
 
@@ -9,6 +11,8 @@
 module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/[^/]+/\1/src/index'
 
 module.name_mapper='\!\!raw-loader\!.*' -> '<PROJECT_ROOT>/flow-stubs/raw-loader.js'
+module.name_mapper='\!\!extract-react-types-loader\!.*' -> '<PROJECT_ROOT>/flow-stubs/extract-react-types-loader.js'
+module.name_mapper='extract-react-types' -> '<PROJECT_ROOT>/flow-stubs/extract-react-types.js'
 
 [lints]
 all=warn

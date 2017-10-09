@@ -1,3 +1,4 @@
+// @flow
 import { basename, join, removeNumericPrefix, removeSuffix } from '../path';
 
 describe('basename', () => {
