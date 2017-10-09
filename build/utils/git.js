@@ -63,7 +63,7 @@ async function getFullCommit(ref) {
 async function getLastPublishCommit() {
   const isPublishCommit = msg => msg.startsWith('RELEASING: ');
 
-  const gitCmd = await spawn('git', ['log', '-n', 50, '--oneline']);
+  const gitCmd = await spawn('git', ['log', '-n', 500, '--oneline']);
   const result = gitCmd.stdout.trim().split('\n')
     .map(line => parseCommitLine(line));
   const latestPublishCommit = result.find(res => isPublishCommit(res.message));
