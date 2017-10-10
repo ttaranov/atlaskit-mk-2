@@ -128,7 +128,6 @@ module.exports = async function createWebpackConfig() {
           exclude: /node_modules/,
           loader: require.resolve('ts-loader'),
           options: {
-            cacheDirectory: true,
             transpileOnly: true,
           },
         },
