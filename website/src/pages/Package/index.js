@@ -74,9 +74,9 @@ type PackageProps = {
 };
 
 type PackageState = {
-  pkg: mixed | null,
-  doc: Node,
-  missing: boolean,
+  pkg: Object | null,
+  doc: Node | null,
+  missing: boolean | null,
 };
 
 function getPkg(packages, groupId, pkgId) {
@@ -107,7 +107,7 @@ export default class Package extends React.Component<PackageProps, PackageState>
   }
 
   loadDoc() {
-    this.setState({ pkg: null, doc: null, error: false }, () => {
+    this.setState({ pkg: null, doc: null, missing: false }, () => {
       let pkg = getPkg(this.props.packages, this.props.groupId, this.props.pkgId);
       let dirs = fs.getDirectories(pkg.children);
       let files = fs.getFiles(pkg.children);
@@ -116,9 +116,13 @@ export default class Package extends React.Component<PackageProps, PackageState>
       let docs = fs.getById(dirs, 'docs');
       let examples = fs.getById(dirs, 'examples');
 
+      let doc = fs.find(docs, () => {
+        return true;
+      });
+
       Promise.all([
         json.exports(),
-        docs.children[0] && docs.children[0].exports().then(mod => mod.default),
+        doc && doc.exports().then(mod => mod.default),
       ]).then(([pkg, doc]) => {
         this.setState({ pkg, doc });
       }).catch(err => {
@@ -134,7 +138,6 @@ export default class Package extends React.Component<PackageProps, PackageState>
   render() {
     const { groupId, pkgId } = this.props;
     const { pkg, doc, missing } = this.state;
-    // const examples = getList(join(group, name));
 
     if (missing) {
       return <FourOhFour />;
@@ -153,7 +156,6 @@ export default class Package extends React.Component<PackageProps, PackageState>
         <h1>{pkg.name}</h1>
         <Intro>{pkg.description}</Intro>
         <MetaData packageName={pkg.name} packageSrc={`https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/packages/${groupId}/${pkgId}`} />
-        {/* <ExamplesList name={name} group={group} examples={examples} /> */}
         <Sep />
         {doc || <NoDocs name={pkgId} />}
       </Page>

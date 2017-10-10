@@ -6,7 +6,6 @@ import Navigation, { AkContainerTitle } from '@atlaskit/navigation';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import atlasKitLogo from '../../assets/atlaskit-logo.png';
 import Groups from './Groups';
-import type { List } from '../../utils/examples';
 import type { Directory } from '../../types';
 
 export type NavProps = {

@@ -25,7 +25,7 @@ export default function Example(props: Props) {
         return (
           <div>
             <loaded.Component/>
-            <Code>{loaded.code}</Code>
+            <Code grammar="jsx" content={loaded.code}/>
           </div>
         );
       } else {
