@@ -17,6 +17,10 @@ export default function Pattern(props: Props) {
   const filePath = `patterns/examples/${props.patternId}`;
   const found = fs.findNormalized(props.patterns, filePath);
 
+  if (!found) {
+    return <FourOhFour/>;
+  }
+
   const Content = Loadable({
     loader: () => found && found.exports(),
     loading: Loading,

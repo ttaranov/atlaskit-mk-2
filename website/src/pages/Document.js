@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import CommonMark from 'commonmark';
 import ReactRenderer from 'commonmark-react-renderer';
-import { AkCodeBlock } from '@atlaskit/code';
+import { AkCodeBlock, AkCode } from '@atlaskit/code';
 import type { Directory, File } from '../types';
 import * as fs from '../utils/fs';
 import Page from '../components/Page';
@@ -14,7 +14,8 @@ import Loadable from 'react-loadable';
 const parser = new CommonMark.Parser();
 const renderer = new ReactRenderer({
   renderers: {
-    CodeBlock: (props) => <p><AkCodeBlock text={props.literal} language={props.language} /></p>
+    CodeBlock: (props) => <p><AkCodeBlock text={props.literal} language={props.language} /></p>,
+    Code: (props) => <AkCode text={props.literal} language={props.language} />
   }
 });
 
