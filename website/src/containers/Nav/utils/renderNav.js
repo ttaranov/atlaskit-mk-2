@@ -3,7 +3,7 @@
 import React from 'react';
 import { AkNavigationItemGroup } from '@atlaskit/navigation';
 import { RouterNavigationItem } from './linkComponents';
-import type { NavGroup } from '../../types';
+import type { NavGroup } from '../../../types';
 
 export default function renderNav(groups: Array<NavGroup>, pathname: string) {
   return groups.map((group, index) =>

@@ -10,7 +10,7 @@ import BitbucketIcon from '@atlaskit/icon/glyph/bitbucket';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import type { Directory } from '../../../types';
 import * as fs from '../../../utils/fs';
-import renderNav from '../renderNav';
+import renderNav from '../utils/renderNav';
 
 const defaultNavGroups = [
   {

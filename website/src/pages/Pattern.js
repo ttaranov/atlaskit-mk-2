@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import Example from './Example';
 import * as fs from '../utils/fs';
 import type { Directory } from '../types';
@@ -14,7 +15,7 @@ type Props = {
 };
 
 export default function Pattern(props: Props) {
-  const filePath = `patterns/examples/${props.patternId}`;
+  const filePath = `patterns/${props.patternId}`;
   const found = fs.findNormalized(props.patterns, filePath);
 
   if (!found) {

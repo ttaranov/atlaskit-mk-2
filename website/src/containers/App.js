@@ -11,6 +11,7 @@ import ChangeLogExplorer from '../pages/ChangeLogExplorer';
 import Example from '../pages/Example';
 import FourOhFour from '../pages/FourOhFour';
 import Pattern from '../pages/Pattern';
+import PatternsInfo from '../pages/PatternsInfo';
 import Package from '../pages/Package';
 import PackagesList from '../pages/PackagesList';
 import Document from '../pages/Document';
@@ -78,6 +79,7 @@ export default class App extends React.PureComponent<AppProps> {
                   docs={docs}
                   docId={props.match.params.docId} />
               )} />
+              <Route path="/patterns" component={PatternsInfo} exact />
               <Route path="/patterns/:patternId*" render={props => (
                 <Pattern
                   patterns={patterns}

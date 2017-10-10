@@ -1,23 +1,13 @@
 /* @flow */
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import CommonMark from 'commonmark';
-import ReactRenderer from 'commonmark-react-renderer';
-import { AkCodeBlock, AkCode } from '@atlaskit/code';
 import type { Directory, File } from '../types';
 import * as fs from '../utils/fs';
 import Page from '../components/Page';
+import Markdown from '../components/Markdown';
 import FourOhFour from './FourOhFour';
 import Loading from '../components/Loading';
 import Loadable from 'react-loadable';
-
-const parser = new CommonMark.Parser();
-const renderer = new ReactRenderer({
-  renderers: {
-    CodeBlock: (props) => <p><AkCodeBlock text={props.literal} language={props.language} /></p>,
-    Code: (props) => <AkCode text={props.literal} language={props.language} />
-  }
-});
 
 type DocProps = {
   docs: Directory,
@@ -39,7 +29,7 @@ export default function Document(props: DocProps) {
     loading: Loading,
     render(md) {
       if (md) {
-        return <div>{renderer.render(parser.parse(md))}</div>;
+        return <Markdown>{md}</Markdown>;
       } else {
         return <FourOhFour/>;
       }

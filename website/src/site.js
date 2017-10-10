@@ -43,42 +43,41 @@ export default dir('atlaskit-mk2', [
           file('2-baselineAlignment.js', () => import('../../packages/elements/lozenge/examples/2-baselineAlignment.js'), () => import('!!raw-loader!../../packages/elements/lozenge/examples/2-baselineAlignment.js')),
         ]),
       ]),
-      dir('tag', [
-        file('package.json', () => import('../../packages/elements/tag/package.json'), () => import('!!raw-loader!../../packages/elements/tag/package.json')),
-        file('CHANGELOG.md', () => import('../../packages/elements/tag/CHANGELOG.md'), () => import('!!raw-loader!../../packages/elements/tag/CHANGELOG.md')),
-        dir('docs',[
-          file('0-intro.js', () => import('../../packages/elements/tag/docs/0-intro.js'), () => import('!!raw-loader!../../packages/elements/tag/docs/0-intro.js')),
-        ]),
-        dir('examples', [
-          file('0-basic.js', () => import('../../packages/elements/tag/examples/0-basic.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/0-basic.js')),
-          file('1-colors.js', () => import('../../packages/elements/tag/examples/1-colors.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/1-colors.js')),
-          file('2-textSimple.js', () => import('../../packages/elements/tag/examples/2-textSimple.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/2-textSimple.js')),
-          file('3-textMaxLength.js', () => import('../../packages/elements/tag/examples/3-textMaxLength.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/3-textMaxLength.js')),
-          file('4-baselineAlignment.js', () => import('../../packages/elements/tag/examples/4-baselineAlignment.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/4-baselineAlignment.js')),
-          file('5-href.js', () => import('../../packages/elements/tag/examples/5-href.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/5-href.js')),
-          file('6-removeButtonText.js', () => import('../../packages/elements/tag/examples/6-removeButtonText.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/6-removeButtonText.js')),
-          file('7-elemBefore.js', () => import('../../packages/elements/tag/examples/7-elemBefore.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/7-elemBefore.js')),
-          file('8-edgeCases.js', () => import('../../packages/elements/tag/examples/8-edgeCases.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/8-edgeCases.js')),
-          file('9-overview.js', () => import('../../packages/elements/tag/examples/9-overview.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/9-overview.js')),
-        ]),
-      ]),
-      dir('tag-group', [
-        file('package.json', () => import('../../packages/elements/tag-group/package.json'), () => import('!!raw-loader!../../packages/elements/tag-group/package.json')),
-        file('CHANGELOG.md', () => import('../../packages/elements/tag-group/CHANGELOG.md'), () => import('!!raw-loader!../../packages/elements/tag-group/CHANGELOG.md')),
-        dir('docs', [
-          file('0-intro.js', () => import('../../packages/elements/tag-group/docs/0-intro.js'), () => import('!!raw-loader!../../packages/elements/tag-group/docs/0-intro.js')),
-        ]),
-        dir('examples',[
-          file('0-basic.js', () => import('../../packages/elements/tag-group/examples/0-basic.js'), () => import('!!raw-loader!../../packages/elements/tag-group/examples/0-basic.js')),
-          file('1-overflow.js', () => import('../../packages/elements/tag-group/examples/1-overflow.js'), () => import('!!raw-loader!../../packages/elements/tag-group/examples/1-overflow.js')),
-          file('2-rounded.js', () => import('../../packages/elements/tag-group/examples/2-rounded.js'), () => import('!!raw-loader!../../packages/elements/tag-group/examples/2-rounded.js')),
-          file('3-animation.js', () => import('../../packages/elements/tag-group/examples/3-animation.js'), () => import('!!raw-loader!../../packages/elements/tag-group/examples/3-animation.js')),
-        ]),
-      ]),
+      // dir('tag', [
+      //   file('package.json', () => import('../../packages/elements/tag/package.json'), () => import('!!raw-loader!../../packages/elements/tag/package.json')),
+      //   file('CHANGELOG.md', () => import('../../packages/elements/tag/CHANGELOG.md'), () => import('!!raw-loader!../../packages/elements/tag/CHANGELOG.md')),
+      //   dir('docs',[
+      //     file('0-intro.js', () => import('../../packages/elements/tag/docs/0-intro.js'), () => import('!!raw-loader!../../packages/elements/tag/docs/0-intro.js')),
+      //   ]),
+      //   dir('examples', [
+      //     file('0-basic.js', () => import('../../packages/elements/tag/examples/0-basic.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/0-basic.js')),
+      //     file('1-colors.js', () => import('../../packages/elements/tag/examples/1-colors.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/1-colors.js')),
+      //     file('2-textSimple.js', () => import('../../packages/elements/tag/examples/2-textSimple.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/2-textSimple.js')),
+      //     file('3-textMaxLength.js', () => import('../../packages/elements/tag/examples/3-textMaxLength.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/3-textMaxLength.js')),
+      //     file('4-baselineAlignment.js', () => import('../../packages/elements/tag/examples/4-baselineAlignment.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/4-baselineAlignment.js')),
+      //     file('5-href.js', () => import('../../packages/elements/tag/examples/5-href.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/5-href.js')),
+      //     file('6-removeButtonText.js', () => import('../../packages/elements/tag/examples/6-removeButtonText.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/6-removeButtonText.js')),
+      //     file('7-elemBefore.js', () => import('../../packages/elements/tag/examples/7-elemBefore.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/7-elemBefore.js')),
+      //     file('8-edgeCases.js', () => import('../../packages/elements/tag/examples/8-edgeCases.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/8-edgeCases.js')),
+      //     file('9-overview.js', () => import('../../packages/elements/tag/examples/9-overview.js'), () => import('!!raw-loader!../../packages/elements/tag/examples/9-overview.js')),
+      //   ]),
+      // ]),
+      // dir('tag-group', [
+      //   file('package.json', () => import('../../packages/elements/tag-group/package.json'), () => import('!!raw-loader!../../packages/elements/tag-group/package.json')),
+      //   file('CHANGELOG.md', () => import('../../packages/elements/tag-group/CHANGELOG.md'), () => import('!!raw-loader!../../packages/elements/tag-group/CHANGELOG.md')),
+      //   dir('docs', [
+      //     file('0-intro.js', () => import('../../packages/elements/tag-group/docs/0-intro.js'), () => import('!!raw-loader!../../packages/elements/tag-group/docs/0-intro.js')),
+      //   ]),
+      //   dir('examples',[
+      //     file('0-basic.js', () => import('../../packages/elements/tag-group/examples/0-basic.js'), () => import('!!raw-loader!../../packages/elements/tag-group/examples/0-basic.js')),
+      //     file('1-overflow.js', () => import('../../packages/elements/tag-group/examples/1-overflow.js'), () => import('!!raw-loader!../../packages/elements/tag-group/examples/1-overflow.js')),
+      //     file('2-rounded.js', () => import('../../packages/elements/tag-group/examples/2-rounded.js'), () => import('!!raw-loader!../../packages/elements/tag-group/examples/2-rounded.js')),
+      //     file('3-animation.js', () => import('../../packages/elements/tag-group/examples/3-animation.js'), () => import('!!raw-loader!../../packages/elements/tag-group/examples/3-animation.js')),
+      //   ]),
+      // ]),
     ]),
   ]),
   dir('patterns', [
-    file('package.json', () => import('../../patterns/package.json'), () => import('!!raw-loader!../../patterns/package.json')),
     dir('examples', [
       file('01-test.js', () => import('../../patterns/examples/01-test.js'), () => import('!!raw-loader!../../patterns/examples/01-test.js')),
     ])

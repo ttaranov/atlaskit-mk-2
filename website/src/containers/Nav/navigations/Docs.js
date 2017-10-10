@@ -3,8 +3,8 @@
 import React from 'react';
 import PageIcon from '@atlaskit/icon/glyph/page';
 import type { Directory } from '../../../types';
-import * as fs from '../../../utils/fs';
-import renderNav from '../renderNav';
+import renderNav from '../utils/renderNav';
+import buildNavGroups from '../utils/buildNavGroups';
 
 export type DocsNavProps = {
   pathname: string,
@@ -12,33 +12,6 @@ export type DocsNavProps = {
 };
 
 export default function DocsNav({ pathname, docs }: DocsNavProps) {
-  const groups = docs.children.map(group => {
-    if (group.type === 'file') {
-      return {
-        items: [
-          {
-            to: `/docs/${fs.normalize(group.id)}`,
-            isSelected: (pathname, to) => pathname.startsWith(to),
-            title: fs.titleize(group.id),
-            icon: <PageIcon label={`${fs.titleize(group.id)} icon`} />,
-          }
-        ]
-      };
-    }
-
-    const children = fs.getFiles(group.children);
-    return {
-      title: group.id,
-      items: children.map(doc => {
-        return {
-          to: `/docs/${group.id}/${fs.normalize(doc.id)}`,
-          isSelected: (pathname, to) => pathname.startsWith(to),
-          title: fs.titleize(doc.id),
-          icon: <PageIcon label={`${fs.titleize(doc.id)} icon`} />,
-        };
-      }),
-    };
-  });
-
+  const groups = buildNavGroups('docs', PageIcon, pathname, docs);
   return <div>{renderNav(groups, pathname)}</div>;
 }

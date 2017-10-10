@@ -12,9 +12,9 @@ import {
 import DefaultNav from './navigations/Default';
 import PackagesNav from './navigations/Packages';
 import DocsNav from './navigations/Docs';
+import PatternsNav from './navigations/Patterns';
 
-import { RouterNavigationItem } from './linkComponents';
-import type { List } from '../../utils/examples';
+import { RouterNavigationItem } from './utils/linkComponents';
 import type { Directory } from '../../types';
 
 export type GroupsProps = {
@@ -60,6 +60,9 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
       </Route>,
       <Route path="/packages">
         <PackagesNav pathname={pathname} packages={this.props.packages} />
+      </Route>,
+      <Route path="/patterns">
+        <PatternsNav pathname={pathname} patterns={this.props.patterns} />
       </Route>,
     ];
 

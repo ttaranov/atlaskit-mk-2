@@ -4,7 +4,7 @@ import React, { type ComponentType } from 'react';
 import sentenceCase from 'sentence-case';
 import BitbucketReposIcon from '@atlaskit/icon/glyph/bitbucket/repos';
 import ComponentIcon from '@atlaskit/icon/glyph/component';
-import renderNav from '../renderNav';
+import renderNav from '../utils/renderNav';
 import type { Directory } from '../../../types';
 import * as fs from '../../../utils/fs';
 
