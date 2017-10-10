@@ -11,6 +11,7 @@ import {
 
 import DefaultNav from './navigations/Default';
 import PackagesNav from './navigations/Packages';
+import DocsNav from './navigations/Docs';
 
 import { RouterNavigationItem } from './linkComponents';
 import type { List } from '../../utils/examples';
@@ -52,14 +53,14 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
   resolveRoutes(pathname: string) {
     const menus = [
       <Route path="/">
-        <DefaultNav pathname={pathname} docs={this.props.docs} patterns={this.props.patterns} />
+        <DefaultNav pathname={pathname} />
+      </Route>,
+      <Route path="/docs">
+        <DocsNav pathname={pathname} docs={this.props.docs} />
       </Route>,
       <Route path="/packages">
         <PackagesNav pathname={pathname} packages={this.props.packages} />
       </Route>,
-      // <Route path="/changelog">
-      //   <PackagesNav pathname={pathname} groups={this.props.groups} />
-      // </Route>,
     ];
 
     const stack = menus

@@ -10,7 +10,7 @@ export default class Home extends React.PureComponent<HomeProps> {
   render() {
     return (
       <Page>
-        <h1>Atlaskit</h1>
+        <h1>AtlasKit</h1>
         <p>{'AtlasKit is Atlassian\'s official UI library, built according to the Atlassian Design Guidelines (ADG).'}</p>
       </Page>
     );

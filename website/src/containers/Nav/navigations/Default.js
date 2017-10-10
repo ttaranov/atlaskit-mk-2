@@ -4,6 +4,10 @@ import React from 'react';
 import HomeFilledIcon from '@atlaskit/icon/glyph/home-filled';
 import ComponentIcon from '@atlaskit/icon/glyph/component';
 import PageIcon from '@atlaskit/icon/glyph/page';
+import OverviewIcon from '@atlaskit/icon/glyph/overview';
+import IssuesIcon from '@atlaskit/icon/glyph/issues';
+import BitbucketIcon from '@atlaskit/icon/glyph/bitbucket';
+import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import type { Directory } from '../../../types';
 import * as fs from '../../../utils/fs';
 import renderNav from '../renderNav';
@@ -16,55 +20,49 @@ const defaultNavGroups = [
         title: 'Welcome',
         icon: <HomeFilledIcon label="Welcome icon" />,
       },
+    ],
+  },
+  {
+    title: 'Get Started',
+    items: [
+      {
+        to: '/docs',
+        title: 'Documentation',
+        icon: <OverviewIcon label="Documentation" />,
+      },
       {
         to: '/packages',
         title: 'Packages',
         icon: <ComponentIcon label="Packages icon" />,
       },
-    ],
+      {
+        to: '/patterns',
+        title: 'Patterns',
+        icon: <IssuesIcon label="Patterns icon" />,
+      },
+    ]
   },
+  {
+    title: 'Resources',
+    items: [
+      {
+        to: 'https://bitbucket.org/atlassian/atlaskit',
+        title: 'Repository',
+        icon: <BitbucketIcon label="Repository" />,
+      },
+      {
+        to: 'https://atlassian.design/',
+        title: 'Design guidelines',
+        icon: <DashboardIcon label="Design guidelines icon" />,
+      },
+    ]
+  }
 ];
-
-export function processDocs(docs: Directory) {
-  return {
-    title: 'Guides',
-    items: fs.flatMap(docs, (file, filePath) => {
-      return {
-        to: `/${fs.normalize(filePath)}`,
-        title: fs.titleize(file.id),
-        icon: <PageIcon label={`${fs.titleize(file.id)} icon`} />,
-      };
-    }),
-  };
-}
-
-export function processPatterns(patterns: Directory) {
-  return {
-    title: 'Patterns',
-    items: fs.flatMap(patterns, (file, filePath) => {
-      if (filePath.endsWith('.json')) return null;
-      return {
-        to: `/patterns/${fs.normalize(file.id)}`,
-        title: fs.titleize(file.id),
-      };
-    }).filter(Boolean),
-  };
-}
 
 export type DefaultNavProps = {
   pathname: string,
-  docs: Directory,
-  patterns: Directory,
 };
 
 export default function DefaultNav(props: DefaultNavProps) {
-  const groups = []
-    .concat(defaultNavGroups)
-    .concat(processDocs(props.docs))
-    .concat(processPatterns(props.patterns));
-  return (
-    <div>
-      {renderNav(groups, props.pathname)}
-    </div>
-  );
+  return <div>{renderNav(defaultNavGroups, props.pathname)}</div>;
 }

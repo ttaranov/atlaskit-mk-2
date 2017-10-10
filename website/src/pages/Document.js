@@ -1,8 +1,10 @@
 /* @flow */
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import CommonMark from 'commonmark';
 import ReactRenderer from 'commonmark-react-renderer';
-import type { Directory } from '../types';
+import { AkCodeBlock } from '@atlaskit/code';
+import type { Directory, File } from '../types';
 import * as fs from '../utils/fs';
 import Page from '../components/Page';
 import FourOhFour from './FourOhFour';
@@ -10,7 +12,11 @@ import Loading from '../components/Loading';
 import Loadable from 'react-loadable';
 
 const parser = new CommonMark.Parser();
-const renderer = new ReactRenderer();
+const renderer = new ReactRenderer({
+  renderers: {
+    CodeBlock: (props) => <p><AkCodeBlock text={props.literal} language={props.language} /></p>
+  }
+});
 
 type DocProps = {
   docs: Directory,
@@ -18,6 +24,12 @@ type DocProps = {
 };
 
 export default function Document(props: DocProps) {
+  if (!props.docId) {
+    const found = fs.getFiles(props.docs.children)[0];
+    if (!found) return <FourOhFour/>;
+    return <Redirect to={`/docs/${fs.normalize(found.id)}`} />
+  }
+
   const filePath = `docs/${props.docId}`;
   const found = fs.findNormalized(props.docs, filePath);
 
