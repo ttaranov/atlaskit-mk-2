@@ -2,8 +2,8 @@
 
 import React from 'react';
 import sentenceCase from 'sentence-case';
-import HomeFilledIcon from '@atlaskit/icon/glyph/home';
-import ComponentIcon from '@atlaskit/icon/glyph/components';
+import HomeFilledIcon from '@atlaskit/icon/glyph/home-filled';
+import ComponentIcon from '@atlaskit/icon/glyph/component';
 import PageIcon from '@atlaskit/icon/glyph/page';
 import type { Doc } from '../../../types';
 import { removeSuffix, removeNumericPrefix, basename } from '../../../utils/path';

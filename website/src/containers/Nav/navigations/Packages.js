@@ -3,7 +3,7 @@
 import React from 'react';
 import sentenceCase from 'sentence-case';
 import BitbucketReposIcon from '@atlaskit/icon/glyph/bitbucket/repos';
-import ComponentIcon from '@atlaskit/icon/glyph/components';
+import ComponentIcon from '@atlaskit/icon/glyph/component';
 import renderNav from '../renderNav';
 import type { Packages } from '../../../types';
 

@@ -1,7 +1,7 @@
 // @flow
 
-import ArrowleftIcon from '@atlaskit/icon/glyph/arrowleft';
-import ArrowrightIcon from '@atlaskit/icon/glyph/arrowright';
+import ArrowleftIcon from '@atlaskit/icon/glyph/arrow-left';
+import ArrowrightIcon from '@atlaskit/icon/glyph/arrow-right';
 import { colors } from '@atlaskit/theme';
 import React from 'react';
 import { getMonthName } from '../util';

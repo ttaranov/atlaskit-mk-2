@@ -3,7 +3,7 @@ import React, { Component, type Node } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import BackIcon from '@atlaskit/icon/glyph/arrowleft';
+import BackIcon from '@atlaskit/icon/glyph/arrow-left';
 import TextField from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
 
