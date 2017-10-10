@@ -1,8 +1,30 @@
 // @flow
 import React from 'react';
-import Page from '../components/Page';
+import Page, { Intro, Section } from '../components/Page';
+import { Link } from 'react-router-dom';
 
 type HomeProps = {};
+
+const IntroContent = props => (
+  <Intro {...props}>
+    AtlasKit is Atlassian&#39;s official UI library, built according to
+    the <a href="//www.atlassian.design" target="_blank" rel="noopener noreferrer">Atlassian Design Guidelines</a> (ADG).
+  </Intro>
+);
+const GettingStartedContent = () => (
+  <Section>
+    <h3>Getting started</h3>
+    <p>To learn how to get ADG into your projects, check out the <Link to="/docs/getting-started">getting started guide</Link>.</p>
+  </Section>
+);
+const GettingInvolvedContent = () => (
+  <Section>
+    <h3>Getting involved</h3>
+    <p>
+      We welcome issue and code contributions. Please start by reading our <a href="//bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">contribution guide</a>.
+    </p>
+  </Section>
+);
 
 export default class Home extends React.PureComponent<HomeProps> {
   props: HomeProps;
@@ -11,7 +33,9 @@ export default class Home extends React.PureComponent<HomeProps> {
     return (
       <Page>
         <h1>AtlasKit</h1>
-        <p>{'AtlasKit is Atlassian\'s official UI library, built according to the Atlassian Design Guidelines (ADG).'}</p>
+        <IntroContent/>
+        <GettingStartedContent/>
+        <GettingInvolvedContent/>
       </Page>
     );
   }
