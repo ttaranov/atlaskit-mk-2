@@ -49,11 +49,13 @@ const defaultNavGroups = [
         to: 'https://bitbucket.org/atlassian/atlaskit',
         title: 'Repository',
         icon: <BitbucketIcon label="Repository" />,
+        external: true,
       },
       {
         to: 'https://atlassian.design/',
         title: 'Design guidelines',
         icon: <DashboardIcon label="Design guidelines icon" />,
+        external: true,
       },
     ]
   }
