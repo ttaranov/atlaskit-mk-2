@@ -5,12 +5,6 @@ import CalendarStateless from './CalendarStateless';
 
 import type { EventChange, EventSelect } from '../types';
 
-type Props = {
-  /** Function to be called when a select action occurs, called with the an ISO
-  string of the date, aka YYYY-MM-DD */
-  onUpdate?: (event: any) => void,
-};
-
 type State = EventChange & {
   focused: number,
   selected: Array<string>,
@@ -19,10 +13,6 @@ type State = EventChange & {
 export default class Calendar extends Component<Props, State> {
   props: Props;
   state: State;
-
-  static defaultProps = {
-    onUpdate: () => {},
-  };
 
   constructor(props: Props) {
     super(props);
