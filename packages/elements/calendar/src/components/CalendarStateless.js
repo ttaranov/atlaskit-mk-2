@@ -207,10 +207,13 @@ export default class CalendarStateless extends Component<Props> {
 
     calendar.forEach(date => {
       const dateAsString = dateToString(date, { fixMonth: true });
-      const week = date.weekDay === 0 ? [] : weeks[weeks.length - 1];
 
-      if (!week.length) {
+      let week;
+      if (date.weekDay === 0) {
+        week = { key: dateAsString, components: [] };
         weeks.push(week);
+      } else {
+        week = weeks[weeks.length - 1];
       }
 
       const isDisabled = disabled.indexOf(dateAsString) > -1;
@@ -220,7 +223,7 @@ export default class CalendarStateless extends Component<Props> {
       const isSiblingMonth = date.siblingMonth;
       const isToday = today === dateAsString;
 
-      week.push(
+      week.components.push(
         <DateComponent
           disabled={isDisabled}
           focused={isFocused}
@@ -253,7 +256,7 @@ export default class CalendarStateless extends Component<Props> {
             <CalendarThead>
               <tr>{makeArrayFromNumber(daysPerWeek).map(i => <CalendarTh key={i}>{getDayName(i)}</CalendarTh>)}</tr>
             </CalendarThead>
-            <CalendarTbody style={{ border: 0 }}>{weeks.map(week => <tr>{week}</tr>)}</CalendarTbody>
+            <CalendarTbody style={{ border: 0 }}>{weeks.map(week => <tr key={week.key}>{week.components}</tr>)}</CalendarTbody>
           </CalendarTable>
         </Wrapper>
       </div>

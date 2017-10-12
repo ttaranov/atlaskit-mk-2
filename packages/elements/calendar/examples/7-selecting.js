@@ -4,7 +4,7 @@ import React from 'react';
 import { CalendarStateless } from '../src';
 import { getDates } from './_';
 
-module.exports = () => (
+export default() => (
   <div>
     <CalendarStateless selected={getDates()} />
     <CalendarStateless previouslySelected={getDates()} />
