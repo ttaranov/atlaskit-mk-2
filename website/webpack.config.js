@@ -4,15 +4,6 @@ const path = require('path');
 const boltQuery = require('bolt-query');
 const webpack = require('webpack');
 
-// const ORDERED_FILE_PREFIX = /^[0-9]+-/;
-
-// function sanitizeName(filePath) {
-//   return filePath
-//     .split(path.sep)
-//     .map(part => path.parse(part).name.replace(ORDERED_FILE_PREFIX, ''))
-//     .join('/');
-// }
-
 module.exports = async function createWebpackConfig() {
   const basePath = path.join(__dirname, '..');
   const results = await boltQuery({
@@ -27,59 +18,15 @@ module.exports = async function createWebpackConfig() {
     },
   });
 
-  // add workspace groups (i.e folders in the /packages directory) to the
-  // packages object here for them to be available in the webstie
-  // const data = {
-  //   packages: {
-  //     elements: [],
-  //     fabric: [],
-  //   },
-  // };
-
-  // const entries = {};
-  const aliases = {
-    // '@atlaskit/docs': path.join(__dirname, '..', 'packages', 'utils', 'docs', 'src', 'index.js'),
-  };
-
-  results.workspaces.forEach(workspace => {
-  //   const parts = workspace.dir.split('/');
-  //   const name = parts.pop();
-  //   const group = parts.pop();
-  //
-  //   if (!data.packages[group]) return;
-  //
-  //   const docsDir = path.join(workspace.dir, 'docs');
-  //   const docs = [];
-  //
+  const aliases = results.workspaces.reduce((acc, workspace) => {
     if (workspace.pkg.src) {
-      aliases[workspace.pkg.name] = path.resolve(workspace.dir, workspace.pkg.src);
+      acc[workspace.pkg.name] = path.resolve(workspace.dir, workspace.pkg.src);
     }
-  //
-  //   if (workspace.files.docs) {
-  //     workspace.files.docs.forEach(doc => {
-  //       const filePath = doc.filePath;
-  //       const relativePath = path.relative(docsDir, filePath);
-  //       const sanitisedName = sanitizeName(relativePath);
-  //       docs.push({ name: sanitisedName, filePath });
-  //
-  //       const bundleName = `${workspace.pkg.name}/docs/${name}`.replace(/\//g, '-');
-  //       entries[bundleName] = filePath;
-  //     });
-  //   }
-  //
-  //   data.packages[group].push({
-  //     name,
-  //     group,
-  //     docs,
-  //     description: workspace.pkg.description,
-  //     relativePath: path.relative(basePath, workspace.dir),
-  //   });
-  });
 
-  // entries.main = './src/index.js';
+    return acc;
+  }, {});
 
   return {
-    // entry: entries,
     entry: { main: './src/index.js' },
     output: {
       filename: '[name].js',
@@ -170,14 +117,9 @@ module.exports = async function createWebpackConfig() {
       alias: aliases,
     },
     resolveLoader: {
-      modules: ['../build/', 'node_modules'],
+      modules: ['../build/', 'node_modules', './src/loaders'],
     },
     plugins: [
-      // new webpack.DefinePlugin({
-      //   'process.env': {
-      //     WEBSITE_DATA: JSON.stringify(data),
-      //   },
-      // }),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
         // ...
