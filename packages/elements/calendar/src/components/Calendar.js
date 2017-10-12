@@ -10,11 +10,10 @@ type State = EventChange & {
   selected: Array<string>,
 };
 
-export default class Calendar extends Component<Props, State> {
-  props: Props;
+export default class Calendar extends Component<Object, State> {
   state: State;
 
-  constructor(props: Props) {
+  constructor(props: Object) {
     super(props);
     const now = new Date();
     const today = now.getDate();
