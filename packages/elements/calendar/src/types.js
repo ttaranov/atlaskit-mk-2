@@ -9,5 +9,5 @@ export type Date = {
 export type EventChange = Date;
 
 export type EventSelect = EventChange & {
-  iso: number,
+  iso: string,
 };

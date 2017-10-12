@@ -18,6 +18,7 @@ type State = EventChange & {
 
 export default class Calendar extends Component<Props, State> {
   props: Props;
+  state: State;
 
   static defaultProps = {
     onUpdate: () => {},
