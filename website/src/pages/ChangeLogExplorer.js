@@ -45,13 +45,13 @@ export default class ChangelogExplorer extends Component<Props, State> {
   render() {
     const { component = '' } = this.props.match.params;
     let changelog = [];
-    try {
-      // $FlowFixMe
-      const reqCtx = require.context('../../../packages/', true, /^\.\/(elements|fabric)\/[\w\d-_]+\/CHANGELOG\.md$/);
-      changelog = reqCtx(`./${component}/CHANGELOG.md`);
-    } catch (e) {
-      console.log(e); // eslint-disable-line
-    }
+    // try {
+    //   // FlowFixMe
+    //   const reqCtx = require.context('../../../packages/', true, /^\.\/(elements|fabric)\/[\w\d-_]+\/CHANGELOG\.md$/);
+    //   changelog = reqCtx(`./${component}/CHANGELOG.md`);
+    // } catch (e) {
+    //   console.log(e); // eslint-disable-line
+    // }
     const { isInvalid, range } = this.state;
 
     return (

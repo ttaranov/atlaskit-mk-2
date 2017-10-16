@@ -246,3 +246,17 @@ export default md`
   ${<Props source={...} />}
 `;
 ```
+
+## Releasing packages
+
+Packages are released automatically once they reach `master` and are done so using `Changeset` commits.
+
+When you wish to release a package, simply run `yarn changeset` and the wizard will guide you.
+
+When releasing a package, you will also need to bump the dependencies of all packages that depend on that package, the wizard will prompt for the type of change for each of these releases (`patch`, `minor` or `major`).
+
+The `summary` used during the creation of a changeset will also be used to create the changelog entry for each package being released.
+
+> **Soon:** You will be able to see which packages will be released at which versions from the Pull Request screen, similar to the way it used to work
+
+> **How does this work?** Running the `yarn changeset` command creates a commit with all the information required to release a package. When a branch is merged to master, all the unreleased changesets are combined, new versions are calculated, packages and dependencies are updated, changelogs are generated and packages are released

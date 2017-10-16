@@ -1,6 +1,7 @@
 // @flow
 import React, { type Node } from 'react';
 import styled from 'styled-components';
+import { gridSize, colors, math } from '@atlaskit/theme';
 
 const PageContainer = styled.main`
   max-width: 60rem;
@@ -23,3 +24,18 @@ export default class Page extends React.PureComponent<PageProps> {
     );
   }
 }
+
+export const Section = styled.section`
+  margin-top: 3em;
+
+  p {
+    line-height: 1.4em;
+  }
+`;
+
+export const Intro = styled.p`
+  color: ${colors.heading};
+  font-size: ${math.multiply(gridSize, 2)}px;
+  font-weight: 300;
+  line-height: 1.4em;
+`;

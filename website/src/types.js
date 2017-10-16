@@ -1,34 +1,6 @@
 // @flow
 import React, { type Node } from 'react';
 
-type BoltQueryFile = {
-  filePath: string,
-  fileContents: string,
-};
-
-export type Example = {
-  codeText?: string,
-  CodeNode?: React.Component<any>,
-};
-
-export type Doc = {
-  filePath: string,
-  fileContents: string,
-};
-
-export type Packages = {
-  [group: string]: Array<Package>,
-}
-
-export type Package = {
-  group: string,
-  name: string,
-  description: string,
-  version: string,
-  relativePath: string,
-  docs: Array<BoltQueryFile>,
-}
-
 export type NavGroupItem = {
   to: string,
   title: string,
@@ -40,3 +12,16 @@ export type NavGroup = {
   title?: string,
   items: Array<NavGroupItem>
 }
+
+export type File = {
+  type: 'file',
+  id: string,
+  exports: () => Promise<Object>,
+  contents: () => Promise<string>,
+};
+
+export type Directory = {
+  type: 'dir',
+  id: string,
+  children: Array<File | Directory>,
+};
