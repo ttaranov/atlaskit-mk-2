@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import Example from './Example';
 import * as fs from '../utils/fs';
 import type { Directory } from '../types';
 import Page from '../components/Page';

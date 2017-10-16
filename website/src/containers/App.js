@@ -8,7 +8,6 @@ import * as fs from '../utils/fs';
 
 import Home from '../pages/Home';
 import ChangeLogExplorer from '../pages/ChangeLogExplorer';
-import Example from '../pages/Example';
 import Examples from '../pages/Examples';
 import FourOhFour from '../pages/FourOhFour';
 import Pattern from '../pages/Pattern';
@@ -95,7 +94,6 @@ export default class App extends React.PureComponent<AppProps> {
                       patterns={patterns}
                       patternId={props.match.params.patternId} />
                   )} />
-                  <Route path="/packages/:group/:name/examples/:example" component={Example} />
                   <Route path="/packages/:group/:name" render={props => (
                     <Package
                       packages={packages}
