@@ -2,7 +2,7 @@
 
 Related reading:
 
-- [naming props](./naming-props.md)
+- [naming props](./naming-props)
 - https://medium.com/flow-type/even-better-support-for-react-in-flow-25b0a3485627
 - https://flow.org/en/docs/react/types/
 

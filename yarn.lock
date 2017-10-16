@@ -31,6 +31,15 @@
     prop-types "^15.5.10"
     styled-components "^1.3.0"
 
+"@atlaskit/button@^1.0.0":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-1.1.4.tgz#e294fee6dd02c5b05c40fa6db6966a8a3c12ad4a"
+  dependencies:
+    "@atlaskit/util-shared-styles" "^2.1.1"
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+    styled-components "^1.3.0"
+
 "@atlaskit/button@^5.0.1":
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-5.1.1.tgz#5e596f8db844c3afe28b2ad7de847ee205cfdf07"
@@ -161,13 +170,15 @@
     prop-types "^15.5.10"
     styled-components "^1.3.0"
 
-"@atlaskit/icon@^3.0.0":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-3.0.3.tgz#0cdc098b97601454bc4b580c143bf0c30ec40d48"
+"@atlaskit/icon@^6.5.2":
+  version "6.6.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-6.6.0.tgz#770c7e0c4fa4ff126099bfc2f7d8f70d9e603900"
   dependencies:
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
     create-error "^0.3.1"
+    prop-types "^15.5.10"
+    styled-components "^1.3.0"
 
 "@atlaskit/icon@^7.0.1":
   version "7.1.0"
@@ -276,6 +287,21 @@
     react-transition-group "^1.2.0"
     styled-components "^1.3.0"
 
+"@atlaskit/single-select@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/single-select/-/single-select-2.0.1.tgz#66b00c8df1fda5064e298e9c20ea66b600b8eb94"
+  dependencies:
+    "@atlaskit/button" "^1.0.0"
+    "@atlaskit/droplist" "^4.9.0"
+    "@atlaskit/field-base" "^8.0.0"
+    "@atlaskit/icon" "^6.5.2"
+    "@atlaskit/spinner" "^4.0.0"
+    "@atlaskit/theme" "^2.0.1"
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+    prop-types "^15.5.10"
+    styled-components "^1.3.0"
+
 "@atlaskit/spinner@^3.4.1":
   version "3.4.2"
   resolved "https://registry.yarnpkg.com/@atlaskit/spinner/-/spinner-3.4.2.tgz#04f432e78dc8b5a413fa59df1ecce0930303c1e0"
@@ -298,22 +324,17 @@
     react-transition-group "^1.2.0"
     styled-components "^1.3.0"
 
-"@atlaskit/tag@^2.6.0":
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/tag/-/tag-2.6.0.tgz#c8da8b292dbc00d2e2abf577a46c2c1c1ba52468"
-  dependencies:
-    "@atlaskit/icon" "^3.0.0"
-    "@atlaskit/util-common" "^1.0.0"
-    "@atlaskit/util-shared-styles" "^2.10.0"
-    babel-runtime "^6.11.6"
-    create-error "^0.3.1"
-    debug "^2.2.0"
-    prop-types "^15.5.10"
-    styled-components "^1.3.0"
-
 "@atlaskit/theme@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-2.0.0.tgz#22af375e0737f23aca370d6294e073ab37a9f621"
+  dependencies:
+    "@atlaskit/util-shared-styles" "^2.6.0"
+    prop-types "^15.5.10"
+    styled-components "^1.3.0"
+
+"@atlaskit/theme@^2.0.1":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-2.2.0.tgz#b8736cb80dd4ed39e2cc090f2db15dcf8784801a"
   dependencies:
     "@atlaskit/util-shared-styles" "^2.6.0"
     prop-types "^15.5.10"
@@ -349,7 +370,7 @@
     custom-event-polyfill "^0.3.0"
     keycode "^2.1.4"
 
-"@atlaskit/util-common@^1.0.0", "@atlaskit/util-common@^1.5.2":
+"@atlaskit/util-common@^1.5.2":
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-common/-/util-common-1.5.2.tgz#ae9e96c540aa2517ca922542333ac24eb3473cbc"
   dependencies:
@@ -2371,6 +2392,14 @@ cli-width@^2.0.0, cli-width@^2.1.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/cli-width/-/cli-width-2.2.0.tgz#ff19ede8a9a5e579324147b0c11f0fbcbabed639"
 
+clipboard@^1.5.5:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/clipboard/-/clipboard-1.7.1.tgz#360d6d6946e99a7a1fef395e42ba92b5e9b5a16b"
+  dependencies:
+    good-listener "^1.2.2"
+    select "^1.1.2"
+    tiny-emitter "^2.0.0"
+
 cliui@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/cliui/-/cliui-2.1.0.tgz#4b475760ff80264c762c3a1719032e91c7fea0d1"
@@ -3011,6 +3040,10 @@ del@^3.0.0:
 delayed-stream@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
+
+delegate@^3.1.2:
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/delegate/-/delegate-3.1.3.tgz#9a8251a777d7025faa55737bc3b071742127a9fd"
 
 delegates@^1.0.0:
   version "1.0.0"
@@ -4164,6 +4197,12 @@ globby@^6.1.0:
     object-assign "^4.0.1"
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
+
+good-listener@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/good-listener/-/good-listener-1.2.2.tgz#d53b30cdf9313dffb7dc9a0d477096aa6d145c50"
+  dependencies:
+    delegate "^3.1.2"
 
 graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.4, graceful-fs@^4.1.6:
   version "4.1.11"
@@ -6733,6 +6772,12 @@ pretty-format@^20.0.3:
     ansi-regex "^2.1.1"
     ansi-styles "^3.0.0"
 
+prismjs@^1.6.0:
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.8.1.tgz#bd0cdc32e9a561c1c8c3c9733765a7f1ec3b54ee"
+  optionalDependencies:
+    clipboard "^1.5.5"
+
 private@^0.1.6, private@^0.1.7:
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/private/-/private-0.1.7.tgz#68ce5e8a1ef0a23bb570cc28537b5332aba63ef1"
@@ -7175,6 +7220,10 @@ react-dom@^15.6.1:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
+react-loadable@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/react-loadable/-/react-loadable-5.1.0.tgz#91c5f8015982bca42bf79b8e61c7b78014792324"
+
 react-markdown@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/react-markdown/-/react-markdown-2.5.0.tgz#b1c61904fee5895886803bd9df7db23c3dc3a89e"
@@ -7184,9 +7233,9 @@ react-markdown@^2.5.0:
     in-publish "^2.0.0"
     prop-types "^15.5.1"
 
-react-markings@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/react-markings/-/react-markings-1.1.4.tgz#b1f464a3d0ecf31ebfd06c901308b6403ae64204"
+react-markings@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/react-markings/-/react-markings-1.1.6.tgz#4ad7359c2a3fd5475482aaced44be74e15e02717"
   dependencies:
     commonmark "^0.27.0"
     commonmark-react-renderer "^4.3.3"
@@ -7623,6 +7672,10 @@ sax@^1.2.1, sax@~1.2.1:
 select-hose@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/select-hose/-/select-hose-2.0.0.tgz#625d8658f865af43ec962bfc376a37359a4994ca"
+
+select@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/select/-/select-1.1.2.tgz#0e7350acdec80b1108528786ec1d4418d11b396d"
 
 selfsigned@^1.9.1:
   version "1.10.1"
@@ -8272,6 +8325,10 @@ timers-browserify@^2.0.2:
   resolved "https://registry.yarnpkg.com/timers-browserify/-/timers-browserify-2.0.4.tgz#96ca53f4b794a5e7c0e1bd7cc88a372298fa01e6"
   dependencies:
     setimmediate "^1.0.4"
+
+tiny-emitter@^2.0.0:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-2.0.2.tgz#82d27468aca5ade8e5fd1e6d22b57dd43ebdfb7c"
 
 tmp@0.0.31:
   version "0.0.31"

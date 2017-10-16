@@ -11,15 +11,16 @@ import {
 
 import DefaultNav from './navigations/Default';
 import PackagesNav from './navigations/Packages';
+import DocsNav from './navigations/Docs';
+import PatternsNav from './navigations/Patterns';
 
-import { RouterNavigationItem } from './linkComponents';
-import type { List } from '../../utils/examples';
-import type { Doc, Packages } from '../../types';
+import { RouterNavigationItem } from './utils/linkComponents';
+import type { Directory } from '../../types';
 
 export type GroupsProps = {
-  docs: Array<Doc>,
-  patterns: Array<List>,
-  packages: Packages
+  docs: Directory,
+  patterns: Directory,
+  packages: Directory,
 }
 
 export type GroupsState = {
@@ -52,13 +53,16 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
   resolveRoutes(pathname: string) {
     const menus = [
       <Route path="/">
-        <DefaultNav pathname={pathname} docs={this.props.docs} patterns={this.props.patterns} />
+        <DefaultNav pathname={pathname} />
+      </Route>,
+      <Route path="/docs">
+        <DocsNav pathname={pathname} docs={this.props.docs} />
       </Route>,
       <Route path="/packages">
         <PackagesNav pathname={pathname} packages={this.props.packages} />
       </Route>,
-      <Route path="/changelog">
-        <PackagesNav pathname={pathname} packages={this.props.packages} />
+      <Route path="/patterns">
+        <PatternsNav pathname={pathname} patterns={this.props.patterns} />
       </Route>,
     ];
 
