@@ -1,5 +1,6 @@
 // @flow
 import React, { type ComponentType } from 'react';
+import { AkCodeBlock } from '@atlaskit/code';
 
 type Props = {
   Component: ComponentType<*>,
@@ -14,16 +15,16 @@ type State = {
 export default class Example extends React.Component<Props, State> {
   static defaultProps = {
     language: 'javascript',
-  }
+  };
   state = {
     sourceIsVisible: false,
-  }
+  };
 
   toggleSource = () => {
     this.setState({
       sourceIsVisible: !this.state.sourceIsVisible,
     });
-  }
+  };
 
   render() {
     const { Component, language, source } = this.props;
@@ -33,8 +34,9 @@ export default class Example extends React.Component<Props, State> {
         <Component />
         {sourceIsVisible ? (
           <div>
-            {`${language}:`}
-            <pre style={{ width: '100%', overflowX: 'scroll' }}>{source}</pre>
+            <p>
+              <AkCodeBlock text={source} language={language} />
+            </p>
             <button onClick={this.toggleSource}>Hide Example Source</button>
           </div>
         ) : (

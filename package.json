@@ -90,8 +90,8 @@
     "tslint-react": "^3.2.0",
     "typescript": "^2.5.1",
     "url-loader": "^0.5.9",
-    "webpack": "^3.5.5",
-    "webpack-dev-server": "^2.7.1"
+    "webpack": "^3.7.1",
+    "webpack-dev-server": "^2.9.2"
   },
   "dependencies": {
     "@atlaskit/avatar": "^8.0.0",
@@ -142,9 +142,7 @@
     "uuid": "^3.1.0"
   },
   "jest": {
-    "modulePathIgnorePatterns": [
-      "./node_modules"
-    ],
+    "modulePathIgnorePatterns": ["./node_modules"],
     "transform": {
       "^.+\\.tsx?$": "ts-jest/preprocessor",
       "^.+\\.js$": "babel-jest"
@@ -156,10 +154,6 @@
       }
     },
     "testRegex": "(/(__tests?__/.*)\\.?(test|spec)?\\.(js|tsx?))$",
-    "moduleFileExtensions": [
-      "js",
-      "ts",
-      "tsx"
-    ]
+    "moduleFileExtensions": ["js", "ts", "tsx"]
   }
 }

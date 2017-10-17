@@ -8669,7 +8669,7 @@ webpack-dev-middleware@^1.0.11, webpack-dev-middleware@^1.11.0:
     range-parser "^1.0.3"
     time-stamp "^2.0.0"
 
-webpack-dev-server@^2.7.1:
+webpack-dev-server@^2.9.2:
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-2.9.2.tgz#0fbab915701d25a905a60e1e784df19727da800f"
   dependencies:
@@ -8705,7 +8705,7 @@ webpack-sources@^1.0.1:
     source-list-map "^2.0.0"
     source-map "~0.5.3"
 
-webpack@^3.5.5:
+webpack@^3.7.1:
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.7.1.tgz#6046b5c415ff7df7a0dc54c5b6b86098e8b952da"
   dependencies:
