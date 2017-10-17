@@ -1,10 +1,12 @@
 // @flow
 import styled from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
+
+const gridSizeUnitless = gridSize();
 
 export default styled.span`
   align-items: center;
   display: flex;
   justify-content: center;
-  padding-left: ${akGridSizeUnitless / 2}px;
+  padding-left: ${gridSizeUnitless / 2}px;
 `;

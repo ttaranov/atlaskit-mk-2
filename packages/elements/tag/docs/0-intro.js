@@ -1,7 +1,6 @@
 // @flow
-/* eslint-disable import/extensions, import/no-webpack-loader-syntax, global-require */
 import React from 'react';
-import { md, Example } from '@atlaskit/docs';
+import { md, Example, Props } from '@atlaskit/docs';
 
 export default md`
   Tags are designed to be displayed within a [Tag Group](/components/tag-group).
@@ -19,4 +18,6 @@ export default md`
     Component={require('../examples/1-colors').default}
     source={require('!!raw-loader!../examples/1-colors')}
   />}
+
+  ${<Props props={require('!!extract-react-types-loader!../src/components/Tag')} />}
 `;

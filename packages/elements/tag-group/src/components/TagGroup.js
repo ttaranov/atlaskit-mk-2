@@ -1,23 +1,18 @@
 // @flow
-import React, { type Node } from 'react';
+import React, { PureComponent, type Node } from 'react';
 import Container from '../styled/Container';
-
-const ALIGNMENT = {
-  values: ['start', 'end'],
-  defaultValue: 'start',
-};
 
 type Props = {
   /** Whether the tags should be left-aligned or right-aligned. */
-  alignment: 'start' | 'end',
+  alignment?: 'start' | 'end',
   /** Tags to render within the tag group. */
   children: Node,
 };
 
-export default class TagGroup extends React.PureComponent<Props> {
+export default class TagGroup extends PureComponent<Props> {
   static defaultProps = {
-    alignment: ALIGNMENT.defaultValue,
-  }
+    alignment: 'start',
+  };
 
   render() {
     const { alignment, children } = this.props;
