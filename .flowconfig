@@ -10,10 +10,10 @@
 [options]
 module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/[^/]+/\1/src/index'
 
-module.name_mapper='\!\!raw-loader\!.*' -> '<PROJECT_ROOT>/flow-stubs/raw-loader.js'
-module.name_mapper='\!\!extract-react-types-loader\!.*' -> '<PROJECT_ROOT>/flow-stubs/extract-react-types-loader.js'
-module.name_mapper='extract-react-types' -> '<PROJECT_ROOT>/flow-stubs/extract-react-types.js'
-module.name_mapper='.*\.md' -> '<PROJECT_ROOT>/flow-stubs/md.js'
+module.name_mapper='\!\!raw-loader\!.*' -> '<PROJECT_ROOT>/typings/raw-loader.js'
+module.name_mapper='\!\!extract-react-types-loader\!.*' -> '<PROJECT_ROOT>/typings/extract-react-types-loader.js'
+module.name_mapper='extract-react-types' -> '<PROJECT_ROOT>/typings/extract-react-types.js'
+module.name_mapper='.*\.md' -> '<PROJECT_ROOT>/typings/md.js'
 
 [lints]
 all=warn
