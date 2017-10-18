@@ -68,8 +68,8 @@
     "extract-react-types": "^0.2.2",
     "file-loader": "^0.11.2",
     "flow-bin": "^0.53.0",
-    "jest": "^20.0.4",
     "globby": "^6.1.0",
+    "jest": "^20.0.4",
     "karma": "^1.7.1",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.2.0",
@@ -119,6 +119,7 @@
     "editor": "^1.0.0",
     "enquirer-prompts": "^1.0.0",
     "glob": "^7.1.2",
+    "html-webpack-plugin": "^2.30.1",
     "jest-fixtures": "^0.3.2",
     "keycode": "^2.1.7",
     "outdent": "^0.3.0",
@@ -142,7 +143,9 @@
     "uuid": "^3.1.0"
   },
   "jest": {
-    "modulePathIgnorePatterns": ["./node_modules"],
+    "modulePathIgnorePatterns": [
+      "./node_modules"
+    ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest/preprocessor",
       "^.+\\.js$": "babel-jest"
@@ -154,6 +157,10 @@
       }
     },
     "testRegex": "(/(__tests?__/.*)\\.?(test|spec)?\\.(js|tsx?))$",
-    "moduleFileExtensions": ["js", "ts", "tsx"]
+    "moduleFileExtensions": [
+      "js",
+      "ts",
+      "tsx"
+    ]
   }
 }

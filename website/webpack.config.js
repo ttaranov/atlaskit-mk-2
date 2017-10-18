@@ -15,6 +15,7 @@ DirectoryWatcher.prototype.createNestedWatcher = function(dirPath) {
 const path = require('path');
 const boltQuery = require('bolt-query');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = async function createWebpackConfig() {
   const basePath = path.join(__dirname, '..');
@@ -47,8 +48,6 @@ module.exports = async function createWebpackConfig() {
     },
     devtool: 'cheap-source-map',
     devServer: {
-      contentBase: path.join(__dirname, 'public'),
-      watchContentBase: true,
       compress: true,
       port: 9000,
       // lazy: true,
@@ -135,7 +134,9 @@ module.exports = async function createWebpackConfig() {
         name: 'vendor',
         // ...
       }),
-
+      new HtmlWebpackPlugin({
+        template: 'public/index.html.ejs'
+      })
       // new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),
     ],
   };
