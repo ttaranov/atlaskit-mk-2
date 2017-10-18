@@ -18,11 +18,11 @@ function createLoaderOutput(
 ) {
   const output = `
     function dir(id, children) {
-      return { type: 'dir', id, children };
+      return { type: 'dir', id: id, children: children };
     }
 
     function file(id, exports, contents) {
-      return { type: 'file', id, exports, contents };
+      return { type: 'file', id: id, exports: exports, contents: contents };
     }
 
     export default ${printDir(dir)};

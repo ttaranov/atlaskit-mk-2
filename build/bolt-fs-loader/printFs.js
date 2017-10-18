@@ -10,7 +10,7 @@ function pad(str /*: string */, depth /*: number */) {
 
 function printFile(file /*: File */, depth /*: number */) {
   return pad(
-    `file('${file.id}', () => import('${file.path}'), () => import('!!raw-loader!${file.path}'))`,
+    `file('${file.id}', function(){ return import('${file.path}'); }, function(){ return import('!!raw-loader!${file.path}');})`,
     depth
   );
 }
@@ -23,7 +23,7 @@ function printDir(dir /*: Directory */, depth /*: number */ = 0) {
         child => (child.type === 'dir' ? printDir(child, depth + 1) : printFile(child, depth + 1))
       )
       .join(',\n'),
-    pad(`])`, depth)
+    pad(`])`, depth),
   ].join('\n');
 }
 
