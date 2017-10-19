@@ -10,7 +10,7 @@
     "Trey S"
   ],
   "scripts": {
-    "build": "webpack",
+    "build": "webpack -p && cp dist/index.html dist/404.html",
     "start": "webpack-dev-server"
   },
   "repository": "atlaskit/fabric",
