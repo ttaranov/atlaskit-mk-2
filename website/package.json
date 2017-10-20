@@ -11,17 +11,20 @@
   ],
   "scripts": {
     "build": "webpack -p && cp dist/index.html dist/404.html",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "deploy": "yarn build && netlify -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID -p dist",
+    "deploy-staging": "yarn build && netlify -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist"
   },
   "repository": "atlaskit/fabric",
   "devDependencies": {
     "babel-loader": "^7.1.2",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "css-loader": "^0.28.0",
-    "extract-react-types-loader": "^0.0.0",
     "bolt-query": "^1.1.4",
     "bolt-query-loader": "^0.0.0",
+    "css-loader": "^0.28.0",
+    "extract-react-types-loader": "^0.0.0",
     "file-loader": "^0.11.2",
+    "netlify-cli": "^1.2.2",
     "raw-loader": "^0.5.1",
     "style-loader": "^0.16.1",
     "ts-loader": "^2.3.4",
