@@ -5,20 +5,26 @@
   "description": "",
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
-  "maintainers": ["Jed W", "Trey S"],
+  "maintainers": [
+    "Jed W",
+    "Trey S"
+  ],
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server"
+    "build": "webpack -p && cp dist/index.html dist/404.html",
+    "start": "webpack-dev-server",
+    "deploy": "yarn build && netlify -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID -p dist",
+    "deploy-staging": "yarn build && netlify -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist"
   },
   "repository": "atlaskit/fabric",
   "devDependencies": {
     "babel-loader": "^7.1.2",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "css-loader": "^0.28.0",
-    "extract-react-types-loader": "^0.0.0",
     "bolt-query": "^1.1.4",
     "bolt-query-loader": "^0.0.0",
+    "css-loader": "^0.28.0",
+    "extract-react-types-loader": "^0.0.0",
     "file-loader": "^0.11.2",
+    "netlify-cli": "^1.2.2",
     "raw-loader": "^0.5.1",
     "style-loader": "^0.16.1",
     "ts-loader": "^2.3.4",
@@ -27,15 +33,14 @@
     "webpack-dev-server": "^2.9.2"
   },
   "dependencies": {
-    "@atlaskit/code": "^2.1.3",
-    "@atlaskit/button": "^5.3.0",
     "@atlaskit/badge": "^6.1.0",
-    "@atlaskit/css-reset": "^1.1.5",
+    "@atlaskit/button": "^5.3.0",
     "@atlaskit/code": "^2.1.3",
+    "@atlaskit/css-reset": "^1.1.5",
     "@atlaskit/field-text": "^4.0.0",
     "@atlaskit/icon": "^9.0.1",
-    "@atlaskit/lozenge": "^3.4.2",
     "@atlaskit/logo": "^4.0.1",
+    "@atlaskit/lozenge": "^3.4.2",
     "@atlaskit/navigation": "^22.0.0",
     "@atlaskit/single-select": "^2.0.1",
     "@atlaskit/tag": "^3.0.2",
@@ -44,6 +49,7 @@
     "babel-runtime": "^6.26.0",
     "commonmark": "^0.27.0",
     "commonmark-react-renderer": "^4.3.3",
+    "html-webpack-plugin": "^2.30.1",
     "prismjs": "^1.6.0",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
@@ -52,8 +58,8 @@
     "react-markdown": "^2.5.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "sentence-case": "^2.1.1",
     "semver": "^5.4.1",
+    "sentence-case": "^2.1.1",
     "styled-components": "^1.4.3"
   }
 }
