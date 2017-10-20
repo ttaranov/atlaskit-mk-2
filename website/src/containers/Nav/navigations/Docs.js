@@ -12,6 +12,7 @@ export type DocsNavProps = {
 };
 
 export default function DocsNav({ pathname, docs }: DocsNavProps) {
+  console.log('Docs nav so here right now');
   const groups = buildNavGroups('docs', PageIcon, pathname, docs);
   return <div>{renderNav(groups, pathname)}</div>;
 }
