@@ -100,6 +100,12 @@ export default class App extends React.PureComponent<AppProps> {
                       groupId={props.match.params.group}
                       pkgId={props.match.params.name} />
                   )} />
+                  <Route path="/old/packages/:group/:name" render={props => (
+                    <Package
+                      packages={packages}
+                      groupId={props.match.params.group}
+                      pkgId={props.match.params.name} />
+                  )} />
                   <Route path="/packages" render={() => <PackagesList packages={packages} />} />
                   <Route path="/changelog/:group/:name/:semver?" component={ChangeLogExplorer} />
                   <Route component={FourOhFour} />

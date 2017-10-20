@@ -14,7 +14,7 @@ import PackagesNav from './navigations/Packages';
 import DocsNav from './navigations/Docs';
 import PatternsNav from './navigations/Patterns';
 
-import { RouterNavigationItem } from './utils/linkComponents';
+import { RouterNavigationItem, ExternalNavigationItem } from './utils/linkComponents';
 import type { Directory } from '../../types';
 
 export type GroupsProps = {
@@ -25,7 +25,8 @@ export type GroupsProps = {
 
 export type GroupsState = {
   parentRoute: ?Object,
-  stack: Array<Node>
+  stack: Array<Node>,
+  wasFromOldSite: boolean
 }
 
 export type GroupsContext = {
@@ -40,6 +41,7 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
   state = {
     parentRoute: null,
     stack: [[]],
+    wasFromOldSite: false,
   }
 
   componentWillMount() {
@@ -61,6 +63,9 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
       <Route path="/packages">
         <PackagesNav pathname={pathname} packages={this.props.packages} />
       </Route>,
+      <Route path="/old/packages">
+        <PackagesNav pathname={pathname} packages={this.props.packages} />
+      </Route>,
       <Route path="/patterns">
         <PatternsNav pathname={pathname} patterns={this.props.patterns} />
       </Route>,
@@ -71,20 +76,31 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
       .map(menu => [
         React.cloneElement(menu, { key: menu.props.path }),
       ]);
+      const wasFromOldSite = matchPath(pathname, '/old/packages/:group/:name');
 
     // $FlowFixMe
     const parentRoute = stack.length > 1 ? stack[stack.length - 2][0].props.path : null;
 
-    this.setState({ parentRoute, stack });
+    this.setState({ parentRoute, stack, wasFromOldSite });
   }
 
   render() {
+    const { parentRoute, wasFromOldSite } = this.state;
     return (
       <div>
-        {this.state.parentRoute ? (
+        {parentRoute && !wasFromOldSite ? (
           <div style={{ marginBottom: '10px' }}>
             <RouterNavigationItem
               href={this.state.parentRoute}
+              icon={<ArrowLeftIcon label="Back" />}
+              text="Back"
+            />
+          </div>
+        ) : null}
+        {wasFromOldSite ? (
+          <div style={{ marginBottom: '10px' }}>
+            <ExternalNavigationItem
+              href="https://atlaskit.atlassian.com"
               icon={<ArrowLeftIcon label="Back" />}
               text="Back"
             />
