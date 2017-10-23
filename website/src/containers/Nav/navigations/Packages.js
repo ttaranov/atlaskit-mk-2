@@ -5,33 +5,34 @@ import sentenceCase from 'sentence-case';
 import BitbucketReposIcon from '@atlaskit/icon/glyph/bitbucket/repos';
 import ComponentIcon from '@atlaskit/icon/glyph/component';
 import renderNav from '../utils/renderNav';
-import whereThis from '../../../whereThis';
 import type { Directory } from '../../../types';
 import * as fs from '../../../utils/fs';
+import allPackages, { packageNames } from '../../../packages';
+import { OLD_WEBSITE_URL, NEW_WEBSITE_PREFIX }from '../../../utils/constants';
 
-const getItemDetails = (pkg, group) => ({
-  to: `/packages/${group.id}/${pkg.id}/`,
+const getItemDetails = (pkg, group, navigateOut) => ({
+  to: navigateOut ? `/packages/${group.id}/${pkg.id}/` : `/${NEW_WEBSITE_PREFIX}/packages/${group.id}/${pkg.id}/`,
   isSelected: (pathname, to) => pathname.startsWith(to),
   title: fs.titleize(pkg.id),
   icon: <BitbucketReposIcon label={`${fs.titleize(pkg.id)} icon`} />,
 })
 
-const getItem = (packages, group) => {
+const getItem = (packages, group, navigateOut) => {
   const findablePkgs: { [key: string]: Object } = packages.reduce((acc, pkg) => {
     acc[pkg.id] = pkg;
     return acc;
   }, {})
 
-  return whereThis.map(data => {
-    const pkg = findablePkgs[data.key];
+  return packageNames.map(name => {
+    const pkg = findablePkgs[allPackages[name].key];
     if (pkg) {
-      return getItemDetails(pkg, group)
+      return getItemDetails(pkg, group, navigateOut)
     } else {
       return {
-        to: `https://atlaskit.atlassian.com/components/${data.key}`,
+        to: `${OLD_WEBSITE_URL}${allPackages[name].key}`,
         external: true,
-        title: data.name,
-        icon: <BitbucketReposIcon label={`${data.name} icon`} />,
+        title: allPackages[name].name,
+        icon: <BitbucketReposIcon label={`${allPackages[name].name} icon`} />,
       }
     }
   })
@@ -46,25 +47,35 @@ const packagesList = {
 export type PackagesNavProps = {
   pathname: string,
   packages: Directory,
+  navigateOut: boolean,
 };
 
-export default function PackagesNav(props: PackagesNavProps) {
-  const dirs = fs.getDirectories(props.packages.children);
+const fakeOldSiteGroups = (dirs, navigateOut) => (
+  dirs.filter(group => (group.id === 'elements'))
+    .map(group => {
+      const packages = fs.getDirectories(group.children);
+      return {
+        title: group.id,
+        items: getItem(packages, group, navigateOut),
+      };
+    })
+)
 
-  const groups = dirs.map(group => {
+const standardGroups = (dirs) => (
+  dirs.map(group => {
     const packages = fs.getDirectories(group.children);
-    if (group.id !== 'elements') {
-      return {
-        title: group.id,
-        items: packages.map(pkg => getItemDetails(pkg, group)),
-      };
-    } else {
-      return {
-        title: group.id,
-        items: getItem(packages, group),
-      };
-    }
-  });
+    return {
+      title: group.id,
+      items: packages.map(pkg => getItemDetails(pkg, group)),
+    };
+  })
+)
 
-  return <div>{renderNav([{ items: [packagesList] }, ...groups], props.pathname)}</div>;
+export default function PackagesNav(props: PackagesNavProps) {
+const { packages, pathname, navigateOut } = props;
+  const dirs = fs.getDirectories(packages.children);
+
+  const groups = navigateOut ? fakeOldSiteGroups(dirs, navigateOut) :  standardGroups(dirs);
+
+  return <div>{renderNav([{ items: [packagesList] }, ...groups], pathname)}</div>;
 }

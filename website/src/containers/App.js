@@ -1,4 +1,4 @@
-// @flow
+/* @flow */
 
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
@@ -100,7 +100,7 @@ export default class App extends React.PureComponent<AppProps> {
                       groupId={props.match.params.group}
                       pkgId={props.match.params.name} />
                   )} />
-                  <Route path="/old/packages/:group/:name" render={props => (
+                  <Route path="/mk-2/packages/:group/:name" render={props => (
                     <Package
                       packages={packages}
                       groupId={props.match.params.group}

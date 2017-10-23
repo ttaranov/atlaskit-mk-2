@@ -16,17 +16,19 @@ import PatternsNav from './navigations/Patterns';
 
 import { RouterNavigationItem, ExternalNavigationItem } from './utils/linkComponents';
 import type { Directory } from '../../types';
+import { OLD_WEBSITE_URL } from '../../utils/constants';
 
 export type GroupsProps = {
   docs: Directory,
   patterns: Directory,
   packages: Directory,
+  navigateOut: boolean,
 }
 
 export type GroupsState = {
   parentRoute: ?Object,
   stack: Array<Node>,
-  wasFromOldSite: boolean
+  navigateOut: boolean
 }
 
 export type GroupsContext = {
@@ -41,7 +43,7 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
   state = {
     parentRoute: null,
     stack: [[]],
-    wasFromOldSite: false,
+    navigateOut: false,
   }
 
   componentWillMount() {
@@ -53,21 +55,23 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
   }
 
   resolveRoutes(pathname: string) {
+    const { docs, navigateOut, packages, patterns } = this.props
+
     const menus = [
       <Route path="/">
         <DefaultNav pathname={pathname} />
       </Route>,
       <Route path="/docs">
-        <DocsNav pathname={pathname} docs={this.props.docs} />
+        <DocsNav pathname={pathname} docs={docs} />
       </Route>,
       <Route path="/packages">
-        <PackagesNav pathname={pathname} packages={this.props.packages} />
+        <PackagesNav pathname={pathname} packages={packages} navigateOut={navigateOut} />
       </Route>,
-      <Route path="/old/packages">
-        <PackagesNav pathname={pathname} packages={this.props.packages} />
+      <Route path="/mk-2/packages">
+        <PackagesNav pathname={pathname} packages={packages} navigateOut={navigateOut} />
       </Route>,
       <Route path="/patterns">
-        <PatternsNav pathname={pathname} patterns={this.props.patterns} />
+        <PatternsNav pathname={pathname} patterns={patterns} />
       </Route>,
     ];
 
@@ -76,37 +80,38 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
       .map(menu => [
         React.cloneElement(menu, { key: menu.props.path }),
       ]);
-      const wasFromOldSite = matchPath(pathname, '/old/packages/:group/:name');
 
     // $FlowFixMe
     const parentRoute = stack.length > 1 ? stack[stack.length - 2][0].props.path : null;
 
-    this.setState({ parentRoute, stack, wasFromOldSite });
+    this.setState({ parentRoute, stack });
   }
 
   render() {
-    const { parentRoute, wasFromOldSite } = this.state;
+    const { parentRoute, stack } = this.state;
+    const { navigateOut } = this.props;
+
     return (
       <div>
-        {parentRoute && !wasFromOldSite ? (
+        {parentRoute && !navigateOut ? (
           <div style={{ marginBottom: '10px' }}>
             <RouterNavigationItem
-              href={this.state.parentRoute}
+              href={parentRoute}
               icon={<ArrowLeftIcon label="Back" />}
               text="Back"
             />
           </div>
         ) : null}
-        {wasFromOldSite ? (
+        {parentRoute  && navigateOut ? (
           <div style={{ marginBottom: '10px' }}>
             <ExternalNavigationItem
-              href="https://atlaskit.atlassian.com"
+              href={OLD_WEBSITE_URL}
               icon={<ArrowLeftIcon label="Back" />}
               text="Back"
             />
           </div>
         ) : null}
-        <NestedNav stack={this.state.stack} />
+        <NestedNav stack={stack} />
       </div>
     );
   }
