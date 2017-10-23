@@ -1,14 +1,9 @@
 // @flow
 
-// TODO: Try and validate + format the value on blur (and Enter keypress?).
-// Probably need to split out value/displayValue state.
-
 import React, { Component } from 'react';
-// eslint-disable-next-line import/extensions
 import type { EventChange, EventSelect } from '@atlaskit/calendar';
 import { parse, format, isValid, getDate, getMonth, getYear } from 'date-fns';
 import DatePickerStateless from './DatePickerStateless';
-import { padWithZeroes } from '../util';
 
 type Handler = (e: any) => void;
 type Props = {
@@ -104,7 +99,6 @@ export default class DatePicker extends Component<Props, State> {
       e.preventDefault();
       this.setState({ isOpen: true });
     } else if (e.key === 'Enter') {
-      // Try and parse the input contents.
       if (e.target instanceof HTMLInputElement) {
         const value = e.target.value;
         this.validateInputContents(value);

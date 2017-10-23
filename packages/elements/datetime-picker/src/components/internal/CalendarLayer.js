@@ -1,7 +1,6 @@
 // @flow
 
 import Layer from '@atlaskit/layer';
-// eslint-disable-next-line import/extensions
 import { CalendarStateless as Calendar } from '@atlaskit/calendar';
 
 import React, { Component, type Node, type ElementRef } from 'react';
