@@ -29,7 +29,7 @@ const getItem = (packages, group, navigateOut) => {
       return getItemDetails(pkg, group, navigateOut)
     } else {
       return {
-        to: `${OLD_WEBSITE_URL}${allPackages[name].key}`,
+        to: `${OLD_WEBSITE_URL}components/${allPackages[name].key}`,
         external: true,
         title: allPackages[name].name,
         icon: <BitbucketReposIcon label={`${allPackages[name].name} icon`} />,
