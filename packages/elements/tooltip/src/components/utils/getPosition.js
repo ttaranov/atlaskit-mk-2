@@ -3,6 +3,20 @@
 import inViewport from './inViewport';
 import getScrollDistance from './getScrollDistance';
 
+import type { PlacementType, PositionType } from '../../types';
+
+type GetPositionArguments = {
+  placement: PlacementType,
+  target: HTMLElement,
+  tooltip: HTMLElement,
+};
+
+type PositionResult = {
+  placement?: PlacementType,
+  position: PositionType,
+  isFlipped?: boolean,
+};
+
 const FLIPPED_PLACEMENT = {
   top: 'bottom',
   right: 'left',
@@ -10,7 +24,7 @@ const FLIPPED_PLACEMENT = {
   left: 'right',
 };
 
-export default function getPosition({ placement, target, tooltip }) {
+export default function getPosition({ placement, target, tooltip }: GetPositionArguments): PositionResult {
   const noPosition = { position: {}, isFlipped: false };
 
   /* eslint-disable no-console */

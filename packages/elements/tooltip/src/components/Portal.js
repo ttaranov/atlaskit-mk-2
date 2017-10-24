@@ -8,13 +8,14 @@ type Props = {
   children: SingleChild,
 };
 
-export default class Portal extends Component {
+export default class Portal extends Component<Props> {
   props: Props // eslint-disable-line react/sort-comp
-  portalElement = null
+  portalElement: HTMLElement
   componentDidMount() {
-    const node = document.createElement('div');
-    if (document.body) {
-      document.body.appendChild(node);
+    const body = document.body;
+    if (body) {
+      const node = document.createElement('div');
+      body.appendChild(node);
       this.portalElement = node;
 
       this.componentDidUpdate();
@@ -24,11 +25,13 @@ export default class Portal extends Component {
     const { children } = this.props;
     render(
       Children.only(children),
-      this.portalElement
+      this.portalElement,
     );
   }
   componentWillUnmount() {
-    document.body.removeChild(this.portalElement);
+    if (document.body) {
+      document.body.removeChild(this.portalElement);
+    }
   }
   render() {
     return null;

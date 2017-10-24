@@ -6,7 +6,7 @@ import Tooltip from '../src';
 
 export default () => (
   <div>
-    <Tooltip description="Hello World">
+    <Tooltip content="Hello World">
       <Button>Hover Over Me</Button>
     </Tooltip>
   </div>

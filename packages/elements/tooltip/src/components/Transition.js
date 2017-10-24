@@ -16,15 +16,14 @@ type Props = {|
   position: { left: number, top: number },
 |};
 
-class Tip extends Component {
-  props: Props // eslint-disable-line react/sort-comp
-
+class Tip extends Component<Props> {
   render() {
-    // NOTE: `in` is NOT public API
     const {
-      in: transitionIn, // eslint-disable-line react/prop-types
       children, immediatelyHide, immediatelyShow, placement, position,
     } = this.props;
+
+    // NOTE: `props.in` is NOT public API
+    const transitionIn: boolean = (this.props: any).in;
 
     return (
       <Slide
