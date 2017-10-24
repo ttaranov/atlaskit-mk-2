@@ -32,6 +32,14 @@
     prop-types "^15.5.10"
     styled-components "^1.3.0"
 
+"@atlaskit/button-group@^1.5.3":
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/button-group/-/button-group-1.5.3.tgz#6754e612d0d0d50759bccce5dab8456e5c8f4ba4"
+  dependencies:
+    "@atlaskit/util-shared-styles" "^2.0.1"
+    prop-types "^15.5.10"
+    styled-components "^1.3.0"
+
 "@atlaskit/button@^1.0.0":
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-1.1.4.tgz#e294fee6dd02c5b05c40fa6db6966a8a3c12ad4a"
@@ -67,6 +75,13 @@
   resolved "https://registry.yarnpkg.com/@atlaskit/css-reset/-/css-reset-1.1.5.tgz#3b9246b9e9421ff6493f6a435b4e089e7917a8ce"
   dependencies:
     "@atlaskit/util-shared-styles" "^2.1.1"
+
+"@atlaskit/docs@^0.0.0":
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/docs/-/docs-0.0.0.tgz#938963a243b43e395a62308a1795ba86270eb601"
+  dependencies:
+    babel-runtime "^6.26.0"
+    react-markings "^1.1.2"
 
 "@atlaskit/dropdown-menu@^3.0.1", "@atlaskit/dropdown-menu@^3.8.0":
   version "3.10.3"
@@ -185,6 +200,17 @@
     prop-types "^15.5.10"
     styled-components "^1.3.0"
 
+"@atlaskit/layer-manager@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@atlaskit/layer-manager/-/layer-manager-2.1.2.tgz#590d777c36aa3e83cb672f9ba5ad6e1b51a0edec"
+  dependencies:
+    focusin "^2.0.0"
+    prop-types "^15.5.10"
+    react-gateway "^2.7.0"
+    react-transition-group "^2.2.0"
+    styled-components "^1.4.6"
+    tabbable "^1.0.6"
+
 "@atlaskit/layer@^2.0.0", "@atlaskit/layer@^2.5.3":
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/@atlaskit/layer/-/layer-2.5.5.tgz#544d50cdcf5011d9a2632a69586127e1db818a55"
@@ -295,6 +321,13 @@
     babel-runtime "^6.11.6"
     create-error "^0.3.1"
     keycode "^2.1.2"
+
+"@atlaskit/util-shared-styles@^2.0.1":
+  version "2.10.4"
+  resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-2.10.4.tgz#ece2aee3c1e2b3b54a249ee30256af9ff03e2970"
+  dependencies:
+    babel-runtime "^6.11.6"
+    styled-components "^1.4.6"
 
 "@atlaskit/util-shared-styles@^2.1.0", "@atlaskit/util-shared-styles@^2.1.1", "@atlaskit/util-shared-styles@^2.10.0", "@atlaskit/util-shared-styles@^2.10.3", "@atlaskit/util-shared-styles@^2.6.0":
   version "2.10.3"
@@ -835,6 +868,12 @@ assertion-error@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/assertion-error/-/assertion-error-1.0.2.tgz#13ca515d86206da0bac66e834dd397d87581094c"
 
+ast-pretty-print@^1.2.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/ast-pretty-print/-/ast-pretty-print-1.3.0.tgz#6654e50ee3de665c541fcf038ddbae5097ce8c43"
+  dependencies:
+    ansi-styles "^3.0.0"
+
 ast-types-flow@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/ast-types-flow/-/ast-types-flow-0.0.7.tgz#f70b735c6bca1a5c9c22d982c3e39e7feba3bdad"
@@ -983,7 +1022,7 @@ babel-core@^6.0.0, babel-core@^6.24.1, babel-core@^6.25.0, babel-core@^6.26.0:
     slash "^1.0.0"
     source-map "^0.5.6"
 
-babel-errors@^1.0.1, babel-errors@^1.1.1:
+babel-errors@^1.0.1, babel-errors@^1.1.0, babel-errors@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/babel-errors/-/babel-errors-1.1.1.tgz#43f7142dd3b365633c758d155bffa3ba41523794"
 
@@ -996,7 +1035,19 @@ babel-eslint@^8.0.1:
     babel-types "7.0.0-beta.0"
     babylon "7.0.0-beta.22"
 
-babel-file-loader@^1.0.3:
+babel-explode-module@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/babel-explode-module/-/babel-explode-module-1.4.0.tgz#b20076f0ee5ff28e8f16baa3146fe136a27c6504"
+  dependencies:
+    babel-types "^6.24.1"
+
+babel-explode-module@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/babel-explode-module/-/babel-explode-module-2.0.0.tgz#d635653b44b1bdf1d5ceafacafb891611876ce3b"
+  dependencies:
+    babel-types "^6.24.1"
+
+babel-file-loader@^1.0.1, babel-file-loader@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/babel-file-loader/-/babel-file-loader-1.0.3.tgz#b9df875e136d6cddc9dfcb36334cd1ad58fffe7f"
   dependencies:
@@ -1015,14 +1066,14 @@ babel-file@^1.0.2:
     babel-core "^6.24.1"
     babel-errors "^1.0.1"
 
-babel-flow-identifiers@^1.1.3:
+babel-flow-identifiers@^1.1.2, babel-flow-identifiers@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/babel-flow-identifiers/-/babel-flow-identifiers-1.1.3.tgz#8ada2633e7afa2cab58892ee2b25b2b6cc4ce598"
   dependencies:
     babel-flow-scope "^1.2.1"
     babel-identifiers "^1.0.0"
 
-babel-flow-scope@^1.2.1:
+babel-flow-scope@^1.2.0, babel-flow-scope@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/babel-flow-scope/-/babel-flow-scope-1.2.1.tgz#2b646211811a203ef0b11ebd219af29428b15990"
 
@@ -1182,6 +1233,12 @@ babel-helper-replace-supers@^6.24.1:
     babel-traverse "^6.24.1"
     babel-types "^6.24.1"
 
+babel-helper-simplify-module@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/babel-helper-simplify-module/-/babel-helper-simplify-module-2.2.0.tgz#62ccda7d379992eea9c1141400d1f63cd9918e16"
+  dependencies:
+    babel-explode-module "^1.4.0"
+
 babel-helpers@7.0.0-alpha.19:
   version "7.0.0-alpha.19"
   resolved "https://registry.yarnpkg.com/babel-helpers/-/babel-helpers-7.0.0-alpha.19.tgz#860701311b3ac06e3158eb2aba97b86ca8a1f16f"
@@ -1215,6 +1272,13 @@ babel-loader@^7.1.2:
     loader-utils "^1.0.2"
     mkdirp "^0.5.1"
 
+babel-log@^1.0.3:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/babel-log/-/babel-log-1.0.4.tgz#e3bebf1de68d10e094605392181d290a91876200"
+  dependencies:
+    ansi-styles "^3.0.0"
+    ast-pretty-print "^1.2.0"
+
 babel-messages@7.0.0-alpha.19:
   version "7.0.0-alpha.19"
   resolved "https://registry.yarnpkg.com/babel-messages/-/babel-messages-7.0.0-alpha.19.tgz#269b34b85070be6f6d101169ed3fdafc856dfd06"
@@ -1246,6 +1310,20 @@ babel-plugin-istanbul@^4.0.0, babel-plugin-istanbul@^4.1.4:
 babel-plugin-jest-hoist@^20.0.3:
   version "20.0.3"
   resolved "https://registry.yarnpkg.com/babel-plugin-jest-hoist/-/babel-plugin-jest-hoist-20.0.3.tgz#afedc853bd3f8dc3548ea671fbe69d03cc2c1767"
+
+babel-plugin-react-flow-props-to-prop-types@^0.15.0:
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-react-flow-props-to-prop-types/-/babel-plugin-react-flow-props-to-prop-types-0.15.0.tgz#0008ecf31bb68f43c11dec57e366f58b73a8acbd"
+  dependencies:
+    babel-errors "^1.1.0"
+    babel-explode-module "^2.0.0"
+    babel-file-loader "^1.0.1"
+    babel-flow-identifiers "^1.1.2"
+    babel-flow-scope "^1.2.0"
+    babel-helper-simplify-module "^2.2.0"
+    babel-log "^1.0.3"
+    babel-react-components "^1.0.1"
+    babel-types "^6.24.1"
 
 babel-plugin-syntax-async-functions@^6.8.0:
   version "6.13.0"
@@ -1610,7 +1688,7 @@ babel-preset-react@^6.24.1:
     babel-plugin-transform-react-jsx-source "^6.22.0"
     babel-preset-flow "^6.23.0"
 
-babel-react-components@^1.1.0:
+babel-react-components@^1.0.1, babel-react-components@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/babel-react-components/-/babel-react-components-1.1.0.tgz#3683490747259ea41cef734ceb9fc6098bc5dcd2"
 
@@ -3996,6 +4074,10 @@ flatten@^1.0.2:
 flow-bin@^0.53.0:
   version "0.53.1"
   resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.53.1.tgz#9b22b63a23c99763ae533ebbab07f88c88c97d84"
+
+focusin@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/focusin/-/focusin-2.0.0.tgz#58c01180dfb1949f03e3ddeee063739fc33b6ffc"
 
 for-in@^0.1.3:
   version "0.1.8"
@@ -7261,7 +7343,7 @@ prop-types-extra@^1.0.1:
   dependencies:
     warning "^3.0.0"
 
-prop-types@^15.5.1, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6:
+prop-types@^15.5.0, prop-types@^15.5.1, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.8:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
@@ -7447,6 +7529,14 @@ react-dom@^15.6.1:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
+react-gateway@^2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/react-gateway/-/react-gateway-2.7.0.tgz#64bb3e8f8b7c6bf9f26ff3bf08a9946a5af4836e"
+  dependencies:
+    prop-types "^15.5.0"
+    react "^0.14.2 || ^15.0.0-0"
+    react-prop-types "^0.4.0"
+
 react-loadable@^5.1.0:
   version "5.2.2"
   resolved "https://registry.yarnpkg.com/react-loadable/-/react-loadable-5.2.2.tgz#1a5ad75841cacb64be12b18a86ac0bc55ccb4dc7"
@@ -7460,12 +7550,18 @@ react-markdown@^2.5.0:
     in-publish "^2.0.0"
     prop-types "^15.5.1"
 
-react-markings@^1.1.6:
+react-markings@^1.1.2, react-markings@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/react-markings/-/react-markings-1.1.6.tgz#4ad7359c2a3fd5475482aaced44be74e15e02717"
   dependencies:
     commonmark "^0.27.0"
     commonmark-react-renderer "^4.3.3"
+
+react-prop-types@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/react-prop-types/-/react-prop-types-0.4.0.tgz#f99b0bfb4006929c9af2051e7c1414a5c75b93d0"
+  dependencies:
+    warning "^3.0.0"
 
 react-resize-aware@^2.7.0:
   version "2.7.0"
@@ -7519,7 +7615,18 @@ react-transition-group@^1.2.0:
     prop-types "^15.5.6"
     warning "^3.0.0"
 
-react@^15.6.1:
+react-transition-group@^2.2.0, react-transition-group@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.2.1.tgz#e9fb677b79e6455fd391b03823afe84849df4a10"
+  dependencies:
+    chain-function "^1.0.0"
+    classnames "^2.2.5"
+    dom-helpers "^3.2.0"
+    loose-envify "^1.3.1"
+    prop-types "^15.5.8"
+    warning "^3.0.0"
+
+"react@^0.14.2 || ^15.0.0-0", react@^15.6.1:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/react/-/react-15.6.2.tgz#dba0434ab439cfe82f108f0f511663908179aa72"
   dependencies:
@@ -8560,6 +8667,10 @@ svgo@^0.7.0:
 symbol-tree@^3.2.1:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.2.tgz#ae27db38f660a7ae2e1c3b7d1bc290819b8519e6"
+
+tabbable@^1.0.6:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/tabbable/-/tabbable-1.1.0.tgz#2c9a9c9f09db5bb0659f587d532548dd6ef2067b"
 
 table@^4.0.1:
   version "4.0.2"
