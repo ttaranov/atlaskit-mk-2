@@ -100,10 +100,14 @@ Animation.defaultProps = {
 const xPos = {
   left: distance,
   right: -distance,
+  top: 0,
+  bottom: 0,
 };
 const yPos = {
   bottom: -distance,
   top: distance,
+  left: 0,
+  right: 0,
 };
 
 // eslint-disable-next-line import/prefer-default-export
@@ -113,11 +117,14 @@ export const Slide = (
     immediatelyHide: boolean,
     immediatelyShow: boolean,
     placement: PlacementType,
-    props: Array<any>
-  }
+    props?: any,
+    children: ChildrenType,
+    in: boolean,
+    style: Object,
+  },
 ) => {
-  const horizontalOffset = xPos[placement] || 0;
-  const verticalOffset = yPos[placement] || 0;
+  const horizontalOffset = xPos[placement];
+  const verticalOffset = yPos[placement];
 
   const restingTransform = 'translate3d(0, 0, 0)';
   const timeout = {

@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react';
 
-import type { ElementType, PlacementType, PositionType, SingleChild } from '../types';
+import type { PlacementType, PositionType, SingleChild } from '../types';
 import { Tooltip as StyledTooltip } from '../styled';
 
 import Portal from './Portal';
@@ -23,24 +23,26 @@ type Props = {
   /** Where the tooltip should appear relative to its target. */
   placement: PlacementType,
   /** React <16.X requires a wrapping element. */
-  tag?: string,
+  tag: string,
 };
 type State = {
   immediatelyHide: boolean,
   immediatelyShow: boolean,
-  isVisible: bool,
+  isVisible: boolean,
+  isFlipped: boolean,
   placement: PlacementType,
-  position: PositionType,
+  position: PositionType | null,
 };
 
 // global tooltip marshall
 const marshall = new TooltipMarshal();
 
-function getInitialState(props) {
+function getInitialState(props): State {
   return {
     immediatelyHide: false,
     immediatelyShow: false,
     isVisible: false,
+    isFlipped: false,
     placement: props.placement,
     position: null,
   };
@@ -51,10 +53,9 @@ type showHideArgs = {
 };
 
 /* eslint-disable react/sort-comp */
-export default class Tooltip extends Component {
-  props: Props
-  state: State = getInitialState(this.props)
-  wrapper: ElementType
+export default class Tooltip extends Component<Props, State> {
+  state = getInitialState(this.props)
+  wrapper: HTMLElement | null
   static defaultProps = {
     placement: 'bottom',
     tag: 'div',
@@ -69,12 +70,12 @@ export default class Tooltip extends Component {
     }
   }
 
-  handleWrapperRef = ref => {
+  handleWrapperRef = (ref: HTMLElement | null) => {
     this.wrapper = ref;
   }
 
-  handleMeasureRef = tooltip => {
-    if (!tooltip) return;
+  handleMeasureRef = (tooltip: HTMLElement) => {
+    if (!tooltip || !this.wrapper) return;
 
     const { placement } = this.state;
     const target = this.wrapper.children.length
@@ -87,7 +88,7 @@ export default class Tooltip extends Component {
     // position: Object(left: number, top: number, position: 'fixed' | 'absolute')
     //   - coordinates passed to Transition
     this.setState(
-      getPosition({ placement, target, tooltip })
+      getPosition({ placement, target, tooltip }),
     );
   }
 
@@ -129,7 +130,7 @@ export default class Tooltip extends Component {
     });
   }
 
-  handleMouseOver = event => {
+  handleMouseOver = (event: MouseEvent) => {
     const { onMouseOver } = this.props;
 
     // bail if over the wrapper, we only want to target the first child.
@@ -139,7 +140,7 @@ export default class Tooltip extends Component {
 
     if (onMouseOver) onMouseOver(event);
   }
-  handleMouseOut = event => {
+  handleMouseOut = (event: MouseEvent) => {
     const { onMouseOut } = this.props;
 
     // bail if over the wrapper, we only want to target the first child.

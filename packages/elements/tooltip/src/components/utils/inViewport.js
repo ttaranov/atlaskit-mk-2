@@ -8,6 +8,7 @@ type Position = {
 };
 
 export default function inViewport({ top, right, bottom, left }: Position) {
+  if (!document.documentElement) return false;
   return (
     top >= 0 &&
     left >= 0 &&

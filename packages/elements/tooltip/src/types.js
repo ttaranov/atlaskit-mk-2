@@ -10,4 +10,4 @@ export type FunctionType = (...args: Array<any>) => mixed;
 export type SingleChild = ComponentType| ElementType;
 
 export type PlacementType = 'bottom' | 'left' | 'right' | 'top';
-export type PositionType = { left: number, top: number };
+export type PositionType = { left?: number, top?: number, isFlipped?: boolean };

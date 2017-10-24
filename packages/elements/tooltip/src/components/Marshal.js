@@ -1,22 +1,16 @@
 // @flow
+import Tooltip from './Tooltip';
 
 const SHOW_DELAY = 300;
 const HIDE_DELAY = 300;
 
 export default class TooltipMarshal {
-  queuedForShow: any
-  queuedForHide: any
-  visibleTooltip: any
+  queuedForShow: ?Tooltip
+  queuedForHide: ?Tooltip
+  visibleTooltip: ?Tooltip
   showTimeout: ?number
   hideTimeout: ?number
-  constructor() {
-    this.queuedForShow = null;
-    this.queuedForHide = null;
-    this.visibleTooltip = null;
-    this.showTimeout = null;
-    this.hideTimeout = null;
-  }
-  show(tooltip) {
+  show(tooltip: Tooltip) {
     // if the tooltip is already queued for show, don't interfere
     if (this.queuedForShow === tooltip) return;
 
@@ -61,7 +55,7 @@ export default class TooltipMarshal {
     clearTimeout(this.showTimeout);
     this.showTimeout = null;
   }
-  hide(tooltip) {
+  hide(tooltip: Tooltip) {
     // if the tooltip is already queued for hide, don't interfere
     if (this.queuedForHide === tooltip) return;
 

@@ -1,6 +1,6 @@
 // @flow
 
-export default function getScrollDistance(el) {
+export default function getScrollDistance(el: HTMLElement) {
   let scrollX = 0;
   let scrollY = 0;
   let isFixed = false;
@@ -13,8 +13,10 @@ export default function getScrollDistance(el) {
       isFixed = true;
       break;
     } else if (el.tagName === 'BODY') {
-      scrollX += el.scrollLeft || document.documentElement.scrollLeft;
-      scrollY += el.scrollTop || document.documentElement.scrollTop;
+      if (document.documentElement) {
+        scrollX += el.scrollLeft || document.documentElement.scrollLeft;
+        scrollY += el.scrollTop || document.documentElement.scrollTop;
+      }
     // for all other non-BODY elements
     } else {
       scrollX += el.scrollLeft;
@@ -22,7 +24,7 @@ export default function getScrollDistance(el) {
     }
 
     // eslint-disable-next-line no-param-reassign
-    el = el.offsetParent;
+    el = ((el.offsetParent: any): HTMLElement);
   }
 
   return { scrollX, scrollY, isFixed };
