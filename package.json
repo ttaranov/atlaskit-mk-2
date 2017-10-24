@@ -106,7 +106,7 @@
     "@atlaskit/field-base": "^8.1.1",
     "@atlaskit/field-text": "^4.0.0",
     "@atlaskit/icon": "^9.0.1",
-    "@atlaskit/input": "^1.5.3",
+    "@atlaskit/input": "^1.6.0",
     "@atlaskit/logo": "^4.0.1",
     "@atlaskit/navigation": "^22.0.0",
     "@atlaskit/single-select": "^2.0.1",

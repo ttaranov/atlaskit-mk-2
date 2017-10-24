@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type ElementRef } from 'react';
 import type { EventChange, EventSelect } from '@atlaskit/calendar';
 import { parse, format, isValid, getDate, getMonth, getYear } from 'date-fns';
 import DatePickerStateless from './DatePickerStateless';
@@ -23,6 +23,7 @@ type State = {
 
 export default class DatePicker extends Component<Props, State> {
   props: Props;
+  datePicker: ElementRef<DatePickerStateless>;
 
   static defaultProps = {
     isDisabled: false,
@@ -112,7 +113,7 @@ export default class DatePicker extends Component<Props, State> {
     if (e.key === 'Escape') {
       e.preventDefault();
       this.setState({ isOpen: false });
-      // TODO: Set focus on the input again.
+      this.datePicker.selectInput();
     }
   }
 
@@ -162,6 +163,7 @@ export default class DatePicker extends Component<Props, State> {
         year={this.state.year}
 
         disabled={this.props.disabled}
+        ref={ref => { this.datePicker = ref; }}
       />
     );
   }

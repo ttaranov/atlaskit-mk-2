@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type ElementRef } from 'react';
 import Input from '@atlaskit/input';
 import type { Handler } from '../../types';
 
@@ -16,6 +16,7 @@ type Props = {
 
 export default class InputField extends Component<Props> {
   props: Props;
+  input: ElementRef<Input>;
 
   static defaultProps = {
     isDisabled: false,
@@ -25,6 +26,10 @@ export default class InputField extends Component<Props> {
     onKeyDown() {},
     onFocus() {},
     onBlur() {},
+  }
+
+  select = () => {
+    this.input.select();
   }
 
   render() {
@@ -38,6 +43,7 @@ export default class InputField extends Component<Props> {
         onKeyDown={this.props.onKeyDown}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
+        ref={ref => { this.input = ref; }}
       />
     );
   }

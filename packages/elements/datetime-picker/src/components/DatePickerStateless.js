@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type ElementRef } from 'react';
 import Container from './internal/Container';
 import Input from './internal/Input';
 import CalendarLayer from './internal/CalendarLayer';
@@ -31,6 +31,7 @@ type Props = {
 
 export default class DatePickerStateless extends Component<Props> {
   props: Props;
+  input: ElementRef<Input>;
 
   static defaultProps = {
     isDisabled: false,
@@ -54,6 +55,10 @@ export default class DatePickerStateless extends Component<Props> {
     year: undefined,
     today: undefined,
     disabled: [],
+  }
+
+  selectInput() {
+    this.input.select();
   }
 
   render() {
@@ -104,6 +109,7 @@ export default class DatePickerStateless extends Component<Props> {
             onBlur={onInputBlur}
             onChange={onInputChange}
             onKeyDown={onInputKeyDown}
+            ref={ref => { this.input = ref; }}
           />
         </Container>
       </CalendarLayer>
