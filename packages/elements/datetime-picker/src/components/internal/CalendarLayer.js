@@ -1,11 +1,10 @@
 // @flow
 
+import React, { Component, type Node, type ElementRef } from 'react';
 import Layer from '@atlaskit/layer';
 import { CalendarStateless as Calendar } from '@atlaskit/calendar';
+import type { Handler } from '../../types';
 
-import React, { Component, type Node, type ElementRef } from 'react';
-
-type Handler = (e: any) => void;
 type Props = {
   isOpen: boolean,
 

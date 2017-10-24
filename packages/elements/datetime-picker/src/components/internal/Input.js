@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react';
 import Input from '@atlaskit/input';
+import type { Handler } from '../../types';
 
-type Handler = (e: any) => void;
 type Props = {
     isDisabled: bool,
     placeholder: ?string,

@@ -4,8 +4,8 @@ import React, { Component, type Node } from 'react';
 import Base from '@atlaskit/field-base';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import { akColorN60 } from '@atlaskit/util-shared-styles';
+import type { Handler } from '../../types';
 
-type Handler = (e: any) => void;
 type Props = {
   shouldShowIcon: bool,
   onIconClick: Handler,

@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import Container from './internal/Container';
 import Input from './internal/Input';
 import CalendarLayer from './internal/CalendarLayer';
+import type { Handler } from '../types';
 
-type Handler = (e: any) => void;
 type Props = {
   isDisabled: boolean,
   isOpen: boolean,

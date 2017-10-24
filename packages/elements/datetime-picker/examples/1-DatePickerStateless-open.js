@@ -3,7 +3,7 @@ import React from 'react';
 import { DatePickerStateless } from '../src';
 import { action } from './helpers/_';
 
-export default function Component() {
+export default () => {
   return (
     <DatePickerStateless
       isOpen
@@ -26,4 +26,4 @@ export default function Component() {
       disabled={['2017-08-06', '2017-08-05']}
     />
   );
-}
+};
