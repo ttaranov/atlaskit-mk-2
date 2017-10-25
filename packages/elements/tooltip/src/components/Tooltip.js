@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable react/require-default-props */
 
-import React, { Component } from 'react';
+import React, { Children, Component } from 'react';
 
 import type { PlacementType, PositionType, SingleChild } from '../types';
 import { Tooltip as StyledTooltip } from '../styled';
@@ -163,7 +163,7 @@ export default class Tooltip extends Component<Props, State> {
         ref={this.handleWrapperRef}
         {...rest}
       >
-        {children}
+        {Children.only(children)}
         {this.renderTooltip()}
       </Tag>
     );
