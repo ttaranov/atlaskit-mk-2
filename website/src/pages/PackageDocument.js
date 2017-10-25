@@ -2,7 +2,7 @@
 import React, { Component, type Node } from 'react';
 import { Redirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
-import type { Directory } from '../types';
+import type { Directory, RouterMatch } from '../types';
 import { packages } from '../site';
 import * as fs from '../utils/fs';
 import Page, { Title } from '../components/Page';
@@ -10,12 +10,12 @@ import FourOhFour from './FourOhFour';
 import Loading from '../components/Loading';
 
 type PackageDocumentProps = {
-  docId: string,
-  pkgId: string,
-  groupId: string,
+  match: RouterMatch,
 };
 
-export default function PackageDocument({ groupId, pkgId, docId }: PackageDocumentProps) {
+export default function PackageDocument({
+  match: { params: { groupId, pkgId, docId } },
+}: PackageDocumentProps) {
   const filePath = `packages/${groupId}/${pkgId}/docs/${docId}`;
   const found = fs.findNormalized(packages, filePath);
 

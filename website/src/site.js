@@ -9,6 +9,6 @@ export default siteData;
 
 const dirs = fs.getDirectories(data.children);
 
-export const docs = fs.getById(dirs, 'docs');
-export const packages = fs.getById(dirs, 'packages');
-export const patterns = fs.getById(dirs, 'patterns');
+export const docs: Directory = fs.getById(dirs, 'docs');
+export const packages: Directory = fs.getById(dirs, 'packages');
+export const patterns: Directory = fs.getById(dirs, 'patterns');

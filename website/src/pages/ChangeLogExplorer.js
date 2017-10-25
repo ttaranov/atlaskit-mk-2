@@ -10,14 +10,11 @@ import Button from '@atlaskit/button';
 import Changelog, { NoMatch } from '../components/ChangeLog';
 import Page from '../components/Page';
 
+import type { RouterMatch } from '../types';
+
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
-  match: {
-    isExact: boolean,
-    params: { component: string, semver?: string },
-    path: string,
-    url: string,
-  },
+  match: RouterMatch,
   history: any,
 };
 type State = { isInvalid: boolean, range: string };
@@ -35,7 +32,8 @@ export default class ChangelogExplorer extends Component<Props, State> {
     const { component } = this.props.match.params;
     const range = e.target.value;
     let isInvalid = false;
-    if (!isInvalid) this.props.history.replace(`/changelog/${String(component)}/${encodeURI(range)}`);
+    if (!isInvalid)
+      this.props.history.replace(`/changelog/${String(component)}/${encodeURI(range)}`);
 
     if (/[a-z]/gi.test(range)) isInvalid = true;
 
@@ -80,7 +78,13 @@ export default class ChangelogExplorer extends Component<Props, State> {
 }
 
 const Back = ({ children, to }: { children?: Node | string, to: string }) => (
-  <Button appearance="link" component={Link} iconBefore={<BackIcon label="Back Icon" size="small" />} spacing="none" to={to}>
+  <Button
+    appearance="link"
+    component={Link}
+    iconBefore={<BackIcon label="Back Icon" size="small" />}
+    spacing="none"
+    to={to}
+  >
     <span style={{ paddingLeft: '0.5em' }}>{children || 'Back to Docs'}</span>
   </Button>
 );
