@@ -1,9 +1,9 @@
 {
   "name": "@atlaskit/datetime-picker",
   "version": "0.0.1",
-  "description": "A React component for picking datetime values",
+  "description": "A React component for picking date/time values",
   "license": "Apache-2.0",
-  "main": "dist/cjs/index.js",
+  "main": "dist/cjs.js",
   "src": "src/index.js",
   "files": [
     "dist"
