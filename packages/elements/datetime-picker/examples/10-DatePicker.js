@@ -10,4 +10,4 @@ export default () => {
       <button type="button">Focusable Button</button>
     </div>
   );
-}
+};
