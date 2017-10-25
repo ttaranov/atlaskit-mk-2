@@ -16,11 +16,13 @@ export default function PatternsNav({ pathname, patterns }: PatternsNavProps) {
   const groups = buildNavGroups('patterns', CodeIcon, pathname, patterns);
 
   groups.unshift({
-    items: [{
-      to: '/patterns',
-      title: 'About patterns',
-      icon: <IssuesIcon label="About patterns"/>
-    }]
+    items: [
+      {
+        to: '/patterns',
+        title: 'About patterns',
+        icon: <IssuesIcon label="About patterns" />,
+      },
+    ],
   });
 
   return <div>{renderNav(groups, pathname)}</div>;
