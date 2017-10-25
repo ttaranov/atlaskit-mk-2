@@ -10,8 +10,9 @@ import FourOhFour from '../FourOhFour';
 import { isModuleNotFoundError } from '../../utils/errors';
 import MetaData from './MetaData';
 // import { join } from '../../utils/path';
-import type { Directory } from '../../types';
+import type { Directory, RouterMatch } from '../../types';
 import * as fs from '../../utils/fs';
+import { packages } from '../../site';
 
 export const Title = styled.div`
   display: flex;
@@ -75,9 +76,7 @@ export const NoDocs = (props: NoDocsProps) => {
 };
 
 type PackageProps = {
-  packages: Directory,
-  groupId: string,
-  pkgId: string,
+  match: RouterMatch,
 };
 
 type PackageState = {
@@ -102,8 +101,8 @@ export default class Package extends React.Component<PackageProps, PackageState>
     this.loadDoc();
   }
 
-  componentWillReceiveProps(nextProps: PackageProps) {
-    if (nextProps.groupId === this.props.groupId && nextProps.pkgId === this.props.pkgId) {
+  componentWillReceiveProps({ match: { params: { groupId, pkgId } } }: PackageProps) {
+    if (groupId === this.props.match.params.groupId && pkgId === this.props.match.params.pkgId) {
       return;
     }
 
@@ -112,7 +111,8 @@ export default class Package extends React.Component<PackageProps, PackageState>
 
   loadDoc() {
     this.setState({ pkg: null, doc: null, missing: false }, () => {
-      let pkg = getPkg(this.props.packages, this.props.groupId, this.props.pkgId);
+      let { groupId, pkgId } = this.props.match.params;
+      let pkg = getPkg(packages, groupId, pkgId);
       let dirs = fs.getDirectories(pkg.children);
       let files = fs.getFiles(pkg.children);
 
@@ -139,7 +139,7 @@ export default class Package extends React.Component<PackageProps, PackageState>
   }
 
   render() {
-    const { groupId, pkgId } = this.props;
+    const { groupId, pkgId } = this.props.match.params;
     const { pkg, doc, missing } = this.state;
 
     if (missing) {

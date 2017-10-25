@@ -6,7 +6,4 @@ import 'regenerator-runtime/runtime';
 import App from './containers/App';
 import repo from './site';
 
-render(
-  <App repo={repo} />,
-  document.getElementById('app'),
-);
+render(<App />, document.getElementById('app'));

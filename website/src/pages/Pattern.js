@@ -2,23 +2,23 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import * as fs from '../utils/fs';
-import type { Directory } from '../types';
+import type { Directory, RouterMatch } from '../types';
 import Page from '../components/Page';
 import FourOhFour from './FourOhFour';
 import Loading from '../components/Loading';
 import Loadable from 'react-loadable';
+import { patterns } from '../site';
 
 type Props = {
-  patterns: Directory,
-  patternId: string,
+  match: RouterMatch,
 };
 
-export default function Pattern(props: Props) {
-  const filePath = `patterns/${props.patternId}`;
-  const found = fs.findNormalized(props.patterns, filePath);
+export default function Pattern({ match: { params: { patternId } } }: Props) {
+  const filePath = `patterns/${patternId}`;
+  const found = fs.findNormalized(patterns, filePath);
 
   if (!found) {
-    return <FourOhFour/>;
+    return <FourOhFour />;
   }
 
   const Content = Loadable({
@@ -28,14 +28,14 @@ export default function Pattern(props: Props) {
       if (mod && mod.default) {
         return React.createElement(mod.default);
       } else {
-        return <FourOhFour/>;
+        return <FourOhFour />;
       }
-    }
+    },
   });
 
   return (
     <Page>
-      <Content/>
+      <Content />
     </Page>
   );
-};
+}
