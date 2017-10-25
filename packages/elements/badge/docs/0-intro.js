@@ -13,10 +13,15 @@ export default md`
   - Use labels to call out tags and high-visibility attributes.
   - Use a tooltip if you want to indicate units.
 
-  ${<Example
-    Component={require('../examples/0-basic').default}
-    source={require('!!raw-loader!../examples/0-basic')}
-  />}
+  ## Examples
+
+  ${(
+    <Example
+      Component={require('../examples/0-basic').default}
+      title="Basic"
+      source={require('!!raw-loader!../examples/0-basic')}
+    />
+  )}
 
   ${<Props props={require('!!extract-react-types-loader!../src/components/Badge')} />}
 `;
