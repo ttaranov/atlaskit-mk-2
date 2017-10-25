@@ -9,7 +9,7 @@ import * as fs from '../utils/fs';
 import type { Directory, RouterMatch } from '../types';
 import { Redirect, Link } from 'react-router-dom';
 import { colors } from '@atlaskit/theme';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';
 import CodeIcon from '@atlaskit/icon/glyph/code';
 import SingleSelect from '@atlaskit/single-select';
 import CodeBlock from '../components/Code';
@@ -75,17 +75,19 @@ const ExamplesCodeContainer = styled.div`
 const ExamplesNavSection = styled.div`padding: 4px;`;
 
 const ExamplesNavIconLink = styled(Link)`
-  display: inline-block;
+  display: inline-flex;
   height: 40px;
-  width: 40px;
-  padding: 3px 4px 5px;
-  border-radius: 50%;
+  padding: 5px 8px 3px 4px;
+  align-items: center;
 
   &:hover {
     background: ${colors.N40};
     cursor: pointer;
+    text-decoration: none;
   }
 `;
+
+const ExamplesNavIcon = styled.span`margin-right: 6px;`;
 
 const ExamplesControl = styled.div`
   display: inline-block;
@@ -93,6 +95,15 @@ const ExamplesControl = styled.div`
   & + & {
     margin-left: 2px;
   }
+`;
+
+const ExamplesError = styled.div`
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  color: ${colors.R400};
+  font-size: 120%;
 `;
 
 type State = {
@@ -218,6 +229,10 @@ export default class Examples extends React.Component<Props, State> {
       loader: () => example.exports(),
       loading: Loading,
       render(loaded) {
+        if (!loaded.default) {
+          return <ExamplesError>Example "{example.id}" doesn't have default export.</ExamplesError>;
+        }
+
         return (
           <ExamplesComponentContainer>
             <loaded.default />
@@ -282,8 +297,11 @@ export default class Examples extends React.Component<Props, State> {
       <ExamplesContainer>
         <ExamplesNav>
           <ExamplesNavSection>
-            <ExamplesNavIconLink to="/">
-              <AtlassianIcon size="large" primaryColor={colors.B500} />
+            <ExamplesNavIconLink to={`/packages/${groupId}/${packageId}`}>
+              <ExamplesNavIcon>
+                <ArrowLeftCircleIcon size="large" primaryColor={colors.B500} label="back to docs" />
+              </ExamplesNavIcon>
+              to {fs.titleize(packageId)} docs
             </ExamplesNavIconLink>
           </ExamplesNavSection>
 
@@ -313,7 +331,7 @@ export default class Examples extends React.Component<Props, State> {
 
           <ExamplesNavSection>
             <div onClick={this.onCodeToggle}>
-              <CodeIcon size="large" primaryColor={colors.N500} />
+              <CodeIcon size="large" primaryColor={colors.N500} label="show source" />
             </div>
           </ExamplesNavSection>
         </ExamplesNav>
