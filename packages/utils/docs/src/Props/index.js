@@ -20,9 +20,7 @@ const HeadingDefault = styled.code`
   color: ${themed({ light: colors.subtleText, dark: colors.subtleText })};
 `;
 
-const HeadingRequired = styled.span`
-  color: ${themed({ light: colors.R500, dark: colors.R300 })};
-`;
+const HeadingRequired = styled.span`color: ${themed({ light: colors.R500, dark: colors.R300 })};`;
 
 const HeadingType = styled.span`
   background: ${themed({ light: colors.B50, dark: colors.B500 })};
@@ -32,12 +30,9 @@ const HeadingType = styled.span`
   padding: 0 0.2em;
 `;
 
-const PropTypeWrapper = styled.div`
-  margin-top: ${math.multiply(gridSize, 4)}px;
-`;
+const PropTypeWrapper = styled.div`margin-top: ${math.multiply(gridSize, 4)}px;`;
 
 const Wrapper = styled.div`
-  border-top: 2px solid ${themed({ light: colors.N20, dark: colors.DN40 })};
   margin-top: ${math.multiply(gridSize, 1.5)}px;
 
   @media (min-width: 780px) {
@@ -66,20 +61,22 @@ function PropTypeHeading(props: PropTypeHeadingProps) {
     typeName = `?${props.type.arguments.kind}`;
   }
 
-  return (<Heading>
-    <code>
-      <HeadingType>{typeName}</HeadingType> {props.name}
-      {props.defaultValue ? <HeadingDefault> = {props.defaultValue.value}</HeadingDefault> : null}
-      {props.required ? <HeadingRequired> required</HeadingRequired> : null}
-    </code>
-  </Heading>);
+  return (
+    <Heading>
+      <code>
+        <HeadingType>{typeName}</HeadingType> {props.name}
+        {props.defaultValue ? <HeadingDefault> = {props.defaultValue.value}</HeadingDefault> : null}
+        {props.required ? <HeadingRequired> required</HeadingRequired> : null}
+      </code>
+    </Heading>
+  );
 }
 
 type DynamicPropsProps = {
   props: {
     classes: Array<{
-      props: Array<any>
-    }>
+      props: Array<any>,
+    }>,
   },
 };
 
@@ -94,8 +91,9 @@ export default function DynamicProps(props: DynamicPropsProps) {
     <PageWrapper>
       {propTypes.map(propType => {
         if (!propType.value) {
-          console.error( // eslint-disable-line no-console
-            `Prop ${propType.key} has no type; this usually indicates invalid propType or defaultProps config`,
+          console.error(
+            // eslint-disable-line no-console
+            `Prop ${propType.key} has no type; this usually indicates invalid propType or defaultProps config`
           );
           return null;
         }
