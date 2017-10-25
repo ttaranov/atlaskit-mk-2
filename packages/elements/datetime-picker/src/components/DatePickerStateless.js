@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, type ElementRef } from 'react';
+import React, { Component } from 'react';
 import Container from './internal/Container';
 import Input from './internal/Input';
 import CalendarLayer from './internal/CalendarLayer';
@@ -31,7 +31,7 @@ type Props = {
 
 export default class DatePickerStateless extends Component<Props> {
   props: Props;
-  input: ElementRef<Input>;
+  input: any;
 
   static defaultProps = {
     isDisabled: false,

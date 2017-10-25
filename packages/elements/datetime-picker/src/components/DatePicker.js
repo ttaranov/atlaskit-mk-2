@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, type ElementRef } from 'react';
+import React, { Component } from 'react';
 import type { EventChange, EventSelect } from '@atlaskit/calendar';
 import { parse, format, isValid, getDate, getMonth, getYear } from 'date-fns';
 import DatePickerStateless from './DatePickerStateless';
@@ -23,7 +23,7 @@ type State = {
 
 export default class DatePicker extends Component<Props, State> {
   props: Props;
-  datePicker: ElementRef<DatePickerStateless>;
+  datePicker: any;
 
   static defaultProps = {
     isDisabled: false,
