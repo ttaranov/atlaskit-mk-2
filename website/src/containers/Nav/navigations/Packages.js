@@ -37,7 +37,9 @@ export function buildSubNavGroup(
 const getItemDetails = (pkg: Directory, group: Directory, navigateOut?: boolean) => {
   const docs = fs.getById(fs.getDirectories(pkg.children) || [], 'docs');
   const examples = fs.getById(fs.getDirectories(pkg.children) || [], 'examples');
-  const docItems = fs.getFiles(docs && docs.children && docs.children.length ? docs.children : []);
+  const docItems = fs
+    .getFiles(docs && docs.children && docs.children.length ? docs.children : [])
+    .slice(1);
   const exampleItems = fs.getFiles(examples.children || []);
 
   return {
