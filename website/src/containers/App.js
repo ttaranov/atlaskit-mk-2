@@ -72,6 +72,7 @@ export default function App() {
                   path="/mk-2/packages/:groupId/:pkgId/docs/:docId"
                   component={PackageDocument}
                 />
+                <Route path="/packages/:groupId/:pkgId" component={Package} />
                 <Route path="/mk-2/packages/:groupId/:pkgId" component={Package} />
                 <Route path="/packages" component={PackagesList} />
                 <Route path="/changelog/:groupId/:pkgId/:semver?" component={ChangeLogExplorer} />

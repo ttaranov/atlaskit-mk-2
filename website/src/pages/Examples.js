@@ -14,6 +14,7 @@ import CodeIcon from '@atlaskit/icon/glyph/code';
 import SingleSelect from '@atlaskit/single-select';
 import CodeBlock from '../components/Code';
 import { packages as packagesData } from '../site';
+import { packageUrl } from '../utils/url';
 
 const ExamplesContainer = styled.div`
   position: relative;
@@ -297,7 +298,7 @@ export default class Examples extends React.Component<Props, State> {
       <ExamplesContainer>
         <ExamplesNav>
           <ExamplesNavSection>
-            <ExamplesNavIconLink to={`/packages/${groupId}/${packageId}`}>
+            <ExamplesNavIconLink to={packageUrl(groupId, packageId)}>
               <ExamplesNavIcon>
                 <ArrowLeftCircleIcon size="large" primaryColor={colors.B500} label="back to docs" />
               </ExamplesNavIcon>

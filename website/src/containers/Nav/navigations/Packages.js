@@ -11,29 +11,55 @@ import type { Directory, File } from '../../../types';
 import * as fs from '../../../utils/fs';
 import allPackages, { packageNames } from '../../../packages';
 import { OLD_WEBSITE_URL, NEW_WEBSITE_PREFIX } from '../../../utils/constants';
+import { packageUrl, packageDocUrl, packageExampleUrl } from '../../../utils/url';
 
-const getItemDetails = (pkg, group, navigateOut) => {
+export function buildSubNavGroup(
+  children: Array<Directory | File>,
+  groupTitle: string,
+  url: (id: string) => string,
+  Icon: ComponentType<*>
+) {
+  return (
+    children &&
+    children.length &&
+    children.filter(item => !item.id.startsWith('_')).reduce((acc, item) => {
+      acc.items.push({
+        to: url(fs.normalize(item.id)),
+        title: fs.titleize(item.id),
+        icon: <Icon label={`${fs.titleize(item.id)} icon`} />,
+      });
+      return acc;
+    },
+    { title: groupTitle, items: [] })
+  );
+}
+
+const getItemDetails = (pkg: Directory, group: Directory, navigateOut?: boolean) => {
   const docs = fs.getById(fs.getDirectories(pkg.children) || [], 'docs');
   const examples = fs.getById(fs.getDirectories(pkg.children) || [], 'examples');
   const docItems = fs.getFiles(docs && docs.children && docs.children.length ? docs.children : []);
   const exampleItems = fs.getFiles(examples.children || []);
-  const baseUrl = `/packages/${group.id}/${pkg.id}`;
 
   return {
-    to: navigateOut
-      ? `/packages/${group.id}/${pkg.id}/`
-      : `/${NEW_WEBSITE_PREFIX}/packages/${group.id}/${pkg.id}/`,
-    isSelected: (pathname, to) => pathname.startsWith(to),
+    to: navigateOut ? `/packages/${group.id}/${pkg.id}` : packageUrl(group.id, pkg.id),
+    isSelected: (pathname, to) => pathname === to,
     title: fs.titleize(pkg.id),
     icon: <BitbucketReposIcon label={`${fs.titleize(pkg.id)} icon`} />,
-    items: [
-      buildSubNavGroup(docItems, 'Docs', `${baseUrl}/docs`, PageIcon),
-      buildSubNavGroup(exampleItems, 'Examples', `/examples/${group.id}/${pkg.id}`, CodeIcon),
-    ].filter(item => !!item),
+    items: navigateOut
+      ? []
+      : [
+          buildSubNavGroup(docItems, 'Docs', packageDocUrl.bind(null, group.id, pkg.id), PageIcon),
+          buildSubNavGroup(
+            exampleItems,
+            'Examples',
+            packageExampleUrl.bind(null, group.id, pkg.id),
+            CodeIcon
+          ),
+        ].filter(item => !!item),
   };
 };
 
-const getItem = (packages, group, navigateOut) => {
+const getItem = (packages: Array<Directory>, group: Directory, navigateOut: boolean) => {
   const findablePkgs: { [key: string]: Object } = packages.reduce((acc, pkg) => {
     acc[pkg.id] = pkg;
     return acc;
@@ -66,7 +92,7 @@ export type PackagesNavProps = {
   navigateOut: boolean,
 };
 
-const fakeOldSiteGroups = (dirs, navigateOut) =>
+const fakeOldSiteGroups = (dirs: Array<Directory>, navigateOut: boolean) =>
   dirs.filter(group => group.id === 'elements').map(group => {
     const packages = fs.getDirectories(group.children);
     return {
@@ -75,7 +101,7 @@ const fakeOldSiteGroups = (dirs, navigateOut) =>
     };
   });
 
-const standardGroups = dirs =>
+const standardGroups = (dirs: Array<Directory>) =>
   dirs.map(group => {
     const packages = fs.getDirectories(group.children);
     return {
@@ -91,25 +117,4 @@ export default function PackagesNav(props: PackagesNavProps) {
   const groups = navigateOut ? fakeOldSiteGroups(dirs, navigateOut) : standardGroups(dirs);
 
   return <div>{renderNav([{ items: [packagesList] }, ...groups], pathname)}</div>;
-}
-
-export function buildSubNavGroup(
-  children: Array<Directory | File>,
-  groupTitle: string,
-  baseUrl: string,
-  Icon: ComponentType<*>
-) {
-  return (
-    children &&
-    children.length &&
-    children.filter(item => !item.id.startsWith('_')).reduce((acc, item) => {
-      acc.items.push({
-        to: `${baseUrl}/${fs.normalize(item.id)}`,
-        title: fs.titleize(item.id),
-        icon: <Icon label={`${fs.titleize(item.id)} icon`} />,
-      });
-      return acc;
-    },
-    { title: groupTitle, items: [] })
-  );
 }
