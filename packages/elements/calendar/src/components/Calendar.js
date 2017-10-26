@@ -6,7 +6,7 @@ import CalendarStateless from './CalendarStateless';
 import type { EventChange, EventSelect } from '../types';
 
 type Props = {
-  onUpdate: (e: any) => void,
+  onUpdate: (iso: string) => void,
 }
 
 type State = EventChange & {
