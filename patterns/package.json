@@ -1,6 +1,7 @@
 {
   "private": true,
   "name": "@atlaskit/patterns",
+  "version": "0.0.0",
   "dependencies": {
     "@atlaskit/badge": "^6.1.0",
     "@atlaskit/lozenge": "^3.4.2",
