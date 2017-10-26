@@ -9,9 +9,9 @@ import Page from '../../components/Page';
 import FourOhFour from '../FourOhFour';
 import { isModuleNotFoundError } from '../../utils/errors';
 import MetaData from './MetaData';
-// import { join } from '../../utils/path';
 import type { Directory, RouterMatch } from '../../types';
 import * as fs from '../../utils/fs';
+import { packageExampleUrl } from '../../utils/url';
 import { packages } from '../../site';
 
 export const Title = styled.div`
@@ -40,32 +40,6 @@ export const Sep = styled.hr`
     margin-top: ${math.multiply(gridSize, 3)}px;
   }
 `;
-
-type ExamplesListProps = {
-  examples: Array<{ name: string, link: string }>,
-  group: string,
-  name: string,
-};
-
-export const ExamplesList = (props: ExamplesListProps) => {
-  const { examples, name, group } = props;
-
-  if (!examples || !examples.length) return null;
-
-  return (
-    <div>
-      <Sep />
-      <h2>Examples</h2>
-      <ul>
-        {examples.map(example => (
-          <li key={example.name}>
-            <Link to={`/packages/${group}/${name}/examples/${example.link}`}>{example.name}</Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
 
 type NoDocsProps = {
   name: string,
@@ -158,7 +132,7 @@ export default class Package extends React.Component<PackageProps, PackageState>
       <Page>
         <Title>
           <h1>{pkg.name}</h1>
-          <LinkButton to={`/examples/${groupId}/${pkgId}`}>Examples</LinkButton>
+          <LinkButton to={packageExampleUrl(groupId, pkgId)}>Examples</LinkButton>
         </Title>
         <Intro>{pkg.description}</Intro>
         <MetaData
