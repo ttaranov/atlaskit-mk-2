@@ -15,6 +15,7 @@ const allPackages = {
   calendar: { key: "calendar", name: "calendar" },
   checkbox: { key: "checkbox", name: "Checkbox" },
   comment: { key: "comment", name: "Comment" },
+  "datetime-picker": { key: "datetime-picker", name: "Date/Time Picker" },
   "dropdown-menu": { key: "dropdown-menu", name: "Dropdown Menu" },
   "dynamic-table": { key: "dynamic-table", name: "Dynamic Table" },
   "field-radio-group": { key: "field-radio-group", name: "Radio Group" },
