@@ -3,9 +3,10 @@
   "name": "@atlaskit/patterns",
   "dependencies": {
     "@atlaskit/badge": "^6.1.0",
-    "@atlaskit/lozenge": "^3.4.2",
+    "@atlaskit/lozenge": "^3.4.3",
     "enzyme": "^2.9.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1"
-  }
+  },
+  "version": null
 }

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/calendar",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A React component for displaying a calendar.",
   "license": "Apache-2.0",
   "main": "dist/cjs.js",
@@ -26,7 +26,7 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^0.0.0",
+    "@atlaskit/docs": "^0.1.0",
     "enzyme": "^2.9.1",
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1"
