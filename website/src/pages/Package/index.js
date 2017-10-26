@@ -131,7 +131,7 @@ export default class Package extends React.Component<PackageProps, PackageState>
     return (
       <Page>
         <Title>
-          <h1>{pkg.name}</h1>
+          <h1>{fs.titleize(pkgId)}</h1>
           <LinkButton to={packageExampleUrl(groupId, pkgId)}>Examples</LinkButton>
         </Title>
         <Intro>{pkg.description}</Intro>
