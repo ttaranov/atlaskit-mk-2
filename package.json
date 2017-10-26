@@ -1,5 +1,6 @@
 {
   "name": "@atlaskit/fabric",
+  "private": true,
   "version": "0.0.0",
   "description": "Fabric components for Atlassian's Atlaskit",
   "main": "index.js",
