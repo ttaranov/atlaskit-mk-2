@@ -14,7 +14,7 @@ import { OLD_WEBSITE_URL, NEW_WEBSITE_PREFIX } from '../../../utils/constants';
 import { packageUrl, packageDocUrl, packageExampleUrl } from '../../../utils/url';
 
 export function buildSubNavGroup(
-  children: Array<Directory | File>,
+  children: Array<File>,
   groupTitle: string,
   url: (id: string) => string,
   Icon: ComponentType<*>

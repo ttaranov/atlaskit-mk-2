@@ -6,6 +6,7 @@ export type NavGroupItem = {
   title: string,
   isSelected?: (string, string) => boolean,
   icon?: Node,
+  items?: Array<NavGroup>,
 };
 
 export type NavGroup = {
