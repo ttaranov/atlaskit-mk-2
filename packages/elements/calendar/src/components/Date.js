@@ -49,7 +49,6 @@ export default class extends Component<Props, State> {
       <DateTd
         aria-live={focused ? 'polite' : ''}
         aria-selected={selected ? 'true' : 'false'}
-        onClick={this.onMouseUp}
         role="gridcell"
         onMouseDown={this.onMouseDown}
         onMouseUp={this.onMouseUp}

@@ -15,6 +15,8 @@ git config --global push.default simple
 
 # $NPM_TOKEN is the auth token for the "atlaskit" user
 npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+# For some reason, the npm dist-tag commands are hitting yarnpkg and not npmjs
+npm set //registry.yarnpkg.com/:_authToken=$NPM_TOKEN
 
 # Forces `chalk` to display colored output in pipelines
 export FORCE_COLOR=1
