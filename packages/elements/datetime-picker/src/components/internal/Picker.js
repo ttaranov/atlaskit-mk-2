@@ -21,6 +21,7 @@ type Props = {
   onPickerUpdate: Handler,
   dialog: any, // TODO: typing
   field: any,
+  dialogProps: any,
 };
 
 export default class BasePicker extends Component<Props> {
@@ -34,6 +35,7 @@ export default class BasePicker extends Component<Props> {
     isDisabled: false,
     isOpen: false,
     shouldShowIcon: false,
+    dialogProps: {},
     onFieldBlur() {},
     onFieldChange() {},
     onFieldTriggerOpen() {},
@@ -87,9 +89,10 @@ export default class BasePicker extends Component<Props> {
         onBlur={this.props.onPickerBlur}
         onTriggerClose={this.props.onPickerTriggerClose}
         onUpdate={this.props.onPickerUpdate}
+        {...this.props.dialogProps}
         ref={ref => { this.dialog = ref; }}
       >
-        <Base>
+        <Base isDisabled={this.props.isDisabled}>
           <Field
             onBlur={this.props.onFieldBlur}
             onChange={this.props.onFieldChange}

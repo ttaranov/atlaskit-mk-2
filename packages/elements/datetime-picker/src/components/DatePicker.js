@@ -104,6 +104,9 @@ export default class DatePicker extends Component<Props, State> {
         displayValue={this.state.displayValue}
         value={this.state.value}
 
+        isDisabled={this.props.isDisabled}
+        dialogProps={{ disabled: this.props.disabled }}
+
         shouldShowIcon
         field={DateField}
         dialog={DateDialog}

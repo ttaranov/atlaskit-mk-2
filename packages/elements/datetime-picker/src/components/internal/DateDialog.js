@@ -13,22 +13,10 @@ import { parseDate } from '../../util';
 type Props = {
   value: string,
   isOpen: boolean,
+  disabled: Array<string>,
   onBlur: Handler,
   onTriggerClose: Handler,
   onUpdate: (value: string) => void,
-
-//   onBlur: Handler,
-//   onChange: Handler,
-//   onKeyDown: Handler,
-//   onSelect: Handler,
-
-//   day: number,
-//   month?: number,
-//   year?: number,
-//   today?: string,
-//   selected: Array<string>,
-//   disabled: Array<string>,
-
   children: Node,
 };
 
@@ -38,12 +26,14 @@ type State = {
   year: number,
 };
 
+// TODO: Prevent selecting disabled dates.
 export default class DateDialog extends Component<Props, State> {
   props: Props;
   calendar: any;
 
   static defaultProps = {
     isOpen: false,
+    disabled: [],
     onTriggerClose() {},
     onUpdate() {},
   }
@@ -103,6 +93,7 @@ export default class DateDialog extends Component<Props, State> {
           month={this.state.month}
           year={this.state.year}
           selected={this.props.value ? [this.props.value] : []}
+          disabled={this.props.disabled}
 
           onChange={this.handleChange}
           onSelect={this.handleSelect}
