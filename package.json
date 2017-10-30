@@ -10,7 +10,7 @@
     "build": "               run-p build:babel build:typescript --print-label --continue-on-error",
     "build:babel": "         NODE_ENV=production bolt workspaces exec --only-fs 'packages/{elements,utils}/**' -- babel src -d dist/cjs",
     "build:typescript": "    NODE_ENV=production bolt workspaces exec --only-fs 'packages/fabric/*' -- tsc",
-    "fml": "                 rm -rf ./**/node_modules && rm -rf */*/*/node_modules && rm -rf */*/node_modules",
+    "fml": "                 rm -rf ./node_modules && rm -rf ./**/node_modules && rm -rf ./**/**/node_modules && rm -rf ./**/**/**/node_modules",
     "test": "                yarn run test:jest",
     "test:jest": "           jest --coverage",
     "lint": "                run-p lint:eslint lint:tslint --continue-on-error",
