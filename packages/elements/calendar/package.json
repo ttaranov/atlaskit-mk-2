@@ -18,7 +18,7 @@
   },
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
-    "@atlaskit/button": "^5.3.0",
+    "@atlaskit/button": "^5.4.8",
     "@atlaskit/icon": "^9.0.1",
     "@atlaskit/theme": "^2.0.0",
     "calendar-base": "^0.3.0",
