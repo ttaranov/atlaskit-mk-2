@@ -8,12 +8,14 @@ import {
   type EventSelect,
 } from '@atlaskit/calendar';
 import type { Handler } from '../../types';
-// import dateToString from '../../util';
+import { parseDate } from '../../util';
 
 type Props = {
+  value: string,
   isOpen: boolean,
+  onBlur: Handler,
   onTriggerClose: Handler,
-  onUpdate: (iso: string) => void,
+  onUpdate: (value: string) => void,
 
 //   onBlur: Handler,
 //   onChange: Handler,
@@ -49,25 +51,32 @@ export default class DateDialog extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const now = new Date();
-    this.state = {
-      day: now.getDate(),
-      month: now.getMonth() + 1,
-      year: now.getFullYear(),
-    };
+    this.setupCalendar();
   }
 
   componentDidUpdate(prevProps: Props) {
     // Focus the calendar when it is opened.
     // TODO: Add prop to toggle this behaviour.
     if (this.props.isOpen && !prevProps.isOpen) {
-      console.log('auto-focusing calendar');
+      this.setupCalendar();
       this.calendar.focus();
     }
   }
 
+  setupCalendar() {
+    let date = new Date();
+    if (this.props.value) {
+      const parsedDate = parseDate(this.props.value);
+      date = parsedDate ? parsedDate.date : date;
+    }
+    this.state = {
+      day: date.getDate(),
+      month: date.getMonth() + 1,
+      year: date.getFullYear(),
+    };
+  }
+
   handleChange = ({ day, month, year }: EventChange) => {
-    console.log('handleChange', day, month, year);
     this.setState({ day, month, year });
   }
 
@@ -86,12 +95,14 @@ export default class DateDialog extends Component<Props, State> {
     return (
       <div
         role="presentation"
+        onBlur={this.props.onBlur}
         onKeyDown={this.handleKeyDown}
       >
         <Calendar
           focused={this.state.day}
           month={this.state.month}
           year={this.state.year}
+          selected={this.props.value ? [this.props.value] : []}
 
           onChange={this.handleChange}
           onSelect={this.handleSelect}

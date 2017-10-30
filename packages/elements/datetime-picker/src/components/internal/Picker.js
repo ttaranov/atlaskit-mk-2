@@ -7,13 +7,16 @@ import { akColorN60 } from '@atlaskit/util-shared-styles';
 import type { Handler } from '../../types';
 
 type Props = {
+  value: ?string,
   displayValue: string,
   isDisabled: bool,
   isOpen: bool,
   shouldShowIcon: bool,
+  onFieldBlur: Handler,
   onFieldChange: Handler,
   onFieldTriggerOpen: Handler,
   onIconClick: Handler,
+  onPickerBlur: Handler,
   onPickerTriggerClose: Handler,
   onPickerUpdate: Handler,
   dialog: any, // TODO: typing
@@ -26,13 +29,16 @@ export default class BasePicker extends Component<Props> {
   field: any;
 
   static defaultProps = {
+    value: null,
     displayValue: '',
     isDisabled: false,
     isOpen: false,
     shouldShowIcon: false,
+    onFieldBlur() {},
     onFieldChange() {},
     onFieldTriggerOpen() {},
     onIconClick() {},
+    onPickerBlur() {},
     onPickerTriggerClose() {},
     onPickerUpdate() {},
   }
@@ -76,13 +82,16 @@ export default class BasePicker extends Component<Props> {
 
     return (
       <Dialog
+        value={this.props.value}
         isOpen={this.props.isOpen}
+        onBlur={this.props.onPickerBlur}
         onTriggerClose={this.props.onPickerTriggerClose}
         onUpdate={this.props.onPickerUpdate}
         ref={ref => { this.dialog = ref; }}
       >
         <Base>
           <Field
+            onBlur={this.props.onFieldBlur}
             onChange={this.props.onFieldChange}
             onTriggerOpen={this.props.onFieldTriggerOpen}
             value={this.props.displayValue}

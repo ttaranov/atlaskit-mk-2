@@ -1,43 +1,32 @@
 // @flow
 
-import type { Date } from './types';
+import { parse, format, isValid } from 'date-fns';
 
-type DateToStringOptions = {
-  fixMonth: boolean,
+const internalDateFormat = 'YYYY-MM-DD';
+const displayDateFormat = 'YYYY/MM/DD';
+
+type ParsedDate = {
+  date: Date,
+  display: string,
+  value: string,
 };
 
-const i18n = {
-  'en-au': {
-    months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-  },
-};
+export const parseDate = (date: string): ?ParsedDate => {
+  const parsedDate = parse(date);
 
-function getI18n() {
-  return i18n['en-au'];
-}
-
-function pad(num) {
-  return num < 10 ? `0${num}` : num;
-}
-
-export function getDayName(i: number) {
-  return getI18n().weekdays[i].substring(0, 3);
-}
-
-export function getMonthName(i: number) {
-  return getI18n().months[i - 1];
-}
-
-export function dateToString(date: Date, { fixMonth }: DateToStringOptions = {}) {
-  return date ? `${date.year}-${pad(date.month + (fixMonth ? 1 : 0))}-${pad(date.day)}` : '';
-}
-
-export function makeArrayFromNumber(i: number) {
-  const arr = [];
-  const num = Math.ceil(i);
-  for (let a = 0; a < num; a += 1) {
-    arr.push(a);
+  if (!isValid(parsedDate)) {
+    return null;
   }
-  return arr;
-}
+
+  return {
+    date: parsedDate,
+    display: format(parsedDate, displayDateFormat),
+    value: format(parsedDate, internalDateFormat),
+  };
+};
+
+
+export const parseTime = (time: string) => {
+  return time;
+};
+

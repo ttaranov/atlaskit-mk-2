@@ -2,11 +2,11 @@
 
 import React, { Component } from 'react';
 // import type { EventChange, EventSelect } from '@atlaskit/calendar';
-// import { parse, format, isValid, getDate, getMonth, getYear } from 'date-fns';
 import BasePicker from './internal/Picker';
 import DateField from './internal/DateField';
 import DateDialog from './internal/DateDialog';
-// import type { Handler } from '../types';
+import type { Handler } from '../types';
+import { parseDate } from '../util';
 
 type Props = {
   isDisabled: boolean,
@@ -36,6 +36,27 @@ export default class DatePicker extends Component<Props, State> {
     isOpen: false,
   };
 
+  handleInputBlur = (e: FocusEvent) => {
+    if (e.target instanceof HTMLInputElement) {
+      const date = e.target.value;
+
+      const parsedDate = parseDate(date);
+
+      if (parsedDate) {
+        this.setState({
+          value: parsedDate.value,
+          displayValue: parsedDate.display,
+        });
+      } else {
+        // TODO: Display error message for invalid date.
+        this.setState({
+          value: null,
+          displayValue: '',
+        });
+      }
+    }
+  }
+
   handleInputChange = (e: Event) => {
     if (e.target instanceof HTMLInputElement) {
       this.setState({ displayValue: e.target.value });
@@ -60,13 +81,20 @@ export default class DatePicker extends Component<Props, State> {
     }
   }
 
+  handlePickerBlur = () => {
+    this.setState({ isOpen: false });
+  }
+
   handleUpdate = (iso: string) => {
-    this.setState({
-      isOpen: false,
-      value: iso,
-      displayValue: iso,
-    });
-    this.picker.selectField();
+    const parsedDate = parseDate(iso);
+    if (parsedDate) {
+      this.setState({
+        isOpen: false,
+        displayValue: parsedDate.display,
+        value: parsedDate.value,
+      });
+      this.picker.selectField();
+    }
   }
 
   render() {
@@ -79,9 +107,11 @@ export default class DatePicker extends Component<Props, State> {
         shouldShowIcon
         field={DateField}
         dialog={DateDialog}
+        onFieldBlur={this.handleInputBlur}
         onFieldChange={this.handleInputChange}
         onFieldTriggerOpen={this.handleTriggerOpen}
         onIconClick={this.handleIconClick}
+        onPickerBlur={this.handlePickerBlur}
         onPickerTriggerClose={this.handleTriggerClose}
         onPickerUpdate={this.handleUpdate}
 

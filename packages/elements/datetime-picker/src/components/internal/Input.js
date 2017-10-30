@@ -29,7 +29,6 @@ export default class InputField extends Component<Props> {
   }
 
   select = () => {
-    console.log('selecting input');
     this.input.select();
   }
 
