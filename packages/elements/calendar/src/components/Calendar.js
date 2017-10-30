@@ -5,13 +5,23 @@ import CalendarStateless from './CalendarStateless';
 
 import type { EventChange, EventSelect } from '../types';
 
+type Props = {
+  onUpdate: (iso: string) => void,
+}
+
 type State = EventChange & {
   focused: number,
   selected: Array<string>,
 };
 
-export default class Calendar extends Component<Object, State> {
+export default class Calendar extends Component<Props, State> {
+  props: Props;
   state: State;
+  calendar: any;
+
+  static defaultProps = {
+    onUpdate() {},
+  };
 
   constructor(props: Object) {
     super(props);
@@ -48,9 +58,24 @@ export default class Calendar extends Component<Object, State> {
     } else {
       this.setState({ selected: [] });
     }
+    this.props.onUpdate(iso);
   };
 
+  focus() {
+    if (this.calendar) {
+      this.calendar.focus();
+    }
+  }
+
   render() {
-    return <CalendarStateless onBlur={this.handleBlur} onChange={this.handleChange} onSelect={this.handleSelect} {...this.state} />;
+    return (
+      <CalendarStateless
+        onBlur={this.handleBlur}
+        onChange={this.handleChange}
+        onSelect={this.handleSelect}
+        {...this.state}
+        ref={ref => { this.calendar = ref; }}
+      />
+    );
   }
 }

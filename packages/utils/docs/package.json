@@ -1,7 +1,7 @@
 {
   "name": "@atlaskit/docs",
   "version": "0.0.0",
-  "description": "Utilities for building documentation",
+  "description": "Utilities for building documentation.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "src": "src/index.js",
