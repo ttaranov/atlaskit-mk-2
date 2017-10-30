@@ -1,4 +1,6 @@
 // @flow
+/* eslint-disable react/no-array-index-key */
+
 import React, { type Node } from 'react';
 import styled from 'styled-components';
 
@@ -138,7 +140,7 @@ function print(type, depth = 1) {
         <TypeMeta>One of <Outline>{'('}</Outline></TypeMeta>
         <Indent>
           {Array.isArray(type.value)
-            ? type.value.map((v, i) => <Block key={i}>{print(v.value, depth + 1)}</Block>) // eslint-disable-line react/no-array-index-key
+            ? type.value.map((v, i) => <Block key={i}>{print(v.value, depth + 1)}</Block>)
             : print(type.value, depth + 1)}
         </Indent>
         <TypeMeta><Outline>{')'}</Outline></TypeMeta>
@@ -152,7 +154,7 @@ function print(type, depth = 1) {
         <TypeMeta>One of <Outline>{'('}</Outline></TypeMeta>
         <Indent>
           {Array.isArray(type.types)
-            ? type.types.map(i => <Block>{print(i, depth + 1)}</Block>)
+            ? type.types.map((t, i) => <Block key={i}>{print(t, depth + 1)}</Block>)
             : print(type.types, depth + 1)}
         </Indent>
         <TypeMeta><Outline>{')'}</Outline></TypeMeta>
