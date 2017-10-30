@@ -6,17 +6,15 @@ import Loadable from 'react-loadable';
 import Loading from '../components/Loading';
 import { AkCodeBlock } from '@atlaskit/code';
 import * as fs from '../utils/fs';
-import type { Directory } from '../types';
+import type { Directory, RouterMatch } from '../types';
 import { Redirect, Link } from 'react-router-dom';
 import { colors } from '@atlaskit/theme';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';
 import CodeIcon from '@atlaskit/icon/glyph/code';
 import SingleSelect from '@atlaskit/single-select';
 import CodeBlock from '../components/Code';
-
-// import Prism from 'prismjs';
-// import 'prismjs/components/prism-jsx';
-// import 'prismjs/themes/prism-tomorrow.css';
+import { packages as packagesData } from '../site';
+import { packageUrl } from '../utils/url';
 
 const ExamplesContainer = styled.div`
   position: relative;
@@ -57,9 +55,8 @@ const ExamplesComponentContainer = styled.div`
   ${'' /* background:
     linear-gradient(45deg, rgba(125,125,125,0.05) 25%, transparent 25%, transparent 75%, rgba(125,125,125,0.05) 75%, rgba(125,125,125,0.05) 0),
     linear-gradient(45deg, rgba(125,125,125,0.05) 25%, transparent 25%, transparent 75%, rgba(125,125,125,0.05) 75%, rgba(125,125,125,0.05) 0),
-    #fff; */}
-
-  background-position: 0 0, 10px 10px;
+    #fff; */} background-position: 0 0,
+    10px 10px;
   background-size: 20px 20px;
   background-attachment: local;
 `;
@@ -67,8 +64,7 @@ const ExamplesComponentContainer = styled.div`
 const ExamplesCodeContainer = styled.div`
   position: absolute;
   z-index: 3;
-  ${'' /* pointer-events: none; */}
-  width: 100%;
+  ${'' /* pointer-events: none; */} width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -77,22 +73,22 @@ const ExamplesCodeContainer = styled.div`
   background: ${colors.DN80A};
 `;
 
-const ExamplesNavSection = styled.div`
-  padding: 4px;
-`;
+const ExamplesNavSection = styled.div`padding: 4px;`;
 
 const ExamplesNavIconLink = styled(Link)`
-  display: inline-block;
+  display: inline-flex;
   height: 40px;
-  width: 40px;
-  padding: 3px 4px 5px;
-  border-radius: 50%;
+  padding: 5px 8px 3px 4px;
+  align-items: center;
 
   &:hover {
     background: ${colors.N40};
     cursor: pointer;
+    text-decoration: none;
   }
 `;
+
+const ExamplesNavIcon = styled.span`margin-right: 6px;`;
 
 const ExamplesControl = styled.div`
   display: inline-block;
@@ -102,15 +98,21 @@ const ExamplesControl = styled.div`
   }
 `;
 
+const ExamplesError = styled.div`
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  color: ${colors.R400};
+  font-size: 120%;
+`;
+
 type State = {
   displayCode: boolean,
 };
 
 type Props = {
-  packages: Directory,
-  groupId?: string,
-  packageId?: string,
-  exampleId?: string,
+  match: RouterMatch,
 };
 
 export default class Examples extends React.Component<Props, State> {
@@ -128,7 +130,11 @@ export default class Examples extends React.Component<Props, State> {
   };
 
   onExampleSelected = (selected: { item: { value: string } }) => {
-    this.updateSelected(this.props.groupId, this.props.packageId, selected.item.value);
+    this.updateSelected(
+      this.props.match.params.groupId,
+      this.props.match.params.pkgId,
+      selected.item.value
+    );
   };
 
   updateSelected(groupId?: string, packageId?: string, exampleId?: string) {
@@ -138,7 +144,7 @@ export default class Examples extends React.Component<Props, State> {
   }
 
   resolveProps(groupId?: string, packageId?: string, exampleId?: string) {
-    let groups = fs.getDirectories(this.props.packages.children);
+    let groups = fs.getDirectories(packagesData.children);
     let resolvedGroupId = groupId || groups[0].id;
     let group = fs.getById(groups, resolvedGroupId);
     let packages = fs.getDirectories(group.children);
@@ -154,13 +160,12 @@ export default class Examples extends React.Component<Props, State> {
       }
     });
 
-    let resolvedExampleId = example ? example.id : null;
+    let resolvedExampleId = example ? example.id : null;
 
-    let hasChanged = (
+    let hasChanged =
       groupId !== resolvedGroupId ||
       packageId !== resolvedPackageId ||
-      exampleId !== (resolvedExampleId ? fs.normalize(resolvedExampleId) : null)
-    );
+      exampleId !== (resolvedExampleId ? fs.normalize(resolvedExampleId) : null);
 
     return {
       hasChanged,
@@ -182,9 +187,9 @@ export default class Examples extends React.Component<Props, State> {
     } else if (!packageId) {
       url = `/examples/${groupId}`;
     } else if (!exampleId) {
-      url = `/examples/${groupId}/${packageId}`
+      url = `/examples/${groupId}/${packageId}`;
     } else {
-      url = `/examples/${groupId}/${packageId}/${fs.normalize(exampleId)}`
+      url = `/examples/${groupId}/${packageId}/${fs.normalize(exampleId)}`;
     }
 
     return url;
@@ -205,10 +210,14 @@ export default class Examples extends React.Component<Props, State> {
       packageId,
       groupId,
       exampleId,
-    } = this.resolveProps(this.props.groupId, this.props.packageId, this.props.exampleId);
+    } = this.resolveProps(
+      this.props.match.params.groupId,
+      this.props.match.params.pkgId,
+      this.props.match.params.exampleId
+    );
 
     if (hasChanged) {
-      return <Redirect to={this.toUrl(groupId, packageId, exampleId)}/>;
+      return <Redirect to={this.toUrl(groupId, packageId, exampleId)} />;
     }
 
     if (!exampleId) {
@@ -221,9 +230,13 @@ export default class Examples extends React.Component<Props, State> {
       loader: () => example.exports(),
       loading: Loading,
       render(loaded) {
+        if (!loaded.default) {
+          return <ExamplesError>Example "{example.id}" doesn't have default export.</ExamplesError>;
+        }
+
         return (
           <ExamplesComponentContainer>
-            <loaded.default/>
+            <loaded.default />
           </ExamplesComponentContainer>
         );
       },
@@ -235,10 +248,10 @@ export default class Examples extends React.Component<Props, State> {
       render(loaded) {
         return (
           <ExamplesCodeContainer>
-            <CodeBlock grammar="jsx" content={loaded}/>
+            <CodeBlock grammar="jsx" content={loaded} />
           </ExamplesCodeContainer>
         );
-      }
+      },
     });
 
     let selectedPackageItem;
@@ -263,30 +276,33 @@ export default class Examples extends React.Component<Props, State> {
 
     let selectedExampleItem;
 
-    const examplesSelectItems = [{
-      heading: 'Examples',
-      items: fs.flatMap(examples, (file, filePath) => {
-        let item = {
-          content: fs.titleize(file.id),
-          value: fs.normalize(filePath.replace('examples/', '')),
-        };
+    const examplesSelectItems = [
+      {
+        heading: 'Examples',
+        items: fs.flatMap(examples, (file, filePath) => {
+          let item = {
+            content: fs.titleize(file.id),
+            value: fs.normalize(filePath.replace('examples/', '')),
+          };
 
-        if (file.id === example.id) {
-          selectedExampleItem = item;
-        }
+          if (file.id === example.id) {
+            selectedExampleItem = item;
+          }
 
-        return item;
-      }),
-    }];
+          return item;
+        }),
+      },
+    ];
 
     return (
       <ExamplesContainer>
         <ExamplesNav>
           <ExamplesNavSection>
-            <ExamplesNavIconLink to="/">
-              <AtlassianIcon
-                size="large"
-                primaryColor={colors.B500}/>
+            <ExamplesNavIconLink to={packageUrl(groupId, packageId)}>
+              <ExamplesNavIcon>
+                <ArrowLeftCircleIcon size="large" primaryColor={colors.B500} label="back to docs" />
+              </ExamplesNavIcon>
+              to {fs.titleize(packageId)} docs
             </ExamplesNavIconLink>
           </ExamplesNavSection>
 
@@ -298,7 +314,8 @@ export default class Examples extends React.Component<Props, State> {
                 hasAutocomplete
                 placeholder="Select Package"
                 onSelected={this.onPackageSelected}
-                defaultSelected={selectedPackageItem}/>
+                defaultSelected={selectedPackageItem}
+              />
             </ExamplesControl>
 
             <ExamplesControl>
@@ -308,22 +325,21 @@ export default class Examples extends React.Component<Props, State> {
                 hasAutocomplete
                 placeholder="Select Example"
                 onSelected={this.onExampleSelected}
-                defaultSelected={selectedExampleItem}/>
+                defaultSelected={selectedExampleItem}
+              />
             </ExamplesControl>
           </ExamplesNavSection>
 
           <ExamplesNavSection>
             <div onClick={this.onCodeToggle}>
-              <CodeIcon
-                size="large"
-                primaryColor={colors.N500}/>
+              <CodeIcon size="large" primaryColor={colors.N500} label="show source" />
             </div>
           </ExamplesNavSection>
         </ExamplesNav>
 
         <ExamplesContent>
-          {this.state.displayCode && <ExampleCode/>}
-          <ExampleComponent/>
+          {this.state.displayCode && <ExampleCode />}
+          <ExampleComponent />
         </ExamplesContent>
       </ExamplesContainer>
     );

@@ -7,25 +7,20 @@ import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import atlasKitLogo from '../../assets/atlaskit-logo.png';
 import { OLD_WEBSITE_URL } from '../../utils/constants';
 import Groups from './Groups';
+import { packages, docs, patterns } from '../../site';
 import type { Directory } from '../../types';
 
-export type NavProps = {
-  docs: Directory,
-  packages: Directory,
-  patterns: Directory,
-};
-
-export default function Nav(props: NavProps) {
+export default function Nav() {
   return (
     <Switch>
       <Route
         render={({ location }) => {
-          const fromOldSite = matchPath(location.pathname, '/packages/:group/:name')
-          const navigateOut = fromOldSite && fromOldSite.isExact
+          const fromOldSite = matchPath(location.pathname, '/packages/:group/:name');
+          const navigateOut = fromOldSite && fromOldSite.isExact;
           return (
             <Navigation
               globalPrimaryIcon={<AtlassianIcon size="large" label="AtlasKit" />}
-              globalPrimaryItemHref={navigateOut ? OLD_WEBSITE_URL : "/"}
+              globalPrimaryItemHref={navigateOut ? OLD_WEBSITE_URL : '/'}
               containerHeaderComponent={() => (
                 <AkContainerTitle
                   navigateOut={fromOldSite && fromOldSite.isExact}
@@ -34,18 +29,16 @@ export default function Nav(props: NavProps) {
                 />
               )}
             >
-            <Groups
-              docs={props.docs}
-              packages={props.packages}
-              patterns={props.patterns}
-              navigateOut={navigateOut}
-            />
-          </Navigation>
-          )
-        }
-      }
-    />
-
-  </Switch>
+              <Groups
+                docs={docs}
+                packages={packages}
+                patterns={patterns}
+                navigateOut={navigateOut}
+              />
+            </Navigation>
+          );
+        }}
+      />
+    </Switch>
   );
 }

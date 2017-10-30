@@ -9,6 +9,14 @@ export default md`
   - Used to display a calendar of dates.
   - Composed with other components to build a datepicker.
 
-  ${<Example source={require('!!raw-loader!../examples/0-basic')} />}
+  ## Examples
+
+  ${(
+    <Example
+      Component={require('../examples/0-basic').default}
+      title="Basic"
+      source={require('!!raw-loader!../examples/0-basic')}
+    />
+  )}
   ${<Props source={require('!!raw-loader!../src/components/Calendar')} />}
 `;

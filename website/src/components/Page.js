@@ -17,13 +17,11 @@ export default class Page extends React.PureComponent<PageProps> {
   props: PageProps;
 
   render() {
-    return (
-      <PageContainer>
-        {this.props.children}
-      </PageContainer>
-    );
+    return <PageContainer>{this.props.children}</PageContainer>;
   }
 }
+
+export const Title = styled.h1`margin-bottom: 1em;`;
 
 export const Section = styled.section`
   margin-top: 3em;

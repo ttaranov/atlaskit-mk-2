@@ -14,6 +14,7 @@ import Pattern from '../pages/Pattern';
 import PatternsInfo from '../pages/PatternsInfo';
 import Package from '../pages/Package';
 import PackagesList from '../pages/PackagesList';
+import PackageDocument from '../pages/PackageDocument';
 import Document from '../pages/Document';
 import Nav from './Nav';
 
@@ -53,68 +54,34 @@ const AppContent = styled.div`
   overflow: auto;
 `;
 
-export type AppProps = {
-  repo: Directory,
-};
-
-export default class App extends React.PureComponent<AppProps> {
-  props: AppProps;
-
-  render() {
-    let dirs = fs.getDirectories(this.props.repo.children);
-
-    let docs = fs.getById(dirs, 'docs');
-    let packages = fs.getById(dirs, 'packages');
-    let patterns = fs.getById(dirs, 'patterns');
-
-    return (
-      <BrowserRouter>
-        <Switch>
-          <Route path="/examples/:groupId?/:packageId?/:exampleId*" render={props => (
-            <Examples
-              packages={packages}
-              groupId={props.match.params.groupId}
-              packageId={props.match.params.packageId}
-              exampleId={props.match.params.exampleId}/>
-          )} />
-          <Route>
-            <AppContainer>
-              <Nav docs={docs} packages={packages} patterns={patterns} />
-              <AppContent>
-                <Switch>
-                  <Route exact path="/" component={Home} />
-                  <Route path="/docs/:docId*" render={props => (
-                    <Document
-                      docs={docs}
-                      docId={props.match.params.docId} />
-                  )} />
-                  <Route path="/patterns" component={PatternsInfo} exact />
-                  <Route path="/patterns/:patternId*" render={props => (
-                    <Pattern
-                      patterns={patterns}
-                      patternId={props.match.params.patternId} />
-                  )} />
-                  <Route path="/packages/:group/:name" render={props => (
-                    <Package
-                      packages={packages}
-                      groupId={props.match.params.group}
-                      pkgId={props.match.params.name} />
-                  )} />
-                  <Route path="/mk-2/packages/:group/:name" render={props => (
-                    <Package
-                      packages={packages}
-                      groupId={props.match.params.group}
-                      pkgId={props.match.params.name} />
-                  )} />
-                  <Route path="/packages" render={() => <PackagesList packages={packages} />} />
-                  <Route path="/changelog/:group/:name/:semver?" component={ChangeLogExplorer} />
-                  <Route component={FourOhFour} />
-                </Switch>
-              </AppContent>
-            </AppContainer>
-          </Route>
-        </Switch>
-      </BrowserRouter>
-    );
-  }
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route path="/examples/:groupId?/:pkgId?/:exampleId*" component={Examples} />
+        <Route>
+          <AppContainer>
+            <Nav />
+            <AppContent>
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route path="/docs/:docId*" component={Document} />
+                <Route path="/patterns" component={PatternsInfo} exact />
+                <Route path="/patterns/:patternId*" component={Pattern} />} />
+                <Route
+                  path="/mk-2/packages/:groupId/:pkgId/docs/:docId"
+                  component={PackageDocument}
+                />
+                <Route path="/packages/:groupId/:pkgId" component={Package} />
+                <Route path="/mk-2/packages/:groupId/:pkgId" component={Package} />
+                <Route path="/packages" component={PackagesList} />
+                <Route path="/changelog/:groupId/:pkgId/:semver?" component={ChangeLogExplorer} />
+                <Route component={FourOhFour} />
+              </Switch>
+            </AppContent>
+          </AppContainer>
+        </Route>
+      </Switch>
+    </BrowserRouter>
+  );
 }

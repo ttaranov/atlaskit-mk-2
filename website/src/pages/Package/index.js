@@ -4,13 +4,23 @@ import React, { type Node } from 'react';
 import styled from 'styled-components';
 import { gridSize, colors, math } from '@atlaskit/theme';
 import { Link } from 'react-router-dom';
+import LinkButton from '../../components/LinkButton';
 import Page from '../../components/Page';
 import FourOhFour from '../FourOhFour';
 import { isModuleNotFoundError } from '../../utils/errors';
 import MetaData from './MetaData';
-// import { join } from '../../utils/path';
-import type { Directory } from '../../types';
+import type { Directory, RouterMatch } from '../../types';
 import * as fs from '../../utils/fs';
+import { packageExampleUrl } from '../../utils/url';
+import { packages } from '../../site';
+
+export const Title = styled.div`
+  display: flex;
+
+  h1 {
+    flex-grow: 1;
+  }
+`;
 
 export const Intro = styled.p`
   color: ${colors.heading};
@@ -31,46 +41,16 @@ export const Sep = styled.hr`
   }
 `;
 
-type ExamplesListProps = {
-  examples: Array<{ name: string, link: string }>,
-  group: string,
-  name: string,
-};
-
-export const ExamplesList = (props: ExamplesListProps) => {
-  const { examples, name, group } = props;
-
-  if (!examples || !examples.length) return null;
-
-  return (
-    <div>
-      <Sep />
-      <h2>Examples</h2>
-      <ul>
-        {examples.map(example => (
-          <li key={example.name}>
-            <Link to={`/packages/${group}/${name}/examples/${example.link}`}>{example.name}</Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
 type NoDocsProps = {
   name: string,
 };
 
 export const NoDocs = (props: NoDocsProps) => {
-  return (
-    <div>Component "{props.name}" doesn't have any docs.</div>
-  );
+  return <div>Component "{props.name}" doesn't have any docs.</div>;
 };
 
 type PackageProps = {
-  packages: Directory,
-  groupId: string,
-  pkgId: string,
+  match: RouterMatch,
 };
 
 type PackageState = {
@@ -95,11 +75,8 @@ export default class Package extends React.Component<PackageProps, PackageState>
     this.loadDoc();
   }
 
-  componentWillReceiveProps(nextProps: PackageProps) {
-    if (
-      nextProps.groupId === this.props.groupId &&
-      nextProps.pkgId === this.props.pkgId
-    ) {
+  componentWillReceiveProps({ match: { params: { groupId, pkgId } } }: PackageProps) {
+    if (groupId === this.props.match.params.groupId && pkgId === this.props.match.params.pkgId) {
       return;
     }
 
@@ -108,7 +85,8 @@ export default class Package extends React.Component<PackageProps, PackageState>
 
   loadDoc() {
     this.setState({ pkg: null, doc: null, missing: false }, () => {
-      let pkg = getPkg(this.props.packages, this.props.groupId, this.props.pkgId);
+      let { groupId, pkgId } = this.props.match.params;
+      let pkg = getPkg(packages, groupId, pkgId);
       let dirs = fs.getDirectories(pkg.children);
       let files = fs.getFiles(pkg.children);
 
@@ -120,23 +98,22 @@ export default class Package extends React.Component<PackageProps, PackageState>
         return true;
       });
 
-      Promise.all([
-        json.exports(),
-        doc && doc.exports().then(mod => mod.default),
-      ]).then(([pkg, doc]) => {
-        this.setState({ pkg, doc });
-      }).catch(err => {
-        if (isModuleNotFoundError(err)) {
-          this.setState({ missing: true })
-        } else {
-          throw err;
-        }
-      });
+      Promise.all([json.exports(), doc && doc.exports().then(mod => mod.default)])
+        .then(([pkg, doc]) => {
+          this.setState({ pkg, doc });
+        })
+        .catch(err => {
+          if (isModuleNotFoundError(err)) {
+            this.setState({ missing: true });
+          } else {
+            throw err;
+          }
+        });
     });
   }
 
   render() {
-    const { groupId, pkgId } = this.props;
+    const { groupId, pkgId } = this.props.match.params;
     const { pkg, doc, missing } = this.state;
 
     if (missing) {
@@ -153,9 +130,15 @@ export default class Package extends React.Component<PackageProps, PackageState>
 
     return (
       <Page>
-        <h1>{pkg.name}</h1>
+        <Title>
+          <h1>{fs.titleize(pkgId)}</h1>
+          <LinkButton to={packageExampleUrl(groupId, pkgId)}>Examples</LinkButton>
+        </Title>
         <Intro>{pkg.description}</Intro>
-        <MetaData packageName={pkg.name} packageSrc={`https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/packages/${groupId}/${pkgId}`} />
+        <MetaData
+          packageName={pkg.name}
+          packageSrc={`https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/packages/${groupId}/${pkgId}`}
+        />
         <Sep />
         {doc || <NoDocs name={pkgId} />}
       </Page>

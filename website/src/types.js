@@ -6,12 +6,13 @@ export type NavGroupItem = {
   title: string,
   isSelected?: (string, string) => boolean,
   icon?: Node,
-}
+  items?: Array<NavGroup>,
+};
 
 export type NavGroup = {
   title?: string,
-  items: Array<NavGroupItem>
-}
+  items: Array<NavGroupItem>,
+};
 
 export type File = {
   type: 'file',
@@ -24,4 +25,10 @@ export type Directory = {
   type: 'dir',
   id: string,
   children: Array<File | Directory>,
+};
+
+export type RouterMatch = {
+  params: {
+    [key: string]: string,
+  },
 };
