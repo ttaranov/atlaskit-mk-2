@@ -56,6 +56,7 @@ const nowYear = now.getFullYear();
 export default class CalendarStateless extends Component<Props> {
   calendar: Object;
   props: Props;
+  calendarEl: ?HTMLDivElement;
 
   static defaultProps = {
     disabled: [],
@@ -187,6 +188,16 @@ export default class CalendarStateless extends Component<Props> {
     return { month, year };
   }
 
+  focus() {
+    if (this.calendarEl instanceof HTMLDivElement) {
+      this.calendarEl.focus();
+    }
+  }
+
+  handleCalendarRef = (ref: ?HTMLDivElement) => {
+    this.calendarEl = ref;
+  }
+
   render() {
     const { disabled, focused, month, previouslySelected, selected, today, year } = this.props;
     const calendar = this.calendar.getCalendar(year, month - 1);
@@ -250,7 +261,7 @@ export default class CalendarStateless extends Component<Props> {
         <Announcer aria-live="assertive" aria-relevant="text">
           {new Date(year, month, focused).toString()}
         </Announcer>
-        <Wrapper aria-label="calendar" role="grid" tabIndex={0}>
+        <Wrapper aria-label="calendar" role="grid" tabIndex={0} innerRef={this.handleCalendarRef}>
           <Heading month={month} year={year} handleClickNext={this.handleClickNext} handleClickPrev={this.handleClickPrev} />
           <CalendarTable role="presentation">
             <CalendarThead>
