@@ -91,10 +91,8 @@ export default function DynamicProps(props: DynamicPropsProps) {
     <PageWrapper>
       {propTypes.map(propType => {
         if (!propType.value) {
-          console.error(
-            // eslint-disable-line no-console
-            `Prop ${propType.key} has no type; this usually indicates invalid propType or defaultProps config`
-          );
+          // eslint-disable-next-line no-console
+          console.error(`Prop ${propType.key} has no type; this usually indicates invalid propType or defaultProps config`);
           return null;
         }
         return (
