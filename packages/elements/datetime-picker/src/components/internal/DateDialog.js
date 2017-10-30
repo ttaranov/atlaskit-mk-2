@@ -71,7 +71,10 @@ export default class DateDialog extends Component<Props, State> {
   }
 
   handleSelect = ({ iso }: EventSelect) => {
-    this.props.onUpdate(iso);
+    // Don't allow selection of disabled dates.
+    if (this.props.disabled.indexOf(iso) === -1) {
+      this.props.onUpdate(iso);
+    }
   }
 
   handleKeyDown = (e: KeyboardEvent) => {
