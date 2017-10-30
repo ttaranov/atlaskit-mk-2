@@ -10,6 +10,7 @@ pipelines:
             - bolt lint
             - bolt typecheck
             - bolt test
+            # - bolt test:browser:browserstack
             - bolt release
             - (cd website && bolt deploy)
 
@@ -22,4 +23,5 @@ pipelines:
           - bolt lint
           - bolt typecheck
           - bolt test
+          # - bolt test:browser:browserstack
           - (cd website && bolt deploy-staging)
