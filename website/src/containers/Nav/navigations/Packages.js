@@ -7,7 +7,7 @@ import PageIcon from '@atlaskit/icon/glyph/page';
 import ComponentIcon from '@atlaskit/icon/glyph/component';
 import CodeIcon from '@atlaskit/icon/glyph/code';
 import renderNav from '../utils/renderNav';
-import type { Directory, File } from '../../../types';
+import type { Directory, File, NavGroupItem } from '../../../types';
 import * as fs from '../../../utils/fs';
 import allPackages, { packageNames } from '../../../packages';
 import { OLD_WEBSITE_URL, NEW_WEBSITE_PREFIX } from '../../../utils/constants';
@@ -18,10 +18,9 @@ export function buildSubNavGroup(
   groupTitle: string,
   url: (id: string) => string,
   Icon: ComponentType<*>
-) {
+): { title?: string, items: Array<NavGroupItem> } | null {
+  if (!children || !children.length) return null;
   return (
-    children &&
-    children.length &&
     children.filter(item => !item.id.startsWith('_')).reduce((acc, item) => {
       acc.items.push({
         to: url(fs.normalize(item.id)),
@@ -42,22 +41,27 @@ const getItemDetails = (pkg: Directory, group: Directory, navigateOut?: boolean)
     .slice(1);
   const exampleItems = fs.getFiles(examples.children || []);
 
+  const items = [];
+
+  if (!navigateOut) {
+    const docsSubnav = buildSubNavGroup(docItems, 'Docs', packageDocUrl.bind(null, group.id, pkg.id), PageIcon);
+    const examplesSubnav = buildSubNavGroup(
+      exampleItems,
+      'Examples',
+      packageExampleUrl.bind(null, group.id, pkg.id),
+      CodeIcon
+    );
+
+    if (docsSubnav) items.push(docsSubnav);
+    if (examplesSubnav) items.push(examplesSubnav);
+  }
+
   return {
     to: navigateOut ? `/packages/${group.id}/${pkg.id}` : packageUrl(group.id, pkg.id),
     isSelected: (pathname, to) => pathname === to,
     title: fs.titleize(pkg.id),
     icon: <BitbucketReposIcon label={`${fs.titleize(pkg.id)} icon`} />,
-    items: navigateOut
-      ? []
-      : [
-          buildSubNavGroup(docItems, 'Docs', packageDocUrl.bind(null, group.id, pkg.id), PageIcon),
-          buildSubNavGroup(
-            exampleItems,
-            'Examples',
-            packageExampleUrl.bind(null, group.id, pkg.id),
-            CodeIcon
-          ),
-        ].filter(item => !!item),
+    items,
   };
 };
 
