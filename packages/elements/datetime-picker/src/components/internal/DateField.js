@@ -21,7 +21,7 @@ export default class DateField extends Component<Props> {
     onChange() {},
     onKeyDown() {},
     onTriggerOpen() {},
-    onTriggerValdiate() {},
+    onTriggerValidate() {},
   };
 
   handleKeyDown = (e: KeyboardEvent) => {
