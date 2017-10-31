@@ -6,7 +6,6 @@ import { shallow } from 'enzyme';
 import { name } from '../package.json';
 import Input from '../src/components/internal/Input';
 
-
 describe(name, () => {
   describe('Input', () => {
     it('should render an AK Input with the correct props', () => {
