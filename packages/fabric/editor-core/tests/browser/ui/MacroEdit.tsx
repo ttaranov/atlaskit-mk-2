@@ -5,7 +5,7 @@ import * as sinon from 'sinon';
 import MacroEdit from '../../../src/ui/MacroEdit';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 
-import { doc, p, makeEditor } from '../../../src/test-helper';
+import { doc, p, makeEditor } from '@atlaskit/editor-test-helpers';
 
 describe('@atlaskit/editor-core ui/MacroEdit', () => {
   const editor = (doc: any) => makeEditor({ doc });

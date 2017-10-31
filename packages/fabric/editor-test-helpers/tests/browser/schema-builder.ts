@@ -1,6 +1,13 @@
 import { expect } from 'chai';
-import schema from '../../../src/test-helper/schema';
-import { markFactory, nodeFactory, p, RefsTracker, sequence, text } from '../../../src/test-helper/schema-builder';
+import {
+  defaultSchema as schema,
+  markFactory,
+  nodeFactory,
+  p,
+  RefsTracker,
+  sequence,
+  text,
+} from '../../src';
 
 describe('@atlaskit/editore-core/test-helper/schema-builder', () => {
   const clone = (object = {}) => ({ ...object });
@@ -100,7 +107,7 @@ describe('@atlaskit/editore-core/test-helper/schema-builder', () => {
       expect(nodeFactory(schema.nodes.paragraph, {})).to.be.an.instanceOf(Function);
     });
 
-    it('returns a factory that returns ref\'d nodes', () => {
+    it("returns a factory that returns ref'd nodes", () => {
       const p = nodeFactory(schema.nodes.paragraph, {});
 
       expect(p()).to.have.property('refs');

@@ -3,19 +3,28 @@ import * as sinon from 'sinon';
 import { expect } from 'chai';
 import hyperlinkPlugins from '../../../../src/plugins/hyperlink';
 import {
-  insertText, chaiPlugin, makeEditor, doc, br, p, a as link,
-  strong, code_block, sendKeyToPm
-} from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
+  insertText,
+  chaiPlugin,
+  makeEditor,
+  doc,
+  br,
+  p,
+  a as link,
+  strong,
+  code_block,
+  sendKeyToPm,
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
 describe('hyperlink', () => {
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: hyperlinkPlugins(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor({
+      doc,
+      plugins: hyperlinkPlugins(defaultSchema),
+    });
 
   describe('input rules', () => {
     it('should convert "www.atlassian.com" to hyperlink', () => {
@@ -26,7 +35,9 @@ describe('hyperlink', () => {
 
       const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com');
       expect(editorView.state.doc).to.deep.equal(doc(p(a, ' ')));
-      expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
+      expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(
+        true
+      );
     });
 
     it('should not convert "www.atlassian.com" to a hyperlink when we haven not hit space afterward', () => {
@@ -85,7 +96,14 @@ describe('hyperlink', () => {
     it('should convert prettyandsimple@example.com to a link', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, 'prettyandsimple@example.com ', sel, sel);
-      expect(editorView.state.doc).to.deep.equal(doc(p(link({ href: 'mailto:prettyandsimple@example.com' })('prettyandsimple@example.com'), ' ')));
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          p(
+            link({ href: 'mailto:prettyandsimple@example.com' })('prettyandsimple@example.com'),
+            ' '
+          )
+        )
+      );
     });
 
     it('should not convert mention like string to a mailto link', () => {
@@ -127,7 +145,9 @@ describe('hyperlink', () => {
       insertText(editorView, `[${linkedText}](http://foo.com)`, sel, sel);
       insertText(editorView, 'hello', sel + linkedText.length, sel + linkedText.length);
 
-      expect(editorView.state.doc).to.deep.equal(doc(p(link({ href: 'http://foo.com' })(`${linkedText}`), 'hello')));
+      expect(editorView.state.doc).to.deep.equal(
+        doc(p(link({ href: 'http://foo.com' })(`${linkedText}`), 'hello'))
+      );
     });
 
     it('does not convert to hyperlink if the previous part already contains a hyperlink', () => {
@@ -136,14 +156,18 @@ describe('hyperlink', () => {
       insertText(editorView, `[${linkedText}](http://foo.com)`, sel, sel);
       insertText(editorView, '. ', sel + linkedText.length, sel + linkedText.length);
 
-      expect(editorView.state.doc).to.deep.equal(doc(p(link({ href: 'http://foo.com' })(`${linkedText}`), '. ')));
+      expect(editorView.state.doc).to.deep.equal(
+        doc(p(link({ href: 'http://foo.com' })(`${linkedText}`), '. '))
+      );
     });
 
     it('does not remove existsing other mark', () => {
       const { editorView, sel } = editor(doc(p(strong('www.{<>}'))));
       insertText(editorView, 'google.com ', sel, sel);
 
-      expect(editorView.state.doc).to.deep.equal(doc(p(link({ href: 'http://www.google.com' })(strong('www.google.com')), strong(' '))));
+      expect(editorView.state.doc).to.deep.equal(
+        doc(p(link({ href: 'http://www.google.com' })(strong('www.google.com')), strong(' ')))
+      );
     });
 
     it('converts to hyperlink if possible hyperink text is after a new line and previous line has an hyperlink', () => {
@@ -156,7 +180,9 @@ describe('hyperlink', () => {
     });
 
     it('should be able to remove hyperlink when its the first node of the paragraph', () => {
-      const { editorView } = editor(doc(p(link({ href: 'http://www.google.com' })('{<}www.google.com{>}'))));
+      const { editorView } = editor(
+        doc(p(link({ href: 'http://www.google.com' })('{<}www.google.com{>}')))
+      );
 
       sendKeyToPm(editorView, 'Backspace');
       insertText(editorView, 'text', editorView.state.selection.from);

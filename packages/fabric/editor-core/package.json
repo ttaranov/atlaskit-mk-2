@@ -3,20 +3,13 @@
   "version": "56.2.2",
   "description": "A package contains Atlassian editor core functionality",
   "license": "Apache-2.0",
-  "main": "dist/cjs/index.js",
+  "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "author": "Atlassian Pty Ltd",
-  "maintainers": [
-    "Eduard S",
-    "Artur B",
-    "Huanhuan H",
-    "Oscar W"
-  ],
+  "maintainers": ["Eduard S", "Artur B", "Huanhuan H", "Oscar W"],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
@@ -84,6 +77,7 @@
   },
   "devDependencies": {
     "@atlaskit/button": "^5.1.1",
+    "@atlaskit/editor-test-helpers": "^0.0.0",
     "@atlaskit/media-test-helpers": "^8.4.0",
     "@atlaskit/util-data-test": "^7.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",

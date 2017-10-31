@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 import AkButton from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
-import { doc, p, makeEditor } from '../../../src/test-helper';
+import { doc, p, makeEditor } from '@atlaskit/editor-test-helpers';
 import ChromeExpanded from '../../../src/ui/ChromeExpanded';
 import HyperlinkEdit from '../../../src/ui/HyperlinkEdit';
 import LanguagePicker from '../../../src/ui/LanguagePicker';

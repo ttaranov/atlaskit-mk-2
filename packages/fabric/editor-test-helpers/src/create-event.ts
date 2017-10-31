@@ -3,7 +3,7 @@
  *
  * In IE, doing `new Event()` would throw an error.
  */
-const supportsEvent = ((event) => {
+const supportsEvent = (event => {
   if (event) {
     try {
       // tslint:disable-next-line:no-unused-expression

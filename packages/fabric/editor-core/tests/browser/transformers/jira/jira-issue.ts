@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { chaiPlugin } from '../../../../src/test-helper';
-import { markFactory, nodeFactory } from '../../../../src/test-helper';
+import { chaiPlugin } from '@atlaskit/editor-test-helpers';
+import { markFactory, nodeFactory } from '@atlaskit/editor-test-helpers';
 import { createJIRASchema } from '@atlaskit/editor-common';
 import { parseWithSchema, encode } from './_test-helpers';
 

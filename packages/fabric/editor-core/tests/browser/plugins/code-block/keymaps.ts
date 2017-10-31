@@ -3,17 +3,23 @@ import { expect } from 'chai';
 import codeBlockPlugin from '../../../../src/plugins/code-block';
 
 import {
-  chaiPlugin, doc, makeEditor, p, sendKeyToPm, code_block
-} from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
+  chaiPlugin,
+  doc,
+  makeEditor,
+  p,
+  sendKeyToPm,
+  code_block,
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 
 chai.use(chaiPlugin);
 
 describe('codeBlock - keymaps', () => {
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: codeBlockPlugin(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor({
+      doc,
+      plugins: codeBlockPlugin(defaultSchema),
+    });
 
   describe('Enter keypress', () => {
     describe('when enter key is pressed 2 times', () => {

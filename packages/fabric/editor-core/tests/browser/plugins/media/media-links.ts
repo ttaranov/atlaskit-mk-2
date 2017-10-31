@@ -3,11 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
 
-import {
-  MediaPluginState,
-  AnalyticsHandler,
-  analyticsService
-} from '../../../../src';
+import { MediaPluginState, AnalyticsHandler, analyticsService } from '../../../../src';
 
 import {
   a,
@@ -24,9 +20,9 @@ import {
   randomId,
   taskItem,
   taskList,
-} from '../../../../src/test-helper';
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 
-import defaultSchema from '../../../../src/test-helper/schema';
 import { insertLinks, detectLinkRangesInSteps } from '../../../../src/plugins/media/media-links';
 import * as utils from '../../../../src/plugins/utils';
 
@@ -38,12 +34,13 @@ describe('media-links', () => {
   const testUuid = '1234';
   const linkCreateContextMock = getLinkCreateContextMock(testLinkId);
   const createTempId = url => `temporary:${testUuid}:${url}`;
-  const readyState = (id, publicId = testLinkId) => ({id, publicId, status: 'ready'});
+  const readyState = (id, publicId = testLinkId) => ({ id, publicId, status: 'ready' });
 
-  const editor = (doc: any, uploadErrorHandler?: () => void) => makeEditor<MediaPluginState>({
-    doc,
-    schema: defaultSchema,
-  });
+  const editor = (doc: any, uploadErrorHandler?: () => void) =>
+    makeEditor<MediaPluginState>({
+      doc,
+      schema: defaultSchema,
+    });
 
   let uuidStub: sinon.SinonStub;
   let mediaStateManager;
@@ -119,15 +116,13 @@ describe('media-links', () => {
 
           const linksRanges = detectLinkRangesInSteps(tr, editorView.state.schema.marks.link, 0);
 
-          expect(linksRanges).to.deep.equal([
-            { href: href2, pos: title1.length },
-          ]);
+          expect(linksRanges).to.deep.equal([{ href: href2, pos: title1.length }]);
           editorView.destroy();
         });
       });
     });
 
-      context('when includes add mark step with links', () => {
+    context('when includes add mark step with links', () => {
       it('returns ranges with links', () => {
         const text = 'hello';
         const href = 'www.atlassian.com';
@@ -138,9 +133,7 @@ describe('media-links', () => {
 
         const linksRanges = detectLinkRangesInSteps(tr, editorView.state.schema.marks.link, 0);
 
-        expect(linksRanges).to.deep.equal([
-          { href, pos: 1 },
-        ]);
+        expect(linksRanges).to.deep.equal([{ href, pos: 1 }]);
         editorView.destroy();
       });
 
@@ -175,9 +168,7 @@ describe('media-links', () => {
         const link2 = a({ href: href2 })('baidu');
         const nodes = link1.concat(link2);
         const linkMark = state.schema.marks.link.create({ href: href3 });
-        const tr = state.tr
-          .replaceWith(sel, sel, nodes)
-          .addMark(sel - text.length, sel, linkMark);
+        const tr = state.tr.replaceWith(sel, sel, nodes).addMark(sel - text.length, sel, linkMark);
 
         const linksRanges = detectLinkRangesInSteps(tr, editorView.state.schema.marks.link, 0);
 
@@ -197,8 +188,11 @@ describe('media-links', () => {
         const link = a({ href })(`${text}{<>}`);
         const { editorView, sel } = editor(doc(p(link)));
         const { state } = editorView;
-        const tr = state.tr
-          .removeMark(sel - text.length, sel, state.schema.marks.link.create({ href }));
+        const tr = state.tr.removeMark(
+          sel - text.length,
+          sel,
+          state.schema.marks.link.create({ href })
+        );
 
         const linksRanges = detectLinkRangesInSteps(tr, editorView.state.schema.marks.link, 0);
 
@@ -239,7 +233,7 @@ describe('media-links', () => {
           handle,
           [],
           linkCreateContextMock,
-          testCollectionName,
+          testCollectionName
         );
 
         sinon.assert.notCalled(handle);
@@ -262,16 +256,18 @@ describe('media-links', () => {
             handle,
             [{ href, pos: 1 }],
             linkCreateContextMock,
-            testCollectionName,
+            testCollectionName
           );
 
           const id = createTempId(href);
           sinon.assert.alwaysCalledWithExactly(handle, readyState(id));
-          expect(editorView.state.doc).to.deep.equal(doc(
-            p(`${href} `),
-            mediaGroup(media({ id, type: 'link', collection: testCollectionName })),
-            p(),
-          ));
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              p(`${href} `),
+              mediaGroup(media({ id, type: 'link', collection: testCollectionName })),
+              p()
+            )
+          );
           editorView.destroy();
         });
 
@@ -288,16 +284,18 @@ describe('media-links', () => {
               handle,
               [{ href, pos: 1000 }],
               linkCreateContextMock,
-              testCollectionName,
+              testCollectionName
             );
 
             const id = createTempId(href);
             sinon.assert.alwaysCalledWithExactly(handle, readyState(id));
-            expect(editorView.state.doc).to.deep.equal(doc(
-              p(`${href} `),
-              mediaGroup(media({ id, type: 'link', collection: testCollectionName })),
-              p(),
-            ));
+            expect(editorView.state.doc).to.deep.equal(
+              doc(
+                p(`${href} `),
+                mediaGroup(media({ id, type: 'link', collection: testCollectionName })),
+                p()
+              )
+            );
             editorView.destroy();
           });
         });
@@ -305,10 +303,7 @@ describe('media-links', () => {
         context('not at the end of the doc', () => {
           it('does not create a new p at the end of doc', async () => {
             const href = 'www.google.com';
-            const { editorView } = editor(doc(
-              p(`${href} {<>}`),
-              p('hello'),
-            ));
+            const { editorView } = editor(doc(p(`${href} {<>}`), p('hello')));
             const handle = sinon.spy();
 
             await insertLinks(
@@ -317,16 +312,18 @@ describe('media-links', () => {
               handle,
               [{ href, pos: 1 }],
               linkCreateContextMock,
-              testCollectionName,
+              testCollectionName
             );
 
             const id = createTempId(href);
             sinon.assert.alwaysCalledWithExactly(handle, readyState(id));
-            expect(editorView.state.doc).to.deep.equal(doc(
-              p(`${href} `),
-              mediaGroup(media({ id, type: 'link', collection: testCollectionName })),
-              p('hello'),
-            ));
+            expect(editorView.state.doc).to.deep.equal(
+              doc(
+                p(`${href} `),
+                mediaGroup(media({ id, type: 'link', collection: testCollectionName })),
+                p('hello')
+              )
+            );
             editorView.destroy();
           });
         });
@@ -335,7 +332,7 @@ describe('media-links', () => {
           const href = 'www.google.com';
           const { editorView } = editor(doc(p(`${href} {<>}`)));
           const spy = sinon.spy();
-          analyticsService.handler = (spy as AnalyticsHandler);
+          analyticsService.handler = spy as AnalyticsHandler;
 
           afterEach(() => {
             analyticsService.handler = null;
@@ -358,10 +355,12 @@ describe('media-links', () => {
         it('creates a link card to join the existing media group below', async () => {
           const hrefOld = 'www.google.com';
           const href = 'www.baidu.com';
-          const { editorView } = editor(doc(
-            p(`${hrefOld} ${href} {<>}`),
-            mediaGroup(media({ id: testLinkId, type: 'link', collection: testCollectionName })),
-          ));
+          const { editorView } = editor(
+            doc(
+              p(`${hrefOld} ${href} {<>}`),
+              mediaGroup(media({ id: testLinkId, type: 'link', collection: testCollectionName }))
+            )
+          );
           const handle = sinon.spy();
 
           // -1 for space, simulate the scenario of autoformatting link
@@ -371,18 +370,20 @@ describe('media-links', () => {
             handle,
             [{ href, pos: hrefOld.length + 2 }],
             linkCreateContextMock,
-            testCollectionName,
+            testCollectionName
           );
 
           const id = createTempId(href);
           sinon.assert.alwaysCalledWithExactly(handle, readyState(id));
-          expect(editorView.state.doc).to.deep.equal(doc(
-            p(`${hrefOld} ${href} `),
-            mediaGroup(
-              media({ id: testLinkId, type: 'link', collection: testCollectionName }),
-              media({ id, type: 'link', collection: testCollectionName }),
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              p(`${hrefOld} ${href} `),
+              mediaGroup(
+                media({ id: testLinkId, type: 'link', collection: testCollectionName }),
+                media({ id, type: 'link', collection: testCollectionName })
+              )
             )
-          ));
+          );
           editorView.destroy();
         });
 
@@ -390,10 +391,12 @@ describe('media-links', () => {
           it('creates a link card to join the existing media group below', async () => {
             const hrefOld = 'www.google.com';
             const href = 'www.baidu.com';
-            const { editorView } = editor(doc(
-              p(`${hrefOld} ${href} {<>}`),
-              mediaGroup(media({ id: testLinkId, type: 'link', collection: testCollectionName })),
-            ));
+            const { editorView } = editor(
+              doc(
+                p(`${hrefOld} ${href} {<>}`),
+                mediaGroup(media({ id: testLinkId, type: 'link', collection: testCollectionName }))
+              )
+            );
             const handle = sinon.spy();
 
             // -1 for space, simulate the scenario of autoformatting link
@@ -403,18 +406,20 @@ describe('media-links', () => {
               handle,
               [{ href, pos: 1000 }],
               linkCreateContextMock,
-              testCollectionName,
+              testCollectionName
             );
 
             const id = createTempId(href);
             sinon.assert.alwaysCalledWithExactly(handle, readyState(id));
-            expect(editorView.state.doc).to.deep.equal(doc(
-              p(`${hrefOld} ${href} `),
-              mediaGroup(
-                media({ id: testLinkId, type: 'link', collection: testCollectionName }),
-                media({ id, type: 'link', collection: testCollectionName }),
+            expect(editorView.state.doc).to.deep.equal(
+              doc(
+                p(`${hrefOld} ${href} `),
+                mediaGroup(
+                  media({ id: testLinkId, type: 'link', collection: testCollectionName }),
+                  media({ id, type: 'link', collection: testCollectionName })
+                )
               )
-            ));
+            );
             editorView.destroy();
           });
         });
@@ -426,11 +431,7 @@ describe('media-links', () => {
         const href1 = 'www.google.com';
         const href2 = 'www.baidu.com';
         const href3 = 'www.atlassian.com';
-        const { editorView } = editor(doc(
-          p(`{<>}${href1}`),
-          p(`${href2} ${href3}`),
-          p('hello')
-        ));
+        const { editorView } = editor(doc(p(`{<>}${href1}`), p(`${href2} ${href3}`), p('hello')));
         const handle = sinon.spy();
 
         const posOfLink1 = 1;
@@ -448,7 +449,7 @@ describe('media-links', () => {
             { href: href3, pos: posOfLink3 },
           ],
           linkCreateContextMock,
-          testCollectionName,
+          testCollectionName
         );
 
         const tempId1 = createTempId(href1);
@@ -458,18 +459,18 @@ describe('media-links', () => {
         sinon.assert.calledWithExactly(handle.firstCall as any, readyState(tempId1));
         sinon.assert.calledWithExactly(handle.secondCall as any, readyState(tempId2));
         sinon.assert.calledWithExactly(handle.thirdCall as any, readyState(tempId3));
-        expect(editorView.state.doc).to.deep.equal(doc(
-          p(`${href1}`),
-          mediaGroup(
-            media({ id: tempId1, type: 'link', collection: testCollectionName }),
-          ),
-          p(`${href2} ${href3}`),
-          mediaGroup(
-            media({ id: tempId2, type: 'link', collection: testCollectionName }),
-            media({ id: tempId3, type: 'link', collection: testCollectionName }),
-          ),
-          p('hello'),
-        ));
+        expect(editorView.state.doc).to.deep.equal(
+          doc(
+            p(`${href1}`),
+            mediaGroup(media({ id: tempId1, type: 'link', collection: testCollectionName })),
+            p(`${href2} ${href3}`),
+            mediaGroup(
+              media({ id: tempId2, type: 'link', collection: testCollectionName }),
+              media({ id: tempId3, type: 'link', collection: testCollectionName })
+            ),
+            p('hello')
+          )
+        );
         editorView.destroy();
       });
     });
@@ -480,7 +481,9 @@ describe('media-links', () => {
       const handle = sinon.spy();
 
       const id = createTempId(href);
-      const addLinkItemStub = sinon.stub(linkCreateContextMock, 'addLinkItem').returns(Promise.reject('error message'));
+      const addLinkItemStub = sinon
+        .stub(linkCreateContextMock, 'addLinkItem')
+        .returns(Promise.reject('error message'));
       await insertLinks(
         editorView,
         mediaStateManager,
@@ -496,11 +499,13 @@ describe('media-links', () => {
         error: 'error message',
         status: 'error',
       });
-      expect(editorView.state.doc).to.deep.equal(doc(
-        p(`${href} `),
-        mediaGroup(media({ id, type: 'link', collection: testCollectionName })),
-        p(),
-      ));
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          p(`${href} `),
+          mediaGroup(media({ id, type: 'link', collection: testCollectionName })),
+          p()
+        )
+      );
       editorView.destroy();
     });
   });
@@ -517,7 +522,7 @@ describe('media-links', () => {
         handle,
         [],
         linkCreateContextMock,
-        testCollectionName,
+        testCollectionName
       );
 
       sinon.assert.notCalled(handle);
@@ -536,7 +541,7 @@ describe('media-links', () => {
         handle,
         [],
         linkCreateContextMock,
-        testCollectionName,
+        testCollectionName
       );
 
       sinon.assert.notCalled(handle);

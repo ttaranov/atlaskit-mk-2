@@ -1,17 +1,29 @@
 import { expect } from 'chai';
 import {
-  doc, code_block, code, p, strong, makeEditor, panel, blockquote
-} from '../../../src/test-helper';
-import defaultSchema from '../../../src/test-helper/schema';
+  doc,
+  code_block,
+  code,
+  p,
+  strong,
+  makeEditor,
+  panel,
+  blockquote,
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 import { toggleMark } from 'prosemirror-commands';
 
-import { isMarkTypeAllowedInCurrentSelection, areBlockTypesDisabled, moveCursorToTheEnd } from '../../../src/utils';
+import {
+  isMarkTypeAllowedInCurrentSelection,
+  areBlockTypesDisabled,
+  moveCursorToTheEnd,
+} from '../../../src/utils';
 
 describe('@atlaskit/editore-core/utils', () => {
-  const editor = (doc: any) => makeEditor({
-    doc,
-    schema: defaultSchema
-  });
+  const editor = (doc: any) =>
+    makeEditor({
+      doc,
+      schema: defaultSchema,
+    });
 
   describe('#isMarkTypeAllowedInCurrentSelection', () => {
     context('when the current node supports the given mark type', () => {
@@ -88,7 +100,9 @@ describe('@atlaskit/editore-core/utils', () => {
           });
 
           it('returns false if the selection includes an excluded node', () => {
-            const { editorView } = editor(doc(p(strong('{<}text'), code('text'), strong('text{>}'))));
+            const { editorView } = editor(
+              doc(p(strong('{<}text'), code('text'), strong('text{>}')))
+            );
             const { mentionQuery } = editorView.state.schema.marks;
 
             let result = isMarkTypeAllowedInCurrentSelection(mentionQuery, editorView.state);
@@ -125,7 +139,9 @@ describe('@atlaskit/editore-core/utils', () => {
 
   describe('#moveCursorToTheEnd', () => {
     it('should move cursor to the end of a document', () => {
-      const { editorView, refs: { endPos } } = editor(doc(p('Som{<>}e text after the cursor{endPos}')));
+      const { editorView, refs: { endPos } } = editor(
+        doc(p('Som{<>}e text after the cursor{endPos}'))
+      );
       moveCursorToTheEnd(editorView);
       expect(endPos).to.be.a('number');
       expect(editorView.state.selection.anchor).to.equal(endPos);

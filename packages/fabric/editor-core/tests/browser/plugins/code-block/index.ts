@@ -3,17 +3,26 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import codeBlockPlugins, { CodeBlockState } from '../../../../src/plugins/code-block';
-import { chaiPlugin, code_block, doc, makeEditor, p, createEvent, blockquote } from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
+import {
+  chaiPlugin,
+  code_block,
+  doc,
+  makeEditor,
+  p,
+  createEvent,
+  blockquote,
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../../src/utils';
 
 chai.use(chaiPlugin);
 
 describe('code-block', () => {
-  const editor = (doc: any) => makeEditor<CodeBlockState>({
-    doc,
-    plugins: codeBlockPlugins(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor<CodeBlockState>({
+      doc,
+      plugins: codeBlockPlugins(defaultSchema),
+    });
 
   const event = createEvent('event');
 
@@ -28,7 +37,9 @@ describe('code-block', () => {
 
     context('when leaving code block', () => {
       it('notifies subscriber', () => {
-        const { refs, pluginState, editorView } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
+        const { refs, pluginState, editorView } = editor(
+          doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}'))
+        );
         const spy = sinon.spy();
         const { pPos } = refs;
 
@@ -42,7 +53,9 @@ describe('code-block', () => {
 
     context('when entering code block', () => {
       it('notifies subscriber', () => {
-        const { refs, pluginState, editorView } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')));
+        const { refs, pluginState, editorView } = editor(
+          doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}'))
+        );
         const spy = sinon.spy();
         const { cbPos } = refs;
 
@@ -56,7 +69,9 @@ describe('code-block', () => {
 
     context('when moving to a different code block', () => {
       it('notifies subscriber', () => {
-        const { refs, pluginState, editorView } = editor(doc(code_block()('codeBlock{<>}'), code_block()('codeBlock{cbPos}')));
+        const { refs, pluginState, editorView } = editor(
+          doc(code_block()('codeBlock{<>}'), code_block()('codeBlock{cbPos}'))
+        );
         const spy = sinon.spy();
         const { cbPos } = refs;
 
@@ -84,7 +99,9 @@ describe('code-block', () => {
 
     context('when code block is focused and then editor is blur', () => {
       it('should call subscribers', () => {
-        const { pluginState, editorView, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
+        const { pluginState, editorView, plugin } = editor(
+          doc(p('paragraph'), code_block()('code{<>}Block'))
+        );
         const spy = sinon.spy();
         pluginState.subscribe(spy);
 
@@ -97,7 +114,9 @@ describe('code-block', () => {
 
     context('when code block is not focused and then editor is blur', () => {
       it('should not call subscribers', () => {
-        const { pluginState, editorView, plugin } = editor(doc(p('para{<>}graph'), code_block()('codeBlock')));
+        const { pluginState, editorView, plugin } = editor(
+          doc(p('para{<>}graph'), code_block()('codeBlock'))
+        );
         const spy = sinon.spy();
         pluginState.subscribe(spy);
 
@@ -110,7 +129,9 @@ describe('code-block', () => {
 
     context('when click inside code_block', () => {
       it('notify the subscriber', () => {
-        const { plugin, pluginState, editorView, sel } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
+        const { plugin, pluginState, editorView, sel } = editor(
+          doc(p('paragraph'), code_block()('codeBlock{<>}'))
+        );
         const spy = sinon.spy();
         pluginState.subscribe(spy);
 
@@ -136,7 +157,9 @@ describe('code-block', () => {
 
     context('when unsubscribe', () => {
       it('does not notify the subscriber', () => {
-        const { refs, pluginState, editorView } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')));
+        const { refs, pluginState, editorView } = editor(
+          doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}'))
+        );
         const spy = sinon.spy();
         const { cbPos } = refs;
         pluginState.subscribe(spy);
@@ -168,7 +191,9 @@ describe('code-block', () => {
 
     context('when cursor moves onto different code block', () => {
       it('returns different elements', () => {
-        const { refs, pluginState, editorView } = editor(doc(code_block()('one{<>} codeBlock'), code_block()('another{cbPos} codeBlock')));
+        const { refs, pluginState, editorView } = editor(
+          doc(code_block()('one{<>} codeBlock'), code_block()('another{cbPos} codeBlock'))
+        );
         const { cbPos } = refs;
 
         const previousElement = pluginState.element;
@@ -219,7 +244,9 @@ describe('code-block', () => {
   context('clicked', () => {
     context('when click inside code block', () => {
       it('returns true', () => {
-        const { plugin, editorView, pluginState, sel } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
+        const { plugin, editorView, pluginState, sel } = editor(
+          doc(p('paragraph'), code_block()('code{<>}Block'))
+        );
 
         plugin.props.handleClick!(editorView, sel, event);
 
@@ -230,7 +257,9 @@ describe('code-block', () => {
 
     context('when click outside of code block', () => {
       it('returns false', () => {
-        const { plugin, editorView, pluginState, sel } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock')));
+        const { plugin, editorView, pluginState, sel } = editor(
+          doc(p('paragraph{<>}'), code_block()('codeBlock'))
+        );
 
         plugin.props.handleClick!(editorView, sel, event);
 
@@ -241,7 +270,9 @@ describe('code-block', () => {
 
     context('when has not been clicked', () => {
       it('returns false', () => {
-        const { refs, pluginState, editorView } = editor(doc(p('paragraph'), code_block()('codeB{cbPos}lock')));
+        const { refs, pluginState, editorView } = editor(
+          doc(p('paragraph'), code_block()('codeB{cbPos}lock'))
+        );
         const { cbPos } = refs;
 
         setTextSelection(editorView, cbPos);
@@ -254,7 +285,9 @@ describe('code-block', () => {
 
   context('updateLanguage', () => {
     it('keeps the content', () => {
-      const { pluginState, editorView } = editor(doc(p('paragraph'), code_block({ language: 'java' })('{<>}codeBlock')));
+      const { pluginState, editorView } = editor(
+        doc(p('paragraph'), code_block({ language: 'java' })('{<>}codeBlock'))
+      );
       const previousElement = pluginState.element;
 
       pluginState.updateLanguage('php', editorView);
@@ -266,7 +299,9 @@ describe('code-block', () => {
     });
 
     it('can update language to be undefined', () => {
-      const { pluginState, editorView } = editor(doc(p('paragraph'), code_block({ language: 'java' })('{<>}codeBlock')));
+      const { pluginState, editorView } = editor(
+        doc(p('paragraph'), code_block({ language: 'java' })('{<>}codeBlock'))
+      );
 
       pluginState.updateLanguage(undefined, editorView);
 
@@ -275,7 +310,9 @@ describe('code-block', () => {
     });
 
     it('updates language', () => {
-      const { pluginState, editorView } = editor(doc(p('paragraph'), code_block({ language: 'java' })('{<>}codeBlock')));
+      const { pluginState, editorView } = editor(
+        doc(p('paragraph'), code_block({ language: 'java' })('{<>}codeBlock'))
+      );
 
       pluginState.updateLanguage('php', editorView);
 
@@ -284,7 +321,9 @@ describe('code-block', () => {
     });
 
     it('updates the node', () => {
-      const { pluginState, editorView } = editor(doc(p('paragraph'), code_block({ language: 'java' })('{<>}codeBlock')));
+      const { pluginState, editorView } = editor(
+        doc(p('paragraph'), code_block({ language: 'java' })('{<>}codeBlock'))
+      );
       const previousActiveCodeBlock = pluginState.activeCodeBlock;
 
       pluginState.updateLanguage('php', editorView);
@@ -298,14 +337,18 @@ describe('code-block', () => {
 
   context('removeCodeBlock', () => {
     it('should change current code_block to simple paragraph', () => {
-      const { pluginState, editorView } = editor(doc(code_block({ language: 'java' })('{<>}codeBlock')));
+      const { pluginState, editorView } = editor(
+        doc(code_block({ language: 'java' })('{<>}codeBlock'))
+      );
       pluginState.removeCodeBlock(editorView);
       expect(editorView.state.doc).to.deep.equal(doc(p('')));
       editorView.destroy();
     });
 
     it('should not remove parent block when removing code_block', () => {
-      const { pluginState, editorView } = editor(doc(blockquote(code_block({ language: 'java' })('codeBlock{<>}'))));
+      const { pluginState, editorView } = editor(
+        doc(blockquote(code_block({ language: 'java' })('codeBlock{<>}')))
+      );
       pluginState.removeCodeBlock(editorView);
       expect(editorView.state.doc).to.deep.equal(doc(blockquote(p())));
       editorView.destroy();
@@ -338,7 +381,9 @@ describe('code-block', () => {
   describe('toolbarVisible', () => {
     context('when editor is blur', () => {
       it('it is false', () => {
-        const { plugin, editorView, pluginState } = editor(doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')));
+        const { plugin, editorView, pluginState } = editor(
+          doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block'))
+        );
 
         plugin.props.onFocus!(editorView, event);
         plugin.props.onBlur!(editorView, event);
@@ -352,7 +397,9 @@ describe('code-block', () => {
   describe('editorFocued', () => {
     context('when editor is focused', () => {
       it('it is true', () => {
-        const { plugin, editorView, pluginState } = editor(doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')));
+        const { plugin, editorView, pluginState } = editor(
+          doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block'))
+        );
 
         plugin.props.onBlur!(editorView, event);
         plugin.props.onFocus!(editorView, event);
@@ -364,7 +411,9 @@ describe('code-block', () => {
 
     context('when editor is blur', () => {
       it('it is false', () => {
-        const { plugin, editorView, pluginState } = editor(doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')));
+        const { plugin, editorView, pluginState } = editor(
+          doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block'))
+        );
 
         plugin.props.onBlur!(editorView, event);
 

@@ -7,23 +7,21 @@ import textFormattingPlugins from '../../../src/plugins/text-formatting';
 import clearFormattingPlugins from '../../../src/plugins/clear-formatting';
 import ToolbarAdvancedTextFormatting from '../../../src/ui/ToolbarAdvancedTextFormatting';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
-import { doc, p, strike, makeEditor } from '../../../src/test-helper';
-import defaultSchema from '../../../src/test-helper/schema';
+import { doc, p, strike, makeEditor, defaultSchema } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../src/analytics';
 
 describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
   const textFormattingPluginSet = textFormattingPlugins(defaultSchema);
   const clearformattingPluginSet = clearFormattingPlugins(defaultSchema);
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: [...textFormattingPluginSet, ...clearformattingPluginSet],
-  });
+  const editor = (doc: any) =>
+    makeEditor({
+      doc,
+      plugins: [...textFormattingPluginSet, ...clearformattingPluginSet],
+    });
 
   it('should render disabled ToolbarButton if both pluginStateTextFormatting and pluginStateClearFormatting are undefined', () => {
     const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarAdvancedTextFormatting editorView={editorView} />
-    );
+    const toolbarOption = mount(<ToolbarAdvancedTextFormatting editorView={editorView} />);
     expect(toolbarOption.find(ToolbarButton).prop('disabled')).to.equal(true);
     toolbarOption.unmount();
   });
@@ -102,7 +100,9 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       .filterWhere(n => n.text() === 'Strikethrough')
       .find('Element');
     strikeButton.simulate('click');
-    expect(textFormattingPluginSet[0].getState(editorView.state).toggleStrike.callCount).to.equal(1);
+    expect(textFormattingPluginSet[0].getState(editorView.state).toggleStrike.callCount).to.equal(
+      1
+    );
     toolbarOption.unmount();
   });
 
@@ -117,7 +117,9 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     );
     toolbarOption.setState({ strikeHidden: true });
     toolbarOption.find(ToolbarButton).simulate('click');
-    const strikeButton = toolbarOption.find('span').findWhere(wrapper => wrapper.text() === 'Strikethrough');
+    const strikeButton = toolbarOption
+      .find('span')
+      .findWhere(wrapper => wrapper.text() === 'Strikethrough');
     expect(strikeButton.length).to.equal(0);
     toolbarOption.unmount();
   });
@@ -139,7 +141,9 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       .filterWhere(n => n.text() === 'Clear Formatting')
       .find('Element');
     clearFormattingButton.simulate('click');
-    expect(clearformattingPluginSet[0].getState(editorView.state).clearFormatting.callCount).to.equal(1);
+    expect(
+      clearformattingPluginSet[0].getState(editorView.state).clearFormatting.callCount
+    ).to.equal(1);
     toolbarOption.unmount();
   });
 
@@ -200,7 +204,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
           pluginStateClearFormatting={clearformattingPluginSet[0].getState(editorView.state)}
           editorView={editorView}
         />
-        );
+      );
       toolbarOption.find('button').simulate('click');
       trackEvent = sinon.spy();
       analyticsService.trackEvent = trackEvent;
@@ -223,7 +227,9 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
           .filterWhere(n => n.text() === type.name)
           .find('Element')
           .simulate('click');
-        expect(trackEvent.calledWith(`atlassian.editor.format.${type.value}.button`)).to.equal(true);
+        expect(trackEvent.calledWith(`atlassian.editor.format.${type.value}.button`)).to.equal(
+          true
+        );
       });
     });
   });

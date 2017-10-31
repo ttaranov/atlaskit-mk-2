@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import {
   doc, p, strong
-} from '../../../../src/test-helper';
+} from '@atlaskit/editor-test-helpers';
 
 import { toJSON } from '../../../../src/utils';
 import { filterContentByType } from '../../../../src/utils/filter/filter';

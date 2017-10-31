@@ -8,33 +8,46 @@ import ToolbarButton from '../../../src/ui/ToolbarButton';
 import AkButton from '@atlaskit/button';
 import { analyticsService } from '../../../src/analytics';
 
-import { doc, panel, p, makeEditor, createEvent } from '../../../src/test-helper';
-import defaultSchema from '../../../src/test-helper/schema';
+import {
+  doc,
+  panel,
+  p,
+  makeEditor,
+  createEvent,
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 
 describe('@atlaskit/editor-core ui/PanelEdit', () => {
   const event = createEvent('event');
-  const editor = (doc: any) => makeEditor<PanelState>({
-    doc,
-    plugins: panelPlugins(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor<PanelState>({
+      doc,
+      plugins: panelPlugins(defaultSchema),
+    });
 
   it('should return null if state variable toolbarVisible is false', () => {
     const { editorView, pluginState } = editor(doc(panel(p('te{<>}xt'))));
-    const panelEditOptions = shallow(<PanelEdit pluginState={pluginState} editorView={editorView} />);
+    const panelEditOptions = shallow(
+      <PanelEdit pluginState={pluginState} editorView={editorView} />
+    );
     panelEditOptions.setState({ toolbarVisible: false });
     expect(panelEditOptions.html()).to.equal(null);
   });
 
   it('should not return null if state variable toolbarVisible is true', () => {
     const { editorView, pluginState } = editor(doc(panel(p('te{<>}xt'))));
-    const panelEditOptions = shallow(<PanelEdit pluginState={pluginState} editorView={editorView} />);
+    const panelEditOptions = shallow(
+      <PanelEdit pluginState={pluginState} editorView={editorView} />
+    );
     panelEditOptions.setState({ toolbarVisible: true });
     expect(panelEditOptions.html()).to.not.equal(null);
   });
 
   it('should have 5 buttons in it', () => {
     const { editorView, pluginState } = editor(doc(panel(p('te{<>}xt'))));
-    const panelEditOptions = shallow(<PanelEdit pluginState={pluginState} editorView={editorView} />);
+    const panelEditOptions = shallow(
+      <PanelEdit pluginState={pluginState} editorView={editorView} />
+    );
     panelEditOptions.setState({ toolbarVisible: true });
     expect(panelEditOptions.find(ToolbarButton).length).to.equal(4);
   });
@@ -91,7 +104,10 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     });
     ['info', 'note', 'tip', 'warning'].forEach((panelType, index) => {
       it(`should trigger analyticsService.trackEvent when ${panelType} button is clicked`, () => {
-        toolbarOption.find(AkButton).at(index).simulate('click');
+        toolbarOption
+          .find(AkButton)
+          .at(index)
+          .simulate('click');
         expect(trackEvent.calledWith(`atlassian.editor.format.${panelType}.button`)).to.equal(true);
       });
     });

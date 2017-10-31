@@ -1,12 +1,9 @@
 import { name } from '../../../../package.json';
 import { expect } from 'chai';
 import createEditor from '../../../helpers/create-editor';
-import { doc, p, blockquote, decisionList, decisionItem } from '../../../../src/test-helper';
+import { doc, p, blockquote, decisionList, decisionItem } from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
-import {
-  JSONTransformer,
-  Transformer
-} from '../../../../src/transformers';
+import { JSONTransformer, Transformer } from '../../../../src/transformers';
 import EditorActions from '../../../../src/editor/actions';
 import { toJSON } from '../../../../src/utils';
 
@@ -14,7 +11,7 @@ const jsonTransformer = new JSONTransformer();
 
 const dummyTransformer: Transformer<string> = {
   parse: content => doc(blockquote(content)),
-  encode: node => node.textContent
+  encode: node => node.textContent,
 };
 
 describe(name, () => {

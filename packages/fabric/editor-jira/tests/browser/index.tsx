@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 
 import { MentionProvider } from '@atlaskit/mention';
-import { chaiPlugin, fixtures } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { chaiPlugin, fixtures } from '@atlaskit/editor-test-helpers';
 import Editor from '../../src/index';
 
 chai.use(chaiPlugin);

@@ -9,8 +9,7 @@ import mediaPlugins from '../../../src/plugins/media';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 import ToolbarInsertBlock from '../../../src/ui/ToolbarInsertBlock';
 import AkButton from '@atlaskit/button';
-import { doc, p, makeEditor, code_block } from '../../../src/test-helper';
-import defaultSchema from '../../../src/test-helper/schema';
+import { doc, p, makeEditor, code_block, defaultSchema } from '@atlaskit/editor-test-helpers';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 import { MediaProvider } from '@atlaskit/media-core';
 import ProviderFactory from '../../../src/providerFactory';
@@ -18,7 +17,7 @@ import { analyticsService } from '../../../src/analytics';
 
 const mediaProvider: Promise<MediaProvider> = Promise.resolve({
   viewContext: Promise.resolve({ serviceHost: 'https://some-host', authProvider: {} as any }),
-  uploadContext: Promise.resolve({ serviceHost: 'https://some-host', authProvider: {} as any })
+  uploadContext: Promise.resolve({ serviceHost: 'https://some-host', authProvider: {} as any }),
 });
 
 const providerFactory = new ProviderFactory();
@@ -28,10 +27,11 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
   const blockTypePluginsSet = blockTypePlugins(defaultSchema);
   const tablePluginsSet = tablePlugins();
   const mediaPluginsSet = mediaPlugins(defaultSchema, { providerFactory });
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: [...blockTypePluginsSet, ...tablePluginsSet, ...mediaPluginsSet],
-  });
+  const editor = (doc: any) =>
+    makeEditor({
+      doc,
+      plugins: [...blockTypePluginsSet, ...tablePluginsSet, ...mediaPluginsSet],
+    });
   let trackEvent;
   beforeEach(() => {
     trackEvent = sinon.spy();
@@ -41,11 +41,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
   it('should render disabled ToolbarButton if isDisabled property is true', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
-      <ToolbarInsertBlock
-        tableHidden={false}
-        editorView={editorView}
-        isDisabled={true}
-      />
+      <ToolbarInsertBlock tableHidden={false} editorView={editorView} isDisabled={true} />
     );
     expect(toolbarOption.find(AkButton).prop('isDisabled')).to.equal(true);
     toolbarOption.unmount();
@@ -53,23 +49,14 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
 
   it('should not render disabled ToolbarButton even if current selection is code block', () => {
     const { editorView } = editor(doc(code_block()('text{<>}')));
-    const toolbarOption = mount(
-      <ToolbarInsertBlock
-        tableHidden={false}
-        editorView={editorView}
-      />
-    );
+    const toolbarOption = mount(<ToolbarInsertBlock tableHidden={false} editorView={editorView} />);
     expect(toolbarOption.find(AkButton).prop('isDisabled')).to.equal(false);
     toolbarOption.unmount();
   });
 
   it('should not render if none of the plugins are present', () => {
     const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarInsertBlock
-        editorView={editorView}
-      />
-    );
+    const toolbarOption = mount(<ToolbarInsertBlock editorView={editorView} />);
     expect(toolbarOption.html()).to.equal(null);
     toolbarOption.unmount();
   });
@@ -90,12 +77,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
 
   it('should have 1 child elements if tableHidden is defined and equals false', () => {
     const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarInsertBlock
-        tableHidden={false}
-        editorView={editorView}
-      />
-    );
+    const toolbarOption = mount(<ToolbarInsertBlock tableHidden={false} editorView={editorView} />);
     toolbarOption.find(ToolbarButton).simulate('click');
     expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(1);
     toolbarOption.unmount();
@@ -108,10 +90,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     await media.uploadContext;
 
     const toolbarOption = mount(
-      <ToolbarInsertBlock
-        mediaUploadsEnabled={true}
-        editorView={editorView}
-      />
+      <ToolbarInsertBlock mediaUploadsEnabled={true} editorView={editorView} />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
     expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(1);
@@ -216,12 +195,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
 
   it('should track table creation event when table menu is clicked option is clicked', () => {
     const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarInsertBlock
-        tableHidden={false}
-        editorView={editorView}
-      />
-    );
+    const toolbarOption = mount(<ToolbarInsertBlock tableHidden={false} editorView={editorView} />);
     toolbarOption.find(ToolbarButton).simulate('click');
     const funcSpy = sinon.spy();
     tableCommands.createTable = () => funcSpy;

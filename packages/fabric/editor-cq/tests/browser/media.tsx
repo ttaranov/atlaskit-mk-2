@@ -10,7 +10,7 @@ import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import {
   chaiPlugin,
   storyMediaProviderFactory,
-} from '@atlaskit/editor-core/dist/es5/test-helper';
+} from '@atlaskit/editor-test-helpers';
 
 import Editor from '../../src';
 

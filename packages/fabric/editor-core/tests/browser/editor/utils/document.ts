@@ -1,9 +1,14 @@
 import { name } from '../../../../package.json';
 import { expect } from 'chai';
 import { Node } from 'prosemirror-model';
-import { doc, p, decisionList, decisionItem } from '../../../../src/test-helper';
+import {
+  doc,
+  p,
+  decisionList,
+  decisionItem,
+  defaultSchema as schema,
+} from '@atlaskit/editor-test-helpers';
 import { isEmpty, isEmptyParagraph, preprocessDoc } from '../../../../src/editor/utils/document';
-import schema from '../../../../src/test-helper/schema';
 
 describe(name, () => {
   describe('Utils -> Document', () => {

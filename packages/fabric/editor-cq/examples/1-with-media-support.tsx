@@ -5,7 +5,7 @@ import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import Editor from '../src';
 import ExampleWrapper from '../example-helpers/ExampleWrapper';
 import { resourceProvider } from '../example-helpers/mentions/story-data';
-import { storyMediaProviderFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 
 const CANCEL_ACTION = () => console.log('Cancel');
 const SAVE_ACTION = () => console.log('Save');

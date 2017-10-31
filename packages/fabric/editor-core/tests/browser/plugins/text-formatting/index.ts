@@ -3,20 +3,35 @@ import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { browser } from '@atlaskit/editor-common';
 import {
-  sendKeyToPm, doc, strike, plain, strong, em, underline, code, p,
-  subsup, chaiPlugin, makeEditor, mention, insertText
-} from '../../../../src/test-helper';
-import textFormattingPlugins, { TextFormattingState } from '../../../../src/plugins/text-formatting';
-import defaultSchema from '../../../../src/test-helper/schema';
+  sendKeyToPm,
+  doc,
+  strike,
+  plain,
+  strong,
+  em,
+  underline,
+  code,
+  p,
+  subsup,
+  chaiPlugin,
+  makeEditor,
+  mention,
+  insertText,
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
+import textFormattingPlugins, {
+  TextFormattingState,
+} from '../../../../src/plugins/text-formatting';
 import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
 describe('text-formatting', () => {
-  const editor = (doc: any) => makeEditor<TextFormattingState>({
-    doc,
-    plugins: textFormattingPlugins(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor<TextFormattingState>({
+      doc,
+      plugins: textFormattingPlugins(defaultSchema),
+    });
 
   describe('keymap', () => {
     let trackEvent;
@@ -55,7 +70,9 @@ describe('text-formatting', () => {
             sendKeyToPm(editorView, 'Cmd-u');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(underline('text'))));
-            expect(trackEvent.calledWith('atlassian.editor.format.underline.keyboard')).to.equal(true);
+            expect(trackEvent.calledWith('atlassian.editor.format.underline.keyboard')).to.equal(
+              true
+            );
           });
         });
 
@@ -76,7 +93,9 @@ describe('text-formatting', () => {
 
         context('when hits Shift-Cmd-M', () => {
           it('toggles code mark', () => {
-            const { editorView } = editor(doc(p(strong('{<}text '), mention({ id: '1234', text: '@helga' }), em(' text{>}'))));
+            const { editorView } = editor(
+              doc(p(strong('{<}text '), mention({ id: '1234', text: '@helga' }), em(' text{>}')))
+            );
 
             sendKeyToPm(editorView, 'Shift-Cmd-M');
 
@@ -116,7 +135,9 @@ describe('text-formatting', () => {
             sendKeyToPm(editorView, 'Ctrl-u');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(underline('text'))));
-            expect(trackEvent.calledWith('atlassian.editor.format.underline.keyboard')).to.equal(true);
+            expect(trackEvent.calledWith('atlassian.editor.format.underline.keyboard')).to.equal(
+              true
+            );
           });
         });
 
@@ -155,7 +176,6 @@ describe('text-formatting', () => {
         expect(trackEvent.calledWith('atlassian.editor.format.code.autoformatting')).to.equal(true);
       });
     });
-
   });
 
   it('should allow a change handler to be attached', () => {
@@ -296,7 +316,9 @@ describe('text-formatting', () => {
     context('when two code nodes separated with one non-code character', () => {
       context('when moving between two code nodes with ArrowLeft', () => {
         it('should disable code for the first node and then enable for the second node', () => {
-          const { editorView, pluginState, refs } = editor(doc(p(code('hello{nextPos}'), 'x',  code('h{<>}ello'))));
+          const { editorView, pluginState, refs } = editor(
+            doc(p(code('hello{nextPos}'), 'x', code('h{<>}ello')))
+          );
           expect(pluginState.codeActive).to.equal(true);
           sendKeyToPm(editorView, 'ArrowLeft');
           expect(pluginState.codeActive).to.equal(true);
@@ -323,7 +345,9 @@ describe('text-formatting', () => {
       });
       context('when code is not the last node', () => {
         it('should disable code and preserve the cursor position', () => {
-          const { editorView, pluginState, refs } = editor(doc(p(code('hello{<>}'), '{nextPos}text')));
+          const { editorView, pluginState, refs } = editor(
+            doc(p(code('hello{<>}'), '{nextPos}text'))
+          );
           expect(pluginState.codeActive).to.equal(true);
           sendKeyToPm(editorView, 'ArrowRight');
           expect(pluginState.codeActive).to.equal(false);
@@ -355,7 +379,9 @@ describe('text-formatting', () => {
 
       context('when code is not the first node', () => {
         it('should disable code and preserve the cursor position', () => {
-          const { editorView, pluginState, refs } = editor(doc(p('text{nextPos}', code('h{<>}ello'))));
+          const { editorView, pluginState, refs } = editor(
+            doc(p('text{nextPos}', code('h{<>}ello')))
+          );
           expect(pluginState.codeActive).to.equal(true);
           sendKeyToPm(editorView, 'ArrowLeft');
           expect(pluginState.codeActive).to.equal(true);
@@ -392,7 +418,9 @@ describe('text-formatting', () => {
       });
       context('when code is not the first node', () => {
         it('should enable code and preserve the cursor position', () => {
-          const { editorView, pluginState, refs } = editor(doc(p('text{<>}', code('{nextPos}hello'))));
+          const { editorView, pluginState, refs } = editor(
+            doc(p('text{<>}', code('{nextPos}hello')))
+          );
           expect(pluginState.codeActive).to.equal(false);
           sendKeyToPm(editorView, 'ArrowRight');
           expect(pluginState.codeActive).to.equal(true);
@@ -425,7 +453,9 @@ describe('text-formatting', () => {
       });
       context('when code is not the last node', () => {
         it('should enable code and preserve the cursor position', () => {
-          const { editorView, pluginState, refs } = editor(doc(p(code('hello{nextPos}'), 't{<>}ext')));
+          const { editorView, pluginState, refs } = editor(
+            doc(p(code('hello{nextPos}'), 't{<>}ext'))
+          );
           expect(pluginState.codeActive).to.equal(false);
           sendKeyToPm(editorView, 'ArrowLeft');
           expect(pluginState.codeActive).to.equal(false);

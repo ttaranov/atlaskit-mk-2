@@ -3,17 +3,13 @@
   "version": "5.0.0",
   "description": "Atlassian Editor component for Confluence Questions",
   "license": "Apache-2.0",
-  "main": "dist/cjs/index.js",
+  "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "author": "Atlassian Pty Ltd",
-  "maintainers": [
-    "Artur B"
-  ],
+  "maintainers": ["Artur B"],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/editor-core": "^56.2.2",
@@ -30,6 +26,7 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
+    "@atlaskit/editor-test-helpers": "^0.0.0",
     "@atlaskit/media-core": "^10.2.0",
     "@atlaskit/media-test-helpers": "^8.4.0",
     "@atlaskit/spinner": "^2.0.1",

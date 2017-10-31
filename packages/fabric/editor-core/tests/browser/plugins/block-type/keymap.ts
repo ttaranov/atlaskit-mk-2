@@ -22,8 +22,8 @@ import {
   tr,
   tdEmpty,
   tdCursor,
-} from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 import blockTypePlugins from '../../../../src/plugins/block-type';
 import { analyticsService } from '../../../../src/analytics';
 import { setNodeSelection } from '../../../../src/utils';
@@ -31,16 +31,16 @@ import { setNodeSelection } from '../../../../src/utils';
 chai.use(chaiPlugin);
 
 describe('codeBlock - keymaps', () => {
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: blockTypePlugin(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor({
+      doc,
+      plugins: blockTypePlugin(defaultSchema),
+    });
   let trackEvent;
   beforeEach(() => {
     trackEvent = sinon.spy();
     analyticsService.trackEvent = trackEvent;
   });
-
 
   describe('keymap', () => {
     if (browser.mac) {
@@ -51,7 +51,9 @@ describe('codeBlock - keymaps', () => {
             sendKeyToPm(editorView, 'Cmd-Alt-9');
 
             expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text'))));
-            expect(trackEvent.calledWith('atlassian.editor.format.blockquote.keyboard')).to.equal(true);
+            expect(trackEvent.calledWith('atlassian.editor.format.blockquote.keyboard')).to.equal(
+              true
+            );
             editorView.destroy();
           });
         });
@@ -59,17 +61,14 @@ describe('codeBlock - keymaps', () => {
         context('when blockquote nodetype is not in schema', () => {
           it('corresponding keymaps should not work', () => {
             const schema = createSchema({
-              nodes: [
-                'doc',
-                'paragraph',
-                'text',
-              ]
+              nodes: ['doc', 'paragraph', 'text'],
             });
-            const editor = (doc: any) => makeEditor({
-              doc,
-              plugins: blockTypePlugins(schema),
-              schema,
-            });
+            const editor = (doc: any) =>
+              makeEditor({
+                doc,
+                plugins: blockTypePlugins(schema),
+                schema,
+              });
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-7');
             expect(editorView.state.doc).to.deep.equal(doc(p('text')));
@@ -121,16 +120,22 @@ describe('codeBlock - keymaps', () => {
 
               sendKeyToPm(editorView, 'Enter');
 
-              expect(editorView.state.doc).to.deep.equal(doc(code_block({ language: 'javascript' })('')));
+              expect(editorView.state.doc).to.deep.equal(
+                doc(code_block({ language: 'javascript' })(''))
+              );
               editorView.destroy();
             });
 
             it('trims the spaces', () => {
-              const { editorView } = editor(doc(p('```javascript    {<>}   hello ', mention({ id: 'foo1', text: '@bar1' }))));
+              const { editorView } = editor(
+                doc(p('```javascript    {<>}   hello ', mention({ id: 'foo1', text: '@bar1' })))
+              );
 
               sendKeyToPm(editorView, 'Enter');
 
-              expect(editorView.state.doc).to.deep.equal(doc(code_block({ language: 'javascript' })('   hello @bar1')));
+              expect(editorView.state.doc).to.deep.equal(
+                doc(code_block({ language: 'javascript' })('   hello @bar1'))
+              );
               editorView.destroy();
             });
           });
@@ -181,7 +186,9 @@ describe('codeBlock - keymaps', () => {
             it('should convert to code block even and set language correctly even if its in middle of paragraph', () => {
               const { editorView } = editor(doc(p('code ```java     {<>}')));
               sendKeyToPm(editorView, 'Enter');
-              expect(editorView.state.doc).to.deep.equal(doc(code_block({ language: 'java' })('code ')));
+              expect(editorView.state.doc).to.deep.equal(
+                doc(code_block({ language: 'java' })('code '))
+              );
             });
 
             it('does not convert to code block if it is in middle of line and there is no space before it', () => {
@@ -257,12 +264,13 @@ describe('codeBlock - keymaps', () => {
                 });
 
                 it('does not ignore @mention', () => {
-
                   const { editorView } = editor(doc(p(mention({ id: 'foo1', text: '@bar1' }))));
 
                   sendKeyToPm(editorView, 'ArrowUp');
 
-                  expect(editorView.state.doc).to.deep.equal(doc(p(mention({ id: 'foo1', text: '@bar1' }))));
+                  expect(editorView.state.doc).to.deep.equal(
+                    doc(p(mention({ id: 'foo1', text: '@bar1' })))
+                  );
                   editorView.destroy();
                 });
               });
@@ -284,7 +292,9 @@ describe('codeBlock - keymaps', () => {
 
                   sendKeyToPm(editorView, 'ArrowUp');
 
-                  expect(editorView.state.doc).to.deep.equal(doc(p(''), table(tr(tdEmpty, tdEmpty, tdEmpty))));
+                  expect(editorView.state.doc).to.deep.equal(
+                    doc(p(''), table(tr(tdEmpty, tdEmpty, tdEmpty)))
+                  );
                   editorView.destroy();
                 });
               });
@@ -298,7 +308,6 @@ describe('codeBlock - keymaps', () => {
                   const { editorView } = editor(doc(p('text'), blockquote(p('{<>}text'))));
 
                   sendKeyToPm(editorView, 'ArrowUp');
-
 
                   expect(editorView.state.doc).to.deep.equal(doc(p('text'), blockquote(p('text'))));
                   editorView.destroy();
@@ -351,12 +360,16 @@ describe('codeBlock - keymaps', () => {
         context('on a nested structure', () => {
           context('when there is more content before the nested block', () => {
             it('does not create a paragraph', () => {
-              const { editorView, sel } = editor(doc(p('text'), blockquote(hr, code_block()('{<>}text'))));
+              const { editorView, sel } = editor(
+                doc(p('text'), blockquote(hr, code_block()('{<>}text')))
+              );
               setNodeSelection(editorView, sel - 1);
 
               sendKeyToPm(editorView, 'ArrowUpv');
 
-              expect(editorView.state.doc).to.deep.equal(doc(p('text'), blockquote(hr, code_block()('text'))));
+              expect(editorView.state.doc).to.deep.equal(
+                doc(p('text'), blockquote(hr, code_block()('text')))
+              );
               editorView.destroy();
             });
           });
@@ -368,7 +381,9 @@ describe('codeBlock - keymaps', () => {
 
               sendKeyToPm(editorView, 'ArrowUp');
 
-              expect(editorView.state.doc).to.deep.equal(doc(p(''), blockquote(hr, code_block()('text'))));
+              expect(editorView.state.doc).to.deep.equal(
+                doc(p(''), blockquote(hr, code_block()('text')))
+              );
               editorView.destroy();
             });
           });
@@ -442,7 +457,9 @@ describe('codeBlock - keymaps', () => {
 
                 sendKeyToPm(editorView, 'ArrowDown');
 
-                expect(editorView.state.doc).to.deep.equal(doc(table(tr(tdEmpty, tdEmpty, tdEmpty)), p('')));
+                expect(editorView.state.doc).to.deep.equal(
+                  doc(table(tr(tdEmpty, tdEmpty, tdEmpty)), p(''))
+                );
                 editorView.destroy();
               });
             });
@@ -456,7 +473,6 @@ describe('codeBlock - keymaps', () => {
                 const { editorView } = editor(doc(blockquote(p('text{<>}')), p('text')));
 
                 sendKeyToPm(editorView, 'ArrowDown');
-
 
                 expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text')), p('text')));
                 editorView.destroy();
@@ -508,12 +524,16 @@ describe('codeBlock - keymaps', () => {
       context('on a nested structure', () => {
         context('when there is more content after the nested block', () => {
           it('does not create a paragraph', () => {
-            const { editorView, sel } = editor(doc(blockquote(hr, code_block()('{<>}text')), p('text')));
+            const { editorView, sel } = editor(
+              doc(blockquote(hr, code_block()('{<>}text')), p('text'))
+            );
             setNodeSelection(editorView, sel - 1);
 
             sendKeyToPm(editorView, 'ArrowDown');
 
-            expect(editorView.state.doc).to.deep.equal(doc(blockquote(hr, code_block()('text')), p('text')));
+            expect(editorView.state.doc).to.deep.equal(
+              doc(blockquote(hr, code_block()('text')), p('text'))
+            );
             editorView.destroy();
           });
         });
@@ -525,7 +545,9 @@ describe('codeBlock - keymaps', () => {
 
             sendKeyToPm(editorView, 'ArrowDown');
 
-            expect(editorView.state.doc).to.deep.equal(doc(blockquote(code_block()('text'), hr), p('')));
+            expect(editorView.state.doc).to.deep.equal(
+              doc(blockquote(code_block()('text'), hr), p(''))
+            );
             expect(trackEvent.calledWith('atlassian.editor.movedown.keyboard')).to.equal(true);
             editorView.destroy();
           });

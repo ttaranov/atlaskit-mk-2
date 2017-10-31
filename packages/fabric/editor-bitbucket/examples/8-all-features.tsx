@@ -4,7 +4,7 @@ import BitbucketStyles from '../example-helpers/bitbucketStyles';
 import { MockMentionSource } from '../example-helpers/_mock-mentionsource';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import { base64fileconverter } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { base64fileconverter } from '@atlaskit/editor-test-helpers';
 import { default as Editor } from '../src';
 
 const mentionSource = new MockMentionSource();

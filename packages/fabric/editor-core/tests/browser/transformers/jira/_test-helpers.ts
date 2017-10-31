@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 
 import { Node, Schema } from 'prosemirror-model';
-import { chaiPlugin } from '../../../../src/test-helper';
+import { chaiPlugin } from '@atlaskit/editor-test-helpers';
 
 import {
   default as JIRATransformer,

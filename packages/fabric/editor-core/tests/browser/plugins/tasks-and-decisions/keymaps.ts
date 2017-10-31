@@ -11,14 +11,13 @@ import {
   sendKeyToPm,
   taskList,
   taskItem,
-} from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 import { uuid } from '@atlaskit/editor-common';
 
 chai.use(chaiPlugin);
 
 describe('tasks and decisions - keymaps', () => {
-
   before(() => {
     uuid.setStatic('local-decision');
   });
@@ -27,69 +26,49 @@ describe('tasks and decisions - keymaps', () => {
     uuid.setStatic(false);
   });
 
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: tasksAndDecisionsPlugins(defaultSchema)
-  });
+  const editor = (doc: any) =>
+    makeEditor({
+      doc,
+      plugins: tasksAndDecisionsPlugins(defaultSchema),
+    });
 
   describe('decisions', () => {
-
     describe('Backspace', () => {
-
       context('when decisionList exists before paragraph', () => {
         it('should merge paragraph with decisionItem and preserve content', () => {
           const { editorView } = editor(doc(decisionList(decisionItem('Hello')), p('{<>}World')));
 
           sendKeyToPm(editorView, 'Backspace');
-          expect(editorView.state.doc).to.deep.equal(
-            doc(
-              decisionList(
-                decisionItem('HelloWorld')
-              ),
-            )
-          );
+          expect(editorView.state.doc).to.deep.equal(doc(decisionList(decisionItem('HelloWorld'))));
         });
         it('should remove paragraph with decisionItem and preserve content', () => {
           const { editorView } = editor(doc(decisionList(decisionItem('Hello')), p('{<>}')));
 
           sendKeyToPm(editorView, 'Backspace');
-          expect(editorView.state.doc).to.deep.equal(
-            doc(
-              decisionList(
-                decisionItem('Hello')
-              ),
-            )
-          );
+          expect(editorView.state.doc).to.deep.equal(doc(decisionList(decisionItem('Hello'))));
         });
       });
 
       context('when cursor is at the begining of a decisionItem', () => {
         it('should merge content of current item with previous item', () => {
-          const { editorView } = editor(doc(decisionList(decisionItem('Hello'), decisionItem('{<>}World'))));
+          const { editorView } = editor(
+            doc(decisionList(decisionItem('Hello'), decisionItem('{<>}World')))
+          );
 
           sendKeyToPm(editorView, 'Backspace');
-          expect(editorView.state.doc).to.deep.equal(
-            doc(
-              decisionList(
-                decisionItem('HelloWorld'),
-              ),
-            )
-          );
+          expect(editorView.state.doc).to.deep.equal(doc(decisionList(decisionItem('HelloWorld'))));
         });
       });
 
       context('when cursor is at the begining of the first decisionItem', () => {
         it('should convert item to paragraph', () => {
-          const { editorView } = editor(doc(decisionList(decisionItem('{<>}Hello'), decisionItem('World'))));
+          const { editorView } = editor(
+            doc(decisionList(decisionItem('{<>}Hello'), decisionItem('World')))
+          );
 
           sendKeyToPm(editorView, 'Backspace');
           expect(editorView.state.doc).to.deep.equal(
-            doc(
-              p('Hello'),
-              decisionList(
-                decisionItem('World'),
-              ),
-            )
+            doc(p('Hello'), decisionList(decisionItem('World')))
           );
         });
 
@@ -97,27 +76,16 @@ describe('tasks and decisions - keymaps', () => {
           const { editorView } = editor(doc(decisionList(decisionItem('{<>}Hello World'))));
 
           sendKeyToPm(editorView, 'Backspace');
-          expect(editorView.state.doc).to.deep.equal(
-            doc(
-              p('Hello World'),
-            )
-          );
+          expect(editorView.state.doc).to.deep.equal(doc(p('Hello World')));
         });
 
         it('should delete selection and keep decisionItem', () => {
           const { editorView } = editor(doc(decisionList(decisionItem('{<}Hello {>}World'))));
 
           sendKeyToPm(editorView, 'Backspace');
-          expect(editorView.state.doc).to.deep.equal(
-            doc(
-              decisionList(
-                decisionItem('World')
-              )
-            )
-          );
+          expect(editorView.state.doc).to.deep.equal(doc(decisionList(decisionItem('World'))));
         });
       });
-
     });
 
     describe('Enter', () => {
@@ -126,26 +94,19 @@ describe('tasks and decisions - keymaps', () => {
           const { editorView } = editor(doc(decisionList(decisionItem('{<>}'))));
 
           sendKeyToPm(editorView, 'Enter');
-          expect(editorView.state.doc).to.deep.equal(
-            doc(
-              p()
-            )
-          );
+          expect(editorView.state.doc).to.deep.equal(doc(p()));
         });
       });
 
       context('when cursor is at the end of empty decisionItem', () => {
         it('should remove decisionItem and insert a paragraph', () => {
-          const { editorView } = editor(doc(decisionList(decisionItem('Hello World'), decisionItem('{<>}'))));
+          const { editorView } = editor(
+            doc(decisionList(decisionItem('Hello World'), decisionItem('{<>}')))
+          );
 
           sendKeyToPm(editorView, 'Enter');
           expect(editorView.state.doc).to.deep.equal(
-            doc(
-              decisionList(
-                decisionItem('Hello World')
-              ),
-              p()
-            )
+            doc(decisionList(decisionItem('Hello World')), p())
           );
         });
       });
@@ -156,48 +117,28 @@ describe('tasks and decisions - keymaps', () => {
 
           sendKeyToPm(editorView, 'Enter');
           expect(editorView.state.doc).to.deep.equal(
-            doc(
-              decisionList(
-                decisionItem('Hello World'),
-                decisionItem()
-              ),
-            )
+            doc(decisionList(decisionItem('Hello World'), decisionItem()))
           );
         });
       });
     });
-
   });
 
   describe('tasks', () => {
-
     describe('Backspace', () => {
-
       context('when taskList exists before paragraph', () => {
         it('should merge paragraph with taskItem and preserve content', () => {
           const { editorView } = editor(doc(taskList(taskItem('Hello')), p('{<>}World')));
 
           sendKeyToPm(editorView, 'Backspace');
-          expect(editorView.state.doc).to.deep.equal(
-            doc(
-              taskList(
-                taskItem('HelloWorld')
-              ),
-            )
-          );
+          expect(editorView.state.doc).to.deep.equal(doc(taskList(taskItem('HelloWorld'))));
         });
 
         it('should remove paragraph with taskItem and preserve content', () => {
           const { editorView } = editor(doc(taskList(taskItem('Hello')), p('{<>}')));
 
           sendKeyToPm(editorView, 'Backspace');
-          expect(editorView.state.doc).to.deep.equal(
-            doc(
-              taskList(
-                taskItem('Hello')
-              ),
-            )
-          );
+          expect(editorView.state.doc).to.deep.equal(doc(taskList(taskItem('Hello'))));
         });
       });
 
@@ -206,13 +147,7 @@ describe('tasks and decisions - keymaps', () => {
           const { editorView } = editor(doc(taskList(taskItem('Hello'), taskItem('{<>}World'))));
 
           sendKeyToPm(editorView, 'Backspace');
-          expect(editorView.state.doc).to.deep.equal(
-            doc(
-              taskList(
-                taskItem('HelloWorld'),
-              ),
-            )
-          );
+          expect(editorView.state.doc).to.deep.equal(doc(taskList(taskItem('HelloWorld'))));
         });
       });
 
@@ -221,41 +156,23 @@ describe('tasks and decisions - keymaps', () => {
           const { editorView } = editor(doc(taskList(taskItem('{<>}Hello'), taskItem('World'))));
 
           sendKeyToPm(editorView, 'Backspace');
-          expect(editorView.state.doc).to.deep.equal(
-            doc(
-              p('Hello'),
-              taskList(
-                taskItem('World'),
-              ),
-            )
-          );
+          expect(editorView.state.doc).to.deep.equal(doc(p('Hello'), taskList(taskItem('World'))));
         });
 
         it('should convert item to paragraph and remove the list if it is empty', () => {
           const { editorView } = editor(doc(taskList(taskItem('{<>}Hello World'))));
 
           sendKeyToPm(editorView, 'Backspace');
-          expect(editorView.state.doc).to.deep.equal(
-            doc(
-              p('Hello World'),
-            )
-          );
+          expect(editorView.state.doc).to.deep.equal(doc(p('Hello World')));
         });
 
         it('should delete selection and keep taskItem', () => {
           const { editorView } = editor(doc(taskList(taskItem('{<}Hello {>}World'))));
 
           sendKeyToPm(editorView, 'Backspace');
-          expect(editorView.state.doc).to.deep.equal(
-            doc(
-              taskList(
-                taskItem('World')
-              )
-            )
-          );
+          expect(editorView.state.doc).to.deep.equal(doc(taskList(taskItem('World'))));
         });
       });
-
     });
 
     describe('Enter', () => {
@@ -264,11 +181,7 @@ describe('tasks and decisions - keymaps', () => {
           const { editorView } = editor(doc(taskList(taskItem('{<>}'))));
 
           sendKeyToPm(editorView, 'Enter');
-          expect(editorView.state.doc).to.deep.equal(
-            doc(
-              p()
-            )
-          );
+          expect(editorView.state.doc).to.deep.equal(doc(p()));
         });
       });
 
@@ -277,14 +190,7 @@ describe('tasks and decisions - keymaps', () => {
           const { editorView } = editor(doc(taskList(taskItem('Hello World'), taskItem('{<>}'))));
 
           sendKeyToPm(editorView, 'Enter');
-          expect(editorView.state.doc).to.deep.equal(
-            doc(
-              taskList(
-                taskItem('Hello World')
-              ),
-              p()
-            )
-          );
+          expect(editorView.state.doc).to.deep.equal(doc(taskList(taskItem('Hello World')), p()));
         });
       });
 
@@ -294,17 +200,10 @@ describe('tasks and decisions - keymaps', () => {
 
           sendKeyToPm(editorView, 'Enter');
           expect(editorView.state.doc).to.deep.equal(
-            doc(
-              taskList(
-                taskItem('Hello World'),
-                taskItem()
-              ),
-            )
+            doc(taskList(taskItem('Hello World'), taskItem()))
           );
         });
       });
     });
-
   });
-
 });

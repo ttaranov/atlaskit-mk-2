@@ -7,7 +7,7 @@ import { CellSelection, TableMap } from 'prosemirror-tables';
 import {
   createEvent, chaiPlugin, doc, p, makeEditor, thEmpty, table, tr, td, th,
   tdEmpty, tdCursor, code_block, code, thCursor
-} from '../../../../src/test-helper';
+} from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../../src/utils';
 import { analyticsService } from '../../../../src/analytics';
 

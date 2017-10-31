@@ -3,16 +3,23 @@ import * as sinon from 'sinon';
 import panelPlugins from '../../../../src/plugins/panel';
 import PanelInputRulesPlugin from '../../../../src/plugins/panel/input-rules';
 import {
-  insertText, doc, p, makeEditor, panel, code_block, a as link
-} from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
+  insertText,
+  doc,
+  p,
+  makeEditor,
+  panel,
+  code_block,
+  a as link,
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../../src/analytics';
 
 describe('panel input rules', () => {
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: panelPlugins(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor({
+      doc,
+      plugins: panelPlugins(defaultSchema),
+    });
   let trackEvent;
   beforeEach(() => {
     trackEvent = sinon.spy();
@@ -33,14 +40,20 @@ describe('panel input rules', () => {
     inputRulePlugin!.props.handleTextInput!(editorView, 6, 6, '}');
 
     expect(editorView.state.doc).to.deep.equal(doc(panel(p())));
-    expect(trackEvent.calledWith('atlassian.editor.format.panel.info.autoformatting')).to.equal(true);
+    expect(trackEvent.calledWith('atlassian.editor.format.panel.info.autoformatting')).to.equal(
+      true
+    );
   });
 
   it('should not replace {info} input inside link with panel node of type info', () => {
-    const { editorView } = editor(doc(p(link({ href: 'http://www.atlassian.com' })('{info'), '{<>}')));
+    const { editorView } = editor(
+      doc(p(link({ href: 'http://www.atlassian.com' })('{info'), '{<>}'))
+    );
     const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
     inputRulePlugin!.props.handleTextInput!(editorView, 6, 6, '}');
-    expect(editorView.state.doc).to.deep.equal(doc(p(link({ href: 'http://www.atlassian.com' })('{info'))));
+    expect(editorView.state.doc).to.deep.equal(
+      doc(p(link({ href: 'http://www.atlassian.com' })('{info')))
+    );
   });
 
   it('should not convert {info} inside a code_block', () => {
@@ -57,7 +70,9 @@ describe('panel input rules', () => {
     const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
     inputRulePlugin!.props.handleTextInput!(editorView, 6, 6, '}');
     expect(editorView.state.doc.content.child(0).attrs.panelType).to.deep.equal('note');
-    expect(trackEvent.calledWith('atlassian.editor.format.panel.note.autoformatting')).to.equal(true);
+    expect(trackEvent.calledWith('atlassian.editor.format.panel.note.autoformatting')).to.equal(
+      true
+    );
   });
 
   it('should replace {tip} input with panel node of type tip', () => {
@@ -66,7 +81,9 @@ describe('panel input rules', () => {
     const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
     inputRulePlugin!.props.handleTextInput!(editorView, 5, 5, '}');
     expect(editorView.state.doc.content.child(0).attrs.panelType).to.deep.equal('tip');
-    expect(trackEvent.calledWith('atlassian.editor.format.panel.tip.autoformatting')).to.equal(true);
+    expect(trackEvent.calledWith('atlassian.editor.format.panel.tip.autoformatting')).to.equal(
+      true
+    );
   });
 
   it('should replace {warning} input with panel node of type warning', () => {
@@ -75,6 +92,8 @@ describe('panel input rules', () => {
     const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
     inputRulePlugin!.props.handleTextInput!(editorView, 9, 9, '}');
     expect(editorView.state.doc.content.child(0).attrs.panelType).to.deep.equal('warning');
-    expect(trackEvent.calledWith('atlassian.editor.format.panel.warning.autoformatting')).to.equal(true);
+    expect(trackEvent.calledWith('atlassian.editor.format.panel.warning.autoformatting')).to.equal(
+      true
+    );
   });
 });

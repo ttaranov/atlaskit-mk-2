@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import TextSerializer from '../../../../src/renderer/text';
-import schema from '../../../../src/test-helper/schema';
+import { defaultSchema as schema } from '@atlaskit/editor-test-helpers';
 
 const serializer = TextSerializer.fromSchema(schema);
 
@@ -10,19 +10,20 @@ const render = (doc: any) => {
 };
 
 describe('Renderer - TextSerializer', () => {
-
   it('should render hardBreak as a new line', () => {
     const doc = {
       type: 'doc',
       version: 1,
-      content: [{
-        type: 'paragraph',
-        content: [
-          { type: 'text', text: 'foo' },
-          { type: 'hardBreak' },
-          { type: 'text', text: 'bar' },
-        ],
-      }],
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            { type: 'text', text: 'foo' },
+            { type: 'hardBreak' },
+            { type: 'text', text: 'bar' },
+          ],
+        },
+      ],
     };
 
     expect(render(doc)).to.equal('foo\nbar');
@@ -32,16 +33,18 @@ describe('Renderer - TextSerializer', () => {
     const doc = {
       type: 'doc',
       version: 1,
-      content: [{
-        type: 'paragraph',
-        content: [
-          { type: 'text', text: 'foo' },
-          { type: 'hardBreak' },
-          { type: 'hardBreak' },
-          { type: 'hardBreak' },
-          { type: 'text', text: 'bar' },
-        ],
-      }],
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            { type: 'text', text: 'foo' },
+            { type: 'hardBreak' },
+            { type: 'hardBreak' },
+            { type: 'hardBreak' },
+            { type: 'text', text: 'bar' },
+          ],
+        },
+      ],
     };
 
     expect(render(doc)).to.equal('foo\nbar');
@@ -51,13 +54,12 @@ describe('Renderer - TextSerializer', () => {
     const doc = {
       type: 'doc',
       version: 1,
-      content: [{
-        type: 'paragraph',
-        content: [
-          { type: 'text', text: '🦄' },
-          { type: 'text', text: 'is a unicorn' },
-        ],
-      }],
+      content: [
+        {
+          type: 'paragraph',
+          content: [{ type: 'text', text: '🦄' }, { type: 'text', text: 'is a unicorn' }],
+        },
+      ],
     };
 
     expect(render(doc)).to.equal('🦄is a unicorn');
@@ -67,28 +69,30 @@ describe('Renderer - TextSerializer', () => {
     const doc = {
       type: 'doc',
       version: 1,
-      content: [{
-        type: 'paragraph',
-        content: [
-          { type: 'text', text: 'My favourite emoji are' },
-          {
-            type: 'emoji',
-            attrs: {
-              shortName: ':grin:',
-              id: '1f601',
-              text: '😁',
-            }
-          },
-          {
-            type: 'emoji',
-            attrs: {
-              shortName: ':evilburns:',
-              id: 'atlassian-evilburns',
-              text: ':evilburns:',
-            }
-          },
-        ],
-      }],
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            { type: 'text', text: 'My favourite emoji are' },
+            {
+              type: 'emoji',
+              attrs: {
+                shortName: ':grin:',
+                id: '1f601',
+                text: '😁',
+              },
+            },
+            {
+              type: 'emoji',
+              attrs: {
+                shortName: ':evilburns:',
+                id: 'atlassian-evilburns',
+                text: ':evilburns:',
+              },
+            },
+          ],
+        },
+      ],
     };
 
     expect(render(doc)).to.equal('My favourite emoji are😁:evilburns:');
@@ -98,20 +102,22 @@ describe('Renderer - TextSerializer', () => {
     const doc = {
       type: 'doc',
       version: 1,
-      content: [{
-        type: 'paragraph',
-        content: [
-          {
-            type: 'mention',
-            attrs: {
-              id: '1',
-              accessLevel: 'CONTAINER',
-              text: '@user'
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'mention',
+              attrs: {
+                id: '1',
+                accessLevel: 'CONTAINER',
+                text: '@user',
+              },
             },
-          },
-          { type: 'text', text: ' is awesome' },
-        ],
-      }],
+            { type: 'text', text: ' is awesome' },
+          ],
+        },
+      ],
     };
 
     expect(render(doc)).to.equal('@user is awesome');
@@ -121,17 +127,21 @@ describe('Renderer - TextSerializer', () => {
     const doc = {
       type: 'doc',
       version: 1,
-      content: [{
-        type: 'mediaGroup',
-        content: [{
-          type: 'media',
-          attrs: {
-            type: 'file',
-            id: 'id',
-            collection: 'collection',
-          },
-        }],
-      }],
+      content: [
+        {
+          type: 'mediaGroup',
+          content: [
+            {
+              type: 'media',
+              attrs: {
+                type: 'file',
+                id: 'id',
+                collection: 'collection',
+              },
+            },
+          ],
+        },
+      ],
     };
 
     expect(render(doc).indexOf('📎 ')).to.equal(0);
@@ -141,17 +151,21 @@ describe('Renderer - TextSerializer', () => {
     const doc = {
       type: 'doc',
       version: 1,
-      content: [{
-        type: 'mediaGroup',
-        content: [{
-          type: 'media',
-          attrs: {
-            type: 'file',
-            id: 'id',
-            collection: 'collection',
-          },
-        }],
-      }],
+      content: [
+        {
+          type: 'mediaGroup',
+          content: [
+            {
+              type: 'media',
+              attrs: {
+                type: 'file',
+                id: 'id',
+                collection: 'collection',
+              },
+            },
+          ],
+        },
+      ],
     };
 
     expect(render(doc)).to.contain('1 File');
@@ -161,27 +175,29 @@ describe('Renderer - TextSerializer', () => {
     const doc = {
       type: 'doc',
       version: 1,
-      content: [{
-        type: 'mediaGroup',
-        content: [
-          {
-            type: 'media',
-            attrs: {
-              type: 'file',
-              id: 'id1',
-              collection: 'collection',
+      content: [
+        {
+          type: 'mediaGroup',
+          content: [
+            {
+              type: 'media',
+              attrs: {
+                type: 'file',
+                id: 'id1',
+                collection: 'collection',
+              },
             },
-          },
-          {
-            type: 'media',
-            attrs: {
-              type: 'file',
-              id: 'id2',
-              collection: 'collection',
+            {
+              type: 'media',
+              attrs: {
+                type: 'file',
+                id: 'id2',
+                collection: 'collection',
+              },
             },
-          },
-        ],
-      }],
+          ],
+        },
+      ],
     };
 
     expect(render(doc)).to.contain('2 Files');
@@ -191,35 +207,37 @@ describe('Renderer - TextSerializer', () => {
     const doc = {
       type: 'doc',
       version: 1,
-      content: [{
-        type: 'mediaGroup',
-        content: [
-          {
-            type: 'media',
-            attrs: {
-              type: 'file',
-              id: 'id1',
-              collection: 'collection',
+      content: [
+        {
+          type: 'mediaGroup',
+          content: [
+            {
+              type: 'media',
+              attrs: {
+                type: 'file',
+                id: 'id1',
+                collection: 'collection',
+              },
             },
-          },
-          {
-            type: 'media',
-            attrs: {
-              type: 'link',
-              id: 'id1',
-              collection: 'collection',
+            {
+              type: 'media',
+              attrs: {
+                type: 'link',
+                id: 'id1',
+                collection: 'collection',
+              },
             },
-          },
-          {
-            type: 'media',
-            attrs: {
-              type: 'file',
-              id: 'id2',
-              collection: 'collection',
+            {
+              type: 'media',
+              attrs: {
+                type: 'file',
+                id: 'id2',
+                collection: 'collection',
+              },
             },
-          },
-        ],
-      }],
+          ],
+        },
+      ],
     };
 
     expect(render(doc)).to.contain('2 Files');
@@ -229,25 +247,29 @@ describe('Renderer - TextSerializer', () => {
     const doc = {
       type: 'doc',
       version: 1,
-      content: [{
-        type: 'paragraph',
-        content: [
-          {
-            type: 'text',
-            text: 'https://www.atlassian.com',
-            marks: [{
-              type: 'link',
-              attrs: {
-                href: 'https://www.atlassian.com',
-              },
-            }],
-          },
-          {
-            type: 'text',
-            text: ' is for TEAM'
-          },
-        ],
-      }],
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'https://www.atlassian.com',
+              marks: [
+                {
+                  type: 'link',
+                  attrs: {
+                    href: 'https://www.atlassian.com',
+                  },
+                },
+              ],
+            },
+            {
+              type: 'text',
+              text: ' is for TEAM',
+            },
+          ],
+        },
+      ],
     };
 
     expect(render(doc)).to.equal('https://www.atlassian.com is for TEAM');
@@ -257,25 +279,29 @@ describe('Renderer - TextSerializer', () => {
     const doc = {
       type: 'doc',
       version: 1,
-      content: [{
-        type: 'paragraph',
-        content: [
-          {
-            type: 'text',
-            text: 'Atlassian',
-            marks: [{
-              type: 'link',
-              attrs: {
-                href: 'https://www.atlassian.com',
-              },
-            }],
-          },
-          {
-            type: 'text',
-            text: ' is for TEAM'
-          },
-        ],
-      }],
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Atlassian',
+              marks: [
+                {
+                  type: 'link',
+                  attrs: {
+                    href: 'https://www.atlassian.com',
+                  },
+                },
+              ],
+            },
+            {
+              type: 'text',
+              text: ' is for TEAM',
+            },
+          ],
+        },
+      ],
     };
 
     expect(render(doc)).to.equal('Atlassian is for TEAM');
@@ -285,12 +311,14 @@ describe('Renderer - TextSerializer', () => {
     const doc = {
       type: 'doc',
       version: 1,
-      content: [{
-        type: 'applicationCard',
-        attrs: {
-          text: 'applicationCard text',
+      content: [
+        {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard text',
+          },
         },
-      }],
+      ],
     };
 
     expect(render(doc)).to.equal('applicationCard text');
@@ -300,13 +328,17 @@ describe('Renderer - TextSerializer', () => {
     const doc = {
       type: 'doc',
       version: 1,
-      content: [{
-        type: 'blockquote',
-        content: [{
-          type: 'paragraph',
-          content: [{ type: 'text', text: 'some quote' }],
-        }],
-      }],
+      content: [
+        {
+          type: 'blockquote',
+          content: [
+            {
+              type: 'paragraph',
+              content: [{ type: 'text', text: 'some quote' }],
+            },
+          ],
+        },
+      ],
     };
 
     expect(render(doc)).to.equal('> some quote');
@@ -316,19 +348,21 @@ describe('Renderer - TextSerializer', () => {
     const doc = {
       type: 'doc',
       version: 1,
-      content: [{
-        type: 'codeBlock',
-        content: [
-          {
-            type: 'text',
-            text: 'foo',
-          },
-          {
-            type: 'text',
-            text: 'bar',
-          }
-        ],
-      }],
+      content: [
+        {
+          type: 'codeBlock',
+          content: [
+            {
+              type: 'text',
+              text: 'foo',
+            },
+            {
+              type: 'text',
+              text: 'bar',
+            },
+          ],
+        },
+      ],
     };
 
     expect(render(doc)).to.equal('foobar');
@@ -346,7 +380,7 @@ describe('Renderer - TextSerializer', () => {
         {
           type: 'paragraph',
           content: [{ type: 'text', text: 'bar' }],
-        }
+        },
       ],
     };
 
@@ -364,14 +398,16 @@ describe('Renderer - TextSerializer', () => {
         },
         {
           type: 'mediaGroup',
-          content: [{
-            type: 'media',
-            attrs: {
-              type: 'link',
-              id: '1',
-              collection: '2',
+          content: [
+            {
+              type: 'media',
+              attrs: {
+                type: 'link',
+                id: '1',
+                collection: '2',
+              },
             },
-          }],
+          ],
         },
         {
           type: 'paragraph',
@@ -394,18 +430,22 @@ describe('Renderer - TextSerializer', () => {
         },
         {
           type: 'bulletList',
-          content: [{
-            type: 'listItem',
-            content: [{
-              type: 'paragraph',
-              content: [{ type: 'text', text: 'ignore me' }],
-            }],
-          }],
+          content: [
+            {
+              type: 'listItem',
+              content: [
+                {
+                  type: 'paragraph',
+                  content: [{ type: 'text', text: 'ignore me' }],
+                },
+              ],
+            },
+          ],
         },
         {
           type: 'paragraph',
           content: [{ type: 'text', text: 'bar' }],
-        }
+        },
       ],
     };
 
@@ -423,18 +463,22 @@ describe('Renderer - TextSerializer', () => {
         },
         {
           type: 'orderedList',
-          content: [{
-            type: 'listItem',
-            content: [{
-              type: 'paragraph',
-              content: [{ type: 'text', text: 'ignore me' }],
-            }],
-          }],
+          content: [
+            {
+              type: 'listItem',
+              content: [
+                {
+                  type: 'paragraph',
+                  content: [{ type: 'text', text: 'ignore me' }],
+                },
+              ],
+            },
+          ],
         },
         {
           type: 'paragraph',
           content: [{ type: 'text', text: 'bar' }],
-        }
+        },
       ],
     };
 
@@ -459,7 +503,7 @@ describe('Renderer - TextSerializer', () => {
           {
             type: 'paragraph',
             content: [{ type: 'text', text: 'bar' }],
-          }
+          },
         ],
       };
 
@@ -482,7 +526,7 @@ describe('Renderer - TextSerializer', () => {
         {
           type: 'paragraph',
           content: [{ type: 'text', text: 'bar' }],
-        }
+        },
       ],
     };
 
@@ -503,15 +547,17 @@ describe('Renderer - TextSerializer', () => {
           attrs: {
             panelType: 'info',
           },
-          content: [{
-            type: 'paragraph',
-            content: [{ type: 'text', text: 'ignore me' }],
-          }],
+          content: [
+            {
+              type: 'paragraph',
+              content: [{ type: 'text', text: 'ignore me' }],
+            },
+          ],
         },
         {
           type: 'paragraph',
           content: [{ type: 'text', text: 'bar' }],
-        }
+        },
       ],
     };
 
@@ -534,7 +580,7 @@ describe('Renderer - TextSerializer', () => {
         {
           type: 'paragraph',
           content: [{ type: 'text', text: 'bar' }],
-        }
+        },
       ],
     };
 

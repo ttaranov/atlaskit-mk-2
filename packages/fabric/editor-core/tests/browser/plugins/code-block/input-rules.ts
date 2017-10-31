@@ -3,17 +3,24 @@ import { expect } from 'chai';
 import codeBlockPlugin from '../../../../src/plugins/code-block';
 
 import {
-  chaiPlugin, doc, insertText, li, makeEditor, p, ul
-} from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
+  chaiPlugin,
+  doc,
+  insertText,
+  li,
+  makeEditor,
+  p,
+  ul,
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 
 chai.use(chaiPlugin);
 
 describe('inputrules', () => {
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: codeBlockPlugin(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor({
+      doc,
+      plugins: codeBlockPlugin(defaultSchema),
+    });
 
   describe('codeblock rule', () => {
     context('when node is not convertable to code block', () => {
@@ -38,9 +45,6 @@ describe('inputrules', () => {
           editorView.destroy();
         });
       });
-
     });
-
   });
-
 });

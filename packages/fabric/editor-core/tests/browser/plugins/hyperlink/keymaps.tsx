@@ -8,18 +8,26 @@ import hyperlinkPlugins, { HyperlinkState } from '../../../../src/plugins/hyperl
 import HyperlinkEdit from '../../../../src/ui/HyperlinkEdit';
 import PanelTextInput from '../../../../src/ui/PanelTextInput';
 import {
-  chaiPlugin, makeEditor, doc, p, a as link, sendKeyToPm, em, code
-} from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
+  chaiPlugin,
+  makeEditor,
+  doc,
+  p,
+  a as link,
+  sendKeyToPm,
+  em,
+  code,
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
 describe('hyperlink - keymap', () => {
-  const editor = (doc: any) => makeEditor<HyperlinkState>({
-    doc,
-    plugins: hyperlinkPlugins(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor<HyperlinkState>({
+      doc,
+      plugins: hyperlinkPlugins(defaultSchema),
+    });
 
   describe('Enter keypress', () => {
     context('when possible link text is at the end', () => {
@@ -33,7 +41,9 @@ describe('hyperlink - keymap', () => {
 
           const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com');
           expect(editorView.state.doc).to.deep.equal(doc(p('hello ', a), p()));
-          expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
+          expect(
+            trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')
+          ).to.equal(true);
         });
 
         it('converts possible mailto link text to hyperlink', () => {
@@ -45,7 +55,9 @@ describe('hyperlink - keymap', () => {
 
           const a = link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com');
           expect(editorView.state.doc).to.deep.equal(doc(p('hello ', a), p()));
-          expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
+          expect(
+            trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')
+          ).to.equal(true);
         });
 
         it('preserves other mark', () => {
@@ -91,14 +103,18 @@ describe('hyperlink - keymap', () => {
 
       const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com');
       expect(editorView.state.doc).to.deep.equal(doc(p('hello ', a)));
-      expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
+      expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(
+        true
+      );
     });
   });
 
   describe('Cmd-k keypress', () => {
     it('should open floating toolbar for non-message editor', () => {
       const { editorView, pluginState } = editor(doc(p('{<}text{>}')));
-      const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
+      const hyperlinkEdit = mount(
+        <HyperlinkEdit pluginState={pluginState} editorView={editorView} />
+      );
       sendKeyToPm(editorView, 'Mod-k');
       let input = hyperlinkEdit.find(PanelTextInput);
       expect(input.length).to.equal(1);
@@ -106,12 +122,15 @@ describe('hyperlink - keymap', () => {
     });
 
     it('should not work for message editor', () => {
-      const messageEditor = (doc: any) => makeEditor<HyperlinkState>({
-        doc,
-        plugins: hyperlinkPlugins(defaultSchema, { appearance: 'message' }),
-      });
+      const messageEditor = (doc: any) =>
+        makeEditor<HyperlinkState>({
+          doc,
+          plugins: hyperlinkPlugins(defaultSchema, { appearance: 'message' }),
+        });
       const { editorView, pluginState } = messageEditor(doc(p('{<}text{>}')));
-      const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
+      const hyperlinkEdit = mount(
+        <HyperlinkEdit pluginState={pluginState} editorView={editorView} />
+      );
       sendKeyToPm(editorView, 'Mod-k');
       let input = hyperlinkEdit.find(PanelTextInput);
       expect(input.length).to.equal(0);
@@ -120,12 +139,13 @@ describe('hyperlink - keymap', () => {
 
     it('should not open floating toolbar if incompatible mark is selected', () => {
       const { editorView, pluginState } = editor(doc(p(code('te{<>}xt'))));
-      const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
+      const hyperlinkEdit = mount(
+        <HyperlinkEdit pluginState={pluginState} editorView={editorView} />
+      );
       sendKeyToPm(editorView, 'Mod-k');
       let input = hyperlinkEdit.find(PanelTextInput);
       expect(input.exists()).to.equal(false);
       hyperlinkEdit.unmount();
     });
   });
-
 });

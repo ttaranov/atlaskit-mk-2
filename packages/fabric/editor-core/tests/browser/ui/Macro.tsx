@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import ProviderFactory from '../../../src/providerFactory';
 import Macro from '../../../src/ui/Macro';
 import MacroComponent from '../../../src/ui/Macro/MacroComponent';
-import { doc, panel, p, makeEditor } from '../../../src/test-helper';
+import { doc, panel, p, makeEditor } from '@atlaskit/editor-test-helpers';
 
 const macroId = 'd29cadc8-bf65-4f15-a1fa-1f31e646acd6';
 const placeholderUrl = '/wiki/plugins/servlet/confluence/placeholder/macro?definition=e3N0YXR1czpzdWJ0bGU9dHJ1ZXxjb2xvdXI9R3JlZW58dGl0bGU9T0t9&locale=en_GB&version=2';

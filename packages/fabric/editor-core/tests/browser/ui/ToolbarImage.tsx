@@ -5,20 +5,22 @@ import * as sinon from 'sinon';
 import imageUploadPlugins, { ImageUploadState } from '../../../src/plugins/image-upload';
 import ToolbarImage from '../../../src/ui/ToolbarImage';
 import AkButton from '@atlaskit/button';
-import { doc, code_block, p, makeEditor } from '../../../src/test-helper';
-import defaultSchema from '../../../src/test-helper/schema';
+import { doc, code_block, p, makeEditor, defaultSchema } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../src/analytics';
 
 describe('ToolbarImage', () => {
-  const editor = (doc: any) => makeEditor<ImageUploadState>({
-    doc,
-    plugins: imageUploadPlugins(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor<ImageUploadState>({
+      doc,
+      plugins: imageUploadPlugins(defaultSchema),
+    });
 
   context('when plugin is enabled', () => {
     it('sets disabled to false', () => {
       const { editorView, pluginState } = editor(doc(p('text')));
-      const toolbarImage = mount(<ToolbarImage pluginState={pluginState} editorView={editorView} />);
+      const toolbarImage = mount(
+        <ToolbarImage pluginState={pluginState} editorView={editorView} />
+      );
 
       expect(toolbarImage.state('disabled')).to.equal(false);
       toolbarImage.unmount();
@@ -28,7 +30,9 @@ describe('ToolbarImage', () => {
   context('when plugin is not enabled', () => {
     it('sets disabled to true', () => {
       const { editorView, pluginState } = editor(doc(code_block()('text')));
-      const toolbarImage = mount(<ToolbarImage pluginState={pluginState} editorView={editorView} />);
+      const toolbarImage = mount(
+        <ToolbarImage pluginState={pluginState} editorView={editorView} />
+      );
 
       expect(toolbarImage.state('disabled')).to.equal(true);
       toolbarImage.unmount();
@@ -41,7 +45,9 @@ describe('ToolbarImage', () => {
       sinon.stub(pluginState, 'handleImageUpload', () => true);
       const trackEvent = sinon.spy();
       analyticsService.trackEvent = trackEvent;
-      const toolbarOption = mount(<ToolbarImage pluginState={pluginState} editorView={editorView} />);
+      const toolbarOption = mount(
+        <ToolbarImage pluginState={pluginState} editorView={editorView} />
+      );
       toolbarOption.find(AkButton).simulate('click');
       expect(trackEvent.calledWith('atlassian.editor.image.button')).to.equal(true);
       toolbarOption.unmount();

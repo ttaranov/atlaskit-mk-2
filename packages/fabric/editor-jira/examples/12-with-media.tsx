@@ -1,6 +1,6 @@
 // tslint:disable:no-console
 import * as React from 'react';
-import { storyMediaProviderFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 import { default as Editor } from '../src';
 import ExampleWrapper from '../example-helpers/ExampleWrapper';
 

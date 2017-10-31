@@ -9,18 +9,19 @@ const getPasteFiles = (clipboardData: DataTransfer) => {
     return [];
   }
 
-  const items = Array.prototype.reduce.call(clipboardData.items || [], (filesArr: File[], item: DataTransferItem) => {
-    if (item.kind === 'file') {
-      filesArr.push(item.getAsFile() as File);
-    }
+  const items = Array.prototype.reduce.call(
+    clipboardData.items || [],
+    (filesArr: File[], item: DataTransferItem) => {
+      if (item.kind === 'file') {
+        filesArr.push(item.getAsFile() as File);
+      }
 
-    return filesArr;
-  }, []);
+      return filesArr;
+    },
+    []
+  );
 
-  return [
-    ...items,
-    ...Array.prototype.slice.call(clipboardData.files || [], 0)
-  ];
+  return [...items, ...Array.prototype.slice.call(clipboardData.files || [], 0)];
 };
 
 export class Converter {
@@ -28,27 +29,18 @@ export class Converter {
   supportedTypes: string[];
   maxFileSizeInBytes: number;
 
-  constructor(
-    supportedTypes: string[],
-    maxFileSizeInBytes: number
-  ) {
+  constructor(supportedTypes: string[], maxFileSizeInBytes: number) {
     this.supportedTypes = supportedTypes;
     this.maxFileSizeInBytes = maxFileSizeInBytes;
   }
 
-  convert(
-    files: File[],
-    fn = (base64src: string) => { },
-    errFn = (file: File) => { }
-  ) {
+  convert(files: File[], fn = (base64src: string) => {}, errFn = (file: File) => {}) {
     if (files && files[0]) {
-      files.forEach((
-        file: File
-      ) => {
+      files.forEach((file: File) => {
         const mimeType = file.type;
         if (
           file.size > this.maxFileSizeInBytes ||
-          !this.supportedTypes.some((fileType) => mimeType.indexOf(fileType) !== -1)
+          !this.supportedTypes.some(fileType => mimeType.indexOf(fileType) !== -1)
         ) {
           errFn(file);
         }
@@ -58,12 +50,12 @@ export class Converter {
           errFn(file);
         };
 
-        const onLoadBinaryString = (readerEvt) => {
+        const onLoadBinaryString = readerEvt => {
           const binarySrc: string = btoa(readerEvt.target.result);
           fn(`data:${mimeType};base64,${binarySrc}`);
         };
 
-        const onLoadDataUrl = (readerEvt) => {
+        const onLoadDataUrl = readerEvt => {
           fn(readerEvt.target.result);
         };
 
@@ -88,11 +80,7 @@ export function dropHandler(
 ): boolean {
   if (
     !converter.HAS_BASE64_FILE_SUPPORT ||
-    !(
-      e.dataTransfer &&
-      e.dataTransfer.files &&
-      e.dataTransfer.files.length
-    )
+    !(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length)
   ) {
     return false;
   }
@@ -111,17 +99,14 @@ export function pasteHandler(
 ): boolean {
   const pastedFiles = getPasteFiles(e.clipboardData);
 
-  if (
-    !converter.HAS_BASE64_FILE_SUPPORT ||
-    !pastedFiles.length
-  ) {
+  if (!converter.HAS_BASE64_FILE_SUPPORT || !pastedFiles.length) {
     return false;
   }
 
   if (pastedFiles.length) {
-    converter.convert(pastedFiles, (
-      src: string
-    ) => { fn({ src }); });
+    converter.convert(pastedFiles, (src: string) => {
+      fn({ src });
+    });
 
     return true;
   }

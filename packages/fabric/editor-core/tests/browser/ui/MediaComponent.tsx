@@ -19,7 +19,7 @@ import {
 import {
   storyMediaProviderFactory,
   randomId,
-} from '../../../src/test-helper';
+} from '@atlaskit/editor-test-helpers';
 
 describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   const file = {

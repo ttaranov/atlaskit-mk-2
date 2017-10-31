@@ -6,7 +6,7 @@ import { akColorN80 } from '@atlaskit/util-shared-styles';
 import Editor from './../src/editor';
 import EditorContext from './../src/editor/ui/EditorContext';
 import WithEditorActions from './../src/editor/ui/WithEditorActions';
-import { storyMediaProviderFactory } from '../src/test-helper';
+import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 

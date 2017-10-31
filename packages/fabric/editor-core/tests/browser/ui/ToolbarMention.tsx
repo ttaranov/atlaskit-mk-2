@@ -4,18 +4,18 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 import mentionsPlugins from '../../../src/plugins/mentions';
 import ToolbarMention from '../../../src/ui/ToolbarMention';
-import { doc, p, makeEditor } from '../../../src/test-helper';
-import defaultSchema from '../../../src/test-helper/schema';
+import { doc, p, makeEditor, defaultSchema } from '@atlaskit/editor-test-helpers';
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import ProviderFactory from '../../../src/providerFactory';
 import pluginKey from '../../../src/plugins/mentions/plugin-key';
 import { analyticsService } from '../../../src/analytics';
 
 describe('ToolbarMention', () => {
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
-  });
+  const editor = (doc: any) =>
+    makeEditor({
+      doc,
+      plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
+    });
 
   it('should create a mentionQuery by clicking on the ToolbarMention icon', () => {
     const { editorView } = editor(doc(p('{<>}')));

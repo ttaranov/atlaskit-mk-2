@@ -7,7 +7,7 @@ import { doc, h1, emoji, mention, p, strong, code_block } from './_schema-builde
 
 import { browser } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
-import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, insertText, sendKeyToPm } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, insertText, sendKeyToPm } from '@atlaskit/editor-test-helpers';
 import Editor from '../../src/index';
 
 chai.use(chaiPlugin);

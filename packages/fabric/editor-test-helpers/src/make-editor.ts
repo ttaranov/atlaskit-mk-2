@@ -1,3 +1,4 @@
+import { reactNodeViewPlugins, setTextSelection } from '@atlaskit/editor-core';
 import { baseKeymap } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
 import { Schema } from 'prosemirror-model';
@@ -5,8 +6,6 @@ import { Plugin, EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { default as defaultSchema } from './schema';
 import { RefsNode, Refs } from './schema-builder';
-import { setTextSelection } from '../utils';
-import { reactNodeViewPlugins } from '../plugins';
 
 /**
  * Build a ProseMirror instance.
@@ -16,7 +15,7 @@ import { reactNodeViewPlugins } from '../plugins';
  * - `<>` -- a collapsed text selection
  * - `<` and `>` -- a range text selection (`<` is from, `>` is to).
  */
-export default <T> (options: Options): EditorInstance<T> => {
+export default <T>(options: Options): EditorInstance<T> => {
   const plugins: Plugin[] = [];
   const schema = options.schema || defaultSchema;
   const fixture = document.body.appendChild(document.createElement('div'));
@@ -29,10 +28,7 @@ export default <T> (options: Options): EditorInstance<T> => {
     plugins.push(...options.plugins);
   }
 
-  plugins.push(
-    ...reactNodeViewPlugins(schema),
-    keymap(baseKeymap)
-  );
+  plugins.push(...reactNodeViewPlugins(schema), keymap(baseKeymap));
 
   const editorState = EditorState.create({
     plugins,
@@ -61,7 +57,7 @@ export default <T> (options: Options): EditorInstance<T> => {
     setTextSelection(editorView, refs['<'], refs['>']);
   }
 
-  const pluginStates = plugins.map((plugin) => plugin.getState(editorState));
+  const pluginStates = plugins.map(plugin => plugin.getState(editorState));
 
   afterEach(() => {
     editorView.destroy();
@@ -78,7 +74,7 @@ export default <T> (options: Options): EditorInstance<T> => {
     refs,
     plugin: plugins[0],
     pluginState: plugins[0].getState(editorState) as T,
-    sel: refs['<>']
+    sel: refs['<>'],
   };
 };
 

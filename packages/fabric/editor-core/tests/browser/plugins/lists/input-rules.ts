@@ -4,19 +4,26 @@ import { expect } from 'chai';
 import listsInputRulesPlugin from '../../../../src/plugins/lists/input-rule';
 import {
   insertText,
-  chaiPlugin, code_block, doc,
-  li, makeEditor, ol, p, ul
-} from '../../../../src/test-helper';
-import schema from '../../../../src/test-helper/schema';
+  chaiPlugin,
+  code_block,
+  doc,
+  li,
+  makeEditor,
+  ol,
+  p,
+  ul,
+  defaultSchema as schema,
+} from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
 describe('inputrules', () => {
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugin: listsInputRulesPlugin(schema)
-  });
+  const editor = (doc: any) =>
+    makeEditor({
+      doc,
+      plugin: listsInputRulesPlugin(schema),
+    });
   let trackEvent;
   beforeEach(() => {
     trackEvent = sinon.spy();
@@ -28,14 +35,18 @@ describe('inputrules', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '* ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(ul(li(p()))));
-      expect(trackEvent.calledWith('atlassian.editor.format.list.bullet.autoformatting')).to.equal(true);
+      expect(trackEvent.calledWith('atlassian.editor.format.list.bullet.autoformatting')).to.equal(
+        true
+      );
     });
 
     it('should convert "- " to a bullet list item', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '- ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(ul(li(p()))));
-      expect(trackEvent.calledWith('atlassian.editor.format.list.bullet.autoformatting')).to.equal(true);
+      expect(trackEvent.calledWith('atlassian.editor.format.list.bullet.autoformatting')).to.equal(
+        true
+      );
     });
 
     it('should be not be possible to convert a code_clock to a list item', () => {
@@ -51,7 +62,9 @@ describe('inputrules', () => {
 
       insertText(editorView, '1. ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(ol(li(p()))));
-      expect(trackEvent.calledWith('atlassian.editor.format.list.numbered.autoformatting')).to.equal(true);
+      expect(
+        trackEvent.calledWith('atlassian.editor.format.list.numbered.autoformatting')
+      ).to.equal(true);
     });
 
     it('should convert "[number]) " to a ordered list item', () => {
@@ -59,7 +72,9 @@ describe('inputrules', () => {
 
       insertText(editorView, '1) ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(ol(li(p()))));
-      expect(trackEvent.calledWith('atlassian.editor.format.list.numbered.autoformatting')).to.equal(true);
+      expect(
+        trackEvent.calledWith('atlassian.editor.format.list.numbered.autoformatting')
+      ).to.equal(true);
     });
 
     it('should always begin a new list on 1', () => {

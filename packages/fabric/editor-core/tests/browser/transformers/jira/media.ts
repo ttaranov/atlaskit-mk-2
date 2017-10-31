@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { nodeFactory } from '../../../../src/test-helper';
+import { nodeFactory } from '@atlaskit/editor-test-helpers';
 import { checkParse, checkEncode, checkParseEncodeRoundTrips } from './_test-helpers';
 import { createJIRASchema, MediaAttributes } from '@atlaskit/editor-common';
 import { JIRATransformer } from '../../../../src/transformers';

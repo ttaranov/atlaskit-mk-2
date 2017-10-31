@@ -13,7 +13,7 @@ import { analyticsService } from '../../../src/analytics';
 
 import {
   createEvent, doc, p, makeEditor, table, tr, tdEmpty, tdCursor
-} from '../../../src/test-helper';
+} from '@atlaskit/editor-test-helpers';
 
 describe('TableFloatingToolbar', () => {
   const event = createEvent('event');

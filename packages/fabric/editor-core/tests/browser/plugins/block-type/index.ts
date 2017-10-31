@@ -15,18 +15,19 @@ import {
   h5,
   makeEditor,
   p,
-} from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 import blockTypePlugins, { BlockTypeState } from '../../../../src/plugins/block-type';
 import { setTextSelection } from '../../../../src/utils';
 
 chai.use(chaiPlugin);
 
 describe('block-type', () => {
-  const editor = (doc: any) => makeEditor<BlockTypeState>({
-    doc,
-    plugins: blockTypePlugins(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor<BlockTypeState>({
+      doc,
+      plugins: blockTypePlugins(defaultSchema),
+    });
 
   it('should be able to change to normal', () => {
     const { editorView, pluginState } = editor(doc(h1('te{<>}xt')));
@@ -115,9 +116,15 @@ describe('block-type', () => {
   it('should have all of the present blocks type panel, blockQuote, codeBlock in availableWrapperBlockTypes', () => {
     const { pluginState } = editor(doc(panel(blockquote(code_block()('te{<>}xt')))));
     expect(pluginState.availableWrapperBlockTypes.length).to.equal(3);
-    expect(pluginState.availableWrapperBlockTypes.some(blockType => blockType.name === 'panel')).to.equal(true);
-    expect(pluginState.availableWrapperBlockTypes.some(blockType => blockType.name === 'codeblock')).to.equal(true);
-    expect(pluginState.availableWrapperBlockTypes.some(blockType => blockType.name === 'blockquote')).to.equal(true);
+    expect(
+      pluginState.availableWrapperBlockTypes.some(blockType => blockType.name === 'panel')
+    ).to.equal(true);
+    expect(
+      pluginState.availableWrapperBlockTypes.some(blockType => blockType.name === 'codeblock')
+    ).to.equal(true);
+    expect(
+      pluginState.availableWrapperBlockTypes.some(blockType => blockType.name === 'blockquote')
+    ).to.equal(true);
   });
 
   it('should be able to identify normal even if there are multiple blocks', () => {
@@ -173,7 +180,9 @@ describe('block-type', () => {
     const { editorView, pluginState } = editor(doc(p('li{<}ne1'), p('li{>}ne2'), p('li{>}ne3')));
 
     pluginState.insertBlockType('blockquote', editorView);
-    expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('li{<}ne1'), p('li{>}ne2'), p('li{>}ne3'))));
+    expect(editorView.state.doc).to.deep.equal(
+      doc(blockquote(p('li{<}ne1'), p('li{>}ne2'), p('li{>}ne3')))
+    );
     editorView.destroy();
   });
 

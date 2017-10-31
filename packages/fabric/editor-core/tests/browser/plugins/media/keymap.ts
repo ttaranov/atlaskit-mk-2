@@ -1,32 +1,27 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import {
-  MediaPluginState,
-  mediaPluginFactory,
-  ProviderFactory,
-} from '../../../../src';
+import { MediaPluginState, mediaPluginFactory, ProviderFactory } from '../../../../src';
 import {
   chaiPlugin,
   doc,
   makeEditor,
   p,
   sendKeyToPm,
-} from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 
 chai.use(chaiPlugin);
 
 describe('media - keymaps', () => {
   const providerFactory = new ProviderFactory();
 
-  const editor = (doc: any, uploadErrorHandler?: () => void) => makeEditor<MediaPluginState>({
-    doc,
-    plugins: [
-      ...mediaPluginFactory(defaultSchema, { providerFactory, uploadErrorHandler }),
-    ],
-    schema: defaultSchema
-  });
+  const editor = (doc: any, uploadErrorHandler?: () => void) =>
+    makeEditor<MediaPluginState>({
+      doc,
+      plugins: [...mediaPluginFactory(defaultSchema, { providerFactory, uploadErrorHandler })],
+      schema: defaultSchema,
+    });
 
   after(() => {
     providerFactory.destroy();

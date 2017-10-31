@@ -1,4 +1,4 @@
-import { chaiPlugin, makeEditor } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { chaiPlugin, makeEditor } from '@atlaskit/editor-test-helpers';
 import { textFormattingPlugins } from '@atlaskit/editor-core';
 import { doc, p, sub, sup, } from './_schema-builder';
 import * as chai from 'chai';

@@ -1,4 +1,4 @@
-import { markFactory, nodeFactory } from '../../../../src/test-helper';
+import { markFactory, nodeFactory } from '@atlaskit/editor-test-helpers';
 import { checkParseEncodeRoundTrips, encode } from './_test-helpers';
 import { expect } from 'chai';
 import { createJIRASchema } from '@atlaskit/editor-common';

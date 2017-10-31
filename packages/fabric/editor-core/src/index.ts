@@ -1,13 +1,6 @@
-export {
-  EmojiProvider,
-  AtlassianEmojiMigrationResource as EmojiResource,
-} from '@atlaskit/emoji';
+export { EmojiProvider, AtlassianEmojiMigrationResource as EmojiResource } from '@atlaskit/emoji';
 
-export {
-  DefaultMediaStateManager,
-  MediaProvider,
-  MediaState,
-} from '@atlaskit/media-core';
+export { DefaultMediaStateManager, MediaProvider, MediaState } from '@atlaskit/media-core';
 
 export {
   AbstractMentionResource,
@@ -18,10 +11,7 @@ export {
   MentionsResult,
 } from '@atlaskit/mention';
 
-export {
-  TaskDecisionProvider,
-  TaskDecisionResource
-} from '@atlaskit/task-decision';
+export { TaskDecisionProvider, TaskDecisionResource } from '@atlaskit/task-decision';
 
 import ProviderFactory, { WithProviders } from './providerFactory';
 export { version, name } from './version';
@@ -31,6 +21,7 @@ export * from './ui';
 export * from './analytics';
 export * from './nodeviews';
 export * from './transformers';
+export { keyCodes } from './keymaps';
 export { ProviderFactory, WithProviders };
 export {
   ErrorReporter,
@@ -39,6 +30,7 @@ export {
   JSONNode,
   toJSON,
   filterContentByType,
+  setTextSelection,
 } from './utils';
 
 export { default as Editor } from './editor';

@@ -1,8 +1,12 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
-import { doc, code_block } from '../../../../src/test-helper/schema-builder';
-import { makeEditor, chaiPlugin } from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
+import {
+  doc,
+  code_block,
+  makeEditor,
+  chaiPlugin,
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 import { CodeBlockState, codeBlockPlugins } from '../../../../src/plugins';
 import codeMirrorPlugins from '../../../../src/plugins/code-mirror';
 import codeMirrorNodeView from '../../../../src/nodeviews/ui/code-mirror';
@@ -12,14 +16,12 @@ chai.use(chaiPlugin);
 const expect = chai.expect;
 
 describe('@atlaskit/nodeviews/code-mirror', () => {
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: [
-      ...codeBlockPlugins(defaultSchema),
-      ...codeMirrorPlugins(defaultSchema),
-    ],
-    nodeViews: { codeBlock: codeMirrorNodeView },
-  });
+  const editor = (doc: any) =>
+    makeEditor({
+      doc,
+      plugins: [...codeBlockPlugins(defaultSchema), ...codeMirrorPlugins(defaultSchema)],
+      nodeViews: { codeBlock: codeMirrorNodeView },
+    });
 
   it('should export code-mirror nodeview factory', () => {
     expect(codeMirrorNodeView instanceof Function).to.equal(true);
@@ -32,7 +34,7 @@ describe('@atlaskit/nodeviews/code-mirror', () => {
     editorView.destroy();
   });
 
- it('should return a defined codeMirrorNodeView object', () => {
+  it('should return a defined codeMirrorNodeView object', () => {
     const { editorView } = editor(doc(code_block({ language: 'java' })('{<>}codeBlock')));
     const node = editorView.state.selection.$from.node(1);
     const codeNodeView = codeMirrorNodeView(node, editorView, () => 0);
@@ -40,7 +42,7 @@ describe('@atlaskit/nodeviews/code-mirror', () => {
     editorView.destroy();
   });
 
- it('should have dom defined as public member of codeMirrorNodeView object', () => {
+  it('should have dom defined as public member of codeMirrorNodeView object', () => {
     const { editorView } = editor(doc(code_block({ language: 'java' })('{<>}codeBlock')));
     const node = editorView.state.selection.$from.node(1);
     const codeNodeView = codeMirrorNodeView(node, editorView, () => 0);
@@ -51,7 +53,7 @@ describe('@atlaskit/nodeviews/code-mirror', () => {
     editorView.destroy();
   });
 
- it('should have callBacks defined as public member of codeMirrorNodeView object', () => {
+  it('should have callBacks defined as public member of codeMirrorNodeView object', () => {
     const { editorView } = editor(doc(code_block({ language: 'java' })('{<>}codeBlock')));
     const node = editorView.state.selection.$from.node(1);
     const codeNodeView = codeMirrorNodeView(node, editorView, () => 0);
@@ -77,8 +79,10 @@ describe('@atlaskit/nodeviews/code-mirror', () => {
     editorView.destroy();
   });
 
-    it('should call unsubscribeFocusHandlers menthod of code-block plugin editor is destroyed', () => {
-    const { editorView, pluginStates } = editor(doc(code_block({ language: 'java' })('{<>}codeBlock')));
+  it('should call unsubscribeFocusHandlers menthod of code-block plugin editor is destroyed', () => {
+    const { editorView, pluginStates } = editor(
+      doc(code_block({ language: 'java' })('{<>}codeBlock'))
+    );
     const func = sinon.spy();
     const codeBlockPlugin = pluginStates.filter(state => state instanceof CodeBlockState);
     expect(codeBlockPlugin.length).to.be.greaterThan(0);
@@ -88,7 +92,9 @@ describe('@atlaskit/nodeviews/code-mirror', () => {
   });
 
   it('should call unsubscribe menthod of code-block plugin editor is destroyed', () => {
-    const { editorView, pluginStates } = editor(doc(code_block({ language: 'java' })('{<>}codeBlock')));
+    const { editorView, pluginStates } = editor(
+      doc(code_block({ language: 'java' })('{<>}codeBlock'))
+    );
     const func = sinon.spy();
     const codeBlockPlugin = pluginStates.filter(state => state instanceof CodeBlockState);
     expect(codeBlockPlugin.length).to.be.greaterThan(0);

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import {
   doc, emoji, hardBreak, mention, p
-} from '../../../../src/test-helper';
+} from '@atlaskit/editor-test-helpers';
 
 import { toJSON } from '../../../../src/utils';
 import { taskDecisionDocFilter } from '../../../../src/utils/filter';

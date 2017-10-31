@@ -9,9 +9,12 @@ import PanelTextInput from '../../../../src/ui/PanelTextInput';
 import RecentSearch from '../../../../src/ui/RecentSearch';
 import RecentItem from '../../../../src/ui/RecentSearch/RecentItem';
 import {
-  doc, p as paragraph, a as link, makeEditor
-} from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
+  doc,
+  p as paragraph,
+  a as link,
+  makeEditor,
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 
 /**
  * Provides sample data for this suite of tests.
@@ -22,31 +25,41 @@ class MockActivityResource extends ActivityResource {
   }
 
   getRecentItems(): Promise<ActivityItem[]> {
-    return Promise.resolve([{
-      objectId: 'recent1',
-      name: 'recent item 1',
-      container: 'container 1',
-      iconUrl: 'https://wac-cdn.atlassian.com/assets/img/favicons/atlassian/favicon.png',
-      url: 'recent1-url.com'
-    }, {
-      objectId: 'recent2',
-      name: 'recent item 2',
-      container: 'container 2',
-      iconUrl: 'https://wac-cdn.atlassian.com/assets/img/favicons/atlassian/favicon.png',
-      url: 'recent2-url.com'
-    }, {
-      objectId: 'recent3',
-      name: 'recent item 3',
-      container: 'container 3',
-      iconUrl: 'https://wac-cdn.atlassian.com/assets/img/favicons/atlassian/favicon.png',
-      url: 'recent3-url.com'
-    }]);
+    return Promise.resolve([
+      {
+        objectId: 'recent1',
+        name: 'recent item 1',
+        container: 'container 1',
+        iconUrl: 'https://wac-cdn.atlassian.com/assets/img/favicons/atlassian/favicon.png',
+        url: 'recent1-url.com',
+      },
+      {
+        objectId: 'recent2',
+        name: 'recent item 2',
+        container: 'container 2',
+        iconUrl: 'https://wac-cdn.atlassian.com/assets/img/favicons/atlassian/favicon.png',
+        url: 'recent2-url.com',
+      },
+      {
+        objectId: 'recent3',
+        name: 'recent item 3',
+        container: 'container 3',
+        iconUrl: 'https://wac-cdn.atlassian.com/assets/img/favicons/atlassian/favicon.png',
+        url: 'recent3-url.com',
+      },
+    ]);
   }
 }
 
 async function openLinkPanel(editorView, pluginState) {
   const activityProviderPromise = Promise.resolve(new MockActivityResource());
-  const hyperlinkEdit = mount(<HyperlinkEdit activityProvider={activityProviderPromise} pluginState={pluginState} editorView={editorView} />);
+  const hyperlinkEdit = mount(
+    <HyperlinkEdit
+      activityProvider={activityProviderPromise}
+      pluginState={pluginState}
+      editorView={editorView}
+    />
+  );
   hyperlinkEdit.setState({ inputActive: true });
   pluginState.showLinkPanel(editorView);
   await timeout();
@@ -72,12 +85,12 @@ function pressReturnInputField(recentSearch: ReactWrapper<any, any>) {
   recentSearch.find('input').simulate('keydown', { keyCode: 13 });
 }
 
-
 describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
-  const editor = (doc: any) => makeEditor<HyperlinkState>({
-    doc,
-    plugins: hyperlinkPlugins(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor<HyperlinkState>({
+      doc,
+      plugins: hyperlinkPlugins(defaultSchema),
+    });
 
   it('should show the recent search input when inserting a new link', async () => {
     const { editorView, pluginState } = editor(doc(paragraph('{<>}')));
@@ -88,7 +101,9 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
   });
 
   it('should not show the recent search input when editing an existing link', async () => {
-    const { editorView, pluginState } = editor(doc(paragraph(link({ href: 'http://www.atlassian.com' })('www.atlas{<>}sian.com'), 'after')));
+    const { editorView, pluginState } = editor(
+      doc(paragraph(link({ href: 'http://www.atlassian.com' })('www.atlas{<>}sian.com'), 'after'))
+    );
     const hyperlinkEdit = await openLinkPanel(editorView, pluginState);
 
     expect(hyperlinkEdit.find(RecentSearch)).to.have.lengthOf(0);
@@ -101,7 +116,12 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     const recentSearch = hyperlinkEdit.find(RecentSearch);
 
     expect(recentSearch.find(RecentItem)).to.have.lengthOf(3);
-    expect(recentSearch.find(RecentItem).at(0).prop('item')).to.have.property('name', 'recent item 1');
+    expect(
+      recentSearch
+        .find(RecentItem)
+        .at(0)
+        .prop('item')
+    ).to.have.property('name', 'recent item 1');
     hyperlinkEdit.unmount();
   });
 
@@ -113,7 +133,12 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     await changeTextInput(recentSearch, 'recent item 1');
 
     expect(recentSearch.find(RecentItem)).to.have.lengthOf(1);
-    expect(recentSearch.find(RecentItem).at(0).prop('item')).to.have.property('name', 'recent item 1');
+    expect(
+      recentSearch
+        .find(RecentItem)
+        .at(0)
+        .prop('item')
+    ).to.have.property('name', 'recent item 1');
     hyperlinkEdit.unmount();
   });
 
@@ -123,9 +148,14 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     const recentSearch = hyperlinkEdit.find(RecentSearch);
 
     expect(recentSearch.find(RecentItem)).to.have.lengthOf(3);
-    recentSearch.find(RecentItem).at(0).simulate('mousedown');
+    recentSearch
+      .find(RecentItem)
+      .at(0)
+      .simulate('mousedown');
 
-    expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://recent1-url.com' })('recent item 1'))));
+    expect(editorView.state.doc).to.deep.equal(
+      doc(paragraph(link({ href: 'http://recent1-url.com' })('recent item 1')))
+    );
     hyperlinkEdit.unmount();
   });
 
@@ -137,7 +167,9 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     await changeTextInput(recentSearch, 'example.com');
     pressReturnInputField(recentSearch);
 
-    expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://example.com' })('example.com'))));
+    expect(editorView.state.doc).to.deep.equal(
+      doc(paragraph(link({ href: 'http://example.com' })('example.com')))
+    );
     hyperlinkEdit.unmount();
   });
 
@@ -149,7 +181,9 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     await changeTextInput(recentSearch, 'recent');
     pressReturnInputField(recentSearch);
 
-    expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://recent1-url.com' })('recent item 1'))));
+    expect(editorView.state.doc).to.deep.equal(
+      doc(paragraph(link({ href: 'http://recent1-url.com' })('recent item 1')))
+    );
     hyperlinkEdit.unmount();
   });
 
@@ -163,7 +197,9 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     pressDownArrowInputField(recentSearch);
     pressReturnInputField(recentSearch);
 
-    expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://recent2-url.com' })('recent item 2'))));
+    expect(editorView.state.doc).to.deep.equal(
+      doc(paragraph(link({ href: 'http://recent2-url.com' })('recent item 2')))
+    );
     hyperlinkEdit.unmount();
   });
 
@@ -175,7 +211,9 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     pressDownArrowInputField(recentSearch);
     pressReturnInputField(recentSearch);
 
-    expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://recent1-url.com' })('Page'))));
+    expect(editorView.state.doc).to.deep.equal(
+      doc(paragraph(link({ href: 'http://recent1-url.com' })('Page')))
+    );
     hyperlinkEdit.unmount();
   });
 });

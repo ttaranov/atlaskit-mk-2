@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
 import { imageFileId, youtubeLinkId } from '@atlaskit/media-test-helpers';
 import Media from '../../../../../src/renderer/react/nodes/media';
-import { storyMediaProviderFactory } from '../../../../../src/test-helper';
+import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 import MediaGroup from '../../../../../src/renderer/react/nodes/mediaGroup';
 import { CardView } from '@atlaskit/media-card';
 import { FilmstripView } from '@atlaskit/media-filmstrip';

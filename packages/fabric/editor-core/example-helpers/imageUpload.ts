@@ -1,4 +1,4 @@
-import { base64fileconverter } from '../src/test-helper';
+import { base64fileconverter } from '@atlaskit/editor-test-helpers';
 
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);

@@ -2,19 +2,28 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import {
-  sendKeyToPm, insertText, doc, code, textColor, p,
-  chaiPlugin, makeEditor, a, strong
-} from '../../../../src/test-helper';
+  sendKeyToPm,
+  insertText,
+  doc,
+  code,
+  textColor,
+  p,
+  chaiPlugin,
+  makeEditor,
+  a,
+  strong,
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 import textColorPlugins, { TextColorState } from '../../../../src/plugins/text-color';
-import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
 describe('text-color', () => {
-  const editor = (doc: any) => makeEditor<TextColorState>({
-    doc,
-    plugins: textColorPlugins(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor<TextColorState>({
+      doc,
+      plugins: textColorPlugins(defaultSchema),
+    });
 
   const testColor1 = '#97a0af';
   const testColor2 = '#0747a6';
@@ -81,18 +90,15 @@ describe('text-color', () => {
   });
 
   it('should expose no color when selection has multiple color marks', () => {
-    const { pluginState } = editor(doc(p(
-      '{<}', createTextColor(testColor1)('te'),
-      createTextColor(testColor2)('xt'), '{>}'
-    )));
+    const { pluginState } = editor(
+      doc(p('{<}', createTextColor(testColor1)('te'), createTextColor(testColor2)('xt'), '{>}'))
+    );
 
     expect(pluginState.color).to.equal(undefined);
   });
 
   it('should expose no color when selection has mixed content', () => {
-    const { pluginState } = editor(doc(p(
-      '{<}', createTextColor(testColor1)('te'), 'xt', '{>}'
-    )));
+    const { pluginState } = editor(doc(p('{<}', createTextColor(testColor1)('te'), 'xt', '{>}')));
 
     expect(pluginState.color).to.equal(undefined);
   });
@@ -134,9 +140,9 @@ describe('text-color', () => {
   });
 
   it('should expose color when selection has other marks with textColor mark', () => {
-    const { pluginState } = editor(doc(p(
-      '{<}', createTextColor(testColor1)('hello ', strong('world'), '!'), '{>}'
-    )));
+    const { pluginState } = editor(
+      doc(p('{<}', createTextColor(testColor1)('hello ', strong('world'), '!'), '{>}'))
+    );
 
     expect(pluginState.color).to.equal(testColor1);
   });

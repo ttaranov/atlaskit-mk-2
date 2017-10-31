@@ -1,6 +1,6 @@
 import { Node } from 'prosemirror-model';
 import { MediaAttributes } from '@atlaskit/editor-common';
-import { markFactory, nodeFactory, RefsNode, RefsTracker } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { markFactory, nodeFactory, RefsNode, RefsTracker } from '@atlaskit/editor-test-helpers';
 import schema from '../../src/schema';
 export { RefsNode, RefsTracker, Node };
 

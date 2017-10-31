@@ -3,21 +3,41 @@ import * as chai from 'chai';
 import * as sinon from 'sinon';
 
 import { browser } from '@atlaskit/editor-common';
-import clearFormattingPlugins, { ClearFormattingState } from '../../../../src/plugins/clear-formatting';
+import clearFormattingPlugins, {
+  ClearFormattingState,
+} from '../../../../src/plugins/clear-formatting';
 import {
-  a as link, blockquote, chaiPlugin, code_block, code, doc, em, h1, subsup,
-  li, makeEditor, ol, p, panel, sendKeyToPm, strike, strong, underline, textColor
-} from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
+  a as link,
+  blockquote,
+  chaiPlugin,
+  code_block,
+  code,
+  doc,
+  em,
+  h1,
+  subsup,
+  li,
+  makeEditor,
+  ol,
+  p,
+  panel,
+  sendKeyToPm,
+  strike,
+  strong,
+  underline,
+  textColor,
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
 describe('clear-formatting', () => {
-  const editor = (doc: any) => makeEditor<ClearFormattingState>({
-    doc,
-    plugins: clearFormattingPlugins(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor<ClearFormattingState>({
+      doc,
+      plugins: clearFormattingPlugins(defaultSchema),
+    });
 
   describe('formattingIsPresent', () => {
     it('should be true if some marks are present', () => {
@@ -31,7 +51,9 @@ describe('clear-formatting', () => {
     });
 
     it('should be false if a code blocks is present', () => {
-      const { pluginState } = editor(doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')));
+      const { pluginState } = editor(
+        doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block'))
+      );
       expect(pluginState.formattingIsPresent).to.equal(false);
     });
 
@@ -49,14 +71,18 @@ describe('clear-formatting', () => {
     });
 
     it('should be false if all present blocks are cleared', () => {
-      const { editorView, pluginState } = editor(doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')));
+      const { editorView, pluginState } = editor(
+        doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block'))
+      );
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).to.equal(false);
       editorView.destroy();
     });
 
     it('should be false if all present marks and blocks are cleared', () => {
-      const { editorView, pluginState } = editor(doc(p('parag{<}raph'), code_block({ language: 'java' })('code{>}Block')));
+      const { editorView, pluginState } = editor(
+        doc(p('parag{<}raph'), code_block({ language: 'java' })('code{>}Block'))
+      );
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).to.equal(false);
       editorView.destroy();
@@ -101,7 +127,7 @@ describe('clear-formatting', () => {
     });
 
     it('should remove superscript if present', () => {
-      const { editorView, pluginState } = editor(doc(p(subsup({ type: 'sup'})('{<}text{>}'))));
+      const { editorView, pluginState } = editor(doc(p(subsup({ type: 'sup' })('{<}text{>}'))));
 
       pluginState.clearFormatting(editorView);
       expect(editorView.state.doc).to.deep.equal(doc(p('text')));
@@ -110,7 +136,7 @@ describe('clear-formatting', () => {
     });
 
     it('should remove subscript if present', () => {
-      const { editorView, pluginState } = editor(doc(p(subsup({ type: 'sub'})('{<}text{>}'))));
+      const { editorView, pluginState } = editor(doc(p(subsup({ type: 'sub' })('{<}text{>}'))));
 
       pluginState.clearFormatting(editorView);
       expect(editorView.state.doc).to.deep.equal(doc(p('text')));
@@ -137,10 +163,14 @@ describe('clear-formatting', () => {
     });
 
     it('should not remove link if present', () => {
-      const { editorView, pluginState } = editor(doc(p(link({ href: 'http://www.atlassian.com' })('t{<}ex{>}t'))));
+      const { editorView, pluginState } = editor(
+        doc(p(link({ href: 'http://www.atlassian.com' })('t{<}ex{>}t')))
+      );
 
       pluginState.clearFormatting(editorView);
-      expect(editorView.state.doc).to.deep.equal(doc(p(link({ href: 'http://www.atlassian.com' })('text'))));
+      expect(editorView.state.doc).to.deep.equal(
+        doc(p(link({ href: 'http://www.atlassian.com' })('text')))
+      );
 
       editorView.destroy();
     });

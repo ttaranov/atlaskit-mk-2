@@ -3,17 +3,13 @@
   "version": "3.4.4",
   "description": "Atlassian Editor component for Bitbucket",
   "license": "Apache-2.0",
-  "main": "dist/cjs/index.js",
+  "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "author": "Atlassian Pty Ltd",
-  "maintainers": [
-    "Huanhuan H"
-  ],
+  "maintainers": ["Huanhuan H"],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/editor-common": "^2.2.1",
@@ -36,6 +32,7 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
+    "@atlaskit/editor-test-helpers": "^0.0.0",
     "@atlaskit/emoji": "^30.1.5",
     "@atlaskit/mention": "^7.6.0",
     "chai": "^4.1.2"

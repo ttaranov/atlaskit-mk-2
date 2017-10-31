@@ -1,7 +1,12 @@
 import * as chai from 'chai';
-import { doc, code_block } from '../../../../src/test-helper/schema-builder';
-import { makeEditor, chaiPlugin, sendKeyToPm } from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
+import {
+  doc,
+  code_block,
+  defaultSchema,
+  makeEditor,
+  chaiPlugin,
+  sendKeyToPm,
+} from '@atlaskit/editor-test-helpers';
 import { codeBlockPlugins } from '../../../../src/plugins';
 import codeMirrorNodeView from '../../../../src/nodeviews/ui/code-mirror';
 import { computeChange, findMode } from '../../../../src/nodeviews/ui/code-mirror/codeMirrorPlugin';
@@ -11,12 +16,13 @@ chai.use(chaiPlugin);
 const expect = chai.expect;
 
 describe('@atlaskit/nodeviews/code-mirror/codeMirrorPlugin', () => {
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: codeBlockPlugins(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor({
+      doc,
+      plugins: codeBlockPlugins(defaultSchema),
+    });
 
- it('should return a defined a not null codeMirror instance', () => {
+  it('should return a defined a not null codeMirror instance', () => {
     const { editorView } = editor(doc(code_block({ language: 'java' })('{<>}codeBlock')));
     const node = editorView.state.selection.$from.node(1);
     const codeNodeView = codeMirrorNodeView(node, editorView, () => 0) as any;
@@ -45,7 +51,9 @@ describe('@atlaskit/nodeviews/code-mirror/codeMirrorPlugin', () => {
     const { editorView } = editor(doc(code_block({ language: 'java' })('{<}test{>}')));
     const node = editorView.state.selection.$from.node(1);
     const codeNodeView = codeMirrorNodeView(node, editorView, () => 0) as any;
-    expect(codeNodeView.codeMirrorPlugin.dom.firstChild.className.indexOf('CodeMirror') >= 0).to.equal(true);
+    expect(
+      codeNodeView.codeMirrorPlugin.dom.firstChild.className.indexOf('CodeMirror') >= 0
+    ).to.equal(true);
     editorView.destroy();
   });
 

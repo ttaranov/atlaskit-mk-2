@@ -1,8 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import {
-  convertedHandlerCallback, Converter, dropHandler, pasteHandler
-} from '../../../src/test-helper/base64fileconverter';
+import { convertedHandlerCallback, Converter, dropHandler, pasteHandler } from '../../src';
 
 describe('@atlaskit/editor-core/test-helper base64fileconverter', () => {
   let savedFileReader: any;
@@ -15,10 +13,11 @@ describe('@atlaskit/editor-core/test-helper base64fileconverter', () => {
     (window as any).FileReader = savedFileReader;
   });
 
-  const mockFile = (args: { size?: number, type?: string } = {}): File => ({
-    size: typeof args.size !== 'undefined' ? args.size : 1,
-    type: typeof args.type !== 'undefined' ? args.type : 'png',
-  } as any);
+  const mockFile = (args: { size?: number; type?: string } = {}): File =>
+    ({
+      size: typeof args.size !== 'undefined' ? args.size : 1,
+      type: typeof args.type !== 'undefined' ? args.type : 'png',
+    } as any);
 
   describe('pasteHandler', () => {
     it('Should not convert files when there is no clipboardData', () => {
@@ -67,7 +66,9 @@ describe('@atlaskit/editor-core/test-helper base64fileconverter', () => {
       const converterStub = {} as Converter;
       converterStub.HAS_BASE64_FILE_SUPPORT = true;
 
-      const convertStub = sinon.spy((files: FileList, cb: convertedHandlerCallback) => cb(`data:png;base64,AYAYSAASn`));
+      const convertStub = sinon.spy((files: FileList, cb: convertedHandlerCallback) =>
+        cb(`data:png;base64,AYAYSAASn`)
+      );
       converterStub.convert = convertStub;
 
       const dragEventStub: DragEvent = {
@@ -96,7 +97,7 @@ describe('@atlaskit/editor-core/test-helper base64fileconverter', () => {
       const cb = sinon.spy();
       const errCb = sinon.spy();
 
-      const fileReaderStub = () => { };
+      const fileReaderStub = () => {};
       fileReaderStub.prototype.onload = sinon.spy();
       fileReaderStub.prototype.readAsBinaryString = sinon.spy();
 
@@ -114,7 +115,7 @@ describe('@atlaskit/editor-core/test-helper base64fileconverter', () => {
       const cb = sinon.spy();
       const errCb = sinon.spy();
 
-      const fileReaderStub = () => { };
+      const fileReaderStub = () => {};
       fileReaderStub.prototype.onload = sinon.spy();
       fileReaderStub.prototype.readAsBinaryString = sinon.spy();
 
@@ -128,14 +129,11 @@ describe('@atlaskit/editor-core/test-helper base64fileconverter', () => {
     });
 
     it('Should not trigger error callback when file match supportedTypes and maxFileSizeInBytes', () => {
-      const converter = new Converter(
-        ['png'],
-        1000
-      );
+      const converter = new Converter(['png'], 1000);
       const cb = sinon.spy();
       const errCb = sinon.spy();
 
-      const fileReaderStub = () => { };
+      const fileReaderStub = () => {};
       fileReaderStub.prototype.onload = sinon.spy();
       fileReaderStub.prototype.readAsBinaryString = sinon.spy();
 

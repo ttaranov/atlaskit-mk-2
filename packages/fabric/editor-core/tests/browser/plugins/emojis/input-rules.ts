@@ -13,8 +13,8 @@ import {
   emoji,
   mention,
   code_block,
-} from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 
 chai.use(chaiPlugin);
@@ -22,10 +22,11 @@ chai.use(chaiPlugin);
 describe('emojis - input rules', () => {
   const providerFactory = new ProviderFactory();
   providerFactory.setProvider('emojiProvider', emojiTestData.getEmojiResourcePromise());
-  const editor = (doc: any) => makeEditor<EmojiState>({
-    doc,
-    plugins: emojiPlugins(defaultSchema, providerFactory),
-  });
+  const editor = (doc: any) =>
+    makeEditor<EmojiState>({
+      doc,
+      plugins: emojiPlugins(defaultSchema, providerFactory),
+    });
 
   const assert = (what: string, expected: boolean, docContents?: any) => {
     const { editorView, pluginState, sel, refs } = editor(doc(docContents || p('{<>}')));
@@ -66,7 +67,7 @@ describe('emojis - input rules', () => {
   });
 
   it('should replace ":" if there is another emoji node in front of it', () => {
-    assert(':', true, p(emoji({ shortName: ':smiley:'}), '{<>}'));
+    assert(':', true, p(emoji({ shortName: ':smiley:' }), '{<>}'));
   });
 
   it('should replace ":" if there is a mention node in front of it', () => {

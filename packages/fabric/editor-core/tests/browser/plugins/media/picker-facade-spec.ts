@@ -3,22 +3,11 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as chaiAsPromised from 'chai-as-promised';
 
-import {
-  DefaultMediaStateManager,
-  MediaStateManager,
-} from '@atlaskit/media-core';
-import {
-  Popup,
-  Browser,
-  Dropzone,
-  Clipboard,
-  BinaryUploader,
-} from 'mediapicker';
+import { DefaultMediaStateManager, MediaStateManager } from '@atlaskit/media-core';
+import { Popup, Browser, Dropzone, Clipboard, BinaryUploader } from 'mediapicker';
 import { StoryBookAuthProvider, StoryBookUserAuthProvider } from '@atlaskit/media-test-helpers';
 
-import {
-  chaiPlugin
-} from '../../../../src/test-helper';
+import { chaiPlugin } from '@atlaskit/editor-test-helpers';
 import PickerFacade from '../../../../src/plugins/media/picker-facade';
 import { ErrorReportingHandler } from '../../../../src/utils';
 import MockMediaPicker from './mock-media-picker';
@@ -34,12 +23,12 @@ describe('Media PickerFacade', () => {
   const dropzoneContainer = document.createElement('div');
   const uploadParams = {
     collection: 'mock',
-    dropzoneContainer
+    dropzoneContainer,
   };
   const contextConfig = {
     serviceHost: 'http://test',
     authProvider: StoryBookAuthProvider.create(false),
-    userAuthProvider: StoryBookUserAuthProvider.create()
+    userAuthProvider: StoryBookUserAuthProvider.create(),
   };
   const testFileId = `${Math.round(Math.random() * 100000)}`;
   const testTemporaryFileId = `temporary:${testFileId}`;
@@ -49,7 +38,7 @@ describe('Media PickerFacade', () => {
     name: 'test name',
     size: Math.round(Math.random() * 1047552),
     type: 'test/file',
-    creationDate: (new Date().getTime()),
+    creationDate: new Date().getTime(),
     toPureJSON: () => ({}),
   };
   const testFileProgress = {
@@ -61,8 +50,8 @@ describe('Media PickerFacade', () => {
     timeLeft: 1,
   };
   const errorReporter: ErrorReportingHandler = {
-    captureException: (err: any) => { },
-    captureMessage: (msg: any) => { },
+    captureException: (err: any) => {},
+    captureMessage: (msg: any) => {},
   };
 
   describe('Generic Picker', () => {
@@ -76,7 +65,14 @@ describe('Media PickerFacade', () => {
 
         return mockPicker;
       };
-      facade = new PickerFacade('popup', uploadParams, contextConfig, stateManager, errorReporter, mockPickerFactory);
+      facade = new PickerFacade(
+        'popup',
+        uploadParams,
+        contextConfig,
+        stateManager,
+        errorReporter,
+        mockPickerFactory
+      );
     });
 
     afterEach(() => {
@@ -106,27 +102,54 @@ describe('Media PickerFacade', () => {
         expect(mockPicker.pickerType).to.eq('popup');
         expect(mockPicker.moduleConfig).to.have.property('uploadParams', uploadParams);
         expect(mockPicker.moduleConfig).to.have.property('apiUrl', contextConfig.serviceHost);
-        expect(mockPicker.moduleConfig).to.have.property('authProvider', contextConfig.authProvider);
+        expect(mockPicker.moduleConfig).to.have.property(
+          'authProvider',
+          contextConfig.authProvider
+        );
       });
 
       it('respects dropzone component config', () => {
-        const dropzoneFacade = new PickerFacade('dropzone', uploadParams, contextConfig, stateManager!, errorReporter, mockPickerFactory);
+        const dropzoneFacade = new PickerFacade(
+          'dropzone',
+          uploadParams,
+          contextConfig,
+          stateManager!,
+          errorReporter,
+          mockPickerFactory
+        );
         expect(dropzoneFacade).to.be.an('object');
         expect(mockPicker.componentConfig).to.have.property('container', dropzoneContainer);
       });
 
       it('respects popup component config', () => {
-        const popupFacade = new PickerFacade('popup', uploadParams, contextConfig, stateManager!, errorReporter, mockPickerFactory);
+        const popupFacade = new PickerFacade(
+          'popup',
+          uploadParams,
+          contextConfig,
+          stateManager!,
+          errorReporter,
+          mockPickerFactory
+        );
         expect(popupFacade).to.be.an('object');
-        expect(mockPicker.componentConfig).to.have.property('userAuthProvider', contextConfig.userAuthProvider);
+        expect(mockPicker.componentConfig).to.have.property(
+          'userAuthProvider',
+          contextConfig.userAuthProvider
+        );
       });
 
       it('fallbacks to browser picker if userAuthProvider is not provided', () => {
         const contextConfigWithoutUserAuthProvider = {
           serviceHost: 'http://test',
-          authProvider: StoryBookAuthProvider.create(false)
+          authProvider: StoryBookAuthProvider.create(false),
         };
-        const popupFacade = new PickerFacade('popup', uploadParams, contextConfigWithoutUserAuthProvider, stateManager!, errorReporter, mockPickerFactory);
+        const popupFacade = new PickerFacade(
+          'popup',
+          uploadParams,
+          contextConfigWithoutUserAuthProvider,
+          stateManager!,
+          errorReporter,
+          mockPickerFactory
+        );
         expect(popupFacade).to.be.an('object');
         expect(mockPicker.pickerType).to.eq('browser');
       });
@@ -137,15 +160,17 @@ describe('Media PickerFacade', () => {
         const cb = sinon.spy();
         stateManager!.subscribe(testTemporaryFileId, cb);
         mockPicker.__triggerEvent('upload-start', {
-          file: testFileData
+          file: testFileData,
         });
-        expect(cb.calledWithExactly({
-          id: testTemporaryFileId,
-          status: 'uploading',
-          fileName: testFileData.name,
-          fileSize: testFileData.size,
-          fileMimeType: testFileData.type,
-        })).to.eq(true);
+        expect(
+          cb.calledWithExactly({
+            id: testTemporaryFileId,
+            status: 'uploading',
+            fileName: testFileData.name,
+            fileSize: testFileData.size,
+            fileMimeType: testFileData.type,
+          })
+        ).to.eq(true);
       });
 
       it('for new uploads via onNewMedia()', () => {
@@ -153,15 +178,17 @@ describe('Media PickerFacade', () => {
         facade!.onNewMedia(cb);
 
         mockPicker.__triggerEvent('upload-start', {
-          file: testFileData
+          file: testFileData,
         });
-        expect(cb.calledWithExactly({
-          id: testTemporaryFileId,
-          status: 'uploading',
-          fileName: testFileData.name,
-          fileSize: testFileData.size,
-          fileMimeType: testFileData.type,
-        })).to.eq(true);
+        expect(
+          cb.calledWithExactly({
+            id: testTemporaryFileId,
+            status: 'uploading',
+            fileName: testFileData.name,
+            fileSize: testFileData.size,
+            fileMimeType: testFileData.type,
+          })
+        ).to.eq(true);
       });
 
       it('for upload progress', () => {
@@ -171,14 +198,16 @@ describe('Media PickerFacade', () => {
           file: testFileData,
           progress: testFileProgress,
         });
-        expect(cb.calledWithExactly({
-          id: testTemporaryFileId,
-          status: 'uploading',
-          progress: testFileProgress.portion,
-          fileName: testFileData.name,
-          fileSize: testFileData.size,
-          fileMimeType: testFileData.type,
-        })).to.eq(true);
+        expect(
+          cb.calledWithExactly({
+            id: testTemporaryFileId,
+            status: 'uploading',
+            progress: testFileProgress.portion,
+            fileName: testFileData.name,
+            fileSize: testFileData.size,
+            fileMimeType: testFileData.type,
+          })
+        ).to.eq(true);
       });
 
       it('for upload preview availability', () => {
@@ -187,12 +216,14 @@ describe('Media PickerFacade', () => {
         stateManager!.subscribe(testTemporaryFileId, cb);
         mockPicker.__triggerEvent('upload-preview-update', {
           file: testFileData,
-          preview
+          preview,
         });
-        expect(cb.calledWithExactly({
-          id: testTemporaryFileId,
-          thumbnail: preview
-        })).to.eq(true);
+        expect(
+          cb.calledWithExactly({
+            id: testTemporaryFileId,
+            thumbnail: preview,
+          })
+        ).to.eq(true);
       });
 
       it('for upload processing', () => {
@@ -201,33 +232,37 @@ describe('Media PickerFacade', () => {
         mockPicker.__triggerEvent('upload-processing', {
           file: { ...testFileData, publicId: testFilePublicId },
         });
-        expect(cb.calledWithExactly({
-          id: testTemporaryFileId,
-          publicId: testFilePublicId,
-          status: 'processing',
-          fileName: testFileData.name,
-          fileSize: testFileData.size,
-          fileMimeType: testFileData.type,
-        })).to.eq(true);
+        expect(
+          cb.calledWithExactly({
+            id: testTemporaryFileId,
+            publicId: testFilePublicId,
+            status: 'processing',
+            fileName: testFileData.name,
+            fileSize: testFileData.size,
+            fileMimeType: testFileData.type,
+          })
+        ).to.eq(true);
       });
 
       it('for upload ready for finalization', () => {
         const cb = sinon.spy();
-        const finalizeCb = () => { };
+        const finalizeCb = () => {};
         stateManager!.subscribe(testTemporaryFileId, cb);
         mockPicker.__triggerEvent('upload-finalize-ready', {
           file: { ...testFileData, publicId: testFilePublicId },
-          finalize: finalizeCb
+          finalize: finalizeCb,
         });
-        expect(cb.calledWithExactly({
-          id: testTemporaryFileId,
-          publicId: testFilePublicId,
-          status: 'unfinalized',
-          finalizeCb: finalizeCb,
-          fileName: testFileData.name,
-          fileSize: testFileData.size,
-          fileMimeType: testFileData.type,
-        })).to.eq(true);
+        expect(
+          cb.calledWithExactly({
+            id: testTemporaryFileId,
+            publicId: testFilePublicId,
+            status: 'unfinalized',
+            finalizeCb: finalizeCb,
+            fileName: testFileData.name,
+            fileSize: testFileData.size,
+            fileMimeType: testFileData.type,
+          })
+        ).to.eq(true);
       });
 
       it('for upload error', () => {
@@ -238,45 +273,50 @@ describe('Media PickerFacade', () => {
             name: 'some-error',
             description: 'something went wrong',
             fileId: testFileData.id,
-          }
-        } as any);
-        expect(cb.calledWithExactly({
-          id: testTemporaryFileId,
-          status: 'error',
-          error: {
-            name: 'some-error',
-            description: 'something went wrong'
           },
-        })).to.eq(true);
+        } as any);
+        expect(
+          cb.calledWithExactly({
+            id: testTemporaryFileId,
+            status: 'error',
+            error: {
+              name: 'some-error',
+              description: 'something went wrong',
+            },
+          })
+        ).to.eq(true);
       });
 
       it('for upload end', () => {
         const cb = sinon.spy();
         stateManager!.subscribe(testTemporaryFileId, cb);
         mockPicker.__triggerEvent('upload-end', {
-          file: { ...testFileData, publicId: testFilePublicId }, public: { id: 'test-id' },
+          file: { ...testFileData, publicId: testFilePublicId },
+          public: { id: 'test-id' },
         });
-        expect(cb.calledWithExactly({
-          id: testTemporaryFileId,
-          publicId: testFilePublicId,
-          status: 'ready',
-          fileName: testFileData.name,
-          fileSize: testFileData.size,
-          fileMimeType: testFileData.type,
-        })).to.eq(true);
+        expect(
+          cb.calledWithExactly({
+            id: testTemporaryFileId,
+            publicId: testFilePublicId,
+            status: 'ready',
+            fileName: testFileData.name,
+            fileSize: testFileData.size,
+            fileMimeType: testFileData.type,
+          })
+        ).to.eq(true);
       });
     });
 
     it('After upload has transitioned from "uploading", subsequent "status update" events must not downgrade status (ED-2062)', () => {
-      const finalizeCb = () => { };
+      const finalizeCb = () => {};
       stateManager!.updateState(testTemporaryFileId, {
         id: testTemporaryFileId,
-        status: 'uploading'
+        status: 'uploading',
       });
 
       mockPicker.__triggerEvent('upload-finalize-ready', {
         file: { ...testFileData, publicId: testFilePublicId },
-        finalize: finalizeCb
+        finalize: finalizeCb,
       });
 
       mockPicker.__triggerEvent('upload-status-update', {
@@ -292,7 +332,7 @@ describe('Media PickerFacade', () => {
         fileName: testFileData.name,
         fileSize: testFileData.size,
         fileMimeType: testFileData.type,
-        finalizeCb: finalizeCb
+        finalizeCb: finalizeCb,
       });
 
       mockPicker.__triggerEvent('upload-processing', {
@@ -307,7 +347,8 @@ describe('Media PickerFacade', () => {
       expect(stateManager!.getState(testTemporaryFileId)!.status).to.eq('processing');
 
       mockPicker.__triggerEvent('upload-end', {
-        file: { ...testFileData, publicId: testFilePublicId }, public: { id: 'test-id' },
+        file: { ...testFileData, publicId: testFilePublicId },
+        public: { id: 'test-id' },
       });
 
       mockPicker.__triggerEvent('upload-status-update', {
@@ -323,8 +364,16 @@ describe('Media PickerFacade', () => {
     const mockPopupPicker = sinon.createStubInstance(Popup);
     beforeEach(() => {
       stateManager = new DefaultMediaStateManager();
-      mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) => mockPopupPicker;
-      facade = new PickerFacade('popup', uploadParams, contextConfig, stateManager, errorReporter, mockPickerFactory);
+      mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) =>
+        mockPopupPicker;
+      facade = new PickerFacade(
+        'popup',
+        uploadParams,
+        contextConfig,
+        stateManager,
+        errorReporter,
+        mockPickerFactory
+      );
     });
 
     afterEach(() => {
@@ -349,7 +398,7 @@ describe('Media PickerFacade', () => {
       const cb = sinon.spy();
       stateManager!.updateState(testTemporaryFileId, {
         id: testTemporaryFileId,
-        status: 'uploading'
+        status: 'uploading',
       });
 
       stateManager!.subscribe(testTemporaryFileId, cb);
@@ -358,7 +407,7 @@ describe('Media PickerFacade', () => {
       sinon.assert.calledOnce(cb);
       sinon.assert.calledWithExactly(cb, {
         id: testTemporaryFileId,
-        status: 'cancelled'
+        status: 'cancelled',
       });
     });
   });
@@ -367,8 +416,16 @@ describe('Media PickerFacade', () => {
     const mockBrowserPicker = sinon.createStubInstance(Browser);
     beforeEach(() => {
       stateManager = new DefaultMediaStateManager();
-      mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) => mockBrowserPicker;
-      facade = new PickerFacade('browser', uploadParams, contextConfig, stateManager, errorReporter, mockPickerFactory);
+      mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) =>
+        mockBrowserPicker;
+      facade = new PickerFacade(
+        'browser',
+        uploadParams,
+        contextConfig,
+        stateManager,
+        errorReporter,
+        mockPickerFactory
+      );
     });
 
     afterEach(() => {
@@ -394,8 +451,16 @@ describe('Media PickerFacade', () => {
     const mockClipboardPicker = sinon.createStubInstance(Clipboard);
     beforeEach(() => {
       stateManager = new DefaultMediaStateManager();
-      mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) => mockClipboardPicker;
-      facade = new PickerFacade('clipboard', uploadParams, contextConfig, stateManager, errorReporter, mockPickerFactory);
+      mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) =>
+        mockClipboardPicker;
+      facade = new PickerFacade(
+        'clipboard',
+        uploadParams,
+        contextConfig,
+        stateManager,
+        errorReporter,
+        mockPickerFactory
+      );
     });
 
     afterEach(() => {
@@ -419,8 +484,16 @@ describe('Media PickerFacade', () => {
     const mockDropzonePicker = sinon.createStubInstance(Dropzone);
     beforeEach(() => {
       stateManager = new DefaultMediaStateManager();
-      mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) => mockDropzonePicker;
-      facade = new PickerFacade('dropzone', uploadParams, contextConfig, stateManager, errorReporter, mockPickerFactory);
+      mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) =>
+        mockDropzonePicker;
+      facade = new PickerFacade(
+        'dropzone',
+        uploadParams,
+        contextConfig,
+        stateManager,
+        errorReporter,
+        mockPickerFactory
+      );
     });
 
     afterEach(() => {
@@ -444,8 +517,16 @@ describe('Media PickerFacade', () => {
     const mockBinaryUploaderPicker = sinon.createStubInstance(BinaryUploader);
     beforeEach(() => {
       stateManager = new DefaultMediaStateManager();
-      mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) => mockBinaryUploaderPicker;
-      facade = new PickerFacade('binary', uploadParams, contextConfig, stateManager, errorReporter, mockPickerFactory);
+      mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) =>
+        mockBinaryUploaderPicker;
+      facade = new PickerFacade(
+        'binary',
+        uploadParams,
+        contextConfig,
+        stateManager,
+        errorReporter,
+        mockPickerFactory
+      );
     });
 
     afterEach(() => {

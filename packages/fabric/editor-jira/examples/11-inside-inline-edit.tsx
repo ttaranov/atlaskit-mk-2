@@ -2,7 +2,7 @@
 import * as React from 'react';
 import InlineEdit from '@atlaskit/inline-edit';
 import { default as Editor } from '../src';
-import { storyMediaProviderFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 import ExampleWrapper from '../example-helpers/ExampleWrapper';
 
 export default function Component() {

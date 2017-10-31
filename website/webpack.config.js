@@ -16,7 +16,6 @@ const path = require('path');
 const boltQuery = require('bolt-query');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = async function createWebpackConfig() {
   const basePath = path.join(__dirname, '..');
@@ -189,11 +188,7 @@ module.exports = async function createWebpackConfig() {
         // deepChildren: true,
       }),
       new HtmlWebpackPlugin({
-        template: 'public/index.html.ejs'
-      }),
-      new BundleAnalyzerPlugin({
-        generateStatsFile: true,
-        analyzerMode: 'static',
+        template: 'public/index.html.ejs',
       }),
       // new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),
     ],

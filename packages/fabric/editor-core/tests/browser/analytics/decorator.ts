@@ -6,7 +6,7 @@ import * as sinon from 'sinon';
 import analytics from '../../../src/analytics/decorator';
 import { AnalyticsHandler } from '../../../src/analytics/handler';
 import service from '../../../src/analytics/service';
-import { chaiPlugin } from '../../../src/test-helper';
+import { chaiPlugin } from '@atlaskit/editor-test-helpers';
 
 chai.use(chaiPlugin);
 
@@ -15,7 +15,7 @@ describe('analytics decorator', () => {
 
   beforeEach(() => {
     spy = sinon.spy();
-    service.handler = (spy as AnalyticsHandler);
+    service.handler = spy as AnalyticsHandler;
   });
 
   afterEach(() => {
@@ -26,7 +26,9 @@ describe('analytics decorator', () => {
   it('tracks events after class method is called', () => {
     class AnnotatedTestClass {
       @analytics('test.event')
-      foo() { return true; }
+      foo() {
+        return true;
+      }
     }
 
     const instance = new AnnotatedTestClass();
@@ -43,11 +45,9 @@ describe('analytics decorator', () => {
 
   it('tracks events after bound method (instance property) is called', () => {
     class AnnotatedTestClass2 {
-      @analytics('test.event.foo')
-      foo = () => true
+      @analytics('test.event.foo') foo = () => true;
 
-      @analytics('test.event.bar')
-      bar = () => true
+      @analytics('test.event.bar') bar = () => true;
     }
 
     const instance = new AnnotatedTestClass2();
@@ -64,8 +64,7 @@ describe('analytics decorator', () => {
 
   it('returns unique decorated bound method (property) per instance', () => {
     class AnnotatedTestClassWithBoundMethod {
-      @analytics('test.event.foo')
-      foo = () => true
+      @analytics('test.event.foo') foo = () => true;
     }
 
     const instance1 = new AnnotatedTestClassWithBoundMethod();
@@ -75,11 +74,10 @@ describe('analytics decorator', () => {
   });
 
   it('returns property value if decorating a non-function property', () => {
-    sinon.stub(console, 'warn', () => { });
+    sinon.stub(console, 'warn', () => {});
 
     class AnnotatedTestClassWithPrimitiveValue {
-      @analytics('test.event.foo')
-      foo = 15.15;
+      @analytics('test.event.foo') foo = 15.15;
     }
 
     const instance = new AnnotatedTestClassWithPrimitiveValue();
@@ -95,10 +93,9 @@ describe('analytics decorator', () => {
       foo = () => {
         this.bar();
         return true;
-      }
+      };
 
-      @analytics('test.event.bar')
-      private bar = () => true
+      @analytics('test.event.bar') private bar = () => true;
     }
 
     const instance = new AnnotatedTestClass3();
@@ -112,8 +109,7 @@ describe('analytics decorator', () => {
 
   it('should not track event if it returns false', () => {
     class AnnotatedTestClass {
-      @analytics('test.event.foo')
-      foo = () => false
+      @analytics('test.event.foo') foo = () => false;
     }
 
     const instance = new AnnotatedTestClass();

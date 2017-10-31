@@ -3,13 +3,11 @@
   "version": "21.0.5",
   "description": "Atlassian Editor component for JIRA",
   "license": "Apache-2.0",
-  "main": "dist/cjs/index.js",
+  "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "author": "Atlassian Pty Ltd",
   "maintainers": [],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
@@ -34,6 +32,7 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
+    "@atlaskit/editor-test-helpers": "^0.0.0",
     "@atlaskit/inline-edit": "^2.2.0",
     "@atlaskit/media-core": "^10.2.0",
     "@atlaskit/media-test-helpers": "^8.4.0",

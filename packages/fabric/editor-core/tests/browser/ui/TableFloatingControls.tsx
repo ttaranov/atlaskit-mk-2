@@ -21,7 +21,7 @@ import {
 
 import {
   createEvent, doc, p, makeEditor, table, tr, tdEmpty, tdCursor
-} from '../../../src/test-helper';
+} from '@atlaskit/editor-test-helpers';
 
 describe('TableFloatingControls', () => {
   const event = createEvent('event');

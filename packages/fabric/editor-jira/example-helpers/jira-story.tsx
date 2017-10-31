@@ -5,7 +5,7 @@ import { pd } from 'pretty-data';
 import {
   storyDecorator,
   storyMediaProviderFactory,
-} from '@atlaskit/editor-core/dist/es5/test-helper';
+} from '@atlaskit/editor-test-helpers';
 import InlineEdit from '@atlaskit/inline-edit';
 import Spinner from '@atlaskit/spinner';
 import { name, version } from '../package.json';

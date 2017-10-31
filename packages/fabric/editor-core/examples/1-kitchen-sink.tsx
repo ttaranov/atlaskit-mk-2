@@ -3,7 +3,7 @@ import * as React from 'react';
 import Editor from '../example-helpers/editor';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
 import { name, version } from '../package.json';
-import { storyDecorator } from '../src/test-helper';
+import { storyDecorator } from '@atlaskit/editor-test-helpers';
 
 const CANCEL_ACTION = () => console.log('Cancel');
 const SAVE_ACTION = () => console.log('Save');

@@ -8,7 +8,7 @@ import {
   makeEditor,
   sendKeyToPm,
   toDOM,
-} from '@atlaskit/editor-core/dist/es5/test-helper';
+} from '@atlaskit/editor-test-helpers';
 import {
   confluenceUnsupportedBlock,
   confluenceUnsupportedInline

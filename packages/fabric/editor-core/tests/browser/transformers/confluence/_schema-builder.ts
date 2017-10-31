@@ -1,5 +1,5 @@
 import { Node } from 'prosemirror-model';
-import { markFactory, nodeFactory, RefsNode, RefsTracker } from '../../../../dist/es5/test-helper';
+import { markFactory, nodeFactory, RefsNode, RefsTracker } from '@atlaskit/editor-test-helpers';
 import { confluenceSchema as schema, MediaAttributes } from '@atlaskit/editor-common';
 
 export { RefsNode, RefsTracker, Node };
@@ -20,9 +20,12 @@ export const li = nodeFactory(schema.nodes.listItem);
 export const ol = nodeFactory(schema.nodes.orderedList);
 export const codeblock = (attrs: {} = {}) => nodeFactory(schema.nodes.codeBlock, attrs);
 export const panel = (attrs: {} = {}) => nodeFactory(schema.nodes.panel, attrs);
-export const confluenceUnsupportedBlock = (cxhtml: string) => nodeFactory(schema.nodes.confluenceUnsupportedBlock, { cxhtml })();
-export const confluenceUnsupportedInline = (cxhtml: string) => nodeFactory(schema.nodes.confluenceUnsupportedInline, { cxhtml })();
-export const mention = (attrs: { id: string, text?: string }) => schema.nodes.mention.createChecked(attrs);
+export const confluenceUnsupportedBlock = (cxhtml: string) =>
+  nodeFactory(schema.nodes.confluenceUnsupportedBlock, { cxhtml })();
+export const confluenceUnsupportedInline = (cxhtml: string) =>
+  nodeFactory(schema.nodes.confluenceUnsupportedInline, { cxhtml })();
+export const mention = (attrs: { id: string; text?: string }) =>
+  schema.nodes.mention.createChecked(attrs);
 export const confluenceJiraIssue = (attrs: {
   issueKey?: string;
   macroId?: string;
@@ -59,8 +62,10 @@ export const media = (attrs: {
 };
 export const table = nodeFactory(schema.nodes.table, {});
 export const tr = nodeFactory(schema.nodes.tableRow, {});
-export const td = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(schema.nodes.tableCell, attrs);
-export const th = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(schema.nodes.tableHeader, attrs);
+export const td = (attrs: { colspan?: number; rowspan?: number }) =>
+  nodeFactory(schema.nodes.tableCell, attrs);
+export const th = (attrs: { colspan?: number; rowspan?: number }) =>
+  nodeFactory(schema.nodes.tableHeader, attrs);
 
 // Marks
 export const code = markFactory(schema.marks.code);
@@ -78,9 +83,7 @@ export const inlineMacro = (attrs: {
   placeholderUrl?: string;
   params?: object;
 }) => schema.nodes.inlineMacro.create(attrs);
-export const emoji = (attrs: {
-  id?: string;
-  shortName: string;
-  text?: string;
-}) => schema.nodes.emoji.create(attrs);
-export const confluenceInlineComment = (attrs: { reference: string }) => markFactory(schema.marks.confluenceInlineComment, attrs ? attrs : {}, true);
+export const emoji = (attrs: { id?: string; shortName: string; text?: string }) =>
+  schema.nodes.emoji.create(attrs);
+export const confluenceInlineComment = (attrs: { reference: string }) =>
+  markFactory(schema.marks.confluenceInlineComment, attrs ? attrs : {}, true);

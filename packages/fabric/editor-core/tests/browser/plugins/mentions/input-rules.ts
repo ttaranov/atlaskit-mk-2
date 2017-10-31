@@ -14,18 +14,19 @@ import {
   emoji,
   mention,
   code,
-} from '../../../../src/test-helper';
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import defaultSchema from '../../../../src/test-helper/schema';
 import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
 describe('mentions - input rules', () => {
-  const editor = (doc: any) => makeEditor<MentionsState>({
-    doc,
-    plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
-  });
+  const editor = (doc: any) =>
+    makeEditor<MentionsState>({
+      doc,
+      plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
+    });
   let trackEvent;
   beforeEach(() => {
     trackEvent = sinon.spy();
@@ -72,7 +73,7 @@ describe('mentions - input rules', () => {
   });
 
   it('should replace "@" if there is another emoji node in front of it', () => {
-    return assert('@', true, p(emoji({ shortName: ':smiley:'}), '{<>}'));
+    return assert('@', true, p(emoji({ shortName: ':smiley:' }), '{<>}'));
   });
 
   it('should replace "@" if there is a mention node in front of it', () => {

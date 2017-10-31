@@ -1,6 +1,6 @@
+import { keyCodes } from '@atlaskit/editor-core';
 import { browser } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
-import { keyCodes } from '../keymaps';
 import { TestingEditorView } from './types/prosemirror';
 
 /**
@@ -18,7 +18,7 @@ export default function sendKeyToPm(editorView: EditorView, keys: string) {
 
   // all of the browsers are using the same keyCode for alphabetical keys
   // and it's the uppercased character code in real world
-  const code = keyCodes[key] ? keyCodes[key] : (key.toUpperCase()).charCodeAt(0);
+  const code = keyCodes[key] ? keyCodes[key] : key.toUpperCase().charCodeAt(0);
 
   const event = new CustomEvent('keydown', {
     bubbles: true,

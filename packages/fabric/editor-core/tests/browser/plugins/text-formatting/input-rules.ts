@@ -3,20 +3,32 @@ import * as sinon from 'sinon';
 import { expect } from 'chai';
 
 import {
-  mention, em, strike, code, strong, insertText, chaiPlugin, doc, makeEditor, p, code_block, plain
-} from '../../../../src/test-helper';
+  mention,
+  em,
+  strike,
+  code,
+  strong,
+  insertText,
+  chaiPlugin,
+  doc,
+  makeEditor,
+  p,
+  code_block,
+  plain,
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 
 import textFormattingPlugins from '../../../../src/plugins/text-formatting';
-import defaultSchema from '../../../../src/test-helper/schema';
 import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
 describe('text-formatting input rules', () => {
-  const editor = (doc: any, schema: any = defaultSchema) => makeEditor({
-    doc,
-    plugins: textFormattingPlugins(schema),
-  });
+  const editor = (doc: any, schema: any = defaultSchema) =>
+    makeEditor({
+      doc,
+      plugins: textFormattingPlugins(schema),
+    });
   let trackEvent;
   beforeEach(() => {
     trackEvent = sinon.spy();
@@ -151,7 +163,9 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '**text**', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(plain('**text**')));
-      expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(false);
+      expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(
+        false
+      );
     });
   });
 
@@ -190,7 +204,9 @@ describe('text-formatting input rules', () => {
       const { editorView, sel } = editor(doc(p(strong('This is bold {<>}'))));
 
       insertText(editorView, '*italic*', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(p(strong('This is bold '), em(strong('italic')))));
+      expect(editorView.state.doc).to.deep.equal(
+        doc(p(strong('This is bold '), em(strong('italic'))))
+      );
     });
 
     it('should not convert "*text*" to em inside a code_block', () => {
@@ -279,7 +295,9 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '_text_', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(plain('_text_')));
-      expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(false);
+      expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(
+        false
+      );
     });
   });
 
@@ -352,7 +370,9 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '~~text~~', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(plain('~~text~~')));
-      expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(false);
+      expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(
+        false
+      );
     });
   });
 
@@ -390,12 +410,7 @@ describe('text-formatting input rules', () => {
 
     it('should convert mention to plaint text', () => {
       const mentionNode = mention({ id: '1234', text: '@helga' });
-      const { editorView, sel } = editor(
-        doc(p(
-          'hey! `hello, ',
-          mentionNode,
-          ' there{<>}?'
-        )));
+      const { editorView, sel } = editor(doc(p('hey! `hello, ', mentionNode, ' there{<>}?')));
       insertText(editorView, '`', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(p('hey! ', code('hello, @helga there'), '?')));
@@ -404,13 +419,8 @@ describe('text-formatting input rules', () => {
     it('should cleanup other formatting', () => {
       const mentionNode = mention({ id: '1234', text: '@helga' });
       const { editorView, sel } = editor(
-        doc(p(
-          '`',
-          strong('hello '),
-          mentionNode,
-          em(', '),
-          strike('there?{<>}')
-        )));
+        doc(p('`', strong('hello '), mentionNode, em(', '), strike('there?{<>}')))
+      );
       insertText(editorView, '`', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(p(code('hello @helga, there?'))));
@@ -445,7 +455,9 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '`text`', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(plain('`text`')));
-      expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(false);
+      expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(
+        false
+      );
     });
   });
 
@@ -454,8 +466,8 @@ describe('text-formatting input rules', () => {
       const simpleSchema = {
         ...defaultSchema,
         marks: {
-          strong: defaultSchema.marks.strong
-        }
+          strong: defaultSchema.marks.strong,
+        },
       };
 
       const { editorView, sel } = editor(doc(p('{<>}')), simpleSchema);
@@ -482,7 +494,7 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '___text__', sel);
       insertText(editorView, '_', editorView.state.selection.from);
 
-      expect(editorView.state.doc).to.deep.equal(doc(p(em(strong(('text'))))));
+      expect(editorView.state.doc).to.deep.equal(doc(p(em(strong('text')))));
     });
 
     it('should not convert " __world__" to strong if I insert a space afterwards', () => {

@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as assert from 'assert';
 import { Node as PMNode } from 'prosemirror-model';
-import { chaiPlugin } from '../../../../src/test-helper';
+import { chaiPlugin } from '@atlaskit/editor-test-helpers';
 import {
   ConfluenceTransformer,
   CONFlUENCE_LANGUAGE_MAP as LANGUAGE_MAP

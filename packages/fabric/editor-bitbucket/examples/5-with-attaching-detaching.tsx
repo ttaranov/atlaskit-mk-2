@@ -1,6 +1,6 @@
 // tslint:disable:no-console
 import * as React from 'react';
-import { base64fileconverter } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { base64fileconverter } from '@atlaskit/editor-test-helpers';
 import { default as Editor } from '../src';
 import BitbucketStyles from '../example-helpers/bitbucketStyles';
 

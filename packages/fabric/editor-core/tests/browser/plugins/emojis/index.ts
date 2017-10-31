@@ -17,8 +17,8 @@ import {
   p,
   ul,
   code,
-} from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 import ProviderFactory from '../../../../src/providerFactory';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
@@ -41,10 +41,11 @@ chai.use(chaiPlugin);
 
 describe('emojis', () => {
   const providerFactory = new ProviderFactory();
-  const editor = (doc: any) => makeEditor<EmojiState>({
-    doc,
-    plugins: emojiPlugins(defaultSchema, providerFactory),
-  });
+  const editor = (doc: any) =>
+    makeEditor<EmojiState>({
+      doc,
+      plugins: emojiPlugins(defaultSchema, providerFactory),
+    });
 
   providerFactory.setProvider('emojiProvider', emojiProvider);
 
@@ -53,9 +54,7 @@ describe('emojis', () => {
   };
 
   describe('keymap', () => {
-
     describe('ArrowUp', () => {
-
       it('should be ignored if there is no emojiProvider', () => {
         const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
         const spy = sinon.spy(pluginState, 'onSelectPrevious');
@@ -234,7 +233,7 @@ describe('emojis', () => {
         const spy = sinon.spy(pluginState, 'insertEmoji');
         (pluginState as any).emojiProvider = true;
         forceUpdate(editorView); // Force update to ensure active query.
-        pluginState.onSearchResult({emojis: [grinEmoji]});
+        pluginState.onSearchResult({ emojis: [grinEmoji] });
 
         sendKeyToPm(editorView, 'Space');
         expect(spy.calledWith(grinEmoji), 'was called').to.equal(true);
@@ -287,18 +286,16 @@ describe('emojis', () => {
         editorView.destroy();
       });
     });
-
   });
 
   describe('insertEmoji', () => {
-
     it('should replace emoji-query-mark with emoji-node', () => {
       const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin'))));
 
       pluginState.insertEmoji({
         fallback: 'Oscar Wallhult',
         shortName: 'oscar',
-        id: '1234'
+        id: '1234',
       });
 
       expect(editorView.state.doc.nodeAt(1), 'emoji node').to.be.of.nodeSpec(emojiNode);
@@ -310,39 +307,19 @@ describe('emojis', () => {
 
       pluginState.insertEmoji(grinEmojiId);
 
-      expect(editorView.state.doc, 'document').to.deep.equal(
-        doc(
-          p(
-            emoji(grinEmojiId),
-            ' '
-          )
-        )
-      );
+      expect(editorView.state.doc, 'document').to.deep.equal(doc(p(emoji(grinEmojiId), ' ')));
       editorView.destroy();
     });
 
     it('should allow inserting multiple emojis next to each other', () => {
       const { editorView, pluginState } = editor(
-        doc(
-          p(
-            emoji(grinEmojiId),
-            ' ',
-            emojiQuery(':ev{<>}')
-          )
-        )
+        doc(p(emoji(grinEmojiId), ' ', emojiQuery(':ev{<>}')))
       );
 
       pluginState.insertEmoji(evilburnsEmojiId);
 
       expect(editorView.state.doc, 'document').to.deep.equal(
-        doc(
-          p(
-            emoji(grinEmojiId),
-            ' ',
-            emoji(evilburnsEmojiId),
-            ' '
-          )
-        )
+        doc(p(emoji(grinEmojiId), ' ', emoji(evilburnsEmojiId), ' '))
       );
       editorView.destroy();
     });
@@ -352,70 +329,30 @@ describe('emojis', () => {
 
       pluginState.insertEmoji(grinEmojiId);
 
-      expect(editorView.state.doc, 'document').to.deep.equal(
-        doc(
-          p(
-            br,
-            emoji(grinEmojiId),
-            ' '
-          )
-        )
-      );
+      expect(editorView.state.doc, 'document').to.deep.equal(doc(p(br, emoji(grinEmojiId), ' ')));
       editorView.destroy();
     });
 
     it('should not break list into two when inserting emoji inside list item', () => {
       const { editorView, pluginState } = editor(
-        doc(
-          p(
-            ul(
-              li(p('One')),
-              li(p('Two ', emojiQuery(':{<>}'))),
-              li(p('Three'))))));
+        doc(p(ul(li(p('One')), li(p('Two ', emojiQuery(':{<>}'))), li(p('Three')))))
+      );
 
       pluginState.insertEmoji(grinEmojiId);
 
       expect(editorView.state.doc, 'document').to.deep.equal(
-        doc(
-          p(
-            ul(
-              li(p('One')),
-              li(
-                p(
-                  'Two ',
-                  emoji(grinEmojiId),
-                  ' '
-                )
-              ),
-              li(p('Three'))
-            )
-          )
-        )
+        doc(p(ul(li(p('One')), li(p('Two ', emoji(grinEmojiId), ' ')), li(p('Three')))))
       );
       editorView.destroy();
     });
 
     it('should insert only 1 emoji at a time inside blockqoute', () => {
-      const { editorView, pluginState } = editor(
-        doc(
-          blockquote(
-            p('Hello ', emojiQuery(':{<>}'))
-          )
-        )
-      );
+      const { editorView, pluginState } = editor(doc(blockquote(p('Hello ', emojiQuery(':{<>}')))));
 
       pluginState.insertEmoji(grinEmojiId);
 
       expect(editorView.state.doc, 'document').to.deep.equal(
-        doc(
-          blockquote(
-            p(
-              'Hello ',
-              emoji(grinEmojiId),
-              ' '
-            )
-          )
-        )
+        doc(blockquote(p('Hello ', emoji(grinEmojiId), ' ')))
       );
 
       expect(editorView.state.doc.nodeAt(8), 'emoji node').to.be.of.nodeSpec(emojiNode);

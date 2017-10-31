@@ -4,14 +4,15 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import WithPluginState from '../../../../src/editor/ui/WithPluginState';
 import { EventDispatcher } from '../../../../src/editor/event-dispatcher';
-import { makeEditor, doc, p } from '../../../../src/test-helper';
+import { makeEditor, doc, p } from '@atlaskit/editor-test-helpers';
 import { Plugin, PluginKey } from 'prosemirror-state';
 
 describe(name, () => {
-  const editor = (doc: any, plugin: Plugin) => makeEditor({
-    doc,
-    plugins: [plugin]
-  });
+  const editor = (doc: any, plugin: Plugin) =>
+    makeEditor({
+      doc,
+      plugins: [plugin],
+    });
   const pluginKey = new PluginKey('plugin');
   const createPlugin = (state, key?) => {
     return new Plugin({
@@ -22,8 +23,8 @@ describe(name, () => {
         },
         apply() {
           return state;
-        }
-      }
+        },
+      },
     });
   };
 
@@ -37,16 +38,18 @@ describe(name, () => {
       const pluginState = {};
       const plugin = createPlugin(pluginState);
       const { editorView } = editor(doc(p()), plugin);
-      const wrapper = mount(<WithPluginState
-        editorView={editorView}
-        eventDispatcher={eventDispatcher}
-        plugins={{ currentPluginState: pluginKey }}
-        // tslint:disable-next-line:jsx-no-lambda
-        render={({ currentPluginState }) => {
-          expect(currentPluginState).to.eq(pluginState);
-          return null;
-        }}
-      />);
+      const wrapper = mount(
+        <WithPluginState
+          editorView={editorView}
+          eventDispatcher={eventDispatcher}
+          plugins={{ currentPluginState: pluginKey }}
+          // tslint:disable-next-line:jsx-no-lambda
+          render={({ currentPluginState }) => {
+            expect(currentPluginState).to.eq(pluginState);
+            return null;
+          }}
+        />
+      );
       wrapper.unmount();
       editorView.destroy();
     });

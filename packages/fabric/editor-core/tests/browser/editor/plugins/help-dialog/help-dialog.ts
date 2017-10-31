@@ -1,14 +1,17 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import createEditor from '../../../../helpers/create-editor';
-import helpDialog, { pluginKey, openHelpCommand, closeHelpCommand } from '../../../../../src/editor/plugins/help-dialog';
+import helpDialog, {
+  pluginKey,
+  openHelpCommand,
+  closeHelpCommand,
+} from '../../../../../src/editor/plugins/help-dialog';
 import { EditorView } from 'prosemirror-view';
 import EditorActions from '../../../../../src/editor/actions';
-import { sendKeyToPm } from '../../../../../src/test-helper';
+import { sendKeyToPm } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../../../src/analytics';
 
 describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
-
   let editorActions: EditorActions;
   let editorView: EditorView;
   beforeEach(() => {

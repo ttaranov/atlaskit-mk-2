@@ -3,9 +3,14 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import imageUploadPlugins, { ImageUploadState } from '../../../../src/plugins/image-upload';
 import {
-  chaiPlugin, makeEditor, img, doc, p, code_block,
-} from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
+  chaiPlugin,
+  makeEditor,
+  img,
+  doc,
+  p,
+  code_block,
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 import { setNodeSelection, setTextSelection } from '../../../../src/utils';
 
 chai.use(chaiPlugin);
@@ -13,10 +18,11 @@ chai.use(chaiPlugin);
 describe('image-upload', () => {
   const testImgSrc = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>';
   const testImg = () => img({ src: testImgSrc });
-  const editor = (doc: any) => makeEditor<ImageUploadState>({
-    doc,
-    plugins: imageUploadPlugins(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor<ImageUploadState>({
+      doc,
+      plugins: imageUploadPlugins(defaultSchema),
+    });
 
   it('allows change handler to be registered', () => {
     const { pluginState } = editor(doc(p('')));

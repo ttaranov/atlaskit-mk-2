@@ -6,21 +6,30 @@ import { FloatingToolbar } from '../../../src/ui/LanguagePicker/styles';
 import Select from '@atlaskit/single-select';
 import { TrashToolbarButton } from '../../../src/ui/LanguagePicker/styles';
 import LanguagePicker from '../../../src/ui/LanguagePicker';
-import { code_block, doc, p, makeEditor, createEvent } from '../../../src/test-helper';
-import defaultSchema from '../../../src/test-helper/schema';
+import {
+  code_block,
+  doc,
+  p,
+  makeEditor,
+  createEvent,
+  defaultSchema,
+} from '@atlaskit/editor-test-helpers';
 
 describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
   const event = createEvent('event');
-  const editor = (doc: any) => makeEditor<CodeBlockState>({
-    doc,
-    plugins: codeBlockPlugins(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor<CodeBlockState>({
+      doc,
+      plugins: codeBlockPlugins(defaultSchema),
+    });
 
   context('when toolbarVisible is false', () => {
     it('does not render toolbar', () => {
       const { editorView, pluginState } = editor(doc(code_block()('text')));
 
-      const languagePicker = shallow(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
+      const languagePicker = shallow(
+        <LanguagePicker pluginState={pluginState} editorView={editorView} />
+      );
       languagePicker.setState({ toolbarVisible: false });
 
       expect(languagePicker.find(FloatingToolbar)).to.have.length(0);
@@ -31,7 +40,9 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
     it('renders toolbar', () => {
       const { editorView, pluginState } = editor(doc(code_block()('text')));
 
-      const languagePicker = shallow(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
+      const languagePicker = shallow(
+        <LanguagePicker pluginState={pluginState} editorView={editorView} />
+      );
       languagePicker.setState({ toolbarVisible: true });
 
       expect(languagePicker.find(FloatingToolbar)).to.have.length(1);
@@ -42,7 +53,9 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
     it('renders toolbar', () => {
       const { editorView, pluginState } = editor(doc(code_block()('text')));
 
-      const languagePicker = shallow(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
+      const languagePicker = shallow(
+        <LanguagePicker pluginState={pluginState} editorView={editorView} />
+      );
       languagePicker.setState({ languageSelectFocused: true, toolbarVisible: false });
 
       expect(languagePicker.find(Select)).to.have.length(1);
@@ -52,7 +65,9 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
   context('click on a code block element', () => {
     it('sets toolbarVisible to be true', () => {
       const { editorView, plugin, pluginState, sel } = editor(doc(code_block()('text')));
-      const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
+      const languagePicker = mount(
+        <LanguagePicker pluginState={pluginState} editorView={editorView} />
+      );
 
       plugin.props.onFocus!(editorView, event);
       plugin.props.handleClick!(editorView, sel, event);
@@ -65,7 +80,9 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
   context('click on a non code block element', () => {
     it('sets current code-block element to be undefined', () => {
       const { editorView, plugin, pluginState, sel } = editor(doc(p('text')));
-      const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
+      const languagePicker = mount(
+        <LanguagePicker pluginState={pluginState} editorView={editorView} />
+      );
 
       plugin.props.handleClick!(editorView, sel, event);
 
@@ -76,12 +93,16 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
 
   context('editor is blur', () => {
     it('LanguagePicker produce null HTML', () => {
-      const { editorView, plugin, pluginState, sel } = editor(doc(p('paragraph'), code_block()('{<}codeBlock{>}')));
+      const { editorView, plugin, pluginState, sel } = editor(
+        doc(p('paragraph'), code_block()('{<}codeBlock{>}'))
+      );
 
       plugin.props.onFocus!(editorView, event);
       plugin.props.handleClick!(editorView, sel, event);
 
-      const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
+      const languagePicker = mount(
+        <LanguagePicker pluginState={pluginState} editorView={editorView} />
+      );
 
       expect(languagePicker.html()).to.not.equal(null);
       plugin.props.onBlur!(editorView, event);
@@ -93,7 +114,9 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
   context('when code block has a language', () => {
     it('shows the formatted language', () => {
       const { editorView, pluginState } = editor(doc(code_block({ language: 'js' })('text')));
-      const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
+      const languagePicker = mount(
+        <LanguagePicker pluginState={pluginState} editorView={editorView} />
+      );
 
       expect(languagePicker.state('activeLanguage').name).to.equal('JavaScript');
       languagePicker.unmount();
@@ -101,7 +124,9 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
 
     it('updates plugin with the formatted langauge', () => {
       const { editorView, pluginState } = editor(doc(code_block({ language: 'js' })('text')));
-      const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
+      const languagePicker = mount(
+        <LanguagePicker pluginState={pluginState} editorView={editorView} />
+      );
 
       expect(pluginState.language).to.equal('javascript');
       languagePicker.unmount();
@@ -111,7 +136,9 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
   context('when code block has no language set', () => {
     it('shows no specific language', () => {
       const { editorView, pluginState } = editor(doc(code_block()('text')));
-      const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
+      const languagePicker = mount(
+        <LanguagePicker pluginState={pluginState} editorView={editorView} />
+      );
 
       expect(languagePicker.state('language')).to.equal(undefined);
       languagePicker.unmount();
@@ -122,7 +149,9 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
     it('should be rendered in language picker floating toolbar', () => {
       const { editorView, pluginState } = editor(doc(code_block({ language: 'js' })('text')));
 
-      const languagePicker = shallow(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
+      const languagePicker = shallow(
+        <LanguagePicker pluginState={pluginState} editorView={editorView} />
+      );
       languagePicker.setState({ languageSelectFocused: true, toolbarVisible: false });
 
       expect(languagePicker.find(TrashToolbarButton)).to.have.length(1);

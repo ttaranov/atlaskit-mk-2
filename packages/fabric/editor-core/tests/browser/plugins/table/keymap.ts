@@ -6,7 +6,7 @@ import { TableMap, CellSelection } from 'prosemirror-tables';
 
 import {
   chaiPlugin, doc, createEvent, makeEditor, sendKeyToPm, table, tr, td, tdEmpty, tdCursor, thEmpty, p
-} from '../../../../src/test-helper';
+} from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);

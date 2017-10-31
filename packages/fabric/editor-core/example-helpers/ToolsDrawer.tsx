@@ -9,7 +9,7 @@ import imageUploadHandler from './imageUpload';
 
 import { MentionResource } from '../src';
 import { toJSON } from '../src/utils';
-import { storyMediaProviderFactory } from '../src/test-helper';
+import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 
 const rejectedPromise = Promise.reject(new Error('Simulated provider rejection'));
 const pendingPromise = new Promise<any>(() => { });
