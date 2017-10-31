@@ -1,12 +1,13 @@
 // @flow
 import React, { PureComponent, type Node } from 'react';
 
-import Chrome from './Chrome';
-import Content from './Content';
-import Remove from './Remove';
+import Chrome from '../Chrome';
+import Content from '../Content';
+import RemoveButton from '../RemoveButton';
 
-import Before from '../styled/Before';
-import Container from '../styled/Container';
+import Before from './styledBefore';
+import Container from './styledContainer';
+
 import type { AppearanceType, TagColor } from '../types';
 
 const colorList = [
@@ -122,7 +123,7 @@ export default class Tag extends PureComponent<Props, State> {
             {text}
           </Content>
           {isRemovable ? (
-            <Remove
+            <RemoveButton
               {...styled}
               onHoverChange={this.handleHoverChange}
               onRemoveAction={this.handleRemoveRequest}

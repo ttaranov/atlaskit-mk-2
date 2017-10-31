@@ -1,8 +1,8 @@
 // @flow
 import styled from 'styled-components';
 import { colors, themed, gridSize, borderRadius } from '@atlaskit/theme';
-import { buttonWidthUnitless, tagHeight, focusRingColor } from './constants';
-import { backgroundColor, backgroundColorHover, textColor, textColorHover } from './theme';
+import { buttonWidthUnitless, tagHeight, focusRingColor } from '../constants';
+import { backgroundColor, backgroundColorHover, textColor, textColorHover } from '../theme';
 
 const gridSizeUnitless = gridSize();
 
@@ -10,7 +10,7 @@ const colorRemoval = themed({ light: colors.R500, dark: colors.DN30 });
 const colorRemovalHover = themed({ light: colors.N700, dark: colors.DN30 });
 const backgroundColorRemoval = themed({ light: colors.R50, dark: colors.R100 });
 
-export default styled.span`
+export const Span = styled.span`
   &:focus {
     box-shadow: 0 0 0 2px ${focusRingColor};
     outline: none;

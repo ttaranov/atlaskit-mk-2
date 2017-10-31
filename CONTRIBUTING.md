@@ -210,7 +210,7 @@ export default function Example() {
 In order to view these examples within your browser, you can run:
 
 ```sh
-bolt examples
+bolt start
 ```
 
 ## Browser testing your code

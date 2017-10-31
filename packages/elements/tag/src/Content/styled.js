@@ -1,7 +1,7 @@
 // @flow
 import styled, { css } from 'styled-components';
 import { gridSize, fontSize, link, linkHover, math } from '@atlaskit/theme';
-import { buttonWidthUnitless, maxTextWidth, maxTextWidthUnitless } from './constants';
+import { buttonWidthUnitless, maxTextWidth, maxTextWidthUnitless } from '../constants';
 
 // Common styles for Text & Link
 const COMMON_STYLES = css`

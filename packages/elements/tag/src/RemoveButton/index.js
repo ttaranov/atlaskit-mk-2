@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import RemoveIcon from '@atlaskit/icon/glyph/cross';
-import Button from '../styled/Remove';
+import { Button } from './styled';
 
 type Props = {
   removeText: string,
@@ -10,7 +10,7 @@ type Props = {
   onRemoveAction?: () => mixed,
 };
 
-export default class Remove extends PureComponent<Props> {
+export default class RemoveButton extends PureComponent<Props> {
   onKeyPress = (e: KeyboardEvent) => {
     const spacebarOrEnter = (e.key === ' ' || e.key === 'Enter');
 
