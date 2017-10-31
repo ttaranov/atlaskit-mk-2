@@ -1,3 +1,4 @@
+import { Schema } from 'prosemirror-model';
 import { createSchema } from '@atlaskit/editor-common';
 
 export default createSchema({
@@ -43,4 +44,4 @@ export default createSchema({
     'textColor',
     'subsup',
   ]
-});
+}) as Schema;

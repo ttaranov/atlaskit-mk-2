@@ -1,3 +1,4 @@
+import { Schema } from 'prosemirror-model';
 import { markFactory, nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import { bitbucketSchema as schema } from '@atlaskit/editor-common';
 

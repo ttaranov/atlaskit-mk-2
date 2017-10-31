@@ -1,6 +1,8 @@
-import { markFactory, nodeFactory } from '../../../../dist/es5/test-helper';
+import { Node } from 'prosemirror-model';
+import { markFactory, nodeFactory, RefsNode, RefsTracker } from '../../../../dist/es5/test-helper';
 import { bitbucketSchema as schema } from '@atlaskit/editor-common';
 
+export { RefsNode, RefsTracker, Node };
 // Nodes
 export const blockquote = nodeFactory(schema.nodes.blockquote);
 export const br = schema.nodes.hardBreak.createChecked();

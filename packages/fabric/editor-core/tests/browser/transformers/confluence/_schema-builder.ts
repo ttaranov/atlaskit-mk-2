@@ -1,6 +1,8 @@
+import { Node } from 'prosemirror-model';
+import { markFactory, nodeFactory, RefsNode, RefsTracker } from '../../../../dist/es5/test-helper';
 import { confluenceSchema as schema, MediaAttributes } from '@atlaskit/editor-common';
-import { markFactory, nodeFactory } from '../../../../src/test-helper';
 
+export { RefsNode, RefsTracker, Node };
 // Nodes
 export const ul = nodeFactory(schema.nodes.bulletList);
 export const doc = nodeFactory(schema.nodes.doc);

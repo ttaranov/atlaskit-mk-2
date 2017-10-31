@@ -17,7 +17,8 @@ export {
   media, mediaGroup, singleImage, textColor, table, tr, td,
   th, tdEmpty, td11, th11, tdCursor, thEmpty, thCursor,
   decisionItem, decisionList, taskItem, taskList, confluenceJiraIssue,
-  confluenceUnsupportedBlock, confluenceUnsupportedInline, inlineMacro
+  confluenceUnsupportedBlock, confluenceUnsupportedInline, inlineMacro,
+  RefsNode, RefsTracker
 } from './schema-builder';
 export * from './html-helpers';
 export { default as storyDecorator } from './story-decorator';

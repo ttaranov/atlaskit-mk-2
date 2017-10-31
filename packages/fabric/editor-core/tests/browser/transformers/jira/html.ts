@@ -1,10 +1,11 @@
+import { Schema } from 'prosemirror-model';
 import { markFactory, nodeFactory } from '../../../../src/test-helper';
 import { checkParse, checkEncode, checkParseEncodeRoundTrips, encode, parseWithSchema } from './_test-helpers';
 
 import { createJIRASchema } from '@atlaskit/editor-common';
 import { expect } from 'chai';
 
-export const schema = createJIRASchema({ allowSubSup: true });
+export const schema: Schema = createJIRASchema({ allowSubSup: true });
 
 // Nodes
 let doc = nodeFactory(schema.nodes.doc);
