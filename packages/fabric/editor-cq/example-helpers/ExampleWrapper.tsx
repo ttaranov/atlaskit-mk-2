@@ -6,7 +6,7 @@ import Spinner from '@atlaskit/spinner';
 import Editor from '../src';
 import CqStyles from './CqStyles';
 
-type Props = { render(handleChange: (editor: Editor) => void): React.ReactInstance };
+type Props = { render(handleChange: (editor: Editor) => void): React.ReactNode };
 type State = { cxhtml?: string; story?: any; prettify?: boolean; isMediaReady?: boolean };
 
 export default class Demo extends React.Component<Props, State> {
