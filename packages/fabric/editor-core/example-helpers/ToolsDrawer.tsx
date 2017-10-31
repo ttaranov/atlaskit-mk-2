@@ -4,12 +4,12 @@ import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import Button from '@atlaskit/button';
 
-import { Content, ButtonGroup } from './../styles';
-import imageUploadHandler from '../imageUpload/handler';
+import { Content, ButtonGroup } from './styles';
+import imageUploadHandler from './imageUpload';
 
-import { MentionResource } from '../../src';
-import { toJSON } from '../../src/utils';
-import { storyMediaProviderFactory } from '../../src/test-helper';
+import { MentionResource } from '../src';
+import { toJSON } from '../src/utils';
+import { storyMediaProviderFactory } from '../src/test-helper';
 
 const rejectedPromise = Promise.reject(new Error('Simulated provider rejection'));
 const pendingPromise = new Promise<any>(() => { });
@@ -119,7 +119,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
         <div className="toolsDrawer">
           {
             Object.keys(providers).map(providerKey => (
-              <div>
+              <div key={providerKey}>
                 <ButtonGroup>
                   <label>{providerKey}: </label>
                   {Object.keys(providers[providerKey]).map((providerStateName) => (
