@@ -5,7 +5,8 @@ import { DecisionItem as AkDecisionItem } from '@atlaskit/task-decision';
 import DecisionItem from '../../../../../src/renderer/react/nodes/decisionItem';
 
 describe('Renderer - React/Nodes/DecisionItem', () => {
-  const listItem = shallow(<DecisionItem>This is a list item</DecisionItem>);
+  const text: any = 'This is a list item';
+  const listItem = shallow(<DecisionItem>{text}</DecisionItem>);
 
   it('should wrap content with <AkDecisionItem>-tag', () => {
     expect(listItem.is(AkDecisionItem)).to.equal(true);

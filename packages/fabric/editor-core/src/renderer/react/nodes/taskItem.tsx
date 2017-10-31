@@ -11,7 +11,7 @@ export interface Props {
   state?: string;
   rendererContext?: RendererContext;
   providers?: ProviderFactory;
-  children: ReactElement<any>,
+  children?: ReactElement<any>;
 }
 
 export default class TaskItem extends PureComponent<Props, {}> {

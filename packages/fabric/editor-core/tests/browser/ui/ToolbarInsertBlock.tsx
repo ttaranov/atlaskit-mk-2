@@ -17,8 +17,8 @@ import ProviderFactory from '../../../src/providerFactory';
 import { analyticsService } from '../../../src/analytics';
 
 const mediaProvider: Promise<MediaProvider> = Promise.resolve({
-  viewContext: Promise.resolve({}),
-  uploadContext: Promise.resolve({})
+  viewContext: Promise.resolve({ serviceHost: 'https://some-host', authProvider: {} as any }),
+  uploadContext: Promise.resolve({ serviceHost: 'https://some-host', authProvider: {} as any })
 });
 
 const providerFactory = new ProviderFactory();

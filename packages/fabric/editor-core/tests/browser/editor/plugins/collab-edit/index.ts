@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import createEditor from '../../../../helpers/create-editor';
 import collabEdit, { pluginKey as collabEditPluginKey } from '../../../../../src/editor/plugins/collab-edit';
 import ProviderFactory from '../../../../../src/providerFactory';
-import { MockCollabEditProvider } from '../../../../../stories/mock-collab-provider';
+import { MockCollabEditProvider } from '../../../../../example-helpers/mock-collab-provider';
 import { findPointer } from '../../../../../src/editor/plugins/collab-edit/utils';
 
 const setupEditor = (setProvider: boolean = true) => {

@@ -4,7 +4,7 @@ import { PureComponent, Children } from 'react';
 import { DecisionList as AkDecisionList, DecisionItem } from '@atlaskit/task-decision';
 
 export type Props = {
-  children: DecisionItem | Array<DecisionItem>
+  children?: DecisionItem | Array<DecisionItem>
 };
 
 export default class DecisionList extends PureComponent<Props, {}> {

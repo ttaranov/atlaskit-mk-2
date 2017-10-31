@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import ReactSerializer from '../../../../src/renderer/react';
-import schema from '../../../../stories/schema';
+import schema from '../../../../example-helpers/schema';
 import * as validator from '@atlaskit/renderer';
 
 const doc = {

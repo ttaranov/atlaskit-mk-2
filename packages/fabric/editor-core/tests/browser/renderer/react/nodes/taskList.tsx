@@ -6,7 +6,8 @@ import TaskList from '../../../../../src/renderer/react/nodes/taskList';
 
 describe('Renderer - React/Nodes/TaskList', () => {
   it('should wrap content with <AkTaskList>-tag with start prop', () => {
-    const taskListWrapper = shallow(<TaskList>This is a task list</TaskList>);
+    const text: any = 'This is a task list';
+    const taskListWrapper = shallow(<TaskList>{text}</TaskList>);
     const taskList = taskListWrapper.childAt(0);
     expect(taskListWrapper.is('div')).to.equal(true);
     expect(taskList.is(AkTaskList)).to.equal(true);
