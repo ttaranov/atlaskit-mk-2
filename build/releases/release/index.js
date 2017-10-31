@@ -59,16 +59,17 @@ async function run(opts) {
     logger.log('Committing changes...');
     const committed = await git.commit(publishCommit);
 
-    logger.log('Pushing back to origin...');
-    const pushed = committed && await git.push();
 
-    if (pushed) {
+    if (committed) {
       // bolt will throw if there is an error
       await bolt.publish({ access: 'public' });
 
       const releasedPackages = releaseObj.releases.map(r => `${r.name}@${r.version}`).join('\n');
       logger.success('Successfully published:');
       logger.log(releasedPackages);
+
+      logger.log('Pushing changes back to origin...');
+      await git.push();
     }
   }
 }
