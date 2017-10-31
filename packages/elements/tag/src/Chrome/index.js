@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent, type Node } from 'react';
-import Span from '../styled/Chrome';
+import { Span } from './styled';
 import type { TagColor } from '../types';
 
 type Props = {

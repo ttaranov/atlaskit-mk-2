@@ -27,5 +27,5 @@ export default md`
     />
   )}
 
-  ${<Props props={require('!!extract-react-types-loader!../src/components/Tag')} />}
+  ${<Props props={require('!!extract-react-types-loader!../src/Tag')} />}
 `;
