@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Tag from '@atlaskit/tag';
 import TagGroup from '../index';
-import Container from './styled';
+import { Container } from './styled';
 
 describe('TagGroup', () => {
   it('should export a base component', () => {
