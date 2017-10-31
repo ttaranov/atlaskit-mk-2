@@ -86,6 +86,7 @@
     "@atlaskit/button": "^5.1.1",
     "@atlaskit/media-test-helpers": "^8.4.0",
     "@atlaskit/util-data-test": "^7.0.0",
+    "@atlaskit/util-shared-styles": "^2.10.3",
     "chai-as-promised": "^6.0.0",
     "fetch-mock": "^5.12.1",
     "highlight.js": "^9.6.0",
