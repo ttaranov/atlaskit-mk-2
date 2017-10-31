@@ -2,8 +2,8 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import Badge from '../src';
-import { APPEARANCE_ENUM } from '../src/components/Badge';
+import Badge from '../index';
+import { APPEARANCE_ENUM } from './index';
 
 describe('Badge', () => {
   describe('value property', () => {
