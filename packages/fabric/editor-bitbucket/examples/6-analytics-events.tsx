@@ -1,12 +1,13 @@
 // tslint:disable:no-console
 import * as React from 'react';
 import { default as Editor } from '../src';
+import BitbucketStyles from '../example-helpers/bitbucketStyles';
 
 const NOOP = () => {};
 
 export default function Component() {
   return (
-    <div>
+    <BitbucketStyles>
       <h5 style={{ marginBottom: 20 }}>
         Interact with the editor and observe analytics events in the Action Logger below
       </h5>
@@ -16,6 +17,6 @@ export default function Component() {
         onSave={NOOP}
         onCancel={NOOP}
       />
-    </div>
+    </BitbucketStyles>
   );
 }

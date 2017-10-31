@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { base64fileconverter } from '@atlaskit/editor-core/dist/es5/test-helper';
 import { default as Editor } from '../src';
+import BitbucketStyles from '../example-helpers/bitbucketStyles';
 
 const CANCEL_ACTION = () => console.log('Cancel');
 const CHANGE_ACTION = () => console.log('Change');
@@ -37,11 +38,13 @@ const imageUploadHandler = (e: any, fn: any) => {
 
 export default function Component() {
   return (
-    <Editor
-      imageUploadHandler={imageUploadHandler}
-      onCancel={CANCEL_ACTION}
-      onChange={CHANGE_ACTION}
-      onSave={SAVE_ACTION}
-    />
+    <BitbucketStyles>
+      <Editor
+        imageUploadHandler={imageUploadHandler}
+        onCancel={CANCEL_ACTION}
+        onChange={CHANGE_ACTION}
+        onSave={SAVE_ACTION}
+      />
+    </BitbucketStyles>
   );
 }

@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { base64fileconverter } from '@atlaskit/editor-core/dist/es5/test-helper';
 import { default as Editor } from '../src';
+import BitbucketStyles from '../example-helpers/bitbucketStyles';
 
 const CHANGE_ACTION = () => console.log('Change');
 const SAVE_ACTION = () => console.log('Save');
@@ -12,7 +13,7 @@ export default class Example extends React.Component<{}, {}> {
 
   render() {
     return (
-      <div>
+      <BitbucketStyles>
         <div id="editor">
           <div ref={this.handleDivRef}>
             <Editor
@@ -25,7 +26,7 @@ export default class Example extends React.Component<{}, {}> {
           </div>
         </div>
         <button onClick={this.handleButtonClick}>Attach</button>
-      </div>
+      </BitbucketStyles>
     );
   }
 

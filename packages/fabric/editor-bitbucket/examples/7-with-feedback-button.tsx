@@ -1,12 +1,13 @@
 // tslint:disable:no-console
 import * as React from 'react';
 import { default as Editor } from '../src';
+import BitbucketStyles from '../example-helpers/bitbucketStyles';
 
 const CANCEL_ACTION = () => console.log('Cancel');
 const CHANGE_ACTION = () => console.log('Change');
 const SAVE_ACTION = () => console.log('Save');
 
-class EditorWithFeedback extends React.Component<{}, { hasJquery?: boolean }> {
+export default class EditorWithFeedback extends React.Component<{}, { hasJquery?: boolean }> {
   state = {
     hasJquery: false,
   };
@@ -21,7 +22,11 @@ class EditorWithFeedback extends React.Component<{}, { hasJquery?: boolean }> {
       return <h3>Please wait, loading jQuery ...</h3>;
     }
 
-    return <Editor onCancel={CANCEL_ACTION} onChange={CHANGE_ACTION} onSave={SAVE_ACTION} />;
+    return (
+      <BitbucketStyles>
+        <Editor onCancel={CANCEL_ACTION} onChange={CHANGE_ACTION} onSave={SAVE_ACTION} />
+      </BitbucketStyles>
+    );
   }
 
   private loadJquery = () => {
@@ -38,8 +43,4 @@ class EditorWithFeedback extends React.Component<{}, { hasJquery?: boolean }> {
 
     document.body.appendChild(scriptElem);
   };
-}
-
-export default function Component() {
-  return <EditorWithFeedback />;
 }

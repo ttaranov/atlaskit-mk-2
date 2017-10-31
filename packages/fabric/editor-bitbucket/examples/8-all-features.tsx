@@ -1,5 +1,6 @@
 // tslint:disable:no-console
 import * as React from 'react';
+import BitbucketStyles from '../example-helpers/bitbucketStyles';
 import { MockMentionSource } from '../example-helpers/_mock-mentionsource';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
@@ -54,22 +55,24 @@ export default class EditorWithAllFeatures extends React.Component<Props, State>
 
   render() {
     return (
-      <div ref="root">
-        <Editor
-          placeholder="Test editor"
-          onCancel={CANCEL_ACTION}
-          onChange={this.handleChange}
-          onSave={SAVE_ACTION}
-          mentionSource={mentionSource}
-          emojiProvider={emojiProvider}
-          analyticsHandler={console.log}
-          imageUploadHandler={imageUploadHandler}
-        />
-        <fieldset style={{ marginTop: 20 }}>
-          <legend>Markdown</legend>
-          <pre>{this.state.markdown}</pre>
-        </fieldset>
-      </div>
+      <BitbucketStyles>
+        <div ref="root">
+          <Editor
+            placeholder="Test editor"
+            onCancel={CANCEL_ACTION}
+            onChange={this.handleChange}
+            onSave={SAVE_ACTION}
+            mentionSource={mentionSource}
+            emojiProvider={emojiProvider}
+            analyticsHandler={console.log}
+            imageUploadHandler={imageUploadHandler}
+          />
+          <fieldset style={{ marginTop: 20 }}>
+            <legend>Markdown</legend>
+            <pre>{this.state.markdown}</pre>
+          </fieldset>
+        </div>
+      </BitbucketStyles>
     );
   }
 }
