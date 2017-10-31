@@ -7,7 +7,6 @@ import { akColorN80 } from '@atlaskit/util-shared-styles';
 import Editor from './../src/editor';
 import EditorContext from './../src/editor/ui/EditorContext';
 import WithEditorActions from './../src/editor/ui/WithEditorActions';
-import { name, version } from '../package.json';
 import { storyDecorator, storyMediaProviderFactory } from '../src/test-helper';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
@@ -88,16 +87,16 @@ const JIRA_ISSUES_LIST = '<p><ac:structured-macro ac:name="jira" ac:schema-versi
 const PANEL_MACRO = `<ac:structured-macro ac:name="warning" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">Hello</ac:parameter><ac:rich-text-body><p>Warning panel</p></ac:rich-text-body></ac:structured-macro>`;
 const STATUS_MACRO = '<p><ac:structured-macro ac:name="status" ac:schema-version="1" ac:macro-id="5e394d20-1d16-4c7d-a67c-13c9cf15abd8"><ac:parameter ac:name="colour">Green</ac:parameter><ac:parameter ac:name="title">Cool macro</ac:parameter><fab:placeholder-url>/wiki/plugins/servlet/confluence/placeholder/macro?definition=e3N0YXR1czpjb2xvdXI9R3JlZW58dGl0bGU9Q29vbCBtYWNyb30&amp;locale=en_GB&amp;version=2</fab:placeholder-url><ac:body-type>NONE</ac:body-type><fab:display-type>INLINE</fab:display-type></ac:structured-macro></p>';
 
-type DemoProps = {
+type ExampleProps = {
   onChange: Function,
 };
 
-type DemoState = {
+type ExampleState = {
   input: string,
   output: string,
 };
 
-class Demo extends Component<DemoProps, DemoState> {
+class Example extends Component<ExampleProps, ExampleState> {
   state = {
     input: '',
     output: '',
@@ -196,16 +195,16 @@ class Demo extends Component<DemoProps, DemoState> {
   private handleInsertStatusMacroClick = () => this.setState({ input: STATUS_MACRO });
 }
 
-type DemoWrapperProps = {};
-type DemoWrapperState = {
+type ExampleWrapperProps = {};
+type ExampleWrapperState = {
   cxhtml?: string,
   story?: any,
   prettify?: boolean,
   isMediaReady?: boolean,
 };
 
-class DemoWrapper extends Component<DemoWrapperProps, DemoWrapperState> {
-  state: DemoWrapperState = {
+export default class ExampleWrapper extends Component<ExampleWrapperProps, ExampleWrapperState> {
+  state: ExampleWrapperState = {
     cxhtml: '',
     prettify: true,
     isMediaReady: true,
@@ -234,7 +233,7 @@ class DemoWrapper extends Component<DemoWrapperProps, DemoWrapperState> {
 
     return (
       <div ref="root">
-        <Demo onChange={this.handleChange}/>
+        <Example onChange={this.handleChange}/>
 
         <fieldset style={{ marginTop: 20 }}>
           <legend>
@@ -253,8 +252,4 @@ class DemoWrapper extends Component<DemoWrapperProps, DemoWrapperState> {
       </div>
     );
   }
-}
-
-export default function Example() {
-  return <DemoWrapper/>;
 }

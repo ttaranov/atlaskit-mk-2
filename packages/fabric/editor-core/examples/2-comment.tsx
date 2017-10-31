@@ -43,7 +43,7 @@ type State = {
   isExpanded?: boolean,
 };
 
-class EditorWithFeedback extends React.Component<Props, State> {
+export default class EditorWithFeedback extends React.Component<Props, State> {
   state = {
     hasJquery: false,
     isExpanded: false
@@ -128,8 +128,4 @@ class EditorWithFeedback extends React.Component<Props, State> {
 
     document.body.appendChild(scriptElem);
   }
-}
-
-export default function Example() {
-  return <EditorWithFeedback />;
 }
