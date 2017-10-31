@@ -2,13 +2,13 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import Chrome from '../src/Chrome';
-import Content from '../src/Content';
-import Remove from '../src/Remove';
-import Tag from '../src/Tag';
+import Chrome from '../Chrome';
+import Content from '../Content';
+import Remove from '../RemoveButton';
+import Tag from './index';
 
-import Before from '../src/Tag/styledBefore';
-import Container from '../src/Tag/styledContainer';
+import Before from './styledBefore';
+import Container from './styledContainer';
 
 // TODO: Revisit all these tests. AK-1975
 // Large parts of the API are not tested (hrefs should render anchors, truncation should occur, etc)

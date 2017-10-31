@@ -11,12 +11,12 @@ export default md`
 
   ## Examples
 
-  {(
+  ${(
     <Example
       Component={require('../examples/0-basic').default}
       title="Basic"
       source={require('!!raw-loader!../examples/0-basic')}
     />
   )}
-  {<Props source={require('!!raw-loader!../src/components/Calendar')} />}
+  ${<Props source={require('!!raw-loader!../src/components/Calendar')} />}
 `;
