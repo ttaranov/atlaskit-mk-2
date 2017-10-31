@@ -36,6 +36,12 @@ export default class DatePicker extends Component<Props, State> {
     isOpen: false,
   };
 
+  onChange = (value: string) => {
+    if (value !== this.state.value) {
+      this.props.onChange(value);
+    }
+  }
+
   handleInputBlur = (e: FocusEvent) => {
     if (e.target instanceof HTMLInputElement) {
       const date = e.target.value;
@@ -43,6 +49,7 @@ export default class DatePicker extends Component<Props, State> {
       const parsedDate = parseDate(date);
 
       if (parsedDate) {
+        this.onChange(parsedDate.value);
         this.setState({
           value: parsedDate.value,
           displayValue: parsedDate.display,
@@ -88,6 +95,7 @@ export default class DatePicker extends Component<Props, State> {
   handleUpdate = (iso: string) => {
     const parsedDate = parseDate(iso);
     if (parsedDate) {
+      this.onChange(parsedDate.value);
       this.setState({
         isOpen: false,
         displayValue: parsedDate.display,
