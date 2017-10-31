@@ -11,6 +11,10 @@
   "maintainers": [
     "Sean C"
   ],
+  "atlaskit": {
+    "name": "Badge",
+    "team": "elements"
+  },
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/theme": "^2.0.0",
