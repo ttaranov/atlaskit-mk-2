@@ -144,6 +144,7 @@
     "outdent": "^0.3.0",
     "prismjs": "^1.6.0",
     "prop-types": "^15.5.10",
+    "prop-types-extra": "^1.0.1",
     "puppeteer": "^0.10.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",

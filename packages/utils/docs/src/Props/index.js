@@ -81,8 +81,11 @@ type DynamicPropsProps = {
 };
 
 export default function DynamicProps(props: DynamicPropsProps) {
+
   const classes = props.props && props.props.classes;
   if (!classes) return null;
+  
+    console.log(classes);
 
   const propTypes = classes[0] && classes[0].props;
   if (!propTypes) return null;
