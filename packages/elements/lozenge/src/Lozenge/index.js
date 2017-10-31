@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent, type Node } from 'react';
-import Container from './styled/Container';
-import Content from './styled/Content';
+import Container from './styledContainer';
+import Content from './styledContent';
 
 export type Appearances = 'default' | 'success' | 'removed' | 'inprogress' | 'new' | 'moved';
 
