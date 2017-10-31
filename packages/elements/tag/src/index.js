@@ -1,2 +1,2 @@
 // @flow
-export { default } from './components/Tag';
+export { default } from './Tag';

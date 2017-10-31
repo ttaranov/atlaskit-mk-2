@@ -1,14 +1,14 @@
 // @flow
 import styled from 'styled-components';
 import { colors, borderRadius, themed } from '@atlaskit/theme';
-import { buttonWidthUnitless, focusRingColor } from './constants';
+import { buttonWidthUnitless, focusRingColor } from '../constants';
 
 const focusColor = themed({ light: colors.R300, dark: colors.R200 });
 
 // NOTE:
 // "-moz-focus-inner" removes some inbuilt padding that Firefox adds (taken from reduced-ui-pack)
 // the focus ring is red unless combined with hover, then uses default blue
-export default styled.button`
+export const Button = styled.button`
   align-items: center;
   appearance: none;
   background: none;

@@ -1,6 +1,6 @@
 // @flow
 import styled, { keyframes } from 'styled-components';
-import { maxWidth, maxWidthUnitless } from './constants';
+import { maxWidth, maxWidthUnitless } from '../constants';
 
 const removeAnimation = keyframes`
   0% {
