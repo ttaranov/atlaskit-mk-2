@@ -5,9 +5,7 @@ import Button from '@atlaskit/button';
 import Tooltip from '../src';
 
 export default () => (
-  <div>
-    <Tooltip content="Hello World">
-      <Button>Hover Over Me</Button>
-    </Tooltip>
-  </div>
+  <Tooltip content="Hello World">
+    <Button>Hover Over Me</Button>
+  </Tooltip>
 );

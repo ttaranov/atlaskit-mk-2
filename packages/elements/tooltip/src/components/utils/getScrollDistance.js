@@ -1,4 +1,5 @@
 // @flow
+import getStyle from './getStyle';
 
 export default function getScrollDistance(el: HTMLElement) {
   let scrollX = 0;
@@ -6,17 +7,28 @@ export default function getScrollDistance(el: HTMLElement) {
   let isFixed = false;
 
   while (el) {
-    // deal with browser quirks with body/window/document and page scroll
-    if (window.getComputedStyle(el, null).position === 'fixed') {
+    const position = getStyle(el, 'position');
+
+    // handle fixed position ancestors
+    if (position === 'fixed') {
       scrollX = (el.offsetLeft - el.scrollLeft) + el.clientLeft;
       scrollY = (el.offsetTop - el.scrollTop) + el.clientTop;
       isFixed = true;
       break;
+
+    // deal with browser quirks with body/window/document and page scroll
     } else if (el.tagName === 'BODY') {
-      if (document.documentElement) {
-        scrollX += el.scrollLeft || document.documentElement.scrollLeft;
-        scrollY += el.scrollTop || document.documentElement.scrollTop;
-      }
+      scrollX += window.scrollX
+        || window.pageXOffset
+        || document.body.scrollTop + (
+          (document.documentElement && document.documentElement.scrollLeft) || 0
+        );
+      scrollY += window.scrollY
+        || window.pageYOffset
+        || document.body.scrollTop + (
+          (document.documentElement && document.documentElement.scrollTop) || 0
+        );
+
     // for all other non-BODY elements
     } else {
       scrollX += el.scrollLeft;

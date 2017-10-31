@@ -20,17 +20,6 @@ import Nav from './Nav';
 
 // eslint-disable-next-line
 injectGlobal`
-  *, ::before, ::after {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-  }
-
-  html, body, #app {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-
   body {
     margin: 0;
     font-family:
@@ -40,18 +29,14 @@ injectGlobal`
 `;
 
 const AppContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
 `;
 
 const AppContent = styled.div`
-  position: absolute;
-  left: 20rem;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  overflow: auto;
+  flex: 1 1 auto;
+  overflow-y: auto;
 `;
 
 export default function App() {
