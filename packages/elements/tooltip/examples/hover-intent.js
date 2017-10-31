@@ -1,0 +1,16 @@
+// @flow
+import React from 'react';
+import { Target } from './styled';
+import Tooltip from '../src/';
+
+const colors = ['purple', 'blue', 'teal', 'green'];
+
+export default () => (
+  <div style={{ display: 'flex' }}>
+    {colors.map((c, i) => (
+      <Tooltip key={c} content={`Content ${i + 1}`} placement="top">
+        <Target color={c} style={{ marginRight: 8 }}>Target {i + 1}</Target>
+      </Tooltip>
+    ))}
+  </div>
+);

@@ -82,7 +82,7 @@ export default class Tooltip extends Component<Props, State> {
       ? this.wrapper.children[0]
       : this.wrapper;
 
-    // NOTE: getPosition returns
+    // NOTE getPosition returns:
     // placement Enum(top | left | bottom | right)
     //   - adjusted for edge collision
     // position: Object(left: number, top: number, position: 'fixed' | 'absolute')
@@ -123,7 +123,7 @@ export default class Tooltip extends Component<Props, State> {
     this.setState({ immediatelyShow: immediate, isVisible: true, position: null });
   }
   hide = ({ immediate }: showHideArgs) => {
-    // Update state twice to allow for the updated immediate prop to pass through
+    // Update state twice to allow for the updated `immediate` prop to pass through
     // to the Transition component before the tooltip is removed
     this.setState({ immediatelyHide: immediate }, () => {
       this.setState({ isVisible: false, position: null });
@@ -152,9 +152,11 @@ export default class Tooltip extends Component<Props, State> {
   }
 
   render() {
-    // NOTE: removing `placement` from spread props
+    // NOTE removing props from rest:
+    // - `content` is a valid HTML attribute, but has a different semantic meaning
+    // - `placement` is NOT valid and react will warn
     // eslint-disable-next-line no-unused-vars
-    const { children, placement, tag: Tag, ...rest } = this.props;
+    const { children, content, placement, tag: Tag, ...rest } = this.props;
 
     return (
       <Tag

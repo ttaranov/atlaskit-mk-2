@@ -1,4 +1,6 @@
 // @flow
 
-// eslint-disable-next-line import/prefer-default-export
+export { default as inViewport } from './inViewport';
 export { default as getPosition } from './getPosition';
+export { default as getScrollDistance } from './getScrollDistance';
+export { default as getStyle } from './getStyle';

@@ -2,7 +2,8 @@
 
 import React, { type ComponentType } from 'react';
 import sentenceCase from 'sentence-case';
-import BitbucketReposIcon from '@atlaskit/icon/glyph/bitbucket/repos';
+import PackageIcon from '@atlaskit/icon/glyph/chevron-right';
+import PackageSelectedIcon from '@atlaskit/icon/glyph/chevron-down';
 import PageIcon from '@atlaskit/icon/glyph/page';
 import ComponentIcon from '@atlaskit/icon/glyph/component';
 import CodeIcon from '@atlaskit/icon/glyph/code';
@@ -58,9 +59,9 @@ const getItemDetails = (pkg: Directory, group: Directory, navigateOut?: boolean)
 
   return {
     to: navigateOut ? `/packages/${group.id}/${pkg.id}` : packageUrl(group.id, pkg.id),
-    isSelected: (pathname, to) => pathname === to,
     title: fs.titleize(pkg.id),
-    icon: <BitbucketReposIcon label={`${fs.titleize(pkg.id)} icon`} />,
+    icon: <PackageIcon label={`${fs.titleize(pkg.id)} icon`} />,
+    iconSelected: <PackageSelectedIcon label={`${fs.titleize(pkg.id)} icon`} />,
     items,
   };
 };
@@ -80,7 +81,7 @@ const getItem = (packages: Array<Directory>, group: Directory, navigateOut: bool
         to: `${OLD_WEBSITE_URL}components/${allPackages[name].key}`,
         external: true,
         title: allPackages[name].name,
-        icon: <BitbucketReposIcon label={`${allPackages[name].name} icon`} />,
+        icon: <PackageIcon label={`${allPackages[name].name} icon`} />,
       };
     }
   });

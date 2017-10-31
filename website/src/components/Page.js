@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { gridSize, colors, math } from '@atlaskit/theme';
 
 const PageContainer = styled.main`
-  max-width: 60rem;
+  max-width: 40rem;
   margin: 2rem auto;
   padding: 0 2rem;
 `;
