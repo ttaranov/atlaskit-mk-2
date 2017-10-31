@@ -2,7 +2,6 @@ import {
   AnalyticsHandler,
   analyticsService,
   asciiEmojiPlugins,
-
   Chrome,
   codeBlockPlugins,
   blockTypePlugins,
@@ -26,9 +25,7 @@ import {
   textFormattingStateKey,
   clearFormattingStateKey,
   pastePlugins,
-
   ProviderFactory,
-
   version as coreVersion,
 
   // nodeviews
@@ -44,7 +41,7 @@ import {
 import { bitbucketSchema as schema } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
 import { EditorState, TextSelection } from 'prosemirror-state';
-import { Node } from 'prosemirror-model'
+import { Node } from 'prosemirror-model';
 import { keymap } from 'prosemirror-keymap';
 import { history } from 'prosemirror-history';
 import { baseKeymap } from 'prosemirror-commands';
@@ -102,7 +99,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    analyticsService.handler = props.analyticsHandler || ((name) => { });
+    analyticsService.handler = props.analyticsHandler || (name => {});
 
     this.state = { isExpanded: props.isExpandedByDefault };
     this.providerFactory = new ProviderFactory();
@@ -141,9 +138,9 @@ export default class Editor extends PureComponent<Props, State> {
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.setState({
       emojiProvider,
-      mentionProvider
+      mentionProvider,
     });
-  }
+  };
 
   /**
    * Focus the content region of the editor.
@@ -166,14 +163,14 @@ export default class Editor extends PureComponent<Props, State> {
     if (onExpanded) {
       onExpanded(this);
     }
-  }
+  };
 
   /**
    * Collapse the editor chrome
    */
   collapse = () => {
     this.setState({ isExpanded: false });
-  }
+  };
 
   /**
    * Clear the content of the editor, making it an empty document.
@@ -195,9 +192,7 @@ export default class Editor extends PureComponent<Props, State> {
    */
   isEmpty(): boolean {
     const { editorView } = this.state;
-    return editorView && editorView.state.doc
-      ? !!editorView.state.doc.textContent
-      : false;
+    return editorView && editorView.state.doc ? !!editorView.state.doc.textContent : false;
   }
 
   /**
@@ -221,9 +216,7 @@ export default class Editor extends PureComponent<Props, State> {
    */
   get value(): string | undefined {
     const { editorView } = this.state;
-    return editorView
-      ? this.transformer.encode(editorView.state.doc)
-      : this.props.defaultValue;
+    return editorView ? this.transformer.encode(editorView.state.doc) : this.props.defaultValue;
   }
 
   /**
@@ -231,9 +224,7 @@ export default class Editor extends PureComponent<Props, State> {
    */
   get doc(): Node | undefined {
     const { editorView } = this.state;
-    return editorView
-      ? editorView.state.doc
-      : undefined;
+    return editorView ? editorView.state.doc : undefined;
   }
 
   render() {
@@ -290,21 +281,21 @@ export default class Editor extends PureComponent<Props, State> {
     if (onCancel) {
       onCancel(this);
     }
-  }
+  };
 
   private handleChange = () => {
     const { onChange } = this.props;
     if (onChange) {
       onChange(this);
     }
-  }
+  };
 
   private handleSave = () => {
     const { onSave } = this.props;
     if (onSave) {
       onSave(this);
     }
-  }
+  };
 
   private handleRef = (place: Element | null) => {
     if (place) {
@@ -313,48 +304,49 @@ export default class Editor extends PureComponent<Props, State> {
 
       const bitbucketKeymap = {
         'Mod-Enter': this.handleSave,
-        'Esc'() { } // Disable Esc handler
+        Esc() {}, // Disable Esc handler
       };
-      const editorState = EditorState.create(
-        {
-          schema,
-          doc: transformer.parse(this.props.defaultValue || ''),
-          plugins: [
-            ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
-            ...emojisPlugins(schema, this.providerFactory),
-            ...asciiEmojiPlugins(schema, this.providerFactory),
-            ...pastePlugins(schema),
-            ...clearFormattingPlugins(schema),
-            ...hyperlinkPlugins(schema),
-            ...rulePlugins(schema),
-            ...imageUploadPlugins(schema),
-            // block type plugin needs to be after hyperlink plugin until we implement keymap priority
-            // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
-            // if converting is possible
-            ...blockTypePlugins(schema),
-            // The following order of plugins blockTypePlugins -> listBlock -> codeBlockPlugins
-            // this is needed to ensure that all block types are supported inside lists
-            // this is needed until we implement keymap proirity :(
-            ...listsPlugins(schema),
-            ...textFormattingPlugins(schema),
-            ...codeBlockPlugins(schema),
-            ...(schema.nodes.table ? tablePlugins({ isHeaderRowRequired: true }) : []),
-            ...reactNodeViewPlugins(schema),
-            history(),
-            keymap(bitbucketKeymap),
-            keymap(baseKeymap) // should be last :(
-          ]
-        }
-      );
+      const editorState = EditorState.create({
+        schema,
+        doc: transformer.parse(this.props.defaultValue || ''),
+        plugins: [
+          ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
+          ...emojisPlugins(schema, this.providerFactory),
+          ...asciiEmojiPlugins(schema, this.providerFactory),
+          ...pastePlugins(schema),
+          ...clearFormattingPlugins(schema),
+          ...hyperlinkPlugins(schema),
+          ...rulePlugins(schema),
+          ...imageUploadPlugins(schema),
+          // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+          // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+          // if converting is possible
+          ...blockTypePlugins(schema),
+          // The following order of plugins blockTypePlugins -> listBlock -> codeBlockPlugins
+          // this is needed to ensure that all block types are supported inside lists
+          // this is needed until we implement keymap proirity :(
+          ...listsPlugins(schema),
+          ...textFormattingPlugins(schema),
+          ...codeBlockPlugins(schema),
+          ...(schema.nodes.table ? tablePlugins({ isHeaderRowRequired: true }) : []),
+          ...reactNodeViewPlugins(schema),
+          history(),
+          keymap(bitbucketKeymap),
+          keymap(baseKeymap), // should be last :(
+        ],
+      });
 
       if (imageUploadHandler) {
         const imageUploadState = imageUploadStateKey.getState(editorState);
-        imageUploadState.setUploadHandler(imageUploadHandler);
+
+        if (imageUploadState.setUploadHandler) {
+          imageUploadState.setUploadHandler(imageUploadHandler);
+        }
       }
 
       const editorView = new EditorView(place, {
         state: editorState,
-        dispatchTransaction: (tr) => {
+        dispatchTransaction: tr => {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
           if (tr.docChanged) {
@@ -365,11 +357,11 @@ export default class Editor extends PureComponent<Props, State> {
           paste(view: EditorView, event: ClipboardEvent) {
             analyticsService.trackEvent('atlassian.editor.paste');
             return false;
-          }
+          },
         },
         transformPastedHTML(html: string) {
           return transformer.buildDOMTree(html).innerHTML;
-        }
+        },
       });
 
       this.setState({ editorView });
@@ -380,5 +372,5 @@ export default class Editor extends PureComponent<Props, State> {
     } else {
       this.setState({ editorView: undefined });
     }
-  }
+  };
 }

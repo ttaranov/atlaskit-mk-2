@@ -11,10 +11,7 @@
     "eofline": true,
     "forin": false,
     "import-spacing": true,
-    "indent": [
-      true,
-      "spaces"
-    ],
+    "indent": [true, "spaces"],
     "interface-name": [false],
     "interface-over-type-literal": false,
     "jsx-boolean-value": [true],
@@ -47,12 +44,8 @@
     "ordered-imports": [false],
     "prefer-const": [false],
     "prefer-for-of": false,
-    "quotemark": [
-      true,
-      "single",
-      "jsx-double"
-    ],
-    "semicolon": [true],
+    "quotemark": [true, "single", "jsx-double"],
+    "semicolon": [false],
     "space-before-function-paren": [false],
     "switch-default": false,
     "trailing-comma": [true],
