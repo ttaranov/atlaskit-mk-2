@@ -2,9 +2,7 @@
 
 import React, { Component } from 'react';
 // import type { EventChange, EventSelect } from '@atlaskit/calendar';
-import BasePicker from './internal/Picker';
-import DateField from './internal/DateField';
-import DateDialog from './internal/DateDialog';
+import DatePickerStateless from './DatePickerStateless';
 import type { Handler } from '../types';
 import { parseDate } from '../util';
 
@@ -22,7 +20,7 @@ type State = {
 
 export default class DatePicker extends Component<Props, State> {
   props: Props;
-  picker: any;
+  datepicker: any;
 
   static defaultProps = {
     isDisabled: false,
@@ -76,13 +74,13 @@ export default class DatePicker extends Component<Props, State> {
 
   handleTriggerClose = () => {
     this.setState({ isOpen: false });
-    this.picker.selectField();
+    this.datepicker.selectField();
   }
 
   handleIconClick = () => {
     if (this.state.isOpen) {
       this.setState({ isOpen: false });
-      this.picker.selectField();
+      this.datepicker.selectField();
     } else {
       this.setState({ isOpen: true });
     }
@@ -101,23 +99,20 @@ export default class DatePicker extends Component<Props, State> {
         displayValue: parsedDate.display,
         value: parsedDate.value,
       });
-      this.picker.selectField();
+      this.datepicker.selectField();
     }
   }
 
   render() {
     return (
-      <BasePicker
+      <DatePickerStateless
+        isDisabled={this.props.isDisabled}
         isOpen={this.state.isOpen}
+        shouldShowIcon
         displayValue={this.state.displayValue}
         value={this.state.value}
+        disabled={this.props.disabled}
 
-        isDisabled={this.props.isDisabled}
-        dialogProps={{ disabled: this.props.disabled }}
-
-        shouldShowIcon
-        field={DateField}
-        dialog={DateDialog}
         onFieldBlur={this.handleInputBlur}
         onFieldChange={this.handleInputChange}
         onFieldTriggerOpen={this.handleTriggerOpen}
@@ -126,7 +121,7 @@ export default class DatePicker extends Component<Props, State> {
         onPickerTriggerClose={this.handleTriggerClose}
         onPickerUpdate={this.handleUpdate}
 
-        ref={ref => { this.picker = ref; }}
+        ref={ref => { this.datepicker = ref; }}
       />
     );
   }
