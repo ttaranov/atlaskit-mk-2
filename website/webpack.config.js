@@ -16,6 +16,7 @@ const path = require('path');
 const boltQuery = require('bolt-query');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = async function createWebpackConfig() {
   const basePath = path.join(__dirname, '..');
@@ -40,7 +41,57 @@ module.exports = async function createWebpackConfig() {
   }, {});
 
   return {
-    entry: { main: './src/index.js' },
+    entry: {
+      main: './src/index.js',
+      vendor: [
+        'react',
+        'react-dom',
+        'styled-components',
+        'highlight.js',
+        'date-fns',
+        '@atlaskit/avatar',
+        '@atlaskit/input',
+        '@atlaskit/layer',
+        '@atlaskit/activity',
+        '@atlaskit/button',
+        '@atlaskit/code',
+        '@atlaskit/dropdown-menu',
+        '@atlaskit/droplist',
+        '@atlaskit/emoji',
+        '@atlaskit/icon',
+        '@atlaskit/logo',
+        '@atlaskit/media-card',
+        '@atlaskit/media-core',
+        '@atlaskit/media-filmstrip',
+        '@atlaskit/mention',
+        '@atlaskit/profilecard',
+        '@atlaskit/single-select',
+        '@atlaskit/spinner',
+        '@atlaskit/task-decision',
+        '@atlaskit/tooltip',
+        '@atlaskit/util-shared-styles',
+        'mediapicker',
+        'prosemirror-commands',
+        'prosemirror-history',
+        'prosemirror-inputrules',
+        'prosemirror-keymap',
+        'prosemirror-markdown',
+        'prosemirror-model',
+        'prosemirror-schema-basic',
+        'prosemirror-schema-list',
+        'prosemirror-state',
+        'prosemirror-tables',
+        'prosemirror-transform',
+        'prosemirror-view',
+        'prosemirror-dev-tools',
+        'tslib',
+        '@atlaskit/media-test-helpers',
+        '@atlaskit/emoji/dist/es5/support',
+        '@atlaskit/mention/dist/es5/support',
+        '@atlaskit/inline-edit',
+        'text-encoding',
+      ],
+    },
     output: {
       filename: '[name].js',
       path: path.resolve(__dirname, 'dist'),
@@ -123,6 +174,7 @@ module.exports = async function createWebpackConfig() {
       ],
     },
     resolve: {
+      // mainFields: ['main', 'module', 'jsnext:main', 'jsnext:experimental:main'],
       extensions: ['.js', '.ts', '.tsx'],
       alias: aliases,
     },
@@ -132,11 +184,17 @@ module.exports = async function createWebpackConfig() {
     plugins: [
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
-        // ...
+        minChunks: Infinity,
+        // children: true,
+        // deepChildren: true,
       }),
       new HtmlWebpackPlugin({
         template: 'public/index.html.ejs'
-      })
+      }),
+      new BundleAnalyzerPlugin({
+        generateStatsFile: true,
+        analyzerMode: 'static',
+      }),
       // new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),
     ],
   };
