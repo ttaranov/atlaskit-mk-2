@@ -31,7 +31,7 @@ class MyComponent extends Component<Props> {
 }
 ```
 
-You should also try and make your non-required boolean props deafult to `false`, as opposed to defaulting to `true` so that one can declaratively opt-in. Generally this is what most tend to do, but it keeps with consistency where you can expect a boolean prop to always be opt-in.
+You should also try and make your non-required boolean props default to `false`, as opposed to defaulting to `true` so that one can declaratively opt-in. Generally this is what most tend to do, but it keeps with consistency where you can expect a boolean prop to always be opt-in.
 
 To opt-in you just add the prop: `<MyComponent isDisabled />`. To opt-out, you don't provide it at all: `<MyComponent />`. If it defaulted to true, you don't have to do anything to opt-in, but to opt-out you then have to do: `<MyComponent isDisabled={false} />`.
 
