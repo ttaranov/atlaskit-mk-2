@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "A React component for picking date/time values",
   "license": "Apache-2.0",
-  "main": "dist/cjs.js",
+  "main": "dist/cjs",
   "src": "src/index.js",
   "files": [
     "dist"
