@@ -73,13 +73,13 @@ export default class DatePicker extends Component<Props, State> {
 
   handleTriggerClose = () => {
     this.setState({ isOpen: false });
-    this.datepicker.selectField();
+    this.selectField();
   }
 
   handleIconClick = () => {
     if (this.state.isOpen) {
       this.setState({ isOpen: false });
-      this.datepicker.selectField();
+      this.selectField();
     } else {
       this.setState({ isOpen: true });
     }
@@ -98,6 +98,12 @@ export default class DatePicker extends Component<Props, State> {
         displayValue: parsedDate.display,
         value: parsedDate.value,
       });
+      this.selectField();
+    }
+  }
+
+  selectField() {
+    if (this.datepicker) {
       this.datepicker.selectField();
     }
   }
