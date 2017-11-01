@@ -5,7 +5,10 @@ import { shallow } from 'enzyme';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import { name } from '../../../../package.json';
 import Picker from '../Picker';
-import PickerTestComponent from '../__test-helpers/PickerTestComponent';
+
+const PickerTestComponent = (props: Object) => (
+  <div {...props} />
+);
 
 describe(name, () => {
   describe('Picker', () => {
