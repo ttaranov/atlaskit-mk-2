@@ -63,13 +63,17 @@ atlaskit-mk-2 (Project)
 │   └── elements ····························· Package group
 │       └── avatar (Workspace) ··············· Package
 │           ├── src ·························· Package source code
-│           │   ├── index.js
-│           │   │   ├── components ··········· Components
-│           │   │   │   └── Avatar.js
-│           │   │   └── styled ··············· Component styles
-│           │   │       └── Avatar.js
-│           │   └── __tests__ ················ Package unit tests
-│           │       └── index.test.js
+│           │   ├── index.js ················· Main entry point
+│           │   ├── index.test.js
+│           │   ├── constants.js ············· Shared code
+│           │   ├── Avatar ··················· Component part
+│           │   │   ├── index.js
+│           │   │   ├── test.js
+│           │   │   └── styled.js
+│           │   └── Presence ················· Component part
+│           │       ├── index.js
+│           │       ├── test.js
+│           │       └── styled.js
 │           ├── examples ····················· Package examples
 │           │   └── 0-overview.js
 │           ├── docs ························· Package documentation
