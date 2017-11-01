@@ -1,8 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-// import type { EventChange, EventSelect } from '@atlaskit/calendar';
-import BasePicker from './internal/Picker';
+import Picker from './internal/Picker';
 import DateField from './internal/DateField';
 import DateDialog from './internal/DateDialog';
 import type { Handler } from '../types';
@@ -50,7 +49,7 @@ export default class DatePickerStateless extends Component<Props> {
 
   render() {
     return (
-      <BasePicker
+      <Picker
         field={DateField}
         dialog={DateDialog}
 
