@@ -26,9 +26,9 @@ type State = {
   year: number,
 };
 
-// TODO: Prevent selecting disabled dates.
 export default class DateDialog extends Component<Props, State> {
   props: Props;
+  state: State;
   calendar: any;
 
   static defaultProps = {

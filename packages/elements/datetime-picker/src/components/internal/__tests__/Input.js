@@ -3,8 +3,8 @@
 import React from 'react';
 import AkInput from '@atlaskit/input';
 import { shallow } from 'enzyme';
-import { name } from '../package.json';
-import Input from '../src/components/internal/Input';
+import { name } from '../../../../package.json';
+import Input from '../Input';
 
 
 describe(name, () => {

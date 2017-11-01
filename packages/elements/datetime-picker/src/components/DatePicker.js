@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component } from 'react';
-// import type { EventChange, EventSelect } from '@atlaskit/calendar';
 import BasePicker from './internal/Picker';
 import DateField from './internal/DateField';
 import DateDialog from './internal/DateDialog';
@@ -22,6 +21,7 @@ type State = {
 
 export default class DatePicker extends Component<Props, State> {
   props: Props;
+  state: State;
   picker: any;
 
   static defaultProps = {
