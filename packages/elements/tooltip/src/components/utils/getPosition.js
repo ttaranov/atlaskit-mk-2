@@ -1,7 +1,6 @@
 // @flow
 
 import inViewport from './inViewport';
-import getScrollDistance from './getScrollDistance';
 
 import type { PlacementType, PositionType } from '../../types';
 
@@ -47,14 +46,14 @@ export default function getPosition({ placement, target, tooltip }: GetPositionA
     },
     right: {
       top: targetRect.top + ((targetRect.height - tooltipRect.height) / 2),
-      right: targetRect.right + gutter + tooltipRect.width, // special case for right
+      right: targetRect.right + gutter + tooltipRect.width, // used to calculate flip
       bottom: 0,
       left: targetRect.right + gutter,
     },
     bottom: {
       top: targetRect.bottom + gutter,
       right: 0,
-      bottom: targetRect.bottom + gutter + tooltipRect.height, // special case for bottom
+      bottom: targetRect.bottom + gutter + tooltipRect.height, // used to calculate flip
       left: targetRect.left + ((targetRect.width - tooltipRect.width) / 2),
 
     },
@@ -67,25 +66,19 @@ export default function getPosition({ placement, target, tooltip }: GetPositionA
   };
 
   // set tooltip positions before scroll adjustment and viewport check
-  const tooltipPosition = PLACEMENT_POSITIONS[placement];
+  const attemptedPosition = PLACEMENT_POSITIONS[placement];
 
   // check if the tooltip is in view or must be flipped
-  const adjustedPlacement = inViewport(tooltipPosition)
+  const adjustedPlacement = inViewport(attemptedPosition)
     ? placement
     : FLIPPED_PLACEMENT[placement];
 
-  // adjust positions with scroll distance
-  const { scrollX, scrollY, isFixed } = getScrollDistance(target);
-  const leftOffset = PLACEMENT_POSITIONS[adjustedPlacement].left;
-  const topOffset = PLACEMENT_POSITIONS[adjustedPlacement].top;
-
-  // account for fixed position ancestors
-  const position = isFixed ? 'fixed' : 'absolute';
-  const left = isFixed ? leftOffset : leftOffset + scrollX;
-  const top = isFixed ? topOffset : topOffset + scrollY;
+  // adjust positions with (possibly) flipped placement
+  const left = PLACEMENT_POSITIONS[adjustedPlacement].left;
+  const top = PLACEMENT_POSITIONS[adjustedPlacement].top;
 
   return {
     placement: adjustedPlacement,
-    position: { left, top, position },
+    position: { left, top },
   };
 }

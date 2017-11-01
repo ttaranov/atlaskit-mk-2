@@ -36,7 +36,6 @@ const AppContainer = styled.div`
 
 const AppContent = styled.div`
   flex: 1 1 auto;
-  overflow-y: auto;
 `;
 
 export default function App() {

@@ -24,7 +24,7 @@ export const Tooltip = styled.span`
   max-width: ${math.multiply(gridSize, 52)}px;
   padding: ${math.divide(gridSize, 4)}px ${gridSize}px;
   pointer-events: none;
-  position: absolute;
+  position: fixed;
   text-overflow: ellipsis;
   top: 0;
   white-space: nowrap;
