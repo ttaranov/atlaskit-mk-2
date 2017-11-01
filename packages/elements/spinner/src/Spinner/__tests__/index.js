@@ -1,12 +1,14 @@
+// @flow
+
 import React from 'react';
 import { mount } from 'enzyme';
 import { colors } from '@atlaskit/theme';
 
 import sinon from 'sinon';
-import Spinner from '../../src';
-import SpinnerGlyph from '../../src/SpinnerGlyph';
-import Container, { getContainerAnimation } from '../../src/styled/Container';
-import Svg, { svgStyles, getStrokeColor } from '../../src/styled/Svg';
+import Spinner from '../../../src';
+import { Glyph } from '../../../src/Glyph';
+import Container, { getContainerAnimation } from '../../../src/Glyph/styledContainer';
+import Svg, { svgStyles, getStrokeColor } from '../../../src/Glyph/styledSvg';
 
 function expectInvalidPropSupplied(prop, component) {
   sinon.assert.calledWithMatch(console.error, // eslint-disable-line no-console
@@ -54,7 +56,8 @@ describe('Spinner', () => {
       const delayProp = 1234;
       const container = mount(<Spinner delay={delayProp} />).find(Container);
       const animation = getContainerAnimation(container.props());
-      const animationDelay = parseFloat(animation.match(/animation: (([0-9]|\.*)*)/)[1]) * 1000;
+      const animationMatch = animation.match(/animation: (([0-9]|\.*)*)/);
+      const animationDelay = animationMatch ? parseFloat(animationMatch[1]) * 1000 : null;
       expect(animationDelay).toBe(delayProp);
     });
   });
@@ -62,12 +65,12 @@ describe('Spinner', () => {
   describe('isCompleting prop', () => {
     it('should add a spinner glyph when not set', () => {
       const wrapper = mount(<Spinner />);
-      expect(wrapper.find(SpinnerGlyph).length).toBe(1);
+      expect(wrapper.find(Glyph).length).toBe(1);
     });
 
     it('should remove the spinner glyph when set to true', () => {
       const wrapper = mount(<Spinner isCompleting />);
-      expect(wrapper.find(SpinnerGlyph).length).toBe(0);
+      expect(wrapper.find(Glyph).length).toBe(0);
     });
   });
 
@@ -116,11 +119,12 @@ describe('Spinner', () => {
     });
 
     it('should render the spinner with the default size if an unsupported value is provided', () => {
+      // $FlowFixMe
       const custom = mount(<Spinner size={{ something: 'weird' }} />);
       expect(custom.find(Svg).prop('height')).toBe(20);
       expect(custom.find(Svg).prop('width')).toBe(20);
       expectInvalidPropSupplied('size', 'Spinner');
-      expectInvalidPropSupplied('size', 'SpinnerGlyph');
+      expectInvalidPropSupplied('size', 'Glyph');
     });
   });
 
@@ -145,7 +149,8 @@ describe('Spinner', () => {
 
     beforeEach(() => {
       const svg = mount(<Spinner />).find(Svg);
-      styles = svgStyles[1](svg.props()).join('');
+      const svgInterpolatedStyles: ((Object) => Array<string>) = (svgStyles[1]: any);
+      styles = svgInterpolatedStyles(svg.props()).join('');
     });
 
     it('should have expected svg stroke keys', () => {
@@ -154,8 +159,8 @@ describe('Spinner', () => {
     });
 
     it('should have strokeDashoffset in px with no space before', () => {
-      const dashOffsetRule = styles.match(/stroke-dashoffset: (.*?);/)[1];
-      expect(dashOffsetRule.match(/[0-9]px/)).not.toBe(null);
+      const dashOffsetMatch = styles.match(/stroke-dashoffset: [0-9.]+px;/);
+      expect(dashOffsetMatch).not.toBe(null);
     });
   });
 });
