@@ -17,6 +17,7 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/editor-core": "^56.2.2",
+    "@atlaskit/editor-common": "^2.2.1",
     "@atlaskit/logo": "^4.0.1",
     "@atlaskit/mention": "^7.6.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
