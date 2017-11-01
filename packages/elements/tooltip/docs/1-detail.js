@@ -29,4 +29,22 @@ export default md`
     * Mouse over, then off, a single target for a fade transition.
     * Mouse between each target for an immediate transition.
     * Mouse over, off briefly, then back over &mdash; there will be no transition.
+
+  ${<Example
+    Component={require('../examples/position').default}
+    source={require('!!raw-loader!../examples/position')}
+    title="Position"
+  />}
+
+  Tooltips should understand the context that they're rendered in and position
+  themselves appropriately.
+
+  ${<Example
+    Component={require('../examples/scroll').default}
+    source={require('!!raw-loader!../examples/scroll')}
+    title="Scroll"
+  />}
+
+  Tooltips should be aware of their ancestors' scroll distance and position
+  themselves appropriately.
 `;

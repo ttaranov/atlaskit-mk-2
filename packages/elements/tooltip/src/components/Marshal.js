@@ -5,8 +5,13 @@ import { getStyle } from './utils';
 const SHOW_DELAY = 300;
 const HIDE_DELAY = 300;
 
+const SCROLLABLE = /auto|scroll/;
+
 function isScrollable(node) {
-  return (/auto|scroll/.test(getStyle(node, 'overflow')));
+  const nodeStyle = getStyle(node);
+  return SCROLLABLE.test(nodeStyle.overflow)
+    || SCROLLABLE.test(nodeStyle.overflowX)
+    || SCROLLABLE.test(nodeStyle.overflowY);
 }
 
 export default class TooltipMarshal {

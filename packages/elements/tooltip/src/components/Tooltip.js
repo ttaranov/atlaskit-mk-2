@@ -28,8 +28,8 @@ type Props = {
 type State = {
   immediatelyHide: boolean,
   immediatelyShow: boolean,
-  isVisible: boolean,
   isFlipped: boolean,
+  isVisible: boolean,
   placement: PlacementType,
   position: PositionType | null,
 };
@@ -77,7 +77,7 @@ export default class Tooltip extends Component<Props, State> {
   handleMeasureRef = (tooltip: HTMLElement) => {
     if (!tooltip || !this.wrapper) return;
 
-    const { placement } = this.state;
+    const { placement } = this.props;
     const target = this.wrapper.children.length
       ? this.wrapper.children[0]
       : this.wrapper;
@@ -85,7 +85,7 @@ export default class Tooltip extends Component<Props, State> {
     // NOTE getPosition returns:
     // placement Enum(top | left | bottom | right)
     //   - adjusted for edge collision
-    // position: Object(left: number, top: number, position: 'fixed' | 'absolute')
+    // position: Object(left: number, top: number)
     //   - coordinates passed to Transition
     this.setState(
       getPosition({ placement, target, tooltip }),
