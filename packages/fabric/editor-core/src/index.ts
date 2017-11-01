@@ -14,7 +14,7 @@ export {
 export { TaskDecisionProvider, TaskDecisionResource } from '@atlaskit/task-decision';
 
 import ProviderFactory, { WithProviders } from './providerFactory';
-export { version, name } from './version';
+export { name, version } from './version';
 export * from './config';
 export * from './plugins';
 export * from './ui';

@@ -29,7 +29,7 @@
     "start": "                               yarn run website:start",
     "changeset": "                           projector ./projector changeset",
     "release": "                             projector ./projector release",
-    "build:editor-common:json-schema": "     NODE_ENV=production tsc --project ./packages/fabric/editor-common/build/json-schema && echo 'Done.'"
+    "build:editor-common:json-schema": "     cd packages/fabric/editor-common && yarn run build/json-schema && echo 'Done.'"
   },
   "bolt": {
     "version": "0.15.x",

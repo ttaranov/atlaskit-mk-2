@@ -80,7 +80,7 @@ import {
   isSchemaWithTables,
 } from './util';
 
-import { version, name } from './version';
+import { name, version } from './version';
 export { version };
 
 // tslint:disable-next-line:variable-name

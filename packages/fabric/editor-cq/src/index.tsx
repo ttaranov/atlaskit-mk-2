@@ -58,7 +58,7 @@ import { baseKeymap } from 'prosemirror-commands';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
-import { version, name } from './version';
+import { name, version } from './version';
 import { default as schema } from './schema';
 import ReactJIRAIssueNode from './nodeviews/ui/jiraIssue';
 import ReactUnsupportedBlockNode from './nodeviews/ui/unsupportedBlock';

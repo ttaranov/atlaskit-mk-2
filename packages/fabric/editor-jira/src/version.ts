@@ -1,2 +1,1 @@
-export const version = '1-DEV';
-export const name = '@atlaskit/editor-jira';
+export { name, version } from '../package.json';

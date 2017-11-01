@@ -1,5 +1,8 @@
 *.log
-dist/
+packages/*/*/dist/*
+!packages/fabric/editor-common/dist/json-schema/
+website/dist/
+
 node_modules/
 coverage/
 **/.DS_Store

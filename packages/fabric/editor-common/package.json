@@ -7,7 +7,12 @@
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
-  "files": ["dist"],
+  "scripts": {
+    "build/json-schema": "mkdir -p dist/json-schema/v1 && ../../../node_modules/.bin/tsc -p build/json-schema && node ./dist/json-schema-cli/index.js ./src/schema/nodes/doc.ts > ./dist/json-schema/v1/full.json"
+  },
+  "files": [
+    "dist"
+  ],
   "author": "Atlassian Pty Ltd",
   "maintainers": ["Oscar W", "Stanislav S"],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",

@@ -50,7 +50,7 @@ import { MentionProvider } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import { version, name } from './version';
+import { name, version } from './version';
 import { MentionResource, MentionSource } from './mention-resource';
 
 export {
