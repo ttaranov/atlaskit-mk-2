@@ -1,3 +1,4 @@
+import { Schema } from 'prosemirror-model';
 import { createSchema } from '@atlaskit/editor-common';
 
 export default createSchema({
@@ -42,6 +43,6 @@ export default createSchema({
     'emojiQuery',
     'textColor',
     'subsup',
-    'inlineCommentMarker'
-  ]
-});
+    'inlineCommentMarker',
+  ],
+}) as Schema;
