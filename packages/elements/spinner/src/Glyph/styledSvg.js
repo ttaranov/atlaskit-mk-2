@@ -13,8 +13,8 @@ type StyleParams = {
 const spinnerColor = themed({ light: colors.N500, dark: colors.N0 });
 const spinnerColorInverted = themed({ light: colors.N0, dark: colors.N0 });
 
-export const getStrokeColor = (p: StyleParams): string => (
-  p.invertColor ? spinnerColorInverted(p) : spinnerColor(p)
+export const getStrokeColor = ({ invertColor, ...props }: {invertColor?: boolean}): string => (
+  invertColor ? spinnerColorInverted(props) : spinnerColor(props)
 );
 
 export const svgStyles = css`

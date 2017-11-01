@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 
 import Container from './styledContainer';
 import Svg from './styledSvg';
-import type { Func, SpinnerGlyphProps, SpinnerGlyphState } from '../types';
+import type { Func, GlyphProps, GlyphState } from '../types';
 
 const SIZES_MAP = {
   small: 20,
@@ -14,11 +14,11 @@ const SIZES_MAP = {
 };
 const DEFAULT_SIZE = SIZES_MAP.small;
 
-export default class SpinnerGlyph extends PureComponent {
+export class Glyph extends PureComponent<GlyphProps, GlyphState> {
   // eslint-disable-next-line react/sort-comp
-  props: SpinnerGlyphProps
+  props: GlyphProps
 
-  state: SpinnerGlyphState = {
+  state: GlyphState = {
     phase: '',
   }
 

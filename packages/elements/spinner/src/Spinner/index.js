@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 
-import Glyph from '../Glyph';
+import { Glyph } from '../Glyph';
 import type { SpinnerProps } from '../types';
 
 export default class Spinner extends Component<SpinnerProps> {

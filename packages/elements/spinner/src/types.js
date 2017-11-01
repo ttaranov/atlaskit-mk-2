@@ -4,7 +4,7 @@ export type Func = () => void;
 
 type SpinnerSizes = 'small' | 'medium' | 'large' | 'xlarge' | number;
 
-export type SpinnerGlyphProps = {
+export type GlyphProps = {
   /** Time in milliseconds after component mount before spinner is visible. */
   delay: number,
   /** Set the spinner color to white, for use in dark-themed UIs. */
@@ -15,13 +15,13 @@ export type SpinnerGlyphProps = {
   size: SpinnerSizes,
 };
 
-export type SpinnerProps = SpinnerGlyphProps & {
+export type SpinnerProps = GlyphProps & {
   /** Whether the process is complete and the spinner should leave */
   isCompleting: boolean,
 };
 
 export type SpinnerPhases = 'DELAY' | 'ENTER' | 'IDLE' | 'LEAVE' | '';
 
-export type SpinnerGlyphState = {
+export type GlyphState = {
   phase: SpinnerPhases,
 };

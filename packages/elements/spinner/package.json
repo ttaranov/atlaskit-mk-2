@@ -26,6 +26,7 @@
   "devDependencies": {
     "@atlaskit/spinner": "^4.0.2",
     "react-transition-group": "^2.2.1",
+    "sinon": "^4.0.2",
     "styled-components": "^1.4.3"
   }
 }

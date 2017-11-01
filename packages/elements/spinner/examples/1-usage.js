@@ -8,7 +8,7 @@ type State = {
   isCompleting: boolean,
 };
 
-class StatefulSpinnerExample extends Component<Props, State> {
+class StatefulSpinnerExample extends Component<{}, State> {
   state = {
     isCompleting: false,
   }
