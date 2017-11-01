@@ -28,6 +28,7 @@
     "release": "                  projector ./projector release"
   },
   "bolt": {
+    "version": "0.15.x",
     "workspaces": [
       "build/*",
       "packages/utils/*",
@@ -124,7 +125,7 @@
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-runtime": "^6.26.0",
-    "bolt": "^0.14.6",
+    "bolt": "^0.15.1",
     "calendar-base": "^0.3.0",
     "chalk": "^2.1.0",
     "commonmark": "^0.27.0",
@@ -158,6 +159,9 @@
     "tslib": "^1.8.0",
     "typestyle": "^1.3.8",
     "uuid": "^3.1.0"
+  },
+  "engines": {
+    "node": "^8.4.0"
   },
   "jest": {
     "modulePathIgnorePatterns": [
