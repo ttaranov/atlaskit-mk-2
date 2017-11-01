@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component } from 'react';
-// import type { EventChange, EventSelect } from '@atlaskit/calendar';
 import DatePickerStateless from './DatePickerStateless';
 import type { Handler } from '../types';
 import { parseDate } from '../util';

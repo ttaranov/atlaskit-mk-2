@@ -1,17 +1,17 @@
 // @flow
 
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import { name } from '../package.json';
-import DatePickerStateless from '../src/components//DatePicker';
+import DatePickerStateless from '../src/components//DatePickerStateless';
 import Picker from '../src/components/internal/Picker';
 import DateField from '../src/components/internal/DateField';
 import DateDialog from '../src/components/internal/DateDialog';
 
 describe(name, () => {
   describe('DatePickerStateless', () => {
-    it('renders a Picker with a DateDialog, DateField and correct props', () => {
-      const wrapper = mount(<DatePickerStateless />);
+    it('renders a Picker with a DateDialog and DateField', () => {
+      const wrapper = shallow(<DatePickerStateless />);
 
       expect(wrapper.find(Picker)).toHaveLength(1);
       const pickerProps = wrapper.find(Picker).props();
