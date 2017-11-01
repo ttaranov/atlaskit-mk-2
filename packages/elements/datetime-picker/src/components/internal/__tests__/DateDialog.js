@@ -4,8 +4,8 @@ import React from 'react';
 import { CalendarStateless } from '@atlaskit/calendar';
 import Layer from '@atlaskit/layer';
 import { shallow } from 'enzyme';
-import { name } from '../package.json';
-import DateDialog from '../src/components/internal/DateDialog';
+import { name } from '../../../../package.json';
+import DateDialog from '../DateDialog';
 
 const getCalendar = dateDialogWrapper => {
   const layerContent = shallow(dateDialogWrapper.find(Layer).props().content);

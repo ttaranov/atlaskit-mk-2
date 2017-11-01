@@ -2,11 +2,11 @@
 
 import React from 'react';
 import { shallow } from 'enzyme';
-import { name } from '../package.json';
-import DatePickerStateless from '../src/components//DatePickerStateless';
-import Picker from '../src/components/internal/Picker';
-import DateField from '../src/components/internal/DateField';
-import DateDialog from '../src/components/internal/DateDialog';
+import { name } from '../../../package.json';
+import DatePickerStateless from '../DatePickerStateless';
+import Picker from '../internal/Picker';
+import DateField from '../internal/DateField';
+import DateDialog from '../internal/DateDialog';
 
 describe(name, () => {
   describe('DatePickerStateless', () => {

@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { shallow } from 'enzyme';
-import { name } from '../package.json';
-import DateField from '../src/components/internal/DateField';
-import Input from '../src/components/internal/Input';
+import { name } from '../../../../package.json';
+import DateField from '../DateField';
+import Input from '../Input';
 
 describe(name, () => {
   describe('DateField', () => {

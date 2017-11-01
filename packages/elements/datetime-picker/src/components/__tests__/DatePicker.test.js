@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { name } from '../package.json';
-import DatePicker from '../src/components//DatePicker';
-import DatePickerStateless from '../src/components//DatePickerStateless';
+import { name } from '../../../package.json';
+import DatePicker from '../DatePicker';
+import DatePickerStateless from '../DatePickerStateless';
 
 describe(name, () => {
   describe('DatePicker', () => {

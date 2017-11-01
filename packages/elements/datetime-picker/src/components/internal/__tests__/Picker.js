@@ -3,8 +3,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
-import { name } from '../package.json';
-import Picker from '../src/components/internal/Picker';
+import { name } from '../../../../package.json';
+import Picker from '../Picker';
 import PickerTestComponent from '../__test-helpers/PickerTestComponent';
 
 describe(name, () => {
