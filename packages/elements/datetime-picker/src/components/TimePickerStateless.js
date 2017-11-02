@@ -30,7 +30,7 @@ export default class TimePickerStateless extends Component<Props> {
     value: null,
     displayValue: '',
     focused: null,
-    disabled: [],
+    times: [],
 
     onFieldBlur() {},
     onFieldChange() {},
