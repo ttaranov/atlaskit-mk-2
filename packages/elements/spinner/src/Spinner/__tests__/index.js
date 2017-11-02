@@ -6,14 +6,8 @@ import { colors } from '@atlaskit/theme';
 
 import sinon from 'sinon';
 import Spinner from '../../../src';
-import { Glyph } from '../../../src/Glyph';
-import Container, { getContainerAnimation } from '../../../src/Glyph/styledContainer';
-import Svg, { svgStyles, getStrokeColor } from '../../../src/Glyph/styledSvg';
-
-function expectInvalidPropSupplied(prop, component) {
-  sinon.assert.calledWithMatch(console.error, // eslint-disable-line no-console
-    new RegExp(`Invalid prop \`${prop}\` supplied to \`${component}\``));
-}
+import Container, { getContainerAnimation } from '../../../src/Spinner/styledContainer';
+import Svg, { svgStyles, getStrokeColor } from '../../../src/Spinner/styledSvg';
 
 beforeEach(() => {
   sinon.stub(console, 'error');
@@ -63,14 +57,14 @@ describe('Spinner', () => {
   });
 
   describe('isCompleting prop', () => {
-    it('should add a spinner glyph when not set', () => {
+    it('should add a spinner container when not set', () => {
       const wrapper = mount(<Spinner />);
-      expect(wrapper.find(Glyph).length).toBe(1);
+      expect(wrapper.find(Container).length).toBe(1);
     });
 
-    it('should remove the spinner glyph when set to true', () => {
+    it('should remove the spinner container when set to true', () => {
       const wrapper = mount(<Spinner isCompleting />);
-      expect(wrapper.find(Glyph).length).toBe(0);
+      expect(wrapper.find(Container).length).toBe(0);
     });
   });
 
@@ -123,8 +117,6 @@ describe('Spinner', () => {
       const custom = mount(<Spinner size={{ something: 'weird' }} />);
       expect(custom.find(Svg).prop('height')).toBe(20);
       expect(custom.find(Svg).prop('width')).toBe(20);
-      expectInvalidPropSupplied('size', 'Spinner');
-      expectInvalidPropSupplied('size', 'Glyph');
     });
   });
 
