@@ -96,7 +96,7 @@ module.exports = async function createWebpackConfig() {
       path: path.resolve(__dirname, 'dist'),
       publicPath: '/',
     },
-    devtool: false,
+    devtool: 'cheap-module-source-map',
     devServer: {
       compress: true,
       port: 9000,
