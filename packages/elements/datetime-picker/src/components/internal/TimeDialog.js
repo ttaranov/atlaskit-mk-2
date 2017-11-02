@@ -2,7 +2,7 @@
 
 import React, { Component, type Node } from 'react';
 import Droplist from '@atlaskit/droplist';
-import DropdownItem from './TimeDialogItem';
+import TimeDialogItem from './TimeDialogItem';
 
 type Props = {
   value: ?string,
@@ -49,7 +49,7 @@ export default class TimeDialog extends Component<Props> {
   }
 
   renderItems = () => this.props.times.map(value => (
-    <DropdownItem
+    <TimeDialogItem
       key={value}
       value={value}
       onSelect={this.props.onUpdate}
