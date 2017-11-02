@@ -13,7 +13,6 @@ type Props = {
 };
 
 export default class TimeDialog extends Component<Props> {
-  props: Props;
   container: any;
 
   static defaultProps = {

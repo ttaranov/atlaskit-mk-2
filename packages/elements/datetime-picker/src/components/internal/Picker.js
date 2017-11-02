@@ -26,7 +26,6 @@ type Props = {
 };
 
 export default class BasePicker extends Component<Props> {
-  props: Props;
   dialog: any;
   field: any;
 

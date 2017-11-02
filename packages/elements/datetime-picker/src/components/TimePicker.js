@@ -42,8 +42,6 @@ type State = {
 };
 
 export default class DatePicker extends Component<Props, State> {
-  props: Props;
-  state: State;
   datepicker: any;
 
   static defaultProps = {

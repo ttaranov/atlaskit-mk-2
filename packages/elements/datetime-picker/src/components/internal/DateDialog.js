@@ -27,8 +27,6 @@ type State = {
 };
 
 export default class DateDialog extends Component<Props, State> {
-  props: Props;
-  state: State;
   calendar: any;
 
   static defaultProps = {

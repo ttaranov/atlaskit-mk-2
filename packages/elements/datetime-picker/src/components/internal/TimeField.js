@@ -11,7 +11,6 @@ type Props = {
 };
 
 export default class TimeField extends Component<Props> {
-  props: Props;
   input: any;
 
   static defaultProps = {

@@ -11,8 +11,6 @@ type Props = {
 };
 
 export default class TimeDialogItem extends Component<Props> {
-  props: Props;
-
   static defaultProps = {
     isFocused: false,
     value: '',

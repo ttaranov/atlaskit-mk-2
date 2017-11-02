@@ -21,7 +21,6 @@ type Props = {
 };
 
 export default class TimePickerStateless extends Component<Props> {
-  props: Props;
   picker: any;
 
   static defaultProps = {

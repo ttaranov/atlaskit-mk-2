@@ -22,7 +22,6 @@ type Props = {
 };
 
 export default class DatePickerStateless extends Component<Props> {
-  props: Props;
   picker: any;
 
   static defaultProps = {

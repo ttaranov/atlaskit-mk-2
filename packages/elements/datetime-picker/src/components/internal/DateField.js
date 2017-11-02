@@ -13,7 +13,6 @@ type Props = {
 };
 
 export default class DateField extends Component<Props> {
-  props: Props;
   input: any;
 
   static defaultProps = {

@@ -15,7 +15,6 @@ type Props = {
 };
 
 export default class InputField extends Component<Props> {
-  props: Props;
   input: ElementRef<Input>;
 
   static defaultProps = {
