@@ -1,9 +1,9 @@
 // @flow
 
 export default function getStyle(
-  node: HTMLElement,
-  prop: String,
-  pseudo: ':after' | ':before' = null,
+  node: HTMLElement | Object,
+  prop?: String,
+  pseudo?: ':after' | ':before',
 ) {
   if (typeof window.getComputedStyle !== 'function') {
     throw Error('Cannot resolve client.');

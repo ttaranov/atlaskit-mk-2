@@ -4,13 +4,29 @@ import inViewport from './inViewport';
 
 import type { PlacementType, PositionType } from '../../types';
 
-type GetPositionArguments = {
+type Coords = {
+  top: number,
+  right: number,
+  bottom: number,
+  left: number,
+};
+type GetCoordsResults = {
+  top: Coords,
+  right: Coords,
+  bottom: Coords,
+  left: Coords,
+};
+type GetCoordsArgs = {
+  targetRect: ClientRect,
+  tooltipRect: ClientRect,
+  gutter: number,
+};
+type GetPositionArgs = {
   placement: PlacementType,
   target: HTMLElement,
   tooltip: HTMLElement,
 };
-
-type PositionResult = {
+type GetPositionResults = {
   placement?: PlacementType,
   position: PositionType,
   isFlipped?: boolean,
@@ -23,21 +39,8 @@ const FLIPPED_PLACEMENT = {
   left: 'right',
 };
 
-export default function getPosition({ placement, target, tooltip }: GetPositionArguments): PositionResult {
-  const noPosition = { position: {}, isFlipped: false };
-
-  /* eslint-disable no-console */
-  if (!placement) console.error('Property "placement" is required.');
-  if (!target) console.error('Property "target" is required.');
-  if (!tooltip) console.error('Property "tooltip" is required.');
-  if (!placement || !target || !tooltip) return noPosition;
-  /* eslint-enable no-console */
-
-  const gutter = 8;
-  const targetRect = target.getBoundingClientRect();
-  const tooltipRect = tooltip.getBoundingClientRect();
-
-  const PLACEMENT_POSITIONS = {
+function getCoords({ targetRect, tooltipRect, gutter }: GetCoordsArgs): GetCoordsResults {
+  return {
     top: {
       top: targetRect.top - (tooltipRect.height + gutter),
       right: 0,
@@ -64,8 +67,26 @@ export default function getPosition({ placement, target, tooltip }: GetPositionA
       left: targetRect.left - (tooltipRect.width + gutter),
     },
   };
+}
 
-  // set tooltip positions before scroll adjustment and viewport check
+export default function getPosition({ placement, target, tooltip }: GetPositionArgs): GetPositionResults {
+  const noPosition = { position: {}, isFlipped: false };
+
+  /* eslint-disable no-console */
+  if (!placement) console.error('Property "placement" is required.');
+  if (!target) console.error('Property "target" is required.');
+  if (!tooltip) console.error('Property "tooltip" is required.');
+  if (!placement || !target || !tooltip) return noPosition;
+  /* eslint-enable no-console */
+
+  // get the original coordinates
+  const gutter = 8;
+  const targetRect = target.getBoundingClientRect();
+  const tooltipRect = tooltip.getBoundingClientRect();
+
+  const PLACEMENT_POSITIONS = getCoords({ targetRect, tooltipRect, gutter });
+
+  // set tooltip positions before viewport check
   const attemptedPosition = PLACEMENT_POSITIONS[placement];
 
   // check if the tooltip is in view or must be flipped

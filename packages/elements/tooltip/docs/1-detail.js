@@ -16,7 +16,7 @@ export default md`
   ${<Example
     Component={require('../examples/hover-intent').default}
     source={require('!!raw-loader!../examples/hover-intent')}
-    title="Hover Intent"
+    title="Intent"
   />}
 
   Tooltips should only appear when the user has paused on the target element.
@@ -26,9 +26,13 @@ export default md`
   Similarly tooltips should not immediately disappear, unless the user hovers
   over another element with a tooltip.
 
+  When the user scrolls, their attention is no longer on the tooltip. We take this
+  opportunity to immediately hide the tooltip.
+
     * Mouse over, then off, a single target for a fade transition.
     * Mouse between each target for an immediate transition.
     * Mouse over, off briefly, then back over &mdash; there will be no transition.
+    * Mouse over a target then scroll, the tooltip will be removed immediately.
 
   ${<Example
     Component={require('../examples/position').default}

@@ -5,7 +5,7 @@ import { colors } from '@atlaskit/theme';
 import Tooltip from '../src';
 import { Target } from './styled';
 
-function capitalize(str) {
+function capitalize(str: String) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
@@ -24,10 +24,13 @@ const Parent = styled.div`
   width: 280px;
 `;
 
-const Position = (
-  { children, pos, ...rest }:
-  { children: any, pos: 'relative' | 'absolute' | 'fixed', rest: Array<any> },
-) => (
+type PosTypes = {
+  children: any,
+  pos: 'relative' | 'absolute' | 'fixed',
+  rest: Array<any>,
+};
+
+const Position = ({ children, pos, ...rest }: PosTypes) => (
   <Parent pos={pos} {...rest}>
     <Tooltip content={`Position "${pos}"`}>
       <Target color={color[pos]}>{capitalize(pos)}</Target>
@@ -38,13 +41,14 @@ const Position = (
 );
 
 export default class PositionExample extends Component {
-  state = { pinned: false }
-  pin = (pinned = true) => {
+  panel: HTMLElement
+  state = { pinned: false, top: 0 }
+  pin = () => {
     const { top } = this.panel.getBoundingClientRect();
-    this.setState({ pinned, top });
+    this.setState({ pinned: true, top });
   }
   unpin = () => this.setState({ pinned: false })
-  ref = ref => { this.panel = ref; }
+  ref = (ref: HTMLElement) => { this.panel = ref; }
   render() {
     const { pinned, top } = this.state;
     return (
