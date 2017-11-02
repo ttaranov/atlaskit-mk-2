@@ -2,9 +2,9 @@ import * as React from 'react';
 import { PropTypes } from 'react';
 import EditorActions from '../../actions';
 
-export default class EditorContext extends React.Component<any, any> {
+export default class EditorContext extends React.Component<any> {
   static childContextTypes = {
-    editorActions: PropTypes.object
+    editorActions: PropTypes.object,
   };
 
   private editorActions: EditorActions;
@@ -16,7 +16,7 @@ export default class EditorContext extends React.Component<any, any> {
 
   getChildContext() {
     return {
-      editorActions: this.editorActions
+      editorActions: this.editorActions,
     };
   }
 

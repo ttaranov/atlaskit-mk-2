@@ -52,7 +52,7 @@
     "triple-equals": true,
     "typedef": [true],
     "unified-signatures": [false],
-    "variable-name": true,
+    "variable-name": false,
     "whitespace": [true]
   },
   "jsRules": {

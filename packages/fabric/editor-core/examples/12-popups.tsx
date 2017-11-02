@@ -16,9 +16,9 @@ const Boundary = styled.div`
 class CustomBoundryExample extends PureComponent<any, any> {
   state = { boundary: undefined };
 
-  handleBoundryRef = (boundary) => {
+  handleBoundryRef = boundary => {
     this.setState({ boundary });
-  }
+  };
 
   render() {
     const props = this.props;
@@ -46,16 +46,16 @@ class PortalExample extends PureComponent<any, any> {
     portal: undefined,
   };
 
-  handleRef = (portal) => {
+  handleRef = portal => {
     this.setState({ portal });
-  }
+  };
 
   render() {
     const props = this.props;
 
     return (
       <div>
-        <div style={{overflow: 'hidden'}}>
+        <div style={{ overflow: 'hidden' }}>
           <Editor
             imageUploadHandler={props.imageUploadHandler}
             analyticsHandler={props.analyticsHandler}
@@ -77,13 +77,13 @@ class PortalExample extends PureComponent<any, any> {
 class PortalWithCustomBoundaryExample extends PureComponent<any, any> {
   state = { portal: undefined, boundary: undefined };
 
-  handlePortalRef = (portal) => {
+  handlePortalRef = portal => {
     this.setState({ portal });
-  }
+  };
 
-  handleBoundryRef = (boundary) => {
+  handleBoundryRef = boundary => {
     this.setState({ boundary });
-  }
+  };
 
   render() {
     const props = this.props;
@@ -91,7 +91,7 @@ class PortalWithCustomBoundaryExample extends PureComponent<any, any> {
     return (
       <div>
         <Boundary innerRef={this.handleBoundryRef}>
-          <div style={{overflow: 'hidden'}}>
+          <div style={{ overflow: 'hidden' }}>
             <Editor
               imageUploadHandler={props.imageUploadHandler}
               analyticsHandler={props.analyticsHandler}
@@ -115,20 +115,25 @@ class PortalWithCustomBoundaryExample extends PureComponent<any, any> {
 class PortalInScrollContainerExample extends PureComponent<any, any> {
   state = { portal: undefined, boundary: undefined };
 
-  handlePortalRef = (portal) => {
+  handlePortalRef = portal => {
     this.setState({ portal });
-  }
+  };
 
-  handleBoundryRef = (boundary) => {
+  handleBoundryRef = boundary => {
     this.setState({ boundary });
-  }
+  };
 
   render() {
     const props = this.props;
 
     return (
       <div
-        style={{overflow: 'scroll', height: 200, position: 'relative', border: `1px solid ${akColorN40}` }}
+        style={{
+          overflow: 'scroll',
+          height: 200,
+          position: 'relative',
+          border: `1px solid ${akColorN40}`,
+        }}
         ref={this.handleBoundryRef}
       >
         <div style={{ minHeight: 500, width: '120%' }}>
@@ -177,7 +182,9 @@ export default function Example() {
     <div>
       <Content>
         <h2>Intentionally Broken Example</h2>
-        <p style={{ marginBottom: 14 }}>Boundries: document.body | Container: 300px, overflow: hidden.</p>
+        <p style={{ marginBottom: 14 }}>
+          Boundries: document.body | Container: 300px, overflow: hidden.
+        </p>
         <div style={{ width: 300, overflow: 'hidden' }}>
           <Editor
             imageUploadHandler={imageUploadHandler}
@@ -187,16 +194,17 @@ export default function Example() {
             mentionProvider={mentionProvider}
             emojiProvider={emojiProvider}
             isExpandedByDefault={true}
-            ref={this.handleEditorRef}
           />
         </div>
       </Content>
 
-      <hr/>
+      <hr />
 
       <Content>
         <h2>Basic</h2>
-        <p style={{ marginBottom: 14 }}>Boundries: document.body | Container: 300px, no overflow.</p>
+        <p style={{ marginBottom: 14 }}>
+          Boundries: document.body | Container: 300px, no overflow.
+        </p>
         <div style={{ width: 300 }}>
           <Editor
             imageUploadHandler={imageUploadHandler}
@@ -206,7 +214,6 @@ export default function Example() {
             mentionProvider={mentionProvider}
             emojiProvider={emojiProvider}
             isExpandedByDefault={true}
-            ref={this.handleEditorRef}
           />
         </div>
       </Content>
@@ -226,11 +233,13 @@ export default function Example() {
         </div>
       </Content>
 
-      <hr/>
+      <hr />
 
       <Content>
         <h2>Basic Portal</h2>
-        <p style={{ marginBottom: 14 }}>Boundries: document.body | Container: 300px, overflow: hidden.</p>
+        <p style={{ marginBottom: 14 }}>
+          Boundries: document.body | Container: 300px, overflow: hidden.
+        </p>
         <div style={{ width: 300 }}>
           <PortalExample
             imageUploadHandler={imageUploadHandler}

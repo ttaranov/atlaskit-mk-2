@@ -21,7 +21,6 @@ class Demo extends React.Component<Props, State> {
   state = { disabled: true };
 
   render() {
-    console.log(this.props.handleChange);
     return (
       <div>
         <Editor

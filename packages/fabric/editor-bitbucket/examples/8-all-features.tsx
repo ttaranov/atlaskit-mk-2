@@ -4,7 +4,7 @@ import BitbucketStyles from '../example-helpers/bitbucketStyles';
 import { MockMentionSource } from '../example-helpers/_mock-mentionsource';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import { base64fileconverter } from '@atlaskit/editor-test-helpers';
+import { Converter, dropHandler, pasteHandler } from '@atlaskit/editor-test-helpers';
 import { default as Editor } from '../src';
 
 const mentionSource = new MockMentionSource();
@@ -14,7 +14,6 @@ const CANCEL_ACTION = () => console.log('Cancel');
 const CHANGE_ACTION = () => console.log('Change');
 const SAVE_ACTION = () => console.log('Save');
 const NOOP = () => {};
-const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 
 const isClipboardEvent = (e: Event) => {

@@ -1,6 +1,5 @@
-import { base64fileconverter } from '@atlaskit/editor-test-helpers';
+import { Converter, dropHandler, pasteHandler } from '@atlaskit/editor-test-helpers';
 
-const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 
 const imageUploadHandler = (e: any, fn: any) => {
@@ -12,7 +11,7 @@ const imageUploadHandler = (e: any, fn: any) => {
     // we cannot trigger a real file viewer from here
     // so we just simulate a succesful image upload and insert an image
     fn({
-      src: 'https://design.atlassian.com/images/brand/logo-21.png'
+      src: 'https://design.atlassian.com/images/brand/logo-21.png',
     });
   }
 };

@@ -110,6 +110,10 @@ class Example extends Component<ExampleProps, ExampleState> {
     input: HTMLTextAreaElement;
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.input !== this.state.input || nextState.output !== this.state.output;
+  }
+
   render() {
     return (
       <div ref="root">
