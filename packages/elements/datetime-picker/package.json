@@ -10,6 +10,10 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [],
+  "atlaskit": {
+    "name": "Date-time picker",
+    "team": "elements"
+  },
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/theme": "^2.0.0",

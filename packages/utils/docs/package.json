@@ -12,6 +12,10 @@
   "maintainers": [
     "James K"
   ],
+  "atlaskit": {
+    "name": "Atlaskit docs",
+    "team": "elements"
+  },
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/code": "^2.1.4",
