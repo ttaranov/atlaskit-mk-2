@@ -8,14 +8,10 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "scripts": {
-    "build":
-      "                               run-p build:babel build:typescript:es5 build:typescript:es2015 build:editor-common:json-schema --print-label --continue-on-error",
-    "build:babel":
-      "                         NODE_ENV=production bolt workspaces exec --only-fs 'packages/{elements,utils}/**' -- babel src -d dist/cjs",
-    "build:typescript:es5":
-      "                NODE_ENV=production bolt workspaces exec --only-fs 'packages/fabric/*' -- tsc --project ./build/es5",
-    "build:typescript:es2015":
-      "             NODE_ENV=production bolt workspaces exec --only-fs 'packages/fabric/*' -- tsc --project ./build/es2015",
+    "build": "                               run-p build:babel build:typescript:es5 build:typescript:es2015 build:editor-common:json-schema --print-label --continue-on-error",
+    "build:babel": "                         NODE_ENV=production bolt workspaces exec --only-fs 'packages/{elements,utils}/**' -- babel src -d dist/cjs",
+    "build:typescript:es5": "                NODE_ENV=production bolt workspaces exec --only-fs 'packages/fabric/*' -- tsc --project ./build/es5",
+    "build:typescript:es2015": "             NODE_ENV=production bolt workspaces exec --only-fs 'packages/fabric/*' -- tsc --project ./build/es2015",
     "delete": "                              yarn run delete:modules && yarn run delete:build",
     "delete:modules": "                      rm -rf node_modules **/node_modules",
     "delete:build": "                        rm -rf **/dist",
@@ -25,19 +21,15 @@
     "test:browser:browserstack": "           projector ./projector test:browser --browserstack",
     "lint": "                                yarn run lint:eslint && yarn run lint:tslint",
     "lint:eslint": "                         eslint '**/*.js'",
-    "lint:tslint":
-      "                         tslint -c ./tslint.json 'packages/*/*/src/**/*.+(ts|tsx)' --format stylish",
-    "typecheck":
-      "                           yarn run typecheck:flow && yarn run typecheck:typescript",
+    "lint:tslint": "                         tslint -c ./tslint.json 'packages/*/*/src/**/*.+(ts|tsx)' --format stylish",
+    "typecheck": "                           yarn run typecheck:flow && yarn run typecheck:typescript",
     "typecheck:flow": "                      flow check",
-    "typecheck:typescript":
-      "                bolt workspaces exec --only-fs 'packages/fabric/*' -- tsc --noEmit --project ./",
+    "typecheck:typescript": "                bolt workspaces exec --only-fs 'packages/fabric/*' -- tsc --noEmit --project ./",
     "website:start": "                       cd website && yarn start",
     "start": "                               yarn run website:start",
     "changeset": "                           projector ./projector changeset",
     "release": "                             projector ./projector release",
-    "build:editor-common:json-schema":
-      "     NODE_ENV=production tsc --project ./packages/fabric/editor-common/build/json-schema && echo 'Done.'"
+    "build:editor-common:json-schema": "     NODE_ENV=production tsc --project ./packages/fabric/editor-common/build/json-schema && echo 'Done.'"
   },
   "bolt": {
     "version": "0.15.x",
@@ -240,6 +232,8 @@
   },
   "jest": {
     "modulePathIgnorePatterns": ["./node_modules"],
+    "transformIgnorePatterns": ["\\/node_modules\\/(?!@atlaskit)"],
+    "resolver": "./resolver.js",
     "transform": {
       "^.+\\.tsx?$": "ts-jest/preprocessor",
       "^.+\\.js$": "babel-jest"
