@@ -12,6 +12,10 @@
   "maintainers": [
     "Trey S"
   ],
+  "atlaskit": {
+    "name": "Calendar",
+    "team": "elements"
+  },
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/button": "^5.3.0",
