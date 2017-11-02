@@ -30,9 +30,9 @@ export default class Spinner extends Component<SpinnerProps, SpinnerState> {
     size: 'small',
   }
 
-  transitionNode: ?Node
+  transitionNode: ?HTMLElement;
 
-  constructor(props) {
+  constructor(props: SpinnerProps) {
     super(props);
     this.state = {
       phase: '',
@@ -47,7 +47,11 @@ export default class Spinner extends Component<SpinnerProps, SpinnerState> {
     const { delay } = this.props;
     if (delay) {
       this.setState({ phase: 'DELAY' });
-      this.endListener(this.transitionNode, setEnterPhase);
+      if (this.transitionNode) {
+        this.endListener(this.transitionNode, setEnterPhase);
+      } else {
+        throw new Error('Cannot obtain transition element reference');
+      }
     } else {
       setEnterPhase();
     }
@@ -61,7 +65,7 @@ export default class Spinner extends Component<SpinnerProps, SpinnerState> {
     this.setState({ phase: 'LEAVE' });
   }
 
-  endListener = (node, done: Function) => {
+  endListener = (node: HTMLElement, done: Function) => {
     function executeCallback(event: AnimationEvent) {
       // ignore animation events on the glyph
       if (event.target.tagName === 'svg') {
@@ -98,7 +102,7 @@ export default class Spinner extends Component<SpinnerProps, SpinnerState> {
           onEntered={this.idle}
           onExit={this.exit}
           onExited={() => this.props.onComplete}
-          ref={(node: Node) => { this.transitionNode = node; }}
+          ref={node => { this.transitionNode = node; }}
         >
           <Container
             delay={delay / 1000}
