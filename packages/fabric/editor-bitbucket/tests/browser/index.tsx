@@ -2,12 +2,19 @@ import * as chai from 'chai';
 import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
-import { SinonSpy } from 'sinon';
 import { doc, h1, emoji, mention, p, strong, code_block } from './_schema-builder';
 
+import { imageUploadStateKey } from '@atlaskit/editor-core';
 import { browser } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
-import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, insertText, sendKeyToPm } from '@atlaskit/editor-test-helpers';
+import {
+  chaiPlugin,
+  createEvent,
+  dispatchPasteEvent,
+  fixtures,
+  insertText,
+  sendKeyToPm,
+} from '@atlaskit/editor-test-helpers';
 import Editor from '../../src/index';
 
 chai.use(chaiPlugin);
@@ -105,12 +112,16 @@ describe('@atlaskit/editor-bitbucket/setFromHtml', () => {
 
 describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
   const fixture = fixtures();
-  let spy: SinonSpy;
+  let spy: any;
   let editorWrapper;
 
-  beforeEach(() => {
+  beforeEach(done => {
     spy = sinon.spy();
-    editorWrapper = mount(<Editor isExpandedByDefault={true} imageUploadHandler={spy} />, { attachTo: fixture() });
+    editorWrapper = mount(<Editor isExpandedByDefault={true} imageUploadHandler={spy} />, {
+      attachTo: fixture(),
+    });
+    const pluginState = imageUploadStateKey.getState(editorWrapper.state().editorView.state);
+    pluginState.handleProvider('imageUploadProvider', Promise.resolve(spy)).then(() => done());
   });
 
   afterEach(() => {
@@ -137,9 +148,9 @@ describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
       Object.defineProperties(event, {
         clipboardData: {
           value: {
-            types: ['Files']
-          }
-        }
+            types: ['Files'],
+          },
+        },
       });
     } catch (e) {
       // This environment does not allow mocking paste events
@@ -153,7 +164,7 @@ describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
     expect(spy.getCall(0).args[1]).to.be.a('function');
   });
 
-  it('should invoke upload handler after dropping an image', function(){
+  it('should invoke upload handler after dropping an image', function() {
     // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop'
     //       so we must dispatch the event directly on the event which has listener attached.
     const dropElement: HTMLElement = (editorWrapper.get(0) as any).state.editorView.dom;
@@ -168,8 +179,8 @@ describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
           types: ['Files'],
           files: [],
           items: [],
-        }
-      }
+        },
+      },
     });
 
     dropElement.dispatchEvent(event);
@@ -185,12 +196,12 @@ describe('@atlaskit/editor-bitbucket/multiple editors as children', () => {
   type State = {};
   class ContainerWithTwoEditors extends React.PureComponent<Props, State> {
     render() {
-     return (
-       <div>
-         <Editor isExpandedByDefault={true} />
-         <Editor isExpandedByDefault={true} />
-       </div>
-     );
+      return (
+        <div>
+          <Editor isExpandedByDefault={true} />
+          <Editor isExpandedByDefault={true} />
+        </div>
+      );
     }
   }
 
@@ -273,7 +284,9 @@ describe.skip('@atlaskit/editor-bitbucket/pasting', () => {
 
   beforeEach(() => {
     const mentionResoure = sinon.stub() as any;
-    editorWrapper = mount(<Editor isExpandedByDefault={true} mentionSource={mentionResoure} />, { attachTo: fixture() });
+    editorWrapper = mount(<Editor isExpandedByDefault={true} mentionSource={mentionResoure} />, {
+      attachTo: fixture(),
+    });
     editor = editorWrapper.get(0) as any;
     editorView = editor!.state!.editorView as EditorView;
   });
@@ -284,7 +297,8 @@ describe.skip('@atlaskit/editor-bitbucket/pasting', () => {
 
   it('should transform pasted html with an emoji', function() {
     const content = {
-      html: '<p>Nice! <img src="https://d301sr.cloudfront.net/69284d5bf158/emoji/img/%2B1.svg" class="emoji"></p>'
+      html:
+        '<p>Nice! <img src="https://d301sr.cloudfront.net/69284d5bf158/emoji/img/%2B1.svg" class="emoji"></p>',
     };
 
     if (!dispatchPasteEvent(editorView, content)) {
@@ -297,7 +311,8 @@ describe.skip('@atlaskit/editor-bitbucket/pasting', () => {
 
   it('should transform pasted html with a mention', function() {
     const content = {
-      html: '<p><a href="/mention/" rel="nofollow" title="@mention" class="mention">Mention</a> some mention.</p>'
+      html:
+        '<p><a href="/mention/" rel="nofollow" title="@mention" class="mention">Mention</a> some mention.</p>',
     };
 
     if (!dispatchPasteEvent(editorView, content)) {
@@ -305,7 +320,9 @@ describe.skip('@atlaskit/editor-bitbucket/pasting', () => {
       return this.skip();
     }
 
-    expect(editor.doc).to.deep.equal(doc(p(mention({ id: 'mention', text: '@Mention' }), ' some mention.')));
+    expect(editor.doc).to.deep.equal(
+      doc(p(mention({ id: 'mention', text: '@Mention' }), ' some mention.'))
+    );
   });
 });
 

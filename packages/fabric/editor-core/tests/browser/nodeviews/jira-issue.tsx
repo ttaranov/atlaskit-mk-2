@@ -19,11 +19,4 @@ describe('jiraIssue - React component', () => {
     expect(wrapper.find(JiraLogo)).to.have.length(1);
     wrapper.unmount();
   });
-
-  it('should use issue key as a text', () => {
-    const node = confluenceJiraIssue({ issueKey: 'test' });
-    const wrapper = mount(<ReactJIRAIssueNode node={node} />);
-    expect(wrapper.text()).to.equal('test');
-    wrapper.unmount();
-  });
 });

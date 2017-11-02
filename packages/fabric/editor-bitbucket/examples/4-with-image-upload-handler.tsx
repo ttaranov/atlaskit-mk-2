@@ -1,6 +1,6 @@
 // tslint:disable:no-console
 import * as React from 'react';
-import { base64fileconverter } from '@atlaskit/editor-test-helpers';
+import { Converter, dropHandler, pasteHandler } from '@atlaskit/editor-test-helpers';
 import { default as Editor } from '../src';
 import BitbucketStyles from '../example-helpers/bitbucketStyles';
 
@@ -20,7 +20,6 @@ const isDragEvent = (e: Event) => {
     : (e as DragEvent).dataTransfer instanceof DataTransfer;
 };
 
-const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 const imageUploadHandler = (e: any, fn: any) => {
   if (isClipboardEvent(e)) {

@@ -124,7 +124,7 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   handleProviders = (props: Props) => {
-    const { emojiProvider, mentionSource } = props;
+    const { emojiProvider, mentionSource, imageUploadHandler } = props;
 
     let mentionProvider;
 
@@ -140,6 +140,10 @@ export default class Editor extends PureComponent<Props, State> {
       emojiProvider,
       mentionProvider,
     });
+
+    if (imageUploadHandler) {
+      this.providerFactory.setProvider('imageUploadProvider', Promise.resolve(imageUploadHandler));
+    }
   };
 
   /**
@@ -299,7 +303,6 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const { imageUploadHandler } = this.props;
       const transformer = this.transformer;
 
       const bitbucketKeymap = {
@@ -317,7 +320,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...clearFormattingPlugins(schema),
           ...hyperlinkPlugins(schema),
           ...rulePlugins(schema),
-          ...imageUploadPlugins(schema),
+          ...imageUploadPlugins(schema, this.providerFactory),
           // block type plugin needs to be after hyperlink plugin until we implement keymap priority
           // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
           // if converting is possible
@@ -335,14 +338,6 @@ export default class Editor extends PureComponent<Props, State> {
           keymap(baseKeymap), // should be last :(
         ],
       });
-
-      if (imageUploadHandler) {
-        const imageUploadState = imageUploadStateKey.getState(editorState);
-
-        if (imageUploadState.setUploadHandler) {
-          imageUploadState.setUploadHandler(imageUploadHandler);
-        }
-      }
 
       const editorView = new EditorView(place, {
         state: editorState,

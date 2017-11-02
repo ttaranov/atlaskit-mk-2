@@ -1,11 +1,18 @@
-import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm, insertText } from '@atlaskit/editor-test-helpers';
+import {
+  chaiPlugin,
+  createEvent,
+  dispatchPasteEvent,
+  fixtures,
+  sendKeyToPm,
+  insertText,
+} from '@atlaskit/editor-test-helpers';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 
-import { analyticsService } from '@atlaskit/editor-core';
+import { analyticsService, imageUploadStateKey } from '@atlaskit/editor-core';
 import { browser } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
 
@@ -102,12 +109,18 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
   let editor: ReactWrapper<any, any>;
   let editorAPI: Editor | null;
 
-  beforeEach(() => {
-    const noop = () => { };
+  beforeEach(done => {
+    const noop = () => {};
     handler = sinon.spy();
 
     editor = mount(
-      <Editor isExpandedByDefault={true} onCancel={noop} onSave={noop} imageUploadHandler={noop} analyticsHandler={handler} />,
+      <Editor
+        isExpandedByDefault={true}
+        onCancel={noop}
+        onSave={noop}
+        imageUploadHandler={noop}
+        analyticsHandler={handler}
+      />,
 
       // We need to attach the editor to DOM because ProseMirror depends on having
       // focus on the content area (detached DOM elements can not receive focus)
@@ -116,6 +129,8 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
 
     editorAPI = editor.get(0) as any;
     editorView = editorAPI!.state!.editorView as EditorView;
+    const pluginState = imageUploadStateKey.getState(editor.state().editorView.state);
+    pluginState.handleProvider('imageUploadProvider', Promise.resolve(handler)).then(() => done());
   });
 
   afterEach(() => {
@@ -212,7 +227,9 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
 
   it('atlassian.editor.format.list.numbered.autoformatting', () => {
     insertText(editorView, '1. ', 1);
-    expect(handler.calledWith('atlassian.editor.format.list.numbered.autoformatting')).to.equal(true);
+    expect(handler.calledWith('atlassian.editor.format.list.numbered.autoformatting')).to.equal(
+      true
+    );
   });
 
   // Unskip it in: https://product-fabric.atlassian.net/browse/ED-2214
@@ -250,20 +267,24 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.feedback.button', () => {
-    window.jQuery = { ajax() { } };
-    const noop = () => { };
+    window.jQuery = { ajax() {} };
+    const noop = () => {};
 
     editor = mount(
-      <Editor isExpandedByDefault={true} onCancel={noop} onSave={noop} imageUploadHandler={noop} analyticsHandler={handler} />,
+      <Editor
+        isExpandedByDefault={true}
+        onCancel={noop}
+        onSave={noop}
+        imageUploadHandler={noop}
+        analyticsHandler={handler}
+      />,
 
       // We need to attach the editor to DOM because ProseMirror depends on having
       // focus on the content area (detached DOM elements can not receive focus)
       { attachTo: fixture() }
     );
 
-    editor
-      .find('ToolbarFeedback > ToolbarButton')
-      .simulate('click');
+    editor.find('ToolbarFeedback > ToolbarButton').simulate('click');
 
     expect(handler.calledWith('atlassian.editor.feedback.button')).to.equal(true);
   });
@@ -286,7 +307,7 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
     expect(handler.calledWith('atlassian.editor.stop.cancel')).to.equal(true);
   });
 
-  it('atlassian.editor.paste', function () {
+  it('atlassian.editor.paste', function() {
     if (!dispatchPasteEvent(editorView, { plain: 'foo' })) {
       // This environment does not support artificial paste events
       return this.skip();
@@ -310,7 +331,7 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
     expect(handler.calledWith('atlassian.editor.image.button')).to.equal(true);
   });
 
-  it('atlassian.editor.image.paste', function () {
+  it('atlassian.editor.image.paste', function() {
     const contentArea: HTMLElement = editorView.dom;
     const event = createEvent('paste');
 
@@ -318,9 +339,9 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
       Object.defineProperties(event, {
         clipboardData: {
           value: {
-            types: ['Files']
-          }
-        }
+            types: ['Files'],
+          },
+        },
       });
     } catch (e) {
       // This environment does not allow mocking paste events
@@ -341,13 +362,13 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
       dataTransfer: {
         value: {
           getData: (type: string) => '',
-          setData: () => { },
-          clearData: () => { },
+          setData: () => {},
+          clearData: () => {},
           types: ['Files'],
           files: [],
           items: [],
-        }
-      }
+        },
+      },
     });
 
     contentArea.dispatchEvent(event);
@@ -362,7 +383,10 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
     { value: 'heading5', name: 'Heading 5' },
   ].forEach(blockType => {
     it(`atlassian.editor.format.${blockType.value}.button`, () => {
-      editor.find('ToolbarBlockType').find('ToolbarButton').simulate('click');
+      editor
+        .find('ToolbarBlockType')
+        .find('ToolbarButton')
+        .simulate('click');
       editor
         .find('ToolbarBlockType')
         .find('Item')
@@ -370,7 +394,9 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
         .find('Element')
         .simulate('click');
 
-      expect(handler.calledWith(`atlassian.editor.format.${blockType.value}.button`)).to.equal(true);
+      expect(handler.calledWith(`atlassian.editor.format.${blockType.value}.button`)).to.equal(
+        true
+      );
     });
   });
 
@@ -379,20 +405,27 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
     { value: 'blockquote', name: 'Block quote' },
   ].forEach(blockType => {
     it(`atlassian.editor.format.${blockType.value}.button`, () => {
-      editor.find('ToolbarInsertBlock').find('ToolbarButton').simulate('click');
+      editor
+        .find('ToolbarInsertBlock')
+        .find('ToolbarButton')
+        .simulate('click');
       editor
         .find('Item')
         .filterWhere(n => n.text().indexOf(blockType.name) > 0)
         .find('Element')
         .simulate('click');
-      expect(handler.calledWith(`atlassian.editor.format.${blockType.value}.button`)).to.equal(true);
+      expect(handler.calledWith(`atlassian.editor.format.${blockType.value}.button`)).to.equal(
+        true
+      );
     });
   });
 
   for (let level = 1; level <= 5; level++) {
     it(`atlassian.editor.format.heading${level}.autoformatting`, () => {
       insertText(editorView, stringRepeat('#', level) + ' ', 1);
-      expect(handler.calledWith(`atlassian.editor.format.heading${level}.autoformatting`)).to.equal(true);
+      expect(handler.calledWith(`atlassian.editor.format.heading${level}.autoformatting`)).to.equal(
+        true
+      );
     });
   }
 
