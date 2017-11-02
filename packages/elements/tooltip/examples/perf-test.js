@@ -15,7 +15,14 @@ function getInitialState() {
   };
 }
 
-export default class PerfTest extends Component {
+type Props = {};
+type State = {
+  count: number,
+  tests: number,
+  time: number,
+};
+
+export default class PerfTest extends Component<Props, State> {
   state = getInitialState()
   startTest = () => {
     let runs = 0;

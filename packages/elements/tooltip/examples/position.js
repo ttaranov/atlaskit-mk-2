@@ -5,7 +5,7 @@ import { colors } from '@atlaskit/theme';
 import Tooltip from '../src';
 import { Target } from './styled';
 
-function capitalize(str: String) {
+function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
@@ -25,9 +25,9 @@ const Parent = styled.div`
 `;
 
 type PosTypes = {
-  children: any,
+  children?: any, // eslint-disable-line react/require-default-props
   pos: 'relative' | 'absolute' | 'fixed',
-  rest: Array<any>,
+  rest?: Array<any>, // eslint-disable-line react/require-default-props
 };
 
 const Position = ({ children, pos, ...rest }: PosTypes) => (
@@ -39,8 +39,9 @@ const Position = ({ children, pos, ...rest }: PosTypes) => (
     {children}
   </Parent>
 );
-
-export default class PositionExample extends Component {
+type Props = {};
+type State = { pinned: boolean, top: number };
+export default class PositionExample extends Component<Props, State> {
   panel: HTMLElement
   state = { pinned: false, top: 0 }
   pin = () => {

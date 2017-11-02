@@ -1,17 +1,19 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Target } from './styled';
 import type { Color } from './styled';
 import Tooltip from '../src/';
 
 const VALID_PLACEMENTS = ['top', 'right', 'bottom', 'left'];
 
-export default class PlacementExample extends PureComponent {
+type Props = { color: Color };
+type State = { placement: number };
+
+export default class PlacementExample extends Component<Props, State> {
   // store the direction as an index and pull it from the list above,
   // just to simplify the `changeDirection` logic
-  state : {| placement: number |} = { placement: 0 }
-  props: {| color: Color |}
+  state = { placement: 0 }
   static defaultProps = {
     color: 'blue',
   }
