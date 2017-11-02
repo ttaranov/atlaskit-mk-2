@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { validateSchemaCompatibility } from 'json-schema-diff-validator';
-import * as newSchema from '../../dist/json-schema/v1/full.json';
+import * as newSchema from '../../json-schema/v1/full.json';
 import { version } from '../../package.json';
 
 // TODO: remove this when jest unit tests are supported for TS files

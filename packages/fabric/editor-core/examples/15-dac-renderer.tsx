@@ -11,7 +11,7 @@ import * as Ajv from 'ajv';
 import * as React from 'react';
 import { ChangeEvent, PureComponent } from 'react';
 
-// import * as v1schema from '../dist/json-schema/v1/full.json';
+// import * as v1schema from '../json-schema/v1/full.json';
 import ProviderFactory from '../src/providerFactory';
 import Renderer from '../src/ui/Renderer';
 

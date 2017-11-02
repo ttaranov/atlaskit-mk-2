@@ -1,5 +1,5 @@
 import { name } from '../../package.json';
-import * as v1schema from '../../dist/json-schema/v1/full.json';
+import * as v1schema from '../../json-schema/v1/full.json';
 import * as Ajv from 'ajv';
 import { readFilesSync } from '../../test-helpers';
 

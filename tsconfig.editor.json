@@ -35,6 +35,7 @@
     ]
   },
   "files": [
-    "./typings/package.json.d.ts"
+    "./typings/package.json.d.ts",
+    "./typings/json.d.ts"
   ]
 }

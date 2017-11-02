@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import * as v1schema from '../dist/json-schema/v1/full.json';
+// import * as v1schema from '../json-schema/v1/full.json';
 
 // TODO: Fix import above
 const v1schema = {};

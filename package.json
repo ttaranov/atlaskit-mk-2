@@ -8,7 +8,8 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "scripts": {
-    "build": "                               run-p build:babel build:typescript:es5 build:typescript:es2015 build:editor-common:json-schema --print-label --continue-on-error",
+    "build": "                               run-p build:pkg build:babel build:typescript:es5 build:typescript:es2015 build:editor-common:json-schema --print-label --continue-on-error",
+    "build:pkg": "                           bolt workspaces exec --only-fs 'packages/**' -- copy-pkg package.json dist/package.json --only name,version",
     "build:babel": "                         NODE_ENV=production bolt workspaces exec --only-fs 'packages/{elements,utils}/**' -- babel src -d dist/cjs",
     "build:typescript:es5": "                NODE_ENV=production bolt workspaces exec --only-fs 'packages/fabric/*' -- tsc --project ./build/es5",
     "build:typescript:es2015": "             NODE_ENV=production bolt workspaces exec --only-fs 'packages/fabric/*' -- tsc --project ./build/es2015",
@@ -29,7 +30,7 @@
     "start": "                               yarn run website:start",
     "changeset": "                           projector ./projector changeset",
     "release": "                             projector ./projector release",
-    "build:editor-common:json-schema": "     cd packages/fabric/editor-common && yarn run build/json-schema && echo 'Done.'"
+    "build:editor-common:json-schema": "     cd packages/fabric/editor-common && yarn run build:json-schema && echo 'Done.'"
   },
   "bolt": {
     "version": "0.15.x",
@@ -71,6 +72,7 @@
     "bolt-query": "^1.1.4",
     "chai": "^4.1.2",
     "chai-as-promised": "^6.0.0",
+    "copy-pkg": "^1.0.0",
     "css-loader": "^0.28.0",
     "custom-event-polyfill": "^0.3.0",
     "enquirer": "^1.0.2",
@@ -245,6 +247,10 @@
       }
     },
     "testRegex": "(/(__tests?__/.*)\\.?(test|spec)?\\.(js|tsx?))$",
-    "moduleFileExtensions": ["js", "ts", "tsx"]
+    "moduleFileExtensions": [
+      "js",
+      "ts",
+      "tsx"
+    ]
   }
 }

@@ -1,7 +1,5 @@
 *.log
-packages/*/*/dist/*
-!packages/fabric/editor-common/dist/json-schema/
-website/dist/
+dist
 
 node_modules/
 coverage/
