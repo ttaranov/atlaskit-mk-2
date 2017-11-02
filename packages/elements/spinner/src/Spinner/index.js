@@ -47,11 +47,7 @@ export default class Spinner extends Component<SpinnerProps, SpinnerState> {
     const { delay } = this.props;
     if (delay) {
       this.setState({ phase: 'DELAY' });
-      if (this.transitionNode) {
-        this.endListener(this.transitionNode, setEnterPhase);
-      } else {
-        throw new Error('Cannot obtain transition element reference');
-      }
+      this.endListener(this.transitionNode, setEnterPhase);
     } else {
       setEnterPhase();
     }
@@ -65,7 +61,7 @@ export default class Spinner extends Component<SpinnerProps, SpinnerState> {
     this.setState({ phase: 'LEAVE' });
   }
 
-  endListener = (node: HTMLElement, done: Function) => {
+  endListener = (node: ?HTMLElement, done: Function) => {
     function executeCallback(event: AnimationEvent) {
       // ignore animation events on the glyph
       if (event.target.tagName === 'svg') {

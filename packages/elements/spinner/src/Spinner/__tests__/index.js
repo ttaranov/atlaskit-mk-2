@@ -5,9 +5,9 @@ import { mount } from 'enzyme';
 import { colors } from '@atlaskit/theme';
 
 import sinon from 'sinon';
-import Spinner from '../../../src';
-import Container, { getContainerAnimation } from '../../../src/Spinner/styledContainer';
-import Svg, { svgStyles, getStrokeColor } from '../../../src/Spinner/styledSvg';
+import Spinner from '../';
+import Container, { getContainerAnimation } from '../styledContainer';
+import Svg, { svgStyles, getStrokeColor } from '../styledSvg';
 
 beforeEach(() => {
   sinon.stub(console, 'error');
