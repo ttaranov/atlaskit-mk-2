@@ -130,7 +130,6 @@ export default class DatePicker extends Component<Props, State> {
       });
     } else {
       // TODO: Display an error message
-      console.error('Invalid time');
       this.setState({
         value: null,
         displayValue: '',
