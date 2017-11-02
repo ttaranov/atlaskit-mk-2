@@ -54,7 +54,7 @@ export const parseTime = (time: string) => {
   }
 
   // Handle 12-hour time
-  if (hours > 12 || minutes > 59) {
+  if (hours > 12 || hours < 1 || minutes > 59) {
     return null;
   }
 

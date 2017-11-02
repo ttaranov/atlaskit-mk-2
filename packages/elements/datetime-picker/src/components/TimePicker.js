@@ -74,7 +74,7 @@ export default class DatePicker extends Component<Props, State> {
 
   handleInputBlur = (e: FocusEvent) => {
     if (e.target instanceof HTMLInputElement) {
-      this.validate(e.target.value);
+      this.validate(this.state.displayValue);
     }
   }
 
@@ -101,7 +101,9 @@ export default class DatePicker extends Component<Props, State> {
     } else if (e.key === 'ArrowUp') {
       this.selectPreviousItem();
     } else if (e.key === 'Enter') {
-      this.validate(this.state.focused);
+      if (this.state.focused) {
+        this.validate(this.state.focused);
+      }
     }
   }
 
@@ -140,8 +142,8 @@ export default class DatePicker extends Component<Props, State> {
   }
 
   updateVisibleTimes = (value: ?string, times: Array<string>) => {
-    const timeShouldBeVisible = (time: string) => time.startsWith(value);
-    const visibleTimes = typeof value === 'string'
+    const timeShouldBeVisible = (time: string) => (value ? time.startsWith(value) : true);
+    const visibleTimes = value
       ? times.filter(timeShouldBeVisible)
       : times;
     this.setState({ visibleTimes });
@@ -161,7 +163,7 @@ export default class DatePicker extends Component<Props, State> {
 
   selectNextItem() {
     const visibleTimes = this.state.visibleTimes;
-    const current = visibleTimes.indexOf(this.state.focused);
+    const current = this.state.focused ? visibleTimes.indexOf(this.state.focused) : -1;
     let next = current + 1;
     next = next > visibleTimes.length - 1 ? 0 : next;
     this.setState({ focused: visibleTimes[next] });
@@ -169,7 +171,7 @@ export default class DatePicker extends Component<Props, State> {
 
   selectPreviousItem() {
     const visibleTimes = this.state.visibleTimes;
-    const current = visibleTimes.indexOf(this.state.focused);
+    const current = this.state.focused ? visibleTimes.indexOf(this.state.focused) : -1;
     let previous = current - 1;
     previous = previous < 0 ? visibleTimes.length - 1 : previous;
     this.setState({ focused: visibleTimes[previous] });
