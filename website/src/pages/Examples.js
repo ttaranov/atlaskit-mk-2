@@ -228,7 +228,11 @@ export default class Examples extends React.Component<Props, State> {
       return <div>Missing example</div>;
     }
 
-    let example = fs.getById(fs.getFiles(examples.children), exampleId);
+    let example;
+
+    if (examples) {
+      example = fs.getById(fs.getFiles(examples.children), exampleId);
+    }
 
     const ExampleComponent = Loadable({
       loader: () => example.exports(),
@@ -283,7 +287,7 @@ export default class Examples extends React.Component<Props, State> {
     const examplesSelectItems = [
       {
         heading: 'Examples',
-        items: fs.flatMap(examples, (file, filePath) => {
+        items: examples ? fs.flatMap(examples, (file, filePath) => {
           let item = {
             content: fs.titleize(file.id),
             value: fs.normalize(filePath.replace('examples/', '')),
@@ -294,7 +298,7 @@ export default class Examples extends React.Component<Props, State> {
           }
 
           return item;
-        }),
+        }) : [],
       },
     ];
 
