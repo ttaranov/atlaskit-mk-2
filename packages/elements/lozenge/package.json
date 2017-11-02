@@ -11,6 +11,10 @@
   "maintainers": [
     "Sean C"
   ],
+  "atlaskit": {
+    "name": "Lozenge",
+    "team": "elements"
+  },
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/util-shared-styles": "^2.10.3",
