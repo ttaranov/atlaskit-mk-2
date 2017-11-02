@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import BadgeElement from '../styled/Badge';
+import { BadgeElement } from './styled';
 
 export const APPEARANCE_ENUM = {
   values: ['default', 'primary', 'primaryInverted', 'important', 'added', 'removed'],

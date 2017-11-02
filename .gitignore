@@ -4,6 +4,7 @@ node_modules/
 coverage/
 **/.DS_Store
 **/.netlify
+.vscode
 
 # This is a hardcoded file for now, just to show that things are working, will remove once not
 # hardcoded
