@@ -25,7 +25,8 @@
     "website:start": "            cd website && yarn start",
     "start": "                    yarn run website:start",
     "changeset": "                projector ./projector changeset",
-    "release": "                  projector ./projector release"
+    "release": "                  projector ./projector release",
+    "ci": "                       bolt install && bolt build && yarn run lint && yarn run test && yarn run typecheck"
   },
   "bolt": {
     "workspaces": [
