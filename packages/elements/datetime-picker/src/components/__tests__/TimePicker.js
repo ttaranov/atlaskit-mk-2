@@ -76,15 +76,16 @@ describe(name, () => {
       expect(wrapper.find(TimePickerStateless).props().isOpen).toBe(true);
     });
 
-    // TODO: Enable test when issue with window.cancelAnimationFrame is resolved.
-    // it('closes the dialog when the input loses focus', () => {
-    //   const wrapper = mount(<TimePicker />);
+    // TODO: AK-3790 - Enable test when issue with window.cancelAnimationFrame is resolved.
+    // eslint-disable-next-line jest/no-disabled-tests
+    it.skip('closes the dialog when the input loses focus', () => {
+      const wrapper = mount(<TimePicker />);
 
-    //   wrapper.setState({ isOpen: true });
-    //   wrapper.find('input').simulate('blur');
+      wrapper.setState({ isOpen: true });
+      wrapper.find('input').simulate('blur');
 
-    //   expect(wrapper.find(TimePickerStateless).props().isOpen).toBe(false);
-    // });
+      expect(wrapper.find(TimePickerStateless).props().isOpen).toBe(false);
+    });
 
     it('calls onChange when a time is selected from the dropdown, closes the dropdown, and updates the values', () => {
       const testValue = '12:30pm';
