@@ -42,9 +42,7 @@ export default class DatePicker extends Component<Props, State> {
 
   handleInputBlur = (e: FocusEvent) => {
     if (e.target instanceof HTMLInputElement) {
-      const date = e.target.value;
-
-      const parsedDate = parseDate(date);
+      const parsedDate = parseDate(e.target.value);
 
       if (parsedDate) {
         this.onChange(parsedDate.value);

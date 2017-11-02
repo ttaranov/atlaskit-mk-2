@@ -14,6 +14,7 @@ type Props = {
   shouldShowIcon: bool,
   onFieldBlur: Handler,
   onFieldChange: Handler,
+  onFieldKeyDown: Handler,
   onFieldTriggerOpen: Handler,
   onIconClick: Handler,
   onPickerBlur: Handler,
@@ -38,6 +39,7 @@ export default class BasePicker extends Component<Props> {
     dialogProps: {},
     onFieldBlur() {},
     onFieldChange() {},
+    onFieldKeyDown() {},
     onFieldTriggerOpen() {},
     onIconClick() {},
     onPickerBlur() {},
@@ -96,6 +98,7 @@ export default class BasePicker extends Component<Props> {
           <Field
             onBlur={this.props.onFieldBlur}
             onChange={this.props.onFieldChange}
+            onKeyDown={this.props.onFieldKeyDown}
             onTriggerOpen={this.props.onFieldTriggerOpen}
             value={this.props.displayValue}
             ref={ref => { this.field = ref; }}
