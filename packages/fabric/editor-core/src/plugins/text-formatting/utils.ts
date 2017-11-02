@@ -30,7 +30,10 @@ export const removeIgnoredNodesLeft = (view: EditorView) => {
   let node = sel.anchorNode;
   let offset = sel.anchorOffset;
   let removeNode;
+  // TODO: un-ignore it
+  // @ts-ignore
   let removeOffset;
+
   if (!node) {
     return;
   }
@@ -76,7 +79,7 @@ export const removeIgnoredNodesLeft = (view: EditorView) => {
   }
 };
 
-export const hasCode = (state: EditorState, pos: number) : boolean => {
+export const hasCode = (state: EditorState, pos: number): boolean => {
   const { code } = state.schema.marks;
   const node = pos >= 0 && state.doc.nodeAt(pos);
   if (node) {

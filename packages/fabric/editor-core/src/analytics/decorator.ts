@@ -34,6 +34,7 @@ export default function analytics(name: string) {
           if (typeof primitiveOrFn === 'function') {
             Object.defineProperty(this, key, { value: trackFunction(name, primitiveOrFn) });
           } else {
+            // tslint:disable-next-line:no-console
             console.warn(`@analytics decorator expects "${key}" to be a function, not a ${typeof primitiveOrFn}.`);
             Object.defineProperty(this, key, { value: primitiveOrFn });
           }
@@ -64,6 +65,7 @@ function trackFunction(analyticsEventName: string, trackedFn: Function) {
       try {
         analyticsService.trackEvent(analyticsEventName);
       } catch (e) {
+        // tslint:disable-next-line:no-console
         console.error('An exception has been thrown when trying to track analytics event:', e);
       }
     }

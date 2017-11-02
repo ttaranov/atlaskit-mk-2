@@ -15,6 +15,7 @@ export function hermentHandler(name: string, properties?: AnalyticsProperties): 
   try {
     window.AJS.EventQueue.push({ name, properties });
   } catch (e) {
+    // tslint:disable-next-line:no-console
     console.warn('Unable to send analytics event via Herment - has it been initialized?', e);
   }
 }

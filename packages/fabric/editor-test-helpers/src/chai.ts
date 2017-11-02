@@ -46,22 +46,22 @@ export default (chai: any) => {
       if (deep && isSlice(left) && isSlice(right)) {
         this.assert(
           left.content.eq(right.content),
-          "expected left's fragment #{exp} to equal right's fragment #{act}",
-          "expected left's fragment #{exp} to not equal right's fragment #{act}",
+          'expected left\'s fragment #{exp} to equal right\'s fragment #{act}',
+          'expected left\'s fragment #{exp} to not equal right\'s fragment #{act}',
           left.content.toString(),
           right.content.toString()
         );
         this.assert(
           left.openStart === right.openStart,
-          "expected left's openStart #{exp} to equal right's openStart #{act}",
-          "expected left's openStart #{exp} to not equal right's openStart #{act}",
+          'expected left\'s openStart #{exp} to equal right\'s openStart #{act}',
+          'expected left\'s openStart #{exp} to not equal right\'s openStart #{act}',
           left.openStart,
           right.openStart
         );
         this.assert(
           left.openEnd === right.openEnd,
-          "expected left's openEnd #{exp} to equal right's openEnd #{act}",
-          "expected left's openEnd #{exp} to not equal right's openEnd #{act}",
+          'expected left\'s openEnd #{exp} to equal right\'s openEnd #{act}',
+          'expected left\'s openEnd #{exp} to not equal right\'s openEnd #{act}',
           left.openEnd,
           right.openEnd
         );

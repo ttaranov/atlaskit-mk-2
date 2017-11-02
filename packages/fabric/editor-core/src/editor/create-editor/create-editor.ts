@@ -137,6 +137,7 @@ export function processDefaultDocument(schema: Schema, rawDoc?: Node | string | 
     try {
       doc = JSON.parse(rawDoc);
     } catch (e) {
+      // tslint:disable-next-line:no-console
       console.error(`Error processing default value: ${rawDoc} isn't valid JSON document`);
       return;
     }
@@ -145,6 +146,7 @@ export function processDefaultDocument(schema: Schema, rawDoc?: Node | string | 
   }
 
   if (Array.isArray(doc)) {
+    // tslint:disable-next-line:no-console
     console.error(`Error processing default value: ${doc} is an array, but it must be an object with the following shape { type: 'doc', content: [...] }`);
     return;
   }
@@ -155,6 +157,7 @@ export function processDefaultDocument(schema: Schema, rawDoc?: Node | string | 
     parsedDoc.check();
     return parsedDoc;
   } catch (e) {
+    // tslint:disable-next-line:no-console
     console.error(`Error processing default value: ${doc} – ${e.message}`);
     return;
   }
