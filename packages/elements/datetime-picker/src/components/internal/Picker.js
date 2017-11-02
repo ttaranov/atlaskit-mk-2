@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type ElementRef } from 'react';
 import Base from '@atlaskit/field-base';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import { akColorN60 } from '@atlaskit/util-shared-styles';
@@ -20,14 +20,14 @@ type Props = {
   onPickerBlur: Handler,
   onPickerTriggerClose: Handler,
   onPickerUpdate: Handler,
-  dialog: any, // TODO: typing
-  field: any,
-  dialogProps: any,
+  dialog: ElementRef<any>,
+  field: ElementRef<any>,
+  dialogProps: { [string]: any },
 };
 
 export default class BasePicker extends Component<Props> {
-  dialog: any;
-  field: any;
+  dialog: ?ElementRef<any>;
+  field: ?ElementRef<any>;
 
   static defaultProps = {
     value: null,
@@ -76,7 +76,9 @@ export default class BasePicker extends Component<Props> {
   }
 
   selectField = () => {
-    this.field.select();
+    if (this.field) {
+      this.field.select();
+    }
   }
 
   render() {

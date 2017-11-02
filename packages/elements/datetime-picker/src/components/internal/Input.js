@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default class InputField extends Component<Props> {
-  input: ElementRef<Input>;
+  input: ElementRef<typeof Input>;
 
   static defaultProps = {
     isDisabled: false,
@@ -28,7 +28,9 @@ export default class InputField extends Component<Props> {
   }
 
   select = () => {
-    this.input.select();
+    if (this.input) {
+      this.input.select();
+    }
   }
 
   render() {

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type ElementRef } from 'react';
 import Picker from './internal/Picker';
 import TimeField from './internal/TimeField';
 import TimeDialog from './internal/TimeDialog';
@@ -21,7 +21,7 @@ type Props = {
 };
 
 export default class TimePickerStateless extends Component<Props> {
-  picker: any;
+  picker: ?ElementRef<typeof Picker>;
 
   static defaultProps = {
     isDisabled: false,

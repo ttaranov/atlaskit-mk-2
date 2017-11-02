@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type ElementRef } from 'react';
 import TimePickerStateless from './TimePickerStateless';
 import type { Handler } from '../types';
 import { parseTime } from '../util';
@@ -42,7 +42,7 @@ type State = {
 };
 
 export default class DatePicker extends Component<Props, State> {
-  datepicker: any;
+  timepicker: ?ElementRef<typeof TimePickerStateless>;
 
   static defaultProps = {
     isDisabled: false,
@@ -176,8 +176,8 @@ export default class DatePicker extends Component<Props, State> {
   }
 
   selectField() {
-    if (this.datepicker) {
-      this.datepicker.selectField();
+    if (this.timepicker) {
+      this.timepicker.selectField();
     }
   }
 
@@ -198,7 +198,7 @@ export default class DatePicker extends Component<Props, State> {
         onIconClick={this.handleIconClick}
         onPickerUpdate={this.handleUpdate}
 
-        ref={ref => { this.datepicker = ref; }}
+        ref={ref => { this.timepicker = ref; }}
       />
     );
   }

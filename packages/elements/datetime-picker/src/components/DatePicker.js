@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type ElementRef } from 'react';
 import DatePickerStateless from './DatePickerStateless';
 import type { Handler } from '../types';
 import { parseDate } from '../util';
@@ -18,7 +18,7 @@ type State = {
 };
 
 export default class DatePicker extends Component<Props, State> {
-  datepicker: any;
+  datepicker: ?ElementRef<typeof DatePickerStateless>;
 
   static defaultProps = {
     isDisabled: false,
