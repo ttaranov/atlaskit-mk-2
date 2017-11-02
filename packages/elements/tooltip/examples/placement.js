@@ -10,8 +10,11 @@ const VALID_PLACEMENTS = ['top', 'right', 'bottom', 'left'];
 export default class PlacementExample extends PureComponent {
   // store the direction as an index and pull it from the list above,
   // just to simplify the `changeDirection` logic
-  state = { placement: 0 }
-  props: { color: Color }
+  state : {| placement: number |} = { placement: 0 }
+  props: {| color: Color |}
+  static defaultProps = {
+    color: 'blue',
+  }
 
   changeDirection = () => {
     this.setState({

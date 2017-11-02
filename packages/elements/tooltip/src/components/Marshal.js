@@ -13,6 +13,7 @@ function isScrollable(node) {
     || SCROLLABLE.test(nodeStyle.overflowX)
     || SCROLLABLE.test(nodeStyle.overflowY);
 }
+type Options = { immediate: boolean };
 
 export default class TooltipMarshal {
   queuedForShow: ?Tooltip
@@ -59,7 +60,7 @@ export default class TooltipMarshal {
       this.showTooltip(tooltip, { immediate: false });
     }, SHOW_DELAY);
   }
-  showTooltip(tooltip, options) {
+  showTooltip(tooltip: Tooltip, options: Options) {
     this.queuedForShow = null;
     this.showTimeout = null;
     if (this.visibleTooltip) {
@@ -73,36 +74,46 @@ export default class TooltipMarshal {
     clearTimeout(this.showTimeout);
     this.showTimeout = null;
   }
-  addScrollListener(tooltip) {
+  addScrollListener(tooltip: Tooltip) {
     if (this.scrollListenerBound) return;
-    this.scrollListenerBound = true;
-    let parent = tooltip.wrapper.parentNode;
-    while (parent) {
-      if (parent.tagName === 'BODY') {
-        window.addEventListener('scroll', this.handleScroll);
-        break;
-      } else if (isScrollable(parent)) {
-        parent.addEventListener('scroll', this.handleScroll);
-        break;
-      }
 
-      parent = parent.parentNode;
+    this.scrollListenerBound = true;
+
+    if (tooltip.wrapper) {
+      let parent = tooltip.wrapper.parentNode;
+
+      while (parent) {
+        if (parent.tagName === 'BODY') {
+          window.addEventListener('scroll', this.handleScroll);
+          break;
+        } else if (isScrollable(parent)) {
+          parent.addEventListener('scroll', this.handleScroll);
+          break;
+        }
+
+        parent = parent.parentNode;
+      }
     }
   }
-  removeScrollListener(tooltip) {
+  removeScrollListener(tooltip: Tooltip) {
     if (!this.scrollListenerBound) return;
-    this.scrollListenerBound = false;
-    let parent = tooltip.wrapper.parentNode;
-    while (parent) {
-      if (parent.tagName === 'BODY') {
-        window.addEventListener('scroll', this.handleScroll);
-        break;
-      } else if (isScrollable(parent)) {
-        parent.removeEventListener('scroll', this.handleScroll);
-        break;
-      }
 
-      parent = parent.parentNode;
+    this.scrollListenerBound = false;
+
+    if (tooltip.wrapper) {
+      let parent = tooltip.wrapper.parentNode;
+
+      while (parent) {
+        if (parent.tagName === 'BODY') {
+          window.addEventListener('scroll', this.handleScroll);
+          break;
+        } else if (isScrollable(parent)) {
+          parent.removeEventListener('scroll', this.handleScroll);
+          break;
+        }
+
+        parent = parent.parentNode;
+      }
     }
   }
   handleScroll = () => {
@@ -130,7 +141,7 @@ export default class TooltipMarshal {
       this.hideTooltip(tooltip, { immediate: false });
     }, HIDE_DELAY);
   }
-  hideTooltip(tooltip, options) {
+  hideTooltip(tooltip: Tooltip, options: Options) {
     this.queuedForHide = null;
     this.hideTimeout = null;
     if (!this.visibleTooltip) {

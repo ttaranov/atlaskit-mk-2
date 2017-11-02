@@ -41,7 +41,7 @@ export default function WysiwygExample() {
   return (
     <Toolbar>
       {Object.keys(ACTIONS).map(a => (
-        <Tooltip content={a} placement="top">
+        <Tooltip key={a} content={a} placement="top">
           <Action>{ACTIONS[a]}</Action>
         </Tooltip>
       ))}

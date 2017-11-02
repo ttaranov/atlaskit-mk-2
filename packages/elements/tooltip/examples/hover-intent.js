@@ -3,7 +3,7 @@ import React from 'react';
 import { Target } from './styled';
 import Tooltip from '../src/';
 
-const colors = ['purple', 'blue', 'teal', 'green'];
+const colors = ['teal', 'blue', 'purple'];
 
 export default () => (
   <div style={{ display: 'flex' }}>
