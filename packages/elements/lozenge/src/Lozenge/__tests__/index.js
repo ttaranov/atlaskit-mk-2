@@ -2,7 +2,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import Lozenge, { APPEARANCE_ENUM } from './index';
+import Lozenge, { APPEARANCE_ENUM } from '../';
 
 describe('Lozenge', () => {
   describe('isBold property', () => {
