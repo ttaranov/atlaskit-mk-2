@@ -13,6 +13,10 @@
     "Luke B",
     "Nadia M"
   ],
+  "atlaskit": {
+    "name": "Tag",
+    "team": "elements"
+  },
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/icon": "^9.0.1",
