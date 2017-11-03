@@ -3,7 +3,13 @@
 import React, { PureComponent } from 'react';
 import Spinner from '@atlaskit/spinner';
 
-class StatefulSpinner extends PureComponent {
+type State = {
+  active: boolean,
+  delay: number,
+  state: 'spinning' | 'removing' | 'completed',
+}
+
+class StatefulSpinner extends PureComponent<{}, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -58,7 +64,7 @@ class StatefulSpinner extends PureComponent {
         <div>Click the spinner to see it&#39;s fade in and out animations.</div>
         <div>The delay field will modify the delay before the spinner shows.</div>
         <div>
-          <code>isCompleting</code> is currently set to <code>{`${!this.state.active}`}</code>
+          <code>isCompleting</code> is currently set to <code>{`${String(!this.state.active)}`}</code>
         </div>
         <div>
           <code>state</code> is currently set to <code>{`${this.state.state}`}</code>
