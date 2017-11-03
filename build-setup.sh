@@ -26,3 +26,7 @@ npm set //registry.yarnpkg.com/:_authToken=$NPM_TOKEN
 # Forces `chalk` to display colored output in pipelines
 export FORCE_COLOR=1
 yarn config set color always
+
+# zip for website deploy
+apt-get -y update
+apt-get -y install zip
