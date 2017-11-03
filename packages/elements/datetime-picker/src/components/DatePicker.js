@@ -40,21 +40,7 @@ export default class DatePicker extends Component<Props, State> {
 
   handleInputBlur = (e: FocusEvent) => {
     if (e.target instanceof HTMLInputElement) {
-      const parsedDate = parseDate(e.target.value);
-
-      if (parsedDate) {
-        this.onChange(parsedDate.value);
-        this.setState({
-          value: parsedDate.value,
-          displayValue: parsedDate.display,
-        });
-      } else {
-        // TODO: Display error message for invalid date.
-        this.setState({
-          value: null,
-          displayValue: '',
-        });
-      }
+      this.validate();
     }
   }
 
@@ -62,6 +48,10 @@ export default class DatePicker extends Component<Props, State> {
     if (e.target instanceof HTMLInputElement) {
       this.setState({ displayValue: e.target.value });
     }
+  }
+
+  handleTriggerValidate = () => {
+    this.validate();
   }
 
   handleTriggerOpen = () => {
@@ -99,6 +89,24 @@ export default class DatePicker extends Component<Props, State> {
     }
   }
 
+  validate() {
+    const parsedDate = parseDate(this.state.displayValue);
+
+    if (parsedDate) {
+      this.onChange(parsedDate.value);
+      this.setState({
+        value: parsedDate.value,
+        displayValue: parsedDate.display,
+      });
+    } else {
+      // TODO: Display error message for invalid date.
+      this.setState({
+        value: null,
+        displayValue: '',
+      });
+    }
+  }
+
   selectField() {
     if (this.datepicker) {
       this.datepicker.selectField();
@@ -118,6 +126,7 @@ export default class DatePicker extends Component<Props, State> {
         onFieldBlur={this.handleInputBlur}
         onFieldChange={this.handleInputChange}
         onFieldTriggerOpen={this.handleTriggerOpen}
+        onFieldTriggerValidate={this.handleTriggerValidate}
         onIconClick={this.handleIconClick}
         onPickerBlur={this.handlePickerBlur}
         onPickerTriggerClose={this.handleTriggerClose}

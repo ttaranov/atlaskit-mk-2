@@ -15,6 +15,7 @@ type Props = {
   onFieldBlur: Handler,
   onFieldChange: Handler,
   onFieldTriggerOpen: Handler,
+  onFieldTriggerValidate: Handler,
   onIconClick: Handler,
   onPickerBlur: Handler,
   onPickerTriggerClose: Handler,
@@ -34,6 +35,7 @@ export default class DatePickerStateless extends Component<Props> {
     onFieldBlur() {},
     onFieldChange() {},
     onFieldTriggerOpen() {},
+    onFieldTriggerValidate() {},
     onIconClick() {},
     onPickerBlur() {},
     onPickerTriggerClose() {},
@@ -62,6 +64,7 @@ export default class DatePickerStateless extends Component<Props> {
         onFieldBlur={this.props.onFieldBlur}
         onFieldChange={this.props.onFieldChange}
         onFieldTriggerOpen={this.props.onFieldTriggerOpen}
+        onFieldTriggerValidate={this.props.onFieldTriggerValidate}
         onIconClick={this.props.onIconClick}
         onPickerBlur={this.props.onPickerBlur}
         onPickerTriggerClose={this.props.onPickerTriggerClose}

@@ -19,13 +19,14 @@ type Props = {
   onIconClick: Handler,
   onPickerBlur: Handler,
   onPickerTriggerClose: Handler,
+  onFieldTriggerValidate: Handler,
   onPickerUpdate: Handler,
   dialog: ElementRef<any>,
   field: ElementRef<any>,
   dialogProps: { [string]: any },
 };
 
-export default class BasePicker extends Component<Props> {
+export default class Picker extends Component<Props> {
   dialog: ?ElementRef<any>;
   field: ?ElementRef<any>;
 
@@ -40,6 +41,7 @@ export default class BasePicker extends Component<Props> {
     onFieldChange() {},
     onFieldKeyDown() {},
     onFieldTriggerOpen() {},
+    onFieldTriggerValidate() {},
     onIconClick() {},
     onPickerBlur() {},
     onPickerTriggerClose() {},
@@ -101,6 +103,7 @@ export default class BasePicker extends Component<Props> {
             onChange={this.props.onFieldChange}
             onKeyDown={this.props.onFieldKeyDown}
             onTriggerOpen={this.props.onFieldTriggerOpen}
+            onTriggerValidate={this.props.onFieldTriggerValidate}
             value={this.props.displayValue}
             ref={ref => { this.field = ref; }}
           />
