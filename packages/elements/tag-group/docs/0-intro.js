@@ -16,5 +16,5 @@ export default md`
     />
   )}
 
-  ${<Props props={require('!!extract-react-types-loader!../src/components/TagGroup')} />}
+  ${<Props props={require('!!extract-react-types-loader!../src/TagGroup')} />}
 `;
