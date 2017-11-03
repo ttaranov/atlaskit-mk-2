@@ -20,6 +20,14 @@ export default md`
       source={require('!!raw-loader!../examples/0-basic')}
     />
   )}
-
+  
+  ${(
+    <Example
+      Component={require('../examples/1-usage').default}
+      title="Animation Options"
+      source={require('!!raw-loader!../examples/1-usage')}
+    />
+  )}
+ 
   ${<Props props={require('!!extract-react-types-loader!../src/Spinner')} />}
 `;
