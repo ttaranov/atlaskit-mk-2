@@ -1,6 +1,7 @@
 // @flow
 
-import React, { Component, type ElementRef } from 'react';
+import React, { Component } from 'react';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import DualPicker from './internal/DualPicker';
 import DateField from './internal/DateField';
 import DateDialog from './internal/DateDialog';
@@ -37,6 +38,7 @@ type Props = {
   isDisabled: boolean,
   disabled: Array<string>,
   times: Array<string>,
+  width: number,
   onChange: Handler,
 };
 
@@ -56,6 +58,7 @@ export default class DateTimePicker extends Component<Props, State> {
     isDisabled: false,
     disabled: [],
     times: defaultTimes,
+    width: akGridSizeUnitless * 30,
     onChange() {},
   }
 
@@ -300,11 +303,11 @@ export default class DateTimePicker extends Component<Props, State> {
         shouldShowIcon
         displayValue={this.state.displayValue}
         value={this.state.value}
-
         dialogProps={[
           { dialog: this.props.disabled },
           { times: this.props.times, value: this.state.focused },
         ]}
+        width={this.props.width}
 
         onIconClick={this.handleIconClick}
         onFieldBlur={[this.handleDateInputBlur, this.handleTimeInputBlur]}

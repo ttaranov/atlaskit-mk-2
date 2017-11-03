@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component, type ElementRef } from 'react';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import DatePickerStateless from './DatePickerStateless';
 import type { Handler } from '../types';
 import { parseDate } from '../util';
@@ -9,6 +10,7 @@ type Props = {
   isDisabled: boolean,
   disabled: Array<string>,
   onChange: Handler,
+  width: number,
 };
 
 type State = {
@@ -24,6 +26,7 @@ export default class DatePicker extends Component<Props, State> {
     isDisabled: false,
     disabled: [],
     onChange() {},
+    width: akGridSizeUnitless * 20,
   }
 
   state = {
@@ -122,6 +125,7 @@ export default class DatePicker extends Component<Props, State> {
         displayValue={this.state.displayValue}
         value={this.state.value}
         disabled={this.props.disabled}
+        width={this.props.width}
 
         onFieldBlur={this.handleInputBlur}
         onFieldChange={this.handleInputChange}

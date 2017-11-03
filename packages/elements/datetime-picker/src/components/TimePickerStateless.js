@@ -13,6 +13,7 @@ type Props = {
   isOpen: boolean,
   isDisabled: boolean,
   times: Array<string>,
+  width: number,
   onFieldBlur: Handler,
   onFieldChange: Handler,
   onFieldKeyDown: Handler,
@@ -29,6 +30,7 @@ export default class TimePickerStateless extends Component<Props> {
     displayValue: '',
     focused: null,
     times: [],
+    width: null,
 
     onFieldBlur() {},
     onFieldChange() {},
@@ -56,6 +58,7 @@ export default class TimePickerStateless extends Component<Props> {
           value: this.props.focused,
           times: this.props.times,
         }}
+        width={this.props.width}
 
         onFieldBlur={this.props.onFieldBlur}
         onFieldChange={this.props.onFieldChange}

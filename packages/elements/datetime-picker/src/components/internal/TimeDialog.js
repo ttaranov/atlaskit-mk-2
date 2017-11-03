@@ -2,12 +2,14 @@
 
 import React, { Component, type Node } from 'react';
 import Droplist from '@atlaskit/droplist';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import TimeDialogItem from './TimeDialogItem';
 
 type Props = {
   value: ?string,
   isOpen: boolean,
   times: Array<string>,
+  width: number,
   onUpdate: (value: string) => void,
   children: ?Node,
 };
@@ -47,13 +49,25 @@ export default class TimeDialog extends Component<Props> {
     }
   }
 
+  getItemWrapperStyle() {
+    if (!this.props.width) {
+      return {};
+    }
+
+    return {
+      width: `${this.props.width - (akGridSizeUnitless * 1.5)}px`,
+    };
+  }
+
   renderItems = () => this.props.times.map(value => (
-    <TimeDialogItem
-      key={value}
-      value={value}
-      onSelect={this.props.onUpdate}
-      isFocused={this.props.value === value}
-    />
+    <div style={this.getItemWrapperStyle()}>
+      <TimeDialogItem
+        key={value}
+        value={value}
+        onSelect={this.props.onUpdate}
+        isFocused={this.props.value === value}
+      />
+    </div>
   ));
 
   render() {

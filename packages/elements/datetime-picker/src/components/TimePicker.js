@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component, type ElementRef } from 'react';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import TimePickerStateless from './TimePickerStateless';
 import type { Handler } from '../types';
 import { parseTime } from '../util';
@@ -30,6 +31,7 @@ const defaultTimes = [
 type Props = {
   isDisabled: boolean,
   times: Array<string>,
+  width: number,
   onChange: Handler,
 };
 
@@ -47,6 +49,7 @@ export default class DatePicker extends Component<Props, State> {
   static defaultProps = {
     isDisabled: false,
     times: defaultTimes,
+    width: akGridSizeUnitless * 20,
     onChange() {},
   }
 
@@ -175,6 +178,7 @@ export default class DatePicker extends Component<Props, State> {
         value={this.state.value}
         times={this.state.visibleTimes}
         focused={this.state.focused}
+        width={this.props.width}
 
         onFieldBlur={this.handleInputBlur}
         onFieldChange={this.handleInputChange}

@@ -3,7 +3,7 @@
 import React, { Component, type ElementRef } from 'react';
 import Base from '@atlaskit/field-base';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
-import { akColorN60 } from '@atlaskit/util-shared-styles';
+import { akColorN60, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import type { Handler } from '../../types';
 
 type DialogProps = {
@@ -16,6 +16,7 @@ type Props = {
   isDisabled: bool,
   isOpen: bool,
   shouldShowIcon: bool,
+  width: number,
   onIconClick: Handler,
   onFieldBlur: [Handler, Handler],
   onFieldChange: [Handler, Handler],
@@ -46,6 +47,7 @@ export default class PickerDual extends Component<Props> {
     isDisabled: false,
     isOpen: false,
     shouldShowIcon: false,
+    width: null,
     onIconClick: noop,
     dialogProps: [{}, {}],
     onFieldBlur: [noop, noop],
@@ -100,6 +102,18 @@ export default class PickerDual extends Component<Props> {
     }
   }
 
+  getFieldWidth() {
+    if (!this.props.width) {
+      return undefined;
+    }
+
+    let fieldWidth = this.props.width - (akGridSizeUnitless * 2);
+    if (this.props.shouldShowIcon) {
+      fieldWidth -= akGridSizeUnitless * 3;
+    }
+    return fieldWidth / 2;
+  }
+
   render() {
     const Dialog1 = this.props.dialogs[0];
     const Dialog2 = this.props.dialogs[1];
@@ -113,6 +127,7 @@ export default class PickerDual extends Component<Props> {
         onBlur={this.props.onPickerBlur[1]}
         onTriggerClose={this.props.onPickerTriggerClose[1]}
         onUpdate={this.props.onPickerUpdate[1]}
+        width={this.props.width}
         {...this.props.dialogProps[1]}
         ref={ref => { this.dialog2 = ref; }}
       >
@@ -122,6 +137,7 @@ export default class PickerDual extends Component<Props> {
           onBlur={this.props.onPickerBlur[0]}
           onTriggerClose={this.props.onPickerTriggerClose[0]}
           onUpdate={this.props.onPickerUpdate[0]}
+          width={this.props.width}
           {...this.props.dialogProps[0]}
           ref={ref => { this.dialog1 = ref; }}
         >
@@ -135,6 +151,7 @@ export default class PickerDual extends Component<Props> {
               onTriggerValidate={this.props.onFieldTriggerValidate[0]}
               value={this.props.displayValue[0]}
               isActive={this.props.active === 1}
+              width={this.getFieldWidth()}
               ref={ref => { this.field1 = ref; }}
             />
             <Field2
@@ -146,6 +163,7 @@ export default class PickerDual extends Component<Props> {
               onTriggerValidate={this.props.onFieldTriggerValidate[1]}
               value={this.props.displayValue[1]}
               isActive={this.props.active === 2}
+              width={this.getFieldWidth()}
               ref={ref => { this.field2 = ref; }}
             />
             {this.maybeRenderIcon()}

@@ -12,6 +12,7 @@ type Props = {
   isOpen: boolean,
   isDisabled: boolean,
   disabled: Array<string>,
+  width: number,
   onFieldBlur: Handler,
   onFieldChange: Handler,
   onFieldTriggerOpen: Handler,
@@ -31,6 +32,7 @@ export default class DatePickerStateless extends Component<Props> {
     value: null,
     displayValue: '',
     disabled: [],
+    width: null,
 
     onFieldBlur() {},
     onFieldChange() {},
@@ -60,6 +62,7 @@ export default class DatePickerStateless extends Component<Props> {
         displayValue={this.props.displayValue}
         value={this.props.value}
         dialogProps={{ disabled: this.props.disabled }}
+        width={this.props.width}
 
         onFieldBlur={this.props.onFieldBlur}
         onFieldChange={this.props.onFieldChange}

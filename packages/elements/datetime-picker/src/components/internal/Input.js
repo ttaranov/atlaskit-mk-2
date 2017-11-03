@@ -2,7 +2,7 @@
 
 import React, { Component, type ElementRef } from 'react';
 import Input from '@atlaskit/input';
-import { akColorN60, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { akColorN100, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import type { Handler } from '../../types';
 
 type Props = {
@@ -10,6 +10,7 @@ type Props = {
   isActive: bool,
   placeholder: ?string,
   value: ?string,
+  width: string,
   onChange: Handler,
   onKeyDown: Handler,
   onFocus: Handler,
@@ -24,6 +25,7 @@ export default class InputField extends Component<Props> {
     isActive: true,
     placeholder: undefined,
     value: null,
+    width: undefined,
     onChange() {},
     onKeyDown() {},
     onFocus() {},
@@ -37,9 +39,10 @@ export default class InputField extends Component<Props> {
   }
 
   getStyle() {
+    const width = this.props.width;
     return !this.props.isActive
-      ? { color: akColorN60, width: `${akGridSizeUnitless * 12}px` }
-      : { width: `${akGridSizeUnitless * 12}px` };
+      ? { color: akColorN100, width }
+      : { width };
   }
 
   render() {
