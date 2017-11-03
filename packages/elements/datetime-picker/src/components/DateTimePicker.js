@@ -68,11 +68,17 @@ export default class DateTimePicker extends Component<Props, State> {
     visibleTimes: this.props.times,
   };
 
+  onChange = (dateValue: ?string, timeValue: ?string) => {
+    if (dateValue && timeValue) {
+      this.props.onChange(`${dateValue} ${timeValue}`);
+    }
+  }
+
   // DatePicker
 
   onDateChange = (value: string) => {
     if (value !== this.state.value[0]) {
-      this.props.onChange(value);
+      this.onChange(value, this.state.value[1]);
     }
   }
 
@@ -163,7 +169,7 @@ export default class DateTimePicker extends Component<Props, State> {
 
   onTimeChange = (value: string) => {
     if (value !== this.state.value[1]) {
-      this.props.onChange(value);
+      this.onChange(this.state.value[0], value);
     }
   }
 

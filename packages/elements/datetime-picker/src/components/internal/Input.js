@@ -2,12 +2,12 @@
 
 import React, { Component, type ElementRef } from 'react';
 import Input from '@atlaskit/input';
-import { akColorN60 } from '@atlaskit/util-shared-styles';
+import { akColorN60, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import type { Handler } from '../../types';
 
 type Props = {
   isDisabled: bool,
-  isGreyedOut: bool,
+  isActive: bool,
   placeholder: ?string,
   value: ?string,
   onChange: Handler,
@@ -21,7 +21,7 @@ export default class InputField extends Component<Props> {
 
   static defaultProps = {
     isDisabled: false,
-    isGreyedOut: false,
+    isActive: true,
     placeholder: undefined,
     value: null,
     onChange() {},
@@ -37,13 +37,9 @@ export default class InputField extends Component<Props> {
   }
 
   getStyle() {
-    if (!this.props.isGreyedOut) {
-      return {};
-    }
-
-    return ({
-      color: akColorN60,
-    });
+    return !this.props.isActive
+      ? { color: akColorN60, width: `${akGridSizeUnitless * 12}px` }
+      : { width: `${akGridSizeUnitless * 12}px` };
   }
 
   render() {
