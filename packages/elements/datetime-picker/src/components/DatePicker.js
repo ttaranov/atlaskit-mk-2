@@ -92,6 +92,7 @@ export default class DatePicker extends Component<Props, State> {
     }
   }
 
+  // TODO: Check that the date is not disabled
   validate() {
     const parsedDate = parseDate(this.state.displayValue);
 

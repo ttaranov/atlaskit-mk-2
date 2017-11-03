@@ -10,13 +10,14 @@ type DialogProps = {
   [string]: any,
 };
 type Props = {
-  active: 1 | 2, // todo: boolean???
+  active: 0 | 1 | 2, // todo: boolean???
   value: [?string, ?string],
   displayValue: [string, string],
   isDisabled: bool,
   isOpen: bool,
   shouldShowIcon: bool,
   width: number,
+  onBlur: Handler,
   onIconClick: Handler,
   onFieldBlur: [Handler, Handler],
   onFieldChange: [Handler, Handler],
@@ -48,6 +49,7 @@ export default class PickerDual extends Component<Props> {
     isOpen: false,
     shouldShowIcon: false,
     width: null,
+    onBlur: noop,
     onIconClick: noop,
     dialogProps: [{}, {}],
     onFieldBlur: [noop, noop],
@@ -141,7 +143,10 @@ export default class PickerDual extends Component<Props> {
           {...this.props.dialogProps[0]}
           ref={ref => { this.dialog1 = ref; }}
         >
-          <Base isDisabled={this.props.isDisabled}>
+          <Base
+            isDisabled={this.props.isDisabled}
+            onBlur={this.props.onBlur}
+          >
             <Field1
               onBlur={this.props.onFieldBlur[0]}
               onChange={this.props.onFieldChange[0]}
@@ -150,7 +155,7 @@ export default class PickerDual extends Component<Props> {
               onTriggerOpen={this.props.onFieldTriggerOpen[0]}
               onTriggerValidate={this.props.onFieldTriggerValidate[0]}
               value={this.props.displayValue[0]}
-              isActive={this.props.active === 1}
+              isActive={this.props.active !== 2}
               width={this.getFieldWidth()}
               ref={ref => { this.field1 = ref; }}
             />
@@ -162,7 +167,7 @@ export default class PickerDual extends Component<Props> {
               onTriggerOpen={this.props.onFieldTriggerOpen[1]}
               onTriggerValidate={this.props.onFieldTriggerValidate[1]}
               value={this.props.displayValue[1]}
-              isActive={this.props.active === 2}
+              isActive={this.props.active !== 1}
               width={this.getFieldWidth()}
               ref={ref => { this.field2 = ref; }}
             />

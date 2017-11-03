@@ -43,7 +43,7 @@ type Props = {
 };
 
 type State = {
-  active: 1 | 2,
+  active: 0 | 1 | 2,
   value: [?string, ?string],
   displayValue: [string, string],
   isOpen: boolean,
@@ -63,7 +63,7 @@ export default class DateTimePicker extends Component<Props, State> {
   }
 
   state = {
-    active: 1,
+    active: 0,
     value: [null, null],
     displayValue: ['', ''],
     isOpen: false,
@@ -74,6 +74,12 @@ export default class DateTimePicker extends Component<Props, State> {
   onChange = (dateValue: ?string, timeValue: ?string) => {
     if (dateValue && timeValue) {
       this.props.onChange(`${dateValue} ${timeValue}`);
+    }
+  }
+
+  handleBlur = () => {
+    if (!this.state.isOpen && this.state.active !== 1) {
+      this.setState({ active: 0 });
     }
   }
 
@@ -89,6 +95,10 @@ export default class DateTimePicker extends Component<Props, State> {
     if (e.target instanceof HTMLInputElement) {
       this.validateDate();
     }
+  }
+
+  handleDateInputFocus = () => {
+    this.setState({ active: 1 });
   }
 
   handleDateInputChange = (e: Event) => {
@@ -124,6 +134,9 @@ export default class DateTimePicker extends Component<Props, State> {
       }
     } else {
       this.setState({ isOpen: true });
+      if (this.state.active === 0) {
+        this.setState({ active: 1 });
+      }
     }
   }
 
@@ -180,7 +193,6 @@ export default class DateTimePicker extends Component<Props, State> {
     if (e.target instanceof HTMLInputElement) {
       this.validateTime(this.state.displayValue[1]);
     }
-    this.setState({ active: 1 });
   }
 
   handleTimeInputFocus = () => {
@@ -305,13 +317,14 @@ export default class DateTimePicker extends Component<Props, State> {
         value={this.state.value}
         dialogProps={[
           { dialog: this.props.disabled },
-          { times: this.props.times, value: this.state.focused },
+          { times: this.state.visibleTimes, value: this.state.focused },
         ]}
         width={this.props.width}
 
         onIconClick={this.handleIconClick}
+        onBlur={this.handleBlur}
         onFieldBlur={[this.handleDateInputBlur, this.handleTimeInputBlur]}
-        onFieldFocus={[noop, this.handleTimeInputFocus]}
+        onFieldFocus={[this.handleDateInputFocus, this.handleTimeInputFocus]}
         onFieldChange={[this.handleDateInputChange, this.handleTimeInputChange]}
         onFieldKeyDown={[noop, this.handleTimeInputKeyDown]}
         onFieldTriggerOpen={[this.handleDateTriggerOpen, noop]}

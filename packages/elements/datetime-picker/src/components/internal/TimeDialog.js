@@ -55,14 +55,13 @@ export default class TimeDialog extends Component<Props> {
     }
 
     return {
-      width: `${this.props.width - (akGridSizeUnitless * 1.5)}px`,
+      width: `${this.props.width}px`,
     };
   }
 
   renderItems = () => this.props.times.map(value => (
-    <div style={this.getItemWrapperStyle()}>
+    <div key={value} style={this.getItemWrapperStyle()} >
       <TimeDialogItem
-        key={value}
         value={value}
         onSelect={this.props.onUpdate}
         isFocused={this.props.value === value}
