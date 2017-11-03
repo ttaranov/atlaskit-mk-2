@@ -26,8 +26,12 @@ export function getFiles(items: Array<Directory | File>): Array<File> {
   return files;
 }
 
+export function maybeGetById<T: Directory | File>(items: Array<T>, id: string): T | null {
+  return items.find(item => item.id === id) || null;
+}
+
 export function getById<T: Directory | File>(items: Array<T>, id: string): T {
-  let match = items.find(item => item.id === id);
+  let match = maybeGetById(items, id);
 
   if (!match) {
     throw new Error(`Missing ${id} in file system`);

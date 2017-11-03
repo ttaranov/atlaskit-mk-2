@@ -1,0 +1,7 @@
+{
+  "extends": "../../../tsconfig.editor.json",
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx"
+  ]
+}
