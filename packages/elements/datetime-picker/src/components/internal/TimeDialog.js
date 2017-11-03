@@ -61,7 +61,7 @@ export default class TimeDialog extends Component<Props> {
       <div ref={ref => { this.container = ref; }}>
         <Droplist
           isKeyboardInteractionDisabled
-          isOpen={this.props.isOpen}
+          isOpen={this.props.isOpen && !!this.props.times.length}
           trigger={this.props.children}
         >
           {this.renderItems()}

@@ -134,6 +134,7 @@ export default class PickerDual extends Component<Props> {
               onTriggerOpen={this.props.onFieldTriggerOpen[0]}
               onTriggerValidate={this.props.onFieldTriggerValidate[0]}
               value={this.props.displayValue[0]}
+              isGreyedOut={this.props.active !== 1}
               ref={ref => { this.field1 = ref; }}
             />
             <Field2
@@ -144,6 +145,7 @@ export default class PickerDual extends Component<Props> {
               onTriggerOpen={this.props.onFieldTriggerOpen[1]}
               onTriggerValidate={this.props.onFieldTriggerValidate[1]}
               value={this.props.displayValue[1]}
+              isGreyedOut={this.props.active !== 2}
               ref={ref => { this.field2 = ref; }}
             />
             {this.maybeRenderIcon()}

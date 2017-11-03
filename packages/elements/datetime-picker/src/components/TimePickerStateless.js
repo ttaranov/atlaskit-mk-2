@@ -16,7 +16,6 @@ type Props = {
   onFieldBlur: Handler,
   onFieldChange: Handler,
   onFieldKeyDown: Handler,
-  onIconClick: Handler,
   onPickerUpdate: Handler,
 };
 
@@ -34,7 +33,6 @@ export default class TimePickerStateless extends Component<Props> {
     onFieldBlur() {},
     onFieldChange() {},
     onFieldKeyDown() {},
-    onIconClick() {},
     onPickerUpdate() {},
   }
 
@@ -52,7 +50,6 @@ export default class TimePickerStateless extends Component<Props> {
 
         isDisabled={this.props.isDisabled}
         isOpen={this.props.isOpen}
-        shouldShowIcon
         displayValue={this.props.displayValue}
         value={this.props.value}
         dialogProps={{
@@ -63,7 +60,6 @@ export default class TimePickerStateless extends Component<Props> {
         onFieldBlur={this.props.onFieldBlur}
         onFieldChange={this.props.onFieldChange}
         onFieldKeyDown={this.props.onFieldKeyDown}
-        onIconClick={this.props.onIconClick}
         onPickerUpdate={this.props.onPickerUpdate}
 
         ref={ref => { this.picker = ref; }}

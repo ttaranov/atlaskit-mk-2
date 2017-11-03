@@ -105,15 +105,6 @@ export default class DatePicker extends Component<Props, State> {
     }
   }
 
-  handleIconClick = () => {
-    if (this.state.isOpen) {
-      this.setState({ isOpen: false });
-    } else {
-      this.openDialog();
-    }
-    this.selectField();
-  }
-
   handleUpdate = (time: string) => {
     this.validate(time);
   }
@@ -175,18 +166,11 @@ export default class DatePicker extends Component<Props, State> {
     this.setState({ focused: visibleTimes[previous] });
   }
 
-  selectField() {
-    if (this.timepicker) {
-      this.timepicker.selectField();
-    }
-  }
-
   render() {
     return (
       <TimePickerStateless
         isDisabled={this.props.isDisabled}
         isOpen={this.state.isOpen}
-        shouldShowIcon
         displayValue={this.state.displayValue}
         value={this.state.value}
         times={this.state.visibleTimes}
@@ -195,7 +179,6 @@ export default class DatePicker extends Component<Props, State> {
         onFieldBlur={this.handleInputBlur}
         onFieldChange={this.handleInputChange}
         onFieldKeyDown={this.handleInputKeyDown}
-        onIconClick={this.handleIconClick}
         onPickerUpdate={this.handleUpdate}
 
         ref={ref => { this.timepicker = ref; }}

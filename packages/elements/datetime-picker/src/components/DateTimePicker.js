@@ -102,6 +102,7 @@ export default class DateTimePicker extends Component<Props, State> {
 
   handleDateTriggerValidate = () => {
     this.validateDate();
+    this.selectTimeField();
   }
 
   handleIconClick = () => {
@@ -130,7 +131,7 @@ export default class DateTimePicker extends Component<Props, State> {
         displayValue: [parsedDate.display, prevState.displayValue[1]],
         value: [parsedDate.value, prevState.value[1]],
       }));
-      this.selectDateField();
+      this.selectTimeField();
     }
   }
 
