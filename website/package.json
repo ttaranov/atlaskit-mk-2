@@ -10,10 +10,10 @@
     "Trey S"
   ],
   "scripts": {
-    "build": "webpack && cp dist/index.html dist/404.html",
+    "build": "webpack && cp dist/index.html dist/404.html && zip -r dist.zip dist/",
     "start": "webpack-dev-server",
-    "deploy": "yarn build && netlify -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID -p dist",
-    "deploy-staging": "yarn build && netlify -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist"
+    "deploy": "yarn build && netlify -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID -p dist.zip",
+    "deploy-staging": "yarn build && netlify -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist.zip"
   },
   "repository": "atlaskit/fabric",
   "devDependencies": {

@@ -10,3 +10,4 @@ coverage/
 # This is a hardcoded file for now, just to show that things are working, will remove once not
 # hardcoded
 releases/new-release.md
+website/dist.zip
