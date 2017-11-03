@@ -15,7 +15,7 @@
     "build:typescript:es2015": "             NODE_ENV=production bolt workspaces exec --only-fs 'packages/fabric/*' -- tsc --project ./build/es2015",
     "delete": "                              yarn run delete:modules && yarn run delete:build",
     "delete:modules": "                      rm -rf node_modules **/node_modules",
-    "delete:build": "                        rm -rf **/dist",
+    "delete:build": "                        rm -rf packages/*/*/dist website/dist",
     "test": "                                yarn run test:jest",
     "test:jest": "                           jest --coverage",
     "test:browser": "                        yarn run delete:build && projector ./projector test:browser",
