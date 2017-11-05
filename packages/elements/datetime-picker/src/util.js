@@ -25,7 +25,42 @@ export const parseDate = (date: string): ?ParsedDate => {
   };
 };
 
+// Parses a string containing a 12-hour or 24-hour time and returns a string representing the
+// 12-hour time, or null if the input string is invalid, e.g.:
+// * 9:00am -> 9:00am
+// * 9:00 -> 9:00am
+// * 13:00 -> 1:00pm
+// * 13:00am -> null
+// * 9:60pm -> null
+// * 25:00 -> null
 export const parseTime = (time: string) => {
-  return time;
+  const matches = time.trim().match(/^(\d{1,2}):(\d{2})([ap]m)?$/);
+  if (!matches) {
+    return null;
+  }
+
+  const hours = parseInt(matches[1], 10);
+  const minutes = parseInt(matches[2], 10);
+  const amOrPm = matches[3];
+  const isTwentyFourHourTime = !amOrPm;
+
+  // Handle 24-hour time
+  if (isTwentyFourHourTime) {
+    if (hours > 23 || minutes > 59) {
+      return null;
+    }
+    const hourString = (hours % 12 === 0) ? '12' : `${hours % 12}`;
+    return `${hourString}:${pad(minutes)}${hours >= 12 ? 'pm' : 'am'}`;
+  }
+
+  // Handle 12-hour time
+  if (hours > 12 || hours < 1 || minutes > 59) {
+    return null;
+  }
+
+  return `${hours}:${pad(minutes)}${amOrPm}`;
 };
 
+function pad(num) {
+  return num < 10 ? `0${num}` : num;
+}

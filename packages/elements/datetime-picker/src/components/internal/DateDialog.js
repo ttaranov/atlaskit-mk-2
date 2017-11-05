@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, type Node } from 'react';
+import React, { Component, type Node, type ElementRef } from 'react';
 import Layer from '@atlaskit/layer';
 import {
   CalendarStateless as Calendar,
@@ -27,9 +27,7 @@ type State = {
 };
 
 export default class DateDialog extends Component<Props, State> {
-  props: Props;
-  state: State;
-  calendar: any;
+  calendar: ?ElementRef<typeof Calendar>;
 
   static defaultProps = {
     value: null,

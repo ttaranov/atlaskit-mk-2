@@ -2,26 +2,25 @@
 
 import React, { Component, type ElementRef } from 'react';
 import Picker from './internal/Picker';
-import DateField from './internal/DateField';
-import DateDialog from './internal/DateDialog';
+import TimeField from './internal/TimeField';
+import TimeDialog from './internal/TimeDialog';
 import type { Handler } from '../types';
 
 type Props = {
   value: ?string,
   displayValue: string,
+  focused: ?string,
   isOpen: boolean,
   isDisabled: boolean,
-  disabled: Array<string>,
+  times: Array<string>,
   onFieldBlur: Handler,
   onFieldChange: Handler,
-  onFieldTriggerOpen: Handler,
+  onFieldKeyDown: Handler,
   onIconClick: Handler,
-  onPickerBlur: Handler,
-  onPickerTriggerClose: Handler,
   onPickerUpdate: Handler,
 };
 
-export default class DatePickerStateless extends Component<Props> {
+export default class TimePickerStateless extends Component<Props> {
   picker: ?ElementRef<typeof Picker>;
 
   static defaultProps = {
@@ -29,14 +28,13 @@ export default class DatePickerStateless extends Component<Props> {
     isOpen: false,
     value: null,
     displayValue: '',
-    disabled: [],
+    focused: null,
+    times: [],
 
     onFieldBlur() {},
     onFieldChange() {},
-    onFieldTriggerOpen() {},
+    onFieldKeyDown() {},
     onIconClick() {},
-    onPickerBlur() {},
-    onPickerTriggerClose() {},
     onPickerUpdate() {},
   }
 
@@ -49,22 +47,23 @@ export default class DatePickerStateless extends Component<Props> {
   render() {
     return (
       <Picker
-        field={DateField}
-        dialog={DateDialog}
+        field={TimeField}
+        dialog={TimeDialog}
 
         isDisabled={this.props.isDisabled}
         isOpen={this.props.isOpen}
         shouldShowIcon
         displayValue={this.props.displayValue}
         value={this.props.value}
-        dialogProps={{ disabled: this.props.disabled }}
+        dialogProps={{
+          value: this.props.focused,
+          times: this.props.times,
+        }}
 
         onFieldBlur={this.props.onFieldBlur}
         onFieldChange={this.props.onFieldChange}
-        onFieldTriggerOpen={this.props.onFieldTriggerOpen}
+        onFieldKeyDown={this.props.onFieldKeyDown}
         onIconClick={this.props.onIconClick}
-        onPickerBlur={this.props.onPickerBlur}
-        onPickerTriggerClose={this.props.onPickerTriggerClose}
         onPickerUpdate={this.props.onPickerUpdate}
 
         ref={ref => { this.picker = ref; }}
