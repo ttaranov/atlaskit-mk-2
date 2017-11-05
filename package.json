@@ -19,6 +19,7 @@
     "test": "                                yarn run test:jest",
     "test:jest": "                           jest --coverage",
     "test:browser": "                        yarn run delete:build && projector ./projector test:browser",
+    "test:browser:watch": "                  yarn run delete:build && projector ./projector test:browser --watch",
     "test:browser:browserstack": "           yarn run delete:build && projector ./projector test:browser --browserstack",
     "lint": "                                yarn run lint:eslint && yarn run lint:tslint",
     "lint:eslint": "                         eslint '**/*.js'",
