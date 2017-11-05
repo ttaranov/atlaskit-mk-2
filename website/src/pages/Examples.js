@@ -151,14 +151,18 @@ export default class Examples extends React.Component<Props, State> {
     let resolvedPackageId = packageId || packages[0].id;
     let pkg = fs.getById(packages, resolvedPackageId);
 
-    let examples = fs.getById(fs.getDirectories(pkg.children), 'examples');
-    let example = fs.find(examples, file => {
-      if (exampleId) {
-        return fs.normalize(file.id) === exampleId;
-      } else {
-        return true;
-      }
-    });
+    let examples = fs.maybeGetById(fs.getDirectories(pkg.children), 'examples');
+    let example;
+
+    if (examples) {
+      example = fs.find(examples, file => {
+        if (exampleId) {
+          return fs.normalize(file.id) === exampleId;
+        } else {
+          return true;
+        }
+      });
+    }
 
     let resolvedExampleId = example ? example.id : null;
 
@@ -224,7 +228,11 @@ export default class Examples extends React.Component<Props, State> {
       return <div>Missing example</div>;
     }
 
-    let example = fs.getById(fs.getFiles(examples.children), exampleId);
+    let example;
+
+    if (examples) {
+      example = fs.getById(fs.getFiles(examples.children), exampleId);
+    }
 
     const ExampleComponent = Loadable({
       loader: () => example.exports(),
@@ -279,7 +287,7 @@ export default class Examples extends React.Component<Props, State> {
     const examplesSelectItems = [
       {
         heading: 'Examples',
-        items: fs.flatMap(examples, (file, filePath) => {
+        items: examples ? fs.flatMap(examples, (file, filePath) => {
           let item = {
             content: fs.titleize(file.id),
             value: fs.normalize(filePath.replace('examples/', '')),
@@ -290,7 +298,7 @@ export default class Examples extends React.Component<Props, State> {
           }
 
           return item;
-        }),
+        }) : [],
       },
     ];
 
