@@ -11,7 +11,8 @@
         "**/docs/**/*.js",
         "**/__tests__/*.js",
         "**/examples/*.js",
-        "./projector.js"
+        "./projector.js",
+        "./resolver.js"
       ]
     }],
     "import/no-unresolved": ["off"],
