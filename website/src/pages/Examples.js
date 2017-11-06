@@ -16,66 +16,54 @@ import CodeBlock from '../components/Code';
 import { packages as packagesData } from '../site';
 import { packageUrl } from '../utils/url';
 
-const ExamplesContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-`;
 
-const ExamplesNav = styled.nav`
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 48px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  background: ${colors.N30};
-  color: white;
-`;
 
-const ExamplesContent = styled.nav`
-  position: absolute;
-  z-index: 1;
-  top: 48px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-`;
-
-const ExamplesComponentContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background: white;
-  ${'' /* background:
-    linear-gradient(45deg, rgba(125,125,125,0.05) 25%, transparent 25%, transparent 75%, rgba(125,125,125,0.05) 75%, rgba(125,125,125,0.05) 0),
-    linear-gradient(45deg, rgba(125,125,125,0.05) 25%, transparent 25%, transparent 75%, rgba(125,125,125,0.05) 75%, rgba(125,125,125,0.05) 0),
-    #fff; */} background-position: 0 0,
-    10px 10px;
-  background-size: 20px 20px;
-  background-attachment: local;
-`;
-
-const ExamplesCodeContainer = styled.div`
-  position: absolute;
-  z-index: 3;
-  ${'' /* pointer-events: none; */} width: 100%;
-  height: 100%;
+const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 20px;
-  background: ${colors.DN80A};
+  height: 100vh;
+  width: 100vw;
 `;
 
-const ExamplesNavSection = styled.div`padding: 4px;`;
+const Content = styled.div`
+  flex: 1 1 auto;
+  position: relative;
+`;
 
-const ExamplesNavIconLink = styled(Link)`
+const Nav = styled.nav`
+  background: ${colors.N30};
+  color: white;
+  display: flex;
+  height: 48px;
+  justify-content: space-between;
+`;
+
+const ComponentContainer = styled.div`
+  background-attachment: local;
+  background-position: 0 0, 10px 10px;
+  background-size: 20px 20px;
+  background: white;
+  height: 100%;
+  position: relative;
+  width: 100%;
+`;
+
+const CodeContainer = styled.div`
+  background: ${colors.DN80A};
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-end;
+  padding: 20px;
+  position: absolute;
+  width: 100%;
+  z-index: 3;
+`;
+
+const NavSection = styled.div`padding: 4px;`;
+
+const NavIconLink = styled(Link)`
   display: inline-flex;
   height: 40px;
   padding: 5px 8px 3px 4px;
@@ -88,9 +76,9 @@ const ExamplesNavIconLink = styled(Link)`
   }
 `;
 
-const ExamplesNavIcon = styled.span`margin-right: 6px;`;
+const NavIcon = styled.span`margin-right: 6px;`;
 
-const ExamplesControl = styled.div`
+const Control = styled.div`
   display: inline-block;
 
   & + & {
@@ -98,13 +86,11 @@ const ExamplesControl = styled.div`
   }
 `;
 
-const ExamplesError = styled.div`
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-  text-align: center;
-  color: ${colors.R400};
+const ErrorMessage = styled.div`
+  background-color: ${colors.R400};
+  color: white;
   font-size: 120%;
+  padding: 1em;
 `;
 
 function PackageSelector(props) {
@@ -129,7 +115,7 @@ function PackageSelector(props) {
   });
 
   return (
-    <ExamplesControl>
+    <Control>
       <SingleSelect
         appearance="subtle"
         items={packagesSelectItems}
@@ -138,7 +124,7 @@ function PackageSelector(props) {
         onSelected={props.onSelected}
         defaultSelected={selectedPackageItem}
       />
-    </ExamplesControl>
+    </Control>
   );
 }
 
@@ -166,7 +152,7 @@ function ExampleSelector(props) {
   ];
 
   return (
-    <ExamplesControl>
+    <Control>
       <SingleSelect
         appearance="subtle"
         items={examplesSelectItems}
@@ -175,23 +161,21 @@ function ExampleSelector(props) {
         onSelected={props.onSelected}
         defaultSelected={selectedExampleItem}
       />
-    </ExamplesControl>
+    </Control>
   );
 }
 
 function ExampleNavigation(props) {
   return (
-    <ExamplesNav>
-      <ExamplesNavSection>
-        <ExamplesNavIconLink to={packageUrl(props.groupId, props.packageId)}>
-          <ExamplesNavIcon>
-            <ArrowLeftCircleIcon size="large" primaryColor={colors.B500} label="back to docs" />
-          </ExamplesNavIcon>
-          to {fs.titleize(props.packageId)} docs
-        </ExamplesNavIconLink>
-      </ExamplesNavSection>
+    <Nav>
+      <NavIconLink to={packageUrl(props.groupId, props.packageId)}>
+        <NavIcon>
+          <ArrowLeftCircleIcon size="large" primaryColor={colors.B500} label="back to docs" />
+        </NavIcon>
+        to {fs.titleize(props.packageId)} docs
+      </NavIconLink>
 
-      <ExamplesNavSection>
+      <NavSection>
         <PackageSelector
           groupId={props.groupId}
           packageId={props.packageId}
@@ -201,14 +185,14 @@ function ExampleNavigation(props) {
           examples={props.examples}
           exampleId={props.exampleId}
           onSelected={props.onExampleSelected}/>
-      </ExamplesNavSection>
+      </NavSection>
 
-      <ExamplesNavSection>
+      <NavSection>
         <div onClick={props.onCodeToggle}>
           <CodeIcon size="large" primaryColor={colors.N500} label="show source" />
         </div>
-      </ExamplesNavSection>
-    </ExamplesNav>
+      </NavSection>
+    </Nav>
   );
 }
 
@@ -218,13 +202,13 @@ function ExampleDisplay(props) {
     loading: Loading,
     render(loaded) {
       if (!loaded.default) {
-        return <ExamplesError>Example "{props.example.id}" doesn't have default export.</ExamplesError>;
+        return <ErrorMessage>Example "{props.example.id}" doesn't have default export.</ErrorMessage>;
       }
 
       return (
-        <ExamplesComponentContainer>
+        <ComponentContainer>
           <loaded.default />
-        </ExamplesComponentContainer>
+        </ComponentContainer>
       );
     },
   });
@@ -234,18 +218,18 @@ function ExampleDisplay(props) {
     loading: Loading,
     render(loaded) {
       return (
-        <ExamplesCodeContainer>
+        <CodeContainer>
           <CodeBlock grammar="jsx" content={loaded} />
-        </ExamplesCodeContainer>
+        </CodeContainer>
       );
     },
   });
 
   return (
-    <ExamplesContent>
+    <Content>
       {props.displayCode && <ExampleCode />}
       <ExampleComponent />
-    </ExamplesContent>
+    </Content>
   );
 }
 
@@ -367,7 +351,7 @@ export default class Examples extends React.Component<Props, State> {
     }
 
     return (
-      <ExamplesContainer>
+      <Container>
         <ExampleNavigation
           groupId={groupId}
           packageId={packageId}
@@ -382,11 +366,11 @@ export default class Examples extends React.Component<Props, State> {
             displayCode={this.state.displayCode}
             example={fs.getById(fs.getFiles(examples.children), exampleId)}/>
         ) : (
-          <ExamplesContent>
-            <ExamplesError>{fs.titleize(packageId)} does not have any examples</ExamplesError>
-          </ExamplesContent>
+          <Content>
+            <ErrorMessage>{fs.titleize(packageId)} does not have any examples</ErrorMessage>
+          </Content>
         )}
-      </ExamplesContainer>
+      </Container>
     );
   }
 }

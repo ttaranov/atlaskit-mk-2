@@ -85,13 +85,8 @@ const getItem = (packages: Array<Directory>, group: Directory, navigateOut: bool
         to: `${OLD_WEBSITE_URL}components/${allPackages[name].key}`,
         external: true,
         title: allPackages[name].name,
-<<<<<<< HEAD
         icon: <PackageIcon label={`${allPackages[name].name} icon`} />,
-      };
-=======
-        icon: <BitbucketReposIcon label={`${allPackages[name].name} icon`} />,
       });
->>>>>>> master
     }
     return results;
   }, []);
