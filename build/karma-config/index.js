@@ -85,8 +85,8 @@ module.exports = async function getConfig({ cwd, watch, browserstack }) {
     mime: {
       'application/javascript': ['ts', 'tsx'],
     },
-    autoWatch: false,
-    singleRun: true,
+    autoWatch: watch,
+    singleRun: !watch,
     concurrency: 20,
     reporters: ['mocha'],
     browsers: ['ChromeHeadless'],
@@ -121,6 +121,7 @@ module.exports = async function getConfig({ cwd, watch, browserstack }) {
       launchers[key].base = 'BrowserStack';
     });
 
+    const time = new Date().getTime();
     Object.assign(config, {
       browserStack: {
         username: process.env.BROWSERSTACK_USERNAME,
@@ -129,7 +130,7 @@ module.exports = async function getConfig({ cwd, watch, browserstack }) {
         startTunnel: true,
         tunnelIdentifier: process.env.BITBUCKET_COMMIT || 'ak_tunnel',
         project: 'AtlasKit',
-        build: `${process.env.CURRENT_BRANCH} ${new Date().getTime()} ${process.env.BITBUCKET_COMMIT}`,
+        build: `${process.env.CURRENT_BRANCH} ${time} ${process.env.BITBUCKET_COMMIT}`,
       },
       captureTimeout: 120000,
       reporters: ['mocha', 'BrowserStack'],
