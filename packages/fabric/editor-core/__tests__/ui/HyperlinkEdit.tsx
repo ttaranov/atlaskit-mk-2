@@ -13,6 +13,7 @@ import {
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../src/utils';
+import { PlaceholderCursor } from '../../src/plugins/placeholder-cursor/cursor';
 
 describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   const editor = (doc: any) =>
@@ -267,5 +268,26 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     expect(updateLinkTextStub).not.toHaveBeenCalled();
     updateLinkTextStub.mockRestore();
     updateLinkStub.mockRestore();
+  });
+
+  it('should add placeholder cursor when input HyperlinkEdit is focused', () => {
+    const { editorView, pluginState } = editor(
+      doc(
+        paragraph(
+          'before',
+          link({ href: 'http://www.atlassian.com' })('www.atlas{<>}sian.com'),
+          'after',
+        ),
+      ),
+    );
+    const hyperlinkEdit = mount(
+      <HyperlinkEdit pluginState={pluginState} editorView={editorView} />,
+    );
+    hyperlinkEdit.setState({ editorFocused: true });
+    const input = hyperlinkEdit.find(PanelTextInput);
+    input.simulate('mouseDown');
+    expect(editorView.state.selection instanceof PlaceholderCursor).toEqual(
+      true,
+    );
   });
 });
