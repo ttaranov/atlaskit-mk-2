@@ -22,7 +22,8 @@
     "tabbable": "^1.1.0"
   },
   "peerDependencies": {
-    "react": "^15.6.1"
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
   },
   "devDependencies": {
     "@atlaskit/docs": "^0.0.2"

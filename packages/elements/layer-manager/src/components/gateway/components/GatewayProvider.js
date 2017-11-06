@@ -1,10 +1,10 @@
 // @flow
-import React, { Component, type ComponentType, type Node } from 'react';
+import React, { Component, type ElementType, type Node } from 'react';
 import PropTypes from 'prop-types';
 import GatewayRegistry from './GatewayRegistry';
 
 type Props = {
-  component: ComponentType<*>,
+  component: ElementType,
   children: Node,
 };
 type Context = {

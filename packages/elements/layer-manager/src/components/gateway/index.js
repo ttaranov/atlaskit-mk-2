@@ -1,3 +1,4 @@
+// @flow
 /*
   Fork of React Gateway
   https://github.com/cloudflare/react-gateway
