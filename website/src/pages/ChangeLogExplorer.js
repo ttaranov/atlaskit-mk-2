@@ -6,9 +6,13 @@ import { Link } from 'react-router-dom';
 import BackIcon from '@atlaskit/icon/glyph/arrow-left';
 import TextField from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
+import Loadable from 'react-loadable';
 
-import Changelog, { NoMatch } from '../components/ChangeLog';
+import Changelog, { NoMatch, type Logs } from '../components/ChangeLog';
 import Page from '../components/Page';
+import { packages } from '../site';
+import * as fs from '../utils/fs';
+import Loading from '../components/Loading';
 
 import type { RouterMatch } from '../types';
 
@@ -17,7 +21,27 @@ type Props = {
   match: RouterMatch,
   history: any,
 };
+
 type State = { isInvalid: boolean, range: string };
+
+const divvyChangelog = (changelog) => {
+  const splitToken = `__CHANGELOG_SPLIT_${Date.now()}__`;
+  return changelog
+      .replace(/## /g, `${splitToken}## `)
+      .split(splitToken)
+      .map((md) => {
+        // This should only allow us to skip the first chunk which is the name, as
+        // well as the unreleased section.
+        const match = md.match(/\d+\.\d+\.\d+/)
+        const version = match ? match[0] : null;
+        if (!version) return null;
+        return {
+          version,
+          md,
+        };
+      })
+      .filter(t => t)
+}
 
 export default class ChangelogExplorer extends Component<Props, State> {
   props: Props;
@@ -29,33 +53,40 @@ export default class ChangelogExplorer extends Component<Props, State> {
   }
 
   handleChange = (e: any) => {
-    const { component } = this.props.match.params;
+    const { groupId, pkgId } = this.props.match.params;
     const range = e.target.value;
-    let isInvalid = false;
-    if (!isInvalid)
-      this.props.history.replace(`/changelog/${String(component)}/${encodeURI(range)}`);
-
-    if (/[a-z]/gi.test(range)) isInvalid = true;
+    this.props.history.replace(`/changelog/${groupId}/${pkgId}/${encodeURI(range)}`);
+    const isInvalid = /[a-z]/gi.test(range)
 
     this.setState({ isInvalid, range });
   };
 
   render() {
-    const { component = '' } = this.props.match.params;
-    let changelog = [];
-    // try {
-    //   // FlowFixMe
-    //   const reqCtx = require.context('../../../packages/', true, /^\.\/(elements|fabric)\/[\w\d-_]+\/CHANGELOG\.md$/);
-    //   changelog = reqCtx(`./${component}/CHANGELOG.md`);
-    // } catch (e) {
-    //   console.log(e); // eslint-disable-line
-    // }
+    const { groupId, pkgId } = this.props.match.params;
+    const filePath = `packages/${groupId}/${pkgId}/CHANGELOG.md`;
+    const found = fs.find(packages, (file, currPath) => {
+      return currPath === filePath
+    });
     const { isInvalid, range } = this.state;
+
+    const Content = Loadable({
+      loading: Loading,
+      loader: () => found && found.contents(),
+      render: changelog => (changelog
+        ? (
+          <Changelog
+            changelog={divvyChangelog(changelog)}
+            range={range}
+            packageName={pkgId}
+          />
+        ) : <NoMatch>Invalid range; please try again.</NoMatch>),
+    });
+
 
     return (
       <Page>
-        <Back to={`/packages/${component}`} />
-        <h1>Changelog: {component}</h1>
+        <Back to={`/packages/${pkgId}`} />
+        <h1>Changelog: {pkgId}</h1>
         <TextField
           autoFocus
           isInvalid={isInvalid}
@@ -69,7 +100,7 @@ export default class ChangelogExplorer extends Component<Props, State> {
           <NoMatch>Invalid range; please try again.</NoMatch>
         ) : (
           <LogWrapper>
-            <Changelog changelog={changelog} range={range} packageName={component} />
+            <Content />
           </LogWrapper>
         )}
       </Page>
