@@ -4,19 +4,19 @@ import { PureComponent, ReactElement } from 'react';
 import { AkButton } from './styles';
 
 export interface Props {
-  selected?: boolean;
+  className?: string;
   disabled?: boolean;
   hideTooltip?: boolean;
   href?: string;
-  title?: string;
-  titlePosition?: string;
+  iconAfter?: ReactElement<any>;
+  iconBefore?: ReactElement<any>;
+  onClick?: () => void;
+  selected?: boolean;
+  spacing?: 'default' | 'compact' | 'none';
   target?: string;
   theme?: 'dark';
-  className?: string;
-  iconBefore?: ReactElement<any>;
-  iconAfter?: ReactElement<any>;
-  spacing?: 'default' | 'compact' | 'none';
-  onClick?: () => void;
+  title?: string;
+  titlePosition?: string;
 }
 
 export default class ToolbarButton extends PureComponent<Props, {}> {
@@ -27,33 +27,31 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
   render() {
     const button = (
       <AkButton
-        className={this.props.className}
+        appearance="subtle"
         ariaHaspopup={true}
+        className={this.props.className}
+        href={this.props.href}
+        iconAfter={this.props.iconAfter}
+        iconBefore={this.props.iconBefore}
         isDisabled={this.props.disabled}
         isSelected={this.props.selected}
-        spacing={this.props.spacing || 'none'}
-        appearance="subtle"
-        href={this.props.href}
         onClick={this.handleClick}
+        spacing={this.props.spacing || 'none'}
         target={this.props.target}
         theme={this.props.theme}
-        iconBefore={this.props.iconBefore}
-        iconAfter={this.props.iconAfter}
       >
         {this.props.children}
       </AkButton>
     );
 
-    return this.props.title && !this.props.hideTooltip
-      ? (
-        <Tooltip
-          placement={this.props.titlePosition || 'top'}
-          content={this.props.title}
-        >
-          {button}
-        </Tooltip>
-      )
-      : button;
+    const placement = this.props.titlePosition || 'top';
+    const showTooltip = this.props.title && !this.props.hideTooltip;
+
+    return showTooltip ? (
+      <Tooltip placement={placement} content={this.props.title}>
+        {button}
+      </Tooltip>
+    ) : button;
   }
 
   private handleClick = () => {
