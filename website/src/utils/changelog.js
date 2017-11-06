@@ -1,3 +1,5 @@
+import type { Logs} from '../components/ChangeLog'
+
 export const divvyChangelog = (changelog): Logs => {
   const splitToken = `__CHANGELOG_SPLIT_${Date.now()}__`;
   return changelog

@@ -61,7 +61,6 @@ export function flatMap<T>(dir: Directory, iteratee: (file: File, filePath: stri
 
 export function find(dir: Directory, iteratee: (file: File, filePath: string) => boolean): File | null {
   function visit(dir, filePath) {
-    // console.log('finding findgin', dir, filePath);
     for (let item of dir.children) {
       let currPath = `${filePath}/${item.id}`;
       if (item.type === 'dir') {

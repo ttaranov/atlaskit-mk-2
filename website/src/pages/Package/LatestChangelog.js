@@ -9,7 +9,7 @@ import Lozenge from '@atlaskit/lozenge';
 
 import { colors, gridSize, math, themed } from '@atlaskit/theme';
 
-import Changelog, { type Logs } from '../../components/Changelog';
+import Changelog, { type Logs } from '../../components/ChangeLog';
 
 const LatestChange = (
   { changelog, pkgId, groupId }:
