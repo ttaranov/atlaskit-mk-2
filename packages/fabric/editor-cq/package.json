@@ -17,14 +17,14 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
-    "@atlaskit/editor-common": "^2.4.0",
     "@atlaskit/editor-core": "^56.3.4",
-    "@atlaskit/logo": "^4.0.1",
+    "@atlaskit/editor-common": "^2.4.0",
+    "@atlaskit/logo": "^5.0.0",
     "@atlaskit/mention": "^7.6.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "collapse-whitespace": "^1.1.6",
     "prosemirror-model": "^0.22.0",
-    "styled-components": "^1.4.3",
+    "styled-components": "^1.4.6",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
