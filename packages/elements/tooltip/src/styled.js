@@ -1,7 +1,7 @@
 // @flow
 
-import styled from 'styled-components';
-import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
+import styled, { css } from 'styled-components';
+import { borderRadius, colors, themed } from '@atlaskit/theme';
 
 const backgroundColor = themed({
   light: colors.N800,
@@ -12,21 +12,30 @@ const textColor = themed({
   dark: colors.DN600,
 });
 
-export const Tooltip = styled.span`
+const common = css`
   background-color: ${backgroundColor};
   border-radius: ${borderRadius}px;
   box-sizing: border-box;
   color: ${textColor};
-  display: inline-block;
   font-size: 12px;
   left: 0;
   line-height: 1.3;
-  max-width: ${math.multiply(gridSize, 52)}px;
-  padding: ${math.divide(gridSize, 4)}px ${gridSize}px;
+  max-width: 240px;
+  padding: 2px 6px;
   pointer-events: none;
   position: fixed;
-  text-overflow: ellipsis;
   top: 0;
+  z-index: 1000;
+`;
+
+export const Tooltip = styled.div`
+  ${common}
+`;
+export const TruncatedTooltip = styled.div`
+  ${common}
+  max-width: 420px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 `;
 

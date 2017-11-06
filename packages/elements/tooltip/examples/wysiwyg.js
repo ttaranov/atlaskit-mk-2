@@ -10,31 +10,38 @@ import LinkIcon from '@atlaskit/icon/glyph/editor/link';
 import BulletListIcon from '@atlaskit/icon/glyph/editor/bullet-list';
 import NumberListIcon from '@atlaskit/icon/glyph/editor/number-list';
 import CodeIcon from '@atlaskit/icon/glyph/editor/code';
+import { borderRadius, colors } from '@atlaskit/theme';
 
 import Tooltip from '../src/';
 
 const Toolbar = styled.div`
+  background-color: ${colors.N20};
+  border-radius: ${borderRadius}px;
   display: flex;
+  padding: 5px;
 `;
 const Action = styled.div`
+  align-items: center;
   border-radius: 3px;
-  margin-right: 3px;
+  display: flex;
   height: 24px;
-  width: 24px;
+  justify-content: center;
+  margin-right: 3px;
+  width: 36px;
 
   &:hover {
-    background-color: #eee;
+    background-color: ${colors.N40};
   }
 `;
 
 const ACTIONS = {
-  bold: <BoldIcon label="Bold" />,
-  italic: <ItalicIcon label="Italic" />,
-  underline: <UnderlineIcon label="Underline" />,
-  link: <LinkIcon label="Link" />,
-  'bullet list': <BulletListIcon label="Bullet List" />,
-  'number list': <NumberListIcon label="Number List" />,
-  source: <CodeIcon label="Source" />,
+  Bold: <BoldIcon label="Bold" />,
+  Italic: <ItalicIcon label="Italic" />,
+  Underline: <UnderlineIcon label="Underline" />,
+  Link: <LinkIcon label="Link" />,
+  'Bullet List': <BulletListIcon label="Bullet List" />,
+  'Number List': <NumberListIcon label="Number List" />,
+  Source: <CodeIcon label="Source" />,
 };
 
 export default function WysiwygExample() {

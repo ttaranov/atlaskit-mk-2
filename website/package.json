@@ -39,6 +39,7 @@
     "@atlaskit/css-reset": "^1.1.5",
     "@atlaskit/field-text": "^4.0.0",
     "@atlaskit/icon": "^9.0.1",
+    "@atlaskit/layer-manager": "^2.2.0",
     "@atlaskit/logo": "^4.0.1",
     "@atlaskit/lozenge": "^3.4.3",
     "@atlaskit/navigation": "^22.0.0",

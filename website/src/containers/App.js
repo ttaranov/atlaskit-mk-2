@@ -3,6 +3,8 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import styled, { injectGlobal } from 'styled-components';
+import LayerManager from '@atlaskit/layer-manager';
+
 import type { Directory } from '../types';
 import * as fs from '../utils/fs';
 
@@ -44,26 +46,28 @@ export default function App() {
       <Switch>
         <Route path="/examples/:groupId?/:pkgId?/:exampleId*" component={Examples} />
         <Route>
-          <AppContainer>
-            <Nav />
-            <AppContent>
-              <Switch>
-                <Route exact path="/" component={Home} />
-                <Route path="/docs/:docId*" component={Document} />
-                <Route path="/patterns" component={PatternsInfo} exact />
-                <Route path="/patterns/:patternId*" component={Pattern} />} />
-                <Route
-                  path="/mk-2/packages/:groupId/:pkgId/docs/:docId"
-                  component={PackageDocument}
-                />
-                <Route path="/packages/:groupId/:pkgId" component={Package} />
-                <Route path="/mk-2/packages/:groupId/:pkgId" component={Package} />
-                <Route path="/packages" component={PackagesList} />
-                <Route path="/changelog/:groupId/:pkgId/:semver?" component={ChangeLogExplorer} />
-                <Route component={FourOhFour} />
-              </Switch>
-            </AppContent>
-          </AppContainer>
+          <LayerManager>
+            <AppContainer>
+              <Nav />
+              <AppContent>
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  <Route path="/docs/:docId*" component={Document} />
+                  <Route path="/patterns" component={PatternsInfo} exact />
+                  <Route path="/patterns/:patternId*" component={Pattern} />} />
+                  <Route
+                    path="/mk-2/packages/:groupId/:pkgId/docs/:docId"
+                    component={PackageDocument}
+                  />
+                  <Route path="/packages/:groupId/:pkgId" component={Package} />
+                  <Route path="/mk-2/packages/:groupId/:pkgId" component={Package} />
+                  <Route path="/packages" component={PackagesList} />
+                  <Route path="/changelog/:groupId/:pkgId/:semver?" component={ChangeLogExplorer} />
+                  <Route component={FourOhFour} />
+                </Switch>
+              </AppContent>
+            </AppContainer>
+          </LayerManager>
         </Route>
       </Switch>
     </BrowserRouter>

@@ -4,7 +4,10 @@
 import React, { Children, Component } from 'react';
 
 import type { PlacementType, PositionType, SingleChild } from '../types';
-import { Tooltip as StyledTooltip } from '../styled';
+import {
+  Tooltip as StyledTooltip,
+  TruncatedTooltip as StyledTruncatedTooltip,
+} from '../styled';
 
 import Portal from './Portal';
 import TooltipMarshal from './Marshal';
@@ -24,6 +27,8 @@ type Props = {
   placement: PlacementType,
   /** React <16.X requires a wrapping element. */
   tag: string,
+  /** Show only one line of text, and truncate when too long. */
+  truncate?: boolean,
 };
 type State = {
   immediatelyHide: boolean,
@@ -62,11 +67,16 @@ export default class Tooltip extends Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const { placement } = nextProps;
+    const { placement, truncate } = nextProps;
 
-    // handle rare case where placement is changed while visible
+    // handle case where placement is changed while visible
     if (placement !== this.props.placement) {
       this.setState({ placement, position: null });
+    }
+
+    // handle case where truncate is changed while visible
+    if (truncate !== this.props.truncate) {
+      this.setState({ position: null });
     }
   }
 
@@ -93,7 +103,7 @@ export default class Tooltip extends Component<Props, State> {
   }
 
   renderTooltip() {
-    const { content } = this.props;
+    const { content, truncate } = this.props;
     const { immediatelyHide, immediatelyShow, isVisible, placement, position } = this.state;
 
     // bail immediately when not visible
@@ -101,17 +111,18 @@ export default class Tooltip extends Component<Props, State> {
 
     // render node for measuring in alternate tree via portal
     if (!position) {
+      const Measure = truncate ? StyledTruncatedTooltip : StyledTooltip;
       return (
         <Portal>
-          <StyledTooltip innerRef={this.handleMeasureRef} style={{ visibility: 'hidden' }}>
+          <Measure innerRef={this.handleMeasureRef} style={{ visibility: 'hidden' }}>
             {content}
-          </StyledTooltip>
+          </Measure>
         </Portal>
       );
     }
 
     // render and animate tooltip when position available
-    const transitionProps = { immediatelyHide, immediatelyShow, placement, position };
+    const transitionProps = { immediatelyHide, immediatelyShow, placement, position, truncate };
     return (
       <Transition {...transitionProps}>
         {content}
@@ -155,8 +166,9 @@ export default class Tooltip extends Component<Props, State> {
     // NOTE removing props from rest:
     // - `content` is a valid HTML attribute, but has a different semantic meaning
     // - `placement` is NOT valid and react will warn
+    // - `truncate` is NOT valid and react will warn
     // eslint-disable-next-line no-unused-vars
-    const { children, content, placement, tag: Tag, ...rest } = this.props;
+    const { children, content, placement, truncate, tag: Tag, ...rest } = this.props;
 
     return (
       <Tag

@@ -15,6 +15,11 @@ const color = {
   fixed: 'red',
 };
 
+const boxShadow = `
+  0 4px 8px -2px ${colors.N60A},
+  0 0 1px ${colors.N60A}
+`;
+
 const Parent = styled.div`
   background-color: ${colors.N20};
   border-radius: 5px;
@@ -22,6 +27,10 @@ const Parent = styled.div`
   padding: 8px;
   position: ${p => p.pos};
   width: 280px;
+  ${p => (p.pos === 'fixed'
+    ? `box-shadow: 0 4px 8px -2px ${colors.N60A}, 0 0 1px ${colors.N60A};`
+    : ''
+  )}
 `;
 
 type PosTypes = {
@@ -39,8 +48,10 @@ const Position = ({ children, pos, ...rest }: PosTypes) => (
     {children}
   </Parent>
 );
+
 type Props = {};
 type State = { pinned: boolean, top: number };
+
 export default class PositionExample extends Component<Props, State> {
   panel: HTMLElement
   state = { pinned: false, top: 0 }
@@ -52,12 +63,18 @@ export default class PositionExample extends Component<Props, State> {
   ref = (ref: HTMLElement) => { this.panel = ref; }
   render() {
     const { pinned, top } = this.state;
+    const fixedPos = pinned ? 'fixed' : 'relative';
+    const fixedStyle = pinned
+      ? { boxShadow, top }
+      : { top: 92 };
+    const buttonStyle = { position: 'absolute', right: 8, top: 8 };
+
     return (
       <div style={{ height: 246, position: 'relative' }}>
         <Position pos="relative" />
         <Position pos="absolute" style={{ top: 84 }} />
-        <Position innerRef={this.ref} pos={pinned ? 'fixed' : 'relative'} style={{ top: pinned ? top : 92 }}>
-          <button onClick={pinned ? this.unpin : this.pin} style={{ position: 'absolute', right: 8, top: 8 }}>
+        <Position innerRef={this.ref} pos={fixedPos} style={fixedStyle}>
+          <button onClick={pinned ? this.unpin : this.pin} style={buttonStyle}>
             {pinned ? 'Unpin' : 'Pin'}
           </button>
         </Position>
