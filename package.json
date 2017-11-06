@@ -29,6 +29,8 @@
     "typecheck:typescript": "                bolt workspaces exec --only-fs 'packages/fabric/*' -- tsc --noEmit --project ./",
     "website:start": "                       cd website && yarn start",
     "start": "                               yarn run website:start",
+    "start:elements": "                      WEBSITE=elements yarn run website:start",
+    "start:editor": "                        WEBSITE=editor   yarn run website:start",
     "changeset": "                           projector ./projector changeset",
     "release": "                             projector ./projector release",
     "build:editor-common:json-schema": "     cd packages/fabric/editor-common && yarn run build:json-schema && echo 'Done.'"
