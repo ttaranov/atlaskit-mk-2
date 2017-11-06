@@ -431,6 +431,42 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       toolbarOption.unmount();
     });
 
+    it('should have link option in dropdown if the width is greater then BreakPoint7', () => {
+      const { editorView } = editor(doc(p('text')));
+      const toolbarOption = mount(
+        <ToolbarInsertBlock
+          editorView={editorView}
+          editorWidth={EditorWidth.BreakPoint7 - 1}
+        />,
+      );
+      toolbarOption.find(ToolbarButton).simulate('click');
+      expect(
+        toolbarOption
+          .find('Item')
+          .filterWhere(n => n.html().indexOf('Add link') > -1).length,
+      ).toEqual(1);
+      toolbarOption.unmount();
+    });
+
+    it('should have media option in dropdown if the width is less then BreakPoint6', () => {
+      const { editorView } = editor(doc(p('text')));
+      const toolbarOption = mount(
+        <ToolbarInsertBlock
+          mediaSupported={true}
+          mediaUploadsEnabled={true}
+          editorView={editorView}
+          editorWidth={EditorWidth.BreakPoint6 - 1}
+        />,
+      );
+      toolbarOption.find(ToolbarButton).simulate('click');
+      expect(
+        toolbarOption
+          .find('Item')
+          .filterWhere(n => n.html().indexOf('Files and images') > -1).length,
+      ).toEqual(1);
+      toolbarOption.unmount();
+    });
+
     it('should have mention option in dropdown if the width is greater then BreakPoint5', () => {
       const { editorView } = editor(doc(p('text')));
       const toolbarOption = mount(
@@ -441,40 +477,47 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
           editorWidth={EditorWidth.BreakPoint5 - 1}
         />,
       );
+      toolbarOption.find(ToolbarButton).simulate('click');
       expect(
-        toolbarOption.find(DropdownMenu).prop('items')[0]['items'][0].content,
-      ).toEqual('Mention');
+        toolbarOption
+          .find('Item')
+          .filterWhere(n => n.html().indexOf('Mention') > -1).length,
+      ).toEqual(1);
       toolbarOption.unmount();
     });
 
-    it('should have media option in dropdown if the width is less then BreakPoint4', () => {
+    it('should have emoji option in dropdown if the width is greater then BreakPoint4', () => {
       const { editorView } = editor(doc(p('text')));
       const toolbarOption = mount(
         <ToolbarInsertBlock
-          mediaSupported={true}
-          mediaUploadsEnabled={true}
+          emojiProvider={emojiProvider}
           editorView={editorView}
-          editorWidth={EditorWidth.BreakPoint6 - 1}
+          editorWidth={EditorWidth.BreakPoint4 - 1}
         />,
       );
+      toolbarOption.find(ToolbarButton).simulate('click');
       expect(
-        toolbarOption.find(DropdownMenu).prop('items')[0]['items'][0].content,
-      ).toEqual('Files and images');
+        toolbarOption
+          .find('Item')
+          .filterWhere(n => n.html().indexOf('Emoji') > -1).length,
+      ).toEqual(1);
       toolbarOption.unmount();
     });
 
-    it('should have 1 child elements if pluginStateTable is defined and width is less then BreakPoint3', () => {
+    it('should have table option if width is less then BreakPoint3', () => {
       const { editorView } = editor(doc(p('text')));
       const toolbarOption = mount(
         <ToolbarInsertBlock
           tableSupported={true}
-          tableHidden={false}
           editorView={editorView}
           editorWidth={EditorWidth.BreakPoint3 - 1}
         />,
       );
+      toolbarOption.find(ToolbarButton).simulate('click');
       expect(
-        toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length,
+        toolbarOption
+          .find('Item')
+          .filterWhere(n => n.html().indexOf('Table') > -1).length,
       ).toEqual(1);
       toolbarOption.unmount();
     });

@@ -60,7 +60,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     toolbarOption.unmount();
   });
 
-  it('should not have  option to underline if EditorWidth is not defined', () => {
+  it('should not have option to underline if EditorWidth is not defined', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting

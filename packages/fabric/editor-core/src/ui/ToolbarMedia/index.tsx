@@ -44,7 +44,7 @@ export default class ToolbarMedia extends PureComponent<Props, State> {
   render() {
     const { editorWidth, isDisabled } = this.props;
     const { disabled } = this.state;
-    if (disabled || (editorWidth && editorWidth! <= EditorWidth.BreakPoint6)) {
+    if (disabled || (editorWidth && editorWidth <= EditorWidth.BreakPoint6)) {
       return null;
     }
     return (
