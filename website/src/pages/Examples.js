@@ -107,6 +107,148 @@ const ExamplesError = styled.div`
   font-size: 120%;
 `;
 
+function PackageSelector(props) {
+  let selectedPackageItem;
+
+  let packagesSelectItems = props.groups.map(group => {
+    return {
+      heading: fs.titleize(group.id),
+      items: fs.getDirectories(group.children).map(pkg => {
+        let item = {
+          content: fs.titleize(pkg.id),
+          value: `${group.id}/${pkg.id}`,
+        };
+
+        if (props.groupId === group.id && props.packageId === pkg.id) {
+          selectedPackageItem = item;
+        }
+
+        return item;
+      }),
+    };
+  });
+
+  return (
+    <ExamplesControl>
+      <SingleSelect
+        appearance="subtle"
+        items={packagesSelectItems}
+        hasAutocomplete
+        placeholder="Select Package"
+        onSelected={props.onSelected}
+        defaultSelected={selectedPackageItem}
+      />
+    </ExamplesControl>
+  );
+}
+
+function ExampleSelector(props) {
+  let selectedExampleItem;
+
+  console.log(props);
+
+  const examplesSelectItems = [
+    {
+      heading: 'Examples',
+      items: props.examples ? fs.flatMap(props.examples, (file, filePath) => {
+        let item = {
+          content: fs.titleize(file.id),
+          value: fs.normalize(filePath.replace('examples/', '')),
+        };
+
+        if (file.id === props.exampleId) {
+          selectedExampleItem = item;
+        }
+
+        return item;
+      }) : [],
+    },
+  ];
+
+  return (
+    <ExamplesControl>
+      <SingleSelect
+        appearance="subtle"
+        items={examplesSelectItems}
+        hasAutocomplete
+        placeholder="Select Example"
+        onSelected={props.onSelected}
+        defaultSelected={selectedExampleItem}
+      />
+    </ExamplesControl>
+  );
+}
+
+function ExampleNavigation(props) {
+  return (
+    <ExamplesNav>
+      <ExamplesNavSection>
+        <ExamplesNavIconLink to={packageUrl(props.groupId, props.packageId)}>
+          <ExamplesNavIcon>
+            <ArrowLeftCircleIcon size="large" primaryColor={colors.B500} label="back to docs" />
+          </ExamplesNavIcon>
+          to {fs.titleize(props.packageId)} docs
+        </ExamplesNavIconLink>
+      </ExamplesNavSection>
+
+      <ExamplesNavSection>
+        <PackageSelector
+          groupId={props.groupId}
+          packageId={props.packageId}
+          groups={props.groups}
+          onSelected={props.onPackageSelected}/>
+        <ExampleSelector
+          examples={props.examples}
+          exampleId={props.exampleId}
+          onSelected={props.onExampleSelected}/>
+      </ExamplesNavSection>
+
+      <ExamplesNavSection>
+        <div onClick={props.onCodeToggle}>
+          <CodeIcon size="large" primaryColor={colors.N500} label="show source" />
+        </div>
+      </ExamplesNavSection>
+    </ExamplesNav>
+  );
+}
+
+function ExampleDisplay(props) {
+  const ExampleComponent = Loadable({
+    loader: () => props.example.exports(),
+    loading: Loading,
+    render(loaded) {
+      if (!loaded.default) {
+        return <ExamplesError>Example "{props.example.id}" doesn't have default export.</ExamplesError>;
+      }
+
+      return (
+        <ExamplesComponentContainer>
+          <loaded.default />
+        </ExamplesComponentContainer>
+      );
+    },
+  });
+
+  const ExampleCode = Loadable({
+    loader: () => props.example.contents(),
+    loading: Loading,
+    render(loaded) {
+      return (
+        <ExamplesCodeContainer>
+          <CodeBlock grammar="jsx" content={loaded} />
+        </ExamplesCodeContainer>
+      );
+    },
+  });
+
+  return (
+    <ExamplesContent>
+      {props.displayCode && <ExampleCode />}
+      <ExampleComponent />
+    </ExamplesContent>
+  );
+}
+
 type State = {
   displayCode: boolean,
 };
@@ -169,7 +311,7 @@ export default class Examples extends React.Component<Props, State> {
     let hasChanged =
       groupId !== resolvedGroupId ||
       packageId !== resolvedPackageId ||
-      exampleId !== (resolvedExampleId ? fs.normalize(resolvedExampleId) : null);
+      (exampleId || null) !== (resolvedExampleId ? fs.normalize(resolvedExampleId) : null);
 
     return {
       hasChanged,
@@ -224,131 +366,26 @@ export default class Examples extends React.Component<Props, State> {
       return <Redirect to={this.toUrl(groupId, packageId, exampleId)} />;
     }
 
-    if (!exampleId) {
-      return <div>Missing example</div>;
-    }
-
-    let example;
-
-    if (examples) {
-      example = fs.getById(fs.getFiles(examples.children), exampleId);
-    }
-
-    const ExampleComponent = Loadable({
-      loader: () => example.exports(),
-      loading: Loading,
-      render(loaded) {
-        if (!loaded.default) {
-          return <ExamplesError>Example "{example.id}" doesn't have default export.</ExamplesError>;
-        }
-
-        return (
-          <ExamplesComponentContainer>
-            <loaded.default />
-          </ExamplesComponentContainer>
-        );
-      },
-    });
-
-    const ExampleCode = Loadable({
-      loader: () => example.contents(),
-      loading: Loading,
-      render(loaded) {
-        return (
-          <ExamplesCodeContainer>
-            <CodeBlock grammar="jsx" content={loaded} />
-          </ExamplesCodeContainer>
-        );
-      },
-    });
-
-    let selectedPackageItem;
-
-    const packagesSelectItems = groups.map(group => {
-      return {
-        heading: fs.titleize(group.id),
-        items: fs.getDirectories(group.children).map(pkg => {
-          let item = {
-            content: fs.titleize(pkg.id),
-            value: `${group.id}/${pkg.id}`,
-          };
-
-          if (groupId === group.id && packageId === pkg.id) {
-            selectedPackageItem = item;
-          }
-
-          return item;
-        }),
-      };
-    });
-
-    let selectedExampleItem;
-
-    const examplesSelectItems = [
-      {
-        heading: 'Examples',
-        items: examples ? fs.flatMap(examples, (file, filePath) => {
-          let item = {
-            content: fs.titleize(file.id),
-            value: fs.normalize(filePath.replace('examples/', '')),
-          };
-
-          if (file.id === example.id) {
-            selectedExampleItem = item;
-          }
-
-          return item;
-        }) : [],
-      },
-    ];
-
     return (
       <ExamplesContainer>
-        <ExamplesNav>
-          <ExamplesNavSection>
-            <ExamplesNavIconLink to={packageUrl(groupId, packageId)}>
-              <ExamplesNavIcon>
-                <ArrowLeftCircleIcon size="large" primaryColor={colors.B500} label="back to docs" />
-              </ExamplesNavIcon>
-              to {fs.titleize(packageId)} docs
-            </ExamplesNavIconLink>
-          </ExamplesNavSection>
-
-          <ExamplesNavSection>
-            <ExamplesControl>
-              <SingleSelect
-                appearance="subtle"
-                items={packagesSelectItems}
-                hasAutocomplete
-                placeholder="Select Package"
-                onSelected={this.onPackageSelected}
-                defaultSelected={selectedPackageItem}
-              />
-            </ExamplesControl>
-
-            <ExamplesControl>
-              <SingleSelect
-                appearance="subtle"
-                items={examplesSelectItems}
-                hasAutocomplete
-                placeholder="Select Example"
-                onSelected={this.onExampleSelected}
-                defaultSelected={selectedExampleItem}
-              />
-            </ExamplesControl>
-          </ExamplesNavSection>
-
-          <ExamplesNavSection>
-            <div onClick={this.onCodeToggle}>
-              <CodeIcon size="large" primaryColor={colors.N500} label="show source" />
-            </div>
-          </ExamplesNavSection>
-        </ExamplesNav>
-
-        <ExamplesContent>
-          {this.state.displayCode && <ExampleCode />}
-          <ExampleComponent />
-        </ExamplesContent>
+        <ExampleNavigation
+          groupId={groupId}
+          packageId={packageId}
+          exampleId={exampleId}
+          groups={groups}
+          examples={examples}
+          onPackageSelected={this.onPackageSelected}
+          onExampleSelected={this.onExampleSelected}
+          onCodeToggle={this.onCodeToggle}/>
+        {examples && exampleId ? (
+          <ExampleDisplay
+            displayCode={this.state.displayCode}
+            example={fs.getById(fs.getFiles(examples.children), exampleId)}/>
+        ) : (
+          <ExamplesContent>
+            <ExamplesError>{fs.titleize(packageId)} does not have any examples</ExamplesError>
+          </ExamplesContent>
+        )}
       </ExamplesContainer>
     );
   }
