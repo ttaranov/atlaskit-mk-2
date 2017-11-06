@@ -7,12 +7,14 @@ import { analyticsDecorator as analytics } from '../../analytics';
 import { addLink, tooltip } from '../../keymaps';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import ToolbarButton from '../ToolbarButton';
+import EditorWidth from '../../utils/editor-width';
 import { OuterContainer } from './styles';
 
 export interface Props {
   editorView: EditorView;
   pluginState: HyperlinkState;
   disabled?: boolean;
+  editorWidth?: number;
 }
 
 export interface State {
@@ -35,10 +37,12 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
 
   render() {
     const { adding, disabled } = this.state;
+    const { editorWidth } = this.props;
 
     return (
-      <OuterContainer>
+      <OuterContainer width={editorWidth! > EditorWidth.BreakPoint6 ? 'large' : 'small'}>
         <ToolbarButton
+          spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
           disabled={disabled || this.props.disabled}
           onClick={this.toggleLinkPanel}
           selected={adding}

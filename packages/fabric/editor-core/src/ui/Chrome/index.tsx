@@ -6,7 +6,6 @@ import { MentionProvider } from '@atlaskit/mention';
 import { EditorView } from 'prosemirror-view';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
-import { EmojiState } from '../../plugins/emojis';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ImageUploadState } from '../../plugins/image-upload';
 import { ListsState } from '../../plugins/lists';
@@ -41,7 +40,6 @@ export interface Props {
   pluginStateMentions?: MentionsState;
   pluginStatePanel?: PanelState;
   pluginStateMedia?: MediaPluginState;
-  pluginStateEmojis?: EmojiState;
   pluginStateTextColor?: TextColorState;
   pluginStateTable?: TableState;
   presenceResourceProvider?: any; // AbstractPresenceResource
@@ -78,7 +76,6 @@ export default class Chrome extends PureComponent<Props, {}> {
         pluginStateClearFormatting={props.pluginStateClearFormatting}
         pluginStateImageUpload={props.pluginStateImageUpload}
         pluginStateMentions={props.pluginStateMentions}
-        pluginStateEmojis={props.pluginStateEmojis}
         pluginStateMedia={props.pluginStateMedia}
         pluginStatePanel={props.pluginStatePanel}
         pluginStateTextColor={props.pluginStateTextColor}

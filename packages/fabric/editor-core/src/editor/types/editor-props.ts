@@ -12,7 +12,13 @@ import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../plugins/macro/types';
 import { Transformer } from '../../';
 
-export type EditorAppearance = 'message' | 'inline-comment' | 'comment' | 'full-page' | 'chromeless' | undefined;
+export type EditorAppearance =
+  | 'message'
+  | 'inline-comment'
+  | 'comment'
+  | 'full-page'
+  | 'chromeless'
+  | undefined;
 
 export type ReactElement = React.ReactElement<any> | React.ReactElement<any>[];
 
