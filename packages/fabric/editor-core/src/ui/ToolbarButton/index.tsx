@@ -1,4 +1,4 @@
-import { Tooltip } from '@atlaskit/tooltip';
+import Tooltip from '@atlaskit/tooltip';
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import { AkButton } from './styles';
@@ -19,15 +19,7 @@ export interface Props {
   onClick?: () => void;
 }
 
-export interface State {
-  isTooltipVisible: boolean;
-}
-
 export default class ToolbarButton extends PureComponent<Props, {}> {
-  state: State = {
-    isTooltipVisible: false
-  };
-
   static defaultProps = {
     className: '',
   };
@@ -35,7 +27,7 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
   render() {
     const button = (
       <AkButton
-        className={`${this.props.className}`}
+        className={this.props.className}
         ariaHaspopup={true}
         isDisabled={this.props.disabled}
         isSelected={this.props.selected}
@@ -52,14 +44,11 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
       </AkButton>
     );
 
-    return this.props.title
+    return this.props.title && !this.props.hideTooltip
       ? (
         <Tooltip
-          position={this.props.titlePosition || 'top'}
-          description={this.props.title}
-          visible={this.isVisible()}
-          onMouseOver={this.handleMouseOver}
-          onMouseOut={this.handleMouseOut}
+          placement={this.props.titlePosition || 'top'}
+          content={this.props.title}
         >
           {button}
         </Tooltip>
@@ -67,24 +56,10 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
       : button;
   }
 
-  private isVisible = (): boolean => {
-    return this.state.isTooltipVisible && !this.props.hideTooltip;
-  }
-
   private handleClick = () => {
     const { disabled, onClick } = this.props;
     if (!disabled && onClick) {
       onClick();
     }
-
-    this.setState({ isTooltipVisible: false });
-  }
-
-  private handleMouseOver = () => {
-    this.setState({ isTooltipVisible: true });
-  }
-
-  private handleMouseOut = () => {
-    this.setState({ isTooltipVisible: false });
   }
 }

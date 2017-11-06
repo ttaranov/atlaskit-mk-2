@@ -27,6 +27,7 @@ const Container = styled.div`
 
 const Content = styled.div`
   flex: 1 1 auto;
+  overflow-y: auto;
   position: relative;
 `;
 
@@ -34,6 +35,7 @@ const Nav = styled.nav`
   background: ${colors.N30};
   color: white;
   display: flex;
+  flex-shrink: 0;
   height: 48px;
   justify-content: space-between;
 `;
