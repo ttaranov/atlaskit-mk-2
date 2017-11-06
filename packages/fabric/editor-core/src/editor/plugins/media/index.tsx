@@ -34,8 +34,44 @@ const mediaPlugin: EditorPlugin = {
     ];
   },
 
-  secondaryToolbarComponent(editorView, providerFactory) {
-    return <ToolbarMedia editorView={editorView} pluginKey={pluginKey} />;
+  primaryToolbarComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    disabled,
+    editorWidth,
+  ) {
+    return (
+      <ToolbarMedia
+        editorView={editorView}
+        pluginKey={pluginKey}
+        isDisabled={disabled}
+        editorWidth={editorWidth}
+      />
+    );
+  },
+
+  secondaryToolbarComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    disabled,
+    editorWidth,
+  ) {
+    return (
+      <ToolbarMedia
+        editorView={editorView}
+        pluginKey={pluginKey}
+        isDisabled={disabled}
+        editorWidth={editorWidth}
+      />
+    );
   },
 };
 

@@ -12,7 +12,7 @@ const ToolbarHelp = (
     render={showHelp => (
       <ToolbarButton
         spacing={
-          props.editorWidth && props.editorWidth! > EditorWidth.BreakPoint6
+          props.editorWidth && props.editorWidth! > EditorWidth.BreakPoint10
             ? 'default'
             : 'none'
         }

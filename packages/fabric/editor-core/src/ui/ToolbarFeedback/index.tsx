@@ -51,7 +51,7 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
       <Wrapper
         width={
           editorWidth &&
-          (editorWidth > EditorWidth.BreakPoint6 ? 'large' : 'small')
+          (editorWidth > EditorWidth.BreakPoint10 ? 'large' : 'small')
         }
       >
         <ToolbarButton
@@ -59,7 +59,7 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
           onClick={this.openFeedbackPopup}
           selected={false}
           spacing={
-            editorWidth && editorWidth > EditorWidth.BreakPoint6
+            editorWidth && editorWidth > EditorWidth.BreakPoint10
               ? 'default'
               : 'none'
           }

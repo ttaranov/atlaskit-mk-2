@@ -89,7 +89,7 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
 
     return (
       <ButtonsGroup
-        width={editorWidth! > EditorWidth.BreakPoint6 ? 'large' : 'small'}
+        width={editorWidth! > EditorWidth.BreakPoint10 ? 'large' : 'small'}
       >
         <ToolbarTextFormatting
           disabled={disabled}

@@ -55,7 +55,7 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
       editorWidth,
     } = this.props;
 
-    if (editorWidth && editorWidth < EditorWidth.BreakPoint7) {
+    if (editorWidth && editorWidth < EditorWidth.BreakPoint8) {
       return null;
     }
 
@@ -70,11 +70,7 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
           fitHeight={80}
           trigger={
             <ToolbarButton
-              spacing={
-                editorWidth && editorWidth > EditorWidth.BreakPoint6
-                  ? 'default'
-                  : 'none'
-              }
+              spacing={editorWidth ? 'default' : 'none'}
               disabled={disabled || this.props.disabled}
               selected={isOpen}
               title="Text color"
