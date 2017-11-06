@@ -91,12 +91,15 @@ export default class Package extends React.Component<PackageProps, PackageState>
       let files = fs.getFiles(pkg.children);
 
       let json = fs.getById(files, 'package.json');
-      let docs = fs.getById(dirs, 'docs');
-      let examples = fs.getById(dirs, 'examples');
+      let docs = fs.maybeGetById(dirs, 'docs');
+      // let examples = fs.maybeGetById(dirs, 'examples');
 
-      let doc = fs.find(docs, () => {
-        return true;
-      });
+      let doc;
+      if (docs) {
+        doc = fs.find(docs, () => {
+          return true;
+        });
+      }
 
       Promise.all([json.exports(), doc && doc.exports().then(mod => mod.default)])
         .then(([pkg, doc]) => {

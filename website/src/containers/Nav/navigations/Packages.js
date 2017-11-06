@@ -35,8 +35,11 @@ export function buildSubNavGroup(
 }
 
 const getItemDetails = (pkg: Directory, group: Directory, navigateOut?: boolean) => {
-  const docs = fs.getById(fs.getDirectories(pkg.children) || [], 'docs');
-  const examples = fs.getById(fs.getDirectories(pkg.children) || [], 'examples');
+  const docs = fs.maybeGetById(fs.getDirectories(pkg.children) || [], 'docs');
+  const examples = fs.maybeGetById(fs.getDirectories(pkg.children) || [], 'examples');
+  if (!docs) return null;
+  if (!examples) return null;
+
   const docItems = fs
     .getFiles(docs && docs.children && docs.children.length ? docs.children : [])
     .slice(1);
@@ -72,19 +75,26 @@ const getItem = (packages: Array<Directory>, group: Directory, navigateOut: bool
     return acc;
   }, {});
 
-  return packageNames.map(name => {
+  return packageNames.reduce((results, name) => {
     const pkg = findablePkgs[allPackages[name].key];
     if (pkg) {
-      return getItemDetails(pkg, group, navigateOut);
+      let details = getItemDetails(pkg, group, navigateOut);
+      if (details) return results.concat(details);
     } else {
-      return {
+      return results.concat({
         to: `${OLD_WEBSITE_URL}components/${allPackages[name].key}`,
         external: true,
         title: allPackages[name].name,
+<<<<<<< HEAD
         icon: <PackageIcon label={`${allPackages[name].name} icon`} />,
       };
+=======
+        icon: <BitbucketReposIcon label={`${allPackages[name].name} icon`} />,
+      });
+>>>>>>> master
     }
-  });
+    return results;
+  }, []);
 };
 
 const packagesList = {
@@ -113,7 +123,14 @@ const standardGroups = (dirs: Array<Directory>) =>
     const packages = fs.getDirectories(group.children);
     return {
       title: group.id,
-      items: packages.map(pkg => getItemDetails(pkg, group)),
+      items: packages.reduce((items, pkg) => {
+        let details = getItemDetails(pkg, group);
+        if (details) {
+          return items.concat(details);
+        } else {
+          return items;
+        }
+      }, []),
     };
   });
 

@@ -6,8 +6,16 @@
     "jest"
   ],
   "rules": {
-    "import/no-extraneous-dependencies": ["off", "vscode"],
-    "import/no-unresolved": ["off", "vscode"],
+    "import/no-extraneous-dependencies": ["error", {
+      "devDependencies": [
+        "**/docs/**/*.js",
+        "**/__tests__/*.js",
+        "**/examples/*.js",
+        "./projector.js",
+        "./resolver.js"
+      ]
+    }],
+    "import/no-unresolved": ["off"],
     "import/prefer-default-export": "off",
 
     "max-len": ["error", 140],

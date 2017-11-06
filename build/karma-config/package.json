@@ -1,5 +1,6 @@
 {
   "name": "@atlaskit/karma-config",
+  "private": true,
   "version": "1.0.0",
   "description": "Configurations for karma used in AtlasKit",
   "main": "index.js",

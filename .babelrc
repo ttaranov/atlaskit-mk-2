@@ -4,7 +4,13 @@
   "env": {
     "production": {
       "presets": ["env", "react", "flow"],
-      "plugins": ["transform-class-properties", "transform-object-rest-spread", "transform-runtime"]
+      "plugins": ["transform-class-properties", "transform-object-rest-spread", "transform-runtime"],
+      "ignore": [
+        "__mocks__",
+        "__tests__",
+        "__fixtures__",
+        "node_modules"
+      ]
     },
     "test": {
       "presets": ["env", "react", "flow"],

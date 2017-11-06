@@ -1,9 +1,10 @@
 {
   "name": "@atlaskit/lozenge",
-  "version": "3.4.3",
+  "version": "3.4.4",
   "description": "A React component that highlights status for quick recognition",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
+  "src": "src/index.js",
   "files": [
     "dist"
   ],
@@ -11,6 +12,10 @@
   "maintainers": [
     "Sean C"
   ],
+  "atlaskit": {
+    "name": "Lozenge",
+    "team": "elements"
+  },
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/util-shared-styles": "^2.10.3",
@@ -21,7 +26,7 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^0.0.1",
+    "@atlaskit/docs": "^0.0.2",
     "enzyme": "^2.9.1",
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1"

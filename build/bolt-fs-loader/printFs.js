@@ -10,7 +10,7 @@ function pad(str /*: string */, depth /*: number */) {
 
 function printFile(file /*: File */, depth /*: number */) {
   return pad(
-    `file('${file.id}', function(){ return import('${file.path}'); }, function(){ return import('!!raw-loader!${file.path}');})`,
+    `file('${file.id}', function(){ return import(/* webpackChunkName: "${file.path}" */ '${file.path}'); }, function(){ return import(/* webpackChunkName: "${file.path} (raw)" */'!!raw-loader!${file.path}');})`,
     depth
   );
 }

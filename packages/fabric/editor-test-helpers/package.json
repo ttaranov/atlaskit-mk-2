@@ -1,0 +1,34 @@
+{
+  "name": "@atlaskit/editor-test-helpers",
+  "version": "0.0.0",
+  "description": "Test Helpers for Atlassian Editor components",
+  "license": "Apache-2.0",
+  "main": "dist/es5/index.js",
+  "src": "src/index.ts",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
+  "files": ["dist"],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [],
+  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "dependencies": {
+    "@atlaskit/editor-common": "^2.2.1",
+    "@atlaskit/editor-core": "^56.2.2",
+    "@atlaskit/media-core": "^10.2.0",
+    "@atlaskit/media-test-helpers": "^8.4.0",
+    "prosemirror-commands": "^0.22.0",
+    "prosemirror-keymap": "^0.22.1",
+    "prosemirror-model": "^0.22.0",
+    "prosemirror-state": "^0.22.0",
+    "prosemirror-view": "^0.22.0"
+  },
+  "peerDependencies": {},
+  "devDependencies": {
+    "@types/prosemirror-commands": "^0.22.0",
+    "@types/prosemirror-keymap": "^0.21.0",
+    "@types/prosemirror-model": "^0.21.0",
+    "@types/prosemirror-state": "^0.21.2",
+    "@types/prosemirror-view": "^0.21.1"
+  }
+}

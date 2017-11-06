@@ -23,5 +23,5 @@ export default md`
     />
   )}
 
-  ${<Props props={require('!!extract-react-types-loader!../src/components/Badge')} />}
+  ${<Props props={require('!!extract-react-types-loader!../src/Badge')} />}
 `;
