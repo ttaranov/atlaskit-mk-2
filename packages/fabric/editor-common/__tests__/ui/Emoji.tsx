@@ -74,4 +74,23 @@ describe('Emoji', () => {
     component.unmount();
   });
 
+  it('should pass fitToHeight down to ResourcedEmoji if there is a provider', () => {
+    const providerFactory = new ProviderFactory();
+    providerFactory.setProvider('emojiProvider', emojiProvider);
+
+    const emojiId = { shortName: ':anything:', fallback: 'fallback', id: 'abc' };
+    const component = mount(
+      <Emoji
+        providers={providerFactory}
+        fitToHeight={32}
+        {...emojiId}
+      />
+    );
+
+    const resourcedEmoji = component.find(ResourcedEmoji);
+    expect(resourcedEmoji.length).to.equal(1);
+    expect(resourcedEmoji.prop('fitToHeight')).to.deep.equal(32);
+    component.unmount();
+  });
+
 });
