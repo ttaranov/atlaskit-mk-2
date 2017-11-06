@@ -10,10 +10,16 @@
     "Trey S"
   ],
   "scripts": {
-    "build": "webpack && cp dist/index.html dist/404.html && zip -r dist.zip dist/",
+    "build": "yarn build:webpack && yarn build:copy && yarn build:minimize && yarn build:zip",
+    "build:no-minimize": "yarn build:webpack && yarn build:copy && yarn build:zip",
+    "build:webpack": "rm -rf dist && WEBSITE_ENV=production webpack ",
+    "build:copy": "cp dist/index.html dist/404.html",
+    "build:zip": "zip -r dist.zip dist/",
+    "build:minimize": "find dist -name '*.js' -type f -prune -exec sh -c  \"echo Minimizing: {} && ./node_modules/.bin/uglifyjs --compress hoist_funs=false '{}' -o '{}'\" \\;",
     "start": "webpack-dev-server",
     "deploy": "yarn build && netlify -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID -p dist.zip",
-    "deploy-staging": "yarn build && netlify -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist.zip"
+    "deploy-staging": "yarn build && netlify -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist.zip",
+    "deploy-staging:no-minimize": "yarn build:no-minimize && netlify -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist.zip"
   },
   "repository": "atlaskit/fabric",
   "devDependencies": {
@@ -61,6 +67,7 @@
     "react-router-dom": "^4.2.2",
     "semver": "^5.4.1",
     "sentence-case": "^2.1.1",
-    "styled-components": "^1.4.3"
+    "styled-components": "^1.4.3",
+    "uglify-js": "^3.1.7"
   }
 }
