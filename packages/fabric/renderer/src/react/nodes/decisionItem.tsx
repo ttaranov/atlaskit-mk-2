@@ -1,9 +1,13 @@
 import * as React from 'react';
-import { PureComponent, Children } from 'react';
+import { PureComponent, Children, ReactElement } from 'react';
 
 import { DecisionItem as AkDecisionItem } from '@atlaskit/task-decision';
 
-export default class DecisionItem extends PureComponent<{}, {}> {
+export interface Props {
+  children?: ReactElement<any>
+}
+
+export default class DecisionItem extends PureComponent<Props, {}> {
   render() {
     const { children } = this.props;
 

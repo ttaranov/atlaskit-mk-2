@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent, Children } from 'react';
+import { PureComponent, Children, ReactElement } from 'react';
 import { ResourcedTaskItem as AkTaskItem } from '@atlaskit/task-decision';
 import { RendererContext } from '../';
 import {
@@ -11,6 +11,7 @@ export interface Props {
   state?: string;
   rendererContext?: RendererContext;
   providers?: ProviderFactory;
+  children?: ReactElement<any>;
 }
 
 export default class TaskItem extends PureComponent<Props, {}> {
@@ -35,7 +36,13 @@ export default class TaskItem extends PureComponent<Props, {}> {
     const { objectAri, containerAri } = rendererContext || { objectAri: '', containerAri: '' };
 
     return (
-      <AkTaskItem taskId={localId} isDone={state === 'DONE'} objectAri={objectAri} containerAri={containerAri} taskDecisionProvider={taskDecisionProvider}>
+      <AkTaskItem
+        taskId={localId}
+        isDone={state === 'DONE'}
+        objectAri={objectAri}
+        containerAri={containerAri}
+        taskDecisionProvider={taskDecisionProvider}
+      >
         {children}
       </AkTaskItem>
     );
