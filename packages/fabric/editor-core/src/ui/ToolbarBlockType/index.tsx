@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
-import TextColorIcon from '@atlaskit/icon/glyph/editor/text-style';
+import TextStyleIcon from '@atlaskit/icon/glyph/editor/text-style';
 import ToolbarButton from '../ToolbarButton';
 import { findKeymapByDescription, tooltip } from '../../keymaps';
 import { analyticsService as analytics } from '../../analytics';
@@ -80,7 +80,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
         spacing={
-          editorWidth && editorWidth > EditorWidth.BreakPoint6
+          editorWidth && editorWidth > EditorWidth.BreakPoint10
             ? 'default'
             : 'none'
         }
@@ -90,7 +90,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
         iconAfter={
           <Wrapper>
             {editorWidth! <= EditorWidth.BreakPoint1 && (
-              <TextColorIcon label="Change formatting" />
+              <TextStyleIcon label="Change formatting" />
             )}
             <ExpandIconWrapper>
               <ExpandIcon label="Change formatting" />

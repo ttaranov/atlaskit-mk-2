@@ -204,8 +204,10 @@ export class TableState {
   };
 
   subscribe(cb: TableStateSubscriber): void {
-    this.changeHandlers.push(cb);
-    cb(this);
+    if (this.changeHandlers.indexOf(cb) < 0) {
+      this.changeHandlers.push(cb);
+      cb(this);
+    }
   }
 
   unsubscribe(cb: TableStateSubscriber): void {

@@ -185,13 +185,12 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   render() {
     const { editorWidth, isDisabled } = this.props;
     const { isOpen, disabled } = this.state;
+    if (editorWidth && editorWidth < EditorWidth.BreakPoint4) {
+      return null;
+    }
     const toolbarButton = (
       <ToolbarButton
-        spacing={
-          editorWidth && editorWidth > EditorWidth.BreakPoint6
-            ? 'default'
-            : 'none'
-        }
+        spacing={editorWidth ? 'default' : 'none'}
         selected={isOpen}
         disabled={disabled || isDisabled}
         onClick={this.toggleOpen}
@@ -205,7 +204,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
       <OuterContainer
         width={
           editorWidth &&
-          (editorWidth > EditorWidth.BreakPoint6 ? 'large' : 'small')
+          (editorWidth > EditorWidth.BreakPoint10 ? 'large' : 'small')
         }
       >
         {toolbarButton}

@@ -3,6 +3,7 @@ import { TableState } from '../../plugins/table';
 import { MediaPluginState } from '../../plugins/media';
 import { MentionsState } from '../../plugins/mentions';
 import { BlockTypeState } from '../../plugins/block-type';
+import { HyperlinkState } from '../../plugins/hyperlink';
 import { BlockType } from '../../plugins/block-type/types';
 import { EditorView } from 'prosemirror-view';
 
@@ -11,6 +12,7 @@ export interface Props {
   pluginStateMedia?: MediaPluginState;
   pluginStateBlockType?: BlockTypeState;
   pluginStateMentions?: MentionsState;
+  pluginStateHyperlink?: HyperlinkState;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   render: (pluginsState: State) => React.ReactElement<any>;
@@ -25,6 +27,8 @@ export interface State {
   mentionsEnabled: boolean;
   mentionsSupported: boolean;
   availableWrapperBlockTypes?: BlockType[];
+  linkDisabled: boolean;
+  showLinkPanel: (editorView: EditorView) => void;
   showMediaPicker: () => void;
   insertBlockType: (name: string, view: EditorView) => void;
   insertMentionQuery: () => void;
@@ -45,6 +49,7 @@ export default class ToolbarInsertBlockWrapper extends React.Component<
       mediaSupported: false,
       mentionsEnabled: false,
       mentionsSupported: false,
+      linkDisabled: false,
     } as State;
   }
 
@@ -54,6 +59,7 @@ export default class ToolbarInsertBlockWrapper extends React.Component<
       pluginStateMedia,
       pluginStateBlockType,
       pluginStateMentions,
+      pluginStateHyperlink,
     } = this.props;
 
     if (pluginStateTable) {
@@ -93,6 +99,15 @@ export default class ToolbarInsertBlockWrapper extends React.Component<
         mentionsEnabled,
         insertMentionQuery,
         mentionsSupported: true,
+      });
+    }
+
+    if (pluginStateHyperlink) {
+      pluginStateHyperlink.subscribe(this.handlePluginStateHyperlinkChange);
+      this.setState({
+        linkDisabled:
+          !pluginStateHyperlink.linkable || pluginStateHyperlink.active,
+        showLinkPanel: pluginStateHyperlink.showLinkPanel,
       });
     }
   }
@@ -191,6 +206,12 @@ export default class ToolbarInsertBlockWrapper extends React.Component<
   private handlePluginStateMentionsChange = (pluginState: MentionsState) => {
     this.setState({
       mentionsEnabled: pluginState.enabled,
+    });
+  };
+
+  private handlePluginStateHyperlinkChange = (pluginState: HyperlinkState) => {
+    this.setState({
+      linkDisabled: !pluginState.linkable || pluginState.active,
     });
   };
 

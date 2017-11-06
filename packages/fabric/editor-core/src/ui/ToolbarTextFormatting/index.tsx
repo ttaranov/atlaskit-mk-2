@@ -51,12 +51,12 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
 
     return (
       <ButtonGroup
-        width={editorWidth! > EditorWidth.BreakPoint6 ? 'large' : 'small'}
+        width={editorWidth! > EditorWidth.BreakPoint10 ? 'large' : 'small'}
       >
         {this.state.boldHidden ? null : (
           <ToolbarButton
             spacing={
-              editorWidth && editorWidth > EditorWidth.BreakPoint6
+              editorWidth && editorWidth > EditorWidth.BreakPoint10
                 ? 'default'
                 : 'none'
             }
@@ -71,7 +71,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
         {this.state.italicHidden ? null : (
           <ToolbarButton
             spacing={
-              editorWidth && editorWidth > EditorWidth.BreakPoint6
+              editorWidth && editorWidth > EditorWidth.BreakPoint10
                 ? 'default'
                 : 'none'
             }
@@ -84,10 +84,10 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
         )}
 
         {this.state.underlineHidden ||
-        (editorWidth && editorWidth < EditorWidth.BreakPoint2) ? null : (
+        (!editorWidth || editorWidth < EditorWidth.BreakPoint2) ? null : (
           <ToolbarButton
             spacing={
-              editorWidth && editorWidth > EditorWidth.BreakPoint6
+              editorWidth && editorWidth > EditorWidth.BreakPoint10
                 ? 'default'
                 : 'none'
             }

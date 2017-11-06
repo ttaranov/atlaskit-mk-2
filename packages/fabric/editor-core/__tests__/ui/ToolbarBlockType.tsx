@@ -52,25 +52,26 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
     toolbarOption.unmount();
   });
 
-  it('should have spacing of toolbar button set to none if editorWidth is less then breakpoint6', () => {
+  it('should have spacing of toolbar button set to none if editorWidth is less then BreakPoint10', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarBlockType
         pluginState={blockTypePluginsSet[0].getState(editorView.state)}
         editorView={editorView}
+        editorWidth={EditorWidth.BreakPoint10 - 1}
       />,
     );
     expect(toolbarOption.find(ToolbarButton).prop('spacing')).toBe('none');
     toolbarOption.unmount();
   });
 
-  it('should have spacing of toolbar button set to default if editorWidth is greater then breakpoint6', () => {
+  it('should have spacing of toolbar button set to default if editorWidth is greater then BreakPoint10', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarBlockType
         pluginState={blockTypePluginsSet[0].getState(editorView.state)}
         editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint6 + 1}
+        editorWidth={EditorWidth.BreakPoint10 + 1}
       />,
     );
     expect(toolbarOption.find(ToolbarButton).prop('spacing')).toBe('default');
