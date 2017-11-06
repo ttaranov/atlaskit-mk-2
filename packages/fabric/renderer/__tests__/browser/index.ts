@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 
 import { renderDocument, Serializer } from '../../src';
 import * as validator from '../../src/validator';
-import schema from './_schema';
+import { defaultSchema as schema } from '@atlaskit/editor-common';
 
 const doc = {
   'version': 1,
