@@ -2,7 +2,6 @@
 import React, { Component, type ComponentType } from 'react';
 import { md } from '@atlaskit/docs';
 import { colors } from '@atlaskit/theme';
-import LayerManager from '@atlaskit/layer-manager';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';
 import ArrowDownCircleIcon from '@atlaskit/icon/glyph/arrow-down-circle';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/arrow-right-circle';
@@ -10,7 +9,6 @@ import ArrowUpCircleIcon from '@atlaskit/icon/glyph/arrow-up-circle';
 
 import Tooltip from '../src';
 import Wysiwyg from '../examples/wysiwyg';
-import PlacementExample from '../examples/placement';
 
 const POSITIONS = {
   top: {
@@ -134,13 +132,6 @@ class Flip extends Component<{}, { active: boolean }> {
   }
 }
 
-// eslint-disable-next-line
-const Managed = () => (
-  <LayerManager>
-    <PlacementExample />
-  </LayerManager>
-);
-
 export default md`
   ### WYSIWYG
 
@@ -161,10 +152,4 @@ export default md`
   Decide whether you want it to wrap or be truncated.
 
   ${<Example component={Image} />}
-
-  ### Layer Manager
-
-  The tooltip will be rendered in the last slot of \`@atlaskit/layer-manager\`.
-
-  ${<Example component={Managed} />}
 `;

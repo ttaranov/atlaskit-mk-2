@@ -11,7 +11,7 @@ import type { ChildrenType } from '../types';
 // render all gateways hierarchically, on top of the app, without needing
 // incremental z-indexes.
 const AppWrapper = styled.div`
-  position: relative,
+  position: relative;
   z-index: 0;
 `;
 

@@ -41,5 +41,5 @@ class Tip extends Component<Props> {
 
 export default withRenderTarget({
   target: 'tooltip',
-  wrapWithTransitionGroup: true,
+  withTransitionGroup: true,
 }, Tip);
