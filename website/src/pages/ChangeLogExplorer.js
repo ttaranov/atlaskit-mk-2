@@ -13,6 +13,7 @@ import Page from '../components/Page';
 import { packages } from '../site';
 import * as fs from '../utils/fs';
 import Loading from '../components/Loading';
+import { divvyChangelog } from '../utils/changelog';
 
 import type { RouterMatch } from '../types';
 
@@ -23,25 +24,6 @@ type Props = {
 };
 
 type State = { isInvalid: boolean, range: string };
-
-const divvyChangelog = (changelog) => {
-  const splitToken = `__CHANGELOG_SPLIT_${Date.now()}__`;
-  return changelog
-      .replace(/## /g, `${splitToken}## `)
-      .split(splitToken)
-      .map((md) => {
-        // This should only allow us to skip the first chunk which is the name, as
-        // well as the unreleased section.
-        const match = md.match(/\d+\.\d+\.\d+/)
-        const version = match ? match[0] : null;
-        if (!version) return null;
-        return {
-          version,
-          md,
-        };
-      })
-      .filter(t => t)
-}
 
 export default class ChangelogExplorer extends Component<Props, State> {
   props: Props;
@@ -85,7 +67,7 @@ export default class ChangelogExplorer extends Component<Props, State> {
 
     return (
       <Page>
-        <Back to={`/packages/${pkgId}`} />
+        <Back to={`/packages/${groupId}/${pkgId}`} />
         <h1>Changelog: {pkgId}</h1>
         <TextField
           autoFocus
