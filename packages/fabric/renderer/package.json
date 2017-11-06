@@ -23,6 +23,8 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
+    "@atlaskit/docs": "^0.0.2",
+    "@atlaskit/editor-core": "^56.2.2",
     "@types/prosemirror-model": "^0.21.0",
     "prosemirror-model": "^0.22.0"
   }
