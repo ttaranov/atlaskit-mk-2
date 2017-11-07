@@ -53,11 +53,20 @@ const colorPresets = [
   },
 ];
 
-export default class InteractiveLogo extends Component {
+type Props = {};
+
+type State = {
+  colorIndex: number,
+  sizeIndex: number,
+};
+
+export default class InteractiveLogo extends Component<Props, State> {
+  state: State;
+
   state = {
     colorIndex: 0,
     sizeIndex: 1,
-  }
+  };
 
   toggleColor = () => {
     this.setState({ colorIndex: (this.state.colorIndex + 1) % colorPresets.length });

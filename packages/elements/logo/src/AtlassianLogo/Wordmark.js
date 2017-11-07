@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 import React, { Component } from 'react';
 
-import { Props, DefaultProps } from '../constants';
+import { type Props, DefaultProps } from '../constants';
 import Wrapper from '../styledWrapper';
 
 const svg = `<canvas height="32" width="158" aria-hidden="true"></canvas>
@@ -24,7 +24,7 @@ export default class AtlassianWordmark extends Component<Props> {
   static defaultProps = DefaultProps;
 
   render() {
-    const { label } = this.props;
+    const { label, iconGradientStart, iconGradientStop } = this.props;
     return (
       <Wrapper
         aria-label={label}

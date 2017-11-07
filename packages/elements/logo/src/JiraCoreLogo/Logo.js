@@ -3,10 +3,10 @@
 import React, { Component } from 'react';
 import uuid from 'uuid';
 
-import { Props, DefaultProps } from '../constants';
+import { type Props, DefaultProps } from '../constants';
 import Wrapper from '../styledWrapper';
 
-const svg = ({ iconGradientStart, iconGradientStop }) => {
+const svg = (iconGradientStart: string, iconGradientStop: string) => {
   const id = uuid();
   return `<canvas height="32" width="123" aria-hidden="true"></canvas>
   <svg viewBox="0 0 123 32" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
@@ -28,11 +28,11 @@ export default class JiraCoreLogo extends Component<Props> {
   static defaultProps = DefaultProps;
 
   render() {
-    const { label } = this.props;
+    const { label, iconGradientStart, iconGradientStop } = this.props;
     return (
       <Wrapper
         aria-label={label}
-        dangerouslySetInnerHTML={{ __html: svg(this.props) }}
+        dangerouslySetInnerHTML={{ __html: svg(String(iconGradientStart), String(iconGradientStop)) }}
         {...this.props}
       />
     );
