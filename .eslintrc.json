@@ -29,6 +29,8 @@
 
     "no-await-in-loop": "off",
 
+    "no-mixed-operators": "off",
+
     "react/sort-comp": "off",
     "react/jsx-filename-extension": "off",
 

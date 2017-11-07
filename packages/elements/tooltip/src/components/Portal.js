@@ -9,8 +9,8 @@ type Props = {
 };
 
 export default class Portal extends Component<Props> {
-  props: Props // eslint-disable-line react/sort-comp
-  portalElement: HTMLElement
+  props: Props; // eslint-disable-line react/sort-comp
+  portalElement: HTMLElement;
   componentDidMount() {
     const body = document.body;
     if (body) {
@@ -23,10 +23,7 @@ export default class Portal extends Component<Props> {
   }
   componentDidUpdate() {
     const { children } = this.props;
-    render(
-      Children.only(children),
-      this.portalElement,
-    );
+    render(Children.only(children), this.portalElement);
   }
   componentWillUnmount() {
     if (document.body) {

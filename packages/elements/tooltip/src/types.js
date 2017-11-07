@@ -7,7 +7,7 @@ export type ChildrenType = PropType<Array<Element<any>> | Element<any>, any>;
 export type ComponentType = PropType<Component<{}, {}, {}>, any>;
 export type ElementType = PropType<Element<mixed>, any>;
 export type FunctionType = (...args: Array<any>) => mixed;
-export type SingleChild = ComponentType| ElementType;
+export type SingleChild = ComponentType | ElementType;
 
 export type PlacementType = 'bottom' | 'left' | 'right' | 'top';
 export type PositionType = { left?: number, top?: number, isFlipped?: boolean };

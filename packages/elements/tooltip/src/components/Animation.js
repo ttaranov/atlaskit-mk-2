@@ -10,7 +10,7 @@ const EXIT_DURATION = 120;
 const easing = 'cubic-bezier(0.23, 1, 0.32, 1)'; // easeOutQuint
 const distance = 8;
 
-type EnterFunc = (node: Element, isAppearing: bool) => void;
+type EnterFunc = (node: Element, isAppearing: boolean) => void;
 type ExitFunc = (node: Element) => void;
 
 type Props = {
@@ -111,18 +111,20 @@ const yPos = {
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export const Slide = (
-  { immediatelyHide, immediatelyShow, placement, ...props }:
-  {
-    immediatelyHide: boolean,
-    immediatelyShow: boolean,
-    placement: PlacementType,
-    props?: any,
-    children: ChildrenType,
-    in: boolean,
-    style: Object,
-  },
-) => {
+export const Slide = ({
+  immediatelyHide,
+  immediatelyShow,
+  placement,
+  ...props
+}: {
+  immediatelyHide: boolean,
+  immediatelyShow: boolean,
+  placement: PlacementType,
+  props?: any,
+  children: ChildrenType,
+  in: boolean,
+  style: Object,
+}) => {
   const horizontalOffset = xPos[placement];
   const verticalOffset = yPos[placement];
 

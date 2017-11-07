@@ -4,7 +4,7 @@ type Position = {
   top: number,
   right: number,
   bottom: number,
-  left: number
+  left: number,
 };
 
 export default function inViewport({ top, right, bottom, left }: Position) {

@@ -39,16 +39,20 @@ const FLIPPED_PLACEMENT = {
   left: 'right',
 };
 
-function getCoords({ targetRect, tooltipRect, gutter }: GetCoordsArgs): GetCoordsResults {
+function getCoords({
+  targetRect,
+  tooltipRect,
+  gutter,
+}: GetCoordsArgs): GetCoordsResults {
   return {
     top: {
       top: targetRect.top - (tooltipRect.height + gutter),
       right: 0,
       bottom: 0,
-      left: targetRect.left + ((targetRect.width - tooltipRect.width) / 2),
+      left: targetRect.left + (targetRect.width - tooltipRect.width) / 2,
     },
     right: {
-      top: targetRect.top + ((targetRect.height - tooltipRect.height) / 2),
+      top: targetRect.top + (targetRect.height - tooltipRect.height) / 2,
       right: targetRect.right + gutter + tooltipRect.width, // used to calculate flip
       bottom: 0,
       left: targetRect.right + gutter,
@@ -57,11 +61,10 @@ function getCoords({ targetRect, tooltipRect, gutter }: GetCoordsArgs): GetCoord
       top: targetRect.bottom + gutter,
       right: 0,
       bottom: targetRect.bottom + gutter + tooltipRect.height, // used to calculate flip
-      left: targetRect.left + ((targetRect.width - tooltipRect.width) / 2),
-
+      left: targetRect.left + (targetRect.width - tooltipRect.width) / 2,
     },
     left: {
-      top: targetRect.top + ((targetRect.height - tooltipRect.height) / 2),
+      top: targetRect.top + (targetRect.height - tooltipRect.height) / 2,
       right: 0,
       bottom: 0,
       left: targetRect.left - (tooltipRect.width + gutter),
@@ -69,7 +72,11 @@ function getCoords({ targetRect, tooltipRect, gutter }: GetCoordsArgs): GetCoord
   };
 }
 
-export default function getPosition({ placement, target, tooltip }: GetPositionArgs): GetPositionResults {
+export default function getPosition({
+  placement,
+  target,
+  tooltip,
+}: GetPositionArgs): GetPositionResults {
   const noPosition = { position: {}, isFlipped: false };
 
   /* eslint-disable no-console */

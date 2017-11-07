@@ -19,7 +19,14 @@ type Props = {
 
 class Tip extends Component<Props> {
   render() {
-    const { children, immediatelyHide, immediatelyShow, placement, position, truncate } = this.props;
+    const {
+      children,
+      immediatelyHide,
+      immediatelyShow,
+      placement,
+      position,
+      truncate,
+    } = this.props;
 
     // NOTE: `props.in` is NOT public API
     const transitionIn: boolean = (this.props: any).in;
@@ -39,7 +46,10 @@ class Tip extends Component<Props> {
   }
 }
 
-export default withRenderTarget({
-  target: 'tooltip',
-  withTransitionGroup: true,
-}, Tip);
+export default withRenderTarget(
+  {
+    target: 'tooltip',
+    withTransitionGroup: true,
+  },
+  Tip,
+);

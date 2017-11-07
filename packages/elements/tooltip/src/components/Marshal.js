@@ -9,20 +9,22 @@ const SCROLLABLE = /auto|scroll/;
 
 function isScrollable(node) {
   const nodeStyle = getStyle(node);
-  return SCROLLABLE.test(nodeStyle.overflow)
-    || SCROLLABLE.test(nodeStyle.overflowX)
-    || SCROLLABLE.test(nodeStyle.overflowY);
+  return (
+    SCROLLABLE.test(nodeStyle.overflow) ||
+    SCROLLABLE.test(nodeStyle.overflowX) ||
+    SCROLLABLE.test(nodeStyle.overflowY)
+  );
 }
 type Options = { immediate: boolean };
 
 export default class TooltipMarshal {
-  queuedForShow: ?Tooltip
-  queuedForHide: ?Tooltip
-  visibleTooltip: ?Tooltip
-  showTimeout: ?number
-  hideTimeout: ?number
+  queuedForShow: ?Tooltip;
+  queuedForHide: ?Tooltip;
+  visibleTooltip: ?Tooltip;
+  showTimeout: ?number;
+  hideTimeout: ?number;
 
-  scrollListenerBound: boolean = false
+  scrollListenerBound: boolean = false;
 
   show(tooltip: Tooltip) {
     // if the tooltip is already queued for show, don't interfere
@@ -119,7 +121,7 @@ export default class TooltipMarshal {
   handleScroll = () => {
     if (!this.visibleTooltip) return;
     this.hideTooltip(this.visibleTooltip, { immediate: true });
-  }
+  };
   hide(tooltip: Tooltip) {
     // if the tooltip is already queued for hide, don't interfere
     if (this.queuedForHide === tooltip) return;
