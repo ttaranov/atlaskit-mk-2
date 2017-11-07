@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example } from '@atlaskit/docs';
 
 export default md`
   Use the logo component to output SVG versions of the company and product logos.

@@ -1,9 +1,10 @@
 // @flow
+/* eslint-disable import/no-extraneous-dependencies */
 import React, { Component } from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
+import { akColorB200, akColorN300, akColorN700, akColorB400 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 import * as logos from '../../src';
-import { akColorB200, akColorN300, akColorN700, akColorB400 } from '@atlaskit/util-shared-styles';
 
 const Centered = styled.div`
   display: flex;
@@ -20,11 +21,6 @@ const sizeRange = (Logo, colorPresetProps, size) => (
     />
   </Centered>
 );
-
-const LogoParent = styled.div`
-  border-left: 1px dotted black;
-  border-right: 1px dotted black;
-`;
 
 const colorPresets = [
   {
