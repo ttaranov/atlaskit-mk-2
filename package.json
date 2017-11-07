@@ -8,7 +8,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "scripts": {
-    "build": "                               run-p build:pkg build:babel build:typescript:es5 build:typescript:es2015 build:editor-common:json-schema --print-label --continue-on-error",
+    "build": "                               run-p build:pkg build:babel && run-p build:typescript:es5 build:typescript:es2015 build:editor-common:json-schema --print-label --continue-on-error",
     "build:pkg": "                           bolt workspaces exec --only-fs 'packages/**' -- copy-pkg package.json dist/package.json --only name,version",
     "build:babel": "                         NODE_ENV=production bolt workspaces exec --only-fs 'packages/{elements,utils}/**' -- babel src -d dist/cjs",
     "build:typescript:es5": "                NODE_ENV=production bolt workspaces exec --only-fs 'packages/fabric/*' -- tsc --project ./build/es5",
