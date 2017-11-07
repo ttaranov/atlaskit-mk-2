@@ -48,7 +48,11 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
     const showTooltip = this.props.title && !this.props.hideTooltip;
 
     return showTooltip ? (
-      <Tooltip placement={placement} content={this.props.title}>
+      <Tooltip
+        content={this.props.title}
+        hideTooltipOnClick
+        placement={placement}
+      >
         {button}
       </Tooltip>
     ) : button;
@@ -56,8 +60,7 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
 
   private handleClick = () => {
     const { disabled, onClick } = this.props;
-    if (!disabled && onClick) {
-      onClick();
-    }
+
+    if (!disabled && onClick) onClick();
   }
 }

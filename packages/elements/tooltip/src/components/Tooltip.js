@@ -15,19 +15,21 @@ import Transition from './Transition';
 import { getPosition } from './utils';
 
 type Props = {
-  /** A single element, either Component or DOM node. */
+  /** A single element, either Component or DOM node */
   children: SingleChild,
-  /** The content of the tooltip. */
+  /** The content of the tooltip */
   content: string,
-  /** Function to be called when a mouse leaves the target. */
+  /** Hide the tooltip when the element is clicked */
+  hideTooltipOnClick?: boolean,
+  /** Function to be called when a mouse leaves the target */
   onMouseOut?: (MouseEvent) => void,
-  /** Function to be called when a mouse enters the target. */
+  /** Function to be called when a mouse enters the target */
   onMouseOver?: (MouseEvent) => void,
-  /** Where the tooltip should appear relative to its target. */
+  /** Where the tooltip should appear relative to its target */
   placement: PlacementType,
-  /** React <16.X requires a wrapping element. */
+  /** React <16.X requires a wrapping element */
   tag: string,
-  /** Show only one line of text, and truncate when too long. */
+  /** Show only one line of text, and truncate when too long */
   truncate?: boolean,
 };
 type State = {
@@ -161,6 +163,11 @@ export default class Tooltip extends Component<Props, State> {
 
     if (onMouseOut) onMouseOut(event);
   }
+  handleClick = () => {
+    const { hideTooltipOnClick } = this.props;
+
+    if (hideTooltipOnClick) this.hide({ immediate: true });
+  }
 
   render() {
     // NOTE removing props from rest:
@@ -172,6 +179,7 @@ export default class Tooltip extends Component<Props, State> {
 
     return (
       <Tag
+        onClick={this.handleClick}
         onMouseOver={this.handleMouseOver}
         onMouseOut={this.handleMouseOut}
         ref={this.handleWrapperRef}
