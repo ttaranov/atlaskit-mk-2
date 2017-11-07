@@ -24,7 +24,7 @@ export default class AtlassianWordmark extends Component<Props> {
   static defaultProps = DefaultProps;
 
   render() {
-    const { label, iconGradientStart, iconGradientStop } = this.props;
+    const { label } = this.props;
     return (
       <Wrapper
         aria-label={label}
