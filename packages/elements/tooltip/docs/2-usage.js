@@ -35,7 +35,9 @@ const POSITIONS = {
 
 // unique enough id
 function getUEID() {
-  return Math.random().toString(32).slice(2);
+  return Math.random()
+    .toString(32)
+    .slice(2);
 }
 
 const Example = ({ component: Tag }: { component: ComponentType<*> }) => (
@@ -43,7 +45,13 @@ const Example = ({ component: Tag }: { component: ComponentType<*> }) => (
     <Tag />
   </div>
 );
-const Checkbox = ({ children, onChange }: { children: string, onChange: (Event) => void }) => {
+const Checkbox = ({
+  children,
+  onChange,
+}: {
+  children: string,
+  onChange: Event => void,
+}) => {
   const id = getUEID();
 
   return (
@@ -60,28 +68,39 @@ const Checkbox = ({ children, onChange }: { children: string, onChange: (Event) 
 };
 
 class Image extends Component<{}, { truncate: boolean }> {
-  state = { truncate: false }
-  toggle = () => this.setState(state => ({ truncate: !state.truncate }))
+  state = { truncate: false };
+  toggle = () => this.setState(state => ({ truncate: !state.truncate }));
   render() {
     const { truncate } = this.state;
 
     /* eslint-disable max-len */
-    const content = 'The red panda (Ailurus fulgens), also called the lesser panda, the red bear-cat, and the red cat-bear, is a mammal native to the eastern Himalayas and southwestern China.';
-    const srcSmiling = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Red_Panda_in_a_Gingko_tree.jpg/220px-Red_Panda_in_a_Gingko_tree.jpg ';
-    const srcWalking = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/RedPandaFullBody.JPG/440px-RedPandaFullBody.JPG';
+    const content =
+      'The red panda (Ailurus fulgens), also called the lesser panda, the red bear-cat, and the red cat-bear, is a mammal native to the eastern Himalayas and southwestern China.';
+    const srcSmiling =
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Red_Panda_in_a_Gingko_tree.jpg/220px-Red_Panda_in_a_Gingko_tree.jpg ';
+    const srcWalking =
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/RedPandaFullBody.JPG/440px-RedPandaFullBody.JPG';
     /* eslint-enable max-len */
 
     return (
       <div>
-        <Checkbox onChange={this.toggle}>
-          Truncate text
-        </Checkbox>
+        <Checkbox onChange={this.toggle}>Truncate text</Checkbox>
         <div style={{ display: 'flex' }}>
           <Tooltip content={content} truncate={truncate}>
-            <img alt="Red panda - smiling" src={srcSmiling} style={{ borderRadius: 4, marginRight: 4 }} width="220" />
+            <img
+              alt="Red panda - smiling"
+              src={srcSmiling}
+              style={{ borderRadius: 4, marginRight: 4 }}
+              width="220"
+            />
           </Tooltip>
           <Tooltip content="At the Cincinati Zoo" truncate={truncate}>
-            <img alt="Red panda - walking" src={srcWalking} style={{ borderRadius: 4 }} width="220" />
+            <img
+              alt="Red panda - walking"
+              src={srcWalking}
+              style={{ borderRadius: 4 }}
+              width="220"
+            />
           </Tooltip>
         </div>
       </div>
@@ -91,8 +110,8 @@ class Image extends Component<{}, { truncate: boolean }> {
 
 // eslint-disable-next-line
 class Flip extends Component<{}, { active: boolean }> {
-  state = { active: false }
-  toggle = () => this.setState(state => ({ active: !state.active }))
+  state = { active: false };
+  toggle = () => this.setState(state => ({ active: !state.active }));
   render() {
     const { active } = this.state;
     const wrapperStyle = {
@@ -105,9 +124,7 @@ class Flip extends Component<{}, { active: boolean }> {
 
     return (
       <div>
-        <Checkbox onChange={this.toggle}>
-          Fix to viewport
-        </Checkbox>
+        <Checkbox onChange={this.toggle}>Fix to viewport</Checkbox>
         <div style={wrapperStyle}>
           {Object.keys(POSITIONS).map(p => {
             const { icon, ...styles } = POSITIONS[p];
@@ -134,8 +151,6 @@ class Flip extends Component<{}, { active: boolean }> {
 
 export default md`
   ### WYSIWYG
-
-  Use me like you love me.
 
   ${<Example component={Wysiwyg} />}
 

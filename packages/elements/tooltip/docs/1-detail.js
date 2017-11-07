@@ -3,21 +3,25 @@ import React from 'react';
 import { md, Example } from '@atlaskit/docs';
 
 export default md`
-  ${<Example
-    Component={require('../examples/placement').default}
-    source={require('!!raw-loader!../examples/placement')}
-    title="Placement"
-  />}
+  ${(
+    <Example
+      Component={require('../examples/placement').default}
+      source={require('!!raw-loader!../examples/placement')}
+      title="Placement"
+    />
+  )}
 
   Tooltips have four placements available; "top", "right", "bottom", and "left".
   Each placement center-aligns itself along the appropriate axis. Click the target
   above to see each placement.
 
-  ${<Example
-    Component={require('../examples/hover-intent').default}
-    source={require('!!raw-loader!../examples/hover-intent')}
-    title="Intent"
-  />}
+  ${(
+    <Example
+      Component={require('../examples/hover-intent').default}
+      source={require('!!raw-loader!../examples/hover-intent')}
+      title="Intent"
+    />
+  )}
 
   Tooltips should only appear when the user has paused on the target element.
   They should remain visible if the user briefly moves the mouse off and back
@@ -34,20 +38,24 @@ export default md`
     * Mouse over, off briefly, then back over &mdash; there will be no transition.
     * Mouse over a target then scroll, the tooltip will be removed immediately.
 
-  ${<Example
-    Component={require('../examples/position').default}
-    source={require('!!raw-loader!../examples/position')}
-    title="Position"
-  />}
+  ${(
+    <Example
+      Component={require('../examples/position').default}
+      source={require('!!raw-loader!../examples/position')}
+      title="Position"
+    />
+  )}
 
   Tooltips should understand the context that they're rendered in and position
   themselves appropriately.
 
-  ${<Example
-    Component={require('../examples/scroll').default}
-    source={require('!!raw-loader!../examples/scroll')}
-    title="Scroll"
-  />}
+  ${(
+    <Example
+      Component={require('../examples/scroll').default}
+      source={require('!!raw-loader!../examples/scroll')}
+      title="Scroll"
+    />
+  )}
 
   Tooltips should be aware of their ancestors' scroll distance and position
   themselves appropriately.
