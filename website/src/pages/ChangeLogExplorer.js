@@ -67,7 +67,7 @@ export default class ChangelogExplorer extends Component<Props, State> {
 
     return (
       <Page>
-        <Back to={`/packages/${groupId}/${pkgId}`} />
+        <Back to={`/mk-2/packages/${groupId}/${pkgId}`} />
         <h1>Changelog: {pkgId}</h1>
         <TextField
           autoFocus
