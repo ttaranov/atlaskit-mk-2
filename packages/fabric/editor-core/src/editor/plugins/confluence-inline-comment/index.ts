@@ -5,7 +5,7 @@ import { confluenceInlineComment } from '@atlaskit/editor-common';
 const confluenceInlineCommentPlugin: EditorPlugin = {
   marks() {
     return [
-      { name: 'confluenceInlineCommentPlugin', mark: confluenceInlineComment, rank: 190 }
+      { name: 'confluenceInlineComment', mark: confluenceInlineComment, rank: 190 }
     ];
   },
 };
