@@ -1,6 +1,6 @@
 import { CardEvent } from '@atlaskit/media-card';
 import { SyntheticEvent } from 'react';
-import { AppCardAction } from '../../schema';
+import { AppCardAction, ActionMarkAction } from '../../schema';
 
 export interface CardSurroundings {
     collectionName: string;
@@ -11,6 +11,7 @@ export type MentionEventHandler = (mentionId: string, text: string, event?: Synt
 export type CardEventClickHandler = (result: CardEvent, surroundings?: CardSurroundings) => void;
 export type AppCardEventClickHandler = (url?: string) => void;
 export type AppCardActionEventClickHandler = (action: AppCardAction) => void;
+export type ActionEventClickHandler = (action: ActionMarkAction) => void;
 
 export interface MentionEventHandlers {
     onClick?: MentionEventHandler;

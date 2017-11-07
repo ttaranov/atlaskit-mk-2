@@ -33,6 +33,7 @@ import { Definition as Code } from '../marks/code';
 import { Definition as SubSup } from '../marks/subsup';
 import { Definition as Underline } from '../marks/underline';
 import { Definition as TextColor } from '../marks/text-color';
+import { Definition as Action } from '../marks/action';
 
 /**
  * @name top_level_node
@@ -96,7 +97,7 @@ export interface NoMark {
  * @name formatted_text_inline_node
  */
 export type InlineFormattedText = Text &
-  MarksObject<Link | Em | Strong | Strike | SubSup | Underline | TextColor>;
+  MarksObject<Link | Em | Strong | Strike | SubSup | Underline | TextColor | Action>;
 
 /**
  * @name link_text_inline_node
