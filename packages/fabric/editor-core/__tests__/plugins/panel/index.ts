@@ -69,7 +69,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       pluginState.subscribe(spy);
       plugin.props.handleDOMEvents!.focus(editorView, event);
       plugin.props.handleDOMEvents!.blur(editorView, event);
-      expect(spy.callCount).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenCalledTimes(2);
     });
 
     it('should not call subscribers when another block was focused and editor blur', () => {
@@ -80,7 +80,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       pluginState.subscribe(spy);
       plugin.props.handleDOMEvents!.focus(editorView, event);
       plugin.props.handleDOMEvents!.blur(editorView, event);
-      expect(spy.callCount)toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should not call subscribers when panel received focus', () => {
@@ -88,7 +88,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       const spy = jest.fn();
       pluginState.subscribe(spy);
       plugin.props.handleDOMEvents!.focus(editorView, event);
-      expect(spy.callCount).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should be able to identify panel node', () => {

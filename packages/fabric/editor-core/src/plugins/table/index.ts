@@ -620,14 +620,12 @@ export const plugin = (pluginConfig?: PluginConfig) =>
           const pluginState: TableState = stateKey.getState(view.state);
           pluginState.updateEditorFocused(false);
           pluginState.update(view.docView, true);
-          pluginState.resetHoverSelection();
+          resetHoverSelection(view.state, view.dispatch);
           return false;
         }
       }
     }
-  }
-});
->>>>>>> ED-2871: Bump editor-core to prosemirror 1.0.0
+  });
 
 const plugins = (pluginConfig?: PluginConfig) => {
   return [plugin(pluginConfig), tableEditing()].filter(
