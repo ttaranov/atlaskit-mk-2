@@ -16,7 +16,7 @@ describe('Renderer - React/Nodes/ApplicationCard', () => {
     {
       title: 'test',
       target: {
-        app: 'some.app',
+        receiver: 'some.app',
         key: 'test.target'
       },
       parameters: {
