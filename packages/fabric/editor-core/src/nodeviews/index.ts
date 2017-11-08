@@ -10,7 +10,7 @@ export { default as ReactUnsupportedInlineNode } from './ui/unsupported-inline';
 export { default as MacroNode } from './ui/macro';
 
 export { panelNodeView } from './ui/panel';
-export { taskItemNodeView } from './ui/taskItem';
+export { taskItemNodeViewFactory } from './ui/taskItem';
 export { decisionItemNodeView } from './ui/decisionItem';
 
 export { ProsemirrorGetPosHandler } from './ui';

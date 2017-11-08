@@ -9,7 +9,7 @@
     "@atlaskit/util-service-support" "^2.0.1"
     tslib "^1.7.1"
 
-"@atlaskit/analytics@^2.0.0":
+"@atlaskit/analytics@^2.0.0", "@atlaskit/analytics@^2.3.2":
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/@atlaskit/analytics/-/analytics-2.3.2.tgz#9c997282cf3db4ece11f9228483429f72036e62f"
   dependencies:
