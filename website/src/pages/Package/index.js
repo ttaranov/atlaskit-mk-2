@@ -95,9 +95,10 @@ export default class Package extends React.Component<PackageProps, PackageState>
       let files = fs.getFiles(pkg.children);
 
       let json = fs.getById(files, 'package.json');
-      let changelog = fs.getById(files, 'CHANGELOG.md');
+      let changelog = fs.maybeGetById(files, 'CHANGELOG.md');
       let docs = fs.maybeGetById(dirs, 'docs');
       // let examples = fs.maybeGetById(dirs, 'examples');
+
 
       let doc;
       if (docs) {
