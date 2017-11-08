@@ -187,7 +187,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     const { mediaProvider, viewContext } = this.state;
     const { id } = this.props;
 
+    console.log('rendering file');
     if (!mediaProvider || !viewContext) {
+      console.log('rendering loading file');
       return this.renderLoadingCard('file');
     }
 
@@ -199,6 +201,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private renderPublicFile() {
+    console.log('render public file');
     const { viewContext } = this.state;
     const { cardDimensions, collection, id, onDelete, onClick } = this.props;
     const otherProps: any = {};
