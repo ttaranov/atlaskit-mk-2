@@ -42,8 +42,7 @@ expect.extend({
 });
 
 describe('JSON schema', () => {
-  // TODO: unskip after next release
-  it.skip('should be backwards compatible', async () => {
+  it('should be backwards compatible', async () => {
     let existingSchema: any;
 
     try {
