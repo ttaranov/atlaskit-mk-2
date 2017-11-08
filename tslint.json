@@ -11,15 +11,12 @@
     "eofline": true,
     "forin": false,
     "import-spacing": true,
-    "indent": [
-      true,
-      "spaces"
-    ],
+    "indent": [true, "spaces"],
     "interface-name": [false],
     "interface-over-type-literal": false,
     "jsx-boolean-value": [true],
     "jsx-alignment": true,
-    "jsx-no-lambda": [true],
+    "jsx-no-lambda": [false],
     "jsx-no-multiline-js": [false],
     "jsx-no-string-ref": [false],
     "jsx-wrap-multiline": [false],
@@ -47,19 +44,15 @@
     "ordered-imports": [false],
     "prefer-const": [false],
     "prefer-for-of": false,
-    "quotemark": [
-      true,
-      "single",
-      "jsx-double"
-    ],
-    "semicolon": [true],
+    "quotemark": [true, "single", "jsx-double"],
+    "semicolon": [false],
     "space-before-function-paren": [false],
     "switch-default": false,
     "trailing-comma": [true],
     "triple-equals": true,
     "typedef": [true],
     "unified-signatures": [false],
-    "variable-name": true,
+    "variable-name": false,
     "whitespace": [true]
   },
   "jsRules": {

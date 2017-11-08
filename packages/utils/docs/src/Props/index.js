@@ -93,6 +93,12 @@ export default function DynamicProps(props: DynamicPropsProps) {
   return (
     <PageWrapper>
       {propTypes.map(propType => {
+        let description;
+        if (propType.leadingComments) {
+          description = propType.leadingComments.reduce((acc, { value }) => (
+            acc.concat(`\n${value}`)
+          ), '');
+        }
         if (!propType.value) {
           // eslint-disable-next-line no-console
           console.error(`Prop ${propType.key} has no type; this usually indicates invalid propType or defaultProps config`);
@@ -105,7 +111,7 @@ export default function DynamicProps(props: DynamicPropsProps) {
               required={!propType.optional}
               type={propType.value}
             />
-            {propType.description && <Description>{propType.description}</Description>}
+            {description && <Description>{description}</Description>}
             <PrettyPropType type={propType.value} />
           </PropTypeWrapper>
         );
