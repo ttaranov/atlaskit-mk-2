@@ -20,7 +20,7 @@ export const decisionList: NodeSpec = {
   group: 'block',
   content: 'decisionItem+',
   attrs: {
-    localId: { compute: uuid.generate },
+    localId: { default: '' },
   },
   parseDOM: [{
     tag: 'ol[data-decision-list-local-id]',
