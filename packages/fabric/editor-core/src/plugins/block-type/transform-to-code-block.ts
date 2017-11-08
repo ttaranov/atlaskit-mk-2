@@ -1,4 +1,4 @@
-import { Slice } from 'prosemirror-model';
+import { Slice, Fragment } from 'prosemirror-model';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { RemoveMarkStep, ReplaceStep, Step } from 'prosemirror-transform';
 import { createSliceWithContent } from '../../utils';
@@ -18,7 +18,7 @@ export function transformToCodeBlockAction(state: EditorState, attrs?: any): Tra
   const where = $from.before($from.depth);
   const tr = clearMarkupFor(state, where);
   return mergeContent(tr, state)
-    .setNodeType(where, codeBlock, attrs);
+    .setNodeMarkup(where, codeBlock, attrs);
 }
 
 export function isConvertableToCodeBlock(state: EditorState): boolean {
@@ -44,28 +44,30 @@ export function isConvertableToCodeBlock(state: EditorState): boolean {
 function clearMarkupFor(state: EditorState, pos: number): Transaction {
   const tr = state.tr;
   const node = tr.doc.nodeAt(pos)!;
-  let match = (state.schema.nodes.codeBlock as any).contentExpr.start();
-  const delSteps: Step[] = [];
+  const { codeBlock } = state.schema.nodes;
+  let match = codeBlock.contentMatch;
+  let delSteps: Step[] = [];
+  let cur = pos + 1;
 
-  for (let i = 0, cur = pos + 1; i < node.childCount; i++) {
+  for (let i = 0; i < node.childCount; i++) {
     const child = node.child(i);
     const end = cur + child.nodeSize;
+    const allowed = match.matchType(child.type);
 
-    const allowed = match.matchType(child.type, child.attrs);
     if (!allowed) {
       if (child.type === state.schema.nodes.mention) {
         const content = child.attrs['text'];
-        delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, state), false));
+        delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, state)));
       } else if (child.type === state.schema.nodes.rule || child.type === state.schema.nodes.hardBreak) {
         const content = '\n';
-        delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, state), false));
+        delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, state)));
       } else {
-        delSteps.push(new ReplaceStep(cur, end, Slice.empty, false));
+        delSteps.push(new ReplaceStep(cur, end, Slice.empty));
       }
     } else {
       match = allowed;
       for (let j = 0; j < child.marks.length; j++) {
-        if (!match.allowsMark(child.marks[j])) {
+        if (!codeBlock.allowsMarkType(child.marks[j].type)) {
           tr.step(new RemoveMarkStep(cur, end, child.marks[j]));
         }
       }
@@ -73,6 +75,10 @@ function clearMarkupFor(state: EditorState, pos: number): Transaction {
     cur = end;
   }
 
+  if (!match.validEnd) {
+    let fill = match.fillBefore(Fragment.empty, true);
+    tr.replace(cur, cur, new Slice(fill!, 0, 0));
+  }
   for (let i = delSteps.length - 1; i >= 0; i--) {
     tr.step(delSteps[i]);
   }

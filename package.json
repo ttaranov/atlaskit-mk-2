@@ -184,7 +184,6 @@
     "@types/prosemirror-history": "^1.0.0",
     "@types/prosemirror-inputrules": "^1.0.0",
     "@types/prosemirror-keymap": "^1.0.0",
-    "@types/prosemirror-markdown": "^1.0.0",
     "@types/prosemirror-model": "^1.0.0",
     "@types/prosemirror-schema-basic": "^1.0.0",
     "@types/prosemirror-schema-list": "^1.0.0",

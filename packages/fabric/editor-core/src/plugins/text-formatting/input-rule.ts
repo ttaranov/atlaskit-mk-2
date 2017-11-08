@@ -22,7 +22,7 @@ function addMark(markType: MarkType, schema: Schema, charSize: number): InputRul
     // fixes autoformatting in heading nodes: # Heading *bold*
     // expected result: should not autoformat *bold*; <h1>Heading *bold*</h1>
     if (state.doc.resolve(from).sameParent(state.doc.resolve(to))) {
-      if (!state.doc.resolve(from).parent.contentMatchAt(0).allowsMark(markType)) {
+      if (!state.doc.resolve(from).parent.type.allowsMarkType(markType)) {
         return;
       }
     }
@@ -50,7 +50,7 @@ function addCodeMark(markType: MarkType, schema: Schema, specialChar: string): I
     // fixes autoformatting in heading nodes: # Heading `bold`
     // expected result: should not autoformat *bold*; <h1>Heading `bold`</h1>
     if (state.doc.resolve(start).sameParent(state.doc.resolve(end))) {
-      if (!state.doc.resolve(start).parent.contentMatchAt(0).allowsMark(markType)) {
+      if (!state.doc.resolve(start).parent.type.allowsMarkType(markType)) {
         return;
       }
     }

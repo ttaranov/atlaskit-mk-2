@@ -50,7 +50,7 @@ describe(name, () => {
 
     describe('preprocessDoc', () => {
       it('should return true if node is empty', () => {
-        const editorContent = doc(p('some text'), decisionList(decisionItem()));
+        const editorContent = doc(p('some text'), decisionList({})(decisionItem({})()));
         const processedContent = preprocessDoc(schema, editorContent);
         expect(processedContent).not.toBe(undefined);
         expect((processedContent as Node)!.content!.childCount).toEqual(1);
@@ -60,7 +60,7 @@ describe(name, () => {
       });
 
       it('should return new document', () => {
-        const editorContent = doc(p('some text'), decisionList(decisionItem()));
+        const editorContent = doc(p('some text'), decisionList({})(decisionItem({})()));
         const processedContent = preprocessDoc(schema, editorContent);
         expect(processedContent).not.toEqual(editorContent);
       });

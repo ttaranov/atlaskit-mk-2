@@ -163,7 +163,7 @@ describe('@atlaskit/editore-core/utils', () => {
   describe('#areBlockTypesDisabled', () => {
     it('should return true is selection has a blockquote', () => {
       const { editorView } = editor(
-        doc(blockquote('te{<}xt'), panel(p('te{>}xt'))),
+        doc(blockquote(p('te{<}xt')), panel(p('te{>}xt'))),
       );
       const result = areBlockTypesDisabled(editorView.state);
       expect(result).toBe(true);

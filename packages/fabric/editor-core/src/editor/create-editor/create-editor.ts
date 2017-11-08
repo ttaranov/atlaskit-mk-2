@@ -31,6 +31,12 @@ export function fixExcludes(marks: { [key: string]: MarkSpec }): { [key: string]
 export function fixNodeContentSchema(nodes: { [key: string]: NodeSpec }, supportedMarks: { [key: string]: MarkSpec }): { [key: string]: NodeSpec } {
   Object.keys(nodes).forEach(nodeKey => {
     const node = nodes[nodeKey];
+    if (node.marks && node.marks !== '_') {
+      node.marks = node.marks
+        .split(' ')
+        .filter(mark => !!supportedMarks[mark])
+        .join(' ');
+    }
     if (node.content && !supportedMarks['link']) {
       node.content = node.content.replace('<link>', '');
     }

@@ -37,7 +37,6 @@ export class TextFormattingState {
   subscriptActive = false;
   subscriptDisabled = false;
   subscriptHidden = false;
-  marksToRemove;
   keymapHandler;
 
   constructor(state: EditorState) {
@@ -253,22 +252,6 @@ export class TextFormattingState {
     const { state } = this;
     const { from, to, empty } = state.selection;
 
-    let foundMark = false;
-    if (this.marksToRemove) {
-      this.marksToRemove.forEach(markToRemove => {
-        if (markToRemove.type.name === mark.type.name) {
-          foundMark = true;
-        }
-      });
-    }
-
-    const currentMarkBefore = state.doc.rangeHasMark(from - 1, to, mark.type);
-    const currentMarkAfter = state.doc.rangeHasMark(from, to, mark.type);
-
-    if (foundMark && (!currentMarkBefore || ( !mark.type.spec.inclusive && !currentMarkAfter ))) {
-      return false;
-    }
-
     // When the selection is empty, only the active marks apply.
     if (empty) {
       return !!mark.isInSet(state.tr.storedMarks || state.selection.$from.marks());
@@ -291,26 +274,11 @@ export class TextFormattingState {
    * Determine if a mark of a specific type exists anywhere in the selection.
    */
   private anyMarkActive(markType: MarkType): boolean {
-    const { state } = this;
-    const { from, to, empty } = state.selection;
-
-    let found = false;
-    if (this.marksToRemove) {
-      this.marksToRemove.forEach(mark => {
-        if (mark.type.name === markType.name) {
-          found = true;
-        }
-      });
-    }
-
-    if (found && !state.doc.rangeHasMark(from - 1, to, markType)) {
-      return false;
-    }
-
+    const { $from, from, to, empty } = this.state.selection;
     if (empty) {
-      return !!markType.isInSet(state.tr.storedMarks || state.selection.$from.marks());
+      return !!markType.isInSet(this.state.storedMarks || $from.marks());
     }
-    return state.doc.rangeHasMark(from, to, markType);
+    return this.state.doc.rangeHasMark(from, to, markType);
   }
 
   textInputHandler(view: EditorView, from: number, to: number, text: string): boolean {

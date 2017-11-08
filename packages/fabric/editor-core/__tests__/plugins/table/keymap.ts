@@ -39,7 +39,7 @@ describe('table keymap', () => {
           ),
         );
         const { nextPos } = refs;
-        plugin.props.onFocus!(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
         pluginState.selectRow(0);
         sendKeyToPm(editorView, 'Tab');
         expect(editorView.state.selection.$from.pos).toEqual(nextPos);
@@ -59,7 +59,7 @@ describe('table keymap', () => {
           ),
         );
         const { nextPos } = refs;
-        plugin.props.onFocus!(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
         pluginState.selectColumn(0);
         sendKeyToPm(editorView, 'Tab');
         expect(editorView.state.selection.$from.pos).toEqual(nextPos);
@@ -217,7 +217,7 @@ describe('table keymap', () => {
           ),
         );
         const { nextPos } = refs;
-        plugin.props.onFocus!(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
         sendKeyToPm(editorView, 'Backspace');
         expect(editorView.state.selection.$from.pos).toEqual(nextPos);
         editorView.destroy();
@@ -229,7 +229,7 @@ describe('table keymap', () => {
         const { editorView, plugin, pluginState } = editor(
           doc(table(tr(tdCursor, td({})(p('2')), td({})(p('3'))))),
         );
-        plugin.props.onFocus!(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
         pluginState.selectTable();
         expect(editorView.state.selection instanceof CellSelection).toEqual(
           true,
@@ -257,7 +257,7 @@ describe('table keymap', () => {
               ),
             ),
           );
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectRow(index);
           expect(editorView.state.selection instanceof CellSelection).toEqual(
             true,
@@ -291,7 +291,7 @@ describe('table keymap', () => {
               ),
             ),
           );
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectColumn(index);
           expect(editorView.state.selection instanceof CellSelection).toEqual(
             true,

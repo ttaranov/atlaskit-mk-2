@@ -286,7 +286,7 @@ export function createPlugin(providerFactory: ProviderFactory) {
       pluginState.setView(view);
 
       return {
-        update(view: EditorView, prevState: EditorState<any>) {
+        update(view: EditorView, prevState: EditorState) {
           pluginState.update(view.state);
         },
         destroy() {

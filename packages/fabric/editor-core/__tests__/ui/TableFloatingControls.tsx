@@ -79,12 +79,12 @@ describe('TableFloatingControls', () => {
       const { plugin, pluginState, editorView } = editor(
         doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
       );
-      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
       const decoration = pluginState.decorations.find()[0] as any;
       expect(
         decoration.type.widget.className.indexOf('table-decoration') > -1,
       ).toBe(true);
-      plugin.props.onBlur!(editorView, event);
+      plugin.props.handleDOMEvents!.blur(editorView, event);
       expect(pluginState.decorations.find().length).toBe(0);
     });
   });
@@ -101,7 +101,7 @@ describe('TableFloatingControls', () => {
             editorView={editorView}
           />,
         );
-        plugin.props.onFocus!(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
         pluginState.selectTable();
         expect(floatingControls.find(CornerControls).prop('isSelected')()).toBe(
           true,
@@ -128,7 +128,7 @@ describe('TableFloatingControls', () => {
               editorView={editorView}
             />,
           );
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           expect(floatingControls.find(ColumnControlsButtonWrap)).toHaveLength(
             column,
           );
@@ -154,7 +154,7 @@ describe('TableFloatingControls', () => {
               editorView={editorView}
             />,
           );
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           floatingControls
             .find(ColumnControlsButton)
             .at(column)
@@ -186,7 +186,7 @@ describe('TableFloatingControls', () => {
               editorView={editorView}
             />,
           );
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           expect(floatingControls.find(RowControlsButtonWrap)).toHaveLength(
             row,
           );
@@ -212,7 +212,7 @@ describe('TableFloatingControls', () => {
               editorView={editorView}
             />,
           );
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           floatingControls
             .find(RowControlsButton)
             .at(row)

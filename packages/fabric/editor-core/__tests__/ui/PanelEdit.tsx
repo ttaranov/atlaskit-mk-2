@@ -57,7 +57,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     const panelEditOptions = mount(
       <PanelEdit pluginState={pluginState} editorView={editorView} />,
     );
-    plugin.props.onFocus!(editorView, event);
+    plugin.props.handleDOMEvents!.focus(editorView, event);
     plugin.props.handleClick!(editorView, sel, event);
     pluginState.update(editorView.state, (editorView as any).docView, true);
     expect(panelEditOptions.state('toolbarVisible')).toBe(true);
@@ -69,7 +69,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     const panelEditOptions = mount(
       <PanelEdit pluginState={pluginState} editorView={editorView} />,
     );
-    plugin.props.onBlur!(editorView, event);
+    plugin.props.handleDOMEvents!.blur(editorView, event);
     expect(panelEditOptions.state('toolbarVisible')).not.toBe(true);
     panelEditOptions.unmount();
   });
@@ -79,7 +79,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     const panelEditOptions = mount(
       <PanelEdit pluginState={pluginState} editorView={editorView} />,
     );
-    plugin.props.onFocus!(editorView, event);
+    plugin.props.handleDOMEvents!.focus(editorView, event);
     pluginState.changePanelType(editorView, { panelType: 'note' });
     expect(panelEditOptions.state('toolbarVisible')).toBe(true);
     panelEditOptions.unmount();
@@ -90,7 +90,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     const panelEditOptions = mount(
       <PanelEdit pluginState={pluginState} editorView={editorView} />,
     );
-    plugin.props.onFocus!(editorView, event);
+    plugin.props.handleDOMEvents!.focus(editorView, event);
     pluginState.removePanel(editorView);
     expect(panelEditOptions.state('toolbarVisible')).toBe(false);
     panelEditOptions.unmount();
@@ -106,7 +106,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
       toolbarOption = mount(
         <PanelEdit pluginState={pluginState} editorView={editorView} />,
       );
-      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
       plugin.props.handleClick!(editorView, sel, event);
       trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
