@@ -89,7 +89,7 @@
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-prefer-object-spread": "^1.2.1",
     "eslint-plugin-react": "^7.1.0",
-    "extract-react-types": "^0.2.2",
+    "extract-react-types": "^0.3.0-beta",
     "fetch-mock": "^5.12.1",
     "file-loader": "^0.11.2",
     "flow-bin": "^0.53.0",
