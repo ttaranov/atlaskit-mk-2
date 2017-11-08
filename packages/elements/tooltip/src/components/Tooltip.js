@@ -1,5 +1,9 @@
 // @flow
-/* eslint-disable react/require-default-props */
+/* eslint-disable
+  react/require-default-props,
+  react/no-multi-comp,
+  react/prefer-stateless-function
+*/
 
 import React, { Children, Component, type Node } from 'react';
 
@@ -60,7 +64,7 @@ type showHideArgs = {
 };
 
 /* eslint-disable react/sort-comp */
-export default class Tooltip extends Component<Props, State> {
+class Tooltip extends Component<Props, State> {
   state = getInitialState(this.props);
   wrapper: HTMLElement | null;
   static defaultProps = {
@@ -211,3 +215,34 @@ export default class Tooltip extends Component<Props, State> {
     );
   }
 }
+
+function renamePropsWithWarning(WrappedComponent, renamedProps) {
+  return class WithRenamedProps extends Component {
+    name = WrappedComponent.displayName || WrappedComponent.name;
+    static displayName = `WithRenamedProps(${this.name})`;
+    componentDidMount() {
+      Object.keys(renamedProps).forEach(prop => {
+        if (prop in this.props) {
+          // eslint-disable-next-line
+          console.warn(`${this.name} Warning: Prop "${prop}" is deprecated, use "${renamedProps[prop]}" instead.`); // prettier-ignore
+        }
+      });
+    }
+    render() {
+      const props = { ...this.props };
+      Object.keys(renamedProps).forEach(prop => {
+        if (prop in props) {
+          if (!(renamedProps[prop] in props)) {
+            props[renamedProps[prop]] = props[prop];
+          }
+          delete props[prop];
+        }
+      });
+      return <WrappedComponent {...props} />;
+    }
+  };
+}
+
+export default renamePropsWithWarning(Tooltip, {
+  description: 'content',
+});
