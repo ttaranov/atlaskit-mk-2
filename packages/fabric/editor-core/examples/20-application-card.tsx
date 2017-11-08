@@ -7,7 +7,26 @@ import {
 const eventHandlers: any = {
   applicationCard: {
     onClick: (url) => console.log('ApplicationCard click', '[react.MouseEvent]', url),
-    onActionClick: (applicationCardAction) => console.log('ApplicationCard action click', '[react.MouseEvent]', applicationCardAction)
+    onActionClick: (applicationCardAction, actions) => {
+      console.log('ApplicationCard action click')('[react.MouseEvent]', applicationCardAction);
+      actions.progress();
+      switch (applicationCardAction.target.key){
+        case 'primary.target':
+          setTimeout(() => {
+            actions.success('Yey, success!');
+          }, 2000);
+          break;
+        case 'secondary.target':
+          setTimeout(() => {
+            actions.failure('There was a glitch.', true);
+          }, 2000);
+          break;
+        case 'another.target':
+          setTimeout(() => {
+            actions.success();
+          }, 2000);
+      }
+    }
   }
 };
 
@@ -178,7 +197,7 @@ const attrs = {
   },
   actions: [
     {
-      title: 'Primary action',
+      title: 'Success action',
       target: {
         app: 'some.app',
         key: 'primary.target'
@@ -189,13 +208,13 @@ const attrs = {
       }
     },
     {
-      title: 'Secondary action',
+      title: 'Failure action',
       target: {
         key: 'secondary.target'
       }
     },
     {
-      title: 'Another action',
+      title: 'Loading action',
       target: {
         app: 'another.app',
         key: 'another.target'
@@ -207,9 +226,19 @@ const attrs = {
 
 export default function Example() {
   return (
-    <ApplicationCard
-      title={{text: 'applicationCard'}}
-      {...attrs as AppCardViewProps}
-    />
+    <div>
+      <ApplicationCard
+        {...attrs as AppCardViewProps}
+      />
+      <ApplicationCard
+        {...attrs as AppCardViewProps}
+        background={undefined}
+      />
+      <ApplicationCard
+        title={{text: 'applicationCard'}}
+        {...attrs as AppCardViewProps}
+        background={undefined}
+      />
+    </div>
   );
 }
