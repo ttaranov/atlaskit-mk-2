@@ -59,10 +59,10 @@ describe('TableFloatingControls', () => {
   context('when editor is not focused', () => {
     it('should not render table controls', () => {
       const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
-      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
       const decoration = pluginState.decorations.find()[0] as any;
       expect(decoration.type.widget.className.indexOf('table-decoration') > -1).to.equal(true);
-      plugin.props.onBlur!(editorView, event);
+      plugin.props.handleDOMEvents!.blur(editorView, event);
       expect(pluginState.decorations.find()).to.have.length(0);
     });
   });
@@ -74,7 +74,7 @@ describe('TableFloatingControls', () => {
         const floatingControls = mount(
           <TableFloatingControls pluginState={pluginState} editorView={editorView} />
         );
-        plugin.props.onFocus!(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
         pluginState.selectTable();
         expect(floatingControls.find(CornerControls).prop('isSelected')()).to.equal(true);
         floatingControls.unmount();
@@ -94,7 +94,7 @@ describe('TableFloatingControls', () => {
           const floatingControls = mount(
             <TableFloatingControls pluginState={pluginState} editorView={editorView} />
           );
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           expect(floatingControls.find(ColumnControlsButtonWrap)).to.have.length(column);
           floatingControls.unmount();
         });
@@ -109,7 +109,7 @@ describe('TableFloatingControls', () => {
           const floatingControls = mount(
             <TableFloatingControls pluginState={pluginState} editorView={editorView} />
           );
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           floatingControls.find(ColumnControlsButton).at(column).find('button').first().simulate('click');
           expect((pluginState.selectColumn as any).calledOnce).to.equal(true);
           const { args } = (pluginState.selectColumn as any).getCalls()[0];
@@ -132,7 +132,7 @@ describe('TableFloatingControls', () => {
           const floatingControls = mount(
             <TableFloatingControls pluginState={pluginState} editorView={editorView} />
           );
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           expect(floatingControls.find(RowControlsButtonWrap)).to.have.length(row);
           floatingControls.unmount();
         });
@@ -147,7 +147,7 @@ describe('TableFloatingControls', () => {
           const floatingControls = mount(
             <TableFloatingControls pluginState={pluginState} editorView={editorView} />
           );
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           floatingControls.find(RowControlsButton).at(row).find('button').first().simulate('click');
           expect((pluginState.selectRow as any).calledOnce).to.equal(true);
           const { args } = (pluginState.selectRow as any).getCalls()[0];

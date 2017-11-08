@@ -69,7 +69,7 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
         <LanguagePicker pluginState={pluginState} editorView={editorView} />
       );
 
-      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
       plugin.props.handleClick!(editorView, sel, event);
 
       expect(languagePicker.state('toolbarVisible')).to.equal(true);
@@ -97,7 +97,7 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
         doc(p('paragraph'), code_block()('{<}codeBlock{>}'))
       );
 
-      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
       plugin.props.handleClick!(editorView, sel, event);
 
       const languagePicker = mount(
@@ -105,7 +105,7 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
       );
 
       expect(languagePicker.html()).to.not.equal(null);
-      plugin.props.onBlur!(editorView, event);
+      plugin.props.handleDOMEvents!.blur(editorView, event);
       expect(languagePicker.html()).to.equal(null);
       languagePicker.unmount();
     });

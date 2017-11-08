@@ -170,12 +170,12 @@ export class TextColorState {
   private markApplies(doc: Node, ranges: Array<SelectionRange>, type: MarkType): boolean {
     for (let i = 0; i < ranges.length; i++) {
       const { $from, $to } = ranges[i];
-      let can = $from.depth === 0 ? doc.contentMatchAt(0).allowsMark(type) : false;
+      let can = $from.depth === 0 ? doc.type.allowsMarkType(type) : false;
       doc.nodesBetween($from.pos, $to.pos, node => {
         if (can) {
           return false;
         }
-        can = node.inlineContent && node.contentMatchAt(0).allowsMark(type);
+        can = node.inlineContent && node.type.allowsMarkType(type);
       });
       if (can) {
         return can;

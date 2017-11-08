@@ -135,7 +135,7 @@ describe('table plugin', () => {
         const { plugin, editorView, pluginState } = editor(
           doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
         );
-        plugin.props.onFocus!(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
         expect(pluginState.editorFocused).to.equal(true);
         editorView.destroy();
       });
@@ -146,7 +146,7 @@ describe('table plugin', () => {
         const { plugin, editorView, pluginState } = editor(
           doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
         );
-        plugin.props.onBlur!(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
         expect(pluginState.editorFocused).to.equal(false);
         editorView.destroy();
       });
@@ -158,7 +158,7 @@ describe('table plugin', () => {
       it('it should not create a new table and return false', () => {
         const tableNode = table(tr(tdCursor));
         const { plugin, editorView } = editor(doc(tableNode));
-        plugin.props.onFocus!(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
         expect(
           tableCommands.createTable()(editorView.state, editorView.dispatch),
         ).to.equal(false);
@@ -215,7 +215,7 @@ describe('table plugin', () => {
           const { plugin, pluginState, editorView } = editor(
             doc(p('text'), table(tr(td({})(p('c1')), td({})(p('c2{<>}'))))),
           );
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertColumn(0);
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -237,7 +237,7 @@ describe('table plugin', () => {
           const { plugin, pluginState, editorView } = editor(
             doc(p('text'), table(tr(td({})(p('c1{<>}')), td({})(p('c2'))))),
           );
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertColumn(1);
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -259,7 +259,7 @@ describe('table plugin', () => {
           const { plugin, pluginState, editorView } = editor(
             doc(p('text'), table(tr(td({})(p('c1{<>}')), td({})(p('c2'))))),
           );
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertColumn(2);
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -288,7 +288,7 @@ describe('table plugin', () => {
               table(tr(td({})(p('row1'))), tr(td({})(p('row2{<>}')))),
             ),
           );
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertRow(0);
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -311,7 +311,7 @@ describe('table plugin', () => {
               table(tr(td({})(p('row1{<>}'))), tr(td({})(p('row2')))),
             ),
           );
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertRow(1);
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -336,7 +336,7 @@ describe('table plugin', () => {
               table(tr(td({})(p('row1{<>}'))), tr(td({})(p('row2')))),
             ),
           );
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertRow(2);
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -361,7 +361,7 @@ describe('table plugin', () => {
             const { plugin, pluginState, editorView } = editor(
               doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
             );
-            plugin.props.onFocus!(editorView, event);
+            plugin.props.handleDOMEvents!.focus(editorView, event);
             pluginState.selectColumn(column);
             const selection = (editorView.state
               .selection as any) as CellSelection;
@@ -387,7 +387,7 @@ describe('table plugin', () => {
             const { plugin, pluginState, editorView } = editor(
               doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))),
             );
-            plugin.props.onFocus!(editorView, event);
+            plugin.props.handleDOMEvents!.focus(editorView, event);
             pluginState.selectRow(row);
             const selection = (editorView.state
               .selection as any) as CellSelection;
@@ -408,7 +408,7 @@ describe('table plugin', () => {
       const { plugin, pluginState, editorView } = editor(
         doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))),
       );
-      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
       pluginState.selectTable();
       const selection = (editorView.state.selection as any) as CellSelection;
       expect(selection.isRowSelection()).to.equal(true);
@@ -426,7 +426,7 @@ describe('table plugin', () => {
               const { plugin, pluginState, editorView } = editor(
                 doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
               );
-              plugin.props.onFocus!(editorView, event);
+              plugin.props.handleDOMEvents!.focus(editorView, event);
               pluginState.selectColumn(column);
               expect(pluginState.isColumnSelected(column)).to.equal(true);
               editorView.destroy();
@@ -446,7 +446,7 @@ describe('table plugin', () => {
               const { plugin, pluginState, editorView } = editor(
                 doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))),
               );
-              plugin.props.onFocus!(editorView, event);
+              plugin.props.handleDOMEvents!.focus(editorView, event);
               pluginState.selectRow(row);
               expect(pluginState.isRowSelected(row)).to.equal(true);
               editorView.destroy();
@@ -468,7 +468,7 @@ describe('table plugin', () => {
             ),
           );
           const { nextPos } = refs;
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectColumn(0);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(
@@ -493,7 +493,7 @@ describe('table plugin', () => {
             ),
           );
           const { nextPos } = refs;
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectColumn(1);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(
@@ -519,7 +519,7 @@ describe('table plugin', () => {
           const { plugin, pluginState, editorView } = editorTableHeader(
             doc(table(tr(thCursor), tr(tdEmpty), tr(tdEmpty))),
           );
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectRow(0);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(
@@ -539,7 +539,7 @@ describe('table plugin', () => {
             ),
           );
           const { nextPos } = refs;
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectRow(0);
           pluginState.remove();
           expect(editorView.state.selection.$from.pos).to.equal(nextPos);
@@ -557,7 +557,7 @@ describe('table plugin', () => {
             ),
           );
           const { nextPos } = refs;
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectColumn(2);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(
@@ -584,7 +584,7 @@ describe('table plugin', () => {
             ),
           );
           const { nextPos } = refs;
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectRow(0);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(
@@ -609,7 +609,7 @@ describe('table plugin', () => {
             ),
           );
           const { nextPos } = refs;
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectRow(1);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(
@@ -634,7 +634,7 @@ describe('table plugin', () => {
             ),
           );
           const { nextPos } = refs;
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectRow(2);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(

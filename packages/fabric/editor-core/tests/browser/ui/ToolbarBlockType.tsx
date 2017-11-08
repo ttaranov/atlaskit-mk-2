@@ -39,7 +39,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
   });
 
   it('should render disabled ToolbarButton if current selection is blockquote', () => {
-    const { editorView } = editor(doc(blockquote('te{<>}xt')));
+    const { editorView } = editor(doc(blockquote(p('te{<>}xt'))));
     const toolbarOption = mount(
       <ToolbarBlockType
         pluginState={blockTypePluginsSet[0].getState(editorView.state)}

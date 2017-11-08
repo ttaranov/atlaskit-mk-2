@@ -609,19 +609,25 @@ export const plugin = (pluginConfig?: PluginConfig) =>
         resetHoverSelection(view.state, view.dispatch);
         return false;
       },
-      onFocus(view: EditorView & { docView?: any }, event) {
-        const pluginState: TableState = stateKey.getState(view.state);
-        pluginState.updateEditorFocused(true);
-        pluginState.update(view.docView, true);
-      },
-      onBlur(view: EditorView & { docView?: any }, event) {
-        const pluginState: TableState = stateKey.getState(view.state);
-        pluginState.updateEditorFocused(false);
-        pluginState.update(view.docView, true);
-        resetHoverSelection(view.state, view.dispatch);
-      },
-    },
-  });
+      handleDOMEvents: {
+        focus(view: EditorView & { docView?: any }, event) {
+          const pluginState: TableState = stateKey.getState(view.state);
+          pluginState.updateEditorFocused(true);
+          pluginState.update(view.docView, true);
+          return false;
+        },
+        blur(view: EditorView & { docView?: any }, event) {
+          const pluginState: TableState = stateKey.getState(view.state);
+          pluginState.updateEditorFocused(false);
+          pluginState.update(view.docView, true);
+          pluginState.resetHoverSelection();
+          return false;
+        }
+      }
+    }
+  }
+});
+>>>>>>> ED-2871: Bump editor-core to prosemirror 1.0.0
 
 const plugins = (pluginConfig?: PluginConfig) => {
   return [plugin(pluginConfig), tableEditing()].filter(

@@ -35,7 +35,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     const hyperlinkEdit = mount(
       <HyperlinkEdit pluginState={pluginState} editorView={editorView} />
     );
-    plugin.props.onBlur!(editorView, blurEvent);
+    plugin.props.handleDOMEvents!.blur(editorView, blurEvent);
     expect(hyperlinkEdit.html()).to.equal(null);
   });
 
@@ -43,7 +43,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     const { editorView, plugin, pluginState } = editor(
       doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('te{<>}xt'), 'after'))
     );
-    plugin.props.onFocus!(editorView, focusEvent);
+    plugin.props.handleDOMEvents!.focus(editorView, focusEvent);
     const hyperlinkEdit = mount(
       <HyperlinkEdit pluginState={pluginState} editorView={editorView} />
     );
@@ -57,7 +57,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     const hyperlinkEdit = mount(
       <HyperlinkEdit pluginState={pluginState} editorView={editorView} />
     );
-    plugin.props.onBlur!(editorView, blurEvent);
+    plugin.props.handleDOMEvents!.blur(editorView, blurEvent);
     expect(hyperlinkEdit.html()).to.equal(null);
   });
 

@@ -117,7 +117,7 @@ function createEntryPoint(subsetName /*?: string */) {
     'prosemirror-tables',
     'prosemirror-transform',
     'prosemirror-view',
-    'prosemirror-dev-tools',
+    // 'prosemirror-dev-tools',
     'tslib',
     '@atlaskit/media-test-helpers',
     '@atlaskit/emoji/dist/es5/support',

@@ -55,7 +55,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
   it('should set toolbarVisible to true when panel is clicked', () => {
     const { plugin, editorView, pluginState, sel } = editor(doc(panel(p('text'))));
     const panelEditOptions = mount(<PanelEdit pluginState={pluginState} editorView={editorView} />);
-    plugin.props.onFocus!(editorView, event);
+    plugin.props.handleDOMEvents!.focus(editorView, event);
     plugin.props.handleClick!(editorView, sel, event);
     pluginState.update(editorView.state, (editorView as any).docView, true);
     expect(panelEditOptions.state('toolbarVisible')).to.equal(true);
@@ -65,7 +65,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
   it('should set toolbarVisible to false when panel is blur', () => {
     const { plugin, editorView, pluginState } = editor(doc(panel(p('text'))));
     const panelEditOptions = mount(<PanelEdit pluginState={pluginState} editorView={editorView} />);
-    plugin.props.onBlur!(editorView, event);
+    plugin.props.handleDOMEvents!.blur(editorView, event);
     expect(panelEditOptions.state('toolbarVisible')).not.to.equal(true);
     panelEditOptions.unmount();
   });
@@ -73,7 +73,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
   it('should continue toolbarVisible to true when panelType is changed', () => {
     const { plugin, editorView, pluginState } = editor(doc(panel(p('text'))));
     const panelEditOptions = mount(<PanelEdit pluginState={pluginState} editorView={editorView} />);
-    plugin.props.onFocus!(editorView, event);
+    plugin.props.handleDOMEvents!.focus(editorView, event);
     pluginState.changePanelType(editorView, { panelType: 'note' });
     expect(panelEditOptions.state('toolbarVisible')).to.equal(true);
     panelEditOptions.unmount();
@@ -82,7 +82,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
   it('should set toolbarVisible to false when panel is removed', () => {
     const { plugin, editorView, pluginState } = editor(doc(panel(p('text'))));
     const panelEditOptions = mount(<PanelEdit pluginState={pluginState} editorView={editorView} />);
-    plugin.props.onFocus!(editorView, event);
+    plugin.props.handleDOMEvents!.focus(editorView, event);
     pluginState.removePanel(editorView);
     expect(panelEditOptions.state('toolbarVisible')).to.equal(false);
     panelEditOptions.unmount();
@@ -94,7 +94,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     beforeEach(() => {
       const { plugin, editorView, pluginState, sel } = editor(doc(panel(p('text{<>}'))));
       toolbarOption = mount(<PanelEdit pluginState={pluginState} editorView={editorView} />);
-      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
       plugin.props.handleClick!(editorView, sel, event);
       trackEvent = sinon.spy();
       analyticsService.trackEvent = trackEvent;

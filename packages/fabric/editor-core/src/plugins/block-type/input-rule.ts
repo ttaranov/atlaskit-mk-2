@@ -1,9 +1,22 @@
-import { blockQuoteRule, headingRule, inputRules, InputRule } from 'prosemirror-inputrules';
-import { Schema } from 'prosemirror-model';
+import { textblockTypeInputRule, wrappingInputRule, inputRules, InputRule } from 'prosemirror-inputrules';
+import { Schema, NodeType } from 'prosemirror-model';
 import { Plugin, Transaction } from 'prosemirror-state';
 import { analyticsService, trackAndInvoke } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 import { createInputRule, defaultInputRuleHandler } from '../utils';
+
+export function headingRule(nodeType: NodeType, maxLevel: number) {
+  return textblockTypeInputRule(new RegExp('^(#{1,' + maxLevel + '})\\s$'),
+                                nodeType, match => ({level: match[1].length}));
+}
+
+export function blockQuoteRule(nodeType: NodeType) {
+  return wrappingInputRule(/^\s*>\s$/, nodeType);
+}
+
+export function codeBlockRule(nodeType: NodeType) {
+  return textblockTypeInputRule(/^```$/, nodeType);
+}
 
 export function inputRulePlugin(schema: Schema): Plugin | undefined {
   const rules: Array<InputRule> = [];

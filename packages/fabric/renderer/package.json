@@ -23,7 +23,7 @@
     "@atlaskit/mention": "^7.6.0",
     "@atlaskit/task-decision": "^4.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
-    "prosemirror-model": "^0.22.0"
+    "prosemirror-model": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^15.6.1"
@@ -33,6 +33,6 @@
     "@atlaskit/editor-core": "^59.5.1",
     "@atlaskit/editor-test-helpers": "^0.7.1",
     "@atlaskit/media-test-helpers": "^8.5.0",
-    "@types/prosemirror-model": "^0.21.0"
+    "@types/prosemirror-model": "^1.0.0"
   }
 }

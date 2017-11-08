@@ -105,7 +105,7 @@ describe('code-block', () => {
         const spy = sinon.spy();
         pluginState.subscribe(spy);
 
-        plugin.props.onBlur!(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
 
         expect(spy.callCount).to.equal(2);
         editorView.destroy();
@@ -120,7 +120,7 @@ describe('code-block', () => {
         const spy = sinon.spy();
         pluginState.subscribe(spy);
 
-        plugin.props.onBlur!(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
 
         expect(spy.callCount).to.equal(1);
         editorView.destroy();
@@ -385,8 +385,8 @@ describe('code-block', () => {
           doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block'))
         );
 
-        plugin.props.onFocus!(editorView, event);
-        plugin.props.onBlur!(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
 
         expect(pluginState.toolbarVisible).to.equal(false);
         editorView.destroy();
@@ -401,8 +401,8 @@ describe('code-block', () => {
           doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block'))
         );
 
-        plugin.props.onBlur!(editorView, event);
-        plugin.props.onFocus!(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
 
         expect(pluginState.editorFocused).to.equal(true);
         editorView.destroy();
@@ -415,7 +415,7 @@ describe('code-block', () => {
           doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block'))
         );
 
-        plugin.props.onBlur!(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
 
         expect(pluginState.editorFocused).not.to.equal(true);
         editorView.destroy();

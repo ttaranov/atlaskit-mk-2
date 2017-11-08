@@ -150,14 +150,18 @@ export const plugin = new Plugin({
       stateKey.getState(view.state).update(view.state, view.docView, true);
       return false;
     },
-    onFocus(view: EditorView, event) {
-      stateKey.getState(view.state).updateEditorFocused(true);
-    },
-    onBlur(view: EditorView & { docView?: any }, event) {
-      const pluginState = stateKey.getState(view.state);
-      pluginState.updateEditorFocused(false);
-      pluginState.update(view.state, view.docView, true);
-    },
+    handleDOMEvents: {
+      focus(view, event) {
+        stateKey.getState(view.state).updateEditorFocused(true);
+        return false;
+      },
+      blur(view: EditorView & { docView?: any }, event) {
+        const pluginState = stateKey.getState(view.state);
+        pluginState.updateEditorFocused(false);
+        pluginState.update(view.state, view.docView, true);
+        return false;
+      }
+    }
   }
 });
 

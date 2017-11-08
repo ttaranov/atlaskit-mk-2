@@ -53,6 +53,6 @@ export default createSchema({
     'textColor',
   ],
   customNodeSpecs: {
-    plain: { ...paragraph, content: 'text*' }
+    plain: { ...paragraph, content: 'text*', marks: '' }
   }
 });

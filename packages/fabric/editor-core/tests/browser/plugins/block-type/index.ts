@@ -260,9 +260,9 @@ describe('block-type', () => {
     });
 
     it('should be able to insert panel after current selection if current selection can not be wrapper in panel', () => {
-      const { pluginState, editorView } = editor(doc(blockquote('test{<>}')));
+      const { pluginState, editorView } = editor(doc(blockquote(p('test{<>}'))));
       pluginState.insertBlockType('panel', editorView);
-      expect(editorView.state.doc).to.deep.equal(doc(blockquote('test'), panel(p())));
+      expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('test')), panel(p())));
       editorView.destroy();
     });
 

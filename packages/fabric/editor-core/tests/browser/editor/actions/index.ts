@@ -1,9 +1,10 @@
 import { name } from '../../../../package.json';
 import { expect } from 'chai';
 import createEditor from '../../../helpers/create-editor';
-import { doc, p, blockquote, decisionList, decisionItem } from '@atlaskit/editor-test-helpers';
+import { doc, p, blockquote, decisionList, decisionItem, taskList, taskItem } from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
 import { JSONTransformer, Transformer } from '../../../../src/transformers';
+import tasksAndDecisionsPlugin from '../../../../src/editor/plugins/tasks-and-decisions';
 import EditorActions from '../../../../src/editor/actions';
 import { toJSON } from '../../../../src/utils';
 
@@ -19,7 +20,9 @@ describe(name, () => {
     let editorActions: EditorActions;
     let editorView: EditorView;
     beforeEach(() => {
-      const editor = createEditor();
+      const editor = createEditor(
+        [tasksAndDecisionsPlugin]
+      );
       editorActions = new EditorActions();
       editorActions._privateRegisterEditor(editor.editorView);
       editorView = editor.editorView;
@@ -80,11 +83,16 @@ describe(name, () => {
       });
 
       it('should filter out task and decision items', async () => {
-        doc(p('some text'), decisionList(decisionItem()));
-        const val = await editorActions.getValue();
-        expect(val).to.not.equal(undefined);
-        expect((val as any)!.content!.length).to.equal(1);
-        expect((val as any)!.content![0].type).to.equal('paragraph');
+        const decisionsAndTasks = doc(
+          decisionList({})(decisionItem({})()),
+          taskList({})(taskItem({})()),
+          p('text')
+        );
+        const expected = toJSON(doc(p('text')));
+        editorActions.replaceDocument(decisionsAndTasks);
+
+        const actual = await editorActions.getValue();
+        expect(actual).to.deep.equal(expected);
       });
     });
 
@@ -150,8 +158,8 @@ describe(name, () => {
       });
 
       it('should append text to a complex document', async () => {
-        const newDoc = doc(p('some text'), blockquote('some quote'), p(''));
-        const expected = doc(p('some text'), blockquote('some quote'), p(' appended'));
+        const newDoc = doc(p('some text'), blockquote(p('some quote')), p(''));
+        const expected = doc(p('some text'), blockquote(p('some quote')), p(' appended'));
         editorActions.replaceDocument(newDoc);
         editorActions.appendText(' appended');
         const val = await editorActions.getValue();
@@ -159,7 +167,7 @@ describe(name, () => {
       });
 
       it(`should return false if the last node of a document isn't a paragraph`, async () => {
-        const newDoc = doc(p('some text'), blockquote('some quote'));
+        const newDoc = doc(p('some text'), blockquote(p('some quote')));
         editorActions.replaceDocument(newDoc);
         expect(editorActions.appendText(' appended')).to.equal(false);
       });

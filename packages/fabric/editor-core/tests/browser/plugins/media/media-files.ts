@@ -688,7 +688,7 @@ describe('media-links', () => {
 
   context('when selection is in a task or decision block', () => {
     it('media insertion ignored for task item', () => {
-      const itemDoc = doc(taskList(taskItem('{<>}')));
+      const itemDoc = doc(taskList()(taskItem()('{<>}')));
       const { editorView } = editor(itemDoc);
 
       insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
@@ -698,7 +698,7 @@ describe('media-links', () => {
     });
 
     it('media insertion ignored for decision item', () => {
-      const decisionDoc = doc(decisionList(decisionItem('{<>}')));
+      const decisionDoc = doc(decisionList()(decisionItem()('{<>}')));
       const { editorView } = editor(decisionDoc);
 
       insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
