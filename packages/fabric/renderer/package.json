@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "7.1.1",
+  "version": "7.1.2",
   "description": "Renderer component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -15,7 +15,7 @@
   "maintainers": [],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
-    "@atlaskit/editor-common": "^2.3.2",
+    "@atlaskit/editor-common": "^2.3.3",
     "prosemirror-model": "^0.22.0"
   },
   "peerDependencies": {
