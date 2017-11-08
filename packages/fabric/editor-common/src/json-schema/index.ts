@@ -14,7 +14,6 @@ import JSONSchemaNode, {
   AllOfSchemaNode,
 } from './json-schema-nodes';
 
-
 // Assuming that the last param will be a file, can be replaced with something like yargs in future
 const file = process.argv[process.argv.length - 1];
 const files = [file];
@@ -88,10 +87,7 @@ function getSchemaNodeFromType(type: ts.Type, validators = {}): SchemaNode {
   } else if (isUnionType(type)) {
     const isEnum = type.types.every(t => isStringLiteralType(t));
     if (isEnum) {
-      return new EnumSchemaNode(
-        // TODO: Fix any
-        type.types.map(t => ((t as ts.LiteralType) as any).text)
-      );
+      return new EnumSchemaNode(type.types.map(t => (t as ts.LiteralType).value));
     } else {
       return new AnyOfSchemaNode(type.types.map(t => getSchemaNodeFromType(t)));
     }
@@ -176,16 +172,13 @@ type PrimitiveType = number | boolean | string;
 
 function extractLiteralValue(typ: ts.Type): PrimitiveType {
   if (typ.flags & ts.TypeFlags.EnumLiteral) {
-    // TODO: Fix any
-    let str = ((<ts.LiteralType>typ) as any).text;
+    let str = String((<ts.LiteralType>typ).value);
     let num = parseFloat(str);
     return isNaN(num) ? str : num;
   } else if (typ.flags & ts.TypeFlags.StringLiteral) {
-    // TODO: Fix any
-    return ((<ts.LiteralType>typ) as any).text;
+    return (<ts.LiteralType>typ).value;
   } else if (typ.flags & ts.TypeFlags.NumberLiteral) {
-    // TODO: Fix any
-    return parseFloat(((<ts.LiteralType>typ) as any).text);
+    return (<ts.LiteralType>typ).value;
   } else if (typ.flags & ts.TypeFlags.BooleanLiteral) {
     // TODO: Fix any
     return (typ as any).intrinsicName === 'true';
