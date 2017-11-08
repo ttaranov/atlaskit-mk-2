@@ -1,5 +1,5 @@
 import { ComponentClass } from 'react';
-import { Node } from 'prosemirror-model';
+import { Fragment, Node } from 'prosemirror-model';
 
 import ApplicationCard, { AppCardViewProps } from './applicationCard';
 import Blockquote from './blockquote';
@@ -145,6 +145,32 @@ export const isText = (type: string): type is 'text' => {
 
 export const isTextWrapper = (type: string): type is 'textWrapper' => {
   return type === 'textWrapper';
+};
+
+export const isEmojiBlock = (fragment: Fragment): boolean => {
+  const content = fragment['content'];
+  if (!content || !content.length || content.length > 7) {
+    return false;
+  }
+  let emojiCount = 0;
+  for (let node of content) {
+    switch (node.type.name) {
+      case 'text':
+        if (node.text && !node.text.match(/^ *$/)) {
+          return false;
+        }
+        continue;
+      case 'emoji':
+        if (++emojiCount > 3) {
+          return false;
+        }
+        continue;
+      default:
+        // Only text and emoji nodes are allowed
+        return false;
+    }
+  }
+  return emojiCount > 0;
 };
 
 export {

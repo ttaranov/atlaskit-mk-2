@@ -9,6 +9,7 @@ import ProviderFactory, { WithProviders } from '../../providerFactory';
 export interface EmojiProps extends EmojiId {
   allowTextFallback?: boolean;
   providers?: ProviderFactory;
+  fitToHeight?: number;
 }
 
 export default class EmojiNode extends PureComponent<EmojiProps, {}> {
@@ -33,6 +34,7 @@ export default class EmojiNode extends PureComponent<EmojiProps, {}> {
       shortName,
       id,
       fallback,
+      fitToHeight,
     } = this.props;
 
     if (allowTextFallback && !providers.emojiProvider) {
@@ -44,6 +46,7 @@ export default class EmojiNode extends PureComponent<EmojiProps, {}> {
         emojiId={{ id, fallback, shortName }}
         emojiProvider={providers.emojiProvider}
         showTooltip={true}
+        fitToHeight={fitToHeight}
       />
     );
   }

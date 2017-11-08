@@ -183,6 +183,29 @@ export const document = {
       type: 'paragraph',
       content: [
         {
+          type: 'emoji',
+          attrs: {
+            ...grinEmojiAttrs,
+          }
+        },
+        {
+          type: 'emoji',
+          attrs: {
+            ...evilburnsEmojiAttrs,
+          }
+        },
+        {
+          type: 'emoji',
+          attrs: {
+            ...grinEmojiAttrs,
+          }
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
           type: 'text',
           text: 'Hi, my name is... My name is... My name is... My name is '
         },
@@ -1265,6 +1288,33 @@ System.out.println("There are " + count + " values >= 5");`
           attrs: {
             localId: 'to-be-ignored-as-no-content',
             state: 'DECIDED'
+          }
+        }
+      ]
+    },
+    {
+      type: 'decisionItem',
+      attrs: {
+        localId: '',
+        state: 'DECIDED'
+      },
+      content: [
+        {
+          type: 'emoji',
+          attrs: {
+            ...grinEmojiAttrs,
+          }
+        },
+        {
+          type: 'emoji',
+          attrs: {
+            ...evilburnsEmojiAttrs,
+          }
+        },
+        {
+          type: 'emoji',
+          attrs: {
+            ...grinEmojiAttrs,
           }
         }
       ]
