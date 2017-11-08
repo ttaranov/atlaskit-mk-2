@@ -140,7 +140,7 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
 
 export class MarkdownSerializer extends PMMarkdownSerializer {
   serialize(content: PMNode, options?: { [key: string]: any }): string {
-    const state = new MarkdownSerializerState(this.nodes, this.marks, options);
+    const state = new MarkdownSerializerState(this.nodes, this.marks, options || {});
 
     state.renderContent(content);
     return state.out === '\u200c' ? '' : state.out; // Return empty string if editor only contains a zero-non-width character
@@ -149,11 +149,11 @@ export class MarkdownSerializer extends PMMarkdownSerializer {
 
 const editorNodes = {
   blockquote(state: MarkdownSerializerState, node: PMNode, parent: PMNode, index: number) {
-    state.wrapBlock('> ', null, node, () => state.renderContent(node));
+    state.wrapBlock('> ', undefined, node, () => state.renderContent(node));
   },
   codeBlock(state: MarkdownSerializerState, node: PMNode, parent: PMNode, index: number) {
     if (!node.attrs.language) {
-      state.wrapBlock('    ', null, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
+      state.wrapBlock('    ', undefined, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
     } else {
       const backticks = generateOuterBacktickChain(node.textContent, 3);
       state.write(backticks + node.attrs.language + '\n');
@@ -194,7 +194,7 @@ const editorNodes = {
       if (i === 0) {
         state.wrapBlock('  ', delimiter, node, () => state.render(child, parent, i));
       } else {
-        state.wrapBlock('    ', null, node, () => state.render(child, parent, i));
+        state.wrapBlock('    ', undefined, node, () => state.render(child, parent, i));
       }
       if (child.type.name === 'paragraph' && i > 0) {
         state.write('\n');
