@@ -253,9 +253,9 @@ function converter(
       case 'AC:HIPCHAT-EMOTICON':
       case 'AC:EMOTICON':
         let emoji = {
-          id: node.getAttribute('ac:emoji-id'),
-          shortName: node.getAttribute('ac:emoji-shortname'),
-          text: node.getAttribute('ac:emoji-fallback'),
+          id: node.getAttribute('ac:emoji-id') || '',
+          shortName: node.getAttribute('ac:emoji-shortname') || '',
+          text: node.getAttribute('ac:emoji-fallback') || '',
         };
 
         if (!emoji.id) {
