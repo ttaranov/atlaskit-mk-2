@@ -3,7 +3,7 @@ import { ReactElement, PureComponent } from 'react';
 import { MediaProps } from './media';
 import { CardEvent } from '@atlaskit/media-card';
 import { FilmstripView } from '@atlaskit/media-filmstrip';
-import { CardSurroundings } from '../../ui/Renderer';
+import { CardSurroundings } from '@atlaskit/editor-common';
 
 export interface MediaGroupProps {
   children?: React.ReactNode;

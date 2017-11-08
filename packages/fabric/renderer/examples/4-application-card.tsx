@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
   AppCardViewProps,
   ApplicationCard,
-} from '../src/renderer/react/nodes';
+} from '../src/react/nodes';
 
 const eventHandlers: any = {
   applicationCard: {

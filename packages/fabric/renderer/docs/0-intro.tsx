@@ -14,10 +14,20 @@ npm install @atlaskit/renderer
 
 Use the component in your React app as follows:
 
-\`\`\`
+\`\`\`js
 import { ReactRenderer } from '@atlaskit/renderer';
 ReactDOM.render(<ReactRenderer doc={DOCUMENT} />, container);
 \`\`\`
+
+## Example
+
+${(
+  <Example
+    Component={require('../examples/1-with-providers').default}
+    title="With Providers"
+    source={require('!!raw-loader!../examples/1-with-providers')}
+  />
+)}
 
 ## Polyfills
 

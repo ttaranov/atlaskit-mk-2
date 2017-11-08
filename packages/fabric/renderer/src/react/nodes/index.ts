@@ -5,7 +5,7 @@ import ApplicationCard, { AppCardViewProps } from './applicationCard';
 import Blockquote from './blockquote';
 import BulletList from './bulletList';
 import CodeBlock from './codeBlock';
-import DecisionItem from './decisionItem';
+import DecisionItem, { Props as DecisionItemProps } from './decisionItem';
 import DecisionList from './decisionList';
 import Doc from './doc';
 import Emoji from './emoji';
@@ -154,6 +154,7 @@ export {
   BulletList,
   CodeBlock,
   DecisionItem,
+  DecisionItemProps,
   DecisionList,
   Doc,
   Emoji,

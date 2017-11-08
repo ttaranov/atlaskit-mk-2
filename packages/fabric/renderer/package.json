@@ -24,8 +24,8 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^0.0.2",
-    "@atlaskit/editor-core": "^56.2.2",
-    "@atlaskit/editor-test-helpers": "^0.0.3",
+    "@atlaskit/editor-core": "^57.0.1",
+    "@atlaskit/editor-test-helpers": "^0.0.7",
     "@types/prosemirror-model": "^0.21.0",
     "prosemirror-model": "^0.22.0"
   }
