@@ -10,10 +10,11 @@
     "Trey S"
   ],
   "scripts": {
-    "build": "yarn build:webpack && yarn build:copy && yarn build:minimize && yarn build:zip",
+    "build": "yarn build:webpack && yarn build:copy && yarn build:sandbox && yarn build:minimize && yarn build:zip",
     "build:no-minimize": "yarn build:webpack && yarn build:copy && yarn build:zip",
     "build:webpack": "rm -rf dist && WEBSITE_ENV=production webpack ",
     "build:copy": "cp dist/index.html dist/404.html",
+    "build:sandbox": "node ./build/sandbox",
     "build:zip": "zip -r dist.zip dist/",
     "build:minimize": "find dist -name '*.js' -type f -prune -exec sh -c  \"echo Minimizing: {} && ./node_modules/.bin/uglifyjs --compress hoist_funs=false '{}' -o '{}'\" \\;",
     "start": "webpack-dev-server",
