@@ -512,7 +512,7 @@ describe('media-links', () => {
 
   context('when selection is in a task or decision block', () => {
     it('link insertion ignored for task item', async () => {
-      const itemDoc = doc(taskList(taskItem('{<>}')));
+      const itemDoc = doc(taskList()(taskItem()('{<>}')));
       const { editorView } = editor(itemDoc);
       const handle = sinon.spy();
 
@@ -531,7 +531,7 @@ describe('media-links', () => {
     });
 
     it('link insertion ignored for decision item', async () => {
-      const decisionDoc = doc(decisionList(decisionItem('{<>}')));
+      const decisionDoc = doc(decisionList()(decisionItem()('{<>}')));
       const { editorView } = editor(decisionDoc);
       const handle = sinon.spy();
 

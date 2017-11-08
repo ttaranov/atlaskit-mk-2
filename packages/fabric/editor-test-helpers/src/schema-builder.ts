@@ -307,10 +307,10 @@ export const tdCursor = td({})(p('{<>}'));
 export const thCursor = th({})(p('{<>}'));
 export const td11 = createCell(1, 1);
 export const th11 = createHeaderCell(1, 1);
-export const decisionList = nodeFactory(sampleSchema.nodes.decisionList, {});
-export const decisionItem = nodeFactory(sampleSchema.nodes.decisionItem, {});
-export const taskList = nodeFactory(sampleSchema.nodes.taskList, {});
-export const taskItem = nodeFactory(sampleSchema.nodes.taskItem, {});
+export const decisionList = (attrs: { localId?: string } = {}) => nodeFactory(sampleSchema.nodes.decisionList, attrs);
+export const decisionItem = (attrs: { localId?: string } = {})=> nodeFactory(sampleSchema.nodes.decisionItem, attrs);
+export const taskList = (attrs: { localId?: string } = {}) => nodeFactory(sampleSchema.nodes.taskList, attrs);
+export const taskItem = (attrs: { localId?: string } = {}) => nodeFactory(sampleSchema.nodes.taskItem, attrs);
 export const confluenceUnsupportedBlock = (cxhtml: string) =>
   nodeFactory(sampleSchema.nodes.confluenceUnsupportedBlock, { cxhtml })();
 export const confluenceUnsupportedInline = (cxhtml: string) =>
