@@ -1,9 +1,5 @@
 // @flow
-/* eslint-disable
-  react/require-default-props,
-  react/no-multi-comp,
-  react/prefer-stateless-function
-*/
+/* eslint-disable react/require-default-props */
 
 import React, { Children, Component, type Node } from 'react';
 
@@ -16,6 +12,7 @@ import {
 import Portal from './Portal';
 import TooltipMarshal from './Marshal';
 import Transition from './Transition';
+import renamePropsWithWarning from './renamePropsWithWarning';
 import { getPosition } from './utils';
 
 type Props = {
@@ -68,6 +65,7 @@ class Tooltip extends Component<Props, State> {
   state = getInitialState(this.props);
   wrapper: HTMLElement | null;
   static defaultProps = {
+
     placement: 'bottom',
     tag: 'div',
   };
@@ -189,12 +187,14 @@ class Tooltip extends Component<Props, State> {
   render() {
     // NOTE removing props from rest:
     // - `content` is a valid HTML attribute, but has a different semantic meaning
+    // - `hideTooltipOnClick` is NOT valid and react will warn
     // - `placement` is NOT valid and react will warn
     // - `truncate` is NOT valid and react will warn
     // eslint-disable-next-line no-unused-vars
     const {
       children,
       content,
+      hideTooltipOnClick,
       placement,
       truncate,
       tag: Tag,
@@ -216,33 +216,9 @@ class Tooltip extends Component<Props, State> {
   }
 }
 
-function renamePropsWithWarning(WrappedComponent, renamedProps) {
-  return class WithRenamedProps extends Component {
-    name = WrappedComponent.displayName || WrappedComponent.name;
-    static displayName = `WithRenamedProps(${this.name})`;
-    componentDidMount() {
-      Object.keys(renamedProps).forEach(prop => {
-        if (prop in this.props) {
-          // eslint-disable-next-line
-          console.warn(`${this.name} Warning: Prop "${prop}" is deprecated, use "${renamedProps[prop]}" instead.`); // prettier-ignore
-        }
-      });
-    }
-    render() {
-      const props = { ...this.props };
-      Object.keys(renamedProps).forEach(prop => {
-        if (prop in props) {
-          if (!(renamedProps[prop] in props)) {
-            props[renamedProps[prop]] = props[prop];
-          }
-          delete props[prop];
-        }
-      });
-      return <WrappedComponent {...props} />;
-    }
-  };
-}
+export type TooltipType = Tooltip;
 
 export default renamePropsWithWarning(Tooltip, {
   description: 'content',
+  position: 'placement',
 });

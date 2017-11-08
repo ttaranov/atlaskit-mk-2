@@ -1,5 +1,5 @@
 // @flow
-import Tooltip from './Tooltip';
+import type { TooltipType } from './Tooltip';
 import { getStyle } from './utils';
 
 const SHOW_DELAY = 300;
@@ -18,15 +18,15 @@ function isScrollable(node) {
 type Options = { immediate: boolean };
 
 export default class TooltipMarshal {
-  queuedForShow: ?Tooltip;
-  queuedForHide: ?Tooltip;
-  visibleTooltip: ?Tooltip;
+  queuedForShow: ?TooltipType;
+  queuedForHide: ?TooltipType;
+  visibleTooltip: ?TooltipType;
   showTimeout: ?number;
   hideTimeout: ?number;
 
   scrollListenerBound: boolean = false;
 
-  show(tooltip: Tooltip) {
+  show(tooltip: TooltipType) {
     // if the tooltip is already queued for show, don't interfere
     if (this.queuedForShow === tooltip) return;
 
@@ -62,7 +62,7 @@ export default class TooltipMarshal {
       this.showTooltip(tooltip, { immediate: false });
     }, SHOW_DELAY);
   }
-  showTooltip(tooltip: Tooltip, options: Options) {
+  showTooltip(tooltip: TooltipType, options: Options) {
     this.queuedForShow = null;
     this.showTimeout = null;
     if (this.visibleTooltip) {
@@ -76,7 +76,7 @@ export default class TooltipMarshal {
     clearTimeout(this.showTimeout);
     this.showTimeout = null;
   }
-  addScrollListener(tooltip: Tooltip) {
+  addScrollListener(tooltip: TooltipType) {
     if (this.scrollListenerBound) return;
 
     this.scrollListenerBound = true;
@@ -89,7 +89,9 @@ export default class TooltipMarshal {
           window.addEventListener('scroll', this.handleScroll);
           break;
         } else if (isScrollable(parent)) {
-          parent.addEventListener('scroll', this.handleScroll);
+          if (parent.addEventListener) {
+            parent.addEventListener('scroll', this.handleScroll);
+          }
           break;
         }
 
@@ -97,7 +99,7 @@ export default class TooltipMarshal {
       }
     }
   }
-  removeScrollListener(tooltip: Tooltip) {
+  removeScrollListener(tooltip: TooltipType) {
     if (!this.scrollListenerBound) return;
 
     this.scrollListenerBound = false;
@@ -122,7 +124,7 @@ export default class TooltipMarshal {
     if (!this.visibleTooltip) return;
     this.hideTooltip(this.visibleTooltip, { immediate: true });
   };
-  hide(tooltip: Tooltip) {
+  hide(tooltip: TooltipType) {
     // if the tooltip is already queued for hide, don't interfere
     if (this.queuedForHide === tooltip) return;
 
@@ -143,7 +145,7 @@ export default class TooltipMarshal {
       this.hideTooltip(tooltip, { immediate: false });
     }, HIDE_DELAY);
   }
-  hideTooltip(tooltip: Tooltip, options: Options) {
+  hideTooltip(tooltip: TooltipType, options: Options) {
     this.queuedForHide = null;
     this.hideTimeout = null;
     if (!this.visibleTooltip) {
