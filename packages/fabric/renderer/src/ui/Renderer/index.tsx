@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { defaultSchema } from '@atlaskit/editor-common';
-import { CardEvent } from '@atlaskit/media-card';
-import { PureComponent, SyntheticEvent } from 'react';
+import { PureComponent } from 'react';
 import { Schema } from 'prosemirror-model';
 import {
   UnsupportedBlock,
-  AppCardAction,
-  ProviderFactory
+  ProviderFactory,
+  defaultSchema,
+  MentionEventHandler,
+  CardEventClickHandler ,
+  AppCardEventClickHandler ,
+  AppCardActionEventClickHandler
 } from '@atlaskit/editor-common';
 import {
   ReactSerializer,
@@ -15,16 +17,6 @@ import {
 } from '../../';
 import { RenderOutputStat } from '../../';
 import { Wrapper } from './style';
-
-export interface CardSurroundings {
-  collectionName: string;
-  list: string[];
-}
-
-export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
-export type CardEventClickHandler = (result: CardEvent, surroundings?: CardSurroundings) => void;
-export type AppCardEventClickHandler = (url?: string) => void;
-export type AppCardActionEventClickHandler = (action: AppCardAction) => void;
 
 export interface MentionEventHandlers {
   onClick?: MentionEventHandler;
