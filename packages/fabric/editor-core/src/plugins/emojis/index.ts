@@ -22,8 +22,9 @@ export interface Options {
 export class EmojiState {
   emojiProvider?: EmojiProvider;
   query?: string;
-  enabled = true;
-  queryActive = false;
+  enabled: boolean = true;
+  focused: boolean = false;
+  queryActive: boolean = false;
   anchorElement?: HTMLElement;
 
   onSelectPrevious = (): boolean => false;
@@ -48,6 +49,10 @@ export class EmojiState {
 
   unsubscribe(cb: StateChangeHandler) {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
+  }
+
+  notifySubscribers () {
+    this.changeHandlers.forEach(cb => cb(this));
   }
 
   update(state: EditorState) {
@@ -95,7 +100,7 @@ export class EmojiState {
     }
 
     if (dirty) {
-      this.changeHandlers.forEach(cb => cb(this));
+      this.notifySubscribers();
     }
   }
 
@@ -214,6 +219,11 @@ export class EmojiState {
     return false;
   }
 
+  updateEditorFocused (focused: boolean) {
+    this.focused = focused;
+    this.notifySubscribers();
+  }
+
   private getEmojisCount = (): number => {
     return (this.queryResult && this.queryResult.length) || 0;
   }
@@ -249,6 +259,12 @@ export function createPlugin(providerFactory: ProviderFactory) {
     props: {
       nodeViews: {
         emoji: nodeViewFactory(providerFactory, { emoji: emojiNodeView })
+      },
+      onFocus(view: EditorView, event) {
+        stateKey.getState(view.state).updateEditorFocused(true);
+      },
+      onBlur(view: EditorView, event) {
+        stateKey.getState(view.state).updateEditorFocused(false);
       }
     },
     key: stateKey,

@@ -20,6 +20,7 @@ export interface State {
   query?: string;
   anchorElement?: HTMLElement;
   queryActive?: boolean;
+  focused?: boolean;
 }
 
 export default class EmojiTypeAhead extends PureComponent<Props, State> {
@@ -65,8 +66,8 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (state: EmojiState) => {
-    const { anchorElement, query, queryActive } = state;
-    this.setState({ anchorElement, query, queryActive });
+    const { anchorElement, query, queryActive, focused } = state;
+    this.setState({ anchorElement, query, queryActive, focused });
   }
 
   private handleEmojiTypeAheadRef = (ref) => {
@@ -74,10 +75,10 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   }
 
   render() {
-    const { anchorElement, query, queryActive } = this.state;
+    const { anchorElement, query, queryActive, focused } = this.state;
     const { popupsBoundariesElement, popupsMountPoint, emojiProvider } = this.props;
 
-    if (!this.pluginState || !anchorElement || !queryActive || !emojiProvider) {
+    if (!focused || !this.pluginState || !anchorElement || !queryActive || !emojiProvider) {
       return null;
     }
 
