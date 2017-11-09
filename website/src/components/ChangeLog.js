@@ -62,11 +62,12 @@ export const NoMatch = styled.div`
   min-height: 120px;
 `;
 
-export type Logs = Array<{ md: string, version: string }>;
+export type Log = { md: string, version: string };
+export type Logs = Array<Log>;
 
 type Props = {
   changelog: Logs,
-  range: string,
+  range?: string,
   packageName: string,
 };
 

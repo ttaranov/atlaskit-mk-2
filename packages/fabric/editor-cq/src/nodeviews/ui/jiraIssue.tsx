@@ -70,7 +70,7 @@ export default class JIRAIssueNode extends PureComponent<Props, {}> {
     return (
       <WrapperNode>
         <SvgChildNode>
-          <JiraLogo size="small" collapseTo="icon"/>
+          <JiraLogo size="small" />
         </SvgChildNode>
         <JiraChildNode>{issueKey}</JiraChildNode>
       </WrapperNode>

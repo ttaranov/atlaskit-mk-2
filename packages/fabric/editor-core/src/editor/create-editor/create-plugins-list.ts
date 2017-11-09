@@ -41,7 +41,8 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   const plugins = getDefaultPluginsList();
 
   if (props.allowTextFormatting) {
-    plugins.push(textFormattingPlugin);
+    const options = props.allowTextFormatting === true ? {} : props.allowTextFormatting;
+    plugins.push(textFormattingPlugin(options));
   }
 
   if (props.allowTextColor) {
