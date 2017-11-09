@@ -1,8 +1,11 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
+import { browser } from '@atlaskit/editor-common';
 import hyperlinkPlugins, { HyperlinkState } from '../../../../src/plugins/hyperlink';
+import pastePlugins from '../../../../src/plugins/paste';
 import {
+  strong,
   chaiPlugin,
   createEvent,
   doc,
@@ -16,6 +19,7 @@ import {
   sendKeyToPm,
   dispatchPasteEvent,
   defaultSchema,
+  isMobileBrowser,
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../../src/utils';
 import { analyticsService } from '../../../../src/analytics';
@@ -26,7 +30,7 @@ describe('hyperlink', () => {
   const editor = (doc: any) =>
     makeEditor<HyperlinkState>({
       doc,
-      plugins: hyperlinkPlugins(defaultSchema),
+      plugins: [...hyperlinkPlugins(defaultSchema), ...pastePlugins(defaultSchema)],
     });
 
   const event = createEvent('event');
@@ -912,218 +916,220 @@ describe('hyperlink', () => {
     });
   });
 
-  describe.skip('paste', () => {
-    context('url link is at beginning of plain text', () => {
-      it('should add link mark', function() {
-        const { editorView } = editor(doc(paragraph('{<>}')));
-        if (!dispatchPasteEvent(editorView, { plain: 'http://www.atlassian.com test' })) {
-          // This environment does not allow mocking paste events
-          return this.skip();
-        }
-        expect(editorView.state.doc).to.deep.equal(
-          doc(
-            paragraph(
-              link({ href: 'http://www.atlassian.com' })('http://www.atlassian.com'),
-              ' test'
+  if (!browser.ie && !isMobileBrowser()) {
+    describe('paste', () => {
+      context('url link is at beginning of plain text', () => {
+        it('should add link mark', function() {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          if (!dispatchPasteEvent(editorView, { plain: 'http://www.atlassian.com test' })) {
+            // This environment does not allow mocking paste events
+            return this.skip();
+          }
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              paragraph(
+                link({ href: 'http://www.atlassian.com' })('http://www.atlassian.com'),
+                ' test'
+              )
             )
-          )
-        );
-        editorView.destroy();
+          );
+          editorView.destroy();
+        });
       });
-    });
 
-    context('a string which is valid email is present in url', () => {
-      it('should not create separate mail link for email', function() {
-        const { editorView } = editor(doc(paragraph('{<>}')));
-        if (
-          !dispatchPasteEvent(editorView, { plain: 'http://www.atlassian.com/test@atlassian.com' })
-        ) {
-          // This environment does not allow mocking paste events
-          return this.skip();
-        }
-        expect(editorView.state.doc).to.deep.equal(
-          doc(
-            paragraph(
-              link({
-                href: 'http://www.atlassian.com/test@atlassian.com',
-              })('http://www.atlassian.com/test@atlassian.com')
+      context('a string which is valid email is present in url', () => {
+        it('should not create separate mail link for email', function() {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          if (
+            !dispatchPasteEvent(editorView, { plain: 'http://www.atlassian.com/test@atlassian.com' })
+          ) {
+            // This environment does not allow mocking paste events
+            return this.skip();
+          }
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              paragraph(
+                link({
+                  href: 'http://www.atlassian.com/test@atlassian.com',
+                })('http://www.atlassian.com/test@atlassian.com')
+              )
             )
-          )
-        );
-        editorView.destroy();
+          );
+          editorView.destroy();
+        });
       });
-    });
 
-    context('a string which is valid url is present in another url', () => {
-      it('should not create separate mail link for email', function() {
-        const { editorView } = editor(doc(paragraph('{<>}')));
-        if (!dispatchPasteEvent(editorView, { plain: 'http://www.atlassian.com/www.temp.com' })) {
-          // This environment does not allow mocking paste events
-          return this.skip();
-        }
-        expect(editorView.state.doc).to.deep.equal(
-          doc(
-            paragraph(
-              link({
-                href: 'http://www.atlassian.com/www.temp.com',
-              })('http://www.atlassian.com/www.temp.com')
+      context('a string which is valid url is present in another url', () => {
+        it('should not create separate mail link for email', function() {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          if (!dispatchPasteEvent(editorView, { plain: 'http://www.atlassian.com/www.temp.com' })) {
+            // This environment does not allow mocking paste events
+            return this.skip();
+          }
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              paragraph(
+                link({
+                  href: 'http://www.atlassian.com/www.temp.com',
+                })('http://www.atlassian.com/www.temp.com')
+              )
             )
-          )
-        );
-        editorView.destroy();
+          );
+          editorView.destroy();
+        });
       });
-    });
 
-    context('url link has brackets', () => {
-      it('should add link mark', function() {
-        const { editorView } = editor(doc(paragraph('{<>}')));
-        if (!dispatchPasteEvent(editorView, { plain: 'http://www.(atlassian).com test' })) {
-          // This environment does not allow mocking paste events
-          return this.skip();
-        }
-        expect(editorView.state.doc).to.deep.equal(
-          doc(
-            paragraph(
-              link({ href: 'http://www.(atlassian).com' })('http://www.(atlassian).com'),
-              ' test'
+      context('url link is at end of html text', () => {
+        it('should add link mark', function() {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          if (
+            !dispatchPasteEvent(editorView, {
+              html: '<a href="http://www.atlassian.com">Atlassian</a> test',
+            })
+          ) {
+            // This environment does not allow mocking paste events
+            return this.skip();
+          }
+          expect(editorView.state.doc).to.deep.equal(
+            doc(paragraph(link({ href: 'http://www.atlassian.com' })('Atlassian'), ' test'))
+          );
+          editorView.destroy();
+        });
+      });
+
+      context('url link without anchor tags in html', () => {
+        it('should add link mark', function() {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          if (!dispatchPasteEvent(editorView, { html: 'http://www.atlassian.com test' })) {
+            // This environment does not allow mocking paste events
+            return this.skip();
+          }
+          expect(editorView.state.doc).to.deep.equal(
+            doc(paragraph(link({ href: 'http://www.atlassian.com' })('http://www.atlassian.com'), ' test'))
+          );
+          editorView.destroy();
+        });
+      });
+
+      context('url link without anchor tags in html in middle of other text', () => {
+        it('should add link mark', function() {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          if (!dispatchPasteEvent(editorView, { html: 'testing http://www.atlassian.com test' })) {
+            // This environment does not allow mocking paste events
+            return this.skip();
+          }
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              paragraph('testing ', link({ href: 'http://www.atlassian.com' })('http://www.atlassian.com'), ' test')
             )
-          )
-        );
-        editorView.destroy();
+          );
+          editorView.destroy();
+        });
       });
-    });
 
-    context('url link is at end of html text', () => {
-      it('should add link mark', function() {
-        const { editorView } = editor(doc(paragraph('{<>}')));
-        if (
-          !dispatchPasteEvent(editorView, {
-            html: '<a href="http://www.atlassian.com">Atlassian</a> test',
-          })
-        ) {
-          // This environment does not allow mocking paste events
-          return this.skip();
-        }
-        expect(editorView.state.doc).to.deep.equal(
-          doc(paragraph(link({ href: 'http://www.atlassian.com' })('Atlassian'), ' test'))
-        );
-        editorView.destroy();
+      context('url link without anchor tags in html without other text', () => {
+        it('should add link mark', function() {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          if (!dispatchPasteEvent(editorView, { html: 'http://www.atlassian.com' })) {
+            // This environment does not allow mocking paste events
+            return this.skip();
+          }
+          expect(editorView.state.doc).to.deep.equal(
+            doc(paragraph(link({ href: 'http://www.atlassian.com' })('http://www.atlassian.com')))
+          );
+          editorView.destroy();
+        });
       });
-    });
 
-    context('url link without anchor tags in html', () => {
-      it('should add link mark', function() {
-        const { editorView } = editor(doc(paragraph('{<>}')));
-        if (!dispatchPasteEvent(editorView, { html: 'http://www.atlassian.com test' })) {
-          // This environment does not allow mocking paste events
-          return this.skip();
-        }
-        expect(editorView.state.doc).to.deep.equal(
-          doc(paragraph(link({ href: 'http://www.atlassian.com' })('Atlassian'), ' test'))
-        );
-        editorView.destroy();
-      });
-    });
-
-    context('url link without anchor tags in html in middle of other text', () => {
-      it('should add link mark', function() {
-        const { editorView } = editor(doc(paragraph('{<>}')));
-        if (!dispatchPasteEvent(editorView, { html: 'testing http://www.atlassian.com test' })) {
-          // This environment does not allow mocking paste events
-          return this.skip();
-        }
-        expect(editorView.state.doc).to.deep.equal(
-          doc(
-            paragraph('testing ', link({ href: 'http://www.atlassian.com' })('Atlassian'), ' test')
-          )
-        );
-        editorView.destroy();
-      });
-    });
-
-    context('url link without anchor tags in html without other text', () => {
-      it('should add link mark', function() {
-        const { editorView } = editor(doc(paragraph('{<>}')));
-        if (!dispatchPasteEvent(editorView, { html: 'http://www.atlassian.com' })) {
-          // This environment does not allow mocking paste events
-          return this.skip();
-        }
-        expect(editorView.state.doc).to.deep.equal(
-          doc(paragraph(link({ href: 'http://www.atlassian.com' })('Atlassian')))
-        );
-        editorView.destroy();
-      });
-    });
-
-    context('email link is at middle of plain text', () => {
-      it('should add link mark', function() {
-        const { editorView } = editor(doc(paragraph('{<>}')));
-        if (!dispatchPasteEvent(editorView, { plain: 'test test@atlassian.com test' })) {
-          return this.skip();
-        }
-        expect(editorView.state.doc).to.deep.equal(
-          doc(
-            paragraph(
-              'test ',
-              link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com'),
-              ' test'
+      context('email link is at middle of plain text', () => {
+        it('should add link mark', function() {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          if (!dispatchPasteEvent(editorView, { plain: 'test test@atlassian.com test' })) {
+            return this.skip();
+          }
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              paragraph(
+                'test ',
+                link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com'),
+                ' test'
+              )
             )
-          )
-        );
-        editorView.destroy();
+          );
+          editorView.destroy();
+        });
       });
-    });
 
-    context('email link without anchor tags in html', () => {
-      it('should add link mark', function() {
-        const { editorView } = editor(doc(paragraph('{<>}')));
-        if (!dispatchPasteEvent(editorView, { html: 'test@atlassian.com test' })) {
-          return this.skip();
-        }
-        expect(editorView.state.doc).to.deep.equal(
-          doc(paragraph(link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com'), ' test'))
-        );
-        editorView.destroy();
+      context('email link without anchor tags in html', () => {
+        it('should add link mark', function() {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          if (!dispatchPasteEvent(editorView, { html: 'test@atlassian.com test' })) {
+            return this.skip();
+          }
+          expect(editorView.state.doc).to.deep.equal(
+            doc(paragraph(link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com'), ' test'))
+          );
+          editorView.destroy();
+        });
       });
-    });
 
-    context('email link without anchor tags in html in middle of other text', () => {
-      it('should add link mark', function() {
-        const { editorView } = editor(doc(paragraph('{<>}')));
-        if (!dispatchPasteEvent(editorView, { html: 'test test@atlassian.com test' })) {
-          return this.skip();
-        }
-        expect(editorView.state.doc).to.deep.equal(
-          doc(
-            paragraph(
-              'test ',
-              link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com'),
-              ' test'
+      context('email link without anchor tags in html in middle of other text', () => {
+        it('should add link mark', function() {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          if (!dispatchPasteEvent(editorView, { html: 'test test@atlassian.com test' })) {
+            return this.skip();
+          }
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              paragraph(
+                'test ',
+                link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com'),
+                ' test'
+              )
             )
-          )
-        );
-        editorView.destroy();
+          );
+          editorView.destroy();
+        });
       });
-    });
 
-    context('email link is at end of html', () => {
-      it('should add link mark', function() {
-        const { editorView } = editor(doc(paragraph('{<>}')));
-        if (
-          !dispatchPasteEvent(editorView, {
-            html: '<a href="mailto:test@atlassian.com">Atlassian</a> test',
-          })
-        ) {
-          // This environment does not allow mocking paste events
-          return this.skip();
-        }
-        expect(editorView.state.doc).to.deep.equal(
-          doc(paragraph(link({ href: 'mailto:test@atlassian.com' })('Atlassian'), ' test'))
-        );
-        editorView.destroy();
+      context('email link is at end of html', () => {
+        it('should add link mark', function() {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          if (
+            !dispatchPasteEvent(editorView, {
+              html: '<a href="mailto:test@atlassian.com">Atlassian</a> test',
+            })
+          ) {
+            // This environment does not allow mocking paste events
+            return this.skip();
+          }
+          expect(editorView.state.doc).to.deep.equal(
+            doc(paragraph(link({ href: 'mailto:test@atlassian.com' })('Atlassian'), ' test'))
+          );
+          editorView.destroy();
+        });
+      });
+
+      context('email link with inline style is pasted and then text is inserted', () => {
+        it('should not apply inline style to inserted text', function() {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          if (
+            !dispatchPasteEvent(editorView, {
+              html: '<a href="mailto:test@atlassian.com"><b>Atlassian</b></a>',
+            })
+          ) {
+            // This environment does not allow mocking paste events
+            return this.skip();
+          }
+          insertText(editorView, 'abc', 10);
+          expect(editorView.state.doc).to.deep.equal(
+            doc(paragraph(link({ href: 'mailto:test@atlassian.com' })(strong('Atlassian')), 'abc'))
+          );
+          editorView.destroy();
+        });
       });
     });
-  });
+  };
 
   describe('Message Appearance', () => {
     const messageEditor = (doc: any) =>

@@ -377,8 +377,15 @@ export const createPlugin = (schema: Schema, editorProps: EditorProps = {}) => n
       if (html) {
         const contentSlices = linkifyContent(view.state.schema, slice);
         if (contentSlices) {
-          const { dispatch, state: { tr } } = view;
-          dispatch(tr.replaceSelection(contentSlices));
+          const { dispatch, state } = view;
+          let tr = state.tr.replaceSelection(contentSlices);
+          dispatch(tr);
+
+          tr = view.state.tr;
+          for (let mark in state.schema.marks) {
+            tr = tr.removeStoredMark(state.schema.marks[mark]);
+          }
+          dispatch(tr);
           return true;
         }
       }
