@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-cq",
-  "version": "5.0.6",
+  "version": "6.0.0",
   "description": "Atlassian Editor component for Confluence Questions",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -17,8 +17,8 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
-    "@atlaskit/editor-common": "^2.4.1",
-    "@atlaskit/editor-core": "^56.3.5",
+    "@atlaskit/editor-common": "^3.0.0",
+    "@atlaskit/editor-core": "^57.0.0",
     "@atlaskit/logo": "^6.0.0",
     "@atlaskit/mention": "^7.6.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
