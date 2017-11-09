@@ -3,6 +3,7 @@
 .*/node_modules/raf-schd/test/.*
 .*/node_modules/extract-react-types/.*
 .*/website/dist/sandbox/.*
+.*/node_modules/babel-normalize-comments/.*
 
 [include]
 

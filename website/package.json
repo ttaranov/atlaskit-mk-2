@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@atlaskit/website",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
@@ -47,7 +47,7 @@
     "@atlaskit/css-reset": "^1.1.5",
     "@atlaskit/field-text": "^4.0.0",
     "@atlaskit/icon": "^9.0.1",
-    "@atlaskit/logo": "^4.0.1",
+    "@atlaskit/logo": "^6.0.0",
     "@atlaskit/lozenge": "^3.4.4",
     "@atlaskit/navigation": "^22.0.0",
     "@atlaskit/single-select": "^2.0.1",
@@ -68,7 +68,7 @@
     "react-router-dom": "^4.2.2",
     "semver": "^5.4.1",
     "sentence-case": "^2.1.1",
-    "styled-components": "^1.4.3",
+    "styled-components": "^1.4.6",
     "uglify-js": "^3.1.7"
   }
 }
