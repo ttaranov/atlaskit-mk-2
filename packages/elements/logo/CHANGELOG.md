@@ -1,88 +1,91 @@
-# @atlaskit/lozenge
+# @atlaskit/logo
 
-## Unreleased
+## 5.0.0 (2017-10-27)
 
-## 3.4.2 (2017-07-27)
+* bug fix; fixed logo width issue in IE11. ([0ce8ab7](https://bitbucket.org/atlassian/atlaskit/commits/0ce8ab7))
+* breaking; Logo sizes changed, children no longer accepted ([7173d81](https://bitbucket.org/atlassian/atlaskit/commits/7173d81))
+* breaking; refactoring Logo component to fix numerous bugs ([7173d81](https://bitbucket.org/atlassian/atlaskit/commits/7173d81))
+
+## 4.0.3 (2017-10-26)
+
+* bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))
+
+## 4.0.2 (2017-10-22)
+
+* bug fix; update styled-components dep and react peerDep ([6a67bf8](https://bitbucket.org/atlassian/atlaskit/commits/6a67bf8))
+
+## 4.0.1 (2017-09-14)
+
+* bug fix; jSD and Statuspage logo icons have fixed gradients (issues closed: ak-3479) ([60d8aca](https://bitbucket.org/atlassian/atlaskit/commits/60d8aca))
+
+## 4.0.0 (2017-09-11)
+
+* breaking; All logos have been updated with new assets, please test these inside your application to make sure ([c4db7fc](https://bitbucket.org/atlassian/atlaskit/commits/c4db7fc))
+* breaking; new and updated company and product logos ([c4db7fc](https://bitbucket.org/atlassian/atlaskit/commits/c4db7fc))
+
+## 3.5.3 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+## 3.5.2 (2017-07-27)
 
 * fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
 
-## 3.4.1 (2017-07-25)
+## 3.5.1 (2017-07-25)
 
 * fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
 
-## 3.1.0 (2017-07-17)
-
-## 3.1.0 (2017-07-17)
-
-## 3.1.0 (2017-07-17)
+## 3.2.0 (2017-07-17)
 
 * fix; rerelease, failed prepublish scripts ([5fd82f8](https://bitbucket.org/atlassian/atlaskit/commits/5fd82f8))
 
-## 3.1.0 (2017-07-17)
+## 3.2.0 (2017-07-17)
 
 * feature; added ES module builds to dist and add jsnext:main to most ADG packages ([ea76507](https://bitbucket.org/atlassian/atlaskit/commits/ea76507))
 
-## 3.0.3 (2017-07-13)
+## 3.1.0 (2017-06-08)
 
 * fix; add prop-types as a dependency to avoid React 15.x warnings ([92598eb](https://bitbucket.org/atlassian/atlaskit/commits/92598eb))
 
-## 3.0.2 (2017-04-27)
+* feature; Convert logo to styled-components updated internal structure ([ec91404](https://bitbucket.org/atlassian/atlaskit/commits/ec91404))
+
+## 3.0.6 (2017-04-27)
 
 * fix; update legal copy to be more clear. Not all modules include ADG license. ([f3a945e](https://bitbucket.org/atlassian/atlaskit/commits/f3a945e))
 
-## 3.0.1 (2017-04-26)
+## 3.0.5 (2017-04-26)
 
 * fix; update legal copy and fix broken links for component README on npm. New contribution and ([0b3e454](https://bitbucket.org/atlassian/atlaskit/commits/0b3e454))
 
-## 2.0.0 (2017-03-27)
+## 3.0.4 (2017-04-18)
 
-null bump major to avoid API conflict with mentions ([1d01253](https://bitbucket.org/atlassian/atlaskit/commits/1d01253))
-null updating dependencies ([d293404](https://bitbucket.org/atlassian/atlaskit/commits/d293404))
+* fix; update logo readme to use new readme component ([491d789](https://bitbucket.org/atlassian/atlaskit/commits/491d789))
 
-* breaking; update lozenge major version
-* breaking; removed classnames dep and .d.ts file
-
-## 1.0.11 (2017-03-23)
+## 3.0.3 (2017-03-23)
 
 * fix; Empty commit to release the component ([49c08ee](https://bitbucket.org/atlassian/atlaskit/commits/49c08ee))
 
-null refactor the lozenge component to use styled-components ([eb738ca](https://bitbucket.org/atlassian/atlaskit/commits/eb738ca))
-
-* breaking; now requires peerDep of "styled-components"
-
-## 1.0.9 (2017-03-21)
-
-## 1.0.9 (2017-03-21)
+## 3.0.1 (2017-03-21)
 
 * fix; maintainers for all the packages were added ([261d00a](https://bitbucket.org/atlassian/atlaskit/commits/261d00a))
 
-## 1.0.8 (2017-02-28)
+## 3.0.0 (2017-03-06)
 
-* fix; dummy commit to release stories ([3df5d9f](https://bitbucket.org/atlassian/atlaskit/commits/3df5d9f))
+* feature; text-only logo mode without icon ([b989245](https://bitbucket.org/atlassian/atlaskit/commits/b989245))
 
-## 1.0.6 (2017-02-28)
+* breaking; isCollapsed prop has been replaced with an optional collapseTo prop (accepts value of 'icon' or 'type')
 
-* fix; dummy commit to fix broken stories and missing registry pages ([a31e92a](https://bitbucket.org/atlassian/atlaskit/commits/a31e92a))
+ISSUES CLOSED: AK-1408
 
-## 1.0.6 (2017-02-28)
+## 2.0.1 (2017-02-09)
 
-* fix; dummy commit to release stories for components ([a105c02](https://bitbucket.org/atlassian/atlaskit/commits/a105c02))
+* fix; avoiding binding render to this ([40c9951](https://bitbucket.org/atlassian/atlaskit/commits/40c9951))
 
-## 1.0.5 (2017-02-28)
+## 1.0.0 (2017-02-06)
 
-* fix; removes jsdoc annotations and moves them to usage.md ([2c53fea](https://bitbucket.org/atlassian/atlaskit/commits/2c53fea))
+* fix; fix logo to have public access ([5a41e37](https://bitbucket.org/atlassian/atlaskit/commits/5a41e37))
 
-## 1.0.4 (2017-02-20)
+## 1.0.0 (2017-02-06)
 
-* fix; use correctly scoped package names in npm docs ([91dbd2f](https://bitbucket.org/atlassian/atlaskit/commits/91dbd2f))
-
-## 1.0.3 (2017-02-07)
-
-## 1.0.2 (2017-02-07)
-
-* fix; Updates docs with yarn installation instructions ([aebf31a](https://bitbucket.org/atlassian/atlaskit/commits/aebf31a))
-* Add TypeScript declarations for lozenge. ([5993cf8](https://bitbucket.org/atlassian/atlaskit/commits/5993cf8))
-
-## 1.0.1 (2017-02-06)
-
-* fix; Updates package to use scoped ak packages ([b655c30](https://bitbucket.org/atlassian/atlaskit/commits/b655c30))
+* feature; Add more product logos ([e84ae80](https://bitbucket.org/atlassian/atlaskit/commits/e84ae80))
+* feature; Adjust width of collapsed logo ([99fa4a5](https://bitbucket.org/atlassian/atlaskit/commits/99fa4a5))
