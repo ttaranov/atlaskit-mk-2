@@ -3,7 +3,7 @@
 
 import React, { Children, Component, type Node } from 'react';
 
-import type { PlacementType, PositionType, SingleChild } from '../types';
+import type { CoordinatesType, PositionType, SingleChild } from '../types';
 import {
   Tooltip as StyledTooltip,
   TruncatedTooltip as StyledTruncatedTooltip,
@@ -27,7 +27,7 @@ type Props = {
   /** Function to be called when a mouse enters the target */
   onMouseOver?: MouseEvent => void,
   /** Where the tooltip should appear relative to its target */
-  placement: PlacementType,
+  position: PositionType,
   /** React <16.X requires a wrapping element */
   tag: string,
   /** Show only one line of text, and truncate when too long */
@@ -38,8 +38,8 @@ type State = {
   immediatelyShow: boolean,
   isFlipped: boolean,
   isVisible: boolean,
-  placement: PlacementType,
-  position: PositionType | null,
+  position: PositionType,
+  coordinates: CoordinatesType | null,
 };
 
 // global tooltip marshall
@@ -51,8 +51,8 @@ function getInitialState(props): State {
     immediatelyShow: false,
     isVisible: false,
     isFlipped: false,
-    placement: props.placement,
-    position: null,
+    position: props.position,
+    coordinates: null,
   };
 }
 
@@ -66,21 +66,21 @@ class Tooltip extends Component<Props, State> {
   wrapper: HTMLElement | null;
   static defaultProps = {
 
-    placement: 'bottom',
+    position: 'bottom',
     tag: 'div',
   };
 
   componentWillReceiveProps(nextProps: Props) {
-    const { placement, truncate } = nextProps;
+    const { position, truncate } = nextProps;
 
-    // handle case where placement is changed while visible
-    if (placement !== this.props.placement) {
-      this.setState({ placement, position: null });
+    // handle case where position is changed while visible
+    if (position !== this.props.position) {
+      this.setState({ position, coordinates: null });
     }
 
     // handle case where truncate is changed while visible
     if (truncate !== this.props.truncate) {
-      this.setState({ position: null });
+      this.setState({ coordinates: null });
     }
   }
 
@@ -91,17 +91,17 @@ class Tooltip extends Component<Props, State> {
   handleMeasureRef = (tooltip: HTMLElement) => {
     if (!tooltip || !this.wrapper) return;
 
-    const { placement } = this.props;
+    const { position } = this.props;
     const target = this.wrapper.children.length
       ? this.wrapper.children[0]
       : this.wrapper;
 
     // NOTE getPosition returns:
-    // placement Enum(top | left | bottom | right)
+    // position Enum(top | left | bottom | right)
     //   - adjusted for edge collision
-    // position: Object(left: number, top: number)
+    // coordinates: Object(left: number, top: number)
     //   - coordinates passed to Transition
-    this.setState(getPosition({ placement, target, tooltip }));
+    this.setState(getPosition({ position, target, tooltip }));
   };
 
   renderTooltip() {
@@ -110,15 +110,15 @@ class Tooltip extends Component<Props, State> {
       immediatelyHide,
       immediatelyShow,
       isVisible,
-      placement,
       position,
+      coordinates,
     } = this.state;
 
     // bail immediately when not visible
     if (!isVisible) return null;
 
     // render node for measuring in alternate tree via portal
-    if (!position) {
+    if (!coordinates) {
       const Measure = truncate ? StyledTruncatedTooltip : StyledTooltip;
       return (
         <Portal>
@@ -132,12 +132,12 @@ class Tooltip extends Component<Props, State> {
       );
     }
 
-    // render and animate tooltip when position available
+    // render and animate tooltip when coordinates available
     const transitionProps = {
       immediatelyHide,
       immediatelyShow,
-      placement,
       position,
+      coordinates,
       truncate,
     };
     return <Transition {...transitionProps}>{content}</Transition>;
@@ -147,14 +147,14 @@ class Tooltip extends Component<Props, State> {
     this.setState({
       immediatelyShow: immediate,
       isVisible: true,
-      position: null,
+      coordinates: null,
     });
   };
   hide = ({ immediate }: showHideArgs) => {
     // Update state twice to allow for the updated `immediate` prop to pass through
     // to the Transition component before the tooltip is removed
     this.setState({ immediatelyHide: immediate }, () => {
-      this.setState({ isVisible: false, position: null });
+      this.setState({ isVisible: false, coordinates: null });
     });
   };
 
@@ -188,14 +188,14 @@ class Tooltip extends Component<Props, State> {
     // NOTE removing props from rest:
     // - `content` is a valid HTML attribute, but has a different semantic meaning
     // - `hideTooltipOnClick` is NOT valid and react will warn
-    // - `placement` is NOT valid and react will warn
+    // - `position` is NOT valid and react will warn
     // - `truncate` is NOT valid and react will warn
     // eslint-disable-next-line no-unused-vars
     const {
       children,
       content,
       hideTooltipOnClick,
-      placement,
+      position,
       truncate,
       tag: Tag,
       ...rest
@@ -220,5 +220,4 @@ export type TooltipType = Tooltip;
 
 export default renamePropsWithWarning(Tooltip, {
   description: 'content',
-  position: 'placement',
 });

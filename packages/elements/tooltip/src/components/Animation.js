@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { Transition } from 'react-transition-group';
-import type { ChildrenType, ComponentType, PlacementType } from '../types';
+import type { ChildrenType, ComponentType, PositionType } from '../types';
 
 const ENTER_DURATION = 120;
 const EXIT_DURATION = 120;
@@ -114,19 +114,19 @@ const yPos = {
 export const Slide = ({
   immediatelyHide,
   immediatelyShow,
-  placement,
+  position,
   ...props
 }: {
   immediatelyHide: boolean,
   immediatelyShow: boolean,
-  placement: PlacementType,
+  position: PositionType,
   props?: any,
   children: ChildrenType,
   in: boolean,
   style: Object,
 }) => {
-  const horizontalOffset = xPos[placement];
-  const verticalOffset = yPos[placement];
+  const horizontalOffset = xPos[position];
+  const verticalOffset = yPos[position];
 
   const restingTransform = 'translate3d(0, 0, 0)';
   const timeout = {

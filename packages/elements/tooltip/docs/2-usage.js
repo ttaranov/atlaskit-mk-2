@@ -137,7 +137,7 @@ class Flip extends Component<{}, { active: boolean }> {
             };
             return (
               <div key={p} style={active ? style : { color: colors.G300 }}>
-                <Tooltip placement={p} content={`Content "${p}"`}>
+                <Tooltip position={p} content={`Content "${p}"`}>
                   {icon}
                 </Tooltip>
               </div>
@@ -157,7 +157,7 @@ export default md`
   ### Flip Behaviour
 
   Sometimes you can't be sure where your tooltip be end up. That's okay, we'll
-  flip the placement when applicable and make sure it's visible to the user.
+  flip the position when applicable and make sure it's visible to the user.
 
   ${<Example component={Flip} />}
 

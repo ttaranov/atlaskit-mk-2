@@ -2,7 +2,7 @@
 
 import inViewport from './inViewport';
 
-import type { PlacementType, PositionType } from '../../types';
+import type { CoordinatesType, PositionType } from '../../types';
 
 type Coords = {
   top: number,
@@ -22,17 +22,16 @@ type GetCoordsArgs = {
   gutter: number,
 };
 type GetPositionArgs = {
-  placement: PlacementType,
+  position: PositionType,
   target: HTMLElement,
   tooltip: HTMLElement,
 };
 type GetPositionResults = {
-  placement?: PlacementType,
+  coordinates?: CoordinatesType,
   position: PositionType,
-  isFlipped?: boolean,
 };
 
-const FLIPPED_PLACEMENT = {
+const FLIPPED_POSITION = {
   top: 'bottom',
   right: 'left',
   bottom: 'top',
@@ -73,17 +72,20 @@ function getCoords({
 }
 
 export default function getPosition({
-  placement,
+  position,
   target,
   tooltip,
 }: GetPositionArgs): GetPositionResults {
-  const noPosition = { position: {}, isFlipped: false };
+  const noPosition = {
+    coordinates: { left: 0, top: 0 },
+    position: 'bottom',
+  };
 
   /* eslint-disable no-console */
-  if (!placement) console.error('Property "placement" is required.');
+  if (!position) console.error('Property "position" is required.');
   if (!target) console.error('Property "target" is required.');
   if (!tooltip) console.error('Property "tooltip" is required.');
-  if (!placement || !target || !tooltip) return noPosition;
+  if (!position || !target || !tooltip) return noPosition;
   /* eslint-enable no-console */
 
   // get the original coordinates
@@ -91,22 +93,22 @@ export default function getPosition({
   const targetRect = target.getBoundingClientRect();
   const tooltipRect = tooltip.getBoundingClientRect();
 
-  const PLACEMENT_POSITIONS = getCoords({ targetRect, tooltipRect, gutter });
+  const POSITIONS = getCoords({ targetRect, tooltipRect, gutter });
 
   // set tooltip positions before viewport check
-  const attemptedPosition = PLACEMENT_POSITIONS[placement];
+  const attemptedPosition = POSITIONS[position];
 
   // check if the tooltip is in view or must be flipped
-  const adjustedPlacement = inViewport(attemptedPosition)
-    ? placement
-    : FLIPPED_PLACEMENT[placement];
+  const adjustedPosition = inViewport(attemptedPosition)
+    ? position
+    : FLIPPED_POSITION[position];
 
-  // adjust positions with (possibly) flipped placement
-  const left = PLACEMENT_POSITIONS[adjustedPlacement].left;
-  const top = PLACEMENT_POSITIONS[adjustedPlacement].top;
+  // adjust positions with (possibly) flipped position
+  const left = POSITIONS[adjustedPosition].left;
+  const top = POSITIONS[adjustedPosition].top;
 
   return {
-    placement: adjustedPlacement,
-    position: { left, top },
+    coordinates: { left, top },
+    position: adjustedPosition,
   };
 }

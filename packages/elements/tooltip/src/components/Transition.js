@@ -5,15 +5,15 @@ import React, { Component } from 'react';
 import { withRenderTarget } from '@atlaskit/layer-manager';
 import { Tooltip, TruncatedTooltip } from '../styled';
 import { Slide } from './Animation';
-import type { PlacementType } from '../types';
+import type { CoordinatesType, PositionType } from '../types';
 
 type Props = {
   children: string,
   immediatelyHide: boolean,
   immediatelyShow: boolean,
-  placement: PlacementType,
+  position: PositionType,
   // eslint-disable-next-line react/no-unused-prop-types
-  position: { left: number, top: number },
+  coordinates: CoordinatesType,
   truncate: boolean,
 };
 
@@ -21,9 +21,9 @@ class Tip extends Component<Props> {
   render() {
     const {
       children,
+      coordinates,
       immediatelyHide,
       immediatelyShow,
-      placement,
       position,
       truncate,
     } = this.props;
@@ -37,8 +37,8 @@ class Tip extends Component<Props> {
         immediatelyHide={immediatelyHide}
         immediatelyShow={immediatelyShow}
         in={transitionIn}
-        placement={placement}
-        style={position}
+        position={position}
+        style={coordinates}
       >
         {children}
       </Slide>

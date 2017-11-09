@@ -9,5 +9,5 @@ export type ElementType = PropType<Element<mixed>, any>;
 export type FunctionType = (...args: Array<any>) => mixed;
 export type SingleChild = ComponentType | ElementType;
 
-export type PlacementType = 'bottom' | 'left' | 'right' | 'top';
-export type PositionType = { left?: number, top?: number, isFlipped?: boolean };
+export type PositionType = 'bottom' | 'left' | 'right' | 'top';
+export type CoordinatesType = { left?: number, top?: number };

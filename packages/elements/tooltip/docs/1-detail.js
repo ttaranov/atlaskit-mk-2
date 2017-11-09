@@ -7,13 +7,13 @@ export default md`
     <Example
       Component={require('../examples/placement').default}
       source={require('!!raw-loader!../examples/placement')}
-      title="Placement"
+      title="Position"
     />
   )}
 
-  Tooltips have four placements available; "top", "right", "bottom", and "left".
-  Each placement center-aligns itself along the appropriate axis. Click the target
-  above to see each placement.
+  Tooltips have four positions available; "top", "right", "bottom", and "left".
+  Each position center-aligns itself along the appropriate axis. Click the target
+  above to see each position.
 
   ${(
     <Example
@@ -42,7 +42,7 @@ export default md`
     <Example
       Component={require('../examples/position').default}
       source={require('!!raw-loader!../examples/position')}
-      title="Position"
+      title="CSS Position"
     />
   )}
 

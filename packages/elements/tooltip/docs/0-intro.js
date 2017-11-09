@@ -36,7 +36,6 @@ export default md`
   #### Changes to Props
 
   * \`description\` has been renamed to \`content\`
-  * \`position\` has been renamed to \`placement\`
 
   In \`7.0.0\` the old props are still supported for backwards-compatibility,
   but will log a deprecation warning. Support will be removed from version
