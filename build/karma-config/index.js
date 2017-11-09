@@ -68,7 +68,7 @@ async function getAliases(cwd) {
   }, {});
 }
 
-module.exports = async function getConfig({ cwd, watch, browserstack }) {
+async function getKarmaConfig({ cwd, watch, browserstack }) {
   const aliases = await getAliases(cwd);
   webpackConfig.resolve.alias = { ...aliases, ...webpackConfig.resolve.alias };
 
@@ -163,4 +163,17 @@ module.exports = async function getConfig({ cwd, watch, browserstack }) {
   }
 
   return config;
-};
+}
+
+async function getPackagesWithKarmaTests() /*: Promise<Array<string>> */ {
+  const project /*: any */ = await boltQuery({
+    cwd: __dirname,
+    workspaceFiles: { karma: 'tests/browser/**/*.+(js|ts|tsx)' },
+  });
+
+  return project.workspaces
+    .filter(workspace => workspace.files.karma.length)
+    .map(workspace => workspace.pkg.name);
+}
+
+module.exports = { getKarmaConfig, getPackagesWithKarmaTests };
