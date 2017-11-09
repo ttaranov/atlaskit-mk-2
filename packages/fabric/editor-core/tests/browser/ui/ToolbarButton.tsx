@@ -65,7 +65,7 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
     toolbarButtonElem.unmount();
   });
 
-  it('should pass titlePosition to tooltip placement', () => {
+  it('should pass titlePosition to tooltip position', () => {
     const toolbarButtonElem = mount(<ToolbarButton
       onClick={noop}
       selected={false}
@@ -76,7 +76,7 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
 
     const tooltip = toolbarButtonElem.find(Tooltip);
     tooltip.simulate('mouseover');
-    expect(tooltip.prop('placement')).to.equal('left');
+    expect(tooltip.prop('position')).to.equal('left');
     toolbarButtonElem.unmount();
   });
 });
