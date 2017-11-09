@@ -28,7 +28,7 @@ type Props = {
   onMouseOver?: MouseEvent => void,
   /** Where the tooltip should appear relative to its target */
   position: PositionType,
-  /** React <16.X requires a wrapping element */
+  /** Replace the wrapping element */
   tag: string,
   /** Show only one line of text, and truncate when too long */
   truncate?: boolean,

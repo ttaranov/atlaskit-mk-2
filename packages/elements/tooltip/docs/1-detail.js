@@ -5,8 +5,8 @@ import { md, Example } from '@atlaskit/docs';
 export default md`
   ${(
     <Example
-      Component={require('../examples/placement').default}
-      source={require('!!raw-loader!../examples/placement')}
+      Component={require('../examples/position').default}
+      source={require('!!raw-loader!../examples/position')}
       title="Position"
     />
   )}
@@ -40,8 +40,8 @@ export default md`
 
   ${(
     <Example
-      Component={require('../examples/position').default}
-      source={require('!!raw-loader!../examples/position')}
+      Component={require('../examples/css-position').default}
+      source={require('!!raw-loader!../examples/css-position')}
       title="CSS Position"
     />
   )}

@@ -44,14 +44,14 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
       </AkButton>
     );
 
-    const placement = this.props.titlePosition || 'top';
+    const position = this.props.titlePosition || 'top';
     const showTooltip = this.props.title && !this.props.hideTooltip;
 
     return showTooltip ? (
       <Tooltip
         content={this.props.title}
         hideTooltipOnClick={true}
-        placement={placement}
+        position={position}
       >
         {button}
       </Tooltip>
