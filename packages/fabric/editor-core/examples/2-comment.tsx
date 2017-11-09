@@ -4,6 +4,7 @@ import Button, { ButtonGroup } from '@atlaskit/button';
 import Editor from './../src/editor';
 import EditorContext from './../src/editor/ui/EditorContext';
 import WithEditorActions from './../src/editor/ui/WithEditorActions';
+import ToolbarHelp from './../src/editor/ui/ToolbarHelp';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
 import CollapsedEditor from '../src/editor/ui/CollapsedEditor';
 import ToolbarFeedback from '../src/ui/ToolbarFeedback';
@@ -94,6 +95,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     allowCodeBlocks={true}
                     allowLists={true}
                     allowTables={true}
+                    allowHelpDialog={true}
 
                     mentionProvider={mentionProvider}
                     emojiProvider={emojiProvider}
@@ -104,7 +106,10 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     onSave={SAVE_ACTION}
                     onCancel={CANCEL_ACTION}
 
-                    primaryToolbarComponents={<ToolbarFeedback packageVersion={version} packageName={name} />}
+                    primaryToolbarComponents={[
+                      <ToolbarFeedback packageVersion={version} packageName={name} />,
+                      <ToolbarHelp />
+                    ]}
                   />
                 </CollapsedEditor>
               </div>}

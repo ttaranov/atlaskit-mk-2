@@ -39,5 +39,6 @@ export { default as WithEditorActions } from './editor/ui/WithEditorActions';
 export { default as WithHelpTrigger } from './editor/ui/WithHelpTrigger';
 export { default as getPropsPreset } from './editor/create-editor/get-props-preset';
 export { default as CollapsedEditor } from './editor/ui/CollapsedEditor';
+export { default as ToolbarHelp } from './editor/ui/ToolbarHelp';
 
 export { createJIRASchema } from '@atlaskit/editor-common';
