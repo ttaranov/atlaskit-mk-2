@@ -80,7 +80,7 @@ async function createChangeset(changedPackages, opts = {}) {
 
   /** Get releaseNotes if there is a major change */
 
-  if (Object.values(changeset.releases).some(bump => bump === 'major')) {
+  if (Object.values(changeset.releases).some(bump => bump.type === 'major')) {
     logger.log('You are making a breaking change, you\'ll need to create new release file to document this');
     logger.log('(you can set you $EDITOR variable to control which editor will be used)');
 
