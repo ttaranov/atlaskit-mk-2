@@ -1,5 +1,10 @@
 # @atlaskit/logo
 
+## 6.0.0 (2017-11-09)
+
+* breaking; Removed the collapseTo prop in favour of explicit named exports (see below).
+* breaking; The default export has been removed in favour of named exports. The named exports are now: AtlassianLogo, AtlassianIcon, AtlassianWordmark, BitbucketLogo, BitbucketIcon, BitbucketWordmark, ConfluenceLogo, ConfluenceIcon, ConfluenceWordmark, HipchatLogo, HipchatIcon, HipchatWordmark, JiraCoreLogo, JiraCoreIcon, JiraCoreWordmark, JiraLogo, JiraIcon, JiraWordmark, StatuspageLogo, StatuspageIcon, StatuspageWordmark, StrideLogo, StrideIcon, StrideWordmark.
+
 ## 5.0.0 (2017-10-27)
 
 * bug fix; fixed logo width issue in IE11. ([0ce8ab7](https://bitbucket.org/atlassian/atlaskit/commits/0ce8ab7))
