@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable react/require-default-props */
 
-import React, { Children, Component, type Node } from 'react';
+import React, { Children, Component } from 'react';
 
 import type { CoordinatesType, PositionType, SingleChild } from '../types';
 import {
@@ -19,7 +19,7 @@ type Props = {
   /** A single element, either Component or DOM node */
   children: SingleChild,
   /** The content of the tooltip */
-  content: Node,
+  content: string,
   /** Hide the tooltip when the element is clicked */
   hideTooltipOnClick?: boolean,
   /** Function to be called when a mouse leaves the target */

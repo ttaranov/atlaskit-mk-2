@@ -30,10 +30,6 @@ async function getAliases(cwd /*: string */) {
   });
 
   return results.workspaces.reduce((acc, workspace) => {
-    if (workspace.pkg.src) {
-      // acc[workspace.pkg.name] = path.resolve(workspace.dir, workspace.pkg.src);
-    }
-
     return acc;
   }, {});
 }
