@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Node as PMNode } from 'prosemirror-model';
-import { JiraLogo } from '@atlaskit/logo';
+import { JiraIcon } from '@atlaskit/logo';
 import {
   akBorderRadius,
   akColorN30,
@@ -67,7 +67,7 @@ export default function JIRAIssueNode(props: Props) {
   return (
     <WrapperNode>
       <SvgChildNode>
-        <JiraLogo size="small" collapseTo="icon"/>
+        <JiraIcon size="small" />
       </SvgChildNode>
       <JiraChildNode>{issueKey}</JiraChildNode>
     </WrapperNode>

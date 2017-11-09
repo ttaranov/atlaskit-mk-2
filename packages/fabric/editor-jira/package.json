@@ -28,7 +28,7 @@
     "prosemirror-model": "^0.22.0",
     "prosemirror-state": "^0.22.0",
     "prosemirror-view": "^0.22.0",
-    "styled-components": "^1.4.3",
+    "styled-components": "^1.4.6",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
