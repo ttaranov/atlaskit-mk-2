@@ -78,7 +78,7 @@ async function createChangeset(changedPackages, opts = {}) {
     dependent.type = bumpType;
   }
 
-  /** Get releaseNotes if there is a major change */
+  /* (TODO: Get releaseNotes if there is a major change)
 
   if (Object.values(changeset.releases).some(bump => bump.type === 'major')) {
     logger.log('You are making a breaking change, you\'ll need to create new release file to document this');
@@ -89,6 +89,7 @@ async function createChangeset(changedPackages, opts = {}) {
     await cli.askEditor(newReleasePath);
     changeset.releaseNotes = newReleasePath;
   }
+  */
 
   changeset.summary = summary;
   changeset.dependents = dependents;
