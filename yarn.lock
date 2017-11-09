@@ -15,7 +15,7 @@
   dependencies:
     prop-types "^15.5.10"
 
-"@atlaskit/avatar@^4.0.5", "@atlaskit/avatar@^4.0.6":
+"@atlaskit/avatar@^4.0.5":
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/@atlaskit/avatar/-/avatar-4.0.6.tgz#4aaf4e720e3beabd473729f7ae804ab5d20bd4d6"
   dependencies:
@@ -58,14 +58,13 @@
     prop-types "^15.5.10"
     styled-components "^1.3.0"
 
-"@atlaskit/blanket@^2.4.3":
-  version "2.4.3"
-  resolved "https://registry.yarnpkg.com/@atlaskit/blanket/-/blanket-2.4.3.tgz#e6424693393e171719d73f0c0e2c383a7aa4cd80"
+"@atlaskit/blanket@^3.0.0":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/blanket/-/blanket-3.0.3.tgz#845729e629ea0fbcca8f96c98ccf353469f6f6f2"
   dependencies:
-    "@atlaskit/util-shared-styles" "^2.10.3"
+    "@atlaskit/theme" "^2.0.0"
     babel-runtime "^6.11.6"
-    prop-types "^15.5.10"
-    styled-components "^1.3.0"
+    styled-components "^1.4.6"
 
 "@atlaskit/button-group@^1.5.3":
   version "1.5.3"
@@ -176,6 +175,18 @@
     babel-runtime "^6.23.0"
     classnames "^2.2.5"
     keycode "^2.1.9"
+    prop-types "^15.5.10"
+    styled-components "^1.4.6"
+
+"@atlaskit/dynamic-table@^6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@atlaskit/dynamic-table/-/dynamic-table-6.0.2.tgz#d75de5ffd0145d4376598d67d3b5b797fdb97c6c"
+  dependencies:
+    "@atlaskit/pagination" "^3.1.0"
+    "@atlaskit/theme" "^2.0.0"
+    "@atlaskit/util-common" "^1.1.0"
+    "@atlaskit/util-shared-styles" "^1.0.1"
+    babel-runtime "^6.11.6"
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
@@ -375,16 +386,6 @@
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
-"@atlaskit/item@^3.1.3":
-  version "3.1.4"
-  resolved "https://registry.yarnpkg.com/@atlaskit/item/-/item-3.1.4.tgz#d91e3e1cae15a2b9f814313ca5df93508f8a3e8e"
-  dependencies:
-    "@atlaskit/icon" "^7.0.1"
-    "@atlaskit/util-shared-styles" "^2.10.0"
-    babel-runtime "^6.23.0"
-    prop-types "^15.5.10"
-    styled-components "^1.3.0"
-
 "@atlaskit/item@^4.0.0", "@atlaskit/item@^4.1.0":
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/@atlaskit/item/-/item-4.1.2.tgz#ecbb3be8a27c8af340825f6f6dd03b463ea465ce"
@@ -394,6 +395,17 @@
     babel-runtime "^6.23.0"
     prop-types "^15.5.10"
     styled-components "^1.3.0"
+
+"@atlaskit/item@^4.2.0":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/item/-/item-4.2.1.tgz#fc475d71f6f15b6f9b4a610c2481c6c358cf1098"
+  dependencies:
+    uid "0.0.2"
+    "@atlaskit/icon" "^7.0.1"
+    "@atlaskit/theme" "^2.1.0"
+    babel-runtime "^6.23.0"
+    prop-types "^15.5.10"
+    styled-components "^1.4.6"
 
 "@atlaskit/layer-manager@^2.1.2":
   version "2.1.2"
@@ -525,29 +537,44 @@
     tslib "^1.2.0"
     xregexp "^3.2.0"
 
-"@atlaskit/navigation@^22.0.0":
-  version "22.0.1"
-  resolved "https://registry.yarnpkg.com/@atlaskit/navigation/-/navigation-22.0.1.tgz#aa57e764d5b4efed3d941f9040a3600bfd4757d3"
+"@atlaskit/navigation@^26.5.1":
+  version "26.5.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/navigation/-/navigation-26.5.1.tgz#de43e279064d21aa79e918638fa16ba3d3d5a22a"
   dependencies:
-    "@atlaskit/avatar" "^4.0.6"
-    "@atlaskit/blanket" "^2.4.3"
+    "@atlaskit/analytics" "^2.0.0"
+    "@atlaskit/avatar" "^8.0.0"
+    "@atlaskit/blanket" "^3.0.0"
     "@atlaskit/dropdown-menu" "^3.8.0"
     "@atlaskit/field-base" "^8.0.1"
-    "@atlaskit/icon" "^8.1.0"
-    "@atlaskit/item" "^3.1.3"
+    "@atlaskit/icon" "^9.0.0"
+    "@atlaskit/item" "^4.2.0"
+    "@atlaskit/polyfills" "^1.0.0"
+    "@atlaskit/size-detector" "^2.0.0"
+    "@atlaskit/theme" "^2.1.0"
     "@atlaskit/tooltip" "^6.0.0"
     "@atlaskit/util-common" "^1.5.2"
     "@atlaskit/util-shared-styles" "^2.10.3"
     babel-runtime "^6.25.0"
     chromatism "^2.6.0"
-    invariant "^2.2.2"
+    es6-object-assign "^1.1.0"
     keycode "^2.1.9"
+    lodash.clonedeep "^4.5.0"
     memoize-one "^3.0.1"
     prop-types "^15.5.10"
     raf-schd "^2.0.1"
-    react-resize-aware "^2.7.0"
     react-transition-group "^1.2.0"
-    styled-components "^1.3.0"
+    styled-components "^1.4.6"
+
+"@atlaskit/pagination@^3.1.0":
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/@atlaskit/pagination/-/pagination-3.5.6.tgz#8454eb241da6270f684da940b8e53bc06cecbf96"
+  dependencies:
+    "@atlaskit/button" "^5.4.2"
+    "@atlaskit/util-common" "^1.1.0"
+    "@atlaskit/util-shared-styles" "^1.0.1"
+    babel-runtime "^6.11.6"
+    prop-types "^15.5.10"
+    styled-components "^1.4.6"
 
 "@atlaskit/polyfills@^1.0.0":
   version "1.1.0"
@@ -588,6 +615,14 @@
     classnames "^2.2.5"
     prop-types "^15.5.10"
     styled-components "^1.3.0"
+
+"@atlaskit/size-detector@^2.0.0":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@atlaskit/size-detector/-/size-detector-2.0.2.tgz#01e8a91d8704dd9a1efeb3b8392466c8b6c92541"
+  dependencies:
+    babel-runtime "^6.11.6"
+    prop-types "^15.5.10"
+    raf-schd "^2.0.1"
 
 "@atlaskit/spinner@^1.0.1":
   version "1.0.5"
@@ -700,7 +735,7 @@
     custom-event-polyfill "^0.3.0"
     keycode "^2.1.4"
 
-"@atlaskit/util-common@^1.0.0", "@atlaskit/util-common@^1.5.2":
+"@atlaskit/util-common@^1.0.0", "@atlaskit/util-common@^1.1.0", "@atlaskit/util-common@^1.5.2":
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-common/-/util-common-1.5.2.tgz#ae9e96c540aa2517ca922542333ac24eb3473cbc"
   dependencies:
@@ -737,7 +772,7 @@
     babel-runtime "^6.11.6"
     styled-components "^1.4.6"
 
-"@atlaskit/util-shared-styles@^2.0.1", "@atlaskit/util-shared-styles@^2.1.0", "@atlaskit/util-shared-styles@^2.1.1", "@atlaskit/util-shared-styles@^2.10.0", "@atlaskit/util-shared-styles@^2.10.3", "@atlaskit/util-shared-styles@^2.6.0":
+"@atlaskit/util-shared-styles@^2.0.1", "@atlaskit/util-shared-styles@^2.1.0", "@atlaskit/util-shared-styles@^2.1.1", "@atlaskit/util-shared-styles@^2.10.3", "@atlaskit/util-shared-styles@^2.6.0":
   version "2.10.3"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-2.10.3.tgz#5b9dfa1ebd9f6c062aa6309dc7236bdbd50acea9"
   dependencies:
@@ -6675,6 +6710,10 @@ lodash.camelcase@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
 
+lodash.clonedeep@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+
 lodash.cond@^4.3.0:
   version "4.5.2"
   resolved "https://registry.yarnpkg.com/lodash.cond/-/lodash.cond-4.5.2.tgz#f471a1da486be60f6ab955d17115523dd1d255d5"
@@ -8831,10 +8870,6 @@ react-prop-types@^0.4.0:
   resolved "https://registry.yarnpkg.com/react-prop-types/-/react-prop-types-0.4.0.tgz#f99b0bfb4006929c9af2051e7c1414a5c75b93d0"
   dependencies:
     warning "^3.0.0"
-
-react-resize-aware@^2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/react-resize-aware/-/react-resize-aware-2.7.0.tgz#1bb6d0b45a234d94d412b5c3f5e9d2ffbf973429"
 
 react-router-dom@^4.2.2:
   version "4.2.2"
