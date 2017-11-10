@@ -52,7 +52,11 @@ describe('@atlaskit/editor-core/utils/filter', () => {
         },
         {
           type: 'mention',
+<<<<<<< HEAD
           attrs: { id: 'id', text: 'mention name' },
+=======
+          attrs: { id: 'id', text: 'mention name', accessLevel: '' },
+>>>>>>> FS-1388 - Handle pasting of multi block content into an action or decision by seperating into text with hard breaks
         },
       ]);
     });
