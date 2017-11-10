@@ -11,7 +11,6 @@ pipelines:
             - bolt typecheck
             - bolt test
             - bolt test:browser:browserstack
-            - bolt build
             - bolt release
             - (cd website && bolt deploy)
 
@@ -25,5 +24,4 @@ pipelines:
           - bolt typecheck
           - bolt test
           - bolt test:browser:browserstack
-          - bolt build
           - (cd website && bolt deploy-staging:no-minimize)
