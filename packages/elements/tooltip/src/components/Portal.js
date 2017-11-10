@@ -1,11 +1,10 @@
 // @flow
 
-import { Children, Component } from 'react';
+import { Children, Component, type Element } from 'react';
 import { render } from 'react-dom';
-import type { SingleChild } from '../types';
 
 type Props = {
-  children: SingleChild,
+  children: Element<*>,
 };
 
 export default class Portal extends Component<Props> {

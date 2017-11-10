@@ -1,9 +1,9 @@
 // @flow
 /* eslint-disable react/require-default-props */
 
-import React, { Children, Component, type Node } from 'react';
+import React, { Children, Component, type Node, type Element } from 'react';
 
-import type { CoordinatesType, PositionType, SingleChild } from '../types';
+import type { CoordinatesType, PositionType } from '../types';
 import {
   Tooltip as StyledTooltip,
   TruncatedTooltip as StyledTruncatedTooltip,
@@ -17,7 +17,7 @@ import { getPosition } from './utils';
 
 type Props = {
   /** A single element, either Component or DOM node */
-  children: SingleChild,
+  children: Element<*>,
   /** The content of the tooltip */
   content: Node,
   /** Hide the tooltip when the element is clicked */

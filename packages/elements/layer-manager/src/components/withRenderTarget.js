@@ -1,17 +1,16 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type ComponentType } from 'react';
 import PropTypes from 'prop-types';
 
 import { Gateway, GatewayRegistry } from './gateway';
 import Portal from './Portal';
-import type { ComponentType } from '../types';
 
 type Props = {};
 
 export default function withRenderTarget(
   { target, withTransitionGroup }:
   { target: string, withTransitionGroup: boolean },
-  WrappedComponent: ComponentType,
+  WrappedComponent: ComponentType<*>,
 ) {
   // eslint-disable-next-line react/prefer-stateless-function
   return class extends Component<Props> {

@@ -1,21 +1,21 @@
 // @flow
 /* eslint-disable react/require-default-props */
 
-import React from 'react';
+import React, { type ComponentType, type Node } from 'react';
 import { Transition } from 'react-transition-group';
-import type { ChildrenType, ComponentType, PositionType } from '../types';
+import type { PositionType } from '../types';
 
 const ENTER_DURATION = 120;
 const EXIT_DURATION = 120;
 const easing = 'cubic-bezier(0.23, 1, 0.32, 1)'; // easeOutQuint
 const distance = 8;
 
-type EnterFunc = (node: Element, isAppearing: boolean) => void;
-type ExitFunc = (node: Element) => void;
+type EnterFunc = (node: HTMLElement, isAppearing: boolean) => void;
+type ExitFunc = (node: HTMLElement) => void;
 
 type Props = {
-  children: ChildrenType,
-  component: ComponentType,
+  children: Node,
+  component: ComponentType<*>,
   onEnter?: EnterFunc,
   onEntering?: EnterFunc,
   onEntered?: EnterFunc,
@@ -90,8 +90,10 @@ function Animation({
     </Transition>
   );
 }
+const DefaultComponent = props => <div {...props} />;
+
 Animation.defaultProps = {
-  component: 'div',
+  component: DefaultComponent,
 };
 
 // SLIDE
@@ -121,7 +123,7 @@ export const Slide = ({
   immediatelyShow: boolean,
   position: PositionType,
   props?: any,
-  children: ChildrenType,
+  children: Node,
   in: boolean,
   style: Object,
 }) => {

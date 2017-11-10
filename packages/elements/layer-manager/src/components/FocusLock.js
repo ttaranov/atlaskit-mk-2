@@ -1,10 +1,9 @@
 // @flow
 
-import { Children, Component } from 'react';
+import { Children, Component, type Node } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 
-import type { ElementType, ChildrenType } from '../types';
 import * as focusScope from '../utils/focus-scope';
 import * as focusStore from '../utils/focus-store';
 
@@ -13,7 +12,7 @@ type Props = {
     DOM Element to apply `aria-hidden=true` to when this component gains focus.
     This is provided via context when used within @atlaskit/layer-manager.
   */
-  ariaHiddenNode?: ElementType,
+  ariaHiddenNode?: HTMLElement,
   /**
     Boolean OR Function indicating which element to focus when the component mounts
     TRUE will automatically find the first "tabbable" element within the modal
@@ -23,7 +22,7 @@ type Props = {
   /**
     Inner content
   */
-  children?: ChildrenType,
+  children?: Node,
   /**
     Toggle focus management outside of mount/unmount lifecycle methods
   */

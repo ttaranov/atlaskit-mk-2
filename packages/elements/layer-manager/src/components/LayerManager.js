@@ -1,10 +1,9 @@
 // @flow
-import React, { Children, Component } from 'react';
+import React, { Children, Component, type Node } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { TransitionGroup } from 'react-transition-group';
 import { GatewayDest, GatewayProvider } from './gateway';
-import type { ChildrenType } from '../types';
 
 
 // NOTE: lock the app wrapper to a 0 z-index. This allows layer manager to
@@ -15,7 +14,7 @@ const AppWrapper = styled.div`
   z-index: 0;
 `;
 
-type Props = { children: ChildrenType};
+type Props = { children: Node };
 type State = { ariaHiddenNode?: HTMLElement };
 
 export default class LayerManager extends Component<Props, State> {
