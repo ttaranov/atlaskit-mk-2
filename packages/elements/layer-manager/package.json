@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/layer-manager",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "A React Component for managing layers",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -26,7 +26,7 @@
     "react-dom": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^0.0.2"
+    "@atlaskit/docs": "^0.0.3"
   },
   "keywords": [
     "atlaskit",
