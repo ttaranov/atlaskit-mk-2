@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "7.0.2",
+  "version": "8.1.0",
   "description": "Renderer component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -8,18 +8,24 @@
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
-    "@atlaskit/editor-common": "^2.2.1",
+    "@atlaskit/code": "^2.1.5",
+    "@atlaskit/editor-common": "^3.1.0",
     "prosemirror-model": "^0.22.0"
   },
   "peerDependencies": {
     "react": "^15.6.1"
   },
   "devDependencies": {
+    "@atlaskit/docs": "^0.0.2",
+    "@atlaskit/editor-core": "^58.0.0",
+    "@atlaskit/editor-test-helpers": "^0.1.0",
     "@types/prosemirror-model": "^0.21.0",
     "prosemirror-model": "^0.22.0"
   }

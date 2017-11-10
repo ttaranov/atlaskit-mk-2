@@ -21,8 +21,7 @@ import {
   ImageResizeMode
 } from '@atlaskit/media-core';
 
-import { MediaAttributes } from '@atlaskit/editor-common';
-import { CardEventClickHandler } from '../Renderer';
+import { MediaAttributes, CardEventClickHandler } from '@atlaskit/editor-common';
 
 export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
 

@@ -24,7 +24,7 @@
     "calendar-base": "^0.3.0",
     "keycode": "^2.1.7",
     "prop-types": "^15.5.10",
-    "styled-components": "^1.4.3"
+    "styled-components": "^1.4.6"
   },
   "peerDependencies": {
     "react": "^15.6.1"

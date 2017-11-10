@@ -5,6 +5,7 @@ import { Node, Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { ImageUploadHandler } from '../plugins/image-upload';
+import { TextFormattingOptions } from '../plugins/text-formatting';
 import { AnalyticsHandler } from '../../analytics';
 import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../plugins/macro/types';
@@ -23,7 +24,7 @@ export interface EditorProps {
   secondaryToolbarComponents?: ReactElement;
   addonToolbarComponents?: ReactElement;
 
-  allowTextFormatting?: boolean;
+  allowTextFormatting?: boolean | TextFormattingOptions;
   allowMentions?: boolean;
   allowTasksAndDecisions?: boolean;
   allowHyperlinks?: boolean;

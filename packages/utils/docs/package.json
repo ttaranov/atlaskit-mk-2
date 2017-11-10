@@ -23,7 +23,7 @@
     "@atlaskit/theme": "^2.0.0",
     "babel-runtime": "^6.26.0",
     "react-markings": "^1.1.6",
-    "styled-components": "^1.4.3"
+    "styled-components": "^1.4.6"
   },
   "peerDependencies": {
     "react": "^15.6.1"

@@ -18,6 +18,9 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const chalk = require('chalk');
 
+const WEBSITE_ENV = process.env.WEBSITE_ENV || 'development';
+const WEBSITE_SUBSET = process.env.WEBSITE || 'all';
+
 /**
  * Generates mapping 'package_name' -> 'package_src_folder'. E.g.:
  * @atlaskit/editor-core -> /path_to_repo/packages/fabric/editor-core/src
@@ -118,10 +121,14 @@ function createEntryPoint(subsetName /*?: string */) {
   return entry;
 }
 
-function subsetBanner(subsetName /*?: string */) {
+function subsetBanner(env /*: string */, subsetName /*: string */) {
   console.log();
   console.log(
-    chalk.blue(`Running website with "${chalk.bold(process.env.WEBSITE || 'all')}" packages.`)
+    chalk.blue(
+      `${env === 'production' ? 'Building' : 'Running'} website with "${chalk.bold(
+        subsetName
+      )}" packages.`
+    )
   );
   console.log();
 }
@@ -130,16 +137,16 @@ module.exports = async function createWebpackConfig() {
   const basePath = path.join(__dirname, '..');
   const aliases = await getAliases(basePath);
 
-  subsetBanner(process.env.WEBSITE);
+  subsetBanner(WEBSITE_ENV, WEBSITE_SUBSET);
 
   return {
-    entry: createEntryPoint(process.env.WEBSITE),
+    entry: createEntryPoint(WEBSITE_SUBSET),
     output: {
       filename: '[name].js',
       path: path.resolve(__dirname, 'dist'),
       publicPath: '/',
     },
-    devtool: 'cheap-module-source-map',
+    devtool: WEBSITE_ENV === 'production' ? false : 'cheap-module-source-map',
     devServer: {
       compress: true,
       port: 9000,
@@ -161,7 +168,7 @@ module.exports = async function createWebpackConfig() {
           test: /SITE_DATA$/,
           loader: 'bolt-fs-loader',
           options: {
-            include: ['docs/**/*.md', 'patterns/**/*.js', ...getPackagesGlobs(process.env.WEBSITE)],
+            include: ['docs/**/*.md', 'patterns/**/*.js', ...getPackagesGlobs(WEBSITE_SUBSET)],
             exclude: ['**/node_modules/**', 'packages/utils/docs/**'],
           },
         },
@@ -238,6 +245,9 @@ module.exports = async function createWebpackConfig() {
       }),
       new HtmlWebpackPlugin({
         template: 'public/index.html.ejs',
+      }),
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': `"${WEBSITE_ENV}"`,
       }),
     ],
   };

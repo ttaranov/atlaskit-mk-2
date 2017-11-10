@@ -11,12 +11,15 @@ import { Redirect, Link } from 'react-router-dom';
 import { colors } from '@atlaskit/theme';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';
 import CodeIcon from '@atlaskit/icon/glyph/code';
+import EditIcon from '@atlaskit/icon/glyph/edit';
+import ErrorIcon from '@atlaskit/icon/glyph/error';
+import Button, { ButtonGroup } from '@atlaskit/button';
+import Flag, { FlagGroup } from '@atlaskit/flag';
+import Spinner from '@atlaskit/spinner';
 import SingleSelect from '@atlaskit/single-select';
 import CodeBlock from '../components/Code';
 import { packages as packagesData } from '../site';
 import { packageUrl } from '../utils/url';
-
-
 
 const Container = styled.div`
   display: flex;
@@ -28,8 +31,9 @@ const Container = styled.div`
 const Content = styled.div`
   flex: 1 1 auto;
   overflow-y: auto;
-  position: relative;
 `;
+
+const SANDBOX_DEPLOY_ENDPOINT = 'https://atlaskit-deploy-sandbox.glitch.me/deploy';
 
 const Nav = styled.nav`
   background: ${colors.N30};
@@ -133,8 +137,6 @@ function PackageSelector(props) {
 function ExampleSelector(props) {
   let selectedExampleItem;
 
-  console.log(props);
-
   const examplesSelectItems = [
     {
       heading: 'Examples',
@@ -190,9 +192,20 @@ function ExampleNavigation(props) {
       </NavSection>
 
       <NavSection>
-        <div onClick={props.onCodeToggle}>
-          <CodeIcon size="large" primaryColor={colors.N500} label="show source" />
-        </div>
+        <ButtonGroup>
+          <Button
+            appearance="link"
+            iconBefore={<CodeIcon size="large" primaryColor={colors.N500} label="Show source" />}
+            onClick={props.onCodeToggle}
+          />
+          <Button
+            appearance="link"
+            iconBefore={props.loadingSandbox
+              ? <Spinner />
+              : <EditIcon size="large" primaryColor={colors.N500} label="Open in Codesandbox.io" />}
+            onClick={props.deploySandbox}
+          />
+      </ButtonGroup>
       </NavSection>
     </Nav>
   );
@@ -237,6 +250,8 @@ function ExampleDisplay(props) {
 
 type State = {
   displayCode: boolean,
+  flags: Object,
+  loadingSandbox: boolean,
 };
 
 type Props = {
@@ -246,6 +261,8 @@ type Props = {
 export default class Examples extends React.Component<Props, State> {
   state = {
     displayCode: false,
+    flags: {},
+    loadingSandbox: false,
   };
 
   static contextTypes = {
@@ -333,6 +350,70 @@ export default class Examples extends React.Component<Props, State> {
     });
   };
 
+  addFlag = (flagProps: {
+    appearance: string,
+    description: string,
+    title: string
+  }) => {
+    const id = Date.now().toString();
+    const icon = (() => {
+      if (flagProps.appearance === 'error') {
+        return <ErrorIcon label="Error" secondaryColor={colors.R400} />;
+      }
+
+      return '';
+    })();
+    this.setState({
+      flags: {
+        [id]: (<Flag
+          icon={icon}
+          id={id}
+          key={id}
+          actions={[{ content: 'OK', onClick: () => this.removeFlag(id) }]}
+          {...flagProps}
+        />),
+        ...this.state.flags,
+      }
+    })
+  }
+
+  removeFlag = (removedKey: string) => {
+    const flags = Object.keys(this.state.flags)
+      .filter(key => key !== removedKey.toString())
+      .reduce((newFlags, key) => ({ ...newFlags, [key]: this.state.flags[key]}), {});
+
+    this.setState({ flags });
+  }
+
+  deploySandbox = async () => {
+    const props = this.resolveProps(
+      this.props.match.params.groupId,
+      this.props.match.params.pkgId,
+      this.props.match.params.exampleId
+    );
+
+    if (!props.example) {
+      return;
+    }
+
+    const component = props.packageId;
+    const example = props.example.id.split('.').slice(0, -1).join('.');
+    this.setState({ loadingSandbox: true });
+    const response = await fetch(`${SANDBOX_DEPLOY_ENDPOINT}/${component}/${example}`);
+    if (response.ok) {
+      const url = await response.text();
+      window.open(url);
+    } else {
+      const message = await response.text();
+      this.addFlag({
+        appearance: 'error',
+        description: message,
+        title: 'Error deploying to Codesandbox',
+      })
+    }
+    this.setState({ loadingSandbox: false });
+  }
+
   render() {
     let {
       hasChanged,
@@ -362,7 +443,10 @@ export default class Examples extends React.Component<Props, State> {
           examples={examples}
           onPackageSelected={this.onPackageSelected}
           onExampleSelected={this.onExampleSelected}
-          onCodeToggle={this.onCodeToggle}/>
+          onCodeToggle={this.onCodeToggle}
+          deploySandbox={this.deploySandbox}
+          loadingSandbox={this.state.loadingSandbox}
+        />
         {examples && exampleId ? (
           <ExampleDisplay
             displayCode={this.state.displayCode}
@@ -372,6 +456,11 @@ export default class Examples extends React.Component<Props, State> {
             <ErrorMessage>{fs.titleize(packageId)} does not have any examples</ErrorMessage>
           </Content>
         )}
+        <FlagGroup>
+          {Object.keys(this.state.flags).map(
+            key => this.state.flags[key]
+          )}
+        </FlagGroup>
       </Container>
     );
   }
