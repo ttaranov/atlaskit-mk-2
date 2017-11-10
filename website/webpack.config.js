@@ -33,10 +33,6 @@ async function getAliases(cwd /*: string */) {
   });
 
   return results.workspaces.reduce((acc, workspace) => {
-    if (workspace.pkg.src) {
-      acc[workspace.pkg.name] = path.resolve(workspace.dir, workspace.pkg.src);
-    }
-
     return acc;
   }, {});
 }
@@ -98,7 +94,7 @@ function createEntryPoint(subsetName /*?: string */) {
     '@atlaskit/single-select',
     '@atlaskit/spinner',
     '@atlaskit/task-decision',
-    '@atlaskit/tooltip',
+    // '@atlaskit/tooltip',
     '@atlaskit/util-shared-styles',
     'mediapicker',
     'prosemirror-commands',
@@ -235,6 +231,7 @@ module.exports = async function createWebpackConfig() {
       ],
     },
     resolve: {
+      mainFields: ['atlaskit:src', 'browser', 'main'],
       extensions: ['.js', '.ts', '.tsx'],
       alias: aliases,
     },

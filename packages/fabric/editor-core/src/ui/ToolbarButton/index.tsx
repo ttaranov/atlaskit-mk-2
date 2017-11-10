@@ -1,33 +1,25 @@
-import { Tooltip } from '@atlaskit/tooltip';
+import Tooltip from '@atlaskit/tooltip';
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import { AkButton } from './styles';
 
 export interface Props {
-  selected?: boolean;
+  className?: string;
   disabled?: boolean;
   hideTooltip?: boolean;
   href?: string;
-  title?: string;
-  titlePosition?: string;
+  iconAfter?: ReactElement<any>;
+  iconBefore?: ReactElement<any>;
+  onClick?: () => void;
+  selected?: boolean;
+  spacing?: 'default' | 'compact' | 'none';
   target?: string;
   theme?: 'dark';
-  className?: string;
-  iconBefore?: ReactElement<any>;
-  iconAfter?: ReactElement<any>;
-  spacing?: 'default' | 'compact' | 'none';
-  onClick?: () => void;
-}
-
-export interface State {
-  isTooltipVisible: boolean;
+  title?: string;
+  titlePosition?: string;
 }
 
 export default class ToolbarButton extends PureComponent<Props, {}> {
-  state: State = {
-    isTooltipVisible: false
-  };
-
   static defaultProps = {
     className: '',
   };
@@ -35,56 +27,42 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
   render() {
     const button = (
       <AkButton
-        className={`${this.props.className}`}
+        appearance="subtle"
         ariaHaspopup={true}
+        className={this.props.className}
+        href={this.props.href}
+        iconAfter={this.props.iconAfter}
+        iconBefore={this.props.iconBefore}
         isDisabled={this.props.disabled}
         isSelected={this.props.selected}
-        spacing={this.props.spacing || 'none'}
-        appearance="subtle"
-        href={this.props.href}
         onClick={this.handleClick}
+        spacing={this.props.spacing || 'none'}
         target={this.props.target}
         theme={this.props.theme}
-        iconBefore={this.props.iconBefore}
-        iconAfter={this.props.iconAfter}
       >
         {this.props.children}
       </AkButton>
     );
 
-    return this.props.title
-      ? (
-        <Tooltip
-          position={this.props.titlePosition || 'top'}
-          description={this.props.title}
-          visible={this.isVisible()}
-          onMouseOver={this.handleMouseOver}
-          onMouseOut={this.handleMouseOut}
-        >
-          {button}
-        </Tooltip>
-      )
-      : button;
-  }
+    const position = this.props.titlePosition || 'top';
+    const showTooltip = this.props.title && !this.props.hideTooltip;
 
-  private isVisible = (): boolean => {
-    return this.state.isTooltipVisible && !this.props.hideTooltip;
+    return showTooltip ? (
+      <Tooltip
+        content={this.props.title}
+        hideTooltipOnClick={true}
+        position={position}
+      >
+        {button}
+      </Tooltip>
+    ) : button;
   }
 
   private handleClick = () => {
     const { disabled, onClick } = this.props;
+
     if (!disabled && onClick) {
       onClick();
     }
-
-    this.setState({ isTooltipVisible: false });
-  }
-
-  private handleMouseOver = () => {
-    this.setState({ isTooltipVisible: true });
-  }
-
-  private handleMouseOut = () => {
-    this.setState({ isTooltipVisible: false });
   }
 }

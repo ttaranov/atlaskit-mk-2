@@ -4,7 +4,7 @@
   "description": "A React component for displaying a calendar.",
   "license": "Apache-2.0",
   "main": "dist/cjs",
-  "src": "src/index.js",
+  "atlaskit:src": "src/index.js",
   "files": [
     "dist"
   ],
