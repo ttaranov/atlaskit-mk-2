@@ -3,7 +3,7 @@
   "version": "8.1.0",
   "description": "Renderer component",
   "license": "Apache-2.0",
-  "main": "dist/cjs/index.js",
+  "main": "dist/es5/index.js",
   "src": "src/index.ts",
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
