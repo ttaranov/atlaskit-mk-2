@@ -6,6 +6,12 @@ import CornerControls from './CornerControls';
 import ColumnControls from './ColumnControls';
 import RowControls from './RowControls';
 import { Container } from './styles';
+import {
+  hoverColumn,
+  hoverTable,
+  hoverRow,
+  resetHoverSelection
+} from '../../editor/plugins/table/actions';
 
 export interface Props {
   pluginState: TableState;
@@ -37,17 +43,19 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
   }
 
   handleCornerMouseOver = () => {
+    const { editorView } = this.props;
     this.setState({ tableHovered: true });
-    this.props.pluginState.hoverTable();
+    hoverTable(editorView.state, editorView.dispatch);
   }
 
   handleCornerMouseOut = () => {
+    const { editorView } = this.props;
     this.setState({ tableHovered: false });
-    this.props.pluginState.resetHoverSelection();
+    resetHoverSelection(editorView.state, editorView.dispatch);
   }
 
   render() {
-    const { pluginState } = this.props;
+    const { editorView, pluginState } = this.props;
     const { tableElement } = pluginState;
     if (!tableElement) {
       return null;
@@ -69,20 +77,22 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
           onMouseOut={this.handleCornerMouseOut}
         />
         <ColumnControls
+          editorView={editorView}
           tableElement={tableElement}
           isSelected={pluginState.isColumnSelected}
           selectColumn={pluginState.selectColumn}
           insertColumn={pluginState.insertColumn}
-          hoverColumn={pluginState.hoverColumn}
-          resetHoverSelection={pluginState.resetHoverSelection}
+          hoverColumn={hoverColumn}
+          resetHoverSelection={resetHoverSelection}
         />
         <RowControls
+          editorView={editorView}
           tableElement={tableElement}
           isSelected={pluginState.isRowSelected}
           selectRow={pluginState.selectRow}
           insertRow={pluginState.insertRow}
-          hoverRow={pluginState.hoverRow}
-          resetHoverSelection={pluginState.resetHoverSelection}
+          hoverRow={hoverRow}
+          resetHoverSelection={resetHoverSelection}
         />
       </Container>
     );

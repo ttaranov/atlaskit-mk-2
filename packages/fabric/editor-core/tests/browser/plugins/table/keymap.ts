@@ -8,6 +8,7 @@ import {
   chaiPlugin, doc, createEvent, makeEditor, sendKeyToPm, table, tr, td, tdEmpty, tdCursor, thEmpty, p
 } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../../src/analytics';
+import { tableStartPos } from '../../../../src/editor/plugins/table/utils';
 
 chai.use(chaiPlugin);
 
@@ -210,7 +211,7 @@ describe('table keymap', () => {
           pluginState.selectRow(index);
           expect(editorView.state.selection instanceof CellSelection).to.equal(true);
           const { selection } = editorView.state;
-          const offset = pluginState.tableStartPos();
+          const offset = tableStartPos(editorView.state);
           const cursorPos = selection.$head.pos - selection.$head.parentOffset + offset!;
           sendKeyToPm(editorView, 'Backspace');
           const rows: any = [];
@@ -234,7 +235,7 @@ describe('table keymap', () => {
           pluginState.selectColumn(index);
           expect(editorView.state.selection instanceof CellSelection).to.equal(true);
           const { selection } = editorView.state;
-          const offset = pluginState.tableStartPos();
+          const offset = tableStartPos(editorView.state);
           const cursorPos = selection.$head.pos - selection.$head.parentOffset + offset!;
           sendKeyToPm(editorView, 'Backspace');
           const columns: any = [];
