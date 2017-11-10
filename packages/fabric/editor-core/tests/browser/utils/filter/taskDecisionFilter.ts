@@ -1,10 +1,19 @@
 import { expect } from 'chai';
+import { Slice } from 'prosemirror-model';
 import {
-  doc, emoji, hardBreak, mention, p
+  defaultSchema,
+  doc,
+  emoji,
+  hardBreak,
+  mention,
+  p,
 } from '@atlaskit/editor-test-helpers';
 
 import { toJSON } from '../../../../src/utils';
-import { taskDecisionDocFilter } from '../../../../src/utils/filter';
+import {
+  taskDecisionDocFilter,
+  taskDecisionSliceFilter,
+} from '../../../../src/utils/filter';
 
 describe('@atlaskit/editor-core/utils/filter', () => {
   describe('taskDecisionDocFilter', () => {
@@ -13,10 +22,14 @@ describe('@atlaskit/editor-core/utils/filter', () => {
         doc(
           p(
             'some text ',
-            emoji({ shortName: ':cheese:', id: 'cheese', fallback: ':cheese:'}),
+            emoji({
+              shortName: ':cheese:',
+              id: 'cheese',
+              fallback: ':cheese:',
+            }),
             hardBreak(),
             ' and mention ',
-            mention({ id: 'id', text: 'mention name' }),
+            mention({ id: 'id', text: 'mention name' })
           )
         )
       );
@@ -28,7 +41,7 @@ describe('@atlaskit/editor-core/utils/filter', () => {
         },
         {
           type: 'emoji',
-          attrs: { shortName: ':cheese:', id: 'cheese', text: ':cheese:'},
+          attrs: { shortName: ':cheese:', id: 'cheese', text: ':cheese:' },
         },
         {
           type: 'hardBreak',
@@ -39,8 +52,94 @@ describe('@atlaskit/editor-core/utils/filter', () => {
         },
         {
           type: 'mention',
-          attrs: { id: 'id', text: 'mention name' }
-        }
+          attrs: { id: 'id', text: 'mention name' },
+        },
+      ]);
+    });
+    it('filtering multiple paragraphs add breaks', () => {
+      const jsonDoc = toJSON(doc(p('some text'), p('some other text')));
+      const content = taskDecisionDocFilter(jsonDoc, defaultSchema);
+      expect(content).to.deep.equal([
+        {
+          type: 'text',
+          text: 'some text',
+        },
+        {
+          type: 'hardBreak',
+        },
+        {
+          type: 'text',
+          text: 'some other text',
+        },
+      ]);
+    });
+  });
+  describe('taskDecisionSliceFilter', () => {
+    it('filter preserves supported types', () => {
+      const jsonDoc = toJSON(
+        doc(
+          p(
+            'some text ',
+            emoji({
+              shortName: ':cheese:',
+              id: 'cheese',
+              fallback: ':cheese:',
+            }),
+            hardBreak(),
+            ' and mention ',
+            mention({ id: 'id', text: 'mention name' })
+          )
+        )
+      );
+      const content = taskDecisionSliceFilter(
+        Slice.fromJSON(defaultSchema, jsonDoc),
+        defaultSchema
+      ).toJSON()!.content;
+      expect(content).to.deep.equal([
+        {
+          type: 'text',
+          text: 'some text ',
+        },
+        {
+          type: 'emoji',
+          attrs: { shortName: ':cheese:', id: 'cheese', text: ':cheese:' },
+        },
+        {
+          type: 'hardBreak',
+        },
+        {
+          type: 'text',
+          text: ' and mention ',
+        },
+        {
+          type: 'mention',
+          attrs: {
+            id: 'id',
+            text: 'mention name',
+            accessLevel: '',
+            userType: null,
+          },
+        },
+      ]);
+    });
+    it('filtering multiple paragraphs add breaks', () => {
+      const jsonDoc = toJSON(doc(p('some text'), p('some other text')));
+      const content = taskDecisionSliceFilter(
+        Slice.fromJSON(defaultSchema, jsonDoc),
+        defaultSchema
+      ).toJSON()!.content;
+      expect(content).to.deep.equal([
+        {
+          type: 'text',
+          text: 'some text',
+        },
+        {
+          type: 'hardBreak',
+        },
+        {
+          type: 'text',
+          text: 'some other text',
+        },
       ]);
     });
   });
