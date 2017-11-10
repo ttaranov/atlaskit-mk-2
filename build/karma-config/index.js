@@ -53,8 +53,8 @@ async function getAliases(cwd) {
   });
 
   return results.workspaces.reduce((acc, workspace) => {
-    if (workspace.pkg.src) {
-      acc[workspace.pkg.name] = path.resolve(workspace.dir, workspace.pkg.src);
+    if (workspace.pkg['atlaskit:src']) {
+      acc[workspace.pkg.name] = path.resolve(workspace.dir, workspace.pkg['atlaskit:src']);
     }
 
     return acc;
