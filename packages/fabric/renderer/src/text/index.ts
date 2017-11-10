@@ -46,7 +46,11 @@ const reduceTree = (fragment: Fragment): Node[] => {
       if (IGNORE_NODE_TYPES.indexOf(node.type.name) !== -1) {
         // pass: ignore these nodes
       } else if (!node.childCount) {
-        childrenChunks.push({ text: getText(node) } as Node);
+        if (node.type.name !== 'paragraph') {
+          childrenChunks.push({ text: getText(node) } as Node);
+        } else {
+          // pass: ignore empty paragraphs
+        }
       } else if (node.type.name === 'mediaGroup') {
         // count children which are media files
         // ignore card links

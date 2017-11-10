@@ -586,4 +586,27 @@ describe('Renderer - TextSerializer', () => {
 
     expect(render(doc)).to.equal('foo\nbar');
   });
+
+  it('should ignore empty paragraphs', () => {
+    const doc = {
+      type: 'doc',
+      version: 1,
+      content: [
+        {
+          type: 'paragraph',
+          content: [{ type: 'text', text: 'foo' }],
+        },
+        {
+          type: 'paragraph',
+          content: [],
+        },
+        {
+          type: 'paragraph',
+          content: [{ type: 'text', text: 'bar' }],
+        },
+      ],
+    };
+
+    expect(render(doc)).to.equal('foo\nbar');
+  });
 });
