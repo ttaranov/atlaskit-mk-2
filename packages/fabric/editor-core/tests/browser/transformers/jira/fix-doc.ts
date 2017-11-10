@@ -78,7 +78,8 @@ const attachments = `<span class="image-wrap" style="">
 </span>`;
 
 function getBody(html: string): HTMLBodyElement {
-  const dom = new DOMParser().parseFromString(html, 'text/html');
+  const parser: DOMParser = new (window as any).DOMParser();
+  const dom = parser.parseFromString(html, 'text/html');
   const fixedDOM = fixDoc(dom);
   return fixedDOM.querySelector('body')!;
 }
