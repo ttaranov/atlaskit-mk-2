@@ -12,21 +12,18 @@ import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import * as fs from '../../utils/fs';
 import type { Directory } from '../../types';
 
-const LinkComponent = (stuff) => {
-  const {
-    href,
-    children,
-    onClick,
-    className,
-  } = stuff;
-  return (
-    <Link
-      className={className}
-      onClick={onClick}
-      to={href}
-    >{children}</Link>
-  )
-}
+const LinkComponent = ({
+  href,
+  children,
+  onClick,
+  className,
+}) => (
+  <Link
+    className={className}
+    onClick={onClick}
+    to={href}
+  >{children}</Link>
+)
 
 const NavItem = ({dirId, id, closeDrawer }) => (
   <AkNavigationItem
