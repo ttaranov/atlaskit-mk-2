@@ -112,18 +112,12 @@ export function convert(content: Fragment, node: Node, schema: Schema): Fragment
           });
         }
 
-        const isAnchor = node.attributes.getNamedItem('href') === null;
-        if (isAnchor || node.className.match('jira-issue-macro-key') || !content || !isSchemaWithLinks(schema)) {
+        if (node.className.match('jira-issue-macro-key') || !content || !isSchemaWithLinks(schema)) {
           return null;
         }
-
-        return addMarks(
-          content,
-          [schema.marks.link!.create({
-            href: node.getAttribute('href'),
-            title: node.getAttribute('title')
-          })]
-        );
+        const href = node.getAttribute('href');
+        const title = node.getAttribute('title');
+        return href ? addMarks(content, [schema.marks.link.create({ href, title })]) : content;
 
       case 'SPAN':
         /**
