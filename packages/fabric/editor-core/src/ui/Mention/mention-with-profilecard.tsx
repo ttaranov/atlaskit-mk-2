@@ -6,10 +6,9 @@ import {
   ResourcedMention,
 } from '@atlaskit/mention';
 
-import { MentionUserType as UserType } from '@atlaskit/editor-common';
+import { MentionUserType as UserType, MentionEventHandler } from '@atlaskit/editor-common';
 import { ProfilecardProvider } from './types';
 import ProfileCard, { AkProfilecardTriggerActions } from '@atlaskit/profilecard';
-import { MentionEventHandler } from '../Renderer';
 import Popup from '../Popup';
 import withOuterListeners from '../with-outer-listeners';
 

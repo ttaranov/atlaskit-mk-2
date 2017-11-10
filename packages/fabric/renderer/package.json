@@ -16,12 +16,16 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/editor-common": "^3.0.1",
+    "@atlaskit/code": "^2.1.5",
     "prosemirror-model": "^0.22.0"
   },
   "peerDependencies": {
     "react": "^15.6.1"
   },
   "devDependencies": {
+    "@atlaskit/docs": "^0.0.2",
+    "@atlaskit/editor-core": "^57.0.1",
+    "@atlaskit/editor-test-helpers": "^0.0.7",
     "@types/prosemirror-model": "^0.21.0",
     "prosemirror-model": "^0.22.0"
   }

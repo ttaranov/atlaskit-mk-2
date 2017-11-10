@@ -4,11 +4,10 @@ import { EditorAppearance, EditorProps } from '../src/editor/types';
 import Editor from '../src/editor';
 import getPropsPreset from '../src/editor/create-editor/get-props-preset';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
-import { storyDecorator } from '../src/test-helper';
 import { taskDecisionDocFilter } from '../src/utils/filter/';
 import { toJSON, JSONDocNode, JSONNode } from '../src/utils/';
-import { ProviderFactory } from '../src';
-import { ReactRenderer } from '../src/renderer';
+import { ProviderFactory } from '@atlaskit/editor-common';
+import { ReactRenderer } from '@atlaskit/renderer';
 
 const SAVE_ACTION = () => console.log('Save');
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
