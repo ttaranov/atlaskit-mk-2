@@ -1,7 +1,7 @@
 /* @flow */
 
 import React from 'react';
-import Page from '../components/Page';
+import Page, { Title, Section } from '../components/Page';
 import { packages } from '../site';
 import Table from '@atlaskit/dynamic-table';
 import styled from 'styled-components';
@@ -51,7 +51,6 @@ const head = {
 
 
 const renderRow = ({
-  atlaskit,
   name: packageName,
   description,
   maintainers,
@@ -59,20 +58,17 @@ const renderRow = ({
   version,
 }, {
   id,
-}) => {
-    const name = atlaskit ? atlaskit.name : fs.titleize(id)
-    const team = atlaskit ? atlaskit.team : ''
-
+}, groupId) => {
     // const publishTime = new Date(lastPublishedOn);
 
     return {
       cells: [
         {
-          key: 'name',
+          key: id,
           content: (
             <RowCell>
-              <a href={`/mk-2/packages/elements/${id}`}>
-                {name}
+              <a href={`/mk-2/packages/${groupId}/${id}`}>
+                {fs.titleize(id)}
               </a>
             </RowCell>
           ),
@@ -104,9 +100,9 @@ const renderRow = ({
           ),
         },
         {
-          key: 'team',
+          key: groupId,
           content: (
-            <RowCell>{team}</RowCell>
+            <RowCell>{fs.titleize(groupId)}</RowCell>
           )
         },
         {
@@ -128,7 +124,7 @@ const makeRows = () => (
           const pkgJSON = fs.getById(pkg.children, 'package.json')
           if (pkgJSON.type !== 'file') throw new Error(`package.json was not a file`);
           return pkgJSON.exports()
-          .then(pkgJSON => renderRow(pkgJSON, pkg))
+            .then(pkgJSON => renderRow(pkgJSON, pkg, team.id))
         })
       )
     ), []))
@@ -140,19 +136,21 @@ export default function PackagesList() {
     loading: Loading,
     loader: makeRows,
     render: Rows => (
-        <TableWrapper>
+        <Section>
           <Table
             head={head}
             rows={Rows}
             isFixedSize
+            defaultSortKey="name"
+            defaultSortOrder="ASC"
           />
-        </TableWrapper>
+        </Section>
     ),
   })
 
   return (
     <Page>
-      <h1>All Packages</h1>
+      <Title>All Packages</Title>
       <LoadedTable />
     </Page>
 
@@ -160,15 +158,6 @@ export default function PackagesList() {
 }
 
 // Tabular data
-const TableWrapper = styled.div`
-  @media (max-width: 600px) {
-    overflow-x: auto;
-
-    & table {
-      table-layout: auto;
-    }
-  }
-`;
 const RowCell = styled.div`
   padding-bottom: ${gridSize}px;
   padding-top: ${gridSize}px;
