@@ -27,6 +27,8 @@ import TableHeader from './tableHeader';
 import TableRow from './tableRow';
 import UnknownBlock from './unknownBlock';
 
+import { akEmojiBigSize } from '../../../styles';
+
 export const nodeToReact = {
   'applicationCard': ApplicationCard,
   'blockquote': Blockquote,
@@ -147,16 +149,37 @@ export const isTextWrapper = (type: string): type is 'textWrapper' => {
   return type === 'textWrapper';
 };
 
-export const isEmojiBlock = (fragment: Fragment): boolean => {
-  const content = fragment['content'];
-  if (!content || !content.length || content.length > 7) {
+/**
+ * Detects whether a fragment contains a single paragraph node
+ * whose content satisfies the condition for an emoji block
+ */
+export const isEmojiDoc = (doc: any, props: any = {}): boolean => {
+  // Previously calculated to be true so pass prop down
+  // from paragraph node to emoji node
+  if (props.fitToHeight === akEmojiBigSize) {
+    return true;
+  }
+  const parentNodes: Node[] = [];
+  doc.forEach(child => parentNodes.push(child));
+  if (parentNodes.length !== 1) {
+    return false;
+  }
+  const node = parentNodes[0];
+  return node.type.name === 'paragraph' && isEmojiBlock(node.content);
+};
+
+const isEmojiBlock = (pnode: Fragment): boolean => {
+  const content: Node[] = [];
+  pnode.forEach(child => content.push(child));
+  if (content.length > 7) {
     return false;
   }
   let emojiCount = 0;
-  for (let node of content) {
+  for (let i = 0; i < content.length; ++i) {
+    const node = content[i];
     switch (node.type.name) {
       case 'text':
-        if (node.text && !node.text.match(/^ *$/)) {
+        if (node.text && !node.text.match(/^\s*$/)) {
           return false;
         }
         continue;
