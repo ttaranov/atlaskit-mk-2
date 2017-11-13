@@ -4,11 +4,7 @@ import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { CardEvent } from '@atlaskit/media-card';
 import { CardSurroundings } from '@atlaskit/editor-common';
-
-import {
-  defaultParams,
-  StoryBookAuthProvider
-} from '@atlaskit/media-test-helpers';
+import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 
 import { ProviderFactory } from '@atlaskit/editor-core';
 import { document } from './story-data';
@@ -37,12 +33,7 @@ const mentionProvider = Promise.resolve({
   }
 });
 
-const mediaProvider = Promise.resolve({
-  viewContext: Promise.resolve({
-    serviceHost: defaultParams.serviceHost,
-    authProvider: StoryBookAuthProvider.create(false)
-  })
-});
+const mediaProvider = storyMediaProviderFactory();
 
 const emojiProvider = emojiStoryData.getEmojiResource();
 

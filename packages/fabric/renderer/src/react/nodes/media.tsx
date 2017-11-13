@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { MediaType } from '@atlaskit/editor-common';
 import { CardDimensions } from '@atlaskit/media-card';
 import { ImageResizeMode } from '@atlaskit/media-core';
 import {
   EventHandlers,
   ProviderFactory,
   MediaItem,
+  MediaType,
   Appearance
 } from '@atlaskit/editor-common';
 
