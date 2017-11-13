@@ -24,15 +24,15 @@ export default function Example(props: Props) {
       if (loaded.Component && loaded.code) {
         return (
           <div>
-            <loaded.Component/>
-            <Code grammar="jsx" content={loaded.code}/>
+            <loaded.Component />
+            <Code grammar="jsx" content={loaded.code} />
           </div>
         );
       } else {
         return <div>Failed to load code for "{props.examplePath}"</div>;
       }
-    }
+    },
   });
 
-  return <Content/>;
-};
+  return <Content />;
+}

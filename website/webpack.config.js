@@ -5,7 +5,9 @@
 
 const DirectoryWatcher = require('watchpack/lib/DirectoryWatcher');
 const _oldcreateNestedWatcher = DirectoryWatcher.prototype.createNestedWatcher;
-DirectoryWatcher.prototype.createNestedWatcher = function(dirPath /*: string */) {
+DirectoryWatcher.prototype.createNestedWatcher = function(
+  dirPath /*: string */,
+) {
   if (dirPath.includes('node_modules')) return;
   _oldcreateNestedWatcher.call(this, dirPath);
 };
@@ -52,7 +54,7 @@ function getPackagesGlobs(subsetName /*?: string */) {
   switch (subsetName) {
     case 'editor':
       return createGlob(
-        'fabric/+(code|editor-core|editor-common|editor-bitbucket|editor-cq|editor-jira|renderer)'
+        'fabric/+(code|editor-core|editor-common|editor-bitbucket|editor-cq|editor-jira|renderer)',
       );
 
     case 'elements':
@@ -125,10 +127,10 @@ function subsetBanner(env /*: string */, subsetName /*: string */) {
   console.log();
   console.log(
     chalk.blue(
-      `${env === 'production' ? 'Building' : 'Running'} website with "${chalk.bold(
-        subsetName
-      )}" packages.`
-    )
+      `${
+        env === 'production' ? 'Building' : 'Running'
+      } website with "${chalk.bold(subsetName)}" packages.`,
+    ),
   );
   console.log();
 }
@@ -168,7 +170,11 @@ module.exports = async function createWebpackConfig() {
           test: /SITE_DATA$/,
           loader: 'bolt-fs-loader',
           options: {
-            include: ['docs/**/*.md', 'patterns/**/*.js', ...getPackagesGlobs(WEBSITE_SUBSET)],
+            include: [
+              'docs/**/*.md',
+              'patterns/**/*.js',
+              ...getPackagesGlobs(WEBSITE_SUBSET),
+            ],
             exclude: ['**/node_modules/**', 'packages/utils/docs/**'],
           },
         },

@@ -17,17 +17,19 @@ import type { Directory } from '../../types';
 type State = {
   searchDrawerOpen: boolean,
   searchDrawerValue: string,
-}
+};
 
 export default class Nav extends Component<{}, State> {
   state = {
     searchDrawerOpen: false,
     searchDrawerValue: '',
-  }
+  };
 
-  openSearchDrawer = () => this.setState({ searchDrawerOpen: true })
-  closeSearchDrawer = () => this.setState({ searchDrawerOpen: false, searchDrawerValue: '' })
-  updateSearchValue = (e: SyntheticInputEvent<*>) => this.setState({ searchDrawerValue: e.target.value })
+  openSearchDrawer = () => this.setState({ searchDrawerOpen: true });
+  closeSearchDrawer = () =>
+    this.setState({ searchDrawerOpen: false, searchDrawerValue: '' });
+  updateSearchValue = (e: SyntheticInputEvent<*>) =>
+    this.setState({ searchDrawerValue: e.target.value });
 
   render() {
     const { searchDrawerOpen, searchDrawerValue } = this.state;
@@ -36,13 +38,18 @@ export default class Nav extends Component<{}, State> {
       <Switch>
         <Route
           render={({ location }) => {
-            const fromOldSite = matchPath(location.pathname, '/packages/:group/:name');
+            const fromOldSite = matchPath(
+              location.pathname,
+              '/packages/:group/:name',
+            );
             const navigateOut = fromOldSite && fromOldSite.isExact;
             return (
               <Navigation
                 isCollapsible={false}
                 isResizeable={false}
-                globalPrimaryIcon={<AtlassianIcon size="large" label="AtlasKit" />}
+                globalPrimaryIcon={
+                  <AtlassianIcon size="large" label="AtlasKit" />
+                }
                 globalPrimaryItemHref={navigateOut ? OLD_WEBSITE_URL : '/'}
                 globalSearchIcon={<SearchIcon label="search" />}
                 onSearchDrawerOpen={this.openSearchDrawer}
@@ -53,14 +60,16 @@ export default class Nav extends Component<{}, State> {
                     text="AtlasKit"
                   />
                 )}
-                drawers={[<SearchDrawer
-                  isOpen={searchDrawerOpen}
-                  closeDrawer={this.closeSearchDrawer}
-                  searchDrawerValue={searchDrawerValue}
-                  updateSearchValue={this.updateSearchValue}
-                  packages={packages}
-                  key="searchDrawer"
-                />]}
+                drawers={[
+                  <SearchDrawer
+                    isOpen={searchDrawerOpen}
+                    closeDrawer={this.closeSearchDrawer}
+                    searchDrawerValue={searchDrawerValue}
+                    updateSearchValue={this.updateSearchValue}
+                    packages={packages}
+                    key="searchDrawer"
+                  />,
+                ]}
               >
                 <Groups
                   docs={docs}
@@ -73,6 +82,6 @@ export default class Nav extends Component<{}, State> {
           }}
         />
       </Switch>
-    )
+    );
   }
 }

@@ -139,13 +139,17 @@ export const Slide = ({
   return (
     <Animation
       styleDefault={{
-        transition: `transform ${timeout.enter}ms ${easing}, opacity ${timeout.enter}ms linear`,
+        transition: `transform ${timeout.enter}ms ${easing}, opacity ${
+          timeout.enter
+        }ms linear`,
         transform: restingTransform,
       }}
       transition={{
         entering: {
           opacity: 0,
-          transform: `translate3d(${horizontalOffset}px, ${verticalOffset}px, 0)`,
+          transform: `translate3d(${horizontalOffset}px, ${
+            verticalOffset
+          }px, 0)`,
         },
         entered: {
           opacity: 1,

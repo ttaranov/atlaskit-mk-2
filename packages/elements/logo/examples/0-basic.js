@@ -39,44 +39,92 @@ export default () => (
       </thead>
       <tbody>
         <tr>
-          <td><AtlassianLogo /></td>
-          <td><AtlassianWordmark /></td>
-          <td><AtlassianIcon /></td>
+          <td>
+            <AtlassianLogo />
+          </td>
+          <td>
+            <AtlassianWordmark />
+          </td>
+          <td>
+            <AtlassianIcon />
+          </td>
         </tr>
         <tr>
-          <td><BitbucketLogo /></td>
-          <td><BitbucketWordmark /></td>
-          <td><BitbucketIcon /></td>
+          <td>
+            <BitbucketLogo />
+          </td>
+          <td>
+            <BitbucketWordmark />
+          </td>
+          <td>
+            <BitbucketIcon />
+          </td>
         </tr>
         <tr>
-          <td><ConfluenceLogo /></td>
-          <td><ConfluenceWordmark /></td>
-          <td><ConfluenceIcon /></td>
+          <td>
+            <ConfluenceLogo />
+          </td>
+          <td>
+            <ConfluenceWordmark />
+          </td>
+          <td>
+            <ConfluenceIcon />
+          </td>
         </tr>
         <tr>
-          <td><HipchatLogo /></td>
-          <td><HipchatWordmark /></td>
-          <td><HipchatIcon /></td>
+          <td>
+            <HipchatLogo />
+          </td>
+          <td>
+            <HipchatWordmark />
+          </td>
+          <td>
+            <HipchatIcon />
+          </td>
         </tr>
         <tr>
-          <td><JiraCoreLogo /></td>
-          <td><JiraCoreWordmark /></td>
-          <td><JiraCoreIcon /></td>
+          <td>
+            <JiraCoreLogo />
+          </td>
+          <td>
+            <JiraCoreWordmark />
+          </td>
+          <td>
+            <JiraCoreIcon />
+          </td>
         </tr>
         <tr>
-          <td><JiraLogo /></td>
-          <td><JiraWordmark /></td>
-          <td><JiraIcon /></td>
+          <td>
+            <JiraLogo />
+          </td>
+          <td>
+            <JiraWordmark />
+          </td>
+          <td>
+            <JiraIcon />
+          </td>
         </tr>
         <tr>
-          <td><StatuspageLogo /></td>
-          <td><StatuspageWordmark /></td>
-          <td><StatuspageIcon /></td>
+          <td>
+            <StatuspageLogo />
+          </td>
+          <td>
+            <StatuspageWordmark />
+          </td>
+          <td>
+            <StatuspageIcon />
+          </td>
         </tr>
         <tr>
-          <td><StrideLogo /></td>
-          <td><StrideWordmark /></td>
-          <td><StrideIcon /></td>
+          <td>
+            <StrideLogo />
+          </td>
+          <td>
+            <StrideWordmark />
+          </td>
+          <td>
+            <StrideIcon />
+          </td>
         </tr>
       </tbody>
     </table>

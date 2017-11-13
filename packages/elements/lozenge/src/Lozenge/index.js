@@ -3,7 +3,13 @@ import React, { PureComponent, type Node } from 'react';
 import Container from './styledContainer';
 import Content from './styledContent';
 
-export type Appearances = 'default' | 'success' | 'removed' | 'inprogress' | 'new' | 'moved';
+export type Appearances =
+  | 'default'
+  | 'success'
+  | 'removed'
+  | 'inprogress'
+  | 'new'
+  | 'moved';
 
 export const APPEARANCE_ENUM = {
   values: ['default', 'success', 'removed', 'inprogress', 'new', 'moved'],
@@ -16,7 +22,7 @@ type Props = {
   /** The appearance type. */
   appearance?: Appearances,
   /** Elements to be rendered inside the lozenge. This should ideally be just
-  a word or two. */
+   a word or two. */
   children?: Node,
 };
 
@@ -38,9 +44,7 @@ export default class Lozenge extends PureComponent<Props> {
 
     return (
       <Container appearance={this.validAppearance()} isBold={isBold}>
-        <Content>
-          {children}
-        </Content>
+        <Content>{children}</Content>
       </Container>
     );
   }

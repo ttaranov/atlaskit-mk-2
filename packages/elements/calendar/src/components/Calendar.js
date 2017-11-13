@@ -7,7 +7,7 @@ import type { EventChange, EventSelect } from '../types';
 
 type Props = {
   onUpdate: (iso: string) => void,
-}
+};
 
 type State = EventChange & {
   focused: number,
@@ -74,7 +74,9 @@ export default class Calendar extends Component<Props, State> {
         onChange={this.handleChange}
         onSelect={this.handleSelect}
         {...this.state}
-        ref={ref => { this.calendar = ref; }}
+        ref={ref => {
+          this.calendar = ref;
+        }}
       />
     );
   }

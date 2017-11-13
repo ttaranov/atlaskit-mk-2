@@ -1,9 +1,10 @@
 {
-  "extends": "airbnb",
+  "extends": ["airbnb", "prettier"],
   "parser": "babel-eslint",
   "plugins": [
     "flowtype",
-    "jest"
+    "jest",
+    "prettier"
   ],
   "rules": {
     "import/no-extraneous-dependencies": ["error", {
@@ -18,12 +19,10 @@
     "import/no-unresolved": ["off"],
     "import/prefer-default-export": "off",
 
-    "max-len": ["error", 140],
     "no-restricted-syntax": "off",
     "no-use-before-define": "off",
 
     "arrow-body-style": "off",
-    "arrow-parens": ["error", "as-needed"],
 
     "spaced-comment": "off",
 
@@ -39,7 +38,19 @@
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",
     "jest/no-identical-title": "error",
-    "jest/valid-expect": "error"
+    "jest/valid-expect": "error",
+
+    "react/jsx-indent": "off",
+    "arrow-parens": "off",
+    "react/jsx-closing-bracket-location": "off",
+    "react/jsx-curly-spacing": "off",
+    "react/jsx-equals-spacing": "off",
+    "react/jsx-first-prop-new-line": "off",
+    "react/jsx-indent-props": "off",
+    "react/jsx-max-props-per-line": "off",
+    "react/jsx-tag-spacing": "off",
+    "react/jsx-wrap-multilines": "off",
+    "max-len": ["error", {"code": 80, "ignoreUrls": true}]
   },
   "env": {
     "browser": true

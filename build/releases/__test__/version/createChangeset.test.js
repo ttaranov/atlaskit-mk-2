@@ -10,7 +10,9 @@ jest.mock('bolt');
 function assertPackagesPrompt(options) {
   const askPackagesCalls = cli.askCheckbox.mock.calls;
   expect(askPackagesCalls.length).toEqual(1);
-  expect(askPackagesCalls[0][0]).toEqual('Which packages would you like to include?');
+  expect(askPackagesCalls[0][0]).toEqual(
+    'Which packages would you like to include?',
+  );
   expect(askPackagesCalls[0][1]).toEqual(options);
 }
 
@@ -18,7 +20,9 @@ function assertBumpTypePrompts(expectedCalls) {
   const bumpTypeCalls = cli.askList.mock.calls;
   expect(bumpTypeCalls.length).toEqual(expectedCalls.length);
   for (let i = 0; i < expectedCalls.length; i += 1) {
-    expect(bumpTypeCalls[i][0]).toEqual(`What kind of change is this for ${chalk.green(expectedCalls[i])}?`);
+    expect(bumpTypeCalls[i][0]).toEqual(
+      `What kind of change is this for ${chalk.green(expectedCalls[i])}?`,
+    );
   }
 }
 
@@ -57,7 +61,7 @@ describe('createChangeset', () => {
   describe('in a simple project', () => {
     /**
      * Just two packages pgk-a and pkg-b with no depencies between them
-    */
+     */
     const dependentsGraph = [['pkg-a', []], ['pkg-b', []]];
     const releases = [{ name: 'pkg-a', type: 'minor' }];
     const dependents = [];
@@ -65,7 +69,9 @@ describe('createChangeset', () => {
 
     beforeEach(async () => {
       mockUserInput(releases, dependents, summary);
-      bolt.getDependentsGraph.mockReturnValueOnce(Promise.resolve(new Map(dependentsGraph)));
+      bolt.getDependentsGraph.mockReturnValueOnce(
+        Promise.resolve(new Map(dependentsGraph)),
+      );
     });
 
     it('should prompt for changed packages, bump type and summary', async () => {
@@ -100,7 +106,9 @@ describe('createChangeset', () => {
 
     beforeEach(async () => {
       mockUserInput(releases, dependents, summary);
-      bolt.getDependentsGraph.mockReturnValueOnce(Promise.resolve(new Map(dependentsGraph)));
+      bolt.getDependentsGraph.mockReturnValueOnce(
+        Promise.resolve(new Map(dependentsGraph)),
+      );
     });
 
     it('should prompt for changed packages, bump type and summary', async () => {
@@ -134,7 +142,11 @@ describe('createChangeset', () => {
      *
      * So, bumping a should cause a, b and c to bump dependencies
      */
-    const dependentsGraph = [['pkg-a', ['pkg-b']], ['pkg-b', ['pkg-c']], ['pkg-c', ['pkg-a']]];
+    const dependentsGraph = [
+      ['pkg-a', ['pkg-b']],
+      ['pkg-b', ['pkg-c']],
+      ['pkg-c', ['pkg-a']],
+    ];
     const releases = [{ name: 'pkg-a', type: 'minor' }];
     const dependents = [
       { name: 'pkg-b', type: 'patch' },
@@ -145,7 +157,9 @@ describe('createChangeset', () => {
 
     beforeEach(async () => {
       mockUserInput(releases, dependents, summary);
-      bolt.getDependentsGraph.mockReturnValueOnce(Promise.resolve(new Map(dependentsGraph)));
+      bolt.getDependentsGraph.mockReturnValueOnce(
+        Promise.resolve(new Map(dependentsGraph)),
+      );
     });
 
     it('should prompt for changed packages, bump type and summary', async () => {

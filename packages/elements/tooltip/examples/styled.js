@@ -12,7 +12,14 @@ const color = {
   yellow: colors.Y300,
 };
 
-export type Color = 'blue' | 'green' | 'neutral' | 'purple' | 'red' | 'teal' | 'yellow';
+export type Color =
+  | 'blue'
+  | 'green'
+  | 'neutral'
+  | 'purple'
+  | 'red'
+  | 'teal'
+  | 'yellow';
 
 export const Center = styled.div`
   box-sizing: border-box;

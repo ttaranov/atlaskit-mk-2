@@ -23,11 +23,11 @@
     "test:browser:watch": "projector ./projector test:browser --watch",
     "test:browser:browserstack": "projector ./projector test:browser --browserstack",
     "lint": "yarn run lint:eslint && yarn run lint:tslint",
-    "lint:eslint": "eslint '**/*.js'",
+    "lint:eslint": "eslint --print-config .eslintrc.json | eslint-config-prettier-check && eslint '**/*.js'",
     "lint:tslint": "tslint-config-prettier-check ./tslint.json && tslint -c ./tslint.json 'packages/*/*/src/**/*.+(ts|tsx)' --format stylish",
     "typecheck": "yarn run typecheck:flow && yarn run typecheck:typescript",
     "typecheck:flow": "flow check",
-    "typecheck:typescript":"bolt workspaces exec --only-fs 'packages/fabric/*' -- tsc --noEmit --project ./",
+    "typecheck:typescript": "bolt workspaces exec --only-fs 'packages/fabric/*' -- tsc --noEmit --project ./",
     "website:start": "cd website && yarn start",
     "start": "yarn run website:start",
     "start:elements": "WEBSITE=elements yarn run website:start",
@@ -83,12 +83,14 @@
     "enzyme": "^2.9.1",
     "eslint": "^4.8.0",
     "eslint-config-airbnb": "^15.1.0",
+    "eslint-config-prettier": "^2.7.0",
     "eslint-plugin-compat": "^1.0.4",
     "eslint-plugin-flowtype": "^2.37.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jest": "^21.2.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-prefer-object-spread": "^1.2.1",
+    "eslint-plugin-prettier": "^2.3.1",
     "eslint-plugin-react": "^7.1.0",
     "extract-react-types": "^0.3.0-beta",
     "fetch-mock": "^5.12.1",
@@ -198,8 +200,8 @@
     "debug": "^2.2.0",
     "editor": "^1.0.0",
     "enquirer-prompts": "^1.0.0",
-    "fs-extra": "^4.0.2",
     "focusin": "^2.0.0",
+    "fs-extra": "^4.0.2",
     "glob": "^7.1.2",
     "html-webpack-plugin": "^2.30.1",
     "jest-fixtures": "^0.3.2",
@@ -248,8 +250,12 @@
     "node": "^8.4.0"
   },
   "jest": {
-    "modulePathIgnorePatterns": ["./node_modules"],
-    "transformIgnorePatterns": ["\\/node_modules\\/(?!@atlaskit)"],
+    "modulePathIgnorePatterns": [
+      "./node_modules"
+    ],
+    "transformIgnorePatterns": [
+      "\\/node_modules\\/(?!@atlaskit)"
+    ],
     "resolver": "./resolver.js",
     "transform": {
       "^.+\\.tsx?$": "ts-jest/preprocessor",
@@ -262,9 +268,16 @@
       }
     },
     "testRegex": "(/(__tests?__/.*)\\.?(test|spec)?\\.(js|tsx?))$",
-    "moduleFileExtensions": ["js", "ts", "tsx"]
+    "moduleFileExtensions": [
+      "js",
+      "ts",
+      "tsx"
+    ]
   },
   "lint-staged": {
-    "*.{js,ts}": ["prettier --write", "git add"]
+    "*.{js,ts}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }

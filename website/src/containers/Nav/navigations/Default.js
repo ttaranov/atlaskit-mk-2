@@ -40,7 +40,7 @@ const defaultNavGroups = [
         title: 'Patterns',
         icon: <IssuesIcon label="Patterns icon" />,
       },
-    ]
+    ],
   },
   {
     title: 'Resources',
@@ -57,8 +57,8 @@ const defaultNavGroups = [
         icon: <DashboardIcon label="Design guidelines icon" />,
         external: true,
       },
-    ]
-  }
+    ],
+  },
 ];
 
 export type DefaultNavProps = {

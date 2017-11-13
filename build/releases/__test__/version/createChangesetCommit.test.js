@@ -36,9 +36,7 @@ describe('createChangesetCommit', () => {
   it('should create commit messages without releaseNotes', () => {
     const changeset = {
       summary: 'This is a summary',
-      releases: [
-        { name: 'package-a', type: 'minor' },
-      ],
+      releases: [{ name: 'package-a', type: 'minor' }],
       dependents: [],
     };
     const commitStr = createChangesetCommit(changeset);
@@ -63,9 +61,7 @@ describe('createChangesetCommit', () => {
   it('should create commit messages without dependents', () => {
     const changeset = {
       summary: 'This is a summary',
-      releases: [
-        { name: 'package-a', type: 'minor' },
-      ],
+      releases: [{ name: 'package-a', type: 'minor' }],
       dependents: [],
     };
     const commitStr = createChangesetCommit(changeset);
@@ -89,10 +85,9 @@ describe('createChangesetCommit', () => {
 
   it('should truncate the summary line to 100 characters', () => {
     const changeset = {
-      summary: 'This is a summary that is super long so that it goes above the 100 character limit, so that it gets truncated',
-      releases: [
-        { name: 'package-a', type: 'minor' },
-      ],
+      summary:
+        'This is a summary that is super long so that it goes above the 100 character limit, so that it gets truncated',
+      releases: [{ name: 'package-a', type: 'minor' }],
       dependents: [],
     };
     const commitStr = createChangesetCommit(changeset);

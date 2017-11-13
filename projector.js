@@ -16,6 +16,10 @@ exports.release = async () => {
 exports['test:browser'] = async (
   { watch, browserstack } /*: { watch: boolean, browserstack: boolean }*/,
 ) => {
-  const config = await getKarmaConfig({ cwd: process.cwd(), watch, browserstack });
+  const config = await getKarmaConfig({
+    cwd: process.cwd(),
+    watch,
+    browserstack,
+  });
   await karma.run({ config, files: [] });
 };

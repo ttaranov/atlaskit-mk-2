@@ -22,7 +22,7 @@ function init(element, findTabbable, callImmediately = true) {
 
   function focus() {
     const els = tabbable(element);
-    const focusTarget = findTabbable ? (els[0] || element) : element;
+    const focusTarget = findTabbable ? els[0] || element : element;
 
     if (typeof focusTarget.focus === 'function') focusTarget.focus();
   }

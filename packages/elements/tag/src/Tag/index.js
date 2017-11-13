@@ -40,13 +40,13 @@ type Props = {
   /** uri or path. If provided, the tag will be a link.  */
   href?: string,
   /** Text display as the aria-label for remove text. Setting this makes the
-  tag removable. */
+   tag removable. */
   removeButtonText?: string,
   /** Handler to be called before the tag is removed. If it does not return a
-  truthy value, the tag will not be removed. */
+   truthy value, the tag will not be removed. */
   onBeforeRemoveAction?: () => boolean,
   /** Handler to be called after tag is removed. Called with the string 'Post
-  Removal Hook'. */
+   Removal Hook'. */
   onAfterRemoveAction?: (text: string) => mixed,
 };
 
@@ -96,7 +96,14 @@ export default class Tag extends PureComponent<Props, State> {
 
   render() {
     const { isFocused, isRemoved, isRemoving, markedForRemoval } = this.state;
-    const { appearance, elemBefore, href, removeButtonText, text, color } = this.props;
+    const {
+      appearance,
+      elemBefore,
+      href,
+      removeButtonText,
+      text,
+      color,
+    } = this.props;
 
     const safeColor = colorList.includes(color) ? color : 'standard';
 
@@ -115,10 +122,12 @@ export default class Tag extends PureComponent<Props, State> {
 
     return (
       <Container {...styled} onAnimationEnd={onAnimationEnd}>
-        <Chrome {...styled} isLink={!!href} onFocusChange={this.handleFocusChange}>
-          {elemBefore ? (
-            <Before>{elemBefore}</Before>
-          ) : null}
+        <Chrome
+          {...styled}
+          isLink={!!href}
+          onFocusChange={this.handleFocusChange}
+        >
+          {elemBefore ? <Before>{elemBefore}</Before> : null}
           <Content {...styled} href={href}>
             {text}
           </Content>

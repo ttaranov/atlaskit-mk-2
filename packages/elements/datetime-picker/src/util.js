@@ -28,4 +28,3 @@ export const parseDate = (date: string): ?ParsedDate => {
 export const parseTime = (time: string) => {
   return time;
 };
-

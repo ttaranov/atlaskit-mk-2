@@ -26,21 +26,26 @@ const Parent = styled.div`
 const Shim = styled.div`
   display: flex;
   justify-content: space-between;
-  ${p => p.scroll === 'horizontal' && css`
-    width: 200%;
-    flex-direction: row;
-  `}
-  ${p => p.scroll === 'vertical' && css`
-    height: 200%;
-    flex-direction: column;
-  `}
+  ${p =>
+    p.scroll === 'horizontal' &&
+    css`
+      width: 200%;
+      flex-direction: row;
+    `} ${p =>
+      p.scroll === 'vertical' &&
+      css`
+        height: 200%;
+        flex-direction: column;
+      `};
 `;
 
 export default () => (
   <div>
     <Parent scroll="horizontal">
       <Shim scroll="horizontal">
-        <p>Horizontal &mdash; scroll <strong>right</strong> to see the target.</p>
+        <p>
+          Horizontal &mdash; scroll <strong>right</strong> to see the target.
+        </p>
         <Tooltip content={'Scroll "horizontal"'}>
           <Target color="green">Horizontal</Target>
         </Tooltip>
@@ -48,7 +53,9 @@ export default () => (
     </Parent>
     <Parent scroll="vertical">
       <Shim scroll="vertical">
-        <p>Vertical &mdash; scroll <strong>down</strong> to see the target.</p>
+        <p>
+          Vertical &mdash; scroll <strong>down</strong> to see the target.
+        </p>
         <Tooltip content={'Scroll "vertical"'}>
           <Target color="yellow">Vertical</Target>
         </Tooltip>
@@ -56,10 +63,14 @@ export default () => (
     </Parent>
     <Parent scroll="horizontal">
       <Shim scroll="horizontal">
-        <p>Nested &mdash; scroll <strong>right</strong> to see the target.</p>
+        <p>
+          Nested &mdash; scroll <strong>right</strong> to see the target.
+        </p>
         <Parent scroll="vertical" style={{ backgroundColor: colors.N40 }}>
           <Shim scroll="vertical">
-            <p>Scroll <strong>down</strong> to see the target.</p>
+            <p>
+              Scroll <strong>down</strong> to see the target.
+            </p>
             <Tooltip content={'Scroll "nested"'}>
               <Target color="red">Nested</Target>
             </Tooltip>
