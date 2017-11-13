@@ -19,28 +19,117 @@ const exampleDocument = {
   type: 'doc',
   content: [
     {
-      type: 'paragraph',
+      type: 'mediaGroup',
       content: [
-        { type: 'text', text: 'Some example document with emojis ' },
         {
-          type: 'emoji',
-          attrs: { shortName: ':catchemall:', id: 'atlassian-catchemall', text: ':catchemall:' }
+          type: 'media',
+          attrs: {
+            id: '65acab80-fb13-4609-a905-2c9453601faa',
+            type: 'file',
+            collection: 'MediaServicesSample'
+          }
         },
-        { type: 'text', text: ' and mentions ' },
         {
-          type: 'mention',
-          attrs: { id: '0', text: '@Carolyn', accessLevel: '' }
+          type: 'media',
+          attrs: {
+            id: '037f18fe-172a-4513-9edc-8dd708d56cb2',
+            type: 'file',
+            collection: 'MediaServicesSample'
+          }
         },
-        { type: 'text', text: '. ' }
+        {
+          type: 'media',
+          attrs: {
+            id: '0f327ed8-6400-4c9b-b335-3936d9bba75c',
+            type: 'file',
+            collection: 'MediaServicesSample'
+          }
+        },
+        {
+          type: 'media',
+          attrs: {
+            id: 'e2e48206-d0c2-41d3-8f4c-c34a32ab8971',
+            type: 'file',
+            collection: 'MediaServicesSample'
+          }
+        },
+        {
+          type: 'media',
+          attrs: {
+            id: '8aca42db-28b2-4ad2-96ee-8d51fc388863',
+            type: 'file',
+            collection: 'MediaServicesSample'
+          }
+        },
+        {
+          type: 'media',
+          attrs: {
+            id: '915ecec8-d27d-4c33-a529-305ca0509a53',
+            type: 'file',
+            collection: 'MediaServicesSample'
+          }
+        },
+        {
+          type: 'media',
+          attrs: {
+            id: '6ac69356-88f3-4b5f-82fb-b56ce0cc51b0',
+            type: 'file',
+            collection: 'MediaServicesSample'
+          }
+        },
+        {
+          type: 'media',
+          attrs: {
+            id: '7490187c-d9cc-42e8-b6fe-1e04a6f1f83d',
+            type: 'file',
+            collection: 'MediaServicesSample'
+          }
+        },
+        {
+          type: 'media',
+          attrs: {
+            id: '45150b50-6670-45b8-afee-9f8095b5e677',
+            type: 'file',
+            collection: 'MediaServicesSample'
+          }
+        },
+        {
+          type: 'media',
+          attrs: {
+            id: '73c02e94-6e9d-40ed-b98b-c0e75df0aa28',
+            type: 'file',
+            collection: 'MediaServicesSample'
+          }
+        },
+        {
+          type: 'media',
+          attrs: {
+            id: '13133443-928d-4c69-b3cd-25a868bad986',
+            type: 'file',
+            collection: 'MediaServicesSample'
+          }
+        },
+        {
+          type: 'media',
+          attrs: {
+            id: '764b6c19-bcc2-413d-82ad-bbae26e74e90',
+            type: 'file',
+            collection: 'MediaServicesSample'
+          }
+        }
       ]
+    },
+    {
+      type: 'paragraph',
+      content: []
     }
   ]
 };
 
 type Props = {};
 type State = {
-  hasJquery?: boolean,
-  isExpanded?: boolean,
+  hasJquery?: boolean;
+  isExpanded?: boolean;
 };
 
 export default class EditorWithFeedback extends React.Component<Props, State> {
@@ -54,7 +143,8 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
     this.loadJquery();
   }
 
-  onFocus = () => this.setState(prevState => ({ isExpanded: !prevState.isExpanded }));
+  onFocus = () =>
+    this.setState(prevState => ({ isExpanded: !prevState.isExpanded }));
 
   render() {
     if (!this.state.hasJquery) {
@@ -66,16 +156,26 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
         <div>
           <WithEditorActions
             // tslint:disable-next-line:jsx-no-lambda
-            render={actions =>
+            render={actions => (
               <ButtonGroup>
-                <Button onClick={() => actions.replaceDocument(exampleDocument)}>Load Document</Button>
+                <Button
+                  onClick={() => actions.replaceDocument(exampleDocument)}
+                >
+                  Load Document
+                </Button>
                 <Button onClick={() => actions.clear()}>Clear</Button>
               </ButtonGroup>
-            }
+            )}
           />
           <ToolsDrawer
             // tslint:disable-next-line:jsx-no-lambda
-            renderEditor={({ mentionProvider, emojiProvider, mediaProvider, imageUploadProvider, onChange }) =>
+            renderEditor={({
+              mentionProvider,
+              emojiProvider,
+              mediaProvider,
+              imageUploadProvider,
+              onChange
+            }) => (
               <div style={{ padding: '20px' }}>
                 <CollapsedEditor
                   placeholder="What do you want to say?"
@@ -87,27 +187,29 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     appearance="comment"
                     analyticsHandler={analyticsHandler}
                     shouldFocus={true}
-
                     allowTextFormatting={true}
                     allowTasksAndDecisions={true}
                     allowHyperlinks={true}
                     allowCodeBlocks={true}
                     allowLists={true}
                     allowTables={true}
-
                     mentionProvider={mentionProvider}
                     emojiProvider={emojiProvider}
                     mediaProvider={mediaProvider}
                     legacyImageUploadProvider={imageUploadProvider}
-
                     onChange={onChange}
                     onSave={SAVE_ACTION}
                     onCancel={CANCEL_ACTION}
-
-                    primaryToolbarComponents={<ToolbarFeedback packageVersion={version} packageName={name} />}
+                    primaryToolbarComponents={
+                      <ToolbarFeedback
+                        packageVersion={version}
+                        packageName={name}
+                      />
+                    }
                   />
                 </CollapsedEditor>
-              </div>}
+              </div>
+            )}
           />
         </div>
       </EditorContext>
@@ -117,7 +219,8 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
   private loadJquery = () => {
     const scriptElem = document.createElement('script');
     scriptElem.type = 'text/javascript';
-    scriptElem.src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js';
+    scriptElem.src =
+      'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js';
 
     scriptElem.onload = () => {
       this.setState({
@@ -127,5 +230,5 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
     };
 
     document.body.appendChild(scriptElem);
-  }
+  };
 }
