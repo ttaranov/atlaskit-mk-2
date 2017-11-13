@@ -235,7 +235,7 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
           if (!isValidString(title)) { return true; }
           if (!target) { return true; }
           if (!isValidString(target.key)) { return true; }
-          if (target.app && !isValidString(target.app)) { return true; }
+          if (target.receiver && !isValidString(target.receiver)) { return true; }
           if (parameters && !isValidObject(parameters)) { return true; }
         })) { break; }
 

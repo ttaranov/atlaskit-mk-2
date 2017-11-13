@@ -254,7 +254,7 @@ describe('Renderer - Validator', () => {
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
 
-      it('should return "text" if attrs.actions[].target.app is not valid string', () => {
+      it('should return "text" if attrs.actions[].target.receiver is not valid string', () => {
         const applicationCard = {
           type: 'applicationCard',
           attrs: {
@@ -263,7 +263,7 @@ describe('Renderer - Validator', () => {
             actions: [{
               title: 'test',
               target: {
-                app: 20,
+                receiver: 20,
                 key: 'test.target'
               }
             }]
@@ -299,7 +299,7 @@ describe('Renderer - Validator', () => {
             actions: [{
               title: 'test',
               target: {
-                app: 'some.app',
+                receiver: 'some.app',
                 key: 'test.target'
               },
               parameters: {
