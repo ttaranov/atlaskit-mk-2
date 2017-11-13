@@ -153,7 +153,7 @@ export const isTextWrapper = (type: string): type is 'textWrapper' => {
  * Detects whether a fragment contains a single paragraph node
  * whose content satisfies the condition for an emoji block
  */
-export const isEmojiDoc = (doc: any, props: any = {}): boolean => {
+export const isEmojiDoc = (doc: Fragment, props: any = {}): boolean => {
   // Previously calculated to be true so pass prop down
   // from paragraph node to emoji node
   if (props.fitToHeight === akEmojiBigSize) {
