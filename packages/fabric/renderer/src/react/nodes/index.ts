@@ -27,34 +27,34 @@ import TableHeader from './tableHeader';
 import TableRow from './tableRow';
 import UnknownBlock from './unknownBlock';
 
-import { akEmojiBigSize } from '../../../styles';
+import { bigEmojiHeight } from '../../utils';
 
 export const nodeToReact = {
-  'applicationCard': ApplicationCard,
-  'blockquote': Blockquote,
-  'bulletList': BulletList,
-  'codeBlock': CodeBlock,
-  'decisionItem': DecisionItem,
-  'decisionList': DecisionList,
-  'doc': Doc,
-  'emoji': Emoji,
-  'hardBreak': HardBreak,
-  'heading': Heading,
-  'listItem': ListItem,
-  'media': Media,
-  'mediaGroup': MediaGroup,
-  'mention': Mention,
-  'orderedList': OrderedList,
-  'panel': Panel,
-  'paragraph': Paragraph,
-  'rule': Rule,
-  'taskItem': TaskItem,
-  'taskList': TaskList,
-  'table': Table,
-  'tableCell': TableCell,
-  'tableHeader': TableHeader,
-  'tableRow': TableRow,
-  'unknownBlock': UnknownBlock,
+  applicationCard: ApplicationCard,
+  blockquote: Blockquote,
+  bulletList: BulletList,
+  codeBlock: CodeBlock,
+  decisionItem: DecisionItem,
+  decisionList: DecisionList,
+  doc: Doc,
+  emoji: Emoji,
+  hardBreak: HardBreak,
+  heading: Heading,
+  listItem: ListItem,
+  media: Media,
+  mediaGroup: MediaGroup,
+  mention: Mention,
+  orderedList: OrderedList,
+  panel: Panel,
+  paragraph: Paragraph,
+  rule: Rule,
+  taskItem: TaskItem,
+  taskList: TaskList,
+  table: Table,
+  tableCell: TableCell,
+  tableHeader: TableHeader,
+  tableRow: TableRow,
+  unknownBlock: UnknownBlock,
 };
 
 export const toReact = (node: Node): ComponentClass<any> => {
@@ -63,7 +63,7 @@ export const toReact = (node: Node): ComponentClass<any> => {
 
 export interface TextWrapper {
   type: {
-    name: 'textWrapper'
+    name: 'textWrapper';
   };
   content: Node[];
 }
@@ -133,7 +133,7 @@ export const mergeTextNodes = (nodes: (Node | NodeSimple)[]) => {
         type: {
           name: 'textWrapper',
         },
-        content: [current]
+        content: [current],
       } as TextWrapper);
     }
 
@@ -156,7 +156,7 @@ export const isTextWrapper = (type: string): type is 'textWrapper' => {
 export const isEmojiDoc = (doc: Fragment, props: any = {}): boolean => {
   // Previously calculated to be true so pass prop down
   // from paragraph node to emoji node
-  if (props.fitToHeight === akEmojiBigSize) {
+  if (props.fitToHeight === bigEmojiHeight) {
     return true;
   }
   const parentNodes: Node[] = [];

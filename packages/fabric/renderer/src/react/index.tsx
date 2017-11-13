@@ -30,7 +30,7 @@ import {
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { EventHandlers } from '@atlaskit/editor-common';
 
-import { akEmojiBigSize } from '../../styles';
+import { bigEmojiHeight } from '../utils';
 
 export interface RendererContext {
   objectAri: string;
@@ -99,7 +99,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   private getEmojiBlockProps(node: Node) {
     return {
       ...this.getProps(node),
-      fitToHeight: akEmojiBigSize,
+      fitToHeight: bigEmojiHeight,
     };
   }
 
