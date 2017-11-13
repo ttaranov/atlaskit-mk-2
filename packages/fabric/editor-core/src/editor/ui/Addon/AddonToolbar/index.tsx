@@ -1,10 +1,10 @@
 import * as React from 'react';
 import MoreIcon from '@atlaskit/icon/glyph/editor/more';
+import { Popup } from '@atlaskit/editor-common';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import { Dropdown, RenderOnClickHandler } from '../';
 import WithEditorActions from '../../WithEditorActions';
 import withOuterListeners from '../../../../ui/with-outer-listeners';
-import Popup from '../../../../ui/Popup';
 import EditorActions from '../../../actions';
 
 // tslint:disable-next-line:variable-name

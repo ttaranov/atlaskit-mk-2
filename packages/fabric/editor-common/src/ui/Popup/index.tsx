@@ -1,5 +1,7 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { PureComponent } from 'react';
+import rafSchedule from 'raf-schd';
 import { akEditorFloatingPanelZIndex } from '../../styles';
 import Portal from '../Portal';
 import { calculatePosition, calculatePlacement, findOverflowScrollParent, Position } from './utils';
@@ -7,7 +9,7 @@ import { calculatePosition, calculatePlacement, findOverflowScrollParent, Positi
 export interface Props {
   alignX?: 'left' | 'right';
   alignY?: 'top' | 'bottom';
-  target?: HTMLElement;
+  target?: React.ReactElement<any> | HTMLElement;
   fitHeight?: number;
   fitWidth?: number;
   boundariesElement?: HTMLElement;
@@ -21,6 +23,7 @@ export interface Props {
 export interface State {
   // Popup Html element reference
   popup?: HTMLElement;
+  targetElement?: HTMLElement;
 
   position?: Position;
 
@@ -37,26 +40,27 @@ export default class Popup extends PureComponent<Props, State> {
     overflowScrollParent: false
   };
 
-  private debounced: number | null = null;
+  private scheduledResizeFrame: number | null = null;
   private placement: [string, string] = ['', ''];
 
   /**
    * Calculates new popup position
    */
-  private updatePosition(props: Props, popup?: HTMLElement) {
-    const { target, fitHeight, fitWidth, boundariesElement, offset, onPositionCalculated, onPlacementChanged, alignX, alignY } = props;
+  private updatePosition(props = this.props, state = this.state) {
+    const { fitHeight, fitWidth, boundariesElement, offset, onPositionCalculated, onPlacementChanged, alignX, alignY } = props;
+    const { targetElement, popup } = state;
 
-    if (!target || !popup) {
+    if (!targetElement || !popup) {
       return;
     }
 
-    const placement = calculatePlacement(target, boundariesElement!, fitWidth, fitHeight, alignX, alignY);
+    const placement = calculatePlacement(targetElement, boundariesElement!, fitWidth, fitHeight, alignX, alignY);
     if (onPlacementChanged && this.placement.join('') !== placement.join('')) {
       onPlacementChanged(placement);
       this.placement = placement;
     }
 
-    let position = calculatePosition({ placement, target, popup, offset: offset! });
+    let position = calculatePosition({ placement, popup, target: targetElement, offset: offset! });
     position = onPositionCalculated ? onPositionCalculated(position) : position;
 
     this.setState({ position });
@@ -69,8 +73,12 @@ export default class Popup extends PureComponent<Props, State> {
   private initPopup(popup: HTMLElement) {
     const { target } = this.props;
     const overflowScrollParent = findOverflowScrollParent(popup);
+    let targetElement;
+    if (target) {
+      targetElement = target instanceof HTMLElement ? target : ReactDOM.findDOMNode(target);
+    }
 
-    if (popup.offsetParent && !popup.offsetParent.contains(target!)) {
+    if (popup.offsetParent && !popup.offsetParent.contains(targetElement!)) {
       throw new Error('Popup\'s offset parent doesn\'t contain target which means it\'s impossible to correctly position popup along with given target.');
     }
 
@@ -78,9 +86,7 @@ export default class Popup extends PureComponent<Props, State> {
       throw new Error('Popup is inside "overflow: scroll" container, but its offset parent isn\'t. Currently Popup isn\'t capable of position itself correctly in such case. Add "position: relative" to "overflow: scroll" container or to some other FloatingPanel wrapper inside it.');
     }
 
-    this.setState({ popup, overflowScrollParent }, () => {
-      this.updatePosition(this.props, popup);
-    });
+    this.setState({ popup, overflowScrollParent, targetElement }, () => this.updatePosition());
   }
 
   private handleRef = (popup: HTMLDivElement) => {
@@ -91,23 +97,14 @@ export default class Popup extends PureComponent<Props, State> {
     this.initPopup(popup);
   }
 
+  private scheduledUpdatePosition = rafSchedule(() => this.updatePosition());
+
   private handleResize = () => {
-    if (this.debounced) {
-      clearTimeout(this.debounced);
-      this.debounced = null;
-    }
-
-    this.debounced = setTimeout(() => {
-      this.debounced = null;
-
-      const { popup } = this.state;
-      this.updatePosition(this.props, popup);
-    }, 200);
+    this.scheduledResizeFrame = this.scheduledUpdatePosition();
   }
 
   componentWillReceiveProps(newProps: Props) {
-    const { popup } = this.state;
-    this.updatePosition(newProps, popup);
+    this.updatePosition(newProps);
   }
 
   componentDidMount() {
@@ -116,6 +113,9 @@ export default class Popup extends PureComponent<Props, State> {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
+    if (this.scheduledResizeFrame) {
+      cancelAnimationFrame(this.scheduledResizeFrame);
+    }
   }
 
   private renderPopup() {

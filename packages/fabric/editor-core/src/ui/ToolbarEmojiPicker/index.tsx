@@ -1,14 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { PureComponent } from 'react';
+import { PureComponent, ReactElement } from 'react';
 import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import { Popup } from '@atlaskit/editor-common';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { EmojiState } from '../../plugins/emojis';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { EmojiPicker as AkEmojiPicker, EmojiProvider } from '@atlaskit/emoji';
 import ToolbarButton from '../ToolbarButton';
-import Popup from '../Popup';
 
 export interface Props {
   editorView: EditorView;
@@ -25,7 +25,6 @@ export interface Props {
 }
 
 export interface State {
-  button?: HTMLElement;
   disabled?: boolean;
   isOpen: boolean;
 }
@@ -36,8 +35,8 @@ export interface State {
 const isDetachedElement = (el) => !document.contains(el);
 
 export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
-  private pickerRef: any;
-  private buttonRef: any;
+  private pickerRef: ReactElement<any>;
+  private buttonRef: ReactElement<any>;
   private pluginState?: EmojiState;
 
   state: State = {
@@ -49,20 +48,12 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.state.button = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
     if (this.pluginState) {
       this.pluginState.subscribe(this.handlePluginStateChange);
     }
     // Keymapping must be added here at the document level as editor focus is lost
     // when the picker opens so plugins/emojis/keymaps.ts will not register ESC
     document.addEventListener('keydown', this.handleEscape);
-  }
-
-  componentDidUpdate() {
-    const { button } = this.state;
-    if (!button || !button.getBoundingClientRect().width) {
-      this.state.button = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
-    }
   }
 
   componentWillUnmount() {
@@ -104,11 +95,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   }
 
   private handleButtonRef = (ref): void => {
-    if (ref) {
-      this.buttonRef = ref;
-    } else {
-      this.buttonRef = null;
-    }
+    this.buttonRef = ref ? ref : null;
   }
 
   private onPickerRef = (ref: any) => {
@@ -145,15 +132,15 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   }
 
   private renderPopup() {
-    const { disabled, isOpen, button } = this.state;
+    const { disabled, isOpen } = this.state;
     const { popupsMountPoint, popupsBoundariesElement, emojiProvider } = this.props;
-    if (disabled || !isOpen || !button) {
+    if (disabled || !isOpen || !this.buttonRef) {
       return null;
     }
 
     return (
       <Popup
-        target={button}
+        target={this.buttonRef}
         fitHeight={350}
         fitWidth={350}
         offset={[0, 3]}

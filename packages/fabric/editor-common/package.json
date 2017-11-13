@@ -38,7 +38,8 @@
     "prosemirror-model": "^0.22.0",
     "prosemirror-schema-basic": "^0.22.0",
     "prosemirror-tables": "^0.1.0",
-    "prosemirror-view": "^0.22.0"
+    "prosemirror-view": "^0.22.0",
+    "raf-schd": "^2.0.2"
   },
   "peerDependencies": {},
   "devDependencies": {
