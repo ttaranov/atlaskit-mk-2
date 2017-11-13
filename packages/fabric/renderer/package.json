@@ -17,6 +17,12 @@
   "dependencies": {
     "@atlaskit/code": "^2.1.6",
     "@atlaskit/editor-common": "^3.2.0",
+    "@atlaskit/icon": "^9.0.1",
+    "@atlaskit/media-card": "^22.0.0",
+    "@atlaskit/media-filmstrip": "^5.3.0",
+    "@atlaskit/mention": "^7.6.0",
+    "@atlaskit/task-decision": "^4.0.0",
+    "@atlaskit/util-shared-styles": "^2.10.3",
     "prosemirror-model": "^0.22.0"
   },
   "peerDependencies": {
@@ -26,7 +32,6 @@
     "@atlaskit/docs": "^0.0.3",
     "@atlaskit/editor-core": "^58.1.0",
     "@atlaskit/editor-test-helpers": "^0.2.0",
-    "@types/prosemirror-model": "^0.21.0",
-    "prosemirror-model": "^0.22.0"
+    "@types/prosemirror-model": "^0.21.0"
   }
 }
