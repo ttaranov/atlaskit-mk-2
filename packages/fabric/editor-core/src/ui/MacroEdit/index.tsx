@@ -53,8 +53,8 @@ export default class MacroEdit extends React.Component<any, any> {
     } = this.props;
     const { nodeAfter } = editorView.state.selection.$from;
     if (nodeAfter) {
-      const { macroId, params } = nodeAfter.attrs;
-      onInsertMacroFromMacroBrowser(editorView, macroProvider, { macroId, params });
+      const { name, params } = nodeAfter.attrs;
+      onInsertMacroFromMacroBrowser(editorView, macroProvider, { name, params });
     }
   }
 
