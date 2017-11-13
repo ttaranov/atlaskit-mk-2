@@ -3,6 +3,7 @@ import { table, tableCell, tableHeader, tableRow } from '@atlaskit/editor-common
 import { tableEditing } from 'prosemirror-tables';
 import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from '../../../plugins/table';
+import hoverSelectionPlugin from './hover-selection-plugin';
 import TableFloatingControls from '../../../ui/TableFloatingControls';
 import TableFloatingToolbar from '../../../ui/TableFloatingToolbar';
 
@@ -20,6 +21,7 @@ const tablesPlugin: EditorPlugin = {
     return [
       { rank: 900, plugin: () => plugin() },
       { rank: 910, plugin: () => tableEditing() },
+      { rank: 920, plugin: () => hoverSelectionPlugin },
     ];
   },
 
@@ -28,8 +30,16 @@ const tablesPlugin: EditorPlugin = {
 
     return (
       <div>
-        <TableFloatingControls editorView={editorView} pluginState={pluginState} />
-        <TableFloatingToolbar editorView={editorView} pluginState={pluginState} popupsMountPoint={popupsMountPoint} popupsBoundariesElement={popupsBoundariesElement} />
+        <TableFloatingControls
+          editorView={editorView}
+          pluginState={pluginState}
+        />
+        <TableFloatingToolbar
+          editorView={editorView}
+          pluginState={pluginState}
+          popupsMountPoint={popupsMountPoint}
+          popupsBoundariesElement={popupsBoundariesElement}
+        />
       </div>
     );
   }

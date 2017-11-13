@@ -25,9 +25,10 @@ import {
   getSelectedRow,
   containsTableHeader,
   createControlsDecoration,
-  createHoverDecoration
 } from './utils';
 import { analyticsService } from '../../analytics';
+import { resetHoverSelection } from '../../editor/plugins/table/actions';
+import { tableStartPos } from '../../editor/plugins/table/utils';
 
 export type TableStateSubscriber = (state: TableState) => any;
 
@@ -52,10 +53,8 @@ export class TableState {
   tableActive: boolean = false;
   domEvent: boolean = false;
   decorations: DecorationSet;
-  hoveredCells: HoveredCell[];
+  view: EditorView;
 
-  private view: EditorView;
-  private hoverDecoration?: Decoration[];
   private controlsDecoration?: Decoration[];
   private isHeaderRowRequired: boolean = false;
   private changeHandlers: TableStateSubscriber[] = [];
@@ -206,36 +205,6 @@ export class TableState {
     }
   }
 
-  hoverColumn = (column: number): void => {
-    if (this.tableNode) {
-      const {from, to} = getColumnPos(column, this.tableNode);
-      this.createHoverSelection(from, to);
-    }
-  }
-
-  hoverRow = (row: number): void => {
-    if (this.tableNode) {
-      const {from, to} = getRowPos(row, this.tableNode);
-      this.createHoverSelection(from, to);
-    }
-  }
-
-  hoverTable = () => {
-    if (this.tableNode) {
-      const {from, to} = getTablePos(this.tableNode);
-      this.createHoverSelection(from, to);
-    }
-  }
-
-  resetHoverSelection = () => {
-    if (this.hoverDecoration) {
-      this.decorations = this.decorations.remove(this.hoverDecoration);
-      this.hoverDecoration = undefined;
-      this.hoveredCells = [];
-      this.view.dispatch(this.view.state.tr);
-    }
-  }
-
   isColumnSelected = (column: number): boolean => {
     if (this.tableNode && this.cellSelection) {
       const map = TableMap.get(this.tableNode);
@@ -351,16 +320,6 @@ export class TableState {
     this.view = view;
   }
 
-  tableStartPos(): number | undefined {
-    const { $from } = this.view.state.selection;
-    for (let i = $from.depth; i > 0; i--) {
-      const node = $from.node(i);
-      if(node.type === this.view.state.schema.nodes.table) {
-        return $from.start(i);
-      }
-    }
-  }
-
   closeFloatingToolbar (): void {
     this.clearSelection();
     this.triggerOnChange();
@@ -403,34 +362,8 @@ export class TableState {
     }
   }
 
-  private createHoverSelection (from: number, to: number): void {
-    if (!this.tableNode || this.hoverDecoration) {
-      return;
-    }
-    const offset = this.tableStartPos();
-    if (offset) {
-      const { state } = this.view;
-      const map = TableMap.get(this.tableNode);
-      const cells = map.cellsInRect(map.rectBetween(from, to));
-
-      this.hoveredCells = cells.map(cellPos => {
-        const pos = cellPos + offset;
-        const node = state.doc.nodeAt(pos)!;
-        return {pos, node};
-      });
-      const decoration: Decoration[] = createHoverDecoration(this.hoveredCells);
-
-      // keeping track of decorations in order to remove them later
-      // cloning, because ProseMirror mutates decorations after the transaction is dispathed (Waat?)
-      this.hoverDecoration = [...decoration];
-      this.decorations = this.decorations.add(state.doc, decoration);
-      // trigger state change to be able to pick it up in the decorations handler
-      this.view.dispatch(state.tr);
-    }
-  }
-
   private getTableElement(docView: any): HTMLElement | undefined {
-    const offset = this.tableStartPos();
+    const offset = tableStartPos(this.view.state);
     if (offset) {
       const { node } = docView.domFromPos(offset);
       if (node) {
@@ -453,7 +386,7 @@ export class TableState {
     if (!this.tableNode) {
       return;
     }
-    const offset = this.tableStartPos();
+    const offset = tableStartPos(this.view.state);
     if (offset) {
       const { state } = this.view;
       const { $anchorCell, $headCell } = (state.selection as any) as CellSelection;
@@ -491,7 +424,7 @@ export class TableState {
   private createCellSelection (from: number, to: number): void {
     const { state } = this.view;
     // here "from" and "to" params are table-relative positions, therefore we add table offset
-    const offset = this.tableStartPos();
+    const offset = tableStartPos(state);
     if (offset) {
       const $anchor = state.doc.resolve(from + offset);
       const $head = state.doc.resolve(to + offset);
@@ -576,7 +509,7 @@ export class TableState {
   }
 
   private moveCursorTo (pos: number): void {
-    const offset = this.tableStartPos();
+    const offset = tableStartPos(this.view.state);
     if (offset) {
       this.moveCursorInsideTableTo(pos + offset);
     }
@@ -613,7 +546,7 @@ export const plugin = (pluginConfig?: PluginConfig) => new Plugin({
       return stateKey.getState(view.state).keymapHandler(view, event);
     },
     handleClick(view: EditorView, pos: number, event) {
-      stateKey.getState(view.state).resetHoverSelection();
+      resetHoverSelection(view.state, view.dispatch);
       return false;
     },
     onFocus(view: EditorView & { docView?: any }, event) {
@@ -625,7 +558,7 @@ export const plugin = (pluginConfig?: PluginConfig) => new Plugin({
       const pluginState: TableState = stateKey.getState(view.state);
       pluginState.updateEditorFocused(false);
       pluginState.update(view.docView, true);
-      pluginState.resetHoverSelection();
+      resetHoverSelection(view.state, view.dispatch);
     },
   }
 });

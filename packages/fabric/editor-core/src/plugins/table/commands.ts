@@ -3,6 +3,8 @@ import { CellSelection, goToNextCell as baseGotoNextCell, TableMap } from 'prose
 import { stateKey } from './';
 import { createTableNode, isIsolating } from './utils';
 import { analyticsService } from '../../analytics';
+import { resetHoverSelection } from '../../editor/plugins/table/actions';
+import { tableStartPos } from '../../editor/plugins/table/utils';
 
 export interface Command {
   (state: EditorState, dispatch?: (tr: Transaction) => void): boolean;
@@ -32,7 +34,7 @@ const goToNextCell = (direction: number): Command => {
     if (!pluginState.tableNode) {
       return false;
     }
-    const offset = pluginState.tableStartPos();
+    const offset = tableStartPos(state);
     if (!offset) {
       return false;
     }
@@ -96,7 +98,7 @@ const emptyCells = (): Command => {
     if (!pluginState.cellSelection) {
       return false;
     }
-    pluginState.resetHoverSelection();
+    resetHoverSelection(state, dispatch);
     pluginState.emptySelectedCells();
     const { $head: { pos, parentOffset } } = (state.selection as any) as CellSelection;
     const newPos = pos - parentOffset;

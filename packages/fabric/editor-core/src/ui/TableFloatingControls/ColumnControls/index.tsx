@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { toolbarSize } from '../styles';
+import { EditorView } from 'prosemirror-view';
+import { EditorState, Transaction } from 'prosemirror-state';
 import {
   ColumnContainer,
   ColumnInner,
@@ -10,16 +12,18 @@ import {
 import InsertColumnButton from './InsertColumnButton';
 
 export interface Props {
+  editorView: EditorView;
   tableElement: HTMLElement;
   isSelected: (column: number) => boolean;
   selectColumn: (column: number) => void;
   insertColumn: (column: number) => void;
-  hoverColumn: (column: number) => void;
-  resetHoverSelection: () => void;
+  hoverColumn: (column: number, state: EditorState, dispatch: (tr: Transaction) => void) => void;
+  resetHoverSelection: (state: EditorState, dispatch: (tr: Transaction) => void) => void;
 }
 
 export default class ColumnControls extends Component<Props, any> {
   render () {
+    const { editorView } = this.props;
     const cols = this.props.tableElement.querySelector('tr')!.children;
     const nodes: any = [];
     const tableHeight = this.props.tableElement.offsetHeight;
@@ -34,8 +38,8 @@ export default class ColumnControls extends Component<Props, any> {
           {/* tslint:disable:jsx-no-lambda */}
           <HeaderButton
             onClick={() => this.props.selectColumn(i)}
-            onMouseOver={() => this.props.hoverColumn(i)}
-            onMouseOut={this.props.resetHoverSelection}
+            onMouseOver={() => this.props.hoverColumn(i, editorView.state, editorView.dispatch)}
+            onMouseOut={() => this.props.resetHoverSelection(editorView.state, editorView.dispatch)}
           />
           {/* tslint:enable:jsx-no-lambda */}
           <InsertColumnButton
