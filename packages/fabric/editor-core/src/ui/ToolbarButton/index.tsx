@@ -47,7 +47,7 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
     const position = this.props.titlePosition || 'top';
     const tooltipContent = !this.props.hideTooltip ? this.props.title : null;
 
-    return (
+    return this.props.title ? (
       <Tooltip
         content={tooltipContent}
         hideTooltipOnClick={true}
@@ -55,7 +55,7 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
       >
         {button}
       </Tooltip>
-    );
+    ) : button;
   }
 
   private handleClick = () => {

@@ -61,7 +61,7 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
 
     const tooltip = toolbarButtonElem.find(Tooltip);
 
-    expect(tooltip).to.have.length(0);
+    expect(tooltip.html()).to.not.contain("tooltip text");
     toolbarButtonElem.unmount();
   });
 
