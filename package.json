@@ -155,6 +155,7 @@
     "@atlaskit/analytics": "^2.3.2",
     "@atlaskit/button": "^5.4.8",
     "@atlaskit/button-group": "^1.5.3",
+    "@atlaskit/comment": "^2.6.7",
     "@atlaskit/css-reset": "^1.1.5",
     "@atlaskit/dropdown-menu": "^3.0.1",
     "@atlaskit/droplist": "^4.11.3",
