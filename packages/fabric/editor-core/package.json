@@ -8,16 +8,9 @@
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "author": "Atlassian Pty Ltd",
-  "maintainers": [
-    "Eduard S",
-    "Artur B",
-    "Huanhuan H",
-    "Oscar W"
-  ],
+  "maintainers": ["Eduard S", "Artur B", "Huanhuan H", "Oscar W"],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
@@ -36,6 +29,7 @@
     "@atlaskit/media-core": "^11.0.0",
     "@atlaskit/media-filmstrip": "^5.3.0",
     "@atlaskit/mention": "^7.6.0",
+    "@atlaskit/modal-dialog": "^3.2.1",
     "@atlaskit/profilecard": "^3.7.1",
     "@atlaskit/single-select": "^2.0.1",
     "@atlaskit/spinner": "^2.0.1",
@@ -86,6 +80,7 @@
   "devDependencies": {
     "@atlaskit/button": "^5.1.1",
     "@atlaskit/editor-test-helpers": "^0.5.2",
+    "@atlaskit/layer-manager": "^2.2.1",
     "@atlaskit/media-test-helpers": "^8.4.0",
     "@atlaskit/renderer": "^8.5.2",
     "@atlaskit/util-data-test": "^7.0.0",

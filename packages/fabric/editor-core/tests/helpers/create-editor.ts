@@ -1,11 +1,19 @@
-import { EditorPlugin, EditorProps, EditorInstance } from '../../src/editor/types';
+import {
+  EditorPlugin,
+  EditorProps,
+  EditorInstance,
+} from '../../src/editor/types';
 import { createEditor } from '../../src/editor/create-editor';
 import { getDefaultPluginsList } from '../../src/editor/create-editor/create-plugins-list';
 import ProviderFactory from '../../src/providerFactory';
 
 export { EditorInstance };
 
-export default function createEditorForTests(editorPlugins: EditorPlugin[] = [], editorProps: EditorProps = {}, providerFactory?: ProviderFactory): EditorInstance {
+export default function createEditorForTests(
+  editorPlugins: EditorPlugin[] = [],
+  editorProps: EditorProps = {},
+  providerFactory?: ProviderFactory
+): EditorInstance {
   const plugins = getDefaultPluginsList().concat(editorPlugins);
   const place = document.body.appendChild(document.createElement('div'));
   const editor = createEditor(
@@ -17,8 +25,9 @@ export default function createEditorForTests(editorPlugins: EditorPlugin[] = [],
 
   afterEach(() => {
     editor.editorView.destroy();
-    if (place && place.parentNode === document.body) {
-      document.body.removeChild(place);
+    plugins.forEach((plugin: any) => plugin.destroy! && plugin.destroy());
+    if (place && place.parentNode) {
+      place.parentNode.removeChild(place);
     }
   });
 

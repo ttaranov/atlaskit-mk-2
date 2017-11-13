@@ -62,8 +62,8 @@ export default <T>(options: Options): EditorInstance<T> => {
   afterEach(() => {
     editorView.destroy();
     plugins.forEach((plugin: any) => plugin.destroy! && plugin.destroy());
-    if (fixture && fixture.parentNode === document.body) {
-      document.body.removeChild(fixture);
+    if (fixture && fixture.parentNode) {
+      fixture.parentNode.removeChild(fixture);
     }
   });
 
