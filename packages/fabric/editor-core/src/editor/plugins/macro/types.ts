@@ -15,7 +15,7 @@ export interface Macro {
 }
 
 export interface MacroParams {
-  macroId: string;
+  name: string;
   params: any;
 }
 
