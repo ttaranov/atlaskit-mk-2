@@ -84,8 +84,17 @@ export const createListAtSelection = (
     return false;
   }
 
-  const where = $from.before($from.depth);
-  const content = $from.node($from.depth).content;
+  let where;
+  let content = $from.node($from.depth).content;
+  if ($from.depth === 0) {
+    where = $from.before($from.depth + 1);
+    if (content.firstChild) {
+      // Assign child nodes as content rather than paragraph
+      content = content.firstChild.content;
+    }
+  } else {
+    where = $from.before($from.depth);
+  }
 
   tr
     .delete(where, $from.end($from.depth))
