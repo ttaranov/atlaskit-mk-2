@@ -2575,9 +2575,9 @@ bolt@^0.13.0:
     sort-object "^3.0.2"
     typeable-promisify "^2.0.1"
 
-bolt@^0.15.3:
-  version "0.15.3"
-  resolved "https://registry.yarnpkg.com/bolt/-/bolt-0.15.3.tgz#e715082630a7910322dd5d8a0ac217122b57e8b2"
+bolt@^0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/bolt/-/bolt-0.16.0.tgz#712fe091f9eb6a1e31bf3c1346308fa1cb8db683"
   dependencies:
     array-includes "^3.0.3"
     babel-runtime "^6.25.0"
@@ -7270,7 +7270,7 @@ meow@^3.3.0, meow@^3.7.0:
     redent "^1.0.0"
     trim-newlines "^1.0.0"
 
-meow@sindresorhus/meow#43401c3:
+"meow@github:sindresorhus/meow#43401c3", meow@sindresorhus/meow#43401c3:
   version "3.6.0"
   resolved "https://codeload.github.com/sindresorhus/meow/tar.gz/43401c39ee442db308288f50d6f213cd0e6e602c"
   dependencies:

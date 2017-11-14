@@ -65,9 +65,12 @@ async function getAllDependents(packagesToRelease, opts = {}) {
   return allDependents;
 }
 
-async function createChangeset(changedPackages/*: Array<string> */, opts/*: { cwd?: string }  */ = {}) {
+async function createChangeset(
+  changedPackages /*: Array<string> */,
+  opts /*: { cwd?: string }  */ = {}
+) {
   const cwd = opts.cwd || process.cwd();
-  const changeset/*: changesetType */ = {
+  const changeset /*: changesetType */ = {
     summary: '',
     releases: [],
     dependents: [],
@@ -97,13 +100,16 @@ async function createChangeset(changedPackages/*: Array<string> */, opts/*: { cw
 
   /** Get dependents and bumptypes */
 
-  const dependents/*: Array<dependentType> */ = await getAllDependents(packagesToRelease, { cwd });
+  const dependents /*: Array<dependentType> */ = await getAllDependents(
+    packagesToRelease,
+    { cwd }
+  );
 
   // This modifies the above dependents array to add a 'type' property to all
   // items.
-  await promptAndAssembleReleaseTypes(dependents, changeset, cwd)
+  await promptAndAssembleReleaseTypes(dependents, changeset, cwd);
 
-  /* (TODO: Get releaseNotes if there is a major change)
+  // (TODO: Get releaseNotes if there is a major change)
 
   // NOTE: This path is not fully implemented yet. It should be revisited when
   // release notes are on the website
@@ -121,7 +127,6 @@ async function createChangeset(changedPackages/*: Array<string> */, opts/*: { cw
   // as the changeset is printed to console, the unneeded verified property needs
   // to be removed
   changeset.dependents = dependents.map(({ finalised, ...rest }) => rest);
-
 
   return changeset;
 }
