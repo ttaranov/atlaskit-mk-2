@@ -8,27 +8,65 @@ import ToolsDrawer from '../example-helpers/ToolsDrawer';
 const SAVE_ACTION = () => console.log('Save');
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
 const exampleDocument = {
-  version: 1,
-  type: 'doc',
-  content: [
+  "version": 1,
+  "type": "doc",
+  "content": [
     {
-      type: 'paragraph',
-      content: [
-        { type: 'text', text: 'Some example document with emojis ' },
+      "type": "paragraph",
+      "content": [
         {
-          type: 'emoji',
-          attrs: { shortName: ':catchemall:', id: 'atlassian-catchemall', text: ':catchemall:' }
+          "type": "text",
+          "text": "Testing message editing with a large amount"
         },
-        { type: 'text', text: ' and mentions ' },
         {
-          type: 'mention',
-          attrs: { id: '0', text: '@Carolyn', accessLevel: '' }
+          "type": "hardBreak"
         },
-        { type: 'text', text: '. ' }
+        {
+          "type": "text",
+          "text": "of"
+        },
+        {
+          "type": "hardBreak"
+        },
+        {
+          "type": "text",
+          "text": "lines"
+        },
+        {
+          "type": "hardBreak"
+        },
+        {
+          "type": "text",
+          "text": "seriously a lot of lines"
+        },
+        {
+          "type": "hardBreak"
+        },
+        {
+          "type": "text",
+          "text": "are in this message"
+        }
       ]
     }
   ]
-};
+}
+
+class ShowHider extends React.Component<{ children: any }, { isShown: boolean }> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isShown: false,
+    }
+  }
+  render() {
+    return (
+      <div>
+        <button onClick={() => this.setState(state => ({ isShown: !state.isShown }))}>click me</button>
+        { this.props.children(this.state.isShown) }
+      </div>
+    );
+  }
+}
 
 export default function Example() {
   return (
@@ -46,25 +84,31 @@ export default function Example() {
         <ToolsDrawer
           // tslint:disable-next-line:jsx-no-lambda
           renderEditor={({ mentionProvider, emojiProvider, mediaProvider, onChange }) =>
-            <Editor
-              appearance="chromeless"
-              analyticsHandler={analyticsHandler}
-              shouldFocus={true}
+            <ShowHider>
+              {(isShown) => isShown && (
+                <Editor
+                  appearance="chromeless"
+                  analyticsHandler={analyticsHandler}
+                  shouldFocus={true}
 
-              allowTextFormatting={true}
-              allowTasksAndDecisions={true}
-              allowHyperlinks={true}
-              allowCodeBlocks={true}
+                  allowTextFormatting={true}
+                  allowTasksAndDecisions={true}
+                  allowHyperlinks={true}
+                  allowCodeBlocks={true}
 
-              saveOnEnter={true}
+                  saveOnEnter={true}
 
-              mentionProvider={mentionProvider}
-              emojiProvider={emojiProvider}
-              mediaProvider={mediaProvider}
+                  mentionProvider={mentionProvider}
+                  emojiProvider={emojiProvider}
+                  mediaProvider={mediaProvider}
 
-              onChange={onChange}
-              onSave={SAVE_ACTION}
-            />}
+                  onChange={onChange}
+                  onSave={SAVE_ACTION}
+                  defaultValue={exampleDocument}
+                />
+              )}
+            </ShowHider>
+          }
         />
       </div>
     </EditorContext>
