@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import DropdownMenu from '@atlaskit/dropdown-menu';
-import Popup from '../Popup';
+import { Popup } from '@atlaskit/editor-common';
 
 export interface Props {
   mountTo?: HTMLElement;

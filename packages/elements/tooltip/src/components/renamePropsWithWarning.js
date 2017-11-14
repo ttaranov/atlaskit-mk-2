@@ -4,25 +4,27 @@ import React, { Component, type ComponentType } from 'react';
 
 type RenamedProps = {
   [key: string]: string,
-}
+};
 type Props = {
   [key: string]: any,
-}
+};
 
 function getComponentName(target: ComponentType<*>): string {
   if (target.displayName && typeof target.displayName === 'string') {
     return target.displayName;
   }
 
-  return (
-    target.name ||
-    'Component'
-  );
+  return target.name || 'Component';
 }
 
-export default function renamePropsWithWarning(WrappedComponent: ComponentType<*>, renamedProps: RenamedProps): ComponentType<*> {
+export default function renamePropsWithWarning(
+  WrappedComponent: ComponentType<*>,
+  renamedProps: RenamedProps,
+): ComponentType<*> {
   return class WithRenamedProps extends Component<Props> {
-    static displayName = `WithRenamedProps(${getComponentName(WrappedComponent)})`;
+    static displayName = `WithRenamedProps(${getComponentName(
+      WrappedComponent,
+    )})`;
     componentDidMount() {
       Object.keys(renamedProps).forEach(prop => {
         if (prop in this.props) {

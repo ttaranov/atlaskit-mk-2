@@ -94,9 +94,15 @@ function createRelease(changesets, allPackages) {
 
   const allReleases = flattenedReleases
     // get the current version for each package
-    .map(release => ({ ...release, version: getCurrentVersion(release.name, allPackages) }))
+    .map(release => ({
+      ...release,
+      version: getCurrentVersion(release.name, allPackages),
+    }))
     // update to new version for each package
-    .map(release => ({ ...release, version: semver.inc(release.version, release.type) }))
+    .map(release => ({
+      ...release,
+      version: semver.inc(release.version, release.type),
+    }))
     // stip out type field
     .map(({ type, ...rest }) => rest);
 

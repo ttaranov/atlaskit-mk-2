@@ -44,7 +44,10 @@ export default function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/examples/:groupId?/:pkgId?/:exampleId*" component={Examples} />
+        <Route
+          path="/examples/:groupId?/:pkgId?/:exampleId*"
+          component={Examples}
+        />
         <Route>
           <LayerManager>
             <AppContainer>
@@ -60,9 +63,15 @@ export default function App() {
                     component={PackageDocument}
                   />
                   <Route path="/packages/:groupId/:pkgId" component={Package} />
-                  <Route path="/mk-2/packages/:groupId/:pkgId" component={Package} />
+                  <Route
+                    path="/mk-2/packages/:groupId/:pkgId"
+                    component={Package}
+                  />
                   <Route path="/packages" component={PackagesList} />
-                  <Route path="/changelog/:groupId/:pkgId/:semver?" component={ChangeLogExplorer} />
+                  <Route
+                    path="/changelog/:groupId/:pkgId/:semver?"
+                    component={ChangeLogExplorer}
+                  />
                   <Route component={FourOhFour} />
                 </Switch>
               </AppContent>

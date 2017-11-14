@@ -11,8 +11,16 @@ export default (
 
       ## Examples
 
-      ${<Example Component={require('../examples/01-basic').default} title="Basic" source={require('!!raw-loader!../examples/01-basic')} />}
+      ${(
+        <Example
+          Component={require('../examples/01-basic').default}
+          title="Basic"
+          source={require('!!raw-loader!../examples/01-basic')}
+        />
+      )}
     `}
-    <Props props={require('!!extract-react-types-loader!../src/components/DatePicker')} />
+    <Props
+      props={require('!!extract-react-types-loader!../src/components/DatePicker')}
+    />
   </div>
 );

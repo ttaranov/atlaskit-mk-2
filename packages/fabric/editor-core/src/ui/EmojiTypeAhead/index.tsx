@@ -4,7 +4,7 @@ import { PureComponent } from 'react';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import Popup from '../Popup';
+import { Popup } from '@atlaskit/editor-common';
 import { EmojiState } from '../../plugins/emojis';
 
 export interface Props {

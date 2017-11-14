@@ -59,15 +59,11 @@ const boldTextColor = {
   success: akColorN0,
 };
 
-const getBackgroundColor = ({ appearance, isBold }) => (isBold
-  ? boldBackgroundColor[appearance]
-  : backgroundColor[appearance]
-);
+const getBackgroundColor = ({ appearance, isBold }) =>
+  isBold ? boldBackgroundColor[appearance] : backgroundColor[appearance];
 
-const getTextColor = ({ appearance, isBold }) => (isBold
-  ? boldTextColor[appearance]
-  : textColor[appearance]
-);
+const getTextColor = ({ appearance, isBold }) =>
+  isBold ? boldTextColor[appearance] : textColor[appearance];
 
 export default styled.span`
   background-color: ${getBackgroundColor};

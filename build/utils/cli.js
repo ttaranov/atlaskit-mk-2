@@ -12,8 +12,7 @@ async function askQuestion(prompt) {
   const questionKey = `Question-${uuid()}`;
   enquirer.question(questionKey, prompt);
 
-  return enquirer.ask(questionKey)
-    .then(responses => responses[questionKey]);
+  return enquirer.ask(questionKey).then(responses => responses[questionKey]);
 }
 
 async function askConfirm(prompt) {
@@ -21,29 +20,26 @@ async function askConfirm(prompt) {
   const questionKey = `Confirm-${uuid()}`;
   enquirer.question(questionKey, prompt, { type: 'confirm' });
   // the response we get back contains all of the responses to all questions we've asked, so just
-  return enquirer.ask(questionKey)
-    .then(responses => responses[questionKey]);
+  return enquirer.ask(questionKey).then(responses => responses[questionKey]);
 }
 
 async function askList(prompt, choices) {
   const questionKey = `List-${uuid()}`;
   enquirer.question(questionKey, prompt, { type: 'list', choices });
 
-  return enquirer.ask(questionKey)
-    .then(responses => responses[questionKey]);
+  return enquirer.ask(questionKey).then(responses => responses[questionKey]);
 }
 
 async function askCheckbox(prompt, choices) {
   const questionKey = `Checkbox-${uuid()}`;
   enquirer.question(questionKey, prompt, { type: 'checkbox', choices });
 
-  return enquirer.ask(questionKey)
-    .then(responses => responses[questionKey]);
+  return enquirer.ask(questionKey).then(responses => responses[questionKey]);
 }
 
 async function askEditor(pathToFile) {
   return new Promise((resolve, reject) => {
-    editor(pathToFile, (code) => {
+    editor(pathToFile, code => {
       if (code === 0) resolve();
       reject();
     });

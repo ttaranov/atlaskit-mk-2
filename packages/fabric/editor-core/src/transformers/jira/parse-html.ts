@@ -2,7 +2,8 @@ import collapse from './collapse-whitespace';
 
 export default function(fragment: string): Document {
   const html = `<!doctype html><html><body>${fragment}</body></html>`;
-  const tree = new DOMParser().parseFromString(html, 'text/html');
+  const parser: DOMParser = new (window as any).DOMParser();
+  const tree = parser.parseFromString(html, 'text/html');
   collapse(tree.documentElement, isBlock);
   return tree;
 }

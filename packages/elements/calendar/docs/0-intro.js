@@ -19,5 +19,9 @@ export default md`
     />
   )}
 
-  ${<Props props={require('!!extract-react-types-loader!../src/components/Calendar')} />}
+  ${(
+    <Props
+      props={require('!!extract-react-types-loader!../src/components/Calendar')}
+    />
+  )}
 `;

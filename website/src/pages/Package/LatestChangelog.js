@@ -11,10 +11,15 @@ import { colors, gridSize, math, themed } from '@atlaskit/theme';
 
 import Changelog, { type Logs } from '../../components/ChangeLog';
 
-const LatestChange = (
-  { changelog, pkgId, groupId }:
-  { changelog: Logs, pkgId: string, groupId: string }
-) => {
+const LatestChange = ({
+  changelog,
+  pkgId,
+  groupId,
+}: {
+  changelog: Logs,
+  pkgId: string,
+  groupId: string,
+}) => {
   if (!changelog || !changelog[0] || !changelog[0].version) return null;
 
   return (
@@ -58,10 +63,7 @@ const Button = styled(Btn)`
   right: 0;
   top: ${math.multiply(gridSize, 3)}px;
 `;
-const Latest = (
-  { children, ...rest }:
-  { children?: Node | string }
-) => (
+const Latest = ({ children, ...rest }: { children?: Node | string }) => (
   <span style={{ position: 'relative', top: -3 }}>
     <Lozenge appearance="new" {...rest}>
       {children || 'Latest'}

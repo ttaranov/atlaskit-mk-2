@@ -2,7 +2,9 @@
 import type { Directory, File } from '../types';
 import sentenceCase from 'sentence-case';
 
-export function getDirectories(items: Array<Directory | File>): Array<Directory> {
+export function getDirectories(
+  items: Array<Directory | File>,
+): Array<Directory> {
   let dirs = [];
 
   for (let item of items) {
@@ -26,7 +28,10 @@ export function getFiles(items: Array<Directory | File>): Array<File> {
   return files;
 }
 
-export function maybeGetById<T: Directory | File>(items: Array<T>, id: string): T | null {
+export function maybeGetById<T: Directory | File>(
+  items: Array<T>,
+  id: string,
+): T | null {
   return items.find(item => item.id === id) || null;
 }
 
@@ -40,7 +45,10 @@ export function getById<T: Directory | File>(items: Array<T>, id: string): T {
   return match;
 }
 
-export function flatMap<T>(dir: Directory, iteratee: (file: File, filePath: string) => T): Array<T> {
+export function flatMap<T>(
+  dir: Directory,
+  iteratee: (file: File, filePath: string) => T,
+): Array<T> {
   let result = [];
 
   function visit(dir, filePath) {
@@ -59,7 +67,10 @@ export function flatMap<T>(dir: Directory, iteratee: (file: File, filePath: stri
   return result;
 }
 
-export function find(dir: Directory, iteratee: (file: File, filePath: string) => boolean): File | null {
+export function find(
+  dir: Directory,
+  iteratee: (file: File, filePath: string) => boolean,
+): File | null {
   function visit(dir, filePath) {
     for (let item of dir.children) {
       let currPath = `${filePath}/${item.id}`;
@@ -82,9 +93,13 @@ export function findNormalized(dir: Directory, filePath: string) {
 }
 
 export function normalize(filePath: string): string {
-  return filePath.split('/').map(part => {
-    return part.replace(/^[\d]+-/, '');
-  }).join('/').replace(/\..*/, '');
+  return filePath
+    .split('/')
+    .map(part => {
+      return part.replace(/^[\d]+-/, '');
+    })
+    .join('/')
+    .replace(/\..*/, '');
 }
 
 export function titleize(filePath: string): string {

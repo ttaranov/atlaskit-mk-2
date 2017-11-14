@@ -33,7 +33,8 @@ const Content = styled.div`
   overflow-y: auto;
 `;
 
-const SANDBOX_DEPLOY_ENDPOINT = 'https://atlaskit-deploy-sandbox.glitch.me/deploy';
+const SANDBOX_DEPLOY_ENDPOINT =
+  'https://atlaskit-deploy-sandbox.glitch.me/deploy';
 
 const Nav = styled.nav`
   background: ${colors.N30};
@@ -67,7 +68,9 @@ const CodeContainer = styled.div`
   z-index: 3;
 `;
 
-const NavSection = styled.div`padding: 4px;`;
+const NavSection = styled.div`
+  padding: 4px;
+`;
 
 const NavIconLink = styled(Link)`
   display: inline-flex;
@@ -82,7 +85,9 @@ const NavIconLink = styled(Link)`
   }
 `;
 
-const NavIcon = styled.span`margin-right: 6px;`;
+const NavIcon = styled.span`
+  margin-right: 6px;
+`;
 
 const Control = styled.div`
   display: inline-block;
@@ -140,18 +145,20 @@ function ExampleSelector(props) {
   const examplesSelectItems = [
     {
       heading: 'Examples',
-      items: props.examples ? fs.flatMap(props.examples, (file, filePath) => {
-        let item = {
-          content: fs.titleize(file.id),
-          value: fs.normalize(filePath.replace('examples/', '')),
-        };
+      items: props.examples
+        ? fs.flatMap(props.examples, (file, filePath) => {
+            let item = {
+              content: fs.titleize(file.id),
+              value: fs.normalize(filePath.replace('examples/', '')),
+            };
 
-        if (file.id === props.exampleId) {
-          selectedExampleItem = item;
-        }
+            if (file.id === props.exampleId) {
+              selectedExampleItem = item;
+            }
 
-        return item;
-      }) : [],
+            return item;
+          })
+        : [],
     },
   ];
 
@@ -174,7 +181,11 @@ function ExampleNavigation(props) {
     <Nav>
       <NavIconLink to={packageUrl(props.groupId, props.packageId)}>
         <NavIcon>
-          <ArrowLeftCircleIcon size="large" primaryColor={colors.B500} label="back to docs" />
+          <ArrowLeftCircleIcon
+            size="large"
+            primaryColor={colors.B500}
+            label="back to docs"
+          />
         </NavIcon>
         to {fs.titleize(props.packageId)} docs
       </NavIconLink>
@@ -184,28 +195,44 @@ function ExampleNavigation(props) {
           groupId={props.groupId}
           packageId={props.packageId}
           groups={props.groups}
-          onSelected={props.onPackageSelected}/>
+          onSelected={props.onPackageSelected}
+        />
         <ExampleSelector
           examples={props.examples}
           exampleId={props.exampleId}
-          onSelected={props.onExampleSelected}/>
+          onSelected={props.onExampleSelected}
+        />
       </NavSection>
 
       <NavSection>
         <ButtonGroup>
           <Button
             appearance="link"
-            iconBefore={<CodeIcon size="large" primaryColor={colors.N500} label="Show source" />}
+            iconBefore={
+              <CodeIcon
+                size="large"
+                primaryColor={colors.N500}
+                label="Show source"
+              />
+            }
             onClick={props.onCodeToggle}
           />
           <Button
             appearance="link"
-            iconBefore={props.loadingSandbox
-              ? <Spinner />
-              : <EditIcon size="large" primaryColor={colors.N500} label="Open in Codesandbox.io" />}
+            iconBefore={
+              props.loadingSandbox ? (
+                <Spinner />
+              ) : (
+                <EditIcon
+                  size="large"
+                  primaryColor={colors.N500}
+                  label="Open in Codesandbox.io"
+                />
+              )
+            }
             onClick={props.deploySandbox}
           />
-      </ButtonGroup>
+        </ButtonGroup>
       </NavSection>
     </Nav>
   );
@@ -217,7 +244,11 @@ function ExampleDisplay(props) {
     loading: Loading,
     render(loaded) {
       if (!loaded.default) {
-        return <ErrorMessage>Example "{props.example.id}" doesn't have default export.</ErrorMessage>;
+        return (
+          <ErrorMessage>
+            Example "{props.example.id}" doesn't have default export.
+          </ErrorMessage>
+        );
       }
 
       return (
@@ -278,13 +309,17 @@ export default class Examples extends React.Component<Props, State> {
     this.updateSelected(
       this.props.match.params.groupId,
       this.props.match.params.pkgId,
-      selected.item.value
+      selected.item.value,
     );
   };
 
   updateSelected(groupId?: string, packageId?: string, exampleId?: string) {
     let resolved = this.resolveProps(groupId, packageId, exampleId);
-    let url = this.toUrl(resolved.groupId, resolved.packageId, resolved.exampleId);
+    let url = this.toUrl(
+      resolved.groupId,
+      resolved.packageId,
+      resolved.exampleId,
+    );
     this.context.router.history.push(url);
   }
 
@@ -314,7 +349,8 @@ export default class Examples extends React.Component<Props, State> {
     let hasChanged =
       groupId !== resolvedGroupId ||
       packageId !== resolvedPackageId ||
-      (exampleId || null) !== (resolvedExampleId ? fs.normalize(resolvedExampleId) : null);
+      (exampleId || null) !==
+        (resolvedExampleId ? fs.normalize(resolvedExampleId) : null);
 
     return {
       hasChanged,
@@ -353,7 +389,7 @@ export default class Examples extends React.Component<Props, State> {
   addFlag = (flagProps: {
     appearance: string,
     description: string,
-    title: string
+    title: string,
   }) => {
     const id = Date.now().toString();
     const icon = (() => {
@@ -365,31 +401,36 @@ export default class Examples extends React.Component<Props, State> {
     })();
     this.setState({
       flags: {
-        [id]: (<Flag
-          icon={icon}
-          id={id}
-          key={id}
-          actions={[{ content: 'OK', onClick: () => this.removeFlag(id) }]}
-          {...flagProps}
-        />),
+        [id]: (
+          <Flag
+            icon={icon}
+            id={id}
+            key={id}
+            actions={[{ content: 'OK', onClick: () => this.removeFlag(id) }]}
+            {...flagProps}
+          />
+        ),
         ...this.state.flags,
-      }
-    })
-  }
+      },
+    });
+  };
 
   removeFlag = (removedKey: string) => {
     const flags = Object.keys(this.state.flags)
       .filter(key => key !== removedKey.toString())
-      .reduce((newFlags, key) => ({ ...newFlags, [key]: this.state.flags[key]}), {});
+      .reduce(
+        (newFlags, key) => ({ ...newFlags, [key]: this.state.flags[key] }),
+        {},
+      );
 
     this.setState({ flags });
-  }
+  };
 
   deploySandbox = async () => {
     const props = this.resolveProps(
       this.props.match.params.groupId,
       this.props.match.params.pkgId,
-      this.props.match.params.exampleId
+      this.props.match.params.exampleId,
     );
 
     if (!props.example) {
@@ -397,9 +438,14 @@ export default class Examples extends React.Component<Props, State> {
     }
 
     const component = props.packageId;
-    const example = props.example.id.split('.').slice(0, -1).join('.');
+    const example = props.example.id
+      .split('.')
+      .slice(0, -1)
+      .join('.');
     this.setState({ loadingSandbox: true });
-    const response = await fetch(`${SANDBOX_DEPLOY_ENDPOINT}/${component}/${example}`);
+    const response = await fetch(
+      `${SANDBOX_DEPLOY_ENDPOINT}/${component}/${example}`,
+    );
     if (response.ok) {
       const url = await response.text();
       window.open(url);
@@ -409,10 +455,10 @@ export default class Examples extends React.Component<Props, State> {
         appearance: 'error',
         description: message,
         title: 'Error deploying to Codesandbox',
-      })
+      });
     }
     this.setState({ loadingSandbox: false });
-  }
+  };
 
   render() {
     let {
@@ -426,7 +472,7 @@ export default class Examples extends React.Component<Props, State> {
     } = this.resolveProps(
       this.props.match.params.groupId,
       this.props.match.params.pkgId,
-      this.props.match.params.exampleId
+      this.props.match.params.exampleId,
     );
 
     if (hasChanged) {
@@ -450,16 +496,17 @@ export default class Examples extends React.Component<Props, State> {
         {examples && exampleId ? (
           <ExampleDisplay
             displayCode={this.state.displayCode}
-            example={fs.getById(fs.getFiles(examples.children), exampleId)}/>
+            example={fs.getById(fs.getFiles(examples.children), exampleId)}
+          />
         ) : (
           <Content>
-            <ErrorMessage>{fs.titleize(packageId)} does not have any examples</ErrorMessage>
+            <ErrorMessage>
+              {fs.titleize(packageId)} does not have any examples
+            </ErrorMessage>
           </Content>
         )}
         <FlagGroup>
-          {Object.keys(this.state.flags).map(
-            key => this.state.flags[key]
-          )}
+          {Object.keys(this.state.flags).map(key => this.state.flags[key])}
         </FlagGroup>
       </Container>
     );

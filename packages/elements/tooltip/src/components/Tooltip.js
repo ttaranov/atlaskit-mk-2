@@ -65,7 +65,6 @@ class Tooltip extends Component<Props, State> {
   state = getInitialState(this.props);
   wrapper: HTMLElement | null;
   static defaultProps = {
-
     position: 'bottom',
     tag: 'div',
   };
@@ -114,8 +113,8 @@ class Tooltip extends Component<Props, State> {
       coordinates,
     } = this.state;
 
-    // bail immediately when not visible
-    if (!isVisible) return null;
+    // bail immediately when not visible, or when there is no content
+    if (!isVisible || !content) return null;
 
     // render node for measuring in alternate tree via portal
     if (!coordinates) {

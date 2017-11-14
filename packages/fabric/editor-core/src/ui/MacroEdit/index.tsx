@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { EditorView } from 'prosemirror-view';
-import Popup from '../Popup';
+import { Popup } from '@atlaskit/editor-common';
 import ToolbarButton from '../ToolbarButton';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditIcon from '@atlaskit/icon/glyph/editor/edit';
@@ -53,8 +53,8 @@ export default class MacroEdit extends React.Component<any, any> {
     } = this.props;
     const { nodeAfter } = editorView.state.selection.$from;
     if (nodeAfter) {
-      const { macroId, params } = nodeAfter.attrs;
-      onInsertMacroFromMacroBrowser(editorView, macroProvider, { macroId, params });
+      const { name, params } = nodeAfter.attrs;
+      onInsertMacroFromMacroBrowser(editorView, macroProvider, { name, params });
     }
   }
 

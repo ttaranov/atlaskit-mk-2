@@ -18,7 +18,7 @@ type Props = {
     TRUE will automatically find the first "tabbable" element within the modal
     Providing a function should return the element you want to focus
   */
-  autoFocus?: boolean | () => HTMLElement,
+  autoFocus?: boolean | (() => HTMLElement),
   /**
     Inner content
   */
@@ -33,16 +33,16 @@ let focusScopeInitFromProps = false;
 
 /* eslint-disable react/sort-comp */
 export default class FocusLock extends Component<Props> {
-  ariaHiddenNode: HTMLElement
-  componentIsMounted: boolean = false
-  teardownFromProps: boolean = false
+  ariaHiddenNode: HTMLElement;
+  componentIsMounted: boolean = false;
+  teardownFromProps: boolean = false;
   static defaultProps = {
     autoFocus: false,
-  }
+  };
   static contextTypes = {
     /** available when invoked within @atlaskit/layer-manager */
     ariaHiddenNode: PropTypes.object,
-  }
+  };
 
   componentDidMount() {
     this.componentIsMounted = true;
@@ -77,7 +77,8 @@ export default class FocusLock extends Component<Props> {
 
     if (!this.componentIsMounted) return;
 
-    this.ariaHiddenNode = this.props.ariaHiddenNode || this.context.ariaHiddenNode;
+    this.ariaHiddenNode =
+      this.props.ariaHiddenNode || this.context.ariaHiddenNode;
 
     focusStore.storeFocus();
     this.findFocusTarget();
@@ -85,7 +86,7 @@ export default class FocusLock extends Component<Props> {
     if (this.ariaHiddenNode) {
       this.ariaHiddenNode.setAttribute('aria-hidden', '');
     }
-  }
+  };
   teardown = (options: { shouldRestoreFocus: boolean }) => {
     if (this.ariaHiddenNode) {
       this.ariaHiddenNode.removeAttribute('aria-hidden');
@@ -96,7 +97,7 @@ export default class FocusLock extends Component<Props> {
     if (options.shouldRestoreFocus) {
       focusStore.restoreFocus();
     }
-  }
+  };
   findFocusTarget() {
     const { autoFocus } = this.props;
 

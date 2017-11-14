@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { TransitionGroup } from 'react-transition-group';
 import { GatewayDest, GatewayProvider } from './gateway';
 
-
 // NOTE: lock the app wrapper to a 0 z-index. This allows layer manager to
 // render all gateways hierarchically, on top of the app, without needing
 // incremental z-indexes.
@@ -18,8 +17,8 @@ type Props = { children: Node };
 type State = { ariaHiddenNode?: HTMLElement };
 
 export default class LayerManager extends Component<Props, State> {
-  state = { ariaHiddenNode: undefined }
-  static childContextTypes : Object = { ariaHiddenNode: PropTypes.object }
+  state = { ariaHiddenNode: undefined };
+  static childContextTypes: Object = { ariaHiddenNode: PropTypes.object };
 
   getChildContext() {
     return {
@@ -31,7 +30,7 @@ export default class LayerManager extends Component<Props, State> {
     if (this.state.ariaHiddenNode) return;
 
     this.setState({ ariaHiddenNode: ref });
-  }
+  };
 
   render() {
     const { children } = this.props;
@@ -43,6 +42,7 @@ export default class LayerManager extends Component<Props, State> {
         </AppWrapper>
         <GatewayDest name="modal" component={TransitionGroup} />
         <GatewayDest name="spotlight" />
+        <GatewayDest name="flag" />
         <GatewayDest name="tooltip" component={TransitionGroup} />
       </GatewayProvider>
     );

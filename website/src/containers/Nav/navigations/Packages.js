@@ -12,17 +12,21 @@ import type { Directory, File, NavGroupItem } from '../../../types';
 import * as fs from '../../../utils/fs';
 import allPackages, { packageNames } from '../../../packages';
 import { OLD_WEBSITE_URL, NEW_WEBSITE_PREFIX } from '../../../utils/constants';
-import { packageUrl, packageDocUrl, packageExampleUrl } from '../../../utils/url';
+import {
+  packageUrl,
+  packageDocUrl,
+  packageExampleUrl,
+} from '../../../utils/url';
 
 export function buildSubNavGroup(
   children: Array<File>,
   groupTitle: string,
   url: (id: string) => string,
-  Icon: ComponentType<*>
+  Icon: ComponentType<*>,
 ): { title?: string, items: Array<NavGroupItem> } | null {
   if (!children || !children.length) return null;
-  return (
-    children.filter(item => !item.id.startsWith('_')).reduce((acc, item) => {
+  return children.filter(item => !item.id.startsWith('_')).reduce(
+    (acc, item) => {
       acc.items.push({
         to: url(fs.normalize(item.id)),
         title: fs.titleize(item.id),
@@ -30,30 +34,44 @@ export function buildSubNavGroup(
       });
       return acc;
     },
-    { title: groupTitle, items: [] })
+    { title: groupTitle, items: [] }
   );
 }
 
-const getItemDetails = (pkg: Directory, group: Directory, navigateOut?: boolean) => {
+const getItemDetails = (
+  pkg: Directory,
+  group: Directory,
+  navigateOut?: boolean,
+) => {
   const docs = fs.maybeGetById(fs.getDirectories(pkg.children) || [], 'docs');
-  const examples = fs.maybeGetById(fs.getDirectories(pkg.children) || [], 'examples');
+  const examples = fs.maybeGetById(
+    fs.getDirectories(pkg.children) || [],
+    'examples',
+  );
   if (!docs) return null;
   if (!examples) return null;
 
   const docItems = fs
-    .getFiles(docs && docs.children && docs.children.length ? docs.children : [])
+    .getFiles(
+      docs && docs.children && docs.children.length ? docs.children : [],
+    )
     .slice(1);
   const exampleItems = fs.getFiles(examples.children || []);
 
   const items = [];
 
   if (!navigateOut) {
-    const docsSubnav = buildSubNavGroup(docItems, 'Docs', packageDocUrl.bind(null, group.id, pkg.id), PageIcon);
+    const docsSubnav = buildSubNavGroup(
+      docItems,
+      'Docs',
+      packageDocUrl.bind(null, group.id, pkg.id),
+      PageIcon,
+    );
     const examplesSubnav = buildSubNavGroup(
       exampleItems,
       'Examples',
       packageExampleUrl.bind(null, group.id, pkg.id),
-      CodeIcon
+      CodeIcon,
     );
 
     if (docsSubnav) items.push(docsSubnav);
@@ -61,7 +79,9 @@ const getItemDetails = (pkg: Directory, group: Directory, navigateOut?: boolean)
   }
 
   return {
-    to: navigateOut ? `/packages/${group.id}/${pkg.id}` : packageUrl(group.id, pkg.id),
+    to: navigateOut
+      ? `/packages/${group.id}/${pkg.id}`
+      : packageUrl(group.id, pkg.id),
     title: fs.titleize(pkg.id),
     icon: <PackageIcon label={`${fs.titleize(pkg.id)} icon`} />,
     iconSelected: <PackageSelectedIcon label={`${fs.titleize(pkg.id)} icon`} />,
@@ -69,11 +89,18 @@ const getItemDetails = (pkg: Directory, group: Directory, navigateOut?: boolean)
   };
 };
 
-const getItem = (packages: Array<Directory>, group: Directory, navigateOut: boolean) => {
-  const findablePkgs: { [key: string]: Object } = packages.reduce((acc, pkg) => {
-    acc[pkg.id] = pkg;
-    return acc;
-  }, {});
+const getItem = (
+  packages: Array<Directory>,
+  group: Directory,
+  navigateOut: boolean,
+) => {
+  const findablePkgs: { [key: string]: Object } = packages.reduce(
+    (acc, pkg) => {
+      acc[pkg.id] = pkg;
+      return acc;
+    },
+    {},
+  );
 
   return packageNames.reduce((results, name) => {
     const pkg = findablePkgs[allPackages[name].key];
@@ -133,7 +160,11 @@ export default function PackagesNav(props: PackagesNavProps) {
   const { packages, pathname, navigateOut } = props;
   const dirs = fs.getDirectories(packages.children);
 
-  const groups = navigateOut ? fakeOldSiteGroups(dirs, navigateOut) : standardGroups(dirs);
+  const groups = navigateOut
+    ? fakeOldSiteGroups(dirs, navigateOut)
+    : standardGroups(dirs);
 
-  return <div>{renderNav([{ items: [packagesList] }, ...groups], pathname)}</div>;
+  return (
+    <div>{renderNav([{ items: [packagesList] }, ...groups], pathname)}</div>
+  );
 }

@@ -15,7 +15,7 @@ type Context = {
 };
 
 export default class GatewayDest extends Component<Props, State> {
-  gatewayRegistry: GatewayRegistry
+  gatewayRegistry: GatewayRegistry;
   static contextTypes = {
     gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired,
   };

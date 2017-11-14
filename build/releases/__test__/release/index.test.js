@@ -26,12 +26,13 @@ bolt.publish = jest.fn();
 
 const simpleReleaseObj = {
   releases: [{ name: 'pkg-a', commits: ['b8bb699'], version: '1.1.0' }],
-  changesets:
-  [{ summary: 'This is a summary',
-    releases: [{ name: 'pkg-a', type: 'minor' }],
-    dependents: [],
-    commit: 'b8bb699',
-  },
+  changesets: [
+    {
+      summary: 'This is a summary',
+      releases: [{ name: 'pkg-a', type: 'minor' }],
+      dependents: [],
+      commit: 'b8bb699',
+    },
   ],
 };
 
@@ -40,15 +41,16 @@ const multipleReleaseObj = {
     { name: 'pkg-a', commits: ['b8bb699'], version: '1.1.0' },
     { name: 'pkg-b', commits: ['b8bb699'], version: '1.0.1' },
   ],
-  changesets:
-  [{ summary: 'This is a summary',
-    releases: [
-      { name: 'pkg-a', type: 'minor' },
-      { name: 'pkg-b', type: 'patch' },
-    ],
-    dependents: [],
-    commit: 'b8bb699',
-  },
+  changesets: [
+    {
+      summary: 'This is a summary',
+      releases: [
+        { name: 'pkg-a', type: 'minor' },
+        { name: 'pkg-b', type: 'patch' },
+      ],
+      dependents: [],
+      commit: 'b8bb699',
+    },
   ],
 };
 
@@ -66,14 +68,18 @@ describe('running release', () => {
   describe('in a simple project', () => {
     describe('when there are no changeset commits', () => {
       beforeEach(() => {
-        git.getChangesetCommitsSince.mockImplementation(() => Promise.resolve([]));
+        git.getChangesetCommitsSince.mockImplementation(() =>
+          Promise.resolve([]),
+        );
       });
 
       it('should warn if no changeset commits exist', async () => {
         await runRelease({ cwd });
         const loggerWarnCalls = logger.warn.mock.calls;
         expect(loggerWarnCalls.length).toEqual(1);
-        expect(loggerWarnCalls[0][0]).toEqual('No unreleased changesets found since xxYYxxY. Exiting');
+        expect(loggerWarnCalls[0][0]).toEqual(
+          'No unreleased changesets found since xxYYxxY. Exiting',
+        );
       });
     });
 
@@ -81,7 +87,9 @@ describe('running release', () => {
       // From here, we'll just mock from createRelease and ignore all the git operations (getChangesetCommitsSince, etc)
       beforeAll(() => {
         // We just need there to be a length > 0
-        git.getChangesetCommitsSince.mockImplementation(() => Promise.resolve([1, 2, 3]));
+        git.getChangesetCommitsSince.mockImplementation(() =>
+          Promise.resolve([1, 2, 3]),
+        );
       });
 
       it('should bump releasedPackages', async () => {
@@ -105,9 +113,13 @@ describe('running release', () => {
 
         expect(fsWriteFileCalls.length).toEqual(2);
         // first call should be minor bump
-        expect(JSON.parse(fsWriteFileCalls[0][1])).toEqual({ version: '1.1.0' });
+        expect(JSON.parse(fsWriteFileCalls[0][1])).toEqual({
+          version: '1.1.0',
+        });
         // second should be a patch
-        expect(JSON.parse(fsWriteFileCalls[1][1])).toEqual({ version: '1.0.1' });
+        expect(JSON.parse(fsWriteFileCalls[1][1])).toEqual({
+          version: '1.0.1',
+        });
       });
 
       describe('if not running in CI', () => {

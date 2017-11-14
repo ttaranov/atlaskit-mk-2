@@ -13,17 +13,22 @@ type MetaItemProps = {
 const MetaItem = (props: MetaItemProps) => (
   <DI>
     <DT>{props.label}</DT>
-    <DD>{props.href
-      ? <a href={props.href} target="_new">{props.summary}</a>
-      : props.summary
-    }</DD>
+    <DD>
+      {props.href ? (
+        <a href={props.href} target="_new">
+          {props.summary}
+        </a>
+      ) : (
+        props.summary
+      )}
+    </DD>
   </DI>
 );
 
 export type MetaDataProps = {
   packageSrc: string,
-  packageName: string
-}
+  packageName: string,
+};
 
 export default class MetaData extends Component<MetaDataProps> {
   render() {
@@ -40,11 +45,7 @@ export default class MetaData extends Component<MetaDataProps> {
           label="npm"
           summary={packageName}
         />
-        <MetaItem
-          href={packageSrc}
-          label="Source"
-          summary="Bitbucket"
-        />
+        <MetaItem href={packageSrc} label="Source" summary="Bitbucket" />
         <MetaItem
           href={`https://unpkg.com/${packageName}/dist`}
           label="Bundle"

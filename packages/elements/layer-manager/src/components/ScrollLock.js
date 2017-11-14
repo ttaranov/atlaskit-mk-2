@@ -1,7 +1,13 @@
 // @flow
 import { Component } from 'react';
 
-const STYLE_KEYS = ['boxSizing', 'height', 'overflow', 'paddingRight', 'position'];
+const STYLE_KEYS = [
+  'boxSizing',
+  'height',
+  'overflow',
+  'paddingRight',
+  'position',
+];
 const LOCK_STYLES = {
   boxSizing: 'border-box', // account for possible declaration `width: 100%;` on body
   overflow: 'hidden',
@@ -15,7 +21,7 @@ type Props = {};
 type TargetStyle = { [key: string]: string | null };
 
 export default class ScrollLock extends Component<Props> {
-  originalStyles = {} // eslint-disable-line react/sort-comp
+  originalStyles = {}; // eslint-disable-line react/sort-comp
   componentDidMount() {
     const target = document.body;
     const targetStyle = target && (target.style: TargetStyle);
@@ -30,7 +36,8 @@ export default class ScrollLock extends Component<Props> {
     if (activeScrollLocks < 1) {
       const currentPadding = parseInt(this.originalStyles.paddingRight, 10);
       const clientWidth = document.body ? document.body.clientWidth : 0;
-      const adjustedPadding = (window.innerWidth - clientWidth) + currentPadding || 0;
+      const adjustedPadding =
+        window.innerWidth - clientWidth + currentPadding || 0;
 
       Object.keys(LOCK_STYLES).forEach(key => {
         const val = LOCK_STYLES[key];

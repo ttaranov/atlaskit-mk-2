@@ -14,7 +14,7 @@ import type { Directory, File, LoaderOptions } from './types';
 function createLoaderOutput(
   dir /*: Directory */,
   files /*: Array<string> */ = [],
-  debug /*: boolean */ = false
+  debug /*: boolean */ = false,
 ) {
   const output = `
     function dir(id, children) {
@@ -43,7 +43,7 @@ function createLoaderOutput(
 
 function addWebpackDependencies(
   dir /*: Directory */,
-  addContextDependency /* (path: string) => void */
+  addContextDependency /* (path: string) => void */,
 ) {
   // Skipping top level directories and add only those that have files matching query inside.
   if (isDirHasFiles(dir)) {
@@ -52,14 +52,16 @@ function addWebpackDependencies(
 
   dir.children.forEach(
     // Making flow happy otherwise it doesn't understand that child here can only by a directory
-    child => child.type === 'dir' && addWebpackDependencies(child, addContextDependency)
+    child =>
+      child.type === 'dir' &&
+      addWebpackDependencies(child, addContextDependency),
   );
 }
 
 module.exports = async function boltFsLoader() {
   const opts /*: LoaderOptions */ = Object.assign(
     { include: [], exclude: [], debug: false },
-    loaderUtils.getOptions(this) || {}
+    loaderUtils.getOptions(this) || {},
   );
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
 
@@ -71,9 +73,16 @@ module.exports = async function boltFsLoader() {
 
   // Separate option for exclude is necessary since webpack treats ! as a sign of a loader
   // which blocks us from using it inside import statement
-  const patterns = [].concat(opts.include).concat((opts.exclude || []).map(p => `!${p}`));
-  const files /*: Array<string> */ = await globby(patterns, { cwd: projectRoot });
-  const result /*: Directory */ = files.reduce((root /*: Directory */, file /*: string */) => {
+  const patterns = []
+    .concat(opts.include)
+    .concat((opts.exclude || []).map(p => `!${p}`));
+  const files /*: Array<string> */ = await globby(patterns, {
+    cwd: projectRoot,
+  });
+  const result /*: Directory */ = files.reduce((
+    root /*: Directory */,
+    file /*: string */,
+  ) => {
     const pathSegments = file.split(path.sep);
     return buildFs(root, pathSegments);
   }, dir('root', projectRoot));
