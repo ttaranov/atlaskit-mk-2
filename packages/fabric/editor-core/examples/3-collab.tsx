@@ -17,7 +17,7 @@ import {
 } from '../src/styles';
 
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
-import { collabEditProviderPromise } from '../example-helpers/mock-collab-provider';
+import { collabEditProvider } from '../example-helpers/mock-collab-provider';
 
 // tslint:disable-next-line:variable-name
 export const TitleInput = styled.input`
@@ -93,7 +93,7 @@ export default function Example() {
             mediaProvider={storyMediaProviderFactory()}
             emojiProvider={emojiStoryData.getEmojiResource()}
             mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
-            collabEditProvider={collabEditProviderPromise}
+            collabEditProvider={collabEditProvider('rick')}
 
             placeholder="Write something..."
             shouldFocus={false}
@@ -132,7 +132,7 @@ export default function Example() {
             mediaProvider={storyMediaProviderFactory()}
             emojiProvider={emojiStoryData.getEmojiResource()}
             mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
-            collabEditProvider={collabEditProviderPromise}
+            collabEditProvider={collabEditProvider('morty')}
 
             placeholder="Write something..."
             shouldFocus={false}
