@@ -1,6 +1,10 @@
 # @atlaskit/tooltip
 
-## 7.0.0 (2017-11-14)
+## 8.0.0 (2017-11-10)
+
+* this release was by mistake
+
+## 7.0.0 (2017-11-10)
 
 * added flow types
 * rewritten the logic for positioning tooltips, removed Popper.js
