@@ -5,5 +5,7 @@
     "./src/**/*.tsx",
     "./tests/**/*.ts",
     "./tests/**/*.tsx",
+    "./__tests__/**/*.ts",
+    "./__tests__/**/*.tsx"
   ]
 }

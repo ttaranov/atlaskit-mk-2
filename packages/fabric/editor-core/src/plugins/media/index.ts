@@ -132,7 +132,7 @@ export class MediaPluginState {
 
       return;
     }
-
+    
     this.mediaProvider = resolvedMediaProvider;
     this.allowsMedia = true;
 

@@ -140,7 +140,7 @@ export function convert(content: Fragment, node: Node, schema: Schema): Fragment
          * </span>
          */
         if (node.className === 'jira-issue-macro') {
-          const jiraKey = node.dataset.jiraKey;
+          const jiraKey = node.getAttribute('data-jira-key');
           const link = node.getElementsByTagName('a')[0];
           if (jiraKey && link) {
             return addMarks(
@@ -159,13 +159,13 @@ export function convert(content: Fragment, node: Node, schema: Schema): Fragment
         } else if (isMedia(node) && isSchemaWithMedia(schema)) {
           const dataNode = node.querySelector('[data-media-services-id]');
           if (dataNode && dataNode instanceof HTMLElement) {
-            const {
-              mediaServicesId: id,
-              mediaServicesType: type,
-              mediaServicesCollection: collection = '',
-              attachmentName, attachmentType,
-              fileName, displayType
-            } = dataNode.dataset;
+            const id = dataNode.getAttribute('data-media-services-id');
+            const type = dataNode.getAttribute('data-media-services-type');
+            const collection = dataNode.getAttribute('data-media-services-collection') || '';
+            const attachmentName = dataNode.getAttribute('data-attachment-name');
+            const attachmentType = dataNode.getAttribute('data-attachment-type');
+            const fileName = dataNode.getAttribute('data-file-name');
+            const displayType = dataNode.getAttribute('data-display-type');
 
             return schema.nodes.media.create({
               id, type, collection,
@@ -317,7 +317,6 @@ export function bfsOrder(root: Node): Node[] {
           inqueue.push(child);
           break;
         default:
-          // tslint:disable-next-line:no-console
           console.error(`Not pushing: ${child.nodeType} ${child.nodeName}`);
       }
     }

@@ -1,5 +1,5 @@
 // @flow
-
+const fs = require('fs');
 const path = require('path');
 const defaultResolver = require('jest-resolve/build/defaultResolver');
 
@@ -11,5 +11,14 @@ module.exports = function resolver(modulePath /*: string */, params /*: any */) 
     } catch (e) {} // eslint-disable-line
   }
 
-  return defaultResolver(modulePath, params);
+  let result = defaultResolver(modulePath, params);
+
+  if (result) {
+    // Dereference symlinks to ensure we don't create a separate
+    // module instance depending on how it was referenced.
+    // @link https://github.com/facebook/jest/pull/4761
+    result = fs.realpathSync(result);
+  }
+
+  return result;
 };

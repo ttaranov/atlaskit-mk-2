@@ -260,6 +260,7 @@
       "js",
       "ts",
       "tsx"
-    ]
+    ],
+    "setupTestFrameworkScriptFile": "<rootDir>jestFrameworkSetup.js"
   }
 }
