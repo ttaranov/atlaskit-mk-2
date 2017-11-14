@@ -44,13 +44,20 @@ class Mediator extends EventEmitter {
         const { sid, doc } = data as any;
         this.emit(`${sid}:init`, { doc });
         this.emit(`${sid}:connected`, { sid });
-        const collaborators = others(sid);
-        const joined = collaborators.map(({ sid: sessionId, ...rest }) => ({
-          sessionId,
-          ...rest,
-          lastActive: 0,
-        }));
-        collaborators.forEach(({ sid: xSid }) => {
+
+        const joined = Object.keys(participants).reduce<Participant[]>(
+          (all, id) => {
+            const { sid: sessionId, ...rest } = participants[id];
+            return all.concat({
+              sessionId,
+              ...rest,
+              lastActive: 0,
+            });
+          },
+          [],
+        );
+
+        others(sid).forEach(({ sid: xSid }) => {
           setTimeout(() => {
             this.emit(`${xSid}:presence`, { joined });
           }, 0);
