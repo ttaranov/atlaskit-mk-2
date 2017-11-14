@@ -6,16 +6,21 @@ import CornerControls from './CornerControls';
 import ColumnControls from './ColumnControls';
 import RowControls from './RowControls';
 import { Container } from './styles';
-import {
-  hoverColumn,
-  hoverTable,
-  hoverRow,
-  resetHoverSelection,
-} from '../../editor/plugins/table/actions';
+import { EditorState, Transaction } from 'prosemirror-state';
 
 export interface Props {
   pluginState: TableState;
   editorView: EditorView;
+  selectRow?: (row: number, state: EditorState, dispatch: (tr: Transaction) => void) => void;
+  hoverRow?: (row: number, state: EditorState, dispatch: (tr: Transaction) => void) => void;
+  resetHoverSelection?: (state: EditorState, dispatch: (tr: Transaction) => void) => void;
+  selectColumn?: (column: number, state: EditorState, dispatch: (tr: Transaction) => void) => void;
+  hoverColumn?: (column: number, state: EditorState, dispatch: (tr: Transaction) => void) => void;
+  selectTable?: (state: EditorState, dispatch: (tr: Transaction) => void) => void;
+  hoverTable?: (state: EditorState, dispatch: (tr: Transaction) => void) => void;
+  isTableSelected?: (state: EditorState) => boolean;
+  isColumnSelected?: (column: number, state: EditorState) => boolean;
+  isRowSelected?: (row: number, state: EditorState) => boolean;
 }
 
 export interface State {
@@ -43,19 +48,31 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
   };
 
   handleCornerMouseOver = () => {
-    const { editorView } = this.props;
+    const { editorView: { state, dispatch }, hoverTable } = this.props;
     this.setState({ tableHovered: true });
-    hoverTable(editorView.state, editorView.dispatch);
-  };
+    hoverTable!(state, dispatch);
+  }
 
   handleCornerMouseOut = () => {
-    const { editorView } = this.props;
+    const { editorView: { state, dispatch }, resetHoverSelection } = this.props;
     this.setState({ tableHovered: false });
-    resetHoverSelection(editorView.state, editorView.dispatch);
-  };
+    resetHoverSelection!(state, dispatch);
+  }
 
   render() {
-    const { editorView, pluginState } = this.props;
+    const {
+      editorView,
+      pluginState,
+      selectTable,
+      selectColumn,
+      selectRow,
+      hoverColumn,
+      hoverRow,
+      resetHoverSelection,
+      isTableSelected,
+      isColumnSelected,
+      isRowSelected
+    } = this.props;
     const { tableElement } = pluginState;
     if (!tableElement) {
       return null;
@@ -68,9 +85,10 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
         onKeyDown={this.handleKeyDown}
       >
         <CornerControls
+          editorView={editorView}
           tableElement={tableElement}
-          isSelected={pluginState.isTableSelected}
-          selectTable={pluginState.selectTable}
+          isSelected={isTableSelected!}
+          selectTable={selectTable!}
           insertColumn={pluginState.insertColumn}
           insertRow={pluginState.insertRow}
           onMouseOver={this.handleCornerMouseOver}
@@ -79,20 +97,20 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
         <ColumnControls
           editorView={editorView}
           tableElement={tableElement}
-          isSelected={pluginState.isColumnSelected}
-          selectColumn={pluginState.selectColumn}
+          isSelected={isColumnSelected!}
+          selectColumn={selectColumn!}
           insertColumn={pluginState.insertColumn}
-          hoverColumn={hoverColumn}
-          resetHoverSelection={resetHoverSelection}
+          hoverColumn={hoverColumn!}
+          resetHoverSelection={resetHoverSelection!}
         />
         <RowControls
           editorView={editorView}
           tableElement={tableElement}
-          isSelected={pluginState.isRowSelected}
-          selectRow={pluginState.selectRow}
+          isSelected={isRowSelected!}
+          selectRow={selectRow!}
           insertRow={pluginState.insertRow}
-          hoverRow={hoverRow}
-          resetHoverSelection={resetHoverSelection}
+          hoverRow={hoverRow!}
+          resetHoverSelection={resetHoverSelection!}
         />
       </Container>
     );

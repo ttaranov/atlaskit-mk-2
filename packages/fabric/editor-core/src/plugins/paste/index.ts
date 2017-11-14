@@ -215,7 +215,7 @@ export function createPlugin(
           if (
             tableState &&
             tableState.isRequiredToAddHeader() &&
-            containsTable(view, slice)
+            containsTable(view.state, slice)
           ) {
             const { state, dispatch } = view;
             const selectionStart = state.selection.$from.pos;

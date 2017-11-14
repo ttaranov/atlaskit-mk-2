@@ -1,4 +1,4 @@
-import { Node, Slice } from 'prosemirror-model';
+import { Node } from 'prosemirror-model';
 import {
   EditorState,
   Plugin,
@@ -22,25 +22,31 @@ import {
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
 
 import keymapHandler from './keymap';
+import { analyticsService } from '../../analytics';
+
 import {
-  getColumnPos,
-  getRowPos,
-  getTablePos,
+  resetHoverSelection,
+  selectRow,
+  emptySelectedCells,
+  clearSelection,
+} from '../../editor/plugins/table/actions';
+
+import {
+  tableStartPos,
+  isHeaderRowSelected,
+  getCellSelection,
+  createControlsDecoration,
   getSelectedColumn,
   getSelectedRow,
   containsTableHeader,
-  createControlsDecoration,
-} from './utils';
-import { analyticsService } from '../../analytics';
-import { resetHoverSelection } from '../../editor/plugins/table/actions';
-import { tableStartPos } from '../../editor/plugins/table/utils';
+  getFirstSelectedCellElement,
+  getCurrentCell,
+  getTableElement,
+  getTableNode,
+  canInsertTable,
+} from '../../editor/plugins/table/utils';
 
 export type TableStateSubscriber = (state: TableState) => any;
-
-export interface HoveredCell {
-  pos: number;
-  node: Node;
-}
 
 export interface PluginConfig {
   isHeaderRowRequired?: boolean;
@@ -88,7 +94,7 @@ export class TableState {
         const nextPos = TableMap.get(this.tableNode).positionAt(
           0,
           column,
-          this.tableNode,
+          this.tableNode
         );
         this.moveCursorTo(nextPos);
       } else {
@@ -99,7 +105,7 @@ export class TableState {
       }
 
       analyticsService.trackEvent(
-        'atlassian.editor.format.table.column.button',
+        'atlassian.editor.format.table.column.button'
       );
     }
   };
@@ -117,7 +123,7 @@ export class TableState {
         const nextPos = TableMap.get(this.tableNode).positionAt(
           row,
           0,
-          this.tableNode,
+          this.tableNode
         );
         this.moveCursorTo(nextPos);
       } else {
@@ -132,45 +138,46 @@ export class TableState {
   };
 
   remove = (): void => {
-    if (!this.cellSelection) {
+    const { state, dispatch } = this.view;
+    const cellSelection = getCellSelection(state);
+    if (!cellSelection) {
       return;
     }
-    const { state, dispatch } = this.view;
-    const isRowSelected = this.cellSelection.isRowSelection();
-    const isColumnSelected = this.cellSelection.isColSelection();
+    const isRowSelected = cellSelection.isRowSelection();
+    const isColumnSelected = cellSelection.isColSelection();
 
     // the whole table
     if (isRowSelected && isColumnSelected) {
       deleteTable(state, dispatch);
       this.focusEditor();
       analyticsService.trackEvent(
-        'atlassian.editor.format.table.delete.button',
+        'atlassian.editor.format.table.delete.button'
       );
     } else if (isColumnSelected) {
       analyticsService.trackEvent(
-        'atlassian.editor.format.table.delete_column.button',
+        'atlassian.editor.format.table.delete_column.button'
       );
 
       // move the cursor in the column to the left of the deleted column(s)
       const map = TableMap.get(this.tableNode!);
-      const { anchor, head } = getSelectedColumn(this.view.state, map);
+      const { anchor, head } = getSelectedColumn(this.view.state);
       const column = Math.min(anchor, head);
       const nextPos = map.positionAt(
         0,
         column > 0 ? column - 1 : 0,
-        this.tableNode!,
+        this.tableNode!
       );
       deleteColumn(state, dispatch);
       this.moveCursorTo(nextPos);
     } else if (isRowSelected) {
       const { tableHeader } = this.view.state.schema.nodes;
-      const cell = this.getCurrentCell();
+      const cell = getCurrentCell(this.view.state);
       const event =
         cell && cell.type === tableHeader ? 'delete_header_row' : 'delete_row';
       analyticsService.trackEvent(
-        `atlassian.editor.format.table.${event}.button`,
+        `atlassian.editor.format.table.${event}.button`
       );
-      const headerRowSelected = this.isHeaderRowSelected();
+      const headerRowSelected = isHeaderRowSelected(this.view.state);
       // move the cursor to the beginning of the next row, or prev row if deleted row was the last row
       const { anchor, head } = getSelectedRow(this.view.state);
       const map = TableMap.get(this.tableNode!);
@@ -184,22 +191,22 @@ export class TableState {
       const nextPos = map.positionAt(
         isRemovingLastRow ? minRow - 1 : minRow,
         0,
-        this.tableNode!,
+        this.tableNode!
       );
       this.moveCursorTo(nextPos);
     } else {
       // replace selected cells with empty cells
-      this.emptySelectedCells();
+      emptySelectedCells(state, dispatch);
       this.moveCursorInsideTableTo(state.selection.from);
       analyticsService.trackEvent(
-        'atlassian.editor.format.table.delete_content.button',
+        'atlassian.editor.format.table.delete_content.button'
       );
     }
   };
 
   convertFirstRowToHeader = () => {
-    this.selectRow(0);
     const { state, dispatch } = this.view;
+    selectRow(0, state, dispatch);
     toggleHeaderRow(state, dispatch);
   };
 
@@ -216,90 +223,20 @@ export class TableState {
     this.editorFocused = editorFocused;
   }
 
-  selectColumn = (column: number): void => {
-    if (this.tableNode) {
-      const { from, to } = getColumnPos(column, this.tableNode);
-      this.createCellSelection(from, to);
-    }
-  };
-
-  selectRow = (row: number): void => {
-    if (this.tableNode) {
-      const { from, to } = getRowPos(row, this.tableNode);
-      this.createCellSelection(from, to);
-    }
-  };
-
-  selectTable = (): void => {
-    if (this.tableNode) {
-      const { from, to } = getTablePos(this.tableNode);
-      this.createCellSelection(from, to);
-    }
-  };
-
-  isColumnSelected = (column: number): boolean => {
-    if (this.tableNode && this.cellSelection) {
-      const map = TableMap.get(this.tableNode);
-      const start = this.cellSelection.$anchorCell.start(-1);
-      const anchor = map.colCount(this.cellSelection.$anchorCell.pos - start);
-      const head = map.colCount(this.cellSelection.$headCell.pos - start);
-      return (
-        this.cellSelection.isColSelection() &&
-        (column <= Math.max(anchor, head) && column >= Math.min(anchor, head))
-      );
-    }
-    return false;
-  };
-
-  isRowSelected = (row: number): boolean => {
-    if (this.cellSelection) {
-      const anchor = this.cellSelection.$anchorCell.index(-1);
-      const head = this.cellSelection.$headCell.index(-1);
-      return (
-        this.cellSelection.isRowSelection() &&
-        (row <= Math.max(anchor, head) && row >= Math.min(anchor, head))
-      );
-    }
-    return false;
-  };
-
-  isHeaderRowSelected = (): boolean => {
-    if (this.cellSelection && this.cellSelection.isRowSelection()) {
-      const { $from } = this.view.state.selection;
-      const { tableHeader } = this.view.state.schema.nodes;
-      for (let i = $from.depth; i > 0; i--) {
-        const node = $from.node(i);
-        if (node.type === tableHeader) {
-          return true;
-        }
-      }
-    }
-    return false;
-  };
-
-  isTableSelected = (): boolean => {
-    if (this.cellSelection) {
-      return (
-        this.cellSelection.isColSelection() &&
-        this.cellSelection.isRowSelection()
-      );
-    }
-    return false;
-  };
-
   update(docView: any, domEvent: boolean = false) {
     let dirty = this.updateSelection();
     let controlsDirty = dirty;
-    const { cellSelection } = this;
+    const { state } = this.view;
+    const cellSelection = getCellSelection(state);
 
-    const tableElement = this.getTableElement(docView);
+    const tableElement = getTableElement(state, docView);
     if ((domEvent && tableElement) || tableElement !== this.tableElement) {
       this.tableElement = tableElement;
       this.domEvent = domEvent;
       dirty = true;
     }
 
-    const tableNode = this.getTableNode();
+    const tableNode = getTableNode(state);
     if (tableNode !== this.tableNode) {
       this.tableNode = tableNode;
       dirty = true;
@@ -314,7 +251,7 @@ export class TableState {
         : false;
 
     const cellElement = toolbarVisible
-      ? this.getFirstSelectedCellElement(docView)
+      ? getFirstSelectedCellElement(state, docView)
       : undefined;
     if (cellElement !== this.cellElement) {
       this.cellElement = cellElement;
@@ -328,7 +265,7 @@ export class TableState {
       controlsDirty = true;
     }
 
-    const tableDisabled = !this.canInsertTable();
+    const tableDisabled = !canInsertTable(state);
     if (tableDisabled !== this.tableDisabled) {
       this.tableDisabled = tableDisabled;
       dirty = true;
@@ -345,14 +282,11 @@ export class TableState {
       }
 
       if (tableActive) {
-        const decoration = createControlsDecoration(this, this.view);
+        const decoration = createControlsDecoration(this.view);
         this.controlsDecoration = [...decoration];
-        this.decorations = this.decorations.add(
-          this.view.state.doc,
-          decoration,
-        );
+        this.decorations = this.decorations.add(state.doc, decoration);
       }
-      this.view.dispatch(this.view.state.tr);
+      this.view.dispatch(state.tr);
     }
   }
 
@@ -361,19 +295,9 @@ export class TableState {
   }
 
   closeFloatingToolbar(): void {
-    this.clearSelection();
+    const { state, dispatch } = this.view;
+    clearSelection(state, dispatch);
     this.triggerOnChange();
-  }
-
-  getCurrentCellStartPos(): number | undefined {
-    const { $from } = this.view.state.selection;
-    const { tableCell, tableHeader } = this.view.state.schema.nodes;
-    for (let i = $from.depth; i > 0; i--) {
-      const node = $from.node(i);
-      if (node.type === tableCell || node.type === tableHeader) {
-        return $from.start(i);
-      }
-    }
   }
 
   isRequiredToAddHeader = (): boolean => this.isHeaderRowRequired;
@@ -381,7 +305,7 @@ export class TableState {
   addHeaderToTableNodes = (slice: Node, selectionStart: number): void => {
     const { table } = this.view.state.schema.nodes;
     slice.content.forEach((node: Node, offset: number) => {
-      if (node.type === table && !containsTableHeader(this.view, node)) {
+      if (node.type === table && !containsTableHeader(this.view.state, node)) {
         const { state, dispatch } = this.view;
         const { tr, doc } = state;
         const $anchor = doc.resolve(selectionStart + offset);
@@ -391,164 +315,34 @@ export class TableState {
     });
   };
 
-  private getCurrentCell(): Node | undefined {
-    const { $from } = this.view.state.selection;
-    const { tableCell, tableHeader } = this.view.state.schema.nodes;
-    for (let i = $from.depth; i > 0; i--) {
-      const node = $from.node(i);
-      if (node.type === tableCell || node.type === tableHeader) {
-        return node;
-      }
-    }
-  }
-
-  private getTableElement(docView: any): HTMLElement | undefined {
-    const offset = tableStartPos(this.view.state);
-    if (offset) {
-      const { node } = docView.domFromPos(offset);
-      if (node) {
-        return node.parentNode as HTMLElement;
-      }
-    }
-  }
-
-  private getFirstSelectedCellElement(docView: any): HTMLElement | undefined {
-    const offset = this.firstSelectedCellStartPos();
-    if (offset) {
-      const { node } = docView.domFromPos(offset);
-      if (node) {
-        return node as HTMLElement;
-      }
-    }
-  }
-
-  private firstSelectedCellStartPos(): number | undefined {
-    if (!this.tableNode) {
-      return;
-    }
-    const offset = tableStartPos(this.view.state);
-    if (offset) {
-      const { state } = this.view;
-      const {
-        $anchorCell,
-        $headCell,
-      } = (state.selection as any) as CellSelection;
-      const { tableCell, tableHeader } = state.schema.nodes;
-      const map = TableMap.get(this.tableNode);
-      const start = $anchorCell.start(-1);
-      // array of selected cells positions
-      const cells = map.cellsInRect(
-        map.rectBetween($anchorCell.pos - start, $headCell.pos - start),
-      );
-      // first selected cell position
-      const firstCellPos = cells[0] + offset + 1;
-      const $from = state.doc.resolve(firstCellPos);
-      for (let i = $from.depth; i > 0; i--) {
-        const node = $from.node(i);
-        if (node.type === tableCell || node.type === tableHeader) {
-          return $from.start(i);
-        }
-      }
-    }
-  }
-
-  private getTableNode(): Node | undefined {
-    const { $from } = this.view.state.selection;
-    for (let i = $from.depth; i > 0; i--) {
-      const node = $from.node(i);
-      if (node.type === this.view.state.schema.nodes.table) {
-        return node;
-      }
-    }
-  }
-
   private triggerOnChange(): void {
     this.changeHandlers.forEach(cb => cb(this));
-  }
-
-  private createCellSelection(from: number, to: number): void {
-    const { state } = this.view;
-    // here "from" and "to" params are table-relative positions, therefore we add table offset
-    const offset = tableStartPos(state);
-    if (offset) {
-      const $anchor = state.doc.resolve(from + offset);
-      const $head = state.doc.resolve(to + offset);
-      this.view.dispatch(
-        this.view.state.tr.setSelection(
-          new (CellSelection as any)($anchor, $head),
-        ),
-      );
-    }
   }
 
   // we keep track of selection changes because
   // 1) we want to mark toolbar buttons as active when the whole row/col is selected
   // 2) we want to drop selection if editor looses focus
   private updateSelection(): boolean {
-    const { selection } = this.view.state;
-    let dirty = false;
+    const { state, dispatch } = this.view;
+    const cellSelection = getCellSelection(state);
 
-    if (selection instanceof CellSelection) {
-      if (selection !== this.cellSelection) {
-        this.cellSelection = selection;
-        dirty = true;
+    if (cellSelection) {
+      if (cellSelection !== this.cellSelection) {
+        this.cellSelection = cellSelection;
+        return true;
       }
       // drop selection if editor looses focus
       if (!this.editorFocused) {
-        this.clearSelection();
+        this.cellElement = undefined;
+        clearSelection(state, dispatch);
+        return true;
       }
     } else if (this.cellSelection) {
       this.cellSelection = undefined;
-      dirty = true;
-    }
-    return dirty;
-  }
-
-  private clearSelection() {
-    const { state } = this.view;
-    this.cellElement = undefined;
-    this.view.dispatch(
-      state.tr.setSelection(Selection.near(state.selection.$from)),
-    );
-  }
-
-  private canInsertTable(): boolean {
-    const { state } = this.view;
-    const { $from, to } = state.selection;
-    const { code } = state.schema.marks;
-    for (let i = $from.depth; i > 0; i--) {
-      const node = $from.node(i);
-      // inline code and codeBlock are excluded
-      if (
-        node.type === state.schema.nodes.codeBlock ||
-        (code && state.doc.rangeHasMark($from.pos, to, code))
-      ) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  private emptySelectedCells(): void {
-    if (!this.cellSelection) {
-      return;
+      return true;
     }
 
-    const { tr, schema } = this.view.state;
-    const emptyCell = schema.nodes.tableCell.createAndFill()!.content;
-    this.cellSelection.forEachCell((cell, pos) => {
-      if (!cell.content.eq(emptyCell)) {
-        const slice = new Slice(emptyCell, 0, 0);
-        tr.replace(
-          tr.mapping.map(pos + 1),
-          tr.mapping.map(pos + cell.nodeSize - 1),
-          slice,
-        );
-      }
-    });
-    if (tr.docChanged) {
-      this.view.dispatch(tr);
-    }
+    return false;
   }
 
   private focusEditor(): void {
@@ -593,7 +387,7 @@ export const plugin = (pluginConfig?: PluginConfig) =>
       return {
         update: (
           view: EditorView & { docView?: any },
-          prevState: EditorState,
+          prevState: EditorState
         ) => {
           pluginState.update(view.docView);
         },
@@ -629,7 +423,7 @@ export const plugin = (pluginConfig?: PluginConfig) =>
 
 const plugins = (pluginConfig?: PluginConfig) => {
   return [plugin(pluginConfig), tableEditing()].filter(
-    plugin => !!plugin,
+    plugin => !!plugin
   ) as Plugin[];
 };
 

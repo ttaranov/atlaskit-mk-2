@@ -1,5 +1,10 @@
 import tablePlugins, { TableState } from '../../../src/plugins/table';
 import { TableMap, CellSelection } from 'prosemirror-tables';
+import {
+  selectRow,
+  selectColumn,
+  selectTable,
+} from '../../../src/editor/plugins/table/actions';
 
 import {
   doc,
@@ -33,14 +38,12 @@ describe('table keymap', () => {
   describe('Tab keypress', () => {
     describe('when the whole row is selected', () => {
       it('it should select the first cell of the next row', () => {
-        const { editorView, plugin, pluginState, refs } = editor(
-          doc(
-            table(tr(tdCursor, tdEmpty), tr(td({})(p('{nextPos}')), tdEmpty)),
-          ),
+        const { editorView, plugin, refs } = editor(
+          doc(table(tr(tdCursor, tdEmpty), tr(td({})(p('{nextPos}')), tdEmpty)))
         );
         const { nextPos } = refs;
         plugin.props.handleDOMEvents!.focus(editorView, event);
-        pluginState.selectRow(0);
+        selectRow(0, editorView.state, editorView.dispatch);
         sendKeyToPm(editorView, 'Tab');
         expect(editorView.state.selection.$from.pos).toEqual(nextPos);
         expect(editorView.state.selection.empty).toEqual(true);
@@ -53,14 +56,12 @@ describe('table keymap', () => {
 
     describe('when the whole column is selected', () => {
       it('it should select the last cell of the next column', () => {
-        const { editorView, plugin, pluginState, refs } = editor(
-          doc(
-            table(tr(tdCursor, tdEmpty), tr(tdEmpty, td({})(p('{nextPos}')))),
-          ),
+        const { editorView, plugin, refs } = editor(
+          doc(table(tr(tdCursor, tdEmpty), tr(tdEmpty, td({})(p('{nextPos}')))))
         );
         const { nextPos } = refs;
         plugin.props.handleDOMEvents!.focus(editorView, event);
-        pluginState.selectColumn(0);
+        selectColumn(0, editorView.state, editorView.dispatch);
         sendKeyToPm(editorView, 'Tab');
         expect(editorView.state.selection.$from.pos).toEqual(nextPos);
         expect(editorView.state.selection.empty).toEqual(true);
@@ -74,7 +75,7 @@ describe('table keymap', () => {
     describe('when the cursor is at the first cell of the first row', () => {
       it('it should select next cell of the current row', () => {
         const { editorView, refs } = editor(
-          doc(table(tr(tdCursor, td({})(p('{nextPos}')), tdEmpty))),
+          doc(table(tr(tdCursor, td({})(p('{nextPos}')), tdEmpty)))
         );
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Tab');
@@ -93,9 +94,9 @@ describe('table keymap', () => {
           doc(
             table(
               tr(tdEmpty, tdEmpty, tdCursor),
-              tr(td({})(p('{nextPos}')), tdEmpty, tdEmpty),
-            ),
-          ),
+              tr(td({})(p('{nextPos}')), tdEmpty, tdEmpty)
+            )
+          )
         );
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Tab');
@@ -112,11 +113,8 @@ describe('table keymap', () => {
       it('it should create a new row and select the first cell of the new row', () => {
         const { editorView, pluginState } = editor(
           doc(
-            table(
-              tr(tdEmpty, tdEmpty, tdEmpty),
-              tr(tdEmpty, tdEmpty, tdCursor),
-            ),
-          ),
+            table(tr(tdEmpty, tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty, tdCursor))
+          )
         );
         sendKeyToPm(editorView, 'Tab');
         const map = TableMap.get(pluginState.tableNode!);
@@ -135,7 +133,7 @@ describe('table keymap', () => {
     describe('when the cursor is at the last cell of the first row', () => {
       it('it should select previous cell of the current row', () => {
         const { editorView, refs } = editor(
-          doc(table(tr(tdEmpty, td({})(p('{nextPos}')), tdCursor))),
+          doc(table(tr(tdEmpty, td({})(p('{nextPos}')), tdCursor)))
         );
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Shift-Tab');
@@ -154,9 +152,9 @@ describe('table keymap', () => {
           doc(
             table(
               tr(tdEmpty, tdEmpty, td({})(p('{nextPos}'))),
-              tr(tdCursor, tdEmpty, tdEmpty),
-            ),
-          ),
+              tr(tdCursor, tdEmpty, tdEmpty)
+            )
+          )
         );
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Shift-Tab');
@@ -173,11 +171,8 @@ describe('table keymap', () => {
       it('it should create a new row and select the first cell of the new row', () => {
         const { editorView, pluginState } = editor(
           doc(
-            table(
-              tr(tdCursor, tdEmpty, tdEmpty),
-              tr(tdEmpty, tdEmpty, tdEmpty),
-            ),
-          ),
+            table(tr(tdCursor, tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty, tdEmpty))
+          )
         );
         sendKeyToPm(editorView, 'Shift-Tab');
         const map = TableMap.get(pluginState.tableNode!);
@@ -196,7 +191,7 @@ describe('table keymap', () => {
         const tableNode = table(
           tr(thEmpty, thEmpty, thEmpty),
           tr(tdEmpty, tdEmpty, tdEmpty),
-          tr(tdEmpty, tdEmpty, tdEmpty),
+          tr(tdEmpty, tdEmpty, tdEmpty)
         );
         const { editorView } = editor(doc(p('{<>}')));
         sendKeyToPm(editorView, 'Shift-Alt-T');
@@ -213,8 +208,8 @@ describe('table keymap', () => {
           doc(
             p('text'),
             table(tr(tdEmpty, td({})(p('hello{nextPos}')))),
-            p('{<>}text'),
-          ),
+            p('{<>}text')
+          )
         );
         const { nextPos } = refs;
         plugin.props.handleDOMEvents!.focus(editorView, event);
@@ -226,13 +221,13 @@ describe('table keymap', () => {
 
     describe('when table is selected', () => {
       it('it should empty table cells', () => {
-        const { editorView, plugin, pluginState } = editor(
-          doc(table(tr(tdCursor, td({})(p('2')), td({})(p('3'))))),
+        const { editorView, plugin } = editor(
+          doc(table(tr(tdCursor, td({})(p('2')), td({})(p('3')))))
         );
         plugin.props.handleDOMEvents!.focus(editorView, event);
-        pluginState.selectTable();
+        selectTable(editorView.state, editorView.dispatch);
         expect(editorView.state.selection instanceof CellSelection).toEqual(
-          true,
+          true
         );
         sendKeyToPm(editorView, 'Backspace');
         expect(editorView.state.doc).toEqualDocument(
@@ -248,19 +243,19 @@ describe('table keymap', () => {
     [0, 1, 2].forEach(index => {
       describe(`when row ${index + 1} is selected`, () => {
         it(`it should empty cells in the row ${index + 1}`, () => {
-          const { editorView, plugin, pluginState } = editor(
+          const { editorView, plugin } = editor(
             doc(
               table(
                 tr(tdEmpty, td({})(p('{<>}1'))),
                 tr(tdEmpty, td({})(p('2'))),
-                tr(tdEmpty, td({})(p('3'))),
-              ),
-            ),
+                tr(tdEmpty, td({})(p('3')))
+              )
+            )
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          pluginState.selectRow(index);
+          selectRow(index, editorView.state, editorView.dispatch);
           expect(editorView.state.selection instanceof CellSelection).toEqual(
-            true,
+            true
           );
           const { selection } = editorView.state;
           const offset = tableStartPos(editorView.state);
@@ -283,18 +278,18 @@ describe('table keymap', () => {
       describe(`when column ${index + 1} is selected`, () => {
         it(`it should empty cells in the column ${index + 1}`, () => {
           const emptyRow = tr(tdEmpty, tdEmpty, tdEmpty);
-          const { editorView, plugin, pluginState } = editor(
+          const { editorView, plugin } = editor(
             doc(
               table(
                 emptyRow,
-                tr(td({})(p('{<>}1')), td({})(p('2')), td({})(p('3'))),
-              ),
-            ),
+                tr(td({})(p('{<>}1')), td({})(p('2')), td({})(p('3')))
+              )
+            )
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          pluginState.selectColumn(index);
+          selectColumn(index, editorView.state, editorView.dispatch);
           expect(editorView.state.selection instanceof CellSelection).toEqual(
-            true,
+            true
           );
           const { selection } = editorView.state;
           const offset = tableStartPos(editorView.state);

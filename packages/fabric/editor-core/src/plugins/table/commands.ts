@@ -10,10 +10,17 @@ import {
   TableMap,
 } from 'prosemirror-tables';
 import { stateKey } from './';
-import { createTableNode, isIsolating } from './utils';
 import { analyticsService } from '../../analytics';
-import { resetHoverSelection } from '../../editor/plugins/table/actions';
-import { tableStartPos } from '../../editor/plugins/table/utils';
+import {
+  resetHoverSelection,
+  emptySelectedCells,
+} from '../../editor/plugins/table/actions';
+import {
+  tableStartPos,
+  createTableNode,
+  isIsolating,
+  getCellStartPos,
+} from '../../editor/plugins/table/utils';
 
 export interface Command {
   (state: EditorState, dispatch?: (tr: Transaction) => void): boolean;
@@ -48,7 +55,7 @@ const goToNextCell = (direction: number): Command => {
       return false;
     }
     const map = TableMap.get(pluginState.tableNode);
-    const start = pluginState.getCurrentCellStartPos();
+    const start = getCellStartPos(state);
     const firstCellPos =
       map.positionAt(0, 0, pluginState.tableNode) + offset + 1;
     const lastCellPos =
@@ -59,7 +66,7 @@ const goToNextCell = (direction: number): Command => {
     const event =
       direction === TAB_FORWARD_DIRECTION ? 'next_cell' : 'previous_cell';
     analyticsService.trackEvent(
-      `atlassian.editor.format.table.${event}.keyboard`,
+      `atlassian.editor.format.table.${event}.keyboard`
     );
 
     if (firstCellPos === start && direction === TAB_BACKWARD_DIRECTION) {
@@ -79,9 +86,7 @@ const goToNextCell = (direction: number): Command => {
     if (result) {
       const latestState = pluginState.view.state;
       dispatch(
-        latestState.tr.setSelection(
-          Selection.near(latestState.selection.$from),
-        ),
+        latestState.tr.setSelection(Selection.near(latestState.selection.$from))
       );
     }
     return result;
@@ -119,14 +124,14 @@ const emptyCells = (): Command => {
       return false;
     }
     resetHoverSelection(state, dispatch);
-    pluginState.emptySelectedCells();
+    emptySelectedCells(state, dispatch);
     const {
       $head: { pos, parentOffset },
     } = (state.selection as any) as CellSelection;
     const newPos = pos - parentOffset;
     pluginState.moveCursorInsideTableTo(newPos);
     analyticsService.trackEvent(
-      'atlassian.editor.format.table.delete_content.keyboard',
+      'atlassian.editor.format.table.delete_content.keyboard'
     );
 
     return true;
