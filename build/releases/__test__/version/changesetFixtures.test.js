@@ -34,12 +34,8 @@ describe('createChangeset', () => {
 
     const summary = 'This is a summary';
 
-
     beforeEach(async () => {
-      cwd = await copyFixtureIntoTempDir(
-        __dirname,
-        'interlinked-dependencies'
-      );
+      cwd = await copyFixtureIntoTempDir(__dirname, 'interlinked-dependencies');
       aWorkspacesDir = path.join(cwd, 'packages', 'a');
       bWorkspacesDir = path.join(cwd, 'packages', 'b');
       cWorkspacesDir = path.join(cwd, 'packages', 'c');
@@ -56,8 +52,8 @@ describe('createChangeset', () => {
         { name: 'pkg-a', type: 'patch' },
         { name: 'pkg-b', type: 'patch' },
       ];
-      mockUserInput(releases,dependents,summary)
-      const changeset = await createChangeset(['pkg-a'], { cwd })
+      mockUserInput(releases, dependents, summary);
+      const changeset = await createChangeset(['pkg-a'], { cwd });
 
       expect(changeset).toEqual({
         summary: 'This is a summary',
@@ -67,7 +63,7 @@ describe('createChangeset', () => {
           { name: 'pkg-c', dependencies: ['pkg-a'], type: 'patch' },
           { name: 'pkg-a', dependencies: ['pkg-b'], type: 'patch' },
         ],
-      })
+      });
     });
     it('should have correct prompt list', async () => {
       const releases = [{ name: 'pkg-a', type: 'minor' }];
@@ -77,31 +73,36 @@ describe('createChangeset', () => {
         { name: 'pkg-a', type: 'patch' },
         { name: 'pkg-b', type: 'patch' },
       ];
-      mockUserInput(releases,dependents,summary)
-      const changeset = await createChangeset(['pkg-a'], { cwd })
+      mockUserInput(releases, dependents, summary);
+      const changeset = await createChangeset(['pkg-a'], { cwd });
 
       // expect(cli.askList.mock.calls.length).toEqual(5);
 
       // the second and last of these relate to pkg-b and are the most relevant
       // The others are tested to ensure the test's slightly flakey dependency
       // on how the packages are pulled in is maintained.
-      expect(cli.askList.mock.calls[0]).toEqual(
-        ['What kind of change is this for \u001b[32mpkg-a\u001b[39m?', ['patch', 'minor', 'major']]
-      )
-      expect(cli.askList.mock.calls[1]).toEqual(
-        ['What kind of change is this for \u001b[32mpkg-b\u001b[39m?', ['none', 'patch', 'minor', 'major']]
-      )
-      expect(cli.askList.mock.calls[2]).toEqual(
-        ['What kind of change is this for \u001b[32mpkg-c\u001b[39m?', ['none', 'patch', 'minor', 'major']]
-      )
-      expect(cli.askList.mock.calls[3]).toEqual(
-        ['What kind of change is this for \u001b[32mpkg-a\u001b[39m?', ['none', 'patch', 'minor', 'major']]
-      )
-      expect(cli.askList.mock.calls[4]).toEqual(
-        ['What kind of change is this for \u001b[32mpkg-b\u001b[39m?', ['patch', 'minor', 'major']]
-      )
+      expect(cli.askList.mock.calls[0]).toEqual([
+        'What kind of change is this for \u001b[32mpkg-a\u001b[39m?',
+        ['patch', 'minor', 'major'],
+      ]);
+      expect(cli.askList.mock.calls[1]).toEqual([
+        'What kind of change is this for \u001b[32mpkg-b\u001b[39m?',
+        ['none', 'patch', 'minor', 'major'],
+      ]);
+      expect(cli.askList.mock.calls[2]).toEqual([
+        'What kind of change is this for \u001b[32mpkg-c\u001b[39m?',
+        ['none', 'patch', 'minor', 'major'],
+      ]);
+      expect(cli.askList.mock.calls[3]).toEqual([
+        'What kind of change is this for \u001b[32mpkg-a\u001b[39m?',
+        ['none', 'patch', 'minor', 'major'],
+      ]);
+      expect(cli.askList.mock.calls[4]).toEqual([
+        'What kind of change is this for \u001b[32mpkg-b\u001b[39m?',
+        ['patch', 'minor', 'major'],
+      ]);
     });
-    it('should only ask b once if it does not need an update', async () => {
+    it.only('should only ask b once if it does not need an update', async () => {
       const releases = [{ name: 'pkg-a', type: 'minor' }];
 
       // If everything is valid, no questions are asked again
@@ -110,11 +111,10 @@ describe('createChangeset', () => {
         { name: 'pkg-c', type: 'none' },
         { name: 'pkg-a', type: 'patch' },
       ];
-      mockUserInput(releases,dependents,summary)
-      const changeset = await createChangeset(['pkg-a'], { cwd })
+      mockUserInput(releases, dependents, summary);
+      const changeset = await createChangeset(['pkg-a'], { cwd });
 
       expect(cli.askList.mock.calls.length).toEqual(4);
     });
-
   });
 });
