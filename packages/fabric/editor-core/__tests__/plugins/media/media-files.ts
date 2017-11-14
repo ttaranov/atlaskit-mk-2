@@ -37,7 +37,7 @@ describe('media-links', () => {
 
       insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-      expect(editorView.state.doc).toEqual(
+      expect(editorView.state.doc).toEqualDocument(
         doc(
           p('text'),
           mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
@@ -66,7 +66,7 @@ describe('media-links', () => {
 
       insertFile(editorView, { id: 'mock2', status: 'uploading' }, testCollectionName);
 
-      expect(editorView.state.doc).toEqual(
+      expect(editorView.state.doc).toEqualDocument(
         doc(
           p('text{<>}'),
           mediaGroup(
@@ -88,7 +88,7 @@ describe('media-links', () => {
 
       insertFile(editorView, { id: 'mock2', status: 'uploading' }, testCollectionName);
 
-      expect(editorView.state.doc).toEqual(
+      expect(editorView.state.doc).toEqualDocument(
         doc(
           mediaGroup(
             media({ id: 'mock2', type: 'file', collection: testCollectionName }),
@@ -108,7 +108,7 @@ describe('media-links', () => {
 
         insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-        expect(editorView.state.doc).toEqual(
+        expect(editorView.state.doc).toEqualDocument(
           doc(
             p('te'),
             mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
@@ -137,7 +137,7 @@ describe('media-links', () => {
 
         insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-        expect(editorView.state.doc).toEqual(
+        expect(editorView.state.doc).toEqualDocument(
           doc(
             h1('te'),
             mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
@@ -156,7 +156,7 @@ describe('media-links', () => {
 
           insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-          expect(editorView.state.doc).toEqual(
+          expect(editorView.state.doc).toEqualDocument(
             doc(
               p('te'),
               mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
@@ -175,7 +175,7 @@ describe('media-links', () => {
 
               insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-              expect(editorView.state.doc).toEqual(
+              expect(editorView.state.doc).toEqualDocument(
                 doc(
                   mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
                   p(),
@@ -191,7 +191,7 @@ describe('media-links', () => {
 
               insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-              expect(editorView.state.doc).toEqual(
+              expect(editorView.state.doc).toEqualDocument(
                 doc(
                   h1(),
                   mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
@@ -213,7 +213,7 @@ describe('media-links', () => {
 
             insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
 
-            expect(editorView.state.doc).toEqual(
+            expect(editorView.state.doc).toEqualDocument(
               doc(
                 mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
                 p(),
@@ -234,7 +234,7 @@ describe('media-links', () => {
 
           insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-          expect(editorView.state.doc).toEqual(
+          expect(editorView.state.doc).toEqualDocument(
             doc(
               p('te'),
               mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
@@ -252,7 +252,7 @@ describe('media-links', () => {
 
           insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
 
-          expect(editorView.state.doc).toEqual(
+          expect(editorView.state.doc).toEqualDocument(
             doc(
               p('te'),
               mediaGroup(
@@ -274,7 +274,7 @@ describe('media-links', () => {
 
           insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-          expect(editorView.state.doc).toEqual(
+          expect(editorView.state.doc).toEqualDocument(
             doc(
               p('text'),
               mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
@@ -295,7 +295,7 @@ describe('media-links', () => {
 
           insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
 
-          expect(editorView.state.doc).toEqual(
+          expect(editorView.state.doc).toEqualDocument(
             doc(
               mediaGroup(
                 media({ id: 'new one', type: 'file', collection: testCollectionName }),
@@ -333,7 +333,7 @@ describe('media-links', () => {
 
             insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-            expect(editorView.state.doc).toEqual(
+            expect(editorView.state.doc).toEqualDocument(
               doc(
                 mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
                 p(),
@@ -355,7 +355,7 @@ describe('media-links', () => {
 
               insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
 
-              expect(editorView.state.doc).toEqual(
+              expect(editorView.state.doc).toEqualDocument(
                 doc(
                   mediaGroup(
                     media({ id: 'new one', type: 'file', collection: testCollectionName }),
@@ -378,7 +378,7 @@ describe('media-links', () => {
 
               insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
 
-              expect(editorView.state.doc).toEqual(
+              expect(editorView.state.doc).toEqualDocument(
                 doc(
                   mediaGroup(
                     media({ id: 'new one', type: 'file', collection: testCollectionName }),
@@ -402,7 +402,7 @@ describe('media-links', () => {
 
               insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
 
-              expect(editorView.state.doc).toEqual(
+              expect(editorView.state.doc).toEqualDocument(
                 doc(
                   mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
                   mediaGroup(
@@ -424,7 +424,7 @@ describe('media-links', () => {
 
         insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-        expect(editorView.state.doc).toEqual(
+        expect(editorView.state.doc).toEqualDocument(
           doc(
             mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
             p('xt'),
@@ -441,7 +441,7 @@ describe('media-links', () => {
 
         insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
 
-        expect(editorView.state.doc).toEqual(
+        expect(editorView.state.doc).toEqualDocument(
           doc(
             mediaGroup(
               media({ id: 'new one', type: 'file', collection: testCollectionName }),
@@ -459,7 +459,7 @@ describe('media-links', () => {
 
     insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-    expect(editorView.state.doc).toEqual(
+    expect(editorView.state.doc).toEqualDocument(
       doc(
         h1('text'),
         mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
@@ -474,7 +474,7 @@ describe('media-links', () => {
 
     insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-    expect(editorView.state.doc).toEqual(
+    expect(editorView.state.doc).toEqualDocument(
       doc(
         code_block()('text'),
         mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
@@ -491,7 +491,7 @@ describe('media-links', () => {
 
       insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-      expect(editorView.state.doc).toEqual(
+      expect(editorView.state.doc).toEqualDocument(
         doc(
           mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
           p(),
@@ -505,7 +505,7 @@ describe('media-links', () => {
 
       insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-      expect(editorView.state.doc).toEqual(
+      expect(editorView.state.doc).toEqualDocument(
         doc(
           code_block()('{<>}'),
           mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
@@ -520,7 +520,7 @@ describe('media-links', () => {
 
       insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-      expect(editorView.state.doc).toEqual(
+      expect(editorView.state.doc).toEqualDocument(
         doc(
           h1('{<>}'),
           mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
@@ -538,7 +538,7 @@ describe('media-links', () => {
 
       insertFile(editorView, { id: 'another one', status: 'uploading' }, testCollectionName);
 
-      expect(editorView.state.doc).toEqual(
+      expect(editorView.state.doc).toEqualDocument(
         doc(
           mediaGroup(
             media({ id: 'another one', type: 'file', collection: testCollectionName }),
@@ -555,7 +555,7 @@ describe('media-links', () => {
 
       insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-      expect(editorView.state.doc).toEqual(
+      expect(editorView.state.doc).toEqualDocument(
         doc(
           mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
           p()
@@ -569,7 +569,7 @@ describe('media-links', () => {
 
       insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-      expect(editorView.state.doc).toEqual(
+      expect(editorView.state.doc).toEqualDocument(
         doc(
           p(),
           mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
@@ -603,7 +603,7 @@ describe('media-links', () => {
 
       insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-      expect(editorView.state.doc).toEqual(itemDoc);
+      expect(editorView.state.doc).toEqualDocument(itemDoc);
       editorView.destroy();
     });
 
@@ -613,7 +613,7 @@ describe('media-links', () => {
 
       insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
-      expect(editorView.state.doc).toEqual(decisionDoc);
+      expect(editorView.state.doc).toEqualDocument(decisionDoc);
       editorView.destroy();
     });
   });
