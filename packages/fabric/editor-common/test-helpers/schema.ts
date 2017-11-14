@@ -1,8 +1,12 @@
-import { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule, Schema } from 'prosemirror-model';
 import {
-  paragraph,
-  createSchema
-} from '../src/schema';
+  AttributeSpec,
+  MarkSpec,
+  Node,
+  NodeSpec,
+  ParseRule,
+  Schema,
+} from 'prosemirror-model';
+import { paragraph, createSchema } from '../src/schema';
 
 export { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule, Schema };
 export default createSchema({
@@ -39,6 +43,8 @@ export default createSchema({
     'taskList',
     'taskItem',
     'inlineMacro',
+    'extension',
+    'inlineExtension',
   ],
   marks: [
     'em',
@@ -53,6 +59,6 @@ export default createSchema({
     'textColor',
   ],
   customNodeSpecs: {
-    plain: { ...paragraph, content: 'text*' }
-  }
+    plain: { ...paragraph, content: 'text*' },
+  },
 });

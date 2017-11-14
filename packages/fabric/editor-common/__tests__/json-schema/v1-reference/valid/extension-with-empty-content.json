@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "extension",
+      "attrs": {
+        "bodyType": "none",
+        "extensionType": "com.atlassian.confluence.macro",
+        "extensionKey": "code"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    }
+  ]
+}
