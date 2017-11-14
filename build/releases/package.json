@@ -16,6 +16,6 @@
     "semver": "^5.4.1"
   },
   "devDependencies": {
-    "jest-fixtures": "^0.3.2"
+    "jest-fixtures": "^0.5.0"
   }
 }
