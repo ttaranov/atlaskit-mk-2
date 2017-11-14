@@ -122,8 +122,7 @@
     "prettier-eslint": "^8.2.1",
     "pretty-data": "^0.40.0",
     "projector-cli": "^3.0.1",
-    "projector-karma":
-      "projectorjs/projector-karma#e6bf8242b4785460f4840ce0817919c99614ada9",
+    "projector-karma": "projectorjs/projector-karma#e6bf8242b4785460f4840ce0817919c99614ada9",
     "projector-spawn": "^1.0.1",
     "prosemirror-dev-tools": "^1.3.3",
     "raw-loader": "^0.5.1",
@@ -158,7 +157,7 @@
     "@atlaskit/flag": "^6.1.5",
     "@atlaskit/icon": "^9.0.1",
     "@atlaskit/input": "^1.6.0",
-    "@atlaskit/media-card": "^22.0.0",
+    "@atlaskit/media-card": "^22.1.0",
     "@atlaskit/media-core": "^11.0.0",
     "@atlaskit/media-filmstrip": "^5.3.0",
     "@atlaskit/mention": "^7.6.0",
