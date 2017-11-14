@@ -2575,9 +2575,9 @@ bolt@^0.13.0:
     sort-object "^3.0.2"
     typeable-promisify "^2.0.1"
 
-bolt@^0.15.2:
-  version "0.15.2"
-  resolved "https://registry.yarnpkg.com/bolt/-/bolt-0.15.2.tgz#e2f96fe0ea720eb3563c478956d317c7889b0165"
+bolt@^0.15.3:
+  version "0.15.3"
+  resolved "https://registry.yarnpkg.com/bolt/-/bolt-0.15.3.tgz#e715082630a7910322dd5d8a0ac217122b57e8b2"
   dependencies:
     array-includes "^3.0.3"
     babel-runtime "^6.25.0"
@@ -6316,11 +6316,12 @@ jest-environment-node@^20.0.3:
     jest-mock "^20.0.3"
     jest-util "^20.0.3"
 
-jest-fixtures@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/jest-fixtures/-/jest-fixtures-0.3.2.tgz#204694429c1ac103fd35b6605c56e24c68d418de"
+jest-fixtures@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/jest-fixtures/-/jest-fixtures-0.5.0.tgz#1c337cca8850ad64cb16e638e4bb57ee11bfff48"
   dependencies:
     find-up "^2.1.0"
+    fs-extra "^4.0.2"
     typeable-promisify "^2.0.1"
 
 jest-get-type@^21.2.0:
