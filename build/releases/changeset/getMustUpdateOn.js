@@ -1,6 +1,39 @@
+// @flow
+const bolt = require('bolt');
 
-function getDependencyType (allWorkSpaces, dependent, nextDependency) {
-  const pkg = allWorkSpaces.find((ws) => ws.name === dependent.name).config
+/*::
+type releaseType = {
+  name: string,
+  type: string,
+}
+type dependentType = {
+  name: string,
+  type?: string,
+  dependencies: Array<string>,
+  finalised?: boolean
+}
+type changesetType = {
+  summary: string,
+  releases: Array<releaseType>,
+  dependents: Array<dependentType>,
+  releaseNotes?: any,
+}
+type workspaceType = {
+  config: {
+    dependencies?: {},
+    devDependencies?: {},
+    peerDependencies?: {},
+    bundledDependencies?: {},
+    optionalDependencies?: {},
+  },
+  name: string
+}
+*/
+
+function getMustUpdateOn (allWorkSpaces/*: Array<workspaceType> */, dependent/*: dependentType */, nextDependency/*: string */) {
+  const workspace = allWorkSpaces.find((ws) => ws.name === dependent.name)
+  if (!workspace) throw new Error(`updating failed, no package found, ${dependent.name}, ${nextDependency}`)
+  const pkg = workspace.config
   const DEPENDENCY_TYPES = [
     'dependencies',
     'devDependencies',
@@ -37,4 +70,4 @@ function getDependencyType (allWorkSpaces, dependent, nextDependency) {
   throw new Error(`Invalid version range for internal dependency  ${nextDependency} in workspace ${dependent.name} , ${range}. Only carat, tilde or exact semver ranges are accepted.`)
 }
 
-module.exports = getDependencyType;
+module.exports = getMustUpdateOn;

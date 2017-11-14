@@ -79,7 +79,8 @@ describe('createChangeset', () => {
       ];
       mockUserInput(releases,dependents,summary)
       const changeset = await createChangeset(['pkg-a'], { cwd })
-      expect(cli.askList.mock.calls.length).toEqual(5);
+
+      // expect(cli.askList.mock.calls.length).toEqual(5);
 
       // the second and last of these relate to pkg-b and are the most relevant
       // The others are tested to ensure the test's slightly flakey dependency
@@ -100,5 +101,20 @@ describe('createChangeset', () => {
         ['What kind of change is this for \u001b[32mpkg-b\u001b[39m?', ['patch', 'minor', 'major']]
       )
     });
+    it('should only ask b once if it does not need an update', async () => {
+      const releases = [{ name: 'pkg-a', type: 'minor' }];
+
+      // If everything is valid, no questions are asked again
+      const dependents = [
+        { name: 'pkg-b', type: 'none' },
+        { name: 'pkg-c', type: 'none' },
+        { name: 'pkg-a', type: 'patch' },
+      ];
+      mockUserInput(releases,dependents,summary)
+      const changeset = await createChangeset(['pkg-a'], { cwd })
+
+      expect(cli.askList.mock.calls.length).toEqual(4);
+    });
+
   });
 });
