@@ -31,7 +31,7 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
       </LayerManager>
     );
 
-    expect(helpDialog.find(HelpDialog)).to.not.equal(null);
+    expect(helpDialog.find(HelpDialog).length).to.equal(1);
     helpDialog.unmount();
   });
 
