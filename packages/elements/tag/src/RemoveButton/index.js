@@ -12,7 +12,7 @@ type Props = {
 
 export default class RemoveButton extends PureComponent<Props> {
   onKeyPress = (e: KeyboardEvent) => {
-    const spacebarOrEnter = (e.key === ' ' || e.key === 'Enter');
+    const spacebarOrEnter = e.key === ' ' || e.key === 'Enter';
 
     if (spacebarOrEnter) {
       e.stopPropagation();

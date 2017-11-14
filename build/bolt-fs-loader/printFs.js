@@ -10,8 +10,12 @@ function pad(str /*: string */, depth /*: number */) {
 
 function printFile(file /*: File */, depth /*: number */) {
   return pad(
-    `file('${file.id}', function(){ return import('${file.path}'); }, function(){ return import('!!raw-loader!${file.path}');})`,
-    depth
+    `file('${file.id}', function(){ return import(/* webpackChunkName: "${
+      file.path
+    }" */ '${file.path}'); }, function(){ return import(/* webpackChunkName: "${
+      file.path
+    } (raw)" */'!!raw-loader!${file.path}');})`,
+    depth,
   );
 }
 
@@ -20,7 +24,10 @@ function printDir(dir /*: Directory */, depth /*: number */ = 0) {
     pad(`dir('${dir.id}', [`, depth),
     dir.children
       .map(
-        child => (child.type === 'dir' ? printDir(child, depth + 1) : printFile(child, depth + 1))
+        child =>
+          child.type === 'dir'
+            ? printDir(child, depth + 1)
+            : printFile(child, depth + 1),
       )
       .join(',\n'),
     pad(`])`, depth),

@@ -18,5 +18,10 @@ export default md`
       source={require('!!raw-loader!../examples/0-basic')}
     />
   )}
-  ${<Props source={require('!!raw-loader!../src/components/Calendar')} />}
+
+  ${(
+    <Props
+      props={require('!!extract-react-types-loader!../src/components/Calendar')}
+    />
+  )}
 `;

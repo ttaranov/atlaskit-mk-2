@@ -1,7 +1,11 @@
 // @flow
 import type { Directory, File } from './types';
+
+// SITE_DATA is dynamically generated at runtime by bolt-fs-loader.
+// Configuration for bolt-fs-loader is in webpack.config.js since it needs to be dynamically created
+// depending on the subset of packages we want to represent on the website.
 // $FlowFixMe
-import data from 'bolt-fs-loader?{ include: ["docs/**/*.md", "packages/**/docs/**/*.+(js|ts|tsx)", "packages/**/package.json", "packages/**/CHANGELOG.md", "packages/**/examples/**/*.+(js|ts|tsx)", "patterns/**/*.js"], exclude: ["**/node_modules/**", "packages/utils/docs/**"] }!';
+import data from './SITE_DATA';
 import * as fs from './utils/fs';
 
 const siteData: Directory = data;

@@ -5,13 +5,13 @@ import Input from '@atlaskit/input';
 import type { Handler } from '../../types';
 
 type Props = {
-    isDisabled: bool,
-    placeholder: ?string,
-    value: ?string,
-    onChange: Handler,
-    onKeyDown: Handler,
-    onFocus: Handler,
-    onBlur: Handler,
+  isDisabled: boolean,
+  placeholder: ?string,
+  value: ?string,
+  onChange: Handler,
+  onKeyDown: Handler,
+  onFocus: Handler,
+  onBlur: Handler,
 };
 
 export default class InputField extends Component<Props> {
@@ -25,13 +25,13 @@ export default class InputField extends Component<Props> {
     onKeyDown() {},
     onFocus() {},
     onBlur() {},
-  }
+  };
 
   select = () => {
     if (this.input) {
       this.input.select();
     }
-  }
+  };
 
   render() {
     return (
@@ -44,7 +44,9 @@ export default class InputField extends Component<Props> {
         onKeyDown={this.props.onKeyDown}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
-        ref={ref => { this.input = ref; }}
+        ref={ref => {
+          this.input = ref;
+        }}
       />
     );
   }

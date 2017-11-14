@@ -6,9 +6,29 @@
 
 const contexts = {
   'editor-core': require.context(
-    '../../packages/fabric/editor-core/test/browser/',
+    '../../packages/fabric/editor-core/tests/browser/',
     true,
-    /^[^_]*.(js|jsx|ts|tsx)$/
+    /^[^_]*.(js|jsx|ts|tsx)$/,
+  ),
+  'editor-bitbucket': require.context(
+    '../../packages/fabric/editor-bitbucket/tests/browser/',
+    true,
+    /^[^_]*.(js|jsx|ts|tsx)$/,
+  ),
+  'editor-cq': require.context(
+    '../../packages/fabric/editor-cq/tests/browser/',
+    true,
+    /^[^_]*.(js|jsx|ts|tsx)$/,
+  ),
+  'editor-test-helpers': require.context(
+    '../../packages/fabric/editor-test-helpers/tests/browser/',
+    true,
+    /^[^_]*.(js|jsx|ts|tsx)$/,
+  ),
+  'editor-common': require.context(
+    '../../packages/fabric/editor-common/tests/browser/',
+    true,
+    /^[^_]*.(js|jsx|ts|tsx)$/,
   ),
 };
 

@@ -3,7 +3,12 @@ import React, { type ComponentType } from 'react';
 import type { Directory } from '../../../types';
 import * as fs from '../../../utils/fs';
 
-export default function buildNavGroups(prefix: string, Icon: ComponentType<*>, pathname: string, dir: Directory) {
+export default function buildNavGroups(
+  prefix: string,
+  Icon: ComponentType<*>,
+  pathname: string,
+  dir: Directory,
+) {
   return dir.children.map(group => {
     if (group.type === 'file') {
       return {
@@ -13,8 +18,8 @@ export default function buildNavGroups(prefix: string, Icon: ComponentType<*>, p
             isSelected: (pathname, to) => pathname.startsWith(to),
             title: fs.titleize(group.id),
             icon: <Icon label={`${fs.titleize(group.id)} icon`} />,
-          }
-        ]
+          },
+        ],
       };
     }
 

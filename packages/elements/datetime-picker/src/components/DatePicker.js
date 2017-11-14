@@ -24,7 +24,7 @@ export default class DatePicker extends Component<Props, State> {
     isDisabled: false,
     disabled: [],
     onChange() {},
-  }
+  };
 
   state = {
     value: null,
@@ -36,7 +36,7 @@ export default class DatePicker extends Component<Props, State> {
     if (value !== this.state.value) {
       this.props.onChange(value);
     }
-  }
+  };
 
   handleInputBlur = (e: FocusEvent) => {
     if (e.target instanceof HTMLInputElement) {
@@ -56,22 +56,22 @@ export default class DatePicker extends Component<Props, State> {
         });
       }
     }
-  }
+  };
 
   handleInputChange = (e: Event) => {
     if (e.target instanceof HTMLInputElement) {
       this.setState({ displayValue: e.target.value });
     }
-  }
+  };
 
   handleTriggerOpen = () => {
     this.setState({ isOpen: true });
-  }
+  };
 
   handleTriggerClose = () => {
     this.setState({ isOpen: false });
     this.selectField();
-  }
+  };
 
   handleIconClick = () => {
     if (this.state.isOpen) {
@@ -80,11 +80,11 @@ export default class DatePicker extends Component<Props, State> {
     } else {
       this.setState({ isOpen: true });
     }
-  }
+  };
 
   handlePickerBlur = () => {
     this.setState({ isOpen: false });
-  }
+  };
 
   handleUpdate = (iso: string) => {
     const parsedDate = parseDate(iso);
@@ -97,7 +97,7 @@ export default class DatePicker extends Component<Props, State> {
       });
       this.selectField();
     }
-  }
+  };
 
   selectField() {
     if (this.datepicker) {
@@ -114,7 +114,6 @@ export default class DatePicker extends Component<Props, State> {
         displayValue={this.state.displayValue}
         value={this.state.value}
         disabled={this.props.disabled}
-
         onFieldBlur={this.handleInputBlur}
         onFieldChange={this.handleInputChange}
         onFieldTriggerOpen={this.handleTriggerOpen}
@@ -122,8 +121,9 @@ export default class DatePicker extends Component<Props, State> {
         onPickerBlur={this.handlePickerBlur}
         onPickerTriggerClose={this.handleTriggerClose}
         onPickerUpdate={this.handleUpdate}
-
-        ref={ref => { this.datepicker = ref; }}
+        ref={ref => {
+          this.datepicker = ref;
+        }}
       />
     );
   }

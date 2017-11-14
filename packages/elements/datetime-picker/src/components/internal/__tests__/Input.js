@@ -18,9 +18,7 @@ describe(name, () => {
         onFocus: () => {},
         onBlur: () => {},
       };
-      const wrapper = shallow(<Input
-        {...props}
-      />);
+      const wrapper = shallow(<Input {...props} />);
 
       const inputProps = wrapper.find(AkInput).props();
       expect(inputProps.disabled).toBe(props.isDisabled);

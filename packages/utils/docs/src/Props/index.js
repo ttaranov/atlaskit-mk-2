@@ -20,7 +20,9 @@ const HeadingDefault = styled.code`
   color: ${themed({ light: colors.subtleText, dark: colors.subtleText })};
 `;
 
-const HeadingRequired = styled.span`color: ${themed({ light: colors.R500, dark: colors.R300 })};`;
+const HeadingRequired = styled.span`
+  color: ${themed({ light: colors.R500, dark: colors.R300 })};
+`;
 
 const HeadingType = styled.span`
   background: ${themed({ light: colors.B50, dark: colors.B500 })};
@@ -30,7 +32,9 @@ const HeadingType = styled.span`
   padding: 0 0.2em;
 `;
 
-const PropTypeWrapper = styled.div`margin-top: ${math.multiply(gridSize, 4)}px;`;
+const PropTypeWrapper = styled.div`
+  margin-top: ${math.multiply(gridSize, 4)}px;
+`;
 
 const Wrapper = styled.div`
   margin-top: ${math.multiply(gridSize, 1.5)}px;
@@ -65,7 +69,9 @@ function PropTypeHeading(props: PropTypeHeadingProps) {
     <Heading>
       <code>
         <HeadingType>{typeName}</HeadingType> {props.name}
-        {props.defaultValue ? <HeadingDefault> = {props.defaultValue.value}</HeadingDefault> : null}
+        {props.defaultValue ? (
+          <HeadingDefault> = {props.defaultValue.value}</HeadingDefault>
+        ) : null}
         {props.required ? <HeadingRequired> required</HeadingRequired> : null}
       </code>
     </Heading>
@@ -90,9 +96,20 @@ export default function DynamicProps(props: DynamicPropsProps) {
   return (
     <PageWrapper>
       {propTypes.map(propType => {
+        let description;
+        if (propType.leadingComments) {
+          description = propType.leadingComments.reduce(
+            (acc, { value }) => acc.concat(`\n${value}`),
+            '',
+          );
+        }
         if (!propType.value) {
           // eslint-disable-next-line no-console
-          console.error(`Prop ${propType.key} has no type; this usually indicates invalid propType or defaultProps config`);
+          console.error(
+            `Prop ${
+              propType.key
+            } has no type; this usually indicates invalid propType or defaultProps config`,
+          );
           return null;
         }
         return (
@@ -102,7 +119,7 @@ export default function DynamicProps(props: DynamicPropsProps) {
               required={!propType.optional}
               type={propType.value}
             />
-            {propType.description && <Description>{propType.description}</Description>}
+            {description && <Description>{description}</Description>}
             <PrettyPropType type={propType.value} />
           </PropTypeWrapper>
         );

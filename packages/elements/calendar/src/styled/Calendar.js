@@ -42,7 +42,9 @@ export const CalendarTbody = styled.tbody`
 
 // FIXME: first-child
 // @atlaskit/css-reset should adjust default behaviours
-const thSpacing = css`padding: 6px 8px`;
+const thSpacing = css`
+  padding: 6px 8px;
+`;
 export const CalendarTh = styled.th`
   border: 0;
   color: ${getCalendarThColor};

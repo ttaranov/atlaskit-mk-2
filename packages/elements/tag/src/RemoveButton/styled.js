@@ -13,7 +13,8 @@ export const Button = styled.button`
   appearance: none;
   background: none;
   border: none;
-  border-radius: ${({ isRounded }) => (isRounded ? `${buttonWidthUnitless / 2}px` : `${borderRadius()}px`)};
+  border-radius: ${({ isRounded }) =>
+    isRounded ? `${buttonWidthUnitless / 2}px` : `${borderRadius()}px`};
   color: ${colors.N500};
   display: flex;
   justify-content: center;
@@ -34,5 +35,9 @@ export const Button = styled.button`
     }
   }
 
-  &::-moz-focus-inner { border: 0; margin: 0; padding: 0; }
+  &::-moz-focus-inner {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
 `;

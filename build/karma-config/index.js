@@ -1,5 +1,6 @@
 const constants = require('karma').constants;
-const ChromiumRevision = require('puppeteer/package.json').puppeteer.chromium_revision;
+const ChromiumRevision = require('puppeteer/package.json').puppeteer
+  .chromium_revision;
 const Downloader = require('puppeteer/utils/ChromiumDownloader');
 const boltQuery = require('bolt-query');
 const path = require('path');
@@ -7,7 +8,10 @@ const babelPolyfill = require.resolve('babel-polyfill');
 const customEventPolyfill = require.resolve('custom-event-polyfill');
 const entry = require.resolve('./entry');
 
-const revisionInfo = Downloader.revisionInfo(Downloader.currentPlatform(), ChromiumRevision);
+const revisionInfo = Downloader.revisionInfo(
+  Downloader.currentPlatform(),
+  ChromiumRevision,
+);
 process.env.CHROME_BIN = revisionInfo.executablePath;
 
 const webpackConfig = {
@@ -53,8 +57,11 @@ async function getAliases(cwd) {
   });
 
   return results.workspaces.reduce((acc, workspace) => {
-    if (workspace.pkg.src) {
-      acc[workspace.pkg.name] = path.resolve(workspace.dir, workspace.pkg.src);
+    if (workspace.pkg['atlaskit:src']) {
+      acc[workspace.pkg.name] = path.resolve(
+        workspace.dir,
+        workspace.pkg['atlaskit:src'],
+      );
     }
 
     return acc;
@@ -85,8 +92,8 @@ module.exports = async function getConfig({ cwd, watch, browserstack }) {
     mime: {
       'application/javascript': ['ts', 'tsx'],
     },
-    autoWatch: false,
-    singleRun: true,
+    autoWatch: watch,
+    singleRun: !watch,
     concurrency: 20,
     reporters: ['mocha'],
     browsers: ['ChromeHeadless'],
@@ -109,9 +116,21 @@ module.exports = async function getConfig({ cwd, watch, browserstack }) {
         browser_version: '11',
       },
       iphone: { os: 'ios', os_version: '9.1', device: 'iPhone 6S' },
-      chrome_latest_osx: { browser: 'chrome', os: 'OS X', os_version: 'El Capitan' },
-      firefox_latest_windows: { browser: 'firefox', os: 'WINDOWS', os_version: '10' },
-      firefox_latest_osx: { browser: 'firefox', os: 'OS X', os_version: 'El Capitan' },
+      chrome_latest_osx: {
+        browser: 'chrome',
+        os: 'OS X',
+        os_version: 'El Capitan',
+      },
+      firefox_latest_windows: {
+        browser: 'firefox',
+        os: 'WINDOWS',
+        os_version: '10',
+      },
+      firefox_latest_osx: {
+        browser: 'firefox',
+        os: 'OS X',
+        os_version: 'El Capitan',
+      },
       edge_latest: { browser: 'edge', os: 'WINDOWS', os_version: '10' },
     };
 
@@ -121,6 +140,7 @@ module.exports = async function getConfig({ cwd, watch, browserstack }) {
       launchers[key].base = 'BrowserStack';
     });
 
+    const time = new Date().getTime();
     Object.assign(config, {
       browserStack: {
         username: process.env.BROWSERSTACK_USERNAME,
@@ -129,7 +149,9 @@ module.exports = async function getConfig({ cwd, watch, browserstack }) {
         startTunnel: true,
         tunnelIdentifier: process.env.BITBUCKET_COMMIT || 'ak_tunnel',
         project: 'AtlasKit',
-        build: `${process.env.CURRENT_BRANCH} ${new Date().getTime()} ${process.env.BITBUCKET_COMMIT}`,
+        build: `${process.env.CURRENT_BRANCH} ${time} ${
+          process.env.BITBUCKET_COMMIT
+        }`,
       },
       captureTimeout: 120000,
       reporters: ['mocha', 'BrowserStack'],

@@ -1,25 +1,34 @@
 {
-  "extends": "airbnb",
+  "extends": ["airbnb", "prettier"],
   "parser": "babel-eslint",
   "plugins": [
     "flowtype",
-    "jest"
+    "jest",
+    "prettier"
   ],
   "rules": {
-    "import/no-extraneous-dependencies": ["off", "vscode"],
-    "import/no-unresolved": ["off", "vscode"],
+    "import/no-extraneous-dependencies": ["error", {
+      "devDependencies": [
+        "**/docs/**/*.js",
+        "**/__tests__/*.js",
+        "**/examples/*.js",
+        "./projector.js",
+        "./resolver.js"
+      ]
+    }],
+    "import/no-unresolved": ["off"],
     "import/prefer-default-export": "off",
 
-    "max-len": ["error", 140],
     "no-restricted-syntax": "off",
     "no-use-before-define": "off",
 
     "arrow-body-style": "off",
-    "arrow-parens": ["error", "as-needed"],
 
     "spaced-comment": "off",
 
     "no-await-in-loop": "off",
+
+    "no-mixed-operators": "off",
 
     "react/sort-comp": "off",
     "react/jsx-filename-extension": "off",
@@ -29,7 +38,19 @@
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",
     "jest/no-identical-title": "error",
-    "jest/valid-expect": "error"
+    "jest/valid-expect": "error",
+
+    // Rules below are all added to remove conflicts with prettier. DO NOT REMOVE
+    "react/jsx-indent": "off",
+    "arrow-parens": "off",
+    "react/jsx-closing-bracket-location": "off",
+    "react/jsx-curly-spacing": "off",
+    "react/jsx-equals-spacing": "off",
+    "react/jsx-first-prop-new-line": "off",
+    "react/jsx-indent-props": "off",
+    "react/jsx-max-props-per-line": "off",
+    "react/jsx-tag-spacing": "off",
+    "react/jsx-wrap-multilines": "off"
   },
   "env": {
     "browser": true

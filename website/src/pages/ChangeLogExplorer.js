@@ -6,9 +6,14 @@ import { Link } from 'react-router-dom';
 import BackIcon from '@atlaskit/icon/glyph/arrow-left';
 import TextField from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
+import Loadable from 'react-loadable';
 
-import Changelog, { NoMatch } from '../components/ChangeLog';
+import Changelog, { NoMatch, type Logs } from '../components/ChangeLog';
 import Page from '../components/Page';
+import { packages } from '../site';
+import * as fs from '../utils/fs';
+import Loading from '../components/Loading';
+import { divvyChangelog } from '../utils/changelog';
 
 import type { RouterMatch } from '../types';
 
@@ -17,6 +22,7 @@ type Props = {
   match: RouterMatch,
   history: any,
 };
+
 type State = { isInvalid: boolean, range: string };
 
 export default class ChangelogExplorer extends Component<Props, State> {
@@ -25,37 +31,50 @@ export default class ChangelogExplorer extends Component<Props, State> {
 
   componentWillMount() {
     const { semver } = this.props.match.params;
-    if (semver) this.setState({ range: decodeURI(String(this.props.match.params.semver)) });
+    if (semver)
+      this.setState({
+        range: decodeURI(String(this.props.match.params.semver)),
+      });
   }
 
   handleChange = (e: any) => {
-    const { component } = this.props.match.params;
+    const { groupId, pkgId } = this.props.match.params;
     const range = e.target.value;
-    let isInvalid = false;
-    if (!isInvalid)
-      this.props.history.replace(`/changelog/${String(component)}/${encodeURI(range)}`);
-
-    if (/[a-z]/gi.test(range)) isInvalid = true;
+    this.props.history.replace(
+      `/changelog/${groupId}/${pkgId}/${encodeURI(range)}`,
+    );
+    const isInvalid = /[a-z]/gi.test(range);
 
     this.setState({ isInvalid, range });
   };
 
   render() {
-    const { component = '' } = this.props.match.params;
-    let changelog = [];
-    // try {
-    //   // FlowFixMe
-    //   const reqCtx = require.context('../../../packages/', true, /^\.\/(elements|fabric)\/[\w\d-_]+\/CHANGELOG\.md$/);
-    //   changelog = reqCtx(`./${component}/CHANGELOG.md`);
-    // } catch (e) {
-    //   console.log(e); // eslint-disable-line
-    // }
+    const { groupId, pkgId } = this.props.match.params;
+    const filePath = `packages/${groupId}/${pkgId}/CHANGELOG.md`;
+    const found = fs.find(packages, (file, currPath) => {
+      return currPath === filePath;
+    });
     const { isInvalid, range } = this.state;
+
+    const Content = Loadable({
+      loading: Loading,
+      loader: () => found && found.contents(),
+      render: changelog =>
+        changelog ? (
+          <Changelog
+            changelog={divvyChangelog(changelog)}
+            range={range}
+            packageName={pkgId}
+          />
+        ) : (
+          <NoMatch>Invalid range; please try again.</NoMatch>
+        ),
+    });
 
     return (
       <Page>
-        <Back to={`/packages/${component}`} />
-        <h1>Changelog: {component}</h1>
+        <Back to={`/mk-2/packages/${groupId}/${pkgId}`} />
+        <h1>Changelog: {pkgId}</h1>
         <TextField
           autoFocus
           isInvalid={isInvalid}
@@ -69,7 +88,7 @@ export default class ChangelogExplorer extends Component<Props, State> {
           <NoMatch>Invalid range; please try again.</NoMatch>
         ) : (
           <LogWrapper>
-            <Changelog changelog={changelog} range={range} packageName={component} />
+            <Content />
           </LogWrapper>
         )}
       </Page>

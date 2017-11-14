@@ -32,7 +32,7 @@ export default class DateField extends Component<Props> {
     if (this.props.onKeyDown) {
       this.props.onKeyDown(e);
     }
-  }
+  };
 
   select() {
     if (this.input) {
@@ -46,7 +46,9 @@ export default class DateField extends Component<Props> {
         placeholder="yyyy/mm/dd"
         {...this.props}
         onKeyDown={this.handleKeyDown}
-        ref={ref => { this.input = ref; }}
+        ref={ref => {
+          this.input = ref;
+        }}
       />
     );
   }

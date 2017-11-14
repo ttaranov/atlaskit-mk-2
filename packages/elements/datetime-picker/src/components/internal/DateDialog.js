@@ -37,7 +37,7 @@ export default class DateDialog extends Component<Props, State> {
     onTriggerClose() {},
     onUpdate() {},
     children: null,
-  }
+  };
 
   constructor(props: Props) {
     super(props);
@@ -74,21 +74,21 @@ export default class DateDialog extends Component<Props, State> {
 
   handleChange = ({ day, month, year }: EventChange) => {
     this.setState({ day, month, year });
-  }
+  };
 
   handleSelect = ({ iso }: EventSelect) => {
     // Don't allow selection of disabled dates.
     if (this.props.disabled.indexOf(iso) === -1) {
       this.props.onUpdate(iso);
     }
-  }
+  };
 
   handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Escape') {
       e.preventDefault();
       this.props.onTriggerClose();
     }
-  }
+  };
 
   renderCalendar() {
     return (
@@ -103,10 +103,11 @@ export default class DateDialog extends Component<Props, State> {
           year={this.state.year}
           selected={this.props.value ? [this.props.value] : []}
           disabled={this.props.disabled}
-
           onChange={this.handleChange}
           onSelect={this.handleSelect}
-          ref={ref => { this.calendar = ref; }}
+          ref={ref => {
+            this.calendar = ref;
+          }}
         />
       </div>
     );

@@ -10,7 +10,9 @@ module.exports = async function extractReactTypesLoader() {
   data.workspaces.forEach(({ files }) => {
     Object.keys(files).forEach(key => {
       files[key].forEach(({ filePath }) => {
-        load.push(`'${filePath}': function () { return import('${filePath}'); }`);
+        load.push(
+          `'${filePath}': function () { return import('${filePath}'); }`,
+        );
       });
     });
   });

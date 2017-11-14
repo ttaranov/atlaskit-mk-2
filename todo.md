@@ -1,3 +1,0 @@
-- ban .jsx
-- eslint @flow
--

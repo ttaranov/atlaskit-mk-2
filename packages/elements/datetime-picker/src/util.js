@@ -49,7 +49,7 @@ export const parseTime = (time: string) => {
     if (hours > 23 || minutes > 59) {
       return null;
     }
-    const hourString = (hours % 12 === 0) ? '12' : `${hours % 12}`;
+    const hourString = hours % 12 === 0 ? '12' : `${hours % 12}`;
     return `${hourString}:${pad(minutes)}${hours >= 12 ? 'pm' : 'am'}`;
   }
 
