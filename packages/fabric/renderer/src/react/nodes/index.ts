@@ -149,6 +149,8 @@ export const isTextWrapper = (type: string): type is 'textWrapper' => {
   return type === 'textWrapper';
 };
 
+const whitespaceRegex = /^\s*$/;
+
 /**
  * Detects whether a fragment contains a single paragraph node
  * whose content satisfies the condition for an emoji block
@@ -159,27 +161,28 @@ export const isEmojiDoc = (doc: Fragment, props: any = {}): boolean => {
   if (props.fitToHeight === bigEmojiHeight) {
     return true;
   }
-  const parentNodes: Node[] = [];
-  doc.forEach(child => parentNodes.push(child));
-  if (parentNodes.length !== 1) {
+  if (doc.childCount !== 1) {
     return false;
   }
+  const parentNodes: Node[] = [];
+  doc.forEach(child => parentNodes.push(child));
   const node = parentNodes[0];
   return node.type.name === 'paragraph' && isEmojiBlock(node.content);
 };
 
 const isEmojiBlock = (pnode: Fragment): boolean => {
   const content: Node[] = [];
-  pnode.forEach(child => content.push(child));
-  if (content.length > 7) {
+  // Optimisation for long documents - worst case block will be space-emoji-space
+  if (pnode.childCount > 7) {
     return false;
   }
+  pnode.forEach(child => content.push(child));
   let emojiCount = 0;
   for (let i = 0; i < content.length; ++i) {
     const node = content[i];
     switch (node.type.name) {
       case 'text':
-        if (node.text && !node.text.match(/^\s*$/)) {
+        if (node.text && !node.text.match(whitespaceRegex)) {
           return false;
         }
         continue;

@@ -1270,33 +1270,6 @@ System.out.println("There are " + count + " values >= 5");`
       ]
     },
     {
-      type: 'decisionItem',
-      attrs: {
-        localId: '',
-        state: 'DECIDED'
-      },
-      content: [
-        {
-          type: 'emoji',
-          attrs: {
-            ...grinEmojiAttrs,
-          }
-        },
-        {
-          type: 'emoji',
-          attrs: {
-            ...evilburnsEmojiAttrs,
-          }
-        },
-        {
-          type: 'emoji',
-          attrs: {
-            ...grinEmojiAttrs,
-          }
-        }
-      ]
-    },
-    {
       type: 'taskList',
       attrs: {
         localId: ''
