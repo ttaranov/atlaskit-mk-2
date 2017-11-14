@@ -21,6 +21,6 @@ export default class EditorContext extends React.Component<any> {
   }
 
   render() {
-    return this.props.children;
+    return React.Children.only(this.props.children);
   }
 }

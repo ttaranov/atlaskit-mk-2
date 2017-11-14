@@ -5,13 +5,12 @@ import { createEditor, getUiComponent } from './create-editor';
 import { createPluginsList } from './create-editor';
 import EditorActions from './actions';
 import ProviderFactory from '../providerFactory';
-import { EditorProps, EditorInstance, EditorAppearanceComponentProps } from './types';
+import { EditorProps, EditorInstance } from './types';
 import { moveCursorToTheEnd } from '../utils';
 export * from './types';
 
 export interface State {
   editor?: EditorInstance;
-  component?: React.ComponentClass<EditorAppearanceComponentProps>;
 }
 
 export default class Editor extends React.Component<EditorProps, State> {
@@ -37,7 +36,6 @@ export default class Editor extends React.Component<EditorProps, State> {
   }
 
   componentDidMount() {
-    this.initUi();
     this.handleProviders(this.props);
   }
 
@@ -83,6 +81,12 @@ export default class Editor extends React.Component<EditorProps, State> {
         moveCursorToTheEnd(editor.editorView);
       }
     }
+    if (editor) {
+      if (!editor.editorView.hasFocus()) {
+        editor.editorView.focus()
+      }
+      moveCursorToTheEnd(editor.editorView);
+    }
   }
 
   private registerEditorForActions(editor: EditorInstance) {
@@ -95,11 +99,6 @@ export default class Editor extends React.Component<EditorProps, State> {
     if (this.context && this.context.editorActions) {
       this.context.editorActions._privateUnregisterEditor();
     }
-  }
-
-  private initUi() {
-    const component = getUiComponent(this.props.appearance);
-    this.setState({ component });
   }
 
   private initEditor = place => {
@@ -135,7 +134,9 @@ export default class Editor extends React.Component<EditorProps, State> {
 
   render() {
     // tslint:disable-next-line:variable-name
-    const { component: Component, editor = {} } = this.state;
+    const { editor = {} } = this.state;
+
+    const Component = getUiComponent(this.props.appearance);
 
     if (!Component) {
       return null;
