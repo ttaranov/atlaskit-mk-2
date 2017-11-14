@@ -1,14 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { PureComponent } from 'react';
+import { PureComponent, ReactElement } from 'react';
 import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import { Popup } from '@atlaskit/editor-common';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { EmojiState } from '../../plugins/emojis';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { EmojiPicker as AkEmojiPicker, EmojiProvider } from '@atlaskit/emoji';
 import ToolbarButton from '../ToolbarButton';
-import Popup from '../Popup';
 
 export interface Props {
   editorView: EditorView;
@@ -36,8 +36,8 @@ export interface State {
 const isDetachedElement = (el) => !document.contains(el);
 
 export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
-  private pickerRef: any;
-  private buttonRef: any;
+  private pickerRef: ReactElement<any>;
+  private buttonRef: ReactElement<any>;
   private pluginState?: EmojiState;
 
   state: State = {
@@ -104,11 +104,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   }
 
   private handleButtonRef = (ref): void => {
-    if (ref) {
-      this.buttonRef = ref;
-    } else {
-      this.buttonRef = null;
-    }
+    this.buttonRef = ref ? ref : null;
   }
 
   private onPickerRef = (ref: any) => {

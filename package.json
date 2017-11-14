@@ -223,6 +223,7 @@
     "prosemirror-transform": "^0.22.0",
     "prosemirror-view": "^0.22.0",
     "puppeteer": "^0.10.2",
+    "raf-schd": "^2.0.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-loadable": "^5.1.0",

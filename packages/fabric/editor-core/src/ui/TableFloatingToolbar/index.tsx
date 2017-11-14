@@ -7,7 +7,7 @@ import tableCommands from '../../plugins/table/commands';
 import ToolbarButton from '../ToolbarButton';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
-import Popup from '../Popup';
+import { Popup } from '@atlaskit/editor-common';
 import { Toolbar } from './styles';
 import DropdownMenu from '../DropdownMenu';
 import { cut, copy, paste } from '../../keymaps';
