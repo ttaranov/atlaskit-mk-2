@@ -29,7 +29,13 @@ describe('ak-progress-tracker/progress-tracker-stage', () => {
     };
 
     const wrapper = shallow(
-      <ProgressTrackerStage item={item} render={render} />,
+      <ProgressTrackerStage
+        item={item}
+        render={render}
+        transitionDelay={0}
+        transitionSpeed={0}
+        transitionEasing={'linear'}
+      />,
     );
     expect(wrapper.length).toBeGreaterThan(0);
     const gridColumn = wrapper.find(GridColumn);
@@ -58,7 +64,13 @@ describe('ak-progress-tracker/progress-tracker-stage', () => {
     };
 
     const wrapper = shallow(
-      <ProgressTrackerStage item={item} render={render} />,
+      <ProgressTrackerStage
+        item={item}
+        render={render}
+        transitionDelay={0}
+        transitionSpeed={0}
+        transitionEasing={'linear'}
+      />,
     );
     expect(wrapper.find(ProgressTrackerStageMarker).props()).toMatchObject({
       color: colors.N70,
@@ -87,7 +99,13 @@ describe('ak-progress-tracker/progress-tracker-stage', () => {
     };
 
     const wrapper = shallow(
-      <ProgressTrackerStage item={item} render={render} />,
+      <ProgressTrackerStage
+        item={item}
+        render={render}
+        transitionDelay={0}
+        transitionSpeed={0}
+        transitionEasing={'linear'}
+      />,
     );
     expect(wrapper.find(ProgressTrackerStageMarker).props()).toMatchObject({
       color: colors.B300,
@@ -116,7 +134,13 @@ describe('ak-progress-tracker/progress-tracker-stage', () => {
     };
 
     const wrapper = shallow(
-      <ProgressTrackerStage item={item} render={render} />,
+      <ProgressTrackerStage
+        item={item}
+        render={render}
+        transitionDelay={0}
+        transitionSpeed={0}
+        transitionEasing={'linear'}
+      />,
     );
     expect(wrapper.find(ProgressTrackerStageMarker).props()).toMatchObject({
       color: colors.B300,
@@ -145,7 +169,13 @@ describe('ak-progress-tracker/progress-tracker-stage', () => {
     };
 
     const wrapper = shallow(
-      <ProgressTrackerStage item={item} render={render} />,
+      <ProgressTrackerStage
+        item={item}
+        render={render}
+        transitionDelay={0}
+        transitionSpeed={0}
+        transitionEasing={'linear'}
+      />,
     );
     expect(wrapper.find(ProgressTrackerStageMarker).props()).toMatchObject({
       color: colors.B300,
@@ -173,8 +203,46 @@ describe('ak-progress-tracker/progress-tracker-stage', () => {
     };
 
     const wrapper = shallow(
-      <ProgressTrackerStage item={item} render={render} />,
+      <ProgressTrackerStage
+        item={item}
+        render={render}
+        transitionDelay={0}
+        transitionSpeed={0}
+        transitionEasing={'linear'}
+      />,
     );
     expect(wrapper.find(ProgressTrackerLink)).toHaveLength(0);
+  });
+
+  it('should render transitions with correct props', () => {
+    const percentageComplete = 100;
+    const transitionDelay = 10;
+    const transitionSpeed = 10;
+    const item = {
+      id: 'visited-1',
+      label: 'Visited Step',
+      percentageComplete,
+      status: 'visited',
+    };
+    const render = {
+      link: (props: LinkComponentProps) => <ProgressTrackerLink {...props} />,
+    };
+
+    const wrapper = shallow(
+      <ProgressTrackerStage
+        item={item}
+        render={render}
+        transitionDelay={transitionDelay}
+        transitionSpeed={transitionSpeed}
+        transitionEasing={'linear'}
+      />,
+    );
+    expect(wrapper.find('Fade')).toHaveLength(3);
+    expect(
+      wrapper
+        .find('Fade')
+        .first()
+        .props().timeout,
+    ).toBe(transitionDelay + transitionSpeed);
   });
 });
