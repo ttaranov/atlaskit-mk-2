@@ -9,7 +9,12 @@ const parseCommitLine = line => {
 };
 
 async function getCommitsSince(ref) {
-  const gitCmd = await spawn('git', ['rev-list', '--no-merges', '--abbrev-commit', `${ref}..HEAD`]);
+  const gitCmd = await spawn('git', [
+    'rev-list',
+    '--no-merges',
+    '--abbrev-commit',
+    `${ref}..HEAD`,
+  ]);
   return gitCmd.stdout.trim().split('\n');
 }
 
@@ -44,12 +49,21 @@ async function getFullCommit(ref) {
   const gitCmd = await spawn('git', ['show', ref]);
   const lines = gitCmd.stdout.trim().split('\n');
 
-  const hash = lines.shift().replace('commit ', '').substring(0, 7);
+  const hash = lines
+    .shift()
+    .replace('commit ', '')
+    .substring(0, 7);
   const author = lines.shift().replace('Author: ', '');
-  const date = new Date(lines.shift().replace('Date: ', '').trim());
+  const date = new Date(
+    lines
+      .shift()
+      .replace('Date: ', '')
+      .trim(),
+  );
 
   // remove the extra padding added by git show
-  const message = lines.map(line => line.replace('    ', ''))
+  const message = lines
+    .map(line => line.replace('    ', ''))
     .join('\n')
     .trim(); // There is one more extra line added by git
   return {
@@ -64,7 +78,9 @@ async function getLastPublishCommit() {
   const isPublishCommit = msg => msg.startsWith('RELEASING: ');
 
   const gitCmd = await spawn('git', ['log', '-n', 500, '--oneline']);
-  const result = gitCmd.stdout.trim().split('\n')
+  const result = gitCmd.stdout
+    .trim()
+    .split('\n')
     .map(line => parseCommitLine(line));
   const latestPublishCommit = result.find(res => isPublishCommit(res.message));
 
@@ -80,7 +96,8 @@ async function getChangesetCommitsSince(ref) {
   if (result.length === 0) return [];
 
   const parsedResults = result.split('\n').map(line => parseCommitLine(line));
-  const changesetCommits = parsedResults.filter(res => isChangesetCommit(res.message))
+  const changesetCommits = parsedResults
+    .filter(res => isChangesetCommit(res.message))
     .map(res => res.commit);
 
   return changesetCommits;

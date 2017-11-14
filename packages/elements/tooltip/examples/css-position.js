@@ -27,10 +27,10 @@ const Parent = styled.div`
   padding: 8px;
   position: ${p => p.pos};
   width: 280px;
-  ${p => (p.pos === 'fixed'
-    ? `box-shadow: 0 4px 8px -2px ${colors.N60A}, 0 0 1px ${colors.N60A};`
-    : ''
-  )}
+  ${p =>
+    p.pos === 'fixed'
+      ? `box-shadow: 0 4px 8px -2px ${colors.N60A}, 0 0 1px ${colors.N60A};`
+      : ''};
 `;
 
 type PosTypes = {
@@ -44,7 +44,9 @@ const Position = ({ children, pos, ...rest }: PosTypes) => (
     <Tooltip content={`Position "${pos}"`}>
       <Target color={color[pos]}>{capitalize(pos)}</Target>
     </Tooltip>
-    <p>Tooltip container position is <code>{pos}</code>.</p>
+    <p>
+      Tooltip container position is <code>{pos}</code>.
+    </p>
     {children}
   </Parent>
 );
@@ -53,20 +55,20 @@ type Props = {};
 type State = { pinned: boolean, top: number };
 
 export default class PositionExample extends Component<Props, State> {
-  panel: HTMLElement
-  state = { pinned: false, top: 0 }
+  panel: HTMLElement;
+  state = { pinned: false, top: 0 };
   pin = () => {
     const { top } = this.panel.getBoundingClientRect();
     this.setState({ pinned: true, top });
-  }
-  unpin = () => this.setState({ pinned: false })
-  ref = (ref: HTMLElement) => { this.panel = ref; }
+  };
+  unpin = () => this.setState({ pinned: false });
+  ref = (ref: HTMLElement) => {
+    this.panel = ref;
+  };
   render() {
     const { pinned, top } = this.state;
     const fixedPos = pinned ? 'fixed' : 'relative';
-    const fixedStyle = pinned
-      ? { boxShadow, top }
-      : { top: 92 };
+    const fixedStyle = pinned ? { boxShadow, top } : { top: 92 };
     const buttonStyle = { position: 'absolute', right: 8, top: 8 };
 
     return (

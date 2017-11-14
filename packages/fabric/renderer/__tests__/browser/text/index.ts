@@ -57,7 +57,10 @@ describe('Renderer - TextSerializer', () => {
       content: [
         {
           type: 'paragraph',
-          content: [{ type: 'text', text: '🦄' }, { type: 'text', text: 'is a unicorn' }],
+          content: [
+            { type: 'text', text: '🦄' },
+            { type: 'text', text: 'is a unicorn' },
+          ],
         },
       ],
     };

@@ -1,6 +1,9 @@
-import { storyData as emojiStoryData, testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
+import {
+  storyData as emojiStoryData,
+  testData as emojiTestData,
+} from '@atlaskit/emoji/dist/es5/support';
 
-const toEmojiAttrs = (emoji) => {
+const toEmojiAttrs = emoji => {
   const { shortName, id, fallback } = emoji;
   return {
     shortName,
@@ -9,9 +12,9 @@ const toEmojiAttrs = (emoji) => {
   };
 };
 
-const toEmojiId = (emoji) => {
-   const { shortName, id, fallback } = emoji;
-   return { shortName, id, fallback };
+const toEmojiId = emoji => {
+  const { shortName, id, fallback } = emoji;
+  return { shortName, id, fallback };
 };
 
 export const grinEmojiAttrs = toEmojiAttrs(emojiTestData.grinEmoji);
@@ -36,80 +39,80 @@ export const document = {
             {
               type: 'link',
               attrs: {
-                href: 'https://www.atlassian.com'
-              }
-            }
-          ]
+                href: 'https://www.atlassian.com',
+              },
+            },
+          ],
         },
         {
           type: 'text',
           text: 'World!',
           marks: [
             {
-              type: 'strong'
+              type: 'strong',
             },
             {
               type: 'link',
               attrs: {
-                href: 'https://www.atlassian.com'
-              }
-            }
-          ]
+                href: 'https://www.atlassian.com',
+              },
+            },
+          ],
         },
         {
           type: 'text',
-          text: ' Look I can do '
+          text: ' Look I can do ',
         },
         {
           type: 'text',
           text: 'italic ',
           marks: [
             {
-              type: 'em'
-            }
-          ]
+              type: 'em',
+            },
+          ],
         },
         {
           type: 'text',
           text: ', strong ',
           marks: [
             {
-              type: 'em'
+              type: 'em',
             },
             {
-              type: 'strong'
-            }
-          ]
+              type: 'strong',
+            },
+          ],
         },
         {
           type: 'text',
           text: 'and underlined text!',
           marks: [
             {
-              type: 'em'
+              type: 'em',
             },
             {
-              type: 'strong'
+              type: 'strong',
             },
             {
-              type: 'underline'
-            }
-          ]
-        }
-      ]
+              type: 'underline',
+            },
+          ],
+        },
+      ],
     },
     {
       type: 'paragraph',
       content: [
         {
           type: 'text',
-          text: 'My favourite emoji are '
+          text: 'My favourite emoji are ',
         },
         {
           type: 'emoji',
           attrs: {
             ...grinEmojiAttrs,
-          }
+          },
         },
         {
           type: 'text',
@@ -119,7 +122,7 @@ export const document = {
           type: 'emoji',
           attrs: {
             ...evilburnsEmojiAttrs,
-          }
+          },
         },
         {
           type: 'text',
@@ -129,121 +132,121 @@ export const document = {
           type: 'emoji',
           attrs: {
             shortName: ':not-an-emoji:',
-          }
+          },
         },
         {
           type: 'text',
           text: '. What are yours?',
           marks: [
             {
-              type: 'unkown mark'
-            }
-          ]
-        }
-      ]
+              type: 'unkown mark',
+            },
+          ],
+        },
+      ],
     },
     {
       type: 'paragraph',
       content: [
         {
           type: 'text',
-          text: 'Hi, my name is... My name is... My name is... My name is '
+          text: 'Hi, my name is... My name is... My name is... My name is ',
         },
         {
           type: 'mention',
           attrs: {
             id: '1',
-            text: '@Oscar Wallhult'
-          }
+            text: '@Oscar Wallhult',
+          },
         },
         {
           type: 'text',
           text: ' :D',
           marks: [
             {
-              type: 'unknown mark'
-            }
-          ]
-        }
-      ]
+              type: 'unknown mark',
+            },
+          ],
+        },
+      ],
     },
     {
       type: 'paragraph',
       content: [
         {
           type: 'text',
-          text: 'This is a '
+          text: 'This is a ',
         },
         {
           type: 'mention',
           attrs: {
             text: '@mention',
-            id: '2'
-          }
+            id: '2',
+          },
         },
         {
           type: 'text',
-          text: '. And this is a broken '
+          text: '. And this is a broken ',
         },
         {
           type: 'mention',
           attrs: {
             textxtx: '@mention',
-            id: 'mention'
-          }
-        }
-      ]
+            id: 'mention',
+          },
+        },
+      ],
     },
     {
       type: 'paragraph',
       content: [
         {
           type: 'text',
-          text: 'Mention with restricted access'
+          text: 'Mention with restricted access',
         },
         {
           type: 'mention',
           attrs: {
             id: '1',
-            accessLevel: 'APPLICATION'
+            accessLevel: 'APPLICATION',
           },
-          text: '@oscar'
-        }
-      ]
+          text: '@oscar',
+        },
+      ],
     },
     {
       type: 'paragraph',
       content: [
         {
           type: 'text',
-          text: 'Mentions with generic ids'
+          text: 'Mentions with generic ids',
         },
         {
           type: 'mention',
           attrs: {
             id: 'here',
-            accessLevel: 'CONTAINER'
+            accessLevel: 'CONTAINER',
           },
-          text: '@here'
+          text: '@here',
         },
         {
           type: 'mention',
           attrs: {
             id: 'all',
-            accessLevel: 'CONTAINER'
+            accessLevel: 'CONTAINER',
           },
-          text: '@all'
-        }
-      ]
+          text: '@all',
+        },
+      ],
     },
     {
       type: 'paragraph',
       content: [
         {
           type: 'text',
-          text: 'This is  a   text    with	multiple		spaces 			and				tabs.'
+          text: 'This is  a   text    with	multiple		spaces 			and				tabs.',
         },
-      ]
+      ],
     },
     {
       type: 'paragraph',
@@ -253,9 +256,9 @@ export const document = {
           text: 'italic',
           marks: [
             {
-              type: 'em'
-            }
-          ]
+              type: 'em',
+            },
+          ],
         },
         {
           type: 'text',
@@ -264,28 +267,28 @@ export const document = {
             {
               type: 'link',
               attrs: {
-                href: 'https://www.atlassian.com'
-              }
-            }
-          ]
+                href: 'https://www.atlassian.com',
+              },
+            },
+          ],
         },
         {
           type: 'text',
           text: 'strike-through',
           marks: [
             {
-              type: 'strike'
-            }
-          ]
+              type: 'strike',
+            },
+          ],
         },
         {
           type: 'text',
           text: 'strong',
           marks: [
             {
-              type: 'strong'
-            }
-          ]
+              type: 'strong',
+            },
+          ],
         },
         {
           type: 'text',
@@ -294,10 +297,10 @@ export const document = {
             {
               type: 'subsup',
               attrs: {
-                type: 'sub'
-              }
-            }
-          ]
+                type: 'sub',
+              },
+            },
+          ],
         },
         {
           type: 'text',
@@ -306,19 +309,19 @@ export const document = {
             {
               type: 'subsup',
               attrs: {
-                type: 'sup'
-              }
-            }
-          ]
+                type: 'sup',
+              },
+            },
+          ],
         },
         {
           type: 'text',
           text: 'underline',
           marks: [
             {
-              type: 'underline'
-            }
-          ]
+              type: 'underline',
+            },
+          ],
         },
         {
           type: 'text',
@@ -326,29 +329,29 @@ export const document = {
           marks: [
             {
               type: 'textColor',
-              attrs: { color: '#ff0000' }
+              attrs: { color: '#ff0000' },
             },
           ],
         },
-      ]
+      ],
     },
     {
       type: 'paragraph',
       content: [
         {
           type: 'text',
-          text: 'some inline code: '
+          text: 'some inline code: ',
         },
         {
           type: 'text',
           text: 'const foo = bar();',
           marks: [
             {
-              type: 'code'
-            }
-          ]
-        }
-      ]
+              type: 'code',
+            },
+          ],
+        },
+      ],
     },
     {
       type: 'paragraph',
@@ -356,8 +359,8 @@ export const document = {
         {
           type: 'unknown type',
           attrs: {
-            text: 'fallback text in node.attrs.text'
-          }
+            text: 'fallback text in node.attrs.text',
+          },
         },
         {
           type: 'hardBreak',
@@ -370,28 +373,28 @@ export const document = {
           type: 'hardBreak',
         },
         {
-          type: 'very unknown'
-        }
-      ]
+          type: 'very unknown',
+        },
+      ],
     },
     {
       type: 'some block unknown type',
       content: [
         {
           type: 'text',
-          text: 'This is text content inside unknown block'
-        }
-      ]
+          text: 'This is text content inside unknown block',
+        },
+      ],
     },
     {
       type: 'some block unknown type with content and text',
       content: [
         {
           type: 'text',
-          text: 'This is also a piece of text inside unknown block'
-        }
+          text: 'This is also a piece of text inside unknown block',
+        },
       ],
-      text: 'ERROR: This text should be ignored!'
+      text: 'ERROR: This text should be ignored!',
     },
     {
       type: 'unknown_table',
@@ -443,16 +446,16 @@ export const document = {
       content: [
         {
           type: 'text',
-          text: 'This is a line with '
-         },
-         {
-          type: 'hardBreak'
-         },
-         {
-           type: 'text',
-           text: 'a hardbreak in it.'
-        }
-      ]
+          text: 'This is a line with ',
+        },
+        {
+          type: 'hardBreak',
+        },
+        {
+          type: 'text',
+          text: 'a hardbreak in it.',
+        },
+      ],
     },
     {
       type: 'heading',
@@ -460,9 +463,9 @@ export const document = {
       content: [
         {
           type: 'text',
-          text: 'Heading 1'
+          text: 'Heading 1',
         },
-      ]
+      ],
     },
     {
       type: 'heading',
@@ -475,12 +478,12 @@ export const document = {
             {
               type: 'link',
               attrs: {
-                href: 'www.atlassian.com'
-              }
-            }
-          ]
-        }
-      ]
+                href: 'www.atlassian.com',
+              },
+            },
+          ],
+        },
+      ],
     },
     {
       type: 'heading',
@@ -489,8 +492,8 @@ export const document = {
         {
           type: 'text',
           text: 'Heading 3',
-        }
-      ]
+        },
+      ],
     },
     {
       type: 'heading',
@@ -499,8 +502,8 @@ export const document = {
         {
           type: 'text',
           text: 'Heading 4',
-        }
-      ]
+        },
+      ],
     },
     {
       type: 'heading',
@@ -509,8 +512,8 @@ export const document = {
         {
           type: 'text',
           text: 'Heading 5',
-        }
-      ]
+        },
+      ],
     },
     {
       type: 'heading',
@@ -519,25 +522,25 @@ export const document = {
         {
           type: 'text',
           text: 'Heading 6',
-        }
-      ]
+        },
+      ],
     },
     {
       type: 'paragraph',
       content: [
         {
           type: 'text',
-          text: 'This is a paragraph with a text node'
+          text: 'This is a paragraph with a text node',
         },
         {
           type: 'text',
-          text: '\n'
+          text: '\n',
         },
         {
           type: 'text',
-          text: 'that contains a new line'
+          text: 'that contains a new line',
         },
-      ]
+      ],
     },
     {
       type: 'paragraph',
@@ -549,10 +552,10 @@ export const document = {
             {
               type: 'link',
               attrs: {
-                href: 'javascript:alert("hello world")'
-              }
-            }
-          ]
+                href: 'javascript:alert("hello world")',
+              },
+            },
+          ],
         },
         {
           type: 'text',
@@ -561,12 +564,12 @@ export const document = {
             {
               type: 'link',
               attrs: {
-                href: 'www.atlassian.com'
-              }
-            }
-          ]
-        }
-      ]
+                href: 'www.atlassian.com',
+              },
+            },
+          ],
+        },
+      ],
     },
     {
       type: 'codeBlock',
@@ -577,7 +580,7 @@ export const document = {
 final IntIntOpenHashMap map = new IntIntOpenHashMap();
 map.put(1, 2);
 map.put(2, 5);
-map.put(3, 10);`
+map.put(3, 10);`,
         },
         {
           type: 'text',
@@ -590,12 +593,12 @@ int count = map.forEach(new IntIntProcedure()
        if (value >= 5) count++;
    }
 }).count;
-System.out.println("There are " + count + " values >= 5");`
-        }
+System.out.println("There are " + count + " values >= 5");`,
+        },
       ],
       attrs: {
-        language: 'javascript'
-      }
+        language: 'javascript',
+      },
     },
     {
       type: 'mediaGroup',
@@ -605,10 +608,10 @@ System.out.println("There are " + count + " values >= 5");`
           attrs: {
             type: 'file',
             id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-            collection: 'MediaServicesSample'
-          }
-        }
-      ]
+            collection: 'MediaServicesSample',
+          },
+        },
+      ],
     },
     {
       type: 'mediaGroup',
@@ -618,18 +621,18 @@ System.out.println("There are " + count + " values >= 5");`
           attrs: {
             type: 'file',
             id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-            collection: 'MediaServicesSample'
-          }
+            collection: 'MediaServicesSample',
+          },
         },
         {
           type: 'media',
           attrs: {
             type: 'file',
             id: '2dfcc12d-04d7-46e7-9fdf-3715ff00ba40',
-            collection: 'MediaServicesSample'
-          }
-        }
-      ]
+            collection: 'MediaServicesSample',
+          },
+        },
+      ],
     },
     {
       type: 'mediaGroup',
@@ -639,18 +642,18 @@ System.out.println("There are " + count + " values >= 5");`
           attrs: {
             type: 'link',
             id: '15a9fb95-2d72-4d28-b338-00fd6bea121b',
-            collection: 'MediaServicesSample'
-          }
+            collection: 'MediaServicesSample',
+          },
         },
         {
           type: 'media',
           attrs: {
             type: 'link',
             id: '410f38f7-ce31-4527-a69d-740e958bf1d1',
-            collection: 'MediaServicesSample'
-          }
-        }
-      ]
+            collection: 'MediaServicesSample',
+          },
+        },
+      ],
     },
     {
       type: 'bulletList',
@@ -663,11 +666,11 @@ System.out.println("There are " + count + " values >= 5");`
               content: [
                 {
                   type: 'text',
-                  text: 'First list item'
-                }
-              ]
-            }
-          ]
+                  text: 'First list item',
+                },
+              ],
+            },
+          ],
         },
         {
           type: 'listItem',
@@ -677,11 +680,11 @@ System.out.println("There are " + count + " values >= 5");`
               content: [
                 {
                   type: 'text',
-                  text: 'Second list item'
-                }
-              ]
-            }
-          ]
+                  text: 'Second list item',
+                },
+              ],
+            },
+          ],
         },
         {
           type: 'listItem',
@@ -691,13 +694,13 @@ System.out.println("There are " + count + " values >= 5");`
               content: [
                 {
                   type: 'text',
-                  text: 'Third list item'
-                }
-              ]
-            }
-          ]
+                  text: 'Third list item',
+                },
+              ],
+            },
+          ],
         },
-      ]
+      ],
     },
     {
       type: 'orderedList',
@@ -710,11 +713,11 @@ System.out.println("There are " + count + " values >= 5");`
               content: [
                 {
                   type: 'text',
-                  text: 'First list item'
-                }
-              ]
-            }
-          ]
+                  text: 'First list item',
+                },
+              ],
+            },
+          ],
         },
         {
           type: 'listItem',
@@ -724,11 +727,11 @@ System.out.println("There are " + count + " values >= 5");`
               content: [
                 {
                   type: 'text',
-                  text: 'Second list item'
-                }
-              ]
-            }
-          ]
+                  text: 'Second list item',
+                },
+              ],
+            },
+          ],
         },
         {
           type: 'listItem',
@@ -738,13 +741,13 @@ System.out.println("There are " + count + " values >= 5");`
               content: [
                 {
                   type: 'text',
-                  text: 'Third list item'
-                }
-              ]
-            }
-          ]
+                  text: 'Third list item',
+                },
+              ],
+            },
+          ],
         },
-      ]
+      ],
     },
     {
       type: 'blockquote',
@@ -754,18 +757,20 @@ System.out.println("There are " + count + " values >= 5");`
           content: [
             {
               type: 'text',
-              text: 'All that is gold does not glitter, not all those who wander are lost; The old that is strong does not wither, deep roots are not reached by the frost.',
+              text:
+                'All that is gold does not glitter, not all those who wander are lost; The old that is strong does not wither, deep roots are not reached by the frost.',
             },
-          ]
+          ],
         },
         {
           type: 'paragraph',
           content: [
             {
               type: 'text',
-              text: 'From the ashes a fire shall be woken, a light from the shadows shall spring; Renewed shall be blade that was broken, the crownless again shall be king.',
-            }
-          ]
+              text:
+                'From the ashes a fire shall be woken, a light from the shadows shall spring; Renewed shall be blade that was broken, the crownless again shall be king.',
+            },
+          ],
         },
         {
           type: 'paragraph',
@@ -776,17 +781,17 @@ System.out.println("There are " + count + " values >= 5");`
               marks: [
                 {
                   type: 'em',
-                }
+                },
               ],
-            }
-          ]
+            },
+          ],
         },
-      ]
+      ],
     },
     {
       type: 'panel',
       attrs: {
-        panelType: 'info'
+        panelType: 'info',
       },
       content: [
         {
@@ -802,17 +807,17 @@ System.out.println("There are " + count + " values >= 5");`
               marks: [
                 {
                   type: 'strong',
-                }
+                },
               ],
             },
-          ]
+          ],
         },
-      ]
+      ],
     },
     {
       type: 'panel',
       attrs: {
-        panelType: 'note'
+        panelType: 'note',
       },
       content: [
         {
@@ -828,17 +833,17 @@ System.out.println("There are " + count + " values >= 5");`
               marks: [
                 {
                   type: 'strong',
-                }
+                },
               ],
             },
-          ]
+          ],
         },
-      ]
+      ],
     },
     {
       type: 'panel',
       attrs: {
-        panelType: 'tip'
+        panelType: 'tip',
       },
       content: [
         {
@@ -854,17 +859,17 @@ System.out.println("There are " + count + " values >= 5");`
               marks: [
                 {
                   type: 'strong',
-                }
+                },
               ],
             },
-          ]
+          ],
         },
-      ]
+      ],
     },
     {
       type: 'panel',
       attrs: {
-        panelType: 'warning'
+        panelType: 'warning',
       },
       content: [
         {
@@ -880,15 +885,15 @@ System.out.println("There are " + count + " values >= 5");`
               marks: [
                 {
                   type: 'strong',
-                }
+                },
               ],
             },
-          ]
+          ],
         },
-      ]
+      ],
     },
     {
-      type: 'rule'
+      type: 'rule',
     },
     {
       type: 'applicationCard',
@@ -896,409 +901,425 @@ System.out.println("There are " + count + " values >= 5");`
       attrs: {
         text: 'applicationCard',
         background: {
-          url: 'http://atlassian.com'
+          url: 'http://atlassian.com',
         },
         link: {
-          url: 'http://atlassian.com'
+          url: 'http://atlassian.com',
         },
         title: {
-          text: 'Sascha Reuter commented on a file: Desktop sidebar states.png'
+          text: 'Sascha Reuter commented on a file: Desktop sidebar states.png',
         },
         user: {
           icon: {
-            url: 'https://extranet.atlassian.com/download/attachments/2246873520/sreuter-57703-pp-1530510_4271148635152_5186589029777108540_n.jpg',
-            label: 'Sascha Reuter'
-          }
+            url:
+              'https://extranet.atlassian.com/download/attachments/2246873520/sreuter-57703-pp-1530510_4271148635152_5186589029777108540_n.jpg',
+            label: 'Sascha Reuter',
+          },
         },
         preview: {
-          url: 'https://image.ibb.co/ghKzoF/1a99566b0c8e0589ca327bb1efe0be5ca1419aa8.png'
+          url:
+            'https://image.ibb.co/ghKzoF/1a99566b0c8e0589ca327bb1efe0be5ca1419aa8.png',
         },
         description: {
           title: 'Can haz description',
-          text: '\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Duis varius mattis massa, quis ornare orci. Integer congue\nrutrum velit, quis euismod eros condimentum quis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris\nlobortis nibh id odio egestas luctus. Nunc nulla lacus, congue eu nibh non, imperdiet varius lacus. Nulla sagittis\nmagna et tincidunt volutpat. Nunc augue lorem, eleifend et tempor ut, malesuada ac lorem. Praesent quis feugiat eros,\net vehicula nibh. Maecenas vehicula commodo nisi, at rutrum ipsum posuere sit amet. Integer sit amet nisl sed ligula\nconsectetur feugiat non at ligula. Cras dignissim suscipit magna at mattis. Maecenas ante leo, feugiat vestibulum velit\na, commodo finibus velit. Maecenas interdum ullamcorper velit non suscipit. Proin tempor, magna vitae dapibus laoreet,\nquam dui convallis lectus, in vestibulum arcu eros eu velit. Quisque vel dolor enim.\n'
+          text:
+            '\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Duis varius mattis massa, quis ornare orci. Integer congue\nrutrum velit, quis euismod eros condimentum quis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris\nlobortis nibh id odio egestas luctus. Nunc nulla lacus, congue eu nibh non, imperdiet varius lacus. Nulla sagittis\nmagna et tincidunt volutpat. Nunc augue lorem, eleifend et tempor ut, malesuada ac lorem. Praesent quis feugiat eros,\net vehicula nibh. Maecenas vehicula commodo nisi, at rutrum ipsum posuere sit amet. Integer sit amet nisl sed ligula\nconsectetur feugiat non at ligula. Cras dignissim suscipit magna at mattis. Maecenas ante leo, feugiat vestibulum velit\na, commodo finibus velit. Maecenas interdum ullamcorper velit non suscipit. Proin tempor, magna vitae dapibus laoreet,\nquam dui convallis lectus, in vestibulum arcu eros eu velit. Quisque vel dolor enim.\n',
         },
         details: [
           {
             icon: {
-              url: 'http://www.fellowshipgw.com/wp-content/themes/lenexabaptist/images/icon-story-gray.png',
-              label: 'Issue type'
+              url:
+                'http://www.fellowshipgw.com/wp-content/themes/lenexabaptist/images/icon-story-gray.png',
+              label: 'Issue type',
             },
-            text: 'Story'
+            text: 'Story',
           },
           {
             badge: {
               value: 101,
               max: 99,
-              appearance: 'important'
-            }
+              appearance: 'important',
+            },
           },
           {
             lozenge: {
               text: 'In Progress',
-              appearance: 'inprogress'
-            }
+              appearance: 'inprogress',
+            },
           },
           {
             title: 'Watchers',
             users: [
               {
                 icon: {
-                  url: 'https://extranet.atlassian.com/download/attachments/3189817539/user-avatar',
-                  label: 'James Newell'
-                }
+                  url:
+                    'https://extranet.atlassian.com/download/attachments/3189817539/user-avatar',
+                  label: 'James Newell',
+                },
               },
               {
                 icon: {
-                  url: 'https://extranet.atlassian.com/download/attachments/2928873907/user-avatar',
-                  label: 'Jon Blower'
-                }
+                  url:
+                    'https://extranet.atlassian.com/download/attachments/2928873907/user-avatar',
+                  label: 'Jon Blower',
+                },
               },
               {
                 icon: {
-                  url: 'https://extranet.atlassian.com/download/attachments/2491694727/user-avatar',
-                  label: 'Scott Simpson'
-                }
-              }
-            ]
+                  url:
+                    'https://extranet.atlassian.com/download/attachments/2491694727/user-avatar',
+                  label: 'Scott Simpson',
+                },
+              },
+            ],
           },
           {
             icon: {
-              url: 'http://www.fellowshipgw.com/wp-content/themes/lenexabaptist/images/icon-story-gray.png',
-              label: 'Issue type'
+              url:
+                'http://www.fellowshipgw.com/wp-content/themes/lenexabaptist/images/icon-story-gray.png',
+              label: 'Issue type',
             },
-            text: 'Story'
+            text: 'Story',
           },
           {
             badge: {
               value: 101,
               max: 99,
-              appearance: 'important'
-            }
+              appearance: 'important',
+            },
           },
           {
             lozenge: {
               text: 'In Progress',
-              appearance: 'inprogress'
-            }
+              appearance: 'inprogress',
+            },
           },
           {
             title: 'Watchers',
             users: [
               {
                 icon: {
-                  url: 'https://extranet.atlassian.com/download/attachments/3189817539/user-avatar',
-                  label: 'James Newell'
-                }
+                  url:
+                    'https://extranet.atlassian.com/download/attachments/3189817539/user-avatar',
+                  label: 'James Newell',
+                },
               },
               {
                 icon: {
-                  url: 'https://extranet.atlassian.com/download/attachments/2928873907/user-avatar',
-                  label: 'Jon Blower'
-                }
+                  url:
+                    'https://extranet.atlassian.com/download/attachments/2928873907/user-avatar',
+                  label: 'Jon Blower',
+                },
               },
               {
                 icon: {
-                  url: 'https://extranet.atlassian.com/download/attachments/2491694727/user-avatar',
-                  label: 'Scott Simpson'
-                }
-              }
-            ]
+                  url:
+                    'https://extranet.atlassian.com/download/attachments/2491694727/user-avatar',
+                  label: 'Scott Simpson',
+                },
+              },
+            ],
           },
           {
             icon: {
-              url: 'http://www.fellowshipgw.com/wp-content/themes/lenexabaptist/images/icon-story-gray.png',
-              label: 'Issue type'
+              url:
+                'http://www.fellowshipgw.com/wp-content/themes/lenexabaptist/images/icon-story-gray.png',
+              label: 'Issue type',
             },
-            text: 'Story'
+            text: 'Story',
           },
           {
             badge: {
               value: 101,
               max: 99,
-              appearance: 'important'
-            }
+              appearance: 'important',
+            },
           },
           {
             lozenge: {
               text: 'In Progress',
-              appearance: 'inprogress'
-            }
+              appearance: 'inprogress',
+            },
           },
           {
             title: 'Watchers',
             users: [
               {
                 icon: {
-                  url: 'https://extranet.atlassian.com/download/attachments/3189817539/user-avatar',
-                  label: 'James Newell'
-                }
+                  url:
+                    'https://extranet.atlassian.com/download/attachments/3189817539/user-avatar',
+                  label: 'James Newell',
+                },
               },
               {
                 icon: {
-                  url: 'https://extranet.atlassian.com/download/attachments/2928873907/user-avatar',
-                  label: 'Jon Blower'
-                }
+                  url:
+                    'https://extranet.atlassian.com/download/attachments/2928873907/user-avatar',
+                  label: 'Jon Blower',
+                },
               },
               {
                 icon: {
-                  url: 'https://extranet.atlassian.com/download/attachments/2491694727/user-avatar',
-                  label: 'Scott Simpson'
-                }
-              }
-            ]
-          }
+                  url:
+                    'https://extranet.atlassian.com/download/attachments/2491694727/user-avatar',
+                  label: 'Scott Simpson',
+                },
+              },
+            ],
+          },
         ],
         context: {
           text: 'Design Home / ... / Media Cards Design',
           icon: {
-            url: 'https://image.ibb.co/jSrC8F/f4b5e33d6b1d36556114a18b594768f41f32673e.png',
-            label: 'foobar'
+            url:
+              'https://image.ibb.co/jSrC8F/f4b5e33d6b1d36556114a18b594768f41f32673e.png',
+            label: 'foobar',
           },
           link: {
-            url: 'https://confluence.atlassian.com/'
-          }
-        }
-      }
+            url: 'https://confluence.atlassian.com/',
+          },
+        },
+      },
     },
     {
       type: 'decisionList',
       attrs: {
-        localId: 'empty-list-should-not-render'
+        localId: 'empty-list-should-not-render',
       },
     },
     {
       type: 'taskList',
       attrs: {
-        localId: 'empty-list-should-not-render'
+        localId: 'empty-list-should-not-render',
       },
     },
     {
       type: 'decisionList',
       attrs: {
-        localId: 'empty-list-should-not-render'
+        localId: 'empty-list-should-not-render',
       },
       content: [
         {
           type: 'decisionItem',
           attrs: {
             localId: 'to-be-ignored-as-no-content',
-            state: 'DECIDED'
-          }
-        }
-      ]
+            state: 'DECIDED',
+          },
+        },
+      ],
     },
     {
       type: 'taskList',
       attrs: {
-        localId: 'empty-list-should-not-render'
+        localId: 'empty-list-should-not-render',
       },
       content: [
         {
           type: 'taskItem',
           attrs: {
             localId: 'to-be-ignored-as-no-content',
-            state: 'TODO'
-          }
-        }
-      ]
+            state: 'TODO',
+          },
+        },
+      ],
     },
     {
       type: 'decisionList',
       attrs: {
-        localId: ''
+        localId: '',
       },
       content: [
         {
           type: 'decisionItem',
           attrs: {
             localId: '',
-            state: 'DECIDED'
+            state: 'DECIDED',
           },
           content: [
             {
               type: 'text',
-              text: 'Hello world'
+              text: 'Hello world',
             },
             {
-              type: 'hardBreak'
+              type: 'hardBreak',
             },
             {
               type: 'text',
-              text: 'This is a decision '
+              text: 'This is a decision ',
             },
             {
               type: 'emoji',
               attrs: {
                 shortName: ':wink:',
                 id: '1f609',
-                text: '😉'
-              }
+                text: '😉',
+              },
             },
             {
               type: 'text',
-              text: ' '
+              text: ' ',
             },
             {
               type: 'mention',
               attrs: {
                 id: '0',
                 text: '@Carolyn',
-                accessLevel: 'CONTAINER'
-              }
+                accessLevel: 'CONTAINER',
+              },
             },
             {
               type: 'text',
-              text: ' '
+              text: ' ',
             },
             {
               type: 'text',
               text: 'was',
               marks: [
                 {
-                  type: 'strong'
-                }
-              ]
+                  type: 'strong',
+                },
+              ],
             },
             {
               type: 'text',
-              text: ' '
+              text: ' ',
             },
             {
               type: 'text',
               text: 'here',
               marks: [
                 {
-                  type: 'em'
+                  type: 'em',
                 },
                 {
-                  type: 'underline'
-                }
-              ]
+                  type: 'underline',
+                },
+              ],
             },
             {
               type: 'text',
-              text: '.'
+              text: '.',
             },
             {
               type: 'mention',
               attrs: {
                 id: 'error:NotFound',
                 text: '@NoLongerWorksHere',
-                accessLevel: 'CONTAINER'
-              }
+                accessLevel: 'CONTAINER',
+              },
             },
             {
               type: 'text',
-              text: ' '
+              text: ' ',
             },
             {
               type: 'text',
               text: 'is not',
               marks: [
                 {
-                  type: 'strong'
-                }
-              ]
+                  type: 'strong',
+                },
+              ],
             },
             {
               type: 'text',
-              text: ' '
+              text: ' ',
             },
             {
               type: 'text',
               text: 'here.',
-            }
-          ]
+            },
+          ],
         },
         {
           type: 'decisionItem',
           attrs: {
             localId: '',
-            state: 'DECIDED'
+            state: 'DECIDED',
           },
           content: [
             {
               type: 'text',
-              text: 'decision 2'
-            }
-          ]
+              text: 'decision 2',
+            },
+          ],
         },
         {
           type: 'decisionItem',
           attrs: {
             localId: 'to-be-ignored-as-no-content',
-            state: 'DECIDED'
-          }
-        }
-      ]
+            state: 'DECIDED',
+          },
+        },
+      ],
     },
     {
       type: 'taskList',
       attrs: {
-        localId: ''
+        localId: '',
       },
       content: [
         {
           type: 'taskItem',
           attrs: {
             localId: 'task-1',
-            state: 'TODO'
+            state: 'TODO',
           },
           content: [
             {
               type: 'text',
-              text: 'Could you please'
+              text: 'Could you please',
             },
             {
-              type: 'hardBreak'
+              type: 'hardBreak',
             },
             {
               type: 'text',
-              text: 'do this '
+              text: 'do this ',
             },
             {
               type: 'mention',
               attrs: {
                 id: '0',
                 text: '@Carolyn',
-                accessLevel: 'CONTAINER'
-              }
+                accessLevel: 'CONTAINER',
+              },
             },
             {
               type: 'text',
-              text: ' '
+              text: ' ',
             },
             {
               type: 'emoji',
               attrs: {
                 shortName: ':wink:',
                 id: '1f609',
-                text: '😉'
-              }
+                text: '😉',
+              },
             },
-          ]
+          ],
         },
         {
           type: 'taskItem',
           attrs: {
             localId: 'task-2',
-            state: 'DONE'
+            state: 'DONE',
           },
           content: [
             {
               type: 'text',
-              text: 'This is completed'
-            }
-          ]
+              text: 'This is completed',
+            },
+          ],
         },
         {
           type: 'taskItem',
           attrs: {
             localId: 'to-be-ignored-as-no-content',
-            state: 'TODO'
-          }
-        }
-      ]
+            state: 'TODO',
+          },
+        },
+      ],
     },
     {
       type: 'table',
@@ -1311,44 +1332,44 @@ System.out.println("There are " + count + " values >= 5");`
               attrs: {
                 colspan: 1,
                 rowspan: 1,
-                background: null
+                background: null,
               },
               content: [
                 {
                   type: 'paragraph',
-                  content: []
-                }
-              ]
+                  content: [],
+                },
+              ],
             },
             {
               type: 'tableHeader',
               attrs: {
                 colspan: 1,
                 rowspan: 1,
-                background: null
+                background: null,
               },
               content: [
                 {
                   type: 'paragraph',
-                  content: []
-                }
-              ]
+                  content: [],
+                },
+              ],
             },
             {
               type: 'tableHeader',
               attrs: {
                 colspan: 1,
                 rowspan: 1,
-                background: null
+                background: null,
               },
               content: [
                 {
                   type: 'paragraph',
-                  content: []
-                }
-              ]
-            }
-          ]
+                  content: [],
+                },
+              ],
+            },
+          ],
         },
         {
           type: 'tableRow',
@@ -1358,44 +1379,44 @@ System.out.println("There are " + count + " values >= 5");`
               attrs: {
                 colspan: 1,
                 rowspan: 1,
-                background: null
+                background: null,
               },
               content: [
                 {
                   type: 'paragraph',
-                  content: []
-                }
-              ]
+                  content: [],
+                },
+              ],
             },
             {
               type: 'tableCell',
               attrs: {
                 colspan: 1,
                 rowspan: 1,
-                background: null
+                background: null,
               },
               content: [
                 {
                   type: 'paragraph',
-                  content: []
-                }
-              ]
+                  content: [],
+                },
+              ],
             },
             {
               type: 'tableCell',
               attrs: {
                 colspan: 1,
                 rowspan: 1,
-                background: null
+                background: null,
               },
               content: [
                 {
                   type: 'paragraph',
-                  content: []
-                }
-              ]
-            }
-          ]
+                  content: [],
+                },
+              ],
+            },
+          ],
         },
         {
           type: 'tableRow',
@@ -1405,46 +1426,46 @@ System.out.println("There are " + count + " values >= 5");`
               attrs: {
                 colspan: 1,
                 rowspan: 1,
-                background: null
+                background: null,
               },
               content: [
                 {
                   type: 'paragraph',
-                  content: []
-                }
-              ]
+                  content: [],
+                },
+              ],
             },
             {
               type: 'tableCell',
               attrs: {
                 colspan: 1,
                 rowspan: 1,
-                background: null
+                background: null,
               },
               content: [
                 {
                   type: 'paragraph',
-                  content: []
-                }
-              ]
+                  content: [],
+                },
+              ],
             },
             {
               type: 'tableCell',
               attrs: {
                 colspan: 1,
                 rowspan: 1,
-                background: null
+                background: null,
               },
               content: [
                 {
                   type: 'paragraph',
-                  content: []
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+                  content: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

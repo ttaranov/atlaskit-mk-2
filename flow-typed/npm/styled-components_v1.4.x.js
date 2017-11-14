@@ -3,24 +3,30 @@
 
 // @flow
 
-type $npm$styledComponents$Interpolation = ((executionContext: Object) => string) | string | number;
-type $npm$styledComponents$NameGenerator = (hash: number) => string
+type $npm$styledComponents$Interpolation =
+  | ((executionContext: Object) => string)
+  | string
+  | number;
+type $npm$styledComponents$NameGenerator = (hash: number) => string;
 
 type $npm$styledComponents$StyledComponent = (
   strings: Array<string>,
   ...interpolations: Array<$npm$styledComponents$Interpolation>
 ) => React$ComponentType<*> & { displayName: string };
 
-
-type $npm$styledComponents$Theme = {[key: string]: mixed};
+type $npm$styledComponents$Theme = { [key: string]: mixed };
 type $npm$styledComponents$ThemeProviderProps = {
-  theme: $npm$styledComponents$Theme | ((outerTheme: $npm$styledComponents$Theme) => void)
+  theme:
+    | $npm$styledComponents$Theme
+    | ((outerTheme: $npm$styledComponents$Theme) => void),
 };
 type $npm$styledComponents$Component =
   | React$Component<*, *>
-  | (props: *) => React$Element<*>;
+  | ((props: *) => React$Element<*>);
 
-class Npm$StyledComponents$ThemeProvider extends React$Component<$npm$styledComponents$ThemeProviderProps> {}
+class Npm$StyledComponents$ThemeProvider extends React$Component<
+  $npm$styledComponents$ThemeProviderProps,
+> {}
 
 declare module 'styled-components' {
   declare type Interpolation = $npm$styledComponents$Interpolation;
@@ -33,10 +39,21 @@ declare module 'styled-components' {
   declare type Component = $npm$styledComponents$Component;
 
   declare module.exports: {
-    injectGlobal: (strings: Array<string>, ...interpolations: Array<Interpolation>) => void,
-    css: (strings: Array<string>, ...interpolations: Array<Interpolation>) => Array<Interpolation>,
-    keyframes: (strings: Array<string>, ...interpolations: Array<Interpolation>) => string,
-    withTheme: (component: Component) => React$Component<*, ThemeProviderProps, *>,
+    injectGlobal: (
+      strings: Array<string>,
+      ...interpolations: Array<Interpolation>
+    ) => void,
+    css: (
+      strings: Array<string>,
+      ...interpolations: Array<Interpolation>
+    ) => Array<Interpolation>,
+    keyframes: (
+      strings: Array<string>,
+      ...interpolations: Array<Interpolation>
+    ) => string,
+    withTheme: (
+      component: Component,
+    ) => React$Component<*, ThemeProviderProps, *>,
     ThemeProvider: typeof Npm$StyledComponents$ThemeProvider,
     (baseComponent: Component): StyledComponent,
     a: StyledComponent,
@@ -187,9 +204,17 @@ declare module 'styled-components/native' {
   declare type Component = $npm$styledComponents$Component;
 
   declare module.exports: {
-    css: (strings: Array<string>, ...interpolations: Array<Interpolation>) => Array<Interpolation>,
-    withTheme: (component: Component) => React$Component<*, ThemeProviderProps, *>,
-    keyframes: (strings: Array<string>, ...interpolations: Array<Interpolation>) => string,
+    css: (
+      strings: Array<string>,
+      ...interpolations: Array<Interpolation>
+    ) => Array<Interpolation>,
+    withTheme: (
+      component: Component,
+    ) => React$Component<*, ThemeProviderProps, *>,
+    keyframes: (
+      strings: Array<string>,
+      ...interpolations: Array<Interpolation>
+    ) => string,
     ThemeProvider: typeof Npm$StyledComponents$ThemeProvider,
 
     (baseComponent: Component): StyledComponent,

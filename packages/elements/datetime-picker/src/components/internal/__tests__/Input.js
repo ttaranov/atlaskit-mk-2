@@ -6,7 +6,6 @@ import { shallow } from 'enzyme';
 import { name } from '../../../../package.json';
 import Input from '../Input';
 
-
 describe(name, () => {
   describe('Input', () => {
     it('should render an AK Input with the correct props', () => {
@@ -19,9 +18,7 @@ describe(name, () => {
         onFocus: () => {},
         onBlur: () => {},
       };
-      const wrapper = shallow(<Input
-        {...props}
-      />);
+      const wrapper = shallow(<Input {...props} />);
 
       const inputProps = wrapper.find(AkInput).props();
       expect(inputProps.disabled).toBe(props.isDisabled);

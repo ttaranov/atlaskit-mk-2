@@ -44,7 +44,15 @@ export default class extends Component<Props, State> {
     }
   };
   render() {
-    const { children, disabled, focused, isToday, previouslySelected, selected, sibling } = this.props;
+    const {
+      children,
+      disabled,
+      focused,
+      isToday,
+      previouslySelected,
+      selected,
+      sibling,
+    } = this.props;
     return (
       <DateTd
         aria-live={focused ? 'polite' : ''}

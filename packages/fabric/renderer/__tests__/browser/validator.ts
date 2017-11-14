@@ -17,7 +17,6 @@ import { isSafeUrl } from '../../src/utils';
 import { defaultSchema as schema } from '@atlaskit/editor-common';
 
 describe('Renderer - Validator', () => {
-
   describe('isSafeUrl', () => {
     const safeURLs = [
       'http:///www.atlassian.com',
@@ -28,7 +27,7 @@ describe('Renderer - Validator', () => {
       '//hipchat.com',
       '//subdomain.somedomain.com',
       '//www.atlassian.com/somepage',
-      'mailto:user@mail.com'
+      'mailto:user@mail.com',
     ];
 
     const unsafeURLs = [
@@ -65,7 +64,6 @@ describe('Renderer - Validator', () => {
   });
 
   describe('getValidNode', () => {
-
     describe('applicationCard', () => {
       it('should return "text" if attrs is missing', () => {
         expect(getValidNode({ type: 'applicationCard' }).type).to.equal('text');
@@ -74,7 +72,7 @@ describe('Renderer - Validator', () => {
       it('should return "text" if attrs.text is missing', () => {
         const applicationCard = {
           type: 'applicationCard',
-          attrs: {}
+          attrs: {},
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -83,8 +81,8 @@ describe('Renderer - Validator', () => {
         const applicationCard = {
           type: 'applicationCard',
           attrs: {
-            text: 'applicationCard'
-          }
+            text: 'applicationCard',
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -94,8 +92,8 @@ describe('Renderer - Validator', () => {
           type: 'applicationCard',
           attrs: {
             text: 'applicationCard',
-            title: {}
-          }
+            title: {},
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -107,9 +105,9 @@ describe('Renderer - Validator', () => {
             text: 'applicationCard',
             title: {
               text: 'title',
-              user: {}
-            }
-          }
+              user: {},
+            },
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -123,11 +121,11 @@ describe('Renderer - Validator', () => {
               text: 'title',
               user: {
                 icon: {
-                  label: 'icon'
-                }
-              }
-            }
-          }
+                  label: 'icon',
+                },
+              },
+            },
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -141,11 +139,11 @@ describe('Renderer - Validator', () => {
               text: 'title',
               user: {
                 icon: {
-                  url: 'https://lol.icon'
-                }
-              }
-            }
-          }
+                  url: 'https://lol.icon',
+                },
+              },
+            },
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -156,8 +154,8 @@ describe('Renderer - Validator', () => {
           attrs: {
             text: 'applicationCard',
             title: { text: 'applicationCard' },
-            link: {}
-          }
+            link: {},
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -168,8 +166,8 @@ describe('Renderer - Validator', () => {
           attrs: {
             text: 'applicationCard',
             title: { text: 'applicationCard' },
-            background: {}
-          }
+            background: {},
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -180,8 +178,8 @@ describe('Renderer - Validator', () => {
           attrs: {
             text: 'applicationCard',
             title: { text: 'applicationCard' },
-            preview: {}
-          }
+            preview: {},
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -192,8 +190,8 @@ describe('Renderer - Validator', () => {
           attrs: {
             text: 'applicationCard',
             title: { text: 'applicationCard' },
-            description: {}
-          }
+            description: {},
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -204,8 +202,8 @@ describe('Renderer - Validator', () => {
           attrs: {
             text: 'applicationCard',
             title: { text: 'applicationCard' },
-            actions: { yes: 'no' }
-          }
+            actions: { yes: 'no' },
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -216,8 +214,8 @@ describe('Renderer - Validator', () => {
           attrs: {
             text: 'applicationCard',
             title: { text: 'applicationCard' },
-            actions: []
-          }
+            actions: [],
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -228,12 +226,14 @@ describe('Renderer - Validator', () => {
           attrs: {
             text: 'applicationCard',
             title: { text: 'applicationCard' },
-            actions: [{
-              target: {
-                key: 'test.target'
-              }
-            }]
-          }
+            actions: [
+              {
+                target: {
+                  key: 'test.target',
+                },
+              },
+            ],
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -244,12 +244,13 @@ describe('Renderer - Validator', () => {
           attrs: {
             text: 'applicationCard',
             title: { text: 'applicationCard' },
-            actions: [{
-              title: 'test',
-              target: {
-              }
-            }]
-          }
+            actions: [
+              {
+                title: 'test',
+                target: {},
+              },
+            ],
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -260,14 +261,16 @@ describe('Renderer - Validator', () => {
           attrs: {
             text: 'applicationCard',
             title: { text: 'applicationCard' },
-            actions: [{
-              title: 'test',
-              target: {
-                receiver: 20,
-                key: 'test.target'
-              }
-            }]
-          }
+            actions: [
+              {
+                title: 'test',
+                target: {
+                  receiver: 20,
+                  key: 'test.target',
+                },
+              },
+            ],
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -278,14 +281,16 @@ describe('Renderer - Validator', () => {
           attrs: {
             text: 'applicationCard',
             title: { text: 'applicationCard' },
-            actions: [{
-              title: 'test',
-              target: {
-                key: 'test.target'
+            actions: [
+              {
+                title: 'test',
+                target: {
+                  key: 'test.target',
+                },
+                parameters: 'aaa',
               },
-              parameters: 'aaa'
-            }]
-          }
+            ],
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -296,18 +301,20 @@ describe('Renderer - Validator', () => {
           attrs: {
             text: 'applicationCard',
             title: { text: 'applicationCard' },
-            actions: [{
-              title: 'test',
-              target: {
-                receiver: 'some.app',
-                key: 'test.target'
+            actions: [
+              {
+                title: 'test',
+                target: {
+                  receiver: 'some.app',
+                  key: 'test.target',
+                },
+                parameters: {
+                  test: 10,
+                  ext: 'ext',
+                },
               },
-              parameters: {
-                test: 10,
-                ext: 'ext'
-              }
-            }]
-          }
+            ],
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('applicationCard');
       });
@@ -318,8 +325,8 @@ describe('Renderer - Validator', () => {
           attrs: {
             text: 'applicationCard',
             title: { text: 'applicationCard' },
-            details: { yes: 'no' }
-          }
+            details: { yes: 'no' },
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -332,10 +339,10 @@ describe('Renderer - Validator', () => {
             title: { text: 'applicationCard' },
             details: [
               {
-                badge: {}
-              }
-            ]
-          }
+                badge: {},
+              },
+            ],
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -348,10 +355,10 @@ describe('Renderer - Validator', () => {
             title: { text: 'applicationCard' },
             details: [
               {
-                lozenge: {}
-              }
-            ]
-          }
+                lozenge: {},
+              },
+            ],
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -364,10 +371,10 @@ describe('Renderer - Validator', () => {
             title: { text: 'applicationCard' },
             details: [
               {
-                users: { yes: 'no'}
-              }
-            ]
-          }
+                users: { yes: 'no' },
+              },
+            ],
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -380,10 +387,10 @@ describe('Renderer - Validator', () => {
             title: { text: 'applicationCard' },
             details: [
               {
-                users: [ { id: 'id'} ]
-              }
-            ]
-          }
+                users: [{ id: 'id' }],
+              },
+            ],
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -394,8 +401,8 @@ describe('Renderer - Validator', () => {
           attrs: {
             text: 'applicationCard',
             title: { text: 'applicationCard' },
-            context: {}
-          }
+            context: {},
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -409,10 +416,10 @@ describe('Renderer - Validator', () => {
             context: {
               text: 'test',
               icon: {
-                label: 'test-label'
-              }
-            }
-          }
+                label: 'test-label',
+              },
+            },
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -426,10 +433,10 @@ describe('Renderer - Validator', () => {
             context: {
               text: 'test',
               icon: {
-                url: 'url'
-              }
-            }
-          }
+                url: 'url',
+              },
+            },
+          },
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
@@ -439,8 +446,8 @@ describe('Renderer - Validator', () => {
           type: 'applicationCard',
           attrs: {
             text: 2017,
-            title: { text: 'applicationCard' }
-          }
+            title: { text: 'applicationCard' },
+          },
         };
 
         expect(getValidNode(applicationCard).type).to.equal('text');
@@ -451,8 +458,8 @@ describe('Renderer - Validator', () => {
           type: 'applicationCard',
           attrs: {
             text: '',
-            title: { text: 'applicationCard' }
-          }
+            title: { text: 'applicationCard' },
+          },
         };
 
         expect(getValidNode(applicationCard).type).to.equal('applicationCard');
@@ -465,15 +472,25 @@ describe('Renderer - Validator', () => {
       });
 
       it('should return "text" if content-field is missing', () => {
-        expect(getValidNode({ type: 'doc', version: 1 } as any).type).to.equal('text');
+        expect(getValidNode({ type: 'doc', version: 1 } as any).type).to.equal(
+          'text',
+        );
       });
 
       it('should return "text" if content-field is empty-array', () => {
-        expect(getValidNode({ type: 'doc', version: 1, content: [] } as any).type).to.equal('text');
+        expect(
+          getValidNode({ type: 'doc', version: 1, content: [] } as any).type,
+        ).to.equal('text');
       });
 
       it('should return "doc" with content field and without version', () => {
-        expect(getValidNode({ type: 'doc', version: 1, content: [{ type: 'unknown' }] } as any)).to.deep.equal({
+        expect(
+          getValidNode({
+            type: 'doc',
+            version: 1,
+            content: [{ type: 'unknown' }],
+          } as any),
+        ).to.deep.equal({
           type: 'doc',
           content: [
             {
@@ -487,7 +504,11 @@ describe('Renderer - Validator', () => {
 
     describe('emoji', () => {
       it('should pass through attrs as emoji', () => {
-        const emojiId = { shortName: ':grinning:', id: '123', fallback: 'cheese' };
+        const emojiId = {
+          shortName: ':grinning:',
+          id: '123',
+          fallback: 'cheese',
+        };
         const { type, attrs } = getValidNode({ type: 'emoji', attrs: emojiId });
         expect(type).to.equal('emoji');
         expect(attrs).to.deep.equal(emojiId);
@@ -509,59 +530,82 @@ describe('Renderer - Validator', () => {
 
     describe('hardBreak', () => {
       it('should return "hardBreak"', () => {
-        expect(getValidNode({ type: 'hardBreak' })).to.deep.equal({ type: 'hardBreak' });
+        expect(getValidNode({ type: 'hardBreak' })).to.deep.equal({
+          type: 'hardBreak',
+        });
       });
 
       it('should discard any extranous attributes', () => {
-        expect(getValidNode({ type: 'hardBreak', attrs: { color: 'green' } })).to.deep.equal({ type: 'hardBreak' });
+        expect(
+          getValidNode({ type: 'hardBreak', attrs: { color: 'green' } }),
+        ).to.deep.equal({ type: 'hardBreak' });
       });
     });
 
     describe('mention', () => {
       it('should return "unknown" if it can not find an ID ', () => {
-        expect(getValidNode({ type: 'mention', attrs: { text: '@Oscar' } }).type).to.deep.equal('text');
+        expect(
+          getValidNode({ type: 'mention', attrs: { text: '@Oscar' } }).type,
+        ).to.deep.equal('text');
       });
 
       it('should use attrs.text if present', () => {
-        expect(getValidNode({ type: 'mention', attrs: { text: '@Oscar', id: 'abcd-abcd-abcd' } })).to.deep.equal({
+        expect(
+          getValidNode({
+            type: 'mention',
+            attrs: { text: '@Oscar', id: 'abcd-abcd-abcd' },
+          }),
+        ).to.deep.equal({
           type: 'mention',
           attrs: {
             text: '@Oscar',
-            id: 'abcd-abcd-abcd'
-          }
+            id: 'abcd-abcd-abcd',
+          },
         });
       });
 
       it('should use attrs.displayName if present and attrs.text is missing', () => {
-        expect(getValidNode({ type: 'mention', attrs: { displayName: '@Oscar', id: 'abcd-abcd-abcd' } })).to.deep.equal({
+        expect(
+          getValidNode({
+            type: 'mention',
+            attrs: { displayName: '@Oscar', id: 'abcd-abcd-abcd' },
+          }),
+        ).to.deep.equal({
           type: 'mention',
           attrs: {
             text: '@Oscar',
-            id: 'abcd-abcd-abcd'
-          }
+            id: 'abcd-abcd-abcd',
+          },
         });
       });
 
       it('should use .text if present and attrs.text and attrs.displayName is missing', () => {
-        expect(getValidNode({ type: 'mention', text: '@Oscar', attrs: { id: 'abcd-abcd-abcd' } })).to.deep.equal({
+        expect(
+          getValidNode({
+            type: 'mention',
+            text: '@Oscar',
+            attrs: { id: 'abcd-abcd-abcd' },
+          }),
+        ).to.deep.equal({
           type: 'mention',
           attrs: {
             text: '@Oscar',
-            id: 'abcd-abcd-abcd'
-          }
+            id: 'abcd-abcd-abcd',
+          },
         });
       });
 
       it('should set attrs.text to "@unknown" if no valid text-property is available', () => {
-        expect(getValidNode({ type: 'mention', attrs: { id: 'abcd-abcd-abcd' } })).to.deep.equal({
+        expect(
+          getValidNode({ type: 'mention', attrs: { id: 'abcd-abcd-abcd' } }),
+        ).to.deep.equal({
           type: 'mention',
           attrs: {
             text: '@unknown',
-            id: 'abcd-abcd-abcd'
-          }
+            id: 'abcd-abcd-abcd',
+          },
         });
       });
-
     });
 
     describe('paragraph', () => {
@@ -570,44 +614,73 @@ describe('Renderer - Validator', () => {
       });
 
       it('should return "paragraph" if content-field is empty array', () => {
-        expect(getValidNode({ type: 'paragraph', content: [] }).type).to.equal('paragraph');
+        expect(getValidNode({ type: 'paragraph', content: [] }).type).to.equal(
+          'paragraph',
+        );
       });
 
       it('should return "paragraph" with content', () => {
-        expect(getValidNode({ type: 'paragraph', content: [{ type: 'text', text: 'Hello World' }] })).to.deep.equal({
+        expect(
+          getValidNode({
+            type: 'paragraph',
+            content: [{ type: 'text', text: 'Hello World' }],
+          }),
+        ).to.deep.equal({
           type: 'paragraph',
           content: [
             {
               type: 'text',
-              text: 'Hello World'
-            }
-          ]
+              text: 'Hello World',
+            },
+          ],
         });
       });
     });
 
     describe('text', () => {
       it('should return "text" with text', () => {
-        expect(getValidNode({ type: 'text', text: 'Hello World' })).to.deep.equal({
+        expect(
+          getValidNode({ type: 'text', text: 'Hello World' }),
+        ).to.deep.equal({
           type: 'text',
           text: 'Hello World',
         });
 
-        expect(getValidNode({ type: 'text', text: 'Hello World', marks: [{ type: 'strong' }] })).to.deep.equal({
+        expect(
+          getValidNode({
+            type: 'text',
+            text: 'Hello World',
+            marks: [{ type: 'strong' }],
+          }),
+        ).to.deep.equal({
           type: 'text',
           text: 'Hello World',
           marks: [
             {
-              type: 'strong'
-            }
-          ]
+              type: 'strong',
+            },
+          ],
         });
       });
     });
 
     describe('mediaGroup', () => {
       it('should return "mediaGroup" with type and content', () => {
-        expect(getValidNode({
+        expect(
+          getValidNode({
+            type: 'mediaGroup',
+            content: [
+              {
+                type: 'media',
+                attrs: {
+                  type: 'file',
+                  id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+                  collection: 'MediaServicesSample',
+                },
+              },
+            ],
+          }),
+        ).to.deep.equal({
           type: 'mediaGroup',
           content: [
             {
@@ -615,80 +688,74 @@ describe('Renderer - Validator', () => {
               attrs: {
                 type: 'file',
                 id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-                collection: 'MediaServicesSample'
-              }
-            }
-          ]
-        })).to.deep.equal({
-          type: 'mediaGroup',
-          content: [
-            {
-              type: 'media',
-              attrs: {
-                type: 'file',
-                id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-                collection: 'MediaServicesSample'
-              }
-            }
-          ]
+                collection: 'MediaServicesSample',
+              },
+            },
+          ],
         });
       });
 
       it('should return "unknownBlock" if some of it\'s content is not media', () => {
-       expect(getValidNode({
-          type: 'mediaGroup',
-          content: [
-            {
-              type: 'text',
-              text: '[media]'
-            }
-          ]
-        })).to.deep.equal({
+        expect(
+          getValidNode({
+            type: 'mediaGroup',
+            content: [
+              {
+                type: 'text',
+                text: '[media]',
+              },
+            ],
+          }),
+        ).to.deep.equal({
           type: 'unknownBlock',
           content: [
             {
               type: 'text',
-              text: '[media]'
-            }
-          ]
+              text: '[media]',
+            },
+          ],
         });
       });
     });
 
     describe('media', () => {
       it('should return "media" with attrs and type', () => {
-        expect(getValidNode({
+        expect(
+          getValidNode({
+            type: 'media',
+            attrs: {
+              type: 'file',
+              id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+              collection: 'MediaServicesSample',
+            },
+          }),
+        ).to.deep.equal({
           type: 'media',
           attrs: {
             type: 'file',
             id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-            collection: 'MediaServicesSample'
-          }
-        })).to.deep.equal({
-          type: 'media',
-          attrs: {
-            type: 'file',
-            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-            collection: 'MediaServicesSample'
-          }
+            collection: 'MediaServicesSample',
+          },
         });
       });
 
       it('should return "media" with attrs and type if collection is empty', () => {
-        expect(getValidNode({
+        expect(
+          getValidNode({
+            type: 'media',
+            attrs: {
+              type: 'file',
+              id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+              collection: '',
+            },
+          }),
+        ).to.deep.equal({
           type: 'media',
           attrs: {
             type: 'file',
             id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-            collection: ''
-          }
-        })).to.deep.equal({
-          type: 'media',
-          attrs: {
-            type: 'file',
-            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-            collection: ''
-          }
+            collection: '',
+          },
         });
       });
     });
@@ -699,10 +766,14 @@ describe('Renderer - Validator', () => {
         const listContent = [
           {
             type: 'text',
-            text: 'content'
-          }
+            text: 'content',
+          },
         ];
-        const { type, attrs, content } = getValidNode({ type: 'decisionList', attrs: listAttrs, content: listContent });
+        const { type, attrs, content } = getValidNode({
+          type: 'decisionList',
+          attrs: listAttrs,
+          content: listContent,
+        });
         expect(type).to.equal('decisionList');
         expect(attrs).to.deep.equal(listAttrs);
         expect(content).to.deep.equal(listContent);
@@ -712,10 +783,13 @@ describe('Renderer - Validator', () => {
         const listContent = [
           {
             type: 'text',
-            text: 'content'
-          }
+            text: 'content',
+          },
         ];
-        const { type, attrs, content } = getValidNode({ type: 'decisionList', content: listContent });
+        const { type, attrs, content } = getValidNode({
+          type: 'decisionList',
+          content: listContent,
+        });
         expect(type).to.equal('decisionList');
         expect(attrs).to.not.equal(undefined);
         expect(attrs.localId).to.not.equal(undefined);
@@ -727,10 +801,14 @@ describe('Renderer - Validator', () => {
         const itemContent = [
           {
             type: 'text',
-            text: 'content'
-          }
+            text: 'content',
+          },
         ];
-        const { type, attrs, content } = getValidNode({ type: 'decisionItem', attrs: itemAttrs, content: itemContent });
+        const { type, attrs, content } = getValidNode({
+          type: 'decisionItem',
+          attrs: itemAttrs,
+          content: itemContent,
+        });
         expect(type).to.equal('decisionItem');
         expect(attrs).to.deep.equal(itemAttrs);
         expect(content).to.deep.equal(itemContent);
@@ -741,10 +819,14 @@ describe('Renderer - Validator', () => {
         const itemContent = [
           {
             type: 'text',
-            text: 'content'
-          }
+            text: 'content',
+          },
         ];
-        const { type, attrs, content } = getValidNode({ type: 'decisionItem', attrs: itemAttrs, content: itemContent });
+        const { type, attrs, content } = getValidNode({
+          type: 'decisionItem',
+          attrs: itemAttrs,
+          content: itemContent,
+        });
         expect(type).to.equal('decisionItem');
         expect(attrs).to.not.equal(undefined);
         expect(attrs.state).to.equal('DECIDED');
@@ -759,10 +841,14 @@ describe('Renderer - Validator', () => {
         const listContent = [
           {
             type: 'text',
-            text: 'content'
-          }
+            text: 'content',
+          },
         ];
-        const { type, attrs, content } = getValidNode({ type: 'taskList', attrs: listAttrs, content: listContent });
+        const { type, attrs, content } = getValidNode({
+          type: 'taskList',
+          attrs: listAttrs,
+          content: listContent,
+        });
         expect(type).to.equal('taskList');
         expect(attrs).to.deep.equal(listAttrs);
         expect(content).to.deep.equal(listContent);
@@ -772,10 +858,13 @@ describe('Renderer - Validator', () => {
         const listContent = [
           {
             type: 'text',
-            text: 'content'
-          }
+            text: 'content',
+          },
         ];
-        const { type, attrs, content } = getValidNode({ type: 'taskList', content: listContent });
+        const { type, attrs, content } = getValidNode({
+          type: 'taskList',
+          content: listContent,
+        });
         expect(type).to.equal('taskList');
         expect(attrs).to.not.equal(undefined);
         expect(attrs.localId).to.not.equal(undefined);
@@ -787,10 +876,14 @@ describe('Renderer - Validator', () => {
         const itemContent = [
           {
             type: 'text',
-            text: 'content'
-          }
+            text: 'content',
+          },
         ];
-        const { type, attrs, content } = getValidNode({ type: 'taskItem', attrs: itemAttrs, content: itemContent });
+        const { type, attrs, content } = getValidNode({
+          type: 'taskItem',
+          attrs: itemAttrs,
+          content: itemContent,
+        });
         expect(type).to.equal('taskItem');
         expect(attrs).to.deep.equal(itemAttrs);
         expect(content).to.deep.equal(itemContent);
@@ -801,10 +894,14 @@ describe('Renderer - Validator', () => {
         const itemContent = [
           {
             type: 'text',
-            text: 'content'
-          }
+            text: 'content',
+          },
         ];
-        const { type, attrs, content } = getValidNode({ type: 'taskItem', attrs: itemAttrs, content: itemContent });
+        const { type, attrs, content } = getValidNode({
+          type: 'taskItem',
+          attrs: itemAttrs,
+          content: itemContent,
+        });
         expect(type).to.equal('taskItem');
         expect(attrs).to.not.equal(undefined);
         expect(attrs.state).to.equal('DONE');
@@ -812,7 +909,6 @@ describe('Renderer - Validator', () => {
         expect(content).to.deep.equal(itemContent);
       });
     });
-
 
     it('should overwrite the default schema if it gets a docSchema parameter', () => {
       // rule is taken out in following schema
@@ -850,7 +946,7 @@ describe('Renderer - Validator', () => {
           'emojiQuery',
           'textColor',
           'subsup',
-        ]
+        ],
       });
 
       const doc = {
@@ -859,19 +955,17 @@ describe('Renderer - Validator', () => {
         content: [
           {
             type: 'rule',
-          }
-        ]
+          },
+        ],
       };
       const result = getValidNode(doc, schema);
 
       expect(result.content![0].type).to.equal('text');
       expect(result.content![0].text).to.equal('[rule]');
     });
-
   });
 
   describe('getValidUnknownNode', () => {
-
     describe('unknown inline nodes', () => {
       it('should return "text" node if content is absent', () => {
         const unknownInlineNode = getValidUnknownNode({ type: 'foobar' });
@@ -879,23 +973,38 @@ describe('Renderer - Validator', () => {
       });
 
       it('should return "text" node if content is empty', () => {
-        const unknownInlineNode = getValidUnknownNode({ type: 'foobar', content: [] });
+        const unknownInlineNode = getValidUnknownNode({
+          type: 'foobar',
+          content: [],
+        });
         expect(unknownInlineNode.type).to.equal('text');
       });
 
       it('should store textUrl attribute in "href" attribute', () => {
-        const unknownInlineNode = getValidUnknownNode({ type: 'foobar', attrs: { textUrl: 'https://www.atlassian.com' } });
+        const unknownInlineNode = getValidUnknownNode({
+          type: 'foobar',
+          attrs: { textUrl: 'https://www.atlassian.com' },
+        });
         expect(unknownInlineNode.marks).to.have.length(1);
-        expect(unknownInlineNode.marks![0].attrs.href).to.equal('https://www.atlassian.com');
+        expect(unknownInlineNode.marks![0].attrs.href).to.equal(
+          'https://www.atlassian.com',
+        );
       });
 
       it('should use default text', () => {
-        const unknownInlineNode = getValidUnknownNode({ type: 'foobar', text: 'some text', attrs: { text: 'some text from attrs' } });
+        const unknownInlineNode = getValidUnknownNode({
+          type: 'foobar',
+          text: 'some text',
+          attrs: { text: 'some text from attrs' },
+        });
         expect(unknownInlineNode.text).to.equal('some text');
       });
 
       it('should use node.attrs.text if text is missing', () => {
-        const unknownInlineNode = getValidUnknownNode({ type: 'foobar', attrs: { text: 'some text from attrs' } });
+        const unknownInlineNode = getValidUnknownNode({
+          type: 'foobar',
+          attrs: { text: 'some text from attrs' },
+        });
         expect(unknownInlineNode.text).to.equal('some text from attrs');
       });
 
@@ -912,11 +1021,11 @@ describe('Renderer - Validator', () => {
           content: [
             {
               type: 'text',
-              text: 'hello'
+              text: 'hello',
             },
             {
               type: 'world-node-type',
-              text: 'world'
+              text: 'world',
             },
           ],
         };
@@ -927,11 +1036,11 @@ describe('Renderer - Validator', () => {
           content: [
             {
               type: 'text',
-              text: 'hello'
+              text: 'hello',
             },
             {
               type: 'text',
-              text: ' '
+              text: ' ',
             },
             {
               type: 'text',
@@ -950,9 +1059,9 @@ describe('Renderer - Validator', () => {
               content: [
                 {
                   type: 'text',
-                  text: 'hello mate'
+                  text: 'hello mate',
                 },
-              ]
+              ],
             },
             {
               type: 'foobar-row',
@@ -962,15 +1071,15 @@ describe('Renderer - Validator', () => {
                   content: [
                     {
                       type: 'text',
-                      text: 'this is'
+                      text: 'this is',
                     },
                     {
                       type: 'special-sydney-node-type',
-                      text: 'Sydney!'
-                    }
-                  ]
-                }
-              ]
+                      text: 'Sydney!',
+                    },
+                  ],
+                },
+              ],
             },
           ],
         };
@@ -981,14 +1090,14 @@ describe('Renderer - Validator', () => {
           content: [
             {
               type: 'text',
-              text: 'hello mate'
+              text: 'hello mate',
             },
             {
               type: 'hardBreak',
             },
             {
               type: 'text',
-              text: 'this is'
+              text: 'this is',
             },
             {
               type: 'text',
@@ -996,8 +1105,8 @@ describe('Renderer - Validator', () => {
             },
             {
               type: 'text',
-              text: 'Sydney!'
-            }
+              text: 'Sydney!',
+            },
           ],
         });
       });
@@ -1011,7 +1120,7 @@ describe('Renderer - Validator', () => {
               content: [
                 {
                   type: 'text',
-                  text: 'hello mate'
+                  text: 'hello mate',
                 },
               ],
             },
@@ -1026,12 +1135,12 @@ describe('Renderer - Validator', () => {
                       content: [
                         {
                           type: 'text',
-                          text: 'this is'
+                          text: 'this is',
                         },
                         {
                           type: 'special-sydney-node-type',
                           attrs: {
-                            textUrl: 'http://www.sydney.com.au/'
+                            textUrl: 'http://www.sydney.com.au/',
                           },
                           text: 'Sydney!',
                         },
@@ -1050,18 +1159,18 @@ describe('Renderer - Validator', () => {
           content: [
             {
               type: 'text',
-              text: 'hello mate'
+              text: 'hello mate',
             },
             {
               type: 'hardBreak',
             },
             {
               type: 'text',
-              text: 'this is'
+              text: 'this is',
             },
             {
               type: 'text',
-              text: ' '
+              text: ' ',
             },
             {
               type: 'text',
@@ -1073,17 +1182,15 @@ describe('Renderer - Validator', () => {
                   },
                 },
               ],
-              text: 'Sydney!'
+              text: 'Sydney!',
             },
           ],
         });
       });
     });
-
   });
 
   describe('getValidMark', () => {
-
     describe('unknown', () => {
       it('should return null if type is unkown', () => {
         expect(getValidMark({ type: 'banana' })).to.equal(null);
@@ -1108,28 +1215,40 @@ describe('Renderer - Validator', () => {
       });
 
       it('should use attrs.href if present', () => {
-        expect(getValidMark({ type: 'link', attrs: { href: 'https://www.atlassian.com' } })).to.deep.equal({
+        expect(
+          getValidMark({
+            type: 'link',
+            attrs: { href: 'https://www.atlassian.com' },
+          }),
+        ).to.deep.equal({
           type: 'link',
           attrs: {
-            href: 'https://www.atlassian.com'
+            href: 'https://www.atlassian.com',
           },
         });
       });
 
       it('should add protocol to a url if it doesn`t exist', () => {
-        expect(getValidMark({ type: 'link', attrs: { href: 'www.atlassian.com' } })).to.deep.equal({
+        expect(
+          getValidMark({ type: 'link', attrs: { href: 'www.atlassian.com' } }),
+        ).to.deep.equal({
           type: 'link',
           attrs: {
-            href: 'http://www.atlassian.com'
+            href: 'http://www.atlassian.com',
           },
         });
       });
 
       it('should use attrs.url if present and attrs.href is missing', () => {
-        expect(getValidMark({ type: 'link', attrs: { url: 'https://www.atlassian.com' } })).to.deep.equal({
+        expect(
+          getValidMark({
+            type: 'link',
+            attrs: { url: 'https://www.atlassian.com' },
+          }),
+        ).to.deep.equal({
           type: 'link',
           attrs: {
-            href: 'https://www.atlassian.com'
+            href: 'https://www.atlassian.com',
           },
         });
       });
@@ -1157,21 +1276,27 @@ describe('Renderer - Validator', () => {
       });
 
       it('should return null if attrs.type is not sub or sup', () => {
-        expect(getValidMark({ type: 'subsup', attrs: { type: 'banana' } })).to.equal(null);
+        expect(
+          getValidMark({ type: 'subsup', attrs: { type: 'banana' } }),
+        ).to.equal(null);
       });
 
       it('should return "subsup" with correct type', () => {
-        expect(getValidMark({ type: 'subsup', attrs: { type: 'sub' } })).to.deep.equal({
+        expect(
+          getValidMark({ type: 'subsup', attrs: { type: 'sub' } }),
+        ).to.deep.equal({
           type: 'subsup',
           attrs: {
-            type: 'sub'
+            type: 'sub',
           },
         });
 
-        expect(getValidMark({ type: 'subsup', attrs: { type: 'sup' } })).to.deep.equal({
+        expect(
+          getValidMark({ type: 'subsup', attrs: { type: 'sup' } }),
+        ).to.deep.equal({
           type: 'subsup',
           attrs: {
-            type: 'sup'
+            type: 'sup',
           },
         });
       });
@@ -1179,7 +1304,9 @@ describe('Renderer - Validator', () => {
 
     describe('textColor', () => {
       it('should return "textColor"', () => {
-        expect(getValidMark({ type: 'textColor', attrs: { color: '#ff0000' } })).to.deep.equal({
+        expect(
+          getValidMark({ type: 'textColor', attrs: { color: '#ff0000' } }),
+        ).to.deep.equal({
           type: 'textColor',
           attrs: {
             color: '#ff0000',
@@ -1188,7 +1315,9 @@ describe('Renderer - Validator', () => {
       });
 
       it('should return "textColor" for uppercase color', () => {
-        expect(getValidMark({ type: 'textColor', attrs: { color: '#FF0000' } })).to.deep.equal({
+        expect(
+          getValidMark({ type: 'textColor', attrs: { color: '#FF0000' } }),
+        ).to.deep.equal({
           type: 'textColor',
           attrs: {
             color: '#FF0000',
@@ -1200,8 +1329,10 @@ describe('Renderer - Validator', () => {
         expect(getValidMark({ type: 'textColor' })).to.equal(null);
       });
 
-      it('should skip nodes if color attribute doesn\'t match RGB pattern', () => {
-        expect(getValidMark({ type: 'textColor', attrs: { color: 'red' } })).to.equal(null);
+      it("should skip nodes if color attribute doesn't match RGB pattern", () => {
+        expect(
+          getValidMark({ type: 'textColor', attrs: { color: 'red' } }),
+        ).to.equal(null);
       });
     });
 
@@ -1212,7 +1343,6 @@ describe('Renderer - Validator', () => {
         });
       });
     });
-
   });
 
   describe('getMarksByOrder', () => {
@@ -1236,7 +1366,6 @@ describe('Renderer - Validator', () => {
   });
 
   describe('isSameMark', () => {
-
     const { strong, strike, link } = schema.marks;
 
     const strongMark = strong.create();
@@ -1261,7 +1390,6 @@ describe('Renderer - Validator', () => {
     it('should return true if type is the same and attributes match', () => {
       expect(isSameMark(linkMark1, linkMark1)).to.equal(true);
     });
-
   });
 
   describe('getValidDocument', () => {
@@ -1274,7 +1402,7 @@ describe('Renderer - Validator', () => {
             type: 'decisionList',
             attrs: {
               localId: 'dl1',
-              mysteryAttr: 'cheese'
+              mysteryAttr: 'cheese',
             },
             content: [
               {
@@ -1282,16 +1410,16 @@ describe('Renderer - Validator', () => {
                 attrs: {
                   localId: 'di1',
                   state: 'DECIDED',
-                  mysteryAttr2: 'bacon'
+                  mysteryAttr2: 'bacon',
                 },
                 content: [
                   {
                     type: 'text',
-                    text: 'We decided'
-                  }
-                ]
-              }
-            ]
+                    text: 'We decided',
+                  },
+                ],
+              },
+            ],
           },
           {
             type: 'mysteryType',
@@ -1299,10 +1427,10 @@ describe('Renderer - Validator', () => {
               {
                 type: 'text',
                 text: 'mystery text',
-              }
-            ]
-          }
-        ]
+              },
+            ],
+          },
+        ],
       };
       const expectedValidDoc: Node = {
         type: 'doc',
@@ -1322,22 +1450,22 @@ describe('Renderer - Validator', () => {
                 content: [
                   {
                     type: 'text',
-                    text: 'We decided'
-                  }
-                ]
-              }
-            ]
+                    text: 'We decided',
+                  },
+                ],
+              },
+            ],
           },
           {
             type: 'unknownBlock',
             content: [
               {
                 type: 'text',
-                text: 'mystery text'
-              }
-            ]
-          }
-        ]
+                text: 'mystery text',
+              },
+            ],
+          },
+        ],
       };
       const originalCopy = JSON.parse(JSON.stringify(original));
       const newDoc = getValidDocument(original);

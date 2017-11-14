@@ -23,7 +23,7 @@ type State = {
 };
 
 export default class PerfTest extends Component<Props, State> {
-  state = getInitialState()
+  state = getInitialState();
   startTest = () => {
     let runs = 0;
     let startTime;
@@ -42,10 +42,10 @@ export default class PerfTest extends Component<Props, State> {
     };
 
     this.setState({ count: 0 }, run);
-  }
+  };
   clearResults = () => {
     this.setState(getInitialState, this.renderTooltips);
-  }
+  };
   renderTooltips() {
     const { count } = this.state;
     const items = [];
@@ -68,7 +68,10 @@ export default class PerfTest extends Component<Props, State> {
         </Button>
         {time ? (
           <div style={{ marginTop: '1em' }}>
-            <p>Rendered {TEST_RUNS}&times;{PER_RUN} tooltips in <code>{time}ms</code></p>
+            <p>
+              Rendered {TEST_RUNS}&times;{PER_RUN} tooltips in{' '}
+              <code>{time}ms</code>
+            </p>
             <button onClick={this.clearResults}>Clear</button>
           </div>
         ) : (
@@ -76,9 +79,7 @@ export default class PerfTest extends Component<Props, State> {
             <p>Start test to see results...</p>
           </div>
         )}
-        <div style={{ marginTop: '1em' }}>
-          {this.renderTooltips()}
-        </div>
+        <div style={{ marginTop: '1em' }}>{this.renderTooltips()}</div>
       </div>
     );
   }

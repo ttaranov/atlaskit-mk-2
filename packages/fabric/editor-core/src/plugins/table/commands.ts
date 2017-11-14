@@ -1,5 +1,14 @@
-import { EditorState, Selection, TextSelection, Transaction } from 'prosemirror-state';
-import { CellSelection, goToNextCell as baseGotoNextCell, TableMap } from 'prosemirror-tables';
+import {
+  EditorState,
+  Selection,
+  TextSelection,
+  Transaction,
+} from 'prosemirror-state';
+import {
+  CellSelection,
+  goToNextCell as baseGotoNextCell,
+  TableMap,
+} from 'prosemirror-tables';
 import { stateKey } from './';
 import { createTableNode, isIsolating } from './utils';
 import { analyticsService } from '../../analytics';
@@ -40,11 +49,18 @@ const goToNextCell = (direction: number): Command => {
     }
     const map = TableMap.get(pluginState.tableNode);
     const start = pluginState.getCurrentCellStartPos();
-    const firstCellPos =  map.positionAt(0, 0, pluginState.tableNode) + offset + 1;
-    const lastCellPos =  map.positionAt(map.height - 1, map.width - 1, pluginState.tableNode) + offset + 1;
+    const firstCellPos =
+      map.positionAt(0, 0, pluginState.tableNode) + offset + 1;
+    const lastCellPos =
+      map.positionAt(map.height - 1, map.width - 1, pluginState.tableNode) +
+      offset +
+      1;
 
-    const event = direction === TAB_FORWARD_DIRECTION ? 'next_cell' : 'previous_cell';
-    analyticsService.trackEvent(`atlassian.editor.format.table.${event}.keyboard`);
+    const event =
+      direction === TAB_FORWARD_DIRECTION ? 'next_cell' : 'previous_cell';
+    analyticsService.trackEvent(
+      `atlassian.editor.format.table.${event}.keyboard`,
+    );
 
     if (firstCellPos === start && direction === TAB_BACKWARD_DIRECTION) {
       pluginState.insertRow(0);
@@ -62,7 +78,11 @@ const goToNextCell = (direction: number): Command => {
     // cancel text selection that is created by default
     if (result) {
       const latestState = pluginState.view.state;
-      dispatch(latestState.tr.setSelection(Selection.near(latestState.selection.$from)));
+      dispatch(
+        latestState.tr.setSelection(
+          Selection.near(latestState.selection.$from),
+        ),
+      );
     }
     return result;
   };
@@ -100,10 +120,14 @@ const emptyCells = (): Command => {
     }
     resetHoverSelection(state, dispatch);
     pluginState.emptySelectedCells();
-    const { $head: { pos, parentOffset } } = (state.selection as any) as CellSelection;
+    const {
+      $head: { pos, parentOffset },
+    } = (state.selection as any) as CellSelection;
     const newPos = pos - parentOffset;
     pluginState.moveCursorInsideTableTo(newPos);
-    analyticsService.trackEvent('atlassian.editor.format.table.delete_content.keyboard');
+    analyticsService.trackEvent(
+      'atlassian.editor.format.table.delete_content.keyboard',
+    );
 
     return true;
   };
@@ -114,7 +138,12 @@ const moveCursorBackward = (): Command => {
     const pluginState = stateKey.getState(state);
     const { $cursor } = state.selection as TextSelection;
     // if cursor is in the middle of a text node, do nothing
-    if (!$cursor || (pluginState.view ? !pluginState.view.endOfTextblock('backward', state) : $cursor.parentOffset > 0)) {
+    if (
+      !$cursor ||
+      (pluginState.view
+        ? !pluginState.view.endOfTextblock('backward', state)
+        : $cursor.parentOffset > 0)
+    ) {
       return false;
     }
 
@@ -161,5 +190,5 @@ export default {
   copy,
   paste,
   moveCursorBackward,
-  emptyCells
+  emptyCells,
 };

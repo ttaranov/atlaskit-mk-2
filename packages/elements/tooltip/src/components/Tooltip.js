@@ -65,7 +65,6 @@ class Tooltip extends Component<Props, State> {
   state = getInitialState(this.props);
   wrapper: HTMLElement | null;
   static defaultProps = {
-
     position: 'bottom',
     tag: 'div',
   };

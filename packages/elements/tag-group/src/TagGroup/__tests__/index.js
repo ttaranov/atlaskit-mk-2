@@ -7,7 +7,13 @@ import { Container } from '../styled';
 
 describe('TagGroup', () => {
   it('should export a base component', () => {
-    expect(shallow(<TagGroup><Tag text="test" /></TagGroup>)).toBeInstanceOf(Object);
+    expect(
+      shallow(
+        <TagGroup>
+          <Tag text="test" />
+        </TagGroup>,
+      ),
+    ).toBeInstanceOf(Object);
   });
 
   it('should render supplied tags', () => {
@@ -23,12 +29,20 @@ describe('TagGroup', () => {
   });
 
   it('should justify to the start when alignment not set', () => {
-    const wrapper = mount(<TagGroup><Tag text="test" /></TagGroup>);
+    const wrapper = mount(
+      <TagGroup>
+        <Tag text="test" />
+      </TagGroup>,
+    );
     expect(wrapper.find(Container).prop('justify')).toBe('start');
   });
 
   it('should justify to the end when alignment is set to end', () => {
-    const wrapper = mount(<TagGroup alignment="end"><Tag text="test" /></TagGroup>);
+    const wrapper = mount(
+      <TagGroup alignment="end">
+        <Tag text="test" />
+      </TagGroup>,
+    );
     expect(wrapper.find(Container).prop('justify')).toBe('end');
   });
 });

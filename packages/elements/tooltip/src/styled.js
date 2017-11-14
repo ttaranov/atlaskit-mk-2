@@ -28,7 +28,9 @@ const common = css`
   z-index: 1000;
 `;
 
-export const Tooltip = styled.div`${common};`;
+export const Tooltip = styled.div`
+  ${common};
+`;
 export const TruncatedTooltip = styled.div`
   ${common} max-width: 420px;
   overflow: hidden;
@@ -38,4 +40,6 @@ export const TruncatedTooltip = styled.div`
 
 // The inline-block here is needed to keep the tooltip appearing in the correct position
 // when nested inside a wider parent (see position: relative example).
-export const Target = styled.div`display: inline-block;`;
+export const Target = styled.div`
+  display: inline-block;
+`;

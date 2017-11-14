@@ -21,7 +21,9 @@ export default class Page extends React.PureComponent<PageProps> {
   }
 }
 
-export const Title = styled.h1`margin-bottom: 1em;`;
+export const Title = styled.h1`
+  margin-bottom: 1em;
+`;
 
 export const Section = styled.section`
   margin-top: 3em;

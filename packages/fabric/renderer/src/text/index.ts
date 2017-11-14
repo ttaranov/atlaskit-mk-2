@@ -1,8 +1,4 @@
-import {
-  Fragment,
-  Node as PMNode,
-  Schema,
-} from 'prosemirror-model';
+import { Fragment, Node as PMNode, Schema } from 'prosemirror-model';
 
 import { Serializer } from '../serializer';
 
@@ -37,7 +33,10 @@ const reduceTree = (fragment: Fragment): Node[] => {
     fragmentContainsInlineNodes = fragmentContainsInlineNodes || node.isInline;
 
     if (fragmentContainsInlineNodes) {
-      if (prevNodeType === HARDBREAK_NODE_TYPE && node.type.name === HARDBREAK_NODE_TYPE) {
+      if (
+        prevNodeType === HARDBREAK_NODE_TYPE &&
+        node.type.name === HARDBREAK_NODE_TYPE
+      ) {
         // pass: ignore multiple hardBreaks
       } else {
         textChunks += getText(node);
@@ -64,7 +63,9 @@ const reduceTree = (fragment: Fragment): Node[] => {
 
         if (childMediaFilesCount) {
           const postfix = childMediaFilesCount > 1 ? 'Files' : 'File';
-          childrenChunks.push({ text: `📎 ${childMediaFilesCount} ${postfix}` } as Node);
+          childrenChunks.push({
+            text: `📎 ${childMediaFilesCount} ${postfix}`,
+          } as Node);
         }
       } else if (node.type.name === 'blockquote') {
         childrenChunks.push({
@@ -86,9 +87,11 @@ const reduceTree = (fragment: Fragment): Node[] => {
 
 const serializeTree = (node: Node): string => {
   if (node.content) {
-    return node.content!.map(childNode => {
-      return (node.text || '') + serializeTree(childNode);
-    }).join('\n');
+    return node.content!
+      .map(childNode => {
+        return (node.text || '') + serializeTree(childNode);
+      })
+      .join('\n');
   }
 
   return node.text!;

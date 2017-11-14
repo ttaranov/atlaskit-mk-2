@@ -2,23 +2,25 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React, { Component } from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import { akColorB200, akColorN300, akColorN700, akColorB400 } from '@atlaskit/util-shared-styles';
+import {
+  akColorB200,
+  akColorN300,
+  akColorN700,
+  akColorB400,
+} from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 import * as logos from '../../src';
 
 const Centered = styled.div`
   display: flex;
-  > * margin: 8px 0;
+  >: 8px 0;
 `;
 
 const sizePresets = ['xsmall', 'small', 'medium', 'large', 'xlarge'];
 
 const sizeRange = (Logo, colorPresetProps, size) => (
   <Centered>
-    <Logo
-      size={size}
-      {...colorPresetProps}
-    />
+    <Logo size={size} {...colorPresetProps} />
   </Centered>
 );
 
@@ -69,12 +71,16 @@ export default class InteractiveLogo extends Component<Props, State> {
   };
 
   toggleColor = () => {
-    this.setState({ colorIndex: (this.state.colorIndex + 1) % colorPresets.length });
-  }
+    this.setState({
+      colorIndex: (this.state.colorIndex + 1) % colorPresets.length,
+    });
+  };
 
   toggleSize = () => {
-    this.setState({ sizeIndex: (this.state.sizeIndex + 1) % sizePresets.length });
-  }
+    this.setState({
+      sizeIndex: (this.state.sizeIndex + 1) % sizePresets.length,
+    });
+  };
 
   render() {
     const colorPreset = colorPresets[this.state.colorIndex];

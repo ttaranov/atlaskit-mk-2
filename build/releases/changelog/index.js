@@ -50,9 +50,14 @@ async function updateChangeLog(releaseObject, opts = {}) {
     const release = releaseObject.releases[i];
     const targetFile = `${options.prefix}${release.name}.md`;
 
-    release.dependent = releaseObject.dependents.find((d) => d.name === release.name);
+    release.dependent = releaseObject.dependents.find(
+      d => d.name === release.name,
+    );
 
-    const templateString = `\n${generateMarkdownTemplate(release, releaseObject).trim('\n')}\n`;
+    const templateString = `\n${generateMarkdownTemplate(
+      release,
+      releaseObject,
+    ).trim('\n')}\n`;
     try {
       if (fs.existsSync(targetFile)) {
         await prependFile(templateString, targetFile);
@@ -81,10 +86,10 @@ async function prependFile(data, file) {
     const oldFileStream = fs.createReadStream(file, { encoding: 'utf-8' });
     const newFileStream = fs.createWriteStream(tempFile);
 
-    oldFileStream.on('error', (err) => {
+    oldFileStream.on('error', err => {
       reject(new Error(`Failed to read file ${file}: ${err}`));
     });
-    newFileStream.on('error', (err) => {
+    newFileStream.on('error', err => {
       reject(new Error(`Failed to write to temp file ${tempFile}: ${err}`));
     });
     newFileStream.on('finish', async () => {

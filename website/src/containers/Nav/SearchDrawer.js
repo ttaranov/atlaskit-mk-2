@@ -1,9 +1,12 @@
 /* @flow */
 
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import {
-  AkSearchDrawer, AkSearch, AkNavigationItem, AkNavigationItemGroup
+  AkSearchDrawer,
+  AkSearch,
+  AkNavigationItem,
+  AkNavigationItemGroup,
 } from '@atlaskit/navigation';
 
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
@@ -12,27 +15,20 @@ import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import * as fs from '../../utils/fs';
 import type { Directory } from '../../types';
 
-const LinkComponent = ({
-  href,
-  children,
-  onClick,
-  className,
-}) => (
-  <Link
-    className={className}
-    onClick={onClick}
-    to={href}
-  >{children}</Link>
-)
+const LinkComponent = ({ href, children, onClick, className }) => (
+  <Link className={className} onClick={onClick} to={href}>
+    {children}
+  </Link>
+);
 
-const NavItem = ({dirId, id, closeDrawer }) => (
+const NavItem = ({ dirId, id, closeDrawer }) => (
   <AkNavigationItem
     onClick={closeDrawer}
     href={`/mk-2/packages/${dirId}/${id}`}
     linkComponent={LinkComponent}
     text={fs.titleize(id)}
   />
-)
+);
 
 const SearchDrawer = ({
   isOpen,
@@ -61,36 +57,42 @@ const SearchDrawer = ({
       onKeyDown={() => {}}
     >
       {fs.getDirectories(packages.children).reduce((acc, dir) => {
-          const initialItems = fs.getDirectories(dir.children)
-          const sanitizedValue = searchDrawerValue.toLowerCase();
-          if (sanitizedValue.length > 0 && new RegExp(`^${sanitizedValue}`).test(dir.id)) {
+        const initialItems = fs.getDirectories(dir.children);
+        const sanitizedValue = searchDrawerValue.toLowerCase();
+        if (
+          sanitizedValue.length > 0 &&
+          new RegExp(`^${sanitizedValue}`).test(dir.id)
+        ) {
+          return acc.concat(
+            <AkNavigationItemGroup title={dir.id} key={dir.id}>
+              {initialItems.map(({ id }) => (
+                <NavItem dirId={dir.id} id={id} closeDrawer={closeDrawer} />
+              ))}
+            </AkNavigationItemGroup>,
+          );
+        }
+        const Items = initialItems.reduce((acc, { id }) => {
+          if (id.includes(sanitizedValue)) {
             return acc.concat(
-              <AkNavigationItemGroup title={dir.id} key={dir.id}>
-                {initialItems.map(({ id }) => (
-                  <NavItem dirId={dir.id} id={id} closeDrawer={closeDrawer} />
-                ))}
-              </AkNavigationItemGroup>
-            )
+              <NavItem
+                dirId={dir.id}
+                id={id}
+                closeDrawer={closeDrawer}
+                key={id}
+              />,
+            );
           }
-          const Items = initialItems
-            .reduce((acc, { id }) => {
-              if (id.includes(sanitizedValue)) {
-                return acc.concat(
-                  <NavItem dirId={dir.id} id={id} closeDrawer={closeDrawer} key={id} />
-                );
-              }
-              return acc;
-            }, [])
-            if (Items.length > 0) {
-              return acc.concat(
-                <AkNavigationItemGroup title={dir.id} key={dir.id}>
-                  {Items}
-                </AkNavigationItemGroup>
-              )
-            }
-            return acc;
-        }, [])
-      }
+          return acc;
+        }, []);
+        if (Items.length > 0) {
+          return acc.concat(
+            <AkNavigationItemGroup title={dir.id} key={dir.id}>
+              {Items}
+            </AkNavigationItemGroup>,
+          );
+        }
+        return acc;
+      }, [])}
     </AkSearch>
   </AkSearchDrawer>
 );
