@@ -6,16 +6,17 @@ import WithPluginState from '../../../ui/WithPluginState';
 import { EventDispatcher } from '../../../event-dispatcher';
 import { pluginKey as collabEditPluginKey } from '../plugin';
 import { getAvatarColor } from '../utils';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 export interface Props {
   editorView?: EditorView;
   eventDispatcher?: EventDispatcher;
 }
 
+// Workaround for https://ecosystem.atlassian.net/browse/AK-3872
 // tslint:disable-next-line:variable-name
 const AvatarContainer: any = styled.div`
-  position: absolute;
-  right: 0;
+  padding-right: ${akGridSizeUnitless}px;
 `;
 
 const itemAppear = keyframes`
@@ -46,10 +47,10 @@ const AvatarItem: any = styled.div`
     content: '${(props: any) => props.avatar}';
     display: block;
     position: absolute;
-    right: -2px;
-    bottom: -2px;
+    right: -1px;
+    bottom: -1px;
     width: 13px;
-    height: 6px;
+    height: 13px;
     z-index: 10;
     border-radius: 3px;
     background: ${(props: any) => props.badgeColor};
@@ -59,7 +60,7 @@ const AvatarItem: any = styled.div`
     padding-top: 7px;
     text-align: center;
     box-shadow: 0 0 1px #fff;
-
+    box-sizing: border-box;
 
     animation: ${itemAppear} 250ms 1;
     animation-fill-mode: both;
@@ -86,18 +87,23 @@ function Item(props: ItemProps) {
 }
 
 export default class Avatars extends React.Component<Props, any> {
-  private onAvatarClick = (data) => {
-  }
-
-  private renderAvatars = ({ data }) => {
-    const { sessionId, activeParticipants } = data;
+  private renderAvatars = (state) => {
+    if (!state.data) {
+      return null;
+    }
+    const { sessionId, activeParticipants } = state.data;
     const avatars = activeParticipants.map(p => ({
       email: p.email,
       key: p.sessionId,
       name: p.name,
       src: p.avatar,
-      sessionId: p.sessionId
+      sessionId: p.sessionId,
+      size: 'medium',
     })).sort(p => p.sessionId === sessionId ? -1 : 1);
+
+    if (!avatars.length) {
+      return null;
+    }
 
     return (
       <AvatarContainer>
@@ -105,7 +111,8 @@ export default class Avatars extends React.Component<Props, any> {
           appearance="stack"
           size="medium"
           data={avatars}
-          onAvatarClick={this.onAvatarClick}
+          // Breaks CSS when avatar renders as button, seems like a dependency problem
+          // onAvatarClick={this.onAvatarClick}
           avatar={Item}
         />
       </AvatarContainer>

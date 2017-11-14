@@ -3,12 +3,12 @@ import * as sinon from 'sinon';
 import createEditor from '../../../../helpers/create-editor';
 import collabEdit, { pluginKey as collabEditPluginKey } from '../../../../../src/editor/plugins/collab-edit';
 import ProviderFactory from '../../../../../src/providerFactory';
-import { MockCollabEditProvider } from '../../../../../example-helpers/mock-collab-provider';
+import { collabEditProvider } from '../../../../../example-helpers/mock-collab-provider';
 import { findPointer } from '../../../../../src/editor/plugins/collab-edit/utils';
 
 const setupEditor = (setProvider: boolean = true) => {
   const providerFactory = new ProviderFactory();
-  const providerPromise = Promise.resolve(new MockCollabEditProvider());
+  const providerPromise = collabEditProvider();
 
   if (setProvider) {
     providerFactory.setProvider('collabEditProvider', providerPromise);
@@ -188,7 +188,6 @@ describe('editor/plugins/collab-edit', () => {
 
   });
 
-  // tslint:disable-next-line:no-only-tests
   describe('presence', () => {
     it('should add new participants', async () => {
       const { editorView, providerPromise } = setupEditor();
