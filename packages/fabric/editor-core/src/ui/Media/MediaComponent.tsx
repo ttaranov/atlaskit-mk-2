@@ -234,12 +234,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     // Cache the data url for thumbnail, so it's not regenerated on each re-render (prevents flicker)
     let dataURI: string | undefined;
     if (thumbnail) {
-      if (this.thumbnailWm.has(thumbnail)) {
-        dataURI = this.thumbnailWm.get(thumbnail);
-      } else {
-        dataURI = URL.createObjectURL(thumbnail);
-        this.thumbnailWm.set(thumbnail, dataURI);
-      }
+      dataURI = thumbnail.src;
     }
 
     // Make sure that we always display progress bar when the file is uploading (prevents flicker)
