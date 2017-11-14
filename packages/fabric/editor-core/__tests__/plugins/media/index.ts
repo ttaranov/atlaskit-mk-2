@@ -427,31 +427,33 @@ describe('Media plugin', () => {
     expect(typeof pluginState.binaryPicker!).toBe('object');
 
     const testFileData = {
-      file: {
-        id: 'test',
-        name: 'test.png',
-        size: 1,
-        type: 'file/test',
-      },
+      files: [
+        {
+          id: 'test',
+          name: 'test.png',
+          size: 1,
+          type: 'file/test',
+        },
+      ],
     };
 
     // Warning: calling private methods below
-    (pluginState as any).dropzonePicker!.handleUploadStart(testFileData);
+    (pluginState as any).dropzonePicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.drop', {
       fileMimeType: 'file/test',
     });
 
-    (pluginState as any).clipboardPicker!.handleUploadStart(testFileData);
+    (pluginState as any).clipboardPicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.paste', {
       fileMimeType: 'file/test',
     });
 
-    (pluginState as any).popupPicker!.handleUploadStart(testFileData);
+    (pluginState as any).popupPicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.popup', {
       fileMimeType: 'file/test',
     });
 
-    (pluginState as any).binaryPicker!.handleUploadStart(testFileData);
+    (pluginState as any).binaryPicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.binary', {
       fileMimeType: 'file/test',
     });

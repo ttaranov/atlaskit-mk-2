@@ -499,28 +499,36 @@ export class MediaPluginState {
       pickers.forEach(picker => picker.onNewMedia(this.insertFile));
       this.dropzonePicker.onDrag(this.handleDrag);
 
-      this.binaryPicker.onNewMedia(e =>
+      this.binaryPicker.onNewMedia(mediaState =>
         analyticsService.trackEvent(
           'atlassian.editor.media.file.binary',
-          e.fileMimeType ? { fileMimeType: e.fileMimeType } : {},
+          mediaState.fileMimeType
+            ? { fileMimeType: mediaState.fileMimeType }
+            : {},
         ),
       );
-      this.popupPicker.onNewMedia(e =>
+      this.popupPicker.onNewMedia(mediaState =>
         analyticsService.trackEvent(
           'atlassian.editor.media.file.popup',
-          e.fileMimeType ? { fileMimeType: e.fileMimeType } : {},
+          mediaState.fileMimeType
+            ? { fileMimeType: mediaState.fileMimeType }
+            : {},
         ),
       );
-      this.clipboardPicker.onNewMedia(e =>
+      this.clipboardPicker.onNewMedia(mediaState =>
         analyticsService.trackEvent(
           'atlassian.editor.media.file.paste',
-          e.fileMimeType ? { fileMimeType: e.fileMimeType } : {},
+          mediaState.fileMimeType
+            ? { fileMimeType: mediaState.fileMimeType }
+            : {},
         ),
       );
-      this.dropzonePicker.onNewMedia(e =>
+      this.dropzonePicker.onNewMedia(mediaState =>
         analyticsService.trackEvent(
           'atlassian.editor.media.file.drop',
-          e.fileMimeType ? { fileMimeType: e.fileMimeType } : {},
+          mediaState.fileMimeType
+            ? { fileMimeType: mediaState.fileMimeType }
+            : {},
         ),
       );
     }
