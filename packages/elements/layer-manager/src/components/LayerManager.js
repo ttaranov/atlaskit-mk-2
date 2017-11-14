@@ -42,6 +42,7 @@ export default class LayerManager extends Component<Props, State> {
         </AppWrapper>
         <GatewayDest name="modal" component={TransitionGroup} />
         <GatewayDest name="spotlight" />
+        <GatewayDest name="flag" />
         <GatewayDest name="tooltip" component={TransitionGroup} />
       </GatewayProvider>
     );
