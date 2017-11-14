@@ -1,12 +1,6 @@
-import {
-  defaultSchema,
-  generateUuid as uuid
-} from '@atlaskit/editor-common';
+import { defaultSchema, generateUuid as uuid } from '@atlaskit/editor-common';
 
-import {
-  Mark as PMMark,
-  Schema
-} from 'prosemirror-model';
+import { Mark as PMMark, Schema } from 'prosemirror-model';
 
 import { isSafeUrl } from './utils';
 
@@ -31,7 +25,7 @@ export interface Mark {
 
 export interface MarkSimple {
   type: {
-    name: string
+    name: string;
   };
   attrs?: any;
 }
@@ -58,8 +52,10 @@ export const isSubSupType = (type: string): type is 'sub' | 'sup' => {
 /*
  * Sorts mark by the predefined order above
  */
-export const getMarksByOrder = (marks: PMMark[] ) => {
-  return [...marks].sort((a, b) => markOrder.indexOf(a.type.name) - markOrder.indexOf(b.type.name));
+export const getMarksByOrder = (marks: PMMark[]) => {
+  return [...marks].sort(
+    (a, b) => markOrder.indexOf(a.type.name) - markOrder.indexOf(b.type.name),
+  );
 };
 
 /*
@@ -73,8 +69,10 @@ export const isSameMark = (mark: PMMark | null, otherMark: PMMark | null) => {
   return mark.eq(otherMark);
 };
 
-export const getValidDocument = (doc: Doc, schema: Schema = defaultSchema): Doc | null => {
-
+export const getValidDocument = (
+  doc: Doc,
+  schema: Schema = defaultSchema,
+): Doc | null => {
   const node = getValidNode(doc as Node, schema);
 
   if (node.type === 'doc') {
@@ -84,13 +82,19 @@ export const getValidDocument = (doc: Doc, schema: Schema = defaultSchema): Doc 
   return null;
 };
 
-export const getValidContent = (content: Node[], schema: Schema = defaultSchema): Node[] => {
+export const getValidContent = (
+  content: Node[],
+  schema: Schema = defaultSchema,
+): Node[] => {
   return content.map(node => getValidNode(node, schema));
 };
 
 const TEXT_COLOR_PATTERN = /^#[0-9a-f]{6}$/i;
 
-const flattenUnknownBlockTree = (node: Node, schema: Schema = defaultSchema): Node[] => {
+const flattenUnknownBlockTree = (
+  node: Node,
+  schema: Schema = defaultSchema,
+): Node[] => {
   const output: Node[] = [];
   let isPrevLeafNode = false;
 
@@ -123,13 +127,19 @@ const isValidObject = obj => obj !== null && typeof obj === 'object';
 const isValidString = str => typeof str === 'string';
 const keysLen = obj => Object.keys(obj).length;
 
-const isValidIcon = icon => isValidObject(icon) && keysLen(icon) === 2 &&
-  isValidString(icon.url) && isValidString(icon.label);
+const isValidIcon = icon =>
+  isValidObject(icon) &&
+  keysLen(icon) === 2 &&
+  isValidString(icon.url) &&
+  isValidString(icon.label);
 
 const isValidUser = user => {
   const len = keysLen(user);
-  return isValidObject(user) && len <= 2 && isValidIcon(user.icon) && (
-    len === 1 || isValidString(user.id)
+  return (
+    isValidObject(user) &&
+    len <= 2 &&
+    isValidIcon(user.icon) &&
+    (len === 1 || isValidString(user.id))
   );
 };
 
@@ -139,12 +149,7 @@ const isValidUser = user => {
  * @see https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-ImplementationdetailsforHCNGwebrenderer
  */
 export const getValidUnknownNode = (node: Node): Node => {
-  const {
-    attrs = {},
-    content,
-    text,
-    type,
-  } = node;
+  const { attrs = {}, content, text, type } = node;
 
   if (!content || !content.length) {
     const unknownInlineNode: Node = {
@@ -153,12 +158,14 @@ export const getValidUnknownNode = (node: Node): Node => {
     };
 
     if (attrs.textUrl) {
-      unknownInlineNode.marks = [{
-        type: 'link',
-        attrs: {
-          href: attrs.textUrl,
-        },
-      } as Mark];
+      unknownInlineNode.marks = [
+        {
+          type: 'link',
+          attrs: {
+            href: attrs.textUrl,
+          },
+        } as Mark,
+      ];
     }
 
     return unknownInlineNode;
@@ -184,7 +191,10 @@ export const getValidUnknownNode = (node: Node): Node => {
  * If a node is not recognized or is missing required attributes, we should return 'unknown'
  *
  */
-export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema): Node => {
+export const getValidNode = (
+  originalNode: Node,
+  schema: Schema = defaultSchema,
+): Node => {
   const { attrs, marks, text, type } = originalNode;
   let { content } = originalNode;
 
@@ -192,7 +202,7 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
     attrs,
     marks,
     text,
-    type
+    type,
   };
 
   if (content) {
@@ -207,52 +217,111 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
   if (type) {
     switch (type) {
       case 'applicationCard': {
-        if (!attrs) { break; }
-        const { text, link, background, preview, title, description, details, actions, context } = attrs;
-        if (!isValidString(text) || !isValidObject(title) || !title.text) { break; }
+        if (!attrs) {
+          break;
+        }
+        const {
+          text,
+          link,
+          background,
+          preview,
+          title,
+          description,
+          details,
+          actions,
+          context,
+        } = attrs;
+        if (!isValidString(text) || !isValidObject(title) || !title.text) {
+          break;
+        }
 
         // title can contain at most two keys (text, user)
         const titleKeys = Object.keys(title);
-        if (titleKeys.length > 2) { break; }
-        if (titleKeys.length === 2 && !title.user) { break; }
-        if (title.user && !isValidUser(title.user)) { break; }
+        if (titleKeys.length > 2) {
+          break;
+        }
+        if (titleKeys.length === 2 && !title.user) {
+          break;
+        }
+        if (title.user && !isValidUser(title.user)) {
+          break;
+        }
 
         if (
           (link && !link.url) ||
           (background && !background.url) ||
           (preview && !preview.url) ||
-          (description && !description.text)) { break; }
+          (description && !description.text)
+        ) {
+          break;
+        }
 
-        if (context && !isValidString(context.text)) { break; }
+        if (context && !isValidString(context.text)) {
+          break;
+        }
         if (context && !isValidIcon(context.icon)) {
           break;
         }
 
-        if (actions && !Array.isArray(actions)) { break; }
-        if (actions && !actions.length) { break; }
-        if (actions && actions.some(meta => {
-          const { title, target, parameters } = meta;
-          if (!isValidString(title)) { return true; }
-          if (!target) { return true; }
-          if (!isValidString(target.key)) { return true; }
-          if (target.app && !isValidString(target.app)) { return true; }
-          if (parameters && !isValidObject(parameters)) { return true; }
-        })) { break; }
+        if (actions && !Array.isArray(actions)) {
+          break;
+        }
+        if (actions && !actions.length) {
+          break;
+        }
+        if (
+          actions &&
+          actions.some(meta => {
+            const { title, target, parameters } = meta;
+            if (!isValidString(title)) {
+              return true;
+            }
+            if (!target) {
+              return true;
+            }
+            if (!isValidString(target.key)) {
+              return true;
+            }
+            if (target.receiver && !isValidString(target.receiver)) {
+              return true;
+            }
+            if (parameters && !isValidObject(parameters)) {
+              return true;
+            }
+          })
+        ) {
+          break;
+        }
 
-        if (details && !Array.isArray(details)) { break; }
-        if (details && details.some(meta => {
-          const { badge, lozenge, users } = meta;
-          if (badge && !badge.value) { return true; }
-          if (lozenge && !lozenge.text) { return true; }
-          if (users && !Array.isArray(users)) { return true; }
+        if (details && !Array.isArray(details)) {
+          break;
+        }
+        if (
+          details &&
+          details.some(meta => {
+            const { badge, lozenge, users } = meta;
+            if (badge && !badge.value) {
+              return true;
+            }
+            if (lozenge && !lozenge.text) {
+              return true;
+            }
+            if (users && !Array.isArray(users)) {
+              return true;
+            }
 
-          if (users && !users.every(isValidUser)) { return true; }
-        })) { break; }
+            if (users && !users.every(isValidUser)) {
+              return true;
+            }
+          })
+        ) {
+          break;
+        }
 
         return {
           type,
           text,
-          attrs
+          attrs,
         };
       }
       case 'doc': {
@@ -260,7 +329,7 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
         if (version && content && content.length) {
           return {
             type,
-            content
+            content,
           };
         }
         break;
@@ -270,7 +339,7 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
           return {
             type,
             attrs,
-            content
+            content,
           };
         }
         break;
@@ -279,14 +348,14 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
         if (attrs && attrs.shortName) {
           return {
             type,
-            attrs
+            attrs,
           };
         }
         break;
       }
       case 'hardBreak': {
         return {
-          type
+          type,
         };
       }
       case 'media': {
@@ -305,8 +374,8 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
             attrs: {
               type: mediaType,
               id: mediaId,
-              collection: mediaCollection
-            }
+              collection: mediaCollection,
+            },
           };
         }
         break;
@@ -315,7 +384,7 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
         if (Array.isArray(content) && !content.some(e => e.type !== 'media')) {
           return {
             type,
-            content
+            content,
           };
         }
         break;
@@ -340,8 +409,8 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
             type,
             attrs: {
               id: mentionId,
-              text: mentionText
-            }
+              text: mentionText,
+            },
           };
           if (mentionAccess) {
             mentionNode.attrs['accessLevel'] = mentionAccess;
@@ -355,7 +424,7 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
         if (content) {
           return {
             type,
-            content
+            content,
           };
         }
         break;
@@ -369,14 +438,17 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
         let { marks } = node;
         if (text) {
           if (marks) {
-            marks = marks.reduce((acc, mark ) => {
-              const validMark = getValidMark(mark);
-              if (validMark) {
-                acc.push(validMark);
-              }
+            marks = marks.reduce(
+              (acc, mark) => {
+                const validMark = getValidMark(mark);
+                if (validMark) {
+                  acc.push(validMark);
+                }
 
-              return acc;
-            }, [] as Mark[]);
+                return acc;
+              },
+              [] as Mark[],
+            );
           }
           return marks ? { type, text, marks: marks } : { type, text };
         }
@@ -391,7 +463,7 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
               type,
               content,
               attrs: {
-                level
+                level,
               },
             };
           }
@@ -413,7 +485,7 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
             type,
             content,
             attrs: {
-              order: attrs && attrs.order
+              order: attrs && attrs.order,
             },
           };
         }
@@ -456,7 +528,7 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
           type,
           content,
           attrs: {
-            localId: attrs && attrs.localId || uuid(),
+            localId: (attrs && attrs.localId) || uuid(),
           },
         };
       }
@@ -465,8 +537,8 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
           type,
           content,
           attrs: {
-            localId: attrs && attrs.localId || uuid(),
-            state: attrs && attrs.state || 'DECIDED'
+            localId: (attrs && attrs.localId) || uuid(),
+            state: (attrs && attrs.state) || 'DECIDED',
           },
         };
       }
@@ -475,7 +547,7 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
           type,
           content,
           attrs: {
-            localId: attrs && attrs.localId || uuid()
+            localId: (attrs && attrs.localId) || uuid(),
           },
         };
       }
@@ -484,29 +556,33 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
           type,
           content,
           attrs: {
-            localId: attrs && attrs.localId || uuid(),
-            state: attrs && attrs.state || 'TODO'
+            localId: (attrs && attrs.localId) || uuid(),
+            state: (attrs && attrs.state) || 'TODO',
           },
         };
       }
       case 'table': {
-        if (Array.isArray(content)
-          && content.length > 0
-          && !content.some(e => e.type !== 'tableRow')) {
+        if (
+          Array.isArray(content) &&
+          content.length > 0 &&
+          !content.some(e => e.type !== 'tableRow')
+        ) {
           return {
             type,
-            content
+            content,
           };
         }
         break;
       }
       case 'tableRow': {
-        if (Array.isArray(content)
-          && content.length > 0
-          && !content.some(e => e.type !== 'tableCell' && e.type !== 'tableHeader')) {
+        if (
+          Array.isArray(content) &&
+          content.length > 0 &&
+          !content.some(e => e.type !== 'tableCell' && e.type !== 'tableHeader')
+        ) {
           return {
             type,
-            content
+            content,
           };
         }
         break;
@@ -515,7 +591,7 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
         if (content) {
           return {
             type,
-            content
+            content,
           };
         }
         break;
@@ -524,7 +600,7 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
         if (content) {
           return {
             type,
-            content
+            content,
           };
         }
         break;
@@ -572,8 +648,8 @@ export const getValidMark = (mark: Mark): Mark | null => {
             return {
               type,
               attrs: {
-                href: linkHref
-              }
+                href: linkHref,
+              },
             };
           }
         }
@@ -596,8 +672,8 @@ export const getValidMark = (mark: Mark): Mark | null => {
             return {
               type,
               attrs: {
-                type: subSupType
-              }
+                type: subSupType,
+              },
             };
           }
         }

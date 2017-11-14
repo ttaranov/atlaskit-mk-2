@@ -180,7 +180,7 @@ const attrs = {
     {
       title: 'Primary action',
       target: {
-        app: 'some.app',
+        receiver: 'some.app',
         key: 'primary.target'
       },
       parameters: {
@@ -197,7 +197,7 @@ const attrs = {
     {
       title: 'Another action',
       target: {
-        app: 'another.app',
+        receiver: 'another.app',
         key: 'another.target'
       }
     }

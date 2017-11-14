@@ -460,9 +460,9 @@
     prop-types "^15.5.10"
     styled-components "^1.3.0"
 
-"@atlaskit/media-card@^21.5.0":
-  version "21.5.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/media-card/-/media-card-21.5.0.tgz#446721cf5d9a7323b0bbce487d8233931c9814b8"
+"@atlaskit/media-card@^22.0.0":
+  version "22.0.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/media-card/-/media-card-22.0.0.tgz#ae81af3eb6718dde5a8dc7ea063c78052590ac29"
   dependencies:
     "@atlaskit/avatar" "^4.0.5"
     "@atlaskit/badge" "^4.0.3"
@@ -1888,9 +1888,9 @@ babel-messages@^6.23.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-"babel-normalize-comments@git+https://github.com/Noviny/babel-normalize-comments.git":
-  version "1.0.0"
-  resolved "git+https://github.com/Noviny/babel-normalize-comments.git#0264e6905f015e7d3f176da4725a3104bb1e2040"
+babel-normalize-comments@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/babel-normalize-comments/-/babel-normalize-comments-1.0.1.tgz#437b6955e35bcfdd51a0b50d8cd9bd974a6f7222"
   dependencies:
     babel-flow-types "^1.2.2"
 
@@ -4808,9 +4808,9 @@ extglob@^0.3.1:
   dependencies:
     is-extglob "^1.0.0"
 
-extract-react-types@^0.3.0-beta:
-  version "0.3.0-beta"
-  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.3.0-beta.tgz#b5c0f2a1704e8072f6a530d3ceccc951601a504e"
+extract-react-types@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.3.0.tgz#c3a7ca5d022692a4cf2a951aace26ac340402ab7"
   dependencies:
     babel-core "7.0.0-alpha.19"
     babel-errors "^1.1.1"
@@ -4822,7 +4822,7 @@ extract-react-types@^0.3.0-beta:
     babel-helper-simplify-module "^2.2.0"
     babel-identifiers "^1.0.0"
     babel-log "^2.0.0"
-    babel-normalize-comments "git+https://github.com/Noviny/babel-normalize-comments.git"
+    babel-normalize-comments "^1.0.1"
     babel-react-components "^1.1.0"
     babel-types "^6.26.0"
     babylon "^7.0.0-beta.22"

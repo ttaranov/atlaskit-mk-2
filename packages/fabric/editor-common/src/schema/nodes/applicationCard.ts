@@ -63,7 +63,7 @@ export interface AppCardDetails {
 export interface AppCardAction {
   title: string;
   target: {
-    app?: string;
+    receiver?: string;
     key: string;
   };
   parameters?: object;
@@ -79,7 +79,13 @@ export interface AppCardBadge {
 export interface AppCardLozenge {
   text: string;
   bold?: boolean;
-  appearance?: 'default' | 'success' | 'removed' | 'inprogress' | 'new' | 'moved';
+  appearance?:
+    | 'default'
+    | 'success'
+    | 'removed'
+    | 'inprogress'
+    | 'new'
+    | 'moved';
 }
 
 export interface AppCardUser {
@@ -113,19 +119,21 @@ export const applicationCard: NodeSpec = {
   inline: false,
   selectable: true,
   attrs: defaultAttrs,
-  parseDOM: [{
-    tag: 'div[data-node-type="media"]',
-    getAttrs: (dom: HTMLElement) => {
-      const attrs: Attributes = { text: '', title: { text: '' } };
+  parseDOM: [
+    {
+      tag: 'div[data-node-type="media"]',
+      getAttrs: (dom: HTMLElement) => {
+        const attrs: Attributes = { text: '', title: { text: '' } };
 
-      Object.keys(defaultAttrs).forEach(key => {
-        attrs[key] = dom.dataset[key];
-      });
+        Object.keys(defaultAttrs).forEach(key => {
+          attrs[key] = dom.dataset[key];
+        });
 
-      return attrs;
-    }
-  }],
+        return attrs;
+      },
+    },
+  ],
   toDOM(node: PMNode) {
     return ['div', node.attrs];
-  }
+  },
 };
