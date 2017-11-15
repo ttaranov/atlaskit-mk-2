@@ -18,6 +18,7 @@ import {
   ul,
   code,
   defaultSchema,
+  createEvent,
 } from '@atlaskit/editor-test-helpers';
 import ProviderFactory from '../../../../src/providerFactory';
 
@@ -40,6 +41,7 @@ const evilburnsEmojiId = {
 chai.use(chaiPlugin);
 
 describe('emojis', () => {
+  const event = createEvent('event');
   const providerFactory = new ProviderFactory();
   const editor = (doc: any) =>
     makeEditor<EmojiState>({
@@ -370,6 +372,26 @@ describe('emojis', () => {
     it('returns false when the emoji mark cannot be applied', () => {
       const { pluginState } = editor(doc(p(code('te{<>}xt'))));
       expect(pluginState.isEnabled()).to.equal(false);
+    });
+  });
+
+  describe('focused', () => {
+    context('when editor is focused', () => {
+      it('it is true', () => {
+        const { plugin, pluginState, editorView } = editor(doc(p('te{<>}xt')));
+        plugin.props.onFocus!(editorView, event);
+        expect(pluginState.focused).to.equal(true);
+        editorView.destroy();
+      });
+    });
+
+    context('when editor is not focused', () => {
+      it('it is false', () => {
+        const { plugin, pluginState, editorView } = editor(doc(p('te{<>}xt')));
+        plugin.props.onBlur!(editorView, event);
+        expect(pluginState.focused).to.equal(false);
+        editorView.destroy();
+      });
     });
   });
 });
