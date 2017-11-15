@@ -10888,8 +10888,8 @@ void-elements@^2.0.0, void-elements@^2.0.1:
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
 
 w3c-keyname@^1.1.0:
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/w3c-keyname/-/w3c-keyname-1.1.7.tgz#81f0943e294fa6c6db16c01edf27783168f06996"
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/w3c-keyname/-/w3c-keyname-1.1.8.tgz#4e2219663760fd6535b7a1550f1552d71fc9372c"
 
 walker@~1.0.5:
   version "1.0.7"
