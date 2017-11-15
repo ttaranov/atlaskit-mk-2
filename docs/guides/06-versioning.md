@@ -32,7 +32,7 @@ It's important to strike a balance here because the more contributions we get, t
 
 ## What's considered a breaking change?
 
-Breaking changes for things that are explicitly marked as public APIs. Stuff like:
+Breaking changes are for things that are explicitly marked as public API. Stuff like:
 
 - Named exports exposed via the main entry point.
 - Props (names as well as expected values).
