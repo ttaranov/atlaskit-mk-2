@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component, type ElementRef } from 'react';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import DatePickerStateless from './DatePickerStateless';
 import type { Handler } from '../types';
 import { parseDate } from '../util';
@@ -9,6 +10,7 @@ type Props = {
   isDisabled: boolean,
   disabled: Array<string>,
   onChange: Handler,
+  width: number,
 };
 
 type State = {
@@ -24,6 +26,7 @@ export default class DatePicker extends Component<Props, State> {
     isDisabled: false,
     disabled: [],
     onChange() {},
+    width: akGridSizeUnitless * 20,
   };
 
   state = {
@@ -40,21 +43,7 @@ export default class DatePicker extends Component<Props, State> {
 
   handleInputBlur = (e: FocusEvent) => {
     if (e.target instanceof HTMLInputElement) {
-      const parsedDate = parseDate(e.target.value);
-
-      if (parsedDate) {
-        this.onChange(parsedDate.value);
-        this.setState({
-          value: parsedDate.value,
-          displayValue: parsedDate.display,
-        });
-      } else {
-        // TODO: Display error message for invalid date.
-        this.setState({
-          value: null,
-          displayValue: '',
-        });
-      }
+      this.validate();
     }
   };
 
@@ -62,6 +51,10 @@ export default class DatePicker extends Component<Props, State> {
     if (e.target instanceof HTMLInputElement) {
       this.setState({ displayValue: e.target.value });
     }
+  };
+
+  handleTriggerValidate = () => {
+    this.validate();
   };
 
   handleTriggerOpen = () => {
@@ -99,6 +92,25 @@ export default class DatePicker extends Component<Props, State> {
     }
   };
 
+  // TODO: Check that the date is not disabled
+  validate() {
+    const parsedDate = parseDate(this.state.displayValue);
+
+    if (parsedDate) {
+      this.onChange(parsedDate.value);
+      this.setState({
+        value: parsedDate.value,
+        displayValue: parsedDate.display,
+      });
+    } else {
+      // TODO: Display error message for invalid date.
+      this.setState({
+        value: null,
+        displayValue: '',
+      });
+    }
+  }
+
   selectField() {
     if (this.datepicker) {
       this.datepicker.selectField();
@@ -114,9 +126,11 @@ export default class DatePicker extends Component<Props, State> {
         displayValue={this.state.displayValue}
         value={this.state.value}
         disabled={this.props.disabled}
+        width={this.props.width}
         onFieldBlur={this.handleInputBlur}
         onFieldChange={this.handleInputChange}
         onFieldTriggerOpen={this.handleTriggerOpen}
+        onFieldTriggerValidate={this.handleTriggerValidate}
         onIconClick={this.handleIconClick}
         onPickerBlur={this.handlePickerBlur}
         onPickerTriggerClose={this.handleTriggerClose}

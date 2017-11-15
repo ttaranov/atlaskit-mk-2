@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component, type ElementRef } from 'react';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import TimePickerStateless from './TimePickerStateless';
 import type { Handler } from '../types';
 import { parseTime } from '../util';
@@ -30,6 +31,7 @@ const defaultTimes = [
 type Props = {
   isDisabled: boolean,
   times: Array<string>,
+  width: number,
   onChange: Handler,
 };
 
@@ -38,7 +40,7 @@ type State = {
   displayValue: string,
   focused: ?string,
   isOpen: boolean,
-  visibleTimes: Array<string>
+  visibleTimes: Array<string>,
 };
 
 export default class DatePicker extends Component<Props, State> {
@@ -47,8 +49,9 @@ export default class DatePicker extends Component<Props, State> {
   static defaultProps = {
     isDisabled: false,
     times: defaultTimes,
+    width: akGridSizeUnitless * 20,
     onChange() {},
-  }
+  };
 
   state = {
     value: null,
@@ -68,13 +71,13 @@ export default class DatePicker extends Component<Props, State> {
     if (value !== this.state.value) {
       this.props.onChange(value);
     }
-  }
+  };
 
   handleInputBlur = (e: FocusEvent) => {
     if (e.target instanceof HTMLInputElement) {
       this.validate(this.state.displayValue);
     }
-  }
+  };
 
   handleInputChange = (e: Event) => {
     if (e.target instanceof HTMLInputElement) {
@@ -82,7 +85,7 @@ export default class DatePicker extends Component<Props, State> {
       this.setState({ displayValue: value });
       this.updateVisibleTimes(value, this.props.times);
     }
-  }
+  };
 
   handleInputKeyDown = (e: KeyboardEvent) => {
     // Handle opening the dialog, keyboard nav, closing the dialog, enter
@@ -103,20 +106,11 @@ export default class DatePicker extends Component<Props, State> {
         this.validate(this.state.focused);
       }
     }
-  }
-
-  handleIconClick = () => {
-    if (this.state.isOpen) {
-      this.setState({ isOpen: false });
-    } else {
-      this.openDialog();
-    }
-    this.selectField();
-  }
+  };
 
   handleUpdate = (time: string) => {
     this.validate(time);
-  }
+  };
 
   validate(value: string) {
     const parsedTime = parseTime(value);
@@ -140,16 +134,17 @@ export default class DatePicker extends Component<Props, State> {
   }
 
   updateVisibleTimes = (value: ?string, times: Array<string>) => {
-    const timeShouldBeVisible = (time: string) => (value ? time.startsWith(value) : true);
-    const visibleTimes = value
-      ? times.filter(timeShouldBeVisible)
-      : times;
+    const timeShouldBeVisible = (time: string) =>
+      value ? time.startsWith(value) : true;
+    const visibleTimes = value ? times.filter(timeShouldBeVisible) : times;
     this.setState({ visibleTimes });
 
     if (!this.state.focused || !timeShouldBeVisible(this.state.focused)) {
-      this.setState({ focused: visibleTimes.length > 0 ? visibleTimes[0] : null });
+      this.setState({
+        focused: visibleTimes.length > 0 ? visibleTimes[0] : null,
+      });
     }
-  }
+  };
 
   openDialog() {
     const visibleTimes = this.state.visibleTimes;
@@ -161,7 +156,9 @@ export default class DatePicker extends Component<Props, State> {
 
   selectNextItem() {
     const visibleTimes = this.state.visibleTimes;
-    const current = this.state.focused ? visibleTimes.indexOf(this.state.focused) : -1;
+    const current = this.state.focused
+      ? visibleTimes.indexOf(this.state.focused)
+      : -1;
     let next = current + 1;
     next = next > visibleTimes.length - 1 ? 0 : next;
     this.setState({ focused: visibleTimes[next] });
@@ -169,16 +166,12 @@ export default class DatePicker extends Component<Props, State> {
 
   selectPreviousItem() {
     const visibleTimes = this.state.visibleTimes;
-    const current = this.state.focused ? visibleTimes.indexOf(this.state.focused) : -1;
+    const current = this.state.focused
+      ? visibleTimes.indexOf(this.state.focused)
+      : -1;
     let previous = current - 1;
     previous = previous < 0 ? visibleTimes.length - 1 : previous;
     this.setState({ focused: visibleTimes[previous] });
-  }
-
-  selectField() {
-    if (this.timepicker) {
-      this.timepicker.selectField();
-    }
   }
 
   render() {
@@ -186,19 +179,18 @@ export default class DatePicker extends Component<Props, State> {
       <TimePickerStateless
         isDisabled={this.props.isDisabled}
         isOpen={this.state.isOpen}
-        shouldShowIcon
         displayValue={this.state.displayValue}
         value={this.state.value}
         times={this.state.visibleTimes}
         focused={this.state.focused}
-
+        width={this.props.width}
         onFieldBlur={this.handleInputBlur}
         onFieldChange={this.handleInputChange}
         onFieldKeyDown={this.handleInputKeyDown}
-        onIconClick={this.handleIconClick}
         onPickerUpdate={this.handleUpdate}
-
-        ref={ref => { this.timepicker = ref; }}
+        ref={ref => {
+          this.timepicker = ref;
+        }}
       />
     );
   }

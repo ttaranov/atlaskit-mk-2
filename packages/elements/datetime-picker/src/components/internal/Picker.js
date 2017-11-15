@@ -3,7 +3,7 @@
 import React, { Component, type ElementRef } from 'react';
 import Base from '@atlaskit/field-base';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
-import { akColorN60 } from '@atlaskit/util-shared-styles';
+import { akColorN60, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import type { Handler } from '../../types';
 
 type Props = {
@@ -19,13 +19,15 @@ type Props = {
   onIconClick: Handler,
   onPickerBlur: Handler,
   onPickerTriggerClose: Handler,
+  onFieldTriggerValidate: Handler,
   onPickerUpdate: Handler,
   dialog: ElementRef<any>,
   field: ElementRef<any>,
   dialogProps: { [string]: any },
+  width: number,
 };
 
-export default class BasePicker extends Component<Props> {
+export default class Picker extends Component<Props> {
   dialog: ?ElementRef<any>;
   field: ?ElementRef<any>;
 
@@ -36,10 +38,12 @@ export default class BasePicker extends Component<Props> {
     isOpen: false,
     shouldShowIcon: false,
     dialogProps: {},
+    width: null,
     onFieldBlur() {},
     onFieldChange() {},
     onFieldKeyDown() {},
     onFieldTriggerOpen() {},
+    onFieldTriggerValidate() {},
     onIconClick() {},
     onPickerBlur() {},
     onPickerTriggerClose() {},
@@ -81,6 +85,18 @@ export default class BasePicker extends Component<Props> {
     }
   };
 
+  getFieldWidth() {
+    if (!this.props.width) {
+      return undefined;
+    }
+
+    let fieldWidth = this.props.width - akGridSizeUnitless * 2;
+    if (this.props.shouldShowIcon) {
+      fieldWidth -= akGridSizeUnitless * 3;
+    }
+    return fieldWidth;
+  }
+
   render() {
     const Dialog = this.props.dialog;
     const Field = this.props.field;
@@ -92,6 +108,7 @@ export default class BasePicker extends Component<Props> {
         onBlur={this.props.onPickerBlur}
         onTriggerClose={this.props.onPickerTriggerClose}
         onUpdate={this.props.onPickerUpdate}
+        width={this.props.width}
         {...this.props.dialogProps}
         ref={ref => {
           this.dialog = ref;
@@ -103,7 +120,9 @@ export default class BasePicker extends Component<Props> {
             onChange={this.props.onFieldChange}
             onKeyDown={this.props.onFieldKeyDown}
             onTriggerOpen={this.props.onFieldTriggerOpen}
+            onTriggerValidate={this.props.onFieldTriggerValidate}
             value={this.props.displayValue}
+            width={this.getFieldWidth()}
             ref={ref => {
               this.field = ref;
             }}

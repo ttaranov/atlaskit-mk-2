@@ -12,9 +12,11 @@ type Props = {
   isOpen: boolean,
   isDisabled: boolean,
   disabled: Array<string>,
+  width: number,
   onFieldBlur: Handler,
   onFieldChange: Handler,
   onFieldTriggerOpen: Handler,
+  onFieldTriggerValidate: Handler,
   onIconClick: Handler,
   onPickerBlur: Handler,
   onPickerTriggerClose: Handler,
@@ -30,15 +32,17 @@ export default class DatePickerStateless extends Component<Props> {
     value: null,
     displayValue: '',
     disabled: [],
+    width: null,
 
     onFieldBlur() {},
     onFieldChange() {},
     onFieldTriggerOpen() {},
+    onFieldTriggerValidate() {},
     onIconClick() {},
     onPickerBlur() {},
     onPickerTriggerClose() {},
     onPickerUpdate() {},
-  }
+  };
 
   selectField() {
     if (this.picker) {
@@ -51,23 +55,24 @@ export default class DatePickerStateless extends Component<Props> {
       <Picker
         field={DateField}
         dialog={DateDialog}
-
         isDisabled={this.props.isDisabled}
         isOpen={this.props.isOpen}
         shouldShowIcon
         displayValue={this.props.displayValue}
         value={this.props.value}
         dialogProps={{ disabled: this.props.disabled }}
-
+        width={this.props.width}
         onFieldBlur={this.props.onFieldBlur}
         onFieldChange={this.props.onFieldChange}
         onFieldTriggerOpen={this.props.onFieldTriggerOpen}
+        onFieldTriggerValidate={this.props.onFieldTriggerValidate}
         onIconClick={this.props.onIconClick}
         onPickerBlur={this.props.onPickerBlur}
         onPickerTriggerClose={this.props.onPickerTriggerClose}
         onPickerUpdate={this.props.onPickerUpdate}
-
-        ref={ref => { this.picker = ref; }}
+        ref={ref => {
+          this.picker = ref;
+        }}
       />
     );
   }

@@ -13,10 +13,10 @@ type Props = {
   isOpen: boolean,
   isDisabled: boolean,
   times: Array<string>,
+  width: number,
   onFieldBlur: Handler,
   onFieldChange: Handler,
   onFieldKeyDown: Handler,
-  onIconClick: Handler,
   onPickerUpdate: Handler,
 };
 
@@ -30,13 +30,13 @@ export default class TimePickerStateless extends Component<Props> {
     displayValue: '',
     focused: null,
     times: [],
+    width: null,
 
     onFieldBlur() {},
     onFieldChange() {},
     onFieldKeyDown() {},
-    onIconClick() {},
     onPickerUpdate() {},
-  }
+  };
 
   selectField() {
     if (this.picker) {
@@ -49,24 +49,22 @@ export default class TimePickerStateless extends Component<Props> {
       <Picker
         field={TimeField}
         dialog={TimeDialog}
-
         isDisabled={this.props.isDisabled}
         isOpen={this.props.isOpen}
-        shouldShowIcon
         displayValue={this.props.displayValue}
         value={this.props.value}
         dialogProps={{
           value: this.props.focused,
           times: this.props.times,
         }}
-
+        width={this.props.width}
         onFieldBlur={this.props.onFieldBlur}
         onFieldChange={this.props.onFieldChange}
         onFieldKeyDown={this.props.onFieldKeyDown}
-        onIconClick={this.props.onIconClick}
         onPickerUpdate={this.props.onPickerUpdate}
-
-        ref={ref => { this.picker = ref; }}
+        ref={ref => {
+          this.picker = ref;
+        }}
       />
     );
   }

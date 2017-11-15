@@ -28,9 +28,11 @@ export default class TimeField extends Component<Props> {
   render() {
     return (
       <Input
-        placeholder="e.g. 9:00am"
+        placeholder="hh:MM"
         {...this.props}
-        ref={ref => { this.input = ref; }}
+        ref={ref => {
+          this.input = ref;
+        }}
       />
     );
   }
