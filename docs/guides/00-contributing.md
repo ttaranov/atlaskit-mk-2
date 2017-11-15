@@ -1,6 +1,6 @@
 # Contributing
 
-Although AtlasKit is responsible for the main development of their components, contributions from outside of our team account for a major part of our development. There's two types of contributions that we are capable of accepting:
+Although Atlaskit is responsible for the main development of their components, contributions from outside of our team account for a major part of our development. There are two types of contributions that we are capable of accepting:
 
 1. Open source
 2. Inter-team
@@ -19,15 +19,15 @@ The contribution may be initially sparked by several methods:
 
 - Water-cooler discussion with a colleague.
 - Issue raised by another team.
-- AtlasKit team member noticing similar implementations in products and raising it.
+- Atlaskit team member noticing similar implementations in products and raising it.
 
 Whatever the method, there should be an initial meeting that is held. This helps to build empathy across teams and get everyone on the same page. The goal of this meeting is to:
 
 1. Set initial action items for involved parties.
 2. Decide who will be the contributor from the external team.
-3. Decide who will be the shepherd from within the AtlasKit team.
+3. Decide who will be the shepherd from within the Atlaskit team.
 
-Contributors are always from external teams, and shepherds are always from within the AtlasKit team.
+Contributors are always from external teams, and shepherds are always from within the Atlaskit team.
 
 ### Sparring and design sign-off
 
