@@ -24,7 +24,10 @@ export default class Component extends React.Component<void, State> {
   render() {
     return (
       <div>
-        <Badge onValueUpdated={this.handleValueUpdated} value={this.state.value} />
+        <Badge
+          onValueUpdated={this.handleValueUpdated}
+          value={this.state.value}
+        />
         <button onClick={this.handleIncrement}>Increment</button>
       </div>
     );

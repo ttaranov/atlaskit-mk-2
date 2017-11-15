@@ -28,7 +28,10 @@ function appendToDir(dir /*: Directory */, child /*: Directory | File */) {
   return dir;
 }
 
-function buildFs(curDir /*: Directory */, [seg, ...restSegments] /*: Array<string> */) {
+function buildFs(
+  curDir /*: Directory */,
+  [seg, ...restSegments] /*: Array<string> */,
+) {
   if (!seg) return curDir;
 
   let item = findInDir(curDir, seg);

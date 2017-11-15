@@ -1,3 +1,3 @@
 export function isModuleNotFoundError(e) {
-  return (e.message.indexOf('Cannot find module') > -1);
+  return e.message.indexOf('Cannot find module') > -1;
 }

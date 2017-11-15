@@ -78,7 +78,8 @@ const attachments = `<span class="image-wrap" style="">
 </span>`;
 
 function getBody(html: string): HTMLBodyElement {
-  const dom = new DOMParser().parseFromString(html, 'text/html');
+  const parser: DOMParser = new (window as any).DOMParser();
+  const dom = parser.parseFromString(html, 'text/html');
   const fixedDOM = fixDoc(dom);
   return fixedDOM.querySelector('body')!;
 }
@@ -95,25 +96,27 @@ describe('fixDoc', () => {
     expect(body.children.length).to.be.equal(2);
   });
 
-    it('should match case 3 - v2', () => {
-      const body = getBody(`<p>foo<br>${attachments}</p>`);
-      expect(body.children.length).to.be.equal(2);
-    });
+  it('should match case 3 - v2', () => {
+    const body = getBody(`<p>foo<br>${attachments}</p>`);
+    expect(body.children.length).to.be.equal(2);
+  });
 
-    it('should not match case 4', () => {
-      const body = getBody(`<p>foo${attachments}<br>bar</p>`);
-      expect(body.children.length).to.be.equal(1);
-    });
+  it('should not match case 4', () => {
+    const body = getBody(`<p>foo${attachments}<br>bar</p>`);
+    expect(body.children.length).to.be.equal(1);
+  });
 
-    it('should not match case 5', () => {
-      const body = getBody(`<p>${attachments}bar</p>`);
-      expect(body.children.length).to.be.equal(1);
-    });
+  it('should not match case 5', () => {
+    const body = getBody(`<p>${attachments}bar</p>`);
+    expect(body.children.length).to.be.equal(1);
+  });
 
-    it('should maintain the position of other nodes', () => {
-      const body = getBody(`<p>Hello</p><p>foo<br>${attachments}<br>bar</p><p>World!</p>`);
-      expect(body.children.length).to.be.equal(5);
-      expect(body.children[0].textContent).to.be.equal('Hello');
-      expect(body.children[4].textContent).to.be.equal('World!');
-    });
+  it('should maintain the position of other nodes', () => {
+    const body = getBody(
+      `<p>Hello</p><p>foo<br>${attachments}<br>bar</p><p>World!</p>`,
+    );
+    expect(body.children.length).to.be.equal(5);
+    expect(body.children[0].textContent).to.be.equal('Hello');
+    expect(body.children[4].textContent).to.be.equal('World!');
+  });
 });

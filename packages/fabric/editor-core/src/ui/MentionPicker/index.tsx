@@ -4,7 +4,7 @@ import { PureComponent } from 'react';
 import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { MentionsState } from '../../plugins/mentions';
-import Popup from '../Popup';
+import { Popup } from '@atlaskit/editor-common';
 
 export interface Props {
   editorView?: EditorView;

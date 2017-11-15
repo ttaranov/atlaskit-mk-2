@@ -6,6 +6,7 @@ import { TableState } from './';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import TableFloatingControls from '../../ui/TableFloatingControls';
+import { tableStartPos } from '../../editor/plugins/table/utils';
 
 export interface TableRelativePosition {
   from: number;
@@ -104,15 +105,9 @@ export const createControlsDecoration = (pluginState: TableState, editorView: Ed
     node
   );
 
-  const pos = pluginState.tableStartPos() || 1;
+  const pos = tableStartPos(editorView.state) || 1;
 
   return [
     Decoration.widget(pos, node)
   ];
-};
-
-export const createHoverDecoration = (hoveredCells: {pos: number; node: Node}[]): Decoration[] => {
-  return hoveredCells.map(cell => {
-    return Decoration.node(cell.pos, cell.pos + cell.node!.nodeSize, {class: 'hoveredCell'});
-  });
 };

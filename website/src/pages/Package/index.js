@@ -15,7 +15,7 @@ import { packageExampleUrl } from '../../utils/url';
 import { packages } from '../../site';
 import type { Logs } from '../../components/ChangeLog';
 import LatestChangelog from './LatestChangelog';
-import { divvyChangelog } from '../../utils/changelog'
+import { divvyChangelog } from '../../utils/changelog';
 
 export const Title = styled.div`
   display: flex;
@@ -60,7 +60,7 @@ type PackageState = {
   pkg: Object | null,
   doc: Node | null,
   missing: boolean | null,
-  changelog: Logs
+  changelog: Logs,
 };
 
 function getPkg(packages, groupId, pkgId) {
@@ -71,7 +71,10 @@ function getPkg(packages, groupId, pkgId) {
   return pkg;
 }
 
-export default class Package extends React.Component<PackageProps, PackageState> {
+export default class Package extends React.Component<
+  PackageProps,
+  PackageState,
+> {
   state = { pkg: null, doc: null, missing: false, changelog: [] };
   props: PackageProps;
 
@@ -79,8 +82,13 @@ export default class Package extends React.Component<PackageProps, PackageState>
     this.loadDoc();
   }
 
-  componentWillReceiveProps({ match: { params: { groupId, pkgId } } }: PackageProps) {
-    if (groupId === this.props.match.params.groupId && pkgId === this.props.match.params.pkgId) {
+  componentWillReceiveProps({
+    match: { params: { groupId, pkgId } },
+  }: PackageProps) {
+    if (
+      groupId === this.props.match.params.groupId &&
+      pkgId === this.props.match.params.pkgId
+    ) {
       return;
     }
 
@@ -88,41 +96,44 @@ export default class Package extends React.Component<PackageProps, PackageState>
   }
 
   loadDoc() {
-    this.setState({ pkg: null, doc: null, changelog: [], missing: false }, () => {
-      let { groupId, pkgId } = this.props.match.params;
-      let pkg = getPkg(packages, groupId, pkgId);
-      let dirs = fs.getDirectories(pkg.children);
-      let files = fs.getFiles(pkg.children);
+    this.setState(
+      { pkg: null, doc: null, changelog: [], missing: false },
+      () => {
+        let { groupId, pkgId } = this.props.match.params;
+        let pkg = getPkg(packages, groupId, pkgId);
+        let dirs = fs.getDirectories(pkg.children);
+        let files = fs.getFiles(pkg.children);
 
-      let json = fs.getById(files, 'package.json');
-      let changelog = fs.maybeGetById(files, 'CHANGELOG.md');
-      let docs = fs.maybeGetById(dirs, 'docs');
-      // let examples = fs.maybeGetById(dirs, 'examples');
+        let json = fs.getById(files, 'package.json');
+        let changelog = fs.maybeGetById(files, 'CHANGELOG.md');
+        let docs = fs.maybeGetById(dirs, 'docs');
+        // let examples = fs.maybeGetById(dirs, 'examples');
 
+        let doc;
+        if (docs) {
+          doc = fs.find(docs, () => {
+            return true;
+          });
+        }
 
-      let doc;
-      if (docs) {
-        doc = fs.find(docs, () => {
-          return true;
-        });
-      }
-
-      Promise.all([
-        json.exports(),
-        doc && doc.exports().then(mod => mod.default),
-        changelog && changelog.contents().then(changelog => divvyChangelog(changelog))
-      ])
-        .then(([pkg, doc, changelog]) => {
-          this.setState({ pkg, doc, changelog: changelog || [] });
-        })
-        .catch(err => {
-          if (isModuleNotFoundError(err)) {
-            this.setState({ missing: true });
-          } else {
-            throw err;
-          }
-        });
-    });
+        Promise.all([
+          json.exports(),
+          doc && doc.exports().then(mod => mod.default),
+          changelog &&
+            changelog.contents().then(changelog => divvyChangelog(changelog)),
+        ])
+          .then(([pkg, doc, changelog]) => {
+            this.setState({ pkg, doc, changelog: changelog || [] });
+          })
+          .catch(err => {
+            if (isModuleNotFoundError(err)) {
+              this.setState({ missing: true });
+            } else {
+              throw err;
+            }
+          });
+      },
+    );
   }
 
   render() {
@@ -145,14 +156,22 @@ export default class Package extends React.Component<PackageProps, PackageState>
       <Page>
         <Title>
           <h1>{fs.titleize(pkgId)}</h1>
-          <LinkButton to={packageExampleUrl(groupId, pkgId)}>Examples</LinkButton>
+          <LinkButton to={packageExampleUrl(groupId, pkgId)}>
+            Examples
+          </LinkButton>
         </Title>
         <Intro>{pkg.description}</Intro>
         <MetaData
           packageName={pkg.name}
-          packageSrc={`https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/packages/${groupId}/${pkgId}`}
+          packageSrc={`https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/packages/${
+            groupId
+          }/${pkgId}`}
         />
-        <LatestChangelog changelog={changelog} pkgId={pkgId} groupId={groupId} />
+        <LatestChangelog
+          changelog={changelog}
+          pkgId={pkgId}
+          groupId={groupId}
+        />
         <Sep />
         {doc || <NoDocs name={pkgId} />}
       </Page>

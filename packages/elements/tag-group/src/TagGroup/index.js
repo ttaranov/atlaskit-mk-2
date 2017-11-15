@@ -17,10 +17,6 @@ export default class TagGroup extends PureComponent<Props> {
   render() {
     const { alignment, children } = this.props;
 
-    return (
-      <Container justify={alignment}>
-        {children}
-      </Container>
-    );
+    return <Container justify={alignment}>{children}</Container>;
   }
 }

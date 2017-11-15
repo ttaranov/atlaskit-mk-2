@@ -17,7 +17,9 @@ type RouterLinkProps = {
   pathname: string,
 };
 
-const SubNavWrapper = styled.div`padding: 0 0 0 ${() => gridSize() * 2}px;`;
+const SubNavWrapper = styled.div`
+  padding: 0 0 0 ${() => gridSize() * 2}px;
+`;
 
 export function isSubNavExpanded(to: string, pathname: string): boolean {
   const lastSeg = to.split('/').pop();
@@ -39,7 +41,12 @@ const RouterLink = ({
 }: RouterLinkProps) => {
   return (
     <div key={pathname}>
-      <Link to={href} replace={replace} className={className} style={{ color: 'inherit' }}>
+      <Link
+        to={href}
+        replace={replace}
+        className={className}
+        style={{ color: 'inherit' }}
+      >
         {children}
       </Link>
       {subNav &&
@@ -53,10 +60,16 @@ const RouterLink = ({
 export const RouterNavigationItem = (props: any) => (
   <AkNavigationItem
     linkComponent={linkProps => (
-      <RouterLink pathname={props.pathname} subNav={props.subNav} {...linkProps} />
+      <RouterLink
+        pathname={props.pathname}
+        subNav={props.subNav}
+        {...linkProps}
+      />
     )}
     {...props}
   />
 );
 
-export const ExternalNavigationItem = (props: any) => <AkNavigationItem {...props} target="_new" />;
+export const ExternalNavigationItem = (props: any) => (
+  <AkNavigationItem {...props} target="_new" />
+);

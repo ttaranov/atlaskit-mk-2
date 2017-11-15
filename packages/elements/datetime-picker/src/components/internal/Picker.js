@@ -9,9 +9,9 @@ import type { Handler } from '../../types';
 type Props = {
   value: ?string,
   displayValue: string,
-  isDisabled: bool,
-  isOpen: bool,
-  shouldShowIcon: bool,
+  isDisabled: boolean,
+  isOpen: boolean,
+  shouldShowIcon: boolean,
   onFieldBlur: Handler,
   onFieldChange: Handler,
   onFieldTriggerOpen: Handler,
@@ -43,7 +43,7 @@ export default class BasePicker extends Component<Props> {
     onPickerBlur() {},
     onPickerTriggerClose() {},
     onPickerUpdate() {},
-  }
+  };
 
   // Use a MouseDown event instead of a Click event so it is fired before the Blur event.
   handleIconMouseDown = (e: MouseEvent) => {
@@ -51,7 +51,7 @@ export default class BasePicker extends Component<Props> {
       e.preventDefault();
       this.props.onIconClick(e);
     }
-  }
+  };
 
   maybeRenderIcon() {
     if (!this.props.shouldShowIcon) {
@@ -76,7 +76,7 @@ export default class BasePicker extends Component<Props> {
 
   selectField = () => {
     this.field.select();
-  }
+  };
 
   render() {
     const Dialog = this.props.dialog;
@@ -90,7 +90,9 @@ export default class BasePicker extends Component<Props> {
         onTriggerClose={this.props.onPickerTriggerClose}
         onUpdate={this.props.onPickerUpdate}
         {...this.props.dialogProps}
-        ref={ref => { this.dialog = ref; }}
+        ref={ref => {
+          this.dialog = ref;
+        }}
       >
         <Base isDisabled={this.props.isDisabled}>
           <Field
@@ -98,7 +100,9 @@ export default class BasePicker extends Component<Props> {
             onChange={this.props.onFieldChange}
             onTriggerOpen={this.props.onFieldTriggerOpen}
             value={this.props.displayValue}
-            ref={ref => { this.field = ref; }}
+            ref={ref => {
+              this.field = ref;
+            }}
           />
           {this.maybeRenderIcon()}
         </Base>
@@ -106,4 +110,3 @@ export default class BasePicker extends Component<Props> {
     );
   }
 }
-

@@ -3,6 +3,8 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import styled, { injectGlobal } from 'styled-components';
+import LayerManager from '@atlaskit/layer-manager';
+
 import type { Directory } from '../types';
 import * as fs from '../utils/fs';
 
@@ -20,17 +22,6 @@ import Nav from './Nav';
 
 // eslint-disable-next-line
 injectGlobal`
-  *, ::before, ::after {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-  }
-
-  html, body, #app {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-
   body {
     margin: 0;
     font-family:
@@ -40,46 +31,52 @@ injectGlobal`
 `;
 
 const AppContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
 `;
 
 const AppContent = styled.div`
-  position: absolute;
-  left: 20rem;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  overflow: auto;
+  flex: 1 1 auto;
 `;
 
 export default function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/examples/:groupId?/:pkgId?/:exampleId*" component={Examples} />
+        <Route
+          path="/examples/:groupId?/:pkgId?/:exampleId*"
+          component={Examples}
+        />
         <Route>
-          <AppContainer>
-            <Nav />
-            <AppContent>
-              <Switch>
-                <Route exact path="/" component={Home} />
-                <Route path="/docs/:docId*" component={Document} />
-                <Route path="/patterns" component={PatternsInfo} exact />
-                <Route path="/patterns/:patternId*" component={Pattern} />} />
-                <Route
-                  path="/mk-2/packages/:groupId/:pkgId/docs/:docId"
-                  component={PackageDocument}
-                />
-                <Route path="/packages/:groupId/:pkgId" component={Package} />
-                <Route path="/mk-2/packages/:groupId/:pkgId" component={Package} />
-                <Route path="/packages" component={PackagesList} />
-                <Route path="/changelog/:groupId/:pkgId/:semver?" component={ChangeLogExplorer} />
-                <Route component={FourOhFour} />
-              </Switch>
-            </AppContent>
-          </AppContainer>
+          <LayerManager>
+            <AppContainer>
+              <Nav />
+              <AppContent>
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  <Route path="/docs/:docId*" component={Document} />
+                  <Route path="/patterns" component={PatternsInfo} exact />
+                  <Route path="/patterns/:patternId*" component={Pattern} />} />
+                  <Route
+                    path="/mk-2/packages/:groupId/:pkgId/docs/:docId"
+                    component={PackageDocument}
+                  />
+                  <Route path="/packages/:groupId/:pkgId" component={Package} />
+                  <Route
+                    path="/mk-2/packages/:groupId/:pkgId"
+                    component={Package}
+                  />
+                  <Route path="/packages" component={PackagesList} />
+                  <Route
+                    path="/changelog/:groupId/:pkgId/:semver?"
+                    component={ChangeLogExplorer}
+                  />
+                  <Route component={FourOhFour} />
+                </Switch>
+              </AppContent>
+            </AppContainer>
+          </LayerManager>
         </Route>
       </Switch>
     </BrowserRouter>

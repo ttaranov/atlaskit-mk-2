@@ -1,10 +1,10 @@
 {
   "name": "@atlaskit/lozenge",
-  "version": "3.4.4",
+  "version": "3.4.5",
   "description": "A React component that highlights status for quick recognition",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
-  "src": "src/index.js",
+  "atlaskit:src": "src/index.js",
   "files": [
     "dist"
   ],
@@ -20,13 +20,13 @@
   "dependencies": {
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.26.0",
-    "styled-components": "^1.4.3"
+    "styled-components": "^1.4.6"
   },
   "peerDependencies": {
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^0.0.2",
+    "@atlaskit/docs": "^0.0.3",
     "enzyme": "^2.9.1",
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1"

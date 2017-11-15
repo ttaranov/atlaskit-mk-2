@@ -17,7 +17,7 @@ type JestMockFn<TArguments: $ReadOnlyArray<*>, TReturn> = {
      * An array that contains all the object instances that have been
      * instantiated from this mock function.
      */
-    instances: Array<TReturn>
+    instances: Array<TReturn>,
   },
   /**
    * Resets all information stored in the mockFn.mock.calls and
@@ -66,14 +66,14 @@ type JestMockFn<TArguments: $ReadOnlyArray<*>, TReturn> = {
   /**
    * Sugar for only returning a value once inside your mock
    */
-  mockReturnValueOnce(value: TReturn): JestMockFn<TArguments, TReturn>
+  mockReturnValueOnce(value: TReturn): JestMockFn<TArguments, TReturn>,
 };
 
 type JestAsymmetricEqualityType = {
   /**
    * A custom Jasmine equality tester
    */
-  asymmetricMatch(value: mixed): boolean
+  asymmetricMatch(value: mixed): boolean,
 };
 
 type JestCallsType = {
@@ -83,19 +83,19 @@ type JestCallsType = {
   count(): number,
   first(): mixed,
   mostRecent(): mixed,
-  reset(): void
+  reset(): void,
 };
 
 type JestClockType = {
   install(): void,
   mockDate(date: Date): void,
   tick(milliseconds?: number): void,
-  uninstall(): void
+  uninstall(): void,
 };
 
 type JestMatcherResult = {
   message?: string | (() => string),
-  pass: boolean
+  pass: boolean,
 };
 
 type JestMatcher = (actual: any, expected: any) => JestMatcherResult;
@@ -110,7 +110,7 @@ type JestPromiseType = {
    * Use resolves to unwrap the value of a fulfilled promise so any other
    * matcher can be chained. If the promise is rejected the assertion fails.
    */
-  resolves: JestExpectType
+  resolves: JestExpectType,
 };
 
 /**
@@ -277,7 +277,7 @@ type JestExpectType = {
    * Use .toThrowErrorMatchingSnapshot to test that a function throws a error
    * matching the most recent snapshot when it is called.
    */
-  toThrowErrorMatchingSnapshot(): void
+  toThrowErrorMatchingSnapshot(): void,
 };
 
 type JestObjectType = {
@@ -352,7 +352,7 @@ type JestObjectType = {
   mock(
     moduleName: string,
     moduleFactory?: any,
-    options?: Object
+    options?: Object,
   ): JestObjectType,
   /**
    * Resets the module registry - the cache of all required modules. This is
@@ -410,21 +410,33 @@ type JestObjectType = {
    * Creates a mock function similar to jest.fn but also tracks calls to
    * object[methodName].
    */
-  spyOn(object: Object, methodName: string): JestMockFn<any, any>
+  spyOn(object: Object, methodName: string): JestMockFn<any, any>,
 };
 
 type JestSpyType = {
-  calls: JestCallsType
+  calls: JestCallsType,
 };
 
 /** Runs this function after every test inside this context */
-declare function afterEach(fn: (done: () => void) => ?Promise<mixed>, timeout?: number): void;
+declare function afterEach(
+  fn: (done: () => void) => ?Promise<mixed>,
+  timeout?: number,
+): void;
 /** Runs this function before every test inside this context */
-declare function beforeEach(fn: (done: () => void) => ?Promise<mixed>, timeout?: number): void;
+declare function beforeEach(
+  fn: (done: () => void) => ?Promise<mixed>,
+  timeout?: number,
+): void;
 /** Runs this function after all tests have finished inside this context */
-declare function afterAll(fn: (done: () => void) => ?Promise<mixed>, timeout?: number): void;
+declare function afterAll(
+  fn: (done: () => void) => ?Promise<mixed>,
+  timeout?: number,
+): void;
 /** Runs this function before any tests have started inside this context */
-declare function beforeAll(fn: (done: () => void) => ?Promise<mixed>, timeout?: number): void;
+declare function beforeAll(
+  fn: (done: () => void) => ?Promise<mixed>,
+  timeout?: number,
+): void;
 
 /** A context for grouping tests together */
 declare var describe: {
@@ -444,7 +456,6 @@ declare var describe: {
   skip(name: string, fn: () => void): void,
 };
 
-
 /** An individual test unit */
 declare var it: {
   /**
@@ -454,7 +465,11 @@ declare var it: {
    * @param {Function} Test
    * @param {number} Timeout for the test, in milliseconds.
    */
-  (name: string, fn?: (done: () => void) => ?Promise<mixed>, timeout?: number): void,
+  (
+    name: string,
+    fn?: (done: () => void) => ?Promise<mixed>,
+    timeout?: number,
+  ): void,
   /**
    * Only run this test
    *
@@ -462,7 +477,11 @@ declare var it: {
    * @param {Function} Test
    * @param {number} Timeout for the test, in milliseconds.
    */
-  only(name: string, fn?: (done: () => void) => ?Promise<mixed>, timeout?: number): void,
+  only(
+    name: string,
+    fn?: (done: () => void) => ?Promise<mixed>,
+    timeout?: number,
+  ): void,
   /**
    * Skip running this test
    *
@@ -470,7 +489,11 @@ declare var it: {
    * @param {Function} Test
    * @param {number} Timeout for the test, in milliseconds.
    */
-  skip(name: string, fn?: (done: () => void) => ?Promise<mixed>, timeout?: number): void,
+  skip(
+    name: string,
+    fn?: (done: () => void) => ?Promise<mixed>,
+    timeout?: number,
+  ): void,
   /**
    * Run the test concurrently
    *
@@ -478,7 +501,11 @@ declare var it: {
    * @param {Function} Test
    * @param {number} Timeout for the test, in milliseconds.
    */
-  concurrent(name: string, fn?: (done: () => void) => ?Promise<mixed>, timeout?: number): void,
+  concurrent(
+    name: string,
+    fn?: (done: () => void) => ?Promise<mixed>,
+    timeout?: number,
+  ): void,
 };
 declare function fit(
   name: string,
@@ -512,7 +539,7 @@ declare var expect: {
   objectContaining(value: Object): void,
   /** Matches any received string that contains the exact expected string. */
   stringContaining(value: string): void,
-  stringMatching(value: string | RegExp): void
+  stringMatching(value: string | RegExp): void,
 };
 
 // TODO handle return type
@@ -535,8 +562,8 @@ declare var jasmine: {
   createSpy(name: string): JestSpyType,
   createSpyObj(
     baseName: string,
-    methodNames: Array<string>
+    methodNames: Array<string>,
   ): { [methodName: string]: JestSpyType },
   objectContaining(value: Object): void,
-  stringMatching(value: string): void
+  stringMatching(value: string): void,
 };

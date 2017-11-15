@@ -103,7 +103,11 @@ function converter(schema: Schema, content: Fragment, node: Node): Fragment | PM
       case 'U':
         return content ? addMarks(content, [schema.marks.underline.create()]) : null;
       case 'A':
-        return content ? addMarks(content, [schema.marks.link.create({ href: node.getAttribute('href') })]) : null;
+        const href = node.getAttribute('href');
+        if (content) {
+          return href ? addMarks(content, [schema.marks.link.create({ href })]) : content;
+        }
+        return null;
       // Nodes
       case 'BLOCKQUOTE':
         return schema.nodes.blockquote.createChecked({},

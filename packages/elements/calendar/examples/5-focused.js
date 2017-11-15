@@ -4,7 +4,7 @@ import React from 'react';
 import { CalendarStateless } from '../src';
 import { notToday, today } from './_';
 
-export default() => (
+export default () => (
   <div>
     <h2>Today</h2>
     <CalendarStateless focused={today} />
