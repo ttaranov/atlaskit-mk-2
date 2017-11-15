@@ -1,18 +1,20 @@
 import * as React from 'react';
+import { EditorState, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import { Node as PmNode } from 'prosemirror-model';
 import { Popup } from '@atlaskit/editor-common';
 import ToolbarButton from '../ToolbarButton';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditIcon from '@atlaskit/icon/glyph/editor/edit';
 import { Toolbar, Separator } from './styles';
-import { MacroProvider } from '../../editor/plugins/macro/types';
+import { MacroProvider, MacroADF } from '../../editor/plugins/macro/types';
 
 export interface Props {
   editorView: EditorView;
   macroElement: HTMLElement | null;
   macroProvider: MacroProvider | null;
-  onInsertMacroFromMacroBrowser: (view: EditorView, macroProvider: MacroProvider) => void;
-  onRemoveMacro: (view: EditorView) => void;
+  onInsertMacroFromMacroBrowser: (state: EditorState, dispatch: (tr: Transaction) => void, macroProvider: MacroProvider, macroNode?: PmNode) => Promise<MacroADF>;
+  onRemoveMacro: (state: EditorState, dispatch: (tr: Transaction) => void) => void;
 }
 
 export default class MacroEdit extends React.Component<any, any> {
@@ -47,19 +49,18 @@ export default class MacroEdit extends React.Component<any, any> {
 
   private onEdit = () => {
     const {
-      editorView,
       macroProvider,
-      onInsertMacroFromMacroBrowser
+      onInsertMacroFromMacroBrowser,
+      editorView: { state, dispatch }
     } = this.props;
-    const { nodeAfter } = editorView.state.selection.$from;
+    const { nodeAfter } = state.selection.$from;
     if (nodeAfter) {
-      const { name, params } = nodeAfter.attrs;
-      onInsertMacroFromMacroBrowser(editorView, macroProvider, { name, params });
+      onInsertMacroFromMacroBrowser(state, dispatch, macroProvider, nodeAfter);
     }
   }
 
   private onRemoveMacro = () => {
-    const { editorView, onRemoveMacro } = this.props;
-    onRemoveMacro(editorView);
+    const { editorView: { state, dispatch }, onRemoveMacro } = this.props;
+    onRemoveMacro(state, dispatch);
   }
 }

@@ -155,7 +155,7 @@ class Example extends Component<ExampleProps, ExampleState> {
                   allowJiraIssue={true}
                   allowUnsupportedContent={true}
                   allowPanel={true}
-                  allowInlineMacro={true}
+                  allowInlineExtension={true}
                   allowConfluenceInlineComment={true}
                   mediaProvider={storyMediaProviderFactory()}
                   emojiProvider={emojiStoryData.getEmojiResource({ uploadSupported: true })}
