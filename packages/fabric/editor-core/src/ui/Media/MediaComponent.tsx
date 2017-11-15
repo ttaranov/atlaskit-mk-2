@@ -70,7 +70,6 @@ function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
 }
 
 export default class MediaComponent extends React.PureComponent<Props, State> {
-  private thumbnailWm = new WeakMap();
   private destroyed = false;
 
   state: State = {
