@@ -38,17 +38,20 @@ export const Overlay = styled.div`
 export const PlaceholderFallback = styled.span`
   background: ${akColorN20};
   border: 1px solid ${akColorN40};
-  padding: 3px 6px;
+  padding: 2px;
 
   .ProseMirror-selectednode & {
     border-color: ${akColorN20};
+  }
+  & > span {
+    vertical-align: middle;
   }
 `;
 
 // tslint:disable-next-line:variable-name
 export const PlaceholderFallbackParams = styled.span`
   text-overflow: ellipsis;
-  width: 200px;
+  width: 198px;
   white-space: nowrap;
   display: inline-block;
   overflow: hidden;

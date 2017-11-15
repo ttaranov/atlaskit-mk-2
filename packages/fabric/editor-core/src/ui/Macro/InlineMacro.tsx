@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { Node as PmNode } from 'prosemirror-model';
+import EditorFileIcon from '@atlaskit/icon/glyph/editor/file';
 import { MacroProvider } from '../../editor/plugins/macro/types';
 import {
   Placeholder,
@@ -51,7 +52,10 @@ export default class InlineMacro extends Component<Props, any> {
 
     return (
       <PlaceholderFallback>
-        {placeholderUrl && <img src={`${macroProvider.config.placeholderBaseUrl}${placeholderUrl}`} alt={extensionKey} />}
+        {placeholderUrl
+          ? <img src={`${macroProvider.config.placeholderBaseUrl}${placeholderUrl}`} alt={extensionKey} />
+          : <EditorFileIcon label={extensionKey} />
+        }
         {capitalizeFirstLetter(extensionKey)}
         <PlaceholderFallbackParams>
           {Object.keys(macroParams).map(key => (key === 'macroId' ? '' : ` | ${key} = ${macroParams[key].value}`))}
