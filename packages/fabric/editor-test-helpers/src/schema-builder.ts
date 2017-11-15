@@ -328,9 +328,8 @@ export const confluenceJiraIssue = (attrs: {
   server?: string;
   serverId?: string;
 }) => sampleSchema.nodes.confluenceJiraIssue.create(attrs);
-export const inlineMacro = (attrs: {
-  macroId: string;
-  name: string;
-  placeholderUrl?: string;
-  params?: object;
-}) => sampleSchema.nodes.inlineMacro.create(attrs);
+export const inlineExtension = (attrs: {
+  extensionKey: string;
+  extensionType: string;
+  parameters?: object;
+}) => sampleSchema.nodes.inlineExtension.create(attrs);

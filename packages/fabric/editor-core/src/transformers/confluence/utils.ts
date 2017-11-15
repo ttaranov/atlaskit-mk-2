@@ -1,19 +1,16 @@
-import {
-  Fragment,
-  Mark,
-  Node as PMNode,
-  Schema
-} from 'prosemirror-model';
+import { Fragment, Mark, Node as PMNode, Schema } from 'prosemirror-model';
 
 import { normalizeHexColor } from '../../utils/color';
 import { AC_XMLNS } from './encode-cxhtml';
-import { Macro } from './types';
-import { getMacroType } from '../../editor/plugins/macro/utils';
+import { Macro, DisplayType, BodyType, MacroType } from './types';
 
 /**
  * Deduce a set of marks from a style declaration.
  */
-export function marksFromStyle(schema: Schema, style: CSSStyleDeclaration): Mark[] {
+export function marksFromStyle(
+  schema: Schema,
+  style: CSSStyleDeclaration,
+): Mark[] {
   let marks: Mark[] = [];
 
   styles: for (let i = 0; i < style.length; i++) {
@@ -33,7 +30,9 @@ export function marksFromStyle(schema: Schema, style: CSSStyleDeclaration): Mark
         }
         break;
       case 'color':
-        marks = schema.marks.textColor.create({ color: normalizeHexColor(value) }).addToSet(marks);
+        marks = schema.marks.textColor
+          .create({ color: normalizeHexColor(value) })
+          .addToSet(marks);
         continue styles;
       case 'font-family':
         if (value === 'monospace') {
@@ -68,7 +67,9 @@ export function getNodeMarkOfType(node: PMNode, markType): Mark | null {
   if (!node.marks) {
     return null;
   }
-  const foundMarks = node.marks.filter(mark => mark.type.name === markType.name);
+  const foundMarks = node.marks.filter(
+    mark => mark.type.name === markType.name,
+  );
   return foundMarks.length ? foundMarks[foundMarks.length - 1] : null;
 }
 
@@ -86,7 +87,7 @@ export function findTraversalPath(roots: Node[]) {
   const outqueue = [] as Node[];
 
   let elem;
-  while (elem = inqueue.shift()) {
+  while ((elem = inqueue.shift())) {
     outqueue.push(elem);
     let children;
     if (isNodeSupportedContent(elem) && (children = childrenOfNode(elem))) {
@@ -131,7 +132,10 @@ export function children(fragment: Fragment): PMNode[] {
  * @param node
  */
 function isNodeSupportedContent(node: Node): boolean {
-  if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.CDATA_SECTION_NODE) {
+  if (
+    node.nodeType === Node.TEXT_NODE ||
+    node.nodeType === Node.CDATA_SECTION_NODE
+  ) {
     return true;
   }
 
@@ -193,7 +197,10 @@ export function getAcTagContent(node: Element, tagName: string): string | null {
   return null;
 }
 
-export function getAcTagChildNodes(node: Element, tagName: string): NodeList | null {
+export function getAcTagChildNodes(
+  node: Element,
+  tagName: string,
+): NodeList | null {
   const child = getAcTagNode(node, tagName);
   if (child) {
     // return html collection only if childNodes are found
@@ -213,32 +220,45 @@ export function getAcTagNode(node: Element, tagName: string): Element | null {
 }
 
 export function getMacroAttribute(node: Element, attribute: string): string {
-  return (node.getAttribute('data-macro-' + attribute) || '');
+  return node.getAttribute('data-macro-' + attribute) || '';
 }
 
 export function getMacroParameters(node: Element): any {
   const params = {};
 
-  getMacroAttribute(node, 'parameters').split('|').forEach(paramStr => {
-    const param = paramStr.split('=');
-    if (param.length) {
-      params[param[0]] = param[1];
-    }
-  });
+  getMacroAttribute(node, 'parameters')
+    .split('|')
+    .forEach(paramStr => {
+      const param = paramStr.split('=');
+      if (param.length) {
+        params[param[0]] = param[1];
+      }
+    });
   return params;
 }
 
-export function createCodeFragment(schema: Schema, codeContent: string, language?: string | null, title?: string | null): Fragment {
+export function createCodeFragment(
+  schema: Schema,
+  codeContent: string,
+  language?: string | null,
+  title?: string | null,
+): Fragment {
   const content: PMNode[] = [];
   let nodeSize = 0;
 
   if (!!title) {
-    const titleNode = schema.nodes.heading.create({ level: 5 }, schema.text(title));
+    const titleNode = schema.nodes.heading.create(
+      { level: 5 },
+      schema.text(title),
+    );
     content.push(titleNode);
     nodeSize += titleNode.nodeSize;
   }
 
-  const codeBlockNode = schema.nodes.codeBlock.create({ language }, schema.text(codeContent));
+  const codeBlockNode = schema.nodes.codeBlock.create(
+    { language },
+    schema.text(codeContent),
+  );
 
   content.push(codeBlockNode);
   nodeSize += codeBlockNode.nodeSize;
@@ -256,7 +276,10 @@ export function hasClass(node: Element, className: string): boolean {
 /*
  * Contructs a struct string of replacement blocks and marks for a given node
  */
-export function getContent(node: Node, convertedNodes: WeakMap<Node, Fragment | PMNode>): Fragment {
+export function getContent(
+  node: Node,
+  convertedNodes: WeakMap<Node, Fragment | PMNode>,
+): Fragment {
   let fragment = Fragment.fromArray([]);
   for (let childIndex = 0; childIndex < node.childNodes.length; childIndex++) {
     const child = node.childNodes[childIndex];
@@ -285,9 +308,8 @@ export function parseMacro(node: Element): Macro {
       if (key) {
         params[key.toLowerCase()] = value;
       }
-    }
-    // example: <fab:placeholder-url>, <fab:display-type>, <ac:rich-text-body>
-    else {
+    } else {
+      // example: <fab:placeholder-url>, <fab:display-type>, <ac:rich-text-body>
       properties[nodeName.toLowerCase()] = value;
     }
   }
@@ -295,8 +317,32 @@ export function parseMacro(node: Element): Macro {
   const macroType = getMacroType(
     properties['fab:display-type'],
     params['plain-text-body'],
-    params['rich-text-body']
+    params['rich-text-body'],
   );
 
   return { macroId, macroName, properties, params, macroType };
 }
+
+export const getMacroType = (
+  displayType: DisplayType,
+  plainTextBody?: string,
+  richTextBody?: any,
+): MacroType => {
+  let bodyType: BodyType = 'BODYLESS';
+
+  if (richTextBody) {
+    bodyType = 'RICH-TEXT-BODY';
+  } else if (plainTextBody) {
+    bodyType = 'PLAIN-TEXT-BODY';
+  }
+
+  return `${bodyType}-${displayType}` as MacroType;
+};
+
+export const getExtensionMacroParams = (params: object, macroId?: string) => {
+  const macroParams = {};
+  Object.keys(params).forEach(key => {
+    macroParams[key] = { value: params[key] };
+  });
+  return { macroId: { value: macroId }, ...macroParams };
+};

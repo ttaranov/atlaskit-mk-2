@@ -1,36 +1,28 @@
-export type DisplayType = 'INLINE' | 'BLOCK';
+import { Node as PmNode } from 'prosemirror-model';
 
-export type BodyType = 'BODYLESS' | 'RICH-TEXT-BODY' | 'PLAIN-TEXT-BODY';
+export type MacroType = 'extension' | 'inlineExtension';
 
-export type MacroType =
-  | 'BODYLESS-INLINE'
-  | 'BODYLESS-BLOCK'
-  | 'RICH-TEXT-BODY-BLOCK'
-  | 'PLAIN-TEXT-BODY-BLOCK';
-
-export interface Macro {
-  macroId: string;
-  name: string;
-  placeholderUrl: string;
-  params: any; // (all "<ac:parameter>")
-  displayType: DisplayType;
-  plainTextBody?: string;
-  richTextBody?: any; // could have nested macros
-}
-
-export interface MacroParams {
-  name: string;
-  params: any;
-}
-
-export interface MacroConfig {
-  placeholderBaseUrl: string;
+export interface MacroADF {
+  type: MacroType;
+  attrs: {
+    extensionKey: string;
+    extensionType: string;
+    bodyType?: 'none' | 'plain' | 'rich'; // inlineExtension doesn't have this field
+    parameters?: {
+      macroParams?: object;
+      macroMetadata?: object;
+    };
+    text?: string; // fallback text
+  };
+  content?: any; // inlineExtension doesn't have any content
 }
 
 export interface MacroProvider {
-  config: MacroConfig;
+  config: {
+    placeholderBaseUrl: string;
+  };
   /**
    * If "macro" param is passed in, it will open macro browser for editing the macro
    */
-  openMacroBrowser(macroParams?: MacroParams): Promise<Macro>;
+  openMacroBrowser(macroNode?: PmNode): Promise<MacroADF>;
 }

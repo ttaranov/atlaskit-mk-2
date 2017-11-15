@@ -42,7 +42,6 @@ export default createSchema({
     'decisionItem',
     'taskList',
     'taskItem',
-    'inlineMacro',
     'extension',
     'inlineExtension',
   ],
