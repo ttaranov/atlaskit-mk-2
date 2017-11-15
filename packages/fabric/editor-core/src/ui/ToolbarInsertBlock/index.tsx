@@ -2,7 +2,7 @@ import * as React from 'react';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
 import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
 import TableIcon from '@atlaskit/icon/glyph/editor/table';
-import MediaIcon from '@atlaskit/icon/glyph/editor/image';
+import AttachmentIcon from '@atlaskit/icon/glyph/editor/attachment';
 import CodeIcon from '@atlaskit/icon/glyph/editor/code';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import QuoteIcon from '@atlaskit/icon/glyph/quote';
@@ -130,7 +130,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
         value: { name: 'media' },
         tooltipDescription: 'Files and Images',
         tooltipPosition: 'right',
-        elemBefore: <MediaIcon label="Insert files and images"/>,
+        elemBefore: <AttachmentIcon label="Insert files and images"/>,
       });
     }
 
