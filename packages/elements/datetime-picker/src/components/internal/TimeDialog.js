@@ -2,7 +2,6 @@
 
 import React, { Component, type Node } from 'react';
 import Droplist from '@atlaskit/droplist';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import TimeDialogItem from './TimeDialogItem';
 
 type Props = {

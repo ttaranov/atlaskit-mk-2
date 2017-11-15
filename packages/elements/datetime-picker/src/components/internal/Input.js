@@ -2,7 +2,7 @@
 
 import React, { Component, type ElementRef } from 'react';
 import Input from '@atlaskit/input';
-import { akColorN100, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { akColorN100 } from '@atlaskit/util-shared-styles';
 import type { Handler } from '../../types';
 
 type Props = {
