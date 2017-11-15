@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "58.1.12",
+  "version": "58.1.13",
   "description": "A package contains Atlassian editor core functionality",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -26,7 +26,7 @@
     "@atlaskit/code": "^2.1.6",
     "@atlaskit/dropdown-menu": "^1.7.0",
     "@atlaskit/droplist": "^3.8.1",
-    "@atlaskit/editor-common": "^3.3.0",
+    "@atlaskit/editor-common": "^3.3.1",
     "@atlaskit/emoji": "^30.1.5",
     "@atlaskit/icon": "^9.0.1",
     "@atlaskit/layer": "^2.5.4",
@@ -84,9 +84,9 @@
   },
   "devDependencies": {
     "@atlaskit/button": "^5.1.1",
-    "@atlaskit/editor-test-helpers": "^0.2.12",
+    "@atlaskit/editor-test-helpers": "^0.2.13",
     "@atlaskit/media-test-helpers": "^8.4.0",
-    "@atlaskit/renderer": "^8.2.12",
+    "@atlaskit/renderer": "^8.2.13",
     "@atlaskit/util-data-test": "^7.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "chai-as-promised": "^6.0.0",
