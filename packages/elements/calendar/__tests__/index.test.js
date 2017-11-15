@@ -19,14 +19,18 @@ describe(name, () => {
     it('should call onUpdate with the iso value when a date is selected', done => {
       const expectedIso = '2017-10-25';
       const wrapper = shallow(
-        <Calendar onUpdate={iso => {
-          expect(iso).toBe(expectedIso);
-          done();
-        }}
+        <Calendar
+          onUpdate={iso => {
+            expect(iso).toBe(expectedIso);
+            done();
+          }}
         />,
       );
 
-      wrapper.find(CalendarStateless).props().onSelect({ iso: expectedIso });
+      wrapper
+        .find(CalendarStateless)
+        .props()
+        .onSelect({ iso: expectedIso });
     });
   });
 
@@ -77,7 +81,13 @@ describe(name, () => {
     });
 
     it('specifying selected days should select the specified days', () => {
-      const wrapper = mount(<CalendarStateless month={1} year={2016} selected={['2016-01-01', '2016-01-02']} />);
+      const wrapper = mount(
+        <CalendarStateless
+          month={1}
+          year={2016}
+          selected={['2016-01-01', '2016-01-02']}
+        />,
+      );
 
       expect(
         wrapper.find({

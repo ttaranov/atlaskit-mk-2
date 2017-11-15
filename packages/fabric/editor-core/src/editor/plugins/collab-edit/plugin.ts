@@ -2,6 +2,7 @@ import { Plugin, PluginKey, Transaction } from 'prosemirror-state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 
 import ProviderFactory from '../../../providerFactory';
+import { isChromeWithSelectionBug } from '../../../utils';
 import { Dispatch } from '../../event-dispatcher';
 import {
   getSendableSelection,
@@ -227,6 +228,10 @@ export class PluginState {
         const to = anchor >= head ? anchor : head;
 
         const isSelection = to - from > 0;
+        // This problem affects Chrome v58-62. See: https://github.com/ProseMirror/prosemirror/issues/710
+        if (!isSelection && isChromeWithSelectionBug) {
+          document.getSelection().empty();
+        }
         add.push(createTelepointer(from - (isSelection ? 0 : 1), to, sessionId, isSelection));
       }
     }

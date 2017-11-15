@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-common",
-  "version": "3.2.6",
+  "version": "3.3.1",
   "description": "A package that contains common classes and components for editor and renderer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -38,11 +38,12 @@
     "prosemirror-model": "^0.22.0",
     "prosemirror-schema-basic": "^0.22.0",
     "prosemirror-tables": "^0.1.0",
-    "prosemirror-view": "^0.22.0"
+    "prosemirror-view": "^0.22.0",
+    "raf-schd": "^2.0.2"
   },
   "peerDependencies": {},
   "devDependencies": {
-    "@atlaskit/editor-test-helpers": "^0.2.6",
+    "@atlaskit/editor-test-helpers": "^0.2.13",
     "@types/chai": "^4.0.4",
     "chai": "^4.1.2",
     "json-schema-diff-validator": "^0.0.4",

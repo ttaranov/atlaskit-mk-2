@@ -19,7 +19,7 @@ import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
 import ProviderFactory from '../../../src/providerFactory';
 import { analyticsService } from '../../../src/analytics';
 import pluginKey from '../../../src/plugins/emojis/plugin-key';
-import Popup from '../../../src/ui/Popup';
+import { Popup } from '@atlaskit/editor-common';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
 const grinEmoji = emojiTestData.grinEmoji;

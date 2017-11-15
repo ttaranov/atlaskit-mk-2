@@ -57,7 +57,10 @@ describe('Renderer - TextSerializer', () => {
       content: [
         {
           type: 'paragraph',
-          content: [{ type: 'text', text: '🦄' }, { type: 'text', text: 'is a unicorn' }],
+          content: [
+            { type: 'text', text: '🦄' },
+            { type: 'text', text: 'is a unicorn' },
+          ],
         },
       ],
     };
@@ -575,6 +578,29 @@ describe('Renderer - TextSerializer', () => {
         },
         {
           type: 'table',
+          content: [],
+        },
+        {
+          type: 'paragraph',
+          content: [{ type: 'text', text: 'bar' }],
+        },
+      ],
+    };
+
+    expect(render(doc)).to.equal('foo\nbar');
+  });
+
+  it('should ignore empty paragraphs', () => {
+    const doc = {
+      type: 'doc',
+      version: 1,
+      content: [
+        {
+          type: 'paragraph',
+          content: [{ type: 'text', text: 'foo' }],
+        },
+        {
+          type: 'paragraph',
           content: [],
         },
         {

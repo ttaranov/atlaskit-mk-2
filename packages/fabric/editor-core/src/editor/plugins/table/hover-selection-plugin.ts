@@ -16,12 +16,12 @@ const plugin = new Plugin({
       }
 
       return set;
-    }
+    },
   },
   key: pluginKey,
   props: {
-    decorations: state => pluginKey.getState(state)
-  }
+    decorations: state => pluginKey.getState(state),
+  },
 });
 
 export default plugin;

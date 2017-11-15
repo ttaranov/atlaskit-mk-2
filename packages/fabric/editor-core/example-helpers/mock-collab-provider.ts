@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import {
   CollabEditProvider,
-  CollabEvent
+  CollabEvent,
 } from '../src/editor/plugins/collab-edit/provider';
 
 interface Participant {
@@ -15,26 +15,26 @@ const participants = {
     sid: 'rick',
     name: 'Rick Sanchez',
     avatar:
-      'https://pbs.twimg.com/profile_images/897250392022540288/W1T-QjML_400x400.jpg'
+      'https://pbs.twimg.com/profile_images/897250392022540288/W1T-QjML_400x400.jpg',
   },
   morty: {
     sid: 'morty',
     name: 'Morty Smith',
     avatar:
-      'https://pbs.twimg.com/profile_images/685489227082129408/YhGfwW73_400x400.png'
+      'https://pbs.twimg.com/profile_images/685489227082129408/YhGfwW73_400x400.png',
   },
   summer: {
     sid: 'sumsum',
     name: 'Summer Smith',
     avatar:
-      'https://pbs.twimg.com/profile_images/878646716328812544/dYdU_OKZ_400x400.jpg'
-  }
+      'https://pbs.twimg.com/profile_images/878646716328812544/dYdU_OKZ_400x400.jpg',
+  },
 };
 
 const others = (sid: string) =>
   Object.keys(participants).reduce<Participant[]>(
     (all, id) => (id === sid ? all : all.concat(participants[id])),
-    []
+    [],
   );
 
 class Mediator extends EventEmitter {
@@ -48,7 +48,7 @@ class Mediator extends EventEmitter {
         const joined = collaborators.map(({ sid: sessionId, ...rest }) => ({
           sessionId,
           ...rest,
-          lastActive: 0
+          lastActive: 0,
         }));
         collaborators.forEach(({ sid: xSid }) => {
           setTimeout(() => {
@@ -97,11 +97,11 @@ export class MockCollabEditProvider implements CollabEditProvider {
           content: [
             {
               type: 'text',
-              text: 'Hello World'
-            }
-          ]
-        }
-      ]
+              text: 'Hello World',
+            },
+          ],
+        },
+      ],
     };
 
     const { sid } = this;

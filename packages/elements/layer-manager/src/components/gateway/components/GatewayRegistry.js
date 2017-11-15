@@ -8,18 +8,18 @@ type GatewayID = string;
 type Name = string;
 
 export default class GatewayRegistry {
-  containers: {} = {}
-  children: {} = {}
-  currentId: number = 0 // Unique key for children of a gateway
+  containers: {} = {};
+  children: {} = {};
+  currentId: number = 0; // Unique key for children of a gateway
 
   /**
-  *   NOTE: this is where we deviate from cloudflare/react-gateway
-  *   https://github.com/cloudflare/react-gateway/blob/master/src/GatewayRegistry.js#L10
-  *
-  *   Rather than passing children through directly, they're cloned with:
-  *   - stackIndex
-  *   - stackTotal
-  */
+   *   NOTE: this is where we deviate from cloudflare/react-gateway
+   *   https://github.com/cloudflare/react-gateway/blob/master/src/GatewayRegistry.js#L10
+   *
+   *   Rather than passing children through directly, they're cloned with:
+   *   - stackIndex
+   *   - stackTotal
+   */
   renderContainer(name: Name) {
     if (!this.containers[name] || !this.children[name]) {
       return;

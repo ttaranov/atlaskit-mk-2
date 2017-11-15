@@ -22,4 +22,6 @@ export { default as jiraIssuePlugin } from './jira-issue';
 export { default as unsupportedContentPlugin } from './unsupported-content';
 export { default as panelPlugin } from './panel';
 export { default as macroPlugin } from './macro';
-export { default as confluenceInlineComment } from './confluence-inline-comment';
+export {
+  default as confluenceInlineComment,
+} from './confluence-inline-comment';

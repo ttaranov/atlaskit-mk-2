@@ -17,11 +17,19 @@ Dependents: package-a@minor, package-b@minor, package-c@patch
 
 function createChangesetCommitStr(changeset) {
   const MAX_SUMMARY_LINE_LENTH = 100;
-  const truncatedSummaryLine = `CHANGESET: ${changeset.summary}`.substring(0, MAX_SUMMARY_LINE_LENTH);
+  const truncatedSummaryLine = `CHANGESET: ${changeset.summary}`.substring(
+    0,
+    MAX_SUMMARY_LINE_LENTH,
+  );
 
   const releaseNotesLine = changeset.releaseNotes || '<none>';
-  const releasesLine = changeset.releases.map(release => `${release.name}@${release.type}`).join(', ');
-  const dependentsLine = changeset.dependents.map(release => `${release.name}@${release.type}`).join(', ') || '[]';
+  const releasesLine = changeset.releases
+    .map(release => `${release.name}@${release.type}`)
+    .join(', ');
+  const dependentsLine =
+    changeset.dependents
+      .map(release => `${release.name}@${release.type}`)
+      .join(', ') || '[]';
 
   return `${truncatedSummaryLine}
 

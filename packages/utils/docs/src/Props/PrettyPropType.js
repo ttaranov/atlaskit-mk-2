@@ -64,8 +64,20 @@ const Invalid = styled.span`
   margin: ${math.divide(gridSize, 2)}px;
 `;
 
-const SIMPLE_TYPES = ['array', 'boolean', 'function', 'number', 'string',
-  'symbol', 'node', 'element', 'custom', 'any', 'void', 'mixed'];
+const SIMPLE_TYPES = [
+  'array',
+  'boolean',
+  'function',
+  'number',
+  'string',
+  'symbol',
+  'node',
+  'element',
+  'custom',
+  'any',
+  'void',
+  'mixed',
+];
 
 /* eslint-disable no-use-before-define */
 /* eslint-disable prefer-rest-params */
@@ -79,15 +91,19 @@ function printComplexType(type) {
 /* eslint-enable prefer-rest-params */
 
 function Indent(props: { children: Node }) {
-  return (
-    <div style={{ paddingLeft: '1.3em' }}>{props.children}</div>
-  );
+  return <div style={{ paddingLeft: '1.3em' }}>{props.children}</div>;
 }
 
 function print(type, depth = 1) {
   if (type.kind === 'string' || type.kind === 'stringLiteral') {
     if (type.value) {
-      return <StringType>{'"'}{type.value}{'"'}</StringType>;
+      return (
+        <StringType>
+          {'"'}
+          {type.value}
+          {'"'}
+        </StringType>
+      );
     }
     return <Type>{type.kind}</Type>;
   }
@@ -101,26 +117,30 @@ function print(type, depth = 1) {
 
   // make sure we have an object; we should always have an object!!!
   if (typeof type !== 'object') {
-    return (
-      <div>ERROR: TYPEOF type === {typeof type}</div>
-    );
+    return <div>ERROR: TYPEOF type === {typeof type}</div>;
   }
 
   if (type.kind === 'object') {
     return (
       <span>
-        <TypeMeta>Shape <Outline>{'{'}</Outline></TypeMeta>
+        <TypeMeta>
+          Shape <Outline>{'{'}</Outline>
+        </TypeMeta>
         <Indent>
           {type.props.map(prop => (
             <div key={prop.key}>
-              <TypeMinWidth><Type>{prop.key}</Type></TypeMinWidth>
-              {' '}{prop.value.kind}
-              {prop.optional ? null : <Required> required</Required>}
-              {' '}{printComplexType(prop.value)}
+              <TypeMinWidth>
+                <Type>{prop.key}</Type>
+              </TypeMinWidth>{' '}
+              {prop.value.kind}
+              {prop.optional ? null : <Required> required</Required>}{' '}
+              {printComplexType(prop.value)}
             </div>
           ))}
         </Indent>
-        <TypeMeta><Outline>{'}'}</Outline></TypeMeta>
+        <TypeMeta>
+          <Outline>{'}'}</Outline>
+        </TypeMeta>
       </span>
     );
   }
@@ -129,21 +149,31 @@ function print(type, depth = 1) {
     if (typeof type.value === 'string') {
       return (
         <span>
-          <TypeMeta>One of <Outline>{'('}</Outline></TypeMeta>
+          <TypeMeta>
+            One of <Outline>{'('}</Outline>
+          </TypeMeta>
           <InstanceType>{type.value}</InstanceType>
-          <TypeMeta><Outline>{')'}</Outline></TypeMeta>
+          <TypeMeta>
+            <Outline>{')'}</Outline>
+          </TypeMeta>
         </span>
       );
     }
     return (
       <span>
-        <TypeMeta>One of <Outline>{'('}</Outline></TypeMeta>
+        <TypeMeta>
+          One of <Outline>{'('}</Outline>
+        </TypeMeta>
         <Indent>
           {Array.isArray(type.value)
-            ? type.value.map((v, i) => <Block key={i}>{print(v.value, depth + 1)}</Block>)
+            ? type.value.map((v, i) => (
+                <Block key={i}>{print(v.value, depth + 1)}</Block>
+              ))
             : print(type.value, depth + 1)}
         </Indent>
-        <TypeMeta><Outline>{')'}</Outline></TypeMeta>
+        <TypeMeta>
+          <Outline>{')'}</Outline>
+        </TypeMeta>
       </span>
     );
   }
@@ -151,13 +181,19 @@ function print(type, depth = 1) {
   if (type.kind === 'union') {
     return (
       <span>
-        <TypeMeta>One of <Outline>{'('}</Outline></TypeMeta>
+        <TypeMeta>
+          One of <Outline>{'('}</Outline>
+        </TypeMeta>
         <Indent>
           {Array.isArray(type.types)
-            ? type.types.map((t, i) => <Block key={i}>{print(t, depth + 1)}</Block>)
+            ? type.types.map((t, i) => (
+                <Block key={i}>{print(t, depth + 1)}</Block>
+              ))
             : print(type.types, depth + 1)}
         </Indent>
-        <TypeMeta><Outline>{')'}</Outline></TypeMeta>
+        <TypeMeta>
+          <Outline>{')'}</Outline>
+        </TypeMeta>
       </span>
     );
   }
@@ -165,9 +201,7 @@ function print(type, depth = 1) {
   // note we guard against complex name properties here, because you can have
   // shapes with name properties
   if (!type.value && typeof type.name === 'string') {
-    return (
-      <Type>{type.name}</Type>
-    );
+    return <Type>{type.name}</Type>;
   }
 
   return <Invalid>{JSON.stringify(type)}</Invalid>;
@@ -179,11 +213,12 @@ type PrettyPropTypeProps = {
 
 export default function PrettyPropType(props: PrettyPropTypeProps) {
   if (SIMPLE_TYPES.includes(props.type.kind)) return null;
-  if (props.type.kind === 'nullable' && SIMPLE_TYPES.includes(props.type.arguments.kind)) return null;
+  if (
+    props.type.kind === 'nullable' &&
+    SIMPLE_TYPES.includes(props.type.arguments.kind)
+  ) {
+    return null;
+  }
 
-  return (
-    <Wrapper>
-      {print(props.type)}
-    </Wrapper>
-  );
+  return <Wrapper>{print(props.type)}</Wrapper>;
 }

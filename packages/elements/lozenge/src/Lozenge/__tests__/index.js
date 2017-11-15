@@ -22,12 +22,18 @@ describe('Lozenge', () => {
 
     it('should change when set to an approved value', () => {
       APPEARANCE_ENUM.values.forEach(value => {
-        expect(mount(<Lozenge appearance={value} />).prop('appearance')).toBe(value);
+        expect(mount(<Lozenge appearance={value} />).prop('appearance')).toBe(
+          value,
+        );
       });
     });
 
     it('should revert to "default" when set to an invalid value', () => {
-      expect(mount(<Lozenge appearance={('foo': any)} />).getNode().validAppearance()).toBe('default');
+      expect(
+        mount(<Lozenge appearance={('foo': any)} />)
+          .getNode()
+          .validAppearance(),
+      ).toBe('default');
     });
   });
 });

@@ -4,10 +4,5 @@ import { DatePicker } from '../src';
 import { action } from './_';
 
 export default () => {
-  return (
-    <DatePicker
-      onChange={action('onChange')}
-      isDisabled
-    />
-  );
+  return <DatePicker onChange={action('onChange')} isDisabled />;
 };

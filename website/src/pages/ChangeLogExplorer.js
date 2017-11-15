@@ -31,14 +31,19 @@ export default class ChangelogExplorer extends Component<Props, State> {
 
   componentWillMount() {
     const { semver } = this.props.match.params;
-    if (semver) this.setState({ range: decodeURI(String(this.props.match.params.semver)) });
+    if (semver)
+      this.setState({
+        range: decodeURI(String(this.props.match.params.semver)),
+      });
   }
 
   handleChange = (e: any) => {
     const { groupId, pkgId } = this.props.match.params;
     const range = e.target.value;
-    this.props.history.replace(`/changelog/${groupId}/${pkgId}/${encodeURI(range)}`);
-    const isInvalid = /[a-z]/gi.test(range)
+    this.props.history.replace(
+      `/changelog/${groupId}/${pkgId}/${encodeURI(range)}`,
+    );
+    const isInvalid = /[a-z]/gi.test(range);
 
     this.setState({ isInvalid, range });
   };
@@ -47,23 +52,24 @@ export default class ChangelogExplorer extends Component<Props, State> {
     const { groupId, pkgId } = this.props.match.params;
     const filePath = `packages/${groupId}/${pkgId}/CHANGELOG.md`;
     const found = fs.find(packages, (file, currPath) => {
-      return currPath === filePath
+      return currPath === filePath;
     });
     const { isInvalid, range } = this.state;
 
     const Content = Loadable({
       loading: Loading,
       loader: () => found && found.contents(),
-      render: changelog => (changelog
-        ? (
+      render: changelog =>
+        changelog ? (
           <Changelog
             changelog={divvyChangelog(changelog)}
             range={range}
             packageName={pkgId}
           />
-        ) : <NoMatch>Invalid range; please try again.</NoMatch>),
+        ) : (
+          <NoMatch>Invalid range; please try again.</NoMatch>
+        ),
     });
-
 
     return (
       <Page>
