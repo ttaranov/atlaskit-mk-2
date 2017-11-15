@@ -9,3 +9,4 @@ export { mentionQuery } from './mention-query';
 export { subsup } from './subsup';
 export { textColor, colorPalette } from './text-color';
 export { confluenceInlineComment } from './confluence-inline-comment';
+export { action, Action as ActionMarkAction, Attributes as ActionMarkAttributes } from './action';

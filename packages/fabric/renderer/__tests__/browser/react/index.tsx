@@ -4,6 +4,9 @@ import * as sinon from 'sinon';
 import { ReactSerializer } from '../../../src';
 import { defaultSchema as schema } from '@atlaskit/editor-common';
 import * as validator from '../../../src/validator';
+import {
+  Action
+} from '../../../src/react/marks';
 
 const doc = {
   'type': 'doc',
@@ -34,6 +37,23 @@ const doc = {
               type: 'link',
               attrs: {
                 href: 'https://www.atlassian.com'
+              }
+            }
+          ]
+        },
+        {
+          type: 'text',
+          text: 'Yo!',
+          marks: [
+            {
+              type: 'strong'
+            },
+            {
+              type: 'action',
+              attrs: {
+                target: {
+                  key: 'test'
+                }
               }
             }
           ]
@@ -103,4 +123,13 @@ describe('Renderer - ReactSerializer', () => {
     });
   });
 
+  describe('getMarkProps', () => {
+    it('should pass eventHandlers to mark component', () => {
+      const eventHandlers = {};
+      const reactSerializer = ReactSerializer.fromSchema(schema, undefined, eventHandlers);
+      const reactDoc = mount(reactSerializer.serializeFragment(docFromSchema.content) as any);
+      expect(reactDoc.find(Action).prop('eventHandlers')).to.equal(eventHandlers);
+      reactDoc.unmount();
+    });
+  });
 });
