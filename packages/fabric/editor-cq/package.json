@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@atlaskit/editor-test-helpers": "^0.2.13",
-    "@atlaskit/media-core": "^10.2.0",
+    "@atlaskit/media-core": "^11.0.0",
     "@atlaskit/media-test-helpers": "^8.4.0",
     "@atlaskit/spinner": "^2.0.1",
     "@types/prosemirror-model": "^0.21.0",
