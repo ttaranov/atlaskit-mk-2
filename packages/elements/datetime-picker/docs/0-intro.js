@@ -18,9 +18,18 @@ export default (
           source={require('!!raw-loader!../examples/01-basic')}
         />
       )}
+
+      ## Datepicker
     `}
     <Props
       props={require('!!extract-react-types-loader!../src/components/DatePicker')}
+    />
+    {md`
+      ## Timepicker
+
+    `}
+    <Props
+      props={require('!!extract-react-types-loader!../src/components/TimePicker')}
     />
   </div>
 );
