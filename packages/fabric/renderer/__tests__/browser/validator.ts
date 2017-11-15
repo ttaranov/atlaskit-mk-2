@@ -637,6 +637,34 @@ describe('Renderer - Validator', () => {
       });
     });
 
+    describe('action', () => {
+      it('should return "action"', () => {
+        const data = {
+          type: 'action',
+          attrs: {
+            title: 'title',
+            target: {
+              key: 'somу-key'
+            },
+            parameters: {}
+          }
+        };
+        expect(getValidMark(data)).to.deep.equal(data);
+      });
+
+      it('should return null if attrs is missing', () => {
+        expect(getValidMark({ type: 'action' })).to.equal(null);
+      });
+
+      it('should return null if attrs.target is missing', () => {
+        expect(getValidMark({ type: 'action', attrs: {} })).to.equal(null);
+      });
+
+      it('should return null if attrs.target.key is missing', () => {
+        expect(getValidMark({ type: 'action', attrs: { target: {} }})).to.equal(null);
+      });
+    });
+
     describe('text', () => {
       it('should return "text" with text', () => {
         expect(

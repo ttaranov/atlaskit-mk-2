@@ -13,6 +13,7 @@ import {
   emojiQuery,
   textColor,
   confluenceInlineComment,
+  action
 } from './marks';
 
 import {
@@ -161,6 +162,7 @@ const marksInOrder: SchemaBuiltInItem[] = [
   { name: 'mentionQuery', spec: mentionQuery },
   { name: 'emojiQuery', spec: emojiQuery },
   { name: 'textColor', spec: textColor },
+  { name: 'action', spec: action },
   { name: 'confluenceInlineComment', spec: confluenceInlineComment },
   ...markGroupDeclarations,
 ];
