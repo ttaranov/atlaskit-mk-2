@@ -31,5 +31,12 @@ export default (
     <Props
       props={require('!!extract-react-types-loader!../src/components/TimePicker')}
     />
+    {md`
+      ## DateTimePicker
+
+    `}
+    <Props
+      props={require('!!extract-react-types-loader!../src/components/DateTimePicker')}
+    />
   </div>
 );
