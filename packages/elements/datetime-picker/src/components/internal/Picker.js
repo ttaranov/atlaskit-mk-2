@@ -24,7 +24,7 @@ type Props = {
   dialog: ElementRef<any>,
   field: ElementRef<any>,
   dialogProps: { [string]: any },
-  width: number,
+  width: ?number,
 };
 
 export default class Picker extends Component<Props> {

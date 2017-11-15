@@ -10,7 +10,7 @@ type Props = {
   isActive: boolean,
   placeholder: ?string,
   value: ?string,
-  width: string,
+  width: ?string,
   onChange: Handler,
   onKeyDown: Handler,
   onFocus: Handler,

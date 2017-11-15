@@ -13,7 +13,7 @@ type Props = {
   isOpen: boolean,
   isDisabled: boolean,
   times: Array<string>,
-  width: number,
+  width: ?number,
   onFieldBlur: Handler,
   onFieldChange: Handler,
   onFieldKeyDown: Handler,

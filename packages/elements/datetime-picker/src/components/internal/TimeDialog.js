@@ -8,7 +8,7 @@ type Props = {
   value: ?string,
   isOpen: boolean,
   times: Array<string>,
-  width: number,
+  width: ?number,
   onUpdate: (value: string) => void,
   children: ?Node,
 };
@@ -22,6 +22,7 @@ export default class TimeDialog extends Component<Props> {
     times: [],
     onUpdate() {},
     children: null,
+    width: null,
   };
 
   componentDidUpdate(prevProps: Props) {
