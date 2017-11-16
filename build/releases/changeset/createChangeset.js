@@ -1,10 +1,13 @@
 /* eslint-disable no-console */
+// @flow
+
 const chalk = require('chalk');
 const bolt = require('bolt');
 
 const cli = require('../../utils/cli');
 const logger = require('../../utils/logger');
 const createReleaseNotesFile = require('./createReleaseNotesFile');
+const promptAndAssembleReleaseTypes = require('./promptAndAssembleReleaseTypes');
 
 /* Changeset object format (TODO: User flow!!!)
   {
@@ -20,12 +23,31 @@ const createReleaseNotesFile = require('./createReleaseNotesFile');
   }
 */
 
+/*::
+type releaseType = {
+  name: string,
+  type: string,
+}
+type dependentType = {
+  name: string,
+  type?: string,
+  dependencies: Array<string>,
+  finalised?: boolean
+}
+type changesetType = {
+  summary: string,
+  releases: Array<releaseType>,
+  dependents: Array<dependentType>,
+  releaseNotes?: any,
+}
+*/
+
 async function getAllDependents(packagesToRelease, opts = {}) {
   const cwd = opts.cwd || process.cwd();
   const allDependents = [];
-  const dependentsGraph = await bolt.getDependentsGraph(cwd);
-  const dependenciesToCheck = [...packagesToRelease];
+  const dependentsGraph = await bolt.getDependentsGraph({ cwd });
 
+  const dependenciesToCheck = [...packagesToRelease];
   while (dependenciesToCheck.length > 0) {
     const nextDependency = dependenciesToCheck.pop();
     const dependents = dependentsGraph.get(nextDependency);
@@ -40,13 +62,15 @@ async function getAllDependents(packagesToRelease, opts = {}) {
       }
     });
   }
-
   return allDependents;
 }
 
-async function createChangeset(changedPackages, opts = {}) {
+async function createChangeset(
+  changedPackages /*: Array<string> */,
+  opts /*: { cwd?: string }  */ = {}
+) {
   const cwd = opts.cwd || process.cwd();
-  const changeset = {
+  const changeset /*: changesetType */ = {
     summary: '',
     releases: [],
     dependents: [],
@@ -76,38 +100,33 @@ async function createChangeset(changedPackages, opts = {}) {
 
   /** Get dependents and bumptypes */
 
-  const dependents = await getAllDependents(packagesToRelease, { cwd });
+  const dependents /*: Array<dependentType> */ = await getAllDependents(
+    packagesToRelease,
+    { cwd }
+  );
 
-  for (const dependent of dependents) {
-    const dependenciesList = chalk.green(dependent.dependencies.join(', '));
-    const dependentName = chalk.green(dependent.name);
-    logger.log(
-      `Bumping [${dependenciesList}] will cause an update to ${
-        dependentName
-      }'s dependencies.`,
-    );
-    const bumpType = await cli.askList(
-      `What kind of change is this for ${dependentName}?`,
-      ['patch', 'minor', 'major'],
-    );
-    dependent.type = bumpType;
-  }
+  // This modifies the above dependents array to add a 'type' property to all
+  // items.
+  await promptAndAssembleReleaseTypes(dependents, changeset, cwd);
 
-  /* (TODO: Get releaseNotes if there is a major change)
+  // (TODO: Get releaseNotes if there is a major change)
 
-  if (Object.values(changeset.releases).some(bump => bump.type === 'major')) {
-    logger.log('You are making a breaking change, you\'ll need to create new release file to document this');
-    logger.log('(you can set you $EDITOR variable to control which editor will be used)');
-
-    await cli.askConfirm('Create new release?'); // This is really just to let the user read the message above
-    const newReleasePath = createReleaseNotesFile('new-release.md', summary); // hard-coding here, but we should prompt for it
-    await cli.askEditor(newReleasePath);
-    changeset.releaseNotes = newReleasePath;
-  }
-  */
+  // NOTE: This path is not fully implemented yet. It should be revisited when
+  // release notes are on the website
+  // if (Object.values(changeset.releases).some(r => r.type === 'major')) {
+  //   logger.log('You are making a breaking change, you\'ll need to create new release file to document this');
+  //   logger.log('(you can set you $EDITOR variable to control which editor will be used)');
+  //
+  //   await cli.askConfirm('Create new release?'); // This is really just to let the user read the message above
+  //   const newReleasePath = createReleaseNotesFile('new-release.md', summary); // hard-coding here, but we should prompt for it
+  //   await cli.askEditor(newReleasePath);
+  //   changeset.releaseNotes = newReleasePath;
+  // }
 
   changeset.summary = summary;
-  changeset.dependents = dependents;
+  // as the changeset is printed to console, the unneeded verified property needs
+  // to be removed
+  changeset.dependents = dependents.map(({ finalised, ...rest }) => rest);
 
   return changeset;
 }
