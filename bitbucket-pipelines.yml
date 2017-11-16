@@ -12,7 +12,8 @@ pipelines:
             - bolt test
             - bolt test:browser:browserstack
             - bolt release
-            - (cd website && bolt deploy)
+            # we `|| true` here because netlify has started returning 404's on success
+            - (cd website && bolt deploy) || true
 
   default:
     - step:
@@ -24,4 +25,5 @@ pipelines:
           - bolt typecheck
           - bolt test
           - bolt test:browser:browserstack
-          - (cd website && bolt deploy-staging:no-minimize)
+          # disabled until we figure out why netlify is returning 500's
+          # - (cd website && bolt deploy-staging) || true
