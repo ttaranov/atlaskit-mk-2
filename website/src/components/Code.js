@@ -32,7 +32,7 @@ export default function CodeBlock(props: Props) {
   let highlighted = Prism.highlight(props.content, syntax);
   return (
     <Code>
-      <code dangerouslySetInnerHTML={{ __html: highlighted }}/>
+      <code dangerouslySetInnerHTML={{ __html: highlighted }} />
     </Code>
   );
 }

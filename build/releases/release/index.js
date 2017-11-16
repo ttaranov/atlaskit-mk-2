@@ -26,12 +26,20 @@ async function run(opts) {
   const cwd = opts.cwd || process.cwd();
   const allPackages = await bolt.getWorkspaces({ cwd });
   const lastPublishCommit = await git.getLastPublishCommit();
-  const unreleasedChangesetCommits = await git.getChangesetCommitsSince(lastPublishCommit);
-  const commits = await Promise.all(unreleasedChangesetCommits.map(commit => git.getFullCommit(commit)));
-  const unreleasedChangesets = commits
-    .map(({ commit, message }) => ({ commit, ...parseChangesetCommit(message) }));
+  const unreleasedChangesetCommits = await git.getChangesetCommitsSince(
+    lastPublishCommit,
+  );
+  const commits = await Promise.all(
+    unreleasedChangesetCommits.map(commit => git.getFullCommit(commit)),
+  );
+  const unreleasedChangesets = commits.map(({ commit, message }) => ({
+    commit,
+    ...parseChangesetCommit(message),
+  }));
   if (unreleasedChangesets.length === 0) {
-    logger.warn(`No unreleased changesets found since ${lastPublishCommit}. Exiting`);
+    logger.warn(
+      `No unreleased changesets found since ${lastPublishCommit}. Exiting`,
+    );
     return;
   }
   const releaseObj = createRelease(unreleasedChangesets, allPackages);
@@ -42,15 +50,19 @@ async function run(opts) {
 
   logger.log(publishCommit);
 
-  const runPublish = isRunningInPipelines() || await cli.askConfirm('Publish these packages?');
+  const runPublish =
+    isRunningInPipelines() || (await cli.askConfirm('Publish these packages?'));
   if (runPublish) {
     // update package versions
     await bumpReleasedPackages(releaseObj, allPackages);
     // Need to transform releases into a form for bolt to update dependencies
-    const versionsToUpdate = releaseObj.releases.reduce((cur, next) => ({
-      ...cur,
-      [next.name]: next.version,
-    }), {});
+    const versionsToUpdate = releaseObj.releases.reduce(
+      (cur, next) => ({
+        ...cur,
+        [next.name]: next.version,
+      }),
+      {},
+    );
     // update dependencies on those versions
     await bolt.updatePackageVersions(versionsToUpdate);
     // TODO: get updatedPackages from bolt.updatePackageVersions and only add those
@@ -59,12 +71,13 @@ async function run(opts) {
     logger.log('Committing changes...');
     const committed = await git.commit(publishCommit);
 
-
     if (committed) {
       // bolt will throw if there is an error
       await bolt.publish({ access: 'public' });
 
-      const releasedPackages = releaseObj.releases.map(r => `${r.name}@${r.version}`).join('\n');
+      const releasedPackages = releaseObj.releases
+        .map(r => `${r.name}@${r.version}`)
+        .join('\n');
       logger.success('Successfully published:');
       logger.log(releasedPackages);
 

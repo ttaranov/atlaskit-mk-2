@@ -21,11 +21,7 @@ export type HeadingProps = {
 export default function Heading({ children, level = 1 }: HeadingProps) {
   const Tag = `h${level}`;
 
-  return (
-    <Tag style={style[Tag]}>
-      {children}
-    </Tag>
-  );
+  return <Tag style={style[Tag]}>{children}</Tag>;
 }
 
 export const H1 = (props: HeadingProps) => <Heading level={1} {...props} />;

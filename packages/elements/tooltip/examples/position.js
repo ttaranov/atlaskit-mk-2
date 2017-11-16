@@ -13,16 +13,16 @@ type State = { position: number };
 export default class PositionExample extends Component<Props, State> {
   // store the direction as an index and pull it from the list above,
   // just to simplify the `changeDirection` logic
-  state = { position: 0 }
+  state = { position: 0 };
   static defaultProps = {
     color: 'blue',
-  }
+  };
 
   changeDirection = () => {
     this.setState({
       position: (this.state.position + 1) % VALID_POSITIONS.length,
     });
-  }
+  };
 
   render() {
     const position = VALID_POSITIONS[this.state.position];

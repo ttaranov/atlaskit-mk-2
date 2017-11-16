@@ -20,13 +20,21 @@ export default (props: Props) => (
   <Heading>
     <div aria-hidden="true" onClick={props.handleClickPrev}>
       <Btn>
-        <ArrowleftIcon label="Last month" size="medium" primaryColor={colors.N80} />
+        <ArrowleftIcon
+          label="Last month"
+          size="medium"
+          primaryColor={colors.N80}
+        />
       </Btn>
     </div>
     <MonthAndYear>{`${getMonthName(props.month)} ${props.year}`}</MonthAndYear>
     <div aria-hidden="true" onClick={props.handleClickNext}>
       <Btn>
-        <ArrowrightIcon label="Next month" size="medium" primaryColor={colors.N80} />
+        <ArrowrightIcon
+          label="Next month"
+          size="medium"
+          primaryColor={colors.N80}
+        />
       </Btn>
     </div>
   </Heading>

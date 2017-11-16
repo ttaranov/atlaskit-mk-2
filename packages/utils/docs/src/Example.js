@@ -34,7 +34,9 @@ export default class Example extends React.Component<Props, State> {
   render() {
     const { Component, source, language, title } = this.props;
     const { isHover, isSourceVisible } = this.state;
-    const toggleLabel = isSourceVisible ? 'Hide Code Snippet' : 'Show Code Snippet';
+    const toggleLabel = isSourceVisible
+      ? 'Hide Code Snippet'
+      : 'Show Code Snippet';
 
     const state = isHover ? 'hover' : 'normal';
     const mode = isSourceVisible ? 'open' : 'closed';
@@ -54,7 +56,11 @@ export default class Example extends React.Component<Props, State> {
 
         {isSourceVisible ? (
           <CodeWrapper>
-            <AkCodeBlock text={source} language={language} showLineNumbers={false} />
+            <AkCodeBlock
+              text={source}
+              language={language}
+              showLineNumbers={false}
+            />
           </CodeWrapper>
         ) : null}
         <Showcase>
@@ -113,4 +119,6 @@ const Showcase = styled.div`
   padding: ${gridSize}px;
 `;
 
-const CodeWrapper = styled.div`margin: 0 0 ${gridSize}px;`;
+const CodeWrapper = styled.div`
+  margin: 0 0 ${gridSize}px;
+`;

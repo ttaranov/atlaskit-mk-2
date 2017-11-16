@@ -23,7 +23,10 @@ function getRemovedStyles({ isRemoved }) {
 
 function getRemovingStyles({ isRemoving }) {
   let styles;
-  if (isRemoving) styles = `animation: ${removeAnimation} 250ms forwards; will-change: width;`;
+  if (isRemoving)
+    styles = `animation: ${
+      removeAnimation
+    } 250ms forwards; will-change: width;`;
 
   return styles;
 }
@@ -32,6 +35,5 @@ export default styled.div`
   box-sizing: border-box;
   display: inline-block;
 
-  ${getRemovingStyles}
-  ${getRemovedStyles}
+  ${getRemovingStyles} ${getRemovedStyles};
 `;

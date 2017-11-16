@@ -43,8 +43,9 @@ describe('Badge', () => {
     });
 
     it('should pass the value through when max === 0', () => {
-      expect(mount(<Badge value={Number.MAX_VALUE} max={0} />).text())
-        .toBe(`${Number.MAX_VALUE}`);
+      expect(mount(<Badge value={Number.MAX_VALUE} max={0} />).text()).toBe(
+        `${Number.MAX_VALUE}`,
+      );
     });
 
     it('should not constrain if equal to value', () => {
@@ -59,12 +60,18 @@ describe('Badge', () => {
 
     it('should change when set to an approved value', () => {
       APPEARANCE_ENUM.values.forEach(value => {
-        expect(mount(<Badge appearance={value} />).prop('appearance')).toBe(value);
+        expect(mount(<Badge appearance={value} />).prop('appearance')).toBe(
+          value,
+        );
       });
     });
 
     it('should revert to "default" when set to an invalid value', () => {
-      expect(mount(<Badge appearance={('foo': any)} />).find('BadgeElement').prop('appearance')).toBe('default');
+      expect(
+        mount(<Badge appearance={('foo': any)} />)
+          .find('BadgeElement')
+          .prop('appearance'),
+      ).toBe('default');
     });
   });
 });

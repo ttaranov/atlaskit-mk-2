@@ -13,10 +13,15 @@ const H3 = styled.h3`
   font-size: 18px;
   font-weight: normal;
 `;
-const Heading = (
-  { children, level, packageName }:
-  { children: Array<mixed>, level: number, packageName: string }
-) :any => {
+const Heading = ({
+  children,
+  level,
+  packageName,
+}: {
+  children: Array<mixed>,
+  level: number,
+  packageName: string,
+}): any => {
   if (level !== 2) return children;
   const childrenArray = Children.toArray(children);
   if (childrenArray.length !== 1) return children;
@@ -29,8 +34,15 @@ const Heading = (
   const versionNumber = version[1];
   const versionDate = version[2];
 
-  const href = `https://bitbucket.org/atlassian/atlaskit/commits/tag/%40atlaskit%2F${packageName}%40${versionNumber}`;
-  const anchorProps = { href, rel: 'noopener noreferrer', style: { fontWeight: 500 }, target: '_blank' };
+  const href = `https://bitbucket.org/atlassian/atlaskit/commits/tag/%40atlaskit%2F${
+    packageName
+  }%40${versionNumber}`;
+  const anchorProps = {
+    href,
+    rel: 'noopener noreferrer',
+    style: { fontWeight: 500 },
+    target: '_blank',
+  };
 
   return (
     <H3>
@@ -43,11 +55,16 @@ const Heading = (
 const LogItem = styled.div`
   margin-bottom: 1em;
 
-  ${p => (p.major ? css`&:not(:first-child) {
-    border-top: 2px solid ${colors.N30};
-    margin-top: ${gutter};
-    padding-top: ${gutter};
-  }` : null)}
+  ${p =>
+    p.major
+      ? css`
+          &:not(:first-child) {
+            border-top: 2px solid ${colors.N30};
+            margin-top: ${gutter};
+            padding-top: ${gutter};
+          }
+        `
+      : null};
 `;
 
 export const NoMatch = styled.div`
@@ -84,26 +101,28 @@ export default class ChangeLog extends Component<Props> {
     return (
       <div>
         {!logs.length ? (
-          <NoMatch>
-            No matching versions, please try again.
-          </NoMatch>
-        ) : logs.map((v, i) => {
-          const major = v.version.substr(0, 1);
-          const majorHasChanged = currentMajor !== major;
-          currentMajor = major;
+          <NoMatch>No matching versions, please try again.</NoMatch>
+        ) : (
+          logs.map((v, i) => {
+            const major = v.version.substr(0, 1);
+            const majorHasChanged = currentMajor !== major;
+            currentMajor = major;
 
-          return (
-            <LogItem key={i} major={majorHasChanged}>
-              <ReactMarkdown
-                escapeHtml
-                source={v.md}
-                renderers={{
-                  Heading: props => <Heading packageName={packageName} {...props} />,
-                }}
-              />
-            </LogItem>
-          );
-        })}
+            return (
+              <LogItem key={i} major={majorHasChanged}>
+                <ReactMarkdown
+                  escapeHtml
+                  source={v.md}
+                  renderers={{
+                    Heading: props => (
+                      <Heading packageName={packageName} {...props} />
+                    ),
+                  }}
+                />
+              </LogItem>
+            );
+          })
+        )}
       </div>
     );
   }

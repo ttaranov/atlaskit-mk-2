@@ -15,6 +15,8 @@ import { Definition as ApplicationCard } from './applicationCard';
 import { Definition as DecisionList } from './decision-list';
 import { Definition as TaskList } from './task-list';
 import { Table } from './tableNodes';
+import { Definition as Extension } from './extension';
+import { Definition as InlineExtension } from './inline-extension';
 
 import { Definition as Text } from './text';
 import { Definition as HardBreak } from './hard-break';
@@ -31,15 +33,27 @@ import { Definition as Code } from '../marks/code';
 import { Definition as SubSup } from '../marks/subsup';
 import { Definition as Underline } from '../marks/underline';
 import { Definition as TextColor } from '../marks/text-color';
+import { Definition as Action } from '../marks/action';
 
 /**
  * @name top_level_node
  * @minItems 1
  */
 export type TopLevel = Array<
-  Panel | Paragraph | Blockquote | OrderedList | BulletList |
-  Rule | Heading | CodeBlock | MediaGroup | ApplicationCard |
-  DecisionList | TaskList | Table
+  | Panel
+  | Paragraph
+  | Blockquote
+  | OrderedList
+  | BulletList
+  | Rule
+  | Heading
+  | CodeBlock
+  | MediaGroup
+  | ApplicationCard
+  | DecisionList
+  | TaskList
+  | Table
+  | Extension
 >;
 
 /**
@@ -47,9 +61,19 @@ export type TopLevel = Array<
  * @minItems 1
  */
 export type TableCellContent = Array<
-  Panel | Paragraph | Blockquote | OrderedList | BulletList |
-  Rule | Heading | CodeBlock | MediaGroup | ApplicationCard |
-  DecisionList | TaskList
+  | Panel
+  | Paragraph
+  | Blockquote
+  | OrderedList
+  | BulletList
+  | Rule
+  | Heading
+  | CodeBlock
+  | MediaGroup
+  | ApplicationCard
+  | DecisionList
+  | TaskList
+  | Extension
 >;
 
 /**
@@ -72,9 +96,8 @@ export interface NoMark {
 /**
  * @name formatted_text_inline_node
  */
-export type InlineFormattedText = Text & MarksObject<
-  Link | Em | Strong | Strike | SubSup | Underline | TextColor
->;
+export type InlineFormattedText = Text &
+  MarksObject<Link | Em | Strong | Strike | SubSup | Underline | TextColor | Action>;
 
 /**
  * @name link_text_inline_node
@@ -89,7 +112,12 @@ export type InlineCode = Text & MarksObject<Code | Link>;
 /**
  * @name atomic_inline_node
  */
-export type InlineAtomic = HardBreak | Mention | Emoji | InlineMacro;
+export type InlineAtomic =
+  | HardBreak
+  | Mention
+  | Emoji
+  | InlineMacro
+  | InlineExtension;
 
 /**
  * @name inline_node

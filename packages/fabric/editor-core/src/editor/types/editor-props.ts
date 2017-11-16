@@ -3,6 +3,7 @@ import { MediaState } from '@atlaskit/media-core';
 import { ActivityProvider } from '@atlaskit/activity';
 import { Node, Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
+import { DelegateAnalyticsEvent } from '@atlaskit/analytics';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { ImageUploadHandler } from '../plugins/image-upload';
 import { TextFormattingOptions } from '../plugins/text-formatting';
@@ -17,7 +18,10 @@ export type ReactElement = React.ReactElement<any> | React.ReactElement<any>[];
 
 export interface EditorProps {
   appearance?: EditorAppearance;
+  // Legacy analytics support
   analyticsHandler?: AnalyticsHandler;
+  // For @atlaskit/analytics support
+  delegateAnalyticsEvent?: DelegateAnalyticsEvent;
 
   contentComponents?: ReactElement;
   primaryToolbarComponents?: ReactElement;

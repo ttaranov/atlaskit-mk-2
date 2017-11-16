@@ -8,7 +8,7 @@ export const tableStartPos = (state: EditorState): number => {
 
   for (let i = $from.depth; i > 0; i--) {
     const node = $from.node(i);
-    if(node.type === state.schema.nodes.table) {
+    if (node.type === state.schema.nodes.table) {
       return $from.start(i);
     }
   }
@@ -16,7 +16,12 @@ export const tableStartPos = (state: EditorState): number => {
   return 0;
 };
 
-export const createHoverDecorationSet = (from: number, to: number, tableNode: PmNode, state: EditorState): DecorationSet => {
+export const createHoverDecorationSet = (
+  from: number,
+  to: number,
+  tableNode: PmNode,
+  state: EditorState,
+): DecorationSet => {
   const map = TableMap.get(tableNode);
   const offset = tableStartPos(state);
 
@@ -28,8 +33,10 @@ export const createHoverDecorationSet = (from: number, to: number, tableNode: Pm
       return { pos, node };
     })
     .map(cell => {
-      return Decoration.node(cell.pos, cell.pos + cell.node.nodeSize, { class: 'hoveredCell' });
+      return Decoration.node(cell.pos, cell.pos + cell.node.nodeSize, {
+        class: 'hoveredCell',
+      });
     });
 
-    return DecorationSet.create(state.doc, deco);
+  return DecorationSet.create(state.doc, deco);
 };

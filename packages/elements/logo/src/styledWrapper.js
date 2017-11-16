@@ -28,7 +28,11 @@ const Wrapper = styled.span`
     The stop-color doesn't cascade down through these elements, so when we have a gradient
     that inherits currentColor, it won't be seen by the <stop> element within the <linearGradient>
   */
-  svg, defs, linearGradient { stop-color: inherit; }
+  svg,
+  defs,
+  lineargradient {
+    stop-color: inherit;
+  }
 `;
 
 export default Wrapper;

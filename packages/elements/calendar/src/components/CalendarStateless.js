@@ -6,18 +6,30 @@ import React, { Component } from 'react';
 import { dateToString, getDayName, makeArrayFromNumber } from '../util';
 import DateComponent from './Date';
 import Heading from './Heading';
-import { Announcer, CalendarTable, CalendarTbody, CalendarTh, CalendarThead, Wrapper } from '../styled/Calendar';
+import {
+  Announcer,
+  CalendarTable,
+  CalendarTbody,
+  CalendarTh,
+  CalendarThead,
+  Wrapper,
+} from '../styled/Calendar';
 
 import type { EventChange } from '../types';
 
-const arrowKeys = [keycode('down'), keycode('left'), keycode('right'), keycode('up')];
+const arrowKeys = [
+  keycode('down'),
+  keycode('left'),
+  keycode('right'),
+  keycode('up'),
+];
 const daysPerWeek = 7;
 const monthsPerYear = 12;
 
 type Handler = (e: any) => void;
 type Props = {
   /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates provided are greyed out.
-  This does not prevent these dates being selected. */
+   This does not prevent these dates being selected. */
   disabled: Array<string>,
   /** The number of the date currently focused. Places border around the date. 0 highlights no date. */
   focused: number,
@@ -37,10 +49,10 @@ type Props = {
   format YYYY-MM-DD. */
   onSelect: Handler,
   /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates
-  provided are given a background color. */
+   provided are given a background color. */
   previouslySelected: Array<string>,
   /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates
-  provided are given a background color. */
+   provided are given a background color. */
   selected: Array<string>,
   /** Value of current day, as a string in the format 'YYYY-MM-DD'. */
   today: string,
@@ -98,7 +110,11 @@ export default class CalendarStateless extends Component<Props> {
 
       if (next > daysInMonth) {
         const { month: nextMonth, year: nextYear } = this.nextMonth();
-        this.triggerOnChange({ year: nextYear, month: nextMonth, day: next - daysInMonth });
+        this.triggerOnChange({
+          year: nextYear,
+          month: nextMonth,
+          day: next - daysInMonth,
+        });
       } else {
         this.triggerOnChange({ year, month, day: next });
       }
@@ -108,7 +124,11 @@ export default class CalendarStateless extends Component<Props> {
       if (prev < 1) {
         const { month: prevMonth, year: prevYear } = this.prevMonth();
         const prevDay = Calendar.daysInMonth(prevYear, prevMonth - 1);
-        this.triggerOnChange({ year: prevYear, month: prevMonth, day: prevDay });
+        this.triggerOnChange({
+          year: prevYear,
+          month: prevMonth,
+          day: prevDay,
+        });
       } else {
         this.triggerOnChange({ year, month, day: prev });
       }
@@ -128,13 +148,25 @@ export default class CalendarStateless extends Component<Props> {
       if (prev < 1) {
         const { month: prevMonth, year: prevYear } = this.prevMonth();
         const prevDay = Calendar.daysInMonth(prevYear, prevMonth - 1) + prev;
-        this.triggerOnChange({ year: prevYear, month: prevMonth, day: prevDay });
+        this.triggerOnChange({
+          year: prevYear,
+          month: prevMonth,
+          day: prevDay,
+        });
       } else {
         this.triggerOnChange({ year, month, day: prev });
       }
     } else if (key === keycode('enter') || key === keycode('space')) {
-      const { focused: selectFocused, month: selectMonth, year: selectYear } = this.props;
-      this.triggerOnSelect({ year: selectYear, month: selectMonth, day: selectFocused });
+      const {
+        focused: selectFocused,
+        month: selectMonth,
+        year: selectYear,
+      } = this.props;
+      this.triggerOnSelect({
+        year: selectYear,
+        month: selectMonth,
+        day: selectFocused,
+      });
     }
   };
 
@@ -143,12 +175,18 @@ export default class CalendarStateless extends Component<Props> {
   };
 
   handleClickNext = () => {
-    const { focused: day, month, year } = { ...this.props, ...this.nextMonth() };
+    const { focused: day, month, year } = {
+      ...this.props,
+      ...this.nextMonth(),
+    };
     this.props.onChange({ day, month, year });
   };
 
   handleClickPrev = () => {
-    const { focused: day, month, year } = { ...this.props, ...this.prevMonth() };
+    const { focused: day, month, year } = {
+      ...this.props,
+      ...this.prevMonth(),
+    };
     this.props.onChange({ day, month, year });
   };
 
@@ -196,10 +234,18 @@ export default class CalendarStateless extends Component<Props> {
 
   handleCalendarRef = (ref: ?HTMLDivElement) => {
     this.calendarEl = ref;
-  }
+  };
 
   render() {
-    const { disabled, focused, month, previouslySelected, selected, today, year } = this.props;
+    const {
+      disabled,
+      focused,
+      month,
+      previouslySelected,
+      selected,
+      today,
+      year,
+    } = this.props;
     const calendar = this.calendar.getCalendar(year, month - 1);
     const weeks = [];
     const shouldDisplaySixthWeek = calendar.length % 6;
@@ -229,7 +275,8 @@ export default class CalendarStateless extends Component<Props> {
 
       const isDisabled = disabled.indexOf(dateAsString) > -1;
       const isFocused = focused === date.day && !date.siblingMonth;
-      const isPreviouslySelected = previouslySelected.indexOf(dateAsString) > -1;
+      const isPreviouslySelected =
+        previouslySelected.indexOf(dateAsString) > -1;
       const isSelected = selected.indexOf(dateAsString) > -1;
       const isSiblingMonth = date.siblingMonth;
       const isToday = today === dateAsString;
@@ -261,13 +308,29 @@ export default class CalendarStateless extends Component<Props> {
         <Announcer aria-live="assertive" aria-relevant="text">
           {new Date(year, month, focused).toString()}
         </Announcer>
-        <Wrapper aria-label="calendar" role="grid" tabIndex={0} innerRef={this.handleCalendarRef}>
-          <Heading month={month} year={year} handleClickNext={this.handleClickNext} handleClickPrev={this.handleClickPrev} />
+        <Wrapper
+          aria-label="calendar"
+          role="grid"
+          tabIndex={0}
+          innerRef={this.handleCalendarRef}
+        >
+          <Heading
+            month={month}
+            year={year}
+            handleClickNext={this.handleClickNext}
+            handleClickPrev={this.handleClickPrev}
+          />
           <CalendarTable role="presentation">
             <CalendarThead>
-              <tr>{makeArrayFromNumber(daysPerWeek).map(i => <CalendarTh key={i}>{getDayName(i)}</CalendarTh>)}</tr>
+              <tr>
+                {makeArrayFromNumber(daysPerWeek).map(i => (
+                  <CalendarTh key={i}>{getDayName(i)}</CalendarTh>
+                ))}
+              </tr>
             </CalendarThead>
-            <CalendarTbody style={{ border: 0 }}>{weeks.map(week => <tr key={week.key}>{week.components}</tr>)}</CalendarTbody>
+            <CalendarTbody style={{ border: 0 }}>
+              {weeks.map(week => <tr key={week.key}>{week.components}</tr>)}
+            </CalendarTbody>
           </CalendarTable>
         </Wrapper>
       </div>

@@ -9,6 +9,7 @@ import Strong from './strong';
 import Subsup from './subsup';
 import TextColor from './textColor';
 import Underline from './underline';
+import Action from './action';
 
 export const markToReact = {
   'code': Code,
@@ -19,6 +20,7 @@ export const markToReact = {
   'subsup': Subsup,
   'textColor': TextColor,
   'underline': Underline,
+  'action': Action
 };
 
 export const toReact = (mark: Mark): ComponentClass<any> => {
@@ -34,4 +36,5 @@ export {
   Subsup,
   TextColor,
   Underline,
+  Action
 };

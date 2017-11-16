@@ -32,6 +32,10 @@ export default () => (
 
     <p>remove-button: hover unlinked vs. linked</p>
     <Tag text="Fruitcake" removeButtonText="Brush your teeth!" />
-    <Tag href="http://www.cupcakeipsum.com" text="Chupa chups" removeButtonText="Floss your teeth!" />
+    <Tag
+      href="http://www.cupcakeipsum.com"
+      text="Chupa chups"
+      removeButtonText="Floss your teeth!"
+    />
   </div>
 );

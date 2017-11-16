@@ -1,16 +1,28 @@
 {
   "presets": [["env", { "modules": false }], "react", "flow"],
-  "plugins": ["transform-class-properties", "transform-object-rest-spread", "syntax-dynamic-import"],
+  "plugins": [
+    "transform-class-properties",
+    "transform-object-rest-spread",
+    "syntax-dynamic-import"
+  ],
   "env": {
-    "production": {
+    "production:cjs": {
       "presets": ["env", "react", "flow"],
-      "plugins": ["transform-class-properties", "transform-object-rest-spread", "transform-runtime"],
-      "ignore": [
-        "__mocks__",
-        "__tests__",
-        "__fixtures__",
-        "node_modules"
-      ]
+      "plugins": [
+        "transform-class-properties",
+        "transform-object-rest-spread",
+        "transform-runtime"
+      ],
+      "ignore": ["__mocks__", "__tests__", "__fixtures__", "node_modules"]
+    },
+    "production:esm": {
+      "presets": [["env", { "modules": false }], "react", "flow"],
+      "plugins": [
+        "transform-class-properties",
+        "transform-object-rest-spread",
+        "transform-runtime"
+      ],
+      "ignore": ["__mocks__", "__tests__", "__fixtures__", "node_modules"]
     },
     "test": {
       "presets": ["env", "react", "flow"],

@@ -33,7 +33,7 @@ export {
   setTextSelection,
 } from './utils';
 
-export { default as Editor } from './editor';
+export { default as Editor, EditorWithAnalytics } from './editor';
 export { default as EditorContext } from './editor/ui/EditorContext';
 export { default as WithEditorActions } from './editor/ui/WithEditorActions';
 export { default as WithHelpTrigger } from './editor/ui/WithHelpTrigger';

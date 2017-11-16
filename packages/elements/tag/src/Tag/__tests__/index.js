@@ -36,7 +36,11 @@ describe('Tag component', () => {
   it('onBeforeRemoveAction callback contract', () => {
     const onBeforeRemoveAction = jest.fn();
     const wrapper = mount(
-      <Tag text="test" removeButtonText="Remove" onBeforeRemoveAction={onBeforeRemoveAction} />,
+      <Tag
+        text="test"
+        removeButtonText="Remove"
+        onBeforeRemoveAction={onBeforeRemoveAction}
+      />,
     );
     wrapper.find(Remove).simulate('click');
     expect(onBeforeRemoveAction).toHaveBeenCalledTimes(1);
@@ -45,7 +49,11 @@ describe('Tag component', () => {
   it('onAfterRemoveAction callback contract', () => {
     const onAfterRemoveAction = jest.fn();
     const wrapper = mount(
-      <Tag text="test" removeButtonText="Remove" onAfterRemoveAction={onAfterRemoveAction} />,
+      <Tag
+        text="test"
+        removeButtonText="Remove"
+        onAfterRemoveAction={onAfterRemoveAction}
+      />,
     );
     wrapper.find(Remove).simulate('click');
     wrapper.find(Container).simulate('animationEnd');
@@ -78,7 +86,7 @@ describe('Tag component', () => {
     const wrapper = mount(<Tag text="test" removeButtonText="foo" />);
     wrapper.find(Remove).simulate('keypress', { key: ' ' });
     wrapper.find(Remove).simulate('keypress', { key: 'Enter' });
-    expect(wrapper.state(('isRemoving'))).toBe(true);
+    expect(wrapper.state('isRemoving')).toBe(true);
   });
 
   it('Tag allows us to set props', () => {
@@ -93,13 +101,17 @@ describe('Tag component', () => {
 
   describe('appearance prop', () => {
     it('should set the isRounded prop of Chrome and Remove to true when set to "rounded"', () => {
-      const wrapper = mount(<Tag appearance="rounded" text="foo" removeButtonText="foo" />);
+      const wrapper = mount(
+        <Tag appearance="rounded" text="foo" removeButtonText="foo" />,
+      );
       expect(wrapper.find(Chrome).prop('isRounded')).toBe(true);
       expect(wrapper.find(Remove).prop('isRounded')).toBe(true);
     });
 
     it('should set the isRounded prop of Chrome and Remove to false when not set to "rounded"', () => {
-      const wrapper = mount(<Tag appearance="default" text="foo" removeButtonText="foo" />);
+      const wrapper = mount(
+        <Tag appearance="default" text="foo" removeButtonText="foo" />,
+      );
       expect(wrapper.find(Chrome).prop('isRounded')).toBe(false);
       expect(wrapper.find(Remove).prop('isRounded')).toBe(false);
     });
@@ -107,12 +119,16 @@ describe('Tag component', () => {
 
   describe('elemBefore prop', () => {
     it('should render anything passed to it', () => {
-      const wrapper = mount(<Tag text="foo" elemBefore={<div className="test" />} />);
+      const wrapper = mount(
+        <Tag text="foo" elemBefore={<div className="test" />} />,
+      );
       expect(wrapper.find(Before).find('div.test').length).toBe(1);
     });
 
     it('should render the elemBefore before the content', () => {
-      const wrapper = mount(<Tag text="foo" elemBefore={<div className="test" />} />);
+      const wrapper = mount(
+        <Tag text="foo" elemBefore={<div className="test" />} />,
+      );
       const chrome = wrapper.find(Chrome);
       expect(chrome.childAt(0).is(Before)).toBe(true);
       expect(chrome.childAt(1).is(Content)).toBe(true);
@@ -134,7 +150,12 @@ describe('Tag component', () => {
 
     it('should reflect the href onto the anchor', () => {
       const wrapper = mount(<Tag text="foo" href="#" />);
-      expect(wrapper.find(Content).find('a').prop('href')).toBe('#');
+      expect(
+        wrapper
+          .find(Content)
+          .find('a')
+          .prop('href'),
+      ).toBe('#');
     });
 
     it('should set the isLink prop on Chrome', () => {
@@ -163,7 +184,13 @@ describe('Tag component', () => {
   describe('onBeforeRemoveAction prop', () => {
     it('should be called if button is clicked', () => {
       const spy = jest.fn();
-      const wrapper = mount(<Tag text="foo" removeButtonText="removeMe" onBeforeRemoveAction={spy} />);
+      const wrapper = mount(
+        <Tag
+          text="foo"
+          removeButtonText="removeMe"
+          onBeforeRemoveAction={spy}
+        />,
+      );
       wrapper.find('button').simulate('click');
       expect(spy).toHaveBeenCalledTimes(1);
     });
@@ -172,7 +199,13 @@ describe('Tag component', () => {
   describe('onAfterRemoveAction prop', () => {
     it('should be called after remove animation is completed', () => {
       const spy = jest.fn();
-      const wrapper = mount(<Tag text="foo" removeButtonText="removeMe" onAfterRemoveAction={spy} />);
+      const wrapper = mount(
+        <Tag
+          text="foo"
+          removeButtonText="removeMe"
+          onAfterRemoveAction={spy}
+        />,
+      );
       wrapper.find('button').simulate('click');
       wrapper.find(Container).simulate('animationEnd');
       expect(spy).toHaveBeenCalledTimes(1);
@@ -181,12 +214,14 @@ describe('Tag component', () => {
     it('should not be called if onBeforeRemoveAction returns false', () => {
       const beforeRemove = () => false;
       const spy = jest.fn();
-      const wrapper = mount(<Tag
-        text="foo"
-        removeButtonText="removeMe"
-        onBeforeRemoveAction={beforeRemove}
-        onAfterRemoveAction={spy}
-      />);
+      const wrapper = mount(
+        <Tag
+          text="foo"
+          removeButtonText="removeMe"
+          onBeforeRemoveAction={beforeRemove}
+          onAfterRemoveAction={spy}
+        />,
+      );
       wrapper.find('button').simulate('click');
       expect(spy).not.toHaveBeenCalled();
     });
@@ -204,7 +239,9 @@ describe('Tag component', () => {
     });
 
     it('should render the standard color option if missing color option is provided', () => {
-      const wrapper = mount(<Tag text="gibberish" color={('gibberish': any)} />);
+      const wrapper = mount(
+        <Tag text="gibberish" color={('gibberish': any)} />,
+      );
       expect(wrapper.find(Chrome).props().color).toBe('standard');
     });
   });

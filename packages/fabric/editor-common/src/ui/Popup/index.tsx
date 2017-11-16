@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import rafSchedule from 'raf-schd';
 import { akEditorFloatingPanelZIndex } from '../../styles';
 import Portal from '../Portal';
 import { calculatePosition, calculatePlacement, findOverflowScrollParent, Position } from './utils';
@@ -37,14 +38,15 @@ export default class Popup extends PureComponent<Props, State> {
     overflowScrollParent: false
   };
 
-  private debounced: number | null = null;
+  private scheduledResizeFrame: number | null = null;
   private placement: [string, string] = ['', ''];
 
   /**
    * Calculates new popup position
    */
-  private updatePosition(props: Props, popup?: HTMLElement) {
+  private updatePosition(props = this.props, state = this.state) {
     const { target, fitHeight, fitWidth, boundariesElement, offset, onPositionCalculated, onPlacementChanged, alignX, alignY } = props;
+    const { popup } = state;
 
     if (!target || !popup) {
       return;
@@ -56,7 +58,7 @@ export default class Popup extends PureComponent<Props, State> {
       this.placement = placement;
     }
 
-    let position = calculatePosition({ placement, target, popup, offset: offset! });
+    let position = calculatePosition({ placement, popup, target, offset: offset! });
     position = onPositionCalculated ? onPositionCalculated(position) : position;
 
     this.setState({ position });
@@ -78,9 +80,7 @@ export default class Popup extends PureComponent<Props, State> {
       throw new Error('Popup is inside "overflow: scroll" container, but its offset parent isn\'t. Currently Popup isn\'t capable of position itself correctly in such case. Add "position: relative" to "overflow: scroll" container or to some other FloatingPanel wrapper inside it.');
     }
 
-    this.setState({ popup, overflowScrollParent }, () => {
-      this.updatePosition(this.props, popup);
-    });
+    this.setState({ popup, overflowScrollParent }, () => this.updatePosition());
   }
 
   private handleRef = (popup: HTMLDivElement) => {
@@ -91,23 +91,14 @@ export default class Popup extends PureComponent<Props, State> {
     this.initPopup(popup);
   }
 
+  private scheduledUpdatePosition = rafSchedule(() => this.updatePosition());
+
   private handleResize = () => {
-    if (this.debounced) {
-      clearTimeout(this.debounced);
-      this.debounced = null;
-    }
-
-    this.debounced = setTimeout(() => {
-      this.debounced = null;
-
-      const { popup } = this.state;
-      this.updatePosition(this.props, popup);
-    }, 200);
+    this.scheduledResizeFrame = this.scheduledUpdatePosition();
   }
 
   componentWillReceiveProps(newProps: Props) {
-    const { popup } = this.state;
-    this.updatePosition(newProps, popup);
+    this.updatePosition(newProps);
   }
 
   componentDidMount() {
@@ -116,6 +107,9 @@ export default class Popup extends PureComponent<Props, State> {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
+    if (this.scheduledResizeFrame) {
+      cancelAnimationFrame(this.scheduledResizeFrame);
+    }
   }
 
   private renderPopup() {

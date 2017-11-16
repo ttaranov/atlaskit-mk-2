@@ -3,7 +3,8 @@ import React, { type Node } from 'react';
 import styled from 'styled-components';
 import Tag from '../src';
 
-const cupcakeipsum = 'Croissant topping tiramisu gummi bears. Bonbon chocolate bar danish soufflé';
+const cupcakeipsum =
+  'Croissant topping tiramisu gummi bears. Bonbon chocolate bar danish soufflé';
 
 const TableHeading = styled.th`
   font-weight: bold;
@@ -27,23 +28,15 @@ export default function Table() {
   return (
     <table>
       <tbody>
-        <Row name="Full text">
-          {cupcakeipsum}
-        </Row>
+        <Row name="Full text">{cupcakeipsum}</Row>
         <Row name="Text">
           <Tag text={cupcakeipsum} />
         </Row>
         <Row name="Linked">
-          <Tag
-            text={cupcakeipsum}
-            href="http://www.cupcakeipsum.com/"
-          />
+          <Tag text={cupcakeipsum} href="http://www.cupcakeipsum.com/" />
         </Row>
         <Row name="Removable">
-          <Tag
-            text={cupcakeipsum}
-            removeButtonText="No sweets for you!"
-          />
+          <Tag text={cupcakeipsum} removeButtonText="No sweets for you!" />
         </Row>
         <Row name="Removable & linked">
           <Tag

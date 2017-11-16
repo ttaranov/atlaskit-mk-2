@@ -12,8 +12,8 @@ type Context = {
 };
 
 export default class Gateway extends Component<Props> {
-  gatewayRegistry: GatewayRegistry
-  id: string = ''
+  gatewayRegistry: GatewayRegistry;
+  id: string = '';
   static contextTypes: Context = {
     gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired,
   };
@@ -24,7 +24,10 @@ export default class Gateway extends Component<Props> {
   }
 
   componentWillMount() {
-    this.id = this.gatewayRegistry.register(this.props.into, this.props.children);
+    this.id = this.gatewayRegistry.register(
+      this.props.into,
+      this.props.children,
+    );
     this.renderIntoGatewayNode(this.props);
   }
 

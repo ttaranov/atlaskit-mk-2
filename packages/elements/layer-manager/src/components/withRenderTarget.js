@@ -8,22 +8,27 @@ import Portal from './Portal';
 type Props = {};
 
 export default function withRenderTarget(
-  { target, withTransitionGroup }:
-  { target: string, withTransitionGroup: boolean },
+  {
+    target,
+    withTransitionGroup,
+  }: { target: string, withTransitionGroup: boolean },
   WrappedComponent: ComponentType<*>,
 ) {
   // eslint-disable-next-line react/prefer-stateless-function
   return class extends Component<Props> {
     static contextTypes = {
       gatewayRegistry: PropTypes.instanceOf(GatewayRegistry),
-    }
+    };
 
     render() {
       const { gatewayRegistry } = this.context;
       const GatewayOrPortal = gatewayRegistry ? Gateway : Portal;
 
       return (
-        <GatewayOrPortal into={target} withTransitionGroup={withTransitionGroup}>
+        <GatewayOrPortal
+          into={target}
+          withTransitionGroup={withTransitionGroup}
+        >
           <WrappedComponent {...this.props} />
         </GatewayOrPortal>
       );

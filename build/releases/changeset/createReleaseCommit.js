@@ -35,10 +35,13 @@ function createReleaseCommit(releaseObj) {
   const releasesLines = releaseObj.releases
     .map(release => `  ${release.name}@${release.version}`)
     .join('\n');
-  const dependentsLines = releaseObj.releases
-    .filter(release => release.dependencies && release.dependencies.length > 0)
-    .map(release => `  ${release.name}@${release.version}`)
-    .join('\n') || '[]';
+  const dependentsLines =
+    releaseObj.releases
+      .filter(
+        release => release.dependencies && release.dependencies.length > 0,
+      )
+      .map(release => `  ${release.name}@${release.version}`)
+      .join('\n') || '[]';
 
   return outdent`
     RELEASING: Releasing ${numPackagesReleased} package(s)
