@@ -25,5 +25,4 @@ pipelines:
           - bolt typecheck
           - bolt test
           - bolt test:browser:browserstack
-          # disabled until we figure out why netlify is returning 500's
-          # - (cd website && bolt deploy-staging) || true
+          - (cd website && bolt deploy-staging:no-minimize) || true
