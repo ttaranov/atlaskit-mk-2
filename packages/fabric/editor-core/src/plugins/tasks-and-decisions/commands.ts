@@ -88,8 +88,9 @@ export const createListAtSelection = (
   let content = $from.node($from.depth).content;
   if ($from.depth === 0) {
     where = $from.before($from.depth + 1);
-    if (content.firstChild) {
-      // Assign child nodes as content rather than paragraph
+    // If content refers to block node, nest one level deeper
+    while (content.firstChild && content.firstChild.isBlock) {
+      // Set content as children until hit text node
       content = content.firstChild.content;
     }
   } else {
