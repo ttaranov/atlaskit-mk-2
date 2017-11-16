@@ -1,4 +1,5 @@
 import {
+  codeBlockToJSON,
   defaultSchema,
   mediaToJSON,
   mentionToJSON,
@@ -7,19 +8,20 @@ import { Node as PMNode } from 'prosemirror-model';
 import { Transformer } from '../transformer';
 
 export type JSONNode = {
-  type: string,
-  attrs?: object,
-  content?: JSONNode[],
-  marks?: any[],
-  text?: string,
+  type: string;
+  attrs?: object;
+  content?: JSONNode[];
+  marks?: any[];
+  text?: string;
 };
 
 export type JSONDocNode = {
-  version: number,
-  type: 'doc',
-  content: JSONNode[],
+  version: number;
+  type: 'doc';
+  content: JSONNode[];
 };
 
+const isCodeBlock = (node: PMNode) => node.type.name === 'codeBlock';
 const isMediaNode = (node: PMNode) => node.type.name === 'media';
 const isMentionNode = (node: PMNode) => node.type.name === 'mention';
 const isParagraph = (node: PMNode) => node.type.name === 'paragraph';
@@ -31,6 +33,8 @@ const toJSON = (node: PMNode): JSONNode => {
     obj.attrs = mediaToJSON(node).attrs;
   } else if (isMentionNode(node)) {
     obj.attrs = mentionToJSON(node).attrs;
+  } else if (isCodeBlock(node)) {
+    obj.attrs = codeBlockToJSON(node).attrs;
   } else if (Object.keys(node.attrs).length) {
     obj.attrs = node.attrs;
   }

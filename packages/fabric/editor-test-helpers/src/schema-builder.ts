@@ -1,7 +1,21 @@
-import { MediaAttributes, MentionAttributes } from '@atlaskit/editor-common';
-import { Fragment, MarkType, Node, NodeType, Schema, Slice } from 'prosemirror-model';
+import {
+  MediaAttributes,
+  MentionAttributes as MentionPublicAttributes,
+} from '@atlaskit/editor-common';
+import {
+  Fragment,
+  MarkType,
+  Node,
+  NodeType,
+  Schema,
+  Slice,
+} from 'prosemirror-model';
 import matches from './matches';
 import sampleSchema from './schema';
+
+export interface MentionAttributes extends MentionPublicAttributes {
+  accessLevel?: string;
+}
 
 /**
  * Represents a ProseMirror "position" in a document.
@@ -32,7 +46,11 @@ export type RefsContentItem = RefsNode | RefsTracker;
  *     builder(aRefsTracker);
  *     builder([aNode, aRefsNode, aRefsTracker]);
  */
-export type BuilderContent = string | Node | RefsContentItem | (Node | RefsContentItem)[];
+export type BuilderContent =
+  | string
+  | Node
+  | RefsContentItem
+  | (Node | RefsContentItem)[];
 
 /**
  * ProseMirror doesn't support empty text nodes, which can be quite
@@ -92,10 +110,9 @@ export function text(value: string, schema: Schema): RefsContentItem {
     const skipLen = skipChars && skipChars.length;
     if (skipLen) {
       if (isEven(skipLen)) {
-        index += (skipLen / 2);
-      }
-      else {
-        stripped += value.slice(textIndex, index + ((skipLen - 1) / 2));
+        index += skipLen / 2;
+      } else {
+        stripped += value.slice(textIndex, index + (skipLen - 1) / 2);
         stripped += value.slice(index + skipLen, index + refToken.length);
         textIndex = index + refToken.length;
         continue;
@@ -109,9 +126,8 @@ export function text(value: string, schema: Schema): RefsContentItem {
 
   stripped += value.slice(textIndex);
 
-  const node = stripped === ''
-    ? new RefsTracker()
-    : schema.text(stripped) as RefsNode;
+  const node =
+    stripped === '' ? new RefsTracker() : (schema.text(stripped) as RefsNode);
 
   node.refs = refs;
   return node;
@@ -175,10 +191,9 @@ export function flatten<T>(deep: (T | T[])[]): T[] {
  * Coerce builder content into ref nodes.
  */
 export function coerce(content: BuilderContent[], schema: Schema) {
-  const refsContent = content
-    .map(item => typeof item === 'string'
-      ? text(item, schema)
-      : item) as (RefsContentItem | RefsContentItem[])[];
+  const refsContent = content.map(
+    item => (typeof item === 'string' ? text(item, schema) : item),
+  ) as (RefsContentItem | RefsContentItem[])[];
   return sequence(...flatten<RefsContentItem>(refsContent));
 }
 
@@ -186,7 +201,7 @@ export function coerce(content: BuilderContent[], schema: Schema) {
  * Create a factory for nodes.
  */
 export function nodeFactory(type: NodeType, attrs = {}) {
-  return function (...content: BuilderContent[]): RefsNode {
+  return function(...content: BuilderContent[]): RefsNode {
     const { nodes, refs } = coerce(content, type.schema);
     const node = type.create(attrs, nodes) as RefsNode;
     node.refs = refs;
@@ -201,21 +216,22 @@ export function markFactory(type: MarkType, attrs = {}, allowDupes = false) {
   const mark = type.create(attrs);
   return (...content: BuilderContent[]): RefsNode[] => {
     const { nodes } = coerce(content, type.schema);
-    return nodes
-      .map(node => {
-        if (!allowDupes && mark.type.isInSet(node.marks)) {
-          return node;
-        } else {
-          const refNode = node.mark(mark.addToSet(node.marks)) as RefsNode;
-          refNode.refs = node.refs;
-          return refNode;
-        }
-      });
+    return nodes.map(node => {
+      if (!allowDupes && mark.type.isInSet(node.marks)) {
+        return node;
+      } else {
+        const refNode = node.mark(mark.addToSet(node.marks)) as RefsNode;
+        refNode.refs = node.refs;
+        return refNode;
+      }
+    });
   };
 }
 
-export const createCell = (colspan, rowspan) => td({colspan, rowspan})(p('x'));
-export const createHeaderCell = (colspan, rowspan) => th({colspan, rowspan})(p('x'));
+export const createCell = (colspan, rowspan) =>
+  td({ colspan, rowspan })(p('x'));
+export const createHeaderCell = (colspan, rowspan) =>
+  th({ colspan, rowspan })(p('x'));
 
 export const doc = nodeFactory(sampleSchema.nodes.doc, {});
 export const p = nodeFactory(sampleSchema.nodes.paragraph, {});
@@ -231,13 +247,21 @@ export const ul = nodeFactory(sampleSchema.nodes.bulletList, {});
 export const ol = nodeFactory(sampleSchema.nodes.orderedList, {});
 export const br = sampleSchema.nodes.hardBreak.createChecked();
 export const panel = nodeFactory(sampleSchema.nodes.panel, {});
-export const panelNote = nodeFactory(sampleSchema.nodes.panel, { panelType: 'note' });
+export const panelNote = nodeFactory(sampleSchema.nodes.panel, {
+  panelType: 'note',
+});
 export const plain = nodeFactory(sampleSchema.nodes.plain, {});
 export const hardBreak = nodeFactory(sampleSchema.nodes.hardBreak, {});
 // tslint:disable-next-line:variable-name
-export const code_block = (attrs: {} = {}) => nodeFactory(sampleSchema.nodes.codeBlock, attrs);
-export const img = (attrs: { src: string, alt?: string, title?: string }) => sampleSchema.nodes.image.createChecked(attrs);
-export const emoji = (attrs: { shortName: string, id?: string, fallback?: string }) => {
+export const code_block = (attrs: {} = {}) =>
+  nodeFactory(sampleSchema.nodes.codeBlock, attrs);
+export const img = (attrs: { src: string; alt?: string; title?: string }) =>
+  sampleSchema.nodes.image.createChecked(attrs);
+export const emoji = (attrs: {
+  shortName: string;
+  id?: string;
+  fallback?: string;
+}) => {
   const emojiNodeAttrs = {
     shortName: attrs.shortName,
     id: attrs.id,
@@ -245,27 +269,38 @@ export const emoji = (attrs: { shortName: string, id?: string, fallback?: string
   };
   return sampleSchema.nodes.emoji.createChecked(emojiNodeAttrs);
 };
-export const mention = (attrs: MentionAttributes) => sampleSchema.nodes.mention.createChecked(attrs);
+export const mention = (attrs: MentionAttributes) =>
+  sampleSchema.nodes.mention.createChecked(attrs);
 export const hr = sampleSchema.nodes.rule.createChecked();
 export const em = markFactory(sampleSchema.marks.em, {});
-export const subsup = (attrs: { type: string }) => markFactory(sampleSchema.marks.subsup, attrs);
+export const subsup = (attrs: { type: string }) =>
+  markFactory(sampleSchema.marks.subsup, attrs);
 export const underline = markFactory(sampleSchema.marks.underline, {});
 export const strong = markFactory(sampleSchema.marks.strong, {});
 export const code = markFactory(sampleSchema.marks.code, {});
 export const strike = markFactory(sampleSchema.marks.strike, {});
-export const mentionQuery = (attrs = { active: true }) => markFactory(sampleSchema.marks.mentionQuery, attrs ? attrs : {} );
-export const a = (attrs: { href: string, title?: string }) => markFactory(sampleSchema.marks.link, attrs);
-export const fragment = (...content: BuilderContent[]) => flatten<BuilderContent>(content);
-export const slice = (...content: BuilderContent[]) => new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
+export const mentionQuery = (attrs = { active: true }) =>
+  markFactory(sampleSchema.marks.mentionQuery, attrs ? attrs : {});
+export const a = (attrs: { href: string; title?: string }) =>
+  markFactory(sampleSchema.marks.link, attrs);
+export const fragment = (...content: BuilderContent[]) =>
+  flatten<BuilderContent>(content);
+export const slice = (...content: BuilderContent[]) =>
+  new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
 export const emojiQuery = markFactory(sampleSchema.marks.emojiQuery, {});
-export const singleImage = (attrs = {}) => nodeFactory(sampleSchema.nodes.singleImage, attrs);
+export const singleImage = (attrs = {}) =>
+  nodeFactory(sampleSchema.nodes.singleImage, attrs);
 export const mediaGroup = nodeFactory(sampleSchema.nodes.mediaGroup);
-export const media = (attrs: MediaAttributes) => sampleSchema.nodes.media.create(attrs);
-export const textColor = (attrs: { color: string }) => markFactory(sampleSchema.marks.textColor, attrs);
+export const media = (attrs: MediaAttributes) =>
+  sampleSchema.nodes.media.create(attrs);
+export const textColor = (attrs: { color: string }) =>
+  markFactory(sampleSchema.marks.textColor, attrs);
 export const table = nodeFactory(sampleSchema.nodes.table, {});
 export const tr = nodeFactory(sampleSchema.nodes.tableRow, {});
-export const td = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(sampleSchema.nodes.tableCell, attrs);
-export const th = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(sampleSchema.nodes.tableHeader, attrs);
+export const td = (attrs: { colspan?: number; rowspan?: number }) =>
+  nodeFactory(sampleSchema.nodes.tableCell, attrs);
+export const th = (attrs: { colspan?: number; rowspan?: number }) =>
+  nodeFactory(sampleSchema.nodes.tableHeader, attrs);
 export const tdEmpty = td({})(p(''));
 export const thEmpty = th({})(p(''));
 export const tdCursor = td({})(p('{<>}'));
@@ -276,9 +311,16 @@ export const decisionList = nodeFactory(sampleSchema.nodes.decisionList, {});
 export const decisionItem = nodeFactory(sampleSchema.nodes.decisionItem, {});
 export const taskList = nodeFactory(sampleSchema.nodes.taskList, {});
 export const taskItem = nodeFactory(sampleSchema.nodes.taskItem, {});
-export const confluenceUnsupportedBlock = (cxhtml: string) => nodeFactory(sampleSchema.nodes.confluenceUnsupportedBlock, { cxhtml })();
-export const confluenceUnsupportedInline = (cxhtml: string) => nodeFactory(sampleSchema.nodes.confluenceUnsupportedInline, { cxhtml })();
-export const confluenceInlineComment = (attrs: { reference: string }) => markFactory(sampleSchema.marks.confluenceInlineComment, attrs ? attrs : {}, true);
+export const confluenceUnsupportedBlock = (cxhtml: string) =>
+  nodeFactory(sampleSchema.nodes.confluenceUnsupportedBlock, { cxhtml })();
+export const confluenceUnsupportedInline = (cxhtml: string) =>
+  nodeFactory(sampleSchema.nodes.confluenceUnsupportedInline, { cxhtml })();
+export const confluenceInlineComment = (attrs: { reference: string }) =>
+  markFactory(
+    sampleSchema.marks.confluenceInlineComment,
+    attrs ? attrs : {},
+    true,
+  );
 export const confluenceJiraIssue = (attrs: {
   issueKey?: string;
   macroId?: string;
