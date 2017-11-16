@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { PropTypes } from 'react';
+import { withAnalytics } from '@atlaskit/analytics';
 import { createEditor, getUiComponent } from './create-editor';
 import { createPluginsList } from './create-editor';
 import EditorActions from './actions';
@@ -179,3 +180,5 @@ export default class Editor extends React.Component<EditorProps, State> {
     );
   }
 }
+
+export const EditorWithAnalytics = withAnalytics<typeof Editor>(Editor, {}, {}, true);
