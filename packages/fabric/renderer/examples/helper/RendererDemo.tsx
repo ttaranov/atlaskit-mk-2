@@ -81,6 +81,9 @@ const eventHandlers = {
     onClick: () => console.log('onClick'),
     onActionClick: () => console.log('onActionClick'),
   },
+  action: {
+      onClick: (event) => console.log('onClick', '[react.MouseEvent]', event)
+  },
 };
 
 interface DemoRendererProps {

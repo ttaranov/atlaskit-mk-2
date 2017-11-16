@@ -26,8 +26,9 @@ interface QueryMark {
 export class MentionsState {
   // public state
   query?: string;
-  queryActive = false;
-  enabled = true;
+  queryActive: boolean = false;
+  enabled: boolean = true;
+  focused: boolean = true;
   anchorElement?: HTMLElement;
   mentionProvider?: MentionProvider;
 
@@ -62,6 +63,10 @@ export class MentionsState {
 
   unsubscribe(cb: MentionsStateSubscriber) {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
+  }
+
+  notifySubscribers () {
+    this.changeHandlers.forEach(cb => cb(this));
   }
 
   apply(tr: Transaction, state: EditorState) {
@@ -129,7 +134,7 @@ export class MentionsState {
     }
 
     if (this.dirty) {
-      this.changeHandlers.forEach(cb => cb(this));
+      this.notifySubscribers();
     }
   }
 
@@ -410,6 +415,11 @@ export class MentionsState {
       this.view.focus();
     }
   }
+
+  updateEditorFocused (focused: boolean) {
+    this.focused = focused;
+    this.notifySubscribers();
+  }
 }
 
 export function createPlugin(providerFactory: ProviderFactory){
@@ -428,6 +438,12 @@ export function createPlugin(providerFactory: ProviderFactory){
     props: {
       nodeViews: {
         mention: nodeViewFactory(providerFactory, { mention: mentionNodeView }),
+      },
+      onFocus(view: EditorView, event) {
+        stateKey.getState(view.state).updateEditorFocused(true);
+      },
+      onBlur(view: EditorView, event) {
+        stateKey.getState(view.state).updateEditorFocused(false);
       }
     },
     key: pluginKey,
