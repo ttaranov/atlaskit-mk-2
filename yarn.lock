@@ -6455,9 +6455,9 @@ json-loader@^0.5.4:
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/json-loader/-/json-loader-0.5.7.tgz#dca14a70235ff82f0ac9a3abeb60d337a365185d"
 
-json-schema-diff-validator@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/json-schema-diff-validator/-/json-schema-diff-validator-0.0.4.tgz#435b320f989357f49a5491f84dd779a6a3b31bc3"
+json-schema-diff-validator@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/json-schema-diff-validator/-/json-schema-diff-validator-0.0.5.tgz#d9fe8394558482d355b07bbf54efcfd766c49126"
   dependencies:
     fast-json-patch "^2.0.5"
 
