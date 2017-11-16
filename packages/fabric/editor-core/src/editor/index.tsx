@@ -49,11 +49,23 @@ export default class Editor extends React.Component<EditorProps, State> {
       return;
     }
 
-    this.unregisterEditorFromActions();
-    this.state.editor.editorView.destroy();
+    const { editor } = this.state;
+    const { editorView } = editor;
+    const { state: editorState } = editorView;
 
-    if (this.state.editor.eventDispatcher) {
-      this.state.editor.eventDispatcher.destroy();
+    this.unregisterEditorFromActions();
+
+    editorState.plugins.forEach(plugin => {
+      const state = plugin.getState(editor.editorView.state);
+      if (state && state.destroy) {
+        state.destroy();
+      };
+    });
+
+    editorView.destroy();
+
+    if (editor.eventDispatcher) {
+      editor.eventDispatcher.destroy();
     }
   }
 
