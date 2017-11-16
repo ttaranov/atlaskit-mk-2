@@ -58,6 +58,8 @@ async function run(opts) {
     await git.add('.');
 
     logger.log('Committing changes...');
+    // TODO: We should probably to a 'can fast forward' check here so we know if our push is going
+    // to succeed before hand. Just means we can have a slightly more informative error message
     const committed = await git.commit(publishCommit);
 
     if (committed) {
