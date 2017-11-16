@@ -29,7 +29,7 @@ describe('tasks and decisions - keymaps', () => {
   const editor = (doc: any) =>
     makeEditor({
       doc,
-      plugins: tasksAndDecisionsPlugins(defaultSchema),
+      plugins: tasksAndDecisionsPlugins(defaultSchema, {}),
     });
 
   describe('decisions', () => {

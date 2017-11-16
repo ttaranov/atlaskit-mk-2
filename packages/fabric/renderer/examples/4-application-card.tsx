@@ -7,9 +7,77 @@ import {
 const eventHandlers: any = {
   applicationCard: {
     onClick: (url) => console.log('ApplicationCard click', '[react.MouseEvent]', url),
-    onActionClick: (applicationCardAction) => console.log('ApplicationCard action click', '[react.MouseEvent]', applicationCardAction)
+    onActionClick: (applicationCardAction, handlers) => {
+      console.log('ApplicationCard action click', '[react.MouseEvent]', applicationCardAction);
+      handlers.progress();
+      switch (applicationCardAction.target.key) {
+        case 'success':
+          setTimeout(() => {
+            handlers.success('Yey. It works.');
+          }, 2000);
+          break;
+        case 'failure':
+          setTimeout(() => {
+            handlers.failure('There is a glitch.');
+          }, 2000);
+          break;
+        case 'loading':
+          setTimeout(() => {
+            handlers.success();
+          }, 2000);
+          break;
+        case 'failure-with-retry':
+          setTimeout(() => {
+            handlers.failure('Some error', true, 'Try again btn text');
+          }, 2000);
+          break;
+      }
+    }
   }
 };
+
+const actions = [
+  {
+    title: 'Success',
+    target: {
+      receiver: 'test-reciever',
+      key: 'success'
+    },
+    parameters: {
+      test: 20
+    }
+  },
+  {
+    title: 'Failure',
+    target: {
+      receiver: 'test-reciever',
+      key: 'failure'
+    },
+    parameters: {
+      test: 30
+    }
+  },
+  {
+    title: 'Loading',
+    target: {
+      receiver: 'test-reciever',
+      key: 'loading'
+    },
+    parameters: {
+      test: 20
+    }
+  },
+  {
+    title: 'Failure with retry',
+    target: {
+      receiver: 'test-reciever',
+      key: 'failure-with-retry'
+    },
+    parameters: {
+      test: 20
+    }
+  }
+];
 
 const attrs = {
   text: 'applicationCard',
@@ -176,40 +244,50 @@ const attrs = {
       url: 'https://confluence.atlassian.com/'
     }
   },
-  actions: [
-    {
-      title: 'Primary action',
-      target: {
-        receiver: 'some.app',
-        key: 'primary.target'
-      },
-      parameters: {
-        test: 10,
-        expenseId: 'test-id'
-      }
-    },
-    {
-      title: 'Secondary action',
-      target: {
-        key: 'secondary.target'
-      }
-    },
-    {
-      title: 'Another action',
-      target: {
-        receiver: 'another.app',
-        key: 'another.target'
-      }
-    }
-  ],
+  actions,
   eventHandlers
 };
 
 export default function Example() {
   return (
-    <ApplicationCard
-      title={{text: 'applicationCard'}}
-      {...attrs as AppCardViewProps}
-    />
+    <div>
+      <div>
+        <ApplicationCard
+          title={{ text: 'applicationCard' }}
+          {...attrs as AppCardViewProps}
+          actions={actions.slice(0, 1)}
+        />
+        <ApplicationCard
+          title={{ text: 'applicationCard' }}
+          {...attrs as AppCardViewProps}
+          actions={actions.slice(0, 2)}
+        />
+        <ApplicationCard
+          title={{ text: 'applicationCard' }}
+          {...attrs as AppCardViewProps}
+          actions={actions}
+        />
+      </div>
+      <div>
+        <ApplicationCard
+          title={{ text: 'applicationCard' }}
+          {...attrs as AppCardViewProps}
+          actions={actions.slice(0, 1)}
+          background={undefined}
+        />
+        <ApplicationCard
+          title={{ text: 'applicationCard' }}
+          {...attrs as AppCardViewProps}
+          actions={actions.slice(0, 2)}
+          background={undefined}
+        />
+        <ApplicationCard
+          title={{ text: 'applicationCard' }}
+          {...attrs as AppCardViewProps}
+          actions={actions}
+          background={undefined}
+        />
+      </div>
+    </div>
   );
 }

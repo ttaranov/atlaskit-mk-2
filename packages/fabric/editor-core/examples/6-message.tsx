@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { AnalyticsDecorator, AnalyticsListener } from '@atlaskit/analytics';
 
-import Editor from './../src/editor';
+import { EditorWithAnalytics } from './../src/editor';
 import EditorContext from './../src/editor/ui/EditorContext';
 import WithHelpTrigger from './../src/editor/ui/WithHelpTrigger';
 import getPropsPreset from './../src/editor/create-editor/get-props-preset';
@@ -20,19 +21,27 @@ export default function Example() {
     <ToolsDrawer
       // tslint:disable-next-line:jsx-no-lambda
       renderEditor={({mentionProvider, emojiProvider, mediaProvider, onChange}) =>
-        <Editor
-          {...getPropsPreset('message')}
+        <AnalyticsListener
+          onEvent={analyticsHandler}
+        >
+          <AnalyticsDecorator
+            data={{ editorType: 'message' }}
+          >
+            <EditorWithAnalytics
+              {...getPropsPreset('message')}
 
-          analyticsHandler={analyticsHandler}
-          maxHeight={305}
+              analyticsHandler={analyticsHandler}
+              maxHeight={305}
 
-          mentionProvider={mentionProvider}
-          emojiProvider={emojiProvider}
-          mediaProvider={mediaProvider}
+              mentionProvider={mentionProvider}
+              emojiProvider={emojiProvider}
+              mediaProvider={mediaProvider}
 
-          onChange={onChange}
-          onSave={SAVE_ACTION}
-        />}
+              onChange={onChange}
+              onSave={SAVE_ACTION}
+            />
+          </AnalyticsDecorator>
+        </AnalyticsListener>}
     />
   );
 }
