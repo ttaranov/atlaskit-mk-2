@@ -39,7 +39,7 @@ describe('@atlaskit/editor-core/utils/filter', () => {
         },
         {
           type: 'mention',
-          attrs: { id: 'id', text: 'mention name', accessLevel: '' }
+          attrs: { id: 'id', text: 'mention name' }
         }
       ]);
     });

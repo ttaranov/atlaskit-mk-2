@@ -707,6 +707,31 @@
     babel-runtime "^6.11.6"
     styled-components "^1.3.0"
 
+"@lbatchelor/netlify-cli@1.2.2-patched.6":
+  version "1.2.2-patched.6"
+  resolved "https://registry.yarnpkg.com/@lbatchelor/netlify-cli/-/netlify-cli-1.2.2-patched.6.tgz#dc7bd4e5eba4e488accc65d8069f9d451ad51a40"
+  dependencies:
+    "@lbatchelor/netlify" "1.2.0-patched.6"
+    chalk "^0.5.1"
+    commander "^2.9.0"
+    github "^0.2.4"
+    home-dir "^0.2.0"
+    inquirer "^0.11.0"
+    open "0.0.5"
+    prompt "^0.2.14"
+    update-notifier "^0.6.0"
+    when "^3.7.5"
+
+"@lbatchelor/netlify@1.2.0-patched.6":
+  version "1.2.0-patched.6"
+  resolved "https://registry.yarnpkg.com/@lbatchelor/netlify/-/netlify-1.2.0-patched.6.tgz#10b0cb1f7d765c36ec71c0e21d43bd7326824ff9"
+  dependencies:
+    base64-js ">=0.0.4"
+    glob ">=3.2.6"
+    graceful-fs "^4.1.2"
+    semaphore "^1.0.5"
+    when "^3.7.5"
+
 "@types/bytes@^2.4.33":
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/@types/bytes/-/bytes-2.5.1.tgz#392c42adb65e16d32328b82b58fbc1611b75da89"
@@ -2505,9 +2530,9 @@ bolt@^0.13.0:
     sort-object "^3.0.2"
     typeable-promisify "^2.0.1"
 
-bolt@^0.15.2:
-  version "0.15.2"
-  resolved "https://registry.yarnpkg.com/bolt/-/bolt-0.15.2.tgz#e2f96fe0ea720eb3563c478956d317c7889b0165"
+bolt@^0.17.0:
+  version "0.17.1"
+  resolved "https://registry.yarnpkg.com/bolt/-/bolt-0.17.1.tgz#a1b874bbc1be5ce0a0298530c571e3d0b34db75b"
   dependencies:
     array-includes "^3.0.3"
     babel-runtime "^6.25.0"
@@ -3156,9 +3181,15 @@ collection-visit@^1.0.0:
     map-visit "^1.0.0"
     object-visit "^1.0.0"
 
-color-convert@^1.3.0, color-convert@^1.9.0:
+color-convert@^1.3.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.0.tgz#1accf97dd739b983bf994d56fec8f95853641b7a"
+  dependencies:
+    color-name "^1.1.1"
+
+color-convert@^1.9.0:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.1.tgz#c1261107aeb2f294ebffec9ed9ecad529a6097ed"
   dependencies:
     color-name "^1.1.1"
 
@@ -6169,11 +6200,12 @@ jest-environment-node@^20.0.3:
     jest-mock "^20.0.3"
     jest-util "^20.0.3"
 
-jest-fixtures@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/jest-fixtures/-/jest-fixtures-0.3.2.tgz#204694429c1ac103fd35b6605c56e24c68d418de"
+jest-fixtures@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/jest-fixtures/-/jest-fixtures-0.5.0.tgz#1c337cca8850ad64cb16e638e4bb57ee11bfff48"
   dependencies:
     find-up "^2.1.0"
+    fs-extra "^4.0.2"
     typeable-promisify "^2.0.1"
 
 jest-get-type@^21.2.0:
@@ -8865,10 +8897,6 @@ radio-symbol@^2.0.0:
     is-windows "^1.0.1"
 
 raf-schd@^2.0.1, raf-schd@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/raf-schd/-/raf-schd-2.0.2.tgz#7cf60f260c2d97ba2ba2a448c73604c5bed8cf08"
-
-raf-schd@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/raf-schd/-/raf-schd-2.0.2.tgz#7cf60f260c2d97ba2ba2a448c73604c5bed8cf08"
 
