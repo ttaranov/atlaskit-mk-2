@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "59.3.2",
+  "version": "59.3.3",
   "description": "A package contains Atlassian editor core functionality",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -8,9 +8,16 @@
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "author": "Atlassian Pty Ltd",
-  "maintainers": ["Eduard S", "Artur B", "Huanhuan H", "Oscar W"],
+  "maintainers": [
+    "Eduard S",
+    "Artur B",
+    "Huanhuan H",
+    "Oscar W"
+  ],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
@@ -20,7 +27,7 @@
     "@atlaskit/code": "^2.1.6",
     "@atlaskit/dropdown-menu": "^1.7.0",
     "@atlaskit/droplist": "^3.8.1",
-    "@atlaskit/editor-common": "^3.6.2",
+    "@atlaskit/editor-common": "^3.6.3",
     "@atlaskit/emoji": "^30.1.5",
     "@atlaskit/icon": "^9.0.1",
     "@atlaskit/layer": "^2.5.4",
@@ -79,10 +86,10 @@
   },
   "devDependencies": {
     "@atlaskit/button": "^5.1.1",
-    "@atlaskit/editor-test-helpers": "^0.5.2",
+    "@atlaskit/editor-test-helpers": "^0.5.3",
     "@atlaskit/layer-manager": "^2.2.1",
     "@atlaskit/media-test-helpers": "^8.4.0",
-    "@atlaskit/renderer": "^8.5.2",
+    "@atlaskit/renderer": "^8.5.3",
     "@atlaskit/util-data-test": "^7.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "chai-as-promised": "^6.0.0",
