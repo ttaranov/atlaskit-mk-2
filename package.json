@@ -162,6 +162,7 @@
     "@atlaskit/media-core": "^11.0.0",
     "@atlaskit/media-filmstrip": "^5.3.0",
     "@atlaskit/mention": "^7.6.0",
+    "@atlaskit/modal-dialog": "^3.2.1",
     "@atlaskit/navigation": "^26.5.1",
     "@atlaskit/profilecard": "^3.7.1",
     "@atlaskit/single-select": "^2.0.1",

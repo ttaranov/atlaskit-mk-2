@@ -81,7 +81,7 @@
     prop-types "^15.5.10"
     styled-components "^1.3.0"
 
-"@atlaskit/button@^5.0.0", "@atlaskit/button@^5.1.2", "@atlaskit/button@^5.4.2", "@atlaskit/button@^5.4.8":
+"@atlaskit/button@^5.0.0", "@atlaskit/button@^5.1.1", "@atlaskit/button@^5.1.2", "@atlaskit/button@^5.4.2", "@atlaskit/button@^5.4.8":
   version "5.4.8"
   resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-5.4.8.tgz#9ae9730cca2f84a38d0ff70f16e360dae9d87302"
   dependencies:
@@ -389,6 +389,16 @@
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
+"@atlaskit/layer-manager@^2.1.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/layer-manager/-/layer-manager-2.4.0.tgz#090c141ae4a10d19a6259f781b70b1e9e24e83cc"
+  dependencies:
+    focusin "^2.0.0"
+    prop-types "^15.5.10"
+    react-transition-group "^2.2.1"
+    styled-components "^1.4.6"
+    tabbable "^1.1.0"
+
 "@atlaskit/layer@^2.0.0", "@atlaskit/layer@^2.0.1", "@atlaskit/layer@^2.1.3", "@atlaskit/layer@^2.1.4", "@atlaskit/layer@^2.5.3", "@atlaskit/layer@^2.5.4":
   version "2.5.4"
   resolved "https://registry.yarnpkg.com/@atlaskit/layer/-/layer-2.5.4.tgz#2a7f37e96e48a5ef8d68db26ba310647f2d678cb"
@@ -478,6 +488,23 @@
     styled-components "^1.4.6"
     tslib "^1.2.0"
     xregexp "^3.2.0"
+
+"@atlaskit/modal-dialog@^3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/modal-dialog/-/modal-dialog-3.2.1.tgz#a3c3784542055f0a5b3118d3f67161a149d4664f"
+  dependencies:
+    "@atlaskit/blanket" "^3.0.0"
+    "@atlaskit/button" "^5.1.1"
+    "@atlaskit/icon" "^9.0.0"
+    "@atlaskit/layer-manager" "^2.1.0"
+    "@atlaskit/theme" "^2.0.0"
+    babel-runtime "^6.25.0"
+    focusin "^2.0.0"
+    prop-types "^15.5.10"
+    raf-schd "^2.0.1"
+    react-transition-group "^2.2.0"
+    styled-components "^1.4.6"
+    tabbable "^1.0.6"
 
 "@atlaskit/navigation@^26.5.1":
   version "26.5.1"
@@ -9067,7 +9094,7 @@ react-transition-group@^1.1.2, react-transition-group@^1.2.0:
     prop-types "^15.5.6"
     warning "^3.0.0"
 
-react-transition-group@^2.2.1:
+react-transition-group@^2.2.0, react-transition-group@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.2.1.tgz#e9fb677b79e6455fd391b03823afe84849df4a10"
   dependencies:
@@ -10240,6 +10267,10 @@ symbol-observable@^1.0.1:
 symbol-tree@^3.2.1:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.2.tgz#ae27db38f660a7ae2e1c3b7d1bc290819b8519e6"
+
+tabbable@^1.0.6:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/tabbable/-/tabbable-1.1.1.tgz#88618caa0dc76e877572a678f0ad97519bba6761"
 
 tabbable@^1.1.0:
   version "1.1.0"
