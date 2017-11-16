@@ -1,5 +1,7 @@
 const { generateMarkdownTemplate } = require('./template');
 const fs = require('fs');
+const bolt = require('bolt');
+const path = require('path');
 const os = require('os');
 const util = require('util');
 const { sep } = require('path');
@@ -14,6 +16,18 @@ function rename(oldPath, newPath) {
 
 function mkdtemp(prefix) {
   return util.promisify(cb => fs.mkdtemp(prefix, cb))();
+}
+
+async function getRepoUrl(cwd, opts) {
+  if (opts.repoUrl) return opts.repoUrl;
+  const project = await bolt.getProject({ cwd });
+  if (
+    project &&
+    project.config['bolt-changelog'] &&
+    project.config['bolt-changelog'].repositoryUrl
+  )
+    return project.config['bolt-changelog'].repositoryUrl;
+  return '';
 }
 
 /**
@@ -39,70 +53,61 @@ function mkdtemp(prefix) {
  *   ]
  * }
  */
-async function updateChangeLog(releaseObject, opts = {}) {
-  const options = {
-    prefix: opts.prefix || '',
-    path: opts.path || __dirname,
-  };
 
+async function updateChangeLog(releaseObject, opts = { cwd: '', repoUrl: '' }) {
+  const cwd = opts.cwd || process.cwd();
+  const allPackages = await bolt.getWorkspaces({ cwd });
+  const prefix = opts.prefix || '';
+  const repoUrl = await getRepoUrl(cwd, opts);
+  let udpatedChangelogs = [];
   // Updating ChangeLog files for each package
   for (let i = 0; i < releaseObject.releases.length; i++) {
     const release = releaseObject.releases[i];
-    const targetFile = `${options.prefix}${release.name}.md`;
+    const pkg = allPackages.find(a => a.name === release.name);
+    if (!pkg)
+      throw new Error(
+        `While writing changelog, could not find workspace ${
+          release.name
+        } in project.`,
+      );
+    const changelogPath = path.join(pkg.dir, 'CHANGELOG.md');
 
-    release.dependent = releaseObject.dependents.find(
-      d => d.name === release.name,
-    );
-
-    const templateString = `\n${generateMarkdownTemplate(
+    const templateString = `\n\n${generateMarkdownTemplate(
       release,
       releaseObject,
+      repoUrl,
     ).trim('\n')}\n`;
     try {
-      if (fs.existsSync(targetFile)) {
-        await prependFile(templateString, targetFile);
+      if (fs.existsSync(changelogPath)) {
+        await prependFile(changelogPath, templateString, pkg);
       } else {
-        await writeFile(targetFile, templateString);
+        await writeFile(changelogPath, `# ${pkg.name}${templateString}`);
       }
     } catch (e) {
       console.log(e);
     }
-    console.log(`Updated file ${targetFile}`);
+    console.log(`Updated file ${changelogPath}`);
+    udpatedChangelogs.push(changelogPath);
   }
+  return udpatedChangelogs;
 }
 
 /**
+ * @param {string} filePath - File path
  * @param {string} data - Data string
- * @param {string} file - File path
  * The process is pretty general. It would create a temp file and write the data
  * into the file and then stream the existing file to the temp file. When it's done,
  * the temp file will be renamed to replace the existing file.
  */
-async function prependFile(data, file) {
-  let tempDir = os.tmpdir();
-  tempDir = await mkdtemp(`${tempDir}${sep}`);
-  const tempFile = `${tempDir}${sep}${file}`;
-  return new Promise((resolve, reject) => {
-    const oldFileStream = fs.createReadStream(file, { encoding: 'utf-8' });
-    const newFileStream = fs.createWriteStream(tempFile);
-
-    oldFileStream.on('error', err => {
-      reject(new Error(`Failed to read file ${file}: ${err}`));
-    });
-    newFileStream.on('error', err => {
-      reject(new Error(`Failed to write to temp file ${tempFile}: ${err}`));
-    });
-    newFileStream.on('finish', async () => {
-      await rename(tempFile, file);
-      resolve(`Finished writing ${file}`);
-    });
-
-    // Write the content to an empty temp file first
-    // then stream the old file over
-    newFileStream.write(data, () => {
-      oldFileStream.pipe(newFileStream);
-    });
-  });
+async function prependFile(filePath, data, pkg) {
+  const fileData = fs.readFileSync(filePath).toString();
+  if (!fileData) {
+    const completelyNewChangelog = `# ${pkg.name}${data}`;
+    fs.writeFileSync(filePath, completelyNewChangelog);
+    return;
+  }
+  const newChangelog = fileData.replace('\n', data);
+  fs.writeFileSync(filePath, newChangelog);
 }
 
 module.exports = {

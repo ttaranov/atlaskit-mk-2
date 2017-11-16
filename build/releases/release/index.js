@@ -34,8 +34,7 @@ async function run(opts) {
   const releaseObj = createRelease(unreleasedChangesets, allPackages);
   const publishCommit = createReleaseCommit(releaseObj);
 
-  /** TODO: Update changelogs here */
-  // changelog.updateChangeLog(releaseObj);
+  const changelogPaths = await changelog.updateChangeLog(releaseObj);
 
   logger.log(publishCommit);
 
@@ -55,6 +54,7 @@ async function run(opts) {
     // update dependencies on those versions
     await bolt.updatePackageVersions(versionsToUpdate);
     // TODO: get updatedPackages from bolt.updatePackageVersions and only add those
+    // as well as the changelogPaths
     await git.add('.');
 
     logger.log('Committing changes...');

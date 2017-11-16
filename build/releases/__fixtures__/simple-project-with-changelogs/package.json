@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "changelog fixtures",
+  "description": "simple project with no content beside changelog variants",
+  "version": "1.0.0",
+  "bolt": {
+    "workspaces": [
+      "packages/*"
+    ]
+  },
+  "bolt-changelog": {
+    "repositoryUrl": "https://somewhere-fake-to-visit.com"
+  }
+}
