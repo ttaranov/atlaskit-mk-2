@@ -28,9 +28,7 @@ async function run(opts) {
   const unreleasedChangesets = await git.getUnpublishedChangesetCommits();
 
   if (unreleasedChangesets.length === 0) {
-    logger.warn(
-      `No unreleased changesets found since ${lastPublishCommit}. Exiting`,
-    );
+    logger.warn(`No unreleased changesets found. Exiting`);
     return;
   }
   const releaseObj = createRelease(unreleasedChangesets, allPackages);
