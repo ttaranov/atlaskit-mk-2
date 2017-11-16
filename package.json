@@ -11,8 +11,8 @@
     "build": "                               run-p build:pkg build:babel && run-p build:typescript:es5 build:typescript:es2015 build:editor-common:json-schema --print-label --continue-on-error",
     "build:pkg": "                           bolt workspaces exec --only-fs 'packages/**' -- copy-pkg package.json dist/package.json --only name,version",
     "build:babel": "                         run-p build:babel:cjs build:babel:esm",
-    "build:babel:cjs": "                     NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --only-fs 'packages/{elements,utils}/**' -- babel src -d dist/cjs",
-    "build:babel:esm": "                     NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --only-fs 'packages/{elements,utils}/**' -- babel src -d dist/esm",
+    "build:babel:cjs": "                     NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --only-fs 'packages/{elements,labs,utils}/**' -- babel src -d dist/cjs",
+    "build:babel:esm": "                     NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --only-fs 'packages/{elements,labs,utils}/**' -- babel src -d dist/esm",
     "build:typescript:es5": "                NODE_ENV=production bolt workspaces exec --only-fs 'packages/fabric/*' -- tsc --project ./build/es5",
     "build:typescript:es2015": "             NODE_ENV=production bolt workspaces exec --only-fs 'packages/fabric/*' -- tsc --project ./build/es2015",
     "delete": "                              yarn run delete:modules && yarn run delete:build",
@@ -42,9 +42,10 @@
     "version": "0.15.x",
     "workspaces": [
       "build/*",
-      "packages/utils/*",
       "packages/elements/*",
       "packages/fabric/*",
+      "packages/labs/*",
+      "packages/utils/*",
       "patterns",
       "website"
     ]
