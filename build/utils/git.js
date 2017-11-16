@@ -1,6 +1,8 @@
 const spawn = require('projector-spawn');
 const path = require('path');
 
+const parseChangesetCommit = require('../releases/changeset/parseChangesetCommit');
+
 // Parses lines that are in the form 'HASH message goes here'
 const parseCommitLine = line => {
   // ignore first result, it is the whole pattern match
@@ -45,9 +47,48 @@ async function push(args = []) {
   return gitCmd.code === 0;
 }
 
-async function getFullCommit(ref) {
-  const gitCmd = await spawn('git', ['show', ref]);
-  const lines = gitCmd.stdout.trim().split('\n');
+// helper method for getAllReleaseCommits and getAllChangesetCommits as they are almost identical
+async function getAndParseJsonFromCommitsStartingWith(str) {
+  // --grep lets us pass a regex, -z splits commits using NUL instead of newlines
+  const gitCmd = await spawn('git', [
+    'log',
+    '--grep',
+    `^${str}`,
+    '-z',
+    '--no-merges',
+  ]);
+  const result = gitCmd.stdout.trim().split('\0');
+  const parsedCommits = result
+    .map(parseFullCommit)
+    // unfortunately, we have left some test data in the repo, which wont parse properly, so we
+    // need to manually pull it out here.
+    .filter(parsed => parsed.message.includes('---'))
+    .map(parsedCommit => {
+      const commit = parsedCommit.commit;
+      const changeset = parseChangesetCommit(parsedCommit.message);
+      if (!changeset) return undefined;
+      // we only care about the changeset and the commit
+      return { ...changeset, commit };
+    })
+    // this filter is for the same reason as above due to some unparsable JSON strings
+    .filter(parsed => !!parsed);
+
+  return parsedCommits;
+}
+
+async function getAllReleaseCommits() {
+  return getAndParseJsonFromCommitsStartingWith('RELEASING: ');
+}
+
+async function getAllChangesetCommits() {
+  return getAndParseJsonFromCommitsStartingWith('CHANGESET: ');
+}
+
+// TODO: This function could be a lot cleaner, simpler and less error prone if we played with
+// the pretty format stuff from `git log` to make sure things will always be as we expect
+// (i.e this function breaks if you dont put '--no-merges' in the git log command)
+function parseFullCommit(commitStr) {
+  const lines = commitStr.trim().split('\n');
 
   const hash = lines
     .shift()
@@ -87,20 +128,21 @@ async function getLastPublishCommit() {
   return latestPublishCommit.commit;
 }
 
-async function getChangesetCommitsSince(ref) {
-  const isChangesetCommit = msg => msg.startsWith('CHANGESET: ');
+async function getUnpublishedChangesetCommits() {
+  const releaseCommits = await getAllReleaseCommits();
+  const changesetCommits = await getAllChangesetCommits();
+  // to find unpublished commits, we'll go through them one by one and compare them to all release
+  // commits and see if there are any that dont have a release commit that matches them
+  const unpublishedCommits = changesetCommits.filter(cs => {
+    return !releaseCommits.find(publishCommit => {
+      // release commits have references to the changesets that they come from
+      return publishCommit.changesets.find(changeset => {
+        return changeset.commit === cs.commit;
+      });
+    });
+  });
 
-  const gitCmd = await spawn('git', ['log', `${ref}...`, '--oneline']);
-  const result = gitCmd.stdout.trim();
-
-  if (result.length === 0) return [];
-
-  const parsedResults = result.split('\n').map(line => parseCommitLine(line));
-  const changesetCommits = parsedResults
-    .filter(res => isChangesetCommit(res.message))
-    .map(res => res.commit);
-
-  return changesetCommits;
+  return unpublishedCommits;
 }
 
 module.exports = {
@@ -110,7 +152,8 @@ module.exports = {
   add,
   commit,
   push,
-  getFullCommit,
+  getUnpublishedChangesetCommits,
+  getAllReleaseCommits,
+  getAllChangesetCommits,
   getLastPublishCommit,
-  getChangesetCommitsSince,
 };
