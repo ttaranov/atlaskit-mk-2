@@ -33,8 +33,8 @@ Contributors are always from external teams, and shepherds are always from withi
 
 After the initial meeting, there should be at least two action items which would be to:
 
-1. Set up an architecture sparring between contributor and shepherd.
-2. Start a discussion with design about the UX of the contribution.
+1. Set up an architecture deep-dive between contributor and shepherd.
+2. Start a discussion with the ADG design team to ensure it meets our standards.
 
 Both actions may not require much work. For example, architecture sparring may not uncover any extra details that need to be fleshed out. It may be a simple carry over. Design sparring may be the same. Design may also want to change some interactions, or it may be that the component needs to be rethought in the context of being consumed by the rest of the company.
 
@@ -54,9 +54,9 @@ The key here is that everyone shares knowledge and can hold each other accountab
 
 Every contribution will have a shepherd, but to the extent at which this shepherd will be involved will vary. For example, a shepherd may not be a developer at all, or might decide that part-time development is a good idea. A shepherd may even take over development at some point. Whatever the case, the shepherd must at the very least be dedicated to:
 
-- Reviewing relevant PRs
-- Meeting with contributors, or involved parties
-- Planning any foll ups after the final contribution and handover has been made.
+- Reviewing relevant PRs.
+- Meeting with contributors, or involved parties.
+- Planning any follow ups after the final contribution and handover has been made.
 
 Footnotes:
 
