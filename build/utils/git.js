@@ -129,6 +129,9 @@ async function getLastPublishCommit() {
 }
 
 async function getUnpublishedChangesetCommits() {
+  // We fetch **all** of the commits because otherwise we can end up in race conditions where a
+  // master build is running and another changeset is merged whilst its still running (the new
+  // changeset would be released without being tested)
   const releaseCommits = await getAllReleaseCommits();
   const changesetCommits = await getAllChangesetCommits();
   // to find unpublished commits, we'll go through them one by one and compare them to all release
