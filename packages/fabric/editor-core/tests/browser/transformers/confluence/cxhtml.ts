@@ -800,6 +800,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       title: { value: 'OK' },
     };
     const macroMetadata = {
+      macroId: { value: String(new Date().valueOf()) },
       placeholder: [
         {
           data: { url: 'www.google.com/placeholder.png' },
@@ -811,10 +812,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       extensionType: 'com.atlassian.confluence.macro.core',
       extensionKey: 'status',
       parameters: {
-        macroParams: {
-          ...macroParams,
-          macroId: { value: String(new Date().valueOf()) },
-        },
+        macroParams,
         macroMetadata,
       },
     };
@@ -829,7 +827,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       `<ac:structured-macro ac:name="${
         attrs.extensionKey
       }" ac:schema-version="1" ac:macro-id="${
-        attrs.parameters.macroParams.macroId.value
+        attrs.parameters.macroMetadata.macroId.value
       }">${params}<fab:placeholder-url>${
         macroMetadata.placeholder[0].data.url
       }</fab:placeholder-url><fab:display-type>INLINE</fab:display-type></ac:structured-macro>`,

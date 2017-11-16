@@ -11,9 +11,9 @@ export const inlineMacroData = [
           color: { value: 'Green' },
           title: { value: 'OK' },
           subtle: { value: 'true' },
-          macroId: { value: new Date().valueOf() },
         },
         macroMetadata: {
+          macroId: { value: new Date().valueOf() },
           placeholder: [
             {
               data: {
@@ -37,9 +37,9 @@ export const inlineMacroData = [
           color: { value: 'Red' },
           title: { value: 'Fail' },
           subtle: { value: 'true' },
-          macroId: { value: new Date().valueOf() },
         },
         macroMetadata: {
+          macroId: { value: new Date().valueOf() },
           placeholder: [
             {
               data: { url: '' },

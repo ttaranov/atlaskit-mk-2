@@ -29,8 +29,8 @@ export const getMacroId = (node: PmNode): string | undefined => {
   if (!node.attrs.parameters) {
     return;
   }
-  const { macroParams } = node.attrs.parameters;
-  if (macroParams && macroParams.macroId) {
-    return macroParams.macroId.value;
+  const { macroMetadata } = node.attrs.parameters;
+  if (macroMetadata && macroMetadata.macroId) {
+    return macroMetadata.macroId.value;
   }
 };

@@ -58,7 +58,7 @@ export default class InlineMacro extends Component<Props, any> {
         }
         {capitalizeFirstLetter(extensionKey)}
         <PlaceholderFallbackParams>
-          {Object.keys(macroParams).map(key => (key === 'macroId' ? '' : ` | ${key} = ${macroParams[key].value}`))}
+          {Object.keys(macroParams).map(key => ` | ${key} = ${macroParams[key].value}`)}
         </PlaceholderFallbackParams>
       </PlaceholderFallback>
     );

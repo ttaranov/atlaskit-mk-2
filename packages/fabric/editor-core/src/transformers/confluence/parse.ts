@@ -444,8 +444,9 @@ function convertConfluenceMacro(
         extensionType: 'com.atlassian.confluence.macro.core',
         extensionKey: macroName.toLowerCase(),
         parameters: {
-          macroParams: getExtensionMacroParams(params, macroId),
+          macroParams: getExtensionMacroParams(params),
           macroMetadata: {
+            macroId: { value: macroId },
             placeholder: [
               {
                 data: { url: properties['fab:placeholder-url'] },

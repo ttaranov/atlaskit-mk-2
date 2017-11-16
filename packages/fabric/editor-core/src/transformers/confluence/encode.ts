@@ -399,9 +399,6 @@ export default function encode(node: PMNode, schema: Schema) {
 
       // parameters
       Object.keys(macroParams).forEach(paramName => {
-        if (paramName === 'macroId') {
-          return;
-        }
         const el = doc.createElementNS(AC_XMLNS, 'ac:parameter');
         el.setAttributeNS(AC_XMLNS, 'ac:name', paramName);
         el.textContent = macroParams[paramName].value;

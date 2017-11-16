@@ -339,10 +339,10 @@ export const getMacroType = (
   return `${bodyType}-${displayType}` as MacroType;
 };
 
-export const getExtensionMacroParams = (params: object, macroId?: string) => {
+export const getExtensionMacroParams = (params: object) => {
   const macroParams = {};
   Object.keys(params).forEach(key => {
     macroParams[key] = { value: params[key] };
   });
-  return { macroId: { value: macroId }, ...macroParams };
+  return macroParams;
 };
