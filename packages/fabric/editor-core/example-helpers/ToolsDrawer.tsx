@@ -33,12 +33,12 @@ const providers = {
     'undefined': undefined,
   },
   mediaProvider: {
-    resolved: storyMediaProviderFactory(),
+    resolved: storyMediaProviderFactory({ includeUserAuthProvider: true }),
     pending: pendingPromise,
     rejected: rejectedPromise,
     'view only': storyMediaProviderFactory({ includeUploadContext: false }),
     'w/o link cards': storyMediaProviderFactory({ includeLinkCreateContext: false }),
-    'with userAuthProvider': storyMediaProviderFactory({ includeUserAuthProvider: true }),
+    'w/o userAuthProvider': storyMediaProviderFactory(),
     'undefined': undefined,
   },
   activityProvider: {
