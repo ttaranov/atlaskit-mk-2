@@ -44,11 +44,11 @@ export const Wrapper = styled.div`
       display: inline-block;
     }
 
-    & ::before {
+    &::before {
       content: "";
     }
 
-    & ::after {
+    &::after {
       content: "";
     }
   }
