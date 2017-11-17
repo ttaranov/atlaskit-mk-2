@@ -48,7 +48,7 @@ export default class Nav extends Component<{}, State> {
                 isCollapsible={false}
                 isResizeable={false}
                 globalPrimaryIcon={
-                  <AtlassianIcon size="large" label="AtlasKit" />
+                  <AtlassianIcon size="large" label="Atlaskit" />
                 }
                 globalPrimaryItemHref={navigateOut ? OLD_WEBSITE_URL : '/'}
                 globalSearchIcon={<SearchIcon label="search" />}
@@ -56,8 +56,8 @@ export default class Nav extends Component<{}, State> {
                 containerHeaderComponent={() => (
                   <AkContainerTitle
                     navigateOut={fromOldSite && fromOldSite.isExact}
-                    icon={<img src={atlasKitLogo} alt="AtlasKit" />}
-                    text="AtlasKit"
+                    icon={<img src={atlasKitLogo} alt="Atlaskit" />}
+                    text="Atlaskit"
                   />
                 )}
                 drawers={[
