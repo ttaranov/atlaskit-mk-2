@@ -48,6 +48,7 @@ const allPackages = {
   theme: { key: 'theme', name: 'Theme' },
   toggle: { key: 'toggle', name: 'Toggle' },
   tooltip: { key: 'tooltip', name: 'Tooltip' },
+  'tree-table': { key: 'tree-table', name: 'Tree Table' },
 };
 
 const getChildOfName: (Directory, string) => Directory | File | void = (
