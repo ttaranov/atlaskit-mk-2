@@ -190,6 +190,7 @@
     "@types/prosemirror-transform": "^0.21.1",
     "@types/prosemirror-view": "^0.21.1",
     "ajv": "^4.11.3",
+    "axios": "^0.17.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-runtime": "^6.26.0",
     "babel-traverse": "^6.26.0",
