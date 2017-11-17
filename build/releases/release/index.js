@@ -25,21 +25,10 @@ async function bumpReleasedPackages(releaseObj, allPackages) {
 async function run(opts) {
   const cwd = opts.cwd || process.cwd();
   const allPackages = await bolt.getWorkspaces({ cwd });
-  const lastPublishCommit = await git.getLastPublishCommit();
-  const unreleasedChangesetCommits = await git.getChangesetCommitsSince(
-    lastPublishCommit,
-  );
-  const commits = await Promise.all(
-    unreleasedChangesetCommits.map(commit => git.getFullCommit(commit)),
-  );
-  const unreleasedChangesets = commits.map(({ commit, message }) => ({
-    commit,
-    ...parseChangesetCommit(message),
-  }));
+  const unreleasedChangesets = await git.getUnpublishedChangesetCommits();
+
   if (unreleasedChangesets.length === 0) {
-    logger.warn(
-      `No unreleased changesets found since ${lastPublishCommit}. Exiting`,
-    );
+    logger.warn(`No unreleased changesets found. Exiting`);
     return;
   }
   const releaseObj = createRelease(unreleasedChangesets, allPackages);
@@ -69,6 +58,8 @@ async function run(opts) {
     await git.add('.');
 
     logger.log('Committing changes...');
+    // TODO: We should probably to a 'can fast forward' check here so we know if our push is going
+    // to succeed before hand. Just means we can have a slightly more informative error message
     const committed = await git.commit(publishCommit);
 
     if (committed) {

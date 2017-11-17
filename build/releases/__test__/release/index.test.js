@@ -17,7 +17,6 @@ jest.mock('../../changeset/createRelease');
 jest.mock('../../../utils/logger');
 
 git.getLastPublishCommit.mockImplementation(() => Promise.resolve('xxYYxxY'));
-git.getFullCommit.mockImplementation(() => Promise.resolve({}));
 git.add.mockImplementation(() => Promise.resolve(true));
 git.commit.mockImplementation(() => Promise.resolve(true));
 git.push.mockImplementation(() => Promise.resolve(true));
@@ -68,7 +67,7 @@ describe('running release', () => {
   describe('in a simple project', () => {
     describe('when there are no changeset commits', () => {
       beforeEach(() => {
-        git.getChangesetCommitsSince.mockImplementation(() =>
+        git.getUnpublishedChangesetCommits.mockImplementation(() =>
           Promise.resolve([]),
         );
       });
@@ -78,16 +77,16 @@ describe('running release', () => {
         const loggerWarnCalls = logger.warn.mock.calls;
         expect(loggerWarnCalls.length).toEqual(1);
         expect(loggerWarnCalls[0][0]).toEqual(
-          'No unreleased changesets found since xxYYxxY. Exiting',
+          'No unreleased changesets found. Exiting',
         );
       });
     });
 
     describe('when there are changeset commits', () => {
-      // From here, we'll just mock from createRelease and ignore all the git operations (getChangesetCommitsSince, etc)
+      // From here, we'll just mock from createRelease and ignore all the git operations (getUnpublishedChangesetCommits, etc)
       beforeAll(() => {
         // We just need there to be a length > 0
-        git.getChangesetCommitsSince.mockImplementation(() =>
+        git.getUnpublishedChangesetCommits.mockImplementation(() =>
           Promise.resolve([1, 2, 3]),
         );
       });
