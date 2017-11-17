@@ -21,7 +21,7 @@
   "dependencies": {
     "@atlaskit/button": "^5.4.8",
     "@atlaskit/icon": "^9.0.1",
-    "@atlaskit/media-card": "^22.1.0",
+    "@atlaskit/media-card": "^22.2.0",
     "@atlaskit/modal-dialog": "^3.2.1",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@atlaskit/field-range": "^2.0.0",
