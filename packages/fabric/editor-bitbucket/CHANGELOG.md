@@ -1,5 +1,7 @@
 # @atlaskit/editor-bitbucket
 
+## 4.7.1
+
 ## 4.7.0
 
 ## 3.4.4 (2017-10-16)
