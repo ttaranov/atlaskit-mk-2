@@ -34,6 +34,7 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
+    "@atlaskit/docs": "^0.0.3",
     "@atlaskit/media-core": "^11.0.0",
     "@atlaskit/media-test-helpers": "^8.5.0"
   }
