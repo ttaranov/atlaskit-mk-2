@@ -161,7 +161,7 @@
     "@atlaskit/flag": "^6.1.5",
     "@atlaskit/icon": "^9.0.1",
     "@atlaskit/input": "^1.6.0",
-    "@atlaskit/media-card": "^22.1.0",
+    "@atlaskit/media-card": "^22.2.0",
     "@atlaskit/media-core": "^11.0.0",
     "@atlaskit/mention": "^7.6.0",
     "@atlaskit/modal-dialog": "^3.2.1",
