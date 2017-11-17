@@ -50,7 +50,8 @@ const createListRule = (regex: RegExp, name: string, list: any, item: any, schem
         }
 
         return tr;
-      }
+      },
+      true
     );
 };
 

@@ -161,6 +161,15 @@ describe('hyperlink', () => {
       );
     });
 
+    it('does convert to hyperlink if the previous link part is already linkified', () => {
+      const { editorView, sel } = editor(doc(p('[test](', link({ href: 'http://www.atlassian.com' })('http://www.atlassian.com{<>}'))));
+      insertText(editorView, ')', sel);
+
+      expect(editorView.state.doc).to.deep.equal(
+        doc(p(link({ href: 'http://www.atlassian.com' })('test')))
+      );
+    });
+
     it('does not remove existsing other mark', () => {
       const { editorView, sel } = editor(doc(p(strong('www.{<>}'))));
       insertText(editorView, 'google.com ', sel, sel);
