@@ -1,15 +1,23 @@
 import { InputRule } from 'prosemirror-inputrules';
 import { EditorState, Transaction } from 'prosemirror-state';
 
-export type InputRuleHandler = string | ((state: EditorState, match, start, end) => (Transaction | null | undefined));
+export type InputRuleHandler =
+  | string
+  | ((state: EditorState, match, start, end) => Transaction | null | undefined);
 
-export function defaultInputRuleHandler(inputRule: InputRule): InputRule {
+export function defaultInputRuleHandler(
+  inputRule: InputRule,
+  isBlockNodeRule: boolean = false
+): InputRule {
   const originalHandler = (inputRule as any).handler;
   // TODO: Fix types (ED-2987)
   (inputRule as any).handler = (state: EditorState, match, start, end) => {
     // Skip any input rule inside code
     // https://product-fabric.atlassian.net/wiki/spaces/E/pages/37945345/Editor+content+feature+rules#Editorcontent/featurerules-Rawtextblocks
-    if (state.selection.$from.parent.type.spec.code || hasUnsupportedMark(state, start, end)) {
+    const unsupportedMarks = isBlockNodeRule
+      ? hasMarksNotSupportedByBlocks(state, start, end)
+      : hasCodeMark(state, start, end);
+    if (state.selection.$from.parent.type.spec.code || unsupportedMarks) {
       return;
     }
     return originalHandler(state, match, start, end);
@@ -17,8 +25,15 @@ export function defaultInputRuleHandler(inputRule: InputRule): InputRule {
   return inputRule;
 }
 
-export function createInputRule(match: RegExp, handler: InputRuleHandler): InputRule {
-  return defaultInputRuleHandler(new InputRule(match, handler));
+export function createInputRule(
+  match: RegExp,
+  handler: InputRuleHandler,
+  isBlockNodeRule: boolean = false
+): InputRule {
+  return defaultInputRuleHandler(
+    new InputRule(match, handler),
+    isBlockNodeRule
+  );
 }
 
 // ProseMirror uses the Unicode Character 'OBJECT REPLACEMENT CHARACTER' (U+FFFC) as text representation for
@@ -28,18 +43,36 @@ export function createInputRule(match: RegExp, handler: InputRuleHandler): Input
 export const leafNodeReplacementCharacter = '\ufffc';
 
 // tslint:disable:no-bitwise
-export const uuid = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-  const r = Math.random() * 16 | 0;
-  return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-});
+export const uuid = () =>
+  'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = (Math.random() * 16) | 0;
+    return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+  });
 
-const hasUnsupportedMark = (state: EditorState, start: number, end: number) => {
-  const { doc, schema: { marks }} = state;
+const hasMarksNotSupportedByBlocks = (
+  state: EditorState,
+  start: number,
+  end: number
+) => {
+  const { doc, schema: { marks } } = state;
   let unsupportedMarksPresent = false;
+  const isUnsupportedMark = node =>
+    node.type === marks.code || node.type === marks.link;
   doc.nodesBetween(start, end, node => {
-    unsupportedMarksPresent = unsupportedMarksPresent || node.marks.filter(
-      ({type}) => type === marks.code || type === marks.link
-    ).length > 0;
+    unsupportedMarksPresent =
+      unsupportedMarksPresent ||
+      node.marks.filter(isUnsupportedMark).length > 0;
+  });
+  return unsupportedMarksPresent;
+};
+
+const hasCodeMark = (state: EditorState, start: number, end: number) => {
+  const { doc, schema: { marks } } = state;
+  let unsupportedMarksPresent = false;
+  const isCodemark = node => node.type === marks.code;
+  doc.nodesBetween(start, end, node => {
+    unsupportedMarksPresent =
+      unsupportedMarksPresent || node.marks.filter(isCodemark).length > 0;
   });
   return unsupportedMarksPresent;
 };

@@ -33,12 +33,12 @@ const providers = {
     'undefined': undefined,
   },
   mediaProvider: {
-    resolved: storyMediaProviderFactory(),
+    resolved: storyMediaProviderFactory({ includeUserAuthProvider: true }),
     pending: pendingPromise,
     rejected: rejectedPromise,
     'view only': storyMediaProviderFactory({ includeUploadContext: false }),
     'w/o link cards': storyMediaProviderFactory({ includeLinkCreateContext: false }),
-    'with userAuthProvider': storyMediaProviderFactory({ includeUserAuthProvider: true }),
+    'w/o userAuthProvider': storyMediaProviderFactory(),
     'undefined': undefined,
   },
   activityProvider: {
@@ -102,7 +102,9 @@ export default class ToolsDrawer extends React.Component<any, State> {
     return (
       <Content>
         <div style={{ padding: '5px 0' }}>
-          ️️️⚠️ Atlassians, make sure you're logged into <a href="https://id.stg.internal.atlassian.com" target="_blank">staging Identity server</a>.
+        ️️️⚠️ Atlassians, for Media integration to work, make sure you're
+          logged into <a href="https://id.stg.internal.atlassian.com" target="_blank">staging Identity server</a>
+          and run your browser <a href="https://stackoverflow.com/a/42024918" target="_blank">with CORS disabled</a>.
         </div>
         {
           editorEnabled ?

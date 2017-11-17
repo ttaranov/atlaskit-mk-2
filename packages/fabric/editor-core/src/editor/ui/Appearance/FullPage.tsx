@@ -4,7 +4,7 @@ import { akColorN30 } from '@atlaskit/util-shared-styles';
 import PluginSlot from '../PluginSlot';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import ContentStyles from '../ContentStyles';
-import Avatars from '../../plugins/collab-edit//ui/avatars';
+import Avatars from '../../plugins/collab-edit/ui/avatars';
 
 // tslint:disable-next-line:variable-name
 const FullPageEditorWrapper = styled.div`

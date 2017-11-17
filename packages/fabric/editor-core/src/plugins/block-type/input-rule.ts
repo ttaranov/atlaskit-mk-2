@@ -10,7 +10,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
 
   if (schema.nodes.heading) {
     // '# ' for h1, '## ' for h2 and etc
-    const rule = defaultInputRuleHandler(headingRule(schema.nodes.heading, 5));
+    const rule = defaultInputRuleHandler(headingRule(schema.nodes.heading, 5), true);
     const currentHandler = (rule as any).handler; // TODO: Fix types (ED-2987)
     (rule as any).handler = (state, match, start, end) => {
       analyticsService.trackEvent(`atlassian.editor.format.heading${match[1].length}.autoformatting`);
@@ -21,7 +21,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
 
   if (schema.nodes.blockquote) {
     // '> ' for blockquote
-    const rule = defaultInputRuleHandler(blockQuoteRule(schema.nodes.blockquote));
+    const rule = defaultInputRuleHandler(blockQuoteRule(schema.nodes.blockquote), true);
     (rule as any).handler = trackAndInvoke('atlassian.editor.format.blockquote.autoformatting', (rule as any).handler); // TODO: Fix types (ED-2987)
     rules.push(rule);
   }
@@ -41,7 +41,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
           .delete(newStart, end)
           .scrollIntoView();
       }
-    }));
+    }, true));
   }
 
   if (rules.length !== 0) {
