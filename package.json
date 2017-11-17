@@ -33,6 +33,8 @@
     "website:start": "                       cd website && yarn start",
     "start": "                               yarn run website:start",
     "start:elements": "                      WEBSITE=elements yarn run website:start",
+    "start:fabric": "                        WEBSITE=fabric   yarn run website:start",
+    "start:media": "                         WEBSITE=media    yarn run website:start",
     "start:editor": "                        WEBSITE=editor   yarn run website:start",
     "changeset": "                           projector ./projector changeset",
     "release": "                             projector ./projector release",
