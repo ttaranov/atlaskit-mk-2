@@ -6,9 +6,9 @@
   "bolt": {
     "workspaces": [
       "packages/*"
-    ]
-  },
-  "bolt-changelog": {
-    "repositoryUrl": "https://somewhere-fake-to-visit.com"
+    ],
+    "releases": {
+      "baseCommitUrl": "https://somewhere-fake-to-visit.com"
+    }
   }
 }

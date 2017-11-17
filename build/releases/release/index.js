@@ -7,6 +7,7 @@ const isRunningInPipelines = require('../../utils/isRunningInPipelines');
 const parseChangesetCommit = require('../changeset/parseChangesetCommit');
 const createRelease = require('../changeset/createRelease');
 const createReleaseCommit = require('../changeset/createReleaseCommit');
+const changelog = require('../changelog');
 const fs = require('../../utils/fs');
 
 async function bumpReleasedPackages(releaseObj, allPackages) {
@@ -34,7 +35,7 @@ async function run(opts) {
   const releaseObj = createRelease(unreleasedChangesets, allPackages);
   const publishCommit = createReleaseCommit(releaseObj);
 
-  const changelogPaths = await changelog.updateChangeLog(releaseObj);
+  const changelogPaths = await changelog.updateChangelog(releaseObj, { cwd });
 
   logger.log(publishCommit);
 
@@ -52,14 +53,22 @@ async function run(opts) {
       {},
     );
     // update dependencies on those versions
-    await bolt.updatePackageVersions(versionsToUpdate);
+    const pkgPaths = await bolt.updatePackageVersions(versionsToUpdate, {
+      cwd,
+    });
     // TODO: get updatedPackages from bolt.updatePackageVersions and only add those
     // as well as the changelogPaths
-    await git.add('.');
+
+    for (let changelogPath of changelogPaths) {
+      await git.add(changelogPath);
+    }
+    for (let pkgPath of pkgPaths) {
+      await git.add(pkgPath);
+    }
 
     logger.log('Committing changes...');
-    // TODO: We should probably to a 'can fast forward' check here so we know if our push is going
-    // to succeed before hand. Just means we can have a slightly more informative error message
+    // TODO: Check if there are any unstaged changed before committing and throw
+    // , as it means something went super-odd.
     const committed = await git.commit(publishCommit);
 
     if (committed) {

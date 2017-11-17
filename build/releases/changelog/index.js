@@ -5,17 +5,10 @@ const path = require('path');
 const os = require('os');
 const util = require('util');
 const { sep } = require('path');
+const logger = require('../../utils/logger');
 
 function writeFile(filePath, fileContents) {
   return util.promisify(cb => fs.writeFile(filePath, fileContents, cb))();
-}
-
-function rename(oldPath, newPath) {
-  return util.promisify(cb => fs.rename(oldPath, newPath, cb))();
-}
-
-function mkdtemp(prefix) {
-  return util.promisify(cb => fs.mkdtemp(prefix, cb))();
 }
 
 async function getRepoUrl(cwd, opts) {
@@ -23,10 +16,11 @@ async function getRepoUrl(cwd, opts) {
   const project = await bolt.getProject({ cwd });
   if (
     project &&
-    project.config['bolt-changelog'] &&
-    project.config['bolt-changelog'].repositoryUrl
+    project.config.bolt &&
+    project.config.bolt.releases &&
+    project.config.bolt.releases.baseCommitUrl
   )
-    return project.config['bolt-changelog'].repositoryUrl;
+    return project.config.bolt.releases.baseCommitUrl;
   return '';
 }
 
@@ -54,7 +48,7 @@ async function getRepoUrl(cwd, opts) {
  * }
  */
 
-async function updateChangeLog(releaseObject, opts = { cwd: '', repoUrl: '' }) {
+async function updateChangelog(releaseObject, opts = { cwd: '', repoUrl: '' }) {
   const cwd = opts.cwd || process.cwd();
   const allPackages = await bolt.getWorkspaces({ cwd });
   const prefix = opts.prefix || '';
@@ -65,7 +59,7 @@ async function updateChangeLog(releaseObject, opts = { cwd: '', repoUrl: '' }) {
     const release = releaseObject.releases[i];
     const pkg = allPackages.find(a => a.name === release.name);
     if (!pkg)
-      throw new Error(
+      logger.warn(
         `While writing changelog, could not find workspace ${
           release.name
         } in project.`,
@@ -84,21 +78,14 @@ async function updateChangeLog(releaseObject, opts = { cwd: '', repoUrl: '' }) {
         await writeFile(changelogPath, `# ${pkg.name}${templateString}`);
       }
     } catch (e) {
-      console.log(e);
+      logger.warn(e);
     }
-    console.log(`Updated file ${changelogPath}`);
+    logger.log(`Updated file ${changelogPath}`);
     udpatedChangelogs.push(changelogPath);
   }
   return udpatedChangelogs;
 }
 
-/**
- * @param {string} filePath - File path
- * @param {string} data - Data string
- * The process is pretty general. It would create a temp file and write the data
- * into the file and then stream the existing file to the temp file. When it's done,
- * the temp file will be renamed to replace the existing file.
- */
 async function prependFile(filePath, data, pkg) {
   const fileData = fs.readFileSync(filePath).toString();
   if (!fileData) {
@@ -111,5 +98,5 @@ async function prependFile(filePath, data, pkg) {
 }
 
 module.exports = {
-  updateChangeLog,
+  updateChangelog,
 };

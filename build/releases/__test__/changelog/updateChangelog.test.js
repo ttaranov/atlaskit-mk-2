@@ -1,7 +1,9 @@
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
-import { updateChangeLog } from '../../changelog';
+import { updateChangelog } from '../../changelog';
 import path from 'path';
 import fs from 'fs';
+
+jest.mock('../../../utils/logger');
 
 const emptyFileChangeset = {
   releases: [
@@ -119,13 +121,12 @@ describe('updateChangelog', async () => {
       'has-no-changelog',
       'CHANGELOG.md',
     );
-    // loggerSpy = jest.spyOn(logger, 'warn');
   });
 
   it('should work with empty changelog', async () => {
     const initalChangelog = fs.readFileSync(emptyChangelogPath).toString();
     expect(initalChangelog).toEqual('');
-    await updateChangeLog(emptyFileChangeset, { cwd });
+    await updateChangelog(emptyFileChangeset, { cwd });
 
     const updatedChangelog = fs.readFileSync(emptyChangelogPath).toString();
     expect(updatedChangelog).toEqual(`# has-empty-changelog
@@ -137,7 +138,7 @@ describe('updateChangelog', async () => {
   it('should work with multiple changesets', async () => {
     const initalChangelog = fs.readFileSync(emptyChangelogPath).toString();
     expect(initalChangelog).toEqual('');
-    await updateChangeLog(multipleChangesets, { cwd });
+    await updateChangelog(multipleChangesets, { cwd });
 
     const updatedChangelog = fs.readFileSync(emptyChangelogPath).toString();
     expect(updatedChangelog).toEqual(`# has-empty-changelog
@@ -152,7 +153,7 @@ describe('updateChangelog', async () => {
     const existingInitial = fs.readFileSync(existingChangelogPath).toString();
     expect(initalChangelog).toEqual('');
     expect(existingInitial).toEqual(filledChangelogContent);
-    await updateChangeLog(multipleReleaseObj, { cwd });
+    await updateChangelog(multipleReleaseObj, { cwd });
 
     const updatedChangelog = fs.readFileSync(emptyChangelogPath).toString();
     const updatedExistingChangelog = fs
@@ -173,10 +174,17 @@ describe('updateChangelog', async () => {
 - [minor] This also existed before [abcdefg](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abcdefg)
 `);
   });
+  it('should return the updated file paths', async () => {
+    const updatedPackages = await updateChangelog(multipleReleaseObj, { cwd });
+    expect(updatedPackages).toEqual([
+      emptyChangelogPath,
+      existingChangelogPath,
+    ]);
+  });
   it('has no changelog file', async () => {
     const changelogExists = fs.existsSync(noChangelogPath);
     expect(changelogExists).toEqual(false);
-    await updateChangeLog(noChangelogFileChangeset, { cwd });
+    await updateChangelog(noChangelogFileChangeset, { cwd });
 
     const updatedChangelog = fs.readFileSync(noChangelogPath).toString();
     expect(updatedChangelog).toEqual(`# has-no-changelog
@@ -189,7 +197,7 @@ describe('updateChangelog', async () => {
     const initalChangelog = fs.readFileSync(existingChangelogPath).toString();
 
     expect(initalChangelog).toEqual(filledChangelogContent);
-    await updateChangeLog(hasFilledChangelogChangeset, { cwd });
+    await updateChangelog(hasFilledChangelogChangeset, { cwd });
 
     const updatedChangelog = fs.readFileSync(existingChangelogPath).toString();
     expect(updatedChangelog).toEqual(`# Has Empty Changelog

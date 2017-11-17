@@ -6,7 +6,7 @@ describe('template', () => {
       releases: [
         {
           name: '@atlaskit/badge',
-          version: 'v1.0.0',
+          version: '1.0.0',
           commits: ['496287c'],
         },
       ],
@@ -25,7 +25,7 @@ describe('template', () => {
     };
 
     const output = generateMarkdownTemplate(input.releases[0], input);
-    expect(output).toBe(`## v1.0.0
+    expect(output).toBe(`## 1.0.0
 - [patch] We fix few bugs in badge. [496287c](496287c)`);
   });
 
@@ -34,7 +34,7 @@ describe('template', () => {
       releases: [
         {
           name: '@atlaskit/badge',
-          version: 'v1.0.0',
+          version: '1.0.0',
           commits: ['496287c'],
         },
       ],
@@ -54,7 +54,7 @@ describe('template', () => {
     };
 
     const output = generateMarkdownTemplate(input.releases[0], input);
-    expect(output).toBe(`## v1.0.0
+    expect(output).toBe(`## 1.0.0
 - [patch] We fix few bugs in badge. [496287c](496287c)
   - See [doc.md](doc.md) for more information`);
   });
@@ -64,7 +64,7 @@ describe('template', () => {
       releases: [
         {
           name: '@atlaskit/badge',
-          version: 'v1.0.0',
+          version: '1.0.0',
           commits: ['496287c', '898739d'],
         },
       ],
@@ -95,7 +95,7 @@ describe('template', () => {
     };
 
     const output = generateMarkdownTemplate(input.releases[0], input);
-    expect(output).toBe(`## v1.0.0
+    expect(output).toBe(`## 1.0.0
 - [patch] We fix few bugs in badge. [496287c](496287c)
   - See [release.md](release.md) for more information
 - [minor] We added in a new feature in badge. [898739d](898739d)
@@ -107,13 +107,13 @@ describe('template', () => {
       releases: [
         {
           name: '@atlaskit/badge',
-          version: 'v1.0.0',
+          version: '1.0.0',
           commits: ['496287c'],
           dependencies: [],
         },
         {
           name: '@atlaskit/code',
-          version: 'v1.0.1',
+          version: '1.0.1',
           commits: ['496287c'],
           dependencies: ['@atlaskit/badge'],
         },
@@ -141,21 +141,21 @@ describe('template', () => {
     };
 
     const output1 = generateMarkdownTemplate(input.releases[0], input);
-    expect(output1).toBe(`## v1.0.0
+    expect(output1).toBe(`## 1.0.0
 - [patch] We fix few bugs in badge. [496287c](496287c)
   - See [release.md](release.md) for more information`);
 
     const output2 = generateMarkdownTemplate(input.releases[1], input);
-    expect(output2).toBe(`## v1.0.1
+    expect(output2).toBe(`## 1.0.1
 - [minor] Updated dependencies [496287c](496287c)
-  - @atlaskit/badge@v1.0.0`);
+  - @atlaskit/badge@1.0.0`);
   });
   it('should generate full urls when given a repo url', () => {
     const input = {
       releases: [
         {
           name: '@atlaskit/badge',
-          version: 'v1.0.0',
+          version: '1.0.0',
           commits: ['496287c'],
         },
       ],
@@ -177,9 +177,9 @@ describe('template', () => {
       generateMarkdownTemplate(
         input.releases[0],
         input,
-        'https://some-website.com/',
+        'https://some-website.com',
       ),
-    ).toEqual(`## v1.0.0
-- [patch] We fix few bugs in badge. [496287c](https://some-website.com//496287c)`);
+    ).toEqual(`## 1.0.0
+- [patch] We fix few bugs in badge. [496287c](https://some-website.com/496287c)`);
   });
 });
