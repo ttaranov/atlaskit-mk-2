@@ -22,7 +22,9 @@ git.add.mockImplementation(() => Promise.resolve(true));
 git.commit.mockImplementation(() => Promise.resolve(true));
 git.push.mockImplementation(() => Promise.resolve(true));
 fs.readFile.mockImplementation(() => Promise.resolve('{}'));
-bolt.publish = jest.fn();
+bolt.publish = jest
+  .fn()
+  .mockImplementation(() => Promise.resolve([{ name: 'foo', version: 'bar' }]));
 
 const simpleReleaseObj = {
   releases: [{ name: 'pkg-a', commits: ['b8bb699'], version: '1.1.0' }],
