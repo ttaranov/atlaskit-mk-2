@@ -16,7 +16,7 @@ const BB_USERNAME = process.env.BITBUCKET_USER;
 const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
 const BITBUCKET_BUILD_NUMBER = process.env.BITBUCKET_BUILD_NUMBER;
 const PIPELINES_ENDPOINT =
-  'https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/pipelines/';
+  'https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/pipelines/';
 const TIME_TO_WAIT_FOR_LOGS_UPLOAD_MS = 5000;
 
 const axiosRequestConfig = {
