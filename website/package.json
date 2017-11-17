@@ -52,6 +52,7 @@
     "@atlaskit/layer-manager": "^2.4.0",
     "@atlaskit/logo": "^6.0.1",
     "@atlaskit/lozenge": "^3.4.5",
+    "@atlaskit/media-test-helpers": "^8.5.0",
     "@atlaskit/navigation": "^26.5.1",
     "@atlaskit/single-select": "^2.0.1",
     "@atlaskit/tag": "^3.0.5",

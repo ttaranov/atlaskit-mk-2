@@ -1,0 +1,29 @@
+{
+  "name": "@atlaskit/media-test-helpers",
+  "version": "8.5.0",
+  "description": "Collection of test helpers used in media component stories and specs",
+  "license": "Apache-2.0",
+  "main": "dist/es5/index.js",
+  "atlaskit:src": "src/index.ts",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [],
+  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "dependencies": {
+    "@atlaskit/util-shared-styles": "^2.10.3",
+    "tslib": "^1.8.0"
+  },
+  "peerDependencies": {
+    "react": "^15.6.1"
+  },
+  "devDependencies": {
+    "@atlaskit/media-core": "^11.0.0",
+    "@atlaskit/media-test-helpers": "^8.5.0",
+    "@atlaskit/field-text": "^4.0.0"
+  }
+}

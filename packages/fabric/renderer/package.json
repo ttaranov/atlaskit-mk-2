@@ -32,6 +32,7 @@
     "@atlaskit/docs": "^0.0.3",
     "@atlaskit/editor-core": "^59.4.3",
     "@atlaskit/editor-test-helpers": "^0.6.3",
+    "@atlaskit/media-test-helpers": "^8.5.0",
     "@types/prosemirror-model": "^0.21.0"
   }
 }
