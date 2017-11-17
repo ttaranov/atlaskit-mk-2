@@ -1,5 +1,8 @@
 # @atlaskit/media-avatar-picker
 
+## 3.3.0
+- [minor] Bump media-avatar-picker [36d89f0](36d89f0)
+
 ## 3.2.0
 - [minor] Upgrade Media Editor packages [193c8a0](193c8a0)
 
