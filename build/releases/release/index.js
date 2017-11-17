@@ -73,9 +73,9 @@ async function run(opts) {
 
     if (committed) {
       // bolt will throw if there is an error
-      await bolt.publish({ access: 'public' });
+      const actuallyPublished = await bolt.publish({ access: 'public' });
 
-      const releasedPackages = releaseObj.releases
+      const releasedPackages = actuallyPublished
         .map(r => `${r.name}@${r.version}`)
         .join('\n');
       logger.success('Successfully published:');
