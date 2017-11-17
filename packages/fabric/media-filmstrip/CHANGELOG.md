@@ -1,5 +1,8 @@
 # @atlaskit/media-filmstrip
 
+## 5.5.0
+- [minor] Upgrade Media Editor packages [193c8a0](193c8a0)
+
 ## 5.3.0 (2017-09-19)
 
 * feature; new LinkCards UI ([06d49d2](https://bitbucket.org/atlassian/atlaskit/commits/06d49d2))
