@@ -53,7 +53,7 @@ async function run(opts) {
   const runPublish =
     isRunningInPipelines() || (await cli.askConfirm('Publish these packages?'));
   if (runPublish) {
-    // update package versions
+    // update package versions (this is the actual version fields, not deps)
     await bumpReleasedPackages(releaseObj, allPackages);
     // Need to transform releases into a form for bolt to update dependencies
     const versionsToUpdate = releaseObj.releases.reduce(
@@ -63,7 +63,7 @@ async function run(opts) {
       }),
       {},
     );
-    // update dependencies on those versions
+    // update dependencies on those versions (for all packages that we have bumped)
     await bolt.updatePackageVersions(versionsToUpdate);
     // TODO: get updatedPackages from bolt.updatePackageVersions and only add those
     await git.add('.');
@@ -72,14 +72,27 @@ async function run(opts) {
     const committed = await git.commit(publishCommit);
 
     if (committed) {
-      // bolt will throw if there is an error
       const actuallyPublished = await bolt.publish({ access: 'public' });
 
-      const releasedPackages = actuallyPublished
+      const releasedPackagesStr = actuallyPublished
         .map(r => `${r.name}@${r.version}`)
         .join('\n');
       logger.success('Successfully published:');
-      logger.log(releasedPackages);
+      logger.log(releasedPackagesStr);
+
+      // not all packages that we bump are supposed to be published, ignore private ones
+      const expectedToBePublished = Object.keys(versionsToUpdate).filter(
+        pkgName => {
+          const pkgWorkspace = allVersions.find(pkg => pkg.name === pkgName);
+          if (!pkgWorkspace) return false;
+          return !pkgWorkspace.config.private;
+        },
+      );
+      if (expectedToBePublished.length !== actuallyPublished.length) {
+        throw new Error(
+          'Some packages have not been published. See logs above',
+        );
+      }
 
       logger.log('Pushing changes back to origin...');
       await git.push();
