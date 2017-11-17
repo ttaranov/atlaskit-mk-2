@@ -88,7 +88,7 @@
     "@atlaskit/button": "^5.1.1",
     "@atlaskit/editor-test-helpers": "^0.6.3",
     "@atlaskit/layer-manager": "^2.2.1",
-    "@atlaskit/media-test-helpers": "^8.4.0",
+    "@atlaskit/media-test-helpers": "^8.5.0",
     "@atlaskit/renderer": "^8.6.3",
     "@atlaskit/util-data-test": "^7.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
