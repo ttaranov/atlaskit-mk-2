@@ -38,7 +38,7 @@
     "@atlaskit/editor-test-helpers": "^0.6.3",
     "@atlaskit/inline-edit": "^2.2.0",
     "@atlaskit/media-core": "^11.0.0",
-    "@atlaskit/media-test-helpers": "^8.4.0",
+    "@atlaskit/media-test-helpers": "^8.5.0",
     "@types/prosemirror-commands": "^0.22.0",
     "@types/prosemirror-history": "^0.21.2",
     "@types/prosemirror-keymap": "^0.21.0",

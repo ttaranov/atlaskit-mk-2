@@ -476,9 +476,9 @@
     lru-fast "^0.2.2"
     tslib "^1.2.0"
 
-"@atlaskit/media-test-helpers@^8.4.0":
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/media-test-helpers/-/media-test-helpers-8.4.0.tgz#3174552ec2f5119349bcee11f87dc079ec719eb4"
+"@atlaskit/media-test-helpers@^8.5.0":
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/media-test-helpers/-/media-test-helpers-8.5.0.tgz#f5a484c8ce55a9a643436be13f2a1579daef8279"
   dependencies:
     "@atlaskit/util-shared-styles" "^1.0.0"
     axios "^0.15.3"
