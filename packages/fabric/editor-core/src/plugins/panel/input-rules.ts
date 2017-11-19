@@ -31,7 +31,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
           return tr;
         }
       }
-    });
+    }, true);
 
   return inputRules({ rules: [panelInputRule] });
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import ImageIcon from '@atlaskit/icon/glyph/editor/image';
+import AttachmentIcon from '@atlaskit/icon/glyph/editor/attachment';
 import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { analyticsDecorator as analytics } from '../../analytics';
@@ -47,7 +47,7 @@ export default class ToolbarMedia extends PureComponent<Props, State> {
       <ToolbarButton
         onClick={this.handleClickMediaButton}
         title="Insert files and images"
-        iconBefore={<ImageIcon label="Insert files and images" />}
+        iconBefore={<AttachmentIcon label="Insert files and images" />}
       />
     );
   }

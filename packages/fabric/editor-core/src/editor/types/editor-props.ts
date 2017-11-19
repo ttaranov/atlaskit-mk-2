@@ -3,8 +3,10 @@ import { MediaState } from '@atlaskit/media-core';
 import { ActivityProvider } from '@atlaskit/activity';
 import { Node, Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
+import { DelegateAnalyticsEvent } from '@atlaskit/analytics';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { ImageUploadHandler } from '../plugins/image-upload';
+import { TextFormattingOptions } from '../plugins/text-formatting';
 import { AnalyticsHandler } from '../../analytics';
 import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../plugins/macro/types';
@@ -16,14 +18,17 @@ export type ReactElement = React.ReactElement<any> | React.ReactElement<any>[];
 
 export interface EditorProps {
   appearance?: EditorAppearance;
+  // Legacy analytics support
   analyticsHandler?: AnalyticsHandler;
+  // For @atlaskit/analytics support
+  delegateAnalyticsEvent?: DelegateAnalyticsEvent;
 
   contentComponents?: ReactElement;
   primaryToolbarComponents?: ReactElement;
   secondaryToolbarComponents?: ReactElement;
   addonToolbarComponents?: ReactElement;
 
-  allowTextFormatting?: boolean;
+  allowTextFormatting?: boolean | TextFormattingOptions;
   allowMentions?: boolean;
   allowTasksAndDecisions?: boolean;
   allowHyperlinks?: boolean;

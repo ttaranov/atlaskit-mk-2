@@ -23,16 +23,20 @@ const ButtonsGroup = styled.div`
   }
 `;
 
-const textFormatting: EditorPlugin = {
+export interface TextFormattingOptions {
+  disableSuperscriptAndSubscript?: boolean;
+  disableUnderline?: boolean;
+}
+
+const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
   marks() {
     return [
       { name: 'em', mark: em, rank: 200 },
       { name: 'strong', mark: strong, rank: 300 },
       { name: 'strike', mark: strike, rank: 400 },
-      { name: 'subsup', mark: subsup, rank: 500 },
-      { name: 'underline', mark: underline, rank: 600 },
       { name: 'code', mark: code, rank: 700 }
-    ];
+    ].concat(options.disableSuperscriptAndSubscript ? [] : { name: 'subsup', mark: subsup, rank: 500 })
+     .concat(options.disableUnderline ? [] : { name: 'underline', mark: underline, rank: 600 });
   },
 
   pmPlugins() {
@@ -62,6 +66,6 @@ const textFormatting: EditorPlugin = {
       </ButtonsGroup>
     );
   }
-};
+});
 
 export default textFormatting;

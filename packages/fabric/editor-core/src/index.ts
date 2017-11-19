@@ -33,11 +33,12 @@ export {
   setTextSelection,
 } from './utils';
 
-export { default as Editor } from './editor';
+export { default as Editor, EditorWithAnalytics } from './editor';
 export { default as EditorContext } from './editor/ui/EditorContext';
 export { default as WithEditorActions } from './editor/ui/WithEditorActions';
 export { default as WithHelpTrigger } from './editor/ui/WithHelpTrigger';
 export { default as getPropsPreset } from './editor/create-editor/get-props-preset';
 export { default as CollapsedEditor } from './editor/ui/CollapsedEditor';
+export { default as ToolbarHelp } from './editor/ui/ToolbarHelp';
 
 export { createJIRASchema } from '@atlaskit/editor-common';

@@ -1,10 +1,10 @@
 {
   "name": "@atlaskit/editor-jira",
-  "version": "21.0.8",
+  "version": "22.7.1",
   "description": "Atlassian Editor component for JIRA",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
-  "src": "src/index.ts",
+  "atlaskit:src": "src/index.ts",
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
@@ -17,7 +17,7 @@
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/button": "^5.4.8",
-    "@atlaskit/editor-core": "^56.3.2",
+    "@atlaskit/editor-core": "^59.5.1",
     "@atlaskit/mention": "^7.6.0",
     "@atlaskit/spinner": "^2.0.1",
     "collapse-whitespace": "^1.1.6",
@@ -28,17 +28,17 @@
     "prosemirror-model": "^0.22.0",
     "prosemirror-state": "^0.22.0",
     "prosemirror-view": "^0.22.0",
-    "styled-components": "^1.4.3",
+    "styled-components": "^1.4.6",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/editor-test-helpers": "^0.0.3",
+    "@atlaskit/editor-test-helpers": "^0.7.1",
     "@atlaskit/inline-edit": "^2.2.0",
-    "@atlaskit/media-core": "^10.2.0",
-    "@atlaskit/media-test-helpers": "^8.4.0",
+    "@atlaskit/media-core": "^11.0.0",
+    "@atlaskit/media-test-helpers": "^8.5.0",
     "@types/prosemirror-commands": "^0.22.0",
     "@types/prosemirror-history": "^0.21.2",
     "@types/prosemirror-keymap": "^0.21.0",

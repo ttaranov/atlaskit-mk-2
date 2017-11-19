@@ -4,7 +4,7 @@ export { confluenceUnsupportedInline } from './confluence-unsupported-inline';
 export { doc } from './doc';
 export { blockquote } from './blockquote';
 export { bulletList } from './bullet-list';
-export { codeBlock } from './code-block';
+export { codeBlock, toJSON as codeBlockToJSON } from './code-block';
 export { hardBreak } from './hard-break';
 export { heading } from './heading';
 export { rule } from './rule';
@@ -23,8 +23,10 @@ export { panel, Attributes as PanelAttributes } from './panel';
 export { text } from './text';
 export { default as unknownBlock } from './unknown-block';
 export {
-  media, MediaType,
-  Attributes as MediaAttributes, DisplayType as MediaDisplayType,
+  media,
+  MediaType,
+  Attributes as MediaAttributes,
+  DisplayType as MediaDisplayType,
   copyOptionalAttrs as copyOptionalMediaAttributes,
   toJSON as mediaToJSON,
 } from './media';
@@ -41,3 +43,5 @@ export { decisionItem } from './decision-item';
 export { taskList } from './task-list';
 export { taskItem } from './task-item';
 export { inlineMacro } from './inline-macro';
+export { extension } from './extension';
+export { inlineExtension } from './inline-extension';

@@ -5,12 +5,12 @@ import type { TagColor } from '../types';
 
 type Props = {
   children: Node,
-  isLink: bool,
-  isRemovable: bool,
-  isRemoved?: bool,
-  isRemoving?: bool,
-  isRounded?: bool,
-  markedForRemoval: bool,
+  isLink: boolean,
+  isRemovable: boolean,
+  isRemoved?: boolean,
+  isRemoving?: boolean,
+  isRounded?: boolean,
+  markedForRemoval: boolean,
   onFocusChange: (focused: boolean) => mixed,
   color: TagColor,
 };
@@ -19,13 +19,13 @@ export default class Chrome extends PureComponent<Props> {
   chromeRef: HTMLElement;
 
   handleKeyPress = (e: KeyboardEvent) => {
-    const spacebarOrEnter = (e.key === ' ' || e.key === 'Enter');
+    const spacebarOrEnter = e.key === ' ' || e.key === 'Enter';
 
     if (this.chromeRef && spacebarOrEnter) {
       const link = this.chromeRef.querySelector('a');
       if (link) link.click();
     }
-  }
+  };
 
   handleBlur = () => {
     this.props.onFocusChange(false);
@@ -37,11 +37,20 @@ export default class Chrome extends PureComponent<Props> {
 
   render() {
     const {
-      children, isLink, isRemovable, isRemoved, isRemoving, isRounded, markedForRemoval, color,
+      children,
+      isLink,
+      isRemovable,
+      isRemoved,
+      isRemoving,
+      isRounded,
+      markedForRemoval,
+      color,
     } = this.props;
 
     const props = {
-      innerRef: r => { this.chromeRef = r; },
+      innerRef: r => {
+        this.chromeRef = r;
+      },
       isRemovable,
       isRemoved,
       isRemoving,

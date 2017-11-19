@@ -5,7 +5,9 @@
 
 const DirectoryWatcher = require('watchpack/lib/DirectoryWatcher');
 const _oldcreateNestedWatcher = DirectoryWatcher.prototype.createNestedWatcher;
-DirectoryWatcher.prototype.createNestedWatcher = function(dirPath /*: string */) {
+DirectoryWatcher.prototype.createNestedWatcher = function(
+  dirPath /*: string */,
+) {
   if (dirPath.includes('node_modules')) return;
   _oldcreateNestedWatcher.call(this, dirPath);
 };
@@ -33,10 +35,6 @@ async function getAliases(cwd /*: string */) {
   });
 
   return results.workspaces.reduce((acc, workspace) => {
-    if (workspace.pkg.src) {
-      acc[workspace.pkg.name] = path.resolve(workspace.dir, workspace.pkg.src);
-    }
-
     return acc;
   }, {});
 }
@@ -56,8 +54,14 @@ function getPackagesGlobs(subsetName /*?: string */) {
   switch (subsetName) {
     case 'editor':
       return createGlob(
-        'fabric/+(code|editor-core|editor-common|editor-bitbucket|editor-cq|editor-jira|renderer)'
+        'fabric/+(code|editor-core|editor-common|editor-bitbucket|editor-cq|editor-jira|renderer)',
       );
+
+    case 'media':
+      return createGlob('fabric/media-*');
+
+    case 'fabric':
+      return createGlob('fabric/**');
 
     case 'elements':
       return createGlob('elements/**');
@@ -98,7 +102,7 @@ function createEntryPoint(subsetName /*?: string */) {
     '@atlaskit/single-select',
     '@atlaskit/spinner',
     '@atlaskit/task-decision',
-    '@atlaskit/tooltip',
+    // '@atlaskit/tooltip',
     '@atlaskit/util-shared-styles',
     'mediapicker',
     'prosemirror-commands',
@@ -129,10 +133,10 @@ function subsetBanner(env /*: string */, subsetName /*: string */) {
   console.log();
   console.log(
     chalk.blue(
-      `${env === 'production' ? 'Building' : 'Running'} website with "${chalk.bold(
-        subsetName
-      )}" packages.`
-    )
+      `${
+        env === 'production' ? 'Building' : 'Running'
+      } website with "${chalk.bold(subsetName)}" packages.`,
+    ),
   );
   console.log();
 }
@@ -172,7 +176,11 @@ module.exports = async function createWebpackConfig() {
           test: /SITE_DATA$/,
           loader: 'bolt-fs-loader',
           options: {
-            include: ['docs/**/*.md', 'patterns/**/*.js', ...getPackagesGlobs(WEBSITE_SUBSET)],
+            include: [
+              'docs/**/*.md',
+              'patterns/**/*.js',
+              ...getPackagesGlobs(WEBSITE_SUBSET),
+            ],
             exclude: ['**/node_modules/**', 'packages/utils/docs/**'],
           },
         },
@@ -235,6 +243,7 @@ module.exports = async function createWebpackConfig() {
       ],
     },
     resolve: {
+      mainFields: ['atlaskit:src', 'browser', 'main'],
       extensions: ['.js', '.ts', '.tsx'],
       alias: aliases,
     },

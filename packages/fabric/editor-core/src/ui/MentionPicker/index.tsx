@@ -4,7 +4,7 @@ import { PureComponent } from 'react';
 import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { MentionsState } from '../../plugins/mentions';
-import Popup from '../Popup';
+import { Popup } from '@atlaskit/editor-common';
 
 export interface Props {
   editorView?: EditorView;
@@ -21,6 +21,7 @@ export interface State {
   query?: string;
   anchorElement?: HTMLElement;
   mentionProvider?: MentionProvider;
+  focused?: boolean;
 }
 
 export default class MentionPicker extends PureComponent<Props, State> {
@@ -86,15 +87,15 @@ export default class MentionPicker extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (state: MentionsState) => {
-    const { anchorElement, query } = state;
-    this.setState({ anchorElement, query });
+    const { anchorElement, query, focused } = state;
+    this.setState({ anchorElement, query, focused });
   }
 
   render() {
-    const { anchorElement, query, mentionProvider } = this.state;
+    const { focused, anchorElement, query, mentionProvider } = this.state;
     const { popupsBoundariesElement, popupsMountPoint, presenceProvider } = this.props;
 
-    if (!anchorElement || query === undefined || !mentionProvider) {
+    if (!focused || !anchorElement || query === undefined || !mentionProvider) {
       return null;
     }
 

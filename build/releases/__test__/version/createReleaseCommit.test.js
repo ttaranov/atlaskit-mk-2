@@ -8,9 +8,7 @@ const fakeAllPackages = [
 ];
 const simpleChangeset = {
   summary: 'This is a summary',
-  releases: [
-    { name: 'package-a', type: 'minor' },
-  ],
+  releases: [{ name: 'package-a', type: 'minor' }],
   dependents: [],
   commit: 'dec4a66',
 };
@@ -67,7 +65,10 @@ describe('createReleaseCommit', () => {
   });
 
   it('should handle a merging releases from multiple changesets', () => {
-    const releaseObj = createRelease([simpleChangeset, simpleChangeset2], fakeAllPackages);
+    const releaseObj = createRelease(
+      [simpleChangeset, simpleChangeset2],
+      fakeAllPackages,
+    );
     const commitStr = createReleaseCommit(releaseObj);
 
     expect(commitStr).toEqual(outdent`

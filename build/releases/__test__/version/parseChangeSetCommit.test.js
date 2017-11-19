@@ -4,9 +4,7 @@ const createChangesetCommit = require('../../changeset/createChangesetCommit');
 
 const simpleChangeset = {
   summary: 'This is a summary',
-  releases: [
-    { name: 'package-a', type: 'minor' },
-  ],
+  releases: [{ name: 'package-a', type: 'minor' }],
   dependents: [],
   commit: 'dec4a66',
 };
@@ -55,9 +53,7 @@ describe('parseChangesetCommit', () => {
     expect(changeset).toEqual({
       summary: 'This is a super cool version',
       releaseNotes: 'doc.md',
-      releases: [
-        { name: 'package-a', type: 'major' },
-      ],
+      releases: [{ name: 'package-a', type: 'major' }],
       dependents: [
         { name: 'package-b', type: 'minor', dependencies: ['package-a'] },
         { name: 'package-c', type: 'patch', dependencies: ['package-b'] },

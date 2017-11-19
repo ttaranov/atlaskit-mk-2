@@ -7,6 +7,7 @@ const isRunningInPipelines = require('../../utils/isRunningInPipelines');
 const parseChangesetCommit = require('../changeset/parseChangesetCommit');
 const createRelease = require('../changeset/createRelease');
 const createReleaseCommit = require('../changeset/createReleaseCommit');
+const changelog = require('../changelog');
 const fs = require('../../utils/fs');
 
 async function bumpReleasedPackages(releaseObj, allPackages) {
@@ -25,46 +26,58 @@ async function bumpReleasedPackages(releaseObj, allPackages) {
 async function run(opts) {
   const cwd = opts.cwd || process.cwd();
   const allPackages = await bolt.getWorkspaces({ cwd });
-  const lastPublishCommit = await git.getLastPublishCommit();
-  const unreleasedChangesetCommits = await git.getChangesetCommitsSince(lastPublishCommit);
-  const commits = await Promise.all(unreleasedChangesetCommits.map(commit => git.getFullCommit(commit)));
-  const unreleasedChangesets = commits
-    .map(({ commit, message }) => ({ commit, ...parseChangesetCommit(message) }));
+  const unreleasedChangesets = await git.getUnpublishedChangesetCommits();
+
   if (unreleasedChangesets.length === 0) {
-    logger.warn(`No unreleased changesets found since ${lastPublishCommit}. Exiting`);
+    logger.warn(`No unreleased changesets found. Exiting`);
     return;
   }
   const releaseObj = createRelease(unreleasedChangesets, allPackages);
   const publishCommit = createReleaseCommit(releaseObj);
 
-  /** TODO: Update changelogs here */
-  // changelog.updateChangeLog(releaseObj);
+  const changelogPaths = await changelog.updateChangelog(releaseObj, { cwd });
 
   logger.log(publishCommit);
 
-  const runPublish = isRunningInPipelines() || await cli.askConfirm('Publish these packages?');
+  const runPublish =
+    isRunningInPipelines() || (await cli.askConfirm('Publish these packages?'));
   if (runPublish) {
     // update package versions
     await bumpReleasedPackages(releaseObj, allPackages);
     // Need to transform releases into a form for bolt to update dependencies
-    const versionsToUpdate = releaseObj.releases.reduce((cur, next) => ({
-      ...cur,
-      [next.name]: next.version,
-    }), {});
+    const versionsToUpdate = releaseObj.releases.reduce(
+      (cur, next) => ({
+        ...cur,
+        [next.name]: next.version,
+      }),
+      {},
+    );
     // update dependencies on those versions
-    await bolt.updatePackageVersions(versionsToUpdate);
+    const pkgPaths = await bolt.updatePackageVersions(versionsToUpdate, {
+      cwd,
+    });
     // TODO: get updatedPackages from bolt.updatePackageVersions and only add those
-    await git.add('.');
+    // as well as the changelogPaths
+
+    for (let changelogPath of changelogPaths) {
+      await git.add(changelogPath);
+    }
+    for (let pkgPath of pkgPaths) {
+      await git.add(pkgPath);
+    }
 
     logger.log('Committing changes...');
+    // TODO: Check if there are any unstaged changed before committing and throw
+    // , as it means something went super-odd.
     const committed = await git.commit(publishCommit);
-
 
     if (committed) {
       // bolt will throw if there is an error
       await bolt.publish({ access: 'public' });
 
-      const releasedPackages = releaseObj.releases.map(r => `${r.name}@${r.version}`).join('\n');
+      const releasedPackages = releaseObj.releases
+        .map(r => `${r.name}@${r.version}`)
+        .join('\n');
       logger.success('Successfully published:');
       logger.log(releasedPackages);
 

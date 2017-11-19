@@ -1,5 +1,6 @@
 const constants = require('karma').constants;
-const ChromiumRevision = require('puppeteer/package.json').puppeteer.chromium_revision;
+const ChromiumRevision = require('puppeteer/package.json').puppeteer
+  .chromium_revision;
 const Downloader = require('puppeteer/utils/ChromiumDownloader');
 const boltQuery = require('bolt-query');
 const path = require('path');
@@ -7,7 +8,10 @@ const babelPolyfill = require.resolve('babel-polyfill');
 const customEventPolyfill = require.resolve('custom-event-polyfill');
 const entry = require.resolve('./entry');
 
-const revisionInfo = Downloader.revisionInfo(Downloader.currentPlatform(), ChromiumRevision);
+const revisionInfo = Downloader.revisionInfo(
+  Downloader.currentPlatform(),
+  ChromiumRevision,
+);
 process.env.CHROME_BIN = revisionInfo.executablePath;
 
 const webpackConfig = {
@@ -53,15 +57,18 @@ async function getAliases(cwd) {
   });
 
   return results.workspaces.reduce((acc, workspace) => {
-    if (workspace.pkg.src) {
-      acc[workspace.pkg.name] = path.resolve(workspace.dir, workspace.pkg.src);
+    if (workspace.pkg['atlaskit:src']) {
+      acc[workspace.pkg.name] = path.resolve(
+        workspace.dir,
+        workspace.pkg['atlaskit:src'],
+      );
     }
 
     return acc;
   }, {});
 }
 
-module.exports = async function getConfig({ cwd, watch, browserstack }) {
+async function getKarmaConfig({ cwd, watch, browserstack }) {
   const aliases = await getAliases(cwd);
   webpackConfig.resolve.alias = { ...aliases, ...webpackConfig.resolve.alias };
 
@@ -109,9 +116,21 @@ module.exports = async function getConfig({ cwd, watch, browserstack }) {
         browser_version: '11',
       },
       iphone: { os: 'ios', os_version: '9.1', device: 'iPhone 6S' },
-      chrome_latest_osx: { browser: 'chrome', os: 'OS X', os_version: 'El Capitan' },
-      firefox_latest_windows: { browser: 'firefox', os: 'WINDOWS', os_version: '10' },
-      firefox_latest_osx: { browser: 'firefox', os: 'OS X', os_version: 'El Capitan' },
+      chrome_latest_osx: {
+        browser: 'chrome',
+        os: 'OS X',
+        os_version: 'El Capitan',
+      },
+      firefox_latest_windows: {
+        browser: 'firefox',
+        os: 'WINDOWS',
+        os_version: '10',
+      },
+      firefox_latest_osx: {
+        browser: 'firefox',
+        os: 'OS X',
+        os_version: 'El Capitan',
+      },
       edge_latest: { browser: 'edge', os: 'WINDOWS', os_version: '10' },
     };
 
@@ -130,7 +149,9 @@ module.exports = async function getConfig({ cwd, watch, browserstack }) {
         startTunnel: true,
         tunnelIdentifier: process.env.BITBUCKET_COMMIT || 'ak_tunnel',
         project: 'AtlasKit',
-        build: `${process.env.CURRENT_BRANCH} ${time} ${process.env.BITBUCKET_COMMIT}`,
+        build: `${process.env.CURRENT_BRANCH} ${time} ${
+          process.env.BITBUCKET_COMMIT
+        }`,
       },
       captureTimeout: 120000,
       reporters: ['mocha', 'BrowserStack'],
@@ -142,4 +163,17 @@ module.exports = async function getConfig({ cwd, watch, browserstack }) {
   }
 
   return config;
-};
+}
+
+async function getPackagesWithKarmaTests() /*: Promise<Array<string>> */ {
+  const project /*: any */ = await boltQuery({
+    cwd: __dirname,
+    workspaceFiles: { karma: 'tests/browser/**/*.+(js|ts|tsx)' },
+  });
+
+  return project.workspaces
+    .filter(workspace => workspace.files.karma.length)
+    .map(workspace => workspace.pkg.name);
+}
+
+module.exports = { getKarmaConfig, getPackagesWithKarmaTests };

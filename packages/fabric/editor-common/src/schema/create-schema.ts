@@ -13,6 +13,7 @@ import {
   emojiQuery,
   textColor,
   confluenceInlineComment,
+  action
 } from './marks';
 
 import {
@@ -48,9 +49,15 @@ import {
   taskItem,
   inlineMacro,
   unknownBlock,
+  extension,
+  inlineExtension,
 } from './nodes';
 
-function addItems(builtInItems: SchemaBuiltInItem[], config: string[], customSpecs: SchemaCustomNodeSpecs | SchemaCustomMarkSpecs = {}) {
+function addItems(
+  builtInItems: SchemaBuiltInItem[],
+  config: string[],
+  customSpecs: SchemaCustomNodeSpecs | SchemaCustomMarkSpecs = {}
+) {
   if (!config) {
     return {};
   }
@@ -92,7 +99,7 @@ function groupDeclaration(name: string) {
     name: `__${name}GroupDeclaration`,
     spec: {
       group: name,
-    }
+    },
   };
 }
 
@@ -103,8 +110,9 @@ const markGroupDeclarations = [
   groupDeclaration(LINK),
 ];
 
-const markGroupDeclarationsNames = markGroupDeclarations.map(groupMark => groupMark.name);
-
+const markGroupDeclarationsNames = markGroupDeclarations.map(
+  groupMark => groupMark.name
+);
 
 const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'doc', spec: doc },
@@ -138,6 +146,8 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'taskList', spec: taskList },
   { name: 'taskItem', spec: taskItem },
   { name: 'inlineMacro', spec: inlineMacro },
+  { name: 'extension', spec: extension },
+  { name: 'inlineExtension', spec: inlineExtension },
   { name: 'unknownBlock', spec: unknownBlock },
 ];
 
@@ -152,6 +162,7 @@ const marksInOrder: SchemaBuiltInItem[] = [
   { name: 'mentionQuery', spec: mentionQuery },
   { name: 'emojiQuery', spec: emojiQuery },
   { name: 'textColor', spec: textColor },
+  { name: 'action', spec: action },
   { name: 'confluenceInlineComment', spec: confluenceInlineComment },
   ...markGroupDeclarations,
 ];
@@ -162,7 +173,9 @@ const marksInOrder: SchemaBuiltInItem[] = [
 export function createSchema(config: SchemaConfig): Schema {
   const { nodes, customNodeSpecs, marks, customMarkSpecs } = config;
   const nodesConfig = Object.keys(customNodeSpecs || {}).concat(nodes);
-  const marksConfig = Object.keys(customMarkSpecs || {}).concat(marks || []).concat(markGroupDeclarationsNames);
+  const marksConfig = Object.keys(customMarkSpecs || {})
+    .concat(marks || [])
+    .concat(markGroupDeclarationsNames);
   return new Schema({
     nodes: addItems(nodesInOrder, nodesConfig, customNodeSpecs),
     marks: addItems(marksInOrder, marksConfig, customMarkSpecs),
@@ -181,5 +194,9 @@ export interface SchemaBuiltInItem {
   spec: NodeSpec | MarkSpec;
 }
 
-export interface SchemaCustomNodeSpecs { [name: string]: NodeSpec; }
-export interface SchemaCustomMarkSpecs { [name: string]: MarkSpec; }
+export interface SchemaCustomNodeSpecs {
+  [name: string]: NodeSpec;
+}
+export interface SchemaCustomMarkSpecs {
+  [name: string]: MarkSpec;
+}

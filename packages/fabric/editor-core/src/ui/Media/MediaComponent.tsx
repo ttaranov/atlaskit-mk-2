@@ -21,8 +21,7 @@ import {
   ImageResizeMode
 } from '@atlaskit/media-core';
 
-import { MediaAttributes } from '@atlaskit/editor-common';
-import { CardEventClickHandler } from '../Renderer';
+import { MediaAttributes, CardEventClickHandler } from '@atlaskit/editor-common';
 
 export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
 
@@ -71,7 +70,6 @@ function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
 }
 
 export default class MediaComponent extends React.PureComponent<Props, State> {
-  private thumbnailWm = new WeakMap();
   private destroyed = false;
 
   state: State = {
@@ -235,12 +233,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     // Cache the data url for thumbnail, so it's not regenerated on each re-render (prevents flicker)
     let dataURI: string | undefined;
     if (thumbnail) {
-      if (this.thumbnailWm.has(thumbnail)) {
-        dataURI = this.thumbnailWm.get(thumbnail);
-      } else {
-        dataURI = URL.createObjectURL(thumbnail);
-        this.thumbnailWm.set(thumbnail, dataURI);
-      }
+      dataURI = thumbnail.src;
     }
 
     // Make sure that we always display progress bar when the file is uploading (prevents flicker)

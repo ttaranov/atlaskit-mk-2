@@ -12,7 +12,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
     rules.push(createInputRule(/^\-\-\-$|^\*\*\*$/, (state, match, start, end) => {
       analyticsService.trackEvent(`atlassian.editor.format.horizontalrule.autoformatting`);
       return state.tr.replaceWith(start, end, Fragment.from(schema.nodes.rule.create()));
-    }));
+    }, true));
   }
 
   if (rules.length !== 0) {

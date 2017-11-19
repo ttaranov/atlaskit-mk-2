@@ -8,8 +8,29 @@ type DateToStringOptions = {
 
 const i18n = {
   'en-au': {
-    months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    months: [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ],
+    weekdays: [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ],
   },
 };
 
@@ -29,8 +50,13 @@ export function getMonthName(i: number) {
   return getI18n().months[i - 1];
 }
 
-export function dateToString(date: Date, { fixMonth }: DateToStringOptions = {}) {
-  return date ? `${date.year}-${pad(date.month + (fixMonth ? 1 : 0))}-${pad(date.day)}` : '';
+export function dateToString(
+  date: Date,
+  { fixMonth }: DateToStringOptions = {},
+) {
+  return date
+    ? `${date.year}-${pad(date.month + (fixMonth ? 1 : 0))}-${pad(date.day)}`
+    : '';
 }
 
 export function makeArrayFromNumber(i: number) {

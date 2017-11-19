@@ -4,6 +4,7 @@ export interface Participant {
   lastActive: number;
   sessionId: string;
   avatar: string;
+  name: string;
 }
 
 export interface InitData {

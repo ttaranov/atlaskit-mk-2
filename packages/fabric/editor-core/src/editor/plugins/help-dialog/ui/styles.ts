@@ -1,8 +1,15 @@
+import { ComponentClass } from 'react';
 import styled from 'styled-components';
-import { akZIndexBlanket, akZIndexDialog, akBorderRadius, akColorN400, akColorN0, akColorN20, akColorN30 } from '@atlaskit/util-shared-styles';
+import {
+  akZIndexBlanket,
+  akBorderRadius,
+  akColorN400,
+  akColorN0,
+  akColorN20,
+  akColorN30,
+} from '@atlaskit/util-shared-styles';
 
-// tslint:disable-next-line:variable-name
-export const Container = styled.div`
+export const Container: ComponentClass = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
@@ -14,60 +21,32 @@ export const Container = styled.div`
   align-items: center;
 `;
 
-// tslint:disable-next-line:variable-name
-export const Wrapper = styled.div`
-  bottom: 0;
-  left: 0;
-  opacity: 0.5;
-  right: 0;
-  top: 0;
-  transition: opacity 220ms;
-  position: fixed;
-  background-color: ${akColorN400};
-`;
-
-// tslint:disable-next-line:variable-name
-export const Dialog = styled.div`
-  width: 80%;
-  height: 80%;
-  display: flex;
-  max-width: 800px;
-  max-height: 650px;
-  color: ${akColorN400};
-  flex-direction: column;
-  z-index: ${akZIndexDialog};
-  background-color: ${akColorN0};
-  border-radius: ${akBorderRadius};
-`;
-
-// tslint:disable-next-line:variable-name
-export const Header = styled.div`
+export const Header: any = styled.div`
+  z-index: 1;
   min-height: 24px;
-  padding: 20px 5%;
+  padding: 20px 40px;
   font-size: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: ${(props: any) =>
+    props.showKeyline ? `0 2px 0 ${akColorN30}` : 'none'};
+  color: ${akColorN400};
+  background-color: ${akColorN0};
 `;
 
-// tslint:disable-next-line:variable-name
-export const IconWrapper = styled.div`
-`;
-
-// tslint:disable-next-line:variable-name
-export const ContentWrapper = styled.div`
-  padding: 20px 5%;
+export const ContentWrapper: ComponentClass = styled.div`
+  padding: 18px 20px;
   border-bottom-right-radius: ${akBorderRadius};
   overflow: auto;
-  box-shadow: inset 0px 2px 0px 0px ${akColorN30};
   position: relative;
-  width: 90%;
+  color: ${akColorN400};
+  background-color: ${akColorN0};
 `;
 
-// tslint:disable-next-line:variable-name
-export const Line = styled.div`
+export const Line: ComponentClass = styled.div`
   background: #fff;
-  content: "";
+  content: '';
   display: block;
   height: 2px;
   left: 0;
@@ -78,8 +57,7 @@ export const Line = styled.div`
   min-width: 604px;
 `;
 
-// tslint:disable-next-line:variable-name
-export const Content = styled.div`
+export const Content: ComponentClass = styled.div`
   min-width: 524px;
   width: 100%;
   position: relative;
@@ -87,31 +65,26 @@ export const Content = styled.div`
   justify-content: space-between;
 `;
 
-// tslint:disable-next-line:variable-name
-export const ColumnLeft = styled.div`
+export const ColumnLeft: ComponentClass = styled.div`
   width: 44%;
 `;
 
-// tslint:disable-next-line:variable-name
-export const ColumnRight = styled.div`
+export const ColumnRight: ComponentClass = styled.div`
   width: 44%;
 `;
 
-// tslint:disable-next-line:variable-name
-export const Row = styled.div`
+export const Row: ComponentClass = styled.div`
   margin: 20px 0;
   display: flex;
   justify-content: space-between;
 `;
 
-// tslint:disable-next-line:variable-name
-export const Title = styled.div`
+export const Title: ComponentClass = styled.div`
   font-size: 18px;
   font-weight: 400;
 `;
 
-// tslint:disable-next-line:variable-name
-export const CodeSm = styled.span`
+export const CodeSm: ComponentClass = styled.span`
   background-color: ${akColorN20};
   border-radius: ${akBorderRadius};
   width: 24px;
@@ -121,8 +94,7 @@ export const CodeSm = styled.span`
   text-align: center;
 `;
 
-// tslint:disable-next-line:variable-name
-export const CodeMd = styled.span`
+export const CodeMd: ComponentClass = styled.span`
   background-color: ${akColorN20};
   border-radius: ${akBorderRadius};
   display: inline-block;
@@ -132,13 +104,12 @@ export const CodeMd = styled.span`
   text-align: center;
 `;
 
-// tslint:disable-next-line:variable-name
-export const CodeLg = styled.span`
-  background-color: ${akColorN20};CodeLg
-  border-radius: ${akBorderRadius};
+export const CodeLg: ComponentClass = styled.span`
+  background-color: ${akColorN20};
+  codelg: ${akBorderRadius};
   display: inline-block;
   height: 24px;
   line-height: 24px;
-  padding: 0 10px ;
+  padding: 0 10px;
   text-align: center;
 `;

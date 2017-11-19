@@ -4,6 +4,7 @@ import { akColorN30 } from '@atlaskit/util-shared-styles';
 import PluginSlot from '../PluginSlot';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import ContentStyles from '../ContentStyles';
+import Avatars from '../../plugins/collab-edit/ui/avatars';
 
 // tslint:disable-next-line:variable-name
 const FullPageEditorWrapper = styled.div`
@@ -118,6 +119,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
             disabled={disabled}
           />
           <MainToolbarCustomComponentsSlot>
+            <Avatars editorView={editorView} eventDispatcher={eventDispatcher} />
             {customPrimaryToolbarComponents}
           </MainToolbarCustomComponentsSlot>
         </MainToolbar>

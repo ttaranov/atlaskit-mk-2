@@ -2,7 +2,11 @@ export type DisplayType = 'INLINE' | 'BLOCK';
 
 export type BodyType = 'BODYLESS' | 'RICH-TEXT-BODY' | 'PLAIN-TEXT-BODY';
 
-export type MacroType = 'BODYLESS-INLINE' | 'BODYLESS-BLOCK' | 'RICH-TEXT-BODY-BLOCK' | 'PLAIN-TEXT-BODY-BLOCK';
+export type MacroType =
+  | 'BODYLESS-INLINE'
+  | 'BODYLESS-BLOCK'
+  | 'RICH-TEXT-BODY-BLOCK'
+  | 'PLAIN-TEXT-BODY-BLOCK';
 
 export interface Macro {
   macroId: string;
@@ -15,7 +19,7 @@ export interface Macro {
 }
 
 export interface MacroParams {
-  macroId: string;
+  name: string;
   params: any;
 }
 

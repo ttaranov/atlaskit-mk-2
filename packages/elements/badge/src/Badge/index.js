@@ -3,7 +3,14 @@ import React, { PureComponent } from 'react';
 import { BadgeElement } from './styled';
 
 export const APPEARANCE_ENUM = {
-  values: ['default', 'primary', 'primaryInverted', 'important', 'added', 'removed'],
+  values: [
+    'default',
+    'primary',
+    'primaryInverted',
+    'important',
+    'added',
+    'removed',
+  ],
   defaultValue: 'default',
 };
 
@@ -28,12 +35,18 @@ function getValue(value, max) {
 
 type Props = {
   /** Affects the visual style of the badge */
-  appearance: 'default' | 'primary' | 'primaryInverted' | 'important' | 'added' | 'removed',
+  appearance:
+    | 'default'
+    | 'primary'
+    | 'primaryInverted'
+    | 'important'
+    | 'added'
+    | 'removed',
   /** The maximum value to display. If value is 100, and max is 50,
-      "50+" will be displayed */
+   "50+" will be displayed */
   max: number,
   /** Handler function to be called when the value prop is changed.
-      Called with fn({ oldValue, newValue }) */
+   Called with fn({ oldValue, newValue }) */
   onValueUpdated?: ({ oldValue: number, newValue: number }) => any,
   /** The value displayed within the badge. */
   value: number,
@@ -44,7 +57,7 @@ export default class Badge extends PureComponent<Props> {
     appearance: 'default',
     max: 99,
     value: 0,
-  }
+  };
 
   componentWillUpdate(nextProps: Props) {
     const { onValueUpdated, value: oldValue } = this.props;

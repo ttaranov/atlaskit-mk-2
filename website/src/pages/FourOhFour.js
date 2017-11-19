@@ -11,7 +11,7 @@ export default class FourOhFour extends React.PureComponent<FourOhFourProps> {
     return (
       <Page>
         <h1>Oops!</h1>
-        <p>{'Couldn\'t find this page.'}</p>
+        <p>{"Couldn't find this page."}</p>
       </Page>
     );
   }

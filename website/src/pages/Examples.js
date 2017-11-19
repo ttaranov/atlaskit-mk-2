@@ -11,71 +11,68 @@ import { Redirect, Link } from 'react-router-dom';
 import { colors } from '@atlaskit/theme';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';
 import CodeIcon from '@atlaskit/icon/glyph/code';
+import EditIcon from '@atlaskit/icon/glyph/edit';
+import ErrorIcon from '@atlaskit/icon/glyph/error';
+import Button, { ButtonGroup } from '@atlaskit/button';
+import Flag, { FlagGroup } from '@atlaskit/flag';
+import Spinner from '@atlaskit/spinner';
 import SingleSelect from '@atlaskit/single-select';
 import CodeBlock from '../components/Code';
 import { packages as packagesData } from '../site';
 import { packageUrl } from '../utils/url';
 
-const ExamplesContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-`;
-
-const ExamplesNav = styled.nav`
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 48px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  background: ${colors.N30};
-  color: white;
-`;
-
-const ExamplesContent = styled.nav`
-  position: absolute;
-  z-index: 1;
-  top: 48px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-`;
-
-const ExamplesComponentContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background: white;
-  ${'' /* background:
-    linear-gradient(45deg, rgba(125,125,125,0.05) 25%, transparent 25%, transparent 75%, rgba(125,125,125,0.05) 75%, rgba(125,125,125,0.05) 0),
-    linear-gradient(45deg, rgba(125,125,125,0.05) 25%, transparent 25%, transparent 75%, rgba(125,125,125,0.05) 75%, rgba(125,125,125,0.05) 0),
-    #fff; */} background-position: 0 0,
-    10px 10px;
-  background-size: 20px 20px;
-  background-attachment: local;
-`;
-
-const ExamplesCodeContainer = styled.div`
-  position: absolute;
-  z-index: 3;
-  ${'' /* pointer-events: none; */} width: 100%;
-  height: 100%;
+const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 20px;
-  background: ${colors.DN80A};
+  height: 100vh;
+  width: 100vw;
 `;
 
-const ExamplesNavSection = styled.div`padding: 4px;`;
+const Content = styled.div`
+  flex: 1 1 auto;
+  overflow-y: auto;
+`;
 
-const ExamplesNavIconLink = styled(Link)`
+const SANDBOX_DEPLOY_ENDPOINT =
+  'https://atlaskit-deploy-sandbox.glitch.me/deploy';
+
+const Nav = styled.nav`
+  background: ${colors.N30};
+  color: white;
+  display: flex;
+  flex-shrink: 0;
+  height: 48px;
+  justify-content: space-between;
+`;
+
+const ComponentContainer = styled.div`
+  background-attachment: local;
+  background-position: 0 0, 10px 10px;
+  background-size: 20px 20px;
+  background: white;
+  height: 100%;
+  position: relative;
+  width: 100%;
+`;
+
+const CodeContainer = styled.div`
+  background: ${colors.DN80A};
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-end;
+  padding: 20px;
+  position: absolute;
+  width: 100%;
+  z-index: 3;
+`;
+
+const NavSection = styled.div`
+  padding: 4px;
+`;
+
+const NavIconLink = styled(Link)`
   display: inline-flex;
   height: 40px;
   padding: 5px 8px 3px 4px;
@@ -88,9 +85,11 @@ const ExamplesNavIconLink = styled(Link)`
   }
 `;
 
-const ExamplesNavIcon = styled.span`margin-right: 6px;`;
+const NavIcon = styled.span`
+  margin-right: 6px;
+`;
 
-const ExamplesControl = styled.div`
+const Control = styled.div`
   display: inline-block;
 
   & + & {
@@ -98,13 +97,11 @@ const ExamplesControl = styled.div`
   }
 `;
 
-const ExamplesError = styled.div`
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-  text-align: center;
-  color: ${colors.R400};
+const ErrorMessage = styled.div`
+  background-color: ${colors.R400};
+  color: white;
   font-size: 120%;
+  padding: 1em;
 `;
 
 function PackageSelector(props) {
@@ -129,7 +126,7 @@ function PackageSelector(props) {
   });
 
   return (
-    <ExamplesControl>
+    <Control>
       <SingleSelect
         appearance="subtle"
         items={packagesSelectItems}
@@ -138,35 +135,35 @@ function PackageSelector(props) {
         onSelected={props.onSelected}
         defaultSelected={selectedPackageItem}
       />
-    </ExamplesControl>
+    </Control>
   );
 }
 
 function ExampleSelector(props) {
   let selectedExampleItem;
 
-  console.log(props);
-
   const examplesSelectItems = [
     {
       heading: 'Examples',
-      items: props.examples ? fs.flatMap(props.examples, (file, filePath) => {
-        let item = {
-          content: fs.titleize(file.id),
-          value: fs.normalize(filePath.replace('examples/', '')),
-        };
+      items: props.examples
+        ? fs.flatMap(props.examples, (file, filePath) => {
+            let item = {
+              content: fs.titleize(file.id),
+              value: fs.normalize(filePath.replace('examples/', '')),
+            };
 
-        if (file.id === props.exampleId) {
-          selectedExampleItem = item;
-        }
+            if (file.id === props.exampleId) {
+              selectedExampleItem = item;
+            }
 
-        return item;
-      }) : [],
+            return item;
+          })
+        : [],
     },
   ];
 
   return (
-    <ExamplesControl>
+    <Control>
       <SingleSelect
         appearance="subtle"
         items={examplesSelectItems}
@@ -175,40 +172,69 @@ function ExampleSelector(props) {
         onSelected={props.onSelected}
         defaultSelected={selectedExampleItem}
       />
-    </ExamplesControl>
+    </Control>
   );
 }
 
 function ExampleNavigation(props) {
   return (
-    <ExamplesNav>
-      <ExamplesNavSection>
-        <ExamplesNavIconLink to={packageUrl(props.groupId, props.packageId)}>
-          <ExamplesNavIcon>
-            <ArrowLeftCircleIcon size="large" primaryColor={colors.B500} label="back to docs" />
-          </ExamplesNavIcon>
-          to {fs.titleize(props.packageId)} docs
-        </ExamplesNavIconLink>
-      </ExamplesNavSection>
+    <Nav>
+      <NavIconLink to={packageUrl(props.groupId, props.packageId)}>
+        <NavIcon>
+          <ArrowLeftCircleIcon
+            size="large"
+            primaryColor={colors.B500}
+            label="back to docs"
+          />
+        </NavIcon>
+        to {fs.titleize(props.packageId)} docs
+      </NavIconLink>
 
-      <ExamplesNavSection>
+      <NavSection>
         <PackageSelector
           groupId={props.groupId}
           packageId={props.packageId}
           groups={props.groups}
-          onSelected={props.onPackageSelected}/>
+          onSelected={props.onPackageSelected}
+        />
         <ExampleSelector
           examples={props.examples}
           exampleId={props.exampleId}
-          onSelected={props.onExampleSelected}/>
-      </ExamplesNavSection>
+          onSelected={props.onExampleSelected}
+        />
+      </NavSection>
 
-      <ExamplesNavSection>
-        <div onClick={props.onCodeToggle}>
-          <CodeIcon size="large" primaryColor={colors.N500} label="show source" />
-        </div>
-      </ExamplesNavSection>
-    </ExamplesNav>
+      <NavSection>
+        <ButtonGroup>
+          <Button
+            appearance="link"
+            iconBefore={
+              <CodeIcon
+                size="large"
+                primaryColor={colors.N500}
+                label="Show source"
+              />
+            }
+            onClick={props.onCodeToggle}
+          />
+          <Button
+            appearance="link"
+            iconBefore={
+              props.loadingSandbox ? (
+                <Spinner />
+              ) : (
+                <EditIcon
+                  size="large"
+                  primaryColor={colors.N500}
+                  label="Open in Codesandbox.io"
+                />
+              )
+            }
+            onClick={props.deploySandbox}
+          />
+        </ButtonGroup>
+      </NavSection>
+    </Nav>
   );
 }
 
@@ -218,13 +244,17 @@ function ExampleDisplay(props) {
     loading: Loading,
     render(loaded) {
       if (!loaded.default) {
-        return <ExamplesError>Example "{props.example.id}" doesn't have default export.</ExamplesError>;
+        return (
+          <ErrorMessage>
+            Example "{props.example.id}" doesn't have default export.
+          </ErrorMessage>
+        );
       }
 
       return (
-        <ExamplesComponentContainer>
+        <ComponentContainer>
           <loaded.default />
-        </ExamplesComponentContainer>
+        </ComponentContainer>
       );
     },
   });
@@ -234,23 +264,25 @@ function ExampleDisplay(props) {
     loading: Loading,
     render(loaded) {
       return (
-        <ExamplesCodeContainer>
+        <CodeContainer>
           <CodeBlock grammar="jsx" content={loaded} />
-        </ExamplesCodeContainer>
+        </CodeContainer>
       );
     },
   });
 
   return (
-    <ExamplesContent>
+    <Content>
       {props.displayCode && <ExampleCode />}
       <ExampleComponent />
-    </ExamplesContent>
+    </Content>
   );
 }
 
 type State = {
   displayCode: boolean,
+  flags: Object,
+  loadingSandbox: boolean,
 };
 
 type Props = {
@@ -260,6 +292,8 @@ type Props = {
 export default class Examples extends React.Component<Props, State> {
   state = {
     displayCode: false,
+    flags: {},
+    loadingSandbox: false,
   };
 
   static contextTypes = {
@@ -275,13 +309,17 @@ export default class Examples extends React.Component<Props, State> {
     this.updateSelected(
       this.props.match.params.groupId,
       this.props.match.params.pkgId,
-      selected.item.value
+      selected.item.value,
     );
   };
 
   updateSelected(groupId?: string, packageId?: string, exampleId?: string) {
     let resolved = this.resolveProps(groupId, packageId, exampleId);
-    let url = this.toUrl(resolved.groupId, resolved.packageId, resolved.exampleId);
+    let url = this.toUrl(
+      resolved.groupId,
+      resolved.packageId,
+      resolved.exampleId,
+    );
     this.context.router.history.push(url);
   }
 
@@ -311,7 +349,8 @@ export default class Examples extends React.Component<Props, State> {
     let hasChanged =
       groupId !== resolvedGroupId ||
       packageId !== resolvedPackageId ||
-      (exampleId || null) !== (resolvedExampleId ? fs.normalize(resolvedExampleId) : null);
+      (exampleId || null) !==
+        (resolvedExampleId ? fs.normalize(resolvedExampleId) : null);
 
     return {
       hasChanged,
@@ -347,6 +386,80 @@ export default class Examples extends React.Component<Props, State> {
     });
   };
 
+  addFlag = (flagProps: {
+    appearance: string,
+    description: string,
+    title: string,
+  }) => {
+    const id = Date.now().toString();
+    const icon = (() => {
+      if (flagProps.appearance === 'error') {
+        return <ErrorIcon label="Error" secondaryColor={colors.R400} />;
+      }
+
+      return '';
+    })();
+    this.setState({
+      flags: {
+        [id]: (
+          <Flag
+            icon={icon}
+            id={id}
+            key={id}
+            actions={[{ content: 'OK', onClick: () => this.removeFlag(id) }]}
+            {...flagProps}
+          />
+        ),
+        ...this.state.flags,
+      },
+    });
+  };
+
+  removeFlag = (removedKey: string) => {
+    const flags = Object.keys(this.state.flags)
+      .filter(key => key !== removedKey.toString())
+      .reduce(
+        (newFlags, key) => ({ ...newFlags, [key]: this.state.flags[key] }),
+        {},
+      );
+
+    this.setState({ flags });
+  };
+
+  deploySandbox = async () => {
+    const props = this.resolveProps(
+      this.props.match.params.groupId,
+      this.props.match.params.pkgId,
+      this.props.match.params.exampleId,
+    );
+
+    if (!props.example) {
+      return;
+    }
+
+    const component = props.packageId;
+    const example = props.example.id
+      .split('.')
+      .slice(0, -1)
+      .join('.');
+    this.setState({ loadingSandbox: true });
+    const response = await fetch(
+      `${SANDBOX_DEPLOY_ENDPOINT}/${component}/${example}`,
+    );
+    if (response.ok) {
+      const url = await response.text();
+      window.open(url);
+    } else {
+      const message = await response.text();
+      this.addFlag({
+        appearance: 'error',
+        description: message,
+        title: 'Error deploying to Codesandbox',
+      });
+    }
+    this.setState({ loadingSandbox: false });
+  };
+
   render() {
     let {
       hasChanged,
@@ -359,7 +472,7 @@ export default class Examples extends React.Component<Props, State> {
     } = this.resolveProps(
       this.props.match.params.groupId,
       this.props.match.params.pkgId,
-      this.props.match.params.exampleId
+      this.props.match.params.exampleId,
     );
 
     if (hasChanged) {
@@ -367,7 +480,7 @@ export default class Examples extends React.Component<Props, State> {
     }
 
     return (
-      <ExamplesContainer>
+      <Container>
         <ExampleNavigation
           groupId={groupId}
           packageId={packageId}
@@ -376,17 +489,26 @@ export default class Examples extends React.Component<Props, State> {
           examples={examples}
           onPackageSelected={this.onPackageSelected}
           onExampleSelected={this.onExampleSelected}
-          onCodeToggle={this.onCodeToggle}/>
+          onCodeToggle={this.onCodeToggle}
+          deploySandbox={this.deploySandbox}
+          loadingSandbox={this.state.loadingSandbox}
+        />
         {examples && exampleId ? (
           <ExampleDisplay
             displayCode={this.state.displayCode}
-            example={fs.getById(fs.getFiles(examples.children), exampleId)}/>
+            example={fs.getById(fs.getFiles(examples.children), exampleId)}
+          />
         ) : (
-          <ExamplesContent>
-            <ExamplesError>{fs.titleize(packageId)} does not have any examples</ExamplesError>
-          </ExamplesContent>
+          <Content>
+            <ErrorMessage>
+              {fs.titleize(packageId)} does not have any examples
+            </ErrorMessage>
+          </Content>
         )}
-      </ExamplesContainer>
+        <FlagGroup>
+          {Object.keys(this.state.flags).map(key => this.state.flags[key])}
+        </FlagGroup>
+      </Container>
     );
   }
 }

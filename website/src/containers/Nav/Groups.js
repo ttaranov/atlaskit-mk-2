@@ -5,16 +5,17 @@ import PropTypes from 'prop-types';
 import { Route, matchPath } from 'react-router-dom';
 
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
-import {
-  AkContainerNavigationNested as NestedNav,
-} from '@atlaskit/navigation';
+import { AkContainerNavigationNested as NestedNav } from '@atlaskit/navigation';
 
 import DefaultNav from './navigations/Default';
 import PackagesNav from './navigations/Packages';
 import DocsNav from './navigations/Docs';
 import PatternsNav from './navigations/Patterns';
 
-import { RouterNavigationItem, ExternalNavigationItem } from './utils/linkComponents';
+import {
+  RouterNavigationItem,
+  ExternalNavigationItem,
+} from './utils/linkComponents';
 import type { Directory } from '../../types';
 import { OLD_WEBSITE_URL } from '../../utils/constants';
 
@@ -23,39 +24,42 @@ export type GroupsProps = {
   patterns: Directory,
   packages: Directory,
   navigateOut: boolean,
-}
+};
 
 export type GroupsState = {
   parentRoute: ?Object,
   stack: Array<Node>,
-  navigateOut: boolean
-}
+  navigateOut: boolean,
+};
 
 export type GroupsContext = {
-  router: Object
-}
+  router: Object,
+};
 
 export default class Groups extends React.Component<GroupsProps, GroupsState> {
   static contextTypes = {
     router: PropTypes.object,
-  }
+  };
 
   state = {
     parentRoute: null,
     stack: [[]],
     navigateOut: false,
-  }
+  };
 
   componentWillMount() {
     this.resolveRoutes(this.context.router.route.location.pathname);
   }
 
-  componentWillReceiveProps(nextProps: GroupsProps, nextContext: GroupsContext) {
+  componentWillReceiveProps(
+    nextProps: GroupsProps,
+    nextContext: GroupsContext,
+  ) {
     this.resolveRoutes(nextContext.router.route.location.pathname);
   }
 
   resolveRoutes(pathname: string) {
-    const { docs, navigateOut, packages, patterns } = this.props
+    const { docs, navigateOut, packages, patterns } = this.props;
 
     const menus = [
       <Route path="/">
@@ -65,10 +69,18 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
         <DocsNav pathname={pathname} docs={docs} />
       </Route>,
       <Route path="/packages">
-        <PackagesNav pathname={pathname} packages={packages} navigateOut={navigateOut} />
+        <PackagesNav
+          pathname={pathname}
+          packages={packages}
+          navigateOut={navigateOut}
+        />
       </Route>,
       <Route path="/mk-2/packages">
-        <PackagesNav pathname={pathname} packages={packages} navigateOut={navigateOut} />
+        <PackagesNav
+          pathname={pathname}
+          packages={packages}
+          navigateOut={navigateOut}
+        />
       </Route>,
       <Route path="/patterns">
         <PatternsNav pathname={pathname} patterns={patterns} />
@@ -77,12 +89,11 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
 
     const stack = menus
       .filter(menu => matchPath(pathname, menu.props))
-      .map(menu => [
-        React.cloneElement(menu, { key: menu.props.path }),
-      ]);
+      .map(menu => [React.cloneElement(menu, { key: menu.props.path })]);
 
-    // $FlowFixMe
-    const parentRoute = stack.length > 1 ? stack[stack.length - 2][0].props.path : null;
+    const parentRoute =
+      // $FlowFixMe
+      stack.length > 1 ? stack[stack.length - 2][0].props.path : null;
 
     this.setState({ parentRoute, stack });
   }
@@ -102,7 +113,7 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
             />
           </div>
         ) : null}
-        {parentRoute  && navigateOut ? (
+        {parentRoute && navigateOut ? (
           <div style={{ marginBottom: '10px' }}>
             <ExternalNavigationItem
               href={OLD_WEBSITE_URL}

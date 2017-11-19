@@ -14,7 +14,9 @@ const IMPORTANT_MESSAGE_START = `${RED_START}${BOLD_START}`;
 const IMPORTANT_MESSAGE_END = `${BOLD_END}${RED_END}`;
 
 async function fetchJSONSchema(version: string) {
-  const url = `https://unpkg.com/@atlaskit/editor-common@${version}/dist/json-schema/v1/full.json`;
+  const url = `https://unpkg.com/@atlaskit/editor-common@${
+    version
+  }/dist/json-schema/v1/full.json`;
   const res = await axios.get(url);
 
   return res.data;
@@ -51,7 +53,9 @@ describe('JSON schema', () => {
       // if package with this version doesn't exist test against the latest version
       // this can happen when you manually bump version in package.json
       if (!err.response || err.response.status !== 404) {
-        throw new Error(`JSON schema fetch error (version ${version}): ${err.message}`);
+        throw new Error(
+          `JSON schema fetch error (version ${version}): ${err.message}`,
+        );
       }
 
       existingSchema = await fetchLatestJSONSchema();
@@ -62,8 +66,12 @@ describe('JSON schema', () => {
     } catch (ex) {
       throw new Error(
         'JSON schema backwards compatibility test failed. ' +
-        `${IMPORTANT_MESSAGE_START}Have you tried rebasing your current branch against target branch?${IMPORTANT_MESSAGE_END}\n` +
-        ex.message
+          `${
+            IMPORTANT_MESSAGE_START
+          }Have you tried rebasing your current branch against target branch?${
+            IMPORTANT_MESSAGE_END
+          }\n` +
+          ex.message,
       );
     }
   });

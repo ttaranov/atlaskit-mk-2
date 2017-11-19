@@ -43,7 +43,8 @@ function getCurrentVersion(packageName, allPackages) {
 function maxBumpType(bumpA, bumpB) {
   if (bumpA === 'major' || bumpB === 'major') return 'major';
   if (bumpA === 'minor' || bumpB === 'minor') return 'minor';
-  return 'patch';
+  if (bumpA === 'patch' || bumpB === 'patch') return 'patch';
+  return 'none';
 }
 
 // Takes an array of Changesets and returns a flat list of actual releases with only one entry per
@@ -93,11 +94,19 @@ function createRelease(changesets, allPackages) {
   // const allReleases = addDependentReleases(flattenedReleases)
 
   const allReleases = flattenedReleases
+    // do not update none packages
+    .filter(release => release.type !== 'none')
     // get the current version for each package
-    .map(release => ({ ...release, version: getCurrentVersion(release.name, allPackages) }))
+    .map(release => ({
+      ...release,
+      version: getCurrentVersion(release.name, allPackages),
+    }))
     // update to new version for each package
-    .map(release => ({ ...release, version: semver.inc(release.version, release.type) }))
-    // stip out type field
+    .map(release => ({
+      ...release,
+      version: semver.inc(release.version, release.type),
+    }))
+    // strip out type field
     .map(({ type, ...rest }) => rest);
 
   return {

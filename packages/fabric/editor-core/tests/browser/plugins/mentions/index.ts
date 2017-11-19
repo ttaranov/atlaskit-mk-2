@@ -19,6 +19,7 @@ import {
   code,
   insertText,
   defaultSchema,
+  createEvent,
 } from '@atlaskit/editor-test-helpers';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { analyticsService } from '../../../../src/analytics';
@@ -30,6 +31,7 @@ const mentionProvider = new Promise<any>(resolve => {
 chai.use(chaiPlugin);
 
 describe('mentions', () => {
+  const event = createEvent('event');
   let sandbox;
   const editor = (doc: any) =>
     makeEditor<MentionsState>({
@@ -802,6 +804,26 @@ describe('mentions', () => {
         expect(
           trackEvent.calledWith('atlassian.editor.mention.insert.previous.match.success')
         ).to.equal(true);
+        editorView.destroy();
+      });
+    });
+  });
+
+  describe('focused', () => {
+    context('when editor is focused', () => {
+      it('it is true', () => {
+        const { plugin, pluginState, editorView } = editor(doc(p('te{<>}xt')));
+        plugin.props.onFocus!(editorView, event);
+        expect(pluginState.focused).to.equal(true);
+        editorView.destroy();
+      });
+    });
+
+    context('when editor is not focused', () => {
+      it('it is false', () => {
+        const { plugin, pluginState, editorView } = editor(doc(p('te{<>}xt')));
+        plugin.props.onBlur!(editorView, event);
+        expect(pluginState.focused).to.equal(false);
         editorView.destroy();
       });
     });

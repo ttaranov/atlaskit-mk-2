@@ -30,7 +30,7 @@ export default class ToolbarInsertBlockWrapper extends React.Component<Props, St
 
     this.state = {
       tableActive: false,
-      tableHidden: false,
+      tableHidden: true,
       mediaUploadsEnabled: false,
     } as State;
   }
