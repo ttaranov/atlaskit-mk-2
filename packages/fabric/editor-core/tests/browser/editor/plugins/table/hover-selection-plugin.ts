@@ -53,7 +53,7 @@ describe('table hover selection plugin', () => {
                 ),
               ),
             );
-            plugin.props.onFocus!(editorView, event);
+            plugin.props.handleDOMEvents!.focus(editorView, event);
             hoverColumn(column, editorView.state, editorView.dispatch);
             const offset = tableStartPos(editorView.state);
             const { from, to } = getColumnPos(column, pluginState.tableNode!);
@@ -82,7 +82,7 @@ describe('table hover selection plugin', () => {
                 ),
               ),
             );
-            plugin.props.onFocus!(editorView, event);
+            plugin.props.handleDOMEvents!.focus(editorView, event);
             hoverRow(row, editorView.state, editorView.dispatch);
             const offset = tableStartPos(editorView.state);
             const { from, to } = getRowPos(row, pluginState.tableNode!);
@@ -109,7 +109,7 @@ describe('table hover selection plugin', () => {
             ),
           ),
         );
-        plugin.props.onFocus!(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
         hoverTable(editorView.state, editorView.dispatch);
         const offset = tableStartPos(editorView.state);
         const { from, to } = getTablePos(pluginState.tableNode!);

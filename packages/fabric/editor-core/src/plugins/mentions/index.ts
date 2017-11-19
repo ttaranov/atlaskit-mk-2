@@ -1,9 +1,16 @@
-import { MentionProvider, MentionDescription, isSpecialMention } from '@atlaskit/mention';
+import {
+  MentionProvider,
+  MentionDescription,
+  isSpecialMention,
+} from '@atlaskit/mention';
 import { Fragment, Node, Schema, Slice } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { inputRulePlugin } from './input-rules';
-import { isMarkTypeAllowedInCurrentSelection, isChromeWithSelectionBug } from '../../utils';
+import {
+  isMarkTypeAllowedInCurrentSelection,
+  isChromeWithSelectionBug,
+} from '../../utils';
 import ProviderFactory from '../../providerFactory';
 import { analyticsService } from '../../analytics';
 import mentionNodeView from './../../nodeviews/ui/mention';
@@ -65,7 +72,7 @@ export class MentionsState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  notifySubscribers () {
+  notifySubscribers() {
     this.changeHandlers.forEach(cb => cb(this));
   }
 
@@ -86,7 +93,7 @@ export class MentionsState {
       this.dirty = true;
     }
 
-    const hasActiveQueryNode = (node) => {
+    const hasActiveQueryNode = node => {
       const mark = mentionQuery.isInSet(node.marks);
       return mark && mark.attrs.active;
     };
@@ -98,7 +105,7 @@ export class MentionsState {
       }
 
       const { nodeBefore } = selection.$from;
-      const newQuery = (nodeBefore && nodeBefore.textContent || '').substr(1);
+      const newQuery = ((nodeBefore && nodeBefore.textContent) || '').substr(1);
 
       if (this.query !== newQuery) {
         this.dirty = true;
@@ -127,7 +134,9 @@ export class MentionsState {
       this.dismiss();
     }
 
-    const newAnchorElement = this.view.dom.querySelector('[data-mention-query]') as HTMLElement;
+    const newAnchorElement = this.view.dom.querySelector(
+      '[data-mention-query]',
+    ) as HTMLElement;
     if (newAnchorElement !== this.anchorElement) {
       this.dirty = true;
       this.anchorElement = newAnchorElement;
@@ -138,9 +147,14 @@ export class MentionsState {
     }
   }
 
-  private rangeHasNodeMatchingQuery(doc, from, to, query: (node: Node)=> boolean) {
+  private rangeHasNodeMatchingQuery(
+    doc,
+    from,
+    to,
+    query: (node: Node) => boolean,
+  ) {
     let found = false;
-    doc.nodesBetween(from, to, (node) => {
+    doc.nodesBetween(from, to, node => {
       if (query(node)) {
         found = true;
       }
@@ -189,7 +203,7 @@ export class MentionsState {
     const { doc, schema } = state;
     const { mentionQuery } = schema.marks;
 
-    const marks: {start, end, query}[] = [];
+    const marks: { start; end; query }[] = [];
     doc.nodesBetween(0, doc.nodeSize - 2, (node, pos) => {
       let mark = mentionQuery.isInSet(node.marks);
       if (mark) {
@@ -198,7 +212,7 @@ export class MentionsState {
           marks.push({
             start: pos,
             end: pos + node.textContent.length,
-            query
+            query,
           });
         }
 
@@ -214,13 +228,13 @@ export class MentionsState {
   private findActiveMentionQueryMark() {
     const activeMentionQueryMarks = this.findMentionQueryMarks(true);
     if (activeMentionQueryMarks.length !== 1) {
-      return { start: -1, end: -1, query: ''};
+      return { start: -1, end: -1, query: '' };
     }
 
     return activeMentionQueryMarks[0];
   }
 
-  insertMention(mentionData?: MentionDescription, queryMark?: { start, end }) {
+  insertMention(mentionData?: MentionDescription, queryMark?: { start; end }) {
     const { view } = this;
     const tr = this.generateInsertMentionTransaction(mentionData, queryMark);
 
@@ -232,7 +246,11 @@ export class MentionsState {
     view.dispatch(tr);
   }
 
-  generateInsertMentionTransaction(mentionData?: MentionDescription, queryMark?: { start, end }, tr?: Transaction): Transaction {
+  generateInsertMentionTransaction(
+    mentionData?: MentionDescription,
+    queryMark?: { start; end },
+    tr?: Transaction,
+  ): Transaction {
     const { state } = this;
     const { mention } = state.schema.nodes;
     const currentTransaction = tr ? tr : state.tr;
@@ -242,12 +260,14 @@ export class MentionsState {
       const { start, end } = queryMark ? queryMark : activeMentionQueryMark;
       const { id, name, nickname, accessLevel, userType } = mentionData;
       const renderName = nickname ? nickname : name;
-      const nodes = [mention.create({
-        text: `@${renderName}`,
-        id,
-        accessLevel,
-        userType: userType === 'DEFAULT' ?  null : userType,
-      })];
+      const nodes = [
+        mention.create({
+          text: `@${renderName}`,
+          id,
+          accessLevel,
+          userType: userType === 'DEFAULT' ? null : userType,
+        }),
+      ];
       if (!this.isNextCharacterSpace(end, currentTransaction.doc)) {
         nodes.push(state.schema.text(' '));
       }
@@ -255,8 +275,12 @@ export class MentionsState {
 
       let transaction = currentTransaction;
       if (activeMentionQueryMark.end !== end) {
-        const mentionMark = state.schema.mark('mentionQuery', {active: true});
-        transaction = transaction.removeMark(end, activeMentionQueryMark.end, mentionMark);
+        const mentionMark = state.schema.mark('mentionQuery', { active: true });
+        transaction = transaction.removeMark(
+          end,
+          activeMentionQueryMark.end,
+          mentionMark,
+        );
       }
       transaction = transaction.replaceWith(start, end, nodes);
 
@@ -269,7 +293,10 @@ export class MentionsState {
   isNextCharacterSpace(position: number, doc) {
     try {
       const resolvedPosition = doc.resolve(position);
-      return resolvedPosition.nodeAfter && resolvedPosition.nodeAfter.textContent.indexOf(' ') === 0;
+      return (
+        resolvedPosition.nodeAfter &&
+        resolvedPosition.nodeAfter.textContent.indexOf(' ') === 0
+      );
     } catch (e) {
       return false;
     }
@@ -281,27 +308,36 @@ export class MentionsState {
         this.setMentionProvider(provider);
         break;
     }
-  }
+  };
 
-  setMentionProvider(provider?: Promise<MentionProvider>): Promise<MentionProvider> {
+  setMentionProvider(
+    provider?: Promise<MentionProvider>,
+  ): Promise<MentionProvider> {
     return new Promise<MentionProvider>((resolve, reject) => {
       if (provider && provider.then) {
-        provider.then(mentionProvider => {
-          if (this.mentionProvider ) {
-            this. mentionProvider.unsubscribe('editor-mentionpicker');
-            this.currentQueryResult = undefined;
-          }
+        provider
+          .then(mentionProvider => {
+            if (this.mentionProvider) {
+              this.mentionProvider.unsubscribe('editor-mentionpicker');
+              this.currentQueryResult = undefined;
+            }
 
-          this.mentionProvider = mentionProvider;
-          this.mentionProvider.subscribe('editor-mentionpicker', undefined, undefined, undefined, this.onMentionResult);
+            this.mentionProvider = mentionProvider;
+            this.mentionProvider.subscribe(
+              'editor-mentionpicker',
+              undefined,
+              undefined,
+              undefined,
+              this.onMentionResult,
+            );
 
-          // Improve first mentions performance by establishing a connection and populating local search
-          this.mentionProvider.filter('');
-          resolve(mentionProvider);
-        })
-        .catch(() => {
-          this.mentionProvider = undefined;
-        });
+            // Improve first mentions performance by establishing a connection and populating local search
+            this.mentionProvider.filter('');
+            resolve(mentionProvider);
+          })
+          .catch(() => {
+            this.mentionProvider = undefined;
+          });
       } else {
         this.mentionProvider = undefined;
       }
@@ -310,7 +346,9 @@ export class MentionsState {
 
   trySelectCurrent() {
     const currentQuery = this.query ? this.query.trim() : '';
-    const mentions: MentionDescription[] = this.currentQueryResult ? this.currentQueryResult : [];
+    const mentions: MentionDescription[] = this.currentQueryResult
+      ? this.currentQueryResult
+      : [];
     const mentionsCount = mentions.length;
     this.tokens.set(currentQuery, this.findActiveMentionQueryMark());
 
@@ -321,14 +359,21 @@ export class MentionsState {
     const queryInFlight = this.mentionProvider.isFiltering(currentQuery);
 
     if (!queryInFlight && mentionsCount === 1) {
-      analyticsService.trackEvent('atlassian.editor.mention.try.select.current');
+      analyticsService.trackEvent(
+        'atlassian.editor.mention.try.select.current',
+      );
       this.onSelectCurrent();
       return true;
     }
 
     // No results for the current query OR no results expected because previous subquery didn't return anything
-    if ((!queryInFlight && mentionsCount === 0) || this.previousQueryResultCount === 0) {
-      analyticsService.trackEvent('atlassian.editor.mention.try.insert.previous');
+    if (
+      (!queryInFlight && mentionsCount === 0) ||
+      this.previousQueryResultCount === 0
+    ) {
+      analyticsService.trackEvent(
+        'atlassian.editor.mention.try.insert.previous',
+      );
       this.tryInsertingPreviousMention();
     }
 
@@ -344,7 +389,9 @@ export class MentionsState {
     this.tokens.forEach((value, key) => {
       const match = this.queryResults.get(key);
       if (match) {
-        analyticsService.trackEvent('atlassian.editor.mention.insert.previous.match.success');
+        analyticsService.trackEvent(
+          'atlassian.editor.mention.insert.previous.match.success',
+        );
         this.insertMention(match, value);
         this.tokens.delete(key);
         mentionInserted = true;
@@ -352,7 +399,9 @@ export class MentionsState {
     });
 
     if (!mentionInserted) {
-      analyticsService.trackEvent('atlassian.editor.mention.insert.previous.match.no.match');
+      analyticsService.trackEvent(
+        'atlassian.editor.mention.insert.previous.match.no.match',
+      );
       this.dismiss();
     }
   }
@@ -374,21 +423,33 @@ export class MentionsState {
     if (this.isSubQueryOfCurrentQuery(query)) {
       this.previousQueryResultCount = mentions.length;
     }
-  }
+  };
 
   private isSubQueryOfCurrentQuery(query: string) {
-    return this.query && this.query.indexOf(query) === 0 && !this.mentionProvider!.isFiltering(query);
+    return (
+      this.query &&
+      this.query.indexOf(query) === 0 &&
+      !this.mentionProvider!.isFiltering(query)
+    );
   }
 
-  private findExactMatch(query: string, mentions: MentionDescription[]): MentionDescription | null {
+  private findExactMatch(
+    query: string,
+    mentions: MentionDescription[],
+  ): MentionDescription | null {
     let filteredMentions = mentions.filter(mention => {
-      if (mention.nickname && mention.nickname.toLocaleLowerCase() === query.toLocaleLowerCase()) {
+      if (
+        mention.nickname &&
+        mention.nickname.toLocaleLowerCase() === query.toLocaleLowerCase()
+      ) {
         return mention;
       }
     });
 
     if (filteredMentions.length > 1) {
-      filteredMentions = filteredMentions.filter(mention => isSpecialMention(mention));
+      filteredMentions = filteredMentions.filter(mention =>
+        isSpecialMention(mention),
+      );
     }
 
     return filteredMentions.length === 1 ? filteredMentions[0] : null;
@@ -409,21 +470,20 @@ export class MentionsState {
     const { state } = this.view;
     const node = state.schema.text('@', [state.schema.mark('mentionQuery')]);
     this.view.dispatch(
-      state.tr.replaceSelection(new Slice(Fragment.from(node), 0, 0))
+      state.tr.replaceSelection(new Slice(Fragment.from(node), 0, 0)),
     );
     if (!this.view.hasFocus()) {
       this.view.focus();
     }
   }
 
-  updateEditorFocused (focused: boolean) {
+  updateEditorFocused(focused: boolean) {
     this.focused = focused;
     this.notifySubscribers();
   }
 }
 
-export function createPlugin(providerFactory: ProviderFactory){
-
+export function createPlugin(providerFactory: ProviderFactory) {
   return new Plugin({
     state: {
       init(config, state) {
@@ -433,18 +493,22 @@ export function createPlugin(providerFactory: ProviderFactory){
         // NOTE: Don't replace the pluginState here.
         prevPluginState.apply(tr, newState);
         return prevPluginState;
-      }
+      },
     },
     props: {
       nodeViews: {
         mention: nodeViewFactory(providerFactory, { mention: mentionNodeView }),
       },
-      onFocus(view: EditorView, event) {
-        stateKey.getState(view.state).updateEditorFocused(true);
+      handleDOMEvents: {
+        focus(view: EditorView, event) {
+          stateKey.getState(view.state).updateEditorFocused(true);
+          return false;
+        },
+        blur(view: EditorView, event) {
+          stateKey.getState(view.state).updateEditorFocused(false);
+          return false;
+        },
       },
-      onBlur(view: EditorView, event) {
-        stateKey.getState(view.state).updateEditorFocused(false);
-      }
     },
     key: pluginKey,
     view: (view: EditorView) => {
@@ -456,10 +520,13 @@ export function createPlugin(providerFactory: ProviderFactory){
           pluginState.update(view.state);
         },
         destroy() {
-          providerFactory.unsubscribe('mentionProvider', pluginState.handleProvider);
-        }
+          providerFactory.unsubscribe(
+            'mentionProvider',
+            pluginState.handleProvider,
+          );
+        },
       };
-    }
+    },
   });
 }
 
@@ -471,7 +538,11 @@ export interface Mention {
 }
 
 const plugins = (schema: Schema, providerFactory) => {
-  return [createPlugin(providerFactory), inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+  return [
+    createPlugin(providerFactory),
+    inputRulePlugin(schema),
+    keymapPlugin(schema),
+  ].filter(plugin => !!plugin) as Plugin[];
 };
 
 export default plugins;
