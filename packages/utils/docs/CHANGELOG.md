@@ -1,15 +1,7 @@
-# @atlaskit/editor-common
+# @atlaskit/docs
 
-## 3.8.3
+## 0.0.4
 - [patch] Use correct dependencies  [7b178b1](7b178b1)
 - [patch] Use correct dependencies  [7b178b1](7b178b1)
 - [patch] Adding responsive behavior to the editor. [e0d9867](e0d9867)
 - [patch] Adding responsive behavior to the editor. [e0d9867](e0d9867)
-
-## 3.8.2
-
-## 3.8.1
-
-## 3.8.0
-- [minor] Upgrade Media Editor packages [193c8a0](193c8a0)
-- [minor] Upgrade Media Editor packages [193c8a0](193c8a0)

@@ -1,5 +1,11 @@
 # @atlaskit/editor-core
 
+## 60.0.0
+- [major] Use correct dependencies  [7b178b1](7b178b1)
+- [major] Use correct dependencies  [7b178b1](7b178b1)
+- [major] Adding responsive behavior to the editor. [e0d9867](e0d9867)
+- [major] Adding responsive behavior to the editor. [e0d9867](e0d9867)
+
 ## 59.6.0
 
 - [minor] Added big emoji render logic to editor-core [5bf750f](5bf750f)

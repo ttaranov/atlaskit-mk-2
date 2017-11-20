@@ -1,5 +1,11 @@
 # @atlaskit/tag
 
+## 3.0.6
+- [patch] Use correct dependencies  [7b178b1](7b178b1)
+- [patch] Use correct dependencies  [7b178b1](7b178b1)
+- [patch] Adding responsive behavior to the editor. [e0d9867](e0d9867)
+- [patch] Adding responsive behavior to the editor. [e0d9867](e0d9867)
+
 ## 3.0.2 (2017-09-20)
 
 * bug fix; fix text colors, styling for colored tags (issues closed: #ak-3557) ([8c48e98](https://bitbucket.org/atlassian/atlaskit/commits/8c48e98))
