@@ -938,6 +938,33 @@ describe('Renderer - Validator', () => {
       });
     });
 
+    describe('image', () => {
+      it('should pass through attrs as image', () => {
+        const imageAttrs = {
+          src: 'http://example.com/test.jpg',
+          alt: 'explanation',
+          title: 'image'
+        };
+        const { type, attrs } = getValidNode({ type: 'image', attrs: imageAttrs });
+        expect(type).to.equal('image');
+        expect(attrs).to.deep.equal(imageAttrs);
+      });
+
+      it('should pass through attrs with only src as image', () => {
+        const imageAttrs = { src: 'http://example.com/test.jpg' };
+        const { type, attrs } = getValidNode({ type: 'image', attrs: imageAttrs });
+        expect(type).to.equal('image');
+        expect(attrs).to.deep.equal(imageAttrs);
+      });
+
+      it('should reject image without src', () => {
+        const imageAttrs = { alt: 'explanation' };
+        const { type, attrs } = getValidNode({ type: 'image', attrs: imageAttrs });
+        expect(type).to.equal('text');
+      });
+    });
+
+
     it('should overwrite the default schema if it gets a docSchema parameter', () => {
       // rule is taken out in following schema
       const schema = createSchema({

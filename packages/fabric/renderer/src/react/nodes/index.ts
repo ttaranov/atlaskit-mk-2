@@ -11,6 +11,7 @@ import Doc from './doc';
 import Emoji from './emoji';
 import HardBreak from './hardBreak';
 import Heading from './heading';
+import Image from './image';
 import ListItem from './listItem';
 import Media from './media';
 import MediaGroup from './mediaGroup';
@@ -40,6 +41,7 @@ export const nodeToReact = {
   emoji: Emoji,
   hardBreak: HardBreak,
   heading: Heading,
+  image: Image,
   listItem: ListItem,
   media: Media,
   mediaGroup: MediaGroup,
@@ -213,6 +215,7 @@ export {
   HardBreak,
   Heading,
   ListItem,
+  Image,
   Media,
   MediaGroup,
   Mention,
