@@ -23,13 +23,14 @@ describe('save on enter', () => {
     onSaveSpy.reset();
   });
 
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: [
-      createSaveOnEnterPlugin(onSaveSpy) as Plugin,
-      ...tasksAndDecisionsPlugins(defaultSchema),
-    ]
-  });
+  const editor = (doc: any) =>
+    makeEditor({
+      doc,
+      plugins: [
+        createSaveOnEnterPlugin(onSaveSpy) as Plugin,
+        ...tasksAndDecisionsPlugins(defaultSchema, {}),
+      ],
+    });
 
   it('should trigger onSubmit when user presses Enter', () => {
     const { editorView } = editor(doc(p('1{<>}')));

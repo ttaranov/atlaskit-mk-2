@@ -13,8 +13,10 @@ import {
   p,
   ul,
   code,
+  defaultSchema,
+  createEvent,
+  spyOnReturnValue,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema, spyOnReturnValue } from '@atlaskit/editor-test-helpers';
 import ProviderFactory from '../../../src/providerFactory';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
@@ -34,6 +36,7 @@ const evilburnsEmojiId = {
 };
 
 describe('emojis', () => {
+  const event = createEvent('event');
   const providerFactory = new ProviderFactory();
   const editor = (doc: any) => makeEditor<EmojiState>({
     doc,
@@ -427,6 +430,26 @@ describe('emojis', () => {
     it('returns false when the emoji mark cannot be applied', () => {
       const { pluginState } = editor(doc(p(code('te{<>}xt'))));
       expect(pluginState.isEnabled()).toBe(false);
+    });
+  });
+
+  describe('focused', () => {
+    context('when editor is focused', () => {
+      it('it is true', () => {
+        const { plugin, pluginState, editorView } = editor(doc(p('te{<>}xt')));
+        plugin.props.onFocus!(editorView, event);
+        expect(pluginState.focused).to.equal(true);
+        editorView.destroy();
+      });
+    });
+
+    context('when editor is not focused', () => {
+      it('it is false', () => {
+        const { plugin, pluginState, editorView } = editor(doc(p('te{<>}xt')));
+        plugin.props.onBlur!(editorView, event);
+        expect(pluginState.focused).to.equal(false);
+        editorView.destroy();
+      });
     });
   });
 });

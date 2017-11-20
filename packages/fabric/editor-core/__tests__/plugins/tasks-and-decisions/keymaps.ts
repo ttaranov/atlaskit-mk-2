@@ -24,10 +24,11 @@ describe('tasks and decisions - keymaps', () => {
     uuid.setStatic(false);
   });
 
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugins: tasksAndDecisionsPlugins(defaultSchema)
-  });
+  const editor = (doc: any) =>
+    makeEditor({
+      doc,
+      plugins: tasksAndDecisionsPlugins(defaultSchema, {}),
+    });
 
   describe('decisions', () => {
 
