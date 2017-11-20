@@ -43,7 +43,7 @@ import {
 } from '../../nodeviews';
 import keymapPlugin from './keymap';
 import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
-import { insertFile } from './media-files';
+import { insertFiles } from './media-files';
 import { removeMediaNode, splitMediaGroup } from './media-common';
 import { Alignment, Display } from './single-image';
 import PickerFacade from './picker-facade';
@@ -197,7 +197,7 @@ export class MediaPluginState {
     this.notifyPluginStateSubscribers();
   };
 
-  insertFile = (mediaStates: MediaState[]): void => {
+  insertFiles = (mediaStates: MediaState[]): void => {
     const collection = this.collectionFromProvider();
     if (!collection) {
       return;
@@ -205,8 +205,9 @@ export class MediaPluginState {
 
     mediaStates.forEach(mediaState => {
       this.stateManager.subscribe(mediaState.id, this.handleMediaState);
-      insertFile(this.view, mediaState, collection);
     });
+
+    insertFiles(this.view, mediaStates, collection);
 
     const { view } = this;
     if (!view.hasFocus()) {
@@ -498,8 +499,8 @@ export class MediaPluginState {
       );
 
       pickers.forEach(picker => {
-        picker.onNewMedia(this.insertFile);
-        picker.onNewMedia(this.trackNewMediaEvent(picker.pickerType));
+        picker.onNewMedia(this.insertFiles);
+        picker.onNewMedia(this.trackNewMediaEvent(picker.type));
       });
       this.dropzonePicker.onDrag(this.handleDrag);
     }
@@ -509,7 +510,7 @@ export class MediaPluginState {
   }
 
   private trackNewMediaEvent(pickerType) {
-    return (mediaStates: MediaState[]) =>
+    return (mediaStates: MediaState[]) => {
       mediaStates.forEach(mediaState => {
         analyticsService.trackEvent(
           `atlassian.editor.media.file.${pickerType}`,
@@ -518,6 +519,7 @@ export class MediaPluginState {
             : {},
         );
       });
+    };
   }
 
   private collectionFromProvider(): string | undefined {

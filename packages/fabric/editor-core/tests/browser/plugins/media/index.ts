@@ -114,7 +114,7 @@ describe('Media plugin', () => {
 
     await mediaProvider;
 
-    pluginState.insertFile([{ id: temporaryFileId, status: 'uploading' }]);
+    pluginState.insertFiles([{ id: temporaryFileId, status: 'uploading' }]);
 
     stateManager.updateState(temporaryFileId, {
       id: temporaryFileId,
@@ -156,7 +156,7 @@ describe('Media plugin', () => {
     const provider = await mediaProvider;
     await provider.uploadContext;
 
-    pluginState.insertFile([{ id: temporaryFileId, status: 'uploading' }]);
+    pluginState.insertFiles([{ id: temporaryFileId, status: 'uploading' }]);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -198,7 +198,7 @@ describe('Media plugin', () => {
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
 
-    pluginState.insertFile([
+    pluginState.insertFiles([
       { id: firstTemporaryFileId, status: 'uploading' },
       { id: secondTemporaryFileId, status: 'uploading' },
       { id: thirdTemporaryFileId, status: 'uploading' },
@@ -209,7 +209,7 @@ describe('Media plugin', () => {
         p(),
         mediaGroup(
           media({
-            id: thirdTemporaryFileId,
+            id: firstTemporaryFileId,
             type: 'file',
             collection: testCollectionName,
           }),
@@ -219,7 +219,7 @@ describe('Media plugin', () => {
             collection: testCollectionName,
           }),
           media({
-            id: firstTemporaryFileId,
+            id: thirdTemporaryFileId,
             type: 'file',
             collection: testCollectionName,
           }),
@@ -304,7 +304,7 @@ describe('Media plugin', () => {
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
 
-    pluginState.insertFile([{ id: tempFileId, status: 'uploading' }]);
+    pluginState.insertFiles([{ id: tempFileId, status: 'uploading' }]);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -456,14 +456,14 @@ describe('Media plugin', () => {
     // Warning: calling private methods below
     (pluginState as any).dropzonePicker!.handleUploadsStart(testFileData);
     expect(
-      spy.calledWithExactly('atlassian.editor.media.file.drop', {
+      spy.calledWithExactly('atlassian.editor.media.file.dropzone', {
         fileMimeType: 'file/test',
       }),
     ).to.eq(true);
 
     (pluginState as any).clipboardPicker!.handleUploadsStart(testFileData);
     expect(
-      spy.calledWithExactly('atlassian.editor.media.file.paste', {
+      spy.calledWithExactly('atlassian.editor.media.file.clipboard', {
         fileMimeType: 'file/test',
       }),
     ).to.eq(true);
@@ -630,10 +630,10 @@ describe('Media plugin', () => {
     const { editorView, pluginState } = editor(doc(p('')));
     await mediaProvider;
 
-    pluginState.insertFile([{ id: 'foo' }]);
+    pluginState.insertFiles([{ id: 'foo' }]);
     expect(editorView.hasFocus()).to.be.equal(true);
 
-    pluginState.insertFile([{ id: 'bar' }]);
+    pluginState.insertFiles([{ id: 'bar' }]);
     expect(editorView.state.doc).to.deep.equal(
       doc(
         mediaGroup(
@@ -653,7 +653,7 @@ describe('Media plugin', () => {
       .stub(pluginState, 'collectionFromProvider')
       .returns(testCollectionName);
 
-    pluginState.insertFile([
+    pluginState.insertFiles([
       {
         id: temporaryFileId,
         status: 'uploading',
