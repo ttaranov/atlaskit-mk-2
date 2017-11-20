@@ -1,5 +1,5 @@
 import { uuid } from '@atlaskit/editor-common';
-import { Schema } from 'prosemirror-model';
+import { Schema, Slice } from 'prosemirror-model';
 import {
   EditorState,
   Selection,
@@ -7,6 +7,9 @@ import {
   Transaction,
 } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+
+import { toJSON } from '../../utils';
+import { taskDecisionSliceFilter } from '../../utils/filter';
 
 const getListTypes = (
   listType: TaskDecisionListType,
@@ -76,23 +79,23 @@ export const createListAtSelection = (
     return false;
   }
 
-  const { decisionList, taskList } = schema.nodes;
+  const { decisionList, taskList, mediaGroup } = schema.nodes;
   const isAlreadyDecisionTask =
     $from.parent.type === decisionList || $from.parent.type === taskList;
+  const isMediaNode = $from.parent.type === mediaGroup;
 
-  if (isAlreadyDecisionTask) {
+  if (isAlreadyDecisionTask || isMediaNode) {
     return false;
   }
 
   let where;
   let content = $from.node($from.depth).content;
+
+  // Handle entire document selected case
   if ($from.depth === 0) {
     where = $from.before($from.depth + 1);
-    // If content refers to block node, nest one level deeper
-    while (content.firstChild && content.firstChild.isBlock) {
-      // Set content as children until hit text node
-      content = content.firstChild.content;
-    }
+    const slice = Slice.fromJSON(schema, toJSON($from.node($from.depth)));
+    content = taskDecisionSliceFilter(slice, schema).content;
   } else {
     where = $from.before($from.depth);
   }
