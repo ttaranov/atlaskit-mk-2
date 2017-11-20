@@ -92,6 +92,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       eventDispatcher,
       providerFactory,
       primaryToolbarComponents,
+      contentComponents,
       customPrimaryToolbarComponents, customContentComponents,
       popupsMountPoint, popupsBoundariesElement,
       disabled
@@ -121,6 +122,15 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
           <ScrollContainer>
             <ContentArea innerRef={this.handleRef}>
               {customContentComponents}
+              <PluginSlot
+                editorView={editorView}
+                eventDispatcher={eventDispatcher}
+                providerFactory={providerFactory}
+                appearance={this.appearance}
+                items={contentComponents}
+                popupsMountPoint={popupsMountPoint}
+                popupsBoundariesElement={popupsBoundariesElement}
+              />
             </ContentArea>
           </ScrollContainer>
         </FullPageEditorWrapper>
