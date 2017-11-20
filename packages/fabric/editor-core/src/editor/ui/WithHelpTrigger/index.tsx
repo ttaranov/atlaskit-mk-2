@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PropTypes } from 'react';
+import * as PropTypes from 'prop-types';
 import { openHelpCommand } from '../../plugins/help-dialog';
 import { analyticsService } from '../../../analytics';
 

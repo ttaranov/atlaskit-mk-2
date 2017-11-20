@@ -65,6 +65,7 @@
     "markdown-it-table": "^1.0.0",
     "mediapicker": "^11.1.6",
     "orderedmap": "^1.0.0",
+    "prop-types": "^15.5.10",
     "prosemirror-commands": "^0.22.0",
     "prosemirror-history": "^0.22.0",
     "prosemirror-inputrules": "^0.22.0",

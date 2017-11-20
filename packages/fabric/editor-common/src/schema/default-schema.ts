@@ -25,6 +25,8 @@ export const defaultSchema: Schema = createSchema({
     'inlineMacro',
     'hardBreak',
     'emoji',
+    'extension',
+    'inlineExtension',
     'table',
     'tableCell',
     'tableHeader',
@@ -48,5 +50,5 @@ export const defaultSchema: Schema = createSchema({
     'emojiQuery',
     'textColor',
     'confluenceInlineComment',
-  ]
+  ],
 });
