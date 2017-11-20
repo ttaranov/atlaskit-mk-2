@@ -5,7 +5,7 @@
 import { EditorView } from 'prosemirror-view';
 
 export class NullSelectionReader {
-  constructor(private warnOnce: () => void){};
+  constructor(private warnOnce: () => void) {}
 
   destroy() {}
   poll() {}
@@ -19,7 +19,7 @@ export class NullSelectionReader {
   }
 
   // Store the current state of the DOM selection.
-  storeDOMState = function (selection) {
+  storeDOMState = function(selection) {
     this.warnOnce();
   };
 
@@ -30,7 +30,7 @@ export class NullSelectionReader {
   // : (?string) → bool
   // When the DOM selection changes in a notable manner, modify the
   // current selection state to match.
-  readFromDOM = function (origin) {
+  readFromDOM = function(origin) {
     this.warnOnce();
     return true;
   };
@@ -45,19 +45,18 @@ const clientRectFixture = {
 
 const selectionFixture = {
   removeAllRanges: () => {},
-  addRange: () => {}
+  addRange: () => {},
 };
 
 const rangeFixture = {
   setEnd: () => {},
   setStart: () => {},
   collapse: () => {},
-  getClientRects: () => ([] as any),
-  getBoundingClientRect: () => (clientRectFixture as any),
+  getClientRects: () => [] as any,
+  getBoundingClientRect: () => clientRectFixture as any,
 };
 
-
-export default (editorView) => {
+export default editorView => {
   const warnOnce = (() => {
     let hasWarned = false;
 
@@ -67,10 +66,12 @@ export default (editorView) => {
       }
 
       // tslint:disable-next-line:no-console
-      console.warn('Warning! Test depends on DOM selection API which is not supported in JSDOM/Node environment.');
+      console.warn(
+        'Warning! Test depends on DOM selection API which is not supported in JSDOM/Node environment.',
+      );
 
       hasWarned = true;
-    }
+    };
   })();
 
   // Ignore all DOM document selection changes and do nothing to update it
@@ -84,29 +85,29 @@ export default (editorView) => {
   };
 
   // Do nothing to update selection
-  (editorView as any).setSelection = function (anchor, head, root) {
+  (editorView as any).setSelection = function(anchor, head, root) {
     warnOnce();
-  }
+  };
 
   // Do nothing when attempting to retrieve selection
   window.getSelection = () => {
     warnOnce();
     return selectionFixture as any;
-  }
+  };
 
   document.getSelection = () => {
     warnOnce();
     return selectionFixture as any;
-  }
+  };
 
   // Do nothing when attempting to create DOM ranges
   document.createRange = () => {
     warnOnce();
     return rangeFixture as any;
-  }
+  };
 
   if (!('getClientRects' in document.createElement('div'))) {
-    Element.prototype.getClientRects = () => ([] as any);
+    Element.prototype.getClientRects = () => [] as any;
     Element.prototype.getBoundingClientRect = () => clientRectFixture as any;
   }
 
@@ -115,5 +116,5 @@ export default (editorView) => {
     delete (window as any).getSelection;
     delete (document as any).getSelection;
     delete (document as any).createRange;
-  }
+  };
 };

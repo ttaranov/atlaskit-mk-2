@@ -28,12 +28,13 @@ if (document && !('innerText' in document.createElement('a'))) {
 
   Object.defineProperty(HTMLElement.prototype, 'innerText', {
     configurable: true,
-    get: function get() { return getInnerText(this); },
+    get: function get() {
+      return getInnerText(this);
+    },
     set: function set(text) {
       const textNodes = Array.prototype.slice
         .call(this.childNodes)
-        .filter(node => node.nodeType === node.TEXT_NODE)
-      ;
+        .filter(node => node.nodeType === node.TEXT_NODE);
 
       // If there's only one child that is a text node, update it
       if (textNodes.length === 1) {
@@ -42,7 +43,9 @@ if (document && !('innerText' in document.createElement('a'))) {
       }
 
       // Remove all child nodes as per WHATWG LS Spec
-      Array.prototype.slice.call(this.childNodes).forEach(node => this.removeChild(node));
+      Array.prototype.slice
+        .call(this.childNodes)
+        .forEach(node => this.removeChild(node));
 
       // Append a single text child node with the text
       this.appendChild(document.createTextNode(text));
@@ -50,37 +53,52 @@ if (document && !('innerText' in document.createElement('a'))) {
   });
 }
 
+if (!('cancelAnimationFrame' in window)) {
+  window.cancelAnimationFrame = () => {
+    console.warn(
+      'Warning! Test uses DOM cancelAnimationFrame API which is not available in JSDOM/Node environment.',
+    );
+  };
+}
+
 /* eslint-disable no-undef */
 expect.extend({
   toEqualDocument(actual, expected) {
-    if (!(expected instanceof pmModel.Node) || !(actual instanceof pmModel.Node)) {
+    if (
+      !(expected instanceof pmModel.Node) ||
+      !(actual instanceof pmModel.Node)
+    ) {
       return {
         pass: false,
         actual,
         expected,
         name: 'toEqualDocument',
-        message: 'Expected both values to be instance of prosemirror-model Node.',
+        message:
+          'Expected both values to be instance of prosemirror-model Node.',
       };
     }
 
     const pass = this.equals(actual.toJSON(), expected.toJSON());
     const message = pass
       ? () =>
-        `${this.utils.matcherHint('.not.toEqualDocument')}\n\n` +
-        `Expected JSON value of document to not equal:\n  ${this.utils.printExpected(expected)}\n` +
-        `Actual JSON:\n  ${this.utils.printReceived(actual)}`
+          `${this.utils.matcherHint('.not.toEqualDocument')}\n\n` +
+          `Expected JSON value of document to not equal:\n  ${this.utils.printExpected(
+            expected,
+          )}\n` +
+          `Actual JSON:\n  ${this.utils.printReceived(actual)}`
       : () => {
-        const diffString = diff(expected, actual, {
-          expand: this.expand,
-        });
-        return (
-          `${this.utils.matcherHint('.toEqualDocument')}\n\n` +
-          `Expected JSON value of document to equal:\n${this.utils.printExpected(expected)}\n` +
-          `Actual JSON:\n  ${this.utils.printReceived(actual)}` +
-          `${(diffString ? `\n\nDifference:\n\n${diffString}` : '')}`
-        );
-      }
-    ;
+          const diffString = diff(expected, actual, {
+            expand: this.expand,
+          });
+          return (
+            `${this.utils.matcherHint('.toEqualDocument')}\n\n` +
+            `Expected JSON value of document to equal:\n${this.utils.printExpected(
+              expected,
+            )}\n` +
+            `Actual JSON:\n  ${this.utils.printReceived(actual)}` +
+            `${diffString ? `\n\nDifference:\n\n${diffString}` : ''}`
+          );
+        };
 
     return {
       pass,

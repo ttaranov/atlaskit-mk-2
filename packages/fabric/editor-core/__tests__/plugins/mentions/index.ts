@@ -14,7 +14,7 @@ import {
   p,
   ul,
   code,
-  insertText
+  insertText,
 } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
@@ -24,32 +24,33 @@ const mentionProvider = new Promise<any>(resolve => {
   resolve(mentionStoryData.resourceProvider);
 });
 
-
 describe('mentions', () => {
   let sandbox;
-  const editor = (doc: any) => makeEditor<MentionsState>({
-    doc,
-    plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
-  });
+  const editor = (doc: any) =>
+    makeEditor<MentionsState>({
+      doc,
+      plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
+    });
 
   const forceUpdate = (pluginState, editorView: any) => {
     pluginState.apply(null, editorView.state);
     editorView.updateState(editorView.state);
   };
 
-  beforeEach(function () {
+  beforeEach(function() {
     sandbox = sinon.sandbox.create();
   });
 
-  afterEach(function () {
+  afterEach(function() {
     sandbox.restore();
   });
 
   describe('keymap', () => {
-
     describe('ArrowUp', () => {
       it('should be ignored if there is no mentionProvider', () => {
-        const { editorView, pluginState } = editor(doc(p(mentionQuery()('@o{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(mentionQuery()('@o{<>}'))),
+        );
         const spy = sandbox.spy(pluginState, 'onSelectPrevious');
 
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
@@ -62,37 +63,37 @@ describe('mentions', () => {
         const { editorView, pluginState } = editor(doc(p('Hello')));
         const spy = sandbox.spy(pluginState, 'onSelectPrevious');
 
-        return pluginState
-          .setMentionProvider(mentionProvider)
-          .then(() => {
-            forceUpdate(pluginState, editorView); // Force update to ensure active query.
+        return pluginState.setMentionProvider(mentionProvider).then(() => {
+          forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
-            sendKeyToPm(editorView, 'ArrowUp');
-            expect(spy.called).toBe(false);
-            editorView.destroy();
-          });
+          sendKeyToPm(editorView, 'ArrowUp');
+          expect(spy.called).toBe(false);
+          editorView.destroy();
+        });
       });
 
       it('should call "onSelectPrevious" which should return false by default', () => {
-        const { editorView, pluginState } = editor(doc(p(mentionQuery()('@o{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(mentionQuery()('@o{<>}'))),
+        );
         const spy = sandbox.spy(pluginState, 'onSelectPrevious');
 
-        return pluginState
-          .setMentionProvider(mentionProvider)
-          .then(() => {
-            forceUpdate(pluginState, editorView); // Force update to ensure active query.
+        return pluginState.setMentionProvider(mentionProvider).then(() => {
+          forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
-            sendKeyToPm(editorView, 'ArrowUp');
-            expect(spy.called).toBe(true);
-            expect(spy.returned(false)).toBe(true);
-            editorView.destroy();
-          });
+          sendKeyToPm(editorView, 'ArrowUp');
+          expect(spy.called).toBe(true);
+          expect(spy.returned(false)).toBe(true);
+          editorView.destroy();
+        });
       });
     });
 
     describe('ArrowDown', () => {
       it('should be ignored if there is no mentionProvider', () => {
-        const { editorView, pluginState } = editor(doc(p(mentionQuery()('@o{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(mentionQuery()('@o{<>}'))),
+        );
         const spy = sandbox.spy(pluginState, 'onSelectNext');
 
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
@@ -104,37 +105,37 @@ describe('mentions', () => {
         const { editorView, pluginState } = editor(doc(p('Hello')));
         const spy = sandbox.spy(pluginState, 'onSelectNext');
 
-        return pluginState
-          .setMentionProvider(mentionProvider)
-          .then(() => {
-            forceUpdate(pluginState, editorView); // Force update to ensure active query.
+        return pluginState.setMentionProvider(mentionProvider).then(() => {
+          forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
-            sendKeyToPm(editorView, 'ArrowDown');
-            expect(spy.called).toBe(false);
-            editorView.destroy();
-          });
+          sendKeyToPm(editorView, 'ArrowDown');
+          expect(spy.called).toBe(false);
+          editorView.destroy();
+        });
       });
 
       it('should call "onSelectNext" which should return false by default', () => {
-        const { editorView, pluginState } = editor(doc(p(mentionQuery()('@o{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(mentionQuery()('@o{<>}'))),
+        );
         const spy = sandbox.spy(pluginState, 'onSelectNext');
 
-        return pluginState
-          .setMentionProvider(mentionProvider)
-          .then(() => {
-            forceUpdate(pluginState, editorView); // Force update to ensure active query.
+        return pluginState.setMentionProvider(mentionProvider).then(() => {
+          forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
-            sendKeyToPm(editorView, 'ArrowDown');
-            expect(spy.called).toBe(true);
-            expect(spy.returned(false)).toBe(true);
-            editorView.destroy();
-          });
+          sendKeyToPm(editorView, 'ArrowDown');
+          expect(spy.called).toBe(true);
+          expect(spy.returned(false)).toBe(true);
+          editorView.destroy();
+        });
       });
     });
 
     describe('Enter', () => {
       it('should be ignored if there is no mentionProvider', () => {
-        const { editorView, pluginState } = editor(doc(p(mentionQuery()('@o{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(mentionQuery()('@o{<>}'))),
+        );
         const spy = sandbox.spy(pluginState, 'onSelectCurrent');
 
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
@@ -147,37 +148,37 @@ describe('mentions', () => {
         const { editorView, pluginState } = editor(doc(p('Hello')));
         const spy = sandbox.spy(pluginState, 'onSelectCurrent');
 
-        return pluginState
-          .setMentionProvider(mentionProvider)
-          .then(() => {
-            forceUpdate(pluginState, editorView); // Force update to ensure active query.
+        return pluginState.setMentionProvider(mentionProvider).then(() => {
+          forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
-            sendKeyToPm(editorView, 'Enter');
-            expect(spy.called).toBe(false);
-            editorView.destroy();
-          });
+          sendKeyToPm(editorView, 'Enter');
+          expect(spy.called).toBe(false);
+          editorView.destroy();
+        });
       });
 
       it('should call "onSelectCurrent" which should return false by default', () => {
-        const { editorView, pluginState } = editor(doc(p(mentionQuery()('@o{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(mentionQuery()('@o{<>}'))),
+        );
         const spy = sandbox.spy(pluginState, 'onSelectCurrent');
 
-        return pluginState
-          .setMentionProvider(mentionProvider)
-          .then(() => {
-            forceUpdate(pluginState, editorView); // Force update to ensure active query.
+        return pluginState.setMentionProvider(mentionProvider).then(() => {
+          forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
-            sendKeyToPm(editorView, 'Enter');
-            expect(spy.called).toBe(true);
-            expect(spy.returned(false)).toBe(true);
-            editorView.destroy();
-          });
+          sendKeyToPm(editorView, 'Enter');
+          expect(spy.called).toBe(true);
+          expect(spy.returned(false)).toBe(true);
+          editorView.destroy();
+        });
       });
     });
 
     describe('Shift-Enter', () => {
       it('should be ignored if there is no mentionProvider', () => {
-        const { editorView, pluginState } = editor(doc(p(mentionQuery()('@o{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(mentionQuery()('@o{<>}'))),
+        );
         const spy = sandbox.spy(pluginState, 'onSelectCurrent');
 
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
@@ -199,7 +200,9 @@ describe('mentions', () => {
       });
 
       it('should call "onSelectCurrent"', async () => {
-        const { editorView, pluginState } = editor(doc(p(mentionQuery()('@o{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(mentionQuery()('@o{<>}'))),
+        );
         const spy = sandbox.spy(pluginState, 'onSelectCurrent');
 
         await pluginState.setMentionProvider(mentionProvider);
@@ -213,7 +216,9 @@ describe('mentions', () => {
 
     describe('Space', () => {
       it('should be ignored if there is no mentionProvider', () => {
-        const { editorView, pluginState } = editor(doc(p(mentionQuery()('@o{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(mentionQuery()('@o{<>}'))),
+        );
         const spy = sandbox.spy(pluginState, 'trySelectCurrent');
 
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
@@ -226,39 +231,43 @@ describe('mentions', () => {
         const { editorView, pluginState } = editor(doc(p('Hello')));
         const spy = sandbox.spy(pluginState, 'trySelectCurrent');
 
-        return pluginState
-          .setMentionProvider(mentionProvider)
-          .then(() => {
-            forceUpdate(pluginState, editorView); // Force update to ensure active query.
+        return pluginState.setMentionProvider(mentionProvider).then(() => {
+          forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
-            sendKeyToPm(editorView, 'Space');
-            expect(spy.called).toBe(false);
-            editorView.destroy();
-          });
+          sendKeyToPm(editorView, 'Space');
+          expect(spy.called).toBe(false);
+          editorView.destroy();
+        });
       });
 
       it('should call "trySelectCurrent"', () => {
-        const { editorView, pluginState } = editor(doc(p(mentionQuery()('@kai{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(mentionQuery()('@kai{<>}'))),
+        );
         const spy = sandbox.spy(pluginState, 'trySelectCurrent');
         const trackEvent = sinon.spy();
         analyticsService.trackEvent = trackEvent;
 
-        return pluginState
-          .setMentionProvider(mentionProvider)
-          .then(() => {
-            forceUpdate(pluginState, editorView); // Force update to ensure active query.
+        return pluginState.setMentionProvider(mentionProvider).then(() => {
+          forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
-            sendKeyToPm(editorView, 'Space');
-            expect(spy.called).toBe(true);
-            expect(trackEvent.calledWith('atlassian.editor.mention.try.insert.previous')).toBe(true);
-            editorView.destroy();
-          });
+          sendKeyToPm(editorView, 'Space');
+          expect(spy.called).toBe(true);
+          expect(
+            trackEvent.calledWith(
+              'atlassian.editor.mention.try.insert.previous',
+            ),
+          ).toBe(true);
+          editorView.destroy();
+        });
       });
     });
 
     describe('Escape', () => {
       it('should be ignored if there is no mentionProvider', () => {
-        const { editorView, pluginState } = editor(doc(p(mentionQuery()('@o{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(mentionQuery()('@o{<>}'))),
+        );
         const spy = sandbox.spy(pluginState, 'dismiss');
 
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
@@ -271,89 +280,93 @@ describe('mentions', () => {
         const { editorView, pluginState } = editor(doc(p('Hello')));
         const spy = sandbox.spy(pluginState, 'dismiss');
 
-        return pluginState
-          .setMentionProvider(mentionProvider)
-          .then(() => {
-            forceUpdate(pluginState, editorView); // Force update to ensure active query.
+        return pluginState.setMentionProvider(mentionProvider).then(() => {
+          forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
-            sendKeyToPm(editorView, 'Esc');
-            expect(spy.called).toBe(false);
-            editorView.destroy();
-          });
+          sendKeyToPm(editorView, 'Esc');
+          expect(spy.called).toBe(false);
+          editorView.destroy();
+        });
       });
 
       it('should call "dismiss" which should return true by default', () => {
-        const { editorView, pluginState } = editor(doc(p(mentionQuery()('@kai{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(mentionQuery()('@kai{<>}'))),
+        );
         const spy = sandbox.spy(pluginState, 'dismiss');
 
-        return pluginState
-          .setMentionProvider(mentionProvider)
-          .then(() => {
-            forceUpdate(pluginState, editorView); // Force update to ensure active query.
-            sendKeyToPm(editorView, 'Esc');
-            expect(spy.called).toBe(true);
-            expect(spy.returned(true)).toBe(true);
-            editorView.destroy();
-          });
+        return pluginState.setMentionProvider(mentionProvider).then(() => {
+          forceUpdate(pluginState, editorView); // Force update to ensure active query.
+          sendKeyToPm(editorView, 'Esc');
+          expect(spy.called).toBe(true);
+          expect(spy.returned(true)).toBe(true);
+          editorView.destroy();
+        });
       });
     });
-
   });
 
   describe('insertMention', () => {
-
     it('should replace mention-query-mark with mention-node', () => {
       const { editorView, pluginState } = editor(doc(p(mentionQuery()('@os'))));
 
       pluginState.insertMention({
         name: 'Oscar Wallhult',
         mentionName: 'oscar',
-        id: '1234'
+        id: '1234',
       });
 
-      expect(editorView.state.doc.nodeAt(1)).to.be.of.nodeSpec(mentionNode);
+      expect(editorView.state.doc.nodeAt(1)!.type.spec).toBe(mentionNode);
       editorView.destroy();
     });
 
     it('should insert a space after the mention-node', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery()('@os{<>}'))));
+      const { editorView, pluginState } = editor(
+        doc(p(mentionQuery()('@os{<>}'))),
+      );
 
       pluginState.insertMention({
         name: 'Oscar Wallhult',
         mentionName: 'oscar',
-        id: '1234'
+        id: '1234',
       });
 
-      expect(editorView.state.doc).toEqualDocument(doc(
-        p(
-          mention({
-            text: '@Oscar Wallhult',
-            id: '1234'
-          }),
-          ' '
-        )
-      ));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p(
+            mention({
+              text: '@Oscar Wallhult',
+              id: '1234',
+            }),
+            ' ',
+          ),
+        ),
+      );
       editorView.destroy();
     });
 
     it('should not insert a space after the mention-node if next character is already a space', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery()('@os{<>}'), ' text')));
+      const { editorView, pluginState } = editor(
+        doc(p(mentionQuery()('@os{<>}'), ' text')),
+      );
 
       pluginState.insertMention({
         name: 'Oscar Wallhult',
         mentionName: 'oscar',
-        id: '1234'
+        id: '1234',
       });
 
-      expect(editorView.state.doc).toEqualDocument(doc(
-        p(
-          mention({
-            text: '@Oscar Wallhult',
-            id: '1234'
-          }),
-          ' text'
-        )
-      ));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p(
+            mention({
+              text: '@Oscar Wallhult',
+              id: '1234',
+            }),
+            ' text',
+          ),
+        ),
+      );
       editorView.destroy();
     });
 
@@ -364,155 +377,196 @@ describe('mentions', () => {
         name: 'Tara Tjandra',
         mentionName: 'ttjandra',
         nickname: 'tara',
-        id: '1234'
+        id: '1234',
       });
 
-      expect(editorView.state.doc).toEqualDocument(doc(
-        p(
-          mention({
-            text: '@tara',
-            id: '1234'
-          }),
-          ' '
-        )
-      ));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p(
+            mention({
+              text: '@tara',
+              id: '1234',
+            }),
+            ' ',
+          ),
+        ),
+      );
       editorView.destroy();
     });
 
     it('should allow inserting multiple @-mentions next to eachother', () => {
-      const { editorView, pluginState } = editor(doc(p(mention({ id: '1234', text: '@Oscar Wallhult' }), ' ', mentionQuery()('@{<>}'))));
+      const { editorView, pluginState } = editor(
+        doc(
+          p(
+            mention({ id: '1234', text: '@Oscar Wallhult' }),
+            ' ',
+            mentionQuery()('@{<>}'),
+          ),
+        ),
+      );
 
       pluginState.insertMention({
         name: 'Bradley Ayers',
         mentionName: 'brad',
-        id: '5678'
+        id: '5678',
       });
 
-      expect(editorView.state.doc).toEqualDocument(doc(
-        p(
-          mention({
-            text: '@Oscar Wallhult',
-            id: '1234'
-          }),
-          ' ',
-          mention({
-            text: '@Bradley Ayers',
-            id: '5678'
-          }),
-          ' '
-        )
-      ));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p(
+            mention({
+              text: '@Oscar Wallhult',
+              id: '1234',
+            }),
+            ' ',
+            mention({
+              text: '@Bradley Ayers',
+              id: '5678',
+            }),
+            ' ',
+          ),
+        ),
+      );
       editorView.destroy();
     });
 
     it('should allow inserting @-mention on new line after hard break', () => {
-      const { editorView, pluginState } = editor(doc(p(br, mentionQuery()('@{<>}'))));
+      const { editorView, pluginState } = editor(
+        doc(p(br, mentionQuery()('@{<>}'))),
+      );
 
       pluginState.insertMention({
         name: 'Oscar Wallhult',
         mentionName: 'oscar',
-        id: '1234'
+        id: '1234',
       });
 
-      expect(editorView.state.doc).toEqualDocument(doc(
-        p(
-          br,
-          mention({
-            id: '1234',
-            text: '@Oscar Wallhult'
-          }),
-          ' '
-        )
-      ));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p(
+            br,
+            mention({
+              id: '1234',
+              text: '@Oscar Wallhult',
+            }),
+            ' ',
+          ),
+        ),
+      );
       editorView.destroy();
     });
 
     it('should not break list into two when inserting mention inside list item', () => {
-      const { editorView, pluginState } = editor(doc(p(ul(li(p('One')), li(p('Two ', mentionQuery()('@{<>}'))), li(p('Three'))))));
+      const { editorView, pluginState } = editor(
+        doc(
+          p(
+            ul(
+              li(p('One')),
+              li(p('Two ', mentionQuery()('@{<>}'))),
+              li(p('Three')),
+            ),
+          ),
+        ),
+      );
 
       pluginState.insertMention({
         name: 'Oscar Wallhult',
         mentionName: 'oscar',
-        id: '1234'
+        id: '1234',
       });
 
-      expect(editorView.state.doc).toEqualDocument(doc(
-        p(
-          ul(
-            li(p('One')),
-            li(
-              p(
-                'Two ',
-                mention({
-                  id: '1234',
-                  text: '@Oscar Wallhult'
-                }),
-                ' '
-              )
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p(
+            ul(
+              li(p('One')),
+              li(
+                p(
+                  'Two ',
+                  mention({
+                    id: '1234',
+                    text: '@Oscar Wallhult',
+                  }),
+                  ' ',
+                ),
+              ),
+              li(p('Three')),
             ),
-            li(p('Three'))
-          )
-        )
-      ));
+          ),
+        ),
+      );
       editorView.destroy();
     });
 
     it('should insert only 1 mention at a time inside blockqoute', () => {
-      const { editorView, pluginState } = editor(doc(blockquote(p('Hello ', mentionQuery()('@{<>}')))));
+      const { editorView, pluginState } = editor(
+        doc(blockquote(p('Hello ', mentionQuery()('@{<>}')))),
+      );
 
       pluginState.insertMention({
         name: 'Oscar Wallhult',
         mentionName: 'oscar',
-        id: '1234'
+        id: '1234',
       });
 
-      expect(editorView.state.doc).toEqualDocument(doc(
-        blockquote(
-          p(
-            'Hello ',
-            mention({
-              id: '1234',
-              text: '@Oscar Wallhult'
-            }),
-            ' '
-          )
-        )
-      ));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          blockquote(
+            p(
+              'Hello ',
+              mention({
+                id: '1234',
+                text: '@Oscar Wallhult',
+              }),
+              ' ',
+            ),
+          ),
+        ),
+      );
 
-      expect(editorView.state.doc.nodeAt(8)).to.be.of.nodeSpec(mentionNode);
+      expect(editorView.state.doc.nodeAt(8)!.type.spec).toBe(mentionNode);
       expect(editorView.state.doc.nodeAt(10)).toBe(null);
       editorView.destroy();
     });
 
     it('should insert mention at the position of the provided inactive mark', () => {
-      const { editorView, pluginState } = editor(doc(p('Hello ', mentionQuery({ active: false })('@os{<>}'), ' text')));
+      const { editorView, pluginState } = editor(
+        doc(p('Hello ', mentionQuery({ active: false })('@os{<>}'), ' text')),
+      );
 
-      pluginState.insertMention({
-        name: 'Oscar Wallhult',
-        mentionName: 'oscar',
-        id: '1234'
-      }, {
+      pluginState.insertMention(
+        {
+          name: 'Oscar Wallhult',
+          mentionName: 'oscar',
+          id: '1234',
+        },
+        {
           start: 7,
-          end: 10
-        });
+          end: 10,
+        },
+      );
 
-      expect(editorView.state.doc).toEqualDocument(doc(
-        p(
-          'Hello ',
-          mention({
-            text: '@Oscar Wallhult',
-            id: '1234'
-          }),
-          ' text'
-        )
-      ));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p(
+            'Hello ',
+            mention({
+              text: '@Oscar Wallhult',
+              id: '1234',
+            }),
+            ' text',
+          ),
+        ),
+      );
       editorView.destroy();
     });
   });
 
   describe('remove', () => {
     it('should remove active mark when all text of mark is removed', () => {
-      const { editorView } = editor(doc(p(mentionQuery({ active: true })('{<}@os{>}'))));
+      const { editorView } = editor(
+        doc(p(mentionQuery({ active: true })('{<}@os{>}'))),
+      );
       sendKeyToPm(editorView, 'Delete');
       expect(editorView.state.doc).toEqualDocument(doc(p()));
       editorView.destroy();
@@ -520,7 +574,9 @@ describe('mentions', () => {
 
     it('should call changeHandlers when mention is removed', () => {
       const spy = sinon.spy();
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('{<}@os{>}'))));
+      const { editorView, pluginState } = editor(
+        doc(p(mentionQuery({ active: true })('{<}@os{>}'))),
+      );
       pluginState.subscribe(spy);
       sendKeyToPm(editorView, 'Delete');
       expect(editorView.state.doc).toEqualDocument(doc(p()));
@@ -531,58 +587,65 @@ describe('mentions', () => {
 
   describe('onMentionResult', () => {
     it('should not replace active mark ', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@os{<>}'))));
+      const { editorView, pluginState } = editor(
+        doc(p(mentionQuery({ active: true })('@os{<>}'))),
+      );
 
-      pluginState.onMentionResult([
-        {
-          name: 'Oscar Wallhult',
-          nickname: 'os',
-          id: '1234'
-        }
-      ], 'os');
+      pluginState.onMentionResult(
+        [
+          {
+            name: 'Oscar Wallhult',
+            nickname: 'os',
+            id: '1234',
+          },
+        ],
+        'os',
+      );
 
-      expect(editorView.state.doc).toEqualDocument(doc(
-        p(
-          mentionQuery({ active: true })('@os{<>}')
-        )
-      ));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(mentionQuery({ active: true })('@os{<>}'))),
+      );
       editorView.destroy();
     });
 
     it('should not modify current selection when resolving', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: false })('@os', ' abcd{<>}'))));
+      const { editorView, pluginState } = editor(
+        doc(p(mentionQuery({ active: false })('@os', ' abcd{<>}'))),
+      );
 
-      pluginState.onMentionResult([
-        {
-          name: 'Oscar Wallhult',
-          nickname: 'os',
-          id: '1234'
-        }
-      ], 'os');
+      pluginState.onMentionResult(
+        [
+          {
+            name: 'Oscar Wallhult',
+            nickname: 'os',
+            id: '1234',
+          },
+        ],
+        'os',
+      );
 
       const newSelectionFrom = editorView.state.selection.from;
       expect(newSelectionFrom).toBe(9);
       editorView.destroy();
     });
-
   });
 
   describe('dismiss', () => {
     it('should remove active mark and keep text', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@os{<>}'))));
+      const { editorView, pluginState } = editor(
+        doc(p(mentionQuery({ active: true })('@os{<>}'))),
+      );
 
       pluginState.dismiss();
 
-      expect(editorView.state.doc).toEqualDocument(doc(
-        p(
-          '@os'
-        )
-      ));
+      expect(editorView.state.doc).toEqualDocument(doc(p('@os')));
       editorView.destroy();
     });
 
     it('should remove stored mentions  mark', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@os{<>}'))));
+      const { editorView, pluginState } = editor(
+        doc(p(mentionQuery({ active: true })('@os{<>}'))),
+      );
 
       pluginState.dismiss();
 
@@ -607,124 +670,143 @@ describe('mentions', () => {
 
   describe('trySelectCurrent', () => {
     it('should select current if there is only one result', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@O w{<>}'))));
+      const { editorView, pluginState } = editor(
+        doc(p(mentionQuery({ active: true })('@O w{<>}'))),
+      );
       const spy = sandbox.spy(pluginState, 'onSelectCurrent');
 
-      return pluginState.setMentionProvider(mentionProvider)
-        .then(() => {
-          const trackEvent = sinon.spy();
-          analyticsService.trackEvent = trackEvent;
+      return pluginState.setMentionProvider(mentionProvider).then(() => {
+        const trackEvent = sinon.spy();
+        analyticsService.trackEvent = trackEvent;
 
-          forceUpdate(pluginState, editorView); // Force update to ensure active query.
+        forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
-          pluginState.onMentionResult([
+        pluginState.onMentionResult(
+          [
             {
               name: 'Oscar Wallhult',
               nickname: 'os',
-              id: '1234'
-            }
-          ], 'O w');
+              id: '1234',
+            },
+          ],
+          'O w',
+        );
 
-          pluginState.trySelectCurrent();
+        pluginState.trySelectCurrent();
 
-          expect(spy.called).toBe(true);
-          expect(trackEvent.calledWith('atlassian.editor.mention.try.select.current')).toBe(true);
-          editorView.destroy();
-        });
+        expect(spy.called).toBe(true);
+        expect(
+          trackEvent.calledWith('atlassian.editor.mention.try.select.current'),
+        ).toBe(true);
+        editorView.destroy();
+      });
     });
 
     it('should not select exact match if non unique', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@os{<>}'))));
+      const { editorView, pluginState } = editor(
+        doc(p(mentionQuery({ active: true })('@os{<>}'))),
+      );
       const spy = sandbox.spy(pluginState, 'insertMention');
 
-      return pluginState.setMentionProvider(mentionProvider)
-        .then(() => {
-          forceUpdate(pluginState, editorView); // Force update to ensure active query.
+      return pluginState.setMentionProvider(mentionProvider).then(() => {
+        forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
-          pluginState.onMentionResult([
+        pluginState.onMentionResult(
+          [
             {
               name: 'Oscar Wallhult',
               nickname: 'os',
-              id: '1234'
+              id: '1234',
             },
             {
               name: 'Oscar Wallhult 2',
               nickname: 'os',
-              id: '666'
+              id: '666',
             },
-          ], 'os');
+          ],
+          'os',
+        );
 
-          pluginState.trySelectCurrent();
+        pluginState.trySelectCurrent();
 
-          expect(spy.called).toBe(false);
-          editorView.destroy();
-        });
+        expect(spy.called).toBe(false);
+        editorView.destroy();
+      });
     });
 
     it('should do nothing if the user is still searching (no exact match)', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@oscar{<>}'))));
+      const { editorView, pluginState } = editor(
+        doc(p(mentionQuery({ active: true })('@oscar{<>}'))),
+      );
 
-      return pluginState.setMentionProvider(mentionProvider)
-        .then(() => {
-          forceUpdate(pluginState, editorView); // Force update to ensure active query.
+      return pluginState.setMentionProvider(mentionProvider).then(() => {
+        forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
-          pluginState.onMentionResult([
+        pluginState.onMentionResult(
+          [
             {
               name: 'Oscar Wallhult',
               nickname: 'os',
-              id: '1234'
+              id: '1234',
             },
             {
               name: 'Oscar Wilde',
-              id: '456'
-            }
-          ], 'oscar');
+              id: '456',
+            },
+          ],
+          'oscar',
+        );
 
-          expect(pluginState.trySelectCurrent()).toBe(false);
-          editorView.destroy();
-        });
+        expect(pluginState.trySelectCurrent()).toBe(false);
+        editorView.destroy();
+      });
     });
 
     it('should try inserting exact match for previous result if previous query has no result', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@oscar{<>}'))));
+      const { editorView, pluginState } = editor(
+        doc(p(mentionQuery({ active: true })('@oscar{<>}'))),
+      );
       const spy = sandbox.spy(pluginState, 'tryInsertingPreviousMention');
 
-      return pluginState.setMentionProvider(mentionProvider)
-        .then(() => {
-          forceUpdate(pluginState, editorView); // Force update to ensure active query.
+      return pluginState.setMentionProvider(mentionProvider).then(() => {
+        forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
-          pluginState.onMentionResult([], 'osc');
+        pluginState.onMentionResult([], 'osc');
 
-          pluginState.trySelectCurrent();
+        pluginState.trySelectCurrent();
 
-          expect(spy.called).toBe(true);
-          editorView.destroy();
-        });
+        expect(spy.called).toBe(true);
+        editorView.destroy();
+      });
     });
 
     it('should try inserting exact match for previous result if no query in flight and no current result', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@oscar{<>}'))));
+      const { editorView, pluginState } = editor(
+        doc(p(mentionQuery({ active: true })('@oscar{<>}'))),
+      );
       const spy = sandbox.spy(pluginState, 'tryInsertingPreviousMention');
 
-      return pluginState.setMentionProvider(mentionProvider)
-        .then(() => {
-          forceUpdate(pluginState, editorView); // Force update to ensure active query.
+      return pluginState.setMentionProvider(mentionProvider).then(() => {
+        forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
-          pluginState.onMentionResult([], 'oscar');
+        pluginState.onMentionResult([], 'oscar');
 
-          pluginState.trySelectCurrent();
+        pluginState.trySelectCurrent();
 
-          expect(spy.called).toBe(true);
-          editorView.destroy();
-        });
+        expect(spy.called).toBe(true);
+        editorView.destroy();
+      });
     });
 
     it('should dismiss if there is no result and none coming', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@xyz{<>}'))));
+      const { editorView, pluginState } = editor(
+        doc(p(mentionQuery({ active: true })('@xyz{<>}'))),
+      );
       const spy = sandbox.spy(pluginState, 'dismiss');
 
-      return pluginState.setMentionProvider(mentionProvider)
-        .then((mentionResource) => {
+      return pluginState
+        .setMentionProvider(mentionProvider)
+        .then(mentionResource => {
           const trackEvent = sinon.spy();
           analyticsService.trackEvent = trackEvent;
           const isFilteringStub = sandbox.stub(mentionResource, 'isFiltering');
@@ -736,7 +818,11 @@ describe('mentions', () => {
           pluginState.trySelectCurrent();
 
           expect(spy.called).toBe(true);
-          expect(trackEvent.calledWith('atlassian.editor.mention.insert.previous.match.no.match')).toBe(true);
+          expect(
+            trackEvent.calledWith(
+              'atlassian.editor.mention.insert.previous.match.no.match',
+            ),
+          ).toBe(true);
           editorView.destroy();
         });
     });
@@ -744,33 +830,41 @@ describe('mentions', () => {
 
   describe('Insert mention using previous exact match', () => {
     it('should insert mention if one previous query has exact match result', () => {
-      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@oscar{<>}'))));
+      const { editorView, pluginState } = editor(
+        doc(p(mentionQuery({ active: true })('@oscar{<>}'))),
+      );
 
-      return pluginState.setMentionProvider(mentionProvider)
-        .then(() => {
-          const trackEvent = sinon.spy();
-          analyticsService.trackEvent = trackEvent;
-          forceUpdate(pluginState, editorView); // Force update to ensure active query.
+      return pluginState.setMentionProvider(mentionProvider).then(() => {
+        const trackEvent = sinon.spy();
+        analyticsService.trackEvent = trackEvent;
+        forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
-          pluginState.onMentionResult([
+        pluginState.onMentionResult(
+          [
             {
               name: 'Oscar Wallhult',
               nickname: 'oscar',
-              id: '1234'
-            }
-          ], 'oscar');
+              id: '1234',
+            },
+          ],
+          'oscar',
+        );
 
-          sendKeyToPm(editorView, 'Space');
-          insertText(editorView, ' How', editorView.state.selection.from);
+        sendKeyToPm(editorView, 'Space');
+        insertText(editorView, ' How', editorView.state.selection.from);
 
-          pluginState.onMentionResult([], 'oscar How');
+        pluginState.onMentionResult([], 'oscar How');
 
-          sendKeyToPm(editorView, 'Space');
+        sendKeyToPm(editorView, 'Space');
 
-          expect(editorView.state.doc.nodeAt(1)).to.be.of.nodeSpec(mentionNode);
-          expect(trackEvent.calledWith('atlassian.editor.mention.insert.previous.match.success')).toBe(true);
-          editorView.destroy();
-        });
+        expect(editorView.state.doc.nodeAt(1)!.type.spec).toBe(mentionNode);
+        expect(
+          trackEvent.calledWith(
+            'atlassian.editor.mention.insert.previous.match.success',
+          ),
+        ).toBe(true);
+        editorView.destroy();
+      });
     });
   });
 });

@@ -1,7 +1,6 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import { Tooltip } from '@atlaskit/tooltip';
-import AkButton from '@atlaskit/button';
+import Tooltip from '@atlaskit/tooltip';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 
 const noop = () => {};
@@ -14,7 +13,7 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
       disabled={false}
     />);
 
-    expect(toolbarButtonElem.find(Tooltip).length).toBe(0);
+    expect(toolbarButtonElem.find(Tooltip)).toHaveLength(0);
     toolbarButtonElem.unmount();
   });
 
@@ -26,41 +25,11 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
       title="tooltip text"
     />);
 
-    expect(toolbarButtonElem.find(Tooltip).length).toBe(1);
+    expect(toolbarButtonElem.find(Tooltip)).toHaveLength(1);
     toolbarButtonElem.unmount();
   });
 
-  it('should show tooltip on mouseover', () => {
-    const toolbarButtonElem = mount(<ToolbarButton
-      onClick={noop}
-      selected={false}
-      disabled={false}
-      title="tooltip text"
-    />);
-
-    const tooltip = toolbarButtonElem.find(Tooltip);
-    tooltip.simulate('mouseover');
-
-    expect(tooltip.prop('visible')).toBe(true);
-    toolbarButtonElem.unmount();
-  });
-
-  it('should hide tooltip on mouseout', () => {
-    const toolbarButtonElem = mount(<ToolbarButton
-      onClick={noop}
-      selected={false}
-      disabled={false}
-      title="tooltip text"
-    />);
-
-    const tooltip = toolbarButtonElem.find(Tooltip);
-    tooltip.simulate('mouseover');
-    tooltip.simulate('mouseout');
-
-    expect(tooltip.prop('visible')).toBe(false);
-    toolbarButtonElem.unmount();
-  });
-
+  // NOTE tested visually
   it.skip('should hide tooltip on click', () => {
     const toolbarButtonElem = mount(<ToolbarButton
       onClick={noop}
@@ -69,13 +38,12 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
       title="tooltip text"
     />);
 
+    toolbarButtonElem.simulate('mouseover');
+    toolbarButtonElem.simulate('click');
+
     const tooltip = toolbarButtonElem.find(Tooltip);
-    tooltip.simulate('mouseover');
 
-    const akButton = toolbarButtonElem.find(AkButton);
-    akButton.simulate('click');
-
-    expect(tooltip.prop('visible')).toBe(false);
+    expect(tooltip).toHaveLength(0);
     toolbarButtonElem.unmount();
   });
 
@@ -88,13 +56,11 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
       title="tooltip text"
     />);
 
+    toolbarButtonElem.simulate('mouseover');
+
     const tooltip = toolbarButtonElem.find(Tooltip);
-    tooltip.simulate('mouseover');
 
-    const akButton = toolbarButtonElem.find(AkButton);
-    akButton.simulate('click');
-
-    expect(tooltip.prop('visible')).toBe(false);
+    expect(tooltip.html()).not.toContain("tooltip text");
     toolbarButtonElem.unmount();
   });
 

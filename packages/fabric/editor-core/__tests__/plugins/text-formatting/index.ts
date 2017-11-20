@@ -1,24 +1,36 @@
-import * as sinon from 'sinon';
 import { browser } from '@atlaskit/editor-common';
 import {
-  sendKeyToPm, doc, strike, plain, strong, em, underline, code, p,
-  subsup, makeEditor, mention, insertText
+  sendKeyToPm,
+  doc,
+  strike,
+  plain,
+  strong,
+  em,
+  underline,
+  code,
+  p,
+  subsup,
+  makeEditor,
+  mention,
+  insertText,
 } from '@atlaskit/editor-test-helpers';
-import textFormattingPlugins, { TextFormattingState } from '../../../src/plugins/text-formatting';
+import textFormattingPlugins, {
+  TextFormattingState,
+} from '../../../src/plugins/text-formatting';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../src/analytics';
 
-
 describe('text-formatting', () => {
-  const editor = (doc: any) => makeEditor<TextFormattingState>({
-    doc,
-    plugins: textFormattingPlugins(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor<TextFormattingState>({
+      doc,
+      plugins: textFormattingPlugins(defaultSchema),
+    });
 
   describe('keymap', () => {
     let trackEvent;
     beforeEach(() => {
-      trackEvent = sinon.spy();
+      trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
     });
     if (browser.mac) {
@@ -29,8 +41,12 @@ describe('text-formatting', () => {
 
             sendKeyToPm(editorView, 'Cmd-b');
 
-            expect(editorView.state.doc).toEqualDocument(doc(p(strong('text'))));
-            expect(trackEvent.calledWith('atlassian.editor.format.strong.keyboard')).toBe(true);
+            expect(editorView.state.doc).toEqualDocument(
+              doc(p(strong('text'))),
+            );
+            expect(trackEvent).toHaveBeenCalledWith(
+              'atlassian.editor.format.strong.keyboard',
+            );
           });
         });
 
@@ -41,7 +57,9 @@ describe('text-formatting', () => {
             sendKeyToPm(editorView, 'Cmd-i');
 
             expect(editorView.state.doc).toEqualDocument(doc(p(em('text'))));
-            expect(trackEvent.calledWith('atlassian.editor.format.em.keyboard')).toBe(true);
+            expect(trackEvent).toHaveBeenCalledWith(
+              'atlassian.editor.format.em.keyboard',
+            );
           });
         });
 
@@ -51,8 +69,12 @@ describe('text-formatting', () => {
 
             sendKeyToPm(editorView, 'Cmd-u');
 
-            expect(editorView.state.doc).toEqualDocument(doc(p(underline('text'))));
-            expect(trackEvent.calledWith('atlassian.editor.format.underline.keyboard')).toBe(true);
+            expect(editorView.state.doc).toEqualDocument(
+              doc(p(underline('text'))),
+            );
+            expect(trackEvent).toHaveBeenCalledWith(
+              'atlassian.editor.format.underline.keyboard',
+            );
           });
         });
 
@@ -66,19 +88,35 @@ describe('text-formatting', () => {
 
             sendKeyToPm(editorView, 'Shift-Cmd-S');
 
-            expect(editorView.state.doc).toEqualDocument(doc(p(strike('text'))));
-            expect(trackEvent.calledWith('atlassian.editor.format.strike.keyboard')).toBe(true);
+            expect(editorView.state.doc).toEqualDocument(
+              doc(p(strike('text'))),
+            );
+            expect(trackEvent).toHaveBeenCalledWith(
+              'atlassian.editor.format.strike.keyboard',
+            );
           });
         });
 
         describe('when hits Shift-Cmd-M', () => {
           it('toggles code mark', () => {
-            const { editorView } = editor(doc(p(strong('{<}text '), mention({ id: '1234', text: '@helga' }), em(' text{>}'))));
+            const { editorView } = editor(
+              doc(
+                p(
+                  strong('{<}text '),
+                  mention({ id: '1234', text: '@helga' }),
+                  em(' text{>}'),
+                ),
+              ),
+            );
 
             sendKeyToPm(editorView, 'Shift-Cmd-M');
 
-            expect(editorView.state.doc).toEqualDocument(doc(p(code('text @helga text'))));
-            expect(trackEvent.calledWith('atlassian.editor.format.code.keyboard')).toBe(true);
+            expect(editorView.state.doc).toEqualDocument(
+              doc(p(code('text @helga text'))),
+            );
+            expect(trackEvent).toHaveBeenCalledWith(
+              'atlassian.editor.format.code.keyboard',
+            );
           });
         });
       });
@@ -90,8 +128,12 @@ describe('text-formatting', () => {
 
             sendKeyToPm(editorView, 'Ctrl-b');
 
-            expect(editorView.state.doc).toEqualDocument(doc(p(strong('text'))));
-            expect(trackEvent.calledWith('atlassian.editor.format.strong.keyboard')).toBe(true);
+            expect(editorView.state.doc).toEqualDocument(
+              doc(p(strong('text'))),
+            );
+            expect(trackEvent).toHaveBeenCalledWith(
+              'atlassian.editor.format.strong.keyboard',
+            );
           });
         });
 
@@ -102,7 +144,9 @@ describe('text-formatting', () => {
             sendKeyToPm(editorView, 'Ctrl-i');
 
             expect(editorView.state.doc).toEqualDocument(doc(p(em('text'))));
-            expect(trackEvent.calledWith('atlassian.editor.format.em.keyboard')).toBe(true);
+            expect(trackEvent).toHaveBeenCalledWith(
+              'atlassian.editor.format.em.keyboard',
+            );
           });
         });
 
@@ -112,8 +156,12 @@ describe('text-formatting', () => {
 
             sendKeyToPm(editorView, 'Ctrl-u');
 
-            expect(editorView.state.doc).toEqualDocument(doc(p(underline('text'))));
-            expect(trackEvent.calledWith('atlassian.editor.format.underline.keyboard')).toBe(true);
+            expect(editorView.state.doc).toEqualDocument(
+              doc(p(underline('text'))),
+            );
+            expect(trackEvent).toHaveBeenCalledWith(
+              'atlassian.editor.format.underline.keyboard',
+            );
           });
         });
 
@@ -127,8 +175,12 @@ describe('text-formatting', () => {
 
             sendKeyToPm(editorView, 'Shift-Ctrl-S');
 
-            expect(editorView.state.doc).toEqualDocument(doc(p(strike('text'))));
-            expect(trackEvent.calledWith('atlassian.editor.format.strike.keyboard')).toBe(true);
+            expect(editorView.state.doc).toEqualDocument(
+              doc(p(strike('text'))),
+            );
+            expect(trackEvent).toHaveBeenCalledWith(
+              'atlassian.editor.format.strike.keyboard',
+            );
           });
         });
 
@@ -139,7 +191,9 @@ describe('text-formatting', () => {
             sendKeyToPm(editorView, 'Shift-Ctrl-M');
 
             expect(editorView.state.doc).toEqualDocument(doc(p(code('text'))));
-            expect(trackEvent.calledWith('atlassian.editor.format.code.keyboard')).toBe(true);
+            expect(trackEvent).toHaveBeenCalledWith(
+              'atlassian.editor.format.code.keyboard',
+            );
           });
         });
       });
@@ -149,19 +203,20 @@ describe('text-formatting', () => {
         const { editorView, sel } = editor(doc(p('`{<>}`')));
         insertText(editorView, 'c', sel);
         expect(editorView.state.doc).toEqualDocument(doc(p(code('c'))));
-        expect(trackEvent.calledWith('atlassian.editor.format.code.autoformatting')).toBe(true);
+        expect(trackEvent).toHaveBeenCalledWith(
+          'atlassian.editor.format.code.autoformatting',
+        );
       });
     });
-
   });
 
   it('should allow a change handler to be attached', () => {
     const { pluginState } = editor(doc(p('text')));
-    const spy = sinon.spy();
+    const spy = jest.fn();
     pluginState.subscribe(spy);
 
-    expect(spy.callCount).toBe(1);
-    expect(spy.calledWith(pluginState)).toBe(true);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith(pluginState);
   });
 
   describe('em', () => {
@@ -247,7 +302,9 @@ describe('text-formatting', () => {
       const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
 
       expect(pluginState.toggleUnderline(editorView));
-      expect(editorView.state.doc).toEqualDocument(doc(p(underline('t'), 'ext')));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(underline('t'), 'ext')),
+      );
       expect(pluginState.toggleUnderline(editorView));
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
     });
@@ -293,7 +350,9 @@ describe('text-formatting', () => {
     describe('when two code nodes separated with one non-code character', () => {
       describe('when moving between two code nodes with ArrowLeft', () => {
         it('should disable code for the first node and then enable for the second node', () => {
-          const { editorView, pluginState, refs } = editor(doc(p(code('hello{nextPos}'), 'x',  code('h{<>}ello'))));
+          const { editorView, pluginState, refs } = editor(
+            doc(p(code('hello{nextPos}'), 'x', code('h{<>}ello'))),
+          );
           expect(pluginState.codeActive).toBe(true);
           sendKeyToPm(editorView, 'ArrowLeft');
           expect(pluginState.codeActive).toBe(true);
@@ -311,7 +370,9 @@ describe('text-formatting', () => {
     describe('when exiting code with ArrowRight', () => {
       describe('when code is the last node', () => {
         it('should disable code and preserve the cursor position', () => {
-          const { editorView, pluginState, refs } = editor(doc(p(code('hello{<>}'), '{nextPos}')));
+          const { editorView, pluginState, refs } = editor(
+            doc(p(code('hello{<>}'), '{nextPos}')),
+          );
           expect(pluginState.codeActive).toBe(true);
           sendKeyToPm(editorView, 'ArrowRight');
           expect(pluginState.codeActive).toBe(false);
@@ -320,7 +381,9 @@ describe('text-formatting', () => {
       });
       describe('when code is not the last node', () => {
         it('should disable code and preserve the cursor position', () => {
-          const { editorView, pluginState, refs } = editor(doc(p(code('hello{<>}'), '{nextPos}text')));
+          const { editorView, pluginState, refs } = editor(
+            doc(p(code('hello{<>}'), '{nextPos}text')),
+          );
           expect(pluginState.codeActive).toBe(true);
           sendKeyToPm(editorView, 'ArrowRight');
           expect(pluginState.codeActive).toBe(false);
@@ -330,7 +393,9 @@ describe('text-formatting', () => {
 
       describe('when code has only one character long', () => {
         it('should disable code and preserve the cursor position', () => {
-          const { editorView, pluginState, refs } = editor(doc(p(code('x{<>}'), '{nextPos}text')));
+          const { editorView, pluginState, refs } = editor(
+            doc(p(code('x{<>}'), '{nextPos}text')),
+          );
           expect(pluginState.codeActive).toBe(true);
           sendKeyToPm(editorView, 'ArrowRight');
           expect(pluginState.codeActive).toBe(false);
@@ -342,7 +407,9 @@ describe('text-formatting', () => {
     describe('when exiting code with ArrowLeft', () => {
       describe('when code is the first node', () => {
         it('should disable code and preserve the cursor position', () => {
-          const { editorView, pluginState, refs } = editor(doc(p('{nextPos}', code('{<>}hello'))));
+          const { editorView, pluginState, refs } = editor(
+            doc(p('{nextPos}', code('{<>}hello'))),
+          );
           expect(pluginState.codeActive).toBe(true);
           sendKeyToPm(editorView, 'ArrowLeft');
           expect(pluginState.codeActive).toBe(false);
@@ -352,7 +419,9 @@ describe('text-formatting', () => {
 
       describe('when code is not the first node', () => {
         it('should disable code and preserve the cursor position', () => {
-          const { editorView, pluginState, refs } = editor(doc(p('text{nextPos}', code('h{<>}ello'))));
+          const { editorView, pluginState, refs } = editor(
+            doc(p('text{nextPos}', code('h{<>}ello'))),
+          );
           expect(pluginState.codeActive).toBe(true);
           sendKeyToPm(editorView, 'ArrowLeft');
           expect(pluginState.codeActive).toBe(true);
@@ -364,7 +433,9 @@ describe('text-formatting', () => {
 
       describe('when code has only one character long', () => {
         it('should disable code and preserve the cursor position', () => {
-          const { editorView, pluginState, refs } = editor(doc(p('text{nextPos}', code('x{<>}'))));
+          const { editorView, pluginState, refs } = editor(
+            doc(p('text{nextPos}', code('x{<>}'))),
+          );
           expect(pluginState.codeActive).toBe(true);
           sendKeyToPm(editorView, 'ArrowLeft');
           expect(pluginState.codeActive).toBe(true);
@@ -378,7 +449,9 @@ describe('text-formatting', () => {
     describe('when entering code with ArrowRight', () => {
       describe('when code is the first node', () => {
         it('should enable code and preserve the cursor position', () => {
-          const { editorView, pluginState, refs } = editor(doc(p('{<>}', code('{nextPos}hello'))));
+          const { editorView, pluginState, refs } = editor(
+            doc(p('{<>}', code('{nextPos}hello'))),
+          );
           expect(pluginState.codeActive).toBe(true);
           sendKeyToPm(editorView, 'ArrowLeft');
           expect(pluginState.codeActive).toBe(false);
@@ -389,7 +462,9 @@ describe('text-formatting', () => {
       });
       describe('when code is not the first node', () => {
         it('should enable code and preserve the cursor position', () => {
-          const { editorView, pluginState, refs } = editor(doc(p('text{<>}', code('{nextPos}hello'))));
+          const { editorView, pluginState, refs } = editor(
+            doc(p('text{<>}', code('{nextPos}hello'))),
+          );
           expect(pluginState.codeActive).toBe(false);
           sendKeyToPm(editorView, 'ArrowRight');
           expect(pluginState.codeActive).toBe(true);
@@ -399,7 +474,9 @@ describe('text-formatting', () => {
 
       describe('when code has only one character long', () => {
         it('should enable code and preserve the cursor position', () => {
-          const { editorView, pluginState, refs } = editor(doc(p('text{<>}', code('{nextPos}x'))));
+          const { editorView, pluginState, refs } = editor(
+            doc(p('text{<>}', code('{nextPos}x'))),
+          );
           expect(pluginState.codeActive).toBe(false);
           sendKeyToPm(editorView, 'ArrowRight');
           expect(pluginState.codeActive).toBe(true);
@@ -411,7 +488,9 @@ describe('text-formatting', () => {
     describe('when entering code with ArrowLeft', () => {
       describe('when code is the last node', () => {
         it('should enable code and preserve the cursor position', () => {
-          const { editorView, pluginState, refs } = editor(doc(p(code('hello{nextPos}'), '{<>}')));
+          const { editorView, pluginState, refs } = editor(
+            doc(p(code('hello{nextPos}'), '{<>}')),
+          );
           expect(pluginState.codeActive).toBe(true);
           sendKeyToPm(editorView, 'ArrowRight');
           expect(pluginState.codeActive).toBe(false);
@@ -422,7 +501,9 @@ describe('text-formatting', () => {
       });
       describe('when code is not the last node', () => {
         it('should enable code and preserve the cursor position', () => {
-          const { editorView, pluginState, refs } = editor(doc(p(code('hello{nextPos}'), 't{<>}ext')));
+          const { editorView, pluginState, refs } = editor(
+            doc(p(code('hello{nextPos}'), 't{<>}ext')),
+          );
           expect(pluginState.codeActive).toBe(false);
           sendKeyToPm(editorView, 'ArrowLeft');
           expect(pluginState.codeActive).toBe(false);
@@ -433,7 +514,9 @@ describe('text-formatting', () => {
       });
       describe('when code has only one character long', () => {
         it('should enable code and preserve the cursor position', () => {
-          const { editorView, pluginState, refs } = editor(doc(p(code('x{nextPos}'), 't{<>}ext')));
+          const { editorView, pluginState, refs } = editor(
+            doc(p(code('x{nextPos}'), 't{<>}ext')),
+          );
           expect(pluginState.codeActive).toBe(false);
           sendKeyToPm(editorView, 'ArrowLeft');
           expect(pluginState.codeActive).toBe(false);
@@ -526,7 +609,9 @@ describe('text-formatting', () => {
       const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
 
       expect(pluginState.toggleSubscript(editorView));
-      expect(editorView.state.doc).toEqualDocument(doc(p(subsup({ type: 'sub' })('t'), 'ext')));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(subsup({ type: 'sub' })('t'), 'ext')),
+      );
       expect(pluginState.toggleSubscript(editorView));
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
     });
@@ -580,7 +665,9 @@ describe('text-formatting', () => {
     it('should be able to toggle superscript on a character', () => {
       const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
       pluginState.toggleSuperscript(editorView);
-      expect(editorView.state.doc).toEqualDocument(doc(p(subsup({ type: 'sup' })('t'), 'ext')));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(subsup({ type: 'sup' })('t'), 'ext')),
+      );
       pluginState.toggleSuperscript(editorView);
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
     });

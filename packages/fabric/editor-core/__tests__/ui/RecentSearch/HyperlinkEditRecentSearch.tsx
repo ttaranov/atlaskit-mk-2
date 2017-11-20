@@ -8,9 +8,8 @@ import PanelTextInput from '../../../src/ui/PanelTextInput';
 import RecentSearch from '../../../src/ui/RecentSearch';
 import RecentItem from '../../../src/ui/RecentSearch/RecentItem';
 import {
-  doc, p as paragraph, a as link, makeEditor
+  doc, p as paragraph, a as link, makeEditor, defaultSchema
 } from '@atlaskit/editor-test-helpers';
-import defaultSchema from '../../../src/test-helper/schema';
 
 /**
  * Provides sample data for this suite of tests.

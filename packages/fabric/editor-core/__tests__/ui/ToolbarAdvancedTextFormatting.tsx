@@ -6,8 +6,7 @@ import textFormattingPlugins from '../../src/plugins/text-formatting';
 import clearFormattingPlugins from '../../src/plugins/clear-formatting';
 import ToolbarAdvancedTextFormatting from '../../src/ui/ToolbarAdvancedTextFormatting';
 import ToolbarButton from '../../src/ui/ToolbarButton';
-import { doc, p, strike, makeEditor } from '@atlaskit/editor-test-helpers';
-import defaultSchema from '../../src/test-helper/schema';
+import { doc, p, strike, makeEditor, defaultSchema } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../src/analytics';
 
 describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {

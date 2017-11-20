@@ -5,8 +5,7 @@ import { FloatingToolbar } from '../../src/ui/LanguagePicker/styles';
 import Select from '@atlaskit/single-select';
 import { TrashToolbarButton } from '../../src/ui/LanguagePicker/styles';
 import LanguagePicker from '../../src/ui/LanguagePicker';
-import { code_block, doc, p, makeEditor, createEvent } from '@atlaskit/editor-test-helpers';
-import defaultSchema from '../../src/test-helper/schema';
+import { code_block, doc, p, makeEditor, createEvent, defaultSchema } from '@atlaskit/editor-test-helpers';
 
 describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
   const event = createEvent('event');

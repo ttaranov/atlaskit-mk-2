@@ -1,14 +1,12 @@
-import * as sinon from 'sinon';
 import ProviderFactory from '../../src/providerFactory';
 
 describe('ProviderFactory', () => {
-
   const provider = Promise.resolve('Hello');
   const providerName1 = 'greetingProvider';
   const providerName2 = 'anotherProvider';
-  const handler1 = sinon.spy();
-  const handler2 = sinon.spy();
-  const handler3 = sinon.spy();
+  const handler1 = jest.fn();
+  const handler2 = jest.fn();
+  const handler3 = jest.fn();
 
   describe('setProvider', () => {
     let providerFactory;
@@ -22,38 +20,40 @@ describe('ProviderFactory', () => {
     });
 
     it('should update map with new provider', () => {
-      const spy = sinon.spy((providerFactory as any).providers, 'set');
+      const spy = jest.spyOn((providerFactory as any).providers, 'set');
       providerFactory.setProvider(providerName1, provider);
 
-      expect(spy.called).toBe(true);
-      expect(spy.calledWith(providerName1, provider)).toBe(true);
-      spy.restore();
+      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledWith(providerName1, provider);
+      spy.mockRestore();
     });
 
     it('should remove provider from map if undefined', () => {
-      const spySet = sinon.spy((providerFactory as any).providers, 'set');
-      const spyDelete = sinon.spy((providerFactory as any).providers, 'delete');
+      const spySet = jest.spyOn((providerFactory as any).providers, 'set');
+      const spyDelete = jest.spyOn(
+        (providerFactory as any).providers,
+        'delete',
+      );
       providerFactory.setProvider(providerName1, undefined);
 
-      expect(spySet.called).toBe(false);
-      expect(spyDelete.called).toBe(true);
-      expect(spyDelete.calledWith(providerName1)).toBe(true);
-      spySet.restore();
-      spyDelete.restore();
+      expect(spySet).not.toHaveBeenCalled();
+      expect(spyDelete).toHaveBeenCalled();
+      expect(spyDelete).toHaveBeenCalledWith(providerName1);
+      spySet.mockRestore();
+      spyDelete.mockRestore();
     });
 
     it('should trigger notifyUpdated', () => {
-      const spy = sinon.spy(providerFactory, 'notifyUpdated');
+      const spy = jest.spyOn(providerFactory, 'notifyUpdated');
       providerFactory.setProvider(providerName1, provider);
       providerFactory.setProvider(providerName1, undefined);
 
-      expect(spy.called).toBe(true);
-      expect(spy.callCount).toEqual(2);
-      expect(spy.firstCall.calledWith(providerName1, provider)).toBe(true);
-      expect(spy.lastCall.calledWith(providerName1, undefined)).toBe(true);
-      spy.restore();
+      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenCalledWith(providerName1, provider);
+      expect(spy).toHaveBeenLastCalledWith(providerName1, undefined);
+      spy.mockRestore();
     });
-
   });
 
   describe('removeProvider', () => {
@@ -64,23 +64,25 @@ describe('ProviderFactory', () => {
     });
 
     it('should remove provider from map', () => {
-      const spyDelete = sinon.spy((providerFactory as any).providers, 'delete');
+      const spyDelete = jest.spyOn(
+        (providerFactory as any).providers,
+        'delete',
+      );
       providerFactory.removeProvider(providerName1);
 
-      expect(spyDelete.called).toBe(true);
-      expect(spyDelete.calledWith(providerName1)).toBe(true);
-      spyDelete.restore();
+      expect(spyDelete).toHaveBeenCalled();
+      expect(spyDelete).toHaveBeenCalledWith(providerName1);
+      spyDelete.mockRestore();
     });
 
     it('should trigger notifyUpdated', () => {
-      const spy = sinon.spy(providerFactory, 'notifyUpdated');
+      const spy = jest.spyOn(providerFactory, 'notifyUpdated');
       providerFactory.removeProvider(providerName1);
 
-      expect(spy.called).toBe(true);
-      expect(spy.calledWith(providerName1)).toBe(true);
-      spy.restore();
+      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledWith(providerName1);
+      spy.mockRestore();
     });
-
   });
 
   describe('subscribe', () => {
@@ -91,26 +93,25 @@ describe('ProviderFactory', () => {
     });
 
     afterEach(() => {
-      handler1.reset();
+      handler1.mockReset();
     });
 
     it('should update map with new handler', () => {
-      const spy = sinon.spy((providerFactory as any).subscribers, 'set');
+      const spy = jest.spyOn((providerFactory as any).subscribers, 'set');
       providerFactory.subscribe(providerName1, handler1);
 
-      expect(spy.called).toBe(true);
-      expect(spy.calledWith(providerName1, [handler1])).toBe(true);
-      spy.restore();
+      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledWith(providerName1, [handler1]);
+      spy.mockRestore();
     });
 
     it('should trigger handler', () => {
       providerFactory.setProvider(providerName1, provider);
       providerFactory.subscribe(providerName1, handler1);
 
-      expect(handler1.called).toBe(true);
-      expect(handler1.calledWith(providerName1, provider)).toBe(true);
+      expect(handler1).toHaveBeenCalled();
+      expect(handler1).toHaveBeenCalledWith(providerName1, provider);
     });
-
   });
 
   describe('unsubscribe', () => {
@@ -122,21 +123,21 @@ describe('ProviderFactory', () => {
     });
 
     it('should remove handler from subscriber map', () => {
-      const spy = sinon.spy((providerFactory as any).subscribers, 'set');
+      const spy = jest.spyOn((providerFactory as any).subscribers, 'set');
       providerFactory.unsubscribe(providerName1, handler1);
 
-      expect(spy.called).toBe(true);
-      expect(spy.calledWith(providerName1, [handler2])).toBe(true);
-      spy.restore();
+      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledWith(providerName1, [handler2]);
+      spy.mockRestore();
     });
 
     it('should remove provider subscription if there are no handlers left', () => {
-      const spy = sinon.spy((providerFactory as any).subscribers, 'delete');
+      const spy = jest.spyOn((providerFactory as any).subscribers, 'delete');
       providerFactory.unsubscribe(providerName1, handler2);
 
-      expect(spy.called).toBe(true);
-      expect(spy.calledWith(providerName1)).toBe(true);
-      spy.restore();
+      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledWith(providerName1);
+      spy.mockRestore();
     });
   });
 
@@ -151,18 +152,18 @@ describe('ProviderFactory', () => {
     });
 
     afterEach(() => {
-      handler1.reset();
-      handler2.reset();
-      handler3.reset();
+      handler1.mockReset();
+      handler2.mockReset();
+      handler3.mockReset();
     });
 
     it('should call all handlers for provider', () => {
       (providerFactory as any).notifyUpdated(providerName1, provider);
-      expect(handler1.called).toBe(true);
-      expect(handler2.called).toBe(true);
-      expect(handler3.called).toBe(false);
-      expect(handler1.calledWith(providerName1, provider)).toBe(true);
-      expect(handler2.calledWith(providerName1, provider)).toBe(true);
+      expect(handler1).toHaveBeenCalled();
+      expect(handler2).toHaveBeenCalled();
+      expect(handler3).not.toHaveBeenCalled();
+      expect(handler1).toHaveBeenCalledWith(providerName1, provider);
+      expect(handler2).toHaveBeenCalledWith(providerName1, provider);
     });
   });
 
@@ -177,5 +178,4 @@ describe('ProviderFactory', () => {
       expect(providerFactory.isEmpty()).toBe(true);
     });
   });
-
 });

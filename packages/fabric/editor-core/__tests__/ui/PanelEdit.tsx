@@ -7,8 +7,7 @@ import ToolbarButton from '../../src/ui/ToolbarButton';
 import AkButton from '@atlaskit/button';
 import { analyticsService } from '../../src/analytics';
 
-import { doc, panel, p, makeEditor, createEvent } from '@atlaskit/editor-test-helpers';
-import defaultSchema from '../../src/test-helper/schema';
+import { doc, panel, p, makeEditor, createEvent, defaultSchema } from '@atlaskit/editor-test-helpers';
 
 describe('@atlaskit/editor-core ui/PanelEdit', () => {
   const event = createEvent('event');

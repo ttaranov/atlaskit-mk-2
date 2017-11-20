@@ -6,7 +6,7 @@ import { Plugin, EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { default as defaultSchema } from './schema';
 import { RefsNode, Refs } from './schema-builder';
-import jsdomFixtures from './jsdom-selection-fixtures';
+import jsdomFixtures from './jsdom-fixtures';
 
 /**
  * Build a ProseMirror instance.
@@ -43,7 +43,10 @@ export default <T>(options: Options): EditorInstance<T> => {
   });
 
   // Work around JSDOM/Node not supporting DOM Selection API
-  if (!('getSelection' in window) && navigator.userAgent.indexOf('Node.js') !== -1) {
+  if (
+    !('getSelection' in window) &&
+    navigator.userAgent.indexOf('Node.js') !== -1
+  ) {
     jsdomFixtures(editorView);
   }
 

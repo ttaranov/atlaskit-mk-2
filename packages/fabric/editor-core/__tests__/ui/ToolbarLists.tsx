@@ -5,8 +5,7 @@ import listsPlugins, { ListsState } from '../../src/plugins/lists';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import AkButton from '@atlaskit/button';
 import ToolbarLists from '../../src/ui/ToolbarLists';
-import { doc, p, makeEditor } from '@atlaskit/editor-test-helpers';
-import defaultSchema from '../../src/test-helper/schema';
+import { doc, p, makeEditor, defaultSchema } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../src/analytics';
 
 describe('ToolbarLists', () => {

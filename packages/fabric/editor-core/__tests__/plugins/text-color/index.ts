@@ -1,17 +1,25 @@
-import * as sinon from 'sinon';
 import {
-  sendKeyToPm, insertText, doc, code, textColor, p,
-  makeEditor, a, strong
+  sendKeyToPm,
+  insertText,
+  doc,
+  code,
+  textColor,
+  p,
+  makeEditor,
+  a,
+  strong,
 } from '@atlaskit/editor-test-helpers';
-import textColorPlugins, { TextColorState } from '../../../src/plugins/text-color';
+import textColorPlugins, {
+  TextColorState,
+} from '../../../src/plugins/text-color';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
 
-
 describe('text-color', () => {
-  const editor = (doc: any) => makeEditor<TextColorState>({
-    doc,
-    plugins: textColorPlugins(defaultSchema),
-  });
+  const editor = (doc: any) =>
+    makeEditor<TextColorState>({
+      doc,
+      plugins: textColorPlugins(defaultSchema),
+    });
 
   const testColor1 = '#97a0af';
   const testColor2 = '#0747a6';
@@ -19,16 +27,18 @@ describe('text-color', () => {
 
   it('should allow a change handler to be attached', () => {
     const { pluginState } = editor(doc(p('text')));
-    const spy = sinon.spy();
+    const spy = jest.fn();
     pluginState.subscribe(spy);
 
-    expect(spy.callCount).toBe(1);
-    expect(spy.calledWith(pluginState)).toBe(true);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith(pluginState);
   });
 
   // Now this works because of `handleKeyDown` & `handleTextInput` inside `text-format` plugin
   it.skip('should be able to remove mark when its the first node of the paragraph', () => {
-    const { editorView } = editor(doc(p(createTextColor(testColor1)('{<}text{>}'))));
+    const { editorView } = editor(
+      doc(p(createTextColor(testColor1)('{<}text{>}'))),
+    );
     sendKeyToPm(editorView, 'Backspace');
     insertText(editorView, 'text', editorView.state.selection.from);
     expect(editorView.state.doc).toEqualDocument(doc(p('text')));
@@ -37,17 +47,39 @@ describe('text-color', () => {
   it('should be able to replace textColor on a character', () => {
     const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
 
-    expect(pluginState.toggleTextColor(editorView.state, editorView.dispatch, testColor1));
-    expect(editorView.state.doc).toEqualDocument(doc(p(createTextColor(testColor1)('t'), 'ext')));
-    expect(pluginState.toggleTextColor(editorView.state, editorView.dispatch, testColor2));
-    expect(editorView.state.doc).toEqualDocument(doc(p(createTextColor(testColor2)('t'), 'ext')));
+    expect(
+      pluginState.toggleTextColor(
+        editorView.state,
+        editorView.dispatch,
+        testColor1,
+      ),
+    );
+    expect(editorView.state.doc).toEqualDocument(
+      doc(p(createTextColor(testColor1)('t'), 'ext')),
+    );
+    expect(
+      pluginState.toggleTextColor(
+        editorView.state,
+        editorView.dispatch,
+        testColor2,
+      ),
+    );
+    expect(editorView.state.doc).toEqualDocument(
+      doc(p(createTextColor(testColor2)('t'), 'ext')),
+    );
   });
 
   it('should expose whether textColor has any color on an empty selection', () => {
     const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
     expect(pluginState.color).toBe(pluginState.defaultColor);
-    expect(pluginState.toggleTextColor(editorView.state, editorView.dispatch, testColor1));
+    expect(
+      pluginState.toggleTextColor(
+        editorView.state,
+        editorView.dispatch,
+        testColor1,
+      ),
+    );
     expect(pluginState.color).toBe(testColor1);
   });
 
@@ -55,7 +87,13 @@ describe('text-color', () => {
     const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
 
     expect(pluginState.color).toBe(pluginState.defaultColor);
-    expect(pluginState.toggleTextColor(editorView.state, editorView.dispatch, testColor1));
+    expect(
+      pluginState.toggleTextColor(
+        editorView.state,
+        editorView.dispatch,
+        testColor1,
+      ),
+    );
     expect(pluginState.color).toBe(testColor1);
   });
 
@@ -66,7 +104,9 @@ describe('text-color', () => {
   });
 
   it('exposes textColor as disabled when inside hyperlink', () => {
-    const { pluginState } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+    const { pluginState } = editor(
+      doc(p(a({ href: 'http://www.atlassian.com' })('te{<>}xt'))),
+    );
 
     expect(pluginState.disabled).toBe(true);
   });
@@ -78,18 +118,24 @@ describe('text-color', () => {
   });
 
   it('should expose no color when selection has multiple color marks', () => {
-    const { pluginState } = editor(doc(p(
-      '{<}', createTextColor(testColor1)('te'),
-      createTextColor(testColor2)('xt'), '{>}'
-    )));
+    const { pluginState } = editor(
+      doc(
+        p(
+          '{<}',
+          createTextColor(testColor1)('te'),
+          createTextColor(testColor2)('xt'),
+          '{>}',
+        ),
+      ),
+    );
 
     expect(pluginState.color).toBe(undefined);
   });
 
   it('should expose no color when selection has mixed content', () => {
-    const { pluginState } = editor(doc(p(
-      '{<}', createTextColor(testColor1)('te'), 'xt', '{>}'
-    )));
+    const { pluginState } = editor(
+      doc(p('{<}', createTextColor(testColor1)('te'), 'xt', '{>}')),
+    );
 
     expect(pluginState.color).toBe(undefined);
   });
@@ -107,33 +153,47 @@ describe('text-color', () => {
   });
 
   it('should expose color when the cursor is inside a textColor mark', () => {
-    const { pluginState } = editor(doc(p(createTextColor(testColor1)('te{<>}xt'))));
+    const { pluginState } = editor(
+      doc(p(createTextColor(testColor1)('te{<>}xt'))),
+    );
 
     expect(pluginState.color).toBe(testColor1);
   });
 
   it('should expose color when the cursor is at the ending of a textColor mark', () => {
-    const { pluginState } = editor(doc(p(createTextColor(testColor1)('text'), '{<>}')));
+    const { pluginState } = editor(
+      doc(p(createTextColor(testColor1)('text'), '{<>}')),
+    );
 
     expect(pluginState.color).toBe(testColor1);
   });
 
   it('should expose default color when the cursor is at the begnining of a textColor mark', () => {
-    const { pluginState } = editor(doc(p('hello', createTextColor(testColor1)('{<>}text'))));
+    const { pluginState } = editor(
+      doc(p('hello', createTextColor(testColor1)('{<>}text'))),
+    );
 
     expect(pluginState.color).toBe(pluginState.defaultColor);
   });
 
   it('should expose color when the cursor is at begnining of doc with textColor mark', () => {
-    const { pluginState } = editor(doc(p('', createTextColor(testColor1)('{<>}text'))));
+    const { pluginState } = editor(
+      doc(p('', createTextColor(testColor1)('{<>}text'))),
+    );
 
     expect(pluginState.color).toBe(testColor1);
   });
 
   it('should expose color when selection has other marks with textColor mark', () => {
-    const { pluginState } = editor(doc(p(
-      '{<}', createTextColor(testColor1)('hello ', strong('world'), '!'), '{>}'
-    )));
+    const { pluginState } = editor(
+      doc(
+        p(
+          '{<}',
+          createTextColor(testColor1)('hello ', strong('world'), '!'),
+          '{>}',
+        ),
+      ),
+    );
 
     expect(pluginState.color).toBe(testColor1);
   });

@@ -6,8 +6,7 @@ import ToolbarHyperlink from '../../src/ui/ToolbarHyperlink';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import AkButton from '@atlaskit/button';
 import LinkIcon from '@atlaskit/icon/glyph/editor/link';
-import { doc, p, makeEditor } from '@atlaskit/editor-test-helpers';
-import defaultSchema from '../../src/test-helper/schema';
+import { doc, p, makeEditor, defaultSchema } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../src/analytics';
 
 describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {

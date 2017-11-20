@@ -4,8 +4,7 @@ import * as sinon from 'sinon';
 import textColorPlugin, { TextColorState } from '../../src/plugins/text-color';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import ToolbarTextColor from '../../src/ui/ToolbarTextColor';
-import { doc, code_block, p, makeEditor } from '@atlaskit/editor-test-helpers';
-import defaultSchema from '../../src/test-helper/schema';
+import { doc, code_block, p, makeEditor, defaultSchema } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../src/analytics';
 
 describe('ToolbarTextColor', () => {

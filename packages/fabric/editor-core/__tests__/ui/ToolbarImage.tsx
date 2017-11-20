@@ -4,8 +4,7 @@ import * as sinon from 'sinon';
 import imageUploadPlugins, { ImageUploadState } from '../../src/plugins/image-upload';
 import ToolbarImage from '../../src/ui/ToolbarImage';
 import AkButton from '@atlaskit/button';
-import { doc, code_block, p, makeEditor } from '@atlaskit/editor-test-helpers';
-import defaultSchema from '../../src/test-helper/schema';
+import { doc, code_block, p, makeEditor, defaultSchema } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../src/analytics';
 
 describe('ToolbarImage', () => {

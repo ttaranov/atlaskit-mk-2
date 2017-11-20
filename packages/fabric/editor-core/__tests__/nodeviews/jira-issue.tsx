@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { JiraLogo } from '@atlaskit/logo';
+import { JiraIcon } from '@atlaskit/logo';
 import ReactJIRAIssueNode from '../../src/nodeviews/ui/jira-issue';
 import { confluenceJiraIssue } from '@atlaskit/editor-test-helpers';
 
@@ -15,7 +15,7 @@ describe('jiraIssue - React component', () => {
   it('should use JiraLogo component', () => {
     const node = confluenceJiraIssue({ issueKey: 'test' });
     const wrapper = mount(<ReactJIRAIssueNode node={node}/>);
-    expect(wrapper.find(JiraLogo).length).toBe(1);
+    expect(wrapper.find(JiraIcon).length).toBe(1);
     wrapper.unmount();
   });
 });

@@ -6,9 +6,8 @@ import hyperlinkPlugins, { HyperlinkState } from '../../src/plugins/hyperlink';
 import HyperlinkEdit from '../../src/ui/HyperlinkEdit';
 import PanelTextInput from '../../src/ui/PanelTextInput';
 import {
-  createEvent, doc, p as paragraph, a as link, makeEditor
+  createEvent, doc, p as paragraph, a as link, makeEditor, defaultSchema
 } from '@atlaskit/editor-test-helpers';
-import defaultSchema from '../../src/test-helper/schema';
 import { setTextSelection } from '../../src/utils';
 
 describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {

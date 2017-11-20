@@ -5,8 +5,7 @@ import blockTypePlugins from '../../src/plugins/block-type';
 import ToolbarBlockType from '../../src/ui/ToolbarBlockType';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import AkButton from '@atlaskit/button';
-import { doc, p, makeEditor, code_block, blockquote, panel } from '@atlaskit/editor-test-helpers';
-import defaultSchema from '../../src/test-helper/schema';
+import { doc, p, makeEditor, code_block, blockquote, panel, defaultSchema } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../src/analytics';
 
 describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
