@@ -36,7 +36,7 @@ export default class PickerFacade {
   private onDragListeners: Array<Function> = [];
   private errorReporter: ErrorReportingHandler;
   private uploadParams: UploadParams;
-  private type: PickerType;
+  private pickerType: PickerType;
 
   constructor(
     pickerType: PickerType,
@@ -52,7 +52,7 @@ export default class PickerFacade {
   ) {
     this.errorReporter = errorReporter;
     this.uploadParams = uploadParams;
-    this.type = pickerType;
+    this.pickerType = pickerType;
 
     if (!mediaPickerFactory) {
       mediaPickerFactory = MediaPicker;
@@ -97,8 +97,8 @@ export default class PickerFacade {
     }
   }
 
-  get pickerType() {
-    return this.type;
+  get type() {
+    return this.pickerType;
   }
 
   destroy() {
