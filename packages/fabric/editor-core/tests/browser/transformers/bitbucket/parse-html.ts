@@ -54,9 +54,9 @@ describe('BitbucketTransformer: parser', () => {
     });
 
     it('should remove all zero-with-non-joiners', () => {
-      expect(parse('<p>foo</p><p>&zwnj;</p><p>&zwnj;</p><p>bar</p>')).to.deep.equal(
-        doc(p('foo'), p(''), p(''), p('bar'))
-      );
+      expect(
+        parse('<p>foo</p><p>&zwnj;</p><p>&zwnj;</p><p>bar</p>'),
+      ).to.deep.equal(doc(p('foo'), p(''), p(''), p('bar')));
     });
 
     it('should support horizontal rules', () => {
@@ -64,9 +64,11 @@ describe('BitbucketTransformer: parser', () => {
     });
 
     it('should support images', () => {
-      const parsed = parse('<p><img alt="Alt text" src="http://path/to/image.jpg"></p>');
+      const parsed = parse(
+        '<p><img alt="Alt text" src="http://path/to/image.jpg"></p>',
+      );
       expect(parsed).to.deep.equal(
-        doc(p(img({ src: 'http://path/to/image.jpg', alt: 'Alt text' })))
+        doc(p(img({ src: 'http://path/to/image.jpg', alt: 'Alt text' }))),
       );
     });
   });
@@ -79,57 +81,62 @@ describe('BitbucketTransformer: parser', () => {
 
     it('should support strong', () => {
       const strong = schema.marks.strong.create();
-      expect(parse('<p><strong>text</strong></p>')).to.have.textWithMarks('text', [strong]);
+      expect(parse('<p><strong>text</strong></p>')).to.have.textWithMarks(
+        'text',
+        [strong],
+      );
     });
 
     it('should support strikethrough', () => {
       const strike = schema.marks.strike.create();
-      expect(parse('<p><strike>text</strike></p>')).to.have.textWithMarks('text', [strike]);
+      expect(parse('<p><strike>text</strike></p>')).to.have.textWithMarks(
+        'text',
+        [strike],
+      );
     });
 
     it('should support code', () => {
       const code = schema.marks.code.create();
       expect(
-        parse('<p><span style="font-family: monospace;">text</span></p>')
+        parse('<p><span style="font-family: monospace;">text</span></p>'),
       ).to.have.textWithMarks('text', [code]);
     });
 
     it('should support links', () => {
       const link = schema.marks.link.create({ href: 'http://example.com' });
       expect(
-        parse('<p><a href="http://example.com">example link</a></p>')
+        parse('<p><a href="http://example.com">example link</a></p>'),
       ).to.have.textWithMarks('example link', [link]);
     });
 
     it('should support both strong and em', () => {
       const em = schema.marks.em.create();
       const strong = schema.marks.strong.create();
-      expect(parse('<p><strong><em>text</em></strong></p>')).to.have.textWithMarks('text', [
-        em,
-        strong,
-      ]);
+      expect(
+        parse('<p><strong><em>text</em></strong></p>'),
+      ).to.have.textWithMarks('text', [em, strong]);
     });
   });
 
   describe('blockquotes', () => {
     it('should be parsed', () => {
       expect(parse('<blockquote><p>text</p></blockquote>')).to.deep.equal(
-        doc(blockquote(p('text')))
+        doc(blockquote(p('text'))),
       );
     });
   });
 
   describe('lists', () => {
     it('that are unordered should be parsed', () => {
-      expect(parse('<ul>' + '<li>foo</li>' + '<li>bar</li>' + '</ul>')).to.deep.equal(
-        doc(ul(li(p('foo')), li(p('bar'))))
-      );
+      expect(
+        parse('<ul>' + '<li>foo</li>' + '<li>bar</li>' + '</ul>'),
+      ).to.deep.equal(doc(ul(li(p('foo')), li(p('bar')))));
     });
 
     it('that are ordered should be parsed', () => {
-      expect(parse('<ol>' + '<li>foo</li>' + '<li>bar</li>' + '</ol>')).to.deep.equal(
-        doc(ol(li(p('foo')), li(p('bar'))))
-      );
+      expect(
+        parse('<ol>' + '<li>foo</li>' + '<li>bar</li>' + '</ol>'),
+      ).to.deep.equal(doc(ol(li(p('foo')), li(p('bar')))));
     });
 
     it('that are nested and homogeneous should be parsed', () => {
@@ -142,8 +149,8 @@ describe('BitbucketTransformer: parser', () => {
             '<li>baz</li>' +
             '</ol>' +
             '</li>' +
-            '</ol>'
-        )
+            '</ol>',
+        ),
       ).to.deep.equal(doc(ol(li(p('foo')), li(p('bar'), ol(li(p('baz')))))));
 
       expect(
@@ -155,8 +162,8 @@ describe('BitbucketTransformer: parser', () => {
             '<li>baz</li>' +
             '</ul>' +
             '</li>' +
-            '</ul>'
-        )
+            '</ul>',
+        ),
       ).to.deep.equal(doc(ul(li(p('foo')), li(p('bar'), ul(li(p('baz')))))));
     });
 
@@ -170,8 +177,8 @@ describe('BitbucketTransformer: parser', () => {
             '<li>baz</li>' +
             '</ol>' +
             '</li>' +
-            '</ul>'
-        )
+            '</ul>',
+        ),
       ).to.deep.equal(doc(ul(li(p('foo')), li(p('bar'), ol(li(p('baz')))))));
     });
 
@@ -187,9 +194,11 @@ describe('BitbucketTransformer: parser', () => {
             '</ol>' +
             '<p>baz</p>' +
             '</li>' +
-            '</ul>'
-        )
-      ).to.deep.equal(doc(ul(li(p('foo'), p('bar'), ol(li(p('nested foo'))), p('baz')))));
+            '</ul>',
+        ),
+      ).to.deep.equal(
+        doc(ul(li(p('foo'), p('bar'), ol(li(p('nested foo'))), p('baz')))),
+      );
     });
   });
 
@@ -217,16 +226,28 @@ describe('BitbucketTransformer: parser', () => {
             '<td>Content Cell</td>' +
             '</tr>' +
             '</tbody>' +
-            '</table>'
-        )
+            '</table>',
+        ),
       ).to.deep.equal(
         doc(
           table(
-            tr(th({})(p('First Header')), th({})(p('Second Header')), th({})(p('Third Header'))),
-            tr(td({})(p('Content Cell')), td({})(p('Content Cell')), td({})(p('Content Cell'))),
-            tr(td({})(p('Content Cell')), td({})(p('Content Cell')), td({})(p('Content Cell')))
-          )
-        )
+            tr(
+              th({})(p('First Header')),
+              th({})(p('Second Header')),
+              th({})(p('Third Header')),
+            ),
+            tr(
+              td({})(p('Content Cell')),
+              td({})(p('Content Cell')),
+              td({})(p('Content Cell')),
+            ),
+            tr(
+              td({})(p('Content Cell')),
+              td({})(p('Content Cell')),
+              td({})(p('Content Cell')),
+            ),
+          ),
+        ),
       );
     });
 
@@ -246,7 +267,7 @@ describe('BitbucketTransformer: parser', () => {
           '<td>Content Cell</td>' +
           '</tr>' +
           '</tbody>' +
-          '</table>'
+          '</table>',
       );
 
       expect(result).to.deep.equal(
@@ -254,9 +275,9 @@ describe('BitbucketTransformer: parser', () => {
           table(
             tr(th({})(p('First Header'))),
             tr(td({})(p('Content Cell'))),
-            tr(td({})(p('Content Cell')))
-          )
-        )
+            tr(td({})(p('Content Cell'))),
+          ),
+        ),
       );
     });
 
@@ -276,10 +297,12 @@ describe('BitbucketTransformer: parser', () => {
           '<td></td>' +
           '</tr>' +
           '</tbody>' +
-          '</table>'
+          '</table>',
       );
 
-      expect(result).to.deep.equal(doc(table(tr(th({})(p())), tr(td({})(p())), tr(td({})(p())))));
+      expect(result).to.deep.equal(
+        doc(table(tr(th({})(p())), tr(td({})(p())), tr(td({})(p())))),
+      );
     });
 
     it('with inline styling', () => {
@@ -298,7 +321,7 @@ describe('BitbucketTransformer: parser', () => {
           '<td><strike>testing</strike></td>' +
           '</tr>' +
           '</tbody>' +
-          '</table>'
+          '</table>',
       );
 
       expect(result).to.deep.equal(
@@ -306,18 +329,18 @@ describe('BitbucketTransformer: parser', () => {
           table(
             tr(th({})(p(strong('testing')))),
             tr(td({})(p(em('testing')))),
-            tr(td({})(p(strike('testing'))))
-          )
-        )
+            tr(td({})(p(strike('testing')))),
+          ),
+        ),
       );
     });
   });
 
   describe('code', () => {
     it('inline should be parsed', () => {
-      expect(parse('foo <span style="font-family: monospace;">bar </span>baz')).to.deep.equal(
-        doc(p('foo ', code('bar '), 'baz'))
-      );
+      expect(
+        parse('foo <span style="font-family: monospace;">bar </span>baz'),
+      ).to.deep.equal(doc(p('foo ', code('bar '), 'baz')));
     });
   });
 
@@ -328,8 +351,8 @@ describe('BitbucketTransformer: parser', () => {
       expect(
         parse(
           '<p>foo</p>' +
-            '<div class="codehilite language-javascript"><pre><span></span>    bar\n       baz</pre></div>'
-        )
+            '<div class="codehilite language-javascript"><pre><span></span>    bar\n       baz</pre></div>',
+        ),
       ).to.deep.equal(doc(p('foo'), js('    bar\n       baz')));
     });
   });
@@ -342,9 +365,13 @@ describe('BitbucketTransformer: parser', () => {
             'foo ' +
             '<a href="/abodera/" rel="nofollow" title="@abodera" class="mention mention-me">Artur Bodera</a>' +
             ' bar' +
-            '</p>'
-        )
-      ).to.deep.equal(doc(p('foo ', mention({ text: '@Artur Bodera', id: 'abodera' }), ' bar')));
+            '</p>',
+        ),
+      ).to.deep.equal(
+        doc(
+          p('foo ', mention({ text: '@Artur Bodera', id: 'abodera' }), ' bar'),
+        ),
+      );
     });
   });
 
@@ -362,10 +389,16 @@ describe('BitbucketTransformer: parser', () => {
             'class="emoji"' +
             '>' +
             ' bar' +
-            '</p>'
-        )
+            '</p>',
+        ),
       ).to.deep.equal(
-        doc(p('foo ', emoji({ shortName: ':diamond_shape_with_a_dot_inside:' }), ' bar'))
+        doc(
+          p(
+            'foo ',
+            emoji({ shortName: ':diamond_shape_with_a_dot_inside:' }),
+            ' bar',
+          ),
+        ),
       );
     });
 
@@ -381,10 +414,16 @@ describe('BitbucketTransformer: parser', () => {
             'class="emoji"' +
             '>' +
             ' bar' +
-            '</p>'
-        )
+            '</p>',
+        ),
       ).to.deep.equal(
-        doc(p('foo ', emoji({ shortName: ':diamond_shape_with_a_dot_inside:' }), ' bar'))
+        doc(
+          p(
+            'foo ',
+            emoji({ shortName: ':diamond_shape_with_a_dot_inside:' }),
+            ' bar',
+          ),
+        ),
       );
     });
   });
@@ -398,7 +437,13 @@ describe('BitbucketTransformer: parser', () => {
       // The following HTML is rendered from an absolute link in markdown:
       //   [Atlassian](http://www.atlassian.com)
       expect(
-        parse('<p>' + 'foo ' + '<a href="http://www.atlassian.com">Atlassian</a>' + ' baz' + '</p>')
+        parse(
+          '<p>' +
+            'foo ' +
+            '<a href="http://www.atlassian.com">Atlassian</a>' +
+            ' baz' +
+            '</p>',
+        ),
       ).to.deep.equal(doc(p('foo ', link('Atlassian'), ' baz')));
     });
 
@@ -416,9 +461,40 @@ describe('BitbucketTransformer: parser', () => {
             'foo ' +
             '<a href="http://www.atlassian.com" title="bar">Atlassian</a>' +
             ' baz' +
-            '</p>'
-        )
+            '</p>',
+        ),
       ).to.deep.equal(doc(p('foo ', link('Atlassian'), ' baz')));
+    });
+
+    it('created automatically by bitbucket should be removed', () => {
+      expect(
+        parse(
+          '<p>' +
+            'foo ' +
+            '<a href="http://www.atlassian.com" rel="nofollow">#1234</a>' +
+            ' baz' +
+            '</p>',
+        ),
+      ).to.deep.equal(doc(p('foo #1234 baz')));
+    });
+
+    it('created manually by bitbucket should not be removed if disableBitbucketLinkStripping is true', () => {
+      const transformer = new BitbucketTransformer(undefined, {
+        disableBitbucketLinkStripping: true,
+      });
+      expect(
+        transformer.parse(
+          '<p>' +
+            'foo ' +
+            '<a href="http://www.atlassian.com" rel="nofollow">#1234</a>' +
+            ' baz' +
+            '</p>',
+        ),
+      ).to.deep.equal(
+        doc(
+          p('foo ', a({ href: 'http://www.atlassian.com' })('#1234'), ' baz'),
+        ),
+      );
     });
   });
 });
