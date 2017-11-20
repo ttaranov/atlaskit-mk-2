@@ -82,7 +82,8 @@ async function run(opts) {
       logger.log(releasedPackages);
 
       logger.log('Pushing changes back to origin...');
-      await git.push();
+      const maxAttempts = 3;
+      await git.rebaseAndPush(maxAttempts);
     }
   }
 }

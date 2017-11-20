@@ -1,3 +1,4 @@
+// @flow
 const spawn = require('projector-spawn');
 const path = require('path');
 
@@ -10,7 +11,7 @@ const parseCommitLine = line => {
   return { commit: hash, message };
 };
 
-async function getCommitsSince(ref) {
+async function getCommitsSince(ref: string) {
   const gitCmd = await spawn('git', [
     'rev-list',
     '--no-merges',
@@ -20,7 +21,7 @@ async function getCommitsSince(ref) {
   return gitCmd.stdout.trim().split('\n');
 }
 
-async function getChangedFilesSince(ref, fullPath = false) {
+async function getChangedFilesSince(ref: string, fullPath: boolean = false) {
   const gitCmd = await spawn('git', ['diff', '--name-only', `${ref}..HEAD`]);
   const files = gitCmd.stdout.trim().split('\n');
   if (!fullPath) return files;
@@ -32,23 +33,47 @@ async function getBranchName() {
   return gitCmd.stdout.trim().split('\n');
 }
 
-async function add(pathToFile) {
+async function add(pathToFile: string) {
   const gitCmd = await spawn('git', ['add', pathToFile]);
   return gitCmd.code === 0;
 }
 
-async function commit(message) {
+async function commit(message: string) {
   const gitCmd = await spawn('git', ['commit', '-m', message, '--allow-empty']);
   return gitCmd.code === 0;
 }
 
-async function push(args = []) {
+async function push(args: Array<string> = []) {
   const gitCmd = await spawn('git', ['push', ...args]);
   return gitCmd.code === 0;
 }
 
+// We expose this as a combined command because we want to be able to do both commands
+// atomically
+async function rebaseAndPush(maxAttempts: number = 3) {
+  let attempts = 0;
+  let pushed = false;
+
+  while (!pushed) {
+    attempts++;
+    try {
+      await spawn('git', ['pull', '--rebase']);
+      await spawn('git', ['push', '--follow-tags']);
+      pushed = true;
+    } catch (e) {
+      if (attempts >= maxAttempts) {
+        break;
+      }
+    }
+  }
+
+  if (!pushed) {
+    throw new Error(`Failed to push after ${maxAttempts} attempts`);
+  }
+}
+
 // helper method for getAllReleaseCommits and getAllChangesetCommits as they are almost identical
-async function getAndParseJsonFromCommitsStartingWith(str) {
+async function getAndParseJsonFromCommitsStartingWith(str: string) {
   // --grep lets us pass a regex, -z splits commits using NUL instead of newlines
   const gitCmd = await spawn('git', [
     'log',
@@ -87,7 +112,7 @@ async function getAllChangesetCommits() {
 // TODO: This function could be a lot cleaner, simpler and less error prone if we played with
 // the pretty format stuff from `git log` to make sure things will always be as we expect
 // (i.e this function breaks if you dont put '--no-merges' in the git log command)
-function parseFullCommit(commitStr) {
+function parseFullCommit(commitStr: string) {
   const lines = commitStr.trim().split('\n');
 
   const hash = lines
@@ -118,7 +143,7 @@ function parseFullCommit(commitStr) {
 async function getLastPublishCommit() {
   const isPublishCommit = msg => msg.startsWith('RELEASING: ');
 
-  const gitCmd = await spawn('git', ['log', '-n', 500, '--oneline']);
+  const gitCmd = await spawn('git', ['log', '-n', '500', '--oneline']);
   const result = gitCmd.stdout
     .trim()
     .split('\n')
@@ -155,6 +180,7 @@ module.exports = {
   add,
   commit,
   push,
+  rebaseAndPush,
   getUnpublishedChangesetCommits,
   getAllReleaseCommits,
   getAllChangesetCommits,
