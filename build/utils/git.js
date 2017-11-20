@@ -1,4 +1,3 @@
-// @flow
 const spawn = require('projector-spawn');
 const path = require('path');
 
@@ -11,7 +10,7 @@ const parseCommitLine = line => {
   return { commit: hash, message };
 };
 
-async function getCommitsSince(ref: string) {
+async function getCommitsSince(ref) {
   const gitCmd = await spawn('git', [
     'rev-list',
     '--no-merges',
@@ -21,7 +20,7 @@ async function getCommitsSince(ref: string) {
   return gitCmd.stdout.trim().split('\n');
 }
 
-async function getChangedFilesSince(ref: string, fullPath: boolean = false) {
+async function getChangedFilesSince(ref, fullPath = false) {
   const gitCmd = await spawn('git', ['diff', '--name-only', `${ref}..HEAD`]);
   const files = gitCmd.stdout.trim().split('\n');
   if (!fullPath) return files;
@@ -33,24 +32,24 @@ async function getBranchName() {
   return gitCmd.stdout.trim().split('\n');
 }
 
-async function add(pathToFile: string) {
+async function add(pathToFile) {
   const gitCmd = await spawn('git', ['add', pathToFile]);
   return gitCmd.code === 0;
 }
 
-async function commit(message: string) {
+async function commit(message) {
   const gitCmd = await spawn('git', ['commit', '-m', message, '--allow-empty']);
   return gitCmd.code === 0;
 }
 
-async function push(args: Array<string> = []) {
+async function push(args = []) {
   const gitCmd = await spawn('git', ['push', ...args]);
   return gitCmd.code === 0;
 }
 
 // We expose this as a combined command because we want to be able to do both commands
 // atomically
-async function rebaseAndPush(maxAttempts: number = 3) {
+async function rebaseAndPush(maxAttempts = 3) {
   let attempts = 0;
   let pushed = false;
 
@@ -73,7 +72,7 @@ async function rebaseAndPush(maxAttempts: number = 3) {
 }
 
 // helper method for getAllReleaseCommits and getAllChangesetCommits as they are almost identical
-async function getAndParseJsonFromCommitsStartingWith(str: string) {
+async function getAndParseJsonFromCommitsStartingWith(str) {
   // --grep lets us pass a regex, -z splits commits using NUL instead of newlines
   const gitCmd = await spawn('git', [
     'log',
@@ -112,7 +111,7 @@ async function getAllChangesetCommits() {
 // TODO: This function could be a lot cleaner, simpler and less error prone if we played with
 // the pretty format stuff from `git log` to make sure things will always be as we expect
 // (i.e this function breaks if you dont put '--no-merges' in the git log command)
-function parseFullCommit(commitStr: string) {
+function parseFullCommit(commitStr) {
   const lines = commitStr.trim().split('\n');
 
   const hash = lines
