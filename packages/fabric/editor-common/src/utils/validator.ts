@@ -355,6 +355,27 @@ export const getValidNode = (
         }
         break;
       }
+      case 'inlineExtension':
+      case 'extension': {
+        if (
+          attrs &&
+          attrs.extensionType &&
+          attrs.extensionKey &&
+          attrs.bodyType
+        ) {
+          switch (attrs.bodyType) {
+            case 'none':
+            case 'plain':
+            case 'rich':
+              return {
+                type,
+                attrs,
+                content,
+              };
+          }
+        }
+        break;
+      }
       case 'hardBreak': {
         return {
           type,

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PropTypes } from 'react';
+import * as PropTypes from 'prop-types';
 import { withAnalytics } from '@atlaskit/analytics';
 import { createEditor, getUiComponent } from './create-editor';
 import { createPluginsList } from './create-editor';
