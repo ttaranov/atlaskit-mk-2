@@ -1,5 +1,9 @@
 # @atlaskit/renderer
 
+## 8.8.0
+- [minor] Added big emoji rendering logic to renderer [f85c47a](f85c47a)
+- [minor] Added big emoji rendering logic to renderer [f85c47a](f85c47a)
+
 ## 8.7.1
 - [patch] Removing the attrs.language !== undefined validation check for codeBlock nodes [1c20b73](1c20b73)
 - [patch] Removing the attrs.language !== undefined validation check for codeBlock nodes [1c20b73](1c20b73)

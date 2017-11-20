@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 59.6.0
+
+- [minor] Added big emoji render logic to editor-core [5bf750f](5bf750f)
+- [minor] Added big emoji render logic to editor-core [5bf750f](5bf750f)
+
 ## 59.5.1
 
 ## 59.5.0
