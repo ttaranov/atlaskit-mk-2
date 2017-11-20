@@ -1,5 +1,7 @@
 # @atlaskit/badge
 
+## 6.1.4
+
 ## 6.1.0 (2017-08-24)
 
 * feature; remove util-shared-styles as a dependency ([52a0a63](https://bitbucket.org/atlassian/atlaskit/commits/52a0a63))

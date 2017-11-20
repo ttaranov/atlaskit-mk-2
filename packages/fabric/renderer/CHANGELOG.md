@@ -1,5 +1,11 @@
 # @atlaskit/renderer
 
+## 8.8.1
+- [patch] Use correct dependencies  [7b178b1](7b178b1)
+- [patch] Use correct dependencies  [7b178b1](7b178b1)
+- [patch] Adding responsive behavior to the editor. [e0d9867](e0d9867)
+- [patch] Adding responsive behavior to the editor. [e0d9867](e0d9867)
+
 ## 8.8.0
 - [minor] Added big emoji rendering logic to renderer [f85c47a](f85c47a)
 - [minor] Added big emoji rendering logic to renderer [f85c47a](f85c47a)
