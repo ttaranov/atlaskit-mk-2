@@ -66,8 +66,10 @@ export default class Nav extends Component<{}, State> {
                     linkComponent={
                       navigateOut
                         ? null
-                        : ({ href, children }) => (
-                            <Link to={href}>{children}</Link>
+                        : ({ href, children, className }) => (
+                            <Link to={href} className={className}>
+                              {children}
+                            </Link>
                           )
                     }
                   />
