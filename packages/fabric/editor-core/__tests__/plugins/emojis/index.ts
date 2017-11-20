@@ -38,10 +38,11 @@ const evilburnsEmojiId = {
 describe('emojis', () => {
   const event = createEvent('event');
   const providerFactory = new ProviderFactory();
-  const editor = (doc: any) => makeEditor<EmojiState>({
-    doc,
-    plugins: emojiPlugins(defaultSchema, providerFactory),
-  });
+  const editor = (doc: any) =>
+    makeEditor<EmojiState>({
+      doc,
+      plugins: emojiPlugins(defaultSchema, providerFactory),
+    });
 
   providerFactory.setProvider('emojiProvider', emojiProvider);
 
@@ -50,11 +51,11 @@ describe('emojis', () => {
   };
 
   describe('keymap', () => {
-
     describe('ArrowUp', () => {
-
       it('should be ignored if there is no emojiProvider', () => {
-        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(emojiQuery(':grin{<>}'))),
+        );
         const spy = jest.spyOn(pluginState, 'onSelectPrevious');
 
         forceUpdate(editorView); // Force update to ensure active query.
@@ -75,7 +76,9 @@ describe('emojis', () => {
       });
 
       it('should call "onSelectPrevious" which should return false by default', () => {
-        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(emojiQuery(':grin{<>}'))),
+        );
         const spy = spyOnReturnValue(pluginState, 'onSelectPrevious');
         (pluginState as any).emojiProvider = true;
         forceUpdate(editorView); // Force update to ensure active query.
@@ -89,7 +92,9 @@ describe('emojis', () => {
 
     describe('ArrowDown', () => {
       it('should be ignored if there is no emojiProvider', () => {
-        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(emojiQuery(':grin{<>}'))),
+        );
         const spy = jest.spyOn(pluginState, 'onSelectNext');
 
         forceUpdate(editorView); // Force update to ensure active query.
@@ -110,7 +115,9 @@ describe('emojis', () => {
       });
 
       it('should call "onSelectNext" which should return false by default', () => {
-        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(emojiQuery(':grin{<>}'))),
+        );
         const spy = spyOnReturnValue(pluginState, 'onSelectNext');
         (pluginState as any).emojiProvider = true;
         forceUpdate(editorView); // Force update to ensure active query.
@@ -124,7 +131,9 @@ describe('emojis', () => {
 
     describe('Enter', () => {
       it('should be ignored if there is no emojiProvider', () => {
-        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(emojiQuery(':grin{<>}'))),
+        );
         const spy = jest.spyOn(pluginState, 'onSelectCurrent');
 
         forceUpdate(editorView); // Force update to ensure active query.
@@ -145,7 +154,9 @@ describe('emojis', () => {
       });
 
       it('should call "onSelectCurrent" which should return false by default', () => {
-        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(emojiQuery(':grin{<>}'))),
+        );
         const spy = spyOnReturnValue(pluginState, 'onSelectCurrent');
         (pluginState as any).emojiProvider = true;
         forceUpdate(editorView); // Force update to ensure active query.
@@ -159,7 +170,9 @@ describe('emojis', () => {
 
     describe('Shift-Enter', () => {
       it('should be ignored if there is no emojiProvider', () => {
-        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(emojiQuery(':grin{<>}'))),
+        );
         const spy = jest.spyOn(pluginState, 'onSelectCurrent');
 
         forceUpdate(editorView); // Force update to ensure active query.
@@ -180,7 +193,9 @@ describe('emojis', () => {
       });
 
       it('should call "onSelectCurrent" which should return false by default', () => {
-        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(emojiQuery(':grin{<>}'))),
+        );
         const spy = spyOnReturnValue(pluginState, 'onSelectCurrent');
         (pluginState as any).emojiProvider = true;
         forceUpdate(editorView); // Force update to ensure active query.
@@ -194,7 +209,9 @@ describe('emojis', () => {
 
     describe('Space', () => {
       it('should be ignored if there is no emojiProvider', () => {
-        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(emojiQuery(':grin{<>}'))),
+        );
         const spy = jest.spyOn(pluginState, 'trySelectCurrent');
 
         forceUpdate(editorView); // Force update to ensure active query.
@@ -215,7 +232,9 @@ describe('emojis', () => {
       });
 
       it('should call "trySelectCurrent" which should return false', () => {
-        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(emojiQuery(':grin{<>}'))),
+        );
         const spy = spyOnReturnValue(pluginState, 'trySelectCurrent');
         (pluginState as any).emojiProvider = true;
         forceUpdate(editorView); // Force update to ensure active query.
@@ -227,11 +246,13 @@ describe('emojis', () => {
       });
 
       it.only('should call "insertEmoji" if there is only 1 result', () => {
-        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(emojiQuery(':grin{<>}'))),
+        );
         const spy = jest.spyOn(pluginState, 'insertEmoji');
         (pluginState as any).emojiProvider = true;
         forceUpdate(editorView); // Force update to ensure active query.
-        pluginState.onSearchResult({emojis: [grinEmoji]});
+        pluginState.onSearchResult({ emojis: [grinEmoji] });
 
         sendKeyToPm(editorView, 'Space');
         expect(spy).toHaveBeenCalledWith(grinEmoji);
@@ -252,7 +273,9 @@ describe('emojis', () => {
 
     describe('Escape', () => {
       it('should be ignored if there is no emojiProvider', () => {
-        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(emojiQuery(':grin{<>}'))),
+        );
         const spy = jest.spyOn(pluginState, 'dismiss');
 
         forceUpdate(editorView); // Force update to ensure active query.
@@ -273,7 +296,9 @@ describe('emojis', () => {
       });
 
       it('should call "dismiss" which should return true by default', () => {
-        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const { editorView, pluginState } = editor(
+          doc(p(emojiQuery(':grin{<>}'))),
+        );
         const spy = spyOnReturnValue(pluginState, 'dismiss');
         (pluginState as any).emojiProvider = true;
         forceUpdate(editorView); // Force update to ensure active query.
@@ -284,18 +309,16 @@ describe('emojis', () => {
         editorView.destroy();
       });
     });
-
   });
 
   describe('insertEmoji', () => {
-
     it('should replace emoji-query-mark with emoji-node', () => {
       const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin'))));
 
       pluginState.insertEmoji({
         fallback: 'Oscar Wallhult',
         shortName: 'oscar',
-        id: '1234'
+        id: '1234',
       });
 
       expect(editorView.state.doc.nodeAt(1)!.type.spec).toEqual(emojiNode);
@@ -307,56 +330,32 @@ describe('emojis', () => {
 
       pluginState.insertEmoji(grinEmojiId);
 
-      expect(editorView.state.doc).toEqual(
-        doc(
-          p(
-            emoji(grinEmojiId),
-            ' '
-          )
-        )
-      );
+      expect(editorView.state.doc).toEqual(doc(p(emoji(grinEmojiId), ' ')));
       editorView.destroy();
     });
 
     it('should allow inserting multiple emojis next to each other', () => {
       const { editorView, pluginState } = editor(
-        doc(
-          p(
-            emoji(grinEmojiId),
-            ' ',
-            emojiQuery(':ev{<>}')
-          )
-        )
+        doc(p(emoji(grinEmojiId), ' ', emojiQuery(':ev{<>}'))),
       );
 
       pluginState.insertEmoji(evilburnsEmojiId);
 
       expect(editorView.state.doc).toEqualDocument(
-        doc(
-          p(
-            emoji(grinEmojiId),
-            ' ',
-            emoji(evilburnsEmojiId),
-            ' '
-          )
-        )
+        doc(p(emoji(grinEmojiId), ' ', emoji(evilburnsEmojiId), ' ')),
       );
       editorView.destroy();
     });
 
     it('should allow inserting emoji on new line after hard break', () => {
-      const { editorView, pluginState } = editor(doc(p(br, emojiQuery(':gr{<>}'))));
+      const { editorView, pluginState } = editor(
+        doc(p(br, emojiQuery(':gr{<>}'))),
+      );
 
       pluginState.insertEmoji(grinEmojiId);
 
       expect(editorView.state.doc).toEqualDocument(
-        doc(
-          p(
-            br,
-            emoji(grinEmojiId),
-            ' '
-          )
-        )
+        doc(p(br, emoji(grinEmojiId), ' ')),
       );
       editorView.destroy();
     });
@@ -368,7 +367,11 @@ describe('emojis', () => {
             ul(
               li(p('One')),
               li(p('Two ', emojiQuery(':{<>}'))),
-              li(p('Three'))))));
+              li(p('Three')),
+            ),
+          ),
+        ),
+      );
 
       pluginState.insertEmoji(grinEmojiId);
 
@@ -377,42 +380,24 @@ describe('emojis', () => {
           p(
             ul(
               li(p('One')),
-              li(
-                p(
-                  'Two ',
-                  emoji(grinEmojiId),
-                  ' '
-                )
-              ),
-              li(p('Three'))
-            )
-          )
-        )
+              li(p('Two ', emoji(grinEmojiId), ' ')),
+              li(p('Three')),
+            ),
+          ),
+        ),
       );
       editorView.destroy();
     });
 
     it('should insert only 1 emoji at a time inside blockqoute', () => {
       const { editorView, pluginState } = editor(
-        doc(
-          blockquote(
-            p('Hello ', emojiQuery(':{<>}'))
-          )
-        )
+        doc(blockquote(p('Hello ', emojiQuery(':{<>}')))),
       );
 
       pluginState.insertEmoji(grinEmojiId);
 
       expect(editorView.state.doc).toEqualDocument(
-        doc(
-          blockquote(
-            p(
-              'Hello ',
-              emoji(grinEmojiId),
-              ' '
-            )
-          )
-        )
+        doc(blockquote(p('Hello ', emoji(grinEmojiId), ' '))),
       );
 
       expect(editorView.state.doc.nodeAt(8)!.type.spec).toEqual(emojiNode);
@@ -438,7 +423,7 @@ describe('emojis', () => {
       it('it is true', () => {
         const { plugin, pluginState, editorView } = editor(doc(p('te{<>}xt')));
         plugin.props.onFocus!(editorView, event);
-        expect(pluginState.focused).to.equal(true);
+        expect(pluginState.focused).toEqual(true);
         editorView.destroy();
       });
     });
@@ -447,7 +432,7 @@ describe('emojis', () => {
       it('it is false', () => {
         const { plugin, pluginState, editorView } = editor(doc(p('te{<>}xt')));
         plugin.props.onBlur!(editorView, event);
-        expect(pluginState.focused).to.equal(false);
+        expect(pluginState.focused).toEqual(false);
         editorView.destroy();
       });
     });
