@@ -269,7 +269,7 @@
         "skipBabel": true
       }
     },
-    "testRegex": "(/(__tests?__/)(.*/)?[^_][^/]*?\\.?(test|spec)?\\.(js|tsx?))$",
+    "testRegex": "(/(__tests?__/)([^_].*\/)*?[^_][^/]*?\\.?(test|spec)?\\.(js|tsx?))$",
     "moduleFileExtensions": [
       "js",
       "ts",
