@@ -6,6 +6,7 @@ import blockTypePlugins from '../../../src/plugins/block-type';
 import ToolbarBlockType from '../../../src/ui/ToolbarBlockType';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 import AkButton from '@atlaskit/button';
+import TextStyleIcon from '@atlaskit/icon/glyph/editor/text-style';
 import {
   doc,
   p,
@@ -16,6 +17,7 @@ import {
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../src/analytics';
+import EditorWidth from '../../../src/utils/editor-width';
 
 describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
   const blockTypePluginsSet = blockTypePlugins(defaultSchema);
@@ -50,6 +52,58 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
     expect(toolbarOption.find(AkButton).prop('isDisabled')).to.equal(true);
     toolbarOption.unmount();
   });
+
+  +  it('should have spacing of toolbar button set to none if editorWidth is less then breakpoint6', () => {
+    const { editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(
+      <ToolbarBlockType
+        pluginState={blockTypePluginsSet[0].getState(editorView.state)}
+        editorView={editorView}
+      />
+    );
+    expect(toolbarOption.find(ToolbarButton).prop('spacing')).to.equal('none');
+    toolbarOption.unmount();
+  });
+
+  it('should have spacing of toolbar button set to default if editorWidth is greater then breakpoint6', () => {
+    const { editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(
+      <ToolbarBlockType
+        pluginState={blockTypePluginsSet[0].getState(editorView.state)}
+        editorView={editorView}
+        editorWidth={EditorWidth.BreakPoint6 + 1}
+      />
+    );
+    expect(toolbarOption.find(ToolbarButton).prop('spacing')).to.equal('default');
+    toolbarOption.unmount();
+  });
+
+  it('should render icon in dropdown-menu if editorWidth is less then BreakPoint1', () => {
+    const { editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(
+      <ToolbarBlockType
+        pluginState={blockTypePluginsSet[0].getState(editorView.state)}
+        editorView={editorView}
+        editorWidth={EditorWidth.BreakPoint1 - 1}
+      />
+    );
+    expect(toolbarOption.find(ToolbarButton).find(TextStyleIcon).length).to.equal(1);
+    toolbarOption.unmount();
+  });
+
+  it('should render current block type in dropdown-menu if editorWidth is greater then BreakPoint1', () => {
+    const { editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(
+      <ToolbarBlockType
+        pluginState={blockTypePluginsSet[0].getState(editorView.state)}
+        editorView={editorView}
+        editorWidth={EditorWidth.BreakPoint1 + 1}
+      />
+    );
+    expect(toolbarOption.find(ToolbarButton).first().text().indexOf('Normal text') >=0 ).to.equal(true);
+    toolbarOption.unmount();
+  });
+
 
   it('should not render disabled ToolbarButton if current selection is panel', () => {
     const { editorView } = editor(doc(panel(p('te{<>}xt'))));

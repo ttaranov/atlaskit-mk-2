@@ -19,7 +19,7 @@
   "dependencies": {
     "@atlaskit/calendar": "^3.0.3",
     "@atlaskit/field-base": "^8.1.1",
-    "@atlaskit/icon": "^9.0.1",
+    "@atlaskit/icon": "^10.3.0",
     "@atlaskit/input": "^1.6.0",
     "@atlaskit/layer": "^2.5.4",
     "@atlaskit/theme": "^2.0.0",

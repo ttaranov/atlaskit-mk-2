@@ -60,10 +60,10 @@ export const IconButton = styled.div`
 
 // tslint:disable-next-line:variable-name
 export const Toolbar = styled.div`
-  align-items: flex-start;
+  align-items: center;
   display: flex;
   height: 40px;
-  padding: ${akGridSize} ${akGridSize} 0;
+  padding: 0 ${akGridSize};
   position: relative;
 
   & > * {
@@ -75,7 +75,7 @@ export const Toolbar = styled.div`
 
     &:first-child {
       margin-left: 0;
-      margin-right: ${akGridSize};
+      align-items: center;
     }
   }
 `;

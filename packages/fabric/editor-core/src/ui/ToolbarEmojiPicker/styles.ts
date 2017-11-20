@@ -5,7 +5,7 @@ import styled from 'styled-components';
 export const OuterContainer = styled.span`
   position: relative;
   margin-right: ${({ width }) =>
-    width === 'large' ? 0 : akGridSizeUnitless}px;
+    !width || width === 'large' ? 0 : akGridSizeUnitless}px;
   > div {
     display: flex;
   }
