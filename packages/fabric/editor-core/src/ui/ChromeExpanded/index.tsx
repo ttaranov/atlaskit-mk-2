@@ -4,7 +4,6 @@ import * as React from 'react';
 import { ActivityProvider } from '@atlaskit/activity';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
-import { MediaProvider } from '@atlaskit/media-core';
 import Spinner from '@atlaskit/spinner';
 import { akColorN40 } from '@atlaskit/util-shared-styles';
 import { browser } from '@atlaskit/editor-common';
@@ -12,7 +11,7 @@ import { EditorView } from 'prosemirror-view';
 import { analyticsDecorator as analytics, analyticsService } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
-import { EmojiState, stateKey as emojiPluginKey } from '../../plugins/emojis';
+import { stateKey as emojiPluginKey } from '../../plugins/emojis';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ImageUploadState } from '../../plugins/image-upload';
 import { ListsState } from '../../plugins/lists';
@@ -20,7 +19,7 @@ import { MentionsState, stateKey as mentionPluginKey } from '../../plugins/menti
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
-import { MediaPluginState, stateKey as mediaPluginKey } from '../../plugins/media';
+import { MediaPluginState } from '../../plugins/media';
 import { TextColorState } from '../../plugins/text-color';
 import { TableState } from '../../plugins/table';
 import EmojiTypeAhead from '../EmojiTypeAhead';
@@ -30,7 +29,6 @@ import MentionPicker from '../MentionPicker';
 import PanelEdit from '../PanelEdit';
 import ToolbarBlockType from '../ToolbarBlockType';
 import ToolbarEmojiPicker from '../ToolbarEmojiPicker';
-import ToolbarMention from '../ToolbarMention';
 import ToolbarFeedback from '../ToolbarFeedback';
 import ToolbarHelp from '../ToolbarHelp';
 import ToolbarHyperlink from '../ToolbarHyperlink';
@@ -38,9 +36,7 @@ import ToolbarLists from '../ToolbarLists';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
 import ToolbarInsertBlock from '../ToolbarInsertBlock';
-import ToolbarInlineCode from '../ToolbarInlineCode';
 import ToolbarImage from '../ToolbarImage';
-import ToolbarMedia from '../ToolbarMedia';
 import ToolbarTextColor from '../ToolbarTextColor';
 import TableFloatingToolbar from '../TableFloatingToolbar';
 import {
@@ -73,7 +69,6 @@ export interface Props {
   pluginStateImageUpload?: ImageUploadState;
   pluginStateMentions?: MentionsState;
   pluginStateMedia?: MediaPluginState;
-  pluginStateEmojis?: EmojiState;
   pluginStateTextColor?: TextColorState;
   pluginStateTable?: TableState;
   presenceResourceProvider?: any; // AbstractPresenceResource
@@ -82,7 +77,6 @@ export interface Props {
   emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
   activityProvider?: Promise<ActivityProvider>;
-  mediaProvider?: Promise<MediaProvider>;
   pluginStatePanel?: PanelState;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
@@ -192,7 +186,6 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       pluginStateBlockType,
       pluginStateClearFormatting,
       pluginStateCodeBlock,
-      pluginStateEmojis,
       pluginStateHyperlink,
       pluginStateImageUpload,
       pluginStateLists,
@@ -248,11 +241,14 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
             /> : null
           }
-          {pluginStateTextFormatting ?
-            <ToolbarInlineCode
-              disabled={disabled}
+          {pluginStateTextFormatting || pluginStateClearFormatting ?
+            <ToolbarAdvancedTextFormatting
+              isDisabled={disabled}
+              pluginStateTextFormatting={pluginStateTextFormatting}
+              pluginStateClearFormatting={pluginStateClearFormatting}
               editorView={editorView}
-              pluginState={pluginStateTextFormatting}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
             /> : null
           }
           {pluginStateTextColor ?
@@ -264,14 +260,11 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               popupsBoundariesElement={popupsBoundariesElement}
             /> : null
           }
-          {pluginStateTextFormatting || pluginStateClearFormatting ?
-            <ToolbarAdvancedTextFormatting
-              isDisabled={disabled}
-              pluginStateTextFormatting={pluginStateTextFormatting}
-              pluginStateClearFormatting={pluginStateClearFormatting}
+          {pluginStateLists ?
+            <ToolbarLists
+              disabled={disabled}
+              pluginState={pluginStateLists}
               editorView={editorView}
-              popupsMountPoint={popupsMountPoint}
-              popupsBoundariesElement={popupsBoundariesElement}
             /> : null
           }
           {pluginStateHyperlink ?
@@ -281,18 +274,21 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
             /> : null
           }
-          {pluginStateLists ?
-            <ToolbarLists
-              disabled={disabled}
-              pluginState={pluginStateLists}
+          {(emojiPluginKey && emojiProvider) &&
+            <ToolbarEmojiPicker
+              isDisabled={disabled}
               editorView={editorView}
-            /> : null
+              pluginKey={emojiPluginKey}
+              emojiProvider={emojiProvider}
+              numFollowingButtons={4}
+            />
           }
-          {(pluginStateTable || pluginStateMedia || pluginStateBlockType) &&
+          {(pluginStateTable || pluginStateMedia || pluginStateBlockType || pluginStateMentions) &&
             <ToolbarInsertBlockWrapper
               pluginStateTable={pluginStateTable}
               pluginStateMedia={pluginStateMedia}
               pluginStateBlockType={pluginStateBlockType}
+              pluginStateMentions={pluginStateMentions}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
               // tslint:disable-next-line:jsx-no-lambda
@@ -302,9 +298,15 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
                   editorView={editorView}
                   tableActive={state.tableActive}
                   tableHidden={state.tableHidden}
+                  tableSupported={state.tableSupported}
+
+                  mentionsEnabled={state.mentionsEnabled}
+                  insertMentionQuery={state.insertMentionQuery}
+                  mentionsSupported={state.mentionsSupported}
 
                   mediaUploadsEnabled={state.mediaUploadsEnabled}
                   onShowMediaPicker={state.showMediaPicker}
+                  mediaSupported={state.mediaSupported}
 
                   availableWrapperBlockTypes={state.availableWrapperBlockTypes}
                   onInsertBlockType={state.insertBlockType}
@@ -357,7 +359,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               mentionProvider={mentionProvider}
             /> : null}
 
-          {pluginStateEmojis && emojiProvider && !disabled ?
+          {emojiProvider && !disabled ?
             <EmojiTypeAhead
               pluginKey={emojiPluginKey}
               editorView={editorView}
@@ -389,20 +391,8 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               }
             </ButtonGroup>
           </FooterActions>
-          {/* NOTE (to be refactored in ED-2565): ToolbarEmojiPicker.numFollowingButtons must be changed if buttons are added after ToolbarEmojiPicker in the SecondaryToolbar */}
           <SecondaryToolbar>
-            {pluginStateMentions && mentionProvider && !disabled ? <ToolbarMention pluginKey={mentionPluginKey} editorView={editorView} /> : null}
-            {pluginStateEmojis && emojiProvider ?
-              <ToolbarEmojiPicker
-                pluginKey={emojiPluginKey}
-                editorView={editorView}
-                emojiProvider={emojiProvider}
-                numFollowingButtons={2}
-                popupsMountPoint={popupsMountPoint}
-                popupsBoundariesElement={popupsBoundariesElement}
-              /> : null}
             {pluginStateImageUpload && !disabled ? <ToolbarImage pluginState={pluginStateImageUpload} editorView={editorView} /> : null}
-            {pluginStateMedia && !disabled ? <ToolbarMedia editorView={editorView} pluginKey={mediaPluginKey} /> : null}
           </SecondaryToolbar>
         </Footer>
       </Container>

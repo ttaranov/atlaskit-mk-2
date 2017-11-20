@@ -20,7 +20,7 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/button": "^5.4.8",
-    "@atlaskit/icon": "^9.0.1",
+    "@atlaskit/icon": "^10.3.0",
     "@atlaskit/media-card": "^22.2.0",
     "@atlaskit/modal-dialog": "^3.2.1",
     "@atlaskit/util-shared-styles": "^2.10.3",

@@ -16,5 +16,6 @@ export { default as ToolbarHyperlink } from './ToolbarHyperlink';
 export { default as ToolbarLists } from './ToolbarLists';
 export { default as ToolbarTask } from './ToolbarTask';
 export { default as ToolbarTextFormatting } from './ToolbarTextFormatting';
+export { default as ToolbarInsertBlock } from './ToolbarInsertBlock';
 export { default as ToolbarMedia } from './ToolbarMedia';
 export { default as UnsupportedBlock } from './UnsupportedBlock';

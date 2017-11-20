@@ -6,6 +6,7 @@ pipelines:
           script:
             - source ./build-setup.sh
             - bolt install
+            - (cd build/ci-scripts && bolt stop-if-older-build)
             - bolt build
             - bolt lint
             - bolt typecheck
@@ -13,7 +14,8 @@ pipelines:
             - bolt test:browser:browserstack
             - bolt release
             # we `|| true` here because netlify has started returning 404's on success
-            - cd website && bolt deploy
+            - (cd website && bolt deploy)
+            - (cd build/ci-scripts && bolt restart-stopped-build)
 
   default:
     - step:
@@ -25,4 +27,4 @@ pipelines:
           - bolt typecheck
           - bolt test
           - bolt test:browser:browserstack
-          - cd website && bolt deploy-staging:no-minimize
+          - (cd website && bolt deploy-staging:no-minimize)
