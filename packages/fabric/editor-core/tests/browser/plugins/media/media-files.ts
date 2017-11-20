@@ -19,7 +19,7 @@ import {
   taskList,
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
-import { insertFile } from '../../../../src/plugins/media/media-files';
+import { insertFiles } from '../../../../src/plugins/media/media-files';
 import { setNodeSelection } from '../../../../src/utils';
 
 chai.use(chaiPlugin);
@@ -38,14 +38,24 @@ describe('media-links', () => {
     it('inserts media node into the document after current paragraph node', () => {
       const { editorView } = editor(doc(p('text{<>}')));
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(
+        editorView,
+        [{ id: temporaryFileId, status: 'uploading' }],
+        testCollectionName,
+      );
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
           p('text'),
-          mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
-          p()
-        )
+          mediaGroup(
+            media({
+              id: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+            }),
+          ),
+          p(),
+        ),
       );
       editorView.destroy();
     });
@@ -53,13 +63,23 @@ describe('media-links', () => {
     it('puts cursor to the next paragraph after inserting media node', () => {
       const { editorView } = editor(doc(p('text{<>}')));
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(
+        editorView,
+        [{ id: temporaryFileId, status: 'uploading' }],
+        testCollectionName,
+      );
 
       const paragraphNodeSize = p('text').nodeSize;
       const mediaGroupNodeSize = mediaGroup(
-        media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+        media({
+          id: temporaryFileId,
+          type: 'file',
+          collection: testCollectionName,
+        }),
       ).nodeSize;
-      expect(editorView.state.selection.from).to.eq(paragraphNodeSize + mediaGroupNodeSize + 1);
+      expect(editorView.state.selection.from).to.eq(
+        paragraphNodeSize + mediaGroupNodeSize + 1,
+      );
       editorView.destroy();
     });
 
@@ -67,20 +87,38 @@ describe('media-links', () => {
       const { editorView } = editor(
         doc(
           p('text{<>}'),
-          mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName }))
-        )
+          mediaGroup(
+            media({
+              id: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+            }),
+          ),
+        ),
       );
 
-      insertFile(editorView, { id: 'mock2', status: 'uploading' }, testCollectionName);
+      insertFiles(
+        editorView,
+        [{ id: 'mock2', status: 'uploading' }],
+        testCollectionName,
+      );
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
           p('text{<>}'),
           mediaGroup(
-            media({ id: 'mock2', type: 'file', collection: testCollectionName }),
-            media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
-          )
-        )
+            media({
+              id: 'mock2',
+              type: 'file',
+              collection: testCollectionName,
+            }),
+            media({
+              id: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+            }),
+          ),
+        ),
       );
       editorView.destroy();
     });
@@ -90,21 +128,39 @@ describe('media-links', () => {
     it('should prepend media node to existing media group before it', () => {
       const { editorView } = editor(
         doc(
-          mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
-          p('{<>}text')
-        )
+          mediaGroup(
+            media({
+              id: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+            }),
+          ),
+          p('{<>}text'),
+        ),
       );
 
-      insertFile(editorView, { id: 'mock2', status: 'uploading' }, testCollectionName);
+      insertFiles(
+        editorView,
+        [{ id: 'mock2', status: 'uploading' }],
+        testCollectionName,
+      );
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
           mediaGroup(
-            media({ id: 'mock2', type: 'file', collection: testCollectionName }),
-            media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+            media({
+              id: 'mock2',
+              type: 'file',
+              collection: testCollectionName,
+            }),
+            media({
+              id: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+            }),
           ),
-          p('text')
-        )
+          p('text'),
+        ),
       );
       editorView.destroy();
     });
@@ -115,16 +171,24 @@ describe('media-links', () => {
       it('splits text', () => {
         const { editorView } = editor(doc(p('te{<>}xt')));
 
-        insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+        insertFiles(
+          editorView,
+          [{ id: temporaryFileId, status: 'uploading' }],
+          testCollectionName,
+        );
 
         expect(editorView.state.doc).to.deep.equal(
           doc(
             p('te'),
             mediaGroup(
-              media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+              media({
+                id: temporaryFileId,
+                type: 'file',
+                collection: testCollectionName,
+              }),
             ),
-            p('xt')
-          )
+            p('xt'),
+          ),
         );
         editorView.destroy();
       });
@@ -134,12 +198,22 @@ describe('media-links', () => {
 
         const paragraphNodeSize = p('te').nodeSize;
         const mediaGroupNodeSize = mediaGroup(
-          media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+          media({
+            id: temporaryFileId,
+            type: 'file',
+            collection: testCollectionName,
+          }),
         ).nodeSize;
 
-        insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+        insertFiles(
+          editorView,
+          [{ id: temporaryFileId, status: 'uploading' }],
+          testCollectionName,
+        );
 
-        expect(editorView.state.selection.from).to.eq(paragraphNodeSize + mediaGroupNodeSize + 1);
+        expect(editorView.state.selection.from).to.eq(
+          paragraphNodeSize + mediaGroupNodeSize + 1,
+        );
         editorView.destroy();
       });
     });
@@ -148,16 +222,24 @@ describe('media-links', () => {
       it('preserves heading', () => {
         const { editorView } = editor(doc(h1('te{<>}xt')));
 
-        insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+        insertFiles(
+          editorView,
+          [{ id: temporaryFileId, status: 'uploading' }],
+          testCollectionName,
+        );
 
         expect(editorView.state.doc).to.deep.equal(
           doc(
             h1('te'),
             mediaGroup(
-              media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+              media({
+                id: temporaryFileId,
+                type: 'file',
+                collection: testCollectionName,
+              }),
             ),
-            h1('xt')
-          )
+            h1('xt'),
+          ),
         );
         editorView.destroy();
       });
@@ -169,16 +251,24 @@ describe('media-links', () => {
         it('replaces selection with a media node', () => {
           const { editorView } = editor(doc(p('te{<}x{>}t')));
 
-          insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+          insertFiles(
+            editorView,
+            [{ id: temporaryFileId, status: 'uploading' }],
+            testCollectionName,
+          );
 
           expect(editorView.state.doc).to.deep.equal(
             doc(
               p('te'),
               mediaGroup(
-                media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+                media({
+                  id: temporaryFileId,
+                  type: 'file',
+                  collection: testCollectionName,
+                }),
               ),
-              p('t')
-            )
+              p('t'),
+            ),
           );
           editorView.destroy();
         });
@@ -190,19 +280,23 @@ describe('media-links', () => {
             it('replaces selection with a media node', () => {
               const { editorView } = editor(doc(p('{<}text{>}')));
 
-              insertFile(
+              insertFiles(
                 editorView,
-                { id: temporaryFileId, status: 'uploading' },
-                testCollectionName
+                [{ id: temporaryFileId, status: 'uploading' }],
+                testCollectionName,
               );
 
               expect(editorView.state.doc).to.deep.equal(
                 doc(
                   mediaGroup(
-                    media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+                    media({
+                      id: temporaryFileId,
+                      type: 'file',
+                      collection: testCollectionName,
+                    }),
                   ),
-                  p()
-                )
+                  p(),
+                ),
               );
               editorView.destroy();
             });
@@ -212,20 +306,24 @@ describe('media-links', () => {
             it('replaces selection with a media node', () => {
               const { editorView } = editor(doc(h1('{<}text{>}')));
 
-              insertFile(
+              insertFiles(
                 editorView,
-                { id: temporaryFileId, status: 'uploading' },
-                testCollectionName
+                [{ id: temporaryFileId, status: 'uploading' }],
+                testCollectionName,
               );
 
               expect(editorView.state.doc).to.deep.equal(
                 doc(
                   h1(),
                   mediaGroup(
-                    media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+                    media({
+                      id: temporaryFileId,
+                      type: 'file',
+                      collection: testCollectionName,
+                    }),
                   ),
-                  p()
-                )
+                  p(),
+                ),
               );
               editorView.destroy();
             });
@@ -237,28 +335,52 @@ describe('media-links', () => {
             const { editorView } = editor(
               doc(
                 mediaGroup(
-                  media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+                  media({
+                    id: temporaryFileId,
+                    type: 'file',
+                    collection: testCollectionName,
+                  }),
                 ),
                 p('{<}text{>}'),
                 mediaGroup(
-                  media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
-                )
-              )
+                  media({
+                    id: temporaryFileId,
+                    type: 'file',
+                    collection: testCollectionName,
+                  }),
+                ),
+              ),
             );
 
-            insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
+            insertFiles(
+              editorView,
+              [{ id: 'new one', status: 'uploading' }],
+              testCollectionName,
+            );
 
             expect(editorView.state.doc).to.deep.equal(
               doc(
                 mediaGroup(
-                  media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+                  media({
+                    id: temporaryFileId,
+                    type: 'file',
+                    collection: testCollectionName,
+                  }),
                 ),
                 p(),
                 mediaGroup(
-                  media({ id: 'new one', type: 'file', collection: testCollectionName }),
-                  media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
-                )
-              )
+                  media({
+                    id: 'new one',
+                    type: 'file',
+                    collection: testCollectionName,
+                  }),
+                  media({
+                    id: temporaryFileId,
+                    type: 'file',
+                    collection: testCollectionName,
+                  }),
+                ),
+              ),
             );
             editorView.destroy();
           });
@@ -269,16 +391,24 @@ describe('media-links', () => {
         it('replaces selection with a media node', () => {
           const { editorView } = editor(doc(p('te{<}xt{>}')));
 
-          insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+          insertFiles(
+            editorView,
+            [{ id: temporaryFileId, status: 'uploading' }],
+            testCollectionName,
+          );
 
           expect(editorView.state.doc).to.deep.equal(
             doc(
               p('te'),
               mediaGroup(
-                media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+                media({
+                  id: temporaryFileId,
+                  type: 'file',
+                  collection: testCollectionName,
+                }),
               ),
-              p()
-            )
+              p(),
+            ),
           );
           editorView.destroy();
         });
@@ -288,21 +418,37 @@ describe('media-links', () => {
             doc(
               p('te{<}xt{>}'),
               mediaGroup(
-                media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
-              )
-            )
+                media({
+                  id: temporaryFileId,
+                  type: 'file',
+                  collection: testCollectionName,
+                }),
+              ),
+            ),
           );
 
-          insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
+          insertFiles(
+            editorView,
+            [{ id: 'new one', status: 'uploading' }],
+            testCollectionName,
+          );
 
           expect(editorView.state.doc).to.deep.equal(
             doc(
               p('te'),
               mediaGroup(
-                media({ id: 'new one', type: 'file', collection: testCollectionName }),
-                media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
-              )
-            )
+                media({
+                  id: 'new one',
+                  type: 'file',
+                  collection: testCollectionName,
+                }),
+                media({
+                  id: temporaryFileId,
+                  type: 'file',
+                  collection: testCollectionName,
+                }),
+              ),
+            ),
           );
           editorView.destroy();
         });
@@ -313,20 +459,28 @@ describe('media-links', () => {
       context('when selection is an inline node', () => {
         it('replaces selection with a media node', () => {
           const { editorView, sel } = editor(
-            doc(p('text{<>}', mention({ id: 'foo1', text: '@bar1' })))
+            doc(p('text{<>}', mention({ id: 'foo1', text: '@bar1' }))),
           );
           setNodeSelection(editorView, sel);
 
-          insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+          insertFiles(
+            editorView,
+            [{ id: temporaryFileId, status: 'uploading' }],
+            testCollectionName,
+          );
 
           expect(editorView.state.doc).to.deep.equal(
             doc(
               p('text'),
               mediaGroup(
-                media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+                media({
+                  id: temporaryFileId,
+                  type: 'file',
+                  collection: testCollectionName,
+                }),
               ),
-              p()
-            )
+              p(),
+            ),
           );
           editorView.destroy();
         });
@@ -337,23 +491,39 @@ describe('media-links', () => {
           const { editorView } = editor(
             doc(
               mediaGroup(
-                media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+                media({
+                  id: temporaryFileId,
+                  type: 'file',
+                  collection: testCollectionName,
+                }),
               ),
-              p('text')
-            )
+              p('text'),
+            ),
           );
           setNodeSelection(editorView, 1);
 
-          insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
+          insertFiles(
+            editorView,
+            [{ id: 'new one', status: 'uploading' }],
+            testCollectionName,
+          );
 
           expect(editorView.state.doc).to.deep.equal(
             doc(
               mediaGroup(
-                media({ id: 'new one', type: 'file', collection: testCollectionName }),
-                media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+                media({
+                  id: 'new one',
+                  type: 'file',
+                  collection: testCollectionName,
+                }),
+                media({
+                  id: temporaryFileId,
+                  type: 'file',
+                  collection: testCollectionName,
+                }),
               ),
-              p('text')
-            )
+              p('text'),
+            ),
           );
           editorView.destroy();
         });
@@ -362,20 +532,38 @@ describe('media-links', () => {
           const { editorView } = editor(
             doc(
               mediaGroup(
-                media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+                media({
+                  id: temporaryFileId,
+                  type: 'file',
+                  collection: testCollectionName,
+                }),
               ),
-              p('text')
-            )
+              p('text'),
+            ),
           );
           setNodeSelection(editorView, 0);
 
-          insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
+          insertFiles(
+            editorView,
+            [{ id: 'new one', status: 'uploading' }],
+            testCollectionName,
+          );
           const mediaGroupNodeSize = mediaGroup(
-            media({ id: 'new one', type: 'file', collection: testCollectionName }),
-            media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+            media({
+              id: 'new one',
+              type: 'file',
+              collection: testCollectionName,
+            }),
+            media({
+              id: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+            }),
           ).nodeSize;
 
-          expect(editorView.state.selection.from).to.deep.equal(mediaGroupNodeSize);
+          expect(editorView.state.selection.from).to.deep.equal(
+            mediaGroupNodeSize,
+          );
           editorView.destroy();
         });
       });
@@ -386,19 +574,23 @@ describe('media-links', () => {
             const { editorView } = editor(doc(hr));
             setNodeSelection(editorView, 0);
 
-            insertFile(
+            insertFiles(
               editorView,
-              { id: temporaryFileId, status: 'uploading' },
-              testCollectionName
+              [{ id: temporaryFileId, status: 'uploading' }],
+              testCollectionName,
             );
 
             expect(editorView.state.doc).to.deep.equal(
               doc(
                 mediaGroup(
-                  media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+                  media({
+                    id: temporaryFileId,
+                    type: 'file',
+                    collection: testCollectionName,
+                  }),
                 ),
-                p()
-              )
+                p(),
+              ),
             );
             editorView.destroy();
           });
@@ -410,26 +602,46 @@ describe('media-links', () => {
               const { editorView } = editor(
                 doc(
                   mediaGroup(
-                    media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+                    media({
+                      id: temporaryFileId,
+                      type: 'file',
+                      collection: testCollectionName,
+                    }),
                   ),
-                  hr
-                )
+                  hr,
+                ),
               );
               const mediaGroupNodeSize = mediaGroup(
-                media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+                media({
+                  id: temporaryFileId,
+                  type: 'file',
+                  collection: testCollectionName,
+                }),
               ).nodeSize;
               setNodeSelection(editorView, mediaGroupNodeSize);
 
-              insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
+              insertFiles(
+                editorView,
+                [{ id: 'new one', status: 'uploading' }],
+                testCollectionName,
+              );
 
               expect(editorView.state.doc).to.deep.equal(
                 doc(
                   mediaGroup(
-                    media({ id: 'new one', type: 'file', collection: testCollectionName }),
-                    media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+                    media({
+                      id: 'new one',
+                      type: 'file',
+                      collection: testCollectionName,
+                    }),
+                    media({
+                      id: temporaryFileId,
+                      type: 'file',
+                      collection: testCollectionName,
+                    }),
                   ),
-                  p()
-                )
+                  p(),
+                ),
               );
               editorView.destroy();
             });
@@ -441,21 +653,37 @@ describe('media-links', () => {
                 doc(
                   hr,
                   mediaGroup(
-                    media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
-                  )
-                )
+                    media({
+                      id: temporaryFileId,
+                      type: 'file',
+                      collection: testCollectionName,
+                    }),
+                  ),
+                ),
               );
               setNodeSelection(editorView, 0);
 
-              insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
+              insertFiles(
+                editorView,
+                [{ id: 'new one', status: 'uploading' }],
+                testCollectionName,
+              );
 
               expect(editorView.state.doc).to.deep.equal(
                 doc(
                   mediaGroup(
-                    media({ id: 'new one', type: 'file', collection: testCollectionName }),
-                    media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
-                  )
-                )
+                    media({
+                      id: 'new one',
+                      type: 'file',
+                      collection: testCollectionName,
+                    }),
+                    media({
+                      id: temporaryFileId,
+                      type: 'file',
+                      collection: testCollectionName,
+                    }),
+                  ),
+                ),
               );
               editorView.destroy();
             });
@@ -466,31 +694,59 @@ describe('media-links', () => {
               const { editorView } = editor(
                 doc(
                   mediaGroup(
-                    media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+                    media({
+                      id: temporaryFileId,
+                      type: 'file',
+                      collection: testCollectionName,
+                    }),
                   ),
                   hr,
                   mediaGroup(
-                    media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
-                  )
-                )
+                    media({
+                      id: temporaryFileId,
+                      type: 'file',
+                      collection: testCollectionName,
+                    }),
+                  ),
+                ),
               );
               const mediaGroupNodeSize = mediaGroup(
-                media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+                media({
+                  id: temporaryFileId,
+                  type: 'file',
+                  collection: testCollectionName,
+                }),
               ).nodeSize;
               setNodeSelection(editorView, mediaGroupNodeSize);
 
-              insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
+              insertFiles(
+                editorView,
+                [{ id: 'new one', status: 'uploading' }],
+                testCollectionName,
+              );
 
               expect(editorView.state.doc).to.deep.equal(
                 doc(
                   mediaGroup(
-                    media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+                    media({
+                      id: temporaryFileId,
+                      type: 'file',
+                      collection: testCollectionName,
+                    }),
                   ),
                   mediaGroup(
-                    media({ id: 'new one', type: 'file', collection: testCollectionName }),
-                    media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
-                  )
-                )
+                    media({
+                      id: 'new one',
+                      type: 'file',
+                      collection: testCollectionName,
+                    }),
+                    media({
+                      id: temporaryFileId,
+                      type: 'file',
+                      collection: testCollectionName,
+                    }),
+                  ),
+                ),
               );
               editorView.destroy();
             });
@@ -503,15 +759,23 @@ describe('media-links', () => {
       it('replaces selection with a media node', () => {
         const { editorView } = editor(doc(p('{<}te{>}xt')));
 
-        insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+        insertFiles(
+          editorView,
+          [{ id: temporaryFileId, status: 'uploading' }],
+          testCollectionName,
+        );
 
         expect(editorView.state.doc).to.deep.equal(
           doc(
             mediaGroup(
-              media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+              media({
+                id: temporaryFileId,
+                type: 'file',
+                collection: testCollectionName,
+              }),
             ),
-            p('xt')
-          )
+            p('xt'),
+          ),
         );
         editorView.destroy();
       });
@@ -520,22 +784,38 @@ describe('media-links', () => {
         const { editorView } = editor(
           doc(
             mediaGroup(
-              media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+              media({
+                id: temporaryFileId,
+                type: 'file',
+                collection: testCollectionName,
+              }),
             ),
-            p('{<}te{>}xt')
-          )
+            p('{<}te{>}xt'),
+          ),
         );
 
-        insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
+        insertFiles(
+          editorView,
+          [{ id: 'new one', status: 'uploading' }],
+          testCollectionName,
+        );
 
         expect(editorView.state.doc).to.deep.equal(
           doc(
             mediaGroup(
-              media({ id: 'new one', type: 'file', collection: testCollectionName }),
-              media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+              media({
+                id: 'new one',
+                type: 'file',
+                collection: testCollectionName,
+              }),
+              media({
+                id: temporaryFileId,
+                type: 'file',
+                collection: testCollectionName,
+              }),
             ),
-            p('xt')
-          )
+            p('xt'),
+          ),
         );
         editorView.destroy();
       });
@@ -544,14 +824,24 @@ describe('media-links', () => {
   it(`should insert media node into the document after current heading node`, () => {
     const { editorView } = editor(doc(h1('text{<>}')));
 
-    insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+    insertFiles(
+      editorView,
+      [{ id: temporaryFileId, status: 'uploading' }],
+      testCollectionName,
+    );
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
         h1('text'),
-        mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
-        p()
-      )
+        mediaGroup(
+          media({
+            id: temporaryFileId,
+            type: 'file',
+            collection: testCollectionName,
+          }),
+        ),
+        p(),
+      ),
     );
     editorView.destroy();
   });
@@ -559,14 +849,24 @@ describe('media-links', () => {
   it(`should insert media node into the document after current codeblock node`, () => {
     const { editorView } = editor(doc(code_block()('text{<>}')));
 
-    insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+    insertFiles(
+      editorView,
+      [{ id: temporaryFileId, status: 'uploading' }],
+      testCollectionName,
+    );
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
         code_block()('text'),
-        mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
-        p()
-      )
+        mediaGroup(
+          media({
+            id: temporaryFileId,
+            type: 'file',
+            collection: testCollectionName,
+          }),
+        ),
+        p(),
+      ),
     );
     editorView.destroy();
   });
@@ -575,13 +875,23 @@ describe('media-links', () => {
     it('replaces empty paragraph with the media grroup in an empty document', () => {
       const { editorView } = editor(doc(p('{<>}')));
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(
+        editorView,
+        [{ id: temporaryFileId, status: 'uploading' }],
+        testCollectionName,
+      );
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
-          mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
-          p()
-        )
+          mediaGroup(
+            media({
+              id: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+            }),
+          ),
+          p(),
+        ),
       );
       editorView.destroy();
     });
@@ -589,14 +899,24 @@ describe('media-links', () => {
     it('apends media group to empty paragraph in an empty code block', () => {
       const { editorView } = editor(doc(code_block()('{<>}')));
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(
+        editorView,
+        [{ id: temporaryFileId, status: 'uploading' }],
+        testCollectionName,
+      );
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
           code_block()('{<>}'),
-          mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
-          p()
-        )
+          mediaGroup(
+            media({
+              id: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+            }),
+          ),
+          p(),
+        ),
       );
       editorView.destroy();
     });
@@ -604,14 +924,24 @@ describe('media-links', () => {
     it('apends media group to empty paragraph in an empty heading', () => {
       const { editorView } = editor(doc(h1('{<>}')));
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(
+        editorView,
+        [{ id: temporaryFileId, status: 'uploading' }],
+        testCollectionName,
+      );
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
           h1('{<>}'),
-          mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
-          p()
-        )
+          mediaGroup(
+            media({
+              id: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+            }),
+          ),
+          p(),
+        ),
       );
       editorView.destroy();
     });
@@ -619,21 +949,39 @@ describe('media-links', () => {
     it('prepends media to existing media group before the empty paragraph', () => {
       const { editorView } = editor(
         doc(
-          mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
-          p('{<>}')
-        )
+          mediaGroup(
+            media({
+              id: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+            }),
+          ),
+          p('{<>}'),
+        ),
       );
 
-      insertFile(editorView, { id: 'another one', status: 'uploading' }, testCollectionName);
+      insertFiles(
+        editorView,
+        [{ id: 'another one', status: 'uploading' }],
+        testCollectionName,
+      );
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
           mediaGroup(
-            media({ id: 'another one', type: 'file', collection: testCollectionName }),
-            media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
+            media({
+              id: 'another one',
+              type: 'file',
+              collection: testCollectionName,
+            }),
+            media({
+              id: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+            }),
           ),
-          p()
-        )
+          p(),
+        ),
       );
       editorView.destroy();
     });
@@ -641,13 +989,23 @@ describe('media-links', () => {
     it('should replace empty paragraph with mediaGroup and preserve next empty paragraph', () => {
       const { editorView } = editor(doc(p('{<>}'), p()));
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(
+        editorView,
+        [{ id: temporaryFileId, status: 'uploading' }],
+        testCollectionName,
+      );
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
-          mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
-          p()
-        )
+          mediaGroup(
+            media({
+              id: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+            }),
+          ),
+          p(),
+        ),
       );
       editorView.destroy();
     });
@@ -655,14 +1013,24 @@ describe('media-links', () => {
     it('should replace empty paragraph with mediaGroup and preserve previous empty paragraph', () => {
       const { editorView } = editor(doc(p(), p('{<>}')));
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(
+        editorView,
+        [{ id: temporaryFileId, status: 'uploading' }],
+        testCollectionName,
+      );
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
           p(),
-          mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
-          p()
-        )
+          mediaGroup(
+            media({
+              id: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+            }),
+          ),
+          p(),
+        ),
       );
       editorView.destroy();
     });
@@ -670,17 +1038,28 @@ describe('media-links', () => {
     it('should insert all media nodes on the same line', async () => {
       const { editorView } = editor(doc(p('{<>}')));
 
-      insertFile(editorView, { id: 'mock2' }, testCollectionName);
-      insertFile(editorView, { id: 'mock1' }, testCollectionName);
+      insertFiles(
+        editorView,
+        [{ id: 'mock1' }, { id: 'mock2' }],
+        testCollectionName,
+      );
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
           mediaGroup(
-            media({ id: 'mock1', type: 'file', collection: testCollectionName }),
-            media({ id: 'mock2', type: 'file', collection: testCollectionName })
+            media({
+              id: 'mock1',
+              type: 'file',
+              collection: testCollectionName,
+            }),
+            media({
+              id: 'mock2',
+              type: 'file',
+              collection: testCollectionName,
+            }),
           ),
-          p()
-        )
+          p(),
+        ),
       );
       editorView.destroy();
     });
@@ -691,7 +1070,11 @@ describe('media-links', () => {
       const itemDoc = doc(taskList(taskItem('{<>}')));
       const { editorView } = editor(itemDoc);
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(
+        editorView,
+        [{ id: temporaryFileId, status: 'uploading' }],
+        testCollectionName,
+      );
 
       expect(editorView.state.doc).to.deep.equal(itemDoc);
       editorView.destroy();
@@ -701,7 +1084,11 @@ describe('media-links', () => {
       const decisionDoc = doc(decisionList(decisionItem('{<>}')));
       const { editorView } = editor(decisionDoc);
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(
+        editorView,
+        [{ id: temporaryFileId, status: 'uploading' }],
+        testCollectionName,
+      );
 
       expect(editorView.state.doc).to.deep.equal(decisionDoc);
       editorView.destroy();

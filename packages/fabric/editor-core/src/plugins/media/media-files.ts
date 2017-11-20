@@ -1,10 +1,14 @@
 import {
-  atTheEndOfDoc, atTheEndOfBlock, atTheBeginningOfBlock,
-  endPositionOfParent, startPositionOfParent,
-  setNodeSelection, setTextSelection,
+  atTheEndOfDoc,
+  atTheEndOfBlock,
+  atTheBeginningOfBlock,
+  endPositionOfParent,
+  startPositionOfParent,
+  setNodeSelection,
+  setTextSelection,
 } from '../../utils';
 
-import {Node as PMNode, NodeType } from 'prosemirror-model';
+import { Node as PMNode, NodeType } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
@@ -24,7 +28,11 @@ export interface Range {
   end: number;
 }
 
-export const insertFile = (view: EditorView, mediaState: MediaState, collection?: string): void => {
+export const insertFiles = (
+  view: EditorView,
+  mediaStates: MediaState[],
+  collection?: string,
+): void => {
   const { state, dispatch } = view;
   const { $to } = state.selection;
   const { tr, schema } = state;
@@ -40,12 +48,17 @@ export const insertFile = (view: EditorView, mediaState: MediaState, collection?
     return;
   }
 
-  const node = createMediaFileNode(mediaState, collection, media);
+  const nodes = createMediaFileNodes(mediaStates, collection, media);
 
   // insert a paragraph after if reach the end of doc
   // and there is no media group in the front or selection is a non media block node
-  if (atTheEndOfDoc(state) && (!posOfPreceedingMediaGroup(state) || isSelectionNonMediaBlockNode(state))) {
-    const paragraphInsertPos = isSelectionNonMediaBlockNode(state) ? $to.pos : $to.pos + 1;
+  if (
+    atTheEndOfDoc(state) &&
+    (!posOfPreceedingMediaGroup(state) || isSelectionNonMediaBlockNode(state))
+  ) {
+    const paragraphInsertPos = isSelectionNonMediaBlockNode(state)
+      ? $to.pos
+      : $to.pos + 1;
     tr.insert(paragraphInsertPos, paragraph.create());
   }
 
@@ -55,11 +68,15 @@ export const insertFile = (view: EditorView, mediaState: MediaState, collection?
   const deleteRange = findDeleteRange(state);
 
   if (!deleteRange) {
-    tr.insert(mediaInsertPos, node);
+    tr.insert(mediaInsertPos, nodes);
   } else if (mediaInsertPos <= deleteRange.start) {
-    tr.deleteRange(deleteRange.start, deleteRange.end).insert(mediaInsertPos, node);
+    tr
+      .deleteRange(deleteRange.start, deleteRange.end)
+      .insert(mediaInsertPos, nodes);
   } else {
-    tr.insert(mediaInsertPos, node).deleteRange(deleteRange.start, deleteRange.end);
+    tr
+      .insert(mediaInsertPos, nodes)
+      .deleteRange(deleteRange.start, deleteRange.end);
   }
 
   dispatch(tr);
@@ -67,22 +84,30 @@ export const insertFile = (view: EditorView, mediaState: MediaState, collection?
   setSelectionAfterMediaInsertion(view, mediaInsertPos);
 };
 
-const createMediaFileNode = (mediaState: MediaState, collection: string, media: NodeType): PMNode => {
-  const { id } = mediaState;
+const createMediaFileNodes = (
+  mediaStates: MediaState[],
+  collection: string,
+  media: NodeType,
+): PMNode[] => {
+  const nodes = mediaStates.map(mediaState => {
+    const { id } = mediaState;
 
-  const node = media.create({
-    id,
-    type: 'file',
-    collection
+    const node = media.create({
+      id,
+      type: 'file',
+      collection,
+    });
+
+    ['fileName', 'fileSize', 'fileMimeType'].forEach(key => {
+      if (mediaState[key]) {
+        node.attrs[`__${key}`] = mediaState[key];
+      }
+    });
+
+    return node;
   });
 
-  ['fileName', 'fileSize', 'fileMimeType'].forEach(key => {
-    if (mediaState[key]) {
-      node.attrs[`__${key}`] = mediaState[key];
-    }
-  });
-
-  return node;
+  return nodes;
 };
 
 const findMediaInsertPos = (state: EditorState): number => {
@@ -127,8 +152,11 @@ const range = (start: number, end: number = start) => {
   return { start, end };
 };
 
-const setSelectionAfterMediaInsertion = (view: EditorView, insertPos: number): void => {
-  const { state  } = view;
+const setSelectionAfterMediaInsertion = (
+  view: EditorView,
+  insertPos: number,
+): void => {
+  const { state } = view;
   const { doc } = state;
   const mediaPos = posOfMediaGroupNearby(state);
   if (!mediaPos) {
