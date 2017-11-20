@@ -20,7 +20,7 @@
     "@atlaskit/icon": "^10.3.0",
     "@atlaskit/media-card": "^22.2.0",
     "@atlaskit/media-filmstrip": "^5.5.1",
-    "@atlaskit/mention": "^7.6.0",
+    "@atlaskit/mention": "^8.1.0",
     "@atlaskit/task-decision": "^4.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "prosemirror-model": "^0.22.0"
