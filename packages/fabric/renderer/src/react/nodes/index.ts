@@ -1,5 +1,5 @@
 import { ComponentClass } from 'react';
-import { Node } from 'prosemirror-model';
+import { Fragment, Node } from 'prosemirror-model';
 
 import ApplicationCard, { AppCardViewProps } from './applicationCard';
 import Blockquote from './blockquote';
@@ -27,32 +27,34 @@ import TableHeader from './tableHeader';
 import TableRow from './tableRow';
 import UnknownBlock from './unknownBlock';
 
+import { bigEmojiHeight } from '../../utils';
+
 export const nodeToReact = {
-  'applicationCard': ApplicationCard,
-  'blockquote': Blockquote,
-  'bulletList': BulletList,
-  'codeBlock': CodeBlock,
-  'decisionItem': DecisionItem,
-  'decisionList': DecisionList,
-  'doc': Doc,
-  'emoji': Emoji,
-  'hardBreak': HardBreak,
-  'heading': Heading,
-  'listItem': ListItem,
-  'media': Media,
-  'mediaGroup': MediaGroup,
-  'mention': Mention,
-  'orderedList': OrderedList,
-  'panel': Panel,
-  'paragraph': Paragraph,
-  'rule': Rule,
-  'taskItem': TaskItem,
-  'taskList': TaskList,
-  'table': Table,
-  'tableCell': TableCell,
-  'tableHeader': TableHeader,
-  'tableRow': TableRow,
-  'unknownBlock': UnknownBlock,
+  applicationCard: ApplicationCard,
+  blockquote: Blockquote,
+  bulletList: BulletList,
+  codeBlock: CodeBlock,
+  decisionItem: DecisionItem,
+  decisionList: DecisionList,
+  doc: Doc,
+  emoji: Emoji,
+  hardBreak: HardBreak,
+  heading: Heading,
+  listItem: ListItem,
+  media: Media,
+  mediaGroup: MediaGroup,
+  mention: Mention,
+  orderedList: OrderedList,
+  panel: Panel,
+  paragraph: Paragraph,
+  rule: Rule,
+  taskItem: TaskItem,
+  taskList: TaskList,
+  table: Table,
+  tableCell: TableCell,
+  tableHeader: TableHeader,
+  tableRow: TableRow,
+  unknownBlock: UnknownBlock,
 };
 
 export const toReact = (node: Node): ComponentClass<any> => {
@@ -61,7 +63,7 @@ export const toReact = (node: Node): ComponentClass<any> => {
 
 export interface TextWrapper {
   type: {
-    name: 'textWrapper'
+    name: 'textWrapper';
   };
   content: Node[];
 }
@@ -131,7 +133,7 @@ export const mergeTextNodes = (nodes: (Node | NodeSimple)[]) => {
         type: {
           name: 'textWrapper',
         },
-        content: [current]
+        content: [current],
       } as TextWrapper);
     }
 
@@ -145,6 +147,56 @@ export const isText = (type: string): type is 'text' => {
 
 export const isTextWrapper = (type: string): type is 'textWrapper' => {
   return type === 'textWrapper';
+};
+
+const whitespaceRegex = /^\s*$/;
+
+/**
+ * Detects whether a fragment contains a single paragraph node
+ * whose content satisfies the condition for an emoji block
+ */
+export const isEmojiDoc = (doc: Fragment, props: any = {}): boolean => {
+  // Previously calculated to be true so pass prop down
+  // from paragraph node to emoji node
+  if (props.fitToHeight === bigEmojiHeight) {
+    return true;
+  }
+  if (doc.childCount !== 1) {
+    return false;
+  }
+  const parentNodes: Node[] = [];
+  doc.forEach(child => parentNodes.push(child));
+  const node = parentNodes[0];
+  return node.type.name === 'paragraph' && isEmojiBlock(node.content);
+};
+
+const isEmojiBlock = (pnode: Fragment): boolean => {
+  const content: Node[] = [];
+  // Optimisation for long documents - worst case block will be space-emoji-space
+  if (pnode.childCount > 7) {
+    return false;
+  }
+  pnode.forEach(child => content.push(child));
+  let emojiCount = 0;
+  for (let i = 0; i < content.length; ++i) {
+    const node = content[i];
+    switch (node.type.name) {
+      case 'text':
+        if (node.text && !node.text.match(whitespaceRegex)) {
+          return false;
+        }
+        continue;
+      case 'emoji':
+        if (++emojiCount > 3) {
+          return false;
+        }
+        continue;
+      default:
+        // Only text and emoji nodes are allowed
+        return false;
+    }
+  }
+  return emojiCount > 0;
 };
 
 export {

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { PropTypes } from 'react';
+import { withAnalytics } from '@atlaskit/analytics';
 import { createEditor, getUiComponent } from './create-editor';
 import { createPluginsList } from './create-editor';
 import EditorActions from './actions';
@@ -49,11 +50,23 @@ export default class Editor extends React.Component<EditorProps, State> {
       return;
     }
 
-    this.unregisterEditorFromActions();
-    this.state.editor.editorView.destroy();
+    const { editor } = this.state;
+    const { editorView } = editor;
+    const { state: editorState } = editorView;
 
-    if (this.state.editor.eventDispatcher) {
-      this.state.editor.eventDispatcher.destroy();
+    this.unregisterEditorFromActions();
+
+    editorState.plugins.forEach(plugin => {
+      const state = plugin.getState(editor.editorView.state);
+      if (state && state.destroy) {
+        state.destroy();
+      };
+    });
+
+    editorView.destroy();
+
+    if (editor.eventDispatcher) {
+      editor.eventDispatcher.destroy();
     }
   }
 
@@ -167,3 +180,5 @@ export default class Editor extends React.Component<EditorProps, State> {
     );
   }
 }
+
+export const EditorWithAnalytics = withAnalytics<typeof Editor>(Editor, {}, {}, true);

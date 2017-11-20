@@ -13,6 +13,7 @@ import {
   emojiQuery,
   textColor,
   confluenceInlineComment,
+  action,
 } from './marks';
 
 import {
@@ -55,7 +56,7 @@ import {
 function addItems(
   builtInItems: SchemaBuiltInItem[],
   config: string[],
-  customSpecs: SchemaCustomNodeSpecs | SchemaCustomMarkSpecs = {}
+  customSpecs: SchemaCustomNodeSpecs | SchemaCustomMarkSpecs = {},
 ) {
   if (!config) {
     return {};
@@ -110,7 +111,7 @@ const markGroupDeclarations = [
 ];
 
 const markGroupDeclarationsNames = markGroupDeclarations.map(
-  groupMark => groupMark.name
+  groupMark => groupMark.name,
 );
 
 const nodesInOrder: SchemaBuiltInItem[] = [
@@ -161,6 +162,7 @@ const marksInOrder: SchemaBuiltInItem[] = [
   { name: 'mentionQuery', spec: mentionQuery },
   { name: 'emojiQuery', spec: emojiQuery },
   { name: 'textColor', spec: textColor },
+  { name: 'action', spec: action },
   { name: 'confluenceInlineComment', spec: confluenceInlineComment },
   ...markGroupDeclarations,
 ];

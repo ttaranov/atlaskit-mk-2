@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView,  NodeView } from 'prosemirror-view';
 
+import { AnalyticsDelegate, AnalyticsDelegateProps } from '@atlaskit/analytics';
 import { TaskItem } from '@atlaskit/task-decision';
 
 type getPosHandler = () => number;
@@ -20,12 +21,14 @@ class Task implements NodeView {
   private view: EditorView;
   private getPos: getPosHandler;
   private showPlaceholder: boolean = false;
+  private analyticsDelegateContext: AnalyticsDelegateProps;
 
-  constructor(node: PMNode, view: EditorView, getPos: getPosHandler) {
+  constructor(node: PMNode, view: EditorView, getPos: getPosHandler, analyticsDelegateContext: AnalyticsDelegateProps) {
     this.node = node;
     this.view = view;
     this.getPos = getPos;
     this.showPlaceholder = node.content.childCount === 0;
+    this.analyticsDelegateContext = analyticsDelegateContext;
     this.renderReactComponent();
   }
 
@@ -57,15 +60,21 @@ class Task implements NodeView {
     const node = this.node;
     const { localId } = node.attrs;
 
-    // tslint:disable-next-line:variable-name
-    ReactDOM.render(
+    const taskItem = (
       <TaskItem
         taskId={localId}
         contentRef={this.handleRef}
         isDone={node.attrs.state === 'DONE'}
         onChange={this.handleOnChange}
         showPlaceholder={this.showPlaceholder}
-      />,
+      />
+    );
+    ReactDOM.render(
+      <AnalyticsDelegate
+        {...this.analyticsDelegateContext}
+      >
+        {taskItem}
+      </AnalyticsDelegate>,
       this.domRef
     );
   }
@@ -93,6 +102,8 @@ class Task implements NodeView {
   }
 }
 
-export const taskItemNodeView = (node: any, view: any, getPos: () => number): NodeView => {
-  return new Task(node, view, getPos);
-};
+export function taskItemNodeViewFactory(analyticsDelegateContext: AnalyticsDelegateProps) {
+  return (node: any, view: any, getPos: () => number): NodeView => {
+    return new Task(node, view, getPos, analyticsDelegateContext);
+  };
+}

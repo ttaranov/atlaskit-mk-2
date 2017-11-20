@@ -99,6 +99,43 @@ export const document = {
             },
           ],
         },
+        {
+          type: 'text',
+          text: ' and action mark',
+          marks: [
+            {
+              type: 'action',
+              attrs: {
+                title: 'test action mark',
+                target: {
+                  receiver: 'some-receiver',
+                  key: 'some-key',
+                },
+                parameters: {
+                  test: 20,
+                },
+              },
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: ' and invalid action mark',
+          marks: [
+            {
+              type: 'action',
+              attrs: {
+                title: 'test action mark',
+                target: {
+                  receiver: 'some-receiver',
+                },
+                parameters: {
+                  test: 30,
+                },
+              },
+            },
+          ],
+        },
       ],
     },
     {

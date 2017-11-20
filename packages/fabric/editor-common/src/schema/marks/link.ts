@@ -10,6 +10,7 @@ export interface Definition {
   attrs: {
     href: string;
     title?: string;
+    id?: string;
     collection?: string;
     occurrenceKey?: string;
   };
@@ -19,19 +20,20 @@ export const link: MarkSpec = {
   excludes: COLOR,
   group: LINK,
   attrs: {
-    href: {}
+    href: {},
   },
   inclusive: false,
   parseDOM: [
     {
-      tag: 'a[href]', getAttrs: (dom: Element) => {
+      tag: 'a[href]',
+      getAttrs: (dom: Element) => {
         const href = dom.getAttribute('href') || '';
 
-        return isSafeUrl(href)
-          ? { href: normalizeUrl(href) }
-          : false;
-      }
-    }
+        return isSafeUrl(href) ? { href: normalizeUrl(href) } : false;
+      },
+    },
   ],
-  toDOM(node): [string, any] { return ['a', node.attrs]; }
+  toDOM(node): [string, any] {
+    return ['a', node.attrs];
+  },
 };

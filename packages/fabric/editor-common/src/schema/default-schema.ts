@@ -36,6 +36,7 @@ export const defaultSchema: Schema = createSchema({
     'unknownBlock',
   ],
   marks: [
+    'action',
     'link',
     'em',
     'strong',
@@ -47,5 +48,5 @@ export const defaultSchema: Schema = createSchema({
     'emojiQuery',
     'textColor',
     'confluenceInlineComment',
-  ]
+  ],
 });

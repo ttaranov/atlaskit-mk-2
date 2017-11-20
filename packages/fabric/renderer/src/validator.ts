@@ -335,14 +335,17 @@ export const getValidNode = (
         break;
       }
       case 'codeBlock': {
-        if (attrs && attrs.language !== undefined) {
+        if (attrs && attrs.language) {
           return {
             type,
             attrs,
             content,
           };
         }
-        break;
+        return {
+          type,
+          content,
+        };
       }
       case 'emoji': {
         if (attrs && attrs.shortName) {
@@ -625,6 +628,19 @@ export const getValidMark = (mark: Mark): Mark | null => {
 
   if (type) {
     switch (type) {
+      case 'action': {
+        if (attrs && attrs.target && attrs.target.key) {
+          return {
+            type,
+            attrs: {
+              title: attrs.title,
+              target: attrs.target,
+              parameters: attrs.parameters,
+            },
+          };
+        }
+        break;
+      }
       case 'code': {
         return {
           type,

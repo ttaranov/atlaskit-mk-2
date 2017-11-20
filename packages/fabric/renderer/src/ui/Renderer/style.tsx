@@ -16,7 +16,7 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
   color:  ${akColorN800};
 
-  & a {
+  & a, span.akActionMark {
     color: ${akColorB400};
     text-decoration: none;
 
@@ -24,6 +24,10 @@ export const Wrapper = styled.div`
       color: ${akColorB300};
       text-decoration: underline;
     }
+  }
+
+  & span.akActionMark {
+    cursor: pointer;
   }
 
   & blockquote {
@@ -40,11 +44,11 @@ export const Wrapper = styled.div`
       display: inline-block;
     }
 
-    & ::before {
+    &::before {
       content: "";
     }
 
-    & ::after {
+    &::after {
       content: "";
     }
   }

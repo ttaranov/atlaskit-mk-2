@@ -7,7 +7,7 @@ type HomeProps = {};
 
 const IntroContent = props => (
   <Intro {...props}>
-    AtlasKit is Atlassian&#39;s official UI library, built according to the{' '}
+    Atlaskit is Atlassian&#39;s official UI library, built according to the{' '}
     <a href="//www.atlassian.design" target="_blank" rel="noopener noreferrer">
       Atlassian Design Guidelines
     </a>{' '}
@@ -45,7 +45,7 @@ export default class Home extends React.PureComponent<HomeProps> {
   render() {
     return (
       <Page>
-        <h1>AtlasKit</h1>
+        <h1>Atlaskit</h1>
         <IntroContent />
         <GettingStartedContent />
         <GettingInvolvedContent />

@@ -9,10 +9,22 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
 
   if (schema.nodes.rule) {
     // '---' and '***' for hr
-    rules.push(createInputRule(/^\-\-\-$|^\*\*\*$/, (state, match, start, end) => {
-      analyticsService.trackEvent(`atlassian.editor.format.horizontalrule.autoformatting`);
-      return state.tr.replaceWith(start, end, Fragment.from(schema.nodes.rule.create()));
-    }));
+    rules.push(
+      createInputRule(
+        /^\-\-\-$|^\*\*\*$/,
+        (state, match, start, end) => {
+          analyticsService.trackEvent(
+            `atlassian.editor.format.horizontalrule.autoformatting`,
+          );
+          return state.tr.replaceWith(
+            start,
+            end,
+            Fragment.from(schema.nodes.rule.create()),
+          );
+        },
+        true,
+      ),
+    );
   }
 
   if (rules.length !== 0) {

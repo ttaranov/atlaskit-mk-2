@@ -31,7 +31,7 @@ describe('save on enter', () => {
       doc,
       plugins: [
         createSaveOnEnterPlugin(onSaveSpy) as Plugin,
-        ...tasksAndDecisionsPlugins(defaultSchema),
+        ...tasksAndDecisionsPlugins(defaultSchema, {}),
       ],
     });
 
