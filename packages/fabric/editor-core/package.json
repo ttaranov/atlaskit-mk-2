@@ -39,7 +39,7 @@
     "@atlaskit/modal-dialog": "^3.2.1",
     "@atlaskit/profilecard": "^3.7.1",
     "@atlaskit/single-select": "^2.0.1",
-    "@atlaskit/spinner": "^2.0.1",
+    "@atlaskit/spinner": "^4.0.2",
     "@atlaskit/task-decision": "^4.0.0",
     "@atlaskit/tooltip": "^8.0.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
@@ -87,7 +87,7 @@
   "devDependencies": {
     "@atlaskit/button": "^5.1.1",
     "@atlaskit/editor-test-helpers": "^0.7.1",
-    "@atlaskit/layer-manager": "^2.2.1",
+    "@atlaskit/layer-manager": "^2.4.0",
     "@atlaskit/media-test-helpers": "^8.5.0",
     "@atlaskit/renderer": "^8.7.1",
     "@atlaskit/util-data-test": "^7.0.0",
