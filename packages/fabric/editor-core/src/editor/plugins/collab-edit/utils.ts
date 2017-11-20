@@ -13,41 +13,24 @@ import {
   DecorationSet,
 } from 'prosemirror-view';
 
+import { hexToRgba } from '../../../utils/color';
+
 export interface Color {
   solid: string;
   selection: string;
 }
 
 export const colors: Color[] = [
-  {
-    solid: akColorR400,
-    selection: 'rgba(222, 53, 11, .5)'
-  },
-  {
-    solid: akColorY400,
-    selection: 'rgba(255, 153, 31, .5)'
-  },
-  {
-    solid: akColorG400,
-    selection: 'rgba(0, 135, 90, .5)'
-  },
-  {
-    solid: akColorT400,
-    selection: 'rgba(0, 163, 191, .5)'
-  },
-  {
-    solid: akColorB400,
-    selection: 'rgba(0, 82, 204, .5)'
-  },
-  {
-    solid: akColorP400,
-    selection: 'rgba(82, 67, 170, .5)'
-  },
-  {
-    solid: akColorN800,
-    selection: 'rgba(23, 43, 7, .5)'
-  },
-];
+  akColorR400,
+  akColorY400,
+  akColorG400,
+  akColorT400,
+  akColorB400,
+  akColorP400,
+  akColorN800,
+].map(solid => ({
+  solid, selection: hexToRgba(solid, 0.2)!
+}));
 
 // tslint:disable:no-bitwise
 export const getAvatarColor = (str: string) => {
@@ -64,11 +47,13 @@ export const getAvatarColor = (str: string) => {
 };
 // tslint:enable:no-bitwise
 
-export const findPointer = (id: string, decorations: DecorationSet): Decoration | undefined => {
-  let current = decorations.find();
+export const findPointers = (id: string, decorations: DecorationSet): Decoration[] | undefined => {
+  const current = decorations.find();
+  let ret: Decoration[] = [];
   for (let i = 0; i < current.length; i++) {
     if ((current[i] as any).spec.pointer.sessionId === id) {
-      return current[i];
+      ret.push(current[i]);
     }
   }
+  return ret;
 };

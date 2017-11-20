@@ -18,7 +18,7 @@ import {
   PresenceData,
   TelepointerData
 } from './types';
-import { getAvatarColor, findPointer } from './utils';
+import { getAvatarColor, findPointers } from './utils';
 import { CollabEditProvider } from './provider';
 export {
   CollabEditProvider,
@@ -154,12 +154,31 @@ export class Participants {
     return Array.from(this.participants.values());
   }
 
+  get(sessionId: string) {
+    return this.participants.get(sessionId);
+  }
 }
 
-const createTelepointer = (from: number, to: number, sessionId: string, isSelection: boolean) => {
-  // TODO: Use Decoration.widget when there's no selection. (ED-2728)
-  const color = getAvatarColor(sessionId).index.toString();
-  return (Decoration as any).inline(from, to, { class: `telepointer color-${color} ${isSelection ? 'telepointer-selection' : 'telepointer-pointer'}` }, { pointer: { sessionId } });
+function style(options) {
+  const color = (options && options.color) || 'black';
+  return `border-left: 1px solid ${color}; border-right: 1px solid ${color}; margin-right: -2px;`;
+}
+
+const createTelepointers = (from: number, to: number, sessionId: string, isSelection: boolean, initial: string) => {
+  let decorations: Decoration[] = [];
+  const avatarColor = getAvatarColor(sessionId);
+  const color = avatarColor.index.toString();
+  if (isSelection) {
+    const className = `telepointer color-${color} telepointer-selection`;
+    decorations.push((Decoration as any).inline(from, to, { class: className, 'data-initial': initial }, { pointer: { sessionId } }));
+  }
+
+  const cursor = document.createElement('span');
+  cursor.textContent = '\u200b';
+  cursor.className = `telepointer color-${color} telepointer-selection-badge`;
+  cursor.style.cssText = `${style({ color: avatarColor.color.solid })};`;
+  cursor.setAttribute('data-initial', initial);
+  return decorations.concat((Decoration as any).widget(to, cursor, { pointer: { sessionId } }));
 };
 
 export class PluginState {
@@ -197,8 +216,8 @@ export class PluginState {
       sid = sessionIdData.sid;
     }
 
-    const add: Decoration[] = [];
-    const remove: Decoration[] = [];
+    let add: Decoration[] = [];
+    let remove: Decoration[] = [];
 
     if (presenceData) {
       const { joined = [] as Participant[], left = [] as { sessionId: string }[] } = presenceData;
@@ -208,9 +227,9 @@ export class PluginState {
 
       // Remove telepointers for users that left
       left.forEach(i => {
-        const pointer = findPointer(i.sessionId, decorationSet);
-        if (pointer) {
-          remove.push(pointer);
+        const pointers = findPointers(i.sessionId, decorationSet);
+        if (pointers) {
+          remove = remove.concat(pointers);
         }
       });
     }
@@ -218,9 +237,9 @@ export class PluginState {
     if (telepointerData) {
       const { sessionId } = telepointerData;
       if (sessionId && sessionId !== sid) {
-        const oldPointer = findPointer(telepointerData.sessionId, decorationSet);
-        if (oldPointer) {
-          remove.push(oldPointer);
+        const oldPointers = findPointers(telepointerData.sessionId, decorationSet);
+        if (oldPointers) {
+          remove = remove.concat(oldPointers);
         }
 
         const { anchor, head } = telepointerData.selection;
@@ -232,7 +251,10 @@ export class PluginState {
         if (!isSelection && isChromeWithSelectionBug) {
           document.getSelection().empty();
         }
-        add.push(createTelepointer(from - (isSelection ? 0 : 1), to, sessionId, isSelection));
+
+        const participant = participants.get(sessionId);
+        const initial = (participant ? participant.name.substring(0, 1).toUpperCase() : 'X');
+        add = add.concat(createTelepointers(from - (isSelection ? 0 : 1), to, sessionId, isSelection, initial));
       }
     }
 

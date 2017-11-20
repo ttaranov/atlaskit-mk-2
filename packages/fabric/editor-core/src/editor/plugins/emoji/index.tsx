@@ -10,6 +10,30 @@ import pluginKey from '../../../plugins/emojis/plugin-key';
 import ToolbarEmojiPicker from '../../../ui/ToolbarEmojiPicker';
 import EmojiTypeAhead from '../../../ui/EmojiTypeAhead';
 
+const toolbarComponent = (editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth) => {
+  const renderNode = (providers) => {
+    // numFollowingButtons must be changed if buttons are added after ToolbarEmojiPicker to the message editor
+      return <ToolbarEmojiPicker
+        editorView={editorView}
+        pluginKey={pluginKey}
+        emojiProvider={providers.emojiProvider}
+        numFollowingButtons={4}
+        editorWidth={editorWidth}
+        isDisabled={disabled}
+        popupsMountPoint={popupsMountPoint}
+        popupsBoundariesElement={popupsBoundariesElement}
+      />;
+    };
+
+    return (
+      <WithProviders
+        providerFactory={providerFactory}
+        providers={['emojiProvider']}
+        renderNode={renderNode}
+      />
+    );
+  }
+
 const emojiPlugin: EditorPlugin = {
   nodes() {
     return [{ name: 'emoji', node: emoji, rank: 1600 }];
@@ -28,7 +52,7 @@ const emojiPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent(editorView, eventDispatcher, providerFactory, apperance, popupsMountPoint, popupsBoundariesElement) {
+  contentComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
     const renderNode = (providers) =>{
       return <EmojiTypeAhead
         editorView={editorView}
@@ -48,27 +72,13 @@ const emojiPlugin: EditorPlugin = {
     );
   },
 
-  secondaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
-    const renderNode = (providers) => {
-      // numFollowingButtons must be changed if buttons are added after ToolbarEmojiPicker to the message editor
-      return <ToolbarEmojiPicker
-        editorView={editorView}
-        pluginKey={pluginKey}
-        emojiProvider={providers.emojiProvider}
-        numFollowingButtons={4}
-        popupsMountPoint={popupsMountPoint}
-        popupsBoundariesElement={popupsBoundariesElement}
-      />;
-    };
-
-    return (
-      <WithProviders
-        providerFactory={providerFactory}
-        providers={['emojiProvider']}
-        renderNode={renderNode}
-      />
-    );
+ secondaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth) {
+    return toolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth);
   },
+
+  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth) {
+    return toolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth);
+  }
 };
 
 export default emojiPlugin;

@@ -15,7 +15,6 @@ import {
   clearFormattingPlugins,
   codeBlockStateKey,
   blockTypeStateKey,
-  emojisStateKey,
   hyperlinkStateKey,
   tablePlugins,
   tableStateKey,
@@ -245,7 +244,6 @@ export default class Editor extends PureComponent<Props, State> {
     const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
     const imageUploadState = editorState && imageUploadStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
-    const emojiState = editorState && emojisStateKey.getState(editorState);
     const tableState = editorState && tableStateKey.getState(editorState);
 
     return (
@@ -260,7 +258,6 @@ export default class Editor extends PureComponent<Props, State> {
         editorView={editorView!}
         pluginStateBlockType={blockTypeState}
         pluginStateCodeBlock={codeBlockState}
-        pluginStateEmojis={emojiState}
         pluginStateHyperlink={hyperlinkState}
         pluginStateLists={listsState}
         pluginStateMentions={mentionsState}

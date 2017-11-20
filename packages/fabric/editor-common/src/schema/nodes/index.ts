@@ -4,7 +4,7 @@ export { confluenceUnsupportedInline } from './confluence-unsupported-inline';
 export { doc } from './doc';
 export { blockquote } from './blockquote';
 export { bulletList } from './bullet-list';
-export { codeBlock } from './code-block';
+export { codeBlock, toJSON as codeBlockToJSON } from './code-block';
 export { hardBreak } from './hard-break';
 export { heading } from './heading';
 export { rule } from './rule';

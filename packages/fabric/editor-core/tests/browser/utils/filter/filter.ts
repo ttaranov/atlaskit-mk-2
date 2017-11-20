@@ -1,27 +1,23 @@
 import { expect } from 'chai';
-import {
-  doc, p, strong
-} from '@atlaskit/editor-test-helpers';
+import { Slice } from 'prosemirror-model';
+import { defaultSchema, doc, p, strong } from '@atlaskit/editor-test-helpers';
 
 import { toJSON } from '../../../../src/utils';
-import { filterContentByType } from '../../../../src/utils/filter/filter';
+import {
+  filterContentByType,
+  filterSliceByType,
+} from '../../../../src/utils/filter/filter';
 
 describe('@atlaskit/editor-core/utils/filter', () => {
   describe('filterContentByType', () => {
     it('filtering by type', () => {
-      const jsonDoc = toJSON(
-        doc(
-          p(
-            'some text'
-          )
-        )
-      );
+      const jsonDoc = toJSON(doc(p('some text')));
       const content = filterContentByType(jsonDoc, new Set(['text']));
       expect(content).to.deep.equal([
         {
           type: 'text',
           text: 'some text',
-        }
+        },
       ]);
     });
 
@@ -39,9 +35,133 @@ describe('@atlaskit/editor-core/utils/filter', () => {
           marks: [
             {
               type: 'strong',
-            }
-          ]
-        }
+            },
+          ],
+        },
+      ]);
+    });
+    it('filtering multiple paragraphs add breaks', () => {
+      const jsonDoc = toJSON(doc(p('some text'), p('some other text')));
+      const content = filterContentByType(
+        jsonDoc,
+        new Set(['text']),
+        defaultSchema,
+        true
+      );
+      expect(content).to.deep.equal([
+        {
+          type: 'text',
+          text: 'some text',
+        },
+        {
+          type: 'hardBreak',
+        },
+        {
+          type: 'text',
+          text: 'some other text',
+        },
+      ]);
+    });
+    it('filtering multiple paragraphs does not breaks when option false', () => {
+      const jsonDoc = toJSON(doc(p('some text'), p('some other text')));
+      const content = filterContentByType(
+        jsonDoc,
+        new Set(['text']),
+        defaultSchema,
+        false
+      );
+      expect(content).to.deep.equal([
+        {
+          type: 'text',
+          text: 'some text',
+        },
+        {
+          type: 'text',
+          text: 'some other text',
+        },
+      ]);
+    });
+  });
+  describe('filterSliceByType', () => {
+    it('filtering by type', () => {
+      const jsonDoc = toJSON(doc(p('some text')));
+      const content = filterSliceByType(
+        Slice.fromJSON(defaultSchema, { content: jsonDoc.content }),
+        new Set(['text']),
+        defaultSchema,
+        false
+      );
+      expect(content.toJSON()!.content).to.deep.equal([
+        {
+          type: 'text',
+          text: 'some text',
+        },
+      ]);
+    });
+
+    it('marks preserved', () => {
+      const jsonDoc = toJSON(doc(p('some ', strong('text'))));
+      const content = filterSliceByType(
+        Slice.fromJSON(defaultSchema, { content: jsonDoc.content }),
+        new Set(['text']),
+        defaultSchema,
+        false
+      );
+      expect(content.toJSON()!.content).to.deep.equal([
+        {
+          type: 'text',
+          text: 'some ',
+        },
+        {
+          type: 'text',
+          text: 'text',
+          marks: [
+            {
+              type: 'strong',
+            },
+          ],
+        },
+      ]);
+    });
+    it('filtering multiple paragraphs add breaks', () => {
+      const jsonDoc = toJSON(doc(p('some text'), p('some other text')));
+      const content = filterSliceByType(
+        Slice.fromJSON(defaultSchema, { content: jsonDoc.content }),
+        new Set(['text']),
+        defaultSchema,
+        true
+      );
+      expect(content.toJSON()!.content).to.deep.equal([
+        {
+          type: 'text',
+          text: 'some text',
+        },
+        {
+          type: 'hardBreak',
+        },
+        {
+          type: 'text',
+          text: 'some other text',
+        },
+      ]);
+    });
+    it('filtering multiple paragraphs does not breaks when option false', () => {
+      const jsonDoc = toJSON(doc(p('some text'), p('some other text')));
+      const content = filterSliceByType(
+        Slice.fromJSON(defaultSchema, { content: jsonDoc.content }),
+        new Set(['text']),
+        defaultSchema,
+        false
+      );
+      expect(content.toJSON()!.content).to.deep.equal([
+        {
+          type: 'text',
+          text: 'some text',
+        },
+        {
+          type: 'text',
+          text: 'some other text',
+        },
       ]);
     });
   });

@@ -8,12 +8,14 @@ import { toggleBulletList, toggleOrderedList, tooltip } from '../../keymaps';
 import { ListsState } from '../../plugins/lists';
 import { ListsState as FutureListsState } from '../../plugins/lists';
 import ToolbarButton from '../ToolbarButton';
-import { ButtonGroup } from './styles';
+import EditorWidth from '../../utils/editor-width';
+import { ButtonGroup, Separator } from './styles';
 
 export interface Props {
   editorView: EditorView;
   pluginState: ListsState | FutureListsState;
   disabled?: boolean;
+  editorWidth?: number;
 }
 
 export interface State {
@@ -52,10 +54,12 @@ export default class ToolbarLists extends PureComponent<Props, State> {
   }
 
   render() {
+    const { editorWidth } = this.props;
     return (
-      <ButtonGroup>
+      <ButtonGroup width={editorWidth! > EditorWidth.BreakPoint6 ? 'large' : 'small'}>
         {this.state.bulletListHidden ? null :
           <ToolbarButton
+            spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
             onClick={this.handleBulletListClick}
             selected={this.state.bulletListActive}
             disabled={this.state.bulletListDisabled || this.props.disabled}
@@ -66,6 +70,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
 
         {this.state.orderedListHidden ? null :
           <ToolbarButton
+            spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
             onClick={this.handleOrderedListClick}
             selected={this.state.orderedListActive}
             disabled={this.state.orderedListDisabled || this.props.disabled}
@@ -73,6 +78,8 @@ export default class ToolbarLists extends PureComponent<Props, State> {
             iconBefore={<NumberListIcon label="Ordered list" />}
           />
         }
+
+        <Separator />
       </ButtonGroup>
     );
   }

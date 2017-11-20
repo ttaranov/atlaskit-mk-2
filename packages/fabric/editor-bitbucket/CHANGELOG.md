@@ -1,5 +1,11 @@
 # @atlaskit/editor-bitbucket
 
+## 4.7.2
+
+## 4.7.1
+
+## 4.7.0
+
 ## 3.4.4 (2017-10-16)
 
 * bug fix; add type to returns mention result so that consistent with API. ([b168339](https://bitbucket.org/atlassian/atlaskit/commits/b168339))

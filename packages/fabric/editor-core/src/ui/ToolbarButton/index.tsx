@@ -39,6 +39,7 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
         spacing={this.props.spacing || 'none'}
         target={this.props.target}
         theme={this.props.theme}
+        shouldFitContainer={true}
       >
         {this.props.children}
       </AkButton>

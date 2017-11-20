@@ -405,7 +405,7 @@ export class MentionsState {
     this.view = view;
   }
 
-  insertMentionQuery() {
+  insertMentionQuery = () => {
     const { state } = this.view;
     const node = state.schema.text('@', [state.schema.mark('mentionQuery')]);
     this.view.dispatch(

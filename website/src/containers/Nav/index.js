@@ -3,10 +3,15 @@
 import React, { Component } from 'react';
 import { Switch, Route, matchPath } from 'react-router-dom';
 import Navigation, { AkContainerTitle } from '@atlaskit/navigation';
+import { Link } from 'react-router-dom';
 
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
+import {
+  RouterNavigationItem,
+  ExternalNavigationItem,
+} from './utils/linkComponents';
 import atlasKitLogo from '../../assets/atlaskit-logo.png';
 import { OLD_WEBSITE_URL } from '../../utils/constants';
 import Groups from './Groups';
@@ -48,16 +53,23 @@ export default class Nav extends Component<{}, State> {
                 isCollapsible={false}
                 isResizeable={false}
                 globalPrimaryIcon={
-                  <AtlassianIcon size="large" label="AtlasKit" />
+                  <AtlassianIcon size="large" label="Atlaskit" />
                 }
                 globalPrimaryItemHref={navigateOut ? OLD_WEBSITE_URL : '/'}
                 globalSearchIcon={<SearchIcon label="search" />}
                 onSearchDrawerOpen={this.openSearchDrawer}
                 containerHeaderComponent={() => (
                   <AkContainerTitle
-                    navigateOut={fromOldSite && fromOldSite.isExact}
-                    icon={<img src={atlasKitLogo} alt="AtlasKit" />}
-                    text="AtlasKit"
+                    icon={<img src={atlasKitLogo} alt="Atlaskit" />}
+                    text="Atlaskit"
+                    href={navigateOut ? OLD_WEBSITE_URL : '/'}
+                    linkComponent={
+                      navigateOut
+                        ? null
+                        : ({ href, children }) => (
+                            <Link to={href}>{children}</Link>
+                          )
+                    }
                   />
                 )}
                 drawers={[

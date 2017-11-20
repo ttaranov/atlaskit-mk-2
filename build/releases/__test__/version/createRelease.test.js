@@ -26,6 +26,15 @@ const changesetWithDep = {
   commit: '695fad0',
 };
 
+const changesetWithNone = {
+  summary: 'This is another summary',
+  releases: [{ name: 'package-a', type: 'minor' }],
+  dependents: [
+    { name: 'package-b', type: 'none', dependencies: ['package-a'] },
+  ],
+  commit: '695fad0',
+};
+
 describe('createRelease', () => {
   it('should handle a single simple changeset', () => {
     const releaseObj = createRelease([simpleChangeset], fakeAllPackages);
@@ -62,6 +71,14 @@ describe('createRelease', () => {
         { name: 'package-b', commits: ['695fad0'], version: '1.0.1' },
       ],
       changesets: [changesetWithDep],
+    });
+  });
+  it('should handle a none release', () => {
+    const releaseObj = createRelease([changesetWithNone], fakeAllPackages);
+
+    expect(releaseObj).toEqual({
+      releases: [{ name: 'package-a', commits: ['695fad0'], version: '1.1.0' }],
+      changesets: [changesetWithNone],
     });
   });
 });

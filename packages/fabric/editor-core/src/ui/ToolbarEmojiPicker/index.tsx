@@ -8,9 +8,12 @@ import { analyticsDecorator as analytics } from '../../analytics';
 import { EmojiState } from '../../plugins/emojis';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { EmojiPicker as AkEmojiPicker, EmojiProvider } from '@atlaskit/emoji';
+import EditorWidth from '../../utils/editor-width';
 import ToolbarButton from '../ToolbarButton';
+import { OuterContainer } from './styles';
 
 export interface Props {
+  isDisabled?: boolean;
   editorView: EditorView;
   pluginKey: PluginKey;
   emojiProvider: Promise<EmojiProvider>;
@@ -22,6 +25,7 @@ export interface Props {
   numFollowingButtons: number;
   popupsMountPoint?: HTMLElement | undefined;
   popupsBoundariesElement?: HTMLElement | undefined;
+  editorWidth?: number;
 }
 
 export interface State {
@@ -56,6 +60,12 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     // Keymapping must be added here at the document level as editor focus is lost
     // when the picker opens so plugins/emojis/keymaps.ts will not register ESC
     document.addEventListener('keydown', this.handleEscape);
+  }
+
+  componentWillReceiveProps(props) {
+    if (!this.pluginState && props.pluginKey) {
+      this.setPluginState(props);
+    }
   }
 
   componentDidUpdate() {
@@ -166,11 +176,13 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   }
 
   render() {
+    const { editorWidth, isDisabled } = this.props;
     const { isOpen, disabled }  = this.state;
     const toolbarButton = (
       <ToolbarButton
+        spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
         selected={isOpen}
-        disabled={disabled}
+        disabled={disabled || isDisabled}
         onClick={this.toggleOpen}
         iconBefore={<EmojiIcon label="Insert emoji (:)" />}
         ref={this.handleButtonRef}
@@ -178,12 +190,13 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
         hideTooltip={isOpen}
       />
     );
-
     return (
-      <div>
+      <OuterContainer
+        width={editorWidth && (editorWidth > EditorWidth.BreakPoint6 ? 'large' : 'small')}
+      >
         {toolbarButton}
         {this.renderPopup()}
-      </div>
+      </OuterContainer>
     );
   }
 

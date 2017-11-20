@@ -12,6 +12,7 @@ import {
   chaiPlugin,
   doc,
   makeEditor,
+  a as link,
   p,
   code_block,
   plain,
@@ -42,6 +43,15 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '**text**', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'))));
+      expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(true);
+    });
+
+    it('should convert text to strong for link also', () => {
+      const { editorView, sel } = editor(doc(p('**', link({ href: 'http://www.atlassian.com' })('Atlassian'), '{<>}')));
+
+      insertText(editorView, '**', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p(strong(link({ href: 'http://www.atlassian.com' })('Atlassian')))));
       expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(true);
     });
 

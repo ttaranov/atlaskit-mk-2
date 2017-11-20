@@ -1,10 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
+import SizeDetector from '@atlaskit/size-detector';
 import PluginSlot from '../PluginSlot';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import ContentStyles from '../ContentStyles';
-import Avatars from '../../plugins/collab-edit//ui/avatars';
+import Avatars from '../../plugins/collab-edit/ui/avatars';
 
 // tslint:disable-next-line:variable-name
 const FullPageEditorWrapper = styled.div`
@@ -53,15 +54,6 @@ const MainToolbar = styled.div`
   border-bottom: 1px solid ${akColorN30};
   display: flex;
   height: 80px;
-
-  & > div > * {
-    margin-left: 4px;
-  }
-
-  & > div > *:first-child {
-    margin-left: 0;
-    margin-right: 8px;
-  }
 `;
 MainToolbar.displayName = 'MainToolbar';
 
@@ -99,45 +91,41 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       editorView,
       eventDispatcher,
       providerFactory,
-      contentComponents, primaryToolbarComponents,
+      primaryToolbarComponents,
       customPrimaryToolbarComponents, customContentComponents,
       popupsMountPoint, popupsBoundariesElement,
       disabled
     } = this.props;
 
     return (
-      <FullPageEditorWrapper>
-        <MainToolbar>
-          <PluginSlot
-            editorView={editorView}
-            eventDispatcher={eventDispatcher}
-            providerFactory={providerFactory}
-            appearance={this.appearance}
-            items={primaryToolbarComponents}
-            popupsMountPoint={popupsMountPoint}
-            popupsBoundariesElement={popupsBoundariesElement}
-            disabled={disabled}
-          />
-          <MainToolbarCustomComponentsSlot>
-            <Avatars editorView={editorView} eventDispatcher={eventDispatcher} />
-            {customPrimaryToolbarComponents}
-          </MainToolbarCustomComponentsSlot>
-        </MainToolbar>
-        <ScrollContainer>
-          <ContentArea innerRef={this.handleRef}>
-            {customContentComponents}
+      <SizeDetector>
+      {({ width }) => (
+        <FullPageEditorWrapper>
+          <MainToolbar>
             <PluginSlot
               editorView={editorView}
               eventDispatcher={eventDispatcher}
               providerFactory={providerFactory}
               appearance={this.appearance}
-              items={contentComponents}
+              items={primaryToolbarComponents}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
+              disabled={disabled}
+              editorWidth={width}
             />
-          </ContentArea>
-        </ScrollContainer>
-      </FullPageEditorWrapper>
+            <MainToolbarCustomComponentsSlot>
+              <Avatars editorView={editorView} eventDispatcher={eventDispatcher} />
+              {customPrimaryToolbarComponents}
+            </MainToolbarCustomComponentsSlot>
+          </MainToolbar>
+          <ScrollContainer>
+            <ContentArea innerRef={this.handleRef}>
+              {customContentComponents}
+            </ContentArea>
+          </ScrollContainer>
+        </FullPageEditorWrapper>
+      )}
+      </SizeDetector>
     );
   }
 }

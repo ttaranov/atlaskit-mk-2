@@ -2,10 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
-import {
-  ToolbarButton,
-  ToolbarMedia,
-} from '@atlaskit/editor-core';
+import { ToolbarButton } from '@atlaskit/editor-core';
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import {
   chaiPlugin,
@@ -16,7 +13,7 @@ import Editor from '../../src';
 
 chai.use(chaiPlugin);
 
-describe('media', () => {
+describe.only('media', () => {
   const resolvedProvider = storyMediaProviderFactory();
   const noop = () => {};
 
@@ -32,7 +29,10 @@ describe('media', () => {
     const resolvedMediaProvider = await resolvedProvider;
     await resolvedMediaProvider.uploadContext;
 
-    expect(editor.find(ToolbarMedia).find(ToolbarButton)).to.have.length(1);
+    expect(editor
+      .find(ToolbarButton)
+      .filterWhere(btn => btn.html().indexOf('Insert files and images') > -1)
+    ).to.have.length(1);
   });
 
   it('should not show media icon if provider is not set', () => {
@@ -43,7 +43,10 @@ describe('media', () => {
       onChange={noop}
     />);
 
-    expect(editor.find(ToolbarMedia).find(ToolbarButton)).to.have.length(0);
+    expect(editor
+      .find(ToolbarButton)
+      .filterWhere(btn => btn.html().indexOf('Insert files and images') > -1)
+    ).to.have.length(0);
   });
 
   it('should not show media icon if provider setting promise has been rejected', async () => {
@@ -58,7 +61,10 @@ describe('media', () => {
     />);
 
     await rejectedProvider.catch(noop);
-    expect(editor.find(ToolbarMedia).find(ToolbarButton)).to.have.length(0);
+    expect(editor
+      .find(ToolbarButton)
+      .filterWhere(btn => btn.html().indexOf('Insert files and images') > -1)
+    ).to.have.length(0);
   });
 
   it('should hide media icon if provider setting promise has been updated to rejected', async () => {
@@ -80,7 +86,10 @@ describe('media', () => {
     // wait while the changes apply
     await rejectedProvider.catch(noop);
 
-    expect(editor.find(ToolbarMedia).find(ToolbarButton)).to.have.length(0);
+    expect(editor
+      .find(ToolbarButton)
+      .filterWhere(btn => btn.html().indexOf('Insert files and images') > -1)
+    ).to.have.length(0);
   });
 
   it('should show media icon if provider setting promise has been updated to resolved', async () => {
@@ -103,7 +112,10 @@ describe('media', () => {
     const resolvedMediaProvider = await resolvedProvider;
     await resolvedMediaProvider.uploadContext;
 
-    expect(editor.find(ToolbarMedia).find(ToolbarButton)).to.have.length(1);
+    expect(editor
+      .find(ToolbarButton)
+      .filterWhere(btn => btn.html().indexOf('Insert files and images') > -1)
+    ).to.have.length(1);
   });
 
   it('should show spinner only when the save button was clicked', async () => {
