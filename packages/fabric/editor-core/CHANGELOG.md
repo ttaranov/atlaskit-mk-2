@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.2.0
+- [minor] allow consumers of BB Transformer to disable BB link stripping [96424fa](96424fa)
+- [minor] allow consumers of BB Transformer to disable BB link stripping [96424fa](96424fa)
+
 ## 60.1.0
 - [minor] ED-2146, when pasting link inline style marks should be cleared from position after link. [bfdcb66](bfdcb66)
 - [minor] ED-2146, when pasting link inline style marks should be cleared from position after link. [bfdcb66](bfdcb66)
