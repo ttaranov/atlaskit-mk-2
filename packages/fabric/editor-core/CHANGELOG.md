@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.1.0
+- [minor] ED-2146, when pasting link inline style marks should be cleared from position after link. [bfdcb66](bfdcb66)
+- [minor] ED-2146, when pasting link inline style marks should be cleared from position after link. [bfdcb66](bfdcb66)
+
 ## 60.0.0
 - [major] Use correct dependencies  [7b178b1](7b178b1)
 - [major] Use correct dependencies  [7b178b1](7b178b1)

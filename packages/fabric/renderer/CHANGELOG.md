@@ -1,5 +1,7 @@
 # @atlaskit/renderer
 
+## 8.9.0
+
 ## 8.8.1
 - [patch] Use correct dependencies  [7b178b1](7b178b1)
 - [patch] Use correct dependencies  [7b178b1](7b178b1)
