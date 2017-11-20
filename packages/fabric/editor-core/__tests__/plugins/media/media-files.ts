@@ -16,7 +16,7 @@ import {
   taskList,
 } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { insertFile } from '../../../src/plugins/media/media-files';
+import { insertFiles } from '../../../src/plugins/media/media-files';
 import { setNodeSelection } from '../../../src/utils';
 
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
@@ -33,9 +33,9 @@ describe('media-links', () => {
     it('inserts media node into the document after current paragraph node', () => {
       const { editorView } = editor(doc(p('text{<>}')));
 
-      insertFile(
+      insertFiles(
         editorView,
-        { id: temporaryFileId, status: 'uploading' },
+        [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
       );
 
@@ -58,9 +58,9 @@ describe('media-links', () => {
     it('puts cursor to the next paragraph after inserting media node', () => {
       const { editorView } = editor(doc(p('text{<>}')));
 
-      insertFile(
+      insertFiles(
         editorView,
-        { id: temporaryFileId, status: 'uploading' },
+        [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
       );
 
@@ -92,9 +92,9 @@ describe('media-links', () => {
         ),
       );
 
-      insertFile(
+      insertFiles(
         editorView,
-        { id: 'mock2', status: 'uploading' },
+        [{ id: 'mock2', status: 'uploading' }],
         testCollectionName,
       );
 
@@ -134,9 +134,9 @@ describe('media-links', () => {
         ),
       );
 
-      insertFile(
+      insertFiles(
         editorView,
-        { id: 'mock2', status: 'uploading' },
+        [{ id: 'mock2', status: 'uploading' }],
         testCollectionName,
       );
 
@@ -166,9 +166,9 @@ describe('media-links', () => {
       it('splits text', () => {
         const { editorView } = editor(doc(p('te{<>}xt')));
 
-        insertFile(
+        insertFiles(
           editorView,
-          { id: temporaryFileId, status: 'uploading' },
+          [{ id: temporaryFileId, status: 'uploading' }],
           testCollectionName,
         );
 
@@ -200,9 +200,9 @@ describe('media-links', () => {
           }),
         ).nodeSize;
 
-        insertFile(
+        insertFiles(
           editorView,
-          { id: temporaryFileId, status: 'uploading' },
+          [{ id: temporaryFileId, status: 'uploading' }],
           testCollectionName,
         );
 
@@ -217,9 +217,9 @@ describe('media-links', () => {
       it('preserves heading', () => {
         const { editorView } = editor(doc(h1('te{<>}xt')));
 
-        insertFile(
+        insertFiles(
           editorView,
-          { id: temporaryFileId, status: 'uploading' },
+          [{ id: temporaryFileId, status: 'uploading' }],
           testCollectionName,
         );
 
@@ -246,9 +246,9 @@ describe('media-links', () => {
         it('replaces selection with a media node', () => {
           const { editorView } = editor(doc(p('te{<}x{>}t')));
 
-          insertFile(
+          insertFiles(
             editorView,
-            { id: temporaryFileId, status: 'uploading' },
+            [{ id: temporaryFileId, status: 'uploading' }],
             testCollectionName,
           );
 
@@ -275,9 +275,9 @@ describe('media-links', () => {
             it('replaces selection with a media node', () => {
               const { editorView } = editor(doc(p('{<}text{>}')));
 
-              insertFile(
+              insertFiles(
                 editorView,
-                { id: temporaryFileId, status: 'uploading' },
+                [{ id: temporaryFileId, status: 'uploading' }],
                 testCollectionName,
               );
 
@@ -301,9 +301,9 @@ describe('media-links', () => {
             it('replaces selection with a media node', () => {
               const { editorView } = editor(doc(h1('{<}text{>}')));
 
-              insertFile(
+              insertFiles(
                 editorView,
-                { id: temporaryFileId, status: 'uploading' },
+                [{ id: temporaryFileId, status: 'uploading' }],
                 testCollectionName,
               );
 
@@ -347,9 +347,9 @@ describe('media-links', () => {
               ),
             );
 
-            insertFile(
+            insertFiles(
               editorView,
-              { id: 'new one', status: 'uploading' },
+              [{ id: 'new one', status: 'uploading' }],
               testCollectionName,
             );
 
@@ -386,9 +386,9 @@ describe('media-links', () => {
         it('replaces selection with a media node', () => {
           const { editorView } = editor(doc(p('te{<}xt{>}')));
 
-          insertFile(
+          insertFiles(
             editorView,
-            { id: temporaryFileId, status: 'uploading' },
+            [{ id: temporaryFileId, status: 'uploading' }],
             testCollectionName,
           );
 
@@ -422,9 +422,9 @@ describe('media-links', () => {
             ),
           );
 
-          insertFile(
+          insertFiles(
             editorView,
-            { id: 'new one', status: 'uploading' },
+            [{ id: 'new one', status: 'uploading' }],
             testCollectionName,
           );
 
@@ -458,9 +458,9 @@ describe('media-links', () => {
           );
           setNodeSelection(editorView, sel);
 
-          insertFile(
+          insertFiles(
             editorView,
-            { id: temporaryFileId, status: 'uploading' },
+            [{ id: temporaryFileId, status: 'uploading' }],
             testCollectionName,
           );
 
@@ -497,9 +497,9 @@ describe('media-links', () => {
           );
           setNodeSelection(editorView, 1);
 
-          insertFile(
+          insertFiles(
             editorView,
-            { id: 'new one', status: 'uploading' },
+            [{ id: 'new one', status: 'uploading' }],
             testCollectionName,
           );
 
@@ -538,9 +538,9 @@ describe('media-links', () => {
           );
           setNodeSelection(editorView, 0);
 
-          insertFile(
+          insertFiles(
             editorView,
-            { id: 'new one', status: 'uploading' },
+            [{ id: 'new one', status: 'uploading' }],
             testCollectionName,
           );
           const mediaGroupNodeSize = mediaGroup(
@@ -567,9 +567,9 @@ describe('media-links', () => {
             const { editorView } = editor(doc(hr));
             setNodeSelection(editorView, 0);
 
-            insertFile(
+            insertFiles(
               editorView,
-              { id: temporaryFileId, status: 'uploading' },
+              [{ id: temporaryFileId, status: 'uploading' }],
               testCollectionName,
             );
 
@@ -613,9 +613,9 @@ describe('media-links', () => {
               ).nodeSize;
               setNodeSelection(editorView, mediaGroupNodeSize);
 
-              insertFile(
+              insertFiles(
                 editorView,
-                { id: 'new one', status: 'uploading' },
+                [{ id: 'new one', status: 'uploading' }],
                 testCollectionName,
               );
 
@@ -656,9 +656,9 @@ describe('media-links', () => {
               );
               setNodeSelection(editorView, 0);
 
-              insertFile(
+              insertFiles(
                 editorView,
-                { id: 'new one', status: 'uploading' },
+                [{ id: 'new one', status: 'uploading' }],
                 testCollectionName,
               );
 
@@ -712,9 +712,9 @@ describe('media-links', () => {
               ).nodeSize;
               setNodeSelection(editorView, mediaGroupNodeSize);
 
-              insertFile(
+              insertFiles(
                 editorView,
-                { id: 'new one', status: 'uploading' },
+                [{ id: 'new one', status: 'uploading' }],
                 testCollectionName,
               );
 
@@ -752,9 +752,9 @@ describe('media-links', () => {
       it('replaces selection with a media node', () => {
         const { editorView } = editor(doc(p('{<}te{>}xt')));
 
-        insertFile(
+        insertFiles(
           editorView,
-          { id: temporaryFileId, status: 'uploading' },
+          [{ id: temporaryFileId, status: 'uploading' }],
           testCollectionName,
         );
 
@@ -787,9 +787,9 @@ describe('media-links', () => {
           ),
         );
 
-        insertFile(
+        insertFiles(
           editorView,
-          { id: 'new one', status: 'uploading' },
+          [{ id: 'new one', status: 'uploading' }],
           testCollectionName,
         );
 
@@ -817,9 +817,9 @@ describe('media-links', () => {
   it(`should insert media node into the document after current heading node`, () => {
     const { editorView } = editor(doc(h1('text{<>}')));
 
-    insertFile(
+    insertFiles(
       editorView,
-      { id: temporaryFileId, status: 'uploading' },
+      [{ id: temporaryFileId, status: 'uploading' }],
       testCollectionName,
     );
 
@@ -842,9 +842,9 @@ describe('media-links', () => {
   it(`should insert media node into the document after current codeblock node`, () => {
     const { editorView } = editor(doc(code_block()('text{<>}')));
 
-    insertFile(
+    insertFiles(
       editorView,
-      { id: temporaryFileId, status: 'uploading' },
+      [{ id: temporaryFileId, status: 'uploading' }],
       testCollectionName,
     );
 
@@ -868,9 +868,9 @@ describe('media-links', () => {
     it('replaces empty paragraph with the media grroup in an empty document', () => {
       const { editorView } = editor(doc(p('{<>}')));
 
-      insertFile(
+      insertFiles(
         editorView,
-        { id: temporaryFileId, status: 'uploading' },
+        [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
       );
 
@@ -892,9 +892,9 @@ describe('media-links', () => {
     it('apends media group to empty paragraph in an empty code block', () => {
       const { editorView } = editor(doc(code_block()('{<>}')));
 
-      insertFile(
+      insertFiles(
         editorView,
-        { id: temporaryFileId, status: 'uploading' },
+        [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
       );
 
@@ -917,9 +917,9 @@ describe('media-links', () => {
     it('apends media group to empty paragraph in an empty heading', () => {
       const { editorView } = editor(doc(h1('{<>}')));
 
-      insertFile(
+      insertFiles(
         editorView,
-        { id: temporaryFileId, status: 'uploading' },
+        [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
       );
 
@@ -953,9 +953,9 @@ describe('media-links', () => {
         ),
       );
 
-      insertFile(
+      insertFiles(
         editorView,
-        { id: 'another one', status: 'uploading' },
+        [{ id: 'another one', status: 'uploading' }],
         testCollectionName,
       );
 
@@ -982,9 +982,9 @@ describe('media-links', () => {
     it('should replace empty paragraph with mediaGroup and preserve next empty paragraph', () => {
       const { editorView } = editor(doc(p('{<>}'), p()));
 
-      insertFile(
+      insertFiles(
         editorView,
-        { id: temporaryFileId, status: 'uploading' },
+        [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
       );
 
@@ -1006,9 +1006,9 @@ describe('media-links', () => {
     it('should replace empty paragraph with mediaGroup and preserve previous empty paragraph', () => {
       const { editorView } = editor(doc(p(), p('{<>}')));
 
-      insertFile(
+      insertFiles(
         editorView,
-        { id: temporaryFileId, status: 'uploading' },
+        [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
       );
 
@@ -1031,8 +1031,11 @@ describe('media-links', () => {
     it('should insert all media nodes on the same line', async () => {
       const { editorView } = editor(doc(p('{<>}')));
 
-      insertFile(editorView, { id: 'mock2' }, testCollectionName);
-      insertFile(editorView, { id: 'mock1' }, testCollectionName);
+      insertFiles(
+        editorView,
+        [{ id: 'mock1' }, { id: 'mock2' }],
+        testCollectionName,
+      );
 
       expect(editorView.state.doc).toEqualDocument(
         doc(
@@ -1060,9 +1063,9 @@ describe('media-links', () => {
       const itemDoc = doc(taskList()(taskItem()('{<>}')));
       const { editorView } = editor(itemDoc);
 
-      insertFile(
+      insertFiles(
         editorView,
-        { id: temporaryFileId, status: 'uploading' },
+        [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
       );
 
@@ -1074,9 +1077,9 @@ describe('media-links', () => {
       const decisionDoc = doc(decisionList()(decisionItem()('{<>}')));
       const { editorView } = editor(decisionDoc);
 
-      insertFile(
+      insertFiles(
         editorView,
-        { id: temporaryFileId, status: 'uploading' },
+        [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
       );
 
