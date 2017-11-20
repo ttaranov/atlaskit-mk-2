@@ -9,11 +9,10 @@ const withContextFromProps = (
   propTypes: {},
   BaseComponent: ComponentType<*> = DefaultBaseComponent,
 ) => {
-  class ContextProps extends Component {
-    props: Props; // eslint-disable-line react/sort-comp
-
+  class ContextProps extends Component<Props> {
     getChildContext() {
       const props = Object.keys(this.props).reduce((result, key) => {
+        // eslint-disable-next-line no-param-reassign
         if (key !== 'children') result[key] = this.props[key];
 
         return result;
