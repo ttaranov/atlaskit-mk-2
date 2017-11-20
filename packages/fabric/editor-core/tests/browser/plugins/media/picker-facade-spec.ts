@@ -203,14 +203,16 @@ describe('Media PickerFacade', () => {
           files: [testFileData],
         });
         expect(
-          cb.calledWithExactly({
-            id: testTemporaryFileId,
-            status: 'uploading',
-            publicId: undefined,
-            fileName: testFileData.name,
-            fileSize: testFileData.size,
-            fileMimeType: testFileData.type,
-          }),
+          cb.calledWithExactly([
+            {
+              id: testTemporaryFileId,
+              status: 'uploading',
+              publicId: undefined,
+              fileName: testFileData.name,
+              fileSize: testFileData.size,
+              fileMimeType: testFileData.type,
+            },
+          ]),
         ).to.eq(true);
       });
 

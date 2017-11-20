@@ -73,7 +73,7 @@ describe('Media plugin', () => {
     const mediaNodeWithPos = pluginState.findMediaNode(id);
     assert(
       mediaNodeWithPos,
-      `Media node with id "${id}" has not been mounted yet`
+      `Media node with id "${id}" has not been mounted yet`,
     );
 
     return mediaNodeWithPos!.getPos();
@@ -97,7 +97,7 @@ describe('Media plugin', () => {
 
     pluginState.insertFileFromDataUrl(
       'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
-      'test.gif'
+      'test.gif',
     );
 
     sinon.assert.calledOnce(pluginState.binaryPicker!.upload as any);
@@ -114,7 +114,7 @@ describe('Media plugin', () => {
 
     await mediaProvider;
 
-    pluginState.insertFile({ id: temporaryFileId, status: 'uploading' });
+    pluginState.insertFile([{ id: temporaryFileId, status: 'uploading' }]);
 
     stateManager.updateState(temporaryFileId, {
       id: temporaryFileId,
@@ -127,7 +127,7 @@ describe('Media plugin', () => {
 
     expect(handler.calledOnce).to.eq(
       true,
-      'uploadErrorHandler should be called once per failed upload'
+      'uploadErrorHandler should be called once per failed upload',
     );
     expect(
       handler.calledWithExactly({
@@ -137,10 +137,10 @@ describe('Media plugin', () => {
           name: 'some-error',
           description: 'something went wrong',
         },
-      })
+      }),
     ).to.eq(
       true,
-      "uploadErrorHandler should be called with MediaState containing 'error' status"
+      "uploadErrorHandler should be called with MediaState containing 'error' status",
     );
     collectionFromProvider.restore();
     pluginState.destroy();
@@ -156,7 +156,7 @@ describe('Media plugin', () => {
     const provider = await mediaProvider;
     await provider.uploadContext;
 
-    pluginState.insertFile({ id: temporaryFileId, status: 'uploading' });
+    pluginState.insertFile([{ id: temporaryFileId, status: 'uploading' }]);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -166,10 +166,10 @@ describe('Media plugin', () => {
             id: temporaryFileId,
             type: 'file',
             collection: testCollectionName,
-          })
+          }),
         ),
-        p()
-      )
+        p(),
+      ),
     );
 
     stateManager.updateState(temporaryFileId, {
@@ -198,9 +198,11 @@ describe('Media plugin', () => {
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
 
-    pluginState.insertFile({ id: firstTemporaryFileId, status: 'uploading' });
-    pluginState.insertFile({ id: secondTemporaryFileId, status: 'uploading' });
-    pluginState.insertFile({ id: thirdTemporaryFileId, status: 'uploading' });
+    pluginState.insertFile([
+      { id: firstTemporaryFileId, status: 'uploading' },
+      { id: secondTemporaryFileId, status: 'uploading' },
+      { id: thirdTemporaryFileId, status: 'uploading' },
+    ]);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -220,10 +222,10 @@ describe('Media plugin', () => {
             id: firstTemporaryFileId,
             type: 'file',
             collection: testCollectionName,
-          })
+          }),
         ),
-        p()
-      )
+        p(),
+      ),
     );
 
     stateManager.updateState(firstTemporaryFileId, {
@@ -260,29 +262,29 @@ describe('Media plugin', () => {
             id: thirdTemporaryFileId,
             type: 'file',
             collection: testCollectionName,
-          })
+          }),
         ),
-        p()
-      )
+        p(),
+      ),
     );
 
     expect(spy.callCount).to.eq(
       2,
-      'State Manager should receive "cancelled" status'
+      'State Manager should receive "cancelled" status',
     );
 
     expect(
       spy.calledWithExactly({
         id: firstTemporaryFileId,
         status: 'cancelled',
-      })
+      }),
     ).to.eq(true, 'State Manager should emit "cancelled" status');
 
     expect(
       spy.calledWithExactly({
         id: secondTemporaryFileId,
         status: 'cancelled',
-      })
+      }),
     ).to.eq(true, 'State Manager should emit "cancelled" status');
     collectionFromProvider.restore();
     editorView.destroy();
@@ -302,7 +304,7 @@ describe('Media plugin', () => {
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
 
-    pluginState.insertFile({ id: tempFileId, status: 'uploading' });
+    pluginState.insertFile([{ id: tempFileId, status: 'uploading' }]);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -312,10 +314,10 @@ describe('Media plugin', () => {
             id: tempFileId,
             type: 'file',
             collection: testCollectionName,
-          })
+          }),
         ),
-        p()
-      )
+        p(),
+      ),
     );
 
     stateManager.updateState(tempFileId, {
@@ -338,10 +340,10 @@ describe('Media plugin', () => {
             id: publicFileId,
             type: 'file',
             collection: testCollectionName,
-          })
+          }),
         ),
-        p()
-      )
+        p(),
+      ),
     );
 
     // undo last change
@@ -351,8 +353,8 @@ describe('Media plugin', () => {
       doc(
         p(),
         // the second paragraph is a side effect of PM history snapshots merging
-        p()
-      )
+        p(),
+      ),
     );
     collectionFromProvider.restore();
     editorView.destroy();
@@ -394,11 +396,11 @@ describe('Media plugin', () => {
     const pickersAfterMediaProvider2 = pluginState.pickers;
 
     expect(pickersAfterMediaProvider1).to.have.length(
-      pickersAfterMediaProvider2.length
+      pickersAfterMediaProvider2.length,
     );
     for (let i = 0; i < pickersAfterMediaProvider1.length; i++) {
       expect(pickersAfterMediaProvider1[i]).to.equal(
-        pickersAfterMediaProvider2[i]
+        pickersAfterMediaProvider2[i],
       );
     }
   });
@@ -456,28 +458,28 @@ describe('Media plugin', () => {
     expect(
       spy.calledWithExactly('atlassian.editor.media.file.drop', {
         fileMimeType: 'file/test',
-      })
+      }),
     ).to.eq(true);
 
     (pluginState as any).clipboardPicker!.handleUploadsStart(testFileData);
     expect(
       spy.calledWithExactly('atlassian.editor.media.file.paste', {
         fileMimeType: 'file/test',
-      })
+      }),
     ).to.eq(true);
 
     (pluginState as any).popupPicker!.handleUploadsStart(testFileData);
     expect(
       spy.calledWithExactly('atlassian.editor.media.file.popup', {
         fileMimeType: 'file/test',
-      })
+      }),
     ).to.eq(true);
 
     (pluginState as any).binaryPicker!.handleUploadsStart(testFileData);
     expect(
       spy.calledWithExactly('atlassian.editor.media.file.binary', {
         fileMimeType: 'file/test',
-      })
+      }),
     ).to.eq(true);
   });
 
@@ -493,9 +495,9 @@ describe('Media plugin', () => {
         doc(
           mediaGroup(deletingMediaNode),
           mediaGroup(
-            media({ id: 'bar', type: 'file', collection: testCollectionName })
-          )
-        )
+            media({ id: 'bar', type: 'file', collection: testCollectionName }),
+          ),
+        ),
       );
 
       const pos = getNodePos(pluginState, deletingMediaNodeId);
@@ -504,9 +506,9 @@ describe('Media plugin', () => {
       expect(editorView.state.doc).to.deep.equal(
         doc(
           mediaGroup(
-            media({ id: 'bar', type: 'file', collection: testCollectionName })
-          )
-        )
+            media({ id: 'bar', type: 'file', collection: testCollectionName }),
+          ),
+        ),
       );
       editorView.destroy();
       pluginState.destroy();
@@ -522,7 +524,7 @@ describe('Media plugin', () => {
           collection: testCollectionName,
         });
         const { editorView, pluginState } = editor(
-          doc(mediaGroup(deletingMediaNode))
+          doc(mediaGroup(deletingMediaNode)),
         );
         setNodeSelection(editorView, 1);
 
@@ -540,7 +542,7 @@ describe('Media plugin', () => {
           collection: testCollectionName,
         });
         const { editorView, pluginState } = editor(
-          doc(mediaGroup(deletingMediaNode))
+          doc(mediaGroup(deletingMediaNode)),
         );
         setNodeSelection(editorView, 1);
 
@@ -558,14 +560,14 @@ describe('Media plugin', () => {
           collection: testCollectionName,
         });
         const { editorView, pluginState } = editor(
-          doc(hr, mediaGroup(deletingMediaNode))
+          doc(hr, mediaGroup(deletingMediaNode)),
         );
         setNodeSelection(editorView, 1);
 
         pluginState.removeSelectedMediaNode();
 
         expect(editorView.state.doc).to.deep.equal(
-          doc(hr, mediaGroup(deletingMediaNode))
+          doc(hr, mediaGroup(deletingMediaNode)),
         );
         editorView.destroy();
         pluginState.destroy();
@@ -578,7 +580,7 @@ describe('Media plugin', () => {
           collection: testCollectionName,
         });
         const { editorView, pluginState } = editor(
-          doc(hr, mediaGroup(deletingMediaNode))
+          doc(hr, mediaGroup(deletingMediaNode)),
         );
         setNodeSelection(editorView, 1);
 
@@ -596,13 +598,13 @@ describe('Media plugin', () => {
           collection: testCollectionName,
         });
         const { editorView, pluginState } = editor(
-          doc('hello{<>}', mediaGroup(deletingMediaNode))
+          doc('hello{<>}', mediaGroup(deletingMediaNode)),
         );
 
         pluginState.removeSelectedMediaNode();
 
         expect(editorView.state.doc).to.deep.equal(
-          doc('hello', mediaGroup(deletingMediaNode))
+          doc('hello', mediaGroup(deletingMediaNode)),
         );
         editorView.destroy();
         pluginState.destroy();
@@ -615,7 +617,7 @@ describe('Media plugin', () => {
           collection: testCollectionName,
         });
         const { pluginState } = editor(
-          doc('hello{<>}', mediaGroup(deletingMediaNode))
+          doc('hello{<>}', mediaGroup(deletingMediaNode)),
         );
 
         expect(pluginState.removeSelectedMediaNode()).to.equal(false);
@@ -628,18 +630,18 @@ describe('Media plugin', () => {
     const { editorView, pluginState } = editor(doc(p('')));
     await mediaProvider;
 
-    pluginState.insertFile({ id: 'foo' });
+    pluginState.insertFile([{ id: 'foo' }]);
     expect(editorView.hasFocus()).to.be.equal(true);
 
-    pluginState.insertFile({ id: 'bar' });
+    pluginState.insertFile([{ id: 'bar' }]);
     expect(editorView.state.doc).to.deep.equal(
       doc(
         mediaGroup(
           media({ id: 'bar', type: 'file', collection: testCollectionName }),
-          media({ id: 'foo', type: 'file', collection: testCollectionName })
+          media({ id: 'foo', type: 'file', collection: testCollectionName }),
         ),
-        p()
-      )
+        p(),
+      ),
     );
     editorView.destroy();
     pluginState.destroy();
@@ -651,13 +653,15 @@ describe('Media plugin', () => {
       .stub(pluginState, 'collectionFromProvider')
       .returns(testCollectionName);
 
-    pluginState.insertFile({
-      id: temporaryFileId,
-      status: 'uploading',
-      fileName: 'foo.png',
-      fileSize: 1234,
-      fileMimeType: 'image/png',
-    });
+    pluginState.insertFile([
+      {
+        id: temporaryFileId,
+        status: 'uploading',
+        fileName: 'foo.png',
+        fileSize: 1234,
+        fileMimeType: 'image/png',
+      },
+    ]);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -669,10 +673,10 @@ describe('Media plugin', () => {
             __fileName: 'foo.png',
             __fileSize: 1234,
             __fileMimeType: 'image/png',
-          })
+          }),
         ),
-        p()
-      )
+        p(),
+      ),
     );
     collectionFromProvider.restore();
     editorView.destroy();
@@ -765,10 +769,10 @@ describe('Media plugin', () => {
               id: `${linkIds![0]}`,
               type: 'link',
               collection: testCollectionName,
-            })
+            }),
           ),
-          p()
-        )
+          p(),
+        ),
       );
       editorView.destroy();
       pluginState.destroy();
@@ -789,9 +793,9 @@ describe('Media plugin', () => {
               id: 'media2',
               type: 'file',
               collection: testCollectionName,
-            })
-          )
-        )
+            }),
+          ),
+        ),
       );
       const positionOfFirstMediaNode = 2;
       setNodeSelection(editorView, positionOfFirstMediaNode);
@@ -805,9 +809,9 @@ describe('Media plugin', () => {
               id: 'media1',
               type: 'file',
               collection: testCollectionName,
-            })
-          )
-        )
+            }),
+          ),
+        ),
       );
       editorView.destroy();
       pluginState.destroy();
@@ -827,9 +831,9 @@ describe('Media plugin', () => {
                 id: 'media2',
                 type: 'file',
                 collection: testCollectionName,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
         const positionOfFirstMediaNode = 1;
         setNodeSelection(editorView, positionOfFirstMediaNode);
@@ -844,9 +848,9 @@ describe('Media plugin', () => {
                 id: 'media2',
                 type: 'file',
                 collection: testCollectionName,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
         editorView.destroy();
         pluginState.destroy();
@@ -857,7 +861,7 @@ describe('Media plugin', () => {
   describe('ignoreLinks', () => {
     it('should set to true when at the beginning of a link', () => {
       const { pluginState } = editor(
-        doc(p(a({ href: 'www.google.com' })('{<>}www.google.com')))
+        doc(p(a({ href: 'www.google.com' })('{<>}www.google.com'))),
       );
       expect(pluginState.ignoreLinks).to.equal(true);
       pluginState.destroy();
@@ -865,7 +869,7 @@ describe('Media plugin', () => {
 
     it('should set to true when at the end of a link', () => {
       const { pluginState } = editor(
-        doc(p(a({ href: 'www.google.com' })('www.google.com{<>}')))
+        doc(p(a({ href: 'www.google.com' })('www.google.com{<>}'))),
       );
       expect(pluginState.ignoreLinks).to.equal(true);
       pluginState.destroy();
@@ -873,7 +877,7 @@ describe('Media plugin', () => {
 
     it('should switch from true to false when insert space after a link', () => {
       const { editorView, pluginState, sel } = editor(
-        doc(p(a({ href: 'www.google.com' })('www.google.com{<>}')))
+        doc(p(a({ href: 'www.google.com' })('www.google.com{<>}'))),
       );
       expect(pluginState.ignoreLinks).to.equal(true);
       insertText(editorView, ' ', sel);
@@ -894,10 +898,10 @@ describe('Media plugin', () => {
                   id: 'media',
                   type: 'file',
                   collection: testCollectionName,
-                })
+                }),
               ),
-              p('hello')
-            )
+              p('hello'),
+            ),
           );
 
           setNodeSelection(editorView, 1);
@@ -911,10 +915,10 @@ describe('Media plugin', () => {
                   id: 'media',
                   type: 'file',
                   collection: testCollectionName,
-                })
+                }),
               ),
-              p('hello')
-            )
+              p('hello'),
+            ),
           );
           editorView.destroy();
           pluginState.destroy();
@@ -930,10 +934,10 @@ describe('Media plugin', () => {
                   id: 'media',
                   type: 'file',
                   collection: testCollectionName,
-                })
+                }),
               ),
-              p('hel{<>}lo')
-            )
+              p('hel{<>}lo'),
+            ),
           );
 
           pluginState.align('right', 'block');
@@ -945,10 +949,10 @@ describe('Media plugin', () => {
                   id: 'media',
                   type: 'file',
                   collection: testCollectionName,
-                })
+                }),
               ),
-              p('hello')
-            )
+              p('hello'),
+            ),
           );
           editorView.destroy();
           pluginState.destroy();
@@ -961,7 +965,7 @@ describe('Media plugin', () => {
     // Copied from MediaPicker DropZone test spec
     const createDragOverOrLeaveEvent = (
       eventName: 'dragover' | 'dragleave',
-      type?: string
+      type?: string,
     ) => {
       const event = document.createEvent('Event') as any;
       event.initEvent(eventName, true, true);
@@ -1018,7 +1022,7 @@ describe('Media plugin', () => {
 
     it('should show the placeholder for code block', async () => {
       const { editorView } = editor(
-        doc(code_block()('const foo = undefined;{<>}'))
+        doc(code_block()('const foo = undefined;{<>}')),
       );
 
       const provider = await mediaProvider;
@@ -1031,7 +1035,7 @@ describe('Media plugin', () => {
       const dragZoneDom = getWidgetDom(editorView);
       expect(dragZoneDom).to.not.equal(null);
       expect(dragZoneDom!.previousSibling!.textContent).to.equal(
-        'const foo = undefined;'
+        'const foo = undefined;',
       );
       expect(dragZoneDom!.nextSibling!.textContent).to.equal('');
 

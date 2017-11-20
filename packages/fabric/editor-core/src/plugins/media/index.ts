@@ -91,14 +91,14 @@ export class MediaPluginState {
     const { nodes } = state.schema;
     assert(
       nodes.media && nodes.mediaGroup,
-      'Editor: unable to init media plugin - media or mediaGroup node absent in schema'
+      'Editor: unable to init media plugin - media or mediaGroup node absent in schema',
     );
 
     this.stateManager = new DefaultMediaStateManager();
     options.providerFactory.subscribe(
       'mediaProvider',
       (name, provider: Promise<MediaProvider>) =>
-        this.setMediaProvider(provider)
+        this.setMediaProvider(provider),
     );
 
     this.errorReporter = options.errorReporter || new ErrorReporter();
@@ -140,11 +140,11 @@ export class MediaPluginState {
         resolvedMediaProvider && resolvedMediaProvider.viewContext,
         `MediaProvider promise did not resolve to a valid instance of MediaProvider - ${
           resolvedMediaProvider
-        }`
+        }`,
       );
     } catch (err) {
       const wrappedError = new Error(
-        `Media functionality disabled due to rejected provider: ${err.message}`
+        `Media functionality disabled due to rejected provider: ${err.message}`,
       );
       this.errorReporter.captureException(wrappedError);
 
@@ -197,15 +197,16 @@ export class MediaPluginState {
     this.notifyPluginStateSubscribers();
   };
 
-  insertFile = (mediaState: MediaState): void => {
+  insertFile = (mediaStates: MediaState[]): void => {
     const collection = this.collectionFromProvider();
     if (!collection) {
       return;
     }
 
-    this.stateManager.subscribe(mediaState.id, this.handleMediaState);
-
-    insertFile(this.view, mediaState, collection);
+    mediaStates.forEach(mediaState => {
+      this.stateManager.subscribe(mediaState.id, this.handleMediaState);
+      insertFile(this.view, mediaState, collection);
+    });
 
     const { view } = this;
     if (!view.hasFocus()) {
@@ -233,7 +234,7 @@ export class MediaPluginState {
 
     if (!(linkCreateContextInstance as Context).addLinkItem) {
       linkCreateContextInstance = ContextFactory.create(
-        linkCreateContextInstance as ContextConfig
+        linkCreateContextInstance as ContextConfig,
       );
     }
 
@@ -243,7 +244,7 @@ export class MediaPluginState {
       this.handleMediaState,
       this.linkRanges,
       linkCreateContextInstance as Context,
-      this.collectionFromProvider()
+      this.collectionFromProvider(),
     );
   };
 
@@ -255,7 +256,7 @@ export class MediaPluginState {
     const { binaryPicker } = this;
     assert(
       binaryPicker,
-      'Unable to insert file because media pickers have not been initialized yet'
+      'Unable to insert file because media pickers have not been initialized yet',
     );
 
     binaryPicker!.upload(url, fileName);
@@ -284,9 +285,9 @@ export class MediaPluginState {
         setTimeout(
           () =>
             reject(
-              new Error(`Media operations did not finish in ${timeout} ms`)
+              new Error(`Media operations did not finish in ${timeout} ms`),
             ),
-          timeout
+          timeout,
         );
       }
 
@@ -375,7 +376,10 @@ export class MediaPluginState {
     }
     const { selection: { from }, schema, tr } = this.view.state;
     this.view.dispatch(
-      tr.setNodeType(from - 1, schema.nodes.singleImage, { alignment, display })
+      tr.setNodeType(from - 1, schema.nodes.singleImage, {
+        alignment,
+        display,
+      }),
     );
     return true;
   };
@@ -400,7 +404,7 @@ export class MediaPluginState {
     return mediaNodes.reduce(
       (
         memo: MediaNodeWithPosHandler | null,
-        nodeWithPos: MediaNodeWithPosHandler
+        nodeWithPos: MediaNodeWithPosHandler,
       ) => {
         if (memo) {
           return memo;
@@ -413,7 +417,7 @@ export class MediaPluginState {
 
         return memo;
       },
-      null
+      null,
     );
   };
 
@@ -433,7 +437,7 @@ export class MediaPluginState {
     this.linkRanges = detectLinkRangesInSteps(
       tr,
       link,
-      oldState.selection.$anchor.pos
+      oldState.selection.$anchor.pos,
     );
   };
 
@@ -462,8 +466,8 @@ export class MediaPluginState {
           uploadParams,
           context,
           stateManager,
-          errorReporter
-        ))
+          errorReporter,
+        )),
       );
       pickers.push(
         (this.popupPicker = new PickerFacade(
@@ -471,8 +475,8 @@ export class MediaPluginState {
           uploadParams,
           context,
           stateManager,
-          errorReporter
-        ))
+          errorReporter,
+        )),
       );
       pickers.push(
         (this.clipboardPicker = new PickerFacade(
@@ -480,8 +484,8 @@ export class MediaPluginState {
           uploadParams,
           context,
           stateManager,
-          errorReporter
-        ))
+          errorReporter,
+        )),
       );
       pickers.push(
         (this.dropzonePicker = new PickerFacade(
@@ -489,49 +493,31 @@ export class MediaPluginState {
           uploadParams,
           context,
           stateManager,
-          errorReporter
-        ))
+          errorReporter,
+        )),
       );
 
-      pickers.forEach(picker => picker.onNewMedia(this.insertFile));
+      pickers.forEach(picker => {
+        picker.onNewMedia(this.insertFile);
+        picker.onNewMedia(this.trackNewMediaEvent(picker.pickerType));
+      });
       this.dropzonePicker.onDrag(this.handleDrag);
-
-      this.binaryPicker.onNewMedia(mediaState =>
-        analyticsService.trackEvent(
-          'atlassian.editor.media.file.binary',
-          mediaState.fileMimeType
-            ? { fileMimeType: mediaState.fileMimeType }
-            : {}
-        )
-      );
-      this.popupPicker.onNewMedia(mediaState =>
-        analyticsService.trackEvent(
-          'atlassian.editor.media.file.popup',
-          mediaState.fileMimeType
-            ? { fileMimeType: mediaState.fileMimeType }
-            : {}
-        )
-      );
-      this.clipboardPicker.onNewMedia(mediaState =>
-        analyticsService.trackEvent(
-          'atlassian.editor.media.file.paste',
-          mediaState.fileMimeType
-            ? { fileMimeType: mediaState.fileMimeType }
-            : {}
-        )
-      );
-      this.dropzonePicker.onNewMedia(mediaState =>
-        analyticsService.trackEvent(
-          'atlassian.editor.media.file.drop',
-          mediaState.fileMimeType
-            ? { fileMimeType: mediaState.fileMimeType }
-            : {}
-        )
-      );
     }
 
     // set new upload params for the pickers
     pickers.forEach(picker => picker.setUploadParams(uploadParams));
+  }
+
+  private trackNewMediaEvent(pickerType) {
+    return (mediaStates: MediaState[]) =>
+      mediaStates.forEach(mediaState => {
+        analyticsService.trackEvent(
+          `atlassian.editor.media.file.${pickerType}`,
+          mediaState.fileMimeType
+            ? { fileMimeType: mediaState.fileMimeType }
+            : {},
+        );
+      });
   }
 
   private collectionFromProvider(): string | undefined {
@@ -571,7 +557,7 @@ export class MediaPluginState {
       removeMediaNode(
         this.view,
         mediaNodeWithPos.node,
-        mediaNodeWithPos.getPos
+        mediaNodeWithPos.getPos,
       );
     }
   };
@@ -602,7 +588,7 @@ export class MediaPluginState {
     const tr = view.state.tr.replaceWith(
       nodePos,
       nodePos + mediaNode.nodeSize,
-      newNode
+      newNode,
     );
     view.dispatch(tr.setMeta('addToHistory', false));
   };
@@ -654,7 +640,7 @@ export const stateKey = new PluginKey('mediaPlugin');
 export const createPlugin = (
   schema: Schema,
   options: MediaPluginOptions,
-  dispatch?: Dispatch
+  dispatch?: Dispatch,
 ) => {
   const dropZone = document.createElement('div');
   ReactDOM.render(React.createElement(DropPlaceholder), dropZone);
@@ -738,7 +724,7 @@ export const createPlugin = (
             mediaGroup: ReactMediaGroupNode,
             media: ReactMediaNode,
           },
-          true
+          true,
         ),
         singleImage: nodeViewFactory(
           options.providerFactory,
@@ -746,14 +732,14 @@ export const createPlugin = (
             singleImage: ReactSingleImageNode,
             media: ReactMediaNode,
           },
-          true
+          true,
         ),
       },
       handleTextInput(
         view: EditorView,
         from: number,
         to: number,
-        text: string
+        text: string,
       ): boolean {
         const pluginState: MediaPluginState = stateKey.getState(view.state);
         pluginState.splitMediaGroup();
@@ -766,10 +752,10 @@ export const createPlugin = (
 const plugins = (
   schema: Schema,
   options: MediaPluginOptions,
-  dispatch?: Dispatch
+  dispatch?: Dispatch,
 ) => {
   return [createPlugin(schema, options, dispatch), keymapPlugin(schema)].filter(
-    plugin => !!plugin
+    plugin => !!plugin,
   ) as Plugin[];
 };
 
