@@ -110,7 +110,8 @@ describe('Media plugin', () => {
 
     await mediaProvider;
 
-    pluginState.insertFile({ id: temporaryFileId, status: 'uploading' });
+    pluginState.insertFile([{ id: temporaryFileId, status: 'uploading' }]);
+
     stateManager.updateState(temporaryFileId, {
       id: temporaryFileId,
       status: 'error',
@@ -145,7 +146,7 @@ describe('Media plugin', () => {
     const provider = await mediaProvider;
     await provider.uploadContext;
 
-    pluginState.insertFile({ id: temporaryFileId, status: 'uploading' });
+    pluginState.insertFile([{ id: temporaryFileId, status: 'uploading' }]);
 
     expect(editorView.state.doc).toEqualDocument(
       doc(
@@ -189,9 +190,11 @@ describe('Media plugin', () => {
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
 
-    pluginState.insertFile({ id: firstTemporaryFileId, status: 'uploading' });
-    pluginState.insertFile({ id: secondTemporaryFileId, status: 'uploading' });
-    pluginState.insertFile({ id: thirdTemporaryFileId, status: 'uploading' });
+    pluginState.insertFile([
+      { id: firstTemporaryFileId, status: 'uploading' },
+      { id: secondTemporaryFileId, status: 'uploading' },
+      { id: thirdTemporaryFileId, status: 'uploading' },
+    ]);
 
     expect(editorView.state.doc).toEqualDocument(
       doc(
@@ -288,7 +291,7 @@ describe('Media plugin', () => {
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
 
-    pluginState.insertFile({ id: tempFileId, status: 'uploading' });
+    pluginState.insertFile([{ id: tempFileId, status: 'uploading' }]);
 
     expect(editorView.state.doc).toEqualDocument(
       doc(
@@ -439,12 +442,12 @@ describe('Media plugin', () => {
 
     // Warning: calling private methods below
     (pluginState as any).dropzonePicker!.handleUploadsStart(testFileData);
-    expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.drop', {
+    expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.dropzone', {
       fileMimeType: 'file/test',
     });
 
     (pluginState as any).clipboardPicker!.handleUploadsStart(testFileData);
-    expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.paste', {
+    expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.clipboard', {
       fileMimeType: 'file/test',
     });
 
@@ -608,10 +611,10 @@ describe('Media plugin', () => {
 
     const spy = jest.spyOn(editorView, 'focus');
 
-    pluginState.insertFile({ id: 'foo' });
+    pluginState.insertFile([{ id: 'foo' }]);
     expect(spy).toHaveBeenCalled();
 
-    pluginState.insertFile({ id: 'bar' });
+    pluginState.insertFile([{ id: 'bar' }]);
     expect(editorView.state.doc).toEqualDocument(
       doc(
         mediaGroup(
@@ -634,13 +637,15 @@ describe('Media plugin', () => {
     );
     collectionFromProvider.mockImplementation(() => testCollectionName);
 
-    pluginState.insertFile({
-      id: temporaryFileId,
-      status: 'uploading',
-      fileName: 'foo.png',
-      fileSize: 1234,
-      fileMimeType: 'image/png',
-    });
+    pluginState.insertFile([
+      {
+        id: temporaryFileId,
+        status: 'uploading',
+        fileName: 'foo.png',
+        fileSize: 1234,
+        fileMimeType: 'image/png',
+      },
+    ]);
 
     expect(editorView.state.doc).toEqualDocument(
       doc(

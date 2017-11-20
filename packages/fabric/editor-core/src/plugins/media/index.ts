@@ -197,15 +197,16 @@ export class MediaPluginState {
     this.notifyPluginStateSubscribers();
   };
 
-  insertFile = (mediaState: MediaState): void => {
+  insertFile = (mediaStates: MediaState[]): void => {
     const collection = this.collectionFromProvider();
     if (!collection) {
       return;
     }
 
-    this.stateManager.subscribe(mediaState.id, this.handleMediaState);
-
-    insertFile(this.view, mediaState, collection);
+    mediaStates.forEach(mediaState => {
+      this.stateManager.subscribe(mediaState.id, this.handleMediaState);
+      insertFile(this.view, mediaState, collection);
+    });
 
     const { view } = this;
     if (!view.hasFocus()) {
@@ -496,45 +497,27 @@ export class MediaPluginState {
         )),
       );
 
-      pickers.forEach(picker => picker.onNewMedia(this.insertFile));
+      pickers.forEach(picker => {
+        picker.onNewMedia(this.insertFile);
+        picker.onNewMedia(this.trackNewMediaEvent(picker.pickerType));
+      });
       this.dropzonePicker.onDrag(this.handleDrag);
-
-      this.binaryPicker.onNewMedia(mediaState =>
-        analyticsService.trackEvent(
-          'atlassian.editor.media.file.binary',
-          mediaState.fileMimeType
-            ? { fileMimeType: mediaState.fileMimeType }
-            : {},
-        ),
-      );
-      this.popupPicker.onNewMedia(mediaState =>
-        analyticsService.trackEvent(
-          'atlassian.editor.media.file.popup',
-          mediaState.fileMimeType
-            ? { fileMimeType: mediaState.fileMimeType }
-            : {},
-        ),
-      );
-      this.clipboardPicker.onNewMedia(mediaState =>
-        analyticsService.trackEvent(
-          'atlassian.editor.media.file.paste',
-          mediaState.fileMimeType
-            ? { fileMimeType: mediaState.fileMimeType }
-            : {},
-        ),
-      );
-      this.dropzonePicker.onNewMedia(mediaState =>
-        analyticsService.trackEvent(
-          'atlassian.editor.media.file.drop',
-          mediaState.fileMimeType
-            ? { fileMimeType: mediaState.fileMimeType }
-            : {},
-        ),
-      );
     }
 
     // set new upload params for the pickers
     pickers.forEach(picker => picker.setUploadParams(uploadParams));
+  }
+
+  private trackNewMediaEvent(pickerType) {
+    return (mediaStates: MediaState[]) =>
+      mediaStates.forEach(mediaState => {
+        analyticsService.trackEvent(
+          `atlassian.editor.media.file.${pickerType}`,
+          mediaState.fileMimeType
+            ? { fileMimeType: mediaState.fileMimeType }
+            : {},
+        );
+      });
   }
 
   private collectionFromProvider(): string | undefined {
