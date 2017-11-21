@@ -45,7 +45,7 @@ import {
 } from '../../nodeviews';
 import keymapPlugin from './keymap';
 import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
-import { insertFilmstrip } from './media-files';
+import { insertFilmstrip, insertSingleImages } from './media-files';
 import { removeMediaNode, splitMediaGroup } from './media-common';
 import PickerFacade from './picker-facade';
 import DropPlaceholder from '../../ui/Media/DropPlaceholder';
@@ -205,16 +205,26 @@ export class MediaPluginState {
   };
 
   insertFiles = (mediaStates: MediaState[]): void => {
+    const { singleImage } = this.view.state.schema.nodes;
     const collection = this.collectionFromProvider();
     if (!collection) {
       return;
     }
 
+    let areImages = true;
+
     mediaStates.forEach(mediaState => {
       this.stateManager.subscribe(mediaState.id, this.handleMediaState);
+      if (!this.isImage(mediaState.fileMimeType)) {
+        areImages = false;
+      }
     });
 
-    insertFilmstrip(this.view, mediaStates, collection);
+    if (this.editorAppearance !== 'message' && areImages && singleImage) {
+      insertSingleImages(this.view, mediaStates, collection);
+    } else {
+      insertFilmstrip(this.view, mediaStates, collection);
+    }
 
     const { view } = this;
     if (!view.hasFocus()) {
@@ -448,6 +458,10 @@ export class MediaPluginState {
       oldState.selection.$anchor.pos,
     );
   };
+
+  private isImage(fileType?: string): boolean {
+    return !!fileType && fileType.indexOf('image/') > -1;
+  }
 
   private destroyPickers = () => {
     const { pickers } = this;
