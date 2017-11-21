@@ -57,6 +57,12 @@ function getPackagesGlobs(subsetName /*?: string */) {
         'fabric/+(code|editor-core|editor-common|editor-bitbucket|editor-cq|editor-jira|renderer)',
       );
 
+    case 'media':
+      return createGlob('fabric/media-*');
+
+    case 'fabric':
+      return createGlob('fabric/**');
+
     case 'elements':
       return createGlob('elements/**');
 

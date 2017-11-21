@@ -1,2 +1,5 @@
-export { filterContentByType } from './filter';
-export { taskDecisionDocFilter } from './task-decision-filter';
+export { filterContentByType, filterSliceByType } from './filter';
+export {
+  taskDecisionDocFilter,
+  taskDecisionSliceFilter,
+} from './task-decision-filter';

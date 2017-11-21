@@ -410,10 +410,11 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
       editor
         .find('ToolbarInsertBlock')
         .find('ToolbarButton')
+        .last()
         .simulate('click');
       editor
         .find('Item')
-        .filterWhere(n => n.text().indexOf(blockType.name) > 0)
+        .filterWhere(n => n.html().indexOf(blockType.name) > 0)
         .find('Element')
         .simulate('click');
       expect(handler.calledWith(`atlassian.editor.format.${blockType.value}.button`)).to.equal(

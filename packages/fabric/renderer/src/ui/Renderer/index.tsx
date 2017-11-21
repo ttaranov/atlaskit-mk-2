@@ -8,7 +8,8 @@ import {
   MentionEventHandler,
   CardEventClickHandler ,
   AppCardEventClickHandler ,
-  AppCardActionEventClickHandler
+  AppCardActionEventClickHandler,
+  ActionEventClickHandler
 } from '@atlaskit/editor-common';
 import {
   ReactSerializer,
@@ -28,6 +29,9 @@ export interface EventHandlers {
   mention?: MentionEventHandlers;
   media?: {
     onClick?: CardEventClickHandler;
+  };
+  action?: {
+    onClick?: ActionEventClickHandler;
   };
   applicationCard?: {
     onClick?: AppCardEventClickHandler;

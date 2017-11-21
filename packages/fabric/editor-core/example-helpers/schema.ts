@@ -43,5 +43,6 @@ export default createSchema({
     'emojiQuery',
     'textColor',
     'subsup',
-  ]
+    'action',
+  ],
 }) as Schema;

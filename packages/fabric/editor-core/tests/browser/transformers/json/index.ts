@@ -50,7 +50,12 @@ describe('JSONTransformer: encode', () => {
   it('should serialize common nodes/marks as ProseMirror does', () => {
     const { editorView } = editor(
       doc(
-        p(strong('>'), ' Atlassian: ', br, a({ href: 'https://atlassian.com' })('Atlassian')),
+        p(
+          strong('>'),
+          ' Atlassian: ',
+          br,
+          a({ href: 'https://atlassian.com' })('Atlassian'),
+        ),
         p(
           em('hello'),
           underline('world'),
@@ -58,7 +63,7 @@ describe('JSONTransformer: encode', () => {
           subsup({ type: 'sub' })('sub'),
           'plain text',
           strike('hey'),
-          textColor({ color: 'red' })('Red :D')
+          textColor({ color: 'red' })('Red :D'),
         ),
         ul(li('ichi'), li('ni'), li('san')),
         ol(li('ek'), li('dui'), li('tin')),
@@ -69,12 +74,11 @@ describe('JSONTransformer: encode', () => {
         h4('H4'),
         h5('H5'),
         h6('H6'),
-        code_block({ language: 'javascript' })(`console.log('hello');`),
         emoji({ shortName: ':joy:' }),
         panel('hello from panel'),
         panelNote('hello from note panel'),
-        hr
-      )
+        hr,
+      ),
     );
     const pmDoc = editorView.state.doc;
     expect(toJSON(pmDoc)).to.deep.equal({
@@ -95,9 +99,9 @@ describe('JSONTransformer: encode', () => {
             __displayType: 'thumbnail',
             __fileMimeType: 'image/png',
             __fileSize: 1234,
-          })
-        )
-      )
+          }),
+        ),
+      ),
     );
     expect(toJSON(editorView.state.doc)).to.deep.equal({
       version: 1,
@@ -120,26 +124,87 @@ describe('JSONTransformer: encode', () => {
     });
   });
 
-  it('should strip unused optional attrs from mention node', () => {
+  it('should strip accessLevel from mention node', () => {
     const { editorView } = editor(
       doc(
-        mention({
-          id: 'id-rick',
-          text: '@Rick Sanchez',
-        })
-      )
+        p(
+          mention({
+            accessLevel: 'CONTAINER',
+            id: 'foo',
+            text: 'fallback',
+            userType: 'APP',
+          }),
+        ),
+      ),
     );
+
     expect(toJSON(editorView.state.doc)).to.deep.equal({
       version: 1,
       type: 'doc',
       content: [
         {
-          type: 'mention',
+          type: 'paragraph',
+          content: [
+            {
+              type: 'mention',
+              attrs: {
+                id: 'foo',
+                text: 'fallback',
+                userType: 'APP',
+              },
+            },
+          ],
+        },
+      ],
+    });
+  });
+
+  it('should strip uniqueId from codeBlock node', () => {
+    const { editorView } = editor(
+      doc(
+        code_block({
+          language: 'javascript',
+          uniqueId: 'foo',
+        })('var foo = 2;'),
+      ),
+    );
+
+    expect(toJSON(editorView.state.doc)).to.deep.equal({
+      version: 1,
+      type: 'doc',
+      content: [
+        {
+          type: 'codeBlock',
           attrs: {
-            id: 'id-rick',
-            text: '@Rick Sanchez',
-            accessLevel: '',
+            language: 'javascript',
           },
+          content: [
+            {
+              type: 'text',
+              text: 'var foo = 2;',
+            },
+          ],
+        },
+      ],
+    });
+  });
+
+  it('should strip language=null from codeBlock node', () => {
+    const { editorView } = editor(doc(code_block()('var foo = 2;')));
+
+    expect(toJSON(editorView.state.doc)).to.deep.equal({
+      version: 1,
+      type: 'doc',
+      content: [
+        {
+          type: 'codeBlock',
+          attrs: {},
+          content: [
+            {
+              type: 'text',
+              text: 'var foo = 2;',
+            },
+          ],
         },
       ],
     });

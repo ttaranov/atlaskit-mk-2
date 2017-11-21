@@ -103,12 +103,31 @@ describe('createChangeset', () => {
     const releases = [{ name: 'pkg-a', type: 'minor' }];
     const dependents = [{ name: 'pkg-b', type: 'patch' }];
     const summary = 'This is a summary';
-
+    const allWorkSpaces = [
+      {
+        name: 'pkg-a',
+        config: {
+          name: 'pkg-a',
+          version: '1.0.3',
+        },
+      },
+      {
+        name: 'pkg-b',
+        config: {
+          name: 'pkg-b',
+          version: '1.2.0',
+          devDependencies: {
+            'pkg-a': '~1.0.3',
+          },
+        },
+      },
+    ];
     beforeEach(async () => {
       mockUserInput(releases, dependents, summary);
       bolt.getDependentsGraph.mockReturnValueOnce(
         Promise.resolve(new Map(dependentsGraph)),
       );
+      bolt.getWorkspaces.mockReturnValueOnce(Promise.resolve(allWorkSpaces));
     });
 
     it('should prompt for changed packages, bump type and summary', async () => {
@@ -149,9 +168,41 @@ describe('createChangeset', () => {
     ];
     const releases = [{ name: 'pkg-a', type: 'minor' }];
     const dependents = [
-      { name: 'pkg-b', type: 'patch' },
       { name: 'pkg-c', type: 'patch' },
+      { name: 'pkg-b', type: 'patch' },
       { name: 'pkg-a', type: 'patch' },
+    ];
+    const allWorkSpaces = [
+      {
+        name: 'pkg-a',
+        config: {
+          name: 'pkg-a',
+          version: '1.0.3',
+          devDependencies: {
+            'pkg-c': '~2.0.0',
+          },
+        },
+      },
+      {
+        name: 'pkg-b',
+        config: {
+          name: 'pkg-b',
+          version: '1.2.0',
+          devDependencies: {
+            'pkg-a': '1.0.3',
+          },
+        },
+      },
+      {
+        name: 'pkg-c',
+        config: {
+          name: 'pkg-c',
+          version: '2.0.0',
+          devDependencies: {
+            'pkg-b': '^1.2.0',
+          },
+        },
+      },
     ];
     const summary = 'This is a summary';
 
@@ -160,10 +211,12 @@ describe('createChangeset', () => {
       bolt.getDependentsGraph.mockReturnValueOnce(
         Promise.resolve(new Map(dependentsGraph)),
       );
+      bolt.getWorkspaces.mockReturnValue(Promise.resolve(allWorkSpaces));
     });
 
     it('should prompt for changed packages, bump type and summary', async () => {
       const changedPackages = ['pkg-a'];
+
       await createChangeset(changedPackages, { cwd });
 
       assertPackagesPrompt(['pkg-a']);

@@ -34,7 +34,7 @@ import imageUploadPlugins, { stateKey as imageUploadStateKey } from '../src/plug
 import rulePlugins from '../src/plugins/rule';
 import listsPlugins, { stateKey as listsStateKey } from '../src/plugins/lists';
 import mentionsPlugins, { stateKey as mentionsStateKey } from '../src/plugins/mentions';
-import emojiPlugins, { stateKey as emojiStateKey } from '../src/plugins/emojis';
+import emojiPlugins from '../src/plugins/emojis';
 import asciiEmojiPlugins from '../src/plugins/emojis/ascii-input-rules';
 import tablePlugins, { stateKey as tableStateKey } from '../src/plugins/table';
 import pastePlugins from '../src/plugins/paste';
@@ -225,7 +225,6 @@ export default class Editor extends PureComponent<Props, State> {
     const mediaState = this.props.mediaProvider && getStateFromKey(mediaStateKey);
     const imageUploadState = this.props.imageUploadHandler && getStateFromKey(imageUploadStateKey);
     const mentionsState = getStateFromKey(mentionsStateKey);
-    const emojiState = getStateFromKey(emojiStateKey);
     const textColorState = getStateFromKey(textColorStateKey);
     const tableState = getStateFromKey(tableStateKey);
 
@@ -249,7 +248,6 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateMedia={mediaState}
         pluginStateImageUpload={imageUploadState}
         pluginStateMentions={mentionsState}
-        pluginStateEmojis={emojiState}
         pluginStateTextColor={textColorState}
         pluginStateTable={tableState}
         mentionProvider={mentionProvider}
@@ -326,7 +324,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...panelPlugins(schema),
           ...(schema.nodes.table ? tablePlugins() : []),
           ...reactNodeViewPlugins(schema),
-          ...(schema.nodes.taskList && schema.nodes.decisionList ? tasksAndDecisionsPlugin(schema) : []),
+          ...(schema.nodes.taskList && schema.nodes.decisionList ? tasksAndDecisionsPlugin(schema, {}) : []),
           history(),
           keymap(baseKeymap) // should be last :(
         ]

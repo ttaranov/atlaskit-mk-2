@@ -637,6 +637,36 @@ describe('Renderer - Validator', () => {
       });
     });
 
+    describe('action', () => {
+      it('should return "action"', () => {
+        const data = {
+          type: 'action',
+          attrs: {
+            title: 'title',
+            target: {
+              key: 'somу-key',
+            },
+            parameters: {},
+          },
+        };
+        expect(getValidMark(data)).to.deep.equal(data);
+      });
+
+      it('should return null if attrs is missing', () => {
+        expect(getValidMark({ type: 'action' })).to.equal(null);
+      });
+
+      it('should return null if attrs.target is missing', () => {
+        expect(getValidMark({ type: 'action', attrs: {} })).to.equal(null);
+      });
+
+      it('should return null if attrs.target.key is missing', () => {
+        expect(
+          getValidMark({ type: 'action', attrs: { target: {} } }),
+        ).to.equal(null);
+      });
+    });
+
     describe('text', () => {
       it('should return "text" with text', () => {
         expect(
@@ -907,6 +937,41 @@ describe('Renderer - Validator', () => {
         expect(attrs.state).to.equal('DONE');
         expect(attrs.localId).to.not.equal(undefined);
         expect(content).to.deep.equal(itemContent);
+      });
+    });
+
+    describe('image', () => {
+      it('should pass through attrs as image', () => {
+        const imageAttrs = {
+          src: 'http://example.com/test.jpg',
+          alt: 'explanation',
+          title: 'image',
+        };
+        const { type, attrs } = getValidNode({
+          type: 'image',
+          attrs: imageAttrs,
+        });
+        expect(type).to.equal('image');
+        expect(attrs).to.deep.equal(imageAttrs);
+      });
+
+      it('should pass through attrs with only src as image', () => {
+        const imageAttrs = { src: 'http://example.com/test.jpg' };
+        const { type, attrs } = getValidNode({
+          type: 'image',
+          attrs: imageAttrs,
+        });
+        expect(type).to.equal('image');
+        expect(attrs).to.deep.equal(imageAttrs);
+      });
+
+      it('should reject image without src', () => {
+        const imageAttrs = { alt: 'explanation' };
+        const { type, attrs } = getValidNode({
+          type: 'image',
+          attrs: imageAttrs,
+        });
+        expect(type).to.equal('text');
       });
     });
 

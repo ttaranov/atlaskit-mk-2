@@ -99,6 +99,43 @@ export const document = {
             },
           ],
         },
+        {
+          type: 'text',
+          text: ' and action mark',
+          marks: [
+            {
+              type: 'action',
+              attrs: {
+                title: 'test action mark',
+                target: {
+                  receiver: 'some-receiver',
+                  key: 'some-key',
+                },
+                parameters: {
+                  test: 20,
+                },
+              },
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: ' and invalid action mark',
+          marks: [
+            {
+              type: 'action',
+              attrs: {
+                title: 'test action mark',
+                target: {
+                  receiver: 'some-receiver',
+                },
+                parameters: {
+                  test: 30,
+                },
+              },
+            },
+          ],
+        },
       ],
     },
     {
@@ -894,6 +931,25 @@ System.out.println("There are " + count + " values >= 5");`,
     },
     {
       type: 'rule',
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text:
+            'Do not use this image node; it may be removed at any time without notice.',
+        },
+        {
+          type: 'image',
+          attrs: {
+            src:
+              'https://www.google.com.au/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
+            alt: 'Google Logo',
+            title: 'Google!',
+          },
+        },
+      ],
     },
     {
       type: 'applicationCard',

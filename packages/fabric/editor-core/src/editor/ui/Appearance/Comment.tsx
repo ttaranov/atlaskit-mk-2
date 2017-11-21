@@ -1,7 +1,8 @@
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import { akColorR100, akColorN40, akBorderRadius, akGridSize, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { akColorR100, akColorN40, akBorderRadius, akGridSize } from '@atlaskit/util-shared-styles';
+import SizeDetector from '@atlaskit/size-detector';
 import PluginSlot from '../PluginSlot';
 import WithPluginState from '../WithPluginState';
 import ContentStyles from '../ContentStyles';
@@ -10,6 +11,9 @@ import {
   EditorAppearance
 } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
+import EditorWidth from '../../../utils/editor-width';
+import { ReactElement } from '../../types';
+
 
 const pulseBackground = keyframes`
   50% {
@@ -75,22 +79,20 @@ const MainToolbar = styled.div`
   display: flex;
   height: auto;
 
-  & > div > * {
-    margin-left: ${akGridSizeUnitless/2}px;
-  }
-
   & > div > *:first-child {
     margin-left: 0;
-    margin-right: ${akGridSize};
   }
 `;
 MainToolbar.displayName = 'MainToolbar';
 
 // tslint:disable-next-line:variable-name
-const MainToolbarCustomComponentsSlot = styled.div`
+const MainToolbarCustomComponentsSlot = styled.span`
   display: flex;
   justify-content: flex-end;
   flex-grow: 1;
+  > div {
+    display: flex;
+  }
 `;
 MainToolbarCustomComponentsSlot.displayName = 'MainToolbar';
 
@@ -141,6 +143,24 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
     }
   }
 
+  private getCustomPrimaryToolbarComponents = (width: number): ReactElement | undefined => {
+    const { customPrimaryToolbarComponents } = this.props;
+    let componentWithWidth: ReactElement | undefined;
+    if (customPrimaryToolbarComponents) {
+      if (customPrimaryToolbarComponents instanceof Array) {
+        componentWithWidth = customPrimaryToolbarComponents.map((elm, key) => {
+          return elm && React.cloneElement(elm, { key, editorWidth: width });
+        });
+      } else {
+        componentWithWidth = React.cloneElement(
+          customPrimaryToolbarComponents,
+          { editorWidth: width }
+        );
+      }
+    }
+    return componentWithWidth;
+  }
+
   private renderChrome = ({ maxContentSize }) => {
     const {
       editorView,
@@ -148,9 +168,10 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       providerFactory,
       contentComponents,
       customContentComponents,
-      primaryToolbarComponents, customPrimaryToolbarComponents,
-      secondaryToolbarComponents, customSecondaryToolbarComponents,
-      popupsMountPoint, popupsBoundariesElement,
+      primaryToolbarComponents,
+      customSecondaryToolbarComponents,
+      popupsMountPoint,
+      popupsBoundariesElement,
       maxHeight,
       onSave, onCancel
     } = this.props;
@@ -158,59 +179,57 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
     return (
-      <CommentEditor
-        className={this.flashToggle ? '-flash' : ''}
-        isMaxContentSizeReached={maxContentSizeReached}
-        maxHeight={maxHeight}
-      >
-        <MainToolbar>
-          <PluginSlot
-            editorView={editorView}
-            eventDispatcher={eventDispatcher}
-            providerFactory={providerFactory}
-            appearance={this.appearance}
-            items={primaryToolbarComponents}
-            popupsMountPoint={popupsMountPoint}
-            popupsBoundariesElement={popupsBoundariesElement}
-          />
-          <MainToolbarCustomComponentsSlot>
-            {customPrimaryToolbarComponents}
-          </MainToolbarCustomComponentsSlot>
-        </MainToolbar>
-        <ContentArea innerRef={this.handleRef}>
-          {customContentComponents}
-          <PluginSlot
-            editorView={editorView}
-            eventDispatcher={eventDispatcher}
-            providerFactory={providerFactory}
-            appearance={this.appearance}
-            items={contentComponents}
-            popupsMountPoint={popupsMountPoint}
-            popupsBoundariesElement={popupsBoundariesElement}
-          />
-        </ContentArea>
-        <SecondaryToolbar>
-          <ButtonGroup>
-            {!onSave ? null :
-              <Button appearance="primary" onClick={this.handleSave}>Save</Button>
-            }
-            {!onCancel ? null :
-              <Button appearance="subtle" onClick={this.handleCancel}>Cancel</Button>
-            }
-          </ButtonGroup>
-          <span style={{ flexGrow: 1 }} />
-          <PluginSlot
-            editorView={editorView}
-            eventDispatcher={eventDispatcher}
-            providerFactory={providerFactory}
-            appearance={this.appearance}
-            items={secondaryToolbarComponents}
-            popupsMountPoint={popupsMountPoint}
-            popupsBoundariesElement={popupsBoundariesElement}
-          />
-          {customSecondaryToolbarComponents}
-        </SecondaryToolbar>
-      </CommentEditor>
+      <SizeDetector>
+      {({ width }) => (
+        <CommentEditor
+          className={this.flashToggle ? '-flash' : ''}
+          isMaxContentSizeReached={maxContentSizeReached}
+          maxHeight={maxHeight}
+        >
+          <MainToolbar>
+            <PluginSlot
+              editorWidth={width}
+              editorView={editorView}
+              eventDispatcher={eventDispatcher}
+              providerFactory={providerFactory}
+              appearance={this.appearance}
+              items={primaryToolbarComponents}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
+            />
+            <MainToolbarCustomComponentsSlot
+              width={width && (width > EditorWidth.BreakPoint6 ? 'large' : 'small')}
+            >
+              {this.getCustomPrimaryToolbarComponents(width)}
+            </MainToolbarCustomComponentsSlot>
+          </MainToolbar>
+          <ContentArea innerRef={this.handleRef}>
+            {customContentComponents}
+            <PluginSlot
+              editorView={editorView}
+              eventDispatcher={eventDispatcher}
+              providerFactory={providerFactory}
+              appearance={this.appearance}
+              items={contentComponents}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
+            />
+          </ContentArea>
+          <SecondaryToolbar>
+            <ButtonGroup>
+              {!onSave ? null :
+                <Button appearance="primary" onClick={this.handleSave}>Save</Button>
+              }
+              {!onCancel ? null :
+                <Button appearance="subtle" onClick={this.handleCancel}>Cancel</Button>
+              }
+            </ButtonGroup>
+            <span style={{ flexGrow: 1 }} />
+            {customSecondaryToolbarComponents}
+          </SecondaryToolbar>
+        </CommentEditor>
+      )}
+      </SizeDetector>
     );
   }
 

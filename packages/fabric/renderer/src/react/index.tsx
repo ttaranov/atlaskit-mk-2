@@ -19,6 +19,7 @@ import {
   mergeTextNodes,
   isTextWrapper,
   TextWrapper,
+  isEmojiDoc,
   toReact,
 } from './nodes';
 
@@ -28,6 +29,8 @@ import {
 
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { EventHandlers } from '@atlaskit/editor-common';
+
+import { bigEmojiHeight } from '../utils';
 
 export interface RendererContext {
   objectAri: string;
@@ -47,12 +50,14 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   }
 
   serializeFragment(fragment: Fragment, props: any = {}, target: any = Doc, key: string = 'root-0'): JSX.Element | null {
+    const emojiBlock = isEmojiDoc(fragment, props);
     const content = ReactSerializer.getChildNodes(fragment).map((node, index) => {
       if (isTextWrapper(node.type.name)) {
         return this.serializeTextWrapper((node as TextWrapper).content);
       }
+      const props = emojiBlock ? this.getEmojiBlockProps(node as Node) : this.getProps(node as Node);
 
-      return this.serializeFragment((node as Node).content, this.getProps(node as Node), toReact(node as Node), `${node.type.name}-${index}`);
+      return this.serializeFragment((node as Node).content, props, toReact(node as Node), `${node.type.name}-${index}`);
     });
 
     return this.renderNode(target, props, key, content);
@@ -91,6 +96,13 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     );
   }
 
+  private getEmojiBlockProps(node: Node) {
+    return {
+      ...this.getProps(node),
+      fitToHeight: bigEmojiHeight,
+    };
+  }
+
   private getProps(node: Node) {
     return {
       text: node.text,
@@ -99,11 +111,14 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       portal: this.portal,
       rendererContext: this.rendererContext,
       ...node.attrs,
-    };
+  };
   }
 
   private getMarkProps(mark: Mark): any {
-    return mark.attrs;
+    return {
+        eventHandlers: this.eventHandlers,
+        ...mark.attrs
+    };
   }
 
   static getChildNodes(fragment: Fragment): (Node | TextWrapper)[] {

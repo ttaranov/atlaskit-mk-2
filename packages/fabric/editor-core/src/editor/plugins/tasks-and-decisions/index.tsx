@@ -3,6 +3,7 @@ import { decisionItem, decisionList, taskItem, taskList } from '@atlaskit/editor
 import styled from 'styled-components';
 import { EditorPlugin } from '../../types';
 import { createPlugin } from '../../../plugins/tasks-and-decisions';
+import pastePlugin from '../../../plugins/tasks-and-decisions/paste-plugin';
 import inputRulePlugin from '../../../plugins/tasks-and-decisions/input-rules';
 import keymap from '../../../plugins/tasks-and-decisions/keymaps';
 import ToolbarDecision from '../../../ui/ToolbarDecision';
@@ -25,7 +26,11 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 500, plugin: (schema, props, providerFactory) => createPlugin() },
+      { rank: 50, plugin: (schema, props, providerFactory) => pastePlugin() }, // must before default paste plugin
+      { rank: 500, plugin: (schema, props, providerFactory) => {
+        const { delegateAnalyticsEvent } = props;
+        return createPlugin({ delegateAnalyticsEvent });
+      }},
       { rank: 510, plugin: schema => inputRulePlugin(schema) },
       { rank: 9800, plugin: schema => keymap(schema) } // Needs to be after "save-on-enter"
     ];
