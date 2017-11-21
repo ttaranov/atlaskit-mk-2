@@ -270,6 +270,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
         onInsertBlockType!(item.value.name, editorView);
         break;
       case 'macro':
+        analytics.trackEvent(`atlassian.editor.format.${item.value.name}.button`);
         onInsertMacroFromMacroBrowser!(macroProvider!)(editorView.state, editorView.dispatch);
     }
   }
