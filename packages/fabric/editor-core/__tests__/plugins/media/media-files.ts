@@ -16,12 +16,12 @@ import {
   taskList,
 } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { insertFiles } from '../../../src/plugins/media/media-files';
+import { insertFilmstrip } from '../../../src/plugins/media/media-files';
 import { setNodeSelection } from '../../../src/utils';
 
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
-describe('media-links', () => {
+describe('media-files', () => {
   const temporaryFileId = `temporary:${randomId()}`;
   const editor = (doc: any, uploadErrorHandler?: () => void) =>
     makeEditor<MediaPluginState>({
@@ -33,7 +33,7 @@ describe('media-links', () => {
     it('inserts media node into the document after current paragraph node', () => {
       const { editorView } = editor(doc(p('text{<>}')));
 
-      insertFiles(
+      insertFilmstrip(
         editorView,
         [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
@@ -58,7 +58,7 @@ describe('media-links', () => {
     it('puts cursor to the next paragraph after inserting media node', () => {
       const { editorView } = editor(doc(p('text{<>}')));
 
-      insertFiles(
+      insertFilmstrip(
         editorView,
         [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
@@ -92,7 +92,7 @@ describe('media-links', () => {
         ),
       );
 
-      insertFiles(
+      insertFilmstrip(
         editorView,
         [{ id: 'mock2', status: 'uploading' }],
         testCollectionName,
@@ -134,7 +134,7 @@ describe('media-links', () => {
         ),
       );
 
-      insertFiles(
+      insertFilmstrip(
         editorView,
         [{ id: 'mock2', status: 'uploading' }],
         testCollectionName,
@@ -166,7 +166,7 @@ describe('media-links', () => {
       it('splits text', () => {
         const { editorView } = editor(doc(p('te{<>}xt')));
 
-        insertFiles(
+        insertFilmstrip(
           editorView,
           [{ id: temporaryFileId, status: 'uploading' }],
           testCollectionName,
@@ -200,7 +200,7 @@ describe('media-links', () => {
           }),
         ).nodeSize;
 
-        insertFiles(
+        insertFilmstrip(
           editorView,
           [{ id: temporaryFileId, status: 'uploading' }],
           testCollectionName,
@@ -217,7 +217,7 @@ describe('media-links', () => {
       it('preserves heading', () => {
         const { editorView } = editor(doc(h1('te{<>}xt')));
 
-        insertFiles(
+        insertFilmstrip(
           editorView,
           [{ id: temporaryFileId, status: 'uploading' }],
           testCollectionName,
@@ -246,7 +246,7 @@ describe('media-links', () => {
         it('replaces selection with a media node', () => {
           const { editorView } = editor(doc(p('te{<}x{>}t')));
 
-          insertFiles(
+          insertFilmstrip(
             editorView,
             [{ id: temporaryFileId, status: 'uploading' }],
             testCollectionName,
@@ -275,7 +275,7 @@ describe('media-links', () => {
             it('replaces selection with a media node', () => {
               const { editorView } = editor(doc(p('{<}text{>}')));
 
-              insertFiles(
+              insertFilmstrip(
                 editorView,
                 [{ id: temporaryFileId, status: 'uploading' }],
                 testCollectionName,
@@ -301,7 +301,7 @@ describe('media-links', () => {
             it('replaces selection with a media node', () => {
               const { editorView } = editor(doc(h1('{<}text{>}')));
 
-              insertFiles(
+              insertFilmstrip(
                 editorView,
                 [{ id: temporaryFileId, status: 'uploading' }],
                 testCollectionName,
@@ -347,7 +347,7 @@ describe('media-links', () => {
               ),
             );
 
-            insertFiles(
+            insertFilmstrip(
               editorView,
               [{ id: 'new one', status: 'uploading' }],
               testCollectionName,
@@ -386,7 +386,7 @@ describe('media-links', () => {
         it('replaces selection with a media node', () => {
           const { editorView } = editor(doc(p('te{<}xt{>}')));
 
-          insertFiles(
+          insertFilmstrip(
             editorView,
             [{ id: temporaryFileId, status: 'uploading' }],
             testCollectionName,
@@ -422,7 +422,7 @@ describe('media-links', () => {
             ),
           );
 
-          insertFiles(
+          insertFilmstrip(
             editorView,
             [{ id: 'new one', status: 'uploading' }],
             testCollectionName,
@@ -458,7 +458,7 @@ describe('media-links', () => {
           );
           setNodeSelection(editorView, sel);
 
-          insertFiles(
+          insertFilmstrip(
             editorView,
             [{ id: temporaryFileId, status: 'uploading' }],
             testCollectionName,
@@ -497,7 +497,7 @@ describe('media-links', () => {
           );
           setNodeSelection(editorView, 1);
 
-          insertFiles(
+          insertFilmstrip(
             editorView,
             [{ id: 'new one', status: 'uploading' }],
             testCollectionName,
@@ -538,7 +538,7 @@ describe('media-links', () => {
           );
           setNodeSelection(editorView, 0);
 
-          insertFiles(
+          insertFilmstrip(
             editorView,
             [{ id: 'new one', status: 'uploading' }],
             testCollectionName,
@@ -567,7 +567,7 @@ describe('media-links', () => {
             const { editorView } = editor(doc(hr));
             setNodeSelection(editorView, 0);
 
-            insertFiles(
+            insertFilmstrip(
               editorView,
               [{ id: temporaryFileId, status: 'uploading' }],
               testCollectionName,
@@ -613,7 +613,7 @@ describe('media-links', () => {
               ).nodeSize;
               setNodeSelection(editorView, mediaGroupNodeSize);
 
-              insertFiles(
+              insertFilmstrip(
                 editorView,
                 [{ id: 'new one', status: 'uploading' }],
                 testCollectionName,
@@ -656,7 +656,7 @@ describe('media-links', () => {
               );
               setNodeSelection(editorView, 0);
 
-              insertFiles(
+              insertFilmstrip(
                 editorView,
                 [{ id: 'new one', status: 'uploading' }],
                 testCollectionName,
@@ -712,7 +712,7 @@ describe('media-links', () => {
               ).nodeSize;
               setNodeSelection(editorView, mediaGroupNodeSize);
 
-              insertFiles(
+              insertFilmstrip(
                 editorView,
                 [{ id: 'new one', status: 'uploading' }],
                 testCollectionName,
@@ -752,7 +752,7 @@ describe('media-links', () => {
       it('replaces selection with a media node', () => {
         const { editorView } = editor(doc(p('{<}te{>}xt')));
 
-        insertFiles(
+        insertFilmstrip(
           editorView,
           [{ id: temporaryFileId, status: 'uploading' }],
           testCollectionName,
@@ -787,7 +787,7 @@ describe('media-links', () => {
           ),
         );
 
-        insertFiles(
+        insertFilmstrip(
           editorView,
           [{ id: 'new one', status: 'uploading' }],
           testCollectionName,
@@ -817,7 +817,7 @@ describe('media-links', () => {
   it(`should insert media node into the document after current heading node`, () => {
     const { editorView } = editor(doc(h1('text{<>}')));
 
-    insertFiles(
+    insertFilmstrip(
       editorView,
       [{ id: temporaryFileId, status: 'uploading' }],
       testCollectionName,
@@ -842,7 +842,7 @@ describe('media-links', () => {
   it(`should insert media node into the document after current codeblock node`, () => {
     const { editorView } = editor(doc(code_block()('text{<>}')));
 
-    insertFiles(
+    insertFilmstrip(
       editorView,
       [{ id: temporaryFileId, status: 'uploading' }],
       testCollectionName,
@@ -868,7 +868,7 @@ describe('media-links', () => {
     it('replaces empty paragraph with the media grroup in an empty document', () => {
       const { editorView } = editor(doc(p('{<>}')));
 
-      insertFiles(
+      insertFilmstrip(
         editorView,
         [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
@@ -892,7 +892,7 @@ describe('media-links', () => {
     it('apends media group to empty paragraph in an empty code block', () => {
       const { editorView } = editor(doc(code_block()('{<>}')));
 
-      insertFiles(
+      insertFilmstrip(
         editorView,
         [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
@@ -917,7 +917,7 @@ describe('media-links', () => {
     it('apends media group to empty paragraph in an empty heading', () => {
       const { editorView } = editor(doc(h1('{<>}')));
 
-      insertFiles(
+      insertFilmstrip(
         editorView,
         [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
@@ -953,7 +953,7 @@ describe('media-links', () => {
         ),
       );
 
-      insertFiles(
+      insertFilmstrip(
         editorView,
         [{ id: 'another one', status: 'uploading' }],
         testCollectionName,
@@ -982,7 +982,7 @@ describe('media-links', () => {
     it('should replace empty paragraph with mediaGroup and preserve next empty paragraph', () => {
       const { editorView } = editor(doc(p('{<>}'), p()));
 
-      insertFiles(
+      insertFilmstrip(
         editorView,
         [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
@@ -1006,7 +1006,7 @@ describe('media-links', () => {
     it('should replace empty paragraph with mediaGroup and preserve previous empty paragraph', () => {
       const { editorView } = editor(doc(p(), p('{<>}')));
 
-      insertFiles(
+      insertFilmstrip(
         editorView,
         [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
@@ -1031,7 +1031,7 @@ describe('media-links', () => {
     it('should insert all media nodes on the same line', async () => {
       const { editorView } = editor(doc(p('{<>}')));
 
-      insertFiles(
+      insertFilmstrip(
         editorView,
         [{ id: 'mock1' }, { id: 'mock2' }],
         testCollectionName,
@@ -1063,7 +1063,7 @@ describe('media-links', () => {
       const itemDoc = doc(taskList(taskItem('{<>}')));
       const { editorView } = editor(itemDoc);
 
-      insertFiles(
+      insertFilmstrip(
         editorView,
         [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
@@ -1077,7 +1077,7 @@ describe('media-links', () => {
       const decisionDoc = doc(decisionList(decisionItem('{<>}')));
       const { editorView } = editor(decisionDoc);
 
-      insertFiles(
+      insertFilmstrip(
         editorView,
         [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,

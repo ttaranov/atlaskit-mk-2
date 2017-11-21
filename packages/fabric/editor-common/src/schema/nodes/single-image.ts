@@ -5,16 +5,18 @@ export const singleImage: NodeSpec = {
   group: 'block',
   content: 'media',
   attrs: {
-    alignment: { default: 'left' },
-    display: { default: 'inline-block' }
+    alignment: { default: 'center' },
+    display: { default: 'block' },
   },
-  parseDOM: [{
-    tag: 'div[data-node-type="singleImage"]',
-    getAttrs: (dom: HTMLElement) => ({
-      'alignment': dom.getAttribute('data-alignment'),
-      'display': dom.getAttribute('data-display'),
-    })
-  }],
+  parseDOM: [
+    {
+      tag: 'div[data-node-type="singleImage"]',
+      getAttrs: (dom: HTMLElement) => ({
+        alignment: dom.getAttribute('data-alignment'),
+        display: dom.getAttribute('data-display'),
+      }),
+    },
+  ],
   toDOM(node: Node) {
     const { alignment, display } = node.attrs;
     const attrs = {
@@ -22,10 +24,6 @@ export const singleImage: NodeSpec = {
       'data-alignment': alignment,
       'data-display': display,
     };
-    return [
-      'div',
-      attrs,
-      0
-    ];
-  }
+    return ['div', attrs, 0];
+  },
 };

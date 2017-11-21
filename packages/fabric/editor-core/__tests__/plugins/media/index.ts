@@ -1,5 +1,7 @@
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import * as assert from 'assert';
+import { createSchema } from '@atlaskit/editor-common';
+
 import {
   mediaPluginFactory,
   MediaPluginState,
@@ -97,6 +99,166 @@ describe('Media plugin', () => {
     expect(pluginState.binaryPicker!.upload as any).toHaveBeenCalledTimes(1);
     collectionFromProvider.mockRestore();
     pluginState.destroy();
+  });
+
+  describe('when message editor', () => {
+    const messageEditor = (doc: any, uploadErrorHandler?: () => void) =>
+      makeEditor<MediaPluginState>({
+        doc,
+        plugins: [
+          ...mediaPluginFactory(
+            defaultSchema,
+            {
+              providerFactory,
+              uploadErrorHandler,
+            },
+            undefined,
+            'message',
+          ),
+        ],
+        schema: defaultSchema,
+      });
+
+    it('inserts filemstrip', async () => {
+      const { editorView, pluginState } = messageEditor(doc(p('')));
+      await mediaProvider;
+
+      pluginState.insertFiles([
+        { id: 'foo', fileMimeType: 'image/jpeg' },
+        { id: 'bar', fileMimeType: 'image/png' },
+      ]);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          mediaGroup(
+            media({
+              id: 'foo',
+              type: 'file',
+              collection: testCollectionName,
+              __fileMimeType: 'image/jpeg',
+            }),
+            media({
+              id: 'bar',
+              type: 'file',
+              collection: testCollectionName,
+              __fileMimeType: 'image/png',
+            }),
+          ),
+          p(),
+        ),
+      );
+    });
+  });
+
+  describe('when non message editor', () => {
+    describe('when schema has singleImage node', () => {
+      describe('when all of the files are images', () => {
+        it('inserts single images', async () => {
+          const { editorView, pluginState } = editor(doc(p('')));
+          await mediaProvider;
+
+          pluginState.insertFiles([
+            { id: 'foo', fileMimeType: 'image/jpeg' },
+            { id: 'bar', fileMimeType: 'image/png' },
+          ]);
+
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              singleImage({ alignment: 'center', display: 'block' })(
+                media({
+                  id: 'foo',
+                  type: 'file',
+                  collection: testCollectionName,
+                  __fileMimeType: 'image/jpeg',
+                }),
+              ),
+              singleImage({ alignment: 'center', display: 'block' })(
+                media({
+                  id: 'bar',
+                  type: 'file',
+                  collection: testCollectionName,
+                  __fileMimeType: 'image/png',
+                }),
+              ),
+              p(),
+            ),
+          );
+        });
+      });
+
+      describe('when it is a mix of pdf and image', () => {
+        it('inserts single images', async () => {
+          const { editorView, pluginState } = editor(doc(p('')));
+          await mediaProvider;
+
+          pluginState.insertFiles([
+            { id: 'foo', fileMimeType: 'pdf' },
+            { id: 'bar', fileMimeType: 'image/png' },
+          ]);
+
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              mediaGroup(
+                media({
+                  id: 'foo',
+                  type: 'file',
+                  collection: testCollectionName,
+                  __fileMimeType: 'pdf',
+                }),
+                media({
+                  id: 'bar',
+                  type: 'file',
+                  collection: testCollectionName,
+                  __fileMimeType: 'image/png',
+                }),
+              ),
+              p(),
+            ),
+          );
+        });
+      });
+    });
+
+    describe('when schema does not have singleImage node', () => {
+      it('inserts filmstrip', async () => {
+        const schema = createSchema({
+          nodes: ['doc', 'paragraph', 'text', 'mediaGroup', 'media'],
+        });
+
+        const noSingleImageEditor = (
+          doc: any,
+          uploadErrorHandler?: () => void,
+        ) =>
+          makeEditor<MediaPluginState>({
+            doc,
+            plugins: [
+              ...mediaPluginFactory(schema, {
+                providerFactory,
+                uploadErrorHandler,
+              }),
+            ],
+            schema: schema,
+          });
+        const { editorView, pluginState } = noSingleImageEditor(doc(p('')));
+        await mediaProvider;
+
+        pluginState.insertFiles([{ id: 'foo', fileMimeType: 'image/jpeg' }]);
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            mediaGroup(
+              media({
+                id: 'foo',
+                type: 'file',
+                collection: testCollectionName,
+                __fileMimeType: 'image/jpeg',
+              }),
+            ),
+            p(),
+          ),
+        );
+      });
+    });
   });
 
   it('should call uploadErrorHandler on upload error', async () => {
@@ -643,7 +805,7 @@ describe('Media plugin', () => {
         status: 'uploading',
         fileName: 'foo.png',
         fileSize: 1234,
-        fileMimeType: 'image/png',
+        fileMimeType: 'pdf',
       },
     ]);
 
@@ -656,7 +818,7 @@ describe('Media plugin', () => {
             collection: testCollectionName,
             __fileName: 'foo.png',
             __fileSize: 1234,
-            __fileMimeType: 'image/png',
+            __fileMimeType: 'pdf',
           }),
         ),
         p(),
