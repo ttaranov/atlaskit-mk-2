@@ -51,45 +51,7 @@ only take about a second.
 
 ## Exploring the Project
 
-Before you dive into the Atlaskit repo, you'll want to familiarize yourself
-with your surroundings.
-
-Atlaskit is a multi-package repo (sometimes called a "monorepo"), meaning that
-from a single repository we develop and publish many different packages.
-
-```
-atlaskit-mk-2 (Project)
-├── packages ································· Public packages
-│   └── elements ····························· Package group
-│       └── avatar (Workspace) ··············· Package
-│           ├── src ·························· Package source code
-│           │   ├── index.js ················· Main entry point
-│           │   ├── index.test.js
-│           │   ├── constants.js ············· Shared code
-│           │   ├── Avatar ··················· Component part
-│           │   │   ├── index.js
-│           │   │   ├── test.js
-│           │   │   └── styled.js
-│           │   └── Presence ················· Component part
-│           │       ├── index.js
-│           │       ├── test.js
-│           │       └── styled.js
-│           ├── examples ····················· Package examples
-│           │   └── 0-overview.js
-│           ├── docs ························· Package documentation
-│           │   └── 0-overview.js
-│           └── package.json ················· Package config
-├── patterns (Workspace) ····················· Cross-component examples -
-│   └── jira
-│       └── 0-navigation.js
-├── releases ································· Release blog posts
-│   └── dark-mode.md
-├── docs ····································· Project documentation
-│   └── getting-started.md
-├── build ···································· Build-related packages
-├── website (Workspace) ······················ Website package
-└── package.json ····························· Project config
-```
+See the [directory structure docs](docs/guides/00-directory-structure.md) for more information.
 
 ## Writing new code
 
