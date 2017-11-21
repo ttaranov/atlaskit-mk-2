@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 60.2.2
+
 ## 60.2.1
 - [patch] Restore accessLevel attribute for mention node [a83619f](a83619f)
 - [patch] Restore accessLevel attribute for mention node [a83619f](a83619f)

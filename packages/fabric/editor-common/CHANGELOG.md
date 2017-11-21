@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 3.9.2
+
 ## 3.9.1
 - [patch] Restore accessLevel attribute for mention node [a83619f](a83619f)
 - [patch] Restore accessLevel attribute for mention node [a83619f](a83619f)
