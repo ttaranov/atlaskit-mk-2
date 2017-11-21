@@ -36,6 +36,7 @@ import { Dispatch } from '../../editor/event-dispatcher';
 import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
+import { EditorAppearance } from '../../editor/types/editor-props';
 import {
   ReactMediaGroupNode,
   ReactMediaNode,
@@ -43,7 +44,7 @@ import {
 } from '../../nodeviews';
 import keymapPlugin from './keymap';
 import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
-import { insertFiles } from './media-files';
+import { insertFilmstrip, insertSingleImages } from './media-files';
 import { removeMediaNode, splitMediaGroup } from './media-common';
 import { Alignment, Display } from './single-image';
 import PickerFacade from './picker-facade';
@@ -80,9 +81,15 @@ export class MediaPluginState {
   private clipboardPicker?: PickerFacadeType;
   private dropzonePicker?: PickerFacadeType;
   private linkRanges: Array<URLInfo>;
+  private editorAppearance: EditorAppearance;
 
-  constructor(state: EditorState, options: MediaPluginOptions) {
+  constructor(
+    state: EditorState,
+    options: MediaPluginOptions,
+    editorAppearance?: EditorAppearance,
+  ) {
     this.options = options;
+    this.editorAppearance = editorAppearance;
     this.waitForMediaUpload =
       options.waitForMediaUpload === undefined
         ? true
@@ -198,16 +205,26 @@ export class MediaPluginState {
   };
 
   insertFiles = (mediaStates: MediaState[]): void => {
+    const { singleImage } = this.view.state.schema.nodes;
     const collection = this.collectionFromProvider();
     if (!collection) {
       return;
     }
 
+    let areImages = true;
+
     mediaStates.forEach(mediaState => {
       this.stateManager.subscribe(mediaState.id, this.handleMediaState);
+      if (!this.isImage(mediaState.fileMimeType)) {
+        areImages = false;
+      }
     });
 
-    insertFiles(this.view, mediaStates, collection);
+    if (this.editorAppearance !== 'message' && areImages && singleImage) {
+      insertSingleImages(this.view, mediaStates, collection);
+    } else {
+      insertFilmstrip(this.view, mediaStates, collection);
+    }
 
     const { view } = this;
     if (!view.hasFocus()) {
@@ -442,6 +459,10 @@ export class MediaPluginState {
     );
   };
 
+  private isImage(fileType?: string): boolean {
+    return !!fileType && fileType.indexOf('image/') > -1;
+  }
+
   private destroyPickers = () => {
     const { pickers } = this;
 
@@ -643,13 +664,14 @@ export const createPlugin = (
   schema: Schema,
   options: MediaPluginOptions,
   dispatch?: Dispatch,
+  editorAppearance?: EditorAppearance,
 ) => {
   const dropZone = document.createElement('div');
   ReactDOM.render(React.createElement(DropPlaceholder), dropZone);
   return new Plugin({
     state: {
       init(config, state) {
-        return new MediaPluginState(state, options);
+        return new MediaPluginState(state, options, editorAppearance);
       },
       apply(tr, pluginState: MediaPluginState, oldState, newState) {
         pluginState.detectLinkRangesInSteps(tr, oldState);
@@ -755,10 +777,12 @@ const plugins = (
   schema: Schema,
   options: MediaPluginOptions,
   dispatch?: Dispatch,
+  editorAppearance?: EditorAppearance,
 ) => {
-  return [createPlugin(schema, options, dispatch), keymapPlugin(schema)].filter(
-    plugin => !!plugin,
-  ) as Plugin[];
+  return [
+    createPlugin(schema, options, dispatch, editorAppearance),
+    keymapPlugin(schema),
+  ].filter(plugin => !!plugin) as Plugin[];
 };
 
 export default plugins;

@@ -5,8 +5,8 @@ export const singleImage: NodeSpec = {
   group: 'block',
   content: 'media',
   attrs: {
-    alignment: { default: 'left' },
-    display: { default: 'inline-block' },
+    alignment: { default: 'center' },
+    display: { default: 'block' },
   },
   parseDOM: [
     {
