@@ -118,6 +118,7 @@ export default function DynamicProps(props: DynamicPropsProps) {
               name={propType.key}
               required={!propType.optional}
               type={propType.value}
+              defaultValue={propType.default}
             />
             {description && <Description>{description}</Description>}
             <PrettyPropType type={propType.value} />
