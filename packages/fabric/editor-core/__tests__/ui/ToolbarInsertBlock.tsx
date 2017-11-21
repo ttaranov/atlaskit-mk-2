@@ -5,7 +5,7 @@ import tablePlugins from '../../src/plugins/table';
 import tableCommands from '../../src/plugins/table/commands';
 import mediaPlugins from '../../src/plugins/media';
 import mentionsPlugins from '../../src/plugins/mentions';
-import DropdownMenu from '@atlaskit/dropdown-menu';
+import DropdownMenu from '../../src/ui/DropdownMenu';
 import ToolbarInsertBlock from '../../src/ui/ToolbarInsertBlock';
 import AkButton from '@atlaskit/button';
 import { doc, p, makeEditor, code_block, defaultSchema } from '@atlaskit/editor-test-helpers';
@@ -137,7 +137,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       .find('Element');
     mediaButton.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
-    expect(trackEvent.calledWith('atlassian.editor.format.media.button')).toEqual(true);
+    expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.media.button');
     toolbarOption.unmount();
   });
 
@@ -183,7 +183,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       .find('Element');
     panelButton.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
-    expect(trackEvent.calledWith('atlassian.editor.format.panel.button')).toEqual(true);
+    expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.panel.button');
     toolbarOption.unmount();
   });
 
@@ -207,7 +207,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       .find('Element');
     codeblockButton.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
-    expect(trackEvent.calledWith('atlassian.editor.format.codeblock.button')).toEqual(true);
+    expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.codeblock.button');
     toolbarOption.unmount();
   });
 
@@ -231,7 +231,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
 
     blockquoteButton.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
-    expect(trackEvent.calledWith('atlassian.editor.format.blockquote.button')).toEqual(true);
+    expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.blockquote.button');
     toolbarOption.unmount();
   });
 

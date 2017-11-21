@@ -160,7 +160,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       .filterWhere(n => n.text() === 'Monospace')
       .find('Element');
     strikeButton.simulate('click');
-    expect(textFormattingPluginSet[0].getState(editorView.state).toggleCode.callCount).toEqual(1);
+    expect(textFormattingPluginSet[0].getState(editorView.state).toggleCode).toHaveBeenCalledTimes(1);
     toolbarOption.unmount();
   });
 

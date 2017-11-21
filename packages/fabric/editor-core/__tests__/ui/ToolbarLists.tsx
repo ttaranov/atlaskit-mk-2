@@ -6,6 +6,7 @@ import AkButton from '@atlaskit/button';
 import ToolbarLists from '../../src/ui/ToolbarLists';
 import { doc, p, makeEditor, defaultSchema } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../src/analytics';
+import EditorWidth from '../../src/utils/editor-width';
 
 describe('ToolbarLists', () => {
   const editor = (doc: any) => makeEditor<ListsState>({
