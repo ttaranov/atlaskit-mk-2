@@ -193,7 +193,10 @@ export default class PickerFacade {
     this.onDragListeners.push(cb);
   }
 
-  private newState = (file: SerialisedMediaFile, status: MediaStateStatus) => {
+  private newState = (
+    file: SerialisedMediaFile,
+    status: MediaStateStatus,
+  ): MediaState => {
     const tempId = this.generateTempId(file.id);
 
     return {

@@ -13,6 +13,7 @@ export const confluenceSchema: Schema = createSchema({
     'bulletList',
     'heading',
     'mediaGroup',
+    'singleImage',
     'confluenceUnsupportedBlock',
     'confluenceJiraIssue',
     'inlineExtension',

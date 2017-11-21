@@ -11,6 +11,7 @@ import { Definition as Rule } from './rule';
 import { Definition as Heading } from './heading';
 import { Definition as CodeBlock } from './code-block';
 import { Definition as MediaGroup } from './media-group';
+import { Definition as SingleImage } from './single-image';
 import { Definition as ApplicationCard } from './applicationCard';
 import { Definition as DecisionList } from './decision-list';
 import { Definition as TaskList } from './task-list';
@@ -48,6 +49,7 @@ export type TopLevel = Array<
   | Heading
   | CodeBlock
   | MediaGroup
+  | SingleImage
   | ApplicationCard
   | DecisionList
   | TaskList
@@ -69,6 +71,7 @@ export type TableCellContent = Array<
   | Heading
   | CodeBlock
   | MediaGroup
+  | SingleImage
   | ApplicationCard
   | DecisionList
   | TaskList
@@ -96,7 +99,9 @@ export interface NoMark {
  * @name formatted_text_inline_node
  */
 export type InlineFormattedText = Text &
-  MarksObject<Link | Em | Strong | Strike | SubSup | Underline | TextColor | Action>;
+  MarksObject<
+    Link | Em | Strong | Strike | SubSup | Underline | TextColor | Action
+  >;
 
 /**
  * @name link_text_inline_node

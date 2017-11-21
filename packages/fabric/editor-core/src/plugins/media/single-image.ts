@@ -1,6 +1,3 @@
-export type Alignment = 'left' | 'right' | 'center';
-export type Display = 'inline-block' | 'block';
-
 export function textAlign(alignment: Alignment, display: Display): string {
   if (display !== 'block') {
     return 'left';

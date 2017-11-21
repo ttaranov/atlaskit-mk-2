@@ -2,6 +2,7 @@ import analyticsService from '../../analytics/service';
 import * as assert from 'assert';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { EditorAppearance } from '../../editor/types/editor-props';
 
 import {
   Context,
@@ -29,6 +30,7 @@ import {
 } from 'prosemirror-state';
 import { insertPoint } from 'prosemirror-transform';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
+import { Alignment, Display } from '@atlaskit/editor-common';
 
 import PickerFacadeType from './picker-facade';
 import { ErrorReporter } from '../../utils';
@@ -43,9 +45,8 @@ import {
 } from '../../nodeviews';
 import keymapPlugin from './keymap';
 import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
-import { insertFiles } from './media-files';
+import { insertFilmstrip } from './media-files';
 import { removeMediaNode, splitMediaGroup } from './media-common';
-import { Alignment, Display } from './single-image';
 import PickerFacade from './picker-facade';
 import DropPlaceholder from '../../ui/Media/DropPlaceholder';
 
@@ -80,9 +81,15 @@ export class MediaPluginState {
   private clipboardPicker?: PickerFacadeType;
   private dropzonePicker?: PickerFacadeType;
   private linkRanges: Array<URLInfo>;
+  private editorAppearance: EditorAppearance;
 
-  constructor(state: EditorState, options: MediaPluginOptions) {
+  constructor(
+    state: EditorState,
+    options: MediaPluginOptions,
+    editorAppearance: EditorAppearance,
+  ) {
     this.options = options;
+    this.editorAppearance = editorAppearance;
     this.waitForMediaUpload =
       options.waitForMediaUpload === undefined
         ? true
@@ -207,7 +214,7 @@ export class MediaPluginState {
       this.stateManager.subscribe(mediaState.id, this.handleMediaState);
     });
 
-    insertFiles(this.view, mediaStates, collection);
+    insertFilmstrip(this.view, mediaStates, collection);
 
     const { view } = this;
     if (!view.hasFocus()) {
@@ -643,13 +650,14 @@ export const createPlugin = (
   schema: Schema,
   options: MediaPluginOptions,
   dispatch?: Dispatch,
+  editorAppearance?: EditorAppearance,
 ) => {
   const dropZone = document.createElement('div');
   ReactDOM.render(React.createElement(DropPlaceholder), dropZone);
   return new Plugin({
     state: {
       init(config, state) {
-        return new MediaPluginState(state, options);
+        return new MediaPluginState(state, options, editorAppearance);
       },
       apply(tr, pluginState: MediaPluginState, oldState, newState) {
         pluginState.detectLinkRangesInSteps(tr, oldState);
@@ -755,10 +763,12 @@ const plugins = (
   schema: Schema,
   options: MediaPluginOptions,
   dispatch?: Dispatch,
+  editorAppearance?: EditorAppearance,
 ) => {
-  return [createPlugin(schema, options, dispatch), keymapPlugin(schema)].filter(
-    plugin => !!plugin,
-  ) as Plugin[];
+  return [
+    createPlugin(schema, options, dispatch, editorAppearance),
+    keymapPlugin(schema),
+  ].filter(plugin => !!plugin) as Plugin[];
 };
 
 export default plugins;

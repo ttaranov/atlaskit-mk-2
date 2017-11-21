@@ -19,6 +19,7 @@ export const defaultSchema: Schema = createSchema({
     'mention',
     'media',
     'mediaGroup',
+    'singleImage',
     'confluenceUnsupportedBlock',
     'confluenceUnsupportedInline',
     'confluenceJiraIssue',

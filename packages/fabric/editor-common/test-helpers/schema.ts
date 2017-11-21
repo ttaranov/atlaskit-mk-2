@@ -29,10 +29,10 @@ export default createSchema({
     'image',
     'media',
     'mediaGroup',
+    'singleImage',
     'confluenceUnsupportedBlock',
     'confluenceUnsupportedInline',
     'confluenceJiraIssue',
-    'singleImage',
     'plain',
     'table',
     'tableCell',
@@ -56,7 +56,7 @@ export default createSchema({
     'subsup',
     'emojiQuery',
     'textColor',
-    'action'
+    'action',
   ],
   customNodeSpecs: {
     plain: { ...paragraph, content: 'text*' },
