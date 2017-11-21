@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import blockTypePlugin from '../../../src/plugins/block-type';
 import { browser, createSchema } from '@atlaskit/editor-common';
 import {
@@ -34,7 +33,7 @@ describe('codeBlock - keymaps', () => {
   });
   let trackEvent;
   beforeEach(() => {
-    trackEvent = sinon.spy();
+    trackEvent = jest.fn();
     analyticsService.trackEvent = trackEvent;
   });
 
@@ -48,7 +47,7 @@ describe('codeBlock - keymaps', () => {
             sendKeyToPm(editorView, 'Cmd-Alt-9');
 
             expect(editorView.state.doc).toEqualDocument(doc(blockquote(p('text'))));
-            expect(trackEvent.calledWith('atlassian.editor.format.blockquote.keyboard')).toBe(true);
+            expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.blockquote.keyboard');
             editorView.destroy();
           });
         });
@@ -79,7 +78,7 @@ describe('codeBlock - keymaps', () => {
             const { editorView } = editor(doc(h1('t{<}ex{>}t')));
             sendKeyToPm(editorView, 'Shift-Enter');
             expect(editorView.state.doc).toEqualDocument(doc(h1('t', hardBreak(), 't')));
-            expect(trackEvent.calledWith('atlassian.editor.newline.keyboard')).toBe(true);
+            expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.newline.keyboard');
             editorView.destroy();
           });
         });
@@ -93,7 +92,7 @@ describe('codeBlock - keymaps', () => {
         expect(editorView.state.doc).toEqualDocument(doc(h1()));
         sendKeyToPm(editorView, 'Mod-z');
         expect(editorView.state.doc).toEqualDocument(doc(p('# ')));
-        expect(trackEvent.calledWith('atlassian.editor.undo.keyboard')).toBe(true);
+        expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.undo.keyboard');
         editorView.destroy();
       });
     });
@@ -339,7 +338,7 @@ describe('codeBlock - keymaps', () => {
               sendKeyToPm(editorView, 'ArrowUp');
 
               expect(editorView.state.doc).toEqualDocument(doc(p(''), hr, code_block()('text')));
-              expect(trackEvent.calledWith('atlassian.editor.moveup.keyboard')).toBe(true);
+              expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.moveup.keyboard');
               editorView.destroy();
             });
           });
@@ -523,7 +522,7 @@ describe('codeBlock - keymaps', () => {
             sendKeyToPm(editorView, 'ArrowDown');
 
             expect(editorView.state.doc).toEqualDocument(doc(blockquote(code_block()('text'), hr), p('')));
-            expect(trackEvent.calledWith('atlassian.editor.movedown.keyboard')).toBe(true);
+            expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.movedown.keyboard');
             editorView.destroy();
           });
         });

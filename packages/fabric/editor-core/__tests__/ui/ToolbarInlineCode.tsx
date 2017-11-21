@@ -1,5 +1,4 @@
 import { mount } from 'enzyme';
-import * as sinon from 'sinon';
 import * as React from 'react';
 import textFormattingPlugins, { TextFormattingState } from '../../src/plugins/text-formatting';
 import ToolbarInlineCode from '../../src/ui/ToolbarInlineCode';
@@ -37,10 +36,10 @@ describe('@atlaskit/editor-core/ui/ToolbarInlineCode', () => {
       />
     );
 
-    const spyFunc = sinon.spy();
+    const spyFunc = jest.fn();
     pluginState.toggleCode = spyFunc;
     codeButton.find('button').simulate('click');
-    expect(spyFunc.callCount).toEqual(1);
+    expect(spyFunc).toHaveBeenCalledTimes(1);
     codeButton.unmount();
   });
 
@@ -60,7 +59,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInlineCode', () => {
 
   describe('analytics', () => {
     it('should trigger analyticsService.trackEvent', () => {
-      const trackEvent = sinon.spy();
+      const trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
       const { editorView, pluginState } = editor(doc(p('text')));
       const toolbarOption = mount(
@@ -70,7 +69,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInlineCode', () => {
         />
       );
       toolbarOption.find(AkButton).simulate('click');
-      expect(trackEvent.calledWith('atlassian.editor.format.code.toggle')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.code.toggle');
       toolbarOption.unmount();
     });
   });

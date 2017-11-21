@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import hyperlinkPlugins from '../../../src/plugins/hyperlink';
 import {
   insertText, makeEditor, doc, br, p, a as link,
@@ -16,14 +15,14 @@ describe('hyperlink', () => {
 
   describe('input rules', () => {
     it('should convert "www.atlassian.com" to hyperlink', () => {
-      const trackEvent = sinon.spy();
+      const trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, 'www.atlassian.com ', sel, sel);
 
       const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com');
       expect(editorView.state.doc).toEqualDocument(doc(p(a, ' ')));
-      expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.hyperlink.autoformatting');
     });
 
     it('should not convert "www.atlassian.com" to a hyperlink when we haven not hit space afterward', () => {

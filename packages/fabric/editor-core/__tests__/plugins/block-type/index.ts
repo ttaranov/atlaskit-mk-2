@@ -1,5 +1,3 @@
-import * as sinon from 'sinon';
-
 import {
   blockquote,
   
@@ -188,23 +186,23 @@ describe('block-type', () => {
 
   it('should get current state immediately once subscribed', () => {
     const { pluginState } = editor(doc(p('text')));
-    const spy = sinon.spy();
+    const spy = jest.fn();
 
     pluginState.subscribe(spy);
 
-    expect(spy.callCount).toBe(1);
-    expect(spy.calledWith(pluginState)).toBe(true);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith(pluginState);
   });
 
   it('should be able to subscribe the changes', () => {
     const { pluginState, editorView } = editor(doc(p('te{<>}xt')));
-    const spy = sinon.spy();
+    const spy = jest.fn();
 
     pluginState.subscribe(spy);
     pluginState.toggleBlockType('heading1', editorView);
 
-    expect(spy.callCount).toBe(2);
-    expect(spy.calledWith(pluginState)).toBe(true);
+    expect(spy).toHaveBeenCalledTimes(2);
+    expect(spy).toHaveBeenCalledWith(pluginState);
     editorView.destroy();
   });
 
@@ -212,11 +210,11 @@ describe('block-type', () => {
     describe('when origin block type is different with target block type', () => {
       it('converts to target block type', () => {
         const { pluginState, editorView } = editor(doc(p('text')));
-        const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
+        const toggleBlockType = jest.spyOn(pluginState, 'toggleBlockType');
 
         pluginState.toggleBlockType('heading1', editorView);
 
-        expect(toggleBlockType.calledWith('heading1', editorView)).toBe(true);
+        expect(toggleBlockType).toHaveBeenCalledWith('heading1', editorView);
         editorView.destroy();
       });
     });

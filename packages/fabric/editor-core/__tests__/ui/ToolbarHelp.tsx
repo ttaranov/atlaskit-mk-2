@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import * as sinon from 'sinon';
 import ToolbarHelp from '../../src/ui/ToolbarHelp';
 import HelpDialog from '../../src/ui/HelpDialog';
 import ToolbarButton from '../../src/ui/ToolbarButton';
@@ -12,11 +11,11 @@ const noop = () => {};
 describe('@atlaskit/editor-core/ui/ToolbarHelp', () => {
 
   it('should trigger analyticsService.trackEvent when help icon is clicked', () => {
-    const trackEvent = sinon.spy();
+    const trackEvent = jest.fn();
     analyticsService.trackEvent = trackEvent;
     const toolbarOption = mount(<ToolbarHelp showHelp={false} toggleHelp={noop} />);
     toolbarOption.find(AkButton).simulate('click');
-    expect(trackEvent.calledWith('atlassian.editor.help.button')).toBe(true);
+    expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.help.button');
     toolbarOption.unmount();
   });
 

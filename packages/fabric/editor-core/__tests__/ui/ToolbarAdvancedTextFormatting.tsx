@@ -1,5 +1,4 @@
 import { mount } from 'enzyme';
-import * as sinon from 'sinon';
 import * as React from 'react';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 import textFormattingPlugins from '../../src/plugins/text-formatting';
@@ -94,13 +93,13 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    textFormattingPluginSet[0].getState(editorView.state).toggleStrike = sinon.spy();
+    textFormattingPluginSet[0].getState(editorView.state).toggleStrike = jest.fn();
     const strikeButton = toolbarOption
       .find('Item')
       .filterWhere(n => n.text() === 'Strikethrough')
       .find('Element');
     strikeButton.simulate('click');
-    expect(textFormattingPluginSet[0].getState(editorView.state).toggleStrike.callCount).toEqual(1);
+    expect(textFormattingPluginSet[0].getState(editorView.state).toggleStrike).toHaveBeenCalledTimes(1);
     toolbarOption.unmount();
   });
 
@@ -131,13 +130,13 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    clearformattingPluginSet[0].getState(editorView.state).clearFormatting = sinon.spy();
+    clearformattingPluginSet[0].getState(editorView.state).clearFormatting = jest.fn();
     const clearFormattingButton = toolbarOption
       .find('Item')
       .filterWhere(n => n.text() === 'Clear Formatting')
       .find('Element');
     clearFormattingButton.simulate('click');
-    expect(clearformattingPluginSet[0].getState(editorView.state).clearFormatting.callCount).toEqual(1);
+    expect(clearformattingPluginSet[0].getState(editorView.state).clearFormatting).toHaveBeenCalledTimes(1);
     toolbarOption.unmount();
   });
 
@@ -200,7 +199,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
         />
         );
       toolbarOption.find('button').simulate('click');
-      trackEvent = sinon.spy();
+      trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
     });
 
@@ -221,7 +220,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
           .filterWhere(n => n.text() === type.name)
           .find('Element')
           .simulate('click');
-        expect(trackEvent.calledWith(`atlassian.editor.format.${type.value}.button`)).toBe(true);
+        expect(trackEvent).toHaveBeenCalledWith(`atlassian.editor.format.${type.value}.button`);
       });
     });
   });

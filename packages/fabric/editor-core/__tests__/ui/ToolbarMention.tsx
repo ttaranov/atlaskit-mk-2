@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import * as sinon from 'sinon';
 import mentionsPlugins from '../../src/plugins/mentions';
 import ToolbarMention from '../../src/ui/ToolbarMention';
 import { doc, p, makeEditor, defaultSchema } from '@atlaskit/editor-test-helpers';
@@ -26,12 +25,12 @@ describe('ToolbarMention', () => {
 
   describe('analytics', () => {
     it('should trigger analyticsService.trackEvent when mention icon is clicked', () => {
-      const trackEvent = sinon.spy();
+      const trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
       const { editorView } = editor(doc(p('')));
       const toolbarOption = mount(<ToolbarMention pluginKey={pluginKey} editorView={editorView} />);
       toolbarOption.find(MentionIcon).simulate('click');
-      expect(trackEvent.calledWith('atlassian.editor.mention.button')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.mention.button');
       toolbarOption.unmount();
     });
   });

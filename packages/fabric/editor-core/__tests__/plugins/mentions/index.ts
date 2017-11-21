@@ -1,4 +1,4 @@
-import * as sinon from 'sinon';
+import createSandbox from 'jest-sandbox';
 import { mention as mentionNode } from '@atlaskit/editor-common';
 import mentionsPlugins, { MentionsState } from '../../../src/plugins/mentions';
 import ProviderFactory from '../../../src/providerFactory';
@@ -17,6 +17,7 @@ import {
   insertText,
   defaultSchema,
   createEvent,
+  spyOnReturnValue,
 } from '@atlaskit/editor-test-helpers';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { analyticsService } from '../../../src/analytics';
@@ -40,7 +41,7 @@ describe('mentions', () => {
   };
 
   beforeEach(function() {
-    sandbox = sinon.sandbox.create();
+    sandbox = createSandbox();
   });
 
   afterEach(function() {
@@ -53,23 +54,23 @@ describe('mentions', () => {
         const { editorView, pluginState } = editor(
           doc(p(mentionQuery()('@o{<>}'))),
         );
-        const spy = sandbox.spy(pluginState, 'onSelectPrevious');
+        const spy = sandbox.spyOn(pluginState, 'onSelectPrevious');
 
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'ArrowUp');
-        expect(spy.called).toBe(false);
+        expect(spy).not.toHaveBeenCalled();
         editorView.destroy();
       });
 
       it('should be ignored if there is no active query', () => {
         const { editorView, pluginState } = editor(doc(p('Hello')));
-        const spy = sandbox.spy(pluginState, 'onSelectPrevious');
+        const spy = sandbox.spyOn(pluginState, 'onSelectPrevious');
 
         return pluginState.setMentionProvider(mentionProvider).then(() => {
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
           sendKeyToPm(editorView, 'ArrowUp');
-          expect(spy.called).toBe(false);
+          expect(spy).not.toHaveBeenCalled();
           editorView.destroy();
         });
       });
@@ -78,14 +79,14 @@ describe('mentions', () => {
         const { editorView, pluginState } = editor(
           doc(p(mentionQuery()('@o{<>}'))),
         );
-        const spy = sandbox.spy(pluginState, 'onSelectPrevious');
+        const spy = spyOnReturnValue(pluginState, 'onSelectPrevious', sandbox);
 
         return pluginState.setMentionProvider(mentionProvider).then(() => {
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
           sendKeyToPm(editorView, 'ArrowUp');
-          expect(spy.called).toBe(true);
-          expect(spy.returned(false)).toBe(true);
+          expect(spy).toHaveBeenCalled();
+          expect(spy.returnValue).toBe(false);
           editorView.destroy();
         });
       });
@@ -96,22 +97,22 @@ describe('mentions', () => {
         const { editorView, pluginState } = editor(
           doc(p(mentionQuery()('@o{<>}'))),
         );
-        const spy = sandbox.spy(pluginState, 'onSelectNext');
+        const spy = sandbox.spyOn(pluginState, 'onSelectNext');
 
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'ArrowDown');
-        expect(spy.called).toBe(false);
+        expect(spy).not.toHaveBeenCalled();
       });
 
       it('should be ignored if there is no active query', () => {
         const { editorView, pluginState } = editor(doc(p('Hello')));
-        const spy = sandbox.spy(pluginState, 'onSelectNext');
+        const spy = sandbox.spyOn(pluginState, 'onSelectNext');
 
         return pluginState.setMentionProvider(mentionProvider).then(() => {
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
           sendKeyToPm(editorView, 'ArrowDown');
-          expect(spy.called).toBe(false);
+          expect(spy).not.toHaveBeenCalled();
           editorView.destroy();
         });
       });
@@ -120,14 +121,14 @@ describe('mentions', () => {
         const { editorView, pluginState } = editor(
           doc(p(mentionQuery()('@o{<>}'))),
         );
-        const spy = sandbox.spy(pluginState, 'onSelectNext');
+        const spy = spyOnReturnValue(pluginState, 'onSelectNext', sandbox);
 
         return pluginState.setMentionProvider(mentionProvider).then(() => {
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
           sendKeyToPm(editorView, 'ArrowDown');
-          expect(spy.called).toBe(true);
-          expect(spy.returned(false)).toBe(true);
+          expect(spy).toHaveBeenCalled();
+          expect(spy.returnValue).toBe(false);
           editorView.destroy();
         });
       });
@@ -138,23 +139,23 @@ describe('mentions', () => {
         const { editorView, pluginState } = editor(
           doc(p(mentionQuery()('@o{<>}'))),
         );
-        const spy = sandbox.spy(pluginState, 'onSelectCurrent');
+        const spy = sandbox.spyOn(pluginState, 'onSelectCurrent');
 
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'Enter');
-        expect(spy.called).toBe(false);
+        expect(spy).not.toHaveBeenCalled();
         editorView.destroy();
       });
 
       it('should be ignored if there is no active query', () => {
         const { editorView, pluginState } = editor(doc(p('Hello')));
-        const spy = sandbox.spy(pluginState, 'onSelectCurrent');
+        const spy = sandbox.spyOn(pluginState, 'onSelectCurrent');
 
         return pluginState.setMentionProvider(mentionProvider).then(() => {
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
           sendKeyToPm(editorView, 'Enter');
-          expect(spy.called).toBe(false);
+          expect(spy).not.toHaveBeenCalled();
           editorView.destroy();
         });
       });
@@ -163,14 +164,14 @@ describe('mentions', () => {
         const { editorView, pluginState } = editor(
           doc(p(mentionQuery()('@o{<>}'))),
         );
-        const spy = sandbox.spy(pluginState, 'onSelectCurrent');
+        const spy = spyOnReturnValue(pluginState, 'onSelectCurrent');
 
         return pluginState.setMentionProvider(mentionProvider).then(() => {
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
           sendKeyToPm(editorView, 'Enter');
-          expect(spy.called).toBe(true);
-          expect(spy.returned(false)).toBe(true);
+          expect(spy).toHaveBeenCalled();
+          expect(spy.returnValue).toBe(false);
           editorView.destroy();
         });
       });
@@ -181,23 +182,23 @@ describe('mentions', () => {
         const { editorView, pluginState } = editor(
           doc(p(mentionQuery()('@o{<>}'))),
         );
-        const spy = sandbox.spy(pluginState, 'onSelectCurrent');
+        const spy = sandbox.spyOn(pluginState, 'onSelectCurrent');
 
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'Shift-Enter');
-        expect(spy.called).toBe(false);
+        expect(spy).not.toHaveBeenCalled();
         editorView.destroy();
       });
 
       it('should be ignored if there is no active query', async () => {
         const { editorView, pluginState } = editor(doc(p('Hello')));
-        const spy = sandbox.spy(pluginState, 'onSelectCurrent');
+        const spy = sandbox.spyOn(pluginState, 'onSelectCurrent');
 
         await pluginState.setMentionProvider(mentionProvider);
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
         sendKeyToPm(editorView, 'Shift-Enter');
-        expect(spy.called).toBe(false);
+        expect(spy).not.toHaveBeenCalled();
         editorView.destroy();
       });
 
@@ -205,13 +206,13 @@ describe('mentions', () => {
         const { editorView, pluginState } = editor(
           doc(p(mentionQuery()('@o{<>}'))),
         );
-        const spy = sandbox.spy(pluginState, 'onSelectCurrent');
+        const spy = sandbox.spyOn(pluginState, 'onSelectCurrent');
 
         await pluginState.setMentionProvider(mentionProvider);
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
         sendKeyToPm(editorView, 'Shift-Enter');
-        expect(spy.called).toBe(true);
+        expect(spy).toHaveBeenCalled();
         editorView.destroy();
       });
     });
@@ -221,23 +222,23 @@ describe('mentions', () => {
         const { editorView, pluginState } = editor(
           doc(p(mentionQuery()('@o{<>}'))),
         );
-        const spy = sandbox.spy(pluginState, 'trySelectCurrent');
+        const spy = sandbox.spyOn(pluginState, 'trySelectCurrent');
 
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'Space');
-        expect(spy.called).toBe(false);
+        expect(spy).not.toHaveBeenCalled();
         editorView.destroy();
       });
 
       it('should be ignored if there is no active query', () => {
         const { editorView, pluginState } = editor(doc(p('Hello')));
-        const spy = sandbox.spy(pluginState, 'trySelectCurrent');
+        const spy = sandbox.spyOn(pluginState, 'trySelectCurrent');
 
         return pluginState.setMentionProvider(mentionProvider).then(() => {
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
           sendKeyToPm(editorView, 'Space');
-          expect(spy.called).toBe(false);
+          expect(spy).not.toHaveBeenCalled();
           editorView.destroy();
         });
       });
@@ -246,20 +247,16 @@ describe('mentions', () => {
         const { editorView, pluginState } = editor(
           doc(p(mentionQuery()('@kai{<>}'))),
         );
-        const spy = sandbox.spy(pluginState, 'trySelectCurrent');
-        const trackEvent = sinon.spy();
+        const spy = sandbox.spyOn(pluginState, 'trySelectCurrent');
+        const trackEvent = jest.fn();
         analyticsService.trackEvent = trackEvent;
 
         return pluginState.setMentionProvider(mentionProvider).then(() => {
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
           sendKeyToPm(editorView, 'Space');
-          expect(spy.called).toBe(true);
-          expect(
-            trackEvent.calledWith(
-              'atlassian.editor.mention.try.insert.previous',
-            ),
-          ).toBe(true);
+          expect(spy).toHaveBeenCalled();
+          expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.mention.try.insert.previous');
           editorView.destroy();
         });
       });
@@ -270,23 +267,23 @@ describe('mentions', () => {
         const { editorView, pluginState } = editor(
           doc(p(mentionQuery()('@o{<>}'))),
         );
-        const spy = sandbox.spy(pluginState, 'dismiss');
+        const spy = sandbox.spyOn(pluginState, 'dismiss');
 
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'Esc');
-        expect(spy.called).toBe(false);
+        expect(spy).not.toHaveBeenCalled();
         editorView.destroy();
       });
 
       it('should be ignored if there is no active query', () => {
         const { editorView, pluginState } = editor(doc(p('Hello')));
-        const spy = sandbox.spy(pluginState, 'dismiss');
+        const spy = sandbox.spyOn(pluginState, 'dismiss');
 
         return pluginState.setMentionProvider(mentionProvider).then(() => {
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
           sendKeyToPm(editorView, 'Esc');
-          expect(spy.called).toBe(false);
+          expect(spy).not.toHaveBeenCalled();
           editorView.destroy();
         });
       });
@@ -295,13 +292,13 @@ describe('mentions', () => {
         const { editorView, pluginState } = editor(
           doc(p(mentionQuery()('@kai{<>}'))),
         );
-        const spy = sandbox.spy(pluginState, 'dismiss');
+        const spy = spyOnReturnValue(pluginState, 'dismiss', sandbox);
 
         return pluginState.setMentionProvider(mentionProvider).then(() => {
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
           sendKeyToPm(editorView, 'Esc');
-          expect(spy.called).toBe(true);
-          expect(spy.returned(true)).toBe(true);
+          expect(spy).toHaveBeenCalled();
+          expect(spy.returnValue).toBe(true);
           editorView.destroy();
         });
       });
@@ -575,14 +572,14 @@ describe('mentions', () => {
     });
 
     it('should call changeHandlers when mention is removed', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const { editorView, pluginState } = editor(
         doc(p(mentionQuery({ active: true })('{<}@os{>}'))),
       );
       pluginState.subscribe(spy);
       sendKeyToPm(editorView, 'Delete');
       expect(editorView.state.doc).toEqualDocument(doc(p()));
-      expect(spy.callCount).toEqual(1);
+      expect(spy).toHaveBeenCalledTimes(1);
       editorView.destroy();
     });
   });
@@ -675,10 +672,10 @@ describe('mentions', () => {
       const { editorView, pluginState } = editor(
         doc(p(mentionQuery({ active: true })('@O w{<>}'))),
       );
-      const spy = sandbox.spy(pluginState, 'onSelectCurrent');
+      const spy = sandbox.spyOn(pluginState, 'onSelectCurrent');
 
       return pluginState.setMentionProvider(mentionProvider).then(() => {
-        const trackEvent = sinon.spy();
+        const trackEvent = jest.fn();
         analyticsService.trackEvent = trackEvent;
 
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
@@ -696,10 +693,8 @@ describe('mentions', () => {
 
         pluginState.trySelectCurrent();
 
-        expect(spy.called).toBe(true);
-        expect(
-          trackEvent.calledWith('atlassian.editor.mention.try.select.current'),
-        ).toBe(true);
+        expect(spy).toHaveBeenCalled();
+        expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.mention.try.select.current');
         editorView.destroy();
       });
     });
@@ -708,7 +703,7 @@ describe('mentions', () => {
       const { editorView, pluginState } = editor(
         doc(p(mentionQuery({ active: true })('@os{<>}'))),
       );
-      const spy = sandbox.spy(pluginState, 'insertMention');
+      const spy = sandbox.spyOn(pluginState, 'insertMention');
 
       return pluginState.setMentionProvider(mentionProvider).then(() => {
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
@@ -731,7 +726,7 @@ describe('mentions', () => {
 
         pluginState.trySelectCurrent();
 
-        expect(spy.called).toBe(false);
+        expect(spy).not.toHaveBeenCalled();
         editorView.destroy();
       });
     });
@@ -768,7 +763,7 @@ describe('mentions', () => {
       const { editorView, pluginState } = editor(
         doc(p(mentionQuery({ active: true })('@oscar{<>}'))),
       );
-      const spy = sandbox.spy(pluginState, 'tryInsertingPreviousMention');
+      const spy = sandbox.spyOn(pluginState, 'tryInsertingPreviousMention');
 
       return pluginState.setMentionProvider(mentionProvider).then(() => {
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
@@ -777,7 +772,7 @@ describe('mentions', () => {
 
         pluginState.trySelectCurrent();
 
-        expect(spy.called).toBe(true);
+        expect(spy).toHaveBeenCalled();
         editorView.destroy();
       });
     });
@@ -786,7 +781,7 @@ describe('mentions', () => {
       const { editorView, pluginState } = editor(
         doc(p(mentionQuery({ active: true })('@oscar{<>}'))),
       );
-      const spy = sandbox.spy(pluginState, 'tryInsertingPreviousMention');
+      const spy = sandbox.spyOn(pluginState, 'tryInsertingPreviousMention');
 
       return pluginState.setMentionProvider(mentionProvider).then(() => {
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
@@ -795,7 +790,7 @@ describe('mentions', () => {
 
         pluginState.trySelectCurrent();
 
-        expect(spy.called).toBe(true);
+        expect(spy).toHaveBeenCalled();
         editorView.destroy();
       });
     });
@@ -804,27 +799,23 @@ describe('mentions', () => {
       const { editorView, pluginState } = editor(
         doc(p(mentionQuery({ active: true })('@xyz{<>}'))),
       );
-      const spy = sandbox.spy(pluginState, 'dismiss');
+      const spy = sandbox.spyOn(pluginState, 'dismiss');
 
       return pluginState
         .setMentionProvider(mentionProvider)
         .then(mentionResource => {
-          const trackEvent = sinon.spy();
+          const trackEvent = jest.fn();
           analyticsService.trackEvent = trackEvent;
-          const isFilteringStub = sandbox.stub(mentionResource, 'isFiltering');
+          const isFilteringStub = sandbox.spyOn(mentionResource, 'isFiltering');
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
-
-          isFilteringStub.returns(false);
+          
+          isFilteringStub.mockImplementation(() => false);
           pluginState.onMentionResult([], 'xyz');
 
           pluginState.trySelectCurrent();
 
-          expect(spy.called).toBe(true);
-          expect(
-            trackEvent.calledWith(
-              'atlassian.editor.mention.insert.previous.match.no.match',
-            ),
-          ).toBe(true);
+          expect(spy).toHaveBeenCalled();
+          expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.mention.insert.previous.match.no.match');
           editorView.destroy();
         });
     });
@@ -837,7 +828,7 @@ describe('mentions', () => {
       );
 
       return pluginState.setMentionProvider(mentionProvider).then(() => {
-        const trackEvent = sinon.spy();
+        const trackEvent = jest.fn();
         analyticsService.trackEvent = trackEvent;
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
@@ -860,11 +851,7 @@ describe('mentions', () => {
         sendKeyToPm(editorView, 'Space');
 
         expect(editorView.state.doc.nodeAt(1)!.type.spec).toBe(mentionNode);
-        expect(
-          trackEvent.calledWith(
-            'atlassian.editor.mention.insert.previous.match.success',
-          ),
-        ).toBe(true);
+        expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.mention.insert.previous.match.success');
         editorView.destroy();
       });
     });

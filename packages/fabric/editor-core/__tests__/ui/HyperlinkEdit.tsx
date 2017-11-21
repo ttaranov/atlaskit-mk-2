@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import { mount } from 'enzyme';
 import * as React from 'react';
 
@@ -111,18 +110,24 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     expect(pluginState.href).toEqual(href);
   });
 
-  it('should update title on blur', () => {
+  it.only('should update title on blur', () => {
     const { editorView, pluginState } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('www.atlas{<>}sian.com'), 'after')));
     const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
     hyperlinkEdit.setState({ editorFocused: true });
     const input = hyperlinkEdit.find(PanelTextInput);
     const title = 'Atlassian';
-    const updateLinkTextStub = sinon.stub(pluginState, 'updateLinkText');
+    const origFn = pluginState.updateLinkText;
+    let titleArg: string;
+    const updateLinkTextStub = jest.spyOn(pluginState, 'updateLinkText');
+    updateLinkTextStub.mockImplementation((...args) => {
+      titleArg = args[0];
+      return origFn.apply(pluginState, args);
+    });
     input.prop('onChange')!(title);
     input.prop('onBlur')!();
     // pluginState.text doesn't work because link is not inclusive. After replace the selection gets outside of the link
-    sinon.assert.alwaysCalledWithMatch(updateLinkTextStub, title);
-    updateLinkTextStub.restore();
+    expect(titleArg!).toMatch(title);
+    updateLinkTextStub.mockRestore();
   });
 
   it('should not update title or href on blur if there is no change', () => {
@@ -130,12 +135,12 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
     hyperlinkEdit.setState({ editorFocused: true });
     const input = hyperlinkEdit.find(PanelTextInput);
-    const updateLinkStub = sinon.stub(pluginState, 'updateLink');
-    const updateLinkTextStub = sinon.stub(pluginState, 'updateLinkText');
+    const updateLinkStub = jest.spyOn(pluginState, 'updateLink');
+    const updateLinkTextStub = jest.spyOn(pluginState, 'updateLinkText');
     input.prop('onBlur')!();
-    sinon.assert.notCalled(updateLinkStub);
-    sinon.assert.notCalled(updateLinkTextStub);
-    updateLinkTextStub.restore();
-    updateLinkStub.restore();
+    expect(updateLinkStub).not.toHaveBeenCalled();
+    expect(updateLinkTextStub).not.toHaveBeenCalled();
+    updateLinkTextStub.mockRestore();
+    updateLinkStub.mockRestore();
   });
 });

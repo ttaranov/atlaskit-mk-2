@@ -1,5 +1,4 @@
 import { mount } from 'enzyme';
-import * as sinon from 'sinon';
 import * as React from 'react';
 import blockTypePlugins from '../../src/plugins/block-type';
 import tablePlugins from '../../src/plugins/table';
@@ -32,7 +31,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
   });
   let trackEvent;
   beforeEach(() => {
-    trackEvent = sinon.spy();
+    trackEvent = jest.fn();
     analyticsService.trackEvent = trackEvent;
   });
 
@@ -122,7 +121,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const media = await mediaProvider;
     await media.uploadContext;
 
-    mediaPluginsSet[0].getState(editorView.state).showMediaPicker = sinon.spy();
+    mediaPluginsSet[0].getState(editorView.state).showMediaPicker = jest.fn();
 
     const toolbarOption = mount(
       <ToolbarInsertBlock
@@ -137,15 +136,15 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       .filterWhere(n => n.text().indexOf('Files and images') > 0)
       .find('Element');
     mediaButton.simulate('click');
-    expect(mediaPluginsSet[0].getState(editorView.state).showMediaPicker.callCount).toEqual(1);
-    expect(trackEvent.calledWith('atlassian.editor.format.media.button')).toBe(true);
+    expect(mediaPluginsSet[0].getState(editorView.state).showMediaPicker).toHaveBeenCalledTimes(1);
+    expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.media.button');
     toolbarOption.unmount();
   });
 
   it('should trigger insertBlockType when Panel option is clicked', () => {
     const { editorView } = editor(doc(p('text')));
     const pluginStateBlockType = blockTypePluginsSet[0].getState(editorView.state);
-    pluginStateBlockType.insertBlockType = sinon.spy();
+    pluginStateBlockType.insertBlockType = jest.fn();
 
     const toolbarOption = mount(
       <ToolbarInsertBlock
@@ -161,15 +160,15 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       .filterWhere(n => n.text().indexOf('Panel') > 0)
       .find('Element');
     panelButton.simulate('click');
-    expect(blockTypePluginsSet[0].getState(editorView.state).insertBlockType.callCount).toEqual(1);
-    expect(trackEvent.calledWith('atlassian.editor.format.panel.button')).toBe(true);
+    expect(blockTypePluginsSet[0].getState(editorView.state).insertBlockType).toHaveBeenCalledTimes(1);
+    expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.panel.button');
     toolbarOption.unmount();
   });
 
   it('should trigger insertBlockType when code block option is clicked', () => {
     const { editorView } = editor(doc(p('text')));
     const pluginStateBlockType = blockTypePluginsSet[0].getState(editorView.state);
-    pluginStateBlockType.insertBlockType = sinon.spy();
+    pluginStateBlockType.insertBlockType = jest.fn();
 
     const toolbarOption = mount(
       <ToolbarInsertBlock
@@ -184,15 +183,15 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       .filterWhere(n => n.text().indexOf('Code block') > 0)
       .find('Element');
     codeblockButton.simulate('click');
-    expect(pluginStateBlockType.insertBlockType.callCount).toEqual(1);
-    expect(trackEvent.calledWith('atlassian.editor.format.codeblock.button')).toBe(true);
+    expect(pluginStateBlockType.insertBlockType).toHaveBeenCalledTimes(1);
+    expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.codeblock.button');
     toolbarOption.unmount();
   });
 
   it('should trigger insertBlockType when blockquote option is clicked', () => {
     const { editorView } = editor(doc(p('text')));
     const pluginStateBlockType = blockTypePluginsSet[0].getState(editorView.state);
-    pluginStateBlockType.insertBlockType = sinon.spy();
+    pluginStateBlockType.insertBlockType = jest.fn();
 
     const toolbarOption = mount(
       <ToolbarInsertBlock
@@ -207,8 +206,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       .filterWhere(n => n.text().indexOf('Block quote') > 0)
       .find('Element');
     blockquoteButton.simulate('click');
-    expect(pluginStateBlockType.insertBlockType.callCount).toEqual(1);
-    expect(trackEvent.calledWith('atlassian.editor.format.blockquote.button')).toBe(true);
+    expect(pluginStateBlockType.insertBlockType).toHaveBeenCalledTimes(1);
+    expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.blockquote.button');
     toolbarOption.unmount();
   });
 
@@ -221,21 +220,21 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    const funcSpy = sinon.spy();
+    const funcSpy = jest.fn();
     tableCommands.createTable = () => funcSpy;
     const tableButton = toolbarOption
       .find('Item')
       .filterWhere(n => n.text().indexOf('Table') > 0)
       .find('Element');
     tableButton.simulate('click');
-    expect(funcSpy.callCount).toEqual(1);
-    expect(trackEvent.calledWith('atlassian.editor.format.table.button')).toBe(true);
+    expect(funcSpy).toHaveBeenCalledTimes(1);
+    expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.table.button');
     toolbarOption.unmount();
   });
 
   it('should trigger insertMacroFromMacroBrowser when "[...] View More" option is clicked', () => {
     const { editorView } = editor(doc(p('text')));
-    const insertMacroFromMacroBrowser = sinon.spy();
+    const insertMacroFromMacroBrowser = jest.fn();
     const macroProvider = {} as any;
 
     const toolbarOption = mount(
@@ -252,8 +251,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       .filterWhere(n => n.text().indexOf('View more') > -1)
       .find('Element');
     button.simulate('click');
-    expect(insertMacroFromMacroBrowser.callCount).toEqual(1);
-    expect(trackEvent.calledWith('atlassian.editor.format.macro.button')).toBe(true);
+    expect(insertMacroFromMacroBrowser).toHaveBeenCalledTimes(1);
+    expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.macro.button');
     toolbarOption.unmount();
   });
 });

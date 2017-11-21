@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import * as sinon from 'sinon';
 import imageUploadPlugins, { ImageUploadState } from '../../src/plugins/image-upload';
 import ToolbarImage from '../../src/ui/ToolbarImage';
 import AkButton from '@atlaskit/button';
@@ -36,13 +35,15 @@ describe('ToolbarImage', () => {
   describe('analytics', () => {
     it('should trigger analyticsService.trackEvent', () => {
       const { editorView, pluginState } = editor(doc(p('text')));
-      sinon.stub(pluginState, 'handleImageUpload', () => true);
-      const trackEvent = sinon.spy();
+      const spy = jest.spyOn(pluginState, 'handleImageUpload');
+      spy.mockImplementation(() => true);
+      const trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
       const toolbarOption = mount(<ToolbarImage pluginState={pluginState} editorView={editorView} />);
       toolbarOption.find(AkButton).simulate('click');
-      expect(trackEvent.calledWith('atlassian.editor.image.button')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.image.button');
       toolbarOption.unmount();
+      spy.mockRestore();
     });
   });
 });

@@ -1,5 +1,4 @@
 import { shallow, mount } from 'enzyme';
-import * as sinon from 'sinon';
 import * as React from 'react';
 import tablePlugins, { TableState } from '../../src/plugins/table';
 import tableCommands from '../../src/plugins/table/commands';
@@ -21,8 +20,9 @@ describe('TableFloatingToolbar', () => {
     plugins: tablePlugins(),
   });
   let trackEvent;
+
   beforeEach(() => {
-    trackEvent = sinon.spy();
+    trackEvent = jest.fn();
     analyticsService.trackEvent = trackEvent;
   });
 
@@ -106,11 +106,11 @@ describe('TableFloatingToolbar', () => {
       const floatingToolbar = shallow(
         <TableFloatingToolbar pluginState={pluginState} editorView={editorView} />
       );
-      pluginState.remove = sinon.spy();
+      pluginState.remove = jest.fn();
       floatingToolbar.setState({ cellElement: document.createElement('td') });
       const button = floatingToolbar.find(ToolbarButton).first();
       button.simulate('click');
-      expect((pluginState.remove as any).callCount).toEqual(1);
+      expect((pluginState.remove as any)).toHaveBeenCalledTimes(1);
       floatingToolbar.unmount();
     });
   });
@@ -160,14 +160,14 @@ describe('TableFloatingToolbar', () => {
           const floatingToolbar = mount(
             <TableFloatingToolbar pluginState={pluginState} editorView={editorView} />
           );
-          tableCommands[command] = sinon.spy();
+          tableCommands[command] = jest.fn();
           floatingToolbar.setState({ cellElement: document.createElement('td') });
           floatingToolbar.find(ToolbarButton).at(1).simulate('click');
           expect(floatingToolbar.state('isOpen')).toBe(true);
           floatingToolbar.find('DropdownMenu span[role="menuitem"]').at(i).simulate('click');
-          expect((pluginState[command] as any).callCount).toEqual(1);
+          expect((pluginState[command] as any)).toHaveBeenCalledTimes(1);
           floatingToolbar.unmount();
-          expect(trackEvent.calledWith(`atlassian.editor.format.table.${command}.button`)).toBe(true);
+          expect(trackEvent).toHaveBeenCalledWith(`atlassian.editor.format.table.${command}.button`);
         });
       });
     });

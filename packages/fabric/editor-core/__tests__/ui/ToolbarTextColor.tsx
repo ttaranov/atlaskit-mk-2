@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import * as sinon from 'sinon';
 import textColorPlugin, { TextColorState } from '../../src/plugins/text-color';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import ToolbarTextColor from '../../src/ui/ToolbarTextColor';
@@ -90,7 +89,7 @@ describe('ToolbarTextColor', () => {
 
   describe('analytics', () => {
     it('should trigger analyticsService.trackEvent when a color is clicked', () => {
-      let trackEvent = sinon.spy();
+      let trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
       const { editorView, pluginState } = editor(doc(p('text')));
       const toolbarOption = mount(
@@ -101,7 +100,7 @@ describe('ToolbarTextColor', () => {
       );
       toolbarOption.find('button').simulate('click');
       toolbarOption.find('ColorPalette button').first().simulate('click');
-      expect(trackEvent.calledWith('atlassian.editor.format.textcolor.button')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.textcolor.button');
       toolbarOption.unmount();
     });
   });

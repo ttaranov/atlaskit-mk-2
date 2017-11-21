@@ -1,5 +1,3 @@
-import * as sinon from 'sinon';
-
 import codeBlockPlugins, { CodeBlockState } from '../../../src/plugins/code-block';
 import { code_block, doc, makeEditor, p, createEvent, blockquote } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
@@ -17,22 +15,22 @@ describe('code-block', () => {
   describe('subscribe', () => {
     it('calls subscriber with plugin', () => {
       const { pluginState } = editor(doc(p('paragraph')));
-      const spy = sinon.spy();
+      const spy = jest.fn();
       pluginState.subscribe(spy);
 
-      expect(spy.calledWith(pluginState)).toBe(true);
+      expect(spy).toHaveBeenCalledWith(pluginState);
     });
 
     describe('when leaving code block', () => {
       it('notifies subscriber', () => {
         const { refs, pluginState, editorView } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const { pPos } = refs;
 
         pluginState.subscribe(spy);
         setTextSelection(editorView, pPos);
 
-        expect(spy.callCount).toEqual(2);
+        expect(spy).toHaveBeenCalledTimes(2);
         editorView.destroy();
       });
     });
@@ -40,13 +38,13 @@ describe('code-block', () => {
     describe('when entering code block', () => {
       it('notifies subscriber', () => {
         const { refs, pluginState, editorView } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')));
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const { cbPos } = refs;
 
         pluginState.subscribe(spy);
         setTextSelection(editorView, cbPos);
 
-        expect(spy.callCount).toEqual(2);
+        expect(spy).toHaveBeenCalledTimes(2);
         editorView.destroy();
       });
     });
@@ -54,13 +52,13 @@ describe('code-block', () => {
     describe('when moving to a different code block', () => {
       it('notifies subscriber', () => {
         const { refs, pluginState, editorView } = editor(doc(code_block()('codeBlock{<>}'), code_block()('codeBlock{cbPos}')));
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const { cbPos } = refs;
 
         pluginState.subscribe(spy);
         setTextSelection(editorView, cbPos);
 
-        expect(spy.callCount).toEqual(2);
+        expect(spy).toHaveBeenCalledTimes(2);
         editorView.destroy();
       });
     });
@@ -68,13 +66,13 @@ describe('code-block', () => {
     describe('when moving within the same code block', () => {
       it('does not notify subscriber', () => {
         const { refs, pluginState, editorView } = editor(doc(code_block()('{<>}codeBlock{cbPos}')));
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const { cbPos } = refs;
 
         pluginState.subscribe(spy);
         setTextSelection(editorView, cbPos);
 
-        expect(spy.callCount).not.toEqual(2);
+        expect(spy).not.toHaveBeenCalledTimes(2);
         editorView.destroy();
       });
     });
@@ -82,12 +80,12 @@ describe('code-block', () => {
     describe('when code block is focused and then editor is blur', () => {
       it('should call subscribers', () => {
         const { pluginState, editorView, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
-        const spy = sinon.spy();
+        const spy = jest.fn();
         pluginState.subscribe(spy);
 
         plugin.props.onBlur!(editorView, event);
 
-        expect(spy.callCount).toEqual(2);
+        expect(spy).toHaveBeenCalledTimes(2);
         editorView.destroy();
       });
     });
@@ -95,12 +93,12 @@ describe('code-block', () => {
     describe('when code block is not focused and then editor is blur', () => {
       it('should not call subscribers', () => {
         const { pluginState, editorView, plugin } = editor(doc(p('para{<>}graph'), code_block()('codeBlock')));
-        const spy = sinon.spy();
+        const spy = jest.fn();
         pluginState.subscribe(spy);
 
         plugin.props.onBlur!(editorView, event);
 
-        expect(spy.callCount).toEqual(1);
+        expect(spy).toHaveBeenCalledTimes(1);
         editorView.destroy();
       });
     });
@@ -108,12 +106,12 @@ describe('code-block', () => {
     describe('when click inside code_block', () => {
       it('notify the subscriber', () => {
         const { plugin, pluginState, editorView, sel } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
-        const spy = sinon.spy();
+        const spy = jest.fn();
         pluginState.subscribe(spy);
 
         plugin.props.handleClick!(editorView, sel, event);
 
-        expect(spy.callCount).toEqual(2);
+        expect(spy).toHaveBeenCalledTimes(2);
         editorView.destroy();
       });
     });
@@ -121,12 +119,12 @@ describe('code-block', () => {
     describe('when click outside of code_block', () => {
       it('does not notify the subscriber', () => {
         const { plugin, editorView, pluginState, sel } = editor(doc(p('paragraph{<>}')));
-        const spy = sinon.spy();
+        const spy = jest.fn();
         pluginState.subscribe(spy);
 
         plugin.props.handleClick!(editorView, sel, event);
 
-        expect(spy.callCount).toEqual(1);
+        expect(spy).toHaveBeenCalledTimes(1);
         editorView.destroy();
       });
     });
@@ -134,14 +132,14 @@ describe('code-block', () => {
     describe('when unsubscribe', () => {
       it('does not notify the subscriber', () => {
         const { refs, pluginState, editorView } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')));
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const { cbPos } = refs;
         pluginState.subscribe(spy);
 
         pluginState.unsubscribe(spy);
         setTextSelection(editorView, cbPos);
 
-        expect(spy.callCount).not.toEqual(2);
+        expect(spy).not.toHaveBeenCalledTimes(2);
         editorView.destroy();
       });
     });

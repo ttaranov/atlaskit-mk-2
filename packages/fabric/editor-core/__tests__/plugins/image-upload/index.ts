@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import imageUploadPlugins, { ImageUploadState } from '../../../src/plugins/image-upload';
 import {
   makeEditor, img, doc, p, code_block,
@@ -18,7 +17,7 @@ describe('image-upload', () => {
   it('allows change handler to be registered', () => {
     const { pluginState } = editor(doc(p('')));
 
-    pluginState.subscribe(sinon.spy());
+    pluginState.subscribe(jest.fn());
   });
 
   it('allows an image to be added at the current collapsed selection', () => {
@@ -31,10 +30,10 @@ describe('image-upload', () => {
 
   it('should get current state immediately once subscribed', () => {
     const { pluginState } = editor(doc(p('{<>}', testImg())));
-    const spy = sinon.spy();
+    const spy = jest.fn();
     pluginState.subscribe(spy);
 
-    expect(spy.callCount).toBe(1);
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(pluginState).toHaveProperty('active', false);
     expect(pluginState).toHaveProperty('enabled', true);
     expect(pluginState).toHaveProperty('src', undefined);
@@ -43,56 +42,56 @@ describe('image-upload', () => {
 
   it('emits a change when an image is selected', () => {
     const { editorView, pluginState, sel } = editor(doc(p('{<>}', testImg())));
-    const spy = sinon.spy();
+    const spy = jest.fn();
     pluginState.subscribe(spy);
 
     setNodeSelection(editorView, sel);
 
-    expect(spy.callCount).toBe(2);
+    expect(spy).toHaveBeenCalledTimes(2);
   });
 
   it('does not emits a change when unsubscribe', () => {
     const { editorView, pluginState, sel } = editor(doc(p('{<>}', testImg())));
-    const spy = sinon.spy();
+    const spy = jest.fn();
     pluginState.subscribe(spy);
     pluginState.unsubscribe(spy);
 
     setNodeSelection(editorView, sel);
 
-    expect(spy.callCount).toBe(1);
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('does not emit multiple changes when an image is not selected', () => {
     const { editorView, pluginState, refs } = editor(doc(p('{<>}t{a}e{b}st', testImg())));
     const { a, b } = refs;
-    const spy = sinon.spy();
+    const spy = jest.fn();
     pluginState.subscribe(spy);
 
     setTextSelection(editorView, a);
     setTextSelection(editorView, b);
 
-    expect(spy.callCount).toBe(1);
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('does not emit multiple changes when an image is selected multiple times', () => {
     const { pluginState } = editor(doc(p('{<>}', testImg())));
-    const spy = sinon.spy();
+    const spy = jest.fn();
 
     pluginState.subscribe(spy);
 
-    expect(spy.callCount).toBe(1);
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('emits a change event when selection leaves an image', () => {
     const { editorView, pluginState, sel, refs } = editor(doc(p('{a}test{<>}', testImg())));
     const { a } = refs;
-    const spy = sinon.spy();
+    const spy = jest.fn();
     setNodeSelection(editorView, sel);
     pluginState.subscribe(spy);
 
     setTextSelection(editorView, a);
 
-    expect(spy.callCount).toBe(2);
+    expect(spy).toHaveBeenCalledTimes(2);
   });
 
   it('permits an image to be added when an image is selected', () => {

@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import { default as blockTypePlugins, BlockTypeState } from '../../../src/plugins/block-type';
 import {
   sendKeyToPm, blockquote, br, code_block, doc, h1, h2, h3, insertText, makeEditor, p,
@@ -14,7 +13,7 @@ describe('inputrules', () => {
   });
   let trackEvent;
   beforeEach(() => {
-    trackEvent = sinon.spy();
+    trackEvent = jest.fn();
     analyticsService.trackEvent = trackEvent;
   });
 
@@ -24,7 +23,7 @@ describe('inputrules', () => {
 
       insertText(editorView, '# ', sel);
       expect(editorView.state.doc).toEqualDocument(doc(h1()));
-      expect(trackEvent.calledWith('atlassian.editor.format.heading1.autoformatting')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.heading1.autoformatting');
       editorView.destroy();
     });
 
@@ -41,7 +40,7 @@ describe('inputrules', () => {
 
       insertText(editorView, '## ', sel);
       expect(editorView.state.doc).toEqualDocument(doc(h2()));
-      expect(trackEvent.calledWith('atlassian.editor.format.heading2.autoformatting')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.heading2.autoformatting');
       editorView.destroy();
     });
 
@@ -58,7 +57,7 @@ describe('inputrules', () => {
 
       insertText(editorView, '### ', sel);
       expect(editorView.state.doc).toEqualDocument(doc(h3()));
-      expect(trackEvent.calledWith('atlassian.editor.format.heading3.autoformatting')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.heading3.autoformatting');
       editorView.destroy();
     });
 
@@ -77,7 +76,7 @@ describe('inputrules', () => {
 
       insertText(editorView, '> ', sel);
       expect(editorView.state.doc).toEqualDocument(doc(blockquote(p())));
-      expect(trackEvent.calledWith('atlassian.editor.format.blockquote.autoformatting')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.blockquote.autoformatting');
       editorView.destroy();
     });
 
@@ -98,7 +97,7 @@ describe('inputrules', () => {
 
           insertText(editorView, '``` ', sel);
           expect(editorView.state.doc).toEqualDocument(doc(code_block()('hello\nworld')));
-          expect(trackEvent.calledWith('atlassian.editor.format.codeblock.autoformatting')).toBe(true);
+          expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.codeblock.autoformatting');
           editorView.destroy();
         });
 
@@ -114,14 +113,14 @@ describe('inputrules', () => {
           const { editorView, sel } = editor(doc(p('code ```{<>}')));
           insertText(editorView, ' ', sel);
           expect(editorView.state.doc).toEqualDocument(doc(code_block()('code ')));
-          expect(trackEvent.calledWith('atlassian.editor.format.codeblock.autoformatting')).toBe(true);
+          expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.codeblock.autoformatting');
         });
 
         it('should convert "``` " in middle of paragraph to a code block and set language correctly', () => {
           const { editorView, sel } = editor(doc(p('code ```java{<>}')));
           insertText(editorView, ' ', sel);
           expect(editorView.state.doc).toEqualDocument(doc(code_block({ language: 'java' })('code ')));
-          expect(trackEvent.calledWith('atlassian.editor.format.codeblock.autoformatting')).toBe(true);
+          expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.codeblock.autoformatting');
         });
       });
 

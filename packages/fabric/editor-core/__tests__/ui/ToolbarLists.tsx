@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import * as sinon from 'sinon';
 import listsPlugins, { ListsState } from '../../src/plugins/lists';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import AkButton from '@atlaskit/button';
@@ -41,7 +40,7 @@ describe('ToolbarLists', () => {
           editorView={editorView}
         />
       );
-      trackEvent = sinon.spy();
+      trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
     });
 
@@ -51,12 +50,12 @@ describe('ToolbarLists', () => {
 
     it('should trigger analyticsService.trackEvent when bulleted list button is clicked', () => {
       toolbarOption.find(AkButton).first().simulate('click');
-      expect(trackEvent.calledWith('atlassian.editor.format.list.bullet.button')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.list.bullet.button');
     });
 
     it('should trigger analyticsService.trackEvent when numbered list button is clicked', () => {
       toolbarOption.find(AkButton).at(1).simulate('click');
-      expect(trackEvent.calledWith('atlassian.editor.format.list.numbered.button')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.list.numbered.button');
     });
   });
 

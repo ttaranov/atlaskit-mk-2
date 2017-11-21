@@ -1,5 +1,3 @@
-import * as sinon from 'sinon';
-
 import { browser } from '@atlaskit/editor-common';
 import clearFormattingPlugins, { ClearFormattingState } from '../../../src/plugins/clear-formatting';
 import {
@@ -153,7 +151,7 @@ describe('clear-formatting', () => {
 
   describe('keymap', () => {
     it('should clear formatting', () => {
-      const trackEvent = sinon.spy();
+      const trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
       const { editorView, pluginState } = editor(doc(p(strong('t{<}ex{>}t'))));
       expect(pluginState.formattingIsPresent).toBe(true);
@@ -165,7 +163,7 @@ describe('clear-formatting', () => {
       }
 
       expect(pluginState.formattingIsPresent).toBe(false);
-      expect(trackEvent.calledWith('atlassian.editor.format.clear.keyboard')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.clear.keyboard');
       editorView.destroy();
     });
   });

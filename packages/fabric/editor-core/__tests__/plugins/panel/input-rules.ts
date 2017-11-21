@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import panelPlugins from '../../../src/plugins/panel';
 import PanelInputRulesPlugin from '../../../src/plugins/panel/input-rules';
 import {
@@ -14,7 +13,7 @@ describe('panel input rules', () => {
   });
   let trackEvent;
   beforeEach(() => {
-    trackEvent = sinon.spy();
+    trackEvent = jest.fn();
     analyticsService.trackEvent = trackEvent;
   });
 
@@ -32,7 +31,7 @@ describe('panel input rules', () => {
     inputRulePlugin!.props.handleTextInput!(editorView, 6, 6, '}');
 
     expect(editorView.state.doc).toEqualDocument(doc(panel(p())));
-    expect(trackEvent.calledWith('atlassian.editor.format.panel.info.autoformatting')).toBe(true);
+    expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.panel.info.autoformatting');
   });
 
   it('should not convert {info} inside a code_block', () => {
@@ -49,7 +48,7 @@ describe('panel input rules', () => {
     const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
     inputRulePlugin!.props.handleTextInput!(editorView, 6, 6, '}');
     expect(editorView.state.doc.content.child(0).attrs.panelType).toEqual('note');
-    expect(trackEvent.calledWith('atlassian.editor.format.panel.note.autoformatting')).toBe(true);
+    expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.panel.note.autoformatting');
   });
 
   it('should replace {tip} input with panel node of type tip', () => {
@@ -58,7 +57,7 @@ describe('panel input rules', () => {
     const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
     inputRulePlugin!.props.handleTextInput!(editorView, 5, 5, '}');
     expect(editorView.state.doc.content.child(0).attrs.panelType).toEqual('tip');
-    expect(trackEvent.calledWith('atlassian.editor.format.panel.tip.autoformatting')).toBe(true);
+    expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.panel.tip.autoformatting');
   });
 
   it('should replace {warning} input with panel node of type warning', () => {
@@ -67,6 +66,6 @@ describe('panel input rules', () => {
     const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
     inputRulePlugin!.props.handleTextInput!(editorView, 9, 9, '}');
     expect(editorView.state.doc.content.child(0).attrs.panelType).toEqual('warning');
-    expect(trackEvent.calledWith('atlassian.editor.format.panel.warning.autoformatting')).toBe(true);
+    expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.panel.warning.autoformatting');
   });
 });

@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import panelPlugins, { PanelState } from '../../../src/plugins/panel';
 import { doc, panel, panelNote, p, makeEditor, createEvent, sendKeyToPm, table, tr, td } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
@@ -13,63 +12,63 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
   describe('API', () => {
     it('should allow a change handler to be registered', () => {
       const { pluginState } = editor(doc(panel(p('te{<>}xt'))));
-      pluginState.subscribe(sinon.spy());
+      pluginState.subscribe(jest.fn());
     });
 
     it('should get current state immediately once subscribed', () => {
       const { pluginState } = editor(doc(panel(p('te{<>}xt'))));
-      const spy = sinon.spy();
+      const spy = jest.fn();
       pluginState.subscribe(spy);
-      expect(spy.callCount).toEqual(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should call subscribers with argument panel state', () => {
       const { pluginState } = editor(doc(panel(p('te{<>}xt'))));
-      const spy = sinon.spy();
+      const spy = jest.fn();
       pluginState.subscribe(spy);
-      expect(spy.calledWith(pluginState)).toBe(true);
+      expect(spy).toHaveBeenCalledWith(pluginState);
     });
 
     it('should call subscribers when panel is clicked', () => {
       const { editorView, plugin, pluginState, sel } = editor(doc(panel(p('te{<>}xt'))));
-      const spy = sinon.spy();
+      const spy = jest.fn();
       pluginState.subscribe(spy);
       plugin.props.handleClick!(editorView, sel, event);
-      expect(spy.callCount).toEqual(2);
+      expect(spy).toHaveBeenCalledTimes(2);
     });
 
     it('should not call subscribers when another block in editor is clicked', () => {
       const { editorView, plugin, pluginState, sel } = editor(doc(p('te{<>}xt'), panel(p('text'))));
-      const spy = sinon.spy();
+      const spy = jest.fn();
       pluginState.subscribe(spy);
       plugin.props.handleClick!(editorView, sel, event);
-      expect(spy.callCount).toEqual(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should call subscribers when panel was focused and editor blur', () => {
       const { editorView, plugin, pluginState } = editor(doc(panel(p('te{<>}xt'))));
-      const spy = sinon.spy();
+      const spy = jest.fn();
       pluginState.subscribe(spy);
       plugin.props.onFocus!(editorView, event);
       plugin.props.onBlur!(editorView, event);
-      expect(spy.callCount).toEqual(2);
+      expect(spy).toHaveBeenCalledTimes(2);
     });
 
     it('should not call subscribers when another block was focused and editor blur', () => {
       const { editorView, plugin, pluginState } = editor(doc(p('te{<>}xt'), panel(p('text'))));
-      const spy = sinon.spy();
+      const spy = jest.fn();
       pluginState.subscribe(spy);
       plugin.props.onFocus!(editorView, event);
       plugin.props.onBlur!(editorView, event);
-      expect(spy.callCount).toEqual(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should not call subscribers when panel received focus', () => {
       const { editorView, plugin, pluginState } = editor(doc(panel(p('text'))));
-      const spy = sinon.spy();
+      const spy = jest.fn();
       pluginState.subscribe(spy);
       plugin.props.onFocus!(editorView, event);
-      expect(spy.callCount).toEqual(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should be able to identify panel node', () => {
@@ -151,23 +150,23 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
 
     it('should call handlers for change in panel type', () => {
       const { pluginState, editorView } = editor(doc(panel(p('te{<>}xt'))));
-      const spy = sinon.spy();
+      const spy = jest.fn();
       pluginState.subscribe(spy);
-      expect(spy.callCount).toEqual(1);
+      expect(spy).toHaveBeenCalledTimes(1);
       expect(pluginState.activePanelType).toEqual('info');
       pluginState.changePanelType(editorView, { panelType: 'note' });
       expect(pluginState.activePanelType).toEqual('note');
-      expect(spy.callCount).toEqual(2);
+      expect(spy).toHaveBeenCalledTimes(2);
     });
 
     it('shoul call handlers when panel is removed', () => {
       const { pluginState, editorView } = editor(doc(panel(p('te{<>}xt'))));
-      const spy = sinon.spy();
+      const spy = jest.fn();
       pluginState.subscribe(spy);
-      expect(spy.callCount).toEqual(1);
+      expect(spy).toHaveBeenCalledTimes(1);
       expect(pluginState.activePanelType).toEqual('info');
       pluginState.removePanel(editorView);
-      expect(spy.callCount).toEqual(2);
+      expect(spy).toHaveBeenCalledTimes(2);
     });
 
   });

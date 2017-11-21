@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import * as sinon from 'sinon';
 import blockTypePlugins from '../../src/plugins/block-type';
 import ToolbarBlockType from '../../src/ui/ToolbarBlockType';
 import ToolbarButton from '../../src/ui/ToolbarButton';
@@ -78,7 +77,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
         />
       );
       toolbarOption.find(ToolbarButton).simulate('click');
-      trackEvent = sinon.spy();
+      trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
     });
 
@@ -99,7 +98,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
             .filterWhere(n => n.text() === blockType.name)
             .find('Element')
             .simulate('click');
-          expect(trackEvent.calledWith(`atlassian.editor.format.${blockType.value}.button`)).toBe(true);
+          expect(trackEvent).toHaveBeenCalledWith(`atlassian.editor.format.${blockType.value}.button`);
         });
     });
   });

@@ -1,12 +1,9 @@
-import * as sinon from 'sinon';
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
-
 import {
   MediaPluginState,
   AnalyticsHandler,
   analyticsService
 } from '../../../src';
-
 import {
   a,
   blockquote,
@@ -23,7 +20,6 @@ import {
   taskItem,
   taskList,
 } from '@atlaskit/editor-test-helpers';
-
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import { insertLinks, detectLinkRangesInSteps } from '../../../src/plugins/media/media-links';
 import * as utils from '../../../src/plugins/utils';
@@ -42,16 +38,17 @@ describe('media-links', () => {
     schema: defaultSchema,
   });
 
-  let uuidStub: sinon.SinonStub;
+  let uuidStub: jest.SpyInstance<any>;
   let mediaStateManager;
 
   beforeEach(() => {
-    uuidStub = sinon.stub(utils, 'uuid').returns(testUuid);
+    uuidStub = jest.spyOn(utils, 'uuid');
+    uuidStub.mockImplementation(() => testUuid);
     mediaStateManager = new DefaultMediaStateManager();
   });
 
   afterEach(() => {
-    uuidStub.restore();
+    uuidStub.mockRestore();
     mediaStateManager.destroy();
   });
 
@@ -229,7 +226,7 @@ describe('media-links', () => {
       it('does nothing', async () => {
         const text = 'www.google.com';
         const { editorView } = editor(doc(p(`${text} {<>}`)));
-        const handle = sinon.spy();
+        const handle = jest.fn();
 
         await insertLinks(
           editorView,
@@ -240,7 +237,7 @@ describe('media-links', () => {
           testCollectionName,
         );
 
-        sinon.assert.notCalled(handle);
+        expect(handle).not.toHaveBeenCalled();
         expect(editorView.state.doc).toEqualDocument(doc(p(`${text} `)));
         editorView.destroy();
       });
@@ -251,7 +248,7 @@ describe('media-links', () => {
         it('creates a link card below where is the link created', async () => {
           const href = 'www.google.com';
           const { editorView } = editor(doc(p(`${href} {<>}`)));
-          const handle = sinon.spy();
+          const handle = jest.fn();
 
           // -1 for space, simulate the scenario of autoformatting link
           await insertLinks(
@@ -264,7 +261,7 @@ describe('media-links', () => {
           );
 
           const id = createTempId(href);
-          sinon.assert.alwaysCalledWithExactly(handle, readyState(id));
+          expect(handle).toHaveBeenCalledWith(readyState(id));
           expect(editorView.state.doc).toEqualDocument(doc(
             p(`${href} `),
             mediaGroup(media({ id, type: 'link', collection: testCollectionName })),
@@ -277,7 +274,7 @@ describe('media-links', () => {
           it('creates a link card at the end of doc', async () => {
             const href = 'www.google.com';
             const { editorView } = editor(doc(p(`${href} {<>}`)));
-            const handle = sinon.spy();
+            const handle = jest.fn();
 
             // -1 for space, simulate the scenario of autoformatting link
             await insertLinks(
@@ -290,7 +287,7 @@ describe('media-links', () => {
             );
 
             const id = createTempId(href);
-            sinon.assert.alwaysCalledWithExactly(handle, readyState(id));
+            expect(handle).toHaveBeenCalledWith(readyState(id));
             expect(editorView.state.doc).toEqualDocument(doc(
               p(`${href} `),
               mediaGroup(media({ id, type: 'link', collection: testCollectionName })),
@@ -307,7 +304,7 @@ describe('media-links', () => {
               p(`${href} {<>}`),
               p('hello'),
             ));
-            const handle = sinon.spy();
+            const handle = jest.fn();
 
             await insertLinks(
               editorView,
@@ -319,7 +316,7 @@ describe('media-links', () => {
             );
 
             const id = createTempId(href);
-            sinon.assert.alwaysCalledWithExactly(handle, readyState(id));
+            expect(handle).toHaveBeenCalledWith(readyState(id));
             expect(editorView.state.doc).toEqualDocument(doc(
               p(`${href} `),
               mediaGroup(media({ id, type: 'link', collection: testCollectionName })),
@@ -332,7 +329,7 @@ describe('media-links', () => {
         it('triggers an analytics event', async () => {
           const href = 'www.google.com';
           const { editorView } = editor(doc(p(`${href} {<>}`)));
-          const spy = sinon.spy();
+          const spy = jest.fn();
           analyticsService.handler = (spy as AnalyticsHandler);
 
           afterEach(() => {
@@ -347,7 +344,7 @@ describe('media-links', () => {
             testCollectionName
           );
 
-          sinon.assert.alwaysCalledWithExactly(spy, 'atlassian.editor.media.link');
+          expect(spy).toHaveBeenCalledWith('atlassian.editor.media.link');
           editorView.destroy();
         });
       });
@@ -360,7 +357,7 @@ describe('media-links', () => {
             p(`${hrefOld} ${href} {<>}`),
             mediaGroup(media({ id: testLinkId, type: 'link', collection: testCollectionName })),
           ));
-          const handle = sinon.spy();
+          const handle = jest.fn();
 
           // -1 for space, simulate the scenario of autoformatting link
           await insertLinks(
@@ -373,7 +370,7 @@ describe('media-links', () => {
           );
 
           const id = createTempId(href);
-          sinon.assert.alwaysCalledWithExactly(handle, readyState(id));
+          expect(handle).toHaveBeenCalledWith(readyState(id));
           expect(editorView.state.doc).toEqualDocument(doc(
             p(`${hrefOld} ${href} `),
             mediaGroup(
@@ -392,7 +389,7 @@ describe('media-links', () => {
               p(`${hrefOld} ${href} {<>}`),
               mediaGroup(media({ id: testLinkId, type: 'link', collection: testCollectionName })),
             ));
-            const handle = sinon.spy();
+            const handle = jest.fn();
 
             // -1 for space, simulate the scenario of autoformatting link
             await insertLinks(
@@ -405,7 +402,7 @@ describe('media-links', () => {
             );
 
             const id = createTempId(href);
-            sinon.assert.alwaysCalledWithExactly(handle, readyState(id));
+            expect(handle).toHaveBeenCalledWith(readyState(id));
             expect(editorView.state.doc).toEqualDocument(doc(
               p(`${hrefOld} ${href} `),
               mediaGroup(
@@ -429,7 +426,7 @@ describe('media-links', () => {
           p(`${href2} ${href3}`),
           p('hello')
         ));
-        const handle = sinon.spy();
+        const handle = jest.fn();
 
         const posOfLink1 = 1;
         const posOfLink2 = posOfLink1 + href1.length + 2;
@@ -452,10 +449,10 @@ describe('media-links', () => {
         const tempId1 = createTempId(href1);
         const tempId2 = createTempId(href2);
         const tempId3 = createTempId(href3);
-        sinon.assert.calledThrice(handle);
-        sinon.assert.calledWithExactly(handle.firstCall as any, readyState(tempId1));
-        sinon.assert.calledWithExactly(handle.secondCall as any, readyState(tempId2));
-        sinon.assert.calledWithExactly(handle.thirdCall as any, readyState(tempId3));
+        expect(handle).toHaveBeenCalledTimes(3);
+        expect(handle).toHaveBeenCalledWith(readyState(tempId1));
+        expect(handle).toHaveBeenCalledWith(readyState(tempId2));
+        expect(handle).toHaveBeenLastCalledWith(readyState(tempId3));
         expect(editorView.state.doc).toEqualDocument(doc(
           p(`${href1}`),
           mediaGroup(
@@ -475,10 +472,11 @@ describe('media-links', () => {
     it('should call remove callback for invalid or private links', async () => {
       const href = 'http://localhost';
       const { editorView } = editor(doc(p(`${href} {<>}`)));
-      const handle = sinon.spy();
+      const handle = jest.fn();
 
       const id = createTempId(href);
-      const addLinkItemStub = sinon.stub(linkCreateContextMock, 'addLinkItem').returns(Promise.reject('error message'));
+      const addLinkItemStub = jest.spyOn(linkCreateContextMock, 'addLinkItem');
+      addLinkItemStub.mockImplementation(() => Promise.reject('error message'));
       await insertLinks(
         editorView,
         mediaStateManager,
@@ -487,9 +485,9 @@ describe('media-links', () => {
         linkCreateContextMock,
         testCollectionName
       );
-      addLinkItemStub.restore();
+      addLinkItemStub.mockRestore();
 
-      sinon.assert.alwaysCalledWithExactly(handle, {
+      expect(handle).toHaveBeenCalledWith({
         id,
         error: 'error message',
         status: 'error',
@@ -507,7 +505,7 @@ describe('media-links', () => {
     it('link insertion ignored for task item', async () => {
       const itemDoc = doc(taskList(taskItem('{<>}')));
       const { editorView } = editor(itemDoc);
-      const handle = sinon.spy();
+      const handle = jest.fn();
 
       await insertLinks(
         editorView,
@@ -518,7 +516,7 @@ describe('media-links', () => {
         testCollectionName,
       );
 
-      sinon.assert.notCalled(handle);
+      expect(handle).not.toHaveBeenCalled();
       expect(editorView.state.doc).toEqual(itemDoc);
       editorView.destroy();
     });
@@ -526,7 +524,7 @@ describe('media-links', () => {
     it('link insertion ignored for decision item', async () => {
       const decisionDoc = doc(decisionList(decisionItem('{<>}')));
       const { editorView } = editor(decisionDoc);
-      const handle = sinon.spy();
+      const handle = jest.fn();
 
       await insertLinks(
         editorView,
@@ -537,7 +535,7 @@ describe('media-links', () => {
         testCollectionName,
       );
 
-      sinon.assert.notCalled(handle);
+      expect(handle).not.toHaveBeenCalled();
       expect(editorView.state.doc).toEqual(decisionDoc);
       editorView.destroy();
     });

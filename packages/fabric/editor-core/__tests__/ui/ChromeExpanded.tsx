@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import * as sinon from 'sinon';
 import AkButton from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 import { doc, p, makeEditor } from '@atlaskit/editor-test-helpers';
@@ -113,18 +112,18 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
       beforeEach(() => {
         const { editorView } = editor(doc(p()));
         toolbarOption = mount(<ChromeExpanded editorView={editorView} onSave={noop} onCancel={noop} saveDisabled={true} />);
-        trackEvent = sinon.spy();
+        trackEvent = jest.fn();
         analyticsService.trackEvent = trackEvent;
       });
 
       it('should trigger analyticsService.trackEvent when save button is clicked', () => {
         toolbarOption.find(AkButton).filterWhere(n => n.text() === 'Save').simulate('click');
-        expect(trackEvent.calledWith('atlassian.editor.stop.save')).toBe(true);
+        expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.stop.save');
       });
 
       it('should trigger analyticsService.trackEvent when cancel button is clicked', () => {
         toolbarOption.find(AkButton).filterWhere(n => n.text() === 'Cancel').simulate('click');
-        expect(trackEvent.calledWith('atlassian.editor.stop.cancel')).toBe(true);
+        expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.stop.cancel');
       });
     });
   });
@@ -162,11 +161,11 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
 
     it('should track analytics when helpDialog is opened using key event Cmd-/', () => {
       const { editorView } = editor(doc(p()));
-      const trackEvent = sinon.spy();
+      const trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
       const chromeExpanded = mount(<ChromeExpanded editorView={editorView} helpDialogPresent={true} onSave={noop} onCancel={noop} saveDisabled={true} />);
       chromeExpanded.simulate('keyDown', keyEvent);
-      expect(trackEvent.calledWith('atlassian.editor.help.keyboard')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.help.keyboard');
     });
 
     it('should reset state variable showHelp if help dialog is present and Escape is entered', () => {

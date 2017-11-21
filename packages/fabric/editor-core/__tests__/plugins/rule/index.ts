@@ -1,5 +1,3 @@
-import * as sinon from 'sinon';
-
 import { browser } from '@atlaskit/editor-common';
 import rulePlugins from '../../../src/plugins/rule';
 import {
@@ -21,14 +19,14 @@ describe('rule', () => {
       // Need to unskip after ED-2305
       describe.skip('when hits Shift-Cmd--', () => {
         it('calls splitCodeBlock', () => {
-          const trackEvent = sinon.spy();
+          const trackEvent = jest.fn();
           analyticsService.trackEvent = trackEvent;
           const { editorView } = editor(doc(p('text{<>}')));
 
           sendKeyToPm(editorView, 'Shift-Cmd--');
 
           expect(editorView.state.doc).toEqualDocument(doc(p('text'), hr));
-          expect(trackEvent.calledWith('atlassian.editor.format.horizontalrule.keyboard')).toBe(true);
+          expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.horizontalrule.keyboard');
         });
       });
       describe('when hits Escape', () => {

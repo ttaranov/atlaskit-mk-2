@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import mentionsPlugins, { MentionsState } from '../../../src/plugins/mentions';
 import ProviderFactory from '../../../src/providerFactory';
 import {
@@ -23,8 +22,9 @@ describe('mentions - input rules', () => {
     plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
   });
   let trackEvent;
+
   beforeEach(() => {
-    trackEvent = sinon.spy();
+    trackEvent = jest.fn();
     analyticsService.trackEvent = trackEvent;
   });
 
@@ -39,7 +39,11 @@ describe('mentions - input rules', () => {
         const { mentionQuery } = state.schema.marks;
         const cursorFocus = state.selection.$to.nodeBefore!;
         expect(!!mentionQuery.isInSet(cursorFocus.marks)).toEqual(expected);
-        expect(trackEvent.calledWith('atlassian.editor.mention.autoformatting')).toEqual(expected);
+        if (expected) {
+          expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.mention.autoformatting');
+        } else {
+          expect(trackEvent).not.toHaveBeenCalledWith('atlassian.editor.mention.autoformatting');
+        }
       });
   };
 

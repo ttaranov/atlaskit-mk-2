@@ -1,6 +1,5 @@
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
-import * as sinon from 'sinon';
 import MacroEdit from '../../src/ui/MacroEdit';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 
@@ -32,7 +31,7 @@ describe('@atlaskit/editor-core ui/MacroEdit', () => {
   it('should trigger onInsertMacroFromMacroBrowser when Edit button is clicked', () => {
     const { editorView } = editor(doc(p('text')));
     const macroElement = document.createElement('div');
-    const insertMacroFromMacroBrowser = sinon.spy();
+    const insertMacroFromMacroBrowser = jest.fn();
     const removeMacro = () => {};
 
     const node = mount(
@@ -45,14 +44,14 @@ describe('@atlaskit/editor-core ui/MacroEdit', () => {
     );
 
     node.find('button').at(0).simulate('click');
-    expect(insertMacroFromMacroBrowser.callCount).toEqual(1);
+    expect(insertMacroFromMacroBrowser).toHaveBeenCalledTimes(1);
     node.unmount();
   });
 
   it('should trigger onRemoveMacro when Trash icon is clicked', () => {
     const { editorView } = editor(doc(p('text')));
     const macroElement = document.createElement('div');
-    const removeMacro = sinon.spy();
+    const removeMacro = jest.fn();
     const insertMacroFromMacroBrowser = () => {};
 
     const node = mount(
@@ -65,7 +64,7 @@ describe('@atlaskit/editor-core ui/MacroEdit', () => {
     );
 
     node.find('button').at(1).simulate('click');
-    expect(removeMacro.callCount).toEqual(1);
+    expect(removeMacro).toHaveBeenCalledTimes(1);
     node.unmount();
   });
 });

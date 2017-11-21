@@ -1,7 +1,6 @@
 import { name } from '../../../package.json';
 import { mount } from 'enzyme';
 import * as React from 'react';
-import * as sinon from 'sinon';
 import Editor from '../../../src/editor';
 import CollapsedEditor from '../../../src/editor/ui/CollapsedEditor';
 import ChromeCollapsed from '../../../src/ui/ChromeCollapsed';
@@ -23,23 +22,23 @@ describe(name, () => {
     });
 
     it('should call onFocus when collapsed editor is clicked', () => {
-      const onFocus = sinon.spy();
+      const onFocus = jest.fn();
       const wrapper = mount(<CollapsedEditor onFocus={onFocus}><Editor /></CollapsedEditor>);
       wrapper.find(ChromeCollapsed).simulate('focus');
-      expect(onFocus.callCount).toEqual(1);
+      expect(onFocus).toHaveBeenCalledTimes(1);
     });
 
     it('should not call onExpand when the editor is initially expanded', () => {
-      const onExpand = sinon.spy();
+      const onExpand = jest.fn();
       mount(<CollapsedEditor isExpanded={true} onExpand={onExpand}><Editor /></CollapsedEditor>);
-      expect(onExpand.callCount).toEqual(0);
+      expect(onExpand).toHaveBeenCalledTimes(0);
     });
 
     it('should call onExpand after the editor is expanded and mounted', () => {
-      const onExpand = sinon.spy();
+      const onExpand = jest.fn();
       const wrapper = mount(<CollapsedEditor isExpanded={false} onExpand={onExpand}><Editor /></CollapsedEditor>);
       wrapper.setProps({ isExpanded: true });
-      expect(onExpand.callCount).toEqual(1);
+      expect(onExpand).toHaveBeenCalledTimes(1);
     });
 
     it('should allow setting a ref on the editor component', () => {

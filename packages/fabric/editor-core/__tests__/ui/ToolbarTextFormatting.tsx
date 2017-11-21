@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import * as sinon from 'sinon';
 import textFormattingPlugin, { TextFormattingState } from '../../src/plugins/text-formatting';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import AkButton from '@atlaskit/button';
@@ -41,7 +40,7 @@ describe('ToolbarTextFormatting', () => {
           editorView={editorView}
         />
       );
-      trackEvent = sinon.spy();
+      trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
     });
 
@@ -51,12 +50,12 @@ describe('ToolbarTextFormatting', () => {
 
     it('should trigger analyticsService.trackEvent when bold button is clicked', () => {
       toolbarOption.find(AkButton).first().simulate('click');
-      expect(trackEvent.calledWith('atlassian.editor.format.strong.button')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.strong.button');
     });
 
     it('should trigger analyticsService.trackEvent when italic button is clicked', () => {
       toolbarOption.find(AkButton).at(1).simulate('click');
-      expect(trackEvent.calledWith('atlassian.editor.format.em.button')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.em.button');
     });
   });
 });

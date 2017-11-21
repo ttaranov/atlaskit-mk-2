@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import imageUploadPlugins from '../../../src/plugins/image-upload';
 import {
   doc, insertText, makeEditor, p, img, code_block
@@ -15,13 +14,13 @@ describe('inputrules', () => {
 
   describe('image rule', () => {
     it('should convert `![text](url)` to image', () => {
-      const trackEvent = sinon.spy();
+      const trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
       const { editorView, sel } = editor(doc(p('{<>}')));
 
       insertText(editorView, '![text](url)', sel);
       expect(editorView.state.doc).toEqualDocument(doc(p(img({ src: 'url', alt: 'text', title: 'text' }))));
-      expect(trackEvent.calledWith('atlassian.editor.image.autoformatting')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.image.autoformatting');
     });
 
     it('should not convert `![text](url)` to image inside a code_block', () => {

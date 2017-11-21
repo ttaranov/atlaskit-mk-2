@@ -1,6 +1,5 @@
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
-import * as sinon from 'sinon';
 import panelPlugins, { PanelState } from '../../src/plugins/panel';
 import PanelEdit from '../../src/ui/PanelEdit';
 import ToolbarButton from '../../src/ui/ToolbarButton';
@@ -81,7 +80,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
       toolbarOption = mount(<PanelEdit pluginState={pluginState} editorView={editorView} />);
       plugin.props.onFocus!(editorView, event);
       plugin.props.handleClick!(editorView, sel, event);
-      trackEvent = sinon.spy();
+      trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
     });
     afterEach(() => {
@@ -90,7 +89,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     ['info', 'note', 'tip', 'warning'].forEach((panelType, index) => {
       it(`should trigger analyticsService.trackEvent when ${panelType} button is clicked`, () => {
         toolbarOption.find(AkButton).at(index).simulate('click');
-        expect(trackEvent.calledWith(`atlassian.editor.format.${panelType}.button`)).toBe(true);
+        expect(trackEvent).toHaveBeenCalledWith(`atlassian.editor.format.${panelType}.button`);
       });
     });
   });

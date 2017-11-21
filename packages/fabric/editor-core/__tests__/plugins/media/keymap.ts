@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import {
   MediaPluginState,
   mediaPluginFactory,
@@ -42,11 +41,11 @@ describe('media - keymaps', () => {
   describe('Backspace keypress', () => {
     it('calls media plugin state to remove media node', () => {
       const { editorView, pluginState } = editor(doc(p('{<>}')));
-      const removeMediaNodeSpy = sinon.spy(pluginState, 'removeSelectedMediaNode');
+      const removeMediaNodeSpy = jest.spyOn(pluginState, 'removeSelectedMediaNode');
 
       sendKeyToPm(editorView, 'Backspace');
 
-      expect(removeMediaNodeSpy.calledOnce).toBe(true);
+      expect(removeMediaNodeSpy).toHaveBeenCalled();
       editorView.destroy();
     });
   });
@@ -54,11 +53,11 @@ describe('media - keymaps', () => {
   describe('Enter keypress', () => {
     it('splits media group', () => {
       const { editorView, pluginState } = editor(doc(p('{<>}')));
-      const splitMediaGroupSpy = sinon.spy(pluginState, 'splitMediaGroup');
+      const splitMediaGroupSpy = jest.spyOn(pluginState, 'splitMediaGroup');
 
       sendKeyToPm(editorView, 'Enter');
 
-      expect(splitMediaGroupSpy.calledOnce).toBe(true);
+      expect(splitMediaGroupSpy).toHaveBeenCalled();
       editorView.destroy();
     });
   });
@@ -66,11 +65,11 @@ describe('media - keymaps', () => {
   describe('Shift-Enter keypress', () => {
     it('splits media group', () => {
       const { editorView, pluginState } = editor(doc(p('{<>}')));
-      const splitMediaGroupSpy = sinon.spy(pluginState, 'splitMediaGroup');
+      const splitMediaGroupSpy = jest.spyOn(pluginState, 'splitMediaGroup');
 
       sendKeyToPm(editorView, 'Shift-Enter');
 
-      expect(splitMediaGroupSpy.calledOnce).toBe(true);
+      expect(splitMediaGroupSpy).toHaveBeenCalled();
       editorView.destroy();
     });
   });

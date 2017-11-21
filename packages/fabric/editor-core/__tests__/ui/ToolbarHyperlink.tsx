@@ -1,5 +1,4 @@
 import { mount } from 'enzyme';
-import * as sinon from 'sinon';
 import * as React from 'react';
 import hyperlinkPlugins, { HyperlinkState } from '../../src/plugins/hyperlink';
 import ToolbarHyperlink from '../../src/ui/ToolbarHyperlink';
@@ -18,10 +17,10 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
   it('should trigger showLinkPanel of plugin when toolbar hyperlink button is clicked', () => {
     const { pluginState, editorView } = editor(doc(p('text')));
     const toolbarHyperlink = mount(<ToolbarHyperlink pluginState={pluginState} editorView={editorView} />);
-    const spyFunc = sinon.spy();
+    const spyFunc = jest.fn();
     pluginState.showLinkPanel = spyFunc;
     toolbarHyperlink.find(LinkIcon).simulate('click');
-    expect(spyFunc.callCount).toEqual(1);
+    expect(spyFunc).toHaveBeenCalledTimes(1);
     toolbarHyperlink.unmount();
   });
 
@@ -57,7 +56,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
 
   describe('analytics', () => {
     it('should trigger analyticsService.trackEvent', () => {
-      const trackEvent = sinon.spy();
+      const trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
       const { editorView, pluginState } = editor(doc(p('text')));
       const toolbarOption = mount(
@@ -67,7 +66,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
         />
       );
       toolbarOption.find(AkButton).simulate('click');
-      expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.button')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.hyperlink.button');
       toolbarOption.unmount();
     });
   });

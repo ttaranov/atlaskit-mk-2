@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import * as sinon from 'sinon';
 import * as keymaps from '../../src/keymaps';
 import ToolbarHelp from '../../src/ui/ToolbarHelp';
 import { getComponentFromKeymap, formatting } from '../../src/ui/HelpDialog';
@@ -13,27 +12,27 @@ const noop = () => {};
 describe('@atlaskit/editor-core/ui/HelpDialog', () => {
 
   it('should call toggleHelp when open help button is clicked', () => {
-    const spy = sinon.spy();
+    const spy = jest.fn();
     const toolbarHelp = mount(<ToolbarHelp  showHelp={false} toggleHelp={spy} />);
     toolbarHelp.find(AkButton).simulate('click');
-    expect(spy.callCount).toEqual(1);
+    expect(spy).toHaveBeenCalledTimes(1);
     toolbarHelp.unmount();
   });
 
   it('should call analytics event when open help button is clicked', () => {
-    const trackEvent = sinon.spy();
+    const trackEvent = jest.fn();
     analyticsService.trackEvent = trackEvent;
     const toolbarHelp = mount(<ToolbarHelp  showHelp={false} toggleHelp={noop} />);
     toolbarHelp.find(AkButton).simulate('click');
-    expect(trackEvent.calledWith('atlassian.editor.help.button')).toBe(true);
+    expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.help.button');
     toolbarHelp.unmount();
   });
 
   it('should call toggleHelp when wrapping div is clicked', () => {
-    const spy = sinon.spy();
+    const spy = jest.fn();
     const toolbarHelp = mount(<ToolbarHelp  showHelp={false} toggleHelp={spy} />);
     toolbarHelp.find(AkButton).simulate('click');
-    expect(spy.callCount).toEqual(1);
+    expect(spy).toHaveBeenCalledTimes(1);
     toolbarHelp.unmount();
   });
 

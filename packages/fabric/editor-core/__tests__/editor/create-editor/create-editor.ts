@@ -3,7 +3,6 @@ import { Schema, Node } from 'prosemirror-model';
 import { Selection } from 'prosemirror-state';
 import createEditor from '../../_helpers/create-editor';
 import { sortByRank, fixExcludes, createPMPlugins, processDefaultDocument } from '../../../src/editor/create-editor/create-editor';
-import * as sinon from 'sinon';
 
 describe(name, () => {
   describe('create-editor', () => {
@@ -149,18 +148,18 @@ describe(name, () => {
 
   describe('onChange', () => {
     it('should call onChange only when document changes', () => {
-      const onChange = sinon.spy();
+      const onChange = jest.fn();
       const editor = createEditor([], { onChange });
       const { editorView } = editor;
       editorView.dispatch(
         editorView.state.tr.insertText('hello')
       );
-      expect(onChange.callCount).toEqual(1);
+      expect(onChange).toHaveBeenCalledTimes(1);
       const { tr } = editorView.state;
       editorView.dispatch(
         tr.setSelection(Selection.near(tr.doc.resolve(1)))
       );
-      expect(onChange.callCount).toEqual(1);
+      expect(onChange).toHaveBeenCalledTimes(1);
     });
   });
 });

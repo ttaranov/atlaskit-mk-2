@@ -1,5 +1,4 @@
 import { shallow, mount } from 'enzyme';
-import * as sinon from 'sinon';
 import * as React from 'react';
 import tablePlugins, { TableState } from '../../src/plugins/table';
 import TableFloatingControls from '../../src/ui/TableFloatingControls';
@@ -104,15 +103,18 @@ describe('TableFloatingControls', () => {
       describe(`when HeaderButton in column ${column + 1} is clicked`, () => {
         it(`should call pluginState.selectColumn(${column})`, () => {
           const { editorView, plugin, pluginState } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
-          pluginState.selectColumn = sinon.spy();
+          const spy = pluginState.selectColumn = jest.fn();
+          let calledWithArgs: Array<any>;
+          spy.mockImplementation((...args) => {
+            calledWithArgs = args;
+          });
           const floatingControls = mount(
             <TableFloatingControls pluginState={pluginState} editorView={editorView} />
           );
           plugin.props.onFocus!(editorView, event);
           floatingControls.find(ColumnControlsButton).at(column).find('button').first().simulate('click');
-          expect((pluginState.selectColumn as any).calledOnce).toBe(true);
-          const { args } = (pluginState.selectColumn as any).getCalls()[0];
-          expect(args[0]).toEqual(column);
+          expect(pluginState.selectColumn).toHaveBeenCalledTimes(1);    
+          expect(calledWithArgs![0]).toEqual(column);
           floatingControls.unmount();
         });
       });
@@ -142,15 +144,18 @@ describe('TableFloatingControls', () => {
       describe(`when HeaderButton in row ${row + 1} is clicked`, () => {
         it(`should call pluginState.selectRow(${row})`, () => {
           const { editorView, plugin, pluginState } = editor(doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))));
-          pluginState.selectRow = sinon.spy();
+          const spy = pluginState.selectRow = jest.fn();
+          let calledWithArgs: Array<any>;
+          spy.mockImplementation((...args) => {
+            calledWithArgs = args;
+          });
           const floatingControls = mount(
             <TableFloatingControls pluginState={pluginState} editorView={editorView} />
           );
           plugin.props.onFocus!(editorView, event);
           floatingControls.find(RowControlsButton).at(row).find('button').first().simulate('click');
-          expect((pluginState.selectRow as any).calledOnce).toBe(true);
-          const { args } = (pluginState.selectRow as any).getCalls()[0];
-          expect(args[0]).toEqual(row);
+          expect(pluginState.selectRow).toHaveBeenCalledTimes(1);          
+          expect(calledWithArgs![0]).toEqual(row);
           floatingControls.unmount();
         });
       });
@@ -162,15 +167,19 @@ describe('TableFloatingControls', () => {
       describe(`when InsertColumnButton with index ${index} is clicked`, () => {
         it(`should call pluginState.insertColumn(${index})`, () => {
           const { pluginState } = editor(doc(p('text')));
-          const insertColumnSpy = sinon.spy(pluginState, 'insertColumn');
+          const insertColumnSpy = jest.spyOn(pluginState, 'insertColumn') as any;
+          let calledWithArgs: Array<any>;
+          insertColumnSpy.mockImplementation((...args) => {
+            calledWithArgs = args;
+          });
+          
           const wrapper = mount(
             <InsertColumnButton index={index} insertColumn={insertColumnSpy} />
           );
           wrapper.setState({ hovered: true });
           wrapper.find(AkButton).simulate('click');
-          expect(insertColumnSpy.calledOnce).toBe(true);
-          const { args } = (insertColumnSpy as any).getCalls()[0];
-          expect(args[0]).toEqual(index);
+          expect(insertColumnSpy).toHaveBeenCalledTimes(1)
+          expect(calledWithArgs![0]).toEqual(index);
           wrapper.unmount();
         });
       });
@@ -182,15 +191,18 @@ describe('TableFloatingControls', () => {
       describe(`when InsertRowButton with index ${index} is clicked`, () => {
         it(`should call pluginState.insertRow(${index})`, () => {
           const { pluginState } = editor(doc(p('text')));
-          const insertRowSpy = sinon.spy(pluginState, 'insertRow');
+          const insertRowSpy = jest.spyOn(pluginState, 'insertRow') as any;
+          let calledWithArgs: Array<any>;
+          insertRowSpy.mockImplementation((...args) => {
+            calledWithArgs = args;
+          });
           const wrapper = mount(
             <InsertRowButton index={index} insertRow={insertRowSpy} />
           );
           wrapper.setState({ hovered: true });
           wrapper.find(AkButton).simulate('click');
-          expect(insertRowSpy.calledOnce).toBe(true);
-          const { args } = (pluginState.insertRow as any).getCalls()[0];
-          expect(args[0]).toEqual(index);
+          expect(insertRowSpy).toHaveBeenCalledTimes(1);
+          expect(calledWithArgs![0]).toEqual(index);
           wrapper.unmount();
         });
       });

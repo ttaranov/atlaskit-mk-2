@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import { mount } from 'enzyme';
 import * as React from 'react';
 
@@ -22,7 +21,7 @@ describe('hyperlink - keymap', () => {
     describe('when possible link text is at the end', () => {
       describe('when it does not contain a link', () => {
         it('converts possible link text to hyperlink', () => {
-          const trackEvent = sinon.spy();
+          const trackEvent = jest.fn();
           analyticsService.trackEvent = trackEvent;
           const { editorView } = editor(doc(p('hello www.atlassian.com{<>}')));
 
@@ -30,11 +29,11 @@ describe('hyperlink - keymap', () => {
 
           const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com');
           expect(editorView.state.doc).toEqualDocument(doc(p('hello ', a), p()));
-          expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).toBe(true);
+          expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.hyperlink.autoformatting');
         });
 
         it('converts possible mailto link text to hyperlink', () => {
-          const trackEvent = sinon.spy();
+          const trackEvent = jest.fn();
           analyticsService.trackEvent = trackEvent;
           const { editorView } = editor(doc(p('hello test@atlassian.com{<>}')));
 
@@ -42,7 +41,7 @@ describe('hyperlink - keymap', () => {
 
           const a = link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com');
           expect(editorView.state.doc).toEqualDocument(doc(p('hello ', a), p()));
-          expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).toBe(true);
+          expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.hyperlink.autoformatting');
         });
 
         it('preserves other mark', () => {
@@ -80,7 +79,7 @@ describe('hyperlink - keymap', () => {
 
   describe('Shift-Enter keypress', () => {
     it('converts possible link text to hyperlink', () => {
-      const trackEvent = sinon.spy();
+      const trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
       const { editorView } = editor(doc(p('hello www.atlassian.com{<>}')));
 
@@ -88,7 +87,7 @@ describe('hyperlink - keymap', () => {
 
       const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com');
       expect(editorView.state.doc).toEqualDocument(doc(p('hello ', a)));
-      expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).toBe(true);
+      expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.hyperlink.autoformatting');
     });
   });
 

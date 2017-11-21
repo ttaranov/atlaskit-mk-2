@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import tasksAndDecisionsPlugins from '../../../src/plugins/tasks-and-decisions';
 import { createPlugin as createSaveOnEnterPlugin } from '../../../src/editor/plugins/save-on-enter';
 import {
@@ -16,11 +15,10 @@ import { Plugin } from 'prosemirror-state';
 
 
 describe('save on enter', () => {
-
-  const onSaveSpy = sinon.spy();
+  const onSaveSpy = jest.fn();
 
   beforeEach(() => {
-    onSaveSpy.reset();
+    onSaveSpy.mockReset();
   });
 
   const editor = (doc: any) =>
@@ -36,30 +34,30 @@ describe('save on enter', () => {
     const { editorView } = editor(doc(p('1{<>}')));
 
     sendKeyToPm(editorView!, 'Enter');
-    expect(onSaveSpy.calledWith(editorView)).toBe(true);
+    expect(onSaveSpy).toHaveBeenCalledWith(editorView);
   });
 
   it('should trigger onSubmit when user presses Enter in decisionItem', () => {
     const { editorView } = editor(doc((decisionList(decisionItem('1{<>}')))));
     sendKeyToPm(editorView!, 'Enter');
-    expect(onSaveSpy.calledWith(editorView)).toBe(true);
+    expect(onSaveSpy).toHaveBeenCalledWith(editorView);
   });
 
   it('should trigger onSubmit when user presses Enter inside taskItem', () => {
     const { editorView } = editor(doc((taskList(taskItem('1{<>}')))));
     sendKeyToPm(editorView!, 'Enter');
-    expect(onSaveSpy.calledWith(editorView)).toBe(true);
+    expect(onSaveSpy).toHaveBeenCalledWith(editorView);
   });
 
   it('should not trigger onSubmit when user presses Enter in empty decisionItem', () => {
     const { editorView } = editor(doc((decisionList(decisionItem('{<>}')))));
     sendKeyToPm(editorView!, 'Enter');
-    expect(onSaveSpy.calledWith(editorView)).toBe(false);
+    expect(onSaveSpy).not.toHaveBeenCalledWith(editorView);
   });
 
   it('should not trigger onSubmit when user presses Enter inside empty taskItem', () => {
     const { editorView } = editor(doc((taskList(taskItem('{<>}')))));
     sendKeyToPm(editorView!, 'Enter');
-    expect(onSaveSpy.calledWith(editorView)).toBe(false);
+    expect(onSaveSpy).not.toHaveBeenCalledWith(editorView);
   });
 });

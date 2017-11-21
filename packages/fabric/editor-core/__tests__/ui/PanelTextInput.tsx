@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import * as sinon from 'sinon';
 
 import PanelTextInput from '../../src/ui/PanelTextInput';
 
@@ -8,59 +7,59 @@ const noop = () => {};
 
 describe('@atlaskit/editor-core/ui/PanelTextInput', () => {
   it('should call onSubmit when ENTER key is pressed', () => {
-    const onSubmitHandler = sinon.stub();
+    const onSubmitHandler = jest.fn();
     const panel = mount(<PanelTextInput onSubmit={onSubmitHandler} />);
 
     const input = panel.find('input');
     (input.get(0) as any).value = 'http://atlassian.com';
     input.simulate('keydown', { which: 'enter', keyCode: 13 });
 
-    expect(onSubmitHandler.calledWith('http://atlassian.com')).toBe(true);
+    expect(onSubmitHandler).toHaveBeenCalledWith('http://atlassian.com');
     panel.unmount();
   });
 
   it('should prevent KeyDown event if ENTER key is pressed', () => {
-    const onSubmitHandler = sinon.stub();
-    const preventDefault = sinon.stub();
+    const onSubmitHandler = jest.fn();
+    const preventDefault = jest.fn();
     const panel = mount(<PanelTextInput onSubmit={onSubmitHandler} />);
 
     const input = panel.find('input');
     input.simulate('keydown', { which: 'enter', keyCode: 13, preventDefault });
 
-    expect(preventDefault.callCount, 'component didn`t call preventDefault').toEqual(1);
+    expect(preventDefault).toHaveBeenCalledTimes(1);
     panel.unmount();
   });
 
   it('should not prevent KeyDown event if any other key is pressed', () => {
-    const preventDefault = sinon.stub();
+    const preventDefault = jest.fn();
     const panel = mount(<PanelTextInput onSubmit={noop} />);
 
     const input = panel.find('input');
     input.simulate('keydown', { which: 'a', keyCode: 65, preventDefault });
 
-    expect(preventDefault.called).toBe(false);
+    expect(preventDefault).not.toHaveBeenCalled();
     panel.unmount();
   });
 
   it('should call onCancel when ESC key is pressed', () => {
-    const onCancelHandler = sinon.stub();
+    const onCancelHandler = jest.fn();
     const panel = mount(<PanelTextInput onCancel={onCancelHandler} />);
 
     const input = panel.find('input');
     input.simulate('keydown', { which: 'esc', keyCode: 27 });
 
-    expect(onCancelHandler.called).toBe(true);
+    expect(onCancelHandler).toHaveBeenCalled();
     panel.unmount();
   });
 
   it('should call onKeyDown when a key is pressed', () => {
-    const onKeyDownHandler = sinon.stub();
+    const onKeyDownHandler = jest.fn();
     const panel = mount(<PanelTextInput onKeyDown={onKeyDownHandler} />);
 
     const input = panel.find('input');
     input.simulate('keydown', { which: 'a', keyCode: 65 });
 
-    expect(onKeyDownHandler.called).toBe(true);
+    expect(onKeyDownHandler).toHaveBeenCalled();
     panel.unmount();
   });
 });
