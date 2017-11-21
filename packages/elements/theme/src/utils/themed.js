@@ -2,7 +2,7 @@
 /* eslint-disable prefer-rest-params */
 
 import getTheme from './getTheme';
-import { type ThemedValue, type ThemeProps } from './types';
+import { type ThemedValue, type ThemeProps } from '../types';
 
 type Value = string | number;
 type Modes = { light: Value, dark: Value };

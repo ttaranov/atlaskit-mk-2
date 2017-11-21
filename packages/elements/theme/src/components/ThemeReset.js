@@ -1,7 +1,7 @@
 // @flow
 
 import styled from 'styled-components';
-import * as colors from './colors';
+import * as colors from '../colors';
 
 const ThemeReset = styled.div`
   background-color: ${colors.background};

@@ -4,11 +4,11 @@ import React, { Component, type Node } from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from 'styled-components';
 
-import type { ThemeModes, ThemeProps } from './types';
-import { background } from './colors';
+import type { ThemeModes, ThemeProps } from '../types';
+import { background } from '../colors';
 import ThemeReset from './ThemeReset';
 
-import { CHANNEL, DEFAULT_THEME_MODE } from './constants';
+import { CHANNEL, DEFAULT_THEME_MODE } from '../constants';
 
 function getStylesheetResetCSS(state: ThemeProps) {
   const backgroundColor = background(state);

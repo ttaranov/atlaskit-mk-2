@@ -1,6 +1,6 @@
 // @flow
 
-import themed from './themed';
+import themed from './utils/themed';
 
 // Reds
 export const R50 = '#FFEBE6';

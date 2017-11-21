@@ -1,11 +1,11 @@
 // @flow
 
 import * as colors from './colors';
-import * as math from './math';
 
-import getTheme from './getTheme';
-import themed from './themed';
-import AtlasKitThemeProvider from './AtlasKitThemeProvider';
+import * as math from './utils/math';
+import getTheme from './utils/getTheme';
+import themed from './utils/themed';
+import AtlasKitThemeProvider from './components/AtlasKitThemeProvider';
 
 export { colors, math, getTheme, themed, AtlasKitThemeProvider };
 
