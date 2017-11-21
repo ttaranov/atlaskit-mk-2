@@ -9,60 +9,62 @@ const inquirer = require('inquirer');
 * identifier for the name every time. This is why we are using UUIDs.
 */
 
-
-async function askCheckbox(message, choices) {
-  const name = `Checkbox-${uuid()}`;
-
-  return inquirer.prompt([
-    {
-      choices,
-      message,
-      name,
-      type: 'checkbox',
-    }
-  ]).then(responses => responses[name]);
-}
-
 async function askQuestion(message) {
   const name = `Question-${uuid()}`;
 
-  return inquirer.prompt([
-    {
-      message,
-      name,
-    }
-  ]).then(responses => responses[name]);
+  return inquirer
+    .prompt([
+      {
+        message,
+        name,
+      },
+    ])
+    .then(responses => responses[name]);
 }
 
 async function askConfirm(message) {
   const name = `Confirm-${uuid()}`;
 
-  return inquirer.prompt([
-    {
-      message,
-      name,
-      type: 'confirm'
-    }
-  ]).then(responses => responses[name]);
+  return inquirer
+    .prompt([
+      {
+        message,
+        name,
+        type: 'confirm',
+      },
+    ])
+    .then(responses => responses[name]);
 }
 
 async function askList(message, choices) {
   const name = `List-${uuid()}`;
 
-  return inquirer.prompt([
-    {
-      choices,
-      message,
-      name,
-      type: 'list',
-    }
-  ]).then(responses => responses[name]);
+  return inquirer
+    .prompt([
+      {
+        choices,
+        message,
+        name,
+        type: 'list',
+      },
+    ])
+    .then(responses => responses[name]);
 }
 
 async function askCheckbox(message, choices) {
   const name = `Checkbox-${uuid()}`;
 
-  return enquirer.ask(questionKey).then(responses => responses[questionKey]);
+  return inquirer
+    .prompt([
+      {
+        choices,
+        message,
+        name,
+        type: 'checkbox',
+      },
+    ])
+    .then(responses => responses[name])
+    .catch(e => console.log('can we do this?', e));
 }
 
 async function askEditor(pathToFile) {
