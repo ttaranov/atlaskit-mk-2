@@ -52,7 +52,7 @@ The structure leading to each package will look something like:
       ├─ CHANGELOG.md ··· Entire change history for the package
       ├─ index.js ······· Private entry point for tests
       ├─ LICENSE ········ Package license
-      ├─ package.json ··· NPM package configuration
+      └─ package.json ··· NPM package configuration
 ```
 
 The details of each directory in each package is explained in greater detail further down.
