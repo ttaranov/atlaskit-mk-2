@@ -13,6 +13,7 @@ export interface Attributes {
   id: string;
   text?: string;
   userType?: UserType;
+  accessLevel?: string;
 }
 
 /**
@@ -71,10 +72,6 @@ const isOptional = (key: string) => {
 export const toJSON = (node: PMNode) => ({
   attrs: Object.keys(node.attrs)
     .reduce((obj, key) => {
-      if (key === 'accessLevel') {
-        return obj;
-      }
-
       if (isOptional(key) && !node.attrs[key]) {
         return obj;
       }

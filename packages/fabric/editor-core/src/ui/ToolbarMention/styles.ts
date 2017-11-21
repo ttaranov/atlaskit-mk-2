@@ -4,4 +4,7 @@ import ToolbarButtonDefault from '../ToolbarButton';
 // tslint:disable-next-line:variable-name
 export const ToolbarButton: any = styled(ToolbarButtonDefault)`
   display: flex;
+  div {
+    display: flex;
+  }
 `;

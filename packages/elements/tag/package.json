@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tag",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "This component displays as a tag with an optional link and/or button to remove the given tag.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -20,7 +20,7 @@
   },
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
-    "@atlaskit/icon": "^9.0.1",
+    "@atlaskit/icon": "^10.3.0",
     "@atlaskit/theme": "2.2.3",
     "@atlaskit/util-common": "^1.5.2",
     "babel-runtime": "^6.26.0",
@@ -33,8 +33,8 @@
   },
   "devDependencies": {
     "@atlaskit/avatar": "^8.0.0",
-    "@atlaskit/docs": "^0.0.3",
-    "@atlaskit/tag-group": "^3.4.5",
+    "@atlaskit/docs": "^0.0.4",
+    "@atlaskit/tag-group": "^3.4.6",
     "@atlaskit/util-common-test": "^2.4.2",
     "enzyme": "^2.9.1",
     "react-dom": "^15.6.1",

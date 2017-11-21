@@ -124,7 +124,40 @@ describe('JSONTransformer: encode', () => {
     });
   });
 
-  it('should strip accessLevel from mention node', () => {
+  it('should strip unused optional attrs from mention node', () => {
+    const { editorView } = editor(
+      doc(
+        p(
+          mention({
+            id: 'id-rick',
+            text: '@Rick Sanchez',
+          }),
+        ),
+      ),
+    );
+
+    expect(toJSON(editorView.state.doc)).to.deep.equal({
+      version: 1,
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'mention',
+              attrs: {
+                id: 'id-rick',
+                text: '@Rick Sanchez',
+                accessLevel: '',
+              },
+            },
+          ],
+        },
+      ],
+    });
+  });
+
+  it('should not strip accessLevel from mention node', () => {
     const { editorView } = editor(
       doc(
         p(
@@ -151,6 +184,7 @@ describe('JSONTransformer: encode', () => {
                 id: 'foo',
                 text: 'fallback',
                 userType: 'APP',
+                accessLevel: 'CONTAINER',
               },
             },
           ],

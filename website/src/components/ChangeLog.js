@@ -29,7 +29,9 @@ const Heading = ({
   if (typeof title !== 'string') return children;
 
   const version = title.match(/^(\d+\.\d+\.\d+)\s+\(([^)]+)\)/);
-  if (!version) return children;
+  if (!version) {
+    return Array.isArray(children) ? <div>{(children: any)}</div> : children;
+  }
 
   const versionNumber = version[1];
   const versionDate = version[2];

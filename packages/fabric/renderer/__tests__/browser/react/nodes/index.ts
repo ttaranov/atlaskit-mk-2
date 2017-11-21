@@ -6,10 +6,10 @@ import {
   isEmojiDoc,
   isText,
   isTextWrapper,
-} from '../../../../src/react/nodes';;
+} from '../../../../src/react/nodes';
 import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 
-const toEmojiAttrs = (emoji) => {
+const toEmojiAttrs = emoji => {
   const { shortName, id, fallback } = emoji;
   return {
     shortName,
@@ -18,7 +18,7 @@ const toEmojiAttrs = (emoji) => {
   };
 };
 
-const toEmojiId = (emoji) => {
+const toEmojiId = emoji => {
   const { shortName, id, fallback } = emoji;
   return { shortName, id, fallback };
 };
@@ -26,93 +26,91 @@ const toEmojiId = (emoji) => {
 export const grinEmojiAttrs = toEmojiAttrs(emojiTestData.grinEmoji);
 export const grinEmojiId = toEmojiId(emojiTestData.grinEmoji);
 
-const createMockFragment = (fragment) => {
+const createMockFragment = fragment => {
   const mock = sinon.createStubInstance(Fragment);
   if (fragment.content) {
     mock.content = createMockFragment(fragment.content);
-    mock.forEach = (fn) => mock.content.forEach(fn);
+    mock.forEach = fn => mock.content.forEach(fn);
   }
-  Object.keys(fragment).forEach(key => mock[key] = fragment[key]);
+  Object.keys(fragment).forEach(key => (mock[key] = fragment[key]));
   return mock;
-}
+};
 
 describe('Renderer - React/Nodes', () => {
-
   describe('mergeTextNodes', () => {
-
     it('should wrap adjacent text nodes in a textWrapper', () => {
       const input = [
         {
           type: {
-            name: 'text'
+            name: 'text',
           },
-          text: 'hello '
+          text: 'hello ',
         },
         {
           type: {
-            name: 'text'
+            name: 'text',
           },
-          text: 'world! '
+          text: 'world! ',
         },
         {
           type: {
-            name: 'mention'
+            name: 'mention',
           },
           attrs: {
             id: 'abcd-abcd-abcd',
-            text: '@Oscar Wallhult'
-          }
+            text: '@Oscar Wallhult',
+          },
         },
         {
           type: {
-            name: 'text'
+            name: 'text',
           },
-          text: ' is my name!'
-        }
+          text: ' is my name!',
+        },
       ];
 
       expect(mergeTextNodes(input)).to.deep.equal([
         {
           type: {
-            name: 'textWrapper'
+            name: 'textWrapper',
           },
           content: [
             {
               type: {
-                name:  'text'
+                name: 'text',
               },
-              text: 'hello '
+              text: 'hello ',
             },
             {
               type: {
-                name:  'text'
+                name: 'text',
               },
-              text: 'world! '
-            }
-          ]
+              text: 'world! ',
+            },
+          ],
         },
         {
           type: {
-            name: 'mention'
+            name: 'mention',
           },
           attrs: {
             id: 'abcd-abcd-abcd',
-            text: '@Oscar Wallhult'
-          }
+            text: '@Oscar Wallhult',
+          },
         },
         {
           type: {
-            name: 'textWrapper'
+            name: 'textWrapper',
           },
           content: [
             {
               type: {
-                name: 'text'
+                name: 'text',
               },
-              text: ' is my name!'
-            }
-          ]
-        }
+              text: ' is my name!',
+            },
+          ],
+        },
       ]);
     });
   });
@@ -120,25 +118,25 @@ describe('Renderer - React/Nodes', () => {
   describe('isEmojiDoc', () => {
     const grinEmoji = {
       type: {
-        name: 'emoji'
+        name: 'emoji',
       },
       attrs: {
         ...grinEmojiAttrs,
-      }
+      },
     };
 
     it('should return true for a single emoji', () => {
       const content = createMockFragment({
         type: {
-          name: 'doc'
+          name: 'doc',
         },
         version: 1,
         content: [
           {
             type: {
-              name: 'paragraph'
+              name: 'paragraph',
             },
-            content: [ grinEmoji ],
+            content: [grinEmoji],
           },
         ],
       });
@@ -149,15 +147,15 @@ describe('Renderer - React/Nodes', () => {
     it('should return true for up to three emojis', () => {
       const content = createMockFragment({
         type: {
-          name: 'doc'
+          name: 'doc',
         },
         version: 1,
         content: [
           {
-            type:{
-              name: 'paragraph'
+            type: {
+              name: 'paragraph',
             },
-            content: [ grinEmoji, grinEmoji, grinEmoji ],
+            content: [grinEmoji, grinEmoji, grinEmoji],
           },
         ],
       });
@@ -168,15 +166,15 @@ describe('Renderer - React/Nodes', () => {
     it('should return false for more than three emojis', () => {
       const content = createMockFragment({
         type: {
-          name: 'doc'
+          name: 'doc',
         },
         version: 1,
         content: [
           {
-            type:{
-              name: 'paragraph'
+            type: {
+              name: 'paragraph',
             },
-            content: [ grinEmoji, grinEmoji, grinEmoji, grinEmoji ],
+            content: [grinEmoji, grinEmoji, grinEmoji, grinEmoji],
           },
         ],
       });
@@ -187,20 +185,20 @@ describe('Renderer - React/Nodes', () => {
     it('should return false if no emojis', () => {
       const content = createMockFragment({
         type: {
-          name: 'doc'
+          name: 'doc',
         },
         version: 1,
         content: [
           {
             type: {
-              name: 'paragraph'
+              name: 'paragraph',
             },
             content: [
               {
                 type: {
-                  name: 'text'
+                  name: 'text',
                 },
-                text: ' '
+                text: ' ',
               },
             ],
           },
@@ -213,41 +211,41 @@ describe('Renderer - React/Nodes', () => {
     it('should ignore surrounding whitespace when determining whether the paragraph is any emoji block', () => {
       const content = createMockFragment({
         type: {
-          name: 'doc'
+          name: 'doc',
         },
         version: 1,
         content: [
           {
             type: {
-              name: 'paragraph'
+              name: 'paragraph',
             },
             content: [
               {
                 type: {
-                  name: 'text'
+                  name: 'text',
                 },
-                text: '	         '
+                text: '	         ',
               },
               grinEmoji,
               {
                 type: {
-                  name: 'text'
+                  name: 'text',
                 },
-                text: '	                         '
+                text: '	                         ',
               },
               grinEmoji,
               {
                 type: {
-                  name: 'text'
+                  name: 'text',
                 },
-                text: '		'
+                text: '		',
               },
               grinEmoji,
               {
                 type: {
-                  name: 'text'
+                  name: 'text',
                 },
-                text: '	'
+                text: '	',
               },
             ],
           },
@@ -260,20 +258,20 @@ describe('Renderer - React/Nodes', () => {
     it('should return false if the block contains non-whitespace text', () => {
       const content = createMockFragment({
         type: {
-          name: 'doc'
+          name: 'doc',
         },
         version: 1,
         content: [
           {
             type: {
-              name: 'paragraph'
+              name: 'paragraph',
             },
             content: [
               {
                 type: {
-                  name: 'text'
+                  name: 'text',
                 },
-                text: 'This is text'
+                text: 'This is text',
               },
               grinEmoji,
             ],
@@ -287,25 +285,25 @@ describe('Renderer - React/Nodes', () => {
     it('should return false if there is a non-text or non-emoji node', () => {
       const content = createMockFragment({
         type: {
-          name: 'doc'
+          name: 'doc',
         },
         version: 1,
         content: [
           {
             type: {
-              name: 'paragraph'
+              name: 'paragraph',
             },
             content: [
               grinEmoji,
               {
                 type: {
-                  name: 'mention'
+                  name: 'mention',
                 },
                 attrs: {
                   id: 'here',
-                  accessLevel: 'CONTAINER'
+                  accessLevel: 'CONTAINER',
                 },
-                text: '@here'
+                text: '@here',
               },
             ],
           },
@@ -318,23 +316,21 @@ describe('Renderer - React/Nodes', () => {
     it('should return false if there are multiple paragraphs in the doc', () => {
       const content = createMockFragment({
         type: {
-          name: 'doc'
+          name: 'doc',
         },
         version: 1,
         content: [
           {
             type: {
-              name: 'paragraph'
+              name: 'paragraph',
             },
-            content: [
-              grinEmoji
-            ],
+            content: [grinEmoji],
           },
           {
             type: {
-              name: 'paragraph'
+              name: 'paragraph',
             },
-            content: [ grinEmoji ],
+            content: [grinEmoji],
           },
         ],
       });
@@ -345,7 +341,7 @@ describe('Renderer - React/Nodes', () => {
     it('should return false if parent block is not of type paragraph', () => {
       const content = createMockFragment({
         type: {
-          name: 'doc'
+          name: 'doc',
         },
         version: 1,
         content: [
@@ -353,9 +349,9 @@ describe('Renderer - React/Nodes', () => {
             type: 'decisionItem',
             attrs: {
               localId: '',
-              state: 'DECIDED'
+              state: 'DECIDED',
             },
-            content: [ grinEmoji ],
+            content: [grinEmoji],
           },
         ],
       });
@@ -363,18 +359,18 @@ describe('Renderer - React/Nodes', () => {
       expect(isEmojiDoc(content)).to.equal(false);
     });
 
-    it('should return true at nested level if fitToHeight prop is set to 64', () => {
-      const content = createMockFragment({ content: [ grinEmoji ] });
+    it('should return true at nested level if fitToHeight prop is set to 48', () => {
+      const content = createMockFragment({ content: [grinEmoji] });
 
-      expect(isEmojiDoc(content, { fitToHeight: 64 })).to.equal(true);
+      expect(isEmojiDoc(content, { fitToHeight: 48 })).to.equal(true);
     });
 
     it('should return false at nested level if no fitToHeight prop', () => {
       const content = createMockFragment({
         type: {
-          name: 'paragraph'
+          name: 'paragraph',
         },
-        content: [ grinEmoji ],
+        content: [grinEmoji],
       });
 
       expect(isEmojiDoc(content, {})).to.equal(false);
@@ -400,5 +396,4 @@ describe('Renderer - React/Nodes', () => {
       expect(isText('mention')).to.equal(false);
     });
   });
-
 });

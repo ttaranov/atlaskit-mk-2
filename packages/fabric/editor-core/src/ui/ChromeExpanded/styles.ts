@@ -60,22 +60,22 @@ export const IconButton = styled.div`
 
 // tslint:disable-next-line:variable-name
 export const Toolbar = styled.div`
-  align-items: flex-start;
+  align-items: center;
   display: flex;
   height: 40px;
-  padding: ${akGridSize} ${akGridSize} 0;
+  padding: 0 ${akGridSize};
   position: relative;
 
   & > * {
     align-items: center;
     display: flex;
-    margin-left: ${akGridSizeUnitless/2}px;
+    margin-left: ${akGridSizeUnitless / 2}px;
     /* Firefox|IE toolbar icons fix: https://product-fabric.atlassian.net/browse/ED-1787 */
     min-width: 0;
 
     &:first-child {
       margin-left: 0;
-      margin-right: ${akGridSize};
+      align-items: center;
     }
   }
 `;
@@ -91,6 +91,6 @@ export const ButtonGroup = styled.span`
   display: flex;
 
   & > span:not(:first-child) {
-    margin-left: ${akGridSizeUnitless/2}px;
+    margin-left: ${akGridSizeUnitless / 2}px;
   }
 `;

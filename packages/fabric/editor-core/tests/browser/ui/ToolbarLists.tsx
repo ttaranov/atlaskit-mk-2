@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 import listsPlugins, { ListsState } from '../../../src/plugins/lists';
+import EditorWidth from '../../../src/utils/editor-width';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 import AkButton from '@atlaskit/button';
 import ToolbarLists from '../../../src/ui/ToolbarLists';
@@ -27,6 +28,23 @@ describe('ToolbarLists', () => {
     });
     toolbarLists.unmount();
   });
+
+  it('should have spacing of toolbar button set to none if editorWidth is less then breakpoint6', () => {
+    const { pluginState, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(<ToolbarLists pluginState={pluginState} editorView={editorView} editorWidth={EditorWidth.BreakPoint6 - 1} />);
+    expect(toolbarOption.find(ToolbarButton).at(0).prop('spacing')).to.equal('none');
+    expect(toolbarOption.find(ToolbarButton).at(1).prop('spacing')).to.equal('none');
+    toolbarOption.unmount();
+  });
+
+  it('should have spacing of toolbar button set to default if editorWidth is greater then breakpoint6', () => {
+    const { pluginState, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(<ToolbarLists pluginState={pluginState} editorView={editorView} editorWidth={EditorWidth.BreakPoint6 + 1} />);
+    expect(toolbarOption.find(ToolbarButton).at(0).prop('spacing')).to.equal('default');
+    expect(toolbarOption.find(ToolbarButton).at(1).prop('spacing')).to.equal('default');
+    toolbarOption.unmount();
+  });
+
 
   describe('analytics', () => {
     let trackEvent;

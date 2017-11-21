@@ -25,7 +25,9 @@ export function escapeMarkdown(str: string, startOfLine?: boolean): string {
   let strToEscape = str || '';
   strToEscape = strToEscape.replace(/[`*\\+_|()\[\]{}]/g, '\\$&');
   if (startOfLine) {
-    strToEscape = strToEscape.replace(/^[#-*]/, '\\$&').replace(/^(\d+)\./, '$1\\.');
+    strToEscape = strToEscape
+      .replace(/^[#-*]/, '\\$&')
+      .replace(/^(\d+)\./, '$1\\.');
   }
   return strToEscape;
 }
@@ -34,7 +36,10 @@ export function escapeMarkdown(str: string, startOfLine?: boolean): string {
  * This function gets markup rendered by Bitbucket server and transforms it into markup that
  * can be consumed by Prosemirror HTML parser, conforming to our schema.
  */
-export function transformHtml(html: string): HTMLElement {
+export function transformHtml(
+  html: string,
+  options: { disableBitbucketLinkStripping?: boolean },
+): HTMLElement {
   const el = document.createElement('div');
   el.innerHTML = html;
 
@@ -75,35 +80,41 @@ export function transformHtml(html: string): HTMLElement {
 
   // Parse emojis i.e.
   //     <img src="https://d301sr5gafysq2.cloudfront.net/207268dc597d/emoji/img/diamond_shape_with_a_dot_inside.svg" alt="diamond shape with a dot inside" title="diamond shape with a dot inside" class="emoji">
-  arrayFrom(el.querySelectorAll('img.emoji')).forEach((img: HTMLImageElement) => {
-    const span = document.createElement('span');
-    let shortName = img.getAttribute('data-emoji-short-name') || '';
+  arrayFrom(el.querySelectorAll('img.emoji')).forEach(
+    (img: HTMLImageElement) => {
+      const span = document.createElement('span');
+      let shortName = img.getAttribute('data-emoji-short-name') || '';
 
-    if (!shortName) {
-      // Fallback to parsing Bitbucket's src attributes to find the
-      // short name
-      const src = img.getAttribute('src');
-      const idMatch = !src ? false : src.match(/([^\/]+)\.[^\/]+$/);
+      if (!shortName) {
+        // Fallback to parsing Bitbucket's src attributes to find the
+        // short name
+        const src = img.getAttribute('src');
+        const idMatch = !src ? false : src.match(/([^\/]+)\.[^\/]+$/);
 
-      if (idMatch) {
-        shortName = `:${decodeURIComponent(idMatch[1])}:`;
+        if (idMatch) {
+          shortName = `:${decodeURIComponent(idMatch[1])}:`;
+        }
       }
-    }
 
-    if (shortName) {
-      span.setAttribute('data-emoji-short-name', shortName);
-    }
+      if (shortName) {
+        span.setAttribute('data-emoji-short-name', shortName);
+      }
 
-    img.parentNode!.insertBefore(span, img);
-    img.parentNode!.removeChild(img);
-  });
+      img.parentNode!.insertBefore(span, img);
+      img.parentNode!.removeChild(img);
+    },
+  );
 
-  // Convert all automatic links to plain text, because they will be re-created on render by the server
-  arrayFrom(el.querySelectorAll('a[rel="nofollow"]')).forEach((a: HTMLLinkElement) => {
-    const text = document.createTextNode(a.innerText);
-    a.parentNode!.insertBefore(text, a);
-    a.parentNode!.removeChild(a);
-  });
+  if (!options.disableBitbucketLinkStripping) {
+    // Convert all automatic links to plain text, because they will be re-created on render by the server
+    arrayFrom(el.querySelectorAll('a[rel="nofollow"]')).forEach(
+      (a: HTMLLinkElement) => {
+        const text = document.createTextNode(a.innerText);
+        a.parentNode!.insertBefore(text, a);
+        a.parentNode!.removeChild(a);
+      },
+    );
+  }
 
   return el;
 }
