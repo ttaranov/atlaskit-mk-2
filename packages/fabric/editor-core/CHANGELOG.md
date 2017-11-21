@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.2.1
+- [patch] Restore accessLevel attribute for mention node [a83619f](a83619f)
+- [patch] Restore accessLevel attribute for mention node [a83619f](a83619f)
+
 ## 60.2.0
 - [minor] allow consumers of BB Transformer to disable BB link stripping [96424fa](96424fa)
 - [minor] allow consumers of BB Transformer to disable BB link stripping [96424fa](96424fa)

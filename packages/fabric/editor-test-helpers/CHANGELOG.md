@@ -1,5 +1,9 @@
 # @atlaskit/editor-test-helpers
 
+## 0.8.1
+- [patch] Restore accessLevel attribute for mention node [a83619f](a83619f)
+- [patch] Restore accessLevel attribute for mention node [a83619f](a83619f)
+
 ## 0.8.0
 
 ## 0.7.3
