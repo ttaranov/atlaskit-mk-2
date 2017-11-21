@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { md, Props } from '@atlaskit/docs';
+import { md, Example, Props } from '@atlaskit/docs';
 
 export default md`
   Theme is a combined component and utility set, exporting a main component for
@@ -19,6 +19,14 @@ export default md`
 
   The AtlasKitThemeProvider should wrap your entire app, to ensure all components are set to the same theme. Mixing dark and light moded components will severely impact accessibility.
   themed function
+
+  ${(
+    <Example
+      Component={require('../examples/0-theme-provider').default}
+      title="Theme Provider Example"
+      source={require('!!raw-loader!../examples/0-theme-provider')}
+    />
+  )}
 
   ${(
     <Props
