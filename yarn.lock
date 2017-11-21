@@ -652,6 +652,13 @@
     styled-components "^1.4.6"
     tslib "^1.2.0"
 
+"@atlaskit/theme@2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-2.2.3.tgz#642743440d0a27ce23606420b28588f0cf01ddad"
+  dependencies:
+    prop-types "^15.5.10"
+    styled-components "^1.4.6"
+
 "@atlaskit/theme@^2.0.0", "@atlaskit/theme@^2.0.1", "@atlaskit/theme@^2.1.0", "@atlaskit/theme@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-2.2.0.tgz#b8736cb80dd4ed39e2cc090f2db15dcf8784801a"
