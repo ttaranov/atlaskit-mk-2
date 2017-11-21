@@ -1,7 +1,4 @@
-import {
-  MediaAttributes,
-  MentionAttributes as MentionPublicAttributes,
-} from '@atlaskit/editor-common';
+import { MediaAttributes, MentionAttributes } from '@atlaskit/editor-common';
 import {
   Fragment,
   MarkType,
@@ -12,10 +9,6 @@ import {
 } from 'prosemirror-model';
 import matches from './matches';
 import sampleSchema from './schema';
-
-export interface MentionAttributes extends MentionPublicAttributes {
-  accessLevel?: string;
-}
 
 /**
  * Represents a ProseMirror "position" in a document.
