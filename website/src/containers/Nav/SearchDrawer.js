@@ -49,7 +49,7 @@ const SearchDrawer = ({
     isOpen={isOpen}
     key="search"
     onBackButton={closeDrawer}
-    primaryIcon={<AtlassianIcon label="AtlasKit" />}
+    primaryIcon={<AtlassianIcon label="Atlaskit" />}
   >
     <AkSearch
       value={searchDrawerValue}

@@ -13,6 +13,7 @@ export interface Attributes {
   id: string;
   text?: string;
   userType?: UserType;
+  accessLevel?: string;
 }
 
 /**

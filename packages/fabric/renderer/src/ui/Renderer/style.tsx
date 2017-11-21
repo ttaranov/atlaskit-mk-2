@@ -44,11 +44,11 @@ export const Wrapper = styled.div`
       display: inline-block;
     }
 
-    & ::before {
+    &::before {
       content: "";
     }
 
-    & ::after {
+    &::after {
       content: "";
     }
   }
@@ -143,5 +143,9 @@ export const Wrapper = styled.div`
     background-color: ${akColorN30A};
     height: 2px;
     border-radius: 1px;
+  }
+
+  & img {
+    max-width: 100%;
   }
 `;

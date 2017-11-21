@@ -6,7 +6,7 @@ import collabEdit, {
 } from '../../../../../src/editor/plugins/collab-edit';
 import ProviderFactory from '../../../../../src/providerFactory';
 import { collabEditProvider } from '../../../../../example-helpers/mock-collab-provider';
-import { findPointer } from '../../../../../src/editor/plugins/collab-edit/utils';
+import { findPointers } from '../../../../../src/editor/plugins/collab-edit/utils';
 
 const setupEditor = (setProvider: boolean = true) => {
   const providerFactory = new ProviderFactory();
@@ -174,10 +174,10 @@ describe('editor/plugins/collab-edit', () => {
 
       const { decorations } = collabEditPluginKey.getState(editorView.state);
 
-      expect(findPointer('test', decorations)!.spec).to.deep.equal({
-        pointer: {
-          sessionId: 'test',
-        },
+      expect(findPointers('test', decorations)![0].spec).to.deep.equal({
+        'pointer': {
+          'sessionId': 'test'
+        }
       });
       editorView.destroy();
     });

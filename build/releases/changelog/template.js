@@ -3,51 +3,60 @@
  * @param {string} versionType - [major, minor, patch]
  * @param {string} doc - path to release doc
  */
-function releaseLine(summary, versionType, doc, commit) {
+function releaseLine(summary, versionType, doc, commit, repoUrl) {
   const result = [];
-  result.push(`- [${versionType}] ${summary} [${commit}](${commit})`);
+  result.push(`- [${versionType}] ${summary} ${commitLink(commit, repoUrl)}`);
   if (doc) {
     result.push(`  - See [${doc}](${doc}) for more information`);
   }
   return result.join('\n');
 }
 
-function commitLink(commit) {
-  return `[${commit}](${commit})`;
+function commitLink(commit, repoUrl) {
+  return repoUrl
+    ? `[${commit}](${repoUrl}/${commit})`
+    : `[${commit}](${commit})`;
 }
 
-function generateMarkdownTemplate(pkg, releaseObject) {
-  const { changeSets, releases } = releaseObject;
-  const result = [`## ${pkg.version}`];
+function generateMarkdownTemplate(release, releaseObject, repoUrl) {
+  const { changesets, releases } = releaseObject;
+  const result = [`## ${release.version}`];
 
-  const releatedChangeSets = pkg.commits.map(commitHash =>
-    changeSets.find(c => c.commit === commitHash),
+  const releatedChangesets = release.commits.map(commitHash =>
+    changesets.find(c => c.commit === commitHash),
   );
 
-  const releaseLines = releatedChangeSets
-    .map(changeSet => {
-      const release = changeSet.releases.find(r => r.name === pkg.name);
-      if (!release) {
-        // We don't find a release for this package in current changeSet
+  const releaseLines = releatedChangesets
+    .map(changeset => {
+      const changesetRelease = changeset.releases.find(
+        r => r.name === release.name,
+      );
+      const commitSegment = commitLink(changeset.commit, repoUrl);
+      if (!changesetRelease) {
+        // We don't find a release for this package in current changeset
         // It's possible been released as a dependency update
         return '';
       }
       return releaseLine(
-        changeSet.summary,
-        release.type,
-        changeSet.releaseNotes,
-        changeSet.commit,
+        changeset.summary,
+        changesetRelease.type,
+        changeset.releaseNotes,
+        changeset.commit,
+        repoUrl,
       ).trim('\n');
     })
     .join('\n');
   result.push(releaseLines);
 
-  if (Array.isArray(pkg.dependencies) && pkg.dependencies.length > 0) {
-    const dependencyLines = releatedChangeSets.map(changeSet => {
-      const dep = changeSet.dependents.find(d => d.name === pkg.name);
+  if (Array.isArray(release.dependencies) && release.dependencies.length > 0) {
+    const dependencyLines = releatedChangesets.map(changeset => {
+      const dep = changeset.dependents.find(d => d.name === release.name);
       const lines = [];
       lines.push(
-        `- [${dep.type}] Updated dependencies ${commitLink(changeSet.commit)}`,
+        `- [${dep.type}] Updated dependencies ${commitLink(
+          changeset.commit,
+          repoUrl,
+        )}`,
       );
       dep.dependencies.forEach(name => {
         const version = releases.find(r => r.name === name).version;

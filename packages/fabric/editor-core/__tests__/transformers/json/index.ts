@@ -73,7 +73,6 @@ describe('JSONTransformer: encode', () => {
         h4('H4'),
         h5('H5'),
         h6('H6'),
-        code_block({ language: 'javascript' })(`console.log('hello');`),
         emoji({ shortName: ':joy:' }),
         panel('hello from panel'),
         panelNote('hello from note panel'),
@@ -127,23 +126,118 @@ describe('JSONTransformer: encode', () => {
   it('should strip unused optional attrs from mention node', () => {
     const { editorView } = editor(
       doc(
-        mention({
-          id: 'id-rick',
-          text: '@Rick Sanchez',
-        }),
+        p(
+          mention({
+            id: 'id-rick',
+            text: '@Rick Sanchez',
+          }),
+        ),
       ),
     );
+
     expect(toJSON(editorView.state.doc)).toEqual({
       version: 1,
       type: 'doc',
       content: [
         {
-          type: 'mention',
+          type: 'paragraph',
+          content: [
+            {
+              type: 'mention',
+              attrs: {
+                id: 'id-rick',
+                text: '@Rick Sanchez',
+                accessLevel: '',
+              },
+            },
+          ],
+        },
+      ],
+    });
+  });
+
+  it('should not strip accessLevel from mention node', () => {
+    const { editorView } = editor(
+      doc(
+        p(
+          mention({
+            accessLevel: 'CONTAINER',
+            id: 'foo',
+            text: 'fallback',
+            userType: 'APP',
+          }),
+        ),
+      ),
+    );
+
+    expect(toJSON(editorView.state.doc)).toEqual({
+      version: 1,
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'mention',
+              attrs: {
+                id: 'foo',
+                text: 'fallback',
+                userType: 'APP',
+                accessLevel: 'CONTAINER',
+              },
+            },
+          ],
+        },
+      ],
+    });
+  });
+
+  it('should strip uniqueId from codeBlock node', () => {
+    const { editorView } = editor(
+      doc(
+        code_block({
+          language: 'javascript',
+          uniqueId: 'foo',
+        })('var foo = 2;'),
+      ),
+    );
+
+    expect(toJSON(editorView.state.doc)).toEqual({
+      version: 1,
+      type: 'doc',
+      content: [
+        {
+          type: 'codeBlock',
           attrs: {
-            id: 'id-rick',
-            text: '@Rick Sanchez',
-            accessLevel: '',
+            language: 'javascript',
           },
+          content: [
+            {
+              type: 'text',
+              text: 'var foo = 2;',
+            },
+          ],
+        },
+      ],
+    });
+  });
+
+  it('should strip language=null from codeBlock node', () => {
+    const { editorView } = editor(doc(code_block()('var foo = 2;')));
+
+    expect(toJSON(editorView.state.doc)).toEqual({
+      version: 1,
+      type: 'doc',
+      content: [
+        {
+          type: 'codeBlock',
+          attrs: {},
+          content: [
+            {
+              type: 'text',
+              text: 'var foo = 2;',
+            },
+          ],
         },
       ],
     });

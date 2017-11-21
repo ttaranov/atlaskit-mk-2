@@ -6,6 +6,7 @@ import AkButton from '@atlaskit/button';
 import ToolbarTextFormatting from '../../src/ui/ToolbarTextFormatting';
 import { doc, p, makeEditor, defaultSchema } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../src/analytics';
+import EditorWidth from '../../src/utils/editor-width';
 
 describe('ToolbarTextFormatting', () => {
   const editor = (doc: any) => makeEditor<TextFormattingState>({
@@ -27,6 +28,38 @@ describe('ToolbarTextFormatting', () => {
       expect(node.prop('disabled')).toBe(true);
     });
     toolbarTextColor.unmount();
+  });
+
+  it('should have spacing of toolbar button set to none if editorWidth is less then breakpoint6', () => {
+    const { pluginState, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(<ToolbarTextFormatting pluginState={pluginState} editorView={editorView} editorWidth={EditorWidth.BreakPoint6 - 1} />);
+    toolbarOption.find(ToolbarButton).forEach(btn => {
+      expect(btn.prop('spacing')).toEqual('none');
+    });
+    toolbarOption.unmount();
+  });
+
+  it('should have spacing of toolbar button set to default if editorWidth is greater then breakpoint6', () => {
+    const { pluginState, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(<ToolbarTextFormatting pluginState={pluginState} editorView={editorView} editorWidth={EditorWidth.BreakPoint6 + 1} />);
+    toolbarOption.find(ToolbarButton).forEach(btn => {
+      expect(btn.prop('spacing')).toEqual('default');
+    });
+    toolbarOption.unmount();
+  });
+
+  it('should have underline as last option if editorWidth is greater then breakpoint7', () => {
+    const { pluginState, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(<ToolbarTextFormatting pluginState={pluginState} editorView={editorView} editorWidth={EditorWidth.BreakPoint2 + 1} />);
+    expect(toolbarOption.find(ToolbarButton).last().html().indexOf('Underline') >= 0).toEqual(true);
+    toolbarOption.unmount();
+  });
+
+  it('should not underline as last option if editorWidth is less then breakpoint7', () => {
+    const { pluginState, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(<ToolbarTextFormatting pluginState={pluginState} editorView={editorView} editorWidth={EditorWidth.BreakPoint2 - 1} />);
+    expect(toolbarOption.find(ToolbarButton).last().text().indexOf('Underline') >= 0).toEqual(false);
+    toolbarOption.unmount();
   });
 
   describe('analytics', () => {

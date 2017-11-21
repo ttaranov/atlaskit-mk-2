@@ -5,11 +5,11 @@ import { EditorView } from 'prosemirror-view';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { TextColorState } from '../../plugins/text-color';
 import ToolbarButton from '../ToolbarButton';
-import Icon from '@atlaskit/icon';
-import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
-import TextColorIcon from '@atlaskit/icon/glyph/editor/text-color';
+import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
+import TextColourIcon from '@atlaskit/icon/glyph/editor/text-color';
 import ColorPalette from './ColorPalette';
-import { ExpandIconWrap, TriggerWrapper } from './styles';
+import EditorWidth from '../../utils/editor-width';
+import { TriggerWrapper, Separator, Wrapper, ExpandIconWrapper } from './styles';
 import Dropdown from '../Dropdown';
 
 export interface Props {
@@ -18,6 +18,7 @@ export interface Props {
   disabled?: boolean;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  editorWidth?: number;
 }
 
 export interface State {
@@ -43,42 +44,49 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
 
   render() {
     const { disabled, isOpen, color } = this.state;
-    const { popupsMountPoint, popupsBoundariesElement } = this.props;
+    const { popupsMountPoint, popupsBoundariesElement, editorWidth } = this.props;
+
+    if (editorWidth && editorWidth < EditorWidth.BreakPoint7) {
+      return null;
+    }
 
     return (
-      <Dropdown
-        mountTo={popupsMountPoint}
-        boundariesElement={popupsBoundariesElement}
-        isOpen={isOpen && !disabled && !this.props.disabled}
-        onOpenChange={this.handleOpenChange}
-        fitWidth={242}
-        fitHeight={80}
-        trigger={
-          <ToolbarButton
-            disabled={disabled || this.props.disabled}
-            selected={isOpen}
-            title="Text color"
-            onClick={this.toggleOpen}
-            iconBefore={
-              <TriggerWrapper>
-                <Icon
-                  primaryColor={this.getIconColor()}
-                  label="Text color"
-                  glyph={TextColorIcon}
-                />
-                <ExpandIconWrap>
-                  <ExpandIcon label="expand-dropdown-menu" />
-                </ExpandIconWrap>
-              </TriggerWrapper>}
+      <Wrapper>
+        <Dropdown
+          mountTo={popupsMountPoint}
+          boundariesElement={popupsBoundariesElement}
+          isOpen={isOpen && !disabled && !this.props.disabled}
+          onOpenChange={this.handleOpenChange}
+          fitWidth={242}
+          fitHeight={80}
+          trigger={
+            <ToolbarButton
+              spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
+              disabled={disabled || this.props.disabled}
+              selected={isOpen}
+              title="Text color"
+              onClick={this.toggleOpen}
+              iconBefore={
+                <TriggerWrapper>
+                  <TextColourIcon
+                    primaryColor={this.getIconColor()}
+                    label="Text color"
+                  />
+                  <ExpandIconWrapper>
+                    <ExpandIcon label="expand-dropdown-menu" />
+                  </ExpandIconWrapper>
+                </TriggerWrapper>}
+            />
+          }
+        >
+          <ColorPalette
+            palette={this.props.pluginState.palette}
+            onClick={this.toggleTextColor}
+            selectedColor={color}
           />
-        }
-      >
-        <ColorPalette
-          palette={this.props.pluginState.palette}
-          onClick={this.toggleTextColor}
-          selectedColor={color}
-        />
-      </Dropdown>
+        </Dropdown>
+        <Separator />
+      </Wrapper>
     );
   }
 

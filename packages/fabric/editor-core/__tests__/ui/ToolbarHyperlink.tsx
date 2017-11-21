@@ -7,11 +7,26 @@ import AkButton from '@atlaskit/button';
 import LinkIcon from '@atlaskit/icon/glyph/editor/link';
 import { doc, p, makeEditor, defaultSchema } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../src/analytics';
+import EditorWidth from '../../src/utils/editor-width';
 
 describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
   const editor = (doc: any) => makeEditor<HyperlinkState>({
     doc,
     plugins: hyperlinkPlugins(defaultSchema),
+  });
+
+  it('should have spacing of toolbar button set to none if editorWidth is less then breakpoint6', () => {
+    const { pluginState, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(<ToolbarHyperlink pluginState={pluginState} editorView={editorView} editorWidth={EditorWidth.BreakPoint6 - 1} />);
+    expect(toolbarOption.find(ToolbarButton).prop('spacing')).toEqual('none');
+    toolbarOption.unmount();
+  });
+
+  it('should have spacing of toolbar button set to default if editorWidth is greater then breakpoint6', () => {
+    const { pluginState, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(<ToolbarHyperlink pluginState={pluginState} editorView={editorView} editorWidth={EditorWidth.BreakPoint6 + 1}/>);
+    expect(toolbarOption.find(ToolbarButton).prop('spacing')).toEqual('default');
+    toolbarOption.unmount();
   });
 
   it('should trigger showLinkPanel of plugin when toolbar hyperlink button is clicked', () => {

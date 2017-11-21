@@ -7,6 +7,7 @@ import {
   insertText,
   doc,
   makeEditor,
+  a as link,
   p,
   code_block,
   plain,
@@ -38,6 +39,15 @@ describe('text-formatting input rules', () => {
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.strong.autoformatting',
       );
+    });
+
+    it('should convert text to strong for link also', () => {
+      const { editorView, sel } = editor(doc(p('**', link({ href: 'http://www.atlassian.com' })('Atlassian'), '{<>}')));
+
+      insertText(editorView, '**', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p(strong(link({ href: 'http://www.atlassian.com' })('Atlassian')))));
+      expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(true);
     });
 
     it('should not convert "** text**" to strong', () => {

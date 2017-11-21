@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { TableState } from '../../plugins/table';
 import { MediaPluginState } from '../../plugins/media';
+import { MentionsState } from '../../plugins/mentions';
 import { BlockTypeState } from '../../plugins/block-type';
 import { BlockType } from '../../plugins/block-type/types';
 import { EditorView } from 'prosemirror-view';
@@ -9,6 +10,7 @@ export interface Props {
   pluginStateTable?: TableState;
   pluginStateMedia?: MediaPluginState;
   pluginStateBlockType?: BlockTypeState;
+  pluginStateMentions?: MentionsState;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   render: (pluginsState: State) => React.ReactElement<any>;
@@ -17,10 +19,15 @@ export interface Props {
 export interface State {
   tableActive: boolean;
   tableHidden: boolean;
+  tableSupported: boolean;
   mediaUploadsEnabled: boolean;
+  mediaSupported: boolean;
+  mentionsEnabled: boolean;
+  mentionsSupported: boolean;
   availableWrapperBlockTypes?: BlockType[];
   showMediaPicker: () => void;
   insertBlockType: (name: string, view: EditorView) => void;
+  insertMentionQuery: () => void;
 }
 
 // TODO: deprecate me when we move to new architecture
@@ -30,22 +37,29 @@ export default class ToolbarInsertBlockWrapper extends React.Component<Props, St
 
     this.state = {
       tableActive: false,
-      tableHidden: false,
+      tableHidden: true,
       mediaUploadsEnabled: false,
+      mediaSupported: false,
+      mentionsEnabled: false,
+      mentionsSupported: false,
     } as State;
   }
 
   componentDidMount() {
-    const { pluginStateTable, pluginStateMedia, pluginStateBlockType } = this.props;
+    const { pluginStateTable, pluginStateMedia, pluginStateBlockType, pluginStateMentions } = this.props;
 
     if (pluginStateTable) {
       pluginStateTable.subscribe(this.handlePluginStateTableChange);
+      this.setState({
+        tableSupported: true
+      });
     }
 
     if (pluginStateMedia) {
       pluginStateMedia.subscribe(this.handlePluginStateMediaChange);
       this.setState({
-        showMediaPicker: pluginStateMedia.showMediaPicker
+        showMediaPicker: pluginStateMedia.showMediaPicker,
+        mediaSupported: true
       });
     }
 
@@ -57,24 +71,39 @@ export default class ToolbarInsertBlockWrapper extends React.Component<Props, St
         insertBlockType
       });
     }
+
+    if (pluginStateMentions) {
+      pluginStateMentions.subscribe(this.handlePluginStateMentionsChange);
+      const { enabled: mentionsEnabled, insertMentionQuery } = pluginStateMentions;
+      this.setState({
+        mentionsEnabled,
+        insertMentionQuery,
+        mentionsSupported: true
+      });
+    }
   }
 
   componentWillReceiveProps(props: Props) {
-    const { pluginStateTable, pluginStateMedia, pluginStateBlockType } = props;
+    const { pluginStateTable, pluginStateMedia, pluginStateBlockType, pluginStateMentions } = props;
     const {
       pluginStateTable: oldPluginStateTable,
       pluginStateMedia: oldPluginStateMedia,
       pluginStateBlockType: oldPluginStateBlockType,
+      pluginStateMentions: oldPluginStateMentions,
     } = this.props;
 
     if (!oldPluginStateTable && pluginStateTable) {
       pluginStateTable.subscribe(this.handlePluginStateTableChange);
+      this.setState({
+        tableSupported: true
+      });
     }
 
     if (!oldPluginStateMedia && pluginStateMedia) {
       pluginStateMedia.subscribe(this.handlePluginStateMediaChange);
       this.setState({
-        showMediaPicker: pluginStateMedia.showMediaPicker
+        showMediaPicker: pluginStateMedia.showMediaPicker,
+        mediaSupported: true
       });
     }
 
@@ -84,6 +113,16 @@ export default class ToolbarInsertBlockWrapper extends React.Component<Props, St
       this.setState({
         availableWrapperBlockTypes,
         insertBlockType
+      });
+    }
+
+    if (!oldPluginStateMentions && pluginStateMentions) {
+      pluginStateMentions.subscribe(this.handlePluginStateMentionsChange);
+      const { enabled: mentionsEnabled, insertMentionQuery } = pluginStateMentions;
+      this.setState({
+        mentionsEnabled,
+        insertMentionQuery,
+        mentionsSupported: true
       });
     }
   }
@@ -117,6 +156,12 @@ export default class ToolbarInsertBlockWrapper extends React.Component<Props, St
   private handlePluginStateBlockTypeChange = (pluginState: BlockTypeState) => {
     this.setState({
       availableWrapperBlockTypes: pluginState.availableWrapperBlockTypes,
+    });
+  }
+
+  private handlePluginStateMentionsChange = (pluginState: MentionsState) => {
+    this.setState({
+      mentionsEnabled: pluginState.enabled,
     });
   }
 

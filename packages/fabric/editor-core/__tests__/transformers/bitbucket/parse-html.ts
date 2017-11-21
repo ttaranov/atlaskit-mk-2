@@ -1,9 +1,32 @@
 import { BitbucketTransformer } from '../../../src/transformers';
 import { bitbucketSchema as schema } from '@atlaskit/editor-common';
 import {
-  a, blockquote, code_block, doc, h1, h2,
-  h3, h4, h5, h6, hr, img, li, emoji, mention,
-  code, ol, p, ul, table, tr, th, td, strong, em, strike
+  a,
+  blockquote,
+  code_block,
+  doc,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  hr,
+  img,
+  li,
+  emoji,
+  mention,
+  code,
+  ol,
+  p,
+  ul,
+  table,
+  tr,
+  th,
+  td,
+  strong,
+  em,
+  strike,
 } from './_schema-builder';
 import { Mark, Node as PMNode } from 'prosemirror-model';
 
@@ -476,6 +499,38 @@ describe('BitbucketTransformer: parser', () => {
           ' baz'
         )
       ));
+    });
+
+    it('created automatically by bitbucket should be removed', () => {
+      expect(
+        parse(
+          '<p>' +
+            'foo ' +
+            '<a href="http://www.atlassian.com" rel="nofollow">#1234</a>' +
+            ' baz' +
+            '</p>',
+        ),
+      ).toEqualDocument(doc(p('foo #1234 baz')));
+    });
+
+    it('created manually by bitbucket should not be removed if disableBitbucketLinkStripping is true', () => {
+      const transformer = new BitbucketTransformer(undefined, {
+        disableBitbucketLinkStripping: true,
+      });
+
+      expect(
+        transformer.parse(
+          '<p>' +
+            'foo ' +
+            '<a href="http://www.atlassian.com" rel="nofollow">#1234</a>' +
+            ' baz' +
+            '</p>',
+        ),
+      ).toEqualDocument(
+        doc(
+          p('foo ', a({ href: 'http://www.atlassian.com' })('#1234'), ' baz'),
+        ),
+      );
     });
   });
 });

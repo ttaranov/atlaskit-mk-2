@@ -49,12 +49,12 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(textColorPlugin);
   }
 
-  if (props.allowHyperlinks) {
-    plugins.push(hyperlinkPlugin);
-  }
-
   if (props.allowLists) {
     plugins.push(listsPlugin);
+  }
+
+  if (props.allowHyperlinks) {
+    plugins.push(hyperlinkPlugin);
   }
 
   if (props.allowCodeBlocks) {

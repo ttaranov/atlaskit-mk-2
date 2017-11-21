@@ -7,15 +7,15 @@ import { plugin as clearFormattingPlugin, stateKey as clearFormattingStateKey} f
 import textFormattingInputRulePlugin from '../../../plugins/text-formatting/input-rule';
 import clearFormattingKeymapPlugin from '../../../plugins/clear-formatting/keymap';
 import ToolbarTextFormatting from '../../../ui/ToolbarTextFormatting';
-import ToolbarInlineCode from '../../../ui/ToolbarInlineCode';
 import ToolbarAdvancedTextFormatting from '../../../ui/ToolbarAdvancedTextFormatting';
+import EditorWidth from '../../../utils/editor-width';
 
 // tslint:disable-next-line:variable-name
 const ButtonsGroup = styled.div`
   display: flex;
 
   & > * {
-    margin-left: 4px;
+    margin-left: ${({ width }) => width === 'large' ? 0 : 4}px;
   }
 
   & > *:first-child {
@@ -48,20 +48,20 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
     ];
   },
 
-  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled) {
+  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth) {
     const textFormattingPluginState = textFormattingStateKey.getState(editorView.state);
     const clearFormattingPluginState = clearFormattingStateKey.getState(editorView.state);
 
     return (
-      <ButtonsGroup>
-        <ToolbarTextFormatting disabled={disabled} editorView={editorView} pluginState={textFormattingPluginState} />
-        <ToolbarInlineCode disabled={disabled} editorView={editorView} pluginState={textFormattingPluginState} />
+      <ButtonsGroup width={editorWidth! > EditorWidth.BreakPoint6 ? 'large' : 'small'}>
+        <ToolbarTextFormatting disabled={disabled} editorView={editorView} pluginState={textFormattingPluginState} editorWidth={editorWidth}/>
         <ToolbarAdvancedTextFormatting
           editorView={editorView}
           isDisabled={disabled}
           pluginStateTextFormatting={textFormattingPluginState}
           pluginStateClearFormatting={clearFormattingPluginState}
           popupsMountPoint={popupsMountPoint}
+          editorWidth={editorWidth}
         />
       </ButtonsGroup>
     );

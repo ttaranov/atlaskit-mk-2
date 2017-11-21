@@ -20,6 +20,12 @@ function parseChangesetCommit(commitMsg) {
     curLine = lines.shift();
   }
 
+  // due to some badly structured JSON in some old releases (trailing commas) we have to do this
+  try {
+    JSON.parse(jsonStr);
+  } catch (e) {
+    return undefined;
+  }
   return JSON.parse(jsonStr);
 }
 
