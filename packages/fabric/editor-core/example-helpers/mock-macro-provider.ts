@@ -1,5 +1,5 @@
 import { Node as PmNode } from 'prosemirror-model';
-import { MacroProvider, MacroADF } from '../src/editor/plugins/macro/types';
+import { MacroProvider, MacroAdf } from '../src/editor/plugins/macro/types';
 import { inlineMacroData } from './mock-macro-data';
 
 export class MockMacroProvider implements MacroProvider {
@@ -7,7 +7,7 @@ export class MockMacroProvider implements MacroProvider {
     placeholderBaseUrl: '//pug.jira-dev.com',
   };
 
-  openMacroBrowser(macroNode?: PmNode): Promise<MacroADF> {
+  openMacroBrowser(macroNode?: PmNode): Promise<MacroAdf> {
     const index = Math.floor(Math.random() * inlineMacroData.length);
     return Promise.resolve(inlineMacroData[index]);
   }

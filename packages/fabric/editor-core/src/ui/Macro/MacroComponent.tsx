@@ -11,7 +11,7 @@ export interface Props {
   editorView: EditorView;
   macroProvider?: Promise<MacroProvider>;
   node: PMNode;
-  setMacroElement: (state: EditorState, dispatch: (tr: Transaction) => void, macroElement: HTMLElement | null) => void;
+  setMacroElement: (macroElement: HTMLElement | null) => (state: EditorState, dispatch: (tr: Transaction) => void) => void;
 }
 
 export interface State {
@@ -75,11 +75,11 @@ export default class MacroComponent extends Component<Props, State> {
   private handleClick = (event: React.SyntheticEvent<any>) => {
     event.nativeEvent.stopImmediatePropagation();
     const { state, dispatch } = this.props.editorView;
-    this.props.setMacroElement(state, dispatch, event.currentTarget);
+    this.props.setMacroElement(event.currentTarget)(state, dispatch);
   }
 
   private handleDocumentClick = () => {
     const { state, dispatch } = this.props.editorView;
-    this.props.setMacroElement(state, dispatch, null);
+    this.props.setMacroElement(null)(state, dispatch);
   }
 }

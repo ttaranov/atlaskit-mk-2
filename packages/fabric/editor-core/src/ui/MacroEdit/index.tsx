@@ -7,13 +7,13 @@ import ToolbarButton from '../ToolbarButton';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditIcon from '@atlaskit/icon/glyph/editor/edit';
 import { Toolbar, Separator } from './styles';
-import { MacroProvider, MacroADF } from '../../editor/plugins/macro/types';
+import { MacroProvider, MacroAdf } from '../../editor/plugins/macro/types';
 
 export interface Props {
   editorView: EditorView;
   macroElement: HTMLElement | null;
   macroProvider: MacroProvider | null;
-  onInsertMacroFromMacroBrowser: (state: EditorState, dispatch: (tr: Transaction) => void, macroProvider: MacroProvider, macroNode?: PmNode) => Promise<MacroADF>;
+  onInsertMacroFromMacroBrowser: (macroProvider: MacroProvider, macroNode?: PmNode) => (state: EditorState, dispatch: (tr: Transaction) => void) => Promise<MacroAdf>;
   onRemoveMacro: (state: EditorState, dispatch: (tr: Transaction) => void) => void;
 }
 
@@ -55,7 +55,7 @@ export default class MacroEdit extends React.Component<any, any> {
     } = this.props;
     const { nodeAfter } = state.selection.$from;
     if (nodeAfter) {
-      onInsertMacroFromMacroBrowser(state, dispatch, macroProvider, nodeAfter);
+      onInsertMacroFromMacroBrowser(macroProvider, nodeAfter)(state, dispatch);
     }
   }
 

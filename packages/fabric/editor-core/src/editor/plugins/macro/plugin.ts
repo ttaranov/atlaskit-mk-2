@@ -41,7 +41,7 @@ export const createPlugin = (
         providerFactory.subscribe(
           'macroProvider',
           (name, provider: Promise<MacroProvider>) =>
-            setMacroProvider(state, dispatch, provider),
+            setMacroProvider(provider)(state, dispatch),
         );
       }
       return {};

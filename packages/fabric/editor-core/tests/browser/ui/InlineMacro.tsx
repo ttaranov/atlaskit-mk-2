@@ -7,7 +7,7 @@ import { inlineMacroData } from '../../../example-helpers/mock-macro-data';
 import { Placeholder, PlaceholderFallback } from '../../../src/ui/Macro/styles';
 
 describe('@atlaskit/editor-core/ui/Macro/InlineMacro', () => {
-  const noop = function () {} as any;
+  const noop: any = () => {};
 
   it('should render Placeholder if inlineExtension has placeholder image param', () => {
     const macro = shallow(<InlineMacro node={inlineMacroData[0] as any} macroProvider={macroProvider} onClick={noop} getPlaceholderUrl={noop} getMacroId={noop} />);
