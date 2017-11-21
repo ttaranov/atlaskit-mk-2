@@ -35,7 +35,7 @@ const Heading = ({
   return (
     <H3>
       <a {...anchorProps}>{version}</a>
-      <small> &mdash; {date || <em>unreleased</em>}</small>
+      {date ? <small> &mdash; {date}</small> : ''}
     </H3>
   );
 };
