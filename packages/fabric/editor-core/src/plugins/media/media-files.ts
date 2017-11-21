@@ -34,7 +34,7 @@ export const insertSingleImages = (
   collection?: string,
 ): void => {
   const { state, dispatch } = view;
-  const { to } = state.selection;
+  const { from } = state.selection;
   const { tr, schema } = state;
   const { singleImage, media } = schema.nodes;
 
@@ -49,7 +49,16 @@ export const insertSingleImages = (
     media,
   );
 
-  tr.insert(to, nodes);
+  // delete the selection or empty paragraph
+  const deleteRange = findDeleteRange(state);
+
+  if (!deleteRange) {
+    tr.insert(from, nodes);
+  } else if (from <= deleteRange.start) {
+    tr.deleteRange(deleteRange.start, deleteRange.end).insert(from, nodes);
+  } else {
+    tr.insert(from, nodes).deleteRange(deleteRange.start, deleteRange.end);
+  }
 
   dispatch(tr);
 };
