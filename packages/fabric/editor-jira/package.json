@@ -18,7 +18,7 @@
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/button": "^5.4.8",
     "@atlaskit/editor-core": "^60.2.2",
-    "@atlaskit/mention": "^7.6.0",
+    "@atlaskit/mention": "^8.1.0",
     "@atlaskit/spinner": "^2.0.1",
     "collapse-whitespace": "^1.1.6",
     "css-color-names": "0.0.4",

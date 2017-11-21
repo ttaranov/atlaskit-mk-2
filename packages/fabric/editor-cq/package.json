@@ -20,7 +20,7 @@
     "@atlaskit/editor-common": "^3.9.2",
     "@atlaskit/editor-core": "^60.2.2",
     "@atlaskit/logo": "^6.0.2",
-    "@atlaskit/mention": "^7.6.0",
+    "@atlaskit/mention": "^8.1.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "collapse-whitespace": "^1.1.6",
     "prosemirror-model": "^0.22.0",
