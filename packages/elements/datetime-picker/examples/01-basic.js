@@ -8,15 +8,12 @@ import { action } from './_';
 export default () => {
   return (
     <div>
-      <Label label="Date picker">
-        <DatePicker onChange={action('onChange')} />
-      </Label>
-      <Label label="Time picker">
-        <TimePicker onChange={action('onChange')} />
-      </Label>
-      <Label label="Date / time picker">
-        <DateTimePicker onChange={action('onChange')} />
-      </Label>
+      <Label label="Date picker" />
+      <DatePicker onChange={action('onChange')} />
+      <Label label="Time picker" />
+      <TimePicker onChange={action('onChange')} />
+      <Label label="Date / time picker" />
+      <DateTimePicker onChange={action('onChange')} />
     </div>
   );
 };
