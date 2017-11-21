@@ -9,7 +9,7 @@ type Modes = { light: Value, dark: Value };
 type VariantModes = { [string]: Modes };
 
 function themedVariants(variantProp, variants) {
-  return (props: ThemeProps) => {
+  return (props: ?ThemeProps) => {
     const theme = getTheme(props);
     if (props && props[variantProp] && variants) {
       const modes = variants[props[variantProp]];
@@ -29,7 +29,7 @@ export default function themed(
     return themedVariants(modesOrVariant, variantModes);
   }
   const modes = modesOrVariant;
-  return (props: ThemeProps) => {
+  return (props: ?ThemeProps) => {
     const theme = getTheme(props);
     return modes[theme.mode];
   };
