@@ -130,12 +130,6 @@ export default class Editor extends React.Component<
 
   private appearance: EditorAppearance = 'comment';
 
-  private handleRef = ref => {
-    if (this.props.onUiReady) {
-      this.props.onUiReady(ref);
-    }
-  };
-
   private handleSave = () => {
     if (this.props.editorView && this.props.onSave) {
       this.props.onSave(this.props.editorView);
@@ -150,6 +144,7 @@ export default class Editor extends React.Component<
 
   private renderChrome = ({ maxContentSize }) => {
     const {
+      editorDOMElement,
       editorView,
       eventDispatcher,
       providerFactory,
@@ -190,7 +185,8 @@ export default class Editor extends React.Component<
             {customPrimaryToolbarComponents}
           </MainToolbarCustomComponentsSlot>
         </MainToolbar>
-        <ContentArea innerRef={this.handleRef}>
+        <ContentArea>
+          {editorDOMElement}
           {customContentComponents}
           <PluginSlot
             editorView={editorView}

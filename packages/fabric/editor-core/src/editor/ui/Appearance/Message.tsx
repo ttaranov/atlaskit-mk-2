@@ -34,9 +34,7 @@ export interface MessageEditorProps {
 // tslint:disable-next-line:variable-name
 const MessageEditor: any = styled.div`
   display: flex;
-  border: 1px solid
-    ${(props: MessageEditorProps) =>
-      props.isMaxContentSizeReached ? '#FF8F73' : '#C1C7D0'};
+  border: 1px solid ${(props: MessageEditorProps) => props.isMaxContentSizeReached ? '#FF8F73' : '#C1C7D0'};
   border-radius: 3px;
   height: auto;
   min-height: 34px;
@@ -92,15 +90,10 @@ export default class Editor extends React.Component<
 
   private appearance: EditorAppearance = 'message';
 
-  private handleRef = ref => {
-    if (this.props.onUiReady) {
-      this.props.onUiReady(ref);
-    }
-  };
-
   private renderChrome = ({ maxContentSize }) => {
     const {
       disabled,
+      editorDOMElement,
       editorView,
       eventDispatcher,
       providerFactory,
@@ -123,7 +116,8 @@ export default class Editor extends React.Component<
         isMaxContentSizeReached={maxContentSizeReached}
         maxHeight={maxHeight}
       >
-        <ContentArea innerRef={this.handleRef}>
+        <ContentArea>
+          {editorDOMElement}
           {customContentComponents}
           <PluginSlot
             disabled={!!disabled}

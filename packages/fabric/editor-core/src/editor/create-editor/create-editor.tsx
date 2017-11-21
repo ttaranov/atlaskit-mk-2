@@ -1,17 +1,18 @@
+import * as React from 'react';
 import { Node, NodeSpec, Schema, MarkSpec } from 'prosemirror-model';
 import { EditorState, Plugin, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { analyticsService, AnalyticsHandler } from '../../analytics';
 import {
-  EditorInstance,
   EditorPlugin,
   EditorProps,
   EditorConfig,
 } from '../types';
-import { ProviderFactory } from '@atlaskit/editor-common';
+import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
 import ErrorReporter from '../../utils/error-reporter';
 import { EventDispatcher, createDispatch, Dispatch } from '../event-dispatcher';
 import { name, version } from '../../version';
+import createPluginList from './create-plugins-list';
 
 export function sortByRank(a: { rank: number }, b: { rank: number }): number {
   return a.rank - b.rank;
@@ -192,65 +193,85 @@ export function processDefaultDocument(
   }
 }
 
-/**
- * Creates and mounts EditorView to the provided place.
- */
-export default function createEditor(
-  place: HTMLElement | null,
-  editorPlugins: EditorPlugin[] = [],
-  props: EditorProps,
+export interface EditorViewProps {
+  editorProps: EditorProps,
   providerFactory: ProviderFactory,
-): EditorInstance {
-  const editorConfig = processPluginsList(editorPlugins);
-  const {
-    contentComponents,
-    primaryToolbarComponents,
-    secondaryToolbarComponents,
-  } = editorConfig;
-  const { contentTransformerProvider, defaultValue, onChange } = props;
+  render: (props: { editor: JSX.Element, state: EditorState, view: EditorView, config: EditorConfig, eventDispatcher: EventDispatcher }) => JSX.Element
+  onEditorCreated: (instance: { state: EditorState, view: EditorView, config: EditorConfig, eventDispatcher: EventDispatcher }) => void;
+  onEditorDestroyed: (instance: { state: EditorState, view: EditorView, config: EditorConfig, eventDispatcher: EventDispatcher }) => void;
+}
 
-  initAnalytics(props.analyticsHandler);
+export interface EditorViewState {
+  editorState: EditorState
+}
 
-  const errorReporter = createErrorReporter(props.errorReporterHandler);
-  const eventDispatcher = new EventDispatcher();
-  const dispatch = createDispatch(eventDispatcher);
-  const schema = createSchema(editorConfig);
-  const plugins = createPMPlugins(
-    editorConfig,
-    schema,
-    props,
-    dispatch,
-    providerFactory,
-    errorReporter,
-  );
-  const contentTransformer = contentTransformerProvider
-    ? contentTransformerProvider(schema)
-    : undefined;
-  const doc =
-    contentTransformer && typeof defaultValue === 'string'
-      ? contentTransformer.parse(defaultValue)
-      : processDefaultDocument(schema, defaultValue);
+export default class ReactEditorView extends React.Component<EditorViewProps, EditorViewState> {
+  view: EditorView;
+  eventDispatcher: EventDispatcher;
+  contentTransformer?: Transformer<string>;
+  config: EditorConfig;
 
-  const state = EditorState.create({ doc, schema, plugins });
-  const editorView = new EditorView(place!, {
-    state,
-    dispatchTransaction(tr: Transaction) {
-      tr.setMeta('isLocal', true);
-      const newState = editorView.state.apply(tr);
-      editorView.updateState(newState);
-      if (onChange && tr.docChanged) {
-        onChange(editorView);
-      }
-    },
-    editable: () => true,
-  });
+  constructor(props) {
+    super(props);
+    this.config = processPluginsList(createPluginList(this.props));
+    const schema = createSchema(this.config);
 
-  return {
-    editorView,
-    eventDispatcher,
-    contentComponents,
-    primaryToolbarComponents,
-    secondaryToolbarComponents,
-    contentTransformer,
-  };
+    const { contentTransformerProvider, defaultValue, errorReporterHandler } = this.props.editorProps;
+    this.contentTransformer = contentTransformerProvider ? contentTransformerProvider(schema) : undefined;
+    const doc = (this.contentTransformer && typeof defaultValue === 'string')
+    ? this.contentTransformer.parse(defaultValue)
+    : processDefaultDocument(schema, defaultValue);
+
+    this.eventDispatcher = new EventDispatcher();
+    const dispatch = createDispatch(this.eventDispatcher);
+    const errorReporter = createErrorReporter(errorReporterHandler)
+    const plugins = createPMPlugins(this.config, schema, props, dispatch, this.props.providerFactory, errorReporter);
+
+    this.state = {
+      editorState: EditorState.create({ doc, schema, plugins })
+    }
+  }
+
+  componentWillReceiveProps(nextProps: EditorViewProps) {
+    if (this.props.editorProps.appearance !== nextProps.editorProps.appearance) {
+
+      const editorConfig = processPluginsList(createPluginList(nextProps.editorProps));
+      const schema = createSchema(editorConfig);
+
+      const dispatch = createDispatch(new EventDispatcher());
+      const errorReporter = createErrorReporter(nextProps.editorProps.errorReporterHandler)
+      const plugins = createPMPlugins(editorConfig, schema, nextProps.editorProps, dispatch, this.props.providerFactory, errorReporter);
+
+      this.setState((prevState: EditorViewState) => {
+        const editorState = prevState.editorState.reconfigure({ schema, plugins })
+        this.view.updateState(editorState);
+        return { editorState };
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this.eventDispatcher.destroy();
+  }
+
+  createEditorView = node => {
+    if (!this.view) {
+      this.view = new EditorView(node, {
+        state: this.state.editorState,
+        dispatchTransaction: this.dispatchTransaction
+      })
+    }
+  }
+
+  dispatchTransaction = (transaction: Transaction) => {
+    transaction.setMeta('isLocal', true);
+    const editorState = this.view.state.apply(transaction)
+    this.view.updateState(editorState)
+    this.setState({ editorState })
+  }
+
+  render() {
+    const editor = <div ref={this.createEditorView} />;
+    return this.props.render ? this.props.render({ editor, state: this.state.editorState, view: this.view, config: this.config, eventDispatcher: this.eventDispatcher }) : editor;
+  }
 }

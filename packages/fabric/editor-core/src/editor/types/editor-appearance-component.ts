@@ -9,6 +9,7 @@ export interface EditorAppearanceComponentProps {
   onCancel?: (editorView: EditorView) => void;
 
   providerFactory: ProviderFactory;
+  editorDOMElement: JSX.Element;
   editorView?: EditorView;
 
   eventDispatcher?: EventDispatcher;
