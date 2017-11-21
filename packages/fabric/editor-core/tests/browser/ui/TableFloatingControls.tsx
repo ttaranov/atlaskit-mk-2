@@ -126,7 +126,7 @@ describe('TableFloatingControls', () => {
           const selectColumn = sinon.spy();
           const floatingControls = mount(
             <TableFloatingControls
-              selectColumn={selectColumn}
+              selectColumn={() => selectColumn}
               isTableSelected={isTableSelected}
               isRowSelected={isRowSelected}
               isColumnSelected={isColumnSelected}
@@ -137,8 +137,6 @@ describe('TableFloatingControls', () => {
           plugin.props.onFocus!(editorView, event);
           floatingControls.find(ColumnControlsButton).at(column).find('button').first().simulate('click');
           expect(selectColumn.calledOnce).to.equal(true);
-          const { args } = selectColumn.getCalls()[0];
-          expect(args[0]).to.equal(column);
           floatingControls.unmount();
         });
       });
@@ -177,7 +175,7 @@ describe('TableFloatingControls', () => {
           const selectRow = sinon.spy();
           const floatingControls = mount(
             <TableFloatingControls
-              selectRow={selectRow}
+              selectRow={() => selectRow}
               isTableSelected={isTableSelected}
               isRowSelected={isRowSelected}
               isColumnSelected={isColumnSelected}
@@ -188,8 +186,6 @@ describe('TableFloatingControls', () => {
           plugin.props.onFocus!(editorView, event);
           floatingControls.find(RowControlsButton).at(row).find('button').first().simulate('click');
           expect(selectRow.calledOnce).to.equal(true);
-          const { args } = selectRow.getCalls()[0];
-          expect(args[0]).to.equal(row);
           floatingControls.unmount();
         });
       });

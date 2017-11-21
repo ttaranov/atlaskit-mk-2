@@ -49,12 +49,12 @@ describe('table hover selection plugin', () => {
                 p('text'),
                 table(
                   tr(tdCursor, tdEmpty, tdEmpty),
-                  tr(tdEmpty, tdEmpty, tdEmpty)
-                )
-              )
+                  tr(tdEmpty, tdEmpty, tdEmpty),
+                ),
+              ),
             );
             plugin.props.handleDOMEvents!.focus(editorView, event);
-            hoverColumn(column, editorView.state, editorView.dispatch);
+            hoverColumn(column)(editorView.state, editorView.dispatch);
             const offset = tableStartPos(editorView.state);
             const { from, to } = getColumnPos(column, pluginState.tableNode!);
             const set = hoverPluginKey.getState(editorView.state);
@@ -78,12 +78,12 @@ describe('table hover selection plugin', () => {
                 table(
                   tr(tdCursor, tdEmpty),
                   tr(tdEmpty, tdEmpty),
-                  tr(tdEmpty, tdEmpty)
-                )
-              )
+                  tr(tdEmpty, tdEmpty),
+                ),
+              ),
             );
             plugin.props.handleDOMEvents!.focus(editorView, event);
-            hoverRow(row, editorView.state, editorView.dispatch);
+            hoverRow(row)(editorView.state, editorView.dispatch);
             const offset = tableStartPos(editorView.state);
             const { from, to } = getRowPos(row, pluginState.tableNode!);
             const set = hoverPluginKey.getState(editorView.state);
@@ -105,9 +105,9 @@ describe('table hover selection plugin', () => {
             table(
               tr(tdCursor, tdEmpty),
               tr(tdEmpty, tdEmpty),
-              tr(tdEmpty, tdEmpty)
-            )
-          )
+              tr(tdEmpty, tdEmpty),
+            ),
+          ),
         );
         plugin.props.handleDOMEvents!.focus(editorView, event);
         hoverTable(editorView.state, editorView.dispatch);
@@ -121,7 +121,7 @@ describe('table hover selection plugin', () => {
         // reset hover selection plugin to an empty DecorationSet
         resetHoverSelection(editorView.state, editorView.dispatch);
         expect(hoverPluginKey.getState(editorView.state)).to.equal(
-          DecorationSet.empty
+          DecorationSet.empty,
         );
       });
     });

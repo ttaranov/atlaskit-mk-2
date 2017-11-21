@@ -1,17 +1,18 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { EditorState, Transaction } from 'prosemirror-state';
+import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { toolbarSize } from '../styles';
 import { CornerContainer, CornerButton } from './styles';
 import InsertColumnButton from '../ColumnControls/InsertColumnButton';
 import InsertRowButton from '../RowControls/InsertRowButton';
+import { Command } from '../../../editor';
 
 export interface Props {
   editorView: EditorView;
   tableElement: HTMLElement;
   isSelected: (state: EditorState) => boolean;
-  selectTable: (state: EditorState, dispatch: (tr: Transaction) => void) => void;
+  selectTable: Command;
   insertColumn: (column: number) => void;
   insertRow: (row: number) => void;
   onMouseOver: () => void;

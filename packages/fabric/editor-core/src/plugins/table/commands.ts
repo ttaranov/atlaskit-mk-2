@@ -21,10 +21,7 @@ import {
   isIsolating,
   getCellStartPos,
 } from '../../editor/plugins/table/utils';
-
-export interface Command {
-  (state: EditorState, dispatch?: (tr: Transaction) => void): boolean;
-}
+import { Command } from '../../editor';
 
 const TAB_FORWARD_DIRECTION = 1;
 const TAB_BACKWARD_DIRECTION = -1;
@@ -66,7 +63,7 @@ const goToNextCell = (direction: number): Command => {
     const event =
       direction === TAB_FORWARD_DIRECTION ? 'next_cell' : 'previous_cell';
     analyticsService.trackEvent(
-      `atlassian.editor.format.table.${event}.keyboard`
+      `atlassian.editor.format.table.${event}.keyboard`,
     );
 
     if (firstCellPos === start && direction === TAB_BACKWARD_DIRECTION) {
@@ -86,7 +83,9 @@ const goToNextCell = (direction: number): Command => {
     if (result) {
       const latestState = pluginState.view.state;
       dispatch(
-        latestState.tr.setSelection(Selection.near(latestState.selection.$from))
+        latestState.tr.setSelection(
+          Selection.near(latestState.selection.$from),
+        ),
       );
     }
     return result;
@@ -131,7 +130,7 @@ const emptyCells = (): Command => {
     const newPos = pos - parentOffset;
     pluginState.moveCursorInsideTableTo(newPos);
     analyticsService.trackEvent(
-      'atlassian.editor.format.table.delete_content.keyboard'
+      'atlassian.editor.format.table.delete_content.keyboard',
     );
 
     return true;

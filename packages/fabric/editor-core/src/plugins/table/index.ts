@@ -94,7 +94,7 @@ export class TableState {
         const nextPos = TableMap.get(this.tableNode).positionAt(
           0,
           column,
-          this.tableNode
+          this.tableNode,
         );
         this.moveCursorTo(nextPos);
       } else {
@@ -105,7 +105,7 @@ export class TableState {
       }
 
       analyticsService.trackEvent(
-        'atlassian.editor.format.table.column.button'
+        'atlassian.editor.format.table.column.button',
       );
     }
   };
@@ -123,7 +123,7 @@ export class TableState {
         const nextPos = TableMap.get(this.tableNode).positionAt(
           row,
           0,
-          this.tableNode
+          this.tableNode,
         );
         this.moveCursorTo(nextPos);
       } else {
@@ -151,11 +151,11 @@ export class TableState {
       deleteTable(state, dispatch);
       this.focusEditor();
       analyticsService.trackEvent(
-        'atlassian.editor.format.table.delete.button'
+        'atlassian.editor.format.table.delete.button',
       );
     } else if (isColumnSelected) {
       analyticsService.trackEvent(
-        'atlassian.editor.format.table.delete_column.button'
+        'atlassian.editor.format.table.delete_column.button',
       );
 
       // move the cursor in the column to the left of the deleted column(s)
@@ -165,7 +165,7 @@ export class TableState {
       const nextPos = map.positionAt(
         0,
         column > 0 ? column - 1 : 0,
-        this.tableNode!
+        this.tableNode!,
       );
       deleteColumn(state, dispatch);
       this.moveCursorTo(nextPos);
@@ -175,7 +175,7 @@ export class TableState {
       const event =
         cell && cell.type === tableHeader ? 'delete_header_row' : 'delete_row';
       analyticsService.trackEvent(
-        `atlassian.editor.format.table.${event}.button`
+        `atlassian.editor.format.table.${event}.button`,
       );
       const headerRowSelected = isHeaderRowSelected(this.view.state);
       // move the cursor to the beginning of the next row, or prev row if deleted row was the last row
@@ -191,7 +191,7 @@ export class TableState {
       const nextPos = map.positionAt(
         isRemovingLastRow ? minRow - 1 : minRow,
         0,
-        this.tableNode!
+        this.tableNode!,
       );
       this.moveCursorTo(nextPos);
     } else {
@@ -199,14 +199,14 @@ export class TableState {
       emptySelectedCells(state, dispatch);
       this.moveCursorInsideTableTo(state.selection.from);
       analyticsService.trackEvent(
-        'atlassian.editor.format.table.delete_content.button'
+        'atlassian.editor.format.table.delete_content.button',
       );
     }
   };
 
   convertFirstRowToHeader = () => {
     const { state, dispatch } = this.view;
-    selectRow(0, state, dispatch);
+    selectRow(0)(state, dispatch);
     toggleHeaderRow(state, dispatch);
   };
 
@@ -387,7 +387,7 @@ export const plugin = (pluginConfig?: PluginConfig) =>
       return {
         update: (
           view: EditorView & { docView?: any },
-          prevState: EditorState
+          prevState: EditorState,
         ) => {
           pluginState.update(view.docView);
         },
@@ -423,7 +423,7 @@ export const plugin = (pluginConfig?: PluginConfig) =>
 
 const plugins = (pluginConfig?: PluginConfig) => {
   return [plugin(pluginConfig), tableEditing()].filter(
-    plugin => !!plugin
+    plugin => !!plugin,
   ) as Plugin[];
 };
 

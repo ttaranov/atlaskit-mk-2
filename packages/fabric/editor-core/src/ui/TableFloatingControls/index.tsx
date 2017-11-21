@@ -6,18 +6,19 @@ import CornerControls from './CornerControls';
 import ColumnControls from './ColumnControls';
 import RowControls from './RowControls';
 import { Container } from './styles';
-import { EditorState, Transaction } from 'prosemirror-state';
+import { EditorState } from 'prosemirror-state';
+import { Command } from '../../editor';
 
 export interface Props {
   pluginState: TableState;
   editorView: EditorView;
-  selectRow?: (row: number, state: EditorState, dispatch: (tr: Transaction) => void) => void;
-  hoverRow?: (row: number, state: EditorState, dispatch: (tr: Transaction) => void) => void;
-  resetHoverSelection?: (state: EditorState, dispatch: (tr: Transaction) => void) => void;
-  selectColumn?: (column: number, state: EditorState, dispatch: (tr: Transaction) => void) => void;
-  hoverColumn?: (column: number, state: EditorState, dispatch: (tr: Transaction) => void) => void;
-  selectTable?: (state: EditorState, dispatch: (tr: Transaction) => void) => void;
-  hoverTable?: (state: EditorState, dispatch: (tr: Transaction) => void) => void;
+  selectRow?: (row: number) => Command;
+  hoverRow?: (row: number) => Command;
+  resetHoverSelection?: Command;
+  selectColumn?: (column: number) => Command;
+  hoverColumn?: (column: number) => Command;
+  selectTable?: Command;
+  hoverTable?: Command;
   isTableSelected?: (state: EditorState) => boolean;
   isColumnSelected?: (column: number, state: EditorState) => boolean;
   isRowSelected?: (row: number, state: EditorState) => boolean;
