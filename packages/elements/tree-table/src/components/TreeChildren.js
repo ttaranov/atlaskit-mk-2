@@ -1,3 +1,5 @@
+// @flow
+
 import React, { PureComponent, type Element } from 'react';
 import Subtree from './Subtree';
 
@@ -5,21 +7,33 @@ import { type DataFunction } from './../types';
 
 type Props = {
   columns: Array<Element>,
+  columnWidths?: Array<string>,
   childrenData: Object,
   getChildrenData: DataFunction,
+  depth?: number,
 };
 
 export default class TreeChildren extends PureComponent<Props> {
   render() {
-    const { childrenData = [], columns, getChildrenData } = this.props;
+    const {
+      childrenData = [],
+      columns,
+      columnWidths,
+      getChildrenData,
+      depth = 0,
+    } = this.props;
     return (
       <div>
         {childrenData.map((childData, index) => (
           <Subtree
             data={childData}
+            hasChildren={childData.hasChildren}
+            isExpanded={false}
             columns={columns}
+            columnWidths={columnWidths}
             getChildrenData={getChildrenData}
-            key={index}
+            depth={depth + 1}
+            key={childData.id || index}
           />
         ))}
       </div>
