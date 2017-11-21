@@ -43,12 +43,17 @@ describe(name, () => {
       input.get(0).value = testValue;
       input.simulate('change');
 
-      expect(wrapper.find(TimePickerStateless).props().displayValue).toBe(testValue);
+      expect(wrapper.find(TimePickerStateless).props().displayValue).toBe(
+        testValue,
+      );
     });
 
     it('opens the dialog when triggered by the field', () => {
       const wrapper = shallow(<TimePicker />);
-      wrapper.find(TimePickerStateless).props().onFieldKeyDown({ key: 'ArrowDown' });
+      wrapper
+        .find(TimePickerStateless)
+        .props()
+        .onFieldKeyDown({ key: 'ArrowDown' });
       expect(wrapper.find(TimePickerStateless).props().isOpen).toBe(true);
     });
 
@@ -56,24 +61,12 @@ describe(name, () => {
       const wrapper = shallow(<TimePicker />);
 
       wrapper.setState({ isOpen: true });
-      wrapper.find(TimePickerStateless).props().onFieldKeyDown({ key: 'Escape' });
+      wrapper
+        .find(TimePickerStateless)
+        .props()
+        .onFieldKeyDown({ key: 'Escape' });
 
       expect(wrapper.find(TimePickerStateless).props().isOpen).toBe(false);
-    });
-
-    it('closes the dialog when the icon is clicked and the dialog is open', () => {
-      const wrapper = shallow(<TimePicker />);
-
-      wrapper.setState({ isOpen: true });
-      wrapper.find(TimePickerStateless).props().onIconClick();
-
-      expect(wrapper.find(TimePickerStateless).props().isOpen).toBe(false);
-    });
-
-    it('opens the dialog when the icon is clicked and the dialog is closed', () => {
-      const wrapper = shallow(<TimePicker />);
-      wrapper.find(TimePickerStateless).props().onIconClick();
-      expect(wrapper.find(TimePickerStateless).props().isOpen).toBe(true);
     });
 
     // TODO: AK-3790 - Enable test when issue with window.cancelAnimationFrame is resolved.
@@ -93,12 +86,17 @@ describe(name, () => {
       const wrapper = shallow(<TimePicker onChange={onChangeMock} />);
 
       wrapper.setState({ isOpen: true });
-      wrapper.find(TimePickerStateless).props().onPickerUpdate(testValue);
+      wrapper
+        .find(TimePickerStateless)
+        .props()
+        .onPickerUpdate(testValue);
 
       expect(onChangeMock.mock.calls).toHaveLength(1);
       expect(onChangeMock.mock.calls[0][0]).toBe(testValue);
 
-      const datePickerStatelessProps = wrapper.find(TimePickerStateless).props();
+      const datePickerStatelessProps = wrapper
+        .find(TimePickerStateless)
+        .props();
       expect(datePickerStatelessProps.isOpen).toBe(false);
       expect(datePickerStatelessProps.value).toBe(testValue);
       expect(datePickerStatelessProps.displayValue).toBe(testValue);
