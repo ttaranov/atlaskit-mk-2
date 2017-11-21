@@ -25,7 +25,6 @@
     ],
     "types": [
       "jest",
-      "mocha",
       "react",
       "enzyme",
       "css-color-names"
