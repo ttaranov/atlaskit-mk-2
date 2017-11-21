@@ -5,7 +5,6 @@ import { EditorView } from 'prosemirror-view';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { TextColorState } from '../../plugins/text-color';
 import ToolbarButton from '../ToolbarButton';
-import Icon from '@atlaskit/icon';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import TextColourIcon from '@atlaskit/icon/glyph/editor/text-color';
 import ColorPalette from './ColorPalette';
@@ -69,10 +68,9 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
               onClick={this.toggleOpen}
               iconBefore={
                 <TriggerWrapper>
-                  <Icon
+                  <TextColourIcon
                     primaryColor={this.getIconColor()}
                     label="Text color"
-                    glyph={TextColourIcon}
                   />
                   <ExpandIconWrapper>
                     <ExpandIcon label="expand-dropdown-menu" />
