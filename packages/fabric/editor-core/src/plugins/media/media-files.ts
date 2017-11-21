@@ -28,7 +28,33 @@ export interface Range {
   end: number;
 }
 
-export const insertFiles = (
+export const insertSingleImages = (
+  view: EditorView,
+  mediaStates: MediaState[],
+  collection?: string,
+): void => {
+  const { state, dispatch } = view;
+  const { to } = state.selection;
+  const { tr, schema } = state;
+  const { singleImage, media } = schema.nodes;
+
+  if (!collection || !media || !singleImage) {
+    return;
+  }
+
+  const nodes = createSingleImageNodes(
+    mediaStates,
+    collection,
+    singleImage,
+    media,
+  );
+
+  tr.insert(to, nodes);
+
+  dispatch(tr);
+};
+
+export const insertFilmstrip = (
   view: EditorView,
   mediaStates: MediaState[],
   collection?: string,
@@ -82,6 +108,30 @@ export const insertFiles = (
   dispatch(tr);
 
   setSelectionAfterMediaInsertion(view, mediaInsertPos);
+};
+
+const createSingleImageNodes = (
+  mediaStates: MediaState[],
+  collection: string,
+  singleImage: NodeType,
+  media: NodeType,
+): PMNode[] => {
+  const nodes = mediaStates.map(mediaState => {
+    const { id } = mediaState;
+
+    const mediaNode = media.create({
+      id,
+      type: 'file',
+      collection,
+      __fileMimeType: mediaState.fileMimeType,
+    });
+
+    const singleImageNode = singleImage.create({}, mediaNode);
+
+    return singleImageNode;
+  });
+
+  return nodes;
 };
 
 const createMediaFileNodes = (

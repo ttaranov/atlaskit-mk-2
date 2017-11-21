@@ -48,7 +48,7 @@ export default function makeSchema(config: JIRASchemaConfig) {
   }
 
   if (config.allowMedia) {
-    nodes.push('mediaGroup', 'media');
+    nodes.push('mediaGroup', 'media', 'singleImage');
   }
 
   if (config.allowTextColor) {
@@ -74,7 +74,9 @@ export function isSchemaWithLinks(schema: Schema): boolean {
   return !!schema.marks.link;
 }
 
-export function isSchemaWithAdvancedTextFormattingMarks(schema: Schema): boolean {
+export function isSchemaWithAdvancedTextFormattingMarks(
+  schema: Schema,
+): boolean {
   return !!schema.marks.code && !!schema.marks.strike;
 }
 
