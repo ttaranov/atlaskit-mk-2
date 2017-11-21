@@ -13,33 +13,46 @@ export type MacroState = {
   macroElement: HTMLElement | null;
 };
 
-export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactory) => new Plugin({
-  state: {
-    init: () => ({ macroProvider: null, macroElement: null }),
+export const createPlugin = (
+  dispatch: Dispatch,
+  providerFactory: ProviderFactory,
+) =>
+  new Plugin({
+    state: {
+      init: () => ({ macroProvider: null, macroElement: null }),
 
-    apply(tr, state: MacroState) {
+      apply(tr, state: MacroState) {
+        const meta = tr.getMeta(pluginKey);
+        if (meta) {
+          const newState = { ...state, ...meta };
+          dispatch(pluginKey, newState);
 
-      const meta = tr.getMeta(pluginKey);
-      if (meta) {
-        const newState = {...state, ...meta};
-        dispatch(pluginKey, newState);
+          return newState;
+        }
 
-        return newState;
+        return state;
+      },
+    },
+    key: pluginKey,
+    view: (view: EditorView) => {
+      // make sure editable DOM node is mounted
+      if (view.dom.parentNode) {
+        const { state, dispatch } = view;
+        providerFactory.subscribe(
+          'macroProvider',
+          (name, provider: Promise<MacroProvider>) =>
+            setMacroProvider(provider)(state, dispatch),
+        );
       }
-
-      return state;
-    }
-  },
-  key: pluginKey,
-  view: (view: EditorView) => {
-    providerFactory.subscribe('macroProvider', (name, provider: Promise<MacroProvider>) => setMacroProvider(view, name, provider));
-    return {};
-  },
-  props: {
-    nodeViews: {
-      inlineMacro: nodeViewFactory(providerFactory, { inlineMacro: MacroNode })
-    }
-  }
-});
+      return {};
+    },
+    props: {
+      nodeViews: {
+        inlineExtension: nodeViewFactory(providerFactory, {
+          inlineExtension: MacroNode,
+        }),
+      },
+    },
+  });
 
 export default createPlugin;

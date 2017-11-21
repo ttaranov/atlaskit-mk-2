@@ -12,14 +12,12 @@ export interface Props {
 
 export default function MacroNode(props: Props) {
   const { node, providerFactory, view } = props;
-  const { macroId, placeholderUrl } = node.attrs;
 
   return (
     <Macro
-      macroId={macroId}
-      placeholderUrl={placeholderUrl}
+      editorView={view}
+      node={node}
       providerFactory={providerFactory}
-      view={view}
     />
   );
 }

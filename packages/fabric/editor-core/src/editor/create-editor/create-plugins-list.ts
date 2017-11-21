@@ -114,7 +114,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(panelPlugin);
   }
 
-  if (props.allowInlineMacro) {
+  if (props.allowInlineExtension) {
     plugins.push(macroPlugin);
   }
 

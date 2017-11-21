@@ -42,7 +42,6 @@ export default createSchema({
     'decisionItem',
     'taskList',
     'taskItem',
-    'inlineMacro',
     'extension',
     'inlineExtension',
   ],
@@ -57,7 +56,7 @@ export default createSchema({
     'subsup',
     'emojiQuery',
     'textColor',
-    'action'
+    'action',
   ],
   customNodeSpecs: {
     plain: { ...paragraph, content: 'text*' },
