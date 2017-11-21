@@ -40,7 +40,7 @@ export interface Props {
   macroProvider?: MacroProvider | null;
   onShowMediaPicker?: () => void;
   onInsertBlockType?: (name: string, view: EditorView) => void;
-  onInsertMacroFromMacroBrowser?: (state: EditorState, dispatch: (tr: Transaction) => void, macroProvider: MacroProvider) => void;
+  onInsertMacroFromMacroBrowser?: (macroProvider: MacroProvider) => (state: EditorState, dispatch: (tr: Transaction) => void) => void;
 }
 
 export interface State {
@@ -270,7 +270,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
         onInsertBlockType!(item.value.name, editorView);
         break;
       case 'macro':
-        onInsertMacroFromMacroBrowser!(editorView.state, editorView.dispatch, macroProvider!);
+        onInsertMacroFromMacroBrowser!(macroProvider!)(editorView.state, editorView.dispatch);
     }
   }
 }

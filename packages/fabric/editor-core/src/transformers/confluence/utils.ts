@@ -179,7 +179,7 @@ function isNodeSupportedContent(node: Node): boolean {
 }
 
 export function getAcName(node: Element): string | undefined {
-  return (node.getAttribute('ac:name') || '').toUpperCase();
+  return node.getAttribute('ac:name') || '';
 }
 
 export function getNodeName(node: Node): string {

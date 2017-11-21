@@ -377,7 +377,7 @@ function convertConfluenceMacro(
     node,
   );
 
-  switch (macroName) {
+  switch (macroName.toUpperCase()) {
     case 'CODE':
       const { language, title } = params;
       const codeContent = properties['ac:plain-text-body'] || ' ';
@@ -412,10 +412,7 @@ function convertConfluenceMacro(
         panelBody.push(schema.nodes.paragraph.create({}));
       }
 
-      return schema.nodes.panel.create(
-        { panelType: macroName.toLowerCase() },
-        panelBody,
-      );
+      return schema.nodes.panel.create({ panelType: macroName }, panelBody);
 
     case 'JIRA':
       const schemaVersion = node.getAttributeNS(AC_XMLNS, 'schema-version');
@@ -442,7 +439,7 @@ function convertConfluenceMacro(
     case 'BODYLESS-INLINE':
       return schema.nodes.inlineExtension.create({
         extensionType: 'com.atlassian.confluence.macro.core',
-        extensionKey: macroName.toLowerCase(),
+        extensionKey: macroName,
         parameters: {
           macroParams: getExtensionMacroParams(params),
           macroMetadata: {

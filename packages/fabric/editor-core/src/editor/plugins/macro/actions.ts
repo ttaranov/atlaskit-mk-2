@@ -1,20 +1,18 @@
 import { EditorState, Transaction } from 'prosemirror-state';
 import { Node as PmNode } from 'prosemirror-model';
-import { MacroProvider, MacroADF } from './types';
+import { MacroProvider, MacroAdf } from './types';
 import { pluginKey } from './plugin';
 import * as assert from 'assert';
 
-export const insertMacroFromMacroBrowser = async (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+export const insertMacroFromMacroBrowser = (
   macroProvider: MacroProvider,
   macroNode?: PmNode,
-) => {
+) => async (state: EditorState, dispatch: (tr: Transaction) => void) => {
   if (!macroProvider) {
     return;
   }
 
-  const newMacro: MacroADF = await macroProvider.openMacroBrowser(macroNode);
+  const newMacro: MacroAdf = await macroProvider.openMacroBrowser(macroNode);
   if (newMacro) {
     const { tr, schema } = state;
     const { type, attrs } = newMacro;
@@ -30,10 +28,9 @@ export const insertMacroFromMacroBrowser = async (
   }
 };
 
-export const setMacroProvider = async (
+export const setMacroProvider = (provider: Promise<MacroProvider>) => async (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
-  provider: Promise<MacroProvider>,
 ) => {
   let resolvedProvider: MacroProvider | null;
   try {
@@ -50,10 +47,9 @@ export const setMacroProvider = async (
   dispatch(state.tr.setMeta(pluginKey, { macroProvider: resolvedProvider }));
 };
 
-export const setMacroElement = (
+export const setMacroElement = (macroElement: HTMLElement | null) => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
-  macroElement: HTMLElement | null,
 ) => {
   dispatch(state.tr.setMeta(pluginKey, { macroElement }));
 };

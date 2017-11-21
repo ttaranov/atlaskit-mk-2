@@ -10,7 +10,7 @@ export const inlineMacroData = [
         macroParams: {
           color: { value: 'Green' },
           title: { value: 'OK' },
-          subtle: { value: 'true' },
+          subtle: { value: true },
         },
         macroMetadata: {
           macroId: { value: new Date().valueOf() },
@@ -36,7 +36,7 @@ export const inlineMacroData = [
         macroParams: {
           color: { value: 'Red' },
           title: { value: 'Fail' },
-          subtle: { value: 'true' },
+          subtle: { value: true },
         },
         macroMetadata: {
           macroId: { value: new Date().valueOf() },
