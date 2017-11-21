@@ -6,6 +6,31 @@ const cli = require('../../../utils/cli');
 jest.mock('../../../utils/cli');
 jest.mock('../../../utils/logger');
 
+function assertPackagesPrompt(options) {
+  const askPackagesCalls = cli.askCheckbox.mock.calls;
+  expect(askPackagesCalls.length).toEqual(1);
+  expect(askPackagesCalls[0][0]).toEqual(
+    'Which packages would you like to include?',
+  );
+  expect(askPackagesCalls[0][1]).toEqual(options);
+}
+
+function assertBumpTypePrompts(expectedCalls) {
+  const bumpTypeCalls = cli.askList.mock.calls;
+  expect(bumpTypeCalls.length).toEqual(expectedCalls.length);
+  for (let i = 0; i < expectedCalls.length; i += 1) {
+    expect(bumpTypeCalls[i][0]).toEqual(
+      `What kind of change is this for ${chalk.green(expectedCalls[i])}?`,
+    );
+  }
+}
+
+function assertSummaryPrompt() {
+  const summaryCalls = cli.askQuestion.mock.calls;
+  expect(summaryCalls.length).toEqual(1);
+  expect(summaryCalls[0][0]).toEqual('Summary');
+}
+
 function mockUserInput(releases, dependents, summary) {
   const pkgsToRelease = releases.map(pkg => pkg.name);
   // select which packages user wants to release
@@ -102,7 +127,7 @@ describe('createChangeset', () => {
         ['patch', 'minor', 'major'],
       ]);
     });
-    it.only('should only ask b once if it does not need an update', async () => {
+    it('should only ask b once if it does not need an update', async () => {
       const releases = [{ name: 'pkg-a', type: 'minor' }];
 
       // If everything is valid, no questions are asked again

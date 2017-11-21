@@ -71,7 +71,7 @@ async function createChangeset(
   opts /*: { cwd?: string }  */ = {},
 ) {
   const cwd = opts.cwd || process.cwd();
-  const allPackages = await bolt.getWorkspaces();
+  const allPackages = await bolt.getWorkspaces({ cwd });
   const changeset /*: changesetType */ = {
     summary: '',
     releases: [],
@@ -80,9 +80,8 @@ async function createChangeset(
 
   let unchangedPackages = [];
 
-  for (let package of allPackages) {
-    if (!changedPackages.includes(package.name))
-      unchangedPackages.push(package.name);
+  for (let pkg of allPackages) {
+    if (!changedPackages.includes(pkg.name)) unchangedPackages.push(pkg.name);
   }
 
   const inquirerList = [
@@ -97,7 +96,6 @@ async function createChangeset(
     'Which packages would you like to include?',
     inquirerList,
   );
-
   /** Get released packages and bumptypes */
 
   for (const pkg of packagesToRelease) {
