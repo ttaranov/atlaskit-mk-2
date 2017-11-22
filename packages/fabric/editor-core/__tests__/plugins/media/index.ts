@@ -1,6 +1,4 @@
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
-import * as assert from 'assert';
-import { createSchema } from '@atlaskit/editor-common';
 
 import {
   mediaPluginFactory,
@@ -216,47 +214,6 @@ describe('Media plugin', () => {
             ),
           );
         });
-      });
-    });
-
-    describe('when schema does not have singleImage node', () => {
-      it('inserts filmstrip', async () => {
-        const schema = createSchema({
-          nodes: ['doc', 'paragraph', 'text', 'mediaGroup', 'media'],
-        });
-
-        const noSingleImageEditor = (
-          doc: any,
-          uploadErrorHandler?: () => void,
-        ) =>
-          makeEditor<MediaPluginState>({
-            doc,
-            plugins: [
-              ...mediaPluginFactory(schema, {
-                providerFactory,
-                uploadErrorHandler,
-              }),
-            ],
-            schema: schema,
-          });
-        const { editorView, pluginState } = noSingleImageEditor(doc(p('')));
-        await mediaProvider;
-
-        pluginState.insertFiles([{ id: 'foo', fileMimeType: 'image/jpeg' }]);
-
-        expect(editorView.state.doc).toEqualDocument(
-          doc(
-            mediaGroup(
-              media({
-                id: 'foo',
-                type: 'file',
-                collection: testCollectionName,
-                __fileMimeType: 'image/jpeg',
-              }),
-            ),
-            p(),
-          ),
-        );
       });
     });
   });
