@@ -13,17 +13,36 @@ const H3 = styled.h3`
   font-size: 18px;
   font-weight: normal;
 `;
+function getVersion(str) {
+  return str.match(/^(\d+\.\d+\.\d+)/);
+}
 const Heading = ({
   children,
   level,
   packageName,
 }: {
-  children: Array<mixed>,
+  children: Node,
   level: number,
   packageName: string,
-}): Node => {
-  const [match, version, date] =
-    children.join('').match(/(\d+\.\d+\.\d+)\s*\(?([^)]*)\)?/) || [];
+}) => {
+  let invalidReturnTypeForComponent = false;
+  const childrenArray = Children.toArray(children);
+  const title = childrenArray[0];
+  const version = getVersion(title);
+
+  if (childrenArray.length !== 1) invalidReturnTypeForComponent = true;
+  if (typeof title !== 'string') invalidReturnTypeForComponent = true;
+  if (!version) invalidReturnTypeForComponent = true;
+
+  // wrap children if they can't be rendered e.g. array
+  if (invalidReturnTypeForComponent) return <div>{children}</div>;
+
+  const versionNumber = version[1];
+  const versionDate = version[2];
+
+  const href = `https://bitbucket.org/atlassian/atlaskit/commits/tag/%40atlaskit%2F${
+    packageName
+  }%40${versionNumber}`;
   const anchorProps = {
     href: `https://bitbucket.org/atlassian/atlaskit/commits/tag/%40atlaskit%2F${
       packageName
@@ -34,8 +53,8 @@ const Heading = ({
   };
   return (
     <H3>
-      <a {...anchorProps}>{version}</a>
-      {date ? <small> &mdash; {date}</small> : ''}
+      <a {...anchorProps}>{versionNumber}</a>
+      {versionDate ? <small> &mdash; {versionDate}</small> : null}
     </H3>
   );
 };

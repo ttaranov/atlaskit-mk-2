@@ -19,6 +19,10 @@ import Package from '../pages/Package';
 import PackagesList from '../pages/PackagesList';
 import PackageDocument from '../pages/PackageDocument';
 import Document from '../pages/Document';
+
+import ChangelogModal from '../pages/Package/ChangelogModal';
+import ExamplesModal from '../pages/Package/ExamplesModal';
+
 import Nav from './Nav';
 
 // eslint-disable-next-line
@@ -65,16 +69,12 @@ export default function App() {
                     <Route exact path="/" component={Home} />
                     <Route path="/docs/:docId*" component={Document} />
                     <Route path="/patterns" component={PatternsInfo} exact />
-                    <Route path="/patterns/:patternId*" component={Pattern} />}
-                    />
+                    <Route path="/patterns/:patternId*" component={Pattern} />} />
                     <Route
                       path="/mk-2/packages/:groupId/:pkgId/docs/:docId"
                       component={PackageDocument}
                     />
-                    <Route
-                      path="/packages/:groupId/:pkgId"
-                      component={Package}
-                    />
+                    <Route path="/packages/:groupId/:pkgId" component={Package} />
                     <Route
                       path="/mk-2/packages/:groupId/:pkgId"
                       component={Package}
@@ -86,6 +86,14 @@ export default function App() {
                     />
                     <Route component={FourOhFour} />
                   </Switch>
+                  <Route
+                    path="/mk-2/packages/:groupId/:pkgId/changelog/:semver?"
+                    component={ChangelogModal}
+                  />
+                  <Route
+                    path="/mk-2/packages/:groupId/:pkgId/example/:exampleId"
+                    component={ExamplesModal}
+                  />
                 </AppContent>
               </AppContainer>
             </AtlaskitThemeProvider>
