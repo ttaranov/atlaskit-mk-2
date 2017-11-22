@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
+import ChevronUpIcon from '@atlaskit/icon/glyph/chevron-up';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { EditorView } from 'prosemirror-view';
 import Editor, { EditorProps } from './../src/editor';
@@ -38,6 +40,8 @@ const appearanceProps = {
   }
 }
 
+
+
 export interface State {
   appearance: 'comment' | 'message'
 }
@@ -63,25 +67,36 @@ class AdaptiveEditor extends React.Component<EditorProps, {}> {
   }
 
   render() {
-    if (this.state.appearance === 'comment') {
-      return (
-        <Editor
-          {...this.props}
-          appearance={this.state.appearance}
-          {...appearanceProps[this.state.appearance]}
-          onChange={this.onEditorChange}
-          defaultValue={this.value}
+    return(
+      <div style={{ display: 'flex' }}>
+        <Button
+          onClick={() => this.setState(prevState => ({ appearance: prevState.appearance === 'comment' ? 'message': 'comment' }))}
+          iconAfter={this.state.appearance === 'comment'
+            ? <ChevronDownIcon label="collapse"/>
+            : <ChevronUpIcon label="expand" />}
         />
-      );
-    }
-    return (
-      <div>
-        <Editor
-          {...this.props}
-          appearance={this.state.appearance}
-          {...appearanceProps[this.state.appearance]}
-          onChange={this.onEditorChange}
-        />
+        <span style={{ marginRight: '8px' }} />
+        {
+          this.state.appearance === 'comment'
+            ? (
+              <Editor
+                {...this.props}
+                appearance={this.state.appearance}
+                {...appearanceProps[this.state.appearance]}
+                onChange={this.onEditorChange}
+                defaultValue={this.value}
+              />
+            ) : (
+              <div style={{ flexGrow: 1}}>
+                <Editor
+                  {...this.props}
+                  appearance={this.state.appearance}
+                  {...appearanceProps[this.state.appearance]}
+                  onChange={this.onEditorChange}
+                />
+              </div>
+            )
+        }
       </div>
     )
   }
