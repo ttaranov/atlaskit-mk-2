@@ -1,10 +1,9 @@
-// @flow
+/* eslint-disable */
 /*
   This file is executed after the test framework is setup for each test file. Addons that modify
   the `expect` object can be applied here.
   @see https://facebook.github.io/jest/docs/configuration.html#setuptestframeworkscriptfile-string
 */
-// require('jest-styled-components');
 const pmModel = require('./node_modules/prosemirror-model');
 const diff = require('./node_modules/jest-diff');
 
