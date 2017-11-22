@@ -18,7 +18,12 @@ function commitLink(commit, repoUrl) {
     : `[${commit}](${commit})`;
 }
 
-function generateMarkdownTemplate(release, releaseObject, repoUrl) {
+function generateMarkdownTemplate(
+  release,
+  releaseObject,
+  updatedDeps,
+  repoUrl,
+) {
   const { changesets, releases } = releaseObject;
   const result = [`## ${release.version}`];
 
@@ -48,23 +53,11 @@ function generateMarkdownTemplate(release, releaseObject, repoUrl) {
     .join('\n');
   result.push(releaseLines);
 
-  if (Array.isArray(release.dependencies) && release.dependencies.length > 0) {
-    const dependencyLines = releatedChangesets.map(changeset => {
-      const dep = changeset.dependents.find(d => d.name === release.name);
-      const lines = [];
-      lines.push(
-        `- [${dep.type}] Updated dependencies ${commitLink(
-          changeset.commit,
-          repoUrl,
-        )}`,
-      );
-      dep.dependencies.forEach(name => {
-        const version = releases.find(r => r.name === name).version;
-        lines.push(`  - ${name}@${version}`);
-      });
-      return lines.join('\n');
-    });
-    result.push(dependencyLines);
+  if (updatedDeps.length > 0) {
+    const updatedDepsLine = `- Updated Dependencies: ${updatedDeps
+      .map(dep => `${dep.name} (${dep.version})`)
+      .join(', ')}`;
+    result.push(updatedDepsLine);
   }
   return result.filter(line => line).join('\n');
 }

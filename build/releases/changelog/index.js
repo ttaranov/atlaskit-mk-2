@@ -6,6 +6,7 @@ const os = require('os');
 const util = require('util');
 const { sep } = require('path');
 const logger = require('../../utils/logger');
+const { DEPENDENCY_TYPES } = require('../constants');
 
 function writeFile(filePath, fileContents) {
   return util.promisify(cb => fs.writeFile(filePath, fileContents, cb))();
@@ -48,6 +49,18 @@ async function getRepoUrl(cwd, opts) {
  * }
  */
 
+function findUpdatedDependencies(pkgConfig, releases) {
+  let packagesToBump = [];
+  for (let depType of DEPENDENCY_TYPES) {
+    let deps = pkgConfig[depType];
+    if (!deps) continue;
+    for (let release of releases) {
+      if (deps[release.name]) packagesToBump.push(release);
+    }
+  }
+  return packagesToBump;
+}
+
 async function updateChangelog(releaseObject, opts = { cwd: '', repoUrl: '' }) {
   const cwd = opts.cwd || process.cwd();
   const allPackages = await bolt.getWorkspaces({ cwd });
@@ -58,6 +71,10 @@ async function updateChangelog(releaseObject, opts = { cwd: '', repoUrl: '' }) {
   for (let i = 0; i < releaseObject.releases.length; i++) {
     const release = releaseObject.releases[i];
     const pkg = allPackages.find(a => a.name === release.name);
+    const updatedDeps = findUpdatedDependencies(
+      pkg.config,
+      releaseObject.releases,
+    );
     if (!pkg)
       logger.warn(
         `While writing changelog, could not find workspace ${
@@ -69,6 +86,7 @@ async function updateChangelog(releaseObject, opts = { cwd: '', repoUrl: '' }) {
     const templateString = `\n\n${generateMarkdownTemplate(
       release,
       releaseObject,
+      updatedDeps,
       repoUrl,
     ).trim('\n')}\n`;
     try {

@@ -102,7 +102,7 @@ describe('createChangeset', () => {
         ['patch', 'minor', 'major'],
       ]);
     });
-    it.only('should only ask b once if it does not need an update', async () => {
+    it('should only ask b once if it does not need an update', async () => {
       const releases = [{ name: 'pkg-a', type: 'minor' }];
 
       // If everything is valid, no questions are asked again

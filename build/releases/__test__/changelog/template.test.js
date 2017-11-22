@@ -24,7 +24,7 @@ describe('template', () => {
       ],
     };
 
-    const output = generateMarkdownTemplate(input.releases[0], input);
+    const output = generateMarkdownTemplate(input.releases[0], input, []);
     expect(output).toBe(`## 1.0.0
 - [patch] We fix few bugs in badge. [496287c](496287c)`);
   });
@@ -53,7 +53,7 @@ describe('template', () => {
       ],
     };
 
-    const output = generateMarkdownTemplate(input.releases[0], input);
+    const output = generateMarkdownTemplate(input.releases[0], input, []);
     expect(output).toBe(`## 1.0.0
 - [patch] We fix few bugs in badge. [496287c](496287c)
   - See [doc.md](doc.md) for more information`);
@@ -94,7 +94,7 @@ describe('template', () => {
       ],
     };
 
-    const output = generateMarkdownTemplate(input.releases[0], input);
+    const output = generateMarkdownTemplate(input.releases[0], input, []);
     expect(output).toBe(`## 1.0.0
 - [patch] We fix few bugs in badge. [496287c](496287c)
   - See [release.md](release.md) for more information
@@ -102,20 +102,18 @@ describe('template', () => {
   - See [super.md](super.md) for more information`);
   });
 
-  it('should generate template from a release with dependencies', () => {
+  it('should add a line for updated packages', () => {
     const input = {
       releases: [
         {
           name: '@atlaskit/badge',
           version: '1.0.0',
           commits: ['496287c'],
-          dependencies: [],
         },
         {
           name: '@atlaskit/code',
           version: '1.0.1',
           commits: ['496287c'],
-          dependencies: ['@atlaskit/badge'],
         },
       ],
       changesets: [
@@ -140,15 +138,11 @@ describe('template', () => {
       ],
     };
 
-    const output1 = generateMarkdownTemplate(input.releases[0], input);
-    expect(output1).toBe(`## 1.0.0
-- [patch] We fix few bugs in badge. [496287c](496287c)
-  - See [release.md](release.md) for more information`);
-
-    const output2 = generateMarkdownTemplate(input.releases[1], input);
+    const output2 = generateMarkdownTemplate(input.releases[1], input, [
+      { name: '@atlaskit/badge', version: '1.0.0' },
+    ]);
     expect(output2).toBe(`## 1.0.1
-- [minor] Updated dependencies [496287c](496287c)
-  - @atlaskit/badge@1.0.0`);
+- Updated Dependencies: @atlaskit/badge (1.0.0)`);
   });
   it('should generate full urls when given a repo url', () => {
     const input = {
@@ -177,6 +171,7 @@ describe('template', () => {
       generateMarkdownTemplate(
         input.releases[0],
         input,
+        [],
         'https://some-website.com',
       ),
     ).toEqual(`## 1.0.0

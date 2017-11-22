@@ -1,4 +1,7 @@
 {
   "name": "has-empty-changelog",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "dependencies": {
+    "has-filled-changelog": "^1.0.0"
+  }
 }

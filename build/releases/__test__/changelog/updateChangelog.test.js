@@ -163,6 +163,7 @@ describe('updateChangelog', async () => {
 
 ## 1.1.0
 - [minor] This is a summary [b8bb699](https://somewhere-fake-to-visit.com/b8bb699)
+- Updated Dependencies: has-filled-changelog (1.0.1)
 `);
     expect(updatedExistingChangelog).toEqual(`# Has Empty Changelog
 
