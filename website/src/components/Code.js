@@ -5,8 +5,9 @@ import Prism from 'prismjs';
 import ToggleIcon from '@atlaskit/icon/glyph/code';
 import { colors, gridSize, themed } from '@atlaskit/theme';
 
+// NOTE: stop prism.js classes from being obfuscated
+import '!style-loader!css-loader!prismjs/themes/prism-tomorrow.css';
 import 'prismjs/components/prism-jsx';
-import 'prismjs/themes/prism-tomorrow.css';
 
 const Code = styled.pre`
   border-radius: 3px;

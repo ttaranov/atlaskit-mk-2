@@ -44,7 +44,6 @@ const Container = styled.div`
 
 const Content = styled.div`
   flex: 1 1 auto;
-  overflow-y: auto;
 `;
 
 const SANDBOX_DEPLOY_ENDPOINT =
