@@ -98,7 +98,11 @@ All new code should be written using either [Flow](https://flow.org) (and
 
 If you need to create a new package, simply create a directory for the package
 and start putting files in the correct location (most things are based on
-file conventions).
+file conventions). Also add your package to:
+
+```
+website/src/packages.js
+```
 
 ## Managing dependencies
 

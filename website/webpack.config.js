@@ -4,6 +4,7 @@
 // in node_modules folder which contains circular symbolic links
 
 const DirectoryWatcher = require('watchpack/lib/DirectoryWatcher');
+
 const _oldcreateNestedWatcher = DirectoryWatcher.prototype.createNestedWatcher;
 DirectoryWatcher.prototype.createNestedWatcher = function(
   dirPath /*: string */,
@@ -80,7 +81,7 @@ function createEntryPoint(subsetName /*?: string */) {
   if (subsetName === 'elements') return entry;
 
   // Editor vendor packages
-  entry['vendor'] = entry.vendor.concat([
+  entry.vendor = entry.vendor.concat([
     'highlight.js',
     'date-fns',
     '@atlaskit/avatar',
