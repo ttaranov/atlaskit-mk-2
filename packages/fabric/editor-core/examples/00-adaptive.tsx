@@ -85,6 +85,7 @@ class AdaptiveEditor extends React.Component<EditorProps, {}> {
                 {...appearanceProps[this.state.appearance]}
                 onChange={this.onEditorChange}
                 defaultValue={this.value}
+                secondaryToolbarComponents={<a>Send</a>}
               />
             ) : (
               <div style={{ flexGrow: 1}}>
