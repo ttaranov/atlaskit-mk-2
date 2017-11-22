@@ -4,7 +4,6 @@ import hyperlinkPlugins, {
 } from '../../../src/plugins/hyperlink';
 import pastePlugins from '../../../src/plugins/paste';
 import {
-  chaiPlugin,
   createEvent,
   doc,
   insert,
@@ -20,8 +19,6 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../src/utils';
 import { analyticsService } from '../../../src/analytics';
-
-chai.use(chaiPlugin);
 
 describe('hyperlink', () => {
   const editor = (doc: any) =>
@@ -620,7 +617,9 @@ describe('hyperlink', () => {
 
       pluginState.removeLink(editorView);
 
-      expect(editorView.state.doc).toEqualDocument(doc(paragraph('hello text')));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(paragraph('hello text')),
+      );
       editorView.destroy();
     });
 
@@ -792,159 +791,146 @@ describe('hyperlink', () => {
       expect(pluginState.element!.textContent).toEqual('dsorin');
     });
 
-    describe(
-      'should update both href and text on edit if they were same before edit',
-      () => {
-        it('inserts a character inside a link', () => {
-          const { editorView, sel } = editor(
-            doc(
-              paragraph(
-                link({ href: 'http://example.co' })('http://example.c{<>}o'),
-              ),
+    describe('should update both href and text on edit if they were same before edit', () => {
+      it('inserts a character inside a link', () => {
+        const { editorView, sel } = editor(
+          doc(
+            paragraph(
+              link({ href: 'http://example.co' })('http://example.c{<>}o'),
             ),
-          );
-          insertText(editorView, 'x', sel);
+          ),
+        );
+        insertText(editorView, 'x', sel);
 
-          expect(editorView.state.doc).toEqualDocument(
-            doc(
-              paragraph(
-                link({ href: 'http://example.cxo' })('http://example.cxo'),
-              ),
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            paragraph(
+              link({ href: 'http://example.cxo' })('http://example.cxo'),
             ),
-          );
-          editorView.destroy();
-        });
+          ),
+        );
+        editorView.destroy();
+      });
 
-        it('inserts a character at the end of a link', () => {
-          const { editorView, sel } = editor(
-            doc(
-              paragraph(
-                link({ href: 'http://example.com' })('http://example.com{<>}'),
-              ),
+      it('inserts a character at the end of a link', () => {
+        const { editorView, sel } = editor(
+          doc(
+            paragraph(
+              link({ href: 'http://example.com' })('http://example.com{<>}'),
             ),
-          );
-          insertText(editorView, 'x', sel);
+          ),
+        );
+        insertText(editorView, 'x', sel);
 
-          expect(editorView.state.doc).toEqualDocument(
-            doc(
-              paragraph(
-                link({ href: 'http://example.com' })('http://example.com'),
-                'x',
-              ),
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            paragraph(
+              link({ href: 'http://example.com' })('http://example.com'),
+              'x',
             ),
-          );
-          editorView.destroy();
-        });
+          ),
+        );
+        editorView.destroy();
+      });
 
-        it('inserts a character at the beginning of a link', () => {
-          const { editorView, sel } = editor(
-            doc(
-              paragraph(
-                link({ href: 'http://example.com' })('{<>}http://example.com'),
-              ),
+      it('inserts a character at the beginning of a link', () => {
+        const { editorView, sel } = editor(
+          doc(
+            paragraph(
+              link({ href: 'http://example.com' })('{<>}http://example.com'),
             ),
-          );
-          insertText(editorView, 'x', sel);
+          ),
+        );
+        insertText(editorView, 'x', sel);
 
-          expect(editorView.state.doc).toEqualDocument(
-            doc(
-              paragraph(
-                'x',
-                link({ href: 'http://example.com' })('http://example.com'),
-              ),
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            paragraph(
+              'x',
+              link({ href: 'http://example.com' })('http://example.com'),
             ),
-          );
-          editorView.destroy();
-        });
+          ),
+        );
+        editorView.destroy();
+      });
 
-        // Sending Backspace with a empty selection doesn't work
-        it.skip('removes a character from the end of a link', () => {
-          const { editorView } = editor(
-            doc(
-              paragraph(
-                link({ href: 'http://example.com' })('http://example.com{<>}'),
-              ),
+      // Sending Backspace with a empty selection doesn't work
+      it.skip('removes a character from the end of a link', () => {
+        const { editorView } = editor(
+          doc(
+            paragraph(
+              link({ href: 'http://example.com' })('http://example.com{<>}'),
             ),
-          );
-          sendKeyToPm(editorView, 'Backspace');
+          ),
+        );
+        sendKeyToPm(editorView, 'Backspace');
 
-          expect(editorView.state.doc).toEqualDocument(
-            doc(
-              paragraph(
-                link({ href: 'http://example.co' })('http://example.co'),
-              ),
-            ),
-          );
-          editorView.destroy();
-        });
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            paragraph(link({ href: 'http://example.co' })('http://example.co')),
+          ),
+        );
+        editorView.destroy();
+      });
 
-        it('replaces a character inside a link', () => {
-          const { editorView } = editor(
-            doc(
-              paragraph(
-                link({ href: 'http://example.com' })(
-                  'http://exampl{<}e{>}.com',
-                ),
-              ),
+      it('replaces a character inside a link', () => {
+        const { editorView } = editor(
+          doc(
+            paragraph(
+              link({ href: 'http://example.com' })('http://exampl{<}e{>}.com'),
             ),
-          );
-          sendKeyToPm(editorView, 'Backspace');
-          expect(editorView.state.doc).toEqualDocument(
-            doc(
-              paragraph(
-                link({ href: 'http://exampl.com' })('http://exampl.com'),
-              ),
-            ),
-          );
-          editorView.destroy();
-        });
+          ),
+        );
+        sendKeyToPm(editorView, 'Backspace');
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            paragraph(link({ href: 'http://exampl.com' })('http://exampl.com')),
+          ),
+        );
+        editorView.destroy();
+      });
 
-        it('replaces end of the link with extended content', () => {
-          const { editorView } = editor(
-            doc(
-              paragraph(
-                link({ href: 'http://example.com' })(
-                  'http://example.co{<}m{>}',
-                ),
-              ),
+      it('replaces end of the link with extended content', () => {
+        const { editorView } = editor(
+          doc(
+            paragraph(
+              link({ href: 'http://example.com' })('http://example.co{<}m{>}'),
             ),
-          );
-          insert(editorView, [' Atlassian']);
+          ),
+        );
+        insert(editorView, [' Atlassian']);
 
-          expect(editorView.state.doc).toEqualDocument(
-            doc(
-              paragraph(
-                link({ href: 'http://example.co' })('http://example.co'),
-                ' Atlassian',
-              ),
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            paragraph(
+              link({ href: 'http://example.co' })('http://example.co'),
+              ' Atlassian',
             ),
-          );
-          editorView.destroy();
-        });
+          ),
+        );
+        editorView.destroy();
+      });
 
-        it('works with valid URLs without scheme', () => {
-          const { editorView } = editor(
-            doc(
-              paragraph(
-                link({ href: 'http://www.example.com' })(
-                  'www.exampl{<}e{>}.com',
-                ),
-              ),
+      it('works with valid URLs without scheme', () => {
+        const { editorView } = editor(
+          doc(
+            paragraph(
+              link({ href: 'http://www.example.com' })('www.exampl{<}e{>}.com'),
             ),
-          );
-          sendKeyToPm(editorView, 'Backspace');
+          ),
+        );
+        sendKeyToPm(editorView, 'Backspace');
 
-          expect(editorView.state.doc).toEqualDocument(
-            doc(
-              paragraph(
-                link({ href: 'http://www.exampl.com' })('www.exampl.com'),
-              ),
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            paragraph(
+              link({ href: 'http://www.exampl.com' })('www.exampl.com'),
             ),
-          );
-          editorView.destroy();
-        });
-      },
-    );
+          ),
+        );
+        editorView.destroy();
+      });
+    });
   });
 
   describe('editorFocused', () => {
@@ -1054,7 +1040,9 @@ describe('hyperlink', () => {
         sendKeyToPm(editorView, 'Mod-k');
 
         expect(spy).toHaveBeenCalledTimes(2);
-        expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.format.hyperlink.keyboard');
+        expect(trackEvent).toHaveBeenCalledWith(
+          'atlassian.editor.format.hyperlink.keyboard',
+        );
         editorView.destroy();
       });
     });
