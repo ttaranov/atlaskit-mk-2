@@ -41,8 +41,6 @@ export const insertSingleImages = (
     return;
   }
 
-  console.log('----inserting, all the conditions matched');
-
   const nodes = createSingleImageNodes(
     mediaStates,
     collection,
