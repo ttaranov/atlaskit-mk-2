@@ -47,6 +47,30 @@ async function push(args = []) {
   return gitCmd.code === 0;
 }
 
+// We expose this as a combined command because we want to be able to do both commands
+// atomically
+async function rebaseAndPush(maxAttempts = 3) {
+  let attempts = 0;
+  let pushed = false;
+
+  while (!pushed) {
+    attempts++;
+    try {
+      await spawn('git', ['pull', '--rebase']);
+      await spawn('git', ['push', '--follow-tags']);
+      pushed = true;
+    } catch (e) {
+      if (attempts >= maxAttempts) {
+        break;
+      }
+    }
+  }
+
+  if (!pushed) {
+    throw new Error(`Failed to push after ${maxAttempts} attempts`);
+  }
+}
+
 // helper method for getAllReleaseCommits and getAllChangesetCommits as they are almost identical
 async function getAndParseJsonFromCommitsStartingWith(str) {
   // --grep lets us pass a regex, -z splits commits using NUL instead of newlines
@@ -118,7 +142,7 @@ function parseFullCommit(commitStr) {
 async function getLastPublishCommit() {
   const isPublishCommit = msg => msg.startsWith('RELEASING: ');
 
-  const gitCmd = await spawn('git', ['log', '-n', 500, '--oneline']);
+  const gitCmd = await spawn('git', ['log', '-n', '500', '--oneline']);
   const result = gitCmd.stdout
     .trim()
     .split('\n')
@@ -155,6 +179,7 @@ module.exports = {
   add,
   commit,
   push,
+  rebaseAndPush,
   getUnpublishedChangesetCommits,
   getAllReleaseCommits,
   getAllChangesetCommits,
