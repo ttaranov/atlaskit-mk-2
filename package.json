@@ -36,7 +36,7 @@
     "start:fabric": "                        WEBSITE=fabric   yarn run website:start",
     "start:media": "                         WEBSITE=media    yarn run website:start",
     "start:editor": "                        WEBSITE=editor   yarn run website:start",
-    "changeset": "                           projector ./projector changeset",
+    "changeset": "                           node ./runChangeset",
     "release": "                             projector ./projector release",
     "build:editor-common:json-schema": "     cd packages/fabric/editor-common && yarn run build:json-schema && echo 'Done.'"
   },
