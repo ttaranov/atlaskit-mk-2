@@ -49,7 +49,10 @@
       "packages/fabric/*",
       "patterns",
       "website"
-    ]
+    ],
+    "releases": {
+      "baseCommitUrl": "https://bitbucket.org/atlassian/atlaskit-mk-2/commits"
+    }
   },
   "devDependencies": {
     "@atlaskit/eslint-config-base": "^2.0.7",
