@@ -7,15 +7,15 @@ export default (
   <div>
     {md`
       The \`datetime-picker\` component is capable of rendering a date picker, time picker, or combinations of both, and is
-      composed from \`@atlaskit/calendar\` and \`@atlaskit/input\`.
+      composed from several components such as \`@atlaskit/calendar\` and \`@atlaskit/input\`.
 
       ## Examples
 
       ${(
         <Example
-          Component={require('../examples/01-basic').default}
+          Component={require('../examples/00-basic').default}
           title="Basic"
-          source={require('!!raw-loader!../examples/01-basic')}
+          source={require('!!raw-loader!../examples/00-basic')}
         />
       )}
 
