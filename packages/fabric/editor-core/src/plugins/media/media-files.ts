@@ -8,7 +8,7 @@ import {
   setTextSelection,
 } from '../../utils';
 
-import { Node as PMNode, NodeType } from 'prosemirror-model';
+import { Node as PMNode, NodeType, Slice, Fragment } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
@@ -34,13 +34,14 @@ export const insertSingleImages = (
   collection?: string,
 ): void => {
   const { state, dispatch } = view;
-  const { from } = state.selection;
   const { tr, schema } = state;
-  const { singleImage, media } = schema.nodes;
+  const { singleImage, media, paragraph } = schema.nodes;
 
   if (!collection || !media || !singleImage) {
     return;
   }
+
+  console.log('----inserting, all the conditions matched');
 
   const nodes = createSingleImageNodes(
     mediaStates,
@@ -49,16 +50,11 @@ export const insertSingleImages = (
     media,
   );
 
-  // delete the selection or empty paragraph
-  const deleteRange = findDeleteRange(state);
-
-  if (!deleteRange) {
-    tr.insert(from, nodes);
-  } else if (from <= deleteRange.start) {
-    tr.deleteRange(deleteRange.start, deleteRange.end).insert(from, nodes);
-  } else {
-    tr.insert(from, nodes).deleteRange(deleteRange.start, deleteRange.end);
+  if (atTheEndOfDoc(state) && atTheBeginningOfBlock(state)) {
+    nodes.push(paragraph.create());
   }
+
+  tr.replaceSelection(new Slice(Fragment.from(nodes), 0, 0));
 
   dispatch(tr);
 };
