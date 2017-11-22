@@ -6,6 +6,7 @@ import ToggleIcon from '@atlaskit/icon/glyph/code';
 import { colors, gridSize, themed } from '@atlaskit/theme';
 
 // NOTE: stop prism.js classes from being obfuscated
+// $FlowFixMe
 import '!style-loader!css-loader!prismjs/themes/prism-tomorrow.css';
 import 'prismjs/components/prism-jsx';
 
