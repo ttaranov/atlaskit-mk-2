@@ -44,13 +44,17 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGrou
 
   renderSingleFile(child: ReactElement<MediaProps>) {
     return React.cloneElement(child, {
-      resizeMode: 'full-fit'
+      resizeMode: 'full-fit',
+      cardDimensions: {
+        width: '300px',
+        height: '200px'
+      }
     } as MediaProps);
   }
 
   renderSingleLink(child: ReactElement<MediaProps>) {
     return React.cloneElement(child, {
-      appearance: 'square'
+      appearance: 'auto' 
     } as MediaProps);
   }
 

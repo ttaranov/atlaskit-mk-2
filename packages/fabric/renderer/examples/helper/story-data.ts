@@ -678,6 +678,19 @@ System.out.println("There are " + count + " values >= 5");`,
           type: 'media',
           attrs: {
             type: 'link',
+            id: '410f38f7-ce31-4527-a69d-740e958bf1d1',
+            collection: 'MediaServicesSample',
+          },
+        },
+      ],
+    },
+    {
+      type: 'mediaGroup',
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            type: 'link',
             id: '15a9fb95-2d72-4d28-b338-00fd6bea121b',
             collection: 'MediaServicesSample',
           },
