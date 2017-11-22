@@ -318,6 +318,14 @@
     react-transition-group "^1.2.0"
     styled-components "^1.4.6"
 
+"@atlaskit/icon@^10.0.0":
+  version "10.3.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-10.3.1.tgz#bc5cbb78334bf99fca30738445af11a414f381de"
+  dependencies:
+    babel-runtime "^6.11.6"
+    prop-types "^15.5.10"
+    styled-components "^1.4.6"
+
 "@atlaskit/icon@^10.1.0":
   version "10.1.2"
   resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-10.1.2.tgz#a5e63c441fb9ab90324a7bae82b3006cfe555f5f"
@@ -431,6 +439,16 @@
     styled-components "^1.4.6"
     tabbable "^1.1.0"
 
+"@atlaskit/layer-manager@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/layer-manager/-/layer-manager-2.4.1.tgz#e2898b27032c4946910f8b0362d5b39f30925219"
+  dependencies:
+    focusin "^2.0.0"
+    prop-types "^15.5.10"
+    react-transition-group "^2.2.1"
+    styled-components "^1.4.6"
+    tabbable "^1.1.0"
+
 "@atlaskit/layer@^2.0.0", "@atlaskit/layer@^2.0.1", "@atlaskit/layer@^2.1.3", "@atlaskit/layer@^2.1.4", "@atlaskit/layer@^2.5.3", "@atlaskit/layer@^2.5.4":
   version "2.5.4"
   resolved "https://registry.yarnpkg.com/@atlaskit/layer/-/layer-2.5.4.tgz#2a7f37e96e48a5ef8d68db26ba310647f2d678cb"
@@ -484,7 +502,7 @@
     lru-fast "^0.2.2"
     tslib "^1.2.0"
 
-"@atlaskit/mention@^7.0.0", "@atlaskit/mention@^7.6.0":
+"@atlaskit/mention@^7.0.0":
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/mention/-/mention-7.6.0.tgz#8c248883aacf2ef7f33ba9def1332000e39ffd82"
   dependencies:
@@ -493,6 +511,23 @@
     "@atlaskit/icon" "^8.0.0"
     "@atlaskit/lozenge" "^3.4.2"
     "@atlaskit/tooltip" "^5.0.1"
+    "@atlaskit/util-common" "^1.5.2"
+    "@atlaskit/util-shared-styles" "^2.10.3"
+    babel-runtime "^6.11.6"
+    js-search "^1.4.2"
+    styled-components "^1.4.6"
+    tslib "^1.2.0"
+    xregexp "^3.2.0"
+
+"@atlaskit/mention@^8.1.0":
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/mention/-/mention-8.1.1.tgz#a369be64c7ed82aa2a70d41359a5c92c46c89aeb"
+  dependencies:
+    uid "^0.0.2"
+    "@atlaskit/avatar" "^8.0.0"
+    "@atlaskit/icon" "^10.0.0"
+    "@atlaskit/lozenge" "^3.4.2"
+    "@atlaskit/tooltip" "^8.0.0"
     "@atlaskit/util-common" "^1.5.2"
     "@atlaskit/util-shared-styles" "^2.10.3"
     babel-runtime "^6.11.6"
@@ -706,6 +741,15 @@
     babel-runtime "^6.11.6"
     prop-types "^15.5.10"
     styled-components "^1.3.0"
+
+"@atlaskit/tooltip@^8.0.0":
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/tooltip/-/tooltip-8.0.3.tgz#bdb05f1bc8766c885b2cf8c81cac93f66ffe02d5"
+  dependencies:
+    "@atlaskit/layer-manager" "^2.4.1"
+    "@atlaskit/theme" "^2.0.0"
+    react-transition-group "^2.2.1"
+    styled-components "^1.4.6"
 
 "@atlaskit/util-common-test@^2.4.2":
   version "2.4.2"
