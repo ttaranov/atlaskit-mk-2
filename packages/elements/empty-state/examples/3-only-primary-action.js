@@ -2,7 +2,7 @@
 
 import React from 'react';
 import EmptyState from '../src/EmptyState';
-import props from './common/Props';
+import props from './common/props';
 
 const newProps = { ...props, secondaryAction: undefined };
 
