@@ -266,7 +266,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const toolbarOption = mount(
       <ToolbarInsertBlock
         macroProvider={macroProvider}
-        onInsertMacroFromMacroBrowser={insertMacroFromMacroBrowser}
+        onInsertMacroFromMacroBrowser={() => insertMacroFromMacroBrowser}
         editorView={editorView}
       />
     );
