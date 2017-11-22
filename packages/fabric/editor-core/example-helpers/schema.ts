@@ -30,7 +30,7 @@ export default createSchema({
     'decisionItem',
     'taskList',
     'taskItem',
-    'inlineMacro',
+    'inlineExtension',
   ],
   marks: [
     'em',

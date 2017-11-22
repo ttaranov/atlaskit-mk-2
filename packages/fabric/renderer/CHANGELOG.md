@@ -1,5 +1,11 @@
 # @atlaskit/renderer
 
+## 8.10.2
+- [patch] Upgrade mention to ^8.1.0 in editor and renderer [48b5af4](48b5af4)
+- [patch] Upgrade mention to ^8.1.0 in editor and renderer [48b5af4](48b5af4)
+
+## 8.10.1
+
 ## 8.10.0
 - [minor] Adding 'image' node for bitbucket consumption; this is unstable and should not be used [590ce41](590ce41)
 - [minor] Adding 'image' node for bitbucket consumption; this is unstable and should not be used [590ce41](590ce41)

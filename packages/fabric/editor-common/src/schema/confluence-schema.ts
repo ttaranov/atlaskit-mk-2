@@ -15,7 +15,7 @@ export const confluenceSchema: Schema = createSchema({
     'mediaGroup',
     'confluenceUnsupportedBlock',
     'confluenceJiraIssue',
-    'inlineMacro',
+    'inlineExtension',
     'listItem',
     'mention',
     'text',
@@ -26,7 +26,7 @@ export const confluenceSchema: Schema = createSchema({
     'tableCell',
     'tableHeader',
     'tableRow',
-    'emoji'
+    'emoji',
   ],
   marks: [
     'link',
@@ -39,5 +39,5 @@ export const confluenceSchema: Schema = createSchema({
     'code',
     'textColor',
     'confluenceInlineComment',
-  ]
+  ],
 });

@@ -1,5 +1,15 @@
 # @atlaskit/editor-common
 
+## 3.9.3
+- [patch] Upgrade mention to ^8.1.0 in editor and renderer [48b5af4](48b5af4)
+- [patch] Upgrade mention to ^8.1.0 in editor and renderer [48b5af4](48b5af4)
+
+## 3.9.2
+
+## 3.9.1
+- [patch] Restore accessLevel attribute for mention node [a83619f](a83619f)
+- [patch] Restore accessLevel attribute for mention node [a83619f](a83619f)
+
 ## 3.9.0
 
 ## 3.8.3

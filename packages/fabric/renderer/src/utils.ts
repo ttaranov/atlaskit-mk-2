@@ -38,4 +38,4 @@ export const isSafeUrl = (url: string): boolean => {
   return whitelistedURLPatterns.some(p => p.test(url.trim()) === true);
 };
 
-export const bigEmojiHeight = 64;
+export const bigEmojiHeight = 48;
