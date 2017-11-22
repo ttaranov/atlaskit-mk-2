@@ -1,5 +1,5 @@
 // @flow
-import React, { Children, Component } from 'react';
+import React, { Children, Component, type Node } from 'react';
 
 import ReactMarkdown from 'react-markdown';
 import semver from 'semver';
@@ -13,23 +13,29 @@ const H3 = styled.h3`
   font-size: 18px;
   font-weight: normal;
 `;
+function getVersion(str) {
+  return str.match(/^(\d+\.\d+\.\d+)/);
+}
 const Heading = ({
   children,
   level,
   packageName,
 }: {
-  children: Array<mixed>,
+  children: Node,
   level: number,
   packageName: string,
-}): any => {
-  if (level !== 2) return children;
+}) => {
+  let invalidReturnTypeForComponent = false;
   const childrenArray = Children.toArray(children);
-  if (childrenArray.length !== 1) return children;
   const title = childrenArray[0];
-  if (typeof title !== 'string') return children;
+  const version = getVersion(title);
 
-  const version = title.match(/^(\d+\.\d+\.\d+)\s+\(([^)]+)\)/);
-  if (!version) return children;
+  if (childrenArray.length !== 1) invalidReturnTypeForComponent = true;
+  if (typeof title !== 'string') invalidReturnTypeForComponent = true;
+  if (!version) invalidReturnTypeForComponent = true;
+
+  // wrap children if they can't be rendered e.g. array
+  if (invalidReturnTypeForComponent) return <div>{children}</div>;
 
   const versionNumber = version[1];
   const versionDate = version[2];
@@ -47,7 +53,7 @@ const Heading = ({
   return (
     <H3>
       <a {...anchorProps}>{versionNumber}</a>
-      <small> &mdash; {versionDate}</small>
+      {versionDate ? <small> &mdash; {versionDate}</small> : null}
     </H3>
   );
 };

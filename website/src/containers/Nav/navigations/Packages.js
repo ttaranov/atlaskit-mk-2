@@ -3,10 +3,12 @@
 import React, { type ComponentType } from 'react';
 import sentenceCase from 'sentence-case';
 import PackageIcon from '@atlaskit/icon/glyph/chevron-right';
-import PackageSelectedIcon from '@atlaskit/icon/glyph/chevron-down';
+import PackageSelectedIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 import PageIcon from '@atlaskit/icon/glyph/page';
 import ComponentIcon from '@atlaskit/icon/glyph/component';
 import CodeIcon from '@atlaskit/icon/glyph/code';
+import { colors } from '@atlaskit/theme';
+
 import renderNav from '../utils/renderNav';
 import type { Directory, File, NavGroupItem } from '../../../types';
 import * as fs from '../../../utils/fs';
@@ -67,15 +69,8 @@ const getItemDetails = (
       packageDocUrl.bind(null, group.id, pkg.id),
       PageIcon,
     );
-    const examplesSubnav = buildSubNavGroup(
-      exampleItems,
-      'Examples',
-      packageExampleUrl.bind(null, group.id, pkg.id),
-      CodeIcon,
-    );
 
     if (docsSubnav) items.push(docsSubnav);
-    if (examplesSubnav) items.push(examplesSubnav);
   }
 
   return {
@@ -84,7 +79,12 @@ const getItemDetails = (
       : packageUrl(group.id, pkg.id),
     title: fs.titleize(pkg.id),
     icon: <PackageIcon label={`${fs.titleize(pkg.id)} icon`} />,
-    iconSelected: <PackageSelectedIcon label={`${fs.titleize(pkg.id)} icon`} />,
+    iconSelected: (
+      <PackageSelectedIcon
+        label={`${fs.titleize(pkg.id)} icon`}
+        secondaryColor={colors.N20}
+      />
+    ),
     items,
   };
 };

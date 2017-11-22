@@ -99,6 +99,7 @@ const Control = styled.div`
 
 const ErrorMessage = styled.div`
   background-color: ${colors.R400};
+  border-radius: 4px;
   color: white;
   font-size: 120%;
   padding: 1em;

@@ -2,13 +2,14 @@
 import React, { PureComponent, type Node } from 'react';
 import styled from 'styled-components';
 import Prism from 'prismjs';
-import 'prismjs/components/prism-jsx';
 import ToggleIcon from '@atlaskit/icon/glyph/code';
-import 'prismjs/themes/prism-tomorrow.css';
 import { colors, gridSize, themed } from '@atlaskit/theme';
 
+import 'prismjs/components/prism-jsx';
+import 'prismjs/themes/prism-tomorrow.css';
+
 const Code = styled.pre`
-  border-radius: 5px;
+  border-radius: 3px;
   background-color: ${themed({ light: colors.N800, dark: colors.N800 })};
   color: ${themed({ light: colors.N60, dark: colors.N60 })};
   display: block;
@@ -28,8 +29,9 @@ type Props = {
 };
 
 export default function CodeBlock(props: Props) {
-  let syntax = Prism.languages[props.grammar];
-  let highlighted = Prism.highlight(props.content, syntax);
+  const syntax = Prism.languages[props.grammar];
+  const highlighted = Prism.highlight(props.content, syntax);
+
   return (
     <Code>
       <code dangerouslySetInnerHTML={{ __html: highlighted }} />

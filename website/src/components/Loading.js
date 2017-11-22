@@ -1,4 +1,22 @@
 // @flow
 import React from 'react';
+import styled from 'styled-components';
+import Spinner from '@atlaskit/spinner';
 
-export default () => <div>Loading...</div>;
+const Container = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  height: 80vh;
+  justify-content: center;
+`;
+
+const Loading = props => (
+  <Container>
+    <Spinner {...props} />
+  </Container>
+);
+Loading.defaultProps = { size: 'large' };
+
+export default Loading;

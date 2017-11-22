@@ -18,6 +18,10 @@ import Package from '../pages/Package';
 import PackagesList from '../pages/PackagesList';
 import PackageDocument from '../pages/PackageDocument';
 import Document from '../pages/Document';
+
+import ChangelogModal from '../pages/Package/ChangelogModal';
+import ExamplesModal from '../pages/Package/ExamplesModal';
+
 import Nav from './Nav';
 
 // eslint-disable-next-line
@@ -74,6 +78,14 @@ export default function App() {
                   />
                   <Route component={FourOhFour} />
                 </Switch>
+                <Route
+                  path="/mk-2/packages/:groupId/:pkgId/changelog/:semver?"
+                  component={ChangelogModal}
+                />
+                <Route
+                  path="/mk-2/packages/:groupId/:pkgId/example/:exampleId"
+                  component={ExamplesModal}
+                />
               </AppContent>
             </AppContainer>
           </LayerManager>
