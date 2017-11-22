@@ -48,29 +48,31 @@ class AdaptiveEditor extends React.Component<EditorProps, {}> {
   }
   value: JSONDocNode;
 
-  onEditorChange = (editorView: EditorView) => {
+  onEditorChange = (editorView) => {
     this.value = toJSON(editorView.state.doc);
-    console.log(this.value)
-    if (this.props.appearance !== 'comment' && JSON.stringify(this.value).indexOf('codeBlock') !== -1) {
-      this.setState({ appearance: 'comment' });
-    }
-    if (this.props.appearance !== 'comment' && JSON.stringify(this.value).indexOf('List') !== -1) {
-      this.setState({ appearance: 'comment' });
-    }
-    if (this.props.appearance !== 'message' && JSON.stringify(this.value).indexOf('codeBlock') === -1 && JSON.stringify(this.value).indexOf('List') === -1) {
-      this.setState({ appearance: 'message' });
+
+    if (this.state.appearance === 'comment') {
+      if (JSON.stringify(this.value).indexOf('tadah') !== -1) {
+        this.setState({ appearance: 'message' });
+      }
+    } else if (this.state.appearance === 'message') {
+      if (JSON.stringify(this.value).indexOf('List') !== -1 || JSON.stringify(this.value).indexOf('codeBlock') !== -1 || JSON.stringify(this.value).indexOf('heading') !== -1 ) {
+        this.setState({ appearance: 'comment' });
+      }
     }
   }
 
   render() {
-    if (this.props.appearance === 'comment') {
-      <Editor
-        {...this.props}
-        appearance={this.state.appearance}
-        {...appearanceProps[this.state.appearance]}
-        onChange={this.onEditorChange}
-        defaultValue={this.value}
-      />
+    if (this.state.appearance === 'comment') {
+      return (
+        <Editor
+          {...this.props}
+          appearance={this.state.appearance}
+          {...appearanceProps[this.state.appearance]}
+          onChange={this.onEditorChange}
+          defaultValue={this.value}
+        />
+      );
     }
     return (
       <div>
@@ -79,7 +81,6 @@ class AdaptiveEditor extends React.Component<EditorProps, {}> {
           appearance={this.state.appearance}
           {...appearanceProps[this.state.appearance]}
           onChange={this.onEditorChange}
-          defaultValue={this.value}
         />
       </div>
     )
@@ -90,29 +91,20 @@ export default class AdaptiveEditorExample extends React.Component<{}, {}> {
 
   render() {
     return (
-      <EditorContext>
-        <div>
-          <ToolsDrawer
-            // tslint:disable-next-line:jsx-no-lambda
-            renderEditor={({ mentionProvider, emojiProvider, mediaProvider, onChange }) =>
-              <div style={{ padding: '20px' }}>
-                <WithEditorActions
-                  render={actions =>
-                    <AdaptiveEditor
-                      shouldFocus={true}
-
-                      mentionProvider={mentionProvider}
-                      emojiProvider={emojiProvider}
-                      mediaProvider={mediaProvider}
-
-                      onChange={onChange}
-                    />
-                  }
-                />
-              </div>}
-          />
-        </div>
-      </EditorContext>
+      <div>
+        <ToolsDrawer
+          // tslint:disable-next-line:jsx-no-lambda
+          renderEditor={({ mentionProvider, emojiProvider, mediaProvider, onChange }) =>
+            <div style={{ padding: '20px' }}>
+              <AdaptiveEditor
+                mentionProvider={mentionProvider}
+                emojiProvider={emojiProvider}
+                mediaProvider={mediaProvider}
+              />
+            </div>
+          }
+        />
+      </div>
     );
   }
 
