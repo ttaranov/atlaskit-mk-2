@@ -207,7 +207,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     ).toggleCode = jest.fn();
     const strikeButton = toolbarOption
       .find('Item')
-      .filterWhere(n => n.text() === 'Monospace')
+      .filterWhere(n => n.text() === 'Code')
       .find('Element');
     strikeButton.simulate('click');
     expect(
@@ -388,7 +388,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     });
 
     [
-      { value: 'code', name: 'Monospace' },
+      { value: 'code', name: 'Code' },
       { value: 'strikethrough', name: 'Strikethrough' },
       { value: 'subscript', name: 'Subscript' },
       { value: 'superscript', name: 'Superscript' },
