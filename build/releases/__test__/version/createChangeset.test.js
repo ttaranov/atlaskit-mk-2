@@ -106,24 +106,22 @@ describe('createChangeset', () => {
     const allWorkSpaces = [
       {
         name: 'pkg-a',
-        config:
-        {
+        config: {
           name: 'pkg-a',
           version: '1.0.3',
-        }
+        },
       },
       {
         name: 'pkg-b',
-        config:
-        {
+        config: {
           name: 'pkg-b',
           version: '1.2.0',
           devDependencies: {
             'pkg-a': '~1.0.3',
           },
-        }
+        },
       },
-    ]
+    ];
     beforeEach(async () => {
       mockUserInput(releases, dependents, summary);
       bolt.getDependentsGraph.mockReturnValueOnce(
@@ -177,38 +175,35 @@ describe('createChangeset', () => {
     const allWorkSpaces = [
       {
         name: 'pkg-a',
-        config:
-        {
+        config: {
           name: 'pkg-a',
           version: '1.0.3',
           devDependencies: {
             'pkg-c': '~2.0.0',
           },
-        }
+        },
       },
       {
         name: 'pkg-b',
-        config:
-        {
+        config: {
           name: 'pkg-b',
           version: '1.2.0',
           devDependencies: {
             'pkg-a': '1.0.3',
           },
-        }
+        },
       },
       {
         name: 'pkg-c',
-        config:
-        {
+        config: {
           name: 'pkg-c',
           version: '2.0.0',
           devDependencies: {
             'pkg-b': '^1.2.0',
           },
-        }
+        },
       },
-    ]
+    ];
     const summary = 'This is a summary';
 
     beforeEach(async () => {
@@ -217,7 +212,6 @@ describe('createChangeset', () => {
         Promise.resolve(new Map(dependentsGraph)),
       );
       bolt.getWorkspaces.mockReturnValue(Promise.resolve(allWorkSpaces));
-
     });
 
     it('should prompt for changed packages, bump type and summary', async () => {

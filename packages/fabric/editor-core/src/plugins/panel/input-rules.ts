@@ -8,11 +8,12 @@ const availablePanelTypes = ['info', 'note', 'tip', 'warning'];
 
 export function inputRulePlugin(schema: Schema): Plugin | undefined {
   const panelInputRule = createInputRule(
-    /^\{(\S+)\}$/, (
+    /^\{(\S+)\}$/,
+    (
       state: EditorState,
       match: Object | undefined,
       start: number,
-      end: number
+      end: number,
     ) => {
       const panelType = match && match[1];
 
@@ -26,12 +27,16 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
           tr = tr.wrap(range, [{ type: panel, attrs: { panelType } }]);
           tr = tr.delete(end - (panelType.length + 2), end + 1);
 
-          analyticsService.trackEvent(`atlassian.editor.format.panel.${panelType}.autoformatting`);
+          analyticsService.trackEvent(
+            `atlassian.editor.format.panel.${panelType}.autoformatting`,
+          );
 
           return tr;
         }
       }
-    }, true);
+    },
+    true,
+  );
 
   return inputRules({ rules: [panelInputRule] });
 }

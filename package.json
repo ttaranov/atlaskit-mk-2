@@ -286,7 +286,7 @@
     "setupTestFrameworkScriptFile": "<rootDir>jestFrameworkSetup.js"
   },
   "lint-staged": {
-    "*.{js,ts}": [
+    "*.{js,ts,tsx}": [
       "prettier --write",
       "git add"
     ]

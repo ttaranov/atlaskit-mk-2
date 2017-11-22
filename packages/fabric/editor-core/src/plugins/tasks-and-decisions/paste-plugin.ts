@@ -41,11 +41,11 @@ export default function createPlugin() {
         }
 
         analyticsService.trackEvent(
-          'atlassian.fabric.action-decision.editor.paste'
+          'atlassian.fabric.action-decision.editor.paste',
         );
 
         const tr = view.state.tr.replaceSelection(
-          taskDecisionSliceFilter(slice, schema)
+          taskDecisionSliceFilter(slice, schema),
         );
         view.dispatch(tr.scrollIntoView());
 

@@ -123,7 +123,12 @@ describe('hyperlink', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       const linkedText = 'http://foo.com';
       insertText(editorView, `[${linkedText}](http://foo.com)`, sel, sel);
-      insertText(editorView, 'hello', sel + linkedText.length, sel + linkedText.length);
+      insertText(
+        editorView,
+        'hello',
+        sel + linkedText.length,
+        sel + linkedText.length,
+      );
 
       expect(editorView.state.doc).toEqualDocument(doc(p(link({ href: 'http://foo.com' })(`${linkedText}`), 'hello')));
     });
@@ -132,13 +137,27 @@ describe('hyperlink', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       const linkedText = 'http://foo.com';
       insertText(editorView, `[${linkedText}](http://foo.com)`, sel, sel);
-      insertText(editorView, '. ', sel + linkedText.length, sel + linkedText.length);
+      insertText(
+        editorView,
+        '. ',
+        sel + linkedText.length,
+        sel + linkedText.length,
+      );
 
       expect(editorView.state.doc).toEqualDocument(doc(p(link({ href: 'http://foo.com' })(`${linkedText}`), '. ')));
     });
 
     it('does convert to hyperlink if the previous link part is already linkified', () => {
-      const { editorView, sel } = editor(doc(p('[test](', link({ href: 'http://www.atlassian.com' })('http://www.atlassian.com{<>}'))));
+      const { editorView, sel } = editor(
+        doc(
+          p(
+            '[test](',
+            link({ href: 'http://www.atlassian.com' })(
+              'http://www.atlassian.com{<>}',
+            ),
+          ),
+        ),
+      );
       insertText(editorView, ')', sel);
 
       expect(editorView.state.doc).toEqualDocument(
@@ -156,8 +175,12 @@ describe('hyperlink', () => {
     });
 
     it('converts to hyperlink if possible hyperink text is after a new line and previous line has an hyperlink', () => {
-      const firstLink = link({ href: 'http://www.google.com' })('www.google.com');
-      const secondLink = link({ href: 'http://www.baidu.com' })('www.baidu.com');
+      const firstLink = link({ href: 'http://www.google.com' })(
+        'www.google.com',
+      );
+      const secondLink = link({ href: 'http://www.baidu.com' })(
+        'www.baidu.com',
+      );
       const { editorView, sel } = editor(doc(p(firstLink, br, p('{<>}'))));
       insertText(editorView, 'www.baidu.com ', sel, sel);
 
