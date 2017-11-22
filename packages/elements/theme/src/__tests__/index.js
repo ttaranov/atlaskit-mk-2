@@ -3,15 +3,15 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import { AtlasKitThemeProvider, themed } from '../';
+import { AtlaskitThemeProvider, themed } from '../';
 
-describe('AtlasKitThemeProvider', () => {
+describe('AtlaskitThemeProvider', () => {
   it('should mount', () => {
     expect(
       mount(
-        <AtlasKitThemeProvider theme="light">
+        <AtlaskitThemeProvider theme="light">
           <div />
-        </AtlasKitThemeProvider>,
+        </AtlaskitThemeProvider>,
       ).prop('theme'),
     ).toBe('light');
   });

@@ -4,7 +4,7 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import styled, { injectGlobal } from 'styled-components';
 import LayerManager from '@atlaskit/layer-manager';
-import { AtlasKitThemeProvider } from '@atlaskit/theme';
+import { AtlaskitThemeProvider } from '@atlaskit/theme';
 
 import type { Directory } from '../types';
 import * as fs from '../utils/fs';
@@ -51,7 +51,7 @@ export default function App() {
         />
         <Route>
           <LayerManager>
-            <AtlasKitThemeProvider mode="light">
+            <AtlaskitThemeProvider mode="light">
               <AppContainer>
                 <Nav />
                 <AppContent>
@@ -82,7 +82,7 @@ export default function App() {
                   </Switch>
                 </AppContent>
               </AppContainer>
-            </AtlasKitThemeProvider>
+            </AtlaskitThemeProvider>
           </LayerManager>
         </Route>
       </Switch>

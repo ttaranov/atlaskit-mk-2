@@ -8,7 +8,7 @@ export default md`
   atlaskit's themes.
 
   \`\`\`
-  import { AtlasKitThemeProvider, themed, colors } from '@atlaskit/theme';
+  import { AtlaskitThemeProvider, themed, colors } from '@atlaskit/theme';
   \`\`\`
 
   ## The theme provider
@@ -17,7 +17,7 @@ export default md`
 
   Native AtlasKit components are set up to have both a 'light' mode and a 'dark' mode, and will respond to this, defaulting to the 'light' mode if no theme is provided.
 
-  The AtlasKitThemeProvider should wrap your entire app, to ensure all components are set to the same theme. Mixing dark and light moded components will severely impact accessibility.
+  The AtlaskitThemeProvider should wrap your entire app, to ensure all components are set to the same theme. Mixing dark and light moded components will severely impact accessibility.
   themed function
 
   ${(

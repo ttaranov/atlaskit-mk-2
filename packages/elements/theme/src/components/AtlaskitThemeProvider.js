@@ -26,7 +26,7 @@ function buildThemeState(mode): ThemeProps {
   return { theme: { [CHANNEL]: { mode } } };
 }
 
-export default class AtlasKitThemeProvider extends Component<
+export default class AtlaskitThemeProvider extends Component<
   Props,
   ThemeProps,
 > {
@@ -35,20 +35,20 @@ export default class AtlasKitThemeProvider extends Component<
     mode: DEFAULT_THEME_MODE,
   };
   static childContextTypes = {
-    hasAtlasKitThemeProvider: PropTypes.bool,
+    hasAtlaskitThemeProvider: PropTypes.bool,
   };
   static contextTypes = {
-    hasAtlasKitThemeProvider: PropTypes.bool,
+    hasAtlaskitThemeProvider: PropTypes.bool,
   };
   constructor(props: Props) {
     super(props);
     this.state = buildThemeState(props.mode);
   }
   getChildContext() {
-    return { hasAtlasKitThemeProvider: true };
+    return { hasAtlaskitThemeProvider: true };
   }
   componentWillMount() {
-    if (!this.context.hasAtlasKitThemeProvider) {
+    if (!this.context.hasAtlaskitThemeProvider) {
       const css = getStylesheetResetCSS(this.state);
       this.stylesheet = document.createElement('style');
       this.stylesheet.type = 'text/css';

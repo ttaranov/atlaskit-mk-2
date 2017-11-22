@@ -5,9 +5,12 @@ import * as colors from './colors';
 import * as math from './utils/math';
 import getTheme from './utils/getTheme';
 import themed from './utils/themed';
-import AtlasKitThemeProvider from './components/AtlasKitThemeProvider';
+import AtlaskitThemeProvider from './components/AtlaskitThemeProvider';
 
-export { colors, math, getTheme, themed, AtlasKitThemeProvider };
+export { colors, math, getTheme, themed, AtlaskitThemeProvider };
+
+// backwards-compatible export with old AtlasKit case
+export const AtlasKitThemeProvider = AtlaskitThemeProvider;
 
 /*
   These theme values are expressed as functions so that if we decide to make

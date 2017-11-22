@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
-import { AtlasKitThemeProvider } from '../';
+import { AtlaskitThemeProvider } from '../';
 
 type Props = {};
 type State = { themeMode: 'light' | 'dark' };
@@ -17,11 +17,11 @@ export default class extends Component<Props, State> {
   render() {
     const { themeMode } = this.state;
     return (
-      <AtlasKitThemeProvider mode={themeMode}>
+      <AtlaskitThemeProvider mode={themeMode}>
         <div style={{ padding: 8 }}>
           <Button onClick={this.switchTheme}>Switch theme ({themeMode})</Button>
         </div>
-      </AtlasKitThemeProvider>
+      </AtlaskitThemeProvider>
     );
   }
 }
