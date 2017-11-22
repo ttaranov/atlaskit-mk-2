@@ -8,10 +8,7 @@ import {
   akColorN800,
 } from '@atlaskit/util-shared-styles';
 
-import {
-  Decoration,
-  DecorationSet,
-} from 'prosemirror-view';
+import { Decoration, DecorationSet } from 'prosemirror-view';
 
 import { hexToRgba } from '../../../utils/color';
 
@@ -29,7 +26,8 @@ export const colors: Color[] = [
   akColorP400,
   akColorN800,
 ].map(solid => ({
-  solid, selection: hexToRgba(solid, 0.2)!
+  solid,
+  selection: hexToRgba(solid, 0.2)!,
 }));
 
 // tslint:disable:no-bitwise
@@ -37,17 +35,20 @@ export const getAvatarColor = (str: string) => {
   let hash = 0;
 
   for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash = (hash << 5) - hash + str.charCodeAt(i);
     hash = hash & hash;
   }
 
-  const index = (Math.abs(hash) % colors.length);
+  const index = Math.abs(hash) % colors.length;
 
   return { index, color: colors[index] };
 };
 // tslint:enable:no-bitwise
 
-export const findPointers = (id: string, decorations: DecorationSet): Decoration[] | undefined => {
+export const findPointers = (
+  id: string,
+  decorations: DecorationSet,
+): Decoration[] | undefined => {
   const current = decorations.find();
   let ret: Decoration[] = [];
   for (let i = 0; i < current.length; i++) {

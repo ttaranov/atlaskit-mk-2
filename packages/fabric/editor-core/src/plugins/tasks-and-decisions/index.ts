@@ -12,15 +12,22 @@ export function createPlugin(analyticDelegateProps: AnalyticsDelegateProps) {
     props: {
       nodeViews: {
         taskItem: taskItemNodeViewFactory(analyticDelegateProps),
-        decisionItem: decisionItemNodeView
+        decisionItem: decisionItemNodeView,
       },
     },
     key: stateKey,
   });
 }
 
-const plugins = (schema: Schema, analyticDelegateProps: AnalyticsDelegateProps) => {
-  return [createPlugin(analyticDelegateProps), inputRulePlugin(schema), keymapsPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+const plugins = (
+  schema: Schema,
+  analyticDelegateProps: AnalyticsDelegateProps,
+) => {
+  return [
+    createPlugin(analyticDelegateProps),
+    inputRulePlugin(schema),
+    keymapsPlugin(schema),
+  ].filter(plugin => !!plugin) as Plugin[];
 };
 
 export default plugins;

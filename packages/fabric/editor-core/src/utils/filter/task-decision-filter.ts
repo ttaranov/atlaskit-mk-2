@@ -11,7 +11,7 @@ const taskDecisionAllowedNodeTypes = new Set([
 
 export const taskDecisionDocFilter = (
   doc: JSONDocNode,
-  schema?: Schema
+  schema?: Schema,
 ): JSONNode[] =>
   filterContentByType(doc, taskDecisionAllowedNodeTypes, schema, true);
 

@@ -46,7 +46,7 @@ describe('@atlaskit/editor-core/utils/filter', () => {
         jsonDoc,
         new Set(['text']),
         defaultSchema,
-        true
+        true,
       );
       expect(content).to.deep.equal([
         {
@@ -68,7 +68,7 @@ describe('@atlaskit/editor-core/utils/filter', () => {
         jsonDoc,
         new Set(['text']),
         defaultSchema,
-        false
+        false,
       );
       expect(content).to.deep.equal([
         {
@@ -89,7 +89,7 @@ describe('@atlaskit/editor-core/utils/filter', () => {
         Slice.fromJSON(defaultSchema, { content: jsonDoc.content }),
         new Set(['text']),
         defaultSchema,
-        false
+        false,
       );
       expect(content.toJSON()!.content).to.deep.equal([
         {
@@ -105,7 +105,7 @@ describe('@atlaskit/editor-core/utils/filter', () => {
         Slice.fromJSON(defaultSchema, { content: jsonDoc.content }),
         new Set(['text']),
         defaultSchema,
-        false
+        false,
       );
       expect(content.toJSON()!.content).to.deep.equal([
         {
@@ -129,7 +129,7 @@ describe('@atlaskit/editor-core/utils/filter', () => {
         Slice.fromJSON(defaultSchema, { content: jsonDoc.content }),
         new Set(['text']),
         defaultSchema,
-        true
+        true,
       );
       expect(content.toJSON()!.content).to.deep.equal([
         {
@@ -151,7 +151,7 @@ describe('@atlaskit/editor-core/utils/filter', () => {
         Slice.fromJSON(defaultSchema, { content: jsonDoc.content }),
         new Set(['text']),
         defaultSchema,
-        false
+        false,
       );
       expect(content.toJSON()!.content).to.deep.equal([
         {

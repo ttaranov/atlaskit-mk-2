@@ -13,7 +13,7 @@ import {
   emojiQuery,
   textColor,
   confluenceInlineComment,
-  action
+  action,
 } from './marks';
 
 import {

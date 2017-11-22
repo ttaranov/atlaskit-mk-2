@@ -14,7 +14,7 @@ export type PMPluginFactory = (
   props: EditorProps,
   dispatch: Dispatch,
   providerFactory: ProviderFactory,
-  errorReporter: ErrorReporter
+  errorReporter: ErrorReporter,
 ) => Plugin | undefined;
 
 export type UIComponentFactory = (
@@ -25,14 +25,14 @@ export type UIComponentFactory = (
   popupsMountPoint?: HTMLElement,
   popupsBoundariesElement?: HTMLElement,
   disabled?: boolean,
-  editorWidth?: number
+  editorWidth?: number,
 ) => React.ReactElement<any> | null;
 
 export interface EditorPlugin {
   /*
    * List of ProseMirror-plugins. This is where we define which plugins will be added to EditorView (main-plugin, keybindings, input-rules, etc.).
    */
-  pmPlugins?: () => { rank: number; plugin: PMPluginFactory; }[];
+  pmPlugins?: () => { rank: number; plugin: PMPluginFactory }[];
 
   /*
    * List of Nodes to add to the schema. Needs to specify a rank for each node according to spec in Document Structure.

@@ -96,7 +96,9 @@ export interface NoMark {
  * @name formatted_text_inline_node
  */
 export type InlineFormattedText = Text &
-  MarksObject<Link | Em | Strong | Strike | SubSup | Underline | TextColor | Action>;
+  MarksObject<
+    Link | Em | Strong | Strike | SubSup | Underline | TextColor | Action
+  >;
 
 /**
  * @name link_text_inline_node
