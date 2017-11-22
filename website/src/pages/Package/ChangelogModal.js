@@ -89,8 +89,9 @@ export default class ExamplesModal extends Component<Props, State> {
     this.setState({ isInvalid, range });
   };
 
-  close = event => {
+  close = (event?: Event) => {
     if (event) event.stopPropagation();
+
     const { groupId, pkgId } = this.props.match.params;
     const url = `/mk-2/packages/${groupId}/${pkgId}`;
 

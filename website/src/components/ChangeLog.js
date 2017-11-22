@@ -13,7 +13,7 @@ const H3 = styled.h3`
   font-size: 18px;
   font-weight: normal;
 `;
-function getVersion(str) {
+function getVersion(str: string) {
   return str.match(/^(\d+\.\d+\.\d+)/);
 }
 const Heading = ({
@@ -25,17 +25,14 @@ const Heading = ({
   level: number,
   packageName: string,
 }) => {
-  let invalidReturnTypeForComponent = false;
   const childrenArray = Children.toArray(children);
   const title = childrenArray[0];
-  const version = getVersion(title);
-
-  if (childrenArray.length !== 1) invalidReturnTypeForComponent = true;
-  if (typeof title !== 'string') invalidReturnTypeForComponent = true;
-  if (!version) invalidReturnTypeForComponent = true;
+  const version = getVersion(title.toString());
 
   // wrap children if they can't be rendered e.g. array
-  if (invalidReturnTypeForComponent) return <div>{children}</div>;
+  if (childrenArray.length !== 1) return <div>{children}</div>;
+  if (typeof title !== 'string') return <div>{children}</div>;
+  if (!version) return <div>{children}</div>;
 
   const versionNumber = version[1];
   const versionDate = version[2];

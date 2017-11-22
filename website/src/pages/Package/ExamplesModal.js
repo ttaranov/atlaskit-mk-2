@@ -305,7 +305,7 @@ export default class ExamplesModal extends Component<Props, State> {
   onCodeToggle = () =>
     this.setState(state => ({ displayCode: !state.displayCode }));
 
-  close = event => {
+  close = (event?: Event) => {
     if (event) event.stopPropagation();
 
     const { params } = this.props.match;
@@ -316,7 +316,7 @@ export default class ExamplesModal extends Component<Props, State> {
     );
     const url = `/mk-2/packages/${groupId}/${packageId}`;
 
-    this.props.history.push(url);
+    this.context.router.history.push(url);
   };
 
   render() {
@@ -381,8 +381,6 @@ export default class ExamplesModal extends Component<Props, State> {
             examples={examples}
             onPackageSelected={this.onPackageSelected}
             onExampleSelected={this.onExampleSelected}
-            onCodeToggle={this.onCodeToggle}
-            deploySandbox={this.deploySandbox}
             loadingSandbox={this.state.loadingSandbox}
           />
           <ModalContent>

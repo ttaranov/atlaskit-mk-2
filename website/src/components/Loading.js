@@ -12,7 +12,7 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const Loading = props => (
+const Loading = (props: {}) => (
   <Container>
     <Spinner {...props} />
   </Container>

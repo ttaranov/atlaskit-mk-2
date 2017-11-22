@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link, Redirect, Route, withRouter } from 'react-router-dom';
@@ -29,7 +29,8 @@ const SANDBOX_DEPLOY_ENDPOINT =
   'https://atlaskit-deploy-sandbox.glitch.me/deploy';
 
 type Props = {
-  exampleId: string,
+  children: Node,
+  exampleId?: string | null,
   groupId: string,
   packageId: string,
 };

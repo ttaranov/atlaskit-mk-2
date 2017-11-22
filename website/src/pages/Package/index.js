@@ -78,10 +78,11 @@ type PackageProps = {
 };
 
 type PackageState = {
-  pkg: Object | null,
-  doc: Node | null,
-  missing: boolean | null,
   changelog: Logs,
+  doc: Node | null,
+  examples: Array<any> | null,
+  missing: boolean | null,
+  pkg: Object | null,
 };
 
 function getPkg(packages, groupId, pkgId) {
@@ -95,6 +96,7 @@ function getPkg(packages, groupId, pkgId) {
 const initialState = {
   changelog: [],
   doc: null,
+  examples: null,
   missing: false,
   pkg: null,
 };
@@ -149,7 +151,7 @@ export default class Package extends Component<PackageProps, PackageState> {
           this.setState({
             pkg,
             doc,
-            examples: examples.children,
+            examples: examples && examples.children,
             changelog: changelog || [],
           });
         })
