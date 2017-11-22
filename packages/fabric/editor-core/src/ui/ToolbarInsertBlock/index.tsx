@@ -40,12 +40,14 @@ export interface Props {
   macroProvider?: MacroProvider | null;
   onShowMediaPicker?: () => void;
   onInsertBlockType?: (name: string, view: EditorView) => void;
-  onInsertMacroFromMacroBrowser?: (macroProvider: MacroProvider) => (state: EditorState, dispatch: (tr: Transaction) => void) => void;
+  onInsertMacroFromMacroBrowser?: (
+    macroProvider: MacroProvider,
+  ) => (state: EditorState, dispatch: (tr: Transaction) => void) => void;
 }
 
 export interface State {
   isOpen?: boolean;
-  button?
+  button?;
 }
 
 const blockTypeIcons = {
@@ -58,7 +60,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
   private buttonRef: ReactElement<any>;
 
   state: State = {
-    isOpen: false
+    isOpen: false,
   };
 
   componentDidMount() {
@@ -67,11 +69,11 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
 
   private onOpenChange = (attrs: any) => {
     this.setState({ isOpen: attrs.isOpen });
-  }
+  };
 
   private handleTriggerClick = () => {
     this.onOpenChange({ isOpen: !this.state.isOpen });
-  }
+  };
 
   render() {
     const { isOpen } = this.state;
@@ -85,73 +87,110 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
       popupsMountPoint,
       popupsBoundariesElement,
       editorWidth,
-      isDisabled
+      isDisabled,
     } = this.props;
 
     const items = this.createItems(editorWidth);
 
-    if (!tableSupported && !mediaSupported && !mentionsSupported && items[0].items.length === 0) {
+    if (
+      !tableSupported &&
+      !mediaSupported &&
+      !mentionsSupported &&
+      items[0].items.length === 0
+    ) {
       return null;
     }
 
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
-        spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
+        spacing={
+          editorWidth && editorWidth > EditorWidth.BreakPoint6
+            ? 'default'
+            : 'none'
+        }
         selected={isOpen}
         disabled={disabled}
         onClick={this.handleTriggerClick}
         iconBefore={
           <Wrapper>
-            <AddIcon label="Open or close insert block dropdown"/>
+            <AddIcon label="Open or close insert block dropdown" />
             <ExpandIconWrapper>
               <ExpandIcon label="Open or close insert block dropdown" />
             </ExpandIconWrapper>
-          </Wrapper>}
+          </Wrapper>
+        }
       />
     );
 
     return (
       <Wrapper>
-        <InnerWrapper width={editorWidth! > EditorWidth.BreakPoint6 ? 'large' : 'small'}>
-          {mentionsSupported && (!editorWidth || editorWidth > EditorWidth.BreakPoint5) && <ToolbarButton
-            spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
-            onClick={this.insertMention}
-            disabled={isDisabled || !mentionsEnabled}
-            title="Mention a person (@)"
-            iconBefore={<MentionIcon label="Add mention" />}
-          />}
-          {mediaSupported && mediaUploadsEnabled && (!editorWidth || editorWidth > EditorWidth.BreakPoint4) && <ToolbarButton
-            spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
-            onClick={this.openMediaPicker}
-            disabled={isDisabled}
-            title="Insert files and images"
-            iconBefore={<AttachmentIcon label="Insert files and images"/>}
-          />}
-          {tableSupported && (!editorWidth || editorWidth > EditorWidth.BreakPoint3) && <ToolbarButton
-            spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
-            onClick={this.createTable}
-            selected={tableActive}
-            disabled={isDisabled}
-            title={tooltip(toggleTable)}
-            iconBefore={<TableIcon label="Insert table"/>}
-          />}
+        <InnerWrapper
+          width={editorWidth! > EditorWidth.BreakPoint6 ? 'large' : 'small'}
+        >
+          {mentionsSupported &&
+            (!editorWidth || editorWidth > EditorWidth.BreakPoint5) && (
+              <ToolbarButton
+                spacing={
+                  editorWidth && editorWidth > EditorWidth.BreakPoint6
+                    ? 'default'
+                    : 'none'
+                }
+                onClick={this.insertMention}
+                disabled={isDisabled || !mentionsEnabled}
+                title="Mention a person (@)"
+                iconBefore={<MentionIcon label="Add mention" />}
+              />
+            )}
+          {mediaSupported &&
+            mediaUploadsEnabled &&
+            (!editorWidth || editorWidth > EditorWidth.BreakPoint4) && (
+              <ToolbarButton
+                spacing={
+                  editorWidth && editorWidth > EditorWidth.BreakPoint6
+                    ? 'default'
+                    : 'none'
+                }
+                onClick={this.openMediaPicker}
+                disabled={isDisabled}
+                title="Insert files and images"
+                iconBefore={<AttachmentIcon label="Insert files and images" />}
+              />
+            )}
+          {tableSupported &&
+            (!editorWidth || editorWidth > EditorWidth.BreakPoint3) && (
+              <ToolbarButton
+                spacing={
+                  editorWidth && editorWidth > EditorWidth.BreakPoint6
+                    ? 'default'
+                    : 'none'
+                }
+                onClick={this.createTable}
+                selected={tableActive}
+                disabled={isDisabled}
+                title={tooltip(toggleTable)}
+                iconBefore={<TableIcon label="Insert table" />}
+              />
+            )}
         </InnerWrapper>
-        {items[0].items.length > 0 && (!isDisabled ?
-          <DropdownMenu
-            items={items}
-            onItemActivated={this.onItemActivated}
-            onOpenChange={this.onOpenChange}
-            mountTo={popupsMountPoint}
-            boundariesElement={popupsBoundariesElement}
-            isOpen={isOpen}
-            fitHeight={188}
-            fitWidth={175}
-          >
-            {toolbarButtonFactory(false)}
-          </DropdownMenu> :
-          <div>
-            <div>{toolbarButtonFactory(true)}</div>
-          </div>)}
+        {items[0].items.length > 0 &&
+          (!isDisabled ? (
+            <DropdownMenu
+              items={items}
+              onItemActivated={this.onItemActivated}
+              onOpenChange={this.onOpenChange}
+              mountTo={popupsMountPoint}
+              boundariesElement={popupsBoundariesElement}
+              isOpen={isOpen}
+              fitHeight={188}
+              fitWidth={175}
+            >
+              {toolbarButtonFactory(false)}
+            </DropdownMenu>
+          ) : (
+            <div>
+              <div>{toolbarButtonFactory(true)}</div>
+            </div>
+          ))}
       </Wrapper>
     );
   }
@@ -166,7 +205,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
       mentionsEnabled,
       mentionsSupported,
       availableWrapperBlockTypes,
-      macroProvider
+      macroProvider,
     } = this.props;
     let items: any[] = [];
     if (mentionsSupported && editorWidth! <= EditorWidth.BreakPoint5) {
@@ -179,13 +218,17 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
         elemBefore: <MentionIcon label="Add mention" />,
       });
     }
-    if (mediaSupported && mediaUploadsEnabled && editorWidth! <= EditorWidth.BreakPoint4) {
+    if (
+      mediaSupported &&
+      mediaUploadsEnabled &&
+      editorWidth! <= EditorWidth.BreakPoint4
+    ) {
       items.push({
         content: 'Files and images',
         value: { name: 'media' },
         tooltipDescription: 'Files and Images',
         tooltipPosition: 'right',
-        elemBefore: <AttachmentIcon label="Insert files and images"/>,
+        elemBefore: <AttachmentIcon label="Insert files and images" />,
       });
     }
     if (tableSupported && editorWidth! <= EditorWidth.BreakPoint3) {
@@ -196,7 +239,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
         isActive: tableActive,
         tooltipDescription: tooltip(toggleTable),
         tooltipPosition: 'right',
-        elemBefore: <TableIcon label="Insert table"/>,
+        elemBefore: <TableIcon label="Insert table" />,
       });
     }
     if (availableWrapperBlockTypes) {
@@ -208,7 +251,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
           value: blockType,
           tooltipDescription: tooltip(findKeymapByDescription(blockType.title)),
           tooltipPosition: 'right',
-          elemBefore: <BlockTypeIcon label={`Insert ${blockType} block`}/>,
+          elemBefore: <BlockTypeIcon label={`Insert ${blockType} block`} />,
         });
       });
     }
@@ -219,41 +262,43 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
         value: { name: 'macro' },
         tooltipDescription: 'View more',
         tooltipPosition: 'right',
-        elemBefore: <EditorMoreIcon label="View more"/>,
+        elemBefore: <EditorMoreIcon label="View more" />,
       });
     }
-    return [{
-      items,
-    }];
-  }
+    return [
+      {
+        items,
+      },
+    ];
+  };
 
   private insertMention = () => {
     analytics.trackEvent(`atlassian.editor.format.mention.button`);
     const { insertMentionQuery } = this.props;
     insertMentionQuery!();
-  }
+  };
 
   private createTable = () => {
     analytics.trackEvent(`atlassian.editor.format.table.button`);
     const { editorView } = this.props;
     tableCommands.createTable()(editorView.state, editorView.dispatch);
-  }
+  };
 
   private openMediaPicker = () => {
     analytics.trackEvent(`atlassian.editor.format.media.button`);
     const { onShowMediaPicker } = this.props;
     onShowMediaPicker!();
-  }
+  };
 
   private onItemActivated = ({ item }): void => {
     const {
       editorView,
       onInsertBlockType,
       onInsertMacroFromMacroBrowser,
-      macroProvider
+      macroProvider,
     } = this.props;
 
-    switch(item.value.name) {
+    switch (item.value.name) {
       case 'table':
         this.createTable();
         break;
@@ -266,12 +311,21 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
       case 'codeblock':
       case 'blockquote':
       case 'panel':
-        analytics.trackEvent(`atlassian.editor.format.${item.value.name}.button`);
+        analytics.trackEvent(
+          `atlassian.editor.format.${item.value.name}.button`,
+        );
         onInsertBlockType!(item.value.name, editorView);
         break;
       case 'macro':
-        analytics.trackEvent(`atlassian.editor.format.${item.value.name}.button`);
-        onInsertMacroFromMacroBrowser!(macroProvider!)(editorView.state, editorView.dispatch);
+        analytics.trackEvent(
+          `atlassian.editor.format.${item.value.name}.button`,
+        );
+        onInsertMacroFromMacroBrowser!(macroProvider!)(
+          editorView.state,
+          editorView.dispatch,
+        );
     }
-  }
+
+    this.setState({ isOpen: false });
+  };
 }
