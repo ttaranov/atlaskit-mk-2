@@ -1,13 +1,8 @@
-import {
-  InputRule,
-  inputRules,
-  wrappingInputRule,
-} from 'prosemirror-inputrules';
+import { InputRule, inputRules } from 'prosemirror-inputrules';
 import { NodeType, Schema } from 'prosemirror-model';
 import { Plugin, Transaction } from 'prosemirror-state';
 import { trackAndInvoke } from '../../analytics';
-import { defaultInputRuleHandler, createInputRule } from '../utils';
-import { findWrapping } from 'prosemirror-transform';
+import { createInputRule } from '../utils';
 
 export function createInputRules(
   regexp: RegExp,
@@ -37,7 +32,7 @@ export default function inputRulePlugin(schema: Schema): Plugin | undefined {
             .replaceRangeWith(
               start - 1,
               end + 1,
-              schema.nodes.bulletList.createAndFill(),
+              schema.nodes.bulletList.createAndFill()!,
             )
             .scrollIntoView();
         },
@@ -55,7 +50,7 @@ export default function inputRulePlugin(schema: Schema): Plugin | undefined {
             .replaceRangeWith(
               start - 1,
               end + 1,
-              schema.nodes.orderedList.createAndFill(),
+              schema.nodes.orderedList.createAndFill()!,
             )
             .scrollIntoView();
         },

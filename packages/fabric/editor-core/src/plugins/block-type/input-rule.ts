@@ -7,12 +7,8 @@ import {
 import { Schema } from 'prosemirror-model';
 import { Plugin, Transaction } from 'prosemirror-state';
 import { findWrapping } from 'prosemirror-transform';
-import { analyticsService, trackAndInvoke } from '../../analytics';
-import {
-  isConvertableToCodeBlock,
-  transformToCodeBlockAction,
-} from '../block-type/transform-to-code-block';
-import { createInputRule, defaultInputRuleHandler } from '../utils';
+import { isConvertableToCodeBlock } from '../block-type/transform-to-code-block';
+import { createInputRule } from '../utils';
 
 export function dumbInputRule(regexp, nodeType, getAttrs) {
   return new InputRule(regexp, (state, match, start, end) => {
@@ -64,7 +60,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
             .replaceRangeWith(
               start - 1,
               end + 1,
-              schema.nodes.heading.createAndFill({ level: match[2].length }),
+              schema.nodes.heading.createAndFill({ level: match[2].length })!,
             )
             .scrollIntoView();
         },
@@ -82,7 +78,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
             .replaceRangeWith(
               start - 1,
               end + 1,
-              schema.nodes.blockquote.createAndFill(),
+              schema.nodes.blockquote.createAndFill()!,
             )
             .scrollIntoView();
         },
@@ -101,7 +97,6 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
             attributes.language = match[4];
           }
           if (isConvertableToCodeBlock(state)) {
-            const newStart = start + match[0].indexOf('`');
             return state.tr
               .replaceRangeWith(
                 start - 1,
