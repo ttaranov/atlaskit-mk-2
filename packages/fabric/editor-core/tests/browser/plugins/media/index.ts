@@ -3,7 +3,6 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
-import { createSchema } from '@atlaskit/editor-common';
 
 import {
   mediaPluginFactory,
@@ -221,47 +220,6 @@ describe('Media plugin', () => {
             ),
           );
         });
-      });
-    });
-
-    context('when schema does not have singleImage node', () => {
-      it('inserts filmstrip', async () => {
-        const schema = createSchema({
-          nodes: ['doc', 'paragraph', 'text', 'mediaGroup', 'media'],
-        });
-
-        const noSingleImageEditor = (
-          doc: any,
-          uploadErrorHandler?: () => void,
-        ) =>
-          makeEditor<MediaPluginState>({
-            doc,
-            plugins: [
-              ...mediaPluginFactory(defaultSchema, {
-                providerFactory,
-                uploadErrorHandler,
-              }),
-            ],
-            schema: schema,
-          });
-        const { editorView, pluginState } = noSingleImageEditor(doc(p('')));
-        await mediaProvider;
-
-        pluginState.insertFiles([{ id: 'foo', fileMimeType: 'image/jpeg' }]);
-
-        expect(editorView.state.doc).to.deep.equal(
-          doc(
-            mediaGroup(
-              media({
-                id: 'foo',
-                type: 'file',
-                collection: testCollectionName,
-                __fileMimeType: 'image/jpeg',
-              }),
-            ),
-            p(),
-          ),
-        );
       });
     });
   });
@@ -820,7 +778,7 @@ describe('Media plugin', () => {
         status: 'uploading',
         fileName: 'foo.png',
         fileSize: 1234,
-        fileMimeType: 'image/png',
+        fileMimeType: 'pdf',
       },
     ]);
 
@@ -833,7 +791,7 @@ describe('Media plugin', () => {
             collection: testCollectionName,
             __fileName: 'foo.png',
             __fileSize: 1234,
-            __fileMimeType: 'image/png',
+            __fileMimeType: 'pdf',
           }),
         ),
         p(),

@@ -108,6 +108,88 @@ describe('media-links', () => {
         );
       });
     });
+
+    context('when current selection not empty', () => {
+      context('at the begining of the doc', () => {
+        it('deletes the selection', () => {
+          const { editorView } = editor(doc(p('{<}text{>}')));
+
+          insertSingleImages(
+            editorView,
+            [{ id: temporaryFileId, status: 'uploading' }],
+            testCollectionName,
+          );
+
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              singleImage({ alignment: 'center', display: 'block' })(
+                media({
+                  id: temporaryFileId,
+                  type: 'file',
+                  collection: testCollectionName,
+                }),
+              ),
+              p(),
+            ),
+          );
+        });
+      });
+
+      context('at the middle of the doc', () => {
+        it('deletes the selection', () => {
+          const { editorView } = editor(doc(p('hello'), p('{<}text{>}'), p()));
+
+          insertSingleImages(
+            editorView,
+            [{ id: temporaryFileId, status: 'uploading' }],
+            testCollectionName,
+          );
+
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              p('hello'),
+              singleImage({ alignment: 'center', display: 'block' })(
+                media({
+                  id: temporaryFileId,
+                  type: 'file',
+                  collection: testCollectionName,
+                }),
+              ),
+              p(''),
+            ),
+          );
+        });
+      });
+
+      context('at the end of the doc', () => {
+        it('deletes the selection', () => {
+          const { editorView } = editor(
+            doc(p('hello'), p('world'), p('{<}text{>}')),
+          );
+
+          insertSingleImages(
+            editorView,
+            [{ id: temporaryFileId, status: 'uploading' }],
+            testCollectionName,
+          );
+
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              p('hello'),
+              p('world'),
+              singleImage({ alignment: 'center', display: 'block' })(
+                media({
+                  id: temporaryFileId,
+                  type: 'file',
+                  collection: testCollectionName,
+                }),
+              ),
+              p(''),
+            ),
+          );
+        });
+      });
+    });
   });
 
   describe('insertFilmstrip', () => {
