@@ -175,9 +175,9 @@ describe('editor/plugins/collab-edit', () => {
       const { decorations } = collabEditPluginKey.getState(editorView.state);
 
       expect(findPointers('test', decorations)![0].spec).to.deep.equal({
-        'pointer': {
-          'sessionId': 'test'
-        }
+        pointer: {
+          sessionId: 'test',
+        },
       });
       editorView.destroy();
     });

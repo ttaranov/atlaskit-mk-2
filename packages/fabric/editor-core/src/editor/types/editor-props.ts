@@ -46,7 +46,7 @@ export interface EditorProps {
   allowJiraIssue?: boolean;
   allowUnsupportedContent?: boolean;
   allowPanel?: boolean;
-  allowInlineMacro?: boolean;
+  allowInlineExtension?: boolean;
   allowConfluenceInlineComment?: boolean;
 
   saveOnEnter?: boolean;

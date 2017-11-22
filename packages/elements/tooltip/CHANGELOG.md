@@ -1,5 +1,7 @@
 # @atlaskit/tooltip
 
+## 8.0.4
+
 ## 8.0.3
 - [patch] Use correct dependencies  [7b178b1](7b178b1)
 - [patch] Use correct dependencies  [7b178b1](7b178b1)

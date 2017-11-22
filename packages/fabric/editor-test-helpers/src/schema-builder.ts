@@ -1,7 +1,4 @@
-import {
-  MediaAttributes,
-  MentionAttributes as MentionPublicAttributes,
-} from '@atlaskit/editor-common';
+import { MediaAttributes, MentionAttributes } from '@atlaskit/editor-common';
 import {
   Fragment,
   MarkType,
@@ -12,10 +9,6 @@ import {
 } from 'prosemirror-model';
 import matches from './matches';
 import sampleSchema from './schema';
-
-export interface MentionAttributes extends MentionPublicAttributes {
-  accessLevel?: string;
-}
 
 /**
  * Represents a ProseMirror "position" in a document.
@@ -328,9 +321,8 @@ export const confluenceJiraIssue = (attrs: {
   server?: string;
   serverId?: string;
 }) => sampleSchema.nodes.confluenceJiraIssue.create(attrs);
-export const inlineMacro = (attrs: {
-  macroId: string;
-  name: string;
-  placeholderUrl?: string;
-  params?: object;
-}) => sampleSchema.nodes.inlineMacro.create(attrs);
+export const inlineExtension = (attrs: {
+  extensionKey: string;
+  extensionType: string;
+  parameters?: object;
+}) => sampleSchema.nodes.inlineExtension.create(attrs);

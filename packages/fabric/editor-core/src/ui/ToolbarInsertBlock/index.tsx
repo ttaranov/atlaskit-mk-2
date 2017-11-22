@@ -11,6 +11,7 @@ import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import QuoteIcon from '@atlaskit/icon/glyph/quote';
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import { EditorView } from 'prosemirror-view';
+import { EditorState, Transaction } from 'prosemirror-state';
 import { analyticsService as analytics } from '../../analytics';
 import { BlockType } from '../../plugins/block-type/types';
 import { toggleTable, tooltip, findKeymapByDescription } from '../../keymaps';
@@ -19,7 +20,7 @@ import ToolbarButton from '../ToolbarButton';
 import EditorWidth from '../../utils/editor-width';
 import { MacroProvider } from '../../editor/plugins/macro/types';
 import tableCommands from '../../plugins/table/commands';
-import { Wrapper, ExpandIconWrapper,InnerWrapper } from './styles';
+import { Wrapper, ExpandIconWrapper, InnerWrapper } from './styles';
 
 export interface Props {
   isDisabled?: boolean;
@@ -39,7 +40,7 @@ export interface Props {
   macroProvider?: MacroProvider | null;
   onShowMediaPicker?: () => void;
   onInsertBlockType?: (name: string, view: EditorView) => void;
-  onInsertMacroFromMacroBrowser?: (view: EditorView, macroProvider: MacroProvider) => void;
+  onInsertMacroFromMacroBrowser?: (macroProvider: MacroProvider) => (state: EditorState, dispatch: (tr: Transaction) => void) => void;
 }
 
 export interface State {
@@ -270,7 +271,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
         break;
       case 'macro':
         analytics.trackEvent(`atlassian.editor.format.${item.value.name}.button`);
-        onInsertMacroFromMacroBrowser!(editorView, macroProvider!);
+        onInsertMacroFromMacroBrowser!(macroProvider!)(editorView.state, editorView.dispatch);
     }
   }
 }

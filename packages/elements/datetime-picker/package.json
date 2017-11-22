@@ -18,6 +18,7 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/calendar": "^3.0.4",
+    "@atlaskit/droplist": "^3.8.1",
     "@atlaskit/field-base": "^8.1.1",
     "@atlaskit/icon": "^10.3.0",
     "@atlaskit/input": "^1.6.0",

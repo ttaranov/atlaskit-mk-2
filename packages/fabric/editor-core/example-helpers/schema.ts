@@ -30,7 +30,7 @@ export default createSchema({
     'decisionItem',
     'taskList',
     'taskItem',
-    'inlineMacro',
+    'inlineExtension',
   ],
   marks: [
     'em',
@@ -43,6 +43,6 @@ export default createSchema({
     'emojiQuery',
     'textColor',
     'subsup',
-    'action'
-  ]
+    'action',
+  ],
 }) as Schema;

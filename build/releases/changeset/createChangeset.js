@@ -67,7 +67,7 @@ async function getAllDependents(packagesToRelease, opts = {}) {
 
 async function createChangeset(
   changedPackages /*: Array<string> */,
-  opts /*: { cwd?: string }  */ = {}
+  opts /*: { cwd?: string }  */ = {},
 ) {
   const cwd = opts.cwd || process.cwd();
   const changeset /*: changesetType */ = {
@@ -102,7 +102,7 @@ async function createChangeset(
 
   const dependents /*: Array<dependentType> */ = await getAllDependents(
     packagesToRelease,
-    { cwd }
+    { cwd },
   );
 
   // This modifies the above dependents array to add a 'type' property to all

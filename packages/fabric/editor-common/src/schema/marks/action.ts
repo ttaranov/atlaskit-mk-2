@@ -27,7 +27,7 @@ export const action: MarkSpec = {
   attrs: {
     title: { default: null },
     target: { default: null },
-    parameters: { default: null }
+    parameters: { default: null },
   },
   inclusive: false,
   parseDOM: [
@@ -42,19 +42,22 @@ export const action: MarkSpec = {
           title,
           target: {
             receiver,
-            key
-          }
+            key,
+          },
         };
-      }
-    }
+      },
+    },
   ],
   toDOM(node): [string, any] {
     const { title, target } = node.attrs;
-    return ['span', {
-      'data-mark-type': 'action',
-      'data-action-mark-title': title,
-      'data-action-mark-target-receiver': target && target.receiver,
-      'data-action-mark-target-key': target && target.key,
-    }];
-  }
+    return [
+      'span',
+      {
+        'data-mark-type': 'action',
+        'data-action-mark-title': title,
+        'data-action-mark-target-receiver': target && target.receiver,
+        'data-action-mark-target-key': target && target.key,
+      },
+    ];
+  },
 };

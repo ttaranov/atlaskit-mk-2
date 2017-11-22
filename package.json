@@ -163,7 +163,7 @@
     "@atlaskit/input": "^1.6.0",
     "@atlaskit/media-card": "^22.2.0",
     "@atlaskit/media-core": "^11.0.0",
-    "@atlaskit/mention": "^7.6.0",
+    "@atlaskit/mention": "^8.1.0",
     "@atlaskit/modal-dialog": "^3.2.1",
     "@atlaskit/navigation": "^26.5.1",
     "@atlaskit/profilecard": "^3.7.1",
@@ -283,7 +283,7 @@
     ]
   },
   "lint-staged": {
-    "*.{js,ts}": [
+    "*.{js,ts,tsx}": [
       "prettier --write",
       "git add"
     ]

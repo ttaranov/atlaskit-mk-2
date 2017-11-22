@@ -1,31 +1,25 @@
-import { EditorView } from 'prosemirror-view';
-import { getMacroType } from './utils';
-import { MacroProvider, MacroParams, Macro } from './types';
+import { EditorState, Transaction } from 'prosemirror-state';
+import { Node as PmNode } from 'prosemirror-model';
+import { MacroProvider, MacroAdf } from './types';
 import { pluginKey } from './plugin';
 import * as assert from 'assert';
 
-export const insertMacroFromMacroBrowser = async (view: EditorView, macroProvider: MacroProvider, macroParams?: MacroParams) => {
+export const insertMacroFromMacroBrowser = (
+  macroProvider: MacroProvider,
+  macroNode?: PmNode,
+) => async (state: EditorState, dispatch: (tr: Transaction) => void) => {
   if (!macroProvider) {
     return;
   }
 
-  const newMacro: Macro = await macroProvider.openMacroBrowser(macroParams);
+  const newMacro: MacroAdf = await macroProvider.openMacroBrowser(macroNode);
   if (newMacro) {
-    const { state: { tr, schema }, dispatch } = view;
-    const {
-      macroId,
-      name,
-      placeholderUrl,
-      params,
-      displayType,
-      plainTextBody,
-      richTextBody
-    } = newMacro;
+    const { tr, schema } = state;
+    const { type, attrs } = newMacro;
     let node;
 
-    switch (getMacroType(displayType, plainTextBody, richTextBody)) {
-      case 'BODYLESS-INLINE':
-        node = schema.nodes.inlineMacro.create({ macroId, name, placeholderUrl, params });
+    if (type === 'inlineExtension') {
+      node = schema.nodes.inlineExtension.create(attrs);
     }
 
     if (node) {
@@ -34,33 +28,38 @@ export const insertMacroFromMacroBrowser = async (view: EditorView, macroProvide
   }
 };
 
-export const setMacroProvider = async (view: EditorView, name: string, provider: Promise<MacroProvider>) => {
+export const setMacroProvider = (provider: Promise<MacroProvider>) => async (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+) => {
   let resolvedProvider: MacroProvider | null;
-
   try {
     resolvedProvider = await provider;
     assert(
       resolvedProvider && resolvedProvider.openMacroBrowser,
-      `MacroProvider promise did not resolve to a valid instance of MacroProvider - ${resolvedProvider}`
+      `MacroProvider promise did not resolve to a valid instance of MacroProvider - ${
+        resolvedProvider
+      }`,
     );
-  } catch (err) { resolvedProvider = null; }
-
-  // make sure editable DOM node is mounted
-  if (view.dom.parentNode) {
-    view.dispatch(view.state.tr.setMeta(pluginKey, { macroProvider: resolvedProvider }));
+  } catch (err) {
+    resolvedProvider = null;
   }
+  dispatch(state.tr.setMeta(pluginKey, { macroProvider: resolvedProvider }));
 };
 
-export const setMacroElement = (view: EditorView, macroElement: HTMLElement | null) => {
-  view.dispatch(view.state.tr.setMeta(pluginKey, { macroElement }));
+export const setMacroElement = (macroElement: HTMLElement | null) => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+) => {
+  dispatch(state.tr.setMeta(pluginKey, { macroElement }));
 };
 
-export const removeMacro = (view: EditorView) => {
-  const { dispatch, state: { tr, selection } } = view;
-  const { $from, $to } = selection;
+export const removeMacro = (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+) => {
+  const { tr, selection: { $from, $to } } = state;
   dispatch(
-    tr
-      .delete($from.pos, $to.pos)
-      .setMeta(pluginKey, { macroElement: null })
+    tr.delete($from.pos, $to.pos).setMeta(pluginKey, { macroElement: null }),
   );
 };
