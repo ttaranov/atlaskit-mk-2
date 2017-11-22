@@ -419,7 +419,7 @@ describe('emojis', () => {
   });
 
   describe('focused', () => {
-    context('when editor is focused', () => {
+    describe('when editor is focused', () => {
       it('it is true', () => {
         const { plugin, pluginState, editorView } = editor(doc(p('te{<>}xt')));
         plugin.props.onFocus!(editorView, event);
@@ -428,7 +428,7 @@ describe('emojis', () => {
       });
     });
 
-    context('when editor is not focused', () => {
+    describe('when editor is not focused', () => {
       it('it is false', () => {
         const { plugin, pluginState, editorView } = editor(doc(p('te{<>}xt')));
         plugin.props.onBlur!(editorView, event);

@@ -1,7 +1,3 @@
-// @flow
-/* eslint-disable */
-// tslint:disable:no-console
-// tslint:disable:no-unused-expression
 import { EditorView } from 'prosemirror-view';
 
 export class NullSelectionReader {

@@ -16,8 +16,8 @@ import { analyticsService } from '../../src/analytics';
 import EditorWidth from '../../src/utils/editor-width';
 
 const mediaProvider: Promise<MediaProvider> = Promise.resolve({
-  viewContext: Promise.resolve({}),
-  uploadContext: Promise.resolve({})
+  viewContext: Promise.resolve({} as any),
+  uploadContext: Promise.resolve({} as any)
 });
 
 const providerFactory = new ProviderFactory();

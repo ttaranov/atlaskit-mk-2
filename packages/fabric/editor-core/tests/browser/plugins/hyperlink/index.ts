@@ -32,7 +32,7 @@ describe('hyperlink', () => {
 
   if (!browser.ie && !isMobileBrowser()) {
     describe('paste', () => {
-      context('url link is at beginning of plain text', () => {
+      describe('url link is at beginning of plain text', () => {
         it('should add link mark', function() {
           const { editorView } = editor(doc(paragraph('{<>}')));
           if (
@@ -57,7 +57,7 @@ describe('hyperlink', () => {
         });
       });
 
-      context('a string which is valid email is present in url', () => {
+      describe('a string which is valid email is present in url', () => {
         it('should not create separate mail link for email', function() {
           const { editorView } = editor(doc(paragraph('{<>}')));
           if (
@@ -81,7 +81,7 @@ describe('hyperlink', () => {
         });
       });
 
-      context('a string which is valid url is present in another url', () => {
+      describe('a string which is valid url is present in another url', () => {
         it('should not create separate mail link for email', function() {
           const { editorView } = editor(doc(paragraph('{<>}')));
           if (
@@ -105,7 +105,7 @@ describe('hyperlink', () => {
         });
       });
 
-      context('url link is at end of html text', () => {
+      describe('url link is at end of html text', () => {
         it('should add link mark', function() {
           const { editorView } = editor(doc(paragraph('{<>}')));
           if (
@@ -128,7 +128,7 @@ describe('hyperlink', () => {
         });
       });
 
-      context('url link without anchor tags in html', () => {
+      describe('url link without anchor tags in html', () => {
         it('should add link mark', function() {
           const { editorView } = editor(doc(paragraph('{<>}')));
           if (
@@ -153,36 +153,33 @@ describe('hyperlink', () => {
         });
       });
 
-      context(
-        'url link without anchor tags in html in middle of other text',
-        () => {
-          it('should add link mark', function() {
-            const { editorView } = editor(doc(paragraph('{<>}')));
-            if (
-              !dispatchPasteEvent(editorView, {
-                html: 'testing http://www.atlassian.com test',
-              })
-            ) {
-              // This environment does not allow mocking paste events
-              return this.skip();
-            }
-            expect(editorView.state.doc).to.deep.equal(
-              doc(
-                paragraph(
-                  'testing ',
-                  link({ href: 'http://www.atlassian.com' })(
-                    'http://www.atlassian.com',
-                  ),
-                  ' test',
+      describe('url link without anchor tags in html in middle of other text', () => {
+        it('should add link mark', function() {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          if (
+            !dispatchPasteEvent(editorView, {
+              html: 'testing http://www.atlassian.com test',
+            })
+          ) {
+            // This environment does not allow mocking paste events
+            return this.skip();
+          }
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              paragraph(
+                'testing ',
+                link({ href: 'http://www.atlassian.com' })(
+                  'http://www.atlassian.com',
                 ),
+                ' test',
               ),
-            );
-            editorView.destroy();
-          });
-        },
-      );
+            ),
+          );
+          editorView.destroy();
+        });
+      });
 
-      context('url link without anchor tags in html without other text', () => {
+      describe('url link without anchor tags in html without other text', () => {
         it('should add link mark', function() {
           const { editorView } = editor(doc(paragraph('{<>}')));
           if (
@@ -206,7 +203,7 @@ describe('hyperlink', () => {
         });
       });
 
-      context('email link is at middle of plain text', () => {
+      describe('email link is at middle of plain text', () => {
         it('should add link mark', function() {
           const { editorView } = editor(doc(paragraph('{<>}')));
           if (
@@ -231,7 +228,7 @@ describe('hyperlink', () => {
         });
       });
 
-      context('email link without anchor tags in html', () => {
+      describe('email link without anchor tags in html', () => {
         it('should add link mark', function() {
           const { editorView } = editor(doc(paragraph('{<>}')));
           if (
@@ -253,35 +250,32 @@ describe('hyperlink', () => {
         });
       });
 
-      context(
-        'email link without anchor tags in html in middle of other text',
-        () => {
-          it('should add link mark', function() {
-            const { editorView } = editor(doc(paragraph('{<>}')));
-            if (
-              !dispatchPasteEvent(editorView, {
-                html: 'test test@atlassian.com test',
-              })
-            ) {
-              return this.skip();
-            }
-            expect(editorView.state.doc).to.deep.equal(
-              doc(
-                paragraph(
-                  'test ',
-                  link({ href: 'mailto:test@atlassian.com' })(
-                    'test@atlassian.com',
-                  ),
-                  ' test',
+      describe('email link without anchor tags in html in middle of other text', () => {
+        it('should add link mark', function() {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          if (
+            !dispatchPasteEvent(editorView, {
+              html: 'test test@atlassian.com test',
+            })
+          ) {
+            return this.skip();
+          }
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              paragraph(
+                'test ',
+                link({ href: 'mailto:test@atlassian.com' })(
+                  'test@atlassian.com',
                 ),
+                ' test',
               ),
-            );
-            editorView.destroy();
-          });
-        },
-      );
+            ),
+          );
+          editorView.destroy();
+        });
+      });
 
-      context('email link is at end of html', () => {
+      describe('email link is at end of html', () => {
         it('should add link mark', function() {
           const { editorView } = editor(doc(paragraph('{<>}')));
           if (
@@ -304,35 +298,31 @@ describe('hyperlink', () => {
         });
       });
 
-      context(
-        'email link with inline style is pasted and then text is inserted',
-        () => {
-          it('should not apply inline style to inserted text', function() {
-            const { editorView } = editor(doc(paragraph('{<>}')));
-            if (
-              !dispatchPasteEvent(editorView, {
-                html:
-                  '<a href="mailto:test@atlassian.com"><b>Atlassian</b></a>',
-              })
-            ) {
-              // This environment does not allow mocking paste events
-              return this.skip();
-            }
-            insertText(editorView, 'abc', 10);
-            expect(editorView.state.doc).to.deep.equal(
-              doc(
-                paragraph(
-                  link({ href: 'mailto:test@atlassian.com' })(
-                    strong('Atlassian'),
-                  ),
-                  'abc',
+      describe('email link with inline style is pasted and then text is inserted', () => {
+        it('should not apply inline style to inserted text', function() {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          if (
+            !dispatchPasteEvent(editorView, {
+              html: '<a href="mailto:test@atlassian.com"><b>Atlassian</b></a>',
+            })
+          ) {
+            // This environment does not allow mocking paste events
+            return this.skip();
+          }
+          insertText(editorView, 'abc', 10);
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              paragraph(
+                link({ href: 'mailto:test@atlassian.com' })(
+                  strong('Atlassian'),
                 ),
+                'abc',
               ),
-            );
-            editorView.destroy();
-          });
-        },
-      );
+            ),
+          );
+          editorView.destroy();
+        });
+      });
     });
   }
 });

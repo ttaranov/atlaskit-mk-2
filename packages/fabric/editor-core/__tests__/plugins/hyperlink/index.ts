@@ -1,9 +1,7 @@
-import { browser } from '@atlaskit/editor-common';
 import hyperlinkPlugins, {
   HyperlinkState,
 } from '../../../src/plugins/hyperlink';
 import {
-  strong,
   createEvent,
   doc,
   insert,
@@ -14,9 +12,7 @@ import {
   makeEditor,
   p as paragraph,
   sendKeyToPm,
-  dispatchPasteEvent,
   defaultSchema,
-  isMobileBrowser,
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../src/utils';
 import { analyticsService } from '../../../src/analytics';

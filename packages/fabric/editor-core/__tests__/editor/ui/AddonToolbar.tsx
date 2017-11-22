@@ -25,7 +25,7 @@ describe(name, () => {
 
   const addons = addonConfigs.map(({ text, icon, actionOnClick, renderOnClick }, i) => (
     <Addon key={i} icon={icon} actionOnClick={actionOnClick} renderOnClick={renderOnClick}>
-      {text}
+      {text as any}
     </Addon>
   ));
 
