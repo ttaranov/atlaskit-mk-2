@@ -97,9 +97,9 @@ axios
   .then(response => {
     if (response && response.status === 201) {
       const newPipelinesUUID = response.data.uuid;
-      const newPipelineURL = `https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home#!/results/${
-        newPipelinesUUID
-      }`;
+      const newPipelineURL = `https://bitbucket.org/${REPO_OWNER}/${
+        REPO_SLUG
+      }/addon/pipelines/home#!/results/${newPipelinesUUID}`;
       console.log(`Successfully restarted pipeline at: ${newPipelineURL}`);
     }
   })
