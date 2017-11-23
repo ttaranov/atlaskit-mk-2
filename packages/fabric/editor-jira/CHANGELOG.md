@@ -1,5 +1,7 @@
 # @atlaskit/editor-jira
 
+## 22.8.4
+
 ## 22.8.2
 - [patch] Upgrade mention to ^8.1.0 in editor and renderer [48b5af4](48b5af4)
 - [patch] Upgrade mention to ^8.1.0 in editor and renderer [48b5af4](48b5af4)

@@ -1,5 +1,11 @@
 # @atlaskit/editor-common
 
+## 3.9.6
+
+
+- [patch] Updated media-card Appearance type to include "auto" [e1f8390](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e1f8390)
+- [patch] Updated media-card Appearance type to include "auto" [e1f8390](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e1f8390)
+
 ## 3.9.4
 - [patch] re-enable backwards compatibility tests [32e0ccb](32e0ccb)
 - [patch] re-enable backwards compatibility tests [32e0ccb](32e0ccb)

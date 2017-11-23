@@ -1,5 +1,7 @@
 # @atlaskit/editor-test-helpers
 
+## 0.8.4
+
 ## 0.8.2
 
 ## 0.8.1
