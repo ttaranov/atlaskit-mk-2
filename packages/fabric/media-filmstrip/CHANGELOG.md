@@ -1,5 +1,11 @@
 # @atlaskit/media-filmstrip
 
+## 5.5.1
+- [patch] Use correct dependencies  [7b178b1](7b178b1)
+- [patch] Use correct dependencies  [7b178b1](7b178b1)
+- [patch] Adding responsive behavior to the editor. [e0d9867](e0d9867)
+- [patch] Adding responsive behavior to the editor. [e0d9867](e0d9867)
+
 ## 5.5.0
 - [minor] Upgrade Media Editor packages [193c8a0](193c8a0)
 

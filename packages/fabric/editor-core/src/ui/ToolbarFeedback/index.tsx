@@ -5,12 +5,16 @@ import Spinner from '@atlaskit/spinner';
 import { analyticsDecorator as analytics } from '../../analytics';
 import ToolbarButton from '../ToolbarButton';
 import { version as coreVersion } from '../../../package.json';
+import EditorWidth from '../../utils/editor-width';
+
+import { Wrapper, ButtonContent } from './styles';
 
 const JIRA_ISSUE_COLLECTOR_URL = 'https://product-fabric.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-j519ub/b/c/78bd26fb4be69a8bdb879359a9397e96/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs.js?locale=en-US&collectorId=305d3263';
 
 export interface Props {
   packageVersion?: string;
   packageName?: string;
+  editorWidth?: number;
 }
 
 export interface State {
@@ -37,20 +41,23 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
     const iconBefore = this.state.jiraIssueCollectorScriptLoading
       ? <Spinner isCompleting={false} onComplete={this.handleSpinnerComplete} />
       : undefined;
+    const { editorWidth } = this.props;
 
     // JIRA issue collector script is using jQuery internally
     return this.hasJquery()
       ? (
-        <span style={{ display: 'inline-block' }}>
+        <Wrapper width={editorWidth && (editorWidth > EditorWidth.BreakPoint6 ? 'large' : 'small')}>
           <ToolbarButton
             iconBefore={iconBefore}
             onClick={this.openFeedbackPopup}
             selected={false}
-            spacing="compact"
+            spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
           >
-            Feedback
+            <ButtonContent>
+              Feedback
+            </ButtonContent>
           </ToolbarButton>
-        </span>
+        </Wrapper>
       )
       : null;
   }

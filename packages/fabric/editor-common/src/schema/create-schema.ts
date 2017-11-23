@@ -13,7 +13,7 @@ import {
   emojiQuery,
   textColor,
   confluenceInlineComment,
-  action
+  action,
 } from './marks';
 
 import {
@@ -47,7 +47,6 @@ import {
   decisionItem,
   taskList,
   taskItem,
-  inlineMacro,
   unknownBlock,
   extension,
   inlineExtension,
@@ -56,7 +55,7 @@ import {
 function addItems(
   builtInItems: SchemaBuiltInItem[],
   config: string[],
-  customSpecs: SchemaCustomNodeSpecs | SchemaCustomMarkSpecs = {}
+  customSpecs: SchemaCustomNodeSpecs | SchemaCustomMarkSpecs = {},
 ) {
   if (!config) {
     return {};
@@ -111,7 +110,7 @@ const markGroupDeclarations = [
 ];
 
 const markGroupDeclarationsNames = markGroupDeclarations.map(
-  groupMark => groupMark.name
+  groupMark => groupMark.name,
 );
 
 const nodesInOrder: SchemaBuiltInItem[] = [
@@ -145,7 +144,6 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'decisionItem', spec: decisionItem },
   { name: 'taskList', spec: taskList },
   { name: 'taskItem', spec: taskItem },
-  { name: 'inlineMacro', spec: inlineMacro },
   { name: 'extension', spec: extension },
   { name: 'inlineExtension', spec: inlineExtension },
   { name: 'unknownBlock', spec: unknownBlock },

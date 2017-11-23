@@ -1,13 +1,36 @@
-import { DisplayType, BodyType, MacroType } from './types';
+import { Node as PmNode } from 'prosemirror-model';
 
-export const getMacroType = (displayType: DisplayType, plainTextBody?: string, richTextBody?: any): MacroType => {
-  let bodyType: BodyType = 'BODYLESS';
+export interface Params {
+  node: PmNode;
+  type: 'image' | 'icon';
+}
 
-  if (richTextBody) {
-    bodyType = 'RICH-TEXT-BODY';
-  } else if (plainTextBody) {
-    bodyType = 'PLAIN-TEXT-BODY';
+export const getPlaceholderUrl = ({
+  node,
+  type,
+}: Params): string | undefined => {
+  if (!node.attrs.parameters) {
+    return;
   }
+  const { macroMetadata } = node.attrs.parameters;
+  if (macroMetadata && macroMetadata.placeholder) {
+    let placeholderUrl;
+    macroMetadata.placeholder.forEach(placeholder => {
+      if (placeholder.type === type) {
+        placeholderUrl = placeholder.data.url;
+      }
+    });
 
-  return `${bodyType}-${displayType}` as MacroType;
+    return placeholderUrl;
+  }
+};
+
+export const getMacroId = (node: PmNode): string | undefined => {
+  if (!node.attrs.parameters) {
+    return;
+  }
+  const { macroMetadata } = node.attrs.parameters;
+  if (macroMetadata && macroMetadata.macroId) {
+    return macroMetadata.macroId.value;
+  }
 };

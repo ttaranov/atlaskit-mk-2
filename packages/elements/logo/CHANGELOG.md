@@ -1,5 +1,10 @@
 # @atlaskit/logo
 
+## 6.0.3
+- [patch] Logo component gradients no work in Firefox and Safari [6d1f521](6d1f521)
+
+## 6.0.2
+
 ## 6.0.0 (2017-11-09)
 
 * breaking; Removed the collapseTo prop in favour of explicit named exports (see below).

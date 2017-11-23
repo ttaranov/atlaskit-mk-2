@@ -263,19 +263,6 @@ describe('@atlaskit/editor-bitbucket/toolbar', () => {
     trigger.simulate('click');
     expect(editorWrapper.find('ToolbarBlockType Group').length).to.equal(0);
   });
-
-  it('should have option of tables in advance menu', () => {
-    const toolbarInsertBlock = editorWrapper.find('ToolbarInsertBlock');
-    const trigger = toolbarInsertBlock.find('ToolbarButton');
-
-    trigger.simulate('click');
-
-    const tableButton = toolbarInsertBlock
-      .find('Item')
-      .filterWhere(n => n.text().indexOf('Table') > 0)
-      .find('Element');
-    expect(tableButton.length).to.equal(1);
-  });
 });
 
 describe.skip('@atlaskit/editor-bitbucket/pasting', () => {

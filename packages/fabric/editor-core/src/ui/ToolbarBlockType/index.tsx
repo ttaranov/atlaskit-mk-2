@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
+import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
+import TextColorIcon from '@atlaskit/icon/glyph/editor/text-style';
 import ToolbarButton from '../ToolbarButton';
 import { findKeymapByDescription, tooltip } from '../../keymaps';
 import { analyticsService as analytics } from '../../analytics';
@@ -8,10 +9,12 @@ import { BlockTypeState } from '../../plugins/block-type';
 import { BlockType } from '../../plugins/block-type/types';
 import { EditorView } from 'prosemirror-view';
 import DropdownMenu from '../DropdownMenu';
-import { ButtonContent, ExpandIconWrapper } from './styles';
+import EditorWidth from '../../utils/editor-width';
+import { ButtonContent, Separator, Wrapper, MenuWrapper, ExpandIconWrapper } from './styles';
 
 export interface Props {
   isDisabled?: boolean;
+  editorWidth?: number;
   editorView: EditorView;
   pluginState: BlockTypeState;
   popupsMountPoint?: HTMLElement;
@@ -54,46 +57,59 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
 
   render() {
     const { active, currentBlockType, blockTypesDisabled, availableBlockTypes } = this.state;
-    const { popupsMountPoint, popupsBoundariesElement } = this.props;
+    const { popupsMountPoint, popupsBoundariesElement, editorWidth } = this.props;
     const blockTypeTitles = availableBlockTypes
       .filter(blockType => blockType.name === currentBlockType.name)
       .map(blockType => blockType.title);
 
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
+        spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
         selected={active}
         disabled={disabled}
         onClick={this.handleTriggerClick}
         iconAfter={
-          <ExpandIconWrapper>
-            <ExpandIcon label="Change formatting" />
-          </ExpandIconWrapper>
+          <Wrapper>
+            {(editorWidth! <= EditorWidth.BreakPoint1) && <TextColorIcon label="Change formatting" />}
+            <ExpandIconWrapper>
+              <ExpandIcon label="Change formatting" />
+            </ExpandIconWrapper>
+          </Wrapper>
         }
       >
-        <ButtonContent>{blockTypeTitles[0] || 'Normal text'}</ButtonContent>
+        {(!editorWidth || editorWidth > EditorWidth.BreakPoint1) &&
+        <ButtonContent width={editorWidth}>
+          {blockTypeTitles[0] || 'Normal text'}
+        </ButtonContent>}
       </ToolbarButton>
     );
 
     if (!this.props.isDisabled && !blockTypesDisabled) {
       const items = this.createItems();
       return (
-        <DropdownMenu
-          items={items}
-          onOpenChange={this.onOpenChange}
-          onItemActivated={this.handleSelectBlockType}
-          isOpen={active}
-          mountTo={popupsMountPoint}
-          boundariesElement={popupsBoundariesElement}
-          fitHeight={360}
-          fitWidth={106}
-        >
-          {toolbarButtonFactory(false)}
-        </DropdownMenu>
+        <MenuWrapper>
+          <DropdownMenu
+            items={items}
+            onOpenChange={this.onOpenChange}
+            onItemActivated={this.handleSelectBlockType}
+            isOpen={active}
+            mountTo={popupsMountPoint}
+            boundariesElement={popupsBoundariesElement}
+            fitHeight={360}
+            fitWidth={106}
+          >
+            {toolbarButtonFactory(false)}
+          </DropdownMenu>
+          <Separator />
+        </MenuWrapper>
       );
     }
 
     return (
-      <span>{toolbarButtonFactory(true)}</span>
+      <Wrapper>
+        {toolbarButtonFactory(true)}
+        <Separator />
+      </Wrapper>
     );
 
   }

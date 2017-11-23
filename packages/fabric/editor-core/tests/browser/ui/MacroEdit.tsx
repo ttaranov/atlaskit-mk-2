@@ -40,7 +40,7 @@ describe('@atlaskit/editor-core ui/MacroEdit', () => {
       <MacroEdit
         macroElement={macroElement}
         onRemoveMacro={removeMacro}
-        onInsertMacroFromMacroBrowser={insertMacroFromMacroBrowser}
+        onInsertMacroFromMacroBrowser={() => insertMacroFromMacroBrowser}
         editorView={editorView}
       />
     );

@@ -1,0 +1,16 @@
+{
+  "name": "@atlaskit/ci-scripts",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A collection of scripts for use in CI",
+  "main": "index.js",
+  "scripts": {
+    "stop-if-older-build": "node ./release.stop.pipeline.if.older.build.running.js",
+    "restart-stopped-build": "node ./release.restart.last.stopped.build.js"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "axios": "^0.17.1"
+  }
+}

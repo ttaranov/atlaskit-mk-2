@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import AdvancedIcon from '@atlaskit/icon/glyph/editor/advanced';
-import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
+import MoreIcon from '@atlaskit/icon/glyph/editor/more';
 import { EditorView } from 'prosemirror-view';
 import { analyticsService } from '../../analytics';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import ToolbarButton from '../ToolbarButton';
-import { toggleUnderline, toggleStrikethrough, clearFormatting, tooltip } from '../../keymaps';
-import { TriggerWrapper, ExpandIconWrapper } from './styles';
+import { toggleUnderline, toggleStrikethrough, toggleCode, clearFormatting, tooltip } from '../../keymaps';
+import EditorWidth from '../../utils/editor-width';
 import DropdownMenu from '../DropdownMenu';
+import { TriggerWrapper, Wrapper, Separator } from './styles';
 
 export interface Props {
   isDisabled?: boolean;
@@ -18,6 +18,7 @@ export interface Props {
   pluginStateClearFormatting?: ClearFormattingState | undefined;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  editorWidth?: number;
 }
 
 export interface State {
@@ -25,6 +26,9 @@ export interface State {
   underlineActive?: boolean;
   underlineDisabled?: boolean;
   underlineHidden?: boolean;
+  codeActive?: boolean;
+  codeDisabled?: boolean;
+  codeHidden?: boolean;
   strikethroughActive?: boolean;
   strikethroughDisabled?: boolean;
   strikeHidden?: boolean;
@@ -75,63 +79,89 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   render() {
     const {
       isOpen,
+      codeActive,
       underlineActive,
       strikethroughActive,
+      subscriptActive,
+      superscriptActive,
+      codeDisabled,
+      underlineDisabled,
       strikethroughDisabled,
       clearFormattingDisabled,
+      subscriptDisabled,
+      superscriptDisabled
     } = this.state;
-    const { popupsMountPoint, popupsBoundariesElement } = this.props;
-    const items = this.createItems();
+    const { popupsMountPoint, popupsBoundariesElement, editorWidth } = this.props;
+    const items = this.createItems(editorWidth);
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
-        selected={isOpen || underlineActive || strikethroughActive}
+        spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
+        selected={
+          isOpen ||
+          (underlineActive && editorWidth! <= EditorWidth.BreakPoint2) ||
+          codeActive ||
+          strikethroughActive ||
+          subscriptActive ||
+          superscriptActive
+        }
         disabled={disabled}
         onClick={this.handleTriggerClick}
         iconBefore={
           <TriggerWrapper>
-            <AdvancedIcon label="Open or close advance text formatting dropdown"/>
-            <ExpandIconWrapper>
-              <ExpandIcon label="Open or close advance text formatting dropdown" />
-            </ExpandIconWrapper>
+            <MoreIcon label="Open or close advance text formatting dropdown"/>
           </TriggerWrapper>}
       />
     );
 
     if (!this.props.isDisabled &&
-      !(strikethroughDisabled && clearFormattingDisabled) &&
+      !(strikethroughDisabled && clearFormattingDisabled &&
+        codeDisabled && subscriptDisabled && superscriptDisabled &&
+        (underlineDisabled && (!editorWidth || editorWidth <= EditorWidth.BreakPoint2))
+      ) &&
       items[0].items.length > 0) {
       return (
-        <DropdownMenu
-          items={items}
-          onItemActivated={this.onItemActivated}
-          onOpenChange={this.onOpenChange}
-          mountTo={popupsMountPoint}
-          boundariesElement={popupsBoundariesElement}
-          isOpen={isOpen}
-          fitHeight={188}
-          fitWidth={136}
-        >
-          {toolbarButtonFactory(false)}
-        </DropdownMenu>
+        <Wrapper>
+          <DropdownMenu
+            items={items}
+            onItemActivated={this.onItemActivated}
+            onOpenChange={this.onOpenChange}
+            mountTo={popupsMountPoint}
+            boundariesElement={popupsBoundariesElement}
+            isOpen={isOpen}
+            fitHeight={188}
+            fitWidth={136}
+          >
+            {toolbarButtonFactory(false)}
+          </DropdownMenu>
+          <Separator />
+        </Wrapper>
       );
     } else {
       return (
-        <div>{toolbarButtonFactory(true)}</div>
+        <Wrapper>
+          <div>
+            {toolbarButtonFactory(true)}
+          </div>
+          <Separator />
+        </Wrapper>
       );
     }
   }
 
-  private createItems = () => {
+  private createItems = (editorWidth?: number) => {
     const { pluginStateTextFormatting, pluginStateClearFormatting } = this.props;
     let items: any[] = [];
 
     if (pluginStateTextFormatting) {
-      const { underlineHidden, strikeHidden, subscriptHidden, superscriptHidden } = this.state;
-      if (!underlineHidden) {
+      const { underlineHidden, codeHidden, strikeHidden, subscriptHidden, superscriptHidden } = this.state;
+      if (!underlineHidden && editorWidth! <= EditorWidth.BreakPoint2) {
         this.addRecordToItems(items, 'Underline', 'underline', tooltip(toggleUnderline));
       }
       if (!strikeHidden) {
         this.addRecordToItems(items, 'Strikethrough', 'strikethrough', tooltip(toggleStrikethrough));
+      }
+      if (!codeHidden) {
+        this.addRecordToItems(items, 'Monospace', 'code', tooltip(toggleCode));
       }
       if (!subscriptHidden) {
         this.addRecordToItems(items, 'Subscript', 'subscript', 'Toggle subscript');
@@ -165,6 +195,10 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
       underlineDisabled: pluginState.underlineDisabled,
       underlineHidden: pluginState.underlineHidden,
 
+      codeActive: pluginState.codeActive,
+      codeDisabled: pluginState.codeDisabled,
+      codeHidden: pluginState.codeHidden,
+
       strikethroughActive: pluginState.strikeActive,
       strikethroughDisabled: pluginState.strikeDisabled,
       strikeHidden: pluginState.strikeHidden,
@@ -191,6 +225,9 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     switch(item.value) {
       case 'underline':
         pluginStateTextFormatting!.toggleUnderline(this.props.editorView);
+        break;
+      case 'code':
+        pluginStateTextFormatting!.toggleCode(this.props.editorView);
         break;
       case 'strikethrough':
         pluginStateTextFormatting!.toggleStrike(this.props.editorView);

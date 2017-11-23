@@ -24,7 +24,7 @@ import {
 import { MediaAttributes } from '../..';
 import { CardEventClickHandler } from '../EventHandlers';
 
-export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
+export type Appearance = 'auto' | 'small' | 'image' | 'horizontal' | 'square';
 
 // This is being used by DropPlaceholder now
 export const MEDIA_HEIGHT = 125;

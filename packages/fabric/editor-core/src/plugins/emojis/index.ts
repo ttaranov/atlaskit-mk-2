@@ -1,8 +1,16 @@
-import { EmojiId, EmojiProvider, EmojiSearchResult, EmojiDescription } from '@atlaskit/emoji';
+import {
+  EmojiId,
+  EmojiProvider,
+  EmojiSearchResult,
+  EmojiDescription,
+} from '@atlaskit/emoji';
 import { Schema } from 'prosemirror-model';
 import { EditorState, Plugin } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { isMarkTypeAllowedInCurrentSelection, isChromeWithSelectionBug } from '../../utils';
+import {
+  isMarkTypeAllowedInCurrentSelection,
+  isChromeWithSelectionBug,
+} from '../../utils';
 import { inputRulePlugin } from './input-rules';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
@@ -51,7 +59,7 @@ export class EmojiState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  notifySubscribers () {
+  notifySubscribers() {
     this.changeHandlers.forEach(cb => cb(this));
   }
 
@@ -80,8 +88,8 @@ export class EmojiState {
         this.queryActive = true;
       }
 
-      const { nodeBefore, /*nodeAfter*/ } = selection.$from;
-      const newQuery = (nodeBefore && nodeBefore.textContent || '');
+      const { nodeBefore /*nodeAfter*/ } = selection.$from;
+      const newQuery = (nodeBefore && nodeBefore.textContent) || '';
 
       if (this.query !== newQuery) {
         dirty = true;
@@ -93,7 +101,9 @@ export class EmojiState {
       return;
     }
 
-    const newAnchorElement = this.view.dom.querySelector('[data-emoji-query]') as HTMLElement;
+    const newAnchorElement = this.view.dom.querySelector(
+      '[data-emoji-query]',
+    ) as HTMLElement;
     if (newAnchorElement !== this.anchorElement) {
       dirty = true;
       this.anchorElement = newAnchorElement;
@@ -118,7 +128,7 @@ export class EmojiState {
       view.dispatch(
         tr
           .removeMark(0, state.doc.nodeSize - 2, markType)
-          .removeStoredMark(markType)
+          .removeStoredMark(markType),
       );
     }
 
@@ -170,7 +180,10 @@ export class EmojiState {
 
     if (emoji && emojiId) {
       const { start, end } = this.findEmojiQueryMark();
-      const node = emoji.create({ ...emojiId, text: emojiId.fallback || emojiId.shortName });
+      const node = emoji.create({
+        ...emojiId,
+        text: emojiId.fallback || emojiId.shortName,
+      });
       const textNode = state.schema.text(' ');
 
       // This problem affects Chrome v58-62. See: https://github.com/ProseMirror/prosemirror/issues/710
@@ -178,9 +191,7 @@ export class EmojiState {
         document.getSelection().empty();
       }
 
-      view.dispatch(
-        state.tr.replaceWith(start, end, [node, textNode])
-      );
+      view.dispatch(state.tr.replaceWith(start, end, [node, textNode]));
       view.focus();
       this.queryActive = false;
       this.query = undefined;
@@ -192,20 +203,22 @@ export class EmojiState {
   handleProvider = (name: string, provider: Promise<any>): void => {
     switch (name) {
       case 'emojiProvider':
-        provider.then((emojiProvider: EmojiProvider) => {
-          this.emojiProvider = emojiProvider;
-          if (this.emojiProvider) {
-            this.emojiProvider.subscribe(this.onProviderChange);
-          }
-        }).catch(() => {
-          if (this.emojiProvider) {
-            this.emojiProvider.unsubscribe(this.onProviderChange);
-          }
-          this.emojiProvider = undefined;
-        });
+        provider
+          .then((emojiProvider: EmojiProvider) => {
+            this.emojiProvider = emojiProvider;
+            if (this.emojiProvider) {
+              this.emojiProvider.subscribe(this.onProviderChange);
+            }
+          })
+          .catch(() => {
+            if (this.emojiProvider) {
+              this.emojiProvider.unsubscribe(this.onProviderChange);
+            }
+            this.emojiProvider = undefined;
+          });
         break;
     }
-  }
+  };
 
   trySelectCurrent = (): boolean => {
     const emojisCount = this.getEmojisCount();
@@ -217,24 +230,24 @@ export class EmojiState {
     }
 
     return false;
-  }
+  };
 
-  updateEditorFocused (focused: boolean) {
+  updateEditorFocused(focused: boolean) {
     this.focused = focused;
     this.notifySubscribers();
   }
 
   private getEmojisCount = (): number => {
     return (this.queryResult && this.queryResult.length) || 0;
-  }
+  };
 
   private isEmptyQuery = (): boolean => {
     return !this.query || this.query === ':';
-  }
+  };
 
   onSearchResult = (searchResults: EmojiSearchResult): void => {
     this.queryResult = searchResults.emojis;
-  }
+  };
 
   private onProviderChange = {
     result: this.onSearchResult,
@@ -254,18 +267,18 @@ export function createPlugin(providerFactory: ProviderFactory) {
       apply(tr, pluginState, oldState, newState) {
         // NOTE: Don't call pluginState.update here.
         return pluginState;
-      }
+      },
     },
     props: {
       nodeViews: {
-        emoji: nodeViewFactory(providerFactory, { emoji: emojiNodeView })
+        emoji: nodeViewFactory(providerFactory, { emoji: emojiNodeView }),
       },
       onFocus(view: EditorView, event) {
         stateKey.getState(view.state).updateEditorFocused(true);
       },
       onBlur(view: EditorView, event) {
         stateKey.getState(view.state).updateEditorFocused(false);
-      }
+      },
     },
     key: stateKey,
     view: (view: EditorView) => {
@@ -277,15 +290,22 @@ export function createPlugin(providerFactory: ProviderFactory) {
           pluginState.update(view.state);
         },
         destroy() {
-          providerFactory.unsubscribe('emojiProvider', pluginState.handleProvider);
-        }
+          providerFactory.unsubscribe(
+            'emojiProvider',
+            pluginState.handleProvider,
+          );
+        },
       };
-    }
+    },
   });
 }
 
 const plugins = (schema: Schema, providerFactory) => {
-  return [createPlugin(providerFactory), inputRulePlugin(schema), keymapPlugin(schema)].filter(plugin => !!plugin) as Plugin[];
+  return [
+    createPlugin(providerFactory),
+    inputRulePlugin(schema),
+    keymapPlugin(schema),
+  ].filter(plugin => !!plugin) as Plugin[];
 };
 
 export default plugins;

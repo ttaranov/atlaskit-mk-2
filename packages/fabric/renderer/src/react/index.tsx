@@ -19,6 +19,7 @@ import {
   mergeTextNodes,
   isTextWrapper,
   TextWrapper,
+  isEmojiDoc,
   toReact,
 } from './nodes';
 
@@ -28,6 +29,8 @@ import {
 
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { EventHandlers } from '@atlaskit/editor-common';
+
+import { bigEmojiHeight } from '../utils';
 
 export interface RendererContext {
   objectAri: string;
@@ -47,12 +50,14 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   }
 
   serializeFragment(fragment: Fragment, props: any = {}, target: any = Doc, key: string = 'root-0'): JSX.Element | null {
+    const emojiBlock = isEmojiDoc(fragment, props);
     const content = ReactSerializer.getChildNodes(fragment).map((node, index) => {
       if (isTextWrapper(node.type.name)) {
         return this.serializeTextWrapper((node as TextWrapper).content);
       }
+      const props = emojiBlock ? this.getEmojiBlockProps(node as Node) : this.getProps(node as Node);
 
-      return this.serializeFragment((node as Node).content, this.getProps(node as Node), toReact(node as Node), `${node.type.name}-${index}`);
+      return this.serializeFragment((node as Node).content, props, toReact(node as Node), `${node.type.name}-${index}`);
     });
 
     return this.renderNode(target, props, key, content);
@@ -89,6 +94,13 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
         {content}
       </Mark>
     );
+  }
+
+  private getEmojiBlockProps(node: Node) {
+    return {
+      ...this.getProps(node),
+      fitToHeight: bigEmojiHeight,
+    };
   }
 
   private getProps(node: Node) {

@@ -608,6 +608,15 @@ export const getValidNode = (
         }
         break;
       }
+      case 'image': {
+        if (attrs && attrs.src) {
+          return {
+            type,
+            attrs,
+          };
+        }
+        break;
+      }
     }
   }
 

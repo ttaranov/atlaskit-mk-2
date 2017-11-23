@@ -24,7 +24,7 @@ import {
   unsupportedContentPlugin,
   panelPlugin,
   macroPlugin,
-  confluenceInlineComment
+  confluenceInlineComment,
 } from '../plugins';
 
 /**
@@ -41,7 +41,8 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   const plugins = getDefaultPluginsList();
 
   if (props.allowTextFormatting) {
-    const options = props.allowTextFormatting === true ? {} : props.allowTextFormatting;
+    const options =
+      props.allowTextFormatting === true ? {} : props.allowTextFormatting;
     plugins.push(textFormattingPlugin(options));
   }
 
@@ -49,12 +50,12 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(textColorPlugin);
   }
 
-  if (props.allowHyperlinks) {
-    plugins.push(hyperlinkPlugin);
-  }
-
   if (props.allowLists) {
     plugins.push(listsPlugin);
+  }
+
+  if (props.allowHyperlinks) {
+    plugins.push(hyperlinkPlugin);
   }
 
   if (props.allowCodeBlocks) {
@@ -97,27 +98,27 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(collabEditPlugin);
   }
 
-  if(props.maxContentSize) {
+  if (props.maxContentSize) {
     plugins.push(maxContentSizePlugin);
   }
 
-  if(props.allowJiraIssue) {
+  if (props.allowJiraIssue) {
     plugins.push(jiraIssuePlugin);
   }
 
-  if(props.allowUnsupportedContent) {
+  if (props.allowUnsupportedContent) {
     plugins.push(unsupportedContentPlugin);
   }
 
-  if(props.allowPanel) {
+  if (props.allowPanel) {
     plugins.push(panelPlugin);
   }
 
-  if(props.allowInlineMacro) {
+  if (props.allowInlineExtension) {
     plugins.push(macroPlugin);
   }
 
-  if(props.allowConfluenceInlineComment) {
+  if (props.allowConfluenceInlineComment) {
     plugins.push(confluenceInlineComment);
   }
 

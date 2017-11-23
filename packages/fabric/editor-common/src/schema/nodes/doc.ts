@@ -22,7 +22,6 @@ import { Definition as Text } from './text';
 import { Definition as HardBreak } from './hard-break';
 import { Definition as Mention } from './mention';
 import { Definition as Emoji } from './emoji';
-import { Definition as InlineMacro } from './inline-macro';
 
 // Marks
 import { Definition as Link } from '../marks/link';
@@ -97,7 +96,9 @@ export interface NoMark {
  * @name formatted_text_inline_node
  */
 export type InlineFormattedText = Text &
-  MarksObject<Link | Em | Strong | Strike | SubSup | Underline | TextColor | Action>;
+  MarksObject<
+    Link | Em | Strong | Strike | SubSup | Underline | TextColor | Action
+  >;
 
 /**
  * @name link_text_inline_node
@@ -112,12 +113,7 @@ export type InlineCode = Text & MarksObject<Code | Link>;
 /**
  * @name atomic_inline_node
  */
-export type InlineAtomic =
-  | HardBreak
-  | Mention
-  | Emoji
-  | InlineMacro
-  | InlineExtension;
+export type InlineAtomic = HardBreak | Mention | Emoji | InlineExtension;
 
 /**
  * @name inline_node

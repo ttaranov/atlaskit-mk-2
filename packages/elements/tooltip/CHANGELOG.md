@@ -1,5 +1,13 @@
 # @atlaskit/tooltip
 
+## 8.0.4
+
+## 8.0.3
+- [patch] Use correct dependencies  [7b178b1](7b178b1)
+- [patch] Use correct dependencies  [7b178b1](7b178b1)
+- [patch] Adding responsive behavior to the editor. [e0d9867](e0d9867)
+- [patch] Adding responsive behavior to the editor. [e0d9867](e0d9867)
+
 ## 8.0.0 (2017-11-10)
 
 * This was an accidental release - do no use, go directly to 8.0.1

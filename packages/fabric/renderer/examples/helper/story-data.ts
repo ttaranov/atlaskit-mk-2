@@ -109,14 +109,14 @@ export const document = {
                 title: 'test action mark',
                 target: {
                   receiver: 'some-receiver',
-                  key: 'some-key'
+                  key: 'some-key',
                 },
                 parameters: {
-                  test: 20
-                }
-              }
-            }
-          ]
+                  test: 20,
+                },
+              },
+            },
+          ],
         },
         {
           type: 'text',
@@ -127,16 +127,16 @@ export const document = {
               attrs: {
                 title: 'test action mark',
                 target: {
-                  receiver: 'some-receiver'
+                  receiver: 'some-receiver',
                 },
                 parameters: {
-                  test: 30
-                }
-              }
-            }
-          ]
+                  test: 30,
+                },
+              },
+            },
+          ],
         },
-      ]
+      ],
     },
     {
       type: 'paragraph',
@@ -678,6 +678,19 @@ System.out.println("There are " + count + " values >= 5");`,
           type: 'media',
           attrs: {
             type: 'link',
+            id: '410f38f7-ce31-4527-a69d-740e958bf1d1',
+            collection: 'MediaServicesSample',
+          },
+        },
+      ],
+    },
+    {
+      type: 'mediaGroup',
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            type: 'link',
             id: '15a9fb95-2d72-4d28-b338-00fd6bea121b',
             collection: 'MediaServicesSample',
           },
@@ -931,6 +944,25 @@ System.out.println("There are " + count + " values >= 5");`,
     },
     {
       type: 'rule',
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text:
+            'Do not use this image node; it may be removed at any time without notice.',
+        },
+        {
+          type: 'image',
+          attrs: {
+            src:
+              'https://www.google.com.au/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
+            alt: 'Google Logo',
+            title: 'Google!',
+          },
+        },
+      ],
     },
     {
       type: 'applicationCard',

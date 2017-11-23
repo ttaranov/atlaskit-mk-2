@@ -8,6 +8,7 @@ const cli = require('../../utils/cli');
 const logger = require('../../utils/logger');
 const createReleaseNotesFile = require('./createReleaseNotesFile');
 const promptAndAssembleReleaseTypes = require('./promptAndAssembleReleaseTypes');
+const inquirer = require('inquirer');
 
 /* Changeset object format (TODO: User flow!!!)
   {
@@ -67,20 +68,34 @@ async function getAllDependents(packagesToRelease, opts = {}) {
 
 async function createChangeset(
   changedPackages /*: Array<string> */,
-  opts /*: { cwd?: string }  */ = {}
+  opts /*: { cwd?: string }  */ = {},
 ) {
   const cwd = opts.cwd || process.cwd();
+  const allPackages = await bolt.getWorkspaces({ cwd });
   const changeset /*: changesetType */ = {
     summary: '',
     releases: [],
     dependents: [],
   };
 
+  let unchangedPackages = [];
+
+  for (let pkg of allPackages) {
+    if (!changedPackages.includes(pkg.name)) unchangedPackages.push(pkg.name);
+  }
+
+  const inquirerList = [
+    new inquirer.Separator('changed packages'),
+    ...changedPackages,
+    new inquirer.Separator('unchanged packages'),
+    ...unchangedPackages,
+    new inquirer.Separator(),
+  ];
+
   const packagesToRelease = await cli.askCheckbox(
     'Which packages would you like to include?',
-    changedPackages,
+    inquirerList,
   );
-
   /** Get released packages and bumptypes */
 
   for (const pkg of packagesToRelease) {
@@ -102,7 +117,7 @@ async function createChangeset(
 
   const dependents /*: Array<dependentType> */ = await getAllDependents(
     packagesToRelease,
-    { cwd }
+    { cwd },
   );
 
   // This modifies the above dependents array to add a 'type' property to all

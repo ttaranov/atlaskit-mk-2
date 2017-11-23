@@ -36,7 +36,7 @@
     "start:fabric": "                        WEBSITE=fabric   yarn run website:start",
     "start:media": "                         WEBSITE=media    yarn run website:start",
     "start:editor": "                        WEBSITE=editor   yarn run website:start",
-    "changeset": "                           projector ./projector changeset",
+    "changeset": "                           node ./runChangeset",
     "release": "                             projector ./projector release",
     "build:editor-common:json-schema": "     cd packages/fabric/editor-common && yarn run build:json-schema && echo 'Done.'"
   },
@@ -49,7 +49,10 @@
       "packages/fabric/*",
       "patterns",
       "website"
-    ]
+    ],
+    "releases": {
+      "baseCommitUrl": "https://bitbucket.org/atlassian/atlaskit-mk-2/commits"
+    }
   },
   "devDependencies": {
     "@atlaskit/eslint-config-base": "^2.0.7",
@@ -82,7 +85,6 @@
     "copy-pkg": "^1.0.0",
     "css-loader": "^0.28.0",
     "custom-event-polyfill": "^0.3.0",
-    "enquirer": "^1.0.2",
     "enzyme": "^2.9.1",
     "eslint": "^4.8.0",
     "eslint-config-airbnb": "^15.1.0",
@@ -159,18 +161,17 @@
     "@atlaskit/field-range": "^2.0.0",
     "@atlaskit/field-text": "^4.0.0",
     "@atlaskit/flag": "^6.1.5",
-    "@atlaskit/icon": "^9.0.1",
+    "@atlaskit/icon": "^10.3.0",
     "@atlaskit/input": "^1.6.0",
     "@atlaskit/media-card": "^22.2.0",
     "@atlaskit/media-core": "^11.0.0",
-    "@atlaskit/mention": "^7.6.0",
+    "@atlaskit/mention": "^8.1.0",
     "@atlaskit/modal-dialog": "^3.2.1",
     "@atlaskit/navigation": "^26.5.1",
     "@atlaskit/profilecard": "^3.7.1",
+    "@atlaskit/size-detector": "^2.0.1",
     "@atlaskit/single-select": "^2.0.1",
-    "@atlaskit/spinner": "^2.0.1",
     "@atlaskit/task-decision": "^4.0.0",
-    "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-common-test": "^2.4.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
@@ -189,6 +190,7 @@
     "@types/prosemirror-transform": "^0.21.1",
     "@types/prosemirror-view": "^0.21.1",
     "ajv": "^4.11.3",
+    "axios": "^0.17.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-runtime": "^6.26.0",
     "babel-traverse": "^6.26.0",
@@ -205,16 +207,15 @@
     "date-fns": "^1.29.0",
     "debug": "^2.2.0",
     "editor": "^1.0.0",
-    "enquirer-prompts": "^1.0.0",
     "focusin": "^2.0.0",
     "fs-extra": "^4.0.2",
     "glob": "^7.1.2",
     "html-webpack-plugin": "^2.30.1",
-    "jest-fixtures": "^0.5.0",
-    "keycode": "^2.1.7",
+    "inquirer": "^3.3.0",
+    "jest-fixtures": "^0.5.0",    "keycode": "^2.1.7",
     "linkify-it": "^2.0.3",
     "markdown-it-table": "^1.0.0",
-    "mediapicker": "^11.1.6",
+    "mediapicker": "^11.1.9",
     "orderedmap": "^1.0.0",
     "outdent": "^0.3.0",
     "prismjs": "^1.6.0",
@@ -282,7 +283,7 @@
     ]
   },
   "lint-staged": {
-    "*.{js,ts}": [
+    "*.{js,ts,tsx}": [
       "prettier --write",
       "git add"
     ]

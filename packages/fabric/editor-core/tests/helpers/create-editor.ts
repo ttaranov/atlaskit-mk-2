@@ -12,7 +12,7 @@ export { EditorInstance };
 export default function createEditorForTests(
   editorPlugins: EditorPlugin[] = [],
   editorProps: EditorProps = {},
-  providerFactory?: ProviderFactory
+  providerFactory?: ProviderFactory,
 ): EditorInstance {
   const plugins = getDefaultPluginsList().concat(editorPlugins);
   const place = document.body.appendChild(document.createElement('div'));
@@ -20,7 +20,7 @@ export default function createEditorForTests(
     place,
     plugins,
     editorProps,
-    providerFactory ? providerFactory : new ProviderFactory()
+    providerFactory ? providerFactory : new ProviderFactory(),
   );
 
   afterEach(() => {
