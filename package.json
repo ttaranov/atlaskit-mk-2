@@ -219,7 +219,7 @@
     "keycode": "^2.1.7",
     "linkify-it": "^2.0.3",
     "markdown-it-table": "^1.0.0",
-    "mediapicker": "^11.1.6",
+    "mediapicker": "^11.1.9",
     "orderedmap": "^1.0.0",
     "outdent": "^0.3.0",
     "prismjs": "^1.6.0",
