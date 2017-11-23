@@ -8,7 +8,7 @@ describe(name, () => {
   let rafStub;
   let cafStub;
   const createChildWithSpy = spy => args => spy(args);
-  const noOp = () => {};
+  const noOp = () => <div />;
 
   beforeEach(() => {
     rafStub = jest
