@@ -7190,9 +7190,9 @@ mediapicker@^10.0.1:
   version "10.1.1"
   resolved "https://registry.yarnpkg.com/mediapicker/-/mediapicker-10.1.1.tgz#0dbffc7d5d8c81ee19c512111479e675d70bbc82"
 
-mediapicker@^11.1.6:
-  version "11.1.6"
-  resolved "https://registry.yarnpkg.com/mediapicker/-/mediapicker-11.1.6.tgz#64ca5f26b40eef9e97b545b7f985ae5de7091ccc"
+mediapicker@^11.1.9:
+  version "11.1.9"
+  resolved "https://registry.yarnpkg.com/mediapicker/-/mediapicker-11.1.9.tgz#c0eb88a30a5a451b36d8ddd44d9d39607ccd79cd"
 
 mediapicker@^5.0.4:
   version "5.4.1"
