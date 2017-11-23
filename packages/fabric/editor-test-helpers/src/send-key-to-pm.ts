@@ -34,9 +34,9 @@ export default function sendKeyToPm(editorView: EditorView, keys: string) {
   (event as any).which = code;
   (event as any).view = window;
 
-  // try {
+  try {
     (editorView as TestingEditorView).dispatchEvent(event);
-  // } catch (error) {
-    // throw new Error(error.message || error.name);
-  // }
+  } catch (error) {
+    throw new Error(error.message || error.name);
+  }
 }

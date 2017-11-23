@@ -85,7 +85,7 @@ class Panel implements NodeView {
   private renderReactComponent() {
     const { panelType } = this;
     this.domRef = document.createElement('div');
-    this.domRef.setAttribute('data-panel-type', this.panelType);
+    this.domRef.dataset.panelType = this.panelType;
 
     // tslint:disable-next-line:variable-name
     const Icon = panelIcons[panelType];

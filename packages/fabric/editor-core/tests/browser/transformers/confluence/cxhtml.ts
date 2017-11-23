@@ -618,7 +618,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         doc(h5('Code'), codeblock({ language: 'js' })('some code')),
       );
 
-      describe('when language is not set', () => {
+      context('when language is not set', () => {
         check(
           `has language attribute as null`,
           `<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>`,
@@ -626,7 +626,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         );
       });
 
-      describe('when language is set', () => {
+      context('when language is set', () => {
         Object.keys(LANGUAGE_MAP).forEach(languageName => {
           check(
             `with language "${languageName}"`,
@@ -640,7 +640,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         });
       });
 
-      describe('when pasted from Editor', () => {
+      context('when pasted from Editor', () => {
         check(
           'with language',
           '<table class="wysiwyg-macro" data-macro-name="code" data-macro-parameters="language=js" data-macro-schema-version="1" data-macro-body-type="PLAIN_TEXT" style="background-color: rgb(240, 240, 240); background-position: 0px 0px; background-repeat: no-repeat; border: 1px solid rgb(221, 221, 221); margin-top: 10px; padding: 24px 2px 2px; width: 637px; border-collapse: separate; cursor: move; color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial; background-image: url(&quot;/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6bGFuZ3VhZ2U9anN9&amp;locale=en_GB&amp;version=2&quot;);"><tbody><tr><td class="wysiwyg-macro-body" style="white-space: pre-wrap; background-color: rgb(255, 255, 255); border: 1px solid rgb(221, 221, 221); margin: 0px; padding: 10px; cursor: text;"><pre style="margin: 0px; tab-size: 4; white-space: pre-wrap;">const speed = 350;</pre></td></tr></tbody></table>',
@@ -666,7 +666,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         );
       });
 
-      describe('when pasted from View', () => {
+      context('when pasted from View', () => {
         check(
           'with language and title',
           '<div class="codeHeader panelHeader pdl" style="margin: 0px; padding: 5px 15px; border-bottom: 1px solid rgb(204, 204, 204); background: rgb(245, 245, 245); text-align: left; overflow: hidden; position: relative; color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;"><b style="color: rgb(51, 51, 51);">hello</b></div><div class="codeContent panelContent pdl" style="margin: 0px; padding: 0px; background: rgb(255, 255, 255); color: rgb(51, 51, 51); text-align: left; font-size: 14px; line-height: 20px; overflow: hidden; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; width: 656.359px; font-family: Arial, sans-serif; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;"><div style="margin: 0px; padding: 0px;"><div id="highlighter_427012" class="syntaxhighlighter sh-confluence nogutter  js" style="margin: 0px; padding: 0px; width: 656.359px; position: relative; overflow: auto; font-size: 1em; background-color: rgb(255, 255, 255) !important;"><table border="0" cellpadding="0" cellspacing="0" style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: 656px; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><tbody style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><tr style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><td class="code" style="border: 0px; background: 0px center; overflow: visible; border-radius: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; padding: 0px 0px 0px 15px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: 641px; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><div class="container" title="Hint: double-click to select code" style="margin: 15px 0px 0px; padding: 0px 0px 15px; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; outline: 0px; overflow: visible; position: relative; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; white-space: pre-wrap;"><div class="line number1 index0 alt2" style="margin: 0px; padding: 0px 1em 0px 0px; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; outline: 0px; overflow: visible; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; white-space: nowrap;"><code class="js plain" style="font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; color: rgb(0, 0, 0) !important;">const speed = 350;</code></div></div></td></tr></tbody></table></div></div></div>',
@@ -704,7 +704,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     });
 
     describe('panel', () => {
-      describe('when panels are nested', () => {
+      context('when panels are nested', () => {
         ['warning', 'tip', 'info', 'note'].forEach(panelType => {
           check(
             `${panelType} panel`,
@@ -716,7 +716,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         });
       });
 
-      describe('when panel does not have any content', () => {
+      context('when panel does not have any content', () => {
         ['warning', 'tip', 'info', 'note'].forEach(panelType => {
           check(
             `${panelType} panel`,
@@ -728,7 +728,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         });
       });
 
-      describe('when panel does not have title', () => {
+      context('when panel does not have title', () => {
         ['warning', 'tip', 'info', 'note'].forEach(panelType => {
           check(
             `${panelType} panel`,
@@ -741,7 +741,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           );
         });
       });
-      describe('when panel has title', () => {
+      context('when panel has title', () => {
         const title = 'Panel title';
 
         ['warning', 'tip', 'info', 'note'].forEach(panelType => {
@@ -758,7 +758,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           );
         });
       });
-      describe('when panel has multiple top-level nodes', () => {
+      context('when panel has multiple top-level nodes', () => {
         const title = 'Panel title';
 
         ['warning', 'tip', 'info', 'note'].forEach(panelType => {
@@ -952,7 +952,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         );
       });
 
-      describe('when pasted from Editor', () => {
+      context('when pasted from Editor', () => {
         it('block wysiwyg-macro noformat: parses CXHTML to codeBlock', () => {
           const actual = parse(
             '<table class="wysiwyg-macro" data-macro-name="noformat" data-macro-schema-version="1" data-macro-body-type="PLAIN_TEXT" data-macro-id="d03bc664-56dd-4eb4-ac68-9eadfc3a9663" style="background-color: rgb(240, 240, 240); background-position: 0px 0px; background-repeat: no-repeat; border: 1px solid rgb(221, 221, 221); margin-top: 10px; padding: 24px 2px 2px; width: 226px; border-collapse: separate; cursor: move; color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial; background-image: url(&quot;/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e25vZm9ybWF0fQ&amp;locale=en_GB&amp;version=2&quot;);"><tbody><tr><td class="wysiwyg-macro-body" style="white-space: pre-wrap; background-color: rgb(255, 255, 255); border: 1px solid rgb(221, 221, 221); margin: 0px; padding: 10px; min-width: 200px; cursor: text;"><pre style="margin: 0px; tab-size: 4; white-space: pre-wrap;">No format content</pre></td></tr></tbody></table>',
@@ -963,7 +963,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         });
       });
 
-      describe('when pasted from View', () => {
+      context('when pasted from View', () => {
         it('<div class="preformatted panel">: parses CXHTML to codeBlock', () => {
           const actual = parse(
             '<div class="preformatted panel" style="margin: 10px 0px; padding: 0px; color: rgb(51, 51, 51); border: 1px solid rgb(204, 204, 204); overflow: auto; border-radius: 3px; background-color: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;"><div class="preformattedContent panelContent" style="margin: 0px; padding: 10px;"><pre style="margin: 0px; padding: 0px; font-family: ConfluenceInstalledFont, monospace; line-height: 1.3;">No format content</pre></div></div>',
