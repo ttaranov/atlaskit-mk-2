@@ -171,7 +171,6 @@
     "@atlaskit/profilecard": "^3.7.1",
     "@atlaskit/size-detector": "^2.0.1",
     "@atlaskit/single-select": "^2.0.1",
-    "@atlaskit/spinner": "^2.0.1",
     "@atlaskit/task-decision": "^4.0.0",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-common-test": "^2.4.2",
