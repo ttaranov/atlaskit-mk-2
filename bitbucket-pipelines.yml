@@ -23,8 +23,4 @@ pipelines:
           - source ./build-setup.sh
           - bolt install
           - bolt build
-          - bolt lint
-          - bolt typecheck
-          - bolt test
-          - bolt test:browser:browserstack
           - (cd website && bolt deploy-staging:no-minimize)
