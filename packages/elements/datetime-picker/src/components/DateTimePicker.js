@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 import DualPicker from './internal/DualPicker';
 import DateField from './internal/DateField';
 import DateDialog from './internal/DateDialog';
@@ -58,7 +58,7 @@ export default class DateTimePicker extends Component<Props, State> {
     isDisabled: false,
     disabled: [],
     times: defaultTimes,
-    width: akGridSizeUnitless * 30,
+    width: gridSize() * 30,
     onChange() {},
   };
 
