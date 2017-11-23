@@ -494,14 +494,6 @@
     tslib "^1.2.0"
     uuid "^3.1.0"
 
-"@atlaskit/media-core@^11.0.0":
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/media-core/-/media-core-11.0.0.tgz#e9622b7c71c43fad0265359dbec6f4945309fb5a"
-  dependencies:
-    axios "^0.15.3"
-    lru-fast "^0.2.2"
-    tslib "^1.2.0"
-
 "@atlaskit/mention@^7.0.0":
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/mention/-/mention-7.6.0.tgz#8c248883aacf2ef7f33ba9def1332000e39ffd82"
@@ -7190,9 +7182,9 @@ mediapicker@^10.0.1:
   version "10.1.1"
   resolved "https://registry.yarnpkg.com/mediapicker/-/mediapicker-10.1.1.tgz#0dbffc7d5d8c81ee19c512111479e675d70bbc82"
 
-mediapicker@^11.1.6:
-  version "11.1.6"
-  resolved "https://registry.yarnpkg.com/mediapicker/-/mediapicker-11.1.6.tgz#64ca5f26b40eef9e97b545b7f985ae5de7091ccc"
+mediapicker@^11.1.9:
+  version "11.1.9"
+  resolved "https://registry.yarnpkg.com/mediapicker/-/mediapicker-11.1.9.tgz#c0eb88a30a5a451b36d8ddd44d9d39607ccd79cd"
 
 mediapicker@^5.0.4:
   version "5.4.1"
@@ -9609,7 +9601,7 @@ rx-lite@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/rx-lite/-/rx-lite-3.1.2.tgz#19ce502ca572665f3b647b10939f97fd1615f102"
 
-rxjs@^5.0.0-beta.11:
+rxjs@^5.0.0-beta.11, rxjs@^5.1.0:
   version "5.5.2"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.2.tgz#28d403f0071121967f18ad665563255d54236ac3"
   dependencies:
