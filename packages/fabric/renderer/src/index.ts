@@ -1,7 +1,5 @@
-import { defaultSchema } from '@atlaskit/editor-common';
+import { defaultSchema, getValidDocument, getValidNode, ADNode } from '@atlaskit/editor-common';
 import { Node as PMNode, Schema } from 'prosemirror-model';
-
-import { getValidDocument } from '@atlaskit/editor-common';
 
 import { Serializer } from './serializer';
 
@@ -70,6 +68,18 @@ export const renderDocument = <T>(
   stat.serializeTime = serializeTime;
 
   return { result, stat };
+};
+
+export const renderNode = <T>(
+  node: Node,
+  serializer: Serializer<T>,
+  schema: Schema = defaultSchema,
+): T | null => {
+  const validNode = getValidNode(node, schema);
+
+  const pmNode = schema.nodeFromJSON(validNode);
+
+  return serializer.serializeFragment(pmNode.content);
 };
 
 export { Serializer };

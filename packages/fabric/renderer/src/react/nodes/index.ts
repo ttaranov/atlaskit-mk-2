@@ -9,6 +9,7 @@ import DecisionItem, { Props as DecisionItemProps } from './decisionItem';
 import DecisionList from './decisionList';
 import Doc from './doc';
 import Emoji from './emoji';
+import Extension, { Props as ExtensionProps } from './extension';
 import HardBreak from './hardBreak';
 import Heading from './heading';
 import Image from './image';
@@ -39,6 +40,7 @@ export const nodeToReact = {
   decisionList: DecisionList,
   doc: Doc,
   emoji: Emoji,
+  extension: Extension,
   hardBreak: HardBreak,
   heading: Heading,
   image: Image,
@@ -212,6 +214,8 @@ export {
   DecisionList,
   Doc,
   Emoji,
+  Extension,
+  ExtensionProps,
   HardBreak,
   Heading,
   ListItem,

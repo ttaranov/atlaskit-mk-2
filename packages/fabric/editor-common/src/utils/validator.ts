@@ -363,16 +363,13 @@ export const getValidNode = (
           attrs.extensionKey &&
           attrs.bodyType
         ) {
-          switch (attrs.bodyType) {
-            case 'none':
-            case 'plain':
-            case 'rich':
-              return {
-                type,
-                attrs,
-                content,
-              };
-          }
+          // we want to keep the oringinal Atlassian Document Content here
+          attrs.adContent = content;
+          return {
+            type,
+            attrs,
+            content,
+          };
         }
         break;
       }
