@@ -1,9 +1,7 @@
-import * as React from 'react';
 import { heading, blockquote, rule, hardBreak } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { plugin, stateKey } from '../../../plugins/block-type';
+import { plugin } from '../../../plugins/block-type';
 import inputRulePlugin from '../../../plugins/block-type/input-rule';
-import ToolbarBlockType from '../../../ui/ToolbarBlockType';
 
 const blockType: EditorPlugin = {
   nodes() {
@@ -23,16 +21,16 @@ const blockType: EditorPlugin = {
   },
 
   primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled) {
-    const pluginState = stateKey.getState(editorView.state);
-    return (
-      <ToolbarBlockType
-        isDisabled={disabled}
-        editorView={editorView}
-        pluginState={pluginState}
-        popupsMountPoint={popupsMountPoint}
-        popupsBoundariesElement={popupsBoundariesElement}
-      />
-    );
+    return null;
+    // return (
+    //   <ToolbarBlockType
+    //     isDisabled={disabled}
+    //     editorView={editorView}
+    //     pluginState={pluginState}
+    //     popupsMountPoint={popupsMountPoint}
+    //     popupsBoundariesElement={popupsBoundariesElement}
+    //   />
+    // );
   }
 };
 

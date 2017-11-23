@@ -75,6 +75,7 @@ export default class ChameleonEditor extends React.Component<Props, State> {
           <Editor
             {...this.props.editorProps}
             {...this.props.apperanceProps![this.state.appearance]}
+            saveOnEnter
 
             onChange={this.onEditorChange}
             defaultValue={this.value}

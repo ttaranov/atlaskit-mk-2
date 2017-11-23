@@ -1,8 +1,6 @@
-import * as React from 'react';
 import { textColor } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { plugin, stateKey } from '../../../plugins/text-color';
-import ToolbarTextColor from '../../../ui/ToolbarTextColor';
+import { plugin } from '../../../plugins/text-color';
 
 const textColorPlugin: EditorPlugin = {
   marks() {
@@ -16,14 +14,7 @@ const textColorPlugin: EditorPlugin = {
   },
 
   primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled) {
-    const pluginState = stateKey.getState(editorView.state);
-    return <ToolbarTextColor
-      disabled={disabled}
-      editorView={editorView}
-      pluginState={pluginState}
-      popupsMountPoint={popupsMountPoint}
-      popupsBoundariesElement={popupsBoundariesElement}
-    />;
+    return null;
   }
 };
 
