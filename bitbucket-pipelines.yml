@@ -24,8 +24,10 @@ pipelines:
           - yarn global bin
           - yarn bin
           - bolt install
-          - ls $(yarn bin)
-          - ls $(yarn global bin)
+          - ls node_modules || true
+          - ls node_modules/.bin || true
+          - ls $(yarn bin) || true
+          - ls $(yarn global bin) && false
           - bolt build
           - bolt lint
           - bolt typecheck
