@@ -71,96 +71,6 @@ function getPackagesGlobs(subsetName /*?: string */) {
   }
 }
 
-function createEntryPoint(subsetName /*?: string */) {
-  const entry = {
-    main: './src/index.js',
-    vendor: ['react', 'react-dom', 'styled-components'],
-  };
-
-  if (subsetName === 'elements') {
-    return entry;
-  }
-
-  if (subsetName === 'media') {
-    /*
-
-      Media vendor packages
-
-      While re-compiling may take longer while watching, "media" are opting out of having
-      :allthethings: in the vendor bundle because having a gigantic vendor bundle makes devtools
-      almost unusable. Devtools are significantly more responsive after these changes:
-
-        vendor bundle: 3.1MB => 510KB
-        main bundle: 250KB => 574KB
-
-      However, with a minimal vendor bundle, we kept running into Out of Memory errors while the
-      bundle is being re-built so we're making a vendor bundle with just the dependencies that we
-      need.
-
-    */
-
-    const dependencies = require('../packages/fabric/media-card/package.json')
-      .dependencies; // FIXME: what about other media packages?
-    entry['vendor'] = entry.vendor.concat(
-      Object.keys(dependencies)
-        .filter(pkg => !entry.vendor.includes(pkg)) // webpack complains about duplicate modules
-        .filter(pkg => !pkg.startsWith('@types/')) // type definitions don't have an entry point
-        .filter(pkg => pkg !== 'babel-runtime'),
-    );
-
-    return entry;
-  }
-
-  // Editor vendor packages
-  entry['vendor'] = entry.vendor.concat([
-    'highlight.js',
-    'date-fns',
-    '@atlaskit/avatar',
-    '@atlaskit/input',
-    '@atlaskit/layer',
-    '@atlaskit/activity',
-    '@atlaskit/button',
-    '@atlaskit/code',
-    '@atlaskit/dropdown-menu',
-    '@atlaskit/droplist',
-    '@atlaskit/emoji',
-    '@atlaskit/icon',
-    '@atlaskit/logo',
-    '@atlaskit/media-card',
-    '@atlaskit/media-core',
-    '@atlaskit/media-filmstrip',
-    '@atlaskit/mention',
-    '@atlaskit/profilecard',
-    '@atlaskit/single-select',
-    '@atlaskit/spinner',
-    '@atlaskit/task-decision',
-    // '@atlaskit/tooltip',
-    '@atlaskit/util-shared-styles',
-    'mediapicker',
-    'prosemirror-commands',
-    'prosemirror-history',
-    'prosemirror-inputrules',
-    'prosemirror-keymap',
-    'prosemirror-markdown',
-    'prosemirror-model',
-    'prosemirror-schema-basic',
-    'prosemirror-schema-list',
-    'prosemirror-state',
-    'prosemirror-tables',
-    'prosemirror-transform',
-    'prosemirror-view',
-    'prosemirror-dev-tools',
-    'tslib',
-    '@atlaskit/media-test-helpers',
-    '@atlaskit/emoji/dist/es5/support',
-    '@atlaskit/mention/dist/es5/support',
-    '@atlaskit/inline-edit',
-    'text-encoding',
-  ]);
-
-  return entry;
-}
-
 function subsetBanner(env /*: string */, subsetName /*: string */) {
   console.log();
   console.log(
@@ -180,7 +90,10 @@ module.exports = async function createWebpackConfig() {
   subsetBanner(WEBSITE_ENV, WEBSITE_SUBSET);
 
   return {
-    entry: createEntryPoint(WEBSITE_SUBSET),
+    entry: {
+      main: './src/index.js',
+      vendor: ['react', 'react-dom', 'styled-components', 'highlight.js'],
+    },
     output: {
       filename: '[name].js',
       path: path.resolve(__dirname, 'dist'),
@@ -283,14 +196,57 @@ module.exports = async function createWebpackConfig() {
       modules: ['../build/', 'node_modules', './src/loaders'],
     },
     plugins: [
+      // Joins all vendor entry point packages into 1 chunk
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
         minChunks: Infinity,
       }),
+
+      new webpack.optimize.CommonsChunkPlugin({
+        async: 'used-two-or-more-times',
+        minChunks(module, count) {
+          return count >= 2;
+        },
+      }),
+
+      new webpack.optimize.CommonsChunkPlugin({
+        async: 'editor-packages',
+        minChunks(module, count) {
+          const context = module.context;
+          return (
+            context &&
+            (context.includes('fabric/editor') ||
+              context.includes('fabric/renderer') ||
+              context.includes('prosemirror'))
+          );
+        },
+      }),
+
+      new webpack.optimize.CommonsChunkPlugin({
+        async: 'media-packages',
+        minChunks(module, count) {
+          const context = module.context;
+          return (
+            context &&
+            (context.includes('fabric/media') ||
+              context.includes('mediapicker'))
+          );
+        },
+      }),
+
+      new webpack.optimize.CommonsChunkPlugin({
+        async: 'elements-packages',
+        minChunks(module, count) {
+          const context = module.context;
+          return context && context.includes('elements/');
+        },
+      }),
+
       new HtmlWebpackPlugin({
         template: 'public/index.html.ejs',
         favicon: 'public/favicon.ico',
       }),
+
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': `"${WEBSITE_ENV}"`,
       }),

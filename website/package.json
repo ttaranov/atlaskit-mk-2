@@ -16,7 +16,7 @@
     "build:copy": "cp dist/index.html dist/404.html",
     "build:sandbox": "node ./build/sandbox",
     "build:zip": "rm -rf dist.zip && zip -r dist.zip dist/",
-    "build:minimize": "find dist -name 'vendor.js' -type f -prune -exec sh -c  \"echo Minimizing: {} && ./node_modules/.bin/uglifyjs --compress hoist_funs=false '{}' -o '{}'\" \\;",
+    "build:minimize": "find dist -name '*.js' -type f -size +100k -prune -exec sh -c  \"echo Minimizing: {} && ./node_modules/.bin/uglifyjs --compress hoist_funs=false '{}' -o '{}'\" \\;",
     "start": "webpack-dev-server",
     "deploy": "yarn build && netlify -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID -p dist.zip",
     "deploy-staging": "yarn build && netlify -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist.zip",
