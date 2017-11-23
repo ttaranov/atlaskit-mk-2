@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-bitbucket",
-  "version": "4.8.3",
+  "version": "4.8.4",
   "description": "Atlassian Editor component for Bitbucket",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",

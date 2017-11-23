@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-cq",
-  "version": "6.8.2",
+  "version": "6.8.3",
   "description": "Atlassian Editor component for Confluence Questions",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
