@@ -85,16 +85,16 @@ export default class Picker extends Component<Props> {
     }
   };
 
-  getFieldWidth() {
-    if (!this.props.width) {
-      return undefined;
+  getFieldWidth(): number {
+    const { shouldShowIcon, width } = this.props;
+
+    if (!width) {
+      return 0;
     }
 
-    let fieldWidth = this.props.width - akGridSizeUnitless * 2;
-    if (this.props.shouldShowIcon) {
-      fieldWidth -= akGridSizeUnitless * 3;
-    }
-    return fieldWidth;
+    return shouldShowIcon
+      ? width - akGridSizeUnitless * 5
+      : width - akGridSizeUnitless * 2;
   }
 
   render() {
