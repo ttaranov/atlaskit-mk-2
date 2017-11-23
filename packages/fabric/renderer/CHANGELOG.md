@@ -1,5 +1,7 @@
 # @atlaskit/renderer
 
+## 8.10.5
+
 ## 8.10.4
 - [patch] Fixed stand alone file and link card rendering [9b467a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b467a6)
 - [patch] Fixed stand alone file and link card rendering [9b467a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b467a6)

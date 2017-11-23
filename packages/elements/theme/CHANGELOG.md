@@ -1,5 +1,9 @@
 # @atlaskit/theme
 
+## 2.2.4
+- [patch] moved theme to new atlaskit repo [a25b940](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a25b940)
+- [patch] moved theme to new atlaskit repo [a25b940](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a25b940)
+
 ## 2.2.3 (2017-10-27)
 
 * bug fix; triggering storybooks ([87e7247](https://bitbucket.org/atlassian/atlaskit/commits/87e7247))
