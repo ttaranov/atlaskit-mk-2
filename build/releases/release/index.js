@@ -26,6 +26,13 @@ async function bumpReleasedPackages(releaseObj, allPackages) {
 async function run(opts) {
   const cwd = opts.cwd || process.cwd();
   const allPackages = await bolt.getWorkspaces({ cwd });
+  const maxGitRetries = 3;
+
+  // need to rebase before getUnpublishedChangesetCommits otherwise we might re-pick up released
+  // packages. Failing to rebase here is safe, we can throw and the next build will release for us.
+  logger.info("Rebasing to make sure we aren't behind in commits...");
+  git.rebase(maxGitRetries);
+
   const unreleasedChangesets = await git.getUnpublishedChangesetCommits();
 
   if (unreleasedChangesets.length === 0) {
@@ -82,8 +89,7 @@ async function run(opts) {
       logger.log(releasedPackages);
 
       logger.log('Pushing changes back to origin...');
-      const maxAttempts = 3;
-      await git.rebaseAndPush(maxAttempts);
+      await git.rebaseAndPush(maxGitRetries);
     }
   }
 }
