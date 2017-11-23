@@ -1,11 +1,22 @@
-import { EditorState, Transaction } from 'prosemirror-state';
+import { EditorState, Transaction, Selection } from 'prosemirror-state';
 import { Command } from '../../commands';
 
 export const FORMATTING_NODE_TYPES = ['heading'];
-export const FORMATTING_MARK_TYPES = ['em', 'code', 'strike', 'strong', 'underline', 'textColor', 'subsup'];
+export const FORMATTING_MARK_TYPES = [
+  'em',
+  'code',
+  'strike',
+  'strong',
+  'underline',
+  'textColor',
+  'subsup',
+];
 
 export function clearFormatting(): Command {
-  return function (state: EditorState, dispatch: (tr: Transaction) => void): boolean {
+  return function(
+    state: EditorState,
+    dispatch: (tr: Transaction) => void,
+  ): boolean {
     const { tr } = state;
 
     FORMATTING_MARK_TYPES.forEach(mark => {
@@ -30,5 +41,24 @@ export function clearFormatting(): Command {
     tr.setStoredMarks([]);
     dispatch(tr);
     return true;
+  };
+}
+
+export function clearFormattingOnEmptyDocumentBackspace(): Command {
+  return function(
+    state: EditorState,
+    dispatch: (tr: Transaction) => void,
+  ): boolean {
+    const { tr } = state;
+    const docStart = Selection.atStart(state.tr.doc);
+    const docEnd = Selection.atEnd(state.tr.doc);
+    if (docStart.eq(docEnd)) {
+      debugger;
+      tr.setStoredMarks([]);
+      tr.setBlockType(docStart.from, docStart.to, state.schema.nodes.paragraph);
+      dispatch(tr);
+      return false;
+    }
+    return false;
   };
 }
