@@ -1,13 +1,12 @@
-import * as chai from 'chai';
-import * as sinon from 'sinon';
-import { expect } from 'chai';
-import { default as blockTypePlugins, BlockTypeState } from '../../../../src/plugins/block-type';
+import {
+  default as blockTypePlugins,
+  BlockTypeState,
+} from '../../../src/plugins/block-type';
 import {
   sendKeyToPm,
   blockquote,
   br,
   code_block,
-  chaiPlugin,
   doc,
   h1,
   h2,
@@ -20,8 +19,6 @@ import {
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../../src/analytics';
-
-chai.use(chaiPlugin);
 
 describe('inputrules', () => {
   const editor = (doc: any) =>
@@ -40,9 +37,9 @@ describe('inputrules', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 
       insertText(editorView, '# ', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(h1()));
-      expect(trackEvent.calledWith('atlassian.editor.format.heading1.autoformatting')).to.equal(
-        true
+      expect(editorView.state.doc).toEqualDocument(doc(h1()));
+      expect(trackEvent).toHaveBeenCalledWith(
+        'atlassian.editor.format.heading1.autoformatting',
       );
       editorView.destroy();
     });
@@ -59,9 +56,9 @@ describe('inputrules', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 
       insertText(editorView, '## ', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(h2()));
-      expect(trackEvent.calledWith('atlassian.editor.format.heading2.autoformatting')).to.equal(
-        true
+      expect(editorView.state.doc).toEqualDocument(doc(h2()));
+      expect(trackEvent).toHaveBeenCalledWith(
+        'atlassian.editor.format.heading2.autoformatting',
       );
       editorView.destroy();
     });
@@ -78,9 +75,9 @@ describe('inputrules', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 
       insertText(editorView, '### ', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(h3()));
-      expect(trackEvent.calledWith('atlassian.editor.format.heading3.autoformatting')).to.equal(
-        true
+      expect(editorView.state.doc).toEqualDocument(doc(h3()));
+      expect(trackEvent).toHaveBeenCalledWith(
+        'atlassian.editor.format.heading3.autoformatting',
       );
       editorView.destroy();
     });
@@ -99,9 +96,9 @@ describe('inputrules', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 
       insertText(editorView, '> ', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(blockquote(p())));
-      expect(trackEvent.calledWith('atlassian.editor.format.blockquote.autoformatting')).to.equal(
-        true
+      expect(editorView.state.doc).toEqualDocument(doc(blockquote(p())));
+      expect(trackEvent).toHaveBeenCalledWith(
+        'atlassian.editor.format.blockquote.autoformatting',
       );
       editorView.destroy();
     });
@@ -110,17 +107,17 @@ describe('inputrules', () => {
       const { editorView, sel } = editor(doc(p(code('>{<>}'))));
 
       insertText(editorView, ' ', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(p(code('> '))));
+      expect(editorView.state.doc).toEqualDocument(doc(p(code('> '))));
       editorView.destroy();
     });
 
     it('should not convert "> " inside link to blockquote', () => {
       const { editorView, sel } = editor(
-        doc(p(link({ href: 'http://www.atlassian.com' })('>{<>}')))
+        doc(p(a({ href: 'http://www.atlassian.com' })('>{<>}'))),
       );
       insertText(editorView, ' ', sel);
-      expect(editorView.state.doc).to.deep.equal(
-        doc(p(link({ href: 'http://www.atlassian.com' })('>'), ' '))
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(a({ href: 'http://www.atlassian.com' })('>'), ' ')),
       );
       editorView.destroy();
     });
@@ -141,10 +138,12 @@ describe('inputrules', () => {
           const { editorView, sel } = editor(doc(p('{<>}hello', br, 'world')));
 
           insertText(editorView, '``` ', sel);
-          expect(editorView.state.doc).to.deep.equal(doc(code_block()('hello\nworld')));
-          expect(
-            trackEvent.calledWith('atlassian.editor.format.codeblock.autoformatting')
-          ).to.equal(true);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(code_block()('hello\nworld')),
+          );
+          expect(trackEvent).toHaveBeenCalledWith(
+            'atlassian.editor.format.codeblock.autoformatting',
+          );
           editorView.destroy();
         });
 
@@ -152,8 +151,8 @@ describe('inputrules', () => {
           const { editorView, sel } = editor(doc(p('{<>}hello', br, 'world')));
 
           insertText(editorView, '```java ', sel);
-          expect(editorView.state.doc).to.deep.equal(
-            doc(code_block({ language: 'java' })('hello\nworld'))
+          expect(editorView.state.doc).toEqualDocument(
+            doc(code_block({ language: 'java' })('hello\nworld')),
           );
           editorView.destroy();
         });
@@ -161,21 +160,23 @@ describe('inputrules', () => {
         it('should convert "``` " in middle of paragraph to a code block', () => {
           const { editorView, sel } = editor(doc(p('code ```{<>}')));
           insertText(editorView, ' ', sel);
-          expect(editorView.state.doc).to.deep.equal(doc(code_block()('code ')));
-          expect(
-            trackEvent.calledWith('atlassian.editor.format.codeblock.autoformatting')
-          ).to.equal(true);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(code_block()('code ')),
+          );
+          expect(trackEvent).toHaveBeenCalledWith(
+            'atlassian.editor.format.codeblock.autoformatting',
+          );
         });
 
         it('should convert "``` " in middle of paragraph to a code block and set language correctly', () => {
           const { editorView, sel } = editor(doc(p('code ```java{<>}')));
           insertText(editorView, ' ', sel);
-          expect(editorView.state.doc).to.deep.equal(
-            doc(code_block({ language: 'java' })('code '))
+          expect(editorView.state.doc).toEqualDocument(
+            doc(code_block({ language: 'java' })('code ')),
           );
-          expect(
-            trackEvent.calledWith('atlassian.editor.format.codeblock.autoformatting')
-          ).to.equal(true);
+          expect(trackEvent).toHaveBeenCalledWith(
+            'atlassian.editor.format.codeblock.autoformatting',
+          );
         });
       });
 
@@ -183,13 +184,17 @@ describe('inputrules', () => {
         it('should convert "`````js" to a code block with attr "language: js"', () => {
           const { editorView } = editor(doc(p('`````js{<>}')));
           sendKeyToPm(editorView, 'Enter');
-          expect(editorView.state.doc).to.deep.equal(doc(code_block({ language: 'js' })('')));
+          expect(editorView.state.doc).toEqualDocument(
+            doc(code_block({ language: 'js' })('')),
+          );
           editorView.destroy();
         });
         it('should convert "code `````js" to a code block with attr "language: js" in middle of paragraph', () => {
           const { editorView } = editor(doc(p('code `````js{<>}')));
           sendKeyToPm(editorView, 'Enter');
-          expect(editorView.state.doc).to.deep.equal(doc(code_block({ language: 'js' })('code ')));
+          expect(editorView.state.doc).toEqualDocument(
+            doc(code_block({ language: 'js' })('code ')),
+          );
         });
       });
     });
