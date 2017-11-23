@@ -3,6 +3,7 @@ import * as React from 'react';
 import textColorPlugin, { TextColorState } from '../../src/plugins/text-color';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import ToolbarTextColor from '../../src/ui/ToolbarTextColor';
+import Color from '../../src/ui/ToolbarTextColor/Color';
 import {
   doc,
   code_block,
@@ -111,6 +112,18 @@ describe('ToolbarTextColor', () => {
     );
 
     expect(toolbarTextColor.find(ToolbarButton).prop('disabled')).toBe(true);
+    toolbarTextColor.unmount();
+  });
+
+  it('should have Color components as much as size of color palette', () => {
+    const { editorView, pluginState } = editor(doc(p('text')));
+    const toolbarTextColor = mount(
+      <ToolbarTextColor pluginState={pluginState} editorView={editorView} />,
+    );
+    toolbarTextColor.find('button').simulate('click');
+    expect(toolbarTextColor.find(Color).length).toEqual(
+      pluginState.palette.size,
+    );
     toolbarTextColor.unmount();
   });
 
