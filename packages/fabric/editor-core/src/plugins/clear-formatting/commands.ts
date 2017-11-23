@@ -52,12 +52,12 @@ export function clearFormattingOnEmptyDocumentBackspace(): Command {
     const { tr } = state;
     const docStart = Selection.atStart(state.tr.doc);
     const docEnd = Selection.atEnd(state.tr.doc);
+    debugger;
     if (docStart.eq(docEnd)) {
-      debugger;
       tr.setStoredMarks([]);
       tr.setBlockType(docStart.from, docStart.to, state.schema.nodes.paragraph);
       dispatch(tr);
-      return false;
+      return true;
     }
     return false;
   };
