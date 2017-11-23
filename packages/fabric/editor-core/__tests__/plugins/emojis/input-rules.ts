@@ -57,7 +57,8 @@ describe('emojis - input rules', () => {
     assert(':', true, p(hardBreak(), '{<>}'));
   });
 
-  it('should replace ":" if there is another emoji node in front of it', () => {
+  // TODO: https://product-fabric.atlassian.net/browse/ED-3268
+  it.skip('should replace ":" if there is another emoji node in front of it', () => {
     assert(':', true, p(emoji({ shortName: ':smiley:' }), '{<>}'));
   });
 
