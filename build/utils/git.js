@@ -50,6 +50,7 @@ async function push(args = []) {
 async function rebase(maxAttempts = 3) {
   let attempts = 0;
   let rebased = false;
+  let lastError = {};
 
   while (!rebased) {
     attempts++;
@@ -57,6 +58,7 @@ async function rebase(maxAttempts = 3) {
       await spawn('git', ['pull', '--rebase']);
       rebased = true;
     } catch (e) {
+      lastError = e;
       if (attempts >= maxAttempts) {
         break;
       }
@@ -64,7 +66,11 @@ async function rebase(maxAttempts = 3) {
   }
 
   if (!rebased) {
-    throw new Error(`Failed to rebase after ${maxAttempts} attempts`);
+    throw new Error(
+      `Failed to rebase after ${maxAttempts} attempts\n${JSON.stringify(
+        lastError,
+      )}`,
+    );
   }
 }
 
@@ -73,6 +79,7 @@ async function rebase(maxAttempts = 3) {
 async function rebaseAndPush(maxAttempts = 3) {
   let attempts = 0;
   let pushed = false;
+  let lastError = {};
 
   while (!pushed) {
     attempts++;
@@ -81,6 +88,7 @@ async function rebaseAndPush(maxAttempts = 3) {
       await spawn('git', ['push', '--follow-tags']);
       pushed = true;
     } catch (e) {
+      lastError = e;
       if (attempts >= maxAttempts) {
         break;
       }
@@ -88,7 +96,11 @@ async function rebaseAndPush(maxAttempts = 3) {
   }
 
   if (!pushed) {
-    throw new Error(`Failed to push after ${maxAttempts} attempts`);
+    throw new Error(
+      `Failed to push after ${maxAttempts} attempts.\n${JSON.stringify(
+        lastError,
+      )}`,
+    );
   }
 }
 
