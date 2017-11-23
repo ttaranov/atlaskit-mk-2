@@ -65,5 +65,10 @@ function getChildrenData(parent = staticData) {
 }
 
 export default () => (
-  <TreeTable columns={[Title, Description]} data={getChildrenData} />
+  <TreeTable
+    columns={[Title, Description]}
+    headers={['Title', 'Description']}
+    columnWidths={['200px', '200px']}
+    data={getChildrenData}
+  />
 );

@@ -1,11 +1,8 @@
 // @flow
-import React, {
-  Children,
-  PureComponent,
-  Component,
-  type ElementType,
-} from 'react';
+import React, { PureComponent, Component, type ElementType } from 'react';
 import TreeChildren from './TreeChildren';
+import TreeHeads from './TreeHeads';
+import TreeHead from './TreeHead';
 
 import { type DataFunction } from './../types';
 
@@ -19,13 +16,21 @@ type Props = {
   data: DataFunction | string,
 };
 
-export default class TreeTable extends Component<Props> {
+export default class TreeTable extends PureComponent<Props> {
   render() {
-    const { data, columns, columnWidths } = this.props;
+    const { data, headers, columns, columnWidths = [] } = this.props;
     const childrenData = data();
-
     return (
       <div>
+        {headers && (
+          <TreeHeads>
+            {headers.map((header, index) => (
+              <TreeHead key={index} width={columnWidths[index]}>
+                {header}
+              </TreeHead>
+            ))}
+          </TreeHeads>
+        )}
         <TreeChildren
           columns={columns}
           childrenData={childrenData}
