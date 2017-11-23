@@ -1,40 +1,70 @@
 const editor = require('editor');
-const Enquirer = require('enquirer');
 const fs = require('fs');
-const enquirerPrompts = require('enquirer-prompts');
 const uuid = require('uuid/v1');
+const inquirer = require('inquirer');
 
-const enquirer = new Enquirer();
-// These are the enquirer plugins for things like confirm, radio, editor, etc
-enquirer.use(enquirerPrompts);
+/* Notes on using inquirer:
+* Each question needs a key, as inquirer is assembling an object behind-the-scenes.
+* At each call, the entire responses object is returned, so we need a unique
+* identifier for the name every time. This is why we are using UUIDs.
+*/
 
-async function askQuestion(prompt) {
-  const questionKey = `Question-${uuid()}`;
-  enquirer.question(questionKey, prompt);
+async function askQuestion(message) {
+  const name = `Question-${uuid()}`;
 
-  return enquirer.ask(questionKey).then(responses => responses[questionKey]);
+  return inquirer
+    .prompt([
+      {
+        message,
+        name,
+      },
+    ])
+    .then(responses => responses[name]);
 }
 
-async function askConfirm(prompt) {
-  // need a random key so we dont conflict with other questions
-  const questionKey = `Confirm-${uuid()}`;
-  enquirer.question(questionKey, prompt, { type: 'confirm' });
-  // the response we get back contains all of the responses to all questions we've asked, so just
-  return enquirer.ask(questionKey).then(responses => responses[questionKey]);
+async function askConfirm(message) {
+  const name = `Confirm-${uuid()}`;
+
+  return inquirer
+    .prompt([
+      {
+        message,
+        name,
+        type: 'confirm',
+      },
+    ])
+    .then(responses => responses[name]);
 }
 
-async function askList(prompt, choices) {
-  const questionKey = `List-${uuid()}`;
-  enquirer.question(questionKey, prompt, { type: 'list', choices });
+async function askList(message, choices) {
+  const name = `List-${uuid()}`;
 
-  return enquirer.ask(questionKey).then(responses => responses[questionKey]);
+  return inquirer
+    .prompt([
+      {
+        choices,
+        message,
+        name,
+        type: 'list',
+      },
+    ])
+    .then(responses => responses[name]);
 }
 
-async function askCheckbox(prompt, choices) {
-  const questionKey = `Checkbox-${uuid()}`;
-  enquirer.question(questionKey, prompt, { type: 'checkbox', choices });
+async function askCheckbox(message, choices) {
+  const name = `Checkbox-${uuid()}`;
 
-  return enquirer.ask(questionKey).then(responses => responses[questionKey]);
+  return inquirer
+    .prompt([
+      {
+        choices,
+        message,
+        name,
+        type: 'checkbox',
+      },
+    ])
+    .then(responses => responses[name])
+    .catch(e => console.log('can we do this?', e));
 }
 
 async function askEditor(pathToFile) {
