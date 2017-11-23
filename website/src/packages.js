@@ -40,6 +40,7 @@ const allPackages = {
     key: 'progress-indicator',
     name: 'Progress Indicator',
   },
+  'size-detector': { key: 'size-detector', name: 'Size Detector' },
   'single-select': { key: 'single-select', name: 'Select (Single)' },
   spinner: { key: 'spinner', name: 'Spinner' },
   tabs: { key: 'tabs', name: 'Tabs' },
