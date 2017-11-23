@@ -5,7 +5,7 @@ pipelines:
       - step:
           script:
             - source ./build-setup.sh
-            - bolt install
+            - bolt install --pure-lockfile
             - (cd build/ci-scripts && bolt stop-if-older-build)
             - bolt build
             - bolt lint
@@ -13,7 +13,6 @@ pipelines:
             - bolt test
             - bolt test:browser:browserstack
             - bolt release
-            # we `|| true` here because netlify has started returning 404's on success
             - (cd website && bolt deploy)
             - (cd build/ci-scripts && bolt restart-stopped-build)
 
@@ -21,7 +20,7 @@ pipelines:
     - step:
         script:
           - source ./build-setup.sh
-          - bolt install
+          - bolt install --pure-lockfile
           - bolt build
           - bolt lint
           - bolt typecheck
