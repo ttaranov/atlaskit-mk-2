@@ -41,7 +41,7 @@
     "build:editor-common:json-schema": "     cd packages/fabric/editor-common && yarn run build:json-schema && echo 'Done.'"
   },
   "bolt": {
-    "version": ">=0.17.0",
+    "version": "0.17.2",
     "workspaces": [
       "build/*",
       "packages/utils/*",

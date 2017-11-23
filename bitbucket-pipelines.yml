@@ -21,7 +21,11 @@ pipelines:
     - step:
         script:
           - source ./build-setup.sh
+          - yarn global bin
+          - yarn bin
           - bolt install
+          - ls $(yarn bin)
+          - ls $(yarn global bin)
           - bolt build
           - bolt lint
           - bolt typecheck
