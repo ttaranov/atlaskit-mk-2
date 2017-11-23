@@ -3,15 +3,22 @@ import styled from 'styled-components';
 import {
   akColorB200,
   akBorderRadius,
-  akGridSizeUnitless
+  akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
+
+export interface AvatarImageProps {
+  isSelected: boolean;
+}
 
 const AvatarImage = styled.img`
   border-radius: ${akBorderRadius};
   cursor: pointer;
-  &.selected {
+  ${({ isSelected }: AvatarImageProps) =>
+    isSelected
+      ? `
     box-shadow: 0px 0px 0px 1px white, 0px 0px 0px 3px ${akColorB200};
-  }
+  `
+      : ''};
 `;
 
 export const LargeAvatarImage = styled(AvatarImage)`
@@ -23,7 +30,6 @@ export const SmallAvatarImage = styled(AvatarImage)`
   width: ${akGridSizeUnitless * 5}px;
   height: ${akGridSizeUnitless * 5}px;
 `;
-
 
 export const PredefinedAvatarViewWrapper = styled.div`
   ul {
@@ -44,27 +50,27 @@ export const PredefinedAvatarViewWrapper = styled.div`
   }
 
   .header {
-      display: flex;
+    display: flex;
+    align-items: center;
+
+    padding-top: 4px;
+    padding-bottom: 8px;
+
+    .description {
+      padding-left: 8px;
+    }
+
+    .back-button {
+      width: 32px;
+      height: 32px;
+      border-radius: 16px;
+
       align-items: center;
+      justify-content: center;
 
-      padding-top: 4px;
-      padding-bottom: 8px;
-
-      .description {
-        padding-left: 8px;
-      }
-
-      .back-button {
-        width: 32px;
-        height: 32px;
-        border-radius: 16px;
-
-        align-items: center;
-        justify-content: center;
-
-        margin: 0px;
-        padding: 0px;
-      }
+      margin: 0px;
+      padding: 0px;
+    }
   }
 
   // hide tickbox and file type icon in overlay
