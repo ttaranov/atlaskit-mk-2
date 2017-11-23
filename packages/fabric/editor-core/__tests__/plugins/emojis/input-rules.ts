@@ -13,16 +13,18 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
 
-
 describe('emojis - input rules', () => {
   const providerFactory = new ProviderFactory();
-  const editor = (doc: any) => makeEditor<EmojiState>({
-    doc,
-    plugins: emojiPlugins(defaultSchema, providerFactory),
-  });
+  const editor = (doc: any) =>
+    makeEditor<EmojiState>({
+      doc,
+      plugins: emojiPlugins(defaultSchema, providerFactory),
+    });
 
   const assert = (what: string, expected: boolean, docContents?: any) => {
-    const { editorView, pluginState, sel, refs } = editor(doc(docContents || p('{<>}')));
+    const { editorView, pluginState, sel, refs } = editor(
+      doc(docContents || p('{<>}')),
+    );
     (pluginState as any).emojiProvider = true;
     insertText(editorView, what, sel || refs['<']);
     const { emojiQuery } = editorView.state.schema.marks;
@@ -55,8 +57,8 @@ describe('emojis - input rules', () => {
     assert(':', true, p(hardBreak(), '{<>}'));
   });
 
-  it.skip('should replace ":" if there is another emoji node in front of it', () => {
-    assert(':', true, p(emoji({ shortName: ':smiley:'}), '{<>}'));
+  it('should replace ":" if there is another emoji node in front of it', () => {
+    assert(':', true, p(emoji({ shortName: ':smiley:' }), '{<>}'));
   });
 
   it('should replace ":" if there is a mention node in front of it', () => {
