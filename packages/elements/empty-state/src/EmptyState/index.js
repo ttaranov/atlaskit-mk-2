@@ -27,7 +27,11 @@ type SecondaryAction = {
   onClick?: () => void,
 };
 
-export type Props = {
+type DefaultProps = {
+  size: Size,
+};
+
+type Props = {
   header: string,
   size?: Size,
   description?: string,
@@ -37,6 +41,10 @@ export type Props = {
 };
 
 export default class EmptyState extends React.PureComponent<Props, void> {
+  static defaultProps: DefaultProps = {
+    size: 'wide',
+  };
+
   render() {
     const {
       imageUrl,

@@ -7,10 +7,6 @@ import Spinner from '@atlaskit/spinner';
 
 import EmptyState from '../src/EmptyState';
 
-// TODO
-// should invoke an event handler when primary action button is clicked
-// should invoke an event handler when secondary action button is clicked
-
 describe('Empty state', () => {
   it('should render primary action when primaryAction prop is not empty', () => {
     const wrapper = mount(
