@@ -23,6 +23,7 @@
     "@atlaskit/mention": "^8.1.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/prosemirror-model": "^1.0.0",
+    "@atlaskit/editor-cq-transformer": "^1.0.0",
     "collapse-whitespace": "^1.1.6",
     "prosemirror-model": "^1.0.0",
     "styled-components": "^1.4.6",

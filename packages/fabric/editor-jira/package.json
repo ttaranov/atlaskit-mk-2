@@ -20,6 +20,8 @@
     "@atlaskit/editor-core": "^60.6.0",
     "@atlaskit/mention": "^8.1.0",
     "@atlaskit/spinner": "^4.0.5",
+    "@atlaskit/editor-jira-transformer": "^1.0.0",
+    "@atlaskit/editor-json-transformer": "^1.0.0",
     "collapse-whitespace": "^1.1.6",
     "css-color-names": "0.0.4",
     "prosemirror-commands": "^1.0.1",

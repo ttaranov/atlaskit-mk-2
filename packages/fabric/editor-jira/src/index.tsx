@@ -49,12 +49,11 @@ import {
   // error-reporting
   ErrorReporter,
   ErrorReportingHandler,
-
-  // transformers
-  JIRATransformer,
-  JSONTransformer,
   createJIRASchema,
 } from '@atlaskit/editor-core';
+
+import { JIRATransformer } from '@atlaskit/editor-jira-transformer';
+import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 
 import { MentionProvider } from '@atlaskit/mention';
 import { ActivityProvider } from '@atlaskit/activity';

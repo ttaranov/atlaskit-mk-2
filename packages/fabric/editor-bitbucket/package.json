@@ -19,6 +19,7 @@
   "dependencies": {
     "@atlaskit/editor-common": "^3.11.1",
     "@atlaskit/editor-core": "^60.6.0",
+    "@atlaskit/editor-bitbucket-transformer": "^1.0.0",
     "@types/prosemirror-commands": "^1.0.0",
     "@types/prosemirror-history": "^1.0.0",
     "@types/prosemirror-keymap": "^1.0.0",
