@@ -27,10 +27,6 @@ type SecondaryAction = {
   onClick?: () => void,
 };
 
-type DefaultProps = {
-  size: Size,
-};
-
 type Props = {
   /** Title that briefly describes the page to the user. */
   header: string,
@@ -47,7 +43,7 @@ type Props = {
 };
 
 export default class EmptyState extends React.PureComponent<Props, void> {
-  static defaultProps: DefaultProps = {
+  static defaultProps: $Shape<Props> = {
     size: 'wide',
   };
 

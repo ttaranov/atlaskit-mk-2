@@ -8,7 +8,6 @@ const props = {
       typography, layout, and printing in place of English to emphasise 
       design elements over content. It's also called placeholder (or filler) 
       text. It's a convenient tool for mock-ups.`,
-  size: 'wide',
   imageUrl: exampleImage,
   primaryAction: {
     label: 'Primary action',
