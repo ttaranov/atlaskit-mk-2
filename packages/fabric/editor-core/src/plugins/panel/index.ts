@@ -1,6 +1,11 @@
 import { analyticsService } from '../../analytics';
 import { Node, Schema } from 'prosemirror-model';
-import { EditorState, Plugin, PluginKey, TextSelection } from 'prosemirror-state';
+import {
+  EditorState,
+  Plugin,
+  PluginKey,
+  TextSelection,
+} from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { panelNodeView } from '../../nodeviews';
 import inputRulePlugin from './input-rules';
@@ -13,7 +18,7 @@ export const availablePanelType = [
   { panelType: 'info' },
   { panelType: 'note' },
   { panelType: 'tip' },
-  { panelType: 'warning' }
+  { panelType: 'warning' },
 ];
 
 export class PanelState {
@@ -37,7 +42,9 @@ export class PanelState {
   }
 
   changePanelType(view: EditorView, panelType: PanelType) {
-    analyticsService.trackEvent(`atlassian.editor.format.${panelType.panelType}.button`);
+    analyticsService.trackEvent(
+      `atlassian.editor.format.${panelType.panelType}.button`,
+    );
     const { state, dispatch } = view;
     let { tr } = state;
     const { panel } = state.schema.nodes;
@@ -80,7 +87,10 @@ export class PanelState {
     if ((domEvent && newPanel) || this.activeNode !== newPanel) {
       const newElement = newPanel && this.getDomElement(docView);
       this.activeNode = newPanel;
-      this.toolbarVisible = this.editorFocused && !!newPanel && (domEvent || this.element !== newElement);
+      this.toolbarVisible =
+        this.editorFocused &&
+        !!newPanel &&
+        (domEvent || this.element !== newElement);
       this.element = newElement;
       this.activePanelType = newPanel && newPanel.attrs['panelType'];
       this.changeHandlers.forEach(cb => cb(this));
@@ -104,14 +114,16 @@ export class PanelState {
       const { node } = docView.domFromPos(selection.$from.pos);
       let currentNode = node;
       while (currentNode) {
-        if (currentNode.attributes && currentNode.attributes['data-panel-type']) {
+        if (
+          currentNode.attributes &&
+          currentNode.attributes['data-panel-type']
+        ) {
           return currentNode as HTMLElement;
         }
         currentNode = currentNode.parentNode!;
       }
     }
   }
-
 }
 
 export type PanelStateSubscriber = (state: PanelState) => any;
@@ -119,48 +131,54 @@ export type PanelStateSubscriber = (state: PanelState) => any;
 export const stateKey = new PluginKey('panelPlugin');
 
 // TODO: Fix types (ED-2987)
-export const plugin = new Plugin({
-  state: {
-    init(config, state: EditorState) {
-      return new PanelState(state);
+export const createPlugin = () =>
+  new Plugin({
+    state: {
+      init(config, state: EditorState) {
+        return new PanelState(state);
+      },
+      apply(tr, pluginState: PanelState, oldState, newState) {
+        const stored = tr.getMeta(stateKey);
+        if (stored) {
+          pluginState.update(newState, stored.docView, stored.domEvent);
+        }
+        return pluginState;
+      },
     },
-    apply(tr, pluginState: PanelState, oldState, newState) {
-      const stored = tr.getMeta(stateKey);
-      if (stored) {
-        pluginState.update(newState, stored.docView, stored.domEvent);
-      }
-      return pluginState;
-    }
-  },
-  key: stateKey,
-  view: (view: EditorView) => {
-    return {
-      update: (view: EditorView & { docView?: any }, prevState: EditorState) => {
-        stateKey.getState(view.state).update(view.state, view.docView);
-      }
-    };
-  },
-  props: {
-    nodeViews: {
-      panel: panelNodeView,
+    key: stateKey,
+    view: (view: EditorView) => {
+      return {
+        update: (
+          view: EditorView & { docView?: any },
+          prevState: EditorState,
+        ) => {
+          stateKey.getState(view.state).update(view.state, view.docView);
+        },
+      };
     },
-    handleClick(view: EditorView & { docView?: any }, event) {
-      stateKey.getState(view.state).update(view.state, view.docView, true);
-      return false;
+    props: {
+      nodeViews: {
+        panel: panelNodeView,
+      },
+      handleClick(view: EditorView & { docView?: any }, event) {
+        stateKey.getState(view.state).update(view.state, view.docView, true);
+        return false;
+      },
+      onFocus(view: EditorView, event) {
+        stateKey.getState(view.state).updateEditorFocused(true);
+      },
+      onBlur(view: EditorView & { docView?: any }, event) {
+        const pluginState = stateKey.getState(view.state);
+        pluginState.updateEditorFocused(false);
+        pluginState.update(view.state, view.docView, true);
+      },
     },
-    onFocus(view: EditorView, event) {
-      stateKey.getState(view.state).updateEditorFocused(true);
-    },
-    onBlur(view: EditorView & { docView?: any }, event) {
-      const pluginState = stateKey.getState(view.state);
-      pluginState.updateEditorFocused(false);
-      pluginState.update(view.state, view.docView, true);
-    },
-  },
-});
+  });
 
 const plugins = (schema: Schema) => {
-  return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+  return [createPlugin(), inputRulePlugin(schema)].filter(
+    plugin => !!plugin,
+  ) as Plugin[];
 };
 
 export default plugins;
