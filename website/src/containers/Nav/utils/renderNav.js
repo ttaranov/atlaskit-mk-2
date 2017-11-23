@@ -12,9 +12,10 @@ export default function renderNav(groups: Array<NavGroup>, pathname: string) {
       key={pathname + index + (group.title || '')}
     >
       {group.items.map(item => {
-        // const isAncestor = pathname.includes(item.to) && pathname !== item.to;
+        const isAncestor = pathname.includes(item.to) && pathname !== item.to;
         const isSelected = pathname === item.to;
-        const icon = isSelected ? item.iconSelected || item.icon : item.icon;
+        const icon =
+          isSelected || isAncestor ? item.iconSelected || item.icon : item.icon;
 
         return item.external ? (
           <ExternalNavigationItem

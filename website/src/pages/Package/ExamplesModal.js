@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Loadable from 'react-loadable';
 import { Link, Redirect, Route, withRouter } from 'react-router-dom';
 
@@ -90,10 +90,13 @@ const ModalActions = styled.div`
 // NAVIGATION
 // ==============================
 
-const Nav = styled.nav`
+const keylineMask = css`
   background-color: ${colors.background};
-  flex-shrink: 0;
   margin-top: -2px;
+  padding-top: 2px;
+`;
+const Nav = styled.nav`
+  ${keylineMask} flex-shrink: 0;
   padding-bottom: 20px;
   padding-right: 20px;
   position: relative;
@@ -125,22 +128,28 @@ const NavItem = styled.button`
 `;
 
 function ExampleNavigation({ examples, exampleId, onExampleSelected }) {
+  const regex = /^[a-zA-Z0-9]/; // begins with letter or number, avoid "special" files
+
   return (
     <Nav>
       <NavInner>
         {examples ? (
-          fs.flatMap(examples, (file, filePath) => (
-            <NavItem
-              children={fs.titleize(file.id)}
-              isSelected={file.id === exampleId}
-              key={file.id}
-              onClick={() =>
-                onExampleSelected(
-                  fs.normalize(filePath.replace('examples/', '')),
-                )
-              }
-            />
-          ))
+          fs.flatMap(
+            examples,
+            (file, filePath) =>
+              file.id.match(regex) && (
+                <NavItem
+                  children={fs.titleize(file.id)}
+                  isSelected={file.id === exampleId}
+                  key={file.id}
+                  onClick={() =>
+                    onExampleSelected(
+                      fs.normalize(filePath.replace('examples/', '')),
+                    )
+                  }
+                />
+              ),
+          )
         ) : (
           <div>No Examples</div>
         )}
@@ -343,7 +352,7 @@ export default class ExamplesModal extends Component<Props, State> {
       <Modal
         header={({ showKeyline }) => (
           <ModalHeader showKeyline={showKeyline}>
-            <ModalTitle>{fs.titleize(packageId)}</ModalTitle>
+            <ModalTitle>{fs.titleize(packageId)} Examples</ModalTitle>
             <ModalActions>
               <CodeSandbox
                 exampleId={exampleId}
@@ -367,7 +376,7 @@ export default class ExamplesModal extends Component<Props, State> {
             </ModalActions>
           </ModalHeader>
         )}
-        height={600}
+        height="100%"
         onClose={this.close}
         width={1180}
       >

@@ -6,7 +6,6 @@ import PackageIcon from '@atlaskit/icon/glyph/chevron-right';
 import PackageSelectedIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 import PageIcon from '@atlaskit/icon/glyph/page';
 import ComponentIcon from '@atlaskit/icon/glyph/component';
-import CodeIcon from '@atlaskit/icon/glyph/code';
 import { colors } from '@atlaskit/theme';
 
 import renderNav from '../utils/renderNav';
@@ -36,7 +35,7 @@ export function buildSubNavGroup(
       });
       return acc;
     },
-    { title: groupTitle, items: [] }
+    { items: [] }
   );
 }
 
@@ -78,13 +77,13 @@ const getItemDetails = (
       ? `/packages/${group.id}/${pkg.id}`
       : packageUrl(group.id, pkg.id),
     title: fs.titleize(pkg.id),
-    icon: <PackageIcon label={`${fs.titleize(pkg.id)} icon`} />,
-    iconSelected: (
-      <PackageSelectedIcon
-        label={`${fs.titleize(pkg.id)} icon`}
-        secondaryColor={colors.N20}
-      />
-    ),
+    // icon: <PackageIcon label={`${fs.titleize(pkg.id)} icon`} />,
+    // iconSelected: (
+    //   <PackageSelectedIcon
+    //     label={`${fs.titleize(pkg.id)} icon`}
+    //     secondaryColor={colors.N20}
+    //   />
+    // ),
     items,
   };
 };
@@ -121,8 +120,7 @@ const getItem = (
 
 const packagesList = {
   to: '/packages',
-  title: 'All packages',
-  icon: <ComponentIcon label="All packages icon" />,
+  title: 'Overview',
 };
 
 export type PackagesNavProps = {
