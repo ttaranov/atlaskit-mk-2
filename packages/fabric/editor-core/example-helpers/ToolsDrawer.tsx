@@ -101,11 +101,6 @@ export default class ToolsDrawer extends React.Component<any, State> {
     const { mentionProvider, emojiProvider, mediaProvider, activityProvider, imageUploadProvider, jsonDocument, editorEnabled } = this.state;
     return (
       <Content>
-        <div style={{ padding: '5px 0' }}>
-        ️️️⚠️ Atlassians, for Media integration to work, make sure you're
-          logged into <a href="https://id.stg.internal.atlassian.com" target="_blank">staging Identity server</a>
-          and run your browser <a href="https://stackoverflow.com/a/42024918" target="_blank">with CORS disabled</a>.
-        </div>
         {
           editorEnabled ?
             (this.props.renderEditor({
@@ -118,35 +113,6 @@ export default class ToolsDrawer extends React.Component<any, State> {
             })) :
             ''
         }
-        <div className="toolsDrawer">
-          {
-            Object.keys(providers).map(providerKey => (
-              <div key={providerKey}>
-                <ButtonGroup>
-                  <label>{providerKey}: </label>
-                  {Object.keys(providers[providerKey]).map((providerStateName) => (
-                    <Button
-                      key={`${providerKey}-${providerStateName}`}
-                      onClick={this.switchProvider.bind(this, providerKey, providerStateName)}
-                      appearance={providerStateName === this.state[providerKey] ? 'primary' : 'default'}
-                      theme="dark"
-                      spacing="compact"
-                    >
-                      {providerStateName}
-                    </Button>
-                  ))}
-                </ButtonGroup>
-              </div>
-            ))
-          }
-          <div>
-            <Button onClick={this.reloadEditor} theme="dark" spacing="compact">
-              Reload Editor
-            </Button>
-          </div>
-        </div>
-        <legend>JSON output:</legend>
-        <pre>{jsonDocument}</pre>
       </Content>
     );
   }
