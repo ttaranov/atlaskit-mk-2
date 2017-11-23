@@ -32,11 +32,17 @@ type DefaultProps = {
 };
 
 type Props = {
+  /** Title that briefly describes the page to the user. */
   header: string,
-  size?: Size,
+  /** The main block of text that holds some additional information. */
   description?: string,
+  /** It affects the width of the main container of this component, "wide" is a default one. */
+  size?: Size,
+  /** Image that will be shown above the title. The larger side of this image will be shrunk to 160px. */
   imageUrl?: string,
+  /** Primary action button for the page, usually it will be something like "Create" (or "Retry" for error pages). */
   primaryAction?: PrimaryAction,
+  /** Secondary action button with link to some external resource like documentation or tutorial, it will be opened in a new tab. */
   secondaryAction?: SecondaryAction,
 };
 
