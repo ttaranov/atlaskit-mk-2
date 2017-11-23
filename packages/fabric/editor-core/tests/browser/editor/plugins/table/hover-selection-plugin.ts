@@ -40,9 +40,9 @@ describe('table hover selection plugin', () => {
     });
 
   describe('hoverColumn(number)', () => {
-    describe('when table has 3 columns', () => {
+    context('when table has 3 columns', () => {
       [0, 1, 2].forEach(column => {
-        describe(`when called with ${column}`, () => {
+        context(`when called with ${column}`, () => {
           it(`it should create a hover selection of ${column} column`, () => {
             const { plugin, pluginState, editorView } = editor(
               doc(
@@ -68,9 +68,9 @@ describe('table hover selection plugin', () => {
   });
 
   describe('hoverRow(number)', () => {
-    describe('when table has 3 rows', () => {
+    context('when table has 3 rows', () => {
       [0, 1, 2].forEach(row => {
-        describe(`when called with ${row}`, () => {
+        context(`when called with ${row}`, () => {
           it(`it should create a hover selection of ${row} row`, () => {
             const { plugin, pluginState, editorView } = editor(
               doc(
@@ -97,7 +97,7 @@ describe('table hover selection plugin', () => {
   });
 
   describe('hoverTable()', () => {
-    describe('when table has 3 rows', () => {
+    context('when table has 3 rows', () => {
       it('it should create a hover selection of the whole table', () => {
         const { plugin, pluginState, editorView } = editor(
           doc(

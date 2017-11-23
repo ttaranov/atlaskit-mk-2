@@ -1,10 +1,18 @@
-import { Fragment, Node as PMNode, Schema } from 'prosemirror-model';
+import {
+  Fragment,
+  Node as PMNode,
+  Schema,
+} from 'prosemirror-model';
 import { Transformer } from '../transformer';
 
 import parseHtml from './parse-html';
 import fixDoc from './fix-doc';
 
-import { bfsOrder, convert, ensureBlocks } from './utils';
+import {
+  bfsOrder,
+  convert,
+  ensureBlocks,
+} from './utils';
 
 import {
   isSchemaWithLists,
@@ -39,11 +47,7 @@ export default class JIRATransformer implements Transformer<string> {
   private mediaContextInfo?: MediaContextInfo;
   private doc: Document;
 
-  constructor(
-    schema: Schema,
-    customEncoders?: JIRACustomEncoders,
-    mediaContextInfo?: MediaContextInfo,
-  ) {
+  constructor(schema: Schema, customEncoders?: JIRACustomEncoders, mediaContextInfo?: MediaContextInfo) {
     this.schema = schema;
     this.customEncoders = customEncoders || {};
     this.mediaContextInfo = mediaContextInfo;
@@ -69,10 +73,7 @@ export default class JIRATransformer implements Transformer<string> {
   }
 
   parse(html: string): PMNode {
-    const convertedNodes = new WeakMap<
-      Node,
-      Fragment | PMNode | null | undefined
-    >();
+    const convertedNodes = new WeakMap<Node, Fragment | PMNode | null | undefined>();
     const dom = fixDoc(parseHtml(html)).querySelector('body')!;
     const nodes = bfsOrder(dom);
 
@@ -86,10 +87,11 @@ export default class JIRATransformer implements Transformer<string> {
     for (let i = nodes.length - 1; i >= 0; i--) {
       const node = nodes[i] as Element;
       // for tables we take tbody content, because tbody is not in schema so the whole bfs thing wouldn't work
-      const targetNode =
+      const targetNode = (
         node.tagName && node.tagName.toUpperCase() === 'TABLE'
           ? node.firstChild!
-          : node;
+          : node
+      );
       const content = this.getContent(targetNode, convertedNodes);
       const candidate = convert(content, node, this.schema);
       if (typeof candidate !== 'undefined') {
@@ -111,10 +113,7 @@ export default class JIRATransformer implements Transformer<string> {
   /*
    * Contructs a struct string of replacement blocks and marks for a given node
    */
-  private getContent(
-    node: Node,
-    convertedNodes: WeakMap<Node, Fragment | PMNode | null | undefined>,
-  ): Fragment {
+  private getContent(node: Node, convertedNodes: WeakMap<Node, Fragment | PMNode | null | undefined>): Fragment {
     let fragment = Fragment.fromArray([]);
     let childIndex;
 
@@ -143,7 +142,7 @@ export default class JIRATransformer implements Transformer<string> {
       rule,
       mediaGroup,
       media,
-      table,
+      table
     } = this.schema.nodes;
 
     if (node.isText) {
@@ -192,9 +191,7 @@ export default class JIRATransformer implements Transformer<string> {
       return this.encodeTable(node);
     }
 
-    throw new Error(
-      `Unexpected node '${(node as any).type.name}' for HTML encoding`,
-    );
+    throw new Error(`Unexpected node '${(node as any).type.name}' for HTML encoding`);
   }
 
   private makeDocument() {
@@ -206,9 +203,7 @@ export default class JIRATransformer implements Transformer<string> {
 
   private encodeFragment(fragment: Fragment) {
     const documentFragment = this.doc.createDocumentFragment();
-    fragment.forEach(node =>
-      documentFragment.appendChild(this.encodeNode(node)!),
-    );
+    fragment.forEach(node => documentFragment.appendChild(this.encodeNode(node)!));
     return documentFragment;
   }
 
@@ -216,10 +211,8 @@ export default class JIRATransformer implements Transformer<string> {
     function anchorNameEncode(name: string) {
       const noSpaces = name.replace(/ /g, '');
       const uriEncoded = encodeURIComponent(noSpaces);
-      const specialsEncoded = uriEncoded.replace(
-        /[!'()*]/g,
-        c => '%' + c.charCodeAt(0).toString(16),
-      );
+      const specialsEncoded = uriEncoded
+        .replace(/[!'()*]/g, c => ('%' + c.charCodeAt(0).toString(16)));
       return specialsEncoded;
     }
 
@@ -278,11 +271,7 @@ export default class JIRATransformer implements Transformer<string> {
             const href = mark.attrs['href'];
 
             // Handle external links e.g. links which start with http://, https://, ftp://, //
-            if (
-              href.match(/\w+:\/\//) ||
-              href.match(/^\/\//) ||
-              href.match('mailto:')
-            ) {
+            if (href.match(/\w+:\/\//) || href.match(/^\/\//) || href.match('mailto:')) {
               linkElem.setAttribute('class', 'external-link');
               linkElem.setAttribute('href', href);
               linkElem.setAttribute('rel', 'nofollow');
@@ -348,10 +337,7 @@ export default class JIRATransformer implements Transformer<string> {
     const elem = this.doc.createElement('li');
     if (node.content.childCount) {
       node.content.forEach(childNode => {
-        if (
-          childNode.type === this.schema.nodes.bulletList ||
-          childNode.type === this.schema.nodes.orderedList
-        ) {
+        if (childNode.type === this.schema.nodes.bulletList || childNode.type === this.schema.nodes.orderedList) {
           const list = this.encodeNode(childNode)!;
 
           /**
@@ -383,8 +369,7 @@ export default class JIRATransformer implements Transformer<string> {
     elem.setAttribute('class', 'user-hover');
     elem.setAttribute('href', encoder ? encoder(node.attrs.id) : node.attrs.id);
     elem.setAttribute('rel', node.attrs.id);
-    elem.appendChild(this.doc.createTextNode(node.attrs.text));
-
+    elem.innerText = node.attrs.text;
     return elem;
   }
 
@@ -397,10 +382,7 @@ export default class JIRATransformer implements Transformer<string> {
 
     const pre = this.doc.createElement('pre');
     // java is default language for JIRA
-    pre.setAttribute(
-      'class',
-      `code-${(node.attrs.language || 'plain').toLocaleLowerCase()}`,
-    );
+    pre.setAttribute('class', `code-${(node.attrs.language || 'plain').toLocaleLowerCase()}`);
     pre.appendChild(this.encodeFragment(node.content));
 
     content.appendChild(pre);
@@ -422,38 +404,26 @@ export default class JIRATransformer implements Transformer<string> {
     return elem;
   }
 
-  private addDataToNode(
-    domNode: HTMLElement,
-    mediaNode: PMNode,
-    defaultDisplayType = 'thumbnail',
-  ) {
+  private addDataToNode(domNode: HTMLElement, mediaNode: PMNode, defaultDisplayType = 'thumbnail') {
     const { id, type, collection, __fileName, __displayType } = mediaNode.attrs;
     // Order of dataset matters in IE Edge, please keep the current order
-    domNode.setAttribute(
-      'data-attachment-type',
-      __displayType || defaultDisplayType,
-    );
-
+    domNode.dataset.attachmentType = __displayType || defaultDisplayType;
     if (__fileName) {
-      domNode.setAttribute('data-attachment-name', __fileName);
+      domNode.dataset.attachmentName = __fileName;
     }
-
-    domNode.setAttribute('data-media-services-type', type);
-    domNode.setAttribute('data-media-services-id', id);
-
+    domNode.dataset.mediaServicesType = type;
+    domNode.dataset.mediaServicesId = id;
     if (collection) {
-      domNode.setAttribute('data-media-services-collection', collection);
+      domNode.dataset.mediaServicesCollection = collection;
     }
   }
 
   private buildURLWithContextInfo(fileId: string, contextInfo: ContextInfo) {
     const { clientId, serviceHost, token, collection } = contextInfo;
-    return `${serviceHost}/file/${fileId}/image?token=${token}&client=${
-      clientId
-    }&collection=${collection}&width=200&height=200&mode=fit`;
+    return `${serviceHost}/file/${fileId}/image?token=${token}&client=${clientId}&collection=${collection}&width=200&height=200&mode=fit`;
   }
 
-  private isImageMimeType(mimeType?: string) {
+  private isImageMimeType (mimeType?: string) {
     return mimeType && mimeType.indexOf('image/') > -1;
   }
 
@@ -465,10 +435,7 @@ export default class JIRATransformer implements Transformer<string> {
 
     if (
       node.attrs.__displayType === 'file' ||
-      !(
-        node.attrs.__displayType ||
-        this.isImageMimeType(node.attrs.__fileMimeType)
-      )
+      !(node.attrs.__displayType || this.isImageMimeType(node.attrs.__fileMimeType))
     ) {
       elem.setAttribute('class', 'nobr');
       this.addDataToNode(a, node, 'file');
@@ -479,26 +446,10 @@ export default class JIRATransformer implements Transformer<string> {
       const img = this.doc.createElement('img');
       img.setAttribute('alt', node.attrs.__fileName);
       // Newly uploaded items have collection
-      if (
-        node.attrs.collection &&
-        this.mediaContextInfo &&
-        this.mediaContextInfo.uploadContext
-      ) {
-        img.setAttribute(
-          'src',
-          this.buildURLWithContextInfo(
-            node.attrs.id,
-            this.mediaContextInfo.uploadContext,
-          ),
-        );
+      if (node.attrs.collection && this.mediaContextInfo && this.mediaContextInfo.uploadContext) {
+        img.setAttribute('src', this.buildURLWithContextInfo(node.attrs.id, this.mediaContextInfo.uploadContext));
       } else if (this.mediaContextInfo && this.mediaContextInfo.viewContext) {
-        img.setAttribute(
-          'src',
-          this.buildURLWithContextInfo(
-            node.attrs.id,
-            this.mediaContextInfo.viewContext,
-          ),
-        );
+        img.setAttribute('src', this.buildURLWithContextInfo(node.attrs.id, this.mediaContextInfo.viewContext));
       }
       this.addDataToNode(img, node);
 
@@ -520,8 +471,7 @@ export default class JIRATransformer implements Transformer<string> {
       const rowElement = this.doc.createElement('tr');
 
       rowNode.descendants(colNode => {
-        const cellType =
-          colNode.type === this.schema.nodes.tableCell ? 'd' : 'h';
+        const cellType = colNode.type === this.schema.nodes.tableCell ? 'd' : 'h';
         const cellElement = this.doc.createElement(`t${cellType}`);
         cellElement.setAttribute('class', `confluenceT${cellType}`);
         cellElement.appendChild(this.encodeFragment(colNode.content));

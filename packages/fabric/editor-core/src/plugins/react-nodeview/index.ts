@@ -26,7 +26,6 @@ export class ReactNodeViewState {
 
 export const stateKey = new PluginKey('reactNodeView');
 
-
 export const plugin = new Plugin({
   state: {
     init(config, state: EditorState) {
