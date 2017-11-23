@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, type ComponentType } from 'react';
+import React, { Component, type Element } from 'react';
 import rafSchedule from 'raf-schd';
 
 // Need to make outer div full height in case consumer wants to align
@@ -26,9 +26,14 @@ const objectStyle = {
   zIndex: -1,
 };
 
+type SizeMetrics = {
+  width: number,
+  height: number,
+};
+
 type Props = {
   /** Function that accepts an object parameter containing 'height' and 'width' properties */
-  children: ComponentType<SizeMetrics>,
+  children: SizeMetrics => Element<any>,
   /** Optional styles object to be applied to the containing element */
   containerStyle?: Object,
 };
@@ -37,20 +42,13 @@ type State = {
   sizeMetrics?: SizeMetrics,
 };
 
-type SizeMetrics = {
-  width: number,
-  height: number,
-};
-
 export default class SizeDetector extends Component<Props, State> {
   props: Props;
   state: State;
 
   constructor(props: Object) {
     super(props);
-    this.state = {
-      sizeMetrics: null,
-    };
+    this.state = {};
   }
 
   static defaultProps = {
@@ -137,6 +135,7 @@ export default class SizeDetector extends Component<Props, State> {
         style={{ ...containerDivStyle, ...this.props.containerStyle }}
         ref={this.handleContainerRef}
       >
+        {/* eslint-disable jsx-a11y/alt-text */}
         <object
           type="text/html"
           style={objectStyle}
