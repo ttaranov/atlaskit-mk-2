@@ -18,6 +18,9 @@ pipelines:
   default:
     - step:
         script:
+          - cat packages/elements/theme/package.json
+          - git pull --rebase origin master
+          - cat packages/elements/theme/package.json
           - source ./build-setup.sh
           - bolt install --pure-lockfile
           - bolt build
