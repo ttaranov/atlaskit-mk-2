@@ -4854,9 +4854,9 @@ extglob@^0.3.1:
   dependencies:
     is-extglob "^1.0.0"
 
-extract-react-types@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.3.0.tgz#c3a7ca5d022692a4cf2a951aace26ac340402ab7"
+extract-react-types@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.3.1.tgz#ce02b2a515da839cee95015e75340ca3562c97e8"
   dependencies:
     babel-core "7.0.0-alpha.19"
     babel-errors "^1.1.1"
