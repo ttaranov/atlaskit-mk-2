@@ -54,7 +54,7 @@ function getPackagesGlobs(subsetName /*?: string */) {
   switch (subsetName) {
     case 'editor':
       return createGlob(
-        'fabric/+(code|editor-core|editor-common|editor-bitbucket|editor-cq|editor-jira|renderer)',
+        'fabric/+(code|editor-core|editor-common|editor-bitbucket|editor-cq|editor-jira|renderer|transformer)',
       );
 
     case 'media':

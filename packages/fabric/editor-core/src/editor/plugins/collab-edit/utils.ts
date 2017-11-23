@@ -10,7 +10,7 @@ import {
 
 import { Decoration, DecorationSet } from 'prosemirror-view';
 
-import { hexToRgba } from '../../../utils/color';
+import { hexToRgba } from '@atlaskit/editor-common';
 
 export interface Color {
   solid: string;

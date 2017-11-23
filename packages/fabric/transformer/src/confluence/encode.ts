@@ -1,11 +1,15 @@
-import { MediaAttributes, getEmojiAcName } from '@atlaskit/editor-common';
+import {
+  MediaAttributes,
+  getEmojiAcName,
+  hexToRgb,
+  getPlaceholderUrl,
+  getMacroId,
+} from '@atlaskit/editor-common';
 import { Fragment, Node as PMNode, Mark, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
 import { AC_XMLNS, FAB_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 import { mapCodeLanguage } from './languageMap';
 import { getNodeMarkOfType } from './utils';
-import { hexToRgb } from '@atlaskit/editor-common';
-import { getPlaceholderUrl, getMacroId } from '@atlaskit/editor-common';
 
 export default function encode(node: PMNode, schema: Schema) {
   const docType = document.implementation.createDocumentType(

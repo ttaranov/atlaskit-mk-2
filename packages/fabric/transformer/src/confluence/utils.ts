@@ -3,7 +3,6 @@ import { Fragment, Mark, Node as PMNode, Schema } from 'prosemirror-model';
 import { normalizeHexColor } from '@atlaskit/editor-common';
 import { AC_XMLNS } from './encode-cxhtml';
 import { Macro, DisplayType, BodyType, MacroType } from './types';
-
 /**
  * Deduce a set of marks from a style declaration.
  */

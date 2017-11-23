@@ -9,11 +9,10 @@ import {
   isSchemaWithSubSupMark,
   isSchemaWithTextColor,
   isSchemaWithTables,
+  normalizeHexColor,
 } from '@atlaskit/editor-common';
 
 import { Fragment, Mark, Node as PMNode, Schema } from 'prosemirror-model';
-
-import { normalizeHexColor } from '@atlaskit/editor-common';
 
 /**
  * Ensure that each node in the fragment is a block, wrapping
@@ -149,7 +148,7 @@ export function convert(
          * </span>
          */
         if (node.className === 'jira-issue-macro') {
-          const jiraKey = node.getAttribute('data-jira-key');
+          const jiraKey = node.dataset.jiraKey;
           const link = node.getElementsByTagName('a')[0];
           if (jiraKey && link) {
             return addMarks(Fragment.from(schema.text(jiraKey)), [
@@ -168,18 +167,15 @@ export function convert(
         } else if (isMedia(node) && isSchemaWithMedia(schema)) {
           const dataNode = node.querySelector('[data-media-services-id]');
           if (dataNode && dataNode instanceof HTMLElement) {
-            const id = dataNode.getAttribute('data-media-services-id');
-            const type = dataNode.getAttribute('data-media-services-type');
-            const collection =
-              dataNode.getAttribute('data-media-services-collection') || '';
-            const attachmentName = dataNode.getAttribute(
-              'data-attachment-name',
-            );
-            const attachmentType = dataNode.getAttribute(
-              'data-attachment-type',
-            );
-            const fileName = dataNode.getAttribute('data-file-name');
-            const displayType = dataNode.getAttribute('data-display-type');
+            const {
+              mediaServicesId: id,
+              mediaServicesType: type,
+              mediaServicesCollection: collection = '',
+              attachmentName,
+              attachmentType,
+              fileName,
+              displayType,
+            } = dataNode.dataset;
 
             return schema.nodes.media.create({
               id,
