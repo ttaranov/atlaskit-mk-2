@@ -5,7 +5,7 @@ pipelines:
       - step:
           script:
             - source ./build-setup.sh
-            - bolt install
+            - bolt install --pure-lockfile
             - (cd build/ci-scripts && bolt stop-if-older-build)
             - bolt build
             - bolt lint
@@ -13,18 +13,26 @@ pipelines:
             - bolt test
             - bolt test:browser:browserstack
             - bolt release
-            # we `|| true` here because netlify has started returning 404's on success
-            - (cd website && bolt deploy)
             - (cd build/ci-scripts && bolt restart-stopped-build)
 
   default:
     - step:
         script:
           - source ./build-setup.sh
-          - bolt install
+          - bolt install --pure-lockfile
           - bolt build
           - bolt lint
           - bolt typecheck
           - bolt test
           - bolt test:browser:browserstack
           - (cd website && bolt deploy-staging:no-minimize)
+
+  custom: # Pipelines that can be scheduled or triggered manually
+
+    # This should only be called by a scheduled build
+    build-website-production:
+      - step:
+          script:
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - (cd website && bolt deploy)
