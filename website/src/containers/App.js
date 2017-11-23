@@ -28,6 +28,12 @@ injectGlobal`
       -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
       sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   }
+
+  #app {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const AppContainer = styled.div`
