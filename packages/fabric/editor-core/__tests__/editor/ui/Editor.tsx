@@ -2,9 +2,7 @@ import { name } from '../../../package.json';
 import { mount } from 'enzyme';
 import * as React from 'react';
 import Editor from '../../../src/editor';
-import { makeEditor, doc, p, storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
-import { Plugin, PluginKey } from 'prosemirror-state';
-import getPropsPreset from '../../../src/editor/create-editor/get-props-preset';
+import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 
 describe(name, () => {
   describe('<Editor />', () => {
