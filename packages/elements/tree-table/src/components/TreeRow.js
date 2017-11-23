@@ -1,9 +1,9 @@
 // @flow
-import React, { Children, PureComponent, Component, type Element } from 'react';
-import TreeCell from '../styled/TreeCell';
-import BulletIcon from '../styled/BulletIcon';
+import React, { PureComponent, type Element } from 'react';
+import { TreeRowContainer, TreeCell } from '../styled';
 
 import { type DataFunction } from './../types';
+import Chevron from './Chevron';
 
 type Props = {
   columns: Array<Element>,
@@ -26,37 +26,31 @@ export default class TreeRow extends PureComponent<Props> {
       depth,
       columnWidths,
     } = this.props;
-    const toggle = (
-      <BulletIcon>
-        <span
-          onClick={onExpandToggle}
-          role="button"
-          tabIndex={-1}
-          style={{ display: 'inline-block' }}
-        >
-          {hasChildren ? (isExpanded ? '[-]' : '[+]') : '*'}
-        </span>
-      </BulletIcon>
-    );
     return (
-      <div>
+      <TreeRowContainer>
         {columns.map((ColumnComponent, columnIndex) => {
           const firstCell = columnIndex === 0;
           const width = (columnWidths && columnWidths[columnIndex]) || '200px'; //`${(1 / columns.length) * 100}%`;
-          const paddingLeft = firstCell ? `${depth * 40}px` : 0;
+          const indentLevel = firstCell ? depth : 0;
           return (
             <TreeCell
               width={width}
-              paddingLeft={paddingLeft}
+              indentLevel={indentLevel}
               key={columnIndex}
               className={'tree-cell'}
             >
-              {firstCell ? toggle : null}
+              {firstCell ? (
+                <Chevron
+                  isExpanded={isExpanded}
+                  hasChildren={hasChildren}
+                  onExpandToggle={onExpandToggle}
+                />
+              ) : null}
               <ColumnComponent {...data} />
             </TreeCell>
           );
         })}
-      </div>
+      </TreeRowContainer>
     );
   }
 }
