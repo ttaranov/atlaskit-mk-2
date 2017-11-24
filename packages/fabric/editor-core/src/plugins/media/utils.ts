@@ -1,14 +1,20 @@
 import {
-  atTheEndOfBlock, atTheBeginningOfBlock,
-  endPositionOfParent, startPositionOfParent
+  atTheEndOfBlock,
+  atTheBeginningOfBlock,
+  endPositionOfParent,
+  startPositionOfParent,
 } from '../../utils';
 import { ResolvedPos } from 'prosemirror-model';
 import { EditorState, NodeSelection } from 'prosemirror-state';
 
-export const posOfMediaGroupNearby = (state: EditorState): number | undefined => {
-  return posOfParentMediaGroup(state)
-    || posOfFollowingMediaGroup(state)
-    || posOfPreceedingMediaGroup(state);
+export const posOfMediaGroupNearby = (
+  state: EditorState,
+): number | undefined => {
+  return (
+    posOfParentMediaGroup(state) ||
+    posOfFollowingMediaGroup(state) ||
+    posOfPreceedingMediaGroup(state)
+  );
 };
 
 export const isSelectionNonMediaBlockNode = (state: EditorState): boolean => {
@@ -17,7 +23,9 @@ export const isSelectionNonMediaBlockNode = (state: EditorState): boolean => {
   return node && node.type !== state.schema.nodes.media && node.isBlock;
 };
 
-export const posOfPreceedingMediaGroup = (state: EditorState): number | undefined => {
+export const posOfPreceedingMediaGroup = (
+  state: EditorState,
+): number | undefined => {
   if (!atTheBeginningOfBlock(state)) {
     return;
   }
@@ -32,7 +40,10 @@ const posOfFollowingMediaGroup = (state: EditorState): number | undefined => {
   return posOfMediaGroupBelow(state, state.selection.$to);
 };
 
-const posOfMediaGroupAbove = (state: EditorState, $pos: ResolvedPos): number | undefined => {
+const posOfMediaGroupAbove = (
+  state: EditorState,
+  $pos: ResolvedPos,
+): number | undefined => {
   let adjacentPos;
   let adjacentNode;
 
@@ -53,13 +64,23 @@ const posOfMediaGroupAbove = (state: EditorState, $pos: ResolvedPos): number | u
  * Determine whether the cursor is inside empty paragraph
  * or the selection is the entire paragraph
  */
-export const isInsidePotentialEmptyParagraph = (state: EditorState): boolean => {
+export const isInsidePotentialEmptyParagraph = (
+  state: EditorState,
+): boolean => {
   const { $from } = state.selection;
 
-  return $from.parent.type === state.schema.nodes.paragraph && atTheBeginningOfBlock(state) && atTheEndOfBlock(state);
+  return (
+    $from.parent.type === state.schema.nodes.paragraph &&
+    atTheBeginningOfBlock(state) &&
+    atTheEndOfBlock(state)
+  );
 };
 
-export const posOfMediaGroupBelow = (state: EditorState, $pos: ResolvedPos, prepend: boolean = true): number | undefined => {
+export const posOfMediaGroupBelow = (
+  state: EditorState,
+  $pos: ResolvedPos,
+  prepend: boolean = true,
+): number | undefined => {
   let adjacentPos;
   let adjacentNode;
 
@@ -76,11 +97,17 @@ export const posOfMediaGroupBelow = (state: EditorState, $pos: ResolvedPos, prep
   }
 };
 
-export const posOfParentMediaGroup = (state: EditorState, $pos?: ResolvedPos, prepend: boolean = true): number | undefined => {
+export const posOfParentMediaGroup = (
+  state: EditorState,
+  $pos?: ResolvedPos,
+  prepend: boolean = true,
+): number | undefined => {
   const { $from } = state.selection;
   $pos = $pos || $from;
 
   if ($pos.parent.type === state.schema.nodes.mediaGroup) {
-    return prepend ? startPositionOfParent($pos) : endPositionOfParent($pos) - 1;
+    return prepend
+      ? startPositionOfParent($pos)
+      : endPositionOfParent($pos) - 1;
   }
 };
