@@ -2,12 +2,15 @@
 
 import React, { Component, type ElementRef } from 'react';
 import Input from '@atlaskit/input';
+import { akColorN100 } from '@atlaskit/util-shared-styles';
 import type { Handler } from '../../types';
 
 type Props = {
   isDisabled: boolean,
+  isActive: boolean,
   placeholder: ?string,
   value: ?string,
+  width: ?string,
   onChange: Handler,
   onKeyDown: Handler,
   onFocus: Handler,
@@ -15,13 +18,14 @@ type Props = {
 };
 
 export default class InputField extends Component<Props> {
-  props: Props;
-  input: ElementRef<Input>;
+  input: ElementRef<typeof Input>;
 
   static defaultProps = {
     isDisabled: false,
+    isActive: true,
     placeholder: undefined,
     value: null,
+    width: undefined,
     onChange() {},
     onKeyDown() {},
     onFocus() {},
@@ -29,8 +33,15 @@ export default class InputField extends Component<Props> {
   };
 
   select = () => {
-    this.input.select();
+    if (this.input) {
+      this.input.select();
+    }
   };
+
+  getStyle() {
+    const width = this.props.width;
+    return !this.props.isActive ? { color: akColorN100, width } : { width };
+  }
 
   render() {
     return (
@@ -43,6 +54,7 @@ export default class InputField extends Component<Props> {
         onKeyDown={this.props.onKeyDown}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
+        style={this.getStyle()}
         ref={ref => {
           this.input = ref;
         }}

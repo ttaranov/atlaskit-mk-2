@@ -1,5 +1,19 @@
 # @atlaskit/editor-core
 
+## 60.3.0
+
+- [minor] Fix panel node view and floating toolbars of full page editor in new architecture. [7db53e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7db53e6)
+- [minor] Fix panel node view and floating toolbars of full page editor in new architecture. [7db53e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7db53e6)
+
+## 60.2.5
+
+- [patch] Fixed stand alone file and link card rendering [d851bfc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d851bfc)
+- [patch] Fixed stand alone file and link card rendering [d851bfc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d851bfc)
+
+## 60.2.3
+- [patch] Upgrade mention to ^8.1.0 in editor and renderer [48b5af4](48b5af4)
+- [patch] Upgrade mention to ^8.1.0 in editor and renderer [48b5af4](48b5af4)
+
 ## 60.2.2
 
 ## 60.2.1

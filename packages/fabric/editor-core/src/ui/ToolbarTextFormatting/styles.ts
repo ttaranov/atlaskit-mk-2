@@ -1,6 +1,4 @@
-import {
-  akGridSizeUnitless
-} from '@atlaskit/util-shared-styles';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
 // tslint:disable-next-line:variable-name
@@ -9,7 +7,8 @@ export const ButtonGroup = styled.span`
   align-items: center;
 
   & > div:not(:first-child) {
-    margin-left: ${({ width }) => width === 'large' ? 0 : akGridSizeUnitless}px;
+    margin-left: ${({ width }) =>
+      width === 'large' ? 0 : akGridSizeUnitless}px;
   }
 
   div {

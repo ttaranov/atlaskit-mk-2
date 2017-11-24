@@ -39,7 +39,7 @@ const filterContent = (
   content: JSONNode[],
   types: Set<string>,
   schema?: Schema,
-  breakBetweenBlocks?: boolean
+  breakBetweenBlocks?: boolean,
 ) => {
   return content.reduce(
     (acc, node, index) => {
@@ -66,7 +66,7 @@ const filterContent = (
 
       return acc;
     },
-    [] as JSONNode[]
+    [] as JSONNode[],
   );
 };
 
@@ -74,7 +74,7 @@ export const filterContentByType = (
   doc: JSONDocNode,
   types: Set<string>,
   schema?: Schema,
-  breakBetweenBlocks?: boolean
+  breakBetweenBlocks?: boolean,
 ) => {
   const { content } = doc;
 
@@ -89,7 +89,7 @@ export const filterSliceByType = (
   slice: Slice,
   types: Set<string>,
   schema: Schema,
-  breakBetweenBlocks?: boolean
+  breakBetweenBlocks?: boolean,
 ) => {
   const jsonSlice = slice.toJSON();
   if (!jsonSlice) {
@@ -100,7 +100,7 @@ export const filterSliceByType = (
     content,
     types,
     schema,
-    breakBetweenBlocks
+    breakBetweenBlocks,
   );
   return Slice.fromJSON(schema, { content: filteredContent });
 };

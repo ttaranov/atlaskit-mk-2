@@ -6,6 +6,31 @@ const cli = require('../../../utils/cli');
 jest.mock('../../../utils/cli');
 jest.mock('../../../utils/logger');
 
+function assertPackagesPrompt(options) {
+  const askPackagesCalls = cli.askCheckbox.mock.calls;
+  expect(askPackagesCalls.length).toEqual(1);
+  expect(askPackagesCalls[0][0]).toEqual(
+    'Which packages would you like to include?',
+  );
+  expect(askPackagesCalls[0][1]).toEqual(options);
+}
+
+function assertBumpTypePrompts(expectedCalls) {
+  const bumpTypeCalls = cli.askList.mock.calls;
+  expect(bumpTypeCalls.length).toEqual(expectedCalls.length);
+  for (let i = 0; i < expectedCalls.length; i += 1) {
+    expect(bumpTypeCalls[i][0]).toEqual(
+      `What kind of change is this for ${chalk.green(expectedCalls[i])}?`,
+    );
+  }
+}
+
+function assertSummaryPrompt() {
+  const summaryCalls = cli.askQuestion.mock.calls;
+  expect(summaryCalls.length).toEqual(1);
+  expect(summaryCalls[0][0]).toEqual('Summary');
+}
+
 function mockUserInput(releases, dependents, summary) {
   const pkgsToRelease = releases.map(pkg => pkg.name);
   // select which packages user wants to release
@@ -26,14 +51,14 @@ function mockUserInput(releases, dependents, summary) {
 }
 
 describe('createChangeset', () => {
+  let aWorkspacesDir;
+  let bWorkspacesDir;
+  let cWorkspacesDir;
+  let cwd;
+
+  const summary = 'This is a summary';
+
   describe('dependencies of different versions', async () => {
-    let aWorkspacesDir;
-    let bWorkspacesDir;
-    let cWorkspacesDir;
-    let cwd;
-
-    const summary = 'This is a summary';
-
     beforeEach(async () => {
       cwd = await copyFixtureIntoTempDir(__dirname, 'interlinked-dependencies');
       aWorkspacesDir = path.join(cwd, 'packages', 'a');
@@ -102,7 +127,7 @@ describe('createChangeset', () => {
         ['patch', 'minor', 'major'],
       ]);
     });
-    it.only('should only ask b once if it does not need an update', async () => {
+    it('should only ask b once if it does not need an update', async () => {
       const releases = [{ name: 'pkg-a', type: 'minor' }];
 
       // If everything is valid, no questions are asked again
@@ -115,6 +140,51 @@ describe('createChangeset', () => {
       const changeset = await createChangeset(['pkg-a'], { cwd });
 
       expect(cli.askList.mock.calls.length).toEqual(4);
+    });
+  });
+
+  describe('project with 0.x packages', () => {
+    beforeEach(async () => {
+      cwd = await copyFixtureIntoTempDir(
+        __dirname,
+        'interlinked-dependencies-with-0x-versions',
+      );
+      aWorkspacesDir = path.join(cwd, 'packages', 'a');
+      bWorkspacesDir = path.join(cwd, 'packages', 'b');
+      cWorkspacesDir = path.join(cwd, 'packages', 'c');
+    });
+
+    it('should not allow "none" for caret or tilde deps on 0.x ranges', async () => {
+      const releases = [{ name: 'pkg-a', type: 'minor' }];
+
+      // If everything is valid, no questions are asked again
+      const dependents = [
+        { name: 'pkg-b', type: 'patch' },
+        { name: 'pkg-c', type: 'patch' },
+        { name: 'pkg-a', type: 'patch' },
+      ];
+      mockUserInput(releases, dependents, summary);
+      const changeset = await createChangeset(['pkg-a'], { cwd });
+
+      // First call is for bump of pkg-a (the package we are releasing)
+      expect(cli.askList.mock.calls[0]).toEqual([
+        'What kind of change is this for \u001b[32mpkg-a\u001b[39m?',
+        ['patch', 'minor', 'major'],
+      ]);
+      // second and third are for dependents (should have no "none" choice)
+      expect(cli.askList.mock.calls[1]).toEqual([
+        'What kind of change is this for \u001b[32mpkg-b\u001b[39m?',
+        ['patch', 'minor', 'major'],
+      ]);
+      expect(cli.askList.mock.calls[2]).toEqual([
+        'What kind of change is this for \u001b[32mpkg-c\u001b[39m?',
+        ['patch', 'minor', 'major'],
+      ]);
+      // last is for pkg-a as a dependent (should be allowed to select none as not a caret dep)
+      expect(cli.askList.mock.calls[3]).toEqual([
+        'What kind of change is this for \u001b[32mpkg-a\u001b[39m?',
+        ['none', 'patch', 'minor', 'major'],
+      ]);
     });
   });
 });

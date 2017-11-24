@@ -1,6 +1,4 @@
-import {
-  akGridSizeUnitless
-} from '@atlaskit/util-shared-styles';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
 // tslint:disable-next-line:variable-name
@@ -17,7 +15,8 @@ export const InnerWrapper = styled.span`
   display: flex;
   align-items: center;
   > * {
-    margin-right: ${({ width }) => width === 'large' ? 0 : akGridSizeUnitless}px;
+    margin-right: ${({ width }) =>
+      width === 'large' ? 0 : akGridSizeUnitless}px;
   }
   div {
     display: flex;

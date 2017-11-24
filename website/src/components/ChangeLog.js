@@ -1,6 +1,6 @@
 // @flow
-import React, { Children, Component } from 'react';
 
+import React, { Children, Component, type Node } from 'react';
 import ReactMarkdown from 'react-markdown';
 import semver from 'semver';
 import styled, { css } from 'styled-components';
@@ -21,35 +21,21 @@ const Heading = ({
   children: Array<mixed>,
   level: number,
   packageName: string,
-}): any => {
-  if (level !== 2) return children;
-  const childrenArray = Children.toArray(children);
-  if (childrenArray.length !== 1) return children;
-  const title = childrenArray[0];
-  if (typeof title !== 'string') return children;
-
-  const version = title.match(/^(\d+\.\d+\.\d+)\s+\(([^)]+)\)/);
-  if (!version) {
-    return Array.isArray(children) ? <div>{(children: any)}</div> : children;
-  }
-
-  const versionNumber = version[1];
-  const versionDate = version[2];
-
-  const href = `https://bitbucket.org/atlassian/atlaskit/commits/tag/%40atlaskit%2F${
-    packageName
-  }%40${versionNumber}`;
+}): Node => {
+  const [match, version, date] =
+    children.join('').match(/(\d+\.\d+\.\d+)\s*\(?([^)]*)\)?/) || [];
   const anchorProps = {
-    href,
+    href: `https://bitbucket.org/atlassian/atlaskit/commits/tag/%40atlaskit%2F${
+      packageName
+    }%40${version}`,
     rel: 'noopener noreferrer',
     style: { fontWeight: 500 },
     target: '_blank',
   };
-
   return (
     <H3>
-      <a {...anchorProps}>{versionNumber}</a>
-      <small> &mdash; {versionDate}</small>
+      <a {...anchorProps}>{version}</a>
+      {date ? <small> &mdash; {date}</small> : ''}
     </H3>
   );
 };

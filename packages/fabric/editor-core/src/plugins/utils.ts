@@ -7,7 +7,7 @@ export type InputRuleHandler =
 
 export function defaultInputRuleHandler(
   inputRule: InputRule,
-  isBlockNodeRule: boolean = false
+  isBlockNodeRule: boolean = false,
 ): InputRule {
   const originalHandler = (inputRule as any).handler;
   // TODO: Fix types (ED-2987)
@@ -28,11 +28,11 @@ export function defaultInputRuleHandler(
 export function createInputRule(
   match: RegExp,
   handler: InputRuleHandler,
-  isBlockNodeRule: boolean = false
+  isBlockNodeRule: boolean = false,
 ): InputRule {
   return defaultInputRuleHandler(
     new InputRule(match, handler),
-    isBlockNodeRule
+    isBlockNodeRule,
   );
 }
 
@@ -52,7 +52,7 @@ export const uuid = () =>
 const hasMarksNotSupportedByBlocks = (
   state: EditorState,
   start: number,
-  end: number
+  end: number,
 ) => {
   const { doc, schema: { marks } } = state;
   let unsupportedMarksPresent = false;
