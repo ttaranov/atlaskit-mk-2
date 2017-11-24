@@ -14,7 +14,8 @@ describe(`${name}/schema Confluence schema`, () => {
     expect(confluenceSchema.nodes).toHaveProperty('bulletList');
     expect(confluenceSchema.nodes).toHaveProperty('heading');
     expect(confluenceSchema.nodes).toHaveProperty('mediaGroup');
-    expect(confluenceSchema.nodes).toHaveProperty('mediaNode');
+    expect(confluenceSchema.nodes).toHaveProperty('media');
+    expect(confluenceSchema.nodes).toHaveProperty('singleImage');
     expect(confluenceSchema.nodes).toHaveProperty('confluenceUnsupportedBlock');
     expect(confluenceSchema.nodes).toHaveProperty('confluenceJiraIssue');
     expect(confluenceSchema.nodes).toHaveProperty('listItem');
