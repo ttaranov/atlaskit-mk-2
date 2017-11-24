@@ -52,6 +52,7 @@
     "@atlaskit/logo": "^6.0.2",
     "@atlaskit/lozenge": "^3.4.6",
     "@atlaskit/media-filmstrip": "^5.5.1",
+    "@atlaskit/media-core": "^11.0.0",
     "@atlaskit/media-test-helpers": "^8.5.0",
     "@atlaskit/navigation": "^26.5.1",
     "@atlaskit/single-select": "^2.0.1",
