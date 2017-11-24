@@ -31,7 +31,7 @@ import { insertPoint } from 'prosemirror-transform';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
 
 import PickerFacadeType from './picker-facade';
-import { ErrorReporter } from '../../utils';
+import { ErrorReporter, isImage } from '../../utils';
 import { Dispatch } from '../../editor/event-dispatcher';
 import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
@@ -44,7 +44,8 @@ import {
 } from '../../nodeviews';
 import keymapPlugin from './keymap';
 import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
-import { insertFilmstrip, insertSingleImages } from './media-files';
+import { insertFilmstrip } from './media-files';
+import { insertSingleImages } from './single-image';
 import { removeMediaNode, splitMediaGroup } from './media-common';
 import { Alignment, Display } from './single-image';
 import PickerFacade from './picker-facade';
@@ -215,7 +216,7 @@ export class MediaPluginState {
 
     mediaStates.forEach(mediaState => {
       this.stateManager.subscribe(mediaState.id, this.handleMediaState);
-      if (!this.isImage(mediaState.fileMimeType)) {
+      if (!isImage(mediaState.fileMimeType)) {
         areImages = false;
       }
     });
@@ -458,10 +459,6 @@ export class MediaPluginState {
       oldState.selection.$anchor.pos,
     );
   };
-
-  private isImage(fileType?: string): boolean {
-    return !!fileType && fileType.indexOf('image/') > -1;
-  }
 
   private destroyPickers = () => {
     const { pickers } = this;
