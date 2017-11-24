@@ -54,10 +54,8 @@ const rangeFixture = {
 
 export default editorView => {
   const warnOnce = (() => {
-    let hasWarned = false;
-
     return () => {
-      if (hasWarned) {
+      if ((window as any).hasWarnedAboutJsdomFixtures) {
         return;
       }
 
@@ -66,7 +64,7 @@ export default editorView => {
         'Warning! Test depends on DOM selection API which is not supported in JSDOM/Node environment.',
       );
 
-      hasWarned = true;
+      (window as any).hasWarnedAboutJsdomFixtures = true;
     };
   })();
 

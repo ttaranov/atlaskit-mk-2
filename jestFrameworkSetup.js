@@ -55,9 +55,12 @@ if (document && !('innerText' in document.createElement('a'))) {
 
 if (!('cancelAnimationFrame' in window)) {
   window.cancelAnimationFrame = () => {
-    console.warn(
-      'Warning! Test uses DOM cancelAnimationFrame API which is not available in JSDOM/Node environment.',
-    );
+    if (!window.hasWarnedAboutCancelAnimationFramePolyfill) {
+      window.hasWarnedAboutCancelAnimationFramePolyfill = true;
+      console.warn(
+        'Warning! Test uses DOM cancelAnimationFrame API which is not available in JSDOM/Node environment.',
+      );
+    }
   };
 }
 
