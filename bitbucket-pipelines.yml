@@ -11,7 +11,7 @@ pipelines:
             - bolt build
             - bolt lint
             - bolt typecheck
-            - bolt test
+            - bolt test:ci
             - bolt test:browser:browserstack
             - bolt release
             - (cd build/ci-scripts && bolt restart-stopped-build)
@@ -24,7 +24,7 @@ pipelines:
           - bolt build
           - bolt lint
           - bolt typecheck
-          - bolt test
+          - bolt test:ci
           - bolt test:browser:browserstack
           - (cd website && bolt deploy-staging:no-minimize)
 
