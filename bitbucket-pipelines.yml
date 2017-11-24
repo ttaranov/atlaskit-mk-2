@@ -4,6 +4,7 @@ pipelines:
     master:
       - step:
           script:
+            # Note: in master, this script will rebase you onto latest origin/master
             - source ./build-setup.sh
             - bolt install --pure-lockfile
             - (cd build/ci-scripts && bolt stop-if-older-build)
