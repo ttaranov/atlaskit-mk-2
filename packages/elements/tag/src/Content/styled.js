@@ -1,6 +1,6 @@
 // @flow
 import styled, { css } from 'styled-components';
-import { gridSize, fontSize, link, linkHover, math } from '@atlaskit/theme';
+import { gridSize, fontSize, colors, math } from '@atlaskit/theme';
 import {
   buttonWidthUnitless,
   maxTextWidth,
@@ -37,7 +37,7 @@ const getFocusedStyles = ({ isFocused, color, ...rest }) => {
     `;
   if (isFocused)
     return css`
-      color: ${link(rest)};
+      color: ${colors.link(rest)};
     `;
   return null;
 };
@@ -47,7 +47,7 @@ export const Link = styled.a`
       color === 'standard' ? 'none' : 'underline'};
 
   &:hover {
-    color: ${linkHover};
+    color: ${colors.linkHover};
     ${({ color }) =>
       color === 'standard'
         ? ''
