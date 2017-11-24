@@ -21,7 +21,7 @@ export interface Extension<T> {
 export type ExtensionHandler<T> = (
   ext: Extension<T>,
   doc: any,
-) => JSX.Element | Node;
+) => JSX.Element | Node | null;
 
 export interface ExtensionHandlers {
   [key: string]: ExtensionHandler<any>;

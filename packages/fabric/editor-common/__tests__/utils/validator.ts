@@ -538,9 +538,10 @@ describe('Renderer - Validator', () => {
         const { type, attrs } = getValidNode({
           type: 'extension',
           attrs: extensionAttrs,
+          content: [],
         });
         expect(type).to.equal('extension');
-        expect(attrs).to.deep.equal(extensionAttrs);
+        expect(attrs.adContent).to.deep.equal([]);
       });
 
       it('should reject extensions without extensionType', () => {
@@ -568,20 +569,6 @@ describe('Renderer - Validator', () => {
         });
         expect(type).to.equal('text');
       });
-
-      it('should reject extensions if bodyType is not one of "none", "plain" and "rich"', () => {
-        const extensionAttrs = {
-          text: 'This is an extension',
-          extensionType: 'com.atlassian.connect.extension',
-          extensionKey: 'CallWithSkype',
-          bodyType: 'nonono',
-        };
-        const { type, attrs } = getValidNode({
-          type: 'extension',
-          attrs: extensionAttrs,
-        });
-        expect(type).to.equal('text');
-      });
     });
 
     describe('inlineExtension', () => {
@@ -595,9 +582,10 @@ describe('Renderer - Validator', () => {
         const { type, attrs } = getValidNode({
           type: 'inlineExtension',
           attrs: extensionAttrs,
+          content: [],
         });
         expect(type).to.equal('inlineExtension');
-        expect(attrs).to.deep.equal(extensionAttrs);
+        expect(attrs.adContent).to.deep.equal([]);
       });
 
       it('should reject inlineExtension without extensionType', () => {
@@ -618,20 +606,6 @@ describe('Renderer - Validator', () => {
           text: 'This is an inlineExtension',
           extensionType: 'com.atlassian.connect.inlineExtension',
           bodyType: 'none',
-        };
-        const { type, attrs } = getValidNode({
-          type: 'inlineExtension',
-          attrs: extensionAttrs,
-        });
-        expect(type).to.equal('text');
-      });
-
-      it('should reject inlineExtension if bodyType is not one of "none", "plain" and "rich"', () => {
-        const extensionAttrs = {
-          text: 'This is an inlineExtension',
-          extensionType: 'com.atlassian.connect.extension',
-          extensionKey: 'CallWithSkype',
-          bodyType: 'nonono',
         };
         const { type, attrs } = getValidNode({
           type: 'inlineExtension',

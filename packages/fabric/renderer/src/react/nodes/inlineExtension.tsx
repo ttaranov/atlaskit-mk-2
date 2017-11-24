@@ -14,7 +14,7 @@ export interface Props {
   adContent?: any;
 }
 
-const Extension: React.StatelessComponent<Props> = props => {
+const InlineExtension: React.StatelessComponent<Props> = props => {
   const {
     serializer,
     rendererContext,
@@ -41,8 +41,7 @@ const Extension: React.StatelessComponent<Props> = props => {
         // We need to wrap the content, because renderNode will start
         // rendering from its content.
         const wrappedContent = {
-          type: 'doc',
-          version: 1,
+          type: 'paragraph',
           content: [content],
         };
         const result = renderNode(
@@ -51,13 +50,13 @@ const Extension: React.StatelessComponent<Props> = props => {
           rendererContext.schema,
         );
         if (result) {
-          return <div>{result}</div>;
+          return <span>{result}</span>;
         }
     }
   }
 
   // Always return default content if anything goes wrong
-  return <div>{children}</div>;
+  return <span>{children}</span>;
 };
 
-export default Extension;
+export default InlineExtension;

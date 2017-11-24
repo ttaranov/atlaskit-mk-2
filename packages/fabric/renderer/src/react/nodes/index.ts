@@ -13,6 +13,9 @@ import Extension, { Props as ExtensionProps } from './extension';
 import HardBreak from './hardBreak';
 import Heading from './heading';
 import Image from './image';
+import InlineExtension, {
+  Props as InlineExtensionProps,
+} from './inlineExtension';
 import ListItem from './listItem';
 import Media from './media';
 import MediaGroup from './mediaGroup';
@@ -44,6 +47,7 @@ export const nodeToReact = {
   hardBreak: HardBreak,
   heading: Heading,
   image: Image,
+  inlineExtension: InlineExtension,
   listItem: ListItem,
   media: Media,
   mediaGroup: MediaGroup,
@@ -220,6 +224,8 @@ export {
   Heading,
   ListItem,
   Image,
+  InlineExtension,
+  InlineExtensionProps,
   Media,
   MediaGroup,
   Mention,
