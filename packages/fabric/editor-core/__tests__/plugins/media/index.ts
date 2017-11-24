@@ -1,4 +1,5 @@
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
+import * as assert from 'assert';
 
 import {
   mediaPluginFactory,

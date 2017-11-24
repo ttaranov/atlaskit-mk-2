@@ -39,13 +39,13 @@ if (!browser.ie && !isMobileBrowser()) {
       title="Attachment" 
       data-file-mime-type="${fileMineType}"></div>`;
 
-      context('message editor', () => {
+      describe('message editor', () => {
         it('pastes', () => {
           const { editorView } = messageEditor(doc(p('{<>}')));
           dispatchPasteEvent(editorView, {
             html: mediaHtml('image/jpeg'),
           });
-          expect(editorView.state.doc).to.deep.equal(
+          expect(editorView.state.doc).toEqualDocument(
             doc(
               p(),
               mediaGroup(
@@ -62,14 +62,14 @@ if (!browser.ie && !isMobileBrowser()) {
         });
       });
 
-      context('non message editor', () => {
-        context('when message is a media image node', () => {
+      describe('non message editor', () => {
+        describe('when message is a media image node', () => {
           it('paste as single image', () => {
             const { editorView } = editor(doc(p('{<>}')));
             dispatchPasteEvent(editorView, {
               html: mediaHtml('image/jpeg'),
             });
-            expect(editorView.state.doc).to.deep.equal(
+            expect(editorView.state.doc).toEqualDocument(
               doc(
                 singleImage({ alignment: 'center', display: 'block' })(
                   media({
@@ -85,13 +85,13 @@ if (!browser.ie && !isMobileBrowser()) {
           });
         });
 
-        context('when message is not a media image node', () => {
+        describe('when message is not a media image node', () => {
           it('does nothing', () => {
             const { editorView } = editor(doc(p('{<>}')));
             dispatchPasteEvent(editorView, {
               html: mediaHtml('pdf'),
             });
-            expect(editorView.state.doc).to.deep.equal(
+            expect(editorView.state.doc).toEqualDocument(
               doc(
                 p(),
                 mediaGroup(
