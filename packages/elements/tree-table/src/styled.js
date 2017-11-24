@@ -1,16 +1,28 @@
 // @flow
 import styled, { css } from 'styled-components';
-import { borderRadius, colors, themed } from '@atlaskit/theme';
+import { colors, themed } from '@atlaskit/theme';
+
+function defaultToPx(length) {
+  const number = +length;
+  if (number === 0) {
+    return 0;
+  }
+  if (Number.isNaN(number)) {
+    return length;
+  }
+  return `${number}px`;
+}
+
+export const iconColor = colors.N800;
 
 export const TreeRowContainer = styled.div`
   border-bottom: 1px solid ${colors.N30};
 `;
 
-export const BulletIcon = styled.span`
+export const ChevronContainer = styled.span`
   display: inline-block
   width: 20px;
   margin-left: -20px;
-  text-align: center;
 `;
 
 const indentWidth = 20;
@@ -18,7 +30,7 @@ const indentWidth = 20;
 const commonCell = css`
   box-sizing: border-box;
   display: inline-block;
-  padding: 10px ${indentWidth}px;
+  padding: 10px ${defaultToPx(indentWidth)};
   ${props =>
     props.width &&
     css`
@@ -30,7 +42,7 @@ export const TreeCell = styled.div`
   ${commonCell} ${props =>
       props.indentLevel &&
       css`
-        padding-left: ${indentWidth * props.indentLevel}px;
+        padding-left: ${defaultToPx(indentWidth * props.indentLevel)};
       `};
 `;
 
@@ -42,6 +54,6 @@ export const TreeHead = styled.div`
   line-height: 1.67;
   letter-spacing: -0.1px;
   color: ${colors.N800}
-  padding-left: ${indentWidth}px;
+  padding-left: ${defaultToPx(indentWidth)};
   padding-bottom: 8px;
 `;

@@ -10,11 +10,10 @@
     "dist"
   ],
   "author": "Atlassian Pty Ltd",
-  "maintainers": [
-  ],
+  "maintainers": [],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
-    "@atlaskit/layer-manager": "^2.4.0",
+    "@atlaskit/icon": "^10.3.0",
     "@atlaskit/theme": "^2.0.0",
     "react-transition-group": "^2.2.1",
     "styled-components": "^1.4.6"
@@ -25,9 +24,7 @@
   },
   "devDependencies": {
     "@atlaskit/button": "^5.4.8",
-    "@atlaskit/button-group": "^1.5.3",
-    "@atlaskit/docs": "^0.0.3",
-    "@atlaskit/icon": "^9.0.1"
+    "@atlaskit/docs": "^0.0.4"
   },
   "keywords": [
     "atlaskit",

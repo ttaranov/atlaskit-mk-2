@@ -1,6 +1,9 @@
 // @flow
 import React, { PureComponent, type Element } from 'react';
-import { BulletIcon } from '../styled';
+import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
+import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
+
+import { ChevronContainer, iconColor } from '../styled';
 
 type Props = {
   isExpanded: boolean,
@@ -22,21 +25,19 @@ export default class Chevron extends PureComponent<Props> {
 
   render() {
     const { isExpanded, hasChildren } = this.props;
-    let text = '*';
+    const iconProps = {
+      onClick: this.handleClick,
+      size: 'small',
+      primaryColor: iconColor,
+    };
+    let icon = null;
     if (hasChildren) {
-      text = isExpanded ? '[-]' : '[+]';
+      icon = isExpanded ? (
+        <ChevronDownIcon label="Collapse" {...iconProps} />
+      ) : (
+        <ChevronRightIcon label="Expand" {...iconProps} />
+      );
     }
-    return (
-      <BulletIcon>
-        <span
-          onClick={this.handleClick}
-          role="button"
-          tabIndex={-1}
-          style={{ display: 'inline-block' }}
-        >
-          {text}
-        </span>
-      </BulletIcon>
-    );
+    return <ChevronContainer>{icon}</ChevronContainer>;
   }
 }
