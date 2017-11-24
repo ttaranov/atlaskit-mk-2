@@ -1,15 +1,27 @@
-import { Fragment } from 'prosemirror-model';
-import { EditorState, NodeSelection, Selection, TextSelection, Transaction  } from 'prosemirror-state';
+import { Fragment, Slice, Node as PMNode } from 'prosemirror-model';
+import {
+  EditorState,
+  NodeSelection,
+  Selection,
+  TextSelection,
+  Transaction,
+} from 'prosemirror-state';
 import { findWrapping, liftTarget } from 'prosemirror-transform';
 import { EditorView } from 'prosemirror-view';
 import * as baseCommand from 'prosemirror-commands';
 import * as baseListCommand from 'prosemirror-schema-list';
 import * as blockTypes from '../plugins/block-type/types';
-import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
+import {
+  isConvertableToCodeBlock,
+  transformToCodeBlockAction,
+} from '../plugins/block-type/transform-to-code-block';
 import {
   isRangeOfType,
-  canMoveDown, canMoveUp,
+  canMoveDown,
+  canMoveUp,
   setTextSelection,
+  atTheEndOfDoc,
+  atTheBeginningOfBlock,
 } from '../utils';
 import hyperlinkPluginStateKey from '../plugins/hyperlink/plugin-key';
 
@@ -51,7 +63,7 @@ export function toggleBlockType(view: EditorView, name: string): boolean {
 }
 
 export function setNormalText(): Command {
-  return function (state, dispatch) {
+  return function(state, dispatch) {
     const { tr, selection: { $from, $to }, schema } = state;
     dispatch(tr.setBlockType($from.pos, $to.pos, schema.nodes.paragraph));
     return true;
@@ -59,11 +71,16 @@ export function setNormalText(): Command {
 }
 
 export function toggleHeading(level: number): Command {
-  return function (state, dispatch) {
+  return function(state, dispatch) {
     const { tr, selection: { $from, $to }, schema } = state;
     const currentBlock = $from.parent;
-    if (currentBlock.type !== schema.nodes.heading || currentBlock.attrs['level'] !== level) {
-      dispatch(tr.setBlockType($from.pos, $to.pos, schema.nodes.heading, { level }));
+    if (
+      currentBlock.type !== schema.nodes.heading ||
+      currentBlock.attrs['level'] !== level
+    ) {
+      dispatch(
+        tr.setBlockType($from.pos, $to.pos, schema.nodes.heading, { level }),
+      );
     } else {
       dispatch(tr.setBlockType($from.pos, $to.pos, schema.nodes.paragraph));
     }
@@ -77,7 +94,10 @@ export function toggleHeading(level: number): Command {
  * a line. This isn't obvious by looking at the editor and it's likely not what the
  * user intended - so we need to adjust the seletion a bit in scenarios like that.
  */
-export function adjustSelectionInList(doc, selection: TextSelection): TextSelection {
+export function adjustSelectionInList(
+  doc,
+  selection: TextSelection,
+): TextSelection {
   let { $from, $to } = selection;
 
   const isSameLine = $from.pos === $to.pos;
@@ -90,7 +110,8 @@ export function adjustSelectionInList(doc, selection: TextSelection): TextSelect
   let startPos = $from.pos;
   let endPos = $to.pos;
 
-  if (isSameLine && startPos === doc.nodeSize - 3) { // Line is empty, don't do anything
+  if (isSameLine && startPos === doc.nodeSize - 3) {
+    // Line is empty, don't do anything
     return selection;
   }
 
@@ -112,23 +133,38 @@ export function adjustSelectionInList(doc, selection: TextSelection): TextSelect
 }
 
 export function preventDefault(): Command {
-  return function (state, dispatch) {
+  return function(state, dispatch) {
     return true;
   };
 }
 
 export function toggleList(listType: 'bulletList' | 'orderedList'): Command {
-  return function (state: EditorState, dispatch: (tr: Transaction) => void, view: EditorView): boolean {
-    dispatch(state.tr.setSelection(adjustSelectionInList(state.doc, state.selection as TextSelection)));
+  return function(
+    state: EditorState,
+    dispatch: (tr: Transaction) => void,
+    view: EditorView,
+  ): boolean {
+    dispatch(
+      state.tr.setSelection(
+        adjustSelectionInList(state.doc, state.selection as TextSelection),
+      ),
+    );
     state = view.state;
 
     const { $from, $to } = state.selection;
     const parent = $from.node(-2);
     const grandgrandParent = $from.node(-3);
-    const isRangeOfSingleType = isRangeOfType(state.doc, $from, $to, state.schema.nodes[listType]);
+    const isRangeOfSingleType = isRangeOfType(
+      state.doc,
+      $from,
+      $to,
+      state.schema.nodes[listType],
+    );
 
-    if ((parent && parent.type === state.schema.nodes[listType] ||
-      grandgrandParent && grandgrandParent.type === state.schema.nodes[listType]) &&
+    if (
+      ((parent && parent.type === state.schema.nodes[listType]) ||
+        (grandgrandParent &&
+          grandgrandParent.type === state.schema.nodes[listType])) &&
       isRangeOfSingleType
     ) {
       // Untoggles list
@@ -155,19 +191,23 @@ export function toggleOrderedList(): Command {
 export function wrapInList(nodeType): Command {
   return baseCommand.autoJoin(
     baseListCommand.wrapInList(nodeType),
-    (before, after) => before.type === after.type && before.type === nodeType
+    (before, after) => before.type === after.type && before.type === nodeType,
   );
 }
 
 export function liftListItems(): Command {
-  return function (state, dispatch) {
+  return function(state, dispatch) {
     const { tr } = state;
     const { $from, $to } = state.selection;
 
     tr.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
       // Following condition will ensure that block types paragraph, heading, codeBlock, blockquote, panel are lifted.
       // isTextblock is true for paragraph, heading, codeBlock.
-      if (node.isTextblock || node.type.name === 'blockquote' || node.type.name === 'panel') {
+      if (
+        node.isTextblock ||
+        node.type.name === 'blockquote' ||
+        node.type.name === 'panel'
+      ) {
         const sel = new NodeSelection(tr.doc.resolve(tr.mapping.map(pos)));
         const range = sel.$from.blockRange(sel.$to);
 
@@ -221,16 +261,20 @@ export function insertBlockType(view: EditorView, name: string): boolean {
  *  and set selection on it.
  */
 function wrapSelectionIn(type): Command {
-  return function (state: EditorState, dispatch) {
+  return function(state: EditorState, dispatch) {
     const { tr } = state;
     const { $from, $to } = state.selection;
     const { paragraph } = state.schema.nodes;
     const range = $from.blockRange($to) as any;
-    const wrapping = range && findWrapping(range, type) as any;
+    const wrapping = range && (findWrapping(range, type) as any);
     if (range && wrapping) {
       tr.wrap(range, wrapping).scrollIntoView();
     } else {
-      tr.replaceRangeWith($to.pos, $to.pos, type.createAndFill({}, paragraph.create()));
+      tr.replaceRangeWith(
+        $to.pos,
+        $to.pos,
+        type.createAndFill({}, paragraph.create()),
+      );
       tr.setSelection(Selection.near(tr.doc.resolve(state.selection.to + 1)));
     }
     dispatch(tr);
@@ -242,20 +286,22 @@ function wrapSelectionIn(type): Command {
  * Function will insert code block at current selection if block is empty or below current selection and set focus on it.
  */
 export function insertCodeBlock(): Command {
-  return function (state: EditorState, dispatch) {
+  return function(state: EditorState, dispatch) {
     const { tr } = state;
     const { $to } = state.selection;
     const { codeBlock } = state.schema.nodes;
     const moveSel = $to.node($to.depth).textContent ? 1 : 0;
     tr.replaceRangeWith($to.pos, $to.pos, codeBlock.createAndFill()!);
-    tr.setSelection(Selection.near(tr.doc.resolve(state.selection.to + moveSel)));
+    tr.setSelection(
+      Selection.near(tr.doc.resolve(state.selection.to + moveSel)),
+    );
     dispatch(tr);
     return true;
   };
 }
 
 export function createCodeBlockFromFenceFormat(): Command {
-  return function (state, dispatch) {
+  return function(state, dispatch) {
     const { codeBlock } = state.schema.nodes;
     const { $from } = state.selection;
     const parentBlock = $from.parent;
@@ -266,7 +312,7 @@ export function createCodeBlockFromFenceFormat(): Command {
 
     let textOnly = true;
 
-    state.doc.nodesBetween(startPos, $from.pos, (node) => {
+    state.doc.nodesBetween(startPos, $from.pos, node => {
       if (node.childCount === 0 && !node.isText && !node.isTextblock) {
         textOnly = false;
       }
@@ -287,12 +333,17 @@ export function createCodeBlockFromFenceFormat(): Command {
     const matches = matcheStart || matchMiddle;
 
     if (matches && isConvertableToCodeBlock(state)) {
-      const attributes: {language?: string} = {};
+      const attributes: { language?: string } = {};
 
       if (matches[2]) {
         attributes.language = matches[2];
       }
-      dispatch(transformToCodeBlockAction(state, attributes).delete($from.pos - matches[1].length, $from.pos));
+      dispatch(
+        transformToCodeBlockAction(state, attributes).delete(
+          $from.pos - matches[1].length,
+          $from.pos,
+        ),
+      );
       return true;
     }
 
@@ -301,14 +352,14 @@ export function createCodeBlockFromFenceFormat(): Command {
 }
 
 export function showLinkPanel(): Command {
-  return function (state, dispatch, view) {
+  return function(state, dispatch, view) {
     const pluginState = hyperlinkPluginStateKey.getState(state);
     return pluginState.showLinkPanel(view);
   };
 }
 
 export function insertNewLine(): Command {
-  return function (state, dispatch) {
+  return function(state, dispatch) {
     const { $from } = state.selection;
     const node = $from.parent;
     const { hardBreak } = state.schema.nodes;
@@ -328,7 +379,7 @@ export function insertNewLine(): Command {
 }
 
 export function insertRule(): Command {
-  return function (state, dispatch) {
+  return function(state, dispatch) {
     const { to } = state.selection;
     const { rule } = state.schema.nodes;
     if (rule) {
@@ -341,7 +392,7 @@ export function insertRule(): Command {
 }
 
 export function indentList(): Command {
-  return function (state, dispatch) {
+  return function(state, dispatch) {
     const { listItem } = state.schema.nodes;
     const { $from } = state.selection;
     if ($from.node(-1).type === listItem) {
@@ -352,7 +403,7 @@ export function indentList(): Command {
 }
 
 export function outdentList(): Command {
-  return function (state, dispatch) {
+  return function(state, dispatch) {
     const { listItem } = state.schema.nodes;
     const { $from } = state.selection;
     if ($from.node(-1).type === listItem) {
@@ -361,9 +412,24 @@ export function outdentList(): Command {
     return false;
   };
 }
+export function insertNodesEndWithNewParagraph(nodes: PMNode[]): Command {
+  return function(state, dispatch) {
+    const { tr, schema } = state;
+    const { paragraph } = schema.nodes;
+
+    if (atTheEndOfDoc(state) && atTheBeginningOfBlock(state)) {
+      nodes.push(paragraph.create());
+    }
+
+    tr.replaceSelection(new Slice(Fragment.from(nodes), 0, 0));
+
+    dispatch(tr);
+    return true;
+  };
+}
 
 export function createNewParagraphAbove(view: EditorView): Command {
-  return function (state, dispatch) {
+  return function(state, dispatch) {
     const append = false;
 
     if (!canMoveUp(state) && canCreateParagraphNear(state)) {
@@ -376,7 +442,7 @@ export function createNewParagraphAbove(view: EditorView): Command {
 }
 
 export function createNewParagraphBelow(view: EditorView): Command {
-  return function (state, dispatch) {
+  return function(state, dispatch) {
     const append = true;
 
     if (!canMoveDown(state) && canCreateParagraphNear(state)) {
@@ -396,7 +462,10 @@ function canCreateParagraphNear(state: EditorState): boolean {
   return $from.depth > 1 || isNodeSelection || insideCodeBlock;
 }
 
-export function createParagraphNear(view: EditorView, append: boolean = true): void {
+export function createParagraphNear(
+  view: EditorView,
+  append: boolean = true,
+): void {
   const { state, dispatch } = view;
   const paragraph = state.schema.nodes.paragraph;
 
@@ -433,7 +502,10 @@ function getInsertPosFromTextBlock(state: EditorState, append: boolean): void {
     if (nodeType === state.schema.nodes.listItem) {
       pos = pos - 1;
     }
-    if (nodeType === state.schema.nodes.tableCell || nodeType === state.schema.nodes.tableHeader) {
+    if (
+      nodeType === state.schema.nodes.tableCell ||
+      nodeType === state.schema.nodes.tableHeader
+    ) {
       pos = pos - 2;
     }
   } else {
@@ -447,7 +519,10 @@ function getInsertPosFromTextBlock(state: EditorState, append: boolean): void {
       pos = pos + 1;
     }
     // table has 4 level depth
-    if (nodeType === state.schema.nodes.tableCell || nodeType === state.schema.nodes.tableHeader) {
+    if (
+      nodeType === state.schema.nodes.tableCell ||
+      nodeType === state.schema.nodes.tableHeader
+    ) {
       pos = pos + 2;
     }
   }
@@ -455,7 +530,10 @@ function getInsertPosFromTextBlock(state: EditorState, append: boolean): void {
   return pos;
 }
 
-function getInsertPosFromNonTextBlock(state: EditorState, append: boolean): void {
+function getInsertPosFromNonTextBlock(
+  state: EditorState,
+  append: boolean,
+): void {
   const { $from, $to } = state.selection;
   let pos;
 
@@ -474,9 +552,17 @@ function getInsertPosFromNonTextBlock(state: EditorState, append: boolean): void
 
 function topLevelNodeIsEmptyTextBlock(state): boolean {
   const topLevelNode = state.selection.$from.node(1);
-  return topLevelNode.isTextblock && topLevelNode.type !== state.schema.nodes.codeBlock && topLevelNode.nodeSize === 2;
+  return (
+    topLevelNode.isTextblock &&
+    topLevelNode.type !== state.schema.nodes.codeBlock &&
+    topLevelNode.nodeSize === 2
+  );
 }
 
 export interface Command {
-  (state: EditorState, dispatch: (tr: Transaction) => void, view?: EditorView): boolean;
+  (
+    state: EditorState,
+    dispatch: (tr: Transaction) => void,
+    view?: EditorView,
+  ): boolean;
 }
