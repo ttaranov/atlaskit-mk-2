@@ -26,7 +26,8 @@ if (document && !('innerText' in document.createElement('a'))) {
     }, '');
 
   Object.defineProperty(HTMLElement.prototype, 'innerText', {
-    configurable: true,
+    configurable: false,
+    enumerable: true,
     get: function get() {
       return getInnerText(this);
     },
@@ -47,7 +48,7 @@ if (document && !('innerText' in document.createElement('a'))) {
         .forEach(node => this.removeChild(node));
 
       // Append a single text child node with the text
-      this.appendChild(document.createTextNode(text));
+      this.appendChild(this.ownerDocument.createTextNode(text));
     },
   });
 }
