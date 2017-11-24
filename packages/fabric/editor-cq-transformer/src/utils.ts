@@ -2,7 +2,8 @@ import { Fragment, Mark, Node as PMNode, Schema } from 'prosemirror-model';
 
 import { normalizeHexColor } from '@atlaskit/editor-common';
 import { AC_XMLNS } from './encode-cxhtml';
-import { Macro, DisplayType, BodyType, MacroType } from './types';
+import { Macro } from './types';
+
 /**
  * Deduce a set of marks from a style declaration.
  */
@@ -211,7 +212,7 @@ export function getAcTagChildNodes(
 export function getAcTagNode(node: Element, tagName: string): Element | null {
   for (let i = 0, len = node.childNodes.length; i < len; i++) {
     const child = node.childNodes[i] as Element;
-    if (getNodeName(child) === tagName) {
+    if (getNodeName(child).toLowerCase() === tagName) {
       return child;
     }
   }
@@ -313,30 +314,8 @@ export function parseMacro(node: Element): Macro {
     }
   }
 
-  const macroType = getMacroType(
-    properties['fab:display-type'],
-    params['plain-text-body'],
-    params['rich-text-body'],
-  );
-
-  return { macroId, macroName, properties, params, macroType };
+  return { macroId, macroName, properties, params };
 }
-
-export const getMacroType = (
-  displayType: DisplayType,
-  plainTextBody?: string,
-  richTextBody?: any,
-): MacroType => {
-  let bodyType: BodyType = 'BODYLESS';
-
-  if (richTextBody) {
-    bodyType = 'RICH-TEXT-BODY';
-  } else if (plainTextBody) {
-    bodyType = 'PLAIN-TEXT-BODY';
-  }
-
-  return `${bodyType}-${displayType}` as MacroType;
-};
 
 export const getExtensionMacroParams = (params: object) => {
   const macroParams = {};

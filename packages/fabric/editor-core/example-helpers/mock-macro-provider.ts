@@ -1,6 +1,11 @@
 import { Node as PmNode } from 'prosemirror-model';
 import { MacroProvider, MacroAdf } from '../src/editor/plugins/macro/types';
-import { inlineMacroData } from './mock-macro-data';
+import {
+  inlineMacroData,
+  blockBodylessMacroData,
+  blockPlainTextMacroData,
+  blockRichTextMacroData,
+} from './mock-macro-data';
 
 export class MockMacroProvider implements MacroProvider {
   public config = {
@@ -8,8 +13,8 @@ export class MockMacroProvider implements MacroProvider {
   };
 
   openMacroBrowser(macroNode?: PmNode): Promise<MacroAdf> {
-    const index = Math.floor(Math.random() * inlineMacroData.length);
-    return Promise.resolve(inlineMacroData[index]);
+    const index = Math.floor(Math.random() * blockRichTextMacroData.length);
+    return Promise.resolve(blockRichTextMacroData[index]);
   }
 }
 

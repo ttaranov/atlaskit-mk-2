@@ -14,7 +14,7 @@ export const Placeholder = styled.span`
   position: relative;
   vertical-align: middle;
 
-  .ProseMirror-selectednode & {
+  .ProseMirror-selectednode > & {
     outline: 2px solid ${akColorB200};
   }
 

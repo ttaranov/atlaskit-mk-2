@@ -63,10 +63,10 @@ const SaveAndCancelButtons = props => (
   <ButtonGroup>
     <Button
       appearance="primary"
+      // tslint:disable-next-line:jsx-no-lambda no-console
       onClick={() =>
         props.editorActions
           .getValue()
-          // tslint:disable-next-line:no-console
           .then(value => console.log(value.toJSON()))
       }
     >
@@ -105,7 +105,7 @@ export default class Example extends React.Component<Props, State> {
             allowJiraIssue={true}
             allowUnsupportedContent={true}
             allowPanel={true}
-            allowInlineExtension={true}
+            allowExtension={true}
             mediaProvider={storyMediaProviderFactory()}
             emojiProvider={emojiStoryData.getEmojiResource({
               uploadSupported: true,

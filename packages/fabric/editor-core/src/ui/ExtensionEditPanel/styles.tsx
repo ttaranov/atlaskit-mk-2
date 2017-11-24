@@ -9,14 +9,6 @@ export const Toolbar = styled.div`
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   padding: 5px;
   display: flex;
-  button:first-child > span {
-    min-width: 55px;
-  }
-  * span > span + span {
-    padding: 4px 4px 0 0px;
-    align-self: center;
-    line-height: normal;
-  }
 `;
 
 // tslint:disable-next-line:variable-name

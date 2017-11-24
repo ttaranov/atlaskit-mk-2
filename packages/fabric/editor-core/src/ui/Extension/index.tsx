@@ -6,16 +6,20 @@ import {
   default as ProviderFactory,
   WithProviders,
 } from '../../providerFactory';
-import MacroComponent from './MacroComponent';
-import { setMacroElement } from '../../editor/plugins/macro/actions';
+import ExtensionComponent from './ExtensionComponent';
+import {
+  setExtensionElement,
+  selectExtension,
+} from '../../editor/plugins/extension/actions';
 
 export interface Props {
   editorView: EditorView;
   node: PMNode;
   providerFactory?: ProviderFactory;
+  handleContentDOMRef: (node: HTMLElement) => void;
 }
 
-export default class Macro extends Component<Props, any> {
+export default class Extension extends Component<Props, any> {
   private providerFactory: ProviderFactory;
 
   constructor(props) {
@@ -32,15 +36,17 @@ export default class Macro extends Component<Props, any> {
   }
 
   private renderWithProvider = providers => {
-    const { node, editorView } = this.props;
+    const { node, editorView, handleContentDOMRef } = this.props;
     const { macroProvider } = providers;
 
     return (
-      <MacroComponent
+      <ExtensionComponent
         editorView={editorView}
         node={node}
         macroProvider={macroProvider}
-        setMacroElement={setMacroElement}
+        setExtensionElement={setExtensionElement}
+        selectExtension={selectExtension}
+        handleContentDOMRef={handleContentDOMRef}
       />
     );
   };
