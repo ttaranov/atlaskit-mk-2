@@ -15,4 +15,8 @@ const dirs = fs.getDirectories(data.children);
 
 export const docs: Directory = fs.getById(dirs, 'docs');
 export const packages: Directory = fs.getById(dirs, 'packages');
-export const patterns: Directory = fs.getById(dirs, 'patterns');
+export const patterns: Directory = fs.maybeGetById(dirs, 'patterns') || {
+  id: 'patterns',
+  type: 'dir',
+  children: [],
+};
