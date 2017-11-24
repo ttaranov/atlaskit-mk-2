@@ -41,7 +41,7 @@ export interface TextFormattingOptions {
   disableUnderline?: boolean;
 }
 
-const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
+const textFormatting = (options: TextFormattingOptions = {}): EditorPlugin => ({
   marks() {
     return [
       { name: 'em', mark: em, rank: 200 },
