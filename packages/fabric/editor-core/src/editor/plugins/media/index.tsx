@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { media, mediaGroup, singleImage } from '@atlaskit/editor-common';
+import { media, mediaGroup } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { stateKey as pluginKey, createPlugin } from '../../../plugins/media';
 import keymapPlugin from '../../../plugins/media/keymap';
@@ -10,7 +10,6 @@ const mediaPlugin: EditorPlugin = {
     return [
       { name: 'mediaGroup', node: mediaGroup, rank: 1700 },
       { name: 'media', node: media, rank: 1800 },
-      { name: 'singleImage', node: singleImage, rank: 1750 },
     ];
   },
 
