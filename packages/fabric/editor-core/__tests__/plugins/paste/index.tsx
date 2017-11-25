@@ -28,7 +28,7 @@ if (!browser.ie && !isMobileBrowser()) {
         plugins: pastePlugins(defaultSchema, 'message'),
       });
 
-    describe.only('handlePaste', () => {
+    describe('handlePaste', () => {
       // const mediaHtml = `<div data-id="123 data-node-type="media" data-type="file" data-collection="abc" data-file-mine-type="image/jpg"></div>`
       const mediaHtml = (fileMineType: string) => `
       <div 
