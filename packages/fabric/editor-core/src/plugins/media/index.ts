@@ -29,6 +29,7 @@ import {
 } from 'prosemirror-state';
 import { insertPoint } from 'prosemirror-transform';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
+import { Alignment, Display } from '@atlaskit/editor-common';
 
 import PickerFacadeType from './picker-facade';
 import { ErrorReporter, isImage } from '../../utils';
@@ -47,7 +48,6 @@ import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
 import { insertFilmstrip } from './media-files';
 import { insertSingleImages } from './single-image';
 import { removeMediaNode, splitMediaGroup } from './media-common';
-import { Alignment, Display } from './single-image';
 import PickerFacade from './picker-facade';
 import DropPlaceholder from '../../ui/Media/DropPlaceholder';
 
