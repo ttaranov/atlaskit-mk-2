@@ -1,13 +1,32 @@
 import { NodeSpec, Node } from 'prosemirror-model';
 
+export type Alignment = 'left' | 'right' | 'center';
+export type Display = 'inline-block' | 'block';
+import { Definition as Media } from './media';
+
+/**
+ * @name singleImage_node
+ */
+export interface Definition {
+  type: 'singleImage';
+  content: Media;
+  attrs: Attributes;
+}
+export interface Attributes {
+  alignment: Alignment;
+  display: Display;
+}
+
+export const defaultAttrs = {
+  alignment: { default: 'center' },
+  display: { default: 'block' },
+};
+
 export const singleImage: NodeSpec = {
   inline: false,
   group: 'block',
   content: 'media',
-  attrs: {
-    alignment: { default: 'center' },
-    display: { default: 'block' },
-  },
+  attrs: defaultAttrs,
   parseDOM: [
     {
       tag: 'div[data-node-type="singleImage"]',
