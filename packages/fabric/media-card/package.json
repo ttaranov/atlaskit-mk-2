@@ -12,7 +12,17 @@
     "dist"
   ],
   "author": "Atlassian Pty Ltd",
-  "maintainers": [],
+  "maintainers": [
+    {
+      "name": "Hector Z"
+    },
+    {
+      "name": "Michael J"
+    },
+    {
+      "name": "James N"
+    }
+  ],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/avatar": "^8.0.0",
