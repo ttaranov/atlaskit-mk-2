@@ -13,70 +13,81 @@ import Editor from '../../src';
 
 chai.use(chaiPlugin);
 
-describe.only('media', () => {
+describe('media', () => {
   const resolvedProvider = storyMediaProviderFactory();
   const noop = () => {};
 
   it('should show media icon if provider is set', async () => {
-    const editor = mount(<Editor
-      isExpandedByDefault={true}
-      mediaProvider={resolvedProvider}
-      onCancel={noop}
-      onSave={noop}
-      onChange={noop}
-    />);
+    const editor = mount(
+      <Editor
+        isExpandedByDefault={true}
+        mediaProvider={resolvedProvider}
+        onCancel={noop}
+        onSave={noop}
+        onChange={noop}
+      />,
+    );
 
     const resolvedMediaProvider = await resolvedProvider;
     await resolvedMediaProvider.uploadContext;
 
-    expect(editor
-      .find(ToolbarButton)
-      .filterWhere(btn => btn.html().indexOf('Insert files and images') > -1)
+    expect(
+      editor
+        .find(ToolbarButton)
+        .filterWhere(btn => btn.html().indexOf('Insert files and images') > -1),
     ).to.have.length(1);
   });
 
   it('should not show media icon if provider is not set', () => {
-    const editor = mount(<Editor
-      isExpandedByDefault={true}
-      onCancel={noop}
-      onSave={noop}
-      onChange={noop}
-    />);
+    const editor = mount(
+      <Editor
+        isExpandedByDefault={true}
+        onCancel={noop}
+        onSave={noop}
+        onChange={noop}
+      />,
+    );
 
-    expect(editor
-      .find(ToolbarButton)
-      .filterWhere(btn => btn.html().indexOf('Insert files and images') > -1)
+    expect(
+      editor
+        .find(ToolbarButton)
+        .filterWhere(btn => btn.html().indexOf('Insert files and images') > -1),
     ).to.have.length(0);
   });
 
   it('should not show media icon if provider setting promise has been rejected', async () => {
     const rejectedProvider = Promise.reject(new Error('foo'));
 
-    const editor = mount(<Editor
-      isExpandedByDefault={true}
-      mediaProvider={rejectedProvider}
-      onCancel={noop}
-      onSave={noop}
-      onChange={noop}
-    />);
+    const editor = mount(
+      <Editor
+        isExpandedByDefault={true}
+        mediaProvider={rejectedProvider}
+        onCancel={noop}
+        onSave={noop}
+        onChange={noop}
+      />,
+    );
 
     await rejectedProvider.catch(noop);
-    expect(editor
-      .find(ToolbarButton)
-      .filterWhere(btn => btn.html().indexOf('Insert files and images') > -1)
+    expect(
+      editor
+        .find(ToolbarButton)
+        .filterWhere(btn => btn.html().indexOf('Insert files and images') > -1),
     ).to.have.length(0);
   });
 
   it('should hide media icon if provider setting promise has been updated to rejected', async () => {
     const rejectedProvider = Promise.reject(new Error('foo'));
 
-    const editor = mount(<Editor
-      isExpandedByDefault={true}
-      mediaProvider={resolvedProvider}
-      onCancel={noop}
-      onSave={noop}
-      onChange={noop}
-    />);
+    const editor = mount(
+      <Editor
+        isExpandedByDefault={true}
+        mediaProvider={resolvedProvider}
+        onCancel={noop}
+        onSave={noop}
+        onChange={noop}
+      />,
+    );
 
     // wait while the changes apply
     await resolvedProvider;
@@ -86,22 +97,25 @@ describe.only('media', () => {
     // wait while the changes apply
     await rejectedProvider.catch(noop);
 
-    expect(editor
-      .find(ToolbarButton)
-      .filterWhere(btn => btn.html().indexOf('Insert files and images') > -1)
+    expect(
+      editor
+        .find(ToolbarButton)
+        .filterWhere(btn => btn.html().indexOf('Insert files and images') > -1),
     ).to.have.length(0);
   });
 
   it('should show media icon if provider setting promise has been updated to resolved', async () => {
     const rejectedProvider = Promise.reject(new Error('foo'));
 
-    const editor = mount(<Editor
-      isExpandedByDefault={true}
-      mediaProvider={rejectedProvider}
-      onCancel={noop}
-      onSave={noop}
-      onChange={noop}
-    />);
+    const editor = mount(
+      <Editor
+        isExpandedByDefault={true}
+        mediaProvider={rejectedProvider}
+        onCancel={noop}
+        onSave={noop}
+        onChange={noop}
+      />,
+    );
 
     // wait while the changes apply
     await rejectedProvider.catch(noop);
@@ -112,23 +126,26 @@ describe.only('media', () => {
     const resolvedMediaProvider = await resolvedProvider;
     await resolvedMediaProvider.uploadContext;
 
-    expect(editor
-      .find(ToolbarButton)
-      .filterWhere(btn => btn.html().indexOf('Insert files and images') > -1)
+    expect(
+      editor
+        .find(ToolbarButton)
+        .filterWhere(btn => btn.html().indexOf('Insert files and images') > -1),
     ).to.have.length(1);
   });
 
   it('should show spinner only when the save button was clicked', async () => {
     const stateManager = new DefaultMediaStateManager();
-    const resolvedProvider = storyMediaProviderFactory({stateManager});
+    const resolvedProvider = storyMediaProviderFactory({ stateManager });
 
-    const editor = mount(<Editor
-      isExpandedByDefault={true}
-      mediaProvider={resolvedProvider}
-      onCancel={noop}
-      onSave={noop}
-      onChange={noop}
-    />);
+    const editor = mount(
+      <Editor
+        isExpandedByDefault={true}
+        mediaProvider={resolvedProvider}
+        onCancel={noop}
+        onSave={noop}
+        onChange={noop}
+      />,
+    );
 
     const resolvedMediaProvider = await resolvedProvider;
     await resolvedMediaProvider.uploadContext;
@@ -137,17 +154,20 @@ describe.only('media', () => {
 
     stateManager.updateState('tmp:123', {
       id: 'tmp:123',
-      status: 'unknown'
+      status: 'unknown',
     });
     expect(editor.state('showSpinner')).to.equal(false);
 
-    editor.find('button').findWhere(node => node.text() === 'Save').first().simulate('click');
+    editor
+      .find('button')
+      .findWhere(node => node.text() === 'Save')
+      .first()
+      .simulate('click');
     expect(editor.state('showSpinner')).to.equal(true);
 
     stateManager.updateState('tmp:123', {
       id: 'tmp:123',
-      status: 'cancelled'
+      status: 'cancelled',
     });
   });
-
 });

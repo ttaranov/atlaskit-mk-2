@@ -1,6 +1,11 @@
 import { Mark, Node, Schema, Slice } from 'prosemirror-model';
-import { EditorState, Plugin, TextSelection, Transaction } from 'prosemirror-state';
-import { Step, ReplaceStep,} from 'prosemirror-transform';
+import {
+  EditorState,
+  Plugin,
+  TextSelection,
+  Transaction,
+} from 'prosemirror-state';
+import { Step, ReplaceStep } from 'prosemirror-transform';
 import { EditorView } from 'prosemirror-view';
 import { isMarkTypeAllowedInCurrentSelection } from '../../utils';
 import inputRulePlugin from './input-rule';
@@ -17,7 +22,12 @@ export interface HyperlinkOptions {
   href: string;
   text?: string;
 }
-export type Coordinates = { left: number; right: number; top: number; bottom: number };
+export type Coordinates = {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+};
 interface NodeInfo {
   node: Node;
   startPos: number;
@@ -83,9 +93,15 @@ export class HyperlinkState {
       const { state } = this;
       const from = this.activeLinkStartPos;
       const to = this.activeLinkStartPos + this.text!.length;
-      view.dispatch(state.tr
-        .removeMark(from, to, this.activeLinkMark)
-        .addMark(from, to, state.schema.mark('link', { href: normalizeUrl(options.href) })));
+      view.dispatch(
+        state.tr
+          .removeMark(from, to, this.activeLinkMark)
+          .addMark(
+            from,
+            to,
+            state.schema.mark('link', { href: normalizeUrl(options.href) }),
+          ),
+      );
     }
   }
 
@@ -95,8 +111,11 @@ export class HyperlinkState {
       const from = this.activeLinkStartPos;
       const to = from + (this.text ? this.text.length : 0);
       const newTo = from + (text ? text.length : 0);
-      view.dispatch(state.tr.insertText(text, from, to)
-        .addMark(from, newTo, this.activeLinkMark!));
+      view.dispatch(
+        state.tr
+          .insertText(text, from, to)
+          .addMark(from, newTo, this.activeLinkMark!),
+      );
       view.focus();
     }
   }
@@ -136,7 +155,7 @@ export class HyperlinkState {
       const transaction = this.state.tr.removeMark(
         nodeInfo.startPos,
         this.state.selection.$from.pos,
-        this.state.schema.marks.link
+        this.state.schema.marks.link,
       );
 
       editorView.dispatch(transaction);
@@ -166,7 +185,10 @@ export class HyperlinkState {
     this.changeHandlers.forEach(cb => cb(this));
   }
 
-  getCoordinates(editorView: EditorView & { docView?: any } , offsetParent: Element): Coordinates {
+  getCoordinates(
+    editorView: EditorView & { docView?: any },
+    offsetParent: Element,
+  ): Coordinates {
     if (editorView.hasFocus()) {
       editorView.focus();
     }
@@ -174,9 +196,13 @@ export class HyperlinkState {
     const { left, top, height } = offsetParent.getBoundingClientRect();
     const { node } = editorView.docView.domFromPos(pos);
 
-    const cursorNode = (node.nodeType === 3) ? // Node.TEXT_NODE = 3
-      (node.parentNode as HTMLElement) : (node as HTMLElement);
-    const cursorHeight = parseFloat(window.getComputedStyle(cursorNode, undefined).lineHeight || '');
+    const cursorNode =
+      node.nodeType === 3 // Node.TEXT_NODE = 3
+        ? (node.parentNode as HTMLElement)
+        : (node as HTMLElement);
+    const cursorHeight = parseFloat(
+      window.getComputedStyle(cursorNode, undefined).lineHeight || '',
+    );
     /**
      * We need to translate the co-ordinates because `coordsAtPos` returns co-ordinates
      * relative to `window`. And, also need to adjust the cursor container height.
@@ -186,15 +212,29 @@ export class HyperlinkState {
      * | {coordsAtPos} | [Cursor]   <- cursorHeight      |  |
      * |               | [FloatingToolbar]               |  |
      */
-    const translateCoordinates = (coords: Coordinates, dx: number, dy: number) => {
+    const translateCoordinates = (
+      coords: Coordinates,
+      dx: number,
+      dy: number,
+    ) => {
       return {
         left: coords.left - dx,
         right: coords.right - dx,
-        top: (coords.top - dy) + (offsetParent === document.body ? 0 : offsetParent.scrollTop),
-        bottom: height - (coords.top - dy) - (offsetParent === document.body ? 0 : offsetParent.scrollTop),
+        top:
+          coords.top -
+          dy +
+          (offsetParent === document.body ? 0 : offsetParent.scrollTop),
+        bottom:
+          height -
+          (coords.top - dy) -
+          (offsetParent === document.body ? 0 : offsetParent.scrollTop),
       };
     };
-    return translateCoordinates(editorView.coordsAtPos(pos), left, top - cursorHeight);
+    return translateCoordinates(
+      editorView.coordsAtPos(pos),
+      left,
+      top - cursorHeight,
+    );
   }
 
   private triggerOnChange() {
@@ -203,7 +243,9 @@ export class HyperlinkState {
 
   private isShouldEscapeFromMark(nodeInfo: NodeInfo | undefined) {
     const parentOffset = this.state.selection.$from.parentOffset;
-    return nodeInfo && parentOffset === 1 && nodeInfo.node.nodeSize > parentOffset;
+    return (
+      nodeInfo && parentOffset === 1 && nodeInfo.node.nodeSize > parentOffset
+    );
   }
 
   private getActiveLinkNodeInfo(): NodeInfo | undefined {
@@ -224,14 +266,14 @@ export class HyperlinkState {
       if (node && node.isText && link.isInSet(node.marks)) {
         return {
           node,
-          startPos: parentNodeStartPos + offset
+          startPos: parentNodeStartPos + offset,
         };
       }
     }
   }
 
   private getActiveLinkMark(activeLinkNode: Node): Mark | undefined {
-    const linkMarks = activeLinkNode.marks.filter((mark) => {
+    const linkMarks = activeLinkNode.marks.filter(mark => {
       return mark.type === this.state.schema.marks.link;
     });
 
@@ -254,7 +296,10 @@ export class HyperlinkState {
    * Returns active dom element for current selection.
    * Used by Hyperlink edit popup to position relative to cursor.
    */
-  private getActiveDomElement(selection, docView: any): HTMLElement | undefined {
+  private getActiveDomElement(
+    selection,
+    docView: any,
+  ): HTMLElement | undefined {
     if (selection.$from.pos !== selection.$to.pos) {
       return;
     }
@@ -273,10 +318,14 @@ export class HyperlinkState {
 function isReplaceStep(step?: Step): step is ReplaceStep {
   return !!step && step instanceof ReplaceStep;
 }
-const hasLinkMark = (schema: any, node?: Node | null) => node && schema.marks.link.isInSet(node.marks) as Mark | null;
+const hasLinkMark = (schema: any, node?: Node | null) =>
+  node && (schema.marks.link.isInSet(node.marks) as Mark | null);
 
 function updateLinkOnChange(
-  transactions: Transaction[], oldState: EditorState, newState: EditorState, isMessageEditor: boolean
+  transactions: Transaction[],
+  oldState: EditorState,
+  newState: EditorState,
+  isMessageEditor: boolean,
 ): Transaction | undefined {
   if (!transactions) {
     return;
@@ -285,7 +334,10 @@ function updateLinkOnChange(
   if (transactions.some(tr => tr.steps.some(isReplaceStep))) {
     const { schema } = newState;
 
-    const { nodeAfter: oldNodeAfter, nodeBefore: oldNodeBefore } = oldState.selection.$from;
+    const {
+      nodeAfter: oldNodeAfter,
+      nodeBefore: oldNodeBefore,
+    } = oldState.selection.$from;
     const oldLinkMarkAfter = hasLinkMark(schema, oldNodeAfter);
     const oldLinkMarkBefore = hasLinkMark(schema, oldNodeBefore);
 
@@ -294,7 +346,14 @@ function updateLinkOnChange(
     const newLinkMarkAfter = hasLinkMark(schema, newNodeAfter);
     const newLinkMarkBefore = hasLinkMark(schema, newNodeBefore);
 
-    if (!(oldNodeBefore && oldLinkMarkBefore && newNodeBefore && newLinkMarkBefore)) {
+    if (
+      !(
+        oldNodeBefore &&
+        oldLinkMarkBefore &&
+        newNodeBefore &&
+        newLinkMarkBefore
+      )
+    ) {
       return;
     }
 
@@ -304,8 +363,10 @@ function updateLinkOnChange(
     let hasSameUrlAndTitle = false;
 
     if (
-      oldNodeAfter && oldLinkMarkAfter &&
-      oldLinkMarkBefore.attrs.href === normalizeUrl(`${oldNodeBefore.text}${oldNodeAfter.text}`)
+      oldNodeAfter &&
+      oldLinkMarkAfter &&
+      oldLinkMarkBefore.attrs.href ===
+        normalizeUrl(`${oldNodeBefore.text}${oldNodeAfter.text}`)
     ) {
       hasSameUrlAndTitle = true;
       if (newNodeAfter && newLinkMarkAfter) {
@@ -316,7 +377,9 @@ function updateLinkOnChange(
         // Replace end of a link https://goo<|gle.com/|>
         href = newNodeBefore.text;
       }
-    } else if (oldLinkMarkBefore.attrs.href === normalizeUrl(oldNodeBefore.text || '')) {
+    } else if (
+      oldLinkMarkBefore.attrs.href === normalizeUrl(oldNodeBefore.text || '')
+    ) {
       hasSameUrlAndTitle = true;
       // End of a link https://google.com/<|>
       if (newNodeBefore.text !== oldNodeBefore.text) {
@@ -336,81 +399,106 @@ function updateLinkOnChange(
   }
 }
 
-export const createPlugin = (schema: Schema, editorProps: EditorProps = {}) => new Plugin({
-  props: {
-    handleTextInput(view: EditorView, from: number, to: number, text: string) {
-      const pluginState = stateKey.getState(view.state);
-      pluginState.escapeFromMark(view);
+export const createPlugin = (schema: Schema, editorProps: EditorProps = {}) =>
+  new Plugin({
+    props: {
+      handleTextInput(
+        view: EditorView,
+        from: number,
+        to: number,
+        text: string,
+      ) {
+        const pluginState = stateKey.getState(view.state);
+        pluginState.escapeFromMark(view);
 
-      return false;
-    },
-    handleClick(view: EditorView) {
-      const pluginState = stateKey.getState(view.state);
-      if (pluginState.active) {
-        pluginState.changeHandlers.forEach(cb => cb(pluginState));
-      }
-      return false;
-    },
-    onBlur(view: EditorView) {
-      const pluginState = stateKey.getState(view.state);
-
-      pluginState.editorFocused = false;
-      if (pluginState.active) {
-        pluginState.changeHandlers.forEach(cb => cb(pluginState));
-      }
-
-      return true;
-    },
-    onFocus(view: EditorView) {
-      const pluginState = stateKey.getState(view.state);
-      pluginState.editorFocused = true;
-
-      return true;
-    },
-    /**
-     * As we are adding linkifyContent, linkifyText can in fact be removed.
-     * But leaving it there so that later it can be enhanced to include markdown parsing.
-     */
-    handlePaste(view: EditorView, event: any, slice: Slice) {
-      const { clipboardData } = event;
-      const html = clipboardData && clipboardData.getData('text/html');
-      if (html) {
-        const contentSlices = linkifyContent(view.state.schema, slice);
-        if (contentSlices) {
-          const { dispatch, state: { tr } } = view;
-          dispatch(tr.replaceSelection(contentSlices));
-          return true;
+        return false;
+      },
+      handleClick(view: EditorView) {
+        const pluginState = stateKey.getState(view.state);
+        if (pluginState.active) {
+          pluginState.changeHandlers.forEach(cb => cb(pluginState));
         }
-      }
-      return false;
-    }
-  },
-  state: {
-    init(config, state: EditorState) {
-      return new HyperlinkState(state);
-    },
-    apply(tr, pluginState: HyperlinkState, oldState, newState) {
-      return pluginState;
-    }
-  },
-  key: stateKey,
-  view: (view: EditorView & { docView?: any }) => {
-    const pluginState = stateKey.getState(view.state);
-    pluginState.update(view.state, view.docView, true);
+        return false;
+      },
+      onBlur(view: EditorView) {
+        const pluginState = stateKey.getState(view.state);
 
-    return {
-      update: (view: EditorView & { docView?: any }, prevState: EditorState) => {
-        pluginState.update(view.state, view.docView);
-      }
-    };
-  },
-  appendTransaction: (transactions, oldState, newState) => {
-    return updateLinkOnChange(transactions, oldState, newState, editorProps.appearance === 'message');
-  },
-});
+        pluginState.editorFocused = false;
+        if (pluginState.active) {
+          pluginState.changeHandlers.forEach(cb => cb(pluginState));
+        }
+
+        return true;
+      },
+      onFocus(view: EditorView) {
+        const pluginState = stateKey.getState(view.state);
+        pluginState.editorFocused = true;
+
+        return true;
+      },
+      /**
+       * As we are adding linkifyContent, linkifyText can in fact be removed.
+       * But leaving it there so that later it can be enhanced to include markdown parsing.
+       */
+      handlePaste(view: EditorView, event: any, slice: Slice) {
+        const { clipboardData } = event;
+        const html = clipboardData && clipboardData.getData('text/html');
+        if (html) {
+          const contentSlices = linkifyContent(view.state.schema, slice);
+          if (contentSlices) {
+            const { dispatch, state } = view;
+            let tr = state.tr.replaceSelection(contentSlices);
+            dispatch(tr);
+
+            tr = view.state.tr;
+            for (let mark in state.schema.marks) {
+              tr = tr.removeStoredMark(state.schema.marks[mark]);
+            }
+            dispatch(tr);
+            return true;
+          }
+        }
+        return false;
+      },
+    },
+    state: {
+      init(config, state: EditorState) {
+        return new HyperlinkState(state);
+      },
+      apply(tr, pluginState: HyperlinkState, oldState, newState) {
+        return pluginState;
+      },
+    },
+    key: stateKey,
+    view: (view: EditorView & { docView?: any }) => {
+      const pluginState = stateKey.getState(view.state);
+      pluginState.update(view.state, view.docView, true);
+
+      return {
+        update: (
+          view: EditorView & { docView?: any },
+          prevState: EditorState,
+        ) => {
+          pluginState.update(view.state, view.docView);
+        },
+      };
+    },
+    appendTransaction: (transactions, oldState, newState) => {
+      return updateLinkOnChange(
+        transactions,
+        oldState,
+        newState,
+        editorProps.appearance === 'message',
+      );
+    },
+  });
 
 const plugins = (schema: Schema, props: EditorProps = {}) => {
-  return [createPlugin(schema, props), inputRulePlugin(schema), keymapPlugin(schema, props)].filter((plugin) => !!plugin) as Plugin[];
+  return [
+    createPlugin(schema, props),
+    inputRulePlugin(schema),
+    keymapPlugin(schema, props),
+  ].filter(plugin => !!plugin) as Plugin[];
 };
 
 export default plugins;

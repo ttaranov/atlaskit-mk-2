@@ -30,6 +30,12 @@ type workspaceType = {
 }
 */
 
+// Given a dependent and a dependency, returns which kind of updates on the dependency should
+// trigger a bump and which symbol it should bump with.
+// This is slightly complicated by caret versions when in 0.x ranges. The rules for when to bump are
+// Exact match: must always bump
+// Tilde range: bumps on major or minor changes
+// Caret range: Bumps on major ranges OR always if the current version is 0.x
 function getMustUpdateOn(
   allWorkSpaces /*: Array<workspaceType> */,
   dependent /*: dependentType */,
@@ -67,28 +73,98 @@ function getMustUpdateOn(
       } is depended on by ${dependent.name}`,
     );
 
-  if (/^\^\d+\.\d+\.\d+$/.test(range))
+  // matching optional (^ or ~) then three numbers (we capture the symbol and the major number)
+  const [wholeMatch, symbol, majorVersion] = range.match(
+    /^([\^~])?(\d+)\.\d+\.\d+$/,
+  );
+  if (wholeMatch !== range) {
+    throw new Error(
+      `Invalid version range for internal dependency  ${
+        nextDependency
+      } in workspace ${dependent.name} , ${
+        range
+      }. Only caret, tilde or exact semver ranges are accepted.`,
+    );
+  }
+  // See comment at the bottom of this file as to why this logic works
+  if (symbol === '^') {
+    if (majorVersion === '0') {
+      return {
+        symbol,
+        mustUpdateOn: ['major', 'minor', 'patch'],
+      };
+    }
     return {
-      symbol: '^',
+      symbol,
       mustUpdateOn: ['major'],
     };
-  if (/^~\d+\.\d+\.\d+$/.test(range))
+  }
+  if (symbol === '~') {
     return {
-      symbol: '~',
+      symbol,
       mustUpdateOn: ['major', 'minor'],
     };
-  if (/^\d+\.\d+\.\d+$/.test(range))
-    return {
-      symbol: '',
-      mustUpdateOn: ['major', 'minor', 'patch'],
-    };
-  throw new Error(
-    `Invalid version range for internal dependency  ${
-      nextDependency
-    } in workspace ${dependent.name} , ${
-      range
-    }. Only carat, tilde or exact semver ranges are accepted.`,
-  );
+  }
+  // must have pinned dependency
+  return {
+    symbol,
+    mustUpdateOn: ['major', 'minor', 'patch'],
+  };
 }
 
 module.exports = getMustUpdateOn;
+
+/*
+   The logic for mustUpdateOn can be a little confusing because of the way caret dependencies
+   are handled. The list below illustrates why this logic is the way it is, by looking at which
+   types of changes will lead to us leaving a version range.
+
+// When dependency is an Exact range ( we should always bump)
+> satisfies('2.0.0', '1.0.0')
+false
+> satisfies('1.0.0', '0.0.0')
+false
+
+> satisfies('1.1.0', '1.0.0')
+false
+> satisfies('0.1.0', '0.0.0')
+false
+
+> satisfies('1.0.1', '1.0.0')
+false
+> satisfies('0.0.1', '0.0.0')
+false
+
+// When dependency is a Tilde range (bump on major and minor changes)
+> satisfies('2.0.0', '~1.0.0')
+false
+> satisfies('1.0.0', '~0.0.0')
+false
+
+> satisfies('1.1.0', '~1.0.0')
+false
+> satisfies('0.1.0', '~0.0.0')
+false
+
+> satisfies('1.0.1', '~1.0.0')
+true
+> satisfies('0.0.1', '~0.0.0')
+true
+
+// When dependency is a Caret range (bump on major || or  always if major version is 0)
+> satisfies('2.0.0', '^1.0.0')
+false
+> satisfies('1.0.0', '^0.0.0')  // major version was 0
+false
+
+> satisfies('1.1.0', '^1.0.0')
+true
+> satisfies('0.1.0', '^0.0.0') // major version was 0
+false
+
+> satisfies('1.0.1', '^1.0.0')
+true
+> satisfies('0.0.1', '^0.0.0') // major version was 0
+false
+
+*/

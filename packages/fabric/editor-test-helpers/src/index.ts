@@ -67,14 +67,18 @@ export {
   confluenceJiraIssue,
   confluenceUnsupportedBlock,
   confluenceUnsupportedInline,
-  inlineMacro,
+  inlineExtension,
   RefsNode,
   RefsTracker,
   sequence,
 } from './schema-builder';
 export { default as defaultSchema } from './schema';
 export * from './html-helpers';
-export { storyMediaProviderFactory, getLinkCreateContextMock } from './media-provider';
+export {
+  storyMediaProviderFactory,
+  getLinkCreateContextMock,
+} from './media-provider';
 export { default as randomId } from './random-id';
 export { default as sleep } from './sleep';
 export { isMobileBrowser } from './device';
+export { default as spyOnReturnValue } from './spy-on-return-value';

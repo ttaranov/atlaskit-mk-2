@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type Node, type ElementRef } from 'react';
 import Layer from '@atlaskit/layer';
 import {
   CalendarStateless as Calendar,
@@ -11,13 +11,13 @@ import type { Handler } from '../../types';
 import { parseDate } from '../../util';
 
 type Props = {
-  value: string,
+  value: ?string,
   isOpen: boolean,
   disabled: Array<string>,
   onBlur: Handler,
   onTriggerClose: Handler,
   onUpdate: (value: string) => void,
-  children: Node,
+  children: ?Node,
 };
 
 type State = {
@@ -27,39 +27,45 @@ type State = {
 };
 
 export default class DateDialog extends Component<Props, State> {
-  props: Props;
-  state: State;
-  calendar: any;
+  calendar: ?ElementRef<typeof Calendar>;
 
   static defaultProps = {
+    value: null,
     isOpen: false,
     disabled: [],
+    onBlur() {},
     onTriggerClose() {},
     onUpdate() {},
+    children: null,
   };
 
   constructor(props: Props) {
     super(props);
+    this.state = this.getUpdatedState();
+  }
 
-    this.setupCalendar();
+  componentWillReceiveProps(nextProps: Props) {
+    // Reset the calendar state when it is opened.
+    if (nextProps.isOpen && !this.props.isOpen) {
+      this.setState(this.getUpdatedState());
+    }
   }
 
   componentDidUpdate(prevProps: Props) {
     // Focus the calendar when it is opened.
     // TODO: Add prop to toggle this behaviour.
-    if (this.props.isOpen && !prevProps.isOpen) {
-      this.setupCalendar();
+    if (this.props.isOpen && !prevProps.isOpen && this.calendar) {
       this.calendar.focus();
     }
   }
 
-  setupCalendar() {
+  getUpdatedState() {
     let date = new Date();
     if (this.props.value) {
       const parsedDate = parseDate(this.props.value);
       date = parsedDate ? parsedDate.date : date;
     }
-    this.state = {
+    return {
       day: date.getDate(),
       month: date.getMonth() + 1,
       year: date.getFullYear(),

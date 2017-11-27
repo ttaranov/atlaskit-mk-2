@@ -1,5 +1,7 @@
 # @atlaskit/lozenge
 
+## 3.4.6
+
 ## Unreleased
 
 ## 3.4.2 (2017-07-27)

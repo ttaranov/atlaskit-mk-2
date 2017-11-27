@@ -144,4 +144,8 @@ export const Wrapper = styled.div`
     height: 2px;
     border-radius: 1px;
   }
+
+  & img {
+    max-width: 100%;
+  }
 `;

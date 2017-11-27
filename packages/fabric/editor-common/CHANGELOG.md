@@ -1,5 +1,35 @@
 # @atlaskit/editor-common
 
+## 3.9.7
+
+## 3.9.6
+
+
+- [patch] Updated media-card Appearance type to include "auto" [e1f8390](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e1f8390)
+- [patch] Updated media-card Appearance type to include "auto" [e1f8390](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e1f8390)
+
+## 3.9.4
+- [patch] re-enable backwards compatibility tests [32e0ccb](32e0ccb)
+- [patch] re-enable backwards compatibility tests [32e0ccb](32e0ccb)
+
+## 3.9.3
+- [patch] Upgrade mention to ^8.1.0 in editor and renderer [48b5af4](48b5af4)
+- [patch] Upgrade mention to ^8.1.0 in editor and renderer [48b5af4](48b5af4)
+
+## 3.9.2
+
+## 3.9.1
+- [patch] Restore accessLevel attribute for mention node [a83619f](a83619f)
+- [patch] Restore accessLevel attribute for mention node [a83619f](a83619f)
+
+## 3.9.0
+
+## 3.8.3
+- [patch] Use correct dependencies  [7b178b1](7b178b1)
+- [patch] Use correct dependencies  [7b178b1](7b178b1)
+- [patch] Adding responsive behavior to the editor. [e0d9867](e0d9867)
+- [patch] Adding responsive behavior to the editor. [e0d9867](e0d9867)
+
 ## 3.8.2
 
 ## 3.8.1

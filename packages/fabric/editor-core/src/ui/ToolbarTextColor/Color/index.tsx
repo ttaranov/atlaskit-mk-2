@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { Button, ButtonWrapper } from './styles';
-import Icon from '@atlaskit/icon';
 import EditorDoneIcon from '@atlaskit/icon/glyph/editor/done';
 import { akColorN0 } from '@atlaskit/util-shared-styles';
 
@@ -27,10 +26,9 @@ export default class Color extends PureComponent<Props, any> {
           style={{ backgroundColor: value }}
         >
           {isSelected &&
-            <Icon
+            <EditorDoneIcon
               primaryColor={akColorN0}
               label="Selected"
-              glyph={EditorDoneIcon}
             />
           }
         </Button>

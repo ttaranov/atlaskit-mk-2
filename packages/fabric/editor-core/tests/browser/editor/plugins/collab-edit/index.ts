@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
+import { TextSelection } from 'prosemirror-state';
 import createEditor from '../../../../helpers/create-editor';
 import collabEdit, {
   pluginKey as collabEditPluginKey,
@@ -133,28 +134,27 @@ describe('editor/plugins/collab-edit', () => {
   });
 
   describe('telepointers', () => {
-    it('should emit telepointer-data for local changes', async () => {
+    it('should emit telepointer-data for local selection changes', async () => {
       const { editorView, providerPromise } = setupEditor();
       const provider = await providerPromise;
       const spy = sandbox.spy(provider, 'sendMessage');
 
-      const { tr } = editorView.state;
-      tr.setMeta('sessionId', { sid: 'test' });
-      tr.insertText('!');
+      const { doc, tr } = editorView.state;
+      tr
+        .setMeta('sessionId', { sid: 'test' })
+        .setSelection(TextSelection.create(doc, 13));
       editorView.dispatch(tr);
+      sinon.assert.calledOnce(spy);
 
-      expect(spy.called).to.equal(true);
-      expect(
-        spy.calledWith({
-          type: 'telepointer',
-          selection: {
-            type: 'textSelection',
-            anchor: 13,
-            head: 13,
-          },
-          sessionId: 'test',
-        }),
-      ).to.equal(true);
+      sinon.assert.calledWith(spy, {
+        type: 'telepointer',
+        selection: {
+          type: 'textSelection',
+          anchor: 13,
+          head: 13,
+        },
+        sessionId: 'test',
+      });
       editorView.destroy();
     });
 

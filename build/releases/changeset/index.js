@@ -5,5 +5,5 @@ const changesetCommand = require('./changesetCommand');
 module.exports = {
   createChangesetCommit,
   createRelease,
-  run: changesetCommand,
+  changesetCommand,
 };
