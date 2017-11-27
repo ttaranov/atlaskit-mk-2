@@ -1,4 +1,4 @@
-import { fakeServer } from 'sinon';
+import * as sinon from 'sinon';
 
 import createRequest from '../src/services/util/createRequest';
 import { AuthProvider } from '../src/auth';
@@ -11,7 +11,7 @@ describe('createRequest()', () => {
   let mockServer: sinon.SinonFakeServer;
 
   beforeEach(() => {
-    mockServer = fakeServer.create();
+    mockServer = sinon.fakeServer.create();
     mockServer.autoRespond = true;
   });
 
