@@ -1,5 +1,5 @@
-import {Component} from './component';
-import {Signal} from '../signal';
+import { Component } from './component';
+import { Signal } from '../signal';
 
 export interface ShapeDeleter extends Component {
   // These methods are called by the core to notify about the availability of the delete operation
@@ -16,7 +16,8 @@ export interface ShapeDeleter extends Component {
 export class DefaultShapeDeleter implements ShapeDeleter {
   readonly deleteShape = new Signal<{}>();
 
-  private readonly keyDownListener = (event: KeyboardEvent) => this.keyDown(event);
+  private readonly keyDownListener = (event: KeyboardEvent) =>
+    this.keyDown(event);
   private isDeleteEnabled: boolean = false;
 
   constructor(private readonly hTextArea: HTMLTextAreaElement) {

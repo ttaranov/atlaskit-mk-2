@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Root Wrapper should render with default props 1`] = `
+.c0 function (_a) {
+  return: '';
+}
+
+.c0 function (_a) {
+  return: '';
+}
+
+<div
+  className="c0"
+/>
+`;
+
+exports[`Root Wrapper should render with horizontal appearance 1`] = `
+.c0 {
+  min-width: 400px;
+  max-width: 400px;
+  height: 125px;
+  position: relative;
+}
+
+<div
+  className="c0"
+/>
+`;
+
+exports[`Root Wrapper should render with small appearance 1`] = `
+.c0 {
+  display: inline-block;
+  width: 100%;
+}
+
+.c0 function (_a) {
+  return: '';
+}
+
+.c0 function (_a) {
+  return: '';
+}
+
+<div
+  className="c0"
+/>
+`;
+
+exports[`Root Wrapper should render with square appearance 1`] = `
+.c0 {
+  min-width: 272px;
+  max-width: 400px;
+  position: relative;
+}
+
+<div
+  className="c0"
+/>
+`;

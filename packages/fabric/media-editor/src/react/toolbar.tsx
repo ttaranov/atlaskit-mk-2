@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Color, Tool} from '../common';
-import {ToolbarContainer} from './styled';
-import {ColorButton, LineWidthButton, ToolButton} from './toolbarButtons';
-import {colorSame} from '../util';
+import { Color, Tool } from '../common';
+import { ToolbarContainer } from './styled';
+import { ColorButton, LineWidthButton, ToolButton } from './toolbarButtons';
+import { colorSame } from '../util';
 
 export type ColorChangedHandler = (color: Color) => void;
 export type ToolChangedHandler = (tool: Tool) => void;
@@ -18,10 +18,10 @@ export interface ToolbarProps {
   onLineWidthChanged: LineWidthChangedHandler;
 }
 
-const red = {red: 250, green: 61, blue: 17};
-const green = {red: 65, green: 224, blue: 138};
-const yellow = {red: 249, green: 182, blue: 0};
-const blue = {red: 34, green: 98, blue: 255};
+const red = { red: 250, green: 61, blue: 17 };
+const green = { red: 65, green: 224, blue: 138 };
+const yellow = { red: 249, green: 182, blue: 0 };
+const blue = { red: 34, green: 98, blue: 255 };
 
 export class Toolbar extends React.Component<ToolbarProps, {}> {
   constructor(props: ToolbarProps) {

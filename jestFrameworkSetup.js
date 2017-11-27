@@ -1,4 +1,7 @@
 /* eslint-disable */
+
+import 'jest-styled-components';
+
 /*
   This file is executed after the test framework is setup for each test file. Addons that modify
   the `expect` object can be applied here.
@@ -11,7 +14,15 @@ const diff = require('./node_modules/jest-diff');
  * Polyfill DOMElement.innerText because JSDOM lacks support for it.
  * @link https://github.com/tmpvar/jsdom/issues/1245
  */
-if (document && !('innerText' in document.createElement('a'))) {
+/**
+ * We're checking the document actually exists here because tests using `jest-styled-components`
+ * need to be run with `testEnvironment=node` for `styled-components@^1`
+ * @see https://github.com/styled-components/jest-styled-components#styled-components--v2
+ */
+if (
+  typeof document !== 'undefined' &&
+  !('innerText' in document.createElement('a'))
+) {
   const getInnerText = node =>
     Array.prototype.slice.call(node.childNodes).reduce((text, child) => {
       if (child.nodeType === child.TEXT_NODE) {
@@ -53,7 +64,12 @@ if (document && !('innerText' in document.createElement('a'))) {
   });
 }
 
-if (!('cancelAnimationFrame' in window)) {
+/**
+ * We're checking the window actually exists here because tests using `jest-styled-components`
+ * need to be run with `testEnvironment=node` for `styled-components@^1`
+ * @see https://github.com/styled-components/jest-styled-components#styled-components--v2
+ */
+if (typeof window !== 'undefined' && !('cancelAnimationFrame' in window)) {
   window.cancelAnimationFrame = () => {
     if (!window.hasWarnedAboutCancelAnimationFramePolyfill) {
       window.hasWarnedAboutCancelAnimationFramePolyfill = true;
