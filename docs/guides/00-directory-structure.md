@@ -111,7 +111,7 @@ Each package's source should contain a similar directory structure. The basic gu
 2. Each file that has a default export, must *only* have a default export - no named exports.
 3. The file name should be the name of the export. For example, if `Avatar` is a default export for a file, the file name should be `Avatar.js`. For a HoC, this might look something like `withAvatar`.
 4. In lieu of a file, you may use a directory with an `index.js` file. For example, `Avatar/index.js`.
-5. Styled components should go in a `styled.js` file, or you can use a `styled/index.js` file that exports sibling files with default exports that conform to #3 or #4.
+5. Styled components should go in a `styled.js` file, or you can use a `styled/index.js` file that exports sibling files with default exports that conform to #3 or #4. This should also follow something similar to #6 and have this for every level of components.
 6. Tests should be in a `__tests__` that correspond to the level of files you're testing. A good rule of thumb is that the imports from your test file should reach up one directory. For example, `import Avatar from '../Avatar';`.
 
 Your structure may look something like this:
@@ -121,18 +121,18 @@ Your structure may look something like this:
   └─ elements
     └─ avatar
       └─ src
-        ├─ __tests__ ·········· Tests for Avatar.js, index.js, styled.js
-        ├─ Avatar ············· Directory form of Avatar.js
-        │ ├─ __tests__ ········ Tests for Avatar/index.js
-        │ └─ index.js ········· Default export for Avatar
-        ├─ styled ············· Directory for styled components
-        │ ├─ __tests__ ········ Tests for Styled/index.js, MyComponent.js
-        │ ├─ index.js ········· Exports MyComponent
-        │ └─ MyComponent.js ··· Exported by index.js
-        ├─ Avatar.js ·········· Simpler form of Avatar/index.js
-        ├─ index.js ··········· Main entry point
-        ├─ styled.js ·········· Simpler form of styled/index.js
-        └─ types.js ··········· Type definitions
+        ├─ __tests__ ············ Tests for Avatar.js, index.js, styled.js
+        ├─ Avatar ··············· Directory form of Avatar.js
+        │ ├─ __tests__ ·········· Tests for Avatar/index.js
+        │ └─ index.js ··········· Default export for Avatar
+        │ └─ styled ············· Directory for styled components
+        │   ├─ __tests__ ········ Tests for Styled/index.js, MyComponent.js
+        │   ├─ index.js ········· Exports MyComponent
+        │   └─ MyComponent.js ··· Exported by index.js
+        ├─ Avatar.js ············ Simpler form of Avatar/index.js
+        ├─ index.js ············· Main entry point
+        ├─ styled.js ············ Simpler form of styled/index.js
+        └─ types.js ············· Type definitions
 ```
 
 The key difference between the file and directory forms (i.e. `styled.js` vs `styled/index.js`) is how complex your component becomes. What matters here is that consistency is still very close and your imports do not change.
