@@ -137,6 +137,8 @@ Your structure may look something like this:
 
 The key difference between the file and directory forms (i.e. `styled.js` vs `styled/index.js`) is how complex your component becomes. What matters here is that consistency is still very close and your imports do not change.
 
+_The rules listed above are exhaustive. Anything outside of them are not supported. This includes things like leading underscores (_filename.js), underscored names (file_name.js) and dotted names (file.name.js)._
+
 #### `CHANGELOG.md`
 
 The changelog contains all of the relevant changes of the package, over time, in an easy-to-consume format. It also is searchable from the website if you want the changes for a particular version.
