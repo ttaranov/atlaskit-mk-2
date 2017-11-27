@@ -5,11 +5,31 @@ Although Atlaskit is responsible for the main development of their components, c
 1. Open source
 2. Inter-team
 
-We haven't had any major open source contributions yet, so we'll only focus on the inter-team contribution model for the time being.
+We haven't had any major open source contributions yet, but we'll describe the process we want to follow here as it underpins the inter-team model.
+
+## Open source contribution model
+
+We want to keep this model very simple. At it's core, we make the assumptions that developers looking to contribute will look at the `README.md` and thus, be directed to the `CONTRIBUTING.md`. Even so, both of those files are widely known as convention in an open source project and developers will be able to direct themselves there.
+
+The process is very simple and consists of:
+
+1. Raising an issue for discussion or go directly to submitting a PR if confident it doesn't need any.
+2. Submitting a PR, unless that has been done in lieu of raising an issue.
+3. Discuss.
+4. Merge when ready.
+
+This is super simple and the PR guidelines can be derived from the rest of our conventions and documentation. It's also compatible with the inter-team model, because, at the very worst, internal teams would still be able to follow this process.
+
+The only real downsides here are that:
+
+1. It can take longer to yield a merge due to async discussions.
+2. Discovery of contribution need is mostly up to the contributor, unless we reach out to them.
+
+The inter-team model expands on the open source model to make this process more efficient because we have the privilege of working with internal teams in such a way.
 
 ## Inter-team contribution model
 
-The inter-team contribution model is kept as light as possible, and is designed in a way to be compatible with what a theoretical open-source contribution model would look like. In the future, if we do end up fleshing out an open source model, it's preferable that we'd update the design of the inter-team model to be a superset of it in hopes that we'd be keeping it as slim, and effective as possible.
+Like the open source model, the inter-team contribution model is kept as light as possible and is designed for compatibility with it so that, at worst, we can fallback to the open source model as teams in other timezones may not be able to meet as easily.
 
 The steps for the inter-team model are as follows.
 
@@ -21,22 +41,15 @@ The contribution may be initially sparked by several methods:
 - Issue raised by another team.
 - Atlaskit team member noticing similar implementations in products and raising it.
 
-Whatever the method, there should be an initial meeting that is held. This helps to build empathy across teams and get everyone on the same page. The goal of this meeting is to:
+Whatever the method, we want to be clear on a few things:
 
-1. Set initial action items for involved parties.
+1. Any initial action items.
 2. Decide who will be the contributor from the external team.
 3. Decide who will be the shepherd from within the Atlaskit team.
 
-Contributors are always from external teams, and shepherds are always from within the Atlaskit team.
+This process may come naturally and not require an initial meeting. For example, a contribution may be very simple, a PR may have already been made and it may be good to go out of the gate. Others may require a bit more formality to keep the quality bar high.
 
-### Sparring and design sign-off
-
-After the initial meeting, there should be at least two action items which would be to:
-
-1. Set up an architecture deep-dive between contributor and shepherd.
-2. Start a discussion with the ADG design team to ensure it meets our standards.
-
-Both actions may not require much work. For example, architecture sparring may not uncover any extra details that need to be fleshed out. It may be a simple carry over. Design sparring may be the same. Design may also want to change some interactions, or it may be that the component needs to be rethought in the context of being consumed by the rest of the company.
+_We don't want this process to to impede the contribution, waste anyone's time or to appear like the waterfall process. You should decide up front if the complexity if the contribution warrants such process and always be mindful to keep it as lean as possible._
 
 ### Regular catch-ups
 
@@ -48,7 +61,9 @@ Some examples of this are:
 - Weekly catch-ups
 - Demos every other day
 
-The key here is that everyone shares knowledge and can hold each other accountable as everyone may have several things on their plate at any given point in time.
+The people involved in these catch-ups will vary, as well. For example, it may simply be the contributor and shepherd. It may have a designer present. Other team members may be involved depending on the complexity.
+
+_The key here is that everyone shares knowledge and can hold each other accountable as everyone may have several things on their plate at any given point in time._
 
 ### Shepherd involvement
 
@@ -57,7 +72,3 @@ Every contribution will have a shepherd, but to the extent at which this shepher
 - Reviewing relevant PRs.
 - Meeting with contributors, or involved parties.
 - Planning any follow ups after the final contribution and handover has been made.
-
-Footnotes:
-
-1. Component architecture sparring and design sparring / sign-off can happen async.
