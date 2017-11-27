@@ -1,4 +1,4 @@
-import fixDoc from '../../../src/transformers/jira/fix-doc';
+import { fixDoc } from '@atlaskit/editor-common';
 
 const attachments = `<span class="image-wrap" style="">
   <a

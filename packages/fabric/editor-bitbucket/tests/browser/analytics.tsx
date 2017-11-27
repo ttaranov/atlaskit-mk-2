@@ -13,18 +13,10 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 
 import { analyticsService, imageUploadStateKey } from '@atlaskit/editor-core';
-import { browser } from '@atlaskit/editor-common';
+import { browser, stringRepeat } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
 
 import Editor from '../../src/index';
-
-function stringRepeat(text: string, length: number): string {
-  let result = '';
-  for (let x = 0; x < length; x++) {
-    result += text;
-  }
-  return result;
-}
 
 chai.use(chaiPlugin);
 

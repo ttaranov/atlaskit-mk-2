@@ -33,11 +33,11 @@ import {
   // error-reporting
   // ErrorReporter,
   ErrorReportingHandler,
-
-  // transformers
-  BitbucketTransformer,
 } from '@atlaskit/editor-core';
-import { bitbucketSchema as schema } from '@atlaskit/editor-common';
+import {
+  bitbucketSchema as schema,
+  BitbucketTransformer,
+} from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
 import { EditorState, TextSelection } from 'prosemirror-state';
 import { Node } from 'prosemirror-model';

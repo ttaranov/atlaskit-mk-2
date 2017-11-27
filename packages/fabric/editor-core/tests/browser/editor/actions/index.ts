@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import createEditor from '../../../helpers/create-editor';
 import { doc, p, blockquote, decisionList, decisionItem } from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
-import { JSONTransformer, Transformer } from '../../../../src/transformers';
+import { JSONTransformer, Transformer } from '@atlaskit/editor-common';
 import EditorActions from '../../../../src/editor/actions';
 import { toJSON } from '../../../../src/utils';
 

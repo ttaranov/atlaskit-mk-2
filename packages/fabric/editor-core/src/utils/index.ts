@@ -4,7 +4,7 @@ import { EditorView } from 'prosemirror-view';
 import { EditorState, NodeSelection, Selection, TextSelection, Transaction } from 'prosemirror-state';
 import { liftTarget, findWrapping } from 'prosemirror-transform';
 import { LEFT } from '../keymaps';
-import JSONTransformer, { JSONDocNode, JSONNode } from '../transformers/json';
+import { JSONDocNode, JSONNode, JSONTransformer } from '@atlaskit/editor-common';
 
 export {
   default as ErrorReporter,
@@ -376,17 +376,6 @@ export function wrapIn(nodeType: NodeType, tr: Transaction, $from: ResolvedPos, 
 export function toJSON(node: Node): JSONDocNode {
   const transformer = new JSONTransformer();
   return transformer.encode(node);
-}
-
-/**
- * Repeating string for multiple times
- */
-export function stringRepeat(text: string, length: number): string {
-  let result = '';
-  for (let x = 0; x < length; x++) {
-    result += text;
-  }
-  return result;
 }
 
 /**

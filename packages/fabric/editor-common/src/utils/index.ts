@@ -1,6 +1,6 @@
 export * from './url';
 export * from './uuid';
-export * from './confluence/emoji';
+export * from './confluence';
 export * from './languageList';
 export { default as browser } from './browser';
 export {
@@ -15,4 +15,15 @@ export const rgbToHex = (value: string): string | undefined => {
     // tslint:disable-next-line:no-bitwise
     return '#' + ((blue | green << 8 | red << 16) | 1 << 24).toString(16).slice(1);
   }
+};
+
+/**
+ * A replacement for `String.repeat` until it becomes widely available.
+ */
+export const stringRepeat = (text: string, length: number): string => {
+  let result = '';
+  for (let x = 0; x < length; x++) {
+    result += text;
+  }
+  return result;
 };

@@ -60,7 +60,6 @@
     "@types/prosemirror-view": "^0.21.1",
     "ajv": "^4.11.3",
     "codemirror": "^5.26.0",
-    "collapse-whitespace": "^1.1.6",
     "css-color-names": "0.0.4",
     "linkify-it": "^2.0.3",
     "markdown-it-table": "^1.0.0",

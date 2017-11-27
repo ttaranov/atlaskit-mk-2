@@ -9,4 +9,4 @@ export {
   isSchemaWithMedia,
   isSchemaWithTextColor,
   isSchemaWithTables
-} from '@atlaskit/editor-common';
+} from '../../schema';

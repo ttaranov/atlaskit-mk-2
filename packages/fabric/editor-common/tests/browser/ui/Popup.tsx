@@ -2,15 +2,15 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as sinon from 'sinon';
-import { browser } from '../../src';
+import { browser } from '../../../src';
 
 import {
   isBody, findOverflowScrollParent,
   getVerticalPlacement, getHorizontalPlacement,
   calculatePosition,
-} from '../../src/ui/Popup/utils';
+} from '../../../src/ui/Popup/utils';
 
-import Popup from '../../src/ui/Popup';
+import Popup from '../../../src/ui/Popup';
 
 describe('Popup', () => {
   describe('Utils', () => {

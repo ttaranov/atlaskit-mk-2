@@ -1,10 +1,7 @@
-import {
-  MediaAttributes,
-  MediaType,
-  acNameToEmoji,
-  acShortcutToEmoji,
-} from '@atlaskit/editor-common';
 import { Fragment, Node as PMNode, Schema } from 'prosemirror-model';
+import { MediaAttributes, MediaType } from '../../schema/nodes';
+import { acNameToEmoji, acShortcutToEmoji } from '../../utils/confluence/emoji';
+
 import parseCxhtml from './parse-cxhtml';
 import { AC_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 import {
@@ -28,6 +25,8 @@ import {
   ensureInline,
   docContentWrapper,
 } from './content-wrapper';
+
+// tslint:disable:no-console
 
 const convertedNodes = new WeakMap<Node, Fragment | PMNode>();
 // This reverted mapping is used to map Unsupported Node back to it's original cxhtml
@@ -279,6 +278,10 @@ function converter(
           node.firstChild instanceof Element &&
           getNodeName(node.firstChild) === 'FAB:MENTION'
         ) {
+          console.log(node)
+          console.log(node.firstChild)
+          console.log(node.firstChild.firstChild)
+
           const cdata = node.firstChild.firstChild!;
 
           return schema.nodes.mention.create({

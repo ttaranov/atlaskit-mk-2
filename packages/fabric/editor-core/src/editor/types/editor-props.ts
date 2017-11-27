@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Transformer } from '@atlaskit/editor-common';
 import { MediaState } from '@atlaskit/media-core';
 import { ActivityProvider } from '@atlaskit/activity';
 import { Node, Schema } from 'prosemirror-model';
@@ -10,7 +11,6 @@ import { TextFormattingOptions } from '../plugins/text-formatting';
 import { AnalyticsHandler } from '../../analytics';
 import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../plugins/macro/types';
-import { Transformer } from '../../';
 
 export type EditorAppearance =
   | 'message'

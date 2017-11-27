@@ -3,7 +3,7 @@ import { TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { getEditorValueWithMedia, insertFileFromDataUrl, preprocessDoc } from '../utils';
 import { toJSON } from '../../utils';
-import { Transformer } from '../../transformers';
+import { Transformer } from '@atlaskit/editor-common';
 export default class EditorActions {
   private editorView?: EditorView;
   private contentTransformer?: Transformer<any>;

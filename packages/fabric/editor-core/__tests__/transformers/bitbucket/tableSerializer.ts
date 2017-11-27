@@ -1,8 +1,8 @@
 import {
   MarkdownSerializer,
-  marks,
-  nodes,
-} from '../../../src/transformers/bitbucket/serializer';
+  markdownNodes as nodes,
+  markdownMarks as marks,
+} from '@atlaskit/editor-common';
 import {
   p,
   table,

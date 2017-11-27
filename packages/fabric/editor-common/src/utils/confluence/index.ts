@@ -1,5 +1,8 @@
 import { Node as PmNode } from 'prosemirror-model';
 
+// re-export everything from emoji
+export * from './emoji';
+
 export interface Params {
   node: PmNode;
   type: 'image' | 'icon';

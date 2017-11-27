@@ -6,7 +6,7 @@ import { chaiPlugin } from '@atlaskit/editor-test-helpers';
 import {
   ConfluenceTransformer,
   CONFlUENCE_LANGUAGE_MAP as LANGUAGE_MAP,
-} from '../../../../src';
+} from '../../../../src/transformers';
 import {
   blockquote,
   br,
@@ -48,7 +48,7 @@ import {
   emoji,
 } from './_schema-builder';
 chai.use(chaiPlugin);
-import { confluenceSchema as schema } from '@atlaskit/editor-common';
+import { confluenceSchema as schema } from '../../../../src/schema';
 
 const transformer = new ConfluenceTransformer(schema);
 const parse = (html: string) => transformer.parse(html);
@@ -1070,13 +1070,13 @@ describe('ConfluenceTransformer: encode - parse:', () => {
 
     check(
       'valid emoji with all fabric emoji attributes',
-      '<p><ac:emoticon ac:name="blue-star" ac:emoji-id="1f61c" ac:emoji-shortname=":stuck_out_tongue_winking_eye:" ac:emoji-fallback="😜"/></p>',
+      '<p><ac:emoticon ac:name="blue-star" ac:emoji-id="1f61c" ac:emoji-shortname=":stuck_out_tongue_winking_eye:" ac:emoji-fallback="ðŸ˜œ"/></p>',
       doc(
         p(
           emoji({
             id: '1f61c',
             shortName: ':stuck_out_tongue_winking_eye:',
-            text: '😜',
+            text: 'ðŸ˜œ',
           }),
         ),
       ),
@@ -1089,7 +1089,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
             emoji({
               id: '1f61c',
               shortName: ':stuck_out_tongue_winking_eye:',
-              text: '😜',
+              text: 'ðŸ˜œ',
             }),
           ),
         ),

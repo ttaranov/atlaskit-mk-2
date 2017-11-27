@@ -11,8 +11,7 @@ import { PureComponent } from 'react';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 
 import Editor from '../example-helpers/editor';
-import { createSchema } from '@atlaskit/editor-common';
-import { JSONTransformer } from '../src/transformers';
+import { createSchema, JSONTransformer } from '@atlaskit/editor-common';
 import ProviderFactory from '../src/providerFactory';
 
 const providerFactory = new ProviderFactory();

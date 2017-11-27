@@ -8,7 +8,7 @@ import {
 import {
   confluenceSchema as schema,
   MediaAttributes,
-} from '@atlaskit/editor-common';
+} from '../../../../src/schema';
 
 export { RefsNode, RefsTracker, Node };
 // Nodes

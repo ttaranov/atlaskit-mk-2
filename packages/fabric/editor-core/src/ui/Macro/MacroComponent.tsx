@@ -4,7 +4,7 @@ import { EditorView } from 'prosemirror-view';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { Node as PMNode } from 'prosemirror-model';
 import { MacroProvider } from '../../editor/plugins/macro/types';
-import { getPlaceholderUrl, getMacroId } from '../../editor/plugins/macro/utils';
+import { getPlaceholderUrl, getMacroId } from '@atlaskit/editor-common';
 import InlineMacro from './InlineMacro';
 
 export interface Props {

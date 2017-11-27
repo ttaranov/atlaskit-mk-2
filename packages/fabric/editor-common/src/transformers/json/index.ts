@@ -3,7 +3,7 @@ import {
   defaultSchema,
   mediaToJSON,
   mentionToJSON,
-} from '@atlaskit/editor-common';
+} from '../../schema';
 import { Node as PMNode } from 'prosemirror-model';
 import { Transformer } from '../transformer';
 

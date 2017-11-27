@@ -30,7 +30,6 @@ export * from './plugins';
 export * from './ui';
 export * from './analytics';
 export * from './nodeviews';
-export * from './transformers';
 export { keyCodes } from './keymaps';
 export { ProviderFactory, WithProviders };
 export {

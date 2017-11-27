@@ -1,5 +1,7 @@
-import { BitbucketTransformer } from '../../../src/transformers';
-import { bitbucketSchema as schema } from '@atlaskit/editor-common';
+import {
+  bitbucketSchema as schema,
+  BitbucketTransformer,
+} from '@atlaskit/editor-common';
 import {
   a,
   blockquote,

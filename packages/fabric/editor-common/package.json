@@ -33,8 +33,10 @@
     "@types/prosemirror-schema-basic": "^0.21.0",
     "@types/prosemirror-view": "^0.21.1",
     "ajv": "^4.11.3",
+    "collapse-whitespace": "^1.1.6",
     "css-color-names": "0.0.4",
     "linkify-it": "^2.0.3",
+    "prosemirror-markdown": "^0.22.0",
     "prosemirror-model": "^0.22.0",
     "prosemirror-schema-basic": "^0.22.0",
     "prosemirror-tables": "^0.1.0",
@@ -45,6 +47,7 @@
   "devDependencies": {
     "@atlaskit/editor-test-helpers": "^0.8.5",
     "@types/chai": "^4.0.4",
+    "@types/prosemirror-markdown": "^0.21.0",
     "chai": "^4.1.2",
     "json-schema-diff-validator": "^0.0.5",
     "sinon": "^2.2.0"

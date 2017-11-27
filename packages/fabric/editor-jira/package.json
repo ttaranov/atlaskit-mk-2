@@ -17,6 +17,7 @@
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/button": "^5.4.8",
+    "@atlaskit/editor-common": "^3.9.7",
     "@atlaskit/editor-core": "^60.3.0",
     "@atlaskit/mention": "^8.1.0",
     "@atlaskit/spinner": "^4.0.2",

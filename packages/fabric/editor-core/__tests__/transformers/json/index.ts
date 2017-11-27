@@ -34,7 +34,7 @@ import {
   underline,
 } from '@atlaskit/editor-test-helpers';
 
-import JSONTransformer from '../../../src/transformers/json';
+import { JSONTransformer } from '@atlaskit/editor-common';
 
 const transformer = new JSONTransformer();
 const toJSON = node => transformer.encode(node);

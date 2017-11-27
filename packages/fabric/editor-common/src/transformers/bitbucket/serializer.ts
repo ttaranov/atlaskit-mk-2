@@ -6,12 +6,10 @@ import {
   Mark,
   Node as PMNode,
 } from 'prosemirror-model';
-import {
-  escapeMarkdown,
-  stringRepeat,
-} from './util';
-import { bitbucketSchema as schema } from '@atlaskit/editor-common';
+import { escapeMarkdown } from './util';
+import { bitbucketSchema as schema } from '../../schema';
 import tableNodes from './tableSerializer';
+import { stringRepeat } from '../../utils';
 
 /**
  * Look for series of backticks in a string, find length of the longest one, then

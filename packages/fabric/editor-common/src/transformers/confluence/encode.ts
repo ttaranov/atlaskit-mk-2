@@ -1,4 +1,4 @@
-import { MediaAttributes, getEmojiAcName } from '@atlaskit/editor-common';
+import { MediaAttributes } from '../../schema';
 import { Fragment, Node as PMNode, Mark, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
 import { AC_XMLNS, FAB_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
@@ -6,9 +6,10 @@ import { mapCodeLanguage } from './languageMap';
 import { getNodeMarkOfType } from './utils';
 import { hexToRgb } from '../../utils/color';
 import {
+  getEmojiAcName,
   getPlaceholderUrl,
   getMacroId,
-} from '../../editor/plugins/macro/utils';
+} from '../../utils/confluence';
 
 export default function encode(node: PMNode, schema: Schema) {
   const docType = document.implementation.createDocumentType(

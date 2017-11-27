@@ -9,7 +9,7 @@ import {
   isSchemaWithSubSupMark,
   isSchemaWithTextColor,
   isSchemaWithTables,
-} from '@atlaskit/editor-common';
+} from '../../schema';
 
 import { Fragment, Mark, Node as PMNode, Schema } from 'prosemirror-model';
 

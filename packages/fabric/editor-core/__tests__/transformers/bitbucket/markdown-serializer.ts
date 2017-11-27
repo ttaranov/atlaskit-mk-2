@@ -1,9 +1,10 @@
 import {
   MarkdownSerializer,
-  marks,
-  nodes,
-} from '../../../src/transformers/bitbucket/serializer';
-import { stringRepeat } from '../../../src/transformers/bitbucket/util';
+  markdownNodes as nodes,
+  markdownMarks as marks,
+  stringRepeat,
+} from '@atlaskit/editor-common';
+
 import {
   a,
   blockquote,

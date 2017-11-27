@@ -6,7 +6,7 @@ import { PureComponent } from 'react';
 import Editor from '../example-helpers/editor';
 import schema from '../example-helpers/schema';
 import { EmojiProvider } from '../src';
-import { BitbucketTransformer } from '../src/transformers';
+import { BitbucketTransformer } from '@atlaskit/editor-common';
 import exampleHTML from '../example-helpers/exampleHTML';
 
 const CANCEL_ACTION = () => console.log('Cancel');
