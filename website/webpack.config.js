@@ -263,6 +263,7 @@ module.exports = async function createWebpackConfig() {
       }),
       new HtmlWebpackPlugin({
         template: 'public/index.html.ejs',
+        favicon: 'public/favicon.ico',
       }),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': `"${WEBSITE_ENV}"`,

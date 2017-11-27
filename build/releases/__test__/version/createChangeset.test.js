@@ -1,20 +1,11 @@
 const chalk = require('chalk');
 const bolt = require('bolt');
+const inquirer = require('inquirer');
 const createChangeset = require('../../changeset/createChangeset');
 const cli = require('../../../utils/cli');
-
 jest.mock('../../../utils/cli');
 jest.mock('../../../utils/logger');
 jest.mock('bolt');
-
-function assertPackagesPrompt(options) {
-  const askPackagesCalls = cli.askCheckbox.mock.calls;
-  expect(askPackagesCalls.length).toEqual(1);
-  expect(askPackagesCalls[0][0]).toEqual(
-    'Which packages would you like to include?',
-  );
-  expect(askPackagesCalls[0][1]).toEqual(options);
-}
 
 function assertBumpTypePrompts(expectedCalls) {
   const bumpTypeCalls = cli.askList.mock.calls;
@@ -35,6 +26,7 @@ function assertSummaryPrompt() {
 function mockUserInput(releases, dependents, summary) {
   const pkgsToRelease = releases.map(pkg => pkg.name);
   // select which packages user wants to release
+  bolt.getWorkspaces.mockReturnValueOnce([...releases, ...dependents]);
   cli.askCheckbox.mockReturnValueOnce(Promise.resolve(pkgsToRelease));
 
   // select release types for each package
@@ -78,7 +70,17 @@ describe('createChangeset', () => {
       const changedPackages = ['pkg-a'];
       await createChangeset(changedPackages, { cwd });
 
-      assertPackagesPrompt(changedPackages);
+      const askPackagesCalls = cli.askCheckbox.mock.calls;
+      expect(askPackagesCalls[0][0]).toEqual(
+        'Which packages would you like to include?',
+      );
+      expect(askPackagesCalls[0][1]).toEqual([
+        { type: 'separator', line: '\u001b[2mchanged packages\u001b[22m' },
+        'pkg-a',
+        { type: 'separator', line: '\u001b[2munchanged packages\u001b[22m' },
+        { type: 'separator', line: '\u001b[2m──────────────\u001b[22m' },
+      ]);
+      expect(askPackagesCalls.length).toEqual(1);
       assertBumpTypePrompts(['pkg-a']);
       assertSummaryPrompt();
     });
@@ -134,7 +136,20 @@ describe('createChangeset', () => {
       const changedPackages = ['pkg-a'];
       await createChangeset(changedPackages, { cwd });
 
-      assertPackagesPrompt(changedPackages);
+      const askPackagesCalls = cli.askCheckbox.mock.calls;
+      expect(askPackagesCalls[0][0]).toEqual(
+        'Which packages would you like to include?',
+      );
+
+      expect(askPackagesCalls[0][1]).toEqual([
+        { type: 'separator', line: '\u001b[2mchanged packages\u001b[22m' },
+        'pkg-a',
+        { type: 'separator', line: '\u001b[2munchanged packages\u001b[22m' },
+        'pkg-b',
+        { type: 'separator', line: '\u001b[2m──────────────\u001b[22m' },
+      ]);
+      expect(askPackagesCalls.length).toEqual(1);
+
       // Should ask for bump type for both packages as b is a dependency
       assertBumpTypePrompts(['pkg-a', 'pkg-b']);
       assertSummaryPrompt();
@@ -219,7 +234,20 @@ describe('createChangeset', () => {
 
       await createChangeset(changedPackages, { cwd });
 
-      assertPackagesPrompt(['pkg-a']);
+      const askPackagesCalls = cli.askCheckbox.mock.calls;
+      expect(askPackagesCalls[0][0]).toEqual(
+        'Which packages would you like to include?',
+      );
+
+      expect(askPackagesCalls[0][1]).toEqual([
+        { type: 'separator', line: '\u001b[2mchanged packages\u001b[22m' },
+        'pkg-a',
+        { type: 'separator', line: '\u001b[2munchanged packages\u001b[22m' },
+        'pkg-c',
+        'pkg-b',
+        { type: 'separator', line: '\u001b[2m──────────────\u001b[22m' },
+      ]);
+      expect(askPackagesCalls.length).toEqual(1);
       // Will ask 4 times, one for release and 3 for dependents
       assertBumpTypePrompts(['pkg-a', 'pkg-b', 'pkg-c', 'pkg-a']);
       assertSummaryPrompt();

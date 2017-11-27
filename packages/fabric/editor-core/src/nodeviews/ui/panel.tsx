@@ -13,7 +13,7 @@ import {
   akColorG400,
   akColorP400,
   akColorB400,
-  akColorY400
+  akColorY400,
 } from '@atlaskit/util-shared-styles';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import TipIcon from '@atlaskit/icon/glyph/editor/hint';
@@ -24,21 +24,21 @@ const panelColor = {
   info: akColorB50,
   note: akColorP50,
   tip: akColorG50,
-  warning: akColorY50
+  warning: akColorY50,
 };
 
 const iconColor = {
   info: akColorB400,
   note: akColorP400,
   tip: akColorG400,
-  warning: akColorY400
+  warning: akColorY400,
 };
 
 const panelIcons = {
   info: InfoIcon,
   tip: TipIcon,
   note: NoteIcon,
-  warning: WarningIcon
+  warning: WarningIcon,
 };
 
 // tslint:disable-next-line:variable-name
@@ -80,24 +80,24 @@ class Panel implements NodeView {
 
   private handleRef = (node: HTMLElement | undefined) => {
     this.contentDOMRef = node;
-  }
+  };
 
   private renderReactComponent() {
     const { panelType } = this;
     this.domRef = document.createElement('div');
-    this.domRef.dataset.panelType = this.panelType;
+    this.domRef.setAttribute('data-panel-type', this.panelType);
 
     // tslint:disable-next-line:variable-name
     const Icon = panelIcons[panelType];
 
     ReactDOM.render(
-      <Wrapper style={{background: panelColor[panelType]}}>
-        <IconWrapper style={{color: iconColor[panelType]}}>
+      <Wrapper style={{ background: panelColor[panelType] }}>
+        <IconWrapper style={{ color: iconColor[panelType] }}>
           <Icon label={`Panel ${panelType}`} />
         </IconWrapper>
         <ContentWrapper innerRef={this.handleRef} />
       </Wrapper>,
-      this.domRef
+      this.domRef,
     );
   }
 
@@ -124,6 +124,10 @@ class Panel implements NodeView {
   }
 }
 
-export const panelNodeView = (node: any, view: any, getPos: () => number): NodeView => {
+export const panelNodeView = (
+  node: any,
+  view: any,
+  getPos: () => number,
+): NodeView => {
   return new Panel(node, view, getPos);
 };

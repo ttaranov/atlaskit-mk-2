@@ -47,6 +47,63 @@ async function push(args = []) {
   return gitCmd.code === 0;
 }
 
+async function rebase(maxAttempts = 3) {
+  let attempts = 0;
+  let rebased = false;
+  let lastError = {};
+
+  while (!rebased) {
+    attempts++;
+    try {
+      await spawn('git', ['pull', '--rebase']);
+      rebased = true;
+    } catch (e) {
+      lastError = e;
+      if (attempts >= maxAttempts) {
+        break;
+      }
+    }
+  }
+
+  if (!rebased) {
+    throw new Error(
+      `Failed to rebase after ${maxAttempts} attempts\n${JSON.stringify(
+        lastError,
+      )}`,
+    );
+  }
+}
+
+// We expose this as a combined command because we want to be able to do both commands
+// atomically
+async function rebaseAndPush(maxAttempts = 3) {
+  let attempts = 0;
+  let pushed = false;
+  let lastError = {};
+
+  while (!pushed) {
+    attempts++;
+    try {
+      await spawn('git', ['pull', '--rebase']);
+      await spawn('git', ['push', '--follow-tags']);
+      pushed = true;
+    } catch (e) {
+      lastError = e;
+      if (attempts >= maxAttempts) {
+        break;
+      }
+    }
+  }
+
+  if (!pushed) {
+    throw new Error(
+      `Failed to push after ${maxAttempts} attempts.\n${JSON.stringify(
+        lastError,
+      )}`,
+    );
+  }
+}
+
 // helper method for getAllReleaseCommits and getAllChangesetCommits as they are almost identical
 async function getAndParseJsonFromCommitsStartingWith(str) {
   // --grep lets us pass a regex, -z splits commits using NUL instead of newlines
@@ -118,7 +175,7 @@ function parseFullCommit(commitStr) {
 async function getLastPublishCommit() {
   const isPublishCommit = msg => msg.startsWith('RELEASING: ');
 
-  const gitCmd = await spawn('git', ['log', '-n', 500, '--oneline']);
+  const gitCmd = await spawn('git', ['log', '-n', '500', '--oneline']);
   const result = gitCmd.stdout
     .trim()
     .split('\n')
@@ -155,6 +212,8 @@ module.exports = {
   add,
   commit,
   push,
+  rebase,
+  rebaseAndPush,
   getUnpublishedChangesetCommits,
   getAllReleaseCommits,
   getAllChangesetCommits,

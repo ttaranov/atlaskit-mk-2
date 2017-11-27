@@ -30,7 +30,7 @@ const Wrapper = styled.span`
   */
   svg,
   defs,
-  lineargradient {
+  linearGradient {
     stop-color: inherit;
   }
 `;
