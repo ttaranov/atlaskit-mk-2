@@ -17,7 +17,7 @@
   "dependencies": {
     "@atlaskit/code": "^2.1.7",
     "@atlaskit/editor-common": "^3.9.10",
-    "@atlaskit/icon": "^10.3.0",
+    "@atlaskit/icon": "^10.3.1",
     "@atlaskit/media-card": "^22.2.1",
     "@atlaskit/media-filmstrip": "^5.5.2",
     "@atlaskit/mention": "^8.1.0",
