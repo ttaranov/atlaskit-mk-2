@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "8.10.2",
+  "version": "8.10.6",
   "description": "Renderer component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -16,10 +16,10 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/code": "^2.1.7",
-    "@atlaskit/editor-common": "^3.9.3",
+    "@atlaskit/editor-common": "^3.9.8",
     "@atlaskit/icon": "^10.3.0",
-    "@atlaskit/media-card": "^22.2.0",
-    "@atlaskit/media-filmstrip": "^5.5.1",
+    "@atlaskit/media-card": "^22.2.1",
+    "@atlaskit/media-filmstrip": "^5.5.2",
     "@atlaskit/mention": "^8.1.0",
     "@atlaskit/task-decision": "^4.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
@@ -30,8 +30,8 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^0.0.4",
-    "@atlaskit/editor-core": "^60.2.3",
-    "@atlaskit/editor-test-helpers": "^0.8.2",
+    "@atlaskit/editor-core": "^60.3.2",
+    "@atlaskit/editor-test-helpers": "^0.8.6",
     "@atlaskit/media-test-helpers": "^8.5.0",
     "@types/prosemirror-model": "^0.21.0"
   }

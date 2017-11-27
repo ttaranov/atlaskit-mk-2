@@ -42,7 +42,7 @@ describe('MediaGroup', () => {
           type={imageFileId.mediaItemType}
           collection={imageFileId.collectionName}
         />
-      </MediaGroup>
+      </MediaGroup>,
     );
     expect(mediaGroup.find(FilmstripView).length).to.equal(1);
   });
@@ -50,7 +50,7 @@ describe('MediaGroup', () => {
   it('should call onClick with all the items in a media group', async () => {
     const onClick = sinon.spy();
     const eventHandlers: EventHandlers = {
-      media: { onClick }
+      media: { onClick },
     };
     const mediaGroup = mount(
       <MediaGroup>
@@ -69,7 +69,7 @@ describe('MediaGroup', () => {
           providers={providerFactory}
         />
       </MediaGroup>,
-      { attachTo: fixture }
+      { attachTo: fixture },
     );
     expect(mediaGroup.find(FilmstripView).length).to.equal(1);
 
@@ -78,7 +78,11 @@ describe('MediaGroup', () => {
     await provider.linkCreateContext;
     await provider.uploadContext;
 
-    const card = mediaGroup.find(FilmstripView).find(Media).first().find(Card);
+    const card = mediaGroup
+      .find(FilmstripView)
+      .find(Media)
+      .first()
+      .find(Card);
     card.props().onClick();
 
     expect(onClick.callCount).to.equal(1);

@@ -1,5 +1,7 @@
 # @atlaskit/media-filmstrip
 
+## 5.5.2
+
 ## 5.5.1
 - [patch] Use correct dependencies  [7b178b1](7b178b1)
 - [patch] Use correct dependencies  [7b178b1](7b178b1)

@@ -22,37 +22,42 @@ import { packages as packagesData } from '../site';
 import { packageUrl } from '../utils/url';
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  width: 100vw;
+  position: relative;
+  width: 100%;
+  height: 100%;
 `;
 
 const Content = styled.div`
-  flex: 1 1 auto;
-  overflow-y: auto;
+  position: absolute;
+  z-index: 1;
+  top: 48px;
+  bottom: 0;
+  width: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 `;
 
 const SANDBOX_DEPLOY_ENDPOINT =
   'https://atlaskit-deploy-sandbox.glitch.me/deploy';
 
 const Nav = styled.nav`
+  display: flex;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  width: 100%;
+  height: 48px;
+  flex-direction: row;
+  justify-content: space-between;
   background: ${colors.N30};
   color: white;
-  display: flex;
-  flex-shrink: 0;
-  height: 48px;
-  justify-content: space-between;
 `;
 
 const ComponentContainer = styled.div`
-  background-attachment: local;
-  background-position: 0 0, 10px 10px;
-  background-size: 20px 20px;
-  background: white;
-  height: 100%;
   position: relative;
   width: 100%;
+  height: 100%;
+  background: white;
 `;
 
 const CodeContainer = styled.div`

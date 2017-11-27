@@ -33,7 +33,7 @@ export const plugin = new Plugin({
     },
     apply(tr, pluginState: ReactNodeViewState, oldState, newState) {
       return pluginState;
-    }
+    },
   },
   key: stateKey,
   view: (view: EditorView) => {
@@ -43,9 +43,9 @@ export const plugin = new Plugin({
       update: (view: EditorView, prevState: EditorState) => {
         const { $anchor, $head } = view.state.selection;
         pluginState.notifyNewSelection($anchor.pos, $head.pos);
-      }
+      },
     };
-  }
+  },
 });
 
 const plugins = (schema: Schema) => {

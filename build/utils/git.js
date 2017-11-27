@@ -47,11 +47,39 @@ async function push(args = []) {
   return gitCmd.code === 0;
 }
 
+async function rebase(maxAttempts = 3) {
+  let attempts = 0;
+  let rebased = false;
+  let lastError = {};
+
+  while (!rebased) {
+    attempts++;
+    try {
+      await spawn('git', ['pull', '--rebase']);
+      rebased = true;
+    } catch (e) {
+      lastError = e;
+      if (attempts >= maxAttempts) {
+        break;
+      }
+    }
+  }
+
+  if (!rebased) {
+    throw new Error(
+      `Failed to rebase after ${maxAttempts} attempts\n${JSON.stringify(
+        lastError,
+      )}`,
+    );
+  }
+}
+
 // We expose this as a combined command because we want to be able to do both commands
 // atomically
 async function rebaseAndPush(maxAttempts = 3) {
   let attempts = 0;
   let pushed = false;
+  let lastError = {};
 
   while (!pushed) {
     attempts++;
@@ -60,6 +88,7 @@ async function rebaseAndPush(maxAttempts = 3) {
       await spawn('git', ['push', '--follow-tags']);
       pushed = true;
     } catch (e) {
+      lastError = e;
       if (attempts >= maxAttempts) {
         break;
       }
@@ -67,7 +96,11 @@ async function rebaseAndPush(maxAttempts = 3) {
   }
 
   if (!pushed) {
-    throw new Error(`Failed to push after ${maxAttempts} attempts`);
+    throw new Error(
+      `Failed to push after ${maxAttempts} attempts.\n${JSON.stringify(
+        lastError,
+      )}`,
+    );
   }
 }
 
@@ -179,6 +212,7 @@ module.exports = {
   add,
   commit,
   push,
+  rebase,
   rebaseAndPush,
   getUnpublishedChangesetCommits,
   getAllReleaseCommits,

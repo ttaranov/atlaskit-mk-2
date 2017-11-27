@@ -2,17 +2,12 @@
 
 const chalk = require('chalk');
 const release = require('./build/releases/release');
-const changeset = require('./build/releases/changeset');
 const karma = require('projector-karma');
 const {
   getKarmaConfig,
   getPackagesWithKarmaTests,
 } = require('./build/karma-config');
 const { getChangedPackages } = require('./build/utils/packages');
-
-exports.changeset = async () => {
-  await changeset.run();
-};
 
 exports.release = async () => {
   await release.run({ cwd: __dirname });

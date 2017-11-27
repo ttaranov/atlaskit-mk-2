@@ -1,5 +1,10 @@
 import { Step } from 'prosemirror-transform';
-import { EditorState } from 'prosemirror-state';
+import {
+  EditorState,
+  AllSelection,
+  NodeSelection,
+  Selection,
+} from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
 import {
@@ -15,14 +20,16 @@ export const handleInit = (initData: InitData, view: EditorView) => {
   const { doc, json } = initData;
   if (doc) {
     const { state, state: { schema, tr } } = view;
-    const content = (doc.content || []).map(child => schema.nodeFromJSON(child));
+    const content = (doc.content || []).map(child =>
+      schema.nodeFromJSON(child),
+    );
 
     if (content.length) {
       const newState = state.apply(
         tr
           .setMeta('addToHistory', false)
           .replaceWith(0, state.doc.nodeSize - 2, content)
-          .scrollIntoView()
+          .scrollIntoView(),
       );
       view.updateState(newState);
     }
@@ -31,12 +38,18 @@ export const handleInit = (initData: InitData, view: EditorView) => {
   }
 };
 
-export const handleConnection = (connectionData: ConnectionData, view: EditorView) => {
+export const handleConnection = (
+  connectionData: ConnectionData,
+  view: EditorView,
+) => {
   const { state: { tr } } = view;
   view.dispatch(tr.setMeta('sessionId', connectionData));
 };
 
-export const handlePresence = (presenceData: PresenceData, view: EditorView) => {
+export const handlePresence = (
+  presenceData: PresenceData,
+  view: EditorView,
+) => {
   const { state: { tr } } = view;
   view.dispatch(tr.setMeta('presence', presenceData));
 };
@@ -65,24 +78,44 @@ export const applyRemoteSteps = (json: any[], view: EditorView) => {
   view.updateState(newState);
 };
 
-export const handleTelePointer = (telepointerData: TelepointerData, view: EditorView) => {
+export const handleTelePointer = (
+  telepointerData: TelepointerData,
+  view: EditorView,
+) => {
   const { state: { tr } } = view;
-  view.dispatch(
-    tr
-      .setMeta('telepointer', telepointerData)
-      .scrollIntoView()
-  );
+  view.dispatch(tr.setMeta('telepointer', telepointerData).scrollIntoView());
 };
 
-export const getSendableSelection = (oldState: EditorState, newState: EditorState): SendableSelection | undefined => {
+function isAllSelection(selection: Selection) {
+  return selection instanceof AllSelection;
+}
+
+function isNodeSelection(selection: Selection) {
+  return selection instanceof NodeSelection;
+}
+
+export const getSendableSelection = (
+  oldState: EditorState,
+  newState: EditorState,
+): SendableSelection | undefined => {
   const oldSelection = oldState.selection;
   const newSelection = newState.selection;
 
-  if (oldSelection.anchor !== newSelection.anchor ||oldSelection.head !== newSelection.head) {
+  if (
+    oldSelection.anchor !== newSelection.anchor ||
+    oldSelection.head !== newSelection.head
+  ) {
+    /**
+     * <kbd>CMD + A</kbd> triggers a AllSelection
+     * <kbd>escape</kbd> triggers a NodeSelection
+     */
     return {
       type: 'textSelection',
       anchor: newSelection.anchor,
-      head: newSelection.head
+      head:
+        isAllSelection(newSelection) || isNodeSelection(newSelection)
+          ? newSelection.head - 1
+          : newSelection.head,
     };
   }
 };
