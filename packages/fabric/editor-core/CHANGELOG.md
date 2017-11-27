@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.4.1
+- [patch] Fixing height of message editor to 32px height and 2px border. [251b2f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/251b2f5)
+- [patch] Fixing height of message editor to 32px height and 2px border. [251b2f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/251b2f5)
+
 ## 60.4.0
 - [minor] Rename monospace to code in toolbar. [6600999](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6600999)
 - [minor] Rename monospace to code in toolbar. [6600999](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6600999)
