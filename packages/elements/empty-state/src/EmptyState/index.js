@@ -40,6 +40,10 @@ type Props = {
   size?: Size,
   /** Image that will be shown above the title. The larger side of this image will be shrunk to 160px. */
   imageUrl?: string,
+  /** Maximum width (in pixels) of the image, default value is 160. */
+  maxImageWidth?: number,
+  /** Maximum height (in pixels) of the image, default value is 160. */
+  maxImageHeight?: number,
   /** Primary action button for the page, usually it will be something like "Create" (or "Retry" for error pages). */
   primaryAction?: PrimaryAction,
   /** Secondary action button for the page. */
@@ -53,14 +57,18 @@ type Props = {
 export default class EmptyState extends React.PureComponent<Props, void> {
   static defaultProps: $Shape<Props> = {
     size: 'wide',
+    maxImageWidth: 160,
+    maxImageHeight: 160,
   };
 
   render() {
     const {
-      imageUrl,
       header,
       description,
       size,
+      imageUrl,
+      maxImageWidth,
+      maxImageHeight,
       isLoading,
       primaryAction,
       secondaryAction,
@@ -107,7 +115,13 @@ export default class EmptyState extends React.PureComponent<Props, void> {
 
     return (
       <Container size={size}>
-        {imageUrl && <Image src={imageUrl} />}
+        {imageUrl && (
+          <Image
+            src={imageUrl}
+            maxImageWidth={maxImageWidth}
+            maxImageHeight={maxImageHeight}
+          />
+        )}
         <Header>{header}</Header>
         {description && <Description>{description}</Description>}
         {actionsContainer}
