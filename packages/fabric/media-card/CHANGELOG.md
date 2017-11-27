@@ -1,5 +1,8 @@
 # @atlaskit/media-image
 
+## 22.2.1
+- [patch] Migrated to the new repo and updated dependencies [f76434e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f76434e)
+
 ## 2.1.1 (2017-09-18)
 
 * bug fix; update media-core and media-test-helpers version ([00108cf](https://bitbucket.org/atlassian/atlaskit/commits/00108cf))

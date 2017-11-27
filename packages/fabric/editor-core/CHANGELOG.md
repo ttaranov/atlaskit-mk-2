@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 60.3.2
+
 ## 60.3.1
 - [patch] Collaborative editing telepointers 2.0 [297afbf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/297afbf)
 - [patch] Collaborative editing telepointers 2.0 [297afbf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/297afbf)

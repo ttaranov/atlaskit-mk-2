@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-filmstrip",
-  "version": "5.5.1",
+  "version": "5.5.2",
   "description": "Includes components that show media cards as a filmstrip",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -32,7 +32,7 @@
     "@atlaskit/docs": "^0.0.4",
     "@atlaskit/field-radio-group": "^1.2.1",
     "@atlaskit/field-range": "^2.0.0",
-    "@atlaskit/media-card": "^22.2.0",
+    "@atlaskit/media-card": "^22.2.1",
     "@atlaskit/media-core": "^11.0.0",
     "@atlaskit/media-test-helpers": "^8.5.0"
   }

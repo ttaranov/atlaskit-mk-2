@@ -1,5 +1,7 @@
 # @atlaskit/media-avatar-picker
 
+## 3.3.3
+
 ## 3.3.2
 - [patch] Dont render AvatarList when image is selected [25c2253](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25c2253)
 
