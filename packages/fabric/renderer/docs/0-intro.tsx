@@ -16,7 +16,7 @@ Use the component in your React app as follows:
 
 \`\`\`js
 import { ReactRenderer } from '@atlaskit/renderer';
-ReactDOM.render(<ReactRenderer doc={DOCUMENT} />, container);
+ReactDOM.render(<ReactRenderer document={DOCUMENT} />, container);
 \`\`\`
 
 ## Example
