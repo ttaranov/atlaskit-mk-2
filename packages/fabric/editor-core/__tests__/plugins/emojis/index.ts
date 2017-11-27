@@ -330,7 +330,9 @@ describe('emojis', () => {
 
       pluginState.insertEmoji(grinEmojiId);
 
-      expect(editorView.state.doc).toEqual(doc(p(emoji(grinEmojiId), ' ')));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(emoji(grinEmojiId), ' ')),
+      );
       editorView.destroy();
     });
 
