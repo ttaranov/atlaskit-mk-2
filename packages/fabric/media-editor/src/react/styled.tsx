@@ -1,6 +1,12 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import {akColorN40, akColorN50A, akColorN90, akColorN200, akColorN600A} from '@atlaskit/util-shared-styles';
+import {
+  akColorN40,
+  akColorN50A,
+  akColorN90,
+  akColorN200,
+  akColorN600A,
+} from '@atlaskit/util-shared-styles';
 
 export const EditorContainer = styled.div`
   position: relative;
@@ -29,7 +35,7 @@ export const SupplementaryCanvas = styled.canvas`
 export const HiddenTextArea = styled.textarea`
   position: absolute;
   display: block;
-  visibility: hidden;  // display:none won't allow to get the keyboard focus
+  visibility: hidden; // display:none won't allow to get the keyboard focus
   left: 0;
   top: 0;
   width: 0;
@@ -42,13 +48,13 @@ export const HiddenTextArea = styled.textarea`
 export const HiddenTextHelperDiv = styled.div`
   position: absolute;
   display: block;
-  visibility: hidden;  // display:none won't allow us to call getClientBoundingRect() for children
+  visibility: hidden; // display:none won't allow us to call getClientBoundingRect() for children
   left: 0;
   top: 0;
   width: 100px;
   height: 100px;
   overflow: hidden;
-  white-space: pre;  // to preserve multiple whitespace characters and not to break lines
+  white-space: pre; // to preserve multiple whitespace characters and not to break lines
 `;
 
 export const ToolbarContainer = styled.div`
@@ -63,7 +69,7 @@ export const ToolbarButton = styled.div`
   display: inline-block;
   width: 32px;
   height: 32px;
-  background-color: ${props => props.selected ? akColorN90 : 'transparent'};
+  background-color: ${props => (props.selected ? akColorN90 : 'transparent')};
   border-radius: 4px;
 
   &:hover {
@@ -92,11 +98,12 @@ export const LineWidthBackCircle = styled.div`
 `;
 
 export const LineWidthFrontCircle = styled.div`
-  width: ${props => props.width ? `${props.width as number}px` : '0'};
-  height: ${props => props.width ? `${props.width as number}px` : '0'};
+  width: ${props => (props.width ? `${props.width as number}px` : '0')};
+  height: ${props => (props.width ? `${props.width as number}px` : '0')};
   background-color: ${akColorN40};
-  borderRadius: 50%;
-  margin: ${props => props.width ? `${10 - (props.width as number) / 2}px` : '0'};
+  borderradius: 50%;
+  margin: ${props =>
+    props.width ? `${10 - (props.width as number) / 2}px` : '0'};
 `;
 
 export const ToolIcon = styled.div`

@@ -1,6 +1,6 @@
-import {Component} from './component';
-import {Color, ShapeParameters, Tool} from '../../common';
-import {Signal} from '../signal';
+import { Component } from './component';
+import { Color, ShapeParameters, Tool } from '../../common';
+import { Signal } from '../signal';
 
 export interface Toolbar extends Component {
   // This function is called by the core to inform about changing of shape parameters
@@ -21,11 +21,9 @@ export class DefaultToolbar implements Toolbar {
   readonly addShadowChanged = new Signal<boolean>();
   readonly toolChanged = new Signal<Tool>();
 
-  constructor(private readonly onUpdateByCore: UpdateByCoreHandler) {
-  }
+  constructor(private readonly onUpdateByCore: UpdateByCoreHandler) {}
 
-  unload(): void {
-  }
+  unload(): void {}
 
   updateByCore(parameters: ShapeParameters): void {
     this.onUpdateByCore(parameters);
