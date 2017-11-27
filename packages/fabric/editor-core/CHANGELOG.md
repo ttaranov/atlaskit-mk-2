@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.3.1
+- [patch] Collaborative editing telepointers 2.0 [297afbf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/297afbf)
+- [patch] Collaborative editing telepointers 2.0 [297afbf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/297afbf)
+
 ## 60.3.0
 
 - [minor] Fix panel node view and floating toolbars of full page editor in new architecture. [7db53e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7db53e6)

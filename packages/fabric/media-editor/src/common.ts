@@ -24,12 +24,19 @@ export interface Dimensions {
   height: number;
 }
 
-export type Tool = 'line' | 'blur' | 'arrow' | 'brush' | 'oval' | 'rectangle' | 'text';
+export type Tool =
+  | 'line'
+  | 'blur'
+  | 'arrow'
+  | 'brush'
+  | 'oval'
+  | 'rectangle'
+  | 'text';
 
 export type TextDirection = 'ltr' | 'rtl';
 
 export interface ExportedImage {
-  isExported: boolean;  // indicates whether the image export was successful
-  content?: string;  // base64 image if isExported is true
-  error?: string;  // failure reason if isExported is false
+  isExported: boolean; // indicates whether the image export was successful
+  content?: string; // base64 image if isExported is true
+  error?: string; // failure reason if isExported is false
 }

@@ -42,7 +42,9 @@ describe('Spinner', () => {
   it('should leave the DELAY state after some time', () => {
     const wrapper = mount(<Spinner />);
     wrapper.find(Container).simulate('animationEnd');
-    setTimeout(() => expect(wrapper.find(Container).prop('phase')).not.toBe('DELAY'));
+    setTimeout(() =>
+      expect(wrapper.find(Container).prop('phase')).not.toBe('DELAY'),
+    );
   });
 
   describe('delay prop', () => {
@@ -51,7 +53,9 @@ describe('Spinner', () => {
       const container = mount(<Spinner delay={delayProp} />).find(Container);
       const animation = getContainerAnimation(container.props());
       const animationMatch = animation.match(/animation: (([0-9]|\.*)*)/);
-      const animationDelay = animationMatch ? parseFloat(animationMatch[1]) * 1000 : null;
+      const animationDelay = animationMatch
+        ? parseFloat(animationMatch[1]) * 1000
+        : null;
       expect(animationDelay).toBe(delayProp);
     });
   });
@@ -141,7 +145,9 @@ describe('Spinner', () => {
 
     beforeEach(() => {
       const svg = mount(<Spinner />).find(Svg);
-      const svgInterpolatedStyles: ((Object) => Array<string>) = (svgStyles[1]: any);
+      const svgInterpolatedStyles: Object => Array<
+        string,
+      > = (svgStyles[1]: any);
       styles = svgInterpolatedStyles(svg.props()).join('');
     });
 

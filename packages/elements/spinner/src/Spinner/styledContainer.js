@@ -42,8 +42,7 @@ export const getContainerAnimation = ({ delay, phase }: AnimationParams) => {
 const getSize = ({ size }: { size: number }) => `${size}px`;
 
 const Container = styled.div`
-  ${getContainerAnimation}
-  display: inline-flex;
+  ${getContainerAnimation} display: inline-flex;
   height: ${getSize};
   width: ${getSize};
 
