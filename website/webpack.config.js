@@ -2,8 +2,6 @@
 
 // Start of the hack for the issue with the webpack watcher that leads to it dying in attempt of watching files
 // in node_modules folder which contains circular symbolic links
-const fs = require('fs');
-const merge = require('lodash/merge');
 const DirectoryWatcher = require('watchpack/lib/DirectoryWatcher');
 const _oldcreateNestedWatcher = DirectoryWatcher.prototype.createNestedWatcher;
 DirectoryWatcher.prototype.createNestedWatcher = function(
@@ -23,7 +21,6 @@ const chalk = require('chalk');
 
 const WEBSITE_ENV = process.env.WEBSITE_ENV || 'development';
 const WEBSITE_SUBSET = process.env.WEBSITE || 'all';
-const babelrc = JSON.parse(fs.readFileSync('../.babelrc').toString());
 
 /**
  * Generates mapping 'package_name' -> 'package_src_folder'. E.g.:
@@ -200,13 +197,9 @@ module.exports = async function createWebpackConfig() {
           test: /\.js$/,
           exclude: /node_modules/,
           loader: require.resolve('babel-loader'),
-          options: merge(
-            {
-              cacheDirectory: true,
-              presets: [['env', { modules: false }]],
-            },
-            babelrc,
-          ),
+          options: {
+            cacheDirectory: true,
+          },
         },
         {
           test: /\.tsx?$/,

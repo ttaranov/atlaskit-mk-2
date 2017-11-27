@@ -290,15 +290,5 @@
       "prettier --write",
       "git add"
     ]
-  },
-  "resolutions": {
-    "**/jsdom": "^11.4.0",
-    "**/jest-environment-jsdom/jsdom": "^11.4.0",
-    "**/jest-cli/jest-environment-jsdom/jsdom": "^11.4.0",
-    "**/jest/jest-cli/jest-environment-jsdom/jsdom": "^11.4.0",
-    "jsdom": "^11.4.0",
-    "jest-environment-jsdom/jsdom": "^11.4.0",
-    "jest-cli/jest-environment-jsdom/jsdom": "^11.4.0",
-    "jest/jest-cli/jest-environment-jsdom/jsdom": "^11.4.0"
   }
 }
