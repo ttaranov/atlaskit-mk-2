@@ -6,10 +6,10 @@ import {
   ProviderFactory,
   defaultSchema,
   EventHandlers,
+  ADNode,
 } from '@atlaskit/editor-common';
 import { ReactSerializer, renderDocument, RendererContext } from '../../';
 import { RenderOutputStat } from '../../';
-import { Node } from '../../validator';
 import { Wrapper } from './style';
 
 export interface Extension<T> {
@@ -21,7 +21,7 @@ export interface Extension<T> {
 export type ExtensionHandler<T> = (
   ext: Extension<T>,
   doc: any,
-) => JSX.Element | Node[] | null;
+) => JSX.Element | ADNode[] | null;
 
 export interface ExtensionHandlers {
   [key: string]: ExtensionHandler<any>;
@@ -56,7 +56,14 @@ export default class Renderer extends PureComponent<Props, {}> {
   }
 
   private updateSerializer(props: Props) {
-    const { eventHandlers, portal, rendererContext, document, extensionHandlers, schema } = props;
+    const {
+      eventHandlers,
+      portal,
+      rendererContext,
+      document,
+      extensionHandlers,
+      schema,
+    } = props;
 
     this.serializer = new ReactSerializer({
       providers: this.providerFactory,

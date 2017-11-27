@@ -44,6 +44,7 @@ export const nodeToReact = {
   doc: Doc,
   emoji: Emoji,
   extension: Extension,
+  bodiedExtension: Extension,
   hardBreak: HardBreak,
   heading: Heading,
   image: Image,

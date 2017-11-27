@@ -1,4 +1,9 @@
-import { defaultSchema, getValidDocument, getValidNode, ADNode } from '@atlaskit/editor-common';
+import {
+  defaultSchema,
+  getValidDocument,
+  getValidNode,
+  ADNode,
+} from '@atlaskit/editor-common';
 import { Node as PMNode, Schema, Fragment } from 'prosemirror-model';
 
 import { Serializer } from './serializer';
@@ -71,7 +76,7 @@ export const renderDocument = <T>(
 };
 
 export const renderNodes = <T>(
-  nodes: Node[],
+  nodes: ADNode[],
   serializer: Serializer<T>,
   schema: Schema = defaultSchema,
   target?: any,

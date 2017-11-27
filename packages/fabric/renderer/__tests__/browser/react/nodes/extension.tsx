@@ -97,6 +97,7 @@ describe('Renderer - React/Nodes/Extension', () => {
         .first()
         .text(),
     ).to.equal('This is the default content of the extension');
+    extension.unmount();
   });
 
   it('should be able to render React.Element from extensionHandler', () => {
@@ -116,6 +117,7 @@ describe('Renderer - React/Nodes/Extension', () => {
         .first()
         .text(),
     ).to.equal('This is a react element');
+    extension.unmount();
   });
 
   it('should be able to render Atlassian Document from extensionHandler', () => {
@@ -135,6 +137,7 @@ describe('Renderer - React/Nodes/Extension', () => {
         .first()
         .text(),
     ).to.equal('This is a ADF node');
+    extension.unmount();
   });
 
   it('should render the default content if extensionHandler throws an exception', () => {
@@ -156,5 +159,6 @@ describe('Renderer - React/Nodes/Extension', () => {
         .first()
         .text(),
     ).to.equal('This is the default content of the extension');
+    extension.unmount();
   });
 });

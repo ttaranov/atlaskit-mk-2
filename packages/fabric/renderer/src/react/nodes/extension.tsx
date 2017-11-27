@@ -2,7 +2,7 @@ import * as React from 'react';
 import { RendererContext } from '..';
 import { renderNodes, Serializer } from '../..';
 import { ExtensionHandlers } from '../../ui/Renderer';
-import { Node as ADNode } from '../../validator';
+import { ADNode } from '@atlaskit/editor-common';
 
 export interface Props {
   serializer: Serializer<any>;

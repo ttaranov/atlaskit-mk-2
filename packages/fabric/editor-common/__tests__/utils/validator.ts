@@ -550,7 +550,7 @@ describe('Renderer - Validator', () => {
           extensionKey: 'CallWithSkype',
           bodyType: 'none',
         };
-        const { type, attrs } = getValidNode({
+        const { type } = getValidNode({
           type: 'extension',
           attrs: extensionAttrs,
         });
@@ -563,7 +563,7 @@ describe('Renderer - Validator', () => {
           extensionType: 'com.atlassian.connect.extension',
           bodyType: 'none',
         };
-        const { type, attrs } = getValidNode({
+        const { type } = getValidNode({
           type: 'extension',
           attrs: extensionAttrs,
         });
@@ -594,7 +594,7 @@ describe('Renderer - Validator', () => {
           extensionKey: 'CallWithSkype',
           bodyType: 'none',
         };
-        const { type, attrs } = getValidNode({
+        const { type } = getValidNode({
           type: 'inlineExtension',
           attrs: extensionAttrs,
         });
@@ -607,7 +607,7 @@ describe('Renderer - Validator', () => {
           extensionType: 'com.atlassian.connect.inlineExtension',
           bodyType: 'none',
         };
-        const { type, attrs } = getValidNode({
+        const { type } = getValidNode({
           type: 'inlineExtension',
           attrs: extensionAttrs,
         });
