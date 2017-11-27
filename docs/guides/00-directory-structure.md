@@ -105,7 +105,7 @@ This is where the NPM packages are kept. Bolt will automatically populate this, 
 
 #### `src`
 
-Each package's source should contain a similar directory structure. The basic guidelines are outlined as follows.
+Each package's source should contain a similar directory structure. Essentially this rule follows the convention that anything that has a default export must be `CamelCapped` or `camelCased`. Everything else is `dash-cased`. This rule is expanded into the following that goes into greater detail about how certain things in the structure should look (i.e. styled-components / tests).
 
 1. There must always be an `index.js` that exports your public API.
 2. Each file that has a default export, must *only* have a default export - no named exports. This simplifies the heuristics to determine a name for the file.
