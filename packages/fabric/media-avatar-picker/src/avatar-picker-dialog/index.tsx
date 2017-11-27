@@ -8,7 +8,11 @@ import { Avatar } from '../avatar-list';
 import { ImageNavigator, CropProperties } from '../image-navigator';
 import { PredefinedAvatarList } from '../predefined-avatar-list';
 
-import { AvatarPickerViewWrapper, ModalHeader } from './styled';
+import {
+  AvatarPickerViewWrapper,
+  ModalHeader,
+  CroppingWrapper,
+} from './styled';
 import { PredefinedAvatarView } from '../predefined-avatar-view';
 
 export interface AvatarPickerDialogProps {
@@ -95,7 +99,8 @@ export class AvatarPickerDialog extends PureComponent<
   render() {
     return (
       <ModalDialog
-        width="352px"
+        height="437px"
+        width="360px"
         header={this.renderHeader()}
         footer={this.renderFooter()}
         onClose={this.props.onCancel}
@@ -142,13 +147,11 @@ export class AvatarPickerDialog extends PureComponent<
     }
 
     return (
-      <div className="predefined-avatars">
-        <PredefinedAvatarList
-          avatars={avatars.slice(0, 5)}
-          onAvatarSelected={this.setSelectedAvatarState}
-          onShowMore={this.onShowMore}
-        />
-      </div>
+      <PredefinedAvatarList
+        avatars={avatars.slice(0, 5)}
+        onAvatarSelected={this.setSelectedAvatarState}
+        onShowMore={this.onShowMore}
+      />
     );
   }
 
@@ -159,21 +162,19 @@ export class AvatarPickerDialog extends PureComponent<
     switch (mode) {
       case Mode.Cropping:
         return (
-          <div className="cropping-wrapper">
-            <div className="cropper">
-              <ImageNavigator
-                imageSource={imageSource}
-                onImageChanged={this.setSelectedImageState}
-                onPositionChanged={this.setPositionState}
-                onSizeChanged={this.setSizeState}
-              />
-            </div>
+          <CroppingWrapper>
+            <ImageNavigator
+              imageSource={imageSource}
+              onImageChanged={this.setSelectedImageState}
+              onPositionChanged={this.setPositionState}
+              onSizeChanged={this.setSizeState}
+            />
             {this.renderPredefinedAvatarList()}
-          </div>
+          </CroppingWrapper>
         );
       case Mode.PredefinedAvatars:
         return (
-          <div className="predefined-avatars-wrapper">
+          <div>
             <PredefinedAvatarView
               avatars={avatars}
               onAvatarSelected={this.setSelectedAvatarState}
