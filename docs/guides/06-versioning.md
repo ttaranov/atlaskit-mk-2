@@ -35,7 +35,7 @@ It's important to strike a balance here because the more contributions we get, t
 Breaking changes are for things that are explicitly marked as public API. Stuff like:
 
 - Named exports exposed via the main entry point.
-- Props (names as well as expected values).
+- Props (names as well as expected values / types).
 - Imperative methods.
 
 Things that aren't public API:
@@ -46,9 +46,11 @@ Things that aren't public API:
 
 Examples of a breaking change:
 
-- Renaming a public prop
-- Making a public prop more restrictive in what it accepts
+- Renaming a public prop.
+- Making a public prop more restrictive in what it accepts.
 - Renaming a named export that's exposed via the main entry point.
+- Icon sizes changing.
+- Flex parent instead of a box and vice-versa.
 
 Examples of things that aren't breaking changes:
 
