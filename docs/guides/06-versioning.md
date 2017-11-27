@@ -55,4 +55,4 @@ Examples of a breaking change:
 Examples of things that aren't breaking changes:
 
 - Refactoring stuff in `render()`. For example, add / removing attributes or changing text content. Some integration tests may be relying on this, but it's still not a breaking change. It won't break you in production if you're using caret versions from NPM. It'll break your tests, but you'll update those prior to releasing anything. *We'll do our best to notify products of changes like this.*
-- Reworking our directory structure. We're aware that some may be reaching into our `dist/es` folder to get tree shaking. We will be offering an `es` build soon where the entry point can be specified as the `module` key in the `package.json`, which means you don't have to reach in, you simply `import` the module. *We'll also do our best here to notify products when things like this change.*
+- Reworking our directory structure. We offer a `dist/esm` build where the `module` field in the `package.json` points to the entry point within that folder. There should be no reason to reach into packages.
