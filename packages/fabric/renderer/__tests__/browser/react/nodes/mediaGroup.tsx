@@ -29,6 +29,19 @@ describe('MediaGroup', () => {
     document.body.removeChild(fixture);
   });
 
+  it('should not render a MediaCard component if it has only one media node', () => {
+    const mediaGroup = shallow(
+      <MediaGroup>
+        <Media
+          id={imageFileId.id}
+          type={imageFileId.mediaItemType}
+          collection={imageFileId.collectionName}
+        />
+      </MediaGroup>
+    );
+    expect(mediaGroup.find(FilmstripView).length).to.equal(0);
+  });
+
   it('should render a FilmstripView component if it has more than one media node', () => {
     const mediaGroup = shallow(
       <MediaGroup>
