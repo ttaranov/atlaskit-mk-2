@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.3.3
+- [patch] Fixing textColor toolbar component for IE11. [d095fc2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d095fc2)
+- [patch] Fixing textColor toolbar component for IE11. [d095fc2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d095fc2)
+
 ## 60.3.2
 
 ## 60.3.1
