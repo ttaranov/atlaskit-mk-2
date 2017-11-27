@@ -108,7 +108,7 @@ This is where the NPM packages are kept. Bolt will automatically populate this, 
 Each package's source should contain a similar directory structure. The basic guidelines are outlined as follows.
 
 1. There must always be an `index.js` that exports your public API.
-2. Each file that has a default export, must *only* have a default export - no named exports.
+2. Each file that has a default export, must *only* have a default export - no named exports. This simplifies the heuristics to determine a name for the file.
 3. The file name should be the name of the export. For example, if `Avatar` is a default export for a file, the file name should be `Avatar.js`. For a HoC, this might look something like `withAvatar`.
 4. In lieu of a file, you may use a directory with an `index.js` file. For example, `Avatar/index.js`.
 5. Styled components should go in a `styled.js` file, or you can use a `styled/index.js` file that exports sibling files with default exports that conform to #3 or #4. This should also follow something similar to #6 and have this for every level of components.
