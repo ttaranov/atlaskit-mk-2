@@ -17,6 +17,7 @@ export interface Props {
 // tslint:disable-next-line:variable-name
 const AvatarContainer: any = styled.div`
   padding-right: ${akGridSizeUnitless}px;
+  margin-right: ${akGridSizeUnitless}px;
 `;
 
 const itemAppear = keyframes`
@@ -87,19 +88,21 @@ function Item(props: ItemProps) {
 }
 
 export default class Avatars extends React.Component<Props, any> {
-  private renderAvatars = (state) => {
+  private renderAvatars = state => {
     if (!state.data) {
       return null;
     }
     const { sessionId, activeParticipants } = state.data;
-    const avatars = activeParticipants.map(p => ({
-      email: p.email,
-      key: p.sessionId,
-      name: p.name,
-      src: p.avatar,
-      sessionId: p.sessionId,
-      size: 'medium',
-    })).sort(p => p.sessionId === sessionId ? -1 : 1);
+    const avatars = activeParticipants
+      .map(p => ({
+        email: p.email,
+        key: p.sessionId,
+        name: p.name,
+        src: p.avatar,
+        sessionId: p.sessionId,
+        size: 'medium',
+      }))
+      .sort(p => (p.sessionId === sessionId ? -1 : 1));
 
     if (!avatars.length) {
       return null;
@@ -117,7 +120,7 @@ export default class Avatars extends React.Component<Props, any> {
         />
       </AvatarContainer>
     );
-  }
+  };
 
   render() {
     const { eventDispatcher, editorView } = this.props;
