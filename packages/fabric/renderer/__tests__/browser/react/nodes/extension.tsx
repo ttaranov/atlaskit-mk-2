@@ -10,22 +10,26 @@ import { RendererContext } from '../../../../src/react';
 import ReactSerializer from '../../../../src/react';
 import { defaultSchema } from '@atlaskit/editor-common';
 
-describe.only('Renderer - React/Nodes/Extension', () => {
+describe('Renderer - React/Nodes/Extension', () => {
   const extensionHandlers: ExtensionHandlers = {
     'com.atlassian.fabric': (param: any, doc: any) => {
       switch (param.extensionKey) {
         case 'react':
           return <p>This is a react element</p>;
         case 'adf':
-          return {
-            type: 'paragraph',
-            content: [
-              {
-                type: 'text',
-                text: 'This is a ADF node',
-              },
-            ],
-          };
+          return [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'This is a ADF node',
+                },
+              ],
+            },
+          ];
+        case 'error':
+          throw new Error('Tong is cursing you...');
         default:
           return null;
       }
@@ -89,7 +93,7 @@ describe.only('Renderer - React/Nodes/Extension', () => {
 
     expect(
       extension
-        .find('p')
+        .find('div')
         .first()
         .text(),
     ).to.equal('This is the default content of the extension');
@@ -108,13 +112,13 @@ describe.only('Renderer - React/Nodes/Extension', () => {
 
     expect(
       extension
-        .find('p')
+        .find('div')
         .first()
         .text(),
     ).to.equal('This is a react element');
   });
 
-  it('should be able to render Atlassian Document from extenionHandler', () => {
+  it('should be able to render Atlassian Document from extensionHandler', () => {
     const extension = mount(
       <Extension
         serializer={serializer}
@@ -127,9 +131,30 @@ describe.only('Renderer - React/Nodes/Extension', () => {
 
     expect(
       extension
-        .find('p')
+        .find('div')
         .first()
         .text(),
     ).to.equal('This is a ADF node');
+  });
+
+  it('should render the default content if extensionHandler throws an exception', () => {
+    const extension = mount(
+      <Extension
+        serializer={serializer}
+        extensionHandlers={extensionHandlers}
+        rendererContext={rendererContext}
+        extensionType="com.atlassian.fabric"
+        extensionKey="error"
+      >
+        <p>This is the default content of the extension</p>
+      </Extension>,
+    );
+
+    expect(
+      extension
+        .find('div')
+        .first()
+        .text(),
+    ).to.equal('This is the default content of the extension');
   });
 });

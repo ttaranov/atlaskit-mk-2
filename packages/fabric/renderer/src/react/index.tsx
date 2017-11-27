@@ -113,29 +113,29 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
 
   // tslint:disable-next-line:variable-name
   private renderNode(
-    Node: ComponentClass<any>,
+    NodeComponent: ComponentClass<any>,
     props: any,
     key: string,
     content: string | JSX.Element | any[] | null | undefined,
   ): JSX.Element {
     return (
-      <Node key={key} {...props}>
+      <NodeComponent key={key} {...props}>
         {content}
-      </Node>
+      </NodeComponent>
     );
   }
 
   // tslint:disable-next-line:variable-name
   private renderMark(
-    Mark: ComponentClass<any>,
+    MarkComponent: ComponentClass<any>,
     props: any,
     key: string,
     content: any,
   ) {
     return (
-      <Mark key={key} {...props}>
+      <MarkComponent key={key} {...props}>
         {content}
-      </Mark>
+      </MarkComponent>
     );
   }
 

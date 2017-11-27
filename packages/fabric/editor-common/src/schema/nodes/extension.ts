@@ -29,7 +29,7 @@ export const extension: NodeSpec = {
     extensionKey: { default: '' },
     parameters: { default: null },
     text: { default: null },
-    adContent: { default: null }, // The original Atlassian Document content
+    originalContent: { default: null }, // The original Atlassian Document content
   },
   parseDOM: [
     {

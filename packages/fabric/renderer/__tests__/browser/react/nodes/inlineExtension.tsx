@@ -10,17 +10,21 @@ import { RendererContext } from '../../../../src/react';
 import ReactSerializer from '../../../../src/react';
 import { defaultSchema } from '@atlaskit/editor-common';
 
-describe.only('Renderer - React/Nodes/Extension', () => {
+describe('Renderer - React/Nodes/InlineExtension', () => {
   const extensionHandlers: ExtensionHandlers = {
     'com.atlassian.fabric': (param: any, doc: any) => {
       switch (param.extensionKey) {
         case 'react':
           return <span>This is a react element</span>;
         case 'adf':
-          return {
-            type: 'text',
-            text: 'This is a ADF node',
-          };
+          return [
+            {
+              type: 'text',
+              text: 'This is a ADF node',
+            },
+          ];
+        case 'error':
+          throw new Error('Cursed by Tong');
         default:
           return null;
       }
@@ -104,7 +108,7 @@ describe.only('Renderer - React/Nodes/Extension', () => {
     ).to.equal('This is a react element');
   });
 
-  it('should be able to render Atlassian Document from extenionHandler', () => {
+  it('should be able to render Atlassian Document from extensionHandler', () => {
     const extension = mount(
       <InlineExtension
         serializer={serializer}
@@ -121,5 +125,26 @@ describe.only('Renderer - React/Nodes/Extension', () => {
         .first()
         .text(),
     ).to.equal('This is a ADF node');
+  });
+
+  it('should render the default content if extensionHandler throws an exception', () => {
+    const extension = mount(
+      <InlineExtension
+        serializer={serializer}
+        extensionHandlers={extensionHandlers}
+        rendererContext={rendererContext}
+        extensionType="com.atlassian.fabric"
+        extensionKey="error"
+      >
+        <span>This is the default content of the extension</span>
+      </InlineExtension>,
+    );
+
+    expect(
+      extension
+        .find('span')
+        .first()
+        .text(),
+    ).to.equal('This is the default content of the extension');
   });
 });

@@ -73,22 +73,39 @@ const extensionHandlers: ExtensionHandlers = {
           <Clock format={'HH:mm:ss'} ticking={true} timezone={'US/Pacific'} />
         );
       case 'mention':
-        return {
-          type: 'paragraph',
-          content: [
-            {
-              type: 'text',
-              text: 'Hi, my name is... My name is... My name is... My name is ',
-            },
-            {
-              type: 'mention',
-              attrs: {
-                id: '1',
-                text: '@Oscar Wallhult',
+        return [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text:
+                  'Hi, my name is... My name is... My name is... My name is ',
               },
+              {
+                type: 'mention',
+                attrs: {
+                  id: '1',
+                  text: '@Oscar Wallhult',
+                },
+              },
+            ],
+          },
+        ];
+      case 'inline':
+        return [
+          {
+            type: 'text',
+            text: 'Hi, my name is... My name is... My name is... My name is ',
+          },
+          {
+            type: 'mention',
+            attrs: {
+              id: '1',
+              text: '@Oscar Wallhult',
             },
-          ],
-        };
+          },
+        ];
     }
   },
 };

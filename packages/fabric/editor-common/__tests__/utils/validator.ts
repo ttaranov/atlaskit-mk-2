@@ -541,7 +541,7 @@ describe('Renderer - Validator', () => {
           content: [],
         });
         expect(type).to.equal('extension');
-        expect(attrs.adContent).to.deep.equal([]);
+        expect(attrs.originalContent).to.deep.equal([]);
       });
 
       it('should reject extensions without extensionType', () => {
@@ -585,7 +585,7 @@ describe('Renderer - Validator', () => {
           content: [],
         });
         expect(type).to.equal('inlineExtension');
-        expect(attrs.adContent).to.deep.equal([]);
+        expect(attrs.originalContent).to.deep.equal([]);
       });
 
       it('should reject inlineExtension without extensionType', () => {

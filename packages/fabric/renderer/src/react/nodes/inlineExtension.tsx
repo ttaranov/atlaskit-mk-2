@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { RendererContext } from '..';
-import { renderNode, Serializer } from '../..';
+import { renderNodes, Serializer } from '../..';
 import { ExtensionHandlers } from '../../ui/Renderer';
-import { Node } from '../../validator';
+import { Node as ADNode } from '../../validator';
 
 export interface Props {
   serializer: Serializer<any>;
@@ -11,48 +11,44 @@ export interface Props {
   extensionType: string;
   extensionKey: string;
   parameters?: any;
-  adContent?: any;
+  originalContent?: any;
 }
 
-const InlineExtension: React.StatelessComponent<Props> = props => {
-  const {
-    serializer,
-    rendererContext,
-    extensionHandlers,
-    extensionType,
-    extensionKey,
-    parameters,
-    adContent,
-    children,
-  } = props;
+const InlineExtension: React.StatelessComponent<Props> = ({
+  serializer,
+  extensionHandlers,
+  rendererContext,
+  extensionType,
+  extensionKey,
+  parameters,
+  originalContent,
+  children,
+}) => {
+  try {
+    if (extensionHandlers && extensionHandlers[extensionType]) {
+      const content = extensionHandlers[extensionType](
+        { extensionKey, parameters, content: originalContent },
+        rendererContext.adDoc,
+      );
 
-  if (extensionHandlers && extensionHandlers[extensionType]) {
-    const content = extensionHandlers[extensionType](
-      { extensionKey, parameters, content: adContent },
-      rendererContext.adDoc,
-    );
-
-    switch (true) {
-      case content && React.isValidElement(content):
-        // Return the content directly if it's a valid JSX.Element
-        return <div>{content}</div>;
-      case !!content:
-        // We expect it to be Atlassian Document here
-        // We need to wrap the content, because renderNode will start
-        // rendering from its content.
-        const wrappedContent = {
-          type: 'paragraph',
-          content: [content],
-        };
-        const result = renderNode(
-          wrappedContent as Node,
-          serializer,
-          rendererContext.schema,
-        );
-        if (result) {
-          return <span>{result}</span>;
-        }
+      switch (true) {
+        case content && React.isValidElement(content):
+          // Return the content directly if it's a valid JSX.Element
+          return <span>{content}</span>;
+        case !!content:
+          // We expect it to be Atlassian Document here
+          const nodes = Array.isArray(content) ? content : [content];
+          return renderNodes(
+            nodes as ADNode[],
+            serializer,
+            rendererContext.schema,
+            'span',
+          );
+      }
     }
+  } catch (e) {
+    /** We don't want this error to block renderer */
+    /** We keep rendering the default content */
   }
 
   // Always return default content if anything goes wrong

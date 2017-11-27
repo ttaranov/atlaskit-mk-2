@@ -364,7 +364,7 @@ export const getValidNode = (
           attrs.bodyType
         ) {
           // we want to keep the oringinal Atlassian Document Content here
-          attrs.adContent = content;
+          attrs.originalContent = JSON.parse(JSON.stringify(content));
           return {
             type,
             attrs,
