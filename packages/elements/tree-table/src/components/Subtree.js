@@ -11,7 +11,9 @@ type Props = {
   data: Object,
   getChildrenData: DataFunction,
   hasChildren: boolean,
+  isExpanded?: boolean,
   depth?: number,
+  render?: Function,
 };
 
 export default class Subtree extends PureComponent<Props> {
@@ -37,17 +39,42 @@ export default class Subtree extends PureComponent<Props> {
     });
   }
 
-  render() {
+  renderChildren() {
+    const {
+      columns,
+      getChildrenData,
+      depth,
+      columnWidths,
+      render,
+    } = this.props;
+    const { isExpanded, childrenData } = this.state;
+    return (
+      isExpanded && (
+        <TreeChildren
+          childrenData={childrenData}
+          columns={columns}
+          columnWidths={columnWidths}
+          getChildrenData={getChildrenData}
+          isExpanded={isExpanded}
+          depth={depth}
+          render={render}
+        />
+      )
+    );
+  }
+
+  renderFromProps() {
     const {
       data,
       columns,
-      getChildrenData,
       hasChildren,
       depth,
       columnWidths,
+      isExpanded,
     } = this.props;
-    const { isExpanded, childrenData } = this.state;
-
+    if (!data) {
+      return null;
+    }
     return (
       <div>
         <TreeRow
@@ -59,17 +86,41 @@ export default class Subtree extends PureComponent<Props> {
           onExpandToggle={this.handleExpandToggleClick}
           columnWidths={columnWidths}
         />
-        {isExpanded ? (
-          <TreeChildren
-            childrenData={childrenData}
-            columns={columns}
-            columnWidths={columnWidths}
-            getChildrenData={getChildrenData}
-            isExpanded={isExpanded}
-            depth={depth}
-          />
-        ) : null}
+        {this.renderChildren()}
       </div>
+    );
+  }
+
+  renderFromChildren() {
+    return <div>{this.props.children}</div>;
+  }
+
+  renderFromRenderProp() {
+    if (!this.props.render) {
+      return null;
+    }
+    const { hasChildren, depth, columnWidths } = this.props;
+    const row = this.props.render(this.props.data.content);
+    const wrappedRow = React.cloneElement(row, {
+      onExpandToggle: this.handleExpandToggleClick,
+      depth,
+      hasChildren,
+      columnWidths,
+      isExpanded: this.state.isExpanded,
+    });
+    return (
+      <div>
+        {wrappedRow}
+        {this.renderChildren()}
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      this.renderFromRenderProp() ||
+      this.renderFromProps() ||
+      this.renderFromChildren()
     );
   }
 }

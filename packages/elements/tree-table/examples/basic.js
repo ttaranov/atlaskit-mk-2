@@ -3,53 +3,7 @@ import React from 'react';
 
 import { TreeTable } from '../src';
 
-const staticData = {
-  children: [
-    {
-      id: '1',
-      content: {
-        title: '1',
-        description: 'First top-level entry',
-      },
-      hasChildren: true,
-      children: [
-        {
-          id: '1.1.',
-          content: {
-            title: '1.1',
-            description: 'First child',
-          },
-          hasChildren: false,
-        },
-        {
-          id: '1.2',
-          content: {
-            title: '1.2',
-            description: 'Second child',
-          },
-          hasChildren: true,
-          children: [
-            {
-              id: '1.2.1',
-              content: {
-                title: '1.2.1',
-                description: 'First grandchild',
-              },
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: '2',
-      content: {
-        title: '2',
-        description: 'Second top-level entry',
-      },
-      hasChildren: false,
-    },
-  ],
-};
+import staticData from './nested-data.json';
 
 function treeCellFromProp(propName) {
   return function TreeCell(props) {
@@ -58,12 +12,12 @@ function treeCellFromProp(propName) {
 }
 
 const Title = treeCellFromProp('title');
-const Description = treeCellFromProp('description');
+const Numbering = treeCellFromProp('numbering');
 
 function getChildrenData(parent = staticData) {
   return parent.children || [];
 }
 
 export default () => (
-  <TreeTable columns={[Title, Description]} data={getChildrenData} />
+  <TreeTable columns={[Title, Numbering]} data={getChildrenData} />
 );

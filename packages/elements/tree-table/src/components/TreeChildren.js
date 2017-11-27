@@ -11,6 +11,7 @@ type Props = {
   childrenData: Object,
   getChildrenData: DataFunction,
   depth?: number,
+  render?: Function,
 };
 
 export default class TreeChildren extends PureComponent<Props> {
@@ -20,6 +21,7 @@ export default class TreeChildren extends PureComponent<Props> {
       columns,
       columnWidths,
       getChildrenData,
+      render,
       depth = 0,
     } = this.props;
     return (
@@ -34,6 +36,7 @@ export default class TreeChildren extends PureComponent<Props> {
             getChildrenData={getChildrenData}
             depth={depth + 1}
             key={childData.id || index}
+            render={render}
           />
         ))}
       </div>

@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, Component, type ElementType } from 'react';
+import React, { PureComponent, type ElementType } from 'react';
 import TreeChildren from './TreeChildren';
 import TreeHeads from './TreeHeads';
 import TreeHead from './TreeHead';
@@ -8,35 +8,44 @@ import { type DataFunction } from './../types';
 
 type Props = {
   /** This is the columns prop description */
-  columns: Array<ElementType>,
+  columns?: Array<ElementType>,
   columnWidths?: Array<string>,
-  // columns: Array<Element>,
+  children?: Array<Element>,
   // headers?: Array<string>,
   /** This is the data prop description */
-  data: DataFunction | string,
+  data?: DataFunction | string,
 };
 
 export default class TreeTable extends PureComponent<Props> {
+  renderChildren() {
+    return this.props.children;
+  }
+
   render() {
     const { data, headers, columns, columnWidths = [] } = this.props;
-    const childrenData = data();
-    return (
-      <div>
-        {headers && (
-          <TreeHeads>
-            {headers.map((header, index) => (
-              <TreeHead key={index} width={columnWidths[index]}>
-                {header}
-              </TreeHead>
-            ))}
-          </TreeHeads>
-        )}
+    const heads = headers && (
+      <TreeHeads>
+        {headers.map((header, index) => (
+          <TreeHead key={index} width={columnWidths[index]}>
+            {header}
+          </TreeHead>
+        ))}
+      </TreeHeads>
+    );
+
+    const children = columns &&
+      data && (
         <TreeChildren
           columns={columns}
-          childrenData={childrenData}
+          childrenData={data()}
           getChildrenData={data}
           columnWidths={columnWidths}
         />
+      );
+    return (
+      <div>
+        {heads}
+        {children || this.renderChildren()}
       </div>
     );
   }

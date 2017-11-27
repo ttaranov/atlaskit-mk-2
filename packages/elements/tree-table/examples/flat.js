@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import { TreeTable } from '../src';
+import { TreeTable } from '../src/index';
 
 const staticData = {
   children: [
