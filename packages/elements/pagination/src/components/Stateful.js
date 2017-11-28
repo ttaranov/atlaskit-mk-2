@@ -35,6 +35,15 @@ export default class AkPagination extends Component<Props, State> {
     current: this.props.defaultCurrent,
   };
 
+  // The `current` prop has always existed in this bonus hidden room form. With
+  // it, you can treat the stateful version as a stateless version. In our nex
+  // major release, we should either update this so there is a single component,
+  // or remove this update.
+  // $FlowFixMe
+  componentWillReceiveProps({ current }: Props) {
+    if (this.state.current !== current) this.setState({ current });
+  }
+
   onSetPage = (page: number) => {
     if (this.props.onSetPage) this.props.onSetPage(page);
     this.setState({ current: page });
