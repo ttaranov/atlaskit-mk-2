@@ -1,105 +1,64 @@
 // @flow
 
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
+import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 
 import EmptyState from '../src/EmptyState';
 
+import { Image, Description } from '../src/styled';
+
 describe('Empty state', () => {
   it('should render primary action when primaryAction prop is not empty', () => {
-    const wrapper = mount(
-      <EmptyState
-        header="Test header"
-        primaryAction={{ label: 'Test action', onClick: () => {} }}
-      />,
+    const wrapper = shallow(
+      <EmptyState header="Test header" primaryAction={<Button />} />,
     );
 
-    expect(wrapper.find('button').length).toBe(1);
-  });
-
-  it('should invoke an event handler when primary action button is clicked', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <EmptyState
-        header="Test header"
-        primaryAction={{ label: 'Test action', onClick: spy }}
-      />,
-    );
-
-    wrapper.find('button').simulate('click');
-
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(wrapper.find(Button).length).toBe(1);
   });
 
   it('should render secondary action when secondaryAction prop is not empty', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <EmptyState
-        header="Test header"
-        secondaryAction={{ label: 'Test action', onClick: spy }}
-      />,
+    const wrapper = shallow(
+      <EmptyState header="Test header" secondaryAction={<Button />} />,
     );
 
-    expect(wrapper.find('button').length).toBe(1);
+    expect(wrapper.find(Button).length).toBe(1);
   });
 
-  it('should invoke an event handler when secondary action button is clicked', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <EmptyState
-        header="Test header"
-        secondaryAction={{
-          label: 'Test action',
-          onClick: spy,
-        }}
-      />,
+  it('should render tertiary action when tertiaryAction prop is not empty', () => {
+    const wrapper = shallow(
+      <EmptyState header="Test header" tertiaryAction={<Button />} />,
     );
 
-    wrapper.find('button').simulate('click');
-
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(wrapper.find(Button).length).toBe(1);
   });
 
-  it('should render link action when linkAction prop is not empty', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <EmptyState
-        header="Test header"
-        linkAction={{ label: 'Link action', url: 'test url', onClick: spy }}
-      />,
+  it('should render no action when no action prop is provided', () => {
+    const wrapper = shallow(<EmptyState header="Test header" />);
+
+    expect(wrapper.find(Button).length).toBe(0);
+  });
+
+  it('should render image when imageUrl prop is not empty', () => {
+    const wrapper = shallow(
+      <EmptyState header="Test header" imageUrl="test" />,
     );
 
-    expect(wrapper.find('a').length).toBe(1);
+    expect(wrapper.find(Image).length).toBe(1);
   });
 
-  it('should invoke an event handler when link action button is clicked', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <EmptyState
-        header="Test header"
-        linkAction={{
-          label: 'Test action',
-          url: 'test url',
-          onClick: spy,
-        }}
-      />,
+  it('should render description when description prop is not empty', () => {
+    const wrapper = shallow(
+      <EmptyState header="Test header" description="test" />,
     );
 
-    wrapper.find('a').simulate('click');
-
-    expect(spy).toHaveBeenCalledTimes(1);
-  });
-
-  it('should not render any action when action props are empty', () => {
-    const wrapper = mount(<EmptyState header="Test header" />);
-
-    expect(wrapper.find('button').length).toBe(0);
+    expect(wrapper.find(Description).length).toBe(1);
   });
 
   it('should render spinner when isLoading prop is true', () => {
-    const wrapper = mount(<EmptyState header="Test header" isLoading />);
+    const wrapper = shallow(<EmptyState header="Test header" isLoading />);
 
     expect(wrapper.find(Spinner).length).toBe(1);
   });

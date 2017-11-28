@@ -25,12 +25,12 @@
     },
     "peerDependencies": {
       "@atlaskit/button": "^5.4.8",
-      "@atlaskit/spinner": "^2.0.1",
+      "@atlaskit/spinner": "^4.0.5",
       "@atlaskit/util-shared-styles": "^2.10.3",
       "react": "^15.6.1"
     },
     "devDependencies": {
       "enzyme": "^2.9.1",
-      "@atlaskit/docs": "^0.0.4"
+      "@atlaskit/docs": "^0.0.7"
     }
   }
