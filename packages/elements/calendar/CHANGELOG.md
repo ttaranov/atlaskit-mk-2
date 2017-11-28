@@ -1,5 +1,7 @@
 # @atlaskit/calendar
 
+## 3.0.5
+
 ## 3.0.4
 - [patch] Use correct dependencies  [7b178b1](7b178b1)
 - [patch] Use correct dependencies  [7b178b1](7b178b1)

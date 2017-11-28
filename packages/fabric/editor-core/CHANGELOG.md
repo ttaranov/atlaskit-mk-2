@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 60.4.2
+
+- [patch] Add documentation to editor core; introduce code formatting method to docs [a1c7e56](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a1c7e56)
+- [patch] Add documentation to editor core; introduce code formatting method to docs [a1c7e56](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a1c7e56)
+
 ## 60.4.1
 - [patch] Fixing height of message editor to 32px height and 2px border. [251b2f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/251b2f5)
 - [patch] Fixing height of message editor to 32px height and 2px border. [251b2f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/251b2f5)
