@@ -428,14 +428,6 @@
     prop-types "^15.5.10"
     styled-components "^1.3.0"
 
-"@atlaskit/media-core@^11.0.0":
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/media-core/-/media-core-11.0.0.tgz#e9622b7c71c43fad0265359dbec6f4945309fb5a"
-  dependencies:
-    axios "^0.15.3"
-    lru-fast "^0.2.2"
-    tslib "^1.2.0"
-
 "@atlaskit/mention@^7.0.0":
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/mention/-/mention-7.6.0.tgz#8c248883aacf2ef7f33ba9def1332000e39ffd82"
@@ -1267,12 +1259,6 @@ aws-sign2@~0.6.0:
 aws4@^1.2.1:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.6.0.tgz#83ef5ca860b2b32e4a0deedee8c771b9db57471e"
-
-axios@^0.15.3:
-  version "0.15.3"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.15.3.tgz#2c9d638b2e191a08ea1d6cc988eadd6ba5bdc053"
-  dependencies:
-    follow-redirects "1.0.0"
 
 axios@^0.17.1:
   version "0.17.1"
@@ -4629,12 +4615,6 @@ flow-bin@^0.53.0:
 focusin@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/focusin/-/focusin-2.0.0.tgz#58c01180dfb1949f03e3ddeee063739fc33b6ffc"
-
-follow-redirects@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.0.0.tgz#8e34298cbd2e176f254effec75a1c78cc849fd37"
-  dependencies:
-    debug "^2.2.0"
 
 follow-redirects@^1.2.5:
   version "1.2.5"
