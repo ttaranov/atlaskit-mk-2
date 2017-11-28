@@ -26,7 +26,6 @@ import ExamplesModal from '../pages/Package/ExamplesModal';
 
 import Nav from './Nav';
 
-// TODO fix CORS font request
 // eslint-disable-next-line
 injectGlobal`
   body {
@@ -35,21 +34,22 @@ injectGlobal`
       -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
       sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   }
-  @font-face {
-    font-family: LLCircularWeb-Book;
-    src: url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-book-s.eot);
-    src: url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-book-s.eot?#iefix) format("embedded-opentype"),url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-book-s.woff) format("woff"),url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-book-s.ttf) format("truetype"),url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-book-s.svg#LLCircularWeb-Book) format("svg");
-    font-weight: 400;
-    font-style: normal
-  }
-  @font-face {
-    font-family: LLCircularWeb-Medium;
-    src: url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-medium-s.eot);
-    src: url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-medium-s.eot?#iefix) format("embedded-opentype"),url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-medium-s.woff) format("woff"),url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-medium-s.ttf) format("truetype"),url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-medium-s.svg#LLCircularWeb-Medium) format("svg");
-    font-weight: 400;
-    font-style: normal
-  }
 `;
+// TODO fix CORS font request, then add to global CSS
+// @font-face {
+//   font-family: LLCircularWeb-Book;
+//   src: url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-book-s.eot);
+//   src: url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-book-s.eot?#iefix) format("embedded-opentype"),url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-book-s.woff) format("woff"),url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-book-s.ttf) format("truetype"),url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-book-s.svg#LLCircularWeb-Book) format("svg");
+//   font-weight: 400;
+//   font-style: normal
+// }
+// @font-face {
+//   font-family: LLCircularWeb-Medium;
+//   src: url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-medium-s.eot);
+//   src: url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-medium-s.eot?#iefix) format("embedded-opentype"),url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-medium-s.woff) format("woff"),url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-medium-s.ttf) format("truetype"),url(https://extranet.atlassian.com/download/attachments/2491682605/lineto-circular-medium-s.svg#LLCircularWeb-Medium) format("svg");
+//   font-weight: 400;
+//   font-style: normal
+// }
 
 const AppContainer = styled.div`
   display: flex;

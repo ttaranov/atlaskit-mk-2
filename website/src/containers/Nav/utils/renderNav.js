@@ -1,11 +1,19 @@
-/* @flow */
+// @flow
 
 import React from 'react';
 import { AkNavigationItemGroup } from '@atlaskit/navigation';
 import { RouterNavigationItem, ExternalNavigationItem } from './linkComponents';
 import type { NavGroup } from '../../../types';
 
-export default function renderNav(groups: Array<NavGroup>, pathname: string) {
+type Props = {
+  onClick?: () => mixed,
+  pathname: string,
+};
+
+export default function renderNav(
+  groups: Array<NavGroup>,
+  { onClick, pathname }: Props,
+) {
   return groups.map((group, index) => (
     <AkNavigationItemGroup
       title={group.title}
@@ -29,6 +37,7 @@ export default function renderNav(groups: Array<NavGroup>, pathname: string) {
             key={item.title}
             href={item.to}
             icon={icon}
+            onClick={onClick}
             text={item.title}
             isSelected={isSelected}
             pathname={pathname}

@@ -126,8 +126,11 @@ const Card = ({ children, icon: Icon, iconColor, title, ...props }) => (
 
 // less the width of global nav bar
 const PageOffset = styled.div`
-  margin-left: -64px;
   text-align: center;
+
+  @media (min-width: 800px) {
+    margin-left: -64px;
+  }
 `;
 
 // ========== BUTTONS ==========

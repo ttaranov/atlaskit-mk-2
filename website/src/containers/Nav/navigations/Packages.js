@@ -163,6 +163,6 @@ export default function PackagesNav(props: PackagesNavProps) {
     : standardGroups(dirs);
 
   return (
-    <div>{renderNav([{ items: [packagesList] }, ...groups], pathname)}</div>
+    <div>{renderNav([{ items: [packagesList] }, ...groups], { pathname })}</div>
   );
 }

@@ -15,9 +15,6 @@ const PageContainer = styled.main`
   margin: 2rem auto;
   padding: 0 2rem;
 `;
-PageContainer.defaultProps = {
-  width: 'medium',
-};
 
 export default PageContainer;
 

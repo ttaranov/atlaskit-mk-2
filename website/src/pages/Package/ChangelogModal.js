@@ -9,7 +9,7 @@ import { Link, Redirect, Route, withRouter } from 'react-router-dom';
 import CloseIcon from '@atlaskit/icon/glyph/cross';
 
 import Button from '@atlaskit/button';
-import TextField from '@atlaskit/field-text';
+import { FieldTextStateless as Input } from '@atlaskit/field-text';
 import Modal, {
   ModalHeader as OgModalHeader,
   ModalTitle,
@@ -44,7 +44,8 @@ const ModalHeader = styled(OgModalHeader)`
 `;
 
 const FieldWrapper = styled.div`
-  margin-top: -20px;
+  flex-grow: 1;
+  padding-right: 20px;
 `;
 const LogWrapper = styled.div`
   margin-top: 2em;
@@ -78,14 +79,21 @@ export default class ExamplesModal extends Component<Props, State> {
       });
   }
 
-  handleChange = (e: any) => {
+  handleChange = (event: Event) => {
     const { groupId, pkgId } = this.props.match.params;
-    const range = e.target.value;
-    this.props.history.replace(
-      `/mk-2/packages/${groupId}/${pkgId}/changelog/${encodeURI(range)}`,
-    );
-    const isInvalid = /[a-z]/gi.test(range);
+    const { target } = event;
 
+    if (!(target instanceof HTMLInputElement)) {
+      return;
+    }
+
+    const range = target.value;
+    const isInvalid = /[a-z]/gi.test(range);
+    const path = `/mk-2/packages/${groupId}/${pkgId}/changelog/${encodeURI(
+      range,
+    )}`;
+
+    this.props.history.replace(path);
     this.setState({ isInvalid, range });
   };
 
@@ -123,9 +131,23 @@ export default class ExamplesModal extends Component<Props, State> {
 
     return (
       <Modal
+        // actions={[{ onClick: this.close, text: 'Done' }]}
         header={({ showKeyline }) => (
           <ModalHeader showKeyline={showKeyline}>
-            <ModalTitle>Changelog</ModalTitle>
+            {/* <ModalTitle>Semver Range</ModalTitle> */}
+            <FieldWrapper>
+              <Input
+                // autoFocus
+                key="input"
+                isInvalid={isInvalid}
+                isLabelHidden
+                label="Semver Range"
+                onChange={this.handleChange}
+                placeholder={'e.g. "> 1.0.6 <= 3.0.2"'}
+                shouldFitContainer
+                value={range}
+              />
+            </FieldWrapper>
             <Button
               appearance="subtle"
               iconBefore={<CloseIcon label="Close Modal" />}
@@ -137,17 +159,6 @@ export default class ExamplesModal extends Component<Props, State> {
         onClose={this.close}
         width={640}
       >
-        <FieldWrapper>
-          <TextField
-            autoFocus
-            isInvalid={isInvalid}
-            label="Semver Range"
-            onChange={this.handleChange}
-            placeholder={'e.g. "> 1.0.6 <= 3.0.2"'}
-            shouldFitContainer
-            value={range}
-          />
-        </FieldWrapper>
         {isInvalid ? (
           <NoMatch>Invalid range; please try again.</NoMatch>
         ) : (

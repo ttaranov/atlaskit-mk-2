@@ -25,5 +25,5 @@ export default function PatternsNav({ pathname, patterns }: PatternsNavProps) {
     ],
   });
 
-  return <div>{renderNav(groups, pathname)}</div>;
+  return <div>{renderNav(groups, { pathname })}</div>;
 }

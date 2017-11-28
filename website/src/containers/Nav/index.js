@@ -31,6 +31,9 @@ import SearchDrawer from './SearchDrawer';
 import { packages, docs, patterns } from '../../site';
 import type { Directory } from '../../types';
 
+import atlaskitLogo from '../../assets/atlaskit-logo-inverted.png';
+import atlaskitLogoMonochrome from '../../assets/atlaskit-logo-monochrome.png';
+
 type State = {
   groupDrawerOpen: boolean,
   searchDrawerOpen: boolean,
@@ -72,13 +75,13 @@ const headers = {
 const secondaryActions = [
   {
     href: 'https://bitbucket.org/atlassian/atlaskit',
-    label: 'Atlaskit Repository',
     icon: BitbucketIcon,
+    label: 'Atlaskit Repository',
   },
   {
     href: 'https://atlassian.design/',
-    label: 'Design guidelines',
     icon: DashboardIcon,
+    label: 'Design guidelines',
   },
 ];
 const SecondaryAnchor = styled.a`
@@ -95,10 +98,19 @@ const SecondaryAnchor = styled.a`
 `;
 const SecondaryAction = ({ href, icon: Icon, label }) => (
   <Tooltip description={label} position="left">
-    <SecondaryAnchor href={href}>
+    <SecondaryAnchor href={href} target="_blank">
       <Icon label={label} primaryColor={colors.N0} size="small" />
     </SecondaryAnchor>
   </Tooltip>
+);
+export const AtlaskitIcon = ({ monochrome }: { monochrome?: boolean }) => (
+  <img
+    alt="Atlaskit logo"
+    height="24"
+    src={monochrome ? atlaskitLogoMonochrome : atlaskitLogo}
+    style={{ display: 'block' }}
+    width="24"
+  />
 );
 
 export default class Nav extends Component<{}, State> {
@@ -159,17 +171,21 @@ export default class Nav extends Component<{}, State> {
                 isCollapsible={!containerNavAvailable}
                 isResizeable={false}
                 globalPrimaryIcon={
-                  <AtlassianIcon
-                    size="large"
-                    primaryColor="#DEEBFF"
-                    label="Atlassian"
-                  />
+                  <Tooltip description="Home" position="right">
+                    <AtlaskitIcon />
+                  </Tooltip>
                 }
                 globalCreateIcon={
-                  !containerNavAvailable && <MenuIcon label="Menu" />
+                  <Tooltip description="Menu" position="right">
+                    <MenuIcon label="Menu" />
+                  </Tooltip>
                 }
                 globalPrimaryItemHref={navigateOut ? OLD_WEBSITE_URL : '/'}
-                globalSearchIcon={<SearchIcon label="search" />}
+                globalSearchIcon={
+                  <Tooltip description="Search" position="right">
+                    <SearchIcon label="search" />
+                  </Tooltip>
+                }
                 globalSecondaryActions={secondaryActions.map(a => (
                   <SecondaryAction {...a} />
                 ))}
@@ -207,6 +223,7 @@ export default class Nav extends Component<{}, State> {
                     isOpen={groupDrawerOpen}
                     closeDrawer={this.closeGroupDrawer}
                     docs={docs}
+                    pathname={location.pathname}
                     packages={packages}
                     patterns={patterns}
                     navigateOut={navigateOut}
