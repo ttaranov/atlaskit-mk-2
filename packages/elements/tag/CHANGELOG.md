@@ -1,5 +1,7 @@
 # @atlaskit/tag
 
+## 3.0.7
+
 ## 3.0.6
 - [patch] Use correct dependencies  [7b178b1](7b178b1)
 - [patch] Use correct dependencies  [7b178b1](7b178b1)

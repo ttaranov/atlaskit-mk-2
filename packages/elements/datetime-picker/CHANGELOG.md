@@ -1,5 +1,7 @@
 # @atlaskit/datetime-picker
 
+## 0.1.1
+
 ## 0.1.0
 - [minor] Added TimePicker and DateTimePicker. Improved docs and examples. [4b49f4d](4b49f4d)
 
