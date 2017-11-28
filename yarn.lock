@@ -963,10 +963,14 @@ ajv@^4.11.3, ajv@^4.7.0, ajv@^4.9.1:
     json-stable-stringify "^1.0.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ajv@^5.0.0:
 =======
 ajv@^5.1.0:
 >>>>>>> jest-beta-editor-failures
+=======
+ajv@^5.1.0:
+>>>>>>> origin/fix/build-tests
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.5.0.tgz#eb2840746e9dc48bd5e063a36e3fd400c5eab5a9"
   dependencies:
@@ -1710,6 +1714,10 @@ babel-plugin-jest-hoist@21.3.0-beta.10:
 babel-plugin-jest-hoist@^20.0.3:
   version "20.0.3"
   resolved "https://registry.yarnpkg.com/babel-plugin-jest-hoist/-/babel-plugin-jest-hoist-20.0.3.tgz#afedc853bd3f8dc3548ea671fbe69d03cc2c1767"
+
+babel-plugin-jest-hoist@^21.2.0:
+  version "21.2.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-jest-hoist/-/babel-plugin-jest-hoist-21.2.0.tgz#2cef637259bd4b628a6cace039de5fcd14dbb006"
 
 babel-plugin-react-flow-props-to-prop-types@^0.15.0:
   version "0.15.0"
@@ -6228,6 +6236,18 @@ jest-styled-components@^4.9.0:
   resolved "https://registry.yarnpkg.com/jest-styled-components/-/jest-styled-components-4.9.0.tgz#459ccb37d0f5720007c8dba358bfff93c8cf4aed"
   dependencies:
     css "^2.2.1"
+
+jest-util@21.3.0-beta.10:
+  version "21.3.0-beta.10"
+  resolved "https://registry.yarnpkg.com/jest-util/-/jest-util-21.3.0-beta.10.tgz#dad92f9f6227f4fcb3c8e5491f09b9280498696a"
+  dependencies:
+    callsites "^2.0.0"
+    chalk "^2.0.1"
+    graceful-fs "^4.1.11"
+    jest-message-util "21.3.0-beta.10"
+    jest-mock "21.3.0-beta.10"
+    jest-validate "21.3.0-beta.10"
+    mkdirp "^0.5.1"
 
 jest-util@^20.0.0, jest-util@^20.0.3:
   version "20.0.3"

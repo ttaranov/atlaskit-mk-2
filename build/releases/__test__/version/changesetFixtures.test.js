@@ -1,8 +1,8 @@
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
 import * as path from 'path';
 import createChangeset from '../../changeset/createChangeset';
-
 const cli = require('../../../utils/cli');
+
 jest.mock('../../../utils/cli');
 jest.mock('../../../utils/logger');
 
