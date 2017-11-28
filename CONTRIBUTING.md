@@ -11,7 +11,7 @@ Don't worry though, we're making it easier than ever to work on Atlaskit from
 end to end. If you have any questions/problems, feel free to contact James Kyle
 or Luke Batchelor.
 
-For a more in-depth view of how we want to work with other teams and open sourcecontributions can be found at http://ak-mk-2-prod.netlify.com/docs/guides/contributing.
+A more in-depth view of how we want to work with other teams and open source contributions can be found at [http://ak-mk-2-prod.netlify.com/docs/guides/contributing](http://ak-mk-2-prod.netlify.com/docs/guides/contributing).
 
 That all being said, let's dive into it:
 
