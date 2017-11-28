@@ -5,14 +5,18 @@ import { AuthProvider } from '../auth';
 export type DataUri = string;
 export type ImageResizeMode = 'crop' | 'fit' | 'full-fit';
 
+export interface FetchImageOptions {
+  width: number;
+  height: number;
+  mode?: ImageResizeMode;
+  allowAnimated?: boolean;
+}
+
 export interface DataUriService {
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri>;
   fetchImageDataUri(
     mediaItem: MediaItem,
-    width: number,
-    height: number,
-    mode?: ImageResizeMode,
-    allowAnimated?: boolean,
+    options: FetchImageOptions,
   ): Promise<DataUri>;
 }
 
@@ -42,10 +46,7 @@ export class MediaDataUriService implements DataUriService {
 
   fetchImageDataUri(
     mediaItem: MediaItem,
-    width: number,
-    height: number,
-    mode: ImageResizeMode = 'crop',
-    allowAnimated: boolean = true,
+    { width, height, mode = 'crop', allowAnimated = true }: FetchImageOptions,
   ): Promise<DataUri> {
     return this.fetchSomeDataUri(`/file/${mediaItem.details.id}/image`, {
       width,

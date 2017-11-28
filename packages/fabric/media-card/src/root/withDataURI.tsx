@@ -124,9 +124,11 @@ export const withDataURI = (Component): any => {
       dataURIService
         .fetchImageDataUri(
           { type: 'file', details: metadata },
-          width,
-          height,
-          resizeMode,
+          {
+            width,
+            height,
+            mode: resizeMode,
+          },
         )
         .then(setDataURI, clearDataURI);
     }
