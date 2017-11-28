@@ -1,5 +1,7 @@
 # @atlaskit/media-filmstrip
 
+## 5.5.5
+
 ## 5.5.4
 
 

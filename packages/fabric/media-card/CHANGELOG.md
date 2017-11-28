@@ -1,5 +1,7 @@
 # @atlaskit/media-image
 
+## 22.2.4
+
 ## 22.2.3
 - [patch] Bumping dependency on docs (from a failed build) [6949056](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6949056)
 
