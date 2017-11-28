@@ -1,5 +1,18 @@
 # @atlaskit/media-avatar-picker
 
+## 3.3.5
+
+
+- [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
+- [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
+
+## 3.3.4
+
+## 3.3.3
+
+## 3.3.2
+- [patch] Dont render AvatarList when image is selected [25c2253](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25c2253)
+
 ## 3.3.1
 - [patch] Use correct dependencies  [7b178b1](7b178b1)
 - [patch] Use correct dependencies  [7b178b1](7b178b1)

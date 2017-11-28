@@ -1,5 +1,17 @@
 # @atlaskit/editor-common
 
+## 3.9.11
+
+
+- [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
+- [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
+
+## 3.9.10
+
+## 3.9.9
+
+## 3.9.8
+
 ## 3.9.7
 
 ## 3.9.6

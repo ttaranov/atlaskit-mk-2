@@ -50,16 +50,5 @@ const allPackages = {
   tooltip: { key: 'tooltip', name: 'Tooltip' },
 };
 
-const getChildOfName: (Directory, string) => Directory | File | void = (
-  { children },
-  name,
-) => children.filter(({ id }) => id === name)[0];
-
-const part1 = getChildOfName(siteData, 'packages');
-const part2 =
-  part1 && part1.type === 'dir' ? getChildOfName(part1, 'elements') : undefined;
-const migratedComponents = part2 && part2.type === 'dir' ? part2.children : [];
-migratedComponents.forEach(({ id }) => (allPackages[id].isMigrated = true));
-
 export default allPackages;
 export const packageNames = Object.keys(allPackages);

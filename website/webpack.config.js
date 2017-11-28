@@ -77,7 +77,39 @@ function createEntryPoint(subsetName /*?: string */) {
     vendor: ['react', 'react-dom', 'styled-components'],
   };
 
-  if (subsetName === 'elements') return entry;
+  if (subsetName === 'elements') {
+    return entry;
+  }
+
+  if (subsetName === 'media') {
+    /*
+
+      Media vendor packages
+
+      While re-compiling may take longer while watching, "media" are opting out of having
+      :allthethings: in the vendor bundle because having a gigantic vendor bundle makes devtools
+      almost unusable. Devtools are significantly more responsive after these changes:
+
+        vendor bundle: 3.1MB => 510KB
+        main bundle: 250KB => 574KB
+
+      However, with a minimal vendor bundle, we kept running into Out of Memory errors while the
+      bundle is being re-built so we're making a vendor bundle with just the dependencies that we
+      need.
+
+    */
+
+    const dependencies = require('../packages/fabric/media-card/package.json')
+      .dependencies; // FIXME: what about other media packages?
+    entry['vendor'] = entry.vendor.concat(
+      Object.keys(dependencies)
+        .filter(pkg => !entry.vendor.includes(pkg)) // webpack complains about duplicate modules
+        .filter(pkg => !pkg.startsWith('@types/')) // type definitions don't have an entry point
+        .filter(pkg => pkg !== 'babel-runtime'),
+    );
+
+    return entry;
+  }
 
   // Editor vendor packages
   entry['vendor'] = entry.vendor.concat([
