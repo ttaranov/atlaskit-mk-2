@@ -330,7 +330,9 @@ describe('emojis', () => {
 
       pluginState.insertEmoji(grinEmojiId);
 
-      expect(editorView.state.doc).toEqual(doc(p(emoji(grinEmojiId), ' ')));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(emoji(grinEmojiId), ' ')),
+      );
       editorView.destroy();
     });
 
@@ -422,7 +424,7 @@ describe('emojis', () => {
     describe('when editor is focused', () => {
       it('it is true', () => {
         const { plugin, pluginState, editorView } = editor(doc(p('te{<>}xt')));
-        plugin.props.onFocus!(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
         expect(pluginState.focused).toEqual(true);
         editorView.destroy();
       });
@@ -431,7 +433,7 @@ describe('emojis', () => {
     describe('when editor is not focused', () => {
       it('it is false', () => {
         const { plugin, pluginState, editorView } = editor(doc(p('te{<>}xt')));
-        plugin.props.onBlur!(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
         expect(pluginState.focused).toEqual(false);
         editorView.destroy();
       });

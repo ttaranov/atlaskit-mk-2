@@ -67,8 +67,8 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       );
       const spy = jest.fn();
       pluginState.subscribe(spy);
-      plugin.props.onFocus!(editorView, event);
-      plugin.props.onBlur!(editorView, event);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
+      plugin.props.handleDOMEvents!.blur(editorView, event);
       expect(spy).toHaveBeenCalledTimes(2);
     });
 
@@ -78,8 +78,8 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       );
       const spy = jest.fn();
       pluginState.subscribe(spy);
-      plugin.props.onFocus!(editorView, event);
-      plugin.props.onBlur!(editorView, event);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
+      plugin.props.handleDOMEvents!.blur(editorView, event);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
@@ -87,7 +87,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       const { editorView, plugin, pluginState } = editor(doc(panel(p('text'))));
       const spy = jest.fn();
       pluginState.subscribe(spy);
-      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
@@ -214,8 +214,8 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         const { editorView, plugin, pluginState } = editor(
           doc(p('te{<>}xt'), panel(p('text'))),
         );
-        plugin.props.onFocus!(editorView, event);
-        plugin.props.onBlur!(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
         expect(pluginState.toolbarVisible).toBe(false);
       });
     });
@@ -227,7 +227,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         const { editorView, plugin, pluginState } = editor(
           doc(p('te{<>}xt'), panel(p('text'))),
         );
-        plugin.props.onFocus!(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
         expect(pluginState.editorFocused).toBe(true);
       });
     });
@@ -237,8 +237,8 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         const { editorView, plugin, pluginState } = editor(
           doc(p('te{<>}xt'), panel(p('text'))),
         );
-        plugin.props.onFocus!(editorView, event);
-        plugin.props.onBlur!(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
         expect(pluginState.editorFocused).toBe(false);
       });
     });

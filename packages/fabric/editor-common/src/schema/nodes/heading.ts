@@ -19,7 +19,8 @@ export interface Definition {
 
 export const heading: NodeSpec = {
   attrs: { level: { default: 1 } },
-  content: `inline<${LINK}>*`,
+  content: `inline*`,
+  marks: `${LINK}`,
   group: 'block',
   defining: true,
   parseDOM: [

@@ -20,7 +20,7 @@ export function clearFormatting(): Command {
       const { $from, $to } = tr.selection;
       tr.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
         if (node.hasMarkup(formattedNodeType)) {
-          tr.setNodeType(pos, state.schema.nodes.paragraph);
+          tr.setNodeMarkup(pos, state.schema.nodes.paragraph);
           return false;
         }
         return true;

@@ -20,7 +20,7 @@ export const taskList: NodeSpec = {
   group: 'block',
   content: 'taskItem+',
   attrs: {
-    localId: { compute: uuid.generate },
+    localId: { default: '' },
   },
   parseDOM: [{
     tag: 'ol[data-task-list-local-id]',

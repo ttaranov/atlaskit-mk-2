@@ -375,9 +375,8 @@ export class MediaPluginState {
     }
     const { selection: { from }, schema, tr } = this.view.state;
     this.view.dispatch(
-      tr.setNodeType(from - 1, schema.nodes.singleImage, {
-        alignment,
-        display,
+      tr.setNodeMarkup(from - 1, schema.nodes.singleImage, {
+        alignment, display
       }),
     );
     return true;
@@ -709,7 +708,7 @@ export const createPlugin = (
           return;
         }
 
-        let pos: number | null | undefined = $anchor.pos;
+        let pos: number | null | void = $anchor.pos;
         if (
           $anchor.parent.type !== schema.nodes.paragraph &&
           $anchor.parent.type !== schema.nodes.codeBlock
