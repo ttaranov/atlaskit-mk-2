@@ -1,5 +1,11 @@
 # @atlaskit/docs
 
+## 0.0.7
+- [patch] Bump version of @atlaskit/docs everywhere [9a0ea18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a0ea18)
+- [patch] Bump version of @atlaskit/docs everywhere [9a0ea18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a0ea18)
+- [patch] Update react-markings dependency [71d0703](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/71d0703)
+- [patch] Update react-markings dependency [71d0703](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/71d0703)
+
 ## 0.0.6
 - [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
 - [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)

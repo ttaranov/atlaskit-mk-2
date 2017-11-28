@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 60.4.4
+
+- [patch] Pasting multiple markdown links should create multiple links in the editor. [829b312](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/829b312)
+- [patch] Pasting multiple markdown links should create multiple links in the editor. [829b312](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/829b312)
+
 ## 60.4.3
 
 

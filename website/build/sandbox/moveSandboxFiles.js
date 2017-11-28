@@ -49,8 +49,14 @@ const followRelativeImports = filepath => {
           filepath,
           nodePath.node.source.value,
         );
-        // Recursion!
-        imports.push(...followRelativeImports(importedFilepath));
+
+        if (importedFilepath.match(/\.js$/)) {
+          // If imported file is a js file recursively check imports in it
+          imports.push(...followRelativeImports(importedFilepath));
+        } else {
+          // Otherwise just add it's src
+          imports.push(importedFilepath);
+        }
       }
     },
   });

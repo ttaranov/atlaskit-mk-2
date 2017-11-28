@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "22.2.3",
+  "version": "22.2.4",
   "description": "Includes all media card related components, CardView, CardViewSmall, Card...",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -26,12 +26,12 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/avatar": "^8.0.0",
-    "@atlaskit/badge": "^6.1.6",
+    "@atlaskit/badge": "^6.1.7",
     "@atlaskit/button": "^5.4.8",
     "@atlaskit/dropdown-menu": "^3.0.1",
     "@atlaskit/field-text": "^4.0.0",
     "@atlaskit/icon": "^10.3.1",
-    "@atlaskit/lozenge": "^3.4.8",
+    "@atlaskit/lozenge": "^3.4.9",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/bytes": "^2.4.33",
     "axios": "^0.17.1",
@@ -48,15 +48,15 @@
     "uuid": "^3.1.0"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^11.0.1",
+    "@atlaskit/media-core": "^11.0.2",
     "react": "^15.6.1",
     "rxjs": "^5.1.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^0.0.6",
+    "@atlaskit/docs": "^0.0.7",
     "@atlaskit/field-radio-group": "^1.2.1",
     "@atlaskit/field-range": "^2.0.0",
-    "@atlaskit/media-core": "^11.0.1",
+    "@atlaskit/media-core": "^11.0.2",
     "@atlaskit/media-test-helpers": "^8.2.1",
     "@atlaskit/toggle": "^2.0.4",
     "deepcopy": "0.6.3"
