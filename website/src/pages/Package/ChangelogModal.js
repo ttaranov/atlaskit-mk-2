@@ -9,12 +9,12 @@ import { Link, Redirect, Route, withRouter } from 'react-router-dom';
 import CloseIcon from '@atlaskit/icon/glyph/cross';
 
 import Button from '@atlaskit/button';
+import { colors, gridSize, math } from '@atlaskit/theme';
 import { FieldTextStateless as Input } from '@atlaskit/field-text';
 import Modal, {
   ModalHeader as OgModalHeader,
   ModalTitle,
 } from '@atlaskit/modal-dialog';
-import { colors } from '@atlaskit/theme';
 
 import * as fs from '../../utils/fs';
 import type { RouterMatch } from '../../types';
@@ -29,7 +29,7 @@ import { divvyChangelog } from '../../utils/changelog';
 // ==============================
 
 const ModalBody = styled.div`
-  display: flex;
+  padding-bottom: ${math.multiply(gridSize, 2)}px;
 `;
 const ModalContent = styled.div`
   flex: 1 1 auto;
@@ -45,7 +45,7 @@ const ModalHeader = styled(OgModalHeader)`
 
 const FieldWrapper = styled.div`
   flex-grow: 1;
-  padding-right: 20px;
+  padding-right: ${math.multiply(gridSize, 2)}px;
 `;
 const LogWrapper = styled.div`
   margin-top: 2em;
@@ -57,6 +57,54 @@ const LogWrapper = styled.div`
 // ==============================
 // END STYLES
 // ==============================
+
+type HeaderProps = {
+  isInvalid: boolean,
+  onChange: (event: KeyboardEvent) => mixed,
+  onClose: () => mixed,
+  showKeyline: boolean,
+  value: string,
+};
+const Header = ({
+  isInvalid,
+  onChange,
+  onClose,
+  showKeyline,
+  value,
+}: HeaderProps) => (
+  <ModalHeader showKeyline={showKeyline}>
+    <FieldWrapper>
+      <Input
+        key="input"
+        isInvalid={isInvalid}
+        isLabelHidden
+        label="Semver Range"
+        onChange={onChange}
+        placeholder={'Semver Range: e.g. "> 1.0.6 <= 3.0.2"'}
+        shouldFitContainer
+        value={value}
+      />
+    </FieldWrapper>
+    <Button
+      appearance="subtle"
+      iconBefore={<CloseIcon label="Close Modal" />}
+      onClick={onClose}
+    />
+  </ModalHeader>
+);
+
+// ==============================
+// END STYLES
+// ==============================
+
+// Ensure the string ends with a number:
+// avoids unsatisfied semver range, which causes a flickering "no match" message
+// as the user is typing
+function getQualifiedRange(str: string) {
+  if (/[0-9]$/.test(str)) return str;
+
+  return '';
+}
 
 type Props = {
   match: RouterMatch,
@@ -79,7 +127,7 @@ export default class ExamplesModal extends Component<Props, State> {
       });
   }
 
-  handleChange = (event: Event) => {
+  handleChange = (event: KeyboardEvent) => {
     const { groupId, pkgId } = this.props.match.params;
     const { target } = event;
 
@@ -106,12 +154,24 @@ export default class ExamplesModal extends Component<Props, State> {
     this.props.history.push(url);
   };
 
+  header = () => {
+    const { isInvalid, range } = this.state;
+
+    return (
+      <Header
+        isInvalid={isInvalid}
+        onChange={this.handleChange}
+        onClose={this.close}
+        showKeyline
+        value={range}
+      />
+    );
+  };
+
   render() {
     const { groupId, pkgId } = this.props.match.params;
     const filePath = `packages/${groupId}/${pkgId}/CHANGELOG.md`;
-    const found = fs.find(packages, (file, currPath) => {
-      return currPath === filePath;
-    });
+    const found = fs.find(packages, (file, currPath) => currPath === filePath);
     const { isInvalid, range } = this.state;
 
     const Content = Loadable({
@@ -121,7 +181,7 @@ export default class ExamplesModal extends Component<Props, State> {
         changelog ? (
           <Changelog
             changelog={divvyChangelog(changelog)}
-            range={range}
+            range={getQualifiedRange(range)}
             packageName={pkgId}
           />
         ) : (
@@ -131,41 +191,21 @@ export default class ExamplesModal extends Component<Props, State> {
 
     return (
       <Modal
-        // actions={[{ onClick: this.close, text: 'Done' }]}
-        header={({ showKeyline }) => (
-          <ModalHeader showKeyline={showKeyline}>
-            {/* <ModalTitle>Semver Range</ModalTitle> */}
-            <FieldWrapper>
-              <Input
-                // autoFocus
-                key="input"
-                isInvalid={isInvalid}
-                isLabelHidden
-                label="Semver Range"
-                onChange={this.handleChange}
-                placeholder={'e.g. "> 1.0.6 <= 3.0.2"'}
-                shouldFitContainer
-                value={range}
-              />
-            </FieldWrapper>
-            <Button
-              appearance="subtle"
-              iconBefore={<CloseIcon label="Close Modal" />}
-              onClick={this.close}
-            />
-          </ModalHeader>
-        )}
+        autoFocus
+        header={this.header}
         height={600}
         onClose={this.close}
         width={640}
       >
-        {isInvalid ? (
-          <NoMatch>Invalid range; please try again.</NoMatch>
-        ) : (
-          <LogWrapper>
-            <Content />
-          </LogWrapper>
-        )}
+        <ModalBody>
+          {isInvalid ? (
+            <NoMatch>Invalid range &mdash; please try again.</NoMatch>
+          ) : (
+            <LogWrapper>
+              <Content />
+            </LogWrapper>
+          )}
+        </ModalBody>
       </Modal>
     );
   }

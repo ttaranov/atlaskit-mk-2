@@ -6,7 +6,7 @@ import semver from 'semver';
 import styled, { css } from 'styled-components';
 import { math, gridSize, colors, borderRadius } from '@atlaskit/theme';
 
-const gutter = `${math.multiply(gridSize, 3)()}px`;
+const gutter = math.multiply(gridSize, 3);
 
 const H3 = styled.h3`
   color: ${colors.N200};
@@ -64,8 +64,8 @@ const LogItem = styled.div`
       ? css`
           &:not(:first-child) {
             border-top: 2px solid ${colors.N30};
-            margin-top: ${gutter};
-            padding-top: ${gutter};
+            margin-top: ${gutter}px;
+            padding-top: ${gutter}px;
           }
         `
       : null};
@@ -74,7 +74,7 @@ const LogItem = styled.div`
 export const NoMatch = styled.div`
   align-items: center;
   background-color: ${colors.N20};
-  border-radius: ${borderRadius()};
+  border-radius: ${borderRadius}px;
   color: ${colors.N200};
   display: flex;
   flex-direction: column;
@@ -105,7 +105,7 @@ export default class ChangeLog extends Component<Props> {
     return (
       <div>
         {!logs.length ? (
-          <NoMatch>No matching versions, please try again.</NoMatch>
+          <NoMatch>No matching versions &mdash; please try again.</NoMatch>
         ) : (
           logs.map((v, i) => {
             const major = v.version.substr(0, 1);
