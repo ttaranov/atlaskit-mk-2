@@ -34,7 +34,7 @@
     "@atlaskit/docs": "^0.0.7",
     "@atlaskit/spinner": "^4.0.5",
     "@atlaskit/util-shared-styles": "^2.10.3",
-    "enzyme": "^3.2.0",
+    "enzyme": "^2.9.1",
     "sinon": "^2.2.0"
   }
 }
