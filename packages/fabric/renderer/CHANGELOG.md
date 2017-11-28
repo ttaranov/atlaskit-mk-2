@@ -1,5 +1,19 @@
 # @atlaskit/renderer
 
+## 8.10.9
+
+## 8.10.8
+
+## 8.10.7
+
+## 8.10.6
+
+## 8.10.5
+
+## 8.10.4
+- [patch] Fixed stand alone file and link card rendering [9b467a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b467a6)
+- [patch] Fixed stand alone file and link card rendering [9b467a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b467a6)
+
 ## 8.10.2
 - [patch] Upgrade mention to ^8.1.0 in editor and renderer [48b5af4](48b5af4)
 - [patch] Upgrade mention to ^8.1.0 in editor and renderer [48b5af4](48b5af4)

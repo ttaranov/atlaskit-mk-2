@@ -14,9 +14,11 @@ export interface Props {
 export default class ColorPalette extends PureComponent<Props, any> {
   render() {
     const { palette, cols = 7, onClick, selectedColor } = this.props;
+    const colors: [string, string][] = [];
+    palette.forEach((value, key) => colors.push([key, value]));
     return (
       <ColorPaletteWrapper style={{ maxWidth: cols * 32 }}>
-        {Array.from(palette).map(([color, label]) => (
+        {colors.map(([color, label]) => (
           <Color
             key={color}
             value={color}

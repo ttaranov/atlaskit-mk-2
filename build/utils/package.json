@@ -11,8 +11,7 @@
   "dependencies": {
     "chalk": "^2.1.0",
     "editor": "^1.0.0",
-    "enquirer": "^1.0.2",
-    "enquirer-prompts": "^1.0.0",
+    "inquirer": "^3.3.0",
     "projector-spawn": "^1.0.1",
     "uuid": "^3.1.0"
   }
