@@ -29,3 +29,30 @@ We want as many contributions as possible and we want to make the process as sim
 For contributors, they want to feel empowered to make a useful contribution. Their time is also very limited, so we must respect that and use it as best as possible. For reviewers, we want to empower contributors and, like them, our time is also very limited.
 
 It's important to strike a balance here because the more contributions we get, the better it is for us because it takes the brunt of the initial weight off our shoulders. By contributing components into our repo as dev releases, it allows contributors a bit more leeway in terms of getting an initial iteration into Atlaskit. Even if it has some nits and some things that need work, using dev releases gives us time to polish those off before going 1.0.
+
+## What's considered a breaking change?
+
+Breaking changes are for things that are explicitly marked as public API. Stuff like:
+
+- Named exports exposed via the main entry point.
+- Props (names as well as expected values / types).
+- Imperative methods.
+
+Things that aren't public API:
+
+- Anything inside `render()`. This includes elements, attributes and classes.
+- Anything that has a leading underscore.
+- Directory structure.
+
+Examples of a breaking change:
+
+- Renaming a public prop.
+- Making a public prop more restrictive in what it accepts.
+- Renaming a named export that's exposed via the main entry point.
+- Icon sizes changing.
+- Flex parent instead of a box and vice-versa.
+
+Examples of things that aren't breaking changes:
+
+- Refactoring stuff in `render()`. For example, add / removing attributes or changing text content. Some integration tests may be relying on this, but it's still not a breaking change. It won't break you in production if you're using caret versions from NPM. It'll break your tests, but you'll update those prior to releasing anything. *We'll do our best to notify products of changes like this.*
+- Reworking our directory structure. We offer a `dist/esm` build where the `module` field in the `package.json` points to the entry point within that folder. There should be no reason to reach into packages.

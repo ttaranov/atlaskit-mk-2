@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/theme",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "description": "The Atlaskit theme framework",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@atlaskit/button": "^5.4.8",
-    "@atlaskit/docs": "^0.0.4",
+    "@atlaskit/docs": "^0.0.5",
     "enzyme": "^2.9.1"
   },
   "keywords": [

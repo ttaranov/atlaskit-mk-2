@@ -1,5 +1,7 @@
 # @atlaskit/logo
 
+## 6.0.4
+
 ## 6.0.3
 - [patch] Logo component gradients no work in Firefox and Safari [6d1f521](6d1f521)
 

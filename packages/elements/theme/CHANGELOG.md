@@ -1,5 +1,7 @@
 # @atlaskit/theme
 
+## 2.2.5
+
 ## 2.2.4
 - [patch] moved theme to new atlaskit repo [a25b940](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a25b940)
 - [patch] moved theme to new atlaskit repo [a25b940](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a25b940)
