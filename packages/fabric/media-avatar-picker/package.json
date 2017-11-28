@@ -30,7 +30,7 @@
   },
   "peerDependencies": {
     "@atlaskit/media-core": "8.4.1 - 10.1.0",
-    "react": "^15.6.1"
+    "react": ">=15.6.1 <=16"
   },
   "devDependencies": {
     "@atlaskit/docs": "^0.0.5",
