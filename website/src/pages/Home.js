@@ -94,6 +94,7 @@ const CardTitleText = styled.h3`
   margin: 0;
 `;
 const CardBody = styled.div`
+  color: ${colors.subtleText}
   margin-top: 8px;
   padding-left: 10px;
 `;
@@ -150,6 +151,13 @@ const Button = styled.a`
     text-decoration: none;
   }
 `;
+const Style = () => (
+  <style>{`
+  body {
+    background-color: ${colors.B500};
+  }
+`}</style>
+);
 
 export default class Home extends React.Component<HomeProps> {
   props: HomeProps;
@@ -157,6 +165,7 @@ export default class Home extends React.Component<HomeProps> {
   render() {
     return (
       <PageOffset>
+        <Style />
         <Page width="large">
           <Title>Atlaskit</Title>
           <Intro>
