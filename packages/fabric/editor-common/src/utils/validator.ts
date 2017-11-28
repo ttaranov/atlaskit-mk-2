@@ -1,29 +1,28 @@
-import { defaultSchema, generateUuid as uuid } from '@atlaskit/editor-common';
-
+import { generateUuid as uuid } from './uuid';
+import { defaultSchema } from '../schema';
 import { Mark as PMMark, Schema } from 'prosemirror-model';
+import { isSafeUrl } from '.';
 
-import { isSafeUrl } from './utils';
-
-export interface Doc {
+export interface ADDoc {
   version: 1;
   type: 'doc';
-  content: Node[];
+  content: ADNode[];
 }
 
-export interface Node {
+export interface ADNode {
   type: string;
   attrs?: any;
-  content?: Node[];
-  marks?: Mark[];
+  content?: ADNode[];
+  marks?: ADMark[];
   text?: string;
 }
 
-export interface Mark {
+export interface ADMark {
   type: string;
   attrs?: any;
 }
 
-export interface MarkSimple {
+export interface ADMarkSimple {
   type: {
     name: string;
   };
@@ -70,32 +69,32 @@ export const isSameMark = (mark: PMMark | null, otherMark: PMMark | null) => {
 };
 
 export const getValidDocument = (
-  doc: Doc,
+  doc: ADDoc,
   schema: Schema = defaultSchema,
-): Doc | null => {
-  const node = getValidNode(doc as Node, schema);
+): ADDoc | null => {
+  const node = getValidNode(doc as ADNode, schema);
 
   if (node.type === 'doc') {
-    return node as Doc;
+    return node as ADDoc;
   }
 
   return null;
 };
 
 export const getValidContent = (
-  content: Node[],
+  content: ADNode[],
   schema: Schema = defaultSchema,
-): Node[] => {
+): ADNode[] => {
   return content.map(node => getValidNode(node, schema));
 };
 
 const TEXT_COLOR_PATTERN = /^#[0-9a-f]{6}$/i;
 
 const flattenUnknownBlockTree = (
-  node: Node,
+  node: ADNode,
   schema: Schema = defaultSchema,
-): Node[] => {
-  const output: Node[] = [];
+): ADNode[] => {
+  const output: ADNode[] = [];
   let isPrevLeafNode = false;
 
   for (let i = 0; i < node.content!.length; i++) {
@@ -104,9 +103,9 @@ const flattenUnknownBlockTree = (
 
     if (i > 0) {
       if (isPrevLeafNode) {
-        output.push({ type: 'text', text: ' ' } as Node);
+        output.push({ type: 'text', text: ' ' } as ADNode);
       } else {
-        output.push({ type: 'hardBreak' } as Node);
+        output.push({ type: 'hardBreak' } as ADNode);
       }
     }
 
@@ -148,11 +147,11 @@ const isValidUser = user => {
  *
  * @see https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-ImplementationdetailsforHCNGwebrenderer
  */
-export const getValidUnknownNode = (node: Node): Node => {
+export const getValidUnknownNode = (node: ADNode): ADNode => {
   const { attrs = {}, content, text, type } = node;
 
   if (!content || !content.length) {
-    const unknownInlineNode: Node = {
+    const unknownInlineNode: ADNode = {
       type: 'text',
       text: text || attrs.text || `[${type}]`,
     };
@@ -164,7 +163,7 @@ export const getValidUnknownNode = (node: Node): Node => {
           attrs: {
             href: attrs.textUrl,
           },
-        } as Mark,
+        } as ADMark,
       ];
     }
 
@@ -192,13 +191,13 @@ export const getValidUnknownNode = (node: Node): Node => {
  *
  */
 export const getValidNode = (
-  originalNode: Node,
+  originalNode: ADNode,
   schema: Schema = defaultSchema,
-): Node => {
+): ADNode => {
   const { attrs, marks, text, type } = originalNode;
   let { content } = originalNode;
 
-  const node: Node = {
+  const node: ADNode = {
     attrs,
     marks,
     text,
@@ -325,7 +324,7 @@ export const getValidNode = (
         };
       }
       case 'doc': {
-        const { version } = originalNode as Doc;
+        const { version } = originalNode as ADDoc;
         if (version && content && content.length) {
           return {
             type,
@@ -450,7 +449,7 @@ export const getValidNode = (
 
                 return acc;
               },
-              [] as Mark[],
+              [] as ADMark[],
             );
           }
           return marks ? { type, text, marks: marks } : { type, text };
@@ -632,7 +631,7 @@ export const getValidNode = (
  * If a node is not recognized or is missing required attributes, we should return null
  *
  */
-export const getValidMark = (mark: Mark): Mark | null => {
+export const getValidMark = (mark: ADMark): ADMark | null => {
   const { attrs, type } = mark;
 
   if (type) {
