@@ -2,6 +2,8 @@ import pastePlugins from '../../../src/plugins/paste';
 import { browser } from '@atlaskit/editor-common';
 import {
   code_block,
+  strong,
+  em,
   doc,
   p,
   code,
@@ -119,6 +121,53 @@ if (!browser.ie && !isMobileBrowser()) {
         const { editorView } = editor(doc(p('{<>}')));
         dispatchPasteEvent(editorView, { plain: 'plain text' });
         expect(editorView.state.doc).toEqualDocument(doc(p('plain text')));
+      });
+
+      describe('if plain text starts with protocol', () => {
+        describe('if it contains "..."', () => {
+          it('should linkify text on paste', () => {
+            const { editorView } = editor(doc(p('{<>}')));
+            const href = 'http://example.com/...blabla';
+            dispatchPasteEvent(editorView, { plain: href });
+            expect(editorView.state.doc).toEqualDocument(
+              doc(p(link({ href })(href))),
+            );
+          });
+        });
+        describe('if it contains "---"', () => {
+          it('should linkify text on paste', () => {
+            const { editorView } = editor(doc(p('{<>}')));
+            const href = 'http://example.com/---blabla';
+            dispatchPasteEvent(editorView, { plain: href });
+            expect(editorView.state.doc).toEqualDocument(
+              doc(p(link({ href })(href))),
+            );
+          });
+        });
+        describe('if it contains "~~~"', () => {
+          it('should linkify text on paste', () => {
+            const { editorView } = editor(doc(p('{<>}')));
+            const href = 'http://example.com/~~~blabla';
+            dispatchPasteEvent(editorView, { plain: href });
+            expect(editorView.state.doc).toEqualDocument(
+              doc(p(link({ href })(href))),
+            );
+          });
+        });
+      });
+
+      describe('if pasted markdown followed by hyperlink', () => {
+        it('should parse markdown and create a hyperlink', () => {
+          const { editorView } = editor(doc(p('{<>}')));
+          const href = 'http://example.com/?...jql=(foo())bar';
+          const text = `**Hello** ${href} _World_`;
+          dispatchPasteEvent(editorView, { plain: text });
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              p(strong('Hello'), ' ', link({ href })(href), ' ', em('World')),
+            ),
+          );
+        });
       });
 
       it('should create code-block for multiple lines of code copied', () => {

@@ -12,6 +12,7 @@ import { isSingleLine, isCode, filterMdToPmSchemaMapping } from './util';
 import { analyticsService } from '../../analytics';
 import * as keymaps from '../../keymaps';
 import { EditorAppearance } from '../../editor/index';
+import linkify from './linkify-md-plugin';
 
 const pmSchemaToMdMapping = {
   nodes: {
@@ -86,7 +87,7 @@ export function createPlugin(
 ) {
   let atlassianMarkDownParser: MarkdownParser;
 
-  const md = MarkdownIt('zero', { html: false, linkify: true });
+  const md = MarkdownIt('zero', { html: false });
   md.enable([
     // Process html entity - &#123;, &#xAF;, &quot;, ...
     'entity',
@@ -106,6 +107,10 @@ export function createPlugin(
   if (schema.nodes.table) {
     md.use(table);
   }
+
+  // enable modified version of linkify plugin
+  // @see https://product-fabric.atlassian.net/browse/ED-3097
+  md.use(linkify);
 
   atlassianMarkDownParser = new MarkdownParser(
     schema,
