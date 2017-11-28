@@ -12,6 +12,7 @@ export interface DataUriService {
     width: number,
     height: number,
     mode?: ImageResizeMode,
+    allowAnimated?: boolean,
   ): Promise<DataUri>;
 }
 
@@ -44,11 +45,13 @@ export class MediaDataUriService implements DataUriService {
     width: number,
     height: number,
     mode: ImageResizeMode = 'crop',
+    allowAnimated: boolean = true,
   ): Promise<DataUri> {
     return this.fetchSomeDataUri(`/file/${mediaItem.details.id}/image`, {
       width,
       height,
       mode,
+      allowAnimated,
       'max-age': 3600,
       collection: this.collectionName,
     });
