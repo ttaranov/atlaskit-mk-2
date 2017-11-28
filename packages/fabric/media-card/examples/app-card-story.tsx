@@ -1,4 +1,4 @@
-/* tslint:disable:variable-name */
+/* tslint:disable:variable-name no-console */
 import * as React from 'react';
 import styled from 'styled-components';
 import { AppCardView } from '../src/app';
@@ -177,12 +177,10 @@ const modelWithIconInContext: AppCardModel = {
   },
 };
 
-const contextLink = { url: 'https://confluence.atlassian.com/' };
 const modelWithLinkInContext: AppCardModel = {
   ...modelWithShortTitle,
   context: {
     ...minimalContext,
-    link: contextLink,
   },
 };
 
@@ -289,15 +287,12 @@ const modelWithBackground: AppCardModel = {
 };
 
 const modelWithMostOfTheThings: AppCardModel = {
-  collapsible: true,
   ...modelWithShortTitle,
-  user: userSaschaReuter,
   description: { title: 'Can haz description', text: loremIpsum },
   details: [...lotsOfMeta, ...lotsOfMeta, ...lotsOfMeta],
   context: {
     ...minimalContext,
     icon: { url: contextIcon, label: 'foobar' },
-    link: contextLink,
   },
   actions: metaActions,
 };
