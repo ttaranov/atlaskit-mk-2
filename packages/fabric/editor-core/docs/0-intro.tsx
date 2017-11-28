@@ -1,6 +1,6 @@
 // @flow
-import React from 'react';
-import { md, Example, code } from '@atlaskit/docs';
+import * as React from 'react';
+import { md, code } from '@atlaskit/docs';
 
 export default md`
 # Installing @atlaskit/editor
