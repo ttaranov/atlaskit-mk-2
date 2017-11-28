@@ -1,0 +1,35 @@
+{
+  "name": "@atlaskit/breadcrumbs",
+  "version": "3.1.1",
+  "description": "A component used for navigation, with each item acting as a link",
+  "license": "Apache-2.0",
+  "main": "dist/bundle.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Ben W"
+  ],
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk2",
+  "dependencies": {
+    "@atlaskit/button": "^5.4.8",
+    "@atlaskit/tooltip": "^8.0.4",
+    "@atlaskit/theme": "^2.0.0",
+    "babel-runtime": "^6.26.0",
+    "styled-components": "^1.4.6"
+  },
+  "peerDependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^0.0.5",
+    "@atlaskit/icon": "^10.3.1",
+    "enzyme": "^2.9.1",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2"
+  }
+}

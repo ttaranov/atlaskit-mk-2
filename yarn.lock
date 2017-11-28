@@ -293,10 +293,11 @@
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
-"@atlaskit/icon@^10.1.3", "@atlaskit/icon@^10.3.0":
-  version "10.3.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-10.3.0.tgz#2a79b88413c7be064496dfc34a9915cb312d6d2b"
+"@atlaskit/icon@^10.1.3", "@atlaskit/icon@^10.3.1":
+  version "10.3.2"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-10.3.2.tgz#000c7da091a97d1878f0766fe4b7fa57dc0e355a"
   dependencies:
+    "@atlaskit/theme" "^2.0.0"
     babel-runtime "^6.11.6"
     prop-types "^15.5.10"
     styled-components "^1.4.6"
