@@ -58,7 +58,7 @@ function getPackagesGlobs(subsetName /*?: string */) {
       );
 
     case 'media':
-      return createGlob('fabric/media-*');
+      return createGlob('fabric/media-viewer');
 
     case 'fabric':
       return createGlob('fabric/**');
