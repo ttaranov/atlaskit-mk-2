@@ -22,10 +22,29 @@ export function stringRepeat(text: string, length: number): string {
  * @see MarkdownSerializerState.esc()
  */
 export function escapeMarkdown(str: string, startOfLine?: boolean): string {
+  str = str.replace(/[`*\\+_|]/g, '\\$&');
+  if (startOfLine) {
+    str = str.replace(/^[#-*]/, '\\$&').replace(/^(\d+)\./, '$1\\.');
+  }
+  return str;
+}
+
+/**
+ * This function escapes all plain-text sequences that might get converted into markdown
+ * formatting by Bitbucket server (via python-markdown).
+ * This is temporary until we get a proper fix in master to handle this case properly
+ * @see MarkdownSerializerState.esc()
+ */
+export function escapeMarkdownForImageHotfix(
+  str: string,
+  startOfLine?: boolean
+): string {
   let strToEscape = str || '';
   strToEscape = strToEscape.replace(/[`*\\+_|()\[\]{}]/g, '\\$&');
   if (startOfLine) {
-    strToEscape = strToEscape.replace(/^[#-*]/, '\\$&').replace(/^(\d+)\./, '$1\\.');
+    strToEscape = strToEscape
+      .replace(/^[#-*]/, '\\$&')
+      .replace(/^(\d+)\./, '$1\\.');
   }
   return strToEscape;
 }
@@ -75,35 +94,39 @@ export function transformHtml(html: string): HTMLElement {
 
   // Parse emojis i.e.
   //     <img src="https://d301sr5gafysq2.cloudfront.net/207268dc597d/emoji/img/diamond_shape_with_a_dot_inside.svg" alt="diamond shape with a dot inside" title="diamond shape with a dot inside" class="emoji">
-  arrayFrom(el.querySelectorAll('img.emoji')).forEach((img: HTMLImageElement) => {
-    const span = document.createElement('span');
-    let shortName = img.getAttribute('data-emoji-short-name') || '';
+  arrayFrom(el.querySelectorAll('img.emoji')).forEach(
+    (img: HTMLImageElement) => {
+      const span = document.createElement('span');
+      let shortName = img.getAttribute('data-emoji-short-name') || '';
 
-    if (!shortName) {
-      // Fallback to parsing Bitbucket's src attributes to find the
-      // short name
-      const src = img.getAttribute('src');
-      const idMatch = !src ? false : src.match(/([^\/]+)\.[^\/]+$/);
+      if (!shortName) {
+        // Fallback to parsing Bitbucket's src attributes to find the
+        // short name
+        const src = img.getAttribute('src');
+        const idMatch = !src ? false : src.match(/([^\/]+)\.[^\/]+$/);
 
-      if (idMatch) {
-        shortName = `:${decodeURIComponent(idMatch[1])}:`;
+        if (idMatch) {
+          shortName = `:${decodeURIComponent(idMatch[1])}:`;
+        }
       }
-    }
 
-    if (shortName) {
-      span.setAttribute('data-emoji-short-name', shortName);
-    }
+      if (shortName) {
+        span.setAttribute('data-emoji-short-name', shortName);
+      }
 
-    img.parentNode!.insertBefore(span, img);
-    img.parentNode!.removeChild(img);
-  });
+      img.parentNode!.insertBefore(span, img);
+      img.parentNode!.removeChild(img);
+    }
+  );
 
   // Convert all automatic links to plain text, because they will be re-created on render by the server
-  arrayFrom(el.querySelectorAll('a[rel="nofollow"]')).forEach((a: HTMLLinkElement) => {
-    const text = document.createTextNode(a.innerText);
-    a.parentNode!.insertBefore(text, a);
-    a.parentNode!.removeChild(a);
-  });
+  arrayFrom(el.querySelectorAll('a[rel="nofollow"]')).forEach(
+    (a: HTMLLinkElement) => {
+      const text = document.createTextNode(a.innerText);
+      a.parentNode!.insertBefore(text, a);
+      a.parentNode!.removeChild(a);
+    }
+  );
 
   return el;
 }
