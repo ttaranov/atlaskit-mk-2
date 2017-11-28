@@ -1,5 +1,9 @@
 # @atlaskit/calendar
 
+## 3.0.6
+- [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
+- [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
+
 ## 3.0.5
 
 ## 3.0.4

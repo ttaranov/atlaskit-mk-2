@@ -1,5 +1,9 @@
 # @atlaskit/docs
 
+## 0.0.6
+- [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
+- [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
+
 ## 0.0.5
 - [patch] bump consumer versions for release [c730a1c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c730a1c)
 - [patch] bump consumer versions for release [c730a1c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c730a1c)

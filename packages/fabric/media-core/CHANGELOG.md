@@ -1,5 +1,8 @@
 # @atlaskit/media-core
 
+## 11.0.1
+- [patch] Move media-core to mk2 biuld repo [379a8ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/379a8ad)
+
 ## 11.0.0 (2017-11-14)
 
 * breaking; updated the interface of MediaState to reflect the changes on mediapicker ([cbee946](https://bitbucket.org/atlassian/atlaskit/commits/cbee946))
