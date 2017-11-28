@@ -16,6 +16,7 @@ import {
 
 export interface Props {
   id: string;
+  occurrenceKey?: string;
   providers?: ProviderFactory;
   type: MediaType;
   collection: string;
@@ -47,6 +48,7 @@ export default class MediaItem extends PureComponent<Props, {}> {
     const {
       id,
       type,
+      occurrenceKey,
       collection,
       cardDimensions,
       onClick,
@@ -59,6 +61,7 @@ export default class MediaItem extends PureComponent<Props, {}> {
     return (
       <MediaComponent
         id={id}
+        occurrenceKey={occurrenceKey}
         mediaProvider={providers.mediaProvider}
         type={type}
         collection={collection}

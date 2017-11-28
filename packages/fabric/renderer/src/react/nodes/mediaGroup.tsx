@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactElement, PureComponent } from 'react';
 import { MediaProps } from './media';
-import { CardEvent } from '@atlaskit/media-card';
+import { CardEvent, Identifier } from '@atlaskit/media-card';
 import { FilmstripView } from '@atlaskit/media-filmstrip';
 import { CardSurroundings } from '@atlaskit/editor-common';
 
@@ -63,7 +63,7 @@ export default class MediaGroup extends PureComponent<
     } as MediaProps);
   }
 
-  cloneFileCard(child: ReactElement<MediaProps>, listIds: Array<string>) {
+  cloneFileCard(child: ReactElement<MediaProps>, surroundingItems: Identifier[]) {
     return React.cloneElement(child, {
       resizeMode: 'crop',
       eventHandlers: {
@@ -80,7 +80,7 @@ export default class MediaGroup extends PureComponent<
             }
             const surroundings: CardSurroundings = {
               collectionName: child.props.collection,
-              list: listIds,
+              list: surroundingItems
             };
             child.props.eventHandlers.media.onClick(event, surroundings);
           },
@@ -92,10 +92,12 @@ export default class MediaGroup extends PureComponent<
   renderStrip() {
     const { children } = this.props;
     const { animate, offset } = this.state;
-    const listIds = React.Children.map(
-      children,
-      (child: ReactElement<MediaProps>) => child.props.id,
-    );
+    const surroundingItems = React.Children.map(children, (child: ReactElement<MediaProps>) => ({
+      id: child.props.id,
+      mediaItemType: child.props.type as any,
+      occurrenceKey: child.props.occurrenceKey,
+      collectionName: child.props.collection
+    }));
 
     return (
       <FilmstripView
@@ -107,7 +109,7 @@ export default class MediaGroup extends PureComponent<
         {React.Children.map(children, (child: ReactElement<MediaProps>) => {
           switch (child.props.type) {
             case 'file':
-              return this.cloneFileCard(child, listIds);
+              return this.cloneFileCard(child, surroundingItems);
             case 'link':
             default:
               return React.cloneElement(child);
