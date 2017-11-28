@@ -11,9 +11,9 @@ import {
 const DemoComponent = () => null; // tslint:disable-line:variable-name
 const DemoComponentWithDataURI = withDataURI(DemoComponent); // tslint:disable-line:variable-name
 
-const createDataURIService = () => ({
-  fetchImageDataUri: jest.fn(() => Promise.resolve('data:jpg')),
-  fetchOriginalDataUri: jest.fn(() => Promise.resolve('data:gif')),
+const createDataURIService = (imageDataUriDataUri = 'data:jpg') => ({
+  fetchImageDataUri: jest.fn(() => Promise.resolve(imageDataUriDataUri)),
+  fetchOriginalDataUri: jest.fn(),
 });
 
 const waitUntilDataURIIsTruthy = (
@@ -111,7 +111,7 @@ describe('WithDataURI', () => {
     });
 
     it('should set the dataURI to a GIF when the mimeType indicates the item is a GIF', () => {
-      const dataURIService = createDataURIService();
+      const dataURIService = createDataURIService('data:gif');
 
       const metadata = {
         mimeType: 'image/gif',
@@ -151,6 +151,69 @@ describe('WithDataURI', () => {
       return waitUntilDataURIIsTruthy(element).then(() =>
         expect(element.state().dataURI).toBe('data:jpg'),
       );
+    });
+
+    it('should call fetchImageDataUri with allowAnimated false', () => {
+      const dataURIService = createDataURIService();
+      const metadata = {
+        name: 'foobar.png',
+      };
+
+      const element = shallow<WithDataURIProps, WithDataURIState>(
+        <DemoComponentWithDataURI
+          dataURIService={dataURIService}
+          metadata={metadata}
+        />,
+      );
+
+      const instance = element.instance() as WithDataURI;
+      instance.updateDataURI({ dataURIService, metadata, appearance: 'small' });
+
+      expect(
+        dataURIService.fetchImageDataUri.mock.calls[0][1].allowAnimated,
+      ).toEqual(false);
+    });
+
+    it('should call fetchImageDataUri with allowAnimated true', () => {
+      const dataURIService = createDataURIService();
+      const metadata = {
+        name: 'foobar.png',
+      };
+
+      const element = shallow<WithDataURIProps, WithDataURIState>(
+        <DemoComponentWithDataURI
+          dataURIService={dataURIService}
+          metadata={metadata}
+        />,
+      );
+
+      const instance = element.instance() as WithDataURI;
+      instance.updateDataURI({ dataURIService, metadata, appearance: 'auto' });
+
+      expect(
+        dataURIService.fetchImageDataUri.mock.calls[0][1].allowAnimated,
+      ).toEqual(true);
+    });
+
+    it('should call fetchImageDataUri when the mimeType indicates the item is a GIF', () => {
+      const dataURIService = createDataURIService();
+      const metadata = {
+        mimeType: 'image/gif',
+        name: 'foobar.gif',
+      };
+
+      const element = shallow<WithDataURIProps, WithDataURIState>(
+        <DemoComponentWithDataURI
+          dataURIService={dataURIService}
+          metadata={metadata}
+        />,
+      );
+
+      const instance = element.instance() as WithDataURI;
+      instance.updateDataURI({ dataURIService, metadata });
+
+      expect(dataURIService.fetchImageDataUri).toHaveBeenCalled();
+      expect(dataURIService.fetchOriginalDataUri).not.toHaveBeenCalled();
     });
   });
 
