@@ -215,7 +215,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     expect(pluginState.href).toEqual(href);
   });
 
-  it.only('should update title on blur', () => {
+  it('should update title on blur', () => {
     const { editorView, pluginState } = editor(
       doc(
         paragraph(
