@@ -5,8 +5,6 @@ import RowChildren from './RowChildren';
 import { type DataFunction } from './../types';
 
 type Props = {
-  /** This is the columns prop description */
-  columns?: Array<ElementType>,
   columnWidths?: Array<string>,
   children?: Array<Node>,
   /** This is the data prop description */
@@ -16,10 +14,9 @@ type Props = {
 
 export default class TreeRows extends PureComponent<Props> {
   render() {
-    const { data, columns, columnWidths = [], render } = this.props;
-    const childRows = ((columns && data) || render) && (
+    const { data, columnWidths = [], render } = this.props;
+    const childRows = (data || render) && (
       <RowChildren
-        columns={columns}
         childrenData={data()}
         getChildrenData={data}
         columnWidths={columnWidths}

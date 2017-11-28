@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { TreeTable } from '../src/index';
-import staticData from './nested-data.json';
+import staticData from './data-structured-nodes.json';
 
 function treeCellFromProp(propName) {
   return function TreeCell(props) {

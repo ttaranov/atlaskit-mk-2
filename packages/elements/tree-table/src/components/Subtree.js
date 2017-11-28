@@ -1,20 +1,16 @@
 // @flow
-import React, { PureComponent, type Element, type Node } from 'react';
+import React, { PureComponent } from 'react';
 
 import RowChildren from './RowChildren';
-import RowData from './RowData';
 import { type DataFunction } from './../types';
 
 type Props = {
-  columns: Array<Element>,
   columnWidths?: Array<string>,
   data: Object,
   getChildrenData: DataFunction,
   hasChildren: boolean,
-  isExpanded?: boolean,
   depth?: number,
-  render?: Function,
-  children?: Array<Node>,
+  render: Function,
 };
 
 export default class Subtree extends PureComponent<Props> {
@@ -41,19 +37,12 @@ export default class Subtree extends PureComponent<Props> {
   }
 
   renderRowChildren() {
-    const {
-      columns,
-      getChildrenData,
-      depth,
-      columnWidths,
-      render,
-    } = this.props;
+    const { getChildrenData, depth, columnWidths, render } = this.props;
     const { isExpanded, childrenData } = this.state;
     return (
       isExpanded && (
         <RowChildren
           childrenData={childrenData}
-          columns={columns}
           columnWidths={columnWidths}
           getChildrenData={getChildrenData}
           isExpanded={isExpanded}
@@ -65,38 +54,26 @@ export default class Subtree extends PureComponent<Props> {
   }
 
   render() {
-    const {
-      hasChildren,
-      depth,
-      columnWidths,
-      columns,
-      data,
-      render,
-    } = this.props;
+    const { depth, columnWidths, data, render } = this.props;
 
-    let rowData = null;
     const rowProps = {
       onExpandToggle: this.handleExpandToggleClick,
       depth,
-      hasChildren,
       columnWidths,
-      data: data.content,
-      columns,
+      data,
       isExpanded: this.state.isExpanded,
     };
-    if (render) {
-      rowData = render(data.content);
-      rowData = React.cloneElement(rowData, rowProps);
-    } else if (columns) {
-      rowData = <RowData {...rowProps} />;
+    let rowData = render(data);
+    if (!rowData) {
+      return null;
     }
-    return rowData ? (
-      <div>
+    rowData = React.cloneElement(rowData, rowProps);
+    const key = rowData.props.key;
+    return (
+      <div key={key}>
         {rowData}
         {this.renderRowChildren()}
       </div>
-    ) : (
-      <div>{this.props.children}</div>
     );
   }
 }

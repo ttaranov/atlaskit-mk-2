@@ -6,7 +6,6 @@ import Subtree from './Subtree';
 import { type DataFunction } from './../types';
 
 type Props = {
-  columns: Array<Element>,
   columnWidths?: Array<string>,
   childrenData: Object,
   getChildrenData: DataFunction,
@@ -18,7 +17,6 @@ export default class RowChildren extends PureComponent<Props> {
   render() {
     const {
       childrenData = [],
-      columns,
       columnWidths,
       getChildrenData,
       render,
@@ -30,8 +28,6 @@ export default class RowChildren extends PureComponent<Props> {
           <Subtree
             data={childRowData}
             hasChildren={childRowData.hasChildren}
-            isExpanded={false}
-            columns={columns}
             columnWidths={columnWidths}
             getChildrenData={getChildrenData}
             depth={depth + 1}

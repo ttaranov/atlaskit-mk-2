@@ -1,7 +1,8 @@
 // @flow
 import React, { PureComponent, type ElementType, type Node } from 'react';
-import { TreeTableContainer } from '../styled';
-import RowChildren from './RowChildren';
+import { TreeTableContainer, TreeCell } from '../styled';
+import TreeRows from './TreeRows';
+import RowData from './RowData';
 import TreeHeads from './TreeHeads';
 import TreeHead from './TreeHead';
 
@@ -19,12 +20,13 @@ type Props = {
 };
 
 export default class TreeTable extends PureComponent<Props> {
-  renderChildren() {
-    return this.props.children;
-  }
-
   render() {
-    const { data, headers, columns, columnWidths = [] } = this.props;
+    const {
+      data: getRowChildrenData,
+      headers,
+      columns,
+      columnWidths = [],
+    } = this.props;
     const heads = headers && (
       <TreeHeads>
         {headers.map((header, index) => (
@@ -34,20 +36,28 @@ export default class TreeTable extends PureComponent<Props> {
         ))}
       </TreeHeads>
     );
-
-    const children = columns &&
-      data && (
-        <RowChildren
-          columns={columns}
-          childrenData={data()}
-          getChildrenData={data}
-          columnWidths={columnWidths}
+    let rows = null;
+    if (columns && getRowChildrenData) {
+      rows = (
+        <TreeRows
+          data={getRowChildrenData}
+          render={data => (
+            <RowData key={data.id} hasChildren={data.hasChildren}>
+              {columns.map((Cell, index) => (
+                <TreeCell key={index}>
+                  <Cell {...data.content} />
+                </TreeCell>
+              ))}
+            </RowData>
+          )}
         />
       );
+    }
     return (
       <TreeTableContainer>
         {heads}
-        {children || this.renderChildren()}
+        {rows}
+        {this.props.children}
       </TreeTableContainer>
     );
   }
