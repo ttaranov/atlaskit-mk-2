@@ -245,7 +245,7 @@ describe('emojis', () => {
         editorView.destroy();
       });
 
-      it.only('should call "insertEmoji" if there is only 1 result', () => {
+      it('should call "insertEmoji" if there is only 1 result', () => {
         const { editorView, pluginState } = editor(
           doc(p(emojiQuery(':grin{<>}'))),
         );
@@ -325,7 +325,7 @@ describe('emojis', () => {
       editorView.destroy();
     });
 
-    it('should insert a space after the emoji-node', () => {
+    it.skip('should insert a space after the emoji-node', () => {
       const { editorView, pluginState } = editor(doc(p(emojiQuery(':gr{<>}'))));
 
       pluginState.insertEmoji(grinEmojiId);

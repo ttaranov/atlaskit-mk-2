@@ -236,6 +236,7 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
         const config = {
           // tslint:disable-next-line:no-console
           onCoreError: (message: string) => {
+            // tslint:disable-next-line
             console.error(message);
           },
           shapeParameters,
