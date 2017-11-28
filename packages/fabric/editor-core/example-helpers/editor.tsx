@@ -3,6 +3,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
+import { TaskDecisionProvider } from '@atlaskit/task-decision';
 
 import { baseKeymap } from 'prosemirror-commands';
 import { history } from 'prosemirror-history';
@@ -77,6 +78,7 @@ export interface Props {
   imageUploadHandler?: ImageUploadHandler;
   mentionProvider?: Promise<MentionProvider>;
   emojiProvider?: Promise<EmojiProvider>;
+  taskDecisionProvider?: Promise<TaskDecisionProvider>;
   mediaProvider?: Promise<MediaProvider>;
   activityProvider?: Promise<any>;
   analyticsHandler?: AnalyticsHandler;
@@ -93,6 +95,7 @@ export interface State {
   isExpanded?: boolean;
   mentionProvider?: Promise<MentionProvider>;
   emojiProvider?: Promise<EmojiProvider>;
+  taskDecisionProvider?: Promise<TaskDecisionProvider>;
 }
 
 export default class Editor extends PureComponent<Props, State> {
@@ -150,6 +153,7 @@ export default class Editor extends PureComponent<Props, State> {
       props.mentionProvider !== nextProps.mentionProvider ||
       props.mediaProvider !== nextProps.mediaProvider ||
       props.emojiProvider !== nextProps.emojiProvider ||
+      props.taskDecisionProvider !== nextProps.taskDecisionProvider ||
       props.activityProvider !== nextProps.activityProvider ||
       props.imageUploadHandler !== nextProps.imageUploadHandler
     ) {
@@ -162,11 +166,16 @@ export default class Editor extends PureComponent<Props, State> {
       emojiProvider,
       mediaProvider,
       mentionProvider,
+      taskDecisionProvider,
       activityProvider,
       imageUploadHandler,
     } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
+    this.providerFactory.setProvider(
+      'taskDecisionProvider',
+      taskDecisionProvider,
+    );
     this.providerFactory.setProvider('mediaProvider', mediaProvider);
     this.providerFactory.setProvider('activityProvider', activityProvider);
     this.providerFactory.setProvider(
@@ -177,6 +186,7 @@ export default class Editor extends PureComponent<Props, State> {
     this.setState({
       emojiProvider,
       mentionProvider,
+      taskDecisionProvider,
     });
   };
 
@@ -239,7 +249,7 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   render() {
-    const { mentionProvider, emojiProvider } = this.state;
+    const { mentionProvider, emojiProvider, taskDecisionProvider } = this.state;
     const { activityProvider } = this.props;
 
     const getState = (editorState: EditorState | undefined) => (
@@ -292,6 +302,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateTable={tableState}
         mentionProvider={mentionProvider}
         emojiProvider={emojiProvider}
+        taskDecisionProvider={taskDecisionProvider}
         activityProvider={activityProvider}
         popupsMountPoint={this.props.popupsMountPoint}
         popupsBoundariesElement={this.props.popupsBoundariesElement}
@@ -376,7 +387,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...(schema.nodes.table ? tablePlugins() : []),
           ...reactNodeViewPlugins(schema),
           ...(schema.nodes.taskList && schema.nodes.decisionList
-            ? tasksAndDecisionsPlugin(schema, {})
+            ? tasksAndDecisionsPlugin(schema, {}, this.providerFactory)
             : []),
           history(),
           keymap(baseKeymap), // should be last :(

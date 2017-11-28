@@ -3,8 +3,9 @@ import * as ReactDOM from 'react-dom';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 
+import ProviderFactory from '../../providerFactory';
 import { AnalyticsDelegate, AnalyticsDelegateProps } from '@atlaskit/analytics';
-import { TaskItem } from '@atlaskit/task-decision';
+import TaskItem from '../../ui/Task';
 
 type getPosHandler = () => number;
 
@@ -22,18 +23,25 @@ class Task implements NodeView {
   private getPos: getPosHandler;
   private showPlaceholder: boolean = false;
   private analyticsDelegateContext: AnalyticsDelegateProps;
+  private providerFactory: ProviderFactory;
 
+<<<<<<< Updated upstream
   constructor(
     node: PMNode,
     view: EditorView,
     getPos: getPosHandler,
     analyticsDelegateContext: AnalyticsDelegateProps,
+    providerFactory: ProviderFactory,
   ) {
+=======
+  constructor(node: PMNode, view: EditorView, getPos: getPosHandler, analyticsDelegateContext: AnalyticsDelegateProps, providerFactory: ProviderFactory) {
+>>>>>>> Stashed changes
     this.node = node;
     this.view = view;
     this.getPos = getPos;
     this.showPlaceholder = node.content.childCount === 0;
     this.analyticsDelegateContext = analyticsDelegateContext;
+    this.providerFactory = providerFactory;
     this.renderReactComponent();
   }
 
@@ -66,15 +74,16 @@ class Task implements NodeView {
     this.domRef.style['list-style-type'] = 'none';
 
     const node = this.node;
-    const { localId } = node.attrs;
+    const { localId, state } = node.attrs;
 
     const taskItem = (
       <TaskItem
         taskId={localId}
         contentRef={this.handleRef}
-        isDone={node.attrs.state === 'DONE'}
+        isDone={state === 'DONE'}
         onChange={this.handleOnChange}
         showPlaceholder={this.showPlaceholder}
+        providers={this.providerFactory}
       />
     );
     ReactDOM.render(
@@ -108,10 +117,8 @@ class Task implements NodeView {
   }
 }
 
-export function taskItemNodeViewFactory(
-  analyticsDelegateContext: AnalyticsDelegateProps,
-) {
+export function taskItemNodeViewFactory(analyticsDelegateContext: AnalyticsDelegateProps, providerFactory: ProviderFactory) {
   return (node: any, view: any, getPos: () => number): NodeView => {
-    return new Task(node, view, getPos, analyticsDelegateContext);
+    return new Task(node, view, getPos, analyticsDelegateContext, providerFactory);
   };
 }

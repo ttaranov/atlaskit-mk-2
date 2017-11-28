@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import Button from '@atlaskit/button';
 
@@ -33,6 +34,12 @@ const providers = {
   },
   emojiProvider: {
     resolved: emojiStoryData.getEmojiResource({ uploadSupported: true }),
+    pending: pendingPromise,
+    rejected: rejectedPromise,
+    undefined: undefined,
+  },
+  taskDecisionProvider: {
+    resolved: taskDecisionStoryData.getMockTaskDecisionResource(),
     pending: pendingPromise,
     rejected: rejectedPromise,
     undefined: undefined,
@@ -70,6 +77,7 @@ interface State {
   mentionProvider: string;
   mediaProvider: string;
   emojiProvider: string;
+  taskDecisionProvider: string;
   activityProvider: string;
   jsonDocument?: string;
 }
@@ -85,6 +93,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
       mentionProvider: 'resolved',
       mediaProvider: 'resolved',
       emojiProvider: 'resolved',
+      taskDecisionProvider: 'resolved',
       activityProvider: 'resolved',
       jsonDocument: '{}',
     };
@@ -113,6 +122,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
     const {
       mentionProvider,
       emojiProvider,
+      taskDecisionProvider,
       mediaProvider,
       activityProvider,
       imageUploadProvider,
@@ -142,6 +152,8 @@ export default class ToolsDrawer extends React.Component<any, State> {
               mediaProvider: providers.mediaProvider[mediaProvider],
               mentionProvider: providers.mentionProvider[mentionProvider],
               emojiProvider: providers.emojiProvider[emojiProvider],
+              taskDecisionProvider:
+                providers.taskDecisionProvider[taskDecisionProvider],
               activityProvider: providers.activityProvider[activityProvider],
               onChange: this.onChange,
             })

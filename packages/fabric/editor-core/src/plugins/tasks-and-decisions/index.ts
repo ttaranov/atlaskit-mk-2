@@ -4,15 +4,22 @@ import { AnalyticsDelegateProps } from '@atlaskit/analytics';
 import { uuid } from '@atlaskit/editor-common';
 import inputRulePlugin from './input-rules';
 import keymapsPlugin from './keymaps';
+import ProviderFactory from '../../providerFactory';
 import { taskItemNodeViewFactory, decisionItemNodeView } from '../../nodeviews';
 
 export const stateKey = new PluginKey('tasksAndDecisionsPlugin');
 
-export function createPlugin(analyticDelegateProps: AnalyticsDelegateProps) {
+export function createPlugin(
+  analyticDelegateProps: AnalyticsDelegateProps,
+  providerFactory: ProviderFactory,
+) {
   return new Plugin({
     props: {
       nodeViews: {
-        taskItem: taskItemNodeViewFactory(analyticDelegateProps),
+        taskItem: taskItemNodeViewFactory(
+          analyticDelegateProps,
+          providerFactory,
+        ),
         decisionItem: decisionItemNodeView,
       },
     },
@@ -66,9 +73,10 @@ export function createPlugin(analyticDelegateProps: AnalyticsDelegateProps) {
 const plugins = (
   schema: Schema,
   analyticDelegateProps: AnalyticsDelegateProps,
+  providerFactory: ProviderFactory,
 ) => {
   return [
-    createPlugin(analyticDelegateProps),
+    createPlugin(analyticDelegateProps, providerFactory),
     inputRulePlugin(schema),
     keymapsPlugin(schema),
   ].filter(plugin => !!plugin) as Plugin[];
