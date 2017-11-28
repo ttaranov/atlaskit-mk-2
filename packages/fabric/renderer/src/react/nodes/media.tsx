@@ -15,6 +15,7 @@ export interface MediaProps {
   providers?: ProviderFactory;
   eventHandlers?: EventHandlers;
   type: MediaType;
+  occurrenceKey?: string;
   collection: string;
   cardDimensions?: CardDimensions;
   appearance?: Appearance;
@@ -28,6 +29,7 @@ export default class Media extends PureComponent<MediaProps, {}> {
       id,
       providers,
       type,
+      occurrenceKey,
       collection,
       cardDimensions,
       appearance,
@@ -38,6 +40,7 @@ export default class Media extends PureComponent<MediaProps, {}> {
       <MediaItem
         id={id}
         type={type}
+        occurrenceKey={occurrenceKey}
         collection={collection}
         providers={providers}
         onClick={eventHandlers && eventHandlers.media && eventHandlers.media.onClick}
