@@ -32,15 +32,11 @@ const HeadingType = styled.span`
   padding: 0 0.2em;
 `;
 const HeadingName = styled.span`
-  display: inline-block;
-  min-width: 160px;
-  padding-right: 1em;
-`;
-const HeadingNameText = styled.span`
   background: ${themed({ light: colors.B50, dark: colors.B500 })};
   color: ${themed({ light: colors.B500, dark: colors.B50 })};
   border-radius: ${borderRadius}px;
   display: inline-block;
+  margin-right: 0.8em;
   padding: 0 0.2em;
 `;
 
@@ -80,9 +76,7 @@ function PropTypeHeading(props: PropTypeHeadingProps) {
   return (
     <Heading>
       <code>
-        <HeadingName>
-          <HeadingNameText>{props.name}</HeadingNameText>
-        </HeadingName>
+        <HeadingName>{props.name}</HeadingName>
         <HeadingType>{typeName}</HeadingType>
         {props.defaultValue ? (
           <HeadingDefault> = {props.defaultValue.value}</HeadingDefault>
