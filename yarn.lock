@@ -159,9 +159,9 @@
     url "^0.11.0"
     xregexp "^3.2.0"
 
-"@atlaskit/emoji@^30.1.5":
-  version "30.1.5"
-  resolved "https://registry.yarnpkg.com/@atlaskit/emoji/-/emoji-30.1.5.tgz#a85937931c50fc53375679eeef4cc7eff6e9a7e1"
+"@atlaskit/emoji@^30.3.3":
+  version "30.3.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/emoji/-/emoji-30.3.3.tgz#9a08eec0c7b9b75c1cfa7ad89740a0a32de8d247"
   dependencies:
     uid "^0.0.2"
     "@atlaskit/button" "^1.0.10"
@@ -176,7 +176,8 @@
     classnames "^2.2.5"
     js-search "^1.4.2"
     lru-fast "^0.2.2"
-    mediapicker "^10.0.1"
+    mediapicker "^11.1.6"
+    prop-types "^15.5.10"
     react-virtualized "^9.8.0"
     tslib "^1.2.0"
     typestyle "^1.3.2"
@@ -6706,11 +6707,7 @@ media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
 
-mediapicker@^10.0.1:
-  version "10.1.1"
-  resolved "https://registry.yarnpkg.com/mediapicker/-/mediapicker-10.1.1.tgz#0dbffc7d5d8c81ee19c512111479e675d70bbc82"
-
-mediapicker@^11.1.9:
+mediapicker@^11.1.6, mediapicker@^11.1.9:
   version "11.1.9"
   resolved "https://registry.yarnpkg.com/mediapicker/-/mediapicker-11.1.9.tgz#c0eb88a30a5a451b36d8ddd44d9d39607ccd79cd"
 
