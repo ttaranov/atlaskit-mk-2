@@ -72,12 +72,8 @@ describe('createChangeset', () => {
 
     it('should prompt for changed packages, bump type and summary', async () => {
       const changedPackages = ['pkg-a'];
-      console.warn('line 84');
       await createChangeset(changedPackages, { cwd });
-      console.warn('line 86');
-
       const askPackagesCalls = cli.askCheckbox.mock.calls;
-      console.warn('line 87');
       expect(askPackagesCalls[0][0]).toEqual(
         'Which packages would you like to include?',
       );

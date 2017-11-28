@@ -1,5 +1,7 @@
 # @atlaskit/media-image
 
+## 22.2.2
+
 ## 22.2.1
 - [patch] Migrated to the new repo and updated dependencies [f76434e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f76434e)
 
