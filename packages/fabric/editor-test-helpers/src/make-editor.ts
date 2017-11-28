@@ -45,7 +45,7 @@ export default <T>(options: Options): EditorInstance<T> => {
   // Work around JSDOM/Node not supporting DOM Selection API
   if (
     !('getSelection' in window) &&
-    navigator.userAgent.indexOf('Node.js') !== -1
+    navigator.userAgent.indexOf('jsdom') !== -1
   ) {
     jsdomFixtures(editorView);
   }

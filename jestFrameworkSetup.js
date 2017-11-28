@@ -1,6 +1,7 @@
 /* eslint-disable */
-
 import 'jest-styled-components';
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-15';
 
 /*
   This file is executed after the test framework is setup for each test file. Addons that modify
@@ -9,6 +10,8 @@ import 'jest-styled-components';
 */
 const pmModel = require('./node_modules/prosemirror-model');
 const diff = require('./node_modules/jest-diff');
+
+Enzyme.configure({ adapter: new Adapter() });
 
 /**
  * Polyfill DOMElement.innerText because JSDOM lacks support for it.

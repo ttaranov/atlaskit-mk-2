@@ -1,3 +1,4 @@
+import { browser } from '@atlaskit/editor-common';
 import { Node, Slice } from 'prosemirror-model';
 import {
   EditorState,
@@ -574,8 +575,17 @@ export class TableState {
 
 export const stateKey = new PluginKey('tablePlugin');
 
-export const plugin = (pluginConfig?: PluginConfig) =>
-  new Plugin({
+export const plugin = (pluginConfig?: PluginConfig) => {
+  // Disable inline table editing and resizing controls in Firefox
+  // https://github.com/ProseMirror/prosemirror/issues/432
+  if (browser.ff) {
+    setTimeout(() => {
+      document.execCommand('enableObjectResizing', false, 'false');
+      document.execCommand('enableInlineTableEditing', false, 'false');
+    });
+  }
+
+  return new Plugin({
     state: {
       init(config, state: EditorState) {
         return new TableState(state, pluginConfig);
@@ -626,6 +636,7 @@ export const plugin = (pluginConfig?: PluginConfig) =>
       }
     }
   });
+};
 
 const plugins = (pluginConfig?: PluginConfig) => {
   return [plugin(pluginConfig), tableEditing()].filter(
@@ -634,10 +645,3 @@ const plugins = (pluginConfig?: PluginConfig) => {
 };
 
 export default plugins;
-
-// Disable inline table editing and resizing controls in Firefox
-// https://github.com/ProseMirror/prosemirror/issues/432
-setTimeout(() => {
-  document.execCommand('enableObjectResizing', false, 'false');
-  document.execCommand('enableInlineTableEditing', false, 'false');
-});
