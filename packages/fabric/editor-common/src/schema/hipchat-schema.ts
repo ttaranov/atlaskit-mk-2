@@ -82,5 +82,5 @@ export const hipchatSchema: Schema = createSchema({
   customNodeSpecs: {
     // The top level node for a document.
     doc,
-  }
+  },
 });

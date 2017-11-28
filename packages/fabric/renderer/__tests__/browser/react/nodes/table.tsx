@@ -9,5 +9,4 @@ describe('Renderer - React/Nodes/Table', () => {
   it('should create a <table>-tag', () => {
     expect(table.name()).to.equal('styled.table');
   });
-
 });

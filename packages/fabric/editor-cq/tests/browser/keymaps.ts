@@ -1,6 +1,6 @@
 import { chaiPlugin, makeEditor } from '@atlaskit/editor-test-helpers';
 import { textFormattingPlugins } from '@atlaskit/editor-core';
-import { doc, p, sub, sup, } from './_schema-builder';
+import { doc, p, sub, sup } from './_schema-builder';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import schema from '../../src/schema';
@@ -12,7 +12,7 @@ describe('Keymaps', () => {
     const ed = makeEditor<any>({
       doc,
       schema,
-      plugins: textFormattingPlugins(schema)
+      plugins: textFormattingPlugins(schema),
     });
 
     afterEach(() => {

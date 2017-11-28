@@ -9,5 +9,4 @@ describe('Renderer - React/Nodes/TableCell', () => {
   it('should create a <td>-tag', () => {
     expect(tableCell.name()).to.equal('td');
   });
-
 });

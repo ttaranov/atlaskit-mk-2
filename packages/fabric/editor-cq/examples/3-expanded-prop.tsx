@@ -33,9 +33,14 @@ class Demo extends React.Component<Props, State> {
     );
   }
 
-  private toggleExpanded = () => this.setState({ expanded: !this.state.expanded });
+  private toggleExpanded = () =>
+    this.setState({ expanded: !this.state.expanded });
 }
 
 export default function Component() {
-  return <ExampleWrapper render={handleChange => <Demo handleChange={handleChange} />} />;
+  return (
+    <ExampleWrapper
+      render={handleChange => <Demo handleChange={handleChange} />}
+    />
+  );
 }

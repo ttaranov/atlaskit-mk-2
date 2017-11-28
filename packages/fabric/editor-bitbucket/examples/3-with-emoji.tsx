@@ -9,7 +9,9 @@ const CANCEL_ACTION = () => console.log('Cancel');
 const CHANGE_ACTION = () => console.log('Change');
 const SAVE_ACTION = () => console.log('Save');
 
-const emojiProvider: Promise<EmojiProvider> = emojiStoryData.getEmojiResource() as any;
+const emojiProvider: Promise<
+  EmojiProvider
+> = emojiStoryData.getEmojiResource() as any;
 
 export default function Component() {
   return (

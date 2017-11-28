@@ -9,5 +9,4 @@ describe('Renderer - React/Nodes/BulletList', () => {
   it('should wrap content with <ul>-tag', () => {
     expect(bulletList.is('ul')).to.equal(true);
   });
-
 });

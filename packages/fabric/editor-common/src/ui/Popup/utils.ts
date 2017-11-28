@@ -23,7 +23,12 @@ export function isTextNode(elem: HTMLElement | Element): boolean {
 /**
  * Decides if given fitHeight fits below or above the target taking boundaries into account.
  */
-export function getVerticalPlacement(target: HTMLElement, boundariesElement: HTMLElement, fitHeight?: number, alignY?: string): string {
+export function getVerticalPlacement(
+  target: HTMLElement,
+  boundariesElement: HTMLElement,
+  fitHeight?: number,
+  alignY?: string,
+): string {
   if (alignY) {
     return alignY;
   }
@@ -40,9 +45,13 @@ export function getVerticalPlacement(target: HTMLElement, boundariesElement: HTM
   const { height: boundriesHeight } = boundariesClientRect;
   const boundriesTop = isBody(boundariesElement) ? 0 : boundariesClientRect.top;
 
-  const { top: targetTop, height: targetHeight } = target.getBoundingClientRect();
+  const {
+    top: targetTop,
+    height: targetHeight,
+  } = target.getBoundingClientRect();
   const spaceAbove = targetTop - (boundriesTop - boundariesElement.scrollTop);
-  const spaceBelow = (boundriesTop + boundriesHeight) - (targetTop + targetHeight);
+  const spaceBelow =
+    boundriesTop + boundriesHeight - (targetTop + targetHeight);
 
   if (spaceBelow >= fitHeight || spaceBelow >= spaceAbove) {
     return 'bottom';
@@ -54,7 +63,12 @@ export function getVerticalPlacement(target: HTMLElement, boundariesElement: HTM
 /**
  * Decides if given fitWidth fits to the left or to the right of the target taking boundaries into account.
  */
-export function getHorizontalPlacement(target: HTMLElement, boundariesElement: HTMLElement, fitWidth?: number, alignX?: string): string {
+export function getHorizontalPlacement(
+  target: HTMLElement,
+  boundariesElement: HTMLElement,
+  fitWidth?: number,
+  alignX?: string,
+): string {
   if (alignX) {
     return alignX;
   }
@@ -67,10 +81,16 @@ export function getHorizontalPlacement(target: HTMLElement, boundariesElement: H
     target = target.parentElement!;
   }
 
-  const { left: targetLeft, width: targetWidth } = target.getBoundingClientRect();
-  const { left: boundriesLeft, width: boundriesWidth } = boundariesElement.getBoundingClientRect();
+  const {
+    left: targetLeft,
+    width: targetWidth,
+  } = target.getBoundingClientRect();
+  const {
+    left: boundriesLeft,
+    width: boundriesWidth,
+  } = boundariesElement.getBoundingClientRect();
   const spaceLeft = targetLeft - boundriesLeft + targetWidth;
-  const spaceRight = (boundriesLeft + boundriesWidth) - targetLeft;
+  const spaceRight = boundriesLeft + boundriesWidth - targetLeft;
 
   if (spaceRight >= fitWidth || spaceRight >= spaceLeft) {
     return 'left';
@@ -79,7 +99,14 @@ export function getHorizontalPlacement(target: HTMLElement, boundariesElement: H
   return 'right';
 }
 
-export function calculatePlacement(target: HTMLElement, boundariesElement: HTMLElement, fitWidth?: number, fitHeight?: number, alignX?: string, alignY?: string): [string, string] {
+export function calculatePlacement(
+  target: HTMLElement,
+  boundariesElement: HTMLElement,
+  fitWidth?: number,
+  fitHeight?: number,
+  alignX?: string,
+  alignY?: string,
+): [string, string] {
   return [
     getVerticalPlacement(target, boundariesElement, fitHeight, alignY),
     getHorizontalPlacement(target, boundariesElement, fitWidth, alignX),
@@ -90,7 +117,12 @@ export function calculatePlacement(target: HTMLElement, boundariesElement: HTMLE
  * Calculates relative coordinates for placing popup along with the target.
  * Uses placement from calculatePlacement.
  */
-export function calculatePosition({ placement, target, popup, offset }: CalculatePositionParams): Position {
+export function calculatePosition({
+  placement,
+  target,
+  popup,
+  offset,
+}: CalculatePositionParams): Position {
   const position: Position = {};
 
   if (!target || !popup || !popup.offsetParent) {
@@ -113,7 +145,7 @@ export function calculatePosition({ placement, target, popup, offset }: Calculat
     top: popupOffsetParentTop,
     left: popupOffsetParentLeft,
     right: popupOffsetParentRight,
-    height: popupOffsetParentHeight
+    height: popupOffsetParentHeight,
   } = popupOffsetParent.getBoundingClientRect();
 
   const {
@@ -124,27 +156,38 @@ export function calculatePosition({ placement, target, popup, offset }: Calculat
   } = target.getBoundingClientRect();
 
   if (verticalPlacement === 'top') {
-    position.bottom = Math.ceil(popupOffsetParentHeight
-      - (targetTop - popupOffsetParentTop)
-      - (isBody(popupOffsetParent) ? 0 : popupOffsetParent.scrollTop)
-      - borderBottomWidth
-      + offset[1]);
+    position.bottom = Math.ceil(
+      popupOffsetParentHeight -
+        (targetTop - popupOffsetParentTop) -
+        (isBody(popupOffsetParent) ? 0 : popupOffsetParent.scrollTop) -
+        borderBottomWidth +
+        offset[1],
+    );
   } else {
-    position.top = Math.ceil((targetTop - popupOffsetParentTop)
-      + targetHeight
-      + (isBody(popupOffsetParent) ? 0 : popupOffsetParent.scrollTop)
-      - borderBottomWidth
-      + offset[1]);
+    position.top = Math.ceil(
+      targetTop -
+        popupOffsetParentTop +
+        targetHeight +
+        (isBody(popupOffsetParent) ? 0 : popupOffsetParent.scrollTop) -
+        borderBottomWidth +
+        offset[1],
+    );
   }
 
   if (horizontalPlacement === 'left') {
-    position.left = Math.ceil(targetLeft - popupOffsetParentLeft
-      + (isBody(popupOffsetParent) ? 0 : popupOffsetParent.scrollLeft)
-      + offset[0]);
+    position.left = Math.ceil(
+      targetLeft -
+        popupOffsetParentLeft +
+        (isBody(popupOffsetParent) ? 0 : popupOffsetParent.scrollLeft) +
+        offset[0],
+    );
   } else {
-    position.right = Math.ceil(popupOffsetParentRight - targetRight
-      - (isBody(popupOffsetParent) ? 0 : popupOffsetParent.scrollLeft)
-      + offset[0]);
+    position.right = Math.ceil(
+      popupOffsetParentRight -
+        targetRight -
+        (isBody(popupOffsetParent) ? 0 : popupOffsetParent.scrollLeft) +
+        offset[0],
+    );
   }
 
   return position;
@@ -153,17 +196,23 @@ export function calculatePosition({ placement, target, popup, offset }: Calculat
 /**
  * Traverse DOM Tree upwards looking for popup parents with "overflow: scroll".
  */
-export function findOverflowScrollParent(popup: HTMLElement | null): HTMLElement | false {
+export function findOverflowScrollParent(
+  popup: HTMLElement | null,
+): HTMLElement | false {
   let parent: HTMLElement | null = popup;
 
   if (!parent) {
     return false;
   }
 
-  while (parent = parent.parentElement) {
+  while ((parent = parent.parentElement)) {
     // IE11 on Window 8 doesn't show styles from CSS when accessing through element.style property.
     const style = window.getComputedStyle(parent);
-    if (style.overflow === 'scroll' || style.overflowX === 'scroll' || style.overflowY === 'scroll') {
+    if (
+      style.overflow === 'scroll' ||
+      style.overflowX === 'scroll' ||
+      style.overflowY === 'scroll'
+    ) {
       return parent;
     }
   }

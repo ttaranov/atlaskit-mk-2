@@ -6,16 +6,12 @@ import {
   ProviderFactory,
   defaultSchema,
   MentionEventHandler,
-  CardEventClickHandler ,
-  AppCardEventClickHandler ,
+  CardEventClickHandler,
+  AppCardEventClickHandler,
   AppCardActionEventClickHandler,
-  ActionEventClickHandler
+  ActionEventClickHandler,
 } from '@atlaskit/editor-common';
-import {
-  ReactSerializer,
-  renderDocument,
-  RendererContext,
-} from '../../';
+import { ReactSerializer, renderDocument, RendererContext } from '../../';
 import { RenderOutputStat } from '../../';
 import { Wrapper } from './style';
 
@@ -67,20 +63,25 @@ export default class Renderer extends PureComponent<Props, {}> {
   }
 
   private updateSerializer(props: Props) {
-    const {
+    const { eventHandlers, portal, rendererContext } = props;
+
+    this.serializer = new ReactSerializer(
+      this.providerFactory,
       eventHandlers,
       portal,
       rendererContext,
-    } = props;
-
-    this.serializer = new ReactSerializer(this.providerFactory, eventHandlers, portal, rendererContext);
+    );
   }
 
   render() {
     const { document, onComplete, schema } = this.props;
 
     try {
-      const { result, stat } = renderDocument(document, this.serializer, schema || defaultSchema);
+      const { result, stat } = renderDocument(
+        document,
+        this.serializer,
+        schema || defaultSchema,
+      );
 
       if (onComplete) {
         onComplete(stat);

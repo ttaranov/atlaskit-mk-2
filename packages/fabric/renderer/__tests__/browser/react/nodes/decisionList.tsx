@@ -14,7 +14,7 @@ describe('Renderer - React/Nodes/DecisionList', () => {
   });
 
   it('should not render if no children', () => {
-    const decisionList = shallow(<DecisionList/>);
+    const decisionList = shallow(<DecisionList />);
     expect(decisionList.isEmptyRender()).to.equal(true);
   });
 });

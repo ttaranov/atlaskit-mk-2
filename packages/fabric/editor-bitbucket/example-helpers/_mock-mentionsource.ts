@@ -12,7 +12,7 @@ export class MockMentionSource implements MentionSource {
 
   query(query: string) {
     if (query && query.length >= 3) {
-      const response = { query, results: search.search(query) } ;
+      const response = { query, results: search.search(query) };
       if (this.handlers['respond']) {
         this.handlers['respond'](response);
       }

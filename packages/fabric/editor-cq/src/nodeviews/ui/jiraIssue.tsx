@@ -41,7 +41,7 @@ const JiraChildNode = styled.span`
 
   &:before {
     color: black;
-    content: "JIRA | ";
+    content: 'JIRA | ';
   }
 `;
 

@@ -7,7 +7,7 @@ import {
   defaultCollectionName,
   StoryBookAuthProvider,
   StoryBookUserAuthProvider,
-  defaultParams
+  defaultParams,
 } from '@atlaskit/media-test-helpers';
 
 export interface MediaProviderFactoryConfig {
@@ -25,9 +25,17 @@ export interface MediaProviderFactoryConfig {
  * at the beginning of your file and pass "mediaTestHelpers" into this function
  */
 export function storyMediaProviderFactory(
-  mediaProviderFactoryConfig: MediaProviderFactoryConfig = {}
+  mediaProviderFactoryConfig: MediaProviderFactoryConfig = {},
 ) {
-  const { serviceHost, collectionName, stateManager, dropzoneContainer, includeUploadContext, includeLinkCreateContext, includeUserAuthProvider } = mediaProviderFactoryConfig;
+  const {
+    serviceHost,
+    collectionName,
+    stateManager,
+    dropzoneContainer,
+    includeUploadContext,
+    includeLinkCreateContext,
+    includeUserAuthProvider,
+  } = mediaProviderFactoryConfig;
   const collection = collectionName || defaultCollectionName;
 
   return Promise.resolve<MediaProvider>({
@@ -38,33 +46,37 @@ export function storyMediaProviderFactory(
     },
     viewContext: Promise.resolve<MediaContextConfig>({
       serviceHost: serviceHost || defaultParams.serviceHost,
-      authProvider: StoryBookAuthProvider.create(false)
+      authProvider: StoryBookAuthProvider.create(false),
     }),
-    uploadContext: includeUploadContext === false ? undefined : Promise.resolve<MediaContextConfig>({
-      serviceHost: 'https://dt-api.internal.app.dev.atlassian.io',
-      authProvider: StoryBookAuthProvider.create(false, {
-        [`urn:filestore:collection:${collection}`]: [
-          'read', 'insert'
-        ],
-        'urn:filestore:chunk:*': ['create', 'read'],
-        'urn:filestore:upload': ['create'],
-        'urn:filestore:upload:*': ['read', 'update']
-      }),
-      userAuthProvider: !includeUserAuthProvider ? undefined : StoryBookUserAuthProvider.create()
-    }),
-    linkCreateContext: includeLinkCreateContext === false ? undefined : Promise.resolve<MediaContextConfig>({
-      serviceHost: 'https://dt-api-filestore.internal.app.dev.atlassian.io',
-      authProvider: StoryBookAuthProvider.create(false, {
-        [`urn:filestore:collection:${collection}`]: [
-          'read', 'update'
-        ],
-        'urn:filestore:file:*': ['read'],
-        'urn:filestore:chunk:*': ['read']
-      })
-    }),
+    uploadContext:
+      includeUploadContext === false
+        ? undefined
+        : Promise.resolve<MediaContextConfig>({
+            serviceHost: 'https://dt-api.internal.app.dev.atlassian.io',
+            authProvider: StoryBookAuthProvider.create(false, {
+              [`urn:filestore:collection:${collection}`]: ['read', 'insert'],
+              'urn:filestore:chunk:*': ['create', 'read'],
+              'urn:filestore:upload': ['create'],
+              'urn:filestore:upload:*': ['read', 'update'],
+            }),
+            userAuthProvider: !includeUserAuthProvider
+              ? undefined
+              : StoryBookUserAuthProvider.create(),
+          }),
+    linkCreateContext:
+      includeLinkCreateContext === false
+        ? undefined
+        : Promise.resolve<MediaContextConfig>({
+            serviceHost:
+              'https://dt-api-filestore.internal.app.dev.atlassian.io',
+            authProvider: StoryBookAuthProvider.create(false, {
+              [`urn:filestore:collection:${collection}`]: ['read', 'update'],
+              'urn:filestore:file:*': ['read'],
+              'urn:filestore:chunk:*': ['read'],
+            }),
+          }),
   });
 }
-
 
 export type promisedString = Promise<string>;
 export type resolveFn = (...any) => any;
@@ -73,13 +85,13 @@ export type thumbnailStore = { [id: string]: promisedString | resolveFn };
 export function fileToBase64(blob) {
   return new Promise((resolve, reject) => {
     const reader = new (window as any).FileReader();
-    reader.onloadend = function () {
+    reader.onloadend = function() {
       resolve(reader.result);
     };
-    reader.onabort = function () {
+    reader.onabort = function() {
       reject('abort');
     };
-    reader.onerror = function (err) {
+    reader.onerror = function(err) {
       reject(err);
     };
     reader.readAsDataURL(blob);
@@ -92,13 +104,13 @@ export function isImage(type: string) {
 
 export function getLinkCreateContextMock(testLinkId: string) {
   return {
-    getUrlPreviewProvider: (url) => ({
+    getUrlPreviewProvider: url => ({
       observable: () => ({
-        subscribe: (cb) => cb({})
-      })
+        subscribe: cb => cb({}),
+      }),
     }),
     addLinkItem: (url, collection, metadata) => {
       return Promise.resolve(testLinkId);
-    }
+    },
   } as any;
 }

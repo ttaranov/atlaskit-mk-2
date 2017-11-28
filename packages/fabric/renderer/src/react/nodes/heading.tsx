@@ -2,7 +2,9 @@ import * as React from 'react';
 
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
-export default function Heading(props: { level: HeadingLevel } & React.Props<any>) {
+export default function Heading(
+  props: { level: HeadingLevel } & React.Props<any>,
+) {
   const { level, children } = props;
   switch (level) {
     case 1:

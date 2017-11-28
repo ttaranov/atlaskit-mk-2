@@ -11,6 +11,8 @@ describe('Renderer - React/Marks/Strike', () => {
   });
 
   it('should output correct html', () => {
-    expect(mark.html()).to.equal('<span style="text-decoration:line-through;">Strike this</span>');
+    expect(mark.html()).to.equal(
+      '<span style="text-decoration:line-through;">Strike this</span>',
+    );
   });
 });

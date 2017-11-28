@@ -34,7 +34,9 @@ export function isSchemaWithTextColor(schema: Schema): boolean {
   return !!schema.marks.textColor;
 }
 
-export async function getMediaContextInfo(mediaProvider?: Promise<MediaProvider>): Promise<MediaContextInfo> {
+export async function getMediaContextInfo(
+  mediaProvider?: Promise<MediaProvider>,
+): Promise<MediaContextInfo> {
   let mediaContextInfo: MediaContextInfo = {};
 
   if (mediaProvider) {
@@ -45,24 +47,44 @@ export async function getMediaContextInfo(mediaProvider?: Promise<MediaProvider>
 
       if (viewContext) {
         const { serviceHost, authProvider } = viewContext.config || viewContext;
-        const collection = resolvedMediaProvider.uploadParams && resolvedMediaProvider.uploadParams.collection || '';
-        const auth = (await authProvider({ collectionName: collection })) as ClientBasedAuth;
+        const collection =
+          (resolvedMediaProvider.uploadParams &&
+            resolvedMediaProvider.uploadParams.collection) ||
+          '';
+        const auth = (await authProvider({
+          collectionName: collection,
+        })) as ClientBasedAuth;
         const { token, clientId } = auth;
 
-        mediaContextInfo.viewContext = { clientId, serviceHost, token, collection };
+        mediaContextInfo.viewContext = {
+          clientId,
+          serviceHost,
+          token,
+          collection,
+        };
       }
     }
 
-    if (resolvedMediaProvider.uploadParams && resolvedMediaProvider.uploadParams.collection) {
+    if (
+      resolvedMediaProvider.uploadParams &&
+      resolvedMediaProvider.uploadParams.collection
+    ) {
       const uploadContext = await resolvedMediaProvider.uploadContext;
 
       if (uploadContext) {
         const { serviceHost, authProvider } = uploadContext;
         const { collection } = resolvedMediaProvider.uploadParams;
-        const auth: ClientBasedAuth = (await authProvider({ collectionName: collection })) as ClientBasedAuth;
+        const auth: ClientBasedAuth = (await authProvider({
+          collectionName: collection,
+        })) as ClientBasedAuth;
         const { token, clientId } = auth;
 
-        mediaContextInfo.uploadContext = { clientId, serviceHost, token, collection };
+        mediaContextInfo.uploadContext = {
+          clientId,
+          serviceHost,
+          token,
+          collection,
+        };
       }
     }
   }

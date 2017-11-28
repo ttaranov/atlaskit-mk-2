@@ -6,7 +6,10 @@ const schema = makeSchema();
 
 describe(`${name}/schema decisionList node`, () => {
   it('serializes to <ol> with proper data-attributes', () => {
-    const html = toHTML(schema.nodes.decisionList.create({ localId: 'cheese' }), schema);
+    const html = toHTML(
+      schema.nodes.decisionList.create({ localId: 'cheese' }),
+      schema,
+    );
     expect(html).toContain('<ol');
     expect(html).toContain('data-decision-list-local-id="cheese"');
   });
@@ -27,6 +30,16 @@ describe(`${name}/schema decisionList node`, () => {
 
 function makeSchema() {
   return createSchema({
-    nodes: ['doc', 'paragraph', 'heading', 'text', 'decisionList', 'decisionItem', 'orderedList', 'bulletList', 'listItem']
+    nodes: [
+      'doc',
+      'paragraph',
+      'heading',
+      'text',
+      'decisionList',
+      'decisionItem',
+      'orderedList',
+      'bulletList',
+      'listItem',
+    ],
   });
 }

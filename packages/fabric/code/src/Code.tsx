@@ -18,12 +18,12 @@ export default class Code extends PureComponent<CodeProps> {
   static propTypes = {
     text: PropTypes.string.isRequired,
     language: PropTypes.oneOf(languageList),
-    theme: PropTypes.object
+    theme: PropTypes.object,
   };
 
   static defaultProps = {
     language: 'md',
-    theme: {}
+    theme: {},
   };
 
   render() {
@@ -33,12 +33,8 @@ export default class Code extends PureComponent<CodeProps> {
       language: normalizeLanguage(language),
       PreTag: 'span',
       style: inlineCodeStyle,
-      showLineNumbers: false
+      showLineNumbers: false,
     };
-    return (
-      <SyntaxHighlighter {...props}>
-        {this.props.text}
-      </SyntaxHighlighter>
-    );
+    return <SyntaxHighlighter {...props}>{this.props.text}</SyntaxHighlighter>;
   }
 }

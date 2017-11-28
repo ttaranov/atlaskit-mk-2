@@ -38,7 +38,7 @@ class OpenHelp extends React.Component<any, any> {
   }
 }
 
-const openHelp = (openHelp) => <OpenHelp openHelp={openHelp} />;
+const openHelp = openHelp => <OpenHelp openHelp={openHelp} />;
 
 /**
  * List of addon configuration objects
@@ -52,52 +52,61 @@ const addonConfigs: AddonConfiguration[] = [
         Rendered on click
         <button onClick={closePopup}>close</button>
       </AddonComponentExample>
-    )
-  }, {
+    ),
+  },
+  {
     text: 'Clear editor',
     icon: <AtlassianIcon label="Item 2" />,
-    actionOnClick: editorActions => editorActions.clear()
-  }, {
+    actionOnClick: editorActions => editorActions.clear(),
+  },
+  {
     text: 'Formatting Tips',
     icon: <QuestionIcon label="Formatting tips" />,
-    renderOnClick: () =>
-      <WithHelpTrigger render={openHelp} />
-  }
+    renderOnClick: () => <WithHelpTrigger render={openHelp} />,
+  },
 ];
 
-const addons = addonConfigs.map(({ text, icon, actionOnClick, renderOnClick }, i) => (
-  <Addon key={i} icon={icon} actionOnClick={actionOnClick} renderOnClick={renderOnClick}>
-    {text}
-  </Addon>
-));
+const addons = addonConfigs.map(
+  ({ text, icon, actionOnClick, renderOnClick }, i) => (
+    <Addon
+      key={i}
+      icon={icon}
+      actionOnClick={actionOnClick}
+      renderOnClick={renderOnClick}
+    >
+      {text}
+    </Addon>
+  ),
+);
 
 export default function Example() {
   return (
     <EditorContext>
       <ToolsDrawer
         // tslint:disable-next-line:jsx-no-lambda
-        renderEditor={({mentionProvider, emojiProvider, mediaProvider, onChange}) =>
+        renderEditor={({
+          mentionProvider,
+          emojiProvider,
+          mediaProvider,
+          onChange,
+        }) => (
           <Editor
             appearance="message"
             analyticsHandler={analyticsHandler}
-
             allowTextFormatting={true}
             allowTasksAndDecisions={true}
             allowHyperlinks={true}
             allowCodeBlocks={true}
             allowHelpDialog={true}
-
             saveOnEnter={true}
-
             mentionProvider={mentionProvider}
             emojiProvider={emojiProvider}
             mediaProvider={mediaProvider}
-
             onChange={onChange}
             onSave={SAVE_ACTION}
-
             addonToolbarComponents={addons}
-          />}
+          />
+        )}
       />
     </EditorContext>
   );
