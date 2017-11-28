@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@atlaskit/button": "^5.4.8",
-    "@atlaskit/docs": "^0.0.4",
+    "@atlaskit/docs": "^0.0.6",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "enzyme": "^2.9.1"
   }
