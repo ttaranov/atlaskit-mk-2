@@ -1,0 +1,5 @@
+{
+  "extends": [
+    "../../../../build/config/eslint.test.unit.js"
+  ]
+}
