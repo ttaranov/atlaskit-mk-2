@@ -13,14 +13,17 @@ type StyleParams = {
 const spinnerColor = themed({ light: colors.N500, dark: colors.N0 });
 const spinnerColorInverted = themed({ light: colors.N0, dark: colors.N0 });
 
-export const getStrokeColor = ({ invertColor, ...props }: {invertColor?: boolean}): string => (
-  invertColor ? spinnerColorInverted(props) : spinnerColor(props)
-);
+export const getStrokeColor = ({
+  invertColor,
+  ...props
+}: {
+  invertColor?: boolean,
+}): string => (invertColor ? spinnerColorInverted(props) : spinnerColor(props));
 
 export const svgStyles = css`
   ${(props: StyleParams) => {
     const strokeWidth = Math.round(props.size / 10);
-    const strokeRadius = (props.size / 2) - (strokeWidth / 2);
+    const strokeRadius = props.size / 2 - strokeWidth / 2;
     const circumference = Math.PI * strokeRadius * 2;
 
     const idleRotation = `0.86s cubic-bezier(0.4, 0.15, 0.6, 0.85) infinite ${keyframes`
@@ -52,9 +55,11 @@ export const svgStyles = css`
       stroke-width: ${strokeWidth}px;
       transform-origin: center;
     `;
-  }}
-  `;
+  }};
+`;
 
-const Svg = styled.svg`${svgStyles}`;
+const Svg = styled.svg`
+  ${svgStyles};
+`;
 Svg.displayName = 'SpinnerSvg';
 export default Svg;

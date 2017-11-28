@@ -1,5 +1,7 @@
 # @atlaskit/tag-group
 
+## 3.4.7
+
 ## 3.4.6
 
 ## Unreleased
