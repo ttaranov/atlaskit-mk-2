@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "60.4.4",
+  "version": "60.4.5",
   "description": "A package contains Atlassian editor core functionality",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -28,7 +28,7 @@
     "@atlaskit/docs": "^0.0.7",
     "@atlaskit/dropdown-menu": "^3.0.1",
     "@atlaskit/droplist": "^3.8.1",
-    "@atlaskit/editor-common": "^3.9.11",
+    "@atlaskit/editor-common": "^3.9.12",
     "@atlaskit/emoji": "^30.3.3",
     "@atlaskit/icon": "^10.3.1",
     "@atlaskit/layer": "^2.5.4",
