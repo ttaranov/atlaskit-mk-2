@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent, type ElementType, type Node } from 'react';
 import { TreeTableContainer } from '../styled';
-import TreeChildren from './TreeChildren';
+import RowChildren from './RowChildren';
 import TreeHeads from './TreeHeads';
 import TreeHead from './TreeHead';
 
@@ -37,7 +37,7 @@ export default class TreeTable extends PureComponent<Props> {
 
     const children = columns &&
       data && (
-        <TreeChildren
+        <RowChildren
           columns={columns}
           childrenData={data()}
           getChildrenData={data}

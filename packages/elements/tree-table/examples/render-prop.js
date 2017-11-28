@@ -5,7 +5,7 @@ import {
   TreeHeads,
   TreeHead,
   TreeRows,
-  TreeRow,
+  RowData,
   TreeCell,
 } from '../src/index';
 import staticData from './nested-data.json';
@@ -23,10 +23,10 @@ export default () => (
     <TreeRows
       data={getChildrenData}
       render={({ id, title, numbering, hasChildren }) => (
-        <TreeRow key={id} hasChildren={hasChildren}>
+        <RowData key={id} hasChildren={hasChildren}>
           <TreeCell width={200}>{title}</TreeCell>
           <TreeCell width={100}>{numbering}</TreeCell>
-        </TreeRow>
+        </RowData>
       )}
     />
   </TreeTable>

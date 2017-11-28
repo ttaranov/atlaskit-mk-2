@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent, type ElementType, type Node } from 'react';
-import TreeChildren from './TreeChildren';
+import RowChildren from './RowChildren';
 
 import { type DataFunction } from './../types';
 
@@ -18,7 +18,7 @@ export default class TreeRows extends PureComponent<Props> {
   render() {
     const { data, columns, columnWidths = [], render } = this.props;
     const childRows = ((columns && data) || render) && (
-      <TreeChildren
+      <RowChildren
         columns={columns}
         childrenData={data()}
         getChildrenData={data}

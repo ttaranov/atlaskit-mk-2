@@ -14,7 +14,7 @@ type Props = {
   render?: Function,
 };
 
-export default class TreeChildren extends PureComponent<Props> {
+export default class RowChildren extends PureComponent<Props> {
   render() {
     const {
       childrenData = [],

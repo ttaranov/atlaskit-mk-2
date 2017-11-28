@@ -14,7 +14,7 @@ type Props = {
   children: Array<Node>,
 };
 
-export default class TreeRow extends PureComponent<Props> {
+export default class RowData extends PureComponent<Props> {
   renderChildrenCells() {
     const {
       children,
@@ -24,10 +24,10 @@ export default class TreeRow extends PureComponent<Props> {
       columnWidths,
     } = this.props;
     return React.Children.map(children, (cell, index) => {
-      const firstCell = index === 0;
+      const isFirstCell = index === 0;
       const width = (columnWidths && columnWidths[index]) || '200px'; //`${(1 / columns.length) * 100}%`;
-      const indentLevel = firstCell ? depth : 0;
-      const chevron = firstCell &&
+      const indentLevel = isFirstCell ? depth : 0;
+      const chevron = isFirstCell &&
         cell.props.children && (
           <Chevron
             key="chevron"

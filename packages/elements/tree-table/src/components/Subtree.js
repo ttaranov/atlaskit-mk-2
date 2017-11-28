@@ -1,8 +1,8 @@
 // @flow
 import React, { PureComponent, type Element, type Node } from 'react';
 
-import TreeChildren from './TreeChildren';
-import TreeRow from './TreeRow';
+import RowChildren from './RowChildren';
+import RowData from './RowData';
 import { type DataFunction } from './../types';
 
 type Props = {
@@ -40,7 +40,7 @@ export default class Subtree extends PureComponent<Props> {
     });
   }
 
-  renderChildren() {
+  renderRowChildren() {
     const {
       columns,
       getChildrenData,
@@ -51,7 +51,7 @@ export default class Subtree extends PureComponent<Props> {
     const { isExpanded, childrenData } = this.state;
     return (
       isExpanded && (
-        <TreeChildren
+        <RowChildren
           childrenData={childrenData}
           columns={columns}
           columnWidths={columnWidths}
@@ -74,7 +74,7 @@ export default class Subtree extends PureComponent<Props> {
       render,
     } = this.props;
 
-    let row = null;
+    let rowData = null;
     const rowProps = {
       onExpandToggle: this.handleExpandToggleClick,
       depth,
@@ -85,15 +85,15 @@ export default class Subtree extends PureComponent<Props> {
       isExpanded: this.state.isExpanded,
     };
     if (render) {
-      row = render(data.content);
-      row = React.cloneElement(row, rowProps);
+      rowData = render(data.content);
+      rowData = React.cloneElement(rowData, rowProps);
     } else if (columns) {
-      row = <TreeRow {...rowProps} />;
+      rowData = <RowData {...rowProps} />;
     }
-    return row ? (
+    return rowData ? (
       <div>
-        {row}
-        {this.renderChildren()}
+        {rowData}
+        {this.renderRowChildren()}
       </div>
     ) : (
       <div>{this.props.children}</div>
