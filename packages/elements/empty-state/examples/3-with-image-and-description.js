@@ -1,8 +1,9 @@
 // @flow
 
 import React from 'react';
+import Button from '@atlaskit/button';
 import EmptyState from '../src/EmptyState';
-import exampleImage from './img/example-image.svg';
+import exampleImage from './img/example-image.png';
 
 const props = {
   header: 'I am the header',
@@ -11,17 +12,6 @@ const props = {
         design elements over content. It's also called placeholder (or filler) 
         text. It's a convenient tool for mock-ups.`,
   imageUrl: exampleImage,
-  maxImageWidth: 400,
-  maxImageHeight: 400,
-  primaryAction: {
-    label: 'Primary action',
-    onClick: () => console.log('Primary action clicked'),
-  },
-  linkAction: {
-    label: 'Link action',
-    url: 'http://www.example.com',
-    onClick: () => console.log('Link action clicked'),
-  },
 };
 
 export default () => <EmptyState {...props} />;
