@@ -6,6 +6,7 @@ const result = {
   chrome: false,
   ios: false,
   webkit: false,
+  ff: false,
 };
 
 if (typeof navigator !== 'undefined') {
@@ -27,6 +28,7 @@ if (typeof navigator !== 'undefined') {
     /AppleWebKit/.test(navigator.userAgent) &&
     /Mobile\/\w+/.test(navigator.userAgent);
   result.webkit = !ie && 'WebkitAppearance' in document.documentElement.style;
+  result.ff = !ie && /firefox/i.test(navigator.userAgent);
 }
 
 export default result;
