@@ -41,9 +41,7 @@ const Heading = ({
     packageName
   }%40${versionNumber}`;
   const anchorProps = {
-    href: `https://bitbucket.org/atlassian/atlaskit/commits/tag/%40atlaskit%2F${
-      packageName
-    }%40${version}`,
+    href: href,
     rel: 'noopener noreferrer',
     style: { fontWeight: 500 },
     target: '_blank',
