@@ -16,8 +16,11 @@ const BUILDS_TO_FETCH = 10;
 const BRANCH_TO_CHECK_FOR_STOPPED_BUILDS_FOR = process.env.BITBUCKET_BRANCH;
 const BB_USERNAME = process.env.BITBUCKET_USER;
 const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
-const PIPELINES_ENDPOINT =
-  'https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/pipelines/';
+const REPO_OWNER = process.env.BITBUCKET_REPO_OWNER;
+const REPO_SLUG = process.env.BITBUCKET_REPO_SLUG;
+const PIPELINES_ENDPOINT = `https://api.bitbucket.org/2.0/repositories/${
+  REPO_OWNER
+}/${REPO_SLUG}/pipelines/`;
 
 const axiosRequestConfig = {
   auth: {

@@ -1,6 +1,14 @@
 import { Node } from 'prosemirror-model';
-import { markFactory, nodeFactory, RefsNode, RefsTracker } from '@atlaskit/editor-test-helpers';
-import { confluenceSchema as schema, MediaAttributes } from '@atlaskit/editor-common';
+import {
+  markFactory,
+  nodeFactory,
+  RefsNode,
+  RefsTracker,
+} from '@atlaskit/editor-test-helpers';
+import {
+  confluenceSchema as schema,
+  MediaAttributes,
+} from '@atlaskit/editor-common';
 
 export { RefsNode, RefsTracker, Node };
 // Nodes
@@ -18,7 +26,8 @@ export const h6 = nodeFactory(schema.nodes.heading, { level: 6 });
 export const hr = nodeFactory(schema.nodes.rule);
 export const li = nodeFactory(schema.nodes.listItem);
 export const ol = nodeFactory(schema.nodes.orderedList);
-export const codeblock = (attrs: {} = {}) => nodeFactory(schema.nodes.codeBlock, attrs);
+export const codeblock = (attrs: {} = {}) =>
+  nodeFactory(schema.nodes.codeBlock, attrs);
 export const panel = (attrs: {} = {}) => nodeFactory(schema.nodes.panel, attrs);
 export const confluenceUnsupportedBlock = (cxhtml: string) =>
   nodeFactory(schema.nodes.confluenceUnsupportedBlock, { cxhtml })();
@@ -76,14 +85,17 @@ export const sub = markFactory(schema.marks.subsup, { type: 'sub' });
 export const sup = markFactory(schema.marks.subsup, { type: 'sup' });
 export const u = markFactory(schema.marks.underline);
 export const link = (attrs: {} = {}) => markFactory(schema.marks.link, attrs);
-export const textColor = (attrs: { color?: string }) => markFactory(schema.marks.textColor, attrs);
-export const inlineMacro = (attrs: {
-  macroId: string;
-  name: string;
-  placeholderUrl?: string;
-  params?: object;
-}) => schema.nodes.inlineMacro.create(attrs);
-export const emoji = (attrs: { id?: string; shortName: string; text?: string }) =>
-  schema.nodes.emoji.create(attrs);
+export const textColor = (attrs: { color?: string }) =>
+  markFactory(schema.marks.textColor, attrs);
+export const inlineExtension = (attrs: {
+  extensionKey: string;
+  extensionType: string;
+  parameters?: object;
+}) => schema.nodes.inlineExtension.create(attrs);
+export const emoji = (attrs: {
+  id?: string;
+  shortName: string;
+  text?: string;
+}) => schema.nodes.emoji.create(attrs);
 export const confluenceInlineComment = (attrs: { reference: string }) =>
   markFactory(schema.marks.confluenceInlineComment, attrs ? attrs : {}, true);

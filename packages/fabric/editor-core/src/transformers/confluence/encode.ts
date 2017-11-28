@@ -5,10 +5,22 @@ import { AC_XMLNS, FAB_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 import { mapCodeLanguage } from './languageMap';
 import { getNodeMarkOfType } from './utils';
 import { hexToRgb } from '../../utils/color';
+import {
+  getPlaceholderUrl,
+  getMacroId,
+} from '../../editor/plugins/macro/utils';
 
 export default function encode(node: PMNode, schema: Schema) {
-  const docType = document.implementation.createDocumentType('html', '-//W3C//DTD XHTML 1.0 Strict//EN', 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd');
-  const doc = document.implementation.createDocument('http://www.w3.org/1999/xhtml', 'html', docType);
+  const docType = document.implementation.createDocumentType(
+    'html',
+    '-//W3C//DTD XHTML 1.0 Strict//EN',
+    'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd',
+  );
+  const doc = document.implementation.createDocument(
+    'http://www.w3.org/1999/xhtml',
+    'html',
+    docType,
+  );
 
   return encodeCxhtml(encodeFragment(node.content));
 
@@ -39,7 +51,10 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodePanel(node);
     } else if (node.type === schema.nodes.mention) {
       return encodeMention(node);
-    } else if (node.type === schema.nodes.confluenceUnsupportedBlock || node.type === schema.nodes.confluenceUnsupportedInline) {
+    } else if (
+      node.type === schema.nodes.confluenceUnsupportedBlock ||
+      node.type === schema.nodes.confluenceUnsupportedInline
+    ) {
       return encodeUnsupported(node);
     } else if (node.type === schema.nodes.mediaGroup) {
       return encodeMediaGroup(node);
@@ -47,12 +62,14 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeMedia(node);
     } else if (node.type === schema.nodes.table) {
       return encodeTable(node);
-    } else if (node.type === schema.nodes.inlineMacro) {
-      return encodeInlineMacro(node);
+    } else if (node.type === schema.nodes.inlineExtension) {
+      return encodeInlineExtension(node);
     } else if (node.type === schema.nodes.emoji) {
       return encodeEmoji(node);
     } else {
-      throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
+      throw new Error(
+        `Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`,
+      );
     }
   }
 
@@ -76,7 +93,7 @@ export default function encode(node: PMNode, schema: Schema) {
   function encodeEmoji(node: PMNode) {
     const elem = doc.createElementNS(AC_XMLNS, 'ac:emoticon');
     const { id, shortName, text } = node.attrs;
-    elem.setAttributeNS(AC_XMLNS, 'ac:name', getEmojiAcName({id, shortName}));
+    elem.setAttributeNS(AC_XMLNS, 'ac:name', getEmojiAcName({ id, shortName }));
     elem.setAttributeNS(AC_XMLNS, 'ac:emoji-id', id);
     elem.setAttributeNS(AC_XMLNS, 'ac:emoji-shortname', shortName);
     if (text) {
@@ -129,11 +146,10 @@ export default function encode(node: PMNode, schema: Schema) {
       const rowElement = doc.createElement('tr');
 
       rowNode.descendants(colNode => {
-        const cellElement = (
+        const cellElement =
           colNode.type === schema.nodes.tableCell
             ? doc.createElement('td')
-            : doc.createElement('th')
-        );
+            : doc.createElement('th');
         cellElement.appendChild(encodeFragment(colNode.content));
         rowElement.appendChild(cellElement);
 
@@ -195,7 +211,9 @@ export default function encode(node: PMNode, schema: Schema) {
             // marks on the same PM node will be applied in reverse order. The code below compensates
             // for that while retaining current behaviour.
             for (let mark of [...marks].reverse()) {
-              elem = elem.appendChild(encodeConfluenceInlineComment(node, mark, schema));
+              elem = elem.appendChild(
+                encodeConfluenceInlineComment(node, mark, schema),
+              );
             }
             break;
           case 'textColor':
@@ -269,13 +287,16 @@ export default function encode(node: PMNode, schema: Schema) {
 
     const plainTextBody = doc.createElementNS(AC_XMLNS, 'ac:plain-text-body');
     const fragment = doc.createDocumentFragment();
-    (node.textContent || '').split(/]]>/g).map((value, index, array) => {
+    (node.textContent || '')
+      .split(/]]>/g)
+      .map((value, index, array) => {
         const isFirst = index === 0;
         const isLast = index === array.length - 1;
         const prefix = isFirst ? '' : '>';
         const suffix = isLast ? '' : ']]';
         return doc.createCDATASection(prefix + value + suffix);
-    }).forEach(cdata => fragment.appendChild(cdata));
+      })
+      .forEach(cdata => fragment.appendChild(cdata));
 
     plainTextBody.appendChild(fragment);
     elem.appendChild(plainTextBody);
@@ -283,12 +304,12 @@ export default function encode(node: PMNode, schema: Schema) {
     return elem;
   }
 
-  function encodePanel (node: PMNode) {
+  function encodePanel(node: PMNode) {
     const elem = createMacroElement(node.attrs.panelType);
     const body = doc.createElementNS(AC_XMLNS, 'ac:rich-text-body');
     const fragment = doc.createDocumentFragment();
 
-    node.descendants(function (node, pos) {
+    node.descendants(function(node, pos) {
       // there is at least one top-level paragraph node in the panel body
       // all text nodes will be handled by "encodeNode"
       if (node.isBlock) {
@@ -298,9 +319,8 @@ export default function encode(node: PMNode, schema: Schema) {
           title.setAttributeNS(AC_XMLNS, 'ac:name', 'title');
           title.textContent = node.firstChild!.textContent;
           elem.appendChild(title);
-        }
-        // panel content
-        else {
+        } else {
+          // panel content
           const domNode = encodeNode(node);
           if (domNode) {
             fragment.appendChild(domNode);
@@ -332,7 +352,8 @@ export default function encode(node: PMNode, schema: Schema) {
   }
 
   function encodeUnsupported(node: PMNode) {
-    const domNode = parseCxhtml(node.attrs.cxhtml || '').querySelector('body')!.firstChild;
+    const domNode = parseCxhtml(node.attrs.cxhtml || '').querySelector('body')!
+      .firstChild;
     if (domNode) {
       return doc.importNode(domNode, true);
     }
@@ -366,20 +387,34 @@ export default function encode(node: PMNode, schema: Schema) {
     return elem;
   }
 
-  function encodeInlineMacro(node: PMNode) {
-    const elem = createMacroElement(node.attrs.name);
-    elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', node.attrs.macroId);
+  function encodeInlineExtension(node: PMNode) {
+    const elem = createMacroElement(node.attrs.extensionKey);
 
-    Object.keys(node.attrs.params).forEach(paramName => {
-      const el = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-      el.setAttributeNS(AC_XMLNS, 'ac:name', paramName);
-      el.textContent = node.attrs.params[paramName];
-      elem.appendChild(el);
-    });
+    if (node.attrs.parameters) {
+      const { macroParams } = node.attrs.parameters;
+      const macroId = getMacroId(node);
+      if (macroId) {
+        elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', macroId);
+      }
 
-    const placeholderUrl = doc.createElementNS(FAB_XMLNS, 'fab:placeholder-url');
-    placeholderUrl.textContent = node.attrs.placeholderUrl;
-    elem.appendChild(placeholderUrl);
+      // parameters
+      Object.keys(macroParams).forEach(paramName => {
+        const el = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+        el.setAttributeNS(AC_XMLNS, 'ac:name', paramName);
+        el.textContent = macroParams[paramName].value;
+        elem.appendChild(el);
+      });
+
+      const placeholderUrl = getPlaceholderUrl({ node, type: 'image' });
+      if (placeholderUrl) {
+        const placeholder = doc.createElementNS(
+          FAB_XMLNS,
+          'fab:placeholder-url',
+        );
+        placeholder.textContent = placeholderUrl;
+        elem.appendChild(placeholder);
+      }
+    }
 
     const displayType = doc.createElementNS(FAB_XMLNS, 'fab:display-type');
     displayType.textContent = 'INLINE';
@@ -388,14 +423,18 @@ export default function encode(node: PMNode, schema: Schema) {
     return elem;
   }
 
-  function createMacroElement (name) {
+  function createMacroElement(name) {
     const elem = doc.createElementNS(AC_XMLNS, 'ac:structured-macro');
     elem.setAttributeNS(AC_XMLNS, 'ac:name', name);
     elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', '1');
     return elem;
   }
 
-  function encodeConfluenceInlineComment(node: PMNode, mark: Mark, schema: Schema) {
+  function encodeConfluenceInlineComment(
+    node: PMNode,
+    mark: Mark,
+    schema: Schema,
+  ) {
     let marker = doc.createElementNS(AC_XMLNS, 'ac:inline-comment-marker');
     const reference = mark ? mark.attrs.reference : '';
     marker.setAttributeNS(AC_XMLNS, 'ac:ref', reference);

@@ -1,9 +1,8 @@
 // @flow
 
-import React, { Component } from 'react';
-import BasePicker from './internal/Picker';
-import DateField from './internal/DateField';
-import DateDialog from './internal/DateDialog';
+import React, { Component, type ElementRef } from 'react';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import DatePickerStateless from './DatePickerStateless';
 import type { Handler } from '../types';
 import { parseDate } from '../util';
 
@@ -11,6 +10,7 @@ type Props = {
   isDisabled: boolean,
   disabled: Array<string>,
   onChange: Handler,
+  width: number,
 };
 
 type State = {
@@ -20,14 +20,13 @@ type State = {
 };
 
 export default class DatePicker extends Component<Props, State> {
-  props: Props;
-  state: State;
-  picker: any;
+  datepicker: ?ElementRef<typeof DatePickerStateless>;
 
   static defaultProps = {
     isDisabled: false,
     disabled: [],
     onChange() {},
+    width: akGridSizeUnitless * 20,
   };
 
   state = {
@@ -44,23 +43,7 @@ export default class DatePicker extends Component<Props, State> {
 
   handleInputBlur = (e: FocusEvent) => {
     if (e.target instanceof HTMLInputElement) {
-      const date = e.target.value;
-
-      const parsedDate = parseDate(date);
-
-      if (parsedDate) {
-        this.onChange(parsedDate.value);
-        this.setState({
-          value: parsedDate.value,
-          displayValue: parsedDate.display,
-        });
-      } else {
-        // TODO: Display error message for invalid date.
-        this.setState({
-          value: null,
-          displayValue: '',
-        });
-      }
+      this.validate();
     }
   };
 
@@ -70,19 +53,23 @@ export default class DatePicker extends Component<Props, State> {
     }
   };
 
+  handleTriggerValidate = () => {
+    this.validate();
+  };
+
   handleTriggerOpen = () => {
     this.setState({ isOpen: true });
   };
 
   handleTriggerClose = () => {
     this.setState({ isOpen: false });
-    this.picker.selectField();
+    this.selectField();
   };
 
   handleIconClick = () => {
     if (this.state.isOpen) {
       this.setState({ isOpen: false });
-      this.picker.selectField();
+      this.selectField();
     } else {
       this.setState({ isOpen: true });
     }
@@ -101,30 +88,55 @@ export default class DatePicker extends Component<Props, State> {
         displayValue: parsedDate.display,
         value: parsedDate.value,
       });
-      this.picker.selectField();
+      this.selectField();
     }
   };
 
+  // TODO: Check that the date is not disabled
+  validate() {
+    const parsedDate = parseDate(this.state.displayValue);
+
+    if (parsedDate) {
+      this.onChange(parsedDate.value);
+      this.setState({
+        value: parsedDate.value,
+        displayValue: parsedDate.display,
+      });
+    } else {
+      // TODO: Display error message for invalid date.
+      this.setState({
+        value: null,
+        displayValue: '',
+      });
+    }
+  }
+
+  selectField() {
+    if (this.datepicker) {
+      this.datepicker.selectField();
+    }
+  }
+
   render() {
     return (
-      <BasePicker
+      <DatePickerStateless
+        isDisabled={this.props.isDisabled}
         isOpen={this.state.isOpen}
+        shouldShowIcon
         displayValue={this.state.displayValue}
         value={this.state.value}
-        isDisabled={this.props.isDisabled}
-        dialogProps={{ disabled: this.props.disabled }}
-        shouldShowIcon
-        field={DateField}
-        dialog={DateDialog}
+        disabled={this.props.disabled}
+        width={this.props.width}
         onFieldBlur={this.handleInputBlur}
         onFieldChange={this.handleInputChange}
         onFieldTriggerOpen={this.handleTriggerOpen}
+        onFieldTriggerValidate={this.handleTriggerValidate}
         onIconClick={this.handleIconClick}
         onPickerBlur={this.handlePickerBlur}
         onPickerTriggerClose={this.handleTriggerClose}
         onPickerUpdate={this.handleUpdate}
         ref={ref => {
-          this.picker = ref;
+          this.datepicker = ref;
         }}
       />
     );

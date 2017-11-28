@@ -66,7 +66,11 @@ const SaveAndCancelButtons = props => (
     <Button
       appearance="primary"
       // tslint:disable-next-line:jsx-no-lambda no-console
-      onClick={() => props.editorActions.getValue().then(value => console.log(value.toJSON()))}
+      onClick={() =>
+        props.editorActions
+          .getValue()
+          .then(value => console.log(value.toJSON()))
+      }
     >
       Publish
     </Button>
@@ -111,7 +115,10 @@ class Example extends Component<ExampleProps, ExampleState> {
   };
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextState.input !== this.state.input || nextState.output !== this.state.output;
+    return (
+      nextState.input !== this.state.input ||
+      nextState.output !== this.state.output
+    );
   }
 
   render() {
@@ -133,9 +140,15 @@ class Example extends Component<ExampleProps, ExampleState> {
           <button onClick={this.handleImportClick}>Import</button>
           <button onClick={this.handleInsertCodeClick}>Insert Code</button>
           <button onClick={this.handleInsertPanelClick}>Insert Panel</button>
-          <button onClick={this.handleInsertJiraIssueClick}>Insert JIRA Issue</button>
-          <button onClick={this.handleInsertJiraIssuesListClick}>Insert JIRA Issues List</button>
-          <button onClick={this.handleInsertStatusMacroClick}>Insert Status Macro</button>
+          <button onClick={this.handleInsertJiraIssueClick}>
+            Insert JIRA Issue
+          </button>
+          <button onClick={this.handleInsertJiraIssuesListClick}>
+            Insert JIRA Issues List
+          </button>
+          <button onClick={this.handleInsertStatusMacroClick}>
+            Insert Status Macro
+          </button>
         </fieldset>
         <Content>
           <EditorContext>
@@ -155,15 +168,21 @@ class Example extends Component<ExampleProps, ExampleState> {
                   allowJiraIssue={true}
                   allowUnsupportedContent={true}
                   allowPanel={true}
-                  allowInlineMacro={true}
+                  allowInlineExtension={true}
                   allowConfluenceInlineComment={true}
                   mediaProvider={storyMediaProviderFactory()}
-                  emojiProvider={emojiStoryData.getEmojiResource({ uploadSupported: true })}
-                  mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
+                  emojiProvider={emojiStoryData.getEmojiResource({
+                    uploadSupported: true,
+                  })}
+                  mentionProvider={Promise.resolve(
+                    mentionStoryData.resourceProvider,
+                  )}
                   activityProvider={Promise.resolve(new MockActivityResource())}
                   macroProvider={macroProviderPromise}
                   // tslint:disable-next-line:jsx-no-lambda
-                  contentTransformerProvider={schema => new ConfluenceTransformer(schema)}
+                  contentTransformerProvider={schema =>
+                    new ConfluenceTransformer(schema)
+                  }
                   placeholder="Write something..."
                   shouldFocus={false}
                   onChange={editorView => this.props.onChange(actions)}
@@ -179,7 +198,9 @@ class Example extends Component<ExampleProps, ExampleState> {
                   primaryToolbarComponents={
                     <WithEditorActions
                       // tslint:disable-next-line:jsx-no-lambda
-                      render={actions => <SaveAndCancelButtons editorActions={actions} />}
+                      render={actions => (
+                        <SaveAndCancelButtons editorActions={actions} />
+                      )}
                     />
                   }
                 />
@@ -191,12 +212,16 @@ class Example extends Component<ExampleProps, ExampleState> {
     );
   }
 
-  private handleImportClick = () => this.setState({ input: this.refs.input.value });
+  private handleImportClick = () =>
+    this.setState({ input: this.refs.input.value });
   private handleInsertCodeClick = () => this.setState({ input: CODE_MACRO });
-  private handleInsertJiraIssueClick = () => this.setState({ input: JIRA_ISSUE });
-  private handleInsertJiraIssuesListClick = () => this.setState({ input: JIRA_ISSUES_LIST });
+  private handleInsertJiraIssueClick = () =>
+    this.setState({ input: JIRA_ISSUE });
+  private handleInsertJiraIssuesListClick = () =>
+    this.setState({ input: JIRA_ISSUES_LIST });
   private handleInsertPanelClick = () => this.setState({ input: PANEL_MACRO });
-  private handleInsertStatusMacroClick = () => this.setState({ input: STATUS_MACRO });
+  private handleInsertStatusMacroClick = () =>
+    this.setState({ input: STATUS_MACRO });
 }
 
 type ExampleWrapperProps = {};
@@ -207,7 +232,10 @@ type ExampleWrapperState = {
   isMediaReady?: boolean;
 };
 
-export default class ExampleWrapper extends Component<ExampleWrapperProps, ExampleWrapperState> {
+export default class ExampleWrapper extends Component<
+  ExampleWrapperProps,
+  ExampleWrapperState
+> {
   state: ExampleWrapperState = {
     cxhtml: '',
     prettify: true,
@@ -233,7 +261,9 @@ export default class ExampleWrapper extends Component<ExampleWrapperProps, Examp
   };
 
   render() {
-    const xml = this.state.prettify ? pd.xml(this.state.cxhtml || '') : this.state.cxhtml || '';
+    const xml = this.state.prettify
+      ? pd.xml(this.state.cxhtml || '')
+      : this.state.cxhtml || '';
 
     return (
       <div ref="root">
@@ -242,7 +272,11 @@ export default class ExampleWrapper extends Component<ExampleWrapperProps, Examp
         <fieldset style={{ marginTop: 20 }}>
           <legend>
             CXHTML output (
-            <input type="checkbox" checked={this.state.prettify} onChange={this.togglePrettify} />
+            <input
+              type="checkbox"
+              checked={this.state.prettify}
+              onChange={this.togglePrettify}
+            />
             <span onClick={this.togglePrettify} style={{ cursor: 'pointer' }}>
               {' '}
               prettify
@@ -250,7 +284,9 @@ export default class ExampleWrapper extends Component<ExampleWrapperProps, Examp
             )
           </legend>
           {this.state.isMediaReady ? (
-            <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>{xml}</pre>
+            <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+              {xml}
+            </pre>
           ) : (
             <div style={{ padding: 20 }}>
               <Spinner size="large" />

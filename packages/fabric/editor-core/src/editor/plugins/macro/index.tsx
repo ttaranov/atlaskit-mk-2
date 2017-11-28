@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { EditorPlugin } from '../../types';
-import { inlineMacro } from '@atlaskit/editor-common';
+import { inlineExtension } from '@atlaskit/editor-common';
 import { createPlugin, pluginKey, MacroState } from './plugin';
 import MacroEdit from '../../../ui/MacroEdit';
 import WithPluginState from '../../ui/WithPluginState';
@@ -8,14 +8,16 @@ import { insertMacroFromMacroBrowser, removeMacro } from '../macro/actions';
 
 const macroPlugin: EditorPlugin = {
   nodes() {
-    return [
-      { rank: 2300, name: 'inlineMacro', node: inlineMacro  },
-    ];
+    return [{ rank: 2300, name: 'inlineExtension', node: inlineExtension }];
   },
 
   pmPlugins() {
     return [
-      { rank: 2310, plugin: (schema, props, dispatch, providerFactory) => createPlugin(dispatch, providerFactory) }
+      {
+        rank: 2310,
+        plugin: (schema, props, dispatch, providerFactory) =>
+          createPlugin(dispatch, providerFactory),
+      },
     ];
   },
 
@@ -37,7 +39,7 @@ const macroPlugin: EditorPlugin = {
         )}
       />
     );
-  }
+  },
 };
 
 export default macroPlugin;

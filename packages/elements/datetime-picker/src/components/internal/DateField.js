@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type ElementRef } from 'react';
 import Input from './Input';
 import type { Handler } from '../../types';
 
@@ -13,15 +13,14 @@ type Props = {
 };
 
 export default class DateField extends Component<Props> {
-  props: Props;
-  input: any;
+  input: ?ElementRef<typeof Input>;
 
   static defaultProps = {
     value: '',
     onChange() {},
     onKeyDown() {},
     onTriggerOpen() {},
-    onTriggerValdiate() {},
+    onTriggerValidate() {},
   };
 
   handleKeyDown = (e: KeyboardEvent) => {

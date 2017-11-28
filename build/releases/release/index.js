@@ -26,6 +26,7 @@ async function bumpReleasedPackages(releaseObj, allPackages) {
 async function run(opts) {
   const cwd = opts.cwd || process.cwd();
   const allPackages = await bolt.getWorkspaces({ cwd });
+
   const unreleasedChangesets = await git.getUnpublishedChangesetCommits();
 
   if (unreleasedChangesets.length === 0) {
@@ -69,21 +70,22 @@ async function run(opts) {
     logger.log('Committing changes...');
     // TODO: Check if there are any unstaged changed before committing and throw
     // , as it means something went super-odd.
-    const committed = await git.commit(publishCommit);
+    await git.commit(publishCommit);
 
-    if (committed) {
-      // bolt will throw if there is an error
-      await bolt.publish({ access: 'public' });
+    // we push back before publishing because it's easier to recover from being ahead of npm than
+    // behind
+    logger.log('Pushing changes back to origin...');
+    const maxRetries = 3;
+    await git.rebaseAndPush(maxRetries);
 
-      const releasedPackages = releaseObj.releases
-        .map(r => `${r.name}@${r.version}`)
-        .join('\n');
-      logger.success('Successfully published:');
-      logger.log(releasedPackages);
+    // bolt will throw if there is an error
+    await bolt.publish({ access: 'public' });
 
-      logger.log('Pushing changes back to origin...');
-      await git.push();
-    }
+    const releasedPackages = releaseObj.releases
+      .map(r => `${r.name}@${r.version}`)
+      .join('\n');
+    logger.success('Successfully published:');
+    logger.log(releasedPackages);
   }
 }
 

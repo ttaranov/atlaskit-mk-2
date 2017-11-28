@@ -7,7 +7,7 @@ export const ButtonContent = styled.span`
   width: 80px;
   height: 24px;
   align-items: center;
-  padding: ${(props) => props.width ? 0 : '0 8px'};
+  padding: ${props => (props.width ? 0 : '0 8px')};
 `;
 
 // tslint:disable-next-line:variable-name
@@ -24,7 +24,6 @@ export const Wrapper = styled.span`
   display: flex;
   align-items: center;
 `;
-
 
 // tslint:disable-next-line:variable-name
 export const MenuWrapper = styled.span`

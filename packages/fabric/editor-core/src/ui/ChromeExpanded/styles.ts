@@ -69,7 +69,7 @@ export const Toolbar = styled.div`
   & > * {
     align-items: center;
     display: flex;
-    margin-left: ${akGridSizeUnitless/2}px;
+    margin-left: ${akGridSizeUnitless / 2}px;
     /* Firefox|IE toolbar icons fix: https://product-fabric.atlassian.net/browse/ED-1787 */
     min-width: 0;
 
@@ -91,6 +91,6 @@ export const ButtonGroup = styled.span`
   display: flex;
 
   & > span:not(:first-child) {
-    margin-left: ${akGridSizeUnitless/2}px;
+    margin-left: ${akGridSizeUnitless / 2}px;
   }
 `;

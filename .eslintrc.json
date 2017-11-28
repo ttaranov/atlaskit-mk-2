@@ -32,6 +32,8 @@
 
     "react/sort-comp": "off",
     "react/jsx-filename-extension": "off",
+    "react/require-default-props": "off",
+
 
     "flowtype/require-valid-file-annotation": [2, "always", { "annotationStyle": "line" }],
     "flowtype/define-flow-type": 1,

@@ -12,29 +12,19 @@ import Underline from './underline';
 import Action from './action';
 
 export const markToReact = {
-  'code': Code,
-  'em': Em,
-  'link': Link,
-  'strike': Strike,
-  'strong': Strong,
-  'subsup': Subsup,
-  'textColor': TextColor,
-  'underline': Underline,
-  'action': Action
+  code: Code,
+  em: Em,
+  link: Link,
+  strike: Strike,
+  strong: Strong,
+  subsup: Subsup,
+  textColor: TextColor,
+  underline: Underline,
+  action: Action,
 };
 
 export const toReact = (mark: Mark): ComponentClass<any> => {
   return markToReact[mark.type.name];
 };
 
-export {
-  Code,
-  Em,
-  Link,
-  Strike,
-  Strong,
-  Subsup,
-  TextColor,
-  Underline,
-  Action
-};
+export { Code, Em, Link, Strike, Strong, Subsup, TextColor, Underline, Action };
