@@ -53,7 +53,7 @@
     "rxjs": "^5.1.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^0.0.5",
+    "@atlaskit/docs": "^1.0.0",
     "@atlaskit/field-radio-group": "^1.2.1",
     "@atlaskit/field-range": "^2.0.0",
     "@atlaskit/media-core": "^11.0.0",

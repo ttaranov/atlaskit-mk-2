@@ -28,7 +28,7 @@
   "devDependencies": {
     "@atlaskit/button": "^5.4.8",
     "@atlaskit/button-group": "^1.5.3",
-    "@atlaskit/docs": "^0.0.5",
+    "@atlaskit/docs": "^1.0.0",
     "@atlaskit/icon": "^10.3.1"
   },
   "keywords": [

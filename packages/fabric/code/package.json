@@ -22,7 +22,7 @@
     "typestyle": "^1.3.8"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^0.0.5"
+    "@atlaskit/docs": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^15.6.1",

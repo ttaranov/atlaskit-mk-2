@@ -25,7 +25,7 @@
     "@atlaskit/avatar": "^8.0.0",
     "@atlaskit/button": "^5.4.8",
     "@atlaskit/code": "^2.1.8",
-    "@atlaskit/docs": "^0.0.5",
+    "@atlaskit/docs": "^1.0.0",
     "@atlaskit/dropdown-menu": "^3.0.1",
     "@atlaskit/droplist": "^3.8.1",
     "@atlaskit/editor-common": "^3.9.10",
