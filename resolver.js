@@ -1,29 +1,38 @@
 // @flow
 const fs = require('fs');
 const path = require('path');
+const resolve = require('resolve');
 
 // This is the resolver used by webpack, which we configure similarly
 // to AK website (see ./website/webpack.config.js - "resolve" field)
-const wpResolver = require('enhanced-resolve').ResolverFactory.createResolver({
-  fileSystem: fs,
-  useSyncFileSystemCalls: true,
-  mainFields: ['atlaskit:src', 'browser', 'main'],
-  extensions: ['.js', '.ts', '.tsx'],
-});
+const webpackResolver = require('enhanced-resolve').ResolverFactory.createResolver(
+  {
+    fileSystem: fs,
+    useSyncFileSystemCalls: true,
+    mainFields: ['atlaskit:src', 'browser', 'main'],
+    extensions: ['.js', '.ts', '.tsx'],
+  },
+);
 
 module.exports = function resolver(
   modulePath /*: string */,
   params /*: any */,
 ) {
-  // If resolving relative paths, use default NodeJS resolver
-  if (!modulePath.startsWith('.') && !modulePath.startsWith(path.sep)) {
-    try {
-      return require.resolve(modulePath);
-    } catch (e) {} // eslint-disable-line
-  }
+  let result /*: string */;
 
-  // Try to resolve to source files of AK packages using webpack resolver
-  let result = wpResolver.resolveSync({}, params.basedir, modulePath);
+  if (!modulePath.startsWith('.') && !modulePath.startsWith(path.sep)) {
+    // When esolving absolute module names, follow Node.js rules (i.e. look for node_modules in
+    // dir of the dependant, then in parent dir, then in parent dir ...)
+    // We're not using the built-in node resolver here because it would prefer
+    // top-level (cwd) node_modules and ignore sub-module's package directories.
+    try {
+      result = resolve.sync(modulePath, params);
+    } catch (e) {} // eslint-disable-line
+  } else {
+    // When resolving relative paths, use webpack resolver configured to
+    // prefer source files over dist/ artifacts.
+    result = webpackResolver.resolveSync({}, params.basedir, modulePath);
+  }
 
   if (result) {
     // Dereference symlinks to ensure we don't create a separate
