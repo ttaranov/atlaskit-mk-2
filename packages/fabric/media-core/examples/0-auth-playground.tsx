@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Component } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import { storiesOf } from '@kadira/storybook';
 import Button from '@atlaskit/button';
 import { Context, ContextFactory } from '../src/context/context';
 import { MediaItem } from '../src/item';

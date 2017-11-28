@@ -1,4 +1,4 @@
-import { LinkItem } from '../src';
+import { LinkItem } from '../src/item';
 import { LinkProvider } from '../src/providers/linkProvider';
 
 const linkId = 'some-link-id';

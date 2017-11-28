@@ -1,4 +1,4 @@
-import { MediaState, MediaStateManager } from './';
+import { MediaState, MediaStateManager } from './index';
 
 export type Subscriber = (state: MediaState) => any;
 
