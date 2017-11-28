@@ -13,8 +13,8 @@ We want to keep this model very simple. At it's core, we make the assumptions th
 
 The process is very simple and consists of:
 
-1. Raising an issue for discussion or go directly to submitting a PR if confident it doesn't need any.
-2. Submitting a PR, unless that has been done in lieu of raising an issue.
+1. Raise an issue for discussion.
+2. Submit a PR resolving the raised issue.
 3. Discuss.
 4. Merge when ready.
 
@@ -33,21 +33,26 @@ Like the open source model, the inter-team contribution model is kept as light a
 
 The steps for the inter-team model are as follows.
 
-### Initial meeting
+### Introduction
 
 The contribution may be initially sparked by several methods:
 
 - Water-cooler discussion with a colleague.
 - Issue raised by another team.
 - Atlaskit team member noticing similar implementations in products and raising it.
+- Any sync meetings between teams.
 
-Whatever the method, we want to be clear on a few things:
+### Initial discussion
+
+Regardless of how the discussion is triggered, we want to be clear on a few things:
 
 1. Any initial action items.
 2. Decide who will be the contributor from the external team.
 3. Decide who will be the shepherd from within the Atlaskit team.
 
 This process may come naturally and not require an initial meeting. For example, a contribution may be very simple, a PR may have already been made and it may be good to go out of the gate. Others may require a bit more formality to keep the quality bar high.
+
+A more complete process may look like: introduction > discuss approach and plan > spec / prototype review > raise PR > discuss and merge > high five.
 
 _We don't want this process to to impede the contribution, waste anyone's time or to appear like the waterfall process. You should decide up front if the complexity if the contribution warrants such process and always be mindful to keep it as lean as possible._
 
@@ -72,3 +77,7 @@ Every contribution will have a shepherd, but to the extent at which this shepher
 - Reviewing relevant PRs.
 - Meeting with contributors, or involved parties.
 - Planning any follow ups after the final contribution and handover has been made.
+
+### Tracking
+
+The shepherd should raise an issue internally to track the overall process and give it a label of "contribution".
