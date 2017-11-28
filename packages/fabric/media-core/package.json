@@ -7,7 +7,7 @@
   "types": "dist/es5/index.d.ts",
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
-  "atlaskit:src": "src/index.tsx",
+  "atlaskit:src": "src/index.ts",
   "files": [
     "dist"
   ],
@@ -30,7 +30,7 @@
     "rxjs": "^5.1.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^0.0.4",
+    "@atlaskit/docs": "0.0.5",
     "@atlaskit/button": "^5.4.8",
     "styled-components": "^1.4.6"
   }
