@@ -17,15 +17,15 @@ function getChildrenData(parent = staticData) {
 export default () => (
   <TreeTable>
     <TreeHeads>
-      <TreeHead>Title</TreeHead>
-      <TreeHead>Numbering</TreeHead>
+      <TreeHead width={200}>Title</TreeHead>
+      <TreeHead width={100}>Numbering</TreeHead>
     </TreeHeads>
     <TreeRows
       data={getChildrenData}
       render={({ id, title, numbering, hasChildren }) => (
-        <TreeRow id={id} hasChildren={hasChildren}>
-          <TreeCell>{title}</TreeCell>
-          <TreeCell>{numbering}</TreeCell>
+        <TreeRow key={id} hasChildren={hasChildren}>
+          <TreeCell width={200}>{title}</TreeCell>
+          <TreeCell width={100}>{numbering}</TreeCell>
         </TreeRow>
       )}
     />

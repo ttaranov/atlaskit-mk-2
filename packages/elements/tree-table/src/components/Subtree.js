@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, type Element } from 'react';
+import React, { PureComponent, type Element, type Node } from 'react';
 
 import TreeChildren from './TreeChildren';
 import TreeRow from './TreeRow';
@@ -14,6 +14,7 @@ type Props = {
   isExpanded?: boolean,
   depth?: number,
   render?: Function,
+  children?: Array<Node>,
 };
 
 export default class Subtree extends PureComponent<Props> {
@@ -63,64 +64,39 @@ export default class Subtree extends PureComponent<Props> {
     );
   }
 
-  renderFromProps() {
+  render() {
     const {
-      data,
-      columns,
       hasChildren,
       depth,
       columnWidths,
-      isExpanded,
+      columns,
+      data,
+      render,
     } = this.props;
-    if (!data) {
-      return null;
-    }
-    return (
-      <div>
-        <TreeRow
-          data={data.content}
-          columns={columns}
-          hasChildren={hasChildren}
-          isExpanded={isExpanded}
-          depth={depth}
-          onExpandToggle={this.handleExpandToggleClick}
-          columnWidths={columnWidths}
-        />
-        {this.renderChildren()}
-      </div>
-    );
-  }
 
-  renderFromChildren() {
-    return <div>{this.props.children}</div>;
-  }
-
-  renderFromRenderProp() {
-    if (!this.props.render) {
-      return null;
-    }
-    const { hasChildren, depth, columnWidths } = this.props;
-    const row = this.props.render(this.props.data.content);
-    const wrappedRow = React.cloneElement(row, {
+    let row = null;
+    const rowProps = {
       onExpandToggle: this.handleExpandToggleClick,
       depth,
       hasChildren,
       columnWidths,
+      data: data.content,
+      columns,
       isExpanded: this.state.isExpanded,
-    });
-    return (
+    };
+    if (render) {
+      row = render(data.content);
+      row = React.cloneElement(row, rowProps);
+    } else if (columns) {
+      row = <TreeRow {...rowProps} />;
+    }
+    return row ? (
       <div>
-        {wrappedRow}
+        {row}
         {this.renderChildren()}
       </div>
-    );
-  }
-
-  render() {
-    return (
-      this.renderFromRenderProp() ||
-      this.renderFromProps() ||
-      this.renderFromChildren()
+    ) : (
+      <div>{this.props.children}</div>
     );
   }
 }

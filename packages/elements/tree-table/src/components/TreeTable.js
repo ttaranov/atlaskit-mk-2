@@ -1,5 +1,6 @@
 // @flow
-import React, { PureComponent, type ElementType } from 'react';
+import React, { PureComponent, type ElementType, type Node } from 'react';
+import { TreeTableContainer } from '../styled';
 import TreeChildren from './TreeChildren';
 import TreeHeads from './TreeHeads';
 import TreeHead from './TreeHead';
@@ -10,7 +11,8 @@ type Props = {
   /** This is the columns prop description */
   columns?: Array<ElementType>,
   columnWidths?: Array<string>,
-  children?: Array<Element>,
+  children?: Array<Node>,
+  headers?: Array<string>,
   // headers?: Array<string>,
   /** This is the data prop description */
   data?: DataFunction | string,
@@ -43,10 +45,10 @@ export default class TreeTable extends PureComponent<Props> {
         />
       );
     return (
-      <div>
+      <TreeTableContainer>
         {heads}
         {children || this.renderChildren()}
-      </div>
+      </TreeTableContainer>
     );
   }
 }

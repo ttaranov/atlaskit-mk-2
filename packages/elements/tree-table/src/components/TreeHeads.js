@@ -1,11 +1,10 @@
 // @flow
-import React, { PureComponent, Component, type ElementType } from 'react';
+import React, { PureComponent, type Node } from 'react';
 
 import { TreeRowContainer } from '../styled';
-import { type DataFunction } from './../types';
 
 type Props = {
-  children: Array<ElementType>,
+  children: Array<Node>,
 };
 
 export default class TreeHeads extends PureComponent<Props> {

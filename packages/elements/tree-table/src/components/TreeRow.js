@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, type Element } from 'react';
+import React, { PureComponent, type Element, type Node } from 'react';
 import { TreeRowContainer, TreeCell } from '../styled';
 import Chevron from './Chevron';
 
@@ -11,7 +11,7 @@ type Props = {
   hasChildren: boolean,
   onExpandToggle: Function,
   depth?: number,
-  children: Array<Element>,
+  children: Array<Node>,
 };
 
 export default class TreeRow extends PureComponent<Props> {

@@ -1,11 +1,11 @@
 // @flow
-import React, { PureComponent, Component, type ElementType } from 'react';
+import React, { PureComponent, type Node } from 'react';
 
 import { type DataFunction } from './../types';
 import { TreeHead as StyledTreeHead } from '../styled';
 
 type Props = {
-  children: Array<ElementType>,
+  children: Array<Node>,
   width?: number,
 };
 

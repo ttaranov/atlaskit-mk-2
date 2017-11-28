@@ -1,6 +1,7 @@
 // @flow
 import styled, { css } from 'styled-components';
 import { colors, themed } from '@atlaskit/theme';
+import React from 'react';
 
 function defaultToPx(length) {
   const number = +length;
@@ -34,7 +35,7 @@ const commonCell = css`
   ${props =>
     props.width &&
     css`
-      width: ${props.width};
+      width: ${defaultToPx(props.width)};
     `};
 `;
 
@@ -57,3 +58,5 @@ export const TreeHead = styled.div`
   padding-left: ${defaultToPx(indentWidth)};
   padding-bottom: 8px;
 `;
+
+export const TreeTableContainer = styled.div``;

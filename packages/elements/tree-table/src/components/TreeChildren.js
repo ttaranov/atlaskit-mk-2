@@ -26,16 +26,16 @@ export default class TreeChildren extends PureComponent<Props> {
     } = this.props;
     return (
       <div>
-        {childrenData.map((childData, index) => (
+        {childrenData.map((childRowData, index) => (
           <Subtree
-            data={childData}
-            hasChildren={childData.hasChildren}
+            data={childRowData}
+            hasChildren={childRowData.hasChildren}
             isExpanded={false}
             columns={columns}
             columnWidths={columnWidths}
             getChildrenData={getChildrenData}
             depth={depth + 1}
-            key={childData.id || index}
+            key={childRowData.id || index}
             render={render}
           />
         ))}
