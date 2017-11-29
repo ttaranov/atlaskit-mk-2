@@ -707,14 +707,6 @@
     lodash.sample "^4.2.1"
     tslib "^1.2.0"
 
-"@atlaskit/util-readme@^1.0.0":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@atlaskit/util-readme/-/util-readme-1.0.5.tgz#28bc17c547839c41e40eaae620242427dd0dc4bb"
-  dependencies:
-    "@atlaskit/util-shared-styles" "^1.0.0"
-    decamelize "^1.2.0"
-    react-syntax-highlighter "^3.0.2"
-
 "@atlaskit/util-service-support@^2.0.1", "@atlaskit/util-service-support@^2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-service-support/-/util-service-support-2.0.2.tgz#5173e0af35bc8b5499bce5a06022c97e9eb3baf1"
@@ -3458,7 +3450,7 @@ decamelize-keys@^1.0.0:
     decamelize "^1.1.0"
     map-obj "^1.0.0"
 
-decamelize@^1.0.0, decamelize@^1.1.0, decamelize@^1.1.1, decamelize@^1.1.2, decamelize@^1.2.0:
+decamelize@^1.0.0, decamelize@^1.1.0, decamelize@^1.1.1, decamelize@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
 
@@ -5044,10 +5036,6 @@ highlight.js@^9.11.0, highlight.js@^9.6.0, highlight.js@~9.12.0:
   version "9.12.0"
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.12.0.tgz#e6d9dbe57cbefe60751f02af336195870c90c01e"
 
-highlight.js@~9.8.0:
-  version "9.8.0"
-  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.8.0.tgz#38eeef40cd45eaddbec8c9e5238fb7a783a3b685"
-
 history@^4.7.2:
   version "4.7.2"
   resolved "https://registry.yarnpkg.com/history/-/history-4.7.2.tgz#22b5c7f31633c5b8021c7f4a8a954ac139ee8d5b"
@@ -6616,7 +6604,7 @@ lowercase-keys@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/lowercase-keys/-/lowercase-keys-1.0.0.tgz#4e3366b39e7f5457e35f1324bdf6f88d0bfc7306"
 
-lowlight@^1.5.0, lowlight@~1.9.1:
+lowlight@~1.9.1:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/lowlight/-/lowlight-1.9.1.tgz#ed7c3dffc36f8c1f263735c0fe0c907847c11250"
   dependencies:
@@ -8373,14 +8361,6 @@ react-router@^4.2.0:
     path-to-regexp "^1.7.0"
     prop-types "^15.5.4"
     warning "^3.0.0"
-
-react-syntax-highlighter@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/react-syntax-highlighter/-/react-syntax-highlighter-3.0.2.tgz#77c556385bbf71dc2e974ba96bfdd0edef5c3192"
-  dependencies:
-    babel-runtime "^6.18.0"
-    highlight.js "~9.8.0"
-    lowlight "^1.5.0"
 
 react-syntax-highlighter@^5.5.0, react-syntax-highlighter@^5.7.0:
   version "5.7.0"
