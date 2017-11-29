@@ -122,7 +122,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                         packageVersion={version}
                         packageName={name}
                       />,
-                      <ToolbarHelp />,
+                      <ToolbarHelp editorWidth={undefined} />,
                     ]}
                   />
                 </CollapsedEditor>
