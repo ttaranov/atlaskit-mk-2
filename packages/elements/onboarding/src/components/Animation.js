@@ -9,6 +9,12 @@ const verticalOffset = 16;
 
 type EnterType = (node: Element, isAppearing: boolean) => void;
 type ExitType = (node: Element) => void;
+type TransitionType = {
+  entering?: Object,
+  entered?: Object,
+  exiting?: Object,
+  exited?: Object,
+};
 type Props = {
   children: ChildrenType,
   component: ComponentType,
@@ -21,13 +27,9 @@ type Props = {
   in: boolean,
   style: {},
   styleDefault: {},
-  transition: {
-    entering?: {},
-    entered?: {},
-    exiting?: {},
-    exited?: {},
-  },
+  transition: TransitionType,
 };
+
 const defaultProps = {
   component: 'div',
 };
@@ -94,7 +96,7 @@ Animation.defaultProps = defaultProps;
 // FADE
 // ==============================
 
-export const Fade = props => (
+export const Fade = (props: Props) => (
   <Animation
     styleDefault={{
       transition: 'opacity 200ms',

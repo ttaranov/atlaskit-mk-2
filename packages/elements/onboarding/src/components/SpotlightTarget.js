@@ -28,7 +28,7 @@ export default class SpotlightTarget extends Component<Props> {
     if (!spotlightRegistry) {
       throw Error(errorMessage);
     } else {
-      spotlightRegistry.add(name, findDOMNode(this));
+      spotlightRegistry.add(name, findDOMNode(this)); // eslint-disable-line
     }
   }
   componentWillUnmount() {

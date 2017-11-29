@@ -82,8 +82,7 @@ const Clone = ({ html }) => (
 );
 /* eslint-enable react/prop-types, react/no-danger */
 
-class Spotlight extends Component {
-  props: Props;
+class Spotlight extends Component<Props, State> {
   state: State = { isExiting: false };
 
   static defaultProps = {
@@ -93,8 +92,9 @@ class Spotlight extends Component {
 
   handleTargetClick = event => {
     const { targetOnClick, target } = this.props;
-
-    targetOnClick({ event, target });
+    if (targetOnClick && typeof targetOnClick === 'function') {
+      targetOnClick({ event, target });
+    }
   };
   handleExit = () => {
     // NOTE: disable FocusLock *before* unmount. animation may end after a new
