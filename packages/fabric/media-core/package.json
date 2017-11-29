@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@atlaskit/button": "^5.4.8",
-    "@atlaskit/docs": "0.0.7",
+    "@atlaskit/docs": "^1.0.0",
     "styled-components": "^1.4.6"
   }
 }
