@@ -8350,6 +8350,13 @@ react-json-tree@^0.10.7:
     prop-types "^15.5.8"
     react-base16-styling "^0.5.1"
 
+react-lazily-render@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/react-lazily-render/-/react-lazily-render-0.0.6.tgz#8ec775e01983d81d879de8f97df2b86842e7c38a"
+  dependencies:
+    lodash "^4.17.4"
+    scrollparent "^2.0.1"
+
 react-lazy-load-zz@^3.0.14:
   version "3.0.14"
   resolved "https://registry.yarnpkg.com/react-lazy-load-zz/-/react-lazy-load-zz-3.0.14.tgz#739b6021da40b1776fd541b0d65079aebeb87c09"
@@ -8895,6 +8902,10 @@ schema-utils@^0.3.0:
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-0.3.0.tgz#f5877222ce3e931edae039f17eb3716e7137f8cf"
   dependencies:
     ajv "^5.0.0"
+
+scrollparent@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/scrollparent/-/scrollparent-2.0.1.tgz#715d5b9cc57760fb22bdccc3befb5bfe06b1a317"
 
 select-hose@^2.0.0:
   version "2.0.0"

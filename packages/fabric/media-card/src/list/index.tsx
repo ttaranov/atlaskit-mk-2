@@ -17,11 +17,11 @@ import {
   defaultImageCardDimensions,
   defaultSmallCardDimensions,
 } from '../utils';
+import { LazyContent } from '../utils/lazyContent';
 import { CardDimensions, CardListEvent, CardEvent } from '..';
 import { Provider, MediaCard, CardView } from '../root';
 import { InfiniteScroll } from './infiniteScroll';
 import { CardListItemWrapper, Spinner } from './styled';
-import { LazyContent } from '../utils';
 
 export interface CardListProps {
   context: Context;
@@ -291,11 +291,7 @@ export class CardList extends Component<CardListProps, CardListState> {
           // We don't want to wrap new items into LazyContent aka lazy load new items
           const useLazyContent = shouldLazyLoadCards && !shouldAnimate;
           return useLazyContent ? (
-            <LazyContent
-              placeholder={placeholder}
-              key={key}
-              appearance={cardAppearance}
-            >
+            <LazyContent key={key} placeholder={placeholder}>
               {cardListItem}
             </LazyContent>
           ) : (
