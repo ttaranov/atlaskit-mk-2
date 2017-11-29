@@ -186,7 +186,7 @@ export default class Home extends React.Component<HomeProps> {
               iconColor={colors.P300}
               title="Documentation"
             >
-              Macaroon cupcake powder dragée liquorice fruitcake cookie sesame.
+              A detailed dive into the decisions that shaped this project.
             </Card>
             <Card
               to="/packages"
@@ -194,8 +194,7 @@ export default class Home extends React.Component<HomeProps> {
               iconColor={colors.R300}
               title="Packages"
             >
-              Powder sweet roll caramels cake toffee toffee toffee donut
-              fruitcake sesame.
+              Documentation and usage guides for the packages in Atlaskit.
             </Card>
             <Card
               to="/patterns"
@@ -203,7 +202,7 @@ export default class Home extends React.Component<HomeProps> {
               iconColor={colors.G300}
               title="Patterns"
             >
-              Soufflé muffin jelly beans sugar plum chocolate bar cake jelly.
+              Common ways to combine packages together for your application.
             </Card>
           </Cards>
           <Button

@@ -66,7 +66,7 @@ const getItemDetails = (
       docItems,
       'Docs',
       packageDocUrl.bind(null, group.id, pkg.id),
-      PageIcon,
+      PackageIcon,
     );
 
     if (docsSubnav) items.push(docsSubnav);
@@ -111,7 +111,7 @@ const getItem = (
         to: `${OLD_WEBSITE_URL}components/${allPackages[name].key}`,
         external: true,
         title: allPackages[name].name,
-        icon: <PackageIcon label={`${allPackages[name].name} icon`} />,
+        // icon: <PackageIcon label={`${allPackages[name].name} icon`} />,
       });
     }
     return results;
