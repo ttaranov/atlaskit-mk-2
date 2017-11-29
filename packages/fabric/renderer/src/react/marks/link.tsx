@@ -1,10 +1,9 @@
 import * as React from 'react';
 
-export default function Link(props: { children?: any; href: string; target?: string; } & React.Props<any>) {
-  const {
-    href,
-    target = '_blank',
-  } = props;
+export default function Link(
+  props: { children?: any; href: string; target?: string } & React.Props<any>,
+) {
+  const { href, target = '_blank' } = props;
 
   const anchorProps: any = {
     href,
@@ -16,7 +15,5 @@ export default function Link(props: { children?: any; href: string; target?: str
     anchorProps.rel = 'noreferrer noopener';
   }
 
-  return (
-    <a {...anchorProps}>{props.children}</a>
-  );
+  return <a {...anchorProps}>{props.children}</a>;
 }

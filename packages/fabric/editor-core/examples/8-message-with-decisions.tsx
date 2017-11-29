@@ -27,18 +27,18 @@ class DecisionBuilderToolsDrawer extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      filteredContent: []
+      filteredContent: [],
     };
     this.providerFactory = new ProviderFactory();
   }
 
   onChange = delegateOnChange => editorView => {
     this.setState({
-      filteredContent: taskDecisionDocFilter(toJSON(editorView.state.doc))
+      filteredContent: taskDecisionDocFilter(toJSON(editorView.state.doc)),
     });
 
     return delegateOnChange(editorView);
-  }
+  };
 
   private handleProviders(props: EditorProps) {
     const { emojiProvider, mentionProvider, mediaProvider } = props;
@@ -63,19 +63,26 @@ class DecisionBuilderToolsDrawer extends Component<Props, State> {
         <h4>Raw content:</h4>
         <ToolsDrawer
           // tslint:disable-next-line:jsx-no-lambda
-          renderEditor={({mentionProvider, emojiProvider, mediaProvider, onChange}) => {
-            this.handleProviders({ mentionProvider, emojiProvider, mediaProvider });
+          renderEditor={({
+            mentionProvider,
+            emojiProvider,
+            mediaProvider,
+            onChange,
+          }) => {
+            this.handleProviders({
+              mentionProvider,
+              emojiProvider,
+              mediaProvider,
+            });
 
             return (
               <Editor
                 {...getPropsPreset(appearance)}
                 analyticsHandler={analyticsHandler}
                 maxHeight={305}
-
                 mentionProvider={mentionProvider}
                 emojiProvider={emojiProvider}
                 mediaProvider={mediaProvider}
-
                 onChange={this.onChange(onChange)}
                 onSave={SAVE_ACTION}
               />
@@ -102,10 +109,10 @@ export default function Example() {
               {
                 type: 'decisionItem',
                 content,
-              }
-            ]
-          }
-        ]
+              },
+            ],
+          },
+        ],
       })}
     />
   );

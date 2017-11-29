@@ -64,7 +64,11 @@ const SaveAndCancelButtons = props => (
     <Button
       appearance="primary"
       // tslint:disable-next-line:jsx-no-lambda no-console
-      onClick={() => props.editorActions.getValue().then(value => console.log(value.toJSON()))}
+      onClick={() =>
+        props.editorActions
+          .getValue()
+          .then(value => console.log(value.toJSON()))
+      }
     >
       Publish
     </Button>
@@ -90,7 +94,6 @@ export default class Example extends React.Component<Props, State> {
           <Editor
             appearance="full-page"
             analyticsHandler={analyticsHandler}
-
             allowTextFormatting={true}
             allowTasksAndDecisions={true}
             allowHyperlinks={true}
@@ -102,19 +105,20 @@ export default class Example extends React.Component<Props, State> {
             allowUnsupportedContent={true}
             allowPanel={true}
             allowInlineExtension={true}
-
             mediaProvider={storyMediaProviderFactory()}
-            emojiProvider={emojiStoryData.getEmojiResource({ uploadSupported: true })}
+            emojiProvider={emojiStoryData.getEmojiResource({
+              uploadSupported: true,
+            })}
             mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
             activityProvider={Promise.resolve(new MockActivityResource())}
             macroProvider={macroProviderPromise}
             // tslint:disable-next-line:jsx-no-lambda
-            contentTransformerProvider={(schema) => new ConfluenceTransformer(schema)}
-
+            contentTransformerProvider={schema =>
+              new ConfluenceTransformer(schema)
+            }
             placeholder="Write something..."
             shouldFocus={false}
             disabled={this.state.disabled}
-
             contentComponents={
               <TitleInput
                 placeholder="Give this page a title..."
@@ -124,11 +128,12 @@ export default class Example extends React.Component<Props, State> {
                 onBlur={this.handleTitleOnBlur}
               />
             }
-
             primaryToolbarComponents={
               <WithEditorActions
                 // tslint:disable-next-line:jsx-no-lambda
-                render={actions => <SaveAndCancelButtons editorActions={actions}/>}
+                render={actions => (
+                  <SaveAndCancelButtons editorActions={actions} />
+                )}
               />
             }
           />
@@ -143,5 +148,5 @@ export default class Example extends React.Component<Props, State> {
     if (ref) {
       ref.focus();
     }
-  }
+  };
 }

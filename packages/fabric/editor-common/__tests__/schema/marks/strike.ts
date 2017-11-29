@@ -3,7 +3,6 @@ import { createSchema } from '../../../src';
 import { fromHTML, toHTML, textWithMarks } from '../../../test-helpers';
 
 describe(`${name}/schema strike mark`, () => {
-
   itMatches('<s>text</s>', 'text');
   itMatches('<del>text</del>', 'text');
   itMatches('<strike>text</strike>', 'text');
@@ -19,7 +18,7 @@ describe(`${name}/schema strike mark`, () => {
 function makeSchema() {
   return createSchema({
     nodes: ['doc', 'paragraph', 'text'],
-    marks: ['strike']
+    marks: ['strike'],
   });
 }
 

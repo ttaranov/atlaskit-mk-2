@@ -18,7 +18,9 @@ describe(`${name}/schema Confluence schema`, () => {
     expect(confluenceSchema.nodes).toHaveProperty('confluenceJiraIssue');
     expect(confluenceSchema.nodes).toHaveProperty('listItem');
     expect(confluenceSchema.nodes).toHaveProperty('mention');
-    expect(confluenceSchema.nodes).toHaveProperty('confluenceUnsupportedInline');
+    expect(confluenceSchema.nodes).toHaveProperty(
+      'confluenceUnsupportedInline',
+    );
     expect(confluenceSchema.nodes).toHaveProperty('media');
     expect(confluenceSchema.nodes).toHaveProperty('rule');
     // Marks

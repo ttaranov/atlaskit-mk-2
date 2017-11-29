@@ -11,7 +11,9 @@ import exampleHTML from '../example-helpers/exampleHTML';
 
 const CANCEL_ACTION = () => console.log('Cancel');
 const SAVE_ACTION = () => console.log('Save');
-const emojiProvider = emojiStoryData.getEmojiResource() as Promise<EmojiProvider>;
+const emojiProvider = emojiStoryData.getEmojiResource() as Promise<
+  EmojiProvider
+>;
 const mentionProvider = Promise.resolve(mentionStoryData.resourceProvider);
 
 type Props = {};
@@ -23,7 +25,7 @@ export default class Example extends PureComponent<Props, State> {
 
   handleChange = (editor: Editor) => {
     this.setState({ markdown: this.serializer.encode(editor.doc!) });
-  }
+  };
 
   render() {
     return (

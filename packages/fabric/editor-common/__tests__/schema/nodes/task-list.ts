@@ -6,7 +6,10 @@ const schema = makeSchema();
 
 describe(`${name}/schema taskList node`, () => {
   it('serializes to <ol> with proper data-attributes', () => {
-    const html = toHTML(schema.nodes.taskList.create({ localId: 'cheese' }), schema);
+    const html = toHTML(
+      schema.nodes.taskList.create({ localId: 'cheese' }),
+      schema,
+    );
     expect(html).toContain('<ol');
     expect(html).toContain('data-task-list-local-id="cheese"');
   });
@@ -27,6 +30,15 @@ describe(`${name}/schema taskList node`, () => {
 
 function makeSchema() {
   return createSchema({
-    nodes: ['doc', 'paragraph', 'text', 'taskList', 'taskItem', 'orderedList', 'bulletList', 'listItem']
+    nodes: [
+      'doc',
+      'paragraph',
+      'text',
+      'taskList',
+      'taskItem',
+      'orderedList',
+      'bulletList',
+      'listItem',
+    ],
   });
 }

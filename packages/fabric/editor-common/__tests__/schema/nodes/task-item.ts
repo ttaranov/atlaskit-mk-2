@@ -27,6 +27,15 @@ describe(`${name}/schema taskItem node`, () => {
 
 function makeSchema() {
   return createSchema({
-    nodes: ['doc', 'paragraph', 'text', 'taskList', 'taskItem', 'orderedList', 'bulletList', 'listItem']
+    nodes: [
+      'doc',
+      'paragraph',
+      'text',
+      'taskList',
+      'taskItem',
+      'orderedList',
+      'bulletList',
+      'listItem',
+    ],
   });
 }

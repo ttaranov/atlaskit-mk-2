@@ -9,5 +9,4 @@ describe('Renderer - React/Nodes/HardBreak', () => {
   it('should render a <br>-tag', () => {
     expect(hardBreak.is('br')).to.equal(true);
   });
-
 });

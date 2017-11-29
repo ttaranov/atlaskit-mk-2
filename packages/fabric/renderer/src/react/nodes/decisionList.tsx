@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { PureComponent, Children } from 'react';
 
-import { DecisionList as AkDecisionList, DecisionItem } from '@atlaskit/task-decision';
+import {
+  DecisionList as AkDecisionList,
+  DecisionItem,
+} from '@atlaskit/task-decision';
 
 export interface Props {
-  children?: DecisionItem | DecisionItem[]
+  children?: DecisionItem | DecisionItem[];
 }
 
 export default class DecisionList extends PureComponent<Props, {}> {
@@ -16,7 +19,9 @@ export default class DecisionList extends PureComponent<Props, {}> {
     }
 
     return (
-      <div className="akDecisionList"><AkDecisionList>{children}</AkDecisionList></div>
+      <div className="akDecisionList">
+        <AkDecisionList>{children}</AkDecisionList>
+      </div>
     );
   }
 }

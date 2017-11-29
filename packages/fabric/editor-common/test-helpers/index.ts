@@ -2,13 +2,19 @@ import { Mark, Node as PMNode } from 'prosemirror-model';
 import * as fs from 'fs';
 
 export const readFilesSync = (path: string) => {
-  return fs.readdirSync(path).reduce((acc, name) => {
-    if (name.match(/\.json$/)) {
-      acc.push( { name, data: JSON.parse(fs.readFileSync(`${path}/${name}`, 'utf-8')) });
-    }
+  return fs.readdirSync(path).reduce(
+    (acc, name) => {
+      if (name.match(/\.json$/)) {
+        acc.push({
+          name,
+          data: JSON.parse(fs.readFileSync(`${path}/${name}`, 'utf-8')),
+        });
+      }
 
-    return acc;
-  }, [] as { name: string, data: any }[]);
+      return acc;
+    },
+    [] as { name: string; data: any }[]
+  );
 };
 
 export * from './html-helpers';

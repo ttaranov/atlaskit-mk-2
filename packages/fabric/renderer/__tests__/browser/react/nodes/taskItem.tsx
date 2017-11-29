@@ -13,7 +13,7 @@ describe('Renderer - React/Nodes/TaskItem', () => {
   });
 
   it('should not render if no children', () => {
-    const taskItem = shallow(<TaskItem localId="task-2"/>);
+    const taskItem = shallow(<TaskItem localId="task-2" />);
     expect(taskItem.isEmptyRender()).to.equal(true);
   });
 });

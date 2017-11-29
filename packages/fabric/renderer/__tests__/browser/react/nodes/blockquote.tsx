@@ -9,5 +9,4 @@ describe('Renderer - React/Nodes/Blockquote', () => {
   it('should wrap content with <blockquote>-tag', () => {
     expect(blockquote.is('blockquote')).to.equal(true);
   });
-
 });

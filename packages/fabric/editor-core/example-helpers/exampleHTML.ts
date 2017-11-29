@@ -1,5 +1,4 @@
-const html =
-`<p>Regular,
+const html = `<p>Regular,
   <strong>Strong</strong>,
   <em>Italic</em>,
   <a href="/abodera/" rel="nofollow" title="@abodera" class="mention mention-me">Artur Bodera</a>,

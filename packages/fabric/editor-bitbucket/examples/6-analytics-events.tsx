@@ -9,7 +9,8 @@ export default function Component() {
   return (
     <BitbucketStyles>
       <h5 style={{ marginBottom: 20 }}>
-        Interact with the editor and observe analytics events in the Action Logger below
+        Interact with the editor and observe analytics events in the Action
+        Logger below
       </h5>
       <Editor
         placeholder="Click me to expand ..."
