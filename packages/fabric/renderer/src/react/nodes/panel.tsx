@@ -10,7 +10,7 @@ import {
   akColorB400,
   akColorY50,
   akColorB50,
-  akColorY400
+  akColorY400,
 } from '@atlaskit/util-shared-styles';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import TipIcon from '@atlaskit/icon/glyph/editor/hint';
@@ -52,7 +52,7 @@ const PanelWrapper = styled.div`
   border-radius: ${akBorderRadius};
   margin: ${akGridSizeUnitless / 2}px 0;
   padding: ${akGridSizeUnitless}px;
-  background: ${({ panelType }: Props) => config[panelType].background}
+  background: ${({ panelType }: Props) => config[panelType].background};
 `;
 
 // tslint:disable-next-line:variable-name
@@ -60,12 +60,12 @@ const IconWrapper = styled.span`
   position: absolute;
   height: ${akGridSizeUnitless * 3}px;
   width: ${akGridSizeUnitless * 3}px;
-  color: ${({ panelType }: Props) => config[panelType].iconColor}
+  color: ${({ panelType }: Props) => config[panelType].iconColor};
 `;
 
 // tslint:disable-next-line:variable-name
 const ContentWrapper = styled.div`
-  margin: 1px 0 1px ${akGridSizeUnitless * 4}px
+  margin: 1px 0 1px ${akGridSizeUnitless * 4}px;
 `;
 
 export default class Panel extends PureComponent<Props, {}> {

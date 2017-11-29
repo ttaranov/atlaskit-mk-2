@@ -17,7 +17,9 @@ class DemoEditor extends React.PureComponent<any, State> {
     const { dropzoneRef } = this.state;
     const editor = !dropzoneRef ? null : (
       <Editor
-        mediaProvider={storyMediaProviderFactory({ dropzoneContainer: dropzoneRef })}
+        mediaProvider={storyMediaProviderFactory({
+          dropzoneContainer: dropzoneRef,
+        })}
         isExpandedByDefault={true}
         devTools={true}
       />
@@ -38,7 +40,9 @@ class DemoEditor extends React.PureComponent<any, State> {
             borderRadius: '25px',
           }}
         >
-          <h4 style={{ textAlign: 'center', color: '#FFF' }}>Drag and Drop files here</h4>
+          <h4 style={{ textAlign: 'center', color: '#FFF' }}>
+            Drag and Drop files here
+          </h4>
         </div>
         {editor}
       </div>

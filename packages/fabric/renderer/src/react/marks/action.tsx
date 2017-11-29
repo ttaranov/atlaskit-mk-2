@@ -9,21 +9,24 @@ export interface Props extends ActionMarkAttributes {
 }
 
 export default class Action extends PureComponent<Props, {}> {
-
   onClick = () => {
-    if (this.props.eventHandlers &&
+    if (
+      this.props.eventHandlers &&
       this.props.eventHandlers.action &&
-      this.props.eventHandlers.action.onClick) {
+      this.props.eventHandlers.action.onClick
+    ) {
       this.props.eventHandlers.action.onClick({
         target: this.props.target,
-        parameters: this.props.parameters
+        parameters: this.props.parameters,
       });
     }
-  }
+  };
 
   render() {
     return (
-      <span className="akActionMark" onClick={this.onClick}>{this.props.children}</span>
+      <span className="akActionMark" onClick={this.onClick}>
+        {this.props.children}
+      </span>
     );
   }
 }

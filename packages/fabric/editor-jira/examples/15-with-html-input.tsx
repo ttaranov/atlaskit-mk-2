@@ -66,5 +66,9 @@ class Demo extends React.Component<Props, State> {
 }
 
 export default function Component() {
-  return <ExampleWrapper render={handleChange => <Demo handleChange={handleChange} />} />;
+  return (
+    <ExampleWrapper
+      render={handleChange => <Demo handleChange={handleChange} />}
+    />
+  );
 }

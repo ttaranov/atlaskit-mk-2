@@ -10,7 +10,11 @@ const SAVE_ACTION = () => console.log('Save');
 export default function Component() {
   return (
     <BitbucketStyles>
-      <Editor onCancel={CANCEL_ACTION} onChange={CHANGE_ACTION} onSave={SAVE_ACTION} />
+      <Editor
+        onCancel={CANCEL_ACTION}
+        onChange={CHANGE_ACTION}
+        onSave={SAVE_ACTION}
+      />
     </BitbucketStyles>
   );
 }

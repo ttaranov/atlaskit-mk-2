@@ -49,27 +49,29 @@ export const media: NodeSpec = {
   inline: false,
   selectable: true,
   attrs: defaultAttrs,
-  parseDOM: [{
-    tag: 'div[data-node-type="media"]',
-    getAttrs: (dom: HTMLElement) => {
-      const attrs = {} as Attributes;
+  parseDOM: [
+    {
+      tag: 'div[data-node-type="media"]',
+      getAttrs: (dom: HTMLElement) => {
+        const attrs = {} as Attributes;
 
-      Object.keys(defaultAttrs).forEach(k => {
-        const key = camelCaseToKebabCase(k).replace(/^__/,'');
-        const value = dom.getAttribute(`data-${key}`);
-        if (value) {
-          attrs[k] = value;
+        Object.keys(defaultAttrs).forEach(k => {
+          const key = camelCaseToKebabCase(k).replace(/^__/, '');
+          const value = dom.getAttribute(`data-${key}`);
+          if (value) {
+            attrs[k] = value;
+          }
+        });
+
+        // Need to do validation & type conversion manually
+        if (attrs.__fileSize) {
+          attrs.__fileSize = +attrs.__fileSize;
         }
-      });
 
-      // Need to do validation & type conversion manually
-      if (attrs.__fileSize) {
-        attrs.__fileSize = +attrs.__fileSize;
-      }
-
-      return attrs;
-    }
-  }],
+        return attrs;
+      },
+    },
+  ],
   toDOM(node: PMNode) {
     const attrs = {
       'data-id': node.attrs.id,
@@ -80,21 +82,31 @@ export const media: NodeSpec = {
       // toDOM is used for static rendering as well as editor rendering. This comes into play for
       // emails, copy/paste, etc, so the title and styling here *is* useful (despite a React-based
       // node view being used for editing).
-      'title': 'Attachment',
+      title: 'Attachment',
       // Manually kept in sync with the style of media cards. The goal is to render a plain grey
       // rectangle that provides an affordance for media.
-      'style': 'display: inline-block; border-radius: 3px; background: #EBECF0; height: 104px; width: 156px; box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px 0 rgba(9, 30, 66, 0.24);'
+      style:
+        'display: inline-block; border-radius: 3px; background: #EBECF0; height: 104px; width: 156px; box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px 0 rgba(9, 30, 66, 0.24);',
     };
 
-    copyOptionalAttrs(node.attrs, attrs, key => `data-${camelCaseToKebabCase(key.slice(2))}`);
+    copyOptionalAttrs(
+      node.attrs,
+      attrs,
+      key => `data-${camelCaseToKebabCase(key.slice(2))}`,
+    );
 
     return ['div', attrs];
-  }
+  },
 };
 
-export const camelCaseToKebabCase = str => str.replace(/([^A-Z]+)([A-Z])/g, (_, x, y) => `${x}-${y.toLowerCase()}`);
+export const camelCaseToKebabCase = str =>
+  str.replace(/([^A-Z]+)([A-Z])/g, (_, x, y) => `${x}-${y.toLowerCase()}`);
 
-export const copyOptionalAttrs = (from: Object, to: Object, map?: (string) => string) => {
+export const copyOptionalAttrs = (
+  from: Object,
+  to: Object,
+  map?: (string) => string,
+) => {
   if (media.attrs) {
     Object.keys(media.attrs).forEach(key => {
       if (key[0] === '_' && key[1] === '_' && from[key]) {
@@ -113,5 +125,5 @@ export const toJSON = (node: PMNode) => ({
       }
       obj[key] = node.attrs[key];
       return obj;
-    }, {})
+    }, {}),
 });

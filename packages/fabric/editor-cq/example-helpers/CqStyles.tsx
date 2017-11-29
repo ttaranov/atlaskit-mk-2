@@ -159,7 +159,8 @@ export default styled.div`
 
     code,
     pre {
-      font-family: 'Consolas', 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace;
+      font-family: 'Consolas', 'Bitstream Vera Sans Mono', 'Courier New',
+        Courier, monospace;
       font-size: 14px;
       line-height: 1.4;
       color: #000;

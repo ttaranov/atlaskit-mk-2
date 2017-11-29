@@ -69,5 +69,7 @@ const tableStyle = `
 `;
 
 // tslint:disable-next-line:variable-name
-const StyledTable = styled.table`${tableStyle}`;
+const StyledTable = styled.table`
+  ${tableStyle};
+`;
 export default StyledTable;

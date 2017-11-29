@@ -9,5 +9,4 @@ describe('Renderer - React/Nodes/Rule', () => {
   it('should create a <hr>-tag', () => {
     expect(rule.name()).to.equal('hr');
   });
-
 });

@@ -16,7 +16,7 @@ describe(`${name}/schema underline mark`, () => {
 function makeSchema() {
   return createSchema({
     nodes: ['doc', 'paragraph', 'text'],
-    marks: ['underline']
+    marks: ['underline'],
   });
 }
 

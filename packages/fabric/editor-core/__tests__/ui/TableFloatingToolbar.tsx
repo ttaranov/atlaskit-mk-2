@@ -70,7 +70,7 @@ describe('TableFloatingToolbar', () => {
       const { plugin, pluginState, editorView } = editor(
         doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
       );
-      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
       pluginState.selectColumn(0);
       const floatingToolbar = mount(
         <TableFloatingToolbar
@@ -88,7 +88,7 @@ describe('TableFloatingToolbar', () => {
       const { plugin, pluginState, editorView } = editor(
         doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
       );
-      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
       pluginState.selectRow(0);
       const floatingToolbar = mount(
         <TableFloatingToolbar
@@ -106,7 +106,7 @@ describe('TableFloatingToolbar', () => {
       const { plugin, pluginState, editorView } = editor(
         doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
       );
-      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
       pluginState.selectRow(0);
       const floatingToolbar = mount(
         <TableFloatingToolbar
@@ -115,7 +115,7 @@ describe('TableFloatingToolbar', () => {
         />,
       );
       expect(floatingToolbar.html()).not.toBe(null);
-      plugin.props.onBlur!(editorView, event);
+      plugin.props.handleDOMEvents!.blur(editorView, event);
       expect(floatingToolbar.html()).toEqual(null);
       floatingToolbar.unmount();
     });

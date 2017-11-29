@@ -53,7 +53,11 @@ export default class Nav extends Component<{}, State> {
                 isCollapsible={false}
                 isResizeable={false}
                 globalPrimaryIcon={
-                  <AtlassianIcon size="large" label="Atlaskit" />
+                  <AtlassianIcon
+                    size="large"
+                    primaryColor="#DEEBFF"
+                    label="Atlassian"
+                  />
                 }
                 globalPrimaryItemHref={navigateOut ? OLD_WEBSITE_URL : '/'}
                 globalSearchIcon={<SearchIcon label="search" />}

@@ -87,14 +87,20 @@ export function normalizeUrl(url: string) {
   return (match && match.url) || url;
 }
 
-export function linkifyContent(schema: Schema, slice: Slice): Slice | undefined {
+export function linkifyContent(
+  schema: Schema,
+  slice: Slice,
+): Slice | undefined {
   const fragment = linkinfyFragment(schema, slice.content);
   if (fragment) {
     return new Slice(fragment, slice.openStart, slice.openEnd);
   }
 }
 
-function linkinfyFragment(schema: Schema, fragment: Fragment): Fragment | undefined {
+function linkinfyFragment(
+  schema: Schema,
+  fragment: Fragment,
+): Fragment | undefined {
   const linkified: Node[] = [];
   for (let i = 0, len = fragment.childCount; i < len; i++) {
     const child: Node = fragment.child(i);
@@ -111,7 +117,13 @@ function linkinfyFragment(schema: Schema, fragment: Fragment): Fragment | undefi
           linkified.push(child.cut(pos, match.start));
         }
         linkified.push(
-          child.cut(match.start, match.end).mark(link.create({href: normalizeUrl(match.href)}).addToSet(child.marks))
+          child
+            .cut(match.start, match.end)
+            .mark(
+              link
+                .create({ href: normalizeUrl(match.href) })
+                .addToSet(child.marks),
+            ),
         );
         pos = match.end;
       });

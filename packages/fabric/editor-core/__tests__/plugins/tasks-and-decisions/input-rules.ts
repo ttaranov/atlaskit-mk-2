@@ -36,7 +36,11 @@ describe('tasks and decisions - input rules', () => {
       insertText(editorView, '<> ', sel);
 
       expect(editorView.state.doc).toEqualDocument(
-        doc(decisionList(decisionItem(''))),
+        doc(
+          decisionList({ localId: 'local-decision' })(
+            decisionItem({ localId: 'local-decision' })(''),
+          ),
+        ),
       );
     });
 
@@ -45,7 +49,11 @@ describe('tasks and decisions - input rules', () => {
       insertText(editorView, '<> ', sel);
 
       expect(editorView.state.doc).toEqualDocument(
-        doc(decisionList(decisionItem('Hello World'))),
+        doc(
+          decisionList({ localId: 'local-decision' })(
+            decisionItem({ localId: 'local-decision' })('Hello World'),
+          ),
+        ),
       );
     });
 
@@ -62,7 +70,12 @@ describe('tasks and decisions - input rules', () => {
       insertText(editorView, '<> ', sel);
 
       expect(editorView.state.doc).toEqualDocument(
-        doc(p('Hello'), decisionList(decisionItem('World'))),
+        doc(
+          p('Hello'),
+          decisionList({ localId: 'local-decision' })(
+            decisionItem({ localId: 'local-decision' })('World'),
+          ),
+        ),
       );
     });
 
@@ -81,7 +94,13 @@ describe('tasks and decisions - input rules', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '[] ', sel);
 
-      expect(editorView.state.doc).toEqualDocument(doc(taskList(taskItem(''))));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          taskList({ localId: 'local-decision' })(
+            taskItem({ localId: 'local-decision' })(''),
+          ),
+        ),
+      );
     });
 
     it('should preserve existing content on row when converting', () => {
@@ -89,7 +108,11 @@ describe('tasks and decisions - input rules', () => {
       insertText(editorView, '[] ', sel);
 
       expect(editorView.state.doc).toEqualDocument(
-        doc(taskList(taskItem('Hello World'))),
+        doc(
+          taskList({ localId: 'local-decision' })(
+            taskItem({ localId: 'local-decision' })('Hello World'),
+          ),
+        ),
       );
     });
 
@@ -106,7 +129,12 @@ describe('tasks and decisions - input rules', () => {
       insertText(editorView, '[] ', sel);
 
       expect(editorView.state.doc).toEqualDocument(
-        doc(p('Hello'), taskList(taskItem('World'))),
+        doc(
+          p('Hello'),
+          taskList({ localId: 'local-decision' })(
+            taskItem({ localId: 'local-decision' })('World'),
+          ),
+        ),
       );
     });
 

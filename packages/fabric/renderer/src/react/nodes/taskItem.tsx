@@ -2,10 +2,7 @@ import * as React from 'react';
 import { PureComponent, Children, ReactElement } from 'react';
 import { ResourcedTaskItem as AkTaskItem } from '@atlaskit/task-decision';
 import { RendererContext } from '../';
-import {
-  ProviderFactory,
-  WithProviders
-} from '@atlaskit/editor-common';
+import { ProviderFactory, WithProviders } from '@atlaskit/editor-common';
 export interface Props {
   localId: string;
   state?: string;
@@ -30,10 +27,13 @@ export default class TaskItem extends PureComponent<Props, {}> {
     }
   }
 
-  private renderWithProvider = (providers) => {
+  private renderWithProvider = providers => {
     const { taskDecisionProvider } = providers;
     const { children, localId, state, rendererContext } = this.props;
-    const { objectAri, containerAri } = rendererContext || { objectAri: '', containerAri: '' };
+    const { objectAri, containerAri } = rendererContext || {
+      objectAri: '',
+      containerAri: '',
+    };
 
     return (
       <AkTaskItem
@@ -46,7 +46,7 @@ export default class TaskItem extends PureComponent<Props, {}> {
         {children}
       </AkTaskItem>
     );
-  }
+  };
 
   render() {
     const { children } = this.props;

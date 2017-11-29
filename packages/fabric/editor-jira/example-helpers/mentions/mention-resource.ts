@@ -30,16 +30,18 @@ export default class MentionResource extends AbstractMentionResource {
       if (query.length >= 3) {
         notifyInfo(`Found no matches for ${query}`);
       }
-      notify({mentions: [], query});
+      notify({ mentions: [], query });
     } else {
-      const mentions = results.map((item, index) => {
-        return {
-          'id': item.attributes.username,
-          'name': item.attributes.display_name,
-          'mentionName': item.attributes.username,
-          'avatarUrl': item.attributes.avatar_url
-        };
-      }).sort((itemA, itemB) => itemA.name < itemB.name ? 0 : 1 ); // Sort by name
+      const mentions = results
+        .map((item, index) => {
+          return {
+            id: item.attributes.username,
+            name: item.attributes.display_name,
+            mentionName: item.attributes.username,
+            avatarUrl: item.attributes.avatar_url,
+          };
+        })
+        .sort((itemA, itemB) => (itemA.name < itemB.name ? 0 : 1)); // Sort by name
 
       notify({ mentions, query });
     }

@@ -20,28 +20,27 @@ export default function Example() {
   return (
     <ToolsDrawer
       // tslint:disable-next-line:jsx-no-lambda
-      renderEditor={({mentionProvider, emojiProvider, mediaProvider, onChange}) =>
-        <AnalyticsListener
-          onEvent={analyticsHandler}
-        >
-          <AnalyticsDecorator
-            data={{ editorType: 'message' }}
-          >
+      renderEditor={({
+        mentionProvider,
+        emojiProvider,
+        mediaProvider,
+        onChange,
+      }) => (
+        <AnalyticsListener onEvent={analyticsHandler}>
+          <AnalyticsDecorator data={{ editorType: 'message' }}>
             <EditorWithAnalytics
               {...getPropsPreset('message')}
-
               analyticsHandler={analyticsHandler}
               maxHeight={305}
-
               mentionProvider={mentionProvider}
               emojiProvider={emojiProvider}
               mediaProvider={mediaProvider}
-
               onChange={onChange}
               onSave={SAVE_ACTION}
             />
           </AnalyticsDecorator>
-        </AnalyticsListener>}
+        </AnalyticsListener>
+      )}
     />
   );
 }

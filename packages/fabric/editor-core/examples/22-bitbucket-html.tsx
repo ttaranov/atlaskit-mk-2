@@ -11,7 +11,9 @@ import exampleHTML from '../example-helpers/exampleHTML';
 
 const CANCEL_ACTION = () => console.log('Cancel');
 const SAVE_ACTION = () => console.log('Save');
-const emojiProvider = emojiStoryData.getEmojiResource() as Promise<EmojiProvider>;
+const emojiProvider = emojiStoryData.getEmojiResource() as Promise<
+  EmojiProvider
+>;
 const mentionProvider = Promise.resolve(mentionStoryData.resourceProvider);
 
 type Props = {};
@@ -39,7 +41,7 @@ export default class Example extends PureComponent<Props, State> {
       this.setState({ hasError: true });
       console.error('Error when setting from HTML', e);
     }
-  }
+  };
 
   handleTextareaRef = (ref: HTMLTextAreaElement | null) => {
     if (!ref) {
@@ -49,7 +51,7 @@ export default class Example extends PureComponent<Props, State> {
     this.textarea = ref;
     ref.value = exampleHTML;
     this.setEditorContentFromHtml();
-  }
+  };
 
   handleEditorRef = (ref: Editor | null) => {
     if (!ref) {
@@ -63,11 +65,14 @@ export default class Example extends PureComponent<Props, State> {
     setTimeout(() => {
       this.setEditorContentFromHtml();
     }, 500);
-  }
+  };
 
   render() {
     return (
-      <div ref="root" style={{ display: 'flex', alignItems: 'stretch', minHeight: '100%' }}>
+      <div
+        ref="root"
+        style={{ display: 'flex', alignItems: 'stretch', minHeight: '100%' }}
+      >
         <div style={{ flex: 3, display: 'flex', alignItems: 'stretch' }}>
           <textarea
             style={{
@@ -78,13 +83,21 @@ export default class Example extends PureComponent<Props, State> {
               border: '0 none',
               padding: '5px 10px',
               borderRight: '10px solid rgb(247, 247, 247)',
-              background: this.state.hasError ? 'red' : 'white'
+              background: this.state.hasError ? 'red' : 'white',
             }}
             ref={this.handleTextareaRef}
             onKeyUp={this.setEditorContentFromHtml}
           />
         </div>
-        <div style={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'stretch', alignContent: 'stretch' }}>
+        <div
+          style={{
+            flex: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'stretch',
+            alignContent: 'stretch',
+          }}
+        >
           <Editor
             ref={this.handleEditorRef}
             isExpandedByDefault={true}

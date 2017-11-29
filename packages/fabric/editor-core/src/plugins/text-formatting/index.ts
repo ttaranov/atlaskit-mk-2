@@ -37,7 +37,6 @@ export class TextFormattingState {
   subscriptActive = false;
   subscriptDisabled = false;
   subscriptHidden = false;
-  marksToRemove;
   keymapHandler;
 
   constructor(state: EditorState) {
@@ -208,7 +207,9 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newSubscriptDisabled = !toggleMark(subsup, { type: 'sub' })(this.state);
+      const newSubscriptDisabled = !toggleMark(subsup, { type: 'sub' })(
+        this.state,
+      );
       if (this.codeActive || newSubscriptDisabled !== this.subscriptDisabled) {
         this.subscriptDisabled = this.codeActive ? true : newSubscriptDisabled;
         dirty = true;
@@ -220,9 +221,16 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newSuperscriptDisabled = !toggleMark(subsup, { type: 'sup' })(this.state);
-      if (this.codeActive || newSuperscriptDisabled !== this.superscriptDisabled) {
-        this.superscriptDisabled = this.codeActive ? true : newSuperscriptDisabled;
+      const newSuperscriptDisabled = !toggleMark(subsup, { type: 'sup' })(
+        this.state,
+      );
+      if (
+        this.codeActive ||
+        newSuperscriptDisabled !== this.superscriptDisabled
+      ) {
+        this.superscriptDisabled = this.codeActive
+          ? true
+          : newSuperscriptDisabled;
         dirty = true;
       }
     }
@@ -253,25 +261,11 @@ export class TextFormattingState {
     const { state } = this;
     const { from, to, empty } = state.selection;
 
-    let foundMark = false;
-    if (this.marksToRemove) {
-      this.marksToRemove.forEach(markToRemove => {
-        if (markToRemove.type.name === mark.type.name) {
-          foundMark = true;
-        }
-      });
-    }
-
-    const currentMarkBefore = state.doc.rangeHasMark(from - 1, to, mark.type);
-    const currentMarkAfter = state.doc.rangeHasMark(from, to, mark.type);
-
-    if (foundMark && (!currentMarkBefore || ( !mark.type.spec.inclusive && !currentMarkAfter ))) {
-      return false;
-    }
-
     // When the selection is empty, only the active marks apply.
     if (empty) {
-      return !!mark.isInSet(state.tr.storedMarks || state.selection.$from.marks());
+      return !!mark.isInSet(
+        state.tr.storedMarks || state.selection.$from.marks(),
+      );
     }
 
     // For a non-collapsed selection, the marks on the nodes matter.
@@ -291,37 +285,29 @@ export class TextFormattingState {
    * Determine if a mark of a specific type exists anywhere in the selection.
    */
   private anyMarkActive(markType: MarkType): boolean {
-    const { state } = this;
-    const { from, to, empty } = state.selection;
-
-    let found = false;
-    if (this.marksToRemove) {
-      this.marksToRemove.forEach(mark => {
-        if (mark.type.name === markType.name) {
-          found = true;
-        }
-      });
-    }
-
-    if (found && !state.doc.rangeHasMark(from - 1, to, markType)) {
-      return false;
-    }
-
+    const { $from, from, to, empty } = this.state.selection;
     if (empty) {
-      return !!markType.isInSet(state.tr.storedMarks || state.selection.$from.marks());
+      return !!markType.isInSet(this.state.storedMarks || $from.marks());
     }
-    return state.doc.rangeHasMark(from, to, markType);
+    return this.state.doc.rangeHasMark(from, to, markType);
   }
 
-  textInputHandler(view: EditorView, from: number, to: number, text: string): boolean {
+  textInputHandler(
+    view: EditorView,
+    from: number,
+    to: number,
+    text: string,
+  ): boolean {
     const { state } = view;
-    if(state.selection.empty) {
+    if (state.selection.empty) {
       const nodeContent = state.selection.$from.node().textContent;
       const start = state.selection.$from.start();
       const charBefore = nodeContent[from - start - 1];
       const charAfter = nodeContent[from - start];
       if (charBefore === '`' && charAfter === '`') {
-        analyticsService.trackEvent(`atlassian.editor.format.code.autoformatting`);
+        analyticsService.trackEvent(
+          `atlassian.editor.format.code.autoformatting`,
+        );
         const tr = state.tr.delete(from - 1, from + 1).insertText(text);
         view.dispatch(transformToCodeAction(state, from - 1, from, tr));
         return true;
@@ -330,7 +316,11 @@ export class TextFormattingState {
     return false;
   }
 
-  private toggleMark(view: EditorView, markType: MarkType, attrs?: any): boolean {
+  private toggleMark(
+    view: EditorView,
+    markType: MarkType,
+    attrs?: any,
+  ): boolean {
     // Disable text-formatting inside code
     if (this.codeActive ? this.codeDisabled : true) {
       return toggleMark(markType, attrs)(view.state, view.dispatch);
@@ -350,7 +340,7 @@ export const plugin = new Plugin({
     apply(tr, pluginState: TextFormattingState, oldState, newState) {
       pluginState.update(newState);
       return pluginState;
-    }
+    },
   },
   key: stateKey,
   view: (view: EditorView) => {
@@ -363,13 +353,17 @@ export const plugin = new Plugin({
       return stateKey.getState(view.state).keymapHandler(view, event);
     },
     handleTextInput(view: EditorView, from: number, to: number, text: string) {
-      return stateKey.getState(view.state).textInputHandler(view, from, to, text);
-    }
-  }
+      return stateKey
+        .getState(view.state)
+        .textInputHandler(view, from, to, text);
+    },
+  },
 });
 
 const plugins = (schema: Schema) => {
-  return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+  return [plugin, inputRulePlugin(schema)].filter(
+    plugin => !!plugin,
+  ) as Plugin[];
 };
 
 export default plugins;

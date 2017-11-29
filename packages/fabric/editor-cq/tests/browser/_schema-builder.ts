@@ -1,6 +1,11 @@
 import { Node } from 'prosemirror-model';
 import { MediaAttributes } from '@atlaskit/editor-common';
-import { markFactory, nodeFactory, RefsNode, RefsTracker } from '@atlaskit/editor-test-helpers';
+import {
+  markFactory,
+  nodeFactory,
+  RefsNode,
+  RefsTracker,
+} from '@atlaskit/editor-test-helpers';
 import schema from '../../src/schema';
 export { RefsNode, RefsTracker, Node };
 
@@ -19,11 +24,15 @@ export const h6 = nodeFactory(schema.nodes.heading, { level: 6 });
 export const hr = nodeFactory(schema.nodes.rule);
 export const li = nodeFactory(schema.nodes.listItem);
 export const ol = nodeFactory(schema.nodes.orderedList);
-export const codeblock = (attrs: {} = {}) => nodeFactory(schema.nodes.codeBlock, attrs);
+export const codeblock = (attrs: {} = {}) =>
+  nodeFactory(schema.nodes.codeBlock, attrs);
 export const panel = (attrs: {} = {}) => nodeFactory(schema.nodes.panel, attrs);
-export const confluenceUnsupportedBlock = (cxhtml: string) => nodeFactory(schema.nodes.confluenceUnsupportedBlock, { cxhtml })();
-export const confluenceUnsupportedInline = (cxhtml: string) => nodeFactory(schema.nodes.confluenceUnsupportedInline, { cxhtml })();
-export const mention = (attrs: { id: string, text?: string }) => schema.nodes.mention.createChecked(attrs);
+export const confluenceUnsupportedBlock = (cxhtml: string) =>
+  nodeFactory(schema.nodes.confluenceUnsupportedBlock, { cxhtml })();
+export const confluenceUnsupportedInline = (cxhtml: string) =>
+  nodeFactory(schema.nodes.confluenceUnsupportedInline, { cxhtml })();
+export const mention = (attrs: { id: string; text?: string }) =>
+  schema.nodes.mention.createChecked(attrs);
 export const confluenceJiraIssue = (attrs: {
   issueKey?: string;
   macroId?: string;
@@ -70,5 +79,7 @@ export const u = markFactory(schema.marks.underline);
 export const link = (attrs: {} = {}) => markFactory(schema.marks.link, attrs);
 export const table = nodeFactory(schema.nodes.table, {});
 export const tr = nodeFactory(schema.nodes.tableRow, {});
-export const td = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(schema.nodes.tableCell, attrs);
-export const th = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(schema.nodes.tableHeader, attrs);
+export const td = (attrs: { colspan?: number; rowspan?: number }) =>
+  nodeFactory(schema.nodes.tableCell, attrs);
+export const th = (attrs: { colspan?: number; rowspan?: number }) =>
+  nodeFactory(schema.nodes.tableHeader, attrs);

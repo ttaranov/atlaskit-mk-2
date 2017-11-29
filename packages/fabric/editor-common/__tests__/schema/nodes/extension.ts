@@ -7,7 +7,7 @@ describe(`${name}/schema extension node`, () => {
     it('converts to extension PM node', () => {
       const doc = fromHTML(
         '<div data-extension-type="com.atlassian.confluence.macro" />',
-        schema
+        schema,
       );
       const node = doc.firstChild!;
       expect(node.type.spec).toEqual(extension);
@@ -28,7 +28,7 @@ describe(`${name}/schema extension node`, () => {
           data-parameters='${JSON.stringify(parameters)}'
         >const x = 4;</div>
       `,
-        schema
+        schema,
       );
 
       const node = doc.firstChild!;
@@ -52,14 +52,14 @@ describe(`${name}/schema extension node`, () => {
       const dom = toDOM(node, schema).firstChild as HTMLElement;
 
       expect(dom.getAttribute('data-extension-type')).toEqual(
-        attrs.extensionType
+        attrs.extensionType,
       );
       expect(dom.getAttribute('data-extension-key')).toEqual(
-        attrs.extensionKey
+        attrs.extensionKey,
       );
       expect(dom.getAttribute('data-body-type')).toEqual(attrs.bodyType);
       expect(dom.getAttribute('data-parameters')).toEqual(
-        JSON.stringify(attrs.parameters)
+        JSON.stringify(attrs.parameters),
       );
     });
 
@@ -71,7 +71,7 @@ describe(`${name}/schema extension node`, () => {
         parameters: { macroparams: { language: 'cpp' } },
       };
       const content = schema.nodes.paragraph.create(
-        schema.text('const x = 4;')
+        schema.text('const x = 4;'),
       );
       const node = schema.nodes.extension.create(attrs, content);
       const dom = toDOM(node, schema).firstChild as HTMLElement;
