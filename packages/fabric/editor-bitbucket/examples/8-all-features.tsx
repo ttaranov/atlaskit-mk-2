@@ -19,7 +19,6 @@ const emojiProvider: Promise<
 const CANCEL_ACTION = () => console.log('Cancel');
 const CHANGE_ACTION = () => console.log('Change');
 const SAVE_ACTION = () => console.log('Save');
-const NOOP = () => {};
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 
 const isClipboardEvent = (e: Event) => {
@@ -48,8 +47,8 @@ const imageUploadHandler = (e: any, fn: any) => {
   }
 };
 
-type Props = {};
-type State = { markdown?: string };
+export type Props = {};
+export type State = { markdown?: string };
 export default class EditorWithAllFeatures extends React.Component<
   Props,
   State
