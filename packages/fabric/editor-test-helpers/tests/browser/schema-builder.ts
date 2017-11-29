@@ -104,7 +104,9 @@ describe('@atlaskit/editore-core/test-helper/schema-builder', () => {
 
   describe('nodeFactory', () => {
     it('returns a function', () => {
-      expect(nodeFactory(schema.nodes.paragraph, {})).to.be.an.instanceOf(Function);
+      expect(nodeFactory(schema.nodes.paragraph, {})).to.be.an.instanceOf(
+        Function,
+      );
     });
 
     it("returns a factory that returns ref'd nodes", () => {
@@ -176,7 +178,9 @@ describe('@atlaskit/editore-core/test-helper/schema-builder', () => {
     });
 
     it('supports being composed with multiple text() and maintaining refs', () => {
-      const node = p(em(text('t{a}ex{b}t', schema), text('t{c}ex{d}t', schema)));
+      const node = p(
+        em(text('t{a}ex{b}t', schema), text('t{c}ex{d}t', schema)),
+      );
       const { a, b, c, d } = node.refs;
       expect(node.textBetween(a, b)).to.equal('ex');
       expect(node.textBetween(c, d)).to.equal('ex');

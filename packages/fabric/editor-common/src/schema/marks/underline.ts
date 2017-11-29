@@ -13,7 +13,12 @@ export const underline: MarkSpec = {
   group: FONT_STYLE,
   parseDOM: [
     { tag: 'u' },
-    { style: 'text-decoration', getAttrs: value => value === 'underline' && null }
+    {
+      style: 'text-decoration',
+      getAttrs: value => value === 'underline' && null,
+    },
   ],
-  toDOM(): [string] { return ['u']; }
+  toDOM(): [string] {
+    return ['u'];
+  },
 };

@@ -7,14 +7,17 @@ const fromHTML = (html: string) => fromHTML_(html, schema);
 
 describe(`${name}/schema mention node`, () => {
   it('should have mention id and display name when serializing to DOM', () => {
-    const html = toHTML(schema.nodes.mention.create({ id: '@bar', text: 'foo bar' }), schema);
+    const html = toHTML(
+      schema.nodes.mention.create({ id: '@bar', text: 'foo bar' }),
+      schema,
+    );
     expect(html).toContain('data-mention-id="@bar"');
     expect(html).toContain('contenteditable="false"');
     expect(html).toContain('foo bar');
   });
 
   it('should extract the correct values of mention id and display name', () => {
-    const doc = fromHTML('<span data-mention-id=\'@user-1\'>foo bar</span>');
+    const doc = fromHTML("<span data-mention-id='@user-1'>foo bar</span>");
     const mention = doc.firstChild!.firstChild!;
 
     expect(mention.type.name).toEqual('mention');
@@ -23,7 +26,14 @@ describe(`${name}/schema mention node`, () => {
   });
 
   it('should ignore if userType is DEFAULT', () => {
-    const html = toHTML(schema.nodes.mention.create({ id: 'id-foo-bar', text: '@foo bar', userType: 'DEFAULT' }), schema);
+    const html = toHTML(
+      schema.nodes.mention.create({
+        id: 'id-foo-bar',
+        text: '@foo bar',
+        userType: 'DEFAULT',
+      }),
+      schema,
+    );
     expect(html).toContain('data-mention-id="id-foo-bar"');
     expect(html).toContain('contenteditable="false"');
     expect(html).toContain('data-user-type="DEFAULT"');
@@ -31,21 +41,37 @@ describe(`${name}/schema mention node`, () => {
   });
 
   it('should have userType if it is SPECIAL', () => {
-    const html = toHTML(schema.nodes.mention.create({ id: 'id-rick', text: '@rick', userType: 'SPECIAL' }), schema);
+    const html = toHTML(
+      schema.nodes.mention.create({
+        id: 'id-rick',
+        text: '@rick',
+        userType: 'SPECIAL',
+      }),
+      schema,
+    );
     expect(html).toContain('data-mention-id="id-rick"');
     expect(html).toContain('data-user-type="SPECIAL"');
     expect(html).toContain('@rick');
   });
 
   it('should have userType if it is APP', () => {
-    const html = toHTML(schema.nodes.mention.create({ id: 'id-coffee', text: '@coffee', userType: 'APP' }), schema);
+    const html = toHTML(
+      schema.nodes.mention.create({
+        id: 'id-coffee',
+        text: '@coffee',
+        userType: 'APP',
+      }),
+      schema,
+    );
     expect(html).toContain('data-mention-id="id-coffee"');
     expect(html).toContain('data-user-type="APP"');
     expect(html).toContain('@coffee');
   });
 
   it('should extract the valid userTypes - SPECIAL', () => {
-    const doc = fromHTML('<span data-mention-id="id-rick" data-user-type="SPECIAL">@Rick Sanchez</span>');
+    const doc = fromHTML(
+      '<span data-mention-id="id-rick" data-user-type="SPECIAL">@Rick Sanchez</span>',
+    );
     const mention = doc.firstChild!.firstChild!;
 
     expect(mention.type.name).toEqual('mention');
@@ -55,7 +81,9 @@ describe(`${name}/schema mention node`, () => {
   });
 
   it('should extract the valid userTypes - APP', () => {
-    const doc = fromHTML('<span data-mention-id="id-coffee" data-user-type="APP">@coffee</span>');
+    const doc = fromHTML(
+      '<span data-mention-id="id-coffee" data-user-type="APP">@coffee</span>',
+    );
     const mention = doc.firstChild!.firstChild!;
 
     expect(mention.type.name).toEqual('mention');
@@ -65,7 +93,9 @@ describe(`${name}/schema mention node`, () => {
   });
 
   it('should not extract invalid value of userType', () => {
-    const doc = fromHTML('<span data-mention-id="id-morty" data-user-type="SIDEKICK">@Morty Smith</span>');
+    const doc = fromHTML(
+      '<span data-mention-id="id-morty" data-user-type="SIDEKICK">@Morty Smith</span>',
+    );
     const mention = doc.firstChild!.firstChild!;
 
     expect(mention.type.name).toEqual('mention');
@@ -77,6 +107,6 @@ describe(`${name}/schema mention node`, () => {
 
 function makeSchema() {
   return createSchema({
-    nodes: ['doc', 'paragraph', 'text', 'mention']
+    nodes: ['doc', 'paragraph', 'text', 'mention'],
   });
 }

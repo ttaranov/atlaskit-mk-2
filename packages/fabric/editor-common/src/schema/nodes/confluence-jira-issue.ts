@@ -13,16 +13,18 @@ export const confluenceJiraIssue = {
     server: { default: null },
     serverId: { default: null },
   },
-  parseDOM: [{
-    tag: `span[data-node-type="${name}"]`,
-    getAttrs: (dom: HTMLElement) => ({
-      issueKey: dom.textContent,
-      macroId: dom.dataset.macroId,
-      schemaVersion: dom.dataset.schemaVersion,
-      server: dom.dataset.server,
-      serverId: dom.dataset.serverId,
-    })
-  }],
+  parseDOM: [
+    {
+      tag: `span[data-node-type="${name}"]`,
+      getAttrs: (dom: HTMLElement) => ({
+        issueKey: dom.textContent,
+        macroId: dom.dataset.macroId,
+        schemaVersion: dom.dataset.schemaVersion,
+        server: dom.dataset.server,
+        serverId: dom.dataset.serverId,
+      }),
+    },
+  ],
   toDOM(node: any) {
     const attrs = {
       'data-node-type': name,
@@ -34,5 +36,5 @@ export const confluenceJiraIssue = {
     };
 
     return ['span', attrs, node.attrs.issueKey];
-  }
+  },
 } as NodeSpec;

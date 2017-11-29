@@ -11,11 +11,7 @@ import {
 } from '@atlaskit/media-core';
 import MediaComponent from '../../src/ui/MediaItem/MediaComponent';
 import { MediaType } from '../../src';
-import {
-  Card,
-  CardView,
-  CardProps,
-} from '@atlaskit/media-card';
+import { Card, CardView, CardProps } from '@atlaskit/media-card';
 import {
   storyMediaProviderFactory,
   randomId,
@@ -27,8 +23,8 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     attrs: {
       type: 'file',
       id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-      collection: 'MediaServicesSample'
-    }
+      collection: 'MediaServicesSample',
+    },
   };
 
   const tempFile = {
@@ -36,8 +32,8 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     attrs: {
       type: 'file',
       id: 'temporary:5556346b-b081-482b-bc4a-4faca8ecd2de',
-      collection: 'MediaServicesSample'
-    }
+      collection: 'MediaServicesSample',
+    },
   };
 
   const link = {
@@ -45,15 +41,20 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     attrs: {
       type: 'link',
       id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-      collection: 'MediaServicesSample'
-    }
+      collection: 'MediaServicesSample',
+    },
   };
 
   const defaultStateManager = new DefaultMediaStateManager();
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
   const getFreshResolvedProvider = (stateManager?: MediaStateManager) => {
-    return Promise.resolve(storyMediaProviderFactory({ collectionName: testCollectionName, stateManager: stateManager || defaultStateManager })) as Promise<MediaProvider>;
+    return Promise.resolve(
+      storyMediaProviderFactory({
+        collectionName: testCollectionName,
+        stateManager: stateManager || defaultStateManager,
+      }),
+    ) as Promise<MediaProvider>;
   };
 
   it('should render a CardView component if the media type is file without provider', () => {
@@ -62,7 +63,8 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
         id={file.attrs.id}
         type={file.attrs.type as MediaType}
         collection={file.attrs.collection}
-      />);
+      />,
+    );
     expect(mediaComponent.find(CardView).length).to.equal(1);
   });
 
@@ -74,7 +76,8 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
         type={file.attrs.type as MediaType}
         collection={file.attrs.collection}
         mediaProvider={mediaProvider}
-      />);
+      />,
+    );
 
     const resolvedMediaProvider = await mediaProvider;
     await resolvedMediaProvider.viewContext;
@@ -90,7 +93,8 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
         type={tempFile.attrs.type as MediaType}
         collection={tempFile.attrs.collection}
         mediaProvider={mediaProvider}
-      />);
+      />,
+    );
 
     const resolvedMediaProvider = await mediaProvider;
     await resolvedMediaProvider.viewContext;
@@ -105,12 +109,15 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
         id={link.attrs.id}
         type={link.attrs.type as MediaType}
         collection={link.attrs.collection}
-      />);
+      />,
+    );
 
     const resolvedMediaProvider = await mediaProvider;
-    const resolvedLinkCreateContextConfig = await resolvedMediaProvider.linkCreateContext as ContextConfig;
-    const linkCreateContext = ContextFactory.create(resolvedLinkCreateContextConfig) as Context;
-    mediaComponent.setState({ 'linkCreateContext': linkCreateContext });
+    const resolvedLinkCreateContextConfig = (await resolvedMediaProvider.linkCreateContext) as ContextConfig;
+    const linkCreateContext = ContextFactory.create(
+      resolvedLinkCreateContextConfig,
+    ) as Context;
+    mediaComponent.setState({ linkCreateContext: linkCreateContext });
 
     expect(mediaComponent.find(Card).length).to.equal(0);
   });
@@ -123,7 +130,8 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
         type={link.attrs.type as MediaType}
         collection={link.attrs.collection}
         mediaProvider={mediaProvider}
-      />);
+      />,
+    );
 
     await mediaProvider;
 
@@ -138,12 +146,15 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
         type={link.attrs.type as MediaType}
         collection={link.attrs.collection}
         mediaProvider={mediaProvider}
-      />);
+      />,
+    );
 
     const resolvedMediaProvider = await mediaProvider;
-    const resolvedLinkCreateContextConfig = await resolvedMediaProvider.linkCreateContext as ContextConfig;
-    const linkCreateContext = ContextFactory.create(resolvedLinkCreateContextConfig) as Context;
-    mediaComponent.setState({ 'linkCreateContext': linkCreateContext });
+    const resolvedLinkCreateContextConfig = (await resolvedMediaProvider.linkCreateContext) as ContextConfig;
+    const linkCreateContext = ContextFactory.create(
+      resolvedLinkCreateContextConfig,
+    ) as Context;
+    mediaComponent.setState({ linkCreateContext: linkCreateContext });
 
     expect(mediaComponent.find(Card).length).to.equal(1);
   });
@@ -158,12 +169,15 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
           collection={link.attrs.collection}
           mediaProvider={mediaProvider}
           appearance="square"
-        />);
+        />,
+      );
 
       const resolvedMediaProvider = await mediaProvider;
-      const resolvedLinkCreateContextConfig = await resolvedMediaProvider.linkCreateContext as ContextConfig;
-      const linkCreateContext = ContextFactory.create(resolvedLinkCreateContextConfig) as Context;
-      mediaComponent.setState({ 'linkCreateContext': linkCreateContext });
+      const resolvedLinkCreateContextConfig = (await resolvedMediaProvider.linkCreateContext) as ContextConfig;
+      const linkCreateContext = ContextFactory.create(
+        resolvedLinkCreateContextConfig,
+      ) as Context;
+      mediaComponent.setState({ linkCreateContext: linkCreateContext });
 
       const props: CardProps = mediaComponent.find(Card).props();
       expect(props.appearance).to.equal('square');
@@ -179,12 +193,15 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
           type={link.attrs.type as MediaType}
           collection={link.attrs.collection}
           mediaProvider={mediaProvider}
-        />);
+        />,
+      );
 
       const resolvedMediaProvider = await mediaProvider;
-      const resolvedLinkCreateContextConfig = await resolvedMediaProvider.linkCreateContext as ContextConfig;
-      const linkCreateContext = ContextFactory.create(resolvedLinkCreateContextConfig) as Context;
-      mediaComponent.setState({ 'linkCreateContext': linkCreateContext });
+      const resolvedLinkCreateContextConfig = (await resolvedMediaProvider.linkCreateContext) as ContextConfig;
+      const linkCreateContext = ContextFactory.create(
+        resolvedLinkCreateContextConfig,
+      ) as Context;
+      mediaComponent.setState({ linkCreateContext: linkCreateContext });
 
       const props: CardProps = mediaComponent.find(Card).props();
       expect(props.appearance).to.equal('horizontal');
@@ -194,11 +211,11 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   it('should use stateManager from Plugin state in Editor mode', async () => {
     const stateManager = {
       getState: () => undefined,
-      updateState: () => { },
+      updateState: () => {},
       subscribe: () => {
         subscribeCalled = true;
       },
-      unsubscribe: () => { }
+      unsubscribe: () => {},
     };
     const mediaProvider = getFreshResolvedProvider(stateManager);
     let subscribeCalled = false;
@@ -209,7 +226,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
         type={link.attrs.type as MediaType}
         collection={link.attrs.collection}
         mediaProvider={mediaProvider}
-      />
+      />,
     );
 
     const resolvedMediaProvider = await mediaProvider;
@@ -226,7 +243,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
         id={link.attrs.id}
         type={link.attrs.type as MediaType}
         collection={link.attrs.collection}
-      />
+      />,
     );
 
     const resolvedMediaProvider = await mediaProvider;

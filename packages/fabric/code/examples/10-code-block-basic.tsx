@@ -1,5 +1,5 @@
-import * as React from "react";
-import { AkCodeBlock } from "../src";
+import * as React from 'react';
+import { AkCodeBlock } from '../src';
 
 const exampleCodeBlock = `// Create a map.
 final IntIntOpenHashMap map = new IntIntOpenHashMap();

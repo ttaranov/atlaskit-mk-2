@@ -207,7 +207,9 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newSubscriptDisabled = !toggleMark(subsup, { type: 'sub' })(this.state);
+      const newSubscriptDisabled = !toggleMark(subsup, { type: 'sub' })(
+        this.state,
+      );
       if (this.codeActive || newSubscriptDisabled !== this.subscriptDisabled) {
         this.subscriptDisabled = this.codeActive ? true : newSubscriptDisabled;
         dirty = true;
@@ -219,9 +221,16 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newSuperscriptDisabled = !toggleMark(subsup, { type: 'sup' })(this.state);
-      if (this.codeActive || newSuperscriptDisabled !== this.superscriptDisabled) {
-        this.superscriptDisabled = this.codeActive ? true : newSuperscriptDisabled;
+      const newSuperscriptDisabled = !toggleMark(subsup, { type: 'sup' })(
+        this.state,
+      );
+      if (
+        this.codeActive ||
+        newSuperscriptDisabled !== this.superscriptDisabled
+      ) {
+        this.superscriptDisabled = this.codeActive
+          ? true
+          : newSuperscriptDisabled;
         dirty = true;
       }
     }
@@ -254,7 +263,9 @@ export class TextFormattingState {
 
     // When the selection is empty, only the active marks apply.
     if (empty) {
-      return !!mark.isInSet(state.tr.storedMarks || state.selection.$from.marks());
+      return !!mark.isInSet(
+        state.tr.storedMarks || state.selection.$from.marks(),
+      );
     }
 
     // For a non-collapsed selection, the marks on the nodes matter.
@@ -281,15 +292,22 @@ export class TextFormattingState {
     return this.state.doc.rangeHasMark(from, to, markType);
   }
 
-  textInputHandler(view: EditorView, from: number, to: number, text: string): boolean {
+  textInputHandler(
+    view: EditorView,
+    from: number,
+    to: number,
+    text: string,
+  ): boolean {
     const { state } = view;
-    if(state.selection.empty) {
+    if (state.selection.empty) {
       const nodeContent = state.selection.$from.node().textContent;
       const start = state.selection.$from.start();
       const charBefore = nodeContent[from - start - 1];
       const charAfter = nodeContent[from - start];
       if (charBefore === '`' && charAfter === '`') {
-        analyticsService.trackEvent(`atlassian.editor.format.code.autoformatting`);
+        analyticsService.trackEvent(
+          `atlassian.editor.format.code.autoformatting`,
+        );
         const tr = state.tr.delete(from - 1, from + 1).insertText(text);
         view.dispatch(transformToCodeAction(state, from - 1, from, tr));
         return true;
@@ -298,7 +316,11 @@ export class TextFormattingState {
     return false;
   }
 
-  private toggleMark(view: EditorView, markType: MarkType, attrs?: any): boolean {
+  private toggleMark(
+    view: EditorView,
+    markType: MarkType,
+    attrs?: any,
+  ): boolean {
     // Disable text-formatting inside code
     if (this.codeActive ? this.codeDisabled : true) {
       return toggleMark(markType, attrs)(view.state, view.dispatch);
@@ -318,7 +340,7 @@ export const plugin = new Plugin({
     apply(tr, pluginState: TextFormattingState, oldState, newState) {
       pluginState.update(newState);
       return pluginState;
-    }
+    },
   },
   key: stateKey,
   view: (view: EditorView) => {
@@ -331,13 +353,17 @@ export const plugin = new Plugin({
       return stateKey.getState(view.state).keymapHandler(view, event);
     },
     handleTextInput(view: EditorView, from: number, to: number, text: string) {
-      return stateKey.getState(view.state).textInputHandler(view, from, to, text);
-    }
-  }
+      return stateKey
+        .getState(view.state)
+        .textInputHandler(view, from, to, text);
+    },
+  },
 });
 
 const plugins = (schema: Schema) => {
-  return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+  return [plugin, inputRulePlugin(schema)].filter(
+    plugin => !!plugin,
+  ) as Plugin[];
 };
 
 export default plugins;

@@ -5,8 +5,17 @@ import Action from '../../../../src/react/marks/action';
 import { EventHandlers } from '../../../../src/ui/Renderer';
 
 describe('Renderer - React/Marks/Action', () => {
-
-  const createAction = (eventHandlers = {}) => mount(<Action title="some-title" target={{key: 'test-target'}} parameters={{ test: 'some-value' }} eventHandlers={eventHandlers}>This is an action</Action>);
+  const createAction = (eventHandlers = {}) =>
+    mount(
+      <Action
+        title="some-title"
+        target={{ key: 'test-target' }}
+        parameters={{ test: 'some-value' }}
+        eventHandlers={eventHandlers}
+      >
+        This is an action
+      </Action>,
+    );
 
   it('should wrap content with <span>-tag', () => {
     const mark = createAction();
@@ -14,21 +23,21 @@ describe('Renderer - React/Marks/Action', () => {
     mark.unmount();
   });
 
-  it('should pass target to event handler', (done) => {
+  it('should pass target to event handler', done => {
     const eventHandlers: EventHandlers = {
       action: {
-        onClick: (actionMark) => {
+        onClick: actionMark => {
           expect(actionMark).to.deep.equal({
             target: {
-              key: 'test-target'
+              key: 'test-target',
             },
             parameters: {
-              test: 'some-value'
-            }
+              test: 'some-value',
+            },
           });
           done();
-        }
-      }
+        },
+      },
     };
     const mark = createAction(eventHandlers);
     mark.find('span').simulate('click');
@@ -37,7 +46,7 @@ describe('Renderer - React/Marks/Action', () => {
 
   it('should not throw if event handler is not defined', () => {
     const eventHandlers: EventHandlers = {
-      action: {}
+      action: {},
     };
     const mark = createAction(eventHandlers);
     expect(() => {

@@ -3,7 +3,6 @@ import { PureComponent } from 'react';
 import { AkCode } from '@atlaskit/code';
 
 export default class Code extends PureComponent<{}, {}> {
-
   render() {
     const { children } = this.props;
     if (typeof children === 'string') {

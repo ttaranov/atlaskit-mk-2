@@ -18,5 +18,5 @@ export const bulletList: NodeSpec = {
   parseDOM: [{ tag: 'ul' }],
   toDOM() {
     return ['ul', 0];
-  }
+  },
 };

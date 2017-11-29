@@ -60,5 +60,5 @@ export default createSchema({
   ],
   customNodeSpecs: {
     plain: { ...paragraph, content: 'text*', marks: '' },
-  }
+  },
 });

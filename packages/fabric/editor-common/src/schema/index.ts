@@ -19,5 +19,5 @@ export {
   isSchemaWithMedia,
   isSchemaWithSubSupMark,
   isSchemaWithTextColor,
-  isSchemaWithTables
+  isSchemaWithTables,
 } from './jira-schema';

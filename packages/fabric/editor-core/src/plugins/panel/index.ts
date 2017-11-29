@@ -175,7 +175,7 @@ export const createPlugin = () =>
           pluginState.update(view.state, view.docView, true);
           return false;
         },
-      }
+      },
     },
   });
 

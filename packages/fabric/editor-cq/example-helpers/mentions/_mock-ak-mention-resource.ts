@@ -9,8 +9,11 @@ search.addIndex('mentionName');
 search.addDocuments(mentionData.mentions);
 
 class MentionResource extends AbstractMentionResource {
-
-  private config: { minWait: number, maxWait: number, shouldHighlightMention?: (mention: any) => boolean };
+  private config: {
+    minWait: number;
+    maxWait: number;
+    shouldHighlightMention?: (mention: any) => boolean;
+  };
   private lastReturnedSearch: number;
 
   constructor(config) {
@@ -38,13 +41,13 @@ class MentionResource extends AbstractMentionResource {
       this._notifyAllResultsListeners(mentionsResult);
     };
 
-    const notifyErrors = (error) => {
+    const notifyErrors = error => {
       this._notifyErrorListeners(error);
     };
 
     const minWait = this.config.minWait || 0;
     const randomTime = (this.config.maxWait || 0) - minWait;
-    const waitTime = (Math.random() * randomTime) + minWait;
+    const waitTime = Math.random() * randomTime + minWait;
     setTimeout(() => {
       let mentions;
       if (query === 'error') {
@@ -57,13 +60,12 @@ class MentionResource extends AbstractMentionResource {
       }
       notify({
         mentions,
-        query
+        query,
       });
     }, waitTime + 1);
   }
 
-  recordMentionSelection(mention: any) {
-  }
+  recordMentionSelection(mention: any) {}
 }
 
 export default MentionResource;

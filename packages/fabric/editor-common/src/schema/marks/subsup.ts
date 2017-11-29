@@ -23,7 +23,9 @@ export const subsup: MarkSpec = {
   attrs: { type: { default: 'sub' } },
   parseDOM: [
     { tag: 'sub', attrs: { type: 'sub' } },
-    { tag: 'sup', attrs: { type: 'sup' } }
+    { tag: 'sup', attrs: { type: 'sup' } },
   ],
-  toDOM(mark: SubSupMark) { return [mark.attrs.type]; }
+  toDOM(mark: SubSupMark) {
+    return [mark.attrs.type];
+  },
 };
