@@ -53,7 +53,45 @@ only take about a second.
 
 ## Exploring the Project
 
-See the [directory structure docs](docs/guides/00-directory-structure.md) for more information.
+Before you dive into the Atlaskit repo, you'll want to familiarize yourself
+with your surroundings.
+
+Atlaskit is a multi-package repo (sometimes called a "monorepo"), meaning that
+from a single repository we develop and publish many different packages.
+
+```
+atlaskit-mk-2 (Project)
+├── packages ································· Public packages
+│   └── elements ····························· Package group
+│       └── avatar (Workspace) ··············· Package
+│           ├── src ·························· Package source code
+│           │   ├── index.js ················· Main entry point
+│           │   ├── index.test.js
+│           │   ├── constants.js ············· Shared code
+│           │   ├── Avatar ··················· Component part
+│           │   │   ├── index.js
+│           │   │   ├── test.js
+│           │   │   └── styled.js
+│           │   └── Presence ················· Component part
+│           │       ├── index.js
+│           │       ├── test.js
+│           │       └── styled.js
+│           ├── examples ····················· Package examples
+│           │   └── 0-overview.js
+│           ├── docs ························· Package documentation
+│           │   └── 0-overview.js
+│           └── package.json ················· Package config
+├── patterns (Workspace) ····················· Cross-component examples -
+│   └── jira
+│       └── 0-navigation.js
+├── releases ································· Release blog posts
+│   └── dark-mode.md
+├── docs ····································· Project documentation
+│   └── getting-started.md
+├── build ···································· Build-related packages
+├── website (Workspace) ······················ Website package
+└── package.json ····························· Project config
+```
 
 ## Writing new code
 
@@ -149,8 +187,8 @@ component package's `examples/` folder.
 
 ```
 /atlaskit-mk2/packages/elements/avatar/examples/
-â”œâ”€â”€ 0-overview.js
-â””â”€â”€ 1-groups.js (New File)
+├── 0-overview.js
+└── 1-groups.js (New File)
 ```
 
 Or if you want to create a cross-component pattern example, you can create a
@@ -158,9 +196,9 @@ new file inside of the `patterns/` folder.
 
 ```
 /atlaskit-mk2/patterns/
-â””â”€â”€ jira
-    â”œâ”€â”€ 0-navigation.js
-    â””â”€â”€ 1-drag-and-drop.js (New File)
+└── jira
+    ├── 0-navigation.js
+    └── 1-drag-and-drop.js (New File)
 ```
 
 Inside of the example or pattern you should import components by their package
@@ -192,8 +230,8 @@ documentation pages (there's generally only one).
 
 ```
 /atlaskit-mk2/packages/elements/avatar/docs/
-â”œâ”€â”€ 0-overview.js
-â””â”€â”€ 1-groups.js
+├── 0-overview.js
+└── 1-groups.js
 ```
 
 Each of these files looks something like this:
