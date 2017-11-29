@@ -1,5 +1,10 @@
 # @atlaskit/pagination
 
+## 3.5.8
+
+- [patch] Bumping dependency on docs [a2462c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2462c4)
+- [patch] Update pagination number proptypes to be more permissive [e7cca21](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7cca21)
+
 ## 3.5.7 (2017-11-17)
 
 * bug fix; bumping internal dependencies to latest version
