@@ -4,7 +4,7 @@ This package contains polyfills for native methods which are unsupported by some
 
 ## Try it out
 
-Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
+Interact with a [live demo of the @NAME@ component](https://atlaskit.atlassian.com).
 
 ## Installation
 
