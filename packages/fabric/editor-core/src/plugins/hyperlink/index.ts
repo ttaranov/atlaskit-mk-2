@@ -436,7 +436,7 @@ export const createPlugin = (schema: Schema, editorProps: EditorProps = {}) =>
 
           event.preventDefault();
           return false;
-        }
+        },
       },
       /**
        * As we are adding linkifyContent, linkifyText can in fact be removed.

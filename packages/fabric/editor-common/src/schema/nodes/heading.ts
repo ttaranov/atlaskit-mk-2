@@ -29,7 +29,9 @@ export const heading: NodeSpec = {
     { tag: 'h3', attrs: { level: 3 } },
     { tag: 'h4', attrs: { level: 4 } },
     { tag: 'h5', attrs: { level: 5 } },
-    { tag: 'h6', attrs: { level: 6 } }
+    { tag: 'h6', attrs: { level: 6 } },
   ],
-  toDOM(node) { return ['h' + node.attrs['level'], 0]; }
+  toDOM(node) {
+    return ['h' + node.attrs['level'], 0];
+  },
 };

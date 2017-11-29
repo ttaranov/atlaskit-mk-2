@@ -58,7 +58,11 @@ declare module 'prosemirror-markdown' {
      * **`ignore`**`: ?bool`
      * : When true, ignore content for the matched token.
      */
-    constructor(schema: Schema, tokenizer: MarkdownIt, tokens: { [key: string]: any });
+    constructor(
+      schema: Schema,
+      tokenizer: MarkdownIt,
+      tokens: { [key: string]: any },
+    );
     /**
      * The value of the `tokens` object used to construct
      * this parser. Can be useful to copy and modify to base other
@@ -82,12 +86,27 @@ declare module 'prosemirror-markdown' {
    * Markdown/CommonMark text.
    */
   export class MarkdownSerializer {
-    constructor(nodes: { [name: string]: (state: MarkdownSerializerState, node: ProsemirrorNode, parent: ProsemirrorNode, index: number) => void }, marks: { [key: string]: any });
+    constructor(
+      nodes: {
+        [name: string]: (
+          state: MarkdownSerializerState,
+          node: ProsemirrorNode,
+          parent: ProsemirrorNode,
+          index: number,
+        ) => void;
+      },
+      marks: { [key: string]: any },
+    );
     /**
      * The node serializer
      * functions for this serializer.
      */
-    nodes: { [name: string]: (p1: MarkdownSerializerState, p2: ProsemirrorNode) => void };
+    nodes: {
+      [name: string]: (
+        p1: MarkdownSerializerState,
+        p2: ProsemirrorNode,
+      ) => void;
+    };
     /**
      * The mark serializer info.
      */
@@ -96,7 +115,10 @@ declare module 'prosemirror-markdown' {
      * Serialize the content of the given node to
      * [CommonMark](http://commonmark.org/).
      */
-    serialize(content: ProsemirrorNode, options?: { [key: string]: any }): string;
+    serialize(
+      content: ProsemirrorNode,
+      options?: { [key: string]: any },
+    ): string;
   }
   /**
    * A serializer for the [basic schema](#schema).
@@ -118,7 +140,12 @@ declare module 'prosemirror-markdown' {
      * the end of the block, and `f` is a function that renders the
      * content of the block.
      */
-    wrapBlock(delim: string, firstDelim: string | undefined, node: ProsemirrorNode, f: () => void): void;
+    wrapBlock(
+      delim: string,
+      firstDelim: string | undefined,
+      node: ProsemirrorNode,
+      f: () => void,
+    ): void;
     /**
      * Ensure the current content ends with a newline.
      */
@@ -156,7 +183,11 @@ declare module 'prosemirror-markdown' {
      * `firstDelim` is a function going from an item index to a
      * delimiter for the first line of the item.
      */
-    renderList(node: ProsemirrorNode, delim: string, firstDelim: (p: number) => string): void;
+    renderList(
+      node: ProsemirrorNode,
+      delim: string,
+      firstDelim: (p: number) => string,
+    ): void;
     /**
      * Escape the given string so that it can safely appear in Markdown
      * content. If `startOfLine` is true, also escape characters that
@@ -172,13 +203,19 @@ declare module 'prosemirror-markdown' {
      * leading or trailing property of the return object will be undefined
      * if there is no match.
      */
-    getEnclosingWhitespace(text: string): { leading?: string | null, trailing?: string | null };
+    getEnclosingWhitespace(
+      text: string,
+    ): { leading?: string | null; trailing?: string | null };
 
     /**
      * Currently undocumented class properties due to generated types
      * see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/20637
      */
-    constructor(nodes: NodeSerializerSpec, marks: MarkSerializerSpec, options: object)
+    constructor(
+      nodes: NodeSerializerSpec,
+      marks: MarkSerializerSpec,
+      options: object,
+    );
     closed: any;
     marks: Mark[];
     out: any;
@@ -190,16 +227,21 @@ declare module 'prosemirror-markdown' {
     markString: (mark: Mark, open: boolean) => string;
   }
 
-  export type NodeSerializer = (state: MarkdownSerializerState, node: ProsemirrorNode, parent?: ProsemirrorNode, index?: number) => void;
+  export type NodeSerializer = (
+    state: MarkdownSerializerState,
+    node: ProsemirrorNode,
+    parent?: ProsemirrorNode,
+    index?: number,
+  ) => void;
   export interface MarkSerializer {
     open: string | ((state: MarkdownSerializerState, mark: Mark) => string);
     close: string | ((state: MarkdownSerializerState, mark: Mark) => string);
     mixable?: boolean;
   }
   export interface NodeSerializerSpec {
-      [ nodeName: string ]: NodeSerializer;
+    [nodeName: string]: NodeSerializer;
   }
   export interface MarkSerializerSpec {
-      [ markName: string ]: MarkSerializer;
+    [markName: string]: MarkSerializer;
   }
 }

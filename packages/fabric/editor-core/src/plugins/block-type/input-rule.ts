@@ -2,7 +2,7 @@ import {
   textblockTypeInputRule,
   wrappingInputRule,
   inputRules,
-  InputRule
+  InputRule,
 } from 'prosemirror-inputrules';
 import { Schema, NodeType } from 'prosemirror-model';
 import { Plugin, Transaction } from 'prosemirror-state';
@@ -14,8 +14,11 @@ import {
 import { createInputRule, defaultInputRuleHandler } from '../utils';
 
 export function headingRule(nodeType: NodeType, maxLevel: number) {
-  return textblockTypeInputRule(new RegExp('^(#{1,' + maxLevel + '})\\s$'),
-                                nodeType, match => ({level: match[1].length}));
+  return textblockTypeInputRule(
+    new RegExp('^(#{1,' + maxLevel + '})\\s$'),
+    nodeType,
+    match => ({ level: match[1].length }),
+  );
 }
 
 export function blockQuoteRule(nodeType: NodeType) {

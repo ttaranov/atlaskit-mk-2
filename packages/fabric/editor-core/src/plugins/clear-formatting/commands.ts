@@ -2,10 +2,21 @@ import { EditorState, Transaction } from 'prosemirror-state';
 import { Command } from '../../commands';
 
 export const FORMATTING_NODE_TYPES = ['heading'];
-export const FORMATTING_MARK_TYPES = ['em', 'code', 'strike', 'strong', 'underline', 'textColor', 'subsup'];
+export const FORMATTING_MARK_TYPES = [
+  'em',
+  'code',
+  'strike',
+  'strong',
+  'underline',
+  'textColor',
+  'subsup',
+];
 
 export function clearFormatting(): Command {
-  return function (state: EditorState, dispatch: (tr: Transaction) => void): boolean {
+  return function(
+    state: EditorState,
+    dispatch: (tr: Transaction) => void,
+  ): boolean {
     const { tr } = state;
 
     FORMATTING_MARK_TYPES.forEach(mark => {

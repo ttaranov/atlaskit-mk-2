@@ -2,14 +2,8 @@ import {
   MarkdownSerializer as PMMarkdownSerializer,
   MarkdownSerializerState as PMMarkdownSerializerState,
 } from 'prosemirror-markdown';
-import {
-  Mark,
-  Node as PMNode,
-} from 'prosemirror-model';
-import {
-  escapeMarkdown,
-  stringRepeat,
-} from './util';
+import { Mark, Node as PMNode } from 'prosemirror-model';
+import { escapeMarkdown, stringRepeat } from './util';
 import { bitbucketSchema as schema } from '@atlaskit/editor-common';
 import tableNodes from './tableSerializer';
 
@@ -18,15 +12,18 @@ import tableNodes from './tableSerializer';
  * generate a backtick chain of a length longer by one. This is the only proven way
  * to escape backticks inside code block and inline code (for python-markdown)
  */
-const generateOuterBacktickChain: (text: string, minLength?: number) => string = (() => {
+const generateOuterBacktickChain: (
+  text: string,
+  minLength?: number,
+) => string = (() => {
   function getMaxLength(text: String): number {
-    return (text.match(/`+/g) || [])
-      .reduce((prev, val) => (val.length > prev.length ? val : prev), '')
-      .length
-      ;
+    return (text.match(/`+/g) || []).reduce(
+      (prev, val) => (val.length > prev.length ? val : prev),
+      '',
+    ).length;
   }
 
-  return function (text: string, minLength = 1): string {
+  return function(text: string, minLength = 1): string {
     const length = Math.max(minLength, getMaxLength(text) + 1);
     return stringRepeat('`', length);
   };
@@ -37,7 +34,8 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
     parent.forEach((child: PMNode, offset: number, index: number) => {
       if (
         // If child is an empty Textblock we need to insert a zwnj-character in order to preserve that line in markdown
-        (child.isTextblock && !child.textContent) &&
+        child.isTextblock &&
+        !child.textContent &&
         // If child is a Codeblock we need to handle this seperately as we want to preserve empty code blocks
         !(child.type === schema.nodes.codeBlock) &&
         !(child.content && (child.content as any).size > 0)
@@ -61,8 +59,13 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
     const active: Mark[] = [];
 
     const progress = (node: PMNode | null, _?: any, index?: number) => {
-      let marks = node ? node.marks.filter(mark => this.marks[mark.type.name]) : [];
-      const code = marks.length && marks[marks.length - 1].type === schema.marks.code && marks[marks.length - 1];
+      let marks = node
+        ? node.marks.filter(mark => this.marks[mark.type.name])
+        : [];
+      const code =
+        marks.length &&
+        marks[marks.length - 1].type === schema.marks.code &&
+        marks[marks.length - 1];
       const len = marks.length - (code ? 1 : 0);
 
       // Try to reorder 'mixable' marks, such as em and strong, which
@@ -81,9 +84,17 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
           }
           if (mark.eq(other)) {
             if (i > j) {
-              marks = marks.slice(0, j).concat(mark).concat(marks.slice(j, i)).concat(marks.slice(i + 1, len));
+              marks = marks
+                .slice(0, j)
+                .concat(mark)
+                .concat(marks.slice(j, i))
+                .concat(marks.slice(i + 1, len));
             } else if (j > i) {
-              marks = marks.slice(0, i).concat(marks.slice(i + 1, j)).concat(mark).concat(marks.slice(j, len));
+              marks = marks
+                .slice(0, i)
+                .concat(marks.slice(i + 1, j))
+                .concat(mark)
+                .concat(marks.slice(j, len));
             }
             continue outer;
           }
@@ -92,7 +103,10 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
 
       // Find the prefix of the mark set that didn't change
       let keep = 0;
-      while (keep < Math.min(active.length, len) && marks[keep].eq(active[keep])) {
+      while (
+        keep < Math.min(active.length, len) &&
+        marks[keep].eq(active[keep])
+      ) {
         ++keep;
       }
 
@@ -140,7 +154,11 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
 
 export class MarkdownSerializer extends PMMarkdownSerializer {
   serialize(content: PMNode, options?: { [key: string]: any }): string {
-    const state = new MarkdownSerializerState(this.nodes, this.marks, options || {});
+    const state = new MarkdownSerializerState(
+      this.nodes,
+      this.marks,
+      options || {},
+    );
 
     state.renderContent(content);
     return state.out === '\u200c' ? '' : state.out; // Return empty string if editor only contains a zero-non-width character
@@ -148,12 +166,24 @@ export class MarkdownSerializer extends PMMarkdownSerializer {
 }
 
 const editorNodes = {
-  blockquote(state: MarkdownSerializerState, node: PMNode, parent: PMNode, index: number) {
+  blockquote(
+    state: MarkdownSerializerState,
+    node: PMNode,
+    parent: PMNode,
+    index: number,
+  ) {
     state.wrapBlock('> ', undefined, node, () => state.renderContent(node));
   },
-  codeBlock(state: MarkdownSerializerState, node: PMNode, parent: PMNode, index: number) {
+  codeBlock(
+    state: MarkdownSerializerState,
+    node: PMNode,
+    parent: PMNode,
+    index: number,
+  ) {
     if (!node.attrs.language) {
-      state.wrapBlock('    ', undefined, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
+      state.wrapBlock('    ', undefined, node, () =>
+        state.text(node.textContent ? node.textContent : '\u200c', false),
+      );
     } else {
       const backticks = generateOuterBacktickChain(node.textContent, 3);
       state.write(backticks + node.attrs.language + '\n');
@@ -163,7 +193,12 @@ const editorNodes = {
     }
     state.closeBlock(node);
   },
-  heading(state: MarkdownSerializerState, node: PMNode, parent: PMNode, index: number) {
+  heading(
+    state: MarkdownSerializerState,
+    node: PMNode,
+    parent: PMNode,
+    index: number,
+  ) {
     state.write(state.repeat('#', node.attrs.level) + ' ');
     state.renderInline(node);
     state.closeBlock(node);
@@ -172,29 +207,49 @@ const editorNodes = {
     state.write(node.attrs.markup || '---');
     state.closeBlock(node);
   },
-  bulletList(state: MarkdownSerializerState, node: PMNode, parent: PMNode, index: number) {
+  bulletList(
+    state: MarkdownSerializerState,
+    node: PMNode,
+    parent: PMNode,
+    index: number,
+  ) {
     for (let i = 0; i < node.childCount; i++) {
       const child = node.child(i);
       state.render(child, node, i);
     }
   },
-  orderedList(state: MarkdownSerializerState, node: PMNode, parent: PMNode, index: number) {
+  orderedList(
+    state: MarkdownSerializerState,
+    node: PMNode,
+    parent: PMNode,
+    index: number,
+  ) {
     for (let i = 0; i < node.childCount; i++) {
       const child = node.child(i);
       state.render(child, node, i);
     }
   },
-  listItem(state: MarkdownSerializerState, node: PMNode, parent: PMNode, index: number) {
-    const delimiter = parent.type.name === 'bulletList' ? '* ' : `${index + 1}. `;
+  listItem(
+    state: MarkdownSerializerState,
+    node: PMNode,
+    parent: PMNode,
+    index: number,
+  ) {
+    const delimiter =
+      parent.type.name === 'bulletList' ? '* ' : `${index + 1}. `;
     for (let i = 0; i < node.childCount; i++) {
       const child = node.child(i);
       if (i > 0) {
         state.write('\n');
       }
       if (i === 0) {
-        state.wrapBlock('  ', delimiter, node, () => state.render(child, parent, i));
+        state.wrapBlock('  ', delimiter, node, () =>
+          state.render(child, parent, i),
+        );
       } else {
-        state.wrapBlock('    ', undefined, node, () => state.render(child, parent, i));
+        state.wrapBlock('    ', undefined, node, () =>
+          state.render(child, parent, i),
+        );
       }
       if (child.type.name === 'paragraph' && i > 0) {
         state.write('\n');
@@ -205,23 +260,41 @@ const editorNodes = {
       state.write('\n');
     }
   },
-  paragraph(state: MarkdownSerializerState, node: PMNode, parent: PMNode, index: number) {
+  paragraph(
+    state: MarkdownSerializerState,
+    node: PMNode,
+    parent: PMNode,
+    index: number,
+  ) {
     state.renderInline(node);
     state.closeBlock(node);
   },
   image(state: MarkdownSerializerState, node: PMNode) {
     // Note: the 'title' is not escaped in this flavor of markdown.
-    state.write('![' + escapeMarkdown(node.attrs.alt) + '](' + escapeMarkdown(node.attrs.src) +
-      (node.attrs.title ? ` '${escapeMarkdown(node.attrs.title)}'` : '') + ')');
+    state.write(
+      '![' +
+        escapeMarkdown(node.attrs.alt) +
+        '](' +
+        escapeMarkdown(node.attrs.src) +
+        (node.attrs.title ? ` '${escapeMarkdown(node.attrs.title)}'` : '') +
+        ')',
+    );
   },
   hardBreak(state: MarkdownSerializerState) {
     state.write('  \n');
   },
-  text(state: MarkdownSerializerState, node: PMNode, parent: PMNode, index: number) {
+  text(
+    state: MarkdownSerializerState,
+    node: PMNode,
+    parent: PMNode,
+    index: number,
+  ) {
     const previousNode = index === 0 ? null : parent.child(index - 1);
-    const previousNodeIsAMention = (previousNode && previousNode.type === schema.nodes.mention);
-    const currentNodeStartWithASpace = (node.textContent.indexOf(' ') === 0);
-    const trimTrailingWhitespace = (previousNodeIsAMention && currentNodeStartWithASpace);
+    const previousNodeIsAMention =
+      previousNode && previousNode.type === schema.nodes.mention;
+    const currentNodeStartWithASpace = node.textContent.indexOf(' ') === 0;
+    const trimTrailingWhitespace =
+      previousNodeIsAMention && currentNodeStartWithASpace;
     let text = trimTrailingWhitespace
       ? node.textContent.replace(' ', '') // only first blank space occurrence is replaced
       : node.textContent;
@@ -239,7 +312,12 @@ const editorNodes = {
       state.write();
       state.out += escapeMarkdown(lines[i], startOfLine);
       if (i !== lines.length - 1) {
-        if (lines[i] && lines[i].length && lines[i + 1] && lines[i + 1].length) {
+        if (
+          lines[i] &&
+          lines[i].length &&
+          lines[i + 1] &&
+          lines[i + 1].length
+        ) {
           state.out += '  ';
         }
         state.out += '\n';
@@ -250,15 +328,25 @@ const editorNodes = {
     state.write('\u200c'); // zero-width-non-joiner
     state.closeBlock(node);
   },
-  mention(state: MarkdownSerializerState, node: PMNode, parent: PMNode, index: number) {
-    const isLastNode = (parent.childCount === index + 1);
+  mention(
+    state: MarkdownSerializerState,
+    node: PMNode,
+    parent: PMNode,
+    index: number,
+  ) {
+    const isLastNode = parent.childCount === index + 1;
     const delimiter = isLastNode ? '' : ' ';
 
     state.write(`@${node.attrs.id}${delimiter}`);
   },
-  emoji(state: MarkdownSerializerState, node: PMNode, parent: PMNode, index: number) {
+  emoji(
+    state: MarkdownSerializerState,
+    node: PMNode,
+    parent: PMNode,
+    index: number,
+  ) {
     state.write(node.attrs.shortName);
-  }
+  },
 };
 
 export const nodes = { ...editorNodes, ...tableNodes };
@@ -271,10 +359,15 @@ export const marks = {
     open: '[',
     close(state: MarkdownSerializerState, mark: any) {
       // Note: the 'title' is not escaped in this flavor of markdown.
-      return '](' + mark.attrs['href'] + (mark.attrs['title'] ? ` '${mark.attrs['title']}'` : '') + ')';
-    }
+      return (
+        '](' +
+        mark.attrs['href'] +
+        (mark.attrs['title'] ? ` '${mark.attrs['title']}'` : '') +
+        ')'
+      );
+    },
   },
   code: { open: '`', close: '`' },
   mentionQuery: { open: '', close: '', mixable: false },
-  emojiQuery: { open: '', close: '', mixable: false }
+  emojiQuery: { open: '', close: '', mixable: false },
 };
