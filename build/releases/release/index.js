@@ -79,13 +79,31 @@ async function run(opts) {
     await git.rebaseAndPush(maxRetries);
 
     // bolt will throw if there is an error
-    await bolt.publish({ access: 'public' });
+    const packages = await bolt.publish({ access: 'public' });
+    let successfullyPublished = [];
+    let failedToPublish = [];
+    for (let p of packages) {
+      if (p.published) successfullyPublished.push(p);
+      else failedToPublish.push(p);
+    }
 
-    const releasedPackages = releaseObj.releases
-      .map(r => `${r.name}@${r.version}`)
-      .join('\n');
-    logger.success('Successfully published:');
-    logger.log(releasedPackages);
+    if (failedToPublish.length === 0) {
+      const failedPackages = failedToPublish
+        .map(p => `${p.name}@${p.newVersion}`)
+        .join('\n');
+      logger.error(`There was an error publishing some packages:`);
+      logger.error(failedPackages);
+    } else {
+      logger.success('Successfully published all packages');
+    }
+
+    if (successfullyPublished.length > 0) {
+      const releasedPackages = successfullyPublished
+        .map(p => `${p.name}@${p.newVersion}`)
+        .join('\n');
+      logger.success('Successfully published packages are:');
+      logger.log(releasedPackages);
+    }
   }
 }
 
