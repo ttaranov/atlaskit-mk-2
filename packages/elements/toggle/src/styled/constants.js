@@ -1,3 +1,4 @@
+// @flow
 import { gridSize } from '@atlaskit/theme';
 
 const dimensions = {

@@ -6,8 +6,8 @@ import Toggle from '../src';
 export default () => (
   <div>
     <p>Regular</p>
-    <Toggle />
+    <Toggle isDisabled />
     <p>Large (checked by default)</p>
-    <Toggle size="large" isDefaultChecked />
+    <Toggle size="large" isDisabled isDefaultChecked />
   </div>
 );

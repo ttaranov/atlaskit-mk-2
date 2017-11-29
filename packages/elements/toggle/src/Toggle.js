@@ -4,6 +4,7 @@ import ToggleStateless from './ToggleStateless';
 import type { StatefulProps } from './types';
 
 type DefaultProps = {|
+  onChange: (event: Event) => void,
   isDefaultChecked: boolean,
 |};
 
@@ -16,6 +17,7 @@ type State = {|
 export default class Toggle extends Component<StatefulProps, State> {
   static defaultProps: DefaultProps = {
     isDefaultChecked: false,
+    onChange: () => {},
   };
 
   state: State = {

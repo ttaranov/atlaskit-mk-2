@@ -5,17 +5,17 @@ import CloseIcon from '@atlaskit/icon/glyph/cross';
 import ConfirmIcon from '@atlaskit/icon/glyph/check';
 import { colors, themed } from '@atlaskit/theme';
 import { Handle, IconWrapper, Inner, Input, Label, Slide } from './styled';
-import type { StatefulProps } from './types';
+import type { StatelessProps } from './types';
 
 // currently all props are optional
-type DefaultProps = StatefulProps;
+type DefaultProps = StatelessProps;
 
 type State = {|
-  isActive: boolean,
+  // not controlled by props but by browser focus
   isFocused: boolean,
 |};
 
-export default class ToggleStateless extends Component<StatefulProps, State> {
+export default class ToggleStateless extends Component<StatelessProps, State> {
   static defaultProps: DefaultProps = {
     isChecked: false,
     isDisabled: false,
@@ -31,27 +31,13 @@ export default class ToggleStateless extends Component<StatefulProps, State> {
 
   state: State = {
     isFocused: false,
-    isActive: false,
   };
 
-  onMouseUp = () => this.setState({ isActive: false, mouseIsDown: false });
-  onMouseDown = () => this.setState({ isActive: true, mouseIsDown: true });
-
-  handleMouseDown = () => {
-    this.setState({ isActive: true, mouseIsDown: true });
-  };
   handleBlur = (event: Event) => {
     this.setState({
-      // onBlur is called after onMouseDown if the checkbox was focused, however
-      // in this case on blur is called immediately after, and we need to check
-      // whether the mouse is down.
-      isActive: this.state.mouseIsDown && this.state.isActive,
       isFocused: false,
     });
     this.props.onBlur(event);
-  };
-  handleChange = (event: Event) => {
-    this.props.onChange(event);
   };
   handleFocus = (event: Event) => {
     this.setState({ isFocused: true });
@@ -68,11 +54,12 @@ export default class ToggleStateless extends Component<StatefulProps, State> {
       value,
       ...rest
     } = this.props;
-    const { isFocused, isActive } = this.state;
+    const { isFocused } = this.state;
+
     const styledProps = {
       isChecked,
       isDisabled,
-      isFocused: isFocused || isActive,
+      isFocused,
       size,
     };
     const Icon = isChecked ? ConfirmIcon : CloseIcon;
@@ -82,20 +69,14 @@ export default class ToggleStateless extends Component<StatefulProps, State> {
       : 'inherit';
 
     return (
-      <Label
-        size={size}
-        isDisabled={isDisabled}
-        htmlFor={id}
-        onMouseDown={this.handleMouseDown}
-        onMouseUp={this.onMouseUp}
-      >
+      <Label size={size} isDisabled={isDisabled} htmlFor={id}>
         <Input
           checked={isChecked}
           disabled={isDisabled}
           id={id}
           name={name}
           onBlur={this.handleBlur}
-          onChange={this.handleChange}
+          onChange={this.props.onChange}
           onFocus={this.handleFocus}
           type="checkbox"
           value={value}
