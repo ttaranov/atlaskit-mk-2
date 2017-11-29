@@ -1,5 +1,4 @@
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import * as React from 'react';
 import { PureComponent } from 'react';
 
@@ -9,15 +8,12 @@ import { EmojiProvider } from '../src';
 import { BitbucketTransformer } from '../src/transformers';
 import exampleHTML from '../example-helpers/exampleHTML';
 
-const CANCEL_ACTION = () => console.log('Cancel');
-const SAVE_ACTION = () => console.log('Save');
 const emojiProvider = emojiStoryData.getEmojiResource() as Promise<
   EmojiProvider
 >;
-const mentionProvider = Promise.resolve(mentionStoryData.resourceProvider);
 
-type Props = {};
-type State = { hasError?: boolean };
+export type Props = {};
+export type State = { hasError?: boolean };
 
 export default class Example extends PureComponent<Props, State> {
   state: State = { hasError: false };
@@ -39,6 +35,7 @@ export default class Example extends PureComponent<Props, State> {
       this.editor!.doc = node;
     } catch (e) {
       this.setState({ hasError: true });
+      // tslint:disable-next-line:no-console
       console.error('Error when setting from HTML', e);
     }
   };
