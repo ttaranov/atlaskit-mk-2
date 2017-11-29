@@ -20,6 +20,6 @@ describe(`${name}/schema image node`, () => {
 
 function makeSchema() {
   return createSchema({
-    nodes: ['doc', 'paragraph', 'text', 'image']
+    nodes: ['doc', 'paragraph', 'text', 'image'],
   });
 }

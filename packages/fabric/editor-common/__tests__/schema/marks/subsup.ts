@@ -8,13 +8,17 @@ describe(`${name}/schema subsup mark`, () => {
 
   it('serializes to <sub>', () => {
     const schema = makeSchema();
-    const node = schema.text('foo', [schema.marks.subsup.create({ type: 'sub' })]);
+    const node = schema.text('foo', [
+      schema.marks.subsup.create({ type: 'sub' }),
+    ]);
     expect(toHTML(node, schema)).toEqual('<sub>foo</sub>');
   });
 
   it('serializes to <sup>', () => {
     const schema = makeSchema();
-    const node = schema.text('foo', [schema.marks.subsup.create({ type: 'sup' })]);
+    const node = schema.text('foo', [
+      schema.marks.subsup.create({ type: 'sup' }),
+    ]);
     expect(toHTML(node, schema)).toEqual('<sup>foo</sup>');
   });
 });
@@ -22,11 +26,15 @@ describe(`${name}/schema subsup mark`, () => {
 function makeSchema() {
   return createSchema({
     nodes: ['doc', 'paragraph', 'text'],
-    marks: ['subsup']
+    marks: ['subsup'],
   });
 }
 
-function itMatches(html: string, expectedText: string, attrs: { type: 'sub' | 'sup' }) {
+function itMatches(
+  html: string,
+  expectedText: string,
+  attrs: { type: 'sub' | 'sup' },
+) {
   it(`matches ${html}`, () => {
     const schema = makeSchema();
     const doc = fromHTML(`${html}`, schema);

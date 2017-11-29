@@ -141,7 +141,10 @@ export default class Editor extends PureComponent<Props, State> {
     });
 
     if (imageUploadHandler) {
-      this.providerFactory.setProvider('imageUploadProvider', Promise.resolve(imageUploadHandler));
+      this.providerFactory.setProvider(
+        'imageUploadProvider',
+        Promise.resolve(imageUploadHandler),
+      );
     }
   };
 
@@ -183,7 +186,9 @@ export default class Editor extends PureComponent<Props, State> {
     if (editorView) {
       const { state } = editorView;
       const tr = state.tr
-        .setSelection(TextSelection.create(state.doc, 0, state.doc.nodeSize - 2))
+        .setSelection(
+          TextSelection.create(state.doc, 0, state.doc.nodeSize - 2),
+        )
         .deleteSelection();
       editorView.dispatch(tr);
     }
@@ -195,7 +200,9 @@ export default class Editor extends PureComponent<Props, State> {
    */
   isEmpty(): boolean {
     const { editorView } = this.state;
-    return editorView && editorView.state.doc ? !!editorView.state.doc.textContent : false;
+    return editorView && editorView.state.doc
+      ? !!editorView.state.doc.textContent
+      : false;
   }
 
   /**
@@ -205,13 +212,17 @@ export default class Editor extends PureComponent<Props, State> {
     const { editorView } = this.state;
 
     if (!editorView || !editorView.state.doc) {
-      throw new Error('Unable to set from HTML before the editor is initialized');
+      throw new Error(
+        'Unable to set from HTML before the editor is initialized',
+      );
     }
 
     const { tr, doc } = editorView.state;
     const newDoc = this.transformer.parse(html.trim());
 
-    editorView.dispatch(tr.replace(0, doc.nodeSize - 2, newDoc.slice(0, newDoc.nodeSize - 2)));
+    editorView.dispatch(
+      tr.replace(0, doc.nodeSize - 2, newDoc.slice(0, newDoc.nodeSize - 2)),
+    );
   }
 
   /**
@@ -219,7 +230,9 @@ export default class Editor extends PureComponent<Props, State> {
    */
   get value(): string | undefined {
     const { editorView } = this.state;
-    return editorView ? this.transformer.encode(editorView.state.doc) : this.props.defaultValue;
+    return editorView
+      ? this.transformer.encode(editorView.state.doc)
+      : this.props.defaultValue;
   }
 
   /**
@@ -237,12 +250,18 @@ export default class Editor extends PureComponent<Props, State> {
     const { isExpanded, editorView } = this.state;
     const editorState = editorView && editorView.state;
     const listsState = editorState && listsStateKey.getState(editorState);
-    const blockTypeState = editorState && blockTypeStateKey.getState(editorState);
-    const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
-    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
-    const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
-    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
-    const imageUploadState = editorState && imageUploadStateKey.getState(editorState);
+    const blockTypeState =
+      editorState && blockTypeStateKey.getState(editorState);
+    const clearFormattingState =
+      editorState && clearFormattingStateKey.getState(editorState);
+    const codeBlockState =
+      editorState && codeBlockStateKey.getState(editorState);
+    const textFormattingState =
+      editorState && textFormattingStateKey.getState(editorState);
+    const hyperlinkState =
+      editorState && hyperlinkStateKey.getState(editorState);
+    const imageUploadState =
+      editorState && imageUploadStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
     const tableState = editorState && tableStateKey.getState(editorState);
 
@@ -328,7 +347,9 @@ export default class Editor extends PureComponent<Props, State> {
           ...listsPlugins(schema),
           ...textFormattingPlugins(schema),
           ...codeBlockPlugins(schema),
-          ...(schema.nodes.table ? tablePlugins({ isHeaderRowRequired: true }) : []),
+          ...(schema.nodes.table
+            ? tablePlugins({ isHeaderRowRequired: true })
+            : []),
           ...reactNodeViewPlugins(schema),
           history(),
           keymap(bitbucketKeymap),

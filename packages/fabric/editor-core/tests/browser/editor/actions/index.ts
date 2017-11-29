@@ -1,7 +1,15 @@
 import { name } from '../../../../package.json';
 import { expect } from 'chai';
 import createEditor from '../../../helpers/create-editor';
-import { doc, p, blockquote, decisionList, decisionItem, taskList, taskItem } from '@atlaskit/editor-test-helpers';
+import {
+  doc,
+  p,
+  blockquote,
+  decisionList,
+  decisionItem,
+  taskList,
+  taskItem,
+} from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
 import { JSONTransformer, Transformer } from '../../../../src/transformers';
 import tasksAndDecisionsPlugin from '../../../../src/editor/plugins/tasks-and-decisions';
@@ -20,9 +28,7 @@ describe(name, () => {
     let editorActions: EditorActions;
     let editorView: EditorView;
     beforeEach(() => {
-      const editor = createEditor(
-        [tasksAndDecisionsPlugin]
-      );
+      const editor = createEditor([tasksAndDecisionsPlugin]);
       editorActions = new EditorActions();
       editorActions._privateRegisterEditor(editor.editorView);
       editorView = editor.editorView;
@@ -86,7 +92,7 @@ describe(name, () => {
         const decisionsAndTasks = doc(
           decisionList({})(decisionItem({})()),
           taskList({})(taskItem({})()),
-          p('text')
+          p('text'),
         );
         const expected = toJSON(doc(p('text')));
         editorActions.replaceDocument(decisionsAndTasks);
@@ -159,7 +165,11 @@ describe(name, () => {
 
       it('should append text to a complex document', async () => {
         const newDoc = doc(p('some text'), blockquote(p('some quote')), p(''));
-        const expected = doc(p('some text'), blockquote(p('some quote')), p(' appended'));
+        const expected = doc(
+          p('some text'),
+          blockquote(p('some quote')),
+          p(' appended'),
+        );
         editorActions.replaceDocument(newDoc);
         editorActions.appendText(' appended');
         const val = await editorActions.getValue();

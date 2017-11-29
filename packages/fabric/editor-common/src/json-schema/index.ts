@@ -25,7 +25,7 @@ const typeIdToDefName: Map<number, string> = new Map();
 const jsonSchema = new JSONSchemaNode(
   'draft-04',
   'Schema for Atlassian Editor documents.',
-  'doc_node'
+  'doc_node',
 );
 
 let ticks = 0;
@@ -76,7 +76,7 @@ function getSchemaNodeFromType(type: ts.Type, validators = {}): SchemaNode {
   if (typeIdToDefName.has((type as any).id)) {
     return new RefSchemaNode(
       // TODO: Fix any
-      `#/definitions/${typeIdToDefName.get((type as any).id)!}`
+      `#/definitions/${typeIdToDefName.get((type as any).id)!}`,
     );
   } else if (isStringType(type)) {
     return new StringSchemaNode(validators);
@@ -87,30 +87,42 @@ function getSchemaNodeFromType(type: ts.Type, validators = {}): SchemaNode {
   } else if (isUnionType(type)) {
     const isEnum = type.types.every(t => isStringLiteralType(t));
     if (isEnum) {
-      return new EnumSchemaNode(type.types.map(t => (t as ts.LiteralType).value));
+      return new EnumSchemaNode(
+        type.types.map(t => (t as ts.LiteralType).value),
+      );
     } else {
       return new AnyOfSchemaNode(type.types.map(t => getSchemaNodeFromType(t)));
     }
   } else if (isIntersectionType(type)) {
-    return new AllOfSchemaNode(type.types.map(
-      // TODO: Fix any
-      t => getSchemaNodeFromType(t, getTags((t as any).getSymbol().getJsDocTags()))
-    ));
+    return new AllOfSchemaNode(
+      type.types.map(
+        // TODO: Fix any
+        t =>
+          getSchemaNodeFromType(
+            t,
+            getTags((t as any).getSymbol().getJsDocTags()),
+          ),
+      ),
+    );
   } else if (isArrayType(type)) {
     // TODO: Fix any
-    const types = (type as any).typeArguments.length === 1 // Array< X | Y >
-      ? [(type as any).typeArguments[0]]
-      : type.typeArguments;
+    const types =
+      (type as any).typeArguments.length === 1 // Array< X | Y >
+        ? [(type as any).typeArguments[0]]
+        : type.typeArguments;
     return new ArraySchemaNode(
       // TODO: Fix any
       (types as any).length === 1 && isAnyType((types as any)[0]) // Array<any>
         ? []
-        // TODO: Fix any
-        : (types as any).map(t => getSchemaNodeFromType(t)),
-      validators
+        : // TODO: Fix any
+          (types as any).map(t => getSchemaNodeFromType(t)),
+      validators,
     );
   } else if (isObjectType(type)) {
-    const obj = new ObjectSchemaNode({}, { additionalProperties: false, ...validators });
+    const obj = new ObjectSchemaNode(
+      {},
+      { additionalProperties: false, ...validators },
+    );
     // Use node's queue to prevent circular dependency
     process.nextTick(() => {
       ticks++;
@@ -121,14 +133,14 @@ function getSchemaNodeFromType(type: ts.Type, validators = {}): SchemaNode {
         if ((name[0] !== '_' || name[1] !== '_') && prop.valueDeclaration) {
           const propType = checker.getTypeOfSymbolAtLocation(
             prop,
-            prop.valueDeclaration
+            prop.valueDeclaration,
           );
           const isRequired = (prop.getFlags() & ts.SymbolFlags.Optional) === 0;
           const validators = getTags(prop.getJsDocTags());
           obj.addProperty(
             name,
             getSchemaNodeFromType(propType, validators),
-            isRequired
+            isRequired,
           );
         }
       });
@@ -148,24 +160,27 @@ function getSchemaNodeFromType(type: ts.Type, validators = {}): SchemaNode {
 type TagInfo = { name: string };
 
 function getTags(tagInfo: ts.JSDocTagInfo[]): TagInfo {
-  return tagInfo.reduce((obj, { name, text = '' }) => {
-    // TODO: Fix any
-    let val: any = text;
-    if (/^\d+$/.test(text)) {
-      // Number
-      val = +text;
-    } else if (text[0] === '"') {
-      // " wrapped string
-      val = JSON.parse(text);
-    } else if (text === 'true') {
-      val = true;
-    } else if (text === 'false') {
-      val = false;
-    }
-    // TODO: Fix any
-    (obj as any)[name] = val;
-    return obj;
-  }, {} as TagInfo);
+  return tagInfo.reduce(
+    (obj, { name, text = '' }) => {
+      // TODO: Fix any
+      let val: any = text;
+      if (/^\d+$/.test(text)) {
+        // Number
+        val = +text;
+      } else if (text[0] === '"') {
+        // " wrapped string
+        val = JSON.parse(text);
+      } else if (text === 'true') {
+        val = true;
+      } else if (text === 'false') {
+        val = false;
+      }
+      // TODO: Fix any
+      (obj as any)[name] = val;
+      return obj;
+    },
+    {} as TagInfo,
+  );
 }
 
 type PrimitiveType = number | boolean | string;
@@ -192,13 +207,13 @@ function isSourceFile(node: ts.Node): node is ts.SourceFile {
 }
 
 function isInterfaceDeclaration(
-  node: ts.Node
+  node: ts.Node,
 ): node is ts.InterfaceDeclaration {
   return node.kind === ts.SyntaxKind.InterfaceDeclaration;
 }
 
 function isTypeAliasDeclaration(
-  node: ts.Node | ts.Declaration
+  node: ts.Node | ts.Declaration,
 ): node is ts.TypeAliasDeclaration {
   return node.kind === ts.SyntaxKind.TypeAliasDeclaration;
 }

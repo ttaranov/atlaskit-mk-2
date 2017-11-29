@@ -1,5 +1,12 @@
 import { Schema, Mark, MarkType, Node } from 'prosemirror-model';
-import { Plugin, PluginKey, EditorState, SelectionRange, TextSelection, Transaction } from 'prosemirror-state';
+import {
+  Plugin,
+  PluginKey,
+  EditorState,
+  SelectionRange,
+  TextSelection,
+  Transaction,
+} from 'prosemirror-state';
 import { colorPalette } from '@atlaskit/editor-common';
 import { akColorN800 } from '@atlaskit/util-shared-styles';
 
@@ -9,7 +16,7 @@ export type StateChangeHandler = (state: TextColorState) => any;
 // https://product-fabric.atlassian.net/browse/ED-1682
 export const DEFAULT_COLOR = {
   color: akColorN800,
-  label: 'Dark grey'
+  label: 'Dark grey',
 };
 
 export class TextColorState {
@@ -65,12 +72,17 @@ export class TextColorState {
   }
 
   toggleTextColor(
-    state: EditorState, dispatch?: (tr: Transaction) => void, color?: string
+    state: EditorState,
+    dispatch?: (tr: Transaction) => void,
+    color?: string,
   ): boolean {
     const { textColor } = this.state.schema.marks;
     if (textColor) {
-      const { empty, ranges, $cursor } = (state.selection) as TextSelection;
-      if ((empty && !$cursor) || !this.markApplies(state.doc, ranges, textColor)) {
+      const { empty, ranges, $cursor } = state.selection as TextSelection;
+      if (
+        (empty && !$cursor) ||
+        !this.markApplies(state.doc, ranges, textColor)
+      ) {
         return false;
       }
       if (this.isExcluded(state.storedMarks || ($cursor && $cursor.marks()))) {
@@ -94,11 +106,13 @@ export class TextColorState {
   }
 
   removeTextColor(
-    state: EditorState, dispatch: (tr: Transaction) => void, color?: string
+    state: EditorState,
+    dispatch: (tr: Transaction) => void,
+    color?: string,
   ): boolean {
     const { textColor } = this.state.schema.marks;
     if (textColor) {
-      const { from, to, $cursor } = (state.selection) as TextSelection;
+      const { from, to, $cursor } = state.selection as TextSelection;
       if ($cursor) {
         dispatch(state.tr.removeStoredMark(textColor));
       } else {
@@ -115,7 +129,7 @@ export class TextColorState {
 
   private getActiveColor(): string | undefined {
     const { state } = this;
-    const { $from, $to, $cursor } = (state.selection) as TextSelection;
+    const { $from, $to, $cursor } = state.selection as TextSelection;
 
     // Filter out other marks
     let marks: Array<Mark | undefined> = [];
@@ -147,7 +161,9 @@ export class TextColorState {
     ) {
       return;
     }
-    return marksWithColor.length ? marksWithColor[0].attrs.color : this.defaultColor;
+    return marksWithColor.length
+      ? marksWithColor[0].attrs.color
+      : this.defaultColor;
   }
 
   private findTextColorMark(marks: Array<Mark>): Mark | undefined {
@@ -155,7 +171,10 @@ export class TextColorState {
     return this.findMarkType(textColor, marks);
   }
 
-  private findMarkType(markType: MarkType, marks: Array<Mark>): Mark | undefined {
+  private findMarkType(
+    markType: MarkType,
+    marks: Array<Mark>,
+  ): Mark | undefined {
     for (let i = 0; i < marks.length; i++) {
       const currentMark = marks[i];
       if (markType === currentMark.type) {
@@ -167,7 +186,11 @@ export class TextColorState {
   // Copied from
   // https://github.com/ProseMirror/prosemirror-commands/blob/1c27e7a/src/commands.js#L395~L406
   // This function only checks if the current node allows mark or not, doesn't respect excludes
-  private markApplies(doc: Node, ranges: Array<SelectionRange>, type: MarkType): boolean {
+  private markApplies(
+    doc: Node,
+    ranges: Array<SelectionRange>,
+    type: MarkType,
+  ): boolean {
     for (let i = 0; i < ranges.length; i++) {
       const { $from, $to } = ranges[i];
       let can = $from.depth === 0 ? doc.type.allowsMarkType(type) : false;
@@ -184,11 +207,11 @@ export class TextColorState {
     return false;
   }
 
-  private isExcluded (marks?: Array<Mark> | null): boolean {
+  private isExcluded(marks?: Array<Mark> | null): boolean {
     if (marks) {
       const { textColor } = this.state.schema.marks;
       return marks.some(
-        mark => mark.type !== textColor && mark.type.excludes(textColor)
+        mark => mark.type !== textColor && mark.type.excludes(textColor),
       );
     }
     return false;
@@ -201,7 +224,7 @@ export const plugin = new Plugin({
   state: {
     init(config, state: EditorState) {
       const palette = new Map<string, string>([
-        [DEFAULT_COLOR.color.toLowerCase(), DEFAULT_COLOR.label]
+        [DEFAULT_COLOR.color.toLowerCase(), DEFAULT_COLOR.label],
       ]);
       // Typescript can't spread Map as of 11 May, 2017
       colorPalette.forEach((label, color) => palette.set(color, label));
@@ -211,13 +234,13 @@ export const plugin = new Plugin({
     apply(tr, pluginState: TextColorState, oldState, newState) {
       pluginState.update(newState);
       return pluginState;
-    }
+    },
   },
   key: stateKey,
 });
 
 const plugins = (schema: Schema) => {
-  return [plugin].filter((plugin) => !!plugin) as Plugin[];
+  return [plugin].filter(plugin => !!plugin) as Plugin[];
 };
 
 export default plugins;

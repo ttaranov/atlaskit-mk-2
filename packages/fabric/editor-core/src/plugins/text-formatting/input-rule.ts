@@ -5,7 +5,11 @@ import { analyticsService } from '../../analytics';
 import { transformToCodeAction } from './transform-to-code';
 import { InputRuleHandler, createInputRule } from '../utils';
 
-function addMark(markType: MarkType, schema: Schema, charSize: number): InputRuleHandler {
+function addMark(
+  markType: MarkType,
+  schema: Schema,
+  charSize: number,
+): InputRuleHandler {
   return (state, match, start, end): Transaction | undefined => {
     const to = end;
     // in case of *string* pattern it matches the text from beginning of the paragraph,
@@ -15,7 +19,10 @@ function addMark(markType: MarkType, schema: Schema, charSize: number): InputRul
 
     // fixes the following case: my `*name` is *
     // expected result: should ignore special characters inside "code"
-    if (state.schema.marks.code && state.schema.marks.code.isInSet(state.doc.resolve(from + 1).marks())) {
+    if (
+      state.schema.marks.code &&
+      state.schema.marks.code.isInSet(state.doc.resolve(from + 1).marks())
+    ) {
       return;
     }
 
@@ -27,7 +34,9 @@ function addMark(markType: MarkType, schema: Schema, charSize: number): InputRul
       }
     }
 
-    analyticsService.trackEvent(`atlassian.editor.format.${markType.name}.autoformatting`);
+    analyticsService.trackEvent(
+      `atlassian.editor.format.${markType.name}.autoformatting`,
+    );
 
     // apply mark to the range (from, to)
     let tr = state.tr.addMark(from, to, markType.create());
@@ -38,14 +47,20 @@ function addMark(markType: MarkType, schema: Schema, charSize: number): InputRul
       tr = tr.delete(to - (charSize - 1), to);
     }
 
-    return tr
-       // delete special characters before the text
-       .delete(from, from + charSize)
-       .removeStoredMark(markType);
+    return (
+      tr
+        // delete special characters before the text
+        .delete(from, from + charSize)
+        .removeStoredMark(markType)
+    );
   };
 }
 
-function addCodeMark(markType: MarkType, schema: Schema, specialChar: string): InputRuleHandler {
+function addCodeMark(
+  markType: MarkType,
+  schema: Schema,
+  specialChar: string,
+): InputRuleHandler {
   return (state, match, start, end): Transaction | undefined => {
     // fixes autoformatting in heading nodes: # Heading `bold`
     // expected result: should not autoformat *bold*; <h1>Heading `bold`</h1>
@@ -55,7 +70,9 @@ function addCodeMark(markType: MarkType, schema: Schema, specialChar: string): I
       }
     }
     analyticsService.trackEvent('atlassian.editor.format.code.autoformatting');
-    return transformToCodeAction(state, start, end).delete(start, start + specialChar.length).removeStoredMark(markType);
+    return transformToCodeAction(state, start, end)
+      .delete(start, start + specialChar.length)
+      .removeStoredMark(markType);
   };
 }
 
@@ -65,26 +82,56 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
   if (schema.marks.strong) {
     // **string** or __strong__ should bold the text
     const markLength = 2;
-    rules.push(createInputRule(/(?:[^`0-9A-Za-z]+)(\_\_([^\s\_][^\_]+)\_\_)$|^(\_\_([^\s \_][^\_]+)\_\_)$/, addMark(schema.marks.strong, schema, markLength)));
-    rules.push(createInputRule(/^(?:[^`]+)(\*\*([^\s\*][^\*]+)\*\*)$|^(\*\*([^\s\*][^\*]+)\*\*)$/, addMark(schema.marks.strong, schema, markLength)));
+    rules.push(
+      createInputRule(
+        /(?:[^`0-9A-Za-z]+)(\_\_([^\s\_][^\_]+)\_\_)$|^(\_\_([^\s \_][^\_]+)\_\_)$/,
+        addMark(schema.marks.strong, schema, markLength),
+      ),
+    );
+    rules.push(
+      createInputRule(
+        /^(?:[^`]+)(\*\*([^\s\*][^\*]+)\*\*)$|^(\*\*([^\s\*][^\*]+)\*\*)$/,
+        addMark(schema.marks.strong, schema, markLength),
+      ),
+    );
   }
 
   if (schema.marks.em) {
     // *string* or _string_ should italic the text
     const markLength = 1;
-    rules.push(createInputRule(/(?:[^\_`0-9A-Za-z]+)(\_([^\s\_][^\_]+?)\_)$|^(\_([^\s\_][^\_]+)\_)$/, addMark(schema.marks.em, schema, markLength)));
-    rules.push(createInputRule(/^(?:[^\*`]+)(\*([^\s\*][^\*]+?)\*)$|^(\*([^\s\*][^\*]+)\*)$/, addMark(schema.marks.em, schema, markLength)));
+    rules.push(
+      createInputRule(
+        /(?:[^\_`0-9A-Za-z]+)(\_([^\s\_][^\_]+?)\_)$|^(\_([^\s\_][^\_]+)\_)$/,
+        addMark(schema.marks.em, schema, markLength),
+      ),
+    );
+    rules.push(
+      createInputRule(
+        /^(?:[^\*`]+)(\*([^\s\*][^\*]+?)\*)$|^(\*([^\s\*][^\*]+)\*)$/,
+        addMark(schema.marks.em, schema, markLength),
+      ),
+    );
   }
 
   if (schema.marks.strike) {
     // ~~string~~ should strikethrough the text
     const markLength = 2;
-    rules.push(createInputRule(/^(?:[^`]+)(\~\~([^\s\~][^\~]+)\~\~)$|^(\~\~([^\s\~][^\~]+)\~\~)$/, addMark(schema.marks.strike, schema, markLength)));
+    rules.push(
+      createInputRule(
+        /^(?:[^`]+)(\~\~([^\s\~][^\~]+)\~\~)$|^(\~\~([^\s\~][^\~]+)\~\~)$/,
+        addMark(schema.marks.strike, schema, markLength),
+      ),
+    );
   }
 
   if (schema.marks.code) {
     // `string` should monospace the text
-    rules.push(createInputRule(/(`[^\s`].*`)$/, addCodeMark(schema.marks.code, schema, '`')));
+    rules.push(
+      createInputRule(
+        /(`[^\s`].*`)$/,
+        addCodeMark(schema.marks.code, schema, '`'),
+      ),
+    );
   }
 
   if (rules.length !== 0) {

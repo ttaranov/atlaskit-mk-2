@@ -1,6 +1,11 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { convertedHandlerCallback, Converter, dropHandler, pasteHandler } from '../../src';
+import {
+  convertedHandlerCallback,
+  Converter,
+  dropHandler,
+  pasteHandler,
+} from '../../src';
 
 describe('@atlaskit/editor-core/test-helper base64fileconverter', () => {
   let savedFileReader: any;
@@ -47,7 +52,9 @@ describe('@atlaskit/editor-core/test-helper base64fileconverter', () => {
         },
       } as any;
 
-      expect(pasteHandler(converterStub, clipboardEvent, sinon.spy())).to.equal(true);
+      expect(pasteHandler(converterStub, clipboardEvent, sinon.spy())).to.equal(
+        true,
+      );
     });
   });
 
@@ -66,8 +73,9 @@ describe('@atlaskit/editor-core/test-helper base64fileconverter', () => {
       const converterStub = {} as Converter;
       converterStub.HAS_BASE64_FILE_SUPPORT = true;
 
-      const convertStub = sinon.spy((files: FileList, cb: convertedHandlerCallback) =>
-        cb(`data:png;base64,AYAYSAASn`)
+      const convertStub = sinon.spy(
+        (files: FileList, cb: convertedHandlerCallback) =>
+          cb(`data:png;base64,AYAYSAASn`),
       );
       converterStub.convert = convertStub;
 

@@ -9,5 +9,4 @@ describe('Renderer - React/Nodes/Image', () => {
   it('should render a <img>-tag', () => {
     expect(image.is('img')).to.equal(true);
   });
-
 });

@@ -4,5 +4,9 @@ import { default as Editor } from '../src';
 import ExampleWrapper from '../example-helpers/ExampleWrapper';
 
 export default function Component() {
-  return <ExampleWrapper render={handleChange => <Editor onChange={handleChange} />} />;
+  return (
+    <ExampleWrapper
+      render={handleChange => <Editor onChange={handleChange} />}
+    />
+  );
 }

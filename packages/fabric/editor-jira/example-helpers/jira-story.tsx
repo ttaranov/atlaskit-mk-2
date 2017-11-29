@@ -20,9 +20,17 @@ const mentionEncoder = (userId: string) => `/secure/ViewProfile?name=${userId}`;
 let handleChange: (editor: Editor) => void;
 
 storiesOf(name, module)
-  .addDecorator(function(story: Function, context: { kind: string; story: string }) {
+  .addDecorator(function(
+    story: Function,
+    context: { kind: string; story: string },
+  ) {
     type Props = {};
-    type State = { html: string; story?: any; prettify?: boolean; isMediaReady?: boolean };
+    type State = {
+      html: string;
+      story?: any;
+      prettify?: boolean;
+      isMediaReady?: boolean;
+    };
     class Demo extends PureComponent<Props, State> {
       state: State;
 
@@ -56,7 +64,9 @@ storiesOf(name, module)
       };
 
       render() {
-        const html = this.state.prettify ? pd.xml(this.state.html) : this.state.html;
+        const html = this.state.prettify
+          ? pd.xml(this.state.html)
+          : this.state.html;
 
         return (
           <div ref="root">
@@ -69,14 +79,19 @@ storiesOf(name, module)
                   checked={this.state.prettify}
                   onChange={this.togglePrettify}
                 />
-                <span onClick={this.togglePrettify} style={{ cursor: 'pointer' }}>
+                <span
+                  onClick={this.togglePrettify}
+                  style={{ cursor: 'pointer' }}
+                >
                   {' '}
                   prettify
                 </span>
                 )
               </legend>
               {this.state.isMediaReady ? (
-                <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>{html}</pre>
+                <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+                  {html}
+                </pre>
               ) : (
                 <div style={{ padding: 20 }}>
                   <Spinner size="large" />
@@ -92,16 +107,30 @@ storiesOf(name, module)
   })
   .addDecorator(storyDecorator(version))
   .add('Editor', () => <Editor onChange={handleChange} />)
-  .add('Editor (allowLists)', () => <Editor onChange={handleChange} allowLists={true} />)
-  .add('Editor (allowLinks)', () => <Editor onChange={handleChange} allowLinks={true} />)
+  .add('Editor (allowLists)', () => (
+    <Editor onChange={handleChange} allowLists={true} />
+  ))
+  .add('Editor (allowLinks)', () => (
+    <Editor onChange={handleChange} allowLinks={true} />
+  ))
   .add('Editor (allowAdvancedTextFormatting)', () => (
     <Editor onChange={handleChange} allowAdvancedTextFormatting={true} />
   ))
-  .add('Editor (allowSubSup)', () => <Editor onChange={handleChange} allowSubSup={true} />)
-  .add('Editor (allowTextColor)', () => <Editor onChange={handleChange} allowTextColor={true} />)
-  .add('Editor (allowCodeBlock)', () => <Editor onChange={handleChange} allowCodeBlock={true} />)
-  .add('Editor (allowBlockQuote)', () => <Editor onChange={handleChange} allowBlockQuote={true} />)
-  .add('Editor (allowTables)', () => <Editor onChange={handleChange} allowTables={true} />)
+  .add('Editor (allowSubSup)', () => (
+    <Editor onChange={handleChange} allowSubSup={true} />
+  ))
+  .add('Editor (allowTextColor)', () => (
+    <Editor onChange={handleChange} allowTextColor={true} />
+  ))
+  .add('Editor (allowCodeBlock)', () => (
+    <Editor onChange={handleChange} allowCodeBlock={true} />
+  ))
+  .add('Editor (allowBlockQuote)', () => (
+    <Editor onChange={handleChange} allowBlockQuote={true} />
+  ))
+  .add('Editor (allowTables)', () => (
+    <Editor onChange={handleChange} allowTables={true} />
+  ))
   .add('Editor (Mentions)', () => (
     <Editor
       onChange={handleChange}
@@ -179,13 +208,16 @@ storiesOf(name, module)
             />
 
             <fieldset style={{ marginTop: 20 }}>
-              <button onClick={this.toggleDisabled}>Toggle disabled state</button>
+              <button onClick={this.toggleDisabled}>
+                Toggle disabled state
+              </button>
             </fieldset>
           </div>
         );
       }
 
-      private toggleDisabled = () => this.setState({ isDisabled: !this.state.isDisabled });
+      private toggleDisabled = () =>
+        this.setState({ isDisabled: !this.state.isDisabled });
     }
 
     return <Demo />;

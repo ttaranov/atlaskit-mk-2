@@ -376,7 +376,8 @@ export class MediaPluginState {
     const { selection: { from }, schema, tr } = this.view.state;
     this.view.dispatch(
       tr.setNodeMarkup(from - 1, schema.nodes.singleImage, {
-        alignment, display
+        alignment,
+        display,
       }),
     );
     return true;

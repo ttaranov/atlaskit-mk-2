@@ -59,7 +59,11 @@ const SaveAndCancelButtons = props => (
     <Button
       appearance="primary"
       // tslint:disable-next-line:jsx-no-lambda no-console
-      onClick={() => props.editorActions.getValue().then(value => console.log(value.toJSON()))}
+      onClick={() =>
+        props.editorActions
+          .getValue()
+          .then(value => console.log(value.toJSON()))
+      }
     >
       Publish
     </Button>
@@ -81,7 +85,6 @@ export default function Example() {
           <Editor
             appearance="full-page"
             analyticsHandler={analyticsHandler}
-
             allowTextFormatting={true}
             allowTasksAndDecisions={true}
             allowHyperlinks={true}
@@ -89,15 +92,12 @@ export default function Example() {
             allowLists={true}
             allowTextColor={true}
             allowTables={true}
-
             mediaProvider={storyMediaProviderFactory()}
             emojiProvider={emojiStoryData.getEmojiResource()}
             mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
             collabEditProvider={collabEditProvider('rick')}
-
             placeholder="Write something..."
             shouldFocus={false}
-
             contentComponents={
               <TitleInput
                 placeholder="Give this page a title..."
@@ -105,11 +105,12 @@ export default function Example() {
                 innerRef={ref => ref && ref.focus()}
               />
             }
-
             primaryToolbarComponents={
               <WithEditorActions
                 // tslint:disable-next-line:jsx-no-lambda
-                render={actions => <SaveAndCancelButtons editorActions={actions}/>}
+                render={actions => (
+                  <SaveAndCancelButtons editorActions={actions} />
+                )}
               />
             }
           />
@@ -120,7 +121,6 @@ export default function Example() {
           <Editor
             appearance="full-page"
             analyticsHandler={analyticsHandler}
-
             allowTextFormatting={true}
             allowTasksAndDecisions={true}
             allowHyperlinks={true}
@@ -128,15 +128,12 @@ export default function Example() {
             allowLists={true}
             allowTextColor={true}
             allowTables={true}
-
             mediaProvider={storyMediaProviderFactory()}
             emojiProvider={emojiStoryData.getEmojiResource()}
             mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
             collabEditProvider={collabEditProvider('morty')}
-
             placeholder="Write something..."
             shouldFocus={false}
-
             contentComponents={
               <TitleInput
                 placeholder="Give this page a title..."
@@ -144,11 +141,12 @@ export default function Example() {
                 innerRef={ref => ref && ref.focus()}
               />
             }
-
             primaryToolbarComponents={
               <WithEditorActions
                 // tslint:disable-next-line:jsx-no-lambda
-                render={actions => <SaveAndCancelButtons editorActions={actions}/>}
+                render={actions => (
+                  <SaveAndCancelButtons editorActions={actions} />
+                )}
               />
             }
           />

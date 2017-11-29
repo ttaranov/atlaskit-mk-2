@@ -632,9 +632,9 @@ export const plugin = (pluginConfig?: PluginConfig) => {
           pluginState.update(view.docView, true);
           resetHoverSelection(view.state, view.dispatch);
           return false;
-        }
-      }
-    }
+        },
+      },
+    },
   });
 };
 

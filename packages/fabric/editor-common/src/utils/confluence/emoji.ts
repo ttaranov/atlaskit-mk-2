@@ -17,7 +17,7 @@ const HC_EMOTICON_PREFIX = 'atlassian-';
  * will be mapped to Emoji Id '2b50' (:star:) with preserving ac:name as shortName attribute;
  */
 const acNameToEmojiMap = {
-  smile: ['1f642', ':slight_smile:' , '\uD83D\uDE42'],
+  smile: ['1f642', ':slight_smile:', '\uD83D\uDE42'],
   sad: ['1f641', ':slight_frown:', '\uD83D\uDE41'],
   cheeky: ['1f61b', ':stuck_out_tongue:', '\uD83D\uDE1B'],
   laugh: ['1f600', ':grinning:', '\uD83D\uDE00'],
@@ -38,26 +38,27 @@ const acNameToEmojiMap = {
   'light-off': null,
   'red-star': null,
   'green-star': null,
-  'blue-star': null
+  'blue-star': null,
 };
 
 export function acNameToEmoji(acName: string) {
   const emojiData = acNameToEmojiMap[acName];
   return emojiData
     ? {
-      id: emojiData[0],
-      shortName: emojiData[1],
-      text: emojiData[2]
-    }
+        id: emojiData[0],
+        shortName: emojiData[1],
+        text: emojiData[2],
+      }
     : {
-      id: DEFAULT_EMOJI_ID,
-      shortName: `:${acName}:`,
-      text: ''
-    };
+        id: DEFAULT_EMOJI_ID,
+        shortName: `:${acName}:`,
+        text: '',
+      };
 }
 
 export function emojiIdToAcName(emojiId: string) {
-  const filterEmojis = acName => acNameToEmojiMap[acName] ? acNameToEmojiMap[acName][0] === emojiId : false;
+  const filterEmojis = acName =>
+    acNameToEmojiMap[acName] ? acNameToEmojiMap[acName][0] === emojiId : false;
   return Object.keys(acNameToEmojiMap).filter(filterEmojis)[0];
 }
 
@@ -65,19 +66,18 @@ export function acShortcutToEmoji(hipchatEmoticonShortName: string) {
   return {
     id: `${HC_EMOTICON_PREFIX}${hipchatEmoticonShortName}`,
     shortName: `:${hipchatEmoticonShortName}:`,
-    text: ''
+    text: '',
   };
 }
 
 function getAcNameFromShortName(shortName: string) {
   return shortName.slice(
     shortName[0] === ':' ? 1 : 0,
-    shortName[shortName.length - 1] === ':' ? -1 : shortName.length
+    shortName[shortName.length - 1] === ':' ? -1 : shortName.length,
   );
 }
 
 export function getEmojiAcName({ id, shortName }) {
-
   if (DEFAULT_EMOJI_ID === id) {
     const possibleName = getAcNameFromShortName(shortName);
     if (possibleName in acNameToEmojiMap) {

@@ -4,7 +4,12 @@ import { expect } from 'chai';
 import ConfluenceInlineComment from '../../../../src/react/marks/confluence-inline-comment';
 
 describe('Renderer - React/Marks/ConfluenceInlineComment', () => {
-  const create = () => mount(<ConfluenceInlineComment reference="this-is-reference-hash">wrapped text</ConfluenceInlineComment>);
+  const create = () =>
+    mount(
+      <ConfluenceInlineComment reference="this-is-reference-hash">
+        wrapped text
+      </ConfluenceInlineComment>,
+    );
 
   it('should wrap content with <span>-tag', () => {
     const mark = create();
@@ -14,8 +19,14 @@ describe('Renderer - React/Marks/ConfluenceInlineComment', () => {
 
   it('should set data-reference to attrs.reference', () => {
     const mark = create();
-    expect(mark.find('span').props()).to.have.property('data-reference', 'this-is-reference-hash');
-    expect(mark.find('span').props()).to.have.property('data-mark-type', 'confluenceInlineComment');
+    expect(mark.find('span').props()).to.have.property(
+      'data-reference',
+      'this-is-reference-hash',
+    );
+    expect(mark.find('span').props()).to.have.property(
+      'data-mark-type',
+      'confluenceInlineComment',
+    );
     mark.unmount();
   });
 });

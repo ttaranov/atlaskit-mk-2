@@ -43,7 +43,7 @@ const schema = createSchema({
     'link',
     'emojiQuery',
     'subsup',
-  ]
+  ],
 });
 
 export default class DACEditor extends PureComponent<{}, {}> {
@@ -56,7 +56,7 @@ export default class DACEditor extends PureComponent<{}, {}> {
 
     const json = this.transformer.encode(editor.doc);
     window.parent.postMessage({ doc: json, editor: true }, '*');
-  }
+  };
 
   render() {
     const emojiProvider = emojiStoryData.getEmojiResource();

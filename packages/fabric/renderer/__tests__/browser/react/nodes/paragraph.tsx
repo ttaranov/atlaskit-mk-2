@@ -9,5 +9,4 @@ describe('Renderer - React/Nodes/Paragraph', () => {
   it('should wrap content with <p>-tag', () => {
     expect(paragraph.is('p')).to.equal(true);
   });
-
 });

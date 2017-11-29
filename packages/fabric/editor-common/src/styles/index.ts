@@ -13,7 +13,7 @@ import {
   akColorN500,
   akColorN700,
   akColorN900,
-  akZIndexLayer
+  akZIndexLayer,
 } from '@atlaskit/util-shared-styles';
 
 export const akEditorCodeFontFamily = akCodeFontFamily;

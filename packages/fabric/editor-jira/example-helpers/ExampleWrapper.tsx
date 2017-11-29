@@ -4,8 +4,15 @@ import { pd } from 'pretty-data';
 import Spinner from '@atlaskit/spinner';
 import Editor from '../src';
 
-type Props = { render(handleChange: (editor: Editor) => void): React.ReactNode };
-type State = { html: string; story?: any; prettify?: boolean; isMediaReady?: boolean };
+type Props = {
+  render(handleChange: (editor: Editor) => void): React.ReactNode;
+};
+type State = {
+  html: string;
+  story?: any;
+  prettify?: boolean;
+  isMediaReady?: boolean;
+};
 
 export default class Demo extends React.Component<Props, State> {
   state: State;
@@ -38,7 +45,9 @@ export default class Demo extends React.Component<Props, State> {
   };
 
   render() {
-    const html = this.state.prettify ? pd.xml(this.state.html) : this.state.html;
+    const html = this.state.prettify
+      ? pd.xml(this.state.html)
+      : this.state.html;
 
     return (
       <div ref="root">
@@ -46,7 +55,11 @@ export default class Demo extends React.Component<Props, State> {
         <fieldset style={{ marginTop: 20 }}>
           <legend>
             HTML (
-            <input type="checkbox" checked={this.state.prettify} onChange={this.togglePrettify} />
+            <input
+              type="checkbox"
+              checked={this.state.prettify}
+              onChange={this.togglePrettify}
+            />
             <span onClick={this.togglePrettify} style={{ cursor: 'pointer' }}>
               {' '}
               prettify
@@ -54,7 +67,9 @@ export default class Demo extends React.Component<Props, State> {
             )
           </legend>
           {this.state.isMediaReady ? (
-            <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>{html}</pre>
+            <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+              {html}
+            </pre>
           ) : (
             <div style={{ padding: 20 }}>
               <Spinner size="large" />

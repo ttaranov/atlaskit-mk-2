@@ -7,7 +7,6 @@ const ajv = new Ajv();
 const validate = ajv.compile(v1schema);
 
 describe(`${name} json-schema v1`, () => {
-
   const valid = readFilesSync(`${__dirname}/v1-reference/valid`);
   valid.forEach(file => {
     it(`validates '${file.name}`, () => {
