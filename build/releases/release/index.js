@@ -23,6 +23,12 @@ async function bumpReleasedPackages(releaseObj, allPackages) {
   }
 }
 
+function logReleases(status, pkgs) {
+  const mappedPkgs = pkgs.map(p => `${p.name}@${p.newVersion}`).join('\n');
+  logger.success(`Packages ${status} published:`);
+  logger.log(mappedPkgs);
+}
+
 async function run(opts) {
   const cwd = opts.cwd || process.cwd();
   const allPackages = await bolt.getWorkspaces({ cwd });
@@ -87,22 +93,13 @@ async function run(opts) {
       else failedToPublish.push(p);
     }
 
-    if (failedToPublish.length === 0) {
-      const failedPackages = failedToPublish
-        .map(p => `${p.name}@${p.newVersion}`)
-        .join('\n');
-      logger.error(`There was an error publishing some packages:`);
-      logger.error(failedPackages);
-    } else {
-      logger.success('Successfully published all packages');
+    if (successfullyPublished.length > 0) {
+      logReleases('successfully', successfullyPublished);
     }
 
-    if (successfullyPublished.length > 0) {
-      const releasedPackages = successfullyPublished
-        .map(p => `${p.name}@${p.newVersion}`)
-        .join('\n');
-      logger.success('Successfully published packages are:');
-      logger.log(releasedPackages);
+    if (failedToPublish.length > 0) {
+      logReleases('failed to', failedToPublish);
+      throw new Error(`Some releases failed: ${JSON.stringify(packages)}`);
     }
   }
 }
