@@ -1,11 +1,6 @@
 import styled, { css } from 'styled-components';
 import { colors, themed } from '@atlaskit/theme';
-import {
-  borderWidth,
-  getHeight,
-  getWidth,
-  transition,
-} from './constants';
+import { borderWidth, getHeight, getWidth, transition } from './constants';
 
 const colorOptions = {
   bgChecked: themed({ light: colors.G400, dark: colors.G300 }),
@@ -28,21 +23,27 @@ const getBgColor = ({ isChecked, isDisabled, ...rest }) => {
 const getHoverStyles = ({ isChecked, isDisabled, ...rest }) => {
   let bgcolor;
   if (!isDisabled) {
-    bgcolor = isChecked ? colorOptions.bgCheckedHover : colorOptions.bgUncheckedHover;
+    bgcolor = isChecked
+      ? colorOptions.bgCheckedHover
+      : colorOptions.bgUncheckedHover;
   }
 
   return css`
     &:hover {
-      ${bgcolor ? css`background-color: ${bgcolor(rest)}` : ''};
+      ${bgcolor
+        ? css`
+            background-color: ${bgcolor(rest)};
+          `
+        : ''};
       cursor: ${isDisabled ? 'not-allowed' : 'pointer'};
     }
   `;
 };
 
-const getBorderColor = ({ isFocused, ...rest }) => (isFocused
-  ? themed({ light: colors.B100, dark: colors.B75 })(rest)
-  : 'transparent'
-);
+const getBorderColor = ({ isFocused, ...rest }) =>
+  isFocused
+    ? themed({ light: colors.B100, dark: colors.B75 })(rest)
+    : 'transparent';
 
 export default styled.div`
   background-clip: content-box;
@@ -56,5 +57,5 @@ export default styled.div`
   transition: ${transition};
   width: ${getWidth}px;
 
-  ${getHoverStyles}
+  ${getHoverStyles};
 `;
