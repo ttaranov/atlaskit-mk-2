@@ -9,7 +9,7 @@ import type { Handler } from '../../types';
 type DialogProps = {
   [string]: any,
 };
-type Props = {
+export type Props = {
   active: 0 | 1 | 2, // todo: boolean???
   value: [?string, ?string],
   displayValue: [string, string],

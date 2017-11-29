@@ -2,9 +2,9 @@
 
 import React, { Component } from 'react';
 import { gridSize } from '@atlaskit/theme';
-import DualPicker from './internal/DualPicker';
 import DateField from './internal/DateField';
 import DateDialog from './internal/DateDialog';
+import DateTimePickerStateless from './DateTimePickerStateless';
 import TimeField from './internal/TimeField';
 import TimeDialog from './internal/TimeDialog';
 import type { Handler } from '../types';
@@ -313,7 +313,7 @@ export default class DateTimePicker extends Component<Props, State> {
 
   render() {
     return (
-      <DualPicker
+      <DateTimePickerStateless
         active={this.state.active}
         isDisabled={this.props.isDisabled}
         isOpen={this.state.isOpen}
