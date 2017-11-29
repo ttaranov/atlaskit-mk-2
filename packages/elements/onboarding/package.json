@@ -21,6 +21,7 @@
     "@atlaskit/progress-indicator": "^2.0.0",
     "@atlaskit/theme": "^2.0.1",
     "react-transition-group": "^2.2.0",
+    "prop-types": "^15.5.10",
     "styled-components": "^1.4.6",
     "scroll-into-view-if-needed": "^1.2.1"
   },

@@ -15,7 +15,7 @@ type State = {
   mounted: number,
 };
 
-export default class SpotlightManager extends PureComponent {
+export default class SpotlightManager extends PureComponent<Props, State> {
   static childContextTypes = {
     spotlightRegistry: PropTypes.instanceOf(SpotlightRegistry).isRequired,
   };
@@ -28,7 +28,7 @@ export default class SpotlightManager extends PureComponent {
   state: State = { mounted: 0 };
   /* eslint-enable react/sort-comp */
 
-  constructor(props, context) {
+  constructor(props: Props, context) {
     super(props, context);
     this.spotlightRegistry = new SpotlightRegistry();
   }

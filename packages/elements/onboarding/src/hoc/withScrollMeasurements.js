@@ -1,6 +1,6 @@
 // @flow
 /* eslint-disable react/sort-comp, react/no-multi-comp */
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import PropTypes from 'prop-types';
 
 import SpotlightRegistry from '../components/SpotlightRegistry';
@@ -67,7 +67,7 @@ export default function withScrollMeasurements(WrappedComponent) {
 
       spotlightRegistry.unmount(target);
     }
-    measureAndScroll = node => {
+    measureAndScroll = (node: Node) => {
       const {
         height,
         left,

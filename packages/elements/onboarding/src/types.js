@@ -1,5 +1,5 @@
 // @flow
-import { Component, Element } from 'react';
+import { type Component, type Element } from 'react';
 import type { PropType } from 'babel-plugin-react-flow-props-to-prop-types'; // eslint-disable-line import/no-extraneous-dependencies
 
 export type ChildrenType = PropType<Array<Element<any>> | Element<any>, any>;

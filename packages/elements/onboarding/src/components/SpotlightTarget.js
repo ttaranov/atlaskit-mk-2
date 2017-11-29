@@ -16,8 +16,7 @@ type Props = {
 const errorMessage =
   '`SpotlightTarget` requires `SpotlightManager` as an ancestor.';
 
-export default class SpotlightTarget extends Component {
-  props: Props; // eslint-disable-line react/sort-comp
+export default class SpotlightTarget extends Component<Props> {
   static contextTypes = {
     spotlightRegistry: PropTypes.instanceOf(SpotlightRegistry).isRequired,
   };

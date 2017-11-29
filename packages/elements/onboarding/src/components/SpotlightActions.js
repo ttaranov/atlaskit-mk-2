@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import Button from '@atlaskit/button';
 
 import { Actions, ActionItems, ActionItem } from '../styled/Dialog';
@@ -22,22 +22,15 @@ const renderButtonsMap = ({ text, ...rest }, idx) => (
   </ActionItem>
 );
 
-export default class SpotlightActions extends Component {
-  props: Props; // eslint-disable-line react/sort-comp
-  static defaultProps = {
-    // NOTE: The span is used to force flex behaviour "space-between" when no
-    // `beforeElement` is supplied, pushing the buttons to the correct side.
-    beforeElement: <span />,
-  };
+// NOTE: The span is used to force flex behaviour "space-between" when no
+// `beforeElement` is supplied, pushing the buttons to the correct side.
+// beforeElement: <span />,
 
-  render() {
-    const { beforeElement, items } = this.props;
+const SpotLightActions = ({ beforeElement = <span />, items }: Props) => (
+  <Actions>
+    {beforeElement}
+    <ActionItems>{items.map(renderButtonsMap)}</ActionItems>
+  </Actions>
+);
 
-    return (
-      <Actions>
-        {beforeElement}
-        <ActionItems>{items.map(renderButtonsMap)}</ActionItems>
-      </Actions>
-    );
-  }
-}
+export default SpotLightActions;
