@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 60.4.7
+
 ## 60.4.6
 
 - [patch] Make tables 100% width in full page editor [a28ac19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a28ac19)
