@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 9.0.1
+- [patch] Migrate MediaViewer to new AK repo [a0bc467](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a0bc467)
+
 ## 9.0.0 (2017-11-23)
 
 
