@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 import { colors, themed } from '@atlaskit/theme';
 import { transition } from './constants';

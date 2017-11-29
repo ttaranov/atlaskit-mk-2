@@ -2,8 +2,7 @@
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
 import { gridSize } from '@atlaskit/theme';
-// TODO: @atlaskit/toggle
-import { ToggleStateless } from '../src';
+import { ToggleStateless } from '@atlaskit/toggle';
 
 type State = {|
   isChecked: boolean,

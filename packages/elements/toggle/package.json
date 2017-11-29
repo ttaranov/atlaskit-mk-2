@@ -15,13 +15,18 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
-    "styled-components": "^1.4.6"
+    "@atlaskit/icon": "^10.3.0",
+    "@atlaskit/theme": "^2.2.4",
+    "styled-components": "^1.4.6",
+    "uuid": "^3.1.0"
   },
   "peerDependencies": {
     "react": "^15.6.1"
   },
   "devDependencies": {
+    "@atlaskit/button": "^5.4.8",
     "@atlaskit/docs": "^0.0.4",
+    "@atlaskit/toggle": "*",
     "enzyme": "^2.9.1"
   },
   "keywords": [

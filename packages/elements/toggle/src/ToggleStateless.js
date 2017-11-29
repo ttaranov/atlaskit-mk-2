@@ -1,5 +1,5 @@
 // @flow
-import uid from 'uid';
+import uuid from 'uuid';
 import React, { Component } from 'react';
 import CloseIcon from '@atlaskit/icon/glyph/cross';
 import ConfirmIcon from '@atlaskit/icon/glyph/check';
@@ -63,7 +63,7 @@ export default class ToggleStateless extends Component<StatelessProps, State> {
       size,
     };
     const Icon = isChecked ? ConfirmIcon : CloseIcon;
-    const id = uid();
+    const id = uuid();
     const primaryColor = isChecked
       ? themed({ light: 'inherit', dark: colors.DN30 })(rest)
       : 'inherit';

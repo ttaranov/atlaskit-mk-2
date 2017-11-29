@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 import { borderWidth } from './constants';
 
