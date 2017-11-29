@@ -8,8 +8,13 @@ export interface Props {
 export default class ConfluenceInlineComment extends Component<Props, {}> {
   render() {
     const { reference, children } = this.props;
+    // confluence expects .inline-comment-marker
     return (
-      <span data-mark-type="confluenceInlineComment" data-reference={reference}>
+      <span
+        className="inline-comment-marker"
+        data-mark-type="confluenceInlineComment"
+        data-ref={reference}
+      >
         {children}
       </span>
     );

@@ -20,12 +20,16 @@ describe('Renderer - React/Marks/ConfluenceInlineComment', () => {
   it('should set data-reference to attrs.reference', () => {
     const mark = create();
     expect(mark.find('span').props()).to.have.property(
-      'data-reference',
+      'data-ref',
       'this-is-reference-hash',
     );
     expect(mark.find('span').props()).to.have.property(
       'data-mark-type',
       'confluenceInlineComment',
+    );
+    expect(mark.find('span').props()).to.have.property(
+      'className',
+      'inline-comment-marker',
     );
     mark.unmount();
   });

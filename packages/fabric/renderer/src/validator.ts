@@ -42,7 +42,7 @@ export const markOrder = [
   'subsup',
   'underline',
   'code',
-  'inlineCommentMarker',
+  'confluenceInlineComment',
 ];
 
 export const isSubSupType = (type: string): type is 'sub' | 'sup' => {
@@ -719,7 +719,7 @@ export const getValidMark = (mark: Mark): Mark | null => {
           type,
         };
       }
-      case 'inlineCommentMarker': {
+      case 'confluenceInlineComment': {
         return {
           type,
           attrs,
