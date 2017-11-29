@@ -1,0 +1,40 @@
+{
+  "name": "@atlaskit/onboarding",
+  "version": "2.0.0",
+  "description": "Highlight elements of the UI to the user and display a complementary dialog.",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [],
+  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "dependencies": {
+    "@atlaskit/blanket": "^3.0.0",
+    "@atlaskit/button": "^5.4.8",
+    "@atlaskit/layer": "^2.5.4",
+    "@atlaskit/layer-manager": "^2.0.1",
+    "@atlaskit/modal-dialog": "^3.0.1",
+    "@atlaskit/progress-indicator": "^2.0.0",
+    "@atlaskit/theme": "^2.0.1",
+    "react-transition-group": "^2.2.0",
+    "styled-components": "^1.4.6",
+    "scroll-into-view-if-needed": "^1.2.1"
+  },
+  "peerDependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.3.2"
+  },
+  "devDependencies": {
+    "@atlaskit/avatar": "^8.0.2",
+    "@atlaskit/docs": "^0.0.7",
+    "@atlaskit/dropdown-menu": "^3.10.1",
+    "@atlaskit/icon": "^10.0.0",
+    "@atlaskit/navigation": "^24.0.2",
+    "@atlaskit/tooltip": "^6.0.0",
+    "@atlaskit/util-readme": "^3.0.0"
+  }
+}
