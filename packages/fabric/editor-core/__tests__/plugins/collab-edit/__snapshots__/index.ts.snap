@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Telepointers should be able render telepointer on empty document 1`] = `
+Object {
+  "doc": Object {
+    "content": Array [
+      Object {
+        "type": "paragraph",
+      },
+    ],
+    "type": "doc",
+  },
+  "selection": Object {
+    "anchor": 1,
+    "head": 1,
+    "type": "text",
+  },
+  "telepointers": Array [
+    Object {
+      "from": 1,
+      "sessionId": "guest",
+      "to": 1,
+    },
+  ],
+}
+`;
+
+exports[`Telepointers shouldn't remove telepointer 1`] = `
+Object {
+  "doc": Object {
+    "content": Array [
+      Object {
+        "content": Array [
+          Object {
+            "text": "aa",
+            "type": "text",
+          },
+        ],
+        "type": "paragraph",
+      },
+    ],
+    "type": "doc",
+  },
+  "selection": Object {
+    "anchor": 2,
+    "head": 2,
+    "type": "text",
+  },
+  "telepointers": Array [
+    Object {
+      "from": 1,
+      "sessionId": "guest",
+      "to": 1,
+    },
+  ],
+}
+`;
