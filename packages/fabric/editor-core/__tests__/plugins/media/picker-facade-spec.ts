@@ -33,6 +33,7 @@ describe('Media PickerFacade', () => {
     authProvider: StoryBookAuthProvider.create(false),
     userAuthProvider: StoryBookUserAuthProvider.create(),
   };
+  const mockContext = { trackEvent: () => jest.fn() };
   const testFileId = `${Math.round(Math.random() * 100000)}`;
   const testTemporaryFileId = `temporary:${testFileId}`;
   const testFilePublicId = '7899d969-c1b2-4460-ad3e-44d51ac85452';
@@ -360,7 +361,7 @@ describe('Media PickerFacade', () => {
     });
   });
 
-  describe.only('Popup Picker', () => {
+  describe('Popup Picker', () => {
     const mockPopupPicker = new Popup(
       { trackEvent: () => {} },
       { apiUrl: '', authProvider: () => {} },
@@ -421,7 +422,10 @@ describe('Media PickerFacade', () => {
   });
 
   describe('Browser Picker', () => {
-    const mockBrowserPicker = new Browser();
+    const mockBrowserPicker = new Browser(mockContext, {
+      apiUrl: '',
+      authProvider: () => {},
+    });
 
     beforeEach(() => {
       stateManager = new DefaultMediaStateManager();
@@ -460,7 +464,10 @@ describe('Media PickerFacade', () => {
   });
 
   describe('Clipboard Picker', () => {
-    const mockClipboardPicker = new Clipboard();
+    const mockClipboardPicker = new Clipboard(mockContext, {
+      apiUrl: '',
+      authProvider: () => {},
+    });
     const activateSpy = (mockClipboardPicker.activate = jest.fn());
 
     beforeEach(() => {
@@ -470,6 +477,7 @@ describe('Media PickerFacade', () => {
         pickerConfig: any,
         extraConfig?: any,
       ) => mockClipboardPicker;
+
       facade = new PickerFacade(
         'clipboard',
         uploadParams,
@@ -491,14 +499,17 @@ describe('Media PickerFacade', () => {
     });
 
     it(`calls picker's deactivate() on destruction`, () => {
-      const spy = mockClipboardPicker.deactivate;
+      const spy = jest.spyOn(mockClipboardPicker, 'deactivate');
       facade!.destroy();
       expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('Dropzone Picker', () => {
-    const mockDropzonePicker = new Dropzone();
+    const mockDropzonePicker = new Dropzone(mockContext, {
+      apiUrl: '',
+      authProvider: () => {},
+    });
     const activateSpy = (mockDropzonePicker.activate = jest.fn());
 
     beforeEach(() => {
@@ -536,7 +547,10 @@ describe('Media PickerFacade', () => {
   });
 
   describe('BinaryUploader Picker', () => {
-    const mockBinaryUploaderPicker = new BinaryUploader();
+    const mockBinaryUploaderPicker = new BinaryUploader(mockContext, {
+      apiUrl: '',
+      authProvider: () => {},
+    });
 
     beforeEach(() => {
       stateManager = new DefaultMediaStateManager();

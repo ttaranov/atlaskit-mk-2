@@ -4,7 +4,7 @@ import { Schema, Slice } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import * as MarkdownIt from 'markdown-it';
-import table from 'markdown-it-table';
+import * as table from 'markdown-it-table';
 import { stateKey as tableStateKey } from '../table';
 import { containsTable } from '../table/utils';
 import { isSingleLine, isCode, filterMdToPmSchemaMapping } from './util';
@@ -28,7 +28,7 @@ const pmSchemaToMdMapping = {
     link: ['link', 'autolink', 'reference', 'linkify'],
     strike: 'strikethrough',
     code: 'backticks',
-  }
+  },
 };
 
 const mdToPmMapping = {
@@ -37,31 +37,37 @@ const mdToPmMapping = {
   em: { mark: 'em' },
   strong: { mark: 'strong' },
   link: {
-    mark: 'link', attrs: tok => ({
+    mark: 'link',
+    attrs: tok => ({
       href: tok.attrGet('href'),
-      title: tok.attrGet('title') || null
-    })
+      title: tok.attrGet('title') || null,
+    }),
   },
   hr: { node: 'rule' },
   heading: { block: 'heading', attrs: tok => ({ level: +tok.tag.slice(1) }) },
   code_block: { block: 'codeBlock' },
   list_item: { block: 'listItem' },
   bullet_list: { block: 'bulletList' },
-  ordered_list: { block: 'orderedList', attrs: tok => ({ order: +tok.attrGet('order') || 1 }) },
+  ordered_list: {
+    block: 'orderedList',
+    attrs: tok => ({ order: +tok.attrGet('order') || 1 }),
+  },
   code_inline: { mark: 'code' },
   fence: { block: 'codeBlock', attrs: tok => ({ language: tok.info || '' }) },
   image: {
-    node: 'image', attrs: tok => ({
+    node: 'image',
+    attrs: tok => ({
       src: tok.attrGet('src'),
       title: tok.attrGet('title') || null,
-      alt: tok.children[0] && tok.children[0].content || null,
-    })
+      alt: (tok.children[0] && tok.children[0].content) || null,
+    }),
   },
   emoji: {
-    node: 'emoji', attrs: tok => ({
+    node: 'emoji',
+    attrs: tok => ({
       shortName: `:${tok.markup}:`,
       text: tok.content,
-    })
+    }),
   },
   table: { block: 'table' },
   tr: { block: 'tableRow' },
@@ -80,7 +86,7 @@ export function createPlugin(schema: Schema) {
     // Process html entity - &#123;, &#xAF;, &quot;, ...
     'entity',
     // Process escaped chars and hardbreaks
-    'escape'
+    'escape',
   ]);
 
   // Enable markdown plugins based on schema
@@ -96,7 +102,11 @@ export function createPlugin(schema: Schema) {
     md.use(table);
   }
 
-  atlassianMarkDownParser = new MarkdownParser(schema, md, filterMdToPmSchemaMapping(schema, mdToPmMapping));
+  atlassianMarkDownParser = new MarkdownParser(
+    schema,
+    md,
+    filterMdToPmSchemaMapping(schema, mdToPmMapping),
+  );
 
   return new Plugin({
     key: stateKey,
@@ -119,13 +129,17 @@ export function createPlugin(schema: Schema) {
         // with "stored marks".
         // @see prosemirror-view/src/clipboard.js:parseFromClipboard()).
         // @see prosemirror-view/src/input.js:doPaste().
-        if ((view as any).shiftKey) { // <- using the same internal flag that prosemirror-view is using
+        if ((view as any).shiftKey) {
+          // <- using the same internal flag that prosemirror-view is using
           analyticsService.trackEvent('atlassian.editor.paste.alt');
 
           let tr = view.state.tr.replaceSelection(slice);
           const { storedMarks } = view.state;
           if (storedMarks && storedMarks.length) {
-            storedMarks.forEach(mark => tr = tr.addMark($from.pos, $from.pos + slice.size, mark));
+            storedMarks.forEach(
+              mark =>
+                (tr = tr.addMark($from.pos, $from.pos + slice.size, mark)),
+            );
           }
           view.dispatch(tr.scrollIntoView());
 
@@ -153,9 +167,16 @@ export function createPlugin(schema: Schema) {
           let tr;
           if (isSingleLine(text)) {
             tr = view.state.tr.insertText(text);
-            tr = tr.addMark($from.pos, $from.pos + text.length, schema.marks.code.create());
+            tr = tr.addMark(
+              $from.pos,
+              $from.pos + text.length,
+              schema.marks.code.create(),
+            );
           } else {
-            const codeBlockNode = schema.nodes.codeBlock.create(node ? node.attrs : {}, schema.text(text));
+            const codeBlockNode = schema.nodes.codeBlock.create(
+              node ? node.attrs : {},
+              schema.text(text),
+            );
             tr = view.state.tr.replaceSelectionWith(codeBlockNode);
           }
           view.dispatch(tr.scrollIntoView());
@@ -168,7 +189,7 @@ export function createPlugin(schema: Schema) {
           const doc = (atlassianMarkDownParser as any).parse(text);
           if (doc && doc.content) {
             const tr = view.state.tr.replaceSelection(
-              new Slice(doc.content, slice.openStart, slice.openEnd)
+              new Slice(doc.content, slice.openStart, slice.openEnd),
             );
             view.dispatch(tr.scrollIntoView());
             return true;
@@ -178,7 +199,11 @@ export function createPlugin(schema: Schema) {
         // If the clipboard contains rich text, pass it through the schema and import what's allowed.
         if (html) {
           const tableState = tableStateKey.getState(view.state);
-          if (tableState && tableState.isRequiredToAddHeader() && containsTable(view, slice)) {
+          if (
+            tableState &&
+            tableState.isRequiredToAddHeader() &&
+            containsTable(view, slice)
+          ) {
             const { state, dispatch } = view;
             const selectionStart = state.selection.$from.pos;
             dispatch(state.tr.replaceSelection(slice));
@@ -189,28 +214,37 @@ export function createPlugin(schema: Schema) {
 
         return false;
       },
-    }
+    },
   });
 }
 
 export function createKeymapPlugin(schema: Schema): Plugin {
   const list = {};
 
-  keymaps.bindKeymapWithCommand(keymaps.paste.common!, (state: EditorState, dispatch) => {
-    analyticsService.trackEvent('atlassian.editor.paste');
+  keymaps.bindKeymapWithCommand(
+    keymaps.paste.common!,
+    (state: EditorState, dispatch) => {
+      analyticsService.trackEvent('atlassian.editor.paste');
 
-    return false;
-  }, list);
+      return false;
+    },
+    list,
+  );
 
-  keymaps.bindKeymapWithCommand(keymaps.altPaste.common!, (state: EditorState, dispatch) => {
-    analyticsService.trackEvent('atlassian.editor.paste');
+  keymaps.bindKeymapWithCommand(
+    keymaps.altPaste.common!,
+    (state: EditorState, dispatch) => {
+      analyticsService.trackEvent('atlassian.editor.paste');
 
-    return false;
-  }, list);
+      return false;
+    },
+    list,
+  );
 
   return keymap(list);
 }
 
 export default (schema: Schema) => [
-  createPlugin(schema), createKeymapPlugin(schema)
+  createPlugin(schema),
+  createKeymapPlugin(schema),
 ];
