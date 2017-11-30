@@ -357,13 +357,7 @@ export const marks = {
   link: {
     open: '[',
     close(state: MarkdownSerializerState, mark: any) {
-      // Note: the 'title' is not escaped in this flavor of markdown.
-      return (
-        '](' +
-        mark.attrs['href'] +
-        (mark.attrs['title'] ? ` '${mark.attrs['title']}'` : '') +
-        ')'
-      );
+      return '](' + mark.attrs['href'] + ')';
     },
   },
   code: { open: '`', close: '`' },
