@@ -11,6 +11,10 @@ type State = {|
 |};
 
 export default class Swapper extends React.Component<any, State> {
+  state: State = {
+    mode: 'light',
+  };
+
   onClick = () => {
     this.setState({
       mode: this.state.mode === 'light' ? 'dark' : 'light',
@@ -23,7 +27,7 @@ export default class Swapper extends React.Component<any, State> {
           <Toggle />
           <div style={{ marginTop: gridSize() }}>
             <Button onClick={this.onClick}>
-              Toggle button{' '}
+              Toggle theme{' '}
               <span role="img" aria-label="irony">
                 😂
               </span>

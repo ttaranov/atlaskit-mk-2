@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import ToggleStatelessWithTheme from './ToggleStatelessWithTheme';
+import ToggleStateless from './ToggleStateless';
 import defaultBaseProps from './defaultBaseProps';
 import type { StatefulProps, DefaultBaseProps } from './types';
 
@@ -31,7 +31,7 @@ export default class Toggle extends Component<StatefulProps, State> {
 
   render() {
     return (
-      <ToggleStatelessWithTheme
+      <ToggleStateless
         {...this.props}
         isChecked={this.state.isChecked}
         onChange={this.onChange}

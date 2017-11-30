@@ -16,10 +16,7 @@ type DefaultProps = DefaultBaseProps & {
   isChecked: boolean,
 };
 
-export default class ToggleStatelessWithTheme extends Component<
-  StatelessProps,
-  State,
-> {
+export default class ToggleStateless extends Component<StatelessProps, State> {
   static defaultProps: DefaultProps = {
     ...defaultBaseProps,
     isChecked: false,
