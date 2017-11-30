@@ -3,17 +3,14 @@ const bolt = require('bolt');
 const path = require('path');
 const runRelease = require('../../release').run;
 const createRelease = require('../../changeset/createRelease');
-const git = require('../../../utils/git');
 const cli = require('../../../utils/cli');
+const git = require('../../../utils/git');
 const fs = require('../../../utils/fs');
 const isRunningInPipelines = require('../../../utils/isRunningInPipelines');
 const logger = require('../../../utils/logger');
-jest.mock('../../../utils/cli', () => ({
-  askConfirm: jest.fn(),
-}));
 
+jest.mock('../../../utils/cli');
 jest.mock('../../../utils/git');
-
 jest.mock('../../../utils/isRunningInPipelines');
 jest.mock('../../changeset/parseChangesetCommit');
 jest.mock('../../../utils/logger');

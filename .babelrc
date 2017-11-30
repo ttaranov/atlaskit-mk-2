@@ -1,13 +1,11 @@
 {
+  "presets": [["env", { "modules": false }], "react", "flow"],
+  "plugins": [
+    "transform-class-properties",
+    "transform-object-rest-spread",
+    "syntax-dynamic-import"
+  ],
   "env": {
-    "development": {
-      "presets": [["env", { "modules": false }], "react", "flow"],
-      "plugins": [
-        "transform-class-properties",
-        "transform-object-rest-spread",
-        "syntax-dynamic-import"
-      ],
-    },
     "production:cjs": {
       "presets": ["env", "react", "flow"],
       "plugins": [
@@ -28,11 +26,7 @@
     },
     "test": {
       "presets": ["env", "react", "flow"],
-      "plugins": [
-        "jest-hoist",
-        "transform-class-properties",
-        "transform-object-rest-spread",
-      ]
+      "plugins": ["transform-class-properties", "transform-object-rest-spread"]
     }
   }
 }

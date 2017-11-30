@@ -1,15 +1,11 @@
-jest.mock('../../../utils/logger');
-jest.mock('../../../utils/cli');
-jest.mock('bolt', () => ({
-  getWorkspaces: jest.fn(),
-  getDependentsGraph: jest.fn(),
-}));
-
-const bolt = require('bolt');
 const chalk = require('chalk');
+const bolt = require('bolt');
 const inquirer = require('inquirer');
 const createChangeset = require('../../changeset/createChangeset');
 const cli = require('../../../utils/cli');
+jest.mock('../../../utils/cli');
+jest.mock('../../../utils/logger');
+jest.mock('bolt');
 
 function assertBumpTypePrompts(expectedCalls) {
   const bumpTypeCalls = cli.askList.mock.calls;
@@ -72,12 +68,9 @@ describe('createChangeset', () => {
 
     it('should prompt for changed packages, bump type and summary', async () => {
       const changedPackages = ['pkg-a'];
-      console.warn('line 84');
       await createChangeset(changedPackages, { cwd });
-      console.warn('line 86');
 
       const askPackagesCalls = cli.askCheckbox.mock.calls;
-      console.warn('line 87');
       expect(askPackagesCalls[0][0]).toEqual(
         'Which packages would you like to include?',
       );
