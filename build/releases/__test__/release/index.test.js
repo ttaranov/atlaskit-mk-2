@@ -18,7 +18,7 @@ jest.mock('../../../utils/logger');
 git.add.mockImplementation(() => Promise.resolve(true));
 git.commit.mockImplementation(() => Promise.resolve(true));
 git.push.mockImplementation(() => Promise.resolve(true));
-bolt.publish = jest.fn();
+bolt.publish = jest.fn(() => Promise.resolve([]));
 
 const simpleChangeset = {
   summary: 'This is a summary',

@@ -191,10 +191,10 @@
     "@types/prosemirror-schema-list": "^1.0.0",
     "@types/prosemirror-state": "^1.0.0",
     "@types/prosemirror-tables": "^0.1.0",
-    "@types/query-string": "^4.3.1",
-    "@types/sinon-chai": "^2.7.27",
     "@types/prosemirror-transform": "^1.0.0",
     "@types/prosemirror-view": "^1.0.0",
+    "@types/query-string": "^4.3.1",
+    "@types/sinon-chai": "^2.7.27",
     "ajv": "^4.11.3",
     "axios": "^0.17.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -307,7 +307,7 @@
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ],
-    "setupTestFrameworkScriptFile": "<rootDir>jestFrameworkSetup.js"
+    "setupTestFrameworkScriptFile": "<rootDir>/jestFrameworkSetup.js"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
