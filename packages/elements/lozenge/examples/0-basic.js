@@ -1,60 +1,55 @@
 // @flow
 import React from 'react';
+import styled from 'styled-components';
 import Lozenge from '../src';
+
+const Hr = styled.div`
+  height: 1px;
+  background-color: #ddd;
+  margin: 2em 0;
+`;
+const Row = styled.div`
+  display: flex;
+`;
+const Col = styled.div`
+  flex: 1 1 auto;
+`;
+
+const APPEARANCES = [
+  { label: 'Default', value: 'default' },
+  { label: 'Success', value: 'success' },
+  { label: 'Removed', value: 'removed' },
+  { label: 'In Progress', value: 'inprogress' },
+  { label: 'New', value: 'new' },
+  { label: 'Moved', value: 'moved' },
+];
 
 export default () => (
   <div>
-    <h2>Subtle Lozenges</h2>
-    <p>
-      <Lozenge>Default</Lozenge>
-    </p>
-    <p>
-      <Lozenge appearance="success">Success</Lozenge>
-    </p>
-    <p>
-      <Lozenge appearance="removed">Removed</Lozenge>
-    </p>
-    <p>
-      <Lozenge appearance="inprogress">In Progress</Lozenge>
-    </p>
-    <p>
-      <Lozenge appearance="new">New</Lozenge>
-    </p>
-    <p>
-      <Lozenge appearance="moved">Moved</Lozenge>
-    </p>
+    <Row>
+      <Col>
+        <p>Subtle</p>
+        {APPEARANCES.map(a => (
+          <p key={a.value}>
+            <Lozenge appearance={a.value}>{a.label}</Lozenge>
+          </p>
+        ))}
+      </Col>
+      <Col>
+        <p>Bold</p>
+        {APPEARANCES.map(a => (
+          <p key={a.value}>
+            <Lozenge appearance={a.value} isBold>
+              {a.label}
+            </Lozenge>
+          </p>
+        ))}
+      </Col>
+    </Row>
 
-    <h2>Bold Lozenges</h2>
-    <p>
-      <Lozenge isBold>Default</Lozenge>
-    </p>
-    <p>
-      <Lozenge appearance="success" isBold>
-        Success
-      </Lozenge>
-    </p>
-    <p>
-      <Lozenge appearance="removed" isBold>
-        Removed
-      </Lozenge>
-    </p>
-    <p>
-      <Lozenge appearance="inprogress" isBold>
-        In Progress
-      </Lozenge>
-    </p>
-    <p>
-      <Lozenge appearance="new" isBold>
-        New
-      </Lozenge>
-    </p>
-    <p>
-      <Lozenge appearance="moved" isBold>
-        Moved
-      </Lozenge>
-    </p>
+    <Hr />
 
-    <h2>Overflowed Lozenge</h2>
+    <p>Overflowed Lozenge</p>
     <p>
       <Lozenge>Long text will be truncated after a point.</Lozenge>
     </p>

@@ -27,13 +27,5 @@ export default md`
     />
   )}
 
-  ${(
-    <Example
-      Component={require('../examples/1-colors').default}
-      title="Colors"
-      source={require('!!raw-loader!../examples/1-colors')}
-    />
-  )}
-
   ${<Props props={require('!!extract-react-types-loader!../src/Tag')} />}
 `;
