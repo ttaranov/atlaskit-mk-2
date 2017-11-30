@@ -2,15 +2,8 @@ import {
   MarkdownSerializer as PMMarkdownSerializer,
   MarkdownSerializerState as PMMarkdownSerializerState,
 } from 'prosemirror-markdown';
-import {
-  Mark,
-  Node as PMNode,
-} from 'prosemirror-model';
-import {
-  escapeMarkdown,
-  stringRepeat,
-} from './util';
-import { bitbucketSchema as schema } from '@atlaskit/editor-common';
+import { Mark, Node as PMNode } from 'prosemirror-model';
+import { escapeMarkdown, stringRepeat } from './util';
 import tableNodes from './tableSerializer';
 
 /**
@@ -39,7 +32,7 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
         // If child is an empty Textblock we need to insert a zwnj-character in order to preserve that line in markdown
         (child.isTextblock && !child.textContent) &&
         // If child is a Codeblock we need to handle this seperately as we want to preserve empty code blocks
-        !(child.type === schema.nodes.codeBlock) &&
+        !(child.type.name === 'codeBlock') &&
         !(child.content && (child.content as any).size > 0)
       ) {
         return nodes.empty_line(this, child);
@@ -61,8 +54,13 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
     const active: Mark[] = [];
 
     const progress = (node: PMNode | null, _?: any, index?: number) => {
-      let marks = node ? node.marks.filter(mark => this.marks[mark.type.name]) : [];
-      const code = marks.length && marks[marks.length - 1].type === schema.marks.code && marks[marks.length - 1];
+      let marks = node
+        ? node.marks.filter(mark => this.marks[mark.type.name])
+        : [];
+      const code =
+        marks.length &&
+        marks[marks.length - 1].type.name === 'code' &&
+        marks[marks.length - 1];
       const len = marks.length - (code ? 1 : 0);
 
       // Try to reorder 'mixable' marks, such as em and strong, which
@@ -219,9 +217,11 @@ const editorNodes = {
   },
   text(state: MarkdownSerializerState, node: PMNode, parent: PMNode, index: number) {
     const previousNode = index === 0 ? null : parent.child(index - 1);
-    const previousNodeIsAMention = (previousNode && previousNode.type === schema.nodes.mention);
-    const currentNodeStartWithASpace = (node.textContent.indexOf(' ') === 0);
-    const trimTrailingWhitespace = (previousNodeIsAMention && currentNodeStartWithASpace);
+    const previousNodeIsAMention =
+      previousNode && previousNode.type.name === 'mention';
+    const currentNodeStartWithASpace = node.textContent.indexOf(' ') === 0;
+    const trimTrailingWhitespace =
+      previousNodeIsAMention && currentNodeStartWithASpace;
     let text = trimTrailingWhitespace
       ? node.textContent.replace(' ', '') // only first blank space occurrence is replaced
       : node.textContent;

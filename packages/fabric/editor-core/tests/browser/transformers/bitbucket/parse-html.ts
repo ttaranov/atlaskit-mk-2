@@ -34,7 +34,7 @@ import {
 
 chai.use(chaiPlugin);
 
-const transformer = new BitbucketTransformer();
+const transformer = new BitbucketTransformer(schema);
 const parse = (html: string) => transformer.parse(html);
 
 // Based on https://bitbucket.org/tutorials/markdowndemo
