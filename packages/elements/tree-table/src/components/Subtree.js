@@ -29,11 +29,21 @@ export default class Subtree extends PureComponent<Props> {
   }
 
   handleExpandToggleClick() {
-    const childrenData = this.props.getChildrenData(this.props.data);
-    this.setState({
-      childrenData,
-      isExpanded: !this.state.isExpanded,
-    });
+    const newIsExpanded = !this.state.isExpanded;
+    if (newIsExpanded) {
+      Promise.resolve()
+        .then(() => this.props.getChildrenData(this.props.data))
+        .then(childrenData => {
+          this.setState({
+            childrenData,
+            isExpanded: newIsExpanded,
+          });
+        });
+    } else {
+      this.setState({
+        isExpanded: newIsExpanded,
+      });
+    }
   }
 
   renderRowChildren() {

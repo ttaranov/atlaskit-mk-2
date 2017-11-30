@@ -1,11 +1,10 @@
 // @flow
-import React, { PureComponent, type Element, type Node } from 'react';
-import { TreeRowContainer, TreeCell } from '../styled';
+import React, { PureComponent, type Node } from 'react';
+import { TreeRowContainer } from '../styled';
 import Chevron from './Chevron';
 
 type Props = {
   columnWidths?: Array<string>,
-  data?: Object,
   isExpanded: boolean,
   hasChildren: boolean,
   onExpandToggle: Function,
@@ -14,34 +13,30 @@ type Props = {
 };
 
 export default class RowData extends PureComponent<Props> {
-  renderCell(cell, index) {
+  renderCell(cell, cellIndex) {
     const { hasChildren, depth, isExpanded, columnWidths } = this.props;
-
-    const isFirst = index === 0;
-    const width = (columnWidths && columnWidths[index]) || '200px'; //`${(1 / columns.length) * 100}%`;
+    const isFirst = cellIndex === 0;
+    const width = (columnWidths && columnWidths[cellIndex]) || '200px'; //`${(1 / columns.length) * 100}%`;
     const indentLevel = isFirst ? depth : 0;
-    const chevron = isFirst &&
-      cell.props.children && (
+    let cellContent = cell.props.children || [];
+    if (isFirst) {
+      cellContent = [
         <Chevron
           key="chevron"
           isExpanded={isExpanded}
           hasChildren={hasChildren}
           onExpandToggle={this.props.onExpandToggle}
-        />
-      );
-
-    const enhancedCellChildren = chevron
-      ? [chevron].concat(cell.props.children)
-      : cell.props.children;
-
+        />,
+      ].concat(cellContent);
+    }
     return React.cloneElement(
       cell,
       {
-        key: index,
+        key: cellIndex,
         indentLevel,
         width,
       },
-      ...enhancedCellChildren,
+      ...cellContent,
     );
   }
 

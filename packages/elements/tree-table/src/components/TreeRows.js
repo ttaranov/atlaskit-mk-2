@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, type ElementType, type Node } from 'react';
+import React, { PureComponent, type Node } from 'react';
 import RowChildren from './RowChildren';
 
 import { type DataFunction } from './../types';
@@ -7,22 +7,40 @@ import { type DataFunction } from './../types';
 type Props = {
   columnWidths?: Array<string>,
   children?: Array<Node>,
-  /** This is the data prop description */
-  data?: DataFunction | string,
-  render?: Function,
+  data: DataFunction | string,
+  render: Function,
 };
 
-export default class TreeRows extends PureComponent<Props> {
+type State = {
+  rootRowsData: Array<Object>,
+};
+
+export default class TreeRows extends PureComponent<Props, State> {
+  state = {
+    rootRowsData: [],
+  };
+
+  componentDidMount() {
+    Promise.resolve()
+      .then(() => this.props.data())
+      .then(rootRowsData => {
+        this.setState({
+          rootRowsData,
+        });
+      });
+  }
+
   render() {
+    const { rootRowsData } = this.state;
     const { data, columnWidths = [], render } = this.props;
-    const childRows = (data || render) && (
+    const rootRows = (
       <RowChildren
-        childrenData={data()}
+        childrenData={rootRowsData}
         getChildrenData={data}
         columnWidths={columnWidths}
         render={render}
       />
     );
-    return <div>{childRows || this.props.children}</div>;
+    return <div>{rootRows || this.props.children}</div>;
   }
 }
