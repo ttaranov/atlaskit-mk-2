@@ -1,5 +1,29 @@
 # @atlaskit/editor-core
 
+## 60.4.8
+
+## 60.4.7
+
+## 60.4.6
+
+- [patch] Make tables 100% width in full page editor [a28ac19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a28ac19)
+- [patch] Make tables 100% width in full page editor [a28ac19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a28ac19)
+
+## 60.4.5
+- [patch] @atlaskit/emoji bumped to ^30.3.3 for big emoji scrolling bugfix [095d6ba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/095d6ba)
+- [patch] @atlaskit/emoji bumped to ^30.3.3 for big emoji scrolling bugfix [095d6ba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/095d6ba)
+
+## 60.4.4
+
+- [patch] Pasting multiple markdown links should create multiple links in the editor. [829b312](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/829b312)
+- [patch] Pasting multiple markdown links should create multiple links in the editor. [829b312](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/829b312)
+
+## 60.4.3
+
+
+- [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
+- [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
+
 ## 60.4.2
 
 - [patch] Add documentation to editor core; introduce code formatting method to docs [a1c7e56](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a1c7e56)

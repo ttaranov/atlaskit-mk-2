@@ -7,15 +7,18 @@ import Editor from '../example-helpers/editor';
 import schema from '../example-helpers/schema';
 import { EmojiProvider } from '../src';
 import { BitbucketTransformer } from '../src/transformers';
-import exampleHTML from '../example-helpers/exampleHTML';
 
+// tslint:disable-next-line:no-console
 const CANCEL_ACTION = () => console.log('Cancel');
+// tslint:disable-next-line:no-console
 const SAVE_ACTION = () => console.log('Save');
-const emojiProvider = emojiStoryData.getEmojiResource() as Promise<EmojiProvider>;
+const emojiProvider = emojiStoryData.getEmojiResource() as Promise<
+  EmojiProvider
+>;
 const mentionProvider = Promise.resolve(mentionStoryData.resourceProvider);
 
-type Props = {};
-type State = { markdown?: string };
+export type Props = {};
+export type State = { markdown?: string };
 
 export default class Example extends PureComponent<Props, State> {
   state: State = { markdown: '' };
@@ -23,7 +26,7 @@ export default class Example extends PureComponent<Props, State> {
 
   handleChange = (editor: Editor) => {
     this.setState({ markdown: this.serializer.encode(editor.doc!) });
-  }
+  };
 
   render() {
     return (

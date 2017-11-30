@@ -4,7 +4,9 @@ export interface Indexed {
   [key: string]: number | string | boolean | undefined;
 }
 
-export default abstract class SchemaNodeWithVadators<T extends Indexed> extends SchemaNode {
+export default abstract class SchemaNodeWithVadators<
+  T extends Indexed
+> extends SchemaNode {
   validators: T;
 
   constructor(type: NodeType, validatiors: T) {

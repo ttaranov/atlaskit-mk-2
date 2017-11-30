@@ -1,7 +1,7 @@
 import {
   akCodeFontFamily,
   akBorderRadius,
-  akGridSize
+  akGridSize,
 } from '@atlaskit/util-shared-styles';
 
 import { defaultColors } from './defaultTheme';
@@ -45,7 +45,6 @@ export interface Theme {
   numberColor?: string;
 }
 
-
 const codeContainerStyle = {
   fontFamily: akCodeFontFamily,
   fontSize: '12px',
@@ -64,12 +63,12 @@ const lineNumberContainerStyle = (theme: Theme) => ({
   padding: akGridSize,
   float: 'left',
   textAlign: 'right',
-  userSelect: 'none'
+  userSelect: 'none',
 });
 
 const codeBlockStyle = (theme: Theme) => ({
   // These properties map to highlightjs css selectors
-  'hljs': {
+  hljs: {
     fontFamily: akCodeFontFamily,
     fontSize: '12px',
     lineHeight: '20px',
@@ -83,110 +82,110 @@ const codeBlockStyle = (theme: Theme) => ({
     transform: 'translate3d(0,0,0)',
   },
   'hljs-subst': {
-    color: theme.substringColor
+    color: theme.substringColor,
   },
   'hljs-keyword': {
     color: theme.keywordColor,
-    fontWeight: 'bolder'
+    fontWeight: 'bolder',
   },
   'hljs-attribute': {
-    color: theme.attributeColor
+    color: theme.attributeColor,
   },
   'hljs-selector-tag': {
-    color: theme.selectorTagColor
+    color: theme.selectorTagColor,
   },
   'hljs-doctag': {
-    color: theme.docTagColor
+    color: theme.docTagColor,
   },
   'hljs-name': {
-    color: theme.nameColor
+    color: theme.nameColor,
   },
   'hljs-built_in': {
-    color: theme.builtInColor
+    color: theme.builtInColor,
   },
   'hljs-literal': {
-    color: theme.literalColor
+    color: theme.literalColor,
   },
   'hljs-bullet': {
-    color: theme.bulletColor
+    color: theme.bulletColor,
   },
   'hljs-code': {
-    color: theme.codeColor
+    color: theme.codeColor,
   },
   'hljs-addition': {
-    color: theme.additionColor
+    color: theme.additionColor,
   },
   'hljs-regexp': {
-    color: theme.regexpColor
+    color: theme.regexpColor,
   },
   'hljs-symbol': {
-    color: theme.symbolColor
+    color: theme.symbolColor,
   },
   'hljs-variable': {
-    color: theme.variableColor
+    color: theme.variableColor,
   },
   'hljs-template-variable': {
-    color: theme.templateVariableColor
+    color: theme.templateVariableColor,
   },
   'hljs-link': {
-    color: theme.linkColor
+    color: theme.linkColor,
   },
   'hljs-selector-attr': {
-    color: theme.selectorAttributeColor
+    color: theme.selectorAttributeColor,
   },
   'hljs-selector-pseudo': {
-    color: theme.selectorPseudoColor
+    color: theme.selectorPseudoColor,
   },
   'hljs-type': {
-    color: theme.typeColor
+    color: theme.typeColor,
   },
   'hljs-string': {
-    color: theme.stringColor
+    color: theme.stringColor,
   },
   'hljs-selector-id': {
-    color: theme.selectorIdColor
+    color: theme.selectorIdColor,
   },
   'hljs-selector-class': {
-    color: theme.selectorClassColor
+    color: theme.selectorClassColor,
   },
   'hljs-quote': {
-    color: theme.quoteColor
+    color: theme.quoteColor,
   },
   'hljs-template-tag': {
-    color: theme.templateTagColor
+    color: theme.templateTagColor,
   },
   'hljs-deletion': {
-    color: theme.deletionColor
+    color: theme.deletionColor,
   },
   'hljs-title': {
-    color: theme.titleColor
+    color: theme.titleColor,
   },
   'hljs-section': {
-    color: theme.sectionColor
+    color: theme.sectionColor,
   },
   'hljs-comment': {
     color: theme.commentColor,
     fontFamily: `SFMono-MediumItalic, ${akCodeFontFamily}`,
-    fontStyle: 'italic'
+    fontStyle: 'italic',
   },
   'hljs-meta-keyword': {
-    color: theme.metaKeywordColor
+    color: theme.metaKeywordColor,
   },
   'hljs-meta': {
-    color: theme.metaColor
+    color: theme.metaColor,
   },
   'hljs-emphasis': {
-    fontStyle: 'italic'
+    fontStyle: 'italic',
   },
   'hljs-strong': {
-    fontWeight: 'bolder'
+    fontWeight: 'bolder',
   },
   'hljs-function': {
-    color: theme.functionColor
+    color: theme.functionColor,
   },
   'hljs-number': {
-    color: theme.numberColor
-  }
+    color: theme.numberColor,
+  },
 });
 
 const inlineCodeStyle = (theme: Theme) => ({
@@ -200,15 +199,18 @@ const inlineCodeStyle = (theme: Theme) => ({
     overflowX: 'auto',
     padding: '2px 4px',
     transform: 'translate3d(0,0,0)',
-  }
+  },
 });
 
 export function applyTheme(theme: Theme = {}) {
-  const newTheme = {...defaultColors, ...theme};
+  const newTheme = { ...defaultColors, ...theme };
   return {
     lineNumberContainerStyle: lineNumberContainerStyle(newTheme),
     codeBlockStyle: codeBlockStyle(newTheme),
-    inlineCodeStyle: {...codeBlockStyle(newTheme), ...inlineCodeStyle(newTheme)},
-    codeContainerStyle
+    inlineCodeStyle: {
+      ...codeBlockStyle(newTheme),
+      ...inlineCodeStyle(newTheme),
+    },
+    codeContainerStyle,
   };
 }

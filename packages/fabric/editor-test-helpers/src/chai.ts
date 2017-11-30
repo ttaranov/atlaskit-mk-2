@@ -1,5 +1,12 @@
 /// <reference path="./types/chai.d.ts"/>
-import { Fragment, Mark, Node, NodeSpec, NodeType, Slice } from 'prosemirror-model';
+import {
+  Fragment,
+  Mark,
+  Node,
+  NodeSpec,
+  NodeType,
+  Slice,
+} from 'prosemirror-model';
 
 function isNodeOrFragment(thing: any): thing is Node | Fragment {
   // Using a simple `instanceof` check is intentionally avoided here to make
@@ -30,7 +37,7 @@ export default (chai: any) => {
           `expected ${left.toString()} to not equal ${right.toString()}`,
           left.toJSON(),
           right.toJSON(),
-          /*showDiff*/ true
+          /*showDiff*/ true,
         );
       } else {
         equalSuper.apply(this, arguments);
@@ -46,24 +53,24 @@ export default (chai: any) => {
       if (deep && isSlice(left) && isSlice(right)) {
         this.assert(
           left.content.eq(right.content),
-          'expected left\'s fragment #{exp} to equal right\'s fragment #{act}',
-          'expected left\'s fragment #{exp} to not equal right\'s fragment #{act}',
+          "expected left's fragment #{exp} to equal right's fragment #{act}",
+          "expected left's fragment #{exp} to not equal right's fragment #{act}",
           left.content.toString(),
-          right.content.toString()
+          right.content.toString(),
         );
         this.assert(
           left.openStart === right.openStart,
-          'expected left\'s openStart #{exp} to equal right\'s openStart #{act}',
-          'expected left\'s openStart #{exp} to not equal right\'s openStart #{act}',
+          "expected left's openStart #{exp} to equal right's openStart #{act}",
+          "expected left's openStart #{exp} to not equal right's openStart #{act}",
           left.openStart,
-          right.openStart
+          right.openStart,
         );
         this.assert(
           left.openEnd === right.openEnd,
-          'expected left\'s openEnd #{exp} to equal right\'s openEnd #{act}',
-          'expected left\'s openEnd #{exp} to not equal right\'s openEnd #{act}',
+          "expected left's openEnd #{exp} to equal right's openEnd #{act}",
+          "expected left's openEnd #{exp} to not equal right's openEnd #{act}",
           left.openEnd,
-          right.openEnd
+          right.openEnd,
         );
       } else {
         equalSuper.apply(this, arguments);

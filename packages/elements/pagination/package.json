@@ -1,0 +1,32 @@
+{
+  "name": "@atlaskit/pagination",
+  "version": "3.5.8",
+  "description": "Pagination component",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Vitalii B"
+    }
+  ],
+  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "dependencies": {
+    "@atlaskit/button": "^5.4.8",
+    "@atlaskit/docs": "^1.0.1",
+    "babel-runtime": "^6.26.0",
+    "styled-components": "^1.4.6"
+  },
+  "peerDependencies": {
+    "react": "^15.6.1"
+  },
+  "devDependencies": {
+    "@atlaskit/theme": "^2.0.0",
+    "enzyme": "^2.9.1"
+  }
+}

@@ -1,7 +1,6 @@
 // tslint:disable:no-console
 
 import * as React from 'react';
-import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import Editor from '../src';
 import ExampleWrapper from '../example-helpers/ExampleWrapper';
 
@@ -33,9 +32,14 @@ class Demo extends React.Component<Props, State> {
     );
   }
 
-  private toggleExpanded = () => this.setState({ expanded: !this.state.expanded });
+  private toggleExpanded = () =>
+    this.setState({ expanded: !this.state.expanded });
 }
 
 export default function Component() {
-  return <ExampleWrapper render={handleChange => <Demo handleChange={handleChange} />} />;
+  return (
+    <ExampleWrapper
+      render={handleChange => <Demo handleChange={handleChange} />}
+    />
+  );
 }

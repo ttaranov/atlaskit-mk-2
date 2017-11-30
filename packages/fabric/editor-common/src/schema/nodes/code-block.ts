@@ -116,6 +116,7 @@ const removeLastNewLine = (dom: HTMLElement): HTMLElement => {
 export const codeBlock: NodeSpec = {
   attrs: { language: { default: null }, uniqueId: { default: null } },
   content: 'text*',
+  marks: '',
   group: 'block',
   code: true,
   defining: true,

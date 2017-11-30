@@ -2,7 +2,22 @@ import { AbstractMentionResource, MentionsResult } from '@atlaskit/editor-core';
 
 export interface MentionSource {
   query(query: string): void;
-  on(eventName: string, handler: (response: { query: string, results: Array<{ attributes: { username: string, display_name: string, avatar_url: string, is_teammate?: boolean } }> }) => void);
+  on(
+    eventName: string,
+    handler: (
+      response: {
+        query: string;
+        results: Array<{
+          attributes: {
+            username: string;
+            display_name: string;
+            avatar_url: string;
+            is_teammate?: boolean;
+          };
+        }>;
+      },
+    ) => void,
+  );
 }
 
 class MentionResource extends AbstractMentionResource {
@@ -28,7 +43,7 @@ class MentionResource extends AbstractMentionResource {
     };
 
     if (this.mentionSource) {
-      this.mentionSource.on('respond', (response) => {
+      this.mentionSource.on('respond', response => {
         if (response.query !== query) {
           return;
         }
@@ -39,22 +54,24 @@ class MentionResource extends AbstractMentionResource {
           } else {
             notifyInfo('Continue typing to search for a user'); // TODO: 18n
           }
-          notify({mentions: [], query});
+          notify({ mentions: [], query });
         } else {
-          const allMentions = response.results.map((item, index) => {
-            return {
-              id: item.attributes.username,
-              avatarUrl: item.attributes.avatar_url,
-              name: item.attributes.display_name,
-              mentionName: item.attributes.username,
-              lozenge: item.attributes.is_teammate ? 'teammate' : ''
-            };
-          }).sort((itemA, itemB) => itemA.name < itemB.name ? 0 : 1 ); // Sort by name
+          const allMentions = response.results
+            .map((item, index) => {
+              return {
+                id: item.attributes.username,
+                avatarUrl: item.attributes.avatar_url,
+                name: item.attributes.display_name,
+                mentionName: item.attributes.username,
+                lozenge: item.attributes.is_teammate ? 'teammate' : '',
+              };
+            })
+            .sort((itemA, itemB) => (itemA.name < itemB.name ? 0 : 1)); // Sort by name
 
           // Display teammates first
           const mentions = [
             ...allMentions.filter(item => !!item.lozenge),
-            ...allMentions.filter(item => !item.lozenge)
+            ...allMentions.filter(item => !item.lozenge),
           ];
 
           notify({ mentions, query });

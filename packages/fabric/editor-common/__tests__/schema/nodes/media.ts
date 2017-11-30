@@ -1,13 +1,30 @@
 import { name } from '../../../package.json';
-import { media, camelCaseToKebabCase, defaultAttrs, Attributes, toJSON } from '../../../src/schema/nodes/media';
+import {
+  media,
+  camelCaseToKebabCase,
+  defaultAttrs,
+  Attributes,
+  toJSON,
+} from '../../../src/schema/nodes/media';
 import { fromHTML, toDOM, schema } from '../../../test-helpers';
 
 // Note: We can't use dom.dataset in jest until it's upgraded to use latest version
 //       of jsdom. In the meantime we can use this helper-method.
 const getDataSet = dom => {
-  const dataSet = {} as Attributes & { fileName: string, fileSize: string, fileMimeType: string, displayType: string };
-  Object.keys({...defaultAttrs, fileName: '', fileSize: '', fileMimeType: '', displayType: ''}).forEach(k => {
-    const key = camelCaseToKebabCase(k).replace(/^__/,'');
+  const dataSet = {} as Attributes & {
+    fileName: string;
+    fileSize: string;
+    fileMimeType: string;
+    displayType: string;
+  };
+  Object.keys({
+    ...defaultAttrs,
+    fileName: '',
+    fileSize: '',
+    fileMimeType: '',
+    displayType: '',
+  }).forEach(k => {
+    const key = camelCaseToKebabCase(k).replace(/^__/, '');
     const value = dom.getAttribute(`data-${key}`);
     if (value) {
       dataSet[k] = value;
@@ -18,9 +35,9 @@ const getDataSet = dom => {
 };
 
 describe(`${name}/schema media node`, () => {
-
   it('should parse html', () => {
-    const doc = fromHTML(`
+    const doc = fromHTML(
+      `
     <div
       data-node-type="media"
       data-id="id"
@@ -30,7 +47,9 @@ describe(`${name}/schema media node`, () => {
       data-file-size="123456"
       data-file-mime-type="image/jpeg"
     />
-    `, schema);
+    `,
+      schema,
+    );
     const mediaGroup = doc.firstChild!;
     const mediaNode = mediaGroup.firstChild!;
 
@@ -45,7 +64,8 @@ describe(`${name}/schema media node`, () => {
   });
 
   it('should parse html (with occurrenceKey)', () => {
-    const doc = fromHTML(`
+    const doc = fromHTML(
+      `
     <div
       data-node-type="media"
       data-id="id"
@@ -53,7 +73,9 @@ describe(`${name}/schema media node`, () => {
       data-collection="collection"
       data-occurrence-key="key"
     />
-    `, schema);
+    `,
+      schema,
+    );
     const mediaGroup = doc.firstChild!;
     const mediaNode = mediaGroup.firstChild!;
 
@@ -77,7 +99,14 @@ describe(`${name}/schema media node`, () => {
 
     const domNode = toDOM(mediaNode, schema).firstChild as HTMLElement;
     const {
-      id, type, collection, occurrenceKey, fileName, fileSize, fileMimeType, displayType
+      id,
+      type,
+      collection,
+      occurrenceKey,
+      fileName,
+      fileSize,
+      fileMimeType,
+      displayType,
     } = getDataSet(domNode);
 
     expect(id).toEqual('id');
@@ -99,9 +128,7 @@ describe(`${name}/schema media node`, () => {
     });
 
     const domNode = toDOM(mediaNode, schema).firstChild as HTMLElement;
-    const {
-      id, type, collection, occurrenceKey
-    } = getDataSet(domNode);
+    const { id, type, collection, occurrenceKey } = getDataSet(domNode);
     expect(id).toEqual('id');
     expect(type).toEqual('file');
     expect(collection).toEqual('collection');
@@ -124,10 +151,9 @@ describe(`${name}/schema media node`, () => {
         collection: 'collection',
         id: 'id',
         type: 'file',
-      }
+      },
     });
   });
-
 
   it('should serialize occurrenceKey when available', () => {
     const mediaNode = schema.nodes.media.create({
@@ -143,7 +169,7 @@ describe(`${name}/schema media node`, () => {
         id: 'id',
         type: 'file',
         occurrenceKey: 'key',
-      }
+      },
     });
   });
 });

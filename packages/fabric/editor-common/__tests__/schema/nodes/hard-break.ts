@@ -19,6 +19,6 @@ describe(`${name}/schema hardBreak node`, () => {
 
 function makeSchema() {
   return createSchema({
-    nodes: ['doc', 'paragraph', 'text', 'hardBreak']
+    nodes: ['doc', 'paragraph', 'text', 'hardBreak'],
   });
 }

@@ -13,17 +13,33 @@ export function isCode(str) {
   let weight = 0;
   lines.forEach(line => {
     // Ends with : or ;
-    if (/[:;]$/.test(line)) { weight++; }
+    if (/[:;]$/.test(line)) {
+      weight++;
+    }
     // Contains second and third braces
-    if (/[{}\[\]]/.test(line)) { weight++; }
+    if (/[{}\[\]]/.test(line)) {
+      weight++;
+    }
     // Contains <tag> or </
-    if ((/<\w+>/.test(line) || /<\//.test(line))) { weight++; }
+    if (/<\w+>/.test(line) || /<\//.test(line)) {
+      weight++;
+    }
     // Contains () <- function calls
-    if (/\(\)/.test(line)) { weight++; }
+    if (/\(\)/.test(line)) {
+      weight++;
+    }
+    // Contains a link
+    if (/(^|[^!])\[(.*?)\]\((\S+)\)$/.test(line)) {
+      weight--;
+    }
     // New line starts with less than two chars. e.g- if, {, <, etc
     const token = /^(\s+)[a-zA-Z<{]{2,}/.exec(line);
-    if (token && 2 <= token[1].length) { weight++; }
-    if (/&&/.test(line)) { weight++; }
+    if (token && 2 <= token[1].length) {
+      weight++;
+    }
+    if (/&&/.test(line)) {
+      weight++;
+    }
   });
   return 4 <= weight && weight >= 0.5 * lines.length;
 }

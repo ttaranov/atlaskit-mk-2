@@ -9,5 +9,4 @@ describe('Renderer - React/Nodes/TableHeader', () => {
   it('should create a <th>-tag', () => {
     expect(tableHeader.name()).to.equal('th');
   });
-
 });

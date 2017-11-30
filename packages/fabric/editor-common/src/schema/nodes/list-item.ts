@@ -15,5 +15,5 @@ export const listItem: NodeSpec = {
   parseDOM: [{ tag: 'li' }],
   toDOM() {
     return ['li', 0];
-  }
+  },
 };

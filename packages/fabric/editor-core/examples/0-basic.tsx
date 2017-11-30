@@ -4,7 +4,10 @@ import Editor from './../src/editor';
 export default function Example() {
   return (
     <div>
-      <p>The most basic editor possible. Editor you get by rendering {'<Editor/>'} component with no props.</p>
+      <p>
+        The most basic editor possible. Editor you get by rendering{' '}
+        {'<Editor/>'} component with no props.
+      </p>
       <Editor appearance="message" />
     </div>
   );

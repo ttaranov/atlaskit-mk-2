@@ -1,7 +1,6 @@
 // tslint:disable:no-console
 
 import * as React from 'react';
-import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import Editor from '../src';
 import ExampleWrapper from '../example-helpers/ExampleWrapper';
 import { resourceProvider } from '../example-helpers/mentions/story-data';
@@ -51,8 +50,12 @@ class Demo extends React.Component<Props, State> {
           <button onClick={this.handleImportClick}>Import</button>
           <button onClick={this.handleInsertCodeClick}>Insert Code</button>
           <button onClick={this.handleInsertPanelClick}>Insert Panel</button>
-          <button onClick={this.handleInsertJiraIssueClick}>Insert JIRA Issue</button>
-          <button onClick={this.handleInsertJiraIssuesListClick}>Insert JIRA Issues List</button>
+          <button onClick={this.handleInsertJiraIssueClick}>
+            Insert JIRA Issue
+          </button>
+          <button onClick={this.handleInsertJiraIssuesListClick}>
+            Insert JIRA Issues List
+          </button>
         </fieldset>
         <Editor
           isExpandedByDefault={true}
@@ -68,13 +71,20 @@ class Demo extends React.Component<Props, State> {
     );
   }
 
-  private handleImportClick = () => this.setState({ input: this.refs.input.value });
+  private handleImportClick = () =>
+    this.setState({ input: this.refs.input.value });
   private handleInsertCodeClick = () => this.setState({ input: CODE_MACRO });
   private handleInsertPanelClick = () => this.setState({ input: PANEL_MACRO });
-  private handleInsertJiraIssueClick = () => this.setState({ input: JIRA_ISSUE });
-  private handleInsertJiraIssuesListClick = () => this.setState({ input: JIRA_ISSUES_LIST });
+  private handleInsertJiraIssueClick = () =>
+    this.setState({ input: JIRA_ISSUE });
+  private handleInsertJiraIssuesListClick = () =>
+    this.setState({ input: JIRA_ISSUES_LIST });
 }
 
 export default function Component() {
-  return <ExampleWrapper render={handleChange => <Demo handleChange={handleChange} />} />;
+  return (
+    <ExampleWrapper
+      render={handleChange => <Demo handleChange={handleChange} />}
+    />
+  );
 }

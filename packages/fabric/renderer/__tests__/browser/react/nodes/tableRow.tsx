@@ -9,5 +9,4 @@ describe('Renderer - React/Nodes/TableRow', () => {
   it('should create a <tr>-tag', () => {
     expect(tableRow.name()).to.equal('tr');
   });
-
 });

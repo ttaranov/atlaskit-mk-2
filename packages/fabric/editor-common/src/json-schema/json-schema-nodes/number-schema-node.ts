@@ -7,7 +7,9 @@ export interface NumberValidators extends Indexed {
   exclusiveMinimum?: number; // 6.5
 }
 
-export default class NumberSchemaNode extends PrimitiveSchemaNode<NumberValidators> {
+export default class NumberSchemaNode extends PrimitiveSchemaNode<
+  NumberValidators
+> {
   constructor(validators: NumberValidators = {}) {
     super('string', validators);
   }

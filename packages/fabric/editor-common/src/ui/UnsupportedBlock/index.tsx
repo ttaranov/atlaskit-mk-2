@@ -33,8 +33,6 @@ const BlockNode = styled.div`
 
 export default class UnsupportedBlockNode extends Component<{}, {}> {
   render() {
-    return (
-      <BlockNode>Unsupported content</BlockNode>
-    );
+    return <BlockNode>Unsupported content</BlockNode>;
   }
 }

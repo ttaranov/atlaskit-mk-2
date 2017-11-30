@@ -27,6 +27,16 @@ describe(`${name}/schema decisionItem node`, () => {
 
 function makeSchema() {
   return createSchema({
-    nodes: ['doc', 'paragraph', 'heading', 'text', 'decisionList', 'decisionItem', 'orderedList', 'bulletList', 'listItem']
+    nodes: [
+      'doc',
+      'paragraph',
+      'heading',
+      'text',
+      'decisionList',
+      'decisionItem',
+      'orderedList',
+      'bulletList',
+      'listItem',
+    ],
   });
 }

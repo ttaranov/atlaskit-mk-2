@@ -68,19 +68,17 @@ const nodes = tableNodes({
         if (value) {
           attrs.style = (attrs.style || '') + `backgroundcolor: ${value};`;
         }
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
-const table: NodeSpec = {...nodes.table, content: 'tableRow+'};
+const table: NodeSpec = { ...nodes.table, content: 'tableRow+' };
 const tableCell: NodeSpec = nodes.table_cell;
 const tableHeader: NodeSpec = nodes.table_header;
-const tableRow: NodeSpec = {...nodes.table_row, content: '(tableCell | tableHeader)*'};
-
-export {
-  table,
-  tableCell,
-  tableHeader,
-  tableRow
+const tableRow: NodeSpec = {
+  ...nodes.table_row,
+  content: '(tableCell | tableHeader)*',
 };
+
+export { table, tableCell, tableHeader, tableRow };

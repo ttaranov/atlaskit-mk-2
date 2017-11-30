@@ -7,7 +7,6 @@ import { akColorN80 } from '@atlaskit/util-shared-styles';
 import Editor from './../src/editor';
 import EditorContext from './../src/editor/ui/EditorContext';
 import WithEditorActions from './../src/editor/ui/WithEditorActions';
-import { name } from '../package.json';
 import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
@@ -56,6 +55,7 @@ export const Content = styled.div`
 }`;
 Content.displayName = 'Content';
 
+// tslint:disable-next-line:no-console
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
 
 // tslint:disable-next-line:variable-name
@@ -63,8 +63,12 @@ const SaveAndCancelButtons = props => (
   <ButtonGroup>
     <Button
       appearance="primary"
-      // tslint:disable-next-line:jsx-no-lambda no-console
-      onClick={() => props.editorActions.getValue().then(value => console.log(value.toJSON()))}
+      onClick={() =>
+        props.editorActions
+          .getValue()
+          // tslint:disable-next-line:no-console
+          .then(value => console.log(value.toJSON()))
+      }
     >
       Publish
     </Button>
@@ -77,8 +81,9 @@ const SaveAndCancelButtons = props => (
     </Button>
   </ButtonGroup>
 );
-type Props = {};
-type State = { disabled: boolean };
+
+export type Props = {};
+export type State = { disabled: boolean };
 
 export default class Example extends React.Component<Props, State> {
   state: State = { disabled: true };
@@ -90,7 +95,6 @@ export default class Example extends React.Component<Props, State> {
           <Editor
             appearance="full-page"
             analyticsHandler={analyticsHandler}
-
             allowTextFormatting={true}
             allowTasksAndDecisions={true}
             allowHyperlinks={true}
@@ -102,19 +106,20 @@ export default class Example extends React.Component<Props, State> {
             allowUnsupportedContent={true}
             allowPanel={true}
             allowInlineExtension={true}
-
             mediaProvider={storyMediaProviderFactory()}
-            emojiProvider={emojiStoryData.getEmojiResource({ uploadSupported: true })}
+            emojiProvider={emojiStoryData.getEmojiResource({
+              uploadSupported: true,
+            })}
             mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
             activityProvider={Promise.resolve(new MockActivityResource())}
             macroProvider={macroProviderPromise}
             // tslint:disable-next-line:jsx-no-lambda
-            contentTransformerProvider={(schema) => new ConfluenceTransformer(schema)}
-
+            contentTransformerProvider={schema =>
+              new ConfluenceTransformer(schema)
+            }
             placeholder="Write something..."
             shouldFocus={false}
             disabled={this.state.disabled}
-
             contentComponents={
               <TitleInput
                 placeholder="Give this page a title..."
@@ -124,11 +129,12 @@ export default class Example extends React.Component<Props, State> {
                 onBlur={this.handleTitleOnBlur}
               />
             }
-
             primaryToolbarComponents={
               <WithEditorActions
                 // tslint:disable-next-line:jsx-no-lambda
-                render={actions => <SaveAndCancelButtons editorActions={actions}/>}
+                render={actions => (
+                  <SaveAndCancelButtons editorActions={actions} />
+                )}
               />
             }
           />
@@ -143,5 +149,5 @@ export default class Example extends React.Component<Props, State> {
     if (ref) {
       ref.focus();
     }
-  }
+  };
 }

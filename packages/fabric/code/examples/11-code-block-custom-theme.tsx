@@ -1,5 +1,5 @@
-import * as React from "react";
-import { AkCodeBlock } from "../src";
+import * as React from 'react';
+import { AkCodeBlock } from '../src';
 import {
   akColorN50,
   akColorN90,
@@ -10,8 +10,8 @@ import {
   akColorR100,
   akColorT300,
   akColorT500,
-  akColorP75
-} from "@atlaskit/util-shared-styles";
+  akColorP75,
+} from '@atlaskit/util-shared-styles';
 
 const exampleCodeBlock = `// Create a map.
 final IntIntOpenHashMap map = new IntIntOpenHashMap();
@@ -64,7 +64,7 @@ const theme = {
   metaKeywordColor: akColorG200,
   metaColor: akColorN400,
   functionColor: akColorG200,
-  numberColor: akColorB100
+  numberColor: akColorB100,
 };
 
 export default function Component() {

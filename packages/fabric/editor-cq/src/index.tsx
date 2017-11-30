@@ -34,7 +34,6 @@ import {
   textColorStateKey,
   textColorPlugins,
 
-
   // nodeviews
   nodeViewFactory,
   ReactMediaGroupNode,
@@ -46,12 +45,12 @@ import {
   ErrorReporter,
   ErrorReportingHandler,
   ConfluenceTransformer,
-  CONFlUENCE_LANGUAGE_MAP as LANGUAGE_MAP
+  CONFlUENCE_LANGUAGE_MAP as LANGUAGE_MAP,
 } from '@atlaskit/editor-core';
 // import { bitbucketSchema as schema } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
 import { EditorState, TextSelection, Plugin } from 'prosemirror-state';
-import { Node as PMNode, Slice } from 'prosemirror-model'
+import { Node as PMNode, Slice } from 'prosemirror-model';
 import { keymap } from 'prosemirror-keymap';
 import { history } from 'prosemirror-history';
 import { baseKeymap } from 'prosemirror-commands';
@@ -108,13 +107,16 @@ export default class Editor extends PureComponent<Props, State> {
 
     this.state = {
       schema,
-      isExpanded: (props.expanded !== undefined) ? props.expanded : props.isExpandedByDefault,
+      isExpanded:
+        props.expanded !== undefined
+          ? props.expanded
+          : props.isExpandedByDefault,
       isMediaReady: true,
       showSpinner: false,
     };
 
     this.providerFactory = new ProviderFactory();
-    analyticsService.handler = props.analyticsHandler || ((name) => {});
+    analyticsService.handler = props.analyticsHandler || (name => {});
 
     const { mentionProvider, mediaProvider, uploadErrorHandler } = props;
 
@@ -161,7 +163,9 @@ export default class Editor extends PureComponent<Props, State> {
     if (editorView) {
       const { state } = editorView;
       const tr = state.tr
-        .setSelection(TextSelection.create(state.doc, 0, state.doc.nodeSize - 2))
+        .setSelection(
+          TextSelection.create(state.doc, 0, state.doc.nodeSize - 2),
+        )
         .deleteSelection();
 
       editorView.dispatch(tr);
@@ -185,15 +189,17 @@ export default class Editor extends PureComponent<Props, State> {
    */
   get value(): Promise<string | undefined> {
     const { editorView } = this.state;
-    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+    const mediaPluginState = mediaStateKey.getState(
+      editorView!.state,
+    ) as MediaPluginState;
 
     return (async () => {
       await mediaPluginState.waitForPendingTasks();
       this.setState({ showSpinner: false });
 
       return editorView && editorView.state.doc
-          ? this.transformer.encode(editorView.state.doc)
-          : this.props.defaultValue;
+        ? this.transformer.encode(editorView.state.doc)
+        : this.props.defaultValue;
     })();
   }
 
@@ -246,24 +252,35 @@ export default class Editor extends PureComponent<Props, State> {
       disabled = false,
       tablesEnabled,
       popupsBoundariesElement,
-      popupsMountPoint
+      popupsMountPoint,
     } = this.props;
     const { editorView, isExpanded, isMediaReady, showSpinner } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const editorState = editorView && editorView.state;
 
-    const blockTypeState = editorState && blockTypeStateKey.getState(editorState);
-    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
-    const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
-    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
+    const blockTypeState =
+      editorState && blockTypeStateKey.getState(editorState);
+    const codeBlockState =
+      editorState && codeBlockStateKey.getState(editorState);
+    const clearFormattingState =
+      editorState && clearFormattingStateKey.getState(editorState);
+    const hyperlinkState =
+      editorState && hyperlinkStateKey.getState(editorState);
     const listsState = editorState && listsStateKey.getState(editorState);
-    const mediaState = editorState && this.mediaPlugins && this.props.mediaProvider && mediaStateKey.getState(editorState);
-    const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
+    const mediaState =
+      editorState &&
+      this.mediaPlugins &&
+      this.props.mediaProvider &&
+      mediaStateKey.getState(editorState);
+    const textFormattingState =
+      editorState && textFormattingStateKey.getState(editorState);
     const panelState = editorState && panelStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
-    const tableState = tablesEnabled && editorState && tableStateKey.getState(editorState);
-    const textColorState = editorState && textColorStateKey.getState(editorState);
+    const tableState =
+      tablesEnabled && editorState && tableStateKey.getState(editorState);
+    const textColorState =
+      editorState && textColorStateKey.getState(editorState);
 
     return (
       <Chrome
@@ -305,7 +322,7 @@ export default class Editor extends PureComponent<Props, State> {
     if (onExpanded) {
       onExpanded(this);
     }
-  }
+  };
 
   private handleRef = (place: Element | null) => {
     const { schema } = this.state;
@@ -345,45 +362,65 @@ export default class Editor extends PureComponent<Props, State> {
           history(),
           keymap(cqKeymap),
           keymap(baseKeymap),
-        ]
+        ],
       });
 
       const codeBlockState = codeBlockStateKey.getState(editorState);
-      const supportedLanguages = Object.keys(LANGUAGE_MAP).map(name => LANGUAGE_MAP[name]);
+      const supportedLanguages = Object.keys(LANGUAGE_MAP).map(
+        name => LANGUAGE_MAP[name],
+      );
       codeBlockState.setLanguages(supportedLanguages);
 
       const editorView = new EditorView(place, {
         state: editorState,
         editable: (state: EditorState) => !this.props.disabled,
-        dispatchTransaction: (tr) => {
+        dispatchTransaction: tr => {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
           this.handleChange(tr.docChanged);
         },
         nodeViews: {
-          jiraIssue: nodeViewFactory(this.providerFactory, { jiraIssue: ReactJIRAIssueNode }),
-          confluenceUnsupportedBlock: nodeViewFactory(this.providerFactory, { confluenceUnsupportedBlock: ReactUnsupportedBlockNode }, true),
-          confluenceUnsupportedInline: nodeViewFactory(this.providerFactory, { confluenceUnsupportedInline: ReactUnsupportedInlineNode }),
-          mediaGroup: nodeViewFactory(this.providerFactory, {
-            mediaGroup: ReactMediaGroupNode,
-            media: ReactMediaNode,
-          }, true),
-          mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
+          jiraIssue: nodeViewFactory(this.providerFactory, {
+            jiraIssue: ReactJIRAIssueNode,
+          }),
+          confluenceUnsupportedBlock: nodeViewFactory(
+            this.providerFactory,
+            { confluenceUnsupportedBlock: ReactUnsupportedBlockNode },
+            true,
+          ),
+          confluenceUnsupportedInline: nodeViewFactory(this.providerFactory, {
+            confluenceUnsupportedInline: ReactUnsupportedInlineNode,
+          }),
+          mediaGroup: nodeViewFactory(
+            this.providerFactory,
+            {
+              mediaGroup: ReactMediaGroupNode,
+              media: ReactMediaNode,
+            },
+            true,
+          ),
+          mention: nodeViewFactory(this.providerFactory, {
+            mention: ReactMentionNode,
+          }),
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {
             analyticsService.trackEvent('atlassian.editor.paste');
             return false;
-          }
+          },
         },
         handlePaste(view: EditorView, event: any, slice: Slice): boolean {
           const { clipboardData } = event;
           const html = clipboardData && clipboardData.getData('text/html');
           // we let table plugin to handle pasting of html that contain tables, because the logic is pretty complex
           if (html && !html.match(/<table[^>]+>/g)) {
-            const doc = this.transformer.parse(html.replace(/^<meta[^>]+>/, ''));
+            const doc = this.transformer.parse(
+              html.replace(/^<meta[^>]+>/, ''),
+            );
             view.dispatch(
-              view.state.tr.replaceSelection(new Slice(doc.content, slice.openStart, slice.openEnd))
+              view.state.tr.replaceSelection(
+                new Slice(doc.content, slice.openStart, slice.openEnd),
+              ),
             );
             return true;
           }
@@ -402,14 +439,14 @@ export default class Editor extends PureComponent<Props, State> {
     } else {
       this.setState({ editorView: undefined });
     }
-  }
+  };
 
   private handleCancel = () => {
     const { onCancel } = this.props;
     if (onCancel) {
       onCancel(this);
     }
-  }
+  };
 
   private handleChange = async (docChanged: boolean) => {
     const { onChange } = this.props;
@@ -418,12 +455,14 @@ export default class Editor extends PureComponent<Props, State> {
     }
 
     const { editorView } = this.state;
-    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+    const mediaPluginState = mediaStateKey.getState(
+      editorView!.state,
+    ) as MediaPluginState;
 
     this.setState({ isMediaReady: false });
     await mediaPluginState.waitForPendingTasks();
     this.setState({ isMediaReady: true });
-  }
+  };
 
   private handleSave = () => {
     this.setState({ showSpinner: true });
@@ -431,7 +470,7 @@ export default class Editor extends PureComponent<Props, State> {
     if (onSave) {
       onSave(this);
     }
-  }
+  };
 
   /**
    * Traverse document nodes to find the number of unsupported ones
@@ -450,17 +489,22 @@ export default class Editor extends PureComponent<Props, State> {
       const data: AnalyticsProperties = {
         type: node.type.name,
         cxhtml: node.attrs.cxhtml as string,
-        text: node.text || ''
+        text: node.text || '',
       };
 
       if (node.type === unsupportedInline) {
-        analyticsService.trackEvent('atlassian.editor.confluenceUnsupported.inline', data);
+        analyticsService.trackEvent(
+          'atlassian.editor.confluenceUnsupported.inline',
+          data,
+        );
       } else if (node.type === unsupportedBlock) {
-        analyticsService.trackEvent('atlassian.editor.confluenceUnsupported.block', data);
+        analyticsService.trackEvent(
+          'atlassian.editor.confluenceUnsupported.block',
+          data,
+        );
       } else {
         node.content.forEach(traverseNode);
       }
     }
   }
-
 }

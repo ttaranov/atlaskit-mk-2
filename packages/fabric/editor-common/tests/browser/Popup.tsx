@@ -5,8 +5,10 @@ import * as sinon from 'sinon';
 import { browser } from '../../src';
 
 import {
-  isBody, findOverflowScrollParent,
-  getVerticalPlacement, getHorizontalPlacement,
+  isBody,
+  findOverflowScrollParent,
+  getVerticalPlacement,
+  getHorizontalPlacement,
   calculatePosition,
 } from '../../src/ui/Popup/utils';
 
@@ -42,7 +44,7 @@ describe('Popup', () => {
         expect(findOverflowScrollParent(target)).to.eq(boundary);
       });
 
-      it('should return false if there aren\'t any scroll parents of target', () => {
+      it("should return false if there aren't any scroll parents of target", () => {
         boundary = document.createElement('div');
         target = document.createElement('div');
         boundary.appendChild(target);
@@ -54,92 +56,102 @@ describe('Popup', () => {
 
     describe('#getVerticalPlacement', () => {
       it('should return default value without fitHeight param', () => {
-        expect(getVerticalPlacement(document.body, document.body, 0)).to.eq('bottom');
+        expect(getVerticalPlacement(document.body, document.body, 0)).to.eq(
+          'bottom',
+        );
       });
 
       describe('with alignY', () => {
         it('should return "top" if "alignY" equals "top"', () => {
           const boundary: any = {};
           const target: any = {};
-          expect(getVerticalPlacement(target, boundary, undefined, 'top')).to.eq('top');
+          expect(
+            getVerticalPlacement(target, boundary, undefined, 'top'),
+          ).to.eq('top');
         });
       });
 
       describe('with fitHeight param', () => {
         const boundary: any = {
           getBoundingClientRect: () => ({ top: 0, height: 300 }),
-          scrollTop: 0
+          scrollTop: 0,
         };
 
         it('should return "bottom" if "fitHeight" fits below target', () => {
           const target: any = {
-            getBoundingClientRect: () => ({ top: 0, height: 30 })
+            getBoundingClientRect: () => ({ top: 0, height: 30 }),
           };
           expect(getVerticalPlacement(target, boundary, 100)).to.eq('bottom');
         });
 
         it('should return "top" if "fitHeight" doesn\'t fit below target but fits above', () => {
           const target: any = {
-            getBoundingClientRect: () => ({ top: 270, height: 30 })
+            getBoundingClientRect: () => ({ top: 270, height: 30 }),
           };
           expect(getVerticalPlacement(target, boundary, 100)).to.eq('top');
         });
 
         it('should return "top" if "fitHeight" fits above the target inside parent with scrollTop > 0', () => {
           const target: any = {
-            getBoundingClientRect: () => ({ top: 470, height: 30 })
+            getBoundingClientRect: () => ({ top: 470, height: 30 }),
           };
           const boundary: any = {
             getBoundingClientRect: () => ({ top: 250, height: 200 }),
-            scrollTop: 200
+            scrollTop: 200,
           };
           expect(getVerticalPlacement(target, boundary, 100)).to.eq('top');
         });
 
         it('should return "bottom" if doesn\'t fit in either direction but there is more space below', () => {
           const target: any = {
-            getBoundingClientRect: () => ({ top: 120, height: 30 })
+            getBoundingClientRect: () => ({ top: 120, height: 30 }),
           };
           expect(getVerticalPlacement(target, boundary, 200)).to.eq('bottom');
         });
 
         it('should return "top" if doesn\'t fit in either direction but there is more space above', () => {
           const target: any = {
-            getBoundingClientRect: () => ({ top: 160, height: 30 })
+            getBoundingClientRect: () => ({ top: 160, height: 30 }),
           };
           expect(getVerticalPlacement(target, boundary, 200)).to.eq('top');
         });
 
         it('should return "bottom" if it fits in both directions evenly', () => {
           const target: any = {
-            getBoundingClientRect: () => ({ top: 135, height: 30 })
+            getBoundingClientRect: () => ({ top: 135, height: 30 }),
           };
           expect(getVerticalPlacement(target, boundary, 100)).to.eq('bottom');
         });
 
         it('should use parentElement if target is a TEXT_NODE', () => {
           const target: any = {
-            getBoundingClientRect: () => ({ top: 135, height: 30 })
+            getBoundingClientRect: () => ({ top: 135, height: 30 }),
           };
           const textTarget: any = {
             nodeType: 3,
-            parentElement: target
+            parentElement: target,
           };
-          expect(getVerticalPlacement(textTarget, boundary, 100)).to.eq('bottom');
+          expect(getVerticalPlacement(textTarget, boundary, 100)).to.eq(
+            'bottom',
+          );
         });
       });
     });
 
     describe('#getHorizontalPlacement', () => {
       it('should return default value without fitWidth param', () => {
-        expect(getHorizontalPlacement(document.body, document.body, 0)).to.eq('left');
+        expect(getHorizontalPlacement(document.body, document.body, 0)).to.eq(
+          'left',
+        );
       });
 
       describe('with alignX', () => {
         it('should return "left" if "alignX" equals "left"', () => {
           const boundary: any = {};
           const target: any = {};
-          expect(getHorizontalPlacement(target, boundary, undefined, 'left')).to.eq('left');
+          expect(
+            getHorizontalPlacement(target, boundary, undefined, 'left'),
+          ).to.eq('left');
         });
       });
 
@@ -147,73 +159,81 @@ describe('Popup', () => {
         const boundary: any = {
           getBoundingClientRect: () => ({ left: 0, width: 300 }),
           scrollHeight: 300,
-          scrollTop: 0
+          scrollTop: 0,
         };
 
         it('should return "left" if "fitWidth" fits from left to right', () => {
           const target: any = {
-            getBoundingClientRect: () => ({ left: 0, width: 30 })
+            getBoundingClientRect: () => ({ left: 0, width: 30 }),
           };
           expect(getHorizontalPlacement(target, boundary, 100)).to.eq('left');
         });
 
         it('should return "right" if "fitWidth" doesn\'t fit from left to right, but fits from right to left', () => {
           const target: any = {
-            getBoundingClientRect: () => ({ left: 270, width: 30 })
+            getBoundingClientRect: () => ({ left: 270, width: 30 }),
           };
           expect(getHorizontalPlacement(target, boundary, 100)).to.eq('right');
         });
 
         it('should return "left" if doesn\'t fit in either direction but there is more space from left to right', () => {
           const target: any = {
-            getBoundingClientRect: () => ({ left: 90, width: 30 })
+            getBoundingClientRect: () => ({ left: 90, width: 30 }),
           };
           expect(getHorizontalPlacement(target, boundary, 200)).to.eq('left');
         });
 
         it('should return "right" if doesn\'t fit in either direction but there is more space from right to left', () => {
           const target: any = {
-            getBoundingClientRect: () => ({ left: 160, width: 30 })
+            getBoundingClientRect: () => ({ left: 160, width: 30 }),
           };
           expect(getHorizontalPlacement(target, boundary, 200)).to.eq('right');
         });
 
         it('should return "left" if it fits in both directions evenly', () => {
           const target: any = {
-            getBoundingClientRect: () => ({ left: 135, width: 30 })
+            getBoundingClientRect: () => ({ left: 135, width: 30 }),
           };
           expect(getHorizontalPlacement(target, boundary, 100)).to.eq('left');
         });
 
         it('should use parentElement if target is a TEXT_NODE', () => {
           const target: any = {
-            getBoundingClientRect: () => ({ left: 135, width: 30 })
+            getBoundingClientRect: () => ({ left: 135, width: 30 }),
           };
           const textTarget: any = {
             nodeType: 3,
-            parentElement: target
+            parentElement: target,
           };
-          expect(getHorizontalPlacement(textTarget, boundary, 100)).to.eq('left');
+          expect(getHorizontalPlacement(textTarget, boundary, 100)).to.eq(
+            'left',
+          );
         });
       });
     });
 
     describe('#calculatePosition', () => {
       const body: any = {
-        getBoundingClientRect: () => ({ top: 0, left: 0, right: 500, width: 500, height: 300 }),
+        getBoundingClientRect: () => ({
+          top: 0,
+          left: 0,
+          right: 500,
+          width: 500,
+          height: 300,
+        }),
         scrollTop: 0,
-        scrollLeft: 0
+        scrollLeft: 0,
       };
 
       const popup: any = {
-        offsetParent: body
+        offsetParent: body,
       };
 
       function insertCss(code) {
         const style = document.createElement('style');
         style.type = 'text/css';
         style.innerHTML = code;
-        document.getElementsByTagName('head')[0].appendChild( style );
+        document.getElementsByTagName('head')[0].appendChild(style);
         return style;
       }
 
@@ -245,46 +265,74 @@ describe('Popup', () => {
       });
 
       it('should return {} without target or popup', () => {
-        expect(calculatePosition({ placement: ['top', 'left'], popup: document.body, offset: [] })).to.deep.eq({});
-        expect(calculatePosition({ placement: ['top', 'left'], target: document.body, offset: [] })).to.deep.eq({});
+        expect(
+          calculatePosition({
+            placement: ['top', 'left'],
+            popup: document.body,
+            offset: [],
+          }),
+        ).to.deep.eq({});
+        expect(
+          calculatePosition({
+            placement: ['top', 'left'],
+            target: document.body,
+            offset: [],
+          }),
+        ).to.deep.eq({});
       });
 
       it('should use parentElement if target is a TEXT_NODE', () => {
         const target: any = {
-          getBoundingClientRect: () => ({ top: 270, left: 0, width: 30, height: 30 })
+          getBoundingClientRect: () => ({
+            top: 270,
+            left: 0,
+            width: 30,
+            height: 30,
+          }),
         };
         const textTarget: any = {
           nodeType: 3,
-          parentElement: target
+          parentElement: target,
         };
-        expect(calculatePosition({
-          placement: ['top', 'left'],
-          target: textTarget,
-          popup,
-          offset: [0, 0]
-        })).to.deep.eq({ left: 0, bottom: 30 });
+        expect(
+          calculatePosition({
+            placement: ['top', 'left'],
+            target: textTarget,
+            popup,
+            offset: [0, 0],
+          }),
+        ).to.deep.eq({ left: 0, bottom: 30 });
       });
 
       describe('[top, left]', () => {
         const target: any = {
-          getBoundingClientRect: () => ({ top: 270, left: 0, width: 30, height: 30 })
+          getBoundingClientRect: () => ({
+            top: 270,
+            left: 0,
+            width: 30,
+            height: 30,
+          }),
         };
         it('should calculate correct position if boundry is body', () => {
-          expect(calculatePosition({
-            placement: ['top', 'left'],
-            target,
-            popup,
-            offset: [0, 0]
-          })).to.deep.eq({ left: 0, bottom: 30 });
+          expect(
+            calculatePosition({
+              placement: ['top', 'left'],
+              target,
+              popup,
+              offset: [0, 0],
+            }),
+          ).to.deep.eq({ left: 0, bottom: 30 });
         });
 
         it('should calculate correct position if boundry is body with offsets', () => {
-          expect(calculatePosition({
-            placement: ['top', 'left'],
-            target,
-            popup,
-            offset: [10, 10]
-          })).to.deep.eq({ left: 10, bottom: 40 });
+          expect(
+            calculatePosition({
+              placement: ['top', 'left'],
+              target,
+              popup,
+              offset: [10, 10],
+            }),
+          ).to.deep.eq({ left: 10, bottom: 40 });
         });
 
         it('should calculate correct position inside scroll parent', () => {
@@ -300,12 +348,14 @@ describe('Popup', () => {
           scrollParent.appendChild(customTarget);
           scrollParent.appendChild(customPopup);
 
-          expect(calculatePosition({
-            placement: ['top', 'left'],
-            target: customTarget,
-            popup: customPopup,
-            offset: [10, 10]
-          })).to.deep.eq({ left: 10, bottom: 110 });
+          expect(
+            calculatePosition({
+              placement: ['top', 'left'],
+              target: customTarget,
+              popup: customPopup,
+              offset: [10, 10],
+            }),
+          ).to.deep.eq({ left: 10, bottom: 110 });
         });
       });
 
@@ -316,38 +366,44 @@ describe('Popup', () => {
             left: 470,
             right: 500,
             width: 30,
-            height: 30
-          })
+            height: 30,
+          }),
         };
 
         it('should calculate correct position if offsetParent has border-bottom', () => {
           const borderBottomWidth = 3;
-          const style = {borderBottomWidth: `${borderBottomWidth}px`};
-          const popup: any = {offsetParent: {...body, style}};
-          expect(calculatePosition({
-            placement: ['top', 'right'],
-            target,
-            popup,
-            offset: [0, 0]
-          })).to.deep.eq({ right: 0, bottom: 30 - borderBottomWidth });
+          const style = { borderBottomWidth: `${borderBottomWidth}px` };
+          const popup: any = { offsetParent: { ...body, style } };
+          expect(
+            calculatePosition({
+              placement: ['top', 'right'],
+              target,
+              popup,
+              offset: [0, 0],
+            }),
+          ).to.deep.eq({ right: 0, bottom: 30 - borderBottomWidth });
         });
 
         it('should calculate correct position if boundry is body', () => {
-          expect(calculatePosition({
-            placement: ['top', 'right'],
-            target,
-            popup,
-            offset: [0, 0]
-          })).to.deep.eq({ right: 0, bottom: 30 });
+          expect(
+            calculatePosition({
+              placement: ['top', 'right'],
+              target,
+              popup,
+              offset: [0, 0],
+            }),
+          ).to.deep.eq({ right: 0, bottom: 30 });
         });
 
         it('should calculate correct position if boundry is body with offsets', () => {
-          expect(calculatePosition({
-            placement: ['top', 'right'],
-            target,
-            popup,
-            offset: [10, 10]
-          })).to.deep.eq({ right: 10, bottom: 40 });
+          expect(
+            calculatePosition({
+              placement: ['top', 'right'],
+              target,
+              popup,
+              offset: [10, 10],
+            }),
+          ).to.deep.eq({ right: 10, bottom: 40 });
         });
 
         it('should calculate correct position inside scroll parent', () => {
@@ -369,48 +425,61 @@ describe('Popup', () => {
           scrollParent.appendChild(customTarget);
           scrollParent.appendChild(customPopup);
 
-          expect(calculatePosition({
-            placement: ['top', 'right'],
-            target: customTarget,
-            popup: customPopup,
-            offset: [10, 10]
-          })).to.deep.eq({ right: 10, bottom: 110 });
+          expect(
+            calculatePosition({
+              placement: ['top', 'right'],
+              target: customTarget,
+              popup: customPopup,
+              offset: [10, 10],
+            }),
+          ).to.deep.eq({ right: 10, bottom: 110 });
         });
       });
 
       describe('[bottom, left]', () => {
         const target: any = {
-          getBoundingClientRect: () => ({ top: 0, left: 0, width: 30, height: 30 })
+          getBoundingClientRect: () => ({
+            top: 0,
+            left: 0,
+            width: 30,
+            height: 30,
+          }),
         };
 
         it('should calculate correct position if offsetParent has border-bottom', () => {
           const borderBottomWidth = 3;
-          const style = {borderBottomWidth: `${borderBottomWidth}px`};
-          const popup: any = {offsetParent: {...body, style}};
-          expect(calculatePosition({
-            placement: ['bottom', 'left'],
-            target,
-            popup,
-            offset: [0, 0]
-          })).to.deep.eq({ left: 0, top: 30 - borderBottomWidth });
+          const style = { borderBottomWidth: `${borderBottomWidth}px` };
+          const popup: any = { offsetParent: { ...body, style } };
+          expect(
+            calculatePosition({
+              placement: ['bottom', 'left'],
+              target,
+              popup,
+              offset: [0, 0],
+            }),
+          ).to.deep.eq({ left: 0, top: 30 - borderBottomWidth });
         });
 
         it('should calculate correct position if boundry is body', () => {
-          expect(calculatePosition({
-            placement: ['bottom', 'left'],
-            target,
-            popup,
-            offset: [0, 0]
-          })).to.deep.eq({ left: 0, top: 30 });
+          expect(
+            calculatePosition({
+              placement: ['bottom', 'left'],
+              target,
+              popup,
+              offset: [0, 0],
+            }),
+          ).to.deep.eq({ left: 0, top: 30 });
         });
 
         it('should calculate correct position if boundry is body with offsets', () => {
-          expect(calculatePosition({
-            placement: ['bottom', 'left'],
-            target,
-            popup,
-            offset: [10, 10]
-          })).to.deep.eq({ left: 10, top: 40 });
+          expect(
+            calculatePosition({
+              placement: ['bottom', 'left'],
+              target,
+              popup,
+              offset: [10, 10],
+            }),
+          ).to.deep.eq({ left: 10, top: 40 });
         });
 
         it('should calculate correct position inside scroll parent', () => {
@@ -422,12 +491,14 @@ describe('Popup', () => {
           scrollParent.appendChild(customTarget);
           scrollParent.appendChild(customPopup);
 
-          expect(calculatePosition({
-            placement: ['bottom', 'left'],
-            target: customTarget,
-            popup: customPopup,
-            offset: [10, 10]
-          })).to.deep.eq({ left: 10, top: 40 });
+          expect(
+            calculatePosition({
+              placement: ['bottom', 'left'],
+              target: customTarget,
+              popup: customPopup,
+              offset: [10, 10],
+            }),
+          ).to.deep.eq({ left: 10, top: 40 });
         });
       });
 
@@ -438,25 +509,29 @@ describe('Popup', () => {
             left: 470,
             right: 500,
             width: 30,
-            height: 30
-          })
+            height: 30,
+          }),
         };
         it('should calculate correct position if boundry is body', () => {
-          expect(calculatePosition({
-            placement: ['bottom', 'right'],
-            target,
-            popup,
-            offset: [0, 0]
-          })).to.deep.eq({ right: 0, top: 30 });
+          expect(
+            calculatePosition({
+              placement: ['bottom', 'right'],
+              target,
+              popup,
+              offset: [0, 0],
+            }),
+          ).to.deep.eq({ right: 0, top: 30 });
         });
 
         it('should calculate correct position if boundry is body with offsets', () => {
-          expect(calculatePosition({
-            placement: ['bottom', 'right'],
-            target,
-            popup,
-            offset: [10, 10]
-          })).to.deep.eq({ right: 10, top: 40 });
+          expect(
+            calculatePosition({
+              placement: ['bottom', 'right'],
+              target,
+              popup,
+              offset: [10, 10],
+            }),
+          ).to.deep.eq({ right: 10, top: 40 });
         });
 
         it('should calculate correct position inside scroll parent', () => {
@@ -474,12 +549,14 @@ describe('Popup', () => {
           scrollParent.appendChild(customTarget);
           scrollParent.appendChild(customPopup);
 
-          expect(calculatePosition({
-            placement: ['bottom', 'right'],
-            target: customTarget,
-            popup: customPopup,
-            offset: [10, 10]
-          })).to.deep.eq({ right: 10, top: 40 });
+          expect(
+            calculatePosition({
+              placement: ['bottom', 'right'],
+              target: customTarget,
+              popup: customPopup,
+              offset: [10, 10],
+            }),
+          ).to.deep.eq({ right: 10, top: 40 });
         });
       });
     });
@@ -497,7 +574,7 @@ describe('Popup', () => {
     });
 
     it('should not render anything without target', () => {
-      const popup = mount(<Popup/>);
+      const popup = mount(<Popup />);
       expect(popup.html()).to.equal(null);
       popup.unmount();
     });
@@ -510,7 +587,9 @@ describe('Popup', () => {
 
     it('should call onPositionCalculated everytime position changes', () => {
       const onPositionCalculated = sinon.stub().returns({});
-      const popup = mount(<Popup target={target} onPositionCalculated={onPositionCalculated} />);
+      const popup = mount(
+        <Popup target={target} onPositionCalculated={onPositionCalculated} />,
+      );
       expect(onPositionCalculated.calledOnce).to.eq(true);
       popup.setProps({ fitHeight: 10 });
       expect(onPositionCalculated.calledTwice).to.eq(true);
@@ -520,14 +599,18 @@ describe('Popup', () => {
     it('should replace position with a result of onPositionCalculated callback', () => {
       const position = {};
       const onPositionCalculated = () => position;
-      const popup = mount(<Popup target={target} onPositionCalculated={onPositionCalculated} />);
+      const popup = mount(
+        <Popup target={target} onPositionCalculated={onPositionCalculated} />,
+      );
       expect((popup.state() as any).position).to.eq(position);
       popup.unmount();
     });
 
     it('should call onPlacementChanged callback once placment is changed', () => {
       const onPlacementChanged = sinon.stub();
-      const popup = mount(<Popup target={target} onPlacementChanged={onPlacementChanged} />);
+      const popup = mount(
+        <Popup target={target} onPlacementChanged={onPlacementChanged} />,
+      );
       expect(onPlacementChanged.calledOnce).to.eq(true);
       popup.unmount();
     });
@@ -545,7 +628,9 @@ describe('Popup', () => {
       document.body.appendChild(offsetParent);
       document.body.appendChild(popupParent);
 
-      expect(() => mount(<Popup target={target} />, { attachTo: popupParent })).to.throw(Error);
+      expect(() =>
+        mount(<Popup target={target} />, { attachTo: popupParent }),
+      ).to.throw(Error);
 
       offsetParent.parentElement!.removeChild(offsetParent);
       popupParent.parentElement!.removeChild(popupParent);
@@ -562,7 +647,9 @@ describe('Popup', () => {
       parent.appendChild(popupParent);
       document.body.appendChild(parent);
 
-      expect(() => mount(<Popup target={target} />, { attachTo: popupParent })).to.throw(Error);
+      expect(() =>
+        mount(<Popup target={target} />, { attachTo: popupParent }),
+      ).to.throw(Error);
 
       parent.parentElement!.removeChild(parent);
     });

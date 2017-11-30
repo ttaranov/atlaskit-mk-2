@@ -1,3 +1,4 @@
+import { ComponentClass } from 'react';
 import {
   akColorB300,
   akColorB400,
@@ -13,10 +14,10 @@ import {
 import styled from 'styled-components';
 
 // tslint:disable-next-line:variable-name
-export const Wrapper = styled.div`
-  color:  ${akColorN800};
+export const Wrapper: ComponentClass<any> = styled.div`
+  color: ${akColorN800};
 
-  & a, span.akActionMark {
+  & span.akActionMark {
     color: ${akColorB400};
     text-decoration: none;
 
@@ -45,11 +46,11 @@ export const Wrapper = styled.div`
     }
 
     &::before {
-      content: "";
+      content: '';
     }
 
     &::after {
-      content: "";
+      content: '';
     }
   }
 
@@ -110,32 +111,33 @@ export const Wrapper = styled.div`
     }
   }
 
-  & .akTaskList > ol, & .akDecisionList > ol {
+  & .akTaskList > ol,
+  & .akDecisionList > ol {
     list-style-type: none;
   }
 
   & h1 {
-    ${akTypographyMixins.h800}
+    ${akTypographyMixins.h800};
   }
 
   & h2 {
-    ${akTypographyMixins.h700}
+    ${akTypographyMixins.h700};
   }
 
   & h3 {
-    ${akTypographyMixins.h600}
+    ${akTypographyMixins.h600};
   }
 
   & h4 {
-    ${akTypographyMixins.h500}
+    ${akTypographyMixins.h500};
   }
 
   & h5 {
-    ${akTypographyMixins.h400}
+    ${akTypographyMixins.h400};
   }
 
   & h6 {
-    ${akTypographyMixins.h300}
+    ${akTypographyMixins.h300};
   }
 
   & hr {

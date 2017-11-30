@@ -8,8 +8,9 @@ import {
   makeEditor,
   dispatchPasteEvent,
   isMobileBrowser,
+  defaultSchema,
+  a as link,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
 
 if (!browser.ie && !isMobileBrowser()) {
   describe('paste plugins', () => {
@@ -91,6 +92,38 @@ if (!browser.ie && !isMobileBrowser()) {
           types: ['text/plain', 'Files'],
         });
         expect(editorView.state.doc).toEqualDocument(doc(p('')));
+      });
+
+      it('should work properly when pasting multiple link markdowns', () => {
+        const { editorView } = editor(doc(p('{<>}')));
+        dispatchPasteEvent(editorView, {
+          plain:
+            '[commit #1 title](https://bitbucket.org/SOME/REPO/commits/commit-id-1)\n' +
+            '[commit #2 title](https://bitbucket.org/SOME/REPO/commits/commit-id-2)\n' +
+            '[commit #3 title](https://bitbucket.org/SOME/REPO/commits/commit-id-3)\n' +
+            '[commit #4 title](https://bitbucket.org/SOME/REPO/commits/commit-id-4)',
+        });
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            p(
+              link({
+                href: 'https://bitbucket.org/SOME/REPO/commits/commit-id-1',
+              })('commit #1 title'),
+              '\n',
+              link({
+                href: 'https://bitbucket.org/SOME/REPO/commits/commit-id-2',
+              })('commit #2 title'),
+              '\n',
+              link({
+                href: 'https://bitbucket.org/SOME/REPO/commits/commit-id-3',
+              })('commit #3 title'),
+              '\n',
+              link({
+                href: 'https://bitbucket.org/SOME/REPO/commits/commit-id-4',
+              })('commit #4 title'),
+            ),
+          ),
+        );
       });
     });
   });

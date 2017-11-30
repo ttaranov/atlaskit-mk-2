@@ -15,13 +15,17 @@ describe('parseIntoAtlassianDocument', () => {
     expect(json).to.deep.equal({
       type: 'doc',
       version: 1,
-      content: [{
-        type: 'paragraph',
-        content: [{
-          type: 'text',
-          text: 'text',
-        }],
-      }],
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'text',
+            },
+          ],
+        },
+      ],
     });
   });
 
@@ -31,18 +35,21 @@ describe('parseIntoAtlassianDocument', () => {
 
     assert.throws(
       () => parse(undefined, schema),
-      'parseIntoAtlassianDocument should throw if first argument is not a string'
+      'parseIntoAtlassianDocument should throw if first argument is not a string',
     );
 
     assert.throws(
       () => parse(null, schema),
-      'parseIntoAtlassianDocument should throw if first argument is not a string'
+      'parseIntoAtlassianDocument should throw if first argument is not a string',
     );
   });
 
   it('should parse HTML according to schema', () => {
     const schema = createJIRASchema({ allowMedia: false, allowLinks: true });
-    const json = parseIntoAtlassianDocument('<p><a href="http://www.atlassian.com">Atlassian</a></p><p>This is a list: <ul><li>element</li></ul></p>', schema);
+    const json = parseIntoAtlassianDocument(
+      '<p><a href="http://www.atlassian.com">Atlassian</a></p><p>This is a list: <ul><li>element</li></ul></p>',
+      schema,
+    );
 
     expect(json).to.deep.equal({
       type: 'doc',
@@ -50,23 +57,29 @@ describe('parseIntoAtlassianDocument', () => {
       content: [
         {
           type: 'paragraph',
-          content: [{
-            type: 'text',
-            text: 'Atlassian',
-            marks: [{
-              type: 'link',
-              attrs: {
-                href: 'http://www.atlassian.com',
-              },
-            }],
-          }],
+          content: [
+            {
+              type: 'text',
+              text: 'Atlassian',
+              marks: [
+                {
+                  type: 'link',
+                  attrs: {
+                    href: 'http://www.atlassian.com',
+                  },
+                },
+              ],
+            },
+          ],
         },
         {
           type: 'paragraph',
-          content: [{
-            type: 'text',
-            text: 'This is a list:'
-          }]
+          content: [
+            {
+              type: 'text',
+              text: 'This is a list:',
+            },
+          ],
         },
         {
           type: 'paragraph',

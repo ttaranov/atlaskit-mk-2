@@ -273,11 +273,15 @@ export function createPlugin(providerFactory: ProviderFactory) {
       nodeViews: {
         emoji: nodeViewFactory(providerFactory, { emoji: emojiNodeView }),
       },
-      onFocus(view: EditorView, event) {
-        stateKey.getState(view.state).updateEditorFocused(true);
-      },
-      onBlur(view: EditorView, event) {
-        stateKey.getState(view.state).updateEditorFocused(false);
+      handleDOMEvents: {
+        focus(view: EditorView, event) {
+          stateKey.getState(view.state).updateEditorFocused(true);
+          return false;
+        },
+        blur(view: EditorView, event) {
+          stateKey.getState(view.state).updateEditorFocused(false);
+          return false;
+        },
       },
     },
     key: stateKey,
@@ -286,7 +290,7 @@ export function createPlugin(providerFactory: ProviderFactory) {
       pluginState.setView(view);
 
       return {
-        update(view: EditorView, prevState: EditorState<any>) {
+        update(view: EditorView, prevState: EditorState) {
           pluginState.update(view.state);
         },
         destroy() {

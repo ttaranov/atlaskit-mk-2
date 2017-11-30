@@ -13,7 +13,7 @@ describe('Renderer - React/Nodes/DecisionItem', () => {
   });
 
   it('should not render if no children', () => {
-    const decisionItem = shallow(<DecisionItem/>);
+    const decisionItem = shallow(<DecisionItem />);
     expect(decisionItem.isEmptyRender()).to.equal(true);
   });
 });
