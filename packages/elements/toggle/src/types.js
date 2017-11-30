@@ -33,8 +33,3 @@ export type StatelessProps = BaseProps & {
   /** Whether the toggle is checked or not */
   isChecked: boolean,
 };
-
-export type StatelessWithThemeProps = StatelessProps & {
-  /** Theme object populated by @atlaskit/theme */
-  theme: Object,
-};

@@ -1,3 +1,3 @@
 // @flow
-export { default as ToggleStateless } from './ToggleStatelessWithTheme';
+export { default as ToggleStateless } from './ToggleStateless';
 export { default } from './Toggle';
