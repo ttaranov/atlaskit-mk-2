@@ -41,7 +41,7 @@
     "deep-equal": "^1.0.1",
     "lodash.debounce": "^4.0.8",
     "polished": "1.5.0",
-    "react-lazy-load-zz": "^3.0.14",
+    "react-lazily-render": "^0.0.6",
     "react-transition-group": "^2.2.1",
     "styled-components": "^1.4.6",
     "tslib": "^1.8.0",

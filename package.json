@@ -255,7 +255,7 @@
     "raf-schd": "^2.0.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "react-lazy-load-zz": "^3.0.14",
+    "react-lazily-render": "^0.0.6",
     "react-loadable": "^5.1.0",
     "react-markdown": "^2.5.0",
     "react-markings": "^1.1.7",

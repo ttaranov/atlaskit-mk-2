@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
-import LazyLoad from 'react-lazy-load-zz';
+
+import LazilyRender from 'react-lazily-render';
 import { Observable } from 'rxjs';
 import 'rxjs/add/observable/of';
 
@@ -10,7 +11,7 @@ import { MediaCollectionFileItem, FileDetails } from '@atlaskit/media-core';
 import { CardList, CardListProps, CardListState } from '../../src/list';
 import { MediaCard } from '../../src/root/mediaCard';
 import { InfiniteScroll } from '../../src/list/infiniteScroll';
-import { LazyContent } from '../../src/utils';
+import { LazyContent } from '../../src/utils/lazyContent';
 
 describe('CardList', () => {
   const collectionName = 'MyMedia';
@@ -359,7 +360,7 @@ describe('CardList', () => {
       expect(list.is(InfiniteScroll)).toBe(false);
     });
 
-    it('should render wrapped in an <LazyLoad> by default', () => {
+    it('should render wrapped in an <LazilyRender> by default', () => {
       const context = contextWithDefaultCollection;
       const list = mount(
         <CardList
@@ -371,7 +372,7 @@ describe('CardList', () => {
 
       list.setState({ loading: false, error: undefined, collection });
 
-      expect(list.find(LazyLoad)).toHaveLength(1);
+      expect(list.find(LazilyRender)).toHaveLength(1);
     });
 
     it('should not render wrapped in an <LazyLoad> when shouldLazyLoadCards=false', () => {
@@ -387,7 +388,7 @@ describe('CardList', () => {
 
       list.setState({ loading: false, error: undefined, collection });
 
-      expect(list.find(LazyLoad)).toHaveLength(0);
+      expect(list.find(LazilyRender)).toHaveLength(0);
     });
 
     it('should not wrap existing items into LazyContent', () => {
