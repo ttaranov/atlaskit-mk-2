@@ -30,14 +30,13 @@ if (!browser.ie && !isMobileBrowser()) {
       });
 
     describe('handlePaste', () => {
-      // const mediaHtml = `<div data-id="123 data-node-type="media" data-type="file" data-collection="abc" data-file-mine-type="image/jpg"></div>`
-      const mediaHtml = (fileMineType: string) => `
+      const mediaHtml = (fileMimeType: string) => `
       <div 
       data-id="af9310df-fee5-459a-a968-99062ecbb756" 
       data-node-type="media" data-type="file" 
       data-collection="MediaServicesSample" 
       title="Attachment" 
-      data-file-mime-type="${fileMineType}"></div>`;
+      data-file-mime-type="${fileMimeType}"></div>`;
 
       describe('message editor', () => {
         it('pastes', () => {

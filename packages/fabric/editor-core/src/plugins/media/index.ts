@@ -45,8 +45,8 @@ import {
 } from '../../nodeviews';
 import keymapPlugin from './keymap';
 import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
-import { insertFilmstrip } from './media-files';
-import { insertSingleImages } from './single-image';
+import { insertMediaGroupNode } from './media-files';
+import { insertSingleImageNodes } from './single-image';
 import { removeMediaNode, splitMediaGroup } from './media-common';
 import PickerFacade from './picker-facade';
 import DropPlaceholder from '../../ui/Media/DropPlaceholder';
@@ -212,19 +212,18 @@ export class MediaPluginState {
       return;
     }
 
-    let areImages = true;
+    const areImages = mediaStates.every(mediaState =>
+      isImage(mediaState.fileMimeType),
+    );
 
-    mediaStates.forEach(mediaState => {
-      this.stateManager.subscribe(mediaState.id, this.handleMediaState);
-      if (!isImage(mediaState.fileMimeType)) {
-        areImages = false;
-      }
-    });
+    mediaStates.forEach(mediaState =>
+      this.stateManager.subscribe(mediaState.id, this.handleMediaState),
+    );
 
     if (this.editorAppearance !== 'message' && areImages && singleImage) {
-      insertSingleImages(this.view, mediaStates, collection);
+      insertSingleImageNodes(this.view, mediaStates, collection);
     } else {
-      insertFilmstrip(this.view, mediaStates, collection);
+      insertMediaGroupNode(this.view, mediaStates, collection);
     }
 
     const { view } = this;

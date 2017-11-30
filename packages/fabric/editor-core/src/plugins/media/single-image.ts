@@ -50,7 +50,7 @@ export const insertMediaAsSingleImage = (
   return insertNodesEndWithNewParagraph(nodes)(state, dispatch);
 };
 
-export const insertSingleImages = (
+export const insertSingleImageNodes = (
   view: EditorView,
   mediaStates: MediaState[],
   collection?: string,

@@ -28,7 +28,7 @@ export interface Range {
   end: number;
 }
 
-export const insertFilmstrip = (
+export const insertMediaGroupNode = (
   view: EditorView,
   mediaStates: MediaState[],
   collection?: string,

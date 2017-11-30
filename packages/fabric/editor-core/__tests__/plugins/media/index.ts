@@ -118,7 +118,7 @@ describe('Media plugin', () => {
         schema: defaultSchema,
       });
 
-    it('inserts filemstrip', async () => {
+    it('inserts media group', async () => {
       const { editorView, pluginState } = messageEditor(doc(p('')));
       await mediaProvider;
 
@@ -150,71 +150,69 @@ describe('Media plugin', () => {
   });
 
   describe('when non message editor', () => {
-    describe('when schema has singleImage node', () => {
-      describe('when all of the files are images', () => {
-        it('inserts single images', async () => {
-          const { editorView, pluginState } = editor(doc(p('')));
-          await mediaProvider;
+    describe('when all of the files are images', () => {
+      it('inserts single images', async () => {
+        const { editorView, pluginState } = editor(doc(p('')));
+        await mediaProvider;
 
-          pluginState.insertFiles([
-            { id: 'foo', fileMimeType: 'image/jpeg' },
-            { id: 'bar', fileMimeType: 'image/png' },
-          ]);
+        pluginState.insertFiles([
+          { id: 'foo', fileMimeType: 'image/jpeg' },
+          { id: 'bar', fileMimeType: 'image/png' },
+        ]);
 
-          expect(editorView.state.doc).toEqualDocument(
-            doc(
-              singleImage({ alignment: 'center', display: 'block' })(
-                media({
-                  id: 'foo',
-                  type: 'file',
-                  collection: testCollectionName,
-                  __fileMimeType: 'image/jpeg',
-                }),
-              ),
-              singleImage({ alignment: 'center', display: 'block' })(
-                media({
-                  id: 'bar',
-                  type: 'file',
-                  collection: testCollectionName,
-                  __fileMimeType: 'image/png',
-                }),
-              ),
-              p(),
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            singleImage({ alignment: 'center', display: 'block' })(
+              media({
+                id: 'foo',
+                type: 'file',
+                collection: testCollectionName,
+                __fileMimeType: 'image/jpeg',
+              }),
             ),
-          );
-        });
+            singleImage({ alignment: 'center', display: 'block' })(
+              media({
+                id: 'bar',
+                type: 'file',
+                collection: testCollectionName,
+                __fileMimeType: 'image/png',
+              }),
+            ),
+            p(),
+          ),
+        );
       });
+    });
 
-      describe('when it is a mix of pdf and image', () => {
-        it('inserts single images', async () => {
-          const { editorView, pluginState } = editor(doc(p('')));
-          await mediaProvider;
+    describe('when it is a mix of pdf and image', () => {
+      it('inserts single images', async () => {
+        const { editorView, pluginState } = editor(doc(p('')));
+        await mediaProvider;
 
-          pluginState.insertFiles([
-            { id: 'foo', fileMimeType: 'pdf' },
-            { id: 'bar', fileMimeType: 'image/png' },
-          ]);
+        pluginState.insertFiles([
+          { id: 'foo', fileMimeType: 'pdf' },
+          { id: 'bar', fileMimeType: 'image/png' },
+        ]);
 
-          expect(editorView.state.doc).toEqualDocument(
-            doc(
-              mediaGroup(
-                media({
-                  id: 'foo',
-                  type: 'file',
-                  collection: testCollectionName,
-                  __fileMimeType: 'pdf',
-                }),
-                media({
-                  id: 'bar',
-                  type: 'file',
-                  collection: testCollectionName,
-                  __fileMimeType: 'image/png',
-                }),
-              ),
-              p(),
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            mediaGroup(
+              media({
+                id: 'foo',
+                type: 'file',
+                collection: testCollectionName,
+                __fileMimeType: 'pdf',
+              }),
+              media({
+                id: 'bar',
+                type: 'file',
+                collection: testCollectionName,
+                __fileMimeType: 'image/png',
+              }),
             ),
-          );
-        });
+            p(),
+          ),
+        );
       });
     });
   });

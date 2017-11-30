@@ -2,7 +2,7 @@ import {
   textAlign,
   float,
   clear,
-  insertSingleImages,
+  insertSingleImageNodes,
   insertMediaAsSingleImage,
 } from '../../../src/plugins/media/single-image';
 import {
@@ -248,7 +248,7 @@ describe('single-image', () => {
   });
 
   describe('insertMediaAsSingleImage', () => {
-    describe('when inserting node is not a media node', () => {
+    describe('when inserting node that is not a media node', () => {
       it('does not insert single image', () => {
         const { editorView } = editor(doc(p('text{<>}')));
         insertMediaAsSingleImage(editorView, p('world'));
@@ -307,12 +307,12 @@ describe('single-image', () => {
     });
   });
 
-  describe('insertSingleImages', () => {
+  describe('insertSingleImageNodes', () => {
     describe('when there is only one image data', () => {
       it('inserts one single image node into the document', () => {
         const { editorView } = editor(doc(p('text{<>}')));
 
-        insertSingleImages(
+        insertSingleImageNodes(
           editorView,
           [{ id: temporaryFileId, status: 'uploading' }],
           testCollectionName,
@@ -338,7 +338,7 @@ describe('single-image', () => {
       it('inserts multiple single image nodes into the document', () => {
         const { editorView } = editor(doc(p('text{<>}hello')));
 
-        insertSingleImages(
+        insertSingleImageNodes(
           editorView,
           [
             { id: temporaryFileId, status: 'uploading' },
@@ -383,7 +383,7 @@ describe('single-image', () => {
         it('deletes the selection', () => {
           const { editorView } = editor(doc(p('{<}text{>}')));
 
-          insertSingleImages(
+          insertSingleImageNodes(
             editorView,
             [{ id: temporaryFileId, status: 'uploading' }],
             testCollectionName,
@@ -408,7 +408,7 @@ describe('single-image', () => {
         it('deletes the selection', () => {
           const { editorView } = editor(doc(p('hello'), p('{<}text{>}'), p()));
 
-          insertSingleImages(
+          insertSingleImageNodes(
             editorView,
             [{ id: temporaryFileId, status: 'uploading' }],
             testCollectionName,
@@ -436,7 +436,7 @@ describe('single-image', () => {
             doc(p('hello'), p('world'), p('{<}text{>}')),
           );
 
-          insertSingleImages(
+          insertSingleImageNodes(
             editorView,
             [{ id: temporaryFileId, status: 'uploading' }],
             testCollectionName,
