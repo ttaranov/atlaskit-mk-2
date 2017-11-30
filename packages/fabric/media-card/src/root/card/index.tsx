@@ -13,7 +13,7 @@ import {
 import { SharedCardProps, CardEventProps } from '../..';
 import { MediaCard } from '../mediaCard';
 import { CardView } from '../cardView';
-import { LazyContent } from '../../utils';
+import { LazyContent } from '../../utils/lazyContent';
 
 export type Identifier = UrlPreviewIdentifier | LinkIdentifier | FileIdentifier;
 export type Provider = MediaItemProvider | UrlPreviewProvider;
@@ -140,9 +140,7 @@ export class Card extends Component<CardProps, {}> {
     );
 
     return isLazy ? (
-      <LazyContent placeholder={this.placeholder} appearance={appearance}>
-        {card}
-      </LazyContent>
+      <LazyContent placeholder={this.placeholder}>{card}</LazyContent>
     ) : (
       card
     );
