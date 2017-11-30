@@ -43,6 +43,12 @@ export default class ToggleStateless extends Component<StatelessProps, State> {
     this.setState({ isFocused: true });
     this.props.onFocus(event);
   };
+  handleChange = (event: Event) => {
+    if (this.props.isDisabled) {
+      return;
+    }
+    this.props.onChange(event);
+  };
 
   render() {
     const {
@@ -76,7 +82,7 @@ export default class ToggleStateless extends Component<StatelessProps, State> {
           id={id}
           name={name}
           onBlur={this.handleBlur}
-          onChange={this.props.onChange}
+          onChange={this.handleChange}
           onFocus={this.handleFocus}
           type="checkbox"
           value={value}
