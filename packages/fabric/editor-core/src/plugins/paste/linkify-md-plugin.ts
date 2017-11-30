@@ -1,4 +1,5 @@
 import * as LinkifyIt from 'linkify-it';
+import { LINK_REGEXP } from '../hyperlink/utils';
 
 declare interface LinkMatch {
   index: number;
@@ -10,7 +11,6 @@ declare interface LinkMatch {
 }
 
 const linkifyMatch = (text: string): LinkMatch[] => {
-  const LINK_REGEXP = /(https?|ftp):\/\/[^\s]+/;
   const matches: LinkMatch[] = [];
 
   if (!LINK_REGEXP.test(text)) {

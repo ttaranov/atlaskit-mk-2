@@ -1,6 +1,8 @@
 import { Slice, Fragment, Node, Schema } from 'prosemirror-model';
 import * as LinkifyIt from 'linkify-it';
 
+export const LINK_REGEXP = /(https?|ftp):\/\/[^\s]+/;
+
 export interface Match {
   schema: any;
   index: number;
@@ -51,6 +53,9 @@ export class LinkMatcher {
  * Adds protocol to url if needed.
  */
 export function normalizeUrl(url: string) {
+  if (LINK_REGEXP.test(url)) {
+    return url;
+  }
   const match = getLinkMatch(url);
   return (match && match.url) || url;
 }

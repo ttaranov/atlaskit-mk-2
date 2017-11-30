@@ -8,7 +8,12 @@ import table from 'markdown-it-table';
 import { stateKey as tableStateKey } from '../table';
 import { containsTable } from '../table/utils';
 import { insertMediaAsSingleImage } from '../media/single-image';
-import { isSingleLine, isCode, filterMdToPmSchemaMapping } from './util';
+import {
+  isSingleLine,
+  isCode,
+  filterMdToPmSchemaMapping,
+  escapeLinks,
+} from './util';
 import { analyticsService } from '../../analytics';
 import * as keymaps from '../../keymaps';
 import { EditorAppearance } from '../../editor/index';
@@ -204,7 +209,7 @@ export function createPlugin(
         // If the clipboard only contains plain text, attempt to parse it as Markdown
         if (text && !html && atlassianMarkDownParser) {
           analyticsService.trackEvent('atlassian.editor.paste.markdown');
-          const doc = (atlassianMarkDownParser as any).parse(text);
+          const doc = (atlassianMarkDownParser as any).parse(escapeLinks(text));
           if (doc && doc.content) {
             const tr = view.state.tr.replaceSelection(
               new Slice(doc.content, slice.openStart, slice.openEnd),

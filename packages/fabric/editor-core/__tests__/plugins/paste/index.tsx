@@ -123,43 +123,46 @@ if (!browser.ie && !isMobileBrowser()) {
         expect(editorView.state.doc).toEqualDocument(doc(p('plain text')));
       });
 
-      describe('if plain text starts with protocol', () => {
-        describe('if it contains "..."', () => {
-          it('should linkify text on paste', () => {
-            const { editorView } = editor(doc(p('{<>}')));
-            const href = 'http://example.com/...blabla';
-            dispatchPasteEvent(editorView, { plain: href });
-            expect(editorView.state.doc).toEqualDocument(
-              doc(p(link({ href })(href))),
-            );
-          });
-        });
-        describe('if it contains "---"', () => {
-          it('should linkify text on paste', () => {
-            const { editorView } = editor(doc(p('{<>}')));
-            const href = 'http://example.com/---blabla';
-            dispatchPasteEvent(editorView, { plain: href });
-            expect(editorView.state.doc).toEqualDocument(
-              doc(p(link({ href })(href))),
-            );
-          });
-        });
-        describe('if it contains "~~~"', () => {
-          it('should linkify text on paste', () => {
-            const { editorView } = editor(doc(p('{<>}')));
-            const href = 'http://example.com/~~~blabla';
-            dispatchPasteEvent(editorView, { plain: href });
-            expect(editorView.state.doc).toEqualDocument(
-              doc(p(link({ href })(href))),
-            );
-          });
-        });
-      });
-
-      describe('if pasted markdown followed by hyperlink', () => {
-        it('should parse markdown and create a hyperlink', () => {
+      describe('hyperlink as a plain text', () => {
+        it('should linkify hyperlink if it contains "..."', () => {
           const { editorView } = editor(doc(p('{<>}')));
-          const href = 'http://example.com/?...jql=(foo())bar';
+          const href = 'http://example.com/...blabla';
+          dispatchPasteEvent(editorView, { plain: href });
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p(link({ href })(href))),
+          );
+        });
+
+        it('should linkify pasted hyperlink if it contains "---"', () => {
+          const { editorView } = editor(doc(p('{<>}')));
+          const href = 'http://example.com/---blabla';
+          dispatchPasteEvent(editorView, { plain: href });
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p(link({ href })(href))),
+          );
+        });
+
+        it('should linkify pasted hyperlink if it contains "~~~"', () => {
+          const { editorView } = editor(doc(p('{<>}')));
+          const href = 'http://example.com/~~~blabla';
+          dispatchPasteEvent(editorView, { plain: href });
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p(link({ href })(href))),
+          );
+        });
+
+        it('should linkify pasted hyperlink if it contains combination of "~~~", "---" and "..."', () => {
+          const { editorView } = editor(doc(p('{<>}')));
+          const href = 'http://example.com/~~~bla...bla---bla';
+          dispatchPasteEvent(editorView, { plain: href });
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p(link({ href })(href))),
+          );
+        });
+
+        it('should parse Urls with nested parentheses', () => {
+          const { editorView } = editor(doc(p('{<>}')));
+          const href = 'http://example.com/?jql=(foo())bar';
           const text = `**Hello** ${href} _World_`;
           dispatchPasteEvent(editorView, { plain: text });
           expect(editorView.state.doc).toEqualDocument(
@@ -167,6 +170,50 @@ if (!browser.ie && !isMobileBrowser()) {
               p(strong('Hello'), ' ', link({ href })(href), ' ', em('World')),
             ),
           );
+        });
+
+        it('should parse Urls with "__text__" and don', () => {
+          const { editorView } = editor(doc(p('{<>}')));
+          const href = 'http://example.com/__text__/something';
+          const text = `text ${href} text`;
+          dispatchPasteEvent(editorView, { plain: text });
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p('text ', link({ href })(href), ' text')),
+          );
+        });
+
+        it('should parse Urls with "**text**"', () => {
+          const { editorView } = editor(doc(p('{<>}')));
+          const href = 'http://example.com/**text**/something';
+          const text = `text ${href} text`;
+          dispatchPasteEvent(editorView, { plain: text });
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p('text ', link({ href })(href), ' text')),
+          );
+        });
+
+        it('should parse Urls with "~~text~~"', () => {
+          const { editorView } = editor(doc(p('{<>}')));
+          const href = 'http://example.com/~~text~~/something';
+          const text = `text ${href} text`;
+          dispatchPasteEvent(editorView, { plain: text });
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p('text ', link({ href })(href), ' text')),
+          );
+        });
+
+        describe('if pasted markdown followed by hyperlink', () => {
+          it('should parse markdown and create a hyperlink', () => {
+            const { editorView } = editor(doc(p('{<>}')));
+            const href = 'http://example.com/?...jql=(foo())bar';
+            const text = `**Hello** ${href} _World_`;
+            dispatchPasteEvent(editorView, { plain: text });
+            expect(editorView.state.doc).toEqualDocument(
+              doc(
+                p(strong('Hello'), ' ', link({ href })(href), ' ', em('World')),
+              ),
+            );
+          });
         });
       });
 
