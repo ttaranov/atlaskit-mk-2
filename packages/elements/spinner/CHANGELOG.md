@@ -1,5 +1,11 @@
 # @atlaskit/spinner
 
+## 4.0.5
+
+## 4.0.4
+
+## 4.0.3
+
 ## 4.0.2 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

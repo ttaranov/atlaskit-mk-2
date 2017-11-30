@@ -7,7 +7,7 @@ type State = {
   active: boolean,
   delay: number,
   state: 'spinning' | 'removing' | 'completed',
-}
+};
 
 class StatefulSpinner extends PureComponent<{}, State> {
   constructor(props) {
@@ -24,15 +24,15 @@ class StatefulSpinner extends PureComponent<{}, State> {
       active: !this.state.active,
       state: this.state.active ? 'removing' : 'spinning',
     });
-  }
+  };
 
   handleOnComplete = () => {
     this.setState({ state: 'completed' });
-  }
+  };
 
   handleInputChange = e => {
     this.setState({ delay: Number.parseInt(e.target.value, 10) });
-  }
+  };
 
   /* eslint-disable jsx-a11y/no-static-element-interactions */
   render() {
@@ -56,18 +56,28 @@ class StatefulSpinner extends PureComponent<{}, State> {
             isCompleting={!this.state.active}
             onComplete={this.handleOnComplete}
           />
-          <label htmlFor="delayInput" style={labelStyles} >
+          <label htmlFor="delayInput" style={labelStyles}>
             Delay
           </label>
-          <input type="number" id="delayInput" style={inputStyles} value={this.state.delay} onChange={this.handleInputChange} />
+          <input
+            type="number"
+            id="delayInput"
+            style={inputStyles}
+            value={this.state.delay}
+            onChange={this.handleInputChange}
+          />
         </div>
         <div>Click the spinner to see it&#39;s fade in and out animations.</div>
-        <div>The delay field will modify the delay before the spinner shows.</div>
         <div>
-          <code>isCompleting</code> is currently set to <code>{`${String(!this.state.active)}`}</code>
+          The delay field will modify the delay before the spinner shows.
         </div>
         <div>
-          <code>state</code> is currently set to <code>{`${this.state.state}`}</code>
+          <code>isCompleting</code> is currently set to{' '}
+          <code>{`${String(!this.state.active)}`}</code>
+        </div>
+        <div>
+          <code>state</code> is currently set to{' '}
+          <code>{`${this.state.state}`}</code>
         </div>
       </div>
     );

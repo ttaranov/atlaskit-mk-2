@@ -9,7 +9,8 @@ export interface Definition {
   type: 'em';
 }
 
-export const em: MarkSpec = {...marks.em,
+export const em: MarkSpec = {
+  ...marks.em,
   inclusive: true,
   group: FONT_STYLE,
 };

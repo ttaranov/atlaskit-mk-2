@@ -4,16 +4,14 @@ import * as sinon from 'sinon';
 import { ReactSerializer } from '../../../src';
 import { defaultSchema as schema } from '@atlaskit/editor-common';
 import * as validator from '../../../src/validator';
-import {
-  Action
-} from '../../../src/react/marks';
+import { Action } from '../../../src/react/marks';
 
 const doc = {
-  'type': 'doc',
-  'content': [
+  type: 'doc',
+  content: [
     {
-      'type': 'paragraph',
-      'content': [
+      type: 'paragraph',
+      content: [
         {
           type: 'text',
           text: 'Hello, ',
@@ -21,57 +19,57 @@ const doc = {
             {
               type: 'link',
               attrs: {
-                href: 'https://www.atlassian.com'
-              }
-            }
-          ]
+                href: 'https://www.atlassian.com',
+              },
+            },
+          ],
         },
         {
           type: 'text',
           text: 'World!',
           marks: [
             {
-              type: 'strong'
+              type: 'strong',
             },
             {
               type: 'link',
               attrs: {
-                href: 'https://www.atlassian.com'
-              }
-            }
-          ]
+                href: 'https://www.atlassian.com',
+              },
+            },
+          ],
         },
         {
           type: 'text',
           text: 'Yo!',
           marks: [
             {
-              type: 'strong'
+              type: 'strong',
             },
             {
               type: 'action',
               attrs: {
                 target: {
-                  key: 'test'
-                }
-              }
-            }
-          ]
+                  key: 'test',
+                },
+              },
+            },
+          ],
         },
-      ]
-    }
-  ]
+      ],
+    },
+  ],
 };
 
 const docFromSchema = schema.nodeFromJSON(doc);
 
 describe('Renderer - ReactSerializer', () => {
-
   describe('serializeFragment', () => {
-
     it('should render document', () => {
       const reactSerializer = ReactSerializer.fromSchema(schema);
-      const reactDoc = mount(reactSerializer.serializeFragment(docFromSchema.content) as any);
+      const reactDoc = mount(reactSerializer.serializeFragment(
+        docFromSchema.content,
+      ) as any);
 
       const root = reactDoc.find('div');
       const paragraph = root.find('p');
@@ -84,22 +82,22 @@ describe('Renderer - ReactSerializer', () => {
       expect(strong.length).to.equal(1);
 
       expect(link.text()).to.equal('Hello, World!');
-      expect(link.props()).to.have.property('href', 'https://www.atlassian.com');
+      expect(link.props()).to.have.property(
+        'href',
+        'https://www.atlassian.com',
+      );
       expect(strong.text()).to.equal('World!');
       reactDoc.unmount();
     });
-
   });
 
   describe('buildMarkStructure', () => {
-
     const { strong } = schema.marks;
 
     it('should wrap text nodes with marks', () => {
-
       const textNodes = [
         schema.text('Hello '),
-        schema.text('World!', [strong.create()])
+        schema.text('World!', [strong.create()]),
       ];
 
       const output = ReactSerializer.buildMarkStructure(textNodes);
@@ -113,7 +111,11 @@ describe('Renderer - ReactSerializer', () => {
 
   describe('getMarks', () => {
     const { strong, strike, underline } = schema.marks;
-    const node = schema.text('Hello World', [strike.create(), underline.create(), strong.create()]);
+    const node = schema.text('Hello World', [
+      strike.create(),
+      underline.create(),
+      strong.create(),
+    ]);
 
     it('should sort marks', () => {
       const sortedMarks = ReactSerializer.getMarks(node);
@@ -126,9 +128,17 @@ describe('Renderer - ReactSerializer', () => {
   describe('getMarkProps', () => {
     it('should pass eventHandlers to mark component', () => {
       const eventHandlers = {};
-      const reactSerializer = ReactSerializer.fromSchema(schema, undefined, eventHandlers);
-      const reactDoc = mount(reactSerializer.serializeFragment(docFromSchema.content) as any);
-      expect(reactDoc.find(Action).prop('eventHandlers')).to.equal(eventHandlers);
+      const reactSerializer = ReactSerializer.fromSchema(
+        schema,
+        undefined,
+        eventHandlers,
+      );
+      const reactDoc = mount(reactSerializer.serializeFragment(
+        docFromSchema.content,
+      ) as any);
+      expect(reactDoc.find(Action).prop('eventHandlers')).to.equal(
+        eventHandlers,
+      );
       reactDoc.unmount();
     });
   });

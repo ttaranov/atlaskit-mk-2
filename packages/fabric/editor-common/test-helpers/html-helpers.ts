@@ -1,4 +1,10 @@
-import { DOMParser, DOMSerializer, Fragment, Schema, Node as PMNode } from 'prosemirror-model';
+import {
+  DOMParser,
+  DOMSerializer,
+  Fragment,
+  Schema,
+  Node as PMNode,
+} from 'prosemirror-model';
 
 export const fromHTML = (html: string, schema: Schema): PMNode => {
   const el = document.createElement('div');

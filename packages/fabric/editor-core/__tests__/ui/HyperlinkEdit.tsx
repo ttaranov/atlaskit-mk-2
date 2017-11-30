@@ -37,7 +37,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     const hyperlinkEdit = mount(
       <HyperlinkEdit pluginState={pluginState} editorView={editorView} />,
     );
-    plugin.props.onBlur!(editorView, blurEvent);
+    plugin.props.handleDOMEvents!.blur(editorView, blurEvent);
     expect(hyperlinkEdit.html()).toEqual(null);
   });
 
@@ -51,7 +51,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
         ),
       ),
     );
-    plugin.props.onFocus!(editorView, focusEvent);
+    plugin.props.handleDOMEvents!.focus(editorView, focusEvent);
     const hyperlinkEdit = mount(
       <HyperlinkEdit pluginState={pluginState} editorView={editorView} />,
     );
@@ -71,7 +71,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     const hyperlinkEdit = mount(
       <HyperlinkEdit pluginState={pluginState} editorView={editorView} />,
     );
-    plugin.props.onBlur!(editorView, blurEvent);
+    plugin.props.handleDOMEvents!.blur(editorView, blurEvent);
     expect(hyperlinkEdit.html()).toEqual(null);
   });
 
@@ -215,7 +215,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     expect(pluginState.href).toEqual(href);
   });
 
-  it.only('should update title on blur', () => {
+  it('should update title on blur', () => {
     const { editorView, pluginState } = editor(
       doc(
         paragraph(

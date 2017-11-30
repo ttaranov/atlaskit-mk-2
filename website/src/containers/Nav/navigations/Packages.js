@@ -3,10 +3,11 @@
 import React, { type ComponentType } from 'react';
 import sentenceCase from 'sentence-case';
 import PackageIcon from '@atlaskit/icon/glyph/chevron-right';
-import PackageSelectedIcon from '@atlaskit/icon/glyph/chevron-down';
+import PackageSelectedIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 import PageIcon from '@atlaskit/icon/glyph/page';
 import ComponentIcon from '@atlaskit/icon/glyph/component';
-import CodeIcon from '@atlaskit/icon/glyph/code';
+import { colors } from '@atlaskit/theme';
+
 import renderNav from '../utils/renderNav';
 import type { Directory, File, NavGroupItem } from '../../../types';
 import * as fs from '../../../utils/fs';
@@ -34,7 +35,7 @@ export function buildSubNavGroup(
       });
       return acc;
     },
-    { title: groupTitle, items: [] }
+    { items: [] }
   );
 }
 
@@ -65,17 +66,10 @@ const getItemDetails = (
       docItems,
       'Docs',
       packageDocUrl.bind(null, group.id, pkg.id),
-      PageIcon,
-    );
-    const examplesSubnav = buildSubNavGroup(
-      exampleItems,
-      'Examples',
-      packageExampleUrl.bind(null, group.id, pkg.id),
-      CodeIcon,
+      PackageIcon,
     );
 
     if (docsSubnav) items.push(docsSubnav);
-    if (examplesSubnav) items.push(examplesSubnav);
   }
 
   return {
@@ -83,8 +77,13 @@ const getItemDetails = (
       ? `/packages/${group.id}/${pkg.id}`
       : packageUrl(group.id, pkg.id),
     title: fs.titleize(pkg.id),
-    icon: <PackageIcon label={`${fs.titleize(pkg.id)} icon`} />,
-    iconSelected: <PackageSelectedIcon label={`${fs.titleize(pkg.id)} icon`} />,
+    // icon: <PackageIcon label={`${fs.titleize(pkg.id)} icon`} />,
+    // iconSelected: (
+    //   <PackageSelectedIcon
+    //     label={`${fs.titleize(pkg.id)} icon`}
+    //     secondaryColor={colors.N20}
+    //   />
+    // ),
     items,
   };
 };
@@ -112,7 +111,7 @@ const getItem = (
         to: `${OLD_WEBSITE_URL}components/${allPackages[name].key}`,
         external: true,
         title: allPackages[name].name,
-        icon: <PackageIcon label={`${allPackages[name].name} icon`} />,
+        // icon: <PackageIcon label={`${allPackages[name].name} icon`} />,
       });
     }
     return results;
@@ -121,8 +120,7 @@ const getItem = (
 
 const packagesList = {
   to: '/packages',
-  title: 'All packages',
-  icon: <ComponentIcon label="All packages icon" />,
+  title: 'Overview',
 };
 
 export type PackagesNavProps = {
@@ -165,6 +163,6 @@ export default function PackagesNav(props: PackagesNavProps) {
     : standardGroups(dirs);
 
   return (
-    <div>{renderNav([{ items: [packagesList] }, ...groups], pathname)}</div>
+    <div>{renderNav([{ items: [packagesList] }, ...groups], { pathname })}</div>
   );
 }

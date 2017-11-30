@@ -17,18 +17,20 @@ export const mediaGroup: NodeSpec = {
   group: 'block',
   content: 'media+',
   attrs: {},
-  parseDOM: [{
-    tag: 'div[data-node-type="mediaGroup"]',
-    getAttrs: (dom: Element) => ({})
-  }],
+  parseDOM: [
+    {
+      tag: 'div[data-node-type="mediaGroup"]',
+      getAttrs: (dom: Element) => ({}),
+    },
+  ],
 
   toDOM(node: any) {
     return [
       'div',
       {
-        'data-node-type': 'mediaGroup'
+        'data-node-type': 'mediaGroup',
       },
-      0
+      0,
     ];
-  }
+  },
 };

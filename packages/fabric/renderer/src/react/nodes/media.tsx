@@ -7,7 +7,7 @@ import {
   ProviderFactory,
   MediaItem,
   MediaType,
-  Appearance
+  Appearance,
 } from '@atlaskit/editor-common';
 
 export interface MediaProps {
@@ -40,7 +40,9 @@ export default class Media extends PureComponent<MediaProps, {}> {
         type={type}
         collection={collection}
         providers={providers}
-        onClick={eventHandlers && eventHandlers.media && eventHandlers.media.onClick}
+        onClick={
+          eventHandlers && eventHandlers.media && eventHandlers.media.onClick
+        }
         cardDimensions={cardDimensions}
         appearance={appearance}
         resizeMode={resizeMode}

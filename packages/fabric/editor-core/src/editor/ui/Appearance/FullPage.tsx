@@ -44,6 +44,12 @@ const ContentArea = styled.div`
     box-sizing: border-box;
     padding-bottom: 50px;
   }
+
+  & .ProseMirror table {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
 `;
 ContentArea.displayName = 'ContentArea';
 
@@ -76,7 +82,10 @@ const SecondaryToolbar = styled.div`
 `;
 SecondaryToolbar.displayName = 'SecondaryToolbar';
 
-export default class Editor extends React.Component<EditorAppearanceComponentProps, any> {
+export default class Editor extends React.Component<
+  EditorAppearanceComponentProps,
+  any
+> {
   static displayName = 'FullPageEditor';
   private appearance: EditorAppearance = 'full-page';
 
@@ -84,7 +93,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
     if (this.props.onUiReady) {
       this.props.onUiReady(ref);
     }
-  }
+  };
 
   render() {
     const {
@@ -93,48 +102,53 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       providerFactory,
       primaryToolbarComponents,
       contentComponents,
-      customPrimaryToolbarComponents, customContentComponents,
-      popupsMountPoint, popupsBoundariesElement,
-      disabled
+      customPrimaryToolbarComponents,
+      customContentComponents,
+      popupsMountPoint,
+      popupsBoundariesElement,
+      disabled,
     } = this.props;
 
     return (
       <SizeDetector>
-      {({ width }) => (
-        <FullPageEditorWrapper>
-          <MainToolbar>
-            <PluginSlot
-              editorView={editorView}
-              eventDispatcher={eventDispatcher}
-              providerFactory={providerFactory}
-              appearance={this.appearance}
-              items={primaryToolbarComponents}
-              popupsMountPoint={popupsMountPoint}
-              popupsBoundariesElement={popupsBoundariesElement}
-              disabled={disabled}
-              editorWidth={width}
-            />
-            <MainToolbarCustomComponentsSlot>
-              <Avatars editorView={editorView} eventDispatcher={eventDispatcher} />
-              {customPrimaryToolbarComponents}
-            </MainToolbarCustomComponentsSlot>
-          </MainToolbar>
-          <ScrollContainer>
-            <ContentArea innerRef={this.handleRef}>
-              {customContentComponents}
+        {({ width }) => (
+          <FullPageEditorWrapper>
+            <MainToolbar>
               <PluginSlot
                 editorView={editorView}
                 eventDispatcher={eventDispatcher}
                 providerFactory={providerFactory}
                 appearance={this.appearance}
-                items={contentComponents}
+                items={primaryToolbarComponents}
                 popupsMountPoint={popupsMountPoint}
                 popupsBoundariesElement={popupsBoundariesElement}
+                disabled={disabled}
+                editorWidth={width}
               />
-            </ContentArea>
-          </ScrollContainer>
-        </FullPageEditorWrapper>
-      )}
+              <MainToolbarCustomComponentsSlot>
+                <Avatars
+                  editorView={editorView}
+                  eventDispatcher={eventDispatcher}
+                />
+                {customPrimaryToolbarComponents}
+              </MainToolbarCustomComponentsSlot>
+            </MainToolbar>
+            <ScrollContainer>
+              <ContentArea innerRef={this.handleRef}>
+                {customContentComponents}
+                <PluginSlot
+                  editorView={editorView}
+                  eventDispatcher={eventDispatcher}
+                  providerFactory={providerFactory}
+                  appearance={this.appearance}
+                  items={contentComponents}
+                  popupsMountPoint={popupsMountPoint}
+                  popupsBoundariesElement={popupsBoundariesElement}
+                />
+              </ContentArea>
+            </ScrollContainer>
+          </FullPageEditorWrapper>
+        )}
       </SizeDetector>
     );
   }

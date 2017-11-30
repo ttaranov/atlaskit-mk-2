@@ -1,11 +1,11 @@
 // @flow
 import React, { type Node } from 'react';
 import styled from 'styled-components';
-
 import { Link } from 'react-router-dom';
 
 import Btn from '@atlaskit/button';
 import Lozenge from '@atlaskit/lozenge';
+import Icon from '@atlaskit/icon/glyph/bullet-list';
 
 import { colors, gridSize, math, themed } from '@atlaskit/theme';
 
@@ -30,7 +30,11 @@ const LatestChange = ({
         range={changelog[0].version}
         packageName={pkgId}
       />
-      <Button component={Link} to={`/changelog/${groupId}/${pkgId}`}>
+      <Button
+        component={Link}
+        iconBefore={<Icon label="List icon" />}
+        to={`/mk-2/packages/${groupId}/${pkgId}/changelog`}
+      >
         Changelog
       </Button>
     </LogWrapper>

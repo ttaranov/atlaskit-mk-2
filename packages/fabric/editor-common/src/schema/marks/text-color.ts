@@ -1,6 +1,11 @@
 import { Mark, MarkSpec } from 'prosemirror-model';
 import {
-  akColorG300, akColorN80, akColorP300, akColorR300, akColorT300, akColorY400,
+  akColorG300,
+  akColorN80,
+  akColorP300,
+  akColorR300,
+  akColorT300,
+  akColorY400,
 } from '@atlaskit/util-shared-styles';
 import { COLOR } from '../groups';
 import { rgbToHex } from '../../utils';
@@ -37,7 +42,7 @@ export const colorPalette = new Map<string, string>();
 ].forEach(([color, label]) => colorPalette.set(color.toLowerCase(), label));
 
 export const textColor: MarkSpec = {
-  attrs: { color: { } },
+  attrs: { color: {} },
   inclusive: true,
   group: COLOR,
   parseDOM: [
@@ -47,18 +52,20 @@ export const textColor: MarkSpec = {
         let hexColor;
         if (value.match(/^rgb/i)) {
           hexColor = rgbToHex(value);
-        }
-        else if (value[0] === '#') {
+        } else if (value[0] === '#') {
           hexColor = value.toLowerCase();
         }
         // else handle other colour formats
         return colorPalette.has(hexColor) ? { color: hexColor } : false;
-      }
-    }
+      },
+    },
   ],
   toDOM(mark: TextColorMark): [string, { style: string }] {
-    return ['span', {
-      style: `color: ${mark.attrs.color}`
-    }];
-  }
+    return [
+      'span',
+      {
+        style: `color: ${mark.attrs.color}`,
+      },
+    ];
+  },
 };

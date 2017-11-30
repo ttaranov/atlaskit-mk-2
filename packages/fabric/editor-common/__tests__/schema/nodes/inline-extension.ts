@@ -7,7 +7,7 @@ describe(`${name}/schema inlineExtension node`, () => {
     it('converts to inlineExtension PM node', () => {
       const doc = fromHTML(
         '<span data-extension-type="com.atlassian.confluence.macro" />',
-        schema
+        schema,
       );
       const node = doc.firstChild!.firstChild!;
       expect(node.type.spec).toEqual(inlineExtension);
@@ -26,7 +26,7 @@ describe(`${name}/schema inlineExtension node`, () => {
           data-parameters='${JSON.stringify(parameters)}'
         />
       `,
-        schema
+        schema,
       );
 
       const node = doc.firstChild!.firstChild!;
@@ -49,13 +49,13 @@ describe(`${name}/schema inlineExtension node`, () => {
         .firstChild as HTMLElement;
 
       expect(dom.getAttribute('data-extension-type')).toEqual(
-        attrs.extensionType
+        attrs.extensionType,
       );
       expect(dom.getAttribute('data-extension-key')).toEqual(
-        attrs.extensionKey
+        attrs.extensionKey,
       );
       expect(dom.getAttribute('data-parameters')).toEqual(
-        JSON.stringify(attrs.parameters)
+        JSON.stringify(attrs.parameters),
       );
     });
 

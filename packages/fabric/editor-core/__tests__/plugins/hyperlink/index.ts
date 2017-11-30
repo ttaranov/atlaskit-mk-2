@@ -741,7 +741,7 @@ describe('hyperlink', () => {
       const spy = jest.fn();
 
       pluginState.subscribe(spy);
-      plugin.props.onBlur!(editorView, event);
+      plugin.props.handleDOMEvents!.blur(editorView, event);
 
       expect(spy).toHaveBeenCalledTimes(2);
       editorView.destroy();
@@ -757,7 +757,7 @@ describe('hyperlink', () => {
       const spy = jest.fn();
 
       pluginState.subscribe(spy);
-      plugin.props.onBlur!(editorView, event);
+      plugin.props.handleDOMEvents!.blur(editorView, event);
 
       expect(spy).toHaveBeenCalledTimes(1);
       editorView.destroy();
@@ -773,8 +773,8 @@ describe('hyperlink', () => {
       const spy = jest.fn();
       pluginState.subscribe(spy);
 
-      plugin.props.onBlur!(editorView, event);
-      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleDOMEvents!.blur(editorView, event);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
 
       expect(spy).toHaveBeenCalledTimes(1);
       editorView.destroy();
@@ -942,8 +942,8 @@ describe('hyperlink', () => {
           ),
         );
 
-        plugin.props.onBlur!(editorView, event);
-        plugin.props.onFocus!(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
 
         expect(pluginState.editorFocused).toEqual(true);
         editorView.destroy();
@@ -958,7 +958,7 @@ describe('hyperlink', () => {
           ),
         );
 
-        plugin.props.onBlur!(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
 
         expect(pluginState.editorFocused).not.toEqual(true);
         editorView.destroy();

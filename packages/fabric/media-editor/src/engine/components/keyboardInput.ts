@@ -1,19 +1,27 @@
-import {Component} from './component';
-import {Signal} from '../signal';
-import {getUtf32Codes} from '../../util';
+import { Component } from './component';
+import { Signal } from '../signal';
+import { getUtf32Codes } from '../../util';
 
-export type InputCommand = 'complete' | 'newline' | 'backspace' | 'delete' | 'left' | 'right' | 'up' | 'down';
+export type InputCommand =
+  | 'complete'
+  | 'newline'
+  | 'backspace'
+  | 'delete'
+  | 'left'
+  | 'right'
+  | 'up'
+  | 'down';
 
 // Conversion of special key codes to input commands
-const inputCommands: {[code: number]: InputCommand} = {
-  27: 'complete',  // Esc
-  8:  'backspace', // Backspace
-  13: 'newline',   // Enter
-  46: 'delete',    // Delete
-  40: 'down',      // Arrow down
-  38: 'up',        // Arrow up
-  37: 'left',      // Arrow left
-  39: 'right'      // Arrow right
+const inputCommands: { [code: number]: InputCommand } = {
+  27: 'complete', // Esc
+  8: 'backspace', // Backspace
+  13: 'newline', // Enter
+  46: 'delete', // Delete
+  40: 'down', // Arrow down
+  38: 'up', // Arrow up
+  37: 'left', // Arrow left
+  39: 'right', // Arrow right
 };
 
 export interface KeyboardInput extends Component {
@@ -21,14 +29,14 @@ export interface KeyboardInput extends Component {
   startInput(): void;
   endInput(): void;
 
-  characterPressed: Signal<number>;  // provides a UTF-32 code of the pressed character
+  characterPressed: Signal<number>; // provides a UTF-32 code of the pressed character
   inputCommand: Signal<InputCommand>;
 
-  readonly supplementaryCanvas: HTMLCanvasElement;  // hidden canvas which will be used for text rendering
-  readonly textHelperDiv: HTMLDivElement;  // hidden helper div in which the typesetter will create temporary spans when necessary;
-                                           // it should be hidden with 'visibility: hidden', but not with 'display: none' because
-                                           // the typesetter will call getCoundingClientRect() for temporary spans.
-                                           // it should have 'white-space: pre' to preserve multiple whitespace characters and not to break lines.
+  readonly supplementaryCanvas: HTMLCanvasElement; // hidden canvas which will be used for text rendering
+  readonly textHelperDiv: HTMLDivElement; // hidden helper div in which the typesetter will create temporary spans when necessary;
+  // it should be hidden with 'visibility: hidden', but not with 'display: none' because
+  // the typesetter will call getCoundingClientRect() for temporary spans.
+  // it should have 'white-space: pre' to preserve multiple whitespace characters and not to break lines.
 }
 
 // The default implementation of KeyboardInput interface.
@@ -42,16 +50,19 @@ export class DefaultKeyboardInput implements KeyboardInput {
   private readonly compositionStartListener = () => this.compositionStart();
   private readonly compositionEndListener = () => this.compositionEnd();
   private readonly keyUpListener = () => this.keyUp();
-  private readonly keyDownListener = (event: KeyboardEvent) => this.keyDown(event);
+  private readonly keyDownListener = (event: KeyboardEvent) =>
+    this.keyDown(event);
   private readonly blurListener = () => this.blur();
 
   private isInputActive: boolean = false;
   private isComposing: boolean = false;
   private readCompositionResultOnKeyUp: boolean = false;
 
-  constructor(private hTextArea: HTMLTextAreaElement,
-              public readonly supplementaryCanvas: HTMLCanvasElement,
-              public readonly textHelperDiv: HTMLDivElement) {
+  constructor(
+    private hTextArea: HTMLTextAreaElement,
+    public readonly supplementaryCanvas: HTMLCanvasElement,
+    public readonly textHelperDiv: HTMLDivElement,
+  ) {
     this.subscribeToTextAreaEvents();
   }
 
@@ -59,14 +70,16 @@ export class DefaultKeyboardInput implements KeyboardInput {
     this.unsubscribeFromTextAreaEvents();
   }
 
-  startInput(): void {  // Called by the core when it is ready to accept text input
+  startInput(): void {
+    // Called by the core when it is ready to accept text input
     this.isInputActive = true;
 
     this.hTextArea.style.visibility = 'visible';
     this.acquireFocus();
   }
 
-  endInput(): void {  // Called by the core when it no longer needs text input
+  endInput(): void {
+    // Called by the core when it no longer needs text input
     this.isInputActive = false;
     this.isComposing = false;
     this.readCompositionResultOnKeyUp = false;
@@ -78,7 +91,10 @@ export class DefaultKeyboardInput implements KeyboardInput {
     const hTextArea = this.hTextArea;
 
     hTextArea.addEventListener('input', this.inputListener);
-    hTextArea.addEventListener('compositionstart', this.compositionStartListener);
+    hTextArea.addEventListener(
+      'compositionstart',
+      this.compositionStartListener,
+    );
     hTextArea.addEventListener('compositionend', this.compositionEndListener);
     hTextArea.addEventListener('keyup', this.keyUpListener);
     hTextArea.addEventListener('keydown', this.keyDownListener);
@@ -89,8 +105,14 @@ export class DefaultKeyboardInput implements KeyboardInput {
     const hTextArea = this.hTextArea;
 
     hTextArea.removeEventListener('input', this.inputListener);
-    hTextArea.removeEventListener('compositionstart', this.compositionStartListener);
-    hTextArea.removeEventListener('compositionend', this.compositionEndListener);
+    hTextArea.removeEventListener(
+      'compositionstart',
+      this.compositionStartListener,
+    );
+    hTextArea.removeEventListener(
+      'compositionend',
+      this.compositionEndListener,
+    );
     hTextArea.removeEventListener('keyup', this.keyUpListener);
     hTextArea.removeEventListener('keydown', this.keyDownListener);
     hTextArea.removeEventListener('blur', this.blurListener);

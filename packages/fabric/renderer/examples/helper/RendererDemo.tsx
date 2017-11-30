@@ -13,24 +13,21 @@ import {
   Props as RendererProps,
 } from '../../src/ui/Renderer';
 
-import {
-  AkProfileClient,
-  modifyResponse,
-} from '@atlaskit/profilecard';
+import { AkProfileClient, modifyResponse } from '@atlaskit/profilecard';
 
-import {
-  renderDocument,
-  TextSerializer,
-} from '../../src';
+import { renderDocument, TextSerializer } from '../../src';
 
 const { getMockProfileClient: getMockProfileClientUtil } = profilecardUtils;
 // tslint:disable-next-line:variable-name
-const MockProfileClient = getMockProfileClientUtil(AkProfileClient, modifyResponse);
+const MockProfileClient = getMockProfileClientUtil(
+  AkProfileClient,
+  modifyResponse,
+);
 
 const mentionProvider = Promise.resolve({
   shouldHighlightMention(mention) {
     return mention.id === 'ABCDE-ABCDE-ABCDE-ABCDE';
-  }
+  },
 });
 
 const mediaProvider = storyMediaProviderFactory();
@@ -55,7 +52,7 @@ const profilecardProvider = Promise.resolve({
       },
     ];
 
-    return (id === '1') ? actions : actions.slice(0, 1);
+    return id === '1' ? actions : actions.slice(0, 1);
   },
 });
 
@@ -74,15 +71,20 @@ const eventHandlers = {
   media: {
     onClick: (result: CardEvent, surroundings?: CardSurroundings) => {
       // json-safe-stringify does not handle cyclic references in the react mouse click event
-      return console.log('onMediaClick', '[react.MouseEvent]', result.mediaItemDetails, surroundings);
-    }
+      return console.log(
+        'onMediaClick',
+        '[react.MouseEvent]',
+        result.mediaItemDetails,
+        surroundings,
+      );
+    },
   },
   applicationCard: {
     onClick: () => console.log('onClick'),
     onActionClick: () => console.log('onActionClick'),
   },
   action: {
-      onClick: (event) => console.log('onClick', '[react.MouseEvent]', event)
+    onClick: event => console.log('onClick', '[react.MouseEvent]', event),
   },
 };
 
@@ -97,7 +99,10 @@ interface DemoRendererState {
   portal?: HTMLElement;
 }
 
-export default class RendererDemo extends PureComponent<DemoRendererProps, DemoRendererState> {
+export default class RendererDemo extends PureComponent<
+  DemoRendererProps,
+  DemoRendererState
+> {
   textSerializer = new TextSerializer();
 
   state: DemoRendererState = {
@@ -106,12 +111,12 @@ export default class RendererDemo extends PureComponent<DemoRendererProps, DemoR
   };
 
   refs: {
-    input: HTMLTextAreaElement,
+    input: HTMLTextAreaElement;
   };
 
   private handlePortalRef = (portal?: HTMLElement) => {
     this.setState({ portal });
-  }
+  };
 
   render() {
     return (
@@ -126,7 +131,7 @@ export default class RendererDemo extends PureComponent<DemoRendererProps, DemoR
               fontSize: 16,
               padding: 10,
               width: '100%',
-              height: 320
+              height: 320,
             }}
             ref="input"
             onChange={this.onDocumentChange}
@@ -146,7 +151,7 @@ export default class RendererDemo extends PureComponent<DemoRendererProps, DemoR
 
     try {
       const props: RendererProps = {
-        document: JSON.parse(this.state.input)
+        document: JSON.parse(this.state.input),
       };
 
       if (this.props.withProviders) {
@@ -160,16 +165,18 @@ export default class RendererDemo extends PureComponent<DemoRendererProps, DemoR
 
       return (
         <div>
-          <div style={{color: '#ccc', marginBottom: '8px'}}>&lt;Renderer&gt;</div>
-          <Renderer {...props}/>
-          <div style={{color: '#ccc', marginTop: '8px'}}>&lt;/Renderer&gt;</div>
-          <div ref={this.handlePortalRef}/>
+          <div style={{ color: '#ccc', marginBottom: '8px' }}>
+            &lt;Renderer&gt;
+          </div>
+          <Renderer {...props} />
+          <div style={{ color: '#ccc', marginTop: '8px' }}>
+            &lt;/Renderer&gt;
+          </div>
+          <div ref={this.handlePortalRef} />
         </div>
       );
     } catch (ex) {
-      return (
-        <pre>Invalid document: {ex.stack}</pre>
-      );
+      return <pre>Invalid document: {ex.stack}</pre>;
     }
   }
 
@@ -192,5 +199,6 @@ export default class RendererDemo extends PureComponent<DemoRendererProps, DemoR
     }
   }
 
-  private onDocumentChange = () => this.setState({ input: this.refs.input.value });
+  private onDocumentChange = () =>
+    this.setState({ input: this.refs.input.value });
 }

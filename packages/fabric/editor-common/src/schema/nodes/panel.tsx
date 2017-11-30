@@ -26,14 +26,14 @@ const panelIcons = {
   info: InfoIcon,
   tip: TipIcon,
   note: NoteIcon,
-  warning: WarningIcon
+  warning: WarningIcon,
 };
 
-const getIconDom = function (panelType: PanelType): HTMLElement {
+const getIconDom = function(panelType: PanelType): HTMLElement {
   const dom = document.createElement('span');
   dom.setAttribute('contenteditable', 'false');
   // Prevent IE11 resize handles on selection.
-  dom.addEventListener('mousedown', (e) => e.preventDefault());
+  dom.addEventListener('mousedown', e => e.preventDefault());
   // tslint:disable-next-line:variable-name
   const Icon = panelIcons[panelType];
   ReactDOM.render(<Icon label={`Panel ${panelType}`} />, dom);
@@ -48,24 +48,21 @@ export const panel: NodeSpec = {
   group: 'block',
   content: '(paragraph | heading | bulletList | orderedList)+',
   attrs: {
-    panelType: { default: 'info' }
+    panelType: { default: 'info' },
   },
-  parseDOM: [{
-    tag: 'div[data-panel-type]',
-    getAttrs: (dom: HTMLElement) => ({
-      'panelType': dom.getAttribute('data-panel-type')!
-    })
-  }],
+  parseDOM: [
+    {
+      tag: 'div[data-panel-type]',
+      getAttrs: (dom: HTMLElement) => ({
+        panelType: dom.getAttribute('data-panel-type')!,
+      }),
+    },
+  ],
   toDOM(node: Node) {
     const panelType = node.attrs['panelType'];
     const attrs: DOMAttributes = {
-      'data-panel-type': panelType
+      'data-panel-type': panelType,
     };
-    return [
-      'div',
-      attrs,
-      getIconDom(panelType),
-      ['div', { }, 0]
-    ];
-  }
+    return ['div', attrs, getIconDom(panelType), ['div', {}, 0]];
+  },
 };

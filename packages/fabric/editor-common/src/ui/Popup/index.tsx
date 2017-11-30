@@ -3,7 +3,12 @@ import { PureComponent } from 'react';
 import rafSchedule from 'raf-schd';
 import { akEditorFloatingPanelZIndex } from '../../styles';
 import Portal from '../Portal';
-import { calculatePosition, calculatePlacement, findOverflowScrollParent, Position } from './utils';
+import {
+  calculatePosition,
+  calculatePlacement,
+  findOverflowScrollParent,
+  Position,
+} from './utils';
 
 export interface Props {
   alignX?: 'left' | 'right';
@@ -31,11 +36,11 @@ export interface State {
 export default class Popup extends PureComponent<Props, State> {
   static defaultProps = {
     offset: [0, 0],
-    boundariesElement: document.body
+    boundariesElement: document.body,
   };
 
   state: State = {
-    overflowScrollParent: false
+    overflowScrollParent: false,
   };
 
   private scheduledResizeFrame: number | null = null;
@@ -45,20 +50,42 @@ export default class Popup extends PureComponent<Props, State> {
    * Calculates new popup position
    */
   private updatePosition(props = this.props, state = this.state) {
-    const { target, fitHeight, fitWidth, boundariesElement, offset, onPositionCalculated, onPlacementChanged, alignX, alignY } = props;
+    const {
+      target,
+      fitHeight,
+      fitWidth,
+      boundariesElement,
+      offset,
+      onPositionCalculated,
+      onPlacementChanged,
+      alignX,
+      alignY,
+    } = props;
     const { popup } = state;
 
     if (!target || !popup) {
       return;
     }
 
-    const placement = calculatePlacement(target, boundariesElement!, fitWidth, fitHeight, alignX, alignY);
+    const placement = calculatePlacement(
+      target,
+      boundariesElement!,
+      fitWidth,
+      fitHeight,
+      alignX,
+      alignY,
+    );
     if (onPlacementChanged && this.placement.join('') !== placement.join('')) {
       onPlacementChanged(placement);
       this.placement = placement;
     }
 
-    let position = calculatePosition({ placement, popup, target, offset: offset! });
+    let position = calculatePosition({
+      placement,
+      popup,
+      target,
+      offset: offset!,
+    });
     position = onPositionCalculated ? onPositionCalculated(position) : position;
 
     this.setState({ position });
@@ -73,11 +100,18 @@ export default class Popup extends PureComponent<Props, State> {
     const overflowScrollParent = findOverflowScrollParent(popup);
 
     if (popup.offsetParent && !popup.offsetParent.contains(target!)) {
-      throw new Error('Popup\'s offset parent doesn\'t contain target which means it\'s impossible to correctly position popup along with given target.');
+      throw new Error(
+        "Popup's offset parent doesn't contain target which means it's impossible to correctly position popup along with given target.",
+      );
     }
 
-    if (overflowScrollParent && !overflowScrollParent.contains(popup.offsetParent)) {
-      throw new Error('Popup is inside "overflow: scroll" container, but its offset parent isn\'t. Currently Popup isn\'t capable of position itself correctly in such case. Add "position: relative" to "overflow: scroll" container or to some other FloatingPanel wrapper inside it.');
+    if (
+      overflowScrollParent &&
+      !overflowScrollParent.contains(popup.offsetParent)
+    ) {
+      throw new Error(
+        'Popup is inside "overflow: scroll" container, but its offset parent isn\'t. Currently Popup isn\'t capable of position itself correctly in such case. Add "position: relative" to "overflow: scroll" container or to some other FloatingPanel wrapper inside it.',
+      );
     }
 
     this.setState({ popup, overflowScrollParent }, () => this.updatePosition());
@@ -89,13 +123,13 @@ export default class Popup extends PureComponent<Props, State> {
     }
 
     this.initPopup(popup);
-  }
+  };
 
   private scheduledUpdatePosition = rafSchedule(() => this.updatePosition());
 
   private handleResize = () => {
     this.scheduledResizeFrame = this.scheduledUpdatePosition();
-  }
+  };
 
   componentWillReceiveProps(newProps: Props) {
     this.updatePosition(newProps);
@@ -118,9 +152,13 @@ export default class Popup extends PureComponent<Props, State> {
     return (
       <div
         ref={this.handleRef}
-        style={{ position: 'absolute', zIndex: akEditorFloatingPanelZIndex, ...position }}
+        style={{
+          position: 'absolute',
+          zIndex: akEditorFloatingPanelZIndex,
+          ...position,
+        }}
       >
-          {this.props.children}
+        {this.props.children}
       </div>
     );
   }

@@ -17,7 +17,7 @@ export default function buildNavGroups(
             to: `/${prefix}/${fs.normalize(group.id)}`,
             isSelected: (pathname, to) => pathname.startsWith(to),
             title: fs.titleize(group.id),
-            icon: <Icon label={`${fs.titleize(group.id)} icon`} />,
+            // icon: <Icon label={`${fs.titleize(group.id)} icon`} />,
           },
         ],
       };
@@ -31,7 +31,7 @@ export default function buildNavGroups(
           to: `/${prefix}/${group.id}/${fs.normalize(doc.id)}`,
           isSelected: (pathname, to) => pathname.startsWith(to),
           title: fs.titleize(doc.id),
-          icon: <Icon label={`${fs.titleize(doc.id)} icon`} />,
+          // icon: <Icon label={`${fs.titleize(doc.id)} icon`} />,
         };
       }),
     };

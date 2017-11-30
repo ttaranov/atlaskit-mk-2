@@ -25,7 +25,8 @@ export const Content = styled.div`
       border-left: 4px solid ${akColorN40};
       color: ${akColorN300};
 
-      &::before, &::after {
+      &::before,
+      &::after {
         content: none;
       }
       & > *:last-child {
@@ -38,7 +39,8 @@ export const Content = styled.div`
       padding: ${akEditorCodeBlockPadding};
       border-radius: ${akBorderRadius};
     }
-    & .code, & code {
+    & .code,
+    & code {
       padding: 1px 3px;
       border: 1px solid #ccc;
       border-radius: 3px;
@@ -46,7 +48,8 @@ export const Content = styled.div`
       font-size: 12px;
       line-height: 1.4;
 
-      &:before, &:after {
+      &:before,
+      &:after {
         vertical-align: text-top;
         display: inline-block;
         width: 3px;
@@ -89,6 +92,6 @@ export const ButtonGroup = styled.span`
   display: flex;
 
   & > button {
-    margin-left: ${akGridSizeUnitless/2}px;
+    margin-left: ${akGridSizeUnitless / 2}px;
   }
 `;

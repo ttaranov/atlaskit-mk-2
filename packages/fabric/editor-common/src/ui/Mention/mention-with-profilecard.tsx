@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { findDOMNode } from 'react-dom';
 import { PureComponent, ReactInstance, SyntheticEvent } from 'react';
-import {
-  MentionProvider,
-  ResourcedMention,
-} from '@atlaskit/mention';
+import { MentionProvider, ResourcedMention } from '@atlaskit/mention';
 
 import { MentionUserType as UserType } from '../../schema';
 import { ProfilecardProvider } from './types';
-import ProfileCard, { AkProfilecardTriggerActions } from '@atlaskit/profilecard';
+import ProfileCard, {
+  AkProfilecardTriggerActions,
+} from '@atlaskit/profilecard';
 import { MentionEventHandler } from '../EventHandlers';
 import Popup from '../Popup';
 import withOuterListeners from '../with-outer-listeners';
@@ -44,20 +43,30 @@ export interface State {
   popupAlignY: PopupAlignY;
 }
 
-export default class MentionWithProfileCard extends PureComponent<Props, State> {
+export default class MentionWithProfileCard extends PureComponent<
+  Props,
+  State
+> {
   private domNode: HTMLElement | null;
-  state: State = { target: null, visible: false, popupAlignX: 'left', popupAlignY: 'top' };
+  state: State = {
+    target: null,
+    visible: false,
+    popupAlignX: 'left',
+    popupAlignY: 'top',
+  };
 
   private handleRef = (target: HTMLElement | null) => {
     this.setState({ target });
-  }
+  };
 
   private calculateLayerPosition(): [PopupAlignX, PopupAlignY] {
     const domNodeCentreCoords = this.getDomNodeCenterCoords();
     const visibleAreaCentreCoords = this.getVisibleAreaCentreCoords();
 
-    const popupAlignY = domNodeCentreCoords.y > visibleAreaCentreCoords.y ? 'top' : 'bottom';
-    const popupAlignX = domNodeCentreCoords.x > visibleAreaCentreCoords.x ? 'right' : 'left';
+    const popupAlignY =
+      domNodeCentreCoords.y > visibleAreaCentreCoords.y ? 'top' : 'bottom';
+    const popupAlignX =
+      domNodeCentreCoords.x > visibleAreaCentreCoords.x ? 'right' : 'left';
 
     return [popupAlignX, popupAlignY];
   }
@@ -68,35 +77,39 @@ export default class MentionWithProfileCard extends PureComponent<Props, State> 
     } else {
       this.domNode = findDOMNode<HTMLElement>(component);
     }
-  }
+  };
 
   private getDomNodeCenterCoords(): Coords {
     const rect = this.domNode!.getBoundingClientRect();
 
     return {
-     x: rect.left + rect.width / 2,
+      x: rect.left + rect.width / 2,
       y: rect.top + rect.height / 2,
     };
   }
 
   private getVisibleAreaCentreCoords(): Coords {
-   return {
+    return {
       x: window.innerWidth / 2,
       y: window.innerHeight / 2,
     };
   }
 
-  private getActions(id: string, text: string, accessLevel?: string): AkProfilecardTriggerActions[] {
+  private getActions(
+    id: string,
+    text: string,
+    accessLevel?: string,
+  ): AkProfilecardTriggerActions[] {
     const { profilecardProvider } = this.props;
     const actions = profilecardProvider.getActions(id, text, accessLevel);
 
-    return actions.map((action) => {
+    return actions.map(action => {
       return {
         ...action,
         callback: (evt: SyntheticEvent<any>) => {
           this.setState({ visible: false });
           action.callback();
-        }
+        },
       };
     });
   }
@@ -111,13 +124,13 @@ export default class MentionWithProfileCard extends PureComponent<Props, State> 
     this.setState({
       popupAlignX,
       popupAlignY,
-      visible: true
+      visible: true,
     });
-  }
+  };
 
   private hideProfilecard = () => {
     this.setState({ visible: false });
-  }
+  };
 
   render() {
     const {
@@ -132,23 +145,12 @@ export default class MentionWithProfileCard extends PureComponent<Props, State> 
       portal,
     } = this.props;
 
-    const {
-      popupAlignX,
-      popupAlignY,
-      target,
-      visible,
-    } = this.state;
+    const { popupAlignX, popupAlignY, target, visible } = this.state;
 
-    const {
-      cloudId,
-      resourceClient,
-    } = profilecardProvider;
+    const { cloudId, resourceClient } = profilecardProvider;
 
     return (
-      <span
-        ref={this.handleRef}
-        onClick={this.showProfilecard}
-      >
+      <span ref={this.handleRef} onClick={this.showProfilecard}>
         <ResourcedMention
           ref={this.handleMentionNodeRef}
           id={id}
@@ -159,22 +161,26 @@ export default class MentionWithProfileCard extends PureComponent<Props, State> 
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         />
-        {target && portal && visible && <Popup
-          offset={[0, 8]}
-          target={target}
-          mountTo={portal}
-          alignX={popupAlignX}
-          alignY={popupAlignY}
-        >
-          <ProfilecardResourcedWithListeners
-            handleClickOutside={this.hideProfilecard}
-            handleEscapeKeydown={this.hideProfilecard}
-            cloudId={cloudId}
-            userId={id}
-            resourceClient={resourceClient}
-            actions={this.getActions(id, text, accessLevel)}
-          />
-        </Popup>}
+        {target &&
+          portal &&
+          visible && (
+            <Popup
+              offset={[0, 8]}
+              target={target}
+              mountTo={portal}
+              alignX={popupAlignX}
+              alignY={popupAlignY}
+            >
+              <ProfilecardResourcedWithListeners
+                handleClickOutside={this.hideProfilecard}
+                handleEscapeKeydown={this.hideProfilecard}
+                cloudId={cloudId}
+                userId={id}
+                resourceClient={resourceClient}
+                actions={this.getActions(id, text, accessLevel)}
+              />
+            </Popup>
+          )}
       </span>
     );
   }

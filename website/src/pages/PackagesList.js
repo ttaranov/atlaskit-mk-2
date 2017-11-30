@@ -150,7 +150,7 @@ export default function PackagesList() {
   });
 
   return (
-    <Page>
+    <Page width="large">
       <Title>All Packages</Title>
       <LoadedTable />
     </Page>

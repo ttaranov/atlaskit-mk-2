@@ -18,5 +18,7 @@ export const blockquote: NodeSpec = {
   defining: true,
   selectable: false,
   parseDOM: [{ tag: 'blockquote' }],
-  toDOM() { return ['blockquote', 0]; }
+  toDOM() {
+    return ['blockquote', 0];
+  },
 };
