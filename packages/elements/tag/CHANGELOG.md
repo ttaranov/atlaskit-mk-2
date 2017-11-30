@@ -1,5 +1,9 @@
 # @atlaskit/tag
 
+## 3.0.10
+- [patch] Fix references to link and linkHover (in theme)  from the Tag styles components [d509c86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d509c86)
+- [patch] Fix references to link and linkHover (in theme)  from the Tag styles components [d509c86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d509c86)
+
 ## 3.0.9
 
 ## 3.0.8
