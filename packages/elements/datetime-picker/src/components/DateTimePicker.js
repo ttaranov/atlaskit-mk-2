@@ -52,7 +52,7 @@ type State = {
 };
 
 export default class DateTimePicker extends Component<Props, State> {
-  dualPicker: any;
+  dateTimePicker: any;
 
   static defaultProps = {
     isDisabled: false,
@@ -176,8 +176,8 @@ export default class DateTimePicker extends Component<Props, State> {
   }
 
   selectDateField() {
-    if (this.dualPicker) {
-      this.dualPicker.selectField1();
+    if (this.dateTimePicker) {
+      this.dateTimePicker.selectDateField();
     }
   }
 
@@ -306,8 +306,8 @@ export default class DateTimePicker extends Component<Props, State> {
   }
 
   selectTimeField() {
-    if (this.dualPicker) {
-      this.dualPicker.selectField2();
+    if (this.dateTimePicker) {
+      this.dateTimePicker.selectTimeField();
     }
   }
 
@@ -339,7 +339,7 @@ export default class DateTimePicker extends Component<Props, State> {
         dialogs={[DateDialog, TimeDialog]}
         fields={[DateField, TimeField]}
         ref={ref => {
-          this.dualPicker = ref;
+          this.dateTimePicker = ref;
         }}
       />
     );
