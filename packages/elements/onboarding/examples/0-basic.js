@@ -5,63 +5,60 @@ import { SpotlightManager } from '../src';
 
 export default function Example() {
   return (
-    <div>
-      <p>Basic Usage</p>
-      <LayerManager>
+    <LayerManager>
+      <SpotlightManager component={Wrapper}>
+        <p>Basic Usage</p>
         <SpotlightManager component={Wrapper}>
           <SpotlightBasic />
         </SpotlightManager>
-      </LayerManager>
 
-      <p>Dialog Placement</p>
-      <LayerManager>
-        <SpotlightManager component={Wrapper}>
-          <SpotlightPlacement />
-        </SpotlightManager>
-      </LayerManager>
+        <p>Dialog Placement</p>
+        <LayerManager>
+          <SpotlightManager component={Wrapper}>
+            <SpotlightPlacement />
+          </SpotlightManager>
+        </LayerManager>
 
-      <p>Dialog Width</p>
-      <LayerManager>
-        <SpotlightManager component={Wrapper}>
-          <SpotlightWidth />
-        </SpotlightManager>
-      </LayerManager>
+        <p>Dialog Width</p>
+        <LayerManager>
+          <SpotlightManager component={Wrapper}>
+            <SpotlightWidth />
+          </SpotlightManager>
+        </LayerManager>
 
-      <p>Target Radius</p>
-      <LayerManager>
-        <SpotlightManager component={Wrapper}>
-          <SpotlightRadius />
-        </SpotlightManager>
-      </LayerManager>
+        <p>Target Radius</p>
+        <LayerManager>
+          <SpotlightManager component={Wrapper}>
+            <SpotlightRadius />
+          </SpotlightManager>
+        </LayerManager>
 
-      <p>Target Background</p>
-      <LayerManager>
-        <SpotlightManager component={Wrapper}>
-          <SpotlightReplacement />
-        </SpotlightManager>
-      </LayerManager>
+        <p>Target Background</p>
+        <LayerManager>
+          <SpotlightManager component={Wrapper}>
+            <SpotlightReplacement />
+          </SpotlightManager>
+        </LayerManager>
 
-      <p>Target Replacement</p>
-      <LayerManager>
-        <SpotlightManager component={Wrapper}>
-          <SpotlightBackground />
-        </SpotlightManager>
-      </LayerManager>
+        <p>Target Replacement</p>
+        <LayerManager>
+          <SpotlightManager component={Wrapper}>
+            <SpotlightBackground />
+          </SpotlightManager>
+        </LayerManager>
 
-      <p>Auto Scroll</p>
-      <LayerManager>
-        <SpotlightManager component={Wrapper}>
-          <SpotlightScroll />
-        </SpotlightManager>
-      </LayerManager>
+        <p>Auto Scroll</p>
+        <LayerManager>
+          <SpotlightManager component={Wrapper}>
+            <SpotlightScroll />
+          </SpotlightManager>
+        </LayerManager>
 
-      <p>Layout Props</p>
-      <LayerManager>
-        <SpotlightManager component={Wrapper}>
-          <SpotlightLayout />
-        </SpotlightManager>
-      </LayerManager>
-    </div>
+        <p>Layout Props</p>
+
+        <SpotlightLayout />
+      </SpotlightManager>
+    </LayerManager>
   );
 }
 

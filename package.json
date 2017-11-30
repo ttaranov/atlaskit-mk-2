@@ -274,6 +274,7 @@
     "react-syntax-highlighter": "^5.7.0",
     "react-transition-group": "^2.2.1",
     "rxjs": "^5.1.0",
+    "scroll-into-view-if-needed": "^1.2.1",
     "semver": "^5.4.1",
     "sentence-case": "^2.1.1",
     "sinon-chai": "^2.9.0",
