@@ -1,6 +1,8 @@
 # @atlaskit/media-core
 
 ## 11.0.2
+* breaking;
+
 
 ## 11.0.1
 - [patch] Move media-core to mk2 biuld repo [379a8ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/379a8ad)

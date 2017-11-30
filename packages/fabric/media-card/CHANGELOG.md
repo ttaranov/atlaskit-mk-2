@@ -1,4 +1,4 @@
-# @atlaskit/media-image
+# @atlaskit/media-card
 
 ## 22.2.5
 - [patch] Fixed hover state for link media-cards in renderer [05ae05d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05ae05d)

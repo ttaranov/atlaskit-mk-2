@@ -8,6 +8,12 @@ import { CardAppearance, CardDimensions } from '..';
 import { isRetina } from '../utils/isRetina';
 import { isLinkDetails } from '../utils/isLinkDetails';
 import { defaultImageCardDimensions } from '../utils';
+import {
+  makeCancelablePromise,
+  CanceledPromiseError,
+  CancelablePromise,
+} from '../utils/cancelablePromise';
+import { DataUri } from '../../../media-core/src/services/dataUriService';
 
 const SMALL_CARD_IMAGE_WIDTH = 32;
 const SMALL_CARD_IMAGE_HEIGHT = 32;
@@ -42,10 +48,15 @@ export const withDataURI = (Component): any => {
     WithDataURIProps,
     WithDataURIState
   > implements WithDataURI {
+    fetchImageDataUriPromise: CancelablePromise<DataUri>;
     state: WithDataURIState = {};
 
     componentDidMount(): void {
       this.updateDataURI(this.props);
+    }
+
+    componentWillUnmount() {
+      this.fetchImageDataUriPromise.cancel();
     }
 
     componentWillReceiveProps(nextProps: WithDataURIProps): void {
@@ -114,8 +125,8 @@ export const withDataURI = (Component): any => {
       const height = this.dataURIHeight(retinaFactor);
       const allowAnimated = appearance !== 'small';
 
-      dataURIService
-        .fetchImageDataUri(
+      this.fetchImageDataUriPromise = makeCancelablePromise(
+        dataURIService.fetchImageDataUri(
           { type: 'file', details: metadata },
           {
             width,
@@ -123,12 +134,18 @@ export const withDataURI = (Component): any => {
             mode: resizeMode,
             allowAnimated,
           },
-        )
-        .then(setDataURI, clearDataURI);
+        ),
+      );
+
+      this.fetchImageDataUriPromise.then(setDataURI).catch(error => {
+        if (!(error instanceof CanceledPromiseError)) {
+          clearDataURI();
+        }
+      });
     }
 
     render(): JSX.Element {
-      const { dataURIService, ...otherProps } = this.props;
+      const { ...otherProps } = this.props;
       const { dataURI } = this.state;
       return <Component {...otherProps} dataURI={dataURI} />;
     }
