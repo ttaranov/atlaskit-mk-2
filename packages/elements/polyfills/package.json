@@ -3,11 +3,8 @@
   "version": "1.2.2",
   "description": "A package containing polyfills for native methods.",
   "license": "Apache-2.0",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "atlaskit:src": "src/index.js",
+  "main": "index.js",
   "files": [
-    "dist",
     "*.js"
   ],
   "author": "Atlassian Pty Ltd",
