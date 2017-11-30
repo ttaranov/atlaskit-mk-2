@@ -33,6 +33,12 @@ describe('Tag component', () => {
     expect(wrapper.find(Chrome).prop('isRemovable')).toBe(true);
   });
 
+  it('Tag with href renders when it has focus (AK-3953)', () => {
+    const wrapper = mount(<Tag {...testProps} />);
+    wrapper.find(Chrome).simulate('focus');
+    expect(wrapper.find('a').prop('href')).toBe(atlassianHref);
+  });
+
   it('onBeforeRemoveAction callback contract', () => {
     const onBeforeRemoveAction = jest.fn();
     const wrapper = mount(

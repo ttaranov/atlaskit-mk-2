@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/build-releases",
-  "version": "1.25.0",
+  "version": "1.27.0",
   "description": "This will definitely get split up at some point, just using for testing",
   "main": "index.js",
   "scripts": {
