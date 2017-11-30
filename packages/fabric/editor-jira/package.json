@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-jira",
-  "version": "22.8.11",
+  "version": "22.8.12",
   "description": "Atlassian Editor component for JIRA",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -17,7 +17,7 @@
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/button": "^5.4.8",
-    "@atlaskit/editor-core": "^60.4.8",
+    "@atlaskit/editor-core": "^60.4.9",
     "@atlaskit/mention": "^8.1.0",
     "@atlaskit/spinner": "^4.0.5",
     "collapse-whitespace": "^1.1.6",
@@ -35,10 +35,10 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/editor-test-helpers": "^0.8.10",
+    "@atlaskit/editor-test-helpers": "^0.8.11",
     "@atlaskit/inline-edit": "^2.2.0",
-    "@atlaskit/media-core": "^11.0.2",
-    "@atlaskit/media-test-helpers": "^8.5.0",
+    "@atlaskit/media-core": "^12.0.0",
+    "@atlaskit/media-test-helpers": "^8.5.1",
     "@types/prosemirror-commands": "^1.0.0",
     "@types/prosemirror-history": "^1.0.0",
     "@types/prosemirror-keymap": "^1.0.0",
