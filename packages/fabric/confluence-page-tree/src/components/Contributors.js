@@ -2,17 +2,20 @@
 import React from 'react';
 import Avatar, { AvatarGroup } from '@atlaskit/avatar';
 import { AkProfilecardTrigger, AkProfileClient } from '@atlaskit/profilecard';
+import { getDirectoryServiceEndpoint } from '../api/directory';
 
-const AvatarWithProfileCard = props => {
+type AvatarWithProfileCardProps = {
+  userId: string,
+  username: string,
+  cloudId: string,
+};
+
+const AvatarWithProfileCard = (props: AvatarWithProfileCardProps) => {
   const { userId, username, cloudId } = props;
 
   const profileClient = new AkProfileClient({
-    url: 'https://api-private.stg.atlassian.com/directory/graphql', //TODO: need to make it configurable for stg/prod
+    url: getDirectoryServiceEndpoint(),
   });
-
-  const redirectToProfilePage = () => {
-    window.location.href = `/wiki/display/~${username}`;
-  };
 
   return (
     <AkProfilecardTrigger
@@ -22,7 +25,9 @@ const AvatarWithProfileCard = props => {
       actions={[
         {
           label: 'View profile', //TODO: How to i18n?
-          callback: redirectToProfilePage,
+          callback: () => {
+            window.location.href = `/wiki/display/~${username}`;
+          },
         },
       ]}
     >
@@ -31,8 +36,26 @@ const AvatarWithProfileCard = props => {
   );
 };
 
-const Contributors = props => {
-  const data = props.contributors.publishers.users.map(user => {
+type User = {
+  displayName: string,
+  profilePicture: {
+    path: string,
+  },
+  accountId: string,
+  username: string,
+};
+
+type ContributorsProps = {
+  cloudId: string,
+  contributors: {
+    publishers: {
+      users: Array<User>,
+    },
+  },
+};
+
+const Contributors = (props: ContributorsProps) => {
+  const data: Array<any> = props.contributors.publishers.users.map(user => {
     return {
       name: user.displayName,
       size: 'medium',
@@ -42,13 +65,16 @@ const Contributors = props => {
     };
   });
 
+  const AvatarWithCloudId = avatarProps => (
+    <AvatarWithProfileCard {...avatarProps} cloudId={props.cloudId} />
+  );
+
   return (
     <div style={{ maxWidth: 270 }}>
       <AvatarGroup
         appearance="stack"
-        onAvatarClick={console.log} //TODO: change this
         data={data}
-        avatar={AvatarWithProfileCard}
+        avatar={AvatarWithCloudId}
         size="large" //TODO: check this
         maxCount={3}
       />
