@@ -22,9 +22,7 @@ describe(name, () => {
     it('passes the focused and times properties to the dialog', () => {
       const focused = 'test-focused-value';
       const times = ['1', '2', '3'];
-      const wrapper = shallow(
-        <TimePickerStateless focused={focused} times={times} />,
-      );
+      const wrapper = shallow(<TimePickerStateless focused={focused} times={times} />);
 
       const pickerDialogProps = wrapper.find(Picker).props().dialogProps;
       expect(pickerDialogProps.value).toBe(focused);

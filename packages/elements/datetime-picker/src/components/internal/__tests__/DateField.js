@@ -19,12 +19,7 @@ describe(name, () => {
       const onKeyDownMock = jest.fn();
       const onTriggerOpenMock = jest.fn();
 
-      const wrapper = shallow(
-        <DateField
-          onKeyDown={onKeyDownMock}
-          onTriggerOpen={onTriggerOpenMock}
-        />,
-      );
+      const wrapper = shallow(<DateField onKeyDown={onKeyDownMock} onTriggerOpen={onTriggerOpenMock} />);
       wrapper.find(Input).simulate('keyDown', { key: 'ArrowDown' });
 
       expect(onKeyDownMock.mock.calls.length).toBe(1);
@@ -35,12 +30,7 @@ describe(name, () => {
       const onKeyDownMock = jest.fn();
       const onTriggerValidateMock = jest.fn();
 
-      const wrapper = shallow(
-        <DateField
-          onKeyDown={onKeyDownMock}
-          onTriggerValidate={onTriggerValidateMock}
-        />,
-      );
+      const wrapper = shallow(<DateField onKeyDown={onKeyDownMock} onTriggerValidate={onTriggerValidateMock} />);
       wrapper.find(Input).simulate('keyDown', { key: 'Enter' });
 
       expect(onKeyDownMock.mock.calls.length).toBe(1);

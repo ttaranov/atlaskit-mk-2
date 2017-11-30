@@ -16,12 +16,7 @@ describe(name, () => {
       expect(wrapper.find(Droplist)).toHaveLength(1);
       expect(wrapper.find(TimeDialogItem)).toHaveLength(testItems.length);
       testItems.forEach((item, index) => {
-        expect(
-          wrapper
-            .find(TimeDialogItem)
-            .at(index)
-            .props().value,
-        ).toBe(item);
+        expect(wrapper.find(TimeDialogItem).at(index).props().value).toBe(item);
       });
     });
   });

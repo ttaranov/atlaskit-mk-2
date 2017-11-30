@@ -43,8 +43,7 @@ describe(name, () => {
     ];
 
     testData.forEach(({ input, expected }) => {
-      it(`parsing time "${input}" should output "${expected ||
-        'null'}"`, () => {
+      it(`parsing time "${input}" should output "${expected || 'null'}"`, () => {
         expect(parseTime(input)).toBe(expected);
       });
     });

@@ -43,17 +43,12 @@ describe(name, () => {
       input.get(0).value = testValue;
       input.simulate('change');
 
-      expect(wrapper.find(DatePickerStateless).props().displayValue).toBe(
-        testValue,
-      );
+      expect(wrapper.find(DatePickerStateless).props().displayValue).toBe(testValue);
     });
 
     it('opens the dialog when triggered by the field', () => {
       const wrapper = shallow(<DatePicker />);
-      wrapper
-        .find(DatePickerStateless)
-        .props()
-        .onFieldTriggerOpen();
+      wrapper.find(DatePickerStateless).props().onFieldTriggerOpen();
       expect(wrapper.find(DatePickerStateless).props().isOpen).toBe(true);
     });
 
@@ -61,10 +56,7 @@ describe(name, () => {
       const wrapper = shallow(<DatePicker />);
 
       wrapper.setState({ isOpen: true });
-      wrapper
-        .find(DatePickerStateless)
-        .props()
-        .onPickerTriggerClose();
+      wrapper.find(DatePickerStateless).props().onPickerTriggerClose();
 
       expect(wrapper.find(DatePickerStateless).props().isOpen).toBe(false);
     });
@@ -73,20 +65,14 @@ describe(name, () => {
       const wrapper = shallow(<DatePicker />);
 
       wrapper.setState({ isOpen: true });
-      wrapper
-        .find(DatePickerStateless)
-        .props()
-        .onIconClick();
+      wrapper.find(DatePickerStateless).props().onIconClick();
 
       expect(wrapper.find(DatePickerStateless).props().isOpen).toBe(false);
     });
 
     it('opens the dialog when the icon is clicked and the dialog is closed', () => {
       const wrapper = shallow(<DatePicker />);
-      wrapper
-        .find(DatePickerStateless)
-        .props()
-        .onIconClick();
+      wrapper.find(DatePickerStateless).props().onIconClick();
       expect(wrapper.find(DatePickerStateless).props().isOpen).toBe(true);
     });
 
@@ -94,10 +80,7 @@ describe(name, () => {
       const wrapper = shallow(<DatePicker />);
 
       wrapper.setState({ isOpen: true });
-      wrapper
-        .find(DatePickerStateless)
-        .props()
-        .onPickerBlur();
+      wrapper.find(DatePickerStateless).props().onPickerBlur();
 
       expect(wrapper.find(DatePickerStateless).props().isOpen).toBe(false);
     });
@@ -109,17 +92,12 @@ describe(name, () => {
       const wrapper = shallow(<DatePicker onChange={onChangeMock} />);
 
       wrapper.setState({ isOpen: true });
-      wrapper
-        .find(DatePickerStateless)
-        .props()
-        .onPickerUpdate(testValue);
+      wrapper.find(DatePickerStateless).props().onPickerUpdate(testValue);
 
       expect(onChangeMock.mock.calls).toHaveLength(1);
       expect(onChangeMock.mock.calls[0][0]).toBe(testValue);
 
-      const datePickerStatelessProps = wrapper
-        .find(DatePickerStateless)
-        .props();
+      const datePickerStatelessProps = wrapper.find(DatePickerStateless).props();
       expect(datePickerStatelessProps.isOpen).toBe(false);
       expect(datePickerStatelessProps.value).toBe(testValue);
       expect(datePickerStatelessProps.displayValue).toBe(formattedValue);
