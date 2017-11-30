@@ -18,7 +18,7 @@ module.exports = function resolver(
   modulePath /*: string */,
   params /*: any */,
 ) {
-  let result /*: string */;
+  let result /*: ?string */;
 
   if (!modulePath.startsWith('.') && !modulePath.startsWith(path.sep)) {
     // When esolving absolute module names, follow Node.js rules (i.e. look for node_modules in
