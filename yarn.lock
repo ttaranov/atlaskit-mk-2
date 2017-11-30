@@ -4288,10 +4288,6 @@ eventemitter3@^2.0.2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-2.0.3.tgz#b5e1079b59fb5e1ba2771c0a993be060a58c99ba"
 
-eventlistener@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/eventlistener/-/eventlistener-0.0.1.tgz#ed2baabb852227af2bcf889152c72c63ca532eb8"
-
 events@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/events/-/events-1.1.1.tgz#9ebdb7635ad099c70dcc4c2a1f5004288e8bd924"
@@ -6485,7 +6481,7 @@ lodash.debounce@^3.1.1:
   dependencies:
     lodash._getnative "^3.0.0"
 
-lodash.debounce@^4.0.0, lodash.debounce@^4.0.8:
+lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
 
@@ -6572,10 +6568,6 @@ lodash.sample@^4.2.1:
 lodash.some@^4.4.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.some/-/lodash.some-4.6.0.tgz#1bb9f314ef6b8baded13b549169b2a945eb68e4d"
-
-lodash.throttle@^4.0.0:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
 
 lodash.unescape@4.0.1:
   version "4.0.1"
@@ -8369,14 +8361,12 @@ react-json-tree@^0.10.7:
     prop-types "^15.5.8"
     react-base16-styling "^0.5.1"
 
-react-lazy-load-zz@^3.0.14:
-  version "3.0.14"
-  resolved "https://registry.yarnpkg.com/react-lazy-load-zz/-/react-lazy-load-zz-3.0.14.tgz#739b6021da40b1776fd541b0d65079aebeb87c09"
+react-lazily-render@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/react-lazily-render/-/react-lazily-render-0.0.6.tgz#8ec775e01983d81d879de8f97df2b86842e7c38a"
   dependencies:
-    eventlistener "0.0.1"
-    lodash.debounce "^4.0.0"
-    lodash.throttle "^4.0.0"
-    prop-types "^15.5.8"
+    lodash "^4.17.4"
+    scrollparent "^2.0.1"
 
 react-loadable@^5.1.0:
   version "5.2.2"
@@ -8914,6 +8904,10 @@ schema-utils@^0.3.0:
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-0.3.0.tgz#f5877222ce3e931edae039f17eb3716e7137f8cf"
   dependencies:
     ajv "^5.0.0"
+
+scrollparent@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/scrollparent/-/scrollparent-2.0.1.tgz#715d5b9cc57760fb22bdccc3befb5bfe06b1a317"
 
 select-hose@^2.0.0:
   version "2.0.0"

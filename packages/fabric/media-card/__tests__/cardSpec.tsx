@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
-import LazyLoad from 'react-lazy-load-zz';
 import { fakeContext } from '@atlaskit/media-test-helpers';
 
 import {
@@ -11,6 +10,7 @@ import {
   CardEvent,
 } from '../src';
 import { MediaCard } from '../src/root/mediaCard';
+import { LazyContent } from '../src/utils/lazyContent';
 
 describe('Card', () => {
   const linkIdentifier: LinkIdentifier = {
@@ -206,21 +206,20 @@ describe('Card', () => {
   it('should use lazy load by default', () => {
     const context = fakeContext() as any;
     const hoverHandler = (result: CardEvent) => {};
-    const card = mount(
+    const card = shallow(
       <Card
         context={context}
         identifier={fileIdentifier}
         onMouseEnter={hoverHandler}
       />,
     );
-
-    expect(card.find(LazyLoad)).toHaveLength(1);
+    expect(card.find(LazyContent)).toHaveLength(1);
   });
 
   it('should not use lazy load when "isLazy" is false', () => {
     const context = fakeContext() as any;
     const hoverHandler = (result: CardEvent) => {};
-    const card = mount(
+    const card = shallow(
       <Card
         isLazy={false}
         context={context}
@@ -229,7 +228,7 @@ describe('Card', () => {
       />,
     );
 
-    expect(card.find(LazyLoad)).toHaveLength(0);
+    expect(card.find(LazyContent)).toHaveLength(0);
   });
 
   it('should pass properties down to MediaCard', () => {
