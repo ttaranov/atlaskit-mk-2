@@ -26,31 +26,39 @@ export interface State {
 export default class AddonToolbar extends React.Component<Props, State> {
   state: State = {
     isOpen: false,
-    addonDropdownContent: null
+    addonDropdownContent: null,
   };
 
   togglePopup = () => {
     this.setState({
       isOpen: !this.state.isOpen,
-      addonDropdownContent: null
+      addonDropdownContent: null,
     });
-  }
+  };
 
-  handleDropdownClick = (editorActions: EditorActions, renderOnClick: RenderOnClickHandler) => {
+  handleDropdownClick = (
+    editorActions: EditorActions,
+    renderOnClick: RenderOnClickHandler,
+  ) => {
     if (renderOnClick) {
       // popup stays open, we just change its content to the component that is returned from renderOnClick()
-      this.setState({ addonDropdownContent: renderOnClick(editorActions, this.togglePopup) });
+      this.setState({
+        addonDropdownContent: renderOnClick(editorActions, this.togglePopup),
+      });
     } else {
       // close popup
       this.togglePopup();
     }
-  }
+  };
 
   render() {
     const { dropdownItems } = this.props;
     const { addonDropdownContent, isOpen } = this.state;
 
-    if (!dropdownItems || (Array.isArray(dropdownItems) && !dropdownItems.length)) {
+    if (
+      !dropdownItems ||
+      (Array.isArray(dropdownItems) && !dropdownItems.length)
+    ) {
       return null;
     }
 
@@ -62,7 +70,7 @@ export default class AddonToolbar extends React.Component<Props, State> {
           title="Insert addon"
           iconBefore={<MoreIcon label="Insert addon" />}
         />
-        {isOpen &&
+        {isOpen && (
           <AddonPopup
             handleClickOutside={this.togglePopup}
             handleEscapeKeydown={this.togglePopup}
@@ -72,34 +80,36 @@ export default class AddonToolbar extends React.Component<Props, State> {
             alignY="top"
           >
             <span onClick={this.handlePopupClick}>
-              {addonDropdownContent
-                ? addonDropdownContent
-                : <WithEditorActions
-                    // tslint:disable-next-line:jsx-no-lambda
-                    render={editorActions =>
-                      <Dropdown
-                        onClick={this.handleDropdownClick}
-                        togglePopup={this.togglePopup}
-                        editorActions={editorActions}
-                      >
-                        {dropdownItems}
-                      </Dropdown>
-                    }
+              {addonDropdownContent ? (
+                addonDropdownContent
+              ) : (
+                <WithEditorActions
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={editorActions => (
+                    <Dropdown
+                      onClick={this.handleDropdownClick}
+                      togglePopup={this.togglePopup}
+                      editorActions={editorActions}
+                    >
+                      {dropdownItems}
+                    </Dropdown>
+                  )}
                 />
-              }
+              )}
             </span>
           </AddonPopup>
-        }
+        )}
       </div>
     );
   }
 
   private handleRef = (target: HTMLDivElement) => {
     this.setState({ target });
-  }
+  };
 
   // cancel bubbling to fix clickOutside logic:
   // popup re-renders its content before the click event bubbles up to the document
   // therefore click target element would be different from the popup content
-  private handlePopupClick = event => event.nativeEvent.stopImmediatePropagation();
+  private handlePopupClick = event =>
+    event.nativeEvent.stopImmediatePropagation();
 }

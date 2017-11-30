@@ -8,7 +8,7 @@ export interface Props {
 }
 
 export default class AdvanceMenuItem extends PureComponent<Props, any> {
-  render () {
+  render() {
     const { elemAfter } = this.props;
     return (
       <AdvanceMenuItemWrap>

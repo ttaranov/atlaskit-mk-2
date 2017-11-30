@@ -12,7 +12,7 @@ import {
   filterSupportedLanguages,
   findMatchedLanguage,
   getLanguageIdentifier,
-  Language
+  Language,
 } from './languageList';
 
 export interface Props {
@@ -35,13 +35,15 @@ export interface State {
 export default class LanguagePicker extends PureComponent<Props, State> {
   items: object[];
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
       language: undefined,
       toolbarVisible: false,
-      supportedLanguages: filterSupportedLanguages(props.pluginState.supportedLanguages)
+      supportedLanguages: filterSupportedLanguages(
+        props.pluginState.supportedLanguages,
+      ),
     } as State;
   }
 
@@ -49,44 +51,51 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
     const { supportedLanguages } = this.state;
 
-    this.items = [{
-      'items': createLanguageList(supportedLanguages)
-        .map(lang => ({ content: lang.name, value: getLanguageIdentifier(lang) }))
-    }];
+    this.items = [
+      {
+        items: createLanguageList(supportedLanguages).map(lang => ({
+          content: lang.name,
+          value: getLanguageIdentifier(lang),
+        })),
+      },
+    ];
   }
 
   componentWillUnmount() {
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
-  onLanguageSelectMouseDown = (event) => {
+  onLanguageSelectMouseDown = event => {
     event.preventDefault();
     this.setState({
       languageSelectFocused: true,
     });
-  }
+  };
 
-  resetLanguageSelectFocused = (event) => {
+  resetLanguageSelectFocused = event => {
     this.setState({
       languageSelectFocused: false,
     });
-  }
+  };
 
   render() {
     const {
       activeLanguage,
       element,
       toolbarVisible,
-      languageSelectFocused
+      languageSelectFocused,
     } = this.state;
 
     const { popupsMountPoint, popupsBoundariesElement } = this.props;
     const defaultLanguage = activeLanguage
-      ? { content: activeLanguage.name, value: getLanguageIdentifier(activeLanguage) }
+      ? {
+          content: activeLanguage.name,
+          value: getLanguageIdentifier(activeLanguage),
+        }
       : undefined;
 
     if (toolbarVisible || languageSelectFocused) {
-        return (
+      return (
         <FloatingToolbar
           target={element}
           offset={[0, 3]}
@@ -133,20 +142,28 @@ export default class LanguagePicker extends PureComponent<Props, State> {
       toolbarVisible,
     });
 
-    const activeLanguageValue = updatedLanguage ? getLanguageIdentifier(updatedLanguage) : undefined;
+    const activeLanguageValue = updatedLanguage
+      ? getLanguageIdentifier(updatedLanguage)
+      : undefined;
     if (language !== activeLanguageValue) {
-      this.props.pluginState.updateLanguage(activeLanguageValue, this.props.editorView);
+      this.props.pluginState.updateLanguage(
+        activeLanguageValue,
+        this.props.editorView,
+      );
     }
-  }
+  };
 
   private handleLanguageChange = (language: any) => {
-    this.props.pluginState.updateLanguage(language.item.value, this.props.editorView);
+    this.props.pluginState.updateLanguage(
+      language.item.value,
+      this.props.editorView,
+    );
     this.setState({
       toolbarVisible: true,
     });
-  }
+  };
 
   private handleRemoveCodeBlock = () => {
     this.props.pluginState.removeCodeBlock(this.props.editorView);
-  }
+  };
 }

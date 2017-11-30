@@ -11,10 +11,12 @@ const messageEditorPropsPreset: EditorProps = {
   allowHyperlinks: true,
   allowCodeBlocks: true,
   allowTasksAndDecisions: true,
-  allowHelpDialog: true
+  allowHelpDialog: true,
 };
 
-export default function getPropsPreset(appearance: EditorAppearance): EditorProps {
+export default function getPropsPreset(
+  appearance: EditorAppearance,
+): EditorProps {
   switch (appearance) {
     case 'message':
       return { ...messageEditorPropsPreset };

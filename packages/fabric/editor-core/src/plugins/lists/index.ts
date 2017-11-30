@@ -1,10 +1,13 @@
 import { Schema } from 'prosemirror-model';
 import { findWrapping } from 'prosemirror-transform';
-import { EditorState,  NodeSelection, Plugin, PluginKey } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
 import {
-  findAncestorPosition,
-} from '../../utils';
+  EditorState,
+  NodeSelection,
+  Plugin,
+  PluginKey,
+} from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+import { findAncestorPosition } from '../../utils';
 
 import { toggleList } from './commands';
 import keymapPlugin from './keymap';
@@ -57,19 +60,22 @@ export class ListsState {
   update(newEditorState) {
     const { doc, selection } = newEditorState;
     const ancestorPosition = findAncestorPosition(doc, selection.$from);
-    const rootNode = selection instanceof NodeSelection
-      ? selection.node
-      : ancestorPosition.node(ancestorPosition.depth)!;
+    const rootNode =
+      selection instanceof NodeSelection
+        ? selection.node
+        : ancestorPosition.node(ancestorPosition.depth)!;
 
     let dirty = false;
 
-    const newBulletListActive = rootNode.type === newEditorState.schema.nodes.bulletList;
+    const newBulletListActive =
+      rootNode.type === newEditorState.schema.nodes.bulletList;
     if (newBulletListActive !== this.bulletListActive) {
       this.bulletListActive = newBulletListActive;
       dirty = true;
     }
 
-    const newOrderedListActive = rootNode.type === newEditorState.schema.nodes.orderedList;
+    const newOrderedListActive =
+      rootNode.type === newEditorState.schema.nodes.orderedList;
     if (newOrderedListActive !== this.orderedListActive) {
       this.orderedListActive = newOrderedListActive;
       dirty = true;
@@ -78,7 +84,10 @@ export class ListsState {
     const newBulletListDisabled = !(
       newBulletListActive ||
       newOrderedListActive ||
-      this.isWrappingPossible(newEditorState.schema.nodes.bulletList, newEditorState)
+      this.isWrappingPossible(
+        newEditorState.schema.nodes.bulletList,
+        newEditorState,
+      )
     );
     if (newBulletListDisabled !== this.bulletListDisabled) {
       this.bulletListDisabled = newBulletListDisabled;
@@ -88,7 +97,10 @@ export class ListsState {
     const newOrderedListDisabled = !(
       newBulletListActive ||
       newOrderedListActive ||
-      this.isWrappingPossible(newEditorState.schema.nodes.orderedList, newEditorState)
+      this.isWrappingPossible(
+        newEditorState.schema.nodes.orderedList,
+        newEditorState,
+      )
     );
     if (newOrderedListDisabled !== this.orderedListDisabled) {
       this.orderedListDisabled = newOrderedListDisabled;
@@ -108,11 +120,15 @@ export class ListsState {
     const { $from, $to } = state.selection;
     const range = $from.blockRange($to);
 
-    if (!range) { return false; }
+    if (!range) {
+      return false;
+    }
 
     const wrap = findWrapping(range, nodeType);
 
-    if (!wrap) { return false; }
+    if (!wrap) {
+      return false;
+    }
 
     return true;
   }
@@ -128,16 +144,18 @@ export const plugin = new Plugin({
     apply(tr, pluginState: ListsState, oldState, newState) {
       pluginState.update(newState);
       return pluginState;
-    }
+    },
   },
   key: stateKey,
   view: (view: EditorView) => {
     return {};
-  }
+  },
 });
 
 const plugins = (schema: Schema) => {
-  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter(
+    plugin => !!plugin,
+  ) as Plugin[];
 };
 
 export default plugins;

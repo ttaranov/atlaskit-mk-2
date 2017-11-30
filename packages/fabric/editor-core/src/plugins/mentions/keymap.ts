@@ -8,69 +8,97 @@ import pluginKey from './plugin-key';
 export function keymapPlugin(schema: Schema): Plugin {
   const list = {};
 
-  keymaps.bindKeymapWithCommand(keymaps.moveUp.common!, (state: any, dispatch) => {
-    const mentionsPlugin = pluginKey.getState(state) as MentionsState;
-    if (!mentionsPlugin.queryActive) {
+  keymaps.bindKeymapWithCommand(
+    keymaps.moveUp.common!,
+    (state: any, dispatch) => {
+      const mentionsPlugin = pluginKey.getState(state) as MentionsState;
+      if (!mentionsPlugin.queryActive) {
+        return false;
+      }
+
+      return mentionsPlugin.onSelectPrevious();
+    },
+    list,
+  );
+
+  keymaps.bindKeymapWithCommand(
+    keymaps.moveDown.common!,
+    (state: any, dispatch) => {
+      const mentionsPlugin = pluginKey.getState(state) as MentionsState;
+      if (!mentionsPlugin.queryActive) {
+        return false;
+      }
+
+      return mentionsPlugin.onSelectNext();
+    },
+    list,
+  );
+
+  keymaps.bindKeymapWithCommand(
+    keymaps.enter.common!,
+    (state: any, dispatch) => {
+      const mentionsPlugin = pluginKey.getState(state) as MentionsState;
+      if (!mentionsPlugin.queryActive) {
+        return false;
+      }
+
+      return mentionsPlugin.onSelectCurrent();
+    },
+    list,
+  );
+
+  keymaps.bindKeymapWithCommand(
+    keymaps.insertNewLine.common!,
+    (state: any, dispatch) => {
+      const mentionsPlugin = pluginKey.getState(state) as MentionsState;
+      if (!mentionsPlugin.queryActive) {
+        return false;
+      }
+
+      mentionsPlugin.onSelectCurrent();
       return false;
-    }
+    },
+    list,
+  );
 
-    return mentionsPlugin.onSelectPrevious();
-  }, list);
+  keymaps.bindKeymapWithCommand(
+    keymaps.tab.common!,
+    (state: any, dispatch) => {
+      const mentionsPlugin = pluginKey.getState(state) as MentionsState;
+      if (!mentionsPlugin.queryActive) {
+        return false;
+      }
 
-  keymaps.bindKeymapWithCommand(keymaps.moveDown.common!, (state: any, dispatch) => {
-    const mentionsPlugin = pluginKey.getState(state) as MentionsState;
-    if (!mentionsPlugin.queryActive) {
-      return false;
-    }
+      return mentionsPlugin.onSelectCurrent();
+    },
+    list,
+  );
 
-    return mentionsPlugin.onSelectNext();
-  }, list);
+  keymaps.bindKeymapWithCommand(
+    keymaps.escape.common!,
+    (state: any, dispatch) => {
+      const mentionsPlugin = pluginKey.getState(state) as MentionsState;
+      if (!mentionsPlugin.queryActive) {
+        return false;
+      }
 
-  keymaps.bindKeymapWithCommand(keymaps.enter.common!, (state: any, dispatch) => {
-    const mentionsPlugin = pluginKey.getState(state) as MentionsState;
-    if (!mentionsPlugin.queryActive) {
-      return false;
-    }
+      return mentionsPlugin.dismiss();
+    },
+    list,
+  );
 
-    return mentionsPlugin.onSelectCurrent();
-  }, list);
+  keymaps.bindKeymapWithCommand(
+    keymaps.space.common!,
+    (state: any, dispatch) => {
+      const mentionsPlugin = pluginKey.getState(state) as MentionsState;
+      if (!mentionsPlugin.queryActive) {
+        return false;
+      }
 
-  keymaps.bindKeymapWithCommand(keymaps.insertNewLine.common!, (state: any, dispatch) => {
-    const mentionsPlugin = pluginKey.getState(state) as MentionsState;
-    if (!mentionsPlugin.queryActive) {
-      return false;
-    }
-
-    mentionsPlugin.onSelectCurrent();
-    return false;
-  }, list);
-
-  keymaps.bindKeymapWithCommand(keymaps.tab.common!, (state: any, dispatch) => {
-    const mentionsPlugin = pluginKey.getState(state) as MentionsState;
-    if (!mentionsPlugin.queryActive) {
-      return false;
-    }
-
-    return mentionsPlugin.onSelectCurrent();
-  }, list);
-
-  keymaps.bindKeymapWithCommand(keymaps.escape.common!, (state: any, dispatch) => {
-    const mentionsPlugin = pluginKey.getState(state) as MentionsState;
-    if (!mentionsPlugin.queryActive) {
-      return false;
-    }
-
-    return mentionsPlugin.dismiss();
-  }, list);
-
-  keymaps.bindKeymapWithCommand(keymaps.space.common!, (state: any, dispatch) => {
-    const mentionsPlugin = pluginKey.getState(state) as MentionsState;
-    if (!mentionsPlugin.queryActive) {
-      return false;
-    }
-
-    return mentionsPlugin.trySelectCurrent();
-  }, list);
+      return mentionsPlugin.trySelectCurrent();
+    },
+    list,
+  );
 
   return keymap(list);
 }

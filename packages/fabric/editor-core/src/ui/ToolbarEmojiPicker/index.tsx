@@ -37,7 +37,7 @@ export interface State {
 /**
  * Checks if an element is detached (i.e. not in the current document)
  */
-const isDetachedElement = (el) => !document.contains(el);
+const isDetachedElement = el => !document.contains(el);
 
 export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   private pickerRef: ReactElement<any>;
@@ -82,12 +82,12 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     }
   }
 
-  handleEscape = (e) => {
+  handleEscape = e => {
     // ESC key pressed
     if (this.state.isOpen && (e.which === 27 || e.keyCode === 27)) {
       this.close();
     }
-  }
+  };
 
   private setPluginState(props: Props) {
     const { editorView, pluginKey } = props;
@@ -102,20 +102,20 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
       this.pluginState = pluginState;
       pluginState.subscribe(this.handlePluginStateChange);
       this.setState({
-        disabled: !pluginState.isEnabled()
+        disabled: !pluginState.isEnabled(),
       });
     }
   }
 
   private handlePluginStateChange = (pluginState: EmojiState) => {
     this.setState({
-      disabled: !pluginState.isEnabled()
+      disabled: !pluginState.isEnabled(),
     });
-  }
+  };
 
   private handleButtonRef = (ref): void => {
     this.buttonRef = ref ? ref : null;
-  }
+  };
 
   private onPickerRef = (ref: any) => {
     if (ref) {
@@ -124,35 +124,42 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
       document.removeEventListener('click', this.handleClickOutside);
     }
     this.pickerRef = ref;
-  }
+  };
 
   private close = () => {
     this.setState({
       isOpen: false,
     });
-  }
+  };
 
   private toggleOpen = () => {
     const { isOpen } = this.state;
     this.setState({
       isOpen: !isOpen,
     });
-  }
+  };
 
-  private handleClickOutside = (e) => {
+  private handleClickOutside = e => {
     const picker = ReactDOM.findDOMNode(this.pickerRef);
     // Ignore click events for detached elements.
     // Workaround for FS-1322 - where two onClicks fire - one when the upload button is
     // still in the document, and one once it's detached. Does not always occur, and
     // may be a side effect of a react render optimisation
-    if (!picker || (!isDetachedElement(e.target) && !picker.contains(e.target))) {
+    if (
+      !picker ||
+      (!isDetachedElement(e.target) && !picker.contains(e.target))
+    ) {
       this.close();
     }
-  }
+  };
 
   private renderPopup() {
     const { disabled, isOpen, button } = this.state;
-    const { popupsMountPoint, popupsBoundariesElement, emojiProvider } = this.props;
+    const {
+      popupsMountPoint,
+      popupsBoundariesElement,
+      emojiProvider,
+    } = this.props;
     if (disabled || !isOpen || !button) {
       return null;
     }
@@ -177,10 +184,14 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
 
   render() {
     const { editorWidth, isDisabled } = this.props;
-    const { isOpen, disabled }  = this.state;
+    const { isOpen, disabled } = this.state;
     const toolbarButton = (
       <ToolbarButton
-        spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
+        spacing={
+          editorWidth && editorWidth > EditorWidth.BreakPoint6
+            ? 'default'
+            : 'none'
+        }
         selected={isOpen}
         disabled={disabled || isDisabled}
         onClick={this.toggleOpen}
@@ -192,7 +203,10 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     );
     return (
       <OuterContainer
-        width={editorWidth && (editorWidth > EditorWidth.BreakPoint6 ? 'large' : 'small')}
+        width={
+          editorWidth &&
+          (editorWidth > EditorWidth.BreakPoint6 ? 'large' : 'small')
+        }
       >
         {toolbarButton}
         {this.renderPopup()}
@@ -208,5 +222,5 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
       return true;
     }
     return false;
-  }
+  };
 }

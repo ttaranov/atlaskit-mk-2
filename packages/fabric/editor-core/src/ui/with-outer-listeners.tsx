@@ -10,8 +10,13 @@ export interface WithOutsideClickProps {
 }
 
 // tslint:disable:next-line variable-name
-export default function withOuterListeners<P>(Component: ComponentClass<P> | StatelessComponent<P>): ComponentClass<P & WithOutsideClickProps> {
-  return class WithOutsideClick extends PureComponent<P & WithOutsideClickProps, {}> {
+export default function withOuterListeners<P>(
+  Component: ComponentClass<P> | StatelessComponent<P>,
+): ComponentClass<P & WithOutsideClickProps> {
+  return class WithOutsideClick extends PureComponent<
+    P & WithOutsideClickProps,
+    {}
+  > {
     componentDidMount() {
       if (this.props.handleClickOutside) {
         document.addEventListener('click', this.handleClick, false);
@@ -32,24 +37,25 @@ export default function withOuterListeners<P>(Component: ComponentClass<P> | Sta
       }
     }
 
-    handleClick = (evt) => {
+    handleClick = evt => {
       const domNode = ReactDOM.findDOMNode(this); // eslint-disable-line react/no-find-dom-node
 
-      if (!domNode || (evt.target instanceof Node && !domNode.contains(evt.target))) {
+      if (
+        !domNode ||
+        (evt.target instanceof Node && !domNode.contains(evt.target))
+      ) {
         (this.props.handleClickOutside as SimpleEventHandler)();
       }
-    }
+    };
 
-    handleKeydown = (evt) => {
+    handleKeydown = evt => {
       if (evt.code === 'Escape') {
         (this.props.handleEscapeKeydown as SimpleEventHandler)();
       }
-    }
+    };
 
     render() {
-      return (
-        <Component {...this.props as any} />
-      );
+      return <Component {...this.props as any} />;
     }
   };
 }

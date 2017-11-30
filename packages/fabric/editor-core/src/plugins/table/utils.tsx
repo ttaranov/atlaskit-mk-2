@@ -13,35 +13,42 @@ export interface TableRelativePosition {
   to: number;
 }
 
-export const getColumnPos = (column, tableNode: Node): TableRelativePosition => {
+export const getColumnPos = (
+  column,
+  tableNode: Node,
+): TableRelativePosition => {
   const map = TableMap.get(tableNode);
   const from = map.positionAt(0, column, tableNode);
   const to = map.positionAt(map.height - 1, column, tableNode);
-  return {from, to};
+  return { from, to };
 };
 
 export const getRowPos = (row, tableNode: Node): TableRelativePosition => {
   const map = TableMap.get(tableNode);
   const from = map.positionAt(row, 0, tableNode);
   const to = map.positionAt(row, map.width - 1, tableNode);
-  return {from, to};
+  return { from, to };
 };
 
 export const getTablePos = (tableNode: Node): TableRelativePosition => {
   const map = TableMap.get(tableNode);
   const from = map.positionAt(0, 0, tableNode);
   const to = map.positionAt(map.height - 1, map.width - 1, tableNode);
-  return {from, to};
+  return { from, to };
 };
 
-export const createTableNode = (rows: number, columns: number, schema: Schema): Node => {
+export const createTableNode = (
+  rows: number,
+  columns: number,
+  schema: Schema,
+): Node => {
   const { table, tableRow, tableCell, tableHeader } = schema.nodes;
   const rowNodes: Node[] = [];
 
-  for (let i = 0; i < rows; i ++) {
+  for (let i = 0; i < rows; i++) {
     const cell = i === 0 ? tableHeader : tableCell;
     const cellNodes: Node[] = [];
-    for (let j = 0; j < columns; j ++) {
+    for (let j = 0; j < columns; j++) {
       cellNodes.push(cell.createAndFill()!);
     }
     rowNodes.push(tableRow.create(undefined, Fragment.from(cellNodes)));
@@ -58,7 +65,10 @@ export interface SelectedCells {
   head: number;
 }
 
-export const getSelectedColumn = (state: EditorState, map: TableMap): SelectedCells => {
+export const getSelectedColumn = (
+  state: EditorState,
+  map: TableMap,
+): SelectedCells => {
   const { $anchorCell, $headCell } = state.selection as any; // TODO: Fix types (ED-2987)
   const start = $anchorCell.start(-1);
   const anchor = map.colCount($anchorCell.pos - start);
@@ -96,18 +106,19 @@ export const containsTableHeader = (view: EditorView, table: Node): boolean => {
   return headerPresent;
 };
 
-export const createControlsDecoration = (pluginState: TableState, editorView: EditorView): Decoration[] => {
+export const createControlsDecoration = (
+  pluginState: TableState,
+  editorView: EditorView,
+): Decoration[] => {
   const node = document.createElement('div');
   node.className = 'table-decoration';
 
   ReactDOM.render(
     <TableFloatingControls pluginState={pluginState} editorView={editorView} />,
-    node
+    node,
   );
 
   const pos = tableStartPos(editorView.state) || 1;
 
-  return [
-    Decoration.widget(pos, node)
-  ];
+  return [Decoration.widget(pos, node)];
 };

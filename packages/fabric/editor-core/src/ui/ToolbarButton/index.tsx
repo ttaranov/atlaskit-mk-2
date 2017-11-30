@@ -56,7 +56,9 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
       >
         {button}
       </Tooltip>
-    ) : button;
+    ) : (
+      button
+    );
   }
 
   private handleClick = () => {
@@ -65,5 +67,5 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
     if (!disabled && onClick) {
       onClick();
     }
-  }
+  };
 }

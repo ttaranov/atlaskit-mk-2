@@ -9,7 +9,9 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
 
   if (schema.nodes.emoji && schema.marks.emojiQuery) {
     const regex = new RegExp(`(^|[\\s\(${leafNodeReplacementCharacter}]):$`);
-    const emojiQueryRule = createInputRule(regex, (state, match, start, end): Transaction | undefined => {
+    const emojiQueryRule = createInputRule(regex, (state, match, start, end):
+      | Transaction
+      | undefined => {
       const emojisState = stateKey.getState(state) as EmojiState;
 
       if (!emojisState.emojiProvider) {
@@ -23,10 +25,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
       const mark = schema.mark('emojiQuery');
       const { tr } = state;
 
-      const emojiText = schema.text(
-        ':',
-        [mark]
-      );
+      const emojiText = schema.text(':', [mark]);
       return tr.replaceSelectionWith(emojiText, false);
     });
 

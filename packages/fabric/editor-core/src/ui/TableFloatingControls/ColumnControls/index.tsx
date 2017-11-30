@@ -17,12 +17,19 @@ export interface Props {
   isSelected: (column: number) => boolean;
   selectColumn: (column: number) => void;
   insertColumn: (column: number) => void;
-  hoverColumn: (column: number, state: EditorState, dispatch: (tr: Transaction) => void) => void;
-  resetHoverSelection: (state: EditorState, dispatch: (tr: Transaction) => void) => void;
+  hoverColumn: (
+    column: number,
+    state: EditorState,
+    dispatch: (tr: Transaction) => void,
+  ) => void;
+  resetHoverSelection: (
+    state: EditorState,
+    dispatch: (tr: Transaction) => void,
+  ) => void;
 }
 
 export default class ColumnControls extends Component<Props, any> {
-  render () {
+  render() {
     const { editorView } = this.props;
     const cols = this.props.tableElement.querySelector('tr')!.children;
     const nodes: any = [];
@@ -38,8 +45,15 @@ export default class ColumnControls extends Component<Props, any> {
           {/* tslint:disable:jsx-no-lambda */}
           <HeaderButton
             onClick={() => this.props.selectColumn(i)}
-            onMouseOver={() => this.props.hoverColumn(i, editorView.state, editorView.dispatch)}
-            onMouseOut={() => this.props.resetHoverSelection(editorView.state, editorView.dispatch)}
+            onMouseOver={() =>
+              this.props.hoverColumn(i, editorView.state, editorView.dispatch)
+            }
+            onMouseOut={() =>
+              this.props.resetHoverSelection(
+                editorView.state,
+                editorView.dispatch,
+              )
+            }
           />
           {/* tslint:enable:jsx-no-lambda */}
           <InsertColumnButton
@@ -47,7 +61,7 @@ export default class ColumnControls extends Component<Props, any> {
             index={i + 1}
             lineMarkerHeight={tableHeight + toolbarSize}
           />
-        </ColumnControlsButtonWrap>
+        </ColumnControlsButtonWrap>,
       );
     }
 

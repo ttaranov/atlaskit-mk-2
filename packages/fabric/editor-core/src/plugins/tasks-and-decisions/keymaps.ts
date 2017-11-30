@@ -1,15 +1,23 @@
 import { uuid } from '@atlaskit/editor-common';
 import { keymap } from 'prosemirror-keymap';
 import { ResolvedPos, Schema } from 'prosemirror-model';
-import { EditorState, TextSelection, Transaction, Plugin } from 'prosemirror-state';
+import {
+  EditorState,
+  TextSelection,
+  Transaction,
+  Plugin,
+} from 'prosemirror-state';
 export function keymapPlugin(schema: Schema): Plugin | undefined {
-
-  const deleteCurrentItem = ($from: ResolvedPos, tr: Transaction ) => {
+  const deleteCurrentItem = ($from: ResolvedPos, tr: Transaction) => {
     return tr.delete($from.before($from.depth) - 1, $from.end($from.depth) + 1);
   };
 
   const deleteList = ($from: ResolvedPos, tr: Transaction, content: any) => {
-    return tr.replaceWith($from.start($from.depth - 1) - 1, $from.end($from.depth - 1) + 1, content);
+    return tr.replaceWith(
+      $from.start($from.depth - 1) - 1,
+      $from.end($from.depth - 1) + 1,
+      content,
+    );
   };
 
   /*
@@ -17,7 +25,7 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
    * eg. behaviour for backspace and enter etc. So we need to implement it.
    */
   const keymaps = {
-    'Backspace': (state: EditorState, dispatch) => {
+    Backspace: (state: EditorState, dispatch) => {
       const { selection, schema: { nodes }, tr } = state;
       const { decisionList, decisionItem, taskList, taskItem } = nodes;
 
@@ -33,7 +41,9 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
       }
 
       const nodeType = $from.node($from.depth).type;
-      const isFirstItemInList = (nodeType === decisionItem || nodeType === taskItem) && $from.index($from.depth - 1) === 0;
+      const isFirstItemInList =
+        (nodeType === decisionItem || nodeType === taskItem) &&
+        $from.index($from.depth - 1) === 0;
 
       // Don't do anything if the cursor isn't at the begining of the node.
       if ($from.parentOffset !== 0) {
@@ -52,8 +62,10 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
 
       const previousNodeType = previousPos.pos > 0 && previousPos.node(1).type;
       const parentNodeType = $from.node(1).type;
-      const previousNodeIsList = (previousNodeType === decisionList || previousNodeType === taskList);
-      const parentNodeIsList = (parentNodeType === decisionList || parentNodeType === taskList);
+      const previousNodeIsList =
+        previousNodeType === decisionList || previousNodeType === taskList;
+      const parentNodeIsList =
+        parentNodeType === decisionList || parentNodeType === taskList;
 
       if (previousNodeIsList && !parentNodeIsList) {
         const content = $from.node($from.depth).content;
@@ -61,40 +73,41 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
         deleteCurrentItem($from, tr)
           .insert(previousPos.pos - 1, content)
           .setSelection(new TextSelection(tr.doc.resolve(previousPos.pos - 1)))
-          .scrollIntoView()
-        ;
+          .scrollIntoView();
 
         dispatch(tr);
 
         return true;
       } else if (isFirstItemInList) {
-        const content = schema.nodes.paragraph.create({}, $from.node($from.depth).content);
+        const content = schema.nodes.paragraph.create(
+          {},
+          $from.node($from.depth).content,
+        );
         const insertPos = previousPos.pos > 0 ? previousPos.pos + 1 : 0;
         const isOnlyChild = $from.node($from.depth - 1).childCount === 1;
 
         if (!isOnlyChild) {
-          deleteCurrentItem($from, tr).insert(insertPos, content)
-          ;
+          deleteCurrentItem($from, tr).insert(insertPos, content);
         } else {
           deleteList($from, tr, content);
         }
 
         tr
           .setSelection(new TextSelection(tr.doc.resolve(insertPos + 1)))
-          .scrollIntoView()
-        ;
+          .scrollIntoView();
 
         dispatch(tr);
 
         return true;
       }
     },
-    'Enter': (state: EditorState, dispatch) => {
+    Enter: (state: EditorState, dispatch) => {
       const { selection, tr, schema: { nodes } } = state;
       const { $from } = selection;
       const node = $from.node($from.depth);
       const nodeType = node && node.type;
-      const nodeIsTaskOrDecisionItem = nodeType === nodes.decisionItem || nodeType === nodes.taskItem;
+      const nodeIsTaskOrDecisionItem =
+        nodeType === nodes.decisionItem || nodeType === nodes.taskItem;
       const isEmpty = node && node.textContent.length === 0;
 
       if (nodeIsTaskOrDecisionItem) {
@@ -102,7 +115,9 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
         const end = $from.end($from.depth - 1) + 1;
 
         if (!isEmpty) {
-          tr.split($from.pos, 1, [{type: nodeType, attrs: { localId: uuid.generate() }}]);
+          tr.split($from.pos, 1, [
+            { type: nodeType, attrs: { localId: uuid.generate() } },
+          ]);
           dispatch(tr);
           return true;
         }
@@ -123,7 +138,7 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
         }
       }
       return false;
-    }
+    },
   };
   return keymap(keymaps);
 }

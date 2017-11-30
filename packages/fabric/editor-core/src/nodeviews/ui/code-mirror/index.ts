@@ -4,7 +4,7 @@ import { CodeBlockState, codeBlockStateKey } from '../../../plugins';
 import codeMirrorPlugin from './codeMirrorPlugin';
 import './styles';
 
-class CodeBlock implements NodeView  {
+class CodeBlock implements NodeView {
   private node: Node;
   private view: EditorView;
   private cm: any;
@@ -16,7 +16,12 @@ class CodeBlock implements NodeView  {
     this.node = node;
     this.view = view;
     this.pluginState = codeBlockStateKey.getState(this.view.state);
-    this.codeMirrorPlugin = new codeMirrorPlugin(node, view, getPos, this.pluginState);
+    this.codeMirrorPlugin = new codeMirrorPlugin(
+      node,
+      view,
+      getPos,
+      this.pluginState,
+    );
     this.uniqueId = this.node.attrs['uniqueId'] || generateId();
     this.node.attrs['uniqueId'] = this.uniqueId;
     this.node.attrs['isCodeMirror'] = true;
@@ -33,13 +38,13 @@ class CodeBlock implements NodeView  {
     if (language && uniqueId === this.uniqueId) {
       this.codeMirrorPlugin.updateLanguage(language);
     }
-  }
+  };
 
   private focusCodeEditor = (uniqueId: string) => {
     if (uniqueId === this.uniqueId) {
       this.codeMirrorPlugin.focusCodeEditor();
     }
-  }
+  };
 
   update(node: Node): boolean {
     if (!this.node || node.type !== this.node.type) {
@@ -73,8 +78,9 @@ class CodeBlock implements NodeView  {
 
 function generateId(): string {
   let text = '';
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for(let i = 0; i < 5; i++ ) {
+  const possible =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  for (let i = 0; i < 5; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return text;

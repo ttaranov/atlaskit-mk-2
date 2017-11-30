@@ -22,7 +22,7 @@ export interface NodeViewConfig {
 export interface EditorConfig {
   nodes: NodeConfig[];
   marks: MarkConfig[];
-  pmPlugins: { rank: number; plugin: PMPluginFactory; }[];
+  pmPlugins: { rank: number; plugin: PMPluginFactory }[];
   contentComponents: UIComponentFactory[];
   primaryToolbarComponents: UIComponentFactory[];
   secondaryToolbarComponents: UIComponentFactory[];

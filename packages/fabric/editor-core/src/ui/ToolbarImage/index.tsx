@@ -41,12 +41,12 @@ export default class ToolbarImage extends PureComponent<Props, State> {
 
   private handlePluginStateChange = (pluginState: ImageUploadState) => {
     this.setState({
-      disabled: !pluginState.enabled
+      disabled: !pluginState.enabled,
     });
-  }
+  };
 
   @analytics('atlassian.editor.image.button')
   private handleInsertImage = () => {
     return this.props.pluginState.handleImageUpload(this.props.editorView);
-  }
+  };
 }
