@@ -29,7 +29,7 @@
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": ">=8.4.1 <=11",
+    "@atlaskit/media-core": ">=8.4.1 <=12",
     "react": "^15.6.1"
   },
   "devDependencies": {
