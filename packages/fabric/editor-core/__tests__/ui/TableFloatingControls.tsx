@@ -31,8 +31,8 @@ import { selectTable } from '../../src/editor/plugins/table/actions';
 import {
   isTableSelected,
   isRowSelected,
-  isColumnSelected
- } from '../../src/editor/plugins/table/utils';
+  isColumnSelected,
+} from '../../src/editor/plugins/table/utils';
 
 describe('TableFloatingControls', () => {
   const event = createEvent('event');
@@ -98,7 +98,9 @@ describe('TableFloatingControls', () => {
   describe('CornerControls', () => {
     describe('when isTableSelected is true', () => {
       it('should render selected header', () => {
-        const { editorView, plugin, pluginState } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
+        const { editorView, plugin, pluginState } = editor(
+          doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
+        );
         const floatingControls = mount(
           <TableFloatingControls
             isTableSelected={isTableSelected}
@@ -106,11 +108,15 @@ describe('TableFloatingControls', () => {
             isColumnSelected={isColumnSelected}
             pluginState={pluginState}
             editorView={editorView}
-          />
+          />,
         );
         plugin.props.handleDOMEvents!.focus(editorView, event);
         selectTable(editorView.state, editorView.dispatch);
-        expect(floatingControls.find(CornerControls).prop('isSelected')(editorView.state)).toBe(true);
+        expect(
+          floatingControls.find(CornerControls).prop('isSelected')(
+            editorView.state,
+          ),
+        ).toBe(true);
         floatingControls.unmount();
       });
     });
@@ -124,7 +130,9 @@ describe('TableFloatingControls', () => {
           for (let i = 1; i < column; i++) {
             nodes.push(tdEmpty);
           }
-          const { editorView, plugin, pluginState } = editor(doc(p('text'), table(tr(...nodes))));
+          const { editorView, plugin, pluginState } = editor(
+            doc(p('text'), table(tr(...nodes))),
+          );
           const floatingControls = mount(
             <TableFloatingControls
               isTableSelected={isTableSelected}
@@ -132,7 +140,7 @@ describe('TableFloatingControls', () => {
               isColumnSelected={isColumnSelected}
               pluginState={pluginState}
               editorView={editorView}
-            />
+            />,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
           expect(floatingControls.find(ColumnControlsButtonWrap)).toHaveLength(
@@ -146,21 +154,23 @@ describe('TableFloatingControls', () => {
     [0, 1, 2].forEach(column => {
       describe(`when HeaderButton in column ${column + 1} is clicked`, () => {
         it(`should call selectColumn(${column})`, () => {
-          const { editorView, plugin, pluginState } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
-          const spy =  jest.fn();
+          const { editorView, plugin, pluginState } = editor(
+            doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
+          );
+          const spy = jest.fn();
           let calledWithArgs: Array<any>;
           spy.mockImplementation((...args) => {
             calledWithArgs = args;
           });
           const floatingControls = mount(
             <TableFloatingControls
-              selectColumn={spy}
+              selectColumn={col => () => spy(col)}
               isTableSelected={isTableSelected}
               isRowSelected={isRowSelected}
               isColumnSelected={isColumnSelected}
               pluginState={pluginState}
               editorView={editorView}
-            />
+            />,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
           floatingControls
@@ -185,7 +195,9 @@ describe('TableFloatingControls', () => {
           for (let i = 1; i < row; i++) {
             rows.push(tr(tdEmpty));
           }
-          const { editorView, plugin, pluginState } = editor(doc(p('text'), table(...rows)));
+          const { editorView, plugin, pluginState } = editor(
+            doc(p('text'), table(...rows)),
+          );
           const floatingControls = mount(
             <TableFloatingControls
               isTableSelected={isTableSelected}
@@ -193,7 +205,7 @@ describe('TableFloatingControls', () => {
               isColumnSelected={isColumnSelected}
               pluginState={pluginState}
               editorView={editorView}
-            />
+            />,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
           expect(floatingControls.find(RowControlsButtonWrap)).toHaveLength(
@@ -207,24 +219,31 @@ describe('TableFloatingControls', () => {
     [0, 1, 2].forEach(row => {
       describe(`when HeaderButton in row ${row + 1} is clicked`, () => {
         it(`should call selectRow(${row})`, () => {
-          const { editorView, plugin, pluginState } = editor(doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))));
-          const spy =  jest.fn();
+          const { editorView, plugin, pluginState } = editor(
+            doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))),
+          );
+          const spy = jest.fn();
           let calledWithArgs: Array<any>;
           spy.mockImplementation((...args) => {
             calledWithArgs = args;
           });
           const floatingControls = mount(
             <TableFloatingControls
-              selectRow={spy}
+              selectRow={row => () => spy(row)}
               isTableSelected={isTableSelected}
               isRowSelected={isRowSelected}
               isColumnSelected={isColumnSelected}
               pluginState={pluginState}
               editorView={editorView}
-            />
+            />,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          floatingControls.find(RowControlsButton).at(row).find('button').first().simulate('click');
+          floatingControls
+            .find(RowControlsButton)
+            .at(row)
+            .find('button')
+            .first()
+            .simulate('click');
           expect(spy).toHaveBeenCalledTimes(1);
           expect(calledWithArgs![0]).toEqual(row);
           floatingControls.unmount();

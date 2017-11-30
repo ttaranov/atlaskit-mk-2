@@ -19,7 +19,10 @@ import {
   tdEmpty,
   tdCursor,
 } from '@atlaskit/editor-test-helpers';
-import { selectRow, selectColumn } from '../../src/editor/plugins/table/actions';
+import {
+  selectRow,
+  selectColumn,
+} from '../../src/editor/plugins/table/actions';
 
 describe('TableFloatingToolbar', () => {
   const event = createEvent('event');
@@ -72,7 +75,7 @@ describe('TableFloatingToolbar', () => {
         doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
       );
       plugin.props.handleDOMEvents!.focus(editorView, event);
-      selectColumn(0, editorView.state, editorView.dispatch);
+      selectColumn(0)(editorView.state, editorView.dispatch);
       const floatingToolbar = mount(
         <TableFloatingToolbar
           pluginState={pluginState}
@@ -90,7 +93,7 @@ describe('TableFloatingToolbar', () => {
         doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
       );
       plugin.props.handleDOMEvents!.focus(editorView, event);
-      selectRow(0, editorView.state, editorView.dispatch);
+      selectRow(0)(editorView.state, editorView.dispatch);
       const floatingToolbar = mount(
         <TableFloatingToolbar
           pluginState={pluginState}
@@ -108,7 +111,7 @@ describe('TableFloatingToolbar', () => {
         doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
       );
       plugin.props.handleDOMEvents!.focus(editorView, event);
-      selectRow(0, editorView.state, editorView.dispatch);
+      selectRow(0)(editorView.state, editorView.dispatch);
       const floatingToolbar = mount(
         <TableFloatingToolbar
           pluginState={pluginState}

@@ -1,11 +1,12 @@
 import { Fragment, Node as PmNode, Schema, Slice } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { getFirstSelectedCellPos, tableStartPos } from './position';
 
 export const createTableNode = (
   rows: number,
   columns: number,
-  schema: Schema
+  schema: Schema,
 ): PmNode => {
   const { table, tableRow, tableCell, tableHeader } = schema.nodes;
   const rowNodes: PmNode[] = [];
@@ -67,7 +68,7 @@ export const containsTable = (state: EditorState, slice: Slice): boolean => {
 
 export const containsTableHeader = (
   state: EditorState,
-  table: PmNode
+  table: PmNode,
 ): boolean => {
   const { tableHeader } = state.schema.nodes;
   let contains = false;
@@ -81,11 +82,11 @@ export const containsTableHeader = (
 
 export const getFirstSelectedCellElement = (
   state: EditorState,
-  docView: any
+  view: EditorView,
 ): HTMLElement | undefined => {
-  const offset = getFirstSelectedCellPos(state);
-  if (offset) {
-    const { node } = docView.domFromPos(offset);
+  const pos = getFirstSelectedCellPos(state);
+  if (pos) {
+    const { node } = view.domAtPos(pos);
     if (node) {
       return node as HTMLElement;
     }
@@ -94,11 +95,11 @@ export const getFirstSelectedCellElement = (
 
 export const getTableElement = (
   state: EditorState,
-  docView: any
+  view: EditorView,
 ): HTMLElement | undefined => {
-  const offset = tableStartPos(state);
-  if (offset) {
-    const { node } = docView.domFromPos(offset);
+  const pos = tableStartPos(state);
+  if (pos) {
+    const { node } = view.domAtPos(pos);
     if (node) {
       return node.parentNode as HTMLElement;
     }

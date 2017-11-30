@@ -223,13 +223,13 @@ export class TableState {
     this.editorFocused = editorFocused;
   }
 
-  update(docView: any, domEvent: boolean = false) {
+  update(domEvent: boolean = false) {
     let dirty = this.updateSelection();
     let controlsDirty = dirty;
     const { state } = this.view;
     const cellSelection = getCellSelection(state);
 
-    const tableElement = getTableElement(state, docView);
+    const tableElement = getTableElement(state, this.view);
     if ((domEvent && tableElement) || tableElement !== this.tableElement) {
       this.tableElement = tableElement;
       this.domEvent = domEvent;
@@ -251,7 +251,7 @@ export class TableState {
         : false;
 
     const cellElement = toolbarVisible
-      ? getFirstSelectedCellElement(state, docView)
+      ? getFirstSelectedCellElement(state, this.view)
       : undefined;
     if (cellElement !== this.cellElement) {
       this.cellElement = cellElement;
@@ -379,17 +379,14 @@ export const plugin = (pluginConfig?: PluginConfig) =>
       },
     },
     key: stateKey,
-    view: (editorView: EditorView & { docView?: any }) => {
+    view: (editorView: EditorView) => {
       const pluginState: TableState = stateKey.getState(editorView.state);
       pluginState.setView(editorView);
       pluginState.keymapHandler = keymapHandler(pluginState);
 
       return {
-        update: (
-          view: EditorView & { docView?: any },
-          prevState: EditorState,
-        ) => {
-          pluginState.update(view.docView);
+        update: (view: EditorView, prevState: EditorState) => {
+          pluginState.update();
         },
       };
     },
@@ -404,16 +401,16 @@ export const plugin = (pluginConfig?: PluginConfig) =>
         return false;
       },
       handleDOMEvents: {
-        focus(view: EditorView & { docView?: any }, event) {
+        focus(view: EditorView, event) {
           const pluginState: TableState = stateKey.getState(view.state);
           pluginState.updateEditorFocused(true);
-          pluginState.update(view.docView, true);
+          pluginState.update(true);
           return false;
         },
-        blur(view: EditorView & { docView?: any }, event) {
+        blur(view: EditorView, event) {
           const pluginState: TableState = stateKey.getState(view.state);
           pluginState.updateEditorFocused(false);
-          pluginState.update(view.docView, true);
+          pluginState.update(true);
           resetHoverSelection(view.state, view.dispatch);
           return false;
         },

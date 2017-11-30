@@ -1,7 +1,5 @@
-import { expect } from 'chai';
 import {
   createEvent,
-  chaiPlugin,
   doc,
   p,
   makeEditor,
@@ -16,19 +14,17 @@ import {
   hoverColumn,
   hoverRow,
   hoverTable,
-} from '../../../../../src/editor/plugins/table/actions';
-import { tableStartPos } from '../../../../../src/editor/plugins/table/utils';
+} from '../../../src/editor/plugins/table/actions';
+import { tableStartPos } from '../../../src/editor/plugins/table/utils';
 import hoverSelectionPlugin, {
   pluginKey as hoverPluginKey,
-} from '../../../../../src/editor/plugins/table/hover-selection-plugin';
-import tablePlugins, { TableState } from '../../../../../src/plugins/table';
+} from '../../../src/editor/plugins/table/hover-selection-plugin';
+import tablePlugins, { TableState } from '../../../src/plugins/table';
 import {
   getColumnPos,
   getRowPos,
   getTablePos,
-} from '../../../../../src/editor/plugins/table/utils';
-
-chai.use(chaiPlugin);
+} from '../../../src/editor/plugins/table/utils';
 
 describe('table hover selection plugin', () => {
   const event = createEvent('event');
@@ -60,7 +56,7 @@ describe('table hover selection plugin', () => {
             const set = hoverPluginKey.getState(editorView.state);
             const deco = set.find(from + offset, to + offset);
             // selection spans 2 cells in the selected column (because we have 2 rows in the table)
-            expect(deco).to.have.length(2);
+            expect(deco).toHaveLength(2);
           });
         });
       });
@@ -89,7 +85,7 @@ describe('table hover selection plugin', () => {
             const set = hoverPluginKey.getState(editorView.state);
             const deco = set.find(from + offset, to + offset);
             // selection spans 2 cells in the selected row
-            expect(deco).to.have.length(2);
+            expect(deco).toHaveLength(2);
           });
         });
       });
@@ -116,11 +112,11 @@ describe('table hover selection plugin', () => {
         const set = hoverPluginKey.getState(editorView.state);
         const deco = set.find(from + offset, to + offset);
         // selection spans all 6 cells
-        expect(deco).to.have.length(6);
+        expect(deco).toHaveLength(6);
 
         // reset hover selection plugin to an empty DecorationSet
         resetHoverSelection(editorView.state, editorView.dispatch);
-        expect(hoverPluginKey.getState(editorView.state)).to.equal(
+        expect(hoverPluginKey.getState(editorView.state)).toEqual(
           DecorationSet.empty,
         );
       });
