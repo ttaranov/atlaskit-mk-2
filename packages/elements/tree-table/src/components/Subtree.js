@@ -5,7 +5,6 @@ import RowChildren from './RowChildren';
 import { type DataFunction } from './../types';
 
 type Props = {
-  columnWidths?: Array<string>,
   data: Object,
   getChildrenData: DataFunction,
   hasChildren: boolean,
@@ -47,13 +46,12 @@ export default class Subtree extends PureComponent<Props> {
   }
 
   renderRowChildren() {
-    const { getChildrenData, depth, columnWidths, render } = this.props;
+    const { getChildrenData, depth, render } = this.props;
     const { isExpanded, childrenData } = this.state;
     return (
       isExpanded && (
         <RowChildren
           childrenData={childrenData}
-          columnWidths={columnWidths}
           getChildrenData={getChildrenData}
           isExpanded={isExpanded}
           depth={depth}
@@ -64,12 +62,11 @@ export default class Subtree extends PureComponent<Props> {
   }
 
   render() {
-    const { depth, columnWidths, data, render } = this.props;
+    const { depth, data, render } = this.props;
 
     const rowProps = {
       onExpandToggle: this.handleExpandToggleClick,
       depth,
-      columnWidths,
       data,
       isExpanded: this.state.isExpanded,
     };

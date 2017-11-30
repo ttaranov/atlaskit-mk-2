@@ -7,8 +7,8 @@ export default md`
 
   ${(
     <Example
-      Component={require('../examples/basic').default}
-      source={require('!!raw-loader!../examples/basic')}
+      Component={require('../examples/single-component-no-headers').default}
+      source={require('!!raw-loader!../examples/single-component-no-headers')}
       title="Basic Usage"
     />
   )}

@@ -9,6 +9,12 @@ type Props = {
 
 export default class TreeHeads extends PureComponent<Props> {
   render() {
-    return <TreeRowContainer>{this.props.children}</TreeRowContainer>;
+    return (
+      <TreeRowContainer>
+        {React.Children.map(this.props.children, (head, index) =>
+          React.cloneElement(head, { key: index, index }),
+        )}
+      </TreeRowContainer>
+    );
   }
 }

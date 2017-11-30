@@ -4,7 +4,6 @@ import { TreeRowContainer } from '../styled';
 import Chevron from './Chevron';
 
 type Props = {
-  columnWidths?: Array<string>,
   isExpanded: boolean,
   hasChildren: boolean,
   onExpandToggle: Function,
@@ -14,9 +13,8 @@ type Props = {
 
 export default class RowData extends PureComponent<Props> {
   renderCell(cell, cellIndex) {
-    const { hasChildren, depth, isExpanded, columnWidths } = this.props;
+    const { hasChildren, depth, isExpanded } = this.props;
     const isFirst = cellIndex === 0;
-    const width = (columnWidths && columnWidths[cellIndex]) || '200px'; //`${(1 / columns.length) * 100}%`;
     const indentLevel = isFirst ? depth : 0;
     let cellContent = cell.props.children || [];
     if (isFirst) {
@@ -33,8 +31,8 @@ export default class RowData extends PureComponent<Props> {
       cell,
       {
         key: cellIndex,
+        index: cellIndex,
         indentLevel,
-        width,
       },
       ...cellContent,
     );

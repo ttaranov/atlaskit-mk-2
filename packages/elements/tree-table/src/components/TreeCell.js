@@ -1,8 +1,7 @@
 // @flow
 import React, { PureComponent, type Node } from 'react';
 
-import { type DataFunction } from './../types';
-import { TreeHead as StyledTreeHead } from '../styled';
+import { TreeCell as StyledTreeCell } from '../styled';
 import withColumnWidth from './withColumnWidth';
 
 type Props = {
@@ -13,9 +12,9 @@ type Props = {
 class TreeHead extends PureComponent<Props> {
   render() {
     return (
-      <StyledTreeHead width={this.props.columnWidth}>
+      <StyledTreeCell {...this.props} width={this.props.columnWidth}>
         {this.props.children}
-      </StyledTreeHead>
+      </StyledTreeCell>
     );
   }
 }

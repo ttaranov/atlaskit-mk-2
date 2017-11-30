@@ -2,7 +2,6 @@
 import React from 'react';
 
 import { TreeTable } from '../src';
-
 import staticData from './data-structured-nodes.json';
 
 function treeCellFromProp(propName) {

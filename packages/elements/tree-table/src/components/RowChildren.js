@@ -1,12 +1,11 @@
 // @flow
 
-import React, { PureComponent, type Element } from 'react';
+import React, { PureComponent } from 'react';
 import Subtree from './Subtree';
 
 import { type DataFunction } from './../types';
 
 type Props = {
-  columnWidths?: Array<string>,
   childrenData: Object,
   getChildrenData: DataFunction,
   depth?: number,
@@ -17,7 +16,6 @@ export default class RowChildren extends PureComponent<Props> {
   render() {
     const {
       childrenData = [],
-      columnWidths,
       getChildrenData,
       render,
       depth = 0,
@@ -28,7 +26,6 @@ export default class RowChildren extends PureComponent<Props> {
           <Subtree
             data={childRowData}
             hasChildren={childRowData.hasChildren}
-            columnWidths={columnWidths}
             getChildrenData={getChildrenData}
             depth={depth + 1}
             key={childRowData.id || index}

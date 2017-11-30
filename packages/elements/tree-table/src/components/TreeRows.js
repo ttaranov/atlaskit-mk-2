@@ -5,7 +5,6 @@ import RowChildren from './RowChildren';
 import { type DataFunction } from './../types';
 
 type Props = {
-  columnWidths?: Array<string>,
   children?: Array<Node>,
   data: DataFunction | string,
   render: Function,
@@ -32,12 +31,11 @@ export default class TreeRows extends PureComponent<Props, State> {
 
   render() {
     const { rootRowsData } = this.state;
-    const { data, columnWidths = [], render } = this.props;
+    const { data, render } = this.props;
     const rootRows = (
       <RowChildren
         childrenData={rootRowsData}
         getChildrenData={data}
-        columnWidths={columnWidths}
         render={render}
       />
     );

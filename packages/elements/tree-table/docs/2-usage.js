@@ -3,7 +3,7 @@ import React, { type ComponentType } from 'react';
 import { md } from '@atlaskit/docs';
 // import { colors } from '@atlaskit/theme';
 
-import Flat from '../examples/flat';
+import Flat from '../examples/single-component-flat';
 
 const Example = ({ component: Tag }: { component: ComponentType<*> }) => (
   <div style={{ marginTop: '0.9em' }}>
