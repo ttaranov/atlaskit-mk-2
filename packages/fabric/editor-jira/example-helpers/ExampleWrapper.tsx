@@ -4,10 +4,10 @@ import { pd } from 'pretty-data';
 import Spinner from '@atlaskit/spinner';
 import Editor from '../src';
 
-type Props = {
+export type Props = {
   render(handleChange: (editor: Editor) => void): React.ReactNode;
 };
-type State = {
+export type State = {
   html: string;
   story?: any;
   prettify?: boolean;

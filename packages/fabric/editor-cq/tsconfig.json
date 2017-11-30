@@ -7,6 +7,12 @@
     "./src/**/*.ts",
     "./src/**/*.tsx",
     "./tests/**/*.ts",
-    "./tests/**/*.tsx"
+    "./tests/**/*.tsx",
+    "./docs/**/*.ts",
+    "./docs/**/*.tsx",
+    "./examples/**/*.ts",
+    "./examples/**/*.tsx",
+    "./example-helpers/**/*.ts",
+    "./example-helpers/**/*.tsx"
   ]
 }

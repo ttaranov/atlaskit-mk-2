@@ -19,11 +19,11 @@ export default function PatternsNav({ pathname, patterns }: PatternsNavProps) {
     items: [
       {
         to: '/patterns',
-        title: 'About patterns',
-        icon: <IssuesIcon label="About patterns" />,
+        title: 'Overview',
+        // icon: <IssuesIcon label="About patterns" />,
       },
     ],
   });
 
-  return <div>{renderNav(groups, pathname)}</div>;
+  return <div>{renderNav(groups, { pathname })}</div>;
 }
