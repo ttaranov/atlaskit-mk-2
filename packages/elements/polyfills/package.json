@@ -7,7 +7,8 @@
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
   "files": [
-    "dist"
+    "dist",
+    "*.js"
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
