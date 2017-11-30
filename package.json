@@ -307,7 +307,7 @@
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ],
-    "setupTestFrameworkScriptFile": "<rootDir>jestFrameworkSetup.js"
+    "setupTestFrameworkScriptFile": "<rootDir>/jestFrameworkSetup.js"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [

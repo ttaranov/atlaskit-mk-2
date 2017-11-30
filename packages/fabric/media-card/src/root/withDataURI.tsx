@@ -98,7 +98,7 @@ export const withDataURI = (Component): any => {
     }
 
     updateDataURI(props: WithDataURIProps): void {
-      const { dataURIService, metadata, resizeMode } = props;
+      const { dataURIService, metadata, resizeMode, appearance } = props;
 
       const setDataURI = dataURI => this.setState({ dataURI });
       const clearDataURI = () => this.setState({ dataURI: undefined });
@@ -109,24 +109,20 @@ export const withDataURI = (Component): any => {
         return;
       }
 
-      const isGif = metadata.mimeType === 'image/gif';
-      if (isGif) {
-        dataURIService
-          .fetchOriginalDataUri({ type: 'file', details: metadata })
-          .then(setDataURI, clearDataURI);
-        return;
-      }
-
       const retinaFactor = isRetina() ? 2 : 1;
       const width = this.dataURIWidth(retinaFactor);
       const height = this.dataURIHeight(retinaFactor);
+      const allowAnimated = appearance !== 'small';
 
       dataURIService
         .fetchImageDataUri(
           { type: 'file', details: metadata },
-          width,
-          height,
-          resizeMode,
+          {
+            width,
+            height,
+            mode: resizeMode,
+            allowAnimated,
+          },
         )
         .then(setDataURI, clearDataURI);
     }
