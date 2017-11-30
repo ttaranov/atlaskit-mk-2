@@ -1,12 +1,11 @@
 // @flow
 
 import styled from 'styled-components';
-
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 
 const SpinnerContainer = styled.div`
-  margin-left: ${2 * akGridSizeUnitless}px;
-  width: ${3 * akGridSizeUnitless}px;
+  margin-left: ${2 * gridSize()}px;
+  width: ${3 * gridSize()}px;
 `;
 
 export default SpinnerContainer;

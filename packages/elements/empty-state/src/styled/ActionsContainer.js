@@ -1,14 +1,14 @@
 // @flow
 
 import styled from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 
 const ActionsContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-left: ${5 * akGridSizeUnitless}px;
-  margin-bottom: ${akGridSizeUnitless}px;
+  padding-left: ${5 * gridSize()}px;
+  margin-bottom: ${gridSize()}px;
 `;
 
 export default ActionsContainer;

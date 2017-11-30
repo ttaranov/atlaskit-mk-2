@@ -1,11 +1,15 @@
 // @flow
 
 import styled from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 
-const verticalMarginSize = akGridSizeUnitless * 6;
-const wideContainerWidth = akGridSizeUnitless * 58; // (based on 6 columns and 5 gutters in the 'medium' grid)
-const narrowContainerWidth = akGridSizeUnitless * 38; // (based on 4 columns and 3 gutters in the 'medium' grid)
+const verticalMarginSize = gridSize() * 6;
+
+const columnWidth = gridSize() * 8;
+const gutter = gridSize() * 2;
+
+const wideContainerWidth = columnWidth * 6 + gutter * 5;
+const narrowContainerWidth = columnWidth * 4 + gutter * 3;
 
 const Container = styled.div`
   margin: ${verticalMarginSize}px auto;

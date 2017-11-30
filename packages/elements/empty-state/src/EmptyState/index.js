@@ -38,7 +38,7 @@ type Props = {
   isLoading?: boolean,
 };
 
-export default class EmptyState extends React.PureComponent<Props, void> {
+export default class EmptyState extends React.Component<Props> {
   static defaultProps: $Shape<Props> = {
     size: 'wide',
     maxImageWidth: 160,
@@ -53,10 +53,10 @@ export default class EmptyState extends React.PureComponent<Props, void> {
       imageUrl,
       maxImageWidth,
       maxImageHeight,
-      isLoading,
       primaryAction,
       secondaryAction,
       tertiaryAction,
+      isLoading,
     } = this.props;
 
     const actionsContainer =
@@ -75,8 +75,8 @@ export default class EmptyState extends React.PureComponent<Props, void> {
         {imageUrl && (
           <Image
             src={imageUrl}
-            maxImageWidth={maxImageWidth}
-            maxImageHeight={maxImageHeight}
+            maxWidth={maxImageWidth}
+            maxHeight={maxImageHeight}
           />
         )}
         <Header>{header}</Header>
