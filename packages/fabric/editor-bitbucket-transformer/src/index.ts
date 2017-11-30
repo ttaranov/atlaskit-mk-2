@@ -1,4 +1,3 @@
-import { bitbucketSchema } from '@atlaskit/editor-common';
 import { DOMParser, Node as PMNode, Schema } from 'prosemirror-model';
 import { MarkdownSerializer, marks, nodes } from './serializer';
 import { transformHtml } from './util';
@@ -13,10 +12,7 @@ export class BitbucketTransformer implements Transformer<string> {
   private schema: Schema;
   private options: TransformerOptions;
 
-  constructor(
-    schema: Schema = bitbucketSchema,
-    options: TransformerOptions = {},
-  ) {
+  constructor(schema: Schema, options: TransformerOptions = {}) {
     this.schema = schema;
     this.options = options;
   }
