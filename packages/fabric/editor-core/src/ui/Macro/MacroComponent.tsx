@@ -4,19 +4,14 @@ import { EditorView } from 'prosemirror-view';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { Node as PMNode } from 'prosemirror-model';
 import { MacroProvider } from '../../editor/plugins/macro/types';
-import {
-  getPlaceholderUrl,
-  getMacroId,
-} from '../../editor/plugins/macro/utils';
+import { getPlaceholderUrl, getMacroId } from '../../editor/plugins/macro/utils';
 import InlineMacro from './InlineMacro';
 
 export interface Props {
   editorView: EditorView;
   macroProvider?: Promise<MacroProvider>;
   node: PMNode;
-  setMacroElement: (
-    macroElement: HTMLElement | null,
-  ) => (state: EditorState, dispatch: (tr: Transaction) => void) => void;
+  setMacroElement: (macroElement: HTMLElement | null) => (state: EditorState, dispatch: (tr: Transaction) => void) => void;
 }
 
 export interface State {
@@ -75,16 +70,16 @@ export default class MacroComponent extends Component<Props, State> {
 
   private handleMacroProvider = (macroProvider: MacroProvider) => {
     this.setState({ macroProvider });
-  };
+  }
 
   private handleClick = (event: React.SyntheticEvent<any>) => {
     event.nativeEvent.stopImmediatePropagation();
     const { state, dispatch } = this.props.editorView;
     this.props.setMacroElement(event.currentTarget)(state, dispatch);
-  };
+  }
 
   private handleDocumentClick = () => {
     const { state, dispatch } = this.props.editorView;
     this.props.setMacroElement(null)(state, dispatch);
-  };
+  }
 }

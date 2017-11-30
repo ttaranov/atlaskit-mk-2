@@ -14,6 +14,10 @@ export default function MacroNode(props: Props) {
   const { node, providerFactory, view } = props;
 
   return (
-    <Macro editorView={view} node={node} providerFactory={providerFactory} />
+    <Macro
+      editorView={view}
+      node={node}
+      providerFactory={providerFactory}
+    />
   );
 }

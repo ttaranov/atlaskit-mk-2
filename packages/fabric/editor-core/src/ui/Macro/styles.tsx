@@ -1,11 +1,5 @@
 import styled from 'styled-components';
-import {
-  akColorB200,
-  akColorN20,
-  akColorN40,
-  akColorN70,
-  akColorN80,
-} from '@atlaskit/util-shared-styles';
+import { akColorB200, akColorN20, akColorN40, akColorN70, akColorN80 } from '@atlaskit/util-shared-styles';
 
 // tslint:disable-next-line:variable-name
 export const Placeholder = styled.span`
@@ -21,8 +15,7 @@ export const Placeholder = styled.span`
   &:hover > div {
     opacity: 0.15;
   }
-  &::after,
-  &::before {
+  &::after, &::before {
     vertical-align: text-top;
     display: inline-block;
     width: 1px;
@@ -38,7 +31,7 @@ export const Overlay = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  transition: opacity 0.25s;
+  transition: opacity .25s;
 `;
 
 // tslint:disable-next-line:variable-name

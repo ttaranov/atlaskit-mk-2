@@ -15,11 +15,11 @@ export default class TimeDialogItem extends Component<Props> {
     isFocused: false,
     value: '',
     onSelect() {},
-  };
+  }
 
   handleActivate = () => {
     this.props.onSelect(this.props.value);
-  };
+  }
 
   render() {
     return (
