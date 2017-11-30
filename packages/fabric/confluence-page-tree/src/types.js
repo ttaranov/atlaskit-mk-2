@@ -1,3 +1,15 @@
 // @flow
 
-export type DataFunction = Object => Array | Promise<Array>;
+export type PageData = {
+  id: string,
+  title: string,
+  childTypes: {
+    page: {
+      value: string,
+    },
+  },
+};
+export type PageAttribute = {
+  id: string,
+  history: any,
+};
