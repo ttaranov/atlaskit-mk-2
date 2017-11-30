@@ -1,12 +1,17 @@
-/* tslint:disable:variable-name */
+/* tslint:disable:no-console */
+
 import * as React from 'react';
-import {tallImage, smallImage, remoteImage} from '@atlaskit/media-test-helpers';
-import {ImageNavigator} from '../src';
+import {
+  tallImage,
+  smallImage,
+  remoteImage,
+} from '@atlaskit/media-test-helpers';
+import { ImageNavigator } from '../src';
 
 let onLoadParams;
 let imageElement;
 
-const onLoad = (params) => {
+const onLoad = params => {
   onLoadParams = params;
 };
 const exportImage = () => {
@@ -23,12 +28,23 @@ export default () => (
   <div>
     <h1>Uploader</h1>
     <ImageNavigator
-      onImageChanged={() => {console.log('onImageChanged')}}
-      onPositionChanged={() => {console.log('onPositionChanged')}}
-      onSizeChanged={() => {console.log('onSizeChanged')}}
+      onImageChanged={() => {
+        console.log('onImageChanged');
+      }}
+      onPositionChanged={() => {
+        console.log('onPositionChanged');
+      }}
+      onSizeChanged={() => {
+        console.log('onSizeChanged');
+      }}
       onLoad={onLoad}
     />
     <button onClick={exportImage}>Export</button>
-    <img style={{position: 'absolute', top: 0, left: '300px'}} src="" alt="" ref={handleImgRef} />
+    <img
+      style={{ position: 'absolute', top: 0, left: '300px' }}
+      src=""
+      alt=""
+      ref={handleImgRef}
+    />
   </div>
-)
+);

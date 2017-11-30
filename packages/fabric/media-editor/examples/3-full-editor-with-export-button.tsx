@@ -1,3 +1,5 @@
+/* tslint:disable:no-console */
+
 import * as React from 'react';
 import { tallImage as imageDataUri } from '@atlaskit/media-test-helpers';
 import { FullEditor } from '../example-helpers/fullEditor';
@@ -32,7 +34,6 @@ export default () => (
         right: '0',
         top: '0',
       }}
-      // tslint:disable-next-line:jsx-no-lambda
       onClick={() => {
         const image = loadParameters.imageGetter();
         if (image.isExported && image.content) {

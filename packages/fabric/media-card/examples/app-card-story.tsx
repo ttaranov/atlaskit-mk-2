@@ -1,4 +1,4 @@
-/* tslint:disable:variable-name no-console */
+/* tslint:disable:no-console */
 import * as React from 'react';
 import styled from 'styled-components';
 import { AppCardView } from '../src/app';
