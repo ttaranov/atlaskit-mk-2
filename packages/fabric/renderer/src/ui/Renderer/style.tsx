@@ -1,3 +1,4 @@
+import { ComponentClass } from 'react';
 import {
   akColorB300,
   akColorB400,
@@ -13,11 +14,10 @@ import {
 import styled from 'styled-components';
 
 // tslint:disable-next-line:variable-name
-export const Wrapper = styled.div`
+export const Wrapper: ComponentClass<any> = styled.div`
   color: ${akColorN800};
 
-  & a,
-  span.akActionMark {
+  & span.akActionMark {
     color: ${akColorB400};
     text-decoration: none;
 
