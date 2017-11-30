@@ -85,7 +85,6 @@ const isDetachedElement = el => !document.contains(el);
 
 export default class ToolbarInsertBlock extends React.Component<Props, State> {
   private pickerRef: ReactElement<any>;
-  private buttonRef: ReactElement<any>;
 
   state: State = {
     isOpen: false,
@@ -140,8 +139,10 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
   }
 
   private handleButtonRef = (ref): void => {
-    this.buttonRef = ref ? ref : null;
-    this.state.button = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
+    const buttonRef = ref || null;
+    if (buttonRef) {
+      this.state.button = ReactDOM.findDOMNode(buttonRef) as HTMLElement;
+    }
   };
 
   private onPickerRef = (ref: any) => {
