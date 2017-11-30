@@ -19,14 +19,22 @@ type BaseProps = {
   size: 'regular' | 'large',
 };
 
-export type StatelessProps = BaseProps & {
-  /** Whether the toggle is checked or not */
-  isChecked: boolean,
-};
+// All base props have defaults
+export type DefaultBaseProps = BaseProps;
 
 export type StatefulProps = BaseProps & {
   /** Whether the toggle is initially checked or not
    * After initial mount whether the component is checked or not is
    * controlled by the component */
   isDefaultChecked: boolean,
+};
+
+export type StatelessProps = BaseProps & {
+  /** Whether the toggle is checked or not */
+  isChecked: boolean,
+};
+
+export type StatelessWithThemeProps = StatelessProps & {
+  /** Theme object populated by @atlaskit/theme */
+  theme: Object,
 };
