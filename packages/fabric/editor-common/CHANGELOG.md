@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 3.9.16
+
 ## 3.9.15
 
 ## 3.9.14
