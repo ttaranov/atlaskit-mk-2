@@ -3,8 +3,6 @@ import React from 'react';
 import { md } from '@atlaskit/docs';
 
 export default md`
-  Use the logo component to output SVG versions of the company and product logos.
-
   This package provides the following polyfills
 
   ${(
@@ -18,4 +16,11 @@ export default md`
     </div>
   )}
 
+  You can also pull them all in at once (not reccomended) using:
+
+  ${(
+    <div style={{ padding: '20px' }}>
+      <pre>{"import '@atlaskit/polyfills';"}</pre>
+    </div>
+  )}
 `;
