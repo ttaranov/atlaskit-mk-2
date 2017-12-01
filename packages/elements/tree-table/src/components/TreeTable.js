@@ -65,7 +65,6 @@ export default class TreeTable extends Component<Props, State> {
   }
 
   getColumnWidth(columnIndex) {
-    console.log('getColumnWidth', this);
     return this.state && this.state.columnWidths[columnIndex];
   }
 
