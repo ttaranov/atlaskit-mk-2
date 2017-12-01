@@ -17,7 +17,7 @@
     "Michael J",
     "Aleksandr Motsjonov"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/button": "^5.4.8",
     "@atlaskit/field-range": "^2.0.0",

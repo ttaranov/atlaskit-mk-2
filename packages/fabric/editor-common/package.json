@@ -20,7 +20,7 @@
     "Oscar W",
     "Stanislav S"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/emoji": "^30.3.3",
     "@atlaskit/icon": "^10.3.1",

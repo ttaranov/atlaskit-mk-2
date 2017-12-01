@@ -18,7 +18,7 @@
     "Huanhuan H",
     "Oscar W"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/analytics": "^2.3.2",

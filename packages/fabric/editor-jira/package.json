@@ -13,7 +13,7 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [],
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/button": "^5.4.8",
