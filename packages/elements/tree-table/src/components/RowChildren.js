@@ -25,7 +25,6 @@ export default class RowChildren extends PureComponent<Props> {
         {childrenData.map((childRowData, index) => (
           <Subtree
             data={childRowData}
-            hasChildren={childRowData.hasChildren}
             getChildrenData={getChildrenData}
             depth={depth + 1}
             key={childRowData.id || index}

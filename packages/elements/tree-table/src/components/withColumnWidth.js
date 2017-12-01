@@ -32,7 +32,7 @@ export default function withColumnWidth(Cell) {
       const columnWidth =
         width !== null && width !== undefined
           ? width
-          : this.context.treeTable.columnWidths[index];
+          : this.context.treeTable.getColumnWidth(index);
       return <Cell {...this.props} columnWidth={columnWidth} />;
     }
   };

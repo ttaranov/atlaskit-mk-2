@@ -5,27 +5,32 @@ import React, {
   type Node,
   PropTypes,
 } from 'react';
-import { TreeTableContainer, TreeCell } from '../styled';
+import { TreeTableContainer } from '../styled';
 import TreeRows from './TreeRows';
 import RowData from './RowData';
 import TreeHeads from './TreeHeads';
 import TreeHead from './TreeHead';
+import TreeCell from './TreeCell';
 
 import { type DataFunction } from './../types';
 
 type Props = {
-  /** This is the columns prop description */
+  /** An array of React component constructors. Each component will be used to render a cell in a tree row.  */
   columns?: Array<ElementType>,
+
+  /** Widths */
   columnWidths?: Array<string>,
-  children?: Array<Node>,
+
+  /** The headers of the table. */
   headers?: Array<string>,
-  // headers?: Array<string>,
-  /** This is the data prop description */
-  data?: DataFunction | string,
+
+  children?: Array<Node>,
+  /** The function that will be used to provide data for rows at a particular level in the hierarchy */
+  data?: DataFunction,
 };
 
 type State = {
-  columnWidths: Array<string>,
+  columnWidths: Array<string | number>,
 };
 
 export default class TreeTable extends Component<Props, State> {
@@ -40,6 +45,7 @@ export default class TreeTable extends Component<Props, State> {
   constructor() {
     super();
     this.setColumnWidth = this.setColumnWidth.bind(this);
+    this.getColumnWidth = this.getColumnWidth.bind(this);
   }
 
   componentWillMount() {
@@ -49,13 +55,18 @@ export default class TreeTable extends Component<Props, State> {
     }
   }
 
-  setColumnWidth(index, width) {
+  setColumnWidth(columnIndex, width) {
     const columnWidths = this.state.columnWidths;
-    if (width === columnWidths[index]) {
+    if (width === columnWidths[columnIndex]) {
       return;
     }
-    columnWidths[index] = width;
+    columnWidths[columnIndex] = width;
     this.setState({ columnWidths });
+  }
+
+  getColumnWidth(columnIndex) {
+    console.log('getColumnWidth', this);
+    return this.state && this.state.columnWidths[columnIndex];
   }
 
   getChildContext() {
@@ -63,6 +74,7 @@ export default class TreeTable extends Component<Props, State> {
       treeTable: {
         columnWidths: this.state.columnWidths,
         setColumnWidth: this.setColumnWidth,
+        getColumnWidth: this.getColumnWidth,
       },
     };
   }

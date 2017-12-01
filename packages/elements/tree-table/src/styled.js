@@ -33,9 +33,9 @@ const commonCell = css`
   display: inline-block;
   padding: 10px ${defaultToPx(indentWidth)};
   ${props =>
-    props.width &&
+    props.columnWidth &&
     css`
-      width: ${defaultToPx(props.width)};
+      width: ${defaultToPx(props.columnWidth)};
     `};
 `;
 

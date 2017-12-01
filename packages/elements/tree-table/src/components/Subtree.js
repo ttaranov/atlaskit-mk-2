@@ -7,7 +7,6 @@ import { type DataFunction } from './../types';
 type Props = {
   data: Object,
   getChildrenData: DataFunction,
-  hasChildren: boolean,
   depth?: number,
   render: Function,
 };
@@ -52,9 +51,9 @@ export default class Subtree extends PureComponent<Props> {
       isExpanded && (
         <RowChildren
           childrenData={childrenData}
-          getChildrenData={getChildrenData}
           isExpanded={isExpanded}
           depth={depth}
+          getChildrenData={getChildrenData}
           render={render}
         />
       )
@@ -64,17 +63,16 @@ export default class Subtree extends PureComponent<Props> {
   render() {
     const { depth, data, render } = this.props;
 
-    const rowProps = {
-      onExpandToggle: this.handleExpandToggleClick,
-      depth,
-      data,
-      isExpanded: this.state.isExpanded,
-    };
     let rowData = render(data);
     if (!rowData) {
       return null;
     }
-    rowData = React.cloneElement(rowData, rowProps);
+    rowData = React.cloneElement(rowData, {
+      onExpandToggle: this.handleExpandToggleClick,
+      depth,
+      data,
+      isExpanded: this.state.isExpanded,
+    });
     const key = rowData.props.key;
     return (
       <div key={key}>

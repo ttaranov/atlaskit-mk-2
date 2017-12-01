@@ -26,14 +26,9 @@ const staticData = {
   ],
 };
 
-function treeCellFromProp(propName) {
-  return function TreeCell(props) {
-    return <span>{props[propName]}</span>;
-  };
-}
-
-const Title = treeCellFromProp('title');
-const Description = treeCellFromProp('description');
+/* eslint react/prop-types: 0 */
+const Title = props => <span>{props.title}</span>;
+const Description = props => <span>{props.description}</span>;
 
 function getChildrenData(parent = staticData) {
   return parent.children || [];

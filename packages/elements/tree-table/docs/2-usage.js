@@ -17,4 +17,8 @@ export default md`
   
   ${<Example component={Flat} />}
 
+
+  ### Customization via render prop
+  
+  
 `;

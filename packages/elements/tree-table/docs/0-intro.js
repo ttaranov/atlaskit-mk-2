@@ -3,11 +3,13 @@ import React from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
 
 export default md`
-  This package exports a single \`TreeTable\` component.
+  This package exports the \'TreeTable\' component.
+  
+  The component displays a table with expandable rows that form a tree-like hierarchy.
 
   ${(
     <Example
-      Component={require('../examples/single-component-no-headers').default}
+      Component={require('../examples/single-component').default}
       source={require('!!raw-loader!../examples/single-component-no-headers')}
       title="Basic Usage"
     />
