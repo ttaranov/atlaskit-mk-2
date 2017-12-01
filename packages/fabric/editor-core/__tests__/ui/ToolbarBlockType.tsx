@@ -3,6 +3,7 @@ import * as React from 'react';
 import blockTypePlugins from '../../src/plugins/block-type';
 import ToolbarBlockType from '../../src/ui/ToolbarBlockType';
 import ToolbarButton from '../../src/ui/ToolbarButton';
+import Item from '@atlaskit/item';
 import AkButton from '@atlaskit/button';
 import TextStyleIcon from '@atlaskit/icon/glyph/editor/text-style';
 import {
@@ -169,9 +170,8 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
         blockType.name
       } is clicked`, () => {
         toolbarOption
-          .find('Item')
+          .find(Item)
           .filterWhere(n => n.text() === blockType.name)
-          .find('Element')
           .simulate('click');
         expect(trackEvent).toHaveBeenCalledWith(
           `atlassian.editor.format.${blockType.value}.button`,

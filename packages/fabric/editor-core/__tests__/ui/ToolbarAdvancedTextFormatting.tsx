@@ -1,6 +1,7 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import DropdownMenu from '@atlaskit/dropdown-menu';
+import DropList from '@atlaskit/droplist';
+import Item from '@atlaskit/item';
 import textFormattingPlugins from '../../src/plugins/text-formatting';
 import clearFormattingPlugins from '../../src/plugins/clear-formatting';
 import ToolbarAdvancedTextFormatting from '../../src/ui/ToolbarAdvancedTextFormatting';
@@ -71,12 +72,10 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    expect(
-      toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length,
-    ).toEqual(6);
+    expect(toolbarOption.find(DropList).find(Item).length).toEqual(6);
     expect(
       toolbarOption
-        .find('Item')
+        .find(Item)
         .filterWhere(n => n.text().indexOf('Underline') >= 0).length,
     ).toEqual(1);
     toolbarOption.unmount();
@@ -97,12 +96,10 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    expect(
-      toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length,
-    ).toEqual(5);
+    expect(toolbarOption.find(DropList).find(Item).length).toEqual(5);
     expect(
       toolbarOption
-        .find('Item')
+        .find(Item)
         .filterWhere(n => n.text().indexOf('Underline') >= 0).length,
     ).toEqual(0);
     toolbarOption.unmount();
@@ -122,9 +119,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    expect(
-      toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length,
-    ).toEqual(5);
+    expect(toolbarOption.find(DropList).find(Item).length).toEqual(5);
     toolbarOption.unmount();
   });
 
@@ -139,9 +134,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    expect(
-      toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length,
-    ).toEqual(4);
+    expect(toolbarOption.find(DropList).find(Item).length).toEqual(4);
     toolbarOption.unmount();
   });
 
@@ -156,9 +149,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    expect(
-      toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length,
-    ).toEqual(1);
+    expect(toolbarOption.find(DropList).find(Item).length).toEqual(1);
     toolbarOption.unmount();
   });
 
@@ -206,9 +197,8 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       editorView.state,
     ).toggleCode = jest.fn();
     const strikeButton = toolbarOption
-      .find('Item')
-      .filterWhere(n => n.text() === 'Code')
-      .find('Element');
+      .find(Item)
+      .filterWhere(n => n.text() === 'Code');
     strikeButton.simulate('click');
     expect(
       textFormattingPluginSet[0].getState(editorView.state).toggleCode,
@@ -234,9 +224,8 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       editorView.state,
     ).toggleStrike = jest.fn();
     const strikeButton = toolbarOption
-      .find('Item')
-      .filterWhere(n => n.text() === 'Strikethrough')
-      .find('Element');
+      .find(Item)
+      .filterWhere(n => n.text() === 'Strikethrough');
     strikeButton.simulate('click');
     expect(
       textFormattingPluginSet[0].getState(editorView.state).toggleStrike,
@@ -287,9 +276,8 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       editorView.state,
     ).clearFormatting = jest.fn();
     const clearFormattingButton = toolbarOption
-      .find('Item')
-      .filterWhere(n => n.text() === 'Clear Formatting')
-      .find('Element');
+      .find(Item)
+      .filterWhere(n => n.text() === 'Clear Formatting');
     clearFormattingButton.simulate('click');
     expect(
       clearformattingPluginSet[0].getState(editorView.state).clearFormatting,
@@ -398,9 +386,8 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
         type.name
       } is clicked`, () => {
         toolbarOption
-          .find('Item')
+          .find(Item)
           .filterWhere(n => n.text() === type.name)
-          .find('Element')
           .simulate('click');
         expect(trackEvent).toHaveBeenCalledWith(
           `atlassian.editor.format.${type.value}.button`,

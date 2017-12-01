@@ -2,6 +2,7 @@ import * as chai from 'chai';
 import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
+import { ItemGroup } from '@atlaskit/item';
 import {
   doc,
   h1,
@@ -284,12 +285,14 @@ describe('@atlaskit/editor-bitbucket/toolbar', () => {
     const trigger = editorWrapper.find('ToolbarBlockType ToolbarButton');
 
     expect(trigger).to.have.length.above(0);
-    expect(editorWrapper.find('ToolbarBlockType Group').length).to.equal(0);
+    expect(
+      editorWrapper.find('ToolbarBlockType').find(ItemGroup).length,
+    ).to.equal(0);
 
     trigger.simulate('click');
-    expect(editorWrapper.find('ToolbarBlockType Group')).to.have.length.above(
-      0,
-    );
+    expect(
+      editorWrapper.find('ToolbarBlockType').find(ItemGroup),
+    ).to.have.length.above(0);
 
     trigger.simulate('click');
     expect(editorWrapper.find('ToolbarBlockType Group').length).to.equal(0);

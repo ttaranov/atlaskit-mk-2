@@ -322,5 +322,6 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
         pluginStateClearFormatting!.clearFormatting(this.props.editorView);
         break;
     }
+    this.setState({ isOpen: false });
   };
 }
