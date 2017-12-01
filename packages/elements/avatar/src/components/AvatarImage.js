@@ -83,10 +83,10 @@ export default class AvatarImage extends PureComponent<Props, State> {
     // if provided a scr - we need to load it
     isLoading: Boolean(this.props.src),
   };
-  isMounted: boolean;
+  isComponentMounted: boolean;
 
   componentDidMount() {
-    this.isMounted = true;
+    this.isComponentMounted = true;
     this.loadImage();
   }
   // handle case where `src` is modified after mount
@@ -101,7 +101,7 @@ export default class AvatarImage extends PureComponent<Props, State> {
     }
   }
   componentWillUnmount() {
-    this.isMounted = false;
+    this.isComponentMounted = false;
   }
   loadImage = () => {
     // nothing to load
@@ -115,7 +115,7 @@ export default class AvatarImage extends PureComponent<Props, State> {
     img.src = this.props.src;
   };
   handleLoad = (hasError: boolean) => {
-    if (this.isMounted) {
+    if (this.isComponentMounted) {
       this.setState({ hasError, isLoading: false });
     }
   };
