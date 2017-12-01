@@ -1,5 +1,8 @@
 # @atlaskit/toggle
 
+## 2.7.0
+- [minor] Adding flow types and moving to new repo [c9f3246](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9f3246)
+
 ## 2.6.4 (2017-11-17)
 
 * bug fix; bumping internal dependencies to latest version ([a19b26d](https://bitbucket.org/atlassian/atlaskit/commits/a19b26d))
