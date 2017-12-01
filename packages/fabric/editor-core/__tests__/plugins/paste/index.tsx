@@ -5,6 +5,9 @@ import {
   doc,
   p,
   code,
+  mediaGroup,
+  media,
+  singleImage,
   makeEditor,
   dispatchPasteEvent,
   isMobileBrowser,
@@ -20,7 +23,90 @@ if (!browser.ie && !isMobileBrowser()) {
         plugins: pastePlugins(defaultSchema),
       });
 
+    const messageEditor = (doc: any) =>
+      makeEditor<any>({
+        doc,
+        plugins: pastePlugins(defaultSchema, 'message'),
+      });
+
     describe('handlePaste', () => {
+      const mediaHtml = (fileMimeType: string) => `
+      <div 
+      data-id="af9310df-fee5-459a-a968-99062ecbb756" 
+      data-node-type="media" data-type="file" 
+      data-collection="MediaServicesSample" 
+      title="Attachment" 
+      data-file-mime-type="${fileMimeType}"></div>`;
+
+      describe('message editor', () => {
+        it('pastes', () => {
+          const { editorView } = messageEditor(doc(p('{<>}')));
+          dispatchPasteEvent(editorView, {
+            html: mediaHtml('image/jpeg'),
+          });
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              p(),
+              mediaGroup(
+                media({
+                  id: 'af9310df-fee5-459a-a968-99062ecbb756',
+                  type: 'file',
+                  collection: 'MediaServicesSample',
+                  __fileMimeType: 'image/jpeg',
+                }),
+              ),
+              p(),
+            ),
+          );
+        });
+      });
+
+      describe('non message editor', () => {
+        describe('when message is a media image node', () => {
+          it('paste as single image', () => {
+            const { editorView } = editor(doc(p('{<>}')));
+            dispatchPasteEvent(editorView, {
+              html: mediaHtml('image/jpeg'),
+            });
+            expect(editorView.state.doc).toEqualDocument(
+              doc(
+                singleImage({ alignment: 'center', display: 'block' })(
+                  media({
+                    id: 'af9310df-fee5-459a-a968-99062ecbb756',
+                    type: 'file',
+                    collection: 'MediaServicesSample',
+                    __fileMimeType: 'image/jpeg',
+                  }),
+                ),
+                p(),
+              ),
+            );
+          });
+        });
+
+        describe('when message is not a media image node', () => {
+          it('does nothing', () => {
+            const { editorView } = editor(doc(p('{<>}')));
+            dispatchPasteEvent(editorView, {
+              html: mediaHtml('pdf'),
+            });
+            expect(editorView.state.doc).toEqualDocument(
+              doc(
+                p(),
+                mediaGroup(
+                  media({
+                    id: 'af9310df-fee5-459a-a968-99062ecbb756',
+                    type: 'file',
+                    collection: 'MediaServicesSample',
+                    __fileMimeType: 'pdf',
+                  }),
+                ),
+                p(),
+              ),
+            );
+          });
+        });
+      });
       it('should not create paragraph when plain text is copied in code-block', () => {
         const { editorView } = editor(doc(code_block()('{<>}')));
         dispatchPasteEvent(editorView, { plain: 'plain text' });

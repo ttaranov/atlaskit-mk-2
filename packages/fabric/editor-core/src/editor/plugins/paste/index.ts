@@ -4,10 +4,13 @@ import { createPlugin, createKeymapPlugin } from '../../../plugins/paste';
 const paste: EditorPlugin = {
   pmPlugins() {
     return [
-      { rank: 100, plugin: createPlugin },
-      { rank: 200, plugin: createKeymapPlugin }
+      {
+        rank: 100,
+        plugin: (schema, props) => createPlugin(schema, props.appearance),
+      },
+      { rank: 200, plugin: createKeymapPlugin },
     ];
-  }
+  },
 };
 
 export default paste;
