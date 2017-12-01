@@ -1,4 +1,6 @@
+// @flow
 import React from 'react';
+import type { Node } from 'react';
 import styled from 'styled-components';
 import { colors, math, gridSize } from '@atlaskit/theme';
 
@@ -7,6 +9,7 @@ export const VerticalRhythm = styled.div`
     margin-top: 1em;
   }
 `;
+// $FlowFixMe
 export const Wrapper = styled(VerticalRhythm)`
   align-items: baseline;
   display: flex;
@@ -14,6 +17,7 @@ export const Wrapper = styled(VerticalRhythm)`
 export const Gap = styled.span`
   margin-right: ${gridSize}px;
 `;
+// $FlowFixMe
 export const Dot = styled(Gap)`
   height: ${math.multiply(gridSize, 3)}px;
   width: ${math.multiply(gridSize, 3)}px;
@@ -27,7 +31,13 @@ export const Heading = styled.div`
   text-transform: uppercase;
 `;
 
-export const Block = ({ children, heading }) =>
+export const Block = ({
+  children,
+  heading,
+}: {
+  children: ?Node,
+  heading?: string,
+}) =>
   heading ? (
     <VerticalRhythm>
       <Heading>{heading}</Heading>
