@@ -1,46 +1,5 @@
 import * as LinkifyIt from 'linkify-it';
-import { LINK_REGEXP } from '../hyperlink/utils';
-
-declare interface LinkMatch {
-  index: number;
-  lastIndex: number;
-  raw: string;
-  url: string;
-  text: string;
-  schema?: string;
-}
-
-const linkifyMatch = (text: string): LinkMatch[] => {
-  const matches: LinkMatch[] = [];
-
-  if (!LINK_REGEXP.test(text)) {
-    return matches;
-  }
-
-  let startpos = 0;
-  let substr;
-
-  while ((substr = text.substr(startpos))) {
-    const link = (substr.match(LINK_REGEXP) || [''])[0];
-    if (link) {
-      const index = substr.search(LINK_REGEXP);
-      const start = index >= 0 ? index + startpos : index;
-      const end = start + link.length;
-      matches.push({
-        index: start,
-        lastIndex: end,
-        raw: link,
-        url: link,
-        text: link,
-      });
-      startpos += end;
-    } else {
-      break;
-    }
-  }
-
-  return matches;
-};
+import { linkifyMatch } from '../hyperlink/utils';
 
 // modified version of the original Linkify plugin
 // https://github.com/markdown-it/markdown-it/blob/master/lib/rules_core/linkify.js
