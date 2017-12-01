@@ -4,7 +4,7 @@ import { Schema, Slice } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import * as MarkdownIt from 'markdown-it';
-import * as table from 'markdown-it-table';
+import table from 'markdown-it-table';
 import { stateKey as tableStateKey } from '../table';
 import { containsTable } from '../table/utils';
 import { isSingleLine, isCode, filterMdToPmSchemaMapping } from './util';

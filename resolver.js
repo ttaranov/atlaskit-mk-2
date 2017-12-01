@@ -20,19 +20,7 @@ module.exports = function resolver(
 ) {
   let result /*: ?string */;
 
-  if (!modulePath.startsWith('.') && !modulePath.startsWith(path.sep)) {
-    // When esolving absolute module names, follow Node.js rules (i.e. look for node_modules in
-    // dir of the dependant, then in parent dir, then in parent dir ...)
-    // We're not using the built-in node resolver here because it would prefer
-    // top-level (cwd) node_modules and ignore sub-module's package directories.
-    try {
-      result = resolve.sync(modulePath, params);
-    } catch (e) {} // eslint-disable-line
-  } else {
-    // When resolving relative paths, use webpack resolver configured to
-    // prefer source files over dist/ artifacts.
-    result = webpackResolver.resolveSync({}, params.basedir, modulePath);
-  }
+  result = webpackResolver.resolveSync({}, params.basedir, modulePath);
 
   if (result) {
     // Dereference symlinks to ensure we don't create a separate
