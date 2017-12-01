@@ -15,7 +15,7 @@
     "name": "Date-time picker",
     "team": "elements"
   },
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/calendar": "^3.0.7",
     "@atlaskit/droplist": "^4.11.3",
