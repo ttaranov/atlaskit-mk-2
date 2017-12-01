@@ -66,7 +66,9 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
       let trackEvent = sinon.spy();
       analyticsService.trackEvent = trackEvent;
       sendKeyToPm(editorView, 'Mod-/');
-      expect(trackEvent.calledWith('atlassian.editor.help.keyboard')).to.equal(true);
+      expect(trackEvent.calledWith('atlassian.editor.help.keyboard')).to.equal(
+        true,
+      );
     });
   });
 });

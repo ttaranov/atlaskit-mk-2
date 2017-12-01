@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { table, tableCell, tableHeader, tableRow } from '@atlaskit/editor-common';
+import {
+  table,
+  tableCell,
+  tableHeader,
+  tableRow,
+} from '@atlaskit/editor-common';
 import { tableEditing } from 'prosemirror-tables';
 import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from '../../../plugins/table';
@@ -13,7 +18,7 @@ const tablesPlugin: EditorPlugin = {
       { rank: 1700, name: 'table', node: table },
       { rank: 1800, name: 'tableHeader', node: tableHeader },
       { rank: 1900, name: 'tableRow', node: tableRow },
-      { rank: 2000, name: 'tableCell', node: tableCell }
+      { rank: 2000, name: 'tableCell', node: tableCell },
     ];
   },
 
@@ -25,7 +30,14 @@ const tablesPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
+  contentComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+  ) {
     const pluginState = stateKey.getState(editorView.state);
 
     return (
@@ -42,7 +54,7 @@ const tablesPlugin: EditorPlugin = {
         />
       </div>
     );
-  }
+  },
 };
 
 export default tablesPlugin;

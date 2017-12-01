@@ -12,6 +12,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 
+import Item from '@atlaskit/item';
 import { analyticsService, imageUploadStateKey } from '@atlaskit/editor-core';
 import { browser } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
@@ -441,9 +442,8 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
         .simulate('click');
       editor
         .find('ToolbarBlockType')
-        .find('Item')
+        .find(Item)
         .filterWhere(n => n.text() === blockType.name)
-        .find('Element')
         .simulate('click');
 
       expect(
@@ -463,9 +463,8 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
         .last()
         .simulate('click');
       editor
-        .find('Item')
+        .find(Item)
         .filterWhere(n => n.html().indexOf(blockType.name) > 0)
-        .find('Element')
         .simulate('click');
       expect(
         handler.calledWith(`atlassian.editor.format.${blockType.value}.button`),

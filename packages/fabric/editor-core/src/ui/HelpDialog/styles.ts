@@ -1,5 +1,13 @@
 import styled from 'styled-components';
-import { akZIndexBlanket, akZIndexDialog, akBorderRadius, akColorN400, akColorN0, akColorN20, akColorN30 } from '@atlaskit/util-shared-styles';
+import {
+  akZIndexBlanket,
+  akZIndexDialog,
+  akBorderRadius,
+  akColorN400,
+  akColorN0,
+  akColorN20,
+  akColorN30,
+} from '@atlaskit/util-shared-styles';
 
 // tslint:disable-next-line:variable-name
 export const Container = styled.div`
@@ -51,8 +59,7 @@ export const Header = styled.div`
 `;
 
 // tslint:disable-next-line:variable-name
-export const IconWrapper = styled.div`
-`;
+export const IconWrapper = styled.div``;
 
 // tslint:disable-next-line:variable-name
 export const ContentWrapper = styled.div`
@@ -67,7 +74,7 @@ export const ContentWrapper = styled.div`
 // tslint:disable-next-line:variable-name
 export const Line = styled.div`
   background: #fff;
-  content: "";
+  content: '';
   display: block;
   height: 2px;
   left: 0;
@@ -134,11 +141,11 @@ export const CodeMd = styled.span`
 
 // tslint:disable-next-line:variable-name
 export const CodeLg = styled.span`
-  background-color: ${akColorN20};CodeLg
-  border-radius: ${akBorderRadius};
+  background-color: ${akColorN20};
+  codelg: ${akBorderRadius};
   display: inline-block;
   height: 24px;
   line-height: 24px;
-  padding: 0 10px ;
+  padding: 0 10px;
   text-align: center;
 `;

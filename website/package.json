@@ -48,7 +48,7 @@
     "@atlaskit/media-filmstrip": "^5.5.8",
     "@atlaskit/media-test-helpers": "^8.5.1",
     "@atlaskit/navigation": "^26.5.1",
-    "@atlaskit/single-select": "^2.0.1",
+    "@atlaskit/single-select": "^3.0.1",
     "@atlaskit/tag": "^3.0.8",
     "@atlaskit/tag-group": "^3.4.8",
     "@atlaskit/theme": "^2.2.6",

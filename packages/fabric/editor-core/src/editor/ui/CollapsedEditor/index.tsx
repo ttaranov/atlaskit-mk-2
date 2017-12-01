@@ -37,7 +37,7 @@ export default class CollapsedEditor extends React.Component<Props, State> {
       editorRefCallback(editorRef);
     }
     this.editorComponent = editorRef;
-  }
+  };
 
   render() {
     const child = React.Children.only(this.props.children);
@@ -46,11 +46,17 @@ export default class CollapsedEditor extends React.Component<Props, State> {
     }
 
     if (!this.props.isExpanded) {
-      return <ChromeCollapsed onFocus={this.props.onFocus} text={this.props.placeholder} />;
+      return (
+        <ChromeCollapsed
+          onFocus={this.props.onFocus}
+          text={this.props.placeholder}
+        />
+      );
     }
 
     return React.cloneElement(child, {
-      ref: editorComponent => this.handleEditorRef(editorComponent, (child as any).ref)
+      ref: editorComponent =>
+        this.handleEditorRef(editorComponent, (child as any).ref),
     });
   }
 }

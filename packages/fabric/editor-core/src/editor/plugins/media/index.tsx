@@ -9,7 +9,7 @@ const mediaPlugin: EditorPlugin = {
   nodes() {
     return [
       { name: 'mediaGroup', node: mediaGroup, rank: 1700 },
-      { name: 'media', node: media, rank: 1800 }
+      { name: 'media', node: media, rank: 1800 },
     ];
   },
 
@@ -24,18 +24,19 @@ const mediaPlugin: EditorPlugin = {
               providerFactory,
               errorReporter,
               uploadErrorHandler: props.uploadErrorHandler,
-              waitForMediaUpload: props.waitForMediaUpload
+              waitForMediaUpload: props.waitForMediaUpload,
             },
-            dispatch
-          )
+            dispatch,
+            props.appearance,
+          ),
       },
-      { rank: 1220, plugin: schema => keymapPlugin(schema) }
+      { rank: 1220, plugin: schema => keymapPlugin(schema) },
     ];
   },
 
   secondaryToolbarComponent(editorView, providerFactory) {
     return <ToolbarMedia editorView={editorView} pluginKey={pluginKey} />;
-  }
+  },
 };
 
 export default mediaPlugin;

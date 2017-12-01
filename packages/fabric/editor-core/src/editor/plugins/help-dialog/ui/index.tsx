@@ -194,7 +194,7 @@ export const formatting: Format[] = [
 
 export const getSupportedFormatting = (schema: Schema): Format[] => {
   return formatting.filter(
-    ({ type }) => schema.nodes[type] || schema.marks[type]
+    ({ type }) => schema.nodes[type] || schema.marks[type],
   );
 };
 
@@ -292,7 +292,7 @@ export default class HelpDialog extends React.Component<Props, any> {
                         <span>{form.name}</span>
                         {getComponentFromKeymap(form.keymap)}
                       </Row>
-                    )
+                    ),
                 )}
               </div>
             </ColumnLeft>
@@ -306,7 +306,7 @@ export default class HelpDialog extends React.Component<Props, any> {
                         <span>{form.name}</span>
                         {form.autoFormatting()}
                       </Row>
-                    )
+                    ),
                 )}
               </div>
             </ColumnRight>

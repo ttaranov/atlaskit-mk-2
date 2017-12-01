@@ -11,7 +11,10 @@ import service from './service';
  *     doSomething(); // this will send analytics event and call the original function
  *
  */
-export default function trackAndInvoke(analyticsEventName: string, fn: (...args: any[]) => any) {
+export default function trackAndInvoke(
+  analyticsEventName: string,
+  fn: (...args: any[]) => any,
+) {
   return (...args: any[]) => {
     const result = fn(...args);
     if (result) {

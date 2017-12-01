@@ -11,22 +11,36 @@ const listPlugin: EditorPlugin = {
     return [
       { name: 'bulletList', node: bulletList, rank: 300 },
       { name: 'orderedList', node: orderedList, rank: 400 },
-      { name: 'listItem', node: listItem, rank: 500 }
+      { name: 'listItem', node: listItem, rank: 500 },
     ];
   },
 
   pmPlugins() {
     return [
       { rank: 600, plugin: () => plugin },
-      { rank: 620, plugin: (schema) => inputRulePlugin(schema) },
-      { rank: 640, plugin: (schema) => keymapPlugin(schema) }
+      { rank: 620, plugin: schema => inputRulePlugin(schema) },
+      { rank: 640, plugin: schema => keymapPlugin(schema) },
     ];
   },
 
-  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled) {
+  primaryToolbarComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    disabled,
+  ) {
     const pluginState = stateKey.getState(editorView.state);
-    return <ToolbarLists disabled={disabled} editorView={editorView} pluginState={pluginState} />;
-  }
+    return (
+      <ToolbarLists
+        disabled={disabled}
+        editorView={editorView}
+        pluginState={pluginState}
+      />
+    );
+  },
 };
 
 export default listPlugin;

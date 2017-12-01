@@ -7,12 +7,13 @@ import { createInputRule, leafNodeReplacementCharacter } from '../utils';
 import { analyticsService } from '../../analytics';
 
 export function inputRulePlugin(schema: Schema): Plugin | undefined {
-
   const rules: Array<InputRule> = [];
 
   if (schema.nodes.mention && schema.marks.mentionQuery) {
     const regex = new RegExp(`(^|[\\s\(${leafNodeReplacementCharacter}])@$`);
-    const mentionQueryRule = createInputRule(regex, (state, match, start, end): Transaction | undefined => {
+    const mentionQueryRule = createInputRule(regex, (state, match, start, end):
+      | Transaction
+      | undefined => {
       const mentionsState = pluginKey.getState(state) as MentionsState;
 
       if (!mentionsState.mentionProvider) {
@@ -28,10 +29,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
 
       analyticsService.trackEvent('atlassian.editor.mention.autoformatting');
 
-      const mentionText = schema.text(
-        '@',
-        [mark]
-      );
+      const mentionText = schema.text('@', [mark]);
       return tr.replaceSelectionWith(mentionText, false);
     });
 

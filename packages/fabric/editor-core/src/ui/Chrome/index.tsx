@@ -59,8 +59,8 @@ export default class Chrome extends PureComponent<Props, {}> {
   render() {
     const { props } = this;
 
-    return props.isExpanded
-      ? <ChromeExpanded
+    return props.isExpanded ? (
+      <ChromeExpanded
         onCancel={props.onCancel}
         onSave={props.onSave}
         saveDisabled={props.saveDisabled}
@@ -94,9 +94,11 @@ export default class Chrome extends PureComponent<Props, {}> {
       >
         {props.children}
       </ChromeExpanded>
-      : <ChromeCollapsed
+    ) : (
+      <ChromeCollapsed
         onFocus={this.props.onCollapsedChromeFocus}
         text={props.placeholder}
-      />;
+      />
+    );
   }
 }

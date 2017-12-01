@@ -47,11 +47,8 @@ export default class PanelEdit extends PureComponent<Props, State> {
   render() {
     const { target, activePanelType, toolbarVisible } = this.state;
     if (toolbarVisible) {
-        return (
-        <FloatingToolbar
-          target={target}
-          offset={[0, 3]}
-        >
+      return (
+        <FloatingToolbar target={target} offset={[0, 3]}>
           {availablePanelType.map((panelType, index) => {
             // tslint:disable-next-line:variable-name
             const Icon = icons[panelType.panelType];
@@ -60,7 +57,9 @@ export default class PanelEdit extends PureComponent<Props, State> {
                 key={index}
                 selected={activePanelType === panelType.panelType}
                 onClick={this.handleSelectPanelType.bind(this, panelType)}
-                iconBefore={<Icon label={`Change panel type to ${panelType.panelType}`} />}
+                iconBefore={
+                  <Icon label={`Change panel type to ${panelType.panelType}`} />
+                }
               />
             );
           })}
@@ -83,15 +82,15 @@ export default class PanelEdit extends PureComponent<Props, State> {
       target,
       activePanelType,
     });
-  }
+  };
 
   private handleSelectPanelType = (panelType: PanelType, event) => {
     const { editorView } = this.props;
     this.props.pluginState.changePanelType(editorView, panelType);
-  }
+  };
 
   private handleRemovePanel = () => {
     const { editorView } = this.props;
     this.props.pluginState.removePanel(editorView);
-  }
+  };
 }

@@ -86,7 +86,7 @@ describe('Media PickerFacade', () => {
 
     it('listens to picker events', () => {
       expect(Object.keys(mockPicker.listeners).length).toEqual(7);
-      expect(mockPicker.listeners).toHaveProperty('upload-start');
+      expect(mockPicker.listeners).toHaveProperty('uploads-start');
       expect(mockPicker.listeners).toHaveProperty('upload-preview-update');
       expect(mockPicker.listeners).toHaveProperty('upload-status-update');
       expect(mockPicker.listeners).toHaveProperty('upload-processing');
@@ -171,8 +171,8 @@ describe('Media PickerFacade', () => {
       it('for upload starting', () => {
         const cb = jest.fn();
         stateManager!.subscribe(testTemporaryFileId, cb);
-        mockPicker.__triggerEvent('upload-start', {
-          file: testFileData,
+        mockPicker.__triggerEvent('uploads-start', {
+          files: [testFileData],
         });
         expect(cb).toHaveBeenCalledWith({
           id: testTemporaryFileId,
@@ -187,12 +187,13 @@ describe('Media PickerFacade', () => {
         const cb = jest.fn();
         facade!.onNewMedia(cb);
 
-        mockPicker.__triggerEvent('upload-start', {
-          file: testFileData,
+        mockPicker.__triggerEvent('uploads-start', {
+          files: [testFileData],
         });
         expect(cb).toHaveBeenCalledWith({
           id: testTemporaryFileId,
           status: 'uploading',
+          publicId: undefined,
           fileName: testFileData.name,
           fileSize: testFileData.size,
           fileMimeType: testFileData.type,

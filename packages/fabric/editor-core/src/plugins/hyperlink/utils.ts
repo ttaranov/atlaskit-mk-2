@@ -14,8 +14,11 @@ export interface Match {
 const linkify = LinkifyIt();
 linkify.add('sourcetree:', 'http:');
 
-const tlds = 'biz|com|edu|gov|net|org|pro|web|xxx|aero|asia|coop|info|museum|name|shop|рф'.split('|');
-const tlds2Char = 'a[cdefgilmnoqrtuwxz]|b[abdefghijmnorstvwyz]|c[acdfghiklmnoruvwxyz]|d[ejkmoz]|e[cegrstu]|f[ijkmor]|g[abdefghilmnpqrstuwy]|h[kmnrtu]|i[delmnoqrst]|j[emop]|k[eghimnprwyz]|l[abcikrstuvy]|m[acdeghklmnopqrtuvwxyz]|n[acefgilopruz]|om|p[aefghkmnrtw]|qa|r[eosuw]|s[abcdegijklmnrtuvxyz]|t[cdfghjklmnortvwz]|u[agksyz]|v[aceginu]|w[fs]|y[et]|z[amw]';
+const tlds = 'biz|com|edu|gov|net|org|pro|web|xxx|aero|asia|coop|info|museum|name|shop|рф'.split(
+  '|',
+);
+const tlds2Char =
+  'a[cdefgilmnoqrtuwxz]|b[abdefghijmnorstvwyz]|c[acdfghiklmnoruvwxyz]|d[ejkmoz]|e[cegrstu]|f[ijkmor]|g[abdefghilmnpqrstuwy]|h[kmnrtu]|i[delmnoqrst]|j[emop]|k[eghimnprwyz]|l[abcikrstuvy]|m[acdeghklmnopqrtuvwxyz]|n[acefgilopruz]|om|p[aefghkmnrtw]|qa|r[eosuw]|s[abcdegijklmnrtuvxyz]|t[cdfghjklmnortvwz]|u[agksyz]|v[aceginu]|w[fs]|y[et]|z[amw]';
 tlds.push(tlds2Char);
 linkify.tlds(tlds, false);
 
@@ -52,14 +55,20 @@ export function normalizeUrl(url: string) {
   return (match && match.url) || url;
 }
 
-export function linkifyContent(schema: Schema, slice: Slice): Slice | undefined {
+export function linkifyContent(
+  schema: Schema,
+  slice: Slice,
+): Slice | undefined {
   const fragment = linkinfyFragment(schema, slice.content);
   if (fragment) {
     return new Slice(fragment, slice.openStart, slice.openEnd);
   }
 }
 
-function linkinfyFragment(schema: Schema, fragment: Fragment): Fragment | undefined {
+function linkinfyFragment(
+  schema: Schema,
+  fragment: Fragment,
+): Fragment | undefined {
   const linkified: Node[] = [];
   for (let i = 0, len = fragment.childCount; i < len; i++) {
     const child: Node = fragment.child(i);
@@ -76,7 +85,13 @@ function linkinfyFragment(schema: Schema, fragment: Fragment): Fragment | undefi
           linkified.push(child.cut(pos, match.start));
         }
         linkified.push(
-          child.cut(match.start, match.end).mark(link.create({href: normalizeUrl(match.href)}).addToSet(child.marks))
+          child
+            .cut(match.start, match.end)
+            .mark(
+              link
+                .create({ href: normalizeUrl(match.href) })
+                .addToSet(child.marks),
+            ),
         );
         pos = match.end;
       });

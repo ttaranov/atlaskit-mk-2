@@ -12,11 +12,10 @@ export interface Props {
 }
 
 export default class ToolbarHelp extends PureComponent<Props, any> {
-
   toggleHelpDialog = (): void => {
     analyticsService.trackEvent('atlassian.editor.help.button');
     this.props.toggleHelp();
-  }
+  };
 
   render() {
     return (
@@ -25,7 +24,7 @@ export default class ToolbarHelp extends PureComponent<Props, any> {
           onClick={this.toggleHelpDialog}
           title="Open help dialog"
           titlePosition="left"
-          iconBefore={<QuestionIcon label="Open help dialog"/>}
+          iconBefore={<QuestionIcon label="Open help dialog" />}
         />
         {this.props.showHelp && <HelpDialog onClick={this.props.toggleHelp} />}
       </span>

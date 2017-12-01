@@ -8,5 +8,5 @@ export {
   isSchemaWithBlockQuotes,
   isSchemaWithMedia,
   isSchemaWithTextColor,
-  isSchemaWithTables
+  isSchemaWithTables,
 } from '@atlaskit/editor-common';
