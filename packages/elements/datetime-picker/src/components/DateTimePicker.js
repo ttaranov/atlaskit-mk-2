@@ -7,7 +7,6 @@ import DateDialog from './internal/DateDialog';
 import DateTimePickerStateless from './DateTimePickerStateless';
 import TimeField from './internal/TimeField';
 import TimeDialog from './internal/TimeDialog';
-import type { Handler } from '../types';
 import { parseDate, parseTime } from '../util';
 
 const noop = () => {};
@@ -34,17 +33,21 @@ const defaultTimes = [
   '6:00pm',
 ];
 
+type Value = [?string, ?string];
 type Props = {
   isDisabled: boolean,
   disabled: Array<string>,
   times: Array<string>,
   width: number,
-  onChange: Handler,
+  onChange: (date: string, time: string) => void,
+  /** An array of two strings containing the date and time values respectively.
+   * If provided, the component will treat this value as the selected value. */
+  value: ?Value,
 };
 
 type State = {
   active: 0 | 1 | 2,
-  value: [?string, ?string],
+  value: Value,
   displayValue: [string, string],
   isOpen: boolean,
   focused: ?string,
@@ -60,20 +63,41 @@ export default class DateTimePicker extends Component<Props, State> {
     times: defaultTimes,
     width: gridSize() * 30,
     onChange() {},
+    value: null,
   };
 
-  state = {
-    active: 0,
-    value: [null, null],
-    displayValue: ['', ''],
-    isOpen: false,
-    focused: null,
-    visibleTimes: this.props.times,
+  constructor(props: Props) {
+    super(props);
+
+    const parsedDate =
+      props.value && props.value[0] ? parseDate(props.value[0]) : null;
+    const parsedTime =
+      props.value && props.value[1] ? parseTime(props.value[1]) : null;
+
+    this.state = {
+      active: 0,
+      value: props.value
+        ? [parsedDate && parsedDate.value, parsedTime]
+        : [null, null],
+      displayValue: props.value
+        ? [parsedDate ? parsedDate.display : '', parsedTime || '']
+        : ['', ''],
+      isOpen: false,
+      focused: null,
+      visibleTimes: this.props.times,
+    };
+  }
+
+  getState = () => {
+    if (!this.props.value) {
+      return this.state;
+    }
+    return { ...this.state, value: this.props.value };
   };
 
   onChange = (dateValue: ?string, timeValue: ?string) => {
     if (dateValue && timeValue) {
-      this.props.onChange(`${dateValue} ${timeValue}`);
+      this.props.onChange(dateValue, timeValue);
     }
   };
 
@@ -86,8 +110,11 @@ export default class DateTimePicker extends Component<Props, State> {
   // DatePicker
 
   onDateChange = (value: string) => {
-    if (value !== this.state.value[0]) {
-      this.onChange(value, this.state.value[1]);
+    if (value !== this.getState().value[0]) {
+      this.setState(prevState => ({
+        value: [value, prevState.value[1]],
+      }));
+      this.onChange(value, this.getState().value[1]);
     }
   };
 
@@ -151,7 +178,6 @@ export default class DateTimePicker extends Component<Props, State> {
       this.setState(prevState => ({
         isOpen: false,
         displayValue: [parsedDate.display, prevState.displayValue[1]],
-        value: [parsedDate.value, prevState.value[1]],
       }));
       this.selectTimeField();
     }
@@ -163,13 +189,11 @@ export default class DateTimePicker extends Component<Props, State> {
     if (parsedDate) {
       this.onDateChange(parsedDate.value);
       this.setState(prevState => ({
-        value: [parsedDate.value, prevState.value[1]],
         displayValue: [parsedDate.display, prevState.displayValue[1]],
       }));
     } else {
       // TODO: Display error message for invalid date.
       this.setState(prevState => ({
-        value: [null, prevState.value[1]],
         displayValue: ['', prevState.displayValue[1]],
       }));
     }
@@ -184,8 +208,11 @@ export default class DateTimePicker extends Component<Props, State> {
   // TimePicker
 
   onTimeChange = (value: string) => {
-    if (value !== this.state.value[1]) {
-      this.onChange(this.state.value[0], value);
+    if (value !== this.getState().value[1]) {
+      this.setState(prevState => ({
+        value: [prevState.value[0], value],
+      }));
+      this.onChange(this.getState().value[0], value);
     }
   };
 
@@ -230,15 +257,6 @@ export default class DateTimePicker extends Component<Props, State> {
     }
   };
 
-  // handleIconClick = () => {
-  //   if (this.state.isOpen) {
-  //     this.setState({ isOpen: false });
-  //   } else {
-  //     this.openDialog();
-  //   }
-  //   this.selectField();
-  // }
-
   handleTimeUpdate = (time: string) => {
     this.validateTime(time);
   };
@@ -249,14 +267,12 @@ export default class DateTimePicker extends Component<Props, State> {
     if (parsedTime) {
       this.onTimeChange(parsedTime);
       this.setState(prevState => ({
-        value: [prevState.value[0], parsedTime],
         displayValue: [prevState.displayValue[0], parsedTime],
         isOpen: false,
       }));
     } else {
       // TODO: Display an error message
       this.setState(prevState => ({
-        value: [prevState.value[0], null],
         displayValue: [prevState.displayValue[0], ''],
         isOpen: false,
       }));
@@ -319,7 +335,7 @@ export default class DateTimePicker extends Component<Props, State> {
         isOpen={this.state.isOpen}
         shouldShowIcon
         displayValue={this.state.displayValue}
-        value={this.state.value}
+        value={this.getState().value}
         dialogProps={[
           { dialog: this.props.disabled },
           { times: this.state.visibleTimes, value: this.state.focused },
