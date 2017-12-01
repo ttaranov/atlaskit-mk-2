@@ -46,7 +46,7 @@ type Props = {
    the default dropdown behaviour. */
   onMoreClick?: FunctionType,
   /** Defines the size of the avatar */
-  size?: SizeType,
+  size: SizeType,
   boundariesElement?: 'viewport' | 'window' | 'scrollParent',
 };
 

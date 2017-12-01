@@ -14,7 +14,7 @@ import { omit } from '../utils';
 import { getProps, getStyledAvatar } from '../helpers';
 import { mapProps, withPseudoState } from '../hoc';
 
-import type { AvatarPropTypes, AvatarPropTypesBase } from '../types';
+import type { AvatarPropTypes } from '../types';
 
 export const AvatarDefaultProps = {
   appearance: 'circle',
@@ -118,13 +118,8 @@ class Avatar extends Component<AvatarPropTypes> {
       stackIndex,
     } = this.props;
 
-    // Since we augment the onClick handler below we can't use the
-    // same type definition that we do for the Avatar's onClick prop
-    type AvatarInnerProps = AvatarPropTypesBase & {
-      onClick?: Function,
-    };
     // distill props from context, props, and state
-    const props: AvatarInnerProps = getProps(this);
+    const props: AvatarPropTypes = getProps(this);
 
     // provide element type based on props
     const Inner: any = getStyledAvatar(this.props);

@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-
 /**
  * Styling a avatar is complicated and there are a number of properties which
  * inform its appearance. We want to be able to style any arbitrary component
@@ -12,6 +11,7 @@ import React from 'react';
  */
 
 /* eslint-disable react/prop-types, no-unused-vars */
+// $FlowFixMe - needs to be typed correctly
 export default function CustomComponentProxy({
   appearance,
   avatar,
