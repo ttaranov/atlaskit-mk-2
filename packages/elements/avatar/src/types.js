@@ -28,7 +28,7 @@ export type AvatarClickType = (
 export type AvatarPropTypesBase = {
   /** Indicates the shape of the avatar. Most avatars are circular, but square avatars
    can be used for 'container' objects. */
-  appearance: AppearanceType,
+  appearance?: AppearanceType,
   /** Used to override the default border color of the presence indicator.
    Accepts any color argument that the border-color CSS property accepts. */
   borderColor?: string | FunctionType,

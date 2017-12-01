@@ -15,6 +15,11 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
+    "@atlaskit/dropdown-menu": "^3.0.1",
+    "@atlaskit/item": "^4.2.3",
+    "@atlaskit/polyfills": "^1.2.3",
+    "@atlaskit/theme": "^2.2.7",
+    "@atlaskit/tooltip": "^8.0.7",
     "styled-components": "^1.4.6"
   },
   "peerDependencies": {
