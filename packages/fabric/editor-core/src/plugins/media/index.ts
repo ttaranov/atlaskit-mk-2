@@ -205,6 +205,14 @@ export class MediaPluginState {
     this.notifyPluginStateSubscribers();
   };
 
+  insertFile = (mediaState: MediaState): void => {
+    // tslint:disable-next-line:no-console
+    console.warn(
+      'This API is deprecated. Please use insertFiles(mediaStates: MediaState[]) instead',
+    );
+    this.insertFiles([mediaState]);
+  };
+
   insertFiles = (mediaStates: MediaState[]): void => {
     const { singleImage } = this.view.state.schema.nodes;
     const collection = this.collectionFromProvider();
