@@ -1,10 +1,8 @@
 // @flow
 import React from 'react';
-import Toggle from '@atlaskit/toggle';
 import Button from '@atlaskit/button';
 import { AtlaskitThemeProvider, gridSize } from '@atlaskit/theme';
-
-console.log('AtlaskitThemeProvider', AtlaskitThemeProvider);
+import Toggle from '../src/';
 
 type State = {|
   mode: 'light' | 'dark',

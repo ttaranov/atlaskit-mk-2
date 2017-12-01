@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-// TODO: @atlaskit/toggle
 import Toggle from '../src';
 
 export default () => (

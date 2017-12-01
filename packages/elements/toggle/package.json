@@ -15,7 +15,7 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
-    "@atlaskit/icon": "^10.3.0",
+    "@atlaskit/icon": "^10.3.1",
     "@atlaskit/theme": "^2.2.4",
     "styled-components": "^1.4.6",
     "uuid": "^3.1.0"
@@ -25,8 +25,7 @@
   },
   "devDependencies": {
     "@atlaskit/button": "^5.4.8",
-    "@atlaskit/docs": "^0.0.4",
-    "@atlaskit/toggle": "*",
+    "@atlaskit/docs": "^1.0.1",
     "enzyme": "^2.9.1"
   },
   "keywords": [
