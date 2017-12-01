@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { NodeSelection } from 'prosemirror-state';
-import tasksAndDecisionsPlugins from '../../../../src/plugins/tasks-and-decisions';
+import tasksAndDecisionsPlugins from '../../../src/plugins/tasks-and-decisions';
 import {
   chaiPlugin,
   makeEditor,
@@ -17,16 +17,16 @@ import {
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import { uuid } from '@atlaskit/editor-common';
-import { changeToTaskDecision } from '../../../../src/plugins/tasks-and-decisions/commands';
+import { changeToTaskDecision } from '../../../src/plugins/tasks-and-decisions/commands';
 
 chai.use(chaiPlugin);
 
 describe('tasks and decisions - commands', () => {
-  before(() => {
-    uuid.setStatic('local-decision');
+  beforeEach(() => {
+    uuid.setStatic('local-highlight');
   });
 
-  after(() => {
+  afterEach(() => {
     uuid.setStatic(false);
   });
 
@@ -47,7 +47,11 @@ describe('tasks and decisions - commands', () => {
 
     it('can convert decision item to action', () => {
       const { editorView } = editor(
-        doc(decisionList(decisionItem('Hello World'))),
+        doc(
+          decisionList({ localId: 'local-highlight' })(
+            decisionItem({ localId: 'local-highlight' })('Hello World'),
+          ),
+        ),
       );
       const { state } = editorView;
       const { tr } = state;
@@ -56,7 +60,13 @@ describe('tasks and decisions - commands', () => {
     });
 
     it('can convert action item to decision', () => {
-      const { editorView } = editor(doc(taskList(taskItem('Hello World'))));
+      const { editorView } = editor(
+        doc(
+          taskList({ localId: 'local-highlight' })(
+            taskItem({ localId: 'local-highlight' })('Hello World'),
+          ),
+        ),
+      );
       const { state } = editorView;
       const { tr } = state;
       tr.setSelection(new NodeSelection(tr.doc.resolve(1)));
