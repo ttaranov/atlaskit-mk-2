@@ -1,7 +1,9 @@
 // @flow
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { math, gridSize } from '@atlaskit/theme';
 
 export const TRANSITION_DURATION = '200ms';
+
+const gridSizeValue: number = gridSize();
 
 export const AVATAR_SIZES: {
   xsmall: number,
@@ -11,12 +13,12 @@ export const AVATAR_SIZES: {
   xlarge: number,
   xxlarge: number,
 } = {
-  xsmall: akGridSizeUnitless * 2,
-  small: akGridSizeUnitless * 3,
-  medium: akGridSizeUnitless * 4,
-  large: akGridSizeUnitless * 5,
-  xlarge: akGridSizeUnitless * 12,
-  xxlarge: akGridSizeUnitless * 16,
+  xsmall: gridSizeValue * 2,
+  small: gridSizeValue * 3,
+  medium: gridSizeValue * 4,
+  large: gridSizeValue * 5,
+  xlarge: gridSizeValue * 12,
+  xxlarge: gridSizeValue * 16,
 };
 
 // border radius only applies to "square" avatars

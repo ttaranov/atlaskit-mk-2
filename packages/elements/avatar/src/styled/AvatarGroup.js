@@ -1,9 +1,9 @@
 // @flow
 import styled from 'styled-components';
-import { akGridSize, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 import { BORDER_WIDTH } from './constants';
 
-const gutterUnitless = akGridSizeUnitless / 2;
+const gutterUnitless = gridSize() / 2;
 const gutter = `${gutterUnitless}px`;
 
 export const Grid = styled.div`
@@ -15,7 +15,7 @@ export const Grid = styled.div`
   margin-right: -${gutter};
 
   > * {
-    margin-bottom: ${akGridSize};
+    margin-bottom: ${gridSize};
     padding-left: ${gutter};
     padding-right: ${gutter};
   }
