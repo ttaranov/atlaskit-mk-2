@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 3.10.0
+- [minor] Added single image to schema; insertFile renamed to insertFiles. [1c6b005](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c6b005)
+- [minor] Added single image to schema; insertFile renamed to insertFiles. [1c6b005](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c6b005)
+
 ## 3.9.16
 
 ## 3.9.15
