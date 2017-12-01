@@ -1,4 +1,4 @@
-export type Language = { name: string, alias: [string] };
+export type Language = { name: string; alias: [string] };
 
 // We expect alias[0] to be used for the ADF attribute, see ED-2813
 export const DEFAULT_LANGUAGES: Language[] = [
@@ -39,8 +39,14 @@ export const DEFAULT_LANGUAGES: Language[] = [
   { name: 'Lua', alias: ['lua'] },
   { name: 'Mathematica', alias: ['mathematica', 'mma', 'nb'] },
   { name: 'MATLAB', alias: ['matlab'] },
-  { name: 'Objective-C', alias: ['objective-c', 'objectivec', 'obj-c', 'objc'] },
-  { name: 'Objective-J', alias: ['objective-j', 'objectivej', 'obj-j', 'objj'] },
+  {
+    name: 'Objective-C',
+    alias: ['objective-c', 'objectivec', 'obj-c', 'objc'],
+  },
+  {
+    name: 'Objective-J',
+    alias: ['objective-j', 'objectivej', 'obj-j', 'objj'],
+  },
   { name: 'ObjectPascal', alias: ['objectpascal'] },
   { name: 'OCaml', alias: ['ocaml'] },
   { name: 'Octave', alias: ['octave'] },
@@ -62,7 +68,22 @@ export const DEFAULT_LANGUAGES: Language[] = [
   { name: 'Scheme', alias: ['scheme', 'scm'] },
   { name: 'Shell', alias: ['shell', 'bash', 'sh', 'ksh', 'zsh'] },
   { name: 'Smalltalk', alias: ['smalltalk', 'squeak', 'st'] },
-  { name: 'SQL', alias: ['sql', 'postgresql', 'postgres', 'plpgsql', 'psql', 'postgresql-console', 'postgres-console', 'tsql', 't-sql', 'mysql', 'sqlite'] },
+  {
+    name: 'SQL',
+    alias: [
+      'sql',
+      'postgresql',
+      'postgres',
+      'plpgsql',
+      'psql',
+      'postgresql-console',
+      'postgres-console',
+      'tsql',
+      't-sql',
+      'mysql',
+      'sqlite',
+    ],
+  },
   { name: 'StandardML', alias: ['standardmL', 'sml'] },
   { name: 'Swift', alias: ['swift'] },
   { name: 'Tcl', alias: ['tcl'] },
@@ -74,15 +95,18 @@ export const DEFAULT_LANGUAGES: Language[] = [
   { name: 'VHDL', alias: ['vhdl'] },
   { name: 'VisualBasic', alias: ['visualbasic', 'vb'] },
   { name: 'XML', alias: ['xml'] },
-  { name: 'XQuery', alias: ['xquery', 'xqy', 'xq', 'xql', 'xqm'] }
+  { name: 'XQuery', alias: ['xquery', 'xqy', 'xq', 'xql', 'xqm'] },
 ];
 
-export function findMatchedLanguage(supportedLanguages: Language[], language?: string) {
+export function findMatchedLanguage(
+  supportedLanguages: Language[],
+  language?: string,
+) {
   if (!language) {
     return undefined;
   }
 
-  const matches = supportedLanguages.filter((supportedLanguage) => {
+  const matches = supportedLanguages.filter(supportedLanguage => {
     return supportedLanguage.alias.indexOf(language.toLowerCase()) !== -1;
   });
 
@@ -93,7 +117,7 @@ export function findMatchedLanguage(supportedLanguages: Language[], language?: s
   return undefined;
 }
 
-export function filterSupportedLanguages (supportedLanguages): Language[] {
+export function filterSupportedLanguages(supportedLanguages): Language[] {
   if (!supportedLanguages || !supportedLanguages.length) {
     return DEFAULT_LANGUAGES;
   }
@@ -109,14 +133,18 @@ export function filterSupportedLanguages (supportedLanguages): Language[] {
   });
 }
 
-export function getLanguageIdentifier (language: Language): string {
+export function getLanguageIdentifier(language: Language): string {
   return language.alias[0];
 }
 
-export function createLanguageList (supportedLanguages: Language[]) {
+export function createLanguageList(supportedLanguages: Language[]) {
   return supportedLanguages.sort((left, right) => {
-    if (left.name > right.name) { return 1; }
-    if (left.name < right.name) { return -1; }
+    if (left.name > right.name) {
+      return 1;
+    }
+    if (left.name < right.name) {
+      return -1;
+    }
     return 0;
   });
 }

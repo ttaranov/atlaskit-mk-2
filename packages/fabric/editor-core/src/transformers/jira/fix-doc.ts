@@ -2,20 +2,20 @@ function getNodeName(node: Node | null | undefined): string | null | undefined {
   return node && node.nodeName.toUpperCase();
 }
 
-function isMedia (node: Node | null): boolean {
+function isMedia(node: Node | null): boolean {
   if (!node) {
     return false;
   }
   if (getNodeName(node) === 'SPAN' && node instanceof HTMLElement) {
     return !!node.querySelector(
       'a > jira-attachment-thumbnail > img[data-attachment-type="thumbnail"], ' +
-      'a[data-attachment-type="file"]'
+        'a[data-attachment-type="file"]',
     );
   }
   return false;
 }
 
-function repairParagraph (p: HTMLParagraphElement) {
+function repairParagraph(p: HTMLParagraphElement) {
   const paragraphs: Array<Array<Node>> = [];
   let buffer: Array<Node> = [];
   let mediaGroupFound = false;
@@ -51,8 +51,7 @@ function repairParagraph (p: HTMLParagraphElement) {
           buffer = [];
         }
       }
-    }
-    else if (isMedia(node)) {
+    } else if (isMedia(node)) {
       // [M, ...]
       if (node.previousSibling === null) {
         mediaGroupFound = true;
@@ -60,7 +59,10 @@ function repairParagraph (p: HTMLParagraphElement) {
     } else {
       if (mediaGroupFound) {
         // Skip white space characters inside media
-        if (getNodeName(node) === '#TEXT' && (node.textContent || '').trim() === '') {
+        if (
+          getNodeName(node) === '#TEXT' &&
+          (node.textContent || '').trim() === ''
+        ) {
           continue;
         }
         buffer = (paragraphs.pop() || []).concat(buffer);
@@ -94,7 +96,7 @@ function repairParagraph (p: HTMLParagraphElement) {
   }
 }
 
-export default function (doc: Document): Document {
+export default function(doc: Document): Document {
   const paragraphs = doc.querySelectorAll('p');
   for (let i = 0, length = paragraphs.length; i < length; i++) {
     repairParagraph(paragraphs[i]);

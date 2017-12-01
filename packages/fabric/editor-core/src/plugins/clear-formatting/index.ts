@@ -1,7 +1,11 @@
 import { MarkType, Schema } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { clearFormatting, FORMATTING_MARK_TYPES, FORMATTING_NODE_TYPES } from './commands';
+import {
+  clearFormatting,
+  FORMATTING_MARK_TYPES,
+  FORMATTING_NODE_TYPES,
+} from './commands';
 import keymapPlugin from './keymap';
 
 export type StateChangeHandler = (state: ClearFormattingState) => any;
@@ -32,9 +36,11 @@ export class ClearFormattingState {
     const { state } = this;
 
     this.activeMarkTypes = FORMATTING_MARK_TYPES.filter(
-      mark => state.schema.marks[mark] && this.markIsActive(state.schema.marks[mark])
+      mark =>
+        state.schema.marks[mark] && this.markIsActive(state.schema.marks[mark]),
     );
-    const formattingIsPresent = this.activeMarkTypes.length > 0 || this.blockStylingIsPresent();
+    const formattingIsPresent =
+      this.activeMarkTypes.length > 0 || this.blockStylingIsPresent();
     if (formattingIsPresent !== this.formattingIsPresent) {
       this.formattingIsPresent = formattingIsPresent;
       this.triggerOnChange();
@@ -70,7 +76,7 @@ export class ClearFormattingState {
       return true;
     });
     return isBlockStyling;
-  }
+  };
 }
 
 export const stateKey = new PluginKey('clearFormattingPlugin');
@@ -83,13 +89,13 @@ export const plugin = new Plugin({
     apply(tr, pluginState: ClearFormattingState, oldState, newState) {
       pluginState.update(newState);
       return pluginState;
-    }
+    },
   },
-  key: stateKey
+  key: stateKey,
 });
 
 const plugins = (schema: Schema) => {
-  return [plugin, keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+  return [plugin, keymapPlugin(schema)].filter(plugin => !!plugin) as Plugin[];
 };
 
 export default plugins;

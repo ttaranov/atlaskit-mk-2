@@ -10,7 +10,7 @@ import {
   hoverColumn,
   hoverTable,
   hoverRow,
-  resetHoverSelection
+  resetHoverSelection,
 } from '../../editor/plugins/table/actions';
 
 export interface Props {
@@ -24,14 +24,14 @@ export interface State {
 
 export default class TableFloatingControls extends PureComponent<Props, State> {
   state: State = {
-    tableHovered: false
+    tableHovered: false,
   };
 
-  handleMouseDown = (event) => {
+  handleMouseDown = event => {
     event.preventDefault();
-  }
+  };
 
-  handleKeyDown = (event) => {
+  handleKeyDown = event => {
     const { editorView, pluginState } = this.props;
     const result = pluginState.keymapHandler(editorView, event.nativeEvent);
     if (result) {
@@ -40,19 +40,19 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
     if (!pluginState.cellSelection) {
       this.setState({ tableHovered: false });
     }
-  }
+  };
 
   handleCornerMouseOver = () => {
     const { editorView } = this.props;
     this.setState({ tableHovered: true });
     hoverTable(editorView.state, editorView.dispatch);
-  }
+  };
 
   handleCornerMouseOut = () => {
     const { editorView } = this.props;
     this.setState({ tableHovered: false });
     resetHoverSelection(editorView.state, editorView.dispatch);
-  }
+  };
 
   render() {
     const { editorView, pluginState } = this.props;

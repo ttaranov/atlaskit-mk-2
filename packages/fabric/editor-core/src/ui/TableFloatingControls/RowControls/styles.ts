@@ -3,7 +3,7 @@ import {
   akEditorTableBorderRadius,
   akEditorTableBorder,
   akEditorTableBorderSelected,
-  akEditorTableToolbarSize
+  akEditorTableToolbarSize,
 } from '../../../styles';
 import {
   HeaderButtonDefault,
@@ -32,7 +32,8 @@ export const RowInner = styled.div`
 export const RowControlsButtonWrap = styled.div`
   position: relative;
   margin-top: -1px;
-  &:hover, &.active {
+  &:hover,
+  &.active {
     z-index: 1;
   }
 `;
@@ -43,7 +44,9 @@ export const HeaderButton = styled(HeaderButtonDefault)`
   height: 100%;
   width: ${akEditorTableToolbarSize - 1}px;
 
-  &:hover, .active > &, .tableHovered & {
+  &:hover,
+  .active > &,
+  .tableHovered & {
     border-right: 1px solid ${akEditorTableBorderSelected};
     width: ${akEditorTableToolbarSize}px;
   }

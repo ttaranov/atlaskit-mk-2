@@ -5,7 +5,9 @@ import styled from 'styled-components';
 import { ComponentClass } from 'react';
 
 // tslint:disable-next-line:variable-name
-export const FloatingToolbar: ComponentClass<any> = styled(FloatingToolbarDefault)`
+export const FloatingToolbar: ComponentClass<any> = styled(
+  FloatingToolbarDefault,
+)`
   background-color: ${akColorN10};
   padding: 4px 8px 4px 4px;
   min-height: 24px;

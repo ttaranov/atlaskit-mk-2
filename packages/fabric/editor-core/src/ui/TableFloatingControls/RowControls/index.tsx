@@ -17,12 +17,19 @@ export interface Props {
   isSelected: (row: number) => boolean;
   selectRow: (row: number) => void;
   insertRow: (row: number) => void;
-  hoverRow: (row: number, state: EditorState, dispatch: (tr: Transaction) => void) => void;
-  resetHoverSelection: (state: EditorState, dispatch: (tr: Transaction) => void) => void;
+  hoverRow: (
+    row: number,
+    state: EditorState,
+    dispatch: (tr: Transaction) => void,
+  ) => void;
+  resetHoverSelection: (
+    state: EditorState,
+    dispatch: (tr: Transaction) => void,
+  ) => void;
 }
 
 export default class RowControls extends Component<Props, any> {
-  render () {
+  render() {
     const { editorView } = this.props;
     const tbody = this.props.tableElement.querySelector('tbody')!;
     const rows = tbody.getElementsByTagName('tr');
@@ -39,8 +46,15 @@ export default class RowControls extends Component<Props, any> {
           {/* tslint:disable:jsx-no-lambda */}
           <HeaderButton
             onClick={() => this.props.selectRow(i)}
-            onMouseOver={() => this.props.hoverRow(i, editorView.state, editorView.dispatch)}
-            onMouseOut={() => this.props.resetHoverSelection(editorView.state, editorView.dispatch)}
+            onMouseOver={() =>
+              this.props.hoverRow(i, editorView.state, editorView.dispatch)
+            }
+            onMouseOut={() =>
+              this.props.resetHoverSelection(
+                editorView.state,
+                editorView.dispatch,
+              )
+            }
           />
           {/* tslint:enable:jsx-no-lambda */}
           <InsertRowButton
@@ -48,7 +62,7 @@ export default class RowControls extends Component<Props, any> {
             index={i + 1}
             lineMarkerWidth={tableWidth + toolbarSize}
           />
-        </RowControlsButtonWrap>
+        </RowControlsButtonWrap>,
       );
     }
 

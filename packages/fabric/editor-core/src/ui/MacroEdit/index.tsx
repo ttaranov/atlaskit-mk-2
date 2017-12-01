@@ -13,8 +13,17 @@ export interface Props {
   editorView: EditorView;
   macroElement: HTMLElement | null;
   macroProvider: MacroProvider | null;
-  onInsertMacroFromMacroBrowser: (macroProvider: MacroProvider, macroNode?: PmNode) => (state: EditorState, dispatch: (tr: Transaction) => void) => Promise<MacroAdf>;
-  onRemoveMacro: (state: EditorState, dispatch: (tr: Transaction) => void) => void;
+  onInsertMacroFromMacroBrowser: (
+    macroProvider: MacroProvider,
+    macroNode?: PmNode,
+  ) => (
+    state: EditorState,
+    dispatch: (tr: Transaction) => void,
+  ) => Promise<MacroAdf>;
+  onRemoveMacro: (
+    state: EditorState,
+    dispatch: (tr: Transaction) => void,
+  ) => void;
 }
 
 export default class MacroEdit extends React.Component<any, any> {
@@ -25,11 +34,7 @@ export default class MacroEdit extends React.Component<any, any> {
     }
 
     return (
-      <Popup
-        target={macroElement}
-        offset={[0, 3]}
-        alignX="right"
-      >
+      <Popup target={macroElement} offset={[0, 3]} alignX="right">
         <Toolbar>
           <ToolbarButton
             onClick={this.onEdit}
@@ -51,16 +56,16 @@ export default class MacroEdit extends React.Component<any, any> {
     const {
       macroProvider,
       onInsertMacroFromMacroBrowser,
-      editorView: { state, dispatch }
+      editorView: { state, dispatch },
     } = this.props;
     const { nodeAfter } = state.selection.$from;
     if (nodeAfter) {
       onInsertMacroFromMacroBrowser(macroProvider, nodeAfter)(state, dispatch);
     }
-  }
+  };
 
   private onRemoveMacro = () => {
     const { editorView: { state, dispatch }, onRemoveMacro } = this.props;
     onRemoveMacro(state, dispatch);
-  }
+  };
 }

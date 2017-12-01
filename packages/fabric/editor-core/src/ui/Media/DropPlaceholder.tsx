@@ -1,11 +1,14 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { akColorB300, akColorB400, akBorderRadius } from '@atlaskit/util-shared-styles';
+import {
+  akColorB300,
+  akColorB400,
+  akBorderRadius,
+} from '@atlaskit/util-shared-styles';
 import DocumentFilledIcon from '@atlaskit/icon/glyph/document-filled';
 import { hexToRgba } from '../../utils/color';
 
 import { MEDIA_HEIGHT, FILE_WIDTH } from './MediaComponent';
-
 
 // tslint:disable-next-line:variable-name
 const IconWrapper = styled.div`

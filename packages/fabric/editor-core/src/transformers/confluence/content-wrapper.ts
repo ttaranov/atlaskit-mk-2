@@ -3,12 +3,16 @@ import {
   Node as PMNode,
   Mark,
   NodeType,
-  Schema
+  Schema,
 } from 'prosemirror-model';
 import { default as encodeCxhtml } from './encode-cxhtml';
 import { children } from './utils';
 
-export const docContentWrapper = (schema: Schema, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
+export const docContentWrapper = (
+  schema: Schema,
+  content: Fragment,
+  convertedNodesReverted: WeakMap<Fragment | PMNode, Node>,
+) => {
   const validContent = (node: PMNode) => {
     if (node.type.spec.group === 'block') {
       return true;
@@ -19,15 +23,22 @@ export const docContentWrapper = (schema: Schema, content: Fragment, convertedNo
   const blockContent: PMNode[] = [];
   content.forEach((node: PMNode) => {
     if (node.type === schema.nodes.confluenceUnsupportedInline) {
-      const unsupportedBlock: PMNode = schema.nodes.confluenceUnsupportedBlock.create({
-        cxhtml: node.attrs.cxhtml
-      });
+      const unsupportedBlock: PMNode = schema.nodes.confluenceUnsupportedBlock.create(
+        {
+          cxhtml: node.attrs.cxhtml,
+        },
+      );
       blockContent.push(unsupportedBlock);
       return;
     }
     blockContent.push(node);
   });
-  return ensureBlock(schema, Fragment.fromArray(blockContent), convertedNodesReverted, validContent);
+  return ensureBlock(
+    schema,
+    Fragment.fromArray(blockContent),
+    convertedNodesReverted,
+    validContent,
+  );
 };
 
 /**
@@ -35,12 +46,20 @@ export const docContentWrapper = (schema: Schema, content: Fragment, convertedNo
  * @param convertedNodesReverted
  * Bullet List and Ordered List can only accept listItems
  */
-export const listContentWrapper = (schema: Schema, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
+export const listContentWrapper = (
+  schema: Schema,
+  content: Fragment,
+  convertedNodesReverted: WeakMap<Fragment | PMNode, Node>,
+) => {
   const result: PMNode[] = [];
 
   content.forEach((node: PMNode) => {
     if (node.type !== schema.nodes.listItem) {
-      const listItemContent = listItemContentWrapper(schema, Fragment.from(node), convertedNodesReverted);
+      const listItemContent = listItemContentWrapper(
+        schema,
+        Fragment.from(node),
+        convertedNodesReverted,
+      );
       const listItem = schema.nodes.listItem.createChecked({}, listItemContent);
       result.push(listItem);
     } else {
@@ -57,8 +76,16 @@ export const listContentWrapper = (schema: Schema, content: Fragment, convertedN
  * A private method that used by listItemContentWrapper and blockquoteContentWrapper
  * to wrap invalid content in a paragraph
  */
-const convertInvalidToParagraph = (schema: Schema, node: PMNode, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
-  const paragraphContent = ensureInline(schema, Fragment.from(node), convertedNodesReverted);
+const convertInvalidToParagraph = (
+  schema: Schema,
+  node: PMNode,
+  convertedNodesReverted: WeakMap<Fragment | PMNode, Node>,
+) => {
+  const paragraphContent = ensureInline(
+    schema,
+    Fragment.from(node),
+    convertedNodesReverted,
+  );
   const paragraph = schema.nodes.paragraph.createChecked({}, paragraphContent);
   return paragraph;
 };
@@ -68,12 +95,22 @@ const convertInvalidToParagraph = (schema: Schema, node: PMNode, convertedNodesR
  * @param convertedNodesReverted
  * ListItem content schema 'paragraph (paragraph | bulletList | orderedList)*'
  */
-export const listItemContentWrapper = (schema: Schema, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
-  const validSpec: NodeType[] = [schema.nodes.paragraph, schema.nodes.bulletList, schema.nodes.orderedList];
+export const listItemContentWrapper = (
+  schema: Schema,
+  content: Fragment,
+  convertedNodesReverted: WeakMap<Fragment | PMNode, Node>,
+) => {
+  const validSpec: NodeType[] = [
+    schema.nodes.paragraph,
+    schema.nodes.bulletList,
+    schema.nodes.orderedList,
+  ];
   const validContent = (node: PMNode) => {
-    if (validSpec.some((spec: NodeType) => {
-      return spec === node.type;
-    })) {
+    if (
+      validSpec.some((spec: NodeType) => {
+        return spec === node.type;
+      })
+    ) {
       return true;
     }
     return false;
@@ -81,7 +118,13 @@ export const listItemContentWrapper = (schema: Schema, content: Fragment, conver
   const convertInvalid = (node: PMNode) => {
     return convertInvalidToParagraph(schema, node, convertedNodesReverted);
   };
-  return ensureBlock(schema, content, convertedNodesReverted, validContent, convertInvalid);
+  return ensureBlock(
+    schema,
+    content,
+    convertedNodesReverted,
+    validContent,
+    convertInvalid,
+  );
 };
 
 /**
@@ -89,12 +132,18 @@ export const listItemContentWrapper = (schema: Schema, content: Fragment, conver
  * @param convertedNodesReverted
  * blockquote schema supports one or more number of paragraph nodes
  */
-export const blockquoteContentWrapper = (schema: Schema, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
+export const blockquoteContentWrapper = (
+  schema: Schema,
+  content: Fragment,
+  convertedNodesReverted: WeakMap<Fragment | PMNode, Node>,
+) => {
   const validSpec: NodeType[] = [schema.nodes.paragraph];
   const validContent = (node: PMNode) => {
-    if (validSpec.some((spec: NodeType) => {
-      return spec === node.type;
-    })) {
+    if (
+      validSpec.some((spec: NodeType) => {
+        return spec === node.type;
+      })
+    ) {
       return true;
     }
     return false;
@@ -102,7 +151,13 @@ export const blockquoteContentWrapper = (schema: Schema, content: Fragment, conv
   const convertInvalid = (node: PMNode) => {
     return convertInvalidToParagraph(schema, node, convertedNodesReverted);
   };
-  return ensureBlock(schema, content, convertedNodesReverted, validContent, convertInvalid);
+  return ensureBlock(
+    schema,
+    content,
+    convertedNodesReverted,
+    validContent,
+    convertInvalid,
+  );
 };
 
 /**
@@ -110,19 +165,29 @@ export const blockquoteContentWrapper = (schema: Schema, content: Fragment, conv
  * @param convertedNodesReverted
  * This function will convert all content to inline nodes
  */
-export const ensureInline = (schema: Schema, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>, supportedMarks?: Mark[]) => {
+export const ensureInline = (
+  schema: Schema,
+  content: Fragment,
+  convertedNodesReverted: WeakMap<Fragment | PMNode, Node>,
+  supportedMarks?: Mark[],
+) => {
   const result: PMNode[] = [];
   content.forEach((node: PMNode) => {
     if (node.isInline) {
-      const filteredMarks = node.marks.filter(mark => !supportedMarks || mark.isInSet(supportedMarks));
+      const filteredMarks = node.marks.filter(
+        mark => !supportedMarks || mark.isInSet(supportedMarks),
+      );
       result.push(node.mark(filteredMarks));
       return;
     }
     // We replace an non-inline node with UnsupportedInline node
-    const originalNode = convertedNodesReverted.get(node) || convertedNodesReverted.get(content);
-    const unsupportedInline: PMNode = schema.nodes.confluenceUnsupportedInline.create({
-      cxhtml: originalNode ? encodeCxhtml(originalNode) : ''
-    });
+    const originalNode =
+      convertedNodesReverted.get(node) || convertedNodesReverted.get(content);
+    const unsupportedInline: PMNode = schema.nodes.confluenceUnsupportedInline.create(
+      {
+        cxhtml: originalNode ? encodeCxhtml(originalNode) : '',
+      },
+    );
     result.push(unsupportedInline);
   });
   return Fragment.fromArray(result);
@@ -134,7 +199,13 @@ export const ensureInline = (schema: Schema, content: Fragment, convertedNodesRe
  * validContent to skip some of the content type
  * Optionaly, you can decide to how to convert invalid node
  */
-export function ensureBlock(schema: Schema, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>, validContent: (node: PMNode) => boolean, convertInvalid?: (node: PMNode) => PMNode): Fragment {
+export function ensureBlock(
+  schema: Schema,
+  content: Fragment,
+  convertedNodesReverted: WeakMap<Fragment | PMNode, Node>,
+  validContent: (node: PMNode) => boolean,
+  convertInvalid?: (node: PMNode) => PMNode,
+): Fragment {
   // This algorithm is fairly simple:
   //
   // 1. If validContent(node) => true, keep it as-is.
@@ -164,10 +235,13 @@ export function ensureBlock(schema: Schema, content: Fragment, convertedNodesRev
   const nodes = children(content);
   const blocks: PMNode[] = [];
   const defaultConvertInvalid = (node: PMNode) => {
-    const originalNode = convertedNodesReverted.get(node) || convertedNodesReverted.get(content);
-    const unsupportedBlock: PMNode = schema.nodes.confluenceUnsupportedBlock.create({
-      cxhtml: originalNode ? encodeCxhtml(originalNode) : ''
-    });
+    const originalNode =
+      convertedNodesReverted.get(node) || convertedNodesReverted.get(content);
+    const unsupportedBlock: PMNode = schema.nodes.confluenceUnsupportedBlock.create(
+      {
+        cxhtml: originalNode ? encodeCxhtml(originalNode) : '',
+      },
+    );
     return unsupportedBlock;
   };
 
@@ -187,10 +261,12 @@ export function ensureBlock(schema: Schema, content: Fragment, convertedNodesRev
         }
       }
       blocks.push(schema.nodes.paragraph.createChecked({}, nodes.slice(i, j)));
-      i = j-1;
+      i = j - 1;
     } else {
       // This is an block node but invalid content
-      blocks.push(convertInvalid ? convertInvalid(node) : defaultConvertInvalid(node));
+      blocks.push(
+        convertInvalid ? convertInvalid(node) : defaultConvertInvalid(node),
+      );
     }
   }
 

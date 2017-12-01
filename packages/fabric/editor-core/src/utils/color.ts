@@ -3,7 +3,10 @@ import * as namedColors from 'css-color-names';
 /**
  * @return String with HEX-coded color
  */
-export function normalizeHexColor(color: string | null, defaultColor?: string): string | null {
+export function normalizeHexColor(
+  color: string | null,
+  defaultColor?: string,
+): string | null {
   if (!color) {
     return null;
   }
@@ -13,16 +16,18 @@ export function normalizeHexColor(color: string | null, defaultColor?: string): 
   if (isHex(color)) {
     // Normalize 3-hex to 6-hex colours
     if (color.length === 4) {
-      color = color.split('').map(c => c === '#' ? '#' : `${c}${c}`).join('');
+      color = color
+        .split('')
+        .map(c => (c === '#' ? '#' : `${c}${c}`))
+        .join('');
     }
-  } else if(isRgb(color)) {
+  } else if (isRgb(color)) {
     return rgbToHex(color);
   } else {
     // http://dev.w3.org/csswg/css-color/#named-colors
     if (namedColors[color]) {
       color = namedColors[color];
-    }
-    else {
+    } else {
       return null;
     }
   }
@@ -46,8 +51,15 @@ export function hexToRgb(color: string): string | null {
   }
 
   let colorBits = color.substring(1).split('');
-  if(colorBits.length === 3){
-    colorBits = [colorBits[0], colorBits[0], colorBits[1], colorBits[1], colorBits[2], colorBits[2]];
+  if (colorBits.length === 3) {
+    colorBits = [
+      colorBits[0],
+      colorBits[0],
+      colorBits[1],
+      colorBits[1],
+      colorBits[2],
+      colorBits[2],
+    ];
   }
 
   const rgb = Number(`0x${colorBits.join('')}`);
@@ -65,8 +77,11 @@ export function hexToRgba(color: string, alpha: number) {
   if (!isHex(color) && color.length !== 7) {
     return null;
   }
-  const hex2rgb = (color: string) => color.match(/[a-z0-9]{2}/gi)!.map(hex => parseInt(hex, 16));
-  return `rgba(${hex2rgb(color).concat(alpha).join(',')})`;
+  const hex2rgb = (color: string) =>
+    color.match(/[a-z0-9]{2}/gi)!.map(hex => parseInt(hex, 16));
+  return `rgba(${hex2rgb(color)
+    .concat(alpha)
+    .join(',')})`;
 }
 
 export function rgbToHex(value: string): string | null {
@@ -75,7 +90,10 @@ export function rgbToHex(value: string): string | null {
   if (matches && matches.length >= 3) {
     const [red, green, blue] = matches.map(Number);
     // tslint:disable-next-line:no-bitwise
-    return '#' + ((blue | green << 8 | red << 16) | 1 << 24).toString(16).slice(1);
+    return (
+      '#' +
+      (blue | (green << 8) | (red << 16) | (1 << 24)).toString(16).slice(1)
+    );
   }
 
   return null;

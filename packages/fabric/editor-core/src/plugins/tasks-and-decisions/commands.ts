@@ -1,9 +1,17 @@
 import { uuid } from '@atlaskit/editor-common';
 import { Schema } from 'prosemirror-model';
-import { EditorState, Selection, TextSelection, Transaction } from 'prosemirror-state';
+import {
+  EditorState,
+  Selection,
+  TextSelection,
+  Transaction,
+} from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
-const getListTypes = (listType: TaskDecisionListType, schema: Schema): { list, item } => {
+const getListTypes = (
+  listType: TaskDecisionListType,
+  schema: Schema,
+): { list; item } => {
   const { decisionList, decisionItem, taskList, taskItem } = schema.nodes;
   if (listType === 'taskList') {
     return {
@@ -20,17 +28,24 @@ const getListTypes = (listType: TaskDecisionListType, schema: Schema): { list, i
 
 export type TaskDecisionListType = 'taskList' | 'decisionList';
 
-const isSelectionInAList = (listType: TaskDecisionListType, selection: Selection) => {
+const isSelectionInAList = (
+  listType: TaskDecisionListType,
+  selection: Selection,
+) => {
   const fromNode = selection.$from.node(selection.$from.depth - 2);
   const endNode = selection.$to.node(selection.$to.depth - 2);
 
-  return fromNode && fromNode.type.name === listType
-      && endNode  && endNode.type.name !== listType;
+  return (
+    fromNode &&
+    fromNode.type.name === listType &&
+    endNode &&
+    endNode.type.name !== listType
+  );
 };
 
 export const changeToTaskDecision = (
   view: EditorView,
-  listType: TaskDecisionListType
+  listType: TaskDecisionListType,
 ): boolean => {
   const { state } = view;
   const { selection, schema } = state;
@@ -47,7 +62,13 @@ export const changeToTaskDecision = (
   return false;
 };
 
-export const createListAtSelection = (tr: Transaction, list: any, item: any, schema: Schema, state: EditorState): boolean => {
+export const createListAtSelection = (
+  tr: Transaction,
+  list: any,
+  item: any,
+  schema: Schema,
+  state: EditorState,
+): boolean => {
   const { selection: { $from, $to } } = state;
 
   if ($from.parent !== $to.parent) {
@@ -56,7 +77,8 @@ export const createListAtSelection = (tr: Transaction, list: any, item: any, sch
   }
 
   const { decisionList, taskList } = schema.nodes;
-  const isAlreadyDecisionTask = $from.parent.type === decisionList || $from.parent.type === taskList;
+  const isAlreadyDecisionTask =
+    $from.parent.type === decisionList || $from.parent.type === taskList;
 
   if (isAlreadyDecisionTask) {
     return false;
@@ -67,8 +89,9 @@ export const createListAtSelection = (tr: Transaction, list: any, item: any, sch
 
   tr
     .delete(where, $from.end($from.depth))
-    .replaceSelectionWith(list.create({ localId: uuid.generate() }, [item.create({}, content)]))
-  ;
+    .replaceSelectionWith(
+      list.create({ localId: uuid.generate() }, [item.create({}, content)]),
+    );
 
   // Adjust selection into new item, if not there (e.g. in full page editor)
   const newSelection = tr.selection;

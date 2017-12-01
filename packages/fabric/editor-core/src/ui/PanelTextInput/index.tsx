@@ -25,13 +25,13 @@ export default class PanelTextInput extends PureComponent<Props, State> {
     super(props);
 
     this.state = {
-      value: props.defaultValue || ''
+      value: props.defaultValue || '',
     };
   }
 
   componentWillReceiveProps(props: Props) {
     this.setState({
-      value: props.defaultValue
+      value: props.defaultValue,
     });
   }
 
@@ -40,14 +40,14 @@ export default class PanelTextInput extends PureComponent<Props, State> {
     if (onMouseDown) {
       onMouseDown();
     }
-  }
+  };
 
   onBlur = () => {
     const { onBlur } = this.props;
     if (onBlur) {
       onBlur();
     }
-  }
+  };
 
   render() {
     const { placeholder } = this.props;
@@ -77,14 +77,14 @@ export default class PanelTextInput extends PureComponent<Props, State> {
     const { onChange } = this.props;
     if (this.input) {
       this.setState({
-        value: this.input.value
+        value: this.input.value,
       });
     }
 
     if (onChange && this.input) {
       onChange(this.input.value);
     }
-  }
+  };
 
   private handleKeydown = (e: KeyboardEvent<any>) => {
     if (e.keyCode === 13 && this.props.onSubmit) {
@@ -97,7 +97,7 @@ export default class PanelTextInput extends PureComponent<Props, State> {
     if (this.props.onKeyDown) {
       this.props.onKeyDown(e);
     }
-  }
+  };
 
   private handleRef = (input: HTMLInputElement | null) => {
     if (input instanceof HTMLInputElement) {
@@ -109,5 +109,5 @@ export default class PanelTextInput extends PureComponent<Props, State> {
     } else {
       this.input = undefined;
     }
-  }
+  };
 }
