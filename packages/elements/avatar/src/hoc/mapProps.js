@@ -5,7 +5,7 @@ import type { ComponentType, ElementType, FunctionType } from '../types';
 
 export default function mapProps(mapping: {}) {
   return (DecoratedComponent: ComponentType) =>
-    class MapProps extends Component {
+    class MapProps extends Component<*> {
       static displayName: string = getDisplayName(
         'mapProps',
         DecoratedComponent,
@@ -15,11 +15,15 @@ export default function mapProps(mapping: {}) {
       component: { blur?: FunctionType, focus?: FunctionType };
 
       // expose blur/focus to consumers via ref
-      blur = (e: FocusEvent) => {
-        if (this.component.blur) this.component.blur(e);
+      blur = () => {
+        if (this.component.blur) this.component.blur();
       };
-      focus = (e: FocusEvent) => {
-        if (this.component.focus) this.component.focus(e);
+      focus = () => {
+        if (this.component.focus) this.component.focus();
+      };
+
+      setComponent = (component: ElementType) => {
+        this.component = component;
       };
 
       render() {
@@ -34,12 +38,7 @@ export default function mapProps(mapping: {}) {
           ),
         };
 
-        return (
-          <DecoratedComponent
-            ref={(r: ElementType) => (this.component = r)}
-            {...mapped}
-          />
-        );
+        return <DecoratedComponent ref={this.setComponent} {...mapped} />;
       }
     };
 }

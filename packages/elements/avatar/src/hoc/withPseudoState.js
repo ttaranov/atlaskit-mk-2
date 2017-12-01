@@ -1,7 +1,8 @@
 // @flow
 import React, { Component } from 'react';
+import type { ComponentType } from 'react';
 import { omit, getDisplayName } from '../utils';
-import type { ComponentType, ElementType, FunctionType } from '../types';
+import type { ElementType, FunctionType } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
@@ -33,31 +34,17 @@ const INTERNAL_HANDLERS = [
   'onMouseUp',
 ];
 
-function getInitialState({
-  href,
-  isActive,
-  isFocus,
-  isHover,
-  isInteractive,
-  onClick,
-}: {
-  href?: string,
-  isActive?: boolean,
-  isFocus?: boolean,
-  isHover?: boolean,
-  isInteractive?: boolean,
-  onClick?: FunctionType,
-}) {
-  return {
-    isActive,
-    isFocus,
-    isHover,
-    isInteractive: !!(href || isInteractive || onClick),
-  };
-}
+type State = {
+  isActive: boolean,
+  isFocus: boolean,
+  isHover: boolean,
+  isInteractive: boolean,
+};
 
-export default function withPseudoState(WrappedComponent: ComponentType) {
-  return class ComponentWithPseudoState extends Component {
+export default function withPseudoState(
+  WrappedComponent: ComponentType<Props>,
+) {
+  return class ComponentWithPseudoState extends Component<Props, State> {
     static displayName = getDisplayName('withPseudoState', WrappedComponent);
     component: { blur?: FunctionType, focus?: FunctionType };
     actionKeys: Array<string>;
@@ -69,15 +56,25 @@ export default function withPseudoState(WrappedComponent: ComponentType) {
       }
     }
 
-    props: Props;
-    state = getInitialState(this.props);
+    state: State = {
+      isActive: Boolean(this.props.isActive),
+      isFocus: Boolean(this.props.isActive),
+      isHover: Boolean(this.props.isActive),
+      isInteractive: Boolean(
+        this.props.href || this.props.isInteractive || this.props.onClick,
+      ),
+    };
 
     // expose blur/focus to consumers via ref
-    blur = (e: FocusEvent) => {
-      if (this.component.blur) this.component.blur(e);
+    blur = () => {
+      if (this.component.blur) this.component.blur();
     };
-    focus = (e: FocusEvent) => {
-      if (this.component.focus) this.component.focus(e);
+    focus = () => {
+      if (this.component.focus) this.component.focus();
+    };
+
+    setComponent = (component: ElementType) => {
+      this.component = component;
     };
 
     onBlur = () => this.setState({ isActive: false, isFocus: false });
@@ -127,11 +124,7 @@ export default function withPseudoState(WrappedComponent: ComponentType) {
       const props: {} = this.getProps();
 
       return (
-        <WrappedComponent
-          ref={(r: ElementType) => (this.component = r)}
-          {...this.state}
-          {...props}
-        />
+        <WrappedComponent ref={this.setComponent} {...this.state} {...props} />
       );
     }
   };
