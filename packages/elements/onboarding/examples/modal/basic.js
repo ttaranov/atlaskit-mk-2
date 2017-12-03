@@ -1,13 +1,17 @@
+// @flow
 import React, { Component } from 'react';
 import Lorem from 'react-lorem-component';
 import LayerManager from '@atlaskit/layer-manager';
 
-import { Modal, SpotlightManager } from '../../../src';
-import { Code } from '../../styled';
-import welcomeImage from '../../assets/this-is-new-jira.png';
+import { Modal, SpotlightManager } from '../../src';
+import { Code } from '../styled';
+import welcomeImage from '../assets/this-is-new-jira.png';
 
-class Example extends Component {
-  state = { active: false };
+type State = {
+  active: boolean,
+};
+class Example extends Component<{}, State> {
+  state: State = { active: false };
   start = () => this.setState({ active: true });
   finish = () => this.setState({ active: false });
   render() {

@@ -1,9 +1,10 @@
+// @flow
 export default class SpotlightRegistry {
   _store = {};
   _mounted = [];
   _eventListeners = {};
 
-  notifyChange(name, ...args) {
+  notifyChange(name: string, ...args) {
     if (this._eventListeners[name]) {
       this._eventListeners[name].forEach(fn => {
         fn(...args);
@@ -25,7 +26,7 @@ export default class SpotlightRegistry {
     }
   }
 
-  add(name, node) {
+  add(name: string, node) {
     if (this._store[name]) {
       console.warn(
         `SpotlightRegistry already has an entry for "${

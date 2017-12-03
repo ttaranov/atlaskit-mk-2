@@ -1,9 +1,10 @@
+// @flow
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Lorem from 'react-lorem-component';
 
-import { Spotlight, SpotlightTarget } from '../../../src';
-import { Code, Highlight, HighlightGroup } from '../../styled';
+import { Spotlight, SpotlightTarget } from '../../src';
+import { Code, Highlight, HighlightGroup } from '../styled';
 
 const Wrapper = styled.div`
   background-color: #f6f6f6;
@@ -11,12 +12,25 @@ const Wrapper = styled.div`
   padding: 40px;
 `;
 
+type State = {
+  active: number | null,
+};
+
 /* eslint-disable react/sort-comp */
-export default class SpotlightTargetBackgroundExample extends Component {
-  state = { active: null };
+export default class SpotlightTargetBackgroundExample extends Component<
+  Object,
+  State,
+> {
+  state: State = { active: null };
   start = () => this.setState({ active: 0 });
-  next = () => this.setState(state => ({ active: state.active + 1 }));
-  prev = () => this.setState(state => ({ active: state.active - 1 }));
+  next = () =>
+    this.setState(state => ({
+      active: state.active != null ? state.active + 1 : null,
+    }));
+  prev = () =>
+    this.setState(state => ({
+      active: state.active != null ? state.active - 1 : null,
+    }));
   finish = () => this.setState({ active: null });
   renderActiveSpotlight() {
     const variants = [
@@ -49,7 +63,7 @@ export default class SpotlightTargetBackgroundExample extends Component {
       </Spotlight>,
     ];
 
-    return variants[this.state.active];
+    return this.state.active == null ? null : variants[this.state.active];
   }
   render() {
     return (

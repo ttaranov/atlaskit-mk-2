@@ -1,14 +1,25 @@
+// @flow
 import React, { Component } from 'react';
 import Lorem from 'react-lorem-component';
 
-import { Spotlight, SpotlightTarget } from '../../../src';
-import { Code, HighlightGroup, Highlight } from '../../styled';
+import { Spotlight, SpotlightTarget } from '../../src';
+import { Code, HighlightGroup, Highlight } from '../styled';
 
-export default class SpotlightTargetRadiusExample extends Component {
-  state = { active: null };
+type State = {
+  active: number | null,
+};
+
+export default class SpotlightTargetRadiusExample extends Component<{}, State> {
+  state: State = { active: null };
   start = () => this.setState({ active: 0 });
-  next = () => this.setState(state => ({ active: state.active + 1 }));
-  prev = () => this.setState(state => ({ active: state.active - 1 }));
+  next = () =>
+    this.setState(state => ({
+      active: state.active != null ? state.active + 1 : null,
+    }));
+  prev = () =>
+    this.setState(state => ({
+      active: state.active != null ? state.active - 1 : null,
+    }));
   finish = () => this.setState({ active: null });
   renderActiveSpotlight() {
     const variants = [
@@ -52,7 +63,7 @@ export default class SpotlightTargetRadiusExample extends Component {
       </Spotlight>,
     ];
 
-    return variants[this.state.active];
+    return this.state.active == null ? null : variants[this.state.active];
   }
   render() {
     return (

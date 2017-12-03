@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Lorem from 'react-lorem-component';
@@ -6,9 +7,9 @@ import Button from '@atlaskit/button';
 import { colors } from '@atlaskit/theme';
 import { ProgressDots } from '@atlaskit/progress-indicator';
 
-import { Modal } from '../../../src';
-import { Code } from '../../styled';
-import welcomeImage from '../../assets/this-is-new-jira.png';
+import { Modal } from '../../src';
+import { Code } from '../styled';
+import welcomeImage from '../assets/this-is-new-jira.png';
 
 const Spacer = styled.div`
   margin-bottom: 40px;
@@ -37,11 +38,15 @@ const customHeader = (
 );
 const Text = () => <Lorem count={1} style={{ marginTop: '1em' }} />;
 
-export default class ModalLayoutExample extends Component {
-  state = { active: null };
-  start = (active = 0) => this.setState({ active });
-  next = () => this.setState(state => ({ active: state.active + 1 }));
-  prev = () => this.setState(state => ({ active: state.active - 1 }));
+type State = {
+  active: number | null,
+};
+
+export default class ModalLayoutExample extends Component<*, State> {
+  state: State = { active: null };
+  start = (active: number = 0) => this.setState({ active });
+  next = () => this.setState(state => ({ active: (state.active || 0) + 1 }));
+  prev = () => this.setState(state => ({ active: (state.active || 0) - 1 }));
   finish = () => this.setState({ active: null });
   renderActiveModal() {
     const customFooter = (

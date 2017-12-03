@@ -48,7 +48,6 @@ const OnboardingModal = ({
           <Actions>
             {actions.map(({ text, ...rest }, idx) => {
               const variant = idx ? 'subtle-link' : 'help';
-
               return (
                 <ActionItem key={text || idx}>
                   <Button appearance={variant} autoFocus={!idx} {...rest}>

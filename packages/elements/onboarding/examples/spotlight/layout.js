@@ -1,12 +1,13 @@
+// @flow
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import AtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
 import Button from '@atlaskit/button';
 import { ProgressDots } from '@atlaskit/progress-indicator';
 
-import { Spotlight, SpotlightTarget } from '../../../src';
-import { Code, Highlight } from '../../styled';
-import welcomeImage from '../../assets/this-is-new-jira.png';
+import { Spotlight, SpotlightTarget } from '../../src';
+import { Code, Highlight } from '../styled';
+import welcomeImage from '../assets/this-is-new-jira.png';
 
 const Spacer = styled.div`
   margin-bottom: 40px;
@@ -34,11 +35,21 @@ const customHeader = (
   </Header>
 );
 
-export default class SpotlightLayoutExample extends Component {
+type State = {
+  active: number | null,
+};
+
+export default class SpotlightLayoutExample extends Component<{}, State> {
   state = { active: null };
-  start = (active = 0) => this.setState({ active });
-  next = () => this.setState(state => ({ active: state.active + 1 }));
-  prev = () => this.setState(state => ({ active: state.active - 1 }));
+  start = (active: number = 0) => this.setState({ active });
+  next = () =>
+    this.setState(state => ({
+      active: state.active != null ? state.active + 1 : null,
+    }));
+  prev = () =>
+    this.setState(state => ({
+      active: state.active != null ? state.active - 1 : null,
+    }));
   finish = () => this.setState({ active: null });
   renderActiveSpotlight() {
     const customFooter = (
@@ -115,7 +126,7 @@ export default class SpotlightLayoutExample extends Component {
       </Spotlight>,
     ];
 
-    return variants[this.state.active];
+    return this.state.active == null ? null : variants[this.state.active];
   }
   render() {
     return (

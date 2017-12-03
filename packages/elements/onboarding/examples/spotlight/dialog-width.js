@@ -1,11 +1,12 @@
+// @flow
 import React, { Component } from 'react';
 import Lorem from 'react-lorem-component';
 import styled from 'styled-components';
 import ArrowUpIcon from '@atlaskit/icon/glyph/arrow-up';
 import ArrowDownIcon from '@atlaskit/icon/glyph/arrow-down';
 
-import { Spotlight, SpotlightTarget } from '../../../src';
-import { Code, Highlight } from '../../styled';
+import { Spotlight, SpotlightTarget } from '../../src';
+import { Code, Highlight } from '../styled';
 
 const Wrapper = styled.div`
   align-items: center;
@@ -43,15 +44,21 @@ const Button = styled.button`
   }
 `;
 
+type State = { value: number | null };
+
 /* eslint-disable react/sort-comp */
-export default class SpotlightDialogWidthExample extends Component {
-  state = {};
+export default class SpotlightDialogWidthExample extends Component<{}, State> {
+  state: State = { value: null };
   start = () => this.setState({ value: 300 });
   increment = () =>
-    this.setState(({ value }) => ({ value: Math.min(value + 100, 600) }));
+    this.setState(({ value }) => ({
+      value: value == null ? undefined : Math.min((value || 0) + 100, 600),
+    }));
   decrement = () =>
-    this.setState(({ value }) => ({ value: Math.max(value - 100, 160) }));
-  finish = () => this.setState({ value: undefined });
+    this.setState(({ value }) => ({
+      value: value == null ? undefined : Math.max((value || 0) - 100, 160),
+    }));
+  finish = () => this.setState({ value: null });
   render() {
     const { value } = this.state;
     const deltaButtons = (

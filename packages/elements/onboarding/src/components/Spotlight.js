@@ -105,31 +105,30 @@ class Spotlight extends Component<Props, State> {
   renderTargetClone() {
     // NOTE: `clone` & `rect` are NOT public API
     const {
-      clone, // eslint-disable-line react/prop-types
       pulse,
-      rect, // eslint-disable-line react/prop-types
       target,
       targetBgColor,
       targetOnClick,
       targetRadius,
       targetReplacement: Replacement,
+      ...props
     } = this.props;
 
     if (!target) {
       throw Error(`Spotlight couldn't find a target matching "${target}".`);
     }
-
+    console.log(props.rect, props.clone);
     return Replacement ? (
-      <Replacement {...rect} />
+      <Replacement {...props.rect} />
     ) : (
-      <TargetOuter style={rect}>
+      <TargetOuter style={props.rect}>
         <TargetInner
           pulse={pulse}
           bgColor={targetBgColor}
           radius={targetRadius}
-          style={rect}
+          style={props.rect}
         >
-          <Clone html={clone} />
+          <Clone html={props.clone} />
           <TargetOverlay onClick={targetOnClick && this.handleTargetClick} />
         </TargetInner>
       </TargetOuter>
@@ -139,8 +138,6 @@ class Spotlight extends Component<Props, State> {
   render() {
     // NOTE: `scrollY` & `in` are NOT public API
     const {
-      in: transitionIn,
-      scrollY, // eslint-disable-line react/prop-types
       actions,
       actionsBeforeElement,
       children,
@@ -150,6 +147,7 @@ class Spotlight extends Component<Props, State> {
       header,
       heading,
       image,
+      ...props
     } = this.props;
 
     const { isExiting } = this.state;
@@ -186,7 +184,11 @@ class Spotlight extends Component<Props, State> {
     );
 
     return (
-      <Fill in={transitionIn} onExit={this.handleExit} scrollDistance={scrollY}>
+      <Fill
+        in={props.in}
+        onExit={this.handleExit}
+        scrollDistance={props.scrollY}
+      >
         <Layer
           boundariesElement="scrollParent"
           content={dialog}
@@ -200,13 +202,15 @@ class Spotlight extends Component<Props, State> {
     );
   }
 }
+//
+// export default withScrollMeasurements(
+//   withRenderTarget(
+//     {
+//       target: 'spotlight',
+//       withTransitionGroup: false,
+//     },
+//     Spotlight,
+//   ),
+// );
 
-export default withScrollMeasurements(
-  withRenderTarget(
-    {
-      target: 'spotlight',
-      withTransitionGroup: false,
-    },
-    Spotlight,
-  ),
-);
+export default Spotlight;

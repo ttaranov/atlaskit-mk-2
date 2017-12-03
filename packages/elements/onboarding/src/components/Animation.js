@@ -10,10 +10,10 @@ const verticalOffset = 16;
 type EnterType = (node: Element, isAppearing: boolean) => void;
 type ExitType = (node: Element) => void;
 type TransitionType = {
-  entering?: Object,
-  entered?: Object,
-  exiting?: Object,
-  exited?: Object,
+  entering: {},
+  entered: {},
+  exiting: {},
+  exited: {},
 };
 type Props = {
   children: ChildrenType,

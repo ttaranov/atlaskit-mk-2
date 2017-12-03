@@ -1,78 +1,54 @@
 // @flow
 import React from 'react';
-import Badge from '../src';
+import styled from 'styled-components';
+import LayerManager from '@atlaskit/layer-manager';
 import { SpotlightManager } from '../src';
+
+import SpotlightBackground from './spotlight/target-background';
+import SpotlightBasic from './spotlight/basic';
+import SpotlightLayout from './spotlight/layout';
+import SpotlightPlacement from './spotlight/dialog-placement';
+import SpotlightRadius from './spotlight/target-radius';
+import SpotlightReplacement from './spotlight/target-replacement';
+import SpotlightScroll from './spotlight/autoscroll';
+import SpotlightWidth from './spotlight/dialog-width';
+
+const Wrapper = styled.div`
+  box-sizing: border-box;
+  height: 100vh;
+  margin: 0 auto;
+  padding: 20px;
+  width: 600px;
+`;
 
 export default function Example() {
   return (
     <LayerManager>
       <SpotlightManager component={Wrapper}>
         <p>Basic Usage</p>
-        <SpotlightManager component={Wrapper}>
-          <SpotlightBasic />
-        </SpotlightManager>
+        <SpotlightBasic />
 
         <p>Dialog Placement</p>
-        <LayerManager>
-          <SpotlightManager component={Wrapper}>
-            <SpotlightPlacement />
-          </SpotlightManager>
-        </LayerManager>
+        <SpotlightPlacement />
 
         <p>Dialog Width</p>
-        <LayerManager>
-          <SpotlightManager component={Wrapper}>
-            <SpotlightWidth />
-          </SpotlightManager>
-        </LayerManager>
+        <SpotlightWidth />
 
         <p>Target Radius</p>
-        <LayerManager>
-          <SpotlightManager component={Wrapper}>
-            <SpotlightRadius />
-          </SpotlightManager>
-        </LayerManager>
+        <SpotlightRadius />
 
         <p>Target Background</p>
-        <LayerManager>
-          <SpotlightManager component={Wrapper}>
-            <SpotlightReplacement />
-          </SpotlightManager>
-        </LayerManager>
+        <SpotlightReplacement />
 
         <p>Target Replacement</p>
-        <LayerManager>
-          <SpotlightManager component={Wrapper}>
-            <SpotlightBackground />
-          </SpotlightManager>
-        </LayerManager>
+        <SpotlightBackground />
 
         <p>Auto Scroll</p>
-        <LayerManager>
-          <SpotlightManager component={Wrapper}>
-            <SpotlightScroll />
-          </SpotlightManager>
-        </LayerManager>
+        <SpotlightScroll />
 
         <p>Layout Props</p>
-
         <SpotlightLayout />
       </SpotlightManager>
     </LayerManager>
   );
 }
-
-storiesOf('Spotlight', module)
-  .addDecorator(story => (
-    <LayerManager>
-      <SpotlightManager component={Wrapper}>{story()}</SpotlightManager>
-    </LayerManager>
-  ))
-  .add('Basic Usage', () => <SpotlightBasic />)
-  .add('Dialog Placement', () => <SpotlightPlacement />)
-  .add('Dialog Width', () => <SpotlightWidth />)
-  .add('Target Radius', () => <SpotlightRadius />)
-  .add('Target Background', () => <SpotlightBackground />)
-  .add('Target Replacement', () => <SpotlightReplacement />)
-  .add('Auto Scroll', () => <SpotlightScroll />)
-  .add('Layout Props', () => <SpotlightLayout />);

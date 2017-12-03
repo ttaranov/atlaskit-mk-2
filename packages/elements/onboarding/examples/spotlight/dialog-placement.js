@@ -1,8 +1,9 @@
+// @flow
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { Spotlight, SpotlightTarget } from '../../../src';
-import { Code, Highlight } from '../../styled';
+import { Spotlight, SpotlightTarget } from '../../src';
+import { Code, Highlight } from '../styled';
 
 const options = [
   'top right',
@@ -27,15 +28,24 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
+type State = {
+  index?: number | void,
+};
+
 /* eslint-disable react/sort-comp */
-export default class SpotlightDialogPlacementExample extends Component {
-  state = {};
+export default class SpotlightDialogPlacementExample extends Component<
+  Object,
+  State,
+> {
+  state: State = {};
   next = () => this.setState(state => ({ index: state.index + 1 }));
   start = () => this.setState({ index: 0 });
   finish = () => this.setState({ index: undefined });
   render() {
     const { index } = this.state;
-    const placement = isNaN(index) ? null : options[index % options.length];
+    const placement = isNaN(index)
+      ? null
+      : options[(index || 0) % options.length];
 
     return (
       <Wrapper>

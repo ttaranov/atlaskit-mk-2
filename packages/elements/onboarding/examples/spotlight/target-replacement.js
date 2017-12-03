@@ -1,12 +1,13 @@
+// @flow
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Lorem from 'react-lorem-component';
 
-import { Spotlight, SpotlightPulse, SpotlightTarget } from '../../../src';
-import { Code } from '../../styled';
+import { Spotlight, SpotlightPulse, SpotlightTarget } from '../../src';
+import { Code } from '../styled';
 
-import logo from '../../assets/logo.png';
-import logoInverted from '../../assets/logo-inverted.png';
+import logo from '../assets/logo.png';
+import logoInverted from '../assets/logo-inverted.png';
 
 const radius = 8;
 const Replacement = rect => {
@@ -24,9 +25,17 @@ const Image = styled.img`
   width: 128px;
 `;
 
+type State = {
+  active: boolean,
+};
 /* eslint-disable react/sort-comp */
-export default class SpotlightTargetReplacementExample extends Component {
-  state = {};
+export default class SpotlightTargetReplacementExample extends Component<
+  {},
+  State,
+> {
+  state: State = {
+    active: false,
+  };
   show = () => this.setState({ active: true });
   hide = () => this.setState({ active: false });
   render() {

@@ -1,18 +1,22 @@
 // @flow
 /* eslint-disable react/sort-comp, react/no-multi-comp */
-import React, { Component, type Node } from 'react';
+import React, { type Element, Component, type Node } from 'react';
 import PropTypes from 'prop-types';
+import { type ComponentType } from '../types';
 
 import SpotlightRegistry from '../components/SpotlightRegistry';
 
 type Props = {|
   target: HTMLElement,
 |};
-type State = {|
+type State = {
+  clone: HTMLElement,
   scrollY: number,
-|};
+  rect: {},
+} | void;
 
-function elementCropDirection(el) {
+function elementCropDirection(el: Element<any>) {
+  if (!el) return null;
   const rect = el.getBoundingClientRect();
 
   let direction;
@@ -42,9 +46,10 @@ function getInitialState() {
   };
 }
 
-export default function withScrollMeasurements(WrappedComponent) {
-  return class SpotlightWrapper extends Component {
-    props: Props;
+export default function withScrollMeasurements(
+  WrappedComponent: ComponentType,
+) {
+  return class SpotlightWrapper extends Component<Props, State> {
     state: State = getInitialState();
     static contextTypes = {
       spotlightRegistry: PropTypes.instanceOf(SpotlightRegistry).isRequired,
@@ -56,7 +61,6 @@ export default function withScrollMeasurements(WrappedComponent) {
       if (!spotlightRegistry) {
         throw Error('`Spotlight` requires `SpotlightManager` as an ancestor.');
       }
-
       spotlightRegistry.mount(target);
       const node = spotlightRegistry.get(target);
       this.measureAndScroll(node);
@@ -67,7 +71,12 @@ export default function withScrollMeasurements(WrappedComponent) {
 
       spotlightRegistry.unmount(target);
     }
-    measureAndScroll = (node: Node) => {
+    measureAndScroll = (node: {}) => {
+      if (!node) {
+        throw new Error(
+          "Looks like you're trying to render a spotlight dialog without a target.",
+        );
+      }
       const {
         height,
         left,
@@ -76,7 +85,6 @@ export default function withScrollMeasurements(WrappedComponent) {
       } = node.getBoundingClientRect();
       const { scrollY } = this.state;
       const gutter = 10; // enough room to be comfortable and not crop the pulse animation
-
       let top = initialTop;
       const cropDirection = elementCropDirection(node);
 

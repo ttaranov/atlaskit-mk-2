@@ -1,11 +1,21 @@
+// @flow
 import React, { Component } from 'react';
 import Lorem from 'react-lorem-component';
 
-import { Spotlight, SpotlightPulse, SpotlightTarget } from '../../../src';
-import { HighlightGroup, Highlight } from '../../styled';
+import { Spotlight, SpotlightPulse, SpotlightTarget } from '../../src';
+import { HighlightGroup, Highlight } from '../styled';
 
-export default class Example extends Component {
-  state = { active: false };
+type State = {
+  active: boolean,
+};
+
+export default class Example extends Component<*, State> {
+  constructor() {
+    super();
+    this.state = {
+      active: false,
+    };
+  }
   show = () => this.setState({ active: true });
   hide = () => this.setState({ active: false });
   render() {

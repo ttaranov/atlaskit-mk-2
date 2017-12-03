@@ -1,7 +1,15 @@
 // @flow
 
-export Modal from './Modal';
-export Spotlight from './Spotlight';
-export SpotlightManager from './SpotlightManager';
-export SpotlightRegistry from './SpotlightRegistry';
-export SpotlightTarget from './SpotlightTarget';
+import Modal from './Modal';
+import Spotlight from './Spotlight';
+import SpotlightManager from './SpotlightManager';
+import SpotlightRegistry from './SpotlightRegistry';
+import SpotlightTarget from './SpotlightTarget';
+
+export {
+  Modal,
+  Spotlight,
+  SpotlightManager,
+  SpotlightRegistry,
+  SpotlightTarget,
+};
