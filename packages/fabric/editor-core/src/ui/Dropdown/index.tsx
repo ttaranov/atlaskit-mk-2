@@ -29,21 +29,28 @@ export default class Dropdown extends PureComponent<Props, State> {
     super(props);
 
     this.state = {
-      popupPlacement: ['bottom', 'left']
+      popupPlacement: ['bottom', 'left'],
     };
   }
 
-  private handleRef = (target) => {
+  private handleRef = target => {
     this.setState({ target });
-  }
+  };
 
-  private updatePopupPlacement = (placement) => {
+  private updatePopupPlacement = placement => {
     this.setState({ popupPlacement: placement });
-  }
+  };
 
   private renderDropdown() {
     const { target, popupPlacement } = this.state;
-    const { children, mountTo, boundariesElement, onOpenChange, fitHeight, fitWidth } = this.props;
+    const {
+      children,
+      mountTo,
+      boundariesElement,
+      onOpenChange,
+      fitHeight,
+      fitWidth,
+    } = this.props;
 
     return (
       <Popup

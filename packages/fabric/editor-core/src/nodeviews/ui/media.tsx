@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
-import {
-  ProsemirrorGetPosHandler,
-  ReactNodeProps,
-} from './';
+import { ProsemirrorGetPosHandler, ReactNodeProps } from './';
 import UIMedia from '../../ui/Media';
 import ProviderFactory from '../../providerFactory';
-import { MediaPluginState, stateKey as mediaStateKey } from '../../plugins/media';
+import {
+  MediaPluginState,
+  stateKey as mediaStateKey,
+} from '../../plugins/media';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { CardDimensions } from '@atlaskit/media-card';
@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   display: inline-block;
   verticalAlign: middle;
   userSelect: all;
-  border: 3px solid ${props => props.selected ? '#8cf' : 'transparent'}
+  border: 3px solid ${props => (props.selected ? '#8cf' : 'transparent')}
   border-radius: 5px;
 `;
 
@@ -51,11 +51,20 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
 
   shouldComponentUpdate(nextProps) {
     const getId = (props: MediaNodeProps) => props.node.attrs.id;
-    return getId(nextProps) !== getId(this.props) || nextProps.selected !== this.props.selected;
+    return (
+      getId(nextProps) !== getId(this.props) ||
+      nextProps.selected !== this.props.selected
+    );
   }
 
   render() {
-    const { node, providerFactory, selected, view, cardDimensions } = this.props;
+    const {
+      node,
+      providerFactory,
+      selected,
+      view,
+      cardDimensions,
+    } = this.props;
     const { id, type, collection } = node.attrs;
 
     return (
@@ -81,10 +90,10 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
     if (event) {
       event.stopPropagation();
     }
-  }
+  };
 
   private handleNewNode = (props: MediaNodeProps) => {
     const { getPos, node } = props;
     this.pluginState.handleMediaNodeMount(node, getPos);
-  }
+  };
 }

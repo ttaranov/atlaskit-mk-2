@@ -16,7 +16,7 @@
     "name": "Calendar",
     "team": "elements"
   },
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/button": "^5.4.8",
     "@atlaskit/icon": "^10.3.1",

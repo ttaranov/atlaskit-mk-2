@@ -8,6 +8,7 @@ import { PredefinedAvatarList } from '../src/predefined-avatar-list';
 import {
   AvatarPickerDialog,
   AvatarPickerDialogProps,
+  DEFAULT_VISIBLE_PREDEFINED_AVATARS,
 } from '../src/avatar-picker-dialog';
 
 describe('Avatar Picker Dialog', () => {
@@ -21,9 +22,19 @@ describe('Avatar Picker Dialog', () => {
         {...props}
       />,
     );
+
   const newImage = new File(['dsjklDFljk'], 'nice-photo.png', {
     type: 'image/png',
   });
+
+  const renderSaveButton = (props: Partial<AvatarPickerDialogProps> = {}) => {
+    const component = renderWithProps(props);
+    const { footer } = component.find(ModalDialog).props() as { footer: any };
+
+    return shallow(footer())
+      .find(Button)
+      .find({ appearance: 'primary' });
+  };
 
   it('when save button is clicked call onSaveImage should be called', () => {
     const onImagePicked = jest.fn();
@@ -42,6 +53,7 @@ describe('Avatar Picker Dialog', () => {
 
     expect(onImagePicked).toBeCalledWith(newImage, { x: 0, y: 0, size: 30 });
   });
+
   it('when save button is clicked call onSaveAvatar should be called', () => {
     const selectedAvatar: Avatar = { dataURI: 'http://an.avatar.com/453' };
     const avatars = [selectedAvatar];
@@ -61,17 +73,60 @@ describe('Avatar Picker Dialog', () => {
     expect(onAvatarPicked).toBeCalledWith(selectedAvatar);
   });
 
-  it('shoult not render avatar list when imageSource is passed', () => {
+  it('should not render avatar list when imageSource is passed', () => {
     const imageSource = 'some-src';
     const component = renderWithProps({ imageSource });
 
     expect(component.find(PredefinedAvatarList)).toHaveLength(0);
   });
 
-  it('shoult not render avatar list when there is an image selected', () => {
+  it('should not render avatar list when there is an image selected', () => {
     const component = renderWithProps({});
 
     component.setState({ selectedImage: newImage });
     expect(component.find(PredefinedAvatarList)).toHaveLength(0);
+  });
+
+  it('should not allow save without selected image or selected avatar', () => {
+    const saveButton = renderSaveButton();
+    expect(saveButton.props().isDisabled).toBeTruthy();
+  });
+
+  it('should allow save with selected image passed as default', () => {
+    const imageSource = 'some-src';
+    const saveButton = renderSaveButton({ imageSource });
+    expect(saveButton.props().isDisabled).toBeFalsy();
+  });
+
+  it('should allow save with predefined avatar passed as default', () => {
+    const selectedAvatar: Avatar = { dataURI: 'http://an.avatar.com/453' };
+    const avatars = [selectedAvatar];
+    const saveButton = renderSaveButton({
+      avatars,
+      defaultSelectedAvatar: selectedAvatar,
+    });
+    expect(saveButton.props().isDisabled).toBeFalsy();
+  });
+
+  it('should ensure selected avatars beyond visible limit are shown when selected', () => {
+    const avatars: Array<Avatar> = [];
+    for (let i = 0; i < DEFAULT_VISIBLE_PREDEFINED_AVATARS + 1; i++) {
+      avatars.push({ dataURI: `http://an.avatar.com/${i}` });
+    }
+    // select one past the end of the visible limit
+    const selectedAvatar = avatars[DEFAULT_VISIBLE_PREDEFINED_AVATARS];
+    const avatarDialog = new AvatarPickerDialog({
+      avatars,
+      onAvatarPicked: jest.fn(),
+      onImagePicked: jest.fn(),
+      onCancel: jest.fn(),
+      defaultSelectedAvatar: selectedAvatar,
+    });
+    const predefinedAvatars = avatarDialog.getPredefinedAvatars();
+
+    expect(predefinedAvatars).toHaveLength(DEFAULT_VISIBLE_PREDEFINED_AVATARS);
+    expect(predefinedAvatars[DEFAULT_VISIBLE_PREDEFINED_AVATARS - 1]).toBe(
+      selectedAvatar,
+    );
   });
 });

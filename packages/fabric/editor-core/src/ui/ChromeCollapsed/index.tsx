@@ -4,13 +4,15 @@ import { Input } from './styles';
 
 export interface Props {
   text?: string;
-  onFocus?: (e: React.EventHandler<React.FocusEvent<HTMLInputElement>> | undefined) => void;
+  onFocus?: (
+    e: React.EventHandler<React.FocusEvent<HTMLInputElement>> | undefined,
+  ) => void;
 }
 
 export default class ChromeCollapsed extends PureComponent<Props, {}> {
   private input?: HTMLElement;
 
-  private focusHandler = (e) => {
+  private focusHandler = e => {
     /**
      * We need this magic for FireFox.
      * The reason we need it is, when, in FireFox, we have focus inside input,
@@ -24,11 +26,11 @@ export default class ChromeCollapsed extends PureComponent<Props, {}> {
     if (this.props.onFocus) {
       this.props.onFocus(e);
     }
-  }
+  };
 
-  private handleInputRef = (ref) => {
+  private handleInputRef = ref => {
     this.input = ref;
-  }
+  };
 
   render() {
     const placeholder = this.props.text || 'Type something…';

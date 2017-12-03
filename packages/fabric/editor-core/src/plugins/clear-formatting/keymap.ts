@@ -9,9 +9,9 @@ export function keymapPlugin(schema: Schema): Plugin {
   const list = {};
   keymaps.bindKeymapWithCommand(
     keymaps.clearFormatting.common!,
-    trackAndInvoke('atlassian.editor.format.clear.keyboard',
-    clearFormatting()
-  ), list);
+    trackAndInvoke('atlassian.editor.format.clear.keyboard', clearFormatting()),
+    list,
+  );
 
   return keymap(list);
 }

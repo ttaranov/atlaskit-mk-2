@@ -3,8 +3,17 @@ import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
 import {
-  NORMAL_TEXT, HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5,
-  BLOCK_QUOTE, CODE_BLOCK, PANEL, OTHER, BlockType
+  NORMAL_TEXT,
+  HEADING_1,
+  HEADING_2,
+  HEADING_3,
+  HEADING_4,
+  HEADING_5,
+  BLOCK_QUOTE,
+  CODE_BLOCK,
+  PANEL,
+  OTHER,
+  BlockType,
 } from './types';
 
 import * as commands from '../../commands';
@@ -36,10 +45,18 @@ export class BlockTypeState {
     this.changeHandlers = [];
     this.state = state;
 
-    this.availableBlockTypes = [NORMAL_TEXT, HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5]
-      .filter(this.isBlockTypeSchemaSupported);
+    this.availableBlockTypes = [
+      NORMAL_TEXT,
+      HEADING_1,
+      HEADING_2,
+      HEADING_3,
+      HEADING_4,
+      HEADING_5,
+    ].filter(this.isBlockTypeSchemaSupported);
 
-    this.availableWrapperBlockTypes = [BLOCK_QUOTE, CODE_BLOCK, PANEL].filter(this.isBlockTypeSchemaSupported);
+    this.availableWrapperBlockTypes = [BLOCK_QUOTE, CODE_BLOCK, PANEL].filter(
+      this.isBlockTypeSchemaSupported,
+    );
 
     this.update(state);
   }
@@ -94,7 +111,9 @@ export class BlockTypeState {
     let blockType;
     const { $from, $to } = state.selection;
     state.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
-      const nodeBlockType = this.availableBlockTypes.filter(blockType => blockType === this.nodeBlockType(node));
+      const nodeBlockType = this.availableBlockTypes.filter(
+        blockType => blockType === this.nodeBlockType(node),
+      );
       if (nodeBlockType.length > 0) {
         if (!blockType) {
           blockType = nodeBlockType[0];
@@ -124,7 +143,7 @@ export class BlockTypeState {
       return NORMAL_TEXT;
     }
     return OTHER;
-  }
+  };
 
   private isBlockTypeSchemaSupported = (blockType: BlockType) => {
     const { state } = this;
@@ -144,7 +163,7 @@ export class BlockTypeState {
       case PANEL:
         return !!state.schema.nodes.panel;
     }
-  }
+  };
 }
 
 export const stateKey = new PluginKey('blockTypePlugin');
@@ -157,11 +176,10 @@ export const plugin = new Plugin({
     apply(tr, pluginState: BlockTypeState, oldState, newState) {
       pluginState.update(newState);
       return pluginState;
-    }
+    },
   },
   key: stateKey,
   view: (view: EditorView) => {
-
     const pluginState = stateKey.getState(view.state);
     pluginState.keymapHandler = keymapHandler(view, pluginState);
     return {};
@@ -169,12 +187,14 @@ export const plugin = new Plugin({
   props: {
     handleKeyDown(view, event) {
       return stateKey.getState(view.state).keymapHandler(view, event);
-    }
-  }
+    },
+  },
 });
 
 const plugins = (schema: Schema) => {
-  return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+  return [plugin, inputRulePlugin(schema)].filter(
+    plugin => !!plugin,
+  ) as Plugin[];
 };
 
 export default plugins;

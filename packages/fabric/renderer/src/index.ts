@@ -1,7 +1,7 @@
 import { defaultSchema } from '@atlaskit/editor-common';
 import { Node as PMNode, Schema } from 'prosemirror-model';
 
-import { getValidDocument } from './validator';
+import { getValidDocument } from '@atlaskit/editor-common';
 
 import { Serializer } from './serializer';
 
@@ -73,6 +73,3 @@ export const renderDocument = <T>(
 };
 
 export { Serializer };
-
-// TODO remove these exports when React renderer is finally extracted from editor-core
-export { getMarksByOrder, isSameMark } from './validator';

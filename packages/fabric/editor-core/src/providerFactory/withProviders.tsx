@@ -12,7 +12,6 @@ export interface Props {
 }
 
 export class WithProviders extends PureComponent<Props, { providers: any }> {
-
   constructor(props) {
     super(props);
 
@@ -22,7 +21,7 @@ export class WithProviders extends PureComponent<Props, { providers: any }> {
     });
 
     this.state = {
-      providers
+      providers,
     };
   }
 
@@ -51,7 +50,7 @@ export class WithProviders extends PureComponent<Props, { providers: any }> {
         },
       };
     });
-  }
+  };
 
   render() {
     const { state, props } = this;

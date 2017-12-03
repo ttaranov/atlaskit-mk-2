@@ -16,15 +16,18 @@ const Wrapper = styled.div`
   display: block;
   float: ${props => float(props['data-alignment'], props['data-display'])};
   clear: ${props => clear(props['data-alignment'], props['data-display'])};
-  text-align: ${props => textAlign(props['data-alignment'], props['data-display'])};
+  text-align: ${props =>
+    textAlign(props['data-alignment'], props['data-display'])};
 
   & > * {
     padding: 5px 10px 0 0;
   }
 `;
 
-export default class SingleImageNode extends PureComponent<MediaGroupNodeProps, {}> {
-
+export default class SingleImageNode extends PureComponent<
+  MediaGroupNodeProps,
+  {}
+> {
   constructor(props) {
     super(props);
   }
@@ -32,7 +35,10 @@ export default class SingleImageNode extends PureComponent<MediaGroupNodeProps, 
   render() {
     const { node } = this.props;
     return (
-      <Wrapper data-alignment={node.attrs.alignment} data-display={node.attrs.display}>
+      <Wrapper
+        data-alignment={node.attrs.alignment}
+        data-display={node.attrs.display}
+      >
         {this.props.children}
       </Wrapper>
     );

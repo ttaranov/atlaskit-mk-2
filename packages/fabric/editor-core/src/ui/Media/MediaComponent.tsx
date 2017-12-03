@@ -18,10 +18,13 @@ import {
   MediaProvider,
   MediaStateManager,
   MediaState,
-  ImageResizeMode
+  ImageResizeMode,
 } from '@atlaskit/media-core';
 
-import { MediaAttributes, CardEventClickHandler } from '@atlaskit/editor-common';
+import {
+  MediaAttributes,
+  CardEventClickHandler,
+} from '@atlaskit/editor-common';
 
 export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
 
@@ -74,7 +77,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   state: State = {
     id: '',
-    status: 'unknown'
+    status: 'unknown',
   };
 
   constructor(props: Props) {
@@ -116,7 +119,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
     const { stateManagerFallback } = this.props;
     if (stateManagerFallback) {
-        stateManagerFallback.unsubscribe(id, this.handleMediaStateChange);
+      stateManagerFallback.unsubscribe(id, this.handleMediaStateChange);
     }
   }
 
@@ -147,7 +150,14 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderLink() {
     const { mediaProvider, linkCreateContext } = this.state;
-    const { id, collection, cardDimensions, onDelete, appearance, ...otherProps } = this.props;
+    const {
+      id,
+      collection,
+      cardDimensions,
+      onDelete,
+      appearance,
+      ...otherProps,
+    } = this.props;
     const hasProviders = mediaProvider && linkCreateContext;
 
     if (!hasProviders) {
@@ -216,7 +226,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         identifier={{
           id,
           mediaItemType: 'file',
-          collectionName: collection
+          collectionName: collection,
         }}
         selectable={false}
         resizeMode={this.resizeMode}
@@ -239,7 +249,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     // Make sure that we always display progress bar when the file is uploading (prevents flicker)
     let progress = state.progress;
     if (!progress && state.status === 'uploading') {
-      progress = .0;
+      progress = 0.0;
     }
 
     // Construct file details object
@@ -247,7 +257,10 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       name: fileName,
       size: fileSize,
       mimeType: fileType,
-      mediaType: (thumbnail || (fileType && fileType.indexOf('image/') > -1) ? 'image' : 'unknown')
+      mediaType:
+        thumbnail || (fileType && fileType.indexOf('image/') > -1)
+          ? 'image'
+          : 'unknown',
     } as FileDetails;
 
     const otherProps: any = {};
@@ -255,19 +268,19 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       otherProps.actions = [CardDelete(onDelete)];
     }
 
-    return <CardView
-      // CardViewProps
-      status={mapMediaStatusIntoCardStatus(state)}
-      mediaItemType="file"
-      metadata={fileDetails}
-
-      // FileCardProps
-      dataURI={dataURI}
-      progress={progress}
-
-      // SharedCardProps
-      {...otherProps}
-    />;
+    return (
+      <CardView
+        // CardViewProps
+        status={mapMediaStatusIntoCardStatus(state)}
+        mediaItemType="file"
+        metadata={fileDetails}
+        // FileCardProps
+        dataURI={dataURI}
+        progress={progress}
+        // SharedCardProps
+        {...otherProps}
+      />
+    );
   }
 
   private handleMediaStateChange = (mediaState: MediaState) => {
@@ -276,11 +289,11 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     const newState = {
-      ...mediaState
+      ...mediaState,
     };
 
     this.setState(newState);
-  }
+  };
 
   private handleMediaProvider = async (mediaProvider: MediaProvider) => {
     const { id } = this.props;
@@ -292,7 +305,8 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     /**
      * Try to get stateManager from MediaProvider first, if not, get the fallback from props
      */
-    const stateManager = mediaProvider.stateManager || this.props.stateManagerFallback;
+    const stateManager =
+      mediaProvider.stateManager || this.props.stateManagerFallback;
 
     this.setState({ mediaProvider });
 
@@ -305,9 +319,12 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
     await this.setContext('viewContext', mediaProvider);
     await this.setContext('linkCreateContext', mediaProvider);
-  }
+  };
 
-  private setContext = async (contextName: string, mediaProvider: MediaProvider) => {
+  private setContext = async (
+    contextName: string,
+    mediaProvider: MediaProvider,
+  ) => {
     let context = await mediaProvider[contextName];
 
     if (this.destroyed || !context) {
@@ -319,7 +336,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     this.setState({ [contextName as any]: context as Context });
-  }
+  };
 
   private get resizeMode(): ImageResizeMode {
     const { resizeMode } = this.props;

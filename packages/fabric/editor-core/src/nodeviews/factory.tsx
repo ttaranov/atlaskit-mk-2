@@ -19,7 +19,14 @@ class NodeViewElem implements NodeView {
   private providerFactory: ProviderFactory;
   private reactNodeViewComponents: ReactNodeViewComponents;
 
-  constructor(node: PMNode, view: EditorView, getPos: getPosHandler, providerFactory: ProviderFactory, reactNodeViewComponents: ReactNodeViewComponents, isBlockNodeView: boolean) {
+  constructor(
+    node: PMNode,
+    view: EditorView,
+    getPos: getPosHandler,
+    providerFactory: ProviderFactory,
+    reactNodeViewComponents: ReactNodeViewComponents,
+    isBlockNodeView: boolean,
+  ) {
     this.nodeTypeName = node.type.name;
     this.view = view;
     this.getPos = getPos;
@@ -63,13 +70,24 @@ class NodeViewElem implements NodeView {
         providerFactory={providerFactory}
         components={reactNodeViewComponents}
       />,
-      this.domRef!
+      this.domRef!,
     );
   }
 }
 
-export default function nodeViewFactory(providerFactory: ProviderFactory, reactNodeViewComponents: ReactNodeViewComponents, isBlockNodeView = false) {
+export default function nodeViewFactory(
+  providerFactory: ProviderFactory,
+  reactNodeViewComponents: ReactNodeViewComponents,
+  isBlockNodeView = false,
+) {
   return (node: PMNode, view: EditorView, getPos: () => number): NodeView => {
-    return new NodeViewElem(node, view, getPos, providerFactory, reactNodeViewComponents, isBlockNodeView);
+    return new NodeViewElem(
+      node,
+      view,
+      getPos,
+      providerFactory,
+      reactNodeViewComponents,
+      isBlockNodeView,
+    );
   };
 }

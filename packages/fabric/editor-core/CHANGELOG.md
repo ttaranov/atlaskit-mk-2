@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.5.0
+- [minor] Added single image to schema; insertFile renamed to insertFiles. [1c6b005](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c6b005)
+- [minor] Added single image to schema; insertFile renamed to insertFiles. [1c6b005](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c6b005)
+
 ## 60.4.10
 
 ## 60.4.9

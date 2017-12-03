@@ -1,5 +1,9 @@
 import styled from 'styled-components';
-import { akColorN900, akColorN50, akColorN0 } from '@atlaskit/util-shared-styles';
+import {
+  akColorN900,
+  akColorN50,
+  akColorN0,
+} from '@atlaskit/util-shared-styles';
 
 // tslint:disable-next-line:variable-name
 export const Button = styled.button`

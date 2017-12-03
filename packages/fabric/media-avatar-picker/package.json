@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-avatar-picker",
-  "version": "3.3.9",
+  "version": "4.0.0",
   "description": "Component that allow users to pick, resize and drag his own and default avatars.",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -17,7 +17,7 @@
     "Michael J",
     "Aleksandr Motsjonov"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/button": "^5.4.8",
     "@atlaskit/field-range": "^2.0.0",

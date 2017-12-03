@@ -1,10 +1,5 @@
-import {
-  akEditorSubtleAccent,
-} from '../../styles';
-import {
-  akBorderRadius,
-  akColorN50
-} from '@atlaskit/util-shared-styles';
+import { akEditorSubtleAccent } from '../../styles';
+import { akBorderRadius, akColorN50 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
 // tslint:disable-next-line:variable-name

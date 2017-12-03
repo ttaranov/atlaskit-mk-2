@@ -2,7 +2,12 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { Popup } from '@atlaskit/editor-common';
 import { Container } from './styles';
-export type Coordniates = { left: number, right: number, top: number, bottom: number };
+export type Coordniates = {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+};
 
 export interface Props {
   onOutsideClick?: () => void;
@@ -22,8 +27,13 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
     const {
       children,
       className,
-      target, offset, fitWidth, fitHeight, popupsMountPoint, popupsBoundariesElement,
-      onPositionCalculated
+      target,
+      offset,
+      fitWidth,
+      fitHeight,
+      popupsMountPoint,
+      popupsBoundariesElement,
+      onPositionCalculated,
     } = this.props;
 
     if (!target) {
@@ -31,21 +41,17 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
     }
 
     return (
-
-        <Popup
-          target={target}
-          offset={offset}
-          fitWidth={fitWidth}
-          fitHeight={fitHeight}
-          mountTo={popupsMountPoint}
-          boundariesElement={popupsBoundariesElement}
-          onPositionCalculated={onPositionCalculated}
-        >
-          <Container className={`${className || ''}`} >
-            {children}
-          </Container>
-        </Popup>
-
+      <Popup
+        target={target}
+        offset={offset}
+        fitWidth={fitWidth}
+        fitHeight={fitHeight}
+        mountTo={popupsMountPoint}
+        boundariesElement={popupsBoundariesElement}
+        onPositionCalculated={onPositionCalculated}
+      >
+        <Container className={`${className || ''}`}>{children}</Container>
+      </Popup>
     );
   }
 }

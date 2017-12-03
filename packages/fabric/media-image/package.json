@@ -13,7 +13,7 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [],
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/util-shared-styles": "^2.10.3",
     "tslib": "^1.8.0"

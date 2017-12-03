@@ -8,6 +8,7 @@ import mentionsPlugins from '../../src/plugins/mentions';
 import DropdownMenu from '../../src/ui/DropdownMenu';
 import ToolbarInsertBlock from '../../src/ui/ToolbarInsertBlock';
 import AkButton from '@atlaskit/button';
+import Item from '@atlaskit/item';
 import {
   doc,
   p,
@@ -160,9 +161,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     );
     toolbarOption.find(ToolbarButton).simulate('click');
     const mediaButton = toolbarOption
-      .find('Item')
-      .filterWhere(n => n.text().indexOf('Files and images') >= 0)
-      .find('Element');
+      .find(Item)
+      .filterWhere(n => n.text().indexOf('Files and images') >= 0);
     mediaButton.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
     expect(trackEvent).toHaveBeenCalledWith(
@@ -185,9 +185,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     );
     toolbarOption.find(ToolbarButton).simulate('click');
     const mediaButton = toolbarOption
-      .find('Item')
-      .filterWhere(n => n.text().indexOf('Files and images') >= 0)
-      .find('Element');
+      .find(Item)
+      .filterWhere(n => n.text().indexOf('Files and images') >= 0);
     mediaButton.simulate('click');
     expect(
       toolbarOption
@@ -219,9 +218,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       editorView.state,
     ).insertBlockType = jest.fn();
     const panelButton = toolbarOption
-      .find('Item')
-      .filterWhere(n => n.text().indexOf('Panel') >= 0)
-      .find('Element');
+      .find(Item)
+      .filterWhere(n => n.text().indexOf('Panel') >= 0);
     panelButton.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
     expect(trackEvent).toHaveBeenCalledWith(
@@ -251,9 +249,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       editorView.state,
     ).insertBlockType = jest.fn();
     const codeblockButton = toolbarOption
-      .find('Item')
-      .filterWhere(n => n.text().indexOf('Code block') >= 0)
-      .find('Element');
+      .find(Item)
+      .filterWhere(n => n.text().indexOf('Code block') >= 0);
     codeblockButton.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
     expect(trackEvent).toHaveBeenCalledWith(
@@ -280,9 +277,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     );
     toolbarOption.find(ToolbarButton).simulate('click');
     const blockquoteButton = toolbarOption
-      .find('Item')
-      .filterWhere(n => n.text().indexOf('Block quote') >= 0)
-      .find('Element');
+      .find(Item)
+      .filterWhere(n => n.text().indexOf('Block quote') >= 0);
 
     blockquoteButton.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
@@ -306,9 +302,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const spy = jest.fn();
     tableCommands.createTable = () => spy;
     const tableButton = toolbarOption
-      .find('Item')
-      .filterWhere(n => n.text().indexOf('Table') >= 0)
-      .find('Element');
+      .find(Item)
+      .filterWhere(n => n.text().indexOf('Table') >= 0);
     tableButton.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
     expect(trackEvent).toHaveBeenCalledWith(
@@ -332,9 +327,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
 
     toolbarOption.find(ToolbarButton).simulate('click');
     const button = toolbarOption
-      .find('Item')
-      .filterWhere(n => n.text().indexOf('View more') > -1)
-      .find('Element');
+      .find(Item)
+      .filterWhere(n => n.text().indexOf('View more') > -1);
     button.simulate('click');
     expect(insertMacroFromMacroBrowser).toHaveBeenCalledTimes(1);
     expect(trackEvent).toHaveBeenCalledWith(

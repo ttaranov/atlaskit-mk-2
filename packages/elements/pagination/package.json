@@ -15,7 +15,7 @@
       "name": "Vitalii B"
     }
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/button": "^5.4.8",
     "@atlaskit/docs": "^1.0.1",

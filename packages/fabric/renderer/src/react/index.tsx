@@ -3,7 +3,7 @@ import { ComponentClass } from 'react';
 
 import { Fragment, Mark, Node, Schema } from 'prosemirror-model';
 
-import { getMarksByOrder, isSameMark, Serializer } from '../';
+import { Serializer } from '../';
 
 import {
   Doc,
@@ -16,8 +16,12 @@ import {
 
 import { toReact as markToReact } from './marks';
 
-import { ProviderFactory } from '@atlaskit/editor-common';
-import { EventHandlers } from '@atlaskit/editor-common';
+import {
+  ProviderFactory,
+  getMarksByOrder,
+  isSameMark,
+  EventHandlers,
+} from '@atlaskit/editor-common';
 
 import { bigEmojiHeight } from '../utils';
 

@@ -32,9 +32,14 @@ export interface Props {
 }
 
 export default class RecentList extends PureComponent<Props, {}> {
-
   render() {
-    const { onSelect, onMouseMove, items, selectedIndex, isLoading } = this.props;
+    const {
+      onSelect,
+      onMouseMove,
+      items,
+      selectedIndex,
+      isLoading,
+    } = this.props;
 
     if (isLoading) {
       return (
@@ -53,7 +58,7 @@ export default class RecentList extends PureComponent<Props, {}> {
     return (
       <Container>
         <List>
-          {items.map((item, index) =>
+          {items.map((item, index) => (
             <RecentItem
               item={item}
               selected={selectedIndex === index}
@@ -61,7 +66,7 @@ export default class RecentList extends PureComponent<Props, {}> {
               onSelect={onSelect}
               key={item.objectId}
             />
-          )}
+          ))}
         </List>
       </Container>
     );

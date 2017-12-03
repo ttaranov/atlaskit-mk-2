@@ -1,7 +1,6 @@
-import { createSchema } from '@atlaskit/editor-common';
 import { expect } from 'chai';
 import {
-  Doc,
+  ADDoc,
   isSubSupType,
   getValidDocument,
   getValidNode,
@@ -10,11 +9,11 @@ import {
   getMarksByOrder,
   isSameMark,
   markOrder,
-  Node,
-} from '../../src/validator';
-import { isSafeUrl } from '../../src/utils';
-
-import { defaultSchema as schema } from '@atlaskit/editor-common';
+  ADNode,
+} from '../../src/utils/validator';
+import { isSafeUrl } from '../../src/utils/url';
+import { defaultSchema as schema } from '../../src/schema/default-schema';
+import { createSchema } from '../../src/schema/create-schema';
 
 describe('Renderer - Validator', () => {
   describe('isSafeUrl', () => {
@@ -967,7 +966,7 @@ describe('Renderer - Validator', () => {
 
       it('should reject image without src', () => {
         const imageAttrs = { alt: 'explanation' };
-        const { type, attrs } = getValidNode({
+        const { type } = getValidNode({
           type: 'image',
           attrs: imageAttrs,
         });
@@ -1459,7 +1458,7 @@ describe('Renderer - Validator', () => {
 
   describe('getValidDocument', () => {
     it('should not mutate original document', () => {
-      const original: Doc = {
+      const original: ADDoc = {
         type: 'doc',
         version: 1,
         content: [
@@ -1497,7 +1496,7 @@ describe('Renderer - Validator', () => {
           },
         ],
       };
-      const expectedValidDoc: Node = {
+      const expectedValidDoc: ADNode = {
         type: 'doc',
         content: [
           {

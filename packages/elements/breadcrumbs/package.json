@@ -13,7 +13,7 @@
   "maintainers": [
     "Ben W"
   ],
-  "repository": "https://bitbucket.org/atlassian/atlaskit-mk2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/button": "^5.4.8",
     "@atlaskit/theme": "^2.2.7",
