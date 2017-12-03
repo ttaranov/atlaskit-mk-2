@@ -17,7 +17,7 @@ const getPadding = ({ isChecked }) =>
   `;
 
 export default styled.div`
-  display: inline-flex;
+  display: flex;
   max-width: ${props => getWidth(props) / 2}px;
   align-items: center;
   ${getPadding};
