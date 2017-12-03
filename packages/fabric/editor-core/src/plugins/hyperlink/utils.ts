@@ -1,6 +1,8 @@
 import { Slice, Fragment, Node, Schema } from 'prosemirror-model';
 import * as LinkifyIt from 'linkify-it';
 
+export const LINK_REGEXP = /(https?|ftp):\/\/[^\s]+/;
+
 export interface Match {
   schema: any;
   index: number;
@@ -22,8 +24,14 @@ const tlds2Char =
 tlds.push(tlds2Char);
 linkify.tlds(tlds, false);
 
-export function getLinkMatch(str: string): Match | null {
-  const match = str && linkify.match(str);
+export function getLinkMatch(str: string): Match | LinkifyMatch | null {
+  if (!str) {
+    return null;
+  }
+  let match = linkifyMatch(str);
+  if (!match.length) {
+    match = linkify.match(str);
+  }
   return match && match[0];
 }
 
@@ -51,6 +59,9 @@ export class LinkMatcher {
  * Adds protocol to url if needed.
  */
 export function normalizeUrl(url: string) {
+  if (LINK_REGEXP.test(url)) {
+    return url;
+  }
   const match = getLinkMatch(url);
   return (match && match.url) || url;
 }
@@ -127,3 +138,45 @@ function findLinkMatches(text: string): LinkMatch[] {
   }
   return matches;
 }
+
+export interface LinkifyMatch {
+  index: number;
+  lastIndex: number;
+  raw: string;
+  url: string;
+  text: string;
+  schema: string;
+}
+
+export const linkifyMatch = (text: string): LinkifyMatch[] => {
+  const matches: LinkifyMatch[] = [];
+
+  if (!LINK_REGEXP.test(text)) {
+    return matches;
+  }
+
+  let startpos = 0;
+  let substr;
+
+  while ((substr = text.substr(startpos))) {
+    const link = (substr.match(LINK_REGEXP) || [''])[0];
+    if (link) {
+      const index = substr.search(LINK_REGEXP);
+      const start = index >= 0 ? index + startpos : index;
+      const end = start + link.length;
+      matches.push({
+        index: start,
+        lastIndex: end,
+        raw: link,
+        url: link,
+        text: link,
+        schema: '',
+      });
+      startpos += end;
+    } else {
+      break;
+    }
+  }
+
+  return matches;
+};
