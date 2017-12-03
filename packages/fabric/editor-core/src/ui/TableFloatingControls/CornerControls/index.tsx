@@ -1,14 +1,18 @@
 import * as React from 'react';
 import { Component } from 'react';
+import { EditorState } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { toolbarSize } from '../styles';
 import { CornerContainer, CornerButton } from './styles';
 import InsertColumnButton from '../ColumnControls/InsertColumnButton';
 import InsertRowButton from '../RowControls/InsertRowButton';
+import { Command } from '../../../editor';
 
 export interface Props {
+  editorView: EditorView;
   tableElement: HTMLElement;
-  isSelected: () => boolean;
-  selectTable: () => void;
+  isSelected: (state: EditorState) => boolean;
+  selectTable: Command;
   insertColumn: (column: number) => void;
   insertRow: (row: number) => void;
   onMouseOver: () => void;
@@ -16,15 +20,15 @@ export interface Props {
 }
 
 export default class CornerControls extends Component<Props, any> {
-  render() {
-    const { tableElement } = this.props;
+  render () {
+    const { tableElement, editorView: { state, dispatch } } = this.props;
     const tableWidth = tableElement.offsetWidth;
     const tableHeight = tableElement.offsetHeight;
 
     return (
-      <CornerContainer className={this.props.isSelected() ? 'active' : ''}>
+      <CornerContainer className={this.props.isSelected(state) ? 'active' : ''}>
         <CornerButton
-          onClick={this.props.selectTable}
+          onClick={() => this.props.selectTable(state, dispatch)}
           onMouseOver={this.props.onMouseOver}
           onMouseOut={this.props.onMouseOut}
         />
