@@ -7,7 +7,7 @@ import {
   BORDER_WIDTH,
   TRANSITION_DURATION,
 } from './constants';
-import type { AvatarPropTypes, SizeType } from '../types';
+import type { AvatarPropTypes, AppearanceType, SizeType } from '../types';
 
 const backgroundColorFocus = colors.B200;
 const overlayColorDefault = 'transparent';
@@ -20,15 +20,16 @@ const overlayColorDisabled = themed({
 
 // "square" avatars are explicit
 export function getBorderRadius(
-  props: AvatarPropTypes,
+  appearance: AppearanceType,
+  size: SizeType,
   config: { includeBorderWidth: boolean } = { includeBorderWidth: false },
 ) {
   const borderWidth: number = config.includeBorderWidth
-    ? BORDER_WIDTH[props.size]
+    ? BORDER_WIDTH[size]
     : 0;
-  return props.appearance === 'circle'
+  return appearance === 'circle'
     ? '50%'
-    : `${AVATAR_RADIUS[props.size] + borderWidth}px`;
+    : `${AVATAR_RADIUS[size] + borderWidth}px`;
 }
 
 export const getSize = (props: { size: SizeType }) => AVATAR_SIZES[props.size]; // for testing
@@ -122,7 +123,8 @@ export function getInnerStyles(
     align-items: stretch;
     background-color: ${backgroundColor};
     border: 0;
-    border-radius: ${getBorderRadius(props, { includeBorderWidth: true })};
+    border-radius: ${p =>
+      getBorderRadius(p.appearance, p.size, { includeBorderWidth: true })};
     padding: ${borderWidth};
     box-sizing: ${boxSizing};
     cursor: ${cursor};
@@ -143,7 +145,7 @@ export function getInnerStyles(
 
     &::after {
       background-color: ${overlayShade};
-      border-radius: ${getBorderRadius};
+      border-radius: ${p => getBorderRadius(p.appearance, p.size)};
       bottom: ${borderWidth};
       content: ' ';
       left: ${borderWidth};

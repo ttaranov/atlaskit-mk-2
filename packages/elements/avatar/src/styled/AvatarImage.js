@@ -1,46 +1,62 @@
 // @flow
 import React from 'react';
+import type { Node } from 'react';
 import { colors, themed } from '@atlaskit/theme';
 import { getBorderRadius } from './utils';
+import type { AppearanceType, SizeType } from '../types';
 
 // if image is loading, we hide the image so it doesn't obscure the gray loading
 // block until the source image is loaded.
-const getBackgroundColor = ({ isLoading }: { isLoading: boolean }) =>
+const getBackgroundColor = (isLoading: boolean) =>
   isLoading ? themed({ light: colors.N40, dark: colors.DN50 }) : 'transparent';
 
-// eslint-disable-next-line react/prop-types, no-unused-vars
-export const Span = ({
-  children,
-  style,
+type SpanArgs = {|
+  appearance: AppearanceType,
+  isLoading: boolean,
+  size: SizeType,
+  role: string,
+  label: ?string,
+  backgroundImage: ?string,
+|};
+
+export const Slot = ({
   isLoading,
   appearance,
-  ...otherProps
-}) => (
+  size,
+  label,
+  role,
+  backgroundImage,
+}: SpanArgs) => (
   <span
     style={{
-      backgroundColor: getBackgroundColor(otherProps),
+      backgroundColor: getBackgroundColor(isLoading),
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
-      borderRadius: getBorderRadius({ appearance, ...otherProps }),
+      borderRadius: getBorderRadius(appearance, size),
       display: 'flex',
       flex: '1 1 100%',
       height: '100%',
       width: '100%',
-      ...style,
+      backgroundImage: backgroundImage ? `url(${backgroundImage})` : null,
     }}
-    {...otherProps}
-  >
-    {children}
-  </span>
+    role={role}
+    aria-label={label}
+  />
 );
 
-// eslint-disable-next-line react/prop-types, no-unused-vars
-export const Svg = ({ children, appearance, ...otherProps }) => (
+type SvgArgs = {
+  appearance: AppearanceType,
+  size: SizeType,
+  children: Node,
+  // allowing other props to be spread onto svg
+};
+
+export const Svg = ({ appearance, size, children, ...otherProps }: SvgArgs) => (
   <svg
     style={{
-      backgroundColor: getBackgroundColor(otherProps),
-      borderRadius: getBorderRadius(otherProps),
+      backgroundColor: getBackgroundColor(false),
+      borderRadius: getBorderRadius(appearance, size),
       height: '100%',
       width: '100%',
     }}

@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { colors, themed } from '@atlaskit/theme';
-import { Span, Svg } from '../styled/AvatarImage';
+import { Slot, Svg } from '../styled/AvatarImage';
 import type { AppearanceType, SizeType } from '../types';
 
 const ShapeGroup = styled.g`
@@ -18,11 +18,11 @@ const ShapeGroup = styled.g`
 export function DefaultImage({
   appearance,
   size,
-  title,
+  alt,
 }: {
   appearance: AppearanceType,
   size: SizeType,
-  title?: string,
+  alt?: string,
 }) {
   const rectBounds = 128;
 
@@ -34,9 +34,9 @@ export function DefaultImage({
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label={title}
+      aria-label={alt}
     >
-      {!!title && <title>{title}</title>}
+      {!!alt && <title>{alt}</title>}
       {appearance === 'circle' ? (
         <ShapeGroup>
           <circle cx="64" cy="64" r="64" />
@@ -59,17 +59,17 @@ export function DefaultImage({
   );
 }
 
-type Props = {
+type Props = {|
   alt?: string,
-  appearance: AppearanceType,
   src?: string,
+  appearance: AppearanceType,
   size: SizeType,
-};
+|};
 
-type State = {
+type State = {|
   hasError: boolean,
   isLoading: boolean,
-};
+|};
 
 let cache = {};
 
@@ -128,26 +128,20 @@ export default class AvatarImage extends PureComponent<Props, State> {
   handleLoadError = () => this.handleLoad(true);
 
   render() {
-    const { alt, src, ...props } = this.props;
+    const { alt, src, appearance, size } = this.props;
     const { hasError, isLoading } = this.state;
     const showDefault = !isLoading && (!src || hasError);
-    const spanStyle =
-      src && (!isLoading || cache[src])
-        ? { backgroundImage: `url(${src})` }
-        : null;
+    const imageUrl: ?string = src && (!isLoading || cache[src]) ? src : null;
     return showDefault ? (
-      <DefaultImage
-        appearance={props.appearance}
-        size={props.size}
-        aria-label={alt}
-      />
+      <DefaultImage appearance={appearance} size={size} alt={alt} />
     ) : (
-      <Span
-        aria-label={alt}
+      <Slot
+        appearance={appearance}
         isLoading={isLoading}
+        size={size}
         role="img"
-        style={spanStyle}
-        {...props}
+        label={alt}
+        backgroundImage={imageUrl}
       />
     );
   }
