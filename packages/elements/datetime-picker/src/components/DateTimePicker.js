@@ -33,7 +33,7 @@ const defaultTimes = [
   '6:00pm',
 ];
 
-type Value = [?string, ?string];
+type Value = any; // TODO: Replace with [?string, ?string] when TupleTypeAnnotation is supported by extract-react-types.
 type Props = {
   isDisabled: boolean,
   disabled: Array<string>,
