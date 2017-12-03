@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import { AvatarDefaultProps } from '../Avatar';
 import AvatarImage, { DefaultImage, clearCache } from '../AvatarImage';
 
 const src =
@@ -10,20 +9,17 @@ const src2 =
   'https://pbs.twimg.com/profile_images/803832195970433027/aaoG6PJI_400x400.jpg';
 const imgSpan = '[role="img"]';
 
-// mock default props, as they'd be inherited from Avatar
-// TODO: fix default props on AvatarImage
-const { appearance, size } = AvatarDefaultProps;
-AvatarImage.defaultProps = { appearance, size };
-
 describe('Avatar', () =>
   describe('Image', () => {
     it('should render an image span when the src is set"', () => {
-      const wrapper = mount(<AvatarImage src={src} />);
+      const wrapper = mount(
+        <AvatarImage src={src} appearance="circle" size="medium" />,
+      );
       expect(wrapper.find(imgSpan).exists()).toBe(true);
     });
     it('should not render an image span when the src is not set"', () =>
       expect(
-        shallow(<AvatarImage />)
+        shallow(<AvatarImage appearance="circle" size="medium" />)
           .find(imgSpan)
           .exists(),
       ).toBe(false));
@@ -32,14 +28,14 @@ describe('Avatar', () =>
       describe('should render default avatar', () => {
         it('when no properties are provided', () =>
           expect(
-            shallow(<AvatarImage />)
+            shallow(<AvatarImage appearance="circle" size="medium" />)
               .find(DefaultImage)
               .exists(),
           ).toBe(true));
 
         it('when there is an error', () =>
           expect(
-            shallow(<AvatarImage />)
+            shallow(<AvatarImage appearance="circle" size="medium" />)
               .setState({ hasError: true, isLoading: false })
               .find(DefaultImage)
               .exists(),
@@ -57,7 +53,7 @@ describe('Avatar', () =>
       describe('should not render default avatar', () => {
         it('when loading=true and no src', () =>
           expect(
-            shallow(<AvatarImage />)
+            shallow(<AvatarImage appearance="circle" size="medium" />)
               .setState({ isLoading: true })
               .find(DefaultImage)
               .exists(),
@@ -76,7 +72,9 @@ describe('Avatar', () =>
       describe('set at mount time', () => {
         let wrapper;
         beforeEach(() => {
-          wrapper = mount(<AvatarImage src={src} />);
+          wrapper = mount(
+            <AvatarImage src={src} appearance="circle" size="medium" />,
+          );
         });
         afterEach(() => {
           clearCache();
@@ -118,7 +116,9 @@ describe('Avatar', () =>
 
       describe('set after mount time', () => {
         it('should load image successfully when src set', () => {
-          const wrapper = mount(<AvatarImage />);
+          const wrapper = mount(
+            <AvatarImage appearance="circle" size="medium" />,
+          );
           expect(wrapper.state('isLoading')).toBe(false);
 
           const stateSpy = jest.spyOn(wrapper.instance(), 'setState');
