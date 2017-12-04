@@ -10,7 +10,7 @@ import { TextFormattingOptions } from '../plugins/text-formatting';
 import { AnalyticsHandler } from '../../analytics';
 import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../plugins/macro/types';
-import { Transformer } from '../../';
+import { Transformer } from '@atlaskit/editor-common';
 
 export type EditorAppearance =
   | 'message'
