@@ -4,12 +4,12 @@ This is a utility component that informs the child function of the available wid
 
 ## Try it out
 
-Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
+Interact with a [live demo of the @atlaskit/size-detector component](https://aui-cdn.atlassian.com/atlaskit/stories/size-detector/).
 
 ## Installation
 
 ```sh
-yarn add @NAME@
+yarn add @atlaskit/size-detector
 ```
 
 ## Acknowledgements
