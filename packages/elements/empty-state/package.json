@@ -32,6 +32,6 @@
   },
   "devDependencies": {
     "enzyme": "^2.9.1",
-    "@atlaskit/docs": "^0.0.7"
+    "@atlaskit/docs": "^1.0.1"
   }
 }
