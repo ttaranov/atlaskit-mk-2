@@ -2,7 +2,16 @@ import * as chai from 'chai';
 import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
-import { doc, h1, emoji, mention, p, strong, code_block } from './_schema-builder';
+import { ItemGroup } from '@atlaskit/item';
+import {
+  doc,
+  h1,
+  emoji,
+  mention,
+  p,
+  strong,
+  code_block,
+} from './_schema-builder';
 
 import { imageUploadStateKey } from '@atlaskit/editor-core';
 import { browser } from '@atlaskit/editor-common';
@@ -85,7 +94,9 @@ describe('@atlaskit/editor-bitbucket/setFromHtml', () => {
   let editorWrapper;
   let editor: Editor;
   beforeEach(() => {
-    editorWrapper = mount(<Editor isExpandedByDefault={true} />, { attachTo: fixture() });
+    editorWrapper = mount(<Editor isExpandedByDefault={true} />, {
+      attachTo: fixture(),
+    });
     editor = editorWrapper.get(0) as any;
   });
 
@@ -117,11 +128,18 @@ describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
 
   beforeEach(done => {
     spy = sinon.spy();
-    editorWrapper = mount(<Editor isExpandedByDefault={true} imageUploadHandler={spy} />, {
-      attachTo: fixture(),
-    });
-    const pluginState = imageUploadStateKey.getState(editorWrapper.state().editorView.state);
-    pluginState.handleProvider('imageUploadProvider', Promise.resolve(spy)).then(() => done());
+    editorWrapper = mount(
+      <Editor isExpandedByDefault={true} imageUploadHandler={spy} />,
+      {
+        attachTo: fixture(),
+      },
+    );
+    const pluginState = imageUploadStateKey.getState(
+      editorWrapper.state().editorView.state,
+    );
+    pluginState
+      .handleProvider('imageUploadProvider', Promise.resolve(spy))
+      .then(() => done());
   });
 
   afterEach(() => {
@@ -142,7 +160,8 @@ describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
 
   // TODO: editor-migration - unskip
   it.skip('should invoke upload handler after pasting an image', function() {
-    const contentArea: HTMLElement = (editorWrapper.get(0) as any).state.editorView.dom;
+    const contentArea: HTMLElement = (editorWrapper.get(0) as any).state
+      .editorView.dom;
     const event = createEvent('paste');
 
     try {
@@ -169,7 +188,8 @@ describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
   it.skip('should invoke upload handler after dropping an image', function() {
     // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop'
     //       so we must dispatch the event directly on the event which has listener attached.
-    const dropElement: HTMLElement = (editorWrapper.get(0) as any).state.editorView.dom;
+    const dropElement: HTMLElement = (editorWrapper.get(0) as any).state
+      .editorView.dom;
     const event = createEvent('drop');
 
     Object.defineProperties(event, {
@@ -229,12 +249,20 @@ describe('@atlaskit/editor-bitbucket/multiple editors as children', () => {
   });
 
   it('should render toolbar elements for both editors', () => {
-    expect(editor1.find('ChromeExpanded ToolbarBlockType')).to.have.length.above(0);
-    expect(editor1.find('ChromeExpanded ToolbarTextFormatting')).to.have.length.above(0);
+    expect(
+      editor1.find('ChromeExpanded ToolbarBlockType'),
+    ).to.have.length.above(0);
+    expect(
+      editor1.find('ChromeExpanded ToolbarTextFormatting'),
+    ).to.have.length.above(0);
     expect(editor1.find('ChromeExpanded ToolbarLists')).to.have.length.above(0);
 
-    expect(editor2.find('ChromeExpanded ToolbarBlockType')).to.have.length.above(0);
-    expect(editor2.find('ChromeExpanded ToolbarTextFormatting')).to.have.length.above(0);
+    expect(
+      editor2.find('ChromeExpanded ToolbarBlockType'),
+    ).to.have.length.above(0);
+    expect(
+      editor2.find('ChromeExpanded ToolbarTextFormatting'),
+    ).to.have.length.above(0);
     expect(editor2.find('ChromeExpanded ToolbarLists')).to.have.length.above(0);
   });
 });
@@ -244,7 +272,9 @@ describe('@atlaskit/editor-bitbucket/toolbar', () => {
   let editorWrapper: ReactWrapper<any, any>;
 
   beforeEach(() => {
-    editorWrapper = mount(<Editor isExpandedByDefault={true} />, { attachTo: fixture() });
+    editorWrapper = mount(<Editor isExpandedByDefault={true} />, {
+      attachTo: fixture(),
+    });
   });
 
   afterEach(() => {
@@ -255,10 +285,14 @@ describe('@atlaskit/editor-bitbucket/toolbar', () => {
     const trigger = editorWrapper.find('ToolbarBlockType ToolbarButton');
 
     expect(trigger).to.have.length.above(0);
-    expect(editorWrapper.find('ToolbarBlockType Group').length).to.equal(0);
+    expect(
+      editorWrapper.find('ToolbarBlockType').find(ItemGroup).length,
+    ).to.equal(0);
 
     trigger.simulate('click');
-    expect(editorWrapper.find('ToolbarBlockType Group')).to.have.length.above(0);
+    expect(
+      editorWrapper.find('ToolbarBlockType').find(ItemGroup),
+    ).to.have.length.above(0);
 
     trigger.simulate('click');
     expect(editorWrapper.find('ToolbarBlockType Group').length).to.equal(0);
@@ -273,9 +307,12 @@ describe.skip('@atlaskit/editor-bitbucket/pasting', () => {
 
   beforeEach(() => {
     const mentionResoure = sinon.stub() as any;
-    editorWrapper = mount(<Editor isExpandedByDefault={true} mentionSource={mentionResoure} />, {
-      attachTo: fixture(),
-    });
+    editorWrapper = mount(
+      <Editor isExpandedByDefault={true} mentionSource={mentionResoure} />,
+      {
+        attachTo: fixture(),
+      },
+    );
     editor = editorWrapper.get(0) as any;
     editorView = editor!.state!.editorView as EditorView;
   });
@@ -295,7 +332,9 @@ describe.skip('@atlaskit/editor-bitbucket/pasting', () => {
       return this.skip();
     }
 
-    expect(editor.doc).to.deep.equal(doc(p('Nice! ', emoji({ shortName: ':+1:' }))));
+    expect(editor.doc).to.deep.equal(
+      doc(p('Nice! ', emoji({ shortName: ':+1:' }))),
+    );
   });
 
   it('should transform pasted html with a mention', function() {
@@ -310,7 +349,7 @@ describe.skip('@atlaskit/editor-bitbucket/pasting', () => {
     }
 
     expect(editor.doc).to.deep.equal(
-      doc(p(mention({ id: 'mention', text: '@Mention' }), ' some mention.'))
+      doc(p(mention({ id: 'mention', text: '@Mention' }), ' some mention.')),
     );
   });
 });
@@ -322,7 +361,9 @@ describe('@atlaskit/editor-bitbucket/keymaps', () => {
   let editorWrapper;
 
   beforeEach(() => {
-    editorWrapper = mount(<Editor isExpandedByDefault={true} />, { attachTo: fixture() });
+    editorWrapper = mount(<Editor isExpandedByDefault={true} />, {
+      attachTo: fixture(),
+    });
     editor = editorWrapper.get(0) as any;
     editorView = editor!.state!.editorView as EditorView;
   });
@@ -349,7 +390,9 @@ describe('@atlaskit/editor-bitbucket/focus', () => {
   let editorWrapper: ReactWrapper<any, any>;
 
   beforeEach(() => {
-    editorWrapper = mount(<Editor isExpandedByDefault={true} />, { attachTo: fixture() });
+    editorWrapper = mount(<Editor isExpandedByDefault={true} />, {
+      attachTo: fixture(),
+    });
   });
 
   afterEach(() => {
@@ -358,7 +401,9 @@ describe('@atlaskit/editor-bitbucket/focus', () => {
 
   it('should focus the editor if not already focused', () => {
     const editorInstance = editorWrapper.instance() as any;
-    const hasFocusStub = sinon.stub(editorInstance.state.editorView, 'hasFocus').returns(false);
+    const hasFocusStub = sinon
+      .stub(editorInstance.state.editorView, 'hasFocus')
+      .returns(false);
     const spy = sinon.stub(editorInstance.state.editorView, 'focus');
     editorInstance.focus();
 
@@ -369,7 +414,9 @@ describe('@atlaskit/editor-bitbucket/focus', () => {
 
   it('should not try to focus when already focused', () => {
     const editorInstance = editorWrapper.instance() as any;
-    const hasFocusStub = sinon.stub(editorInstance.state.editorView, 'hasFocus').returns(true);
+    const hasFocusStub = sinon
+      .stub(editorInstance.state.editorView, 'hasFocus')
+      .returns(true);
     const spy = sinon.stub(editorInstance.state.editorView, 'focus');
     editorInstance.focus();
 

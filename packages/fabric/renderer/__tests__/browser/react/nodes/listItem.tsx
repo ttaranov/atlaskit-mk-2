@@ -9,5 +9,4 @@ describe('Renderer - React/Nodes/ListItem', () => {
   it('should wrap content with <li>-tag', () => {
     expect(listItem.is('li')).to.equal(true);
   });
-
 });

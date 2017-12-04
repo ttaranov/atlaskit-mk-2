@@ -14,7 +14,7 @@ describe('Renderer - React/Nodes/TaskList', () => {
   });
 
   it('should not render if no children', () => {
-    const taskList = shallow(<TaskList/>);
+    const taskList = shallow(<TaskList />);
     expect(taskList.isEmptyRender()).to.equal(true);
   });
 });

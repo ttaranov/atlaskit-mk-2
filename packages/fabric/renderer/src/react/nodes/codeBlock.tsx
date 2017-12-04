@@ -12,18 +12,13 @@ export interface Props {
 
 export default class CodeBlock extends PureComponent<Props, {}> {
   render() {
-    const {
-      children,
-      language,
-    } = this.props;
+    const { children, language } = this.props;
 
     const codeProps = {
       language,
-      text: React.Children.map(children, identity).join('')
+      text: React.Children.map(children, identity).join(''),
     };
 
-    return (
-      <AkCodeBlock {...codeProps}/>
-    );
+    return <AkCodeBlock {...codeProps} />;
   }
 }

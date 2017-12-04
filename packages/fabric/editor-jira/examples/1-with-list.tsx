@@ -5,6 +5,10 @@ import ExampleWrapper from '../example-helpers/ExampleWrapper';
 
 export default function Component() {
   return (
-    <ExampleWrapper render={handleChange => <Editor onChange={handleChange} allowLists={true} />} />
+    <ExampleWrapper
+      render={handleChange => (
+        <Editor onChange={handleChange} allowLists={true} />
+      )}
+    />
   );
 }

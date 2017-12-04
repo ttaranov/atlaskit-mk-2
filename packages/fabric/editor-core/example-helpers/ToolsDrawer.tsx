@@ -11,50 +11,57 @@ import { MentionResource } from '../src';
 import { toJSON } from '../src/utils';
 import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 
-const rejectedPromise = Promise.reject(new Error('Simulated provider rejection'));
-const pendingPromise = new Promise<any>(() => { });
+const rejectedPromise = Promise.reject(
+  new Error('Simulated provider rejection'),
+);
+const pendingPromise = new Promise<any>(() => {});
 
 const providers = {
   mentionProvider: {
     resolved: Promise.resolve(mentionStoryData.resourceProvider),
-    'resolved 2': Promise.resolve(new MentionResource({
-      url: 'https://pf-mentions-service.staging.atlassian.io/mentions/f7ebe2c0-0309-4687-b913-41d422f2110b',
-      containerId: 'b0d035bd-9b98-4386-863b-07286c34dc14',
-      productId: 'hipchat'
-    })),
+    'resolved 2': Promise.resolve(
+      new MentionResource({
+        url:
+          'https://pf-mentions-service.staging.atlassian.io/mentions/f7ebe2c0-0309-4687-b913-41d422f2110b',
+        containerId: 'b0d035bd-9b98-4386-863b-07286c34dc14',
+        productId: 'hipchat',
+      }),
+    ),
     pending: pendingPromise,
     rejected: rejectedPromise,
-    'undefined': undefined,
+    undefined: undefined,
   },
   emojiProvider: {
     resolved: emojiStoryData.getEmojiResource({ uploadSupported: true }),
     pending: pendingPromise,
     rejected: rejectedPromise,
-    'undefined': undefined,
+    undefined: undefined,
   },
   mediaProvider: {
     resolved: storyMediaProviderFactory({ includeUserAuthProvider: true }),
     pending: pendingPromise,
     rejected: rejectedPromise,
     'view only': storyMediaProviderFactory({ includeUploadContext: false }),
-    'w/o link cards': storyMediaProviderFactory({ includeLinkCreateContext: false }),
+    'w/o link cards': storyMediaProviderFactory({
+      includeLinkCreateContext: false,
+    }),
     'w/o userAuthProvider': storyMediaProviderFactory(),
-    'undefined': undefined,
+    undefined: undefined,
   },
   activityProvider: {
     resolved: new MockActivityResource(),
     pending: pendingPromise,
     rejected: rejectedPromise,
-    'undefined': undefined,
+    undefined: undefined,
   },
   imageUploadProvider: {
     resolved: Promise.resolve(imageUploadHandler),
     pending: pendingPromise,
     rejected: rejectedPromise,
-    'undefined': undefined,
-  }
+    undefined: undefined,
+  },
 };
-rejectedPromise.catch(() => { });
+rejectedPromise.catch(() => {});
 
 interface State {
   editorEnabled: boolean;
@@ -83,62 +90,81 @@ export default class ToolsDrawer extends React.Component<any, State> {
 
   private switchProvider = (providerType, providerName) => {
     this.setState({ [providerType]: providerName });
-  }
+  };
 
   private reloadEditor = () => {
     this.setState({ editorEnabled: false }, () => {
       this.setState({ editorEnabled: true });
     });
-  }
+  };
 
   private onChange = editorView => {
     this.setState({
-      jsonDocument: JSON.stringify(toJSON(editorView.state.doc), null, 2)
+      jsonDocument: JSON.stringify(toJSON(editorView.state.doc), null, 2),
     });
-  }
+  };
 
   render() {
-    const { mentionProvider, emojiProvider, mediaProvider, activityProvider, imageUploadProvider, jsonDocument, editorEnabled } = this.state;
+    const {
+      mentionProvider,
+      emojiProvider,
+      mediaProvider,
+      activityProvider,
+      imageUploadProvider,
+      jsonDocument,
+      editorEnabled,
+    } = this.state;
     return (
       <Content>
         <div style={{ padding: '5px 0' }}>
-        ️️️⚠️ Atlassians, for Media integration to work, make sure you're
-          logged into <a href="https://id.stg.internal.atlassian.com" target="_blank">staging Identity server</a>
-          and run your browser <a href="https://stackoverflow.com/a/42024918" target="_blank">with CORS disabled</a>.
+          ️️️⚠️ Atlassians, for Media integration to work, make sure you're
+          logged into{' '}
+          <a href="https://id.stg.internal.atlassian.com" target="_blank">
+            staging Identity server
+          </a>
+          and run your browser{' '}
+          <a href="https://stackoverflow.com/a/42024918" target="_blank">
+            with CORS disabled
+          </a>.
         </div>
-        {
-          editorEnabled ?
-            (this.props.renderEditor({
-              imageUploadProvider: providers.imageUploadProvider[imageUploadProvider],
+        {editorEnabled
+          ? this.props.renderEditor({
+              imageUploadProvider:
+                providers.imageUploadProvider[imageUploadProvider],
               mediaProvider: providers.mediaProvider[mediaProvider],
               mentionProvider: providers.mentionProvider[mentionProvider],
               emojiProvider: providers.emojiProvider[emojiProvider],
               activityProvider: providers.activityProvider[activityProvider],
-              onChange: this.onChange
-            })) :
-            ''
-        }
+              onChange: this.onChange,
+            })
+          : ''}
         <div className="toolsDrawer">
-          {
-            Object.keys(providers).map(providerKey => (
-              <div key={providerKey}>
-                <ButtonGroup>
-                  <label>{providerKey}: </label>
-                  {Object.keys(providers[providerKey]).map((providerStateName) => (
-                    <Button
-                      key={`${providerKey}-${providerStateName}`}
-                      onClick={this.switchProvider.bind(this, providerKey, providerStateName)}
-                      appearance={providerStateName === this.state[providerKey] ? 'primary' : 'default'}
-                      theme="dark"
-                      spacing="compact"
-                    >
-                      {providerStateName}
-                    </Button>
-                  ))}
-                </ButtonGroup>
-              </div>
-            ))
-          }
+          {Object.keys(providers).map(providerKey => (
+            <div key={providerKey}>
+              <ButtonGroup>
+                <label>{providerKey}: </label>
+                {Object.keys(providers[providerKey]).map(providerStateName => (
+                  <Button
+                    key={`${providerKey}-${providerStateName}`}
+                    onClick={this.switchProvider.bind(
+                      this,
+                      providerKey,
+                      providerStateName,
+                    )}
+                    appearance={
+                      providerStateName === this.state[providerKey]
+                        ? 'primary'
+                        : 'default'
+                    }
+                    theme="dark"
+                    spacing="compact"
+                  >
+                    {providerStateName}
+                  </Button>
+                ))}
+              </ButtonGroup>
+            </div>
+          ))}
           <div>
             <Button onClick={this.reloadEditor} theme="dark" spacing="compact">
               Reload Editor

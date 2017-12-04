@@ -4,7 +4,6 @@ import { expect } from 'chai';
 import SubSup from '../../../../src/react/marks/subsup';
 
 describe('Renderer - React/Marks/Subsup', () => {
-
   describe('<Sub />', () => {
     const mark = shallow(<SubSup type="sub">This is sub</SubSup>);
 
@@ -28,5 +27,4 @@ describe('Renderer - React/Marks/Subsup', () => {
       expect(mark.html()).to.equal('<sup>This is sup</sup>');
     });
   });
-
 });

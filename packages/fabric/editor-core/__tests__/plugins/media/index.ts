@@ -1,5 +1,6 @@
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import * as assert from 'assert';
+
 import {
   mediaPluginFactory,
   MediaPluginState,
@@ -99,6 +100,123 @@ describe('Media plugin', () => {
     pluginState.destroy();
   });
 
+  describe('when message editor', () => {
+    const messageEditor = (doc: any, uploadErrorHandler?: () => void) =>
+      makeEditor<MediaPluginState>({
+        doc,
+        plugins: [
+          ...mediaPluginFactory(
+            defaultSchema,
+            {
+              providerFactory,
+              uploadErrorHandler,
+            },
+            undefined,
+            'message',
+          ),
+        ],
+        schema: defaultSchema,
+      });
+
+    it('inserts media group', async () => {
+      const { editorView, pluginState } = messageEditor(doc(p('')));
+      await mediaProvider;
+
+      pluginState.insertFiles([
+        { id: 'foo', fileMimeType: 'image/jpeg' },
+        { id: 'bar', fileMimeType: 'image/png' },
+      ]);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          mediaGroup(
+            media({
+              id: 'foo',
+              type: 'file',
+              collection: testCollectionName,
+              __fileMimeType: 'image/jpeg',
+            }),
+            media({
+              id: 'bar',
+              type: 'file',
+              collection: testCollectionName,
+              __fileMimeType: 'image/png',
+            }),
+          ),
+          p(),
+        ),
+      );
+    });
+  });
+
+  describe('when non message editor', () => {
+    describe('when all of the files are images', () => {
+      it('inserts single images', async () => {
+        const { editorView, pluginState } = editor(doc(p('')));
+        await mediaProvider;
+
+        pluginState.insertFiles([
+          { id: 'foo', fileMimeType: 'image/jpeg' },
+          { id: 'bar', fileMimeType: 'image/png' },
+        ]);
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            singleImage({ alignment: 'center', display: 'block' })(
+              media({
+                id: 'foo',
+                type: 'file',
+                collection: testCollectionName,
+                __fileMimeType: 'image/jpeg',
+              }),
+            ),
+            singleImage({ alignment: 'center', display: 'block' })(
+              media({
+                id: 'bar',
+                type: 'file',
+                collection: testCollectionName,
+                __fileMimeType: 'image/png',
+              }),
+            ),
+            p(),
+          ),
+        );
+      });
+    });
+
+    describe('when it is a mix of pdf and image', () => {
+      it('inserts single images', async () => {
+        const { editorView, pluginState } = editor(doc(p('')));
+        await mediaProvider;
+
+        pluginState.insertFiles([
+          { id: 'foo', fileMimeType: 'pdf' },
+          { id: 'bar', fileMimeType: 'image/png' },
+        ]);
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            mediaGroup(
+              media({
+                id: 'foo',
+                type: 'file',
+                collection: testCollectionName,
+                __fileMimeType: 'pdf',
+              }),
+              media({
+                id: 'bar',
+                type: 'file',
+                collection: testCollectionName,
+                __fileMimeType: 'image/png',
+              }),
+            ),
+            p(),
+          ),
+        );
+      });
+    });
+  });
+
   it('should call uploadErrorHandler on upload error', async () => {
     const errorHandlerSpy = jest.fn();
     const { pluginState } = editor(doc(p(), p('{<>}')), errorHandlerSpy);
@@ -110,7 +228,8 @@ describe('Media plugin', () => {
 
     await mediaProvider;
 
-    pluginState.insertFile({ id: temporaryFileId, status: 'uploading' });
+    pluginState.insertFiles([{ id: temporaryFileId, status: 'uploading' }]);
+
     stateManager.updateState(temporaryFileId, {
       id: temporaryFileId,
       status: 'error',
@@ -145,7 +264,7 @@ describe('Media plugin', () => {
     const provider = await mediaProvider;
     await provider.uploadContext;
 
-    pluginState.insertFile({ id: temporaryFileId, status: 'uploading' });
+    pluginState.insertFiles([{ id: temporaryFileId, status: 'uploading' }]);
 
     expect(editorView.state.doc).toEqualDocument(
       doc(
@@ -189,16 +308,18 @@ describe('Media plugin', () => {
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
 
-    pluginState.insertFile({ id: firstTemporaryFileId, status: 'uploading' });
-    pluginState.insertFile({ id: secondTemporaryFileId, status: 'uploading' });
-    pluginState.insertFile({ id: thirdTemporaryFileId, status: 'uploading' });
+    pluginState.insertFiles([
+      { id: firstTemporaryFileId, status: 'uploading' },
+      { id: secondTemporaryFileId, status: 'uploading' },
+      { id: thirdTemporaryFileId, status: 'uploading' },
+    ]);
 
     expect(editorView.state.doc).toEqualDocument(
       doc(
         p(),
         mediaGroup(
           media({
-            id: thirdTemporaryFileId,
+            id: firstTemporaryFileId,
             type: 'file',
             collection: testCollectionName,
           }),
@@ -208,7 +329,7 @@ describe('Media plugin', () => {
             collection: testCollectionName,
           }),
           media({
-            id: firstTemporaryFileId,
+            id: thirdTemporaryFileId,
             type: 'file',
             collection: testCollectionName,
           }),
@@ -288,7 +409,7 @@ describe('Media plugin', () => {
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
 
-    pluginState.insertFile({ id: tempFileId, status: 'uploading' });
+    pluginState.insertFiles([{ id: tempFileId, status: 'uploading' }]);
 
     expect(editorView.state.doc).toEqualDocument(
       doc(
@@ -427,31 +548,33 @@ describe('Media plugin', () => {
     expect(typeof pluginState.binaryPicker!).toBe('object');
 
     const testFileData = {
-      file: {
-        id: 'test',
-        name: 'test.png',
-        size: 1,
-        type: 'file/test',
-      },
+      files: [
+        {
+          id: 'test',
+          name: 'test.png',
+          size: 1,
+          type: 'file/test',
+        },
+      ],
     };
 
     // Warning: calling private methods below
-    (pluginState as any).dropzonePicker!.handleUploadStart(testFileData);
-    expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.drop', {
+    (pluginState as any).dropzonePicker!.handleUploadsStart(testFileData);
+    expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.dropzone', {
       fileMimeType: 'file/test',
     });
 
-    (pluginState as any).clipboardPicker!.handleUploadStart(testFileData);
-    expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.paste', {
+    (pluginState as any).clipboardPicker!.handleUploadsStart(testFileData);
+    expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.clipboard', {
       fileMimeType: 'file/test',
     });
 
-    (pluginState as any).popupPicker!.handleUploadStart(testFileData);
+    (pluginState as any).popupPicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.popup', {
       fileMimeType: 'file/test',
     });
 
-    (pluginState as any).binaryPicker!.handleUploadStart(testFileData);
+    (pluginState as any).binaryPicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.binary', {
       fileMimeType: 'file/test',
     });
@@ -606,10 +729,10 @@ describe('Media plugin', () => {
 
     const spy = jest.spyOn(editorView, 'focus');
 
-    pluginState.insertFile({ id: 'foo' });
+    pluginState.insertFiles([{ id: 'foo' }]);
     expect(spy).toHaveBeenCalled();
 
-    pluginState.insertFile({ id: 'bar' });
+    pluginState.insertFiles([{ id: 'bar' }]);
     expect(editorView.state.doc).toEqualDocument(
       doc(
         mediaGroup(
@@ -632,13 +755,15 @@ describe('Media plugin', () => {
     );
     collectionFromProvider.mockImplementation(() => testCollectionName);
 
-    pluginState.insertFile({
-      id: temporaryFileId,
-      status: 'uploading',
-      fileName: 'foo.png',
-      fileSize: 1234,
-      fileMimeType: 'image/png',
-    });
+    pluginState.insertFiles([
+      {
+        id: temporaryFileId,
+        status: 'uploading',
+        fileName: 'foo.png',
+        fileSize: 1234,
+        fileMimeType: 'pdf',
+      },
+    ]);
 
     expect(editorView.state.doc).toEqualDocument(
       doc(
@@ -649,7 +774,7 @@ describe('Media plugin', () => {
             collection: testCollectionName,
             __fileName: 'foo.png',
             __fileSize: 1234,
-            __fileMimeType: 'image/png',
+            __fileMimeType: 'pdf',
           }),
         ),
         p(),

@@ -4,13 +4,16 @@ import { schema, toDOM, fromHTML } from '../../../test-helpers';
 describe(`${name}/schema single image node`, () => {
   describe('parse html', () => {
     it('gets attributes from html', () => {
-      const doc = fromHTML(`
+      const doc = fromHTML(
+        `
         <div
           data-node-type="singleImage"
           data-alignment="left"
           data-display="inline-block"
         />
-        `, schema);
+        `,
+        schema,
+      );
 
       const singleImageNode = doc.firstChild!;
 
@@ -20,13 +23,16 @@ describe(`${name}/schema single image node`, () => {
     });
 
     it('auto creates a media node inside single image node', () => {
-      const doc = fromHTML(`
+      const doc = fromHTML(
+        `
         <div
           data-node-type="singleImage"
           data-alignment="left"
           data-display="block"
         />
-        `, schema);
+        `,
+        schema,
+      );
 
       const singleImageNode = doc.firstChild!;
 
@@ -39,10 +45,11 @@ describe(`${name}/schema single image node`, () => {
     it('converts attributes to related data attribute in html', () => {
       const singleImageNode = schema.nodes.singleImage.create({
         alignment: 'right',
-        display: 'block'
+        display: 'block',
       });
 
-      const singleImageDom = toDOM(singleImageNode, schema).firstChild as HTMLElement;
+      const singleImageDom = toDOM(singleImageNode, schema)
+        .firstChild as HTMLElement;
       const alignment = singleImageDom.getAttribute('data-alignment');
       const display = singleImageDom.getAttribute('data-display');
       const nodeType = singleImageDom.getAttribute('data-node-type');
@@ -55,14 +62,19 @@ describe(`${name}/schema single image node`, () => {
 
   it('encodes and decodes to the same node', () => {
     const { singleImage, media } = schema.nodes;
-    const singleImageNode = singleImage.create({
-      alignment: 'center',
-      display: 'inline-block'
-    }, media.create());
+    const singleImageNode = singleImage.create(
+      {
+        alignment: 'center',
+        display: 'inline-block',
+      },
+      media.create(),
+    );
 
-    const singleImageDom = toDOM(singleImageNode, schema).firstChild as HTMLElement;
+    const singleImageDom = toDOM(singleImageNode, schema)
+      .firstChild as HTMLElement;
 
-    const parsedSingleImage = fromHTML(singleImageDom.outerHTML, schema).firstChild;
+    const parsedSingleImage = fromHTML(singleImageDom.outerHTML, schema)
+      .firstChild;
 
     expect(parsedSingleImage).toEqual(singleImageNode);
   });

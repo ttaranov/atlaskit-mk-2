@@ -4,7 +4,7 @@ export {
   AnalyticsProperties,
   detectHandler,
   hermentHandler,
-  debugHandler
+  debugHandler,
 } from './handler';
 export { default as analyticsDecorator } from './decorator';
 export { default as trackAndInvoke } from './trackAndInvoke';

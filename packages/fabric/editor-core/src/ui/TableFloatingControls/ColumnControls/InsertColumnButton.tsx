@@ -19,7 +19,7 @@ export interface ButtonProps {
 export default class InsertColumnButton extends Component<ButtonProps, any> {
   handleInsert = () => this.props.insertColumn(this.props.index);
 
-  render () {
+  render() {
     return (
       <InsertColumnButtonWrap style={this.props.style}>
         <InsertColumnButtonInner>

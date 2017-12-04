@@ -19,8 +19,12 @@ export const confluenceUnsupportedInline = {
     {
       tag: `div[data-node-type="${name}"]`,
       getAttrs(dom: HTMLElement) {
-        return { cxhtml: dom.getAttribute('data-confluence-unsupported-inline-cxhtml')! };
-      }
-    }
-  ]
+        return {
+          cxhtml: dom.getAttribute(
+            'data-confluence-unsupported-inline-cxhtml',
+          )!,
+        };
+      },
+    },
+  ],
 } as NodeSpec;

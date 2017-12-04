@@ -25,7 +25,7 @@ class Decision implements NodeView {
 
   private handleRef = (node: HTMLElement | undefined) => {
     this.contentDOMRef = node;
-  }
+  };
 
   private renderReactComponent() {
     this.domRef = document.createElement('li');
@@ -33,8 +33,11 @@ class Decision implements NodeView {
 
     // tslint:disable-next-line:variable-name
     ReactDOM.render(
-      <DecisionItem contentRef={this.handleRef} showPlaceholder={this.showPlaceholder} />,
-      this.domRef
+      <DecisionItem
+        contentRef={this.handleRef}
+        showPlaceholder={this.showPlaceholder}
+      />,
+      this.domRef,
     );
   }
 
@@ -61,6 +64,10 @@ class Decision implements NodeView {
   }
 }
 
-export const decisionItemNodeView = (node: any, view: any, getPos: () => number): NodeView => {
+export const decisionItemNodeView = (
+  node: any,
+  view: any,
+  getPos: () => number,
+): NodeView => {
   return new Decision(node, view, getPos);
 };

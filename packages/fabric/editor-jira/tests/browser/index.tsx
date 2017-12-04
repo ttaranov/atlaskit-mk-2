@@ -29,7 +29,9 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
   });
 
   it('should respect defaultExpanded property', () => {
-    const editorWrapper = mount(<Editor isExpandedByDefault={true} />, { attachTo: fixture() });
+    const editorWrapper = mount(<Editor isExpandedByDefault={true} />, {
+      attachTo: fixture(),
+    });
     expect(editorWrapper.find('ChromeCollapsed').length).to.equal(0);
     expect(editorWrapper.find('ChromeExpanded')).to.have.length.above(0);
   });
@@ -42,7 +44,9 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
   });
 
   it('should render disabled chrome if isDisabled=true', () => {
-    const chrome = mount(<Editor isExpandedByDefault={true} isDisabled={true} />);
+    const chrome = mount(
+      <Editor isExpandedByDefault={true} isDisabled={true} />,
+    );
     expect(chrome.find('ChromeExpanded').prop('disabled')).to.equal(true);
   });
 
@@ -63,7 +67,9 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
   });
 
   it('.collapse() method should collapse the editor chrome', () => {
-    const editorWrapper = mount(<Editor isExpandedByDefault={true} />, { attachTo: fixture() });
+    const editorWrapper = mount(<Editor isExpandedByDefault={true} />, {
+      attachTo: fixture(),
+    });
     const editor: Editor = editorWrapper.get(0) as any;
 
     editor.collapse();
@@ -74,7 +80,9 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
 
   it('should call onExpanded after editor is expanded via click', () => {
     const spy = sinon.spy();
-    const editorWrapper = mount(<Editor onExpanded={spy} />, { attachTo: fixture() });
+    const editorWrapper = mount(<Editor onExpanded={spy} />, {
+      attachTo: fixture(),
+    });
 
     editorWrapper.find('ChromeCollapsed input').simulate('focus');
     expect(spy.callCount).to.equal(1);
@@ -82,7 +90,9 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
 
   it('should call onExpanded after editor is expanded via .expand()', () => {
     const spy = sinon.spy();
-    const editorWrapper = mount(<Editor onExpanded={spy} />, { attachTo: fixture() });
+    const editorWrapper = mount(<Editor onExpanded={spy} />, {
+      attachTo: fixture(),
+    });
     const editor: Editor = editorWrapper.get(0) as any;
 
     editor.expand();
@@ -93,7 +103,9 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
 
 describe('feature flags', () => {
   it('should enable mentions if mentionProvider exists', () => {
-    const editorWrapper = mount(<Editor mentionProvider={Promise.resolve(({} as MentionProvider))} />);
+    const editorWrapper = mount(
+      <Editor mentionProvider={Promise.resolve({} as MentionProvider)} />,
+    );
     const editor: Editor = editorWrapper.get(0) as any;
     expect(editor.state.schema.nodes.mention).to.not.eq(undefined);
     expect(editor.state.schema.marks.mentionQuery).to.not.eq(undefined);
@@ -183,7 +195,9 @@ describe('@atlaskit/editor-jira/focus', () => {
   let editorWrapper: ReactWrapper<any, any>;
 
   beforeEach(() => {
-    editorWrapper = mount(<Editor isExpandedByDefault={true} />, { attachTo: fixture() });
+    editorWrapper = mount(<Editor isExpandedByDefault={true} />, {
+      attachTo: fixture(),
+    });
   });
 
   afterEach(() => {
@@ -192,7 +206,9 @@ describe('@atlaskit/editor-jira/focus', () => {
 
   it('should focus the editor if not already focused', () => {
     const editorInstance = editorWrapper.instance() as any;
-    const hasFocusStub = sinon.stub(editorInstance.state.editorView, 'hasFocus').returns(false);
+    const hasFocusStub = sinon
+      .stub(editorInstance.state.editorView, 'hasFocus')
+      .returns(false);
     const spy = sinon.stub(editorInstance.state.editorView, 'focus');
     editorInstance.focus();
 
@@ -203,7 +219,9 @@ describe('@atlaskit/editor-jira/focus', () => {
 
   it('should not try to focus when already focused', () => {
     const editorInstance = editorWrapper.instance() as any;
-    const hasFocusStub = sinon.stub(editorInstance.state.editorView, 'hasFocus').returns(true);
+    const hasFocusStub = sinon
+      .stub(editorInstance.state.editorView, 'hasFocus')
+      .returns(true);
     const spy = sinon.stub(editorInstance.state.editorView, 'focus');
     editorInstance.focus();
 

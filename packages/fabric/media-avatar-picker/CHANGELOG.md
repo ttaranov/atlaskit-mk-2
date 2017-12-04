@@ -1,5 +1,16 @@
 # @atlaskit/media-avatar-picker
 
+## 4.0.0
+- [major] fix selection of predefined avatars. breaking changes, reduced public interface to only expose AvatarPickerDialog. [f76449f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f76449f)
+
+## 3.3.9
+
+## 3.3.8
+
+## 3.3.7
+
+## 3.3.6
+
 ## 3.3.5
 
 

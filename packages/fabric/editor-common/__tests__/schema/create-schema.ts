@@ -1,10 +1,8 @@
 import { name } from '../../package.json';
-import {
-  code as codeBase,
-  createSchema
-} from '../../src';
+import { code as codeBase, createSchema } from '../../src';
 
-const filterGroupDecMark = marks => marks.filter(mark => mark[0] !== '_' || mark[1] !== '_');
+const filterGroupDecMark = marks =>
+  marks.filter(mark => mark[0] !== '_' || mark[1] !== '_');
 
 describe(`${name}/schema createSchema helper`, () => {
   it('should add only defined marks and nodes to the schema', () => {
@@ -33,7 +31,10 @@ describe(`${name}/schema createSchema helper`, () => {
       parseDOM: [{ tag: 'div' }],
     };
     const nodesConfig = ['doc', 'paragraph', 'text'];
-    const schema = createSchema({ nodes: nodesConfig, customNodeSpecs: { listItem } });
+    const schema = createSchema({
+      nodes: nodesConfig,
+      customNodeSpecs: { listItem },
+    });
     const nodes = Object.keys(schema.nodes);
     expect(nodes).toEqual(['doc', 'paragraph', 'text', 'listItem']);
     expect(schema.nodes.listItem.spec).toEqual(listItem);
@@ -45,7 +46,10 @@ describe(`${name}/schema createSchema helper`, () => {
       parseDOM: [{ tag: 'div' }],
     };
     const nodesConfig = ['doc', 'paragraph', 'text'];
-    const schema = createSchema({ nodes: nodesConfig, customNodeSpecs: { jiraIssue } });
+    const schema = createSchema({
+      nodes: nodesConfig,
+      customNodeSpecs: { jiraIssue },
+    });
     const nodes = Object.keys(schema.nodes);
     expect(nodes).toEqual(['doc', 'paragraph', 'text', 'jiraIssue']);
   });
@@ -54,7 +58,11 @@ describe(`${name}/schema createSchema helper`, () => {
     const code = { ...codeBase, excludes: 'em' };
     const nodesConfig = ['doc', 'paragraph', 'text'];
     const marksConfig = ['em'];
-    const schema = createSchema({ nodes: nodesConfig, marks: marksConfig, customMarkSpecs: { code } });
+    const schema = createSchema({
+      nodes: nodesConfig,
+      marks: marksConfig,
+      customMarkSpecs: { code },
+    });
     const marks = filterGroupDecMark(Object.keys(schema.marks));
     expect(marks).toEqual(['em', 'code']);
     expect(schema.marks.code.spec).toEqual(code);
@@ -64,7 +72,11 @@ describe(`${name}/schema createSchema helper`, () => {
     const monospace = { ...codeBase, excludes: 'em' };
     const nodesConfig = ['doc', 'paragraph', 'text'];
     const marksConfig = ['em'];
-    const schema = createSchema({ nodes: nodesConfig, marks: marksConfig, customMarkSpecs: { monospace } });
+    const schema = createSchema({
+      nodes: nodesConfig,
+      marks: marksConfig,
+      customMarkSpecs: { monospace },
+    });
     const marks = filterGroupDecMark(Object.keys(schema.marks));
     expect(marks).toEqual(['em', 'monospace']);
     expect(schema.marks.monospace.spec).toEqual(monospace);
@@ -73,7 +85,10 @@ describe(`${name}/schema createSchema helper`, () => {
   it('should allow only custom mark spec', () => {
     const code = { ...codeBase, excludes: '' };
     const nodesConfig = ['doc', 'paragraph', 'text'];
-    const schema = createSchema({ nodes: nodesConfig, customMarkSpecs: { code } });
+    const schema = createSchema({
+      nodes: nodesConfig,
+      customMarkSpecs: { code },
+    });
     expect(schema.marks.code.spec).toEqual(code);
   });
 });

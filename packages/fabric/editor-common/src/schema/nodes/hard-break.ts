@@ -15,5 +15,7 @@ export const hardBreak: NodeSpec = {
   group: 'inline',
   selectable: false,
   parseDOM: [{ tag: 'br' }],
-  toDOM() { return ['br']; }
+  toDOM() {
+    return ['br'];
+  },
 };

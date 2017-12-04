@@ -2,7 +2,12 @@ import { Transaction, EditorState } from 'prosemirror-state';
 import { ReplaceStep, Step } from 'prosemirror-transform';
 import { createSliceWithContent } from '../../utils';
 
-export function transformToCodeAction(state: EditorState, from: number, to: number, transaction?: Transaction): Transaction {
+export function transformToCodeAction(
+  state: EditorState,
+  from: number,
+  to: number,
+  transaction?: Transaction,
+): Transaction {
   const replaceSteps: Step[] = [];
   let tr = transaction || state.tr;
 
@@ -12,7 +17,14 @@ export function transformToCodeAction(state: EditorState, from: number, to: numb
     const end = cur + node.nodeSize;
     if (node.type === state.schema.nodes.mention) {
       const content = node.attrs.text;
-      replaceSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, state), false));
+      replaceSteps.push(
+        new ReplaceStep(
+          cur,
+          end,
+          createSliceWithContent(content, state),
+          false,
+        ),
+      );
     }
   });
 

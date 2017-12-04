@@ -1,5 +1,17 @@
 # @atlaskit/media-image
 
+## 22.2.7
+- [patch] fix lazy-loading of cards when scrolling up [868505d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/868505d)
+
+## 22.2.6
+- [patch] Show static images for gifs in small cards [e2508f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e2508f9)
+- [patch] Show static images for gifs in small cards [e2508f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e2508f9)
+
+## 22.2.5
+- [patch] Fixed hover state for link media-cards in renderer [05ae05d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05ae05d)
+
+## 22.2.4
+
 ## 22.2.3
 - [patch] Bumping dependency on docs (from a failed build) [6949056](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6949056)
 

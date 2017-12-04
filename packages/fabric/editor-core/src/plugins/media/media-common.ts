@@ -6,7 +6,11 @@ import { createParagraphNear } from '../../commands';
 import { moveLeft, atTheBeginningOfDoc, isTemporary } from '../../utils';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 
-export const removeMediaNode = (view: EditorView, node: PMNode, getPos: ProsemirrorGetPosHandler) => {
+export const removeMediaNode = (
+  view: EditorView,
+  node: PMNode,
+  getPos: ProsemirrorGetPosHandler,
+) => {
   const { id } = node.attrs;
   const { state } = view;
   const { tr, selection, doc } = state;
@@ -21,12 +25,17 @@ export const removeMediaNode = (view: EditorView, node: PMNode, getPos: Prosemir
   view.dispatch(tr);
 
   const $currentMediaNodePos = doc.resolve(currentMediaNodePos);
-  const isLastMediaNode = $currentMediaNodePos.index() === $currentMediaNodePos.parent.childCount - 1;
+  const isLastMediaNode =
+    $currentMediaNodePos.index() === $currentMediaNodePos.parent.childCount - 1;
 
   // If deleting a selected media node, we need to tell where the cursor to go next.
   // Prosemirror didn't gave us the behaviour of moving left if the media node is not the last one.
   // So we handle it ourselves.
-  if (selection.from === currentMediaNodePos && !isLastMediaNode && !atTheBeginningOfDoc(state)) {
+  if (
+    selection.from === currentMediaNodePos &&
+    !isLastMediaNode &&
+    !atTheBeginningOfDoc(state)
+  ) {
     moveLeft(view);
   }
 };
@@ -35,7 +44,10 @@ export const splitMediaGroup = (view: EditorView): boolean => {
   const { selection } = view.state;
 
   // if selection is not a media node, do nothing.
-  if (!(selection instanceof NodeSelection) || selection.node.type !== view.state.schema.nodes.media) {
+  if (
+    !(selection instanceof NodeSelection) ||
+    selection.node.type !== view.state.schema.nodes.media
+  ) {
     return false;
   }
 

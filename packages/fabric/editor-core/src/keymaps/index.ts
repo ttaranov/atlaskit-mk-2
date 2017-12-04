@@ -4,9 +4,15 @@ import { EditorState, Transaction } from 'prosemirror-state';
 export const toggleBold = makeKeyMapWithCommon('Bold', 'Mod-b');
 export const toggleItalic = makeKeyMapWithCommon('Italic', 'Mod-i');
 export const toggleUnderline = makeKeyMapWithCommon('Underline', 'Mod-u');
-export const toggleStrikethrough = makeKeyMapWithCommon('Strikethrough', 'Mod-Shift-s');
+export const toggleStrikethrough = makeKeyMapWithCommon(
+  'Strikethrough',
+  'Mod-Shift-s',
+);
 export const toggleCode = makeKeyMapWithCommon('Code', 'Mod-Shift-m');
-export const clearFormatting = makeKeyMapWithCommon('Clear formatting', 'Mod-\\');
+export const clearFormatting = makeKeyMapWithCommon(
+  'Clear formatting',
+  'Mod-\\',
+);
 export const setNormalText = makeKeymap('Normal text', '', 'Cmd-Alt-0');
 export const toggleHeading1 = makeKeymap('Heading 1', '', 'Cmd-Alt-1');
 export const toggleHeading2 = makeKeymap('Heading 2', '', 'Cmd-Alt-2');
@@ -16,13 +22,25 @@ export const toggleHeading5 = makeKeymap('Heading 5', '', 'Cmd-Alt-5');
 export const toggleOrderedList = makeKeymap('Numbered list', '', 'Cmd-Alt-7');
 export const toggleBulletList = makeKeymap('Bullet list', '', 'Cmd-Alt-8');
 export const toggleBlockQuote = makeKeymap('Block quote', '', 'Cmd-Alt-9');
-export const insertNewLine = makeKeyMapWithCommon('Insert new line', 'Shift-Enter');
-export const shiftBackspace = makeKeyMapWithCommon('Shift Backspace', 'Shift-Backspace');
+export const insertNewLine = makeKeyMapWithCommon(
+  'Insert new line',
+  'Shift-Enter',
+);
+export const shiftBackspace = makeKeyMapWithCommon(
+  'Shift Backspace',
+  'Shift-Backspace',
+);
 export const splitCodeBlock = makeKeyMapWithCommon('Split code block', 'Enter');
 export const splitListItem = makeKeyMapWithCommon('Split list item', 'Enter');
-export const insertRule = makeKeyMapWithCommon('Insert horizontal rule', 'Mod-Shift--');
+export const insertRule = makeKeyMapWithCommon(
+  'Insert horizontal rule',
+  'Mod-Shift--',
+);
 export const undo = makeKeyMapWithCommon('Undo', 'Mod-z');
-export const createCodeBlock = makeKeyMapWithCommon('Create code block', 'Enter');
+export const createCodeBlock = makeKeyMapWithCommon(
+  'Create code block',
+  'Enter',
+);
 export const moveUp = makeKeyMapWithCommon('Move up', 'ArrowUp');
 export const moveDown = makeKeyMapWithCommon('Move down', 'ArrowDown');
 export const moveLeft = makeKeyMapWithCommon('Move left', 'ArrowLeft');
@@ -62,12 +80,18 @@ export function tooltip(keymap: Keymap | undefined): string | undefined {
   }
 }
 
-export function findKeymapByDescription(description: string): Keymap | undefined {
-  const matches = ALL.filter((keymap) => (keymap.description.toUpperCase() === description.toUpperCase()));
+export function findKeymapByDescription(
+  description: string,
+): Keymap | undefined {
+  const matches = ALL.filter(
+    keymap => keymap.description.toUpperCase() === description.toUpperCase(),
+  );
   return matches[0];
 }
 
-export function findShortcutByDescription(description: string): string | undefined {
+export function findShortcutByDescription(
+  description: string,
+): string | undefined {
   const keymap = findKeymapByDescription(description);
   if (keymap) {
     return findShortcutByKeymap(keymap);
@@ -82,18 +106,40 @@ export function findShortcutByKeymap(keymap: Keymap): string | undefined {
   return keymap.windows;
 }
 
-const ALL = [toggleOrderedList, toggleBulletList, toggleBold, toggleItalic,
-  toggleUnderline, toggleStrikethrough, toggleCode,
-  setNormalText, toggleHeading1, toggleHeading2, toggleHeading3, toggleHeading4, toggleHeading5,
-  toggleBlockQuote, insertNewLine, insertRule,
-  splitCodeBlock, splitListItem, redo, undo];
+const ALL = [
+  toggleOrderedList,
+  toggleBulletList,
+  toggleBold,
+  toggleItalic,
+  toggleUnderline,
+  toggleStrikethrough,
+  toggleCode,
+  setNormalText,
+  toggleHeading1,
+  toggleHeading2,
+  toggleHeading3,
+  toggleHeading4,
+  toggleHeading5,
+  toggleBlockQuote,
+  insertNewLine,
+  insertRule,
+  splitCodeBlock,
+  splitListItem,
+  redo,
+  undo,
+];
 
-function makeKeymap(description: string, windows: string, mac: string, common?: string): Keymap {
+function makeKeymap(
+  description: string,
+  windows: string,
+  mac: string,
+  common?: string,
+): Keymap {
   return {
     description: description,
     windows: windows,
     mac: mac,
-    common: common
+    common: common,
   };
 }
 
@@ -110,11 +156,18 @@ export interface Keymap {
   common?: string;
 }
 
-export function bindKeymapWithCommand(shortcut: string, cmd: (state: EditorState, dispatch: (tr: Transaction) => void) => boolean, keymap: { [key: string]: Function }) {
+export function bindKeymapWithCommand(
+  shortcut: string,
+  cmd: (state: EditorState, dispatch: (tr: Transaction) => void) => boolean,
+  keymap: { [key: string]: Function },
+) {
   const oldCmd = keymap[shortcut];
   let newCmd = cmd;
   if (keymap[shortcut]) {
-    newCmd = (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
+    newCmd = (
+      state: EditorState,
+      dispatch: (tr: Transaction) => void,
+    ): boolean => {
       return oldCmd(state, dispatch) || cmd(state, dispatch);
     };
   }
@@ -132,10 +185,40 @@ export function findKeyMapForBrowser(kayMap: Keymap): string | undefined {
 }
 
 export const keyCodes: { [key: string]: number } = {
-  'Enter': 13, 'Backspace': 8, 'Tab': 9, 'Shift': 16, 'Ctrl': 17, 'Alt': 18, 'Pause': 19, 'CapsLock': 20, 'Esc': 27, 'Space': 32,
-  'PageUp': 63276, 'PageDown': 63277, 'End': 63275, 'Home': 63273, 'Left': 63234, 'Up': 63232, 'Right': 63235, 'Down': 63233,
-  'PrintScrn': 44, 'Insert': 63302, 'Delete': 63272, ';': 186, '=': 187, 'Mod': 93, '*': 106, '-': 189, '.': 190, '/': 191, ',': 188,
-  '`': 192, '[': 219, '\\': 220, ']': 221, '\'': 222
+  Enter: 13,
+  Backspace: 8,
+  Tab: 9,
+  Shift: 16,
+  Ctrl: 17,
+  Alt: 18,
+  Pause: 19,
+  CapsLock: 20,
+  Esc: 27,
+  Space: 32,
+  PageUp: 63276,
+  PageDown: 63277,
+  End: 63275,
+  Home: 63273,
+  Left: 63234,
+  Up: 63232,
+  Right: 63235,
+  Down: 63233,
+  PrintScrn: 44,
+  Insert: 63302,
+  Delete: 63272,
+  ';': 186,
+  '=': 187,
+  Mod: 93,
+  '*': 106,
+  '-': 189,
+  '.': 190,
+  '/': 191,
+  ',': 188,
+  '`': 192,
+  '[': 219,
+  '\\': 220,
+  ']': 221,
+  "'": 222,
 };
 
 export const LEFT = 37;

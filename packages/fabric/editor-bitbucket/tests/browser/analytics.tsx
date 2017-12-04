@@ -12,6 +12,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 
+import Item from '@atlaskit/item';
 import { analyticsService, imageUploadStateKey } from '@atlaskit/editor-core';
 import { browser } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
@@ -68,7 +69,9 @@ describe('@atlaskit/editor-bitbucket/analytics/start-event', () => {
     }
 
     expect(handler.called).to.equal(false);
-    const container = mount(<ContainerWithTwoEditors />, { attachTo: fixture() });
+    const container = mount(<ContainerWithTwoEditors />, {
+      attachTo: fixture(),
+    });
     expect(handler.calledWith('atlassian.editor.start')).to.equal(true);
     expect(handler.callCount).to.equal(2);
     container.unmount();
@@ -91,7 +94,9 @@ describe('@atlaskit/editor-bitbucket/analytics/analyticsHandler', () => {
 
   it('updates analytics handler when provided via property', () => {
     const handler = sinon.spy();
-    const editorWrapper = mount(<Editor analyticsHandler={handler} />, { attachTo: fixture() });
+    const editorWrapper = mount(<Editor analyticsHandler={handler} />, {
+      attachTo: fixture(),
+    });
     expect(handler.called).to.equal(false);
 
     editorWrapper.find('ChromeCollapsed').simulate('focus');
@@ -124,13 +129,17 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
 
       // We need to attach the editor to DOM because ProseMirror depends on having
       // focus on the content area (detached DOM elements can not receive focus)
-      { attachTo: fixture() }
+      { attachTo: fixture() },
     );
 
     editorAPI = editor.get(0) as any;
     editorView = editorAPI!.state!.editorView as EditorView;
-    const pluginState = imageUploadStateKey.getState(editor.state().editorView.state);
-    pluginState.handleProvider('imageUploadProvider', Promise.resolve(handler)).then(() => done());
+    const pluginState = imageUploadStateKey.getState(
+      editor.state().editorView.state,
+    );
+    pluginState
+      .handleProvider('imageUploadProvider', Promise.resolve(handler))
+      .then(() => done());
   });
 
   afterEach(() => {
@@ -139,7 +148,9 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
 
   it('atlassian.editor.format.clear.keyboard', () => {
     sendKeyToPm(editorView, 'Mod-\\');
-    expect(handler.calledWith('atlassian.editor.format.clear.keyboard')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.format.clear.keyboard'),
+    ).to.equal(true);
   });
 
   it('atlassian.editor.format.hyperlink.button', () => {
@@ -150,22 +161,30 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
       .parent()
       .simulate('click');
 
-    expect(handler.calledWith('atlassian.editor.format.hyperlink.button')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.format.hyperlink.button'),
+    ).to.equal(true);
   });
 
   it('atlassian.editor.format.hyperlink.autoformatting with url format', () => {
     insertText(editorView, 'www.google.com ', 1);
-    expect(handler.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.format.hyperlink.autoformatting'),
+    ).to.equal(true);
   });
 
   it('atlassian.editor.hyperlink.autoformatting with markdown format', () => {
     insertText(editorView, '[hello](www.google.com)', 1);
-    expect(handler.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.format.hyperlink.autoformatting'),
+    ).to.equal(true);
   });
 
   it('atlassian.editor.format.hyperlink.keyboard', () => {
     sendKeyToPm(editorView, 'Mod-k');
-    expect(handler.calledWith('atlassian.editor.format.hyperlink.keyboard')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.format.hyperlink.keyboard'),
+    ).to.equal(true);
   });
 
   it('atlassian.editor.format.strong.button', () => {
@@ -175,17 +194,23 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
       .parent()
       .simulate('click');
 
-    expect(handler.calledWith('atlassian.editor.format.strong.button')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.format.strong.button'),
+    ).to.equal(true);
   });
 
   it('atlassian.editor.format.strong.keyboard', () => {
     sendKeyToPm(editorView, 'Mod-b');
-    expect(handler.calledWith('atlassian.editor.format.strong.keyboard')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.format.strong.keyboard'),
+    ).to.equal(true);
   });
 
   it('atlassian.editor.format.strong.autoformatting', () => {
     insertText(editorView, '**text**', 1);
-    expect(handler.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.format.strong.autoformatting'),
+    ).to.equal(true);
   });
 
   it('atlassian.editor.format.em.button', () => {
@@ -195,41 +220,55 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
       .parent()
       .simulate('click');
 
-    expect(handler.calledWith('atlassian.editor.format.em.button')).to.equal(true);
+    expect(handler.calledWith('atlassian.editor.format.em.button')).to.equal(
+      true,
+    );
   });
 
   it('atlassian.editor.format.em.autoformatting', () => {
     insertText(editorView, '*text*', 1);
-    expect(handler.calledWith('atlassian.editor.format.em.autoformatting')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.format.em.autoformatting'),
+    ).to.equal(true);
   });
 
   it('atlassian.editor.format.em.keyboard', () => {
     sendKeyToPm(editorView, 'Mod-i');
-    expect(handler.calledWith('atlassian.editor.format.em.keyboard')).to.equal(true);
+    expect(handler.calledWith('atlassian.editor.format.em.keyboard')).to.equal(
+      true,
+    );
   });
 
   it('atlassian.editor.format.code.keyboard', () => {
     sendKeyToPm(editorView, 'Mod-Shift-M');
-    expect(handler.calledWith('atlassian.editor.format.code.keyboard')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.format.code.keyboard'),
+    ).to.equal(true);
   });
 
   it('atlassian.editor.format.code.autoformatting', () => {
     insertText(editorView, '`text`', 1);
-    expect(handler.calledWith('atlassian.editor.format.code.autoformatting')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.format.code.autoformatting'),
+    ).to.equal(true);
   });
 
   it('atlassian.editor.format.list.numbered.keyboard', () => {
     if (browser.mac) {
       sendKeyToPm(editorView, 'Cmd-Alt-7');
-      expect(handler.calledWith('atlassian.editor.format.list.numbered.keyboard')).to.equal(true);
+      expect(
+        handler.calledWith('atlassian.editor.format.list.numbered.keyboard'),
+      ).to.equal(true);
     }
   });
 
   it('atlassian.editor.format.list.numbered.autoformatting', () => {
     insertText(editorView, '1. ', 1);
-    expect(handler.calledWith('atlassian.editor.format.list.numbered.autoformatting')).to.equal(
-      true
-    );
+    expect(
+      handler.calledWith(
+        'atlassian.editor.format.list.numbered.autoformatting',
+      ),
+    ).to.equal(true);
   });
 
   // Unskip it in: https://product-fabric.atlassian.net/browse/ED-2214
@@ -240,7 +279,9 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
       .parent()
       .simulate('click');
 
-    expect(handler.calledWith('atlassian.editor.format.list.numbered.button')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.format.list.numbered.button'),
+    ).to.equal(true);
   });
 
   // Unskip it in: https://product-fabric.atlassian.net/browse/ED-2214
@@ -251,19 +292,25 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
       .parent()
       .simulate('click');
 
-    expect(handler.calledWith('atlassian.editor.format.list.bullet.button')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.format.list.bullet.button'),
+    ).to.equal(true);
   });
 
   it('atlassian.editor.format.list.bullet.keyboard', () => {
     if (browser.mac) {
       sendKeyToPm(editorView, 'Cmd-Alt-8');
-      expect(handler.calledWith('atlassian.editor.format.list.bullet.keyboard')).to.equal(true);
+      expect(
+        handler.calledWith('atlassian.editor.format.list.bullet.keyboard'),
+      ).to.equal(true);
     }
   });
 
   it('atlassian.editor.format.list.bullet.autoformatting', () => {
     insertText(editorView, '* ', 1);
-    expect(handler.calledWith('atlassian.editor.format.list.bullet.autoformatting')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.format.list.bullet.autoformatting'),
+    ).to.equal(true);
   });
 
   it('atlassian.editor.feedback.button', () => {
@@ -281,12 +328,14 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
 
       // We need to attach the editor to DOM because ProseMirror depends on having
       // focus on the content area (detached DOM elements can not receive focus)
-      { attachTo: fixture() }
+      { attachTo: fixture() },
     );
 
     editor.find('ToolbarFeedback > ToolbarButton').simulate('click');
 
-    expect(handler.calledWith('atlassian.editor.feedback.button')).to.equal(true);
+    expect(handler.calledWith('atlassian.editor.feedback.button')).to.equal(
+      true,
+    );
   });
 
   it('atlassian.editor.stop.save', () => {
@@ -319,7 +368,9 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
 
   it('atlassian.editor.image.autoformatting', () => {
     insertText(editorView, '![hello](www.google.com)', 1);
-    expect(handler.calledWith('atlassian.editor.image.autoformatting')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.image.autoformatting'),
+    ).to.equal(true);
   });
 
   it('atlassian.editor.image.button', () => {
@@ -391,14 +442,13 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
         .simulate('click');
       editor
         .find('ToolbarBlockType')
-        .find('Item')
+        .find(Item)
         .filterWhere(n => n.text() === blockType.name)
-        .find('Element')
         .simulate('click');
 
-      expect(handler.calledWith(`atlassian.editor.format.${blockType.value}.button`)).to.equal(
-        true
-      );
+      expect(
+        handler.calledWith(`atlassian.editor.format.${blockType.value}.button`),
+      ).to.equal(true);
     });
   });
 
@@ -413,51 +463,62 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
         .last()
         .simulate('click');
       editor
-        .find('Item')
+        .find(Item)
         .filterWhere(n => n.html().indexOf(blockType.name) > 0)
-        .find('Element')
         .simulate('click');
-      expect(handler.calledWith(`atlassian.editor.format.${blockType.value}.button`)).to.equal(
-        true
-      );
+      expect(
+        handler.calledWith(`atlassian.editor.format.${blockType.value}.button`),
+      ).to.equal(true);
     });
   });
 
   for (let level = 1; level <= 5; level++) {
     it(`atlassian.editor.format.heading${level}.autoformatting`, () => {
       insertText(editorView, stringRepeat('#', level) + ' ', 1);
-      expect(handler.calledWith(`atlassian.editor.format.heading${level}.autoformatting`)).to.equal(
-        true
-      );
+      expect(
+        handler.calledWith(
+          `atlassian.editor.format.heading${level}.autoformatting`,
+        ),
+      ).to.equal(true);
     });
   }
 
   it('atlassian.editor.format.blockquote.keyboard', () => {
     if (browser.mac) {
       sendKeyToPm(editorView, 'Cmd-Alt-9');
-      expect(handler.calledWith('atlassian.editor.format.blockquote.keyboard')).to.equal(true);
+      expect(
+        handler.calledWith('atlassian.editor.format.blockquote.keyboard'),
+      ).to.equal(true);
     }
   });
 
   it('atlassian.editor.format.blockquote.autoformatting', () => {
     insertText(editorView, '> ', 1);
-    expect(handler.calledWith('atlassian.editor.format.blockquote.autoformatting')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.format.blockquote.autoformatting'),
+    ).to.equal(true);
   });
 
   it('atlassian.editor.format.codeblock.autoformatting', () => {
     insertText(editorView, '```', 1);
     sendKeyToPm(editorView, 'Enter');
-    expect(handler.calledWith('atlassian.editor.format.codeblock.autoformatting')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.format.codeblock.autoformatting'),
+    ).to.equal(true);
   });
 
   it('atlassian.editor.newline.keyboard', () => {
     sendKeyToPm(editorView, 'Shift-Enter');
-    expect(handler.calledWith('atlassian.editor.newline.keyboard')).to.equal(true);
+    expect(handler.calledWith('atlassian.editor.newline.keyboard')).to.equal(
+      true,
+    );
   });
 
   // Need to unskip after ED-2305
   it.skip('atlassian.editor.horizontalrule.keyboard', () => {
     sendKeyToPm(editorView, 'Mod-Shift--');
-    expect(handler.calledWith('atlassian.editor.format.horizontalrule.keyboard')).to.equal(true);
+    expect(
+      handler.calledWith('atlassian.editor.format.horizontalrule.keyboard'),
+    ).to.equal(true);
   });
 });

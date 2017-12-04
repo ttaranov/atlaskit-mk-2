@@ -5,7 +5,6 @@ import ProviderFactory from '../../../../src/providerFactory';
 import PluginSlot from '../../../../src/editor/ui/PluginSlot';
 
 describe('@atlaskit/editor-core/editor/plugins/PluginSlot', () => {
-
   const providerFactory = new ProviderFactory();
 
   it('should have PluginSlot component defined', () => {
@@ -13,7 +12,13 @@ describe('@atlaskit/editor-core/editor/plugins/PluginSlot', () => {
   });
 
   it('should editorWidth defined in props', () => {
-    const editor = mount(<PluginSlot providerFactory={providerFactory} appearance="full-page" editorWidth={100} />);
+    const editor = mount(
+      <PluginSlot
+        providerFactory={providerFactory}
+        appearance="full-page"
+        editorWidth={100}
+      />,
+    );
     expect(editor.prop('editorWidth')).to.equal(100);
   });
 });

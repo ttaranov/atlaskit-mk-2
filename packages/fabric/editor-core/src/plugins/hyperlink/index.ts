@@ -420,21 +420,23 @@ export const createPlugin = (schema: Schema, editorProps: EditorProps = {}) =>
         }
         return false;
       },
-      onBlur(view: EditorView) {
-        const pluginState = stateKey.getState(view.state);
+      handleDOMEvents: {
+        blur(view, event) {
+          const pluginState = stateKey.getState(view.state);
+          pluginState.editorFocused = false;
+          if (pluginState.active) {
+            pluginState.changeHandlers.forEach(cb => cb(pluginState));
+          }
+          event.preventDefault();
+          return false;
+        },
+        focus(view, event) {
+          const pluginState = stateKey.getState(view.state);
+          pluginState.editorFocused = true;
 
-        pluginState.editorFocused = false;
-        if (pluginState.active) {
-          pluginState.changeHandlers.forEach(cb => cb(pluginState));
-        }
-
-        return true;
-      },
-      onFocus(view: EditorView) {
-        const pluginState = stateKey.getState(view.state);
-        pluginState.editorFocused = true;
-
-        return true;
+          event.preventDefault();
+          return false;
+        },
       },
       /**
        * As we are adding linkifyContent, linkifyText can in fact be removed.
@@ -446,15 +448,9 @@ export const createPlugin = (schema: Schema, editorProps: EditorProps = {}) =>
         if (html) {
           const contentSlices = linkifyContent(view.state.schema, slice);
           if (contentSlices) {
-            const { dispatch, state } = view;
-            let tr = state.tr.replaceSelection(contentSlices);
-            dispatch(tr);
-
-            tr = view.state.tr;
-            for (let mark in state.schema.marks) {
-              tr = tr.removeStoredMark(state.schema.marks[mark]);
-            }
-            dispatch(tr);
+            const { dispatch } = view;
+            dispatch(view.state.tr.replaceSelection(contentSlices));
+            dispatch(view.state.tr.setStoredMarks([]));
             return true;
           }
         }

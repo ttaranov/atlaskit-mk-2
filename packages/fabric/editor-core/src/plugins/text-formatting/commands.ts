@@ -1,4 +1,9 @@
-import { EditorState, Transaction, TextSelection, Selection } from 'prosemirror-state';
+import {
+  EditorState,
+  Transaction,
+  TextSelection,
+  Selection,
+} from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { removeIgnoredNodesLeft, hasCode } from './utils';
 import { stateKey } from './';
@@ -16,11 +21,25 @@ export const moveRight = (): Command => {
     }
     const { storedMarks } = state.tr;
     const insideCode = stateKey.getState(state).markActive(code.create());
-    const currentPosHasCode = state.doc.rangeHasMark($cursor.pos, $cursor.pos, code);
-    const nextPosHasCode = state.doc.rangeHasMark($cursor.pos, $cursor.pos + 1, code);
+    const currentPosHasCode = state.doc.rangeHasMark(
+      $cursor.pos,
+      $cursor.pos,
+      code,
+    );
+    const nextPosHasCode = state.doc.rangeHasMark(
+      $cursor.pos,
+      $cursor.pos + 1,
+      code,
+    );
 
-    const exitingCode = !currentPosHasCode && !nextPosHasCode && (!storedMarks || !!storedMarks.length);
-    const enteringCode = !currentPosHasCode && nextPosHasCode && (!storedMarks || !storedMarks.length);
+    const exitingCode =
+      !currentPosHasCode &&
+      !nextPosHasCode &&
+      (!storedMarks || !!storedMarks.length);
+    const enteringCode =
+      !currentPosHasCode &&
+      nextPosHasCode &&
+      (!storedMarks || !storedMarks.length);
 
     // entering code mark (from the left edge): don't move the cursor, just add the mark
     if (!insideCode && enteringCode) {
@@ -38,7 +57,9 @@ export const moveRight = (): Command => {
   };
 };
 
-export const moveLeft = (view: EditorView & { cursorWrapper?: any }): Command => {
+export const moveLeft = (
+  view: EditorView & { cursorWrapper?: any },
+): Command => {
   return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
     const { code } = state.schema.marks;
     const { empty, $cursor } = state.selection as TextSelection;
@@ -52,14 +73,23 @@ export const moveLeft = (view: EditorView & { cursorWrapper?: any }): Command =>
     const nextPosHasCode = hasCode(state, $cursor.pos - 1);
     const nextNextPosHasCode = hasCode(state, $cursor.pos - 2);
 
-    const exitingCode = currentPosHasCode && !nextPosHasCode && Array.isArray(storedMarks);
-    const atLeftEdge = nextPosHasCode && !nextNextPosHasCode && (storedMarks === null || Array.isArray(storedMarks) && !!storedMarks.length);
-    const atRightEdge = (
+    const exitingCode =
+      currentPosHasCode && !nextPosHasCode && Array.isArray(storedMarks);
+    const atLeftEdge =
+      nextPosHasCode &&
+      !nextNextPosHasCode &&
+      (storedMarks === null ||
+        (Array.isArray(storedMarks) && !!storedMarks.length));
+    const atRightEdge =
       ((exitingCode && Array.isArray(storedMarks) && !storedMarks.length) ||
-      !exitingCode && storedMarks === null) &&
-      !nextPosHasCode && nextNextPosHasCode
-    );
-    const enteringCode = !currentPosHasCode && nextPosHasCode && Array.isArray(storedMarks) && !storedMarks.length;
+        (!exitingCode && storedMarks === null)) &&
+      !nextPosHasCode &&
+      nextNextPosHasCode;
+    const enteringCode =
+      !currentPosHasCode &&
+      nextPosHasCode &&
+      Array.isArray(storedMarks) &&
+      !storedMarks.length;
 
     // removing ignored nodes (cursor wrapper) to make sure cursor isn't stuck
     if (view.cursorWrapper && !atLeftEdge && !atRightEdge) {
@@ -68,7 +98,9 @@ export const moveLeft = (view: EditorView & { cursorWrapper?: any }): Command =>
 
     // at the right edge: remove code mark and move the cursor to the left
     if (!insideCode && atRightEdge) {
-      const tr = state.tr.setSelection(Selection.near(state.doc.resolve($cursor.pos - 1)));
+      const tr = state.tr.setSelection(
+        Selection.near(state.doc.resolve($cursor.pos - 1)),
+      );
       dispatch(tr.removeStoredMark(code));
       return true;
     }
@@ -81,7 +113,9 @@ export const moveLeft = (view: EditorView & { cursorWrapper?: any }): Command =>
 
     // at the left edge: add code mark and move the cursor to the left
     if (insideCode && atLeftEdge) {
-      const tr = state.tr.setSelection(Selection.near(state.doc.resolve($cursor.pos - 1)));
+      const tr = state.tr.setSelection(
+        Selection.near(state.doc.resolve($cursor.pos - 1)),
+      );
       dispatch(tr.addStoredMark(code.create()));
       return true;
     }

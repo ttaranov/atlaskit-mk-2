@@ -20,7 +20,6 @@ export interface State {
 }
 
 export default class ToolbarInlineCode extends PureComponent<Props, State> {
-
   state: State = {};
 
   componentDidMount() {
@@ -37,7 +36,7 @@ export default class ToolbarInlineCode extends PureComponent<Props, State> {
       isDisabled: pluginState.codeDisabled,
       isEnabled: !pluginState.codeHidden,
     });
-  }
+  };
 
   @analytics('atlassian.editor.format.code.toggle')
   private handleOnClick = (): boolean => {
@@ -45,7 +44,7 @@ export default class ToolbarInlineCode extends PureComponent<Props, State> {
       return this.props.pluginState.toggleCode(this.props.editorView);
     }
     return false;
-  }
+  };
 
   render() {
     const { isDisabled, isEnabled } = this.state;

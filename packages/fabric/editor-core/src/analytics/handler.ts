@@ -3,7 +3,7 @@ export interface AnalyticsProperties {
 }
 
 export interface AnalyticsHandler {
-  (name: string, properties?: AnalyticsProperties ): any;
+  (name: string, properties?: AnalyticsProperties): any;
 }
 
 /**
@@ -11,18 +11,31 @@ export interface AnalyticsHandler {
  *
  * @link https://bitbucket.org/atlassian/herment/overview
  */
-export function hermentHandler(name: string, properties?: AnalyticsProperties): void {
+export function hermentHandler(
+  name: string,
+  properties?: AnalyticsProperties,
+): void {
   try {
     window.AJS.EventQueue.push({ name, properties });
   } catch (e) {
     // tslint:disable-next-line:no-console
-    console.warn('Unable to send analytics event via Herment - has it been initialized?', e);
+    console.warn(
+      'Unable to send analytics event via Herment - has it been initialized?',
+      e,
+    );
   }
 }
 
-export function debugHandler(name: string, properties?: AnalyticsProperties): void {
+export function debugHandler(
+  name: string,
+  properties?: AnalyticsProperties,
+): void {
   // tslint:disable-next-line:no-console
-  console.info('analytics event: ', name, properties ? properties : '[no properties]');
+  console.info(
+    'analytics event: ',
+    name,
+    properties ? properties : '[no properties]',
+  );
 }
 
 /**
@@ -43,13 +56,12 @@ export function detectHandler(): AnalyticsHandler {
   return () => null;
 }
 
-
 // This declaration is needed for TS to allow invoking Herment queue methods
 // tslint:disable-next-line:no-namespace
 declare global {
   interface Window {
     AJS: {
-      EventQueue: { push: (...args: any[]) => any }
+      EventQueue: { push: (...args: any[]) => any };
     };
   }
 }

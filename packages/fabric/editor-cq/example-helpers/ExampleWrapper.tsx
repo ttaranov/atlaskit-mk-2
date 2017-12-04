@@ -6,8 +6,15 @@ import Spinner from '@atlaskit/spinner';
 import Editor from '../src';
 import CqStyles from './CqStyles';
 
-type Props = { render(handleChange: (editor: Editor) => void): React.ReactNode };
-type State = { cxhtml?: string; story?: any; prettify?: boolean; isMediaReady?: boolean };
+type Props = {
+  render(handleChange: (editor: Editor) => void): React.ReactNode;
+};
+type State = {
+  cxhtml?: string;
+  story?: any;
+  prettify?: boolean;
+  isMediaReady?: boolean;
+};
 
 export default class Demo extends React.Component<Props, State> {
   state: State;
@@ -39,7 +46,9 @@ export default class Demo extends React.Component<Props, State> {
   };
 
   render() {
-    const xml = this.state.prettify ? pd.xml(this.state.cxhtml || '') : this.state.cxhtml || '';
+    const xml = this.state.prettify
+      ? pd.xml(this.state.cxhtml || '')
+      : this.state.cxhtml || '';
 
     return (
       <CqStyles>
@@ -48,7 +57,11 @@ export default class Demo extends React.Component<Props, State> {
           <fieldset style={{ marginTop: 20 }}>
             <legend>
               CXHTML output (
-              <input type="checkbox" checked={this.state.prettify} onChange={this.togglePrettify} />
+              <input
+                type="checkbox"
+                checked={this.state.prettify}
+                onChange={this.togglePrettify}
+              />
               <span onClick={this.togglePrettify} style={{ cursor: 'pointer' }}>
                 {' '}
                 prettify
@@ -56,7 +69,9 @@ export default class Demo extends React.Component<Props, State> {
               )
             </legend>
             {this.state.isMediaReady ? (
-              <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>{xml}</pre>
+              <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+                {xml}
+              </pre>
             ) : (
               <div style={{ padding: 20 }}>
                 <Spinner size="large" />

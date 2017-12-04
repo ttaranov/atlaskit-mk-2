@@ -102,7 +102,7 @@ describe('code-block', () => {
         const spy = jest.fn();
         pluginState.subscribe(spy);
 
-        plugin.props.onBlur!(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
 
         expect(spy).toHaveBeenCalledTimes(2);
         editorView.destroy();
@@ -117,7 +117,7 @@ describe('code-block', () => {
         const spy = jest.fn();
         pluginState.subscribe(spy);
 
-        plugin.props.onBlur!(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
 
         expect(spy).toHaveBeenCalledTimes(1);
         editorView.destroy();
@@ -404,8 +404,8 @@ describe('code-block', () => {
           ),
         );
 
-        plugin.props.onFocus!(editorView, event);
-        plugin.props.onBlur!(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
 
         expect(pluginState.toolbarVisible).toBe(false);
         editorView.destroy();
@@ -423,8 +423,8 @@ describe('code-block', () => {
           ),
         );
 
-        plugin.props.onBlur!(editorView, event);
-        plugin.props.onFocus!(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
 
         expect(pluginState.editorFocused).toBe(true);
         editorView.destroy();
@@ -440,7 +440,7 @@ describe('code-block', () => {
           ),
         );
 
-        plugin.props.onBlur!(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
 
         expect(pluginState.editorFocused).not.toBe(true);
         editorView.destroy();

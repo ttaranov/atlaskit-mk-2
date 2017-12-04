@@ -1,5 +1,23 @@
 # @atlaskit/renderer
 
+## 8.11.0
+- [minor] Move validators from renderer to editor-common [3e2fd00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3e2fd00)
+- [minor] Move validators from renderer to editor-common [3e2fd00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3e2fd00)
+
+## 8.10.16
+
+## 8.10.15
+
+## 8.10.14
+
+## 8.10.13
+- [patch] Use styled-component for link mark to avoid cascading styles to affect media. [0c9475b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c9475b)
+- [patch] Use styled-component for link mark to avoid cascading styles to affect media. [0c9475b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c9475b)
+
+## 8.10.12
+
+## 8.10.11
+
 ## 8.10.10
 
 

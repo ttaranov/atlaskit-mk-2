@@ -17,17 +17,22 @@ export const code: MarkSpec = {
     {
       style: 'font-family',
       preserveWhitespace: true,
-      getAttrs: (value: string) => (value.toLowerCase().indexOf('monospace') > -1) && null,
+      getAttrs: (value: string) =>
+        value.toLowerCase().indexOf('monospace') > -1 && null,
     },
-    { style: 'white-space',
+    {
+      style: 'white-space',
       preserveWhitespace: true,
-      getAttrs: value => value === 'pre' && null
+      getAttrs: value => value === 'pre' && null,
     },
   ],
   toDOM() {
-    return ['span', {
-      style: 'font-family: monospace; white-space: pre-wrap;',
-      class: 'code'
-    }];
-  }
+    return [
+      'span',
+      {
+        style: 'font-family: monospace; white-space: pre-wrap;',
+        class: 'code',
+      },
+    ];
+  },
 };

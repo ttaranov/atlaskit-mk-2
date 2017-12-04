@@ -1,9 +1,11 @@
 import { PrimitiveType } from './schema-node';
-import SchemaNodeWithValidators, { Indexed } from './schema-node-with-validators';
+import SchemaNodeWithValidators, {
+  Indexed,
+} from './schema-node-with-validators';
 
 export default class PrimitiveSchemaNode<
   T extends Indexed
-  > extends SchemaNodeWithValidators<T> {
+> extends SchemaNodeWithValidators<T> {
   constructor(type: PrimitiveType, validators: T = {} as T) {
     super(type, validators);
   }

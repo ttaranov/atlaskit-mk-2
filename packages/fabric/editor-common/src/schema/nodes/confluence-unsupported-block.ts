@@ -18,8 +18,10 @@ export const confluenceUnsupportedBlock = {
     {
       tag: `div[data-node-type="${name}"]`,
       getAttrs(dom: HTMLElement) {
-        return { cxhtml: dom.getAttribute('data-confluence-unsupported-block-cxhtml')! };
-      }
-    }
-  ]
+        return {
+          cxhtml: dom.getAttribute('data-confluence-unsupported-block-cxhtml')!,
+        };
+      },
+    },
+  ],
 } as NodeSpec;

@@ -24,5 +24,5 @@ export const orderedList: NodeSpec = {
   parseDOM: [{ tag: 'ol' }],
   toDOM() {
     return ['ol', 0];
-  }
+  },
 };

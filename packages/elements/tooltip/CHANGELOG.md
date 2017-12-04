@@ -1,5 +1,7 @@
 # @atlaskit/tooltip
 
+## 8.0.7
+
 ## 8.0.6
 - [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
 - [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)

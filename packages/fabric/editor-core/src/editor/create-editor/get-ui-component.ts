@@ -5,7 +5,7 @@ import Comment from '../ui/Appearance/Comment';
 import { EditorAppearance, EditorAppearanceComponentProps } from '../types';
 
 export default function getUiComponent(
-  appearance: EditorAppearance
+  appearance: EditorAppearance,
 ): React.ComponentClass<EditorAppearanceComponentProps> {
   appearance = appearance || 'message';
 
@@ -19,6 +19,8 @@ export default function getUiComponent(
     case 'comment':
       return Comment;
     default:
-      throw new Error(`Appearance '${appearance}' is not supported by the editor.`);
+      throw new Error(
+        `Appearance '${appearance}' is not supported by the editor.`,
+      );
   }
 }

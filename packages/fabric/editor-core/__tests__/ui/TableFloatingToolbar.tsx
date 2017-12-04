@@ -19,6 +19,10 @@ import {
   tdEmpty,
   tdCursor,
 } from '@atlaskit/editor-test-helpers';
+import {
+  selectRow,
+  selectColumn,
+} from '../../src/editor/plugins/table/actions';
 
 describe('TableFloatingToolbar', () => {
   const event = createEvent('event');
@@ -70,8 +74,8 @@ describe('TableFloatingToolbar', () => {
       const { plugin, pluginState, editorView } = editor(
         doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
       );
-      plugin.props.onFocus!(editorView, event);
-      pluginState.selectColumn(0);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
+      selectColumn(0)(editorView.state, editorView.dispatch);
       const floatingToolbar = mount(
         <TableFloatingToolbar
           pluginState={pluginState}
@@ -88,8 +92,8 @@ describe('TableFloatingToolbar', () => {
       const { plugin, pluginState, editorView } = editor(
         doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
       );
-      plugin.props.onFocus!(editorView, event);
-      pluginState.selectRow(0);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
+      selectRow(0)(editorView.state, editorView.dispatch);
       const floatingToolbar = mount(
         <TableFloatingToolbar
           pluginState={pluginState}
@@ -106,8 +110,8 @@ describe('TableFloatingToolbar', () => {
       const { plugin, pluginState, editorView } = editor(
         doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
       );
-      plugin.props.onFocus!(editorView, event);
-      pluginState.selectRow(0);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
+      selectRow(0)(editorView.state, editorView.dispatch);
       const floatingToolbar = mount(
         <TableFloatingToolbar
           pluginState={pluginState}
@@ -115,7 +119,7 @@ describe('TableFloatingToolbar', () => {
         />,
       );
       expect(floatingToolbar.html()).not.toBe(null);
-      plugin.props.onBlur!(editorView, event);
+      plugin.props.handleDOMEvents!.blur(editorView, event);
       expect(floatingToolbar.html()).toEqual(null);
       floatingToolbar.unmount();
     });

@@ -44,6 +44,12 @@ const ContentArea = styled.div`
     box-sizing: border-box;
     padding-bottom: 50px;
   }
+
+  & .ProseMirror table {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
 `;
 ContentArea.displayName = 'ContentArea';
 

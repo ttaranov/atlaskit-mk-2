@@ -20,7 +20,9 @@ export const HeaderButtonDefault = styled.button`
   display: block;
   padding: 0;
   cursor: pointer;
-  &:hover, .active > &, .tableHovered & {
+  &:hover,
+  .active > &,
+  .tableHovered & {
     background-color: ${akEditorTableToolbarSelected};
     border-color: ${akEditorTableBorderSelected};
   }
@@ -52,7 +54,7 @@ export const InsertMarkerDefault = styled.div`
   width: 4px;
   border-radius: 50%;
   div:hover > & {
-    background-color: ${akEditorTableBorderSelected}
+    background-color: ${akEditorTableBorderSelected};
   }
 `;
 // tslint:disable-next-line:variable-name

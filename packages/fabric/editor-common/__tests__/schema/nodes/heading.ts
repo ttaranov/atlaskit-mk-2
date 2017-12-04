@@ -19,6 +19,6 @@ describe(`${name}/schema heading node`, () => {
 
 function makeSchema() {
   return createSchema({
-    nodes: ['doc', 'paragraph', 'text', 'heading']
+    nodes: ['doc', 'paragraph', 'text', 'heading'],
   });
 }

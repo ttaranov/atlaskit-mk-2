@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PropTypes } from 'react';
+import * as PropTypes from 'prop-types';
 import EditorActions from '../../actions';
 
 export default class EditorContext extends React.Component<any> {

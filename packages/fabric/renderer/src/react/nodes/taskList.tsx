@@ -4,7 +4,7 @@ import { PureComponent, Children } from 'react';
 import { TaskList as AkTaskList, TaskItem } from '@atlaskit/task-decision';
 
 export interface Props {
-  children?: TaskItem | TaskItem[]
+  children?: TaskItem | TaskItem[];
 }
 
 export default class TaskList extends PureComponent<Props, {}> {
@@ -16,7 +16,9 @@ export default class TaskList extends PureComponent<Props, {}> {
     }
 
     return (
-      <div className="akTaskList"><AkTaskList>{children}</AkTaskList></div>
+      <div className="akTaskList">
+        <AkTaskList>{children}</AkTaskList>
+      </div>
     );
   }
 }

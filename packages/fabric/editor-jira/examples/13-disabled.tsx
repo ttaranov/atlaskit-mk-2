@@ -30,9 +30,14 @@ class Demo extends React.Component<Props, State> {
     );
   }
 
-  private toggleDisabled = () => this.setState({ isDisabled: !this.state.isDisabled });
+  private toggleDisabled = () =>
+    this.setState({ isDisabled: !this.state.isDisabled });
 }
 
 export default function Component() {
-  return <ExampleWrapper render={handleChange => <Demo handleChange={handleChange} />} />;
+  return (
+    <ExampleWrapper
+      render={handleChange => <Demo handleChange={handleChange} />}
+    />
+  );
 }

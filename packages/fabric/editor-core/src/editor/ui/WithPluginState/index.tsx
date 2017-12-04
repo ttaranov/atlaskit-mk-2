@@ -68,7 +68,11 @@ export default class WithPluginState extends React.Component<State, any> {
   }
 
   componentWillReceiveProps(nextProps: Props, prevProps: Props) {
-    if (nextProps.eventDispatcher && nextProps.eventDispatcher && !prevProps.eventDispatcher) {
+    if (
+      nextProps.eventDispatcher &&
+      nextProps.eventDispatcher &&
+      !prevProps.eventDispatcher
+    ) {
       this.subscribe(nextProps);
     }
   }
@@ -79,7 +83,9 @@ export default class WithPluginState extends React.Component<State, any> {
       return;
     }
 
-    Object.keys(this.listeners).forEach(key => eventDispatcher.off(key, this.listeners[key]));
+    Object.keys(this.listeners).forEach(key =>
+      eventDispatcher.off(key, this.listeners[key]),
+    );
   }
 
   render() {

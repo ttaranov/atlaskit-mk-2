@@ -5,5 +5,5 @@ export const resourceProvider = new MentionResource({
   maxWait: 25,
   shouldHighlightMention(mention) {
     return mention.id === '19';
-  }
+  },
 });

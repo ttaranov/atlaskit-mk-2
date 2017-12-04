@@ -4,11 +4,14 @@ import { fromHTML, toDOM, schema } from '../../../test-helpers';
 describe(`${name}/schema mediaGroup node`, () => {
   describe('parse html', () => {
     it('gets attributes from html', () => {
-      const doc = fromHTML(`
+      const doc = fromHTML(
+        `
         <div
           data-node-type="mediaGroup"
         />
-        `, schema);
+        `,
+        schema,
+      );
 
       const mediaGroupNode = doc.firstChild!;
 
@@ -16,11 +19,14 @@ describe(`${name}/schema mediaGroup node`, () => {
     });
 
     it('auto creates a media node inside single image node', () => {
-      const doc = fromHTML(`
+      const doc = fromHTML(
+        `
         <div
           data-node-type="mediaGroup"
         />
-        `, schema);
+        `,
+        schema,
+      );
 
       const mediaGroupNode = doc.firstChild!;
 
@@ -33,7 +39,8 @@ describe(`${name}/schema mediaGroup node`, () => {
     it('converts attributes to related data attribute in html', () => {
       const mediaGroupNode = schema.nodes.mediaGroup.create();
 
-      const mediaGroupDom = toDOM(mediaGroupNode, schema).firstChild as HTMLElement;
+      const mediaGroupDom = toDOM(mediaGroupNode, schema)
+        .firstChild as HTMLElement;
       const nodeType = mediaGroupDom.getAttribute('data-node-type');
 
       expect(nodeType).toEqual('mediaGroup');
@@ -44,9 +51,11 @@ describe(`${name}/schema mediaGroup node`, () => {
     const { mediaGroup, media } = schema.nodes;
     const mediaGroupNode = mediaGroup.create({}, media.create());
 
-    const mediaGroupDom = toDOM(mediaGroupNode, schema).firstChild as HTMLElement;
+    const mediaGroupDom = toDOM(mediaGroupNode, schema)
+      .firstChild as HTMLElement;
 
-    const parsedMediaGroup = fromHTML(mediaGroupDom.outerHTML, schema).firstChild;
+    const parsedMediaGroup = fromHTML(mediaGroupDom.outerHTML, schema)
+      .firstChild;
 
     expect(parsedMediaGroup).toEqual(mediaGroupNode);
   });
