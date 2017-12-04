@@ -26,8 +26,8 @@ const initialState: State = {
 export default class ExternalSrcAvatar extends Component<*, State> {
   state: State = initialState;
 
-  // $FlowFixMe - cannot find event.target.value
   changeUrl = (event: Event) =>
+    // $FlowFixMe - cannot find event.target.value
     this.setState({ inputValue: event.target.value });
 
   loadImage = (event: Event) => {
