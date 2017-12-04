@@ -123,7 +123,7 @@ export function createPMPlugins(
   return editorConfig.pmPlugins
     .sort(sortByRank)
     .map(({ plugin }) =>
-      plugin(schema, props, dispatch, providerFactory, errorReporter),
+      plugin({ schema, props, dispatch, providerFactory, errorReporter }),
     )
     .filter(plugin => !!plugin) as Plugin[];
 }

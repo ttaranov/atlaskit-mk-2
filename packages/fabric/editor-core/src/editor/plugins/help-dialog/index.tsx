@@ -48,11 +48,8 @@ export function createPlugin(dispatch: Function) {
 const helpDialog: EditorPlugin = {
   pmPlugins() {
     return [
-      {
-        rank: 2200,
-        plugin: (schema, props, dispatch) => createPlugin(dispatch),
-      },
-      { rank: 2210, plugin: (schema, props) => keymapPlugin(schema) },
+      { rank: 2200, plugin: ({ dispatch }) => createPlugin(dispatch) },
+      { rank: 2210, plugin: ({ schema }) => keymapPlugin(schema) },
     ];
   },
 

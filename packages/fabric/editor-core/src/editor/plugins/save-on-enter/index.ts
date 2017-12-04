@@ -41,9 +41,7 @@ function isEmptyAtCursor($cursor) {
 
 const saveOnEnterPlugin: EditorPlugin = {
   pmPlugins() {
-    return [
-      { rank: 9700, plugin: (schema, props) => createPlugin(props.onSave) },
-    ];
+    return [{ rank: 9700, plugin: ({ props }) => createPlugin(props.onSave) }];
   },
 };
 
