@@ -59,12 +59,12 @@ export function DefaultImage({
   );
 }
 
-type Props = {|
-  alt?: string,
-  src?: string,
+type Props = {
   appearance: AppearanceType,
   size: SizeType,
-|};
+  alt?: string,
+  src?: string,
+};
 
 type State = {|
   hasError: boolean,

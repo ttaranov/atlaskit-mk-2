@@ -16,12 +16,6 @@ import { mapProps, withPseudoState } from '../hoc';
 
 import type { AvatarPropTypes } from '../types';
 
-export const AvatarDefaultProps = {
-  appearance: 'circle',
-  enableTooltip: true,
-  size: 'medium',
-};
-
 const warn = message => {
   if (process.env.NODE_ENV !== 'production') {
     console.warn(message); // eslint-disable-line no-console
@@ -29,16 +23,20 @@ const warn = message => {
 };
 
 class Avatar extends Component<AvatarPropTypes> {
-  node: ?HTMLElement;
+  ref: ?HTMLElement;
 
-  static defaultProps = AvatarDefaultProps;
+  static defaultProps = {
+    appearance: 'circle',
+    enableTooltip: true,
+    size: 'medium',
+  };
 
   // expose blur/focus to consumers via ref
   blur = () => {
-    if (this.node) this.node.blur();
+    if (this.ref) this.ref.blur();
   };
   focus = () => {
-    if (this.node) this.node.focus();
+    if (this.ref) this.ref.focus();
   };
 
   // disallow click on disabled avatars
@@ -101,8 +99,8 @@ class Avatar extends Component<AvatarPropTypes> {
     return indicator;
   };
 
-  setNode = (ref: ?HTMLElement) => {
-    this.node = ref;
+  setRef = (ref: ?HTMLElement) => {
+    this.ref = ref;
   };
 
   /* eslint-enable no-console */
@@ -111,7 +109,6 @@ class Avatar extends Component<AvatarPropTypes> {
     const {
       appearance,
       enableTooltip,
-      onClick,
       name,
       size,
       src,
@@ -119,17 +116,19 @@ class Avatar extends Component<AvatarPropTypes> {
     } = this.props;
 
     // distill props from context, props, and state
-    const props: AvatarPropTypes = getProps(this);
+    const enhancedProps: AvatarPropTypes = getProps(this);
 
     // provide element type based on props
+    // TODO: why not enhanced props?
     const Inner: any = getStyledAvatar(this.props);
-
-    // augment the onClick handler
-    props.onClick = onClick && this.guardedClick;
 
     const AvatarNode = (
       <Outer size={size} stackIndex={stackIndex}>
-        <Inner innerRef={this.setNode} {...props}>
+        <Inner
+          innerRef={this.setRef}
+          onClick={this.guardedClick}
+          {...enhancedProps}
+        >
           <Image alt={name} appearance={appearance} size={size} src={src} />
         </Inner>
 

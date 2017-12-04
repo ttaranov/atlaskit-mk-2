@@ -33,20 +33,22 @@ type Props = {
   appearance: 'grid' | 'stack',
   /** Component used to render each avatar */
   avatar: ComponentType,
+  /** The maximum number of avatars allowed in the grid */
+  maxCount: number,
+  /** Defines the size of the avatar */
+  size: SizeType,
   /** Typically the background color that the avatar is presented on.
    Accepts any color argument that the CSS border-color property accepts. */
   borderColor?: string,
   /** Array of avatar data passed to each `avatar` component */
   data: Array<AvatarPropTypes>,
-  /** The maximum number of avatars allowed in the grid */
-  maxCount: number,
+
   /** Handle the click event on the avatar item */
   onAvatarClick?: AvatarClickType,
   /** Take control of the click event on the more indicator. This will cancel
    the default dropdown behaviour. */
   onMoreClick?: FunctionType,
-  /** Defines the size of the avatar */
-  size: SizeType,
+
   boundariesElement?: 'viewport' | 'window' | 'scrollParent',
 };
 

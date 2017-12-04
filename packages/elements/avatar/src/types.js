@@ -28,7 +28,9 @@ export type AvatarClickType = (
 export type AvatarPropTypesBase = {
   /** Indicates the shape of the avatar. Most avatars are circular, but square avatars
    can be used for 'container' objects. */
-  appearance?: AppearanceType,
+  appearance: AppearanceType,
+  /** Defines the size of the avatar */
+  size: SizeType,
   /** Used to override the default border color of the presence indicator.
    Accepts any color argument that the border-color CSS property accepts. */
   borderColor?: string | FunctionType,
@@ -56,8 +58,7 @@ export type AvatarPropTypesBase = {
   Alternatively accepts any React element. For best results, it is recommended to
   use square content with height and width of 100%. */
   presence?: PresenceType,
-  /** Defines the size of the avatar */
-  size: SizeType,
+
   /** A url to load an image from (this can also be a base64 encoded image). */
   src?: string,
   /** Indicates contextual information by showing a small icon on the avatar.

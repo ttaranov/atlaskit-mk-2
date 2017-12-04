@@ -1,10 +1,8 @@
 // @flow
 import React, { Component } from 'react';
-import type { ComponentType } from 'react';
 import { omit, getDisplayName } from '../utils';
-import type { ElementType, FunctionType } from '../types';
+import type { ComponentType, ElementType, FunctionType } from '../types';
 
-/* eslint-disable react/no-unused-prop-types */
 type Props = {
   href?: string,
   isActive?: boolean,
@@ -21,7 +19,6 @@ type Props = {
   onMouseLeave?: FunctionType,
   onMouseUp?: FunctionType,
 };
-/* eslint-enable react/no-unused-prop-types */
 
 const INTERNAL_HANDLERS = [
   'onBlur',
