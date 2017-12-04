@@ -8,28 +8,14 @@ import {
   HR,
 } from '../examples-util/styled';
 import Avatar from '../src/';
-import { omit } from '../src/utils';
-import type { AppearanceType, AvatarPropTypes } from '../src/types';
+import WithAllAvatarSizes from './with-all-avatar-sizes';
+import type { AppearanceType } from '../src/types';
 
-const DefaultAvatar = props => (
+const AvatarInCol = props => (
   <AvatarCol>
     <Avatar {...props} />
   </AvatarCol>
 );
-const AllAvatarSizes = (props: AvatarPropTypes) => {
-  // avoid warnings from invalid sizes
-  const modifiedProps = omit(props, 'presence', 'status');
-  return (
-    <AvatarRow>
-      <DefaultAvatar size="xxlarge" {...modifiedProps} />
-      <DefaultAvatar size="xlarge" {...props} />
-      <DefaultAvatar size="large" {...props} />
-      <DefaultAvatar size="medium" {...props} />
-      <DefaultAvatar size="small" {...props} />
-      <DefaultAvatar size="xsmall" {...modifiedProps} />
-    </AvatarRow>
-  );
-};
 
 export default ({
   appearance,
@@ -55,26 +41,26 @@ export default ({
       &quot;online&quot;
     </Note>
     <AvatarRow>
-      <DefaultAvatar appearance={appearance} src={src} size="large" />
-      <DefaultAvatar
+      <AvatarInCol appearance={appearance} src={src} size="large" />
+      <AvatarInCol
         appearance={appearance}
         src={src}
         size="large"
         presence="busy"
       />
-      <DefaultAvatar
+      <AvatarInCol
         appearance={appearance}
         src={src}
         size="large"
         presence="focus"
       />
-      <DefaultAvatar
+      <AvatarInCol
         appearance={appearance}
         src={src}
         size="large"
         presence="offline"
       />
-      <DefaultAvatar
+      <AvatarInCol
         appearance={appearance}
         src={src}
         size="large"
@@ -86,7 +72,7 @@ export default ({
     <Note>
       Sizes &quot;xsmall&quot; and &quot;xxlarge&quot; do NOT support Presence
     </Note>
-    <AllAvatarSizes src={src} presence="online" />
+    <WithAllAvatarSizes src={src} presence="online" />
 
     <HR />
     <h2>Status</h2>
@@ -97,20 +83,20 @@ export default ({
       &quot;locked&quot;
     </Note>
     <AvatarRow>
-      <DefaultAvatar appearance={appearance} src={src} size="large" />
-      <DefaultAvatar
+      <AvatarInCol appearance={appearance} src={src} size="large" />
+      <AvatarInCol
         appearance={appearance}
         src={src}
         size="large"
         status="approved"
       />
-      <DefaultAvatar
+      <AvatarInCol
         appearance={appearance}
         src={src}
         size="large"
         status="declined"
       />
-      <DefaultAvatar
+      <AvatarInCol
         appearance={appearance}
         src={src}
         size="large"
@@ -122,6 +108,6 @@ export default ({
     <Note>
       Sizes &quot;xsmall&quot; and &quot;xxlarge&quot; do NOT support Status
     </Note>
-    <AllAvatarSizes appearance={appearance} src={src} status="approved" />
+    <WithAllAvatarSizes appearance={appearance} src={src} status="approved" />
   </Wrapper>
 );

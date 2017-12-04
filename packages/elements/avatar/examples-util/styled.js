@@ -53,19 +53,6 @@ export const Note = styled.div`
   }
 `;
 
-export const DivPresence = styled.div`
-  align-items: center;
-  background-color: rebeccapurple;
-  color: white;
-  display: flex;
-  font-size: 0.75em;
-  font-weight: 500;
-  height: 100%;
-  justify-content: center;
-  text-align: center;
-  width: 100%;
-`;
-
 export const HR = styled.div`
   border: 0;
   border-top: 1px solid #ccc;
