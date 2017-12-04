@@ -167,7 +167,7 @@ export default class Home extends React.Component<HomeProps> {
       <PageOffset>
         <Style />
         <Page width="large">
-          <Title>Atlaskit</Title>
+          <Title>Atlaskit RULES</Title>
           <Intro>
             Atlassian&#39;s official UI library, built according to the{' '}
             <a

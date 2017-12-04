@@ -22,10 +22,10 @@ pipelines:
           - source ./build-setup.sh
           - bolt install --pure-lockfile
           - bolt build
-          - bolt lint
-          - bolt typecheck
-          - bolt test:ci
-          - bolt test:browser:browserstack
+          # - bolt lint
+          # - bolt typecheck
+          # - bolt test:ci
+          # - bolt test:browser:browserstack
           # We are using the patched netlify again because it's failing randomly
           - (cd website && bolt deploy-staging:no-minimize) || true
 
