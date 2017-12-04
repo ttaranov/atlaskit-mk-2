@@ -4,7 +4,7 @@ import { EditorView } from 'prosemirror-view';
 import { Node as PMNode } from 'prosemirror-model';
 import {
   default as ProviderFactory,
-  WithProviders
+  WithProviders,
 } from '../../providerFactory';
 import MacroComponent from './MacroComponent';
 import { setMacroElement } from '../../editor/plugins/macro/actions';
@@ -31,7 +31,7 @@ export default class Macro extends Component<Props, any> {
     }
   }
 
-  private renderWithProvider = (providers) => {
+  private renderWithProvider = providers => {
     const { node, editorView } = this.props;
     const { macroProvider } = providers;
 
@@ -43,7 +43,7 @@ export default class Macro extends Component<Props, any> {
         setMacroElement={setMacroElement}
       />
     );
-  }
+  };
 
   render() {
     return (

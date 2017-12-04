@@ -24,20 +24,40 @@ export interface Props {
 
 export default class PluginSlot extends React.Component<Props, any> {
   shouldComponentUpdate(nextProps: Props) {
-    const { editorView, items, providerFactory, eventDispatcher, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth } = this.props;
-    return !(nextProps.editorView === editorView
-      && nextProps.items === items
-      && nextProps.providerFactory === providerFactory
-      && nextProps.eventDispatcher === eventDispatcher
-      && nextProps.popupsMountPoint === popupsMountPoint
-      && nextProps.popupsBoundariesElement === popupsBoundariesElement
-      && nextProps.disabled === disabled
-      && nextProps.editorWidth === editorWidth
+    const {
+      editorView,
+      items,
+      providerFactory,
+      eventDispatcher,
+      popupsMountPoint,
+      popupsBoundariesElement,
+      disabled,
+      editorWidth,
+    } = this.props;
+    return !(
+      nextProps.editorView === editorView &&
+      nextProps.items === items &&
+      nextProps.providerFactory === providerFactory &&
+      nextProps.eventDispatcher === eventDispatcher &&
+      nextProps.popupsMountPoint === popupsMountPoint &&
+      nextProps.popupsBoundariesElement === popupsBoundariesElement &&
+      nextProps.disabled === disabled &&
+      nextProps.editorWidth === editorWidth
     );
   }
 
   render() {
-    const { items, editorWidth, editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled } = this.props;
+    const {
+      items,
+      editorWidth,
+      editorView,
+      eventDispatcher,
+      providerFactory,
+      appearance,
+      popupsMountPoint,
+      popupsBoundariesElement,
+      disabled,
+    } = this.props;
 
     if (!items) {
       return null;
@@ -50,7 +70,16 @@ export default class PluginSlot extends React.Component<Props, any> {
           if (editorWidth) {
             props.editorWidth = editorWidth;
           }
-          const element = component(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth);
+          const element = component(
+            editorView,
+            eventDispatcher,
+            providerFactory,
+            appearance,
+            popupsMountPoint,
+            popupsBoundariesElement,
+            disabled,
+            editorWidth,
+          );
           return element && React.cloneElement(element, props);
         })}
       </PluginsComponentsWrapper>

@@ -43,7 +43,6 @@ export interface State {
 }
 
 export default class HyperlinkEdit extends PureComponent<Props, State> {
-
   state: State = {
     unlinkable: true,
     editorFocused: false,
@@ -64,13 +63,13 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     this.setState({
       inputActive: true,
     });
-  }
+  };
 
   resetInputActive = () => {
     this.setState({
       inputActive: false,
     });
-  }
+  };
 
   private getOffsetParent() {
     return this.props.popupsMountPoint
@@ -83,9 +82,10 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     let popupTarget = target;
 
     if (!popupTarget && activeElement) {
-      popupTarget = activeElement.nodeType === TEXT_NODE
-        ? activeElement.parentElement as HTMLElement
-        : activeElement;
+      popupTarget =
+        activeElement.nodeType === TEXT_NODE
+          ? (activeElement.parentElement as HTMLElement)
+          : activeElement;
     }
 
     return popupTarget;
@@ -95,17 +95,19 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
    * Dynamic offsets for hyperlink editing popup
    * because we need to show it next to cursor even without clear target for popup.
    */
-  private adjustPosition = (position) => {
+  private adjustPosition = position => {
     const { pluginState } = this.props;
     if (!pluginState.active) {
-
       const editorRoot = this.getOffsetParent();
 
       if (!editorRoot) {
         return position;
       }
 
-      const coordinates = pluginState.getCoordinates(this.props.editorView, editorRoot);
+      const coordinates = pluginState.getCoordinates(
+        this.props.editorView,
+        editorRoot,
+      );
 
       if (position.left) {
         position.left = coordinates.left;
@@ -124,10 +126,18 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       }
     }
     return position;
-  }
+  };
 
   render() {
-    const { href, oldHref, unlinkable, active, editorFocused, inputActive, showToolbarPanel } = this.state;
+    const {
+      href,
+      oldHref,
+      unlinkable,
+      active,
+      editorFocused,
+      inputActive,
+      showToolbarPanel,
+    } = this.state;
     const popupTarget = this.getPopupTarget();
 
     if (!popupTarget) {
@@ -148,24 +158,22 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
           popupsBoundariesElement={this.props.popupsBoundariesElement}
         >
           <Container>
-            {!showOpenButton ? null :
+            {!showOpenButton ? null : (
               <ToolbarButton
                 href={href}
                 target="_blank"
                 title="Open link in new tab"
                 iconBefore={<OpenIcon label="Open link" />}
               />
-            }
-            {!showUnlinkButton ? null :
+            )}
+            {!showUnlinkButton ? null : (
               <ToolbarButton
                 title="Unlink"
                 onClick={this.handleUnlink}
                 iconBefore={<UnlinkIcon label="Unlink" />}
               />
-            }
-            {!showUnlinkButton ? null :
-              <Separator />
-            }
+            )}
+            {!showUnlinkButton ? null : <Separator />}
             {this.renderInput()}
           </Container>
         </FloatingToolbar>
@@ -180,7 +188,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     const { editorView, pluginState, activityProvider } = this.props;
     const normalizedOldText = oldText && normalizeUrl(oldText);
 
-     // insert new link with recently viewed dropdown
+    // insert new link with recently viewed dropdown
     if (activityProvider && !oldHref) {
       return (
         <RecentSearch
@@ -237,15 +245,17 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       }
     }
     this.resetInputActive();
-  }
+  };
 
   private handleUnlink = () => {
     this.props.pluginState.removeLink(this.props.editorView);
-  }
+  };
 
   private handlePluginStateChange = (pluginState: HyperlinkState) => {
     const { inputActive } = this.state;
-    const hrefNotPreset = pluginState.active && (!pluginState.href || pluginState.href.length === 0);
+    const hrefNotPreset =
+      pluginState.active &&
+      (!pluginState.href || pluginState.href.length === 0);
 
     this.setState({
       active: pluginState.active,
@@ -259,15 +269,15 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       inputActive: hrefNotPreset || inputActive,
       showToolbarPanel: pluginState.showToolbarPanel,
     });
-  }
+  };
 
   private updateHref = (href: string) => {
     this.setState({ href });
-  }
+  };
 
   private updateText = (text: string) => {
     this.setState({ text });
-  }
+  };
 
   private updateLinkText = (text: string) => {
     if (text && text.length > 0 && text !== this.state.oldText) {
@@ -275,7 +285,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       pluginState.updateLinkText(text, editorView);
       this.setState({ text: '' });
     }
-  }
+  };
 
   private updateLinkHref = (href: string) => {
     const { editorView, pluginState } = this.props;
@@ -285,5 +295,5 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       pluginState.addLink({ href }, editorView);
     }
     editorView.focus();
-  }
+  };
 }

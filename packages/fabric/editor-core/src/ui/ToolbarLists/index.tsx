@@ -39,45 +39,63 @@ export default class ToolbarLists extends PureComponent<Props, State> {
 
   componentDidMount() {
     if (this.props.editorView) {
-      (this.props.pluginState as FutureListsState).subscribe(this.handleFuturePluginStateChange);
+      (this.props.pluginState as FutureListsState).subscribe(
+        this.handleFuturePluginStateChange,
+      );
     } else {
-      (this.props.pluginState as ListsState).subscribe(this.handlePluginStateChange);
+      (this.props.pluginState as ListsState).subscribe(
+        this.handlePluginStateChange,
+      );
     }
   }
 
   componentWillUnmount() {
     if (this.props.editorView) {
-      (this.props.pluginState as FutureListsState).unsubscribe(this.handleFuturePluginStateChange);
+      (this.props.pluginState as FutureListsState).unsubscribe(
+        this.handleFuturePluginStateChange,
+      );
     } else {
-      (this.props.pluginState as ListsState).unsubscribe(this.handlePluginStateChange);
+      (this.props.pluginState as ListsState).unsubscribe(
+        this.handlePluginStateChange,
+      );
     }
   }
 
   render() {
     const { editorWidth } = this.props;
     return (
-      <ButtonGroup width={editorWidth! > EditorWidth.BreakPoint6 ? 'large' : 'small'}>
-        {this.state.bulletListHidden ? null :
+      <ButtonGroup
+        width={editorWidth! > EditorWidth.BreakPoint6 ? 'large' : 'small'}
+      >
+        {this.state.bulletListHidden ? null : (
           <ToolbarButton
-            spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
+            spacing={
+              editorWidth && editorWidth > EditorWidth.BreakPoint6
+                ? 'default'
+                : 'none'
+            }
             onClick={this.handleBulletListClick}
             selected={this.state.bulletListActive}
             disabled={this.state.bulletListDisabled || this.props.disabled}
             title={tooltip(toggleBulletList)}
             iconBefore={<BulletListIcon label="Unordered list" />}
           />
-        }
+        )}
 
-        {this.state.orderedListHidden ? null :
+        {this.state.orderedListHidden ? null : (
           <ToolbarButton
-            spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
+            spacing={
+              editorWidth && editorWidth > EditorWidth.BreakPoint6
+                ? 'default'
+                : 'none'
+            }
             onClick={this.handleOrderedListClick}
             selected={this.state.orderedListActive}
             disabled={this.state.orderedListDisabled || this.props.disabled}
             title={tooltip(toggleOrderedList)}
             iconBefore={<NumberListIcon label="Ordered list" />}
           />
-        }
+        )}
 
         <Separator />
       </ButtonGroup>
@@ -93,7 +111,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
       orderedListDisabled: pluginState.orderedListDisabled,
       orderedListHidden: pluginState.orderedListHidden,
     });
-  }
+  };
 
   private handleFuturePluginStateChange = (pluginState: FutureListsState) => {
     this.setState({
@@ -104,27 +122,35 @@ export default class ToolbarLists extends PureComponent<Props, State> {
       orderedListDisabled: pluginState.orderedListDisabled,
       orderedListHidden: pluginState.orderedListHidden,
     });
-  }
+  };
 
   @analytics('atlassian.editor.format.list.bullet.button')
   private handleBulletListClick = () => {
     if (!this.state.bulletListDisabled) {
       if (this.props.editorView) {
-        return (this.props.pluginState as FutureListsState).toggleBulletList(this.props.editorView);
+        return (this.props.pluginState as FutureListsState).toggleBulletList(
+          this.props.editorView,
+        );
       }
-      return (this.props.pluginState as ListsState).toggleBulletList(this.props.editorView);
+      return (this.props.pluginState as ListsState).toggleBulletList(
+        this.props.editorView,
+      );
     }
     return false;
-  }
+  };
 
   @analytics('atlassian.editor.format.list.numbered.button')
   private handleOrderedListClick = () => {
     if (!this.state.orderedListDisabled) {
       if (this.props.editorView) {
-        return (this.props.pluginState as FutureListsState).toggleOrderedList(this.props.editorView);
+        return (this.props.pluginState as FutureListsState).toggleOrderedList(
+          this.props.editorView,
+        );
       }
-      return (this.props.pluginState as ListsState).toggleOrderedList(this.props.editorView);
+      return (this.props.pluginState as ListsState).toggleOrderedList(
+        this.props.editorView,
+      );
     }
     return false;
-  }
+  };
 }

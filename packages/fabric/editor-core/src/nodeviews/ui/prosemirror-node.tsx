@@ -19,7 +19,10 @@ export interface ReactProsemirrorNodeProps {
   [key: string]: any;
 }
 
-export default class ReactProsemirrorNode extends PureComponent<ReactProsemirrorNodeProps, {}> {
+export default class ReactProsemirrorNode extends PureComponent<
+  ReactProsemirrorNodeProps,
+  {}
+> {
   /**
    * All children components of ReactProsemirrorNode are React components
    * which are completely rendered by us, not Prosemirror. This also means
@@ -27,7 +30,9 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
    * and showing "selected" element. Wrapping ReactProsemirrorNode into HOC
    * helps us to pass "selected" prop into child components
    */
-  private wrapped: ReactComponentConstructor = wrapComponentWithClickArea(ReactProsemirrorNode);
+  private wrapped: ReactComponentConstructor = wrapComponentWithClickArea(
+    ReactProsemirrorNode,
+  );
 
   // Stores prosemirror offset of nodes with `attrs.id`
   private childIdToOffset: Map<string | number, number> = new Map();
@@ -37,7 +42,10 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
     const nodeTypeName = node.type.name;
     const pluginState = reactNodeViewStateKey.getState(view.state);
 
-    assert(components[nodeTypeName], `Rich node with type ${nodeTypeName} is not declared`);
+    assert(
+      components[nodeTypeName],
+      `Rich node with type ${nodeTypeName} is not declared`,
+    );
     assert(pluginState, 'ReactNodeViewPlugin is not enabled');
 
     const attrs = { ...this.props, node };
@@ -49,14 +57,18 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
     node.forEach((childNode: PMNode, offset: number, index: number) => {
       children.push(
         <RichNodeWithClickArea
-          key={childNode.attrs.id ? `richnode-${childNode.attrs.id}` : `richnode-${offset}-${index}`}
+          key={
+            childNode.attrs.id
+              ? `richnode-${childNode.attrs.id}`
+              : `richnode-${offset}-${index}`
+          }
           components={components}
           node={childNode}
           getPos={this.handleGetPos(childNode.attrs.id || offset)}
           view={view}
           pluginState={pluginState}
           providerFactory={providerFactory}
-        />
+        />,
       );
       if (childNode.attrs.id) {
         this.childIdToOffset.set(childNode.attrs.id, offset);
@@ -73,7 +85,7 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
    * because each node has its own position
    * i.e. different nodes can't have the same position
    */
-  private handleGetPos = (id) => () => {
+  private handleGetPos = id => () => {
     let offset = 0;
     if (this.childIdToOffset.has(id)) {
       offset = this.childIdToOffset.get(id)!;
@@ -81,5 +93,5 @@ export default class ReactProsemirrorNode extends PureComponent<ReactProsemirror
       offset = +id;
     }
     return this.props.getPos() + offset + 1;
-  }
+  };
 }

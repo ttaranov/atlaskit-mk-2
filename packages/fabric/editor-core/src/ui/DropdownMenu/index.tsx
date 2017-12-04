@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import DropdownMenu from '@atlaskit/dropdown-menu';
+import styled from 'styled-components';
+import DropList from '@atlaskit/droplist';
+import Item, { ItemGroup } from '@atlaskit/item';
+import Tooltip from '@atlaskit/tooltip';
 import { Popup } from '@atlaskit/editor-common';
+import withOuterListeners from '../with-outer-listeners';
 
 export interface Props {
   mountTo?: HTMLElement;
@@ -11,7 +15,15 @@ export interface Props {
   onItemActivated?: (attrs) => void;
   fitWidth?: number;
   fitHeight?: number;
-  items: Array<Object>;
+  items: Array<{
+    items: Array<{
+      content: string;
+      elemBefore?: React.ReactNode;
+      tooltipDescription?: string;
+      tooltopPosition?: string;
+      isActive: boolean;
+    }>;
+  }>;
 }
 
 export interface State {
@@ -19,8 +31,24 @@ export interface State {
   popupPlacement: [string, string];
 }
 
+const DropListWithOutsideListeners: any = withOuterListeners(DropList);
+
 /**
- * Wrapper around @atlaskit/dropdown-menu which uses Popup and Portal to render
+ * Hack for item to immitate old dropdown-menu selected styles
+ */
+const ItemWrapper: any = styled.div`
+  ${(props: any) =>
+    props.isSelected
+      ? '&& > span, && > span:hover { background: #6c798f; color: #fff; }'
+      : ''};
+`;
+
+const ItemContentWrapper: any = styled.span`
+  ${(props: any) => (props.hasElemBefore ? 'margin-left: 8px;' : '')};
+`;
+
+/**
+ * Wrapper around @atlaskit/droplist which uses Popup and Portal to render
  * dropdown-menu outside of "overflow: hidden" containers when needed.
  *
  * Also it controls popper's placement.
@@ -30,44 +58,91 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
     super(props);
 
     this.state = {
-      popupPlacement: ['bottom', 'left']
+      popupPlacement: ['bottom', 'left'],
     };
   }
 
-  private handleRef = (target) => {
+  private handleRef = target => {
     this.setState({ target });
-  }
+  };
 
-  private updatePopupPlacement = (placement) => {
+  private updatePopupPlacement = placement => {
     this.setState({ popupPlacement: placement });
+  };
+
+  private handleClose = () => {
+    if (this.props.onOpenChange) {
+      this.props.onOpenChange({ isOpen: false });
+    }
+  };
+
+  private renderItem(item, onItemActivated) {
+    const dropListItem = (
+      <ItemWrapper key={item.content} isSelected={item.isActive}>
+        <Item
+          elemBefore={item.elemBefore}
+          onClick={() => onItemActivated && onItemActivated({ item })}
+        >
+          <ItemContentWrapper hasElemBefore={!!item.elemBefore}>
+            {item.content}
+          </ItemContentWrapper>
+        </Item>
+      </ItemWrapper>
+    );
+
+    if (item.tooltipDescription) {
+      return (
+        <Tooltip
+          key={item.content}
+          content={item.tooltipDescription}
+          position={item.tooltipPosition}
+        >
+          {dropListItem}
+        </Tooltip>
+      );
+    }
+
+    return dropListItem;
   }
 
   private renderDropdownMenu() {
     const { target, popupPlacement } = this.state;
-    const { items, mountTo, boundariesElement, onOpenChange, onItemActivated, fitHeight, fitWidth } = this.props;
+    const {
+      items,
+      mountTo,
+      boundariesElement,
+      onItemActivated,
+      fitHeight,
+      fitWidth,
+      isOpen,
+    } = this.props;
 
     return (
       <Popup
-        target={target}
+        target={isOpen ? target : undefined}
         mountTo={mountTo}
         boundariesElement={boundariesElement}
         onPlacementChanged={this.updatePopupPlacement}
         fitHeight={fitHeight}
         fitWidth={fitWidth}
       >
-        <DropdownMenu
-          defaultOpen={true}
-          onOpenChange={onOpenChange}
-          onItemActivated={onItemActivated}
+        <DropListWithOutsideListeners
+          isOpen={true}
           appearance="tall"
           position={popupPlacement.join(' ')}
           shouldFlip={false}
           shouldFitContainer={true}
           isTriggerNotTabbable={true}
-          items={items}
+          handleClickOutside={this.handleClose}
+          handleEscapeKeydown={this.handleClose}
         >
           <div style={{ height: 0, minWidth: fitWidth || 0 }} />
-        </DropdownMenu>
+          {items.map((group, index) => (
+            <ItemGroup key={index}>
+              {group.items.map(item => this.renderItem(item, onItemActivated))}
+            </ItemGroup>
+          ))}
+        </DropListWithOutsideListeners>
       </Popup>
     );
   }

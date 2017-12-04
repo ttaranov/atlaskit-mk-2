@@ -8,5 +8,9 @@ export interface ProfileCardAction {
 export interface ProfilecardProvider {
   cloudId: string;
   resourceClient: AkProfileClient;
-  getActions: (id: string, text: string, accessLevel?: string) => ProfileCardAction[];
+  getActions: (
+    id: string,
+    text: string,
+    accessLevel?: string,
+  ) => ProfileCardAction[];
 }

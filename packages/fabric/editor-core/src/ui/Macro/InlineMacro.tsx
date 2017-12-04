@@ -7,10 +7,10 @@ import {
   Placeholder,
   Overlay,
   PlaceholderFallback,
-  PlaceholderFallbackParams
+  PlaceholderFallbackParams,
 } from './styles';
 
-const capitalizeFirstLetter = (str: string):string => {
+const capitalizeFirstLetter = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
@@ -18,7 +18,9 @@ export interface Props {
   node: PmNode;
   macroProvider: MacroProvider;
   onClick: (event: React.SyntheticEvent<any>) => void;
-  getPlaceholderUrl: (params: { node: PmNode, type: 'icon' | 'image' }) => string | undefined;
+  getPlaceholderUrl: (
+    params: { node: PmNode; type: 'icon' | 'image' },
+  ) => string | undefined;
   getMacroId: (node: PmNode) => string | undefined;
 }
 
@@ -32,8 +34,7 @@ export default class InlineMacro extends Component<Props, any> {
         <Overlay />
         {placeholderImageUrl
           ? this.renderPlaceholderImage(placeholderImageUrl)
-          : this.renderPlaceholderFallback()
-        }
+          : this.renderPlaceholderFallback()}
       </Placeholder>
     );
   }
@@ -41,8 +42,13 @@ export default class InlineMacro extends Component<Props, any> {
   private renderPlaceholderImage = (placeholderUrl: string) => {
     const { macroProvider, node: { attrs: { extensionKey } } } = this.props;
 
-    return <img src={`${macroProvider.config.placeholderBaseUrl}${placeholderUrl}`} alt={extensionKey} />;
-  }
+    return (
+      <img
+        src={`${macroProvider.config.placeholderBaseUrl}${placeholderUrl}`}
+        alt={extensionKey}
+      />
+    );
+  };
 
   private renderPlaceholderFallback = () => {
     const { macroProvider, node, getPlaceholderUrl } = this.props;
@@ -52,15 +58,21 @@ export default class InlineMacro extends Component<Props, any> {
 
     return (
       <PlaceholderFallback>
-        {placeholderUrl
-          ? <img src={`${macroProvider.config.placeholderBaseUrl}${placeholderUrl}`} alt={extensionKey} />
-          : <EditorFileIcon label={extensionKey} />
-        }
+        {placeholderUrl ? (
+          <img
+            src={`${macroProvider.config.placeholderBaseUrl}${placeholderUrl}`}
+            alt={extensionKey}
+          />
+        ) : (
+          <EditorFileIcon label={extensionKey} />
+        )}
         {capitalizeFirstLetter(extensionKey)}
         <PlaceholderFallbackParams>
-          {Object.keys(macroParams).map(key => ` | ${key} = ${macroParams[key].value}`)}
+          {Object.keys(macroParams).map(
+            key => ` | ${key} = ${macroParams[key].value}`,
+          )}
         </PlaceholderFallbackParams>
       </PlaceholderFallback>
     );
-  }
+  };
 }

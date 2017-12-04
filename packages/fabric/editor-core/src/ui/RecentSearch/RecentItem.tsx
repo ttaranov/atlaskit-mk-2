@@ -1,11 +1,15 @@
 import * as React from 'react';
 import { ActivityItem } from '@atlaskit/activity';
-import { akColorN100, akColorN800, akColorN30 } from '@atlaskit/util-shared-styles';
+import {
+  akColorN100,
+  akColorN800,
+  akColorN30,
+} from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
 // tslint:disable:next-line variable-name
 const Container = styled.li`
-  background-color: ${(props) => props.selected ? akColorN30 : 'transparent'};
+  background-color: ${props => (props.selected ? akColorN30 : 'transparent')};
   padding: 5px;
   cursor: pointer;
   display: flex;
@@ -41,16 +45,16 @@ export interface Props {
 }
 
 export default class RecentItem extends React.PureComponent<Props, {}> {
-  handleSelect = (e) => {
+  handleSelect = e => {
     e.preventDefault(); // don't let editor lose focus
     const { item, onSelect } = this.props;
     onSelect(item.url, item.name);
-  }
+  };
 
   handleMouseMove = () => {
     const { onMouseMove, item } = this.props;
     onMouseMove(item.objectId);
-  }
+  };
 
   render() {
     const { item, selected } = this.props;

@@ -16,7 +16,7 @@
     "name": "Calendar",
     "team": "elements"
   },
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/button": "^5.4.8",
     "@atlaskit/icon": "^10.3.1",
@@ -30,7 +30,7 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^0.0.7",
+    "@atlaskit/docs": "^1.0.0",
     "enzyme": "^2.9.1",
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1"

@@ -39,7 +39,7 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
     copyDisabled: false,
     pasteDisabled: false,
     // disabled for the first version of tables
-    advancedMenuDisabled: true
+    advancedMenuDisabled: true,
   };
 
   componentDidMount() {
@@ -75,24 +75,27 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
               onClick={this.handleRemove}
               iconBefore={<RemoveIcon label="Remove selected cells" />}
             />
-            {!advancedMenuDisabled && items[0].items.length > 0 &&
-              <DropdownMenu
-                items={items}
-                isOpen={isOpen}
-                onOpenChange={this.handleOpenChange}
-                onItemActivated={this.onItemActivated}
-                mountTo={popupsMountPoint}
-                boundariesElement={popupsBoundariesElement}
-                fitHeight={188}
-                fitWidth={136}
-              >
-                <ToolbarButton
-                  selected={isOpen}
-                  onClick={this.toggleAdvancedMenu}
-                  iconBefore={<EditorMoreIcon label="Open or close advance menu" />}
-                />
-              </DropdownMenu>
-            }
+            {!advancedMenuDisabled &&
+              items[0].items.length > 0 && (
+                <DropdownMenu
+                  items={items}
+                  isOpen={isOpen}
+                  onOpenChange={this.handleOpenChange}
+                  onItemActivated={this.onItemActivated}
+                  mountTo={popupsMountPoint}
+                  boundariesElement={popupsBoundariesElement}
+                  fitHeight={188}
+                  fitWidth={136}
+                >
+                  <ToolbarButton
+                    selected={isOpen}
+                    onClick={this.toggleAdvancedMenu}
+                    iconBefore={
+                      <EditorMoreIcon label="Open or close advance menu" />
+                    }
+                  />
+                </DropdownMenu>
+              )}
           </Toolbar>
         </Popup>
       );
@@ -103,11 +106,11 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
 
   private toggleAdvancedMenu = () => {
     this.handleOpenChange({ isOpen: !this.state.isOpen });
-  }
+  };
 
   private handleOpenChange = ({ isOpen }) => {
     this.setState({ isOpen });
-  }
+  };
 
   private createItems = () => {
     const items: any[] = [];
@@ -115,7 +118,7 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
     this.addRecordToItems(items, 'Copy', getShortcut(copy));
     this.addRecordToItems(items, 'Paste', getShortcut(paste));
     return [{ items }];
-  }
+  };
 
   private addRecordToItems = (items, content, shortcut?) => {
     const value = content.toLowerCase();
@@ -124,11 +127,11 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
       isDisabled: this.state[`${value}Disabled`],
       value,
     });
-  }
+  };
 
   private onItemActivated = ({ item }) => {
     const { editorView } = this.props;
-    switch(item.value) {
+    switch (item.value) {
       case 'cut':
         analytics.trackEvent('atlassian.editor.format.table.cut.button');
         tableCommands.cut()(editorView.state, editorView.dispatch);
@@ -142,14 +145,14 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
         tableCommands.paste()(editorView.state, editorView.dispatch);
         break;
     }
-  }
+  };
 
   private handlePluginStateChange = (pluginState: TableState) => {
     const { cellElement, cellSelection } = pluginState;
     this.setState({ cellElement, cellSelection });
-  }
+  };
 
   private handleRemove = () => {
     this.props.pluginState.remove();
-  }
+  };
 }

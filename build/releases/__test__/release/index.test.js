@@ -18,7 +18,8 @@ jest.mock('../../../utils/logger');
 git.add.mockImplementation(() => Promise.resolve(true));
 git.commit.mockImplementation(() => Promise.resolve(true));
 git.push.mockImplementation(() => Promise.resolve(true));
-bolt.publish = jest.fn();
+// we want to keep other bolt commands still running so our tests are more e2e
+bolt.publish = jest.fn(() => Promise.resolve([]));
 
 const simpleChangeset = {
   summary: 'This is a summary',
@@ -95,126 +96,107 @@ describe('running release', () => {
         const loggerWarnCalls = logger.warn.mock.calls;
         expect(loggerWarnCalls.length).toEqual(1);
         expect(loggerWarnCalls[0][0]).toEqual(
-          'No unreleased changesets found. Exiting',
+          'No unreleased changesets found.',
         );
       });
     });
 
-    describe('when there are changeset commits', () => {
-      // From here, we'll just mock from createRelease and ignore all the git operations (getUnpublishedChangesetCommits, etc)
-      beforeAll(() => {
-        // We just need there to be a length > 0
-        git.getUnpublishedChangesetCommits.mockImplementation(() =>
-          Promise.resolve([simpleChangeset, simpleChangeset2]),
-        );
+    describe('when runing in CI', () => {
+      beforeEach(() => {
+        isRunningInPipelines.mockReturnValueOnce(true);
       });
 
-      it('should bump releasedPackages', async () => {
-        cli.askConfirm.mockReturnValueOnce(Promise.resolve(true));
-        const spy = jest.spyOn(fs, 'writeFile');
-
-        await runRelease({ cwd });
-        const calls = spy.mock.calls;
-        expect(JSON.parse(calls[0][1])).toEqual(
-          expect.objectContaining({ name: 'pkg-a', version: '1.1.0' }),
-        );
-        expect(JSON.parse(calls[1][1])).toEqual(
-          expect.objectContaining({ name: 'pkg-b', version: '1.0.1' }),
-        );
-      });
-
-      it('should bump multiple released packages if required', async () => {
-        cli.askConfirm.mockReturnValueOnce(Promise.resolve(true));
-        const spy = jest.spyOn(fs, 'writeFile');
-        await runRelease({ cwd });
-        const calls = spy.mock.calls;
-
-        // first call should be minor bump
-        expect(JSON.parse(calls[0][1])).toEqual(
-          expect.objectContaining({
-            name: 'pkg-a',
-            version: '1.1.0',
-          }),
-        );
-        // second should be a patch
-        expect(JSON.parse(calls[1][1])).toEqual(
-          expect.objectContaining({
-            name: 'pkg-b',
-            version: '1.0.1',
-          }),
-        );
-      });
-
-      describe('if not running in CI', () => {
-        beforeEach(() => {
-          isRunningInPipelines.mockReturnValueOnce(false);
-        });
-
-        it('should ask for user confirmation if not running in CI', async () => {
-          cli.askConfirm.mockReturnValueOnce(Promise.resolve(true));
-
-          await runRelease({ cwd });
-
-          const confirmationCalls = cli.askConfirm.mock.calls;
-          expect(confirmationCalls.length).toEqual(1);
-          expect(confirmationCalls[0][0]).toEqual('Publish these packages?');
-        });
-
-        it('should run publish if user confirms', async () => {
-          cli.askConfirm.mockReturnValueOnce(Promise.resolve(true));
-
+      describe('When there is no changeset commits', () => {
+        // we make sure we still do this so that a later build can clean up after a previously
+        // failed one (where the change was pushed back but not released and the next build has no
+        // changeset commits)
+        it('should still run bolt.publish', async () => {
           await runRelease({ cwd });
 
           expect(bolt.publish).toHaveBeenCalled();
         });
+      });
+
+      describe('When there is a changeset commit', () => {
+        beforeEach(() => {
+          git.getUnpublishedChangesetCommits.mockImplementationOnce(() =>
+            Promise.resolve([simpleChangeset2]),
+          );
+        });
+
+        it('should bump releasedPackages', async () => {
+          const spy = jest.spyOn(fs, 'writeFile');
+
+          await runRelease({ cwd });
+          const calls = spy.mock.calls;
+          expect(JSON.parse(calls[0][1])).toEqual(
+            expect.objectContaining({ name: 'pkg-a', version: '1.1.0' }),
+          );
+          expect(JSON.parse(calls[1][1])).toEqual(
+            expect.objectContaining({ name: 'pkg-b', version: '1.0.1' }),
+          );
+        });
+
         it('should git add the expected files', async () => {
-          cli.askConfirm.mockReturnValueOnce(Promise.resolve(true));
-          git.getUnpublishedChangesetCommits.mockReturnValueOnce([
-            simpleChangeset2,
-          ]);
           await runRelease({ cwd });
           const mocks = git.add.mock.calls;
 
           // First two are adding the package.json actual versions
           expect(mocks[0]).toEqual([pkgAConfigPath]);
           expect(mocks[1]).toEqual([pkgBConfigPath]);
-          // Next two bump changelogs
-          expect(mocks[2]).toEqual([pkgAChangelogPath]);
-          expect(mocks[3]).toEqual([pkgBChangelogPath]);
-          // Last is update package.json for A after its B dependency is bumped.
-          expect(mocks[4]).toEqual([pkgAConfigPath]);
-        });
-
-        it("should not run publish if user  doesn't confirm", async () => {
-          cli.askConfirm.mockReturnValueOnce(Promise.resolve(false));
-          git.getUnpublishedChangesetCommits.mockReturnValueOnce([
-            simpleChangeset2,
-          ]);
-
-          await runRelease({ cwd });
-          expect(bolt.publish).not.toHaveBeenCalled();
-        });
-      });
-
-      describe('if running in CI', () => {
-        beforeEach(() => {
-          isRunningInPipelines.mockReturnValueOnce(true);
-          git.getUnpublishedChangesetCommits.mockReturnValueOnce([
-            simpleChangeset2,
-          ]);
-        });
-
-        it('should not ask for user confirmation', async () => {
-          await runRelease({ cwd });
-
-          const confirmationCalls = cli.askConfirm.mock.calls;
-          expect(confirmationCalls.length).toEqual(0);
+          // Next is update package.json for A after its B dependency is bumped.
+          expect(mocks[2]).toEqual([pkgAConfigPath]);
+          // Final two bump changelogs
+          expect(mocks[3]).toEqual([pkgAChangelogPath]);
+          expect(mocks[4]).toEqual([pkgBChangelogPath]);
         });
 
         it('should run bolt.publish', async () => {
           await runRelease({ cwd });
 
           expect(bolt.publish).toHaveBeenCalled();
+        });
+      });
+
+      describe('when there are multiple changeset commits', () => {
+        beforeEach(() => {
+          git.getUnpublishedChangesetCommits.mockImplementationOnce(() =>
+            Promise.resolve([simpleChangeset, simpleChangeset2]),
+          );
+        });
+
+        it('should bump releasedPackages', async () => {
+          const spy = jest.spyOn(fs, 'writeFile');
+
+          await runRelease({ cwd });
+          const calls = spy.mock.calls;
+          expect(JSON.parse(calls[0][1])).toEqual(
+            expect.objectContaining({ name: 'pkg-a', version: '1.1.0' }),
+          );
+          expect(JSON.parse(calls[1][1])).toEqual(
+            expect.objectContaining({ name: 'pkg-b', version: '1.0.1' }),
+          );
+        });
+
+        it('should bump multiple released packages if required', async () => {
+          const spy = jest.spyOn(fs, 'writeFile');
+          await runRelease({ cwd });
+          const calls = spy.mock.calls;
+
+          // first call should be minor bump
+          expect(JSON.parse(calls[0][1])).toEqual(
+            expect.objectContaining({
+              name: 'pkg-a',
+              version: '1.1.0',
+            }),
+          );
+          // second should be a patch
+          expect(JSON.parse(calls[1][1])).toEqual(
+            expect.objectContaining({
+              name: 'pkg-b',
+              version: '1.0.1',
+            }),
+          );
         });
       });
     });

@@ -102,28 +102,6 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
     const { parentRoute, stack } = this.state;
     const { navigateOut } = this.props;
 
-    return (
-      <div>
-        {parentRoute && !navigateOut ? (
-          <div style={{ marginBottom: '10px' }}>
-            <RouterNavigationItem
-              href={parentRoute}
-              icon={<ArrowLeftIcon label="Back" />}
-              text="Back"
-            />
-          </div>
-        ) : null}
-        {parentRoute && navigateOut ? (
-          <div style={{ marginBottom: '10px' }}>
-            <ExternalNavigationItem
-              href={OLD_WEBSITE_URL}
-              icon={<ArrowLeftIcon label="Back" />}
-              text="Back"
-            />
-          </div>
-        ) : null}
-        <NestedNav stack={stack} />
-      </div>
-    );
+    return <NestedNav stack={stack} />;
   }
 }

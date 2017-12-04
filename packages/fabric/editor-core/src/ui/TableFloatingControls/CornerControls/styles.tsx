@@ -24,15 +24,29 @@ export const CornerButton = styled.button`
   bottom: -1px;
   width: ${akEditorTableToolbarSize}px;
   height: ${akEditorTableToolbarSize}px;
-  background-image: linear-gradient(to bottom right, #fff 0, #fff 49%, ${akEditorTableBorder} 50%, ${akEditorTableBorder} 100%);
+  background-image: linear-gradient(
+    to bottom right,
+    #fff 0,
+    #fff 49%,
+    ${akEditorTableBorder} 50%,
+    ${akEditorTableBorder} 100%
+  );
   box-shadow: inset 0 0 0 1px #fff;
   border: 1px solid ${akEditorTableBorder};
   border-top-left-radius: ${akEditorTableBorderRadius};
   cursor: pointer;
   padding: 0;
 
-  &:hover, .active > &, .tableHovered & {
-    background-image: linear-gradient(to bottom right, #fff 0, #fff 49%, ${akEditorTableToolbarSelected} 50%, ${akEditorTableToolbarSelected} 100%);
+  &:hover,
+  .active > &,
+  .tableHovered & {
+    background-image: linear-gradient(
+      to bottom right,
+      #fff 0,
+      #fff 49%,
+      ${akEditorTableToolbarSelected} 50%,
+      ${akEditorTableToolbarSelected} 100%
+    );
     border-color: ${akEditorTableBorderSelected};
     z-index: 1;
   }

@@ -3,8 +3,8 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import { renderDocument, Serializer } from '../../src';
-import * as validator from '../../src/validator';
 import { defaultSchema as schema } from '@atlaskit/editor-common';
+import * as common from '@atlaskit/editor-common';
 
 const doc = {
   version: 1,
@@ -56,7 +56,7 @@ describe('Renderer', () => {
     const serializer = new MockSerializer();
 
     it('should call getValidDocument', () => {
-      const spy = sinon.spy(validator, 'getValidDocument');
+      const spy = sinon.spy(common, 'getValidDocument');
       renderDocument(doc, serializer, schema);
       expect(spy.calledWith(doc)).to.equal(true);
     });

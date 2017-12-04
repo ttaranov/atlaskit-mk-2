@@ -9,9 +9,12 @@ import { DEFAULT_LANGUAGES } from '../../../ui/LanguagePicker/languageList';
 import './styles';
 
 const MOD = browser.mac ? 'Cmd' : 'Ctrl';
-interface CMSelection { head: number; anchor: number; }
+interface CMSelection {
+  head: number;
+  anchor: number;
+}
 
-export default class CodeBlockPlugin  {
+export default class CodeBlockPlugin {
   private node: Node;
   private view: EditorView & { docView?: any };
   private getPos: Function;
@@ -22,7 +25,12 @@ export default class CodeBlockPlugin  {
   private pluginState: CodeBlockState;
   public cm: any;
 
-  constructor(node: Node, view: EditorView, getPos: () => number, pluginState: CodeBlockState) {
+  constructor(
+    node: Node,
+    view: EditorView,
+    getPos: () => number,
+    pluginState: CodeBlockState,
+  ) {
     this.node = node;
     this.view = view;
     this.getPos = getPos;
@@ -44,7 +52,7 @@ export default class CodeBlockPlugin  {
     this.cm.on('mousedown', this.cmMousedown);
     this.cm.on('blur', this.cmBlur);
     this.setMode(this.node.attrs['language']);
-  }
+  };
 
   getCodeMirrorConfig = () => ({
     value: this.value,
@@ -53,7 +61,7 @@ export default class CodeBlockPlugin  {
     tabSize: 2,
     gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
     extraKeys: this.prepareExtraKeyMap(),
-  })
+  });
 
   private prepareExtraKeyMap(): any {
     const keymap = {
@@ -63,10 +71,11 @@ export default class CodeBlockPlugin  {
       Right: () => this.maybeEscape('char', 1),
       [`${MOD}-A`]: this.selectAllEditorContent,
       [`${MOD}-Z`]: () => undo(this.view.state, this.view.dispatch),
-      'Enter': this.handleEnter,
+      Enter: this.handleEnter,
     };
     if (browser.mac) {
-      keymap[`Shift-${MOD}-Z`] = () => redo(this.view.state, this.view.dispatch);
+      keymap[`Shift-${MOD}-Z`] = () =>
+        redo(this.view.state, this.view.dispatch);
     } else {
       keymap[`${MOD}-Y`] = () => redo(this.view.state, this.view.dispatch);
     }
@@ -78,7 +87,7 @@ export default class CodeBlockPlugin  {
       this.valueChanged();
       this.pluginState.update(this.view.state, this.view.docView, false);
     }
-  }
+  };
 
   private cmFocused = (cm: CodeMirror.Editor) => {
     if (!this.updating) {
@@ -86,27 +95,31 @@ export default class CodeBlockPlugin  {
     }
     this.pluginState.updateEditorFocused(true);
     this.pluginState.update(this.view.state, this.view.docView, true);
-  }
+  };
 
   private cmMousedown = () => {
     this.forwardSelection();
     this.pluginState.update(this.view.state, this.view.docView, true);
-  }
+  };
 
   private cmBlur = () => {
     this.removeSelection();
     this.pluginState.updateEditorFocused(false);
     this.pluginState.update(this.view.state, this.view.docView, true);
-  }
+  };
 
   private selectAllEditorContent = (): void => {
     this.view.focus();
     const { dispatch, state } = this.view;
-    dispatch(state.tr.setSelection(
-      new TextSelection(state.doc.resolve(0),
-      state.doc.resolve(state.doc.content['size'])
-    )));
-  }
+    dispatch(
+      state.tr.setSelection(
+        new TextSelection(
+          state.doc.resolve(0),
+          state.doc.resolve(state.doc.content['size']),
+        ),
+      ),
+    );
+  };
 
   private handleEnter = (): any => {
     const pos = this.cm.getCursor();
@@ -116,8 +129,11 @@ export default class CodeBlockPlugin  {
       const { $from, $head } = selection;
       const node = $from.node($from.depth);
       const nodeEnd = $from.start($from.depth) + node.textContent.length;
-      if (node && node.type === nodes.codeBlock &&
-        node.textContent.slice(node.textContent.length - 2) === '\n\n') {
+      if (
+        node &&
+        node.type === nodes.codeBlock &&
+        node.textContent.slice(node.textContent.length - 2) === '\n\n'
+      ) {
         const pos = $head.after();
         tr.replaceWith(pos, pos, state.schema.nodes.paragraph.createAndFill()!);
         tr.setSelection(Selection.near(tr.doc.resolve(pos), 1));
@@ -128,26 +144,31 @@ export default class CodeBlockPlugin  {
       }
     }
     return CodeMirror.Pass;
-  }
+  };
 
   private maybeEscape(unit: string, dir: number): any {
     const pos = this.cm.getCursor();
-    if (this.cm.somethingSelected() ||
+    if (
+      this.cm.somethingSelected() ||
       pos.line !== (dir < 0 ? this.cm.firstLine() : this.cm.lastLine()) ||
-      (unit === 'char' && pos.ch !== (dir < 0 ? 0 : this.cm.getLine(pos.line).length))) {
+      (unit === 'char' &&
+        pos.ch !== (dir < 0 ? 0 : this.cm.getLine(pos.line).length))
+    ) {
       return CodeMirror.Pass;
     }
     this.view.focus();
     const targetPos = this.getPos() + (dir < 0 ? 0 : this.value.length + 2);
     const tr = this.view.state.tr;
-    if ((dir < 0 && targetPos === 0) ||
-      (dir > 0 && !Selection.findFrom(tr.doc.resolve(targetPos), dir))) {
+    if (
+      (dir < 0 && targetPos === 0) ||
+      (dir > 0 && !Selection.findFrom(tr.doc.resolve(targetPos), dir))
+    ) {
       tr.insert(targetPos, this.view.state.schema.nodes.paragraph.create());
     }
     this.view.dispatch(
-      tr.setSelection(
-        Selection.near(tr.doc.resolve(targetPos), dir)
-      ).scrollIntoView()
+      tr
+        .setSelection(Selection.near(tr.doc.resolve(targetPos), dir))
+        .scrollIntoView(),
     );
     this.view.focus();
   }
@@ -160,9 +181,11 @@ export default class CodeBlockPlugin  {
   }
 
   private selectionChanged(selection: CMSelection): boolean {
-    return !this.selection ||
+    return (
+      !this.selection ||
       selection.head !== this.selection.head ||
-      selection.anchor !== this.selection.anchor;
+      selection.anchor !== this.selection.anchor
+    );
   }
 
   private valueChanged(): void {
@@ -173,7 +196,11 @@ export default class CodeBlockPlugin  {
       const start = this.getPos() + 1;
       const { schema } = this.view.state;
       const content = change.text ? schema.text(change.text) : Fragment.empty;
-      const tr = this.view.state.tr.replaceWith(start + change.from, start + change.to, content);
+      const tr = this.view.state.tr.replaceWith(
+        start + change.from,
+        start + change.to,
+        content,
+      );
       if (this.cm.hasFocus()) {
         const selection = this.findSelection();
         if (this.selectionChanged(selection)) {
@@ -181,8 +208,8 @@ export default class CodeBlockPlugin  {
             TextSelection.create(
               tr.doc,
               start + selection.anchor,
-              start + selection.head
-            )
+              start + selection.head,
+            ),
           );
           this.selection = selection;
         }
@@ -203,25 +230,26 @@ export default class CodeBlockPlugin  {
     this.selection = selection;
     const base = this.getPos() + 1;
     this.view.dispatch(
-      this.view.state.tr.setSelection(TextSelection.create(
-        this.view.state.doc, base + selection.anchor, base + selection.head
-      ))
+      this.view.state.tr.setSelection(
+        TextSelection.create(
+          this.view.state.doc,
+          base + selection.anchor,
+          base + selection.head,
+        ),
+      ),
     );
   }
 
   private findSelection(): CMSelection {
     return {
       head: this.cm.indexFromPos(this.cm.getCursor('head')),
-      anchor: this.cm.indexFromPos(this.cm.getCursor('anchor'))
+      anchor: this.cm.indexFromPos(this.cm.getCursor('anchor')),
     };
   }
 
   private removeSelection(): void {
     if (this.cm) {
-      this.cm.setSelection(
-        this.cm.posFromIndex(0),
-        this.cm.posFromIndex(0)
-      );
+      this.cm.setSelection(this.cm.posFromIndex(0), this.cm.posFromIndex(0));
     }
   }
 
@@ -229,11 +257,11 @@ export default class CodeBlockPlugin  {
     if (language && this.cm.getMode().name !== language) {
       this.setMode(language);
     }
-  }
+  };
 
   focusCodeEditor = () => {
     this.cm.focus();
-  }
+  };
 
   get dom() {
     return this.domRef;
@@ -248,7 +276,7 @@ export default class CodeBlockPlugin  {
         change.text,
         this.cm.posFromIndex(change.from),
         this.cm.posFromIndex(change.to),
-        'docUpdate'
+        'docUpdate',
       );
       this.updating = false;
     }
@@ -260,7 +288,7 @@ export default class CodeBlockPlugin  {
     }
     this.cm.setSelection(
       this.cm.posFromIndex(anchor),
-      this.cm.posFromIndex(head)
+      this.cm.posFromIndex(head),
     );
   }
 
@@ -280,10 +308,14 @@ export function computeChange(oldVal: string, newVal: string): any {
   let start: number = 0;
   let oldEnd: number = oldVal.length;
   let newEnd: number = newVal.length;
-  while (start < oldEnd && oldVal.charCodeAt(start) === newVal.charCodeAt(start)) {
+  while (
+    start < oldEnd &&
+    oldVal.charCodeAt(start) === newVal.charCodeAt(start)
+  ) {
     ++start;
   }
-  while (oldEnd > start &&
+  while (
+    oldEnd > start &&
     newEnd > start &&
     oldVal.charCodeAt(oldEnd - 1) === newVal.charCodeAt(newEnd - 1)
   ) {
@@ -294,12 +326,14 @@ export function computeChange(oldVal: string, newVal: string): any {
 }
 
 export function findMode(mode: string) {
-  const matches = DEFAULT_LANGUAGES.filter(language => language.alias.indexOf(mode.toLowerCase()) !== -1);
+  const matches = DEFAULT_LANGUAGES.filter(
+    language => language.alias.indexOf(mode.toLowerCase()) !== -1,
+  );
   if (!matches.length) {
     return false;
   }
-  const modes = matches[0].alias.map(
-    lang => CodeMirror['findModeByName'](lang)
-  ).filter(mode => !!mode);
+  const modes = matches[0].alias
+    .map(lang => CodeMirror['findModeByName'](lang))
+    .filter(mode => !!mode);
   return modes[0];
 }

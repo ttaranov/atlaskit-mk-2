@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import {
-  EmojiId,
-  ResourcedEmoji,
-} from '@atlaskit/emoji';
+import { EmojiId, ResourcedEmoji } from '@atlaskit/emoji';
 import ProviderFactory, { WithProviders } from '../../providerFactory';
 
 export interface EmojiProps extends EmojiId {
@@ -28,7 +25,7 @@ export default class EmojiNode extends PureComponent<EmojiProps, {}> {
     }
   }
 
-  private renderWithProvider = (providers) => {
+  private renderWithProvider = providers => {
     const {
       allowTextFallback,
       shortName,
@@ -49,7 +46,7 @@ export default class EmojiNode extends PureComponent<EmojiProps, {}> {
         fitToHeight={fitToHeight}
       />
     );
-  }
+  };
 
   render() {
     return (

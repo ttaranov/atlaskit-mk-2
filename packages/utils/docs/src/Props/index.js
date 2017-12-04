@@ -25,10 +25,18 @@ const HeadingRequired = styled.span`
 `;
 
 const HeadingType = styled.span`
-  background: ${themed({ light: colors.B50, dark: colors.B500 })};
+  background: ${themed({ light: colors.N20, dark: colors.DN20 })};
   border-radius: ${borderRadius}px;
-  color: ${themed({ light: colors.B500, dark: colors.B50 })};
+  color: ${themed({ light: colors.N300, dark: colors.DN300 })};
   display: inline-block;
+  padding: 0 0.2em;
+`;
+const HeadingName = styled.span`
+  background: ${themed({ light: colors.B50, dark: colors.B500 })};
+  color: ${themed({ light: colors.B500, dark: colors.B50 })};
+  border-radius: ${borderRadius}px;
+  display: inline-block;
+  margin-right: 0.8em;
   padding: 0 0.2em;
 `;
 
@@ -68,7 +76,8 @@ function PropTypeHeading(props: PropTypeHeadingProps) {
   return (
     <Heading>
       <code>
-        <HeadingType>{typeName}</HeadingType> {props.name}
+        <HeadingName>{props.name}</HeadingName>
+        <HeadingType>{typeName}</HeadingType>
         {props.defaultValue ? (
           <HeadingDefault> = {props.defaultValue.value}</HeadingDefault>
         ) : null}

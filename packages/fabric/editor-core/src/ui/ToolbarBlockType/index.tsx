@@ -10,7 +10,13 @@ import { BlockType } from '../../plugins/block-type/types';
 import { EditorView } from 'prosemirror-view';
 import DropdownMenu from '../DropdownMenu';
 import EditorWidth from '../../utils/editor-width';
-import { ButtonContent, Separator, Wrapper, MenuWrapper, ExpandIconWrapper } from './styles';
+import {
+  ButtonContent,
+  Separator,
+  Wrapper,
+  MenuWrapper,
+  ExpandIconWrapper,
+} from './styles';
 
 export interface Props {
   isDisabled?: boolean;
@@ -53,34 +59,50 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
     this.setState({
       active: attrs.isOpen,
     });
-  }
+  };
 
   render() {
-    const { active, currentBlockType, blockTypesDisabled, availableBlockTypes } = this.state;
-    const { popupsMountPoint, popupsBoundariesElement, editorWidth } = this.props;
+    const {
+      active,
+      currentBlockType,
+      blockTypesDisabled,
+      availableBlockTypes,
+    } = this.state;
+    const {
+      popupsMountPoint,
+      popupsBoundariesElement,
+      editorWidth,
+    } = this.props;
     const blockTypeTitles = availableBlockTypes
       .filter(blockType => blockType.name === currentBlockType.name)
       .map(blockType => blockType.title);
 
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
-        spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
+        spacing={
+          editorWidth && editorWidth > EditorWidth.BreakPoint6
+            ? 'default'
+            : 'none'
+        }
         selected={active}
         disabled={disabled}
         onClick={this.handleTriggerClick}
         iconAfter={
           <Wrapper>
-            {(editorWidth! <= EditorWidth.BreakPoint1) && <TextColorIcon label="Change formatting" />}
+            {editorWidth! <= EditorWidth.BreakPoint1 && (
+              <TextColorIcon label="Change formatting" />
+            )}
             <ExpandIconWrapper>
               <ExpandIcon label="Change formatting" />
             </ExpandIconWrapper>
           </Wrapper>
         }
       >
-        {(!editorWidth || editorWidth > EditorWidth.BreakPoint1) &&
-        <ButtonContent width={editorWidth}>
-          {blockTypeTitles[0] || 'Normal text'}
-        </ButtonContent>}
+        {(!editorWidth || editorWidth > EditorWidth.BreakPoint1) && (
+          <ButtonContent width={editorWidth}>
+            {blockTypeTitles[0] || 'Normal text'}
+          </ButtonContent>
+        )}
       </ToolbarButton>
     );
 
@@ -111,12 +133,11 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
         <Separator />
       </Wrapper>
     );
-
   }
 
   private handleTriggerClick = () => {
     this.onOpenChange({ isOpen: !this.state.active });
-  }
+  };
 
   private createItems = () => {
     const { currentBlockType, availableBlockTypes } = this.state;
@@ -127,13 +148,15 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
         value: blockType,
         tooltipDescription: tooltip(findKeymapByDescription(blockType.title)),
         tooltipPosition: 'right',
-        isActive: (currentBlockType === blockType),
+        isActive: currentBlockType === blockType,
       });
     });
-    return [{
-      items,
-    }];
-  }
+    return [
+      {
+        items,
+      },
+    ];
+  };
 
   private handlePluginStateChange = (pluginState: BlockTypeState) => {
     this.setState({
@@ -142,18 +165,21 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
       currentBlockType: pluginState.currentBlockType,
       blockTypesDisabled: pluginState.blockTypesDisabled,
     });
-  }
+  };
 
   private handleSelectBlockType = ({ item }) => {
     const blockType = item.value;
     const { availableBlockTypes } = this.state;
-    this.props.pluginState.toggleBlockType(blockType.name, this.props.editorView);
+    this.props.pluginState.toggleBlockType(
+      blockType.name,
+      this.props.editorView,
+    );
     this.setState({
       active: false,
       availableBlockTypes,
-      currentBlockType: blockType
+      currentBlockType: blockType,
     });
 
     analytics.trackEvent(`atlassian.editor.format.${blockType.name}.button`);
-  }
+  };
 }
