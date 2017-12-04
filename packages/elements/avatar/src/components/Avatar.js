@@ -1,5 +1,4 @@
 // @flow
-import '@atlaskit/polyfills/array-prototype-includes';
 import React, { Component } from 'react';
 import type { Node } from 'react';
 import Tooltip from '@atlaskit/tooltip';
@@ -71,10 +70,7 @@ class Avatar extends Component<AvatarPropTypes> {
     }
 
     // only support particular sizes
-    if (
-      !validIconSizes.includes(this.props.size) &&
-      (showPresence || showStatus)
-    ) {
+    if (validIconSizes.indexOf(this.props.size) === -1) {
       warn(
         `Avatar size "${String(this.props.size)}" does NOT support ${
           showPresence ? 'presence' : 'status'
@@ -118,8 +114,6 @@ class Avatar extends Component<AvatarPropTypes> {
   setRef = (ref: ?HTMLElement) => {
     this.ref = ref;
   };
-
-  /* eslint-enable no-console */
 
   render() {
     const {

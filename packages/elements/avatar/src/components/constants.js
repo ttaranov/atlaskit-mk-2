@@ -1,10 +1,7 @@
 // @flow
-import type { SupportedSizeWithAnIcon } from '../types';
 import { ICON_SIZES } from '../styled/constants';
 
-export const validIconSizes: SupportedSizeWithAnIcon[] = Object.keys(
-  ICON_SIZES,
-);
+export const validIconSizes: string[] = Object.keys(ICON_SIZES);
 
 export const propsOmittedFromClickData: string[] = [
   'onBlur',

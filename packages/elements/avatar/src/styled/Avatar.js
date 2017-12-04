@@ -8,14 +8,18 @@ import {
   SQUARE_ICON_OFFSET,
   ICON_SIZES,
 } from './constants';
-import type { AppearanceType, SupportedSizeWithAnIcon } from '../types';
+import type {
+  AppearanceType,
+  SizeType,
+  SupportedSizeWithAnIcon,
+} from '../types';
 import { getAvatarDimensions, getInnerStyles } from './utils';
 
 // OUTER WRAPPER
 // eslint-disable-next-line react/prop-types
 type OuterArgs = {|
   children: Node,
-  size: SupportedSizeWithAnIcon,
+  size: SizeType,
   stackIndex: ?number,
 |};
 

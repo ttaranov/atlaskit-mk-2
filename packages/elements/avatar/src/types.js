@@ -11,6 +11,7 @@ export type AppearanceType = 'circle' | 'square';
 export type PresenceType =
   | ('online' | 'busy' | 'focus' | 'offline')
   | ComponentType;
+
 export type SizeType =
   | 'xsmall'
   | 'small'
