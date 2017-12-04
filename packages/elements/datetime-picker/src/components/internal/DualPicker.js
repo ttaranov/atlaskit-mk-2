@@ -3,13 +3,13 @@
 import React, { Component, type ElementRef } from 'react';
 import Base from '@atlaskit/field-base';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
-import { akColorN60, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { colors, gridSize } from '@atlaskit/theme';
 import type { Handler } from '../../types';
 
 type DialogProps = {
   [string]: any,
 };
-type Props = {
+export type Props = {
   active: 0 | 1 | 2, // todo: boolean???
   value: [?string, ?string],
   displayValue: [string, string],
@@ -86,7 +86,7 @@ export default class PickerDual extends Component<Props> {
       >
         <CalendarIcon
           label="Show calendar"
-          primaryColor={this.props.isDisabled ? akColorN60 : undefined}
+          primaryColor={this.props.isDisabled ? colors.N60 : undefined}
         />
       </div>
     );
@@ -109,9 +109,9 @@ export default class PickerDual extends Component<Props> {
       return undefined;
     }
 
-    let fieldWidth = this.props.width - akGridSizeUnitless * 2;
+    let fieldWidth = this.props.width - gridSize() * 2;
     if (this.props.shouldShowIcon) {
-      fieldWidth -= akGridSizeUnitless * 3;
+      fieldWidth -= gridSize() * 3;
     }
     return fieldWidth / 2;
   }

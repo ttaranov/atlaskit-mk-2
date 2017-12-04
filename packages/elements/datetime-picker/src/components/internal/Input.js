@@ -2,7 +2,7 @@
 
 import React, { Component, type ElementRef } from 'react';
 import Input from '@atlaskit/input';
-import { akColorN100 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import type { Handler } from '../../types';
 
 type Props = {
@@ -40,7 +40,7 @@ export default class InputField extends Component<Props> {
 
   getStyle() {
     const width = this.props.width;
-    return !this.props.isActive ? { color: akColorN100, width } : { width };
+    return !this.props.isActive ? { color: colors.N100, width } : { width };
   }
 
   render() {
