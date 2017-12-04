@@ -195,6 +195,51 @@ describe(name, () => {
           expect(value.content[0].content[0].attrs.id).to.be.eq(testPubFileId);
         });
       });
+
+      describe('with waitForMediaUpload === false', () => {
+        it('should resolve even when media operations are pending', async () => {
+          const providerFactory = new ProviderFactory();
+          const editor = createEditor(
+            [mediaPlugin, hyperlinkPlugin],
+            {
+              mediaProvider,
+              waitForMediaUpload: false,
+            },
+            providerFactory,
+          );
+          providerFactory.setProvider('mediaProvider', mediaProvider);
+          editorActions = new EditorActions();
+          editorActions._privateRegisterEditor(editor.editorView);
+          editorView = editor.editorView;
+          mediaPluginState = mediaPluginStateKey.getState(
+            editorView.state,
+          ) as any;
+
+          sinon
+            .stub(mediaPluginState, 'collectionFromProvider' as any)
+            .returns(testCollectionName);
+
+          stateManager.updateState(testTempFileId, {
+            id: testTempFileId,
+            status: 'uploading',
+          });
+
+          const provider = await mediaProvider;
+          await provider.uploadContext;
+
+          mediaPluginState.insertFiles([
+            { id: testTempFileId, status: 'uploading' },
+          ]);
+
+          const value = (await editorActions.getValue()) as any;
+
+          expect(value).to.be.an('object');
+          expect(value.content).to.be.of.length(2);
+          expect(value.content[0].type).to.be.eq('mediaGroup');
+          expect(value.content[0].content[0].type).to.be.eq('media');
+          expect(value.content[0].content[0].attrs.id).to.be.eq(testTempFileId);
+        });
+      });
     });
 
     describe('#replaceDocument', () => {
