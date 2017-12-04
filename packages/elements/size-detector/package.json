@@ -26,7 +26,7 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^0.0.4",
+    "@atlaskit/docs": "^1.0.1",
     "styled-components": "^1.4.6",
     "enzyme": "^2.9.1"
   }
