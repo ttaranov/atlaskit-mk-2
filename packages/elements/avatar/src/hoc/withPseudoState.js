@@ -39,6 +39,7 @@ type State = {
 };
 
 export default function withPseudoState(
+  // $FlowFixMe - this is not the correct way of typing this
   WrappedComponent: ComponentType<Props>,
 ) {
   return class ComponentWithPseudoState extends Component<Props, State> {

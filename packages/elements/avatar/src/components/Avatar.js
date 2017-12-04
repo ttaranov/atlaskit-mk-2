@@ -126,8 +126,8 @@ class Avatar extends Component<AvatarPropTypes> {
       <Outer size={size} stackIndex={stackIndex}>
         <Inner
           innerRef={this.setRef}
-          onClick={this.guardedClick}
           {...enhancedProps}
+          onClick={this.guardedClick}
         >
           <Image alt={name} appearance={appearance} size={size} src={src} />
         </Inner>

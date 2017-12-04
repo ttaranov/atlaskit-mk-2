@@ -76,7 +76,6 @@ class AvatarItem extends Component<Props> {
     const {
       avatar,
       enableTextTruncate,
-      onClick,
       primaryText,
       secondaryText,
     } = this.props;
@@ -85,16 +84,17 @@ class AvatarItem extends Component<Props> {
     const borderColor = getBackgroundColor(this.props);
 
     // distill props from context, props, and state
-    const props = getProps(this);
+    const enhancedProps = getProps(this);
 
     // provide element type based on props
     const StyledComponent: any = getStyledAvatarItem(this.props);
 
-    // augment the onClick handler
-    props.onClick = onClick && this.guardedClick;
-
     return (
-      <StyledComponent innerRef={this.setNode} {...props}>
+      <StyledComponent
+        innerRef={this.setNode}
+        {...enhancedProps}
+        onClick={this.guardedClick}
+      >
         {cloneElement(avatar, { borderColor })}
         <Content truncate={enableTextTruncate}>
           <PrimaryText truncate={enableTextTruncate}>{primaryText}</PrimaryText>
