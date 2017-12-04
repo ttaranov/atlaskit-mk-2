@@ -1,3 +1,5 @@
+/* tslint:disable:no-console */
+
 import * as React from 'react';
 import { Component } from 'react';
 import Button from '@atlaskit/button';

@@ -190,14 +190,16 @@ describe('Media PickerFacade', () => {
         mockPicker.__triggerEvent('uploads-start', {
           files: [testFileData],
         });
-        expect(cb).toHaveBeenCalledWith({
-          id: testTemporaryFileId,
-          status: 'uploading',
-          publicId: undefined,
-          fileName: testFileData.name,
-          fileSize: testFileData.size,
-          fileMimeType: testFileData.type,
-        });
+        expect(cb).toHaveBeenCalledWith([
+          {
+            id: testTemporaryFileId,
+            status: 'uploading',
+            publicId: undefined,
+            fileName: testFileData.name,
+            fileSize: testFileData.size,
+            fileMimeType: testFileData.type,
+          },
+        ]);
       });
 
       it('for upload progress', () => {
@@ -225,7 +227,7 @@ describe('Media PickerFacade', () => {
           file: testFileData,
           preview,
         });
-        expect(cb).toHaveBeenCalledWith({
+        expect(cb.mock.calls[0][0]).toMatchObject({
           id: testTemporaryFileId,
           thumbnail: preview,
         });
@@ -317,7 +319,7 @@ describe('Media PickerFacade', () => {
       });
 
       mockPicker.__triggerEvent('upload-status-update', {
-        file: testFileData,
+        file: { ...testFileData, publicId: testFilePublicId },
         progress: testFileProgress,
       });
 
@@ -361,7 +363,7 @@ describe('Media PickerFacade', () => {
     });
   });
 
-  describe.only('Popup Picker', () => {
+  describe('Popup Picker', () => {
     const mockPopupPicker = new Popup(
       { trackEvent: () => {} },
       { apiUrl: '', authProvider: () => {} },
@@ -422,7 +424,7 @@ describe('Media PickerFacade', () => {
   });
 
   describe('Browser Picker', () => {
-    const mockBrowserPicker = new Browser();
+    const mockBrowserPicker = new Browser({ trackEvent() {} }, {});
 
     beforeEach(() => {
       stateManager = new DefaultMediaStateManager();
@@ -461,7 +463,7 @@ describe('Media PickerFacade', () => {
   });
 
   describe('Clipboard Picker', () => {
-    const mockClipboardPicker = new Clipboard();
+    const mockClipboardPicker = new Clipboard({ trackEvent() {} }, {});
     const activateSpy = (mockClipboardPicker.activate = jest.fn());
 
     beforeEach(() => {
@@ -492,14 +494,15 @@ describe('Media PickerFacade', () => {
     });
 
     it(`calls picker's deactivate() on destruction`, () => {
-      const spy = mockClipboardPicker.deactivate;
+      const spy = jest.fn();
+      mockClipboardPicker.deactivate = spy;
       facade!.destroy();
       expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('Dropzone Picker', () => {
-    const mockDropzonePicker = new Dropzone();
+    const mockDropzonePicker = new Dropzone({ trackEvent() {} }, {});
     const activateSpy = (mockDropzonePicker.activate = jest.fn());
 
     beforeEach(() => {
@@ -537,7 +540,10 @@ describe('Media PickerFacade', () => {
   });
 
   describe('BinaryUploader Picker', () => {
-    const mockBinaryUploaderPicker = new BinaryUploader();
+    const mockBinaryUploaderPicker = new BinaryUploader(
+      { trackEvent() {} },
+      {},
+    );
 
     beforeEach(() => {
       stateManager = new DefaultMediaStateManager();

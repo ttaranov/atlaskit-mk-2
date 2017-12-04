@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorAppearance, EditorProps } from '../src/editor/types';
@@ -62,7 +64,6 @@ class DecisionBuilderToolsDrawer extends Component<Props, State> {
         <pre>{JSON.stringify(filteredContent, undefined, 2)}</pre>
         <h4>Raw content:</h4>
         <ToolsDrawer
-          // tslint:disable-next-line:jsx-no-lambda
           renderEditor={({
             mentionProvider,
             emojiProvider,
@@ -98,7 +99,6 @@ export default function Example() {
   return (
     <DecisionBuilderToolsDrawer
       appearance="message"
-      // tslint:disable-next-line:jsx-no-lambda
       renderToDocument={content => ({
         type: 'doc',
         version: 1,
