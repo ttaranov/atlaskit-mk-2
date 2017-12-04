@@ -13,7 +13,7 @@ const panelPlugin: EditorPlugin = {
   pmPlugins() {
     return [
       { rank: 1110, plugin: createPlugin },
-      { rank: 1120, plugin: schema => inputRulePlugin(schema) },
+      { rank: 1120, plugin: ({ schema }) => inputRulePlugin(schema) },
     ];
   },
 

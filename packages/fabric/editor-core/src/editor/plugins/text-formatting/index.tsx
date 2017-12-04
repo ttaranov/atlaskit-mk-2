@@ -64,9 +64,15 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
   pmPlugins() {
     return [
       { rank: 800, plugin: () => textFormattingPlugin },
-      { rank: 810, plugin: schema => textFormattingInputRulePlugin(schema) },
+      {
+        rank: 810,
+        plugin: ({ schema }) => textFormattingInputRulePlugin(schema),
+      },
       { rank: 820, plugin: () => clearFormattingPlugin },
-      { rank: 830, plugin: schema => clearFormattingKeymapPlugin(schema) },
+      {
+        rank: 830,
+        plugin: ({ schema }) => clearFormattingKeymapPlugin(schema),
+      },
     ];
   },
 
