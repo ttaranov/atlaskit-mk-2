@@ -1,6 +1,6 @@
 // @flow
 
-import type { Date } from './types';
+import type { Date } from '../types';
 
 type DateToStringOptions = {
   fixMonth: boolean,
@@ -59,7 +59,7 @@ export function dateToString(
     : '';
 }
 
-export function makeArrayFromNumber(i: number) {
+export function makeArrayFromNumber(i: number): Array<number> {
   const arr = [];
   const num = Math.ceil(i);
   for (let a = 0; a < num; a += 1) {
