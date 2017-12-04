@@ -21,21 +21,3 @@ ${(
   />
 )}
 `;
-
-// export const examples = [
-//   {
-//     title: 'Warning Usage',
-//     Component: WarningBanner,
-//     src: warningBannerSrc,
-//   },
-//   {
-//     title: 'Error Usage',
-//     Component: ErrorBanner,
-//     src: errorBannerSrc,
-//   },
-//   {
-//     title: 'Toggle Banner',
-//     Component: AnimationExample,
-//     src: animationExampleSrc,
-//   },
-// ];

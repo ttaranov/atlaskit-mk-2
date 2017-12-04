@@ -1,15 +1,17 @@
 # Banner
 
-This is a React component that displays a prominent banner message. It is intended to be used at the top of the page.
+This is a React component that displays a prominent banner message. It is
+intended to be used at the top of the page.
 
 ![Example Banner](https://i.imgur.com/5N9j2tp.png)
 
 ## Try it out
 
-Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
+Detailed docs and example usage can be found
+[here](http://ak-mk-2-prod.netlify.com/mk-2/packages/elements/banner).
 
 ## Installation
 
 ```sh
-npm install @NAME@
+npm install @atlaskit/breadcrumbs
 ```
