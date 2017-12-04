@@ -59,7 +59,7 @@ class Avatar extends Component<AvatarPropTypes> {
     const showStatus = Boolean(status);
 
     // no icon needed
-    if (!showStatus && !showStatus) {
+    if (!showStatus && !showPresence) {
       return null;
     }
 

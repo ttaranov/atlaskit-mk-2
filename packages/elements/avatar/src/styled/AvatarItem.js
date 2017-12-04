@@ -15,6 +15,7 @@ const focusBorderColor = themed({
   dark: colors.B75,
 });
 
+// $FlowFixMe - add types for arguments
 export function getBackgroundColor({
   backgroundColor,
   href,
@@ -40,6 +41,7 @@ export function getBackgroundColor({
   return themedBackgroundColor;
 }
 
+// $FlowFixMe - add types for arguments
 export function getStyles({ href, isActive, isDisabled, isFocus, onClick }) {
   const isInteractive = href || onClick;
 
