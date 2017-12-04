@@ -76,17 +76,35 @@ describe('Spinner', () => {
     it('should be called after isCompleting prop is set', () => {
       const spy = jest.fn();
       const wrapper = mount(<Spinner delay={0} onComplete={spy} />);
+      mockCompleteAnimation(wrapper);
       wrapper.setProps({ isCompleting: true });
-      wrapper.find(Container).simulate('animationEnd');
-      setTimeout(() => expect(expect(spy).toHaveBeenCalledTimes(1)));
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should not be called if isCompleting is not set', () => {
       const spy = jest.fn();
       const wrapper = mount(<Spinner delay={0} onComplete={spy} />);
-      wrapper.find(Container).simulate('animationEnd');
-      setTimeout(() => expect(expect(spy).not.toHaveBeenCalledTimes(1)));
+      mockCompleteAnimation(wrapper);
+      expect(spy).not.toHaveBeenCalled();
     });
+
+    function mockCompleteAnimation(spinner) {
+      const instance = spinner.instance();
+      const originalEndListener = instance.endListener;
+      instance.endListener = (node, done) => {
+        const originalAddEventListener = node.addEventListener;
+        jest
+          .spyOn(node, 'addEventListener')
+          .mockImplementation((eventName, callback, ...rest) => {
+            if (eventName === 'animationend') {
+              callback({ target: node });
+            } else {
+              originalAddEventListener.call(node, eventName, callback, ...rest);
+            }
+          });
+        originalEndListener.call(instance, node, done);
+      };
+    }
   });
 
   describe('size prop', () => {
