@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component, type ElementRef } from 'react';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 import DatePickerStateless from './DatePickerStateless';
 import type { Handler } from '../types';
 import { parseDate } from '../util';
@@ -26,7 +26,7 @@ export default class DatePicker extends Component<Props, State> {
     isDisabled: false,
     disabled: [],
     onChange() {},
-    width: akGridSizeUnitless * 20,
+    width: gridSize() * 20,
   };
 
   state = {

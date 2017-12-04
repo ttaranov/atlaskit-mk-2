@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.5.3
+- [patch] FS-1366 fix selection in action/decision [854c137](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/854c137)
+- [patch] FS-1366 fix selection in action/decision [854c137](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/854c137)
+
 ## 60.5.2
 
 - [patch] moved table plugins methods to utils [90e6b2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90e6b2b)
