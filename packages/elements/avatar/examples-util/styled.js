@@ -1,5 +1,6 @@
 // @flow
 import styled from 'styled-components';
+// TODO: remove
 import {
   akColorR50,
   akColorN100,
@@ -33,9 +34,8 @@ export const AvatarColLabel = styled.div`
   text-transform: uppercase;
 `;
 
-export const Wrapper = styled.div`
-  padding: 2em;
-`;
+// TODO: combine with other file
+export const Wrapper = styled.div``;
 
 export const Note = styled.div`
   color: ${akColorN100};
