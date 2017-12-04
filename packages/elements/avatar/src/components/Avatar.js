@@ -1,11 +1,12 @@
 // @flow
 import '@atlaskit/polyfills/array-prototype-includes';
 import React, { Component } from 'react';
+import type { Node } from 'react';
 import Tooltip from '@atlaskit/tooltip';
 
 import { validIconSizes, propsOmittedFromClickData } from './constants';
 import Presence from './Presence';
-import Image from './AvatarImage';
+import AvatarImage from './AvatarImage';
 import Status from './Status';
 
 import Outer, { PresenceWrapper, StatusWrapper } from '../styled/Avatar';
@@ -14,7 +15,7 @@ import { omit } from '../utils';
 import { getProps, getStyledAvatar } from '../helpers';
 import { mapProps, withPseudoState } from '../hoc';
 
-import type { AvatarPropTypes } from '../types';
+import type { AvatarPropTypes, SupportedSizeWithAnIcon } from '../types';
 
 const warn = message => {
   if (process.env.NODE_ENV !== 'production') {
@@ -53,48 +54,63 @@ class Avatar extends Component<AvatarPropTypes> {
 
   // enforce status / presence rules
   /* eslint-disable no-console */
-  renderIcon = () => {
-    const { appearance, borderColor, presence, size, status } = this.props;
-    const showPresence = !!presence;
-    const showStatus = !!status;
+  renderIcon = (): ?Node => {
+    const { appearance, borderColor, presence, status } = this.props;
+    const showPresence = Boolean(presence);
+    const showStatus = Boolean(status);
 
-    // add warnings for various invalid states
-    if (!validIconSizes.includes(size) && (showPresence || showStatus)) {
+    // no icon needed
+    if (!showStatus && !showStatus) {
+      return null;
+    }
+
+    // cannot display both
+    if (showStatus && showPresence) {
+      warn('Avatar supports `presence` OR `status` properties, not both.');
+      return null;
+    }
+
+    // only support particular sizes
+    if (
+      !validIconSizes.includes(this.props.size) &&
+      (showPresence || showStatus)
+    ) {
       warn(
-        `Avatar size "${String(size)}" does NOT support ${
+        `Avatar size "${String(this.props.size)}" does NOT support ${
           showPresence ? 'presence' : 'status'
         }`,
       );
       return null;
     }
-    if (showPresence && showStatus) {
-      warn('Avatar supports `presence` OR `status` properties, not both.');
-      return null;
-    }
 
-    let indicator;
+    // we can cast here because we already know that it is a valid icon size
+    const size: SupportedSizeWithAnIcon = (this.props.size: any);
 
-    if (showPresence) {
-      const customPresenceNode = typeof presence === 'object' ? presence : null;
+    const indicator: ?Node = (() => {
+      if (showPresence) {
+        const customPresenceNode =
+          typeof presence === 'object' ? presence : null;
 
-      indicator = (
-        <PresenceWrapper appearance={appearance} size={size}>
-          <Presence
-            borderColor={borderColor}
-            presence={!customPresenceNode && presence}
-            size={size}
-          >
-            {customPresenceNode}
-          </Presence>
-        </PresenceWrapper>
-      );
-    } else if (showStatus) {
-      indicator = (
+        return (
+          <PresenceWrapper appearance={appearance} size={size}>
+            <Presence
+              borderColor={borderColor}
+              presence={!customPresenceNode && presence}
+              size={size}
+            >
+              {customPresenceNode}
+            </Presence>
+          </PresenceWrapper>
+        );
+      }
+
+      // showStatus
+      return (
         <StatusWrapper appearance={appearance} size={size}>
           <Status status={status} borderColor={borderColor} size={size} />
         </StatusWrapper>
       );
-    }
+    })();
 
     return indicator;
   };
@@ -129,7 +145,12 @@ class Avatar extends Component<AvatarPropTypes> {
           {...enhancedProps}
           onClick={this.guardedClick}
         >
-          <Image alt={name} appearance={appearance} size={size} src={src} />
+          <AvatarImage
+            alt={name}
+            appearance={appearance}
+            size={size}
+            src={src}
+          />
         </Inner>
 
         {this.renderIcon()}

@@ -18,6 +18,8 @@ export type SizeType =
   | 'large'
   | 'xlarge'
   | 'xxlarge';
+export type SupportedSizeWithAnIcon = 'small' | 'medium' | 'large' | 'xlarge';
+
 export type StatusType = 'approved' | 'declined' | 'locked';
 export type StyledComponentType = 'custom' | 'button' | 'link' | 'span';
 

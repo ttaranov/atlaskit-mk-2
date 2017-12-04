@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import type { Node } from 'react';
 import styled from 'styled-components';
 import {
   BORDER_WIDTH,
@@ -7,24 +8,34 @@ import {
   SQUARE_ICON_OFFSET,
   ICON_SIZES,
 } from './constants';
+import type { AppearanceType, SupportedSizeWithAnIcon } from '../types';
 import { getAvatarDimensions, getInnerStyles } from './utils';
 
 // OUTER WRAPPER
 // eslint-disable-next-line react/prop-types
-export default ({ children, ...otherProps }) => {
-  const size = `${getAvatarDimensions(otherProps, {
-    includeBorderWidth: true,
-    sizeOnly: true,
-  })}px`;
+type OuterArgs = {|
+  children: Node,
+  size: SupportedSizeWithAnIcon,
+  stackIndex: ?number,
+|};
+
+export default ({ children, size, stackIndex }: OuterArgs) => {
+  const sizeValue: string = `${getAvatarDimensions(
+    { size },
+    {
+      includeBorderWidth: true,
+      sizeOnly: true,
+    },
+  )}px`;
   return (
     <div
       style={{
         display: 'inline-block',
         position: 'relative',
         outline: 0,
-        width: size,
-        height: size,
-        ...(otherProps.stackIndex ? { zIndex: otherProps.stackIndex } : {}),
+        width: sizeValue,
+        height: sizeValue,
+        zIndex: stackIndex,
       }}
     >
       {children}
@@ -38,7 +49,13 @@ export const Inner = styled.div`
 `;
 
 // PRESENCE WRAPPER
-const getPresenceLayout = ({ appearance, size }) => {
+type LayoutArgs = {
+  appearance: AppearanceType,
+  size: SupportedSizeWithAnIcon,
+};
+
+// TODO: do not have all icon sizes!
+const getPresenceLayout = ({ appearance, size }: LayoutArgs) => {
   const presencePosition =
     appearance === 'square' ? -(BORDER_WIDTH[size] * 2) : ICON_OFFSET[size];
   const presenceSize = ICON_SIZES[size];
@@ -51,21 +68,24 @@ const getPresenceLayout = ({ appearance, size }) => {
   };
 };
 
-// eslint-disable-next-line react/prop-types
-export const PresenceWrapper = ({ children, ...otherProps }) => (
+type PresenceArgs = LayoutArgs & {
+  children: Node,
+};
+
+export const PresenceWrapper = (args: PresenceArgs) => (
   <span
     style={{
       pointerEvents: 'none',
       position: 'absolute',
-      ...getPresenceLayout(otherProps),
+      ...getPresenceLayout(args),
     }}
   >
-    {children}
+    {args.children}
   </span>
 );
 
 // STATUS WRAPPER
-const getStatusLayout = ({ appearance, size }) => {
+const getStatusLayout = ({ appearance, size }: LayoutArgs) => {
   const statusPosition =
     appearance === 'square' ? SQUARE_ICON_OFFSET[size] : ICON_OFFSET[size];
   const statusSize = ICON_SIZES[size];
@@ -78,14 +98,18 @@ const getStatusLayout = ({ appearance, size }) => {
   };
 };
 
+type StatusArgs = LayoutArgs & {
+  children: Node,
+};
+
 // eslint-disable-next-line react/prop-types
-export const StatusWrapper = ({ children, ...otherProps }) => (
+export const StatusWrapper = (args: StatusArgs) => (
   <span
     style={{
       position: 'absolute',
-      ...getStatusLayout(otherProps),
+      ...getStatusLayout(args),
     }}
   >
-    {children}
+    {args.children}
   </span>
 );
