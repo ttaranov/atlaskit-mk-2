@@ -5,10 +5,7 @@ import { akColorR100, akColorN40, akBorderRadius, akGridSize, akGridSizeUnitless
 import PluginSlot from '../PluginSlot';
 import WithPluginState from '../WithPluginState';
 import ContentStyles from '../ContentStyles';
-import {
-  EditorAppearanceComponentProps,
-  EditorAppearance
-} from '../../types';
+import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
 
 const pulseBackground = keyframes`
@@ -41,9 +38,10 @@ const CommentEditor: any = styled.div`
 
   min-height: 30px;
   height: auto;
-  ${(props: CommentEditorProps) => props.maxHeight ? 'max-height: ' + props.maxHeight + 'px;' : ''}
-
-  background-color: white;
+  ${(props: CommentEditorProps) =>
+    props.maxHeight
+      ? 'max-height: ' + props.maxHeight + 'px;'
+      : ''} background-color: white;
   border: 1px solid ${akColorN40};
   box-sizing: border-box;
   border-radius: ${akBorderRadius};
@@ -52,17 +50,13 @@ const CommentEditor: any = styled.div`
   box-sizing: border-box;
   word-wrap: break-word;
 
-  animation: ${(props: any) => props.isMaxContentSizeReached ? `.25s ease-in-out ${pulseBackground}` : 'none'};
+  animation: ${(props: any) =>
+    props.isMaxContentSizeReached
+      ? `.25s ease-in-out ${pulseBackground}`
+      : 'none'};
 
   &.-flash {
-    animation: .25s ease-in-out ${pulseBackgroundReverse};
-  }
-
-  div > .ProseMirror {
-    outline: none;
-    white-space: pre-wrap;
-    padding: 0;
-    margin: 0;
+    animation: 0.25s ease-in-out ${pulseBackgroundReverse};
   }
 `;
 CommentEditor.displayName = 'CommentEditor';
@@ -96,10 +90,14 @@ MainToolbarCustomComponentsSlot.displayName = 'MainToolbar';
 
 // tslint:disable-next-line:variable-name
 const ContentArea = styled(ContentStyles)`
-  padding: 12px 20px;
   flex-grow: 1;
   overflow-x: hidden;
   overflow-y: auto;
+
+  /** Hack for Bitbucket to ensure entire editorView gets drop event; see ED-3294 **/
+  .ProseMirror {
+    padding: 12px 20px;
+  }
 `;
 ContentArea.displayName = 'ContentArea';
 
@@ -115,8 +113,10 @@ SecondaryToolbar.displayName = 'SecondaryToolbar';
 
 export interface EditorAppearanceComponentState {}
 
-export default class Editor extends React.Component<EditorAppearanceComponentProps, EditorAppearanceComponentState> {
-
+export default class Editor extends React.Component<
+  EditorAppearanceComponentProps,
+  EditorAppearanceComponentState
+> {
   static displayName = 'CommentEditorAppearance';
 
   private flashToggle = false;
@@ -127,19 +127,19 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
     if (this.props.onUiReady) {
       this.props.onUiReady(ref);
     }
-  }
+  };
 
   private handleSave = () => {
     if (this.props.editorView && this.props.onSave) {
       this.props.onSave(this.props.editorView);
     }
-  }
+  };
 
   private handleCancel = () => {
     if (this.props.editorView && this.props.onCancel) {
       this.props.onCancel(this.props.editorView);
     }
-  }
+  };
 
   private renderChrome = ({ maxContentSize }) => {
     const {
@@ -152,9 +152,11 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       secondaryToolbarComponents, customSecondaryToolbarComponents,
       popupsMountPoint, popupsBoundariesElement,
       maxHeight,
-      onSave, onCancel
+      onSave,
+      onCancel,
     } = this.props;
-    const maxContentSizeReached = maxContentSize && maxContentSize.maxContentSizeReached;
+    const maxContentSizeReached =
+      maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
     return (
@@ -212,7 +214,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
         </SecondaryToolbar>
       </CommentEditor>
     );
-  }
+  };
 
   render() {
     const { eventDispatcher, editorView } = this.props;
