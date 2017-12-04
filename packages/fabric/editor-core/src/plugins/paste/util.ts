@@ -55,3 +55,11 @@ export function filterMdToPmSchemaMapping(schema: Schema, map) {
     return newMap;
   }, {});
 }
+
+// @see https://product-fabric.atlassian.net/browse/ED-3159
+// @see https://github.com/markdown-it/markdown-it/issues/38
+export function escapeLinks(text) {
+  return text.replace(/(\[([^\]]+)\]\()?((https?|ftp):\/\/[^\s]+)/g, str => {
+    return str.match(/^(https?|ftp):\/\/[^\s]+$/) ? `<${str}>` : str;
+  });
+}
