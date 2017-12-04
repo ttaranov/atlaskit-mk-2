@@ -19,41 +19,41 @@ export default md`
 
   ${(
     <Example
-      Component={require('../examples/0-avatar').default}
+      Component={require('../examples/0-basicAvatar').default}
       title="Avatar"
-      source={require('!!raw-loader!../examples/0-avatar')}
+      source={require('!!raw-loader!../examples/0-basicAvatar')}
     />
   )}
 
   ${(
     <Example
-      Component={require('../examples/1-avatarGroup').default}
+      Component={require('../examples/1-basicAvatarGroup').default}
       title="AvatarGroup"
-      source={require('!!raw-loader!../examples/1-avatarGroup')}
+      source={require('!!raw-loader!../examples/1-basicAvatarGroup')}
     />
   )}
 
   ${(
     <Example
-      Component={require('../examples/2-avatarItem').default}
+      Component={require('../examples/2-basicAvatarItem').default}
       title="Presence"
-      source={require('!!raw-loader!../examples/2-avatarItem')}
+      source={require('!!raw-loader!../examples/2-basicAvatarItem')}
     />
   )}
 
   ${(
     <Example
-      Component={require('../examples/3-presence').default}
+      Component={require('../examples/3-basicPresence').default}
       title="Presence"
-      source={require('!!raw-loader!../examples/3-presence')}
+      source={require('!!raw-loader!../examples/3-basicPresence')}
     />
   )}
 
   ${(
     <Example
-      Component={require('../examples/4-status').default}
+      Component={require('../examples/4-basicStatus').default}
       title="Status"
-      source={require('!!raw-loader!../examples/4-status')}
+      source={require('!!raw-loader!../examples/4-basicStatus')}
     />
   )}
 
