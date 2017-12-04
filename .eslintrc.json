@@ -36,7 +36,8 @@
 
 
     "flowtype/require-valid-file-annotation": [2, "always", { "annotationStyle": "line" }],
-
+    "flowtype/define-flow-type": 1,
+    
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",
     "jest/no-identical-title": "error",
