@@ -1,5 +1,10 @@
+import {
+  MediaPluginState,
+  stateKey as mediaPluginStateKey,
+} from './../../../../src/plugins/media/index';
 import { name } from '../../../../package.json';
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 import createEditor from '../../../helpers/create-editor';
 import {
   doc,
@@ -9,12 +14,18 @@ import {
   decisionItem,
   taskList,
   taskItem,
+  randomId,
+  storyMediaProviderFactory,
 } from '@atlaskit/editor-test-helpers';
+import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import { EditorView } from 'prosemirror-view';
 import { JSONTransformer, Transformer } from '../../../../src/transformers';
 import tasksAndDecisionsPlugin from '../../../../src/editor/plugins/tasks-and-decisions';
+import mediaPlugin from '../../../../src/editor/plugins/media';
+import hyperlinkPlugin from '../../../../src/editor/plugins/hyperlink';
 import EditorActions from '../../../../src/editor/actions';
 import { toJSON } from '../../../../src/utils';
+import ProviderFactory from '../../../../src/providerFactory';
 
 const jsonTransformer = new JSONTransformer();
 
@@ -27,11 +38,38 @@ describe(name, () => {
   describe('EditorActions', () => {
     let editorActions: EditorActions;
     let editorView: EditorView;
+    const testTempFileId = `temporary:${randomId()}`;
+    const testPubFileId = `${randomId()}`;
+    const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
+    const stateManager = new DefaultMediaStateManager();
+    const mediaProvider = storyMediaProviderFactory({
+      collectionName: testCollectionName,
+      stateManager,
+      includeUserAuthProvider: true,
+    });
+    let mediaPluginState: MediaPluginState;
+
     beforeEach(() => {
-      const editor = createEditor([tasksAndDecisionsPlugin]);
+      const providerFactory = new ProviderFactory();
+      const editor = createEditor(
+        [tasksAndDecisionsPlugin, mediaPlugin, hyperlinkPlugin],
+        {
+          mediaProvider,
+          waitForMediaUpload: true,
+          uploadErrorHandler: () => {},
+        },
+        providerFactory,
+      );
+      providerFactory.setProvider('mediaProvider', mediaProvider);
       editorActions = new EditorActions();
       editorActions._privateRegisterEditor(editor.editorView);
       editorView = editor.editorView;
+
+      mediaPluginState = mediaPluginStateKey.getState(editorView.state) as any;
+
+      sinon
+        .stub(mediaPluginState, 'collectionFromProvider' as any)
+        .returns(testCollectionName);
     });
 
     afterEach(() => {
@@ -99,6 +137,63 @@ describe(name, () => {
 
         const actual = await editorActions.getValue();
         expect(actual).to.deep.equal(expected);
+      });
+
+      describe('with waitForMediaUpload === true', () => {
+        it('should not resolve when media operations are pending', async () => {
+          stateManager.updateState(testTempFileId, {
+            id: testTempFileId,
+            status: 'uploading',
+          });
+
+          const provider = await mediaProvider;
+          await provider.uploadContext;
+
+          mediaPluginState.insertFiles([
+            { id: testTempFileId, status: 'uploading' },
+          ]);
+
+          let resolved: any;
+
+          editorActions
+            .getValue()
+            .then(potentialValue => (resolved = potentialValue));
+
+          return new Promise(resolve => {
+            setTimeout(() => {
+              expect(resolved).to.equal(undefined);
+              resolve();
+            }, 50);
+          });
+        });
+
+        it('should resolve after media have resolved', async () => {
+          stateManager.updateState(testTempFileId, {
+            id: testTempFileId,
+            status: 'uploading',
+          });
+
+          const provider = await mediaProvider;
+          await provider.uploadContext;
+
+          mediaPluginState.insertFiles([
+            { id: testTempFileId, status: 'uploading' },
+          ]);
+
+          stateManager.updateState(testTempFileId, {
+            status: 'ready',
+            id: testTempFileId,
+            publicId: testPubFileId,
+          });
+
+          const value = (await editorActions.getValue()) as any;
+
+          expect(value).to.be.an('object');
+          expect(value.content).to.be.of.length(2);
+          expect(value.content[0].type).to.be.eq('mediaGroup');
+          expect(value.content[0].content[0].type).to.be.eq('media');
+          expect(value.content[0].content[0].attrs.id).to.be.eq(testPubFileId);
+        });
       });
     });
 

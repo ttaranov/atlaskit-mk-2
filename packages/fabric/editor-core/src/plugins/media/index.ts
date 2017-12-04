@@ -51,7 +51,7 @@ import { removeMediaNode, splitMediaGroup } from './media-common';
 import PickerFacade from './picker-facade';
 import DropPlaceholder from '../../ui/Media/DropPlaceholder';
 
-const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
+const MEDIA_END_STATES = ['ready', 'error', 'cancelled'];
 
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
@@ -71,6 +71,7 @@ export class MediaPluginState {
   public waitForMediaUpload: boolean = true;
   public showDropzone: boolean = false;
   private mediaNodes: MediaNodeWithPosHandler[] = [];
+  private pendingMedia: Promise<MediaState>[] = [];
   private options: MediaPluginOptions;
   private view: EditorView;
   private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
@@ -214,6 +215,7 @@ export class MediaPluginState {
   };
 
   insertFiles = (mediaStates: MediaState[]): void => {
+    const { stateManager, pendingMedia } = this;
     const { singleImage } = this.view.state.schema.nodes;
     const collection = this.collectionFromProvider();
     if (!collection) {
@@ -233,6 +235,23 @@ export class MediaPluginState {
     } else {
       insertMediaGroupNode(this.view, mediaStates, collection);
     }
+
+    const isResolvedState = (state: MediaState) =>
+      state.status && MEDIA_END_STATES.indexOf(state.status) !== -1;
+
+    pendingMedia.push(
+      ...mediaStates.filter(state => !isResolvedState(state)).map(state => {
+        const resolvePromise = new Promise<MediaState>((resolve, reject) =>
+          stateManager.subscribe(state.id, newState => {
+            if (isResolvedState(newState)) {
+              pendingMedia.splice(pendingMedia.indexOf(resolvePromise), 1);
+              resolve(newState);
+            }
+          }),
+        );
+        return resolvePromise;
+      }),
+    );
 
     const { view } = this;
     if (!view.hasFocus()) {
@@ -304,50 +323,23 @@ export class MediaPluginState {
    *
    */
   waitForPendingTasks = (timeout?: Number) => {
-    const { mediaNodes, stateManager } = this;
+    const { pendingMedia } = this;
 
-    return new Promise<void>((resolve, reject) => {
-      if (timeout) {
-        setTimeout(
-          () =>
-            reject(
-              new Error(`Media operations did not finish in ${timeout} ms`),
-            ),
-          timeout,
-        );
-      }
+    if (!timeout) {
+      return Promise.all(pendingMedia);
+    }
 
-      let outstandingNodes = mediaNodes.length;
-      if (!outstandingNodes) {
-        return resolve();
-      }
+    return new Promise((resolve, reject) => {
+      const allPromise = Promise.all(pendingMedia);
+      const rejectTimeout = setTimeout(
+        () =>
+          reject(new Error(`Media operations did not finish in ${timeout} ms`)),
+        timeout,
+      );
 
-      function onNodeStateChanged(state: MediaState) {
-        const { status } = state;
-
-        if (MEDIA_RESOLVE_STATES.indexOf(status || '') !== -1) {
-          onNodeStateReady(state.id);
-        }
-      }
-
-      function onNodeStateReady(id: string) {
-        outstandingNodes--;
-        stateManager.unsubscribe(id, onNodeStateChanged);
-
-        if (outstandingNodes <= 0) {
-          resolve();
-        }
-      }
-
-      mediaNodes.forEach(({ node }) => {
-        const mediaNodeId = node.attrs.id;
-        const nodeCurrentStatus = this.getMediaNodeStateStatus(mediaNodeId);
-
-        if (MEDIA_RESOLVE_STATES.indexOf(nodeCurrentStatus) !== -1) {
-          onNodeStateReady(mediaNodeId);
-        } else {
-          stateManager.subscribe(mediaNodeId, onNodeStateChanged);
-        }
+      return allPromise.then(() => {
+        clearTimeout(rejectTimeout);
+        resolve();
       });
     });
   };
