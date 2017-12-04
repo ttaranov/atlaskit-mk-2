@@ -26,7 +26,7 @@ pipelines:
           - bolt typecheck
           - bolt test:ci
           - bolt test:browser:browserstack
-          - (cd website && bolt deploy-staging:no-minimize)
+          # - (cd website && bolt deploy-staging:no-minimize)
 
   custom: # Pipelines that can be scheduled or triggered manually
 
