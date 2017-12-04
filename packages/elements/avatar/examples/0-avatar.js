@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import Avatar from '../src';
-import { Block, Gap } from './helpers';
+import { Block, Gap } from '../examples-util/helpers';
 
 export default () => (
   <div>

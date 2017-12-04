@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import Avatar, { AvatarItem } from '../src';
-import { RANDOM_USERS, getAdorableAvatar } from './data';
+import { RANDOM_USERS, getAdorableAvatar } from '../examples-util/data';
 
 function getPresence() {
   const chance = Math.random();

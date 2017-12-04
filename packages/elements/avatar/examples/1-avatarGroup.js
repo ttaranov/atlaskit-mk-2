@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
 import { AvatarGroup } from '../src'; // TODO: add to docs
-import { Block } from './helpers';
-import { RANDOM_USERS, getAdorableAvatar } from './data';
+import { Block } from '../examples-util/helpers';
+import { RANDOM_USERS, getAdorableAvatar } from '../examples-util/data';
 
 export default () => {
   const data = RANDOM_USERS.map(d => ({

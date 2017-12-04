@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { Status } from '../src';
-import { Block, Dot } from './helpers';
+import { Block, Dot } from '../examples-util/helpers';
 
 export default () => (
   <Block>
