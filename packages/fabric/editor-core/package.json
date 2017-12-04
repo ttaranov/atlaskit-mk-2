@@ -25,7 +25,6 @@
     "@atlaskit/avatar": "^8.0.0",
     "@atlaskit/button": "^5.4.8",
     "@atlaskit/code": "^2.1.10",
-    "@atlaskit/docs": "^1.0.1",
     "@atlaskit/droplist": "^4.11.3",
     "@atlaskit/editor-common": "^3.11.1",
     "@atlaskit/emoji": "^30.3.3",
@@ -88,6 +87,7 @@
   },
   "devDependencies": {
     "@atlaskit/button": "^5.1.1",
+    "@atlaskit/docs": "^1.0.1",
     "@atlaskit/editor-test-helpers": "^0.8.14",
     "@atlaskit/layer-manager": "^2.5.3",
     "@atlaskit/media-test-helpers": "^8.5.1",
