@@ -35,6 +35,14 @@ export default md`
 
   ${(
     <Example
+      Component={require('../examples/2-avatarItem').default}
+      title="Presence"
+      source={require('!!raw-loader!../examples/2-avatarItem')}
+    />
+  )}
+
+  ${(
+    <Example
       Component={require('../examples/3-presence').default}
       title="Presence"
       source={require('!!raw-loader!../examples/3-presence')}
