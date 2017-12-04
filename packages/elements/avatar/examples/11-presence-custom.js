@@ -9,7 +9,14 @@ import WithAllAvatarSizes from '../examples-util/with-all-avatar-sizes';
 
 const cleanTickInlineSvg: string = tickInlineSvg.replace(/"/g, '');
 
-const Tick = props => <img alt="tick" src={cleanTickInlineSvg} {...props} />;
+const Tick = () => (
+  <img
+    alt="tick"
+    src={cleanTickInlineSvg}
+    role="presentation"
+    style={{ height: '100%', width: '100%' }}
+  />
+);
 
 const DivPresence = styled.div`
   align-items: center;
@@ -32,11 +39,7 @@ export default () => (
     </Note>
     <h5>SVG</h5>
     <Note>Using a custom svg as the presence</Note>
-    <WithAllAvatarSizes
-      presence={
-        <Tick role="presentation" style={{ height: '100%', width: '100%' }} />
-      }
-    />
+    <WithAllAvatarSizes presence={<Tick />} />
     <HR />
     <h5>Your own component</h5>
     <Note>This example shows using a styled div as a presence.</Note>
