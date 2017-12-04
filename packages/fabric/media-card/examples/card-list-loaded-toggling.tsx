@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { Component } from 'react';
 import {
-  StoryList,
   createStorybookContext,
   collectionNames,
-  defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
-import { CardList, CardListEvent } from '../src';
+import { CardList } from '../src';
 import {
   CardSwitcherWrapper,
   CardSwitcherRow,

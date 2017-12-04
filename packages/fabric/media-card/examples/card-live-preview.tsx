@@ -4,42 +4,11 @@ import Button from '@atlaskit/button';
 import FieldText from '@atlaskit/field-text';
 import {
   StoryList,
-  Matrix,
   createStorybookContext,
   defaultCollectionName as collectionName,
-  videoUrlPreviewId,
-  audioUrlPreviewId,
-  imageUrlPreviewId,
-  docUrlPreviewId,
-  unknownUrlPreviewId,
-  genericUrlPreviewId,
-  youTubeUrlPreviewId,
-  spotifyUrlPreviewId,
-  soundcloudUrlPreviewId,
-  publicTrelloBoardUrlPreviewId,
-  privateTrelloBoardUrlPreviewId,
-  errorLinkId,
-  videoFileId,
-  audioFileId,
-  imageFileId,
-  docFileId,
-  unknownFileId,
-  smallImageFileId,
-  wideImageFileId,
-  largeImageFileId,
-  errorFileId,
 } from '@atlaskit/media-test-helpers';
 
-import {
-  Card,
-  UrlPreviewIdentifier,
-  FileIdentifier,
-  Identifier,
-  CardAppearance,
-  CardEvent,
-  OnSelectChangeFuncResult,
-} from '../src';
-import { SelectableCard } from '../example-helpers/selectableCard';
+import { Card, UrlPreviewIdentifier } from '../src';
 
 const context = createStorybookContext();
 

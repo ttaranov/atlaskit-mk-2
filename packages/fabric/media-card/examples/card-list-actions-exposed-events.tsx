@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
   StoryList,
   createStorybookContext,
-  collectionNames,
   defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
 import { CardList, CardListEvent } from '../src';
