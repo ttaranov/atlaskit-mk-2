@@ -5,6 +5,7 @@ import { colors } from '@atlaskit/theme';
 import Avatar from '../src/';
 import { Wrapper, Note } from '../examples-util/styled';
 import nucleusImage from '../examples-util/nucleus.png';
+import { avatarUrl } from '../examples-util/constants';
 import type { AvatarPropTypes, PresenceType, StatusType } from '../src/types';
 
 const exampleColors: string[] = [
@@ -13,8 +14,6 @@ const exampleColors: string[] = [
   colors.N20,
   colors.N0,
 ];
-const avatarSource =
-  'https://pbs.twimg.com/profile_images/803832195970433027/aaoG6PJI_400x400.jpg';
 
 const presences: PresenceType[] = [null, 'online', 'offline', 'busy'];
 // $FlowFixMe - adding null
@@ -63,7 +62,7 @@ export default () => (
         <ColorColumn
           key={index}
           borderColor={color}
-          src={avatarSource}
+          src={avatarUrl}
           presence={presences[index]}
         />
       ))}
