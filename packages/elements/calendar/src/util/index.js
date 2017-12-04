@@ -54,9 +54,9 @@ export function dateToString(
   date: Date,
   { fixMonth }: DateToStringOptions = {},
 ) {
-  return date
-    ? `${date.year}-${pad(date.month + (fixMonth ? 1 : 0))}-${pad(date.day)}`
-    : '';
+  return `${date.year}-${pad(date.month + (fixMonth ? 1 : 0))}-${pad(
+    date.day,
+  )}`;
 }
 
 export function makeArrayFromNumber(i: number): Array<number> {
