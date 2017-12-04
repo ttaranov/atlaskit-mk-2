@@ -42,7 +42,7 @@ function pad(num) {
   return num < 10 ? `0${num}` : num;
 }
 
-export function getDayName(i: number) {
+export function getShortDayName(i: number) {
   return getI18n().weekdays[i].substring(0, 3);
 }
 
