@@ -7,7 +7,7 @@ import type { AppearanceType, SizeType } from '../types';
 
 // if image is loading, we hide the image so it doesn't obscure the gray loading
 // block until the source image is loaded.
-const getBackgroundColor = (isLoading: boolean) =>
+const getBackgroundColor = ({ isLoading }: { isLoading: boolean }) =>
   isLoading ? themed({ light: colors.N40, dark: colors.DN50 }) : 'transparent';
 
 type SlotArgs = {|
@@ -29,12 +29,12 @@ export const Slot = ({
 }: SlotArgs) => (
   <span
     style={{
-      backgroundColor: getBackgroundColor(isLoading),
+      backgroundColor: getBackgroundColor({ isLoading }),
       backgroundImage: backgroundImage ? `url(${backgroundImage})` : null,
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
-      borderRadius: getBorderRadius(appearance, size),
+      borderRadius: getBorderRadius({ appearance, size }),
       display: 'flex',
       flex: '1 1 100%',
       height: '100%',
@@ -55,8 +55,8 @@ type SvgArgs = {
 export const Svg = ({ appearance, size, children, ...otherProps }: SvgArgs) => (
   <svg
     style={{
-      backgroundColor: getBackgroundColor(false),
-      borderRadius: getBorderRadius(appearance, size),
+      backgroundColor: getBackgroundColor({ isLoading: false }),
+      borderRadius: getBorderRadius({ appearance, size }),
       height: '100%',
       width: '100%',
     }}

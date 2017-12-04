@@ -20,16 +20,15 @@ const overlayColorDisabled = themed({
 
 // "square" avatars are explicit
 export function getBorderRadius(
-  appearance: AppearanceType,
-  size: SizeType,
+  props: { appearance: AppearanceType, size: SizeType },
   config: { includeBorderWidth: boolean } = { includeBorderWidth: false },
 ) {
   const borderWidth: number = config.includeBorderWidth
-    ? BORDER_WIDTH[size]
+    ? BORDER_WIDTH[props.size]
     : 0;
-  return appearance === 'circle'
+  return props.appearance === 'circle'
     ? '50%'
-    : `${AVATAR_RADIUS[size] + borderWidth}px`;
+    : `${AVATAR_RADIUS[props.size] + borderWidth}px`;
 }
 
 export const getSize = (props: { size: SizeType }) => AVATAR_SIZES[props.size]; // for testing
@@ -123,8 +122,7 @@ export function getInnerStyles(
     align-items: stretch;
     background-color: ${backgroundColor};
     border: 0;
-    border-radius: ${p =>
-      getBorderRadius(p.appearance, p.size, { includeBorderWidth: true })};
+    border-radius: ${p => getBorderRadius(p, { includeBorderWidth: true })};
     padding: ${borderWidth};
     box-sizing: ${boxSizing};
     cursor: ${cursor};
@@ -145,7 +143,7 @@ export function getInnerStyles(
 
     &::after {
       background-color: ${overlayShade};
-      border-radius: ${p => getBorderRadius(p.appearance, p.size)};
+      border-radius: ${getBorderRadius};
       bottom: ${borderWidth};
       content: ' ';
       left: ${borderWidth};
