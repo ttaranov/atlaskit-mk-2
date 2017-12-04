@@ -26,7 +26,8 @@ pipelines:
           - bolt typecheck
           - bolt test:ci
           - bolt test:browser:browserstack
-          # - (cd website && bolt deploy-staging:no-minimize)
+          # We are using the patched netlify again because it's failing randomly
+          - (cd website && bolt deploy-staging:no-minimize) || true
 
   custom: # Pipelines that can be scheduled or triggered manually
 
@@ -36,4 +37,5 @@ pipelines:
           script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
-            - (cd website && bolt deploy)
+            # We are using the patched netlify again because it's failing randomly
+            - (cd website && bolt deploy) || true
