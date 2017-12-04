@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 3.11.2
+
+- [patch] Adding separate transformer packages. [f734c01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f734c01)
+- [patch] Adding separate transformer packages. [f734c01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f734c01)
+
 ## 3.11.1
 
 ## 3.11.0

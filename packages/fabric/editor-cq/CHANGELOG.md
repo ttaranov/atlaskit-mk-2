@@ -1,5 +1,10 @@
 # @atlaskit/editor-cq
 
+## 6.9.5
+
+- [patch] Adding separate transformer packages. [f734c01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f734c01)
+- [patch] Adding separate transformer packages. [f734c01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f734c01)
+
 ## 6.9.4
 
 ## 6.9.3
