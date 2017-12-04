@@ -1,3 +1,4 @@
+// tslint:disable:no-console
 import * as React from 'react';
 import { PureComponent } from 'react';
 import Editor from '@atlaskit/editor-bitbucket';
