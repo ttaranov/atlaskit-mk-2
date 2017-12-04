@@ -4,7 +4,6 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import styled, { injectGlobal } from 'styled-components';
 import LayerManager from '@atlaskit/layer-manager';
-import { AtlaskitThemeProvider } from '@atlaskit/theme';
 
 import type { Directory } from '../types';
 import * as fs from '../utils/fs';
@@ -15,10 +14,14 @@ import Examples from '../pages/Examples';
 import FourOhFour from '../pages/FourOhFour';
 import Pattern from '../pages/Pattern';
 import PatternsInfo from '../pages/PatternsInfo';
+import Document from '../pages/Document';
+
 import Package from '../pages/Package';
 import PackagesList from '../pages/PackagesList';
 import PackageDocument from '../pages/PackageDocument';
-import Document from '../pages/Document';
+import ChangelogModal from '../pages/Package/ChangelogModal';
+import ExamplesModal from '../pages/Package/ExamplesModal';
+
 import Nav from './Nav';
 
 // eslint-disable-next-line
@@ -57,38 +60,41 @@ export default function App() {
         />
         <Route>
           <LayerManager>
-            <AtlaskitThemeProvider mode="light">
-              <AppContainer>
-                <Nav />
-                <AppContent>
-                  <Switch>
-                    <Route exact path="/" component={Home} />
-                    <Route path="/docs/:docId*" component={Document} />
-                    <Route path="/patterns" component={PatternsInfo} exact />
-                    <Route path="/patterns/:patternId*" component={Pattern} />}
-                    />
-                    <Route
-                      path="/mk-2/packages/:groupId/:pkgId/docs/:docId"
-                      component={PackageDocument}
-                    />
-                    <Route
-                      path="/packages/:groupId/:pkgId"
-                      component={Package}
-                    />
-                    <Route
-                      path="/mk-2/packages/:groupId/:pkgId"
-                      component={Package}
-                    />
-                    <Route path="/packages" component={PackagesList} />
-                    <Route
-                      path="/changelog/:groupId/:pkgId/:semver?"
-                      component={ChangeLogExplorer}
-                    />
-                    <Route component={FourOhFour} />
-                  </Switch>
-                </AppContent>
-              </AppContainer>
-            </AtlaskitThemeProvider>
+            <AppContainer>
+              <Nav />
+              <AppContent>
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  <Route path="/docs/:docId*" component={Document} />
+                  <Route path="/patterns" component={PatternsInfo} exact />
+                  <Route path="/patterns/:patternId*" component={Pattern} />
+                  <Route
+                    path="/mk-2/packages/:groupId/:pkgId/docs/:docId"
+                    component={PackageDocument}
+                  />
+                  <Route path="/packages/:groupId/:pkgId" component={Package} />
+                  <Route
+                    path="/mk-2/packages/:groupId/:pkgId"
+                    component={Package}
+                  />
+                  <Route path="/packages" component={PackagesList} />
+                  <Route
+                    path="/changelog/:groupId/:pkgId/:semver?"
+                    component={ChangeLogExplorer}
+                  />
+                  <Route component={FourOhFour} />
+                </Switch>
+
+                <Route
+                  path="/mk-2/packages/:groupId/:pkgId/changelog/:semver?"
+                  component={ChangelogModal}
+                />
+                <Route
+                  path="/mk-2/packages/:groupId/:pkgId/example/:exampleId"
+                  component={ExamplesModal}
+                />
+              </AppContent>
+            </AppContainer>
           </LayerManager>
         </Route>
       </Switch>

@@ -1,50 +1,26 @@
-/* tslint:disable:variable-name */
 import * as React from 'react';
-import { Component } from 'react';
-import { LazyLoadCard } from '../../root/card/styled';
+import LazilyRender from 'react-lazily-render';
+
+/*
+  I could have used LazilyRender directly whereever LazyContent is used, but it was easier to test
+  with enzyme (the .find() method just works, no need to execute the render fn)
+*/
 
 export interface LazyContentProps {
   placeholder?: JSX.Element;
-  children?: any;
-
-  [propName: string]: any;
+  children?: React.ReactNode;
 }
 
-export interface LazyContentState {
-  isVisible: boolean;
-}
+export interface LazyContentState {}
 
-export class LazyContent extends Component<LazyContentProps, LazyContentState> {
-  constructor(props: LazyContentProps) {
-    super(props);
-
-    this.state = {
-      isVisible: false,
-    };
-  }
-
-  private onContentVisible = () => {
-    this.setState({
-      isVisible: true,
-    });
-  };
-
+export class LazyContent extends React.Component<
+  LazyContentProps,
+  LazyContentState
+> {
   render() {
-    const { children, placeholder, ...otherProps } = this.props;
-    const { isVisible } = this.state;
-
+    const { children, placeholder } = this.props;
     return (
-      <div>
-        <LazyLoadCard
-          {...otherProps}
-          throttle={150}
-          onContentVisible={this.onContentVisible}
-          wrapperClassName="filmtrip-list-wrapper"
-        >
-          {children}
-        </LazyLoadCard>
-        {!isVisible && placeholder}
-      </div>
+      <LazilyRender>{render => (render ? children : placeholder)}</LazilyRender>
     );
   }
 }

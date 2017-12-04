@@ -4,10 +4,7 @@ import { akColorR100 } from '@atlaskit/util-shared-styles';
 import PluginSlot from '../PluginSlot';
 import WithPluginState from '../WithPluginState';
 import ContentStyles from '../ContentStyles';
-import {
-  EditorAppearanceComponentProps,
-  EditorAppearance
-} from '../../types';
+import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
 
 const pulseBackground = keyframes`
@@ -37,17 +34,22 @@ export interface ChromelessEditorProps {
 const ChromelessEditor: any = styled.div`
   height: auto;
   min-height: 30px;
-  ${(props: ChromelessEditorProps) => props.maxHeight ? 'max-height: ' + props.maxHeight + 'px;' : ''}
-  overflow-x: hidden;
+  ${(props: ChromelessEditorProps) =>
+    props.maxHeight
+      ? 'max-height: ' + props.maxHeight + 'px;'
+      : ''} overflow-x: hidden;
   overflow-y: auto;
 
   max-width: inherit;
   box-sizing: border-box;
   word-wrap: break-word;
-  animation: ${(props: any) => props.isMaxContentSizeReached ? `.25s ease-in-out ${pulseBackground}` : 'none'};
+  animation: ${(props: any) =>
+    props.isMaxContentSizeReached
+      ? `.25s ease-in-out ${pulseBackground}`
+      : 'none'};
 
   &.-flash {
-    animation: .25s ease-in-out ${pulseBackgroundReverse};
+    animation: 0.25s ease-in-out ${pulseBackgroundReverse};
   }
 
   div > .ProseMirror {
@@ -63,7 +65,10 @@ ChromelessEditor.displayName = 'ChromelessEditor';
 const ContentArea = styled(ContentStyles)``;
 ContentArea.displayName = 'ContentArea';
 
-export default class Editor extends React.Component<EditorAppearanceComponentProps, any> {
+export default class Editor extends React.Component<
+  EditorAppearanceComponentProps,
+  any
+> {
   static displayName = 'ChromelessEditorAppearance';
 
   private flashToggle = false;
@@ -74,7 +79,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
     if (this.props.onUiReady) {
       this.props.onUiReady(ref);
     }
-  }
+  };
 
   private renderChrome = ({ maxContentSize }) => {
     const {
@@ -85,9 +90,10 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       customContentComponents,
       maxHeight,
       popupsMountPoint,
-      popupsBoundariesElement
+      popupsBoundariesElement,
     } = this.props;
-    const maxContentSizeReached = maxContentSize && maxContentSize.maxContentSizeReached;
+    const maxContentSizeReached =
+      maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
     return (
@@ -110,7 +116,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
         </ContentArea>
       </ChromelessEditor>
     );
-  }
+  };
 
   render() {
     const { eventDispatcher, editorView } = this.props;

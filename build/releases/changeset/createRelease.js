@@ -1,5 +1,5 @@
 const semver = require('semver');
-
+const flattenChangesets = require('./flattenChangesets');
 /*
   This flattens an array of Version objects into one object that can be used to create the changelogs
   and the publish commit messages.
@@ -39,61 +39,11 @@ function getCurrentVersion(packageName, allPackages) {
   return allPackages.find(pkg => pkg.name === packageName).config.version;
 }
 
-// returns which bump type is bigger (bumpA can be undefined)
-function maxBumpType(bumpA, bumpB) {
-  if (bumpA === 'major' || bumpB === 'major') return 'major';
-  if (bumpA === 'minor' || bumpB === 'minor') return 'minor';
-  if (bumpA === 'patch' || bumpB === 'patch') return 'patch';
-  return 'none';
-}
-
-// Takes an array of Changesets and returns a flat list of actual releases with only one entry per
-// package. i.e [{ name:'', type:'', commits: ['', ''], dependencies: []}, ]
-function flattenReleases(changesets) {
-  const flattened = [];
-  const combined = [];
-
-  changesets.forEach(changeset => {
-    changeset.releases.forEach(release => {
-      combined.push({
-        name: release.name,
-        type: release.type,
-        commit: changeset.commit,
-      });
-    });
-
-    changeset.dependents.forEach(dependent => {
-      combined.push({
-        name: dependent.name,
-        type: dependent.type,
-        commit: changeset.commit,
-      });
-    });
-  });
-
-  combined.forEach(release => {
-    const { name, type, commit } = release;
-    const foundBefore = flattened.find(pkg => pkg.name === name);
-
-    if (!foundBefore) {
-      flattened.push({ name, type, commits: [commit] });
-    } else {
-      foundBefore.type = maxBumpType(foundBefore.type, type);
-      foundBefore.commits.push(commit);
-    }
-  });
-
-  return flattened;
-}
-
 function createRelease(changesets, allPackages) {
   // First, combine all the changeset.releases into one useful array
-  const flattenedReleases = flattenReleases(changesets);
+  const flattenedChangesets = flattenChangesets(changesets);
 
-  // Then add in the dependents to the releases
-  // const allReleases = addDependentReleases(flattenedReleases)
-
-  const allReleases = flattenedReleases
+  const allReleases = flattenedChangesets
     // do not update none packages
     .filter(release => release.type !== 'none')
     // get the current version for each package

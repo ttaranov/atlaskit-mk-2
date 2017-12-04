@@ -28,7 +28,7 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
     const helpDialog = mount(
       <LayerManager>
         <HelpDialog editorView={editorView} isVisible={true} />
-      </LayerManager>
+      </LayerManager>,
     );
 
     expect(helpDialog.find(HelpDialog).length).to.equal(1);
@@ -60,7 +60,7 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
     it('should have a value of type keymap in keymap property', () => {
       expect(
         formatting.filter(f => f.name === 'Quote')[0].keymap ===
-          keymaps.toggleBlockQuote
+          keymaps.toggleBlockQuote,
       ).to.equal(true);
     });
 
@@ -110,7 +110,7 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
       expect(formatting.filter(f => f.type === 'strong').length).to.equal(0);
       expect(formatting.filter(f => f.type === 'codeBlock').length).to.equal(1);
       expect(formatting.filter(f => f.type === 'blockquote').length).to.equal(
-        0
+        0,
       );
     });
   });

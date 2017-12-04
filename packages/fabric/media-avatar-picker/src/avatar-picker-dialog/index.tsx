@@ -15,6 +15,8 @@ import {
 } from './styled';
 import { PredefinedAvatarView } from '../predefined-avatar-view';
 
+export const DEFAULT_VISIBLE_PREDEFINED_AVATARS = 5;
+
 export interface AvatarPickerDialogProps {
   avatars: Array<Avatar>;
   defaultSelectedAvatar?: Avatar;
@@ -51,6 +53,7 @@ export class AvatarPickerDialog extends PureComponent<
       y: 0,
       size: 0,
     },
+    selectedAvatar: this.props.defaultSelectedAvatar,
   };
 
   setSelectedImageState = (selectedImage: File, crop: CropProperties) => {
@@ -58,7 +61,9 @@ export class AvatarPickerDialog extends PureComponent<
   };
 
   setSelectedAvatarState = (avatar: Avatar) => {
-    this.setState({ selectedAvatar: avatar });
+    this.setState({
+      selectedAvatar: avatar,
+    });
   };
 
   /**
@@ -121,7 +126,11 @@ export class AvatarPickerDialog extends PureComponent<
     return () => (
       <ModalFooter>
         <div>
-          <Button appearance="primary" onClick={this.onSaveClick}>
+          <Button
+            appearance="primary"
+            onClick={this.onSaveClick}
+            isDisabled={this.isDisabled}
+          >
             Save
           </Button>
           <Button appearance="subtle-link" onClick={this.props.onCancel}>
@@ -132,6 +141,14 @@ export class AvatarPickerDialog extends PureComponent<
     );
   }
 
+  get isDisabled() {
+    return !(
+      this.props.imageSource ||
+      this.state.selectedImage ||
+      this.state.selectedAvatar
+    );
+  }
+
   get isAvatarListVisible() {
     const { imageSource } = this.props;
     const { selectedImage } = this.state;
@@ -139,16 +156,31 @@ export class AvatarPickerDialog extends PureComponent<
     return !imageSource && !selectedImage;
   }
 
-  renderPredefinedAvatarList() {
-    const { isAvatarListVisible } = this;
+  getPredefinedAvatars() {
     const { avatars } = this.props;
+    const { selectedAvatar } = this.state;
+    const avatarsSubset = avatars.slice(0, DEFAULT_VISIBLE_PREDEFINED_AVATARS);
+    if (
+      selectedAvatar &&
+      avatars.indexOf(selectedAvatar) >= DEFAULT_VISIBLE_PREDEFINED_AVATARS
+    ) {
+      avatarsSubset[avatarsSubset.length - 1] = selectedAvatar;
+    }
+    return avatarsSubset;
+  }
+
+  renderPredefinedAvatarList() {
+    const { selectedAvatar } = this.state;
+    const { isAvatarListVisible } = this;
+    const avatars = this.getPredefinedAvatars();
     if (!isAvatarListVisible) {
       return null;
     }
 
     return (
       <PredefinedAvatarList
-        avatars={avatars.slice(0, 5)}
+        selectedAvatar={selectedAvatar}
+        avatars={avatars}
         onAvatarSelected={this.setSelectedAvatarState}
         onShowMore={this.onShowMore}
       />
@@ -157,7 +189,7 @@ export class AvatarPickerDialog extends PureComponent<
 
   renderContent() {
     const { imageSource, avatars } = this.props;
-    const { mode } = this.state;
+    const { mode, selectedAvatar } = this.state;
 
     switch (mode) {
       case Mode.Cropping:
@@ -179,6 +211,7 @@ export class AvatarPickerDialog extends PureComponent<
               avatars={avatars}
               onAvatarSelected={this.setSelectedAvatarState}
               onGoBack={this.onGoBack}
+              selectedAvatar={selectedAvatar}
             />
           </div>
         );

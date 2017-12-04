@@ -19,7 +19,7 @@ export interface State {
 }
 
 export default class ToolbarMedia extends PureComponent<Props, State> {
-  state: State = {disabled: false};
+  state: State = { disabled: false };
   private pluginState?: MediaPluginState;
 
   componentDidMount() {
@@ -47,7 +47,11 @@ export default class ToolbarMedia extends PureComponent<Props, State> {
     const { editorWidth } = this.props;
     return (
       <ToolbarButton
-        spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
+        spacing={
+          editorWidth && editorWidth > EditorWidth.BreakPoint6
+            ? 'default'
+            : 'none'
+        }
         onClick={this.handleClickMediaButton}
         title="Insert files and images"
         iconBefore={<AttachmentIcon label="Insert files and images" />}
@@ -67,13 +71,13 @@ export default class ToolbarMedia extends PureComponent<Props, State> {
 
   private handlePluginStateChange = (pluginState: MediaPluginState) => {
     this.setState({
-      disabled: !pluginState.allowsUploads
+      disabled: !pluginState.allowsUploads,
     });
-  }
+  };
 
   @analytics('atlassian.editor.media.button')
   private handleClickMediaButton = () => {
     this.pluginState!.showMediaPicker();
     return true;
-  }
+  };
 }

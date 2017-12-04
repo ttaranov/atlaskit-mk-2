@@ -7,7 +7,7 @@ export const pluginKey = new PluginKey('maxContentSizePlugin');
 export function createPlugin(
   dispatch: Dispatch,
   maxContentSize?: number,
-  onMaxContentSize?: (isMaxContentSizeReached: boolean) => void
+  onMaxContentSize?: (isMaxContentSizeReached: boolean) => void,
 ): Plugin | undefined {
   if (!maxContentSize) {
     return;
@@ -25,16 +25,20 @@ export function createPlugin(
 
       maxContentSizeReached = result;
       return !result;
-    }
+    },
   });
 }
 
 const maxContentSizePlugin: EditorPlugin = {
   pmPlugins() {
     return [
-      { rank: 10000, plugin: (schema, props, dispatch) => createPlugin(dispatch, props.maxContentSize)}
+      {
+        rank: 10000,
+        plugin: (schema, props, dispatch) =>
+          createPlugin(dispatch, props.maxContentSize),
+      },
     ];
-  }
+  },
 };
 
 export default maxContentSizePlugin;

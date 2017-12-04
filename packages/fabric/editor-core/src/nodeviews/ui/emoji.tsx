@@ -8,7 +8,7 @@ import { EditorView } from 'prosemirror-view';
 
 // tslint:disable-next-line:variable-name
 const Wrapper = styled.span`
-  userSelect: all;
+  userselect: all;
 `;
 
 export interface Props {

@@ -10,27 +10,24 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
   }
 
   // ![something](link) should convert to an image
-  const imageRule = createInputRule(/!\[(\S+)\]\((\S+)\)$/, (state, match, start, end) => {
-    const { schema } = state;
-    const attrs = {
-      src: match[2],
-      alt: match[1],
-      title: match[1],
-    };
+  const imageRule = createInputRule(
+    /!\[(\S+)\]\((\S+)\)$/,
+    (state, match, start, end) => {
+      const { schema } = state;
+      const attrs = {
+        src: match[2],
+        alt: match[1],
+        title: match[1],
+      };
 
-    const node = schema.nodes.image.create(attrs);
-    analyticsService.trackEvent('atlassian.editor.image.autoformatting');
-    return state.tr.replaceWith(
-      start,
-      end,
-      node
-    );
-  });
+      const node = schema.nodes.image.create(attrs);
+      analyticsService.trackEvent('atlassian.editor.image.autoformatting');
+      return state.tr.replaceWith(start, end, node);
+    },
+  );
 
   return inputRules({
-    rules: [
-      imageRule
-    ]
+    rules: [imageRule],
   });
 }
 

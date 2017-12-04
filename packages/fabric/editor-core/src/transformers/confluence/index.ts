@@ -1,7 +1,4 @@
-import {
-  Node as PMNode,
-  Schema
-} from 'prosemirror-model';
+import { Node as PMNode, Schema } from 'prosemirror-model';
 import { Transformer } from '../transformer';
 import parse from './parse';
 import encode from './encode';

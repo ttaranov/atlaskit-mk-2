@@ -21,10 +21,12 @@ export default function analytics(name: string) {
   return function(
     target: any,
     key: string,
-    descriptor?: TypedPropertyDescriptor<any>
+    descriptor?: TypedPropertyDescriptor<any>,
   ): any {
     if (!name) {
-      throw new SyntaxError('@analytics requires an event name as the first argument.');
+      throw new SyntaxError(
+        '@analytics requires an event name as the first argument.',
+      );
     }
 
     if (!descriptor) {
@@ -32,13 +34,19 @@ export default function analytics(name: string) {
       return {
         set(primitiveOrFn: any) {
           if (typeof primitiveOrFn === 'function') {
-            Object.defineProperty(this, key, { value: trackFunction(name, primitiveOrFn) });
+            Object.defineProperty(this, key, {
+              value: trackFunction(name, primitiveOrFn),
+            });
           } else {
             // tslint:disable-next-line:no-console
-            console.warn(`@analytics decorator expects "${key}" to be a function, not a ${typeof primitiveOrFn}.`);
+            console.warn(
+              `@analytics decorator expects "${
+                key
+              }" to be a function, not a ${typeof primitiveOrFn}.`,
+            );
             Object.defineProperty(this, key, { value: primitiveOrFn });
           }
-        }
+        },
       } as PropertyDescriptor;
     }
 
@@ -50,7 +58,7 @@ export default function analytics(name: string) {
     // We're decorating a class method
     return {
       ...descriptor,
-      value: trackFunction(name, fn)
+      value: trackFunction(name, fn),
     };
   };
 }
@@ -66,7 +74,10 @@ function trackFunction(analyticsEventName: string, trackedFn: Function) {
         analyticsService.trackEvent(analyticsEventName);
       } catch (e) {
         // tslint:disable-next-line:no-console
-        console.error('An exception has been thrown when trying to track analytics event:', e);
+        console.error(
+          'An exception has been thrown when trying to track analytics event:',
+          e,
+        );
       }
     }
     return result;

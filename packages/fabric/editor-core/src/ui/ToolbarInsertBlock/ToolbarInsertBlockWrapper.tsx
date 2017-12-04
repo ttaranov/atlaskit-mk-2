@@ -31,7 +31,10 @@ export interface State {
 }
 
 // TODO: deprecate me when we move to new architecture
-export default class ToolbarInsertBlockWrapper extends React.Component<Props, State> {
+export default class ToolbarInsertBlockWrapper extends React.Component<
+  Props,
+  State
+> {
   constructor(props) {
     super(props);
 
@@ -46,12 +49,17 @@ export default class ToolbarInsertBlockWrapper extends React.Component<Props, St
   }
 
   componentDidMount() {
-    const { pluginStateTable, pluginStateMedia, pluginStateBlockType, pluginStateMentions } = this.props;
+    const {
+      pluginStateTable,
+      pluginStateMedia,
+      pluginStateBlockType,
+      pluginStateMentions,
+    } = this.props;
 
     if (pluginStateTable) {
       pluginStateTable.subscribe(this.handlePluginStateTableChange);
       this.setState({
-        tableSupported: true
+        tableSupported: true,
       });
     }
 
@@ -59,32 +67,43 @@ export default class ToolbarInsertBlockWrapper extends React.Component<Props, St
       pluginStateMedia.subscribe(this.handlePluginStateMediaChange);
       this.setState({
         showMediaPicker: pluginStateMedia.showMediaPicker,
-        mediaSupported: true
+        mediaSupported: true,
       });
     }
 
     if (pluginStateBlockType) {
       pluginStateBlockType.subscribe(this.handlePluginStateBlockTypeChange);
-      const { availableWrapperBlockTypes, insertBlockType } = pluginStateBlockType;
+      const {
+        availableWrapperBlockTypes,
+        insertBlockType,
+      } = pluginStateBlockType;
       this.setState({
         availableWrapperBlockTypes,
-        insertBlockType
+        insertBlockType,
       });
     }
 
     if (pluginStateMentions) {
       pluginStateMentions.subscribe(this.handlePluginStateMentionsChange);
-      const { enabled: mentionsEnabled, insertMentionQuery } = pluginStateMentions;
+      const {
+        enabled: mentionsEnabled,
+        insertMentionQuery,
+      } = pluginStateMentions;
       this.setState({
         mentionsEnabled,
         insertMentionQuery,
-        mentionsSupported: true
+        mentionsSupported: true,
       });
     }
   }
 
   componentWillReceiveProps(props: Props) {
-    const { pluginStateTable, pluginStateMedia, pluginStateBlockType, pluginStateMentions } = props;
+    const {
+      pluginStateTable,
+      pluginStateMedia,
+      pluginStateBlockType,
+      pluginStateMentions,
+    } = props;
     const {
       pluginStateTable: oldPluginStateTable,
       pluginStateMedia: oldPluginStateMedia,
@@ -95,7 +114,7 @@ export default class ToolbarInsertBlockWrapper extends React.Component<Props, St
     if (!oldPluginStateTable && pluginStateTable) {
       pluginStateTable.subscribe(this.handlePluginStateTableChange);
       this.setState({
-        tableSupported: true
+        tableSupported: true,
       });
     }
 
@@ -103,32 +122,42 @@ export default class ToolbarInsertBlockWrapper extends React.Component<Props, St
       pluginStateMedia.subscribe(this.handlePluginStateMediaChange);
       this.setState({
         showMediaPicker: pluginStateMedia.showMediaPicker,
-        mediaSupported: true
+        mediaSupported: true,
       });
     }
 
     if (!oldPluginStateBlockType && pluginStateBlockType) {
       pluginStateBlockType.subscribe(this.handlePluginStateBlockTypeChange);
-      const { availableWrapperBlockTypes, insertBlockType } = pluginStateBlockType;
+      const {
+        availableWrapperBlockTypes,
+        insertBlockType,
+      } = pluginStateBlockType;
       this.setState({
         availableWrapperBlockTypes,
-        insertBlockType
+        insertBlockType,
       });
     }
 
     if (!oldPluginStateMentions && pluginStateMentions) {
       pluginStateMentions.subscribe(this.handlePluginStateMentionsChange);
-      const { enabled: mentionsEnabled, insertMentionQuery } = pluginStateMentions;
+      const {
+        enabled: mentionsEnabled,
+        insertMentionQuery,
+      } = pluginStateMentions;
       this.setState({
         mentionsEnabled,
         insertMentionQuery,
-        mentionsSupported: true
+        mentionsSupported: true,
       });
     }
   }
 
   componentWillUnmount() {
-    const { pluginStateTable, pluginStateMedia, pluginStateBlockType } = this.props;
+    const {
+      pluginStateTable,
+      pluginStateMedia,
+      pluginStateBlockType,
+    } = this.props;
 
     if (pluginStateTable) {
       pluginStateTable.unsubscribe(this.handlePluginStateTableChange);
@@ -144,26 +173,26 @@ export default class ToolbarInsertBlockWrapper extends React.Component<Props, St
   private handlePluginStateTableChange = (pluginState: TableState) => {
     const { tableActive, tableHidden } = pluginState;
     this.setState({ tableActive, tableHidden });
-  }
+  };
 
   private handlePluginStateMediaChange = (pluginState: MediaPluginState) => {
     this.setState({
       mediaUploadsEnabled: pluginState.allowsUploads,
-      showMediaPicker: pluginState.showMediaPicker
+      showMediaPicker: pluginState.showMediaPicker,
     });
-  }
+  };
 
   private handlePluginStateBlockTypeChange = (pluginState: BlockTypeState) => {
     this.setState({
       availableWrapperBlockTypes: pluginState.availableWrapperBlockTypes,
     });
-  }
+  };
 
   private handlePluginStateMentionsChange = (pluginState: MentionsState) => {
     this.setState({
       mentionsEnabled: pluginState.enabled,
     });
-  }
+  };
 
   render() {
     const { render } = this.props;

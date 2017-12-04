@@ -25,24 +25,21 @@ export default class Color extends PureComponent<Props, any> {
           title={label}
           style={{ backgroundColor: value }}
         >
-          {isSelected &&
-            <EditorDoneIcon
-              primaryColor={akColorN0}
-              label="Selected"
-            />
-          }
+          {isSelected && (
+            <EditorDoneIcon primaryColor={akColorN0} label="Selected" />
+          )}
         </Button>
       </ButtonWrapper>
     );
   }
 
-  onMouseDown = (e) => {
+  onMouseDown = e => {
     e.preventDefault();
-  }
+  };
 
-  onClick = (e) => {
+  onClick = e => {
     const { onClick, value } = this.props;
     e.preventDefault();
     onClick(value);
-  }
+  };
 }

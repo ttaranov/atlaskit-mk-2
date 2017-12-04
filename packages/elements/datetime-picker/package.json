@@ -15,10 +15,10 @@
     "name": "Date-time picker",
     "team": "elements"
   },
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/calendar": "^3.0.7",
-    "@atlaskit/droplist": "^3.8.1",
+    "@atlaskit/droplist": "^4.11.3",
     "@atlaskit/field-base": "^8.1.1",
     "@atlaskit/icon": "^10.3.1",
     "@atlaskit/input": "^1.6.0",
@@ -32,7 +32,7 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^0.0.7",
+    "@atlaskit/docs": "^1.0.0",
     "@atlaskit/field-text": "^4.0.0",
     "enzyme": "^2.9.1",
     "react-dom": "^15.6.1",

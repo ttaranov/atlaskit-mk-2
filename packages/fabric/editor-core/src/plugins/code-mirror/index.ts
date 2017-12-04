@@ -11,7 +11,7 @@ const plugin = new Plugin({
     nodeViews: {
       codeBlock: codeMirrorNodeView,
     },
-  }
+  },
 });
 
 const plugins = (schema: Schema) => {

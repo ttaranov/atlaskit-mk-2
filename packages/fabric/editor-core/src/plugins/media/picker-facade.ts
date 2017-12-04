@@ -4,26 +4,26 @@ import {
   MediaPickerComponent,
   MediaPickerComponents,
   ComponentConfigs,
-
   Popup,
   Browser,
   Dropzone,
   Clipboard,
   BinaryUploader,
-
-  UploadStartPayload,
+  UploadsStartPayload,
   UploadPreviewUpdatePayload,
   UploadStatusUpdatePayload,
   UploadProcessingPayload,
   UploadFinalizeReadyPayload,
   UploadErrorPayload,
   UploadEndPayload,
+  SerialisedMediaFile,
 } from 'mediapicker';
 import {
   ContextConfig,
   MediaStateManager,
   MediaState,
   UploadParams,
+  MediaStateStatus,
 } from '@atlaskit/media-core';
 
 import { ErrorReportingHandler } from '../../utils';
@@ -32,10 +32,11 @@ export type PickerType = keyof MediaPickerComponents;
 
 export default class PickerFacade {
   private picker: MediaPickerComponent;
-  private onStartListeners: Array<(state: MediaState) => void> = [];
+  private onStartListeners: Array<(states: MediaState[]) => void> = [];
   private onDragListeners: Array<Function> = [];
   private errorReporter: ErrorReportingHandler;
   private uploadParams: UploadParams;
+  private pickerType: PickerType;
 
   constructor(
     pickerType: PickerType,
@@ -43,10 +44,15 @@ export default class PickerFacade {
     contextConfig: ContextConfig,
     private stateManager: MediaStateManager,
     errorReporter: ErrorReportingHandler,
-    mediaPickerFactory?: (pickerType: PickerType, moduleConfig: ModuleConfig, componentConfig?: ComponentConfigs[PickerType]) => MediaPickerComponents[PickerType]
+    mediaPickerFactory?: (
+      pickerType: PickerType,
+      moduleConfig: ModuleConfig,
+      componentConfig?: ComponentConfigs[PickerType],
+    ) => MediaPickerComponents[PickerType],
   ) {
     this.errorReporter = errorReporter;
     this.uploadParams = uploadParams;
+    this.pickerType = pickerType;
 
     if (!mediaPickerFactory) {
       mediaPickerFactory = MediaPicker;
@@ -67,13 +73,13 @@ export default class PickerFacade {
       }
     }
 
-    const picker = this.picker = mediaPickerFactory!(
+    const picker = (this.picker = mediaPickerFactory!(
       pickerType,
       this.buildPickerConfigFromContext(contextConfig),
-      componentConfig
-    );
+      componentConfig,
+    ));
 
-    picker.on('upload-start', this.handleUploadStart);
+    picker.on('uploads-start', this.handleUploadsStart);
     picker.on('upload-preview-update', this.handleUploadPreviewUpdate);
     picker.on('upload-status-update', this.handleUploadStatusUpdate);
     picker.on('upload-processing', this.handleUploadProcessing);
@@ -91,6 +97,10 @@ export default class PickerFacade {
     }
   }
 
+  get type() {
+    return this.pickerType;
+  }
+
   destroy() {
     const { picker } = this;
 
@@ -98,7 +108,7 @@ export default class PickerFacade {
       return;
     }
 
-    picker.removeAllListeners('upload-start');
+    picker.removeAllListeners('uploads-start');
     picker.removeAllListeners('upload-preview-update');
     picker.removeAllListeners('upload-status-update');
     picker.removeAllListeners('upload-processing');
@@ -143,7 +153,7 @@ export default class PickerFacade {
     if (this.picker instanceof Popup) {
       const state = this.stateManager.getState(tempId);
 
-      if (!state || (state.status === 'cancelled')) {
+      if (!state || state.status === 'cancelled') {
         return;
       }
 
@@ -153,7 +163,11 @@ export default class PickerFacade {
         // We're deliberately consuming a known Media Picker exception, as it seems that
         // the picker has problems cancelling uploads before the popup picker has been shown
         // TODO: remove after fixing https://jira.atlassian.com/browse/FIL-4161
-        if (!/((popupIframe|cancelUpload).*?undefined)|(undefined.*?(popupIframe|cancelUpload))/.test(`${e}`)) {
+        if (
+          !/((popupIframe|cancelUpload).*?undefined)|(undefined.*?(popupIframe|cancelUpload))/.test(
+            `${e}`,
+          )
+        ) {
           throw e;
         }
       }
@@ -171,13 +185,26 @@ export default class PickerFacade {
     }
   }
 
-  onNewMedia(cb: (state: MediaState) => any) {
+  onNewMedia(cb: (states: MediaState[]) => any) {
     this.onStartListeners.push(cb);
   }
 
   onDrag(cb: (state: 'enter' | 'leave') => any) {
     this.onDragListeners.push(cb);
   }
+
+  private newState = (file: SerialisedMediaFile, status: MediaStateStatus) => {
+    const tempId = this.generateTempId(file.id);
+
+    return {
+      id: tempId,
+      status: status,
+      publicId: file.publicId,
+      fileName: file.name,
+      fileSize: file.size,
+      fileMimeType: file.type,
+    };
+  };
 
   private buildPickerConfigFromContext(context: ContextConfig): ModuleConfig {
     return {
@@ -193,117 +220,101 @@ export default class PickerFacade {
     return dropzoneContainer ? dropzoneContainer : document.body;
   }
 
-  private handleUploadStart = (event: UploadStartPayload) => {
-    const { file } = event;
-    const tempId = `temporary:${file.id}`;
-    const state = {
-      id: tempId,
-      status: 'uploading',
-      fileName: file.name as string,
-      fileSize: file.size as number,
-      fileMimeType: file.type as string,
-    };
-
-    this.stateManager.updateState(tempId, state as MediaState);
-    this.onStartListeners.forEach(cb => cb.call(cb, state));
+  private generateTempId(id: string) {
+    return `temporary:${id}`;
   }
+
+  private handleUploadsStart = (event: UploadsStartPayload) => {
+    const { files } = event;
+
+    const states = files.map(file => {
+      const state = this.newState(file, 'uploading');
+      this.stateManager.updateState(state.id, state);
+      return state;
+    });
+
+    this.onStartListeners.forEach(cb => cb.call(cb, states));
+  };
 
   private handleUploadStatusUpdate = (event: UploadStatusUpdatePayload) => {
     const { file, progress } = event;
-    const tempId = `temporary:${file.id}`;
+    const tempId = this.generateTempId(file.id);
     const currentState = this.stateManager.getState(tempId);
-    const currentStatus = currentState && currentState.status ? currentState.status : 'unknown';
+    const currentStatus =
+      currentState && currentState.status ? currentState.status : 'unknown';
 
-    this.stateManager.updateState(tempId, {
-      id: tempId,
-      status: currentStatus === 'unknown' ? 'uploading' : currentStatus,
-      progress: progress ? progress.portion : undefined,
-      fileName: file.name as string,
-      fileSize: file.size as number,
-      fileMimeType: file.type as string,
-    });
-  }
+    const state = this.newState(
+      file,
+      currentStatus === 'unknown' ? 'uploading' : currentStatus,
+    );
+    state['progress'] = progress ? progress.portion : undefined;
+    this.stateManager.updateState(state.id, state);
+  };
 
   private handleUploadProcessing = (event: UploadProcessingPayload) => {
     const { file } = event;
-    const tempId = `temporary:${file.id}`;
 
-    this.stateManager.updateState(tempId, {
-      id: tempId,
-      publicId: file.publicId as string,
-      status: 'processing',
-      fileName: file.name as string,
-      fileSize: file.size as number,
-      fileMimeType: file.type as string,
-    });
-  }
+    const state = this.newState(file, 'processing');
+    this.stateManager.updateState(state.id, state);
+  };
 
   private handleUploadFinalizeReady = (event: UploadFinalizeReadyPayload) => {
-    const { file } = event;
-    const { finalize } = event;
-    const tempId = `temporary:${file.id}`;
+    const { file, finalize } = event;
 
     if (!finalize) {
-      throw new Error('Editor: Media: Picker emitted finalize-ready event but didn\'t provide finalize callback');
+      throw new Error(
+        "Editor: Media: Picker emitted finalize-ready event but didn't provide finalize callback",
+      );
     }
 
-    this.stateManager.updateState(tempId, {
-      id: tempId,
-      publicId: file.publicId as string,
-      finalizeCb: finalize,
-      status: 'unfinalized',
-      fileName: file.name as string,
-      fileSize: file.size as number,
-      fileMimeType: file.type as string,
-    });
-  }
+    const state = this.newState(file, 'unfinalized');
+    state['finalizeCb'] = finalize;
+    this.stateManager.updateState(state.id, state);
+  };
 
   private handleUploadError = ({ error }: UploadErrorPayload) => {
     if (!error || !error.fileId) {
-      const err = new Error(`Media: unknown upload-error received from Media Picker: ${error && error.name}`);
+      const err = new Error(
+        `Media: unknown upload-error received from Media Picker: ${error &&
+          error.name}`,
+      );
       this.errorReporter.captureException(err);
 
       return;
     }
 
-    const tempId = `temporary:${error.fileId}`;
+    const tempId = this.generateTempId(error.fileId);
     this.stateManager.updateState(tempId, {
       id: tempId,
       status: 'error',
-      error: error ? { description: error!.description, name: error!.name } : undefined,
+      error: error
+        ? { description: error!.description, name: error!.name }
+        : undefined,
     });
-  }
+  };
 
   private handleUploadEnd = (event: UploadEndPayload) => {
     const { file } = event;
-    const tempId = `temporary:${file.id}`;
 
-    this.stateManager.updateState(tempId, {
-      id: tempId,
-      publicId: file.publicId as string,
-      status: 'ready',
-      fileName: file.name as string,
-      fileSize: file.size as number,
-      fileMimeType: file.type as string,
-    });
-  }
+    const state = this.newState(file, 'ready');
+    this.stateManager.updateState(state.id, state);
+  };
 
   private handleUploadPreviewUpdate = (event: UploadPreviewUpdatePayload) => {
-    const tempId = `temporary:${event.file.id}`;
+    const { file, preview } = event;
 
-    if (event.preview !== undefined) {
-      this.stateManager.updateState(tempId, {
-        id: tempId,
-        thumbnail: event.preview
-      });
+    if (preview !== undefined) {
+      const state = this.newState(file, 'uploading');
+      state['thumbnail'] = preview;
+      this.stateManager.updateState(state.id, state);
     }
-  }
+  };
 
   private handleDragEnter = () => {
     this.onDragListeners.forEach(cb => cb.call(cb, 'enter'));
-  }
+  };
 
   private handleDragLeave = () => {
     this.onDragListeners.forEach(cb => cb.call(cb, 'leave'));
-  }
+  };
 }

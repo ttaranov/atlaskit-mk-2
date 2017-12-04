@@ -10,7 +10,10 @@ import QuestionIcon from '@atlaskit/icon/glyph/editor/help';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import styled from 'styled-components';
 
+// tslint:disable-next-line:no-console
 const SAVE_ACTION = () => console.log('Save');
+
+// tslint:disable-next-line:no-console
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
 
 // tslint:disable-next-line:variable-name
@@ -74,7 +77,7 @@ const addons = addonConfigs.map(
       actionOnClick={actionOnClick}
       renderOnClick={renderOnClick}
     >
-      {text}
+      {text as any}
     </Addon>
   ),
 );

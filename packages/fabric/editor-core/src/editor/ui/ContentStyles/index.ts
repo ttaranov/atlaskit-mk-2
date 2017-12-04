@@ -7,10 +7,7 @@ import {
   akEditorTableBorderSelected,
   akEditorTableFloatingControls,
 } from '../../../styles';
-import {
-  akGridSizeUnitless,
-  akColorN80,
-} from '@atlaskit/util-shared-styles';
+import { akGridSizeUnitless, akColorN80 } from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
 
 const tableStyle = `
@@ -76,7 +73,9 @@ const tableStyle = `
 `;
 
 // tslint:disable-next-line:variable-name
-export const StyledTable = styled.table`${tableStyle}`;
+export const StyledTable = styled.table`
+  ${tableStyle};
+`;
 
 // tslint:disable-next-line:variable-name
 const ContentStyles = styled.div`
@@ -104,7 +103,8 @@ const ContentStyles = styled.div`
     }
   }
 
-  .ProseMirror ul, .ProseMirror ol {
+  .ProseMirror ul,
+  .ProseMirror ol {
     padding-left: 30px;
     cursor: default;
   }
@@ -115,7 +115,7 @@ const ContentStyles = styled.div`
     margin: ${akGridSizeUnitless * 1.5}px 0 0 0;
     margin-right: 0;
 
-    [dir="rtl"] & {
+    [dir='rtl'] & {
       padding-left: 0;
       padding-right: ${akGridSizeUnitless * 2}px;
     }
@@ -125,11 +125,11 @@ const ContentStyles = styled.div`
     }
 
     &::before {
-      content: "";
+      content: '';
     }
 
     &::after {
-      content: "";
+      content: '';
     }
   }
 
@@ -156,19 +156,51 @@ const ContentStyles = styled.div`
 
     & > li > ol > li,
     & > li > ol > li > ol > li > ol > li > ol > li,
-    & > li > ol > li > ol > li > ol > li > ol > li > ol > li > ol > li > ol > li {
+    &
+      > li
+      > ol
+      > li
+      > ol
+      > li
+      > ol
+      > li
+      > ol
+      > li
+      > ol
+      > li
+      > ol
+      > li
+      > ol
+      > li {
       list-style-type: lower-alpha;
     }
 
     & > li > ol > li > ol > li,
     & > li > ol > li > ol > li > ol > li > ol > li > ol > li,
-    & > li > ol > li > ol > li > ol > li > ol > li > ol > li > ol > li > ol > li > ol > li {
+    &
+      > li
+      > ol
+      > li
+      > ol
+      > li
+      > ol
+      > li
+      > ol
+      > li
+      > ol
+      > li
+      > ol
+      > li
+      > ol
+      > li
+      > ol
+      > li {
       list-style-type: lower-roman;
     }
   }
 
   .ProseMirror li > * {
-    pointer-events: auto
+    pointer-events: auto;
   }
 
   .ProseMirror-hideselection *::selection {
@@ -211,11 +243,14 @@ const ContentStyles = styled.div`
   .ProseMirror blockquote table:last-child {
     display: inline-table;
   }
-  .ProseMirror table ${tableStyle}
-
-  .ProseMirror .telepointer ${telepointerStyle}
-
-  .ProseMirror img {
+  .ProseMirror
+    table
+    ${tableStyle}
+    .ProseMirror
+    .telepointer
+    ${telepointerStyle}
+    .ProseMirror
+    img {
     max-width: 100%;
   }
 `;

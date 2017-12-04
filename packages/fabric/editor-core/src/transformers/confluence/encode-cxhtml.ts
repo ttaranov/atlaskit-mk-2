@@ -54,7 +54,10 @@ export default function(node: Node): string {
   riWrapper.appendChild(node);
 
   const wrappedResult = wrapper.outerHTML;
-  const result = wrappedResult.slice(prefixLength, wrappedResult.length - suffixLength);
+  const result = wrappedResult.slice(
+    prefixLength,
+    wrappedResult.length - suffixLength,
+  );
 
   if (marker.parentNode) {
     marker.parentNode.replaceChild(node, marker);

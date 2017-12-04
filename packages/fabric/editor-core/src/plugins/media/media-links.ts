@@ -21,7 +21,7 @@ export const insertLinks = async (
   handleMediaState: (state: MediaState) => void,
   linkRanges: Array<URLInfo>,
   linkCreateContext: Context,
-  collection?: string
+  collection?: string,
 ): Promise<Array<string | undefined> | undefined> => {
   if (!linkRanges || linkRanges.length <= 0 || !collection) {
     return;
@@ -44,16 +44,23 @@ export const insertLinks = async (
 
         const { tr } = state;
         const id = `temporary:${uuid()}:${href}`;
-        const node = state.schema.nodes.media.create({ id, type: 'link', collection });
+        const node = state.schema.nodes.media.create({
+          id,
+          type: 'link',
+          collection,
+        });
         stateManager.subscribe(id, handleMediaState);
 
         // If there's multiple replace steps, make sure subsequent transactions are mapped onto new positions
-        trQueue.forEach(tr => pos = tr.mapping.map(pos));
+        trQueue.forEach(tr => (pos = tr.mapping.map(pos)));
 
-        const $latestPos = tr.doc.resolve(pos > posAtTheEndOfDoc ? posAtTheEndOfDoc : pos);
-        const insertPos = posOfMediaGroupBelow(state, $latestPos, false)
-          || posOfParentMediaGroup(state, $latestPos, false)
-          || endPositionOfParent($latestPos);
+        const $latestPos = tr.doc.resolve(
+          pos > posAtTheEndOfDoc ? posAtTheEndOfDoc : pos,
+        );
+        const insertPos =
+          posOfMediaGroupBelow(state, $latestPos, false) ||
+          posOfParentMediaGroup(state, $latestPos, false) ||
+          endPositionOfParent($latestPos);
 
         // Insert an empty paragraph in case we've reached the end of the document
         if (insertPos === state.doc.nodeSize - 2) {
@@ -65,36 +72,50 @@ export const insertLinks = async (
         dispatch(tr);
         analyticsService.trackEvent('atlassian.editor.media.link');
 
-        const updateStateWithError = error => stateManager.updateState(id, {
-          id,
-          status: 'error',
-          error,
-        }) || resolve();
+        const updateStateWithError = error =>
+          stateManager.updateState(id, {
+            id,
+            status: 'error',
+            error,
+          }) || resolve();
 
-        const isAppWithoutURL = metadata => metadata && metadata.resources && metadata.resources.app && !metadata.resources.app.url;
+        const isAppWithoutURL = metadata =>
+          metadata &&
+          metadata.resources &&
+          metadata.resources.app &&
+          !metadata.resources.app.url;
 
         // Unfurl URL using media API
-        linkCreateContext.getUrlPreviewProvider(href).observable().subscribe(metadata => {
-          // Workaround for problem with missing fields preventing Twitter links from working
-          if(isAppWithoutURL(metadata))  {
-            (metadata as any).resources.app.url = metadata.url;
-          }
-          linkCreateContext.addLinkItem(href, collection, metadata)
-            .then(publicId =>
-              stateManager.updateState(id, {
-                id,
-                publicId,
-                status: 'ready'
-              }) || resolve(publicId)
-            )
-            .catch(updateStateWithError);
-        }, updateStateWithError);
+        linkCreateContext
+          .getUrlPreviewProvider(href)
+          .observable()
+          .subscribe(metadata => {
+            // Workaround for problem with missing fields preventing Twitter links from working
+            if (isAppWithoutURL(metadata)) {
+              (metadata as any).resources.app.url = metadata.url;
+            }
+            linkCreateContext
+              .addLinkItem(href, collection, metadata)
+              .then(
+                publicId =>
+                  stateManager.updateState(id, {
+                    id,
+                    publicId,
+                    status: 'ready',
+                  }) || resolve(publicId),
+              )
+              .catch(updateStateWithError);
+          }, updateStateWithError);
       });
-    })
+    }),
   );
 };
 
-export const detectLinkRangesInSteps = (tr: Transaction, link: MarkType, offset: number): Array<URLInfo> => {
+export const detectLinkRangesInSteps = (
+  tr: Transaction,
+  link: MarkType,
+  offset: number,
+): Array<URLInfo> => {
   return tr.steps.reduce((linkRanges, step) => {
     let rangeWithUrls;
     if (step instanceof AddMarkStep) {
@@ -107,20 +128,30 @@ export const detectLinkRangesInSteps = (tr: Transaction, link: MarkType, offset:
   }, []);
 };
 
-const findRangesWithUrlsInAddMarkStep = (step: AddMarkStep, link: MarkType): Array<URLInfo> | undefined => {
+const findRangesWithUrlsInAddMarkStep = (
+  step: AddMarkStep,
+  link: MarkType,
+): Array<URLInfo> | undefined => {
   const { mark } = step as any; // TODO: Stop using internal API
 
-  if (link.isInSet([ mark ]) && mark.attrs.href) {
-    return [{
-      href: mark.attrs.href,
-      pos: (step as any).from, // TODO: Stop using internal API
-    }];
+  if (link.isInSet([mark]) && mark.attrs.href) {
+    return [
+      {
+        href: mark.attrs.href,
+        pos: (step as any).from, // TODO: Stop using internal API
+      },
+    ];
   }
 };
 
-const findRangesWithUrlsInReplaceStep = (step: ReplaceStep, link: MarkType, offset: number): Array<URLInfo> | undefined => {
+const findRangesWithUrlsInReplaceStep = (
+  step: ReplaceStep,
+  link: MarkType,
+  offset: number,
+): Array<URLInfo> | undefined => {
   const urls = new Array<URLInfo>();
-  (step as any).slice.content.descendants((child, pos, parent) => { // TODO: Stop using internal API
+  (step as any).slice.content.descendants((child, pos, parent) => {
+    // TODO: Stop using internal API
     const linkMark = link.isInSet(child.marks);
 
     if (linkMark && linkMark.attrs.href) {

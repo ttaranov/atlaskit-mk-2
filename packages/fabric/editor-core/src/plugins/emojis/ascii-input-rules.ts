@@ -8,12 +8,18 @@ import ProviderFactory from '../../providerFactory';
 
 let matcher: AsciiEmojiMatcher;
 
-export function inputRulePlugin(schema: Schema, providerFactory?: ProviderFactory): Plugin | undefined {
+export function inputRulePlugin(
+  schema: Schema,
+  providerFactory?: ProviderFactory,
+): Plugin | undefined {
   if (schema.nodes.emoji && providerFactory) {
     initMatcher(providerFactory);
-    const asciiEmojiRule = createInputRule(AsciiEmojiMatcher.REGEX, inputRuleHandler);
+    const asciiEmojiRule = createInputRule(
+      AsciiEmojiMatcher.REGEX,
+      inputRuleHandler,
+    );
     return inputRules({
-      rules: [asciiEmojiRule]
+      rules: [asciiEmojiRule],
     });
   }
 }
@@ -34,13 +40,27 @@ function initMatcher(providerFactory: ProviderFactory) {
   providerFactory.subscribe('emojiProvider', handleProvider);
 }
 
-function inputRuleHandler(state: EditorState, matchParts: [string], start: number, end: number): Transaction | undefined {
-  if (!matcher) { return undefined; }
-  if (!isEnabled(state)) { return undefined; }
+function inputRuleHandler(
+  state: EditorState,
+  matchParts: [string],
+  start: number,
+  end: number,
+): Transaction | undefined {
+  if (!matcher) {
+    return undefined;
+  }
+  if (!isEnabled(state)) {
+    return undefined;
+  }
 
   const match = matcher.match(matchParts);
   if (match) {
-    const transactionCreator = new AsciiEmojiTransactionCreator(state, match, start, end);
+    const transactionCreator = new AsciiEmojiTransactionCreator(
+      state,
+      match,
+      start,
+      end,
+    );
     return transactionCreator.create();
   }
   return undefined;
@@ -48,8 +68,12 @@ function inputRuleHandler(state: EditorState, matchParts: [string], start: numbe
 
 function isEnabled(state: EditorState) {
   const emojiQuery = state.schema.marks.emojiQuery;
-  const isEmojiQueryActive = state.selection.$from.marks().some(mark => mark.type === emojiQuery);
-  return isEmojiQueryActive || isMarkTypeAllowedInCurrentSelection(emojiQuery, state);
+  const isEmojiQueryActive = state.selection.$from
+    .marks()
+    .some(mark => mark.type === emojiQuery);
+  return (
+    isEmojiQueryActive || isMarkTypeAllowedInCurrentSelection(emojiQuery, state)
+  );
 }
 
 type AsciiEmojiMatch = {
@@ -88,7 +112,11 @@ class AsciiEmojiMatcher {
    *
    * See https://regex101.com/r/HRS9O2/2
    */
-  static REGEX = new RegExp(`((?:^|[\\s${leafNodeReplacementCharacter}])(?:\\(*?))(\\(y\\)|[^:\\s${leafNodeReplacementCharacter}\\(]\\S{1,3}|:\\S{1,3}( ))$`);
+  static REGEX = new RegExp(
+    `((?:^|[\\s${leafNodeReplacementCharacter}])(?:\\(*?))(\\(y\\)|[^:\\s${
+      leafNodeReplacementCharacter
+    }\\(]\\S{1,3}|:\\S{1,3}( ))$`,
+  );
 
   private static REGEX_LEADING_CAPTURE_INDEX = 1;
   private static REGEX_EMOJI_ASCII_CAPTURE_INDEX = 2;
@@ -134,7 +162,10 @@ class AsciiEmojiMatcher {
 class RecordingAsciiEmojiMatcher extends AsciiEmojiMatcher {
   private emojiProvider: EmojiProvider;
 
-  constructor(emojiProvider: EmojiProvider, asciiToEmojiMap: Map<string, EmojiDescription>) {
+  constructor(
+    emojiProvider: EmojiProvider,
+    asciiToEmojiMap: Map<string, EmojiDescription>,
+  ) {
     super(asciiToEmojiMap);
     this.emojiProvider = emojiProvider;
   }
@@ -155,7 +186,12 @@ class AsciiEmojiTransactionCreator {
   private start: number;
   private end: number;
 
-  constructor(state: EditorState, match: AsciiEmojiMatch, start: number, end: number) {
+  constructor(
+    state: EditorState,
+    match: AsciiEmojiMatch,
+    start: number,
+    end: number,
+  ) {
     this.state = state;
     this.match = match;
     this.start = start;
@@ -163,11 +199,7 @@ class AsciiEmojiTransactionCreator {
   }
 
   create(): Transaction {
-    return this.state.tr.replaceWith(
-      this.from,
-      this.to,
-      this.createNodes()
-    );
+    return this.state.tr.replaceWith(this.from, this.to, this.createNodes());
   }
 
   private get from(): number {
@@ -196,7 +228,7 @@ class AsciiEmojiTransactionCreator {
     return {
       id: emoji.id,
       shortName: emoji.shortName,
-      text: emoji.fallback || emoji.shortName
+      text: emoji.fallback || emoji.shortName,
     };
   }
 
@@ -212,7 +244,9 @@ class AsciiEmojiTransactionCreator {
 export const stateKey = new PluginKey('asciiEmojiPlugin');
 
 const plugins = (schema: Schema, providerFactory?: ProviderFactory) => {
-  return [inputRulePlugin(schema, providerFactory)].filter((plugin) => !!plugin) as Plugin[];
+  return [inputRulePlugin(schema, providerFactory)].filter(
+    plugin => !!plugin,
+  ) as Plugin[];
 };
 
 export default plugins;

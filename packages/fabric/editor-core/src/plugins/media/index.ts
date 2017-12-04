@@ -29,13 +29,15 @@ import {
 } from 'prosemirror-state';
 import { insertPoint } from 'prosemirror-transform';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
+import { Alignment, Display } from '@atlaskit/editor-common';
 
 import PickerFacadeType from './picker-facade';
-import { ErrorReporter } from '../../utils';
+import { ErrorReporter, isImage } from '../../utils';
 import { Dispatch } from '../../editor/event-dispatcher';
 import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
+import { EditorAppearance } from '../../editor/types/editor-props';
 import {
   ReactMediaGroupNode,
   ReactMediaNode,
@@ -43,9 +45,9 @@ import {
 } from '../../nodeviews';
 import keymapPlugin from './keymap';
 import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
-import { insertFile } from './media-files';
+import { insertMediaGroupNode } from './media-files';
+import { insertSingleImageNodes } from './single-image';
 import { removeMediaNode, splitMediaGroup } from './media-common';
-import { Alignment, Display } from './single-image';
 import PickerFacade from './picker-facade';
 import DropPlaceholder from '../../ui/Media/DropPlaceholder';
 
@@ -80,9 +82,15 @@ export class MediaPluginState {
   private clipboardPicker?: PickerFacadeType;
   private dropzonePicker?: PickerFacadeType;
   private linkRanges: Array<URLInfo>;
+  private editorAppearance: EditorAppearance;
 
-  constructor(state: EditorState, options: MediaPluginOptions) {
+  constructor(
+    state: EditorState,
+    options: MediaPluginOptions,
+    editorAppearance?: EditorAppearance,
+  ) {
     this.options = options;
+    this.editorAppearance = editorAppearance;
     this.waitForMediaUpload =
       options.waitForMediaUpload === undefined
         ? true
@@ -198,14 +206,33 @@ export class MediaPluginState {
   };
 
   insertFile = (mediaState: MediaState): void => {
+    // tslint:disable-next-line:no-console
+    console.warn(
+      'This API is deprecated. Please use insertFiles(mediaStates: MediaState[]) instead',
+    );
+    this.insertFiles([mediaState]);
+  };
+
+  insertFiles = (mediaStates: MediaState[]): void => {
+    const { singleImage } = this.view.state.schema.nodes;
     const collection = this.collectionFromProvider();
     if (!collection) {
       return;
     }
 
-    this.stateManager.subscribe(mediaState.id, this.handleMediaState);
+    const areImages = mediaStates.every(mediaState =>
+      isImage(mediaState.fileMimeType),
+    );
 
-    insertFile(this.view, mediaState, collection);
+    mediaStates.forEach(mediaState =>
+      this.stateManager.subscribe(mediaState.id, this.handleMediaState),
+    );
+
+    if (this.editorAppearance !== 'message' && areImages && singleImage) {
+      insertSingleImageNodes(this.view, mediaStates, collection);
+    } else {
+      insertMediaGroupNode(this.view, mediaStates, collection);
+    }
 
     const { view } = this;
     if (!view.hasFocus()) {
@@ -496,37 +523,28 @@ export class MediaPluginState {
         )),
       );
 
-      pickers.forEach(picker => picker.onNewMedia(this.insertFile));
+      pickers.forEach(picker => {
+        picker.onNewMedia(this.insertFiles);
+        picker.onNewMedia(this.trackNewMediaEvent(picker.type));
+      });
       this.dropzonePicker.onDrag(this.handleDrag);
-
-      this.binaryPicker.onNewMedia(e =>
-        analyticsService.trackEvent(
-          'atlassian.editor.media.file.binary',
-          e.fileMimeType ? { fileMimeType: e.fileMimeType } : {},
-        ),
-      );
-      this.popupPicker.onNewMedia(e =>
-        analyticsService.trackEvent(
-          'atlassian.editor.media.file.popup',
-          e.fileMimeType ? { fileMimeType: e.fileMimeType } : {},
-        ),
-      );
-      this.clipboardPicker.onNewMedia(e =>
-        analyticsService.trackEvent(
-          'atlassian.editor.media.file.paste',
-          e.fileMimeType ? { fileMimeType: e.fileMimeType } : {},
-        ),
-      );
-      this.dropzonePicker.onNewMedia(e =>
-        analyticsService.trackEvent(
-          'atlassian.editor.media.file.drop',
-          e.fileMimeType ? { fileMimeType: e.fileMimeType } : {},
-        ),
-      );
     }
 
     // set new upload params for the pickers
     pickers.forEach(picker => picker.setUploadParams(uploadParams));
+  }
+
+  private trackNewMediaEvent(pickerType) {
+    return (mediaStates: MediaState[]) => {
+      mediaStates.forEach(mediaState => {
+        analyticsService.trackEvent(
+          `atlassian.editor.media.file.${pickerType}`,
+          mediaState.fileMimeType
+            ? { fileMimeType: mediaState.fileMimeType }
+            : {},
+        );
+      });
+    };
   }
 
   private collectionFromProvider(): string | undefined {
@@ -650,13 +668,14 @@ export const createPlugin = (
   schema: Schema,
   options: MediaPluginOptions,
   dispatch?: Dispatch,
+  editorAppearance?: EditorAppearance,
 ) => {
   const dropZone = document.createElement('div');
   ReactDOM.render(React.createElement(DropPlaceholder), dropZone);
   return new Plugin({
     state: {
       init(config, state) {
-        return new MediaPluginState(state, options);
+        return new MediaPluginState(state, options, editorAppearance);
       },
       apply(tr, pluginState: MediaPluginState, oldState, newState) {
         pluginState.detectLinkRangesInSteps(tr, oldState);
@@ -762,10 +781,12 @@ const plugins = (
   schema: Schema,
   options: MediaPluginOptions,
   dispatch?: Dispatch,
+  editorAppearance?: EditorAppearance,
 ) => {
-  return [createPlugin(schema, options, dispatch), keymapPlugin(schema)].filter(
-    plugin => !!plugin,
-  ) as Plugin[];
+  return [
+    createPlugin(schema, options, dispatch, editorAppearance),
+    keymapPlugin(schema),
+  ].filter(plugin => !!plugin) as Plugin[];
 };
 
 export default plugins;

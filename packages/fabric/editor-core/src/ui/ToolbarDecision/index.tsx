@@ -38,5 +38,5 @@ export default class ToolbarDecision extends PureComponent<Props, State> {
     }
     changeToTaskDecision(editorView, 'decisionList');
     return true;
-  }
+  };
 }

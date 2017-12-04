@@ -1,5 +1,7 @@
 # @atlaskit/media-image
 
+## 2.2.1
+
 ## 2.1.1 (2017-09-18)
 
 * bug fix; update media-core and media-test-helpers version ([00108cf](https://bitbucket.org/atlassian/atlaskit/commits/00108cf))

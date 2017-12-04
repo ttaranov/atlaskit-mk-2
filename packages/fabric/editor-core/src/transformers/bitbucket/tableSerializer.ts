@@ -1,7 +1,8 @@
 import { MarkdownSerializerState } from 'prosemirror-markdown';
 import { Node as PMNode } from 'prosemirror-model';
 
-const isHeaderRow = (row: PMNode): boolean => row.child(0).type.name === 'tableHeader';
+const isHeaderRow = (row: PMNode): boolean =>
+  row.child(0).type.name === 'tableHeader';
 
 const isHeaderRowPresent = (table: PMNode): boolean => {
   let headerRowPresent = false;
@@ -13,7 +14,11 @@ const isHeaderRowPresent = (table: PMNode): boolean => {
   return headerRowPresent;
 };
 
-const renderNode = (state: MarkdownSerializerState, node: PMNode, index: number): void => {
+const renderNode = (
+  state: MarkdownSerializerState,
+  node: PMNode,
+  index: number,
+): void => {
   if (index > 0) {
     state.write(' ');
   }
@@ -23,8 +28,7 @@ const renderNode = (state: MarkdownSerializerState, node: PMNode, index: number)
         state.write(' ');
       }
       state.renderInline(child);
-    }
-    else {
+    } else {
       renderNode(state, child, i);
     }
   });
@@ -50,7 +54,7 @@ export default {
     state.write('|');
     state.ensureNewLine();
     if (isHeaderRow(node)) {
-      for(let i = 0; i < node.childCount; i++) {
+      for (let i = 0; i < node.childCount; i++) {
         state.write('| --- ');
       }
       state.write('|');

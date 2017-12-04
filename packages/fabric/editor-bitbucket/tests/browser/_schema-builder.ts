@@ -1,6 +1,12 @@
-import { Schema } from 'prosemirror-model';
-import { markFactory, nodeFactory } from '@atlaskit/editor-test-helpers';
+import { Schema, Node } from 'prosemirror-model';
+import {
+  markFactory,
+  nodeFactory,
+  RefsNode,
+  RefsTracker,
+} from '@atlaskit/editor-test-helpers';
 import { bitbucketSchema as schema } from '@atlaskit/editor-common';
+export { RefsNode, Node, Schema, RefsTracker };
 
 // Nodes
 export const blockquote = nodeFactory(schema.nodes.blockquote);

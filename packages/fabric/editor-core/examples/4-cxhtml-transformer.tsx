@@ -7,7 +7,6 @@ import { akColorN80 } from '@atlaskit/util-shared-styles';
 import Editor from './../src/editor';
 import EditorContext from './../src/editor/ui/EditorContext';
 import WithEditorActions from './../src/editor/ui/WithEditorActions';
-import { name, version } from '../package.json';
 import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
@@ -58,6 +57,7 @@ export const Content = styled.div`
 }`;
 Content.displayName = 'Content';
 
+// tslint:disable-next-line:no-console
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
 
 // tslint:disable-next-line:variable-name
@@ -65,10 +65,10 @@ const SaveAndCancelButtons = props => (
   <ButtonGroup>
     <Button
       appearance="primary"
-      // tslint:disable-next-line:jsx-no-lambda no-console
       onClick={() =>
         props.editorActions
           .getValue()
+          // tslint:disable-next-line:no-console
           .then(value => console.log(value.toJSON()))
       }
     >
@@ -224,8 +224,8 @@ class Example extends Component<ExampleProps, ExampleState> {
     this.setState({ input: STATUS_MACRO });
 }
 
-type ExampleWrapperProps = {};
-type ExampleWrapperState = {
+export type ExampleWrapperProps = {};
+export type ExampleWrapperState = {
   cxhtml?: string;
   story?: any;
   prettify?: boolean;
@@ -245,9 +245,11 @@ export default class ExampleWrapper extends Component<
   handleChange = editorActions => {
     this.setState({ isMediaReady: false });
 
+    // tslint:disable-next-line:no-console
     console.log('Change');
 
     editorActions.getValue().then(value => {
+      // tslint:disable-next-line:no-console
       console.log('Value has been resolved', value);
       this.setState({
         isMediaReady: true,

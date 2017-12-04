@@ -5,7 +5,11 @@ import { createEditor, getUiComponent } from './create-editor';
 import { createPluginsList } from './create-editor';
 import EditorActions from './actions';
 import ProviderFactory from '../providerFactory';
-import { EditorProps, EditorInstance, EditorAppearanceComponentProps } from './types';
+import {
+  EditorProps,
+  EditorInstance,
+  EditorAppearanceComponentProps,
+} from './types';
 import { moveCursorToTheEnd } from '../utils';
 export * from './types';
 
@@ -17,11 +21,11 @@ export interface State {
 export default class Editor extends React.Component<EditorProps, State> {
   static defaultProps: EditorProps = {
     appearance: 'message',
-    disabled: false
+    disabled: false,
   };
 
   static contextTypes = {
-    editorActions: PropTypes.object
+    editorActions: PropTypes.object,
   };
 
   context: {
@@ -60,7 +64,7 @@ export default class Editor extends React.Component<EditorProps, State> {
       const state = plugin.getState(editor.editorView.state);
       if (state && state.destroy) {
         state.destroy();
-      };
+      }
     });
 
     editorView.destroy();
@@ -87,7 +91,10 @@ export default class Editor extends React.Component<EditorProps, State> {
 
   private registerEditorForActions(editor: EditorInstance) {
     if (this.context && this.context.editorActions) {
-      this.context.editorActions._privateRegisterEditor(editor.editorView, editor.contentTransformer);
+      this.context.editorActions._privateRegisterEditor(
+        editor.editorView,
+        editor.contentTransformer,
+      );
     }
   }
 
@@ -107,10 +114,15 @@ export default class Editor extends React.Component<EditorProps, State> {
       return;
     }
     const plugins = createPluginsList(this.props);
-    const editor = createEditor(place, plugins, this.props, this.providerFactory);
+    const editor = createEditor(
+      place,
+      plugins,
+      this.props,
+      this.providerFactory,
+    );
     this.registerEditorForActions(editor);
     this.setState({ editor });
-  }
+  };
 
   private handleProviders(props: EditorProps) {
     const {
@@ -121,12 +133,15 @@ export default class Editor extends React.Component<EditorProps, State> {
       activityProvider,
       presenceProvider,
       macroProvider,
-      legacyImageUploadProvider
+      legacyImageUploadProvider,
     } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.providerFactory.setProvider('mediaProvider', mediaProvider);
-    this.providerFactory.setProvider('imageUploadProvider', legacyImageUploadProvider);
+    this.providerFactory.setProvider(
+      'imageUploadProvider',
+      legacyImageUploadProvider,
+    );
     this.providerFactory.setProvider('collabEditProvider', collabEditProvider);
     this.providerFactory.setProvider('activityProvider', activityProvider);
     this.providerFactory.setProvider('presenceProvider', presenceProvider);
@@ -146,39 +161,36 @@ export default class Editor extends React.Component<EditorProps, State> {
       contentComponents,
       primaryToolbarComponents,
       secondaryToolbarComponents,
-      eventDispatcher
+      eventDispatcher,
     } = editor as EditorInstance;
 
     return (
       <Component
         onUiReady={this.initEditor}
-
         disabled={this.props.disabled}
-
         editorView={editorView}
         providerFactory={this.providerFactory}
-
         eventDispatcher={eventDispatcher}
-
         maxHeight={this.props.maxHeight}
         onSave={this.props.onSave}
         onCancel={this.props.onCancel}
-
         popupsMountPoint={this.props.popupsMountPoint}
         popupsBoundariesElement={this.props.popupsBoundariesElement}
-
         contentComponents={contentComponents}
         primaryToolbarComponents={primaryToolbarComponents}
         secondaryToolbarComponents={secondaryToolbarComponents}
-
         customContentComponents={this.props.contentComponents}
         customPrimaryToolbarComponents={this.props.primaryToolbarComponents}
         customSecondaryToolbarComponents={this.props.secondaryToolbarComponents}
-
         addonToolbarComponents={this.props.addonToolbarComponents}
       />
     );
   }
 }
 
-export const EditorWithAnalytics = withAnalytics<typeof Editor>(Editor, {}, {}, true);
+export const EditorWithAnalytics = withAnalytics<typeof Editor>(
+  Editor,
+  {},
+  {},
+  true,
+);

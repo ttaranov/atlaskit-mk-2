@@ -50,8 +50,7 @@ function getMustUpdateOn(
   const DEPENDENCY_TYPES = [
     'dependencies',
     'devDependencies',
-    // Currently we don't support range versions. Need to comment out, until James Kyle solve this problem
-    //'peerDependencies',
+    'peerDependencies',
     'bundledDependencies',
     'optionalDependencies',
   ];

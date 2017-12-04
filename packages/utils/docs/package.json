@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/docs",
-  "version": "0.0.7",
+  "version": "1.0.1",
   "description": "Utilities for building documentation",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -17,7 +17,7 @@
     "name": "Atlaskit docs",
     "team": "elements"
   },
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/code": "^2.1.10",
     "@atlaskit/icon": "^10.3.1",
