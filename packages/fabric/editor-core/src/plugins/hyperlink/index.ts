@@ -162,7 +162,7 @@ export class HyperlinkState {
     }
   }
 
-  showLinkPanel(editorView: EditorView & { docView?: any }) {
+  showLinkPanel = (editorView: EditorView & { docView?: any }) => {
     if (this.linkable) {
       if (!(this.showToolbarPanel || editorView.hasFocus())) {
         editorView.focus();
@@ -178,7 +178,7 @@ export class HyperlinkState {
       return true;
     }
     return false;
-  }
+  };
 
   hideLinkPanel() {
     this.showToolbarPanel = false;

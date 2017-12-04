@@ -51,6 +51,15 @@ describe('table plugin', () => {
       expect(spy).toHaveBeenCalledWith(pluginState);
     });
 
+    it('should not be possible to add same listener twice', () => {
+      const { pluginState } = editor(doc(p('paragraph')));
+      const spy1 = jest.fn();
+      pluginState.subscribe(spy1);
+      pluginState.subscribe(spy1);
+
+      expect(spy1).toHaveBeenCalledTimes(1);
+    });
+
     describe('when leaving table', () => {
       it('notifies subscriber', () => {
         const { refs, pluginState, editorView } = editor(

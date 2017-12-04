@@ -38,6 +38,8 @@ const listPlugin: EditorPlugin = {
         disabled={disabled}
         editorView={editorView}
         pluginState={pluginState}
+        popupsMountPoint={popupsMountPoint}
+        popupsBoundariesElement={popupsBoundariesElement}
       />
     );
   },

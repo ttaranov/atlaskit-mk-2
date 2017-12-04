@@ -60,6 +60,10 @@ const mentionsPlugin: EditorPlugin = {
     );
   },
 
+  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth) {
+    return <ToolbarMention editorView={editorView} pluginKey={pluginKey} editorWidth={editorWidth} isDisabled={disabled} />;
+  },
+
   secondaryToolbarComponent(editorView) {
     return <ToolbarMention editorView={editorView} pluginKey={pluginKey} />;
   },

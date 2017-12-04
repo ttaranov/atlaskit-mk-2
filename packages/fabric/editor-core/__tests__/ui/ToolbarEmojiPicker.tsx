@@ -71,6 +71,21 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     toolbarEmojiPicker.unmount();
   });
 
+  it('should return null if EditorWidth is less then BreakPoint4', () => {
+    const { editorView } = editor(doc(p('')));
+    const toolbarEmojiPicker = mount(
+      <ToolbarEmojiPicker
+        pluginKey={pluginKey}
+        emojiProvider={emojiProvider}
+        editorView={editorView}
+        numFollowingButtons={0}
+        editorWidth={EditorWidth.BreakPoint4 - 1}
+      />,
+    );
+    expect(toolbarEmojiPicker.html()).toEqual(null);
+    toolbarEmojiPicker.unmount();
+  });
+
   it('should be enabled by default', () => {
     const { editorView } = editor(doc(p('')));
     const toolbarEmojiPicker = mount(
@@ -129,7 +144,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     toolbarOption.unmount();
   });
 
-  it('should have spacing of toolbar button set to none if editorWidth is less then breakpoint6', () => {
+  it('should have spacing of toolbar button set to default', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarEmojiPicker
@@ -137,22 +152,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
         emojiProvider={emojiProvider}
         editorView={editorView}
         numFollowingButtons={0}
-        editorWidth={EditorWidth.BreakPoint6 - 1}
-      />,
-    );
-    expect(toolbarOption.find(ToolbarButton).prop('spacing')).toEqual('none');
-    toolbarOption.unmount();
-  });
-
-  it('should have spacing of toolbar button set to default if editorWidth is greater then breakpoint6', () => {
-    const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarEmojiPicker
-        pluginKey={pluginKey}
-        emojiProvider={emojiProvider}
-        editorView={editorView}
-        numFollowingButtons={0}
-        editorWidth={EditorWidth.BreakPoint6 + 1}
+        editorWidth={EditorWidth.BreakPoint4 + 1}
       />,
     );
     expect(toolbarOption.find(ToolbarButton).prop('spacing')).toEqual(
