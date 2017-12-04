@@ -24,7 +24,6 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/banner": "*",
     "@atlaskit/button": "^5.4.8",
     "@atlaskit/docs": "^1.0.0",
     "@atlaskit/icon": "^10.3.1",
