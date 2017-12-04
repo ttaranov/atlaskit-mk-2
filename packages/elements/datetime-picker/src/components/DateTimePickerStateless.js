@@ -8,6 +8,20 @@ import TimeDialog from './internal/TimeDialog';
 import TimeField from './internal/TimeField';
 
 export default class DateTimePickerStateless extends Component<Props> {
+  dualPicker: any;
+
+  selectDateField() {
+    if (this.dualPicker) {
+      this.dualPicker.selectField1();
+    }
+  }
+
+  selectTimeField() {
+    if (this.dualPicker) {
+      this.dualPicker.selectField2();
+    }
+  }
+
   render() {
     return (
       <DualPicker
@@ -15,6 +29,9 @@ export default class DateTimePickerStateless extends Component<Props> {
         dialogs={[DateDialog, TimeDialog]}
         fields={[DateField, TimeField]}
         shouldShowIcon
+        ref={ref => {
+          this.dualPicker = ref;
+        }}
       />
     );
   }
