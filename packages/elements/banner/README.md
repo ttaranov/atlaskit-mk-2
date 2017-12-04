@@ -13,5 +13,5 @@ Detailed docs and example usage can be found
 ## Installation
 
 ```sh
-npm install @atlaskit/breadcrumbs
+npm install @atlaskit/banner
 ```
