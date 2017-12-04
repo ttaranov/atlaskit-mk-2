@@ -43,7 +43,7 @@ describe('Avatar', () =>
 
         it('when src is set and there is an error', () =>
           expect(
-            shallow(<AvatarImage src={src} />)
+            shallow(<AvatarImage appearance="circle" size="medium" src={src} />)
               .setState({ hasError: true, isLoading: false })
               .find(DefaultImage)
               .exists(),
@@ -61,7 +61,7 @@ describe('Avatar', () =>
 
         it('when src is set', () =>
           expect(
-            shallow(<AvatarImage src={src} />)
+            shallow(<AvatarImage appearance="circle" size="medium" src={src} />)
               .find(DefaultImage)
               .exists(),
           ).toBe(false));
