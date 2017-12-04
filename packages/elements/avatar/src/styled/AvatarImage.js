@@ -10,7 +10,7 @@ import type { AppearanceType, SizeType } from '../types';
 const getBackgroundColor = (isLoading: boolean) =>
   isLoading ? themed({ light: colors.N40, dark: colors.DN50 }) : 'transparent';
 
-type SpanArgs = {|
+type SlotArgs = {|
   appearance: AppearanceType,
   isLoading: boolean,
   size: SizeType,
@@ -23,13 +23,14 @@ export const Slot = ({
   isLoading,
   appearance,
   size,
+  backgroundImage,
   label,
   role,
-  backgroundImage,
-}: SpanArgs) => (
+}: SlotArgs) => (
   <span
     style={{
       backgroundColor: getBackgroundColor(isLoading),
+      backgroundImage: backgroundImage ? `url(${backgroundImage})` : null,
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
@@ -38,7 +39,6 @@ export const Slot = ({
       flex: '1 1 100%',
       height: '100%',
       width: '100%',
-      backgroundImage: backgroundImage ? `url(${backgroundImage})` : null,
     }}
     role={role}
     aria-label={label}

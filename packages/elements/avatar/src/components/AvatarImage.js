@@ -18,11 +18,11 @@ const ShapeGroup = styled.g`
 export function DefaultImage({
   appearance,
   size,
-  alt,
+  title,
 }: {
   appearance: AppearanceType,
   size: SizeType,
-  alt?: string,
+  title?: string,
 }) {
   const rectBounds = 128;
 
@@ -34,9 +34,9 @@ export function DefaultImage({
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label={alt}
+      aria-label={title}
     >
-      {!!alt && <title>{alt}</title>}
+      {!!title && <title>{title}</title>}
       {appearance === 'circle' ? (
         <ShapeGroup>
           <circle cx="64" cy="64" r="64" />
@@ -133,7 +133,7 @@ export default class AvatarImage extends PureComponent<Props, State> {
     const showDefault = !isLoading && (!src || hasError);
     const imageUrl: ?string = src && (!isLoading || cache[src]) ? src : null;
     return showDefault ? (
-      <DefaultImage appearance={appearance} size={size} alt={alt} />
+      <DefaultImage appearance={appearance} size={size} title={alt} />
     ) : (
       <Slot
         appearance={appearance}

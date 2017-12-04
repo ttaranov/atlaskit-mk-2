@@ -17,11 +17,11 @@ import { getAvatarDimensions, getInnerStyles } from './utils';
 
 // OUTER WRAPPER
 // eslint-disable-next-line react/prop-types
-type OuterArgs = {|
+type OuterArgs = {
   children: Node,
   size: SizeType,
   stackIndex: ?number,
-|};
+};
 
 export default ({ children, size, stackIndex }: OuterArgs) => {
   const sizeValue: string = `${getAvatarDimensions(

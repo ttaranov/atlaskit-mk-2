@@ -34,13 +34,14 @@ export type AvatarPropTypesBase = {
   appearance: AppearanceType,
   /** Defines the size of the avatar */
   size: SizeType,
+  /** Display a tooltip on hover */
+  enableTooltip: boolean,
   /** Used to override the default border color of the presence indicator.
    Accepts any color argument that the border-color CSS property accepts. */
   borderColor?: string | FunctionType,
   /** A custom component to use instead of the default span. */
   component?: ComponentType,
-  /** Display a tooltip on hover */
-  enableTooltip?: boolean,
+
   /** Provides a url for avatars being used as a link. */
   href?: string,
   /** Change the style to indicate the avatar is active. */

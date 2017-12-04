@@ -5,6 +5,7 @@ import type { ComponentType, ElementType, FunctionType } from '../types';
 
 export default function mapProps(mapping: {}) {
   return (DecoratedComponent: ComponentType) =>
+    // TODO: type this correctly
     class MapProps extends Component<*> {
       static displayName: string = getDisplayName(
         'mapProps',

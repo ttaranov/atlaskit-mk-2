@@ -2,21 +2,17 @@
 import React, { Component } from 'react';
 import type { Node } from 'react';
 import Tooltip from '@atlaskit/tooltip';
-
 import { validIconSizes, propsOmittedFromClickData } from './constants';
 import Presence from './Presence';
 import AvatarImage from './AvatarImage';
 import Status from './Status';
-
 import Outer, { PresenceWrapper, StatusWrapper } from '../styled/Avatar';
-
 import { omit } from '../utils';
 import { getProps, getStyledAvatar } from '../helpers';
 import { mapProps, withPseudoState } from '../hoc';
-
 import type { AvatarPropTypes, SupportedSizeWithAnIcon } from '../types';
 
-const warn = message => {
+const warn = (message: string) => {
   if (process.env.NODE_ENV !== 'production') {
     console.warn(message); // eslint-disable-line no-console
   }
