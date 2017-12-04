@@ -6,4 +6,4 @@
 // falls through the `main` `package.json` field.
 //
 
-export * from './src';
+export { default } from './src';
