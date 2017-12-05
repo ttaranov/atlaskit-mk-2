@@ -13,13 +13,14 @@ const getWrapperHeight = ({ dimensions }: WrapperProps) =>
   dimensions && dimensions.height
     ? `height: ${getCSSUnitValue(dimensions.height)}`
     : '';
+
 const getWrapperWidth = ({ dimensions }: WrapperProps) =>
   dimensions && dimensions.width
     ? `width: ${getCSSUnitValue(dimensions.width)}`
     : '';
 
 export const Wrapper = styled.div`
-  ${({ appearance }: WrapperProps) => {
+  ${({ appearance, dimensions }: WrapperProps) => {
     if (appearance === 'square' || appearance === 'horizontal') {
       return `
         ${getCSSBoundaries(appearance)}
@@ -35,8 +36,8 @@ export const Wrapper = styled.div`
     }
 
     return `
-      ${getWrapperHeight}
-      ${getWrapperWidth}
+      ${getWrapperHeight({ dimensions })}
+      ${getWrapperWidth({ dimensions })}
     `;
   }};
 `;

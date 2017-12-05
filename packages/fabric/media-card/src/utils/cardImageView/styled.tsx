@@ -76,12 +76,10 @@ const cardSize = ({ cardSize }: CardProps) => {
 
 export const Card = styled(Root)`
   ${cardShadow} ${cardSize} ${borderRadius} background: #fff;
-  display: table;
   cursor: pointer;
   line-height: normal;
   position: relative;
-
-  .wrapper {
+  ${size('inherit')} .wrapper {
     ${borderRadius} background: ${akColorN20};
     display: block;
     height: inherit;

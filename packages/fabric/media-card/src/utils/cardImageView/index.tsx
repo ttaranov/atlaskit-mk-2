@@ -69,23 +69,9 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
     return getCSSUnitValue(width);
   }
 
-  private get height(): CardDimensionValue {
-    const { height } = this.props.dimensions || { height: undefined };
-
-    if (!height) {
-      return defaultImageCardDimensions.height;
-    }
-
-    return getCSSUnitValue(height);
-  }
-
   private isDownloadingOrProcessing() {
     const { status } = this.props;
     return status === 'loading' || status === 'processing';
-  }
-
-  private get cardStyle() {
-    return { height: this.height, width: this.width };
   }
 
   private get cardSize(): BreakpointSizeValue {
@@ -93,14 +79,9 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
   }
 
   render() {
-    const cardStyle = this.cardStyle;
     const cardSize = this.cardSize;
 
-    return (
-      <Wrapper style={cardStyle} cardSize={cardSize}>
-        {this.getCardContents()}
-      </Wrapper>
-    );
+    return <Wrapper cardSize={cardSize}>{this.getCardContents()}</Wrapper>;
   }
 
   private getCardContents = (): Array<JSX.Element> | JSX.Element => {
