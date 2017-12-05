@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-json-transformer",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "JSON transformer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
