@@ -40,6 +40,7 @@ describe(name, () => {
     let editorActions: EditorActions;
     let editorView: EditorView;
     const testTempFileId = `temporary:${randomId()}`;
+    const testTempFileId2 = `temporary:${randomId()}`;
     const testPubFileId = `${randomId()}`;
     const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
     const stateManager = new DefaultMediaStateManager();
@@ -49,9 +50,10 @@ describe(name, () => {
       includeUserAuthProvider: true,
     });
     let mediaPluginState: MediaPluginState;
+    let providerFactory: ProviderFactory;
 
     beforeEach(() => {
-      const providerFactory = new ProviderFactory();
+      providerFactory = new ProviderFactory();
       const editor = createEditor(
         [tasksAndDecisionsPlugin, mediaPlugin, hyperlinkPlugin],
         {
@@ -75,6 +77,7 @@ describe(name, () => {
 
     afterEach(() => {
       editorView.destroy();
+      providerFactory.destroy();
     });
 
     describe('#focus', () => {
@@ -141,7 +144,7 @@ describe(name, () => {
       });
 
       describe('with waitForMediaUpload === true', () => {
-        it('should not resolve when media operations are pending', async () => {
+        it('should not resolve when all media operations are pending', async () => {
           stateManager.updateState(testTempFileId, {
             id: testTempFileId,
             status: 'uploading',
@@ -159,6 +162,49 @@ describe(name, () => {
           editorActions
             .getValue()
             .then(potentialValue => (resolved = potentialValue));
+
+          return new Promise(resolve => {
+            setTimeout(() => {
+              expect(resolved).to.equal(undefined);
+              resolve();
+            }, 50);
+          });
+        });
+
+        // tslint:disable-next-line:no-only-tests
+        it('should not resolve when some media operations are pending', async () => {
+          stateManager.updateState(testTempFileId, {
+            id: testTempFileId,
+            status: 'uploading',
+          });
+
+          stateManager.updateState(testTempFileId2, {
+            id: testTempFileId2,
+            status: 'uploading',
+          });
+
+          const provider = await mediaProvider;
+          await provider.uploadContext;
+
+          mediaPluginState.insertFiles([
+            { id: testTempFileId, status: 'uploading' },
+          ]);
+
+          let resolved: any;
+
+          editorActions
+            .getValue()
+            .then(potentialValue => (resolved = potentialValue));
+
+          mediaPluginState.insertFiles([
+            { id: testTempFileId2, status: 'uploading' },
+          ]);
+
+          stateManager.updateState(testTempFileId, {
+            status: 'ready',
+            id: testTempFileId,
+            publicId: testPubFileId,
+          });
 
           return new Promise(resolve => {
             setTimeout(() => {
@@ -199,7 +245,6 @@ describe(name, () => {
 
       describe('with waitForMediaUpload === false', () => {
         it('should resolve even when media operations are pending', async () => {
-          const providerFactory = new ProviderFactory();
           const editor = createEditor(
             [mediaPlugin, hyperlinkPlugin],
             {

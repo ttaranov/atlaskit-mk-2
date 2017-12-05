@@ -236,20 +236,33 @@ export class MediaPluginState {
       insertMediaGroupNode(this.view, mediaStates, collection);
     }
 
-    const isResolvedState = (state: MediaState) =>
+    const isEndState = (state: MediaState) =>
       state.status && MEDIA_END_STATES.indexOf(state.status) !== -1;
 
+    // For each in-flight media item (uploading, processing etc.) subscribe
+    // to its state changes and store a promise in pendingMedia[].
     pendingMedia.push(
-      ...mediaStates.filter(state => !isResolvedState(state)).map(state => {
-        const resolvePromise = new Promise<MediaState>((resolve, reject) =>
-          stateManager.subscribe(state.id, newState => {
-            if (isResolvedState(newState)) {
-              pendingMedia.splice(pendingMedia.indexOf(resolvePromise), 1);
-              resolve(newState);
-            }
-          }),
+      ...mediaStates.filter(state => !isEndState(state)).map(state => {
+        const mediaResolvedPromise = new Promise<MediaState>(
+          (resolve, reject) => {
+            const onStateChange = newState => {
+              // When media item reaches its final state, remove listener and promise
+              // from pendingMedia[] before resolving.
+              if (isEndState(newState)) {
+                stateManager.unsubscribe(state.id, onStateChange);
+                pendingMedia.splice(
+                  pendingMedia.indexOf(mediaResolvedPromise),
+                  1,
+                );
+                resolve(newState);
+              }
+            };
+
+            stateManager.subscribe(state.id, onStateChange);
+          },
         );
-        return resolvePromise;
+
+        return mediaResolvedPromise;
       }),
     );
 
@@ -320,13 +333,18 @@ export class MediaPluginState {
    * An optional timeout will cause the promise to reject if the operation takes too long
    *
    * NOTE: The promise will resolve even if some of the media have failed to process.
-   *
    */
   waitForPendingTasks = (timeout?: Number) => {
     const { pendingMedia } = this;
 
+    if (!pendingMedia.length) {
+      return Promise.resolve();
+    }
+
     if (!timeout) {
-      return Promise.all(pendingMedia);
+      // We chain it back with itself to make sure, that no new pending media
+      // has been added to document before the previous one has been resolved.
+      return Promise.all(pendingMedia).then(() => this.waitForPendingTasks());
     }
 
     return new Promise((resolve, reject) => {
@@ -339,7 +357,10 @@ export class MediaPluginState {
 
       return allPromise.then(() => {
         clearTimeout(rejectTimeout);
-        resolve();
+
+        // We chain it back with itself to make sure, that no new pending media
+        // has been added to document before the previous one has been resolved.
+        return this.waitForPendingTasks();
       });
     });
   };
