@@ -1,12 +1,22 @@
-*.log
+# ignore dependency caches
+node_modules/
+
+# ignore builds
 dist
 
-node_modules/
+# ignore generated files
 coverage/
-**/.DS_Store
 **/.netlify
+
+# ignore all logs
+*.log
+
+# ignore editor generated files
 .vscode
 .idea
+
+# ignore OS generated files
+**/.DS_Store
 
 # This is a hardcoded file for now, just to show that things are working, will remove once not
 # hardcoded

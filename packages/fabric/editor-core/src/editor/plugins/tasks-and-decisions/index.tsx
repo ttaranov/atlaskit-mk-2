@@ -31,16 +31,16 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 50, plugin: (schema, props, providerFactory) => pastePlugin() }, // must before default paste plugin
+      { rank: 50, plugin: () => pastePlugin() }, // must before default paste plugin
       {
         rank: 500,
-        plugin: (schema, props, providerFactory) => {
+        plugin: ({ props }) => {
           const { delegateAnalyticsEvent } = props;
           return createPlugin({ delegateAnalyticsEvent });
         },
       },
-      { rank: 510, plugin: schema => inputRulePlugin(schema) },
-      { rank: 9800, plugin: schema => keymap(schema) }, // Needs to be after "save-on-enter"
+      { rank: 510, plugin: ({ schema }) => inputRulePlugin(schema) },
+      { rank: 9800, plugin: ({ schema }) => keymap(schema) }, // Needs to be after "save-on-enter"
     ];
   },
 

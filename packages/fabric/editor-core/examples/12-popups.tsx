@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
@@ -172,8 +174,8 @@ class PortalInScrollContainerExample extends PureComponent<any, any> {
 
 const CANCEL_ACTION = () => console.log('Cancel');
 const SAVE_ACTION = () => console.log('Save');
-
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
+
 const mentionProvider = new Promise<any>(resolve =>
   resolve(mentionStoryData.resourceProvider),
 );

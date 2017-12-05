@@ -58,12 +58,12 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(hyperlinkPlugin);
   }
 
-  if (props.allowCodeBlocks) {
-    plugins.push(codeBlockPlugin);
+  if (props.mediaProvider) {
+    plugins.push(mediaPlugin);
   }
 
-  if (props.allowTables) {
-    plugins.push(tablesPlugin);
+  if (props.allowCodeBlocks) {
+    plugins.push(codeBlockPlugin);
   }
 
   if (props.mentionProvider) {
@@ -72,6 +72,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.emojiProvider) {
     plugins.push(emojiPlugin);
+  }
+
+  if (props.allowTables) {
+    plugins.push(tablesPlugin);
   }
 
   if (props.allowTasksAndDecisions) {
@@ -84,10 +88,6 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.saveOnEnter) {
     plugins.push(saveOnEnterPlugin);
-  }
-
-  if (props.mediaProvider) {
-    plugins.push(mediaPlugin);
   }
 
   if (props.legacyImageUploadProvider) {

@@ -18,7 +18,11 @@ import {
 } from 'prosemirror-state';
 import { liftTarget, findWrapping } from 'prosemirror-transform';
 import { LEFT } from '../keymaps';
-import JSONTransformer, { JSONDocNode, JSONNode } from '../transformers/json';
+import {
+  JSONTransformer,
+  JSONDocNode,
+  JSONNode,
+} from '@atlaskit/editor-json-transformer';
 
 export {
   default as ErrorReporter,

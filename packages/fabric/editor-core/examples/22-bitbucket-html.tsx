@@ -5,7 +5,7 @@ import { PureComponent } from 'react';
 import Editor from '../example-helpers/editor';
 import schema from '../example-helpers/schema';
 import { EmojiProvider } from '../src';
-import { BitbucketTransformer } from '../src/transformers';
+import { BitbucketTransformer } from '@atlaskit/editor-bitbucket-transformer';
 import exampleHTML from '../example-helpers/exampleHTML';
 
 const emojiProvider = emojiStoryData.getEmojiResource() as Promise<

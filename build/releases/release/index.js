@@ -35,21 +35,23 @@ async function run(opts) {
 
   const unreleasedChangesets = await git.getUnpublishedChangesetCommits();
 
-  if (unreleasedChangesets.length === 0) {
-    logger.warn(`No unreleased changesets found. Exiting`);
-    return;
-  }
   const releaseObj = createRelease(unreleasedChangesets, allPackages);
   const publishCommit = createReleaseCommit(releaseObj);
-
-  const changelogPaths = await changelog.updateChangelog(releaseObj, { cwd });
-
   logger.log(publishCommit);
 
-  const runPublish =
-    isRunningInPipelines() || (await cli.askConfirm('Publish these packages?'));
-  if (runPublish) {
-    // update package versions
+  if (unreleasedChangesets.length === 0) {
+    logger.warn('No unreleased changesets found.');
+  }
+
+  // in the future we will expose the ability to update files/changelogs without being in CI
+  // for now, we'll just exit
+  if (!isRunningInPipelines()) {
+    return;
+  }
+
+  // if we have packages that need to be changed
+  if (unreleasedChangesets.length > 0) {
+    // update local package versions
     await bumpReleasedPackages(releaseObj, allPackages);
     // Need to transform releases into a form for bolt to update dependencies
     const versionsToUpdate = releaseObj.releases.reduce(
@@ -59,18 +61,19 @@ async function run(opts) {
       }),
       {},
     );
-    // update dependencies on those versions
+    // update dependencies on those versions using bolt
     const pkgPaths = await bolt.updatePackageVersions(versionsToUpdate, {
       cwd,
     });
-    // TODO: get updatedPackages from bolt.updatePackageVersions and only add those
-    // as well as the changelogPaths
 
-    for (let changelogPath of changelogPaths) {
-      await git.add(changelogPath);
-    }
     for (let pkgPath of pkgPaths) {
       await git.add(pkgPath);
+    }
+
+    // Now update the changelogs
+    const changelogPaths = await changelog.updateChangelog(releaseObj, { cwd });
+    for (let changelogPath of changelogPaths) {
+      await git.add(changelogPath);
     }
 
     logger.log('Committing changes...');
@@ -83,24 +86,25 @@ async function run(opts) {
     logger.log('Pushing changes back to origin...');
     const maxRetries = 3;
     await git.rebaseAndPush(maxRetries);
+  }
 
-    // bolt will throw if there is an error
-    const packages = await bolt.publish({ access: 'public' });
-    let successfullyPublished = [];
-    let failedToPublish = [];
-    for (let p of packages) {
-      if (p.published) successfullyPublished.push(p);
-      else failedToPublish.push(p);
-    }
+  // We always run publish even if we didnt have any packages we know we are publishing (a previous)
+  // failed build might have bumped packages but not released them.
+  const packages = await bolt.publish({ access: 'public' });
+  let successfullyPublished = [];
+  let failedToPublish = [];
+  for (let p of packages) {
+    if (p.published) successfullyPublished.push(p);
+    else failedToPublish.push(p);
+  }
 
-    if (successfullyPublished.length > 0) {
-      logReleases('successfully', successfullyPublished);
-    }
+  if (successfullyPublished.length > 0) {
+    logReleases('successfully', successfullyPublished);
+  }
 
-    if (failedToPublish.length > 0) {
-      logReleases('failed to', failedToPublish);
-      throw new Error(`Some releases failed: ${JSON.stringify(packages)}`);
-    }
+  if (failedToPublish.length > 0) {
+    logReleases('failed to', failedToPublish);
+    throw new Error(`Some releases failed: ${JSON.stringify(packages)}`);
   }
 }
 

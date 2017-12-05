@@ -1,5 +1,5 @@
 // @flow
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { sizes } from './constants';
 
 const Wrapper = styled.span`
@@ -8,7 +8,6 @@ const Wrapper = styled.span`
   fill: ${p => p.textColor};
   height: ${p => sizes[p.size]}px;
   position: relative;
-  stop-color: currentColor;
   user-select: none;
 
   > svg {
@@ -24,15 +23,19 @@ const Wrapper = styled.span`
     height: 100%;
     visibility: hidden;
   }
-  /*
-    The stop-color doesn't cascade down through these elements, so when we have a gradient
-    that inherits currentColor, it won't be seen by the <stop> element within the <linearGradient>
-  */
-  svg,
-  defs,
-  linearGradient {
-    stop-color: inherit;
-  }
+  ${p =>
+    /* Only apply this if our stop-colors are inherit, if they aren't we don't need to set stop-color via css */
+    p.iconGradientStart === 'inherit' &&
+    p.iconGradientStop === 'inherit' &&
+    css`
+     /* Stop-color doesn't properly apply in chrome when the inherited/current color changes.
+      * We have to initially set stop-color to inherit (either via DOM attribute or an initial CSS
+      * rule) and then override it with currentColor for the color changes to be picked up.
+      */
+      stop {
+        stop-color: currentColor;
+      }
+    `};
 `;
 
 export default Wrapper;

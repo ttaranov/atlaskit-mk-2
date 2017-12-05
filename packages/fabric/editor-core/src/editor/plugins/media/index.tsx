@@ -17,7 +17,7 @@ const mediaPlugin: EditorPlugin = {
     return [
       {
         rank: 1200,
-        plugin: (schema, props, dispatch, providerFactory, errorReporter) =>
+        plugin: ({ schema, props, dispatch, providerFactory, errorReporter }) =>
           createPlugin(
             schema,
             {
@@ -30,12 +30,48 @@ const mediaPlugin: EditorPlugin = {
             props.appearance,
           ),
       },
-      { rank: 1220, plugin: schema => keymapPlugin(schema) },
+      { rank: 1220, plugin: ({ schema }) => keymapPlugin(schema) },
     ];
   },
 
-  secondaryToolbarComponent(editorView, providerFactory) {
-    return <ToolbarMedia editorView={editorView} pluginKey={pluginKey} />;
+  primaryToolbarComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    disabled,
+    editorWidth,
+  ) {
+    return (
+      <ToolbarMedia
+        editorView={editorView}
+        pluginKey={pluginKey}
+        isDisabled={disabled}
+        editorWidth={editorWidth}
+      />
+    );
+  },
+
+  secondaryToolbarComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    disabled,
+    editorWidth,
+  ) {
+    return (
+      <ToolbarMedia
+        editorView={editorView}
+        pluginKey={pluginKey}
+        isDisabled={disabled}
+        editorWidth={editorWidth}
+      />
+    );
   },
 };
 

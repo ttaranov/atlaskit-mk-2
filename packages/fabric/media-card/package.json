@@ -23,7 +23,7 @@
       "name": "James N"
     }
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/avatar": "^8.0.0",
     "@atlaskit/badge": "^6.1.7",

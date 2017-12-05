@@ -9,8 +9,8 @@ import { tableEditing } from 'prosemirror-tables';
 import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from '../../../plugins/table';
 import hoverSelectionPlugin from './hover-selection-plugin';
-import TableFloatingControls from '../../../ui/TableFloatingControls';
 import TableFloatingToolbar from '../../../ui/TableFloatingToolbar';
+import ToolbarTable from './ui/ToolbarTable';
 
 const tablesPlugin: EditorPlugin = {
   nodes() {
@@ -41,18 +41,35 @@ const tablesPlugin: EditorPlugin = {
     const pluginState = stateKey.getState(editorView.state);
 
     return (
-      <div>
-        <TableFloatingControls
-          editorView={editorView}
-          pluginState={pluginState}
-        />
-        <TableFloatingToolbar
-          editorView={editorView}
-          pluginState={pluginState}
-          popupsMountPoint={popupsMountPoint}
-          popupsBoundariesElement={popupsBoundariesElement}
-        />
-      </div>
+      <TableFloatingToolbar
+        editorView={editorView}
+        pluginState={pluginState}
+        popupsMountPoint={popupsMountPoint}
+        popupsBoundariesElement={popupsBoundariesElement}
+      />
+    );
+  },
+
+  primaryToolbarComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    disabled,
+    editorWidth,
+  ) {
+    const pluginState = stateKey.getState(editorView.state);
+    return (
+      <ToolbarTable
+        isDisabled={disabled}
+        editorWidth={editorWidth}
+        editorView={editorView}
+        pluginState={pluginState}
+        popupsMountPoint={popupsMountPoint}
+        popupsBoundariesElement={popupsBoundariesElement}
+      />
     );
   },
 };

@@ -123,7 +123,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
         spacing={
-          editorWidth && editorWidth > EditorWidth.BreakPoint6
+          editorWidth && editorWidth > EditorWidth.BreakPoint10
             ? 'default'
             : 'none'
         }
@@ -200,7 +200,11 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
         subscriptHidden,
         superscriptHidden,
       } = this.state;
-      if (!underlineHidden && editorWidth! <= EditorWidth.BreakPoint2) {
+      if (
+        !underlineHidden &&
+        editorWidth &&
+        editorWidth <= EditorWidth.BreakPoint2
+      ) {
         this.addRecordToItems(
           items,
           'Underline',

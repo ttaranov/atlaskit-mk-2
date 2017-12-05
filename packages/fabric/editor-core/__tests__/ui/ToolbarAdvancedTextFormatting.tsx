@@ -34,26 +34,51 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     toolbarOption.unmount();
   });
 
-  it('should have spacing of toolbar button set to none if editorWidth is less then breakpoint6', () => {
+  it('should have spacing of toolbar button set to none if editorWidth is less then BreakPoint10', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
-      <ToolbarAdvancedTextFormatting editorView={editorView} />,
+      <ToolbarAdvancedTextFormatting
+        editorView={editorView}
+        editorWidth={EditorWidth.BreakPoint10 - 1}
+      />,
     );
     expect(toolbarOption.find(ToolbarButton).prop('spacing')).toEqual('none');
     toolbarOption.unmount();
   });
 
-  it('should have spacing of toolbar button set to default if editorWidth is greater then breakpoint6', () => {
+  it('should have spacing of toolbar button set to default if editorWidth is greater then BreakPoint10', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
         editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint6 + 1}
+        editorWidth={EditorWidth.BreakPoint10 + 1}
       />,
     );
     expect(toolbarOption.find(ToolbarButton).prop('spacing')).toEqual(
       'default',
     );
+    toolbarOption.unmount();
+  });
+
+  it('should not have  option to underline if EditorWidth is not defined', () => {
+    const { editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={textFormattingPluginSet[0].getState(
+          editorView.state,
+        )}
+        pluginStateClearFormatting={clearformattingPluginSet[0].getState(
+          editorView.state,
+        )}
+        editorView={editorView}
+      />,
+    );
+    toolbarOption.find(ToolbarButton).simulate('click');
+    expect(
+      toolbarOption
+        .find('Item')
+        .filterWhere(n => n.text().indexOf('Underline') >= 0).length,
+    ).toEqual(0);
     toolbarOption.unmount();
   });
 

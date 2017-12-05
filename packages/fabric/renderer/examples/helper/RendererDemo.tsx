@@ -1,3 +1,5 @@
+/* tslint:disable: no-console */
+
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
@@ -18,7 +20,6 @@ import { AkProfileClient, modifyResponse } from '@atlaskit/profilecard';
 import { renderDocument, TextSerializer } from '../../src';
 
 const { getMockProfileClient: getMockProfileClientUtil } = profilecardUtils;
-// tslint:disable-next-line:variable-name
 const MockProfileClient = getMockProfileClientUtil(
   AkProfileClient,
   modifyResponse,

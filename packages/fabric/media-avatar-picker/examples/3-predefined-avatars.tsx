@@ -1,25 +1,40 @@
-/* tslint:disable:variable-name */
+/* tslint:disable:no-console */
+
 import * as React from 'react';
 import styled from 'styled-components';
 
-import {AvatarList, Avatar, PredefinedAvatarList, PredefinedAvatarView} from '../src';
-import {generateAvatars} from '../example-helpers';
+import {
+  AvatarList,
+  Avatar,
+  PredefinedAvatarList,
+  PredefinedAvatarView,
+} from '../src';
+import { generateAvatars } from '../example-helpers';
 
 const avatars: Array<Avatar> = generateAvatars(5);
-const Wrapper = styled.div`margin: 10px`;
+const Wrapper = styled.div`
+  margin: 10px;
+`;
 
 export default () => (
   <div>
     <div>
       <h1>Avatar List</h1>
       <Wrapper>
-        <AvatarList avatars={avatars.map(a => ({avatar: a, selected: false}))}/>
+        <AvatarList
+          avatars={avatars.map(a => ({ avatar: a, selected: false }))}
+        />
       </Wrapper>
-      </div>
+    </div>
     <div>
       <h1>Predefined Avatars (none preselected)</h1>
       <Wrapper>
-        <PredefinedAvatarList avatars={avatars} onAvatarSelected={() => {console.log('onAvatarSelected')}} />
+        <PredefinedAvatarList
+          avatars={avatars}
+          onAvatarSelected={() => {
+            console.log('onAvatarSelected');
+          }}
+        />
       </Wrapper>
     </div>
     <div>
@@ -28,7 +43,9 @@ export default () => (
         <PredefinedAvatarList
           avatars={avatars}
           selectedAvatar={avatars[2]}
-          onAvatarSelected={() => {console.log('onAvatarSelected')}}
+          onAvatarSelected={() => {
+            console.log('onAvatarSelected');
+          }}
         />
       </Wrapper>
     </div>
@@ -37,7 +54,9 @@ export default () => (
       <Wrapper>
         <PredefinedAvatarView
           avatars={generateAvatars(25)}
-          onAvatarSelected={() => {console.log('onAvatarSelected')}}
+          onAvatarSelected={() => {
+            console.log('onAvatarSelected');
+          }}
         />
       </Wrapper>
     </div>

@@ -18,6 +18,7 @@ const allPackages = {
   'datetime-picker': { key: 'datetime-picker', name: 'Date/Time Picker' },
   'dropdown-menu': { key: 'dropdown-menu', name: 'Dropdown Menu' },
   'dynamic-table': { key: 'dynamic-table', name: 'Dynamic Table' },
+  'empty-state': { key: 'empty-state', name: 'Empty State' },
   'field-radio-group': { key: 'field-radio-group', name: 'Radio Group' },
   'field-range': { key: 'field-range', name: 'Field Range' },
   'field-text-area': { key: 'field-text-area', name: 'Text Field Area' },

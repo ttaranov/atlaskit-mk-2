@@ -29,7 +29,7 @@ const jiraIssuePlugin: EditorPlugin = {
     return [
       {
         rank: 1410,
-        plugin: (schema, props, dispatch, providerFactory) =>
+        plugin: ({ schema, providerFactory }) =>
           createPlugin(schema, providerFactory),
       },
     ];
