@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 import { Avatar } from '../src/avatar-list';
@@ -128,5 +128,30 @@ describe('Avatar Picker Dialog', () => {
     expect(predefinedAvatars[DEFAULT_VISIBLE_PREDEFINED_AVATARS - 1]).toBe(
       selectedAvatar,
     );
+  });
+
+  it('should by able to customise title', () => {
+    const selectedAvatar: Avatar = { dataURI: 'http://an.avatar.com/123' };
+    const avatars = [selectedAvatar];
+    const component = renderWithProps({ avatars, title: 'test-title' });
+    const { header } = component.find(ModalDialog).props() as { header: any };
+    const title = shallow(header());
+    expect(title.text()).toBe('test-title');
+  });
+
+  it('should by able to customise primary button text', () => {
+    const selectedAvatar: Avatar = { dataURI: 'http://an.avatar.com/123' };
+    const avatars = [selectedAvatar];
+    const component = renderWithProps({
+      avatars,
+      primaryButtonText: 'test-primary-text',
+    });
+    const { footer } = component.find(ModalDialog).props() as { footer: any };
+    expect(
+      mount(footer())
+        .find(Button)
+        .at(0)
+        .text(),
+    ).toBe('test-primary-text');
   });
 });

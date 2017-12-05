@@ -24,6 +24,8 @@ export interface AvatarPickerDialogProps {
   imageSource?: string;
   onImagePicked: (file: File, crop: CropProperties) => void;
   onCancel: () => void;
+  title?: string;
+  primaryButtonText?: string;
 }
 
 export enum Mode {
@@ -119,21 +121,24 @@ export class AvatarPickerDialog extends PureComponent<
   }
 
   renderHeader() {
-    return () => <ModalHeader>Upload an avatar</ModalHeader>;
+    const { title } = this.props;
+    return () => <ModalHeader>{title || 'Upload an avatar'}</ModalHeader>;
   }
 
   renderFooter() {
+    const { primaryButtonText, onCancel } = this.props;
+    const { onSaveClick, isDisabled } = this;
     return () => (
       <ModalFooter>
         <div>
           <Button
             appearance="primary"
-            onClick={this.onSaveClick}
-            isDisabled={this.isDisabled}
+            onClick={onSaveClick}
+            isDisabled={isDisabled}
           >
-            Save
+            {primaryButtonText || 'Save'}
           </Button>
-          <Button appearance="subtle-link" onClick={this.props.onCancel}>
+          <Button appearance="subtle-link" onClick={onCancel}>
             Cancel
           </Button>
         </div>
