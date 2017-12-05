@@ -255,11 +255,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
       emojiProvider,
     } = this.props;
     let items: any[] = [];
-    if (
-      mediaSupported &&
-      mediaUploadsEnabled &&
-      editorWidth! <= EditorWidth.BreakPoint7
-    ) {
+    if (editorWidth! <= EditorWidth.BreakPoint7) {
       items.push({
         content: 'Add link',
         value: { name: 'link' },

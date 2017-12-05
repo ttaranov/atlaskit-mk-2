@@ -36,6 +36,19 @@ describe('ToolbarTextColor', () => {
     toolbarOption.unmount();
   });
 
+  it('should return null if editor width is less then BreakPoint8', () => {
+    const { pluginState, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(
+      <ToolbarTextColor
+        pluginState={pluginState}
+        editorView={editorView}
+        editorWidth={EditorWidth.BreakPoint8 - 1}
+      />,
+    );
+    expect(toolbarOption.html()).toEqual(null);
+    toolbarOption.unmount();
+  });
+
   describe('when plugin is enabled', () => {
     it('sets disabled to false', () => {
       const { editorView, pluginState } = editor(doc(p('text')));
