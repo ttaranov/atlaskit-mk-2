@@ -3,11 +3,16 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Lorem from 'react-lorem-component';
 
-import { Spotlight, SpotlightPulse, SpotlightTarget } from '../../src';
-import { Code } from '../styled';
+import {
+  Spotlight,
+  SpotlightManager,
+  SpotlightPulse,
+  SpotlightTarget,
+} from '../src';
+import { Code } from './styled';
 
-import logo from '../assets/logo.png';
-import logoInverted from '../assets/logo-inverted.png';
+import logo from './assets/logo.png';
+import logoInverted from './assets/logo-inverted.png';
 
 const radius = 8;
 const Replacement = rect => {
@@ -42,11 +47,11 @@ export default class SpotlightTargetReplacementExample extends Component<
     const { active } = this.state;
 
     return (
-      <div>
+      <SpotlightManager>
         {/* so we don't get a gross flash on reveal */}
         <img alt="hidden" src={logoInverted} style={{ display: 'none' }} />
 
-        <SpotlightTarget name="unique">
+        <SpotlightTarget name="target-replacement-example">
           <Image alt="I will be replaced..." src={logo} />
         </SpotlightTarget>
 
@@ -74,15 +79,15 @@ export default class SpotlightTargetReplacementExample extends Component<
           <Spotlight
             actions={[{ onClick: this.hide, text: 'Done' }]}
             dialogPlacement="bottom left"
-            key="unique"
+            key="target-replacement-example"
             heading="Hey, neat!"
-            target="unique"
+            target="target-replacement-example"
             targetReplacement={Replacement}
           >
             <Lorem count={1} />
           </Spotlight>
         )}
-      </div>
+      </SpotlightManager>
     );
   }
 }

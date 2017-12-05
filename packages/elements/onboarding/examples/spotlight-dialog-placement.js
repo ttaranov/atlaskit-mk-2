@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { Spotlight, SpotlightTarget } from '../../src';
-import { Code, Highlight } from '../styled';
+import { Spotlight, SpotlightManager, SpotlightTarget } from '../src';
+import { Code, Highlight } from './styled';
 
 const options = [
   'top right',
@@ -48,8 +48,8 @@ export default class SpotlightDialogPlacementExample extends Component<
       : options[(index || 0) % options.length];
 
     return (
-      <Wrapper>
-        <SpotlightTarget name="unique">
+      <SpotlightManager component={Wrapper}>
+        <SpotlightTarget name="placement-example">
           <Highlight color="neutral">Target</Highlight>
         </SpotlightTarget>
 
@@ -68,14 +68,14 @@ export default class SpotlightDialogPlacementExample extends Component<
             dialogPlacement={placement}
             dialogWidth={300}
             heading={`"${placement}"`}
-            key="unique"
-            target="unique"
+            key="placement-example"
+            target="placement-example"
             targetOnClick={this.next}
           >
             A single line of innocuous text.
           </Spotlight>
         ) : null}
-      </Wrapper>
+      </SpotlightManager>
     );
   }
 }

@@ -16,7 +16,7 @@ type State = {
 };
 
 export default class SpotlightManager extends PureComponent<Props, State> {
-  spotlightRegistry: typeof SpotlightRegistry = new SpotlightRegistry();
+  spotlightRegistry: SpotlightRegistry = new SpotlightRegistry();
   static childContextTypes = {
     spotlightRegistry: PropTypes.instanceOf(SpotlightRegistry).isRequired,
   };

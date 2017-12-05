@@ -623,6 +623,15 @@
     styled-components "^1.4.6"
     whatwg-fetch "^1.0.0"
 
+"@atlaskit/progress-indicator@^2.0.0":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@atlaskit/progress-indicator/-/progress-indicator-2.0.2.tgz#6e3ee6fcfb3693673ba2e4b1c9ec28001a9471db"
+  dependencies:
+    "@atlaskit/theme" "^2.1.0"
+    babel-runtime "^6.11.6"
+    prop-types "^15.5.10"
+    styled-components "^1.4.6"
+
 "@atlaskit/single-select@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/single-select/-/single-select-3.0.1.tgz#3047d125f7170fa0626ecee03a521eaab0119f49"

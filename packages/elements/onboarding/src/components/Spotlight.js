@@ -90,11 +90,10 @@ class Spotlight extends Component<Props, State> {
     pulse: true,
   };
 
-  handleTargetClick = event => {
+  handleTargetClick = (event: MouseEvent) => {
     const { targetOnClick, target } = this.props;
-    if (targetOnClick && typeof targetOnClick === 'function') {
-      targetOnClick({ event, target });
-    }
+
+    if (targetOnClick) targetOnClick({ event, target });
   };
   handleExit = () => {
     // NOTE: disable FocusLock *before* unmount. animation may end after a new
@@ -117,7 +116,7 @@ class Spotlight extends Component<Props, State> {
     if (!target) {
       throw Error(`Spotlight couldn't find a target matching "${target}".`);
     }
-    console.log(props.rect, props.clone);
+
     return Replacement ? (
       <Replacement {...props.rect} />
     ) : (
@@ -202,15 +201,13 @@ class Spotlight extends Component<Props, State> {
     );
   }
 }
-//
-// export default withScrollMeasurements(
-//   withRenderTarget(
-//     {
-//       target: 'spotlight',
-//       withTransitionGroup: false,
-//     },
-//     Spotlight,
-//   ),
-// );
 
-export default Spotlight;
+export default withScrollMeasurements(
+  withRenderTarget(
+    {
+      target: 'spotlight',
+      withTransitionGroup: true,
+    },
+    Spotlight,
+  ),
+);

@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import ArrowUpIcon from '@atlaskit/icon/glyph/arrow-up';
 import ArrowDownIcon from '@atlaskit/icon/glyph/arrow-down';
 
-import { Spotlight, SpotlightTarget } from '../../src';
-import { Code, Highlight } from '../styled';
+import { Spotlight, SpotlightManager, SpotlightTarget } from '../src';
+import { Code, Highlight } from './styled';
 
 const Wrapper = styled.div`
   align-items: center;
@@ -73,8 +73,8 @@ export default class SpotlightDialogWidthExample extends Component<{}, State> {
     );
 
     return (
-      <Wrapper>
-        <SpotlightTarget name="unique">
+      <SpotlightManager component={Wrapper}>
+        <SpotlightTarget name="width-example">
           <Highlight color="neutral">Target</Highlight>
         </SpotlightTarget>
 
@@ -96,13 +96,13 @@ export default class SpotlightDialogWidthExample extends Component<{}, State> {
             dialogPlacement="top center"
             dialogWidth={value}
             heading={`${value}px`}
-            key="unique"
-            target="unique"
+            key="width-example"
+            target="width-example"
           >
             <Lorem count={1} />
           </Spotlight>
         )}
-      </Wrapper>
+      </SpotlightManager>
     );
   }
 }

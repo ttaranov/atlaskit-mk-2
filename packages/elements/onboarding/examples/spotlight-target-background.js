@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Lorem from 'react-lorem-component';
 
-import { Spotlight, SpotlightTarget } from '../../src';
-import { Code, Highlight, HighlightGroup } from '../styled';
+import { Spotlight, SpotlightManager, SpotlightTarget } from '../src';
+import { Code, Highlight, HighlightGroup } from './styled';
 
 const Wrapper = styled.div`
   background-color: #f6f6f6;
@@ -67,7 +67,7 @@ export default class SpotlightTargetBackgroundExample extends Component<
   }
   render() {
     return (
-      <Wrapper>
+      <SpotlightManager component={Wrapper}>
         <HighlightGroup>
           <SpotlightTarget name="without">
             <Highlight bg="transparent" color="red">
@@ -89,7 +89,7 @@ export default class SpotlightTargetBackgroundExample extends Component<
         <button onClick={this.start}>Start</button>
 
         {this.renderActiveSpotlight()}
-      </Wrapper>
+      </SpotlightManager>
     );
   }
 }

@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import Lorem from 'react-lorem-component';
 
-import { Spotlight, SpotlightTarget } from '../../src';
-import { Code, HighlightGroup, Highlight } from '../styled';
+import { Spotlight, SpotlightManager, SpotlightTarget } from '../src';
+import { Code, HighlightGroup, Highlight } from './styled';
 
 type State = {
   active: number | null,
@@ -67,7 +67,7 @@ export default class SpotlightTargetRadiusExample extends Component<{}, State> {
   }
   render() {
     return (
-      <div>
+      <SpotlightManager>
         <HighlightGroup>
           <SpotlightTarget name="small">
             <Highlight color="blue" radius={4}>
@@ -96,7 +96,7 @@ export default class SpotlightTargetRadiusExample extends Component<{}, State> {
         <button onClick={this.start}>Start</button>
 
         {this.renderActiveSpotlight()}
-      </div>
+      </SpotlightManager>
     );
   }
 }

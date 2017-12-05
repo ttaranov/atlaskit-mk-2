@@ -1,6 +1,6 @@
 // @flow
 /* eslint-disable react/sort-comp, react/no-multi-comp */
-import React, { type Element, Component, type Node } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { type ComponentType } from '../types';
 
@@ -10,12 +10,12 @@ type Props = {|
   target: HTMLElement,
 |};
 type State = {
-  clone: HTMLElement,
+  clone?: string, // string representation of HTMLElement
   scrollY: number,
-  rect: {},
-} | void;
+  rect?: {},
+};
 
-function elementCropDirection(el: Element<any>) {
+function elementCropDirection(el: HTMLElement) {
   if (!el) return null;
   const rect = el.getBoundingClientRect();
 
@@ -40,17 +40,12 @@ function getScrollY() {
     0
   );
 }
-function getInitialState() {
-  return {
-    scrollY: getScrollY(),
-  };
-}
 
 export default function withScrollMeasurements(
   WrappedComponent: ComponentType,
 ) {
   return class SpotlightWrapper extends Component<Props, State> {
-    state: State = getInitialState();
+    state: State = { scrollY: getScrollY() };
     static contextTypes = {
       spotlightRegistry: PropTypes.instanceOf(SpotlightRegistry).isRequired,
     };
@@ -71,11 +66,12 @@ export default function withScrollMeasurements(
 
       spotlightRegistry.unmount(target);
     }
-    measureAndScroll = (node: {}) => {
+    measureAndScroll = (node: HTMLElement) => {
       if (!node) {
-        throw new Error(
-          "Looks like you're trying to render a spotlight dialog without a target.",
-        );
+        throw new Error(`
+          It looks like you're trying to render a spotlight dialog without a
+          target, or before the target has rendered.
+        `);
       }
       const {
         height,
@@ -107,9 +103,7 @@ export default function withScrollMeasurements(
       });
     };
     render() {
-      return (
-        <WrappedComponent {...this.context} {...this.props} {...this.state} />
-      );
+      return <WrappedComponent {...this.props} {...this.state} />;
     }
   };
 }

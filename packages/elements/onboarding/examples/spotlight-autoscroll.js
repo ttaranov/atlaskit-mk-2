@@ -2,14 +2,21 @@
 import React, { Component } from 'react';
 import Lorem from 'react-lorem-component';
 
-import { Spotlight, SpotlightPulse, SpotlightTarget } from '../../src';
-import { HighlightGroup, Highlight } from '../styled';
+import {
+  Spotlight,
+  SpotlightManager,
+  SpotlightPulse,
+  SpotlightTarget,
+} from '../src';
+import { HighlightGroup, Highlight } from './styled';
 
 type State = {
   active: boolean,
 };
 
-export default class Example extends Component<*, State> {
+const Base = props => <div style={{ paddingBottom: 40 }} {...props} />;
+
+export default class SpotlightAutoscrollExample extends Component<*, State> {
   constructor() {
     super();
     this.state = {
@@ -22,7 +29,7 @@ export default class Example extends Component<*, State> {
     const { active } = this.state;
 
     return (
-      <div style={{ paddingBottom: 40 }}>
+      <SpotlightManager component={Base}>
         <p>
           To save some time for consumers and provide a delightfull experience
           to users we check whether the target element is within the viewport
@@ -36,8 +43,13 @@ export default class Example extends Component<*, State> {
         <Lorem count={10} style={{ marginBottom: 20 }} />
 
         <HighlightGroup>
-          <SpotlightTarget name="unique">
-            <Highlight color="red">I&apos;m out of view 😞</Highlight>
+          <SpotlightTarget name="scroll-behaviour">
+            <Highlight color="red">
+              I&apos;m out of view{' '}
+              <span role="img" aria-label="sad face">
+                😞
+              </span>
+            </Highlight>
           </SpotlightTarget>
         </HighlightGroup>
 
@@ -48,12 +60,15 @@ export default class Example extends Component<*, State> {
             actions={[{ onClick: this.hide, text: 'Got it' }]}
             dialogPlacement="bottom left"
             heading="Aww, yiss!"
-            key="unique"
-            target="unique"
+            key="scroll-behaviour"
+            target="scroll-behaviour"
             targetReplacement={rect => (
               <SpotlightPulse style={{ position: 'absolute', ...rect }}>
                 <Highlight color="green" style={{ width: rect.width }}>
-                  I&apos;m in view 😌
+                  I&apos;m in view{' '}
+                  <span role="img" aria-label="happy face">
+                    😌
+                  </span>
                 </Highlight>
               </SpotlightPulse>
             )}
@@ -61,7 +76,7 @@ export default class Example extends Component<*, State> {
             <Lorem count={1} />
           </Spotlight>
         )}
-      </div>
+      </SpotlightManager>
     );
   }
 }

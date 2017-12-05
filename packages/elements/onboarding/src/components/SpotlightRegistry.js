@@ -1,33 +1,36 @@
 // @flow
-export default class SpotlightRegistry {
-  _store = {};
-  _mounted = [];
-  _eventListeners = {};
+import { type Node } from 'react';
 
-  notifyChange(name: string, ...args) {
-    if (this._eventListeners[name]) {
-      this._eventListeners[name].forEach(fn => {
+export default class SpotlightRegistry {
+  store = {};
+  mounted = [];
+  eventListeners = {};
+
+  notifyChange(name: string, ...args: any) {
+    if (this.eventListeners[name]) {
+      this.eventListeners[name].forEach(fn => {
         fn(...args);
       });
     }
   }
-  addChangeListener(name, fn) {
-    if (!this._eventListeners[name]) {
-      this._eventListeners[name] = [];
+  addChangeListener(name: string, fn: () => void) {
+    if (!this.eventListeners[name]) {
+      this.eventListeners[name] = [];
     }
 
-    this._eventListeners[name].push(fn);
+    this.eventListeners[name].push(fn);
   }
-  removeChangeListener(name, fn) {
-    if (this._eventListeners[name]) {
-      this._eventListeners[name] = this._eventListeners[name].filter(
+  removeChangeListener(name: string, fn: () => void) {
+    if (this.eventListeners[name]) {
+      this.eventListeners[name] = this.eventListeners[name].filter(
         i => fn !== i,
       );
     }
   }
 
-  add(name: string, node) {
-    if (this._store[name]) {
+  add(name: string, node: Node) {
+    if (this.store[name]) {
+      // eslint-disable-next-line no-console
       console.warn(
         `SpotlightRegistry already has an entry for "${
           name
@@ -36,25 +39,25 @@ export default class SpotlightRegistry {
       return;
     }
 
-    this._store[name] = node;
+    this.store[name] = node;
     this.notifyChange('add', name);
   }
-  get(name) {
-    return this._store[name];
+  get(name: string) {
+    return this.store[name];
   }
-  remove(name) {
-    if (this._store[name]) {
-      delete this._store[name];
+  remove(name: string) {
+    if (this.store[name]) {
+      delete this.store[name];
       this.notifyChange('remove', name);
     }
   }
 
-  mount(name) {
-    this._mounted.push(name);
+  mount(name: string) {
+    this.mounted.push(name);
     this.notifyChange('mount', name);
   }
-  unmount(name) {
-    this._mounted = this._mounted.filter(i => name !== i);
+  unmount(name: string) {
+    this.mounted = this.mounted.filter(i => name !== i);
     this.notifyChange('unmount', name);
   }
 }

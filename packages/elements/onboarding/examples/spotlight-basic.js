@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import Lorem from 'react-lorem-component';
 
-import { Spotlight, SpotlightTarget } from '../../src';
-import { HighlightGroup, Highlight } from '../styled';
+import { Spotlight, SpotlightManager, SpotlightTarget } from '../src';
+import { HighlightGroup, Highlight } from './styled';
 
 type State = {
   active: number | null,
@@ -15,7 +15,7 @@ export default class SpotlightBasicExample extends Component<Object, State> {
   next = () => this.setState(state => ({ active: state.active + 1 }));
   prev = () => this.setState(state => ({ active: (state.active || 0) - 1 }));
   finish = () => this.setState({ active: null });
-  renderActiveSpotlight() {
+  renderActiveSpotlight = () => {
     const variants = [
       <Spotlight
         actions={[
@@ -53,12 +53,14 @@ export default class SpotlightBasicExample extends Component<Object, State> {
         <Lorem count={1} />
       </Spotlight>,
     ];
+
     if (this.state.active == null) return null;
+
     return variants[this.state.active];
-  }
+  };
   render() {
     return (
-      <div>
+      <SpotlightManager>
         <HighlightGroup>
           <SpotlightTarget name="green">
             <Highlight color="green">First Element</Highlight>
@@ -78,7 +80,7 @@ export default class SpotlightBasicExample extends Component<Object, State> {
         <button onClick={this.start}>Start</button>
 
         {this.renderActiveSpotlight()}
-      </div>
+      </SpotlightManager>
     );
   }
 }
