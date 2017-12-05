@@ -12,7 +12,7 @@ export type State = { json?: {} };
 
 const jsonPretty = (obj: any) => JSON.stringify(obj, null, 2);
 
-export class Example extends PureComponent<Props, State> {
+export default class Example extends PureComponent<Props, State> {
   state: State = { json: {} };
   serializer = new JSONTransformer();
 

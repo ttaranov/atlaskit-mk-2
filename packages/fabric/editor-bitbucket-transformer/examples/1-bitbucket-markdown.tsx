@@ -11,7 +11,7 @@ const SAVE_ACTION = () => console.log('Save');
 export type Props = {};
 export type State = { markdown?: string };
 
-export class Example extends PureComponent<Props, State> {
+export default class Example extends PureComponent<Props, State> {
   state: State = { markdown: '' };
   serializer = new BitbucketTransformer(schema);
 
