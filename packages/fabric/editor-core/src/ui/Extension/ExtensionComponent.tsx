@@ -64,8 +64,8 @@ export default class ExtensionComponent extends Component<Props, State> {
             node={node}
             macroProvider={macroProvider}
             onClick={this.handleClick}
-            onSelectExtension={this.handleSelectExtension}
             handleContentDOMRef={handleContentDOMRef}
+            onSelectExtension={this.handleSelectExtension}
           />
         );
       case 'inlineExtension':
@@ -85,19 +85,25 @@ export default class ExtensionComponent extends Component<Props, State> {
     this.setState({ macroProvider });
   };
 
-  private handleSelectExtension = () => {
-    const { state, dispatch } = this.props.editorView;
-    this.props.selectExtension(state, dispatch);
-  };
-
   private handleClick = (event: React.SyntheticEvent<any>) => {
-    event.nativeEvent.stopImmediatePropagation();
+    if (event.nativeEvent.defaultPrevented) {
+      return;
+    }
+    event.nativeEvent.preventDefault();
     const { state, dispatch } = this.props.editorView;
     this.props.setExtensionElement(event.currentTarget)(state, dispatch);
   };
 
-  private handleDocumentClick = () => {
+  private handleDocumentClick = (event: MouseEvent) => {
+    if (event.defaultPrevented) {
+      return;
+    }
     const { state, dispatch } = this.props.editorView;
     this.props.setExtensionElement(null)(state, dispatch);
+  };
+
+  private handleSelectExtension = () => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.selectExtension(state, dispatch);
   };
 }

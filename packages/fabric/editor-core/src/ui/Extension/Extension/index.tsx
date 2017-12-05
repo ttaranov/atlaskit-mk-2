@@ -6,60 +6,65 @@ import {
   MacroProvider,
   getPlaceholderUrl,
 } from '../../../editor/plugins/macro';
+import { Header, Content, ContentWrapper } from './styles';
 import {
   Wrapper,
-  Header,
-  Placeholder,
+  Overlay,
   PlaceholderFallback,
   PlaceholderFallbackParams,
-  Content,
-} from './styles';
+} from '../styles';
 import { capitalizeFirstLetter } from '../utils';
 
 export interface Props {
   node: PmNode;
   macroProvider?: MacroProvider;
   onClick: (event: React.SyntheticEvent<any>) => void;
-  onSelectExtension: () => void;
   handleContentDOMRef: (node: HTMLElement | null) => void;
+  onSelectExtension: () => void;
 }
 
 export default class Extension extends Component<Props, any> {
   render() {
     const {
+      macroProvider,
       node,
       onClick,
-      onSelectExtension,
       handleContentDOMRef,
+      onSelectExtension,
     } = this.props;
     const { extensionKey } = node.attrs;
 
-    // TODO: handle other extension types to get "placeholderUrl"
     let placeholderUrl;
     let placeholderFallbackUrl;
 
-    // if (macroProvider) {
-    //   const { config: { placeholderBaseUrl } } = macroProvider;
-    //   const imageUrl = getPlaceholderUrl({ node, type: 'image' });
-    //   const iconUrl = getPlaceholderUrl({ node, type: 'icon' });
-    //   placeholderUrl = imageUrl ? `${placeholderBaseUrl}${imageUrl}` : null;
-    //   placeholderFallbackUrl = iconUrl
-    //     ? `${placeholderBaseUrl}${iconUrl}`
-    //     : null;
-    // }
+    if (macroProvider) {
+      const { config: { placeholderBaseUrl } } = macroProvider;
+      const imageUrl = getPlaceholderUrl({ node, type: 'image' });
+      const iconUrl = getPlaceholderUrl({ node, type: 'icon' });
+      placeholderUrl = imageUrl ? `${placeholderBaseUrl}${imageUrl}` : null;
+      placeholderFallbackUrl = iconUrl
+        ? `${placeholderBaseUrl}${iconUrl}`
+        : null;
+    }
+
+    const bodyless = node.attrs.bodyType === 'none';
 
     return (
-      <Wrapper onClick={onClick}>
-        <Header onClick={onSelectExtension}>
+      <Wrapper onClick={onClick} className={bodyless ? 'with-overlay' : ''}>
+        <Overlay className="extension-overlay" />
+        <Header contentEditable={false} onClick={onSelectExtension}>
           {placeholderUrl ? (
             <img src={placeholderUrl} alt={extensionKey} />
           ) : (
             this.renderPlaceholderFallback(placeholderFallbackUrl)
           )}
         </Header>
-        {node.attrs.bodyType !== 'none' && (
-          <Content innerRef={handleContentDOMRef} />
-        )}
+        <ContentWrapper className={bodyless ? 'bodyless' : ''}>
+          <Content
+            innerRef={handleContentDOMRef}
+            className="extension-content"
+          />
+        </ContentWrapper>
       </Wrapper>
     );
   }

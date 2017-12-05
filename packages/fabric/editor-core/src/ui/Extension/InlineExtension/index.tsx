@@ -6,12 +6,8 @@ import {
   MacroProvider,
   getPlaceholderUrl,
 } from '../../../editor/plugins/macro';
-import {
-  Placeholder,
-  Overlay,
-  PlaceholderFallback,
-  PlaceholderFallbackParams,
-} from './styles';
+import { Wrapper, PlaceholderFallback } from './styles';
+import { Overlay, PlaceholderFallbackParams } from '../styles';
 import { capitalizeFirstLetter } from '../utils';
 
 export interface Props {
@@ -40,14 +36,14 @@ export default class InlineExtension extends Component<Props, any> {
     }
 
     return (
-      <Placeholder onClick={onClick}>
-        <Overlay />
+      <Wrapper onClick={onClick} className="with-overlay">
+        <Overlay className="extension-overlay" />
         {placeholderUrl ? (
           <img src={placeholderUrl} alt={extensionKey} />
         ) : (
           this.renderPlaceholderFallback(placeholderFallbackUrl)
         )}
-      </Placeholder>
+      </Wrapper>
     );
   }
 

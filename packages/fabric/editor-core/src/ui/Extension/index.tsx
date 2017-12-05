@@ -45,8 +45,8 @@ export default class Extension extends Component<Props, any> {
         node={node}
         macroProvider={macroProvider}
         setExtensionElement={setExtensionElement}
-        selectExtension={selectExtension}
         handleContentDOMRef={handleContentDOMRef}
+        selectExtension={selectExtension}
       />
     );
   };

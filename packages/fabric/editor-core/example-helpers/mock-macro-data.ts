@@ -1,8 +1,11 @@
-import { MacroType } from '../src/editor/plugins/macro/types';
+import {
+  ExtensionType,
+  ExtensionBodyType,
+} from '../src/editor/plugins/macro/types';
 
 export const inlineMacroData = [
   {
-    type: 'inlineExtension' as MacroType,
+    type: 'inlineExtension' as ExtensionType,
     attrs: {
       extensionType: 'com.atlassian.confluence.macro.core',
       extensionKey: 'status',
@@ -28,7 +31,7 @@ export const inlineMacroData = [
     },
   },
   {
-    type: 'inlineExtension' as MacroType,
+    type: 'inlineExtension' as ExtensionType,
     attrs: {
       extensionType: 'com.atlassian.confluence.macro.core',
       extensionKey: 'status',
@@ -54,9 +57,9 @@ export const inlineMacroData = [
 
 export const blockBodylessMacroData = [
   {
-    type: 'extension' as MacroType,
+    type: 'extension' as ExtensionType,
     attrs: {
-      bodyType: 'none',
+      bodyType: 'none' as ExtensionBodyType,
       extensionType: 'com.atlassian.confluence.macro.core',
       extensionKey: 'gallery',
       parameters: {
@@ -80,9 +83,9 @@ export const blockBodylessMacroData = [
     content: [],
   },
   {
-    type: 'extension' as MacroType,
+    type: 'extension' as ExtensionType,
     attrs: {
-      bodyType: 'none',
+      bodyType: 'none' as ExtensionBodyType,
       extensionType: 'com.atlassian.confluence.macro.core',
       extensionKey: 'gallery',
       parameters: {
@@ -106,9 +109,9 @@ export const blockBodylessMacroData = [
 
 export const blockPlainTextMacroData = [
   {
-    type: 'extension' as MacroType,
+    type: 'extension' as ExtensionType,
     attrs: {
-      bodyType: 'plain',
+      bodyType: 'plain' as ExtensionBodyType,
       extensionType: 'com.atlassian.confluence.macro.core',
       extensionKey: 'code block',
       parameters: {
@@ -142,9 +145,9 @@ export const blockPlainTextMacroData = [
     ],
   },
   {
-    type: 'extension' as MacroType,
+    type: 'extension' as ExtensionType,
     attrs: {
-      bodyType: 'plain',
+      bodyType: 'plain' as ExtensionBodyType,
       extensionType: 'com.atlassian.confluence.macro.core',
       extensionKey: 'code block',
       parameters: {
@@ -178,9 +181,9 @@ export const blockPlainTextMacroData = [
 
 export const blockRichTextMacroData = [
   {
-    type: 'extension' as MacroType,
+    type: 'extension' as ExtensionType,
     attrs: {
-      bodyType: 'rich',
+      bodyType: 'rich' as ExtensionBodyType,
       extensionType: 'com.atlassian.confluence.macro.core',
       extensionKey: 'expand',
       parameters: {
@@ -228,9 +231,9 @@ export const blockRichTextMacroData = [
     ],
   },
   {
-    type: 'extension' as MacroType,
+    type: 'extension' as ExtensionType,
     attrs: {
-      bodyType: 'rich',
+      bodyType: 'rich' as ExtensionBodyType,
       extensionType: 'com.atlassian.confluence.macro.core',
       extensionKey: 'expand',
       parameters: {
@@ -271,7 +274,7 @@ export const blockRichTextMacroData = [
             ],
           },
           {
-            type: 'inlineExtension' as MacroType,
+            type: 'inlineExtension' as ExtensionType,
             attrs: {
               extensionType: 'com.atlassian.confluence.macro.core',
               extensionKey: 'status',

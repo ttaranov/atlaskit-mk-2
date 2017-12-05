@@ -15,6 +15,8 @@ class ExtensionNode implements NodeView {
   private domRef: HTMLElement | undefined;
   private contentDOMRef: HTMLElement | undefined;
   private node: PmNode;
+  private view: EditorView;
+  private providerFactory: ProviderFactory;
 
   constructor(
     node: PmNode,
@@ -23,8 +25,10 @@ class ExtensionNode implements NodeView {
   ) {
     const elementType = node.type.name === 'extension' ? 'div' : 'span';
     this.node = node;
+    this.view = view;
+    this.providerFactory = providerFactory;
     this.domRef = document.createElement(elementType);
-    this.renderReactComponent({ node, view, providerFactory });
+    this.renderReactComponent(node);
   }
 
   get dom() {
@@ -32,16 +36,18 @@ class ExtensionNode implements NodeView {
   }
 
   get contentDOM() {
-    const { bodyType } = this.node.attrs;
-    return bodyType === 'none' ? undefined : this.contentDOMRef;
+    return this.contentDOMRef;
   }
 
-  update() {
-    /**
-     * Returning false here fixes an error where the editor fails to set selection
-     * inside the contentDOM after a transaction. See ED-2374.
-     */
-    return false;
+  update(node: PmNode) {
+    // @see https://github.com/ProseMirror/prosemirror/issues/648
+    const isValidUpdate = this.node.type.name === node.type.name;
+
+    if (isValidUpdate) {
+      this.renderReactComponent(node);
+    }
+
+    return isValidUpdate;
   }
 
   destroy() {
@@ -50,14 +56,12 @@ class ExtensionNode implements NodeView {
     this.contentDOMRef = undefined;
   }
 
-  private renderReactComponent(props: Props) {
-    const { node, providerFactory, view } = props;
-
+  private renderReactComponent(node: PmNode) {
     ReactDOM.render(
       <Extension
-        editorView={view}
+        editorView={this.view}
         node={node}
-        providerFactory={providerFactory}
+        providerFactory={this.providerFactory}
         handleContentDOMRef={this.handleContentDOMRef}
       />,
       this.domRef,

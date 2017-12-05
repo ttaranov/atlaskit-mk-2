@@ -374,10 +374,11 @@ function convertConfluenceMacro(
   node: Element,
 ): Fragment | PMNode | null | undefined {
   const { macroName, macroId, params, properties } = parseMacro(node);
-  const plainTextBody = properties['ac:plain-text-body'];
-  const richTextBody = properties['ac:rich-text-body']
-    ? parseDomNode(schema, getAcTagNode(node, 'ac:rich-text-body')!).content
+  const richBodyNode = getAcTagNode(node, 'ac:rich-text-body')!;
+  const richTextBody = richBodyNode
+    ? parseDomNode(schema, richBodyNode).content
     : null;
+  const plainTextBody = properties['ac:plain-text-body'];
 
   switch (macroName.toUpperCase()) {
     case 'CODE':
@@ -465,7 +466,7 @@ function convertConfluenceMacro(
         content = richTextBody;
         bodyType = 'rich';
       } else {
-        content = schema.nodes.paragraph.createChecked({});
+        content = null;
         bodyType = 'none';
       }
 

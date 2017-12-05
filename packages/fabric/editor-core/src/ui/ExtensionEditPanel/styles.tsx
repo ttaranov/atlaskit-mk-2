@@ -6,7 +6,7 @@ import { akBorderRadius } from '@atlaskit/util-shared-styles';
 export const Toolbar = styled.div`
   background: white;
   border-radius: ${akBorderRadius};
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
   padding: 5px;
   display: flex;
 `;

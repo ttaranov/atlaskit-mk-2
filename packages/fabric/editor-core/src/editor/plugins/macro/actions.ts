@@ -1,9 +1,8 @@
-import { EditorState, Transaction, NodeSelection } from 'prosemirror-state';
+import { EditorState, Transaction } from 'prosemirror-state';
 import { Node as PmNode } from 'prosemirror-model';
 import { MacroProvider, MacroAdf } from './types';
 import { pluginKey } from './';
 import * as assert from 'assert';
-import { getExtensionRange, isCursorInsideNode } from '../extension/utils';
 
 export const insertMacroFromMacroBrowser = (
   macroProvider: MacroProvider,
@@ -11,6 +10,7 @@ export const insertMacroFromMacroBrowser = (
 ) => async (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
+  tr?: Transaction,
 ): Promise<boolean> => {
   if (!macroProvider) {
     return false;
@@ -21,7 +21,6 @@ export const insertMacroFromMacroBrowser = (
   if (newMacro) {
     const { schema } = state;
     const { type, attrs } = newMacro;
-    let { tr } = state;
     let node;
 
     if (type === 'extension') {
@@ -33,13 +32,7 @@ export const insertMacroFromMacroBrowser = (
       node = schema.nodes.inlineExtension.create(attrs);
     }
     if (node) {
-      if (isCursorInsideNode(state, schema.nodes.extension)) {
-        const range = getExtensionRange(state);
-        tr = tr.setSelection(
-          NodeSelection.create(state.doc, range.$from.pos - 1),
-        );
-      }
-      dispatch(tr.replaceSelectionWith(node).scrollIntoView());
+      dispatch((tr || state.tr).replaceSelectionWith(node).scrollIntoView());
     }
     return true;
   }

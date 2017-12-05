@@ -299,18 +299,21 @@ export function parseMacro(node: Element): Macro {
 
   for (let i = 0, len = node.childNodes.length; i < len; i++) {
     const child = node.childNodes[i] as Element;
-    const nodeName = getNodeName(child);
+    const nodeName = getNodeName(child).toLowerCase();
+    if (child.nodeType === 3) {
+      continue;
+    }
     const value = child.textContent;
 
     // example: <ac:parameter ac:name=\"colour\">Red</ac:parameter>
-    if (nodeName === 'AC:PARAMETER') {
+    if (nodeName === 'ac:parameter') {
       const key = getAcName(child);
       if (key) {
         params[key.toLowerCase()] = value;
       }
     } else {
       // example: <fab:placeholder-url>, <fab:display-type>, <ac:rich-text-body>
-      properties[nodeName.toLowerCase()] = value;
+      properties[nodeName] = value;
     }
   }
 

@@ -18,7 +18,7 @@ export default (props: Props) => {
   }
 
   return (
-    <Popup target={element} offset={[0, 3]} alignX="right">
+    <Popup target={element} offset={[0, 8]} alignX="right">
       <Toolbar>
         <ToolbarButton
           onClick={props.onEdit}

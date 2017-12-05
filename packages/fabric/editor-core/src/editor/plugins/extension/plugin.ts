@@ -1,7 +1,10 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { ExtensionNodeView } from '../../../nodeviews';
 import ProviderFactory from '../../../providerFactory';
 import { Dispatch } from '../../event-dispatcher';
+import { setExtensionElement } from './actions';
+import { getExtensionNode } from './utils';
 
 export const pluginKey = new PluginKey('extensionPlugin');
 
@@ -25,6 +28,20 @@ export default (dispatch: Dispatch, providerFactory: ProviderFactory) =>
 
         return state;
       },
+    },
+    view: () => {
+      return {
+        update: (view: EditorView) => {
+          const { state, dispatch } = view;
+          const { element } = pluginKey.getState(state);
+          if (
+            element &&
+            (!document.contains(element) || !getExtensionNode(state))
+          ) {
+            setExtensionElement(null)(state, dispatch);
+          }
+        },
+      };
     },
     key: pluginKey,
     props: {

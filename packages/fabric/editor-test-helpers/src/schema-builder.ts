@@ -330,3 +330,11 @@ export const inlineExtension = (attrs: {
   extensionType: string;
   parameters?: object;
 }) => sampleSchema.nodes.inlineExtension.create(attrs);
+export const extension = (
+  attrs: {
+    extensionKey: string;
+    extensionType: string;
+    parameters?: object;
+  },
+  content?,
+) => sampleSchema.nodes.extension.create(attrs, content);

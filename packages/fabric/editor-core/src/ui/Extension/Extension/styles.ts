@@ -1,68 +1,37 @@
 import styled from 'styled-components';
-import {
-  akColorB200,
-  akColorN20,
-  akColorN40,
-  akColorN70,
-  akColorN80,
-} from '@atlaskit/util-shared-styles';
-
-// tslint:disable-next-line:variable-name
-export const Wrapper = styled.div`
-  background: #f0f0f0;
-  border: 1px solid ${akColorN40};
-
-  .ProseMirror-selectednode > & {
-    outline: 2px solid ${akColorB200};
-  }
-`;
+import { akColorN30, akBorderRadius } from '@atlaskit/util-shared-styles';
+import { padding } from '../styles';
 
 export const Header = styled.div`
   cursor: pointer;
+  padding: ${padding / 2}px ${padding / 2}px ${padding / 4}px;
   vertical-align: middle;
 
   img {
-    user-select: none;
+    display: flex;
+    padding: ${padding / 2}px;
   }
-`;
-
-// Appears on hover over the macro node
-// tslint:disable-next-line:variable-name
-export const Overlay = styled.div`
-  background: ${akColorN80};
-  opacity: 0;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  transition: opacity 0.25s;
-  flex: 1;
-`;
-
-// tslint:disable-next-line:variable-name
-export const PlaceholderFallback = styled.div`
-  padding: 2px 0;
-
-  & > span {
-    vertical-align: middle;
-  }
-`;
-
-// tslint:disable-next-line:variable-name
-export const PlaceholderFallbackParams = styled.span`
-  text-overflow: ellipsis;
-  width: 198px;
-  white-space: nowrap;
-  display: inline-block;
-  overflow: hidden;
-  margin-left: 5px;
-  vertical-align: middle;
-  color: ${akColorN70};
 `;
 
 // tslint:disable-next-line:variable-name
 export const Content = styled.div`
+  padding: ${padding}px;
   background: white;
-  border: 1px solid ${akColorN40};
-  padding: 5px;
-  margin: 0 3px 3px;
+  border: 1px solid ${akColorN30};
+  border-radius: ${akBorderRadius};
+`;
+
+// tslint:disable-next-line:variable-name
+export const ContentWrapper = styled.div`
+  padding: 0 ${padding}px ${padding}px;
+
+  /*
+    if node with "content hole" rendered without content (like block bodyless extension),
+    PM throws errors when it is selected (with triple click)
+    we just hide node's body with css
+  */
+  &.bodyless {
+    position: absolute;
+    left: -9999px;
+  }
 `;

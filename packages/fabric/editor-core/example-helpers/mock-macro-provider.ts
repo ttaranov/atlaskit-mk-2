@@ -1,9 +1,9 @@
 import { Node as PmNode } from 'prosemirror-model';
 import { MacroProvider, MacroAdf } from '../src/editor/plugins/macro/types';
 import {
-  inlineMacroData,
-  blockBodylessMacroData,
-  blockPlainTextMacroData,
+  // inlineMacroData,
+  // blockBodylessMacroData,
+  // blockPlainTextMacroData,
   blockRichTextMacroData,
 } from './mock-macro-data';
 
