@@ -72,8 +72,7 @@ cases(
 cases(
   'makeArrayFromNumber',
   ({ src, dst }) => {
-    // $FlowFixMe - toMatchObject() works, but it's complaining that it cannot be called on an intersection type.
-    expect(makeArrayFromNumber(src)).toMatchObject(dst);
+    expect(makeArrayFromNumber(src)).toEqual(dst);
   },
   [{ src: 0, dst: [] }, { src: 1, dst: [0] }, { src: 2, dst: [0, 1] }],
 );
