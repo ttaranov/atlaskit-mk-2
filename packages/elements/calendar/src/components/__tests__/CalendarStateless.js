@@ -31,19 +31,10 @@ test('should highlight current date', () => {
   ).toBe(true);
 });
 
-test('should call onSelect', done => {
+test('should call onSelect', () => {
+  const spy = jest.fn();
   const wrapper = shallow(
-    <CalendarStateless
-      month={1}
-      year={2016}
-      onSelect={({ day, month, year, iso }) => {
-        expect(day).toBe(1);
-        expect(month).toBe(1);
-        expect(year).toBe(2016);
-        expect(iso).toBe('2016-01-01');
-        done();
-      }}
-    />,
+    <CalendarStateless month={1} year={2016} onSelect={spy} />,
   );
   wrapper
     .find(DateComponent)
@@ -56,6 +47,12 @@ test('should call onSelect', done => {
       month: 1,
       year: 2016,
     });
+  expect(spy).toHaveBeenCalledWith({
+    day: 1,
+    month: 1,
+    year: 2016,
+    iso: '2016-01-01',
+  });
 });
 
 test('specifying selected days should select the specified days', () => {
