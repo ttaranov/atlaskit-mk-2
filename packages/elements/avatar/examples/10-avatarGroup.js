@@ -136,6 +136,8 @@ export default class AvatarGroupExample extends Component<*, State> {
             onAvatarClick={console.log}
             data={stackSourceURLs.map(i => ({
               key: i,
+              appearance: 'circle',
+              enableTooltip: true,
               name: `Grid Avatar ${i + 1}`,
               src: avatarUrl,
               size: avatarSize,
@@ -167,6 +169,8 @@ export default class AvatarGroupExample extends Component<*, State> {
             name: `Stack Avatar ${i + 1}`,
             src: avatarUrl,
             size: avatarSize,
+            appearance: 'circle',
+            enableTooltip: true,
           }))}
           size={avatarSize}
         />
@@ -187,6 +191,8 @@ export default class AvatarGroupExample extends Component<*, State> {
               name: `Stack Avatar ${i + 1}`,
               src: avatarUrl,
               size: avatarSize,
+              appearance: 'circle',
+              enableTooltip: true,
             }))}
             size={avatarSize}
           />
@@ -219,6 +225,8 @@ export default class AvatarGroupExample extends Component<*, State> {
                   name: `Stack Avatar ${i + 1}`,
                   src: avatarUrl,
                   size: avatarSize,
+                  appearance: 'circle',
+                  enableTooltip: true,
                 }))}
               />
             </div>

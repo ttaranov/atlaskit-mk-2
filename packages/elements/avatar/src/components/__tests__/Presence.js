@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import Presence from '../Presence';
 import getPresenceSVG from '../../helpers/getPresenceSVG';

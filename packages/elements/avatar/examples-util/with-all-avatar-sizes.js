@@ -3,9 +3,8 @@ import React from 'react';
 import Avatar from '../src/';
 import { Block } from './helpers';
 import { omit } from '../src/utils';
-import type { AvatarPropTypes } from '../src/types';
 
-export default (props: AvatarPropTypes) => {
+export default (props: Object) => {
   const modifiedProps = omit(props, 'presence', 'status');
   return (
     <Block>

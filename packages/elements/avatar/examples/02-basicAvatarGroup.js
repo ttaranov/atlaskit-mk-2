@@ -10,6 +10,9 @@ export default () => {
     key: d.email,
     name: d.name,
     src: getAdorableAvatar(d.email),
+    appearance: 'circle',
+    size: 'medium',
+    enableTooltip: true,
   }));
 
   return (

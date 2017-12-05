@@ -15,6 +15,8 @@ const generateData = avatarCount => {
       name: `Name ${i}`,
       src: `#${i}`,
       size: 'medium',
+      appearance: 'circle',
+      enableTooltip: true,
     });
   }
   return data;
