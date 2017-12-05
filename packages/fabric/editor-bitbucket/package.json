@@ -38,7 +38,7 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/editor-test-helpers": "^0.8.15",
+    "@atlaskit/editor-test-helpers": "^1.0.0",
     "@atlaskit/emoji": "^30.3.3",
     "@atlaskit/mention": "^8.1.0",
     "chai": "^4.1.2"
