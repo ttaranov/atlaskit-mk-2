@@ -494,7 +494,7 @@ ISSUES CLOSED: FIL-3919
 * empty commit to make components release themselves ([5511fbe](https://bitbucket.org/atlassian/atlaskit/commits/5511fbe))
 
 
-* feature; move providers, services, and context to AtlasKit ([31ca242](https://bitbucket.org/atlassian/atlaskit/commits/31ca242))
+* feature; move providers, services, and context to Atlaskit ([31ca242](https://bitbucket.org/atlassian/atlaskit/commits/31ca242))
 
 ## 1.0.0 (2017-02-12)
 
