@@ -63,10 +63,10 @@ const SaveAndCancelButtons = props => (
   <ButtonGroup>
     <Button
       appearance="primary"
-      // tslint:disable-next-line:jsx-no-lambda no-console
       onClick={() =>
         props.editorActions
           .getValue()
+          // tslint:disable-next-line:no-console
           .then(value => console.log(value.toJSON()))
       }
     >
