@@ -17,13 +17,8 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
-<<<<<<< HEAD
     "@atlaskit/button": "^6.0.0",
     "@atlaskit/docs": "^2.1.0",
-=======
-    "@atlaskit/button": "^5.4.14",
-    "@atlaskit/docs": "^2.0.0",
->>>>>>> bump buttons
     "babel-runtime": "^6.26.0",
     "styled-components": "^1.4.6"
   },
