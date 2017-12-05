@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { mount, shallow } from 'enzyme';
-import { expect } from 'chai';
 import { imageFileId, youtubeLinkId } from '@atlaskit/media-test-helpers';
 import Media from '../../../../src/react/nodes/media';
 import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
@@ -29,6 +28,19 @@ describe('MediaGroup', () => {
     document.body.removeChild(fixture);
   });
 
+  it('should not render a FilmstripView component if it has only one media node', () => {
+    const mediaGroup = shallow(
+      <MediaGroup>
+        <Media
+          id={imageFileId.id}
+          type={imageFileId.mediaItemType}
+          collection={imageFileId.collectionName}
+        />
+      </MediaGroup>
+    );
+    expect(mediaGroup.find(FilmstripView)).toHaveLength(0);
+  });
+
   it('should render a FilmstripView component if it has more than one media node', () => {
     const mediaGroup = shallow(
       <MediaGroup>
@@ -44,7 +56,7 @@ describe('MediaGroup', () => {
         />
       </MediaGroup>,
     );
-    expect(mediaGroup.find(FilmstripView).length).to.equal(1);
+    expect(mediaGroup.find(FilmstripView)).toHaveLength(1);
   });
 
   it('should call onClick with all the items in a media group', async () => {
@@ -57,6 +69,7 @@ describe('MediaGroup', () => {
         <Media
           id={imageFileId.id}
           type={imageFileId.mediaItemType}
+          occurrenceKey='001'
           collection={imageFileId.collectionName}
           eventHandlers={eventHandlers}
           providers={providerFactory}
@@ -71,7 +84,7 @@ describe('MediaGroup', () => {
       </MediaGroup>,
       { attachTo: fixture },
     );
-    expect(mediaGroup.find(FilmstripView).length).to.equal(1);
+    expect(mediaGroup.find(FilmstripView)).toHaveLength(1);
 
     const provider = await mediaProvider;
     await provider.viewContext;
@@ -85,13 +98,22 @@ describe('MediaGroup', () => {
       .find(Card);
     card.props().onClick();
 
-    expect(onClick.callCount).to.equal(1);
-    expect(onClick.lastCall.args.length).to.be.greaterThan(1);
+    expect(onClick.callCount).toBe(1);
+    expect(onClick.lastCall.args.length).toBeGreaterThan(1);
 
-    const items = onClick.lastCall.args[1].list;
-    expect(items.length).to.equal(2);
-    expect(items[0]).to.deep.equal(imageFileId.id);
-    expect(items[1]).to.deep.equal(youtubeLinkId.id);
+    const surroundingItems = onClick.lastCall.args[1].list;
+    expect(surroundingItems.length).toBe(2);
+
+    expect(surroundingItems[0].id).toBe(imageFileId.id);
+    expect(surroundingItems[0].mediaItemType).toBe(imageFileId.mediaItemType);
+    expect(surroundingItems[0].collectionName).toBe(imageFileId.collectionName);
+    expect(surroundingItems[0].occurrenceKey).toBe('001');
+
+    expect(surroundingItems[1].id).toBe(youtubeLinkId.id);
+    expect(surroundingItems[1].mediaItemType).toBe(youtubeLinkId.mediaItemType);
+    expect(surroundingItems[1].collectionName).toBe(youtubeLinkId.collectionName);
+    expect(surroundingItems[1].occurrenceKey).toBeUndefined();
+
     mediaGroup.unmount();
   });
 });
