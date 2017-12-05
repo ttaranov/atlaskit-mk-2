@@ -1,5 +1,7 @@
 # @atlaskit/media-avatar-picker
 
+## 4.1.0
+
 ## 4.0.1
 - [patch] expose Avatar type, fix broken example deps [f3f4bec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3f4bec)
 

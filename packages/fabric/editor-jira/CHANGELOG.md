@@ -1,5 +1,7 @@
 # @atlaskit/editor-jira
 
+## 22.9.1
+
 ## 22.9.0
 - [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)
 - [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)

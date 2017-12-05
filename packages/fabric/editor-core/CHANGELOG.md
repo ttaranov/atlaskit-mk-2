@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 60.8.1
+
 ## 60.8.0
 - [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)
 - [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)
