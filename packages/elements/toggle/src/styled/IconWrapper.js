@@ -22,4 +22,9 @@ export default styled.div`
   align-items: center;
   ${getPadding};
   color: ${themed({ light: 'inherit', dark: colors.DN30 })};
+
+  /* Make sure child icon span does not overflow wrapper boundaries */
+  span[role='img'] {
+    max-height: 100%;
+  }
 `;
