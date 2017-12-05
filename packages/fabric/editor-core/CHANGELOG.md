@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.7.1
+- [patch] Adding more unit test coverage for responsive editor changes. [0b35f50](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b35f50)
+- [patch] Adding more unit test coverage for responsive editor changes. [0b35f50](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b35f50)
+
 ## 60.7.0
 - [patch] Move docs to be a dev dependency for editor-core [65ada60](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65ada60)
 - [patch] Move docs to be a dev dependency for editor-core [65ada60](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65ada60)
