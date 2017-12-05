@@ -6,7 +6,7 @@ import Avatar from '../src/';
 import { Code, Note } from '../examples-util/helpers';
 import nucleusImage from '../examples-util/nucleus.png';
 import { avatarUrl } from '../examples-util/data';
-import type { AvatarPropTypes, PresenceType, StatusType } from '../src/types';
+import type { PresenceType, StatusType } from '../src/types';
 
 const exampleColors: string[] = [
   colors.N800,
@@ -36,7 +36,7 @@ const styles = {
   },
 };
 
-const ColorColumn = (props: AvatarPropTypes) => (
+const ColorColumn = (props: Object) => (
   <div style={{ ...styles.column, backgroundColor: props.borderColor }}>
     <Avatar onClick={console.log} {...props} size="xlarge" />
     <Avatar onClick={console.log} {...props} />

@@ -1,7 +1,7 @@
 // @flow
 import nucleusImage from '../examples-util/nucleus.png';
 
-import fullAvatarExample from '../examples-util/full-avatar-example';
+import fullAvatarExample from '../examples-util/fullAvatarExample';
 
 export default () =>
   fullAvatarExample({

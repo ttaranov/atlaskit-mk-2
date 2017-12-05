@@ -8,6 +8,7 @@ export function omit(obj: {}, ...keysToOmit: Array<string>) {
   }, {});
 }
 
+// $FlowFixMe - ComponentType is not correct
 export function getDisplayName(prefix: string, Component: ComponentType) {
   const componentName: string = Component.displayName || Component.name;
 

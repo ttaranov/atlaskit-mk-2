@@ -2,7 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import tickInlineSvg from '../examples-util/tick.svg';
-import WithAllAvatarSizes from '../examples-util/with-all-avatar-sizes';
+import WithAllAvatarSizes from '../examples-util/withAllAvatarSizes';
 
 // the raw tick svg is wrapped in " quotation marks so we will clean it:
 

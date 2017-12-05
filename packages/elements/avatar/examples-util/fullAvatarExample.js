@@ -2,7 +2,7 @@
 import React from 'react';
 import { gridSize } from '@atlaskit/theme';
 import Avatar from '../src/';
-import WithAllAvatarSizes from './with-all-avatar-sizes';
+import WithAllAvatarSizes from './withAllAvatarSizes';
 import { Block, Code, Note } from '../examples-util/helpers';
 import type { AppearanceType } from '../src/types';
 
