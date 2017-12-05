@@ -6,7 +6,6 @@ import { Node as PMNode } from 'prosemirror-model';
 import { MacroProvider } from '../../editor/plugins/macro';
 import InlineExtension from './InlineExtension';
 import Extension from './Extension';
-import { getPlaceholderUrl, getMacroId } from '@atlaskit/editor-common';
 
 export interface Props {
   editorView: EditorView;

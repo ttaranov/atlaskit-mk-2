@@ -2,10 +2,8 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Node as PmNode } from 'prosemirror-model';
 import EditorFileIcon from '@atlaskit/icon/glyph/editor/file';
-import {
-  MacroProvider,
-  getPlaceholderUrl,
-} from '../../../editor/plugins/macro';
+import { MacroProvider } from '../../../editor/plugins/macro';
+import { getPlaceholderUrl } from '@atlaskit/editor-common';
 import { Wrapper, PlaceholderFallback } from './styles';
 import { Overlay, PlaceholderFallbackParams } from '../styles';
 import { capitalizeFirstLetter } from '../utils';
