@@ -6,7 +6,7 @@ import {
   smallImage,
   remoteImage,
 } from '@atlaskit/media-test-helpers';
-import { ImageNavigator } from '../src';
+import { ImageNavigator } from '../src/image-navigator';
 
 let onLoadParams;
 let imageElement;
@@ -28,23 +28,12 @@ export default () => (
   <div>
     <h1>Uploader</h1>
     <ImageNavigator
-      onImageChanged={() => {
-        console.log('onImageChanged');
-      }}
-      onPositionChanged={() => {
-        console.log('onPositionChanged');
-      }}
-      onSizeChanged={() => {
-        console.log('onSizeChanged');
-      }}
+      onImageChanged={() => {console.log('onImageChanged')}}
+      onPositionChanged={() => {console.log('onPositionChanged')}}
+      onSizeChanged={() => {console.log('onSizeChanged')}}
       onLoad={onLoad}
     />
     <button onClick={exportImage}>Export</button>
-    <img
-      style={{ position: 'absolute', top: 0, left: '300px' }}
-      src=""
-      alt=""
-      ref={handleImgRef}
-    />
+    <img style={{position: 'absolute', top: 0, left: '300px'}} src="" alt="" ref={handleImgRef} />
   </div>
 );
