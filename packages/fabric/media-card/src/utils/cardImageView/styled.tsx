@@ -79,7 +79,7 @@ export const Card = styled(Root)`
   cursor: pointer;
   line-height: normal;
   position: relative;
-  ${size('inherit')} .wrapper {
+  ${size()} .wrapper {
     ${borderRadius} background: ${akColorN20};
     display: block;
     height: inherit;
