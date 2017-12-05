@@ -89,6 +89,16 @@
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
+"@atlaskit/button@^5.4.14":
+  version "5.4.14"
+  resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-5.4.14.tgz#600975141fd356ccbf712885a00f63a1367dd28d"
+  dependencies:
+    "@atlaskit/theme" "^2.0.0"
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+    prop-types "^15.5.10"
+    styled-components "^1.4.6"
+
 "@atlaskit/button@^5.4.3":
   version "5.4.9"
   resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-5.4.9.tgz#2bd557ae23ebfc30c71acd09e3c62b7f3885154e"
@@ -867,6 +877,10 @@
   version "2.0.48"
   resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-2.0.48.tgz#3e90d8cde2d29015e5583017f7830cb3975b2eef"
 
+"@types/lodash@^4.14.87":
+  version "4.14.87"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.87.tgz#55f92183b048c2c64402afe472f8333f4e319a6b"
+
 "@types/mocha@^2.2.39":
   version "2.2.44"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.44.tgz#1d4a798e53f35212fd5ad4d04050620171cd5b5e"
@@ -971,6 +985,12 @@
 "@types/react-syntax-highlighter@^0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@types/react-syntax-highlighter/-/react-syntax-highlighter-0.0.3.tgz#c15aeac29eb193d11ac3a70e3d489f8539e6ee1a"
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-transition-group@^2.0.6":
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-2.0.6.tgz#8903fa2cf540ba454461590bff811a787889617c"
   dependencies:
     "@types/react" "*"
 

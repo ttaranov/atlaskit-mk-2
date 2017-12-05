@@ -30,15 +30,9 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@atlaskit/button": "^6.0.0",
     "@atlaskit/docs": "^2.1.0",
     "@atlaskit/spinner": "^4.0.8",
-=======
-    "@atlaskit/button": "^5.4.14",
-    "@atlaskit/docs": "^2.0.0",
-    "@atlaskit/spinner": "^4.0.7",
->>>>>>> bump buttons
     "@atlaskit/util-shared-styles": "^2.10.3",
     "enzyme": "^2.9.1",
     "sinon": "^2.2.0"
