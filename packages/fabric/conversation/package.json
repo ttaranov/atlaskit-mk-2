@@ -1,0 +1,35 @@
+{
+  "name": "@atlaskit/conversation",
+  "version": "1.0.0",
+  "config": {
+    "access": "public"
+  },
+  "description": "Render conversation threads",
+  "license": "Apache-2.0",
+  "main": "dist/es5/index.js",
+  "jsnext:main": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
+  "src": "src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Oscar W"
+  ],
+  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "peerDependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  },
+  "dependencies": {
+    "@atlaskit/avatar": "^8.0.0",
+    "@atlaskit/comment": "^2.6.7",
+    "@atlaskit/editor-core": "^60.2.3",
+    "@atlaskit/renderer": "^8.1.4",
+    "date-fns": "^1.29.0",
+    "prop-types": "^15.5.10",
+    "styled-components": "^1.4.6",
+    "tslib": "^1.8.0"
+  }
+}
