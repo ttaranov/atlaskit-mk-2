@@ -25,6 +25,7 @@ import {
   panelPlugin,
   macroPlugin,
   confluenceInlineComment,
+  placeholderCursorPlugin,
 } from '../plugins';
 
 /**
@@ -120,6 +121,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.allowConfluenceInlineComment) {
     plugins.push(confluenceInlineComment);
+  }
+
+  if (props.allowPlaceholderCursor) {
+    plugins.push(placeholderCursorPlugin);
   }
 
   // UI only plugins

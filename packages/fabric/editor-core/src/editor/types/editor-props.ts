@@ -48,6 +48,7 @@ export interface EditorProps {
   allowPanel?: boolean;
   allowInlineExtension?: boolean;
   allowConfluenceInlineComment?: boolean;
+  allowPlaceholderCursor?: boolean;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;
