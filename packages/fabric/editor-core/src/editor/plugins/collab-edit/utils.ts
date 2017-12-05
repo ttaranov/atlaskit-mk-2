@@ -9,7 +9,7 @@ import {
   akColorN800,
 } from '@atlaskit/util-shared-styles';
 
-import { hexToRgba } from '../../../utils/color';
+import { hexToRgba } from '@atlaskit/editor-common';
 
 export interface Color {
   solid: string;

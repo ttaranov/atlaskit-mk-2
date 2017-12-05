@@ -682,17 +682,6 @@
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
-"@atlaskit/toggle@^2.0.4":
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/@atlaskit/toggle/-/toggle-2.6.4.tgz#3a7ecc110385c92ab9ad96df91c1f9a87be4a785"
-  dependencies:
-    uid "0.0.2"
-    "@atlaskit/icon" "^10.1.3"
-    "@atlaskit/theme" "^2.0.0"
-    babel-runtime "^6.11.6"
-    prop-types "^15.5.10"
-    styled-components "^1.4.6"
-
 "@atlaskit/tooltip@^1.2.0":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/tooltip/-/tooltip-1.2.1.tgz#459ab9601f31b4ea0e8c6f5722f51efcc930d875"
@@ -6851,9 +6840,8 @@ meow@^3.3.0, meow@^3.7.0:
     redent "^1.0.0"
     trim-newlines "^1.0.0"
 
-"meow@github:sindresorhus/meow#43401c3", meow@sindresorhus/meow#43401c3:
+meow@sindresorhus/meow#43401c3:
   version "3.6.0"
-  uid "43401c39ee442db308288f50d6f213cd0e6e602c"
   resolved "https://codeload.github.com/sindresorhus/meow/tar.gz/43401c39ee442db308288f50d6f213cd0e6e602c"
   dependencies:
     camelcase-keys "^4.0.0"

@@ -18,8 +18,8 @@ const listPlugin: EditorPlugin = {
   pmPlugins() {
     return [
       { rank: 600, plugin: () => plugin },
-      { rank: 620, plugin: schema => inputRulePlugin(schema) },
-      { rank: 640, plugin: schema => keymapPlugin(schema) },
+      { rank: 620, plugin: ({ schema }) => inputRulePlugin(schema) },
+      { rank: 640, plugin: ({ schema }) => keymapPlugin(schema) },
     ];
   },
 
@@ -38,6 +38,8 @@ const listPlugin: EditorPlugin = {
         disabled={disabled}
         editorView={editorView}
         pluginState={pluginState}
+        popupsMountPoint={popupsMountPoint}
+        popupsBoundariesElement={popupsBoundariesElement}
       />
     );
   },

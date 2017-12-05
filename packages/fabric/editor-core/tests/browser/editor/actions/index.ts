@@ -19,7 +19,8 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import { EditorView } from 'prosemirror-view';
-import { JSONTransformer, Transformer } from '../../../../src/transformers';
+import { JSONTransformer } from '@atlaskit/editor-json-transformer';
+import { Transformer } from '@atlaskit/editor-common';
 import tasksAndDecisionsPlugin from '../../../../src/editor/plugins/tasks-and-decisions';
 import mediaPlugin from '../../../../src/editor/plugins/media';
 import hyperlinkPlugin from '../../../../src/editor/plugins/hyperlink';

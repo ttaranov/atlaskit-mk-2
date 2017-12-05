@@ -20,10 +20,10 @@ const imageUpload: EditorPlugin = {
     return [
       {
         rank: 1298,
-        plugin: (schema, props, dispatch, providerFactory) =>
+        plugin: ({ schema, providerFactory }) =>
           createPlugin(schema, { providerFactory }),
       },
-      { rank: 1299, plugin: schema => inputRulePlugin(schema) },
+      { rank: 1299, plugin: ({ schema }) => inputRulePlugin(schema) },
     ];
   },
 

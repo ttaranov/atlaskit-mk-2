@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {PureComponent} from 'react';
+import { PureComponent } from 'react';
 
-import {PredefinedAvatarViewWrapper, LargeAvatarImage} from './styled';
-import {Avatar} from '../avatar-list';
+import { PredefinedAvatarViewWrapper, LargeAvatarImage } from './styled';
+import { Avatar } from '../avatar-list';
 
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import Button from '@atlaskit/button';
@@ -27,61 +27,49 @@ export interface PredefinedAvatarViewProps {
   avatars: Array<Avatar>;
   onGoBack?: () => void;
   onAvatarSelected: (avatar: Avatar) => void;
-}
-
-export interface PredefinedAvatarViewState {
   selectedAvatar?: Avatar;
 }
 
-export class PredefinedAvatarView extends PureComponent<PredefinedAvatarViewProps, PredefinedAvatarViewState> {
+export class PredefinedAvatarView extends PureComponent<
+  PredefinedAvatarViewProps,
+  {}
+> {
   static defaultProps = {
-    avatars: []
+    avatars: [],
   };
 
-  constructor() {
-    super();
-
-    this.state = {};
-  }
-
   render() {
-    const {avatars} = this.props;
-    const cards = avatars.map(
-      (avatar, idx) => {
-        const elementKey = `predefined-avatar-${idx}`;
-        return (<li key={elementKey}>
+    const { avatars, selectedAvatar, onGoBack } = this.props;
+    const cards = avatars.map((avatar, idx) => {
+      const elementKey = `predefined-avatar-${idx}`;
+      return (
+        <li key={elementKey}>
           <LargeAvatarImage
-            className={avatar === this.state.selectedAvatar ? 'selected' : ''}
+            isSelected={avatar === selectedAvatar}
             src={avatar.dataURI}
-            // tslint:disable-next-line:jsx-no-lambda
-            onClick={(e) => this.createOnItemClickHandler(avatar)}
+            onClick={this.createOnItemClickHandler(avatar)}
           />
-        </li>);
-      }
-    );
+        </li>
+      );
+    });
 
     return (
       <PredefinedAvatarViewWrapper>
         <div className="header">
-          <BackBtn onClick={this.props.onGoBack} /><div className="description">Default avatars</div>
+          <BackBtn onClick={onGoBack} />
+          <div className="description">Default avatars</div>
         </div>
-        <ul>
-          {cards}
-        </ul>
+        <ul>{cards}</ul>
       </PredefinedAvatarViewWrapper>
     );
   }
 
-  createOnItemClickHandler(avatar: Avatar): (event: Event) => void {
-    return () => {
-      const { onAvatarSelected } = this.props;
+  createOnItemClickHandler(avatar: Avatar) {
+    const { onAvatarSelected } = this.props;
+    return e => {
       if (onAvatarSelected) {
         onAvatarSelected(avatar);
       }
-
-      this.setState(state => {
-        return {...state, selectedAvatar: avatar};
-      });
     };
   }
 }

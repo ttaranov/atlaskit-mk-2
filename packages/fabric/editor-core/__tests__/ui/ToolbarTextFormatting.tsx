@@ -38,13 +38,13 @@ describe('ToolbarTextFormatting', () => {
     toolbarTextColor.unmount();
   });
 
-  it('should have spacing of toolbar button set to none if editorWidth is less then breakpoint6', () => {
+  it('should have spacing of toolbar button set to none if editorWidth is less then BreakPoint10', () => {
     const { pluginState, editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarTextFormatting
         pluginState={pluginState}
         editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint6 - 1}
+        editorWidth={EditorWidth.BreakPoint10 - 1}
       />,
     );
     toolbarOption.find(ToolbarButton).forEach(btn => {
@@ -53,13 +53,13 @@ describe('ToolbarTextFormatting', () => {
     toolbarOption.unmount();
   });
 
-  it('should have spacing of toolbar button set to default if editorWidth is greater then breakpoint6', () => {
+  it('should have spacing of toolbar button set to default if editorWidth is greater then BreakPoint10', () => {
     const { pluginState, editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarTextFormatting
         pluginState={pluginState}
         editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint6 + 1}
+        editorWidth={EditorWidth.BreakPoint10 + 1}
       />,
     );
     toolbarOption.find(ToolbarButton).forEach(btn => {

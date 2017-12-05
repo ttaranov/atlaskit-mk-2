@@ -1,5 +1,32 @@
 # @atlaskit/editor-core
 
+## 60.7.0
+- [patch] Move docs to be a dev dependency for editor-core [65ada60](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65ada60)
+- [patch] Move docs to be a dev dependency for editor-core [65ada60](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65ada60)
+- [minor] Adding separate transformer packages. [f734c01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f734c01)
+- [minor] Adding separate transformer packages. [f734c01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f734c01)
+
+## 60.6.0
+- [minor] Change in collapse order of responsive editor toolbar. [14448bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14448bd)
+- [minor] Change in collapse order of responsive editor toolbar. [14448bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14448bd)
+
+## 60.5.3
+- [patch] FS-1366 fix selection in action/decision [854c137](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/854c137)
+- [patch] FS-1366 fix selection in action/decision [854c137](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/854c137)
+
+## 60.5.2
+
+- [patch] moved table plugins methods to utils [90e6b2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90e6b2b)
+- [patch] moved table plugins methods to utils [90e6b2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90e6b2b)
+
+## 60.5.1
+- [patch] fixed pasting links [847d51b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/847d51b)
+- [patch] fixed pasting links [847d51b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/847d51b)
+
+## 60.5.0
+- [minor] Added single image to schema; insertFile renamed to insertFiles. [1c6b005](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c6b005)
+- [minor] Added single image to schema; insertFile renamed to insertFiles. [1c6b005](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c6b005)
+
 ## 60.4.10
 
 ## 60.4.9

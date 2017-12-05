@@ -8,7 +8,7 @@ const collabEditPlugin: EditorPlugin = {
     return [
       {
         rank: 1000,
-        plugin: (schema, props, dispatch, providerFactory) =>
+        plugin: ({ dispatch, providerFactory }) =>
           createPlugin(dispatch, providerFactory),
       },
     ];

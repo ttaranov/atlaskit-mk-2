@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import Editor from '../src/editor';
@@ -40,7 +42,6 @@ export default function Example() {
     <EditorContext>
       <div>
         <WithEditorActions
-          // tslint:disable-next-line:jsx-no-lambda
           render={actions => (
             <ButtonGroup>
               <Button onClick={() => actions.replaceDocument(exampleDocument)}>
@@ -51,7 +52,6 @@ export default function Example() {
           )}
         />
         <ToolsDrawer
-          // tslint:disable-next-line:jsx-no-lambda
           renderEditor={({
             mentionProvider,
             emojiProvider,

@@ -174,7 +174,7 @@ export class EmojiState {
     return { start, end };
   }
 
-  insertEmoji(emojiId?: EmojiId) {
+  insertEmoji = (emojiId?: EmojiId) => {
     const { state, view } = this;
     const { emoji } = state.schema.nodes;
 
@@ -198,7 +198,7 @@ export class EmojiState {
     } else {
       this.dismiss();
     }
-  }
+  };
 
   handleProvider = (name: string, provider: Promise<any>): void => {
     switch (name) {

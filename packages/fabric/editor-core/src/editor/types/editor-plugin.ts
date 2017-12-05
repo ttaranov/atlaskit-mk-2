@@ -10,11 +10,13 @@ import { EditorProps, EditorAppearance } from './editor-props';
 import { Dispatch, EventDispatcher } from '../event-dispatcher';
 
 export type PMPluginFactory = (
-  schema: Schema,
-  props: EditorProps,
-  dispatch: Dispatch,
-  providerFactory: ProviderFactory,
-  errorReporter: ErrorReporter,
+  params: {
+    schema: Schema;
+    props: EditorProps;
+    dispatch: Dispatch;
+    providerFactory: ProviderFactory;
+    errorReporter: ErrorReporter;
+  },
 ) => Plugin | undefined;
 
 export type UIComponentFactory = (

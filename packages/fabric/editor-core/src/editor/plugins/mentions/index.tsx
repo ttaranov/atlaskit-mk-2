@@ -22,11 +22,10 @@ const mentionsPlugin: EditorPlugin = {
     return [
       {
         rank: 300,
-        plugin: (schema, props, dispatch, providerFactory) =>
-          createPlugin(providerFactory),
+        plugin: ({ providerFactory }) => createPlugin(providerFactory),
       },
-      { rank: 310, plugin: schema => inputRulePlugin(schema) },
-      { rank: 320, plugin: schema => keymap(schema) },
+      { rank: 310, plugin: ({ schema }) => inputRulePlugin(schema) },
+      { rank: 320, plugin: ({ schema }) => keymap(schema) },
     ];
   },
 
@@ -58,6 +57,10 @@ const mentionsPlugin: EditorPlugin = {
         renderNode={renderNode}
       />
     );
+  },
+
+  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth) {
+    return <ToolbarMention editorView={editorView} pluginKey={pluginKey} editorWidth={editorWidth} isDisabled={disabled} />;
   },
 
   secondaryToolbarComponent(editorView) {

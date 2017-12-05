@@ -13,7 +13,7 @@
   "maintainers": [
     "Jed W"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "prop-types": "^15.5.10",
     "styled-components": "^1.4.6"

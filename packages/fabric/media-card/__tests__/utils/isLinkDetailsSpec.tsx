@@ -7,8 +7,8 @@ describe('isLinkDetails()', () => {
   });
 
   it('should return false for something random', () => {
-    expect(isLinkDetails('test')).toBe(false);
-    expect(isLinkDetails(2.2)).toBe(false);
+    expect(isLinkDetails('test' as FileDetails)).toBe(false);
+    expect(isLinkDetails(2.2 as FileDetails)).toBe(false);
   });
 
   it('should return true for a UrlPreview', () => {
