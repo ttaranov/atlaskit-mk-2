@@ -15,6 +15,7 @@ import {
   makeEditor,
   p,
   code,
+  hardBreak,
   a as link,
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
@@ -38,6 +39,17 @@ describe('inputrules', () => {
 
       insertText(editorView, '# ', sel);
       expect(editorView.state.doc).toEqualDocument(doc(h1()));
+      expect(trackEvent).toHaveBeenCalledWith(
+        'atlassian.editor.format.heading1.autoformatting',
+      );
+      editorView.destroy();
+    });
+
+    it('should convert "# " after shift+enter to heading 1', () => {
+      const { editorView, sel } = editor(doc(p('test', hardBreak(), '{<>}')));
+
+      insertText(editorView, '# ', sel);
+      expect(editorView.state.doc).toEqualDocument(doc(p('test'), h1()));
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.heading1.autoformatting',
       );
@@ -103,6 +115,34 @@ describe('inputrules', () => {
       editorView.destroy();
     });
 
+    it('should convert "> " to a blockquote after shift+enter', () => {
+      const { editorView, sel } = editor(doc(p('test', hardBreak(), '{<>}')));
+
+      insertText(editorView, '> ', sel);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('test'), blockquote(p())),
+      );
+      expect(trackEvent).toHaveBeenCalledWith(
+        'atlassian.editor.format.blockquote.autoformatting',
+      );
+      editorView.destroy();
+    });
+
+    it('should convert "> " to a blockquote after multiple shift+enter', () => {
+      const { editorView, sel } = editor(
+        doc(p('test', hardBreak(), hardBreak(), '{<>}test')),
+      );
+
+      insertText(editorView, '> ', sel);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('test', hardBreak()), blockquote(p('test'))),
+      );
+      expect(trackEvent).toHaveBeenCalledWith(
+        'atlassian.editor.format.blockquote.autoformatting',
+      );
+      editorView.destroy();
+    });
+
     it('should not convert "> " inside code mark to blockquote', () => {
       const { editorView, sel } = editor(doc(p(code('>{<>}'))));
 
@@ -140,6 +180,21 @@ describe('inputrules', () => {
           insertText(editorView, '``` ', sel);
           expect(editorView.state.doc).toEqualDocument(
             doc(code_block()('hello\nworld')),
+          );
+          expect(trackEvent).toHaveBeenCalledWith(
+            'atlassian.editor.format.codeblock.autoformatting',
+          );
+          editorView.destroy();
+        });
+
+        it('should convert "``` " after shoft+enter to a code block', () => {
+          const { editorView, sel } = editor(
+            doc(p('test', hardBreak(), '{<>}')),
+          );
+
+          insertText(editorView, '``` ', sel);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p('test'), code_block()()),
           );
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.codeblock.autoformatting',

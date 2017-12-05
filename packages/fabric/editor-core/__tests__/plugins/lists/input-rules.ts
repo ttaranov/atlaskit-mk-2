@@ -9,6 +9,7 @@ import {
   p,
   ul,
   defaultSchema as schema,
+  hardBreak,
 } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../src/analytics';
 
@@ -29,6 +30,28 @@ describe('inputrules', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '* ', sel);
       expect(editorView.state.doc).toEqualDocument(doc(ul(li(p()))));
+      expect(trackEvent).toHaveBeenCalledWith(
+        'atlassian.editor.format.list.bullet.autoformatting',
+      );
+    });
+
+    it('should convert "* " after shift+enter to a bullet list item', () => {
+      const { editorView, sel } = editor(doc(p('test', hardBreak(), '{<>}')));
+      insertText(editorView, '* ', sel);
+      expect(editorView.state.doc).toEqualDocument(doc(p('test'), ul(li(p()))));
+      expect(trackEvent).toHaveBeenCalledWith(
+        'atlassian.editor.format.list.bullet.autoformatting',
+      );
+    });
+
+    it('should convert "* " after multiple shift+enter to a bullet list item', () => {
+      const { editorView, sel } = editor(
+        doc(p('test', hardBreak(), hardBreak(), '{<>}')),
+      );
+      insertText(editorView, '* ', sel);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('test', hardBreak()), ul(li(p()))),
+      );
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.list.bullet.autoformatting',
       );
@@ -56,6 +79,28 @@ describe('inputrules', () => {
 
       insertText(editorView, '1. ', sel);
       expect(editorView.state.doc).toEqualDocument(doc(ol(li(p()))));
+      expect(trackEvent).toHaveBeenCalledWith(
+        'atlassian.editor.format.list.numbered.autoformatting',
+      );
+    });
+
+    it('should convert "[number]. " after shift+enter to a ordered list item', () => {
+      const { editorView, sel } = editor(doc(p('test', hardBreak(), '{<>}')));
+      insertText(editorView, '1. ', sel);
+      expect(editorView.state.doc).toEqualDocument(doc(p('test'), ol(li(p()))));
+      expect(trackEvent).toHaveBeenCalledWith(
+        'atlassian.editor.format.list.numbered.autoformatting',
+      );
+    });
+
+    it('should convert "[number]. " after multiple shift+enter to a ordered list item', () => {
+      const { editorView, sel } = editor(
+        doc(p('test', hardBreak(), hardBreak(), '{<>}')),
+      );
+      insertText(editorView, '1. ', sel);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('test', hardBreak()), ol(li(p()))),
+      );
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.list.numbered.autoformatting',
       );

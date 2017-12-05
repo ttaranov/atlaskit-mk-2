@@ -7,6 +7,7 @@ import {
   makeEditor,
   panel,
   code_block,
+  hardBreak,
 } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../src/analytics';
@@ -37,6 +38,30 @@ describe('panel input rules', () => {
     inputRulePlugin!.props.handleTextInput!(editorView, 6, 6, '}');
 
     expect(editorView.state.doc).toEqualDocument(doc(panel(p())));
+    expect(trackEvent).toHaveBeenCalledWith(
+      'atlassian.editor.format.panel.info.autoformatting',
+    );
+  });
+
+  it('should replace {info} after shift+enter with panel node of type info', () => {
+    const { editorView, sel } = editor(doc(p('test', hardBreak(), '{<>}')));
+    insertText(editorView, '{info}', sel);
+
+    expect(editorView.state.doc).toEqualDocument(doc(p('test'), panel(p())));
+    expect(trackEvent).toHaveBeenCalledWith(
+      'atlassian.editor.format.panel.info.autoformatting',
+    );
+  });
+
+  it('should replace {info} after multiple shift+enter with panel node of type info', () => {
+    const { editorView, sel } = editor(
+      doc(p('test', hardBreak(), hardBreak(), '{<>}testing')),
+    );
+    insertText(editorView, '{info}', sel);
+
+    expect(editorView.state.doc).toEqualDocument(
+      doc(p('test', hardBreak()), panel(p('testing'))),
+    );
     expect(trackEvent).toHaveBeenCalledWith(
       'atlassian.editor.format.panel.info.autoformatting',
     );
