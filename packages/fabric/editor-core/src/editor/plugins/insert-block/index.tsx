@@ -40,7 +40,6 @@ const insertBlockPlugin: EditorPlugin = {
             hyperlinkState: hyperlinkStateKey,
             emojiState: emojiStateKey,
           }}
-          // tslint:disable-next-line:jsx-no-lambda
           render={({
             blockTypeState = {} as BlockTypeState,
             mediaState,
@@ -68,10 +67,14 @@ const insertBlockPlugin: EditorPlugin = {
               availableWrapperBlockTypes={
                 blockTypeState.availableWrapperBlockTypes
               }
-              linkDisabled={!hyperlinkState.linkable || hyperlinkState.active}
-              showLinkPanel={hyperlinkState.showLinkPanel}
-              emojiDisabled={!emojiState.enabled}
-              insertEmoji={emojiState.insertEmoji}
+              linkDisabled={
+                !hyperlinkState ||
+                !hyperlinkState.linkable ||
+                hyperlinkState.active
+              }
+              showLinkPanel={hyperlinkState && hyperlinkState.showLinkPanel}
+              emojiDisabled={!emojiState || !emojiState.enabled}
+              insertEmoji={emojiState && emojiState.insertEmoji}
               emojiProvider={providers.emojiProvider}
               onInsertBlockType={blockTypeState.insertBlockType}
               onInsertMacroFromMacroBrowser={insertMacroFromMacroBrowser}
