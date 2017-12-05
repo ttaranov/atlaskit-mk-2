@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import ArrowDown from '@atlaskit/icon/glyph/arrow-down';
 import ArrowUp from '@atlaskit/icon/glyph/arrow-up';
-import { Note, Wrapper, HR } from '../examples-util/styled';
+import { Note, Code } from '../examples-util/helpers';
 import { AvatarGroup } from '../src/';
 import { AVATAR_SIZES } from '../src/styled/constants';
-import { avatarUrl } from '../examples-util/constants';
+import { avatarUrl } from '../examples-util/data';
 
 type State = {|
   avatarCount: number,
@@ -46,7 +46,7 @@ export default class AvatarGroupExample extends Component<*, State> {
     for (let i = 0; i < avatarCount; i++) stackSourceURLs.push(i);
 
     return (
-      <Wrapper>
+      <div>
         <h2>Avatar Group </h2>
         <Note size="large">
           Click the excess indicator to see the remaining avatars in a dropdown
@@ -171,12 +171,11 @@ export default class AvatarGroupExample extends Component<*, State> {
           size={avatarSize}
         />
 
-        <HR />
         <h5>On {'"More"'} Click</h5>
         <div style={{ maxWidth: 380 }}>
           <Note>
             Circumvent the default dropdown menu behaviour by passing{' '}
-            <code>onMoreClick</code> to <code>{'<AvatarGroup />'}</code> and
+            <Code>onMoreClick</Code> to <Code>{'<AvatarGroup />'}</Code> and
             handle the event however you want.
           </Note>
           <AvatarGroup
@@ -198,8 +197,7 @@ export default class AvatarGroupExample extends Component<*, State> {
           ) : null}
         </div>
 
-        <HR />
-        <h5>Constrained by the scrollparent</h5>
+        <h5>Constrained by the scroll parent</h5>
         <div>
           <p>Expand and scroll up to reposition the avatar group menu</p>
           <div
@@ -226,7 +224,7 @@ export default class AvatarGroupExample extends Component<*, State> {
             </div>
           </div>
         </div>
-      </Wrapper>
+      </div>
     );
   }
 }

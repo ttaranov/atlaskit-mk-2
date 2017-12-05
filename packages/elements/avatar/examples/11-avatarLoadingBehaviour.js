@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { gridSize } from '@atlaskit/theme';
 import Button from '@atlaskit/button';
-import { Note } from '../examples-util/styled';
+import { Note } from '../examples-util/helpers';
 import Avatar from '../src/';
 
 const Btn = props => (
@@ -46,8 +46,7 @@ export default class ExternalSrcAvatar extends Component<*, State> {
 
     return (
       <form onSubmit={this.loadImage}>
-        <h5>Loading an Image</h5>
-        <Note>Try pasting a URL to see the loading behaviour:</Note>
+        <Note size="large">Try pasting a URL to see the loading behavior:</Note>
         <div
           style={{
             display: 'flex',

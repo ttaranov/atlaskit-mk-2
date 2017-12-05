@@ -1,32 +1,20 @@
 // @flow
 import React from 'react';
 import Avatar from '../src/';
-import { AvatarRow, AvatarCol } from './styled';
+import { Block } from './helpers';
 import { omit } from '../src/utils';
 import type { AvatarPropTypes } from '../src/types';
 
 export default (props: AvatarPropTypes) => {
   const modifiedProps = omit(props, 'presence', 'status');
   return (
-    <AvatarRow>
-      <AvatarCol>
-        <Avatar size="xxlarge" {...modifiedProps} />
-      </AvatarCol>
-      <AvatarCol>
-        <Avatar size="xlarge" {...props} />
-      </AvatarCol>
-      <AvatarCol>
-        <Avatar size="large" {...props} />
-      </AvatarCol>
-      <AvatarCol>
-        <Avatar size="medium" {...props} />
-      </AvatarCol>
-      <AvatarCol>
-        <Avatar size="small" {...props} />
-      </AvatarCol>
-      <AvatarCol>
-        <Avatar size="xsmall" {...modifiedProps} />
-      </AvatarCol>
-    </AvatarRow>
+    <Block>
+      <Avatar size="xxlarge" {...modifiedProps} />
+      <Avatar size="xlarge" {...props} />
+      <Avatar size="large" {...props} />
+      <Avatar size="medium" {...props} />
+      <Avatar size="small" {...props} />
+      <Avatar size="xsmall" {...modifiedProps} />
+    </Block>
   );
 };

@@ -3,9 +3,9 @@
 import React from 'react';
 import { colors } from '@atlaskit/theme';
 import Avatar from '../src/';
-import { Wrapper, Note } from '../examples-util/styled';
+import { Code, Note } from '../examples-util/helpers';
 import nucleusImage from '../examples-util/nucleus.png';
-import { avatarUrl } from '../examples-util/constants';
+import { avatarUrl } from '../examples-util/data';
 import type { AvatarPropTypes, PresenceType, StatusType } from '../src/types';
 
 const exampleColors: string[] = [
@@ -43,14 +43,13 @@ const ColorColumn = (props: AvatarPropTypes) => (
   </div>
 );
 export default () => (
-  <Wrapper>
+  <div>
     <h2>Coloured Backgrounds</h2>
     <Note>
       <p>
-        The <code>presenceBorderColor</code> property is now{' '}
-        <code>borderColor</code>
-        which is consumed by {'<Avatar/>'} and passed on to {'<Presence/>'} and
-        {' <Status/>'}.
+        The <Code>borderColor</Code> is consumed by <Code>{'<Avatar/>'}</Code>{' '}
+        and passed on to <Code>{'<Presence/>'}</Code>
+        and <Code>{'<Status/>'}</Code>
       </p>
       <p>
         Try clicking/tabbing on the avatars to see how the focus ring interacts
@@ -78,5 +77,5 @@ export default () => (
         />
       ))}
     </div>
-  </Wrapper>
+  </div>
 );

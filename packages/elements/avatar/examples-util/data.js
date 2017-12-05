@@ -25,3 +25,5 @@ export const RANDOM_USERS = [
 export function getAdorableAvatar(id: string, size?: number = 80) {
   return `https://api.adorable.io/avatars/${size}/${id}.png`;
 }
+export const avatarUrl: string =
+  'https://pbs.twimg.com/profile_images/803832195970433027/aaoG6PJI_400x400.jpg';

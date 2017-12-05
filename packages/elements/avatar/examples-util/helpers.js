@@ -4,16 +4,36 @@ import type { Node } from 'react';
 import styled from 'styled-components';
 import { colors, math, gridSize } from '@atlaskit/theme';
 
-export const VerticalRhythm = styled.div`
-  & + & {
-    margin-top: 1em;
+const Wrapper = styled.div`
+  margin-top: ${gridSize}px;
+`;
+
+const ChildrenWrapper = styled.div`
+  align-items: baseline;
+  color: ${colors.text};
+  display: flex;
+
+  > * {
+    margin-right: ${gridSize}px;
   }
 `;
-// $FlowFixMe
-export const Wrapper = styled(VerticalRhythm)`
-  align-items: baseline;
-  display: flex;
+
+export const Note = styled.p`
+  color: ${colors.N100};
+  font-size: ${props => (props.size === 'large' ? '1.15em' : '0.9rem')};
+  margin-top: ${math.divide(gridSize, 2)}px;
+  margin-bottom: ${math.multiply(gridSize, 2)}px;
 `;
+
+export const Code = styled.code`
+  background-color: ${colors.R50};
+  border-radius: 0.2em;
+  color: ${colors.R400};
+  font-size: 0.85em;
+  line-height: 1.1;
+  padding: 0.1em 0.4em;
+`;
+
 export const Gap = styled.span`
   margin-right: ${gridSize}px;
 `;
@@ -37,12 +57,9 @@ export const Block = ({
 }: {
   children: ?Node,
   heading?: string,
-}) =>
-  heading ? (
-    <VerticalRhythm>
-      <Heading>{heading}</Heading>
-      <Wrapper>{children}</Wrapper>
-    </VerticalRhythm>
-  ) : (
-    <Wrapper>{children}</Wrapper>
-  );
+}) => (
+  <Wrapper>
+    {heading ? <Heading>{heading}</Heading> : null}
+    <ChildrenWrapper>{children}</ChildrenWrapper>
+  </Wrapper>
+);

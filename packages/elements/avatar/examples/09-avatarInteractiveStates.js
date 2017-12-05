@@ -1,9 +1,9 @@
 // @flow
 import React from 'react';
 import type { Node } from 'react';
-import { Note, Wrapper, HR } from '../examples-util/styled';
 import Avatar from '../src/';
-import { avatarUrl } from '../examples-util/constants';
+import { Code, Note } from '../examples-util/helpers';
+import { avatarUrl } from '../examples-util/data';
 
 const stackSourceURLs = [];
 const avatarSize = 'large';
@@ -28,18 +28,18 @@ const AvatarShowcase = ({ children, description, title }: ShowcaseProps) => (
 );
 
 export default () => (
-  <Wrapper>
+  <div>
     <h2>Interactive Avatars</h2>
     <Note size="large">
       For most instances you will no-longer need to wrap{' '}
-      <code>{'<Avatar/>'}</code>.
+      <Code>{'<Avatar/>'}</Code>.
     </Note>
     <AvatarShowcase
       title="Button"
       description={
         <span>
-          Provide <code>onClick</code> to {'<Avatar/>'} or{' '}
-          <code>onAvatarClick</code> to {'<AvatarGroup/>'}
+          Provide <Code>onClick</Code> to <Code>{'<Avatar/>'}</Code> or{' '}
+          <Code>onAvatarClick</Code> to <Code>{'<AvatarGroup/>'}</Code>
         </span>
       }
     >
@@ -50,8 +50,8 @@ export default () => (
       title="Anchor"
       description={
         <span>
-          Provide <code>href</code> to {'<Avatar/>'}. Also, optionally accepts a{' '}
-          <code>target</code> property.
+          Provide <Code>href</Code> to <Code>{'<Avatar/>'}</Code>. Also,
+          optionally accepts a <Code>target</Code> property.
         </span>
       }
     >
@@ -67,15 +67,14 @@ export default () => (
       title="Tooltip"
       description={
         <span>
-          Provide <code>name</code> to {'<Avatar/>'}. Image receives alt-text
-          and an aria-label, which describes the image to screenreaders.
+          Provide <Code>name</Code> to <Code>{'<Avatar/>'}</Code>. Image
+          receives alt-text and an aria-label, which describes the image to
+          screenreaders.
         </span>
       }
     >
       <Avatar src={avatarUrl} name="Bill Murray" size={avatarSize} />
     </AvatarShowcase>
-
-    <HR />
 
     <h5>Avatar States</h5>
     <Note>
@@ -86,25 +85,25 @@ export default () => (
     </AvatarShowcase>
     <AvatarShowcase
       title="isHover"
-      description="akColorN70A applied as an overlay"
+      description="colors.N70A applied as an overlay"
     >
       <Avatar src={avatarUrl} size="large" onClick={() => {}} isHover />
     </AvatarShowcase>
     <AvatarShowcase
       title="isActive"
-      description="akColorN70A applied as an overlay, and scaled down to 90%"
+      description="colors.N70A applied as an overlay, and scaled down to 90%"
     >
       <Avatar src={avatarUrl} size="large" onClick={() => {}} isActive />
     </AvatarShowcase>
     <AvatarShowcase
       title="isFocus"
-      description="akColorB200 focus ring applied, border-width relative to avatar size"
+      description="colors.B200 focus ring applied, border-width relative to avatar size"
     >
       <Avatar src={avatarUrl} size="large" onClick={() => {}} isFocus />
     </AvatarShowcase>
     <AvatarShowcase
       title="isSelected"
-      description="akColorN200A applied as an overlay"
+      description="colors.N200A applied as an overlay"
     >
       <Avatar src={avatarUrl} size="large" onClick={() => {}} isSelected />
     </AvatarShowcase>
@@ -114,5 +113,5 @@ export default () => (
     >
       <Avatar src={avatarUrl} size="large" onClick={() => {}} isDisabled />
     </AvatarShowcase>
-  </Wrapper>
+  </div>
 );

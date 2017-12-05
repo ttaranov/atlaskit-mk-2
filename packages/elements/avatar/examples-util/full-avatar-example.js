@@ -1,21 +1,10 @@
 // @flow
 import React from 'react';
-import {
-  Wrapper,
-  AvatarCol,
-  Note,
-  AvatarRow,
-  HR,
-} from '../examples-util/styled';
+import { gridSize } from '@atlaskit/theme';
 import Avatar from '../src/';
 import WithAllAvatarSizes from './with-all-avatar-sizes';
+import { Block, Code, Note } from '../examples-util/helpers';
 import type { AppearanceType } from '../src/types';
-
-const AvatarInCol = props => (
-  <AvatarCol>
-    <Avatar {...props} />
-  </AvatarCol>
-);
 
 export default ({
   appearance,
@@ -24,90 +13,73 @@ export default ({
   appearance: AppearanceType,
   src: string,
 }) => (
-  <Wrapper>
-    <h5>Default</h5>
+  <div>
+    <h2>Default appearance</h2>
     <Note>
-      &quot;medium&quot; size &mdash; no &quot;presence&quot;, or
-      &quot;status&quot;
+      <Code>medium</Code> size - no <Code>presence</Code>, or
+      <Code>status</Code>
     </Note>
-    <Avatar appearance={appearance} />
+    <div style={{ marginTop: gridSize() }}>
+      <Avatar appearance={appearance} />
+    </div>
 
-    <HR />
     <h2>Presence</h2>
-
-    <h5>Presence Types</h5>
+    <h4>Presence Types</h4>
     <Note>
-      Supports &quot;busy&quot;, &quot;focus&quot;, &quot;offline&quot;, and
-      &quot;online&quot;
+      Supports <Code>busy</Code>, <Code>focus</Code>, <Code>offline</Code>, and
+      <Code>online</Code>
     </Note>
-    <AvatarRow>
-      <AvatarInCol appearance={appearance} src={src} size="large" />
-      <AvatarInCol
-        appearance={appearance}
-        src={src}
-        size="large"
-        presence="busy"
-      />
-      <AvatarInCol
-        appearance={appearance}
-        src={src}
-        size="large"
-        presence="focus"
-      />
-      <AvatarInCol
+    <Block>
+      <Avatar appearance={appearance} src={src} size="large" />
+      <Avatar appearance={appearance} src={src} size="large" presence="busy" />
+      <Avatar appearance={appearance} src={src} size="large" presence="focus" />
+      <Avatar
         appearance={appearance}
         src={src}
         size="large"
         presence="offline"
       />
-      <AvatarInCol
+      <Avatar
         appearance={appearance}
         src={src}
         size="large"
         presence="online"
       />
-    </AvatarRow>
+    </Block>
 
-    <h5>All Sizes with Presence</h5>
+    <h4>All Sizes with Presence</h4>
     <Note>
-      Sizes &quot;xsmall&quot; and &quot;xxlarge&quot; do NOT support Presence
+      Sizes <Code>xsmall</Code> and <Code>xxlarge</Code> do NOT support Presence
     </Note>
     <WithAllAvatarSizes src={src} presence="online" />
 
-    <HR />
     <h2>Status</h2>
-
-    <h5>Status Types</h5>
+    <h4>Status Types</h4>
     <Note>
-      Supports &quot;approved&quot;, &quot;declined&quot;, and
-      &quot;locked&quot;
+      Supports <Code>approved</Code>, <Code>declined</Code>, and
+      <Code>locked</Code>
     </Note>
-    <AvatarRow>
-      <AvatarInCol appearance={appearance} src={src} size="large" />
-      <AvatarInCol
+    <Block>
+      <Avatar appearance={appearance} src={src} size="large" />
+      <Avatar
         appearance={appearance}
         src={src}
         size="large"
         status="approved"
       />
-      <AvatarInCol
+      <Avatar
         appearance={appearance}
         src={src}
         size="large"
         status="declined"
       />
-      <AvatarInCol
-        appearance={appearance}
-        src={src}
-        size="large"
-        status="locked"
-      />
-    </AvatarRow>
+      <Avatar appearance={appearance} src={src} size="large" status="locked" />
+    </Block>
 
-    <h5>All Sizes with Status</h5>
+    <h4>All Sizes with Status</h4>
     <Note>
-      Sizes &quot;xsmall&quot; and &quot;xxlarge&quot; do NOT support Status
+      Sizes <Code>xsmall</Code> and <Code>xxlarge</Code> do NOT support Status
     </Note>
     <WithAllAvatarSizes appearance={appearance} src={src} status="approved" />
-  </Wrapper>
+  </div>
 );
