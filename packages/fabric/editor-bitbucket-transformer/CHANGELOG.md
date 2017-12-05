@@ -1,5 +1,7 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 2.0.3
+
 ## 2.0.2
 - [patch] Fix of the build scripts for editor-*-transformer packages [59b4ea5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59b4ea5)
 - [patch] Fix of the build scripts for editor-*-transformer packages [59b4ea5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59b4ea5)

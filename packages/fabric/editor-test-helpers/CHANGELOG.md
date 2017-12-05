@@ -1,5 +1,9 @@
 # @atlaskit/editor-test-helpers
 
+## 1.1.0
+- [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)
+- [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)
+
 ## 0.8.15
 
 ## 0.8.14

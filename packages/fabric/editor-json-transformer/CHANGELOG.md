@@ -1,5 +1,9 @@
 # @atlaskit/editor-json-transformer
 
+## 2.0.3
+- [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)
+- [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)
+
 ## 2.0.2
 - [patch] Fix of the build scripts for editor-*-transformer packages [59b4ea5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59b4ea5)
 - [patch] Fix of the build scripts for editor-*-transformer packages [59b4ea5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59b4ea5)

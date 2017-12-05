@@ -1,5 +1,7 @@
 # @atlaskit/editor-jira-transformer
 
+## 2.0.2
+
 ## 2.0.1
 - [patch] Fix of the build scripts for editor-*-transformer packages [59b4ea5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59b4ea5)
 - [patch] Fix of the build scripts for editor-*-transformer packages [59b4ea5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59b4ea5)
