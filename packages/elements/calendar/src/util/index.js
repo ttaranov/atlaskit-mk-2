@@ -1,6 +1,6 @@
 // @flow
 
-import type { Date } from './types';
+import type { Date } from '../types';
 
 type DateToStringOptions = {
   fixMonth: boolean,
@@ -42,7 +42,7 @@ function pad(num) {
   return num < 10 ? `0${num}` : num;
 }
 
-export function getDayName(i: number) {
+export function getShortDayName(i: number) {
   return getI18n().weekdays[i].substring(0, 3);
 }
 
@@ -54,15 +54,14 @@ export function dateToString(
   date: Date,
   { fixMonth }: DateToStringOptions = {},
 ) {
-  return date
-    ? `${date.year}-${pad(date.month + (fixMonth ? 1 : 0))}-${pad(date.day)}`
-    : '';
+  return `${date.year}-${pad(date.month + (fixMonth ? 1 : 0))}-${pad(
+    date.day,
+  )}`;
 }
 
-export function makeArrayFromNumber(i: number) {
+export function makeArrayFromNumber(i: number): Array<number> {
   const arr = [];
-  const num = Math.ceil(i);
-  for (let a = 0; a < num; a += 1) {
+  for (let a = 0; a < i; a += 1) {
     arr.push(a);
   }
   return arr;

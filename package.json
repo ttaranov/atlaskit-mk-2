@@ -107,6 +107,7 @@
     "highlight.js": "^9.6.0",
     "husky": "^0.14.3",
     "jest": "^20.0.4",
+    "jest-in-case": "^1.0.2",
     "jest-resolve": "^20.0.4",
     "jest-sandbox": "^1.1.1",
     "jquery": "^3.2.1",
@@ -145,7 +146,6 @@
     "tslint-react": "^3.2.0",
     "typescript": "^2.5.1",
     "url-loader": "^0.5.9",
-    "svg-url-loader": "^2.3.0",    
     "webpack": "^3.7.1",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.2"
