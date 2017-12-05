@@ -393,7 +393,7 @@ export default class Editor extends PureComponent<Props, State> {
 
       if (this.props.devTools) {
         // This is disabled until https://github.com/d4rkr00t/prosemirror-dev-tools/issues/77 is resolved
-        //applyDevTools(editorView);
+        // applyDevTools(editorView);
       }
 
       editorView.focus();

@@ -1,5 +1,9 @@
 # @atlaskit/renderer
 
+## 8.11.2
+
+## 8.11.1
+
 ## 8.11.0
 - [minor] Move validators from renderer to editor-common [3e2fd00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3e2fd00)
 - [minor] Move validators from renderer to editor-common [3e2fd00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3e2fd00)

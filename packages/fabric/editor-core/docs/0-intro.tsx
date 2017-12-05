@@ -2,7 +2,7 @@
 import { md, code } from '@atlaskit/docs';
 
 export default md`
-# Installing @atlaskit/editor
+# Installing @atlaskit/editor-core
 
 \`\`\`
 npm install @atlaskit/editor-core

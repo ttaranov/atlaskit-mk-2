@@ -23,17 +23,17 @@ describe('@atlaskit/editor-core/ui/ToolbarFeedback', () => {
     });
   });
 
-  it('should have spacing of toolbar button set to none if editorWidth is less then breakpoint6', () => {
+  it('should have spacing of toolbar button set to none if editorWidth is less then BreakPoint10', () => {
     const toolbarOption = mount(
-      <ToolbarFeedback editorWidth={EditorWidth.BreakPoint6 - 1} />,
+      <ToolbarFeedback editorWidth={EditorWidth.BreakPoint10 - 1} />,
     );
     expect(toolbarOption.find(ToolbarButton).prop('spacing')).toEqual('none');
     toolbarOption.unmount();
   });
 
-  it('should have spacing of toolbar button set to default if editorWidth is greater then breakpoint6', () => {
+  it('should have spacing of toolbar button set to default if editorWidth is greater then BreakPoint10', () => {
     const toolbarOption = mount(
-      <ToolbarFeedback editorWidth={EditorWidth.BreakPoint6 + 1} />,
+      <ToolbarFeedback editorWidth={EditorWidth.BreakPoint10 + 1} />,
     );
     expect(toolbarOption.find(ToolbarButton).prop('spacing')).toEqual(
       'default',

@@ -1,7 +1,9 @@
+// tslint:disable:no-console
+
 import * as React from 'react';
-import {tallImage} from '@atlaskit/media-test-helpers';
-import {Avatar, AvatarPickerDialog} from '../src';
-import {generateAvatars} from '../example-helpers';
+import { tallImage } from '@atlaskit/media-test-helpers';
+import { Avatar, AvatarPickerDialog } from '../src';
+import { generateAvatars } from '../example-helpers';
 
 const avatars: Array<Avatar> = generateAvatars(30);
 

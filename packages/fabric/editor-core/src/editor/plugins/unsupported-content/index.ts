@@ -59,7 +59,7 @@ const unsupportedContentPlugin: EditorPlugin = {
     return [
       {
         rank: 1320,
-        plugin: (schema, props, dispatch, providerFactory) =>
+        plugin: ({ schema, providerFactory }) =>
           createPlugin(schema, providerFactory),
       },
     ];

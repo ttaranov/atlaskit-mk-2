@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import styled from 'styled-components';
 import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
@@ -19,7 +21,6 @@ import {
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import { collabEditProvider } from '../example-helpers/mock-collab-provider';
 
-// tslint:disable-next-line:variable-name
 export const TitleInput = styled.input`
   border: none;
   outline: none;
@@ -33,7 +34,6 @@ export const TitleInput = styled.input`
 `;
 TitleInput.displayName = 'TitleInput';
 
-// tslint:disable-next-line:variable-name
 export const Content = styled.div`
   padding: 0 20px;
   height: 50%;
@@ -53,12 +53,10 @@ Content.displayName = 'Content';
 
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
 
-// tslint:disable-next-line:variable-name
 const SaveAndCancelButtons = props => (
   <ButtonGroup>
     <Button
       appearance="primary"
-      // tslint:disable-next-line:jsx-no-lambda no-console
       onClick={() =>
         props.editorActions
           .getValue()
@@ -67,11 +65,7 @@ const SaveAndCancelButtons = props => (
     >
       Publish
     </Button>
-    <Button
-      appearance="subtle"
-      // tslint:disable-next-line:jsx-no-lambda
-      onClick={() => props.editorActions.clear()}
-    >
+    <Button appearance="subtle" onClick={() => props.editorActions.clear()}>
       Close
     </Button>
   </ButtonGroup>
@@ -101,13 +95,11 @@ export default function Example() {
             contentComponents={
               <TitleInput
                 placeholder="Give this page a title..."
-                // tslint:disable-next-line:jsx-no-lambda
                 innerRef={ref => ref && ref.focus()}
               />
             }
             primaryToolbarComponents={
               <WithEditorActions
-                // tslint:disable-next-line:jsx-no-lambda
                 render={actions => (
                   <SaveAndCancelButtons editorActions={actions} />
                 )}
@@ -137,13 +129,11 @@ export default function Example() {
             contentComponents={
               <TitleInput
                 placeholder="Give this page a title..."
-                // tslint:disable-next-line:jsx-no-lambda
                 innerRef={ref => ref && ref.focus()}
               />
             }
             primaryToolbarComponents={
               <WithEditorActions
-                // tslint:disable-next-line:jsx-no-lambda
                 render={actions => (
                   <SaveAndCancelButtons editorActions={actions} />
                 )}

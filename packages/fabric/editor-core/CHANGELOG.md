@@ -1,5 +1,23 @@
 # @atlaskit/editor-core
 
+## 60.7.1
+- [patch] Adding more unit test coverage for responsive editor changes. [0b35f50](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b35f50)
+- [patch] Adding more unit test coverage for responsive editor changes. [0b35f50](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b35f50)
+
+## 60.7.0
+- [patch] Move docs to be a dev dependency for editor-core [65ada60](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65ada60)
+- [patch] Move docs to be a dev dependency for editor-core [65ada60](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65ada60)
+- [minor] Adding separate transformer packages. [f734c01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f734c01)
+- [minor] Adding separate transformer packages. [f734c01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f734c01)
+
+## 60.6.0
+- [minor] Change in collapse order of responsive editor toolbar. [14448bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14448bd)
+- [minor] Change in collapse order of responsive editor toolbar. [14448bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14448bd)
+
+## 60.5.3
+- [patch] FS-1366 fix selection in action/decision [854c137](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/854c137)
+- [patch] FS-1366 fix selection in action/decision [854c137](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/854c137)
+
 ## 60.5.2
 
 - [patch] moved table plugins methods to utils [90e6b2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90e6b2b)

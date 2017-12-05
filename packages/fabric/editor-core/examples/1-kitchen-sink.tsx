@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import * as React from 'react';
 
 import Editor from '../example-helpers/editor';
@@ -51,7 +53,6 @@ class DemoEditor extends React.PureComponent<any, any> {
 export default function Example() {
   return (
     <ToolsDrawer
-      // tslint:disable-next-line:jsx-no-lambda
       renderEditor={({
         mediaProvider,
         mentionProvider,

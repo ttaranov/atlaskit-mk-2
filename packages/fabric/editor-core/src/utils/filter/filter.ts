@@ -1,5 +1,5 @@
 import { Schema, Slice } from 'prosemirror-model';
-import { JSONDocNode, JSONNode } from '../../';
+import { JSONDocNode, JSONNode } from '@atlaskit/editor-json-transformer';
 
 const isBlockNode = (node: JSONNode, schema?: Schema): boolean => {
   if (!schema) {

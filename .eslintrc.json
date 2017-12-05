@@ -18,6 +18,7 @@
     }],
     "import/no-unresolved": ["off"],
     "import/prefer-default-export": "off",
+    "react/prefer-stateless-function": "off",
 
     "no-restricted-syntax": "off",
     "no-use-before-define": "off",
@@ -53,7 +54,8 @@
     "react/jsx-indent-props": "off",
     "react/jsx-max-props-per-line": "off",
     "react/jsx-tag-spacing": "off",
-    "react/jsx-wrap-multilines": "off"
+    "react/jsx-wrap-multilines": "off",
+    "react/prefer-stateless-function": "off"
   },
   "env": {
     "browser": true
