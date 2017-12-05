@@ -1,5 +1,7 @@
 # @atlaskit/editor-jira
 
+## 22.8.20
+
 ## 22.8.19
 
 - [patch] Adding separate transformer packages. [f734c01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f734c01)
