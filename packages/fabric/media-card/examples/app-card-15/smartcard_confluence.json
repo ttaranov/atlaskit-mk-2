@@ -1,0 +1,80 @@
+{
+  "context": {
+    "text": "Confluence / Mike Cannon-Brookes",
+    "icon": {
+      "url": "https://dl.dropbox.com/s/5by07yq0630vakq/logo.png",
+      "label": ""
+    }
+  },
+  "type": "appData",
+  "data": {
+    "preview": {
+      "url": "https://dl.dropbox.com/s/8dwc4hx46829zbl/preview.png"
+    },
+    "icon": {
+      "url": "https://dl.dropbox.com/s/cz4m7mx7bj6e5xc/icon.png",
+      "label": "Story"
+    },
+    "title": {
+      "title": {
+        "text": "Founder Update 82 - Our Bold New Brand",
+        "label": ""
+      },
+      "text": {
+        "text": "Last modified by Kimball Denetso on August 25, 2017",
+        "label": ""
+      }
+    },
+    "link": {
+      "url": "https://www.atlassian.com"
+    },
+    "details": [
+      {
+        "icon": {
+          "url": "https://dl.dropbox.com/s/9wg81ftuuy7xxzi/icon1.png",
+          "label": "label"
+        },
+        "text": "214"
+      },
+      {
+        "icon": {
+          "url": "https://dl.dropbox.com/s/0z04l9aeb8cgi50/icon2.png",
+          "label": "label"
+        },
+        "text": "23"
+      }
+    ],
+    "users": [
+      {
+        "icon": {
+          "url": "https://gravatar.com/avatar/14a437ba346533f33ca25e51172042ad?s=200",
+          "label": "James Newell"
+        }
+      },
+      {
+        "icon": {
+          "url": "https://gravatar.com/avatar/2482b49e63b1a30d8bedd8480d9929cc?s=200",
+          "label": "Jon Blower"
+        }
+      }
+    ],
+    "actions": {
+      "actions": [
+        {
+          "title": "Like",
+          "target": {
+            "recipient": "1",
+            "key": "1"
+          }
+        },
+        {
+          "title": "Comment",
+          "target": {
+            "recipient": "2",
+            "key": "2"
+          }
+        }
+      ]
+    }
+  }
+}
