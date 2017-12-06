@@ -30,11 +30,12 @@ export interface EditableCardState {
 class EditableCard extends Component<{}, EditableCardState> {
   state: EditableCardState = {
     identifier: genericFileId,
-    dimensions: defaultImageCardDimensions,
-    parentDimensions: { height: 250, width: 400 },
-    isWidthPercentage: false,
-    isHeightPercentage: false,
-    isLazy: true,
+    // dimensions: {...defaultImageCardDimensions},
+    dimensions: { height: '50%', width: '100%' },
+    parentDimensions: { height: 300, width: 500 },
+    isWidthPercentage: true,
+    isHeightPercentage: true,
+    isLazy: false,
   };
 
   onWidthChange = e => {
@@ -90,13 +91,14 @@ class EditableCard extends Component<{}, EditableCardState> {
     const height = parseInt(`${dimensions.height}`, 0);
     const { width: parentWidth, height: parentHeight } = parentDimensions;
     const parentStyle = { width: parentWidth, height: parentHeight };
-    console.log(height);
+    const newDimensions: CardDimensions = { width, height };
+
     if (isWidthPercentage) {
-      dimensions.width = `${dimensions.width}%`;
+      newDimensions.width = `${width}%`;
     }
 
     if (isHeightPercentage) {
-      dimensions.height = `${dimensions.height}%`;
+      newDimensions.height = `${height}%`;
     }
 
     return (
@@ -156,7 +158,7 @@ class EditableCard extends Component<{}, EditableCardState> {
           <Card
             context={context}
             identifier={identifier}
-            dimensions={dimensions}
+            dimensions={newDimensions}
             isLazy={isLazy}
           />
         </EditableCardContent>

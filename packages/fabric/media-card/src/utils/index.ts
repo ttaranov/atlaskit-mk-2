@@ -23,3 +23,5 @@ export * from './cardImageView';
 export * from './cardLoading';
 export * from './cardDimensions';
 export * from './breakpointSize';
+export * from './isValidPercentageUnit';
+export * from './getElementDimension';

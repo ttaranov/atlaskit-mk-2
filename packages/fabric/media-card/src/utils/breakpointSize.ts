@@ -1,7 +1,12 @@
+import { CardDimensionValue } from '../';
+
 export type BreakpointSizeValue = 'small' | 'medium' | 'large' | 'xlarge';
 
-export const breakpointSize = (width, sizes): BreakpointSizeValue => {
-  const value = parseInt(width, 0); // Normalize value
+export const breakpointSize = (
+  width: CardDimensionValue,
+  sizes,
+): BreakpointSizeValue => {
+  const value = parseInt(`${width}`, 0); // Normalize value
   const keys = Object.keys(sizes);
   const defaultValue = keys[0];
   let breakpoint;
