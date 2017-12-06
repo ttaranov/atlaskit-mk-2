@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import { akColorN100 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 import Tabs from '../src';
@@ -27,7 +26,7 @@ export default () => (
       width: 400,
       height: 200,
       margin: '16px auto',
-      border: `1px dashed ${akColorN100}`,
+      border: `1px dashed ${colors.N100}`,
       display: 'flex',
     }}
   >

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import Lorem from 'react-lorem-component';
-import { akColorN100 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import Tabs from '../src';
 
 export default () => (
@@ -9,7 +9,7 @@ export default () => (
     style={{
       height: 200,
       margin: '16px auto',
-      border: `1px dashed ${akColorN100}`,
+      border: `1px dashed ${colors.N100}`,
       display: 'flex',
     }}
   >

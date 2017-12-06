@@ -23,7 +23,6 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/theme": "^2.2.7",
-    "@atlaskit/util-shared-styles": "^2.10.3",
     "classnames": "^2.2.5",
     "css-element-queries": "^0.3.2",
     "debounce": "^1.0.0",
