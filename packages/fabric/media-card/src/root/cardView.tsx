@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { MouseEvent } from 'react';
 import {
   MediaItemType,
@@ -25,7 +26,9 @@ import {
   cardBreakpointSizes,
 } from '../utils/breakpoint';
 import { defaultImageCardDimensions } from '../utils/cardDimensions';
+import { isValidPercentageUnit } from '../utils/isValidPercentageUnit';
 import { getCSSUnitValue } from '../utils/getCSSUnitValue';
+import { getElementDimension } from '../utils/getElementDimension';
 import { Wrapper } from './styled';
 
 export interface CardViewProps extends SharedCardProps {
@@ -43,11 +46,21 @@ export interface CardViewProps extends SharedCardProps {
   [propName: string]: any;
 }
 
-export class CardView extends React.Component<CardViewProps, {}> {
+export interface CardViewState {
+  elementWidth?: number;
+}
+
+export class CardView extends React.Component<CardViewProps, CardViewState> {
   // tslint:disable-line:variable-name
   static defaultProps = {
     appearance: 'auto',
   };
+
+  state: CardViewState = {};
+
+  componentDidMount() {
+    this.saveElementWidth();
+  }
 
   componentWillReceiveProps(nextProps: CardViewProps) {
     const { selected: currSelected } = this.props;
@@ -73,7 +86,14 @@ export class CardView extends React.Component<CardViewProps, {}> {
     }
   };
 
+  // This width is only used to calculate breakpoints, dimensions are passed down as
+  // integrator pass it to the root component
   private get width(): CardDimensionValue {
+    const { elementWidth } = this.state;
+    if (elementWidth) {
+      return elementWidth;
+    }
+
     const { width } = this.props.dimensions || { width: undefined };
 
     if (!width) {
@@ -84,37 +104,26 @@ export class CardView extends React.Component<CardViewProps, {}> {
   }
 
   private get cardSize(): BreakpointSizeValue {
-    console.log(
-      'cardSize',
-      this.width,
-      breakpointSize(this.width, cardBreakpointSizes),
-    );
     return breakpointSize(this.width, cardBreakpointSizes);
   }
 
-  // updateDimensions() {
-  //   const {dimensions} = this.props;
-  //   if (!dimensions) {return;}
+  // If the dimensions.width is a percentage, we need to transform it
+  // into a pixel value in order to get the right breakpoints applied.
+  saveElementWidth() {
+    const { dimensions } = this.props;
+    if (!dimensions) {
+      return;
+    }
 
-  //   const element = ReactDOM.findDOMNode(this);
-  //   const {width, height} = dimensions;
-  //   let newWidth, newHeight;
+    const element = ReactDOM.findDOMNode(this);
+    const { width } = dimensions;
 
-  //   if (width && isValidPercentageUnit(width)) {
-  //     newWidth = getElementDimension(element, 'width');
-  //   }
+    if (width && isValidPercentageUnit(width)) {
+      const elementWidth = getElementDimension(element, 'width');
 
-  //   if (height && isValidPercentageUnit(height)) {
-  //     newHeight = getElementDimension(element, 'height');
-  //   }
-
-  //   this.setState({
-  //     dimensions: {
-  //       width: newWidth || width,
-  //       height: newHeight || height,
-  //     }
-  //   });
-  // }
+      this.setState({ elementWidth });
+    }
+  }
 
   render() {
     const { onClick, onMouseEnter } = this;
@@ -128,8 +137,6 @@ export class CardView extends React.Component<CardViewProps, {}> {
     } else {
       card = this.renderCardFromDetails();
     }
-
-    console.log('cardView render', dimensions);
 
     return (
       <Wrapper
