@@ -52,7 +52,7 @@ export const Content = styled.div`
       border-radius: ${akBorderRadius};
     }
   }
-}`;
+`;
 Content.displayName = 'Content';
 
 // tslint:disable-next-line:no-console
