@@ -1,4 +1,5 @@
 import * as React from 'react';
+jest.mock('../src/utils/breakpoint');
 
 import { shallow, mount } from 'enzyme';
 import { FileDetails, LinkDetails } from '@atlaskit/media-core';
@@ -8,6 +9,8 @@ import { Retry } from '../src/utils/cardGenericViewSmall/styled';
 import { CardView } from '../src/root/cardView';
 import { LinkCard } from '../src/links';
 import { FileCard } from '../src/files';
+import { Wrapper } from '../src/root/styled';
+import { breakpointSize, cardBreakpointSizes } from '../src/utils/breakpoint';
 
 describe('CardView', () => {
   const file: FileDetails = {
@@ -217,5 +220,17 @@ describe('CardView', () => {
     );
 
     expect(card.find('MediaImage').prop('crop')).toBe(false);
+  });
+
+  it('should render wrapper with correct breakpoint size', () => {
+    const dimensions = { width: '100%', height: '50%' };
+
+    (breakpointSize as jest.Mock<void>).mockReturnValue('small');
+    const card = shallow(
+      <CardView status="complete" metadata={file} dimensions={dimensions} />,
+    );
+    expect(breakpointSize).toHaveBeenCalledWith('100%');
+
+    expect(card.find(Wrapper).props().breakpointSize).toEqual('small');
   });
 });

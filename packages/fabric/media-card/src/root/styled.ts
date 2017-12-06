@@ -8,7 +8,7 @@ import { BreakpointSizeValue, breakpointStyles } from '../utils/breakpoint';
 export interface WrapperProps {
   dimensions?: CardDimensions;
   appearance?: CardAppearance;
-  breakpointSize: BreakpointSizeValue;
+  breakpointSize?: BreakpointSizeValue;
 }
 
 const getWrapperHeight = (dimensions?: CardDimensions) =>
@@ -22,7 +22,7 @@ const getWrapperWidth = (dimensions?: CardDimensions) =>
     : '';
 
 export const Wrapper = styled.div`
-  ${({ appearance, dimensions, breakpointSize }: WrapperProps) => {
+  ${({ appearance, dimensions, breakpointSize = 'medium' }: WrapperProps) => {
     if (appearance === 'square' || appearance === 'horizontal') {
       return `
         ${getCSSBoundaries(appearance)}

@@ -19,11 +19,7 @@ import {
 import { LinkCard } from '../links';
 import { FileCard } from '../files';
 import { isLinkDetails } from '../utils/isLinkDetails';
-import {
-  breakpointSize,
-  BreakpointSizeValue,
-  cardBreakpointSizes,
-} from '../utils/breakpoint';
+import { breakpointSize } from '../utils/breakpoint';
 import { defaultImageCardDimensions } from '../utils/cardDimensions';
 import { isValidPercentageUnit } from '../utils/isValidPercentageUnit';
 import { getCSSUnitValue } from '../utils/getCSSUnitValue';
@@ -102,10 +98,6 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
     return getCSSUnitValue(width);
   }
 
-  private get breakpointSize(): BreakpointSizeValue {
-    return breakpointSize(this.width, cardBreakpointSizes);
-  }
-
   // If the dimensions.width is a percentage, we need to transform it
   // into a pixel value in order to get the right breakpoints applied.
   saveElementWidth() {
@@ -138,7 +130,7 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
 
     return (
       <Wrapper
-        breakpointSize={this.breakpointSize}
+        breakpointSize={breakpointSize(this.width)}
         appearance={appearance}
         dimensions={dimensions}
         onClick={onClick}

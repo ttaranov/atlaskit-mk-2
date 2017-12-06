@@ -5,7 +5,7 @@ export type BreakpointSizeValue = 'small' | 'medium' | 'large' | 'xlarge';
 
 export const breakpointSize = (
   width: CardDimensionValue,
-  sizes,
+  sizes = cardBreakpointSizes,
 ): BreakpointSizeValue => {
   const value = parseInt(`${width}`, 10); // Normalize value
   const keys = Object.keys(sizes);
@@ -25,7 +25,9 @@ export interface BreakpointProps {
   breakpointSize: BreakpointSizeValue;
 }
 
-export const cardBreakpointSizes = {
+export type CardBreakpoint = { [P in BreakpointSizeValue]?: number };
+
+export const cardBreakpointSizes: CardBreakpoint = {
   small: 173,
   medium: 225,
   large: 300,
