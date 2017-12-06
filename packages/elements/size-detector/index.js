@@ -6,4 +6,4 @@
 // falls through the `main` `package.json` field.
 //
 
-export { default } from './src';
+export * from './src'; // eslint-disable-line import/export
