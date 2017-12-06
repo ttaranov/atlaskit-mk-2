@@ -2,9 +2,8 @@ import * as React from 'react';
 import ViewModel from '../ViewModel';
 import CardFrame from '../../shared/CardFrame';
 import IconImage from '../../shared/IconImage';
-import CardPreview from '../shared/CardPreview';
+import CardPreview from '../../shared/CardPreview';
 import CardDetails from '../shared/CardDetails';
-
 import { minWidth, maxWidth } from '../shared/width';
 
 export interface StandaloneApplicationCardViewProps extends ViewModel {}
@@ -31,11 +30,12 @@ export default class StandaloneApplicationCardView extends React.Component<
         maxWidth={maxWidth({ hasPreview: Boolean(preview) })}
         href={link && link.url}
         icon={
+          context &&
           context.icon && (
             <IconImage src={context.icon.url} alt={context.icon.label || ''} />
           )
         }
-        text={context.text}
+        text={context && context.text}
       >
         {preview ? <CardPreview url={preview.url} /> : null}
         <CardDetails

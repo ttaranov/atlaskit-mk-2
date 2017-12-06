@@ -16,6 +16,7 @@ export interface UsersProps {
 export default class Actions extends React.Component<UsersProps> {
   createActionHandler = (target: any) => {
     return (event?: MouseEvent) => {
+      /* prevent the parent link handler from opening a URL when clicked */
       if (event) {
         event.preventDefault();
       }
@@ -28,6 +29,7 @@ export default class Actions extends React.Component<UsersProps> {
   };
 
   handleOpenChange = ({ event }: { event: MouseEvent }) => {
+    /* prevent the parent link handler from opening a URL when clicked */
     if (event) {
       event.preventDefault();
     }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ImageIcon from '@atlaskit/icon/glyph/image';
 import { Wrapper, ImageWrapper, IconWrapper } from './styled';
-import noImageIcon from './noImageIcon';
+import NoImageIcon from './NoImageIcon';
 
 export interface CardPreviewProps {
   url?: string;
@@ -20,20 +20,20 @@ export default class CardPreview extends React.Component<CardPreviewProps> {
     const { url } = this.props;
     const { error } = this.state;
 
-    if (error) {
-      return <IconWrapper>{noImageIcon}</IconWrapper>;
+    if (error || !url) {
+      return (
+        <IconWrapper>
+          <NoImageIcon />
+        </IconWrapper>
+      );
     }
 
-    if (url) {
-      return [
-        <IconWrapper key="placeholder">
-          <ImageIcon size="xlarge" label="loading" />
-        </IconWrapper>,
-        <ImageWrapper key="image" url={url} />,
-      ];
-    }
-
-    return <IconWrapper>{noImageIcon}</IconWrapper>;
+    return [
+      <IconWrapper key="placeholder">
+        <ImageIcon size="xlarge" label="loading" />
+      </IconWrapper>,
+      <ImageWrapper key="image" url={url} />,
+    ];
   }
 
   tryAndLoadUrl() {

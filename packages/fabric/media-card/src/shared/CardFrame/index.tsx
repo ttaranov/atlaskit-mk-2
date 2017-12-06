@@ -18,8 +18,23 @@ export interface CardFrameProps {
 }
 
 export default class CardFrame extends React.Component<CardFrameProps> {
+  renderHeader() {
+    const { icon, text } = this.props;
+    return (
+      <Header>
+        <IconWrapper>{icon}</IconWrapper>
+        <TextWrapper>{text}</TextWrapper>
+      </Header>
+    );
+  }
+
+  renderContent() {
+    const { children } = this.props;
+    return <Content>{children}</Content>;
+  }
+
   render() {
-    const { href, icon, text, minWidth, maxWidth, children } = this.props;
+    const { href, minWidth, maxWidth } = this.props;
     if (href) {
       return (
         <LinkWrapper
@@ -30,21 +45,15 @@ export default class CardFrame extends React.Component<CardFrameProps> {
           minWidth={minWidth}
           maxWidth={maxWidth}
         >
-          <Header>
-            <IconWrapper>{icon}</IconWrapper>
-            <TextWrapper>{text}</TextWrapper>
-          </Header>
-          <Content>{children}</Content>
+          {this.renderHeader()}
+          {this.renderContent()}
         </LinkWrapper>
       );
     } else {
       return (
         <Wrapper minWidth={minWidth} maxWidth={maxWidth}>
-          <Header>
-            <IconWrapper>{icon}</IconWrapper>
-            <TextWrapper>{text}</TextWrapper>
-          </Header>
-          <Content>{children}</Content>
+          {this.renderHeader()}
+          {this.renderContent()}
         </Wrapper>
       );
     }

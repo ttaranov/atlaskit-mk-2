@@ -3,58 +3,76 @@ import Badge from '@atlaskit/badge';
 import Lozenge from '@atlaskit/lozenge';
 import Tooltip from '@atlaskit/tooltip';
 import IconImage from '../../../../shared/IconImage';
-import { DetailViewModel } from '../../../ViewModel';
-import { Wrapper, WidgetWrapper, Widget, Title, Text } from './styled';
+import {
+  DetailViewModel,
+  IconViewModel,
+  BadgeViewModel,
+  LozengeViewModel,
+} from '../../../ViewModel';
+import { Wrapper, WidgetWrapper, WidgetDetails, Title, Text } from './styled';
 
 export interface WidgetsProps {
   details?: DetailViewModel[];
 }
 
 export default class Widgets extends React.Component<WidgetsProps> {
-  renderWidget(key: any, data: DetailViewModel) {
-    const { title, text, icon, badge, lozenge, label } = data;
-    const attrs = [];
+  renderTitle(title: string): JSX.Element {
+    return <Title key="title">{title}:</Title>;
+  }
+
+  renderIcon(icon: IconViewModel) {
+    return <IconImage key="icon" src={icon.url} alt={icon.label || ''} />;
+  }
+
+  renderBadge(badge: BadgeViewModel) {
+    return (
+      <Badge
+        key="badge"
+        appearance={badge.appearance || 'default'}
+        value={badge.value}
+        max={badge.max}
+      />
+    );
+  }
+
+  renderLozenge(lozenge: LozengeViewModel) {
+    return (
+      <Lozenge
+        key="lozenge"
+        appearance={lozenge.appearance || 'default'}
+        isBold={lozenge.isBold}
+      >
+        {lozenge.text}
+      </Lozenge>
+    );
+  }
+
+  renderText(text: string) {
+    return <Text key="text">{text}</Text>;
+  }
+
+  renderWidget(key: any, detail: DetailViewModel) {
+    const { title, text, icon, badge, lozenge, label } = detail;
+    const attrs: JSX.Element[] = [];
 
     if (title) {
-      attrs.push(<Title key="title">{title}:</Title>);
+      attrs.push(this.renderTitle(title));
     }
 
     if (icon) {
-      attrs.push(
-        <IconImage
-          key="icon"
-          src={icon.url}
-          alt={icon.label}
-          title={icon.label}
-        />,
-      );
+      attrs.push(this.renderIcon(icon));
     }
 
     if (badge) {
-      attrs.push(
-        <Badge
-          key="badge"
-          appearance={badge.appearance || 'default'}
-          value={badge.value}
-          max={badge.max}
-        />,
-      );
+      attrs.push(this.renderBadge(badge));
     }
 
     if (lozenge) {
-      attrs.push(
-        <Lozenge
-          key="lozenge"
-          appearance={lozenge.appearance || 'default'}
-          isBold={lozenge.isBold}
-        >
-          {lozenge.text}
-        </Lozenge>,
-      );
+      attrs.push(this.renderLozenge(lozenge));
     }
 
     if (text) {
-      attrs.push(<Text key="text">{text}</Text>);
+      attrs.push(this.renderText(text));
     }
 
     if (attrs.length === 0) {
@@ -72,7 +90,7 @@ export default class Widgets extends React.Component<WidgetsProps> {
     return (
       <WidgetWrapper key={key}>
         <Tooltip content={label}>
-          <Widget>{attrs}</Widget>
+          <WidgetDetails>{attrs}</WidgetDetails>
         </Tooltip>
       </WidgetWrapper>
     );
@@ -80,6 +98,11 @@ export default class Widgets extends React.Component<WidgetsProps> {
 
   render() {
     const { details = [] } = this.props;
+
+    if (details.length === 0) {
+      return null;
+    }
+
     return (
       <Wrapper>
         {details.map((detail, index) => this.renderWidget(index, detail))}
