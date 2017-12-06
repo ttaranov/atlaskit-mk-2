@@ -1,5 +1,9 @@
 # @atlaskit/spinner
 
+## 4.0.6
+- [patch] fix Spinner's onComplete prop not being called [91e8994](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91e8994)
+- [patch] fix Spinner's onComplete prop not being called [91e8994](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91e8994)
+
 ## 4.0.5
 
 ## 4.0.4

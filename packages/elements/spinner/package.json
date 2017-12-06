@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/spinner",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "description": "A React component that displays a spinning icon to show a loading state",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -32,7 +32,7 @@
   "devDependencies": {
     "@atlaskit/button": "^5.4.8",
     "@atlaskit/docs": "^1.0.0",
-    "@atlaskit/spinner": "^4.0.5",
+    "@atlaskit/spinner": "^4.0.6",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "enzyme": "^2.9.1",
     "sinon": "^2.2.0"
