@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.8.4
+- [patch] Add default inline code styles [d5d8e5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5d8e5f)
+- [patch] Add default inline code styles [d5d8e5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5d8e5f)
+
 ## 60.8.3
 - [patch] Fix getValue() action resolving too early with media in-flight. [d31fafe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d31fafe)
 - [patch] Fix getValue() action resolving too early with media in-flight. [d31fafe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d31fafe)

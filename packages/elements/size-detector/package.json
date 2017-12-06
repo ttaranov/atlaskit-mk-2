@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/size-detector",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Wrapper for components that need to respond to size changes",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
