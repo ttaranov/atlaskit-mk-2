@@ -34,6 +34,11 @@ export default () => (
       onLoad={onLoad}
     />
     <button onClick={exportImage}>Export</button>
-    <img style={{position: 'absolute', top: 0, left: '300px'}} src="" alt="" ref={handleImgRef} />
+    <img
+      style={{ position: 'absolute', top: 0, left: '300px' }}
+      src=""
+      alt=""
+      ref={handleImgRef}
+    />
   </div>
-)
+);

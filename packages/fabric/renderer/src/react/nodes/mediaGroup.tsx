@@ -63,7 +63,10 @@ export default class MediaGroup extends PureComponent<
     } as MediaProps);
   }
 
-  cloneFileCard(child: ReactElement<MediaProps>, surroundingItems: Identifier[]) {
+  cloneFileCard(
+    child: ReactElement<MediaProps>,
+    surroundingItems: Identifier[],
+  ) {
     return React.cloneElement(child, {
       resizeMode: 'crop',
       eventHandlers: {
@@ -80,7 +83,7 @@ export default class MediaGroup extends PureComponent<
             }
             const surroundings: CardSurroundings = {
               collectionName: child.props.collection,
-              list: surroundingItems
+              list: surroundingItems,
             };
             child.props.eventHandlers.media.onClick(event, surroundings);
           },
@@ -92,7 +95,11 @@ export default class MediaGroup extends PureComponent<
   renderStrip() {
     const { children } = this.props;
     const { animate, offset } = this.state;
-    const surroundingItems = React.Children.map(children, (child: ReactElement<MediaProps>) => this.mapMediaPropsToIdentifier(child.props));
+    const surroundingItems = React.Children.map(
+      children,
+      (child: ReactElement<MediaProps>) =>
+        this.mapMediaPropsToIdentifier(child.props),
+    );
 
     return (
       <FilmstripView
@@ -114,22 +121,27 @@ export default class MediaGroup extends PureComponent<
     );
   }
 
-  private mapMediaPropsToIdentifier({ id, type, occurrenceKey, collection }: MediaProps): Identifier {
+  private mapMediaPropsToIdentifier({
+    id,
+    type,
+    occurrenceKey,
+    collection,
+  }: MediaProps): Identifier {
     switch (type) {
       case 'file':
         return {
           id,
           mediaItemType: type,
           occurrenceKey,
-          collectionName: collection
-        }
+          collectionName: collection,
+        };
       case 'link':
         return {
           id,
           mediaItemType: type,
           occurrenceKey,
-          collectionName: collection
-        }
+          collectionName: collection,
+        };
     }
   }
 }

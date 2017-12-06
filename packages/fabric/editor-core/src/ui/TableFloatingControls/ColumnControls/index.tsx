@@ -23,7 +23,7 @@ export interface Props {
 }
 
 export default class ColumnControls extends Component<Props, any> {
-  render () {
+  render() {
     const { editorView: { state, dispatch } } = this.props;
     const cols = this.props.tableElement.querySelector('tr')!.children;
     const nodes: any = [];

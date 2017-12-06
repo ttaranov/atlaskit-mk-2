@@ -627,7 +627,7 @@
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
-"@atlaskit/size-detector@^2.0.0", "@atlaskit/size-detector@^2.0.1":
+"@atlaskit/size-detector@^2.0.0":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@atlaskit/size-detector/-/size-detector-2.0.2.tgz#01e8a91d8704dd9a1efeb3b8392466c8b6c92541"
   dependencies:
@@ -4496,9 +4496,9 @@ extglob@^0.3.1:
   dependencies:
     is-extglob "^1.0.0"
 
-extract-react-types@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.3.0.tgz#c3a7ca5d022692a4cf2a951aace26ac340402ab7"
+extract-react-types@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.3.1.tgz#ce02b2a515da839cee95015e75340ca3562c97e8"
   dependencies:
     babel-core "7.0.0-alpha.19"
     babel-errors "^1.1.1"
@@ -7658,6 +7658,10 @@ pend@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
 
+performance-now@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
+
 performance-now@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-0.2.0.tgz#33ef30c5c77d4ea21c5a53869d91b56d8f2555e5"
@@ -8355,6 +8359,12 @@ quick-lru@^1.0.0:
 raf-schd@^2.0.1, raf-schd@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/raf-schd/-/raf-schd-2.0.2.tgz#7cf60f260c2d97ba2ba2a448c73604c5bed8cf08"
+
+raf-stub@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/raf-stub/-/raf-stub-2.0.1.tgz#fa04aefa3f3b4bd89712b24187b622f24265bf12"
+  dependencies:
+    performance-now "2.1.0"
 
 railroad-diagrams@^1.0.0:
   version "1.0.0"

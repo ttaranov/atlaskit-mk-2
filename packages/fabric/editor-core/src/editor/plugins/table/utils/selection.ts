@@ -4,7 +4,7 @@ import { EditorState } from 'prosemirror-state';
 import { TableMap } from 'prosemirror-tables';
 
 export const getCellSelection = (
-  state: EditorState
+  state: EditorState,
 ): CellSelection | undefined => {
   const { selection } = state;
   if (selection instanceof CellSelection) {
@@ -14,7 +14,7 @@ export const getCellSelection = (
 
 export const isColumnSelected = (
   column: number,
-  state: EditorState
+  state: EditorState,
 ): boolean => {
   const cellSelection = getCellSelection(state);
   const { tableNode } = tablePluginKey.getState(state);
@@ -71,7 +71,7 @@ export const isTableSelected = (state: EditorState): boolean => {
 };
 
 export const getSelectedColumn = (
-  state: EditorState
+  state: EditorState,
 ): { anchor: number; head: number } => {
   const { tableNode } = tablePluginKey.getState(state);
   const map = TableMap.get(tableNode);
@@ -84,7 +84,7 @@ export const getSelectedColumn = (
 };
 
 export const getSelectedRow = (
-  state: EditorState
+  state: EditorState,
 ): { anchor: number; head: number } => {
   const { $anchorCell, $headCell } = (state.selection as any) as CellSelection;
   const anchor = $anchorCell.index(-1);
