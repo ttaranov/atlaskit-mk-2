@@ -97,7 +97,7 @@ export default class Spinner extends Component<SpinnerProps, SpinnerState> {
           onEnter={this.enter}
           onEntered={this.idle}
           onExit={this.exit}
-          onExited={() => this.props.onComplete}
+          onExited={() => this.props.onComplete()}
           ref={node => {
             this.transitionNode = node;
           }}
