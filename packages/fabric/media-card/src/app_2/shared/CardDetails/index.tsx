@@ -121,9 +121,11 @@ export default class CardDetails extends React.Component<
       title: {
         title = {
           text: '',
+          label: '',
         },
         text = {
           text: '',
+          label: '',
         },
       } = {},
       icon,
@@ -143,10 +145,10 @@ export default class CardDetails extends React.Component<
             {!icon && this.renderUser()}
             {!icon && !user && this.renderThumbnail()}
             <CopyWrapper>
-              <Tooltip content={title.label}>
+              <Tooltip content={title.label || ''}>
                 <Title>{title.text}</Title>
               </Tooltip>
-              <Tooltip content={text.label}>
+              <Tooltip content={text.label || ''}>
                 <Description>{text.text}</Description>
               </Tooltip>
             </CopyWrapper>
