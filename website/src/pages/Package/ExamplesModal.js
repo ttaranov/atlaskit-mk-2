@@ -10,10 +10,12 @@ import CodeIcon from '@atlaskit/icon/glyph/code';
 import EditIcon from '@atlaskit/icon/glyph/edit';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import CloseIcon from '@atlaskit/icon/glyph/cross';
+import ScreenIcon from '@atlaskit/icon/glyph/screen';
 
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { AkCodeBlock } from '@atlaskit/code';
 import Flag, { FlagGroup } from '@atlaskit/flag';
+import Tooltip from '@atlaskit/tooltip';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';
 import Modal, {
   ModalHeader as OgModalHeader,
@@ -208,6 +210,48 @@ type Props = {
   match: RouterMatch,
 };
 
+function toUrl(
+  groupId?: string,
+  packageId?: string,
+  exampleId?: string | null,
+) {
+  let url;
+
+  if (!groupId) {
+    url = `/mk-2/packages`;
+  } else if (!packageId) {
+    url = `/mk-2/packages/${groupId}`;
+  } else if (!exampleId) {
+    url = `/mk-2/packages/${groupId}/${packageId}`;
+  } else {
+    url = `/mk-2/packages/${groupId}/${packageId}/example/${fs.normalize(
+      exampleId,
+    )}`;
+  }
+
+  return url;
+}
+
+function toExampleUrl(
+  groupId?: string,
+  packageId?: string,
+  exampleId?: string | null,
+) {
+  let url;
+
+  if (!groupId) {
+    url = `/examples`;
+  } else if (!packageId) {
+    url = `/examples/${groupId}`;
+  } else if (!exampleId) {
+    url = `/examples/${groupId}/${packageId}`;
+  } else {
+    url = `/examples/${groupId}/${packageId}/${fs.normalize(exampleId)}`;
+  }
+
+  return url;
+}
+
 export default class ExamplesModal extends Component<Props, State> {
   state = {
     displayCode: false,
@@ -243,11 +287,7 @@ export default class ExamplesModal extends Component<Props, State> {
 
   updateSelected(groupId?: string, packageId?: string, exampleId?: string) {
     let resolved = this.resolveProps(groupId, packageId, exampleId);
-    let url = this.toUrl(
-      resolved.groupId,
-      resolved.packageId,
-      resolved.exampleId,
-    );
+    let url = toUrl(resolved.groupId, resolved.packageId, resolved.exampleId);
     this.context.router.history.push(url);
   }
 
@@ -292,24 +332,6 @@ export default class ExamplesModal extends Component<Props, State> {
     };
   }
 
-  toUrl(groupId?: string, packageId?: string, exampleId?: string | null) {
-    let url;
-
-    if (!groupId) {
-      url = `/mk-2/packages`;
-    } else if (!packageId) {
-      url = `/mk-2/packages/${groupId}`;
-    } else if (!exampleId) {
-      url = `/mk-2/packages/${groupId}/${packageId}`;
-    } else {
-      url = `/mk-2/packages/${groupId}/${packageId}/example/${fs.normalize(
-        exampleId,
-      )}`;
-    }
-
-    return url;
-  }
-
   onCodeToggle = () =>
     this.setState(state => ({ displayCode: !state.displayCode }));
 
@@ -345,7 +367,7 @@ export default class ExamplesModal extends Component<Props, State> {
     const { displayCode } = this.state;
 
     if (hasChanged) {
-      return <Redirect to={this.toUrl(groupId, packageId, exampleId)} />;
+      return <Redirect to={toUrl(groupId, packageId, exampleId)} />;
     }
 
     return (
@@ -367,11 +389,21 @@ export default class ExamplesModal extends Component<Props, State> {
                 >
                   Source
                 </Button>
-                <Button
-                  appearance="subtle"
-                  iconBefore={<CloseIcon label="Close Modal" />}
-                  onClick={this.close}
-                />
+                <Tooltip description="Fullscreen" position="bottom">
+                  <Button
+                    appearance="subtle"
+                    component={Link}
+                    iconBefore={<ScreenIcon label="Screen Icon" />}
+                    to={toExampleUrl(groupId, packageId, exampleId)}
+                  />
+                </Tooltip>
+                <Tooltip description="Close" position="bottom">
+                  <Button
+                    appearance="subtle"
+                    iconBefore={<CloseIcon label="Close Modal" />}
+                    onClick={this.close}
+                  />
+                </Tooltip>
               </CodeSandbox>
             </ModalActions>
           </ModalHeader>

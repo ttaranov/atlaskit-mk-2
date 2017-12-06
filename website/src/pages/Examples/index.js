@@ -1,114 +1,43 @@
 // @flow
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import Loadable from 'react-loadable';
-import Loading from '../components/Loading';
-import { AkCodeBlock } from '@atlaskit/code';
-import * as fs from '../utils/fs';
-import type { Directory, RouterMatch } from '../types';
 import { Redirect, Link } from 'react-router-dom';
-import { colors } from '@atlaskit/theme';
-import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';
+
+import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import Button, { ButtonGroup } from '@atlaskit/button';
+import { AkCodeBlock } from '@atlaskit/code';
 import CodeIcon from '@atlaskit/icon/glyph/code';
 import EditIcon from '@atlaskit/icon/glyph/edit';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
-import Button, { ButtonGroup } from '@atlaskit/button';
 import Flag, { FlagGroup } from '@atlaskit/flag';
-import Spinner from '@atlaskit/spinner';
 import SingleSelect from '@atlaskit/single-select';
-import CodeBlock from '../components/Code';
-import { packages as packagesData } from '../site';
-import { packageUrl } from '../utils/url';
+import Spinner from '@atlaskit/spinner';
+import Tooltip from '@atlaskit/tooltip';
+import { colors } from '@atlaskit/theme';
 
-const Container = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-`;
+import Loading from '../../components/Loading';
+import * as fs from '../../utils/fs';
+import type { Directory, RouterMatch } from '../../types';
+import CodeBlock from '../../components/Code';
+import { packages as packagesData } from '../../site';
+import { packageUrl } from '../../utils/url';
+import {
+  CodeContainer,
+  ComponentContainer,
+  Container,
+  Content,
+  Control,
+  ErrorMessage,
+  ExampleComponentWrapper,
+  Nav,
+  NavButton,
+  NavLink,
+  NavSection,
+} from './styled';
 
-const Content = styled.div`
-  position: absolute;
-  z-index: 1;
-  top: 48px;
-  bottom: 0;
-  width: 100%;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-`;
-
-const SANDBOX_DEPLOY_ENDPOINT =
+export const SANDBOX_DEPLOY_ENDPOINT =
   'https://atlaskit-deploy-sandbox.glitch.me/deploy';
-
-const Nav = styled.nav`
-  display: flex;
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  width: 100%;
-  height: 48px;
-  flex-direction: row;
-  justify-content: space-between;
-  background: ${colors.N30};
-  color: white;
-`;
-
-const ComponentContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background: white;
-`;
-
-const CodeContainer = styled.div`
-  background: ${colors.DN80A};
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: flex-end;
-  padding: 20px;
-  position: absolute;
-  width: 100%;
-  z-index: 3;
-`;
-
-const NavSection = styled.div`
-  padding: 4px;
-`;
-
-const NavIconLink = styled(Link)`
-  display: inline-flex;
-  height: 40px;
-  padding: 5px 8px 3px 4px;
-  align-items: center;
-
-  &:hover {
-    background: ${colors.N40};
-    cursor: pointer;
-    text-decoration: none;
-  }
-`;
-
-const NavIcon = styled.span`
-  margin-right: 6px;
-`;
-
-const Control = styled.div`
-  display: inline-block;
-
-  & + & {
-    margin-left: 2px;
-  }
-`;
-
-const ErrorMessage = styled.div`
-  background-color: ${colors.R400};
-  border-radius: 4px;
-  color: white;
-  font-size: 120%;
-  padding: 1em;
-`;
 
 function PackageSelector(props) {
   let selectedPackageItem;
@@ -185,16 +114,13 @@ function ExampleSelector(props) {
 function ExampleNavigation(props) {
   return (
     <Nav>
-      <NavIconLink to={packageUrl(props.groupId, props.packageId)}>
-        <NavIcon>
-          <ArrowLeftCircleIcon
-            size="large"
-            primaryColor={colors.B500}
-            label="back to docs"
-          />
-        </NavIcon>
-        to {fs.titleize(props.packageId)} docs
-      </NavIconLink>
+      <NavSection style={{ marginLeft: 8 }}>
+        <Tooltip description="Back to docs" position="right">
+          <NavLink to={packageUrl(props.groupId, props.packageId)}>
+            <ArrowLeftIcon label="Back to docs" />
+          </NavLink>
+        </Tooltip>
+      </NavSection>
 
       <NavSection>
         <PackageSelector
@@ -210,35 +136,18 @@ function ExampleNavigation(props) {
         />
       </NavSection>
 
-      <NavSection>
-        <ButtonGroup>
-          <Button
-            appearance="link"
-            iconBefore={
-              <CodeIcon
-                size="large"
-                primaryColor={colors.N500}
-                label="Show source"
-              />
-            }
+      <NavSection style={{ marginRight: 8 }}>
+        <Tooltip
+          description={`${props.codeIsVisible ? 'Hide' : 'Show'} source`}
+          position="left"
+        >
+          <NavButton
+            isSelected={props.codeIsVisible}
             onClick={props.onCodeToggle}
-          />
-          <Button
-            appearance="link"
-            iconBefore={
-              props.loadingSandbox ? (
-                <Spinner />
-              ) : (
-                <EditIcon
-                  size="large"
-                  primaryColor={colors.N500}
-                  label="Open in Codesandbox.io"
-                />
-              )
-            }
-            onClick={props.deploySandbox}
-          />
-        </ButtonGroup>
+          >
+            <CodeIcon label="Show source" />
+          </NavButton>
+        </Tooltip>
       </NavSection>
     </Nav>
   );
@@ -269,18 +178,18 @@ function ExampleDisplay(props) {
     loader: () => props.example.contents(),
     loading: Loading,
     render(loaded) {
-      return (
-        <CodeContainer>
-          <CodeBlock grammar="jsx" content={loaded} />
-        </CodeContainer>
-      );
+      return <CodeBlock grammar="jsx" content={loaded} />;
     },
   });
 
   return (
     <Content>
-      {props.displayCode && <ExampleCode />}
-      <ExampleComponent />
+      <ExampleComponentWrapper codeIsVisible={props.displayCode}>
+        <ExampleComponent />
+      </ExampleComponentWrapper>
+      <CodeContainer show={props.displayCode}>
+        <ExampleCode />
+      </CodeContainer>
     </Content>
   );
 }
@@ -326,6 +235,7 @@ export default class Examples extends React.Component<Props, State> {
       resolved.packageId,
       resolved.exampleId,
     );
+
     this.context.router.history.push(url);
   }
 
@@ -386,11 +296,8 @@ export default class Examples extends React.Component<Props, State> {
     return url;
   }
 
-  onCodeToggle = () => {
-    this.setState({
-      displayCode: !this.state.displayCode,
-    });
-  };
+  onCodeToggle = () =>
+    this.setState(state => ({ displayCode: !state.displayCode }));
 
   addFlag = (flagProps: {
     appearance: string,
@@ -493,6 +400,7 @@ export default class Examples extends React.Component<Props, State> {
           exampleId={exampleId}
           groups={groups}
           examples={examples}
+          codeIsVisible={this.state.displayCode}
           onPackageSelected={this.onPackageSelected}
           onExampleSelected={this.onExampleSelected}
           onCodeToggle={this.onCodeToggle}
