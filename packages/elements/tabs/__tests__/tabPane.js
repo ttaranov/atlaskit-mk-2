@@ -7,13 +7,6 @@ import { name } from '../package.json';
 
 describe(name, () => {
   describe('TabPane', () => {
-    describe('exports', () => {
-      it('the TabPane component', () => {
-        expect(TabPane).not.toBe(undefined);
-        expect(<TabPane />).toBeInstanceOf(Object);
-      });
-    });
-
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<TabPane />);

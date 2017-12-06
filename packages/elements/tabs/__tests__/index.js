@@ -9,15 +9,6 @@ import { NavItem } from '../src/styled';
 
 describe(name, () => {
   describe('Tabs', () => {
-    describe('exports', () => {
-      it('the Tabs component', () => {
-        expect(Tabs).not.toBe(undefined);
-        expect(
-          new Tabs({ onSelect: () => {}, tabs: sampleTabsNoDefault }),
-        ).toBeInstanceOf(Component);
-      });
-    });
-
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<Tabs />);

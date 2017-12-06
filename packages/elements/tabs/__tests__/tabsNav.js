@@ -20,12 +20,6 @@ const DefaultNav = ({
 
 describe(name, () => {
   describe('TabsNav', () => {
-    describe('exports', () => {
-      it('the TabsNav component', () => {
-        expect(TabsNav).not.toBe(undefined);
-      });
-    });
-
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<DefaultNav />);

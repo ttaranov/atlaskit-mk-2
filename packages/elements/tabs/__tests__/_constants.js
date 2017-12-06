@@ -1,5 +1,4 @@
 // @flow
-// import { type ChildrenType, type FunctionType } from '../src/types';
 import { type StatelessTabs, type StatefulTabs } from '../src/types';
 
 const sampleTabsNoSelection: StatelessTabs = [

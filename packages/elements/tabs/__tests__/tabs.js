@@ -12,13 +12,6 @@ const NOOP = () => {};
 
 describe(name, () => {
   describe('TabsStateless', () => {
-    describe('exports', () => {
-      it('the TabsStateless component', () => {
-        expect(TabsStateless).not.toBe(undefined);
-        expect(new TabsStateless()).toBeInstanceOf(Component);
-      });
-    });
-
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<TabsStateless onKeyboardNav={NOOP} />);
