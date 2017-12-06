@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 60.8.3
+- [patch] Fix getValue() action resolving too early with media in-flight. [d31fafe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d31fafe)
+- [patch] Fix getValue() action resolving too early with media in-flight. [d31fafe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d31fafe)
+
+## 60.8.2
+- [patch] added extension node [ec73cb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec73cb8)
+- [patch] added extension node [ec73cb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec73cb8)
+
 ## 60.8.1
 
 ## 60.8.0

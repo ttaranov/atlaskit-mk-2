@@ -1,5 +1,11 @@
 # @atlaskit/editor-test-helpers
 
+## 1.1.3
+
+## 1.1.2
+- [patch] added extension node [ec73cb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec73cb8)
+- [patch] added extension node [ec73cb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec73cb8)
+
 ## 1.1.1
 
 ## 1.1.0
