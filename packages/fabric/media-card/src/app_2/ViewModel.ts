@@ -67,12 +67,12 @@ export interface UserViewModel {
 }
 
 export default interface ViewModel {
-  context: ContextViewModel;
+  context?: ContextViewModel;
   link?: LinkViewModel;
   icon?: IconViewModel;
   user?: UserViewModel;
   preview?: PreviewViewModel;
-  title: TitleViewModel;
+  title?: TitleViewModel;
   details?: DetailViewModel[];
   users?: UserViewModel[];
   actions?: ActionViewModel[];

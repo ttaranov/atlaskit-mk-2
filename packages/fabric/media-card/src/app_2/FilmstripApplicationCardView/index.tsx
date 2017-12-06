@@ -30,11 +30,12 @@ export default class StandaloneApplicationCardView extends React.Component<
         maxWidth={maxWidth({ hasPreview: false })}
         href={link && link.url}
         icon={
+          context &&
           context.icon && (
             <IconImage src={context.icon.url} alt={context.icon.label || ''} />
           )
         }
-        text={context.text}
+        text={context && context.text}
       >
         <CardDetails
           title={title}

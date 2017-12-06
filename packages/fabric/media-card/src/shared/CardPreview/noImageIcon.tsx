@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export default (
+export default () => (
   <svg
     width="55px"
     height="55px"

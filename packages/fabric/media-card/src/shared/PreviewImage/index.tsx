@@ -5,12 +5,7 @@ export interface PreviewImageProps {
   src: string;
 }
 
-export interface PreviewImageState {}
-
-export default class PreviewImage extends React.Component<
-  PreviewImageProps,
-  PreviewImageState
-> {
+export default class PreviewImage extends React.Component<PreviewImageProps> {
   render() {
     const { src } = this.props;
     return <Image src={src} />;

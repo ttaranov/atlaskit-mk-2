@@ -8,12 +8,12 @@ export interface UsersProps {
 }
 
 export default class Users extends React.Component<UsersProps> {
-  /* prevent the link handler from opening a URL when clicked */
+  /* prevent the parent link handler from opening a URL when clicked */
   handleAvatarClick = ({ event }: { event: MouseEvent }) => {
     event.preventDefault();
   };
 
-  /* prevent the link handler from opening a URL when clicked */
+  /* prevent the parent link handler from opening a URL when clicked */
   handleMoreClick = (event: MouseEvent) => {
     event.preventDefault();
   };

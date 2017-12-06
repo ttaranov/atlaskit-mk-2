@@ -8,12 +8,7 @@ export interface IconImageProps {
   size?: number;
 }
 
-export interface IconImageState {}
-
-export default class IconImage extends React.Component<
-  IconImageProps,
-  IconImageState
-> {
+export default class IconImage extends React.Component<IconImageProps> {
   render() {
     const { src, alt, title, size = 16 } = this.props;
     return <Image src={src} alt={alt} title={title} size={size} />;
