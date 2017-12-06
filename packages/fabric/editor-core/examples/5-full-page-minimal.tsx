@@ -42,7 +42,7 @@ export const Content = styled.div`
       border-radius: ${akBorderRadius};
     }
   }
-}`;
+`;
 Content.displayName = 'Content';
 
 export type Props = {};
