@@ -7,10 +7,11 @@ import { layers } from '@atlaskit/theme';
 
 import type {
   ActionsType,
-  ChildrenType,
   ComponentType,
+  ChildrenType,
   ElementType,
 } from '../types';
+
 import {
   Dialog,
   DialogBody,
@@ -18,14 +19,13 @@ import {
   Heading,
   Image,
 } from '../styled/Dialog';
+
 import { TargetOverlay, TargetOuter, TargetInner } from '../styled/Target';
 import { Fade } from './Animation';
 import Actions from './SpotlightActions';
 import withScrollMeasurements from '../hoc/withScrollMeasurements';
 
-const Fill = props => <Fade component={FillScreen} {...props} />;
-
-type Props = {|
+export type SpotLightProps = {|
   /** Buttons to render in the footer */
   actions?: ActionsType,
   /** An optional element rendered beside the footer actions */
@@ -69,6 +69,18 @@ type Props = {|
   /** Alternative element to render than the wrapped target */
   targetReplacement?: ComponentType,
 |};
+
+type FillProps = {
+  in: boolean,
+  onExit: Function,
+  scrollDistance: number,
+  children: ChildrenType,
+};
+
+const Fill = (props: FillProps) => <Fade component={FillScreen} {...props} />;
+
+type Props = SpotLightProps;
+
 type State = {|
   isExiting: boolean,
 |};

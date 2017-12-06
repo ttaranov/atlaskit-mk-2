@@ -40,7 +40,7 @@ export const TargetOuter = styled.div`
 `;
 
 // fixed position holds the target in place if overflow/scroll is necessary
-export const TargetInner = styled(Div)`
+export const TargetInner = styled.div`
   ${animationWithCheck} position: fixed;
 `;
 
@@ -54,6 +54,6 @@ export const TargetOverlay = styled.div`
 `;
 
 // exported for consumer
-export const Pulse = styled(Div)`
+export const Pulse = styled.div`
   ${animation};
 `;

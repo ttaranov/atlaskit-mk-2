@@ -6,9 +6,7 @@ import { type ComponentType } from '../types';
 
 import SpotlightRegistry from '../components/SpotlightRegistry';
 
-type Props = {|
-  target: HTMLElement,
-|};
+type Props = { target: string };
 type State = {
   clone?: string, // string representation of HTMLElement
   scrollY: number,
@@ -25,6 +23,7 @@ function elementCropDirection(el: HTMLElement) {
     direction = 'top';
   }
   if (
+    // $FlowFixMe
     rect.bottom >= (window.innerHeight || document.documentElement.clientHeight)
   ) {
     direction = 'bottom';
@@ -35,7 +34,9 @@ function elementCropDirection(el: HTMLElement) {
 function getScrollY() {
   return (
     window.pageYOffset ||
+    // $FlowFixMe
     document.documentElement.scrollTop ||
+    // $FlowFixMe
     document.body.scrollTop ||
     0
   );

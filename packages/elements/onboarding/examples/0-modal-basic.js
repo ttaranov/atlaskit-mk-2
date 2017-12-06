@@ -38,7 +38,6 @@ class Example extends Component<{}, State> {
             heading="Experience your new JIRA"
             image={welcomeImage}
             key="welcome"
-            onClose={this.finish}
           >
             <p>
               Switch context, jump between project, and get back to work quickly

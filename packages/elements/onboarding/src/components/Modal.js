@@ -41,12 +41,14 @@ const OnboardingModal = ({
   const footer = footerElement ? () => footerElement : null;
   const header = headerElement ? () => headerElement : null;
 
+  const safeActions = actions;
+
   const footerComponent =
     footer ||
-    (actions
+    (safeActions
       ? () => (
           <Actions>
-            {actions.map(({ text, ...rest }, idx) => {
+            {safeActions.map(({ text, ...rest }, idx) => {
               const variant = idx ? 'subtle-link' : 'help';
               return (
                 <ActionItem key={text || idx}>
