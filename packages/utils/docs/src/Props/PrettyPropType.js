@@ -2,9 +2,8 @@
 /* eslint-disable react/no-array-index-key */
 
 import React, { type Node } from 'react';
-import styled from 'styled-components';
-
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
+import styled from 'styled-components';
 
 const Wrapper = styled.code`
   display: inline-block;
@@ -94,6 +93,11 @@ function Indent(props: { children: Node }) {
   return <div style={{ paddingLeft: '1.3em' }}>{props.children}</div>;
 }
 
+function resolveFromGeneric(type) {
+  if (type.value.kind === 'generic') return resolveFromGeneric(type.value);
+  return type.value;
+}
+
 function print(type, depth = 1) {
   if (type.kind === 'string' || type.kind === 'stringLiteral') {
     if (type.value) {
@@ -106,6 +110,10 @@ function print(type, depth = 1) {
       );
     }
     return <Type>{type.kind}</Type>;
+  }
+
+  if (type.kind === 'function') {
+    return <Type>{'function'}</Type>;
   }
 
   if (type.kind === 'number' || type.kind === 'numberLiteral') {
@@ -127,7 +135,7 @@ function print(type, depth = 1) {
           Shape <Outline>{'{'}</Outline>
         </TypeMeta>
         <Indent>
-          {type.props.map(prop => (
+          {type.members.map(prop => (
             <div key={prop.key}>
               <TypeMinWidth>
                 <Type>{prop.key}</Type>
@@ -212,13 +220,17 @@ type PrettyPropTypeProps = {
 };
 
 export default function PrettyPropType(props: PrettyPropTypeProps) {
-  if (SIMPLE_TYPES.includes(props.type.kind)) return null;
+  let type = props.type;
+  if (type.kind === 'generic') {
+    type = resolveFromGeneric(props.type);
+  }
+  if (SIMPLE_TYPES.includes(type.kind)) return null;
   if (
-    props.type.kind === 'nullable' &&
+    type.kind === 'nullable' &&
     SIMPLE_TYPES.includes(props.type.arguments.kind)
   ) {
     return null;
   }
 
-  return <Wrapper>{print(props.type)}</Wrapper>;
+  return <Wrapper>{print(type)}</Wrapper>;
 }
