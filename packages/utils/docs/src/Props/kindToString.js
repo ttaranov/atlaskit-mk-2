@@ -51,6 +51,10 @@ converters.memberExpression = type => {
   return property;
 };
 
+converters.call = type => {
+  return `${convert(type.callee)}(${type.args.map(convert).join(', ')})`;
+};
+
 converters.external = type => {
   if (type.importKind === 'value') {
     return `${type.moduleSpecifier}.${type.name}`;

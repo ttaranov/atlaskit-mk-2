@@ -98,7 +98,11 @@ function resolveFromGeneric(type) {
   return type.value;
 }
 
-function print(type, depth = 1) {
+function print(startType, depth = 1) {
+  let type = startType;
+  if (type.kind === 'nullable') type = type.arguments;
+  if (type.kind === 'generic') type = resolveFromGeneric(type);
+
   if (type.kind === 'string' || type.kind === 'stringLiteral') {
     if (type.value) {
       return (
@@ -114,6 +118,9 @@ function print(type, depth = 1) {
 
   if (type.kind === 'function') {
     return <Type>{'function'}</Type>;
+  }
+  if (type.kind === 'any') {
+    return <Type>{'any'}</Type>;
   }
 
   if (type.kind === 'number' || type.kind === 'numberLiteral') {
