@@ -75,9 +75,8 @@ export const withDataURI = (Component): any => {
 
     dataURIDimension(dimension: ElementDimension): number {
       const retinaFactor = isRetina() ? 2 : 1;
-      const { [dimension]: dimensionValue } = this.props.dimensions || {
-        [dimension]: undefined,
-      };
+      const dimensionValue =
+        (this.props.dimensions && this.props.dimensions[dimension]) || '';
 
       if (this.isSmall()) {
         return minImageCardDimensions[dimension] * retinaFactor;
