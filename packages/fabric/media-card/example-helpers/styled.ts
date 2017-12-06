@@ -25,6 +25,7 @@ export const CardSwitcherRow = styled.div`
 export const EditableCardOptions = styled.div`
   padding: 20px;
   border-bottom: 1px solid #ccc;
+  max-width: 700px;
 `;
 
 export const SliderWrapper = styled.div`
@@ -44,6 +45,7 @@ export const EditableCardContent = styled.div`
   margin: 0 10px 50px 10px;
   overflow: hidden;
   background: antiquewhite;
+  box-sizing: border-box;
 `;
 
 export const OptionsWrapper = styled.div`
@@ -65,4 +67,11 @@ export const CardDimensionsWrapper = styled.div`
     padding: 5px;
     border-radius: 3px;
   }
+`;
+
+export const MainWrapper = styled.div`
+  display: flex;
+`;
+export const CardPreviewWrapper = styled.div`
+  flex: 1;
 `;
