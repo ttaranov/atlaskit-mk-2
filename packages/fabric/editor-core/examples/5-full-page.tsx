@@ -11,7 +11,7 @@ import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
-import { ConfluenceTransformer } from '../';
+import { ConfluenceTransformer } from '@atlaskit/editor-cq-transformer';
 
 import { macroProviderPromise } from '../example-helpers/mock-macro-provider';
 

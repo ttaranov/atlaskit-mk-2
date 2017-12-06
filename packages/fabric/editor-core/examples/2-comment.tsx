@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import * as React from 'react';
 
 import Button, { ButtonGroup } from '@atlaskit/button';
@@ -42,8 +44,8 @@ const exampleDocument = {
   ],
 };
 
-type Props = {};
-type State = {
+export type Props = {};
+export type State = {
   hasJquery?: boolean;
   isExpanded?: boolean;
 };
@@ -71,7 +73,6 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
       <EditorContext>
         <div>
           <WithEditorActions
-            // tslint:disable-next-line:jsx-no-lambda
             render={actions => (
               <ButtonGroup>
                 <Button
@@ -84,7 +85,6 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
             )}
           />
           <ToolsDrawer
-            // tslint:disable-next-line:jsx-no-lambda
             renderEditor={({
               mentionProvider,
               emojiProvider,
@@ -110,6 +110,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     allowLists={true}
                     allowTables={true}
                     allowHelpDialog={true}
+                    allowPlaceholderCursor={true}
                     mentionProvider={mentionProvider}
                     emojiProvider={emojiProvider}
                     mediaProvider={mediaProvider}
@@ -121,8 +122,12 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                       <ToolbarFeedback
                         packageVersion={version}
                         packageName={name}
+                        key="toolbar-feedback"
                       />,
-                      <ToolbarHelp editorWidth={undefined} />,
+                      <ToolbarHelp
+                        editorWidth={undefined}
+                        key="toolbar-help"
+                      />,
                     ]}
                   />
                 </CollapsedEditor>

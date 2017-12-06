@@ -6,7 +6,7 @@ import {
   akBorderRadius,
 } from '@atlaskit/util-shared-styles';
 import DocumentFilledIcon from '@atlaskit/icon/glyph/document-filled';
-import { hexToRgba } from '../../utils/color';
+import { hexToRgba } from '@atlaskit/editor-common';
 
 import { MEDIA_HEIGHT, FILE_WIDTH } from './MediaComponent';
 

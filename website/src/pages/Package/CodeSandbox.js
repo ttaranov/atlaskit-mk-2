@@ -134,7 +134,11 @@ export default class CodeSandbox extends Component<Props, State> {
     return (
       <div>
         <ButtonGroup>
-          <Button onClick={this.deploySandbox} iconBefore={codesandboxIcon}>
+          <Button
+            onClick={this.deploySandbox}
+            iconBefore={codesandboxIcon}
+            isDisabled={loadingSandbox}
+          >
             {loadingSandbox ? 'Loading...' : 'Sandbox'}
           </Button>
           {children}

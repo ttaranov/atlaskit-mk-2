@@ -253,6 +253,26 @@ const ContentStyles = styled.div`
     img {
     max-width: 100%;
   }
+
+  //=============== PLACEHOLDER CURSOR STYLES=========
+
+  & .ProseMirror-placeholder-cursor {
+    display: inline;
+    pointer-events: none;
+    position: relative;
+    height: 15px;
+  }
+
+  & .ProseMirror-placeholder-cursor:after {
+    content: '';
+    display: inline;
+    top: 0;
+    position: absolute;
+    height: 100%;
+    border-right: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  //=============== PLACEHOLDER CURSOR STYLES================
 `;
 
 export default ContentStyles;

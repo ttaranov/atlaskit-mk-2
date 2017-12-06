@@ -3,7 +3,7 @@
 import { Calendar } from 'calendar-base';
 import keycode from 'keycode';
 import React, { Component } from 'react';
-import { dateToString, getDayName, makeArrayFromNumber } from '../util';
+import { dateToString, getShortDayName, makeArrayFromNumber } from '../util';
 import DateComponent from './Date';
 import Heading from './Heading';
 import {
@@ -324,7 +324,7 @@ export default class CalendarStateless extends Component<Props> {
             <CalendarThead>
               <tr>
                 {makeArrayFromNumber(daysPerWeek).map(i => (
-                  <CalendarTh key={i}>{getDayName(i)}</CalendarTh>
+                  <CalendarTh key={i}>{getShortDayName(i)}</CalendarTh>
                 ))}
               </tr>
             </CalendarThead>

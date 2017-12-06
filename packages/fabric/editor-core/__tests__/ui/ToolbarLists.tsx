@@ -4,6 +4,7 @@ import listsPlugins, { ListsState } from '../../src/plugins/lists';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import AkButton from '@atlaskit/button';
 import ToolbarLists from '../../src/ui/ToolbarLists';
+import DropdownMenu from '../../src/ui/DropdownMenu';
 import {
   doc,
   p,
@@ -35,37 +36,32 @@ describe('ToolbarLists', () => {
     });
     toolbarLists.unmount();
   });
-  it('should have spacing of toolbar button set to none if editorWidth is less then breakpoint6', () => {
+
+  it('should have spacing of toolbar button set to none if editorWidth is less then BreakPoint10', () => {
     const { pluginState, editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarLists
         pluginState={pluginState}
         editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint6 - 1}
+        editorWidth={EditorWidth.BreakPoint10 - 1}
       />,
     );
     expect(
       toolbarOption
         .find(ToolbarButton)
         .at(0)
-        .prop('spacing'),
-    ).toBe('none');
-    expect(
-      toolbarOption
-        .find(ToolbarButton)
-        .at(1)
         .prop('spacing'),
     ).toBe('none');
     toolbarOption.unmount();
   });
 
-  it('should have spacing of toolbar button set to default if editorWidth is greater then breakpoint6', () => {
+  it('should have spacing of toolbar button set to default if editorWidth is greater then BreakPoint10', () => {
     const { pluginState, editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarLists
         pluginState={pluginState}
         editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint6 + 1}
+        editorWidth={EditorWidth.BreakPoint10 + 1}
       />,
     );
     expect(
@@ -74,12 +70,32 @@ describe('ToolbarLists', () => {
         .at(0)
         .prop('spacing'),
     ).toBe('default');
-    expect(
-      toolbarOption
-        .find(ToolbarButton)
-        .at(1)
-        .prop('spacing'),
-    ).toBe('default');
+    toolbarOption.unmount();
+  });
+
+  it('should have a dropdown if editor-width is less then BreakPoint9', () => {
+    const { pluginState, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(
+      <ToolbarLists
+        pluginState={pluginState}
+        editorView={editorView}
+        editorWidth={EditorWidth.BreakPoint9 - 1}
+      />,
+    );
+    expect(toolbarOption.find(DropdownMenu).length).toEqual(1);
+    toolbarOption.unmount();
+  });
+
+  it('should not have a dropdown if editor-width is less then BreakPoint9', () => {
+    const { pluginState, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(
+      <ToolbarLists
+        pluginState={pluginState}
+        editorView={editorView}
+        editorWidth={EditorWidth.BreakPoint9 + 1}
+      />,
+    );
+    expect(toolbarOption.find(DropdownMenu).length).toEqual(0);
     toolbarOption.unmount();
   });
 

@@ -1,5 +1,31 @@
 # @atlaskit/editor-core
 
+## 60.8.1
+
+## 60.8.0
+- [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)
+- [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)
+- [patch] Fix dependencies [5a4d799](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5a4d799)
+- [patch] Fix dependencies [5a4d799](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5a4d799)
+- [minor] ED-2864, adding fake cursor to links. [4655eac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4655eac)
+- [minor] ED-2864, adding fake cursor to links. [4655eac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4655eac)
+
+## 60.7.2
+
+## 60.7.1
+- [patch] Adding more unit test coverage for responsive editor changes. [0b35f50](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b35f50)
+- [patch] Adding more unit test coverage for responsive editor changes. [0b35f50](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b35f50)
+
+## 60.7.0
+- [patch] Move docs to be a dev dependency for editor-core [65ada60](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65ada60)
+- [patch] Move docs to be a dev dependency for editor-core [65ada60](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65ada60)
+- [minor] Adding separate transformer packages. [f734c01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f734c01)
+- [minor] Adding separate transformer packages. [f734c01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f734c01)
+
+## 60.6.0
+- [minor] Change in collapse order of responsive editor toolbar. [14448bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14448bd)
+- [minor] Change in collapse order of responsive editor toolbar. [14448bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14448bd)
+
 ## 60.5.3
 - [patch] FS-1366 fix selection in action/decision [854c137](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/854c137)
 - [patch] FS-1366 fix selection in action/decision [854c137](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/854c137)

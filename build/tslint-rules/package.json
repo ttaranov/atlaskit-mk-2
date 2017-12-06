@@ -1,0 +1,12 @@
+{
+  "name": "@atlaskit/tslint-rules",
+  "private": true,
+  "version": "1.0.0",
+  "main": "tslint.json",
+  "description": "Custom tslint rules used in Atlaskit",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0"
+}

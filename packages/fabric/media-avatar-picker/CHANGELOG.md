@@ -1,5 +1,10 @@
 # @atlaskit/media-avatar-picker
 
+## 4.1.0
+
+## 4.0.1
+- [patch] expose Avatar type, fix broken example deps [f3f4bec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3f4bec)
+
 ## 4.0.0
 - [major] fix selection of predefined avatars. breaking changes, reduced public interface to only expose AvatarPickerDialog. [f76449f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f76449f)
 

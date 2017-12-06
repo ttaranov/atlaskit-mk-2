@@ -44,9 +44,13 @@ import {
   // error-reporting
   ErrorReporter,
   ErrorReportingHandler,
+} from '@atlaskit/editor-core';
+
+import {
   ConfluenceTransformer,
   CONFlUENCE_LANGUAGE_MAP as LANGUAGE_MAP,
-} from '@atlaskit/editor-core';
+} from '@atlaskit/editor-cq-transformer';
+
 // import { bitbucketSchema as schema } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
 import { EditorState, TextSelection, Plugin } from 'prosemirror-state';

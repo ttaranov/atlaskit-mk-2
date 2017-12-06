@@ -6,9 +6,9 @@ const paste: EditorPlugin = {
     return [
       {
         rank: 100,
-        plugin: (schema, props) => createPlugin(schema, props.appearance),
+        plugin: ({ schema, props }) => createPlugin(schema, props.appearance),
       },
-      { rank: 200, plugin: createKeymapPlugin },
+      { rank: 200, plugin: ({ schema }) => createKeymapPlugin(schema) },
     ];
   },
 };

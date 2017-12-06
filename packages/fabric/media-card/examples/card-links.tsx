@@ -1,14 +1,7 @@
 import * as React from 'react';
 import {
   StoryList,
-  Matrix,
   createStorybookContext,
-  defaultCollectionName as collectionName,
-  videoUrlPreviewId,
-  audioUrlPreviewId,
-  imageUrlPreviewId,
-  docUrlPreviewId,
-  unknownUrlPreviewId,
   genericUrlPreviewId,
   youTubeUrlPreviewId,
   spotifyUrlPreviewId,
@@ -16,26 +9,9 @@ import {
   publicTrelloBoardUrlPreviewId,
   privateTrelloBoardUrlPreviewId,
   errorLinkId,
-  videoFileId,
-  audioFileId,
-  imageFileId,
-  docFileId,
-  unknownFileId,
-  smallImageFileId,
-  wideImageFileId,
-  largeImageFileId,
-  errorFileId,
 } from '@atlaskit/media-test-helpers';
 
-import {
-  Card,
-  UrlPreviewIdentifier,
-  FileIdentifier,
-  Identifier,
-  CardAppearance,
-  CardEvent,
-  OnSelectChangeFuncResult,
-} from '../src';
+import { Card } from '../src';
 import { createApiCards } from '../example-helpers';
 
 const context = createStorybookContext();

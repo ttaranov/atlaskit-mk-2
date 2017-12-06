@@ -4,7 +4,7 @@ This is a utility component that informs the child function of the available wid
 
 ## Try it out
 
-Interact with a [live demo of the @atlaskit/size-detector component](https://aui-cdn.atlassian.com/atlaskit/stories/size-detector/).
+Interact with a [live demo of the @atlaskit/size-detector component](https://atlaskit.atlassian.com).
 
 ## Installation
 

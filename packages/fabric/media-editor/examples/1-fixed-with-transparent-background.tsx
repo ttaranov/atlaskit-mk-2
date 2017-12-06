@@ -1,3 +1,5 @@
+/* tslint:disable:no-console */
+
 import * as React from 'react';
 import { tallImage as imageDataUri } from '@atlaskit/media-test-helpers';
 import { MediaEditor, LoadParameters } from '../src';

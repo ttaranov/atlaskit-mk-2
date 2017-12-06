@@ -12,6 +12,7 @@ export interface Props {
   editorView: EditorView;
   pluginKey: PluginKey;
   editorWidth?: number;
+  isDisabled?: boolean;
 }
 
 export interface State {
@@ -41,18 +42,16 @@ export default class ToolbarMedia extends PureComponent<Props, State> {
   }
 
   render() {
-    if (this.state.disabled) {
+    const { editorWidth, isDisabled } = this.props;
+    const { disabled } = this.state;
+    if (disabled || (editorWidth && editorWidth <= EditorWidth.BreakPoint6)) {
       return null;
     }
-    const { editorWidth } = this.props;
     return (
       <ToolbarButton
-        spacing={
-          editorWidth && editorWidth > EditorWidth.BreakPoint6
-            ? 'default'
-            : 'none'
-        }
+        spacing={editorWidth ? 'default' : 'none'}
         onClick={this.handleClickMediaButton}
+        disabled={isDisabled}
         title="Insert files and images"
         iconBefore={<AttachmentIcon label="Insert files and images" />}
       />

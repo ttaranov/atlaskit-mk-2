@@ -15,7 +15,7 @@ const macroPlugin: EditorPlugin = {
     return [
       {
         rank: 2310,
-        plugin: (schema, props, dispatch, providerFactory) =>
+        plugin: ({ dispatch, providerFactory }) =>
           createPlugin(dispatch, providerFactory),
       },
     ];

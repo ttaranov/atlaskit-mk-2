@@ -21,28 +21,29 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
       plugins: hyperlinkPlugins(defaultSchema),
     });
 
-  it('should have spacing of toolbar button set to none if editorWidth is less then breakpoint6', () => {
+  it('should return null if EditorWidth is less then BreakPoint4', () => {
     const { pluginState, editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarHyperlink
         pluginState={pluginState}
         editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint6 - 1}
+        editorWidth={EditorWidth.BreakPoint7 - 1}
       />,
     );
-    expect(toolbarOption.find(ToolbarButton).prop('spacing')).toEqual('none');
+    expect(toolbarOption.html()).toEqual(null);
     toolbarOption.unmount();
   });
 
-  it('should have spacing of toolbar button set to default if editorWidth is greater then breakpoint6', () => {
+  it('should have spacing of toolbar button set to default', () => {
     const { pluginState, editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarHyperlink
         pluginState={pluginState}
         editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint6 + 1}
+        editorWidth={EditorWidth.BreakPoint7 + 1}
       />,
     );
+
     expect(toolbarOption.find(ToolbarButton).prop('spacing')).toEqual(
       'default',
     );

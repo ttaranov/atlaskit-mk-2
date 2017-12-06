@@ -18,7 +18,12 @@ import {
 } from 'prosemirror-state';
 import { liftTarget, findWrapping } from 'prosemirror-transform';
 import { LEFT } from '../keymaps';
-import JSONTransformer, { JSONDocNode, JSONNode } from '../transformers/json';
+import {
+  JSONTransformer,
+  JSONDocNode,
+  JSONNode,
+} from '@atlaskit/editor-json-transformer';
+import { PlaceholderCursor } from '../plugins/placeholder-cursor/cursor';
 
 export {
   default as ErrorReporter,
@@ -115,6 +120,10 @@ export function isMarkTypeAllowedInCurrentSelection(
   markType: MarkType,
   state: EditorState,
 ) {
+  if (state.selection instanceof PlaceholderCursor) {
+    return true;
+  }
+
   if (!isMarkTypeAllowedInNode(markType, state)) {
     return false;
   }

@@ -39,16 +39,16 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
     const { adding, disabled } = this.state;
     const { editorWidth } = this.props;
 
+    if (editorWidth && editorWidth <= EditorWidth.BreakPoint7) {
+      return null;
+    }
+
     return (
       <OuterContainer
-        width={editorWidth! > EditorWidth.BreakPoint6 ? 'large' : 'small'}
+        width={editorWidth! > EditorWidth.BreakPoint10 ? 'large' : 'small'}
       >
         <ToolbarButton
-          spacing={
-            editorWidth && editorWidth > EditorWidth.BreakPoint6
-              ? 'default'
-              : 'none'
-          }
+          spacing={editorWidth ? 'default' : 'none'}
           disabled={disabled || this.props.disabled}
           onClick={this.toggleLinkPanel}
           selected={adding}

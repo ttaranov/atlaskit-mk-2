@@ -1,5 +1,5 @@
 {
-  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier", "./build/tslint-rules"],
   "rules": {
     "array-type": [false],
     "arrow-parens": false,
@@ -41,7 +41,8 @@
     "triple-equals": true,
     "typedef": [true],
     "unified-signatures": [false],
-    "variable-name": false
+    "variable-name": false,
+    "no-only-tests": true
   },
   "jsRules": {
     // We use eslint for .js and .jsx, so all the TSLint rules can be disabled.
@@ -86,6 +87,7 @@
     "triple-equals": false,
     "variable-name": false,
     "quotemark": [false],
-    "whitespace": [false]
+    "whitespace": [false],
+    "no-only-tests": true
   }
 }

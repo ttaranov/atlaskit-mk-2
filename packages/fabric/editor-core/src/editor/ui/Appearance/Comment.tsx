@@ -210,7 +210,8 @@ export default class Editor extends React.Component<
               />
               <MainToolbarCustomComponentsSlot
                 width={
-                  width && (width > EditorWidth.BreakPoint6 ? 'large' : 'small')
+                  width &&
+                  (width > EditorWidth.BreakPoint10 ? 'large' : 'small')
                 }
               >
                 {this.getCustomPrimaryToolbarComponents(width)}

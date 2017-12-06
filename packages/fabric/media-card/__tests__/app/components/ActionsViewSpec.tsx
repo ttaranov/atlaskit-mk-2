@@ -443,9 +443,14 @@ describe('ActionsView', () => {
         onActionClick={onActionClickSpy}
       />,
     );
-    element.find(DropdownMenu).prop('onItemActivated')!({
+
+    const onItemActivated: Function = element
+      .find(DropdownMenu)
+      .prop('onItemActivated');
+    onItemActivated({
       item: { action: { appCardAction: actions[2], key: 3 } },
     });
+
     expect(onActionClickSpy).toHaveBeenCalledWith(actions[2], {
       failure: expect.any(Function),
       success: expect.any(Function),

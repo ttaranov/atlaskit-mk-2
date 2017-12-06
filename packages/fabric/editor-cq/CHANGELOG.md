@@ -1,5 +1,20 @@
 # @atlaskit/editor-cq
 
+## 6.10.1
+
+## 6.10.0
+- [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)
+- [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)
+
+## 6.9.6
+
+## 6.9.5
+
+- [patch] Adding separate transformer packages. [f734c01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f734c01)
+- [patch] Adding separate transformer packages. [f734c01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f734c01)
+
+## 6.9.4
+
 ## 6.9.3
 
 ## 6.9.2

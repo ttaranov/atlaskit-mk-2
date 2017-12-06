@@ -1,5 +1,20 @@
 # @atlaskit/editor-bitbucket
 
+## 4.10.1
+
+## 4.10.0
+- [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)
+- [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)
+
+## 4.9.6
+
+## 4.9.5
+
+- [patch] Adding separate transformer packages. [f734c01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f734c01)
+- [patch] Adding separate transformer packages. [f734c01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f734c01)
+
+## 4.9.4
+
 ## 4.9.3
 
 ## 4.9.2

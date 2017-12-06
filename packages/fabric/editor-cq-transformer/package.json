@@ -1,0 +1,31 @@
+{
+  "name": "@atlaskit/editor-cq-transformer",
+  "version": "2.0.3",
+  "description": "Editor CQ Transformer",
+  "license": "Apache-2.0",
+  "main": "dist/es5/index.js",
+  "atlaskit:src": "src/index.ts",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [],
+  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "dependencies": {
+    "@atlaskit/editor-common": "^4.0.0",
+    "prosemirror-model": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react": "^15.6.1"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^1.0.1",
+    "@atlaskit/editor-cq": "^6.10.1",
+    "@atlaskit/editor-test-helpers": "^1.1.1",
+    "@types/prosemirror-model": "^1.0.0",
+    "chai-as-promised": "^6.0.0"
+  }
+}
