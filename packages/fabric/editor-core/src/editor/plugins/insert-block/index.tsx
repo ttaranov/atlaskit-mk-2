@@ -9,9 +9,12 @@ import { stateKey as mediaStateKey } from '../../../plugins/media';
 import { stateKey as hyperlinkStateKey } from '../../../plugins/hyperlink';
 import { stateKey as mentionStateKey } from '../../../plugins/mentions';
 import { stateKey as tablesStateKey } from '../../../plugins/table';
-import { pluginKey as macroStateKey, MacroState } from '../macro/plugin';
+import {
+  pluginKey as macroStateKey,
+  MacroState,
+  insertMacroFromMacroBrowser,
+} from '../macro';
 import { stateKey as emojiStateKey } from '../../../plugins/emojis';
-import { insertMacroFromMacroBrowser } from '../macro/actions';
 import WithPluginState from '../../ui/WithPluginState';
 import ToolbarInsertBlock from '../../../ui/ToolbarInsertBlock';
 

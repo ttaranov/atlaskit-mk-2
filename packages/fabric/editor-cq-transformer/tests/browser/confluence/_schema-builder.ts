@@ -92,6 +92,14 @@ export const inlineExtension = (attrs: {
   extensionType: string;
   parameters?: object;
 }) => schema.nodes.inlineExtension.create(attrs);
+export const extension = (
+  attrs: {
+    extensionKey: string;
+    extensionType: string;
+    parameters?: object;
+  },
+  content?,
+) => schema.nodes.extension.create(attrs, content);
 export const emoji = (attrs: {
   id?: string;
   shortName: string;

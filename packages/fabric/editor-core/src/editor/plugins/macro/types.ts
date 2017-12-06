@@ -1,13 +1,14 @@
 import { Node as PmNode } from 'prosemirror-model';
 
-export type MacroType = 'extension' | 'inlineExtension';
+export type ExtensionType = 'extension' | 'inlineExtension';
+export type ExtensionBodyType = 'none' | 'plain' | 'rich';
 
 export interface MacroAdf {
-  type: MacroType;
+  type: ExtensionType;
   attrs: {
     extensionKey: string;
     extensionType: string;
-    bodyType?: 'none' | 'plain' | 'rich'; // inlineExtension doesn't have this field
+    bodyType?: ExtensionBodyType; // inlineExtension doesn't have this field
     parameters?: {
       macroParams?: object;
       macroMetadata?: object;

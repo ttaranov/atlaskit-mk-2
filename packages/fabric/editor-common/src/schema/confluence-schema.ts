@@ -17,6 +17,7 @@ export const confluenceSchema: Schema = createSchema({
     'singleImage',
     'confluenceUnsupportedBlock',
     'confluenceJiraIssue',
+    'extension',
     'inlineExtension',
     'listItem',
     'mention',

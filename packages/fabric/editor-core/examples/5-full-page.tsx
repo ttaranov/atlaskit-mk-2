@@ -105,7 +105,7 @@ export default class Example extends React.Component<Props, State> {
             allowJiraIssue={true}
             allowUnsupportedContent={true}
             allowPanel={true}
-            allowInlineExtension={true}
+            allowExtension={true}
             mediaProvider={storyMediaProviderFactory()}
             emojiProvider={emojiStoryData.getEmojiResource({
               uploadSupported: true,
