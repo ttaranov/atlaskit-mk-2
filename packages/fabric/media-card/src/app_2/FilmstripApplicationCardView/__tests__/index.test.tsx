@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import CardFrame from '../../../shared/CardFrame';
-import CardPreview from '../../../shared/CardPreview';
 import CardDetails from '../../shared/CardDetails';
 import IconImage from '../../../shared/IconImage';
 import FilmstripApplicationCardView from '..';
