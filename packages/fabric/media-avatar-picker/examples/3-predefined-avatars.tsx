@@ -1,9 +1,14 @@
-/* tslint:disable:variable-name */
+/* tslint:disable:no-console */
+
 import * as React from 'react';
 import styled from 'styled-components';
 
-import {AvatarList, Avatar, PredefinedAvatarList, PredefinedAvatarView} from '../src';
-import {generateAvatars} from '../example-helpers';
+import { Avatar } from '../src';
+import { AvatarList } from '../src/avatar-list';
+import { PredefinedAvatarList } from '../src/predefined-avatar-list';
+import { PredefinedAvatarView } from '../src/predefined-avatar-view';
+
+import { generateAvatars } from '../example-helpers';
 
 const avatars: Array<Avatar> = generateAvatars(5);
 const Wrapper = styled.div`margin: 10px`;
@@ -15,7 +20,7 @@ export default () => (
       <Wrapper>
         <AvatarList avatars={avatars.map(a => ({avatar: a, selected: false}))}/>
       </Wrapper>
-      </div>
+    </div>
     <div>
       <h1>Predefined Avatars (none preselected)</h1>
       <Wrapper>

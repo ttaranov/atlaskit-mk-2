@@ -9,7 +9,12 @@ import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import TextColourIcon from '@atlaskit/icon/glyph/editor/text-color';
 import ColorPalette from './ColorPalette';
 import EditorWidth from '../../utils/editor-width';
-import { TriggerWrapper, Separator, Wrapper, ExpandIconWrapper } from './styles';
+import {
+  TriggerWrapper,
+  Separator,
+  Wrapper,
+  ExpandIconWrapper,
+} from './styles';
 import Dropdown from '../Dropdown';
 
 export interface Props {
@@ -31,7 +36,7 @@ export const stateKey = new PluginKey('textColorPlugin');
 
 export default class ToolbarTextColor extends PureComponent<Props, State> {
   state: State = {
-    isOpen: false
+    isOpen: false,
   };
 
   componentDidMount() {
@@ -44,9 +49,13 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
 
   render() {
     const { disabled, isOpen, color } = this.state;
-    const { popupsMountPoint, popupsBoundariesElement, editorWidth } = this.props;
+    const {
+      popupsMountPoint,
+      popupsBoundariesElement,
+      editorWidth,
+    } = this.props;
 
-    if (editorWidth && editorWidth < EditorWidth.BreakPoint7) {
+    if (editorWidth && editorWidth < EditorWidth.BreakPoint8) {
       return null;
     }
 
@@ -61,7 +70,7 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
           fitHeight={80}
           trigger={
             <ToolbarButton
-              spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
+              spacing={editorWidth ? 'default' : 'none'}
               disabled={disabled || this.props.disabled}
               selected={isOpen}
               title="Text color"
@@ -75,7 +84,8 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
                   <ExpandIconWrapper>
                     <ExpandIcon label="expand-dropdown-menu" />
                   </ExpandIconWrapper>
-                </TriggerWrapper>}
+                </TriggerWrapper>
+              }
             />
           }
         >
@@ -91,34 +101,41 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
   }
 
   @analytics('atlassian.editor.format.textcolor.button')
-  private toggleTextColor = (color) => {
+  private toggleTextColor = color => {
     const { pluginState, editorView } = this.props;
     if (!this.state.disabled) {
       this.toggleOpen();
       if (color === pluginState.defaultColor) {
-        return pluginState.removeTextColor(editorView.state, editorView.dispatch);
+        return pluginState.removeTextColor(
+          editorView.state,
+          editorView.dispatch,
+        );
       }
-      return pluginState.toggleTextColor(editorView.state, editorView.dispatch, color);
+      return pluginState.toggleTextColor(
+        editorView.state,
+        editorView.dispatch,
+        color,
+      );
     }
     return false;
-  }
+  };
 
   private toggleOpen = () => {
     this.handleOpenChange({ isOpen: !this.state.isOpen });
-  }
+  };
 
-  private handleOpenChange = ({isOpen}) => {
+  private handleOpenChange = ({ isOpen }) => {
     this.setState({ isOpen });
-  }
+  };
 
   private handlePluginStateChange = (pluginState: TextColorState) => {
     const { color, disabled } = pluginState;
     this.setState({ color, disabled });
-  }
+  };
 
   private getIconColor = (): string | undefined => {
     const { isOpen, color } = this.state;
     const isDefaultColor = this.props.pluginState.defaultColor === color;
     return isOpen || isDefaultColor ? undefined : color;
-  }
+  };
 }

@@ -4,10 +4,7 @@ import { akColorR100 } from '@atlaskit/util-shared-styles';
 import PluginSlot from '../PluginSlot';
 import WithPluginState from '../WithPluginState';
 import ContentStyles from '../ContentStyles';
-import {
-  EditorAppearanceComponentProps,
-  EditorAppearance
-} from '../../types';
+import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
 import { AddonToolbar } from '../Addon';
 
@@ -37,18 +34,25 @@ export interface MessageEditorProps {
 // tslint:disable-next-line:variable-name
 const MessageEditor: any = styled.div`
   display: flex;
-  border: 1px solid ${(props: MessageEditorProps) => props.isMaxContentSizeReached ? '#FF8F73' : '#C1C7D0' };
+  border: 1px solid
+    ${(props: MessageEditorProps) =>
+      props.isMaxContentSizeReached ? '#FF8F73' : '#C1C7D0'};
   border-radius: 3px;
   height: auto;
-  min-height: 30px;
-  ${(props: MessageEditorProps) => props.maxHeight ? 'max-height: ' + props.maxHeight + 'px;' : ''}
-  max-width: inherit;
+  min-height: 34px;
+  ${(props: MessageEditorProps) =>
+    props.maxHeight
+      ? 'max-height: ' + props.maxHeight + 'px;'
+      : ''} max-width: inherit;
   box-sizing: border-box;
   word-wrap: break-word;
-  animation: ${(props: MessageEditorProps) => props.isMaxContentSizeReached ? `.25s ease-in-out ${pulseBackground}` : 'none'};
+  animation: ${(props: MessageEditorProps) =>
+    props.isMaxContentSizeReached
+      ? `.25s ease-in-out ${pulseBackground}`
+      : 'none'};
 
   &.-flash {
-    animation: .25s ease-in-out ${pulseBackgroundReverse};
+    animation: 0.25s ease-in-out ${pulseBackgroundReverse};
   }
 
   div > .ProseMirror {
@@ -78,7 +82,10 @@ const SecondaryToolbarContainer = styled.div`
   display: flex;
 `;
 
-export default class Editor extends React.Component<EditorAppearanceComponentProps, any> {
+export default class Editor extends React.Component<
+  EditorAppearanceComponentProps,
+  any
+> {
   static displayName = 'MessageEditor';
 
   private flashToggle = false;
@@ -89,7 +96,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
     if (this.props.onUiReady) {
       this.props.onUiReady(ref);
     }
-  }
+  };
 
   private renderChrome = ({ maxContentSize }) => {
     const {
@@ -103,9 +110,10 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       addonToolbarComponents,
       maxHeight,
       popupsMountPoint,
-      popupsBoundariesElement
+      popupsBoundariesElement,
     } = this.props;
-    const maxContentSizeReached = maxContentSize && maxContentSize.maxContentSizeReached;
+    const maxContentSizeReached =
+      maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
     return (
@@ -141,7 +149,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
         </SecondaryToolbarContainer>
       </MessageEditor>
     );
-  }
+  };
 
   render() {
     const { eventDispatcher, editorView } = this.props;

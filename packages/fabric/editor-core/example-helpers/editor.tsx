@@ -3,13 +3,17 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
-import applyDevTools from 'prosemirror-dev-tools';
 
 import { baseKeymap } from 'prosemirror-commands';
 import { history } from 'prosemirror-history';
 import { keymap } from 'prosemirror-keymap';
 import { Node, Schema } from 'prosemirror-model';
-import { EditorState, TextSelection, Plugin, PluginKey } from 'prosemirror-state';
+import {
+  EditorState,
+  TextSelection,
+  Plugin,
+  PluginKey,
+} from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
 import { default as schemaFull } from './schema';
@@ -24,24 +28,42 @@ import {
 } from '../src';
 
 import { Chrome } from '../src';
-import blockTypePlugins, { stateKey as blockTypeStateKey } from '../src/plugins/block-type';
-import clearFormattingPlugins, { stateKey as clearFormattingStateKey } from '../src/plugins/clear-formatting';
-import codeBlockPlugins, { stateKey as codeBlockStateKey } from '../src/plugins/code-block';
+import blockTypePlugins, {
+  stateKey as blockTypeStateKey,
+} from '../src/plugins/block-type';
+import clearFormattingPlugins, {
+  stateKey as clearFormattingStateKey,
+} from '../src/plugins/clear-formatting';
+import codeBlockPlugins, {
+  stateKey as codeBlockStateKey,
+} from '../src/plugins/code-block';
 import panelPlugins, { stateKey as panelStateKey } from '../src/plugins/panel';
-import textFormattingPlugins, { stateKey as textFormattingStateKey } from '../src/plugins/text-formatting';
-import hyperlinkPlugins, { stateKey as hyperlinkStateKey } from '../src/plugins/hyperlink';
-import imageUploadPlugins, { stateKey as imageUploadStateKey } from '../src/plugins/image-upload';
+import textFormattingPlugins, {
+  stateKey as textFormattingStateKey,
+} from '../src/plugins/text-formatting';
+import hyperlinkPlugins, {
+  stateKey as hyperlinkStateKey,
+} from '../src/plugins/hyperlink';
+import imageUploadPlugins, {
+  stateKey as imageUploadStateKey,
+} from '../src/plugins/image-upload';
 import rulePlugins from '../src/plugins/rule';
 import listsPlugins, { stateKey as listsStateKey } from '../src/plugins/lists';
-import mentionsPlugins, { stateKey as mentionsStateKey } from '../src/plugins/mentions';
+import mentionsPlugins, {
+  stateKey as mentionsStateKey,
+} from '../src/plugins/mentions';
 import emojiPlugins from '../src/plugins/emojis';
 import asciiEmojiPlugins from '../src/plugins/emojis/ascii-input-rules';
 import tablePlugins, { stateKey as tableStateKey } from '../src/plugins/table';
 import pastePlugins from '../src/plugins/paste';
 import tasksAndDecisionsPlugin from '../src/plugins/tasks-and-decisions';
 import reactNodeViewPlugins from '../src/plugins/react-nodeview';
-import mediaPluginFactory, { stateKey as mediaStateKey } from '../src/plugins/media';
-import textColorPlugins, { stateKey as textColorStateKey } from '../src/plugins/text-color';
+import mediaPluginFactory, {
+  stateKey as mediaStateKey,
+} from '../src/plugins/media';
+import textColorPlugins, {
+  stateKey as textColorStateKey,
+} from '../src/plugins/text-color';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 export interface Props {
@@ -85,7 +107,7 @@ export default class Editor extends PureComponent<Props, State> {
     this.state = { isExpanded: props.isExpandedByDefault };
     this.schema = props.schema || schemaFull;
 
-    analyticsService.handler = props.analyticsHandler || (name => { });
+    analyticsService.handler = props.analyticsHandler || (name => {});
     this.providerFactory = new ProviderFactory();
 
     const errorReporter = new ErrorReporter();
@@ -136,18 +158,27 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   handleProviders = (props: Props) => {
-    const { emojiProvider, mediaProvider, mentionProvider, activityProvider, imageUploadHandler } = props;
+    const {
+      emojiProvider,
+      mediaProvider,
+      mentionProvider,
+      activityProvider,
+      imageUploadHandler,
+    } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.providerFactory.setProvider('mediaProvider', mediaProvider);
     this.providerFactory.setProvider('activityProvider', activityProvider);
-    this.providerFactory.setProvider('imageUploadProvider', Promise.resolve(imageUploadHandler));
+    this.providerFactory.setProvider(
+      'imageUploadProvider',
+      Promise.resolve(imageUploadHandler),
+    );
 
     this.setState({
       emojiProvider,
-      mentionProvider
+      mentionProvider,
     });
-  }
+  };
 
   /**
    * Focus the content region of the editor.
@@ -161,18 +192,20 @@ export default class Editor extends PureComponent<Props, State> {
 
   expand = () => {
     this.setState({ isExpanded: true });
-  }
+  };
 
   collapse = () => {
     this.setState({ isExpanded: false });
-  }
+  };
 
   clear(): void {
     const { editorView } = this.state;
     if (editorView) {
       const { state } = editorView;
       const tr = state.tr
-        .setSelection(TextSelection.create(state.doc, 0, state.doc.nodeSize - 2))
+        .setSelection(
+          TextSelection.create(state.doc, 0, state.doc.nodeSize - 2),
+        )
         .deleteSelection();
       editorView.dispatch(tr);
     }
@@ -180,7 +213,9 @@ export default class Editor extends PureComponent<Props, State> {
 
   isEmpty(): boolean {
     const { editorView } = this.state;
-    return editorView && editorView.state.doc ? !!editorView.state.doc.textContent : false;
+    return editorView && editorView.state.doc
+      ? !!editorView.state.doc.textContent
+      : false;
   }
 
   get value(): string | undefined {
@@ -189,11 +224,13 @@ export default class Editor extends PureComponent<Props, State> {
 
   set doc(newDoc: Node | undefined) {
     const { editorView } = this.state;
-    assert(editorView, 'EditorView doesn\'t exist yet');
+    assert(editorView, "EditorView doesn't exist yet");
     assert(newDoc, 'New document cannot be nullable');
 
     const { tr, doc } = editorView!.state;
-    editorView!.dispatch(tr.replace(0, doc.nodeSize - 2, newDoc!.slice(0, newDoc!.nodeSize - 2)));
+    editorView!.dispatch(
+      tr.replace(0, doc.nodeSize - 2, newDoc!.slice(0, newDoc!.nodeSize - 2)),
+    );
   }
 
   get doc(): Node | undefined {
@@ -205,8 +242,9 @@ export default class Editor extends PureComponent<Props, State> {
     const { mentionProvider, emojiProvider } = this.state;
     const { activityProvider } = this.props;
 
-    const getState = (editorState: EditorState | undefined) => (stateKey: PluginKey) =>
-      editorState && stateKey.getState(editorState);
+    const getState = (editorState: EditorState | undefined) => (
+      stateKey: PluginKey,
+    ) => editorState && stateKey.getState(editorState);
 
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
@@ -222,8 +260,10 @@ export default class Editor extends PureComponent<Props, State> {
     const panelState = getStateFromKey(panelStateKey);
     const textFormattingState = getStateFromKey(textFormattingStateKey);
     const hyperlinkState = getStateFromKey(hyperlinkStateKey);
-    const mediaState = this.props.mediaProvider && getStateFromKey(mediaStateKey);
-    const imageUploadState = this.props.imageUploadHandler && getStateFromKey(imageUploadStateKey);
+    const mediaState =
+      this.props.mediaProvider && getStateFromKey(mediaStateKey);
+    const imageUploadState =
+      this.props.imageUploadHandler && getStateFromKey(imageUploadStateKey);
     const mentionsState = getStateFromKey(mentionsStateKey);
     const textColorState = getStateFromKey(textColorStateKey);
     const tableState = getStateFromKey(tableStateKey);
@@ -267,21 +307,21 @@ export default class Editor extends PureComponent<Props, State> {
     if (onCancel) {
       onCancel(this);
     }
-  }
+  };
 
   private handleChange = () => {
     const { onChange } = this.props;
     if (onChange) {
       onChange(this);
     }
-  }
+  };
 
   private handleSave = () => {
     const { onSave } = this.props;
     if (onSave) {
       onSave(this);
     }
-  }
+  };
 
   private handleRef = (place: Element | null) => {
     const { mediaPlugins, schema } = this;
@@ -291,7 +331,10 @@ export default class Editor extends PureComponent<Props, State> {
     if (defaultValue && defaultValue !== '{}') {
       doc = schema.nodeFromJSON(JSON.parse(defaultValue));
     } else {
-      doc = schema.nodeFromJSON({type:'doc', content: [{type: 'paragraph'}]});
+      doc = schema.nodeFromJSON({
+        type: 'doc',
+        content: [{ type: 'paragraph' }],
+      });
     }
 
     if (place) {
@@ -300,16 +343,24 @@ export default class Editor extends PureComponent<Props, State> {
         doc,
         plugins: [
           ...pastePlugins(schema),
-          ...(schema.nodes.mention ? mentionsPlugins(schema, this.providerFactory) : []), // mentions and emoji needs to be first
-          ...(schema.nodes.emoji ? emojiPlugins(schema, this.providerFactory) : []),
-          ...(schema.nodes.emoji ? asciiEmojiPlugins(schema, this.providerFactory) : []),
+          ...(schema.nodes.mention
+            ? mentionsPlugins(schema, this.providerFactory)
+            : []), // mentions and emoji needs to be first
+          ...(schema.nodes.emoji
+            ? emojiPlugins(schema, this.providerFactory)
+            : []),
+          ...(schema.nodes.emoji
+            ? asciiEmojiPlugins(schema, this.providerFactory)
+            : []),
           ...clearFormattingPlugins(schema),
           ...textFormattingPlugins(schema),
           ...hyperlinkPlugins(schema),
           ...rulePlugins(schema),
           ...(schema.marks.textColor ? textColorPlugins(schema) : []),
           ...(schema.nodes.media ? mediaPlugins : []),
-          ...(schema.nodes.image ? imageUploadPlugins(schema, this.providerFactory) : []),
+          ...(schema.nodes.image
+            ? imageUploadPlugins(schema, this.providerFactory)
+            : []),
           // block type plugin needs to be after hyperlink plugin until we implement keymap priority
           // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
           // if converting is possible.
@@ -324,10 +375,12 @@ export default class Editor extends PureComponent<Props, State> {
           ...panelPlugins(schema),
           ...(schema.nodes.table ? tablePlugins() : []),
           ...reactNodeViewPlugins(schema),
-          ...(schema.nodes.taskList && schema.nodes.decisionList ? tasksAndDecisionsPlugin(schema, {}) : []),
+          ...(schema.nodes.taskList && schema.nodes.decisionList
+            ? tasksAndDecisionsPlugin(schema, {})
+            : []),
           history(),
-          keymap(baseKeymap) // should be last :(
-        ]
+          keymap(baseKeymap), // should be last :(
+        ],
       });
       const editorView = new EditorView(place, {
         state: editorState,
@@ -335,11 +388,12 @@ export default class Editor extends PureComponent<Props, State> {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
           this.handleChange();
-        }
+        },
       });
 
       if (this.props.devTools) {
-        applyDevTools(editorView);
+        // This is disabled until https://github.com/d4rkr00t/prosemirror-dev-tools/issues/77 is resolved
+        // applyDevTools(editorView);
       }
 
       editorView.focus();
@@ -348,5 +402,5 @@ export default class Editor extends PureComponent<Props, State> {
     } else {
       this.setState({ editorView: undefined });
     }
-  }
+  };
 }

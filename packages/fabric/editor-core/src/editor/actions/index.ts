@@ -1,9 +1,13 @@
 import { Node } from 'prosemirror-model';
 import { TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { getEditorValueWithMedia, insertFileFromDataUrl, preprocessDoc } from '../utils';
+import {
+  getEditorValueWithMedia,
+  insertFileFromDataUrl,
+  preprocessDoc,
+} from '../utils';
 import { toJSON } from '../../utils';
-import { Transformer } from '../../transformers';
+import { Transformer } from '@atlaskit/editor-common';
 export default class EditorActions {
   private editorView?: EditorView;
   private contentTransformer?: Transformer<any>;
@@ -14,11 +18,16 @@ export default class EditorActions {
   }
 
   // This method needs to be public for EditorContext component.
-  _privateRegisterEditor(editorView: EditorView, contentTransformer?: Transformer<any>): void {
+  _privateRegisterEditor(
+    editorView: EditorView,
+    contentTransformer?: Transformer<any>,
+  ): void {
     if (!this.editorView && editorView) {
       this.editorView = editorView;
     } else if (this.editorView !== editorView) {
-      throw new Error('Editor has already been registered! It\'s not allowed to re-register editor with the new Editor instance.');
+      throw new Error(
+        "Editor has already been registered! It's not allowed to re-register editor with the new Editor instance.",
+      );
     }
     this.contentTransformer = contentTransformer;
   }
@@ -63,7 +72,9 @@ export default class EditorActions {
   }
 
   getValue(): Promise<any | undefined> {
-    return getEditorValueWithMedia(this.editorView && this.editorView.state).then(doc => {
+    return getEditorValueWithMedia(
+      this.editorView && this.editorView.state,
+    ).then(doc => {
       const processedDoc = preprocessDoc(this.editorView!.state.schema, doc);
       if (this.contentTransformer && processedDoc) {
         return this.contentTransformer.encode(processedDoc);
@@ -98,7 +109,9 @@ export default class EditorActions {
       jsonDocument = rawValue;
     }
 
-    const content = (jsonDocument.content || []).map(child => schema.nodeFromJSON(child));
+    const content = (jsonDocument.content || []).map(child =>
+      schema.nodeFromJSON(child),
+    );
 
     if (!content || content.length === 0) {
       return false;
@@ -125,9 +138,7 @@ export default class EditorActions {
       return false;
     }
 
-    const tr = state.tr
-      .insertText(text)
-      .scrollIntoView();
+    const tr = state.tr.insertText(text).scrollIntoView();
     this.editorView.dispatch(tr);
 
     return true;

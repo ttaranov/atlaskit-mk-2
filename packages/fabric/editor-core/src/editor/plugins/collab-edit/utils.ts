@@ -1,3 +1,4 @@
+import { Decoration, DecorationSet } from 'prosemirror-view';
 import {
   akColorR400,
   akColorY400,
@@ -8,9 +9,7 @@ import {
   akColorN800,
 } from '@atlaskit/util-shared-styles';
 
-import { Decoration, DecorationSet } from 'prosemirror-view';
-
-import { hexToRgba } from '../../../utils/color';
+import { hexToRgba } from '@atlaskit/editor-common';
 
 export interface Color {
   solid: string;
@@ -48,13 +47,50 @@ export const getAvatarColor = (str: string) => {
 export const findPointers = (
   id: string,
   decorations: DecorationSet,
-): Decoration[] | undefined => {
-  const current = decorations.find();
-  let ret: Decoration[] = [];
-  for (let i = 0; i < current.length; i++) {
-    if ((current[i] as any).spec.pointer.sessionId === id) {
-      ret.push(current[i]);
-    }
+): Decoration[] =>
+  decorations
+    .find()
+    .reduce(
+      (arr, deco: any) =>
+        deco.spec.pointer.sessionId === id ? arr.concat(deco) : arr,
+      [],
+    );
+
+function style(options) {
+  const color = (options && options.color) || 'black';
+  return `border-left: 1px solid ${color}; border-right: 1px solid ${
+    color
+  }; margin-right: -2px;`;
+}
+
+export const createTelepointers = (
+  from: number,
+  to: number,
+  sessionId: string,
+  isSelection: boolean,
+  initial: string,
+) => {
+  let decorations: Decoration[] = [];
+  const avatarColor = getAvatarColor(sessionId);
+  const color = avatarColor.index.toString();
+  if (isSelection) {
+    const className = `telepointer color-${color} telepointer-selection`;
+    decorations.push(
+      (Decoration as any).inline(
+        from,
+        to,
+        { class: className, 'data-initial': initial },
+        { pointer: { sessionId } },
+      ),
+    );
   }
-  return ret;
+
+  const cursor = document.createElement('span');
+  cursor.textContent = '\u200b';
+  cursor.className = `telepointer color-${color} telepointer-selection-badge`;
+  cursor.style.cssText = `${style({ color: avatarColor.color.solid })};`;
+  cursor.setAttribute('data-initial', initial);
+  return decorations.concat(
+    (Decoration as any).widget(to, cursor, { pointer: { sessionId } }),
+  );
 };

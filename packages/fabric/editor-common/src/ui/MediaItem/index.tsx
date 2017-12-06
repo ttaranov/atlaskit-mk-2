@@ -7,15 +7,16 @@ import { CardDimensions } from '@atlaskit/media-card';
 import {
   CardEventHandler,
   MediaStateManager,
-  ImageResizeMode
+  ImageResizeMode,
 } from '@atlaskit/media-core';
 import {
   default as ProviderFactory,
-  WithProviders
+  WithProviders,
 } from '../../providerFactory';
 
 export interface Props {
   id: string;
+  occurrenceKey?: string;
   providers?: ProviderFactory;
   type: MediaType;
   collection: string;
@@ -43,22 +44,24 @@ export default class MediaItem extends PureComponent<Props, {}> {
     }
   }
 
-  private renderWithProvider = (providers) => {
+  private renderWithProvider = providers => {
     const {
       id,
       type,
+      occurrenceKey,
       collection,
       cardDimensions,
       onClick,
       onDelete,
       resizeMode,
       appearance,
-      stateManagerFallback
+      stateManagerFallback,
     } = this.props;
 
     return (
       <MediaComponent
         id={id}
+        occurrenceKey={occurrenceKey}
         mediaProvider={providers.mediaProvider}
         type={type}
         collection={collection}
@@ -70,7 +73,7 @@ export default class MediaItem extends PureComponent<Props, {}> {
         stateManagerFallback={stateManagerFallback}
       />
     );
-  }
+  };
 
   render() {
     return (

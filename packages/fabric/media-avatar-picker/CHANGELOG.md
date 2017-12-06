@@ -1,5 +1,37 @@
 # @atlaskit/media-avatar-picker
 
+## 4.1.1
+- [patch] fix broken syntax in avatar example [c7cc95d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7cc95d)
+
+## 4.1.0
+
+## 4.0.1
+- [patch] expose Avatar type, fix broken example deps [f3f4bec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3f4bec)
+
+## 4.0.0
+- [major] fix selection of predefined avatars. breaking changes, reduced public interface to only expose AvatarPickerDialog. [f76449f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f76449f)
+
+## 3.3.9
+
+## 3.3.8
+
+## 3.3.7
+
+## 3.3.6
+
+## 3.3.5
+
+
+- [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
+- [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
+
+## 3.3.4
+
+## 3.3.3
+
+## 3.3.2
+- [patch] Dont render AvatarList when image is selected [25c2253](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25c2253)
+
 ## 3.3.1
 - [patch] Use correct dependencies  [7b178b1](7b178b1)
 - [patch] Use correct dependencies  [7b178b1](7b178b1)

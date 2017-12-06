@@ -1,19 +1,20 @@
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import { akColorR100, akColorN40, akBorderRadius, akGridSize } from '@atlaskit/util-shared-styles';
+import {
+  akColorR100,
+  akColorN40,
+  akBorderRadius,
+  akGridSize,
+} from '@atlaskit/util-shared-styles';
 import SizeDetector from '@atlaskit/size-detector';
 import PluginSlot from '../PluginSlot';
 import WithPluginState from '../WithPluginState';
 import ContentStyles from '../ContentStyles';
-import {
-  EditorAppearanceComponentProps,
-  EditorAppearance
-} from '../../types';
+import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
 import EditorWidth from '../../../utils/editor-width';
 import { ReactElement } from '../../types';
-
 
 const pulseBackground = keyframes`
   50% {
@@ -45,9 +46,10 @@ const CommentEditor: any = styled.div`
 
   min-height: 30px;
   height: auto;
-  ${(props: CommentEditorProps) => props.maxHeight ? 'max-height: ' + props.maxHeight + 'px;' : ''}
-
-  background-color: white;
+  ${(props: CommentEditorProps) =>
+    props.maxHeight
+      ? 'max-height: ' + props.maxHeight + 'px;'
+      : ''} background-color: white;
   border: 1px solid ${akColorN40};
   box-sizing: border-box;
   border-radius: ${akBorderRadius};
@@ -56,10 +58,13 @@ const CommentEditor: any = styled.div`
   box-sizing: border-box;
   word-wrap: break-word;
 
-  animation: ${(props: any) => props.isMaxContentSizeReached ? `.25s ease-in-out ${pulseBackground}` : 'none'};
+  animation: ${(props: any) =>
+    props.isMaxContentSizeReached
+      ? `.25s ease-in-out ${pulseBackground}`
+      : 'none'};
 
   &.-flash {
-    animation: .25s ease-in-out ${pulseBackgroundReverse};
+    animation: 0.25s ease-in-out ${pulseBackgroundReverse};
   }
 
   div > .ProseMirror {
@@ -117,8 +122,10 @@ SecondaryToolbar.displayName = 'SecondaryToolbar';
 
 export interface EditorAppearanceComponentState {}
 
-export default class Editor extends React.Component<EditorAppearanceComponentProps, EditorAppearanceComponentState> {
-
+export default class Editor extends React.Component<
+  EditorAppearanceComponentProps,
+  EditorAppearanceComponentState
+> {
   static displayName = 'CommentEditorAppearance';
 
   private flashToggle = false;
@@ -129,21 +136,23 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
     if (this.props.onUiReady) {
       this.props.onUiReady(ref);
     }
-  }
+  };
 
   private handleSave = () => {
     if (this.props.editorView && this.props.onSave) {
       this.props.onSave(this.props.editorView);
     }
-  }
+  };
 
   private handleCancel = () => {
     if (this.props.editorView && this.props.onCancel) {
       this.props.onCancel(this.props.editorView);
     }
-  }
+  };
 
-  private getCustomPrimaryToolbarComponents = (width: number): ReactElement | undefined => {
+  private getCustomPrimaryToolbarComponents = (
+    width: number,
+  ): ReactElement | undefined => {
     const { customPrimaryToolbarComponents } = this.props;
     let componentWithWidth: ReactElement | undefined;
     if (customPrimaryToolbarComponents) {
@@ -154,12 +163,12 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       } else {
         componentWithWidth = React.cloneElement(
           customPrimaryToolbarComponents,
-          { editorWidth: width }
+          { editorWidth: width },
         );
       }
     }
     return componentWithWidth;
-  }
+  };
 
   private renderChrome = ({ maxContentSize }) => {
     const {
@@ -173,65 +182,74 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       popupsMountPoint,
       popupsBoundariesElement,
       maxHeight,
-      onSave, onCancel
+      onSave,
+      onCancel,
     } = this.props;
-    const maxContentSizeReached = maxContentSize && maxContentSize.maxContentSizeReached;
+    const maxContentSizeReached =
+      maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
     return (
       <SizeDetector>
-      {({ width }) => (
-        <CommentEditor
-          className={this.flashToggle ? '-flash' : ''}
-          isMaxContentSizeReached={maxContentSizeReached}
-          maxHeight={maxHeight}
-        >
-          <MainToolbar>
-            <PluginSlot
-              editorWidth={width}
-              editorView={editorView}
-              eventDispatcher={eventDispatcher}
-              providerFactory={providerFactory}
-              appearance={this.appearance}
-              items={primaryToolbarComponents}
-              popupsMountPoint={popupsMountPoint}
-              popupsBoundariesElement={popupsBoundariesElement}
-            />
-            <MainToolbarCustomComponentsSlot
-              width={width && (width > EditorWidth.BreakPoint6 ? 'large' : 'small')}
-            >
-              {this.getCustomPrimaryToolbarComponents(width)}
-            </MainToolbarCustomComponentsSlot>
-          </MainToolbar>
-          <ContentArea innerRef={this.handleRef}>
-            {customContentComponents}
-            <PluginSlot
-              editorView={editorView}
-              eventDispatcher={eventDispatcher}
-              providerFactory={providerFactory}
-              appearance={this.appearance}
-              items={contentComponents}
-              popupsMountPoint={popupsMountPoint}
-              popupsBoundariesElement={popupsBoundariesElement}
-            />
-          </ContentArea>
-          <SecondaryToolbar>
-            <ButtonGroup>
-              {!onSave ? null :
-                <Button appearance="primary" onClick={this.handleSave}>Save</Button>
-              }
-              {!onCancel ? null :
-                <Button appearance="subtle" onClick={this.handleCancel}>Cancel</Button>
-              }
-            </ButtonGroup>
-            <span style={{ flexGrow: 1 }} />
-            {customSecondaryToolbarComponents}
-          </SecondaryToolbar>
-        </CommentEditor>
-      )}
+        {({ width }) => (
+          <CommentEditor
+            className={this.flashToggle ? '-flash' : ''}
+            isMaxContentSizeReached={maxContentSizeReached}
+            maxHeight={maxHeight}
+          >
+            <MainToolbar>
+              <PluginSlot
+                editorWidth={width}
+                editorView={editorView}
+                eventDispatcher={eventDispatcher}
+                providerFactory={providerFactory}
+                appearance={this.appearance}
+                items={primaryToolbarComponents}
+                popupsMountPoint={popupsMountPoint}
+                popupsBoundariesElement={popupsBoundariesElement}
+              />
+              <MainToolbarCustomComponentsSlot
+                width={
+                  width &&
+                  (width > EditorWidth.BreakPoint10 ? 'large' : 'small')
+                }
+              >
+                {this.getCustomPrimaryToolbarComponents(width)}
+              </MainToolbarCustomComponentsSlot>
+            </MainToolbar>
+            <ContentArea innerRef={this.handleRef}>
+              {customContentComponents}
+              <PluginSlot
+                editorView={editorView}
+                eventDispatcher={eventDispatcher}
+                providerFactory={providerFactory}
+                appearance={this.appearance}
+                items={contentComponents}
+                popupsMountPoint={popupsMountPoint}
+                popupsBoundariesElement={popupsBoundariesElement}
+              />
+            </ContentArea>
+            <SecondaryToolbar>
+              <ButtonGroup>
+                {!onSave ? null : (
+                  <Button appearance="primary" onClick={this.handleSave}>
+                    Save
+                  </Button>
+                )}
+                {!onCancel ? null : (
+                  <Button appearance="subtle" onClick={this.handleCancel}>
+                    Cancel
+                  </Button>
+                )}
+              </ButtonGroup>
+              <span style={{ flexGrow: 1 }} />
+              {customSecondaryToolbarComponents}
+            </SecondaryToolbar>
+          </CommentEditor>
+        )}
       </SizeDetector>
     );
-  }
+  };
 
   render() {
     const { eventDispatcher, editorView } = this.props;

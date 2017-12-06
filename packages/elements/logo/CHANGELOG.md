@@ -1,5 +1,14 @@
 # @atlaskit/logo
 
+## 6.0.7
+- [patch] Fix inherited color logo gradient changes not working in chrome [694c59f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/694c59f)
+
+## 6.0.6
+
+## 6.0.5
+
+## 6.0.4
+
 ## 6.0.3
 - [patch] Logo component gradients no work in Firefox and Safari [6d1f521](6d1f521)
 

@@ -15,23 +15,26 @@ export interface Definition {
 }
 
 export const decisionItem: NodeSpec = {
-  content: 'inline<_>*',
+  content: 'inline*',
+  marks: '_',
   attrs: {
-    localId: { compute: uuid.generate },
+    localId: { default: '' },
     state: { default: 'DECIDED' },
   },
-  parseDOM: [{
-    tag: 'li[data-decision-local-id]',
+  parseDOM: [
+    {
+      tag: 'li[data-decision-local-id]',
 
-    // Default priority is 50. We normaly don't change this but since this node type is
-    // also used by list-item we need to make sure that we run this parser first.
-    priority: 100,
+      // Default priority is 50. We normaly don't change this but since this node type is
+      // also used by list-item we need to make sure that we run this parser first.
+      priority: 100,
 
-    getAttrs: (dom: Element) => ({
-      localId: uuid.generate(),
-      state: dom.getAttribute('data-decision-state')!,
-    })
-  }],
+      getAttrs: (dom: Element) => ({
+        localId: uuid.generate(),
+        state: dom.getAttribute('data-decision-state')!,
+      }),
+    },
+  ],
   toDOM(node: Node) {
     const { localId, state } = node.attrs;
     const attrs = {
@@ -39,5 +42,5 @@ export const decisionItem: NodeSpec = {
       'data-decision-state': state,
     };
     return ['li', attrs, 0];
-  }
+  },
 };

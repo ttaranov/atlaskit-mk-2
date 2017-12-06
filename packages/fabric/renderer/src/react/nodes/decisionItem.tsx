@@ -4,7 +4,7 @@ import { StatelessComponent, Children, ReactElement } from 'react';
 import { DecisionItem as AkDecisionItem } from '@atlaskit/task-decision';
 
 export interface Props {
-  children?: ReactElement<any>
+  children?: ReactElement<any>;
 }
 
 const DecisionItem: StatelessComponent<Props> = ({ children }: Props) => {
@@ -12,9 +12,7 @@ const DecisionItem: StatelessComponent<Props> = ({ children }: Props) => {
     return null;
   }
 
-  return (
-    <AkDecisionItem>{children}</AkDecisionItem>
-  );
-}
+  return <AkDecisionItem>{children}</AkDecisionItem>;
+};
 
 export default DecisionItem;

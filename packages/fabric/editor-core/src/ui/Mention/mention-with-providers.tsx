@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import {
-  MentionProvider,
-  ResourcedMention,
-} from '@atlaskit/mention';
+import { MentionProvider, ResourcedMention } from '@atlaskit/mention';
 
-import { MentionUserType as UserType, MentionEventHandlers } from '@atlaskit/editor-common';
+import {
+  MentionUserType as UserType,
+  MentionEventHandlers,
+} from '@atlaskit/editor-common';
 import ResourcedMentionWithProfilecard from './mention-with-profilecard';
 import { ProfilecardProvider } from './types';
 
@@ -68,13 +68,15 @@ export default class MentionWithProviders extends PureComponent<Props, State> {
 
     const actionHandlers = {};
     ['onClick', 'onMouseEnter', 'onMouseLeave'].forEach(handler => {
-      actionHandlers[handler] = eventHandlers && eventHandlers[handler] || noop;
+      actionHandlers[handler] =
+        (eventHandlers && eventHandlers[handler]) || noop;
     });
 
     // tslint:disable-next-line:variable-name
-    const MentionComponent = (profilecardProvider && GENERIC_USER_IDS.indexOf(id) === -1)
-      ? ResourcedMentionWithProfilecard
-      : ResourcedMention;
+    const MentionComponent =
+      profilecardProvider && GENERIC_USER_IDS.indexOf(id) === -1
+        ? ResourcedMentionWithProfilecard
+        : ResourcedMention;
 
     return (
       <MentionComponent

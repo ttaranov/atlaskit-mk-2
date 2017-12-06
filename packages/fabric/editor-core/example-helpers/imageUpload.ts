@@ -1,4 +1,8 @@
-import { Converter, dropHandler, pasteHandler } from '@atlaskit/editor-test-helpers';
+import {
+  Converter,
+  dropHandler,
+  pasteHandler,
+} from '@atlaskit/editor-test-helpers';
 
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 

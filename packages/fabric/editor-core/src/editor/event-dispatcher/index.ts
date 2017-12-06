@@ -1,6 +1,8 @@
 import { PluginKey } from 'prosemirror-state';
 
-export interface Listeners { [name: string]: Listener[]; }
+export interface Listeners {
+  [name: string]: Listener[];
+}
 export type Listener = (data: any) => void;
 export type Dispatch = (eventName: PluginKey | string, data: any) => void;
 
@@ -20,7 +22,9 @@ export class EventDispatcher {
       return;
     }
 
-    this.listeners[event] = this.listeners[event].filter(callback => callback !== cb);
+    this.listeners[event] = this.listeners[event].filter(
+      callback => callback !== cb,
+    );
   }
 
   emit(event: string, data: any): void {
@@ -46,7 +50,8 @@ export function createDispatch(eventDispatcher: EventDispatcher): Dispatch {
       throw new Error('event name is required!');
     }
 
-    const event = typeof eventName === 'string' ? eventName : (eventName as any).key;
+    const event =
+      typeof eventName === 'string' ? eventName : (eventName as any).key;
     eventDispatcher.emit(event, data);
   };
 }

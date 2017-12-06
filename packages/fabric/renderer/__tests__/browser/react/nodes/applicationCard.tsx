@@ -7,7 +7,6 @@ import { EventHandlers } from '../../../../src/ui/Renderer';
 import * as sinon from 'sinon';
 
 describe('Renderer - React/Nodes/ApplicationCard', () => {
-
   let applicationCard;
   let spyOnClick;
   let spyOnActionClick;
@@ -17,12 +16,12 @@ describe('Renderer - React/Nodes/ApplicationCard', () => {
       title: 'test',
       target: {
         receiver: 'some.app',
-        key: 'test.target'
+        key: 'test.target',
       },
       parameters: {
-        expenseId: 'some-id'
-      }
-    }
+        expenseId: 'some-id',
+      },
+    },
   ];
 
   beforeEach(() => {
@@ -31,24 +30,21 @@ describe('Renderer - React/Nodes/ApplicationCard', () => {
     const eventHandlers: EventHandlers = {
       applicationCard: {
         onClick: spyOnClick,
-        onActionClick: spyOnActionClick
-      }
+        onActionClick: spyOnActionClick,
+      },
     };
     const attrs = {
       text: 'applicationCard',
       title: {
-        text: 'applicationCard'
+        text: 'applicationCard',
       },
       link: {
-        url: 'link-url'
+        url: 'link-url',
       },
-      actions: actions
+      actions: actions,
     };
     applicationCard = shallow(
-      <ApplicationCard
-        eventHandlers={eventHandlers}
-        {...attrs}
-      />
+      <ApplicationCard eventHandlers={eventHandlers} {...attrs} />,
     );
   });
 
@@ -57,11 +53,15 @@ describe('Renderer - React/Nodes/ApplicationCard', () => {
   });
 
   it('should pass onActionClick to AppCardView', () => {
-    expect(applicationCard.find(AppCardView).prop('onActionClick')).to.equal(spyOnActionClick);
+    expect(applicationCard.find(AppCardView).prop('onActionClick')).to.equal(
+      spyOnActionClick,
+    );
   });
 
   it('should pass actions to AppCardView', () => {
-    expect(applicationCard.find(AppCardView).prop('model').actions).to.equal(actions);
+    expect(applicationCard.find(AppCardView).prop('model').actions).to.equal(
+      actions,
+    );
   });
 
   it('should call onClick with link.url', () => {
@@ -69,5 +69,4 @@ describe('Renderer - React/Nodes/ApplicationCard', () => {
     expect(spyOnClick.callCount).to.equal(1);
     expect(spyOnClick.calledWith('link-url')).to.equal(true);
   });
-
 });

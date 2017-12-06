@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Node as PMNode } from 'prosemirror-model';
-import { EditorView,  NodeView } from 'prosemirror-view';
+import { EditorView, NodeView } from 'prosemirror-view';
 
 import { AnalyticsDelegate, AnalyticsDelegateProps } from '@atlaskit/analytics';
 import { TaskItem } from '@atlaskit/task-decision';
@@ -23,7 +23,12 @@ class Task implements NodeView {
   private showPlaceholder: boolean = false;
   private analyticsDelegateContext: AnalyticsDelegateProps;
 
-  constructor(node: PMNode, view: EditorView, getPos: getPosHandler, analyticsDelegateContext: AnalyticsDelegateProps) {
+  constructor(
+    node: PMNode,
+    view: EditorView,
+    getPos: getPosHandler,
+    analyticsDelegateContext: AnalyticsDelegateProps,
+  ) {
     this.node = node;
     this.view = view;
     this.getPos = getPos;
@@ -34,7 +39,7 @@ class Task implements NodeView {
 
   private handleRef = (node: HTMLElement | undefined) => {
     this.contentDOMRef = node;
-  }
+  };
 
   private handleOnChange = (taskId: string, isChecked: boolean) => {
     const { view } = this;
@@ -47,11 +52,14 @@ class Task implements NodeView {
     tr.replaceWith(
       nodePos,
       nodePos + node.nodeSize,
-      schema.nodes.taskItem.create({ state: isChecked ? 'DONE' : 'TODO' }, node.content)
+      schema.nodes.taskItem.create(
+        { state: isChecked ? 'DONE' : 'TODO' },
+        node.content,
+      ),
     );
 
     view.dispatch(tr);
-  }
+  };
 
   private renderReactComponent() {
     this.domRef = document.createElement('li');
@@ -70,12 +78,10 @@ class Task implements NodeView {
       />
     );
     ReactDOM.render(
-      <AnalyticsDelegate
-        {...this.analyticsDelegateContext}
-      >
+      <AnalyticsDelegate {...this.analyticsDelegateContext}>
         {taskItem}
       </AnalyticsDelegate>,
-      this.domRef
+      this.domRef,
     );
   }
 
@@ -102,7 +108,9 @@ class Task implements NodeView {
   }
 }
 
-export function taskItemNodeViewFactory(analyticsDelegateContext: AnalyticsDelegateProps) {
+export function taskItemNodeViewFactory(
+  analyticsDelegateContext: AnalyticsDelegateProps,
+) {
   return (node: any, view: any, getPos: () => number): NodeView => {
     return new Task(node, view, getPos, analyticsDelegateContext);
   };

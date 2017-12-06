@@ -10,7 +10,7 @@ import { TextFormattingOptions } from '../plugins/text-formatting';
 import { AnalyticsHandler } from '../../analytics';
 import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../plugins/macro/types';
-import { Transformer } from '../../';
+import { Transformer } from '@atlaskit/editor-common';
 
 export type EditorAppearance =
   | 'message'
@@ -46,8 +46,9 @@ export interface EditorProps {
   allowJiraIssue?: boolean;
   allowUnsupportedContent?: boolean;
   allowPanel?: boolean;
-  allowInlineExtension?: boolean;
+  allowExtension?: boolean;
   allowConfluenceInlineComment?: boolean;
+  allowPlaceholderCursor?: boolean;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;

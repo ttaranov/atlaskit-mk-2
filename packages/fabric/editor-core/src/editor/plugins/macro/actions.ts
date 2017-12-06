@@ -1,37 +1,49 @@
 import { EditorState, Transaction } from 'prosemirror-state';
 import { Node as PmNode } from 'prosemirror-model';
 import { MacroProvider, MacroAdf } from './types';
-import { pluginKey } from './plugin';
+import { pluginKey } from './';
 import * as assert from 'assert';
 
 export const insertMacroFromMacroBrowser = (
   macroProvider: MacroProvider,
   macroNode?: PmNode,
-) => async (state: EditorState, dispatch: (tr: Transaction) => void) => {
+) => async (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+  tr?: Transaction,
+): Promise<boolean> => {
   if (!macroProvider) {
-    return;
+    return false;
   }
 
+  // opens MacroBrowser for editing "macroNode" if passed in
   const newMacro: MacroAdf = await macroProvider.openMacroBrowser(macroNode);
   if (newMacro) {
-    const { tr, schema } = state;
+    const { schema } = state;
     const { type, attrs } = newMacro;
     let node;
 
-    if (type === 'inlineExtension') {
+    if (type === 'extension') {
+      node = schema.nodes.extension.create(
+        attrs,
+        schema.nodeFromJSON(newMacro).content,
+      );
+    } else if (type === 'inlineExtension') {
       node = schema.nodes.inlineExtension.create(attrs);
     }
-
     if (node) {
-      dispatch(tr.replaceSelectionWith(node).scrollIntoView());
+      dispatch((tr || state.tr).replaceSelectionWith(node).scrollIntoView());
     }
+    return true;
   }
+
+  return false;
 };
 
 export const setMacroProvider = (provider: Promise<MacroProvider>) => async (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
-) => {
+): Promise<boolean> => {
   let resolvedProvider: MacroProvider | null;
   try {
     resolvedProvider = await provider;
@@ -45,21 +57,5 @@ export const setMacroProvider = (provider: Promise<MacroProvider>) => async (
     resolvedProvider = null;
   }
   dispatch(state.tr.setMeta(pluginKey, { macroProvider: resolvedProvider }));
-};
-
-export const setMacroElement = (macroElement: HTMLElement | null) => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-) => {
-  dispatch(state.tr.setMeta(pluginKey, { macroElement }));
-};
-
-export const removeMacro = (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-) => {
-  const { tr, selection: { $from, $to } } = state;
-  dispatch(
-    tr.delete($from.pos, $to.pos).setMeta(pluginKey, { macroElement: null }),
-  );
+  return true;
 };

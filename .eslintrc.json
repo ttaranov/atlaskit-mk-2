@@ -18,6 +18,7 @@
     }],
     "import/no-unresolved": ["off"],
     "import/prefer-default-export": "off",
+    "react/prefer-stateless-function": "off",
 
     "no-restricted-syntax": "off",
     "no-use-before-define": "off",
@@ -32,9 +33,12 @@
 
     "react/sort-comp": "off",
     "react/jsx-filename-extension": "off",
+    "react/require-default-props": "off",
+
 
     "flowtype/require-valid-file-annotation": [2, "always", { "annotationStyle": "line" }],
-
+    "flowtype/define-flow-type": 1,
+    
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",
     "jest/no-identical-title": "error",
@@ -50,7 +54,8 @@
     "react/jsx-indent-props": "off",
     "react/jsx-max-props-per-line": "off",
     "react/jsx-tag-spacing": "off",
-    "react/jsx-wrap-multilines": "off"
+    "react/jsx-wrap-multilines": "off",
+    "react/prefer-stateless-function": "off"
   },
   "env": {
     "browser": true

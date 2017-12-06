@@ -16,25 +16,57 @@ const hyperlinkPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 900, plugin: createPlugin },
-      { rank: 910, plugin: createInputRulePlugin },
-      { rank: 920, plugin: createKeymapPlugin },
+      { rank: 900, plugin: ({ schema, props }) => createPlugin(schema, props) },
+      { rank: 910, plugin: ({ schema }) => createInputRulePlugin(schema) },
+      {
+        rank: 920,
+        plugin: ({ schema, props }) => createKeymapPlugin(schema, props),
+      },
     ];
   },
 
-  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled) {
+  primaryToolbarComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    disabled,
+  ) {
     const pluginState = pluginKey.getState(editorView.state);
-    return <ToolbarHyperlink disabled={disabled} editorView={editorView} pluginState={pluginState} />;
+    return (
+      <ToolbarHyperlink
+        disabled={disabled}
+        editorView={editorView}
+        pluginState={pluginState}
+      />
+    );
   },
 
-  contentComponent(editorView, dispatch, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
+  contentComponent(
+    editorView,
+    dispatch,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+  ) {
     if (appearance === 'message') {
       return null;
     }
 
-    const renderNode = (providers) => {
+    const renderNode = providers => {
       const pluginState = pluginKey.getState(editorView.state);
-      return <HyperlinkEdit editorView={editorView} pluginState={pluginState} activityProvider={providers.activityProvider} popupsMountPoint={popupsMountPoint} popupsBoundariesElement={popupsBoundariesElement} />;
+      return (
+        <HyperlinkEdit
+          editorView={editorView}
+          pluginState={pluginState}
+          activityProvider={providers.activityProvider}
+          popupsMountPoint={popupsMountPoint}
+          popupsBoundariesElement={popupsBoundariesElement}
+        />
+      );
     };
 
     return (
@@ -44,7 +76,7 @@ const hyperlinkPlugin: EditorPlugin = {
         renderNode={renderNode}
       />
     );
-  }
+  },
 };
 
 export default hyperlinkPlugin;

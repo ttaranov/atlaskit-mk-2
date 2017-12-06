@@ -1,17 +1,37 @@
 import * as React from 'react';
 
-import {EditorContainer, OutputArea, DrawingCanvas, HiddenTextArea, HiddenTextHelperDiv, SupplementaryCanvas} from './styled';
-import {Engine} from '../engine/engine';
-import {ColorWithAlpha, Dimensions, ExportedImage, ShapeParameters, TextDirection, Tool} from '../common';
-import {colorSame, colorWithAlphaSame, dimensionsSame} from '../util';
+import {
+  EditorContainer,
+  OutputArea,
+  DrawingCanvas,
+  HiddenTextArea,
+  HiddenTextHelperDiv,
+  SupplementaryCanvas,
+} from './styled';
+import { Engine } from '../engine/engine';
+import {
+  ColorWithAlpha,
+  Dimensions,
+  ExportedImage,
+  ShapeParameters,
+  TextDirection,
+  Tool,
+} from '../common';
+import { colorSame, colorWithAlphaSame, dimensionsSame } from '../util';
 
-import {DefaultDrawingArea, OutputSize} from '../engine/components/drawingArea';
-import {DefaultImageProvider, urlImageLoader} from '../engine/components/imageProvider';
-import {DefaultMouseInput} from '../engine/components/mouseInput';
-import {DefaultToolbar} from '../engine/components/toolbar';
-import {DefaultKeyboardInput} from '../engine/components/keyboardInput';
-import {DefaultImageReceiver} from '../engine/components/imageReceiver';
-import {DefaultShapeDeleter} from '../engine/components/shapeDeleter';
+import {
+  DefaultDrawingArea,
+  OutputSize,
+} from '../engine/components/drawingArea';
+import {
+  DefaultImageProvider,
+  urlImageLoader,
+} from '../engine/components/imageProvider';
+import { DefaultMouseInput } from '../engine/components/mouseInput';
+import { DefaultToolbar } from '../engine/components/toolbar';
+import { DefaultKeyboardInput } from '../engine/components/keyboardInput';
+import { DefaultImageReceiver } from '../engine/components/imageReceiver';
+import { DefaultShapeDeleter } from '../engine/components/shapeDeleter';
 
 export type ImageGetter = (format?: string) => ExportedImage;
 
@@ -19,9 +39,14 @@ export interface LoadParameters {
   imageGetter: ImageGetter;
 }
 
-export type LoadHandler = (imageUrl: string, loadParameters: LoadParameters) => void;
+export type LoadHandler = (
+  imageUrl: string,
+  loadParameters: LoadParameters,
+) => void;
 export type ErrorHandler = (imageUrl: string, error: Error) => void;
-export type ShapeParametersChangedHandler = (parameters: ShapeParameters) => void;
+export type ShapeParametersChangedHandler = (
+  parameters: ShapeParameters,
+) => void;
 
 export interface MediaEditorProps {
   imageUrl: string;
@@ -74,18 +99,30 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
       this.loadEngine();
     }
 
-    if (!dimensionsSame(currProps.dimensions, prevProps.dimensions) ||
-        currProps.screenScaleFactor !== prevProps.screenScaleFactor) {
+    if (
+      !dimensionsSame(currProps.dimensions, prevProps.dimensions) ||
+      currProps.screenScaleFactor !== prevProps.screenScaleFactor
+    ) {
       this.drawingArea.setSize(MediaEditor.toOutputSize(currProps));
     }
 
-    if (!colorWithAlphaSame(currProps.backgroundColor, prevProps.backgroundColor)) {
+    if (
+      !colorWithAlphaSame(currProps.backgroundColor, prevProps.backgroundColor)
+    ) {
       // TODO inform the core about the new background color
       // https://jira.atlassian.com/browse/FIL-3996
     }
 
-    const {color: currColor, lineWidth: currLineWidth, addShadow: currAddShadow} = currProps.shapeParameters;
-    const {color: prevColor, lineWidth: prevLineWidth, addShadow: prevAddShadow} = prevProps.shapeParameters;
+    const {
+      color: currColor,
+      lineWidth: currLineWidth,
+      addShadow: currAddShadow,
+    } = currProps.shapeParameters;
+    const {
+      color: prevColor,
+      lineWidth: prevLineWidth,
+      addShadow: prevAddShadow,
+    } = prevProps.shapeParameters;
     if (!colorSame(currColor, prevColor)) {
       this.toolbar.setColor(currColor);
     }
@@ -105,22 +142,32 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
     this.unloadEngine();
   }
 
-  private handleOutputAreaInnerRef = (outputArea) => { this.outputArea = outputArea; };
-  private handleSupplementaryCanvasInnerRef = (canvas) => { this.supplementaryCanvas = canvas; };
-  private handleHiddenTextAreaInnerRef = (textArea) => { this.hiddenTextArea = textArea; };
-  private handleHiddenTextHelperDivInnerRef = (div) => { this.hiddenTextHelperDiv = div; };
-  private handleDrawingCanvasInnerRef = (canvas) => { this.canvas = canvas; };
+  private handleOutputAreaInnerRef = outputArea => {
+    this.outputArea = outputArea;
+  };
+  private handleSupplementaryCanvasInnerRef = canvas => {
+    this.supplementaryCanvas = canvas;
+  };
+  private handleHiddenTextAreaInnerRef = textArea => {
+    this.hiddenTextArea = textArea;
+  };
+  private handleHiddenTextHelperDivInnerRef = div => {
+    this.hiddenTextHelperDiv = div;
+  };
+  private handleDrawingCanvasInnerRef = canvas => {
+    this.canvas = canvas;
+  };
 
   render() {
-    const {dimensions} = this.props;
+    const { dimensions } = this.props;
     const width = `${dimensions.width}px`;
     const height = `${dimensions.height}px`;
 
     return (
-      <EditorContainer style={{width, height}}>
+      <EditorContainer style={{ width, height }}>
         <OutputArea
           innerRef={this.handleOutputAreaInnerRef}
-          style={{width, height}}
+          style={{ width, height }}
         >
           <SupplementaryCanvas
             innerRef={this.handleSupplementaryCanvasInnerRef}
@@ -137,7 +184,7 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
 
           <DrawingCanvas
             innerRef={this.handleDrawingCanvasInnerRef}
-            style={{width, height}}
+            style={{ width, height }}
           />
         </OutputArea>
       </EditorContainer>
@@ -145,10 +192,13 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
   }
 
   private loadEngine(): void {
-    const {imageUrl} = this.props;
+    const { imageUrl } = this.props;
 
-    DefaultImageProvider.create(() => urlImageLoader(imageUrl), this.supplementaryCanvas)
-      .then((imageProvider) => {
+    DefaultImageProvider.create(
+      () => urlImageLoader(imageUrl),
+      this.supplementaryCanvas,
+    )
+      .then(imageProvider => {
         // We must not create the engine if the component was unmounted or if the image was changed
         if (this.isUnmounted || imageUrl !== this.props.imageUrl) {
           return;
@@ -156,22 +206,39 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
 
         // Creating components for the engine
         const outputSize = MediaEditor.toOutputSize(this.props);
-        const {backgroundColor} = this.props;
-        this.drawingArea = new DefaultDrawingArea(this.canvas, outputSize, backgroundColor);
+        const { backgroundColor } = this.props;
+        this.drawingArea = new DefaultDrawingArea(
+          this.canvas,
+          outputSize,
+          backgroundColor,
+        );
 
         const mouseInput = new DefaultMouseInput(this.outputArea);
-        this.toolbar = new DefaultToolbar(params => this.props.onShapeParametersChanged(params));
-        const keyboardInput = new DefaultKeyboardInput(this.hiddenTextArea, this.supplementaryCanvas, this.hiddenTextHelperDiv);
-        const imageReceiver = new DefaultImageReceiver(this.supplementaryCanvas);
+        this.toolbar = new DefaultToolbar(params =>
+          this.props.onShapeParametersChanged(params),
+        );
+        const keyboardInput = new DefaultKeyboardInput(
+          this.hiddenTextArea,
+          this.supplementaryCanvas,
+          this.hiddenTextHelperDiv,
+        );
+        const imageReceiver = new DefaultImageReceiver(
+          this.supplementaryCanvas,
+        );
         const shapeDeleter = new DefaultShapeDeleter(this.hiddenTextArea);
 
         // Creating the engine
-        const {shapeParameters, tool: initialTool} = this.props;
-        const textDirection = ((window.getComputedStyle(this.outputArea).direction) as TextDirection) || defaultTextDirection;
+        const { shapeParameters, tool: initialTool } = this.props;
+        const textDirection =
+          (window.getComputedStyle(this.outputArea)
+            .direction as TextDirection) || defaultTextDirection;
 
         const config = {
           // tslint:disable-next-line:no-console
-          onCoreError: (message: string) => { console.error(message); },
+          onCoreError: (message: string) => {
+            // tslint:disable-next-line
+            console.error(message);
+          },
           shapeParameters,
           initialTool,
           textDirection,
@@ -181,12 +248,12 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
           toolbar: this.toolbar,
           keyboardInput,
           imageReceiver,
-          shapeDeleter
+          shapeDeleter,
         };
 
         this.engine = new Engine(config);
         const loadParameters = {
-          imageGetter: (format?: string) => this.engine.getBase64Image(format)
+          imageGetter: (format?: string) => this.engine.getBase64Image(format),
         };
 
         this.props.onLoad(imageUrl, loadParameters);
@@ -202,13 +269,14 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
   }
 
   private static toOutputSize(props: MediaEditorProps): OutputSize {
-    const {dimensions} = props;
-    const screenScaleFactor = props.screenScaleFactor || MediaEditor.screenScaleFactor;
+    const { dimensions } = props;
+    const screenScaleFactor =
+      props.screenScaleFactor || MediaEditor.screenScaleFactor;
 
     return {
       width: dimensions.width * screenScaleFactor,
       height: dimensions.height * screenScaleFactor,
-      screenScaleFactor
+      screenScaleFactor,
     };
   }
 

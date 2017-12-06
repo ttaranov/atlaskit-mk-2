@@ -5,7 +5,12 @@ import UnderlineIcon from '@atlaskit/icon/glyph/editor/underline';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
-import { toggleBold, toggleItalic, toggleUnderline, tooltip } from '../../keymaps';
+import {
+  toggleBold,
+  toggleItalic,
+  toggleUnderline,
+  tooltip,
+} from '../../keymaps';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import ToolbarButton from '../ToolbarButton';
 import EditorWidth from '../../utils/editor-width';
@@ -45,39 +50,54 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
     const { disabled, editorWidth } = this.props;
 
     return (
-      <ButtonGroup width={editorWidth! > EditorWidth.BreakPoint6 ? 'large' : 'small'}>
-        {this.state.boldHidden ? null :
+      <ButtonGroup
+        width={editorWidth! > EditorWidth.BreakPoint10 ? 'large' : 'small'}
+      >
+        {this.state.boldHidden ? null : (
           <ToolbarButton
-            spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
+            spacing={
+              editorWidth && editorWidth > EditorWidth.BreakPoint10
+                ? 'default'
+                : 'none'
+            }
             onClick={this.handleBoldClick}
             selected={this.state.boldActive}
             disabled={disabled || this.state.boldDisabled}
             title={tooltip(toggleBold)}
             iconBefore={<BoldIcon label="Bold" />}
           />
-        }
+        )}
 
-        {this.state.italicHidden ? null :
+        {this.state.italicHidden ? null : (
           <ToolbarButton
-            spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
+            spacing={
+              editorWidth && editorWidth > EditorWidth.BreakPoint10
+                ? 'default'
+                : 'none'
+            }
             onClick={this.handleItalicClick}
             selected={this.state.italicActive}
             disabled={disabled || this.state.italicDisabled}
             title={tooltip(toggleItalic)}
             iconBefore={<ItalicIcon label="Italic" />}
           />
-        }
+        )}
 
-        {this.state.underlineHidden || (editorWidth && editorWidth < EditorWidth.BreakPoint2) ? null :
+        {this.state.underlineHidden ||
+        (!editorWidth || editorWidth < EditorWidth.BreakPoint2) ? null : (
           <ToolbarButton
-            spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
+            spacing={
+              editorWidth && editorWidth > EditorWidth.BreakPoint10
+                ? 'default'
+                : 'none'
+            }
             onClick={this.handleUnderlineClick}
             selected={this.state.underlineActive}
             disabled={disabled || this.state.underlineDisabled}
             title={tooltip(toggleUnderline)}
             iconBefore={<UnderlineIcon label="Underline" />}
           />
-        }
+        )}
       </ButtonGroup>
     );
   }
@@ -94,7 +114,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
       underlineDisabled: pluginState.underlineDisabled,
       underlineHidden: pluginState.underlineHidden,
     });
-  }
+  };
 
   @analytics('atlassian.editor.format.strong.button')
   private handleBoldClick = (): boolean => {
@@ -102,7 +122,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
       return this.props.pluginState.toggleStrong(this.props.editorView);
     }
     return false;
-  }
+  };
 
   @analytics('atlassian.editor.format.em.button')
   private handleItalicClick = (): boolean => {
@@ -110,7 +130,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
       return this.props.pluginState.toggleEm(this.props.editorView);
     }
     return false;
-  }
+  };
 
   @analytics('atlassian.editor.format.underline.button')
   private handleUnderlineClick = (): boolean => {
@@ -118,5 +138,5 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
       return this.props.pluginState.toggleUnderline(this.props.editorView);
     }
     return false;
-  }
+  };
 }

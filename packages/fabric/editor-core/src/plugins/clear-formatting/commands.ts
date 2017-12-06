@@ -2,10 +2,21 @@ import { EditorState, Transaction } from 'prosemirror-state';
 import { Command } from '../../commands';
 
 export const FORMATTING_NODE_TYPES = ['heading'];
-export const FORMATTING_MARK_TYPES = ['em', 'code', 'strike', 'strong', 'underline', 'textColor', 'subsup'];
+export const FORMATTING_MARK_TYPES = [
+  'em',
+  'code',
+  'strike',
+  'strong',
+  'underline',
+  'textColor',
+  'subsup',
+];
 
 export function clearFormatting(): Command {
-  return function (state: EditorState, dispatch: (tr: Transaction) => void): boolean {
+  return function(
+    state: EditorState,
+    dispatch: (tr: Transaction) => void,
+  ): boolean {
     const { tr } = state;
 
     FORMATTING_MARK_TYPES.forEach(mark => {
@@ -20,7 +31,7 @@ export function clearFormatting(): Command {
       const { $from, $to } = tr.selection;
       tr.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
         if (node.hasMarkup(formattedNodeType)) {
-          tr.setNodeType(pos, state.schema.nodes.paragraph);
+          tr.setNodeMarkup(pos, state.schema.nodes.paragraph);
           return false;
         }
         return true;

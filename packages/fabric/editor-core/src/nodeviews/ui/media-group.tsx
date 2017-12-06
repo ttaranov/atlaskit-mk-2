@@ -5,7 +5,10 @@ import styled from 'styled-components';
 import { FilmstripView } from '@atlaskit/media-filmstrip';
 import { EditorView } from 'prosemirror-view';
 import { MediaNodeProps } from './media';
-import { MediaPluginState, stateKey as mediaStateKey } from '../../plugins/media';
+import {
+  MediaPluginState,
+  stateKey as mediaStateKey,
+} from '../../plugins/media';
 import { Props as MediaProps } from '../../ui/Media/MediaComponent';
 
 export interface MediaGroupNodeProps {
@@ -25,13 +28,16 @@ const Wrapper = styled.div`
   }
 `;
 
-export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, MediaGroupNodeState> {
+export default class MediaGroupNode extends PureComponent<
+  MediaGroupNodeProps,
+  MediaGroupNodeState
+> {
   private mediaPluginState: MediaPluginState;
   private mediaNodesIds: string[];
 
   state: MediaGroupNodeState = {
     animate: false,
-    offset: 0
+    offset: 0,
   };
 
   constructor(props) {
@@ -41,8 +47,9 @@ export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, M
     assert(this.mediaPluginState, 'Media is not enabled');
   }
 
-  private handleSize = ({offset}) => this.setState({offset});
-  private handleScroll = ({animate, offset}) => this.setState({animate, offset});
+  private handleSize = ({ offset }) => this.setState({ offset });
+  private handleScroll = ({ animate, offset }) =>
+    this.setState({ animate, offset });
 
   /**
    * Save all childNodes ids into "mediaNodesIds"
@@ -56,7 +63,9 @@ export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, M
    */
   componentWillReceiveProps(nextProps) {
     const newMediaNodesIds = this.getMediaNodesIds(nextProps.children);
-    const removedNodesIds = this.mediaNodesIds.filter(id => newMediaNodesIds.indexOf(id) === -1);
+    const removedNodesIds = this.mediaNodesIds.filter(
+      id => newMediaNodesIds.indexOf(id) === -1,
+    );
 
     removedNodesIds.forEach(mediaNodeId => {
       this.mediaPluginState.cancelInFlightUpload(mediaNodeId);
@@ -66,7 +75,7 @@ export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, M
   }
 
   render() {
-    const {animate, offset} = this.state;
+    const { animate, offset } = this.state;
     return (
       <Wrapper>
         <FilmstripView
@@ -75,30 +84,36 @@ export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, M
           onSize={this.handleSize}
           onScroll={this.handleScroll}
         >
-        {
-          React.Children.map(this.props.children, (child: ReactElement<MediaNodeProps>) => {
-            switch(child.props.node.attrs.type) {
-              case 'file':
-                return child;
+          {React.Children.map(
+            this.props.children,
+            (child: ReactElement<MediaNodeProps>) => {
+              switch (child.props.node.attrs.type) {
+                case 'file':
+                  return child;
 
-              default:
-              case 'link':
-                return React.cloneElement(child as ReactElement<any>, {
-                  cardDimensions: {
-                    width: 343,
-                  },
-                } as MediaProps);
-            }
-          })
-          }
+                default:
+                case 'link':
+                  return React.cloneElement(
+                    child as ReactElement<any>,
+                    {
+                      cardDimensions: {
+                        width: 343,
+                      },
+                    } as MediaProps,
+                  );
+              }
+            },
+          )}
         </FilmstripView>
       </Wrapper>
     );
   }
 
   private getMediaNodesIds = (children: React.ReactNode): string[] => {
-    return React.Children.map(children, (child: React.ReactElement<any>) => {
-      return (child.props as MediaNodeProps).node.attrs.id;
-    }) || [];
-  }
+    return (
+      React.Children.map(children, (child: React.ReactElement<any>) => {
+        return (child.props as MediaNodeProps).node.attrs.id;
+      }) || []
+    );
+  };
 }

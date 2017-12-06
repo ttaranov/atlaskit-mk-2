@@ -1,8 +1,5 @@
 import styled from 'styled-components';
-import {
-  akColorN20,
-  akColorN800,
-} from '@atlaskit/util-shared-styles';
+import { akColorN20, akColorN800 } from '@atlaskit/util-shared-styles';
 
 // tslint:disable-next-line:variable-name
 export const DropdownItem = styled.div`

@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
@@ -172,9 +174,11 @@ class PortalInScrollContainerExample extends PureComponent<any, any> {
 
 const CANCEL_ACTION = () => console.log('Cancel');
 const SAVE_ACTION = () => console.log('Save');
-
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
-const mentionProvider = new Promise<any>(resolve => resolve(mentionStoryData.resourceProvider));
+
+const mentionProvider = new Promise<any>(resolve =>
+  resolve(mentionStoryData.resourceProvider),
+);
 const emojiProvider = emojiStoryData.getEmojiResource() as any;
 
 export default function Example() {
@@ -220,7 +224,9 @@ export default function Example() {
 
       <Content>
         <h2>Basic with Custom Boundry</h2>
-        <p style={{ marginBottom: 14 }}>Boundries: custom | Container: 500px, no overflow.</p>
+        <p style={{ marginBottom: 14 }}>
+          Boundries: custom | Container: 500px, no overflow.
+        </p>
         <div style={{ width: 500 }}>
           <CustomBoundryExample
             imageUploadHandler={imageUploadHandler}
@@ -255,7 +261,9 @@ export default function Example() {
 
       <Content>
         <h2>Portal with Custom Boundry</h2>
-        <p style={{ marginBottom: 14 }}>Boundries: custom | Container: 500px, overflow: hidden.</p>
+        <p style={{ marginBottom: 14 }}>
+          Boundries: custom | Container: 500px, overflow: hidden.
+        </p>
         <div style={{ width: 500 }}>
           <PortalWithCustomBoundaryExample
             imageUploadHandler={imageUploadHandler}
@@ -270,7 +278,9 @@ export default function Example() {
 
       <Content>
         <h2>Portal in Scroll Container</h2>
-        <p style={{ marginBottom: 14 }}>Boundries: custom | Container: 700px, overflow: hidden.</p>
+        <p style={{ marginBottom: 14 }}>
+          Boundries: custom | Container: 700px, overflow: hidden.
+        </p>
         <div style={{ maxWidth: 700 }}>
           <PortalInScrollContainerExample
             imageUploadHandler={imageUploadHandler}

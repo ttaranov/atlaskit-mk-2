@@ -1,5 +1,50 @@
 # @atlaskit/editor-bitbucket
 
+## 4.10.2
+
+## 4.10.1
+
+## 4.10.0
+- [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)
+- [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)
+
+## 4.9.6
+
+## 4.9.5
+
+- [patch] Adding separate transformer packages. [f734c01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f734c01)
+- [patch] Adding separate transformer packages. [f734c01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f734c01)
+
+## 4.9.4
+
+## 4.9.3
+
+## 4.9.2
+
+## 4.9.1
+
+## 4.9.0
+
+## 4.8.15
+
+## 4.8.14
+
+## 4.8.13
+
+## 4.8.12
+
+## 4.8.11
+- [patch] @atlaskit/emoji bumped to ^30.3.3 for big emoji scrolling bugfix [095d6ba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/095d6ba)
+- [patch] @atlaskit/emoji bumped to ^30.3.3 for big emoji scrolling bugfix [095d6ba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/095d6ba)
+
+## 4.8.10
+
+## 4.8.9
+
+## 4.8.8
+
+## 4.8.7
+
 ## 4.8.6
 
 ## 4.8.5

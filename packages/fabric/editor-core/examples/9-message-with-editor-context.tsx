@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import Editor from '../src/editor';
@@ -18,17 +20,21 @@ const exampleDocument = {
         { type: 'text', text: 'Some example document with emojis ' },
         {
           type: 'emoji',
-          attrs: { shortName: ':catchemall:', id: 'atlassian-catchemall', text: ':catchemall:' }
+          attrs: {
+            shortName: ':catchemall:',
+            id: 'atlassian-catchemall',
+            text: ':catchemall:',
+          },
         },
         { type: 'text', text: ' and mentions ' },
         {
           type: 'mention',
-          attrs: { id: '0', text: '@Carolyn', accessLevel: '' }
+          attrs: { id: '0', text: '@Carolyn', accessLevel: '' },
         },
-        { type: 'text', text: '. ' }
-      ]
-    }
-  ]
+        { type: 'text', text: '. ' },
+      ],
+    },
+  ],
 };
 
 export default function Example() {
@@ -36,30 +42,33 @@ export default function Example() {
     <EditorContext>
       <div>
         <WithEditorActions
-          // tslint:disable-next-line:jsx-no-lambda
-          render={actions =>
+          render={actions => (
             <ButtonGroup>
-              <Button onClick={() => actions.replaceDocument(exampleDocument)}>Load Document</Button>
+              <Button onClick={() => actions.replaceDocument(exampleDocument)}>
+                Load Document
+              </Button>
               <Button onClick={() => actions.clear()}>Clear</Button>
             </ButtonGroup>
-          }
+          )}
         />
         <ToolsDrawer
-          // tslint:disable-next-line:jsx-no-lambda
-          renderEditor={({ mentionProvider, emojiProvider, mediaProvider, onChange }) =>
+          renderEditor={({
+            mentionProvider,
+            emojiProvider,
+            mediaProvider,
+            onChange,
+          }) => (
             <Editor
               {...getPropsPreset('message')}
-
               analyticsHandler={analyticsHandler}
               maxHeight={305}
-
               mentionProvider={mentionProvider}
               emojiProvider={emojiProvider}
               mediaProvider={mediaProvider}
-
               onChange={onChange}
               onSave={SAVE_ACTION}
-            />}
+            />
+          )}
         />
       </div>
     </EditorContext>

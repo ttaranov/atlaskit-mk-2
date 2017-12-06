@@ -16,16 +16,17 @@ export const confluenceInlineComment: MarkSpec = {
   excludes: '',
   attrs: {
     reference: {
-      default: ''
-    }
+      default: '',
+    },
   },
-  parseDOM: [
-    { tag: 'span[data-mark-type="confluenceInlineComment"]' }
-  ],
+  parseDOM: [{ tag: 'span[data-mark-type="confluenceInlineComment"]' }],
   toDOM(node): [string, any] {
-    return ['span', {
-      'data-mark-type': 'confluenceInlineComment',
-      'data-reference': node.attrs.reference
-    }];
-  }
+    return [
+      'span',
+      {
+        'data-mark-type': 'confluenceInlineComment',
+        'data-reference': node.attrs.reference,
+      },
+    ];
+  },
 };

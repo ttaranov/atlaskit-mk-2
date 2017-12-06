@@ -4,7 +4,10 @@ import { Node, Fragment, Schema } from 'prosemirror-model';
  * Checks if node is an empty paragraph.
  */
 export function isEmptyParagraph(node?: Node | null): boolean {
-  return !node || (node.type.name === 'paragraph' && !node.textContent && !node.childCount);
+  return (
+    !node ||
+    (node.type.name === 'paragraph' && !node.textContent && !node.childCount)
+  );
 }
 
 /**
@@ -15,9 +18,11 @@ export function isEmpty(node?: Node): boolean {
     return false;
   }
 
-  if (!node
-    || !node.childCount
-    || (node.childCount === 1 && isEmptyParagraph(node.firstChild))) {
+  if (
+    !node ||
+    !node.childCount ||
+    (node.childCount === 1 && isEmptyParagraph(node.firstChild))
+  ) {
     return true;
   }
 
@@ -25,17 +30,23 @@ export function isEmpty(node?: Node): boolean {
   const nonBlock: Node[] = [];
 
   node.forEach(child => {
-    child.isInline
-      ? nonBlock.push(child)
-      : block.push(child);
+    child.isInline ? nonBlock.push(child) : block.push(child);
   });
 
-  return !nonBlock.length
-    && !block.filter(childNode =>
-        !!childNode.childCount && !(childNode.childCount === 1 && isEmptyParagraph(childNode.firstChild))).length;
+  return (
+    !nonBlock.length &&
+    !block.filter(
+      childNode =>
+        !!childNode.childCount &&
+        !(childNode.childCount === 1 && isEmptyParagraph(childNode.firstChild)),
+    ).length
+  );
 }
 
-export const preprocessDoc = (schema: Schema, origDoc: Node | undefined): Node | undefined => {
+export const preprocessDoc = (
+  schema: Schema,
+  origDoc: Node | undefined,
+): Node | undefined => {
   if (!origDoc) {
     return;
   }
@@ -43,8 +54,10 @@ export const preprocessDoc = (schema: Schema, origDoc: Node | undefined): Node |
   const content: Node[] = [];
   origDoc.content.forEach(node => {
     const { taskList, decisionList } = schema.nodes;
-    if((node.type !== taskList && node.type !== decisionList) ||
-      node.textContent) {
+    if (
+      (node.type !== taskList && node.type !== decisionList) ||
+      node.textContent
+    ) {
       content.push(node);
     }
   });

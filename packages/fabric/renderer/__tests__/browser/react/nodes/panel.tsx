@@ -5,7 +5,9 @@ import Panel from '../../../../src/react/nodes/panel';
 
 describe('Renderer - React/Nodes/Panel', () => {
   describe('info', () => {
-    const infoPanel = shallow(<Panel panelType="info">This is a info panel</Panel>);
+    const infoPanel = shallow(
+      <Panel panelType="info">This is a info panel</Panel>,
+    );
 
     it('should wrap content with <div>-tag', () => {
       expect(infoPanel.name()).to.equal('styled.div');
@@ -17,7 +19,9 @@ describe('Renderer - React/Nodes/Panel', () => {
   });
 
   describe('note', () => {
-    const notePanel = shallow(<Panel panelType="note">This is a note panel</Panel>);
+    const notePanel = shallow(
+      <Panel panelType="note">This is a note panel</Panel>,
+    );
 
     it('should wrap content with <div>-tag', () => {
       expect(notePanel.name()).to.equal('styled.div');
@@ -29,7 +33,9 @@ describe('Renderer - React/Nodes/Panel', () => {
   });
 
   describe('tip', () => {
-    const tipPanel = shallow(<Panel panelType="tip">This is a tip panel</Panel>);
+    const tipPanel = shallow(
+      <Panel panelType="tip">This is a tip panel</Panel>,
+    );
 
     it('should wrap content with <div>-tag', () => {
       expect(tipPanel.name()).to.equal('styled.div');
@@ -41,7 +47,9 @@ describe('Renderer - React/Nodes/Panel', () => {
   });
 
   describe('warning', () => {
-    const warningPanel = shallow(<Panel panelType="warning">This is a warning panel</Panel>);
+    const warningPanel = shallow(
+      <Panel panelType="warning">This is a warning panel</Panel>,
+    );
 
     it('should wrap content with <div>-tag', () => {
       expect(warningPanel.name()).to.equal('styled.div');

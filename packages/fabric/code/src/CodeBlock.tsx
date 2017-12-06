@@ -17,20 +17,19 @@ export interface CodeBlockProps {
 }
 
 export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
-
   static displayName = 'CodeBlock';
 
   static propTypes = {
     text: PropTypes.string.isRequired,
     language: PropTypes.oneOf(languageList),
     showLineNumbers: PropTypes.bool,
-    theme: PropTypes.object
+    theme: PropTypes.object,
   };
 
   static defaultProps = {
     showLineNumbers: true,
     language: 'md',
-    theme: {}
+    theme: {},
   };
 
   handleCopy(event: any) {
@@ -41,7 +40,9 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
     if (data) {
       event.preventDefault();
       const selectedText = window.getSelection().toString();
-      const document = `<!doctype html><html><head></head><body><pre>${selectedText}</pre></body></html>`;
+      const document = `<!doctype html><html><head></head><body><pre>${
+        selectedText
+      }</pre></body></html>`;
       data.clearData();
       data.setData('text/html', document);
       data.setData('text/plain', selectedText);
@@ -50,22 +51,23 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
 
   render() {
     const { language } = this.props;
-    const { lineNumberContainerStyle, codeBlockStyle, codeContainerStyle } = applyTheme(this.props.theme);
+    const {
+      lineNumberContainerStyle,
+      codeBlockStyle,
+      codeContainerStyle,
+    } = applyTheme(this.props.theme);
     const props = {
       language: normalizeLanguage(language),
       style: codeBlockStyle,
       showLineNumbers: this.props.showLineNumbers,
       PreTag: 'span',
       codeTagProps: { style: codeContainerStyle } as HTMLElement,
-      lineNumberContainerStyle
+      lineNumberContainerStyle,
     };
     const codeText = this.props.text.toString();
 
     return (
-      <SyntaxHighlighter
-        {...props}
-        onCopy={this.handleCopy}
-      >
+      <SyntaxHighlighter {...props} onCopy={this.handleCopy}>
         {codeText}
       </SyntaxHighlighter>
     );

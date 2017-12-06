@@ -1,5 +1,25 @@
 # @atlaskit/media-filmstrip
 
+## 5.6.0
+
+## 5.5.8
+
+## 5.5.7
+
+## 5.5.6
+
+## 5.5.5
+
+## 5.5.4
+
+
+- [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
+- [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
+
+## 5.5.3
+
+## 5.5.2
+
 ## 5.5.1
 - [patch] Use correct dependencies  [7b178b1](7b178b1)
 - [patch] Use correct dependencies  [7b178b1](7b178b1)

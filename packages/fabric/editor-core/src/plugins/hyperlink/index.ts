@@ -12,6 +12,10 @@ import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
 import { Match, getLinkMatch, normalizeUrl, linkifyContent } from './utils';
 import { EditorProps } from '../../editor/types/editor-props';
+import {
+  addPlaceholderCursor,
+  removePlaceholderCursor,
+} from '../placeholder-cursor/cursor';
 
 import stateKey from './plugin-key';
 export { stateKey };
@@ -121,7 +125,8 @@ export class HyperlinkState {
   }
 
   // TODO: Fix types (ED-2987)
-  update(state: EditorState, docView: any, dirty: boolean = false) {
+  update(editorView: EditorView & { docView?: any }, dirty: boolean = false) {
+    const { state, docView } = editorView;
     this.state = state;
 
     const nodeInfo = this.getActiveLinkNodeInfo();
@@ -162,7 +167,7 @@ export class HyperlinkState {
     }
   }
 
-  showLinkPanel(editorView: EditorView & { docView?: any }) {
+  showLinkPanel = (editorView: EditorView & { docView?: any }) => {
     if (this.linkable) {
       if (!(this.showToolbarPanel || editorView.hasFocus())) {
         editorView.focus();
@@ -173,16 +178,18 @@ export class HyperlinkState {
         this.changeHandlers.forEach(cb => cb(this));
       } else {
         this.addLink({ href: '' }, editorView);
-        this.update(editorView.state, editorView.docView);
+        this.update(editorView);
       }
+      addPlaceholderCursor(editorView.state, editorView.dispatch);
       return true;
     }
     return false;
-  }
+  };
 
-  hideLinkPanel() {
+  hideLinkPanel(state: EditorState, dispatch: (tr: Transaction) => void) {
     this.showToolbarPanel = false;
     this.changeHandlers.forEach(cb => cb(this));
+    removePlaceholderCursor(state, dispatch);
   }
 
   getCoordinates(
@@ -420,21 +427,23 @@ export const createPlugin = (schema: Schema, editorProps: EditorProps = {}) =>
         }
         return false;
       },
-      onBlur(view: EditorView) {
-        const pluginState = stateKey.getState(view.state);
+      handleDOMEvents: {
+        blur(view, event) {
+          const pluginState = stateKey.getState(view.state);
+          pluginState.editorFocused = false;
+          if (pluginState.active) {
+            pluginState.changeHandlers.forEach(cb => cb(pluginState));
+          }
+          event.preventDefault();
+          return false;
+        },
+        focus(view, event) {
+          const pluginState = stateKey.getState(view.state);
+          pluginState.editorFocused = true;
 
-        pluginState.editorFocused = false;
-        if (pluginState.active) {
-          pluginState.changeHandlers.forEach(cb => cb(pluginState));
-        }
-
-        return true;
-      },
-      onFocus(view: EditorView) {
-        const pluginState = stateKey.getState(view.state);
-        pluginState.editorFocused = true;
-
-        return true;
+          event.preventDefault();
+          return false;
+        },
       },
       /**
        * As we are adding linkifyContent, linkifyText can in fact be removed.
@@ -446,15 +455,9 @@ export const createPlugin = (schema: Schema, editorProps: EditorProps = {}) =>
         if (html) {
           const contentSlices = linkifyContent(view.state.schema, slice);
           if (contentSlices) {
-            const { dispatch, state } = view;
-            let tr = state.tr.replaceSelection(contentSlices);
-            dispatch(tr);
-
-            tr = view.state.tr;
-            for (let mark in state.schema.marks) {
-              tr = tr.removeStoredMark(state.schema.marks[mark]);
-            }
-            dispatch(tr);
+            const { dispatch } = view;
+            dispatch(view.state.tr.replaceSelection(contentSlices));
+            dispatch(view.state.tr.setStoredMarks([]));
             return true;
           }
         }
@@ -472,14 +475,14 @@ export const createPlugin = (schema: Schema, editorProps: EditorProps = {}) =>
     key: stateKey,
     view: (view: EditorView & { docView?: any }) => {
       const pluginState = stateKey.getState(view.state);
-      pluginState.update(view.state, view.docView, true);
+      pluginState.update(view, true);
 
       return {
         update: (
           view: EditorView & { docView?: any },
           prevState: EditorState,
         ) => {
-          pluginState.update(view.state, view.docView);
+          pluginState.update(view);
         },
       };
     },

@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import * as React from 'react';
 
 import Button, { ButtonGroup } from '@atlaskit/button';
@@ -25,29 +27,33 @@ const exampleDocument = {
         { type: 'text', text: 'Some example document with emojis ' },
         {
           type: 'emoji',
-          attrs: { shortName: ':catchemall:', id: 'atlassian-catchemall', text: ':catchemall:' }
+          attrs: {
+            shortName: ':catchemall:',
+            id: 'atlassian-catchemall',
+            text: ':catchemall:',
+          },
         },
         { type: 'text', text: ' and mentions ' },
         {
           type: 'mention',
-          attrs: { id: '0', text: '@Carolyn', accessLevel: '' }
+          attrs: { id: '0', text: '@Carolyn', accessLevel: '' },
         },
-        { type: 'text', text: '. ' }
-      ]
-    }
-  ]
+        { type: 'text', text: '. ' },
+      ],
+    },
+  ],
 };
 
-type Props = {};
-type State = {
-  hasJquery?: boolean,
-  isExpanded?: boolean,
+export type Props = {};
+export type State = {
+  hasJquery?: boolean;
+  isExpanded?: boolean;
 };
 
 export default class EditorWithFeedback extends React.Component<Props, State> {
   state = {
     hasJquery: false,
-    isExpanded: false
+    isExpanded: false,
   };
 
   componentDidMount() {
@@ -55,7 +61,8 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
     this.loadJquery();
   }
 
-  onFocus = () => this.setState(prevState => ({ isExpanded: !prevState.isExpanded }));
+  onFocus = () =>
+    this.setState(prevState => ({ isExpanded: !prevState.isExpanded }));
 
   render() {
     if (!this.state.hasJquery) {
@@ -66,17 +73,25 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
       <EditorContext>
         <div>
           <WithEditorActions
-            // tslint:disable-next-line:jsx-no-lambda
-            render={actions =>
+            render={actions => (
               <ButtonGroup>
-                <Button onClick={() => actions.replaceDocument(exampleDocument)}>Load Document</Button>
+                <Button
+                  onClick={() => actions.replaceDocument(exampleDocument)}
+                >
+                  Load Document
+                </Button>
                 <Button onClick={() => actions.clear()}>Clear</Button>
               </ButtonGroup>
-            }
+            )}
           />
           <ToolsDrawer
-            // tslint:disable-next-line:jsx-no-lambda
-            renderEditor={({ mentionProvider, emojiProvider, mediaProvider, imageUploadProvider, onChange }) =>
+            renderEditor={({
+              mentionProvider,
+              emojiProvider,
+              mediaProvider,
+              imageUploadProvider,
+              onChange,
+            }) => (
               <div style={{ padding: '20px' }}>
                 <CollapsedEditor
                   placeholder="What do you want to say?"
@@ -88,7 +103,6 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     appearance="comment"
                     analyticsHandler={analyticsHandler}
                     shouldFocus={true}
-
                     allowTextFormatting={true}
                     allowTasksAndDecisions={true}
                     allowHyperlinks={true}
@@ -96,23 +110,29 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     allowLists={true}
                     allowTables={true}
                     allowHelpDialog={true}
-
+                    allowPlaceholderCursor={true}
                     mentionProvider={mentionProvider}
                     emojiProvider={emojiProvider}
                     mediaProvider={mediaProvider}
                     legacyImageUploadProvider={imageUploadProvider}
-
                     onChange={onChange}
                     onSave={SAVE_ACTION}
                     onCancel={CANCEL_ACTION}
-
                     primaryToolbarComponents={[
-                      <ToolbarFeedback packageVersion={version} packageName={name} />,
-                      <ToolbarHelp />
+                      <ToolbarFeedback
+                        packageVersion={version}
+                        packageName={name}
+                        key="toolbar-feedback"
+                      />,
+                      <ToolbarHelp
+                        editorWidth={undefined}
+                        key="toolbar-help"
+                      />,
                     ]}
                   />
                 </CollapsedEditor>
-              </div>}
+              </div>
+            )}
           />
         </div>
       </EditorContext>
@@ -122,15 +142,16 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
   private loadJquery = () => {
     const scriptElem = document.createElement('script');
     scriptElem.type = 'text/javascript';
-    scriptElem.src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js';
+    scriptElem.src =
+      'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js';
 
     scriptElem.onload = () => {
       this.setState({
         ...this.state,
-        hasJquery: true
+        hasJquery: true,
       });
     };
 
     document.body.appendChild(scriptElem);
-  }
+  };
 }

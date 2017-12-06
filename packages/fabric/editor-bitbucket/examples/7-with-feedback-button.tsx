@@ -7,7 +7,10 @@ const CANCEL_ACTION = () => console.log('Cancel');
 const CHANGE_ACTION = () => console.log('Change');
 const SAVE_ACTION = () => console.log('Save');
 
-export default class EditorWithFeedback extends React.Component<{}, { hasJquery?: boolean }> {
+export default class EditorWithFeedback extends React.Component<
+  {},
+  { hasJquery?: boolean }
+> {
   state = {
     hasJquery: false,
   };
@@ -24,7 +27,11 @@ export default class EditorWithFeedback extends React.Component<{}, { hasJquery?
 
     return (
       <BitbucketStyles>
-        <Editor onCancel={CANCEL_ACTION} onChange={CHANGE_ACTION} onSave={SAVE_ACTION} />
+        <Editor
+          onCancel={CANCEL_ACTION}
+          onChange={CHANGE_ACTION}
+          onSave={SAVE_ACTION}
+        />
       </BitbucketStyles>
     );
   }
@@ -32,7 +39,8 @@ export default class EditorWithFeedback extends React.Component<{}, { hasJquery?
   private loadJquery = () => {
     const scriptElem = document.createElement('script');
     scriptElem.type = 'text/javascript';
-    scriptElem.src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js';
+    scriptElem.src =
+      'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js';
 
     scriptElem.onload = () => {
       this.setState({

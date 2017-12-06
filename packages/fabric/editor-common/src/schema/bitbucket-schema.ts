@@ -20,7 +20,7 @@ export const bitbucketSchema: Schema = createSchema({
     'table',
     'tableCell',
     'tableHeader',
-    'tableRow'
+    'tableRow',
   ],
   marks: [
     'em',
@@ -30,5 +30,5 @@ export const bitbucketSchema: Schema = createSchema({
     'mentionQuery',
     'emojiQuery',
     'code',
-  ]
+  ],
 });

@@ -1,9 +1,9 @@
+// tslint:disable:no-console
+
 import * as React from 'react';
 
 import Editor from '../example-helpers/editor';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
-import { name, version } from '../package.json';
-import { storyDecorator } from '@atlaskit/editor-test-helpers';
 
 const CANCEL_ACTION = () => console.log('Cancel');
 const SAVE_ACTION = () => console.log('Save');
@@ -19,14 +19,19 @@ class DemoEditor extends React.PureComponent<any, any> {
     if (editor && editor.doc && this.props.onChange) {
       this.props.onChange(editor.state.editorView);
     }
-  }
+  };
 
-  private handleEditorRef = (ref) => {
+  private handleEditorRef = ref => {
     this.editorRef = ref;
-  }
+  };
 
   render() {
-    const {mediaProvider, mentionProvider, emojiProvider, activityProvider} = this.props;
+    const {
+      mediaProvider,
+      mentionProvider,
+      emojiProvider,
+      activityProvider,
+    } = this.props;
     return (
       <Editor
         analyticsHandler={analyticsHandler}
@@ -48,15 +53,21 @@ class DemoEditor extends React.PureComponent<any, any> {
 export default function Example() {
   return (
     <ToolsDrawer
-      // tslint:disable-next-line:jsx-no-lambda
-      renderEditor={({mediaProvider, mentionProvider, emojiProvider, activityProvider, onChange}) =>
+      renderEditor={({
+        mediaProvider,
+        mentionProvider,
+        emojiProvider,
+        activityProvider,
+        onChange,
+      }) => (
         <DemoEditor
           onChange={onChange}
           mediaProvider={mediaProvider}
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}
           activityProvider={activityProvider}
-        />}
+        />
+      )}
     />
   );
 }

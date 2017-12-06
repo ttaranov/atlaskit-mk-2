@@ -32,8 +32,6 @@ const InlineNode = styled.span`
 
 export default class UnsupportedInlineNode extends PureComponent<{}, {}> {
   render() {
-    return (
-      <InlineNode>Unsupported content</InlineNode>
-    );
+    return <InlineNode>Unsupported content</InlineNode>;
   }
 }

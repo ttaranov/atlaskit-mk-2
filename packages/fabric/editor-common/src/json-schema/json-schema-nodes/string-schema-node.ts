@@ -6,7 +6,9 @@ export interface StringValidators extends Indexed {
   pattern?: string; // 6.8
 }
 
-export default class StringSchemaNode extends PrimitiveSchemaNode<StringValidators> {
+export default class StringSchemaNode extends PrimitiveSchemaNode<
+  StringValidators
+> {
   constructor(validators: StringValidators = {}) {
     super('string', validators);
   }

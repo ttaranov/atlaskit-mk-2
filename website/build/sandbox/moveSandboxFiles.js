@@ -13,9 +13,9 @@ const getImportFilepath = (currentFilepath, relativeImportPath) => {
     path.parse(currentFilepath).dir,
     relativeImportPath,
   );
-  const fileOrDir = globby.sync(`${importPath}*`)[0];
-  const isDirectory = !path.parse(fileOrDir).ext;
-  return isDirectory ? path.join(fileOrDir, 'index.js') : fileOrDir;
+  return require.resolve(
+    path.join(path.dirname(currentFilepath), relativeImportPath),
+  );
 };
 
 // A recursive function that takes a filepath and returns an array
@@ -39,14 +39,24 @@ const followRelativeImports = filepath => {
         // ... or if it's an export statement that directly exports a relative import
         (nodePath.node.type === 'ExportNamedDeclaration' &&
           nodePath.node.source &&
+          nodePath.node.source.value[0] === '.') ||
+        // export * from './src';
+        (nodePath.node.type === 'ExportAllDeclaration' &&
+          nodePath.node.source &&
           nodePath.node.source.value[0] === '.')
       ) {
         const importedFilepath = getImportFilepath(
           filepath,
           nodePath.node.source.value,
         );
-        // Recursion!
-        imports.push(...followRelativeImports(importedFilepath));
+
+        if (importedFilepath.match(/\.js$/)) {
+          // If imported file is a js file recursively check imports in it
+          imports.push(...followRelativeImports(importedFilepath));
+        } else {
+          // Otherwise just add it's src
+          imports.push(importedFilepath);
+        }
       }
     },
   });

@@ -1,7 +1,7 @@
 import { EditorView } from 'prosemirror-view';
 import { UIComponentFactory } from './editor-plugin';
 import { EventDispatcher } from '../event-dispatcher';
-import { Transformer } from '../../transformers';
+import { Transformer } from '@atlaskit/editor-common';
 
 export interface EditorInstance {
   editorView: EditorView;

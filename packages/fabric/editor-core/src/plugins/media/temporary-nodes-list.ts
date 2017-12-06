@@ -50,6 +50,9 @@ export default class TemporaryNodesList {
   get length() {
     const { map } = this;
 
-    return Array.from(map.keys()).reduce((acc, val) => acc + map.get(val)!.length, 0);
+    return Array.from(map.keys()).reduce(
+      (acc, val) => acc + map.get(val)!.length,
+      0,
+    );
   }
 }

@@ -6,7 +6,13 @@ import { analyticsService } from '../../analytics';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import ToolbarButton from '../ToolbarButton';
-import { toggleUnderline, toggleStrikethrough, toggleCode, clearFormatting, tooltip } from '../../keymaps';
+import {
+  toggleUnderline,
+  toggleStrikethrough,
+  toggleCode,
+  clearFormatting,
+  tooltip,
+} from '../../keymaps';
 import EditorWidth from '../../utils/editor-width';
 import DropdownMenu from '../DropdownMenu';
 import { TriggerWrapper, Wrapper, Separator } from './styles';
@@ -41,28 +47,45 @@ export interface State {
   clearFormattingDisabled?: boolean;
 }
 
-export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, State> {
+export default class ToolbarAdvancedTextFormatting extends PureComponent<
+  Props,
+  State
+> {
   state: State = {
     isOpen: false,
   };
 
   componentDidMount() {
-    const { pluginStateTextFormatting, pluginStateClearFormatting } = this.props;
+    const {
+      pluginStateTextFormatting,
+      pluginStateClearFormatting,
+    } = this.props;
     if (pluginStateTextFormatting) {
-      pluginStateTextFormatting.subscribe(this.handlePluginStateTextFormattingChange);
+      pluginStateTextFormatting.subscribe(
+        this.handlePluginStateTextFormattingChange,
+      );
     }
     if (pluginStateClearFormatting) {
-      pluginStateClearFormatting.subscribe(this.handlePluginStateClearFormattingChange);
+      pluginStateClearFormatting.subscribe(
+        this.handlePluginStateClearFormattingChange,
+      );
     }
   }
 
   componentWillUnmount() {
-    const { pluginStateTextFormatting, pluginStateClearFormatting } = this.props;
+    const {
+      pluginStateTextFormatting,
+      pluginStateClearFormatting,
+    } = this.props;
     if (pluginStateTextFormatting) {
-      pluginStateTextFormatting.unsubscribe(this.handlePluginStateTextFormattingChange);
+      pluginStateTextFormatting.unsubscribe(
+        this.handlePluginStateTextFormattingChange,
+      );
     }
     if (pluginStateClearFormatting) {
-      pluginStateClearFormatting.unsubscribe(this.handlePluginStateClearFormattingChange);
+      pluginStateClearFormatting.unsubscribe(
+        this.handlePluginStateClearFormattingChange,
+      );
     }
   }
 
@@ -70,11 +93,11 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     this.setState({
       isOpen: attrs.isOpen,
     });
-  }
+  };
 
   private handleTriggerClick = () => {
     this.onOpenChange({ isOpen: !this.state.isOpen });
-  }
+  };
 
   render() {
     const {
@@ -89,13 +112,21 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
       strikethroughDisabled,
       clearFormattingDisabled,
       subscriptDisabled,
-      superscriptDisabled
+      superscriptDisabled,
     } = this.state;
-    const { popupsMountPoint, popupsBoundariesElement, editorWidth } = this.props;
+    const {
+      popupsMountPoint,
+      popupsBoundariesElement,
+      editorWidth,
+    } = this.props;
     const items = this.createItems(editorWidth);
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
-        spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
+        spacing={
+          editorWidth && editorWidth > EditorWidth.BreakPoint10
+            ? 'default'
+            : 'none'
+        }
         selected={
           isOpen ||
           (underlineActive && editorWidth! <= EditorWidth.BreakPoint2) ||
@@ -108,17 +139,25 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
         onClick={this.handleTriggerClick}
         iconBefore={
           <TriggerWrapper>
-            <MoreIcon label="Open or close advance text formatting dropdown"/>
-          </TriggerWrapper>}
+            <MoreIcon label="Open or close advance text formatting dropdown" />
+          </TriggerWrapper>
+        }
       />
     );
 
-    if (!this.props.isDisabled &&
-      !(strikethroughDisabled && clearFormattingDisabled &&
-        codeDisabled && subscriptDisabled && superscriptDisabled &&
-        (underlineDisabled && (!editorWidth || editorWidth <= EditorWidth.BreakPoint2))
+    if (
+      !this.props.isDisabled &&
+      !(
+        strikethroughDisabled &&
+        clearFormattingDisabled &&
+        codeDisabled &&
+        subscriptDisabled &&
+        superscriptDisabled &&
+        (underlineDisabled &&
+          (!editorWidth || editorWidth <= EditorWidth.BreakPoint2))
       ) &&
-      items[0].items.length > 0) {
+      items[0].items.length > 0
+    ) {
       return (
         <Wrapper>
           <DropdownMenu
@@ -139,9 +178,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     } else {
       return (
         <Wrapper>
-          <div>
-            {toolbarButtonFactory(true)}
-          </div>
+          <div>{toolbarButtonFactory(true)}</div>
           <Separator />
         </Wrapper>
       );
@@ -149,34 +186,74 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   }
 
   private createItems = (editorWidth?: number) => {
-    const { pluginStateTextFormatting, pluginStateClearFormatting } = this.props;
+    const {
+      pluginStateTextFormatting,
+      pluginStateClearFormatting,
+    } = this.props;
     let items: any[] = [];
 
     if (pluginStateTextFormatting) {
-      const { underlineHidden, codeHidden, strikeHidden, subscriptHidden, superscriptHidden } = this.state;
-      if (!underlineHidden && editorWidth! <= EditorWidth.BreakPoint2) {
-        this.addRecordToItems(items, 'Underline', 'underline', tooltip(toggleUnderline));
+      const {
+        underlineHidden,
+        codeHidden,
+        strikeHidden,
+        subscriptHidden,
+        superscriptHidden,
+      } = this.state;
+      if (
+        !underlineHidden &&
+        editorWidth &&
+        editorWidth <= EditorWidth.BreakPoint2
+      ) {
+        this.addRecordToItems(
+          items,
+          'Underline',
+          'underline',
+          tooltip(toggleUnderline),
+        );
       }
       if (!strikeHidden) {
-        this.addRecordToItems(items, 'Strikethrough', 'strikethrough', tooltip(toggleStrikethrough));
+        this.addRecordToItems(
+          items,
+          'Strikethrough',
+          'strikethrough',
+          tooltip(toggleStrikethrough),
+        );
       }
       if (!codeHidden) {
-        this.addRecordToItems(items, 'Monospace', 'code', tooltip(toggleCode));
+        this.addRecordToItems(items, 'Code', 'code', tooltip(toggleCode));
       }
       if (!subscriptHidden) {
-        this.addRecordToItems(items, 'Subscript', 'subscript', 'Toggle subscript');
+        this.addRecordToItems(
+          items,
+          'Subscript',
+          'subscript',
+          'Toggle subscript',
+        );
       }
       if (!superscriptHidden) {
-        this.addRecordToItems(items, 'Superscript', 'superscript', 'Toggle superscript');
+        this.addRecordToItems(
+          items,
+          'Superscript',
+          'superscript',
+          'Toggle superscript',
+        );
       }
     }
     if (pluginStateClearFormatting) {
-      this.addRecordToItems(items, 'Clear Formatting', 'clear', tooltip(clearFormatting));
+      this.addRecordToItems(
+        items,
+        'Clear Formatting',
+        'clear',
+        tooltip(clearFormatting),
+      );
     }
-    return [{
-      items,
-    }];
-  }
+    return [
+      {
+        items,
+      },
+    ];
+  };
 
   private addRecordToItems = (items, content, value, tooltipDescription) => {
     items.push({
@@ -187,9 +264,11 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
       tooltipDescription,
       tooltipPosition: 'right',
     });
-  }
+  };
 
-  private handlePluginStateTextFormattingChange = (pluginState: TextFormattingState) => {
+  private handlePluginStateTextFormattingChange = (
+    pluginState: TextFormattingState,
+  ) => {
     this.setState({
       underlineActive: pluginState.underlineActive,
       underlineDisabled: pluginState.underlineDisabled,
@@ -211,18 +290,23 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
       superscriptDisabled: pluginState.superscriptDisabled,
       superscriptHidden: pluginState.superscriptHidden,
     });
-  }
+  };
 
-  private handlePluginStateClearFormattingChange = (pluginState: ClearFormattingState) => {
+  private handlePluginStateClearFormattingChange = (
+    pluginState: ClearFormattingState,
+  ) => {
     this.setState({
       clearFormattingDisabled: !pluginState.formattingIsPresent,
     });
-  }
+  };
 
   private onItemActivated = ({ item }) => {
     analyticsService.trackEvent(`atlassian.editor.format.${item.value}.button`);
-    const { pluginStateTextFormatting, pluginStateClearFormatting } = this.props;
-    switch(item.value) {
+    const {
+      pluginStateTextFormatting,
+      pluginStateClearFormatting,
+    } = this.props;
+    switch (item.value) {
       case 'underline':
         pluginStateTextFormatting!.toggleUnderline(this.props.editorView);
         break;
@@ -242,5 +326,6 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
         pluginStateClearFormatting!.clearFormatting(this.props.editorView);
         break;
     }
-  }
+    this.setState({ isOpen: false });
+  };
 }

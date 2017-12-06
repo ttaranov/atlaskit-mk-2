@@ -5,14 +5,17 @@ import * as baseListCommand from 'prosemirror-schema-list';
 import * as commands from '../../commands';
 import { liftFollowingList } from '../../commands/lists';
 
-export const enterKeyCommand = (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
+export const enterKeyCommand = (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
   const { selection } = state;
   if (selection.empty) {
     const { $from } = selection;
     const { listItem } = state.schema.nodes;
     const node = $from.node($from.depth);
     const wrapper = $from.node($from.depth - 1);
-    if (wrapper.type === listItem) {
+    if (wrapper && wrapper.type === listItem) {
       if (node.textContent.length === 0) {
         return commands.outdentList()(state, dispatch);
       } else {
@@ -27,14 +30,17 @@ export const toggleList = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
   view: EditorView,
-  listType: 'bulletList' | 'orderedList'
+  listType: 'bulletList' | 'orderedList',
 ): boolean => {
   const { selection } = state;
   const { bulletList, orderedList, listItem } = state.schema.nodes;
   const fromNode = selection.$from.node(selection.$from.depth - 2);
   const endNode = selection.$to.node(selection.$to.depth - 2);
-  if ((!fromNode || fromNode.type.name !== listType) ||
-    (!endNode || endNode.type.name !== listType)) {
+  if (
+    !fromNode ||
+    fromNode.type.name !== listType ||
+    (!endNode || endNode.type.name !== listType)
+  ) {
     return commands.toggleList(listType)(state, dispatch, view);
   } else {
     let rootListDepth;
@@ -43,7 +49,11 @@ export const toggleList = (
       if (node.type === bulletList || node.type === orderedList) {
         rootListDepth = i;
       }
-      if (node.type !== bulletList && node.type !== orderedList && node.type !== listItem) {
+      if (
+        node.type !== bulletList &&
+        node.type !== orderedList &&
+        node.type !== listItem
+      ) {
         break;
       }
     }
@@ -52,7 +62,7 @@ export const toggleList = (
       selection.$to.pos,
       selection.$to.end(rootListDepth),
       rootListDepth,
-      state.tr
+      state.tr,
     );
     tr = liftSelectionList(state, tr);
     dispatch(tr);
@@ -78,7 +88,9 @@ function liftSelectionList(state: EditorState, tr: Transaction): Transaction {
     if (start.depth > 0) {
       let end;
       if (paragraph.node.textContent && paragraph.node.textContent.length > 0) {
-        end = tr.doc.resolve(tr.mapping.map(paragraph.pos + paragraph.node.textContent.length));
+        end = tr.doc.resolve(
+          tr.mapping.map(paragraph.pos + paragraph.node.textContent.length),
+        );
       } else {
         end = tr.doc.resolve(tr.mapping.map(paragraph.pos + 1));
       }
@@ -100,7 +112,11 @@ function listLiftTarget(schema: Schema, resPos: ResolvedPos): number {
     if (node.type === bulletList || node.type === orderedList) {
       target = i;
     }
-    if (node.type !== bulletList && node.type !== orderedList && node.type !== listItem) {
+    if (
+      node.type !== bulletList &&
+      node.type !== orderedList &&
+      node.type !== listItem
+    ) {
       break;
     }
   }

@@ -174,7 +174,7 @@ export class EmojiState {
     return { start, end };
   }
 
-  insertEmoji(emojiId?: EmojiId) {
+  insertEmoji = (emojiId?: EmojiId) => {
     const { state, view } = this;
     const { emoji } = state.schema.nodes;
 
@@ -198,7 +198,7 @@ export class EmojiState {
     } else {
       this.dismiss();
     }
-  }
+  };
 
   handleProvider = (name: string, provider: Promise<any>): void => {
     switch (name) {
@@ -273,11 +273,15 @@ export function createPlugin(providerFactory: ProviderFactory) {
       nodeViews: {
         emoji: nodeViewFactory(providerFactory, { emoji: emojiNodeView }),
       },
-      onFocus(view: EditorView, event) {
-        stateKey.getState(view.state).updateEditorFocused(true);
-      },
-      onBlur(view: EditorView, event) {
-        stateKey.getState(view.state).updateEditorFocused(false);
+      handleDOMEvents: {
+        focus(view: EditorView, event) {
+          stateKey.getState(view.state).updateEditorFocused(true);
+          return false;
+        },
+        blur(view: EditorView, event) {
+          stateKey.getState(view.state).updateEditorFocused(false);
+          return false;
+        },
       },
     },
     key: stateKey,
@@ -286,7 +290,7 @@ export function createPlugin(providerFactory: ProviderFactory) {
       pluginState.setView(view);
 
       return {
-        update(view: EditorView, prevState: EditorState<any>) {
+        update(view: EditorView, prevState: EditorState) {
           pluginState.update(view.state);
         },
         destroy() {

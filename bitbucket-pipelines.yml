@@ -4,13 +4,14 @@ pipelines:
     master:
       - step:
           script:
+            # Note: in master, this script will rebase you onto latest origin/master
             - source ./build-setup.sh
             - bolt install --pure-lockfile
             - (cd build/ci-scripts && bolt stop-if-older-build)
             - bolt build
             - bolt lint
             - bolt typecheck
-            - bolt test
+            - bolt test:ci
             - bolt test:browser:browserstack
             - bolt release
             - (cd build/ci-scripts && bolt restart-stopped-build)
@@ -23,7 +24,7 @@ pipelines:
           - bolt build
           - bolt lint
           - bolt typecheck
-          - bolt test
+          - bolt test:ci
           - bolt test:browser:browserstack
           - (cd website && bolt deploy-staging:no-minimize)
 

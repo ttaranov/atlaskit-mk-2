@@ -35,14 +35,14 @@ export default class RecentSearch extends PureComponent<Props, State> {
   state: State = {
     selectedIndex: -1,
     linkAdded: false,
-    isLoading: false
+    isLoading: false,
   };
 
   async resolveProvider() {
     const activityProvider = await this.props.activityProvider;
 
     this.setState({
-      activityProvider: activityProvider
+      activityProvider: activityProvider,
     });
 
     return activityProvider;
@@ -65,23 +65,23 @@ export default class RecentSearch extends PureComponent<Props, State> {
 
   private updateInput = async (input: string) => {
     this.setState({
-      input: input
+      input: input,
     });
 
     if (this.state.activityProvider) {
       if (input.length === 0) {
         this.setState({
           items: limit(await this.state.activityProvider.getRecentItems()),
-          selectedIndex: -1
+          selectedIndex: -1,
         });
       } else {
         this.setState({
           items: limit(await this.state.activityProvider.searchRecent(input)),
-          selectedIndex: 0
+          selectedIndex: 0,
         });
       }
     }
-  }
+  };
 
   render() {
     const { items, isLoading, selectedIndex } = this.state;
@@ -112,12 +112,12 @@ export default class RecentSearch extends PureComponent<Props, State> {
     const { items } = this.state;
 
     if (items) {
-      const index = findIndex(items, (item) => item.objectId === objectId);
+      const index = findIndex(items, item => item.objectId === objectId);
       this.setState({
-        selectedIndex: index
+        selectedIndex: index,
       });
     }
-  }
+  };
 
   private handleSubmit = () => {
     const { items, input, selectedIndex } = this.state;
@@ -129,7 +129,7 @@ export default class RecentSearch extends PureComponent<Props, State> {
     } else if (input && input.length > 0) {
       this.addLink(input);
     }
-  }
+  };
 
   private handleKeyDown = (e: KeyboardEvent<any>) => {
     const { items, selectedIndex } = this.state;
@@ -137,30 +137,35 @@ export default class RecentSearch extends PureComponent<Props, State> {
       return;
     }
 
-    if (e.keyCode === 40) { // down
+    if (e.keyCode === 40) {
+      // down
       e.preventDefault();
       this.setState({
-        selectedIndex: (selectedIndex + 1) % items.length
+        selectedIndex: (selectedIndex + 1) % items.length,
       });
-    } else if (e.keyCode === 38) { // up
+    } else if (e.keyCode === 38) {
+      // up
       e.preventDefault();
       this.setState({
-        selectedIndex: selectedIndex > 0 ? selectedIndex - 1 : items.length - 1
+        selectedIndex: selectedIndex > 0 ? selectedIndex - 1 : items.length - 1,
       });
     }
-  }
+  };
 
   private handleBlur = () => {
     const { editorView, pluginState } = this.props;
     const { linkAdded } = this.state;
 
-    if (linkAdded || editorView.state.selection.empty && !pluginState.active) {
-      pluginState.hideLinkPanel();
+    if (
+      linkAdded ||
+      (editorView.state.selection.empty && !pluginState.active)
+    ) {
+      pluginState.hideLinkPanel(editorView.state, editorView.dispatch);
       editorView.focus();
     } else {
       pluginState.removeLink(editorView);
     }
-  }
+  };
 
   private addLink = (href: string, text?: string) => {
     const { editorView, pluginState } = this.props;
@@ -171,12 +176,15 @@ export default class RecentSearch extends PureComponent<Props, State> {
       pluginState.updateLink({ href }, editorView);
     }
 
-    this.setState({
-      linkAdded: true
-    }, () => {
-      editorView.focus();
-    });
-  }
+    this.setState(
+      {
+        linkAdded: true,
+      },
+      () => {
+        editorView.focus();
+      },
+    );
+  };
 }
 
 const findIndex = (array: any[], predicate: (item: any) => boolean): number => {

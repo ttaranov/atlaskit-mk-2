@@ -10,9 +10,7 @@ export default class Portal extends PureComponent<Props, any> {
   target?: HTMLElement;
 
   private renderPortalContent(children) {
-    return (
-      <div>{children}</div>
-    );
+    return <div>{children}</div>;
   }
 
   private renderPortal(props) {
@@ -28,7 +26,7 @@ export default class Portal extends PureComponent<Props, any> {
     ReactDOM.unstable_renderSubtreeIntoContainer(
       this,
       this.renderPortalContent(props.children),
-      this.target
+      this.target,
     );
   }
 

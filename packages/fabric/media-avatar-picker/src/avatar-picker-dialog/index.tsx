@@ -1,15 +1,21 @@
 import * as React from 'react';
-import {PureComponent} from 'react';
+import { PureComponent } from 'react';
 
 import ModalDialog, { ModalFooter } from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 
-import {Avatar} from '../avatar-list';
-import {ImageNavigator, CropProperties} from '../image-navigator';
-import {PredefinedAvatarList} from '../predefined-avatar-list';
+import { Avatar } from '../avatar-list';
+import { ImageNavigator, CropProperties } from '../image-navigator';
+import { PredefinedAvatarList } from '../predefined-avatar-list';
 
-import {AvatarPickerViewWrapper, ModalHeader} from './styled';
-import {PredefinedAvatarView} from '../predefined-avatar-view';
+import {
+  AvatarPickerViewWrapper,
+  ModalHeader,
+  CroppingWrapper,
+} from './styled';
+import { PredefinedAvatarView } from '../predefined-avatar-view';
+
+export const DEFAULT_VISIBLE_PREDEFINED_AVATARS = 5;
 
 export interface AvatarPickerDialogProps {
   avatars: Array<Avatar>;
@@ -32,31 +38,33 @@ export interface AvatarPickerDialogState {
   crop: CropProperties;
 }
 
-export class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, AvatarPickerDialogState> {
+export class AvatarPickerDialog extends PureComponent<
+  AvatarPickerDialogProps,
+  AvatarPickerDialogState
+> {
   static defaultProps = {
-    avatars: []
+    avatars: [],
   };
 
-  constructor() {
-    super();
-
-    this.state = {
-      mode: Mode.Cropping,
-      crop: {
-        x: 0,
-        y: 0,
-        size: 0,
-      }
-    };
-  }
+  state: AvatarPickerDialogState = {
+    mode: Mode.Cropping,
+    crop: {
+      x: 0,
+      y: 0,
+      size: 0,
+    },
+    selectedAvatar: this.props.defaultSelectedAvatar,
+  };
 
   setSelectedImageState = (selectedImage: File, crop: CropProperties) => {
     this.setState({ selectedImage, crop });
-  }
+  };
 
   setSelectedAvatarState = (avatar: Avatar) => {
-    this.setState({ selectedAvatar: avatar });
-  }
+    this.setState({
+      selectedAvatar: avatar,
+    });
+  };
 
   /**
    * Updates the image position state. These numbers are always positive.
@@ -66,34 +74,38 @@ export class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, A
    */
   setPositionState = (x: number, y: number) => {
     const { size } = this.state.crop;
-    this.setState({ crop: { x, y, size }});
-  }
+    this.setState({ crop: { x, y, size } });
+  };
 
   setSizeState = (size: number) => {
     const { x, y } = this.state.crop;
-    this.setState({ crop: { x, y, size }});
-  }
+    this.setState({ crop: { x, y, size } });
+  };
 
   onSaveClick = () => {
-    if (this.state.selectedImage) {
-      this.props.onImagePicked(this.state.selectedImage, this.state.crop);
-    } else if (this.state.selectedAvatar) {
-      this.props.onAvatarPicked(this.state.selectedAvatar);
+    const { onImagePicked, onAvatarPicked } = this.props;
+    const { selectedImage, crop, selectedAvatar } = this.state;
+
+    if (selectedImage) {
+      onImagePicked(selectedImage, crop);
+    } else if (selectedAvatar) {
+      onAvatarPicked(selectedAvatar);
     }
-  }
+  };
 
   onShowMore = () => {
-    this.setState({ mode: Mode.PredefinedAvatars});
-  }
+    this.setState({ mode: Mode.PredefinedAvatars });
+  };
 
   onGoBack = () => {
     this.setState({ mode: Mode.Cropping });
-  }
+  };
 
   render() {
     return (
       <ModalDialog
-        width="352px"
+        height="437px"
+        width="360px"
         header={this.renderHeader()}
         footer={this.renderFooter()}
         onClose={this.props.onCancel}
@@ -107,54 +119,99 @@ export class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, A
   }
 
   renderHeader() {
-    return () => (
-      <ModalHeader>Upload an avatar</ModalHeader>
-    );
+    return () => <ModalHeader>Upload an avatar</ModalHeader>;
   }
 
   renderFooter() {
     return () => (
       <ModalFooter>
         <div>
-          <Button appearance="primary" onClick={this.onSaveClick}>Save</Button>
-          <Button appearance="subtle-link" onClick={this.props.onCancel}>Cancel</Button>
+          <Button
+            appearance="primary"
+            onClick={this.onSaveClick}
+            isDisabled={this.isDisabled}
+          >
+            Save
+          </Button>
+          <Button appearance="subtle-link" onClick={this.props.onCancel}>
+            Cancel
+          </Button>
         </div>
       </ModalFooter>
     );
   }
 
+  get isDisabled() {
+    return !(
+      this.props.imageSource ||
+      this.state.selectedImage ||
+      this.state.selectedAvatar
+    );
+  }
+
+  get isAvatarListVisible() {
+    const { imageSource } = this.props;
+    const { selectedImage } = this.state;
+
+    return !imageSource && !selectedImage;
+  }
+
+  getPredefinedAvatars() {
+    const { avatars } = this.props;
+    const { selectedAvatar } = this.state;
+    const avatarsSubset = avatars.slice(0, DEFAULT_VISIBLE_PREDEFINED_AVATARS);
+    if (
+      selectedAvatar &&
+      avatars.indexOf(selectedAvatar) >= DEFAULT_VISIBLE_PREDEFINED_AVATARS
+    ) {
+      avatarsSubset[avatarsSubset.length - 1] = selectedAvatar;
+    }
+    return avatarsSubset;
+  }
+
+  renderPredefinedAvatarList() {
+    const { selectedAvatar } = this.state;
+    const { isAvatarListVisible } = this;
+    const avatars = this.getPredefinedAvatars();
+    if (!isAvatarListVisible) {
+      return null;
+    }
+
+    return (
+      <PredefinedAvatarList
+        selectedAvatar={selectedAvatar}
+        avatars={avatars}
+        onAvatarSelected={this.setSelectedAvatarState}
+        onShowMore={this.onShowMore}
+      />
+    );
+  }
+
   renderContent() {
-    const {imageSource, avatars} = this.props;
-    const {mode} = this.state;
+    const { imageSource, avatars } = this.props;
+    const { mode, selectedAvatar } = this.state;
 
     switch (mode) {
       case Mode.Cropping:
         return (
-          <div className="cropping-wrapper">
-            <div className="cropper">
-              <ImageNavigator
-                imageSource={imageSource}
-                onImageChanged={this.setSelectedImageState}
-                onPositionChanged={this.setPositionState}
-                onSizeChanged={this.setSizeState}
-              />
-            </div>
-            <div className="predefined-avatars">
-              <PredefinedAvatarList
-                avatars={avatars.slice(0, 5)}
-                onAvatarSelected={this.setSelectedAvatarState}
-                onShowMore={this.onShowMore}
-              />
-            </div>
-          </div>
+          <CroppingWrapper>
+            <ImageNavigator
+              imageSource={imageSource}
+              onImageChanged={this.setSelectedImageState}
+              onPositionChanged={this.setPositionState}
+              onSizeChanged={this.setSizeState}
+            />
+            {this.renderPredefinedAvatarList()}
+          </CroppingWrapper>
         );
       case Mode.PredefinedAvatars:
         return (
-          <div className="predefined-avatars-wrapper">
+          <div>
             <PredefinedAvatarView
               avatars={avatars}
               onAvatarSelected={this.setSelectedAvatarState}
               onGoBack={this.onGoBack}
+              selectedAvatar={selectedAvatar}
             />
           </div>
         );

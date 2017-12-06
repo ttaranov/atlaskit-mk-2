@@ -68,17 +68,27 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   private handlePluginStateChange = (state: EmojiState) => {
     const { anchorElement, query, queryActive, focused } = state;
     this.setState({ anchorElement, query, queryActive, focused });
-  }
+  };
 
-  private handleEmojiTypeAheadRef = (ref) => {
+  private handleEmojiTypeAheadRef = ref => {
     this.typeAhead = ref;
-  }
+  };
 
   render() {
     const { anchorElement, query, queryActive, focused } = this.state;
-    const { popupsBoundariesElement, popupsMountPoint, emojiProvider } = this.props;
+    const {
+      popupsBoundariesElement,
+      popupsMountPoint,
+      emojiProvider,
+    } = this.props;
 
-    if (!focused || !this.pluginState || !anchorElement || !queryActive || !emojiProvider) {
+    if (
+      !focused ||
+      !this.pluginState ||
+      !anchorElement ||
+      !queryActive ||
+      !emojiProvider
+    ) {
       return null;
     }
 
@@ -103,7 +113,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
 
   private handleSelectedEmoji = (emojiId: any, emoji: any) => {
     this.pluginState!.insertEmoji(emojiId);
-  }
+  };
 
   private handleSelectPrevious = (): boolean => {
     if (this.typeAhead) {
@@ -111,7 +121,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     }
 
     return true;
-  }
+  };
 
   private handleSelectNext = (): boolean => {
     if (this.typeAhead) {
@@ -119,7 +129,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     }
 
     return true;
-  }
+  };
 
   private handleSelectCurrent = (): boolean => {
     if (this.getEmojisCount() > 0) {
@@ -129,7 +139,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     }
 
     return true;
-  }
+  };
 
   private getEmojisCount(): number {
     return (this.typeAhead && this.typeAhead.count()) || 0;

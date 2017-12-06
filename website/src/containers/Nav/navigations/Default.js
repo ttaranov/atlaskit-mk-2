@@ -62,9 +62,10 @@ const defaultNavGroups = [
 ];
 
 export type DefaultNavProps = {
+  onClick?: () => mixed,
   pathname: string,
 };
 
-export default function DefaultNav(props: DefaultNavProps) {
-  return <div>{renderNav(defaultNavGroups, props.pathname)}</div>;
+export default function DefaultNav({ onClick, pathname }: DefaultNavProps) {
+  return <div>{renderNav(defaultNavGroups, { onClick, pathname })}</div>;
 }

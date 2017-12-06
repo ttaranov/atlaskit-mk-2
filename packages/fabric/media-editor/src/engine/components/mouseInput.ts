@@ -1,5 +1,5 @@
-import {Component} from './component';
-import {Signal} from '../signal';
+import { Component } from './component';
+import { Signal } from '../signal';
 
 // Each coordinate is a float value between 0.0 and 1.0.
 // (0.0, 0.0) corresponds to the top left corner, (1.0, 1.0) corresponds to the bottom right corner of the input area.
@@ -25,8 +25,10 @@ export class DefaultMouseInput implements MouseInput {
   readonly dragEnd = new Signal<ScreenPoint>();
   readonly dragLost = new Signal<{}>();
 
-  private readonly mouseDownListener = (event: MouseEvent) => this.mouseDown(event);
-  private readonly mouseMoveListener = (event: MouseEvent) => this.mouseMove(event);
+  private readonly mouseDownListener = (event: MouseEvent) =>
+    this.mouseDown(event);
+  private readonly mouseMoveListener = (event: MouseEvent) =>
+    this.mouseMove(event);
   private readonly mouseUpListener = (event: MouseEvent) => this.mouseUp(event);
   private readonly mouseLostListener = () => this.mouseLost();
 
@@ -35,9 +37,12 @@ export class DefaultMouseInput implements MouseInput {
   private isCapturingInput: boolean;
   private initialPosition: ScreenPoint;
 
-  constructor(private readonly inputArea: HTMLElement,
-              positionCalculator?: PositionCalculator) {
-    this.getPosition = positionCalculator || (event => this.defaultPositionCalculator(event));
+  constructor(
+    private readonly inputArea: HTMLElement,
+    positionCalculator?: PositionCalculator,
+  ) {
+    this.getPosition =
+      positionCalculator || (event => this.defaultPositionCalculator(event));
     this.isDragging = false;
     this.isCapturingInput = false;
     this.inputArea.addEventListener('mousedown', this.mouseDownListener);
@@ -126,7 +131,7 @@ export class DefaultMouseInput implements MouseInput {
 
     return {
       x: x / rect.width,
-      y: y / rect.height
+      y: y / rect.height,
     };
   }
 }

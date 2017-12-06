@@ -2,10 +2,13 @@ import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
 export const nodeLen = (node: Node): number => {
-  return node.nodeType === 3 && node.nodeValue ? node.nodeValue.length : node.childNodes.length;
+  return node.nodeType === 3 && node.nodeValue
+    ? node.nodeValue.length
+    : node.childNodes.length;
 };
 
-export const isIgnorable = (dom: any): boolean => dom.pmViewDesc && dom.pmViewDesc.size === 0;
+export const isIgnorable = (dom: any): boolean =>
+  dom.pmViewDesc && dom.pmViewDesc.size === 0;
 
 export const isBlockNode = (dom: any): boolean => {
   const desc = dom.pmViewDesc;
@@ -14,7 +17,7 @@ export const isBlockNode = (dom: any): boolean => {
 
 export const domIndex = function(node: Node | null): number | undefined {
   if (node) {
-    for (let index = 0;; index++) {
+    for (let index = 0; ; index++) {
       node = node.previousSibling;
       if (!node) {
         return index;
@@ -41,10 +44,15 @@ export const removeIgnoredNodesLeft = (view: EditorView) => {
     if (offset > 0) {
       if (node.nodeType !== 1) {
         // zero-width non-breaking space
-        if (node.nodeType === 3 && node.nodeValue.charAt(offset - 1) === '\ufeff') {
+        if (
+          node.nodeType === 3 &&
+          node.nodeValue.charAt(offset - 1) === '\ufeff'
+        ) {
           removeNode = node;
           removeOffset = --offset;
-        } else { break; }
+        } else {
+          break;
+        }
       } else {
         const before = node.childNodes[offset - 1];
         if (isIgnorable(before)) {
@@ -53,7 +61,9 @@ export const removeIgnoredNodesLeft = (view: EditorView) => {
         } else if (before.nodeType === 3) {
           node = before;
           offset = node.nodeValue.length;
-        } else { break; }
+        } else {
+          break;
+        }
       }
     } else if (isBlockNode(node)) {
       break;
@@ -66,7 +76,9 @@ export const removeIgnoredNodesLeft = (view: EditorView) => {
       }
       if (!prev) {
         node = node.parentNode;
-        if (node === view.dom) { break; }
+        if (node === view.dom) {
+          break;
+        }
         offset = 0;
       } else {
         node = prev;

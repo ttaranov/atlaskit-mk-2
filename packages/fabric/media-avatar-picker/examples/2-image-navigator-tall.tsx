@@ -1,12 +1,16 @@
-/* tslint:disable:variable-name */
+/* tslint:disable:no-console */
 import * as React from 'react';
-import {tallImage, smallImage, remoteImage} from '@atlaskit/media-test-helpers';
-import {ImageNavigator} from '../src';
+import {
+  tallImage,
+  smallImage,
+  remoteImage,
+} from '@atlaskit/media-test-helpers';
+import { ImageNavigator } from '../src/image-navigator';
 
 let onLoadParams;
 let imageElement;
 
-const onLoad = (params) => {
+const onLoad = params => {
   onLoadParams = params;
 };
 const exportImage = () => {

@@ -3,11 +3,7 @@ import { baseKeymap } from 'prosemirror-commands';
 import { history } from 'prosemirror-history';
 import { keymap } from 'prosemirror-keymap';
 import { Schema } from 'prosemirror-model';
-import {
-  EditorState,
-  Plugin,
-  TextSelection,
-} from 'prosemirror-state';
+import { EditorState, Plugin, TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
 import {
@@ -37,7 +33,6 @@ import {
   pastePlugins,
   ProviderFactory,
   version as coreVersion,
-
   MediaProvider,
   MediaState,
   MediaPluginState,
@@ -54,13 +49,11 @@ import {
   // error-reporting
   ErrorReporter,
   ErrorReportingHandler,
-
-  // transformers
-  JIRATransformer,
-  JSONTransformer,
-
   createJIRASchema,
 } from '@atlaskit/editor-core';
+
+import { JIRATransformer } from '@atlaskit/editor-jira-transformer';
+import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 
 import { MentionProvider } from '@atlaskit/mention';
 import { ActivityProvider } from '@atlaskit/activity';
@@ -151,15 +144,22 @@ export default class Editor extends PureComponent<Props, State> {
     super(props);
 
     const {
-      allowLists, allowLinks, allowAdvancedTextFormatting,
-      allowCodeBlock, allowBlockQuote, allowSubSup, allowTextColor, allowTables,
+      allowLists,
+      allowLinks,
+      allowAdvancedTextFormatting,
+      allowCodeBlock,
+      allowBlockQuote,
+      allowSubSup,
+      allowTextColor,
+      allowTables,
 
       analyticsHandler,
 
       mentionProvider,
-      mediaProvider, uploadErrorHandler,
+      mediaProvider,
+      uploadErrorHandler,
 
-      isExpandedByDefault: isExpanded
+      isExpandedByDefault: isExpanded,
     } = props;
 
     const schema = createJIRASchema({
@@ -172,7 +172,7 @@ export default class Editor extends PureComponent<Props, State> {
       allowSubSup: !!allowSubSup,
       allowTextColor: !!allowTextColor,
       allowMedia: !!mediaProvider,
-      allowTables: !!allowTables
+      allowTables: !!allowTables,
     });
 
     this.state = { isExpanded, schema, isMediaReady: true };
@@ -194,11 +194,11 @@ export default class Editor extends PureComponent<Props, State> {
       this.mediaPlugins = mediaPluginFactory(schema, {
         uploadErrorHandler,
         errorReporter,
-        providerFactory: this.providerFactory
+        providerFactory: this.providerFactory,
       });
     }
 
-    analyticsService.handler = analyticsHandler || ((name) => { });
+    analyticsService.handler = analyticsHandler || (name => {});
   }
 
   async componentWillMount() {
@@ -206,14 +206,20 @@ export default class Editor extends PureComponent<Props, State> {
     const { mentionEncoder } = this.props;
     const { schema } = this.state;
 
-    this.transformerWithMediaContext = new JIRATransformer(schema, { mention: mentionEncoder }, mediaContextInfo);
+    this.transformerWithMediaContext = new JIRATransformer(
+      schema,
+      { mention: mentionEncoder },
+      mediaContextInfo,
+    );
   }
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.isDisabled !== this.props.isDisabled) {
       const { editorView } = this.state;
       if (editorView) {
-        (editorView.dom as HTMLElement).contentEditable = String(!nextProps.isDisabled);
+        (editorView.dom as HTMLElement).contentEditable = String(
+          !nextProps.isDisabled,
+        );
 
         if (!nextProps.isDisabled && !editorView.hasFocus()) {
           editorView.focus();
@@ -264,7 +270,7 @@ export default class Editor extends PureComponent<Props, State> {
     if (onExpanded) {
       onExpanded(this);
     }
-  }
+  };
 
   /**
    * Collapse the editor chrome
@@ -273,7 +279,7 @@ export default class Editor extends PureComponent<Props, State> {
     const { schema } = this.state;
 
     this.setState({ isExpanded: false, schema });
-  }
+  };
 
   /**
    * Clear the content of the editor, making it an empty document.
@@ -284,7 +290,9 @@ export default class Editor extends PureComponent<Props, State> {
     if (editorView) {
       const { state } = editorView;
       const tr = state.tr
-        .setSelection(TextSelection.create(state.doc, 0, state.doc.nodeSize - 2))
+        .setSelection(
+          TextSelection.create(state.doc, 0, state.doc.nodeSize - 2),
+        )
         .deleteSelection();
 
       editorView.dispatch(tr);
@@ -308,7 +316,9 @@ export default class Editor extends PureComponent<Props, State> {
    */
   get value(): Promise<string | undefined> {
     const { editorView } = this.state;
-    const mediaPluginState = editorView && mediaStateKey.getState(editorView.state) as MediaPluginState;
+    const mediaPluginState =
+      editorView &&
+      (mediaStateKey.getState(editorView.state) as MediaPluginState);
 
     return (async () => {
       if (mediaPluginState) {
@@ -325,29 +335,43 @@ export default class Editor extends PureComponent<Props, State> {
     const { editorView, isExpanded, isMediaReady } = this.state;
     const {
       isDisabled = false,
-      mentionProvider, mediaProvider, activityProvider,
-      popupsBoundariesElement, popupsMountPoint,
+      mentionProvider,
+      mediaProvider,
+      activityProvider,
+      popupsBoundariesElement,
+      popupsMountPoint,
       renderFooter,
-      onSave, onCancel
+      onSave,
+      onCancel,
     } = this.props;
     const editorState = editorView && editorView.state;
 
     const listsState = editorState && listsStateKey.getState(editorState);
-    const blockTypeState = editorState && blockTypeStateKey.getState(editorState);
-    const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
-    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
-    const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
-    const textColorState = editorState && textColorStateKey.getState(editorState);
-    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
+    const blockTypeState =
+      editorState && blockTypeStateKey.getState(editorState);
+    const clearFormattingState =
+      editorState && clearFormattingStateKey.getState(editorState);
+    const codeBlockState =
+      editorState && codeBlockStateKey.getState(editorState);
+    const textFormattingState =
+      editorState && textFormattingStateKey.getState(editorState);
+    const textColorState =
+      editorState && textColorStateKey.getState(editorState);
+    const hyperlinkState =
+      editorState && hyperlinkStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
-    const mediaState = editorState && mediaProvider && this.mediaPlugins && mediaStateKey.getState(editorState);
+    const mediaState =
+      editorState &&
+      mediaProvider &&
+      this.mediaPlugins &&
+      mediaStateKey.getState(editorState);
     const tableState = editorState && tableStateKey.getState(editorState);
-    const iconAfter = !isMediaReady
-      ? <Spinner isCompleting={false} />
-      : undefined;
-    const saveButtonAppearance = !isMediaReady
-      ? 'default'
-      : 'primary';
+    const iconAfter = !isMediaReady ? (
+      <Spinner isCompleting={false} />
+    ) : (
+      undefined
+    );
+    const saveButtonAppearance = !isMediaReady ? 'default' : 'primary';
 
     return (
       <div>
@@ -376,20 +400,39 @@ export default class Editor extends PureComponent<Props, State> {
           popupsBoundariesElement={popupsBoundariesElement}
           popupsMountPoint={popupsMountPoint}
         />
-        {
-          isExpanded && (
-            <FooterWrapper>
-              {(onSave || onCancel) && (
-                <ButtonGroup>
-                  {onSave && <Button isDisabled={isDisabled || !isMediaReady} iconAfter={iconAfter} appearance={saveButtonAppearance} onClick={this.handleSave}>Save</Button>}
-                  {onCancel && <Button isDisabled={isDisabled} appearance="subtle" onClick={this.handleCancel}>Cancel</Button>}
-                </ButtonGroup>
-              )}
+        {isExpanded && (
+          <FooterWrapper>
+            {(onSave || onCancel) && (
+              <ButtonGroup>
+                {onSave && (
+                  <Button
+                    isDisabled={isDisabled || !isMediaReady}
+                    iconAfter={iconAfter}
+                    appearance={saveButtonAppearance}
+                    onClick={this.handleSave}
+                  >
+                    Save
+                  </Button>
+                )}
+                {onCancel && (
+                  <Button
+                    isDisabled={isDisabled}
+                    appearance="subtle"
+                    onClick={this.handleCancel}
+                  >
+                    Cancel
+                  </Button>
+                )}
+              </ButtonGroup>
+            )}
 
-              {renderFooter && (<FooterSlot>{renderFooter({ saveDisabled: !isMediaReady })}</FooterSlot>)}
-            </FooterWrapper>
-          )
-        }
+            {renderFooter && (
+              <FooterSlot>
+                {renderFooter({ saveDisabled: !isMediaReady })}
+              </FooterSlot>
+            )}
+          </FooterWrapper>
+        )}
       </div>
     );
   }
@@ -401,7 +444,7 @@ export default class Editor extends PureComponent<Props, State> {
       onCancel(this);
     }
     return true;
-  }
+  };
 
   private handleChange = async () => {
     const { onChange } = this.props;
@@ -409,16 +452,17 @@ export default class Editor extends PureComponent<Props, State> {
       onChange(this);
     }
 
-
     const { editorView } = this.state;
-    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+    const mediaPluginState = mediaStateKey.getState(
+      editorView!.state,
+    ) as MediaPluginState;
 
     if (mediaPluginState) {
       this.setState({ isMediaReady: false });
       await mediaPluginState.waitForPendingTasks();
       this.setState({ isMediaReady: true });
     }
-  }
+  };
 
   @analytics('atlassian.editor.stop.save')
   private handleSave = () => {
@@ -427,7 +471,7 @@ export default class Editor extends PureComponent<Props, State> {
       onSave(this);
     }
     return true;
-  }
+  };
 
   private handleRef = (place: Element | null) => {
     const { schema } = this.state;
@@ -443,7 +487,9 @@ export default class Editor extends PureComponent<Props, State> {
         plugins: [
           ...pastePlugins(schema),
           ...(isSchemaWithLinks(schema) ? hyperlinkPlugins(schema) : []),
-          ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema, this.providerFactory) : []),
+          ...(isSchemaWithMentions(schema)
+            ? mentionsPlugins(schema, this.providerFactory)
+            : []),
           ...clearFormattingPlugins(schema),
           ...rulePlugins(schema),
           ...(isSchemaWithMedia(schema) ? this.mediaPlugins : []),
@@ -463,30 +509,36 @@ export default class Editor extends PureComponent<Props, State> {
           history(),
           keymap(jiraKeymap),
           keymap(baseKeymap), // should be last :(
-        ]
+        ],
       });
 
       const editorView = new EditorView(place, {
         state: editorState,
         editable: (state: EditorState) => !this.props.isDisabled,
-        dispatchTransaction: (tr) => {
+        dispatchTransaction: tr => {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
           this.handleChange();
         },
         nodeViews: {
-          mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
-          mediaGroup: nodeViewFactory(this.providerFactory, {
-            mediaGroup: ReactMediaGroupNode,
-            media: ReactMediaNode,
-          }, true),
+          mention: nodeViewFactory(this.providerFactory, {
+            mention: ReactMentionNode,
+          }),
+          mediaGroup: nodeViewFactory(
+            this.providerFactory,
+            {
+              mediaGroup: ReactMediaGroupNode,
+              media: ReactMediaNode,
+            },
+            true,
+          ),
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {
             analyticsService.trackEvent('atlassian.editor.paste');
             return false;
-          }
-        }
+          },
+        },
       });
 
       analyticsService.trackEvent('atlassian.editor.start');
@@ -495,11 +547,15 @@ export default class Editor extends PureComponent<Props, State> {
     } else {
       this.setState({ editorView: undefined });
     }
-  }
+  };
 }
 
 export const parseIntoAtlassianDocument = (html: string, schema: Schema) => {
-  assert.strictEqual(typeof html, 'string', 'First parseIntoAtlassianDocument() argument is not a string');
+  assert.strictEqual(
+    typeof html,
+    'string',
+    'First parseIntoAtlassianDocument() argument is not a string',
+  );
 
   const jsonTransformer = new JSONTransformer();
   const jiraTransformer = new JIRATransformer(schema);

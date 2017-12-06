@@ -47,7 +47,10 @@ export class CodeBlockState {
 
   updateLanguage(language: string | undefined, view: EditorView): void {
     if (this.activeCodeBlock) {
-      setBlockType(view.state.schema.nodes.codeBlock, { language, uniqueId: this.uniqueId })(view.state, view.dispatch);
+      setBlockType(view.state.schema.nodes.codeBlock, {
+        language,
+        uniqueId: this.uniqueId,
+      })(view.state, view.dispatch);
       if (this.focusHandlers.length > 0) {
         this.triggerFocus();
       } else {
@@ -64,7 +67,6 @@ export class CodeBlockState {
     view.focus();
   }
 
-
   updateEditorFocused(editorFocused: boolean) {
     this.editorFocused = editorFocused;
   }
@@ -74,16 +76,24 @@ export class CodeBlockState {
   }
 
   // TODO: Fix types (ED-2987)
-  update(state: EditorState, docView: EditorView & { docView?: any }, domEvent: boolean = false) {
+  update(
+    state: EditorState,
+    docView: EditorView & { docView?: any },
+    domEvent: boolean = false,
+  ) {
     this.state = state;
     const codeBlockNode = this.activeCodeBlockNode();
-    if (domEvent && codeBlockNode || codeBlockNode !== this.activeCodeBlock) {
+    if ((domEvent && codeBlockNode) || codeBlockNode !== this.activeCodeBlock) {
       this.domEvent = domEvent;
       const newElement = codeBlockNode && this.activeCodeBlockElement(docView);
 
-      this.toolbarVisible = this.editorFocused && !!codeBlockNode && (domEvent || this.element !== newElement);
+      this.toolbarVisible =
+        this.editorFocused &&
+        !!codeBlockNode &&
+        (domEvent || this.element !== newElement);
       this.activeCodeBlock = codeBlockNode;
-      this.language = codeBlockNode && codeBlockNode.attrs['language'] || undefined;
+      this.language =
+        (codeBlockNode && codeBlockNode.attrs['language']) || undefined;
       this.element = newElement;
       this.uniqueId = codeBlockNode && codeBlockNode!.attrs['uniqueId'];
       this.triggerOnChange();
@@ -133,16 +143,21 @@ export const plugin = new Plugin({
         pluginState.update(newState, stored.docView, stored.domEvent);
       }
       return pluginState;
-    }
+    },
   },
   key: stateKey,
   // TODO: Fix types (ED-2987)
   view: (editorView: EditorView & { docView?: any }) => {
-    stateKey.getState(editorView.state).update(editorView.state, editorView.docView);
+    stateKey
+      .getState(editorView.state)
+      .update(editorView.state, editorView.docView);
     return {
-      update: (view: EditorView & { docView?: any }, prevState: EditorState) => {
+      update: (
+        view: EditorView & { docView?: any },
+        prevState: EditorState,
+      ) => {
         stateKey.getState(view.state).update(view.state, view.docView);
-      }
+      },
     };
   },
   props: {
@@ -150,19 +165,23 @@ export const plugin = new Plugin({
       stateKey.getState(view.state).update(view.state, view.docView, true);
       return false;
     },
-    onFocus(view: EditorView, event) {
-      stateKey.getState(view.state).updateEditorFocused(true);
+    handleDOMEvents: {
+      focus(view, event) {
+        stateKey.getState(view.state).updateEditorFocused(true);
+        return false;
+      },
+      blur(view: EditorView & { docView?: any }, event) {
+        const pluginState = stateKey.getState(view.state);
+        pluginState.updateEditorFocused(false);
+        pluginState.update(view.state, view.docView, true);
+        return false;
+      },
     },
-    onBlur(view: EditorView & { docView?: any }, event) {
-      const pluginState = stateKey.getState(view.state);
-      pluginState.updateEditorFocused(false);
-      pluginState.update(view.state, view.docView, true);
-    },
-  }
+  },
 });
 
 const plugins = (schema: Schema) => {
-  return [plugin, keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+  return [plugin, keymapPlugin(schema)].filter(plugin => !!plugin) as Plugin[];
 };
 
 export default plugins;

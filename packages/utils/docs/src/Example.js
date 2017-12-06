@@ -64,9 +64,7 @@ export default class Example extends React.Component<Props, State> {
           </CodeWrapper>
         ) : null}
         <Showcase>
-          <ComponentWrapper>
-            <Component />
-          </ComponentWrapper>
+          <Component />
         </Showcase>
       </Wrapper>
     );
@@ -119,11 +117,6 @@ const Showcase = styled.div`
   border-radius: 3px;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
   padding: ${gridSize}px;
-`;
-
-const ComponentWrapper = styled.div`
-  border-radius: 3px;
-  overflow: hidden;
 `;
 
 const CodeWrapper = styled.div`

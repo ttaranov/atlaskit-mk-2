@@ -20,22 +20,34 @@ const mentionsPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 300, plugin: (schema, props, dispatch, providerFactory) => createPlugin(providerFactory) },
-      { rank: 310, plugin: schema => inputRulePlugin(schema) },
-      { rank: 320, plugin: schema => keymap(schema) }
+      {
+        rank: 300,
+        plugin: ({ providerFactory }) => createPlugin(providerFactory),
+      },
+      { rank: 310, plugin: ({ schema }) => inputRulePlugin(schema) },
+      { rank: 320, plugin: ({ schema }) => keymap(schema) },
     ];
   },
 
-  contentComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
-    const renderNode = (providers) => {
-      return <MentionPicker
-        editorView={editorView}
-        pluginKey={pluginKey}
-        mentionProvider={providers.mentionProvider}
-        presenceProvider={providers.presenceProvider}
-        popupsMountPoint={popupsMountPoint}
-        popupsBoundariesElement={popupsBoundariesElement}
-      />;
+  contentComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+  ) {
+    const renderNode = providers => {
+      return (
+        <MentionPicker
+          editorView={editorView}
+          pluginKey={pluginKey}
+          mentionProvider={providers.mentionProvider}
+          presenceProvider={providers.presenceProvider}
+          popupsMountPoint={popupsMountPoint}
+          popupsBoundariesElement={popupsBoundariesElement}
+        />
+      );
     };
 
     return (
@@ -47,9 +59,13 @@ const mentionsPlugin: EditorPlugin = {
     );
   },
 
+  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth) {
+    return <ToolbarMention editorView={editorView} pluginKey={pluginKey} editorWidth={editorWidth} isDisabled={disabled} />;
+  },
+
   secondaryToolbarComponent(editorView) {
     return <ToolbarMention editorView={editorView} pluginKey={pluginKey} />;
-  }
+  },
 };
 
 export default mentionsPlugin;

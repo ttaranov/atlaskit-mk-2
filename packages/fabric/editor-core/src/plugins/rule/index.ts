@@ -24,16 +24,18 @@ const plugin = new Plugin({
     },
     apply(tr, pluginState: RuleState, oldState, newState) {
       return pluginState;
-    }
+    },
   },
   key: stateKey,
   view: (view: EditorView) => {
     return {};
-  }
+  },
 });
 
 const plugins = (schema: Schema) => {
-  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter(
+    plugin => !!plugin,
+  ) as Plugin[];
 };
 
 export default plugins;

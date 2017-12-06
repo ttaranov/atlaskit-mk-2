@@ -1,5 +1,6 @@
 import { Plugin, PluginKey, Transaction } from 'prosemirror-state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
+import { Step, ReplaceStep } from 'prosemirror-transform';
 
 import ProviderFactory from '../../../providerFactory';
 import { isChromeWithSelectionBug } from '../../../utils';
@@ -18,7 +19,8 @@ import {
   PresenceData,
   TelepointerData,
 } from './types';
-import { getAvatarColor, findPointers } from './utils';
+import { Participants } from './participants';
+import { findPointers, createTelepointers } from './utils';
 import { CollabEditProvider } from './provider';
 export { CollabEditProvider };
 
@@ -48,7 +50,7 @@ export const createPlugin = (
 
         if (collabEditProvider) {
           const selection = getSendableSelection(oldState, newState);
-          if (selection && sessionId) {
+          if (selection && sessionId && !tr.docChanged) {
             collabEditProvider.sendMessage({
               type: 'telepointer',
               selection,
@@ -58,7 +60,6 @@ export const createPlugin = (
         }
 
         dispatch(pluginKey, { activeParticipants, sessionId });
-
         return pluginState;
       },
     },
@@ -94,7 +95,7 @@ export const createPlugin = (
               .on('presence', data => handlePresence(data, view))
               .on('telepointer', data => handleTelePointer(data, view))
               .on('error', err => {
-                // TODO: Handle errors propery (ED-2580)
+                // TODO: Handle errors property (ED-2580)
               })
               .initialize(() => view.state);
           } else {
@@ -114,94 +115,7 @@ export const createPlugin = (
   });
 };
 
-export class Participants {
-  private participants: Map<string, Participant>;
-
-  constructor(
-    participants: Map<string, Participant> = new Map<string, Participant>(),
-  ) {
-    this.participants = participants;
-  }
-
-  add(data: Participant[]) {
-    const newSet = new Map<string, Participant>(this.participants);
-    data.forEach(participant => {
-      newSet.set(participant.sessionId, participant);
-    });
-    return new Participants(newSet);
-  }
-
-  remove(sessionIds: string[]) {
-    const newSet = new Map<string, Participant>(this.participants);
-    sessionIds.forEach(sessionId => {
-      newSet.delete(sessionId);
-    });
-
-    return new Participants(newSet);
-  }
-
-  update(sessionId: string, lastActive: number) {
-    const newSet = new Map<string, Participant>(this.participants);
-    const data = newSet.get(sessionId);
-    if (!data) {
-      return this;
-    }
-
-    newSet.set(sessionId, {
-      ...data,
-      lastActive,
-    });
-
-    return new Participants(newSet);
-  }
-
-  toArray() {
-    return Array.from(this.participants.values());
-  }
-
-  get(sessionId: string) {
-    return this.participants.get(sessionId);
-  }
-}
-
-function style(options) {
-  const color = (options && options.color) || 'black';
-  return `border-left: 1px solid ${color}; border-right: 1px solid ${
-    color
-  }; margin-right: -2px;`;
-}
-
-const createTelepointers = (
-  from: number,
-  to: number,
-  sessionId: string,
-  isSelection: boolean,
-  initial: string,
-) => {
-  let decorations: Decoration[] = [];
-  const avatarColor = getAvatarColor(sessionId);
-  const color = avatarColor.index.toString();
-  if (isSelection) {
-    const className = `telepointer color-${color} telepointer-selection`;
-    decorations.push(
-      (Decoration as any).inline(
-        from,
-        to,
-        { class: className, 'data-initial': initial },
-        { pointer: { sessionId } },
-      ),
-    );
-  }
-
-  const cursor = document.createElement('span');
-  cursor.textContent = '\u200b';
-  cursor.className = `telepointer color-${color} telepointer-selection-badge`;
-  cursor.style.cssText = `${style({ color: avatarColor.color.solid })};`;
-  cursor.setAttribute('data-initial', initial);
-  return decorations.concat(
-    (Decoration as any).widget(to, cursor, { pointer: { sessionId } }),
-  );
-};
+const isReplaceStep = (step: Step) => step instanceof ReplaceStep;
 
 export class PluginState {
   private decorationSet: DecorationSet;
@@ -228,6 +142,11 @@ export class PluginState {
     this.decorationSet = decorations;
     this.participants = participants;
     this.sid = sessionId;
+  }
+
+  getInitial(sessionId) {
+    const participant = this.participants.get(sessionId);
+    return participant ? participant.name.substring(0, 1).toUpperCase() : 'X';
   }
 
   apply(tr: Transaction) {
@@ -283,20 +202,58 @@ export class PluginState {
           document.getSelection().empty();
         }
 
-        const participant = participants.get(sessionId);
-        const initial = participant
-          ? participant.name.substring(0, 1).toUpperCase()
-          : 'X';
         add = add.concat(
           createTelepointers(
             from - (isSelection ? 0 : 1),
             to,
             sessionId,
             isSelection,
-            initial,
+            this.getInitial(sessionId),
           ),
         );
       }
+    }
+
+    if (tr.docChanged) {
+      // Adjust decoration positions to changes made by the transaction
+      decorationSet = decorationSet.map(tr.mapping, tr.doc, {
+        // Reapplies decorators those got removed by the state change
+        onRemove: (spec: { pointer: { sessionId: string } }) => {
+          if (spec.pointer && spec.pointer.sessionId) {
+            const step = tr.steps.filter(isReplaceStep)[0];
+            if (step) {
+              const { sessionId } = spec.pointer;
+              const { slice: { content: { size } }, from } = step as any;
+              const pos = size
+                ? Math.min(from + size, tr.doc.nodeSize - 3)
+                : Math.max(from, 1);
+
+              add = add.concat(
+                createTelepointers(
+                  pos,
+                  pos,
+                  sessionId,
+                  false,
+                  this.getInitial(sessionId),
+                ),
+              );
+            }
+          }
+        },
+      });
+
+      // Remove any selection decoration within the change range,
+      // takes care of the issue when after pasting we end up with a dead selection
+      tr.steps.filter(isReplaceStep).forEach(s => {
+        const { from, to } = s as any;
+        decorationSet.find(from, to).forEach((deco: any) => {
+          // `type` is private, `from` and `to` are public in latest version
+          // `from` != `to` means it's a selection
+          if (deco.from !== deco.to) {
+            remove.push(deco);
+          }
+        });
+      });
     }
 
     if (remove.length) {
@@ -312,7 +269,6 @@ export class PluginState {
 
   static init(config: any) {
     const { doc } = config;
-
     return new PluginState(DecorationSet.create(doc, []), new Participants());
   }
 }

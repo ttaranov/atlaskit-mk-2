@@ -14,6 +14,7 @@ import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 
 import * as fs from '../../utils/fs';
 import type { Directory } from '../../types';
+import { AtlaskitIcon } from './index';
 
 const LinkComponent = ({ href, children, onClick, className }) => (
   <Link className={className} onClick={onClick} to={href}>
@@ -49,7 +50,7 @@ const SearchDrawer = ({
     isOpen={isOpen}
     key="search"
     onBackButton={closeDrawer}
-    primaryIcon={<AtlassianIcon label="Atlaskit" />}
+    primaryIcon={<AtlaskitIcon monochrome />}
   >
     <AkSearch
       value={searchDrawerValue}

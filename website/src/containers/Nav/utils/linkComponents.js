@@ -9,12 +9,13 @@ import renderNav from './renderNav';
 
 type RouterLinkProps = {
   children: Node,
-  href: string,
   className?: string,
+  href: string,
+  isSelected: boolean,
+  onClick: () => mixed,
+  pathname: string,
   replace?: boolean,
   subNav?: any,
-  isSelected: boolean,
-  pathname: string,
 };
 
 const SubNavWrapper = styled.div`
@@ -36,40 +37,45 @@ const RouterLink = ({
   replace,
   className,
   subNav,
+  onClick,
   isSelected,
   pathname,
 }: RouterLinkProps) => {
   return (
     <div key={pathname}>
       <Link
-        to={href}
-        replace={replace}
         className={className}
+        onClick={onClick}
+        replace={replace}
         style={{ color: 'inherit' }}
+        to={href}
       >
         {children}
       </Link>
       {subNav &&
         isSubNavExpanded(href, pathname) && (
-          <SubNavWrapper>{renderNav(subNav, pathname)}</SubNavWrapper>
+          <SubNavWrapper>{renderNav(subNav, { pathname })}</SubNavWrapper>
         )}
     </div>
   );
 };
 
-export const RouterNavigationItem = (props: any) => (
-  <AkNavigationItem
-    linkComponent={linkProps => (
-      <RouterLink
-        pathname={props.pathname}
-        subNav={props.subNav}
-        {...linkProps}
-      />
-    )}
-    {...props}
-  />
-);
+export const RouterNavigationItem = (props: any) => {
+  return (
+    <AkNavigationItem
+      linkComponent={linkProps => (
+        <RouterLink
+          onClick={props.onClick}
+          pathname={props.pathname}
+          subNav={props.subNav}
+          {...linkProps}
+        />
+      )}
+      {...props}
+    />
+  );
+};
 
 export const ExternalNavigationItem = (props: any) => (
-  <AkNavigationItem {...props} target="_new" />
+  <AkNavigationItem {...props} />
 );

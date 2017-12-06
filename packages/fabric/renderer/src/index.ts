@@ -1,12 +1,7 @@
 import { defaultSchema } from '@atlaskit/editor-common';
-import {
-  Node as PMNode,
-  Schema,
-} from 'prosemirror-model';
+import { Node as PMNode, Schema } from 'prosemirror-model';
 
-import {
-  getValidDocument,
-} from './validator';
+import { getValidDocument } from '@atlaskit/editor-common';
 
 import { Serializer } from './serializer';
 
@@ -42,13 +37,16 @@ const withStopwatch = <T>(cb: () => T): ResultWithTime<T> => {
   return { output, time };
 };
 
-export const renderDocument = <T>(doc: any, serializer: Serializer<T>, schema: Schema = defaultSchema): RenderOutput<T | null> => {
+export const renderDocument = <T>(
+  doc: any,
+  serializer: Serializer<T>,
+  schema: Schema = defaultSchema,
+): RenderOutput<T | null> => {
   const stat: RenderOutputStat = { sanitizeTime: 0 };
 
-  const {
-    output: validDoc,
-    time: sanitizeTime,
-  } = withStopwatch(() => getValidDocument(doc, schema));
+  const { output: validDoc, time: sanitizeTime } = withStopwatch(() =>
+    getValidDocument(doc, schema),
+  );
 
   // save sanitize time to stats
   stat.sanitizeTime = sanitizeTime;
@@ -57,18 +55,16 @@ export const renderDocument = <T>(doc: any, serializer: Serializer<T>, schema: S
     return { stat, result: null };
   }
 
-  const {
-    output: node,
-    time: buildTreeTime,
-  } = withStopwatch<PMNode>(() => schema.nodeFromJSON(validDoc));
+  const { output: node, time: buildTreeTime } = withStopwatch<PMNode>(() =>
+    schema.nodeFromJSON(validDoc),
+  );
 
   // save build tree time to stats
   stat.buildTreeTime = buildTreeTime;
 
-  const {
-    output: result,
-    time: serializeTime,
-  } = withStopwatch<T | null>(() => serializer.serializeFragment(node.content));
+  const { output: result, time: serializeTime } = withStopwatch<T | null>(() =>
+    serializer.serializeFragment(node.content),
+  );
 
   // save serialize tree time to stats
   stat.serializeTime = serializeTime;
@@ -77,6 +73,3 @@ export const renderDocument = <T>(doc: any, serializer: Serializer<T>, schema: S
 };
 
 export { Serializer };
-
-// TODO remove these exports when React renderer is finally extracted from editor-core
-export { getMarksByOrder, isSameMark } from './validator';

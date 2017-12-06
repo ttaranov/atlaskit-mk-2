@@ -42,6 +42,7 @@ export default createSchema({
     'decisionItem',
     'taskList',
     'taskItem',
+    'extension',
     'inlineExtension',
   ],
   marks: [
@@ -57,6 +58,6 @@ export default createSchema({
     'textColor',
   ],
   customNodeSpecs: {
-    plain: { ...paragraph, content: 'text*' },
+    plain: { ...paragraph, content: 'text*', marks: '' },
   },
 });

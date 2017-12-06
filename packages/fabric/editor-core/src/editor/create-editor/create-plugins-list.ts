@@ -25,6 +25,8 @@ import {
   panelPlugin,
   macroPlugin,
   confluenceInlineComment,
+  placeholderCursorPlugin,
+  extensionPlugin,
 } from '../plugins';
 
 /**
@@ -58,12 +60,12 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(hyperlinkPlugin);
   }
 
-  if (props.allowCodeBlocks) {
-    plugins.push(codeBlockPlugin);
+  if (props.mediaProvider) {
+    plugins.push(mediaPlugin);
   }
 
-  if (props.allowTables) {
-    plugins.push(tablesPlugin);
+  if (props.allowCodeBlocks) {
+    plugins.push(codeBlockPlugin);
   }
 
   if (props.mentionProvider) {
@@ -72,6 +74,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.emojiProvider) {
     plugins.push(emojiPlugin);
+  }
+
+  if (props.allowTables) {
+    plugins.push(tablesPlugin);
   }
 
   if (props.allowTasksAndDecisions) {
@@ -84,10 +90,6 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.saveOnEnter) {
     plugins.push(saveOnEnterPlugin);
-  }
-
-  if (props.mediaProvider) {
-    plugins.push(mediaPlugin);
   }
 
   if (props.legacyImageUploadProvider) {
@@ -114,12 +116,20 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(panelPlugin);
   }
 
-  if (props.allowInlineExtension) {
+  if (props.allowExtension) {
+    plugins.push(extensionPlugin);
+  }
+
+  if (props.macroProvider) {
     plugins.push(macroPlugin);
   }
 
   if (props.allowConfluenceInlineComment) {
     plugins.push(confluenceInlineComment);
+  }
+
+  if (props.allowPlaceholderCursor) {
+    plugins.push(placeholderCursorPlugin);
   }
 
   // UI only plugins

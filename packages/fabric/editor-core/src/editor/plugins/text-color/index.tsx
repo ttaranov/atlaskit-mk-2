@@ -10,21 +10,29 @@ const textColorPlugin: EditorPlugin = {
   },
 
   pmPlugins() {
-    return [
-      { rank: 600, plugin: () => plugin },
-    ];
+    return [{ rank: 600, plugin: () => plugin }];
   },
 
-  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled) {
+  primaryToolbarComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    disabled,
+  ) {
     const pluginState = stateKey.getState(editorView.state);
-    return <ToolbarTextColor
-      disabled={disabled}
-      editorView={editorView}
-      pluginState={pluginState}
-      popupsMountPoint={popupsMountPoint}
-      popupsBoundariesElement={popupsBoundariesElement}
-    />;
-  }
+    return (
+      <ToolbarTextColor
+        disabled={disabled}
+        editorView={editorView}
+        pluginState={pluginState}
+        popupsMountPoint={popupsMountPoint}
+        popupsBoundariesElement={popupsBoundariesElement}
+      />
+    );
+  },
 };
 
 export default textColorPlugin;

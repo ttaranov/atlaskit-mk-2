@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-image",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Atlassian Editor component for JIRA",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -13,7 +13,7 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [],
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/util-shared-styles": "^2.10.3",
     "tslib": "^1.8.0"
@@ -22,8 +22,8 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/media-core": "^11.0.0",
-    "@atlaskit/media-test-helpers": "^8.5.0",
-    "@atlaskit/field-text": "^4.0.0"
+    "@atlaskit/field-text": "^4.0.0",
+    "@atlaskit/media-core": "^12.0.0",
+    "@atlaskit/media-test-helpers": "^8.5.1"
   }
 }

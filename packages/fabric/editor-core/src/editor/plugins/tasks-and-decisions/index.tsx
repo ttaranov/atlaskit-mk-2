@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { decisionItem, decisionList, taskItem, taskList } from '@atlaskit/editor-common';
+import {
+  decisionItem,
+  decisionList,
+  taskItem,
+  taskList,
+} from '@atlaskit/editor-common';
 import styled from 'styled-components';
 import { EditorPlugin } from '../../types';
 import { createPlugin } from '../../../plugins/tasks-and-decisions';
@@ -20,19 +25,22 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
       { name: 'decisionList', node: decisionList, rank: 1800 },
       { name: 'decisionItem', node: decisionItem, rank: 1900 },
       { name: 'taskList', node: taskList, rank: 2000 },
-      { name: 'taskItem', node: taskItem, rank: 2100 }
+      { name: 'taskItem', node: taskItem, rank: 2100 },
     ];
   },
 
   pmPlugins() {
     return [
-      { rank: 50, plugin: (schema, props, providerFactory) => pastePlugin() }, // must before default paste plugin
-      { rank: 500, plugin: (schema, props, providerFactory) => {
-        const { delegateAnalyticsEvent } = props;
-        return createPlugin({ delegateAnalyticsEvent });
-      }},
-      { rank: 510, plugin: schema => inputRulePlugin(schema) },
-      { rank: 9800, plugin: schema => keymap(schema) } // Needs to be after "save-on-enter"
+      { rank: 50, plugin: () => pastePlugin() }, // must before default paste plugin
+      {
+        rank: 500,
+        plugin: ({ props }) => {
+          const { delegateAnalyticsEvent } = props;
+          return createPlugin({ delegateAnalyticsEvent });
+        },
+      },
+      { rank: 510, plugin: ({ schema }) => inputRulePlugin(schema) },
+      { rank: 9800, plugin: ({ schema }) => keymap(schema) }, // Needs to be after "save-on-enter"
     ];
   },
 
@@ -43,7 +51,7 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
         <ToolbarTask editorView={editorView} />
       </TaskDecisionToolbarGroup>
     );
-  }
+  },
 };
 
 export default tasksAndDecisionsPlugin;

@@ -13,18 +13,32 @@ const codeBlockPlugin: EditorPlugin = {
   pmPlugins() {
     return [
       { rank: 700, plugin: () => plugin },
-      { rank: 720, plugin: (schema) => keymap(schema) },
+      { rank: 720, plugin: ({ schema }) => keymap(schema) },
     ];
   },
 
-  contentComponent(editorView, dispatch, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
+  contentComponent(
+    editorView,
+    dispatch,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+  ) {
     if (appearance === 'message') {
       return null;
     }
 
     const pluginState = stateKey.getState(editorView.state);
-    return <LanguagePicker editorView={editorView} pluginState={pluginState} popupsMountPoint={popupsMountPoint} popupsBoundariesElement={popupsBoundariesElement} />;
-  }
+    return (
+      <LanguagePicker
+        editorView={editorView}
+        pluginState={pluginState}
+        popupsMountPoint={popupsMountPoint}
+        popupsBoundariesElement={popupsBoundariesElement}
+      />
+    );
+  },
 };
 
 export default codeBlockPlugin;

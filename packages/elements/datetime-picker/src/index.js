@@ -9,7 +9,9 @@ export {
   default as TimePickerStateless,
 } from './components/TimePickerStateless';
 export { default as DateTimePicker } from './components/DateTimePicker';
-
+export {
+  default as DateTimePickerStateless,
+} from './components/DateTimePickerStateless';
 export { default as BasePicker } from './components/internal/Picker';
 export { default as DateField } from './components/internal/DateField';
 export { default as DateDialog } from './components/internal/DateDialog';

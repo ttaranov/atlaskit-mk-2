@@ -10,10 +10,20 @@ import pluginKey from '../../../plugins/emojis/plugin-key';
 import ToolbarEmojiPicker from '../../../ui/ToolbarEmojiPicker';
 import EmojiTypeAhead from '../../../ui/EmojiTypeAhead';
 
-const toolbarComponent = (editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth) => {
-  const renderNode = (providers) => {
+const toolbarComponent = (
+  editorView,
+  eventDispatcher,
+  providerFactory,
+  appearance,
+  popupsMountPoint,
+  popupsBoundariesElement,
+  disabled,
+  editorWidth,
+) => {
+  const renderNode = providers => {
     // numFollowingButtons must be changed if buttons are added after ToolbarEmojiPicker to the message editor
-      return <ToolbarEmojiPicker
+    return (
+      <ToolbarEmojiPicker
         editorView={editorView}
         pluginKey={pluginKey}
         emojiProvider={providers.emojiProvider}
@@ -22,17 +32,18 @@ const toolbarComponent = (editorView, eventDispatcher, providerFactory, appearan
         isDisabled={disabled}
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
-      />;
-    };
-
-    return (
-      <WithProviders
-        providerFactory={providerFactory}
-        providers={['emojiProvider']}
-        renderNode={renderNode}
       />
     );
-  }
+  };
+
+  return (
+    <WithProviders
+      providerFactory={providerFactory}
+      providers={['emojiProvider']}
+      renderNode={renderNode}
+    />
+  );
+};
 
 const emojiPlugin: EditorPlugin = {
   nodes() {
@@ -45,22 +56,38 @@ const emojiPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 400, plugin: (schema, props, dispatch, providerFactory) => createPlugin(providerFactory) },
-      { rank: 410, plugin: schema => inputRulePlugin(schema) },
-      { rank: 420, plugin: schema => keymap(schema) },
-      { rank: 430, plugin: (schema, props, dispatch, providerFactory) => asciiInputRulePlugin(schema, providerFactory) }
+      {
+        rank: 400,
+        plugin: ({ providerFactory }) => createPlugin(providerFactory),
+      },
+      { rank: 410, plugin: ({ schema }) => inputRulePlugin(schema) },
+      { rank: 420, plugin: ({ schema }) => keymap(schema) },
+      {
+        rank: 430,
+        plugin: ({ schema, providerFactory }) =>
+          asciiInputRulePlugin(schema, providerFactory),
+      },
     ];
   },
 
-  contentComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
-    const renderNode = (providers) =>{
-      return <EmojiTypeAhead
-        editorView={editorView}
-        pluginKey={pluginKey}
-        emojiProvider={providers.emojiProvider}
-        popupsMountPoint={popupsMountPoint}
-        popupsBoundariesElement={popupsBoundariesElement}
-      />;
+  contentComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+  ) {
+    const renderNode = providers => {
+      return (
+        <EmojiTypeAhead
+          editorView={editorView}
+          pluginKey={pluginKey}
+          emojiProvider={providers.emojiProvider}
+          popupsMountPoint={popupsMountPoint}
+          popupsBoundariesElement={popupsBoundariesElement}
+        />
+      );
     };
 
     return (
@@ -72,13 +99,49 @@ const emojiPlugin: EditorPlugin = {
     );
   },
 
- secondaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth) {
-    return toolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth);
+  secondaryToolbarComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    disabled,
+    editorWidth,
+  ) {
+    return toolbarComponent(
+      editorView,
+      eventDispatcher,
+      providerFactory,
+      appearance,
+      popupsMountPoint,
+      popupsBoundariesElement,
+      disabled,
+      editorWidth,
+    );
   },
 
-  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth) {
-    return toolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth);
-  }
+  primaryToolbarComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    disabled,
+    editorWidth,
+  ) {
+    return toolbarComponent(
+      editorView,
+      eventDispatcher,
+      providerFactory,
+      appearance,
+      popupsMountPoint,
+      popupsBoundariesElement,
+      disabled,
+      editorWidth,
+    );
+  },
 };
 
 export default emojiPlugin;

@@ -9,7 +9,8 @@ import EditorWidth from '../../utils/editor-width';
 
 import { Wrapper, ButtonContent } from './styles';
 
-const JIRA_ISSUE_COLLECTOR_URL = 'https://product-fabric.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-j519ub/b/c/78bd26fb4be69a8bdb879359a9397e96/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs.js?locale=en-US&collectorId=305d3263';
+const JIRA_ISSUE_COLLECTOR_URL =
+  'https://product-fabric.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-j519ub/b/c/78bd26fb4be69a8bdb879359a9397e96/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs.js?locale=en-US&collectorId=305d3263';
 
 export interface Props {
   packageVersion?: string;
@@ -30,7 +31,7 @@ declare global {
 
 export default class ToolbarFeedback extends PureComponent<Props, State> {
   state: State = {
-    jiraIssueCollectorScriptLoading: false
+    jiraIssueCollectorScriptLoading: false,
   };
 
   showJiraCollectorDialogCallback?: () => void;
@@ -38,28 +39,35 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
   private handleSpinnerComplete() {}
 
   render() {
-    const iconBefore = this.state.jiraIssueCollectorScriptLoading
-      ? <Spinner isCompleting={false} onComplete={this.handleSpinnerComplete} />
-      : undefined;
+    const iconBefore = this.state.jiraIssueCollectorScriptLoading ? (
+      <Spinner isCompleting={false} onComplete={this.handleSpinnerComplete} />
+    ) : (
+      undefined
+    );
     const { editorWidth } = this.props;
 
     // JIRA issue collector script is using jQuery internally
-    return this.hasJquery()
-      ? (
-        <Wrapper width={editorWidth && (editorWidth > EditorWidth.BreakPoint6 ? 'large' : 'small')}>
-          <ToolbarButton
-            iconBefore={iconBefore}
-            onClick={this.openFeedbackPopup}
-            selected={false}
-            spacing={(editorWidth && editorWidth > EditorWidth.BreakPoint6) ? 'default' : 'none'}
-          >
-            <ButtonContent>
-              Feedback
-            </ButtonContent>
-          </ToolbarButton>
-        </Wrapper>
-      )
-      : null;
+    return this.hasJquery() ? (
+      <Wrapper
+        width={
+          editorWidth &&
+          (editorWidth > EditorWidth.BreakPoint10 ? 'large' : 'small')
+        }
+      >
+        <ToolbarButton
+          iconBefore={iconBefore}
+          onClick={this.openFeedbackPopup}
+          selected={false}
+          spacing={
+            editorWidth && editorWidth > EditorWidth.BreakPoint10
+              ? 'default'
+              : 'none'
+          }
+        >
+          <ButtonContent>Feedback</ButtonContent>
+        </ToolbarButton>
+      </Wrapper>
+    ) : null;
   }
 
   @analytics('atlassian.editor.feedback.button')
@@ -73,7 +81,7 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
 
     // triggerFunction is executed as soon as JIRA issue collector script is loaded
     window.ATL_JQ_PAGE_PROPS = {
-      triggerFunction: (showCollectorDialog) => {
+      triggerFunction: showCollectorDialog => {
         this.setState({ jiraIssueCollectorScriptLoading: false });
 
         if (typeof showCollectorDialog === 'function') {
@@ -86,18 +94,22 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
         }
       },
       fieldValues: {
-        description: `Please describe the problem you're having or feature you'd like to see:\n\n\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n version: ${this.props.packageName}@${this.props.packageVersion} (${coreVersion})\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n\n`
+        description: `Please describe the problem you're having or feature you'd like to see:\n\n\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n version: ${
+          this.props.packageName
+        }@${this.props.packageVersion} (${
+          coreVersion
+        })\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n\n`,
       },
       environment: {
         'Editor Package': this.props.packageName,
         'Editor Version': this.props.packageVersion,
         'Editor Core Version': coreVersion,
-      }
+      },
     };
 
     this.loadJiraIssueCollectorScript();
     return true;
-  }
+  };
 
   private loadJiraIssueCollectorScript = (): void => {
     if (this.hasJquery()) {
@@ -105,12 +117,12 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
         url: JIRA_ISSUE_COLLECTOR_URL,
         type: 'get',
         cache: true,
-        dataType: 'script'
+        dataType: 'script',
       });
     }
-  }
+  };
 
   private hasJquery = (): boolean => {
-    return (typeof window.jQuery !== 'undefined');
-  }
+    return typeof window.jQuery !== 'undefined';
+  };
 }

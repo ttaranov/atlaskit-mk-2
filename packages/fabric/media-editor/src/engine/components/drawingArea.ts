@@ -1,6 +1,6 @@
-import {ColorWithAlpha} from '../../common';
-import {Component} from './component';
-import {Signal} from '../signal';
+import { ColorWithAlpha } from '../../common';
+import { Component } from './component';
+import { Signal } from '../signal';
 
 export interface OutputSize {
   width: number;
@@ -19,9 +19,11 @@ export interface DrawingArea extends Component {
 export class DefaultDrawingArea implements DrawingArea {
   public readonly resize: Signal<OutputSize> = new Signal<OutputSize>();
 
-  constructor(public readonly canvas: HTMLCanvasElement,
-              private size: OutputSize,
-              public readonly backgroundColor: ColorWithAlpha) {
+  constructor(
+    public readonly canvas: HTMLCanvasElement,
+    private size: OutputSize,
+    public readonly backgroundColor: ColorWithAlpha,
+  ) {
     this.setCanvasSize();
   }
 
@@ -29,8 +31,7 @@ export class DefaultDrawingArea implements DrawingArea {
     return this.size;
   }
 
-  unload(): void {
-  }
+  unload(): void {}
 
   setSize(size: OutputSize): void {
     this.size = size;

@@ -1,9 +1,11 @@
-import * as React from 'react';
-import {tallImage as imageDataUri} from '@atlaskit/media-test-helpers';
-import {FullEditor} from '../example-helpers/fullEditor';
-import {MediaEditor, LoadParameters} from '../src';
+/* tslint:disable:no-console */
 
-const lightGrey = {red: 230, green: 230, blue: 230};
+import * as React from 'react';
+import { tallImage as imageDataUri } from '@atlaskit/media-test-helpers';
+import { FullEditor } from '../example-helpers/fullEditor';
+import { MediaEditor, LoadParameters } from '../src';
+
+const lightGrey = { red: 230, green: 230, blue: 230 };
 
 let loadParameters: LoadParameters;
 
@@ -25,8 +27,13 @@ export default () => (
     />
 
     <button
-      style={{position: 'absolute', width: '100px', height: '30px', right: '0', top: '0'}}
-      // tslint:disable-next-line:jsx-no-lambda
+      style={{
+        position: 'absolute',
+        width: '100px',
+        height: '30px',
+        right: '0',
+        top: '0',
+      }}
       onClick={() => {
         const image = loadParameters.imageGetter();
         if (image.isExported && image.content) {

@@ -1,5 +1,11 @@
 # @atlaskit/layer-manager
 
+## 2.5.3
+
+## 2.5.2
+
+## 2.5.1
+
 ## 2.5.0
 - [minor] support context via HOC from layer-manager [333a8de](333a8de)
 

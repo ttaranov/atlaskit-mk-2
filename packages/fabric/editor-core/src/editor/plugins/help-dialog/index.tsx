@@ -40,33 +40,40 @@ export function createPlugin(dispatch: Function) {
           return newState;
         }
         return currentState;
-      }
-    }
+      },
+    },
   });
 }
 
 const helpDialog: EditorPlugin = {
   pmPlugins() {
     return [
-      { rank: 2200, plugin: (schema, props, dispatch) => createPlugin(dispatch) },
-      { rank: 2210, plugin: (schema, props) => keymapPlugin(schema) },
+      { rank: 2200, plugin: ({ dispatch }) => createPlugin(dispatch) },
+      { rank: 2210, plugin: ({ schema }) => keymapPlugin(schema) },
     ];
   },
 
   contentComponent(editorView: EditorView, eventDispatcher: EventDispatcher) {
-    return <WithPluginState
-      editorView={editorView}
-      eventDispatcher={eventDispatcher}
-      plugins={{
-        helpDialog: pluginKey
-      }}
-      // tslint:disable-next-line:jsx-no-lambda
-      render={({ helpDialog = {} as any }) => <HelpDialog editorView={editorView} isVisible={helpDialog.isVisible} />}
-    />;
-  }
+    return (
+      <WithPluginState
+        editorView={editorView}
+        eventDispatcher={eventDispatcher}
+        plugins={{
+          helpDialog: pluginKey,
+        }}
+        // tslint:disable-next-line:jsx-no-lambda
+        render={({ helpDialog = {} as any }) => (
+          <HelpDialog
+            editorView={editorView}
+            isVisible={helpDialog.isVisible}
+          />
+        )}
+      />
+    );
+  },
 };
 
-const  keymapPlugin = (schema: Schema): Plugin => {
+const keymapPlugin = (schema: Schema): Plugin => {
   const list = {};
   keymaps.bindKeymapWithCommand(
     keymaps.openHelp.common!,
@@ -78,7 +85,9 @@ const  keymapPlugin = (schema: Schema): Plugin => {
         openHelpCommand(tr, dispatch);
       }
       return true;
-    }, list);
+    },
+    list,
+  );
   return keymap(list);
 };
 

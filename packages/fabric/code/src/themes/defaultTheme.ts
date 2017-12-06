@@ -50,5 +50,5 @@ export const defaultColors: Theme = {
   metaKeywordColor: akColorG400,
   metaColor: akColorN400,
   functionColor: akColorN800,
-  numberColor: akColorB500
+  numberColor: akColorB500,
 };

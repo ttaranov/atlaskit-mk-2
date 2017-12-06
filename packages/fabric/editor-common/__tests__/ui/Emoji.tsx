@@ -6,7 +6,6 @@ import ProviderFactory from '../../src/providerFactory';
 import Emoji from '../../src/ui/Emoji';
 
 describe('Emoji', () => {
-
   const emojiProvider = Promise.resolve({} as EmojiProvider);
 
   it('should render "fallback" if there is no emojiProvider prop', () => {
@@ -15,7 +14,7 @@ describe('Emoji', () => {
         allowTextFallback={true}
         shortName=":anything:"
         fallback="fallback"
-      />
+      />,
     );
 
     const fallbackSpan = component.find('span');
@@ -34,7 +33,7 @@ describe('Emoji', () => {
         allowTextFallback={true}
         shortName=":anything:"
         fallback="fallback"
-      />
+      />,
     );
 
     expect(component.find(ResourcedEmoji)).to.have.length(1);
@@ -43,10 +42,7 @@ describe('Emoji', () => {
 
   it('should render "fallback" if there is no emojiProvider prop and no fallback', () => {
     const component = mount(
-      <Emoji
-        allowTextFallback={true}
-        shortName=":anything:"
-      />
+      <Emoji allowTextFallback={true} shortName=":anything:" />,
     );
 
     const fallbackSpan = component.find('span');
@@ -59,13 +55,12 @@ describe('Emoji', () => {
     const providerFactory = new ProviderFactory();
     providerFactory.setProvider('emojiProvider', emojiProvider);
 
-    const emojiId = { shortName: ':anything:', fallback: 'fallback', id: 'abc' };
-    const component = mount(
-      <Emoji
-        providers={providerFactory}
-        {...emojiId}
-      />
-    );
+    const emojiId = {
+      shortName: ':anything:',
+      fallback: 'fallback',
+      id: 'abc',
+    };
+    const component = mount(<Emoji providers={providerFactory} {...emojiId} />);
 
     const resourcedEmoji = component.find(ResourcedEmoji);
     expect(resourcedEmoji.length).to.equal(1);
@@ -78,13 +73,13 @@ describe('Emoji', () => {
     const providerFactory = new ProviderFactory();
     providerFactory.setProvider('emojiProvider', emojiProvider);
 
-    const emojiId = { shortName: ':anything:', fallback: 'fallback', id: 'abc' };
+    const emojiId = {
+      shortName: ':anything:',
+      fallback: 'fallback',
+      id: 'abc',
+    };
     const component = mount(
-      <Emoji
-        providers={providerFactory}
-        fitToHeight={32}
-        {...emojiId}
-      />
+      <Emoji providers={providerFactory} fitToHeight={32} {...emojiId} />,
     );
 
     const resourcedEmoji = component.find(ResourcedEmoji);
@@ -92,5 +87,4 @@ describe('Emoji', () => {
     expect(resourcedEmoji.prop('fitToHeight')).to.deep.equal(32);
     component.unmount();
   });
-
 });

@@ -1,5 +1,5 @@
-import {Component} from './component';
-import {isImageRemote} from '@atlaskit/media-core';
+import { Component } from './component';
+import { isImageRemote } from '@atlaskit/media-core';
 
 export interface ImageProvider extends Component {
   readonly backImage: HTMLImageElement;
@@ -8,7 +8,7 @@ export interface ImageProvider extends Component {
   readonly supplementaryCanvas: HTMLCanvasElement;
 }
 
-export type ImageLoader = () => Promise<HTMLImageElement>;  // the editor should be able to read the data of this image
+export type ImageLoader = () => Promise<HTMLImageElement>; // the editor should be able to read the data of this image
 
 export const urlImageLoader = (url: string): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {
@@ -18,25 +18,34 @@ export const urlImageLoader = (url: string): Promise<HTMLImageElement> => {
     if (isImageRemote(url)) {
       img.crossOrigin = '';
     }
-    img.onload = () => { resolve(img); };
-    img.onerror = () => { reject(new Error(`Can't load image with url: ${url}`)); };
+    img.onload = () => {
+      resolve(img);
+    };
+    img.onerror = () => {
+      reject(new Error(`Can't load image with url: ${url}`));
+    };
     img.src = url;
   });
 };
 
 export class DefaultImageProvider implements ImageProvider {
-  public static create(imageLoader: ImageLoader, supplementaryCanvas: HTMLCanvasElement): Promise<DefaultImageProvider> {
-    return imageLoader().then(img => new DefaultImageProvider(img, supplementaryCanvas));
+  public static create(
+    imageLoader: ImageLoader,
+    supplementaryCanvas: HTMLCanvasElement,
+  ): Promise<DefaultImageProvider> {
+    return imageLoader().then(
+      img => new DefaultImageProvider(img, supplementaryCanvas),
+    );
   }
 
-  private constructor(public readonly backImage: HTMLImageElement,
-                      public readonly supplementaryCanvas: HTMLCanvasElement) {
-  }
+  private constructor(
+    public readonly backImage: HTMLImageElement,
+    public readonly supplementaryCanvas: HTMLCanvasElement,
+  ) {}
 
   get backImageUuid(): string {
     return 'default';
   }
 
-  unload(): void {
-  }
+  unload(): void {}
 }

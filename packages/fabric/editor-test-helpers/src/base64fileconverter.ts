@@ -18,10 +18,13 @@ const getPasteFiles = (clipboardData: DataTransfer) => {
 
       return filesArr;
     },
-    []
+    [],
   );
 
-  return [...items, ...Array.prototype.slice.call(clipboardData.files || [], 0)];
+  return [
+    ...items,
+    ...Array.prototype.slice.call(clipboardData.files || [], 0),
+  ];
 };
 
 export class Converter {
@@ -34,13 +37,19 @@ export class Converter {
     this.maxFileSizeInBytes = maxFileSizeInBytes;
   }
 
-  convert(files: File[], fn = (base64src: string) => {}, errFn = (file: File) => {}) {
+  convert(
+    files: File[],
+    fn = (base64src: string) => {},
+    errFn = (file: File) => {},
+  ) {
     if (files && files[0]) {
       files.forEach((file: File) => {
         const mimeType = file.type;
         if (
           file.size > this.maxFileSizeInBytes ||
-          !this.supportedTypes.some(fileType => mimeType.indexOf(fileType) !== -1)
+          !this.supportedTypes.some(
+            fileType => mimeType.indexOf(fileType) !== -1,
+          )
         ) {
           errFn(file);
         }
@@ -76,7 +85,7 @@ export type convertedHandlerCallback = (imageAttrs: any) => void;
 export function dropHandler(
   converter: Converter,
   e: DragEvent,
-  fn: convertedHandlerCallback
+  fn: convertedHandlerCallback,
 ): boolean {
   if (
     !converter.HAS_BASE64_FILE_SUPPORT ||
@@ -95,7 +104,7 @@ export function dropHandler(
 export function pasteHandler(
   converter: Converter,
   e: ClipboardEvent,
-  fn: convertedHandlerCallback
+  fn: convertedHandlerCallback,
 ): boolean {
   const pastedFiles = getPasteFiles(e.clipboardData);
 

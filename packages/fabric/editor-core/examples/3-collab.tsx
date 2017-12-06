@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import styled from 'styled-components';
 import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
@@ -19,7 +21,6 @@ import {
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import { collabEditProvider } from '../example-helpers/mock-collab-provider';
 
-// tslint:disable-next-line:variable-name
 export const TitleInput = styled.input`
   border: none;
   outline: none;
@@ -33,7 +34,6 @@ export const TitleInput = styled.input`
 `;
 TitleInput.displayName = 'TitleInput';
 
-// tslint:disable-next-line:variable-name
 export const Content = styled.div`
   padding: 0 20px;
   height: 50%;
@@ -53,21 +53,19 @@ Content.displayName = 'Content';
 
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
 
-// tslint:disable-next-line:variable-name
 const SaveAndCancelButtons = props => (
   <ButtonGroup>
     <Button
       appearance="primary"
-      // tslint:disable-next-line:jsx-no-lambda no-console
-      onClick={() => props.editorActions.getValue().then(value => console.log(value.toJSON()))}
+      onClick={() =>
+        props.editorActions
+          .getValue()
+          .then(value => console.log(value.toJSON()))
+      }
     >
       Publish
     </Button>
-    <Button
-      appearance="subtle"
-      // tslint:disable-next-line:jsx-no-lambda
-      onClick={() => props.editorActions.clear()}
-    >
+    <Button appearance="subtle" onClick={() => props.editorActions.clear()}>
       Close
     </Button>
   </ButtonGroup>
@@ -81,7 +79,6 @@ export default function Example() {
           <Editor
             appearance="full-page"
             analyticsHandler={analyticsHandler}
-
             allowTextFormatting={true}
             allowTasksAndDecisions={true}
             allowHyperlinks={true}
@@ -89,27 +86,23 @@ export default function Example() {
             allowLists={true}
             allowTextColor={true}
             allowTables={true}
-
             mediaProvider={storyMediaProviderFactory()}
             emojiProvider={emojiStoryData.getEmojiResource()}
             mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
             collabEditProvider={collabEditProvider('rick')}
-
             placeholder="Write something..."
             shouldFocus={false}
-
             contentComponents={
               <TitleInput
                 placeholder="Give this page a title..."
-                // tslint:disable-next-line:jsx-no-lambda
                 innerRef={ref => ref && ref.focus()}
               />
             }
-
             primaryToolbarComponents={
               <WithEditorActions
-                // tslint:disable-next-line:jsx-no-lambda
-                render={actions => <SaveAndCancelButtons editorActions={actions}/>}
+                render={actions => (
+                  <SaveAndCancelButtons editorActions={actions} />
+                )}
               />
             }
           />
@@ -120,7 +113,6 @@ export default function Example() {
           <Editor
             appearance="full-page"
             analyticsHandler={analyticsHandler}
-
             allowTextFormatting={true}
             allowTasksAndDecisions={true}
             allowHyperlinks={true}
@@ -128,27 +120,23 @@ export default function Example() {
             allowLists={true}
             allowTextColor={true}
             allowTables={true}
-
             mediaProvider={storyMediaProviderFactory()}
             emojiProvider={emojiStoryData.getEmojiResource()}
             mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
             collabEditProvider={collabEditProvider('morty')}
-
             placeholder="Write something..."
             shouldFocus={false}
-
             contentComponents={
               <TitleInput
                 placeholder="Give this page a title..."
-                // tslint:disable-next-line:jsx-no-lambda
                 innerRef={ref => ref && ref.focus()}
               />
             }
-
             primaryToolbarComponents={
               <WithEditorActions
-                // tslint:disable-next-line:jsx-no-lambda
-                render={actions => <SaveAndCancelButtons editorActions={actions}/>}
+                render={actions => (
+                  <SaveAndCancelButtons editorActions={actions} />
+                )}
               />
             }
           />

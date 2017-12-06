@@ -18,6 +18,7 @@ const allPackages = {
   'datetime-picker': { key: 'datetime-picker', name: 'Date/Time Picker' },
   'dropdown-menu': { key: 'dropdown-menu', name: 'Dropdown Menu' },
   'dynamic-table': { key: 'dynamic-table', name: 'Dynamic Table' },
+  'empty-state': { key: 'empty-state', name: 'Empty State' },
   'field-radio-group': { key: 'field-radio-group', name: 'Radio Group' },
   'field-range': { key: 'field-range', name: 'Field Range' },
   'field-text-area': { key: 'field-text-area', name: 'Text Field Area' },
@@ -50,17 +51,6 @@ const allPackages = {
   tooltip: { key: 'tooltip', name: 'Tooltip' },
   'tree-table': { key: 'tree-table', name: 'Tree Table' },
 };
-
-const getChildOfName: (Directory, string) => Directory | File | void = (
-  { children },
-  name,
-) => children.filter(({ id }) => id === name)[0];
-
-const part1 = getChildOfName(siteData, 'packages');
-const part2 =
-  part1 && part1.type === 'dir' ? getChildOfName(part1, 'elements') : undefined;
-const migratedComponents = part2 && part2.type === 'dir' ? part2.children : [];
-migratedComponents.forEach(({ id }) => (allPackages[id].isMigrated = true));
 
 export default allPackages;
 export const packageNames = Object.keys(allPackages);

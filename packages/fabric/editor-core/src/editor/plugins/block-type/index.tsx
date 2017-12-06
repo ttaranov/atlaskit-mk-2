@@ -11,18 +11,26 @@ const blockType: EditorPlugin = {
       { name: 'heading', node: heading, rank: 600 },
       { name: 'blockquote', node: blockquote, rank: 700 },
       { name: 'rule', node: rule, rank: 1000 },
-      { name: 'hardBreak', node: hardBreak, rank: 1500 }
+      { name: 'hardBreak', node: hardBreak, rank: 1500 },
     ];
   },
 
   pmPlugins() {
     return [
       { rank: 500, plugin: () => plugin },
-      { rank: 510, plugin: schema => inputRulePlugin(schema) }
+      { rank: 510, plugin: ({ schema }) => inputRulePlugin(schema) },
     ];
   },
 
-  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled) {
+  primaryToolbarComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    disabled,
+  ) {
     const pluginState = stateKey.getState(editorView.state);
     return (
       <ToolbarBlockType
@@ -33,7 +41,7 @@ const blockType: EditorPlugin = {
         popupsBoundariesElement={popupsBoundariesElement}
       />
     );
-  }
+  },
 };
 
 export default blockType;

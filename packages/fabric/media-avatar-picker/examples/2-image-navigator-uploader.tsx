@@ -1,12 +1,17 @@
-/* tslint:disable:variable-name */
+/* tslint:disable:no-console */
+
 import * as React from 'react';
-import {tallImage, smallImage, remoteImage} from '@atlaskit/media-test-helpers';
-import {ImageNavigator} from '../src';
+import {
+  tallImage,
+  smallImage,
+  remoteImage,
+} from '@atlaskit/media-test-helpers';
+import { ImageNavigator } from '../src/image-navigator';
 
 let onLoadParams;
 let imageElement;
 
-const onLoad = (params) => {
+const onLoad = params => {
   onLoadParams = params;
 };
 const exportImage = () => {
@@ -31,4 +36,4 @@ export default () => (
     <button onClick={exportImage}>Export</button>
     <img style={{position: 'absolute', top: 0, left: '300px'}} src="" alt="" ref={handleImgRef} />
   </div>
-)
+);

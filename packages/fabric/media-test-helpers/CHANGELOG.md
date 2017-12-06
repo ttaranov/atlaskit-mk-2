@@ -1,5 +1,9 @@
 # @atlaskit/media-test-helpers
 
+## 8.5.1
+- [patch] Show static images for gifs in small cards [e2508f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e2508f9)
+- [patch] Show static images for gifs in small cards [e2508f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e2508f9)
+
 ## 8.4.0 (2017-10-10)
 
 * bug fix; fixed incompatible types between axioPromise and Promise. ([a227432](https://bitbucket.org/atlassian/atlaskit/commits/a227432))
