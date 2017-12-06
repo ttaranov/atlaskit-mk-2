@@ -1,4 +1,4 @@
-import {
+export {
   AttributeSpec,
   MarkSpec,
   Node,
@@ -6,57 +6,17 @@ import {
   ParseRule,
   Schema,
 } from 'prosemirror-model';
-import { paragraph, createSchema } from '@atlaskit/editor-common';
 
-export { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule, Schema };
+import {
+  paragraph,
+  createSchema,
+  defaultSchemaMarks,
+  defaultSchemaNodes,
+} from '@atlaskit/editor-common';
+
 export default createSchema({
-  nodes: [
-    'doc',
-    'applicationCard',
-    'paragraph',
-    'text',
-    'bulletList',
-    'orderedList',
-    'listItem',
-    'heading',
-    'blockquote',
-    'codeBlock',
-    'panel',
-    'rule',
-    'hardBreak',
-    'mention',
-    'emoji',
-    'image',
-    'media',
-    'mediaGroup',
-    'confluenceUnsupportedBlock',
-    'confluenceUnsupportedInline',
-    'confluenceJiraIssue',
-    'singleImage',
-    'plain',
-    'table',
-    'tableCell',
-    'tableHeader',
-    'tableRow',
-    'decisionList',
-    'decisionItem',
-    'taskList',
-    'taskItem',
-    'extension',
-    'inlineExtension',
-  ],
-  marks: [
-    'em',
-    'strong',
-    'code',
-    'strike',
-    'underline',
-    'link',
-    'mentionQuery',
-    'subsup',
-    'emojiQuery',
-    'textColor',
-  ],
+  nodes: defaultSchemaNodes.concat(['plain']),
+  marks: defaultSchemaMarks,
   customNodeSpecs: {
     plain: { ...paragraph, content: 'text*', marks: '' },
   },
