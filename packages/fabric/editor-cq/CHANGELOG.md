@@ -1,5 +1,7 @@
 # @atlaskit/editor-cq
 
+## 6.10.3
+
 ## 6.10.2
 - [patch] added extension node [ec73cb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec73cb8)
 - [patch] added extension node [ec73cb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec73cb8)

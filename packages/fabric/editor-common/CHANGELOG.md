@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 4.0.2
+
 ## 4.0.1
 - [patch] added extension node [ec73cb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec73cb8)
 - [patch] added extension node [ec73cb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec73cb8)
