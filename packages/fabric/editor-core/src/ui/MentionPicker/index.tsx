@@ -2,6 +2,7 @@ import {
   MentionPicker as AkMentionPicker,
   MentionProvider,
   MentionDescription,
+  isSpecialMention,
 } from '@atlaskit/mention';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -9,6 +10,18 @@ import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { MentionsState } from '../../plugins/mentions';
 import { Popup } from '@atlaskit/editor-common';
+import { analyticsService } from '../../analytics';
+import * as keymaps from '../../keymaps';
+
+enum InsertType {
+  SELECTED = 'selected',
+  ENTER = 'enter',
+  SPACE = 'space',
+  AUTO = 'auto',
+  TAB = 'tab',
+}
+
+const MentionAnalyticsPrefix = 'atlassian.fabric.mention';
 
 export interface Props {
   editorView?: EditorView;
@@ -33,8 +46,13 @@ export default class MentionPicker extends PureComponent<Props, State> {
   content?: HTMLElement;
   private pluginState?: MentionsState;
   private picker?: AkMentionPicker;
+  private pickerOpenTime: number;
+  private pickerElapsedTime: number;
+  private insertType?: InsertType;
 
   componentWillMount() {
+    this.pickerOpenTime = 0;
+    this.pickerElapsedTime = 0;
     this.setPluginState(this.props);
   }
 
@@ -77,6 +95,8 @@ export default class MentionPicker extends PureComponent<Props, State> {
       pluginState.onSelectPrevious = this.handleSelectPrevious;
       pluginState.onSelectNext = this.handleSelectNext;
       pluginState.onSelectCurrent = this.handleSelectCurrent;
+      pluginState.onSelectPreviousMentionAuto = this.handlePreviousMentionAuto;
+      pluginState.onDismiss = this.handleOnClose;
     }
   }
 
@@ -93,6 +113,24 @@ export default class MentionPicker extends PureComponent<Props, State> {
   private handlePluginStateChange = (state: MentionsState) => {
     const { anchorElement, query, focused } = state;
     this.setState({ anchorElement, query, focused });
+  };
+
+  private handleOnOpen = () => {
+    this.pickerOpenTime = Date.now();
+  };
+
+  private calculateElapsedTime = () => {
+    this.pickerElapsedTime = Date.now() - this.pickerOpenTime;
+  };
+
+  private handleOnClose = (): boolean => {
+    this.calculateElapsedTime();
+
+    analyticsService.trackEvent(`${MentionAnalyticsPrefix}.picker.close`, {
+      duration: this.pickerElapsedTime || 0,
+    });
+
+    return true;
   };
 
   render() {
@@ -120,6 +158,8 @@ export default class MentionPicker extends PureComponent<Props, State> {
           resourceProvider={mentionProvider}
           presenceProvider={presenceProvider}
           onSelection={this.handleSelectedMention}
+          onOpen={this.handleOnOpen}
+          onClose={this.handleOnClose}
           query={query}
           ref={this.handleMentionPickerRef}
         />
@@ -132,7 +172,9 @@ export default class MentionPicker extends PureComponent<Props, State> {
   };
 
   private handleSelectedMention = (mention: MentionDescription) => {
+    this.calculateElapsedTime();
     this.pluginState!.insertMention(mention);
+    this.fireMentionInsertAnalytics(mention, this.insertType);
   };
 
   private handleSelectPrevious = (): boolean => {
@@ -151,14 +193,49 @@ export default class MentionPicker extends PureComponent<Props, State> {
     return true;
   };
 
-  private handleSelectCurrent = (): boolean => {
+  private getInsertTypeForKey(key?: string) {
+    if (key === keymaps.space.common) return InsertType.SPACE;
+    else if (key === keymaps.enter.common) return InsertType.ENTER;
+    else if (key === keymaps.tab.common) return InsertType.TAB;
+    return undefined;
+  }
+
+  private handleSelectCurrent = (key): boolean => {
     if (this.getMentionsCount() > 0 && this.picker) {
+      this.insertType = this.getInsertTypeForKey(key);
+
       (this.picker as AkMentionPicker).chooseCurrentSelection();
     } else {
+      this.insertType = undefined;
       this.pluginState!.dismiss();
     }
 
+    this.handleOnClose();
     return true;
+  };
+
+  private handlePreviousMentionAuto = (mention: MentionDescription) => {
+    this.calculateElapsedTime();
+    this.insertType = InsertType.AUTO;
+    this.fireMentionInsertAnalytics(mention, InsertType.AUTO);
+  };
+
+  private fireMentionInsertAnalytics = (
+    mention: MentionDescription,
+    insertType?: InsertType = InsertType.SELECTED,
+  ) => {
+    const { accessLevel } = mention;
+    const lastQuery = this.pluginState!.lastQuery;
+
+    analyticsService.trackEvent(`${MentionAnalyticsPrefix}.picker.insert`, {
+      mode: insertType,
+      isSpecial: isSpecialMention(mention) || false,
+      accessLevel: accessLevel || '',
+      queryLength: lastQuery ? lastQuery.length : 0,
+      duration: this.pickerElapsedTime || 0,
+    });
+
+    this.insertType = undefined;
   };
 
   private getMentionsCount(): number {

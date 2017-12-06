@@ -33,6 +33,7 @@ interface QueryMark {
 export class MentionsState {
   // public state
   query?: string;
+  lastQuery?: string;
   queryActive: boolean = false;
   enabled: boolean = true;
   focused: boolean = true;
@@ -41,7 +42,9 @@ export class MentionsState {
 
   onSelectPrevious = (): boolean => false;
   onSelectNext = (): boolean => false;
-  onSelectCurrent = (): boolean => false;
+  onSelectCurrent = (key?: string): boolean => false;
+  onSelectPreviousMentionAuto = (mention: MentionDescription): void => {};
+  onDismiss = (): void => {};
 
   private changeHandlers: StateChangeHandler[] = [];
   private state: EditorState;
@@ -169,7 +172,7 @@ export class MentionsState {
       const { view } = this;
       view.dispatch(transaction);
     }
-
+    this.onDismiss();
     return true;
   }
 
@@ -344,7 +347,7 @@ export class MentionsState {
     });
   }
 
-  trySelectCurrent() {
+  trySelectCurrent(key?: string) {
     const currentQuery = this.query ? this.query.trim() : '';
     const mentions: MentionDescription[] = this.currentQueryResult
       ? this.currentQueryResult
@@ -362,7 +365,7 @@ export class MentionsState {
       analyticsService.trackEvent(
         'atlassian.editor.mention.try.select.current',
       );
-      this.onSelectCurrent();
+      this.onSelectCurrent(key);
       return true;
     }
 
@@ -394,6 +397,7 @@ export class MentionsState {
         );
         this.insertMention(match, value);
         this.tokens.delete(key);
+        this.onSelectPreviousMentionAuto(match);
         mentionInserted = true;
       }
     });
@@ -457,6 +461,7 @@ export class MentionsState {
 
   private clearState() {
     this.queryActive = false;
+    this.lastQuery = this.query;
     this.query = undefined;
     this.tokens.clear();
     this.previousQueryResultCount = -1;
