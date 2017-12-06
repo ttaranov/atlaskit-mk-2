@@ -24,7 +24,11 @@ export const RowContainer = styled.div`
 export const RowInner = styled.div`
   display: flex;
   flex-direction: column;
+  & > div button {
+    border-radius: 0;
+  }
   & > div:last-child button {
+    border-radius: 0;
     border-bottom-left-radius: ${akEditorTableBorderRadius};
   }
 `;

@@ -71,5 +71,6 @@ export const createControlsDecoration = (
     node,
   );
 
-  return [Decoration.widget(pos, node)];
+  // -1 to place decoration before table instead of putting it inside
+  return [Decoration.widget(pos - 1, node)];
 };
