@@ -22,6 +22,6 @@ export * from './mediaImage';
 export * from './cardImageView';
 export * from './cardLoading';
 export * from './cardDimensions';
-export * from './breakpointSize';
+export * from './breakpoint';
 export * from './isValidPercentageUnit';
 export * from './getElementDimension';

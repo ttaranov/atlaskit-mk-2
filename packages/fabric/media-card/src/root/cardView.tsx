@@ -14,10 +14,18 @@ import {
   CardStatus,
   CardEvent,
   OnSelectChangeFuncResult,
+  CardDimensionValue,
 } from '..';
 import { LinkCard } from '../links';
 import { FileCard } from '../files';
 import { isLinkDetails } from '../utils/isLinkDetails';
+import {
+  breakpointSize,
+  BreakpointSizeValue,
+  cardBreakpointSizes,
+} from '../utils/breakpoint';
+import { defaultImageCardDimensions } from '../utils/cardDimensions';
+import { getCSSUnitValue } from '../utils/getCSSUnitValue';
 import { Wrapper } from './styled';
 
 export interface CardViewProps extends SharedCardProps {
@@ -65,6 +73,49 @@ export class CardView extends React.Component<CardViewProps, {}> {
     }
   };
 
+  private get width(): CardDimensionValue {
+    const { width } = this.props.dimensions || { width: undefined };
+
+    if (!width) {
+      return defaultImageCardDimensions.width;
+    }
+
+    return getCSSUnitValue(width);
+  }
+
+  private get cardSize(): BreakpointSizeValue {
+    console.log(
+      'cardSize',
+      this.width,
+      breakpointSize(this.width, cardBreakpointSizes),
+    );
+    return breakpointSize(this.width, cardBreakpointSizes);
+  }
+
+  // updateDimensions() {
+  //   const {dimensions} = this.props;
+  //   if (!dimensions) {return;}
+
+  //   const element = ReactDOM.findDOMNode(this);
+  //   const {width, height} = dimensions;
+  //   let newWidth, newHeight;
+
+  //   if (width && isValidPercentageUnit(width)) {
+  //     newWidth = getElementDimension(element, 'width');
+  //   }
+
+  //   if (height && isValidPercentageUnit(height)) {
+  //     newHeight = getElementDimension(element, 'height');
+  //   }
+
+  //   this.setState({
+  //     dimensions: {
+  //       width: newWidth || width,
+  //       height: newHeight || height,
+  //     }
+  //   });
+  // }
+
   render() {
     const { onClick, onMouseEnter } = this;
     const { mediaItemType, dimensions, appearance } = this.props;
@@ -78,8 +129,11 @@ export class CardView extends React.Component<CardViewProps, {}> {
       card = this.renderCardFromDetails();
     }
 
+    console.log('cardView render', dimensions);
+
     return (
       <Wrapper
+        cardSize={this.cardSize}
         appearance={appearance}
         dimensions={dimensions}
         onClick={onClick}

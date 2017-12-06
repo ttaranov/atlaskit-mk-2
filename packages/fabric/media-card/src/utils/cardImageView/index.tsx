@@ -11,18 +11,11 @@ import {
   CardActionType,
   ImageResizeMode,
 } from '@atlaskit/media-core';
-
-import { getCSSUnitValue } from '../getCSSUnitValue';
-import { CardDimensions, CardDimensionValue, CardStatus } from '../../index';
+import { CardDimensions, CardStatus } from '../../index';
 import { CardContent } from './cardContent';
 import { CardOverlay } from './cardOverlay';
 import { Card as Wrapper } from './styled';
 import { UploadingView } from '../../utils/uploadingView';
-import {
-  breakpointSize,
-  BreakpointSizeValue,
-} from '../../utils/breakpointSize';
-import { defaultImageCardDimensions } from '../../utils/cardDimensions';
 
 export interface CardImageViewProps {
   mediaItemType?: MediaItemType;
@@ -47,41 +40,18 @@ export interface CardImageViewProps {
   resizeMode?: ImageResizeMode;
 }
 
-const breakpointSizes = {
-  small: 173,
-  medium: 225,
-  large: 300,
-  xlarge: Infinity,
-};
-
 export class CardImageView extends Component<CardImageViewProps, {}> {
   static defaultProps = {
     resizeMode: 'crop',
   };
-
-  private get width(): CardDimensionValue {
-    const { width } = this.props.dimensions || { width: undefined };
-
-    if (!width) {
-      return defaultImageCardDimensions.width;
-    }
-
-    return getCSSUnitValue(width);
-  }
 
   private isDownloadingOrProcessing() {
     const { status } = this.props;
     return status === 'loading' || status === 'processing';
   }
 
-  private get cardSize(): BreakpointSizeValue {
-    return breakpointSize(this.width, breakpointSizes);
-  }
-
   render() {
-    const cardSize = this.cardSize;
-
-    return <Wrapper cardSize={cardSize}>{this.getCardContents()}</Wrapper>;
+    return <Wrapper>{this.getCardContents()}</Wrapper>;
   }
 
   private getCardContents = (): Array<JSX.Element> | JSX.Element => {
