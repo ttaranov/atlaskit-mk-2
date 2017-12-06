@@ -10,7 +10,7 @@ import { CardView } from '../src/root/cardView';
 import { LinkCard } from '../src/links';
 import { FileCard } from '../src/files';
 import { Wrapper } from '../src/root/styled';
-import { breakpointSize, cardBreakpointSizes } from '../src/utils/breakpoint';
+import { breakpointSize } from '../src/utils/breakpoint';
 
 describe('CardView', () => {
   const file: FileDetails = {

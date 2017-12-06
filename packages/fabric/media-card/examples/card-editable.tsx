@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { Component } from 'react';
-import FieldRadioGroup from '@atlaskit/field-radio-group';
 import {
   createStorybookContext,
   genericFileId,
 } from '@atlaskit/media-test-helpers';
-import { ImageResizeMode, MediaItemType } from '@atlaskit/media-core';
 import Toggle from '@atlaskit/toggle';
 import Slider from '@atlaskit/field-range';
 import { Card, Identifier, CardDimensions } from '../src';
@@ -30,8 +28,7 @@ export interface EditableCardState {
 class EditableCard extends Component<{}, EditableCardState> {
   state: EditableCardState = {
     identifier: genericFileId,
-    // dimensions: {...defaultImageCardDimensions},
-    dimensions: { height: '50%', width: '100%' },
+    dimensions: { ...defaultImageCardDimensions },
     parentDimensions: { height: 300, width: 500 },
     isWidthPercentage: true,
     isHeightPercentage: true,

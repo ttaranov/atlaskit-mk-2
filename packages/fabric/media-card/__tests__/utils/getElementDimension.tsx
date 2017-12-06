@@ -14,8 +14,9 @@ describe('getElementDimension', () => {
       },
     };
     (ReactDOM.findDOMNode as jest.Mock<void>).mockReturnValue(element);
-    const width = getElementDimension(null, 'width');
-    const height = getElementDimension(null, 'height');
+    const dummyComponent = <div /> as any; // This casting is done to avoid having to create a new React class here
+    const width = getElementDimension(dummyComponent, 'width');
+    const height = getElementDimension(dummyComponent, 'height');
 
     expect(width).toEqual(1);
     expect(height).toEqual(10);
