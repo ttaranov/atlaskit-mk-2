@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { md, Example } from '@atlaskit/docs';
+import { md, Props, Example } from '@atlaskit/docs';
 
 export default md`
   A Toggle component. It is a checkbox displayed in an alternative way.
@@ -28,7 +28,15 @@ export default md`
     />
   )}
 
-  ## Props
+  ## Default Export Props
 
-  > Currently this is not provided as we are experiencing a flow type generation issue
+  ${<Props props={require('!!extract-react-types-loader!../src/Toggle')} />}
+
+  ## Stateless Props
+
+  ${(
+    <Props
+      props={require('!!extract-react-types-loader!../src/ToggleStateless')}
+    />
+  )}
 `;
