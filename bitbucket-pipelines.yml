@@ -26,6 +26,9 @@ pipelines:
           - bolt typecheck
           - bolt test:ci
           - bolt test:browser:browserstack
+          # We have to disable the deploy step atm, but we can still build to ensure we dont
+          # break the website
+          - (cd website && bolt build)
           # - (cd website && bolt deploy-staging:no-minimize)
 
   custom: # Pipelines that can be scheduled or triggered manually
@@ -37,3 +40,11 @@ pipelines:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
             - (cd website && bolt deploy)
+
+    # Adding this so we can test deploying with manual steps
+    build-website-staging:
+      - step:
+          script:
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - (cd website && bolt deploy:staging)
