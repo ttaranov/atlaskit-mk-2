@@ -63,6 +63,29 @@ describe('<MediaViewer />', () => {
 
       expect(context.getMediaItemProvider).not.toHaveBeenCalled();
     });
+
+    it('should accept a custom page size', () => {
+      const context = Stubs.context(contextConfig);
+      mount(
+        <MediaViewer
+          context={context as any}
+          selectedItem={selectedItem}
+          dataSource={collectionDataSource}
+          collectionName={collectionName}
+          pageSize={122}
+          MediaViewer={Stubs.mediaViewerConstructor() as any}
+          basePath={basePath}
+        />,
+      );
+      expect(context.getMediaCollectionProvider).toHaveBeenCalledTimes(1);
+      expect(context.getMediaCollectionProvider).toHaveBeenCalledWith(
+        collectionName,
+        122,
+      );
+
+      expect(context.getMediaItemProvider).not.toHaveBeenCalled();
+    });
+
   });
 
   describe('with media list data source', () => {
