@@ -26,7 +26,7 @@ export const WidgetWrapper = styled.div`
   max-width: calc(100% - (2 * 8px));
 `;
 
-export const Widget = styled.div`
+export const WidgetDetails = styled.div`
   display: flex;
   align-items: center;
 

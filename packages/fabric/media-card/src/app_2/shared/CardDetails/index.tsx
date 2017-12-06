@@ -140,8 +140,8 @@ export default class CardDetails extends React.Component<
         <BodyWrapper>
           <TopWrapper>
             {this.renderIcon()}
-            {this.renderThumbnail()}
-            {this.renderUser()}
+            {!icon && this.renderUser()}
+            {!icon && !user && this.renderThumbnail()}
             <CopyWrapper>
               <Tooltip content={title.label}>
                 <Title>{title.text}</Title>
@@ -151,7 +151,7 @@ export default class CardDetails extends React.Component<
               </Tooltip>
             </CopyWrapper>
             <Actions
-              compact={width && width < 380}
+              compact={width && width < 384}
               actions={actions}
               onAction={onAction}
             />

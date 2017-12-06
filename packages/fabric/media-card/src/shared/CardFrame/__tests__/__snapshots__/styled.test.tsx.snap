@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LinkWrapper should have hover styles when there is a href 1`] = `
+.c0 {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  padding: 0 8px 8px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  background-color: #F4F5F7;
+  line-height: initial;
+  transition: background 0.3s;
+  -webkit-transition: background 0.3s;
+  display: block;
+}
+
+.c0:hover {
+  background-color: #EBECF0;
+}
+
+.c0:active {
+  background-color: #DEEBFF;
+}
+
+.c0:hover {
+  text-decoration: none;
+}
+
+<a
+  className="c0"
+  href="https://www.example.com/"
+/>
+`;
+
+exports[`LinkWrapper should not have hover styles when there is no href 1`] = `
+.c0 {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  padding: 0 8px 8px 8px;
+  border-radius: 3px;
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  background-color: #F4F5F7;
+  line-height: initial;
+  transition: background 0.3s;
+  -webkit-transition: background 0.3s;
+  display: block;
+}
+
+.c0:hover {
+  text-decoration: none;
+}
+
+<a
+  className="c0"
+/>
+`;
+
+exports[`Wrapper should have hover styles when there is a href 1`] = `
+.c0 {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  padding: 0 8px 8px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  background-color: #F4F5F7;
+  line-height: initial;
+  transition: background 0.3s;
+  -webkit-transition: background 0.3s;
+}
+
+.c0:hover {
+  background-color: #EBECF0;
+}
+
+.c0:active {
+  background-color: #DEEBFF;
+}
+
+<div
+  className="c0"
+  href="https://www.example.com/"
+/>
+`;
+
+exports[`Wrapper should not have hover styles when there is no href 1`] = `
+.c0 {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  padding: 0 8px 8px 8px;
+  border-radius: 3px;
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  background-color: #F4F5F7;
+  line-height: initial;
+  transition: background 0.3s;
+  -webkit-transition: background 0.3s;
+}
+
+<div
+  className="c0"
+/>
+`;

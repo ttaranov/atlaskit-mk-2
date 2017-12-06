@@ -57,6 +57,7 @@ export interface BottomWrapperProps {
 
 export const BottomWrapper = styled.div`
   display: flex;
+  justify-content: flex-end;
   margin-top: 4px;
   ${({ padLeft }: BottomWrapperProps) => {
     if (padLeft) {
