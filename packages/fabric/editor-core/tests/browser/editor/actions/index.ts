@@ -171,6 +171,29 @@ describe(name, () => {
           });
         });
 
+        it('should reject after timeout is reached', async () => {
+          stateManager.updateState(testTempFileId, {
+            id: testTempFileId,
+            status: 'uploading',
+          });
+
+          const provider = await mediaProvider;
+          await provider.uploadContext;
+
+          mediaPluginState.insertFiles([
+            { id: testTempFileId, status: 'uploading' },
+          ]);
+
+          // Note: getValue() public API doesn't yet support timeout, but the
+          //       plugin state does and we want to have coverage of that.
+          return mediaPluginState
+            .waitForPendingTasks(1)
+            .then(() => {
+              throw new Error('The promise should not resolve successfully');
+            })
+            .catch(() => {});
+        });
+
         // tslint:disable-next-line:no-only-tests
         it('should not resolve when some media operations are pending', async () => {
           stateManager.updateState(testTempFileId, {

@@ -71,7 +71,7 @@ export class MediaPluginState {
   public waitForMediaUpload: boolean = true;
   public showDropzone: boolean = false;
   private mediaNodes: MediaNodeWithPosHandler[] = [];
-  private pendingMedia: Promise<MediaState>[] = [];
+  private pendingTask = Promise.resolve<MediaState | null>(null);
   private options: MediaPluginOptions;
   private view: EditorView;
   private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
@@ -215,7 +215,7 @@ export class MediaPluginState {
   };
 
   insertFiles = (mediaStates: MediaState[]): void => {
-    const { stateManager, pendingMedia } = this;
+    const { stateManager } = this;
     const { singleImage } = this.view.state.schema.nodes;
     const collection = this.collectionFromProvider();
     if (!collection) {
@@ -239,32 +239,22 @@ export class MediaPluginState {
     const isEndState = (state: MediaState) =>
       state.status && MEDIA_END_STATES.indexOf(state.status) !== -1;
 
-    // For each in-flight media item (uploading, processing etc.) subscribe
-    // to its state changes and store a promise in pendingMedia[].
-    pendingMedia.push(
-      ...mediaStates.filter(state => !isEndState(state)).map(state => {
-        const mediaResolvedPromise = new Promise<MediaState>(
-          (resolve, reject) => {
-            const onStateChange = newState => {
-              // When media item reaches its final state, remove listener and promise
-              // from pendingMedia[] before resolving.
-              if (isEndState(newState)) {
-                stateManager.unsubscribe(state.id, onStateChange);
-                pendingMedia.splice(
-                  pendingMedia.indexOf(mediaResolvedPromise),
-                  1,
-                );
-                resolve(newState);
-              }
-            };
+    this.pendingTask = mediaStates
+      .filter(state => !isEndState(state))
+      .reduce((promise, state) => {
+        // Chain the previous promise with a new one for this media item
+        return new Promise<MediaState | null>((resolve, reject) => {
+          const onStateChange = newState => {
+            // When media item reaches its final state, remove listener and resolve
+            if (isEndState(newState)) {
+              stateManager.unsubscribe(state.id, onStateChange);
+              resolve(newState);
+            }
+          };
 
-            stateManager.subscribe(state.id, onStateChange);
-          },
-        );
-
-        return mediaResolvedPromise;
-      }),
-    );
+          stateManager.subscribe(state.id, onStateChange);
+        }).then(() => promise);
+      }, this.pendingTask);
 
     const { view } = this;
     if (!view.hasFocus()) {
@@ -334,35 +324,39 @@ export class MediaPluginState {
    *
    * NOTE: The promise will resolve even if some of the media have failed to process.
    */
-  waitForPendingTasks = (timeout?: Number) => {
-    const { pendingMedia } = this;
-
-    if (!pendingMedia.length) {
-      return Promise.resolve();
+  waitForPendingTasks = (
+    timeout?: Number,
+    lastTask?: Promise<MediaState | null>,
+  ) => {
+    if (lastTask && this.pendingTask === lastTask) {
+      return lastTask;
     }
+
+    const chainedPromise = this.pendingTask.then(() =>
+      // Call ourselves to make sure that no new pending tasks have been
+      // added before the current promise has resolved.
+      this.waitForPendingTasks(undefined, this.pendingTask!),
+    );
 
     if (!timeout) {
-      // We chain it back with itself to make sure, that no new pending media
-      // has been added to document before the previous one has been resolved.
-      return Promise.all(pendingMedia).then(() => this.waitForPendingTasks());
+      return chainedPromise;
     }
 
-    return new Promise((resolve, reject) => {
-      const allPromise = Promise.all(pendingMedia);
-      const rejectTimeout = setTimeout(
+    let rejectTimeout: number;
+    const timeoutPromise = new Promise((resolve, reject) => {
+      rejectTimeout = setTimeout(
         () =>
           reject(new Error(`Media operations did not finish in ${timeout} ms`)),
         timeout,
       );
-
-      return allPromise.then(() => {
-        clearTimeout(rejectTimeout);
-
-        // We chain it back with itself to make sure, that no new pending media
-        // has been added to document before the previous one has been resolved.
-        return this.waitForPendingTasks();
-      });
     });
+
+    return Promise.race([
+      timeoutPromise,
+      chainedPromise.then(() => {
+        clearTimeout(rejectTimeout);
+      }),
+    ]);
   };
 
   setView(view: EditorView) {
