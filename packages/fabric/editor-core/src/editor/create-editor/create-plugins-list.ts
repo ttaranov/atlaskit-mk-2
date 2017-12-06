@@ -26,6 +26,7 @@ import {
   macroPlugin,
   confluenceInlineComment,
   placeholderCursorPlugin,
+  extensionPlugin,
 } from '../plugins';
 
 /**
@@ -115,7 +116,11 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(panelPlugin);
   }
 
-  if (props.allowInlineExtension) {
+  if (props.allowExtension) {
+    plugins.push(extensionPlugin);
+  }
+
+  if (props.macroProvider) {
     plugins.push(macroPlugin);
   }
 

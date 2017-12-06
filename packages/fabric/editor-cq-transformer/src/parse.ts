@@ -373,21 +373,22 @@ function convertConfluenceMacro(
   schema: Schema,
   node: Element,
 ): Fragment | PMNode | null | undefined {
-  const { macroName, macroId, macroType, params, properties } = parseMacro(
-    node,
-  );
+  const { macroName, macroId, params, properties } = parseMacro(node);
+  const richBodyNode = getAcTagNode(node, 'ac:rich-text-body')!;
+  const richTextBody = richBodyNode
+    ? parseDomNode(schema, richBodyNode).content
+    : null;
+  const plainTextBody = properties['ac:plain-text-body'];
 
   switch (macroName.toUpperCase()) {
     case 'CODE':
       const { language, title } = params;
-      const codeContent = properties['ac:plain-text-body'] || ' ';
-      return createCodeFragment(schema, codeContent, language, title);
+      return createCodeFragment(schema, plainTextBody || '', language, title);
 
     case 'NOFORMAT': {
-      const codeContent = properties['ac:plain-text-body'] || ' ';
       return schema.nodes.codeBlock.create(
         { language: null },
-        schema.text(codeContent),
+        schema.text(plainTextBody || ''),
       );
     }
 
@@ -396,7 +397,6 @@ function convertConfluenceMacro(
     case 'NOTE':
     case 'TIP':
       const panelTitle = params.title;
-      const panelRichTextBody = getAcTagNode(node, 'AC:RICH-TEXT-BODY') || '';
       let panelBody: any[] = [];
 
       if (panelTitle) {
@@ -405,9 +405,8 @@ function convertConfluenceMacro(
         );
       }
 
-      if (panelRichTextBody) {
-        const pmNode = parseDomNode(schema, panelRichTextBody);
-        panelBody = panelBody.concat(pmNode.content);
+      if (richTextBody) {
+        panelBody = panelBody.concat(richTextBody);
       } else {
         panelBody.push(schema.nodes.paragraph.create({}));
       }
@@ -435,8 +434,8 @@ function convertConfluenceMacro(
       });
   }
 
-  switch (macroType) {
-    case 'BODYLESS-INLINE':
+  switch (properties['fab:display-type']) {
+    case 'INLINE':
       return schema.nodes.inlineExtension.create({
         extensionType: 'com.atlassian.confluence.macro.core',
         extensionKey: macroName,
@@ -453,6 +452,44 @@ function convertConfluenceMacro(
           },
         },
       });
+    case 'BLOCK':
+      let content;
+      let bodyType;
+
+      if (plainTextBody) {
+        content = schema.nodes.paragraph.createChecked(
+          {},
+          schema.text(plainTextBody),
+        );
+        bodyType = 'plain';
+      } else if (richTextBody) {
+        content = richTextBody;
+        bodyType = 'rich';
+      } else {
+        content = null;
+        bodyType = 'none';
+      }
+
+      return schema.nodes.extension.create(
+        {
+          extensionType: 'com.atlassian.confluence.macro.core',
+          extensionKey: macroName,
+          bodyType,
+          parameters: {
+            macroParams: getExtensionMacroParams(params),
+            macroMetadata: {
+              macroId: { value: macroId },
+              placeholder: [
+                {
+                  data: { url: properties['fab:placeholder-url'] },
+                  type: 'image',
+                },
+              ],
+            },
+          },
+        },
+        Fragment.from(content),
+      );
   }
 
   return null;

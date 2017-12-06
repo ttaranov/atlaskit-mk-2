@@ -63,8 +63,11 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeMedia(node);
     } else if (node.type === schema.nodes.table) {
       return encodeTable(node);
-    } else if (node.type === schema.nodes.inlineExtension) {
-      return encodeInlineExtension(node);
+    } else if (
+      node.type === schema.nodes.extension ||
+      node.type === schema.nodes.inlineExtension
+    ) {
+      return encodeExtension(node);
     } else if (node.type === schema.nodes.emoji) {
       return encodeEmoji(node);
     } else {
@@ -388,7 +391,7 @@ export default function encode(node: PMNode, schema: Schema) {
     return elem;
   }
 
-  function encodeInlineExtension(node: PMNode) {
+  function encodeExtension(node: PMNode) {
     const elem = createMacroElement(node.attrs.extensionKey);
 
     if (node.attrs.parameters) {
@@ -399,12 +402,14 @@ export default function encode(node: PMNode, schema: Schema) {
       }
 
       // parameters
-      Object.keys(macroParams).forEach(paramName => {
-        const el = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-        el.setAttributeNS(AC_XMLNS, 'ac:name', paramName);
-        el.textContent = macroParams[paramName].value;
-        elem.appendChild(el);
-      });
+      if (macroParams) {
+        Object.keys(macroParams).forEach(paramName => {
+          const el = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+          el.setAttributeNS(AC_XMLNS, 'ac:name', paramName);
+          el.textContent = macroParams[paramName].value;
+          elem.appendChild(el);
+        });
+      }
 
       const placeholderUrl = getPlaceholderUrl({ node, type: 'image' });
       if (placeholderUrl) {
@@ -418,8 +423,33 @@ export default function encode(node: PMNode, schema: Schema) {
     }
 
     const displayType = doc.createElementNS(FAB_XMLNS, 'fab:display-type');
-    displayType.textContent = 'INLINE';
+    displayType.textContent =
+      node.type.name === 'extension' ? 'BLOCK' : 'INLINE';
     elem.appendChild(displayType);
+
+    // extension content
+    if (node.type.name === 'extension' && node.attrs.bodyType !== 'none') {
+      let content;
+
+      if (node.attrs.bodyType === 'plain') {
+        content = doc.createElementNS(AC_XMLNS, 'ac:plain-text-body');
+        const fragment = doc.createDocumentFragment();
+        node.descendants(node => {
+          if (node.isText) {
+            const domNode = encodeNode(node);
+            if (domNode) {
+              fragment.appendChild(domNode);
+            }
+          }
+        });
+        content.appendChild(fragment);
+      } else {
+        content = doc.createElementNS(AC_XMLNS, 'ac:rich-text-body');
+        content.appendChild(encodeFragment(node.content));
+      }
+
+      elem.appendChild(content);
+    }
 
     return elem;
   }

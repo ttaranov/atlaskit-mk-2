@@ -14,8 +14,18 @@ import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import { ConfluenceTransformer } from '@atlaskit/editor-cq-transformer';
 import Spinner from '@atlaskit/spinner';
 import { pd } from 'pretty-data';
-
 import { macroProviderPromise } from '../example-helpers/mock-macro-provider';
+import {
+  CODE_MACRO,
+  JIRA_ISSUE,
+  JIRA_ISSUES_LIST,
+  PANEL_MACRO,
+  INLINE_MACRO,
+  BLOCK_BODYLESS_MACRO,
+  BLOCK_PLAIN_TEXT_MACRO,
+  BLOCK_RICH_TEXT_MACRO,
+  BLOCK_NESTED_MACRO,
+} from '../example-helpers/cxhtml-test-data';
 
 import {
   akEditorCodeBackground,
@@ -84,17 +94,6 @@ const SaveAndCancelButtons = props => (
   </ButtonGroup>
 );
 
-const CODE_MACRO = `<ac:structured-macro ac:name="code" ac:schema-version="1" ac:macro-id="1c61c2dd-3574-45f3-ac07-76d400504d84"><ac:parameter ac:name="language">js</ac:parameter><ac:parameter ac:name="theme">Confluence</ac:parameter><ac:parameter ac:name="title">Example</ac:parameter><ac:plain-text-body><![CDATA[if (true) {
-  console.log('Hello World');
-}]]></ac:plain-text-body></ac:structured-macro>`;
-const JIRA_ISSUE =
-  '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="a1a887df-a2dd-492b-8b5c-415d8eab22cf"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter><ac:parameter ac:name="key">ED-1068</ac:parameter></ac:structured-macro></p>';
-const JIRA_ISSUES_LIST =
-  '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="be852c2a-4d33-4ceb-8e21-b3b45791d92e"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="columns">key,summary,type,created,updated,due,assignee,reporter,priority,status,resolution</ac:parameter><ac:parameter ac:name="maximumIssues">20</ac:parameter><ac:parameter ac:name="jqlQuery">project = ED AND component = codeblock</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter></ac:structured-macro></p>';
-const PANEL_MACRO = `<ac:structured-macro ac:name="warning" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">Hello</ac:parameter><ac:rich-text-body><p>Warning panel</p></ac:rich-text-body></ac:structured-macro>`;
-const STATUS_MACRO =
-  '<p><ac:structured-macro ac:name="status" ac:schema-version="1" ac:macro-id="5e394d20-1d16-4c7d-a67c-13c9cf15abd8"><ac:parameter ac:name="colour">Green</ac:parameter><ac:parameter ac:name="title">Cool macro</ac:parameter><fab:placeholder-url>/wiki/plugins/servlet/confluence/placeholder/macro?definition=e3N0YXR1czpjb2xvdXI9R3JlZW58dGl0bGU9Q29vbCBtYWNyb30&amp;locale=en_GB&amp;version=2</fab:placeholder-url><ac:body-type>NONE</ac:body-type><fab:display-type>INLINE</fab:display-type></ac:structured-macro></p>';
-
 type ExampleProps = {
   onChange: Function;
 };
@@ -138,16 +137,26 @@ class Example extends Component<ExampleProps, ExampleState> {
             ref="input"
           />
           <button onClick={this.handleImportClick}>Import</button>
-          <button onClick={this.handleInsertCodeClick}>Insert Code</button>
-          <button onClick={this.handleInsertPanelClick}>Insert Panel</button>
-          <button onClick={this.handleInsertJiraIssueClick}>
-            Insert JIRA Issue
-          </button>
+          <button onClick={this.handleInsertCodeClick}>Code</button>
+          <button onClick={this.handleInsertPanelClick}>Panel</button>
+          <button onClick={this.handleInsertJiraIssueClick}>JIRA Issue</button>
           <button onClick={this.handleInsertJiraIssuesListClick}>
-            Insert JIRA Issues List
+            JIRA Issues List
           </button>
-          <button onClick={this.handleInsertStatusMacroClick}>
-            Insert Status Macro
+          <button onClick={this.handleInsertInlineMacroClick}>
+            Inline Macro
+          </button>
+          <button onClick={this.handleInsertBodylessMacroClick}>
+            Block Bodyless Macro
+          </button>
+          <button onClick={this.handleInsertPlainTextMacroClick}>
+            Block Plain Text Macro
+          </button>
+          <button onClick={this.handleInsertRichTextMacroClick}>
+            Block Rich Text Macro
+          </button>
+          <button onClick={this.handleInsertNestedMacroClick}>
+            Nested Macro
           </button>
         </fieldset>
         <Content>
@@ -168,7 +177,7 @@ class Example extends Component<ExampleProps, ExampleState> {
                   allowJiraIssue={true}
                   allowUnsupportedContent={true}
                   allowPanel={true}
-                  allowInlineExtension={true}
+                  allowExtension={true}
                   allowConfluenceInlineComment={true}
                   mediaProvider={storyMediaProviderFactory()}
                   emojiProvider={emojiStoryData.getEmojiResource({
@@ -220,8 +229,16 @@ class Example extends Component<ExampleProps, ExampleState> {
   private handleInsertJiraIssuesListClick = () =>
     this.setState({ input: JIRA_ISSUES_LIST });
   private handleInsertPanelClick = () => this.setState({ input: PANEL_MACRO });
-  private handleInsertStatusMacroClick = () =>
-    this.setState({ input: STATUS_MACRO });
+  private handleInsertInlineMacroClick = () =>
+    this.setState({ input: INLINE_MACRO });
+  private handleInsertBodylessMacroClick = () =>
+    this.setState({ input: BLOCK_BODYLESS_MACRO });
+  private handleInsertPlainTextMacroClick = () =>
+    this.setState({ input: BLOCK_PLAIN_TEXT_MACRO });
+  private handleInsertRichTextMacroClick = () =>
+    this.setState({ input: BLOCK_RICH_TEXT_MACRO });
+  private handleInsertNestedMacroClick = () =>
+    this.setState({ input: BLOCK_NESTED_MACRO });
 }
 
 export type ExampleWrapperProps = {};
