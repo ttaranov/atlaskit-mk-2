@@ -1,11 +1,13 @@
 // @flow
-import type { Node } from 'react';
+import type { Element, Node } from 'react';
+import type { PropType } from 'babel-plugin-react-flow-props-to-prop-types'; // eslint-disable-line import/no-extraneous-dependencies
 
+export type ChildrenType = PropType<Array<Element<any>> | Element<any>, any>;
 export type FunctionType = (...args: Array<any>) => mixed;
 export type StatefulTab = {
-  content?: Node,
+  content?: any,
   defaultSelected?: boolean,
-  label: string,
+  label: any,
   isSelected?: boolean,
 };
 export type StatelessTab = {
