@@ -10,7 +10,7 @@ import { ImageNavigator } from '../src/image-navigator';
 let onLoadParams;
 let imageElement;
 
-const onLoad = (params) => {
+const onLoad = params => {
   onLoadParams = params;
 };
 const exportImage = () => {

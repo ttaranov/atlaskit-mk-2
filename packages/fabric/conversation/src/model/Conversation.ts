@@ -5,5 +5,5 @@ export interface Conversation {
   children?: Comment[];
   meta?: {
     [key: string]: any;
-  }
+  };
 }

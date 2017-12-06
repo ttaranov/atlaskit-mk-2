@@ -23,7 +23,7 @@ export interface Props {
 }
 
 export default class RowControls extends Component<Props, any> {
-  render () {
+  render() {
     const { editorView: { state, dispatch } } = this.props;
     const tbody = this.props.tableElement.querySelector('tbody')!;
     const rows = tbody.getElementsByTagName('tr');
