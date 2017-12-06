@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import {
   DataUriService,
   MediaItemDetails,
@@ -85,9 +84,7 @@ export const withDataURI = (Component): any => {
       }
 
       if (isValidPercentageUnit(dimensionValue)) {
-        const element = ReactDOM.findDOMNode(this);
-
-        return getElementDimension(element, dimension);
+        return getElementDimension(this, dimension);
       }
 
       return (

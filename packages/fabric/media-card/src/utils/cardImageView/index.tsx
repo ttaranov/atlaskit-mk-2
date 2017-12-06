@@ -14,7 +14,7 @@ import {
 import { CardDimensions, CardStatus } from '../../index';
 import { CardContent } from './cardContent';
 import { CardOverlay } from './cardOverlay';
-import { Card as Wrapper } from './styled';
+import { Wrapper } from './styled';
 import { UploadingView } from '../../utils/uploadingView';
 
 export interface CardImageViewProps {

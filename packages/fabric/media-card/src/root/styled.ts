@@ -8,21 +8,21 @@ import { BreakpointSizeValue, breakpointStyles } from '../utils/breakpoint';
 export interface WrapperProps {
   dimensions?: CardDimensions;
   appearance?: CardAppearance;
-  cardSize: BreakpointSizeValue;
+  breakpointSize: BreakpointSizeValue;
 }
 
-const getWrapperHeight = ({ dimensions }: WrapperProps) =>
+const getWrapperHeight = (dimensions?: CardDimensions) =>
   dimensions && dimensions.height
     ? `height: ${getCSSUnitValue(dimensions.height)}`
     : '';
 
-const getWrapperWidth = ({ dimensions }: WrapperProps) =>
+const getWrapperWidth = (dimensions?: CardDimensions) =>
   dimensions && dimensions.width
     ? `width: ${getCSSUnitValue(dimensions.width)}`
     : '';
 
 export const Wrapper = styled.div`
-  ${({ appearance, dimensions, cardSize }: WrapperProps) => {
+  ${({ appearance, dimensions, breakpointSize }: WrapperProps) => {
     if (appearance === 'square' || appearance === 'horizontal') {
       return `
         ${getCSSBoundaries(appearance)}
@@ -38,9 +38,9 @@ export const Wrapper = styled.div`
     }
 
     return `
-      ${breakpointStyles({ cardSize })}
-      ${getWrapperHeight({ dimensions })}
-      ${getWrapperWidth({ dimensions })}
+      ${breakpointStyles({ breakpointSize })}
+      ${getWrapperHeight(dimensions)}
+      ${getWrapperWidth(dimensions)}
     `;
   }};
 `;

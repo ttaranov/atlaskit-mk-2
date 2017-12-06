@@ -7,7 +7,7 @@ export const breakpointSize = (
   width: CardDimensionValue,
   sizes,
 ): BreakpointSizeValue => {
-  const value = parseInt(`${width}`, 0); // Normalize value
+  const value = parseInt(`${width}`, 10); // Normalize value
   const keys = Object.keys(sizes);
   const defaultValue = keys[0];
   let breakpoint;
@@ -22,7 +22,7 @@ export const breakpointSize = (
 };
 
 export interface BreakpointProps {
-  cardSize: BreakpointSizeValue;
+  breakpointSize: BreakpointSizeValue;
 }
 
 export const cardBreakpointSizes = {
@@ -32,8 +32,8 @@ export const cardBreakpointSizes = {
   xlarge: Infinity,
 };
 
-export const breakpointStyles = ({ cardSize }: BreakpointProps) => {
-  switch (cardSize) {
+export const breakpointStyles = ({ breakpointSize }: BreakpointProps) => {
+  switch (breakpointSize) {
     case 'small':
       return `
         .title {

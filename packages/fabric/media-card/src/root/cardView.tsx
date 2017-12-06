@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { MouseEvent } from 'react';
 import {
   MediaItemType,
@@ -103,7 +102,7 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
     return getCSSUnitValue(width);
   }
 
-  private get cardSize(): BreakpointSizeValue {
+  private get breakpointSize(): BreakpointSizeValue {
     return breakpointSize(this.width, cardBreakpointSizes);
   }
 
@@ -115,11 +114,10 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
       return;
     }
 
-    const element = ReactDOM.findDOMNode(this);
     const { width } = dimensions;
 
     if (width && isValidPercentageUnit(width)) {
-      const elementWidth = getElementDimension(element, 'width');
+      const elementWidth = getElementDimension(this, 'width');
 
       this.setState({ elementWidth });
     }
@@ -140,7 +138,7 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
 
     return (
       <Wrapper
-        cardSize={this.cardSize}
+        breakpointSize={this.breakpointSize}
         appearance={appearance}
         dimensions={dimensions}
         onClick={onClick}
