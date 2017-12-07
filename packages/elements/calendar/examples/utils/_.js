@@ -1,6 +1,6 @@
 // @flow
 
-import { dateToString } from '../src/util';
+import { dateToString } from '../../src/util';
 
 export const now = new Date();
 export const today = now.getDate();
