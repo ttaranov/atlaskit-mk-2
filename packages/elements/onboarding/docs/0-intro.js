@@ -23,19 +23,19 @@ export default md`
   ## Spotlight
   ${(
     <Props
-      props={require('!!extract-react-types-loader!../src/components/SpotLight')}
+      props={require('!!extract-react-types-loader!../src/components/Spotlight')}
     />
   )}
   ## SpotlightManager
   ${(
     <Props
-      props={require('!!extract-react-types-loader!../src/components/SpotLightManager')}
+      props={require('!!extract-react-types-loader!../src/components/SpotlightManager')}
     />
   )}
   ## SpotlightTarget
   ${(
     <Props
-      props={require('!!extract-react-types-loader!../src/components/SpotLightTarget')}
+      props={require('!!extract-react-types-loader!../src/components/SpotlightTarget')}
     />
   )}
 
