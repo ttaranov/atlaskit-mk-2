@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import { colors, layers, themed } from '@atlaskit/theme';
 
 // NOTE:
-// we can't use @atlaskit/blanket because the z-index is insufficient
+// we can't use @atlaskit/blanket
+// because it has to sit on top of other layered elements (i.e. Modal).
 
 const backgroundColor = themed({ light: colors.N100A, dark: colors.DN90A });
 
 export default styled.div`
-  background: ${backgroundColor};
+  background: ${p => (p.isTinted ? backgroundColor : 'transparent')};
   bottom: 0;
   left: 0;
   position: fixed;

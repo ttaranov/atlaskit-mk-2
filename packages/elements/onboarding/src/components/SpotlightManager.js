@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 import { ScrollLock } from '@atlaskit/layer-manager';
 
 import SpotlightRegistry from './SpotlightRegistry';
-import type { ChildrenType, ComponentType } from '../types';
 import Blanket from '../styled/Blanket';
+
+import type { ChildrenType, ComponentType } from '../types';
 
 type Props = {
   children: ChildrenType,
   component: ComponentType,
+  blanketIsTinted?: boolean,
 };
 type State = {
   mounted: number,
@@ -22,6 +24,7 @@ export default class SpotlightManager extends PureComponent<Props, State> {
   };
   static defaultProps = {
     component: 'div',
+    blanketIsTinted: true,
   };
 
   /* eslint-disable react/sort-comp */
@@ -56,7 +59,7 @@ export default class SpotlightManager extends PureComponent<Props, State> {
     return (
       <Tag>
         {children}
-        {dialogIsVisible && <Blanket />}
+        {dialogIsVisible && <Blanket isTinted={this.props.blanketIsTinted} />}
         {dialogIsVisible && <ScrollLock />}
       </Tag>
     );

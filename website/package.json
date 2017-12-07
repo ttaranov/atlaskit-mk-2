@@ -40,7 +40,7 @@
     "@atlaskit/dynamic-table": "^6.0.2",
     "@atlaskit/field-text": "^4.0.0",
     "@atlaskit/icon": "^10.3.1",
-    "@atlaskit/layer-manager": "^2.5.2",
+    "@atlaskit/layer-manager": "^2.5.4",
     "@atlaskit/logo": "^6.0.9",
     "@atlaskit/lozenge": "^3.4.8",
     "@atlaskit/media-card": "^22.4.3",
