@@ -24,6 +24,8 @@ export interface AvatarPickerDialogProps {
   imageSource?: string;
   onImagePicked: (file: File, crop: CropProperties) => void;
   onCancel: () => void;
+  title?: string;
+  primaryButtonText?: string;
 }
 
 export enum Mode {
@@ -106,34 +108,35 @@ export class AvatarPickerDialog extends PureComponent<
       <ModalDialog
         height="437px"
         width="360px"
-        header={this.renderHeader()}
-        footer={this.renderFooter()}
+        header={this.headerContent()}
+        footer={this.footerContent()}
         onClose={this.props.onCancel}
         isOpen={true}
       >
-        <AvatarPickerViewWrapper>
-          {this.renderContent()}
-        </AvatarPickerViewWrapper>
+        <AvatarPickerViewWrapper>{this.renderBody()}</AvatarPickerViewWrapper>
       </ModalDialog>
     );
   }
 
-  renderHeader() {
-    return () => <ModalHeader>Upload an avatar</ModalHeader>;
+  headerContent() {
+    const { title } = this.props;
+    return () => <ModalHeader>{title || 'Upload an avatar'}</ModalHeader>;
   }
 
-  renderFooter() {
+  footerContent() {
+    const { primaryButtonText, onCancel } = this.props;
+    const { onSaveClick, isDisabled } = this;
     return () => (
       <ModalFooter>
         <div>
           <Button
             appearance="primary"
-            onClick={this.onSaveClick}
-            isDisabled={this.isDisabled}
+            onClick={onSaveClick}
+            isDisabled={isDisabled}
           >
-            Save
+            {primaryButtonText || 'Save'}
           </Button>
-          <Button appearance="subtle-link" onClick={this.props.onCancel}>
+          <Button appearance="subtle-link" onClick={onCancel}>
             Cancel
           </Button>
         </div>
@@ -187,7 +190,7 @@ export class AvatarPickerDialog extends PureComponent<
     );
   }
 
-  renderContent() {
+  renderBody() {
     const { imageSource, avatars } = this.props;
     const { mode, selectedAvatar } = this.state;
 
