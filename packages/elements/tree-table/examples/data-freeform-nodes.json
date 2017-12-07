@@ -18,7 +18,7 @@
           "children": [
             {
               "id": "1.2.1",
-              "title": "First grandchild",
+              "title": "First grandchild with a very long name",
               "numbering": "1.2.1",
               "children": []
             }

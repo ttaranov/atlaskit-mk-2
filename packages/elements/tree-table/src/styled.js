@@ -48,6 +48,9 @@ export const TreeCell = styled.div`
   ${commonCell} ${props =>
       props.indentLevel &&
       css`
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         padding-left: ${defaultToPx(indentWidth * props.indentLevel)};
         position: relative;
       `};

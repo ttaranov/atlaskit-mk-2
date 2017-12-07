@@ -1,14 +1,9 @@
 // @flow
 import React, { PureComponent } from 'react';
-import Spinner from '@atlaskit/spinner';
-
 import RowChildren from './RowChildren';
 import { type DataFunction } from './../types';
 
-import TreeCell from './TreeCell';
-import Chevron from './Chevron';
 import Loader from './Loader';
-import { TreeRowContainer, ChevronContainer } from '../styled';
 
 type Props = {
   data: Object,

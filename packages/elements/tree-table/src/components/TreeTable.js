@@ -18,13 +18,14 @@ type Props = {
   /** An array of React component constructors. Each component will be used to render a cell in a tree row.  */
   columns?: Array<ElementType>,
 
-  /** Widths */
-  columnWidths?: Array<string>,
+  /** The widths of the columns in the table. */
+  columnWidths?: Array<string | number>,
 
   /** The headers of the table. */
   headers?: Array<string>,
 
   children?: Array<Node>,
+
   /** The function that will be used to provide data for rows at a particular level in the hierarchy */
   data?: DataFunction,
 };
