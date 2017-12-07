@@ -55,7 +55,7 @@ export function keymapPlugin(schema: Schema): Plugin {
         return false;
       }
 
-      mentionsPlugin.onSelectCurrent();
+      mentionsPlugin.onSelectCurrent(keymaps.insertNewLine.common);
       return false;
     },
     list,

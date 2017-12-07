@@ -13,15 +13,27 @@ import { Popup } from '@atlaskit/editor-common';
 import { analyticsService } from '../../analytics';
 import * as keymaps from '../../keymaps';
 
+const MentionAnalyticsPrefix = 'atlassian.fabric.mention';
+
 enum InsertType {
   SELECTED = 'selected',
   ENTER = 'enter',
+  SHIFT_ENTER = 'shift-enter',
   SPACE = 'space',
   AUTO = 'auto',
   TAB = 'tab',
 }
 
-const MentionAnalyticsPrefix = 'atlassian.fabric.mention';
+function createInsertTypeMap(): object {
+  const map = {};
+  map[keymaps.space.common] = InsertType.SPACE;
+  map[keymaps.enter.common] = InsertType.ENTER;
+  map[keymaps.insertNewLine.common] = InsertType.SHIFT_ENTER;
+  map[keymaps.tab.common] = InsertType.TAB;
+  return Object.freeze(map);
+}
+
+const insertTypeMap: object = createInsertTypeMap();
 
 export interface Props {
   editorView?: EditorView;
@@ -193,16 +205,9 @@ export default class MentionPicker extends PureComponent<Props, State> {
     return true;
   };
 
-  private getInsertTypeForKey(key?: string) {
-    if (key === keymaps.space.common) return InsertType.SPACE;
-    else if (key === keymaps.enter.common) return InsertType.ENTER;
-    else if (key === keymaps.tab.common) return InsertType.TAB;
-    return undefined;
-  }
-
   private handleSelectCurrent = (key): boolean => {
     if (this.getMentionsCount() > 0 && this.picker) {
-      this.insertType = this.getInsertTypeForKey(key);
+      this.insertType = insertTypeMap[key];
 
       (this.picker as AkMentionPicker).chooseCurrentSelection();
     } else {
@@ -222,7 +227,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
 
   private fireMentionInsertAnalytics = (
     mention: MentionDescription,
-    insertType?: InsertType = InsertType.SELECTED,
+    insertType: InsertType = InsertType.SELECTED,
   ) => {
     const { accessLevel } = mention;
     const lastQuery = this.pluginState!.lastQuery;

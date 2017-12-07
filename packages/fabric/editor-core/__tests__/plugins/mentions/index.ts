@@ -21,6 +21,7 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { analyticsService } from '../../../src/analytics';
+import * as keymaps from '../../../src/keymaps';
 
 const mentionProvider = new Promise<any>(resolve => {
   resolve(mentionStoryData.resourceProvider);
@@ -143,7 +144,7 @@ describe('mentions', () => {
 
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'Enter');
-        expect(spy).not.toHaveBeenCalled();
+        expect(spy).not.toHaveBeenCalledWith(keymaps.enter.common);
         editorView.destroy();
       });
 
@@ -170,7 +171,7 @@ describe('mentions', () => {
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
           sendKeyToPm(editorView, 'Enter');
-          expect(spy).toHaveBeenCalled();
+          expect(spy).toHaveBeenCalledWith(keymaps.enter.common);
           expect(spy.returnValue).toBe(false);
           editorView.destroy();
         });
@@ -212,7 +213,7 @@ describe('mentions', () => {
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
         sendKeyToPm(editorView, 'Shift-Enter');
-        expect(spy).toHaveBeenCalled();
+        expect(spy).toHaveBeenCalledWith(keymaps.insertNewLine.common);
         editorView.destroy();
       });
     });
@@ -295,12 +296,19 @@ describe('mentions', () => {
           doc(p(mentionQuery()('@kai{<>}'))),
         );
         const spy = spyOnReturnValue(pluginState, 'dismiss', sandbox);
+        const spyOnDismiss = spyOnReturnValue(
+          pluginState,
+          'onDismiss',
+          sandbox,
+        );
 
         return pluginState.setMentionProvider(mentionProvider).then(() => {
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
           sendKeyToPm(editorView, 'Esc');
           expect(spy).toHaveBeenCalled();
           expect(spy.returnValue).toBe(true);
+          expect(spyOnDismiss).toHaveBeenCalled();
+
           editorView.destroy();
         });
       });
@@ -693,9 +701,9 @@ describe('mentions', () => {
           'O w',
         );
 
-        pluginState.trySelectCurrent();
+        pluginState.trySelectCurrent(keymaps.space.common);
 
-        expect(spy).toHaveBeenCalled();
+        expect(spy).toHaveBeenCalledWith(keymaps.space.common);
         expect(trackEvent).toHaveBeenCalledWith(
           'atlassian.editor.mention.try.select.current',
         );
@@ -832,22 +840,22 @@ describe('mentions', () => {
       const { editorView, pluginState } = editor(
         doc(p(mentionQuery({ active: true })('@oscar{<>}'))),
       );
+      const spyOnSelectPreviousMentionAuto = spyOnReturnValue(
+        pluginState,
+        'onSelectPreviousMentionAuto',
+        sandbox,
+      );
 
       return pluginState.setMentionProvider(mentionProvider).then(() => {
         const trackEvent = jest.fn();
         analyticsService.trackEvent = trackEvent;
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
-
-        pluginState.onMentionResult(
-          [
-            {
-              name: 'Oscar Wallhult',
-              nickname: 'oscar',
-              id: '1234',
-            },
-          ],
-          'oscar',
-        );
+        const userMention = {
+          name: 'Oscar Wallhult',
+          nickname: 'oscar',
+          id: '1234',
+        };
+        pluginState.onMentionResult([userMention], 'oscar');
 
         sendKeyToPm(editorView, 'Space');
         insertText(editorView, ' How', editorView.state.selection.from);
@@ -860,6 +868,9 @@ describe('mentions', () => {
         expect(trackEvent).toHaveBeenCalledWith(
           'atlassian.editor.mention.insert.previous.match.success',
         );
+        expect(spyOnSelectPreviousMentionAuto).toHaveBeenCalledWith(
+          userMention,
+        ); // verify if callback was executed
         editorView.destroy();
       });
     });
@@ -880,6 +891,22 @@ describe('mentions', () => {
         const { plugin, pluginState, editorView } = editor(doc(p('te{<>}xt')));
         plugin.props.handleDOMEvents!.blur(editorView, event);
         expect(pluginState.focused).toEqual(false);
+        editorView.destroy();
+      });
+    });
+  });
+
+  describe('lastQuery', () => {
+    describe('when state is cleared', () => {
+      it('should store the previous query', () => {
+        const { editorView, pluginState } = editor(
+          doc(p(mentionQuery()('@joe{<>}'))),
+        );
+        pluginState!.query = 'joe';
+        pluginState.dismiss();
+
+        expect(pluginState!.lastQuery).toEqual('joe');
+        expect(pluginState!.query).toEqual(undefined);
         editorView.destroy();
       });
     });
