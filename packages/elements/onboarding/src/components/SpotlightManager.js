@@ -11,6 +11,7 @@ import type { ChildrenType, ComponentType } from '../types';
 type Props = {
   children: ChildrenType,
   component: ComponentType,
+  /** Boolean prop for toggling blanket transparency  */
   blanketIsTinted?: boolean,
 };
 type State = {
