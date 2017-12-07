@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-bitbucket",
-  "version": "4.11.0",
+  "version": "4.11.1",
   "description": "Atlassian Editor component for Bitbucket",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -18,8 +18,8 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/editor-bitbucket-transformer": "^2.1.0",
-    "@atlaskit/editor-common": "^4.1.0",
-    "@atlaskit/editor-core": "^60.9.0",
+    "@atlaskit/editor-common": "^4.1.1",
+    "@atlaskit/editor-core": "^60.9.1",
     "@types/prosemirror-commands": "^1.0.0",
     "@types/prosemirror-history": "^1.0.0",
     "@types/prosemirror-keymap": "^1.0.0",
@@ -38,7 +38,7 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/editor-test-helpers": "^1.2.0",
+    "@atlaskit/editor-test-helpers": "^1.2.1",
     "@atlaskit/emoji": "^30.3.3",
     "@atlaskit/mention": "^8.1.0",
     "chai": "^4.1.2"
