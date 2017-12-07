@@ -1,5 +1,7 @@
 # @atlaskit/banner
 
+## 4.0.6
+
 ## 4.0.5
 - [patch] Migrate banner to new atlaskit repo [0d035b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d035b2)
 

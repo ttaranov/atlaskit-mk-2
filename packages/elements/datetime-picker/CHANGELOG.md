@@ -1,5 +1,7 @@
 # @atlaskit/datetime-picker
 
+## 0.2.1
+
 ## 0.2.0
 - [minor] DateTimePicker is now controlled. [1318f4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1318f4e)
 - [minor] Add DateTimePickerStateless component. Fix issue where DateTimePicker tries to call selectField on the dualPicker, which didn't exist. Add ability to have a controlled DateTimePicker. [4bd0167](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4bd0167)

@@ -1,5 +1,7 @@
 # @atlaskit/media-avatar-picker
 
+## 4.1.2
+
 ## 4.1.1
 - [patch] fix broken syntax in avatar example [c7cc95d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7cc95d)
 

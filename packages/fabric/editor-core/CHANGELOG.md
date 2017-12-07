@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 60.8.5
+
 ## 60.8.4
 - [patch] Add default inline code styles [d5d8e5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5d8e5f)
 - [patch] Add default inline code styles [d5d8e5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5d8e5f)

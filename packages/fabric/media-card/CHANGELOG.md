@@ -1,5 +1,7 @@
 # @atlaskit/media-image
 
+## 22.3.1
+
 ## 22.3.0
 - [minor] Update signature onClick event on filmstrip (renderer) [30bdfcc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30bdfcc)
 - [minor] Update signature onClick event on filmstrip (renderer) [dbced25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbced25)

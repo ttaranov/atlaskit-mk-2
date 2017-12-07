@@ -1,5 +1,7 @@
 # @atlaskit/media-viewer
 
+## 9.0.4
+
 ## 9.0.3
 - [patch]  pass pageSize property down from MediaViewer to MediaCollectionViewer [6fd7dae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6fd7dae)
 
