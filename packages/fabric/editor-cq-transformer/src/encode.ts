@@ -65,6 +65,7 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeTable(node);
     } else if (
       node.type === schema.nodes.extension ||
+      node.type === schema.nodes.bodiedExtension ||
       node.type === schema.nodes.inlineExtension
     ) {
       return encodeExtension(node);
@@ -424,30 +425,12 @@ export default function encode(node: PMNode, schema: Schema) {
 
     const displayType = doc.createElementNS(FAB_XMLNS, 'fab:display-type');
     displayType.textContent =
-      node.type.name === 'extension' ? 'BLOCK' : 'INLINE';
+      node.type.name === 'inlineExtension' ? 'INLINE' : 'BLOCK';
     elem.appendChild(displayType);
 
-    // extension content
-    if (node.type.name === 'extension' && node.attrs.bodyType !== 'none') {
-      let content;
-
-      if (node.attrs.bodyType === 'plain') {
-        content = doc.createElementNS(AC_XMLNS, 'ac:plain-text-body');
-        const fragment = doc.createDocumentFragment();
-        node.descendants(node => {
-          if (node.isText) {
-            const domNode = encodeNode(node);
-            if (domNode) {
-              fragment.appendChild(domNode);
-            }
-          }
-        });
-        content.appendChild(fragment);
-      } else {
-        content = doc.createElementNS(AC_XMLNS, 'ac:rich-text-body');
-        content.appendChild(encodeFragment(node.content));
-      }
-
+    if (node.type.name === 'bodiedExtension') {
+      const content = doc.createElementNS(AC_XMLNS, 'ac:rich-text-body');
+      content.appendChild(encodeFragment(node.content));
       elem.appendChild(content);
     }
 

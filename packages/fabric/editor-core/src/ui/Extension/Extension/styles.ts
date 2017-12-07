@@ -24,14 +24,4 @@ export const Content = styled.div`
 // tslint:disable-next-line:variable-name
 export const ContentWrapper = styled.div`
   padding: 0 ${padding}px ${padding}px;
-
-  /*
-    if node with "content hole" rendered without content (like block bodyless extension),
-    PM throws errors when it is selected (with triple click)
-    we just hide node's body with css
-  */
-  &.bodyless {
-    position: absolute;
-    left: -9999px;
-  }
 `;

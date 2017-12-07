@@ -44,3 +44,4 @@ export { taskList } from './task-list';
 export { taskItem } from './task-item';
 export { extension } from './extension';
 export { inlineExtension } from './inline-extension';
+export { bodiedExtension } from './bodied-extension';

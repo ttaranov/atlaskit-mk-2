@@ -18,6 +18,7 @@ export const confluenceSchema: Schema = createSchema({
     'confluenceJiraIssue',
     'extension',
     'inlineExtension',
+    'bodiedExtension',
     'listItem',
     'mention',
     'text',

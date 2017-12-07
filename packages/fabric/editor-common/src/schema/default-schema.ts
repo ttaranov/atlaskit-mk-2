@@ -24,6 +24,7 @@ export const defaultSchema: Schema = createSchema({
     'confluenceJiraIssue',
     'extension',
     'inlineExtension',
+    'bodiedExtension',
     'hardBreak',
     'emoji',
     'table',
