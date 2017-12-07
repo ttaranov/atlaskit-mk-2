@@ -1,3 +1,4 @@
+import { StatsContainer } from './validator';
 import { generateUuid as uuid } from './uuid';
 import { defaultSchema } from '../schema';
 import { Mark as PMMark, Schema } from 'prosemirror-model';
@@ -27,6 +28,11 @@ export interface ADMarkSimple {
     name: string;
   };
   attrs?: any;
+}
+
+export interface StatsContainer {
+  unknownBlockNodes: number;
+  unknownInlineNodes: number;
 }
 
 /*
@@ -71,8 +77,12 @@ export const isSameMark = (mark: PMMark | null, otherMark: PMMark | null) => {
 export const getValidDocument = (
   doc: ADDoc,
   schema: Schema = defaultSchema,
+  statsContainer: StatsContainer = {
+    unknownInlineNodes: 0,
+    unknownBlockNodes: 0,
+  },
 ): ADDoc | null => {
-  const node = getValidNode(doc as ADNode, schema);
+  const node = getValidNode(doc as ADNode, schema, statsContainer);
 
   if (node.type === 'doc') {
     return node as ADDoc;
@@ -84,8 +94,9 @@ export const getValidDocument = (
 export const getValidContent = (
   content: ADNode[],
   schema: Schema = defaultSchema,
+  statsContainer: StatsContainer,
 ): ADNode[] => {
-  return content.map(node => getValidNode(node, schema));
+  return content.map(node => getValidNode(node, schema, statsContainer));
 };
 
 const TEXT_COLOR_PATTERN = /^#[0-9a-f]{6}$/i;
@@ -147,7 +158,10 @@ const isValidUser = user => {
  *
  * @see https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-ImplementationdetailsforHCNGwebrenderer
  */
-export const getValidUnknownNode = (node: ADNode): ADNode => {
+export const getValidUnknownNode = (
+  node: ADNode,
+  statsContainer: StatsContainer,
+): ADNode => {
   const { attrs = {}, content, text, type } = node;
 
   if (!content || !content.length) {
@@ -167,6 +181,8 @@ export const getValidUnknownNode = (node: ADNode): ADNode => {
       ];
     }
 
+    statsContainer.unknownInlineNodes++;
+
     return unknownInlineNode;
   }
 
@@ -175,6 +191,8 @@ export const getValidUnknownNode = (node: ADNode): ADNode => {
    * join with a blank space, otherwise they are children of different branches, i.e.
    * we need to join them with a hardBreak node
    */
+  statsContainer.unknownBlockNodes++;
+
   return {
     type: 'unknownBlock',
     content: flattenUnknownBlockTree(node),
@@ -193,6 +211,10 @@ export const getValidUnknownNode = (node: ADNode): ADNode => {
 export const getValidNode = (
   originalNode: ADNode,
   schema: Schema = defaultSchema,
+  statsContainer: StatsContainer = {
+    unknownInlineNodes: 0,
+    unknownBlockNodes: 0,
+  },
 ): ADNode => {
   const { attrs, marks, text, type } = originalNode;
   let { content } = originalNode;
@@ -205,12 +227,12 @@ export const getValidNode = (
   };
 
   if (content) {
-    node.content = content = getValidContent(content, schema);
+    node.content = content = getValidContent(content, schema, statsContainer);
   }
 
   // If node type doesn't exist in schema, make it an unknown node
   if (!schema.nodes[type]) {
-    return getValidUnknownNode(node);
+    return getValidUnknownNode(node, statsContainer);
   }
 
   if (type) {
@@ -442,7 +464,7 @@ export const getValidNode = (
           if (marks) {
             marks = marks.reduce(
               (acc, mark) => {
-                const validMark = getValidMark(mark);
+                const validMark = getValidMark(mark, statsContainer);
                 if (validMark) {
                   acc.push(validMark);
                 }
@@ -619,7 +641,7 @@ export const getValidNode = (
     }
   }
 
-  return getValidUnknownNode(node);
+  return getValidUnknownNode(node, statsContainer);
 };
 
 /*
@@ -631,7 +653,10 @@ export const getValidNode = (
  * If a node is not recognized or is missing required attributes, we should return null
  *
  */
-export const getValidMark = (mark: ADMark): ADMark | null => {
+export const getValidMark = (
+  mark: ADMark,
+  statsContainer: StatsContainer,
+): ADMark | null => {
   const { attrs, type } = mark;
 
   if (type) {
@@ -726,6 +751,8 @@ export const getValidMark = (mark: ADMark): ADMark | null => {
       }
     }
   }
+
+  statsContainer.unknownMarks++;
 
   return null;
 };

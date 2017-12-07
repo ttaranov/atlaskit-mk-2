@@ -3,7 +3,6 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { ReactSerializer } from '../../../src';
 import { defaultSchema as schema } from '@atlaskit/editor-common';
-import * as validator from '../../../src/validator';
 import { Action } from '../../../src/react/marks';
 
 const doc = {

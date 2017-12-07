@@ -19,6 +19,8 @@ export interface RenderOutputStat {
   buildTreeTime?: number;
   sanitizeTime: number;
   serializeTime?: number;
+  unknownBlockNodes: number;
+  unknownInlineNodes: number;
 }
 
 export interface ResultWithTime<T> {
@@ -42,10 +44,14 @@ export const renderDocument = <T>(
   serializer: Serializer<T>,
   schema: Schema = defaultSchema,
 ): RenderOutput<T | null> => {
-  const stat: RenderOutputStat = { sanitizeTime: 0 };
+  const stat: RenderOutputStat = {
+    sanitizeTime: 0,
+    unknownBlockNodes: 0,
+    unknownInlineNodes: 0,
+  };
 
   const { output: validDoc, time: sanitizeTime } = withStopwatch(() =>
-    getValidDocument(doc, schema),
+    getValidDocument(doc, schema, stat),
   );
 
   // save sanitize time to stats
