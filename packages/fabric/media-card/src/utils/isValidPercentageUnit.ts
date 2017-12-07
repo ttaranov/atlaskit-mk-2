@@ -1,3 +1,4 @@
+// Utility used to know if the integrator is using percentage values
 export const isValidPercentageUnit = (value: string | number): boolean => {
   const valueString = `${value}`;
 

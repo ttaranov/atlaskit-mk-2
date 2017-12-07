@@ -12,7 +12,6 @@ import {
   EditableCardOptions,
   EditableCardContent,
 } from '../example-helpers/styled';
-import { defaultImageCardDimensions } from '../src/utils/cardDimensions';
 
 const context = createStorybookContext();
 
@@ -28,7 +27,7 @@ export interface EditableCardState {
 class EditableCard extends Component<{}, EditableCardState> {
   state: EditableCardState = {
     identifier: genericFileId,
-    dimensions: { ...defaultImageCardDimensions },
+    dimensions: { width: '100%', height: '50%' },
     parentDimensions: { height: 300, width: 500 },
     isWidthPercentage: true,
     isHeightPercentage: true,

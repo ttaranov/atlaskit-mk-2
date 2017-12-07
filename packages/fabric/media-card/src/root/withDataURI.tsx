@@ -8,7 +8,7 @@ import { CardAppearance, CardDimensions } from '..';
 import { isRetina } from '../utils/isRetina';
 import { isLinkDetails } from '../utils/isLinkDetails';
 import { isValidPercentageUnit } from '../utils/isValidPercentageUnit';
-import { minImageCardDimensions } from '../utils/cardDimensions';
+import { getCardMinHeight } from '../utils/cardDimensions';
 import {
   getElementDimension,
   ElementDimension,
@@ -73,13 +73,15 @@ export const withDataURI = (Component): any => {
       return this.props.appearance === 'small';
     }
 
+    // No mather if the integrator passed pixels or percentages, this will
+    // always return a pixels value that the /image endpoint can use
     dataURIDimension(dimension: ElementDimension): number {
       const retinaFactor = isRetina() ? 2 : 1;
       const dimensionValue =
         (this.props.dimensions && this.props.dimensions[dimension]) || '';
 
       if (this.isSmall()) {
-        return minImageCardDimensions[dimension] * retinaFactor;
+        return getCardMinHeight('small') * retinaFactor;
       }
 
       if (isValidPercentageUnit(dimensionValue)) {

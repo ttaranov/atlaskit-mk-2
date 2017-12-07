@@ -271,8 +271,8 @@ describe('WithDataURI', () => {
         expect(dataURIService.fetchImageDataUri).toBeCalledWith(
           expect.anything(),
           expect.objectContaining({
-            width: 144 * 2,
-            height: 96 * 2,
+            width: 32 * 2,
+            height: 32 * 2,
           }),
         );
       });
