@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { CalendarStateless } from '../src';
-import { notThisMonth, notThisYear } from './_';
+import { notThisMonth, notThisYear } from './utils/_';
 
 export default () => (
   <div>
