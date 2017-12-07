@@ -14,6 +14,7 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/avatar": "^8.0.0",
+    "@atlaskit/button": "^5.4.8",
     "@atlaskit/profilecard": "^3.7.1",
     "@atlaskit/theme": "^2.0.0",
     "styled-components": "^1.4.6"

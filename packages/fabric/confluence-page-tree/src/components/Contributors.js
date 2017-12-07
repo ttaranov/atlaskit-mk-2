@@ -75,7 +75,7 @@ const Contributors = (props: ContributorsProps) => {
         appearance="stack"
         data={data}
         avatar={AvatarWithCloudId}
-        size="large" //TODO: check this
+        size="small" //TODO: check this
         maxCount={3}
       />
     </div>
