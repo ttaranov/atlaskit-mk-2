@@ -1,10 +1,9 @@
 // @flow
-import { type Component, type Element } from 'react';
-import type { PropType } from 'babel-plugin-react-flow-props-to-prop-types'; // eslint-disable-line import/no-extraneous-dependencies
+import { type Element } from 'react';
 
-export type ChildrenType = PropType<Array<Element<any>> | Element<any>, any>;
-export type ComponentType = PropType<Component<{}, {}, {}>, any>;
-export type ElementType = PropType<Element<mixed>, any>;
+export type ChildrenType = Array<any> | Node | Element<any>;
+export type ComponentType = any;
+export type ElementType = Element<any>;
 export type FunctionType = (...args: Array<any>) => mixed;
 export type ActionsType = Array<{
   onClick?: any => void,
