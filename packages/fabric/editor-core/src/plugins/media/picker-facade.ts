@@ -9,14 +9,14 @@ import {
   Dropzone,
   Clipboard,
   BinaryUploader,
-  UploadsStartPayload,
+  UploadsStartEventPayload,
   UploadPreviewUpdatePayload,
   UploadStatusUpdatePayload,
   UploadProcessingPayload,
   UploadFinalizeReadyPayload,
   UploadErrorPayload,
   UploadEndPayload,
-  SerialisedMediaFile,
+  MediaFile,
 } from 'mediapicker';
 import {
   ContextConfig,
