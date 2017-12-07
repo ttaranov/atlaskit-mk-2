@@ -33,6 +33,7 @@ export const CornerButton = styled.button`
   );
   box-shadow: inset 0 0 0 1px #fff;
   border: 1px solid ${akEditorTableBorder};
+  border-radius: 0;
   border-top-left-radius: ${akEditorTableBorderRadius};
   cursor: pointer;
   padding: 0;
