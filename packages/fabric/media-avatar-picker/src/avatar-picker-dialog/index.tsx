@@ -108,24 +108,22 @@ export class AvatarPickerDialog extends PureComponent<
       <ModalDialog
         height="437px"
         width="360px"
-        header={this.renderHeader()}
-        footer={this.renderFooter()}
+        header={this.headerContent()}
+        footer={this.footerContent()}
         onClose={this.props.onCancel}
         isOpen={true}
       >
-        <AvatarPickerViewWrapper>
-          {this.renderContent()}
-        </AvatarPickerViewWrapper>
+        <AvatarPickerViewWrapper>{this.renderBody()}</AvatarPickerViewWrapper>
       </ModalDialog>
     );
   }
 
-  renderHeader() {
+  headerContent() {
     const { title } = this.props;
     return () => <ModalHeader>{title || 'Upload an avatar'}</ModalHeader>;
   }
 
-  renderFooter() {
+  footerContent() {
     const { primaryButtonText, onCancel } = this.props;
     const { onSaveClick, isDisabled } = this;
     return () => (
@@ -192,7 +190,7 @@ export class AvatarPickerDialog extends PureComponent<
     );
   }
 
-  renderContent() {
+  renderBody() {
     const { imageSource, avatars } = this.props;
     const { mode, selectedAvatar } = this.state;
 

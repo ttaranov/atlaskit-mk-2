@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 import { Avatar } from '../src/avatar-list';
@@ -130,13 +130,39 @@ describe('Avatar Picker Dialog', () => {
     );
   });
 
+  it('should render default title', () => {
+    const selectedAvatar: Avatar = { dataURI: 'http://an.avatar.com/123' };
+    const avatars = [selectedAvatar];
+    const component = renderWithProps({ avatars });
+    const { header } = component.find(ModalDialog).props() as { header: any };
+    const title = shallow(header());
+    expect(title.text()).toBe('Upload an avatar');
+  });
+
   it('should by able to customise title', () => {
     const selectedAvatar: Avatar = { dataURI: 'http://an.avatar.com/123' };
     const avatars = [selectedAvatar];
-    const component = renderWithProps({ avatars, title: 'test-title' });
+    const component = renderWithProps({
+      avatars,
+      title: 'test-title',
+    });
     const { header } = component.find(ModalDialog).props() as { header: any };
     const title = shallow(header());
     expect(title.text()).toBe('test-title');
+  });
+
+  it('should render default primary button text', () => {
+    const selectedAvatar: Avatar = { dataURI: 'http://an.avatar.com/123' };
+    const avatars = [selectedAvatar];
+    const component = renderWithProps({ avatars });
+    const { footer } = component.find(ModalDialog).props() as { footer: any };
+    const footerComponent = shallow(footer());
+    expect(
+      (footerComponent
+        .find(Button)
+        .at(0)
+        .props() as React.Props<{}>).children,
+    ).toBe('Save');
   });
 
   it('should by able to customise primary button text', () => {
@@ -147,11 +173,12 @@ describe('Avatar Picker Dialog', () => {
       primaryButtonText: 'test-primary-text',
     });
     const { footer } = component.find(ModalDialog).props() as { footer: any };
+    const footerComponent = shallow(footer());
     expect(
-      mount(footer())
+      (footerComponent
         .find(Button)
         .at(0)
-        .text(),
+        .props() as React.Props<{}>).children,
     ).toBe('test-primary-text');
   });
 });
