@@ -24,17 +24,6 @@ enum InsertType {
   TAB = 'tab',
 }
 
-function createInsertTypeMap(): object {
-  const map = {};
-  map[keymaps.space.common] = InsertType.SPACE;
-  map[keymaps.enter.common] = InsertType.ENTER;
-  map[keymaps.insertNewLine.common] = InsertType.SHIFT_ENTER;
-  map[keymaps.tab.common] = InsertType.TAB;
-  return Object.freeze(map);
-}
-
-const insertTypeMap: object = createInsertTypeMap();
-
 export interface Props {
   editorView?: EditorView;
   mentionProvider: Promise<MentionProvider>;
@@ -205,9 +194,25 @@ export default class MentionPicker extends PureComponent<Props, State> {
     return true;
   };
 
+  private getInsertTypeForKey(key?: string) {
+    if (key === keymaps.space.common) {
+      return InsertType.SPACE;
+    }
+    if (key === keymaps.enter.common) {
+      return InsertType.ENTER;
+    }
+    if (key === keymaps.tab.common) {
+      return InsertType.TAB;
+    }
+    if (key === keymaps.insertNewLine.common) {
+      return InsertType.SHIFT_ENTER;
+    }
+    return undefined;
+  }
+
   private handleSelectCurrent = (key): boolean => {
     if (this.getMentionsCount() > 0 && this.picker) {
-      this.insertType = insertTypeMap[key];
+      this.insertType = this.getInsertTypeForKey(key);
 
       (this.picker as AkMentionPicker).chooseCurrentSelection();
     } else {
