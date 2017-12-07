@@ -29,15 +29,10 @@ export default class ExtensionComponent extends Component<Props, State> {
   state: State = {};
 
   componentDidMount() {
-    document.addEventListener('click', this.handleDocumentClick, false);
     const { macroProvider } = this.props;
     if (macroProvider) {
       macroProvider.then(this.handleMacroProvider);
     }
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('click', this.handleDocumentClick, false);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -58,6 +53,7 @@ export default class ExtensionComponent extends Component<Props, State> {
 
     switch (node.type.name) {
       case 'extension':
+      case 'bodiedExtension':
         return (
           <Extension
             node={node}
@@ -91,14 +87,6 @@ export default class ExtensionComponent extends Component<Props, State> {
     event.nativeEvent.preventDefault();
     const { state, dispatch } = this.props.editorView;
     this.props.setExtensionElement(event.currentTarget)(state, dispatch);
-  };
-
-  private handleDocumentClick = (event: MouseEvent) => {
-    if (event.defaultPrevented) {
-      return;
-    }
-    const { state, dispatch } = this.props.editorView;
-    this.props.setExtensionElement(null)(state, dispatch);
   };
 
   private handleSelectExtension = () => {

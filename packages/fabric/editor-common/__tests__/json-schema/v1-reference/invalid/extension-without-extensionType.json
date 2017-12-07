@@ -5,15 +5,8 @@
     {
       "type": "extension",
       "attrs": {
-        "bodyType": "none",
-        "extensionKey": "code"
-      },
-      "content": [
-        {
-          "type": "paragraph",
-          "content": []
-        }
-      ]
+        "extensionKey": "gallery"
+      }
     }
   ]
 }

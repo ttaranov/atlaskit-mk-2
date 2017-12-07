@@ -1,28 +1,28 @@
 import { name } from '../../../package.json';
 import { schema, toDOM, fromHTML } from '../../../test-helpers';
-import { extension } from '../../../src';
+import { bodiedExtension } from '../../../src';
 
-describe(`${name}/schema extension node`, () => {
+describe(`${name}/schema bodiedExtension node`, () => {
   describe('parse html', () => {
     it('converts to extension PM node', () => {
-      const doc = fromHTML('<div data-node-type="extension" />', schema);
+      const doc = fromHTML('<div data-node-type="bodied-extension" />', schema);
       const node = doc.firstChild!;
-      expect(node.type.spec).toEqual(extension);
+      expect(node.type.spec).toEqual(bodiedExtension);
     });
 
     it('gets attributes from html', () => {
       const extensionType = 'com.atlassian.confluence.macro.core';
-      const extensionKey = 'gallery';
-      const parameters = { macroparams: { width: '100px' } };
+      const extensionKey = 'superMacro';
+      const parameters = { macroparams: { super: true } };
 
       const doc = fromHTML(
         `
         <div
-          data-node-type="extension"
+          data-node-type="bodied-extension"
           data-extension-type="${extensionType}"
           data-extension-key="${extensionKey}"
           data-parameters='${JSON.stringify(parameters)}'
-        />
+        ><p>hello</p></div>
       `,
         schema,
       );
@@ -37,15 +37,15 @@ describe(`${name}/schema extension node`, () => {
   describe('encode html', () => {
     it('converts html data attributes to node attributes', () => {
       const attrs = {
-        extensionType: 'com.atlassian.confluence.macro.core',
-        extensionKey: 'gallery',
-        parameters: { macroparams: { width: '100px' } },
+        extensionType: 'com.atlassian.confluence.macro',
+        extensionKey: 'superMacro',
+        parameters: { macroparams: { super: true } },
       };
-      // extension node can contain no content
-      const node = schema.nodes.extension.create(attrs);
+      const content = schema.nodes.paragraph.create(schema.text('hello'));
+      const node = schema.nodes.bodiedExtension.create(attrs, content);
       const dom = toDOM(node, schema).firstChild as HTMLElement;
 
-      expect(dom.getAttribute('data-node-type')).toEqual('extension');
+      expect(dom.getAttribute('data-node-type')).toEqual('bodied-extension');
       expect(dom.getAttribute('data-extension-type')).toEqual(
         attrs.extensionType,
       );
@@ -59,11 +59,12 @@ describe(`${name}/schema extension node`, () => {
 
     it('encodes and decodes to the same node', () => {
       const attrs = {
-        extensionType: 'com.atlassian.confluence.macro.core',
-        extensionKey: 'gallery',
-        parameters: { macroparams: { width: '100px' } },
+        extensionType: 'com.atlassian.confluence.macro',
+        extensionKey: 'superMacro',
+        parameters: { macroparams: { super: true } },
       };
-      const node = schema.nodes.extension.create(attrs);
+      const content = schema.nodes.paragraph.create(schema.text('hello'));
+      const node = schema.nodes.bodiedExtension.create(attrs, content);
       const dom = toDOM(node, schema).firstChild as HTMLElement;
       const parsedNode = fromHTML(dom.outerHTML, schema).firstChild!;
       expect(parsedNode).toEqual(node);

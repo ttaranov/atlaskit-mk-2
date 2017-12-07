@@ -1,10 +1,11 @@
 import { NodeSpec, Node as PMNode } from 'prosemirror-model';
+import { ExtensionContent } from './doc';
 
 /**
- * @name inlineExtension_node
+ * @name bodiedExtension_node
  */
 export interface Definition {
-  type: 'inlineExtension';
+  type: 'bodiedExtension';
   attrs: {
     /**
      * @minLength 1
@@ -17,11 +18,13 @@ export interface Definition {
     parameters?: object;
     text?: string;
   };
+  content: ExtensionContent;
 }
 
-export const inlineExtension: NodeSpec = {
-  inline: true,
-  group: 'inline',
+export const bodiedExtension: NodeSpec = {
+  inline: false,
+  group: 'block',
+  content: 'block*',
   selectable: true,
   attrs: {
     extensionType: { default: '' },
@@ -31,7 +34,7 @@ export const inlineExtension: NodeSpec = {
   },
   parseDOM: [
     {
-      tag: 'span[data-extension-type]',
+      tag: '[data-node-type="bodied-extension"]',
       getAttrs: (dom: HTMLElement) => ({
         extensionType: dom.getAttribute('data-extension-type'),
         extensionKey: dom.getAttribute('data-extension-key'),
@@ -42,11 +45,12 @@ export const inlineExtension: NodeSpec = {
   ],
   toDOM(node: PMNode) {
     const attrs = {
+      'data-node-type': 'bodied-extension',
       'data-extension-type': node.attrs.extensionType,
       'data-extension-key': node.attrs.extensionKey,
       'data-text': node.attrs.text,
       'data-parameters': JSON.stringify(node.attrs.parameters),
     };
-    return ['span', attrs];
+    return ['div', attrs, 0];
   },
 };

@@ -32,6 +32,7 @@ export default createSchema({
     'taskItem',
     'extension',
     'inlineExtension',
+    'bodiedExtension',
   ],
   marks: [
     'em',

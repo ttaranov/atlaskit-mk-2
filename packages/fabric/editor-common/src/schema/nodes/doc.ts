@@ -17,6 +17,7 @@ import { Definition as TaskList } from './task-list';
 import { Table } from './tableNodes';
 import { Definition as Extension } from './extension';
 import { Definition as InlineExtension } from './inline-extension';
+import { Definition as BodiedExtension } from './bodied-extension';
 
 import { Definition as Text } from './text';
 import { Definition as HardBreak } from './hard-break';
@@ -53,6 +54,7 @@ export type TopLevel = Array<
   | TaskList
   | Table
   | Extension
+  | BodiedExtension
 >;
 
 /**
@@ -73,6 +75,30 @@ export type TableCellContent = Array<
   | DecisionList
   | TaskList
   | Extension
+  | InlineExtension
+  | BodiedExtension
+>;
+
+// exclude Extension and BodiedExtension
+/**
+ * @name extension_content
+ * @minItems 1
+ */
+export type ExtensionContent = Array<
+  | Panel
+  | Paragraph
+  | Blockquote
+  | OrderedList
+  | BulletList
+  | Rule
+  | Heading
+  | CodeBlock
+  | MediaGroup
+  | ApplicationCard
+  | DecisionList
+  | TaskList
+  | Table
+  | InlineExtension
 >;
 
 /**

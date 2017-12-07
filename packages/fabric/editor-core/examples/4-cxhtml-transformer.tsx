@@ -20,11 +20,10 @@ import {
   JIRA_ISSUE,
   JIRA_ISSUES_LIST,
   PANEL_MACRO,
-  INLINE_MACRO,
-  BLOCK_BODYLESS_MACRO,
-  BLOCK_PLAIN_TEXT_MACRO,
-  BLOCK_RICH_TEXT_MACRO,
-  BLOCK_NESTED_MACRO,
+  INLINE_EXTENSION,
+  EXTENSION,
+  BODIED_EXTENSION,
+  BODIED_NESTED_EXTENSION,
 } from '../example-helpers/cxhtml-test-data';
 
 import {
@@ -143,20 +142,15 @@ class Example extends Component<ExampleProps, ExampleState> {
           <button onClick={this.handleInsertJiraIssuesListClick}>
             JIRA Issues List
           </button>
-          <button onClick={this.handleInsertInlineMacroClick}>
-            Inline Macro
+          <button onClick={this.handleInsertInlineExtensionClick}>
+            Inline Extension
           </button>
-          <button onClick={this.handleInsertBodylessMacroClick}>
-            Block Bodyless Macro
-          </button>
-          <button onClick={this.handleInsertPlainTextMacroClick}>
-            Block Plain Text Macro
-          </button>
-          <button onClick={this.handleInsertRichTextMacroClick}>
-            Block Rich Text Macro
+          <button onClick={this.handleInsertExtensionClick}>Extension</button>
+          <button onClick={this.handleInsertBodiedExtensionClick}>
+            Bodied Extension
           </button>
           <button onClick={this.handleInsertNestedMacroClick}>
-            Nested Macro
+            Nested Extensions
           </button>
         </fieldset>
         <Content>
@@ -229,16 +223,14 @@ class Example extends Component<ExampleProps, ExampleState> {
   private handleInsertJiraIssuesListClick = () =>
     this.setState({ input: JIRA_ISSUES_LIST });
   private handleInsertPanelClick = () => this.setState({ input: PANEL_MACRO });
-  private handleInsertInlineMacroClick = () =>
-    this.setState({ input: INLINE_MACRO });
-  private handleInsertBodylessMacroClick = () =>
-    this.setState({ input: BLOCK_BODYLESS_MACRO });
-  private handleInsertPlainTextMacroClick = () =>
-    this.setState({ input: BLOCK_PLAIN_TEXT_MACRO });
-  private handleInsertRichTextMacroClick = () =>
-    this.setState({ input: BLOCK_RICH_TEXT_MACRO });
+  private handleInsertInlineExtensionClick = () =>
+    this.setState({ input: INLINE_EXTENSION });
+  private handleInsertExtensionClick = () =>
+    this.setState({ input: EXTENSION });
+  private handleInsertBodiedExtensionClick = () =>
+    this.setState({ input: BODIED_EXTENSION });
   private handleInsertNestedMacroClick = () =>
-    this.setState({ input: BLOCK_NESTED_MACRO });
+    this.setState({ input: BODIED_NESTED_EXTENSION });
 }
 
 export type ExampleWrapperProps = {};
