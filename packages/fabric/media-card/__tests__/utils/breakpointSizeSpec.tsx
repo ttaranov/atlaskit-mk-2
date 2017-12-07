@@ -11,6 +11,10 @@ describe('breakpointSize', () => {
     expect(breakpointSize(200, sizes)).toBe('large');
   });
 
+  it('should use default sizes object', () => {
+    expect(breakpointSize('175px')).toBe('medium');
+  });
+
   it('should return the first key as default value', () => {
     expect(breakpointSize(100, sizes)).toBe('small');
   });
