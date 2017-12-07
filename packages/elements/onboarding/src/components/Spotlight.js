@@ -25,7 +25,7 @@ import { Fade } from './Animation';
 import Actions from './SpotlightActions';
 import withScrollMeasurements from '../hoc/withScrollMeasurements';
 
-export type SpotLightProps = {|
+type Props = {|
   /** Buttons to render in the footer */
   actions?: ActionsType,
   /** An optional element rendered beside the footer actions */
@@ -78,8 +78,6 @@ type FillProps = {
 };
 
 const Fill = (props: FillProps) => <Fade component={FillScreen} {...props} />;
-
-type Props = SpotLightProps;
 
 type State = {|
   isExiting: boolean,
