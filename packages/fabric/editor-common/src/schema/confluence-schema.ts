@@ -14,7 +14,6 @@ export const confluenceSchema: Schema = createSchema({
     'heading',
     'mediaGroup',
     'media',
-    'singleImage',
     'confluenceUnsupportedBlock',
     'confluenceJiraIssue',
     'extension',
