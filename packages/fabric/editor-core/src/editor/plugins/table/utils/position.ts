@@ -18,7 +18,7 @@ export const tableStartPos = (state: EditorState): number => {
 
 export const getColumnPos = (
   column,
-  tableNode: PmNode
+  tableNode: PmNode,
 ): { from: number; to: number } => {
   const map = TableMap.get(tableNode);
   const from = map.positionAt(0, column, tableNode);
@@ -29,7 +29,7 @@ export const getColumnPos = (
 
 export const getRowPos = (
   row,
-  tableNode: PmNode
+  tableNode: PmNode,
 ): { from: number; to: number } => {
   const map = TableMap.get(tableNode);
   const from = map.positionAt(row, 0, tableNode);
@@ -39,7 +39,7 @@ export const getRowPos = (
 };
 
 export const getTablePos = (
-  tableNode: PmNode
+  tableNode: PmNode,
 ): { from: number; to: number } => {
   const map = TableMap.get(tableNode);
   const from = map.positionAt(0, 0, tableNode);
@@ -50,7 +50,7 @@ export const getTablePos = (
 
 export const getCellStartPos = (
   state: EditorState,
-  $pos?: ResolvedPos
+  $pos?: ResolvedPos,
 ): number | undefined => {
   const { tableCell, tableHeader } = state.schema.nodes;
   $pos = $pos || state.selection.$from;
@@ -64,7 +64,7 @@ export const getCellStartPos = (
 };
 
 export const getFirstSelectedCellPos = (
-  state: EditorState
+  state: EditorState,
 ): number | undefined => {
   const { tableNode } = tablePluginKey.getState(state);
   const offset = tableStartPos(state);
@@ -73,7 +73,7 @@ export const getFirstSelectedCellPos = (
   const start = $anchorCell.start(-1);
   // array of selected cells positions
   const cells = map.cellsInRect(
-    map.rectBetween($anchorCell.pos - start, $headCell.pos - start)
+    map.rectBetween($anchorCell.pos - start, $headCell.pos - start),
   );
   // first selected cell position
   const firstCellPos = cells[0] + offset + 1;

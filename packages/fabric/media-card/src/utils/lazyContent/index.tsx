@@ -1,5 +1,5 @@
 import * as React from 'react';
-import LazilyRender from 'react-lazily-render';
+import { Wrapper } from './styled';
 
 /*
   I could have used LazilyRender directly whereever LazyContent is used, but it was easier to test
@@ -19,8 +19,6 @@ export class LazyContent extends React.Component<
 > {
   render() {
     const { children, placeholder } = this.props;
-    return (
-      <LazilyRender>{render => (render ? children : placeholder)}</LazilyRender>
-    );
+    return <Wrapper>{render => (render ? children : placeholder)}</Wrapper>;
   }
 }

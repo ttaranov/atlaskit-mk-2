@@ -15,16 +15,17 @@ import {
   resetHoverSelection,
   selectTable,
   selectColumn,
-  selectRow
+  selectRow,
 } from '../actions';
 
-import {
-  isTableSelected,
-  isColumnSelected,
-  isRowSelected
-} from '../utils';
+import { isTableSelected, isColumnSelected, isRowSelected } from '../utils';
 
-export const createHoverDecorationSet = (from: number, to: number, tableNode: PmNode, state: EditorState): DecorationSet => {
+export const createHoverDecorationSet = (
+  from: number,
+  to: number,
+  tableNode: PmNode,
+  state: EditorState,
+): DecorationSet => {
   const map = TableMap.get(tableNode);
   const offset = tableStartPos(state);
 
@@ -36,13 +37,17 @@ export const createHoverDecorationSet = (from: number, to: number, tableNode: Pm
       return { pos, node };
     })
     .map(cell => {
-      return Decoration.node(cell.pos, cell.pos + cell.node.nodeSize, { class: 'hoveredCell' });
+      return Decoration.node(cell.pos, cell.pos + cell.node.nodeSize, {
+        class: 'hoveredCell',
+      });
     });
 
-    return DecorationSet.create(state.doc, deco);
+  return DecorationSet.create(state.doc, deco);
 };
 
-export const createControlsDecoration = (editorView: EditorView): Decoration[] => {
+export const createControlsDecoration = (
+  editorView: EditorView,
+): Decoration[] => {
   const pluginState = tablePluginKey.getState(editorView.state);
   const pos = tableStartPos(editorView.state);
   const node = document.createElement('div');
@@ -62,8 +67,10 @@ export const createControlsDecoration = (editorView: EditorView): Decoration[] =
       isTableSelected={isTableSelected}
       isColumnSelected={isColumnSelected}
       isRowSelected={isRowSelected}
-    />
-  , node);
+    />,
+    node,
+  );
 
-  return [ Decoration.widget(pos, node) ];
+  // -1 to place decoration before table instead of putting it inside
+  return [Decoration.widget(pos - 1, node)];
 };

@@ -1,5 +1,7 @@
 # @atlaskit/media-core
 
+## 12.0.1
+
 ## 12.0.0
 - [major] Show static images for gifs in small cards [e2508f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e2508f9)
 

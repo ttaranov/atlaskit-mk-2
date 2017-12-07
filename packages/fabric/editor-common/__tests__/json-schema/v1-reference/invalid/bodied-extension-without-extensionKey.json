@@ -3,11 +3,9 @@
   "type": "doc",
   "content": [
     {
-      "type": "extension",
+      "type": "bodiedExtension",
       "attrs": {
-        "bodyType": "none",
-        "extensionType": "com.atlassian.confluence.macro",
-        "extensionKey": "code"
+        "extensionType": "com.atlassian.confluence.macro"
       },
       "content": [
         {

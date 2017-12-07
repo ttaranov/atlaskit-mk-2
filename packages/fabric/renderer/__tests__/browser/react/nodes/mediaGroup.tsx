@@ -36,7 +36,7 @@ describe('MediaGroup', () => {
           type={imageFileId.mediaItemType}
           collection={imageFileId.collectionName}
         />
-      </MediaGroup>
+      </MediaGroup>,
     );
     expect(mediaGroup.find(FilmstripView)).toHaveLength(0);
   });
@@ -69,7 +69,7 @@ describe('MediaGroup', () => {
         <Media
           id={imageFileId.id}
           type={imageFileId.mediaItemType}
-          occurrenceKey='001'
+          occurrenceKey="001"
           collection={imageFileId.collectionName}
           eventHandlers={eventHandlers}
           providers={providerFactory}
@@ -111,7 +111,9 @@ describe('MediaGroup', () => {
 
     expect(surroundingItems[1].id).toBe(youtubeLinkId.id);
     expect(surroundingItems[1].mediaItemType).toBe(youtubeLinkId.mediaItemType);
-    expect(surroundingItems[1].collectionName).toBe(youtubeLinkId.collectionName);
+    expect(surroundingItems[1].collectionName).toBe(
+      youtubeLinkId.collectionName,
+    );
     expect(surroundingItems[1].occurrenceKey).toBeUndefined();
 
     mediaGroup.unmount();

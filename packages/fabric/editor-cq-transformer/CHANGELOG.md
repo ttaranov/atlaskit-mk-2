@@ -1,5 +1,15 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.1.1
+- [patch] split extension node [4303d49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4303d49)
+- [patch] split extension node [4303d49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4303d49)
+
+## 2.1.0
+
+## 2.0.5
+
+## 2.0.4
+
 ## 2.0.3
 
 ## 2.0.2

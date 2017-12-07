@@ -71,77 +71,115 @@ const SaveAndCancelButtons = props => (
   </ButtonGroup>
 );
 
+interface DropzoneEditorWrapperProps {
+  children: (container: HTMLElement) => React.ReactNode;
+}
+
+class DropzoneEditorWrapper extends React.Component<
+  DropzoneEditorWrapperProps,
+  {}
+> {
+  dropzoneContainer: HTMLElement | null = null;
+
+  handleRef = node => {
+    this.dropzoneContainer = node;
+    this.forceUpdate();
+  };
+
+  render() {
+    return (
+      <Content innerRef={this.handleRef}>
+        {this.dropzoneContainer
+          ? this.props.children(this.dropzoneContainer)
+          : null}
+      </Content>
+    );
+  }
+}
+
 export default function Example() {
   return (
     <div>
-      <Content>
-        <EditorContext>
-          <Editor
-            appearance="full-page"
-            analyticsHandler={analyticsHandler}
-            allowTextFormatting={true}
-            allowTasksAndDecisions={true}
-            allowHyperlinks={true}
-            allowCodeBlocks={true}
-            allowLists={true}
-            allowTextColor={true}
-            allowTables={true}
-            mediaProvider={storyMediaProviderFactory()}
-            emojiProvider={emojiStoryData.getEmojiResource()}
-            mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
-            collabEditProvider={collabEditProvider('rick')}
-            placeholder="Write something..."
-            shouldFocus={false}
-            contentComponents={
-              <TitleInput
-                placeholder="Give this page a title..."
-                innerRef={ref => ref && ref.focus()}
-              />
-            }
-            primaryToolbarComponents={
-              <WithEditorActions
-                render={actions => (
-                  <SaveAndCancelButtons editorActions={actions} />
-                )}
-              />
-            }
-          />
-        </EditorContext>
-      </Content>
-      <Content>
-        <EditorContext>
-          <Editor
-            appearance="full-page"
-            analyticsHandler={analyticsHandler}
-            allowTextFormatting={true}
-            allowTasksAndDecisions={true}
-            allowHyperlinks={true}
-            allowCodeBlocks={true}
-            allowLists={true}
-            allowTextColor={true}
-            allowTables={true}
-            mediaProvider={storyMediaProviderFactory()}
-            emojiProvider={emojiStoryData.getEmojiResource()}
-            mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
-            collabEditProvider={collabEditProvider('morty')}
-            placeholder="Write something..."
-            shouldFocus={false}
-            contentComponents={
-              <TitleInput
-                placeholder="Give this page a title..."
-                innerRef={ref => ref && ref.focus()}
-              />
-            }
-            primaryToolbarComponents={
-              <WithEditorActions
-                render={actions => (
-                  <SaveAndCancelButtons editorActions={actions} />
-                )}
-              />
-            }
-          />
-        </EditorContext>
-      </Content>
+      <DropzoneEditorWrapper>
+        {parentContainer => (
+          <EditorContext>
+            <Editor
+              appearance="full-page"
+              analyticsHandler={analyticsHandler}
+              allowTextFormatting={true}
+              allowTasksAndDecisions={true}
+              allowHyperlinks={true}
+              allowCodeBlocks={true}
+              allowLists={true}
+              allowTextColor={true}
+              allowTables={true}
+              mediaProvider={storyMediaProviderFactory({
+                dropzoneContainer: parentContainer,
+              })}
+              emojiProvider={emojiStoryData.getEmojiResource()}
+              mentionProvider={Promise.resolve(
+                mentionStoryData.resourceProvider,
+              )}
+              collabEditProvider={collabEditProvider('rick')}
+              placeholder="Write something..."
+              shouldFocus={false}
+              contentComponents={
+                <TitleInput
+                  placeholder="Give this page a title..."
+                  innerRef={ref => ref && ref.focus()}
+                />
+              }
+              primaryToolbarComponents={
+                <WithEditorActions
+                  render={actions => (
+                    <SaveAndCancelButtons editorActions={actions} />
+                  )}
+                />
+              }
+            />
+          </EditorContext>
+        )}
+      </DropzoneEditorWrapper>
+      <DropzoneEditorWrapper>
+        {parentContainer => (
+          <EditorContext>
+            <Editor
+              appearance="full-page"
+              analyticsHandler={analyticsHandler}
+              allowTextFormatting={true}
+              allowTasksAndDecisions={true}
+              allowHyperlinks={true}
+              allowCodeBlocks={true}
+              allowLists={true}
+              allowTextColor={true}
+              allowTables={true}
+              mediaProvider={storyMediaProviderFactory({
+                dropzoneContainer: parentContainer,
+              })}
+              emojiProvider={emojiStoryData.getEmojiResource()}
+              mentionProvider={Promise.resolve(
+                mentionStoryData.resourceProvider,
+              )}
+              collabEditProvider={collabEditProvider('morty')}
+              placeholder="Write something..."
+              shouldFocus={false}
+              contentComponents={
+                <TitleInput
+                  placeholder="Give this page a title..."
+                  innerRef={ref => ref && ref.focus()}
+                />
+              }
+              primaryToolbarComponents={
+                <WithEditorActions
+                  render={actions => (
+                    <SaveAndCancelButtons editorActions={actions} />
+                  )}
+                />
+              }
+            />
+          </EditorContext>
+        )}
+      </DropzoneEditorWrapper>
     </div>
   );
 }

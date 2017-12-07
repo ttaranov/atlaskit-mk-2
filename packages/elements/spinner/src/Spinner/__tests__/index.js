@@ -76,16 +76,22 @@ describe('Spinner', () => {
     it('should be called after isCompleting prop is set', () => {
       const spy = jest.fn();
       const wrapper = mount(<Spinner delay={0} onComplete={spy} />);
+      const transitionContainerNode = wrapper.find(Container).getDOMNode();
+
       wrapper.setProps({ isCompleting: true });
-      wrapper.find(Container).simulate('animationEnd');
-      setTimeout(() => expect(expect(spy).toHaveBeenCalledTimes(1)));
+      transitionContainerNode.dispatchEvent(new Event('animationend'));
+
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should not be called if isCompleting is not set', () => {
       const spy = jest.fn();
       const wrapper = mount(<Spinner delay={0} onComplete={spy} />);
-      wrapper.find(Container).simulate('animationEnd');
-      setTimeout(() => expect(expect(spy).not.toHaveBeenCalledTimes(1)));
+      const transitionContainerNode = wrapper.find(Container).getDOMNode();
+
+      transitionContainerNode.dispatchEvent(new Event('animationend'));
+
+      expect(spy).not.toHaveBeenCalled();
     });
   });
 

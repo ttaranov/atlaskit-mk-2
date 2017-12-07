@@ -1,5 +1,21 @@
 # @atlaskit/editor-common
 
+## 4.2.0
+- [minor] split extension node [4303d49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4303d49)
+- [minor] split extension node [4303d49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4303d49)
+
+## 4.1.1
+
+## 4.1.0
+- [patch] Remove singleImage from editor-cq schema [f5c1ecb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5c1ecb)
+- [patch] Remove singleImage from editor-cq schema [f5c1ecb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5c1ecb)
+
+## 4.0.2
+
+## 4.0.1
+- [patch] added extension node [ec73cb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec73cb8)
+- [patch] added extension node [ec73cb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec73cb8)
+
 ## 4.0.0
 - [major] Update signature onClick event on filmstrip (renderer) [30bdfcc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30bdfcc)
 - [major] Update signature onClick event on filmstrip (renderer) [30bdfcc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30bdfcc)

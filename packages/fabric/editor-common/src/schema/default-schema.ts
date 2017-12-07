@@ -3,7 +3,7 @@ import { Schema } from 'prosemirror-model';
 
 export const defaultSchemaNodes = [
   'applicationCard',
-  'blockquote',
+  'bodiedExtension',
   'bulletList',
   'codeBlock',
   'confluenceJiraIssue',

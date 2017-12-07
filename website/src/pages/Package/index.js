@@ -5,12 +5,9 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { gridSize, colors, math } from '@atlaskit/theme';
 import Button from '@atlaskit/button';
-import ScreenshareIcon from '@atlaskit/icon/glyph/vid-share-screen';
 import DiscoverIcon from '@atlaskit/icon/glyph/discover';
 import WatchIcon from '@atlaskit/icon/glyph/watch';
-import ScreenIcon from '@atlaskit/icon/glyph/screen';
-
-const ExamplesIcon = ScreenIcon;
+import ExamplesIcon from '@atlaskit/icon/glyph/screen';
 
 import LinkButton from '../../components/LinkButton';
 import Loading from '../../components/Loading';
@@ -165,7 +162,7 @@ export default class Package extends Component<PackageProps, PackageState> {
     });
   }
 
-  getExamplesPath = () => {
+  getExamplesPath = (inModal?: boolean) => {
     const { groupId, pkgId } = this.props.match.params;
     const { examples } = this.state;
 
@@ -175,9 +172,11 @@ export default class Package extends Component<PackageProps, PackageState> {
     const filtered = examples.map(a => a.id).filter(id => id.match(regex));
     const res = filtered[0];
 
-    return (
-      res && `/mk-2/packages/${groupId}/${pkgId}/example/${fs.normalize(res)}`
-    );
+    if (!res) return null;
+
+    return inModal
+      ? `/mk-2/packages/${groupId}/${pkgId}/example/${fs.normalize(res)}`
+      : `/examples/${groupId}/${pkgId}/${fs.normalize(res)}`;
   };
 
   render() {
@@ -196,20 +195,24 @@ export default class Package extends Component<PackageProps, PackageState> {
       );
     }
 
-    const examplesPath = this.getExamplesPath();
+    const examplePath = this.getExamplesPath();
+    const exampleModalPath = this.getExamplesPath(true);
 
     return (
       <Page>
         <Title>
           <h1>{fs.titleize(pkgId)}</h1>
-          {examplesPath && (
-            <Button
-              component={Link}
-              iconBefore={<ExamplesIcon label="Examples Icon" />}
-              to={{ pathname: examplesPath, state: { modal: true } }}
-            >
-              Examples
-            </Button>
+          {examplePath && (
+            <ButtonGroup>
+              <Button
+                component={Link}
+                iconBefore={<ExamplesIcon label="Examples Icon" />}
+                to={examplePath}
+              />
+              <Button component={Link} to={exampleModalPath}>
+                Examples
+              </Button>
+            </ButtonGroup>
           )}
         </Title>
         <Intro>{pkg.description}</Intro>

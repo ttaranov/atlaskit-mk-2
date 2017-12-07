@@ -23,7 +23,11 @@ export const ColumnContainer = styled.div`
 // tslint:disable-next-line:variable-name
 export const ColumnInner = styled.div`
   display: flex;
+  & > div button {
+    border-radius: 0;
+  }
   & > div:last-child button {
+    border-radius: 0;
     border-top-right-radius: ${akEditorTableBorderRadius};
   }
 `;

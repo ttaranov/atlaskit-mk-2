@@ -58,7 +58,7 @@ const squareLinkCard = (
 
 export default () => (
   <div style={{ margin: '40px' }}>
-    <h1>Appearence matrix</h1>
+    <h1>Appearance matrix</h1>
     <Matrix>
       <thead>
         <tr>

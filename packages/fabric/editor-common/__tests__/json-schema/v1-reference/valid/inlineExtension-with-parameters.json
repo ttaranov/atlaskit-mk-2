@@ -8,7 +8,7 @@
         {
           "type": "inlineExtension",
           "attrs": {
-            "extensionType": "com.atlassian.confluence.macro",
+            "extensionType": "com.atlassian.confluence.macro.core",
             "extensionKey": "status",
             "parameters": {
               "macroparams": {

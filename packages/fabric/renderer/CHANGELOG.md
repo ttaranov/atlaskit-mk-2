@@ -1,5 +1,13 @@
 # @atlaskit/renderer
 
+## 9.1.1
+
+## 9.1.0
+
+## 9.0.2
+
+## 9.0.1
+
 ## 9.0.0
 - [major] Update signature onClick event on filmstrip (renderer) [30bdfcc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30bdfcc)
 - [major] Update signature onClick event on filmstrip (renderer) [30bdfcc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30bdfcc)

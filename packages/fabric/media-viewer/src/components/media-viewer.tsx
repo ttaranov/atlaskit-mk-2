@@ -25,6 +25,7 @@ export interface MediaViewerProps {
   readonly dataSource: MediaViewerDataSource;
 
   readonly collectionName: string;
+  readonly pageSize?: number;
 
   readonly MediaViewer: MediaViewerConstructor;
   readonly mediaViewerConfiguration?: MediaViewerConfig;
@@ -55,6 +56,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
           context={this.props.context}
           selectedItem={this.props.selectedItem}
           collectionName={this.props.dataSource.collectionName}
+          pageSize={this.props.pageSize}
           MediaViewer={this.props.MediaViewer}
           mediaViewerConfiguration={this.props.mediaViewerConfiguration}
           basePath={this.props.basePath}

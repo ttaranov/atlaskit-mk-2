@@ -7,7 +7,11 @@ import {
   akEditorTableBorderSelected,
   akEditorTableFloatingControls,
 } from '../../../styles';
-import { akGridSizeUnitless, akColorN80 } from '@atlaskit/util-shared-styles';
+import {
+  akGridSizeUnitless,
+  akColorN80,
+  akColorN20,
+} from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
 
 const tableStyle = `
@@ -64,10 +68,6 @@ const tableStyle = `
         opacity: 0.3;
         pointer-events: none;
       }
-      .table-decoration {
-        position: relative;
-        left: -1px;
-      }
     }
   }
 `;
@@ -86,6 +86,11 @@ const ContentStyles = styled.div`
     word-wrap: break-word;
   }
 
+  // Hack for tables controlls. Otherwise marging collapse and controlls are misplaced.
+  & div.ProseMirror {
+    padding-top: 0.1px;
+  }
+
   .ProseMirror {
     word-wrap: break-word;
     white-space: pre-wrap;
@@ -100,13 +105,8 @@ const ContentStyles = styled.div`
     &::before {
       content: attr(data-text);
       color: ${akColorN80};
+      pointer-events: none;
     }
-  }
-
-  .ProseMirror ul,
-  .ProseMirror ol {
-    padding-left: 30px;
-    cursor: default;
   }
 
   .ProseMirror blockquote {
@@ -135,6 +135,28 @@ const ContentStyles = styled.div`
 
   .ProseMirror pre {
     white-space: pre-wrap;
+  }
+
+  .ProseMirror .code {
+    padding: 2px 1px;
+    background: ${akColorN20};
+    border-radius: 3px;
+    font-family: monospace;
+    white-space: pre-wrap;
+
+    &:before,
+    &:after {
+      vertical-align: text-top;
+      display: inline-block;
+      width: 3px;
+      content: '';
+    }
+  }
+
+  .ProseMirror ul,
+  .ProseMirror ol {
+    padding-left: 30px;
+    cursor: default;
   }
 
   .ProseMirror li {
@@ -252,6 +274,12 @@ const ContentStyles = styled.div`
     .ProseMirror
     img {
     max-width: 100%;
+  }
+
+  .ProseMirror .table-decoration {
+    position: relative;
+    left: 8px;
+    top: 20px;
   }
 
   //=============== PLACEHOLDER CURSOR STYLES=========
