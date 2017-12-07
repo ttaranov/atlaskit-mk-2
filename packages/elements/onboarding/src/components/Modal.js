@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
 import Modal from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 
@@ -23,65 +23,64 @@ type Props = {|
 |};
 /* eslint-enable react/no-unused-prop-types */
 
-// why was this written as a component and not a pure function to begin with?
-//
-
 const noop = () => {};
-const OnboardingModal = ({
-  footer: footerElement,
-  header: headerElement,
-  actions,
-  children,
-  heading,
-  image,
-  ...props
-}: Props) => {
-  // NOTE: @atlaskit/modal-dialog expects a component for header/footer. This
-  // is inconsistent with Spotlight so we take the element and create a component.
-  const footer = footerElement ? () => footerElement : null;
-  const header = headerElement ? () => headerElement : null;
 
-  const safeActions = actions;
+export default class OnboardingModal extends Component<Props, null> {
+  render() {
+    const {
+      footer: footerElement,
+      header: headerElement,
+      actions,
+      children,
+      heading,
+      image,
+      ...props
+    } = this.props;
+    // NOTE: @atlaskit/modal-dialog expects a component for header/footer. This
+    // is inconsistent with Spotlight so we take the element and create a component.
+    const footer = footerElement ? () => footerElement : null;
+    const header = headerElement ? () => headerElement : null;
 
-  const footerComponent =
-    footer ||
-    (safeActions
-      ? () => (
-          <Actions>
-            {safeActions.map(({ text, ...rest }, idx) => {
-              const variant = idx ? 'subtle-link' : 'help';
-              return (
-                <ActionItem key={text || idx}>
-                  <Button appearance={variant} autoFocus={!idx} {...rest}>
-                    {text}
-                  </Button>
-                </ActionItem>
-              );
-            })}
-          </Actions>
-        )
-      : null);
+    const safeActions = actions;
 
-  const headerComponent =
-    header || (image ? () => <Image alt={heading} src={image} /> : null);
+    const footerComponent =
+      footer ||
+      (safeActions
+        ? () => (
+            <Actions>
+              {safeActions.map(({ text, ...rest }, idx) => {
+                const variant = idx ? 'subtle-link' : 'help';
+                return (
+                  <ActionItem key={text || idx}>
+                    <Button appearance={variant} autoFocus={!idx} {...rest}>
+                      {text}
+                    </Button>
+                  </ActionItem>
+                );
+              })}
+            </Actions>
+          )
+        : null);
 
-  return (
-    <Modal
-      autoFocus
-      footer={footerComponent}
-      header={headerComponent}
-      onClose={noop}
-      scrollBehavior="outside"
-      shouldCloseOnOverlayClick={false}
-      shouldCloseOnEscapePress={false}
-      {...props}
-    >
-      <Body>
-        {heading && <Heading>{heading}</Heading>}
-        {children}
-      </Body>
-    </Modal>
-  );
-};
+    const headerComponent =
+      header || (image ? () => <Image alt={heading} src={image} /> : null);
 
-export default OnboardingModal;
+    return (
+      <Modal
+        autoFocus
+        footer={footerComponent}
+        header={headerComponent}
+        onClose={noop}
+        scrollBehavior="outside"
+        shouldCloseOnOverlayClick={false}
+        shouldCloseOnEscapePress={false}
+        {...props}
+      >
+        <Body>
+          {heading && <Heading>{heading}</Heading>}
+          {children}
+        </Body>
+      </Modal>
+    );
+  }
+}

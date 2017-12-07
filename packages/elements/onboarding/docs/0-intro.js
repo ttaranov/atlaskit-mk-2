@@ -9,15 +9,33 @@ export default md`
   ## Example
   ${(
     <Example
-      Component={require('../examples/1-spotlight-basic').default}
+      Component={require('../examples/0-spotlight-basic').default}
       title="Basic"
-      source={require('!!raw-loader!../examples/1-spotlight-basic')}
+      source={require('!!raw-loader!../examples/0-spotlight-basic')}
     />
   )}
-  
+  ## Modal
+  ${(
+    <Props
+      props={require('!!extract-react-types-loader!../src/components/Modal')}
+    />
+  )}
+  ## Spotlight
   ${(
     <Props
       props={require('!!extract-react-types-loader!../src/components/SpotLight')}
+    />
+  )}
+  ## SpotlightManager
+  ${(
+    <Props
+      props={require('!!extract-react-types-loader!../src/components/SpotLightManager')}
+    />
+  )}
+  ## SpotlightTarget
+  ${(
+    <Props
+      props={require('!!extract-react-types-loader!../src/components/SpotLightTarget')}
     />
   )}
 
