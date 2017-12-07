@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 4.1.0
+- [patch] Remove singleImage from editor-cq schema [f5c1ecb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5c1ecb)
+- [patch] Remove singleImage from editor-cq schema [f5c1ecb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5c1ecb)
+
 ## 4.0.2
 
 ## 4.0.1

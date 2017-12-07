@@ -1,5 +1,7 @@
 # @atlaskit/media-avatar-picker
 
+## 4.3.0
+
 ## 4.2.0
 - [minor] [MSW-339] customise avatar picker dialog labels [c9686ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9686ad)
 

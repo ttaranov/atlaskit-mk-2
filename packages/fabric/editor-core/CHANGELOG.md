@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 60.9.0
+
+- [patch] Fixes table controls styles for firefox and chrome [3f0a783](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f0a783)
+- [patch] Fixes table controls styles for firefox and chrome [3f0a783](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f0a783)
+
 ## 60.8.5
 
 ## 60.8.4
