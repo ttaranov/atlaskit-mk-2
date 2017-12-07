@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { colors } from '@atlaskit/theme';
 import Tooltip from '../src';
-import { Target } from './../examples-styled-components';
+import { Target } from './styled';
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);

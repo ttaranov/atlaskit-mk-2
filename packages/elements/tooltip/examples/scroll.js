@@ -3,7 +3,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { colors } from '@atlaskit/theme';
 import Tooltip from '../src';
-import { Target } from './../examples-styled-components';
+import { Target } from './styled';
 
 const direction = {
   horizontal: 'overflow-x',

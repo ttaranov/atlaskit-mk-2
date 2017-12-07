@@ -1,8 +1,8 @@
 // @flow
 
 import React, { Component } from 'react';
-import { Target } from './../examples-styled-components';
-import type { Color } from './../examples-styled-components';
+import { Target } from './styled';
+import type { Color } from './styled';
 import Tooltip from '../src/';
 
 const VALID_POSITIONS = ['top', 'right', 'bottom', 'left'];

@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Target } from './../examples-styled-components';
+import { Target } from './styled';
 import Tooltip from '../src/';
 
 const colors = ['teal', 'blue', 'purple'];
