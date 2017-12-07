@@ -6,10 +6,10 @@ import CardDetails from '../shared/CardDetails';
 
 import { minWidth, maxWidth } from '../shared/width';
 
-export interface StandaloneApplicationCardViewProps extends ViewModel {}
+export interface FilmstripApplicationCardViewProps extends ViewModel {}
 
-export default class StandaloneApplicationCardView extends React.Component<
-  StandaloneApplicationCardViewProps
+export default class FilmstripApplicationCardView extends React.Component<
+  FilmstripApplicationCardViewProps
 > {
   render() {
     const {

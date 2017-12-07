@@ -1,4 +1,4 @@
-/* tslint:disable:variable-name */
+/* tslint:disable:variable-name no-console */
 import * as React from 'react';
 import StandaloneApplicationCardView from '../src/app_2/StandaloneApplicationCardView';
 import FilmstripApplicationCardView from '../src/app_2/FilmstripApplicationCardView';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import debounce = require('lodash/debounce');
+import * as debounce from 'lodash.debounce';
 import Avatar from '@atlaskit/avatar';
 import Tooltip from '@atlaskit/tooltip';
 import IconImage from '../../../shared/IconImage';

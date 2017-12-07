@@ -1,17 +1,16 @@
 import styled from 'styled-components';
 import { ellipsis } from '../../../styles';
 import { title, description } from '../../../styles/cardDetails';
+import newCardDetailsHeight from '../../../shared/newCardDetailsHeight';
 
 const thumbnailWidth = 40;
 
 export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  box-sizing: border-box;
+  height: ${newCardDetailsHeight}px;
   padding: 8px 12px 8px 12px;
-
-  & * {
-    box-sizing: border-box;
-  }
 `;
 
 export const BodyWrapper = styled.div`

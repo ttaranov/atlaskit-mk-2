@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import Button from '@atlaskit/button';
 import { DropdownItem } from '@atlaskit/dropdown-menu';
-import Actions from '..';
+import Actions from '../../../../../src/app_2/shared/CardDetails/Actions';
 
 describe('Actions', () => {
   it('should render zero actions as null', () => {

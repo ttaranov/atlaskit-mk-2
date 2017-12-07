@@ -1,11 +1,15 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import Avatar from '@atlaskit/avatar';
-import IconImage from '../../../../shared/IconImage';
-import PreviewImage from '../../../../shared/PreviewImage';
-import CardDetails from '..';
-import Actions from '../Actions';
-import { Title, Description, BottomWrapper } from '../styled';
+import IconImage from '../../../../src/shared/IconImage';
+import PreviewImage from '../../../../src/shared/PreviewImage';
+import CardDetails from '../../../../src/app_2/shared/CardDetails';
+import Actions from '../../../../src/app_2/shared/CardDetails/Actions';
+import {
+  Title,
+  Description,
+  BottomWrapper,
+} from '../../../../src/app_2/shared/CardDetails/styled';
 
 describe('CardDetails', () => {
   const icon = {

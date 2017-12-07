@@ -4,7 +4,7 @@
  */
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { Wrapper, LinkWrapper } from '../styled';
+import { Wrapper, LinkWrapper } from '../../../src/shared/CardFrame/styled';
 
 describe('Wrapper', () => {
   it('should render with minWidth when there is a minWidth', () => {
