@@ -1,13 +1,6 @@
 // @flow
 import styled from 'styled-components';
-import {
-  borderRadius,
-  colors,
-  gridSize,
-  layers,
-  math,
-  themed,
-} from '@atlaskit/theme';
+import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
 // dialog may not be smaller than 160px or larger than 600px
 const dialogWidth = ({ width }) => `${Math.min(Math.max(width, 160), 600)}px`;
@@ -45,7 +38,6 @@ export const Dialog = styled.div`
   display: flex;
   flex-direction: column;
   width: ${dialogWidth};
-  z-index: ${layers.spotlight};
 `;
 export const DialogBody = styled.div`
   flex: 1 1 auto;

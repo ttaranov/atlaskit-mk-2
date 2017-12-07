@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { Transition } from 'react-transition-group';
+import { layers } from '@atlaskit/theme';
 import { type ComponentType } from '../types';
 
 const duration = 500;
@@ -22,7 +23,7 @@ export const Fade = ({ component: Tag, in: hasEntered, ...props }: Props) => (
 
       const base = {
         transition: 'opacity 200ms',
-        zIndex: 1,
+        zIndex: layers.spotlight(),
       };
       const anim = {
         entering: { opacity: 0 },
