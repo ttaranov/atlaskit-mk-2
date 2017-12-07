@@ -27,7 +27,7 @@ export default class Chevron extends PureComponent<Props> {
     const { isExpanded, hasChildren } = this.props;
     const iconProps = {
       onClick: this.handleClick,
-      size: 'small',
+      size: 'medium',
       primaryColor: iconColor,
     };
     let icon = null;

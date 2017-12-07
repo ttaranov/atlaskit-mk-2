@@ -10,28 +10,32 @@ type Props = {
   getChildrenData: DataFunction,
   depth?: number,
   render?: Function,
+  isLoading?: boolean,
 };
 
 export default class RowChildren extends PureComponent<Props> {
-  render() {
+  renderChildRows() {
     const {
       childrenData = [],
       getChildrenData,
       render,
       depth = 0,
     } = this.props;
+    return childrenData.map((childRowData, index) => (
+      <Subtree
+        data={childRowData}
+        getChildrenData={getChildrenData}
+        depth={depth + 1}
+        key={childRowData.id || index}
+        render={render}
+      />
+    ));
+  }
+
+  render() {
+    const { isLoading } = this.props;
     return (
-      <div>
-        {childrenData.map((childRowData, index) => (
-          <Subtree
-            data={childRowData}
-            getChildrenData={getChildrenData}
-            depth={depth + 1}
-            key={childRowData.id || index}
-            render={render}
-          />
-        ))}
-      </div>
+      <div>{isLoading ? this.renderLoading() : this.renderChildRows()}</div>
     );
   }
 }

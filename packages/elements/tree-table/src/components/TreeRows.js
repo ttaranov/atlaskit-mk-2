@@ -17,6 +17,7 @@ type State = {
 export default class TreeRows extends PureComponent<Props, State> {
   state = {
     rootRowsData: [],
+    isLoading: false,
   };
 
   componentDidMount() {

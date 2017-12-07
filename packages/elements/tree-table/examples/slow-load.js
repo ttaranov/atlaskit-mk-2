@@ -10,16 +10,12 @@ import {
 } from '../src/index';
 import staticData from './data-freeform-nodes.json';
 
-function fetchRoots() {
-  return Promise.resolve(staticData.children);
-}
-
-function fetchChildrenOf(node) {
-  return Promise.resolve(node.children);
-}
-
-function getChildrenData(parent) {
-  return parent ? fetchChildrenOf(parent) : fetchRoots();
+function getChildrenData(parent = staticData) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(parent.children);
+    }, 3000);
+  });
 }
 
 export default () => (

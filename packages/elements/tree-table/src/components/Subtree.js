@@ -1,8 +1,14 @@
 // @flow
 import React, { PureComponent } from 'react';
+import Spinner from '@atlaskit/spinner';
 
 import RowChildren from './RowChildren';
 import { type DataFunction } from './../types';
+
+import TreeCell from './TreeCell';
+import Chevron from './Chevron';
+import Loader from './Loader';
+import { TreeRowContainer, ChevronContainer } from '../styled';
 
 type Props = {
   data: Object,
@@ -14,6 +20,7 @@ type Props = {
 export default class Subtree extends PureComponent<Props> {
   state = {
     isExpanded: false,
+    isLoading: false,
     childrenData: null,
   };
 
@@ -24,24 +31,43 @@ export default class Subtree extends PureComponent<Props> {
   constructor() {
     super();
     this.handleExpandToggleClick = this.handleExpandToggleClick.bind(this);
+    this.handleLoadingFinished = this.handleLoadingFinished.bind(this);
   }
 
   handleExpandToggleClick() {
     const newIsExpanded = !this.state.isExpanded;
-    if (newIsExpanded) {
+    if (newIsExpanded && !this.state.childrenData) {
+      this.setState({
+        isLoading: true,
+      });
       Promise.resolve()
         .then(() => this.props.getChildrenData(this.props.data))
         .then(childrenData => {
           this.setState({
             childrenData,
-            isExpanded: newIsExpanded,
           });
         });
-    } else {
-      this.setState({
-        isExpanded: newIsExpanded,
-      });
     }
+    this.setState({
+      isExpanded: newIsExpanded,
+    });
+  }
+
+  handleLoadingFinished() {
+    this.setState({
+      isLoading: false,
+    });
+  }
+
+  renderLoading() {
+    const isCompleting = !!this.state.childrenData;
+    return (
+      <Loader
+        isCompleting={isCompleting}
+        onComplete={this.handleLoadingFinished}
+        depth={this.props.depth}
+      />
+    );
   }
 
   renderRowChildren() {
@@ -62,6 +88,7 @@ export default class Subtree extends PureComponent<Props> {
 
   render() {
     const { depth, data, render } = this.props;
+    const { isLoading } = this.state;
 
     let rowData = render(data);
     if (!rowData) {
@@ -77,7 +104,7 @@ export default class Subtree extends PureComponent<Props> {
     return (
       <div key={key}>
         {rowData}
-        {this.renderRowChildren()}
+        {isLoading ? this.renderLoading() : this.renderRowChildren()}
       </div>
     );
   }
