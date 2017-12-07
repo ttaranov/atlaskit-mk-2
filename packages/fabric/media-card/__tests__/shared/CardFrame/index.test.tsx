@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import CardFrame from '..';
-import { Wrapper, LinkWrapper } from '../styled';
+import CardFrame from '../../../src/shared/CardFrame';
+import { Wrapper, LinkWrapper } from '../../../src/shared/CardFrame/styled';
+
+// TODO: test placeholders
+
+// TODO: test placeholders
 
 describe('CardFrame', () => {
   it('should render as a link when there is a href', () => {

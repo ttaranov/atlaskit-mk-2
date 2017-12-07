@@ -7,7 +7,7 @@ import {
   akColorN300,
   akFontFamily,
 } from '@atlaskit/util-shared-styles';
-import { borderRadius, size, linkCardShadow } from '../../styles';
+import { borderRadius, size, linkCardShadow, ellipsis } from '../../styles';
 
 export interface WrapperProps {
   href?: string;
@@ -69,17 +69,38 @@ export const Header = styled.div`
   color: ${akColorN300};
 `;
 
+export interface PlaceholderProps {
+  isPlaceholder: boolean;
+}
+
 export const IconWrapper = styled.div`
-  ${borderRadius} ${size(16)} margin-right: 4px;
-  background-color: ${akColorN30};
+  ${borderRadius} ${size(16)} ${({ isPlaceholder }: PlaceholderProps) => {
+      if (isPlaceholder) {
+        return `
+        background-color: ${akColorN30};
+      `;
+      } else {
+        return '';
+      }
+    }} margin-right: 4px;
 `;
 
 export const TextWrapper = styled.div`
-  color: ${akColorN300};
-  overflow: hidden;
-  text-overflow: ellipsis;
-  height: 16px;
+  ${({ isPlaceholder }: PlaceholderProps) => {
+    if (isPlaceholder) {
+      return `
+        ${borderRadius}
+        width: 125px;
+        height: 12px;
+        background-color: ${akColorN30};
+      `;
+    } else {
+      return '';
+    }
+  }} color: ${akColorN300};
   font-size: 12px;
+  line-height: 16px;
+  ${ellipsis('none')};
 `;
 
 export const Content = styled.div`

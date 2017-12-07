@@ -1,4 +1,4 @@
-import { minWidth, maxWidth } from '../width';
+import { minWidth, maxWidth } from '../../../src/app_2/shared/width';
 
 describe('minWidth()', () => {
   it('should return 240 when there is a preview', () => {

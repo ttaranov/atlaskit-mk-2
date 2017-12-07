@@ -1,5 +1,5 @@
 /*
-  I'd love to use a namespace for these types... but linting says no :(
+  I'd love to use a namespace for these types... but our typescript linting says no :(
 */
 
 export interface LinkViewModel {

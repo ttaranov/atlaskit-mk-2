@@ -20,6 +20,7 @@ pipelines:
     - step:
         script:
           - source ./build-setup.sh
+          - bolt delete
           - bolt install --pure-lockfile
           - bolt build
           - bolt lint

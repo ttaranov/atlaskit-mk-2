@@ -1,68 +1,57 @@
 import * as React from 'react';
+import ImageLoader from 'react-render-image';
 import ImageIcon from '@atlaskit/icon/glyph/image';
-import { Wrapper, ImageWrapper, IconWrapper } from './styled';
 import NoImageIcon from './NoImageIcon';
+import { Wrapper, ImageWrapper, IconWrapper } from './styled';
+
+export const LoadingView = () => (
+  <IconWrapper>
+    <ImageIcon size="xlarge" label="loading" />
+  </IconWrapper>
+);
+
+export const NoImageView = () => (
+  <IconWrapper>
+    <NoImageIcon />
+  </IconWrapper>
+);
+
+export const LoadedView = ({ url }: { url: string }) => (
+  <ImageWrapper url={url} />
+);
 
 export interface CardPreviewProps {
+  isPlaceholder?: boolean;
   url?: string;
 }
 
-export interface CardPreviewState {
-  error?: boolean;
-}
-
 export default class CardPreview extends React.Component<CardPreviewProps> {
-  state = {
-    error: false,
-  };
-
   renderContent() {
-    const { url } = this.props;
-    const { error } = this.state;
+    const { isPlaceholder, url } = this.props;
 
-    if (error || !url) {
-      return (
-        <IconWrapper>
-          <NoImageIcon />
-        </IconWrapper>
-      );
+    if (isPlaceholder) {
+      return <LoadingView />;
     }
-
-    return [
-      <IconWrapper key="placeholder">
-        <ImageIcon size="xlarge" label="loading" />
-      </IconWrapper>,
-      <ImageWrapper key="image" url={url} />,
-    ];
-  }
-
-  tryAndLoadUrl() {
-    const { url } = this.props;
 
     if (!url) {
-      return;
+      return <NoImageView />;
     }
 
-    this.setState({ error: false }, () => {
-      const img = new Image();
-      img.src = url;
-      img.onerror = () => {
-        this.setState({ error: true });
-      };
-    });
-  }
+    return (
+      <ImageLoader src={url}>
+        {({ loaded, errored }) => {
+          if (errored) {
+            return <NoImageView />;
+          }
 
-  componentDidMount() {
-    this.tryAndLoadUrl();
-  }
+          if (loaded) {
+            return <LoadedView url={url} />;
+          }
 
-  componentDidUpdate(prevProps: CardPreviewProps) {
-    const { url: prevURL } = prevProps;
-    const { url: nextURL } = this.props;
-
-    if (prevURL !== nextURL) {
-      this.tryAndLoadUrl();
-    }
+          return <LoadingView />;
+        }}
+      </ImageLoader>
+    );
   }
 
   render() {

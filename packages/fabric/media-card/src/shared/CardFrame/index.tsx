@@ -9,8 +9,9 @@ import {
 } from './styled';
 
 export interface CardFrameProps {
+  isPlaceholder?: boolean;
   href?: string;
-  icon?: React.ReactNode;
+  icon?: React.ReactElement<any>;
   text?: React.ReactNode;
   minWidth?: number;
   maxWidth?: number;
@@ -19,11 +20,15 @@ export interface CardFrameProps {
 
 export default class CardFrame extends React.Component<CardFrameProps> {
   renderHeader() {
-    const { icon, text } = this.props;
+    const { isPlaceholder = false, icon, text } = this.props;
     return (
       <Header>
-        <IconWrapper>{icon}</IconWrapper>
-        <TextWrapper>{text}</TextWrapper>
+        <IconWrapper isPlaceholder={isPlaceholder}>
+          {!isPlaceholder && icon}
+        </IconWrapper>
+        <TextWrapper isPlaceholder={isPlaceholder}>
+          {!isPlaceholder && text}
+        </TextWrapper>
       </Header>
     );
   }
@@ -34,8 +39,8 @@ export default class CardFrame extends React.Component<CardFrameProps> {
   }
 
   render() {
-    const { href, minWidth, maxWidth } = this.props;
-    if (href) {
+    const { isPlaceholder, href, minWidth, maxWidth } = this.props;
+    if (!isPlaceholder && href) {
       return (
         <LinkWrapper
           target="_blank"

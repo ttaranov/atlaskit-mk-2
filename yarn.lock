@@ -89,16 +89,6 @@
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
-"@atlaskit/button@^5.4.14":
-  version "5.4.14"
-  resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-5.4.14.tgz#600975141fd356ccbf712885a00f63a1367dd28d"
-  dependencies:
-    "@atlaskit/theme" "^2.0.0"
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-    prop-types "^15.5.10"
-    styled-components "^1.4.6"
-
 "@atlaskit/button@^5.4.3":
   version "5.4.9"
   resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-5.4.9.tgz#2bd557ae23ebfc30c71acd09e3c62b7f3885154e"
@@ -862,7 +852,7 @@
   version "0.0.40"
   resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-0.0.40.tgz#0868ed9ba5bf3ef8072de80e245ecf4a8f0bbdfd"
 
-"@types/enzyme@^2.9.1":
+"@types/enzyme@^2.8.12":
   version "2.8.12"
   resolved "https://registry.yarnpkg.com/@types/enzyme/-/enzyme-2.8.12.tgz#a669d79ce1760d7241bc4b6fb7535d68669d78ad"
   dependencies:
@@ -876,10 +866,6 @@
 "@types/jquery@^2.0.41":
   version "2.0.48"
   resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-2.0.48.tgz#3e90d8cde2d29015e5583017f7830cb3975b2eef"
-
-"@types/lodash@^4.14.87":
-  version "4.14.87"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.87.tgz#55f92183b048c2c64402afe472f8333f4e319a6b"
 
 "@types/mocha@^2.2.39":
   version "2.2.44"
