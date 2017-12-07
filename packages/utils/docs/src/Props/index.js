@@ -163,7 +163,6 @@ export default function DynamicProps(props: DynamicPropsProps) {
   if (!propTypesObj) return null;
 
   const propTypes = getPropTypes(propTypesObj);
-
   if (!propTypes) return null;
 
   return (
