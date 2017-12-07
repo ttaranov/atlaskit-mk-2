@@ -1,6 +1,8 @@
 /* eslint-disable */
 
 import 'jest-styled-components';
+import { replaceRaf } from 'raf-stub';
+replaceRaf([global, typeof window !== 'undefined' ? window : {}]);
 
 /*
   This file is executed after the test framework is setup for each test file. Addons that modify

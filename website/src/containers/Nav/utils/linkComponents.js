@@ -77,5 +77,5 @@ export const RouterNavigationItem = (props: any) => {
 };
 
 export const ExternalNavigationItem = (props: any) => (
-  <AkNavigationItem {...props} target="_new" />
+  <AkNavigationItem {...props} />
 );

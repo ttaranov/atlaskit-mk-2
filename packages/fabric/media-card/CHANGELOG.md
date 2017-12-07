@@ -1,5 +1,12 @@
 # @atlaskit/media-image
 
+## 22.3.1
+
+## 22.3.0
+- [minor] Update signature onClick event on filmstrip (renderer) [30bdfcc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30bdfcc)
+- [minor] Update signature onClick event on filmstrip (renderer) [dbced25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbced25)
+- [minor] Update signature onClick event on filmstrip (renderer) [7ee4743](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7ee4743)
+
 ## 22.2.7
 - [patch] fix lazy-loading of cards when scrolling up [868505d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/868505d)
 

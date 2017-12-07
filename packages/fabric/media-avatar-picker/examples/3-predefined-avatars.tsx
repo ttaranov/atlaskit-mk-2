@@ -3,12 +3,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import {
-  AvatarList,
-  Avatar,
-  PredefinedAvatarList,
-  PredefinedAvatarView,
-} from '../src';
+import { Avatar } from '../src';
+import { AvatarList } from '../src/avatar-list';
+import { PredefinedAvatarList } from '../src/predefined-avatar-list';
+import { PredefinedAvatarView } from '../src/predefined-avatar-view';
+
 import { generateAvatars } from '../example-helpers';
 
 const avatars: Array<Avatar> = generateAvatars(5);

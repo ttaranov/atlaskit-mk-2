@@ -52,13 +52,13 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
     const { editorView: { state, dispatch }, hoverTable } = this.props;
     this.setState({ tableHovered: true });
     hoverTable!(state, dispatch);
-  }
+  };
 
   handleCornerMouseOut = () => {
     const { editorView: { state, dispatch }, resetHoverSelection } = this.props;
     this.setState({ tableHovered: false });
     resetHoverSelection!(state, dispatch);
-  }
+  };
 
   render() {
     const {
@@ -72,7 +72,7 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
       resetHoverSelection,
       isTableSelected,
       isColumnSelected,
-      isRowSelected
+      isRowSelected,
     } = this.props;
     const { tableElement } = pluginState;
     if (!tableElement) {

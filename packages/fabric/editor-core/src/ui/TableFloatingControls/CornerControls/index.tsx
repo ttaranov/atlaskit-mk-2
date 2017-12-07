@@ -20,7 +20,7 @@ export interface Props {
 }
 
 export default class CornerControls extends Component<Props, any> {
-  render () {
+  render() {
     const { tableElement, editorView: { state, dispatch } } = this.props;
     const tableWidth = tableElement.offsetWidth;
     const tableHeight = tableElement.offsetHeight;

@@ -9,6 +9,10 @@ import { Separator, Container, FloatingToolbar, ToolbarButton } from './styles';
 import { EditorView } from 'prosemirror-view';
 import { normalizeUrl } from '../../plugins/hyperlink/utils';
 import RecentSearch from '../RecentSearch';
+import {
+  addPlaceholderCursor,
+  removePlaceholderCursor,
+} from '../../plugins/placeholder-cursor/cursor';
 
 const TEXT_NODE = 3;
 
@@ -63,12 +67,20 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     this.setState({
       inputActive: true,
     });
+    if (this.state.editorFocused) {
+      const { editorView } = this.props;
+      addPlaceholderCursor(editorView.state, editorView.dispatch);
+    }
   };
 
   resetInputActive = () => {
     this.setState({
       inputActive: false,
     });
+    if (!this.state.editorFocused) {
+      const { editorView } = this.props;
+      removePlaceholderCursor(editorView.state, editorView.dispatch);
+    }
   };
 
   private getOffsetParent() {
@@ -77,18 +89,15 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       : (this.props.editorView.dom as HTMLElement).offsetParent;
   }
 
-  private getPopupTarget(): HTMLElement | undefined {
-    const { target, activeElement } = this.state;
-    let popupTarget = target;
-
-    if (!popupTarget && activeElement) {
-      popupTarget =
-        activeElement.nodeType === TEXT_NODE
-          ? (activeElement.parentElement as HTMLElement)
-          : activeElement;
-    }
-
-    return popupTarget;
+  private getPopupTarget(): HTMLElement | null {
+    const { state, docView } = this.props.editorView as EditorView & {
+      docView?: any;
+    };
+    const { node } = docView.domFromPos(state.selection.$from.pos);
+    const activeElement = node as HTMLElement;
+    return activeElement.nodeType === TEXT_NODE
+      ? (activeElement.parentElement as HTMLElement)
+      : activeElement;
   }
 
   /**
@@ -138,13 +147,12 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       inputActive,
       showToolbarPanel,
     } = this.state;
-    const popupTarget = this.getPopupTarget();
-
-    if (!popupTarget) {
-      return null;
-    }
 
     if ((active || showToolbarPanel) && (editorFocused || inputActive)) {
+      const popupTarget = this.getPopupTarget();
+      if (!popupTarget) {
+        return null;
+      }
       const showOpenButton = !!oldHref;
       const showUnlinkButton = unlinkable && active && oldHref;
 
@@ -232,7 +240,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     const { editorView, pluginState } = this.props;
     const { href, text } = this.state;
     if (editorView.state.selection.empty && !pluginState.active) {
-      pluginState.hideLinkPanel();
+      pluginState.hideLinkPanel(editorView.state, editorView.dispatch);
     } else if (!href || href.length === 0) {
       pluginState.removeLink(editorView);
     } else {

@@ -7,7 +7,11 @@ import {
   akEditorTableBorderSelected,
   akEditorTableFloatingControls,
 } from '../../../styles';
-import { akGridSizeUnitless, akColorN80 } from '@atlaskit/util-shared-styles';
+import {
+  akGridSizeUnitless,
+  akColorN80,
+  akColorN20,
+} from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
 
 const tableStyle = `
@@ -100,13 +104,8 @@ const ContentStyles = styled.div`
     &::before {
       content: attr(data-text);
       color: ${akColorN80};
+      pointer-events: none;
     }
-  }
-
-  .ProseMirror ul,
-  .ProseMirror ol {
-    padding-left: 30px;
-    cursor: default;
   }
 
   .ProseMirror blockquote {
@@ -135,6 +134,28 @@ const ContentStyles = styled.div`
 
   .ProseMirror pre {
     white-space: pre-wrap;
+  }
+
+  .ProseMirror .code {
+    padding: 2px 1px;
+    background: ${akColorN20};
+    border-radius: 3px;
+    font-family: monospace;
+    white-space: pre-wrap;
+
+    &:before,
+    &:after {
+      vertical-align: text-top;
+      display: inline-block;
+      width: 3px;
+      content: '';
+    }
+  }
+
+  .ProseMirror ul,
+  .ProseMirror ol {
+    padding-left: 30px;
+    cursor: default;
   }
 
   .ProseMirror li {
@@ -253,6 +274,26 @@ const ContentStyles = styled.div`
     img {
     max-width: 100%;
   }
+
+  //=============== PLACEHOLDER CURSOR STYLES=========
+
+  & .ProseMirror-placeholder-cursor {
+    display: inline;
+    pointer-events: none;
+    position: relative;
+    height: 15px;
+  }
+
+  & .ProseMirror-placeholder-cursor:after {
+    content: '';
+    display: inline;
+    top: 0;
+    position: absolute;
+    height: 100%;
+    border-right: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  //=============== PLACEHOLDER CURSOR STYLES================
 `;
 
 export default ContentStyles;

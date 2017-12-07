@@ -10,7 +10,7 @@ const getFlexDirection = ({ isChecked }) => (isChecked ? 'row' : 'row-reverse');
 
 export default styled.div`
   color: ${({ isDisabled }) => (isDisabled ? disabledColor : color)};
-  display: inline-flex;
+  display: flex;
   flex-direction: ${getFlexDirection};
   height: 100%;
   transition: ${transition};

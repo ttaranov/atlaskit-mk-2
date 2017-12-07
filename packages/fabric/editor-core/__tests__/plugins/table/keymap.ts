@@ -237,7 +237,7 @@ describe('table keymap', () => {
         plugin.props.handleDOMEvents!.focus(editorView, event);
         selectTable(editorView.state, editorView.dispatch);
         expect(editorView.state.selection instanceof CellSelection).toEqual(
-          true
+          true,
         );
         sendKeyToPm(editorView, 'Backspace');
         expect(editorView.state.doc).toEqualDocument(

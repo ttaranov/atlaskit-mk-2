@@ -1,4 +1,5 @@
 import { browser } from '@atlaskit/editor-common';
+import { TextSelection } from 'prosemirror-state';
 import hyperlinkPlugins, {
   HyperlinkState,
 } from '../../../src/plugins/hyperlink';
@@ -19,6 +20,7 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../src/utils';
 import { analyticsService } from '../../../src/analytics';
+import { PlaceholderCursor } from '../../../src/plugins/placeholder-cursor/cursor';
 
 describe('hyperlink', () => {
   const editor = (doc: any) =>
@@ -1025,6 +1027,28 @@ describe('hyperlink', () => {
         expect(pluginState.activeLinkNode).toEqual(undefined);
         editorView.destroy();
       });
+
+      it('should add placeholder cursor in the editor', () => {
+        const { editorView, pluginState } = editor(doc(paragraph('{<>}')));
+        pluginState.showLinkPanel(editorView);
+        expect(editorView.state.selection instanceof PlaceholderCursor).toEqual(
+          true,
+        );
+        editorView.destroy();
+      });
+    });
+  });
+
+  describe('hideLinkPanel', () => {
+    it('should remove placeholder cursor from the editor', () => {
+      const { editorView, pluginState } = editor(doc(paragraph('{<>}')));
+      pluginState.showLinkPanel(editorView);
+      expect(editorView.state.selection instanceof PlaceholderCursor).toEqual(
+        true,
+      );
+      pluginState.hideLinkPanel(editorView.state, editorView.dispatch);
+      expect(editorView.state.selection instanceof TextSelection).toEqual(true);
+      editorView.destroy();
     });
   });
 

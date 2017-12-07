@@ -1,5 +1,31 @@
 # @atlaskit/editor-core
 
+## 60.8.5
+
+## 60.8.4
+- [patch] Add default inline code styles [d5d8e5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5d8e5f)
+- [patch] Add default inline code styles [d5d8e5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5d8e5f)
+
+## 60.8.3
+- [patch] Fix getValue() action resolving too early with media in-flight. [d31fafe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d31fafe)
+- [patch] Fix getValue() action resolving too early with media in-flight. [d31fafe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d31fafe)
+
+## 60.8.2
+- [patch] added extension node [ec73cb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec73cb8)
+- [patch] added extension node [ec73cb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec73cb8)
+
+## 60.8.1
+
+## 60.8.0
+- [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)
+- [patch] Fix dependencies [9f9de42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f9de42)
+- [patch] Fix dependencies [5a4d799](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5a4d799)
+- [patch] Fix dependencies [5a4d799](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5a4d799)
+- [minor] ED-2864, adding fake cursor to links. [4655eac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4655eac)
+- [minor] ED-2864, adding fake cursor to links. [4655eac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4655eac)
+
+## 60.7.2
+
 ## 60.7.1
 - [patch] Adding more unit test coverage for responsive editor changes. [0b35f50](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b35f50)
 - [patch] Adding more unit test coverage for responsive editor changes. [0b35f50](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b35f50)

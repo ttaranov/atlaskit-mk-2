@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/toggle",
-  "version": "2.7.0",
+  "version": "2.7.2",
   "description": "A component to view and switch between enabled or disabled states",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -16,7 +16,7 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/icon": "^10.3.1",
-    "@atlaskit/theme": "^2.2.4",
+    "@atlaskit/theme": "^2.2.8",
     "styled-components": "^1.4.6",
     "uuid": "^3.1.0"
   },
@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@atlaskit/button": "^5.4.8",
-    "@atlaskit/docs": "^1.0.1",
+    "@atlaskit/docs": "^2.0.0",
     "enzyme": "^2.9.1"
   },
   "keywords": [

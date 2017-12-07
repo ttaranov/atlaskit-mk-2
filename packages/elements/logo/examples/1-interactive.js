@@ -28,7 +28,7 @@ const sizeRange = (Logo, colorPresetProps, size, useProps) => {
     <Centered>
       <Logo size={size} {...props} />
     </Centered>
-  )
+  );
 };
 
 const colorPresets = [
@@ -83,7 +83,7 @@ export default class InteractiveLogo extends Component<Props, State> {
     this.setState({
       useProps: !this.state.useProps,
     });
-  }
+  };
 
   toggleColor = () => {
     this.setState({
@@ -101,13 +101,23 @@ export default class InteractiveLogo extends Component<Props, State> {
     const colorPreset = colorPresets[this.state.colorIndex];
     const sizePreset = sizePresets[this.state.sizeIndex];
     const radioItems = [
-      { name: 'color', value: 'props', label: 'Set colour via component props', defaultSelected: true },
+      {
+        name: 'color',
+        value: 'props',
+        label: 'Set colour via component props',
+        defaultSelected: true,
+      },
       { name: 'color', value: 'inherit', label: 'Inherit colour from parent' },
     ];
 
     const { useProps } = this.state;
 
-    return <div style={{ color: this.state.useProps ? akColorN300 : colorPreset.iconColor }}>
+    return (
+      <div
+        style={{
+          color: this.state.useProps ? akColorN300 : colorPreset.iconColor,
+        }}
+      >
         <ButtonGroup>
           <Button onClick={this.toggleSize}>Change size</Button>
         </ButtonGroup>
@@ -123,10 +133,16 @@ export default class InteractiveLogo extends Component<Props, State> {
         {sizeRange(logos.HipchatLogo, colorPreset, sizePreset, useProps)}
         {sizeRange(logos.JiraLogo, colorPreset, sizePreset, useProps)}
         {sizeRange(logos.JiraCoreLogo, colorPreset, sizePreset, useProps)}
-        {sizeRange(logos.JiraServiceDeskLogo, colorPreset, sizePreset, useProps)}
+        {sizeRange(
+          logos.JiraServiceDeskLogo,
+          colorPreset,
+          sizePreset,
+          useProps,
+        )}
         {sizeRange(logos.JiraSoftwareLogo, colorPreset, sizePreset, useProps)}
         {sizeRange(logos.StatuspageLogo, colorPreset, sizePreset, useProps)}
         {sizeRange(logos.StrideLogo, colorPreset, sizePreset, useProps)}
-      </div>;
+      </div>
+    );
   }
 }

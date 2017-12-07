@@ -5,7 +5,7 @@ import {
   smallImage,
   remoteImage,
 } from '@atlaskit/media-test-helpers';
-import { ImageNavigator } from '../src';
+import { ImageNavigator } from '../src/image-navigator';
 
 let onLoadParams;
 let imageElement;

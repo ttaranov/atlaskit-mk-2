@@ -1,5 +1,18 @@
 # @atlaskit/media-avatar-picker
 
+## 4.2.0
+- [minor] [MSW-339] customise avatar picker dialog labels [c9686ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9686ad)
+
+## 4.1.2
+
+## 4.1.1
+- [patch] fix broken syntax in avatar example [c7cc95d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7cc95d)
+
+## 4.1.0
+
+## 4.0.1
+- [patch] expose Avatar type, fix broken example deps [f3f4bec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3f4bec)
+
 ## 4.0.0
 - [major] fix selection of predefined avatars. breaking changes, reduced public interface to only expose AvatarPickerDialog. [f76449f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f76449f)
 

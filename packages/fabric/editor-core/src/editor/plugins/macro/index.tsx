@@ -1,16 +1,55 @@
-import * as React from 'react';
-import { EditorPlugin } from '../../types';
-import { inlineExtension } from '@atlaskit/editor-common';
-import { createPlugin, pluginKey, MacroState } from './plugin';
-import MacroEdit from '../../../ui/MacroEdit';
-import WithPluginState from '../../ui/WithPluginState';
-import { insertMacroFromMacroBrowser, removeMacro } from '../macro/actions';
+import { Plugin, PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+import { MacroProvider } from './types';
+import ProviderFactory from '../../../providerFactory';
+import { setMacroProvider } from './actions';
+import { Dispatch } from '../../event-dispatcher';
 
-const macroPlugin: EditorPlugin = {
-  nodes() {
-    return [{ rank: 2300, name: 'inlineExtension', node: inlineExtension }];
-  },
+export * from './types';
+export * from './actions';
 
+export const pluginKey = new PluginKey('macroPlugin');
+
+export type MacroState = {
+  macroProvider: MacroProvider | null;
+};
+
+export const createPlugin = (
+  dispatch: Dispatch,
+  providerFactory: ProviderFactory,
+) =>
+  new Plugin({
+    state: {
+      init: () => ({ macroProvider: null }),
+
+      apply(tr, state: MacroState) {
+        const meta = tr.getMeta(pluginKey);
+        if (meta) {
+          const newState = { ...state, ...meta };
+          dispatch(pluginKey, newState);
+
+          return newState;
+        }
+
+        return state;
+      },
+    },
+    key: pluginKey,
+    view: (view: EditorView) => {
+      // make sure editable DOM node is mounted
+      if (view.dom.parentNode) {
+        const { state, dispatch } = view;
+        providerFactory.subscribe(
+          'macroProvider',
+          (name, provider: Promise<MacroProvider>) =>
+            setMacroProvider(provider)(state, dispatch),
+        );
+      }
+      return {};
+    },
+  });
+
+export default {
   pmPlugins() {
     return [
       {
@@ -20,26 +59,4 @@ const macroPlugin: EditorPlugin = {
       },
     ];
   },
-
-  contentComponent(editorView, eventDispatcher, providerFactory, appearance) {
-    return (
-      <WithPluginState
-        editorView={editorView}
-        eventDispatcher={eventDispatcher}
-        plugins={{ macroState: pluginKey }}
-        // tslint:disable-next-line:jsx-no-lambda
-        render={({ macroState = {} as MacroState }) => (
-          <MacroEdit
-            editorView={editorView}
-            macroElement={macroState.macroElement}
-            macroProvider={macroState.macroProvider}
-            onRemoveMacro={removeMacro}
-            onInsertMacroFromMacroBrowser={insertMacroFromMacroBrowser}
-          />
-        )}
-      />
-    );
-  },
 };
-
-export default macroPlugin;
