@@ -1,5 +1,7 @@
 # @atlaskit/editor-test-helpers
 
+## 1.2.3
+
 ## 1.2.2
 - [patch] split extension node [4303d49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4303d49)
 - [patch] split extension node [4303d49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4303d49)

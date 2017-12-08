@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 4.2.1
+
 ## 4.2.0
 - [minor] split extension node [4303d49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4303d49)
 - [minor] split extension node [4303d49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4303d49)

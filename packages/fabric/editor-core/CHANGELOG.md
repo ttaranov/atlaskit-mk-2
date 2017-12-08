@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.9.3
+- [patch] fix inline comments marker name in schema [966f9c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/966f9c2)
+- [patch] fix inline comments marker name in schema [966f9c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/966f9c2)
+
 ## 60.9.2
 - [patch] split extension node [4303d49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4303d49)
 - [patch] split extension node [4303d49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4303d49)
