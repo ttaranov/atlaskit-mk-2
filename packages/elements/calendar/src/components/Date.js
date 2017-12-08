@@ -38,8 +38,8 @@ export default class extends Component<Props, State> {
   onMouseDown = () => this.setState({ isActive: true });
   onMouseUp = () => {
     this.setState({ isActive: false });
-    const { children: day, month, onClick, year } = this.props;
-    if (onClick) {
+    const { children: day, month, onClick, year, disabled } = this.props;
+    if (!disabled && onClick) {
       onClick({ year, month, day });
     }
   };
