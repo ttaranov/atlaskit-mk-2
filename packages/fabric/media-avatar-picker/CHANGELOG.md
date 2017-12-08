@@ -1,5 +1,7 @@
 # @atlaskit/media-avatar-picker
 
+## 4.3.2
+
 ## 4.3.1
 - [patch] fix onClick events not firing in media-avatar-picker dialog [cb54328](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cb54328)
 

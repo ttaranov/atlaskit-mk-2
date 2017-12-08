@@ -1,5 +1,8 @@
 # @atlaskit/media-image
 
+## 22.4.1
+- [patch] Use default dimensions in CardView when dimensions are not provided [d07f3f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d07f3f8)
+
 ## 22.4.0
 - [minor] make Card and CardView to work properly when percetanges are passed as dimensions [3178808](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3178808)
 

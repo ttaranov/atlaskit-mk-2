@@ -1,5 +1,7 @@
 # @atlaskit/editor-bitbucket
 
+## 4.11.4
+
 ## 4.11.3
 - [patch] Remove support for images with data URI's for Bitbucket's image node in the editor [e055dee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e055dee)
 - [patch] Remove support for images with data URI's for Bitbucket's image node in the editor [e055dee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e055dee)
