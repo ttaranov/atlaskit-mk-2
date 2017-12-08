@@ -27,6 +27,8 @@ pipelines:
           - bolt test:ci
           - bolt test:browser:browserstack
           - (cd website && bolt build)
+          # tentatively try to deploy again
+          - (cd website && bolt deploy-staging:no-minimize)
 
           # Disabling AGAIN, because netlify keeps dying
           # - (cd website && bolt deploy-staging:no-minimize)
