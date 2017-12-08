@@ -233,4 +233,12 @@ describe('CardView', () => {
 
     expect(card.find(Wrapper).props().breakpointSize).toEqual('small');
   });
+
+  it('should render wrapper with default dimensions when dimensions are not provided', () => {
+    const card = shallow(<CardView status="complete" metadata={file} />);
+    expect(card.find(Wrapper).props().dimensions).toEqual({
+      width: 156,
+      height: 125,
+    });
+  });
 });
