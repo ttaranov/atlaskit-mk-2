@@ -27,6 +27,7 @@ import {
   confluenceInlineComment,
   placeholderCursorPlugin,
   extensionPlugin,
+  rulePlugin,
 } from '../plugins';
 
 /**
@@ -58,6 +59,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.allowHyperlinks) {
     plugins.push(hyperlinkPlugin);
+  }
+
+  if (props.allowRule) {
+    plugins.push(rulePlugin);
   }
 
   if (props.mediaProvider) {
