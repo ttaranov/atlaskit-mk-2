@@ -19,14 +19,21 @@
     "@atlaskit/editor-core": "^60.14.12",
     "@atlaskit/media-core": "^12.0.0",
     "@atlaskit/media-test-helpers": "^8.5.1",
+    "chance": "1.0.12",
+    "json-schema-ref-parser": "4.0.4",
+    "lodash.merge": "4.6.0",
     "prosemirror-commands": "^1.0.1",
     "prosemirror-keymap": "^1.0.0",
     "prosemirror-model": "^1.0.0",
     "prosemirror-state": "^1.0.1",
-    "prosemirror-view": "^1.0.0"
+    "prosemirror-view": "^1.0.0",
+    "randexp": "0.4.6"
   },
   "peerDependencies": {},
   "devDependencies": {
+    "@types/chance": "0.7.35",
+    "@types/json-schema": "6.0.0",
+    "@types/lodash.merge": "4.6.3",
     "@types/prosemirror-commands": "^1.0.0",
     "@types/prosemirror-keymap": "^1.0.0",
     "@types/prosemirror-model": "^1.0.0",

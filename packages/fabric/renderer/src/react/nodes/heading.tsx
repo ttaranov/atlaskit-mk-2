@@ -19,5 +19,7 @@ export default function Heading(
       return <h5>{children}</h5>;
     case 6:
       return <h6>{children}</h6>;
+    default:
+      return null;
   }
 }

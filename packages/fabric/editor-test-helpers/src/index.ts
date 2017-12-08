@@ -1,3 +1,4 @@
+export { default as createRandomADFGenerator } from './adf-schema-generator';
 export * from './base64fileconverter';
 export { default as sendKeyToPm } from './send-key-to-pm';
 export { default as chaiPlugin } from './chai';
