@@ -806,6 +806,31 @@
     babel-runtime "^6.11.6"
     styled-components "^1.4.6"
 
+"@lbatchelor/netlify-cli@^1.2.2-patched.7":
+  version "1.2.2-patched.7"
+  resolved "https://registry.yarnpkg.com/@lbatchelor/netlify-cli/-/netlify-cli-1.2.2-patched.7.tgz#341485bc63dc6f0aa89b458f324e634ca673f4fd"
+  dependencies:
+    "@lbatchelor/netlify" "1.2.0-patched.7"
+    chalk "^0.5.1"
+    commander "^2.9.0"
+    github "^0.2.4"
+    home-dir "^0.2.0"
+    inquirer "^0.11.0"
+    open "0.0.5"
+    prompt "^0.2.14"
+    update-notifier "^0.6.0"
+    when "^3.7.5"
+
+"@lbatchelor/netlify@1.2.0-patched.7", "@lbatchelor/netlify@^1.2.0-patched.7":
+  version "1.2.0-patched.7"
+  resolved "https://registry.yarnpkg.com/@lbatchelor/netlify/-/netlify-1.2.0-patched.7.tgz#afaa1f305b080e3955853a4d01d0f3d3ea77994e"
+  dependencies:
+    base64-js ">=0.0.4"
+    glob ">=3.2.6"
+    graceful-fs "^4.1.2"
+    semaphore "^1.0.5"
+    when "^3.7.5"
+
 "@types/bytes@^2.4.33":
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/@types/bytes/-/bytes-2.5.1.tgz#392c42adb65e16d32328b82b58fbc1611b75da89"
