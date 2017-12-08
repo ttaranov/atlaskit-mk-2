@@ -1,5 +1,8 @@
 # @atlaskit/tabs
 
+## 4.0.5
+- [patch] Migrate to ak-mk-2 [4c679a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4c679a0)
+
 ## 4.0.4 (2017-11-17)
 
 * bug fix; bumping internal dependencies to latest version ([f87bb04](https://bitbucket.org/atlassian/atlaskit/commits/f87bb04))
