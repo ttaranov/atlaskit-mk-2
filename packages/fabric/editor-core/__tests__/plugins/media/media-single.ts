@@ -2,13 +2,13 @@ import {
   textAlign,
   float,
   clear,
-  insertSingleImageNodes,
-  insertMediaAsSingleImage,
-} from '../../../src/plugins/media/single-image';
+  insertMediaSingleNodes,
+  insertMediaAsMediaSingle,
+} from '../../../src/plugins/media/media-single';
 import {
   doc,
   p,
-  singleImage,
+  mediaSingle,
   media,
   randomId,
   defaultSchema,
@@ -16,7 +16,7 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { MediaPluginState } from '../../../src';
 
-describe('single-image', () => {
+describe('media-single', () => {
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
   const temporaryFileId = `temporary:${randomId()}`;
   const editor = (doc: any, uploadErrorHandler?: () => void) =>
@@ -247,11 +247,11 @@ describe('single-image', () => {
     });
   });
 
-  describe('insertMediaAsSingleImage', () => {
+  describe('insertMediaAsMediaSingle', () => {
     describe('when inserting node that is not a media node', () => {
-      it('does not insert single image', () => {
+      it('does not insert mediaSingle', () => {
         const { editorView } = editor(doc(p('text{<>}')));
-        insertMediaAsSingleImage(editorView, p('world'));
+        insertMediaAsMediaSingle(editorView, p('world'));
 
         expect(editorView.state.doc).toEqualDocument(doc(p('text')));
       });
@@ -259,9 +259,9 @@ describe('single-image', () => {
 
     describe('when inserting node is a media node', () => {
       describe('when media node is not an image', () => {
-        it('does not insert single image', () => {
+        it('does not insert mediaSingle', () => {
           const { editorView } = editor(doc(p('text{<>}')));
-          insertMediaAsSingleImage(
+          insertMediaAsMediaSingle(
             editorView,
             media({
               id: temporaryFileId,
@@ -276,9 +276,9 @@ describe('single-image', () => {
       });
 
       describe('when media node is an image', () => {
-        it('inserts single image', () => {
+        it('inserts mediaSingle', () => {
           const { editorView } = editor(doc(p('text{<>}')));
-          insertMediaAsSingleImage(
+          insertMediaAsMediaSingle(
             editorView,
             media({
               id: temporaryFileId,
@@ -291,7 +291,7 @@ describe('single-image', () => {
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p('text'),
-              singleImage({ alignment: 'center', display: 'block' })(
+              mediaSingle({ alignment: 'center', display: 'block' })(
                 media({
                   id: temporaryFileId,
                   type: 'file',
@@ -307,12 +307,12 @@ describe('single-image', () => {
     });
   });
 
-  describe('insertSingleImageNodes', () => {
+  describe('insertMediaSingleNodes', () => {
     describe('when there is only one image data', () => {
-      it('inserts one single image node into the document', () => {
+      it('inserts one mediaSingle node into the document', () => {
         const { editorView } = editor(doc(p('text{<>}')));
 
-        insertSingleImageNodes(
+        insertMediaSingleNodes(
           editorView,
           [{ id: temporaryFileId, status: 'uploading' }],
           testCollectionName,
@@ -321,7 +321,7 @@ describe('single-image', () => {
         expect(editorView.state.doc).toEqualDocument(
           doc(
             p('text'),
-            singleImage({ alignment: 'center', display: 'block' })(
+            mediaSingle({ alignment: 'center', display: 'block' })(
               media({
                 id: temporaryFileId,
                 type: 'file',
@@ -335,10 +335,10 @@ describe('single-image', () => {
     });
 
     describe("when there are multiple images' data", () => {
-      it('inserts multiple single image nodes into the document', () => {
+      it('inserts multiple mediaSingle nodes into the document', () => {
         const { editorView } = editor(doc(p('text{<>}hello')));
 
-        insertSingleImageNodes(
+        insertMediaSingleNodes(
           editorView,
           [
             { id: temporaryFileId, status: 'uploading' },
@@ -351,21 +351,21 @@ describe('single-image', () => {
         expect(editorView.state.doc).toEqualDocument(
           doc(
             p('text'),
-            singleImage({ alignment: 'center', display: 'block' })(
+            mediaSingle({ alignment: 'center', display: 'block' })(
               media({
                 id: temporaryFileId,
                 type: 'file',
                 collection: testCollectionName,
               }),
             ),
-            singleImage({ alignment: 'center', display: 'block' })(
+            mediaSingle({ alignment: 'center', display: 'block' })(
               media({
                 id: temporaryFileId + '1',
                 type: 'file',
                 collection: testCollectionName,
               }),
             ),
-            singleImage({ alignment: 'center', display: 'block' })(
+            mediaSingle({ alignment: 'center', display: 'block' })(
               media({
                 id: temporaryFileId + '2',
                 type: 'file',
@@ -383,7 +383,7 @@ describe('single-image', () => {
         it('deletes the selection', () => {
           const { editorView } = editor(doc(p('{<}text{>}')));
 
-          insertSingleImageNodes(
+          insertMediaSingleNodes(
             editorView,
             [{ id: temporaryFileId, status: 'uploading' }],
             testCollectionName,
@@ -391,7 +391,7 @@ describe('single-image', () => {
 
           expect(editorView.state.doc).toEqualDocument(
             doc(
-              singleImage({ alignment: 'center', display: 'block' })(
+              mediaSingle({ alignment: 'center', display: 'block' })(
                 media({
                   id: temporaryFileId,
                   type: 'file',
@@ -408,7 +408,7 @@ describe('single-image', () => {
         it('deletes the selection', () => {
           const { editorView } = editor(doc(p('hello'), p('{<}text{>}'), p()));
 
-          insertSingleImageNodes(
+          insertMediaSingleNodes(
             editorView,
             [{ id: temporaryFileId, status: 'uploading' }],
             testCollectionName,
@@ -417,7 +417,7 @@ describe('single-image', () => {
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p('hello'),
-              singleImage({ alignment: 'center', display: 'block' })(
+              mediaSingle({ alignment: 'center', display: 'block' })(
                 media({
                   id: temporaryFileId,
                   type: 'file',
@@ -436,7 +436,7 @@ describe('single-image', () => {
             doc(p('hello'), p('world'), p('{<}text{>}')),
           );
 
-          insertSingleImageNodes(
+          insertMediaSingleNodes(
             editorView,
             [{ id: temporaryFileId, status: 'uploading' }],
             testCollectionName,
@@ -446,7 +446,7 @@ describe('single-image', () => {
             doc(
               p('hello'),
               p('world'),
-              singleImage({ alignment: 'center', display: 'block' })(
+              mediaSingle({ alignment: 'center', display: 'block' })(
                 media({
                   id: temporaryFileId,
                   type: 'file',

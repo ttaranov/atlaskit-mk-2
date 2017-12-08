@@ -31,7 +31,7 @@ export {
   toJSON as mediaToJSON,
 } from './media';
 export { mediaGroup } from './media-group';
-export { singleImage, Alignment, Display } from './single-image';
+export { mediaSingle, Alignment, Display } from './media-single';
 export { table, tableCell, tableHeader, tableRow } from './tableNodes';
 export {
   applicationCard,

@@ -5,10 +5,10 @@ export type Display = 'inline-block' | 'block';
 import { Definition as Media } from './media';
 
 /**
- * @name singleImage_node
+ * @name mediaSingle_node
  */
 export interface Definition {
-  type: 'singleImage';
+  type: 'mediaSingle';
   content: Media;
   attrs: Attributes;
 }
@@ -22,14 +22,14 @@ export const defaultAttrs = {
   display: { default: 'block' },
 };
 
-export const singleImage: NodeSpec = {
+export const mediaSingle: NodeSpec = {
   inline: false,
   group: 'block',
   content: 'media',
   attrs: defaultAttrs,
   parseDOM: [
     {
-      tag: 'div[data-node-type="singleImage"]',
+      tag: 'div[data-node-type="mediaSingle"]',
       getAttrs: (dom: HTMLElement) => ({
         alignment: dom.getAttribute('data-alignment'),
         display: dom.getAttribute('data-display'),
@@ -39,7 +39,7 @@ export const singleImage: NodeSpec = {
   toDOM(node: Node) {
     const { alignment, display } = node.attrs;
     const attrs = {
-      'data-node-type': 'singleImage',
+      'data-node-type': 'mediaSingle',
       'data-alignment': alignment,
       'data-display': display,
     };

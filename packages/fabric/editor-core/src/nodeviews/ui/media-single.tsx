@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 import styled from 'styled-components';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { float, clear, textAlign } from '../../plugins/media/single-image';
+import { float, clear, textAlign } from '../../plugins/media/media-single';
 
 export interface MediaGroupNodeProps {
   view: EditorView;
@@ -24,7 +24,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default class SingleImageNode extends PureComponent<
+export default class MediaSingleNode extends PureComponent<
   MediaGroupNodeProps,
   {}
 > {

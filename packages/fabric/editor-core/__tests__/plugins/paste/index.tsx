@@ -9,7 +9,7 @@ import {
   code,
   mediaGroup,
   media,
-  singleImage,
+  mediaSingle,
   makeEditor,
   dispatchPasteEvent,
   isMobileBrowser,
@@ -65,14 +65,14 @@ if (!browser.ie && !isMobileBrowser()) {
 
       describe('non message editor', () => {
         describe('when message is a media image node', () => {
-          it('paste as single image', () => {
+          it('paste as mediaSingle', () => {
             const { editorView } = editor(doc(p('{<>}')));
             dispatchPasteEvent(editorView, {
               html: mediaHtml('image/jpeg'),
             });
             expect(editorView.state.doc).toEqualDocument(
               doc(
-                singleImage({ alignment: 'center', display: 'block' })(
+                mediaSingle({ alignment: 'center', display: 'block' })(
                   media({
                     id: 'af9310df-fee5-459a-a968-99062ecbb756',
                     type: 'file',

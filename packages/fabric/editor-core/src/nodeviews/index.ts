@@ -1,6 +1,6 @@
 export { default as nodeViewFactory } from './factory';
 export { default as ReactEmojiNode } from './ui/emoji';
-export { default as ReactSingleImageNode } from './ui/single-image';
+export { default as ReactMediaSingleNode } from './ui/media-single';
 export { default as ReactMediaGroupNode } from './ui/media-group';
 export { default as ReactMediaNode } from './ui/media';
 export { default as ReactMentionNode } from './ui/mention';
