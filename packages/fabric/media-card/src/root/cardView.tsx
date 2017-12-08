@@ -132,7 +132,7 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
       <Wrapper
         breakpointSize={breakpointSize(this.width)}
         appearance={appearance}
-        dimensions={dimensions}
+        dimensions={dimensions || defaultImageCardDimensions}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
       >

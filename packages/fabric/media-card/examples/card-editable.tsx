@@ -22,6 +22,7 @@ export interface EditableCardState {
   isWidthPercentage: boolean;
   isHeightPercentage: boolean;
   isLazy: boolean;
+  useDimensions: boolean;
 }
 
 class EditableCard extends Component<{}, EditableCardState> {
@@ -32,6 +33,7 @@ class EditableCard extends Component<{}, EditableCardState> {
     isWidthPercentage: true,
     isHeightPercentage: true,
     isLazy: false,
+    useDimensions: true,
   };
 
   onWidthChange = e => {
@@ -74,6 +76,10 @@ class EditableCard extends Component<{}, EditableCardState> {
     this.setState({ isLazy: !this.state.isLazy });
   };
 
+  onUseDimensionsChange = () => {
+    this.setState({ useDimensions: !this.state.useDimensions });
+  };
+
   render() {
     const {
       identifier,
@@ -82,6 +88,7 @@ class EditableCard extends Component<{}, EditableCardState> {
       isHeightPercentage,
       parentDimensions,
       isLazy,
+      useDimensions,
     } = this.state;
     const width = parseInt(`${dimensions.width}`, 0);
     const height = parseInt(`${dimensions.height}`, 0);
@@ -149,12 +156,17 @@ class EditableCard extends Component<{}, EditableCardState> {
           </CardDimensionsWrapper>
           isLazy
           <Toggle isDefaultChecked={isLazy} onChange={this.onIsLazyChange} />
+          use dimensions
+          <Toggle
+            isDefaultChecked={useDimensions}
+            onChange={this.onUseDimensionsChange}
+          />
         </EditableCardOptions>
         <EditableCardContent style={parentStyle}>
           <Card
             context={context}
             identifier={identifier}
-            dimensions={newDimensions}
+            dimensions={useDimensions ? newDimensions : undefined}
             isLazy={isLazy}
           />
         </EditableCardContent>
