@@ -162,6 +162,7 @@ export default class Editor extends React.Component<EditorProps, State> {
       primaryToolbarComponents,
       secondaryToolbarComponents,
       eventDispatcher,
+      primaryToolbarSpace,
     } = editor as EditorInstance;
 
     return (
@@ -178,6 +179,9 @@ export default class Editor extends React.Component<EditorProps, State> {
         popupsBoundariesElement={this.props.popupsBoundariesElement}
         contentComponents={contentComponents}
         primaryToolbarComponents={primaryToolbarComponents}
+        primaryToolbarSpace={
+          (primaryToolbarSpace || 0) + (this.props.primaryToolbarSpace || 0)
+        }
         secondaryToolbarComponents={secondaryToolbarComponents}
         customContentComponents={this.props.contentComponents}
         customPrimaryToolbarComponents={this.props.primaryToolbarComponents}

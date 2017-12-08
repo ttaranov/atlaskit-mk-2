@@ -121,6 +121,8 @@ const emojiPlugin: EditorPlugin = {
     );
   },
 
+  primaryToolbarSpace: 32,
+
   primaryToolbarComponent(
     editorView,
     eventDispatcher,

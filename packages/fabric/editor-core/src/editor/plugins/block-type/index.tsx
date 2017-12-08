@@ -21,6 +21,8 @@ const blockType: EditorPlugin = {
     ];
   },
 
+  primaryToolbarSpace: 124,
+
   primaryToolbarComponent(
     editorView,
     eventDispatcher,

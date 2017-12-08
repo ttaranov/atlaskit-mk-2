@@ -59,6 +59,8 @@ const mentionsPlugin: EditorPlugin = {
     );
   },
 
+  primaryToolbarSpace: 32,
+
   primaryToolbarComponent(
     editorView,
     eventDispatcher,

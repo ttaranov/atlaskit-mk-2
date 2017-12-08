@@ -50,6 +50,8 @@ const tablesPlugin: EditorPlugin = {
     );
   },
 
+  primaryToolbarSpace: 32,
+
   primaryToolbarComponent(
     editorView,
     eventDispatcher,

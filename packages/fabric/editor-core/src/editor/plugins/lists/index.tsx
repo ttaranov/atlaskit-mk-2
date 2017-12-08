@@ -23,6 +23,8 @@ const listPlugin: EditorPlugin = {
     ];
   },
 
+  primaryToolbarSpace: 64,
+
   primaryToolbarComponent(
     editorView,
     eventDispatcher,

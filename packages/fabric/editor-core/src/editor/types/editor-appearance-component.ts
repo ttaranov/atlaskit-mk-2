@@ -17,6 +17,7 @@ export interface EditorAppearanceComponentProps {
 
   contentComponents?: UIComponentFactory[];
   primaryToolbarComponents?: UIComponentFactory[];
+  primaryToolbarSpace?: number;
   secondaryToolbarComponents?: UIComponentFactory[];
 
   customContentComponents?: ReactElement;

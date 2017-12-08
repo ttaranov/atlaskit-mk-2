@@ -130,6 +130,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                         key="toolbar-help"
                       />,
                     ]}
+                    primaryToolbarSpace={125}
                   />
                 </CollapsedEditor>
               </div>

@@ -6,6 +6,7 @@ import PluginSlot from '../PluginSlot';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import ContentStyles from '../ContentStyles';
 import Avatars from '../../plugins/collab-edit/ui/avatars';
+import { resetBreakPoints } from '../../../utils/editor-width';
 
 // tslint:disable-next-line:variable-name
 const FullPageEditorWrapper = styled.div`
@@ -99,12 +100,29 @@ export default class Editor extends React.Component<
     }
   };
 
+  constructor(props: EditorAppearanceComponentProps) {
+    super(props);
+    if (props.primaryToolbarSpace) {
+      resetBreakPoints(props.primaryToolbarSpace);
+    }
+  }
+
+  componentWillReceiveProps(props: EditorAppearanceComponentProps) {
+    if (
+      props.primaryToolbarSpace &&
+      props.primaryToolbarSpace !== this.props.primaryToolbarSpace
+    ) {
+      resetBreakPoints(props.primaryToolbarSpace);
+    }
+  }
+
   render() {
     const {
       editorView,
       eventDispatcher,
       providerFactory,
       primaryToolbarComponents,
+      primaryToolbarSpace,
       contentComponents,
       customPrimaryToolbarComponents,
       customContentComponents,
@@ -112,7 +130,7 @@ export default class Editor extends React.Component<
       popupsBoundariesElement,
       disabled,
     } = this.props;
-
+    console.log('primaryToolbarSpace', primaryToolbarSpace);
     return (
       <SizeDetector>
         {({ width }) => (

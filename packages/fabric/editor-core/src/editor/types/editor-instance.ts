@@ -10,4 +10,5 @@ export interface EditorInstance {
   primaryToolbarComponents: UIComponentFactory[];
   secondaryToolbarComponents: UIComponentFactory[];
   contentTransformer?: Transformer<string>;
+  primaryToolbarSpace?: number;
 }

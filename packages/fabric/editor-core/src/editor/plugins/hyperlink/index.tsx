@@ -25,6 +25,8 @@ const hyperlinkPlugin: EditorPlugin = {
     ];
   },
 
+  primaryToolbarSpace: 32,
+
   primaryToolbarComponent(
     editorView,
     eventDispatcher,

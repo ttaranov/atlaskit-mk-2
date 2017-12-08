@@ -25,5 +25,6 @@ export interface EditorConfig {
   pmPlugins: { rank: number; plugin: PMPluginFactory }[];
   contentComponents: UIComponentFactory[];
   primaryToolbarComponents: UIComponentFactory[];
+  primaryToolbarSpace: number;
   secondaryToolbarComponents: UIComponentFactory[];
 }

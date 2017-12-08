@@ -76,6 +76,8 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
     ];
   },
 
+  primaryToolbarSpace: 128,
+
   primaryToolbarComponent(
     editorView,
     eventDispatcher,

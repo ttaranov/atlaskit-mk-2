@@ -34,6 +34,8 @@ const mediaPlugin: EditorPlugin = {
     ];
   },
 
+  primaryToolbarSpace: 32,
+
   primaryToolbarComponent(
     editorView,
     eventDispatcher,

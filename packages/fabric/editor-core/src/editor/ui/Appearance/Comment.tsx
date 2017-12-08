@@ -15,6 +15,7 @@ import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
 import EditorWidth from '../../../utils/editor-width';
 import { ReactElement } from '../../types';
+import { resetBreakPoints } from '../../../utils/editor-width';
 
 const pulseBackground = keyframes`
   50% {
@@ -146,6 +147,22 @@ export default class Editor extends React.Component<
       this.props.onCancel(this.props.editorView);
     }
   };
+
+  constructor(props: EditorAppearanceComponentProps) {
+    super(props);
+    if (props.primaryToolbarSpace) {
+      resetBreakPoints(props.primaryToolbarSpace);
+    }
+  }
+
+  componentWillReceiveProps(props: EditorAppearanceComponentProps) {
+    if (
+      props.primaryToolbarSpace &&
+      props.primaryToolbarSpace !== this.props.primaryToolbarSpace
+    ) {
+      resetBreakPoints(props.primaryToolbarSpace);
+    }
+  }
 
   private getCustomPrimaryToolbarComponents = (
     width: number,

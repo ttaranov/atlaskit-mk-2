@@ -13,6 +13,8 @@ const textColorPlugin: EditorPlugin = {
     return [{ rank: 600, plugin: () => plugin }];
   },
 
+  primaryToolbarSpace: 32,
+
   primaryToolbarComponent(
     editorView,
     eventDispatcher,

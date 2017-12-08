@@ -52,6 +52,11 @@ export interface EditorPlugin {
   contentComponent?: UIComponentFactory;
 
   /*
+   * Space in px in promary toolbar that primaryToolbarComponent will take.
+   */
+  primaryToolbarSpace?: number;
+
+  /*
    * Optional UI-component that will be added to the toolbar at the top of the editor (doesn't exist in the compact-editor).
    */
   primaryToolbarComponent?: UIComponentFactory;

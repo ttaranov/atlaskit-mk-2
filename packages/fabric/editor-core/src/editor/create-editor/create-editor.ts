@@ -74,6 +74,7 @@ export function processPluginsList(plugins: EditorPlugin[]): EditorConfig {
 
       if (plugin.primaryToolbarComponent) {
         acc.primaryToolbarComponents.push(plugin.primaryToolbarComponent);
+        acc.primaryToolbarSpace += plugin.primaryToolbarSpace || 0;
       }
 
       if (plugin.secondaryToolbarComponent) {
@@ -88,6 +89,7 @@ export function processPluginsList(plugins: EditorPlugin[]): EditorConfig {
       pmPlugins: [],
       contentComponents: [],
       primaryToolbarComponents: [],
+      primaryToolbarSpace: 0,
       secondaryToolbarComponents: [],
     } as EditorConfig,
   );
@@ -204,6 +206,7 @@ export default function createEditor(
     contentComponents,
     primaryToolbarComponents,
     secondaryToolbarComponents,
+    primaryToolbarSpace,
   } = editorConfig;
   const { contentTransformerProvider, defaultValue, onChange } = props;
 
@@ -247,6 +250,7 @@ export default function createEditor(
     eventDispatcher,
     contentComponents,
     primaryToolbarComponents,
+    primaryToolbarSpace,
     secondaryToolbarComponents,
     contentTransformer,
   };

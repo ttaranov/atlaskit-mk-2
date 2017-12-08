@@ -31,6 +31,7 @@ export interface EditorProps {
 
   contentComponents?: ReactElement;
   primaryToolbarComponents?: ReactElement;
+  primaryToolbarSpace?: number;
   secondaryToolbarComponents?: ReactElement;
   addonToolbarComponents?: ReactElement;
 
