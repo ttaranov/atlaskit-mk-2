@@ -15,7 +15,7 @@ describe(`${name}/schema createSchema helper`, () => {
     expect(marks).toEqual(['em', 'strong', 'strike']);
   });
 
-  it('should preserv order for marks and nodes in the schema', () => {
+  it('should preserve order for marks and nodes in the schema', () => {
     const nodesConfig = ['text', 'doc', 'paragraph'];
     const marksConfig = ['strong', 'strike', 'em'];
     const schema = createSchema({ nodes: nodesConfig, marks: marksConfig });

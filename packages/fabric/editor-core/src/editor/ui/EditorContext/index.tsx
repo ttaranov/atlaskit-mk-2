@@ -21,6 +21,7 @@ export default class EditorContext extends React.Component<any> {
   }
 
   render() {
-    return this.props.children;
+    // TODO: Determine why this cast is necessary?
+    return this.props.children as JSX.Element[];
   }
 }

@@ -1,0 +1,72 @@
+import {
+  doc,
+  a,
+  p,
+  code_block,
+  randomId,
+  decisionList,
+  decisionItem,
+  ul,
+  li,
+  emoji,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  ol,
+  RefsNode,
+  strong,
+  em,
+  subsup,
+  mention,
+  mentionQuery,
+  strike,
+  code,
+  underline,
+  emojiQuery,
+  textColor,
+} from '@atlaskit/editor-test-helpers';
+
+const referenceDoc = () =>
+  doc(
+    h1('Heading 1'),
+    h2('Heading 2'),
+    h3('Heading 3'),
+    h4('Heading 4'),
+    h5('Heading 5'),
+    h6('Heading 6'),
+    p(
+      'Plain text',
+      a({ href: 'http://www.atlassian.com' })('external link'),
+      strong('strong'),
+      em('em'),
+      subsup({ type: 'sub' })('sub'),
+      subsup({ type: 'sup' })('sup'),
+      strike('strike'),
+      code('code'),
+      emoji({ shortName: randomId() }),
+      mention({ id: randomId() }),
+      mentionQuery({ active: false })('me'),
+      emojiQuery('em'),
+      underline('underline'),
+      textColor({ color: 'red' })('color'),
+    ),
+    p(
+      a({ href: 'http://www.atlassian.com' })(
+        underline(
+          strong(em(subsup({ type: 'sub' })(strike(code('matryoshka'))))),
+        ),
+      ),
+    ),
+    code_block({ language: 'javascript' })('class Banana {\n  eat() {}\n}'),
+    decisionList({ localId: `${randomId()}` })(
+      decisionItem({ localId: `${randomId()}` })('Hug'),
+      decisionItem({})('Pat head'),
+    ),
+    ul(li(p('One')), li(p('Two'))),
+    ol(li(p('One')), li(p('Two'))),
+  ) as RefsNode;
+
+export default referenceDoc;
