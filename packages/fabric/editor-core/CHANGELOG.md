@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.11.0
+- [minor] Add rule plugin [caf2ac0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/caf2ac0)
+- [minor] Add rule plugin [caf2ac0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/caf2ac0)
+
 ## 60.10.1
 
 ## 60.10.0
