@@ -20,7 +20,10 @@ import { LinkCard } from '../links';
 import { FileCard } from '../files';
 import { isLinkDetails } from '../utils/isLinkDetails';
 import { breakpointSize } from '../utils/breakpoint';
-import { defaultImageCardDimensions } from '../utils/cardDimensions';
+import {
+  defaultImageCardDimensions,
+  getDefaultCardDimensions,
+} from '../utils/cardDimensions';
 import { isValidPercentageUnit } from '../utils/isValidPercentageUnit';
 import { getCSSUnitValue } from '../utils/getCSSUnitValue';
 import { getElementDimension } from '../utils/getElementDimension';
@@ -132,7 +135,7 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
       <Wrapper
         breakpointSize={breakpointSize(this.width)}
         appearance={appearance}
-        dimensions={dimensions || defaultImageCardDimensions}
+        dimensions={dimensions || getDefaultCardDimensions(appearance)}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
       >

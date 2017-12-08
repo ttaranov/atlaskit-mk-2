@@ -2,7 +2,10 @@
 import styled from 'styled-components';
 import { CardDimensions, CardAppearance } from '../';
 import { getCSSUnitValue } from '../utils/getCSSUnitValue';
-import { getCSSBoundaries } from '../utils/cardDimensions';
+import {
+  getCSSBoundaries,
+  defaultSmallCardDimensions,
+} from '../utils/cardDimensions';
 import { BreakpointSizeValue, breakpointStyles } from '../utils/breakpoint';
 
 export interface WrapperProps {
@@ -31,9 +34,8 @@ export const Wrapper = styled.div`
     } else if (appearance === 'small') {
       return `
         display: inline-block;
-        width: 100%;
-        ${getWrapperHeight}
-        ${getWrapperWidth}
+        ${getWrapperWidth(dimensions)}
+        height: ${defaultSmallCardDimensions.height}px;
       `;
     }
 

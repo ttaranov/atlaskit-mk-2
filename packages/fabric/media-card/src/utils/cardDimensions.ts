@@ -149,3 +149,28 @@ export const getCSSBoundaries = (appearance?: CardAppearance) => {
 
   return width + height;
 };
+
+export const getDefaultCardDimensions = (
+  appearance?: CardAppearance,
+): CardDimensions => {
+  if (appearance === 'small') {
+    return {
+      height: defaultSmallCardDimensions.height,
+      width: '100%',
+    };
+  }
+
+  if (appearance === 'image') {
+    return defaultImageCardDimensions;
+  }
+
+  if (appearance === 'square') {
+    return defaultSquareCardDimensions;
+  }
+
+  if (appearance === 'horizontal') {
+    return defaultHorizontalCardDimensions;
+  }
+
+  return defaultImageCardDimensions;
+};
