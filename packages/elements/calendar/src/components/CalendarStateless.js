@@ -3,6 +3,7 @@
 import { Calendar } from 'calendar-base';
 import keycode from 'keycode';
 import React, { Component } from 'react';
+import uuid from 'uuid/v1';
 import { dateToString, getShortDayName, makeArrayFromNumber } from '../util';
 import DateComponent from './Date';
 import Heading from './Heading';
@@ -236,6 +237,10 @@ export default class CalendarStateless extends Component<Props> {
     this.calendarEl = ref;
   };
 
+  getUniqueId = (prefix: string) => {
+    return `${prefix}-${uuid()}`;
+  };
+
   render() {
     const {
       disabled,
@@ -249,6 +254,7 @@ export default class CalendarStateless extends Component<Props> {
     const calendar = this.calendar.getCalendar(year, month - 1);
     const weeks = [];
     const shouldDisplaySixthWeek = calendar.length % 6;
+    const announceId = this.getUniqueId('announce');
 
     if (shouldDisplaySixthWeek) {
       const lastDayIsSibling = calendar[calendar.length - 1].siblingMonth;
@@ -305,7 +311,7 @@ export default class CalendarStateless extends Component<Props> {
       // screen readers that it can be navigated with the keyboard, but the linter still fails.
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div onBlur={this.props.onBlur} onKeyDown={this.handleKeyDown}>
-        <Announcer aria-live="assertive" aria-relevant="text">
+        <Announcer id={announceId} aria-live="assertive" aria-relevant="text">
           {new Date(year, month, focused).toString()}
         </Announcer>
         <Wrapper
@@ -313,6 +319,7 @@ export default class CalendarStateless extends Component<Props> {
           role="grid"
           tabIndex={0}
           innerRef={this.handleCalendarRef}
+          aria-describedby={announceId}
         >
           <Heading
             month={month}

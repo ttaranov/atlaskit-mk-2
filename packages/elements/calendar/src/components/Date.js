@@ -55,7 +55,6 @@ export default class extends Component<Props, State> {
     } = this.props;
     return (
       <DateTd
-        aria-live={focused ? 'polite' : ''}
         aria-selected={selected ? 'true' : 'false'}
         role="gridcell"
         onMouseDown={this.onMouseDown}
