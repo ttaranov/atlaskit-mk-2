@@ -79,4 +79,5 @@ export interface EditorProps {
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;
   onCancel?: (editorView: EditorView) => void;
+  onReady?: (editorView: EditorView) => void;
 }

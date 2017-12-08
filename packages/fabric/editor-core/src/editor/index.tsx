@@ -113,6 +113,7 @@ export default class Editor extends React.Component<EditorProps, State> {
     if (!place) {
       return;
     }
+
     const plugins = createPluginsList(this.props);
     const editor = createEditor(
       place,
@@ -122,6 +123,11 @@ export default class Editor extends React.Component<EditorProps, State> {
     );
     this.registerEditorForActions(editor);
     this.setState({ editor });
+
+    const { onReady } = this.props;
+    if (onReady) {
+      onReady(editor.editorView);
+    }
   };
 
   private handleProviders(props: EditorProps) {
