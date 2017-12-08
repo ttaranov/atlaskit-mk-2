@@ -7019,9 +7019,9 @@ mediapicker@^11.1.6:
   version "11.1.9"
   resolved "https://registry.yarnpkg.com/mediapicker/-/mediapicker-11.1.9.tgz#c0eb88a30a5a451b36d8ddd44d9d39607ccd79cd"
 
-mediapicker@^16.0.0:
-  version "16.0.0"
-  resolved "https://registry.yarnpkg.com/mediapicker/-/mediapicker-16.0.0.tgz#6c6c56d7790c5fb6eaa9a500b975c58b2c5304df"
+mediapicker@^16.0.1:
+  version "16.0.1"
+  resolved "https://registry.yarnpkg.com/mediapicker/-/mediapicker-16.0.1.tgz#5776d78b8b66b8da9e5ae80610855741902262a2"
   dependencies:
     "@atlaskit/button" "^1.0.3"
     "@atlaskit/dropdown-menu" "^1.1.0"
