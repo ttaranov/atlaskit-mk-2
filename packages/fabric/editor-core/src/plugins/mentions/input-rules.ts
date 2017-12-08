@@ -27,7 +27,9 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
       const mark = schema.mark('mentionQuery');
       const { tr } = state;
 
-      analyticsService.trackEvent('atlassian.editor.mention.autoformatting');
+      analyticsService.trackEvent(
+        'atlassian.fabric.mention.picker.trigger.shortcut',
+      );
 
       const mentionText = schema.text('@', [mark]);
       return tr.replaceSelectionWith(mentionText, false);

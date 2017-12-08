@@ -43,7 +43,6 @@ export class MentionsState {
   onSelectPrevious = (): boolean => false;
   onSelectNext = (): boolean => false;
   onSelectCurrent = (key?: string): boolean => false;
-  onSelectPreviousMentionAuto = (mention: MentionDescription): void => {};
   onDismiss = (): void => {};
 
   private changeHandlers: StateChangeHandler[] = [];
@@ -362,9 +361,6 @@ export class MentionsState {
     const queryInFlight = this.mentionProvider.isFiltering(currentQuery);
 
     if (!queryInFlight && mentionsCount === 1) {
-      analyticsService.trackEvent(
-        'atlassian.editor.mention.try.select.current',
-      );
       this.onSelectCurrent(key);
       return true;
     }
@@ -374,10 +370,10 @@ export class MentionsState {
       (!queryInFlight && mentionsCount === 0) ||
       this.previousQueryResultCount === 0
     ) {
-      analyticsService.trackEvent(
-        'atlassian.editor.mention.try.insert.previous',
-      );
-      this.tryInsertingPreviousMention();
+      const match: boolean = this.tryInsertingPreviousMention();
+      analyticsService.trackEvent('atlassian.fabric.mention.insert.auto', {
+        match,
+      });
     }
 
     if (!this.query) {
@@ -387,27 +383,21 @@ export class MentionsState {
     return false;
   }
 
-  tryInsertingPreviousMention() {
+  tryInsertingPreviousMention(): boolean {
     let mentionInserted = false;
     this.tokens.forEach((value, key) => {
       const match = this.queryResults.get(key);
       if (match) {
-        analyticsService.trackEvent(
-          'atlassian.editor.mention.insert.previous.match.success',
-        );
         this.insertMention(match, value);
         this.tokens.delete(key);
-        this.onSelectPreviousMentionAuto(match);
         mentionInserted = true;
       }
     });
 
     if (!mentionInserted) {
-      analyticsService.trackEvent(
-        'atlassian.editor.mention.insert.previous.match.no.match',
-      );
       this.dismiss();
     }
+    return mentionInserted;
   }
 
   onMentionResult = (mentions: MentionDescription[], query: string) => {

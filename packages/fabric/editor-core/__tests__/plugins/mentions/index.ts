@@ -258,7 +258,8 @@ describe('mentions', () => {
           sendKeyToPm(editorView, 'Space');
           expect(spy).toHaveBeenCalled();
           expect(trackEvent).toHaveBeenCalledWith(
-            'atlassian.editor.mention.try.insert.previous',
+            'atlassian.fabric.mention.insert.auto',
+            { match: false },
           );
           editorView.destroy();
         });
@@ -685,9 +686,6 @@ describe('mentions', () => {
       const spy = sandbox.spyOn(pluginState, 'onSelectCurrent');
 
       return pluginState.setMentionProvider(mentionProvider).then(() => {
-        const trackEvent = jest.fn();
-        analyticsService.trackEvent = trackEvent;
-
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
         pluginState.onMentionResult(
@@ -704,9 +702,6 @@ describe('mentions', () => {
         pluginState.trySelectCurrent(keymaps.space.common);
 
         expect(spy).toHaveBeenCalledWith(keymaps.space.common);
-        expect(trackEvent).toHaveBeenCalledWith(
-          'atlassian.editor.mention.try.select.current',
-        );
         editorView.destroy();
       });
     });
@@ -828,7 +823,8 @@ describe('mentions', () => {
 
           expect(spy).toHaveBeenCalled();
           expect(trackEvent).toHaveBeenCalledWith(
-            'atlassian.editor.mention.insert.previous.match.no.match',
+            'atlassian.fabric.mention.insert.auto',
+            { match: false },
           );
           editorView.destroy();
         });
@@ -840,12 +836,6 @@ describe('mentions', () => {
       const { editorView, pluginState } = editor(
         doc(p(mentionQuery({ active: true })('@oscar{<>}'))),
       );
-      const spyOnSelectPreviousMentionAuto = spyOnReturnValue(
-        pluginState,
-        'onSelectPreviousMentionAuto',
-        sandbox,
-      );
-
       return pluginState.setMentionProvider(mentionProvider).then(() => {
         const trackEvent = jest.fn();
         analyticsService.trackEvent = trackEvent;
@@ -866,11 +856,9 @@ describe('mentions', () => {
 
         expect(editorView.state.doc.nodeAt(1)!.type.spec).toBe(mentionNode);
         expect(trackEvent).toHaveBeenCalledWith(
-          'atlassian.editor.mention.insert.previous.match.success',
+          'atlassian.fabric.mention.insert.auto',
+          { match: true },
         );
-        expect(spyOnSelectPreviousMentionAuto).toHaveBeenCalledWith(
-          userMention,
-        ); // verify if callback was executed
         editorView.destroy();
       });
     });

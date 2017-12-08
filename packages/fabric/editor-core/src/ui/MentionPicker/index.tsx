@@ -13,14 +13,11 @@ import { Popup } from '@atlaskit/editor-common';
 import { analyticsService } from '../../analytics';
 import * as keymaps from '../../keymaps';
 
-const MentionAnalyticsPrefix = 'atlassian.fabric.mention';
-
 enum InsertType {
   SELECTED = 'selected',
   ENTER = 'enter',
   SHIFT_ENTER = 'shift-enter',
   SPACE = 'space',
-  AUTO = 'auto',
   TAB = 'tab',
 }
 
@@ -96,7 +93,6 @@ export default class MentionPicker extends PureComponent<Props, State> {
       pluginState.onSelectPrevious = this.handleSelectPrevious;
       pluginState.onSelectNext = this.handleSelectNext;
       pluginState.onSelectCurrent = this.handleSelectCurrent;
-      pluginState.onSelectPreviousMentionAuto = this.handlePreviousMentionAuto;
       pluginState.onDismiss = this.handleOnClose;
     }
   }
@@ -127,7 +123,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
   private handleOnClose = (): boolean => {
     this.calculateElapsedTime();
 
-    analyticsService.trackEvent(`${MentionAnalyticsPrefix}.picker.close`, {
+    analyticsService.trackEvent('atlassian.fabric.mention.picker.close', {
       duration: this.pickerElapsedTime || 0,
     });
 
@@ -175,7 +171,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
   private handleSelectedMention = (mention: MentionDescription) => {
     this.calculateElapsedTime();
     this.pluginState!.insertMention(mention);
-    this.fireMentionInsertAnalytics(mention, this.insertType);
+    this.fireMentionInsertAnalytics(mention);
   };
 
   private handleSelectPrevious = (): boolean => {
@@ -224,21 +220,12 @@ export default class MentionPicker extends PureComponent<Props, State> {
     return true;
   };
 
-  private handlePreviousMentionAuto = (mention: MentionDescription) => {
-    this.calculateElapsedTime();
-    this.insertType = InsertType.AUTO;
-    this.fireMentionInsertAnalytics(mention, InsertType.AUTO);
-  };
-
-  private fireMentionInsertAnalytics = (
-    mention: MentionDescription,
-    insertType: InsertType = InsertType.SELECTED,
-  ) => {
+  private fireMentionInsertAnalytics = (mention: MentionDescription) => {
     const { accessLevel } = mention;
     const lastQuery = this.pluginState!.lastQuery;
 
-    analyticsService.trackEvent(`${MentionAnalyticsPrefix}.picker.insert`, {
-      mode: insertType,
+    analyticsService.trackEvent('atlassian.fabric.mention.picker.insert', {
+      mode: this.insertType || InsertType.SELECTED,
       isSpecial: isSpecialMention(mention) || false,
       accessLevel: accessLevel || '',
       queryLength: lastQuery ? lastQuery.length : 0,
