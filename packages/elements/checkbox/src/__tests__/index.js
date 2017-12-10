@@ -1,9 +1,11 @@
+// @flow
+
 import React from 'react';
 import { mount } from 'enzyme';
 import { colors } from '@atlaskit/theme';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 
-import Checkbox, { CheckboxStateless, CheckboxGroup } from '../../src';
+import Checkbox, { CheckboxStateless, CheckboxGroup } from '../';
 import { HiddenCheckbox } from '../../src/styled/Checkbox';
 import { name } from '../../package.json';
 

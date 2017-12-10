@@ -1,4 +1,5 @@
 // @flow
+
 import React, { PureComponent } from 'react';
 import CheckboxStateless from './CheckboxStateless';
 
@@ -25,7 +26,9 @@ type Props = {|
   value: number | string,
 |};
 
-export default class Checkbox extends PureComponent {
+type State = {};
+
+export default class Checkbox extends PureComponent<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
@@ -36,11 +39,11 @@ export default class Checkbox extends PureComponent {
   state = { isChecked: !!this.props.initiallyChecked };
 
   onChange = (event: Event & { currentTarget: HTMLInputElement }) => {
-    const { isDisabled, onChange } = this.props;
+    const { isDisabled, onChange, name, value } = this.props;
     if (isDisabled) return null;
     const isChecked = event.currentTarget.checked;
     return this.setState({ isChecked }, () => {
-      if (onChange) onChange({ event, isChecked });
+      if (onChange) onChange({ event, isChecked, name, value });
     });
   };
 
