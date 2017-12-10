@@ -25,7 +25,6 @@ class Task implements NodeView {
   private analyticsDelegateContext: AnalyticsDelegateProps;
   private providerFactory: ProviderFactory;
 
-<<<<<<< Updated upstream
   constructor(
     node: PMNode,
     view: EditorView,
@@ -33,9 +32,6 @@ class Task implements NodeView {
     analyticsDelegateContext: AnalyticsDelegateProps,
     providerFactory: ProviderFactory,
   ) {
-=======
-  constructor(node: PMNode, view: EditorView, getPos: getPosHandler, analyticsDelegateContext: AnalyticsDelegateProps, providerFactory: ProviderFactory) {
->>>>>>> Stashed changes
     this.node = node;
     this.view = view;
     this.getPos = getPos;
@@ -53,7 +49,6 @@ class Task implements NodeView {
     const { view } = this;
     const { state } = view;
     const { doc, schema, tr } = state;
-
     const nodePos = this.getPos();
     const node = doc.nodeAt(nodePos)!;
 
@@ -117,8 +112,17 @@ class Task implements NodeView {
   }
 }
 
-export function taskItemNodeViewFactory(analyticsDelegateContext: AnalyticsDelegateProps, providerFactory: ProviderFactory) {
+export function taskItemNodeViewFactory(
+  analyticsDelegateContext: AnalyticsDelegateProps,
+  providerFactory: ProviderFactory,
+) {
   return (node: any, view: any, getPos: () => number): NodeView => {
-    return new Task(node, view, getPos, analyticsDelegateContext, providerFactory);
+    return new Task(
+      node,
+      view,
+      getPos,
+      analyticsDelegateContext,
+      providerFactory,
+    );
   };
 }

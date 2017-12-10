@@ -67,6 +67,7 @@ export interface EditorProps {
   mediaProvider?: Promise<any>;
   macroProvider?: Promise<MacroProvider>;
   taskDecisionProvider?: Promise<any>;
+  contextIdentifierProvider?: Promise<any>;
   waitForMediaUpload?: boolean;
   contentTransformerProvider?: (schema: Schema) => Transformer<string>;
 

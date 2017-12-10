@@ -140,6 +140,8 @@ export default class Editor extends React.Component<EditorProps, State> {
       emojiProvider,
       mentionProvider,
       mediaProvider,
+      taskDecisionProvider,
+      contextIdentifierProvider,
       collabEditProvider,
       activityProvider,
       presenceProvider,
@@ -148,6 +150,14 @@ export default class Editor extends React.Component<EditorProps, State> {
     } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
+    this.providerFactory.setProvider(
+      'taskDecisionProvider',
+      taskDecisionProvider,
+    );
+    this.providerFactory.setProvider(
+      'contextIdentifierProvider',
+      contextIdentifierProvider,
+    );
     this.providerFactory.setProvider('mediaProvider', mediaProvider);
     this.providerFactory.setProvider(
       'imageUploadProvider',

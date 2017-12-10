@@ -23,6 +23,11 @@ export {
   TaskDecisionResource,
 } from '@atlaskit/task-decision';
 
+export {
+  ContextIdentifierProvider,
+  ContextIdentifierResource,
+} from '@atlaskit/editor-common';
+
 import ProviderFactory, { WithProviders } from './providerFactory';
 export { name, version } from './version';
 export * from './config';

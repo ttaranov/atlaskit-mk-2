@@ -2,18 +2,18 @@ import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import {
   default as ProviderFactory,
-  WithProviders
+  WithProviders,
 } from '../../providerFactory';
-import { ResourcedTaskItem as AkTaskItem } from '@atlaskit/task-decision';
+import TaskItemWithProviders from './task-item-with-providers';
 
 export interface TaskProps {
   taskId: string;
-  providers?: ProviderFactory;
   isDone: boolean;
   contentRef?: (node: HTMLElement | undefined) => void;
   onChange?: (taskId: string, isChecked: boolean) => void;
   showPlaceholder?: boolean;
   children?: ReactElement<any>;
+  providers?: ProviderFactory;
 }
 
 export default class TaskItem extends PureComponent<TaskProps, {}> {
@@ -32,63 +32,23 @@ export default class TaskItem extends PureComponent<TaskProps, {}> {
     }
   }
 
-  private renderWithProvider = (providers) => {
-    // const {
-    //   taskId,
-    //   contentRef,
-    //   isDone,
-    //   onChange,
-    //   showPlaceholder,
-    //   children,
-    // } = this.props;
-
-    // const {
-    //   taskDecisionProvider,
-    // } = providers;
-
-    // return (
-    //   <AkTaskItem
-    //     taskId={taskId}
-    //     contentRef={contentRef}
-    //     isDone={isDone}
-    //     onChange={onChange}
-    //     showPlaceholder={showPlaceholder}
-    //     taskDecisionProvider={taskDecisionProvider}
-    //     objectAri=''
-    //     containerAri=''
-    //   >
-    //     {children}
-    //   </AkTaskItem>
-    // );
-    const {
-      taskId,
-      isDone,
-      onChange,
-      children,
-    } = this.props;
-
-    const {
-      taskDecisionProvider,
-    } = providers;
+  private renderWithProvider = providerFactory => {
+    const { providers, ...otherProps } = this.props;
+    const { taskDecisionProvider, contextIdentifierProvider } = providerFactory;
 
     return (
-      <AkTaskItem
-        taskId={taskId}
-        isDone={isDone}
-        onChange={onChange}
+      <TaskItemWithProviders
+        {...otherProps}
         taskDecisionProvider={taskDecisionProvider}
-        objectAri=''
-        containerAri=''
-      >
-        {children}
-      </AkTaskItem>
+        contextIdentifierProvider={contextIdentifierProvider}
+      />
     );
-  }
+  };
 
   render() {
     return (
       <WithProviders
-        providers={['taskDecisionProvider']}
+        providers={['taskDecisionProvider', 'contextIdentifierProvider']}
         providerFactory={this.providerFactory}
         renderNode={this.renderWithProvider}
       />
