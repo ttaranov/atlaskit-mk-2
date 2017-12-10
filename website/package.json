@@ -20,9 +20,9 @@
     "build:zip": "rm -rf dist.zip && zip -r dist.zip dist/",
     "build:minimize": "find dist -name '*.js' -type f -size +100k -prune -exec sh -c  \"echo Minimizing: {} && ./node_modules/.bin/uglifyjs --compress hoist_funs=false '{}' -o '{}'\" \\;",
     "start": "yarn webpack:dev",
-    "deploy": "yarn build && netlify -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID -p dist.zip",
-    "deploy-staging": "yarn build && netlify -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist.zip",
-    "deploy-staging:no-minimize": "yarn build:no-minimize && netlify -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist.zip"
+    "deploy": "yarn build && netlify-patched -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID -p dist.zip",
+    "deploy-staging": "yarn build && netlify-patched -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist.zip",
+    "deploy-staging:no-minimize": "yarn build:no-minimize && netlify-patched -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist.zip"
   },
   "repository": "atlaskit/fabric",
   "devDependencies": {
@@ -53,6 +53,8 @@
     "@atlaskit/tag-group": "^3.4.8",
     "@atlaskit/theme": "^2.2.6",
     "@atlaskit/webpack-config": "^1.0.0",
+    "@lbatchelor/netlify": "^1.2.0-patched.7",
+    "@lbatchelor/netlify-cli": "^1.2.2-patched.7",
     "babel-runtime": "^6.26.0",
     "commonmark": "^0.27.0",
     "commonmark-react-renderer": "^4.3.3",
