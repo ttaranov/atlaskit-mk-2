@@ -1,6 +1,9 @@
 export * from './base64fileconverter';
 export { default as sendKeyToPm } from './send-key-to-pm';
 export { default as chaiPlugin } from './chai';
+export {
+  storyContextIdentifierProviderFactory,
+} from './context-identifier-provider';
 export { default as createEvent } from './create-event';
 export { default as dispatchPasteEvent } from './dispatch-paste-event';
 export { default as makeEditor } from './make-editor';

@@ -5,6 +5,7 @@ export * from './type';
 
 import ProviderFactory, { WithProviders } from './providerFactory';
 export { ProviderFactory, WithProviders };
+export * from './config';
 
 export * from './styles';
 export * from './ui';
