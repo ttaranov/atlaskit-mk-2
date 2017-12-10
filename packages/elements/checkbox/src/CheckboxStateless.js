@@ -1,4 +1,5 @@
 // @flow
+
 import React, { PureComponent } from 'react';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import { colors, themed } from '@atlaskit/theme';
@@ -38,7 +39,7 @@ type State = {|
   isHovered: boolean,
 |};
 
-class CheckboxStateless extends PureComponent {
+class CheckboxStateless extends PureComponent<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
   state: State = {
     isActive: false,
