@@ -1,5 +1,7 @@
 # @atlaskit/calendar
 
+## 3.0.11
+
 ## 3.0.10
 - [patch] stopped disabled dates from triggering onClick prop [3b42698](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b42698)
 

@@ -1,0 +1,35 @@
+{
+  "name": "@atlaskit/button",
+  "version": "6.0.0",
+  "description": "A React component that is a base button.",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Ben C"
+  ],
+  "atlaskit": {
+    "name": "Button",
+    "team": "elements"
+  },
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/theme": "^2.2.9",
+    "babel-runtime": "^6.26.0",
+    "styled-components": "^1.4.6"
+  },
+  "peerDependencies": {
+    "react": "^15.6.1"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^2.1.0",
+    "@atlaskit/icon": "^10.3.1",
+    "enzyme": "^2.9.1",
+    "react-router-dom": "^4.2.2"
+  }
+}

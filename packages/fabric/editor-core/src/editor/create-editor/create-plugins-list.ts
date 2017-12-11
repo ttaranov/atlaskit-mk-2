@@ -27,13 +27,15 @@ import {
   confluenceInlineComment,
   placeholderCursorPlugin,
   extensionPlugin,
+  rulePlugin,
+  clearMarksOnChangeToEmptyDocumentPlugin,
 } from '../plugins';
 
 /**
  * Returns list of plugins that are absolutely necessary for editor to work
  */
 export function getDefaultPluginsList(): EditorPlugin[] {
-  return [pastePlugin, basePlugin, blockTypePlugin, placeholderPlugin];
+  return [pastePlugin, basePlugin, blockTypePlugin, placeholderPlugin, clearMarksOnChangeToEmptyDocumentPlugin];
 }
 
 /**
@@ -58,6 +60,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.allowHyperlinks) {
     plugins.push(hyperlinkPlugin);
+  }
+
+  if (props.allowRule) {
+    plugins.push(rulePlugin);
   }
 
   if (props.mediaProvider) {

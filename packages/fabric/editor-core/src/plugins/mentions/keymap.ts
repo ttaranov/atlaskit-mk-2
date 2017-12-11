@@ -42,7 +42,7 @@ export function keymapPlugin(schema: Schema): Plugin {
         return false;
       }
 
-      return mentionsPlugin.onSelectCurrent();
+      return mentionsPlugin.onSelectCurrent(keymaps.enter.common);
     },
     list,
   );
@@ -55,7 +55,7 @@ export function keymapPlugin(schema: Schema): Plugin {
         return false;
       }
 
-      mentionsPlugin.onSelectCurrent();
+      mentionsPlugin.onSelectCurrent(keymaps.insertNewLine.common);
       return false;
     },
     list,
@@ -69,7 +69,7 @@ export function keymapPlugin(schema: Schema): Plugin {
         return false;
       }
 
-      return mentionsPlugin.onSelectCurrent();
+      return mentionsPlugin.onSelectCurrent(keymaps.tab.common);
     },
     list,
   );
@@ -95,7 +95,7 @@ export function keymapPlugin(schema: Schema): Plugin {
         return false;
       }
 
-      return mentionsPlugin.trySelectCurrent();
+      return mentionsPlugin.trySelectCurrent(keymaps.space.common);
     },
     list,
   );

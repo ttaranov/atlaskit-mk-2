@@ -1,5 +1,13 @@
 # @atlaskit/tag
 
+## 3.0.12
+
+
+
+
+- [patch] Fixed flow error [c3d78ba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3d78ba)
+- [patch] Fixed flow error [c3d78ba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3d78ba)
+
 ## 3.0.11
 
 ## 3.0.10

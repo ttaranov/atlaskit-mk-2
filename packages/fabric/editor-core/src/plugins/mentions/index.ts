@@ -33,6 +33,7 @@ interface QueryMark {
 export class MentionsState {
   // public state
   query?: string;
+  lastQuery?: string;
   queryActive: boolean = false;
   enabled: boolean = true;
   focused: boolean = true;
@@ -41,7 +42,8 @@ export class MentionsState {
 
   onSelectPrevious = (): boolean => false;
   onSelectNext = (): boolean => false;
-  onSelectCurrent = (): boolean => false;
+  onSelectCurrent = (key?: string): boolean => false;
+  onDismiss = (): void => {};
 
   private changeHandlers: StateChangeHandler[] = [];
   private state: EditorState;
@@ -169,7 +171,7 @@ export class MentionsState {
       const { view } = this;
       view.dispatch(transaction);
     }
-
+    this.onDismiss();
     return true;
   }
 
@@ -344,7 +346,7 @@ export class MentionsState {
     });
   }
 
-  trySelectCurrent() {
+  trySelectCurrent(key?: string) {
     const currentQuery = this.query ? this.query.trim() : '';
     const mentions: MentionDescription[] = this.currentQueryResult
       ? this.currentQueryResult
@@ -359,10 +361,7 @@ export class MentionsState {
     const queryInFlight = this.mentionProvider.isFiltering(currentQuery);
 
     if (!queryInFlight && mentionsCount === 1) {
-      analyticsService.trackEvent(
-        'atlassian.editor.mention.try.select.current',
-      );
-      this.onSelectCurrent();
+      this.onSelectCurrent(key);
       return true;
     }
 
@@ -371,10 +370,10 @@ export class MentionsState {
       (!queryInFlight && mentionsCount === 0) ||
       this.previousQueryResultCount === 0
     ) {
-      analyticsService.trackEvent(
-        'atlassian.editor.mention.try.insert.previous',
-      );
-      this.tryInsertingPreviousMention();
+      const match: boolean = this.tryInsertingPreviousMention();
+      analyticsService.trackEvent('atlassian.fabric.mention.insert.auto', {
+        match,
+      });
     }
 
     if (!this.query) {
@@ -384,14 +383,11 @@ export class MentionsState {
     return false;
   }
 
-  tryInsertingPreviousMention() {
+  tryInsertingPreviousMention(): boolean {
     let mentionInserted = false;
     this.tokens.forEach((value, key) => {
       const match = this.queryResults.get(key);
       if (match) {
-        analyticsService.trackEvent(
-          'atlassian.editor.mention.insert.previous.match.success',
-        );
         this.insertMention(match, value);
         this.tokens.delete(key);
         mentionInserted = true;
@@ -399,11 +395,9 @@ export class MentionsState {
     });
 
     if (!mentionInserted) {
-      analyticsService.trackEvent(
-        'atlassian.editor.mention.insert.previous.match.no.match',
-      );
       this.dismiss();
     }
+    return mentionInserted;
   }
 
   onMentionResult = (mentions: MentionDescription[], query: string) => {
@@ -457,6 +451,7 @@ export class MentionsState {
 
   private clearState() {
     this.queryActive = false;
+    this.lastQuery = this.query;
     this.query = undefined;
     this.tokens.clear();
     this.previousQueryResultCount = -1;

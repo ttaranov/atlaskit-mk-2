@@ -50,14 +50,6 @@
     babel-runtime "^6.11.6"
     styled-components "^1.4.6"
 
-"@atlaskit/button-group@^1.5.3":
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/@atlaskit/button-group/-/button-group-1.5.3.tgz#6754e612d0d0d50759bccce5dab8456e5c8f4ba4"
-  dependencies:
-    "@atlaskit/util-shared-styles" "^2.0.1"
-    prop-types "^15.5.10"
-    styled-components "^1.3.0"
-
 "@atlaskit/button@^1.0.0", "@atlaskit/button@^1.0.10":
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-1.1.4.tgz#e294fee6dd02c5b05c40fa6db6966a8a3c12ad4a"
@@ -67,7 +59,7 @@
     classnames "^2.2.5"
     styled-components "^1.3.0"
 
-"@atlaskit/button@^5.0.0", "@atlaskit/button@^5.1.1", "@atlaskit/button@^5.4.2", "@atlaskit/button@^5.4.8":
+"@atlaskit/button@^5.0.0", "@atlaskit/button@^5.1.1", "@atlaskit/button@^5.4.2":
   version "5.4.8"
   resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-5.4.8.tgz#9ae9730cca2f84a38d0ff70f16e360dae9d87302"
   dependencies:
@@ -576,6 +568,15 @@
     react-transition-group "^1.2.0"
     styled-components "^1.4.6"
 
+"@atlaskit/page@^5.0.3":
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/page/-/page-5.0.3.tgz#db69b47d27759354b9c38efc79f24aa61ea0f8c1"
+  dependencies:
+    "@atlaskit/util-shared-styles" "^1.0.0"
+    babel-runtime "^6.11.6"
+    prop-types "^15.5.10"
+    styled-components "^1.4.6"
+
 "@atlaskit/pagination@^3.1.0":
   version "3.5.6"
   resolved "https://registry.yarnpkg.com/@atlaskit/pagination/-/pagination-3.5.6.tgz#8454eb241da6270f684da940b8e53bc06cecbf96"
@@ -792,7 +793,7 @@
   dependencies:
     babel-runtime "^6.11.6"
 
-"@atlaskit/util-shared-styles@^2.0.0", "@atlaskit/util-shared-styles@^2.0.1", "@atlaskit/util-shared-styles@^2.0.3", "@atlaskit/util-shared-styles@^2.1.0", "@atlaskit/util-shared-styles@^2.1.1", "@atlaskit/util-shared-styles@^2.10.3", "@atlaskit/util-shared-styles@^2.2.1", "@atlaskit/util-shared-styles@^2.3.1", "@atlaskit/util-shared-styles@^2.6.0":
+"@atlaskit/util-shared-styles@^2.0.0", "@atlaskit/util-shared-styles@^2.0.3", "@atlaskit/util-shared-styles@^2.1.0", "@atlaskit/util-shared-styles@^2.1.1", "@atlaskit/util-shared-styles@^2.10.3", "@atlaskit/util-shared-styles@^2.2.1", "@atlaskit/util-shared-styles@^2.3.1", "@atlaskit/util-shared-styles@^2.6.0":
   version "2.10.3"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-2.10.3.tgz#5b9dfa1ebd9f6c062aa6309dc7236bdbd50acea9"
   dependencies:
@@ -805,6 +806,31 @@
   dependencies:
     babel-runtime "^6.11.6"
     styled-components "^1.4.6"
+
+"@lbatchelor/netlify-cli@^1.2.2-patched.7":
+  version "1.2.2-patched.7"
+  resolved "https://registry.yarnpkg.com/@lbatchelor/netlify-cli/-/netlify-cli-1.2.2-patched.7.tgz#341485bc63dc6f0aa89b458f324e634ca673f4fd"
+  dependencies:
+    "@lbatchelor/netlify" "1.2.0-patched.7"
+    chalk "^0.5.1"
+    commander "^2.9.0"
+    github "^0.2.4"
+    home-dir "^0.2.0"
+    inquirer "^0.11.0"
+    open "0.0.5"
+    prompt "^0.2.14"
+    update-notifier "^0.6.0"
+    when "^3.7.5"
+
+"@lbatchelor/netlify@1.2.0-patched.7", "@lbatchelor/netlify@^1.2.0-patched.7":
+  version "1.2.0-patched.7"
+  resolved "https://registry.yarnpkg.com/@lbatchelor/netlify/-/netlify-1.2.0-patched.7.tgz#afaa1f305b080e3955853a4d01d0f3d3ea77994e"
+  dependencies:
+    base64-js ">=0.0.4"
+    glob ">=3.2.6"
+    graceful-fs "^4.1.2"
+    semaphore "^1.0.5"
+    when "^3.7.5"
 
 "@types/bytes@^2.4.33":
   version "2.5.1"
@@ -4504,9 +4530,9 @@ extglob@^0.3.1:
   dependencies:
     is-extglob "^1.0.0"
 
-extract-react-types@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.4.0.tgz#1fc0707f70aa477ca7e3a7e865cafc122d9970b5"
+extract-react-types@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.4.1.tgz#ce5d0f31cff99941224b92ecbeaf2a291cb8f142"
   dependencies:
     babel-core "7.0.0-alpha.19"
     babel-errors "^1.1.1"
