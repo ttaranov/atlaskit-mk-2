@@ -18,7 +18,7 @@
         "name": "Ben C"
     }
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "styled-components": "^1.4.6",
     "@atlaskit/theme": "^2.0.0",

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import CheckboxStateless from './CheckboxStateless';
 
 type Props = {|
@@ -30,7 +30,7 @@ type State = {
   isChecked: boolean,
 };
 
-export default class Checkbox extends PureComponent<Props, State> {
+export default class Checkbox extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
