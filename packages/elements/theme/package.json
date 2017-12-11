@@ -22,8 +22,13 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@atlaskit/button": "^6.0.0",
     "@atlaskit/docs": "^2.1.0",
+=======
+    "@atlaskit/button": "^5.4.14",
+    "@atlaskit/docs": "^2.0.0",
+>>>>>>> bump buttons
     "enzyme": "^2.9.1"
   },
   "keywords": [
