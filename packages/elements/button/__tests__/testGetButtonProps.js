@@ -1,19 +1,12 @@
 // @flow
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
-import getButtonProps from '../src/components/getButtonProps';
 import Button from '../src';
 
 const Component = () => null;
 
-let component;
-
 describe('getButtonProps', () => {
-  beforeEach(() => {
-    component = <Button />;
-  });
-
   it('should pass through all props to a custom component', () => {
     const cmp = mount(<Button customProp={1} component={Component} />);
     expect(cmp.find('StyledComponent').prop('customProp')).toBe(1);
