@@ -1,10 +1,10 @@
 // @flow
 import { colors, themed } from '@atlaskit/theme';
 
-type Themes = {|
-  light: string,
-  dark: string,
-|};
+type Themes = {
+  light: string | number,
+  dark: string | number,
+};
 
 type Properties = {|
   green: Themes,
