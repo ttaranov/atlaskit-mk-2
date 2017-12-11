@@ -30,6 +30,7 @@ const CustomComponentProxy = (props: DerivedButtonProps) => {
       'No custom component provided while trying to use custom button component',
     );
   const ProxiedComponent = component;
+  // $FlowFixMe
   return <ProxiedComponent {...proxiedProps}>{children}</ProxiedComponent>;
 };
 /* eslint-enable */

@@ -1,5 +1,6 @@
+// @flow
 import React from 'react';
-import Btn from '@atlaskit/button';
+import Btn from '../src';
 
 const Table = props => <div style={{ display: 'table' }} {...props} />;
 const Row = props => <div style={{ display: 'table-row' }} {...props} />;

@@ -1,17 +1,23 @@
 // @flow
-/* eslint-disable react/prop-types */
+/* eslint-disable react/no-unused-prop-types */
 
-import React from 'react';
+import React, { type Node } from 'react';
 import { gridSize, math } from '@atlaskit/theme';
 
-const getMargin = props => {
+type Props = {
+  spacing: string,
+  isOnlyChild: boolean,
+  children: Node,
+};
+
+const getMargin = (props: Props) => {
   if (props.spacing === 'none') return 0;
   if (props.isOnlyChild) return `0 -${math.divide(gridSize, 4)(props)}px`;
 
   return `0 ${math.divide(gridSize, 2)(props)}px`;
 };
 
-const IconWrapper = props => {
+const IconWrapper = (props: Props) => {
   const style = {
     alignSelf: 'center',
     display: 'flex',

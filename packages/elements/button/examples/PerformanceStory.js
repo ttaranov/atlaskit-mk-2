@@ -1,14 +1,17 @@
-/* eslint-disable react/prop-types, react/no-multi-comp */
+// @flow
+/* eslint-disable react/prop-types, react/no-multi-comp, no-plusplus  */
 
-import { storiesOf } from '@kadira/storybook';
-
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import styled from 'styled-components';
 
-import { name } from '../package.json';
 import Button from '../src';
 
-class CustomComponent extends Component {
+type Props = {
+  children: Node,
+  innerRef: () => any,
+};
+
+class CustomComponent extends Component<Props, {}> {
   render() {
     const { children, innerRef, ...props } = this.props; // eslint-disable-line
     return <div {...props}>{children}</div>;
@@ -23,7 +26,11 @@ const PER_RUN = 100; // how many button groups to render
 const TEST_RUNS = 5; // how many render passes to run during the test
 const BUTTON_COUNT = 5; // the number of buttons per group
 
-class PerfTest extends Component {
+type State = {
+  count: number,
+};
+
+class PerfTest extends Component<{}, State> {
   state = {
     count: 0,
   };
@@ -63,6 +70,7 @@ class PerfTest extends Component {
           <Button appearance="danger">Button {buttonNumber + 2}</Button>
           <Button appearance="primary">Button {buttonNumber + 3}</Button>
           <Button appearance="help">Button {buttonNumber + 4}</Button>
+          {/* $FlowFixMe */}
           <Button component={CustomComponent}>Button {buttonNumber + 5}</Button>
         </Buttons>,
       );
@@ -83,4 +91,4 @@ class PerfTest extends Component {
   }
 }
 
-storiesOf(name, module).add('performance test', () => <PerfTest />);
+export default () => <PerfTest />;

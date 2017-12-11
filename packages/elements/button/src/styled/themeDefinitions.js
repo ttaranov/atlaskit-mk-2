@@ -6,7 +6,6 @@ import { colors, themed } from '@atlaskit/theme';
  * @param {String} hex Hex colour code.
  * @param {Number} alpha Optional alpha value (defaults to 1).
  *
- * @todo Move this to util-shared-styles.
  */
 /* eslint-disable no-bitwise */
 const hex2rgba = (hex, alpha = 1) => {
@@ -21,8 +20,11 @@ const hex2rgba = (hex, alpha = 1) => {
 
     color = `0x${color.join('')}`;
 
+    // $FlowFixMe - `>>` oxperand can validly take a string value
     const r = (color >> 16) & 255;
+    // $FlowFixMe - `>>` operand can validly take a string value
     const g = (color >> 8) & 255;
+    // $FlowFixMe - `>>` operand can validly take a string value
     const b = color & 255;
 
     return `rgba(${[r, g, b].join(',')}, ${alpha})`;
@@ -107,7 +109,7 @@ export default {
         hover: themed({ light: colors.R300, dark: colors.R300 }),
         active: themed({ light: colors.R500, dark: colors.R500 }),
         disabled: themed({ light: colors.N20A, dark: colors.DN70 }),
-        selected: themed({ light: colors.R600, dark: colors.R600 }),
+        selected: themed({ light: colors.R500, dark: colors.R500 }),
       },
       boxShadowColor: {
         focus: themed({ light: colors.R100, dark: colors.R100 }),
@@ -126,7 +128,7 @@ export default {
         hover: themed({ light: colors.P200, dark: colors.P200 }),
         active: themed({ light: colors.P500, dark: colors.P500 }),
         disabled: themed({ light: colors.N20A, dark: colors.DN70 }),
-        selected: themed({ light: colors.R600, dark: colors.R600 }),
+        selected: themed({ light: colors.R500, dark: colors.R500 }),
       },
       boxShadowColor: {
         focus: themed({ light: colors.P100, dark: colors.P100 }),

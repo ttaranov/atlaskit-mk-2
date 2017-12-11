@@ -1,10 +1,24 @@
 // @flow
-/* eslint-disable react/prop-types */
 
-import React from 'react';
+import React, { type Node } from 'react';
 
-const ButtonWrapper = props => {
-  const style = {
+type Props = {
+  onClick: (e: Event) => mixed,
+  fit: boolean,
+  children: Node,
+};
+
+type styleObj = {
+  alignSelf: string,
+  display: string,
+  flexWrap: string,
+  maxWidth: string,
+  width?: string,
+  justifyContent?: string,
+};
+
+const ButtonWrapper = (props: Props) => {
+  const style: styleObj = {
     alignSelf: 'center',
     display: 'inline-flex',
     flexWrap: 'nowrap',

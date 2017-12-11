@@ -33,6 +33,9 @@ const createStyledComponent = () => {
   // Override pseudo-state specificity.
   // This is necessary because we don't know what DOM element the custom component will render.
   const component = styled(
+    //CustomComponentProxy is absolutely valid here, so this seems a
+    // problem with styled-components flow definitions
+    // $FlowFixMe
     CustomComponentProxy,
   )`&,a&,&:hover,&:active,&:focus{${getButtonStyles}}`;
   component.displayName = 'StyledCustomComponent';
@@ -53,7 +56,6 @@ export default class Button extends Component<ButtonProps, State> {
     isDisabled: false,
     isSelected: false,
     spacing: 'default',
-    tabIndex: null,
     type: 'button',
     shouldFitContainer: false,
   };
@@ -122,13 +124,14 @@ export default class Button extends Component<ButtonProps, State> {
     const buttonProps = getButtonProps(this);
     const StyledComponent = this.getStyledComponent();
 
-    const iconIsOnlyChild =
+    const iconIsOnlyChild: boolean = !!(
       (iconBefore && !iconAfter && !children) ||
-      (iconAfter && !iconBefore && !children);
+      (iconAfter && !iconBefore && !children)
+    );
 
     return (
       <StyledComponent innerRef={innerRef} {...buttonProps}>
-        <ButtonWrapper onClick={this.onInnerClick} fit={shouldFitContainer}>
+        <ButtonWrapper onClick={this.onInnerClick} fit={!!shouldFitContainer}>
           {iconBefore ? (
             <IconWrapper
               spacing={buttonProps.spacing}

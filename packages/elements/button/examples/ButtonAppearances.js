@@ -1,5 +1,6 @@
+// @flow
 import React from 'react';
-import Btn from '@atlaskit/button';
+import Button from '../src';
 
 const appearances = [
   'default',
@@ -18,9 +19,9 @@ const Row = props => <div style={{ display: 'table-row' }} {...props} />;
 const Cell = props => (
   <div style={{ display: 'table-cell', padding: 4 }} {...props} />
 );
-const Button = props => (
+const Btn = props => (
   <Cell>
-    <Btn {...props} />
+    <Button {...props} />
   </Cell>
 );
 
@@ -28,22 +29,20 @@ function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-const ButtonAppearance = () => (
+export default () => (
   <Table>
-    {appearances.map((a, i) => (
-      <Row key={i}>
-        <Button appearance={a}>{capitalize(a)}</Button>
-        <Button appearance={a} isDisabled>
+    {appearances.map(a => (
+      <Row key={a}>
+        <Btn appearance={a}>{capitalize(a)}</Btn>
+        <Btn appearance={a} isDisabled>
           Disabled
-        </Button>
+        </Btn>
         {selectableAppearances.includes(a) ? (
-          <Button appearance={a} isSelected>
+          <Btn appearance={a} isSelected>
             Selected
-          </Button>
+          </Btn>
         ) : null}
       </Row>
     ))}
   </Table>
 );
-
-export default ButtonAppearance;

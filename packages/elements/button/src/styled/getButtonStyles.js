@@ -33,6 +33,7 @@ export const getPropertyAppearance = (
 };
 
 export default function getButtonStyles(props: Object) {
+  // $FlowFixMe - by design, fontSize should take props for forwards compatibility - Ben
   const baseSize = fontSize(props);
   const buttonHeight = `${math.divide(math.multiply(gridSize, 4), baseSize)(
     props,
@@ -49,6 +50,7 @@ export default function getButtonStyles(props: Object) {
   let height = buttonHeight;
   let lineHeight = buttonHeight;
   let outline = 'none';
+  // $FlowFixMe - by design, gridSize should take props for forwards compatibility - Ben
   let padding = `0 ${gridSize(props)}px`;
   let transitionDuration = '0.1s, 0.15s';
   let transition =

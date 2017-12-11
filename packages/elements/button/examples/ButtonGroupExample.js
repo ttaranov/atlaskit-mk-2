@@ -1,7 +1,8 @@
+// @flow
 import React from 'react';
-import Button, { ButtonGroup } from '@atlaskit/button';
+import Button, { ButtonGroup } from '../src';
 
-const ButtonGroupExample = () => (
+export default () => (
   <ButtonGroup>
     <Button>First Button</Button>
     <Button>Second Button</Button>
@@ -9,5 +10,3 @@ const ButtonGroupExample = () => (
     <Button>Fourth Button</Button>
   </ButtonGroup>
 );
-
-export default ButtonGroupExample;

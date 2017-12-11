@@ -1,14 +1,21 @@
 // @flow
 /* eslint-disable react/prop-types */
 
-import React from 'react';
+import React, { type Node } from 'react';
 import { gridSize, math } from '@atlaskit/theme';
+/* eslint-disable react/no-unused-prop-types */
 
 const getAlignment = p => (p.followsIcon ? 'baseline' : 'center');
 const gridSizeDiv2 = math.divide(gridSize, 2);
 const getMargin = p => (p.spacing === 'none' ? 0 : `0 ${gridSizeDiv2(p)}px`);
 
-const ButtonContent = props => {
+type Props = {
+  followsIcon: boolean,
+  spacing: string,
+  children: Node,
+};
+
+const ButtonContent = (props: Props) => {
   const style = {
     alignItems: getAlignment(props),
     alignSelf: getAlignment(props),
