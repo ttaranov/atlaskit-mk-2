@@ -68,6 +68,7 @@ export {
   confluenceUnsupportedBlock,
   confluenceUnsupportedInline,
   inlineExtension,
+  bodiedExtension,
   extension,
   RefsNode,
   RefsTracker,

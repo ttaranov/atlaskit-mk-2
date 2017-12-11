@@ -1,5 +1,9 @@
 # @atlaskit/avatar
 
+## 8.3.8
+
+## 8.3.7
+
 ## 8.3.6
 - [patch] migrating avatar package to new repo [f3f5e51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3f5e51)
 

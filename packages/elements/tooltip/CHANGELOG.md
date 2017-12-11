@@ -1,5 +1,13 @@
 # @atlaskit/tooltip
 
+## 8.0.9
+
+
+
+- [patch] remove unused button dependency and corrected themes type [3475dd6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3475dd6)
+
+## 8.0.8
+
 ## 8.0.7
 
 ## 8.0.6

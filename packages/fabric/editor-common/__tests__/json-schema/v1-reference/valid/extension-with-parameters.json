@@ -5,8 +5,7 @@
     {
       "type": "extension",
       "attrs": {
-        "bodyType": "none",
-        "extensionType": "com.atlassian.confluence.macro",
+        "extensionType": "com.atlassian.confluence.macro.core",
         "extensionKey": "code",
         "parameters": {
           "macroparams": {
@@ -19,13 +18,7 @@
             }
           }
         }
-      },
-      "content": [
-        {
-          "type": "paragraph",
-          "content": []
-        }
-      ]
+      }
     }
   ]
 }

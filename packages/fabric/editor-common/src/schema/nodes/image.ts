@@ -11,6 +11,10 @@ export const image: NodeSpec = {
   draggable: true,
   parseDOM: [
     {
+      tag: 'img[src^="data:image/"]',
+      ignore: true,
+    },
+    {
       tag: 'img[src]',
       getAttrs(dom: HTMLElement) {
         return {

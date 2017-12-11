@@ -1,21 +1,26 @@
 // @flow
 import React from 'react';
-import { md, Example } from '@atlaskit/docs';
+import { md, Example, Props } from '@atlaskit/docs';
 
 export default md`
   ### Usage
 
   This package exports an number of different Avatar related components
-  \`\`\`js
-  import Avatar, { AvatarGroup, AvatarItem, Presence, Status } from '@atlaskit/avatar';
-  \`\`\`
 
-  Use the \`Avatar\` component to represent users with their
-  profile picture. Optionally, a presence to indicate online status can also
-  be displayed.
+  ~~~js
+  import Avatar, {
+    AvatarGroup,
+    AvatarItem,
+    Presence,
+    Status,
+  } from '@atlaskit/avatar';
+  ~~~
 
-  You can use the \`Presence\` component independently for contexts
-  where the profile picture is not required (e.g. next to a username)
+  Use the \`Avatar\` component to represent users with their profile picture.
+  Optionally, a presence to indicate online status can also be displayed.
+
+  You can use the \`Presence\` component independently for contexts where the
+  profile picture is not required (e.g. next to a username)
 
   ${(
     <Example
@@ -57,7 +62,44 @@ export default md`
     />
   )}
 
-  ## Props
+  ## Base Props
 
-  > Currently this is not provided as we are experiencing a flow type generation issue
+  ${(
+    <Props
+      props={require('!!extract-react-types-loader!../src/components/Avatar')}
+    />
+  )}
+
+  ## Avatar Item Props
+
+  ${(
+    <Props
+      props={require('!!extract-react-types-loader!../src/components/AvatarItem')}
+    />
+  )}
+
+## Presence Props
+
+  ${(
+    <Props
+      props={require('!!extract-react-types-loader!../src/components/Presence')}
+    />
+  )}
+
+  ## Status Props
+
+  ${(
+    <Props
+      props={require('!!extract-react-types-loader!../src/components/Status')}
+    />
+  )}
+
 `;
+
+// ## Avatar Group Props
+//
+//   ${(
+//     <Props
+//       props={require('!!extract-react-types-loader!../src/components/AvatarGroup')}
+//     />
+//   )}

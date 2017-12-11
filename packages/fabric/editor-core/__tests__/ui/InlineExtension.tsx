@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import InlineExtension from '../../src/ui/Extension/InlineExtension';
 import { macroProvider } from '../../example-helpers/mock-macro-provider';
-import { inlineMacroData } from '../../example-helpers/mock-macro-data';
+import { inlineExtensionData } from '../../example-helpers/mock-extension-data';
 import { PlaceholderFallback } from '../../src/ui/Extension/InlineExtension/styles';
 
 describe('@atlaskit/editor-core/ui/Macro/InlineExtension', () => {
@@ -11,7 +11,7 @@ describe('@atlaskit/editor-core/ui/Macro/InlineExtension', () => {
   it('should render Placeholder if inlineExtension has placeholder image param', () => {
     const macro = shallow(
       <InlineExtension
-        node={inlineMacroData[0] as any}
+        node={inlineExtensionData[0] as any}
         macroProvider={macroProvider}
         onClick={noop}
       />,
@@ -22,7 +22,7 @@ describe('@atlaskit/editor-core/ui/Macro/InlineExtension', () => {
   it("should render PlaceholderFallback if inlineExtension doesn't have placeholder image param", () => {
     const macro = shallow(
       <InlineExtension
-        node={inlineMacroData[1] as any}
+        node={inlineExtensionData[1] as any}
         macroProvider={macroProvider}
         onClick={noop}
       />,

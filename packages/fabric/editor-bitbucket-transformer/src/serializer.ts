@@ -4,7 +4,6 @@ import {
 } from 'prosemirror-markdown';
 import { Mark, Node as PMNode } from 'prosemirror-model';
 import { escapeMarkdown, stringRepeat } from './util';
-import { bitbucketSchema as schema } from '@atlaskit/editor-common';
 import tableNodes from './tableSerializer';
 
 /**
@@ -37,7 +36,7 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
         child.isTextblock &&
         !child.textContent &&
         // If child is a Codeblock we need to handle this seperately as we want to preserve empty code blocks
-        !(child.type === schema.nodes.codeBlock) &&
+        !(child.type.name === 'codeBlock') &&
         !(child.content && (child.content as any).size > 0)
       ) {
         return nodes.empty_line(this, child);
@@ -64,7 +63,7 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
         : [];
       const code =
         marks.length &&
-        marks[marks.length - 1].type === schema.marks.code &&
+        marks[marks.length - 1].type.name === 'code' &&
         marks[marks.length - 1];
       const len = marks.length - (code ? 1 : 0);
 
@@ -291,7 +290,7 @@ const editorNodes = {
   ) {
     const previousNode = index === 0 ? null : parent.child(index - 1);
     const previousNodeIsAMention =
-      previousNode && previousNode.type === schema.nodes.mention;
+      previousNode && previousNode.type.name === 'mention';
     const currentNodeStartWithASpace = node.textContent.indexOf(' ') === 0;
     const trimTrailingWhitespace =
       previousNodeIsAMention && currentNodeStartWithASpace;
@@ -358,13 +357,7 @@ export const marks = {
   link: {
     open: '[',
     close(state: MarkdownSerializerState, mark: any) {
-      // Note: the 'title' is not escaped in this flavor of markdown.
-      return (
-        '](' +
-        mark.attrs['href'] +
-        (mark.attrs['title'] ? ` '${mark.attrs['title']}'` : '') +
-        ')'
-      );
+      return '](' + mark.attrs['href'] + ')';
     },
   },
   code: { open: '`', close: '`' },

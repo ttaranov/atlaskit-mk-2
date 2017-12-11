@@ -66,13 +66,6 @@ const CommentEditor: any = styled.div`
   &.-flash {
     animation: 0.25s ease-in-out ${pulseBackgroundReverse};
   }
-
-  div > .ProseMirror {
-    outline: none;
-    white-space: pre-wrap;
-    padding: 0;
-    margin: 0;
-  }
 `;
 CommentEditor.displayName = 'CommentEditor';
 
@@ -103,10 +96,14 @@ MainToolbarCustomComponentsSlot.displayName = 'MainToolbar';
 
 // tslint:disable-next-line:variable-name
 const ContentArea = styled(ContentStyles)`
-  padding: 12px 20px;
   flex-grow: 1;
   overflow-x: hidden;
   overflow-y: auto;
+
+  /** Hack for Bitbucket to ensure entire editorView gets drop event; see ED-3294 **/
+  .ProseMirror {
+    padding: 12px 20px;
+  }
 `;
 ContentArea.displayName = 'ContentArea';
 

@@ -6,6 +6,7 @@ import hyperlinkPlugins, {
 } from '../../../../src/plugins/hyperlink';
 import pastePlugins from '../../../../src/plugins/paste';
 import {
+  img,
   strong,
   chaiPlugin,
   doc,
@@ -317,6 +318,46 @@ describe('hyperlink', () => {
                   strong('Atlassian'),
                 ),
                 'abc',
+              ),
+            ),
+          );
+          editorView.destroy();
+        });
+      });
+      describe('image content', () => {
+        it('should not allow pasting of images with data URI src', () => {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          if (
+            !dispatchPasteEvent(editorView, {
+              html:
+                '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAAFElEQVQYGWP8////fwYkwITEBjMBfegEAARi5UUAAAAASUVORK5CYII=" />',
+            })
+          ) {
+            // This environment does not allow mocking paste events
+            return this.skip();
+          }
+          expect(editorView.state.doc).to.deep.equal(doc(paragraph('')));
+          editorView.destroy();
+        });
+
+        it('should allow pasting of images with url src', () => {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          if (
+            !dispatchPasteEvent(editorView, {
+              html:
+                '<img src="http://atlassian.com/logo.png" alt="Atlassian" />',
+            })
+          ) {
+            // This environment does not allow mocking paste events
+            return this.skip();
+          }
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              paragraph(
+                img({
+                  alt: 'Atlassian',
+                  src: 'http://atlassian.com/logo.png',
+                }),
               ),
             ),
           );

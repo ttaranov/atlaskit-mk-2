@@ -558,6 +558,42 @@ describe('BitbucketTransformer: serializer', () => {
       ).toEqual("foo ![an image](http://example.com 'a title') bar");
     });
 
+    it('in heading to serialize', () => {
+      expect(
+        markdownSerializer.serialize(
+          doc(
+            h1(
+              p(
+                img({
+                  src: 'http://example.com',
+                  alt: 'an image',
+                  title: 'a title',
+                }),
+                ' foo',
+              ),
+            ),
+          ),
+        ),
+      ).toEqual("# ![an image](http://example.com 'a title') foo");
+
+      expect(
+        markdownSerializer.serialize(
+          doc(
+            h2(
+              p(
+                img({
+                  src: 'http://example.com',
+                  alt: 'an image',
+                  title: 'a title',
+                }),
+                ' foo',
+              ),
+            ),
+          ),
+        ),
+      ).toEqual("## ![an image](http://example.com 'a title') foo");
+    });
+
     it('should escape the characters in image attributes', () => {
       expect(
         markdownSerializer.serialize(
@@ -659,7 +695,7 @@ describe('BitbucketTransformer: serializer', () => {
       });
     });
 
-    xdescribe('links', () => {
+    describe('links', () => {
       it('with no text to be ignored', () => {
         const link = a({ href: 'http://example.com' });
 
@@ -674,64 +710,6 @@ describe('BitbucketTransformer: serializer', () => {
         );
       });
 
-      it('with title to serialize', () => {
-        const link = a({
-          href: 'http://example.com',
-          title: 'title',
-        });
-
-        expect(markdownSerializer.serialize(doc(p(link('foo'))))).toEqual(
-          '[foo](http://example.com "title")',
-        );
-      });
-
-      it('with title containing double-quotes to serialize', () => {
-        const link = a({
-          href: 'http://example.com',
-          title: 'some " "title"',
-        });
-
-        expect(markdownSerializer.serialize(doc(p(link('foo'))))).toEqual(
-          '[foo](http://example.com "some " "title"")',
-        );
-      });
-
-      it('in heading to serialize', () => {
-        expect(
-          markdownSerializer.serialize(
-            doc(
-              h1(
-                p(
-                  img({
-                    src: 'http://example.com',
-                    alt: 'an image',
-                    title: 'a title',
-                  }),
-                  ' foo',
-                ),
-              ),
-            ),
-          ),
-        ).toEqual('# ![an image](http://example.com "a title") foo');
-
-        expect(
-          markdownSerializer.serialize(
-            doc(
-              h2(
-                p(
-                  img({
-                    src: 'http://example.com',
-                    alt: 'an image',
-                    title: 'a title',
-                  }),
-                  ' foo',
-                ),
-              ),
-            ),
-          ),
-        ).toEqual('## ![an image](http://example.com "a title") foo');
-      });
-
       it('with space in url to serialize', () => {
         const link = a({
           href: '/url with space',
@@ -742,21 +720,24 @@ describe('BitbucketTransformer: serializer', () => {
         );
       });
 
-      it('with space in url and title to serialize', () => {
-        const link = a({
-          href: '/url with space',
-          title: 'title',
-        });
-
-        expect(markdownSerializer.serialize(doc(p(link('foo'))))).toEqual(
-          '[foo](/url with space "title")',
-        );
-      });
-
       it('with special characters, characters should not be escaped', () => {
         const link = a({ href: 'hr~ef' });
         expect(markdownSerializer.serialize(doc(p(link('foo'))))).toEqual(
           '[foo](hr~ef)',
+        );
+      });
+
+      // Tests should pass when ED-3307 is fixed
+      it.skip('should escape markdown characters in url', () => {
+        const link = a({ href: 'http://google.com/)(][*_|' });
+        expect(markdownSerializer.serialize(doc(p(link('foo'))))).toEqual(
+          '[foo](http://google.com/\\)\\(\\]\\[\\*\\_\\|)',
+        );
+      });
+      it.skip('should not escape ~ inside link', () => {
+        const link = a({ href: 'http://google.com/~/' });
+        expect(markdownSerializer.serialize(doc(p(link('foo'))))).toEqual(
+          '[foo](http://google.com/~/',
         );
       });
     });

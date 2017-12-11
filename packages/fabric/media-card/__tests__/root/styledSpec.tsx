@@ -38,4 +38,12 @@ describe('Root Wrapper', () => {
     );
     expect(element).toMatchSnapshot();
   });
+
+  it('should render element with the right breakpoints', () => {
+    const largeElement = shallow(<Wrapper breakpointSize="large" />);
+    const xlargeElement = shallow(<Wrapper breakpointSize="xlarge" />);
+
+    expect(largeElement).toMatchSnapshot();
+    expect(xlargeElement).toMatchSnapshot();
+  });
 });
