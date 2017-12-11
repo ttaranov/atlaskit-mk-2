@@ -4,7 +4,7 @@ export const fileCollectionName = `${defaultCollectionName}Files`;
 
 export const collectionNames = [
   defaultCollectionName,
-  'MediaServicesSampleAtlasKit',
+  'MediaServicesSampleAtlaskit',
   'MediaServicesSampleHulk',
   'MediaServicesSampleFabric',
   fileCollectionName,

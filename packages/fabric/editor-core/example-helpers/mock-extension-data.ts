@@ -1,9 +1,6 @@
-import {
-  ExtensionType,
-  ExtensionBodyType,
-} from '../src/editor/plugins/macro/types';
+import { ExtensionType } from '../src/editor/plugins/macro/types';
 
-export const inlineMacroData = [
+export const inlineExtensionData = [
   {
     type: 'inlineExtension' as ExtensionType,
     attrs: {
@@ -55,11 +52,10 @@ export const inlineMacroData = [
   },
 ];
 
-export const blockBodylessMacroData = [
+export const extensionData = [
   {
     type: 'extension' as ExtensionType,
     attrs: {
-      bodyType: 'none' as ExtensionBodyType,
       extensionType: 'com.atlassian.confluence.macro.core',
       extensionKey: 'gallery',
       parameters: {
@@ -80,12 +76,10 @@ export const blockBodylessMacroData = [
         },
       },
     },
-    content: [],
   },
   {
     type: 'extension' as ExtensionType,
     attrs: {
-      bodyType: 'none' as ExtensionBodyType,
       extensionType: 'com.atlassian.confluence.macro.core',
       extensionKey: 'gallery',
       parameters: {
@@ -103,87 +97,13 @@ export const blockBodylessMacroData = [
         },
       },
     },
-    content: [],
   },
 ];
 
-export const blockPlainTextMacroData = [
+export const bodiedExtensionData = [
   {
-    type: 'extension' as ExtensionType,
+    type: 'bodiedExtension' as ExtensionType,
     attrs: {
-      bodyType: 'plain' as ExtensionBodyType,
-      extensionType: 'com.atlassian.confluence.macro.core',
-      extensionKey: 'code block',
-      parameters: {
-        macroParams: {
-          language: { value: 'cpp' },
-        },
-        macroMetadata: {
-          macroId: { value: new Date().valueOf() },
-          placeholder: [
-            {
-              data: {
-                url:
-                  '/wiki/plugins/servlet/confluence/placeholder/macro?definition=e2NvZGU6bGFuZ3VhZ2U9Y3BwfQ&locale=en_GB&version=2',
-              },
-              type: 'image',
-            },
-          ],
-        },
-      },
-    },
-    content: [
-      {
-        type: 'paragraph',
-        content: [
-          {
-            type: 'text',
-            text: 'Foo',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    type: 'extension' as ExtensionType,
-    attrs: {
-      bodyType: 'plain' as ExtensionBodyType,
-      extensionType: 'com.atlassian.confluence.macro.core',
-      extensionKey: 'code block',
-      parameters: {
-        macroParams: {
-          language: { value: 'java' },
-        },
-        macroMetadata: {
-          macroId: { value: new Date().valueOf() },
-          placeholder: [
-            {
-              data: { url: '' },
-              type: 'icon',
-            },
-          ],
-        },
-      },
-    },
-    content: [
-      {
-        type: 'paragraph',
-        content: [
-          {
-            type: 'text',
-            text: 'Bar',
-          },
-        ],
-      },
-    ],
-  },
-];
-
-export const blockRichTextMacroData = [
-  {
-    type: 'extension' as ExtensionType,
-    attrs: {
-      bodyType: 'rich' as ExtensionBodyType,
       extensionType: 'com.atlassian.confluence.macro.core',
       extensionKey: 'expand',
       parameters: {
@@ -231,9 +151,8 @@ export const blockRichTextMacroData = [
     ],
   },
   {
-    type: 'extension' as ExtensionType,
+    type: 'bodiedExtension' as ExtensionType,
     attrs: {
-      bodyType: 'rich' as ExtensionBodyType,
       extensionType: 'com.atlassian.confluence.macro.core',
       extensionKey: 'expand',
       parameters: {

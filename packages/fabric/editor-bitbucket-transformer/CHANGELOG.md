@@ -1,5 +1,15 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 2.1.2
+
+## 2.1.1
+
+
+- [patch] Change @atlaskit/editor-core to be only a dev dependency [765b8ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/765b8ff)
+- [patch] Change @atlaskit/editor-core to be only a dev dependency [765b8ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/765b8ff)
+
+## 2.1.0
+
 ## 2.0.5
 
 ## 2.0.4

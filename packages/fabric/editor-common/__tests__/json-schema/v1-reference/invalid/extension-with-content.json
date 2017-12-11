@@ -5,19 +5,13 @@
     {
       "type": "extension",
       "attrs": {
-        "bodyType": "plain",
         "extensionType": "com.atlassian.confluence.macro",
-        "extensionKey": "code"
+        "extensionKey": "gallery"
       },
       "content": [
         {
           "type": "paragraph",
-          "content": [
-            {
-              "type": "text",
-              "text": "const x = 111;"
-            }
-          ]
+          "content": []
         }
       ]
     }

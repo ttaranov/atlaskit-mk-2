@@ -45,10 +45,10 @@ export default class Extension extends Component<Props, any> {
         : null;
     }
 
-    const bodyless = node.attrs.bodyType === 'none';
+    const hasBody = node.type.name === 'bodiedExtension';
 
     return (
-      <Wrapper onClick={onClick} className={bodyless ? 'with-overlay' : ''}>
+      <Wrapper onClick={onClick} className={hasBody ? '' : 'with-overlay'}>
         <Overlay className="extension-overlay" />
         <Header contentEditable={false} onClick={onSelectExtension}>
           {placeholderUrl ? (
@@ -57,12 +57,14 @@ export default class Extension extends Component<Props, any> {
             this.renderPlaceholderFallback(placeholderFallbackUrl)
           )}
         </Header>
-        <ContentWrapper className={bodyless ? 'bodyless' : ''}>
-          <Content
-            innerRef={handleContentDOMRef}
-            className="extension-content"
-          />
-        </ContentWrapper>
+        {hasBody && (
+          <ContentWrapper>
+            <Content
+              innerRef={handleContentDOMRef}
+              className="extension-content"
+            />
+          </ContentWrapper>
+        )}
       </Wrapper>
     );
   }

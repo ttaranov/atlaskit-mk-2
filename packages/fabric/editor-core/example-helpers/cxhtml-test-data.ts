@@ -10,17 +10,14 @@ export const JIRA_ISSUES_LIST =
 
 export const PANEL_MACRO = `<ac:structured-macro ac:name="warning" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">Hello</ac:parameter><ac:rich-text-body><p>Warning panel</p></ac:rich-text-body></ac:structured-macro>`;
 
-export const INLINE_MACRO =
+export const INLINE_EXTENSION =
   '<p><ac:structured-macro ac:name="status" ac:schema-version="1" ac:macro-id="1511498935556"> <ac:parameter ac:name="color">Red</ac:parameter> <ac:parameter ac:name="title">Fail</ac:parameter> <ac:parameter ac:name="subtle">true</ac:parameter> <fab:display-type>INLINE</fab:display-type> </ac:structured-macro></p>';
 
-export const BLOCK_BODYLESS_MACRO =
+export const EXTENSION =
   '<ac:structured-macro ac:name="gallery" ac:schema-version="1" ac:macro-id="1511499023528"> <ac:parameter ac:name="color">Red</ac:parameter> <fab:placeholder-url>/wiki/plugins/servlet/confluence/placeholder/macro?definition=e2dhbGxlcnl9&amp;locale=en_GB&amp;version=2</fab:placeholder-url> <fab:display-type>BLOCK</fab:display-type></ac:structured-macro>';
 
-export const BLOCK_PLAIN_TEXT_MACRO =
-  '<ac:structured-macro ac:name="code block" ac:schema-version="1" ac:macro-id="1511499084209"> <ac:parameter ac:name="language">java</ac:parameter> <fab:display-type>BLOCK</fab:display-type> <ac:plain-text-body>Bar</ac:plain-text-body></ac:structured-macro>';
-
-export const BLOCK_RICH_TEXT_MACRO =
+export const BODIED_EXTENSION =
   '<ac:structured-macro ac:name="expand" ac:schema-version="1" ac:macro-id="1511499130537"> <fab:placeholder-url>/wiki/plugins/servlet/confluence/placeholder/macro?definition=e2V4cGFuZH0&amp;locale=en_GB&amp;version=2</fab:placeholder-url> <fab:display-type>BLOCK</fab:display-type> <ac:rich-text-body> <h5>Heading</h5> <p> <u>Foo</u> </p> </ac:rich-text-body></ac:structured-macro>';
 
-export const BLOCK_NESTED_MACRO =
+export const BODIED_NESTED_EXTENSION =
   '<ac:structured-macro ac:name="expand" ac:schema-version="1" ac:macro-id="1511499178897"> <fab:display-type>BLOCK</fab:display-type> <ac:rich-text-body> <h5>Heading</h5> <p> <u>Foo</u> <ac:structured-macro ac:name="status" ac:schema-version="1" ac:macro-id="1511499178897"> <ac:parameter ac:name="color">Green</ac:parameter> <ac:parameter ac:name="title">OK</ac:parameter> <ac:parameter ac:name="subtle">true</ac:parameter> <fab:placeholder-url>/wiki/plugins/servlet/confluence/placeholder/macro?definition=e3N0YXR1czpzdWJ0bGU9dHJ1ZXxjb2xvdXI9R3JlZW58dGl0bGU9T0t9&amp;locale=en_GB&amp;version=2</fab:placeholder-url> <fab:display-type>INLINE</fab:display-type> </ac:structured-macro> </p> </ac:rich-text-body></ac:structured-macro>';

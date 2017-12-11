@@ -1,5 +1,23 @@
 # @atlaskit/editor-common
 
+## 4.3.1
+
+## 4.3.0
+- [minor] Remove support for images with data URI's for Bitbucket's image node in the editor [e055dee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e055dee)
+- [minor] Remove support for images with data URI's for Bitbucket's image node in the editor [e055dee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e055dee)
+
+## 4.2.1
+
+## 4.2.0
+- [minor] split extension node [4303d49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4303d49)
+- [minor] split extension node [4303d49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4303d49)
+
+## 4.1.1
+
+## 4.1.0
+- [patch] Remove singleImage from editor-cq schema [f5c1ecb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5c1ecb)
+- [patch] Remove singleImage from editor-cq schema [f5c1ecb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5c1ecb)
+
 ## 4.0.2
 
 ## 4.0.1

@@ -45,6 +45,10 @@ const ContentArea = styled.div`
     padding-bottom: 50px;
   }
 
+  & .ProseMirror .table-decoration {
+    left: 0;
+  }
+
   & .ProseMirror table {
     margin-left: 0;
     margin-right: 0;

@@ -7,10 +7,13 @@ import {
 import { CardAppearance, CardDimensions } from '..';
 import { isRetina } from '../utils/isRetina';
 import { isLinkDetails } from '../utils/isLinkDetails';
+import { isValidPercentageUnit } from '../utils/isValidPercentageUnit';
+import { getCardMinHeight } from '../utils/cardDimensions';
+import {
+  getElementDimension,
+  ElementDimension,
+} from '../utils/getElementDimension';
 import { defaultImageCardDimensions } from '../utils';
-
-const SMALL_CARD_IMAGE_WIDTH = 32;
-const SMALL_CARD_IMAGE_HEIGHT = 32;
 
 export interface WithDataURIProps {
   dataURIService?: DataUriService;
@@ -70,30 +73,25 @@ export const withDataURI = (Component): any => {
       return this.props.appearance === 'small';
     }
 
-    private dataURIWidth(retinaFactor): number {
-      const { width } = this.props.dimensions || { width: undefined };
+    // No mather if the integrator passed pixels or percentages, this will
+    // always return a pixels value that the /image endpoint can use
+    dataURIDimension(dimension: ElementDimension): number {
+      const retinaFactor = isRetina() ? 2 : 1;
+      const dimensionValue =
+        (this.props.dimensions && this.props.dimensions[dimension]) || '';
 
       if (this.isSmall()) {
-        return SMALL_CARD_IMAGE_WIDTH * retinaFactor;
+        return getCardMinHeight('small') * retinaFactor;
+      }
+
+      if (isValidPercentageUnit(dimensionValue)) {
+        return getElementDimension(this, dimension);
       }
 
       return (
-        (typeof width === 'number' ? width : defaultImageCardDimensions.width) *
-        retinaFactor
-      );
-    }
-
-    private dataURIHeight(retinaFactor): number {
-      const { height } = this.props.dimensions || { height: undefined };
-
-      if (this.isSmall()) {
-        return SMALL_CARD_IMAGE_HEIGHT * retinaFactor;
-      }
-
-      return (
-        (typeof height === 'number'
-          ? height
-          : defaultImageCardDimensions.height) * retinaFactor
+        (typeof dimensionValue === 'number'
+          ? dimensionValue
+          : defaultImageCardDimensions[dimension]) * retinaFactor
       );
     }
 
@@ -109,9 +107,8 @@ export const withDataURI = (Component): any => {
         return;
       }
 
-      const retinaFactor = isRetina() ? 2 : 1;
-      const width = this.dataURIWidth(retinaFactor);
-      const height = this.dataURIHeight(retinaFactor);
+      const width = this.dataURIDimension('width');
+      const height = this.dataURIDimension('height');
       const allowAnimated = appearance !== 'small';
 
       dataURIService
@@ -130,6 +127,7 @@ export const withDataURI = (Component): any => {
     render(): JSX.Element {
       const { dataURIService, ...otherProps } = this.props;
       const { dataURI } = this.state;
+
       return <Component {...otherProps} dataURI={dataURI} />;
     }
   }

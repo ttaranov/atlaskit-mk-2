@@ -1,9 +1,18 @@
 import { NodeSpec, Node as PMNode } from 'prosemirror-model';
 
+/**
+ * @name inlineExtension_node
+ */
 export interface Definition {
   type: 'inlineExtension';
   attrs: {
+    /**
+     * @minLength 1
+     */
     extensionKey: string;
+    /**
+     * @minLength 1
+     */
     extensionType: string;
     parameters?: object;
     text?: string;
@@ -26,7 +35,6 @@ export const inlineExtension: NodeSpec = {
       getAttrs: (dom: HTMLElement) => ({
         extensionType: dom.getAttribute('data-extension-type'),
         extensionKey: dom.getAttribute('data-extension-key'),
-        bodyType: dom.getAttribute('data-body-type'),
         text: dom.getAttribute('data-text'),
         parameters: JSON.parse(dom.getAttribute('data-parameters') || '{}'),
       }),

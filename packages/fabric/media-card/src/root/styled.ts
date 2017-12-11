@@ -3,23 +3,26 @@ import styled from 'styled-components';
 import { CardDimensions, CardAppearance } from '../';
 import { getCSSUnitValue } from '../utils/getCSSUnitValue';
 import { getCSSBoundaries } from '../utils/cardDimensions';
+import { BreakpointSizeValue, breakpointStyles } from '../utils/breakpoint';
 
 export interface WrapperProps {
   dimensions?: CardDimensions;
   appearance?: CardAppearance;
+  breakpointSize?: BreakpointSizeValue;
 }
 
-const getWrapperHeight = ({ dimensions }: WrapperProps) =>
+const getWrapperHeight = (dimensions?: CardDimensions) =>
   dimensions && dimensions.height
     ? `height: ${getCSSUnitValue(dimensions.height)}`
     : '';
-const getWrapperWidth = ({ dimensions }: WrapperProps) =>
+
+const getWrapperWidth = (dimensions?: CardDimensions) =>
   dimensions && dimensions.width
     ? `width: ${getCSSUnitValue(dimensions.width)}`
     : '';
 
 export const Wrapper = styled.div`
-  ${({ appearance }: WrapperProps) => {
+  ${({ appearance, dimensions, breakpointSize = 'medium' }: WrapperProps) => {
     if (appearance === 'square' || appearance === 'horizontal') {
       return `
         ${getCSSBoundaries(appearance)}
@@ -35,8 +38,9 @@ export const Wrapper = styled.div`
     }
 
     return `
-      ${getWrapperHeight}
-      ${getWrapperWidth}
+      ${breakpointStyles({ breakpointSize })}
+      ${getWrapperHeight(dimensions)}
+      ${getWrapperWidth(dimensions)}
     `;
   }};
 `;

@@ -68,10 +68,6 @@ const tableStyle = `
         opacity: 0.3;
         pointer-events: none;
       }
-      .table-decoration {
-        position: relative;
-        left: -1px;
-      }
     }
   }
 `;
@@ -88,6 +84,11 @@ const ContentStyles = styled.div`
   & .ie11 {
     overflow: visible;
     word-wrap: break-word;
+  }
+
+  // Hack for tables controlls. Otherwise marging collapse and controlls are misplaced.
+  & div.ProseMirror {
+    padding-top: 0.1px;
   }
 
   .ProseMirror {
@@ -273,6 +274,12 @@ const ContentStyles = styled.div`
     .ProseMirror
     img {
     max-width: 100%;
+  }
+
+  .ProseMirror .table-decoration {
+    position: relative;
+    left: 8px;
+    top: 20px;
   }
 
   //=============== PLACEHOLDER CURSOR STYLES=========
