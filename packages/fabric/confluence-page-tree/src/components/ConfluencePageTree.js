@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import {
-  TreeTable,
+import TreeTable, {
   TreeHeads,
   TreeHead,
   TreeRows,
