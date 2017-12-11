@@ -100,6 +100,7 @@ export default class Editor extends React.Component<
 
   private renderChrome = ({ maxContentSize }) => {
     const {
+      disabled,
       editorView,
       eventDispatcher,
       providerFactory,
@@ -125,6 +126,7 @@ export default class Editor extends React.Component<
         <ContentArea innerRef={this.handleRef}>
           {customContentComponents}
           <PluginSlot
+            disabled={disabled}
             editorView={editorView}
             eventDispatcher={eventDispatcher}
             providerFactory={providerFactory}
@@ -136,6 +138,7 @@ export default class Editor extends React.Component<
         </ContentArea>
         <SecondaryToolbarContainer>
           <PluginSlot
+            disabled={disabled}
             editorView={editorView}
             eventDispatcher={eventDispatcher}
             providerFactory={providerFactory}

@@ -181,6 +181,7 @@ export default class Editor extends React.Component<
       maxHeight,
       onSave,
       onCancel,
+      disabled,
     } = this.props;
     const maxContentSizeReached =
       maxContentSize && maxContentSize.maxContentSizeReached;
@@ -204,6 +205,7 @@ export default class Editor extends React.Component<
                 items={primaryToolbarComponents}
                 popupsMountPoint={popupsMountPoint}
                 popupsBoundariesElement={popupsBoundariesElement}
+                disabled={disabled}
               />
               <MainToolbarCustomComponentsSlot
                 width={
@@ -224,17 +226,26 @@ export default class Editor extends React.Component<
                 items={contentComponents}
                 popupsMountPoint={popupsMountPoint}
                 popupsBoundariesElement={popupsBoundariesElement}
+                disabled={disabled}
               />
             </ContentArea>
             <SecondaryToolbar>
               <ButtonGroup>
                 {!onSave ? null : (
-                  <Button appearance="primary" onClick={this.handleSave}>
+                  <Button
+                    appearance="primary"
+                    onClick={this.handleSave}
+                    isDisabled={disabled}
+                  >
                     Save
                   </Button>
                 )}
                 {!onCancel ? null : (
-                  <Button appearance="subtle" onClick={this.handleCancel}>
+                  <Button
+                    appearance="subtle"
+                    onClick={this.handleCancel}
+                    isDisabled={disabled}
+                  >
                     Cancel
                   </Button>
                 )}
