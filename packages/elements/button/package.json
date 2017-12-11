@@ -7,13 +7,11 @@
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
   "files": [
-    "dist",
-    "src/index.d.ts"
+    "dist"
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Matias C",
-    "Nadia M"
+    "Ben C"
   ],
   "atlaskit": {
     "name": "Button",
