@@ -20,7 +20,16 @@ git.commit.mockImplementation(() => Promise.resolve(true));
 git.push.mockImplementation(() => Promise.resolve(true));
 git.tag.mockImplementation(() => Promise.resolve(true));
 // we want to keep other bolt commands still running so our tests are more e2e
-bolt.publish = jest.fn(() => Promise.resolve([]));
+// NOTE: This is pretty terrible. Quite obviously bolt is not going to return these results
+// each time, but there is only one test that uses the output of this function ('should add git tags')
+// and we know this will be heavily refactored once its moved into the bolt org anyway. So we are happy
+// to keep this debt in for now. LB takes full responsibility for this if it becomes flakey.
+bolt.publish = jest.fn(() =>
+  Promise.resolve([
+    { name: 'pkg-a', newVersion: '1.1.0', published: true },
+    { name: 'pkg-b', newVersion: '1.0.1', published: true },
+  ]),
+);
 
 const simpleChangeset = {
   summary: 'This is a summary',
@@ -159,12 +168,6 @@ describe('running release', () => {
         });
 
         it('should add git tags', async () => {
-          bolt.publish = jest.fn(() =>
-            Promise.resolve([
-              { name: 'pkg-a', newVersion: '1.1.0', published: true },
-              { name: 'pkg-b', newVersion: '1.0.1', published: true },
-            ]),
-          );
           await runRelease({ cwd });
 
           expect(git.tag).toHaveBeenCalledWith('pkg-a@1.1.0');
