@@ -29,7 +29,7 @@ export interface State {
 export default class TaskItemWithProviders extends PureComponent<Props, State> {
   state: State = { resolvedContextProvider: undefined };
 
-  componentDidMount() {
+  componentWillMount() {
     this.updateContextIdentifierProvider(this.props);
   }
 
@@ -42,11 +42,14 @@ export default class TaskItemWithProviders extends PureComponent<Props, State> {
     }
   }
 
-  private updateContextIdentifierProvider(props: Props) {
+  private async updateContextIdentifierProvider(props: Props) {
     if (props.contextIdentifierProvider) {
-      props.contextIdentifierProvider.then(resolvedContextProvider =>
-        this.setState({ resolvedContextProvider }),
-      );
+      try {
+        const resolvedContextProvider = await props.contextIdentifierProvider;
+        this.setState({ resolvedContextProvider });
+      } catch (err) {
+        this.setState({ resolvedContextProvider: undefined });
+      }
     } else {
       this.setState({ resolvedContextProvider: undefined });
     }

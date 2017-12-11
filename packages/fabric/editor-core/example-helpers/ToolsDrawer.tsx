@@ -10,7 +10,10 @@ import imageUploadHandler from './imageUpload';
 
 import { MentionResource } from '../src';
 import { toJSON } from '../src/utils';
-import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
+import {
+  storyContextIdentifierProviderFactory,
+  storyMediaProviderFactory,
+} from '@atlaskit/editor-test-helpers';
 
 const rejectedPromise = Promise.reject(
   new Error('Simulated provider rejection'),
@@ -39,7 +42,15 @@ const providers = {
     undefined: undefined,
   },
   taskDecisionProvider: {
-    resolved: taskDecisionStoryData.getMockTaskDecisionResource(),
+    resolved: Promise.resolve(
+      taskDecisionStoryData.getMockTaskDecisionResource(),
+    ),
+    pending: pendingPromise,
+    rejected: rejectedPromise,
+    undefined: undefined,
+  },
+  contextIdentifierProvider: {
+    resolved: storyContextIdentifierProviderFactory(),
     pending: pendingPromise,
     rejected: rejectedPromise,
     undefined: undefined,
@@ -78,6 +89,7 @@ interface State {
   mediaProvider: string;
   emojiProvider: string;
   taskDecisionProvider: string;
+  contextIdentifierProvider: string;
   activityProvider: string;
   jsonDocument?: string;
 }
@@ -94,6 +106,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
       mediaProvider: 'resolved',
       emojiProvider: 'resolved',
       taskDecisionProvider: 'resolved',
+      contextIdentifierProvider: 'resolved',
       activityProvider: 'resolved',
       jsonDocument: '{}',
     };
@@ -123,6 +136,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
       mentionProvider,
       emojiProvider,
       taskDecisionProvider,
+      contextIdentifierProvider,
       mediaProvider,
       activityProvider,
       imageUploadProvider,
@@ -154,6 +168,8 @@ export default class ToolsDrawer extends React.Component<any, State> {
               emojiProvider: providers.emojiProvider[emojiProvider],
               taskDecisionProvider:
                 providers.taskDecisionProvider[taskDecisionProvider],
+              contextIdentifierProvider:
+                providers.contextIdentifierProvider[contextIdentifierProvider],
               activityProvider: providers.activityProvider[activityProvider],
               onChange: this.onChange,
             })

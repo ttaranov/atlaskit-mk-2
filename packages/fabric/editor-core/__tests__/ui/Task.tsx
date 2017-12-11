@@ -112,7 +112,7 @@ describe('@atlaskit/editor-core/ui/Task', () => {
     task.unmount();
   });
 
-  it('should not change state of task if no contextIdentifierProvider', async () => {
+  it('should not change state of task if no contextIdentifierProvider', () => {
     const providerFactory = new ProviderFactory();
     const taskDecisionProvider = Promise.resolve(
       taskDecisionStoryData.getMockTaskDecisionResource(),
