@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-jira",
-  "version": "22.10.4",
+  "version": "22.11.0",
   "description": "Atlassian Editor component for JIRA",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -17,7 +17,7 @@
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/button": "^5.4.8",
-    "@atlaskit/editor-core": "^60.12.1",
+    "@atlaskit/editor-core": "^60.13.0",
     "@atlaskit/editor-jira-transformer": "^2.1.2",
     "@atlaskit/editor-json-transformer": "^2.1.2",
     "@atlaskit/mention": "^8.1.0",
