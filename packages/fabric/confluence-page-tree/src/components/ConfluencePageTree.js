@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-
 import {
   TreeTable,
   TreeHeads,
@@ -10,7 +9,9 @@ import {
   TreeCell,
 } from '../../../../elements/tree-table';
 import { Contributors } from './Contributors';
+import { ErrorTree } from './ErrorTree';
 import { getChildPageDetails } from '../api/confluence';
+import { getI18n } from '../i18n-text';
 
 type Props = {
   contentId: string,
@@ -40,37 +41,44 @@ export default class ConfluencePageTree extends Component<Props, State> {
   render() {
     const { cloudId } = this.props;
     const { isLoading } = this.state;
+    const hasData = true;
 
     return isLoading ? null : (
       <TreeTable>
         <TreeHeads>
-          <TreeHead width={300}>Title</TreeHead>
-          <TreeHead width={300}>Contributors</TreeHead>
-          <TreeHead width={300}>Last Modified</TreeHead>
+          <TreeHead width={'30%'}>{getI18n().tableHeaderTitle}</TreeHead>
+          <TreeHead width={'30%'}>{getI18n().tableHeaderContributors}</TreeHead>
+          <TreeHead width={'30%'}>{getI18n().tableHeaderLastModified}</TreeHead>
         </TreeHeads>
-        <TreeRows
-          data={() => this.data}
-          render={({
-            id,
-            title,
-            contributors,
-            lastUpdated,
-            childTypes,
-            _links,
-          }) => (
-            <RowData key={id} hasChildren={childTypes.page.value}>
-              <TreeCell width={300}>
-                <a href={_links.webui}>{title}</a>
-              </TreeCell>
-              <TreeCell width={300}>
-                <Contributors cloudId={cloudId} contributors={contributors} />
-              </TreeCell>
-              <TreeCell width={300}>
-                <div>{lastUpdated.friendlyWhen}</div>
-              </TreeCell>
-            </RowData>
-          )}
-        />
+        {hasData ? (
+          <TreeRows
+            data={({ id = this.props.contentId } = {}) =>
+              getChildPageDetails(id)
+            }
+            render={({
+              id,
+              title,
+              contributors,
+              lastUpdated,
+              childTypes,
+              _links,
+            }) => (
+              <RowData key={id} hasChildren={childTypes.page.value}>
+                <TreeCell width={'30%'}>
+                  <a href={_links.webui}>{title}</a>
+                </TreeCell>
+                <TreeCell width={'30%'}>
+                  <Contributors cloudId={cloudId} contributors={contributors} />
+                </TreeCell>
+                <TreeCell width={'30%'}>
+                  <div>{lastUpdated.friendlyWhen}</div>
+                </TreeCell>
+              </RowData>
+            )}
+          />
+        ) : (
+          <ErrorTree type={'none'} />
+        )}
       </TreeTable>
     );
   }
