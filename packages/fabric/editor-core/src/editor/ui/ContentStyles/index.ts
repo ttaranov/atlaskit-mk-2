@@ -86,11 +86,6 @@ const ContentStyles = styled.div`
     word-wrap: break-word;
   }
 
-  // Hack for tables controlls. Otherwise marging collapse and controlls are misplaced.
-  & div.ProseMirror {
-    padding-top: 0.1px;
-  }
-
   .ProseMirror {
     word-wrap: break-word;
     white-space: pre-wrap;
