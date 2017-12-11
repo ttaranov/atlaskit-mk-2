@@ -257,11 +257,11 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
   };
 
   private handleOnCancel = () => {
+    const { editorView } = this.props;
+    this.props.pluginState.hideLinkPanel(editorView.state, editorView.dispatch);
     this.setState({
-      inputActive: false,
-      editorFocused: false,
+      active: false,
     });
-    this.handleOnBlur();
   };
 
   private handleUnlink = () => {
