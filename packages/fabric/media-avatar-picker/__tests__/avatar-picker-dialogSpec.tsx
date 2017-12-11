@@ -10,6 +10,8 @@ import {
   AvatarPickerDialogProps,
   DEFAULT_VISIBLE_PREDEFINED_AVATARS,
 } from '../src/avatar-picker-dialog';
+import { dataURItoFile, fileToDataURI } from '../src/util';
+import { tallImage } from '@atlaskit/media-test-helpers';
 
 describe('Avatar Picker Dialog', () => {
   const renderWithProps = (props: Partial<AvatarPickerDialogProps>) =>
@@ -23,9 +25,7 @@ describe('Avatar Picker Dialog', () => {
       />,
     );
 
-  const newImage = new File(['dsjklDFljk'], 'nice-photo.png', {
-    type: 'image/png',
-  });
+  const newImage = dataURItoFile(tallImage);
 
   const renderSaveButton = (props: Partial<AvatarPickerDialogProps> = {}) => {
     const component = renderWithProps(props);
@@ -180,5 +180,31 @@ describe('Avatar Picker Dialog', () => {
         .at(0)
         .props() as React.Props<{}>).children,
     ).toBe('test-primary-text');
+  });
+
+  it('should return same File when image source is provided by default', async () => {
+    const onImagePicked = jest.fn();
+
+    const component = renderWithProps({
+      imageSource: tallImage,
+      onImagePicked,
+    });
+
+    const { onImageChanged } = component.find(ImageNavigator).props();
+    onImageChanged(newImage, { x: 0, y: 0, size: 30 });
+
+    const { footer } = component.find(ModalDialog).props() as { footer: any };
+
+    shallow(footer())
+      .find(Button)
+      .find({ appearance: 'primary' })
+      .simulate('click');
+
+    const savedImage = onImagePicked.mock.calls[0][0];
+    expect(onImagePicked).toBeCalled();
+    expect(savedImage).toBeInstanceOf(File);
+
+    const dataUri = await fileToDataURI(savedImage);
+    expect(dataUri).toBe(tallImage);
   });
 });
