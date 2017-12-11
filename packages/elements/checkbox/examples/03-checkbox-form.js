@@ -1,15 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
 import Button from '@atlaskit/button';
-import Checkbox, { CheckboxStateless, CheckboxGroup } from '../src';
-import { name } from '../package.json';
-import { borderRadius, colors } from '@atlaskit/theme';
-const containerStyle = {
-  padding: 20,
-  backgroundColor: 'white',
-  width: 500,
-};
+import Checkbox, { CheckboxGroup } from '../src';
 
 const formTestUrl = '//httpbin.org/get';
 
@@ -21,7 +13,7 @@ export default class CheckboxGroupExample extends PureComponent<void> {
           action={formTestUrl}
           method="get"
           style={{ backgroundColor: 'white' }}
-          target="myFrame"
+          target="submitFrame"
         >
           <CheckboxGroup>
             <Checkbox label="One" value="One" name="one" />
@@ -60,7 +52,9 @@ export default class CheckboxGroupExample extends PureComponent<void> {
         <p>The data submitted by the form will appear below:</p>
         <iframe
           src=""
-          name="myFrame"
+          title="Checkbox Resopnse Frame"
+          id="submitFrame"
+          name="submitFrame"
           style={{
             width: '95%',
             height: '300px',
