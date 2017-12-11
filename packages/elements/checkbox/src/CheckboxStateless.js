@@ -37,6 +37,7 @@ type State = {|
   isActive: boolean,
   isFocused: boolean,
   isHovered: boolean,
+  mouseIsDown: boolean,
 |};
 
 class CheckboxStateless extends PureComponent<Props, State> {
@@ -45,16 +46,17 @@ class CheckboxStateless extends PureComponent<Props, State> {
     isActive: false,
     isFocused: false,
     isHovered: false,
+    mouseIsDown: false,
   };
   checkbox: ?HTMLButtonElement;
   actionKeys = [' '];
 
   // expose blur/focus to consumers via ref
   blur = (e: FocusEvent) => {
-    if (this.checkbox && this.checkbox.blur) this.checkbox.blur(e);
+    if (this.checkbox && this.checkbox.blur) this.checkbox.blur();
   };
   focus = (e: FocusEvent) => {
-    if (this.checkbox && this.checkbox.focus) this.checkbox.focus(e);
+    if (this.checkbox && this.checkbox.focus) this.checkbox.focus();
   };
 
   onBlur = () =>
@@ -173,12 +175,14 @@ class CheckboxStateless extends PureComponent<Props, State> {
     );
   }
 }
-
+// TODO: Review if the error is an issue with Flow of 'Too many type arguments. Expected at most 2...'
+// possible reported related issue https://github.com/apollographql/react-apollo/issues/1220
+// $FlowFixMe
 const CheckboxWithTheme = withTheme(CheckboxStateless);
 
 const emptyTheme = {};
 
-export default function(props) {
+export default function(props: any) {
   return (
     <ThemeProvider theme={emptyTheme}>
       <CheckboxWithTheme {...props} />

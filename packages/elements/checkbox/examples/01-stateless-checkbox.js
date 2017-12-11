@@ -11,18 +11,17 @@ const containerStyle = {
   width: 500,
 };
 
-type Props = {};
 type State = {
   isChecked: boolean,
   onChangeResult: string,
 };
 
-export default class StatelessExample extends PureComponent<Props, State> {
+export default class StatelessExample extends PureComponent<void, State> {
   state = {
     isChecked: false,
     onChangeResult: 'Check & Uncheck to trigger onChange',
   };
-  onChange = (event: object) => {
+  onChange = (event: any) => {
     this.setState({
       isChecked: !this.state.isChecked,
       onChangeResult:

@@ -26,7 +26,9 @@ type Props = {|
   value: number | string,
 |};
 
-type State = {};
+type State = {
+  isChecked: boolean,
+};
 
 export default class Checkbox extends PureComponent<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
