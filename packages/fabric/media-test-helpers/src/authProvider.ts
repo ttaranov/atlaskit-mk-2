@@ -59,7 +59,7 @@ export class StoryBookUserAuthProvider {
         return Promise.resolve(cachedAuth);
       }
 
-      const response = await axios.get('/token/user/session', config);
+      const response = await axios.get('/token/user/impersonation', config);
       const { clientId, token } = response.data;
       const auth = { clientId, token };
 
