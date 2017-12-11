@@ -13,7 +13,7 @@ const containerStyle = {
 
 const formTestUrl = '//httpbin.org/get';
 
-export default class CheckboxGroupExample extends PureComponent {
+export default class CheckboxGroupExample extends PureComponent<void> {
   render() {
     return (
       <div>
@@ -25,7 +25,7 @@ export default class CheckboxGroupExample extends PureComponent {
         >
           <CheckboxGroup>
             <Checkbox label="One" value="One" name="one" />
-            <Checkbox label="Two" value="two" name="one" />
+            <Checkbox label="Two" value="two" name="two" />
             <Checkbox label="Three" value="Three" name="three" />
           </CheckboxGroup>
 
