@@ -73,7 +73,7 @@ describe('ToolbarMention', () => {
       );
       toolbarOption.find(MentionIcon).simulate('click');
       expect(trackEvent).toHaveBeenCalledWith(
-        'atlassian.editor.mention.button',
+        'atlassian.fabric.mention.picker.trigger.button',
       );
       toolbarOption.unmount();
     });

@@ -43,11 +43,11 @@ describe('mentions - input rules', () => {
         expect(!!mentionQuery.isInSet(cursorFocus.marks)).toEqual(expected);
         if (expected) {
           expect(trackEvent).toHaveBeenCalledWith(
-            'atlassian.editor.mention.autoformatting',
+            'atlassian.fabric.mention.picker.trigger.shortcut',
           );
         } else {
           expect(trackEvent).not.toHaveBeenCalledWith(
-            'atlassian.editor.mention.autoformatting',
+            'atlassian.fabric.mention.picker.trigger.shortcut',
           );
         }
       });
