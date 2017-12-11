@@ -28,13 +28,14 @@ import {
   placeholderCursorPlugin,
   extensionPlugin,
   rulePlugin,
+  clearMarksOnChangeToEmptyDocumentPlugin,
 } from '../plugins';
 
 /**
  * Returns list of plugins that are absolutely necessary for editor to work
  */
 export function getDefaultPluginsList(): EditorPlugin[] {
-  return [pastePlugin, basePlugin, blockTypePlugin, placeholderPlugin];
+  return [pastePlugin, basePlugin, blockTypePlugin, placeholderPlugin, clearMarksOnChangeToEmptyDocumentPlugin];
 }
 
 /**
