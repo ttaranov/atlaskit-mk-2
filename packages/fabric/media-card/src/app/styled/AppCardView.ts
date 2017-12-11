@@ -44,6 +44,10 @@ const cardColors = ({ background }: CardProps) => {
 const cardOverlay = ({ background }: CardProps) => {
   if (background) {
     return css`
+      /* allow us to position the background underlay when we have a background */
+      position: relative;
+      z-index: 0;
+
       &::before {
         ${positionedBehindCard} background-color: ${akColorN20};
         background-image: url(${background});
@@ -69,10 +73,6 @@ export const Card = styled.div`
 
   min-width: 368px;
   max-width: 100%; /* make the card fit its container */
-
-  /* allow us to position the background underlay when we have a background */
-  position: relative;
-  z-index: 0;
 
   font-size: 12px;
   font-family: ${akFontFamily};
