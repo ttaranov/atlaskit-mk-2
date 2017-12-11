@@ -18,6 +18,7 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { uuid } from '@atlaskit/editor-common';
 import { changeToTaskDecision } from '../../../src/plugins/tasks-and-decisions/commands';
+import ProviderFactory from '../../../src/providerFactory';
 
 chai.use(chaiPlugin);
 
@@ -33,7 +34,11 @@ describe('tasks and decisions - commands', () => {
   const editor = (doc: any) =>
     makeEditor({
       doc,
-      plugins: tasksAndDecisionsPlugins(defaultSchema, {}),
+      plugins: tasksAndDecisionsPlugins(
+        defaultSchema,
+        {},
+        new ProviderFactory(),
+      ),
     });
 
   describe('changeToTaskDecision', () => {

@@ -29,7 +29,7 @@ export interface State {
 export default class TaskItemWithProviders extends PureComponent<Props, State> {
   state: State = { resolvedContextProvider: undefined };
 
-  componentWillMount() {
+  componentDidMount() {
     this.updateContextIdentifierProvider(this.props);
   }
 
@@ -56,7 +56,7 @@ export default class TaskItemWithProviders extends PureComponent<Props, State> {
     const {
       taskDecisionProvider,
       contextIdentifierProvider,
-      ...otherProps,
+      ...otherProps
     } = this.props;
 
     const { resolvedContextProvider } = this.state;
@@ -68,8 +68,8 @@ export default class TaskItemWithProviders extends PureComponent<Props, State> {
       <ResourcedTaskItem
         {...otherProps}
         taskDecisionProvider={taskDecisionProvider}
-        objectAri={objectId || 'bogus'}
-        containerAri={containerId || 'bogus'}
+        objectAri={objectId}
+        containerAri={containerId}
       />
     );
   }

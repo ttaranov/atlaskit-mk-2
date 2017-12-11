@@ -14,6 +14,7 @@ import {
 import tasksAndDecisionsPlugins from '../../../src/plugins/tasks-and-decisions';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import { uuid } from '@atlaskit/editor-common';
+import ProviderFactory from '../../../src/providerFactory';
 
 describe('tasks and decisions - input rules', () => {
   beforeEach(() => {
@@ -27,7 +28,11 @@ describe('tasks and decisions - input rules', () => {
   const editor = (doc: any) =>
     makeEditor({
       doc,
-      plugins: tasksAndDecisionsPlugins(defaultSchema, {}),
+      plugins: tasksAndDecisionsPlugins(
+        defaultSchema,
+        {},
+        new ProviderFactory(),
+      ),
     });
 
   describe('decisions', () => {

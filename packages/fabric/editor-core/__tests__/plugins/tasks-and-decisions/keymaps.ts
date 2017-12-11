@@ -11,6 +11,7 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import { uuid } from '@atlaskit/editor-common';
+import ProviderFactory from '../../../src/providerFactory';
 
 describe('tasks and decisions - keymaps', () => {
   beforeEach(() => {
@@ -24,7 +25,11 @@ describe('tasks and decisions - keymaps', () => {
   const editor = (doc: any) =>
     makeEditor({
       doc,
-      plugins: tasksAndDecisionsPlugins(defaultSchema, {}),
+      plugins: tasksAndDecisionsPlugins(
+        defaultSchema,
+        {},
+        new ProviderFactory(),
+      ),
     });
 
   describe('decisions', () => {

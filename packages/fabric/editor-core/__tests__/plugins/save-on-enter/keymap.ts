@@ -12,6 +12,7 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import { Plugin } from 'prosemirror-state';
+import ProviderFactory from '../../../src/providerFactory';
 
 describe('save on enter', () => {
   const onSaveSpy = jest.fn();
@@ -25,7 +26,7 @@ describe('save on enter', () => {
       doc,
       plugins: [
         createSaveOnEnterPlugin(onSaveSpy) as Plugin,
-        ...tasksAndDecisionsPlugins(defaultSchema, {}),
+        ...tasksAndDecisionsPlugins(defaultSchema, {}, new ProviderFactory()),
       ],
     });
 

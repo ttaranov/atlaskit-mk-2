@@ -41,7 +41,7 @@
     "@atlaskit/profilecard": "^3.7.1",
     "@atlaskit/single-select": "^3.0.1",
     "@atlaskit/spinner": "^4.0.8",
-    "@atlaskit/task-decision": "^4.5.0",
+    "@atlaskit/task-decision": "^4.6.0",
     "@atlaskit/tooltip": "^8.0.9",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/codemirror": "^0.0.40",
