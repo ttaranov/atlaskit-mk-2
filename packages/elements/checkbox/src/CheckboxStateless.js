@@ -52,10 +52,10 @@ class CheckboxStateless extends PureComponent<Props, State> {
   actionKeys = [' '];
 
   // expose blur/focus to consumers via ref
-  blur = (e: FocusEvent) => {
+  blur = () => {
     if (this.checkbox && this.checkbox.blur) this.checkbox.blur();
   };
-  focus = (e: FocusEvent) => {
+  focus = () => {
     if (this.checkbox && this.checkbox.focus) this.checkbox.focus();
   };
 
@@ -152,7 +152,7 @@ class CheckboxStateless extends PureComponent<Props, State> {
           type="checkbox"
           value={value}
           name={name}
-          innerRef={r => (this.checkbox = r)}
+          innerRef={r => (this.checkbox = r)} // eslint-disable-line
         />
         <Wrapper>
           <IconWrapper

@@ -1,15 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
-import Button from '@atlaskit/button';
-import Checkbox, { CheckboxStateless, CheckboxGroup } from '../src';
-import { name } from '../package.json';
-import { borderRadius, colors } from '@atlaskit/theme';
-const containerStyle = {
-  padding: 20,
-  backgroundColor: 'white',
-  width: 500,
-};
+import { CheckboxStateless } from '../src';
 
 type State = {
   isChecked: boolean,
@@ -24,9 +15,9 @@ export default class StatelessExample extends PureComponent<void, State> {
   onChange = (event: any) => {
     this.setState({
       isChecked: !this.state.isChecked,
-      onChangeResult:
-        'onChange Event with currentTarget.checked:' +
-        event.currentTarget.checked,
+      onChangeResult: `onChange Event with currentTarget.checked: ${
+        event.currentTarget.checked
+      }`,
     });
   };
 

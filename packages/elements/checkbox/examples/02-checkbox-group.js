@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import Checkbox, { CheckboxStateless, CheckboxGroup } from '../src';
+import Checkbox, { CheckboxGroup } from '../src';
 
 export default class CheckboxGroupExample extends PureComponent<void> {
   render() {
