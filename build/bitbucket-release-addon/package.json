@@ -4,7 +4,6 @@
   "private": true,
   "description": "Bitbucket addon for displaying releases section in PRs",
   "scripts": {
-    "test": "echo 'Nothing to see here'",
     "dev": "webpack-dev-server --content-base dist/",
     "build": "webpack -p",
     "deploy": "yarn build && netlify deploy"
