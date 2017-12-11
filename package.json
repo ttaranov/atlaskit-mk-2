@@ -99,7 +99,7 @@
     "eslint-plugin-prefer-object-spread": "^1.2.1",
     "eslint-plugin-prettier": "^2.3.1",
     "eslint-plugin-react": "^7.1.0",
-    "extract-react-types": "^0.4.0",
+    "extract-react-types": "^0.4.1",
     "fetch-mock": "^5.12.1",
     "file-loader": "^0.11.2",
     "flow-bin": "^0.53.0",
@@ -154,8 +154,6 @@
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/analytics": "^2.3.2",
-    "@atlaskit/button": "^5.4.8",
-    "@atlaskit/button-group": "^1.5.3",
     "@atlaskit/comment": "^2.6.7",
     "@atlaskit/css-reset": "^1.1.5",
     "@atlaskit/dropdown-menu": "^3.0.1",
