@@ -11,7 +11,7 @@ type Props = {
   innerRef: () => any,
 };
 
-class CustomComponent extends Component<Props, {}> {
+class CustomComponent extends Component<Props, *> {
   render() {
     const { children, innerRef, ...props } = this.props;
     return <div {...props}>{children}</div>;
