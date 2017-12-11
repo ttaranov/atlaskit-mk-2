@@ -1536,5 +1536,24 @@ System.out.println("There are " + count + " values >= 5");`,
         },
       ],
     },
+    {
+      type: 'extension',
+      attrs: {
+        extensionType: 'com.atlassian.fabric',
+        extensionKey: 'clock',
+        bodyType: 'rich',
+      },
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'This is the default content of the extension',
+            },
+          ],
+        },
+      ],
+    },
   ],
 };
