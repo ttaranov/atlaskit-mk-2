@@ -1,5 +1,11 @@
 # @atlaskit/button
 
+## 6.0.0
+- [major] Remove typescript [4635000](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4635000)
+- [major] Remove typescript [4635000](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4635000)
+- [patch] Move button to new repo, tidy types [2dafda6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2dafda6)
+- [patch] Move button to new repo, tidy types [2dafda6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2dafda6)
+
 ## 5.4.14 (2017-12-01)
 
 * bug fix; fix button group spacing (issues closed: ak-3978) ([f0037f2](https://bitbucket.org/atlassian/atlaskit/commits/f0037f2))

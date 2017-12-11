@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 60.13.1
+
 ## 60.13.0
 - [minor] Remove marks on change to empty document [b5eec07](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5eec07)
 - [minor] Remove marks on change to empty document [b5eec07](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5eec07)
