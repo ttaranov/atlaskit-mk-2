@@ -30,7 +30,7 @@
     "rxjs": "^5.1.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^5.4.8",
+    "@atlaskit/button": "^5.4.14",
     "@atlaskit/docs": "^2.0.0",
     "styled-components": "^1.4.6"
   }

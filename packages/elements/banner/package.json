@@ -23,7 +23,7 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/button": "^5.4.8",
+    "@atlaskit/button": "^5.4.14",
     "@atlaskit/docs": "^2.0.0",
     "@atlaskit/icon": "^10.3.1",
     "enzyme": "^2.9.1"

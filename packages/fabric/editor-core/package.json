@@ -23,7 +23,7 @@
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/analytics": "^2.3.2",
     "@atlaskit/avatar": "^8.3.7",
-    "@atlaskit/button": "^5.4.8",
+    "@atlaskit/button": "^5.4.14",
     "@atlaskit/code": "^2.1.11",
     "@atlaskit/droplist": "^4.11.3",
     "@atlaskit/editor-common": "^4.3.2",

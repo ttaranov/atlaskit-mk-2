@@ -16,7 +16,7 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
-    "@atlaskit/button": "^5.4.8",
+    "@atlaskit/button": "^5.4.14",
     "@atlaskit/editor-core": "^60.13.0",
     "@atlaskit/editor-jira-transformer": "^2.1.2",
     "@atlaskit/editor-json-transformer": "^2.1.2",

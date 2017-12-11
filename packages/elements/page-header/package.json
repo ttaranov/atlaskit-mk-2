@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@atlaskit/breadcrumbs": "^3.1.5",
-    "@atlaskit/button": "^5.4.8",
+    "@atlaskit/button": "^5.4.14",
     "@atlaskit/docs": "2.0.0",
     "@atlaskit/field-text": "^4.0.0",
     "@atlaskit/single-select": "^3.0.1",

@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@atlaskit/badge": "^6.1.6",
-    "@atlaskit/button": "^5.4.8",
+    "@atlaskit/button": "^5.4.14",
     "@atlaskit/code": "^2.1.9",
     "@atlaskit/css-reset": "^1.1.5",
     "@atlaskit/dynamic-table": "^6.0.2",
