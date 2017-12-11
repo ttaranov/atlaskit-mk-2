@@ -47,6 +47,12 @@ async function push(args = []) {
   return gitCmd.code === 0;
 }
 
+// used to create a single tag at a time for the current head only
+async function tag(tagStr) {
+  const gitCmd = await spawn('git', ['tag', tag]);
+  return gitCmd.code === 0;
+}
+
 async function rebase(maxAttempts = 3) {
   let attempts = 0;
   let rebased = false;
@@ -212,6 +218,7 @@ module.exports = {
   add,
   commit,
   push,
+  tag,
   rebase,
   rebaseAndPush,
   getUnpublishedChangesetCommits,
