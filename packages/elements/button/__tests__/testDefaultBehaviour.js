@@ -1,7 +1,8 @@
+// @flow
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 
-import Button from '../../src/index';
+import Button from '../src/index';
 
 describe('ak-button/default-behaviour', () => {
   it('button should have type="button" by default', () =>

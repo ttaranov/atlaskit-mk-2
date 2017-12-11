@@ -1,30 +1,34 @@
-import getButtonProps from '../../src/components/getButtonProps';
+// @flow
+import React from 'react';
+import { shallow, mount } from 'enzyme';
+
+import getButtonProps from '../src/components/getButtonProps';
+import Button from '../src';
+
+const Component = () => null;
 
 let component;
 
 describe('getButtonProps', () => {
   beforeEach(() => {
-    component = {
-      state: {},
-      props: {},
-    };
+    component = <Button />;
   });
 
   it('should pass through all props to a custom component', () => {
-    component.props.component = () => {};
-    component.props.customProp = 1;
-
-    expect(getButtonProps(component).customProp).toBe(1);
+    const cmp = mount(<Button customProp={1} component={Component} />);
+    expect(cmp.find('StyledComponent').prop('customProp')).toBe(1);
   });
 
   it('should not pass through all props to an inbuilt component', () => {
-    component.customProp = 1;
+    const cmp = mount(<Button customProp={1} />);
 
-    expect(getButtonProps(component).customProp).toBeUndefined();
+    expect(cmp.find('StyledComponent').prop('customProp')).toBeUndefined();
   });
 
   it('should add appearance props', () => {
-    expect(Object.keys(getButtonProps(component))).toEqual(
+    const cmp = mount(<Button />);
+
+    expect(Object.keys(cmp.find('StyledComponent').props())).toEqual(
       expect.arrayContaining([
         'appearance',
         'className',
@@ -40,17 +44,17 @@ describe('getButtonProps', () => {
   });
 
   it("should pass interaction state props from the component's state", () => {
-    component.state.isActive = 1;
-    component.state.isFocus = 2;
-    component.state.isHover = 3;
+    const cmp = mount(<Button />);
 
-    expect(getButtonProps(component).isActive).toBe(1);
-    expect(getButtonProps(component).isFocus).toBe(2);
-    expect(getButtonProps(component).isHover).toBe(3);
+    expect(cmp.find('StyledComponent').prop('isActive')).toBe(false);
+    expect(cmp.find('StyledComponent').prop('isFocus')).toBe(false);
+    expect(cmp.find('StyledComponent').prop('isHover')).toBe(false);
   });
 
   it('should add interaction handler props', () => {
-    expect(Object.keys(getButtonProps(component))).toEqual(
+    const cmp = mount(<Button />);
+
+    expect(Object.keys(cmp.find('StyledComponent').props())).toEqual(
       expect.arrayContaining([
         'onBlur',
         'onFocus',
@@ -63,30 +67,49 @@ describe('getButtonProps', () => {
   });
 
   it('should pass interaction handler functions directly from the component', () => {
-    component.onBlur = 1;
-    component.onFocus = 2;
-    component.onMouseDown = 3;
-    component.onMouseEnter = 4;
-    component.onMouseLeave = 5;
-    component.onMouseUp = 6;
+    const onBlur = () => {};
+    const onFocus = () => {};
+    const onMouseDown = () => {};
+    const onMouseEnter = () => {};
+    const onMouseLeave = () => {};
+    const onMouseUp = () => {};
 
-    expect(getButtonProps(component).onBlur).toBe(1);
-    expect(getButtonProps(component).onFocus).toBe(2);
-    expect(getButtonProps(component).onMouseDown).toBe(3);
-    expect(getButtonProps(component).onMouseEnter).toBe(4);
-    expect(getButtonProps(component).onMouseLeave).toBe(5);
-    expect(getButtonProps(component).onMouseUp).toBe(6);
+    const cmp = mount(
+      <Button
+        onBlur={onBlur}
+        onFocus={onFocus}
+        onMouseDown={onMouseDown}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        onMouseUp={onMouseUp}
+      />,
+    );
+
+    expect(cmp.find('StyledComponent').prop('onBlur')).not.toBe(onBlur);
+    expect(cmp.find('StyledComponent').prop('onFocus')).not.toBe(onFocus);
+    expect(cmp.find('StyledComponent').prop('onMouseDown')).not.toBe(
+      onMouseDown,
+    );
+    expect(cmp.find('StyledComponent').prop('onMouseEnter')).not.toBe(
+      onMouseEnter,
+    );
+    expect(cmp.find('StyledComponent').prop('onMouseLeave')).not.toBe(
+      onMouseLeave,
+    );
+    expect(cmp.find('StyledComponent').prop('onMouseUp')).not.toBe(onMouseUp);
   });
 
   it('should pass the onClick handler from props', () => {
-    component.onClick = 1;
-    component.props.onClick = 2;
+    const onClick = () => {};
+    const cmp = mount(<Button onClick={onClick} />);
 
-    expect(getButtonProps(component).onClick).toBe(2);
+    expect(cmp.find('StyledComponent').prop('onClick')).toBe(onClick);
   });
 
   it('should add aria, form, id and type props to a button', () => {
-    expect(Object.keys(getButtonProps(component))).toEqual(
+    const cmp = mount(<Button />);
+
+    expect(Object.keys(cmp.find('StyledComponent').props())).toEqual(
       expect.arrayContaining([
         'aria-haspopup',
         'aria-expanded',
@@ -97,9 +120,9 @@ describe('getButtonProps', () => {
       ]),
     );
 
-    component.props.href = '#';
+    const cmp2 = mount(<Button href="#" />);
 
-    expect(Object.keys(getButtonProps(component))).not.toEqual(
+    expect(Object.keys(cmp2.find('StyledComponent').props())).not.toEqual(
       expect.arrayContaining([
         'aria-haspopup',
         'aria-expanded',
@@ -112,15 +135,15 @@ describe('getButtonProps', () => {
   });
 
   it('should add href and target props to a link', () => {
-    component.props.href = '#';
+    const cmp = mount(<Button href="#" />);
 
-    expect(Object.keys(getButtonProps(component))).toEqual(
+    expect(Object.keys(cmp.find('StyledComponent').props())).toEqual(
       expect.arrayContaining(['href', 'target']),
     );
 
-    component.props.isDisabled = true;
+    const cmp2 = mount(<Button href="#" isDisabled />);
 
-    expect(Object.keys(getButtonProps(component))).not.toEqual(
+    expect(Object.keys(cmp2.find('StyledComponent').props())).not.toEqual(
       expect.arrayContaining(['href', 'target']),
     );
   });

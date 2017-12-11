@@ -1,4 +1,5 @@
-import { getPropertyAppearance } from '../../src/styled/getButtonStyles';
+// @flow
+import { getPropertyAppearance } from '../src/styled/getButtonStyles';
 
 const themeDefinitions = {
   fallbacks: {
