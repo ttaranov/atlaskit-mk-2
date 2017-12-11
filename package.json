@@ -159,13 +159,9 @@
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/analytics": "^2.3.2",
-<<<<<<< HEAD
-=======
     "@atlaskit/blanket": "^3.0.0",
     "@atlaskit/button-group": "^1.5.3",
->>>>>>> b524ae7d8... fix withRenderTarget config bug. add some Flow types
     "@atlaskit/comment": "^2.6.7",
-    "@atlaskit/button": "^5.4.8",
     "@atlaskit/css-reset": "^1.1.5",
     "@atlaskit/dropdown-menu": "^3.0.1",
     "@atlaskit/droplist": "^4.11.3",
