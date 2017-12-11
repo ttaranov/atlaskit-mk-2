@@ -1,8 +1,7 @@
 // @flow
-
 import React, { PureComponent } from 'react';
 import Subtree from './Subtree';
-
+import Loader from './Loader';
 import { type DataFunction } from './../types';
 
 type Props = {
@@ -10,10 +9,48 @@ type Props = {
   getChildrenData: DataFunction,
   depth?: number,
   render?: Function,
-  isLoading?: boolean,
+  // isLoading?: boolean,
 };
 
 export default class RowChildren extends PureComponent<Props> {
+  state = {
+    isLoaderShown: this.isLoadingData(this.props && this.props.childrenData),
+  };
+
+  constructor() {
+    super();
+    this.handleLoadingFinished = this.handleLoadingFinished.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.childrenData !== this.props.childrenData) {
+      if (this.isLoadingData(nextProps.childrenData)) {
+        this.setState({ isLoaderShown: true });
+      }
+    }
+  }
+
+  isLoadingData(data) {
+    return !data;
+  }
+
+  handleLoadingFinished() {
+    this.setState({
+      isLoaderShown: false,
+    });
+  }
+
+  renderLoader() {
+    const isCompleting = !this.isLoadingData(this.props.childrenData);
+    return (
+      <Loader
+        isCompleting={isCompleting}
+        onComplete={this.handleLoadingFinished}
+        depth={this.props.depth}
+      />
+    );
+  }
+
   renderChildRows() {
     const {
       childrenData = [],
@@ -33,9 +70,9 @@ export default class RowChildren extends PureComponent<Props> {
   }
 
   render() {
-    const { isLoading } = this.props;
+    const { isLoaderShown } = this.state;
     return (
-      <div>{isLoading ? this.renderLoading() : this.renderChildRows()}</div>
+      <div>{isLoaderShown ? this.renderLoader() : this.renderChildRows()}</div>
     );
   }
 }

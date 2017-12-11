@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import { TreeTable } from '../src/index';
+import TreeTable from '../src/index';
 import staticData from './data-structured-nodes.json';
 
 /* eslint react/prop-types: 0 */

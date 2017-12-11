@@ -3,8 +3,6 @@ import React, { PureComponent } from 'react';
 import RowChildren from './RowChildren';
 import { type DataFunction } from './../types';
 
-import Loader from './Loader';
-
 type Props = {
   data: Object,
   getChildrenData: DataFunction,
@@ -26,7 +24,6 @@ export default class Subtree extends PureComponent<Props> {
   constructor() {
     super();
     this.handleExpandToggleClick = this.handleExpandToggleClick.bind(this);
-    this.handleLoadingFinished = this.handleLoadingFinished.bind(this);
   }
 
   handleExpandToggleClick() {
@@ -48,42 +45,9 @@ export default class Subtree extends PureComponent<Props> {
     });
   }
 
-  handleLoadingFinished() {
-    this.setState({
-      isLoading: false,
-    });
-  }
-
-  renderLoading() {
-    const isCompleting = !!this.state.childrenData;
-    return (
-      <Loader
-        isCompleting={isCompleting}
-        onComplete={this.handleLoadingFinished}
-        depth={this.props.depth}
-      />
-    );
-  }
-
-  renderRowChildren() {
-    const { getChildrenData, depth, render } = this.props;
-    const { isExpanded, childrenData } = this.state;
-    return (
-      isExpanded && (
-        <RowChildren
-          childrenData={childrenData}
-          isExpanded={isExpanded}
-          depth={depth}
-          getChildrenData={getChildrenData}
-          render={render}
-        />
-      )
-    );
-  }
-
   render() {
-    const { depth, data, render } = this.props;
-    const { isLoading } = this.state;
+    const { depth, data, render, getChildrenData } = this.props;
+    const { isExpanded, childrenData } = this.state;
 
     let rowData = render(data);
     if (!rowData) {
@@ -93,13 +57,20 @@ export default class Subtree extends PureComponent<Props> {
       onExpandToggle: this.handleExpandToggleClick,
       depth,
       data,
-      isExpanded: this.state.isExpanded,
+      isExpanded,
     });
     const key = rowData.props.key;
     return (
       <div key={key}>
         {rowData}
-        {isLoading ? this.renderLoading() : this.renderRowChildren()}
+        {isExpanded && (
+          <RowChildren
+            childrenData={childrenData}
+            depth={depth}
+            getChildrenData={getChildrenData}
+            render={render}
+          />
+        )}
       </div>
     );
   }
