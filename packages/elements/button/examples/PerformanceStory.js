@@ -1,5 +1,5 @@
 // @flow
-/* eslint-disable react/prop-types, react/no-multi-comp, no-plusplus  */
+/* eslint-disable react/prop-types, react/no-multi-comp  */
 
 import React, { Component, type Node } from 'react';
 import styled from 'styled-components';
@@ -13,7 +13,7 @@ type Props = {
 
 class CustomComponent extends Component<Props, {}> {
   render() {
-    const { children, innerRef, ...props } = this.props; // eslint-disable-line
+    const { children, innerRef, ...props } = this.props;
     return <div {...props}>{children}</div>;
   }
 }
@@ -70,7 +70,6 @@ class PerfTest extends Component<{}, State> {
           <Button appearance="danger">Button {buttonNumber + 2}</Button>
           <Button appearance="primary">Button {buttonNumber + 3}</Button>
           <Button appearance="help">Button {buttonNumber + 4}</Button>
-          {/* $FlowFixMe */}
           <Button component={CustomComponent}>Button {buttonNumber + 5}</Button>
         </Buttons>,
       );
