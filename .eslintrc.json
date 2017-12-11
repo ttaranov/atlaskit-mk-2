@@ -30,7 +30,8 @@
     "no-await-in-loop": "off",
 
     "no-mixed-operators": "off",
-
+    "no-plusplus": "off",
+    
     "react/sort-comp": "off",
     "react/jsx-filename-extension": "off",
     "react/require-default-props": "off",
@@ -38,7 +39,7 @@
 
     "flowtype/require-valid-file-annotation": [2, "always", { "annotationStyle": "line" }],
     "flowtype/define-flow-type": 1,
-    
+
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",
     "jest/no-identical-title": "error",

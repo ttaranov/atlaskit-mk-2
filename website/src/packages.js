@@ -41,6 +41,7 @@ const allPackages = {
     key: 'progress-indicator',
     name: 'Progress Indicator',
   },
+  'progress-tracker': { key: 'progress-tracker', name: 'Progress Tracker' },
   'single-select': { key: 'single-select', name: 'Select (Single)' },
   spinner: { key: 'spinner', name: 'Spinner' },
   tabs: { key: 'tabs', name: 'Tabs' },

@@ -1,5 +1,11 @@
 # @atlaskit/size-detector
 
+## 2.0.4
+
+## 2.0.3
+- [patch] Minor adjustment to size-detector to satisfy migration requirements [a5fb97d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5fb97d)
+- [patch] migrated to atlaskit-mk-2 [c606eb2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c606eb2)
+
 ## 2.0.2 (2017-10-22)
 
 * bug fix; update styled-components dep and react peerDep ([6a67bf8](https://bitbucket.org/atlassian/atlaskit/commits/6a67bf8))

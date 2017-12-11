@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { CalendarStateless } from '../src';
-import { getDates } from './_';
+import { getDates } from './utils/_';
 
 export default () => (
   <div>

@@ -5,15 +5,8 @@
     {
       "type": "extension",
       "attrs": {
-        "bodyType": "none",
         "extensionType": "com.atlassian.confluence.macro"
-      },
-      "content": [
-        {
-          "type": "paragraph",
-          "content": []
-        }
-      ]
+      }
     }
   ]
 }

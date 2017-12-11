@@ -4,10 +4,10 @@ import ProviderFactory from '../../src/providerFactory';
 import Extension from '../../src/ui/Extension';
 import ExtensionComponent from '../../src/ui/Extension/ExtensionComponent';
 import { macroProviderPromise } from '../../example-helpers/mock-macro-provider';
-import { inlineMacroData } from '../../example-helpers/mock-macro-data';
+import { extensionData } from '../../example-helpers/mock-extension-data';
 
 describe('@atlaskit/editor-core/ui/Extension', () => {
-  const node = inlineMacroData[0] as any;
+  const node = extensionData[0] as any;
   const noop: any = () => {};
 
   it('should render macro component', () => {
@@ -24,7 +24,7 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
     extension.unmount();
   });
 
-  it('should pass macroProvider into MacroComponent', () => {
+  it('should pass macroProvider into ExtensionComponent', () => {
     const providerFactory = new ProviderFactory();
     providerFactory.setProvider('macroProvider', macroProviderPromise);
 

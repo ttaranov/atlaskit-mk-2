@@ -10,6 +10,7 @@ import {
 import {
   isEmpty,
   isEmptyParagraph,
+  isEmptyDocument,
   preprocessDoc,
 } from '../../../src/editor/utils/document';
 // import schema from '../../../src/test-helper/schema';
@@ -45,6 +46,33 @@ describe(name, () => {
 
       it('should return false if node contains non-empty block nodes', () => {
         expect(isEmpty(doc(p(), p('some text'), p()))).toBe(false);
+      });
+    });
+
+    describe('isEmptyDocument', () => {
+      it('should return true if node looks like an empty document', () => {
+        const node = doc(p(''));
+        expect(isEmptyDocument(node)).toBe(true);
+      });
+
+      it('should return false if node has text content', () => {
+        const node = doc(p('hello world'));
+        expect(isEmptyDocument(node)).toBe(false);
+      });
+
+      it('should return false if node has multiple empty children', () => {
+        const node = doc(p(), p());
+        expect(isEmptyDocument(node)).toBe(false);
+      });
+
+      it('should return false if node has no paragraph node', () => {
+        const node = doc();
+        expect(isEmptyDocument(node)).toBe(false);
+      });
+
+      it('should return false if node has block content', () => {
+        const node = doc(decisionList({})(decisionItem({})()));
+        expect(isEmptyDocument(node)).toBe(false);
       });
     });
 

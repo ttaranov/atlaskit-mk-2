@@ -60,7 +60,8 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
         return false;
       }
 
-      const previousNodeType = previousPos.pos > 0 && previousPos.node(1).type;
+      const previousNodeType =
+        previousPos.pos > 0 && previousPos.node(1) && previousPos.node(1).type;
       const parentNodeType = $from.node(1).type;
       const previousNodeIsList =
         previousNodeType === decisionList || previousNodeType === taskList;

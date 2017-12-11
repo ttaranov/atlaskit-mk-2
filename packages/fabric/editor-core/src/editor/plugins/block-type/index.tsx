@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { heading, blockquote, rule, hardBreak } from '@atlaskit/editor-common';
+import { heading, blockquote, hardBreak } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from '../../../plugins/block-type';
 import inputRulePlugin from '../../../plugins/block-type/input-rule';
@@ -10,7 +10,6 @@ const blockType: EditorPlugin = {
     return [
       { name: 'heading', node: heading, rank: 600 },
       { name: 'blockquote', node: blockquote, rank: 700 },
-      { name: 'rule', node: rule, rank: 1000 },
       { name: 'hardBreak', node: hardBreak, rank: 1500 },
     ];
   },

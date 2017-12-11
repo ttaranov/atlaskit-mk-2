@@ -8,7 +8,7 @@ import {
   doc,
   makeEditor,
   p as paragraph,
-  extension,
+  bodiedExtension,
 } from '@atlaskit/editor-test-helpers';
 import {
   setExtensionElement,
@@ -38,7 +38,7 @@ describe('extension', () => {
     describe('setExtensionElement', () => {
       it('should set "element" prop in plugin state to a DOM node', () => {
         const { editorView } = editor(
-          doc(extension(extensionAttrs, paragraph('te{<>}xt'))),
+          doc(bodiedExtension(extensionAttrs, paragraph('te{<>}xt'))),
         );
         const element = document.createElement('span');
         document.body.appendChild(element);
@@ -57,7 +57,7 @@ describe('extension', () => {
     describe('editExtension', () => {
       it('should return false if macroProvider is not available', () => {
         const { editorView: { state, dispatch } } = editor(
-          doc(extension(extensionAttrs, paragraph('te{<>}xt'))),
+          doc(bodiedExtension(extensionAttrs, paragraph('te{<>}xt'))),
         );
         expect(editExtension(null)(state, dispatch)).toBe(false);
       });
@@ -70,7 +70,7 @@ describe('extension', () => {
       });
       it('should return true if macroProvider is available and cursor is inside extension node', async () => {
         const { editorView: { state, dispatch } } = editor(
-          doc(extension(extensionAttrs, paragraph('te{<>}xt'))),
+          doc(bodiedExtension(extensionAttrs, paragraph('te{<>}xt'))),
         );
         const provider = await macroProviderPromise;
         expect(editExtension(provider)(state, dispatch)).toBe(true);
@@ -80,7 +80,7 @@ describe('extension', () => {
     describe('removeExtension', () => {
       it('should set "element" prop in plugin state to null and remove the node', () => {
         const { editorView } = editor(
-          doc(extension(extensionAttrs, paragraph('te{<>}xt'))),
+          doc(bodiedExtension(extensionAttrs, paragraph('te{<>}xt'))),
         );
         const element = document.createElement('span');
         document.body.appendChild(element);
@@ -99,7 +99,7 @@ describe('extension', () => {
     describe('selectExtension', () => {
       it('should create a NodeSelection and return true', () => {
         const { editorView } = editor(
-          doc(extension(extensionAttrs, paragraph('te{<>}xt'))),
+          doc(bodiedExtension(extensionAttrs, paragraph('te{<>}xt'))),
         );
         expect(selectExtension(editorView.state, editorView.dispatch)).toBe(
           true,

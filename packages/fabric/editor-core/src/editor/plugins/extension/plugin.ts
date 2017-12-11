@@ -47,6 +47,7 @@ export default (dispatch: Dispatch, providerFactory: ProviderFactory) =>
     props: {
       nodeViews: {
         extension: ExtensionNodeView(providerFactory),
+        bodiedExtension: ExtensionNodeView(providerFactory),
         inlineExtension: ExtensionNodeView(providerFactory),
       },
     },

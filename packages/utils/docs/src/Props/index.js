@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
 import Description from './Description';
+import convert from './kindToString';
 import { H2 } from './Heading';
 import PrettyPropType from './PrettyPropType';
 
@@ -17,7 +18,7 @@ const Heading = styled.h3`
 `;
 
 const HeadingDefault = styled.code`
-  color: ${themed({ light: colors.subtleText, dark: colors.subtleText })};
+  color: ${colors.subtleText};
 `;
 
 const HeadingRequired = styled.span`
@@ -53,9 +54,15 @@ const Wrapper = styled.div`
   }
 `;
 
-const PageWrapper = ({ children }: { children: Node }) => (
+const PageWrapper = ({
+  children,
+  heading,
+}: {
+  children: Node,
+  heading?: string,
+}) => (
   <Wrapper>
-    <H2>Props</H2>
+    <H2>{heading || 'Props'}</H2>
     {children}
   </Wrapper>
 );
@@ -64,13 +71,34 @@ type PropTypeHeadingProps = {
   name: string,
   required: boolean,
   type: any,
-  defaultValue?: any, // eslint-disable-line react/require-default-props
+  // This is probably giving up
+  defaultValue?: any,
+};
+
+const resolveFromGeneric = type => {
+  if (type.value.kind === 'generic') return resolveFromGeneric(type.value);
+  return type.value;
 };
 
 function PropTypeHeading(props: PropTypeHeadingProps) {
   let typeName = props.type.kind;
   if (typeName === 'nullable') {
     typeName = `?${props.type.arguments.kind}`;
+  } else if (typeName === 'union') {
+    typeName = 'set options';
+  } else if (typeName === 'generic') {
+    const r = resolveFromGeneric(props.type);
+    if (r.kind === 'external') {
+      typeName = `${r.moduleSpecifier}.${r.name}`;
+    } else {
+      typeName = r.kind;
+    }
+  }
+
+  let defaultValue = null;
+
+  if (props.defaultValue) {
+    defaultValue = `${convert(props.defaultValue)}`;
   }
 
   return (
@@ -78,32 +106,74 @@ function PropTypeHeading(props: PropTypeHeadingProps) {
       <code>
         <HeadingName>{props.name}</HeadingName>
         <HeadingType>{typeName}</HeadingType>
-        {props.defaultValue ? (
-          <HeadingDefault> = {props.defaultValue.value}</HeadingDefault>
-        ) : null}
+        {defaultValue && <HeadingDefault> = {defaultValue}</HeadingDefault>}
         {props.required ? <HeadingRequired> required</HeadingRequired> : null}
       </code>
     </Heading>
   );
 }
 
+const reduceToObj = type => {
+  if (type.kind === 'generic') {
+    return reduceToObj(type.value);
+  } else if (type.kind === 'object') {
+    return type.members;
+  }
+  // eslint-disable-next-line no-console
+  console.warn('was expecting to reduce to an object and could not', type);
+  return [];
+};
+
+type Obj = {
+  kind: 'object',
+  members: Array<any>,
+};
+
+type Gen = {
+  kind: 'generic',
+  value: any,
+};
+
+type Inter = {
+  kind: 'intersection',
+  types: Array<Obj | Gen>,
+};
+
 type DynamicPropsProps = {
+  heading?: string,
   props: {
-    classes: Array<{
-      props: Array<any>,
+    classes?: Array<{
+      kind: string,
+      value: Obj | Inter,
     }>,
   },
+};
+
+const getPropTypes = propTypesObj => {
+  let propTypes;
+  if (propTypesObj.kind === 'object') {
+    propTypes = propTypesObj.members;
+  } else if (propTypesObj.kind === 'intersection') {
+    propTypes = propTypesObj.types.reduce(
+      (acc, type) => [...acc, ...reduceToObj(type)],
+      [],
+    );
+  }
+  return propTypes;
 };
 
 export default function DynamicProps(props: DynamicPropsProps) {
   const classes = props.props && props.props.classes;
   if (!classes) return null;
 
-  const propTypes = classes[0] && classes[0].props;
+  const propTypesObj = classes[0] && classes[0].value;
+  if (!propTypesObj) return null;
+
+  const propTypes = getPropTypes(propTypesObj);
   if (!propTypes) return null;
 
   return (
-    <PageWrapper>
+    <PageWrapper heading={props.heading}>
       {propTypes.map(propType => {
         let description;
         if (propType.leadingComments) {
@@ -127,6 +197,7 @@ export default function DynamicProps(props: DynamicPropsProps) {
               name={propType.key}
               required={!propType.optional}
               type={propType.value}
+              defaultValue={propType.default}
             />
             {description && <Description>{description}</Description>}
             <PrettyPropType type={propType.value} />
