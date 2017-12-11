@@ -1,0 +1,1 @@
+{"baseUrl":"http://localhost:8081","usingVersions":false,"html":{"popup":"./html/popup.html","popupInject":"./html/popup/popup.html","dropzone":"./html/dropzone.html","redirectUrl":"./html/link-account-handler/handler.html","userMethodsHelperUrl":"./html/user-methods-helper/helper.html"},"version":"12.0.0"}

@@ -1,0 +1,128 @@
+import { shallow } from 'enzyme';
+import * as React from 'react';
+import { getComponentClassWithStore, mockState, mockStore } from '../../mocks';
+import {
+  StatelessSidebar,
+  default as ConnectedSidebar,
+} from '../../../../src/popup/components/sidebar/sidebar';
+import {
+  ServiceList,
+  Separator,
+} from '../../../../src/popup/components/sidebar/styled';
+import SidebarItem from '../../../../src/popup/components/sidebar/item/sidebarItem';
+
+const ConnectedSidebarWithStore = getComponentClassWithStore(ConnectedSidebar);
+
+const createConnectedComponent = () => {
+  const store = mockStore();
+  const dispatch = store.dispatch;
+  const component = shallow(<ConnectedSidebarWithStore store={store} />).find(
+    StatelessSidebar,
+  );
+  return { component, dispatch };
+};
+
+const setUserAgent = (stubedAgent: string) => {
+  (navigator as any).__defineGetter__('userAgent', function() {
+    return stubedAgent;
+  });
+};
+
+describe('<Sidebar />', () => {
+  it('should deliver all required props to stateless component', () => {
+    const { component } = createConnectedComponent();
+    const props = component.props();
+    expect(props.selected).toEqual(mockState.view.service.name);
+  });
+
+  describe('#render()', () => {
+    test('should render ServiceList, 3 SidebarItems and Separator', () => {
+      const element = shallow(<StatelessSidebar selected="" />);
+
+      expect(element.find(ServiceList)).toHaveLength(1);
+      expect(element.find(SidebarItem)).toHaveLength(3);
+      expect(element.find(Separator)).toHaveLength(1);
+    });
+
+    test('should not render dropbox and google drive option when navigator.userAgent starts with "Stride"', () => {
+      const previousUserAgent = navigator.userAgent;
+      setUserAgent(
+        'Stride Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) ...',
+      );
+
+      const element = shallow(<StatelessSidebar selected="" />);
+
+      expect(element.find(ServiceList)).toHaveLength(1);
+      expect(element.find(SidebarItem)).toHaveLength(1);
+      expect(element.find(Separator)).toHaveLength(0);
+      expect(element.find(SidebarItem).props().serviceName).toEqual('upload');
+
+      setUserAgent(previousUserAgent);
+    });
+
+    test('should use selected prop to pass isActive prop to SidebarItem components', () => {
+      const uploadElement = shallow(<StatelessSidebar selected="upload" />);
+
+      const dropBoxElement = shallow(<StatelessSidebar selected="dropbox" />);
+
+      const googleElement = shallow(<StatelessSidebar selected="google" />);
+
+      expect(
+        uploadElement
+          .find(SidebarItem)
+          .find({ serviceName: 'upload' })
+          .prop('isActive'),
+      ).toBe(true);
+      expect(
+        uploadElement
+          .find(SidebarItem)
+          .find({ serviceName: 'dropbox' })
+          .prop('isActive'),
+      ).toBe(false);
+      expect(
+        uploadElement
+          .find(SidebarItem)
+          .find({ serviceName: 'google' })
+          .prop('isActive'),
+      ).toBe(false);
+
+      expect(
+        dropBoxElement
+          .find(SidebarItem)
+          .find({ serviceName: 'upload' })
+          .prop('isActive'),
+      ).toBe(false);
+      expect(
+        dropBoxElement
+          .find(SidebarItem)
+          .find({ serviceName: 'dropbox' })
+          .prop('isActive'),
+      ).toBe(true);
+      expect(
+        dropBoxElement
+          .find(SidebarItem)
+          .find({ serviceName: 'google' })
+          .prop('isActive'),
+      ).toBe(false);
+
+      expect(
+        googleElement
+          .find(SidebarItem)
+          .find({ serviceName: 'upload' })
+          .prop('isActive'),
+      ).toBe(false);
+      expect(
+        googleElement
+          .find(SidebarItem)
+          .find({ serviceName: 'dropbox' })
+          .prop('isActive'),
+      ).toBe(false);
+      expect(
+        googleElement
+          .find(SidebarItem)
+          .find({ serviceName: 'google' })
+          .prop('isActive'),
+      ).toBe(true);
+    });
+  });
+});

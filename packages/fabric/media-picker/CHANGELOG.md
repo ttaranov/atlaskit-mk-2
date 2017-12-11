@@ -1,0 +1,108 @@
+## MediaPicker
+
+#### 15.0.0 (2017-12-05)
+ * **breaking:**
+    * Renamed public event payload types and interfaces to be consistant with internal event types
+      * If you have previously used these types, you will need to switch to the newly renamed types
+      * e.g. UploadsStartPayload to UploadsStartEventPayload
+    * Tightened the allowable events listenable by component type
+      * e.g. you can no longer listen to Popup specific events from non-popup components
+
+#### 14.1.0 (2017-12-05)
+ * **minor:**
+    * Various code quality improvements. Cleanup work after popup iframe removal.
+    * Using AK colors and fonts remove upload section
+    * Display different files with different icons in remove upload section.
+
+#### 14.0.0 (2017-12-04)
+ * **breaking:**
+    * `@atlaskit/media-core` peer dependency was bumped to `^12.0.0` 
+ 
+#### 13.0.0 (2017-11-30)
+ * **breaking:**
+    * Popup is no longer deployed to S3 location
+      * embedded iframe is no longer required
+    * Popup styling has been changed to be responsive
+    * Fixes some styling problems with the Popup dialog
+    * Fixes a regression of the Load More button in cloud picking
+    * ie: API has not changed
+
+#### 12.0.0 (2017-11-21)
+ * **breaking:**
+    * `upload-start` event triggered for each of the files is removed. Instead `uploads-start` was 
+    introduced that is triggered for all files once. It's payload is an object with `files` key holding
+    a list of object of type `UploadFile` (same interface as removed `upload-start`'s payload `file` object)  
+   
+#### 11.1.9 (2017-11-17)
+
+  * **patch**
+    * Disables cloud picking (Dropbox and Google Drive) when Popup is embedded within the Stride Electron app
+      * Popup internally checks the `navigator.userAgent` to see whether it starts with "Stride" to determine whether to disable cloud picking
+    * Fixes race condition with Media Picker Popup `teardown()` and `init()`
+      * Previously, if consumers were to call init() after a teardown() some of the required setup config for Popup would be missing from the iframes url query string
+
+#### 11.1.8 (2017-11-16)
+ * **patch:**
+    * Fix ASAP support for all local media pickers (binary, browse, etc)
+    
+#### 11.1.7 (2017-11-15)
+ * **patch:**
+    * Refactored app.tsx to be connected to the redux store.
+
+#### 11.1.6 (2017-11-10)
+ * **patch:**
+    * Fix a bug where 3-6 web workers are created for each mediapicker instance. Now all mediapicker 
+    instances are sharing common pool of web workers. [#517](https://bitbucket.org/atlassian/mediakit-web/pull-requests/517/msw-307-use-static-pool-of-three-web/diff)     
+
+#### 11.1.5 (2017-11-06)
+
+ * **patch:**
+    * Converted Media Picker Popup Dropzone components to styled-components [#512](https://bitbucket.org/atlassian/mediakit-web/pull-requests/512/feat-popup-convert-dropzone-to-styled/diff)
+      * Dropzone now uses styled-components internally
+      * Added enzyme tests for the render method
+
+#### 11.1.4 (2017-11-06)
+
+ * **patch:**
+    * Converted Media Picker Popup Footer components to styled-components [#511](https://bitbucket.org/atlassian/mediakit-web/pull-requests/511/feat-popup-convert-footer-to-styled/diff)
+      * Footer now uses styled-components internally
+      * Added enzyme tests for the render method
+
+#### 11.1.3 (2017-11-02)
+
+ * **patch:**
+    * Converted Media Picker Popup Navigation components to styled-components [#510](https://bitbucket.org/atlassian/mediakit-web/pull-requests/510/feat-popup-make-navigation-components/diff)
+      * Navigation, Breadcrumbs, Refresh Button and Account Dropdown now use styled-components internally
+      * Added tests enzyme tests for the render method
+
+#### 11.1.2 (2017-10-31)
+
+  * **patch:**
+    * Fixed Media Picker Browser component example [#509](https://bitbucket.org/atlassian/mediakit-web/pull-requests/509/fix-media-picker-use-correct-collection/diff)
+      * Fixed the browser component examples page to work when the user changes collection
+
+#### 11.1.1 (2017-10-31)
+
+  * **patch:**
+    * Converted Media Picker Popup Sidebar components to styled-components [#508](https://bitbucket.org/atlassian/mediakit-web/pull-requests/508/feat-popup-convert-icons-sidebar/diff)
+      * Sidebar and SidebarItem now use styled-components internally
+      * Added tests enzyme tests for the render method
+
+#### 11.1.0 (2017-10)
+
+  * **feat:**
+    * Updated Media Picker Popup to initiate remote cloud account file fetching from a WebSocket connection [#506](https://bitbucket.org/atlassian/mediakit-web/pull-requests/506/feat-media-picker-use-websocket-to/diff)
+      * Popup now initiates Google Drive and Dropbox file fetching from the WebSocket connection
+        * This fixes a bug where the XHR for initiating remote file fetching did NOT return before the first WebSocket message was received
+      * Upload UUID used for keeping track of uploads is now generated by the frontend
+        * This will enable Popup to propagate uploads-start with all inserted uploads upfront
+
+#### 11.0.0 (2017-10-26)
+
+  * **breaking:**
+    * `upload-preview-update` event changes [#498](https://bitbucket.org/atlassian/mediakit-web/pull-requests/498/add-dimensions-to-upload-preview-event-for/diff):
+      * Payload structure modified to provide image dimensions for local image uploads:
+        * `preview` property changed:
+          * from: `<Blob | undefined>`
+          * to: `<ImagePreview> {width:number, height:number, src:string}`
+      * This event is no longer sent if image preview fails, therefore payload will always contain image details if preview successfully generated
