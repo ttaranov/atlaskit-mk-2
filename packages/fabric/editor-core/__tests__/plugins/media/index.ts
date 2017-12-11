@@ -162,7 +162,9 @@ describe('Media plugin', () => {
 
         expect(editorView.state.doc).toEqualDocument(
           doc(
-            mediaSingle({ alignment: 'center', display: 'block' })(
+            mediaSingle({
+              layout: 'center',
+            })(
               media({
                 id: 'foo',
                 type: 'file',
@@ -170,7 +172,9 @@ describe('Media plugin', () => {
                 __fileMimeType: 'image/jpeg',
               }),
             ),
-            mediaSingle({ alignment: 'center', display: 'block' })(
+            mediaSingle({
+              layout: 'center',
+            })(
               media({
                 id: 'bar',
                 type: 'file',
@@ -1008,11 +1012,11 @@ describe('Media plugin', () => {
 
           setNodeSelection(editorView, 1);
 
-          pluginState.align('left', 'inline-block');
+          pluginState.align('wrap-left');
 
           expect(editorView.state.doc).toEqualDocument(
             doc(
-              mediaSingle({ alignment: 'left', display: 'inline-block' })(
+              mediaSingle({ layout: 'wrap-left' })(
                 media({
                   id: 'media',
                   type: 'file',
@@ -1042,7 +1046,7 @@ describe('Media plugin', () => {
             ),
           );
 
-          pluginState.align('right', 'block');
+          pluginState.align('wide');
 
           expect(editorView.state.doc).toEqualDocument(
             doc(

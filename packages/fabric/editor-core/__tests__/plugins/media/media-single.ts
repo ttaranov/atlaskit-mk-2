@@ -1,7 +1,4 @@
 import {
-  textAlign,
-  float,
-  clear,
   insertMediaSingleNodes,
   insertMediaAsMediaSingle,
 } from '../../../src/plugins/media/media-single';
@@ -24,228 +21,6 @@ describe('media-single', () => {
       doc,
       schema: defaultSchema,
     });
-
-  describe('textAlign', () => {
-    describe('when node alignment property is left', () => {
-      const alignment = 'left';
-
-      describe('and display property is block', () => {
-        const display = 'block';
-
-        it('returns left', () => {
-          const result = textAlign(alignment, display);
-
-          expect(result).toBe('left');
-        });
-      });
-
-      describe('and display property is block', () => {
-        const display = 'inline-block';
-
-        it('returns left', () => {
-          const result = textAlign(alignment, display);
-
-          expect(result).toBe('left');
-        });
-      });
-    });
-
-    describe('when node alignment property is right', () => {
-      const alignment = 'right';
-
-      describe('and display property is block', () => {
-        const display = 'block';
-
-        it('returns right', () => {
-          const result = textAlign(alignment, display);
-
-          expect(result).toBe('right');
-        });
-      });
-
-      describe('and display property is inline-block', () => {
-        const display = 'inline-block';
-
-        it('returns left', () => {
-          const result = textAlign(alignment, display);
-
-          expect(result).toBe('left');
-        });
-      });
-    });
-
-    describe('when node alignment property is center', () => {
-      const alignment = 'center';
-
-      describe('and display property is block', () => {
-        const display = 'block';
-
-        it('returns center', () => {
-          const result = textAlign(alignment, display);
-
-          expect(result).toBe('center');
-        });
-      });
-
-      describe('and display property is inline-block', () => {
-        const display = 'inline-block';
-
-        it('returns left', () => {
-          const result = textAlign(alignment, display);
-
-          expect(result).toBe('left');
-        });
-      });
-    });
-  });
-
-  describe('float', () => {
-    describe('when node alignment property is left', () => {
-      const alignment = 'left';
-
-      describe('and display property is block', () => {
-        const display = 'block';
-
-        it('returns none', () => {
-          const result = float(alignment, display);
-
-          expect(result).toBe('none');
-        });
-      });
-
-      describe('and display property is inline-block', () => {
-        const display = 'inline-block';
-
-        it('returns left', () => {
-          const result = float(alignment, display);
-
-          expect(result).toBe('left');
-        });
-      });
-    });
-
-    describe('when node alignment property is right', () => {
-      const alignment = 'right';
-
-      describe('and display property is block', () => {
-        const display = 'block';
-
-        it('returns none', () => {
-          const result = float(alignment, display);
-
-          expect(result).toBe('none');
-        });
-      });
-
-      describe('and display property is inline-block', () => {
-        const display = 'inline-block';
-
-        it('returns right', () => {
-          const result = float(alignment, display);
-
-          expect(result).toBe('right');
-        });
-      });
-    });
-
-    describe('when node alignment property is center', () => {
-      const alignment = 'center';
-
-      describe('and display property is block', () => {
-        const display = 'block';
-
-        it('returns none', () => {
-          const result = float(alignment, display);
-
-          expect(result).toBe('none');
-        });
-      });
-
-      describe('and display property is block', () => {
-        const display = 'inline-block';
-
-        it('returns left', () => {
-          const result = float(alignment, display);
-
-          expect(result).toBe('left');
-        });
-      });
-    });
-  });
-
-  describe('clear', () => {
-    describe('when node alignment property is left', () => {
-      const alignment = 'left';
-
-      describe('and display property is block', () => {
-        const display = 'block';
-
-        it('returns both', () => {
-          const result = clear(alignment, display);
-
-          expect(result).toBe('both');
-        });
-      });
-
-      describe('and display property is inline-block', () => {
-        const display = 'inline-block';
-
-        it('returns left', () => {
-          const result = clear(alignment, display);
-
-          expect(result).toBe('left');
-        });
-      });
-    });
-
-    describe('when node alignment property is right', () => {
-      const alignment = 'right';
-
-      describe('and display property is block', () => {
-        const display = 'block';
-
-        it('returns both', () => {
-          const result = clear(alignment, display);
-
-          expect(result).toBe('both');
-        });
-      });
-
-      describe('and display property is inline-block', () => {
-        const display = 'inline-block';
-
-        it('returns right', () => {
-          const result = clear(alignment, display);
-
-          expect(result).toBe('right');
-        });
-      });
-    });
-
-    describe('when node alignment property is center', () => {
-      const alignment = 'center';
-
-      describe('and display property is block', () => {
-        const display = 'block';
-
-        it('returns both', () => {
-          const result = clear(alignment, display);
-
-          expect(result).toBe('both');
-        });
-      });
-
-      describe('and display property is inline-block', () => {
-        const display = 'inline-block';
-
-        it('returns both', () => {
-          const result = clear(alignment, display);
-
-          expect(result).toBe('both');
-        });
-      });
-    });
-  });
 
   describe('insertMediaAsMediaSingle', () => {
     describe('when inserting node that is not a media node', () => {
@@ -291,7 +66,7 @@ describe('media-single', () => {
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p('text'),
-              mediaSingle({ alignment: 'center', display: 'block' })(
+              mediaSingle({ layout: 'center' })(
                 media({
                   id: temporaryFileId,
                   type: 'file',
@@ -321,7 +96,7 @@ describe('media-single', () => {
         expect(editorView.state.doc).toEqualDocument(
           doc(
             p('text'),
-            mediaSingle({ alignment: 'center', display: 'block' })(
+            mediaSingle({ layout: 'center' })(
               media({
                 id: temporaryFileId,
                 type: 'file',
@@ -351,21 +126,21 @@ describe('media-single', () => {
         expect(editorView.state.doc).toEqualDocument(
           doc(
             p('text'),
-            mediaSingle({ alignment: 'center', display: 'block' })(
+            mediaSingle({ layout: 'center' })(
               media({
                 id: temporaryFileId,
                 type: 'file',
                 collection: testCollectionName,
               }),
             ),
-            mediaSingle({ alignment: 'center', display: 'block' })(
+            mediaSingle({ layout: 'center' })(
               media({
                 id: temporaryFileId + '1',
                 type: 'file',
                 collection: testCollectionName,
               }),
             ),
-            mediaSingle({ alignment: 'center', display: 'block' })(
+            mediaSingle({ layout: 'center' })(
               media({
                 id: temporaryFileId + '2',
                 type: 'file',
@@ -391,7 +166,7 @@ describe('media-single', () => {
 
           expect(editorView.state.doc).toEqualDocument(
             doc(
-              mediaSingle({ alignment: 'center', display: 'block' })(
+              mediaSingle({ layout: 'center' })(
                 media({
                   id: temporaryFileId,
                   type: 'file',
@@ -417,7 +192,7 @@ describe('media-single', () => {
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p('hello'),
-              mediaSingle({ alignment: 'center', display: 'block' })(
+              mediaSingle({ layout: 'center' })(
                 media({
                   id: temporaryFileId,
                   type: 'file',
@@ -446,7 +221,7 @@ describe('media-single', () => {
             doc(
               p('hello'),
               p('world'),
-              mediaSingle({ alignment: 'center', display: 'block' })(
+              mediaSingle({ layout: 'center' })(
                 media({
                   id: temporaryFileId,
                   type: 'file',

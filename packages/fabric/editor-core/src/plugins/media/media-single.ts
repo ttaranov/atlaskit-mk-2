@@ -1,32 +1,8 @@
 import { Node as PMNode, NodeType } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { Alignment, Display } from '@atlaskit/editor-common';
 import { MediaState } from '@atlaskit/media-core';
 import { isImage } from '../../utils';
 import { insertNodesEndWithNewParagraph } from '../../commands';
-
-export function textAlign(alignment: Alignment, display: Display): string {
-  if (display !== 'block') {
-    return 'left';
-  }
-  return alignment;
-}
-
-export function float(alignment: Alignment, display: Display): string {
-  if (display === 'block') {
-    return 'none';
-  }
-
-  return alignment === 'right' ? 'right' : 'left';
-}
-
-export function clear(alignment: Alignment, display: Display): string {
-  if (display === 'block') {
-    return 'both';
-  }
-
-  return alignment === 'center' ? 'both' : alignment;
-}
 
 export const insertMediaAsMediaSingle = (
   view: EditorView,

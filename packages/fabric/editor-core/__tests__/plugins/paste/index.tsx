@@ -72,7 +72,7 @@ if (!browser.ie && !isMobileBrowser()) {
             });
             expect(editorView.state.doc).toEqualDocument(
               doc(
-                mediaSingle({ alignment: 'center', display: 'block' })(
+                mediaSingle({ layout: 'center' })(
                   media({
                     id: 'af9310df-fee5-459a-a968-99062ecbb756',
                     type: 'file',

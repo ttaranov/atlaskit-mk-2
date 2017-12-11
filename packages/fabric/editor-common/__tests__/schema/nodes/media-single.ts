@@ -8,8 +8,7 @@ describe(`${name}/schema mediaSingle node`, () => {
         `
         <div
           data-node-type="mediaSingle"
-          data-alignment="left"
-          data-display="inline-block"
+          data-layout="wrap-right"
         />
         `,
         schema,
@@ -18,8 +17,23 @@ describe(`${name}/schema mediaSingle node`, () => {
       const mediaSingleNode = doc.firstChild!;
 
       expect(mediaSingleNode.type).toEqual(schema.nodes.mediaSingle);
-      expect(mediaSingleNode.attrs.alignment).toEqual('left');
-      expect(mediaSingleNode.attrs.display).toEqual('inline-block');
+      expect(mediaSingleNode.attrs.layout).toEqual('wrap-right');
+    });
+
+    it('defaults to align center', () => {
+      const doc = fromHTML(
+        `
+        <div
+          data-node-type="mediaSingle"
+        />
+        `,
+        schema,
+      );
+
+      const mediaSingleNode = doc.firstChild!;
+
+      expect(mediaSingleNode.type).toEqual(schema.nodes.mediaSingle);
+      expect(mediaSingleNode.attrs.layout).toEqual('center');
     });
 
     it('auto creates a media node inside mediaSingle node', () => {
@@ -44,18 +58,15 @@ describe(`${name}/schema mediaSingle node`, () => {
   describe('encode node', () => {
     it('converts attributes to related data attribute in html', () => {
       const mediaSingleNode = schema.nodes.mediaSingle.create({
-        alignment: 'right',
-        display: 'block',
+        layout: 'center',
       });
 
       const mediaSingleDom = toDOM(mediaSingleNode, schema)
         .firstChild as HTMLElement;
-      const alignment = mediaSingleDom.getAttribute('data-alignment');
-      const display = mediaSingleDom.getAttribute('data-display');
+      const layout = mediaSingleDom.getAttribute('data-layout');
       const nodeType = mediaSingleDom.getAttribute('data-node-type');
 
-      expect(alignment).toEqual('right');
-      expect(display).toEqual('block');
+      expect(layout).toEqual('center');
       expect(nodeType).toEqual('mediaSingle');
     });
   });
@@ -64,8 +75,7 @@ describe(`${name}/schema mediaSingle node`, () => {
     const { mediaSingle, media } = schema.nodes;
     const mediaSingleNode = mediaSingle.create(
       {
-        alignment: 'center',
-        display: 'inline-block',
+        layout: 'wide',
       },
       media.create(),
     );

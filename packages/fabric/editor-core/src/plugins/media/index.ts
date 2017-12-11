@@ -29,7 +29,7 @@ import {
 } from 'prosemirror-state';
 import { insertPoint } from 'prosemirror-transform';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
-import { Alignment, Display } from '@atlaskit/editor-common';
+import { Layout } from '@atlaskit/editor-common';
 
 import PickerFacadeType from './picker-facade';
 import { ErrorReporter, isImage } from '../../utils';
@@ -403,15 +403,14 @@ export class MediaPluginState {
     this.mediaNodes = this.mediaNodes.filter(({ node }) => oldNode !== node);
   };
 
-  align = (alignment: Alignment, display: Display = 'block'): boolean => {
+  align = (layout: Layout): boolean => {
     if (!this.isMediaNodeSelection()) {
       return false;
     }
     const { selection: { from }, schema, tr } = this.view.state;
     this.view.dispatch(
       tr.setNodeMarkup(from - 1, schema.nodes.mediaSingle, {
-        alignment,
-        display,
+        layout,
       }),
     );
     return true;

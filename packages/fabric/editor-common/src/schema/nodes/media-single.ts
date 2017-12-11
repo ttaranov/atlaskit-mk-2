@@ -1,8 +1,12 @@
 import { NodeSpec, Node } from 'prosemirror-model';
-
-export type Alignment = 'left' | 'right' | 'center';
-export type Display = 'inline-block' | 'block';
 import { Definition as Media } from './media';
+
+export type Layout =
+  | 'wrap-right'
+  | 'center'
+  | 'wrap-left'
+  | 'wide'
+  | 'full-width';
 
 /**
  * @name mediaSingle_node
@@ -13,13 +17,11 @@ export interface Definition {
   attrs: Attributes;
 }
 export interface Attributes {
-  alignment: Alignment;
-  display: Display;
+  layout: Layout;
 }
 
 export const defaultAttrs = {
-  alignment: { default: 'center' },
-  display: { default: 'block' },
+  layout: { default: 'center' },
 };
 
 export const mediaSingle: NodeSpec = {
@@ -31,17 +33,15 @@ export const mediaSingle: NodeSpec = {
     {
       tag: 'div[data-node-type="mediaSingle"]',
       getAttrs: (dom: HTMLElement) => ({
-        alignment: dom.getAttribute('data-alignment'),
-        display: dom.getAttribute('data-display'),
+        layout: dom.getAttribute('data-layout') || 'center',
       }),
     },
   ],
   toDOM(node: Node) {
-    const { alignment, display } = node.attrs;
+    const { layout } = node.attrs;
     const attrs = {
       'data-node-type': 'mediaSingle',
-      'data-alignment': alignment,
-      'data-display': display,
+      'data-layout': layout,
     };
     return ['div', attrs, 0];
   },
