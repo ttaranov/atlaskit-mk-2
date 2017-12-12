@@ -1,29 +1,97 @@
 // @flow
-import type { Element, Node } from 'react';
-import type { PropType } from 'babel-plugin-react-flow-props-to-prop-types'; // eslint-disable-line import/no-extraneous-dependencies
+import type { ComponentType } from 'react';
 
-export type ChildrenType = PropType<Array<Element<any>> | Element<any>, any>;
-export type FunctionType = (...args: Array<any>) => mixed;
-export type StatefulTab = {
-  content?: any,
-  defaultSelected?: boolean,
-  label: any,
-  isSelected?: boolean,
-};
-export type StatelessTab = {
-  content?: Node,
-  isSelected?: boolean,
-  label: string,
-  onSelect: FunctionType,
+export type TabData = { [string]: any };
+
+type TabItemElementProps = {
+  'aria-posinset': number,
+  'aria-selected': boolean,
+  'aria-setsize': number,
+  onClick: () => void,
+  onKeyDown: (e: KeyboardEvent) => void,
+  onMouseDown: (e: MouseEvent) => void,
+  role: string,
+  tabIndex: number | string,
 };
 
-export type StatefulTabs = Array<StatefulTab>;
+type TabItemElementRef = (ref: HTMLElement) => void;
 
-export type StatelessTabs = Array<StatelessTab>;
+export type TabItemComponentProvided = {
+  data: TabData,
+  elementProps: TabItemElementProps,
+  elementRef: TabItemElementRef,
+  isSelected: boolean,
+};
 
-export type TabsStatelessProps = {
-  /** Handler for navigation using the keyboard buttons. */
-  onKeyboardNav: string => void,
-  /** The tabs to display, with content being hidden unless the tab is selected. */
-  tabs?: StatelessTabs,
+export type TabContentComponentProvided = {
+  data: TabData,
+  elementProps: {
+    role: string,
+  },
+};
+
+export type TabItemType = ComponentType<TabItemComponentProvided>;
+export type TabContentType = ComponentType<TabContentComponentProvided>;
+
+export type SelectedTabProp = any;
+export type IsSelectedTestFunction = (
+  selectedTab: SelectedTabProp,
+  tab: TabData,
+  tabIndex: number,
+) => boolean;
+type OnSelectCallback = (selectedTab: TabData, selectedIndex: number) => void;
+
+export type TabsProps = {
+  /** The tab that will be selected by default when the component mounts. If not
+   * set the first tab will be displayed by default. */
+  defaultSelectedTab?: SelectedTabProp,
+  /** Override the in-built check to determine whether a tab is selected. This
+   * function will be passed some information about the selected tab, the tab to
+   * be compared, and the index of the tab to be compared, as parameters in that
+   * order. It must return a boolean. */
+  isSelectedTest?: IsSelectedTestFunction,
+  /** A callback function which will be fired when a new tab is selected. It
+   * will be passed the data and the index of the selected tab as parameters. */
+  onSelect?: OnSelectCallback,
+  /** The selected tab. By default this prop accepts either the tab object or
+   * the the tab's index. If used in conjunction with the isSelectedTest prop it
+   * can be any arbitrary data. If this prop is set the component behaves as a
+   * 'controlled' component, and will not maintain any internal state. It will
+   * be up to you to listen to onSelect changes, update your own state, and pass
+   * that information down to this prop accordingly. */
+  selectedTab?: SelectedTabProp,
+  /** A custom component to render instead of the default tab item. It will be
+   * passed the following props. data: The complete tab object which you
+   * provided in the tabs array. elementProps: An object containing various
+   * accessibility and interaction props which should be spread onto your
+   * component. elementRef: A ref callback which you'll need to attach to your
+   * underlying DOM node. isSelected: Whether this tab is currently selected.
+   * This package exports the default TabItem component as a named export if you
+   * want to wrap that.
+   */
+  tabContentComponent: TabContentType,
+  /** A custom component to render instead of the default tab content pane. It
+   * will be passed the following props. data: The complete tab object which you
+   * provided in the tabs array. elementProps: An object containing
+   * accessibility props which should be spread onto your component. This
+   * package exports the default TabContent component as a named export if you
+   * want to wrap that.
+   */
+  tabItemComponent: TabItemType,
+  /** An array of objects containing data for your tabs. By default a tab object
+   * must include 'label' and 'content' properties, but if used in conjunction
+   * with the tabItemComponent and tabContentComponent props this object can
+   * have any shape you choose. */
+  tabs: Array<TabData>,
+};
+
+export type TabsState = {
+  selectedTab: TabData,
+};
+
+export type TabsNavigationProps = {
+  onSelect: OnSelectCallback,
+  selectedTab: TabData,
+  tabItemComponent: TabItemType,
+  tabs: Array<TabData>,
 };

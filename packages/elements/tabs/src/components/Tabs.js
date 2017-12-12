@@ -1,90 +1,117 @@
 // @flow
-/* eslint-disable react/sort-comp */
-import React, { PureComponent } from 'react';
-import TabsStateless from './TabsStateless';
-import type { StatefulTabs, StatelessTabs } from '../types';
 
-type Props = {
-  /** Handler for selecting a new tab. Called with the number of the tab, zero-indexed */
-  onSelect?: number => void,
-  /** The tabs to display, with content being hidden unless the tab is selected. */
-  tabs: StatefulTabs,
-};
-type State = {
-  selectedTab: number | null,
-};
+import React, { Component } from 'react';
+import TabsNavigation from './TabsNavigation';
+import DefaultTabContent from './TabContent';
+import DefaultTabItem from './TabItem';
+import { Tabs as StyledTabs } from '../styled';
+import type {
+  IsSelectedTestFunction,
+  SelectedTabProp,
+  TabData,
+  TabsProps,
+  TabsState,
+} from '../types';
 
-export default class Tabs extends PureComponent<Props, State> {
+const defaultIsSelectedTestNumber: IsSelectedTestFunction = (
+  selectedIndex,
+  tab,
+  tabIndex,
+) => selectedIndex === tabIndex;
+
+const defaultIsSelectedTestObject: IsSelectedTestFunction = (
+  selectedTab,
+  tab,
+) => selectedTab === tab;
+
+export default class Tabs extends Component<TabsProps, TabsState> {
   static defaultProps = {
-    onSelect: () => {},
-    tabs: [],
+    tabItemComponent: DefaultTabItem,
+    tabContentComponent: DefaultTabContent,
   };
-  state: State = { selectedTab: null };
-  constructor(props: Props) {
+
+  constructor(props: TabsProps) {
     super(props);
 
-    // Set the selected tab to the first tab with defaultSelected provided
-    let defaultSelectedIndex = null;
-    if (props) {
-      for (let i = 0; i < props.tabs.length; i++) {
-        // eslint-disable-line no-plusplus
-        if (props.tabs[i].defaultSelected) {
-          defaultSelectedIndex = i;
-          break;
-        }
-      }
-    }
+    const initiallySelectedTab =
+      this.props.selectedTab ||
+      this.props.defaultSelectedTab ||
+      this.props.tabs[0];
+
+    const selectedTab = this.resolveSelected(initiallySelectedTab);
 
     this.state = {
-      selectedTab: defaultSelectedIndex,
+      selectedTab,
     };
   }
 
-  getTabs = (): StatelessTabs =>
-    this.props.tabs.map((tab, index) => ({
-      ...tab,
-      isSelected: index === this.state.selectedTab,
-      onKeyboardNav: this.tabKeyboardNavHandler,
-      onSelect: () => this.tabSelectHandler(index),
-    }));
-
-  tabSelectHandler = (selectedTabIndex: number) => {
-    if (this.props.onSelect) {
-      this.props.onSelect(selectedTabIndex);
+  componentWillReceiveProps(newProps: TabsProps) {
+    if (
+      typeof newProps.selectedTab !== 'undefined' &&
+      newProps.selectedTab !== this.state.selectedTab
+    ) {
+      const selectedTab = this.resolveSelected(newProps.selectedTab);
+      this.setState({ selectedTab });
     }
 
-    this.setState({ selectedTab: selectedTabIndex });
+    if (newProps.tabs !== this.props.tabs) {
+      const updatedSelectedTab = this.resolveSelected(this.state.selectedTab);
+      this.setState({ selectedTab: updatedSelectedTab });
+    }
+  }
+
+  resolveSelected = (selectedTab: SelectedTabProp): TabData => {
+    const { tabs, isSelectedTest } = this.props;
+
+    const testFunction: IsSelectedTestFunction = (() => {
+      if (isSelectedTest) {
+        return isSelectedTest;
+      }
+      if (typeof selectedTab === 'number') {
+        return defaultIsSelectedTestNumber;
+      }
+      return defaultIsSelectedTestObject;
+    })();
+
+    return (
+      tabs.find((tab, tabIndex) => testFunction(selectedTab, tab, tabIndex)) ||
+      tabs[0]
+    );
   };
 
-  tabKeyboardNavHandler = (key: string) => {
-    // Handle left and right arrow key presses by selecting the previous or next tab
-
-    const selectedIndex = this.state.selectedTab;
-    if (selectedIndex !== null) {
-      let nextIndex = selectedIndex;
-
-      if (key === 'ArrowLeft') {
-        nextIndex =
-          Number(selectedIndex) - 1 < 0 ? 0 : Number(selectedIndex) - 1;
-      } else if (key === 'ArrowRight') {
-        nextIndex =
-          selectedIndex + 1 > this.props.tabs.length - 1
-            ? this.props.tabs.length - 1
-            : selectedIndex + 1;
-      }
-
-      if (nextIndex !== selectedIndex) {
-        this.tabSelectHandler(Number(nextIndex));
-      }
+  onSelect = (newSelectedTab: TabData, newSelectedIndex: number) => {
+    const { onSelect, selectedTab } = this.props;
+    if (typeof onSelect === 'function') {
+      onSelect(newSelectedTab, newSelectedIndex);
+    }
+    if (typeof selectedTab === 'undefined') {
+      this.setState({ selectedTab: newSelectedTab });
     }
   };
 
   render() {
+    const {
+      tabContentComponent: TabContent,
+      tabItemComponent,
+      tabs,
+    } = this.props;
+    const { selectedTab } = this.state;
+    const tabContentProps = {
+      data: selectedTab,
+      elementProps: {
+        role: 'tabpanel',
+      },
+    };
     return (
-      <TabsStateless
-        onKeyboardNav={this.tabKeyboardNavHandler}
-        tabs={this.getTabs()}
-      />
+      <StyledTabs>
+        <TabsNavigation
+          onSelect={this.onSelect}
+          selectedTab={selectedTab}
+          tabItemComponent={tabItemComponent}
+          tabs={tabs}
+        />
+        <TabContent {...tabContentProps} />
+      </StyledTabs>
     );
   }
 }

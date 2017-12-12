@@ -3,11 +3,7 @@ import React from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
 
 export default md`
-  Use lozenges to highlight an item's status for quick recognition. Use
-  subtle lozenges by default and in instances where they may dominate the
-  screen, such as in long tables.
-
-  ## Stateful Tabs
+  Use tabs to display multiple panels within a single window.
 
   ${(
     <Props
@@ -17,25 +13,9 @@ export default md`
 
   ${(
     <Example
-      Component={require('../examples/0-basic').default}
+      Component={require('../examples/00-basic').default}
       title="Basic"
-      source={require('!!raw-loader!../examples/0-basic')}
-    />
-  )}
-
-  ## Stateless Tabs
-
-  ${(
-    <Props
-      props={require('!!extract-react-types-loader!../src/components/TabsStateless')}
-    />
-  )}
-
-  ${(
-    <Example
-      Component={require('../examples/1-stateless').default}
-      title="Basic"
-      source={require('!!raw-loader!../examples/1-stateless')}
+      source={require('!!raw-loader!../examples/00-basic')}
     />
   )}
 `;

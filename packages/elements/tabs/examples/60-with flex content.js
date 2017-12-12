@@ -17,7 +17,6 @@ export default () => (
       tabs={[
         {
           label: 'Spinner should be centered',
-          defaultSelected: true,
           content: (
             <div
               style={{

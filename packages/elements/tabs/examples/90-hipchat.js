@@ -52,7 +52,6 @@ export default () => (
         tabs={[
           {
             label: 'HipChat example',
-            defaultSelected: true,
             content: (
               <div className="lobby-tab-content">
                 <div className="lobby-title">Title goes here</div>
