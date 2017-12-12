@@ -22,7 +22,7 @@ type Props = {
   values: Array<any>,
 };
 
-export default class ProgressDots extends Component<Props, void> {
+export default class ProgressDots extends Component<Props, {}> {
   props: Props; // eslint-disable-line react/sort-comp
   tablist: { children: Array<HTMLElement> };
   static defaultProps = {
