@@ -9,6 +9,14 @@ const verticalOffset = 16;
 
 type EnterType = (node: Element, isAppearing: boolean) => void;
 type ExitType = (node: Element) => void;
+
+type TransitionType = {
+  entering?: {},
+  entered?: {},
+  exiting?: {},
+  exited?: {},
+};
+
 type Props = {
   in: boolean,
   component: ComponentType,
@@ -18,14 +26,9 @@ type Props = {
   onExit?: ExitType,
   onExiting?: ExitType,
   onExited?: ExitType,
-  style: {},
+  style?: {},
   styleDefault: {},
-  transition: {
-    entering?: {},
-    entered?: {},
-    exiting?: {},
-    exited?: {},
-  },
+  transition: TransitionType,
 };
 const DefaultProps = {
   component: 'div',
@@ -89,8 +92,11 @@ Animation.defaultProps = DefaultProps;
 
 // FADE
 // ==============================
-
-export const Fade = (props: Props) => (
+type FadeProps = $Diff<
+  Props,
+  { style: {}, styleDefault: {}, transition: TransitionType },
+>;
+export const Fade = (props: FadeProps) => (
   <Animation
     styleDefault={{
       transition: `opacity ${duration / 2}ms`,
@@ -100,19 +106,20 @@ export const Fade = (props: Props) => (
       entered: { opacity: 1 },
       exiting: { opacity: 0 },
     }}
-    in={props.in}
-    style={props.style}
     {...props}
   />
 );
 
 // SLIDE UP
 // ==============================
-
+type SlideUpProps = $Diff<
+  Props,
+  { style: {}, styleDefault: {}, transition: TransitionType },
+>;
 export const SlideUp = ({
   stackIndex,
   ...props
-}: { stackIndex: number } & Props) => {
+}: { stackIndex: number } & SlideUpProps) => {
   const translateY = stackIndex * (verticalOffset / 2);
   const restingTransform = `translate3d(0, ${translateY}px, 0)`;
 
