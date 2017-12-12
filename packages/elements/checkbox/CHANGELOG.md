@@ -1,5 +1,9 @@
 # @atlaskit/checkbox
 
+## 1.1.7
+- [patch] Updates dependency on button to 6.0.0 [2b02ebc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b02ebc)
+- [patch] Moved to new repo & build system. Cleaned up docs & examples & added Flow   [9b55672](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b55672)
+
 ## 1.1.6 (2017-11-24)
 
 ## 1.1.6 (2017-11-24)

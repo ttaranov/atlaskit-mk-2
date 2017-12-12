@@ -91,6 +91,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
               mediaProvider,
               imageUploadProvider,
               onChange,
+              disabled,
             }) => (
               <div style={{ padding: '20px' }}>
                 <CollapsedEditor
@@ -112,6 +113,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     allowTables={true}
                     allowHelpDialog={true}
                     allowPlaceholderCursor={true}
+                    disabled={disabled}
                     mentionProvider={mentionProvider}
                     emojiProvider={emojiProvider}
                     mediaProvider={mediaProvider}

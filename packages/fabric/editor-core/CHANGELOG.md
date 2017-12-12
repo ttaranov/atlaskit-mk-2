@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.14.1
+- [patch] Unskipping jest tests [54d88f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/54d88f7)
+- [patch] Unskipping jest tests [54d88f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/54d88f7)
+
 ## 60.14.0
 
 ## 60.13.1
