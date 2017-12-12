@@ -1,0 +1,58 @@
+// @flow
+import React from 'react';
+import { md, Example, Props } from '@atlaskit/docs';
+
+export default md`
+  ### Usage
+
+  Provides a standard way to create a text-based form input with an associated label.
+
+  ~~~js
+  import FieldTextArea, { FieldTextAreaStateless } from '@atlaskit/field-text';
+  ~~~
+
+  Text Field Area exports both a stateful default component, and a stateless
+  component. The stateful component manages the value of the input for you
+  and passes all other props on to the stateless version. 
+
+  ${(
+    <Example
+      Component={require('../examples/00-basic-usage').default}
+      title="Basic"
+      source={require('!!raw-loader!../examples/00-basic-usage')}
+    />
+  )}
+
+  ${(
+    <Example
+      Component={require('../examples/01-stateless-example').default}
+      title="Stateless Example"
+      source={require('!!raw-loader!../examples/01-stateless-example')}
+    />
+  )}
+
+  ${(
+    <Example
+      Component={require('../examples/02-form-example').default}
+      title="Form Example"
+      source={require('!!raw-loader!../examples/02-form-example')}
+    />
+  )}
+
+  ## FieldTextArea Props
+
+  ${(
+    <Props
+      props={require('!!extract-react-types-loader!../src/FieldTextArea')}
+    />
+  )}
+
+  ## FieldTextAreaStateless Props
+
+  ${(
+    <Props
+      props={require('!!extract-react-types-loader!../src/FieldTextAreaStateless')}
+    />
+  )}
+
+`;
