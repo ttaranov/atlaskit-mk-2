@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/confluence-page-tree",
-  "version": "8.0.2",
+  "version": "0.1.0",
   "description": "A React Component for displaying Confluence Page Tree",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -24,11 +24,18 @@
     "react-dom": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^1.0.1"
+    "@atlaskit/docs": "^1.0.1",
+    "@storybook/react": "^3.2.17",
+    "@storybook/addon-actions": "^3.2.17",
+    "@storybook/addon-links": "^3.2.17"
   },
   "keywords": [
     "atlaskit",
     "react",
     "ui"
-  ]
+  ],
+  "scripts": {
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  }
 }

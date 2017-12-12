@@ -39,7 +39,9 @@
     "start:editor": "                        yarn run website:start '**/packages/fabric/+(code|editor-core|editor-common|editor-bitbucket|editor-cq|editor-jira|renderer)'",
     "changeset": "                           node ./runChangeset",
     "release": "                             projector ./projector release",
-    "build:editor-common:json-schema": "     cd packages/fabric/editor-common && yarn run build:json-schema && echo 'Done.'"
+    "build:editor-common:json-schema": "     cd packages/fabric/editor-common && yarn run build:json-schema && echo 'Done.'",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "bolt": {
     "version": ">=0.17.0",
@@ -60,6 +62,9 @@
     "@atlaskit/inline-edit": "^4.5.5",
     "@atlaskit/layer": "^2.5.4",
     "@atlaskit/util-data-test": "^7.0.0",
+    "@storybook/addon-actions": "^3.2.17",
+    "@storybook/addon-links": "^3.2.17",
+    "@storybook/react": "^3.2.17",
     "@types/chai": "^4.0.4",
     "@types/enzyme": "^2.8.6",
     "@types/jest": "^20.0.8",
