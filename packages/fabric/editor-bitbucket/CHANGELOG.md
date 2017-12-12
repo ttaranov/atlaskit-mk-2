@@ -1,5 +1,9 @@
 # @atlaskit/editor-bitbucket
 
+## 4.12.0
+
+## 4.11.5
+
 ## 4.11.4
 
 ## 4.11.3

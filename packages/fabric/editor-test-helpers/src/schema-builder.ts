@@ -281,8 +281,8 @@ export const fragment = (...content: BuilderContent[]) =>
 export const slice = (...content: BuilderContent[]) =>
   new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
 export const emojiQuery = markFactory(sampleSchema.marks.emojiQuery, {});
-export const singleImage = (attrs = {}) =>
-  nodeFactory(sampleSchema.nodes.singleImage, attrs);
+export const mediaSingle = (attrs = {}) =>
+  nodeFactory(sampleSchema.nodes.mediaSingle, attrs);
 export const mediaGroup = nodeFactory(sampleSchema.nodes.mediaGroup);
 export const media = (attrs: MediaAttributes) =>
   sampleSchema.nodes.media.create(attrs);

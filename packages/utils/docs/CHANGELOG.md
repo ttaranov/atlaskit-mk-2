@@ -1,5 +1,11 @@
 # @atlaskit/docs
 
+## 2.1.0
+
+
+- [minor] corrected types and added heading option to props [bdf39b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdf39b3)
+- [minor] corrected types and added heading option to props [bdf39b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdf39b3)
+
 ## 2.0.0
 - [major] Now renders default props, consumes breaking change from extract-react-types [df9fa94](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df9fa94)
 - [major] Now renders default props, consumes breaking change from extract-react-types [df9fa94](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df9fa94)

@@ -22,6 +22,7 @@ export interface Props {
       tooltipDescription?: string;
       tooltopPosition?: string;
       isActive: boolean;
+      isDisabled?: boolean;
     }>;
   }>;
 }
@@ -78,9 +79,10 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
 
   private renderItem(item, onItemActivated) {
     const dropListItem = (
-      <ItemWrapper key={item.content} isSelected={item.isActive}>
+      <ItemWrapper key={item.key || item.content} isSelected={item.isActive}>
         <Item
           elemBefore={item.elemBefore}
+          isDisabled={item.isDisabled}
           onClick={() => onItemActivated && onItemActivated({ item })}
         >
           <ItemContentWrapper hasElemBefore={!!item.elemBefore}>

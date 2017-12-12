@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { PropTypes } from 'react';
+import * as PropTypes from 'prop-types';
 import { withAnalytics } from '@atlaskit/analytics';
+import { DirectEditorProps } from 'prosemirror-view';
 import { createEditor, getUiComponent } from './create-editor';
 import { createPluginsList } from './create-editor';
 import EditorActions from './actions';
@@ -86,6 +87,16 @@ export default class Editor extends React.Component<EditorProps, State> {
 
         moveCursorToTheEnd(editor.editorView);
       }
+    }
+
+    // Disables the contenteditable attribute of the editor if the editor is disabled
+    if (
+      (!prevState.editor && editor && this.props.disabled) ||
+      (editor && prevProps.disabled !== this.props.disabled)
+    ) {
+      editor.editorView.setProps({
+        editable: state => !this.props.disabled,
+      } as DirectEditorProps);
     }
   }
 

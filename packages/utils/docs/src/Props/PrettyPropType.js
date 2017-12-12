@@ -34,7 +34,7 @@ const Type = styled.span`
 // $FlowFixMe
 const TypeMeta = styled(Type)`
   background-color: ${themed({ light: colors.N20, dark: colors.DN50 })};
-  color: ${themed({ light: colors.subtleText, dark: colors.subtleText })};
+  color: ${colors.subtleText};
 `;
 
 // $FlowFixMe
@@ -54,7 +54,7 @@ const Required = styled.span`
 `;
 
 const Outline = styled.span`
-  color: ${themed({ light: colors.subtleText, dark: colors.subtleText })};
+  color: ${colors.subtleText};
   line-height: 1;
 `;
 

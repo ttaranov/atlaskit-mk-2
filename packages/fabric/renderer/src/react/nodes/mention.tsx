@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import { Mention, ProviderFactory } from '@atlaskit/editor-common';
-import { EventHandlers } from '../../ui/Renderer';
+import {
+  Mention,
+  ProviderFactory,
+  EventHandlers,
+} from '@atlaskit/editor-common';
 
 export interface Props {
   id: string;

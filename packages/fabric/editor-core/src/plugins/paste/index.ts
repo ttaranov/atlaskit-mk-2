@@ -7,7 +7,7 @@ import * as MarkdownIt from 'markdown-it';
 import table from 'markdown-it-table';
 import { stateKey as tableStateKey } from '../table';
 import { containsTable } from '../table/utils';
-import { insertMediaAsSingleImage } from '../media/single-image';
+import { insertMediaAsMediaSingle } from '../media/media-single';
 import {
   isSingleLine,
   isCode,
@@ -178,7 +178,7 @@ export function createPlugin(
           node &&
           node.type === schema.nodes.media
         ) {
-          return insertMediaAsSingleImage(view, node);
+          return insertMediaAsMediaSingle(view, node);
         }
 
         // If the clipboard contents looks like computer code, create a code block
