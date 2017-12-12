@@ -13,6 +13,26 @@ type State = {
   rect?: {},
 };
 
+function computedStyle(node, prop) {
+  if (!node) return '';
+  return prop
+    ? window.getComputedStyle(node, null)[prop]
+    : window.getComputedStyle(node, null);
+}
+
+function getScrollParent(node: any) {
+  const scrollable = ['auto', 'scroll'];
+  if (node == null) return null;
+  if (
+    node.scrollHeight > node.clientHeight &&
+    (scrollable.includes(computedStyle(node, 'overflow')) ||
+      scrollable.includes(computedStyle(node, 'overflowY')))
+  ) {
+    return node;
+  }
+  return getScrollParent(node.parentNode);
+}
+
 function elementCropDirection(el: HTMLElement) {
   if (!el) return null;
   const rect = el.getBoundingClientRect();
@@ -31,22 +51,21 @@ function elementCropDirection(el: HTMLElement) {
 
   return direction;
 }
-function getScrollY() {
-  return (
-    window.pageYOffset ||
-    // $FlowFixMe
-    document.documentElement.scrollTop ||
-    // $FlowFixMe
-    document.body.scrollTop ||
-    0
-  );
+
+function getScrollY(node = window) {
+  if (node === window) {
+    return window.pageYOffset;
+  }
+  const scrollContainer = getScrollParent(node);
+
+  return scrollContainer ? scrollContainer.scrollTop : window.pageYOffset;
 }
 
 export default function withScrollMeasurements(
   WrappedComponent: ComponentType,
 ) {
   return class SpotlightWrapper extends Component<Props, State> {
-    state: State = { scrollY: getScrollY() };
+    state: State = { scrollY: 0 };
     static contextTypes = {
       spotlightRegistry: PropTypes.instanceOf(SpotlightRegistry).isRequired,
     };
@@ -59,12 +78,13 @@ export default function withScrollMeasurements(
       }
       spotlightRegistry.mount(target);
       const node = spotlightRegistry.get(target);
-      this.measureAndScroll(node);
+      this.setState({ scrollY: getScrollY(node) }, () => {
+        this.measureAndScroll(node);
+      });
     }
     componentWillUnmount() {
       const { target } = this.props;
       const { spotlightRegistry } = this.context;
-
       spotlightRegistry.unmount(target);
     }
     measureAndScroll = (node: HTMLElement) => {
@@ -80,22 +100,40 @@ export default function withScrollMeasurements(
         top: initialTop,
         width,
       } = node.getBoundingClientRect();
-      const { scrollY } = this.state;
-      const gutter = 10; // enough room to be comfortable and not crop the pulse animation
-      let top = initialTop;
-      const cropDirection = elementCropDirection(node);
 
-      // scroll if necessary
-      if (cropDirection === 'top') {
-        const offsetY = scrollY + (initialTop - gutter);
-        top = gutter;
-        window.scrollTo(0, offsetY);
-      } else if (cropDirection === 'bottom') {
-        const offsetY = initialTop - window.innerHeight + height + gutter;
-        top = initialTop - offsetY;
-        window.scrollTo(0, scrollY + offsetY);
+      const gutter = 10; // enough room to be comfortable and not crop the pulse animation
+
+      let top = initialTop;
+      let offsetY;
+
+      const cropDirection = elementCropDirection(node);
+      const scrollParent = getScrollParent(node) || window;
+      if (scrollParent === window) {
+        if (cropDirection === 'top') {
+          offsetY = initialTop - gutter;
+          top = gutter;
+        } else if (cropDirection === 'bottom') {
+          offsetY = initialTop - window.innerHeight + height + gutter;
+          top = window.innerHeight - (height + gutter);
+        }
+      } else {
+        const {
+          height: parentHeight,
+          top: parentTop,
+        } = scrollParent.getBoundingClientRect();
+        if (cropDirection === 'top') {
+          // We're using Math.abs here because we need to add
+          // the absolute values of initial top and parent top together
+          // for the specific offsetY value.
+          offsetY = -(Math.abs(initialTop) + Math.abs(parentTop) + gutter);
+          top = parentTop + gutter;
+        } else if (cropDirection === 'bottom') {
+          offsetY = initialTop + height - (parentTop + parentHeight) + gutter;
+          top = parentHeight + parentTop - gutter - height;
+        }
       }
 
+      scrollParent.scrollBy(0, offsetY);
       // get adjusted measurements after scrolling
       this.setState({
         clone: node.outerHTML,

@@ -394,7 +394,7 @@ export default class Examples extends React.Component<Props, State> {
 
     return (
       <Container>
-        <ExampleNavigation
+        {/* <ExampleNavigation
           groupId={groupId}
           packageId={packageId}
           exampleId={exampleId}
@@ -406,7 +406,7 @@ export default class Examples extends React.Component<Props, State> {
           onCodeToggle={this.onCodeToggle}
           deploySandbox={this.deploySandbox}
           loadingSandbox={this.state.loadingSandbox}
-        />
+        /> */}
         {examples && exampleId ? (
           <ExampleDisplay
             displayCode={this.state.displayCode}

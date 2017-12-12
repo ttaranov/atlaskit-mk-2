@@ -18,12 +18,15 @@ export const Container = styled.div`
   height: 100%;
 `;
 
+// export const Content = styled.div`
+//   bottom: 0;
+//   overflow: auto;
+//   position: absolute;
+//   top: 48px;
+//   width: 100%;
+//   z-index: 1;
+// `;
 export const Content = styled.div`
-  bottom: 0;
-  overflow: auto;
-  position: absolute;
-  top: 48px;
-  width: 100%;
   z-index: 1;
 `;
 

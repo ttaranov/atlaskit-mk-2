@@ -27,7 +27,6 @@ export default class SpotlightAutoscrollExample extends Component<*, State> {
   hide = () => this.setState({ active: false });
   render() {
     const { active } = this.state;
-
     return (
       <SpotlightManager component={Base}>
         <p>
@@ -51,9 +50,16 @@ export default class SpotlightAutoscrollExample extends Component<*, State> {
               </span>
             </Highlight>
           </SpotlightTarget>
+          {/* <SpotlightTarget name="scroll-behaviour">
+            <blockquote>ajksdfjla ksdfjksdfjkasdjlkfsdjl</blockquote>
+          </SpotlightTarget> */}
         </HighlightGroup>
 
         <Lorem count={10} style={{ marginTop: 20 }} />
+
+        <p style={{ marginBottom: '1em' }}>
+          <button onClick={this.show}>Show</button>
+        </p>
 
         {active && (
           <Spotlight
@@ -62,16 +68,16 @@ export default class SpotlightAutoscrollExample extends Component<*, State> {
             heading="Aww, yiss!"
             key="scroll-behaviour"
             target="scroll-behaviour"
-            targetReplacement={rect => (
-              <SpotlightPulse style={{ position: 'absolute', ...rect }}>
-                <Highlight color="green" style={{ width: rect.width }}>
-                  I&apos;m in view{' '}
-                  <span role="img" aria-label="happy face">
-                    😌
-                  </span>
-                </Highlight>
-              </SpotlightPulse>
-            )}
+            // targetReplacement={rect => (
+            //   <SpotlightPulse style={{ position: 'absolute', ...rect }}>
+            //     <Highlight color="green" style={{ width: rect.width }}>
+            //       I&apos;m in view{' '}
+            //       <span role="img" aria-label="happy face">
+            //         😌
+            //       </span>
+            //     </Highlight>
+            //   </SpotlightPulse>
+            // )}
           >
             <Lorem count={1} />
           </Spotlight>
