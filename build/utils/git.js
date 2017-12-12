@@ -49,7 +49,7 @@ async function push(args = []) {
 
 // used to create a single tag at a time for the current head only
 async function tag(tagStr) {
-  const gitCmd = await spawn('git', ['tag', tag]);
+  const gitCmd = await spawn('git', ['tag', tagStr]);
   return gitCmd.code === 0;
 }
 
