@@ -48,7 +48,7 @@ export {
   emojiQuery,
   media,
   mediaGroup,
-  singleImage,
+  mediaSingle,
   textColor,
   table,
   tr,
