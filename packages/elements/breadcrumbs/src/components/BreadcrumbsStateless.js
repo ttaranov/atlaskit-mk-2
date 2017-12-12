@@ -1,8 +1,8 @@
 // @flow
-import React, { Children, Component } from 'react';
+import React, { Children, Component, type Node, type Element } from 'react';
 import EllipsisItem from './EllipsisItem';
 import Container from '../styled/BreadcrumbsContainer';
-import type { ChildrenType, ElementType } from '../types';
+import type { ElementType } from '../types';
 
 const defaultMaxItems = 8;
 
@@ -19,7 +19,7 @@ type Props = {
    the ellpisis. */
   onExpand: Event => mixed,
   /** A single <BreadcrumbsItem> or an array of <BreadcrumbsItem>.  */
-  children?: ChildrenType,
+  children?: Node,
 };
 
 export default class BreadcrumbsStateless extends Component<Props, {}> {
@@ -31,7 +31,7 @@ export default class BreadcrumbsStateless extends Component<Props, {}> {
     maxItems: defaultMaxItems,
   };
 
-  renderAllItems(): Array<ElementType> {
+  renderAllItems(): Array<Element> {
     const allNonEmptyItems = toArray(this.props.children);
     return allNonEmptyItems.map((child, index) =>
       React.cloneElement(child, {
