@@ -25,6 +25,10 @@ export default md`
     occurrenceKey: '',
     type: 'file',
   };
+
+  // you want to use here the same pagination you use for the CardList component
+  const pageSize = 30;
+
   const dataSource = {
     collectionName: defaultCollectionName,
   };
@@ -32,6 +36,7 @@ export default md`
 
   export default () => (
     <MediaViewer
+      pageSize={pageSize}
       context={context}
       selectedItem={selectedItem}
       dataSource={dataSource}

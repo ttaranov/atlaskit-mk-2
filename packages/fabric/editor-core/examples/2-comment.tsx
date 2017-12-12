@@ -108,6 +108,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     allowHyperlinks={true}
                     allowCodeBlocks={true}
                     allowLists={true}
+                    allowRule={true}
                     allowTables={true}
                     allowHelpDialog={true}
                     allowPlaceholderCursor={true}

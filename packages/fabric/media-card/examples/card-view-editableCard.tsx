@@ -41,6 +41,8 @@ import {
   SliderWrapper,
   OptionsWrapper,
   CardDimensionsWrapper,
+  MainWrapper,
+  CardPreviewWrapper,
 } from '../example-helpers/styled';
 import { defaultImageCardDimensions } from '../src/utils/cardDimensions';
 
@@ -150,6 +152,8 @@ export const generateStoriesForEditableCards = () => {
     isClickHandlerActive: boolean;
     isParentInlineBlock: boolean;
     doesParentHasWidth: boolean;
+    isWidthPercentage: boolean;
+    isHeightPercentage: boolean;
   }
 
   class EditableCard extends Component<EditableCardProps, EditableCardState> {
@@ -180,6 +184,8 @@ export const generateStoriesForEditableCards = () => {
         isClickHandlerActive: true,
         isParentInlineBlock: false,
         doesParentHasWidth: true,
+        isWidthPercentage: true,
+        isHeightPercentage: true,
       };
       const previousState = getStateFromLocalStorage();
 
@@ -208,12 +214,15 @@ export const generateStoriesForEditableCards = () => {
         isMouseEnterHandlerActive,
         isParentInlineBlock,
         doesParentHasWidth,
+        isWidthPercentage,
+        isHeightPercentage,
       } = this.state;
       const width = parseInt(`${dimensions.width}`, 0);
       const height = parseInt(`${dimensions.height}`, 0);
       const metadata = metadataOptionsMap[metadataKey];
       const { width: parentWidth, height: parentHeight } = parentDimensions;
       const parentStyle = { height: parentHeight };
+      const newDimensions: CardDimensions = { width, height };
 
       if (isParentInlineBlock) {
         parentStyle['display'] = 'inline-block';
@@ -223,28 +232,72 @@ export const generateStoriesForEditableCards = () => {
         parentStyle['width'] = parentWidth;
       }
 
+      if (isWidthPercentage) {
+        newDimensions.width = `${width}%`;
+      }
+
+      if (isHeightPercentage) {
+        newDimensions.height = `${height}%`;
+      }
+
       return (
-        <div>
+        <MainWrapper>
+          <CardPreviewWrapper>
+            <CardDimensionsWrapper>
+              <div>
+                Card dimensions: {width}x{height}
+              </div>
+              <div>
+                Parent dimensions: {parentWidth}x{parentHeight}
+              </div>
+            </CardDimensionsWrapper>
+            <EditableCardContent style={parentStyle}>
+              <CardView
+                onRetry={() => console.log('onRetry')}
+                appearance={appearance}
+                status={status}
+                metadata={metadata}
+                mediaItemType={mediaItemType}
+                dataURI={dataURI}
+                dimensions={newDimensions}
+                actions={menuActions}
+                progress={progress}
+                selectable={selectable}
+                selected={selected}
+                resizeMode={resizeMode}
+                onClick={this.onClick}
+                onMouseEnter={this.onMouseEnter}
+              />
+            </EditableCardContent>
+          </CardPreviewWrapper>
           <EditableCardOptions>
             <h3>Edit me</h3>
             <SliderWrapper>
               <div>
                 Card dimensions <hr />
                 <div>
-                  Width ({width})
+                  Width ({width}) | Percentage
+                  <Toggle
+                    isDefaultChecked={isWidthPercentage}
+                    onChange={this.onWidthPercentageChange}
+                  />
                   <Slider
                     value={Number(width)}
-                    min={144}
-                    max={1000}
+                    min={0}
+                    max={500}
                     onChange={this.onWidthChange}
                   />
                 </div>
                 <div>
-                  Height ({height})
+                  Height ({height}) | Percentage
+                  <Toggle
+                    isDefaultChecked={isHeightPercentage}
+                    onChange={this.onHeightPercentageChange}
+                  />
                   <Slider
                     value={Number(height)}
-                    min={50}
-                    max={1000}
+                    min={0}
+                    max={500}
                     onChange={this.onHeightChange}
                   />
                 </div>
@@ -391,35 +444,17 @@ export const generateStoriesForEditableCards = () => {
               />
             </OptionsWrapper>
           </EditableCardOptions>
-          <CardDimensionsWrapper>
-            <div>
-              Card dimensions: {width}x{height}
-            </div>
-            <div>
-              Parent dimensions: {parentWidth}x{parentHeight}
-            </div>
-          </CardDimensionsWrapper>
-          <EditableCardContent style={parentStyle}>
-            <CardView
-              onRetry={() => console.log('onRetry')}
-              appearance={appearance}
-              status={status}
-              metadata={metadata}
-              mediaItemType={mediaItemType}
-              dataURI={dataURI}
-              dimensions={dimensions}
-              actions={menuActions}
-              progress={progress}
-              selectable={selectable}
-              selected={selected}
-              resizeMode={resizeMode}
-              onClick={this.onClick}
-              onMouseEnter={this.onMouseEnter}
-            />
-          </EditableCardContent>
-        </div>
+        </MainWrapper>
       );
     }
+
+    onWidthPercentageChange = () => {
+      this.setState({ isWidthPercentage: !this.state.isWidthPercentage });
+    };
+
+    onHeightPercentageChange = () => {
+      this.setState({ isHeightPercentage: !this.state.isHeightPercentage });
+    };
 
     onMouseEnterChange = () => {
       this.setState({

@@ -129,4 +129,56 @@ describe('Avatar Picker Dialog', () => {
       selectedAvatar,
     );
   });
+
+  it('should render default title', () => {
+    const selectedAvatar: Avatar = { dataURI: 'http://an.avatar.com/123' };
+    const avatars = [selectedAvatar];
+    const component = renderWithProps({ avatars });
+    const { header } = component.find(ModalDialog).props() as { header: any };
+    const title = shallow(header());
+    expect(title.text()).toBe('Upload an avatar');
+  });
+
+  it('should by able to customise title', () => {
+    const selectedAvatar: Avatar = { dataURI: 'http://an.avatar.com/123' };
+    const avatars = [selectedAvatar];
+    const component = renderWithProps({
+      avatars,
+      title: 'test-title',
+    });
+    const { header } = component.find(ModalDialog).props() as { header: any };
+    const title = shallow(header());
+    expect(title.text()).toBe('test-title');
+  });
+
+  it('should render default primary button text', () => {
+    const selectedAvatar: Avatar = { dataURI: 'http://an.avatar.com/123' };
+    const avatars = [selectedAvatar];
+    const component = renderWithProps({ avatars });
+    const { footer } = component.find(ModalDialog).props() as { footer: any };
+    const footerComponent = shallow(footer());
+    expect(
+      (footerComponent
+        .find(Button)
+        .at(0)
+        .props() as React.Props<{}>).children,
+    ).toBe('Save');
+  });
+
+  it('should by able to customise primary button text', () => {
+    const selectedAvatar: Avatar = { dataURI: 'http://an.avatar.com/123' };
+    const avatars = [selectedAvatar];
+    const component = renderWithProps({
+      avatars,
+      primaryButtonText: 'test-primary-text',
+    });
+    const { footer } = component.find(ModalDialog).props() as { footer: any };
+    const footerComponent = shallow(footer());
+    expect(
+      (footerComponent
+        .find(Button)
+        .at(0)
+        .props() as React.Props<{}>).children,
+    ).toBe('test-primary-text');
+  });
 });

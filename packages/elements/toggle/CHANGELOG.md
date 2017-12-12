@@ -1,5 +1,9 @@
 # @atlaskit/toggle
 
+## 2.7.3
+
+## 2.7.2
+
 ## 2.7.1
 - [patch] Fix toggle icon alignment [bafb82b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bafb82b)
 

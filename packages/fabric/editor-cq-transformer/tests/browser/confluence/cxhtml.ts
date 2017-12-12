@@ -46,6 +46,7 @@ import {
   th,
   inlineExtension,
   extension,
+  bodiedExtension,
   emoji,
 } from './_schema-builder';
 chai.use(chaiPlugin);
@@ -809,7 +810,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         },
       ],
     };
-    const defaultAttrs = {
+    const attrs = {
       extensionType: 'com.atlassian.confluence.macro.core',
       extensionKey: 'status',
       parameters: {
@@ -825,7 +826,6 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     );
 
     describe('inlineExtension', () => {
-      const attrs = { ...defaultAttrs };
       check(
         'basic',
         `<ac:structured-macro ac:name="${
@@ -840,7 +840,6 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     });
 
     describe('bodyless', () => {
-      const attrs = { ...defaultAttrs, bodyType: 'none' };
       check(
         'basic',
         `<ac:structured-macro ac:name="${
@@ -854,26 +853,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       );
     });
 
-    describe('plain text body', () => {
-      const attrs = { ...defaultAttrs, bodyType: 'plain' };
-      check(
-        'basic',
-        `<ac:structured-macro ac:name="${
-          attrs.extensionKey
-        }" ac:schema-version="1" ac:macro-id="${
-          attrs.parameters.macroMetadata.macroId.value
-        }">${params}<fab:placeholder-url>${
-          macroMetadata.placeholder[0].data.url
-        }</fab:placeholder-url>
-          <fab:display-type>BLOCK</fab:display-type>
-          <ac:plain-text-body>piggy</ac:plain-text-body>
-        </ac:structured-macro>`,
-        doc(extension(attrs, p('piggy'))),
-      );
-    });
-
-    describe('rich text body', () => {
-      const attrs = { ...defaultAttrs, bodyType: 'rich' };
+    describe('bodiedExtension', () => {
       check(
         'basic',
         `<ac:structured-macro ac:name="${
@@ -886,7 +866,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           <fab:display-type>BLOCK</fab:display-type>
           <ac:rich-text-body><p>little<strong>piggy</strong></p></ac:rich-text-body>
         </ac:structured-macro>`,
-        doc(extension(attrs, p('little', strong('piggy')))),
+        doc(bodiedExtension(attrs, p('little', strong('piggy')))),
       );
     });
   });

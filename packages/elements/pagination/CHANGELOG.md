@@ -1,5 +1,9 @@
 # @atlaskit/pagination
 
+## 3.5.10
+
+## 3.5.9
+
 ## 3.5.8
 
 - [patch] Bumping dependency on docs [a2462c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2462c4)

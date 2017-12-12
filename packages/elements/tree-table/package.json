@@ -24,8 +24,7 @@
     "react-dom": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/button": "^5.4.8",
-    "@atlaskit/docs": "^1.0.1"
+    "@atlaskit/docs": "^2.1.0"
   },
   "keywords": [
     "atlaskit",

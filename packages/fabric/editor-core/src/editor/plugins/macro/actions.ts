@@ -24,7 +24,9 @@ export const insertMacroFromMacroBrowser = (
     let node;
 
     if (type === 'extension') {
-      node = schema.nodes.extension.create(
+      node = schema.nodes.extension.create(attrs);
+    } else if (type === 'bodiedExtension') {
+      node = schema.nodes.bodiedExtension.create(
         attrs,
         schema.nodeFromJSON(newMacro).content,
       );

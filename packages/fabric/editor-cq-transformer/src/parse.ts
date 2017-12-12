@@ -378,19 +378,12 @@ function convertConfluenceMacro(
   const richTextBody = richBodyNode
     ? parseDomNode(schema, richBodyNode).content
     : null;
-  const plainTextBody = properties['ac:plain-text-body'];
+  const plainTextBody = properties['ac:plain-text-body'] || '';
 
   switch (macroName.toUpperCase()) {
     case 'CODE':
       const { language, title } = params;
-      return createCodeFragment(schema, plainTextBody || '', language, title);
-
-    case 'NOFORMAT': {
-      return schema.nodes.codeBlock.create(
-        { language: null },
-        schema.text(plainTextBody || ''),
-      );
-    }
+      return createCodeFragment(schema, plainTextBody, language, title);
 
     case 'WARNING':
     case 'INFO':
@@ -434,6 +427,13 @@ function convertConfluenceMacro(
       });
   }
 
+  if (plainTextBody) {
+    return schema.nodes.codeBlock.create(
+      { language: null },
+      schema.text(plainTextBody),
+    );
+  }
+
   switch (properties['fab:display-type']) {
     case 'INLINE':
       return schema.nodes.inlineExtension.create({
@@ -453,43 +453,28 @@ function convertConfluenceMacro(
         },
       });
     case 'BLOCK':
-      let content;
-      let bodyType;
-
-      if (plainTextBody) {
-        content = schema.nodes.paragraph.createChecked(
-          {},
-          schema.text(plainTextBody),
-        );
-        bodyType = 'plain';
-      } else if (richTextBody) {
-        content = richTextBody;
-        bodyType = 'rich';
-      } else {
-        content = null;
-        bodyType = 'none';
-      }
-
-      return schema.nodes.extension.create(
-        {
-          extensionType: 'com.atlassian.confluence.macro.core',
-          extensionKey: macroName,
-          bodyType,
-          parameters: {
-            macroParams: getExtensionMacroParams(params),
-            macroMetadata: {
-              macroId: { value: macroId },
-              placeholder: [
-                {
-                  data: { url: properties['fab:placeholder-url'] },
-                  type: 'image',
-                },
-              ],
-            },
+      const attrs = {
+        extensionType: 'com.atlassian.confluence.macro.core',
+        extensionKey: macroName,
+        parameters: {
+          macroParams: getExtensionMacroParams(params),
+          macroMetadata: {
+            macroId: { value: macroId },
+            placeholder: [
+              {
+                data: { url: properties['fab:placeholder-url'] },
+                type: 'image',
+              },
+            ],
           },
         },
-        Fragment.from(content),
-      );
+      };
+      return richTextBody
+        ? schema.nodes.bodiedExtension.create(
+            attrs,
+            Fragment.from(richTextBody),
+          )
+        : schema.nodes.extension.create(attrs);
   }
 
   return null;

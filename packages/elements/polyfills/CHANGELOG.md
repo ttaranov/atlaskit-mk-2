@@ -1,5 +1,7 @@
 # @atlaskit/polyfills
 
+## 1.2.4
+
 ## 1.2.3
 - [patch] Removes broken dist builds and simply exposes individual polyfills [c9e83f6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9e83f6)
 

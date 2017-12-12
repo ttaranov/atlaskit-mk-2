@@ -43,6 +43,22 @@ export function isEmpty(node?: Node): boolean {
   );
 }
 
+/**
+ * Checks if a node looks like an empty document
+ */
+export function isEmptyDocument(node: Node): boolean {
+  const nodeChild = node.content.firstChild;
+
+  if (node.childCount !== 1 || !nodeChild) {
+    return false;
+  }
+  return (
+    nodeChild.type.name === 'paragraph' &&
+    !nodeChild.childCount &&
+    nodeChild.nodeSize === 2
+  );
+}
+
 export const preprocessDoc = (
   schema: Schema,
   origDoc: Node | undefined,

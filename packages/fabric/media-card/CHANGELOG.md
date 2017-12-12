@@ -1,5 +1,18 @@
 # @atlaskit/media-image
 
+## 22.4.3
+
+## 22.4.2
+- [patch] fix z-index issue for app cards [d2e05ae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2e05ae)
+
+## 22.4.1
+- [patch] Use default dimensions in CardView when dimensions are not provided [d07f3f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d07f3f8)
+
+## 22.4.0
+- [minor] make Card and CardView to work properly when percetanges are passed as dimensions [3178808](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3178808)
+
+## 22.3.1
+
 ## 22.3.0
 - [minor] Update signature onClick event on filmstrip (renderer) [30bdfcc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30bdfcc)
 - [minor] Update signature onClick event on filmstrip (renderer) [dbced25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbced25)

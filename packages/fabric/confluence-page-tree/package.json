@@ -14,7 +14,7 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/avatar": "^8.0.0",
-    "@atlaskit/button": "^5.4.8",
+    "@atlaskit/button": "^6.0.0",
     "@atlaskit/profilecard": "^3.7.1",
     "@atlaskit/theme": "^2.0.0",
     "styled-components": "^1.4.6"
@@ -24,18 +24,11 @@
     "react-dom": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^1.0.1",
-    "@storybook/react": "^3.2.17",
-    "@storybook/addon-actions": "^3.2.17",
-    "@storybook/addon-links": "^3.2.17"
+    "@atlaskit/docs": "^2.1.0"
   },
   "keywords": [
     "atlaskit",
     "react",
     "ui"
-  ],
-  "scripts": {
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
-  }
+  ]
 }

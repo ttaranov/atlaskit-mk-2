@@ -42,7 +42,7 @@ export {
   default as textColorPlugins,
   stateKey as textColorStateKey,
 } from './text-color';
-export { default as rulePlugins, stateKey as ruleStateKey } from './rule';
+export { default as rulePlugins } from './rule';
 export { default as panelPlugins, stateKey as panelStateKey } from './panel';
 export {
   default as reactNodeViewPlugins,

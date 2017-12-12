@@ -1,5 +1,60 @@
 # @atlaskit/editor-core
 
+## 60.13.1
+
+## 60.13.0
+- [minor] Remove marks on change to empty document [b5eec07](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5eec07)
+- [minor] Remove marks on change to empty document [b5eec07](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5eec07)
+
+## 60.12.1
+
+## 60.12.0
+- [minor] replaced deprecated mention toolbar analytic with new one [cf2dd95](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf2dd95)
+- [minor] replaced deprecated mention toolbar analytic with new one [cf2dd95](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf2dd95)
+- [patch] replaced deprecated mention analytics with the new ones [8a9070c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a9070c)
+- [patch] replaced deprecated mention analytics with the new ones [8a9070c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a9070c)
+- [patch] fixed typescript build errors [0d5baaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d5baaa)
+- [patch] fixed typescript build errors [0d5baaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d5baaa)
+- [minor] code improvements for mention analytics and tests added [35bd176](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35bd176)
+- [minor] code improvements for mention analytics and tests added [35bd176](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35bd176)
+- [minor] added analytic events for mentions [1f7019a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1f7019a)
+- [minor] added analytic events for mentions [1f7019a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1f7019a)
+
+## 60.11.0
+- [minor] Add rule plugin [caf2ac0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/caf2ac0)
+- [minor] Add rule plugin [caf2ac0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/caf2ac0)
+
+## 60.10.1
+
+## 60.10.0
+- [minor] Remove support for images with data URI's for Bitbucket's image node in the editor [e055dee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e055dee)
+- [minor] Remove support for images with data URI's for Bitbucket's image node in the editor [e055dee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e055dee)
+- [patch] Fixed an issue with drag-and-dropping images in Firefox where dropping an image on the padding of the parent container of Prosemirror's contenteditable would cause the image to be added to the editor via an InputEvent rather than trigger a DragEvent. [9b69d97](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b69d97)
+- [patch] Fixed an issue with drag-and-dropping images in Firefox where dropping an image on the padding of the parent container of Prosemirror's contenteditable would cause the image to be added to the editor via an InputEvent rather than trigger a DragEvent. [9b69d97](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b69d97)
+
+## 60.9.3
+- [patch] fix inline comments marker name in schema [966f9c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/966f9c2)
+- [patch] fix inline comments marker name in schema [966f9c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/966f9c2)
+
+## 60.9.2
+- [patch] split extension node [4303d49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4303d49)
+- [patch] split extension node [4303d49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4303d49)
+
+## 60.9.1
+- [patch] Provide an option to disable subscript/superscript in new arch [264db1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/264db1f)
+- [patch] Provide an option to disable subscript/superscript in new arch [264db1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/264db1f)
+
+## 60.9.0
+
+- [patch] Fixes table controls styles for firefox and chrome [3f0a783](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f0a783)
+- [patch] Fixes table controls styles for firefox and chrome [3f0a783](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f0a783)
+
+## 60.8.5
+
+## 60.8.4
+- [patch] Add default inline code styles [d5d8e5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5d8e5f)
+- [patch] Add default inline code styles [d5d8e5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5d8e5f)
+
 ## 60.8.3
 - [patch] Fix getValue() action resolving too early with media in-flight. [d31fafe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d31fafe)
 - [patch] Fix getValue() action resolving too early with media in-flight. [d31fafe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d31fafe)

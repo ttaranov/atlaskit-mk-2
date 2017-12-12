@@ -1,5 +1,60 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Root Wrapper should render element with the right breakpoints 1`] = `
+.c0 .overlay {
+  padding: 24px;
+}
+
+.c0 .title {
+  font-size: 14px;
+}
+
+.c0 .file-size {
+  font-size: 14px;
+}
+
+.c0 .file-type-icon span {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+<div
+  className="c0"
+/>
+`;
+
+exports[`Root Wrapper should render element with the right breakpoints 2`] = `
+.c0 {
+  border-radius: 2px;
+}
+
+.c0 .title {
+  font-size: 16px;
+}
+
+.c0 .file-size {
+  font-size: 14px;
+}
+
+.c0 .wrapper,
+.c0 .img-wrapper {
+  border-radius: 2px;
+}
+
+.c0 .overlay {
+  padding: 24px;
+}
+
+.c0 .file-type-icon span {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+<div
+  className="c0"
+/>
+`;
+
 exports[`Root Wrapper should render with default props 1`] = `
 .c0 function (_a) {
   return: '';

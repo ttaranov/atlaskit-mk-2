@@ -4,6 +4,7 @@ import { fromHTML, toHTML } from '../../../test-helpers';
 
 const schema = makeSchema();
 const src = 'http://test.com';
+const srcDataURI = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAY)';
 
 describe(`${name}/schema image node`, () => {
   it('serializes to <img>', () => {
@@ -15,6 +16,12 @@ describe(`${name}/schema image node`, () => {
     const doc = fromHTML(`<img src="${src}" />`, schema);
     const img = doc.firstChild!.firstChild!;
     expect(img.type.name).toEqual('image');
+  });
+
+  it('does not match <img src="data:image/...">', () => {
+    const doc = fromHTML(`<img src="${srcDataURI}" />`, schema);
+    const img = doc.firstChild!.firstChild!;
+    expect(img).toBeNull();
   });
 });
 
