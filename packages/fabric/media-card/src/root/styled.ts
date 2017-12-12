@@ -8,7 +8,6 @@ import {
   defaultSmallCardDimensions,
 } from '../utils/cardDimensions';
 import { BreakpointSizeValue, breakpointStyles } from '../utils/breakpoint';
-import { minSmallCardDimensions } from '../utils/index';
 
 export interface WrapperProps {
   mediaItemType: MediaItemType;
@@ -34,17 +33,20 @@ export const Wrapper = styled.div`
     mediaItemType,
     breakpointSize = 'medium',
   }: WrapperProps) => {
-    if (mediaItemType === 'link') {
-      return `
-        ${getCSSBoundaries(appearance)}
-        position: relative;
-      `;
-    } else if (appearance === 'small') {
+    if (appearance === 'small') {
       return `
         display: inline-block;
         min-width: ${defaultSmallCardDimensions.width}px;
         ${getWrapperWidth(dimensions)}
         height: ${defaultSmallCardDimensions.height}px;
+      `;
+    }
+    // Links are responsive and omit passed dimensions, instead they use max and min dimensions
+    // they don't apply breakpoints either
+    if (mediaItemType === 'link') {
+      return `
+        ${getCSSBoundaries(appearance)}
+        position: relative;
       `;
     }
 
