@@ -4,7 +4,13 @@
  */
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { Wrapper, LinkWrapper } from '../../../src/shared/CardFrame/styled';
+import { akColorN30 } from '@atlaskit/util-shared-styles';
+import {
+  Wrapper,
+  LinkWrapper,
+  IconWrapper,
+  TextWrapper,
+} from '../../../src/shared/CardFrame/styled';
 
 describe('Wrapper', () => {
   it('should render with minWidth when there is a minWidth', () => {
@@ -67,5 +73,29 @@ describe('LinkWrapper', () => {
   it('should not have hover styles when there is no href', () => {
     const element = shallow(<LinkWrapper />);
     expect(element).toMatchSnapshot();
+  });
+});
+
+describe('IconWrapper', () => {
+  it('should look like a placeholder when isPlaceholder=true', () => {
+    const element = shallow(<IconWrapper isPlaceholder={true} />);
+    expect(element).toHaveStyleRule('background-color', akColorN30);
+  });
+
+  it('should look like a placeholder when isPlaceholder=false', () => {
+    const element = shallow(<IconWrapper isPlaceholder={false} />);
+    expect(element).not.toHaveStyleRule('background-color', akColorN30);
+  });
+});
+
+describe('TextWrapper', () => {
+  it('should look like a placeholder when isPlaceholder=true', () => {
+    const element = shallow(<TextWrapper isPlaceholder={true} />);
+    expect(element).toHaveStyleRule('background-color', akColorN30);
+  });
+
+  it('should look like a placeholder when isPlaceholder=false', () => {
+    const element = shallow(<TextWrapper isPlaceholder={false} />);
+    expect(element).not.toHaveStyleRule('background-color', akColorN30);
   });
 });
