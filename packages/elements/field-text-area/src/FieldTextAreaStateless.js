@@ -1,6 +1,5 @@
 // @flow
-import React, { Component } from 'react';
-import { type Node } from 'react';
+import React, { Component, type Node } from 'react';
 import Base, { Label } from '@atlaskit/field-base';
 import TextArea from './styled/TextArea';
 
@@ -46,9 +45,14 @@ type Props = {|
   minimumRows?: number,
   /** Disables the resizing of the text area. */
   enableResize?: boolean,
+  /** Type of field */
+  type?: string, //eslint-disable-line react/no-unused-prop-types
 |};
 
-export default class FieldText extends Component<Props, void> {
+export default class FieldText extends Component<any, void> {
+  props: Props; // eslint-disable-line react/sort-comp
+  input: any; // eslint-disable-line react/sort-comp
+
   static defaultProps = {
     compact: false,
     disabled: false,

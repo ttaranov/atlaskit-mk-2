@@ -1,6 +1,5 @@
 // @flow
-import React, { Component } from 'react';
-import { type Node } from 'react';
+import React, { Component, type Node } from 'react';
 import FieldTextAreaStateless from './FieldTextAreaStateless';
 
 export { FieldTextAreaStateless };
@@ -25,7 +24,7 @@ type Props = {|
   /** The value of the input. */
   value?: string | number,
   /** Handler to be called when the input changes. */
-  onChange?: (event: Event) => mixed,
+  onChange?: (event: Event) => void,
   /** Id value to be passed to the html input. */
   id?: string,
   /** Sets whether to show or hide the label. */
@@ -52,12 +51,13 @@ type Props = {|
 type State = {|
   /** The value to be used in the field text area. This is the value that will
    be returned on form submission. */
-  value: number | string,
+  value?: number | string,
 |};
 
 /* eslint-disable react/prop-types */
 export default class extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
+  input: any; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
     onChange: () => {},
@@ -67,9 +67,9 @@ export default class extends Component<Props, State> {
     value: this.props.value,
   };
 
-  handleOnChange = e => {
+  handleOnChange = (e: any) => {
     this.setState({ value: e.target.value });
-    this.props.onChange(e);
+    if (this.props.onChange) this.props.onChange(e);
   };
 
   focus = () => {

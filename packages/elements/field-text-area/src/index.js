@@ -1,3 +1,4 @@
+// @flow
 import FieldTextArea from './FieldTextArea';
 import FieldTextAreaStateless from './FieldTextAreaStateless';
 

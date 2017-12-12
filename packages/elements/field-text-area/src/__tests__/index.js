@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Base from '@atlaskit/field-base';
@@ -153,6 +154,7 @@ describe('FieldTextAreaStateless', () => {
       describe(JSON.stringify(prop), () =>
         it('TextArea should have attribute defined', () => {
           const key = Object.keys(prop)[0];
+          // $FlowFixMe
           const value = prop[key];
           expect(
             shallow(

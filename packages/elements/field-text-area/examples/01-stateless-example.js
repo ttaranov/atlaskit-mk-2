@@ -1,12 +1,16 @@
+// @flow
 import React, { Component } from 'react';
 import { FieldTextAreaStateless } from '../src/FieldTextArea';
 
-export default class StatelessExample extends Component {
+type State = {|
+  value: string | number,
+|};
+export default class StatelessExample extends Component<void, State> {
   state = {
     value: '',
   };
 
-  setValue = e => this.setState({ value: e.target.value });
+  setValue = (e: any) => this.setState({ value: e.target.value });
 
   render() {
     return (

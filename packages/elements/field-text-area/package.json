@@ -35,7 +35,7 @@
   "devDependencies": {
     "@atlaskit/docs": "^2.0.0",
     "enzyme": "^2.9.1",
-    "@atlaskit/button": "^5.4.8",
+    "@atlaskit/button": "^6.0.0",
     "@atlaskit/util-readme": "^1.0.0"
   },
   "keywords": [
