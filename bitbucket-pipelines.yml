@@ -20,7 +20,7 @@ pipelines:
     - step:
         script:
           - source ./build-setup.sh
-          - bolt delete
+          - rm -rf ./packages/fabric/media-card/dist
           - bolt install --pure-lockfile
           - bolt build
           - bolt lint
