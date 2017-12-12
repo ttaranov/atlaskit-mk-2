@@ -82,6 +82,15 @@ const blockTypeIcons = {
  */
 const isDetachedElement = el => !document.contains(el);
 
+export const InsertBlockIcon = () => (
+  <Wrapper>
+    <AddIcon label="Open or close insert block dropdown" />
+    <ExpandIconWrapper>
+      <ExpandIcon label="Open or close insert block dropdown" />
+    </ExpandIconWrapper>
+  </Wrapper>
+);
+
 export default class ToolbarInsertBlock extends React.Component<Props, State> {
   private pickerRef: ReactElement<any>;
   private button?;

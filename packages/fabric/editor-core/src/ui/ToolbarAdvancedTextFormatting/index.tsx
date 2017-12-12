@@ -47,6 +47,12 @@ export interface State {
   clearFormattingDisabled?: boolean;
 }
 
+export const TextFormattingIcon = () => (
+  <TriggerWrapper>
+    <MoreIcon label="Open or close advance text formatting dropdown" />
+  </TriggerWrapper>
+);
+
 export default class ToolbarAdvancedTextFormatting extends PureComponent<
   Props,
   State

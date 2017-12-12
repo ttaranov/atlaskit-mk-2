@@ -32,6 +32,15 @@ export interface State {
   isDropdownOpen: boolean;
 }
 
+export const ListIcon = () => (
+  <Wrapper>
+    <BulletListIcon label="Add list" />
+    <ExpandIconWrapper>
+      <ExpandIcon label="Open or close insert block dropdown" />
+    </ExpandIconWrapper>
+  </Wrapper>
+);
+
 export default class ToolbarLists extends PureComponent<Props, State> {
   state: State = {
     bulletListActive: false,
