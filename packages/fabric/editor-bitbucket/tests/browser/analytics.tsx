@@ -271,12 +271,12 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
     ).to.equal(true);
   });
 
-  // Unskip it in: https://product-fabric.atlassian.net/browse/ED-2214
-  it.skip('atlassian.editor.format.list.numbered.button', () => {
+  it('atlassian.editor.format.list.numbered.button', () => {
     editor
       .find('ToolbarLists')
-      .find('EditorBulletListIconIcon')
-      .parent()
+      .find('ToolbarButton')
+      .findWhere(el => !!el.find('EditorNumberListIcon').length)
+      .find('Button')
       .simulate('click');
 
     expect(
@@ -284,12 +284,12 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
     ).to.equal(true);
   });
 
-  // Unskip it in: https://product-fabric.atlassian.net/browse/ED-2214
-  it.skip('atlassian.editor.format.list.bullet.button', () => {
+  it('atlassian.editor.format.list.bullet.button', () => {
     editor
       .find('ToolbarLists')
-      .find('EditorBulletListIcon')
-      .parent()
+      .find('ToolbarButton')
+      .findWhere(el => !!el.find('EditorBulletListIcon').length)
+      .find('Button')
       .simulate('click');
 
     expect(
@@ -356,8 +356,7 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
     expect(handler.calledWith('atlassian.editor.stop.cancel')).to.equal(true);
   });
 
-  // TODO: editor-migration - unskip
-  it.skip('atlassian.editor.paste', function() {
+  it('atlassian.editor.paste', function() {
     if (!dispatchPasteEvent(editorView, { plain: 'foo' })) {
       // This environment does not support artificial paste events
       return this.skip();
@@ -383,8 +382,7 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
     expect(handler.calledWith('atlassian.editor.image.button')).to.equal(true);
   });
 
-  // TODO: editor-migration - unskip
-  it.skip('atlassian.editor.image.paste', function() {
+  it('atlassian.editor.image.paste', function() {
     const contentArea: HTMLElement = editorView.dom;
     const event = createEvent('paste');
 

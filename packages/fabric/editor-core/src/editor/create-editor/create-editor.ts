@@ -240,6 +240,7 @@ export default function createEditor(
         onChange(editorView);
       }
     },
+    editable: () => true,
   });
 
   return {

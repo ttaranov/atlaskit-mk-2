@@ -65,6 +65,7 @@ class DecisionBuilderToolsDrawer extends Component<Props, State> {
         <h4>Raw content:</h4>
         <ToolsDrawer
           renderEditor={({
+            disabled,
             mentionProvider,
             emojiProvider,
             mediaProvider,
@@ -80,6 +81,7 @@ class DecisionBuilderToolsDrawer extends Component<Props, State> {
               <Editor
                 {...getPropsPreset(appearance)}
                 analyticsHandler={analyticsHandler}
+                disabled={disabled}
                 maxHeight={305}
                 mentionProvider={mentionProvider}
                 emojiProvider={emojiProvider}

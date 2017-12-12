@@ -22,27 +22,41 @@ import {
   isSameMark,
   EventHandlers,
 } from '@atlaskit/editor-common';
-
+import { ExtensionHandlers } from '../ui/Renderer';
 import { bigEmojiHeight } from '../utils';
 
 export interface RendererContext {
   objectAri: string;
   containerAri: string;
+  adDoc?: any;
+  schema?: Schema;
 }
+
+export interface ConstructorParams {
+  providers?: ProviderFactory;
+  eventHandlers?: EventHandlers;
+  extensionHandlers?: ExtensionHandlers;
+  portal?: HTMLElement;
+  objectContext?: RendererContext;
+}
+
 export default class ReactSerializer implements Serializer<JSX.Element> {
   private providers?: ProviderFactory;
   private eventHandlers?: EventHandlers;
+  private extensionHandlers?: ExtensionHandlers;
   private portal?: HTMLElement;
   private rendererContext?: RendererContext;
 
-  constructor(
-    providers?: ProviderFactory,
-    eventHandlers?: EventHandlers,
-    portal?: HTMLElement,
-    objectContext?: RendererContext,
-  ) {
+  constructor({
+    providers,
+    eventHandlers,
+    extensionHandlers,
+    portal,
+    objectContext,
+  }: ConstructorParams) {
     this.providers = providers;
     this.eventHandlers = eventHandlers;
+    this.extensionHandlers = extensionHandlers;
     this.portal = portal;
     this.rendererContext = objectContext;
   }
@@ -99,29 +113,29 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
 
   // tslint:disable-next-line:variable-name
   private renderNode(
-    Node: ComponentClass<any>,
+    NodeComponent: ComponentClass<any>,
     props: any,
     key: string,
     content: string | JSX.Element | any[] | null | undefined,
   ): JSX.Element {
     return (
-      <Node key={key} {...props}>
+      <NodeComponent key={key} {...props}>
         {content}
-      </Node>
+      </NodeComponent>
     );
   }
 
   // tslint:disable-next-line:variable-name
   private renderMark(
-    Mark: ComponentClass<any>,
+    MarkComponent: ComponentClass<any>,
     props: any,
     key: string,
     content: any,
   ) {
     return (
-      <Mark key={key} {...props}>
+      <MarkComponent key={key} {...props}>
         {content}
-      </Mark>
+      </MarkComponent>
     );
   }
 
@@ -137,8 +151,10 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       text: node.text,
       providers: this.providers,
       eventHandlers: this.eventHandlers,
+      extensionHandlers: this.extensionHandlers,
       portal: this.portal,
       rendererContext: this.rendererContext,
+      serializer: this,
       ...node.attrs,
     };
   }
@@ -209,10 +225,9 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
 
   static fromSchema(
     schema: Schema,
-    providers?: ProviderFactory,
-    eventHandlers?: EventHandlers,
+    { providers, eventHandlers, extensionHandlers }: ConstructorParams,
   ): ReactSerializer {
     // TODO: Do we actually need the schema here?
-    return new ReactSerializer(providers, eventHandlers);
+    return new ReactSerializer({ providers, eventHandlers, extensionHandlers });
   }
 }

@@ -88,6 +88,7 @@ export default function Example() {
       <ToolsDrawer
         // tslint:disable-next-line:jsx-no-lambda
         renderEditor={({
+          disabled,
           mentionProvider,
           emojiProvider,
           mediaProvider,
@@ -101,6 +102,7 @@ export default function Example() {
             allowHyperlinks={true}
             allowCodeBlocks={true}
             allowHelpDialog={true}
+            disabled={disabled}
             saveOnEnter={true}
             mentionProvider={mentionProvider}
             emojiProvider={emojiProvider}
