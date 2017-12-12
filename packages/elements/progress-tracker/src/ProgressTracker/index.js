@@ -10,6 +10,7 @@ import type {
   Stages,
   Spacing,
   LinkComponentProps,
+  LinkElement,
   ProgressTrackerStageRenderProp,
 } from '../types';
 
@@ -37,7 +38,9 @@ export default class ProgressTracker extends PureComponent<Props, State> {
     items: [],
     spacing: 'cosy',
     render: {
-      link: (props: LinkComponentProps) => <ProgressTrackerLink {...props} />,
+      link: (props: LinkComponentProps): LinkElement => (
+        <ProgressTrackerLink {...props} />
+      ),
     },
     animated: true,
   };
