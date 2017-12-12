@@ -1,5 +1,4 @@
 import { MediaProvider } from '@atlaskit/editor-core';
-import { ClientBasedAuth } from '@atlaskit/media-core';
 import { Schema } from 'prosemirror-model';
 
 export interface ContextInfo {
@@ -51,9 +50,9 @@ export async function getMediaContextInfo(
           (resolvedMediaProvider.uploadParams &&
             resolvedMediaProvider.uploadParams.collection) ||
           '';
-        const auth = (await authProvider({
+        const auth = await authProvider({
           collectionName: collection,
-        })) as ClientBasedAuth;
+        });
         const { token, clientId } = auth;
 
         mediaContextInfo.viewContext = {
@@ -74,9 +73,9 @@ export async function getMediaContextInfo(
       if (uploadContext) {
         const { serviceHost, authProvider } = uploadContext;
         const { collection } = resolvedMediaProvider.uploadParams;
-        const auth: ClientBasedAuth = (await authProvider({
+        const auth = (await authProvider({
           collectionName: collection,
-        })) as ClientBasedAuth;
+        })) as any;
         const { token, clientId } = auth;
 
         mediaContextInfo.uploadContext = {
