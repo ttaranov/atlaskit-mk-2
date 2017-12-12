@@ -101,6 +101,7 @@ const ContentArea = styled(ContentStyles)`
   overflow-y: auto;
 
   /** Hack for Bitbucket to ensure entire editorView gets drop event; see ED-3294 **/
+  /** Hack for tables controlls. Otherwise marging collapse and controlls are misplaced. **/
   .ProseMirror {
     padding: 12px 20px;
   }
