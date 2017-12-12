@@ -1,5 +1,7 @@
 # @atlaskit/renderer
 
+## 10.0.1
+
 ## 10.0.0
 - [major] Addes in extension node and modify ReactSerializer class construtor to accept an object. [e408698](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e408698)
 - [major] Addes in extension node and modify ReactSerializer class construtor to accept an object. [e408698](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e408698)

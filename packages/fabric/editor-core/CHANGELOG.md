@@ -1,5 +1,16 @@
 # @atlaskit/editor-core
 
+## 60.14.2
+- [patch] Fix issue where disabled state was not being set correctly for the new-arch editors [79095b1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79095b1)
+- [patch] Fix issue where disabled state was not being set correctly for the new-arch editors [79095b1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79095b1)
+
+- [patch] Fix comments editor paddings [c8a57cf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8a57cf)
+- [patch] Fix comments editor paddings [c8a57cf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8a57cf)
+- [patch] Rename singleImage to mediaSingle. Replaced alignment and display attributes with layout. [0b97f0a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b97f0a)
+- [patch] Rename singleImage to mediaSingle. Replaced alignment and display attributes with layout. [0b97f0a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b97f0a)
+- [patch] Updated map of ac:emoticons to new emojis [f7f214e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7f214e)
+- [patch] Updated map of ac:emoticons to new emojis [f7f214e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7f214e)
+
 ## 60.14.1
 - [patch] Unskipping jest tests [54d88f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/54d88f7)
 - [patch] Unskipping jest tests [54d88f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/54d88f7)
