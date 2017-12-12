@@ -8,11 +8,10 @@ export const mockUser: User = {
 
 export const mockConversation: Conversation = {
   id: 'mock-conversation',
-  externalId: 'abc:abc:abc/demo',
+  containerId: 'abc:abc:abc/demo',
   children: [
     {
       id: 'mock-comment-1',
-      externalId: 'abc:abc:abc/demo',
       createdBy: mockUser,
       createdAt: Date.now(),
       document: {
@@ -36,11 +35,10 @@ export const mockConversation: Conversation = {
 
 export const mockInlineConversation: Conversation = {
   id: 'mock-inline-conversation',
-  externalId: 'abc:abc:abc/demo',
+  containerId: 'abc:abc:abc/demo',
   children: [
     {
       id: 'mock-comment-2',
-      externalId: 'abc:abc:abc/demo',
       createdBy: mockUser,
       createdAt: Date.now(),
       document: {

@@ -30,14 +30,12 @@ export class MockProvider implements ResourceProvider {
     return Promise.resolve(conversation);
   }
 
-  async create(meta: any): Promise<Conversation> {
-    const { externalId } = this.config;
-
+  async create(containerId: string, meta: any): Promise<Conversation> {
     const conversation = {
       id: `conversation-${Math.floor(Math.random() * 1000)}-${Math.floor(
         Math.random() * 1000,
       )}`,
-      externalId: externalId,
+      containerId,
       children: [],
     };
 
@@ -46,10 +44,8 @@ export class MockProvider implements ResourceProvider {
   }
 
   async addComment(conversationId: string, parentId: string, document: any) {
-    const { externalId } = this.config;
     const comment: Comment = {
       document,
-      externalId,
       createdBy: mockUser,
       createdAt: Date.now(),
       id: `comment-${Math.floor(Math.random() * 1000)}-${Math.floor(

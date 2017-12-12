@@ -10,7 +10,7 @@ import { Demo } from '../example-helpers/DemoPage';
 const provider = new ConversationResource({
   containerId: 'container:abc:abc/123',
   externalId: 'abc:abc:abc/demo',
-  url: 'http://localhost:8080',
+  url: 'http://localhost:9999',
 });
 
 export default function Example() {
