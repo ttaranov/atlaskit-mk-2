@@ -31,7 +31,7 @@ export default class PanelTextInput extends PureComponent<Props, State> {
 
   componentWillReceiveProps(props: Props) {
     this.setState({
-      value: props.defaultValue,
+      value: props.defaultValue || '',
     });
   }
 
