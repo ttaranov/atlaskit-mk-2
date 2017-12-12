@@ -32,6 +32,16 @@ describe('MediaDataUriService', () => {
       expect(params.allowAnimated).toBe(true);
     });
 
+    it('should allow animation by default with old API usage', () => {
+      const fetchSomeDataUriSpy = jest.fn();
+      service.fetchSomeDataUri = fetchSomeDataUriSpy;
+
+      service.fetchImageDataUri({ type: 'file', details: {} }, 100, 100);
+
+      let params = fetchSomeDataUriSpy.mock.calls[0][1];
+      expect(params.allowAnimated).toBe(true);
+    });
+
     it('should allow consumers to disallow animation', () => {
       const fetchSomeDataUriSpy = jest.fn();
       service.fetchSomeDataUri = fetchSomeDataUriSpy;
@@ -43,6 +53,22 @@ describe('MediaDataUriService', () => {
           height: 100,
           allowAnimated: false,
         },
+      );
+
+      let params = fetchSomeDataUriSpy.mock.calls[0][1];
+      expect(params.allowAnimated).toBe(false);
+    });
+
+    it('should allow consumers to disallow animation with old API usage', () => {
+      const fetchSomeDataUriSpy = jest.fn();
+      service.fetchSomeDataUri = fetchSomeDataUriSpy;
+
+      service.fetchImageDataUri(
+        { type: 'file', details: {} },
+        100,
+        100,
+        'crop',
+        false,
       );
 
       let params = fetchSomeDataUriSpy.mock.calls[0][1];

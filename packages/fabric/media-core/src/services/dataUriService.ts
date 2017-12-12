@@ -16,7 +16,10 @@ export interface DataUriService {
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri>;
   fetchImageDataUri(
     mediaItem: MediaItem,
-    options: FetchImageOptions,
+    widthOrOptions: number | FetchImageOptions,
+    heightArg?: number,
+    modeArg?: ImageResizeMode,
+    allowAnimatedArg?: boolean,
   ): Promise<DataUri>;
 }
 
@@ -44,15 +47,37 @@ export class MediaDataUriService implements DataUriService {
     });
   }
 
+  isFetchImageOptions(
+    target: number | FetchImageOptions,
+  ): target is FetchImageOptions {
+    return !!(target as FetchImageOptions).width;
+  }
+
   fetchImageDataUri(
     mediaItem: MediaItem,
-    { width, height, mode = 'crop', allowAnimated = true }: FetchImageOptions,
+    widthOrOptions: number | FetchImageOptions,
+    heightArg?: number,
+    modeArg?: ImageResizeMode,
+    allowAnimatedArg?: boolean,
   ): Promise<DataUri> {
+    const { width, height, mode, allowAnimated } = (() => {
+      if (this.isFetchImageOptions(widthOrOptions)) {
+        return widthOrOptions;
+      } else {
+        return {
+          width: widthOrOptions,
+          height: heightArg,
+          mode: modeArg,
+          allowAnimated: allowAnimatedArg,
+        };
+      }
+    })();
+
     return this.fetchSomeDataUri(`/file/${mediaItem.details.id}/image`, {
       width,
       height,
-      mode,
-      allowAnimated,
+      mode: mode || 'crop',
+      allowAnimated: allowAnimated === undefined ? true : allowAnimated,
       'max-age': 3600,
       collection: this.collectionName,
     });
