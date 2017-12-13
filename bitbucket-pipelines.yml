@@ -22,14 +22,10 @@ pipelines:
           - source ./build-setup.sh
           - bolt install --pure-lockfile
           - bolt build
-          - bolt lint
-          - bolt typecheck
-          - bolt test:ci
-          - bolt test:browser:browserstack
           - (cd website && bolt build)
 
           # Disabling AGAIN, because netlify keeps dying
-          # - (cd website && bolt deploy-staging:no-minimize)
+          - (cd website && bolt deploy-staging:no-minimize)
 
   custom: # Pipelines that can be scheduled or triggered manually
 
