@@ -13,12 +13,20 @@ const year: number = now.getFullYear();
 
 describe('Date', () => {
   it('should render the component', () => {
-    const wrapper = shallow(<DateComponent />);
+    const wrapper = shallow(
+      <DateComponent month={month} year={year}>
+        {date}
+      </DateComponent>,
+    );
     expect(wrapper.length).toBeGreaterThan(0);
   });
 
   it('should prevent default event actions on mouse down', () => {
-    const wrapper = shallow(<DateComponent />);
+    const wrapper = shallow(
+      <DateComponent month={month} year={year}>
+        {date}
+      </DateComponent>,
+    );
     const spy = jest.fn();
 
     wrapper.simulate('mousedown', {
@@ -44,9 +52,15 @@ describe('Date', () => {
   it('should not call onClick prop when date is disabled', () => {
     const dummyOnClickProp = jest.fn();
     const wrapper = shallow(
-      <DateComponent disabled month={month} year={year} onClick={dummyOnClickProp}>
+      <DateComponent
+        disabled
+        month={month}
+        year={year}
+        onClick={dummyOnClickProp}
+      >
         {date}
-      </DateComponent>);
+      </DateComponent>,
+    );
 
     wrapper.find(DateTd).simulate('mouseup');
 
