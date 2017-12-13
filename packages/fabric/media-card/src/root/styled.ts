@@ -1,11 +1,17 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
+import { MediaItemType } from '@atlaskit/media-core';
 import { CardDimensions, CardAppearance } from '../';
 import { getCSSUnitValue } from '../utils/getCSSUnitValue';
-import { getCSSBoundaries } from '../utils/cardDimensions';
+import {
+  getCSSBoundaries,
+  defaultSmallCardDimensions,
+  minSmallCardDimensions,
+} from '../utils/cardDimensions';
 import { BreakpointSizeValue, breakpointStyles } from '../utils/breakpoint';
 
 export interface WrapperProps {
+  mediaItemType: MediaItemType;
   dimensions?: CardDimensions;
   appearance?: CardAppearance;
   breakpointSize?: BreakpointSizeValue;
@@ -22,18 +28,26 @@ const getWrapperWidth = (dimensions?: CardDimensions) =>
     : '';
 
 export const Wrapper = styled.div`
-  ${({ appearance, dimensions, breakpointSize = 'medium' }: WrapperProps) => {
-    if (appearance === 'square' || appearance === 'horizontal') {
+  ${({
+    appearance,
+    dimensions,
+    mediaItemType,
+    breakpointSize = 'medium',
+  }: WrapperProps) => {
+    if (appearance === 'small') {
+      return `
+        display: inline-block;
+        min-width: ${minSmallCardDimensions.width}px;
+        ${getWrapperWidth(dimensions)}
+        height: ${defaultSmallCardDimensions.height}px;
+      `;
+    }
+    // Links are responsive and omit passed dimensions, instead they use max and min dimensions
+    // they don't apply breakpoints either
+    if (mediaItemType === 'link') {
       return `
         ${getCSSBoundaries(appearance)}
         position: relative;
-      `;
-    } else if (appearance === 'small') {
-      return `
-        display: inline-block;
-        width: 100%;
-        ${getWrapperHeight}
-        ${getWrapperWidth}
       `;
     }
 

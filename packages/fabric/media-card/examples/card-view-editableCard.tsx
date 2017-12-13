@@ -154,6 +154,7 @@ export const generateStoriesForEditableCards = () => {
     doesParentHasWidth: boolean;
     isWidthPercentage: boolean;
     isHeightPercentage: boolean;
+    useDimensions: boolean;
   }
 
   class EditableCard extends Component<EditableCardProps, EditableCardState> {
@@ -186,6 +187,7 @@ export const generateStoriesForEditableCards = () => {
         doesParentHasWidth: true,
         isWidthPercentage: true,
         isHeightPercentage: true,
+        useDimensions: true,
       };
       const previousState = getStateFromLocalStorage();
 
@@ -216,6 +218,7 @@ export const generateStoriesForEditableCards = () => {
         doesParentHasWidth,
         isWidthPercentage,
         isHeightPercentage,
+        useDimensions,
       } = this.state;
       const width = parseInt(`${dimensions.width}`, 0);
       const height = parseInt(`${dimensions.height}`, 0);
@@ -259,7 +262,7 @@ export const generateStoriesForEditableCards = () => {
                 metadata={metadata}
                 mediaItemType={mediaItemType}
                 dataURI={dataURI}
-                dimensions={newDimensions}
+                dimensions={useDimensions ? newDimensions : undefined}
                 actions={menuActions}
                 progress={progress}
                 selectable={selectable}
@@ -271,7 +274,6 @@ export const generateStoriesForEditableCards = () => {
             </EditableCardContent>
           </CardPreviewWrapper>
           <EditableCardOptions>
-            <h3>Edit me</h3>
             <SliderWrapper>
               <div>
                 Card dimensions <hr />
@@ -399,6 +401,12 @@ export const generateStoriesForEditableCards = () => {
                 <Toggle
                   isDefaultChecked={isMouseEnterHandlerActive}
                   onChange={this.onMouseEnterChange}
+                />
+                <hr />
+                use dimensions
+                <Toggle
+                  isDefaultChecked={useDimensions}
+                  onChange={this.onUseDimensionsChange}
                 />
               </div>
             </SliderWrapper>
@@ -573,6 +581,10 @@ export const generateStoriesForEditableCards = () => {
 
     onProgressChange = progress => {
       this.setState({ progress });
+    };
+
+    onUseDimensionsChange = () => {
+      this.setState({ useDimensions: !this.state.useDimensions });
     };
   }
 

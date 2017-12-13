@@ -1,5 +1,11 @@
 # @atlaskit/renderer
 
+## 10.0.4
+
+## 10.0.3
+- [patch] Bumped task decision version [1180bbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1180bbe)
+- [patch] Bumped task decision version [1180bbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1180bbe)
+
 ## 10.0.2
 
 ## 10.0.1
