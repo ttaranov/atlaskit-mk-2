@@ -44,15 +44,15 @@ const commonCell = css`
 `;
 
 export const DataCell = styled.div`
-  ${commonCell} ${props =>
-      props.indentLevel &&
-      css`
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        padding-left: ${defaultToPx(indentWidth * props.indentLevel)};
-        position: relative;
-      `};
+  ${commonCell} white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  ${props =>
+    props.indentLevel &&
+    css`
+      padding-left: ${defaultToPx(indentWidth * props.indentLevel)};
+    `};
 `;
 
 export const Header = styled.div`
