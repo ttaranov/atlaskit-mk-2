@@ -2,7 +2,7 @@
 // @flow
 import React from 'react';
 import { mount } from 'enzyme';
-import FieldRange from '../..';
+import FieldRange from '../FieldRange';
 
 // We need to simulate a real event on the DOM element due IE compatibility
 const simulateValueChange = (input, value) => {

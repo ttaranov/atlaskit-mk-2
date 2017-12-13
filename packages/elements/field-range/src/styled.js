@@ -1,3 +1,4 @@
+// @flow
 /* eslint-disable no-mixed-operators */
 import styled, { css } from 'styled-components';
 import theme from './theme';

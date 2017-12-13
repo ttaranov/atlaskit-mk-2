@@ -1,3 +1,4 @@
+// @flow
 import {
   akColorN0,
   akColorN20,
