@@ -162,7 +162,6 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
           offset={[0, 3]}
           fitWidth={230}
           onPositionCalculated={this.adjustPosition}
-          onCancel={this.handleOnCancel}
           popupsMountPoint={this.props.popupsMountPoint}
           popupsBoundariesElement={this.props.popupsBoundariesElement}
         >
@@ -254,14 +253,6 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       }
     }
     this.resetInputActive();
-  };
-
-  private handleOnCancel = () => {
-    this.setState({
-      inputActive: false,
-      editorFocused: false,
-    });
-    this.handleOnBlur();
   };
 
   private handleUnlink = () => {
