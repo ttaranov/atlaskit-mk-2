@@ -46,11 +46,18 @@ export const createPlugin = (
           }
         }
 
+        const { activeParticipants: prevActiveParticipants } = prevPluginState;
         const { activeParticipants, sessionId } = pluginState;
 
         if (collabEditProvider) {
-          const selection = getSendableSelection(oldState, newState);
-          if (selection && sessionId && !tr.docChanged) {
+          const selectionChanged = !oldState.selection.eq(newState.selection);
+          const participantsChanged = prevActiveParticipants !== activeParticipants;
+
+          if (
+            (sessionId && selectionChanged && !tr.docChanged) ||
+            (sessionId && participantsChanged)
+          ) {
+            const selection = getSendableSelection(newState.selection);
             collabEditProvider.sendMessage({
               type: 'telepointer',
               selection,
