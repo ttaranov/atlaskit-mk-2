@@ -270,7 +270,7 @@ describe('CardView', () => {
 
     it('should use item type to calculate default dimensions', () => {
       const card = shallow(
-        <CardView status="complete" mediaItemType="link" metadata={file} />,
+        <CardView status="complete" mediaItemType="file" metadata={file} />,
       );
       const props = card.find(Wrapper).props();
 
@@ -278,7 +278,23 @@ describe('CardView', () => {
         width: 156,
         height: 125,
       });
-      expect(props.mediaItemType).toEqual('link');
+      expect(props.mediaItemType).toEqual('file');
+    });
+
+    it('should not use default dimensions for link cards', () => {
+      const implicitLinkCard = shallow(
+        <CardView status="complete" metadata={link} />,
+      );
+      const explicitLinkCard = shallow(
+        <CardView status="complete" mediaItemType="link" metadata={file} />,
+      );
+
+      expect(implicitLinkCard.find(Wrapper).props().dimensions).toEqual(
+        undefined,
+      );
+      expect(explicitLinkCard.find(Wrapper).props().dimensions).toEqual(
+        undefined,
+      );
     });
   });
 });

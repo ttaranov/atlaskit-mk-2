@@ -130,6 +130,9 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
   render() {
     const { onClick, onMouseEnter, mediaType } = this;
     const { dimensions, appearance } = this.props;
+    const wrapperDimensions = dimensions
+      ? dimensions
+      : mediaType === 'file' ? getDefaultCardDimensions(appearance) : undefined;
     let card;
 
     if (mediaType === 'link') {
@@ -143,7 +146,7 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
         mediaItemType={mediaType}
         breakpointSize={breakpointSize(this.width)}
         appearance={appearance}
-        dimensions={dimensions || getDefaultCardDimensions(appearance)}
+        dimensions={wrapperDimensions}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
       >
