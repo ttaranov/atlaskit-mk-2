@@ -10,24 +10,24 @@ export interface Props {
   rendererContext: RendererContext;
   extensionType: string;
   extensionKey: string;
-  text?: string;
+  originalContent?: any;
   parameters?: any;
 }
 
-const Extension: React.StatelessComponent<Props> = ({
+const BodiedExtension: React.StatelessComponent<Props> = ({
   serializer,
   extensionHandlers,
   rendererContext,
   extensionType,
   extensionKey,
-  text,
+  originalContent,
   parameters,
   children,
 }) => {
   try {
     if (extensionHandlers && extensionHandlers[extensionType]) {
       const content = extensionHandlers[extensionType](
-        { extensionKey, parameters, content: text },
+        { extensionKey, parameters, content: originalContent },
         rendererContext.adDoc,
       );
 
@@ -52,7 +52,7 @@ const Extension: React.StatelessComponent<Props> = ({
   }
 
   // Always return default content if anything goes wrong
-  return <div>{text || 'extension'}</div>;
+  return <div>{children}</div>;
 };
 
-export default Extension;
+export default BodiedExtension;
