@@ -689,9 +689,9 @@
     react-transition-group "^2.2.1"
     styled-components "^1.4.6"
 
-"@atlaskit/task-decision@^4.0.0":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@atlaskit/task-decision/-/task-decision-4.4.1.tgz#e34bd4fe815a28ce830bbc3502302caed4a60b92"
+"@atlaskit/task-decision@^4.6.0":
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/task-decision/-/task-decision-4.6.0.tgz#9944eeec81ef67d1faac469747f5ae5e653c4272"
   dependencies:
     uid "^0.0.2"
     "@atlaskit/analytics" "^2.3.2"
