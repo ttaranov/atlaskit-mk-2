@@ -10,7 +10,7 @@ type Props = {
   render: Function,
 };
 
-export default class Subtree extends PureComponent<Props> {
+export default class Row extends PureComponent<Props> {
   state = {
     isExpanded: false,
     isLoading: false,

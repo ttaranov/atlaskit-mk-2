@@ -1,12 +1,12 @@
 // @flow
 import React, { PureComponent } from 'react';
 import TreeTable, {
-  TreeHeads,
-  TreeHead,
+  HeadersRow,
+  Header,
   TreeRows,
   RowData,
-  TreeCell,
-} from '../src/index';
+  DataCell,
+} from '../src';
 import staticData from './data-freeform-nodes.json';
 
 function fetchRoots() {
@@ -96,16 +96,16 @@ class ReduxStatelessTree extends PureComponent {
   render() {
     const props = this.props;
 
-    // TreeHeadRow
+    // HeaderRow
     // HeaderRow
 
     return <div>TODO</div>;
     return (
       <TreeTable>
-        <TreeHeads>
-          <TreeHead width={200}>Title</TreeHead>
-          <TreeHead width={100}>Numbering</TreeHead>
-        </TreeHeads>
+        <HeadersRow>
+          <Header width={200}>Title</Header>
+          <Header width={100}>Numbering</Header>
+        </HeadersRow>
         <TreeRows
           rootsData={this.props.roots}
           render={({ id, title, numbering, childrenIds }) => (
@@ -124,10 +124,10 @@ class ReduxStatelessTree extends PureComponent {
       </TreeTable>
     );
     // return <TreeTable>
-    //   <TreeHeads>
-    //     <TreeHead width={200}>Title</TreeHead>
-    //     <TreeHead width={100}>Numbering</TreeHead>
-    //   </TreeHeads>
+    //   <HeadersRow>
+    //     <Header width={200}>Title</Header>
+    //     <Header width={100}>Numbering</Header>
+    //   </HeadersRow>
     //   <TreeRows
     //     rootsData={this.props.roots}
     //     render={({ id, title, numbering, children }) => (
@@ -135,8 +135,8 @@ class ReduxStatelessTree extends PureComponent {
     //         onChildrenDataRequested={props.onDataRequested}
     //         childrenData={children}
     //         key={id} hasChildren={children.length > 0}>
-    //         <TreeCell>{title}</TreeCell>
-    //         <TreeCell>{numbering}</TreeCell>
+    //         <DataCell>{title}</DataCell>
+    //         <DataCell>{numbering}</DataCell>
     //       </RowData>
     //     )}
     //   />
@@ -148,10 +148,10 @@ export default ReduxConnectedTree;
 
 //
 // <TreeTable>
-//   <TreeHeads>
-//     <TreeHead width={200}>Title</TreeHead>
-//     <TreeHead width={100}>Numbering</TreeHead>
-//   </TreeHeads>
+//   <HeadersRow>
+//     <Header width={200}>Title</Header>
+//     <Header width={100}>Numbering</Header>
+//   </HeadersRow>
 //   <TreeRows
 //     onDataRequested={this.props.onDataRequested} {/* Dispatches */}
 //     getChildData={this.getChildren} {/* Returns child data */}
@@ -159,8 +159,8 @@ export default ReduxConnectedTree;
 //     render={({ id, title, numbering, children }) => (
 //       <RowData
 //         key={id} hasChildren={children.length > 0}>
-//         <TreeCell>{title}</TreeCell>
-//         <TreeCell>{numbering}</TreeCell>
+//         <DataCell>{title}</DataCell>
+//         <DataCell>{numbering}</DataCell>
 //       </RowData>
 //     )}
 //   />

@@ -4,14 +4,14 @@ import React from 'react';
 import TreeTable from '../src';
 import staticData from './data-structured-nodes.json';
 
-function treeCellFromProp(propName) {
-  return function TreeCell(props) {
+function dataCellFromProp(propName) {
+  return function DataCell(props) {
     return <span>{props[propName]}</span>;
   };
 }
 
-const Title = treeCellFromProp('title');
-const Numbering = treeCellFromProp('numbering');
+const Title = dataCellFromProp('title');
+const Numbering = dataCellFromProp('numbering');
 
 function getChildrenData(parent = staticData) {
   return parent.children || [];
