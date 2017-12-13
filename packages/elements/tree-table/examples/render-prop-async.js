@@ -7,7 +7,7 @@ import TreeTable, {
   RowData,
   DataCell,
 } from '../src';
-import staticData from './data-freeform-nodes.json';
+import staticData from './data-cleancode-toc.json';
 
 function fetchRoots() {
   return Promise.resolve(staticData.children);
@@ -24,15 +24,17 @@ function getChildrenData(parent) {
 export default () => (
   <TreeTable>
     <HeadersRow>
-      <Header width={200}>Title</Header>
+      <Header width={200}>Chapter title</Header>
       <Header width={100}>Numbering</Header>
+      <Header width={100}>Page</Header>
     </HeadersRow>
     <TreeRows
       data={getChildrenData}
-      render={({ id, title, numbering, children }) => (
-        <RowData key={id} hasChildren={children.length > 0}>
+      render={({ title, numbering, page, children }) => (
+        <RowData key={numbering} hasChildren={children.length > 0}>
           <DataCell>{title}</DataCell>
           <DataCell>{numbering}</DataCell>
+          <DataCell>{page}</DataCell>
         </RowData>
       )}
     />
