@@ -244,7 +244,6 @@ export function createCodeFragment(
   title?: string | null,
 ): Fragment {
   const content: PMNode[] = [];
-  let nodeSize = 0;
 
   if (!!title) {
     const titleNode = schema.nodes.heading.create(
@@ -252,7 +251,6 @@ export function createCodeFragment(
       schema.text(title),
     );
     content.push(titleNode);
-    nodeSize += titleNode.nodeSize;
   }
 
   const codeBlockNode = schema.nodes.codeBlock.create(
@@ -261,7 +259,6 @@ export function createCodeFragment(
   );
 
   content.push(codeBlockNode);
-  nodeSize += codeBlockNode.nodeSize;
 
   return Fragment.from(content);
 }

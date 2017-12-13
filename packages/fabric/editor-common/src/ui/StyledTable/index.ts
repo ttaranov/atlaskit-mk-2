@@ -1,3 +1,4 @@
+import * as React from 'react';
 import styled from 'styled-components';
 import {
   akEditorTableCellSelected,
@@ -69,7 +70,10 @@ const tableStyle = `
 `;
 
 // tslint:disable-next-line:variable-name
+// The explicit type here works around TS 2.4 issue #9944
+// https://github.com/Microsoft/TypeScript/issues/9944
 const StyledTable = styled.table`
   ${tableStyle};
-`;
+` as React.ComponentClass<React.HTMLProps<HTMLTableElement>>;
+
 export default StyledTable;
