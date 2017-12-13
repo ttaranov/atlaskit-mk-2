@@ -22,6 +22,7 @@
     "test": "                                yarn run test:jest",
     "test:ci": "                             yarn run test:jest -- --runInBand",
     "test:jest": "                           jest --coverage",
+    "test:jest:watch": "                     jest --watch",
     "test:browser": "                        projector ./projector testBrowser",
     "test:browser:watch": "                  projector ./projector testBrowser --watch",
     "test:browser:browserstack": "           projector ./projector testBrowserCI --browserstack",
