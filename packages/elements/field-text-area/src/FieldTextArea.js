@@ -1,8 +1,7 @@
 // @flow
-import React, { Component, type Node } from 'react';
+// import React, { Component, type Node } from 'react';
+import React, { Component } from 'react';
 import FieldTextAreaStateless from './FieldTextAreaStateless';
-
-export { FieldTextAreaStateless };
 
 type Props = {|
   /** Set whether the fields should expand to fill available horizontal space. */
@@ -24,14 +23,16 @@ type Props = {|
   /** The value of the input. */
   value?: string | number,
   /** Handler to be called when the input changes. */
-  onChange?: (event: Event) => void,
+  // onChange?: (event: Event) => mixed,
+  onChange?: any,
   /** Id value to be passed to the html input. */
   id?: string,
   /** Sets whether to show or hide the label. */
   isLabelHidden?: boolean,
   /** Provided component is rendered inside a modal dialogue when the field is
    selected. */
-  invalidMessage?: Node,
+  // invalidMessage?: Node,
+  invalidMessage?: any,
   /** Ensure the input fits in to its containing element. If the field is still
    resizable, it will not be hotizontally resizable. */
   shouldFitContainer?: boolean,
@@ -54,8 +55,13 @@ type State = {|
   value?: number | string,
 |};
 
-/* eslint-disable react/prop-types */
-export default class extends Component<Props, State> {
+// export default class extends Component<{}, {}> {
+//   render () {
+//     return (<div>Hi</div>)
+//   }
+// }
+
+export default class FieldTextArea extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
   input: any; // eslint-disable-line react/sort-comp
 

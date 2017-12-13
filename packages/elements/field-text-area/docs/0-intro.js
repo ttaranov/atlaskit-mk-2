@@ -8,7 +8,7 @@ export default md`
   Provides a standard way to create a text-based form input with an associated label.
 
   ~~~js
-  import FieldTextArea, { FieldTextAreaStateless } from '@atlaskit/field-text';
+  import FieldTextArea, { FieldTextAreaStateless } from '@atlaskit/field-text-area';
   ~~~
 
   Text Field Area exports both a stateful default component, and a stateless
@@ -39,19 +39,17 @@ export default md`
     />
   )}
 
-  ## FieldTextArea Props
-
   ${(
     <Props
       props={require('!!extract-react-types-loader!../src/FieldTextArea')}
+      heading="FieldTextArea Props"
     />
   )}
-
-  ## FieldTextAreaStateless Props
 
   ${(
     <Props
       props={require('!!extract-react-types-loader!../src/FieldTextAreaStateless')}
+      heading="FieldTextAreaStateless Props"
     />
   )}
 

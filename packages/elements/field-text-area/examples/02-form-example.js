@@ -5,7 +5,7 @@ import FieldTextArea from '../src/FieldTextArea';
 
 const formTestUrl = '//httpbin.org/get';
 
-export default class FormExample extends Component<void> {
+export default class FormExample extends Component<void, void> {
   render() {
     return (
       <div>

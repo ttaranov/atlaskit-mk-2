@@ -49,7 +49,9 @@ type Props = {|
   type?: string, //eslint-disable-line react/no-unused-prop-types
 |};
 
-export default class FieldText extends Component<any, void> {
+// We are using any as FieldTextArea passes props via spread
+// TODO: if there is no impact props should be passed explicitly from FieldTextArea
+export default class FieldTextAreaStateless extends Component<any, void> {
   props: Props; // eslint-disable-line react/sort-comp
   input: any; // eslint-disable-line react/sort-comp
 
