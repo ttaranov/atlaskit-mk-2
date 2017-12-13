@@ -338,8 +338,30 @@ describe('WithDataURI', () => {
         expect(dataURIService.fetchImageDataUri).toBeCalledWith(
           expect.anything(),
           expect.objectContaining({
-            width: 100,
-            height: 200,
+            width: 50 * 2,
+            height: 100 * 2,
+          }),
+        );
+      });
+
+      it('should fetch dimensions with original size for non retina displays', () => {
+        (isRetina as jest.Mock<void>).mockReturnValue(false);
+        const element = shallow<WithDataURIProps, WithDataURIState>(
+          <DemoComponentWithDataURI
+            dataURIService={dataURIService}
+            metadata={metadata}
+            dimensions={dimensions}
+          />,
+        );
+
+        const instance = element.instance() as WithDataURI;
+        instance.updateDataURI({ dataURIService, metadata });
+
+        expect(dataURIService.fetchImageDataUri).toBeCalledWith(
+          expect.anything(),
+          expect.objectContaining({
+            width: 50,
+            height: 100,
           }),
         );
       });
