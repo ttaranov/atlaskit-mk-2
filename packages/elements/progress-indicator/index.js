@@ -5,4 +5,4 @@
    file before looking in package.json:main
 */
 
-module.exports = require('./src/index.js');
+export * from './src';
