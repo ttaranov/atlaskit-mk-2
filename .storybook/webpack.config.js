@@ -16,6 +16,23 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              camelCase: true,
+              importLoaders: 1,
+              mergeRules: false,
+              modules: true,
+            },
+          },
+        ],
+      },
+      {
         test: /\.(gif|jpe?g|png|ico)$/,
         loader: 'url-loader?limit=10000',
       },

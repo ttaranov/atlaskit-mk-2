@@ -1,11 +1,12 @@
 // @flow
+
 import React, { Component } from 'react';
 import TreeTable, {
-  TreeHeads,
-  TreeHead,
+  HeadersRow,
+  Header,
   TreeRows,
   RowData,
-  TreeCell,
+  DataCell,
 } from '../../../../elements/tree-table/src';
 import { Contributors } from './Contributors';
 import { ErrorTree } from './ErrorTree';
@@ -19,11 +20,13 @@ type Props = {
 
 type State = {
   isLoading: boolean,
+  errorType?: 'error' | 'noaccess' | 'none' | null,
 };
 
 export default class ConfluencePageTree extends Component<Props, State> {
   state = {
     isLoading: true,
+    errorType: null,
   };
 
   data = null;
@@ -31,24 +34,39 @@ export default class ConfluencePageTree extends Component<Props, State> {
   componentDidMount() {
     const { contentId } = this.props;
 
-    getChildPageDetails(contentId).then(data => {
-      this.data = data;
-      this.setState({ isLoading: false });
-    });
+    getChildPageDetails(contentId)
+      .then(data => {
+        this.data = data;
+
+        this.data.length === 0
+          ? this.setState(() => ({
+              isLoading: false,
+              errorType: 'none',
+            }))
+          : this.setState({
+              isLoading: false,
+            });
+      })
+      .catch(() => {
+        this.setState({
+          isLoading: false,
+          errorType: 'error',
+        });
+      });
   }
 
   render() {
     const { cloudId } = this.props;
-    const { isLoading } = this.state;
+    const { isLoading, errorType } = this.state;
     const hasData = true;
 
     return isLoading ? null : (
       <TreeTable>
-        <TreeHeads>
-          <TreeHead width={'30%'}>{getI18n().tableHeaderTitle}</TreeHead>
-          <TreeHead width={'30%'}>{getI18n().tableHeaderContributors}</TreeHead>
-          <TreeHead width={'30%'}>{getI18n().tableHeaderLastModified}</TreeHead>
-        </TreeHeads>
+        <HeadersRow>
+          <Header width={'30%'}>{getI18n().tableHeaderTitle}</Header>
+          <Header width={'30%'}>{getI18n().tableHeaderContributors}</Header>
+          <Header width={'30%'}>{getI18n().tableHeaderLastModified}</Header>
+        </HeadersRow>
         {hasData ? (
           <TreeRows
             data={({ id = this.props.contentId } = {}) =>
@@ -63,20 +81,20 @@ export default class ConfluencePageTree extends Component<Props, State> {
               _links,
             }) => (
               <RowData key={id} hasChildren={childTypes.page.value}>
-                <TreeCell width={'30%'}>
+                <DataCell width={'30%'}>
                   <a href={_links.webui}>{title}</a>
-                </TreeCell>
-                <TreeCell width={'30%'}>
+                </DataCell>
+                <DataCell width={'30%'}>
                   <Contributors cloudId={cloudId} contributors={contributors} />
-                </TreeCell>
-                <TreeCell width={'30%'}>
+                </DataCell>
+                <DataCell width={'30%'}>
                   <div>{lastUpdated.friendlyWhen}</div>
-                </TreeCell>
+                </DataCell>
               </RowData>
             )}
           />
         ) : (
-          <ErrorTree type={'none'} />
+          <ErrorTree type={errorType} />
         )}
       </TreeTable>
     );
