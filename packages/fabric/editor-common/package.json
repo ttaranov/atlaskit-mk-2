@@ -44,7 +44,7 @@
   },
   "peerDependencies": {},
   "devDependencies": {
-    "@atlaskit/renderer": "^9.0.0",
+    "@atlaskit/renderer": "^10.0.3",
     "@atlaskit/editor-json-transformer": "^2.0.4",
     "@atlaskit/editor-core": "^60.9.2",
     "@atlaskit/editor-test-helpers": "^1.2.6",

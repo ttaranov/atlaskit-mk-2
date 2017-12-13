@@ -1,4 +1,9 @@
-import { MediaAttributes, MentionAttributes } from '@atlaskit/editor-common';
+import {
+  MediaAttributes,
+  MentionAttributes,
+  ActionMarkAttributes,
+  ApplicationCardAttributes,
+} from '@atlaskit/editor-common';
 import {
   Fragment,
   MarkType,
@@ -343,3 +348,7 @@ export const bodiedExtension = (
   },
   content,
 ) => sampleSchema.nodes.bodiedExtension.create(attrs, content);
+export const action = (attrs: ActionMarkAttributes) =>
+  markFactory(sampleSchema.marks.action, attrs);
+export const applicationCard = (attrs: ApplicationCardAttributes) =>
+  sampleSchema.nodes.applicationCard.createChecked(attrs);

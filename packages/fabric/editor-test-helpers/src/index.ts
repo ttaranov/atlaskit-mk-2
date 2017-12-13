@@ -67,12 +67,15 @@ export {
   confluenceJiraIssue,
   confluenceUnsupportedBlock,
   confluenceUnsupportedInline,
+  confluenceInlineComment,
   inlineExtension,
   bodiedExtension,
   extension,
   RefsNode,
   RefsTracker,
   sequence,
+  action,
+  applicationCard,
 } from './schema-builder';
 export { default as defaultSchema } from './schema';
 export * from './html-helpers';
