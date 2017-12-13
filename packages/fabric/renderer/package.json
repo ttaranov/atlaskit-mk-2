@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "10.0.2",
+  "version": "10.0.3",
   "description": "Renderer component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.1.1",
-    "@atlaskit/editor-core": "^60.14.3",
+    "@atlaskit/editor-core": "^60.14.4",
     "@atlaskit/editor-test-helpers": "^1.2.6",
     "@atlaskit/media-test-helpers": "^8.5.1",
     "@types/prosemirror-model": "^1.0.0",
