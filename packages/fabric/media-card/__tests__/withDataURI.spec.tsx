@@ -218,6 +218,10 @@ describe('WithDataURI', () => {
         width: 50,
         height: 100,
       };
+      const pixelDimensions = {
+        width: '300px',
+        height: '200px',
+      };
       let dataURIService;
 
       beforeEach(() => {
@@ -249,8 +253,29 @@ describe('WithDataURI', () => {
         expect(dataURIService.fetchImageDataUri).toBeCalledWith(
           expect.anything(),
           expect.objectContaining({
-            width: 500,
-            height: 200,
+            width: 500 * 2,
+            height: 200 * 2,
+          }),
+        );
+      });
+
+      it('should call fetchImageDataUri with given dimensions, even if they use pixels', () => {
+        const element = shallow<WithDataURIProps, WithDataURIState>(
+          <DemoComponentWithDataURI
+            dataURIService={dataURIService}
+            metadata={metadata}
+            dimensions={pixelDimensions}
+          />,
+        );
+
+        const instance = element.instance() as WithDataURI;
+        instance.updateDataURI({ dataURIService, metadata });
+
+        expect(dataURIService.fetchImageDataUri).toBeCalledWith(
+          expect.anything(),
+          expect.objectContaining({
+            width: 300 * 2,
+            height: 200 * 2,
           }),
         );
       });

@@ -25,3 +25,4 @@ export * from './cardDimensions';
 export * from './breakpoint';
 export * from './isValidPercentageUnit';
 export * from './getElementDimension';
+export * from './isPixelUnit';
