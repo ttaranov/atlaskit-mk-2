@@ -56,7 +56,7 @@ const Panels = styled.div`
 type State = {
   isInteractive: boolean,
   selectedIndex: number,
-  selectedAppearance: string,
+  selectedAppearance: 'default' | 'help' | 'inverted' | 'primary',
   selectedSize: 'small' | 'default' | 'large',
   selectedSpacing: 'comfortable' | 'cozy' | 'compact',
   themeIndex: number,
@@ -90,8 +90,9 @@ export default class ProgressIndicatorDots extends Component<{}, State> {
   /* eslint-enable */
   toggleTheme = () =>
     this.setState(state => ({ themeIndex: state.themeIndex + 1 }));
-  toggleAppearance = (selectedAppearance: string) =>
-    this.setState({ selectedAppearance });
+  toggleAppearance = (
+    selectedAppearance: 'default' | 'help' | 'inverted' | 'primary',
+  ) => this.setState({ selectedAppearance });
   toggleSize = (selectedSize: 'small' | 'default' | 'large') =>
     this.setState({ selectedSize });
   toggleSpacing = (selectedSpacing: 'comfortable' | 'cozy' | 'compact') =>
@@ -111,7 +112,6 @@ export default class ProgressIndicatorDots extends Component<{}, State> {
     const selectedTheme = themes[themeIndex % 2];
     const buttonAppearance =
       selectedAppearance === 'inverted' ? 'primary' : selectedAppearance;
-
     return (
       <AtlasKitThemeProvider mode={selectedTheme}>
         <Page>
@@ -203,6 +203,7 @@ export default class ProgressIndicatorDots extends Component<{}, State> {
               Prev
             </Button>
             <ProgressDots
+              appearance={selectedAppearance}
               onSelect={isInteractive ? this.handleSelect : undefined}
               selectedIndex={selectedIndex}
               size={selectedSize}
