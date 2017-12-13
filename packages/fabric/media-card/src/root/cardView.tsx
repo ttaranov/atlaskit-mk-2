@@ -20,7 +20,10 @@ import { LinkCard } from '../links';
 import { FileCard } from '../files';
 import { isLinkDetails } from '../utils/isLinkDetails';
 import { breakpointSize } from '../utils/breakpoint';
-import { defaultImageCardDimensions } from '../utils/cardDimensions';
+import {
+  defaultImageCardDimensions,
+  getDefaultCardDimensions,
+} from '../utils/cardDimensions';
 import { isValidPercentageUnit } from '../utils/isValidPercentageUnit';
 import { getCSSUnitValue } from '../utils/getCSSUnitValue';
 import { getElementDimension } from '../utils/getElementDimension';
@@ -115,24 +118,35 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
     }
   }
 
+  private get mediaType(): MediaItemType {
+    const { mediaItemType, metadata } = this.props;
+    if (mediaItemType) {
+      return mediaItemType;
+    }
+
+    return isLinkDetails(metadata) ? 'link' : 'file';
+  }
+
   render() {
-    const { onClick, onMouseEnter } = this;
-    const { mediaItemType, dimensions, appearance } = this.props;
+    const { onClick, onMouseEnter, mediaType } = this;
+    const { dimensions, appearance } = this.props;
+    const wrapperDimensions = dimensions
+      ? dimensions
+      : mediaType === 'file' ? getDefaultCardDimensions(appearance) : undefined;
     let card;
 
-    if (mediaItemType === 'link') {
+    if (mediaType === 'link') {
       card = this.renderLink();
-    } else if (mediaItemType === 'file') {
+    } else if (mediaType === 'file') {
       card = this.renderFile();
-    } else {
-      card = this.renderCardFromDetails();
     }
 
     return (
       <Wrapper
+        mediaItemType={mediaType}
         breakpointSize={breakpointSize(this.width)}
         appearance={appearance}
-        dimensions={dimensions || defaultImageCardDimensions}
+        dimensions={wrapperDimensions}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
       >
@@ -140,16 +154,6 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
       </Wrapper>
     );
   }
-
-  private renderCardFromDetails = () => {
-    const { metadata } = this.props;
-
-    if (isLinkDetails(metadata)) {
-      return this.renderLink();
-    }
-
-    return this.renderFile();
-  };
 
   private renderLink = () => {
     const {
