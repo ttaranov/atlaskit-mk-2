@@ -6,7 +6,7 @@ import TreeTable, {
   TreeRows,
   RowData,
   TreeCell,
-} from '../../../../elements/tree-table';
+} from '../../../../elements/tree-table/src';
 import { Contributors } from './Contributors';
 import { ErrorTree } from './ErrorTree';
 import { getChildPageDetails } from '../api/confluence';

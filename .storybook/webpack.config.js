@@ -10,6 +10,9 @@ module.exports = {
   plugins: [
     // your custom plugins
   ],
+  resolve: {
+    mainFields: ['atlaskit:src', 'browser', 'main'],
+  },
   module: {
     rules: [
       {
