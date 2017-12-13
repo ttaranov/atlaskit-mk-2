@@ -109,9 +109,9 @@ async function run(opts) {
       logger.log('New tag: ', tag);
       await git.tag(tag);
     }
-    logger.log('Pushing tags');
+    logger.log('Pushing tags...');
     // shouldn't need to worry about rebasing or pushing because we didnt create any new commits
-    await git.push();
+    await git.push(['--follow-tags']);
   }
 
   if (failedToPublish.length > 0) {
