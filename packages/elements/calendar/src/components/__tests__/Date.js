@@ -11,33 +11,45 @@ const date: number = now.getDate();
 const month: number = now.getMonth() + 1;
 const year: number = now.getFullYear();
 
-const dummyOnClickProp = jest.fn();
+describe('Date', () => {
+  it('should render the component', () => {
+    const wrapper = shallow(<DateComponent />);
+    expect(wrapper.length).toBeGreaterThan(0);
+  });
 
-test('should not call onClick prop when date is disabled', () => {
-  const wrapper = shallow(
-    <DateComponent
-      disabled
-      month={month}
-      year={year}
-      onClick={dummyOnClickProp}
-    >
-      {date}
-    </DateComponent>,
-  );
+  it('should prevent default event actions on mouse down', () => {
+    const wrapper = shallow(<DateComponent />);
+    const spy = jest.fn();
 
-  wrapper.find(DateTd).simulate('mouseup');
+    wrapper.simulate('mousedown', {
+      preventDefault: spy,
+    });
 
-  expect(dummyOnClickProp).not.toHaveBeenCalled();
-});
+    expect(spy).toHaveBeenCalled();
+  });
 
-test('should call onClick prop when date is enabled (default scenario)', () => {
-  const wrapper = shallow(
-    <DateComponent month={month} year={year} onClick={dummyOnClickProp}>
-      {date}
-    </DateComponent>,
-  );
+  it('should call onClick prop when date is enabled (default scenario)', () => {
+    const dummyOnClickProp = jest.fn();
+    const wrapper = shallow(
+      <DateComponent month={month} year={year} onClick={dummyOnClickProp}>
+        {date}
+      </DateComponent>,
+    );
 
-  wrapper.find(DateTd).simulate('mouseup');
+    wrapper.find(DateTd).simulate('mouseup');
 
-  expect(dummyOnClickProp).toHaveBeenCalled();
+    expect(dummyOnClickProp).toHaveBeenCalled();
+  });
+
+  it('should not call onClick prop when date is disabled', () => {
+    const dummyOnClickProp = jest.fn();
+    const wrapper = shallow(
+      <DateComponent disabled month={month} year={year} onClick={dummyOnClickProp}>
+        {date}
+      </DateComponent>);
+
+    wrapper.find(DateTd).simulate('mouseup');
+
+    expect(dummyOnClickProp).not.toHaveBeenCalled();
+  });
 });
