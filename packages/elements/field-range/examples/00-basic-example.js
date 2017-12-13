@@ -1,0 +1,52 @@
+// @flow
+import React, { PureComponent } from 'react';
+import styled from 'styled-components';
+import FieldRange from '../src';
+
+const Container = styled.div`
+  width: 500px;
+`;
+
+type State = {
+  onChangeResult: string,
+};
+
+export default class BasicExample extends PureComponent<void, State> {
+  state = {
+    onChangeResult: 'Check & Uncheck to trigger onChange',
+  };
+
+  onChange = (value: ?number) => {
+    this.setState({
+      onChangeResult: `onChange called with value: ${value}`,
+    });
+  };
+
+  render() {
+    return (
+      <div>
+        <Container>
+          <FieldRange
+            value={20}
+            min={0}
+            max={100}
+            step={1}
+            onChange={this.onChange}
+          />
+        </Container>
+        <div
+          style={{
+            borderStyle: 'dashed',
+            borderWidth: '1px',
+            borderColor: '#ccc',
+            padding: '0.5em',
+            color: '#ccc',
+            margin: '0.5em',
+          }}
+        >
+          Range: 0-100. Step: 1. {this.state.onChangeResult}
+        </div>
+      </div>
+    );
+  }
+}
