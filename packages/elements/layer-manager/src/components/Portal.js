@@ -1,6 +1,6 @@
 // @flow
 import React, { Children, Component, type Node } from 'react';
-import { render } from 'react-dom';
+import { render, unmountComponentAtNode } from 'react-dom';
 import { withTheme, ThemeProvider } from 'styled-components';
 import { TransitionGroup } from 'react-transition-group';
 
@@ -41,6 +41,7 @@ class Portal extends Component<Props> {
       // animations need to complete
       setTimeout(() => {
         if (!document.body || !this.portalElement) return;
+        unmountComponentAtNode(this.portalElement);
         document.body.removeChild(this.portalElement);
       }, 5000);
     });
