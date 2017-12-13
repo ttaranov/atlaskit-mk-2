@@ -41,17 +41,17 @@ export default class BasicExample extends PureComponent<void, State> {
         </div>
         <div>
           <FieldTextArea
-            label="Required, Spell check disabled & max length"
+            label="Required, Spell check disabled & max length (25)"
             isSpellCheckEnabled={false}
             required
-          />
-          <FieldTextArea
-            label="hidden label"
-            isLabelHidden
-            placeholder="Hidden Label"
             maxLength={10}
           />
-          <FieldTextArea disabled label="disabled" value="Disabled" />
+          <FieldTextArea
+            label="Hidden label"
+            isLabelHidden
+            placeholder="Hidden Label"
+          />
+          <FieldTextArea disabled label="Disabled" value="Disabled" />
           <FieldTextArea
             isInvalid
             label="Is Invalid & showing message"
