@@ -2,9 +2,7 @@
 import React, { PureComponent } from 'react';
 import Spinner from '@atlaskit/spinner';
 
-import { type DataFunction } from './../types';
-
-import TreeCell from './TreeCell';
+import DataCell from './DataCell';
 import { TreeRowContainer, ChevronContainer } from '../styled';
 
 type Props = {
@@ -13,7 +11,7 @@ type Props = {
   depth?: number,
 };
 
-export default class Loader extends PureComponent<Props> {
+export default class LoaderRow extends PureComponent<Props> {
   static defaultProps = {
     depth: 1,
   };
@@ -22,17 +20,17 @@ export default class Loader extends PureComponent<Props> {
     const { isCompleting, depth, onComplete } = this.props;
     return (
       <TreeRowContainer>
-        <TreeCell indentLevel={depth}>
+        <DataCell indentLevel={depth}>
           <ChevronContainer>
             <Spinner
-              delay={100}
-              invertColor={false}
-              onComplete={onComplete}
-              size="small"
               isCompleting={isCompleting}
+              onComplete={onComplete}
+              delay={100}
+              size="small"
+              invertColor={false}
             />
           </ChevronContainer>
-        </TreeCell>
+        </DataCell>
       </TreeRowContainer>
     );
   }

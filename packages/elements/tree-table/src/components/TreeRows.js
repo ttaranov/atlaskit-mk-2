@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, type Node } from 'react';
+import React, { PureComponent } from 'react';
 import RowChildren from './RowChildren';
 
 import { type DataFunction } from './../types';

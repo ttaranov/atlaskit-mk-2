@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
-import Subtree from './Subtree';
-import Loader from './Loader';
+import Row from './Row';
+import LoaderRow from './LoaderRow';
 import { type DataFunction } from './../types';
 
 type Props = {
@@ -9,7 +9,6 @@ type Props = {
   getChildrenData: DataFunction,
   depth?: number,
   render?: Function,
-  // isLoading?: boolean,
 };
 
 export default class RowChildren extends PureComponent<Props> {
@@ -43,7 +42,7 @@ export default class RowChildren extends PureComponent<Props> {
   renderLoader() {
     const isCompleting = !this.isLoadingData(this.props.childrenData);
     return (
-      <Loader
+      <LoaderRow
         isCompleting={isCompleting}
         onComplete={this.handleLoadingFinished}
         depth={this.props.depth}
@@ -59,7 +58,7 @@ export default class RowChildren extends PureComponent<Props> {
       depth = 0,
     } = this.props;
     return childrenData.map((childRowData, index) => (
-      <Subtree
+      <Row
         data={childRowData}
         getChildrenData={getChildrenData}
         depth={depth + 1}

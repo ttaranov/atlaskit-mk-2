@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, type Element } from 'react';
+import React, { PureComponent } from 'react';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 

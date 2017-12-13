@@ -8,9 +8,9 @@ import React, {
 import { TreeTableContainer } from '../styled';
 import TreeRows from './TreeRows';
 import RowData from './RowData';
-import TreeHeads from './TreeHeads';
-import TreeHead from './TreeHead';
-import TreeCell from './TreeCell';
+import HeadersRow from './HeadersRow';
+import Header from './Header';
+import DataCell from './DataCell';
 
 import { type DataFunction } from './../types';
 
@@ -87,13 +87,13 @@ export default class TreeTable extends Component<Props, State> {
       columnWidths = [],
     } = this.props;
     const heads = headers && (
-      <TreeHeads>
+      <HeadersRow>
         {headers.map((header, index) => (
-          <TreeHead key={index} index={index} width={columnWidths[index]}>
+          <Header key={index} index={index} width={columnWidths[index]}>
             {header}
-          </TreeHead>
+          </Header>
         ))}
-      </TreeHeads>
+      </HeadersRow>
     );
     let rows = null;
     if (columns && getRowChildrenData) {
@@ -103,9 +103,9 @@ export default class TreeTable extends Component<Props, State> {
           render={data => (
             <RowData key={data.id} hasChildren={data.hasChildren}>
               {columns.map((Cell, index) => (
-                <TreeCell key={index} index={index} width={columnWidths[index]}>
+                <DataCell key={index} index={index} width={columnWidths[index]}>
                   <Cell {...data.content} />
-                </TreeCell>
+                </DataCell>
               ))}
             </RowData>
           )}

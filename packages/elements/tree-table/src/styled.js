@@ -1,7 +1,6 @@
 // @flow
 import styled, { css } from 'styled-components';
-import { colors, themed } from '@atlaskit/theme';
-import React from 'react';
+import { colors } from '@atlaskit/theme';
 
 function defaultToPx(length) {
   const number = +length;
@@ -44,7 +43,7 @@ const commonCell = css`
     `};
 `;
 
-export const TreeCell = styled.div`
+export const DataCell = styled.div`
   ${commonCell} ${props =>
       props.indentLevel &&
       css`
@@ -56,7 +55,7 @@ export const TreeCell = styled.div`
       `};
 `;
 
-export const TreeHead = styled.div`
+export const Header = styled.div`
   ${commonCell} font-weight: bold;
   font-size: 12px;
   font-weight: bold;
