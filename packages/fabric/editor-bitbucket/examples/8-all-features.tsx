@@ -73,7 +73,7 @@ export default class EditorWithAllFeatures extends React.Component<
             onSave={SAVE_ACTION}
             mentionSource={mentionSource}
             emojiProvider={emojiProvider}
-            analyticsHandler={console.log}
+            analyticsHandler={(...args) => console.log.apply(console, args)}
             imageUploadHandler={imageUploadHandler}
           />
           <fieldset style={{ marginTop: 20 }}>

@@ -86,9 +86,8 @@ describe('Renderer - React/Nodes/Extension', () => {
         rendererContext={rendererContext}
         extensionType="com.atlassian.fabric"
         extensionKey="default"
-      >
-        <p>This is the default content of the extension</p>
-      </Extension>,
+        text="This is the default text"
+      />,
     );
 
     expect(
@@ -96,7 +95,7 @@ describe('Renderer - React/Nodes/Extension', () => {
         .find('div')
         .first()
         .text(),
-    ).to.equal('This is the default content of the extension');
+    ).to.equal('This is the default text');
     extension.unmount();
   });
 
@@ -148,9 +147,7 @@ describe('Renderer - React/Nodes/Extension', () => {
         rendererContext={rendererContext}
         extensionType="com.atlassian.fabric"
         extensionKey="error"
-      >
-        <p>This is the default content of the extension</p>
-      </Extension>,
+      />,
     );
 
     expect(
@@ -158,7 +155,7 @@ describe('Renderer - React/Nodes/Extension', () => {
         .find('div')
         .first()
         .text(),
-    ).to.equal('This is the default content of the extension');
+    ).to.equal('extension');
     extension.unmount();
   });
 });
