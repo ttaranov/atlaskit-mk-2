@@ -19,16 +19,16 @@ storiesOf('Button', module)
     <Button onClick={action('clicked')}>😀 😎 👍 💯</Button>
   ));
 
-storiesOf('ConfluencePageTree', module).add('default', () => (
-  <ConfluencePageTree
-    contentId={'65538'}
-    cloudId={'56765c63-6627-4235-9328-e3a28ef97069'}
-  />
-));
-
-storiesOf('ConfluencePageTree', module).add('error', () => (
-  <ConfluencePageTree
-    contentId={'655381'}
-    cloudId={'56765c63-6627-4235-9328-e3a28ef97069'}
-  />
-));
+storiesOf('ConfluencePageTree', module)
+  .add('default', () => (
+    <ConfluencePageTree
+      contentId={'65538'}
+      cloudId={'56765c63-6627-4235-9328-e3a28ef97069'}
+    />
+  ))
+  .add('error', () => (
+    <ConfluencePageTree
+      contentId={'655381'}
+      cloudId={'56765c63-6627-4235-9328-e3a28ef97069'}
+    />
+  ));

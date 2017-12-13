@@ -45,6 +45,7 @@ export default class ConfluencePageTree extends Component<Props, State> {
             }))
           : this.setState({
               isLoading: false,
+              errorType: null,
             });
       })
       .catch(() => {
@@ -58,7 +59,6 @@ export default class ConfluencePageTree extends Component<Props, State> {
   render() {
     const { cloudId } = this.props;
     const { isLoading, errorType } = this.state;
-    const hasData = true;
 
     return isLoading ? null : (
       <TreeTable>
@@ -67,7 +67,9 @@ export default class ConfluencePageTree extends Component<Props, State> {
           <Header width={'30%'}>{getI18n().tableHeaderContributors}</Header>
           <Header width={'30%'}>{getI18n().tableHeaderLastModified}</Header>
         </HeadersRow>
-        {hasData ? (
+        {errorType ? (
+          <ErrorTree type={errorType} />
+        ) : (
           <TreeRows
             data={({ id = this.props.contentId } = {}) =>
               getChildPageDetails(id)
@@ -93,8 +95,6 @@ export default class ConfluencePageTree extends Component<Props, State> {
               </RowData>
             )}
           />
-        ) : (
-          <ErrorTree type={errorType} />
         )}
       </TreeTable>
     );
