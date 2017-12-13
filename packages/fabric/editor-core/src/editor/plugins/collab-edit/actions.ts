@@ -1,6 +1,5 @@
 import { Step } from 'prosemirror-transform';
 import {
-  EditorState,
   AllSelection,
   NodeSelection,
   Selection,
@@ -95,27 +94,18 @@ function isNodeSelection(selection: Selection) {
 }
 
 export const getSendableSelection = (
-  oldState: EditorState,
-  newState: EditorState,
-): SendableSelection | undefined => {
-  const oldSelection = oldState.selection;
-  const newSelection = newState.selection;
-
-  if (
-    oldSelection.anchor !== newSelection.anchor ||
-    oldSelection.head !== newSelection.head
-  ) {
-    /**
-     * <kbd>CMD + A</kbd> triggers a AllSelection
-     * <kbd>escape</kbd> triggers a NodeSelection
-     */
-    return {
-      type: 'textSelection',
-      anchor: newSelection.anchor,
-      head:
-        isAllSelection(newSelection) || isNodeSelection(newSelection)
-          ? newSelection.head - 1
-          : newSelection.head,
-    };
-  }
+  selection: Selection,
+): SendableSelection => {
+  /**
+   * <kbd>CMD + A</kbd> triggers a AllSelection
+   * <kbd>escape</kbd> triggers a NodeSelection
+   */
+  return {
+    type: 'textSelection',
+    anchor: selection.anchor,
+    head:
+      isAllSelection(selection) || isNodeSelection(selection)
+        ? selection.head - 1
+        : selection.head,
+  };
 };
