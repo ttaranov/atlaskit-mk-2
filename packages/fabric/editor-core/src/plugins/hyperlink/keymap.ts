@@ -6,6 +6,7 @@ import * as commands from '../../commands';
 import { analyticsService, trackAndInvoke } from '../../analytics';
 import { Match, getLinkMatch } from './utils';
 import { EditorProps } from '../../editor/types/editor-props';
+import { HyperlinkState, stateKey } from './';
 
 export function createKeymapPlugin(
   schema: Schema,
@@ -33,6 +34,20 @@ export function createKeymapPlugin(
   keymaps.bindKeymapWithCommand(
     keymaps.insertNewLine.common!,
     mayConvertLastWordToHyperlink,
+    list,
+  );
+
+  keymaps.bindKeymapWithCommand(
+    keymaps.escape.common!,
+    (state: EditorState, dispatch) => {
+      const hyperlinkPlugin = stateKey.getState(state) as HyperlinkState;
+      if (!hyperlinkPlugin.active) {
+        return false;
+      }
+
+      hyperlinkPlugin.setInactive(state, dispatch);
+      return true;
+    },
     list,
   );
 

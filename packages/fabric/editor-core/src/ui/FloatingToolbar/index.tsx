@@ -18,26 +18,11 @@ export interface Props {
   fitWidth?: number;
   fitHeight?: number;
   onPositionCalculated?: (position: any) => any;
-  onCancel?: () => void;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
 }
 
 export default class FloatingToolbar extends PureComponent<Props, any> {
-  componentDidMount() {
-    document.addEventListener('keydown', this.handleKeydown);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.handleKeydown);
-  }
-
-  private handleKeydown = e => {
-    if (e.keyCode === 27 && this.props.onCancel) {
-      this.props.onCancel();
-    }
-  };
-
   render() {
     const {
       children,
