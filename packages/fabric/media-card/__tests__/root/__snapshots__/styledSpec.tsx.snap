@@ -1,93 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Root Wrapper File default 1`] = `
-.c0 .title {
-  font-size: 14px;
-}
-
-.c0 .file-type-icon span {
-  width: 16px !important;
-  height: 16px !important;
-}
-
-<div
-  className="c0"
-/>
-`;
-
-exports[`Root Wrapper File with appeareance 1`] = `
-.c0 .title {
-  font-size: 14px;
-}
-
-.c0 .file-type-icon span {
-  width: 16px !important;
-  height: 16px !important;
-}
-
-<div
-  className="c0"
-/>
-`;
-
-exports[`Root Wrapper File with appeareance 2`] = `
-.c0 {
-  display: inline-block;
-  min-width: 200px;
-  height: 42px;
-}
-
-<div
-  className="c0"
-/>
-`;
-
-exports[`Root Wrapper File with appeareance 3`] = `
-.c0 .title {
-  font-size: 14px;
-}
-
-.c0 .file-type-icon span {
-  width: 16px !important;
-  height: 16px !important;
-}
-
-<div
-  className="c0"
-/>
-`;
-
-exports[`Root Wrapper File with appeareance 4`] = `
-.c0 .title {
-  font-size: 14px;
-}
-
-.c0 .file-type-icon span {
-  width: 16px !important;
-  height: 16px !important;
-}
-
-<div
-  className="c0"
-/>
-`;
-
-exports[`Root Wrapper File with appeareance 5`] = `
-.c0 .title {
-  font-size: 14px;
-}
-
-.c0 .file-type-icon span {
-  width: 16px !important;
-  height: 16px !important;
-}
-
-<div
-  className="c0"
-/>
-`;
-
-exports[`Root Wrapper File with breakpoint 1`] = `
+exports[`Root Wrapper File should apply breakpoint rules bassed on breakpointSize 1`] = `
 .c0 .title {
   font-size: 12px;
 }
@@ -102,7 +15,7 @@ exports[`Root Wrapper File with breakpoint 1`] = `
 />
 `;
 
-exports[`Root Wrapper File with breakpoint 2`] = `
+exports[`Root Wrapper File should apply breakpoint rules bassed on breakpointSize 2`] = `
 .c0 .title {
   font-size: 14px;
 }
@@ -117,7 +30,7 @@ exports[`Root Wrapper File with breakpoint 2`] = `
 />
 `;
 
-exports[`Root Wrapper File with breakpoint 3`] = `
+exports[`Root Wrapper File should apply breakpoint rules bassed on breakpointSize 3`] = `
 .c0 .overlay {
   padding: 24px;
 }
@@ -140,7 +53,7 @@ exports[`Root Wrapper File with breakpoint 3`] = `
 />
 `;
 
-exports[`Root Wrapper File with breakpoint 4`] = `
+exports[`Root Wrapper File should apply breakpoint rules bassed on breakpointSize 4`] = `
 .c0 {
   border-radius: 2px;
 }
@@ -172,7 +85,94 @@ exports[`Root Wrapper File with breakpoint 4`] = `
 />
 `;
 
-exports[`Root Wrapper File with dimensions 1`] = `
+exports[`Root Wrapper File should render properly with default properties 1`] = `
+.c0 .title {
+  font-size: 14px;
+}
+
+.c0 .file-type-icon span {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+<div
+  className="c0"
+/>
+`;
+
+exports[`Root Wrapper File should render properly with different appeareances 1`] = `
+.c0 .title {
+  font-size: 14px;
+}
+
+.c0 .file-type-icon span {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+<div
+  className="c0"
+/>
+`;
+
+exports[`Root Wrapper File should render properly with different appeareances 2`] = `
+.c0 {
+  display: inline-block;
+  min-width: 200px;
+  height: 42px;
+}
+
+<div
+  className="c0"
+/>
+`;
+
+exports[`Root Wrapper File should render properly with different appeareances 3`] = `
+.c0 .title {
+  font-size: 14px;
+}
+
+.c0 .file-type-icon span {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+<div
+  className="c0"
+/>
+`;
+
+exports[`Root Wrapper File should render properly with different appeareances 4`] = `
+.c0 .title {
+  font-size: 14px;
+}
+
+.c0 .file-type-icon span {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+<div
+  className="c0"
+/>
+`;
+
+exports[`Root Wrapper File should render properly with different appeareances 5`] = `
+.c0 .title {
+  font-size: 14px;
+}
+
+.c0 .file-type-icon span {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+<div
+  className="c0"
+/>
+`;
+
+exports[`Root Wrapper File should render properly with passed dimensions 1`] = `
 .c0 {
   height: 300px;
   width: 400px;
@@ -192,7 +192,7 @@ exports[`Root Wrapper File with dimensions 1`] = `
 />
 `;
 
-exports[`Root Wrapper File with dimensions 2`] = `
+exports[`Root Wrapper File should render properly with passed dimensions 2`] = `
 .c0 {
   display: inline-block;
   min-width: 200px;
@@ -205,7 +205,7 @@ exports[`Root Wrapper File with dimensions 2`] = `
 />
 `;
 
-exports[`Root Wrapper File with dimensions 3`] = `
+exports[`Root Wrapper File should render properly with passed dimensions 3`] = `
 .c0 {
   height: 300px;
   width: 400px;
@@ -225,9 +225,9 @@ exports[`Root Wrapper File with dimensions 3`] = `
 />
 `;
 
-exports[`Root Wrapper Link default 1`] = `
+exports[`Root Wrapper Link should render properly with default properties 1`] = `
 .c0 {
-  min-width: 0px;
+  min-width: 200px;
   max-width: 400px;
   position: relative;
 }
@@ -237,9 +237,9 @@ exports[`Root Wrapper Link default 1`] = `
 />
 `;
 
-exports[`Root Wrapper Link with appeareance 1`] = `
+exports[`Root Wrapper Link should render properly with different appeareances 1`] = `
 .c0 {
-  min-width: 0px;
+  min-width: 200px;
   max-width: 400px;
   position: relative;
 }
@@ -249,7 +249,7 @@ exports[`Root Wrapper Link with appeareance 1`] = `
 />
 `;
 
-exports[`Root Wrapper Link with appeareance 2`] = `
+exports[`Root Wrapper Link should render properly with different appeareances 2`] = `
 .c0 {
   display: inline-block;
   min-width: 200px;
@@ -261,7 +261,7 @@ exports[`Root Wrapper Link with appeareance 2`] = `
 />
 `;
 
-exports[`Root Wrapper Link with appeareance 3`] = `
+exports[`Root Wrapper Link should render properly with different appeareances 3`] = `
 .c0 {
   min-width: 144px;
   max-width: 480px;
@@ -273,7 +273,7 @@ exports[`Root Wrapper Link with appeareance 3`] = `
 />
 `;
 
-exports[`Root Wrapper Link with appeareance 4`] = `
+exports[`Root Wrapper Link should render properly with different appeareances 4`] = `
 .c0 {
   min-width: 272px;
   max-width: 400px;
@@ -285,7 +285,7 @@ exports[`Root Wrapper Link with appeareance 4`] = `
 />
 `;
 
-exports[`Root Wrapper Link with appeareance 5`] = `
+exports[`Root Wrapper Link should render properly with different appeareances 5`] = `
 .c0 {
   min-width: 400px;
   max-width: 400px;
@@ -298,9 +298,9 @@ exports[`Root Wrapper Link with appeareance 5`] = `
 />
 `;
 
-exports[`Root Wrapper Link with dimensions 1`] = `
+exports[`Root Wrapper Link should render properly with passed dimensions 1`] = `
 .c0 {
-  min-width: 0px;
+  min-width: 200px;
   max-width: 400px;
   position: relative;
 }
@@ -310,7 +310,7 @@ exports[`Root Wrapper Link with dimensions 1`] = `
 />
 `;
 
-exports[`Root Wrapper Link with dimensions 2`] = `
+exports[`Root Wrapper Link should render properly with passed dimensions 2`] = `
 .c0 {
   display: inline-block;
   min-width: 200px;
@@ -323,9 +323,9 @@ exports[`Root Wrapper Link with dimensions 2`] = `
 />
 `;
 
-exports[`Root Wrapper Link with dimensions 3`] = `
+exports[`Root Wrapper Link should render properly with passed dimensions 3`] = `
 .c0 {
-  min-width: 0px;
+  min-width: 200px;
   max-width: 400px;
   position: relative;
 }

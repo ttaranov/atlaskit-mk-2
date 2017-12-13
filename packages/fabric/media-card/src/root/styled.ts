@@ -6,9 +6,9 @@ import { getCSSUnitValue } from '../utils/getCSSUnitValue';
 import {
   getCSSBoundaries,
   defaultSmallCardDimensions,
+  minSmallCardDimensions,
 } from '../utils/cardDimensions';
 import { BreakpointSizeValue, breakpointStyles } from '../utils/breakpoint';
-import { minSmallCardDimensions } from '../utils/index';
 
 export interface WrapperProps {
   mediaItemType: MediaItemType;
