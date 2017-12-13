@@ -8,6 +8,7 @@ import {
   defaultSmallCardDimensions,
 } from '../utils/cardDimensions';
 import { BreakpointSizeValue, breakpointStyles } from '../utils/breakpoint';
+import { minSmallCardDimensions } from '../utils/index';
 
 export interface WrapperProps {
   mediaItemType: MediaItemType;
@@ -36,7 +37,7 @@ export const Wrapper = styled.div`
     if (appearance === 'small') {
       return `
         display: inline-block;
-        min-width: ${defaultSmallCardDimensions.width}px;
+        min-width: ${minSmallCardDimensions.width}px;
         ${getWrapperWidth(dimensions)}
         height: ${defaultSmallCardDimensions.height}px;
       `;

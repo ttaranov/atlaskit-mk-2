@@ -4,7 +4,7 @@ import { CardAppearance, CardDimensions } from '..';
 // Default dimensions
 
 export const defaultSmallCardDimensions = {
-  width: 200,
+  width: '100%',
   height: 42,
 };
 
@@ -26,7 +26,7 @@ export const defaultSquareCardDimensions = {
 // Small dimensions
 
 export const minSmallCardDimensions = {
-  width: 0,
+  width: 200,
   height: 32,
 };
 
@@ -154,10 +154,7 @@ export const getDefaultCardDimensions = (
   appearance?: CardAppearance,
 ): CardDimensions => {
   if (appearance === 'small') {
-    return {
-      height: defaultSmallCardDimensions.height,
-      width: '100%',
-    };
+    return defaultSmallCardDimensions;
   }
 
   if (appearance === 'image') {

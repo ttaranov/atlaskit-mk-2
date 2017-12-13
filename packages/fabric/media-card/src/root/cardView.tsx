@@ -118,7 +118,7 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
     }
   }
 
-  private get type(): MediaItemType {
+  private get mediaType(): MediaItemType {
     const { mediaItemType, metadata } = this.props;
     if (mediaItemType) {
       return mediaItemType;
@@ -128,19 +128,19 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
   }
 
   render() {
-    const { onClick, onMouseEnter, type } = this;
+    const { onClick, onMouseEnter, mediaType } = this;
     const { dimensions, appearance } = this.props;
     let card;
 
-    if (type === 'link') {
+    if (mediaType === 'link') {
       card = this.renderLink();
-    } else if (type === 'file') {
+    } else if (mediaType === 'file') {
       card = this.renderFile();
     }
 
     return (
       <Wrapper
-        mediaItemType={type}
+        mediaItemType={mediaType}
         breakpointSize={breakpointSize(this.width)}
         appearance={appearance}
         dimensions={dimensions || getDefaultCardDimensions(appearance)}

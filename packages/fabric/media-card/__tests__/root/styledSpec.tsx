@@ -14,12 +14,12 @@ describe('Root Wrapper', () => {
   };
 
   describe('File', () => {
-    it('default', () => {
+    it('should render properly with default properties', () => {
       const file = shallow(<Wrapper mediaItemType="file" />);
       expect(file).toMatchSnapshot();
     });
 
-    it('with dimensions', () => {
+    it('should render properly with passed dimensions', () => {
       const defaultWithDimensions = shallow(
         <Wrapper mediaItemType="file" dimensions={dimensions} />,
       );
@@ -43,7 +43,7 @@ describe('Root Wrapper', () => {
       expect(auto).toMatchSnapshot();
     });
 
-    it('with appeareance', () => {
+    it('should render properly with different appeareances', () => {
       const auto = shallow(<Wrapper mediaItemType="file" appearance="auto" />);
       const small = shallow(
         <Wrapper mediaItemType="file" appearance="small" />,
@@ -65,7 +65,7 @@ describe('Root Wrapper', () => {
       expect(horizontal).toMatchSnapshot();
     });
 
-    it('with breakpoint', () => {
+    it('should apply breakpoint rules bassed on breakpointSize', () => {
       const small = shallow(
         <Wrapper mediaItemType="file" breakpointSize="small" />,
       );
@@ -87,13 +87,13 @@ describe('Root Wrapper', () => {
   });
 
   describe('Link', () => {
-    it('default', () => {
+    it('should render properly with default properties', () => {
       const file = shallow(<Wrapper mediaItemType="link" />);
 
       expect(file).toMatchSnapshot();
     });
 
-    it('with dimensions', () => {
+    it('should render properly with passed dimensions', () => {
       const defaultWithDimensions = shallow(
         <Wrapper mediaItemType="link" dimensions={dimensions} />,
       );
@@ -117,7 +117,7 @@ describe('Root Wrapper', () => {
       expect(auto).toMatchSnapshot();
     });
 
-    it('with appeareance', () => {
+    it('should render properly with different appeareances', () => {
       const auto = shallow(<Wrapper mediaItemType="link" appearance="auto" />);
       const small = shallow(
         <Wrapper mediaItemType="link" appearance="small" />,
