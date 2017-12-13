@@ -11,20 +11,27 @@ type TabItemElementProps = {
   onKeyDown: (e: KeyboardEvent) => void,
   onMouseDown: (e: MouseEvent) => void,
   role: string,
-  tabIndex: number | string,
+  tabIndex: number,
 };
 
 type TabItemElementRef = (ref: HTMLElement) => void;
 
 export type TabItemComponentProvided = {
+  /** The complete tab object which you provided to Tabs in the tabs array. */
   data: TabData,
+  /** Accessibility props and interaction callbacks which should be spread onto
+   * your component. */
   elementProps: TabItemElementProps,
+  /** A ref callback which you'll need to attach to your underlying DOM node. */
   elementRef: TabItemElementRef,
+  /** Whether this tab is currently selected. */
   isSelected: boolean,
 };
 
 export type TabContentComponentProvided = {
+  /** The complete tab object which you provided to Tabs in the tabs array. */
   data: TabData,
+  /** Accessibility props which should be spread onto your component. */
   elementProps: {
     role: string,
   },
@@ -60,22 +67,12 @@ export type TabsProps = {
    * be up to you to listen to onSelect changes, update your own state, and pass
    * that information down to this prop accordingly. */
   selectedTab?: SelectedTabProp,
-  /** A custom component to render instead of the default tab item. It will be
-   * passed the following props. data: The complete tab object which you
-   * provided in the tabs array. elementProps: An object containing various
-   * accessibility and interaction props which should be spread onto your
-   * component. elementRef: A ref callback which you'll need to attach to your
-   * underlying DOM node. isSelected: Whether this tab is currently selected.
-   * This package exports the default TabItem component as a named export if you
-   * want to wrap that.
+  /** A custom component to render instead of the default tab content pane. See
+   * tabContentComponent Provided Props below for more information.
    */
   tabContentComponent: TabContentType,
-  /** A custom component to render instead of the default tab content pane. It
-   * will be passed the following props. data: The complete tab object which you
-   * provided in the tabs array. elementProps: An object containing
-   * accessibility props which should be spread onto your component. This
-   * package exports the default TabContent component as a named export if you
-   * want to wrap that.
+  /** A custom component to render instead of the default tab item. See
+   * tabItemComponent Provided Props below for more information.
    */
   tabItemComponent: TabItemType,
   /** An array of objects containing data for your tabs. By default a tab object

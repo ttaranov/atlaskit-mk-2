@@ -7,6 +7,7 @@ export default md`
 
   ${(
     <Props
+      heading="Tabs Props"
       props={require('!!extract-react-types-loader!../src/components/Tabs')}
     />
   )}
@@ -16,6 +17,20 @@ export default md`
       Component={require('../examples/00-basic').default}
       title="Basic"
       source={require('!!raw-loader!../examples/00-basic')}
+    />
+  )}
+
+  ${(
+    <Props
+      heading="tabContentComponent Provided Props"
+      props={require('!!extract-react-types-loader!../src/components/TabContent')}
+    />
+  )}
+
+  ${(
+    <Props
+      heading="tabItemComponent Provided Props"
+      props={require('!!extract-react-types-loader!../src/components/TabItem')}
     />
   )}
 `;

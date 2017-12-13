@@ -14,7 +14,7 @@ const defaultElementProps = {
   onKeyDown: noop,
   onMouseDown: noop,
   role: 'tab',
-  tabIndex: '-1',
+  tabIndex: (() => -1)(), // Need to write it this way until extract-react-types-loader supports unary expressions
 };
 
 export default class TabItem extends Component<TabItemComponentProvided> {
