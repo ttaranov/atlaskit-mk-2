@@ -10,31 +10,31 @@ export interface Props {
   rendererContext: RendererContext;
   extensionType: string;
   extensionKey: string;
-  text: string;
+  originalContent?: any;
   parameters?: any;
 }
 
-const InlineExtension: React.StatelessComponent<Props> = ({
+const BodiedExtension: React.StatelessComponent<Props> = ({
   serializer,
   extensionHandlers,
   rendererContext,
   extensionType,
   extensionKey,
+  originalContent,
   parameters,
-  text,
   children,
 }) => {
   try {
     if (extensionHandlers && extensionHandlers[extensionType]) {
       const content = extensionHandlers[extensionType](
-        { extensionKey, parameters, content: text },
+        { extensionKey, parameters, content: originalContent },
         rendererContext.adDoc,
       );
 
       switch (true) {
         case content && React.isValidElement(content):
           // Return the content directly if it's a valid JSX.Element
-          return <span>{content}</span>;
+          return <div>{content}</div>;
         case !!content:
           // We expect it to be Atlassian Document here
           const nodes = Array.isArray(content) ? content : [content];
@@ -42,7 +42,7 @@ const InlineExtension: React.StatelessComponent<Props> = ({
             nodes as ADNode[],
             serializer,
             rendererContext.schema,
-            'span',
+            'div',
           );
       }
     }
@@ -52,7 +52,7 @@ const InlineExtension: React.StatelessComponent<Props> = ({
   }
 
   // Always return default content if anything goes wrong
-  return <span>{children}</span>;
+  return <div>{children}</div>;
 };
 
-export default InlineExtension;
+export default BodiedExtension;

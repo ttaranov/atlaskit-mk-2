@@ -10,8 +10,8 @@ export interface Props {
   rendererContext: RendererContext;
   extensionType: string;
   extensionKey: string;
+  text?: string;
   parameters?: any;
-  originalContent?: any;
 }
 
 const Extension: React.StatelessComponent<Props> = ({
@@ -20,14 +20,14 @@ const Extension: React.StatelessComponent<Props> = ({
   rendererContext,
   extensionType,
   extensionKey,
+  text,
   parameters,
-  originalContent,
   children,
 }) => {
   try {
     if (extensionHandlers && extensionHandlers[extensionType]) {
       const content = extensionHandlers[extensionType](
-        { extensionKey, parameters, content: originalContent },
+        { extensionKey, parameters, content: text },
         rendererContext.adDoc,
       );
 

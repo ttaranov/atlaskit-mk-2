@@ -3,6 +3,9 @@ import { Fragment, Node } from 'prosemirror-model';
 
 import ApplicationCard, { AppCardViewProps } from './applicationCard';
 import Blockquote from './blockquote';
+import BodiedExtension, {
+  Props as BodiedExtensionProps,
+} from './bodiedExtension';
 import BulletList from './bulletList';
 import CodeBlock from './codeBlock';
 import DecisionItem, { Props as DecisionItemProps } from './decisionItem';
@@ -44,7 +47,7 @@ export const nodeToReact = {
   doc: Doc,
   emoji: Emoji,
   extension: Extension,
-  bodiedExtension: Extension,
+  bodiedExtension: BodiedExtension,
   hardBreak: HardBreak,
   heading: Heading,
   image: Image,
@@ -212,6 +215,8 @@ export {
   AppCardViewProps,
   ApplicationCard,
   Blockquote,
+  BodiedExtension,
+  BodiedExtensionProps,
   BulletList,
   CodeBlock,
   DecisionItem,
