@@ -1,12 +1,14 @@
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
+import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
+import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
+import Item from '@atlaskit/item';
+import DropdownMenu from '../../src/ui/DropdownMenu';
 import tablePlugins, { TableState } from '../../src/plugins/table';
 import tableCommands from '../../src/plugins/table/commands';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import TableFloatingToolbar from '../../src/ui/TableFloatingToolbar';
 import { Toolbar } from '../../src/ui/TableFloatingToolbar/styles';
-import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import { analyticsService } from '../../src/analytics';
 
 import {
@@ -162,7 +164,7 @@ describe('TableFloatingToolbar', () => {
     });
   });
 
-  describe.skip('Advance menu', () => {
+  describe('Advance menu', () => {
     describe('icon', () => {
       it('should be rendered in the toolbar', () => {
         const { pluginState, editorView } = editor(
@@ -174,7 +176,10 @@ describe('TableFloatingToolbar', () => {
             editorView={editorView}
           />,
         );
-        floatingToolbar.setState({ cellElement: document.createElement('td') });
+        floatingToolbar.setState({
+          cellElement: document.createElement('td'),
+          advancedMenuDisabled: false,
+        });
         const button = floatingToolbar.find(ToolbarButton).at(1);
         expect(button.find(EditorMoreIcon).length).toBe(1);
         floatingToolbar.unmount();
@@ -190,7 +195,10 @@ describe('TableFloatingToolbar', () => {
             editorView={editorView}
           />,
         );
-        floatingToolbar.setState({ cellElement: document.createElement('td') });
+        floatingToolbar.setState({
+          cellElement: document.createElement('td'),
+          advancedMenuDisabled: false,
+        });
         floatingToolbar
           .find(ToolbarButton)
           .at(1)
@@ -211,14 +219,18 @@ describe('TableFloatingToolbar', () => {
             editorView={editorView}
           />,
         );
-        floatingToolbar.setState({ cellElement: document.createElement('td') });
+        floatingToolbar.setState({
+          cellElement: document.createElement('td'),
+          advancedMenuDisabled: false,
+        });
         floatingToolbar
           .find(ToolbarButton)
           .at(1)
           .simulate('click');
         expect(floatingToolbar.state('isOpen')).toBe(true);
         floatingToolbar
-          .find('DropdownMenu span[role="menuitem"]')
+          .find(DropdownMenu)
+          .find(Item)
           .first()
           .simulate('click');
         expect(floatingToolbar.state('isOpen')).toBe(false);
@@ -238,24 +250,29 @@ describe('TableFloatingToolbar', () => {
               editorView={editorView}
             />,
           );
-          tableCommands[command] = jest.fn();
+          tableCommands[command] = jest.fn(() => () => {});
           floatingToolbar.setState({
             cellElement: document.createElement('td'),
+            advancedMenuDisabled: false,
           });
+
           floatingToolbar
             .find(ToolbarButton)
             .at(1)
             .simulate('click');
           expect(floatingToolbar.state('isOpen')).toBe(true);
+
           floatingToolbar
-            .find('DropdownMenu span[role="menuitem"]')
+            .find(DropdownMenu)
+            .find(Item)
             .at(i)
             .simulate('click');
-          expect(pluginState[command] as any).toHaveBeenCalledTimes(1);
-          floatingToolbar.unmount();
+          expect(tableCommands[command] as any).toHaveBeenCalledTimes(1);
           expect(trackEvent).toHaveBeenCalledWith(
             `atlassian.editor.format.table.${command}.button`,
           );
+
+          floatingToolbar.unmount();
         });
       });
     });

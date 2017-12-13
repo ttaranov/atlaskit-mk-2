@@ -30,7 +30,7 @@ import {
 } from './_schema-builder';
 import { Mark, Node as PMNode } from 'prosemirror-model';
 
-const transformer = new BitbucketTransformer();
+const transformer = new BitbucketTransformer(schema);
 const parse = (html: string) => transformer.parse(html);
 
 export const textWithMarks = (obj: PMNode, text: string, marks: Mark[]) => {
@@ -499,7 +499,7 @@ describe('BitbucketTransformer: parser', () => {
     });
 
     it('created manually by bitbucket should not be removed if disableBitbucketLinkStripping is true', () => {
-      const transformer = new BitbucketTransformer(undefined, {
+      const transformer = new BitbucketTransformer(schema, {
         disableBitbucketLinkStripping: true,
       });
 

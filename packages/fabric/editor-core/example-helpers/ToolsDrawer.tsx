@@ -64,6 +64,7 @@ const providers = {
 rejectedPromise.catch(() => {});
 
 interface State {
+  reloadEditor: boolean;
   editorEnabled: boolean;
   imageUploadProvider: string;
   mentionProvider: string;
@@ -78,6 +79,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
     super(props);
 
     this.state = {
+      reloadEditor: false,
       editorEnabled: true,
       imageUploadProvider: 'undefined',
       mentionProvider: 'resolved',
@@ -93,10 +95,13 @@ export default class ToolsDrawer extends React.Component<any, State> {
   };
 
   private reloadEditor = () => {
-    this.setState({ editorEnabled: false }, () => {
-      this.setState({ editorEnabled: true });
+    this.setState({ reloadEditor: true }, () => {
+      this.setState({ reloadEditor: false });
     });
   };
+
+  private toggleDisabled = () =>
+    this.setState(prevState => ({ editorEnabled: !prevState.editorEnabled }))
 
   private onChange = editorView => {
     this.setState({
@@ -112,6 +117,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
       activityProvider,
       imageUploadProvider,
       jsonDocument,
+      reloadEditor,
       editorEnabled,
     } = this.state;
     return (
@@ -127,8 +133,10 @@ export default class ToolsDrawer extends React.Component<any, State> {
             with CORS disabled
           </a>.
         </div>
-        {editorEnabled
-          ? this.props.renderEditor({
+        {reloadEditor
+          ? ''
+          : this.props.renderEditor({
+              disabled: !editorEnabled,
               imageUploadProvider:
                 providers.imageUploadProvider[imageUploadProvider],
               mediaProvider: providers.mediaProvider[mediaProvider],
@@ -137,7 +145,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
               activityProvider: providers.activityProvider[activityProvider],
               onChange: this.onChange,
             })
-          : ''}
+        }
         <div className="toolsDrawer">
           {Object.keys(providers).map(providerKey => (
             <div key={providerKey}>
@@ -166,9 +174,14 @@ export default class ToolsDrawer extends React.Component<any, State> {
             </div>
           ))}
           <div>
-            <Button onClick={this.reloadEditor} theme="dark" spacing="compact">
-              Reload Editor
-            </Button>
+            <ButtonGroup>
+              <Button onClick={this.toggleDisabled} theme="dark" spacing="compact">
+                { this.state.editorEnabled ? 'Disable editor' : 'Enable editor' }
+              </Button>
+              <Button onClick={this.reloadEditor} theme="dark" spacing="compact">
+                Reload Editor
+              </Button>
+            </ButtonGroup>
           </div>
         </div>
         <legend>JSON output:</legend>

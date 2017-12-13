@@ -234,7 +234,7 @@ export const createPlugin = (
       handleDOMEvents: {
         drop(view: EditorView, event: DragEvent) {
           const pluginState: ImageUploadState = stateKey.getState(view.state);
-          if (!isDroppedFile(event) || !pluginState.changeHandlers.length) {
+          if (!isDroppedFile(event) || !pluginState.enabled) {
             return false;
           }
           analyticsService.trackEvent('atlassian.editor.image.drop');
@@ -247,7 +247,7 @@ export const createPlugin = (
         },
         paste(view: EditorView, event: ClipboardEvent) {
           const pluginState: ImageUploadState = stateKey.getState(view.state);
-          if (!isPastedFile(event) || !pluginState.changeHandlers.length) {
+          if (!isPastedFile(event) || !pluginState.enabled) {
             return false;
           }
           analyticsService.trackEvent('atlassian.editor.image.paste');

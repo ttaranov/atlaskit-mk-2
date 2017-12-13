@@ -3,6 +3,7 @@ import { Schema } from 'prosemirror-model';
 
 export const defaultSchemaNodes = [
   'applicationCard',
+  'blockquote',
   'bodiedExtension',
   'bulletList',
   'codeBlock',
@@ -21,12 +22,12 @@ export const defaultSchemaNodes = [
   'listItem',
   'media',
   'mediaGroup',
+  'mediaSingle',
   'mention',
   'orderedList',
   'panel',
   'paragraph',
   'rule',
-  'singleImage',
   'table',
   'tableCell',
   'tableHeader',

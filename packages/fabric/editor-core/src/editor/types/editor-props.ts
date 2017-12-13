@@ -38,6 +38,7 @@ export interface EditorProps {
   allowMentions?: boolean;
   allowTasksAndDecisions?: boolean;
   allowHyperlinks?: boolean;
+  allowRule?: boolean;
   allowCodeBlocks?: boolean;
   allowLists?: boolean;
   allowTextColor?: boolean;

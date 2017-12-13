@@ -345,7 +345,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
     return true;
   };
 
-  @analyticsDecorator('atlassian.editor.format.mention.button')
+  @analyticsDecorator('atlassian.fabric.mention.picker.trigger.button')
   private insertMention = (): boolean => {
     const { insertMentionQuery } = this.props;
     insertMentionQuery!();

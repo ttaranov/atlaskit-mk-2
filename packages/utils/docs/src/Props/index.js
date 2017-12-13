@@ -18,7 +18,7 @@ const Heading = styled.h3`
 `;
 
 const HeadingDefault = styled.code`
-  color: ${themed({ light: colors.subtleText, dark: colors.subtleText })};
+  color: ${colors.subtleText};
 `;
 
 const HeadingRequired = styled.span`
@@ -54,9 +54,15 @@ const Wrapper = styled.div`
   }
 `;
 
-const PageWrapper = ({ children }: { children: Node }) => (
+const PageWrapper = ({
+  children,
+  heading,
+}: {
+  children: Node,
+  heading?: string,
+}) => (
   <Wrapper>
-    <H2>Props</H2>
+    <H2>{heading || 'Props'}</H2>
     {children}
   </Wrapper>
 );
@@ -134,6 +140,7 @@ type Inter = {
 };
 
 type DynamicPropsProps = {
+  heading?: string,
   props: {
     classes?: Array<{
       kind: string,
@@ -163,13 +170,10 @@ export default function DynamicProps(props: DynamicPropsProps) {
   if (!propTypesObj) return null;
 
   const propTypes = getPropTypes(propTypesObj);
-
-  console.log(propTypes);
-
   if (!propTypes) return null;
 
   return (
-    <PageWrapper>
+    <PageWrapper heading={props.heading}>
       {propTypes.map(propType => {
         let description;
         if (propType.leadingComments) {

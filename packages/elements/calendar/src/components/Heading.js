@@ -17,9 +17,9 @@ type Props = {|
 |};
 
 export default (props: Props) => (
-  <Heading>
-    <div aria-hidden="true" onClick={props.handleClickPrev}>
-      <Btn>
+  <Heading aria-hidden="true">
+    <div>
+      <Btn onClick={props.handleClickPrev}>
         <ArrowleftIcon
           label="Last month"
           size="medium"
@@ -28,8 +28,8 @@ export default (props: Props) => (
       </Btn>
     </div>
     <MonthAndYear>{`${getMonthName(props.month)} ${props.year}`}</MonthAndYear>
-    <div aria-hidden="true" onClick={props.handleClickNext}>
-      <Btn>
+    <div>
+      <Btn onClick={props.handleClickNext}>
         <ArrowrightIcon
           label="Next month"
           size="medium"

@@ -13,7 +13,7 @@ import {
   h1,
   makeEditor,
   mediaGroup,
-  singleImage,
+  mediaSingle,
   media,
   p,
   a,
@@ -151,7 +151,7 @@ describe('Media plugin', () => {
 
   describe('when non message editor', () => {
     describe('when all of the files are images', () => {
-      it('inserts single images', async () => {
+      it('inserts single medias', async () => {
         const { editorView, pluginState } = editor(doc(p('')));
         await mediaProvider;
 
@@ -162,7 +162,9 @@ describe('Media plugin', () => {
 
         expect(editorView.state.doc).toEqualDocument(
           doc(
-            singleImage({ alignment: 'center', display: 'block' })(
+            mediaSingle({
+              layout: 'center',
+            })(
               media({
                 id: 'foo',
                 type: 'file',
@@ -170,7 +172,9 @@ describe('Media plugin', () => {
                 __fileMimeType: 'image/jpeg',
               }),
             ),
-            singleImage({ alignment: 'center', display: 'block' })(
+            mediaSingle({
+              layout: 'center',
+            })(
               media({
                 id: 'bar',
                 type: 'file',
@@ -185,7 +189,7 @@ describe('Media plugin', () => {
     });
 
     describe('when it is a mix of pdf and image', () => {
-      it('inserts single images', async () => {
+      it('inserts single medias', async () => {
         const { editorView, pluginState } = editor(doc(p('')));
         await mediaProvider;
 
@@ -992,7 +996,7 @@ describe('Media plugin', () => {
   describe('align', () => {
     describe('when there is only one image in the media group', () => {
       describe('when selection is a media node', () => {
-        it('changes media group to single image with layout', () => {
+        it('changes media group to mediaSingle with layout', () => {
           const { editorView, pluginState } = editor(
             doc(
               mediaGroup(
@@ -1008,11 +1012,11 @@ describe('Media plugin', () => {
 
           setNodeSelection(editorView, 1);
 
-          pluginState.align('left', 'inline-block');
+          pluginState.align('wrap-left');
 
           expect(editorView.state.doc).toEqualDocument(
             doc(
-              singleImage({ alignment: 'left', display: 'inline-block' })(
+              mediaSingle({ layout: 'wrap-left' })(
                 media({
                   id: 'media',
                   type: 'file',
@@ -1042,7 +1046,7 @@ describe('Media plugin', () => {
             ),
           );
 
-          pluginState.align('right', 'block');
+          pluginState.align('wide');
 
           expect(editorView.state.doc).toEqualDocument(
             doc(

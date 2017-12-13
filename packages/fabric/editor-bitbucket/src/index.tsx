@@ -91,7 +91,7 @@ export interface State {
 export default class Editor extends PureComponent<Props, State> {
   state: State;
   providerFactory: ProviderFactory;
-  transformer = new BitbucketTransformer();
+  transformer = new BitbucketTransformer(schema);
   version = `${version} (editor-core ${coreVersion})`;
 
   constructor(props: Props) {

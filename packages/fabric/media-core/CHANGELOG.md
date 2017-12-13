@@ -1,9 +1,36 @@
 # @atlaskit/media-core
 
+## 12.0.2
+
 ## 12.0.1
 
 ## 12.0.0
 - [major] Show static images for gifs in small cards [e2508f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e2508f9)
+* breaking; Api for DataUriService has changed
+before:
+```typescript
+interface fetchImageDataUri(
+    mediaItem: MediaItem,
+    width: number,
+    height: number,
+    mode?: ImageResizeMode,
+    allowAnimated?: boolean): Promise<DataUri>;
+``` 
+after:
+```typescript
+interface FetchImageOptions {
+  width: number;
+  height: number;
+  mode?: ImageResizeMode;
+  allowAnimated?: boolean;
+}
+
+interface fetchImageDataUri(
+    mediaItem: MediaItem,
+    options: FetchImageOptions,
+  ): Promise<DataUri>;
+```
+
 
 ## 11.0.2
 
@@ -496,7 +523,7 @@ ISSUES CLOSED: FIL-3919
 * empty commit to make components release themselves ([5511fbe](https://bitbucket.org/atlassian/atlaskit/commits/5511fbe))
 
 
-* feature; move providers, services, and context to AtlasKit ([31ca242](https://bitbucket.org/atlassian/atlaskit/commits/31ca242))
+* feature; move providers, services, and context to Atlaskit ([31ca242](https://bitbucket.org/atlassian/atlaskit/commits/31ca242))
 
 ## 1.0.0 (2017-02-12)
 

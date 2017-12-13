@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 import { Gateway, GatewayRegistry } from './gateway';
 import Portal from './Portal';
 
-type Props = {};
+type Props = {
+  target: string,
+  withTransitionGroup: boolean,
+};
 
 export default function withRenderTarget(
-  {
-    target,
-    withTransitionGroup,
-  }: { target: string, withTransitionGroup: boolean },
+  { target, withTransitionGroup }: Props,
   WrappedComponent: ComponentType<*>,
 ) {
   // eslint-disable-next-line react/prefer-stateless-function

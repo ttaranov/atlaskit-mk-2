@@ -123,6 +123,7 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
   private addRecordToItems = (items, content, shortcut?) => {
     const value = content.toLowerCase();
     items.push({
+      key: content,
       content: <AdvanceMenuItem content={content} elemAfter={shortcut} />,
       isDisabled: this.state[`${value}Disabled`],
       value,

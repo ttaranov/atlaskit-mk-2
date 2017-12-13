@@ -65,7 +65,7 @@ const docFromSchema = schema.nodeFromJSON(doc);
 describe('Renderer - ReactSerializer', () => {
   describe('serializeFragment', () => {
     it('should render document', () => {
-      const reactSerializer = ReactSerializer.fromSchema(schema);
+      const reactSerializer = ReactSerializer.fromSchema(schema, {});
       const reactDoc = mount(reactSerializer.serializeFragment(
         docFromSchema.content,
       ) as any);
@@ -127,11 +127,9 @@ describe('Renderer - ReactSerializer', () => {
   describe('getMarkProps', () => {
     it('should pass eventHandlers to mark component', () => {
       const eventHandlers = {};
-      const reactSerializer = ReactSerializer.fromSchema(
-        schema,
-        undefined,
+      const reactSerializer = ReactSerializer.fromSchema(schema, {
         eventHandlers,
-      );
+      });
       const reactDoc = mount(reactSerializer.serializeFragment(
         docFromSchema.content,
       ) as any);
