@@ -1,10 +1,71 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
+import Tooltip from '@atlaskit/tooltip';
+import Modal from '@atlaskit/modal-dialog';
+// import { Spotlight, SpotlightManager, SpotlightTarget } from '@atlaskit/onboarding';
 
-import Tooltip from '../src';
+const Spotlight = props => <div {...props} />;
+const SpotlightManager = props => <div {...props} />;
+const SpotlightTarget = props => <div {...props} />;
 
-export default () => (
-  <Tooltip content="Hello World">
-    <button>Hover Over Me</button>
-  </Tooltip>
-);
+type Props = {};
+type State = {
+  modalIsVisible: boolean,
+  spotlightIsVisible: boolean,
+};
+
+export default class Example extends Component<Props, State> {
+  state: State = { modalIsVisible: false, spotlightIsVisible: false };
+  toggleModal = () =>
+    this.setState(state => ({
+      modalIsVisible: !state.modalIsVisible,
+    }));
+  toggleSpotlight = () =>
+    this.setState(state => ({
+      spotlightIsVisible: !state.spotlightIsVisible,
+    }));
+  render() {
+    const { modalIsVisible, spotlightIsVisible } = this.state;
+
+    return (
+      <SpotlightManager
+        component="div"
+        style={{ alignItems: 'center', display: 'flex' }}
+      >
+        <Tooltip description="Hello World">
+          <button>Tooltip</button>
+        </Tooltip>
+        <button onClick={this.toggleModal}>Modal</button>
+        <SpotlightTarget name="button">
+          <button onClick={this.toggleSpotlight}>Onboarding</button>
+        </SpotlightTarget>
+
+        {modalIsVisible && (
+          <Modal
+            actions={[{ onClick: this.toggleModal, text: 'Close' }]}
+            heading="Modal heading"
+            onClose={this.toggleModal}
+          >
+            Cupcake ipsum dolor sit amet. Cheesecake fruitcake brownie donut
+            dragée cotton candy. Sesame snaps gingerbread brownie caramels
+            liquorice pie bonbon cake gummies.
+          </Modal>
+        )}
+
+        {spotlightIsVisible && (
+          <Spotlight
+            actions={[{ onClick: this.toggleSpotlight, text: 'Close' }]}
+            dialogPlacement="bottom left"
+            heading="Spotlight heading"
+            key="button"
+            target="button"
+          >
+            Cupcake ipsum dolor sit amet. Cheesecake fruitcake brownie donut
+            dragée cotton candy. Sesame snaps gingerbread brownie caramels
+            liquorice pie bonbon cake gummies.
+          </Spotlight>
+        )}
+      </SpotlightManager>
+    );
+  }
+}
