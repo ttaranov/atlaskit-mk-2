@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 60.14.7
+
 ## 60.14.6
 - [patch] Fix issue where focusing in the editor would not work as expected in Safari when the editor has a placeholder [ac96315](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac96315)
 - [patch] Fix issue where focusing in the editor would not work as expected in Safari when the editor has a placeholder [ac96315](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac96315)
