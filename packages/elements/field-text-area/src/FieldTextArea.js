@@ -1,6 +1,5 @@
 // @flow
-// import React, { Component, type Node } from 'react';
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import FieldTextAreaStateless from './FieldTextAreaStateless';
 
 type Props = {|
@@ -31,8 +30,8 @@ type Props = {|
   isLabelHidden?: boolean,
   /** Provided component is rendered inside a modal dialogue when the field is
    selected. */
-  // invalidMessage?: Node,
-  invalidMessage?: any,
+  invalidMessage?: Node,
+
   /** Ensure the input fits in to its containing element. If the field is still
    resizable, it will not be hotizontally resizable. */
   shouldFitContainer?: boolean,
@@ -54,12 +53,6 @@ type State = {|
    be returned on form submission. */
   value?: number | string,
 |};
-
-// export default class extends Component<{}, {}> {
-//   render () {
-//     return (<div>Hi</div>)
-//   }
-// }
 
 export default class FieldTextArea extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
