@@ -1,4 +1,4 @@
-import { Core } from './binaries/editorCore';
+import { Core } from '../../../binaries/editorCore';
 
 // Called on the timer tick, accepts a timer id
 export type TimerTickHandler = (id: number) => void;

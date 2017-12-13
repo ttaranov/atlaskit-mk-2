@@ -9,7 +9,8 @@
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "binaries"
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [

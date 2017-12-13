@@ -1,4 +1,4 @@
-import { Core } from '../binaries/editorCore';
+import { Core } from '../../../../binaries/editorCore';
 import { Typeset } from './typeset';
 import { FontInfo } from './fontInfo';
 

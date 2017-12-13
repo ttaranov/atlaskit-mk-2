@@ -1,4 +1,4 @@
-import { Core } from './core/binaries/editorCore';
+import { Core } from '../../binaries/editorCore';
 import { ExportedImage, ShapeParameters, TextDirection, Tool } from '../common';
 import { ResourceManager } from './resourceManager';
 
