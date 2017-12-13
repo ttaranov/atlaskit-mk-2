@@ -19,6 +19,7 @@ import {
 } from './styled';
 import { uploadPlaceholder } from './images';
 import { constrainPos, constrainScale } from '../constraint-util';
+import { dataURItoFile } from '../util';
 
 export const CONTAINER_SIZE = akGridSizeUnitless * 32;
 
@@ -192,11 +193,11 @@ export class ImageNavigator extends Component<Props, State> {
   onImageSize = (width, height) => {
     const { imageFile, imagePos } = this.state;
     const scale = this.calculateMinScale(width, height);
-    // imageFile will be undefined when this component is rendered with
-    // an imageSource value rather than a new image being uploaded or dropped.
-    // This means that cropping does not work when imageSource is provided
-    if (imageFile) {
-      this.props.onImageChanged(imageFile, {
+    // imageFile will not exist if imageSource passed through props.
+    // therefore we have to create a File, as one needs to be raised by dialog parent component when Save clicked.
+    const file: File = imageFile || dataURItoFile(this.dataURI);
+    if (file) {
+      this.props.onImageChanged(file, {
         ...imagePos,
         size: CONTAINER_SIZE / scale,
       });
