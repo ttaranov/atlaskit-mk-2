@@ -21,7 +21,7 @@
     "@atlaskit/media-card": "^23.0.0",
     "@atlaskit/media-filmstrip": "^5.7.3",
     "@atlaskit/mention": "^8.1.0",
-    "@atlaskit/task-decision": "^4.0.0",
+    "@atlaskit/task-decision": "^4.6.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "prosemirror-model": "^1.0.0"
   },
