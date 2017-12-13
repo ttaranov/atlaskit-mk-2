@@ -52,7 +52,7 @@ const Extension: React.StatelessComponent<Props> = ({
   }
 
   // Always return default content if anything goes wrong
-  return <div>{children}</div>;
+  return <div>{text || 'extension'}</div>;
 };
 
 export default Extension;

@@ -10,7 +10,7 @@ export interface Props {
   rendererContext: RendererContext;
   extensionType: string;
   extensionKey: string;
-  text: string;
+  text?: string;
   parameters?: any;
 }
 
@@ -52,7 +52,7 @@ const InlineExtension: React.StatelessComponent<Props> = ({
   }
 
   // Always return default content if anything goes wrong
-  return <span>{children}</span>;
+  return <span>{text || 'inlineExtension'}</span>;
 };
 
 export default InlineExtension;
