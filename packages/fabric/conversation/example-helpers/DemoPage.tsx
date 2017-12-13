@@ -54,6 +54,8 @@ interface FileProps {
   provider: ResourceProvider;
 }
 
+const containerId = 'container:abc:abc/123';
+
 class File extends React.Component<FileProps, { addAt?: number }> {
   constructor(props) {
     super(props);
@@ -91,6 +93,7 @@ class File extends React.Component<FileProps, { addAt?: number }> {
             provider={provider}
             isExpanded={false}
             meta={{ lineNumber: index }}
+            containerId={containerId}
           />
         </ConvoWrapper>
       );
@@ -104,6 +107,7 @@ class File extends React.Component<FileProps, { addAt?: number }> {
             provider={provider}
             isExpanded={true}
             meta={{ name, lineNumber: index }}
+            containerId={containerId}
           />
         </ConvoWrapper>
       );
@@ -161,7 +165,7 @@ export class Demo extends React.Component<
     const { provider } = this.props;
     // First get a list of all conversations for this page
     try {
-      const conversations = await provider.getConversations();
+      const conversations = await provider.getConversations(containerId);
       this.setState({ conversations });
     } catch (err) {
       // Handle error
@@ -180,7 +184,11 @@ export class Demo extends React.Component<
           marginBottom: '10px',
         }}
       >
-        <Conversation provider={provider} id={conversation.id} />
+        <Conversation
+          provider={provider}
+          id={conversation.id}
+          containerId={containerId}
+        />
       </div>
     ));
   }
@@ -193,7 +201,7 @@ export class Demo extends React.Component<
       <div style={{ margin: '20px' }}>
         {this.renderConversations(prConverations)}
         {prConverations.length === 0 ? (
-          <Conversation provider={provider} />
+          <Conversation provider={provider} containerId={containerId} />
         ) : null}
         <File
           name="main.js"

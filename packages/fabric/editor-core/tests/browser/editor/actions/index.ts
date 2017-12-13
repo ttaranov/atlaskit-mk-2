@@ -99,8 +99,7 @@ describe(name, () => {
         expect(editorView.hasFocus()).to.equal(false);
       });
 
-      // TODO: editor-migration - unskip
-      it.skip('should blur editor if it has focus', () => {
+      it('should blur editor if it has focus', () => {
         editorActions.focus();
         expect(editorActions.blur()).to.equal(true);
         expect(editorView.hasFocus()).to.equal(false);

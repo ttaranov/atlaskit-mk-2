@@ -1,5 +1,19 @@
 # @atlaskit/renderer
 
+## 10.0.3
+- [patch] Bumped task decision version [1180bbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1180bbe)
+- [patch] Bumped task decision version [1180bbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1180bbe)
+
+## 10.0.2
+
+## 10.0.1
+
+## 10.0.0
+- [major] Addes in extension node and modify ReactSerializer class construtor to accept an object. [e408698](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e408698)
+- [major] Addes in extension node and modify ReactSerializer class construtor to accept an object. [e408698](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e408698)
+- [major] Addes in extension node [e52d336](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e52d336)
+- [major] Addes in extension node [e52d336](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e52d336)
+
 ## 9.1.5
 
 ## 9.1.4

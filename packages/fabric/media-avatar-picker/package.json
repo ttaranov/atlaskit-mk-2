@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-avatar-picker",
-  "version": "4.3.4",
+  "version": "4.3.6",
   "description": "Component that allow users to pick, resize and drag his own and default avatars.",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -22,7 +22,7 @@
     "@atlaskit/button": "^6.0.0",
     "@atlaskit/field-range": "^2.0.0",
     "@atlaskit/icon": "^10.3.1",
-    "@atlaskit/media-card": "^22.4.3",
+    "@atlaskit/media-card": "^23.0.0",
     "@atlaskit/modal-dialog": "^3.2.1",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "styled-components": "^1.4.6",
@@ -33,7 +33,7 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.1.0",
+    "@atlaskit/docs": "^2.1.1",
     "@atlaskit/media-core": "^12.0.2",
     "@atlaskit/media-test-helpers": "^8.5.1"
   }

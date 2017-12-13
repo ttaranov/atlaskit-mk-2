@@ -7,6 +7,7 @@ import { ResourceProvider } from '../api/ConversationResource';
 
 export interface Props {
   provider: ResourceProvider;
+  containerId: string;
 
   id?: string;
   isExpanded?: boolean;
@@ -79,8 +80,8 @@ export default class Conversation extends React.Component<Props, State> {
   };
 
   private async createConversation() {
-    const { provider, meta } = this.props;
-    return await provider.create(meta);
+    const { provider, meta, containerId } = this.props;
+    return await provider.create(containerId, meta);
   }
 
   private async addComment(id: string, doc: any) {

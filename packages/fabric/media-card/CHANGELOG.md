@@ -1,5 +1,8 @@
 # @atlaskit/media-image
 
+## 23.0.0
+- [major] Bump media-core peer dependency to next major versoin (12) [0a84f90](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a84f90)
+
 ## 22.4.3
 
 ## 22.4.2

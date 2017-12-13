@@ -3,6 +3,8 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 import { ItemGroup } from '@atlaskit/item';
+import { EmojiProvider } from '@atlaskit/emoji';
+import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import {
   doc,
   h1,
@@ -29,12 +31,17 @@ import Editor from '../../src/index';
 chai.use(chaiPlugin);
 
 const expect = chai.expect;
+const emojiProvider: Promise<
+  EmojiProvider
+> = emojiStoryData.getEmojiResource() as any;
 
 describe('@atlaskit/editor-bitbucket/expand and collapse', () => {
   const fixture = fixtures();
   let editorWrapper;
   beforeEach(() => {
-    editorWrapper = mount(<Editor />, { attachTo: fixture() });
+    editorWrapper = mount(<Editor />, {
+      attachTo: fixture(),
+    });
   });
 
   afterEach(() => {
@@ -158,8 +165,7 @@ describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
     expect(spy.getCall(0).args[1]).to.be.a('function');
   });
 
-  // TODO: editor-migration - unskip
-  it.skip('should invoke upload handler after pasting an image', function() {
+  it('should invoke upload handler after pasting an image', function() {
     const contentArea: HTMLElement = (editorWrapper.get(0) as any).state
       .editorView.dom;
     const event = createEvent('paste');
@@ -184,10 +190,9 @@ describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
     expect(spy.getCall(0).args[1]).to.be.a('function');
   });
 
-  // TODO: editor-migration - unskip
-  it.skip('should invoke upload handler after dropping an image', function() {
+  it('should invoke upload handler after dropping an image', function() {
     // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop'
-    //       so we must dispatch the event directly on the event which has listener attached.
+    //       so we must dispatch the event directly on the element which has listener attached.
     const dropElement: HTMLElement = (editorWrapper.get(0) as any).state
       .editorView.dom;
     const event = createEvent('drop');
@@ -299,7 +304,7 @@ describe('@atlaskit/editor-bitbucket/toolbar', () => {
   });
 });
 
-describe.skip('@atlaskit/editor-bitbucket/pasting', () => {
+describe('@atlaskit/editor-bitbucket/pasting', () => {
   const fixture = fixtures();
   let editor: Editor;
   let editorView: EditorView;
@@ -308,7 +313,11 @@ describe.skip('@atlaskit/editor-bitbucket/pasting', () => {
   beforeEach(() => {
     const mentionResoure = sinon.stub() as any;
     editorWrapper = mount(
-      <Editor isExpandedByDefault={true} mentionSource={mentionResoure} />,
+      <Editor
+        isExpandedByDefault={true}
+        mentionSource={mentionResoure}
+        emojiProvider={emojiProvider}
+      />,
       {
         attachTo: fixture(),
       },

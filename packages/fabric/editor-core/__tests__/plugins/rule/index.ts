@@ -44,6 +44,7 @@ describe('rule', () => {
         });
       });
     } else {
+      // Need to unskip after ED-2305
       describe.skip('when hits Shift-Ctrl--', () => {
         it('calls splitCodeBlock', () => {
           const { editorView } = editor(doc(p('text{<>}')));
