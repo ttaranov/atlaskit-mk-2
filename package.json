@@ -180,7 +180,6 @@
     "@atlaskit/navigation": "^26.5.1",
     "@atlaskit/page": "^5.0.3",
     "@atlaskit/profilecard": "^3.7.1",
-    "@atlaskit/progress-indicator": "^2.0.0",
     "@atlaskit/single-select": "^3.0.1",
     "@atlaskit/task-decision": "^4.6.0",
     "@atlaskit/util-common": "^1.5.2",
