@@ -10,9 +10,9 @@ export default md`
   
   ${(
     <Example
-      Component={require('../examples/single-component').default}
-      source={require('!!raw-loader!../examples/single-component')}
-      title="Basic Usage"
+      Component={require('../examples/render-prop-async').default}
+      source={require('!!raw-loader!../examples/render-prop-async')}
+      title="Basic Usage: Table of Contents"
     />
   )}
   
