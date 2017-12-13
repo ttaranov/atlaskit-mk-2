@@ -14,7 +14,7 @@ export default function Component() {
       </h5>
       <Editor
         placeholder="Click me to expand ..."
-        analyticsHandler={console.log}
+        analyticsHandler={(...args) => console.log.apply(console, args)}
         onSave={NOOP}
         onCancel={NOOP}
       />

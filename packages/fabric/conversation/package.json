@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/conversation",
-  "version": "2.0.7",
+  "version": "3.0.0",
   "config": {
     "access": "public"
   },

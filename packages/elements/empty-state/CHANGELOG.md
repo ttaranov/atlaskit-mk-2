@@ -1,5 +1,8 @@
 # @atlaskit/empty-state
 
+## 0.1.3
+- [patch] Color of the description changed to N800 [ebf65be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebf65be)
+
 ## 0.1.2
 
 ## 0.1.1
