@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "60.14.3",
+  "version": "60.14.6",
   "description": "A package contains Atlassian editor core functionality",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -94,7 +94,7 @@
     "@atlaskit/editor-test-helpers": "^1.2.6",
     "@atlaskit/layer-manager": "^2.5.4",
     "@atlaskit/media-test-helpers": "^8.5.1",
-    "@atlaskit/renderer": "^10.0.2",
+    "@atlaskit/renderer": "^10.0.3",
     "@atlaskit/util-data-test": "^7.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "chai-as-promised": "^6.0.0",

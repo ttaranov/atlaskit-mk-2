@@ -96,6 +96,7 @@ const ContentStyles = styled.div`
     position: absolute;
     width: 100%;
     pointer-events: none;
+    user-select: none;
 
     &::before {
       content: attr(data-text);
