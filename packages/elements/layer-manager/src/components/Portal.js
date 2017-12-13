@@ -40,9 +40,12 @@ class Portal extends Component<Props> {
       // five seconds is an arbitary number, but is more than any of our
       // animations need to complete
       setTimeout(() => {
-        if (!document.body || !this.portalElement) return;
-        unmountComponentAtNode(this.portalElement);
-        document.body.removeChild(this.portalElement);
+        const target = document.body;
+        const portal = this.portalElement;
+        if (target && portal) {
+          unmountComponentAtNode(portal);
+          target.removeChild(portal);
+        }
       }, 5000);
     });
   }

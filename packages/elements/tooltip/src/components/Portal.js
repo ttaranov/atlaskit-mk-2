@@ -25,9 +25,11 @@ export default class Portal extends Component<Props> {
     render(Children.only(children), this.portalElement);
   }
   componentWillUnmount() {
-    if (document.body) {
-      unmountComponentAtNode(this.portalElement);
-      document.body.removeChild(this.portalElement);
+    const target = document.body;
+    const portal = this.portalElement;
+    if (target && portal) {
+      unmountComponentAtNode(portal);
+      target.removeChild(portal);
     }
   }
   render() {
