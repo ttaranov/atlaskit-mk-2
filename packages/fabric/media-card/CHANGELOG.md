@@ -1,5 +1,7 @@
 # @atlaskit/media-image
 
+## 23.0.3
+
 ## 23.0.2
 - [patch] Make Card to work with pixel units [dedba4f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dedba4f)
 

@@ -1,5 +1,7 @@
 # @atlaskit/media-avatar-picker
 
+## 4.3.10
+
 ## 4.3.9
 
 ## 4.3.8
