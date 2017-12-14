@@ -146,9 +146,7 @@ async function createChangeset(
   changeset.summary = summary;
   // as the changeset is printed to console, the unneeded verified property needs
   // to be removed
-  changeset.dependents = dependents.map(
-    ({ finalised, ...rest }): changesetDependentType => rest,
-  );
+  changeset.dependents = dependents.map(({ finalised, ...rest }) => rest);
 
   return changeset;
 }
