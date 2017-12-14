@@ -58,3 +58,5 @@ export const Wrapper = styled.div`
     `;
   }};
 `;
+
+Wrapper.displayName = 'CardViewWrapper';

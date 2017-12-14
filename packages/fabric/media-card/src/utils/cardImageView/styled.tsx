@@ -28,3 +28,9 @@ export const Wrapper = styled(Root)`
     }
   }
 `;
+
+Wrapper.displayName = 'CardImageViewWrapper';
+
+export const ImgWrapper = styled.div``;
+
+ImgWrapper.displayName = 'ImgWrapper';

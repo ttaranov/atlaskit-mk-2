@@ -14,7 +14,7 @@ import {
 import { CardDimensions, CardStatus } from '../../index';
 import { CardContent } from './cardContent';
 import { CardOverlay } from './cardOverlay';
-import { Wrapper } from './styled';
+import { Wrapper, ImgWrapper } from './styled';
 import { UploadingView } from '../../utils/uploadingView';
 
 export interface CardImageViewProps {
@@ -148,8 +148,8 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
       : this.createSuccessCardOverlay();
 
     return (
-      <div className="wrapper">
-        <div className="img-wrapper">
+      <SuccessCardWrapper className="wrapper">
+        <ImgWrapper className="img-wrapper">
           <CardContent
             loading={this.isDownloadingOrProcessing()}
             mediaItemType={mediaItemType}
@@ -157,9 +157,9 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
             dataURI={dataURI}
             crop={this.isCropped}
           />
-        </div>
+        </ImgWrapper>
         {overlay}
-      </div>
+      </SuccessCardWrapper>
     );
   };
 
