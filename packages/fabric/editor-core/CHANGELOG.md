@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.14.10
+- [patch] Add default center layout support for single image [6113e02](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6113e02)
+- [patch] Add default center layout support for single image [6113e02](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6113e02)
+
 ## 60.14.9
 
 ## 60.14.8
