@@ -268,6 +268,7 @@
     "raf-stub": "^2.0.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-ga": "^2.3.5",
     "react-lazily-render": "^0.0.6",
     "react-loadable": "^5.1.0",
     "react-markdown": "^2.5.0",
