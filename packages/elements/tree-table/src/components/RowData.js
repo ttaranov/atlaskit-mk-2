@@ -31,7 +31,7 @@ export default class RowData extends PureComponent<Props> {
       cell,
       {
         key: cellIndex,
-        index: cellIndex,
+        columnIndex: cellIndex,
         indentLevel,
       },
       ...cellContent,

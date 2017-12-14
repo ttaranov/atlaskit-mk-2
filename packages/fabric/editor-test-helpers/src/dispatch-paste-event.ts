@@ -1,3 +1,4 @@
+import { browser } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
 import { TestingEditorView } from './types/prosemirror';
 import createEvent from './create-event';
@@ -30,6 +31,12 @@ export default (editorView: EditorView, content: PasteContent) => {
     },
     types: content.types || [],
   };
+
+  // Skiping IE < 15
+  // Reason: https://github.com/ProseMirror/prosemirror-view/blob/9d2295d03c2d17357213371e4d083f0213441a7e/src/input.js#L379-L384
+  if ((browser.ie && browser.ie_version < 15) || browser.ios) {
+    return false;
+  }
 
   try {
     Object.defineProperty(event, 'clipboardData', { value: clipboardData });

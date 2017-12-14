@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "22.4.3",
+  "version": "23.0.3",
   "description": "Includes all media card related components, CardView, CardViewSmall, Card...",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -25,7 +25,7 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/avatar": "^8.3.8",
+    "@atlaskit/avatar": "^8.3.9",
     "@atlaskit/badge": "^6.1.8",
     "@atlaskit/button": "^6.0.0",
     "@atlaskit/dropdown-menu": "^3.0.1",

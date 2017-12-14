@@ -1,5 +1,19 @@
 # @atlaskit/media-avatar-picker
 
+## 4.3.10
+
+## 4.3.9
+
+## 4.3.8
+
+## 4.3.7
+- [patch] Ensure avatar picker with source submits default image [f8c957f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f8c957f)
+
+## 4.3.6
+
+## 4.3.5
+- [patch] apply pretty printing to avatar picker src [fb77dce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb77dce)
+
 ## 4.3.4
 
 ## 4.3.3

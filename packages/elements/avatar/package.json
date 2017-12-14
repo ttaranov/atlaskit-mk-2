@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/avatar",
-  "version": "8.3.8",
+  "version": "8.3.9",
   "description": "A component that represents a user",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -19,7 +19,7 @@
     "@atlaskit/item": "^4.2.3",
     "@atlaskit/polyfills": "^1.2.4",
     "@atlaskit/theme": "^2.2.9",
-    "@atlaskit/tooltip": "^8.0.9",
+    "@atlaskit/tooltip": "^8.0.10",
     "styled-components": "^1.4.6"
   },
   "peerDependencies": {

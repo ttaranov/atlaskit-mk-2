@@ -30,14 +30,15 @@ export default class Chevron extends PureComponent<Props> {
       size: 'medium',
       primaryColor: iconColor,
     };
-    let icon = null;
-    if (hasChildren) {
-      icon = isExpanded ? (
-        <ChevronDownIcon label="Collapse" {...iconProps} />
-      ) : (
-        <ChevronRightIcon label="Expand" {...iconProps} />
-      );
-    }
-    return <ChevronContainer>{icon}</ChevronContainer>;
+    return (
+      <ChevronContainer>
+        {hasChildren &&
+          (isExpanded ? (
+            <ChevronDownIcon label="Collapse" {...iconProps} />
+          ) : (
+            <ChevronRightIcon label="Expand" {...iconProps} />
+          ))}
+      </ChevronContainer>
+    );
   }
 }

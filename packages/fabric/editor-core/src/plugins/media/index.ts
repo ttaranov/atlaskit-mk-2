@@ -29,7 +29,7 @@ import {
 } from 'prosemirror-state';
 import { insertPoint } from 'prosemirror-transform';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
-import { Alignment, Display } from '@atlaskit/editor-common';
+import { Layout } from '@atlaskit/editor-common';
 
 import PickerFacadeType from './picker-facade';
 import { ErrorReporter, isImage } from '../../utils';
@@ -41,12 +41,12 @@ import { EditorAppearance } from '../../editor/types/editor-props';
 import {
   ReactMediaGroupNode,
   ReactMediaNode,
-  ReactSingleImageNode,
+  ReactMediaSingleNode,
 } from '../../nodeviews';
 import keymapPlugin from './keymap';
 import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
 import { insertMediaGroupNode } from './media-files';
-import { insertSingleImageNodes } from './single-image';
+import { insertMediaSingleNodes } from './media-single';
 import { removeMediaNode, splitMediaGroup } from './media-common';
 import PickerFacade from './picker-facade';
 import DropPlaceholder from '../../ui/Media/DropPlaceholder';
@@ -216,7 +216,7 @@ export class MediaPluginState {
 
   insertFiles = (mediaStates: MediaState[]): void => {
     const { stateManager } = this;
-    const { singleImage } = this.view.state.schema.nodes;
+    const { mediaSingle } = this.view.state.schema.nodes;
     const collection = this.collectionFromProvider();
     if (!collection) {
       return;
@@ -230,8 +230,8 @@ export class MediaPluginState {
       this.stateManager.subscribe(mediaState.id, this.handleMediaState),
     );
 
-    if (this.editorAppearance !== 'message' && areImages && singleImage) {
-      insertSingleImageNodes(this.view, mediaStates, collection);
+    if (this.editorAppearance !== 'message' && areImages && mediaSingle) {
+      insertMediaSingleNodes(this.view, mediaStates, collection);
     } else {
       insertMediaGroupNode(this.view, mediaStates, collection);
     }
@@ -403,15 +403,14 @@ export class MediaPluginState {
     this.mediaNodes = this.mediaNodes.filter(({ node }) => oldNode !== node);
   };
 
-  align = (alignment: Alignment, display: Display = 'block'): boolean => {
+  align = (layout: Layout): boolean => {
     if (!this.isMediaNodeSelection()) {
       return false;
     }
     const { selection: { from }, schema, tr } = this.view.state;
     this.view.dispatch(
-      tr.setNodeMarkup(from - 1, schema.nodes.singleImage, {
-        alignment,
-        display,
+      tr.setNodeMarkup(from - 1, schema.nodes.mediaSingle, {
+        layout,
       }),
     );
     return true;
@@ -761,10 +760,10 @@ export const createPlugin = (
           },
           true,
         ),
-        singleImage: nodeViewFactory(
+        mediaSingle: nodeViewFactory(
           options.providerFactory,
           {
-            singleImage: ReactSingleImageNode,
+            mediaSingle: ReactMediaSingleNode,
             media: ReactMediaNode,
           },
           true,

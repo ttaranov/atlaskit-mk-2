@@ -1,18 +1,18 @@
-/* tslint:disable: no-console */
-
+// tslint:disable:no-console
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { CardEvent } from '@atlaskit/media-card';
-import { CardSurroundings } from '@atlaskit/editor-common';
+import { CardSurroundings, ProviderFactory } from '@atlaskit/editor-common';
 import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
+import * as Clock from 'react-live-clock';
 
-import { ProviderFactory } from '@atlaskit/editor-core';
 import { document } from './story-data';
 import {
   default as Renderer,
   Props as RendererProps,
+  ExtensionHandlers,
 } from '../../src/ui/Renderer';
 
 import { AkProfileClient, modifyResponse } from '@atlaskit/profilecard';
@@ -63,6 +63,53 @@ providerFactory.setProvider('mediaProvider', mediaProvider);
 providerFactory.setProvider('emojiProvider', emojiProvider);
 providerFactory.setProvider('profilecardProvider', profilecardProvider);
 
+const extensionHandlers: ExtensionHandlers = {
+  'com.atlassian.fabric': (ext, doc) => {
+    const { extensionKey, parameters, content } = ext;
+
+    switch (extensionKey) {
+      case 'clock':
+        return (
+          <Clock format={'HH:mm:ss'} ticking={true} timezone={'US/Pacific'} />
+        );
+      case 'mention':
+        return [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text:
+                  'Hi, my name is... My name is... My name is... My name is ',
+              },
+              {
+                type: 'mention',
+                attrs: {
+                  id: '1',
+                  text: '@Oscar Wallhult',
+                },
+              },
+            ],
+          },
+        ];
+      case 'inline':
+        return [
+          {
+            type: 'text',
+            text: 'Hi, my name is... My name is... My name is... My name is ',
+          },
+          {
+            type: 'mention',
+            attrs: {
+              id: '1',
+              text: '@Oscar Wallhult',
+            },
+          },
+        ];
+    }
+  },
+};
+
 const eventHandlers = {
   mention: {
     onClick: () => console.log('onMentionClick'),
@@ -92,6 +139,7 @@ const eventHandlers = {
 interface DemoRendererProps {
   withPortal?: boolean;
   withProviders?: boolean;
+  withExtension?: boolean;
   serializer: 'react' | 'text';
 }
 
@@ -158,6 +206,10 @@ export default class RendererDemo extends PureComponent<
       if (this.props.withProviders) {
         props.eventHandlers = eventHandlers;
         props.dataProviders = providerFactory;
+      }
+
+      if (this.props.withExtension) {
+        props.extensionHandlers = extensionHandlers;
       }
 
       if (this.props.withPortal) {
