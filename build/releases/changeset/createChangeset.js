@@ -35,10 +35,15 @@ type dependentType = {
   dependencies: Array<string>,
   finalised?: boolean
 }
+type changesetDependentType = {
+  name: string,
+  dependencies: Array<string>,
+  type?: string,
+}
 type changesetType = {
   summary: string,
   releases: Array<releaseType>,
-  dependents: Array<dependentType>,
+  dependents: Array<changesetDependentType>,
   releaseNotes?: any,
 }
 */
@@ -141,7 +146,9 @@ async function createChangeset(
   changeset.summary = summary;
   // as the changeset is printed to console, the unneeded verified property needs
   // to be removed
-  changeset.dependents = dependents.map(({ finalised, ...rest }) => rest);
+  changeset.dependents = dependents.map(
+    ({ finalised, ...rest }): changesetDependentType => rest,
+  );
 
   return changeset;
 }

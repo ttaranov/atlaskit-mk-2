@@ -14,7 +14,7 @@ export type PatternsNavProps = {
 
 export default function PatternsNav({ pathname, patterns }: PatternsNavProps) {
   const groups = buildNavGroups('patterns', CodeIcon, pathname, patterns);
-
+  console.log(groups);
   groups.unshift({
     items: [
       {
@@ -24,6 +24,7 @@ export default function PatternsNav({ pathname, patterns }: PatternsNavProps) {
       },
     ],
   });
+  console.log(groups);
 
   return <div>{renderNav(groups, { pathname })}</div>;
 }
