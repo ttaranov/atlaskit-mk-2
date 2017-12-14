@@ -5,7 +5,7 @@ export default function withColumnWidth(Cell) {
   type Props = {
     children: Array<Node>,
     width?: number,
-    index: number,
+    columnIndex: number,
   };
 
   return class CellWithColumnWidth extends PureComponent<Props> {
@@ -28,11 +28,11 @@ export default function withColumnWidth(Cell) {
     }
 
     render() {
-      const { width, index } = this.props;
+      const { width, columnIndex } = this.props;
       const columnWidth =
         width !== null && width !== undefined
           ? width
-          : this.context.treeTable.getColumnWidth(index);
+          : this.context.treeTable.getColumnWidth(columnIndex);
       return <Cell {...this.props} columnWidth={columnWidth} />;
     }
   };
