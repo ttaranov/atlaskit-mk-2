@@ -8,6 +8,7 @@ import { CardAppearance, CardDimensions } from '..';
 import { isRetina } from '../utils/isRetina';
 import { isLinkDetails } from '../utils/isLinkDetails';
 import { isValidPercentageUnit } from '../utils/isValidPercentageUnit';
+import { containsPixelUnit } from '../utils/containsPixelUnit';
 import { getCardMinHeight } from '../utils/cardDimensions';
 import {
   getElementDimension,
@@ -85,14 +86,18 @@ export const withDataURI = (Component): any => {
       }
 
       if (isValidPercentageUnit(dimensionValue)) {
-        return getElementDimension(this, dimension);
+        return getElementDimension(this, dimension) * retinaFactor;
       }
 
-      return (
-        (typeof dimensionValue === 'number'
-          ? dimensionValue
-          : defaultImageCardDimensions[dimension]) * retinaFactor
-      );
+      if (typeof dimensionValue === 'number') {
+        return dimensionValue * retinaFactor;
+      }
+
+      if (containsPixelUnit(`${dimensionValue}`)) {
+        return parseInt(`${dimensionValue}`, 10) * retinaFactor;
+      }
+
+      return defaultImageCardDimensions[dimension] * retinaFactor;
     }
 
     updateDataURI(props: WithDataURIProps): void {

@@ -1,5 +1,13 @@
 # @atlaskit/editor-common
 
+## 5.0.5
+
+## 5.0.4
+
+## 5.0.3
+- [patch] Only bodiedExtension has content [6d4caae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d4caae)
+- [patch] Only bodiedExtension has content [6d4caae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d4caae)
+
 ## 5.0.2
 
 ## 5.0.1
