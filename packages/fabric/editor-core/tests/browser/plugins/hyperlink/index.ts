@@ -379,7 +379,7 @@ describe('hyperlink', () => {
         expect(
           hyperlinkState.active,
           'Hyperlink plugin state.active should be false',
-        ).to.be.false;
+        ).to.equal(false);
         editorView.destroy();
       });
     });
