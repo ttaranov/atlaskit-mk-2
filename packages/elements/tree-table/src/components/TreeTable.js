@@ -1,10 +1,6 @@
 // @flow
-import React, {
-  Component,
-  type ElementType,
-  type Node,
-  PropTypes,
-} from 'react';
+import React, { Component, type ElementType, type Node } from 'react';
+import PropTypes from 'prop-types';
 import { TreeTableContainer } from '../styled';
 import TreeRows from './TreeRows';
 import RowData from './RowData';
