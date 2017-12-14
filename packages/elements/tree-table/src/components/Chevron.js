@@ -32,11 +32,12 @@ export default class Chevron extends PureComponent<Props> {
     };
     return (
       <ChevronContainer>
-        {hasChildren && isExpanded ? (
-          <ChevronDownIcon label="Collapse" {...iconProps} />
-        ) : (
-          <ChevronRightIcon label="Expand" {...iconProps} />
-        )}
+        {hasChildren &&
+          (isExpanded ? (
+            <ChevronDownIcon label="Collapse" {...iconProps} />
+          ) : (
+            <ChevronRightIcon label="Expand" {...iconProps} />
+          ))}
       </ChevronContainer>
     );
   }
