@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { MouseEvent, Component } from 'react';
-import * as cx from 'classnames';
 import { MediaType, CardAction, CardEventHandler } from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/check';
 // We dont require things directly from "utils" to avoid circular dependencies
@@ -59,35 +58,42 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
     };
   }
 
-  private get wrapperClassNames() {
-    const { error, selectable, selected, mediaType, persistent } = this.props;
-    const { isMenuExpanded } = this.state;
-
-    return error
-      ? cx('overlay', { error, active: isMenuExpanded })
-      : cx('overlay', mediaType, {
-          active: isMenuExpanded,
-          selectable,
-          selected,
-          persistent: !persistent,
-        });
-  }
-
   render() {
-    const { error, mediaName, persistent, actions } = this.props;
+    const {
+      error,
+      mediaName,
+      persistent,
+      actions,
+      selectable,
+      selected,
+      mediaType,
+    } = this.props;
+    const { isMenuExpanded } = this.state;
     const titleText = error || !mediaName ? '' : mediaName;
     const menuTriggerColor = !persistent ? 'white' : undefined;
 
     return (
-      <Overlay hasError={!!error} className={this.wrapperClassNames}>
-        <TopRow className={'top-row'}>
+      <Overlay
+        hasError={!!error}
+        mediaType={mediaType}
+        isSelectable={selectable}
+        isSelected={selected}
+        isPersistent={!persistent}
+        isActive={isMenuExpanded}
+        className="overlay"
+      >
+        <TopRow
+          isActive={isMenuExpanded}
+          isPersistent={!persistent}
+          className="top-row"
+        >
           {this.errorLine()}
-          <TitleWrapper className={'title'}>
+          <TitleWrapper isPersistent={!persistent} className="title">
             <Ellipsify text={titleText} lines={2} />
           </TitleWrapper>
           {this.tickBox()}
         </TopRow>
-        <BottomRow className={'bottom-row'}>
+        <BottomRow className="bottom-row">
           <LeftColumn>{this.bottomLeftColumn()}</LeftColumn>
           <RightColumn>
             <Menu
@@ -115,9 +121,15 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   tickBox() {
     const { selected, selectable } = this.props;
     const tick = <TickIcon label="tick" />;
-    const className = cx('tickbox', { selected });
 
-    return selectable && <TickBox className={className}> {tick} </TickBox>;
+    return (
+      selectable && (
+        <TickBox className="tickbox" isSelected={selected}>
+          {' '}
+          {tick}{' '}
+        </TickBox>
+      )
+    );
   }
 
   bottomLeftColumn() {
@@ -136,8 +148,6 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       );
     } else {
       const { mediaType, subtitle, icon } = this.props;
-      const classNames = cx('metadata');
-
       const fileIcon =
         mediaType || icon ? (
           <FileIcon mediaType={mediaType} iconUrl={icon} />
@@ -149,7 +159,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
 
       return (
         <div>
-          <Metadata className={classNames}>
+          <Metadata className="metadata">
             {fileIcon}
             {subtitleEl}
           </Metadata>

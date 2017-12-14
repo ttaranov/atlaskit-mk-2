@@ -1,5 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
+import { MediaType } from '@atlaskit/media-core';
 import {
   rgba,
   centerX,
@@ -22,11 +23,148 @@ import {
 } from '@atlaskit/util-shared-styles';
 
 export interface OverlayProps {
-  hasError: boolean;
+  hasError?: boolean;
+  mediaType?: MediaType;
+  isSelectable?: boolean;
+  isSelected?: boolean;
+  isPersistent?: boolean;
+  isActive?: boolean;
 }
 
+const overlayStyles = ({
+  hasError,
+  isSelectable,
+  isSelected,
+  isPersistent,
+  isActive,
+}: OverlayProps) => {
+  let activeStyles;
+
+  if (hasError) {
+    return `
+      cursor: default;
+
+      &:hover {
+        background: transparent;
+        .top-row {
+          .title {
+            color: ${akColorN800};
+          }
+        }
+      }
+    `;
+  }
+
+  if (isSelectable) {
+    return `
+      &:hover {
+        .tickbox {
+          opacity: 1;
+        }
+      }
+
+      &.selected {
+        border-color: ${akColorB200} !important;
+      }
+    `;
+  }
+
+  if (isActive) {
+    activeStyles = {};
+  }
+
+  if (isPersistent) {
+    return `
+      &:not(.active) {
+        overflow: hidden;
+      }
+  
+      .bottom-row {
+        opacity: 0;
+        transition: transform 0.2s, opacity 0.5s;
+        transform: translateY(
+          35px
+        ); // This is the height of the overlay footer, needs to be present now since the parent uses flex and 100% doesn't look right anymore
+  
+        .file-type-icon {
+          display: none;
+        }
+  
+        .file-size {
+          color: white;
+          display: none;
+        }
+  
+        .more-btn {
+          color: ${akColorN0};
+          display: none;
+  
+          &:hover {
+            background-color: rgba(9, 30, 66, 0.2);
+          }
+        }
+  
+        .delete-btn {
+          display: none;
+  
+          &:hover {
+            background-color: rgba(9, 30, 66, 0.2);
+          }
+        }
+      }
+  
+      &:hover,
+      &.active {
+        background-color: ${rgba(akColorN900, 0.5)};
+  
+        .title {
+          opacity: 1;
+          visibility: visible;
+        }
+  
+        .file-type-icon,
+        .file-size {
+          display: block;
+        }
+  
+        .more-btn {
+          ${centerX} color: ${akColorN0};
+        }
+  
+        .delete-btn {
+          display: flex;
+        }
+  
+        .bottom-row {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    `;
+  }
+
+  return '';
+};
+
+export const tickboxStyles = ({ isSelected }: OverlayProps) => {
+  if (isSelected) {
+    return `
+      background-color: ${akColorB200} !important;
+      border-color: ${akColorB200} !important;
+      opacity: 1;
+      color: white;
+      background-color: #0052cc; // TODO FIL-3884: Align with tickbox icons
+    `;
+  }
+
+  return '';
+};
+
 export const TickBox = styled.div`
-  ${size(14)} ${transition()} background-color: ${rgba('#ffffff', 0.5)};
+  ${tickboxStyles} ${size(14)} ${transition()} background-color: ${rgba(
+      '#ffffff',
+      0.5,
+    )};
   position: absolute;
   top: 8px;
   right: 8px;
@@ -35,17 +173,13 @@ export const TickBox = styled.div`
   display: flex;
   opacity: 0;
 
-  &.selected {
-    opacity: 1;
-    color: white;
-    background-color: #0052cc; // TODO FIL-3884: Align with tickbox icons
-  }
-
   // Enforce dimensions of "tick" icon
   svg {
     width: 14px;
   }
 `;
+
+TickBox.displayName = 'TickBox';
 
 export const Overlay = styled.div`
   ${size()} ${absolute()} ${borderRadius} display: flex;
@@ -56,25 +190,7 @@ export const Overlay = styled.div`
   transition: 0.3s background ${easeOutCubic}, 0.3s border-color;
   padding: 16px;
 
-  ${({ hasError }: OverlayProps) => {
-    if (hasError) {
-      return `
-        cursor: default;
-
-        &:hover {
-          background: transparent;
-        }
-      `;
-    }
-
-    return '';
-  }} &:hover, &.active {
-    .top-row {
-      .title {
-        color: ${akColorB400};
-      }
-    }
-
+  ${overlayStyles} &:hover, &.active {
     .bottom-row {
       .delete-btn {
         display: flex;
@@ -108,117 +224,9 @@ export const Overlay = styled.div`
       }
     }
   }
-
-  &.persistent {
-    &:not(.active) {
-      overflow: hidden;
-    }
-
-    .top-row {
-      .title {
-        transition: opacity 0.3s;
-        opacity: 0;
-        color: white;
-        visibility: hidden;
-      }
-    }
-
-    .bottom-row {
-      opacity: 0;
-      transition: transform 0.2s, opacity 0.5s;
-      transform: translateY(
-        35px
-      ); // This is the height of the overlay footer, needs to be present now since the parent uses flex and 100% doesn't look right anymore
-
-      .file-type-icon {
-        display: none;
-      }
-
-      .file-size {
-        color: white;
-        display: none;
-      }
-
-      .more-btn {
-        color: ${akColorN0};
-        display: none;
-
-        &:hover {
-          background-color: rgba(9, 30, 66, 0.2);
-        }
-      }
-
-      .delete-btn {
-        display: none;
-
-        &:hover {
-          background-color: rgba(9, 30, 66, 0.2);
-        }
-      }
-    }
-
-    &:hover,
-    &.active {
-      background-color: ${rgba(akColorN900, 0.5)};
-
-      .title {
-        opacity: 1;
-        visibility: visible;
-      }
-
-      .file-type-icon,
-      .file-size {
-        display: block;
-      }
-
-      .more-btn {
-        ${centerX} color: ${akColorN0};
-      }
-
-      .delete-btn {
-        display: flex;
-      }
-
-      .bottom-row {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Selectable */
-    &.selectable {
-      &:hover {
-        .tickbox {
-          opacity: 1;
-        }
-      }
-
-      &.selected {
-        border-color: ${akColorB200} !important;
-
-        .tickbox {
-          background-color: ${akColorB200} !important;
-          border-color: ${akColorB200} !important;
-          color: white;
-        }
-      }
-    }
-  }
-
-  &.error {
-    .top-row {
-      overflow: visible;
-    }
-    &:hover,
-    &.active {
-      .top-row {
-        .title {
-          color: ${akColorN800};
-        }
-      }
-    }
-  }
 `;
+
+Overlay.displayName = 'OverlayWrapper';
 
 export const ErrorLine = styled.div`
   display: block;
@@ -234,7 +242,22 @@ export const LeftColumn = styled.div`
   vertical-align: middle;
 `;
 
-export const TopRow = styled.div``;
+const topRowStyles = ({ hasError }: OverlayProps) => {
+  if (hasError) {
+    return `
+      overflow: visible;
+    `;
+  }
+
+  if (isPersistent) {
+  }
+};
+
+export const TopRow = styled.div`
+  ${topRowStyles};
+`;
+
+TopRow.displayName = 'TopRow';
 
 export const BottomRow = styled.div`
   display: flex;
@@ -242,6 +265,8 @@ export const BottomRow = styled.div`
   z-index: 1;
   height: 16px;
 `;
+
+BottomRow.displayName = 'BottomRow';
 
 export const RightColumn = styled.div`
   .meat-balls-button {
@@ -280,8 +305,27 @@ export const ErrorWrapper = styled.div`
   display: flex;
 `;
 
+export const titleStyles = ({ isPersistent, isActive }: OverlayProps) => {
+  if (isActive) {
+    // TODO: Which one is good?
+    return `
+      color: ${akColorB400};
+      color: ${akColorN800};
+    `;
+  }
+
+  if (isPersistent) {
+    return `
+      transition: opacity 0.3s;
+      opacity: 0;
+      color: white;
+      visibility: hidden;
+    `;
+  }
+};
+
 export const TitleWrapper = styled.div`
-  box-sizing: border-box;
+  ${titleStyles} box-sizing: border-box;
   word-wrap: break-word;
   color: ${akColorN800};
   font-size: 12px;

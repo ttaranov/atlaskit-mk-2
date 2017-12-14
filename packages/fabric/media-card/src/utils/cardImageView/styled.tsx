@@ -34,3 +34,7 @@ Wrapper.displayName = 'CardImageViewWrapper';
 export const ImgWrapper = styled.div``;
 
 ImgWrapper.displayName = 'ImgWrapper';
+
+export const SuccessCardWrapper = styled.div``;
+
+SuccessCardWrapper.displayName = 'SuccessCardWrapper';
