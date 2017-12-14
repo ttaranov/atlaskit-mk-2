@@ -66,7 +66,72 @@
       "title": "Chapter 3: Functions",
       "page": 17,
       "numbering": "3",
-      "children": []
+      "children": [
+        {
+          "title": "Small!",
+          "page": 34,
+          "numbering": "3.1",
+          "children": [
+          ]
+        },
+        {
+          "title": "Do One Thing",
+          "page": 35,
+          "numbering": "3.2",
+          "children": [
+          ]
+        },
+        {
+          "title": "One Level of Abstraction per Function",
+          "page": 36,
+          "numbering": "3.3",
+          "children": [
+          ]
+        },
+        {
+          "title": "Switch statements",
+          "page": 37,
+          "numbering": "3.4",
+          "children": [
+          ]
+        },
+        {
+          "title": "Use Descriptive Names",
+          "page": 39,
+          "numbering": "3.5",
+          "children": [
+          ]
+        },
+        {
+          "title": "Function Arguments",
+          "page": 40,
+          "numbering": "3.6",
+          "children": [
+          ]
+        },
+        {
+          "title": "Have No Side Effects",
+          "page": 44,
+          "numbering": "3.7",
+          "children": [
+            {
+              "title": "Output Arguments",
+              "page": 45,
+              "numbering": "3.7.1",
+              "children": [
+
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Command Query Separation",
+          "page": 45,
+          "numbering": "3.8",
+          "children": [
+          ]
+        }
+      ]
     },
     {
       "title": "Chapter 4: Comments",
