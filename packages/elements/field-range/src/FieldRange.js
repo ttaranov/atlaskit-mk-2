@@ -24,7 +24,10 @@ const defaultStep = 0.1;
 const dummyOnChangeHandler = () => {};
 
 export default class Slider extends Component<Props, State> {
+  props: Props;
+
   static defaultProps = {
+    value: 0,
     min: 0,
     max: 100,
     step: defaultStep,
@@ -88,8 +91,6 @@ export default class Slider extends Component<Props, State> {
     const { onInputChange } = this;
     element.addEventListener(eventName, onInputChange);
   };
-
-  props: Props;
 
   render() {
     const { min, max, step } = this.props;

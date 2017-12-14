@@ -9,16 +9,19 @@ const Container = styled.div`
 
 type State = {
   onChangeResult: string,
+  rangeValue: number,
 };
 
 export default class BasicExample extends PureComponent<void, State> {
   state = {
     onChangeResult: 'Check & Uncheck to trigger onChange',
+    rangeValue: 50,
   };
 
-  onChange = (value: ?number) => {
+  onChange = (value: any) => {
     this.setState({
       onChangeResult: `onChange called with value: ${value}`,
+      rangeValue: value,
     });
   };
 
@@ -27,7 +30,7 @@ export default class BasicExample extends PureComponent<void, State> {
       <div>
         <Container>
           <FieldRange
-            value={20}
+            value={this.state.rangeValue}
             min={0}
             max={100}
             step={1}
