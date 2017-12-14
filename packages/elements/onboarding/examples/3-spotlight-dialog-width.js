@@ -62,7 +62,7 @@ export default class SpotlightDialogWidthExample extends Component<{}, State> {
   render() {
     const { value } = this.state;
     const deltaButtons = (
-      <ButtonGroup appearance="help">
+      <ButtonGroup>
         <Button onClick={this.decrement}>
           <ArrowDownIcon label="Decrement" />
         </Button>
