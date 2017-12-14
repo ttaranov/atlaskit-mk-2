@@ -183,7 +183,7 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
         rendererContext={rendererContext}
         extensionType="com.atlassian.fabric"
         extensionKey="originalContent"
-        originalContent={originalContent}
+        content={originalContent}
       >
         <p>This is the default content of the extension</p>
       </BodiedExtension>,
