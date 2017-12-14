@@ -22,14 +22,10 @@ const warnIfDeprecatedAppearance = appearance => {
   }
 };
 
-type WithDeprecationWarningsProps = *;
-
 export default function withDeprecationWarnings(
-  WrappedComponent: ComponentType<WithDeprecationWarningsProps>,
-): ComponentType<WithDeprecationWarningsProps> {
-  return class WithDeprecationWarnings extends Component<
-    WithDeprecationWarningsProps,
-  > {
+  WrappedComponent: ComponentType<*>,
+): ComponentType<*> {
+  return class WithDeprecationWarnings extends Component<*> {
     static displayName = `WithDeprecationWarnings(${getComponentName(
       WrappedComponent,
     )})`;
@@ -38,7 +34,7 @@ export default function withDeprecationWarnings(
       warnIfDeprecatedAppearance(this.props.appearance);
     }
 
-    componentWillReceiveProps(newProps: WithDeprecationWarningsProps) {
+    componentWillReceiveProps(newProps: *) {
       if (newProps.appearance !== this.props.appearance) {
         warnIfDeprecatedAppearance(newProps.appearance);
       }
