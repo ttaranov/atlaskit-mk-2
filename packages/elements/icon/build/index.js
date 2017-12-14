@@ -8,7 +8,6 @@ const config = require('./config');
 const cleanSVG = require('./svgo/clean')(config);
 const customiseSVG = require('./svgo/customise')();
 const glyphTemplate = require('./glyph.template');
-const tsTemplate = require('./typescript.template');
 const createIconsDocs = require('./createIconsDocs');
 
 console.log('Processing icon glyphs.');
@@ -71,13 +70,6 @@ fs
               fs.outputFile(
                 path.join(__dirname, config.destDir, `${fileKey}.js`),
                 code,
-              ),
-            )
-            // Write the TypeScript file
-            .then(() =>
-              fs.outputFile(
-                path.join(__dirname, config.destDir, `${fileKey}.d.ts`),
-                tsTemplate,
               ),
             )
             // Return the filename and display name

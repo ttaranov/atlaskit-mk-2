@@ -5,8 +5,6 @@
 .*/website/dist/sandbox/.*
 .*/node_modules/babel-normalize-comments/.*
 .*/packages/elements/icon/es5/.*
-.*/packages/elements/icon/glyph/.*
-.*/packages/elements/icon/utils/.*
 
 [include]
 
