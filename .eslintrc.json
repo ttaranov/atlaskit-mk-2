@@ -11,7 +11,7 @@
       "devDependencies": [
         "**/docs/**/*.js",
         "**/__tests__/*.js",
-        "**/examples/*.js",
+        "**/examples/**/*.js",
         "./projector.js",
         "./resolver.js"
       ]
@@ -31,7 +31,7 @@
 
     "no-mixed-operators": "off",
     "no-plusplus": "off",
-    
+
     "react/sort-comp": "off",
     "react/jsx-filename-extension": "off",
     "react/require-default-props": "off",
