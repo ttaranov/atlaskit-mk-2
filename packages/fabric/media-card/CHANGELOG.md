@@ -1,5 +1,8 @@
 # @atlaskit/media-image
 
+## 23.0.2
+- [patch] Make Card to work with pixel units [dedba4f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dedba4f)
+
 ## 23.0.1
 - [patch] Make Card to work properly with pixel units [69c6443](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69c6443)
 - [patch] Dont use default dimensions for link cards [ae94181](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae94181)
