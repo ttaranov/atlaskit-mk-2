@@ -50,14 +50,6 @@
     babel-runtime "^6.11.6"
     styled-components "^1.4.6"
 
-"@atlaskit/button-group@^1.5.3":
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/@atlaskit/button-group/-/button-group-1.5.4.tgz#cb7883fcfb6697bf0bf828f5c15a51726649c5c8"
-  dependencies:
-    "@atlaskit/util-shared-styles" "^2.0.1"
-    prop-types "^15.5.10"
-    styled-components "^1.3.0"
-
 "@atlaskit/button@^1.0.0", "@atlaskit/button@^1.0.10":
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-1.1.4.tgz#e294fee6dd02c5b05c40fa6db6966a8a3c12ad4a"
@@ -807,13 +799,6 @@
   dependencies:
     babel-runtime "^6.11.6"
     styled-components "^1.3.0"
-
-"@atlaskit/util-shared-styles@^2.0.1":
-  version "2.10.6"
-  resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-2.10.6.tgz#56aa25d59cef0324f653a6e857d512a70be47c65"
-  dependencies:
-    babel-runtime "^6.11.6"
-    styled-components "^1.4.6"
 
 "@atlaskit/util-shared-styles@^2.10.5":
   version "2.10.5"
