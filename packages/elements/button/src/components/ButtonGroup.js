@@ -40,6 +40,4 @@ class ButtonGroup extends Component<ButtonGroupProps> {
   }
 }
 
-export type ButtonGroupType = ButtonGroup;
-
 export default withDeprecationWarnings(ButtonGroup);
