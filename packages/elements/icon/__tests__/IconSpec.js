@@ -14,7 +14,7 @@ const sizeValues = {
   xlarge: '48px',
 };
 
-describe.skip(name, () => {
+describe(name, () => {
   describe('Icon', () => {
     const secretContent = 'secret content';
     const secretWrapper = () => <div>{secretContent}</div>;

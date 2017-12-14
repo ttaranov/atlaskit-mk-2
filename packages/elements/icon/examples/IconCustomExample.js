@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import Icon, { size } from '../src';
+import Icon from '../src';
 
 const customGlyph = () => (
   <svg viewBox="0 0 24 24" focusable="false" role="presentation">
@@ -13,7 +13,7 @@ const customGlyph = () => (
 
 class IconCustomExample extends Component<{}, {}> {
   render() {
-    return <Icon glyph={customGlyph} label="Custom icon" size={size.xlarge} />;
+    return <Icon glyph={customGlyph} label="Custom icon" size="xlarge" />;
   }
 }
 

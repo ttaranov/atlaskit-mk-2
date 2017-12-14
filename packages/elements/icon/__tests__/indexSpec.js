@@ -10,6 +10,7 @@ import { size } from '../src/components/Icon';
 import AtlassianIcon from '../glyph/atlassian';
 import BitbucketIcon from '../glyph/bitbucket';
 import ConfluenceIcon from '../glyph/confluence';
+import components from '../utils/icons';
 
 // List all files in a directory in Node.js recursively in a synchronous fashion
 const walkSync = (dir: string, filelist: string[]) => {
@@ -399,7 +400,7 @@ describe(name, () => {
       expect(span.is('[role="img"]')).toBe(true);
     });
 
-    it.skip('should be possible to create the components', () => {
+    it('should be possible to create the components', () => {
       Object.values(components).forEach(iconData => {
         const Icon = iconData.component;
         const wrapper = shallow(<Icon label="My icon" />);

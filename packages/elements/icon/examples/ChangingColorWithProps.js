@@ -28,7 +28,7 @@ const Paragraph = styled.p`
 
 export default class ChangingColorWithProps extends Component<
   {},
-  { isColorFlipped: boolean, icons: [Component<*>, string][] },
+  { isColorFlipped: boolean, icons: [Class<Component<*>>, string][] },
 > {
   state = {
     isColorFlipped: true,

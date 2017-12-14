@@ -13,7 +13,7 @@ type State = {
 };
 
 class AnimationDemo extends Component<{}, State> {
-  checkbox: HTMLInputElement;
+  checkbox: ?HTMLInputElement;
   timer = 0;
 
   state = {
@@ -28,7 +28,7 @@ class AnimationDemo extends Component<{}, State> {
 
   componentDidMount() {
     this.startAnimating();
-    this.checkbox.checked = true;
+    if (this.checkbox) this.checkbox.checked = true;
   }
 
   componentWillUnmount() {
@@ -63,7 +63,7 @@ class AnimationDemo extends Component<{}, State> {
           type="checkbox"
           id="animate"
           onChange={this.toggleAnimation}
-          ref={elem => {
+          ref={(elem: ?HTMLInputElement) => {
             this.checkbox = elem;
           }}
         />{' '}

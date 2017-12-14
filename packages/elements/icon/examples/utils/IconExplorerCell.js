@@ -6,7 +6,6 @@ import { FieldTextStateless } from '@atlaskit/field-text';
 import Modal from '@atlaskit/modal-dialog';
 import Tooltip from '@atlaskit/tooltip';
 import { colors, gridSize } from '@atlaskit/theme';
-import { size } from '../../src';
 
 const IconExplorerLink = styled.a`
   &,
@@ -34,14 +33,27 @@ const IconModalHeader = styled.h3`
   padding: 20px;
 `;
 
-class IconExplorerCell extends Component<{}, { isModalOpen: boolean }> {
+type Props = {
+  keywords: string[],
+  component: Class<Component<*, *>>,
+  componentName: string,
+  package: string,
+};
+
+class IconExplorerCell extends Component<Props, { isModalOpen: boolean }> {
+  props: Props;
   state = {
     isModalOpen: false,
   };
 
-  setInputRef = ref => {
+  ref: ?FieldTextStateless;
+  input: ?HTMLInputElement;
+  importCodeField: ?HTMLElement;
+
+  setInputRef = (ref: ?FieldTextStateless) => {
     const isSet = Boolean(this.ref);
 
+    console.log(ref);
     this.input = ref ? ref.input : null;
 
     if (this.input && !isSet) {
@@ -82,7 +94,7 @@ class IconExplorerCell extends Component<{}, { isModalOpen: boolean }> {
         onClose={this.closeModal}
         header={() => (
           <IconModalHeader>
-            <Icon label={props.componentName} size={size.medium} />
+            <Icon label={props.componentName} size="medium" />
             {props.componentName}
           </IconModalHeader>
         )}
@@ -99,7 +111,7 @@ class IconExplorerCell extends Component<{}, { isModalOpen: boolean }> {
       >
         {/* eslint-disable jsx-a11y/no-static-element-interactions */}
         <div
-          onClick={() => this.input.select()}
+          onClick={() => this.input && this.input.select()}
           ref={ref => {
             this.importCodeField = ref;
           }}
@@ -123,7 +135,7 @@ class IconExplorerCell extends Component<{}, { isModalOpen: boolean }> {
       <div>
         <Tooltip content={props.componentName}>
           <IconExplorerLink onClick={this.openModal}>
-            <Icon label={props.componentName} size={size.medium} />
+            <Icon label={props.componentName} size="medium" />
           </IconExplorerLink>
         </Tooltip>
         {modal}

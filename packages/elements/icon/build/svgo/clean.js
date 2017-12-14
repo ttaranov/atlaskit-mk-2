@@ -21,7 +21,10 @@ module.exports = (config /*: { maxWidth: number, maxHeight: number }*/) => {
 
   const defaultSVGO = initialiseDefaultSVGO();
 
-  return (filename /*: string*/, rawSVG /*: string*/) =>
+  return (
+    filename /*: string*/,
+    rawSVG /*: string*/,
+  ): Promise<{ info: any, data: any }> =>
     // Run the default optimiser on the SVG
     new Promise(resolve => defaultSVGO.optimize(rawSVG, resolve))
       // Check width and height

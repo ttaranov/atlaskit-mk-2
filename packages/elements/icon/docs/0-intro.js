@@ -23,9 +23,9 @@ export default md`
 
   ${(
     <Example
-      Component={require('../examples/IconAllExample').default}
+      Component={require('../examples/01-icon-explorer').default}
       title="Basic"
-      source={require('!!raw-loader!../examples/IconAllExample')}
+      source={require('!!raw-loader!../examples/01-icon-explorer')}
     />
   )}
 

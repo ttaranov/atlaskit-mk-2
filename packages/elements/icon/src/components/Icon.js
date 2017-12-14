@@ -78,7 +78,7 @@ class Icon extends Component<Props, {}> {
    * using placeholders as we do not have to rely on regular expressions to find specific element
    * to replace.
    */
-  static insertDynamicGradientID(svgStr) {
+  static insertDynamicGradientID(svgStr: string) {
     const id = uuid();
 
     const replacedSvgStr = svgStr

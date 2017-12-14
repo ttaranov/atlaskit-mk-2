@@ -15,8 +15,6 @@ import ArrowLeftIcon from '../glyph/arrow-left';
 import ArrowRightIcon from '../glyph/arrow-right';
 import ArrowUpIcon from '../glyph/arrow-up';
 
-import { size } from '../src';
-
 const IconRow = styled.div`
   display: flex;
   flex-direction: row;
@@ -49,17 +47,19 @@ const Button = props => (
   </div>
 );
 
+const sizes = ['small', 'medium', 'large', 'xlarge'];
+
 type sizeOpts = 'small' | 'medium' | 'large' | 'xlarge';
 
 class IconSizeExample extends Component<{}, { size: sizeOpts }> {
   state = {
-    size: size.medium,
+    size: 'medium',
   };
 
   updateSize = (s: sizeOpts) => this.setState({ size: s });
 
   renderButtons = () =>
-    Object.values(size).map(s => (
+    sizes.map(s => (
       <Button
         isSelected={s === this.state.size}
         key={s}
@@ -75,6 +75,7 @@ class IconSizeExample extends Component<{}, { size: sizeOpts }> {
         <ButtonGroup>{this.renderButtons()}</ButtonGroup>
         <IconRow>
           {demoIcons.map((Icon, i) => (
+            // eslint-disable-next-line react/no-array-index-key
             <IconWrapper key={i}>
               <Icon label={`Icon ${i}`} size={this.state.size} />
             </IconWrapper>

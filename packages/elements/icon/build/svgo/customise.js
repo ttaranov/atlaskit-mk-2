@@ -33,7 +33,7 @@ module.exports = () => {
     });
   };
 
-  return (filename /*: string*/, data /*: string*/) => {
+  return (filename /*: string*/, data /*: string*/): Promise<*> => {
     const customSVGO = initialiseCustomSVGO(filename);
 
     // Run the default optimiser on the SVG

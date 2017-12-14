@@ -17,7 +17,7 @@
     "@atlaskit/icon": "^10.3.1",
     "@atlaskit/layer": "^2.5.4",
     "@atlaskit/layer-manager": "^2.5.6",
-    "@atlaskit/modal-dialog": "^3.2.1",
+    "@atlaskit/modal-dialog": "^3.2.2",
     "@atlaskit/theme": "^2.2.1",
     "prop-types": "^15.5.10",
     "react-lorem-component": "^0.12.2",

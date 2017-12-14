@@ -2,7 +2,7 @@
 const prettier = require('prettier');
 const synonyms = require('../utils/synonyms');
 
-module.exports = icons =>
+module.exports = (icons: { fileKey: string, displayName: string }[]) =>
   prettier.format(
     `
 /* eslint-disable global-require */
