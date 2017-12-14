@@ -38,7 +38,7 @@
     "@atlaskit/code": "^2.1.9",
     "@atlaskit/css-reset": "^1.1.5",
     "@atlaskit/dynamic-table": "^6.0.2",
-    "@atlaskit/field-text": "^4.0.0",
+    "@atlaskit/field-text": "^4.1.2",
     "@atlaskit/icon": "^10.3.1",
     "@atlaskit/layer-manager": "^2.5.6",
     "@atlaskit/logo": "^6.0.9",
