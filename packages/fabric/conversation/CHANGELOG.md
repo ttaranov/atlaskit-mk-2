@@ -1,5 +1,13 @@
 # @atlaskit/conversation
 
+## 3.0.4
+
+## 3.0.3
+
+## 3.0.2
+
+## 3.0.1
+
 ## 3.0.0
 - [major] Changing the API to match the service [b308326](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b308326)
 

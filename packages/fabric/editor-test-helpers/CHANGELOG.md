@@ -1,5 +1,11 @@
 # @atlaskit/editor-test-helpers
 
+## 1.2.9
+
+## 1.2.8
+
+## 1.2.7
+
 ## 1.2.6
 
 

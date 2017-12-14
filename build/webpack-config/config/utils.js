@@ -6,7 +6,7 @@ function createGlob(glob /*: string */) /*: Array<string> */ {
     `${glob}/docs/**/*.+(js|ts|tsx)`,
     `${glob}/package.json`,
     `${glob}/CHANGELOG.md`,
-    `${glob}/examples/**/*.+(js|ts|tsx)`,
+    `${glob}/examples/*.+(js|ts|tsx)`,
   ];
 }
 

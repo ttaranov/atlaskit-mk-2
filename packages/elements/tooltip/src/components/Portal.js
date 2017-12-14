@@ -1,7 +1,7 @@
 // @flow
 
 import { Children, Component, type Element } from 'react';
-import { render } from 'react-dom';
+import { render, unmountComponentAtNode } from 'react-dom';
 
 type Props = {
   children: Element<*>,
@@ -25,8 +25,11 @@ export default class Portal extends Component<Props> {
     render(Children.only(children), this.portalElement);
   }
   componentWillUnmount() {
-    if (document.body) {
-      document.body.removeChild(this.portalElement);
+    const target = document.body;
+    const portal = this.portalElement;
+    if (target && portal) {
+      unmountComponentAtNode(portal);
+      target.removeChild(portal);
     }
   }
   render() {
