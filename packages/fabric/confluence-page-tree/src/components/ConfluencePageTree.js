@@ -19,61 +19,46 @@ type Props = {
 };
 
 type State = {
-  isLoading: boolean,
-  errorType?: 'error' | 'noaccess' | 'none' | null,
+  errorState?: 'error' | 'noaccess' | 'empty' | null,
 };
 
 export default class ConfluencePageTree extends Component<Props, State> {
   state = {
-    isLoading: true,
-    errorType: null,
+    errorState: null,
   };
 
-  data = null;
-
-  componentDidMount() {
-    const { contentId } = this.props;
-
-    getChildPageDetails(contentId)
-      .then(data => {
-        this.data = data;
-
-        this.data.length === 0
-          ? this.setState(() => ({
-              isLoading: false,
-              errorType: 'none',
-            }))
-          : this.setState({
-              isLoading: false,
-              errorType: null,
-            });
-      })
-      .catch(() => {
-        this.setState({
-          isLoading: false,
-          errorType: 'error',
-        });
-      });
-  }
-
   render() {
-    const { cloudId } = this.props;
-    const { isLoading, errorType } = this.state;
+    const { cloudId, contentId } = this.props;
+    const { errorState } = this.state;
 
-    return isLoading ? null : (
+    return (
       <TreeTable>
         <HeadersRow>
           <Header width={'30%'}>{getI18n().tableHeaderTitle}</Header>
           <Header width={'30%'}>{getI18n().tableHeaderContributors}</Header>
           <Header width={'30%'}>{getI18n().tableHeaderLastModified}</Header>
         </HeadersRow>
-        {errorType ? (
-          <ErrorTree type={errorType} />
+        {errorState ? (
+          <ErrorTree type={errorState} />
         ) : (
           <TreeRows
-            data={({ id = this.props.contentId } = {}) =>
-              getChildPageDetails(id)
-            }
+            data={({ id = contentId } = {}) => {
+              return contentId === id
+                ? getChildPageDetails(id)
+                    .then(result => {
+                      let newErrorState;
+
+                      result.length === 0
+                        ? (newErrorState = 'empty')
+                        : (newErrorState = null);
+                      this.setState({ errorState: newErrorState });
+                      return result;
+                    })
+                    .catch(() => {
+                      this.setState({ errorState: 'error' });
+                    })
+                : getChildPageDetails(id);
+            }}
             render={({
               id,
               title,

@@ -9,7 +9,7 @@ const i18n = {
       description:
         "You don't have access to these pages. Please speak to your site admin for help.",
     },
-    none: {
+    empty: {
       title: "There's nothing here but potential",
       description:
         'Create some meeting notes, product requirements, decisions, or other content to see this space fill up.',

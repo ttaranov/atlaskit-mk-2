@@ -7,7 +7,7 @@ import emptyImg from '../assets/empty.png';
 import errorImg from '../assets/error.png';
 
 type ErrorTreeProps = {
-  type?: 'error' | 'noaccess' | 'none',
+  type?: 'error' | 'noaccess' | 'empty',
   readOnly?: boolean,
 };
 
@@ -23,7 +23,7 @@ const ErrorTree = ({ type, readOnly }: ErrorTreeProps) => {
   const imgMap = {
     error: errorImg,
     noaccess: errorImg,
-    none: emptyImg,
+    empty: emptyImg,
   };
 
   return (
@@ -31,7 +31,7 @@ const ErrorTree = ({ type, readOnly }: ErrorTreeProps) => {
       <img src={imgMap[type]} />
       <h3>{getErrorTitle()}</h3>
       <DescriptionContainer>{getErrorDescription()}</DescriptionContainer>
-      {type === 'none' ? (
+      {type === 'empty' ? (
         <Button appearance="primary" isDisabled={readOnly}>
           {getI18n().create}
         </Button>
