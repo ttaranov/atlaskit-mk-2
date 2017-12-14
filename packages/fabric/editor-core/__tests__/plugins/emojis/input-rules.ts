@@ -15,6 +15,10 @@ import { defaultSchema } from '@atlaskit/editor-test-helpers';
 
 describe('emojis - input rules', () => {
   const providerFactory = new ProviderFactory();
+  providerFactory.setProvider(
+    'emojiProvider',
+    Promise.resolve({ unsubscribe() {} }),
+  );
   const editor = (doc: any) =>
     makeEditor<EmojiState>({
       doc,
@@ -57,8 +61,7 @@ describe('emojis - input rules', () => {
     assert(':', true, p(hardBreak(), '{<>}'));
   });
 
-  // TODO: https://product-fabric.atlassian.net/browse/ED-3268
-  it.skip('should replace ":" if there is another emoji node in front of it', () => {
+  it('should replace ":" if there is another emoji node in front of it', () => {
     assert(':', true, p(emoji({ shortName: ':smiley:' }), '{<>}'));
   });
 

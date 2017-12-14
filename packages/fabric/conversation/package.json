@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/conversation",
-  "version": "2.0.6",
+  "version": "3.0.4",
   "config": {
     "access": "public"
   },
@@ -23,10 +23,10 @@
     "react-dom": "^15.6.1"
   },
   "dependencies": {
-    "@atlaskit/avatar": "^8.3.6",
+    "@atlaskit/avatar": "^8.3.9",
     "@atlaskit/comment": "^2.6.7",
-    "@atlaskit/editor-core": "^60.14.0",
-    "@atlaskit/renderer": "^10.0.0",
+    "@atlaskit/editor-core": "^60.14.9",
+    "@atlaskit/renderer": "^10.0.7",
     "date-fns": "^1.29.0",
     "prop-types": "^15.5.10",
     "styled-components": "^1.4.6",

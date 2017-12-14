@@ -856,25 +856,6 @@ describe('hyperlink', () => {
         editorView.destroy();
       });
 
-      // Sending Backspace with a empty selection doesn't work
-      it.skip('removes a character from the end of a link', () => {
-        const { editorView } = editor(
-          doc(
-            paragraph(
-              link({ href: 'http://example.com' })('http://example.com{<>}'),
-            ),
-          ),
-        );
-        sendKeyToPm(editorView, 'Backspace');
-
-        expect(editorView.state.doc).toEqualDocument(
-          doc(
-            paragraph(link({ href: 'http://example.co' })('http://example.co')),
-          ),
-        );
-        editorView.destroy();
-      });
-
       it('replaces a character inside a link', () => {
         const { editorView } = editor(
           doc(

@@ -52,6 +52,7 @@ export default function Example() {
         />
         <ToolsDrawer
           renderEditor={({
+            disabled,
             mentionProvider,
             emojiProvider,
             mediaProvider,
@@ -60,6 +61,7 @@ export default function Example() {
             <Editor
               appearance="chromeless"
               analyticsHandler={analyticsHandler}
+              disabled={disabled}
               shouldFocus={true}
               allowTextFormatting={true}
               allowTasksAndDecisions={true}

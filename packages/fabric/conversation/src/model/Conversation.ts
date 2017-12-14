@@ -1,7 +1,7 @@
 import { Comment } from './Comment';
 export interface Conversation {
   id: string;
-  externalId: string;
+  containerId: string;
   children?: Comment[];
   meta?: {
     [key: string]: any;

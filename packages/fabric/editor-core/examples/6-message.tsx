@@ -16,6 +16,7 @@ export default function Example() {
     <ToolsDrawer
       // tslint:disable-next-line:jsx-no-lambda
       renderEditor={({
+        disabled,
         mentionProvider,
         emojiProvider,
         mediaProvider,
@@ -26,6 +27,7 @@ export default function Example() {
             <EditorWithAnalytics
               {...getPropsPreset('message')}
               analyticsHandler={analyticsHandler}
+              disabled={disabled}
               maxHeight={305}
               mentionProvider={mentionProvider}
               emojiProvider={emojiProvider}

@@ -9,6 +9,7 @@ import {
   strong,
   code_block,
   sendKeyToPm,
+  dispatchPasteEvent,
 } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../src/analytics';
@@ -202,6 +203,26 @@ describe('hyperlink', () => {
 
       expect(editorView.state.doc).toEqualDocument(
         doc(p(link({ href: 'http://www.atlassian.com' })('test'))),
+      );
+    });
+
+    it('does convert to hyperlink if markdown formatting is used with link pasting', () => {
+      const { editorView, sel } = editor(doc(p('[test]({<>}')));
+      dispatchPasteEvent(editorView, { plain: 'http://www.atlassian.com' });
+      insertText(editorView, ')', sel + 'http://www.atlassian.com'.length);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(link({ href: 'http://www.atlassian.com' })('test'))),
+      );
+    });
+
+    it('does convert to hyperlink if markdown formatting is used with pasting of link with spaces', () => {
+      const { editorView, sel } = editor(doc(p('[test]({<>}')));
+      dispatchPasteEvent(editorView, { plain: 'http://www.atla%20ssian.com' });
+      insertText(editorView, ')', sel + 'http://www.atla%20ssian.com'.length);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(link({ href: 'http://www.atla%20ssian.com' })('test'))),
       );
     });
 

@@ -76,9 +76,8 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
         rendererContext={rendererContext}
         extensionType="com.atlassian.fabric"
         extensionKey="default"
-      >
-        <span>This is the default content of the extension</span>
-      </InlineExtension>,
+        text="This is the default text"
+      />,
     );
 
     expect(
@@ -86,7 +85,7 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
         .find('span')
         .first()
         .text(),
-    ).to.equal('This is the default content of the extension');
+    ).to.equal('This is the default text');
     extension.unmount();
   });
 
@@ -138,9 +137,7 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
         rendererContext={rendererContext}
         extensionType="com.atlassian.fabric"
         extensionKey="error"
-      >
-        <span>This is the default content of the extension</span>
-      </InlineExtension>,
+      />,
     );
 
     expect(
@@ -148,7 +145,7 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
         .find('span')
         .first()
         .text(),
-    ).to.equal('This is the default content of the extension');
+    ).to.equal('inlineExtension');
     extension.unmount();
   });
 });

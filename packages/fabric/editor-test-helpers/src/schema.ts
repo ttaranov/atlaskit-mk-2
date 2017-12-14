@@ -32,7 +32,7 @@ export default createSchema({
     'confluenceUnsupportedBlock',
     'confluenceUnsupportedInline',
     'confluenceJiraIssue',
-    'singleImage',
+    'mediaSingle',
     'plain',
     'table',
     'tableCell',

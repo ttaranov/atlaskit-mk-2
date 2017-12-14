@@ -1,6 +1,4 @@
 import {
-  sendKeyToPm,
-  insertText,
   doc,
   code,
   textColor,
@@ -32,16 +30,6 @@ describe('text-color', () => {
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(pluginState);
-  });
-
-  // Now this works because of `handleKeyDown` & `handleTextInput` inside `text-format` plugin
-  it.skip('should be able to remove mark when its the first node of the paragraph', () => {
-    const { editorView } = editor(
-      doc(p(createTextColor(testColor1)('{<}text{>}'))),
-    );
-    sendKeyToPm(editorView, 'Backspace');
-    insertText(editorView, 'text', editorView.state.selection.from);
-    expect(editorView.state.doc).toEqualDocument(doc(p('text')));
   });
 
   it('should be able to replace textColor on a character', () => {

@@ -2,14 +2,12 @@ import { Comment, Conversation } from '../model';
 
 export interface ConversationResourceConfig {
   url: string;
-  containerId: string;
-  externalId: string;
 }
 
 export interface ResourceProvider {
-  getConversations(): Promise<any>;
+  getConversations(containerId: string): Promise<any>;
   getConversation(id: string): Promise<Conversation>;
-  create(meta: any): Promise<Conversation>;
+  create(containerId: string, meta: any): Promise<Conversation>;
   addComment(
     conversationId: string,
     parentId: string,
@@ -52,12 +50,10 @@ export class ConversationResource implements ResourceProvider {
   }
 
   /**
-   * Retrieve the IDs (and meta-data) for all conversations associated with the external ID.
+   * Retrieve the IDs (and meta-data) for all conversations associated with the container ID.
    */
-  async getConversations() {
-    const { externalId } = this.config;
-
-    return await this.makeRequest(`/conversation?externalId=${externalId}`, {
+  async getConversations(containerId: string) {
+    return await this.makeRequest(`/conversation?containerId=${containerId}`, {
       method: 'GET',
     });
   }
@@ -73,14 +69,12 @@ export class ConversationResource implements ResourceProvider {
 
   /**
    * Creates a new Conversation and associates it with the
-   * externalId provided.
+   * containerId provided.
    */
-  async create(meta: any): Promise<Conversation> {
-    const { containerId, externalId } = this.config;
-
+  async create(containerId: string, meta: any): Promise<Conversation> {
     return await this.makeRequest('/conversation', {
       method: 'POST',
-      body: JSON.stringify({ containerId, externalId, meta }),
+      body: JSON.stringify({ containerId, meta }),
     });
   }
 
@@ -126,8 +120,6 @@ export class ConversationResource implements ResourceProvider {
     commentId: string,
     document: any,
   ): Promise<Comment> {
-    const { externalId, containerId } = this.config;
-
     const result = await this.makeRequest(
       `/conversation/${conversationId}/comment/${commentId}`,
       {
@@ -135,8 +127,6 @@ export class ConversationResource implements ResourceProvider {
         body: JSON.stringify({
           id: commentId,
           document,
-          externalId,
-          containerId,
         }),
       },
     );
