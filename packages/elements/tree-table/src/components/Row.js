@@ -10,7 +10,13 @@ type Props = {
   render: Function,
 };
 
-export default class Row extends PureComponent<Props> {
+type State = {
+  isExpanded: boolean,
+  isLoading: boolean,
+  childrenData?: Array<Object>,
+};
+
+export default class Row extends PureComponent<Props, State> {
   state = {
     isExpanded: false,
     isLoading: false,

@@ -11,18 +11,24 @@ type Props = {
   render?: Function,
 };
 
-export default class RowChildren extends PureComponent<Props> {
-  state = {
-    isLoaderShown: this.isLoadingData(this.props && this.props.childrenData),
-  };
+type State = {
+  isLoaderShown?: boolean,
+};
 
+export default class RowChildren extends PureComponent<Props, State> {
   constructor() {
     super();
     this.handleLoadingFinished = this.handleLoadingFinished.bind(this);
   }
 
+  componentWillMount() {
+    this.setState({
+      isLoaderShown: this.isLoadingData(this.props.childrenData),
+    });
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (nextProps.childrenData !== this.props.childrenData) {
+    if (nextProps.childrenData !== this.props && this.props.childrenData) {
       if (this.isLoadingData(nextProps.childrenData)) {
         this.setState({ isLoaderShown: true });
       }
