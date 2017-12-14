@@ -5,7 +5,7 @@ import {
   InputRule,
 } from 'prosemirror-inputrules';
 import { Schema, NodeType } from 'prosemirror-model';
-import { Plugin, Transaction } from 'prosemirror-state';
+import { Plugin, Transaction, TextSelection } from 'prosemirror-state';
 import { analyticsService, trackAndInvoke } from '../../analytics';
 import {
   isConvertableToCodeBlock,
@@ -16,7 +16,7 @@ import {
   defaultInputRuleHandler,
   leafNodeReplacementCharacter,
 } from '../utils';
-import { insertBlock } from './utils';
+import { findWrapping } from 'prosemirror-transform';
 
 export function headingRule(nodeType: NodeType, maxLevel: number) {
   return textblockTypeInputRule(
@@ -55,16 +55,23 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
       createInputRule(
         new RegExp(`${leafNodeReplacementCharacter}(#{1,5})\\s$`),
         (state, match, start, end): Transaction | undefined => {
-          const level = match[1].length;
-          return insertBlock(
-            state,
-            schema.nodes.heading,
-            `heading${level}`,
-            start,
-            end,
-            level,
-            { level },
-          );
+          const { tr } = state;
+          if (tr.doc.resolve(start).nodeAfter!.type.name !== 'hardBreak') {
+            return;
+          }
+          if (!findWrapping(tr.doc.resolve(start + 1).blockRange()!, schema.nodes.heading)) {
+            return;
+          }
+          return tr
+            .replaceRangeWith(
+              start,
+              end + 1,
+              schema.nodes.heading.createAndFill()!,
+            )
+            .setSelection(
+              TextSelection.near(tr.doc.resolve(end))
+            )
+            .scrollIntoView();
         },
         true,
       ),
@@ -86,14 +93,23 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
       createInputRule(
         new RegExp(`${leafNodeReplacementCharacter}\\s*>\\s$`),
         (state, match, start, end): Transaction | undefined => {
-          return insertBlock(
-            state,
-            schema.nodes.blockquote,
-            'blockquote',
-            start,
-            end,
-            1,
-          );
+          const { tr } = state;
+          if (tr.doc.resolve(start).nodeAfter!.type.name !== 'hardBreak') {
+            return;
+          }
+          if (!findWrapping(tr.doc.resolve(start + 1).blockRange()!, schema.nodes.blockquote)) {
+            return;
+          }
+          return tr
+            .replaceRangeWith(
+              start,
+              end + 1,
+              schema.nodes.blockquote.createAndFill()!,
+            )
+            .setSelection(
+              TextSelection.near(tr.doc.resolve(end))
+            )
+            .scrollIntoView();
         },
         true,
       ),
@@ -127,23 +143,26 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
     );
     rules.push(
       createInputRule(
-        new RegExp(
-          `((${leafNodeReplacementCharacter}\`{3,})|(\\s\`{3,}))(\\S*)\\s$`,
-        ),
+        new RegExp(`(${leafNodeReplacementCharacter}\\s*\`{3,})(\\S+)\\s$`),
         (state, match, start, end): Transaction | undefined => {
-          const attributes: any = {};
-          if (match[4]) {
-            attributes.language = match[4];
+          const { tr } = state;
+          if (tr.doc.resolve(start).nodeAfter!.type.name !== 'hardBreak') {
+            return;
           }
-          return insertBlock(
-            state,
-            schema.nodes.codeBlock,
-            'codeblock',
-            start,
-            end,
-            match[0].length - 2,
-            attributes,
-          );
+          if (!findWrapping(tr.doc.resolve(start + 1).blockRange()!, schema.nodes.codeBlock)) {
+            return;
+          }
+          const attributes = match[2] ? { language: match[2] } : {};
+          return tr
+            .replaceRangeWith(
+              start,
+              end + 1,
+              schema.nodes.codeBlock.createAndFill(attributes)!,
+            )
+            .setSelection(
+              TextSelection.create(tr.doc, end + 1)
+            )
+            .scrollIntoView();
         },
         true,
       ),

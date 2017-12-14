@@ -4,12 +4,13 @@ import {
   wrappingInputRule,
 } from 'prosemirror-inputrules';
 import { NodeType, Schema } from 'prosemirror-model';
-import { Plugin, Transaction, EditorState } from 'prosemirror-state';
-import { analyticsService, trackAndInvoke } from '../../analytics';
+import { Plugin, Transaction, TextSelection } from 'prosemirror-state';
+import { trackAndInvoke } from '../../analytics';
 import {
   createInputRule as defaultCreateInputRule,
   defaultInputRuleHandler,
 } from '../utils';
+import { findWrapping } from 'prosemirror-transform';
 
 export function createInputRule(regexp: RegExp, nodeType: NodeType): InputRule {
   return wrappingInputRule(
@@ -19,25 +20,6 @@ export function createInputRule(regexp: RegExp, nodeType: NodeType): InputRule {
     (_, node) => node.type === nodeType,
   );
 }
-
-export const insertList = (
-  state: EditorState,
-  listType: NodeType,
-  listTypeName: string,
-  start: number,
-  end: number,
-  matchSize: number,
-): Transaction => {
-  analyticsService.trackEvent(
-    `atlassian.editor.format.list.${listTypeName}.autoformatting`,
-  );
-  const { listItem } = state.schema.nodes;
-  let tr = state.tr.delete(start, end).split(start);
-  const position = tr.doc.resolve(start + 2);
-  let range = position.blockRange(position)!;
-  tr = tr.wrap(range, [{ type: listType }, { type: listItem }]);
-  return tr;
-};
 
 // TODO: Fix types (ED-2987)
 export default function inputRulePlugin(schema: Schema): Plugin | undefined {
@@ -56,16 +38,28 @@ export default function inputRulePlugin(schema: Schema): Plugin | undefined {
     rules.push(rule);
     rules.push(
       defaultCreateInputRule(
-        /\ufffc\s*([\*\-]) $/,
+        /\ufffc(\s*[\*\-])\s$/gm,
         (state, match, start, end): Transaction | undefined => {
-          return insertList(
-            state,
-            schema.nodes.bulletList,
-            'bullet',
-            start,
-            end,
-            1,
-          );
+          const { tr } = state;
+          if (tr.doc.resolve(start).nodeAfter!.type.name !== 'hardBreak') {
+            return;
+          }
+          if (
+            !findWrapping(
+              tr.doc.resolve(start + 1).blockRange()!,
+              schema.nodes.bulletList,
+            )
+          ) {
+            return;
+          }
+          return tr
+            .replaceRangeWith(
+              start,
+              end + 1,
+              schema.nodes.bulletList.createAndFill()!,
+            )
+            .setSelection(TextSelection.near(tr.doc.resolve(end)))
+            .scrollIntoView();
         },
         true,
       ),
@@ -88,16 +82,28 @@ export default function inputRulePlugin(schema: Schema): Plugin | undefined {
     rules.push(rule);
     rules.push(
       defaultCreateInputRule(
-        /\ufffc(\d+)[\.\)] $/,
+        /\ufffc(\d+\.)\s$/gm,
         (state, match, start, end): Transaction | undefined => {
-          return insertList(
-            state,
-            schema.nodes.orderedList,
-            'numbered',
-            start,
-            end,
-            2,
-          );
+          const { tr } = state;
+          if (tr.doc.resolve(start).nodeAfter!.type.name !== 'hardBreak') {
+            return;
+          }
+          if (
+            !findWrapping(
+              tr.doc.resolve(start + 1).blockRange()!,
+              schema.nodes.orderedList,
+            )
+          ) {
+            return;
+          }
+          return tr
+            .replaceRangeWith(
+              start,
+              end + 1,
+              schema.nodes.orderedList.createAndFill()!,
+            )
+            .setSelection(TextSelection.near(tr.doc.resolve(end)))
+            .scrollIntoView();
         },
         true,
       ),
