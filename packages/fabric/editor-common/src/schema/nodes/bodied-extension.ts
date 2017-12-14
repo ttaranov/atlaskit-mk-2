@@ -31,6 +31,7 @@ export const bodiedExtension: NodeSpec = {
     extensionKey: { default: '' },
     parameters: { default: null },
     text: { default: null },
+    originalContent: { default: null }, // The original Atlassian Document content
   },
   parseDOM: [
     {
