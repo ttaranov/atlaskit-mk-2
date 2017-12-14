@@ -41,7 +41,7 @@
     "release": "                             projector ./projector release",
     "build:editor-common:json-schema": "     cd packages/fabric/editor-common && yarn run build:json-schema && echo 'Done.'",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
     "build:media-editor:copy-binaries": "    cd packages/fabric/media-editor && cp -r src/engine/core/binaries dist/es5/engine/core && cp -r src/engine/core/binaries dist/es2015/engine/core"
   },
   "bolt": {
