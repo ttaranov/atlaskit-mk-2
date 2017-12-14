@@ -145,10 +145,14 @@ export default class Editor extends React.Component<EditorProps, State> {
       presenceProvider,
       macroProvider,
       legacyImageUploadProvider,
+      media,
     } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
-    this.providerFactory.setProvider('mediaProvider', mediaProvider);
+    this.providerFactory.setProvider(
+      'mediaProvider',
+      media ? media.provider : mediaProvider,
+    );
     this.providerFactory.setProvider(
       'imageUploadProvider',
       legacyImageUploadProvider,

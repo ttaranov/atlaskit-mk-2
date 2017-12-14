@@ -1,4 +1,5 @@
 import * as React from 'react';
+import styled from 'styled-components';
 import {
   Card,
   CardView,
@@ -6,7 +7,6 @@ import {
   CardDimensions,
   Identifier,
 } from '@atlaskit/media-card';
-
 import {
   MediaItemType,
   ContextConfig,
@@ -20,11 +20,13 @@ import {
   MediaState,
   ImageResizeMode,
 } from '@atlaskit/media-core';
-
 import {
   MediaAttributes,
   CardEventClickHandler,
 } from '@atlaskit/editor-common';
+
+import { isImage } from '../../utils';
+import { MediaSingleDimensionHelper } from '../../nodeviews/ui/mediaSingle/styled';
 
 export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
 
@@ -40,6 +42,7 @@ export interface Props extends MediaAttributes {
   resizeMode?: ImageResizeMode;
   appearance?: Appearance;
   stateManagerFallback?: MediaStateManager;
+  isMediaSingle?: boolean;
 }
 
 export interface State extends MediaState {
@@ -47,6 +50,12 @@ export interface State extends MediaState {
   viewContext?: Context;
   linkCreateContext?: Context;
 }
+
+const Wrapper = styled.div`
+  height: 100%;
+  ${MediaSingleDimensionHelper};
+`;
+Wrapper.displayName = 'TemporaryMediaWrapper';
 
 /**
  * Map media state status into CardView processing status
@@ -60,7 +69,7 @@ function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
       return 'complete';
 
     case 'processing':
-      return 'processing';
+      return 'uploading';
 
     case 'uploading':
       return 'uploading';
@@ -75,14 +84,14 @@ function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
 export default class MediaComponent extends React.PureComponent<Props, State> {
   private destroyed = false;
 
+  static defaultProps = {
+    isMediaSingle: false,
+  };
+
   state: State = {
     id: '',
     status: 'unknown',
   };
-
-  constructor(props: Props) {
-    super(props);
-  }
 
   componentWillMount() {
     const { mediaProvider } = this.props;
@@ -92,7 +101,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
   }
 
-  public componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
     const { mediaProvider } = nextProps;
 
     if (this.props.mediaProvider !== mediaProvider) {
@@ -104,7 +113,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
   }
 
-  public componentWillUnmount() {
+  componentWillUnmount() {
     this.destroyed = true;
 
     const { id } = this.props;
@@ -236,9 +245,8 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private renderTemporaryFile() {
-    const { state } = this;
-    const { thumbnail, fileName, fileSize, fileType } = state;
-    const { onDelete } = this.props;
+    const { thumbnail, fileName, fileSize, fileMimeType, status } = this.state;
+    const { onDelete, isMediaSingle } = this.props;
 
     // Cache the data url for thumbnail, so it's not regenerated on each re-render (prevents flicker)
     let dataURI: string | undefined;
@@ -247,20 +255,19 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     // Make sure that we always display progress bar when the file is uploading (prevents flicker)
-    let progress = state.progress;
-    if (!progress && state.status === 'uploading') {
+    let { progress } = this.state;
+    if (!progress && status === 'uploading') {
       progress = 0.0;
     }
+
+    const isImageFile = isImage(fileMimeType);
 
     // Construct file details object
     const fileDetails = {
       name: fileName,
       size: fileSize,
-      mimeType: fileType,
-      mediaType:
-        thumbnail || (fileType && fileType.indexOf('image/') > -1)
-          ? 'image'
-          : 'unknown',
+      mimeType: fileMimeType,
+      mediaType: thumbnail || isImageFile ? 'image' : 'unknown',
     } as FileDetails;
 
     const otherProps: any = {};
@@ -268,10 +275,18 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       otherProps.actions = [CardDelete(onDelete)];
     }
 
-    return (
+    if (isMediaSingle) {
+      otherProps.dimensions = { width: '100%', height: '100%' };
+    } else {
+      // Without this initial render will have a 0x0 item
+      otherProps.dimensions = { width: FILE_WIDTH, height: MEDIA_HEIGHT };
+      otherProps.appearance = 'image';
+    }
+
+    const element = (
       <CardView
         // CardViewProps
-        status={mapMediaStatusIntoCardStatus(state)}
+        status={mapMediaStatusIntoCardStatus(this.state)}
         mediaItemType="file"
         metadata={fileDetails}
         // FileCardProps
@@ -281,6 +296,18 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         {...otherProps}
       />
     );
+
+    if (isMediaSingle && thumbnail && thumbnail.width && thumbnail.height) {
+      const { width, height } = thumbnail;
+      // Wrap to create a container so that we can use 100% width & height in media-card
+      return (
+        <Wrapper height={height} width={width} layout="center">
+          {element}
+        </Wrapper>
+      );
+    } else {
+      return element;
+    }
   }
 
   private handleMediaStateChange = (mediaState: MediaState) => {
@@ -288,11 +315,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       return;
     }
 
-    const newState = {
-      ...mediaState,
-    };
-
-    this.setState(newState);
+    this.setState({ ...mediaState });
   };
 
   private handleMediaProvider = async (mediaProvider: MediaProvider) => {

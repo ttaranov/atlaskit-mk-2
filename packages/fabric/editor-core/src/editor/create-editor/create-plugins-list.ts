@@ -35,7 +35,13 @@ import {
  * Returns list of plugins that are absolutely necessary for editor to work
  */
 export function getDefaultPluginsList(): EditorPlugin[] {
-  return [pastePlugin, basePlugin, blockTypePlugin, placeholderPlugin, clearMarksOnChangeToEmptyDocumentPlugin];
+  return [
+    pastePlugin,
+    basePlugin,
+    blockTypePlugin,
+    placeholderPlugin,
+    clearMarksOnChangeToEmptyDocumentPlugin,
+  ];
 }
 
 /**
@@ -66,8 +72,8 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(rulePlugin);
   }
 
-  if (props.mediaProvider) {
-    plugins.push(mediaPlugin);
+  if (props.media || props.mediaProvider) {
+    plugins.push(mediaPlugin(props.media));
   }
 
   if (props.allowCodeBlocks) {
