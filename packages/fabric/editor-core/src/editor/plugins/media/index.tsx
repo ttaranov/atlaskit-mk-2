@@ -1,16 +1,26 @@
 import * as React from 'react';
-import { media, mediaGroup } from '@atlaskit/editor-common';
+import { media, mediaGroup, mediaSingle } from '@atlaskit/editor-common';
+import { MediaProvider } from '@atlaskit/media-core';
 import { EditorPlugin } from '../../types';
 import { stateKey as pluginKey, createPlugin } from '../../../plugins/media';
 import keymapPlugin from '../../../plugins/media/keymap';
 import ToolbarMedia from '../../../ui/ToolbarMedia';
 
-const mediaPlugin: EditorPlugin = {
+export interface MediaOptions {
+  provider: Promise<MediaProvider>;
+  allowMediaSingle?: boolean;
+}
+
+const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
   nodes() {
     return [
       { name: 'mediaGroup', node: mediaGroup, rank: 1700 },
+      { name: 'mediaSingle', node: mediaSingle, rank: 1750 },
       { name: 'media', node: media, rank: 1800 },
-    ];
+    ].filter(
+      node =>
+        node.name !== 'mediaSingle' || (options && options.allowMediaSingle),
+    );
   },
 
   pmPlugins() {
@@ -73,6 +83,6 @@ const mediaPlugin: EditorPlugin = {
       />
     );
   },
-};
+});
 
 export default mediaPlugin;

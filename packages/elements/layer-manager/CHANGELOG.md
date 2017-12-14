@@ -1,5 +1,8 @@
 # @atlaskit/layer-manager
 
+## 2.5.5
+- [patch] AK-4064 ensure unmountComponentAtNode is called for components rendered via ReactDOM.render [e3153c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3153c3)
+
 ## 2.5.4
 
 ## 2.5.3

@@ -10,8 +10,8 @@ export interface Props {
   rendererContext: RendererContext;
   extensionType: string;
   extensionKey: string;
+  text?: string;
   parameters?: any;
-  originalContent?: any;
 }
 
 const InlineExtension: React.StatelessComponent<Props> = ({
@@ -21,13 +21,13 @@ const InlineExtension: React.StatelessComponent<Props> = ({
   extensionType,
   extensionKey,
   parameters,
-  originalContent,
+  text,
   children,
 }) => {
   try {
     if (extensionHandlers && extensionHandlers[extensionType]) {
       const content = extensionHandlers[extensionType](
-        { extensionKey, parameters, content: originalContent },
+        { extensionKey, parameters, content: text },
         rendererContext.adDoc,
       );
 
@@ -52,7 +52,7 @@ const InlineExtension: React.StatelessComponent<Props> = ({
   }
 
   // Always return default content if anything goes wrong
-  return <span>{children}</span>;
+  return <span>{text || 'inlineExtension'}</span>;
 };
 
 export default InlineExtension;

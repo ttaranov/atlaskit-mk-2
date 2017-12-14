@@ -1,5 +1,19 @@
 # @atlaskit/editor-core
 
+## 60.14.10
+- [patch] Add default center layout support for single image [6113e02](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6113e02)
+- [patch] Add default center layout support for single image [6113e02](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6113e02)
+
+## 60.14.9
+
+## 60.14.8
+
+## 60.14.7
+
+## 60.14.6
+- [patch] Fix issue where focusing in the editor would not work as expected in Safari when the editor has a placeholder [ac96315](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac96315)
+- [patch] Fix issue where focusing in the editor would not work as expected in Safari when the editor has a placeholder [ac96315](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac96315)
+
 ## 60.14.5
 - [patch] Display telepointer of existing users when joining a collaboration session [a6441ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6441ff)
 - [patch] Display telepointer of existing users when joining a collaboration session [a6441ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6441ff)

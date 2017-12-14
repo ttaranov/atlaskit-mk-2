@@ -1,5 +1,15 @@
 # @atlaskit/renderer
 
+## 10.0.7
+
+## 10.0.6
+
+## 10.0.5
+- [patch] Only bodiedExtension has content [6d4caae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d4caae)
+- [patch] Only bodiedExtension has content [6d4caae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d4caae)
+
+## 10.0.4
+
 ## 10.0.3
 - [patch] Bumped task decision version [1180bbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1180bbe)
 - [patch] Bumped task decision version [1180bbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1180bbe)
