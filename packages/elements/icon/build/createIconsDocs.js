@@ -1,6 +1,6 @@
 // @flow
 const prettier = require('prettier');
-const synonyms = require('../icons/synonyms');
+const synonyms = require('../utils/synonyms');
 
 module.exports = icons =>
   prettier.format(
@@ -19,7 +19,7 @@ module.exports = icons =>
 ${icons
       .map(
         ({ fileKey, displayName }) =>
-          `import ${displayName} from '@atlaskit/icon/glyph/${fileKey}';`,
+          `import ${displayName} from '../glyph/${fileKey}';`,
       )
       .join('')}
 

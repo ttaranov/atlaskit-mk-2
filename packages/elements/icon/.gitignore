@@ -1,5 +1,0 @@
-/glyph
-# We deliberately do not ignore the /icons/processed dir as we need it to be present at all times
-# for reduced ui pack to avoid race conditions. This is required until icons exposes the built sprite file
-#/icons/processed
-/docs/icons.js

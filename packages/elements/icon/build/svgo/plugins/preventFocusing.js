@@ -22,7 +22,13 @@ const focusableAttribute = {
 // Setting focusable="false" prevents this behaviour, and results
 // in consistent behaviour across all browsers.
 
-exports.fn = function addFocusableFalseAttr(data) {
+/*::
+type dataType = {
+  content: any[]
+}
+*/
+
+exports.fn = function addFocusableFalseAttr(data /*: dataType*/) {
   const svg = data.content[0];
   if (svg.isElem('svg') && !svg.hasAttr(focusableAttribute.name)) {
     svg.addAttr(focusableAttribute);

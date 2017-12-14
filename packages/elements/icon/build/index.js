@@ -6,7 +6,7 @@ const path = require('path');
 
 const config = require('./config');
 const cleanSVG = require('./svgo/clean')(config);
-const customiseSVG = require('./svgo/customise')(config);
+const customiseSVG = require('./svgo/customise')();
 const glyphTemplate = require('./glyph.template');
 const tsTemplate = require('./typescript.template');
 const createIconsDocs = require('./createIconsDocs');
@@ -19,12 +19,17 @@ fs
   .then(() => fs.emptyDir(path.join(__dirname, config.destDir)))
   // Read the contents of the source directory
   .then(() =>
-    glob.sync('**/*.svg', { cwd: path.join(__dirname, config.srcDir, 'src') }),
+    glob.sync('**/*.svg', { cwd: path.join(__dirname, config.srcDir) }),
   )
   // Map over all the files
   .then(files =>
     Promise.all(
       files.map(filepath => {
+        const wayHome = filepath
+          .split('/')
+          .map(a => '..')
+          .concat('es5/index')
+          .join('/');
         const fileKey = filepath.replace(/\.svg$/, '');
         const displayName = fileKey
           .split(/\W/)
@@ -35,28 +40,30 @@ fs
         // Read the contents of the SVG file
         return (
           fs
-            .readFile(path.join(__dirname, config.srcDir, 'src', filepath))
+            .readFile(path.join(__dirname, config.srcDir, filepath))
             // Optimise the SVG
             .then(rawSVG => cleanSVG(filepath, rawSVG))
-            .then(({ data: optimisedSVG }) =>
+            .then(({ data: optimisedSVG }) => {
               // saved the optimised SVGs to disk for reduced-ui-pack
-              fs
-                .outputFile(
-                  path.join(__dirname, config.processedDir, filepath),
-                  optimisedSVG,
-                )
-                // customise the SVG to make it JSX ready
-                .then(() => customiseSVG(filepath, optimisedSVG))
+              return (
+                fs
+                  .outputFile(
+                    path.join(__dirname, config.processedDir, filepath),
+                    optimisedSVG,
+                  )
+                  // customise the SVG to make it JSX ready
+                  .then(() => customiseSVG(filepath, optimisedSVG))
 
-                // wrap the optimised SVGs in the JS module
-                .then(({ data: customisedSVG }) =>
-                  glyphTemplate(customisedSVG, displayName),
-                ),
-            )
+                  // wrap the optimised SVGs in the JS module
+                  .then(({ data: customisedSVG }) =>
+                    glyphTemplate(customisedSVG, displayName, wayHome),
+                  )
+              );
+            })
             // Transpile the component code
             .then(componentCode =>
               babel.transform(componentCode, {
-                presets: ['es2015', 'react', 'stage-0'],
+                presets: ['env', 'react'],
               }),
             )
             // Write the component file
@@ -83,7 +90,7 @@ fs
   // Generate icon documentation data
   .then(icons => {
     const iconDocs = createIconsDocs(icons);
-    return fs.outputFile('./docs/icons.js', iconDocs);
+    return fs.outputFile('./utils/icons.js', iconDocs);
   })
   // Job done 🤙
   .then(() => console.log('\n 📦  Icons sorted.'))

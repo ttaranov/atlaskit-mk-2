@@ -3,10 +3,11 @@
  * This is the template for an auto-generated icon component.
  */
 module.exports = (
-  svg: () => mixed,
-  displayName: string,
+  svg /*: () => mixed*/,
+  displayName /*: string*/,
+  wayHome /*: string*/,
 ) => `import React from 'react';
-import Icon from '@atlaskit/icon';
+import Icon from '${wayHome}';
 
 const ${
   displayName

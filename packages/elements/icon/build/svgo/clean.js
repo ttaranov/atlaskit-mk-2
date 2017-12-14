@@ -4,7 +4,7 @@ const SVGO = require('svgo');
 const removeNamespacedAttributes = require('./plugins/removeNamespacedAttributes');
 const replaceSketchHexColors = require('./plugins/replaceSketchHexColors');
 
-module.exports = (config: { maxWidth: number, maxHeight: number }) => {
+module.exports = (config /*: { maxWidth: number, maxHeight: number }*/) => {
   const initialiseDefaultSVGO = () =>
     new SVGO({
       multipass: true,
@@ -21,7 +21,7 @@ module.exports = (config: { maxWidth: number, maxHeight: number }) => {
 
   const defaultSVGO = initialiseDefaultSVGO();
 
-  return (filename: string, rawSVG: string) =>
+  return (filename /*: string*/, rawSVG /*: string*/) =>
     // Run the default optimiser on the SVG
     new Promise(resolve => defaultSVGO.optimize(rawSVG, resolve))
       // Check width and height

@@ -11,7 +11,7 @@ exports.description =
 const primaryHex = '#42526E';
 const secondaryHex = '#79F2C0';
 
-exports.fn = function callbackOnDefinedFill(item) {
+exports.fn = function callbackOnDefinedFill(item /*: any*/) {
   var fill; // eslint-disable-line no-var
   var stopColor; // eslint-disable-line no-var
   // look for an fill or stop color attributes within the SVG file

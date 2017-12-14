@@ -9,7 +9,12 @@ exports.params = {
   callback: console.log.bind(console), // eslint-disable-line no-console
 };
 
-exports.fn = function callbackOnStyleElement(item, params) {
+exports.fn = function callbackOnStyleElement(
+  item /*: any*/,
+  params /*: {
+  callback: () => mixed
+}*/,
+) {
   if (item.isElem('style')) {
     params.callback();
   }

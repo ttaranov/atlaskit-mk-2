@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import styled, { css } from 'styled-components';
 import uuid from 'uuid';
 import { colors } from '@atlaskit/theme';
@@ -127,7 +127,7 @@ class Icon extends Component<Props, {}> {
         role="img"
         aria-label={this.props.label}
       >
-        <Glyph role="presentation" />
+        {Glyph ? <Glyph role="presentation" /> : null}
       </IconWrapper>
     );
   }

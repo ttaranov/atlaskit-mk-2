@@ -16,24 +16,29 @@ exports.description =
  * The original IDs are still kept as they are still necessary to distinguish multiple
  * gradient fills within a single icon.
  *
- * @param {Object} node node
+ * @param {Object} item item
  * @param {Object} opts plugin params
  * @param {Object} extra plugin extra information
  */
-exports.fn = function replaceIDs(node, opts) {
+exports.fn = function replaceIDs(
+  item /*: any*/,
+  opts /*: {
+  placeholderStr: string,
+}*/,
+) {
   const placeholderStr = opts.placeholderStr;
 
-  if (node.isElem('linearGradient') && node.hasAttr('id')) {
-    node.attrs.id.value += `-${placeholderStr}`;
-  } else if (node.hasAttr('fill')) {
-    const fillAttr = node.attr('fill');
+  if (item.isElem('linearGradient') && item.hasAttr('id')) {
+    item.attrs.id.value += `-${placeholderStr}`;
+  } else if (item.hasAttr('fill')) {
+    const fillAttr = item.attr('fill');
     const replacedFillValue = fillAttr.value.replace(
       /\burl\(("|')?#(.+?)\1\)/,
       `url(#$2-${placeholderStr})`,
     );
 
-    node.attrs.fill.value = replacedFillValue;
+    item.attrs.fill.value = replacedFillValue;
   }
 
-  return node;
+  return item;
 };

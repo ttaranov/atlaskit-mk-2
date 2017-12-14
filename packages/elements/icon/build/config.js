@@ -1,9 +1,9 @@
 // @flow
 module.exports = {
   // Relative to this directory
-  srcDir: '../icons',
-  processedDir: '../icons/processed',
-  destDir: '../dist/glyph',
+  srcDir: '../utils/raw_svgs',
+  processedDir: '../svgs',
+  destDir: '../glyph',
   maxWidth: 24,
   maxHeight: 24,
 };

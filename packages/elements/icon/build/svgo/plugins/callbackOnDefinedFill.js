@@ -10,7 +10,13 @@ exports.params = {
   callback: console.log.bind(console), // eslint-disable-line no-console
 };
 
-exports.fn = function callbackOnDefinedFill(item, params) {
+exports.fn = function callbackOnDefinedFill(
+  item /*: any */,
+  params /*: {
+  callback: (f: string) => mixed,
+  allowedValues: string[]
+}*/,
+) {
   var fill; // eslint-disable-line no-var
   if (item.hasAttr('fill')) {
     fill = item.attr('fill').value;
