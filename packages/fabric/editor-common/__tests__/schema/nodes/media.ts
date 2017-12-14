@@ -172,4 +172,56 @@ describe(`${name}/schema media node`, () => {
       },
     });
   });
+
+  it('should not serialize optional key with null value', () => {
+    const mediaNode = schema.nodes.media.create({
+      id: 'id',
+      type: 'file',
+      collection: 'collection',
+      occurrenceKey: null,
+    });
+
+    expect(toJSON(mediaNode)).toEqual({
+      attrs: {
+        collection: 'collection',
+        id: 'id',
+        type: 'file',
+      },
+    });
+  });
+
+  it('should not serialize optional string key with empty string', () => {
+    const mediaNode = schema.nodes.media.create({
+      id: 'id',
+      type: 'file',
+      collection: 'collection',
+      occurrenceKey: '',
+    });
+
+    expect(toJSON(mediaNode)).toEqual({
+      attrs: {
+        collection: 'collection',
+        id: 'id',
+        type: 'file',
+      },
+    });
+  });
+
+  it('should serialize optional number keys with value 0', () => {
+    const mediaNode = schema.nodes.media.create({
+      id: 'id',
+      type: 'file',
+      collection: 'collection',
+      width: 0,
+    });
+
+    expect(toJSON(mediaNode)).toEqual({
+      attrs: {
+        collection: 'collection',
+        id: 'id',
+        type: 'file',
+        width: 0,
+      },
+    });
+  });
 });

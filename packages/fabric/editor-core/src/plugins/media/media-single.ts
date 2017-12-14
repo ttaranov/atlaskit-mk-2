@@ -54,8 +54,8 @@ const createMediaSingleNodes = (
   collection: string,
   mediaSingle: NodeType,
   media: NodeType,
-): PMNode[] => {
-  const nodes = mediaStates.map(mediaState => {
+): PMNode[] =>
+  mediaStates.map(mediaState => {
     const { id } = mediaState;
 
     const mediaNode = media.create({
@@ -65,10 +65,5 @@ const createMediaSingleNodes = (
       __fileMimeType: mediaState.fileMimeType,
     });
 
-    const mediaSingleNode = mediaSingle.create({}, mediaNode);
-
-    return mediaSingleNode;
+    return mediaSingle.create({}, mediaNode);
   });
-
-  return nodes;
-};
