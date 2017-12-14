@@ -46,7 +46,7 @@ export function createKeymapPlugin(
       }
 
       hyperlinkPlugin.setInactive(state, dispatch);
-      return true;
+      return false;
     },
     list,
   );
