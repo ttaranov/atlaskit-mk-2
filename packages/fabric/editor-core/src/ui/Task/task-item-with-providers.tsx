@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
-
+import { ContextIdentifierProvider } from '@atlaskit/editor-common';
 import {
   ContentRef,
   TaskDecisionProvider,
@@ -38,11 +38,14 @@ export default class TaskItemWithProviders extends PureComponent<Props, State> {
     }
   }
 
-  private updateContextIdentifierProvider(props: Props) {
+  private async updateContextIdentifierProvider(props: Props) {
     if (props.contextIdentifierProvider) {
-      props.contextIdentifierProvider.then(resolvedContextProvider =>
-        this.setState({ resolvedContextProvider }),
-      );
+      try {
+        const resolvedContextProvider = await props.contextIdentifierProvider;
+        this.setState({ resolvedContextProvider });
+      } catch (err) {
+        this.setState({ resolvedContextProvider: undefined });
+      }
     } else {
       this.setState({ resolvedContextProvider: undefined });
     }
@@ -54,7 +57,16 @@ export default class TaskItemWithProviders extends PureComponent<Props, State> {
       contextIdentifierProvider,
       ...otherProps,
     } = this.props;
+    const { objectId, containerId } =
+      this.state.resolvedContextProvider || ({} as ContextIdentifierProvider);
 
-    return <ResourcedTaskItem {...otherProps} />;
+    return (
+      <ResourcedTaskItem
+        {...otherProps}
+        taskDecisionProvider={taskDecisionProvider}
+        objectAri={objectId}
+        containerAri={containerId}
+      />
+    );
   }
 }
