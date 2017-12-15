@@ -38,19 +38,12 @@ export default class CardPreview extends React.Component<CardPreviewProps> {
     }
 
     return (
-      <ImageLoader src={url}>
-        {({ loaded, errored }) => {
-          if (errored) {
-            return <NoImageView />;
-          }
-
-          if (loaded) {
-            return <LoadedView url={url} />;
-          }
-
-          return <LoadingView />;
-        }}
-      </ImageLoader>
+      <ImageLoader
+        src={url}
+        loading={<LoadingView />}
+        loaded={<LoadedView url={url} />}
+        errored={<NoImageView />}
+      />
     );
   }
 

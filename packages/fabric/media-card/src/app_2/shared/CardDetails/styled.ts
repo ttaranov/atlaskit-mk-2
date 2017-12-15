@@ -47,6 +47,7 @@ export const Title = styled.div`
 
 export const Description = styled.div`
   margin-top: 4px;
+  height: 16px;
   ${description} ${ellipsis('100%')};
 `;
 

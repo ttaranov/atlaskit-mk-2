@@ -9,30 +9,57 @@ import {
 } from '@atlaskit/util-shared-styles';
 import { borderRadius, size, linkCardShadow, ellipsis } from '../../styles';
 
+const wrapperPadding = 8;
+
 export interface WrapperProps {
-  href?: string;
+  isInteractive?: boolean;
   minWidth?: number;
   maxWidth?: number;
 }
 
+/*
+
+  Conversation confirming widths with @Scotty:
+
+  # (Standalone links/smart-cards with a feature image) OR (Filmstrip links/smart-cards):
+
+    width: 100% => take up the full width of the container
+    max-width: 400px; but don't go larger than 400px
+    min-width: 240px; but don't go smaller than 240px
+
+      => so they'll all be 400px unless someone resizes the window
+
+  # (Standalone links/smart-cards without a feature image):
+
+    width: 100% => take up the full width of the container
+    max-width: 644px; but don't go larger than 664px
+    min-width: 240px; but don't go smaller than 240px
+
+      => so they'll all be 664px unless someone resizes the window
+
+ */
+
 const wrapperStyles = css`
+  display: inline-flex;
+  flex-direction: column;
   box-sizing: border-box;
   font-family: ${akFontFamily};
-  padding: 0 8px 8px 8px;
-  ${borderRadius} ${({ minWidth }: WrapperProps) => {
-      if (minWidth) {
-        return `min-width: ${minWidth}px`;
-      } else {
-        return '';
-      }
-    }} ${({ maxWidth }: WrapperProps) => {
+  padding: 0 ${wrapperPadding}px ${wrapperPadding}px ${wrapperPadding}px;
+  ${borderRadius} width: 100%;
+  ${({ minWidth }: WrapperProps) => {
+    if (minWidth) {
+      return `min-width: ${minWidth}px`;
+    } else {
+      return '';
+    }
+  }} ${({ maxWidth }: WrapperProps) => {
       if (maxWidth) {
         return `max-width: ${maxWidth}px`;
       } else {
         return '';
       }
-    }} ${({ href }: WrapperProps) => {
-      if (href) {
+    }} ${({ isInteractive }: WrapperProps) => {
+      if (isInteractive) {
         return `
           cursor: pointer;
           &:hover {
@@ -51,9 +78,12 @@ const wrapperStyles = css`
   transition: background 0.3s;
 `;
 
+export interface ContentProps {
+  maxWidth?: number;
+}
+
 export const LinkWrapper = styled.a`
-  ${wrapperStyles} display: block;
-  &:hover {
+  ${wrapperStyles} &:hover {
     text-decoration: none;
   }
 `;

@@ -8,8 +8,6 @@ import {
   TextWrapper,
 } from '../../../src/shared/CardFrame/styled';
 
-// TODO: test placeholders
-
 describe('CardFrame', () => {
   it('should render as a link when there is a href', () => {
     const element = shallow(<CardFrame href="https://www.google.com/" />);

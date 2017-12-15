@@ -7,4 +7,7 @@ export interface ImageProps {
 
 export const Image = styled.img`
   ${({ size }: ImageProps) => csssize(size)} ${borderRadius};
+
+  /* hide the alt text when the image cannot be found */
+  overflow: hidden;
 `;

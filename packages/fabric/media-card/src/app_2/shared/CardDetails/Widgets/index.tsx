@@ -5,10 +5,9 @@ import Tooltip from '@atlaskit/tooltip';
 import IconImage from '../../../../shared/IconImage';
 import {
   DetailViewModel,
-  IconViewModel,
   BadgeViewModel,
   LozengeViewModel,
-} from '../../../ViewModel';
+} from '../../../shared/ViewModel';
 import { Wrapper, WidgetWrapper, WidgetDetails, Title, Text } from './styled';
 
 export interface WidgetsProps {
@@ -20,8 +19,8 @@ export default class Widgets extends React.Component<WidgetsProps> {
     return <Title key="title">{title}:</Title>;
   }
 
-  renderIcon(icon: IconViewModel) {
-    return <IconImage key="icon" src={icon.url} alt={icon.label || ''} />;
+  renderIcon(icon: string) {
+    return <IconImage key="icon" src={icon} />;
   }
 
   renderBadge(badge: BadgeViewModel) {
@@ -52,7 +51,7 @@ export default class Widgets extends React.Component<WidgetsProps> {
   }
 
   renderWidget(key: any, detail: DetailViewModel) {
-    const { title, text, icon, badge, lozenge, label } = detail;
+    const { title, text, icon, badge, lozenge, tooltip } = detail;
     const attrs: JSX.Element[] = [];
 
     if (title) {
@@ -89,7 +88,7 @@ export default class Widgets extends React.Component<WidgetsProps> {
 
     return (
       <WidgetWrapper key={key}>
-        <Tooltip content={label}>
+        <Tooltip content={tooltip}>
           <WidgetDetails>{attrs}</WidgetDetails>
         </Tooltip>
       </WidgetWrapper>

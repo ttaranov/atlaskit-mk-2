@@ -33,12 +33,12 @@ describe('Wrapper', () => {
     expect(element).not.toHaveStyleRule('max-width', '');
   });
 
-  it('should have hover styles when there is a href', () => {
-    const element = shallow(<Wrapper href="https://www.example.com/" />);
+  it('should have hover styles when isInteractive=true', () => {
+    const element = shallow(<Wrapper isInteractive={true} />);
     expect(element).toMatchSnapshot();
   });
 
-  it('should not have hover styles when there is no href', () => {
+  it('should not have hover styles when isInteractive=false', () => {
     const element = shallow(<Wrapper />);
     expect(element).toMatchSnapshot();
   });
@@ -65,13 +65,13 @@ describe('LinkWrapper', () => {
     expect(element).not.toHaveStyleRule('max-width', '');
   });
 
-  it('should have hover styles when there is a href', () => {
-    const element = shallow(<LinkWrapper href="https://www.example.com/" />);
+  it('should have hover styles when isInteractive=true', () => {
+    const element = shallow(<LinkWrapper isInteractive={true} />);
     expect(element).toMatchSnapshot();
   });
 
-  it('should not have hover styles when there is no href', () => {
-    const element = shallow(<LinkWrapper />);
+  it('should not have hover styles when isInteractive=false', () => {
+    const element = shallow(<LinkWrapper isInteractive={false} />);
     expect(element).toMatchSnapshot();
   });
 });

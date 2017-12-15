@@ -1,29 +1,29 @@
 import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
+import MeatballIcon from '@atlaskit/icon/glyph/more';
 import DropdownMenu, {
   DropdownItemGroup,
   DropdownItem,
 } from '@atlaskit/dropdown-menu';
-import { ActionViewModel } from '../../../ViewModel';
+import { ActionViewModel } from '../../../shared/ViewModel';
 import { Wrapper } from './styled';
 
 export interface UsersProps {
   compact?: boolean;
   actions?: ActionViewModel[];
-  onAction?: (target: any) => void;
 }
 
 export default class Actions extends React.Component<UsersProps> {
-  createActionHandler = (target: any) => {
+  createActionHandler = (handler?: () => void) => {
     return (event?: MouseEvent) => {
       /* prevent the parent link handler from opening a URL when clicked */
       if (event) {
         event.preventDefault();
+        event.stopPropagation();
       }
 
-      const { onAction } = this.props;
-      if (onAction) {
-        onAction(target);
+      if (handler) {
+        handler();
       }
     };
   };
@@ -32,6 +32,7 @@ export default class Actions extends React.Component<UsersProps> {
     /* prevent the parent link handler from opening a URL when clicked */
     if (event) {
       event.preventDefault();
+      event.stopPropagation();
     }
   };
 
@@ -60,27 +61,30 @@ export default class Actions extends React.Component<UsersProps> {
       <Wrapper>
         <ButtonGroup>
           {firstAction ? (
-            <Button onClick={this.createActionHandler(firstAction.target)}>
-              {firstAction.title}
+            <Button onClick={this.createActionHandler(firstAction.handler)}>
+              {firstAction.text}
             </Button>
           ) : null}
           {secondAction ? (
-            <Button onClick={this.createActionHandler(secondAction.target)}>
-              {secondAction.title}
+            <Button onClick={this.createActionHandler(secondAction.handler)}>
+              {secondAction.text}
             </Button>
           ) : null}
           {otherActions.length ? (
             <DropdownMenu
               triggerType="button"
+              triggerButtonProps={{
+                iconAfter: <MeatballIcon label="actions" size="medium" />,
+              }}
               onOpenChange={this.handleOpenChange}
             >
               <DropdownItemGroup>
                 {otherActions.map(action => (
                   <DropdownItem
-                    key={action.title}
-                    onClick={this.createActionHandler(action.target)}
+                    key={action.text}
+                    onClick={this.createActionHandler(action.handler)}
                   >
-                    {action.title}
+                    {action.text}
                   </DropdownItem>
                 ))}
               </DropdownItemGroup>

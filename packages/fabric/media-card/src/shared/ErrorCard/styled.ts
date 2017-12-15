@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { akColorY400, akColorN300 } from '@atlaskit/util-shared-styles';
+import { akColorN300 } from '@atlaskit/util-shared-styles';
 import { withAppearance } from '../../styles';
 import { size, center, absolute } from '../../styles';
 import newCardDetailsHeight from '../../shared/newCardDetailsHeight';
@@ -49,10 +49,6 @@ export const ErrorMessage = styled.div`
       margin: 16px 0 24px 0;
     `,
   })};
-`;
-
-export const WarningIconWrapper = styled.span`
-  color: ${akColorY400};
 `;
 
 export const ErrorImage = styled.img`

@@ -16,8 +16,8 @@ describe('Actions', () => {
         compact={true}
         actions={[
           {
-            title: 'Like',
-            target: null,
+            text: 'Like',
+            handler: jest.fn(),
           },
         ]}
       />,
@@ -33,8 +33,8 @@ describe('Actions', () => {
         compact={false}
         actions={[
           {
-            title: 'Like',
-            target: null,
+            text: 'Like',
+            handler: jest.fn(),
           },
         ]}
       />,
@@ -54,12 +54,12 @@ describe('Actions', () => {
         compact={false}
         actions={[
           {
-            title: 'Like',
-            target: null,
+            text: 'Like',
+            handler: jest.fn(),
           },
           {
-            title: 'Comment',
-            target: null,
+            text: 'Comment',
+            handler: jest.fn(),
           },
         ]}
       />,
@@ -90,16 +90,16 @@ describe('Actions', () => {
         compact={false}
         actions={[
           {
-            title: 'Like',
-            target: null,
+            text: 'Like',
+            handler: jest.fn(),
           },
           {
-            title: 'Comment',
-            target: null,
+            text: 'Comment',
+            handler: jest.fn(),
           },
           {
-            title: 'Report',
-            target: null,
+            text: 'Report',
+            handler: jest.fn(),
           },
         ]}
       />,
@@ -131,22 +131,22 @@ describe('Actions', () => {
     ).toEqual('Report');
   });
 
-  it('should call onAction with the data from the first action when it is a button', () => {
-    const onAction = jest.fn();
+  it('should call the handler for the first action when it is a button', () => {
+    const handler1 = jest.fn();
+    const handler2 = jest.fn();
     const element = shallow(
       <Actions
         compact={false}
         actions={[
           {
-            title: 'Like',
-            target: 111,
+            text: 'Like',
+            handler: handler1,
           },
           {
-            title: 'Comment',
-            target: 222,
+            text: 'Comment',
+            handler: handler2,
           },
         ]}
-        onAction={onAction}
       />,
     );
 
@@ -154,26 +154,26 @@ describe('Actions', () => {
       .find(Button)
       .first()
       .simulate('click');
-    expect(onAction).toHaveBeenCalledTimes(1);
-    expect(onAction).toHaveBeenCalledWith(111);
+    expect(handler1).toHaveBeenCalledTimes(1);
+    expect(handler2).toHaveBeenCalledTimes(0);
   });
 
-  it('should call onAction with the data from the first action when it is a drop down item', () => {
-    const onAction = jest.fn();
+  it('should call the handler for the first action when it is a drop down item', () => {
+    const handler1 = jest.fn();
+    const handler2 = jest.fn();
     const element = shallow(
       <Actions
         compact={true}
         actions={[
           {
-            title: 'Like',
-            target: 111,
+            text: 'Like',
+            handler: handler1,
           },
           {
-            title: 'Comment',
-            target: 222,
+            text: 'Comment',
+            handler: handler2,
           },
         ]}
-        onAction={onAction}
       />,
     );
 
@@ -181,26 +181,26 @@ describe('Actions', () => {
       .find(DropdownItem)
       .first()
       .simulate('click');
-    expect(onAction).toHaveBeenCalledTimes(1);
-    expect(onAction).toHaveBeenCalledWith(111);
+    expect(handler1).toHaveBeenCalledTimes(1);
+    expect(handler2).toHaveBeenCalledTimes(0);
   });
 
-  it('should call onAction with the data from the second action when it is a button', () => {
-    const onAction = jest.fn();
+  it('should call the handler for the second action when it is a button', () => {
+    const handler1 = jest.fn();
+    const handler2 = jest.fn();
     const element = shallow(
       <Actions
         compact={false}
         actions={[
           {
-            title: 'Like',
-            target: 111,
+            text: 'Like',
+            handler: handler1,
           },
           {
-            title: 'Comment',
-            target: 222,
+            text: 'Comment',
+            handler: handler2,
           },
         ]}
-        onAction={onAction}
       />,
     );
 
@@ -208,30 +208,31 @@ describe('Actions', () => {
       .find(Button)
       .at(1)
       .simulate('click');
-    expect(onAction).toHaveBeenCalledTimes(1);
-    expect(onAction).toHaveBeenCalledWith(222);
+    expect(handler1).toHaveBeenCalledTimes(0);
+    expect(handler2).toHaveBeenCalledTimes(1);
   });
 
-  it('should call onAction with the data from the second action when it is a drop down item', () => {
-    const onAction = jest.fn();
+  it('should call the handler for the second action when it is a drop down item', () => {
+    const handler1 = jest.fn();
+    const handler2 = jest.fn();
+    const handler3 = jest.fn();
     const element = shallow(
       <Actions
         compact={false}
         actions={[
           {
-            title: 'Like',
-            target: 111,
+            text: 'Like',
+            handler: handler1,
           },
           {
-            title: 'Comment',
-            target: 222,
+            text: 'Comment',
+            handler: handler2,
           },
           {
-            title: 'Report',
-            target: 333,
+            text: 'Report',
+            handler: handler3,
           },
         ]}
-        onAction={onAction}
       />,
     );
 
@@ -239,7 +240,8 @@ describe('Actions', () => {
       .find(DropdownItem)
       .first()
       .simulate('click');
-    expect(onAction).toHaveBeenCalledTimes(1);
-    expect(onAction).toHaveBeenCalledWith(222);
+    expect(handler1).toHaveBeenCalledTimes(0);
+    expect(handler2).toHaveBeenCalledTimes(1);
+    expect(handler3).toHaveBeenCalledTimes(0);
   });
 });

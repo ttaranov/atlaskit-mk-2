@@ -1,0 +1,55 @@
+{
+  "link": {
+    "url": "https://bitbucket.org/hipchat/banana-addon-bitbucket/pull-requests/133"
+  },
+  "title": {
+    "text": "#133: added refresh button",
+    "user": {
+      "icon": {
+        "url": "https://bitbucket.org/account/icheremskyi/avatar/32/",
+        "label": "Ihor Cheremskyi"
+      }
+    }
+  },
+  "details": [
+    {
+      "icon": {
+        "url": "https://banana-addon-bitbucket.us-west-2.prod.public.atl-paas.net/icons/bitbucket/branches.png",
+        "label": "Branch"
+      },
+      "text": "refrsh-buton"
+    },
+    {
+      "icon": {
+        "url": "https://banana-addon-bitbucket.us-west-2.prod.public.atl-paas.net/icons/bitbucket/target.png",
+        "label": "Target"
+      },
+      "text": "master"
+    },
+    {
+      "title": "Reviewers",
+      "users": [
+        {
+          "icon": {
+            "url": "https://bitbucket.org/account/drudzik/avatar/32/",
+            "label": "Dmytro Rudzik"
+          }
+        },
+        {
+          "icon": {
+            "url": "https://bitbucket.org/account/OleksiiChuian/avatar/32/",
+            "label": "Oleksii Chuian"
+          }
+        }
+      ]
+    }
+  ],
+  "context": {
+    "text": "Bitbucket / banana-addon-bitbucket",
+    "icon": {
+      "url": "https://banana-addon-bitbucket.us-west-2.prod.public.atl-paas.net/icons/bitbucket-logo.png",
+      "label": "hipchat/banana-addon-bitbucket"
+    }
+  },
+  "text": ""
+}

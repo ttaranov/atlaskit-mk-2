@@ -13,29 +13,20 @@ import {
 
 describe('CardDetails', () => {
   const icon = {
-    url: '',
+    url: 'https://www.example.com/foobar.jpg',
   };
 
   const user = {
-    icon: {
-      url: '',
-    },
+    icon: 'https://www.example.com/foobar.jpg',
   };
 
-  const thumbnail = {
-    url: '',
-  };
+  const thumbnail = 'https://www.example.com/foobar.jpg';
 
   it('should render the title', () => {
     const element = shallow(
       <CardDetails
         title={{
-          title: {
-            text: 'Hello World!',
-          },
-          text: {
-            text: 'Your world is small.',
-          },
+          text: 'Hello World!',
         }}
       />,
     );
@@ -50,13 +41,8 @@ describe('CardDetails', () => {
   it('should render the description', () => {
     const element = shallow(
       <CardDetails
-        title={{
-          title: {
-            text: 'Hello World!',
-          },
-          text: {
-            text: 'Your world is small.',
-          },
+        description={{
+          text: 'Your world is small.',
         }}
       />,
     );

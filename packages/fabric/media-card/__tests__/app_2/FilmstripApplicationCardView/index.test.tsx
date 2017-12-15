@@ -1,20 +1,16 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import CardFrame from '../../../src/shared/CardFrame';
-import IconImage from '../../../src/shared/IconImage';
+import LinkIcon from '../../../src/shared/LinkIcon';
 import CardDetails from '../../../src/app_2/shared/CardDetails';
 import FilmstripApplicationCardView from '../../../src/app_2/FilmstripApplicationCardView';
 
 describe('FilmstripApplicationCardView', () => {
-  const preview = {
-    url: '',
-  };
+  const preview = 'https://www.example.com/foo.jpg';
 
   it('should render a link when link is provided', () => {
     const element = shallow(
-      <FilmstripApplicationCardView
-        link={{ url: 'https://www.google.com/' }}
-      />,
+      <FilmstripApplicationCardView link="https://www.google.com/" />,
     );
     expect(element.find(CardFrame).prop('href')).toEqual(
       'https://www.google.com/',
@@ -43,20 +39,18 @@ describe('FilmstripApplicationCardView', () => {
       <FilmstripApplicationCardView
         context={{
           text: 'Jira',
-          icon: {
-            url: 'https://www.google.com/',
-          },
+          icon: 'https://www.google.com/',
         }}
       />,
     );
     expect(element.find(CardFrame).prop('icon')).toEqual(
-      <IconImage src="https://www.google.com/" alt="" />,
+      <LinkIcon src="https://www.google.com/" />,
     );
   });
 
   it('should not render text in the frame when context is not provided', () => {
     const element = shallow(<FilmstripApplicationCardView />);
-    expect(element.find(CardFrame).prop('icon')).toBeUndefined();
+    expect(element.find(CardFrame).prop('text')).toBeUndefined();
   });
 
   it('it should render a thumbnail when there is a preview', () => {

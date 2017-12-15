@@ -1,10 +1,8 @@
 import * as React from 'react';
-import ViewModel from '../ViewModel';
+import ViewModel from '../shared/ViewModel';
 import CardFrame from '../../shared/CardFrame';
-import IconImage from '../../shared/IconImage';
+import LinkIcon from '../../shared/LinkIcon';
 import CardDetails from '../shared/CardDetails';
-
-import { minWidth, maxWidth } from '../shared/width';
 
 export interface FilmstripApplicationCardViewProps extends ViewModel {}
 
@@ -16,36 +14,33 @@ export default class FilmstripApplicationCardView extends React.Component<
       link,
       context,
       title,
+      description,
       icon,
       preview,
       user,
       users,
       details,
       actions,
-      onAction,
+      onClick,
     } = this.props;
     return (
       <CardFrame
-        minWidth={minWidth({ hasPreview: false })}
-        maxWidth={maxWidth({ hasPreview: false })}
-        href={link && link.url}
-        icon={
-          context &&
-          context.icon && (
-            <IconImage src={context.icon.url} alt={context.icon.label || ''} />
-          )
-        }
+        minWidth={240}
+        maxWidth={400}
+        href={link}
+        icon={<LinkIcon src={context && context.icon} />}
         text={context && context.text}
+        onClick={onClick}
       >
         <CardDetails
           title={title}
+          description={description}
           icon={icon}
           user={user}
           thumbnail={preview}
           users={users}
           actions={actions}
           details={details}
-          onAction={onAction}
         />
       </CardFrame>
     );

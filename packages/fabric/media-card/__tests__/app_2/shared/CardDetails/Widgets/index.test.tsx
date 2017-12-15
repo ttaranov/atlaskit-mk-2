@@ -40,10 +40,7 @@ describe('Widgets', () => {
       <Widgets
         details={[
           {
-            icon: {
-              url: 'https://www.example.com/foobar.jpg',
-              label: 'foobar',
-            },
+            icon: 'https://www.example.com/foobar.jpg',
           },
         ]}
       />,
@@ -53,7 +50,6 @@ describe('Widgets', () => {
     expect(icon.props()).toEqual(
       expect.objectContaining({
         src: 'https://www.example.com/foobar.jpg',
-        alt: 'foobar',
       }),
     );
   });
@@ -112,10 +108,7 @@ describe('Widgets', () => {
           {
             title: 'Modified',
             text: '03/10/1990',
-            icon: {
-              url: 'https://www.example.com/foobar.jpg',
-              label: 'foobar',
-            },
+            icon: 'https://www.example.com/foobar.jpg',
             lozenge: {
               appearance: 'success',
               text: 'Closed',
@@ -145,10 +138,7 @@ describe('Widgets', () => {
             text: '03/10/1990',
           },
           {
-            icon: {
-              url: 'https://www.example.com/foobar.jpg',
-              label: 'foobar',
-            },
+            icon: 'https://www.example.com/foobar.jpg',
           },
           {
             lozenge: {
@@ -177,9 +167,7 @@ describe('Widgets', () => {
     expect(
       widgets
         .at(1)
-        .contains(
-          <IconImage src="https://www.example.com/foobar.jpg" alt="foobar" />,
-        ),
+        .contains(<IconImage src="https://www.example.com/foobar.jpg" />),
     ).toBeTruthy();
 
     expect(

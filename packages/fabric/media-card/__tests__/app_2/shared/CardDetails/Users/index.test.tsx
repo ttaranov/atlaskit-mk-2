@@ -14,15 +14,11 @@ describe('Users', () => {
       <Users
         users={[
           {
-            icon: {
-              url: 'https://www.example.com/',
-              label: 'John Smith',
-            },
+            icon: 'https://www.example.com/',
+            name: 'John Smith',
           },
           {
-            icon: {
-              url: 'https://www.whisky.com/',
-            },
+            icon: 'https://www.whisky.com/',
           },
         ]}
       />,

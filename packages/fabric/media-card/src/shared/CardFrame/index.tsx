@@ -16,9 +16,26 @@ export interface CardFrameProps {
   minWidth?: number;
   maxWidth?: number;
   children?: React.ReactNode;
+  onClick?: () => void;
 }
 
+const className = 'media-card-frame';
+
 export default class CardFrame extends React.Component<CardFrameProps> {
+  get isInteractive() {
+    const { href, onClick } = this.props;
+    return Boolean(href) || Boolean(onClick);
+  }
+
+  handleClick = event => {
+    const { onClick } = this.props;
+    if (onClick) {
+      event.preventDefault();
+      event.stopPropagation();
+      onClick();
+    }
+  };
+
   renderHeader() {
     const { isPlaceholder = false, icon, text } = this.props;
     return (
@@ -39,16 +56,19 @@ export default class CardFrame extends React.Component<CardFrameProps> {
   }
 
   render() {
+    const { isInteractive } = this;
     const { isPlaceholder, href, minWidth, maxWidth } = this.props;
     if (!isPlaceholder && href) {
       return (
         <LinkWrapper
           target="_blank"
           rel="noopener"
-          className="media-card-link"
+          className={className}
+          isInteractive={isInteractive}
           href={href}
           minWidth={minWidth}
           maxWidth={maxWidth}
+          onClick={this.handleClick}
         >
           {this.renderHeader()}
           {this.renderContent()}
@@ -56,7 +76,13 @@ export default class CardFrame extends React.Component<CardFrameProps> {
       );
     } else {
       return (
-        <Wrapper minWidth={minWidth} maxWidth={maxWidth}>
+        <Wrapper
+          className={className}
+          isInteractive={isInteractive}
+          minWidth={minWidth}
+          maxWidth={maxWidth}
+          onClick={this.handleClick}
+        >
           {this.renderHeader()}
           {this.renderContent()}
         </Wrapper>

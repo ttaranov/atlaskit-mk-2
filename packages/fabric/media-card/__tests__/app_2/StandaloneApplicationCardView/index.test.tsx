@@ -2,20 +2,16 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import CardFrame from '../../../src/shared/CardFrame';
 import CardPreview from '../../../src/shared/CardPreview';
-import IconImage from '../../../src/shared/IconImage';
+import LinkIcon from '../../../src/shared/LinkIcon';
 import CardDetails from '../../../src/app_2/shared/CardDetails';
 import StandaloneApplicationCardView from '../../../src/app_2/StandaloneApplicationCardView';
 
 describe('StandaloneApplicationCardView', () => {
-  const preview = {
-    url: '',
-  };
+  const preview = 'https://www.example.com/foo.jpg';
 
   it('should render a link when link is provided', () => {
     const element = shallow(
-      <StandaloneApplicationCardView
-        link={{ url: 'https://www.google.com/' }}
-      />,
+      <StandaloneApplicationCardView link="https://www.google.com/" />,
     );
     expect(element.find(CardFrame).prop('href')).toEqual(
       'https://www.google.com/',
@@ -44,20 +40,18 @@ describe('StandaloneApplicationCardView', () => {
       <StandaloneApplicationCardView
         context={{
           text: 'Jira',
-          icon: {
-            url: 'https://www.google.com/',
-          },
+          icon: 'https://www.google.com/',
         }}
       />,
     );
     expect(element.find(CardFrame).prop('icon')).toEqual(
-      <IconImage src="https://www.google.com/" alt="" />,
+      <LinkIcon src="https://www.google.com/" />,
     );
   });
 
   it('should not render text in the frame when context is not provided', () => {
     const element = shallow(<StandaloneApplicationCardView />);
-    expect(element.find(CardFrame).prop('icon')).toBeUndefined();
+    expect(element.find(CardFrame).prop('text')).toBeUndefined();
   });
 
   it('it should render a preview when there is a preview', () => {
@@ -96,15 +90,15 @@ describe('StandaloneApplicationCardView', () => {
     expect(element.find(CardFrame).prop('minWidth')).toEqual(240);
   });
 
-  it('should have a maxWidth of 664 when there is a preview', () => {
+  it('should have a maxWidth of 400 when there is a preview', () => {
     const element = shallow(
       <StandaloneApplicationCardView preview={preview} />,
     );
-    expect(element.find(CardFrame).prop('maxWidth')).toEqual(664);
+    expect(element.find(CardFrame).prop('maxWidth')).toEqual(400);
   });
 
-  it('should have a maxWidth of 400 when there is no preview', () => {
+  it('should have a maxWidth of 664 when there is no preview', () => {
     const element = shallow(<StandaloneApplicationCardView />);
-    expect(element.find(CardFrame).prop('maxWidth')).toEqual(400);
+    expect(element.find(CardFrame).prop('maxWidth')).toEqual(664);
   });
 });

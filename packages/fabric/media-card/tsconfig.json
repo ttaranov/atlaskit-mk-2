@@ -12,7 +12,6 @@
     "./docs/**/*.tsx"
   ],
   "files": [
-    "./typings/json.d.ts",
-    "./typings/react-render-image.d.ts"
+    "./typings/json.d.ts"
   ]
 }

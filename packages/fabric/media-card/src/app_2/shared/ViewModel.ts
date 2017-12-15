@@ -1,33 +1,22 @@
-/*
-  I'd love to use a namespace for these types... but our typescript linting says no :(
-*/
-
-export interface LinkViewModel {
-  url: string; // will be used for primary click action on card
-}
-
-export interface IconViewModel {
-  url: string;
-  label?: string;
-}
-
 export interface ContextViewModel {
+  icon?: string;
   text: string;
-  icon?: IconViewModel;
 }
 
-export interface PreviewViewModel {
+export interface IconWithTooltip {
   url: string;
+  tooltip?: string;
 }
 
-export interface TextWithLabel {
+export interface TextWithTooltip {
   text: string;
-  label?: string; // accessibility text e.g. tooltip or voiceover
+  tooltip?: string;
 }
 
-export interface TitleViewModel {
-  title: TextWithLabel;
-  text: TextWithLabel;
+export interface UserViewModel {
+  icon?: string;
+  name?: string;
+  // in the future we might add other things supported by <Avatar/> e.g. href
 }
 
 export interface BadgeViewModel {
@@ -50,31 +39,31 @@ export interface LozengeViewModel {
 
 export interface DetailViewModel {
   title?: string;
-  icon?: IconViewModel;
+  icon?: string;
   badge?: BadgeViewModel;
   lozenge?: LozengeViewModel;
   text?: string;
-  label?: string;
+  tooltip?: string;
 }
 
 export interface ActionViewModel {
-  title: string;
-  target: any;
-}
+  text: string;
 
-export interface UserViewModel {
-  icon: IconViewModel;
+  // I chose an action handler over a generic data blob because there's no ambiguity in which action the
+  // blob originated from when multiple actions contain the same blob - edge case I know, but why not
+  handler: () => void;
 }
 
 export default interface ViewModel {
   context?: ContextViewModel;
-  link?: LinkViewModel;
-  icon?: IconViewModel;
+  link?: string;
+  icon?: IconWithTooltip;
   user?: UserViewModel;
-  preview?: PreviewViewModel;
-  title?: TitleViewModel;
+  preview?: string;
+  title?: TextWithTooltip;
+  description?: TextWithTooltip;
   details?: DetailViewModel[];
   users?: UserViewModel[];
   actions?: ActionViewModel[];
-  onAction?: (target: any) => void;
+  onClick?: () => void;
 };

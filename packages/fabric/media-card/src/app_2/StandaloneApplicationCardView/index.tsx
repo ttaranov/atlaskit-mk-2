@@ -1,10 +1,9 @@
 import * as React from 'react';
-import ViewModel from '../ViewModel';
+import ViewModel from '../shared/ViewModel';
 import CardFrame from '../../shared/CardFrame';
-import IconImage from '../../shared/IconImage';
 import CardPreview from '../../shared/CardPreview';
+import LinkIcon from '../../shared/LinkIcon';
 import CardDetails from '../shared/CardDetails';
-import { minWidth, maxWidth } from '../shared/width';
 
 export interface StandaloneApplicationCardViewProps extends ViewModel {}
 
@@ -16,36 +15,33 @@ export default class StandaloneApplicationCardView extends React.Component<
       link,
       context,
       title,
+      description,
       icon,
       preview,
       user,
       users,
       details,
       actions,
-      onAction,
+      onClick,
     } = this.props;
     return (
       <CardFrame
-        minWidth={minWidth({ hasPreview: Boolean(preview) })}
-        maxWidth={maxWidth({ hasPreview: Boolean(preview) })}
-        href={link && link.url}
-        icon={
-          context &&
-          context.icon && (
-            <IconImage src={context.icon.url} alt={context.icon.label || ''} />
-          )
-        }
+        minWidth={240}
+        maxWidth={Boolean(preview) ? 400 : 664}
+        href={link}
+        icon={<LinkIcon src={context && context.icon} />}
         text={context && context.text}
+        onClick={onClick}
       >
-        {preview ? <CardPreview url={preview.url} /> : null}
+        {preview ? <CardPreview url={preview} /> : null}
         <CardDetails
           title={title}
+          description={description}
           icon={icon}
           user={user}
           users={users}
-          actions={actions}
           details={details}
-          onAction={onAction}
+          actions={actions}
         />
       </CardFrame>
     );

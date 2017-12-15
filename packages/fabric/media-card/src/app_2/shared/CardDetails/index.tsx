@@ -5,13 +5,12 @@ import Tooltip from '@atlaskit/tooltip';
 import IconImage from '../../../shared/IconImage';
 import PreviewImage from '../../../shared/PreviewImage';
 import {
-  TitleViewModel,
-  IconViewModel,
+  TextWithTooltip,
+  IconWithTooltip,
   UserViewModel,
-  PreviewViewModel,
   ActionViewModel,
   DetailViewModel,
-} from '../../ViewModel';
+} from '../../shared/ViewModel';
 import Users from './Users';
 import Actions from './Actions';
 import Widgets from './Widgets';
@@ -27,14 +26,14 @@ import {
 } from './styled';
 
 export interface CardDetailsProps {
-  title?: TitleViewModel;
-  icon?: IconViewModel;
+  title?: TextWithTooltip;
+  description?: TextWithTooltip;
+  icon?: IconWithTooltip;
   user?: UserViewModel;
   users?: UserViewModel[];
-  thumbnail?: PreviewViewModel;
+  thumbnail?: string;
   details?: DetailViewModel[];
   actions?: ActionViewModel[];
-  onAction?: (target: any) => void;
 }
 
 export interface CardDetailsState {
@@ -79,10 +78,11 @@ export default class CardDetails extends React.Component<
       return null;
     }
 
+    // TODO: handle if there is an error loading the image -> show the placeholder
     return (
       <LeftWrapper>
-        <Tooltip content={icon.label}>
-          <IconImage src={icon.url} alt={icon.label || ''} size={24} />
+        <Tooltip content={icon.tooltip}>
+          <IconImage src={icon.url} size={24} />
         </Tooltip>
       </LeftWrapper>
     );
@@ -95,9 +95,10 @@ export default class CardDetails extends React.Component<
       return null;
     }
 
+    // TODO: handle if there is an error loading the image -> show the placeholder
     return (
       <LeftWrapper>
-        <PreviewImage src={thumbnail.url} />
+        <PreviewImage src={thumbnail} />
       </LeftWrapper>
     );
   }
@@ -111,30 +112,21 @@ export default class CardDetails extends React.Component<
 
     return (
       <LeftWrapper>
-        <Avatar size="medium" src={user.icon.url} name={user.icon.label} />
+        <Avatar size="medium" src={user.icon} name={user.name} />
       </LeftWrapper>
     );
   }
 
   render() {
     const {
-      title: {
-        title = {
-          text: '',
-          label: '',
-        },
-        text = {
-          text: '',
-          label: '',
-        },
-      } = {},
+      title,
+      description,
       icon,
       thumbnail,
       user,
       users,
       details,
       actions,
-      onAction,
     } = this.props;
     const { width } = this.state;
     return (
@@ -145,18 +137,16 @@ export default class CardDetails extends React.Component<
             {!icon && this.renderUser()}
             {!icon && !user && this.renderThumbnail()}
             <CopyWrapper>
-              <Tooltip content={title.label || ''}>
-                <Title>{title.text}</Title>
+              <Tooltip content={title ? title.tooltip : undefined}>
+                <Title>{title ? title.text : undefined}</Title>
               </Tooltip>
-              <Tooltip content={text.label || ''}>
-                <Description>{text.text}</Description>
+              <Tooltip content={description ? description.tooltip : undefined}>
+                <Description>
+                  {description ? description.text : undefined}
+                </Description>
               </Tooltip>
             </CopyWrapper>
-            <Actions
-              compact={width && width < 384}
-              actions={actions}
-              onAction={onAction}
-            />
+            <Actions compact={width && width < 384} actions={actions} />
           </TopWrapper>
           <BottomWrapper padLeft={Boolean(icon || thumbnail || user)}>
             <Widgets details={details} />
