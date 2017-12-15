@@ -1,6 +1,11 @@
 import { Participant } from './types';
 
-export class Participants {
+export interface ReadOnlyParticipants {
+  get(sessionId: string): Participant | undefined;
+  toArray(): ReadonlyArray<Participant>;
+}
+
+export class Participants implements ReadOnlyParticipants {
   private participants: Map<string, Participant>;
 
   constructor(
