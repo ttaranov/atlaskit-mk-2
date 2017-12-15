@@ -28,10 +28,15 @@ export default class GatewayRegistry {
     const childrenKeys = Object.keys(this.children[name]);
     const stackTotal = childrenKeys.length;
 
+    console.log(`DESTINATION "${name}" rendered`, this.containers[name]);
+    console.log('with children', this.children[name]);
+
     this.containers[name].setState({
       children: childrenKeys.sort().map((key, i) => {
         const stackIndex = stackTotal - (i + 1);
         const element = this.children[name][key];
+
+        console.log('KEY: ', key);
 
         return cloneElement(element, { key, stackIndex, stackTotal });
       }),
@@ -40,23 +45,28 @@ export default class GatewayRegistry {
 
   addContainer(name: Name, container: Container) {
     this.containers[name] = container;
+    console.log('DESTINATION "added":', name);
     this.renderContainer(name);
   }
 
   removeContainer(name: Name) {
+    console.log('DESTINATION "removed":', name);
     this.containers[name] = null;
   }
 
   addChild(name: Name, gatewayId: GatewayID, child: Child) {
+    console.log('CHILD "added"', name, child);
     this.children[name][gatewayId] = child;
     this.renderContainer(name);
   }
 
   clearChild(name: Name, gatewayId: GatewayID) {
+    console.log('CHILD "removed":', name, this.children[name]);
     delete this.children[name][gatewayId];
   }
 
   register(name: Name, child: Child) {
+    console.log('CHILD "registered":', name, child);
     this.children[name] = this.children[name] || {};
 
     const gatewayId = `${name}_${this.currentId}`;

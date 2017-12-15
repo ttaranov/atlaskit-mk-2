@@ -42,7 +42,11 @@ export default class FocusLockExample extends Component<Props, State> {
         </p>
         <FocusLock enabled={isActive}>
           <div style={boxStyle}>
-            {isActive ? <LockIcon /> : <UnlockIcon />}
+            {isActive ? (
+              <LockIcon label="Focus locked icon" />
+            ) : (
+              <UnlockIcon label="Focus unlocked icon" />
+            )}
             <div style={{ paddingLeft: 8 }}>
               <p>
                 Once a user moves focus to this element or one of its

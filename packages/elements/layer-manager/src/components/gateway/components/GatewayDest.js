@@ -9,6 +9,7 @@ type Props = {
 };
 type State = {
   children: Node,
+  isMounted: boolean,
 };
 type Context = {
   gatewayRegistry: GatewayRegistry,
@@ -22,14 +23,14 @@ export default class GatewayDest extends Component<Props, State> {
   static defaultProps = {
     component: 'div',
   };
+  state = {
+    children: null,
+  };
 
   constructor(props: Props, context: Context) {
     super(props, context);
     this.gatewayRegistry = context.gatewayRegistry;
   }
-
-  state = { children: null };
-
   componentWillMount() {
     this.gatewayRegistry.addContainer(this.props.name, this);
   }
