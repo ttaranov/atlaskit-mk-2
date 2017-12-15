@@ -35,7 +35,7 @@ describe('StandaloneApplicationCardView', () => {
     expect(element.find(CardFrame).prop('text')).toBeUndefined();
   });
 
-  it('should render icon in the frame when context is provided', () => {
+  it('should render icon URL in the frame when context is provided', () => {
     const element = shallow(
       <StandaloneApplicationCardView
         context={{
@@ -49,9 +49,9 @@ describe('StandaloneApplicationCardView', () => {
     );
   });
 
-  it('should not render icon in the frame when context is not provided', () => {
+  it('should not render icon URL in the frame when context is not provided', () => {
     const element = shallow(<StandaloneApplicationCardView />);
-    expect(element.find(CardFrame).prop('icon')).toBeUndefined();
+    expect(element.find(CardFrame).prop('icon')).toEqual(<LinkIcon />);
   });
 
   it('it should render a preview when there is a preview', () => {
