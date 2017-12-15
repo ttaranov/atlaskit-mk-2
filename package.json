@@ -43,7 +43,7 @@
     "build:media-editor:copy-binaries": "    cd packages/fabric/media-editor && cp -r src/engine/core/binaries dist/es5/engine/core && cp -r src/engine/core/binaries dist/es2015/engine/core"
   },
   "bolt": {
-    "version": ">=0.17.0",
+    "version": "^0.18.0",
     "workspaces": [
       "build/*",
       "packages/utils/*",
@@ -211,7 +211,7 @@
     "babel-runtime": "^6.26.0",
     "babel-traverse": "^6.26.0",
     "babylon": "^6.18.0",
-    "bolt": "^0.17.0",
+    "bolt": "^0.18.0",
     "bytes": "^2.4.0",
     "calendar-base": "^0.3.0",
     "chalk": "^2.1.0",
