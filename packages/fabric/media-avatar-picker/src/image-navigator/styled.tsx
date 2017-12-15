@@ -1,5 +1,5 @@
 /* tslint:disable:variable-name */
-import styled, {keyframes} from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 const spin = keyframes`
@@ -10,7 +10,11 @@ const spin = keyframes`
 export const Container = styled.div`
   width: ${akGridSizeUnitless * 32}px;
   box-sizing: border-box;
-  *, *:before, *:after {box-sizing: border-box;}
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
 `;
 
 export const SliderContainer = styled.div`
@@ -51,7 +55,7 @@ export const DragZone = styled.div`
   padding: 15px;
   position: relative;
   border-radius: 100%;
-  transition: background-color .3s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition: background-color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
 
   &:after {
     content: '';
@@ -62,15 +66,18 @@ export const DragZone = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    transition: border-color .3s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: border-color 0.3s cubic-bezier(0.19, 1, 0.22, 1);
   }
 
-  ${(props: DragZoneProps) => props.isDroppingFile && `
+  ${(props: DragZoneProps) =>
+    (props.isDroppingFile &&
+      `
     background-color: #ddecfe;
     &:after {
       ${droppingAnimation}
     }
-  ` || ''}
+  `) ||
+    ''};
 `;
 
 export const DragZoneImage = styled.img`
