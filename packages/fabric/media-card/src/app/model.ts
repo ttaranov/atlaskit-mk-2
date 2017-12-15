@@ -17,6 +17,7 @@ export interface AppCardTitle {
 export interface AppCardDescription {
   title?: string; // the bolded bit
   text: string;
+  lines?: number;
 }
 
 export interface AppCardIcon {

@@ -7,6 +7,7 @@ export interface DescriptionViewProps {
   text: string;
   title?: string;
   contentMaxWidth: number;
+  lines?: number;
 }
 
 export class DescriptionView extends React.Component<DescriptionViewProps, {}> {
@@ -19,11 +20,11 @@ export class DescriptionView extends React.Component<DescriptionViewProps, {}> {
   }
 
   renderText() {
-    const { text } = this.props;
+    const { text, lines } = this.props;
     if (!text) {
       return null;
     }
-    return <Ellipsify lines={2} text={text} inline={true} />;
+    return <Ellipsify lines={lines || 2} text={text} inline={true} />;
   }
 
   render(): JSX.Element {

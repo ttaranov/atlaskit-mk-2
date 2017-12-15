@@ -75,6 +75,7 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
       <DescriptionView
         title={description.title}
         text={description.text}
+        lines={description.lines}
         contentMaxWidth={this.contentMaxWidth}
       />
     );

@@ -136,6 +136,11 @@ const modelWithTitleInDescription: AppCardModel = {
   description: { title: 'Lorem Ipsum', text: loremIpsum },
 };
 
+const modelWithLinesInDescription: AppCardModel = {
+  ...modelWithShortTitle,
+  description: { text: loremIpsum, lines: 4 },
+};
+
 const metaUsers = [userJamesNewell, userJonBlower, userScottSimpson];
 const modelWithUsersInDetails: AppCardModel = {
   ...modelWithShortTitle,
@@ -666,6 +671,7 @@ export default () => (
       <Section title="With description">
         <AppCardView model={modelWithDescription} />
         <AppCardView model={modelWithTitleInDescription} />
+        <AppCardView model={modelWithLinesInDescription} />
       </Section>
 
       <Section title="With details">
