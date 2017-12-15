@@ -57,7 +57,7 @@ function getColor(props) {
   return colors.text(props);
 }
 
-const getCursor = ({ disabled }) => (disabled ? 'default' : 'pointer');
+const getCursor = ({ disabled }) => (disabled ? 'not-allowed' : 'pointer');
 
 function getHoverBackgroundColor(props) {
   if (props.previouslySelected) return hoverPreviouslySelectedBackground(props);
