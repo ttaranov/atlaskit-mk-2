@@ -34,6 +34,7 @@ export const MediaSingleDimensionHelper = ({
   width,
   height,
 }: WrapperProps) => css`
+  margin: 0 auto;
   float: ${float(layout)};
   clear: ${clear(layout)};
   max-width: ${width}px;
