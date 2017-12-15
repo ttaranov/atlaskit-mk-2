@@ -1,5 +1,8 @@
 # @atlaskit/analytics
 
+## 2.3.3
+- [patch] Migrated to the mk2 repo [eba7e6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eba7e6a)
+
 ## 2.3.2 (2017-10-24)
 
 * bug fix; update the cleanprops function ([e27ace3](https://bitbucket.org/atlassian/atlaskit/commits/e27ace3))
