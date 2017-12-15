@@ -1,7 +1,7 @@
 import * as Chance from 'chance';
-import { randexp } from 'randexp';
+import * as RandExp from 'randexp';
 
-randexp.defaultRange.add(0, 65535); // Increase the character range
+RandExp.prototype.defaultRange.add(0, 65535); // Increase the character range
 
 const generator = new Chance();
 
@@ -31,10 +31,10 @@ export const itemFromList = <T>(list: T[]): T => {
 
 export const stringFromPattern = (pattern: string) => {
   if (pattern.indexOf('$') >= 0) {
-    return randexp(pattern);
+    return new RandExp(pattern).gen();
   }
   // pad end of string, if regex does not specify end match
-  return randexp(pattern) + generator.string();
+  return new RandExp(pattern).gen() + generator.string();
 };
 
 export const decimalFromZeroToOne = () => {

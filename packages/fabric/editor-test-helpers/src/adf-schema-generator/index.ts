@@ -1,7 +1,7 @@
 /// <reference types="node" />
-import * as schema from './schema.json';
+import * as schema from '@atlaskit/editor-common/json-schema/v1/full.json';
 import { JSONSchema4 } from 'json-schema';
-import *  as RefParser from 'json-schema-ref-parser';
+import * as RefParser from 'json-schema-ref-parser';
 import createADFGenerator from './schema-generator';
 import { transformSchema } from './utils';
 import { SchemaNode } from './types';
