@@ -11,10 +11,10 @@ type EnterType = (node: Element, isAppearing: boolean) => void;
 type ExitType = (node: Element) => void;
 
 type TransitionType = {
-  entering?: {},
-  entered?: {},
-  exiting?: {},
-  exited?: {},
+  entering?: Object,
+  entered?: Object,
+  exiting?: Object,
+  exited?: Object,
 };
 
 type Props = {
@@ -92,11 +92,9 @@ Animation.defaultProps = DefaultProps;
 
 // FADE
 // ==============================
-type FadeProps = $Diff<
-  Props,
-  { style: {}, styleDefault: {}, transition: TransitionType },
->;
-export const Fade = (props: FadeProps) => (
+export const Fade = (
+  props: $Diff<Props, { styleDefault: {}, transition: {} }>,
+) => (
   <Animation
     styleDefault={{
       transition: `opacity ${duration / 2}ms`,
@@ -112,21 +110,22 @@ export const Fade = (props: FadeProps) => (
 
 // SLIDE UP
 // ==============================
-type SlideUpProps = $Diff<
-  Props,
-  { style: {}, styleDefault: {}, transition: TransitionType },
->;
 export const SlideUp = ({
   stackIndex,
+  in: transitionIn,
+  style,
   ...props
-}: { stackIndex: number } & SlideUpProps) => {
+}: { stackIndex: number } & $Diff<
+  Props,
+  { styleDefault: {}, transition: {} },
+>) => {
   const translateY = stackIndex * (verticalOffset / 2);
   const restingTransform = `translate3d(0, ${translateY}px, 0)`;
 
   return (
     <Animation
-      in={props.in}
-      style={props.style}
+      in={transitionIn}
+      style={style}
       styleDefault={{
         transition: `transform ${duration}ms ${easing}`,
         transform: restingTransform,

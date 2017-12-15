@@ -1,3 +1,4 @@
+// @flow
 // eslint-disable-next-line import/prefer-default-export
 export const WIDTH_ENUM = {
   values: ['small', 'medium', 'large', 'x-large'],

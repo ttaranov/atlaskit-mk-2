@@ -1,3 +1,4 @@
+// @flow
 import styled, { css } from 'styled-components';
 import { borderRadius, colors, themed } from '@atlaskit/theme';
 import { WIDTH_ENUM } from '../shared-variables';
@@ -23,14 +24,24 @@ const maxDimensions = css`calc(100% - ${gutter * 2}px)`;
 const maxHeightDimensions = css`calc(100% - ${gutter * 2 -
   IEMaxHeightCalcPx}px)`;
 
-export const dialogWidth = ({ widthName, widthValue }) => {
+export const dialogWidth = ({
+  widthName,
+  widthValue,
+}: {
+  widthName?: string,
+  widthValue?: string | number,
+}) => {
   if (typeof widthValue === 'number') {
     return `${widthValue}px`;
   }
 
   return widthName ? `${WIDTH_ENUM.widths[widthName]}px` : widthValue || 'auto';
 };
-export const dialogHeight = ({ heightValue }) => {
+export const dialogHeight = ({
+  heightValue,
+}: {
+  heightValue?: string | number,
+}) => {
   if (typeof heightValue === 'number') {
     return `${heightValue}px`;
   }

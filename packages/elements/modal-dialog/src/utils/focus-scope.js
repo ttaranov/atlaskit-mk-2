@@ -1,3 +1,4 @@
+// @flow
 /*
   Fork of a11y-focus-scope
   https://github.com/cloudflare/a11y-focus-scope
@@ -31,16 +32,21 @@ function init(element, findTabbable) {
 
   if (findTabbable) focus();
 
+  // $FlowFixMe: internal conflict in the flow definition of document.addEventListener
   document.addEventListener('focusin', onFocusIn);
 
   return function teardown() {
+    // $FlowFixMe: internal conflict in the flow definition of document.removeEnvent
     document.removeEventListener('focusin', onFocusIn);
   };
 }
 
 let teardownFn;
 
-exports.scopeFocus = function scopeFocus(element, findTabbable) {
+exports.scopeFocus = function scopeFocus(
+  element: HTMLElement,
+  findTabbable: boolean,
+) {
   if (teardownFn) teardownFn();
   teardownFn = init(element, findTabbable);
 };

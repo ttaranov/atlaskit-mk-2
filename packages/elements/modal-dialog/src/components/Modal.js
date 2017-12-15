@@ -186,6 +186,8 @@ class Modal extends Component<Props, State> {
       footer,
       header,
       height,
+      // $FlowFixMe
+      in: transitionIn, // eslint-disable-line react/prop-types
       isChromeless,
       onClose,
       onCloseComplete,
@@ -196,13 +198,12 @@ class Modal extends Component<Props, State> {
       heading,
       width,
       scrollBehavior,
-      ...props
     } = this.props;
 
     const { isExiting, scrollDistance } = this.state;
 
     const isBackground = stackIndex != null && stackIndex > 0;
-    const transitionProps = { in: props.in, stackIndex };
+    const transitionProps = { in: transitionIn, stackIndex };
 
     // If a custom width (number or percentage) is supplied, set inline style
     // otherwise allow styled component to consume as named prop

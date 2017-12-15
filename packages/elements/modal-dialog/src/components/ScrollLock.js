@@ -28,12 +28,13 @@ export default class ScrollLock extends PureComponent<Props, {}> {
   originalStyles = {};
   static defaultProps = { detectScrollbars: true };
   componentDidMount() {
+    if (!document.body) return;
     const target = document.body;
-    const scrollbarWidth = window.innerWidth - document.body.clientWidth;
+    const scrollbarWidth = window.innerWidth - target.clientWidth;
 
     // keep any styles already applied to the body
     STYLE_KEYS.forEach(key => {
-      this.originalStyles[key] = target.style[key];
+      this.originalStyles[key] = target.style.getPropertyValue(key);
     });
 
     if (this.props.detectScrollbars) {
@@ -41,16 +42,17 @@ export default class ScrollLock extends PureComponent<Props, {}> {
     }
 
     Object.keys(LOCK_STYLES).forEach(rule => {
-      const val = LOCK_STYLES[rule];
-      target.style[rule] = val;
+      const value = LOCK_STYLES[rule];
+      target.style.setProperty(rule, value);
     });
   }
   componentWillUnmount() {
+    if (!document.body) return;
     const target = document.body;
 
     // reapply original body styles, if any
     STYLE_KEYS.forEach(rule => {
-      target.style[rule] = this.originalStyles[rule];
+      target.style.setProperty(rule, this.originalStyles[rule]);
     });
   }
   render() {

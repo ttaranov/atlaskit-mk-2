@@ -11,7 +11,7 @@ import {
 } from '../styled/Content';
 
 const icon = { danger: ErrorIcon, warning: WarningIcon };
-const TitleIcon = ({ appearance }: { appearance: 'danger' | 'warning' }) => {
+const TitleIcon = ({ appearance }: { appearance?: 'danger' | 'warning' }) => {
   if (!appearance) return null;
 
   const Icon = icon[appearance];

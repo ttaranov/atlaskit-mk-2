@@ -6,5 +6,7 @@ export type ChildrenType = Node;
 export type ComponentType = PropType<Component<{}, {}, {}>, any>;
 export type ElementType = PropType<Element<mixed>, any>;
 export type FunctionType = (...args: Array<any>) => mixed;
-export type KeyboardOrMouseEvent = MouseEvent<any> | KeyboardEvent<any>;
+export type KeyboardOrMouseEvent =
+  | SyntheticMouseEvent<any>
+  | SyntheticKeyboardEvent<any>;
 export type AppearanceType = 'danger' | 'warning';

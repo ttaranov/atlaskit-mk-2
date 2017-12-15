@@ -109,12 +109,14 @@ export default class Content extends Component<Props, State> {
   componentDidMount() {
     this._isMounted = true;
 
+    // $FlowFixMe
     document.addEventListener('keydown', this.handleKeyDown, false);
     document.addEventListener('keyup', this.handleKeyUp, false);
 
     if (this.scrollContainer) {
+      const capturedScrollContainer = this.scrollContainer;
       window.addEventListener('resize', this.determineKeylines, false);
-      this.scrollContainer.addEventListener(
+      capturedScrollContainer.addEventListener(
         'scroll',
         this.determineKeylines,
         false,
@@ -126,19 +128,21 @@ export default class Content extends Component<Props, State> {
     const { stackIndex } = this.props;
 
     // update focus scope and let consumer know when stack index has changed
-    if (nextProps.stackIndex !== stackIndex) {
+    if (nextProps.stackIndex && nextProps.stackIndex !== stackIndex) {
       this.handleStackChange(nextProps.stackIndex);
     }
   }
   componentWillUnmount() {
     this._isMounted = false;
 
+    // $FlowFixMe
     document.removeEventListener('keydown', this.handleKeyDown, false);
     document.removeEventListener('keyup', this.handleKeyUp, false);
 
     if (this.scrollContainer) {
+      const capturedScrollContainer = this.scrollContainer;
       window.removeEventListener('resize', this.determineKeylines, false);
-      this.scrollContainer.removeEventListener(
+      capturedScrollContainer.removeEventListener(
         'scroll',
         this.determineKeylines,
         false,
@@ -163,8 +167,8 @@ export default class Content extends Component<Props, State> {
   handleKeyUp = () => {
     this.escapeIsHeldDown = false;
   };
-  handleKeyDown = (event: KeyboardOrMouseEvent) => {
-    const { onClose, shouldCloseOnEscapePress, stackIndex } = this.props;
+  handleKeyDown = (event: SyntheticKeyboardEvent<any>) => {
+    const { onClose, shouldCloseOnEscapePress, stackIndex = 0 } = this.props;
 
     // avoid consumers accidently closing multiple modals if they hold escape.
     if (this.escapeIsHeldDown) return;
@@ -175,14 +179,13 @@ export default class Content extends Component<Props, State> {
 
     switch (event.key) {
       case 'Escape':
-        if (shouldCloseOnEscapePress) onClose();
+        if (shouldCloseOnEscapePress) onClose(event);
         break;
       default:
     }
   };
   handleStackChange = (stackIndex: number) => {
     const { onStackChange } = this.props;
-
     if (onStackChange) onStackChange(stackIndex);
   };
 

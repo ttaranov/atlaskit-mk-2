@@ -1,3 +1,4 @@
+// @flow
 import styled, { css } from 'styled-components';
 import { colors, gridSize, math, themed } from '@atlaskit/theme';
 
@@ -28,6 +29,8 @@ const HeaderOrFooter = styled.div`
   justify-content: space-between;
   transition: box-shadow 200ms;
 `;
+
+// $FlowFixMe: Passed in type incompatible with expected type of React.Component (quite sure this is an issue with styled component flow types)
 export const Header = styled(HeaderOrFooter)`
   padding: ${outerGutter}px ${outerGutter}px ${innerGutter - keylineHeight}px;
   box-shadow: ${p =>
@@ -77,6 +80,8 @@ export const Body = styled.div`
 
 // Footer
 // ==============================
+
+// $FlowFixMe: Passed in type incompatible with expected type of React.Component (quite sure this is an issue with styled component flow types)
 export const Footer = styled(HeaderOrFooter)`
   padding: ${innerGutter - keylineHeight}px ${outerGutter}px ${outerGutter}px;
   box-shadow: ${p =>
