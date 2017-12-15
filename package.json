@@ -273,6 +273,7 @@
     "raf-stub": "^2.0.1",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.2",
+    "react-deprecate": "^0.1.0",
     "react-dom": "^15.6.1",
     "react-ga": "^2.3.5",
     "react-lazily-render": "^0.0.6",
