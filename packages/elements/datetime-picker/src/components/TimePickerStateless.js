@@ -7,6 +7,7 @@ import TimeDialog from './internal/TimeDialog';
 import type { Handler } from '../types';
 
 type Props = {
+  autoFocus: boolean,
   value: ?string,
   displayValue: string,
   focused: ?string,
@@ -24,6 +25,7 @@ export default class TimePickerStateless extends Component<Props> {
   picker: ?ElementRef<typeof Picker>;
 
   static defaultProps = {
+    autoFocus: false,
     isDisabled: false,
     isOpen: false,
     value: null,
@@ -47,6 +49,7 @@ export default class TimePickerStateless extends Component<Props> {
   render() {
     return (
       <Picker
+        autoFocus={this.props.autoFocus}
         field={TimeField}
         dialog={TimeDialog}
         isDisabled={this.props.isDisabled}
