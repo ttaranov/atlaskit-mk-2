@@ -6,6 +6,8 @@ import { type ComponentType } from '../types';
 
 import SpotlightRegistry from '../components/SpotlightRegistry';
 
+const SCROLLABLE = /auto|scroll/;
+
 type Props = { target: string };
 type State = {
   clone?: string, // string representation of HTMLElement
@@ -21,12 +23,11 @@ function computedStyle(node, prop) {
 }
 
 function getScrollParent(node: any) {
-  const scrollable = ['auto', 'scroll'];
   if (node == null) return null;
   if (
     node.scrollHeight > node.clientHeight &&
-    (scrollable.includes(computedStyle(node, 'overflow')) ||
-      scrollable.includes(computedStyle(node, 'overflowY')))
+    (SCROLLABLE.test(computedStyle(node, 'overflow')) ||
+      SCROLLABLE.test(computedStyle(node, 'overflowY')))
   ) {
     return node;
   }
