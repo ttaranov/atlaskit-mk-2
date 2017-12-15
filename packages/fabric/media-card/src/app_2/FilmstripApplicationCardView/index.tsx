@@ -4,6 +4,14 @@ import CardFrame from '../../shared/CardFrame';
 import LinkIcon from '../../shared/LinkIcon';
 import CardDetails from '../shared/CardDetails';
 
+/*
+
+  This card is currently not exported and is not used internally. It will be used in the future
+  when smart-cards can be displayed in the Filmstrip. This card does not have a preview and has
+  a smaller width than other smart-cards.
+
+*/
+
 export interface FilmstripApplicationCardViewProps extends ViewModel {}
 
 export default class FilmstripApplicationCardView extends React.Component<

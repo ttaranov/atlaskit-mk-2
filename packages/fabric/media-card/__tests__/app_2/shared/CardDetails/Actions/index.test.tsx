@@ -4,6 +4,21 @@ import Button from '@atlaskit/button';
 import { DropdownItem } from '@atlaskit/dropdown-menu';
 import Actions from '../../../../../src/app_2/shared/CardDetails/Actions';
 
+const likeAction = {
+  text: 'Like',
+  handler: jest.fn(),
+};
+
+const commentAction = {
+  text: 'Comment',
+  handler: jest.fn(),
+};
+
+const reportAction = {
+  text: 'Report',
+  handler: jest.fn(),
+};
+
 describe('Actions', () => {
   it('should render zero actions as null', () => {
     const element = shallow(<Actions actions={[]} />);
@@ -11,34 +26,14 @@ describe('Actions', () => {
   });
 
   it('should render a single action as a drop down menu when compact=true', () => {
-    const element = shallow(
-      <Actions
-        compact={true}
-        actions={[
-          {
-            text: 'Like',
-            handler: jest.fn(),
-          },
-        ]}
-      />,
-    );
+    const element = shallow(<Actions compact={true} actions={[likeAction]} />);
 
     expect(element.find(Button)).toHaveLength(0);
     expect(element.find(DropdownItem)).toHaveLength(1);
   });
 
   it('should render a single action as a single button when compact=false', () => {
-    const element = shallow(
-      <Actions
-        compact={false}
-        actions={[
-          {
-            text: 'Like',
-            handler: jest.fn(),
-          },
-        ]}
-      />,
-    );
+    const element = shallow(<Actions compact={false} actions={[likeAction]} />);
 
     const buttons = element.find(Button);
 
@@ -50,19 +45,7 @@ describe('Actions', () => {
 
   it('should render two actions as two buttons when compact=false', () => {
     const element = shallow(
-      <Actions
-        compact={false}
-        actions={[
-          {
-            text: 'Like',
-            handler: jest.fn(),
-          },
-          {
-            text: 'Comment',
-            handler: jest.fn(),
-          },
-        ]}
-      />,
+      <Actions compact={false} actions={[likeAction, commentAction]} />,
     );
 
     const buttons = element.find(Button);
@@ -88,20 +71,7 @@ describe('Actions', () => {
     const element = shallow(
       <Actions
         compact={false}
-        actions={[
-          {
-            text: 'Like',
-            handler: jest.fn(),
-          },
-          {
-            text: 'Comment',
-            handler: jest.fn(),
-          },
-          {
-            text: 'Report',
-            handler: jest.fn(),
-          },
-        ]}
+        actions={[likeAction, commentAction, reportAction]}
       />,
     );
 

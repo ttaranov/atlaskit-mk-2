@@ -1,5 +1,8 @@
 import * as React from 'react';
 
+// TODO: This file should be removed as soon as we get the new Icons in @atlaskit/icon
+// MD-33
+
 export default () => (
   <svg
     width="55px"

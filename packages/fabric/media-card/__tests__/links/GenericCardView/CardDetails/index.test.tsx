@@ -17,7 +17,7 @@ describe('CardDetails', () => {
     expect(element.find(TitlePlaceholder)).toHaveLength(1);
   });
 
-  it('should not render real content when isPlaceholder=false', () => {
+  it('should render real content by default', () => {
     const element = shallow(<CardDetails />);
     expect(element.find(Title)).toHaveLength(1);
     expect(element.find(TitlePlaceholder)).toHaveLength(0);

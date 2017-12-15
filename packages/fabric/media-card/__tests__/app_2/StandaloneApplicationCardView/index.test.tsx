@@ -23,19 +23,19 @@ describe('StandaloneApplicationCardView', () => {
     expect(element.find(CardFrame).prop('href')).toBeUndefined();
   });
 
-  it('should render an icon in the frame when context is provided', () => {
+  it('should render text in the frame when context is provided', () => {
     const element = shallow(
       <StandaloneApplicationCardView context={{ text: 'Jira' }} />,
     );
     expect(element.find(CardFrame).prop('text')).toEqual('Jira');
   });
 
-  it('should not render an icon in the frame when context is not provided', () => {
+  it('should not render text in the frame when context is not provided', () => {
     const element = shallow(<StandaloneApplicationCardView />);
     expect(element.find(CardFrame).prop('text')).toBeUndefined();
   });
 
-  it('should render text in the frame when context is provided', () => {
+  it('should render icon in the frame when context is provided', () => {
     const element = shallow(
       <StandaloneApplicationCardView
         context={{
@@ -49,9 +49,9 @@ describe('StandaloneApplicationCardView', () => {
     );
   });
 
-  it('should not render text in the frame when context is not provided', () => {
+  it('should not render icon in the frame when context is not provided', () => {
     const element = shallow(<StandaloneApplicationCardView />);
-    expect(element.find(CardFrame).prop('text')).toBeUndefined();
+    expect(element.find(CardFrame).prop('icon')).toBeUndefined();
   });
 
   it('it should render a preview when there is a preview', () => {
