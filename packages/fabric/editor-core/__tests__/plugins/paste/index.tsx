@@ -192,6 +192,24 @@ if (!browser.ie && !isMobileBrowser()) {
           );
         });
 
+        it('should not process html entities', () => {
+          const { editorView } = editor(doc(p('{<>}')));
+          dispatchPasteEvent(editorView, {
+            plain: '&amp; &gt; &nbsp;',
+          });
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p('&amp; &gt; &nbsp;')),
+          );
+        });
+
+        it('should not process escaping', () => {
+          const { editorView } = editor(doc(p('{<>}')));
+          dispatchPasteEvent(editorView, {
+            plain: '\\&amp;',
+          });
+          expect(editorView.state.doc).toEqualDocument(doc(p('\\&amp;')));
+        });
+
         it('should parse Urls with "~~text~~"', () => {
           const { editorView } = editor(doc(p('{<>}')));
           const href = 'http://example.com/~~text~~/something';

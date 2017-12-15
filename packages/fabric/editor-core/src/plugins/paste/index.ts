@@ -93,12 +93,6 @@ export function createPlugin(
   let atlassianMarkDownParser: MarkdownParser;
 
   const md = MarkdownIt('zero', { html: false });
-  md.enable([
-    // Process html entity - &#123;, &#xAF;, &quot;, ...
-    'entity',
-    // Process escaped chars and hardbreaks
-    'escape',
-  ]);
 
   // Enable markdown plugins based on schema
   ['nodes', 'marks'].forEach(key => {
@@ -163,6 +157,9 @@ export function createPlugin(
 
         const text = event.clipboardData.getData('text/plain');
         const html = event.clipboardData.getData('text/html');
+        console.log('--------------text:', text);
+        console.log('--------------html:', html);
+
         const node = slice.content.firstChild;
         const { schema } = view.state;
         const selectedNode = $from.node($from.depth);
