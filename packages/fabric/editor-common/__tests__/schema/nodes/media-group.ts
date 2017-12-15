@@ -18,7 +18,7 @@ describe(`${name}/schema mediaGroup node`, () => {
       expect(mediaGroupNode.type).toEqual(schema.nodes.mediaGroup);
     });
 
-    it('auto creates a media node inside single image node', () => {
+    it('auto creates a media node inside mediaSingle node', () => {
       const doc = fromHTML(
         `
         <div

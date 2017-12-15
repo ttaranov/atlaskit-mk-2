@@ -53,6 +53,7 @@ export default function Example() {
         />
         <ToolsDrawer
           renderEditor={({
+            disabled,
             mentionProvider,
             emojiProvider,
             mediaProvider,
@@ -61,6 +62,7 @@ export default function Example() {
             <Editor
               {...getPropsPreset('message')}
               analyticsHandler={analyticsHandler}
+              disabled={disabled}
               maxHeight={305}
               mentionProvider={mentionProvider}
               emojiProvider={emojiProvider}

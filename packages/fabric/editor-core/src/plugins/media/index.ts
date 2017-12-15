@@ -1,8 +1,16 @@
-import analyticsService from '../../analytics/service';
 import * as assert from 'assert';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-
+import { Node as PMNode, Schema } from 'prosemirror-model';
+import { insertPoint } from 'prosemirror-transform';
+import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
+import {
+  EditorState,
+  NodeSelection,
+  Plugin,
+  PluginKey,
+  Transaction,
+} from 'prosemirror-state';
 import {
   Context,
   DefaultMediaStateManager,
@@ -13,43 +21,33 @@ import {
   ContextConfig,
   ContextFactory,
 } from '@atlaskit/media-core';
-
 import {
-  copyOptionalMediaAttributes,
+  copyPrivateMediaAttributes,
   MediaType,
+  Layout,
 } from '@atlaskit/editor-common';
 
-import { Node as PMNode, Schema } from 'prosemirror-model';
-import {
-  EditorState,
-  NodeSelection,
-  Plugin,
-  PluginKey,
-  Transaction,
-} from 'prosemirror-state';
-import { insertPoint } from 'prosemirror-transform';
-import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
-import { Alignment, Display } from '@atlaskit/editor-common';
-
-import PickerFacadeType from './picker-facade';
+import analyticsService from '../../analytics/service';
 import { ErrorReporter, isImage } from '../../utils';
 import { Dispatch } from '../../editor/event-dispatcher';
-import { MediaPluginOptions } from './media-plugin-options';
-import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
 import { EditorAppearance } from '../../editor/types/editor-props';
+import { ProsemirrorGetPosHandler } from '../../nodeviews';
+import DropPlaceholder from '../../ui/Media/DropPlaceholder';
 import {
   ReactMediaGroupNode,
   ReactMediaNode,
-  ReactSingleImageNode,
+  ReactMediaSingleNode,
 } from '../../nodeviews';
+
+import PickerFacadeType from './picker-facade';
+import { MediaPluginOptions } from './media-plugin-options';
 import keymapPlugin from './keymap';
 import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
 import { insertMediaGroupNode } from './media-files';
-import { insertSingleImageNodes } from './single-image';
+import { insertMediaSingleNodes } from './media-single';
 import { removeMediaNode, splitMediaGroup } from './media-common';
 import PickerFacade from './picker-facade';
-import DropPlaceholder from '../../ui/Media/DropPlaceholder';
 
 const MEDIA_END_STATES = ['ready', 'error', 'cancelled'];
 
@@ -216,7 +214,7 @@ export class MediaPluginState {
 
   insertFiles = (mediaStates: MediaState[]): void => {
     const { stateManager } = this;
-    const { singleImage } = this.view.state.schema.nodes;
+    const { mediaSingle } = this.view.state.schema.nodes;
     const collection = this.collectionFromProvider();
     if (!collection) {
       return;
@@ -230,8 +228,8 @@ export class MediaPluginState {
       this.stateManager.subscribe(mediaState.id, this.handleMediaState),
     );
 
-    if (this.editorAppearance !== 'message' && areImages && singleImage) {
-      insertSingleImageNodes(this.view, mediaStates, collection);
+    if (this.editorAppearance !== 'message' && areImages && mediaSingle) {
+      insertMediaSingleNodes(this.view, mediaStates, collection);
     } else {
       insertMediaGroupNode(this.view, mediaStates, collection);
     }
@@ -403,15 +401,14 @@ export class MediaPluginState {
     this.mediaNodes = this.mediaNodes.filter(({ node }) => oldNode !== node);
   };
 
-  align = (alignment: Alignment, display: Display = 'block'): boolean => {
+  align = (layout: Layout): boolean => {
     if (!this.isMediaNodeSelection()) {
       return false;
     }
     const { selection: { from }, schema, tr } = this.view.state;
     this.view.dispatch(
-      tr.setNodeMarkup(from - 1, schema.nodes.singleImage, {
-        alignment,
-        display,
+      tr.setNodeMarkup(from - 1, schema.nodes.mediaSingle, {
+        layout,
       }),
     );
     return true;
@@ -575,7 +572,7 @@ export class MediaPluginState {
 
       case 'ready':
         this.stateManager.unsubscribe(state.id, this.handleMediaState);
-        this.replaceNodeWithPublicId(state.id, state.publicId!);
+        this.replaceTemporaryNode(state);
         break;
     }
   };
@@ -596,13 +593,15 @@ export class MediaPluginState {
     }
   };
 
-  private replaceNodeWithPublicId = (temporaryId: string, publicId: string) => {
+  private replaceTemporaryNode = (state: MediaState) => {
     const { view } = this;
     if (!view) {
       return;
     }
 
-    const mediaNodeWithPos = this.findMediaNode(temporaryId);
+    const { id, publicId, thumbnail } = state;
+
+    const mediaNodeWithPos = this.findMediaNode(id);
     if (!mediaNodeWithPos) {
       return;
     }
@@ -612,10 +611,12 @@ export class MediaPluginState {
     const newNode = view.state.schema.nodes.media!.create({
       ...mediaNode.attrs,
       id: publicId,
+      width: thumbnail && thumbnail.width,
+      height: thumbnail && thumbnail.height,
     });
 
     // Copy all optional attributes from old node
-    copyOptionalMediaAttributes(mediaNode.attrs, newNode.attrs);
+    copyPrivateMediaAttributes(mediaNode.attrs, newNode.attrs);
 
     // replace the old node with a new one
     const nodePos = getPos();
@@ -669,7 +670,22 @@ export class MediaPluginState {
   };
 }
 
+const createDropPlaceholder = (editorAppearance?: EditorAppearance) => {
+  const dropPlaceholder = document.createElement('div');
+  if (editorAppearance === 'full-page') {
+    ReactDOM.render(
+      React.createElement(DropPlaceholder, { type: 'single' }),
+      dropPlaceholder,
+    );
+  } else {
+    ReactDOM.render(React.createElement(DropPlaceholder), dropPlaceholder);
+  }
+  return dropPlaceholder;
+};
+
 export const stateKey = new PluginKey('mediaPlugin');
+export const getMediaPluginState = (state: EditorState) =>
+  stateKey.getState(state) as MediaPluginState;
 
 export const createPlugin = (
   schema: Schema,
@@ -677,8 +693,8 @@ export const createPlugin = (
   dispatch?: Dispatch,
   editorAppearance?: EditorAppearance,
 ) => {
-  const dropZone = document.createElement('div');
-  ReactDOM.render(React.createElement(DropPlaceholder), dropZone);
+  const dropPlaceholder = createDropPlaceholder(editorAppearance);
+
   return new Plugin({
     state: {
       init(config, state) {
@@ -712,19 +728,19 @@ export const createPlugin = (
       },
     },
     key: stateKey,
-    view: (view: EditorView) => {
-      const pluginState: MediaPluginState = stateKey.getState(view.state);
+    view: view => {
+      const pluginState = getMediaPluginState(view.state);
       pluginState.setView(view);
 
       return {
-        update: (view: EditorView, prevState: EditorState) => {
+        update: () => {
           pluginState.insertLinks();
         },
       };
     },
     props: {
-      decorations: (state: EditorState) => {
-        const pluginState = stateKey.getState(state);
+      decorations: state => {
+        const pluginState = getMediaPluginState(state);
         if (!pluginState.showDropzone) {
           return;
         }
@@ -748,7 +764,7 @@ export const createPlugin = (
         }
 
         const dropPlaceholders: Decoration[] = [
-          Decoration.widget(pos, dropZone, { key: 'drop-placeholder' }),
+          Decoration.widget(pos, dropPlaceholder, { key: 'drop-placeholder' }),
         ];
         return DecorationSet.create(state.doc, dropPlaceholders);
       },
@@ -761,10 +777,10 @@ export const createPlugin = (
           },
           true,
         ),
-        singleImage: nodeViewFactory(
+        mediaSingle: nodeViewFactory(
           options.providerFactory,
           {
-            singleImage: ReactSingleImageNode,
+            mediaSingle: ReactMediaSingleNode,
             media: ReactMediaNode,
           },
           true,
@@ -776,8 +792,7 @@ export const createPlugin = (
         to: number,
         text: string,
       ): boolean {
-        const pluginState: MediaPluginState = stateKey.getState(view.state);
-        pluginState.splitMediaGroup();
+        getMediaPluginState(view.state).splitMediaGroup();
         return false;
       },
     },

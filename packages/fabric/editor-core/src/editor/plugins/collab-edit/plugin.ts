@@ -19,7 +19,7 @@ import {
   PresenceData,
   TelepointerData,
 } from './types';
-import { Participants } from './participants';
+import { Participants, ReadOnlyParticipants } from './participants';
 import { findPointers, createTelepointers } from './utils';
 import { CollabEditProvider } from './provider';
 export { CollabEditProvider };
@@ -46,11 +46,19 @@ export const createPlugin = (
           }
         }
 
+        const { activeParticipants: prevActiveParticipants } = prevPluginState;
         const { activeParticipants, sessionId } = pluginState;
 
         if (collabEditProvider) {
-          const selection = getSendableSelection(oldState, newState);
-          if (selection && sessionId && !tr.docChanged) {
+          const selectionChanged = !oldState.selection.eq(newState.selection);
+          const participantsChanged =
+            prevActiveParticipants !== activeParticipants;
+
+          if (
+            (sessionId && selectionChanged && !tr.docChanged) ||
+            (sessionId && participantsChanged)
+          ) {
+            const selection = getSendableSelection(newState.selection);
             collabEditProvider.sendMessage({
               type: 'telepointer',
               selection,
@@ -59,7 +67,10 @@ export const createPlugin = (
           }
         }
 
-        dispatch(pluginKey, { activeParticipants, sessionId });
+        dispatch(pluginKey, {
+          activeParticipants: activeParticipants.toArray(),
+          sessionId,
+        });
         return pluginState;
       },
     },
@@ -127,7 +138,7 @@ export class PluginState {
   }
 
   get activeParticipants() {
-    return this.participants.toArray();
+    return this.participants as ReadOnlyParticipants;
   }
 
   get sessionId() {

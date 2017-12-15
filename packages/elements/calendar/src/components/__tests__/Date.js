@@ -1,6 +1,6 @@
 // @flow
 
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import React from 'react';
 import DateComponent from '../Date';
 import { DateDiv, DateTd } from '../../styled/Date';
@@ -19,6 +19,19 @@ const create = props => {
 
 const dummyOnClickProp = jest.fn();
 
+test('should render the component', () => {
+  expect(create()).toMatchSnapshot();
+});
+
+test('should prevent default event actions on mouse down', () => {
+  const wrapper = create();
+  const spy = jest.fn();
+  wrapper.simulate('mousedown', {
+    preventDefault: spy,
+  });
+  expect(spy).toHaveBeenCalled();
+});
+
 test('should not call onClick prop when date is disabled', () => {
   const wrapper = create({ disabled: true, onClick: dummyOnClickProp });
   wrapper.find(DateTd).simulate('mouseup');
@@ -31,7 +44,7 @@ test('should call onClick prop when date is enabled (default scenario)', () => {
   expect(dummyOnClickProp).toHaveBeenCalled();
 });
 
-test('DateDiv', () => {
+test('DateDiv props', () => {
   const div = props =>
     create(props)
       .find(DateDiv)

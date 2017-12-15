@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {mount} from 'enzyme';
-import {ImageCropper, ImageCropperProp} from '../src/image-cropper';
-import {Container, DragOverlay} from '../src/image-cropper/styled';
-import {smallImage} from '@atlaskit/media-test-helpers';
+import { mount } from 'enzyme';
+import { ImageCropper, ImageCropperProp } from '../src/image-cropper';
+import { Container, DragOverlay } from '../src/image-cropper/styled';
+import { smallImage } from '@atlaskit/media-test-helpers';
 
 const imageWidth = 600;
 const imageHeight = 400;
@@ -31,7 +31,7 @@ describe('Image cropper', () => {
       left,
       onDragStarted: onDragStartedSpy,
       onImageSize: onImageSizeSpy,
-      ...props
+      ...props,
     };
     component = mount(<ImageCropper {...allProps} />);
     img = component.find('img');
@@ -41,7 +41,7 @@ describe('Image cropper', () => {
 
   describe('with image width', () => {
     beforeEach(() => {
-      createComponent({imageWidth});
+      createComponent({ imageWidth });
     });
 
     describe('image tag', () => {
@@ -73,14 +73,15 @@ describe('Image cropper', () => {
     });
   });
 
-
   describe('without image width', () => {
     beforeEach(() => {
       createComponent();
     });
 
     it('should call onImageSize when image is loaded', () => {
-      img.simulate('load', {target: {naturalWidth: imageWidth, naturalHeight: imageHeight}});
+      img.simulate('load', {
+        target: { naturalWidth: imageWidth, naturalHeight: imageHeight },
+      });
       expect(onImageSizeSpy).toHaveBeenCalledTimes(1);
       expect(onImageSizeSpy).toHaveBeenCalledWith(imageWidth, imageHeight);
     });

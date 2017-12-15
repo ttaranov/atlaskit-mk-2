@@ -35,4 +35,7 @@ export interface EventHandlers {
     onClick?: AppCardEventClickHandler;
     onActionClick?: AppCardActionEventClickHandler;
   };
+  action?: {
+    onClick?: ActionEventClickHandler;
+  };
 }

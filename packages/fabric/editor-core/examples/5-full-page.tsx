@@ -85,6 +85,14 @@ const SaveAndCancelButtons = props => (
 export type Props = {};
 export type State = { disabled: boolean };
 
+const providers = {
+  emojiProvider: emojiStoryData.getEmojiResource({ uploadSupported: true }),
+  mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
+  activityProvider: Promise.resolve(new MockActivityResource()),
+  macroProvider: macroProviderPromise,
+};
+const mediaProvider = storyMediaProviderFactory();
+
 export default class Example extends React.Component<Props, State> {
   state: State = { disabled: true };
 
@@ -106,13 +114,9 @@ export default class Example extends React.Component<Props, State> {
             allowUnsupportedContent={true}
             allowPanel={true}
             allowExtension={true}
-            mediaProvider={storyMediaProviderFactory()}
-            emojiProvider={emojiStoryData.getEmojiResource({
-              uploadSupported: true,
-            })}
-            mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
-            activityProvider={Promise.resolve(new MockActivityResource())}
-            macroProvider={macroProviderPromise}
+            allowPlaceholderCursor={true}
+            {...providers}
+            media={{ provider: mediaProvider, allowMediaSingle: true }}
             // tslint:disable-next-line:jsx-no-lambda
             contentTransformerProvider={schema =>
               new ConfluenceTransformer(schema)

@@ -5,40 +5,33 @@ import {
   UnsupportedBlock,
   ProviderFactory,
   defaultSchema,
-  MentionEventHandler,
-  CardEventClickHandler,
-  AppCardEventClickHandler,
-  AppCardActionEventClickHandler,
-  ActionEventClickHandler,
+  EventHandlers,
+  ADNode,
 } from '@atlaskit/editor-common';
 import { ReactSerializer, renderDocument, RendererContext } from '../../';
 import { RenderOutputStat } from '../../';
 import { Wrapper } from './style';
 
-export interface MentionEventHandlers {
-  onClick?: MentionEventHandler;
-  onMouseEnter?: MentionEventHandler;
-  onMouseLeave?: MentionEventHandler;
+export interface Extension<T> {
+  extensionKey: string;
+  parameters?: T;
+  content?: any; // This would be the original Atlassian Document Format
 }
 
-export interface EventHandlers {
-  mention?: MentionEventHandlers;
-  media?: {
-    onClick?: CardEventClickHandler;
-  };
-  action?: {
-    onClick?: ActionEventClickHandler;
-  };
-  applicationCard?: {
-    onClick?: AppCardEventClickHandler;
-    onActionClick?: AppCardActionEventClickHandler;
-  };
+export type ExtensionHandler<T> = (
+  ext: Extension<T>,
+  doc: any,
+) => JSX.Element | ADNode[] | null;
+
+export interface ExtensionHandlers {
+  [key: string]: ExtensionHandler<any>;
 }
 
 export interface Props {
   document: any;
   dataProviders?: ProviderFactory;
   eventHandlers?: EventHandlers;
+  extensionHandlers?: ExtensionHandlers;
   onComplete?: (stat: RenderOutputStat) => void;
   portal?: HTMLElement;
   rendererContext?: RendererContext;
@@ -63,14 +56,26 @@ export default class Renderer extends PureComponent<Props, {}> {
   }
 
   private updateSerializer(props: Props) {
-    const { eventHandlers, portal, rendererContext } = props;
-
-    this.serializer = new ReactSerializer(
-      this.providerFactory,
+    const {
       eventHandlers,
       portal,
       rendererContext,
-    );
+      document,
+      extensionHandlers,
+      schema,
+    } = props;
+
+    this.serializer = new ReactSerializer({
+      providers: this.providerFactory,
+      eventHandlers,
+      extensionHandlers,
+      portal,
+      objectContext: {
+        adDoc: document,
+        schema,
+        ...rendererContext,
+      } as RendererContext,
+    });
   }
 
   render() {

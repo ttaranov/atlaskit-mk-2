@@ -8,6 +8,7 @@ import {
   ellipsis,
   borderRadius,
   easeOutExpo,
+  size,
 } from '../../styles';
 import {
   akColorN20,
@@ -79,9 +80,7 @@ export interface ImgWrapperProps {
 }
 
 export const ImgWrapper = styled.div`
-  ${center} ${borderRadius} width: ${imgSize}px;
-  height: 100%;
-  overflow: hidden;
+  ${center} ${borderRadius} ${size(imgSize)} overflow: hidden;
   position: relative;
   float: left;
 

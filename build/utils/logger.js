@@ -1,24 +1,23 @@
-// @flow
 const chalk = require('chalk');
 
-function log(message /*: string */) {
-  console.log(message);
+function log() {
+  console.log.apply(this, arguments);
 }
 
-function info(message /*: string */) {
-  console.error(chalk.cyan('info'), message);
+function info() {
+  console.error.apply(this, [chalk.cyan('info'), ...arguments]);
 }
 
-function warn(message /*: string */) {
-  console.error(chalk.yellow('warn'), message);
+function warn() {
+  console.error.apply(this, [chalk.yellow('warn'), ...arguments]);
 }
 
-function error(message /*: string */) {
-  console.error(chalk.red('error'), message);
+function error() {
+  console.error.apply(this, [chalk.red('error'), ...arguments]);
 }
 
-function success(message /*: string */) {
-  console.log(chalk.green('success'), message);
+function success() {
+  console.log.apply(this, [chalk.green('success'), ...arguments]);
 }
 
 module.exports = {

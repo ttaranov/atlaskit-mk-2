@@ -1,16 +1,19 @@
 import * as React from 'react';
-import { MediaState } from '@atlaskit/media-core';
-import { ActivityProvider } from '@atlaskit/activity';
 import { Node, Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
+import { MediaProvider, MediaState } from '@atlaskit/media-core';
+import { Transformer } from '@atlaskit/editor-common';
+import { ActivityProvider } from '@atlaskit/activity';
 import { DelegateAnalyticsEvent } from '@atlaskit/analytics';
+import { MentionProvider } from '@atlaskit/mention';
+
 import { ErrorReportingHandler } from '../../utils/error-reporter';
+import { AnalyticsHandler } from '../../analytics';
 import { ImageUploadHandler } from '../plugins/image-upload';
 import { TextFormattingOptions } from '../plugins/text-formatting';
-import { AnalyticsHandler } from '../../analytics';
 import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../plugins/macro/types';
-import { Transformer } from '@atlaskit/editor-common';
+import { MediaOptions } from '../plugins/media';
 
 export type EditorAppearance =
   | 'message'
@@ -38,6 +41,7 @@ export interface EditorProps {
   allowMentions?: boolean;
   allowTasksAndDecisions?: boolean;
   allowHyperlinks?: boolean;
+  allowRule?: boolean;
   allowCodeBlocks?: boolean;
   allowLists?: boolean;
   allowTextColor?: boolean;
@@ -62,11 +66,12 @@ export interface EditorProps {
   presenceProvider?: Promise<any>;
   emojiProvider?: Promise<any>;
   legacyImageUploadProvider?: Promise<ImageUploadHandler>;
-  mentionProvider?: Promise<any>;
-  mediaProvider?: Promise<any>;
+  mentionProvider?: Promise<MentionProvider>;
+  mediaProvider?: Promise<MediaProvider>;
   macroProvider?: Promise<MacroProvider>;
   waitForMediaUpload?: boolean;
   contentTransformerProvider?: (schema: Schema) => Transformer<string>;
+  media?: MediaOptions;
 
   maxHeight?: number;
   maxContentSize?: number;

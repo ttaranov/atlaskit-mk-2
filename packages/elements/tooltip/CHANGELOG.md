@@ -1,5 +1,15 @@
 # @atlaskit/tooltip
 
+## 8.0.10
+- [patch] AK-4064 ensure unmountComponentAtNode is called for components rendered via ReactDOM.render [e3153c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3153c3)
+- [patch] AK-4064 ensure unmountComponentAtNode is called for components rendered via ReactDOM.render [e3153c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3153c3)
+
+## 8.0.9
+
+
+
+- [patch] remove unused button dependency and corrected themes type [3475dd6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3475dd6)
+
 ## 8.0.8
 
 ## 8.0.7

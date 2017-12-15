@@ -18,7 +18,7 @@ describe(`${name}/schema panel node`, () => {
     expect(html).toContain('data-panel-type="info"');
   });
 
-  it.skip('should extract the correct values of panelType', () => {
+  it('should extract the correct values of panelType', () => {
     const doc = fromHTML(
       "<div data-panel-type='tip'><p>testing</p></div>",
       schema,

@@ -84,7 +84,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
 
   // Following test case is breaking due to trouble in @atlaskit/downdown.
   // isDisabled is always set to false.
-  it.skip('should disable mention option if mentionsEnabled is false', () => {
+  it('should disable mention option if mentionsEnabled is false', () => {
     const { editorView } = editor(
       doc(code_block({ language: 'js' })('te{<>}xt')),
     );
@@ -98,7 +98,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     );
     toolbarOption.find(ToolbarButton).simulate('click');
     const mentionButton = toolbarOption
-      .find('Item')
+      .find(Item)
       .filterWhere(n => n.html().indexOf('Mention') >= 0);
     expect(mentionButton.prop('isDisabled')).toEqual(true);
     toolbarOption.unmount();

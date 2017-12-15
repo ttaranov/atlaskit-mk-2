@@ -3,15 +3,22 @@ import { Fragment, Node } from 'prosemirror-model';
 
 import ApplicationCard, { AppCardViewProps } from './applicationCard';
 import Blockquote from './blockquote';
+import BodiedExtension, {
+  Props as BodiedExtensionProps,
+} from './bodiedExtension';
 import BulletList from './bulletList';
 import CodeBlock from './codeBlock';
 import DecisionItem, { Props as DecisionItemProps } from './decisionItem';
 import DecisionList from './decisionList';
 import Doc from './doc';
 import Emoji from './emoji';
+import Extension, { Props as ExtensionProps } from './extension';
 import HardBreak from './hardBreak';
 import Heading from './heading';
 import Image from './image';
+import InlineExtension, {
+  Props as InlineExtensionProps,
+} from './inlineExtension';
 import ListItem from './listItem';
 import Media from './media';
 import MediaGroup from './mediaGroup';
@@ -39,9 +46,12 @@ export const nodeToReact = {
   decisionList: DecisionList,
   doc: Doc,
   emoji: Emoji,
+  extension: Extension,
+  bodiedExtension: BodiedExtension,
   hardBreak: HardBreak,
   heading: Heading,
   image: Image,
+  inlineExtension: InlineExtension,
   listItem: ListItem,
   media: Media,
   mediaGroup: MediaGroup,
@@ -205,6 +215,8 @@ export {
   AppCardViewProps,
   ApplicationCard,
   Blockquote,
+  BodiedExtension,
+  BodiedExtensionProps,
   BulletList,
   CodeBlock,
   DecisionItem,
@@ -212,10 +224,14 @@ export {
   DecisionList,
   Doc,
   Emoji,
+  Extension,
+  ExtensionProps,
   HardBreak,
   Heading,
   ListItem,
   Image,
+  InlineExtension,
+  InlineExtensionProps,
   Media,
   MediaGroup,
   Mention,

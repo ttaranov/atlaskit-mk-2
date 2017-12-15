@@ -1,0 +1,37 @@
+{
+  "name": "AK-MK-2 Release Addon",
+  "description": "Addon to display a 'releases' panel in PRs to show which packages will be released",
+  "baseUrl": "https://ak-mk-2-releases-addon.netlify.com/",
+  "key": "ak-mk-2-release-addon",
+  "vendor": {
+    "name": "Luke Batchelor"
+  },
+  "scopes": ["pullrequest"],
+  "authentication": {
+    "type": "jwt"
+  },
+  "contexts": [
+    "account"
+  ],
+  "modules": {
+    "webPanels": [{
+      "weight": 100,
+      "tooltip": {
+        "value": "Packages to be released in this PR"
+      },
+      "key": "ak-mk-2-release-addon-panel",
+      "name": {
+        "value": "Releases"
+      },
+      "url": "/index.html?user={pullrequest.source.repository.owner.username}&repo={pullrequest.source.repository.name}&pullrequestid={pullrequest.id}",
+      "location": "org.bitbucket.pullrequest.overview.informationPanel",
+      "conditions": [{
+        "condition": "equals",
+        "target": "repository.uuid",
+        "params": {
+          "value": "{6380b4e9-6ac5-4dd4-a8e0-65f09cabe4c8}"
+        }
+      }]
+    }]
+  }
+}

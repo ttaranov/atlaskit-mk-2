@@ -64,13 +64,6 @@ export class CardGenericViewSmall extends Component<
     return getCSSUnitValue(height);
   }
 
-  private get wrapperStyles(): CardDimensions {
-    return {
-      width: getCSSUnitValue(this.width),
-      height: getCSSUnitValue(this.height),
-    };
-  }
-
   render() {
     const { error } = this.props;
     if (error) {
@@ -134,11 +127,10 @@ export class CardGenericViewSmall extends Component<
 
   private formatCard(left: JSX.Element, right: JSX.Element) {
     const { actions, loading, error } = this.props;
-    const cardStyle = this.wrapperStyles;
     const cardClass = cx('media-card', { loading });
 
     return (
-      <SmallCard hasError={!!error} className={cardClass} style={cardStyle}>
+      <SmallCard hasError={!!error} className={cardClass}>
         <ImgWrapper shadow={!loading && !error}>{left}</ImgWrapper>
         <InfoWrapper>{right}</InfoWrapper>
         <ActionsWrapper>
