@@ -34,7 +34,7 @@ export const ImageUploader = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 10px 0;
+  margin: 0 10px 20px 10px;
 `;
 const droppingAnimation = `
   border-color: #0e56c4;
@@ -96,4 +96,9 @@ export const SelectionBlocker = styled.div`
   bottom: 0;
   background-color: transparent;
   user-select: none;
+`;
+
+export const PaddedBreak = styled.p`
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;

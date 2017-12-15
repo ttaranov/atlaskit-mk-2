@@ -16,6 +16,7 @@ import {
   DragZoneImage,
   DragZoneText,
   SelectionBlocker,
+  PaddedBreak,
 } from './styled';
 import { uploadPlaceholder } from './images';
 import { constrainPos, constrainScale } from '../constraint-util';
@@ -290,7 +291,7 @@ export class ImageNavigator extends Component<Props, State> {
           <DragZoneImage src={uploadPlaceholder} alt="upload image" />
           <DragZoneText>Drag and drop your photos here</DragZoneText>
         </DragZone>
-        or
+        <PaddedBreak>or</PaddedBreak>
         <Button onClick={this.onUploadButtonClick as any}>
           Upload a photo
           <FileInput
