@@ -83,7 +83,7 @@ const actions = [
   },
 ];
 
-const attrs = {
+const attrs: AppCardViewProps = {
   text: 'applicationCard',
   background: {
     url: 'http://atlassian.com',
@@ -268,42 +268,50 @@ const attrs = {
   eventHandlers,
 };
 
+const attrsWithMultilines: AppCardViewProps = {
+  ...attrs,
+  description: {
+    ...attrs.description,
+    lines: 4,
+  },
+};
+
 export default function Example() {
   return (
     <div>
       <div>
         <ApplicationCard
           title={{ text: 'applicationCard' }}
-          {...attrs as AppCardViewProps}
+          {...attrs}
           actions={actions.slice(0, 1)}
         />
         <ApplicationCard
           title={{ text: 'applicationCard' }}
-          {...attrs as AppCardViewProps}
+          {...attrs}
           actions={actions.slice(0, 2)}
         />
         <ApplicationCard
           title={{ text: 'applicationCard' }}
-          {...attrs as AppCardViewProps}
+          {...attrs}
           actions={actions}
         />
       </div>
       <div>
         <ApplicationCard
           title={{ text: 'applicationCard' }}
-          {...attrs as AppCardViewProps}
+          {...attrs}
           actions={actions.slice(0, 1)}
           background={undefined}
         />
         <ApplicationCard
           title={{ text: 'applicationCard' }}
-          {...attrs as AppCardViewProps}
+          {...attrs}
           actions={actions.slice(0, 2)}
           background={undefined}
         />
         <ApplicationCard
           title={{ text: 'applicationCard' }}
-          {...attrs as AppCardViewProps}
+          {...attrsWithMultilines}
           actions={actions}
           background={undefined}
         />

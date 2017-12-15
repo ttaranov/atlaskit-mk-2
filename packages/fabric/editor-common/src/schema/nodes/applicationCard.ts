@@ -49,6 +49,7 @@ export interface AppCardTitle {
 
 export interface AppCardDescription {
   text: string;
+  lines?: number;
 }
 
 export interface AppCardDetails {
