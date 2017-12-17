@@ -8,14 +8,14 @@ import HeadersRow from './HeadersRow';
 import Header from './Header';
 import DataCell from './DataCell';
 
-import { type DataFunction } from './../types';
+import { type DataFunction, type CSSWidth } from './../types';
 
 type Props = {
   /** An array of React component constructors. Each component will be used to render a cell in a tree row.  */
   columns?: Array<ElementType>,
 
   /** The widths of the columns in the table. */
-  columnWidths?: Array<string | number>,
+  columnWidths?: Array<CSSWidth>,
 
   /** The headers of the table. */
   headers?: Array<string>,
@@ -27,7 +27,7 @@ type Props = {
 };
 
 type State = {
-  columnWidths: Array<string | number>,
+  columnWidths: Array<CSSWidth>,
 };
 
 export default class TreeTable extends Component<Props, State> {
@@ -52,7 +52,7 @@ export default class TreeTable extends Component<Props, State> {
     }
   }
 
-  setColumnWidth(columnIndex, width) {
+  setColumnWidth(columnIndex: number, width: CSSWidth) {
     const columnWidths = this.state.columnWidths;
     if (width === columnWidths[columnIndex]) {
       return;
@@ -61,8 +61,8 @@ export default class TreeTable extends Component<Props, State> {
     this.setState({ columnWidths });
   }
 
-  getColumnWidth(columnIndex) {
-    return this.state && this.state.columnWidths[columnIndex];
+  getColumnWidth(columnIndex: number): CSSWidth | null {
+    return (this.state && this.state.columnWidths[columnIndex]) || null;
   }
 
   getChildContext() {

@@ -2,11 +2,11 @@
 import React, { PureComponent } from 'react';
 import RowChildren from './RowChildren';
 
-import { type DataFunction } from './../types';
+import { type DataFunction, type RenderFunction } from './../types';
 
 type Props = {
-  data: DataFunction | string,
-  render: Function,
+  data: DataFunction,
+  render: RenderFunction,
 };
 
 type State = {

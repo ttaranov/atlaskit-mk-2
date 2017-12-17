@@ -2,13 +2,13 @@
 import React, { PureComponent } from 'react';
 import Row from './Row';
 import LoaderRow from './LoaderRow';
-import { type DataFunction } from './../types';
+import { type DataFunction, type RenderFunction } from './../types';
 
 type Props = {
-  childrenData: Object,
+  childrenData: Array<Object | null> | null,
   getChildrenData: DataFunction,
   depth?: number,
-  render?: Function,
+  render?: RenderFunction,
 };
 
 type State = {

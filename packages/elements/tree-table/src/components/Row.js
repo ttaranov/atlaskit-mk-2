@@ -1,13 +1,13 @@
 // @flow
 import React, { PureComponent } from 'react';
 import RowChildren from './RowChildren';
-import { type DataFunction } from './../types';
+import { type DataFunction, type RenderFunction } from './../types';
 
 type Props = {
   data: Object,
   getChildrenData: DataFunction,
   depth?: number,
-  render: Function,
+  render: RenderFunction,
 };
 
 type State = {
