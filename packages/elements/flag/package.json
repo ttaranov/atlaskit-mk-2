@@ -11,12 +11,8 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    {
-      "name": "Jared Crowe"
-    },
-    {
-      "name": "Ajay N Mathur"
-    }
+    "Jared Crowe",
+    "Ajay N Mathur"
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
