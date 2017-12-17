@@ -114,13 +114,16 @@ class Spotlight extends Component<Props, State> {
   renderTargetClone() {
     // NOTE: `clone` & `rect` are NOT public API
     const {
+      // $FlowFixMe
+      clone, // eslint-disable-line react/prop-types
+      // $FlowFixMe
+      rect, // eslint-disable-line react/prop-types
       pulse,
       target,
       targetBgColor,
       targetOnClick,
       targetRadius,
       targetReplacement: Replacement,
-      ...props
     } = this.props;
 
     if (!target) {
@@ -128,16 +131,16 @@ class Spotlight extends Component<Props, State> {
     }
 
     return Replacement ? (
-      <Replacement {...props.rect} />
+      <Replacement {...rect} />
     ) : (
-      <TargetOuter style={props.rect}>
+      <TargetOuter style={rect}>
         <TargetInner
           pulse={pulse}
           bgColor={targetBgColor}
           radius={targetRadius}
-          style={props.rect}
+          style={rect}
         >
-          <Clone html={props.clone} />
+          <Clone html={clone} />
           <TargetOverlay onClick={targetOnClick && this.handleTargetClick} />
         </TargetInner>
       </TargetOuter>
@@ -155,8 +158,11 @@ class Spotlight extends Component<Props, State> {
       footer,
       header,
       heading,
+      // $FlowFixMe
+      in: transitionIn, // eslint-disable-line react/prop-types
       image,
-      ...props
+      // $FlowFixMe
+      scrollY, // eslint-disable-line react/prop-types
     } = this.props;
 
     const { isExiting } = this.state;
@@ -193,11 +199,7 @@ class Spotlight extends Component<Props, State> {
     );
 
     return (
-      <Fill
-        in={props.in}
-        onExit={this.handleExit}
-        scrollDistance={props.scrollY}
-      >
+      <Fill in={transitionIn} onExit={this.handleExit} scrollDistance={scrollY}>
         <Layer
           boundariesElement="scrollParent"
           content={dialog}
