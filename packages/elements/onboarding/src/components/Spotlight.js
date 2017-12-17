@@ -1,10 +1,12 @@
 // @flow
 /* eslint-disable react/sort-comp, react/no-multi-comp */
 import React, { Component } from 'react';
+import { ThemeProvider } from 'styled-components';
 import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
 import Layer from '@atlaskit/layer';
 import { layers } from '@atlaskit/theme';
 
+import { getTheme } from './theme';
 import type {
   ActionsType,
   ComponentType,
@@ -186,16 +188,18 @@ class Spotlight extends Component<Props, State> {
 
     // build the dialog before passing it to Layer
     const dialog = (
-      <FocusLock enabled={!isExiting} autoFocus>
-        <Dialog width={dialogWidth} tabIndex="-1">
-          {headerElement}
-          <DialogBody>
-            {heading && <Heading>{heading}</Heading>}
-            {children}
-          </DialogBody>
-          {footerElement}
-        </Dialog>
-      </FocusLock>
+      <ThemeProvider theme={getTheme}>
+        <FocusLock enabled={!isExiting} autoFocus>
+          <Dialog width={dialogWidth} tabIndex="-1">
+            {headerElement}
+            <DialogBody>
+              {heading && <Heading>{heading}</Heading>}
+              {children}
+            </DialogBody>
+            {footerElement}
+          </Dialog>
+        </FocusLock>
+      </ThemeProvider>
     );
 
     return (
