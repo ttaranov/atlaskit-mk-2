@@ -40,4 +40,32 @@ describe('CardFrame', () => {
     const element = shallow(<CardFrame text="foobar" isPlaceholder={false} />);
     expect(element.find(TextWrapper).children()).toHaveLength(1);
   });
+
+  it('should not be interactive when isPlaceholder=true and href is defined', () => {
+    const element = shallow(
+      <CardFrame isPlaceholder={true} href="htttps:///www.example.com/" />,
+    );
+    expect(element.first().prop('isInteractive')).toBeFalsy();
+  });
+
+  it('should not be interactive when isPlaceholder=true and onClick is defined', () => {
+    const element = shallow(
+      <CardFrame isPlaceholder={true} onClick={jest.fn()} />,
+    );
+    expect(element.first().prop('isInteractive')).toBeFalsy();
+  });
+
+  it('should be interactive when isPlaceholder=false and href is defined', () => {
+    const element = shallow(
+      <CardFrame isPlaceholder={false} href="htttps:///www.example.com/" />,
+    );
+    expect(element.first().prop('isInteractive')).toBeTruthy();
+  });
+
+  it('should be interactive when isPlaceholder=false and onClick is defined', () => {
+    const element = shallow(
+      <CardFrame isPlaceholder={false} onClick={jest.fn()} />,
+    );
+    expect(element.first().prop('isInteractive')).toBeTruthy();
+  });
 });

@@ -23,8 +23,8 @@ const className = 'media-card-frame';
 
 export default class CardFrame extends React.Component<CardFrameProps> {
   get isInteractive() {
-    const { href, onClick } = this.props;
-    return Boolean(href) || Boolean(onClick);
+    const { isPlaceholder, href, onClick } = this.props;
+    return !isPlaceholder && (Boolean(href) || Boolean(onClick));
   }
 
   handleClick = event => {
