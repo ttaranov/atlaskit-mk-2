@@ -1,5 +1,17 @@
 # @atlaskit/editor-core
 
+## 60.14.12
+- [patch] Fixes issues where an incorrect object comparison would cause cascading telepointer events to fire on each transaction. [c3263c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3263c9)
+- [patch] Fixes issues where an incorrect object comparison would cause cascading telepointer events to fire on each transaction. [c3263c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3263c9)
+
+## 60.14.11
+- [patch] Fix single image temporary placeholder alignment [0a891be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a891be)
+- [patch] Fix single image temporary placeholder alignment [0a891be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a891be)
+
+## 60.14.10
+- [patch] Add default center layout support for single image [6113e02](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6113e02)
+- [patch] Add default center layout support for single image [6113e02](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6113e02)
+
 ## 60.14.9
 
 ## 60.14.8

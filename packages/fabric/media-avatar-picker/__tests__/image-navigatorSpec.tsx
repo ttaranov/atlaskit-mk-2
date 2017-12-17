@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {mount} from 'enzyme';
-import {CONTAINER_SIZE, ImageNavigator} from '../src/image-navigator';
-import {ImageUploader, DragZone} from '../src/image-navigator/styled';
-import {ImageCropper} from '../src/image-cropper';
+import { mount } from 'enzyme';
+import { CONTAINER_SIZE, ImageNavigator } from '../src/image-navigator';
+import { ImageUploader, DragZone } from '../src/image-navigator/styled';
+import { ImageCropper } from '../src/image-cropper';
 import Slider from '@atlaskit/field-range';
-import {createMouseEvent, smallImage} from '@atlaskit/media-test-helpers';
+import { createMouseEvent, smallImage } from '@atlaskit/media-test-helpers';
 
 describe('Image navigator', () => {
   let component;
@@ -20,12 +20,14 @@ describe('Image navigator', () => {
     let imageCropper;
     let slider;
     beforeEach(() => {
-      component = mount(<ImageNavigator
-        imageSource={smallImage}
-        onImageChanged={onImageChanged}
-        onPositionChanged={onPositionChanged}
-        onSizeChanged={onSizeChanged}
-      />);
+      component = mount(
+        <ImageNavigator
+          imageSource={smallImage}
+          onImageChanged={onImageChanged}
+          onPositionChanged={onPositionChanged}
+          onSizeChanged={onSizeChanged}
+        />,
+      );
       imageCropper = component.find(ImageCropper);
       slider = component.find(Slider);
     });
@@ -58,7 +60,10 @@ describe('Image navigator', () => {
       });
 
       it('should have min scale set to minimum allowed', () => {
-        const expectedMinScale = Math.max(CONTAINER_SIZE / imageWidth, CONTAINER_SIZE / imageHeight);
+        const expectedMinScale = Math.max(
+          CONTAINER_SIZE / imageWidth,
+          CONTAINER_SIZE / imageHeight,
+        );
         expect(slider.props().min).toBe(expectedMinScale * 100);
       });
     });
@@ -118,30 +123,47 @@ describe('Image navigator', () => {
         const imageDragStartPos = component.state().imageDragStartPos;
 
         imageCropper.props().onDragStarted();
-        document.dispatchEvent(createMouseEvent('mousemove', {screenX: 0, screenY: 0}));
-        expect(component.state().cursorInitPos).toEqual({x: 0, y: 0});
-        expect(component.state().imagePos).toEqual({x: 0, y: 0});
+        document.dispatchEvent(
+          createMouseEvent('mousemove', { screenX: 0, screenY: 0 }),
+        );
+        expect(component.state().cursorInitPos).toEqual({ x: 0, y: 0 });
+        expect(component.state().imagePos).toEqual({ x: 0, y: 0 });
 
-        document.dispatchEvent(createMouseEvent('mousemove', {screenX: -20, screenY: -30}));
-        expect(component.state().cursorInitPos).toEqual({x: 0, y: 0});
-        expect(component.state().imagePos).toEqual({x: imageDragStartPos.x - 20, y: imageDragStartPos.y - 30});
+        document.dispatchEvent(
+          createMouseEvent('mousemove', { screenX: -20, screenY: -30 }),
+        );
+        expect(component.state().cursorInitPos).toEqual({ x: 0, y: 0 });
+        expect(component.state().imagePos).toEqual({
+          x: imageDragStartPos.x - 20,
+          y: imageDragStartPos.y - 30,
+        });
 
         document.dispatchEvent(createMouseEvent('mouseup'));
         expect(component.state().cursorInitPos).toBe(undefined);
-        expect(component.state().imageDragStartPos).toEqual({x: imageDragStartPos.x - 20, y: imageDragStartPos.y - 30});
+        expect(component.state().imageDragStartPos).toEqual({
+          x: imageDragStartPos.x - 20,
+          y: imageDragStartPos.y - 30,
+        });
       });
       it('should call onPositionChanged on drop', () => {
         const imageDragStartPos = component.state().imageDragStartPos;
 
         imageCropper.props().onDragStarted();
-        document.dispatchEvent(createMouseEvent('mousemove', {screenX: 0, screenY: 0}));
+        document.dispatchEvent(
+          createMouseEvent('mousemove', { screenX: 0, screenY: 0 }),
+        );
         expect(onPositionChanged).not.toHaveBeenCalled();
 
-        document.dispatchEvent(createMouseEvent('mousemove', {screenX: -20, screenY: -30}));
+        document.dispatchEvent(
+          createMouseEvent('mousemove', { screenX: -20, screenY: -30 }),
+        );
         expect(onPositionChanged).not.toHaveBeenCalled();
 
         document.dispatchEvent(createMouseEvent('mouseup'));
-        expect(onPositionChanged).toHaveBeenCalledWith(imageDragStartPos.x + 20, imageDragStartPos.y + 30);
+        expect(onPositionChanged).toHaveBeenCalledWith(
+          imageDragStartPos.x + 20,
+          imageDragStartPos.y + 30,
+        );
       });
     });
     describe('when image is scaled', () => {
@@ -169,11 +191,13 @@ describe('Image navigator', () => {
   });
   describe('with no imageSource', () => {
     beforeEach(() => {
-      component = mount(<ImageNavigator
-        onImageChanged={onImageChanged}
-        onPositionChanged={onPositionChanged}
-        onSizeChanged={onSizeChanged}
-      />);
+      component = mount(
+        <ImageNavigator
+          onImageChanged={onImageChanged}
+          onPositionChanged={onPositionChanged}
+          onSizeChanged={onSizeChanged}
+        />,
+      );
     });
     it('should render ImageUploader to allow users to pick an image', () => {
       expect(component.find(ImageUploader)).toHaveLength(1);
@@ -184,9 +208,9 @@ describe('Image navigator', () => {
         preventDefault: jest.fn(),
         dataTransfer: {
           files: [file],
-        }
+        },
       });
-      it('should set imageFile state with the image', (done) => {
+      it('should set imageFile state with the image', done => {
         const droppedImage = new File(['dsjklDFljk'], 'nice-photo.png', {
           type: 'image/png',
         });
