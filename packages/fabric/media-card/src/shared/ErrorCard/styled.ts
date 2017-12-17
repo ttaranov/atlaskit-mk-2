@@ -20,7 +20,6 @@ export const ErrorWrapper = styled.div`
       ${aspectRatio}
     `,
     horizontal: `
-      ${size()}
       ${center}
     `,
   })};
