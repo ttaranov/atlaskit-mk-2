@@ -10,7 +10,6 @@ const appearances = [
   'subtle-link',
   'warning',
   'danger',
-  'help',
 ];
 const selectableAppearances = ['default', 'primary'];
 
