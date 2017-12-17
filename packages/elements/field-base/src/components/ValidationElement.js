@@ -1,6 +1,6 @@
 // @flow
 import styled from 'styled-components';
-import React from 'react';
+import React, { Component } from 'react';
 import { colors } from '@atlaskit/theme';
 import Spinner from '@atlaskit/spinner';
 import Icon from '@atlaskit/icon/glyph/warning';
@@ -20,22 +20,25 @@ const SpinnerParent = styled.div`
   margin-left: 10px;
 `;
 
-// TODO: Fix the strict mode no dupes error from flow
-// $FlowFixMe
-const ValidationElement = ({ isDisabled, isInvalid, isLoading }) => {
-  if (!isDisabled && isInvalid) {
-    return (
-      <WarningIcon>
-        <Icon label="warning" />
-      </WarningIcon>
-    );
+type Props = {|
+  isDisabled: boolean,
+  isInvalid: boolean,
+  isLoading: boolean,
+|};
+export default class ValidationElement extends Component<Props, void> {
+  render() {
+    if (!this.props.isDisabled && this.props.isInvalid) {
+      return (
+        <WarningIcon>
+          <Icon label="warning" />
+        </WarningIcon>
+      );
+    }
+
+    return this.props.isLoading ? (
+      <SpinnerParent>
+        <Spinner size="small" />
+      </SpinnerParent>
+    ) : null;
   }
-
-  return isLoading ? (
-    <SpinnerParent>
-      <Spinner size="small" />
-    </SpinnerParent>
-  ) : null;
-};
-
-export default ValidationElement;
+}

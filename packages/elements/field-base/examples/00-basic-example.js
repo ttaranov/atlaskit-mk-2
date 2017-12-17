@@ -12,13 +12,13 @@ export default class BasicExample extends PureComponent<void, State> {
       'Click into and out of the input above to trigger onBlur & onFocus in the Fieldbase',
   };
 
-  onBlur = (event: any) => {
+  onBlur = () => {
     this.setState({
       eventResult: 'onBlur called from FieldBase above',
     });
   };
 
-  onFocus = (event: any) => {
+  onFocus = () => {
     this.setState({
       eventResult: 'onFocus called from FieldBase above',
     });

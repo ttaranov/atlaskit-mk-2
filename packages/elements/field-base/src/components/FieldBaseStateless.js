@@ -1,5 +1,4 @@
 // @flow
-import PropTypes from 'prop-types';
 import React, { Component, type Node } from 'react';
 import InlineDialog from '@atlaskit/inline-dialog';
 import { Content, ContentWrapper, ChildWrapper } from '../styled/Content';
@@ -55,7 +54,7 @@ type Props = {|
 // TODO: We are using any as FieldTextArea passes props via spread. If flow types upgrade fixes this
 // then switch back to Props
 /* eslint-disable react/no-unused-prop-types */
-export default class FieldBaseStateless extends Component<any, void> {
+export default class FieldBaseStateless extends Component<Props | any, void> {
   static defaultProps = {
     appearance: 'standard',
     invalidMessage: '',

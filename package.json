@@ -168,6 +168,7 @@
     "@atlaskit/droplist": "^4.11.3",
     "@atlaskit/dynamic-table": "^6.0.2",
     "@atlaskit/emoji": "^30.3.3",
+    "@atlaskit/field-base": "^8.1.5",
     "@atlaskit/field-radio-group": "^1.2.1",
     "@atlaskit/field-range": "^2.0.0",
     "@atlaskit/field-text": "^4.0.0",
