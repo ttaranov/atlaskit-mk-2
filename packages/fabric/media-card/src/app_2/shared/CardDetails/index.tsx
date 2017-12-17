@@ -3,7 +3,6 @@ import * as debounce from 'lodash.debounce';
 import Avatar from '@atlaskit/avatar';
 import Tooltip from '@atlaskit/tooltip';
 import IconImage from '../../../shared/IconImage';
-import PreviewImage from '../../../shared/PreviewImage';
 import {
   TextWithTooltip,
   IconWithTooltip,
@@ -23,6 +22,7 @@ import {
   CopyWrapper,
   Title,
   Description,
+  Thumbnail,
 } from './styled';
 
 export interface CardDetailsProps {
@@ -98,7 +98,7 @@ export default class CardDetails extends React.Component<
     // TODO: handle if there is an error loading the image -> show the placeholder
     return (
       <LeftWrapper>
-        <PreviewImage src={thumbnail} />
+        <Thumbnail src={thumbnail} />
       </LeftWrapper>
     );
   }

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { ellipsis } from '../../../styles';
+import { akColorN30 } from '@atlaskit/util-shared-styles';
+import { ellipsis, borderRadius, size } from '../../../styles';
 import { title, description } from '../../../styles/cardDetails';
 import newCardDetailsHeight from '../../../shared/newCardDetailsHeight';
 
@@ -66,4 +67,14 @@ export const BottomWrapper = styled.div`
       return '';
     }
   }};
+`;
+
+export interface ThumbnailProps {
+  src: string;
+}
+
+export const Thumbnail = styled.div`
+  ${borderRadius} ${size(32)} background-color: ${akColorN30};
+  background-image: url(${({ src }: ThumbnailProps) => src});
+  background-size: cover;
 `;

@@ -69,7 +69,8 @@ export const DescriptionPlaceholder2 = styled.div`
 
 export const Thumbnail = styled.div`
   flex-shrink: 0;
-  ${borderRadius} ${size(72)} margin-left: 4px;
+  ${borderRadius} background-color: ${akColorN30};
+  ${size(72)} margin-left: 4px;
   ${({ isPlaceholder }: PlaceholderProps) => {
     if (isPlaceholder) {
       return `${placeholder}`;

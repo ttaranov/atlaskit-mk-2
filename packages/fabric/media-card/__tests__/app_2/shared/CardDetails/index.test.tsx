@@ -2,13 +2,13 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import Avatar from '@atlaskit/avatar';
 import IconImage from '../../../../src/shared/IconImage';
-import PreviewImage from '../../../../src/shared/PreviewImage';
 import CardDetails from '../../../../src/app_2/shared/CardDetails';
 import Actions from '../../../../src/app_2/shared/CardDetails/Actions';
 import {
   Title,
   Description,
   BottomWrapper,
+  Thumbnail,
 } from '../../../../src/app_2/shared/CardDetails/styled';
 
 describe('CardDetails', () => {
@@ -60,49 +60,49 @@ describe('CardDetails', () => {
     );
     expect(element.find(IconImage)).toHaveLength(1);
     expect(element.find(Avatar)).toHaveLength(0);
-    expect(element.find(PreviewImage)).toHaveLength(0);
+    expect(element.find(Thumbnail)).toHaveLength(0);
   });
 
   it('should render the user when there is a user and a thumbnail', () => {
     const element = shallow(<CardDetails user={user} thumbnail={thumbnail} />);
     expect(element.find(IconImage)).toHaveLength(0);
     expect(element.find(Avatar)).toHaveLength(1);
-    expect(element.find(PreviewImage)).toHaveLength(0);
+    expect(element.find(Thumbnail)).toHaveLength(0);
   });
 
   it('should render the user when there is a user', () => {
     const element = shallow(<CardDetails user={user} />);
     expect(element.find(IconImage)).toHaveLength(0);
     expect(element.find(Avatar)).toHaveLength(1);
-    expect(element.find(PreviewImage)).toHaveLength(0);
+    expect(element.find(Thumbnail)).toHaveLength(0);
   });
 
   it('should render the thumbnail when there is a thumbnail', () => {
     const element = shallow(<CardDetails thumbnail={thumbnail} />);
     expect(element.find(IconImage)).toHaveLength(0);
     expect(element.find(Avatar)).toHaveLength(0);
-    expect(element.find(PreviewImage)).toHaveLength(1);
+    expect(element.find(Thumbnail)).toHaveLength(1);
   });
 
   it('should render the icon when there is an icon and a user', () => {
     const element = shallow(<CardDetails icon={icon} user={user} />);
     expect(element.find(IconImage)).toHaveLength(1);
     expect(element.find(Avatar)).toHaveLength(0);
-    expect(element.find(PreviewImage)).toHaveLength(0);
+    expect(element.find(Thumbnail)).toHaveLength(0);
   });
 
   it('should render the icon when there is an icon and a thumbnail', () => {
     const element = shallow(<CardDetails icon={icon} thumbnail={thumbnail} />);
     expect(element.find(IconImage)).toHaveLength(1);
     expect(element.find(Avatar)).toHaveLength(0);
-    expect(element.find(PreviewImage)).toHaveLength(0);
+    expect(element.find(Thumbnail)).toHaveLength(0);
   });
 
   it('should render the icon when there is an icon', () => {
     const element = shallow(<CardDetails icon={icon} thumbnail={thumbnail} />);
     expect(element.find(IconImage)).toHaveLength(1);
     expect(element.find(Avatar)).toHaveLength(0);
-    expect(element.find(PreviewImage)).toHaveLength(0);
+    expect(element.find(Thumbnail)).toHaveLength(0);
   });
 
   it('should padLeft when there is an icon', () => {
