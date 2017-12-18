@@ -10,8 +10,10 @@ import { WarningIcon } from '../components/ValidationElement';
 const defaultProps = {
   onFocus: () => {},
   onBlur: () => {},
-  onIconClick: () => {},
 };
+
+const onFocus = () => {};
+const onBlur = () => {};
 
 describe('ak-field-base', () => {
   // Stub window.cancelAnimationFrame, so Popper (used in Layer) doesn't error when accessing it.
@@ -28,14 +30,17 @@ describe('ak-field-base', () => {
     describe('by default', () =>
       it('should render a content', () =>
         expect(
-          shallow(<FieldBaseStateless {...defaultProps} />).find(Content)
-            .length,
+          shallow(
+            <FieldBaseStateless onFocus={onFocus} onBlur={onBlur} />,
+          ).find(Content).length,
         ).toBeGreaterThan(0)));
 
     describe('isReadOnly prop = true', () =>
       it('should render with the readOnly prop', () =>
         expect(
-          shallow(<FieldBaseStateless {...defaultProps} isReadOnly />)
+          shallow(
+            <FieldBaseStateless onFocus={onFocus} onBlur={onBlur} isReadOnly />,
+          )
             .find(Content)
             .prop('readOnly'),
         ).toBe(true)));
@@ -43,7 +48,9 @@ describe('ak-field-base', () => {
     describe('isFocused prop = true', () => {
       it('should render the content with the isFocused prop', () =>
         expect(
-          shallow(<FieldBaseStateless {...defaultProps} isFocused />)
+          shallow(
+            <FieldBaseStateless onFocus={onFocus} onBlur={onBlur} isFocused />,
+          )
             .find(Content)
             .prop('isFocused'),
         ).toBe(true));
@@ -52,7 +59,13 @@ describe('ak-field-base', () => {
     describe('is{p}addingDisabled prop = true', () => {
       it('should render the content with the paddingDisabled prop', () =>
         expect(
-          shallow(<FieldBaseStateless {...defaultProps} isPaddingDisabled />)
+          shallow(
+            <FieldBaseStateless
+              onFocus={onFocus}
+              onBlur={onBlur}
+              isPaddingDisabled
+            />,
+          )
             .find(Content)
             .prop('paddingDisabled'),
         ).toBe(true));
@@ -61,7 +74,7 @@ describe('ak-field-base', () => {
     describe('isInvalid prop = true', () => {
       it('should render with the isFocused styles and not the isInvalid styles', () => {
         const Invalid = mount(
-          <FieldBaseStateless {...defaultProps} isInvalid />,
+          <FieldBaseStateless onFocus={onFocus} onBlur={onBlur} isInvalid />,
         );
         expect(Invalid.find(Content).prop('invalid')).toBe(true);
         expect(Invalid.find(WarningIcon).length).toBeGreaterThan(0);
@@ -69,9 +82,9 @@ describe('ak-field-base', () => {
 
       it('should render the warning icon', () =>
         expect(
-          mount(<FieldBaseStateless {...defaultProps} isInvalid />).find(
-            WarningIcon,
-          ).length,
+          mount(
+            <FieldBaseStateless onFocus={onFocus} onBlur={onBlur} isInvalid />,
+          ).find(WarningIcon).length,
         ).toBeGreaterThan(0));
     });
 
@@ -79,7 +92,12 @@ describe('ak-field-base', () => {
       it('should not render the warning icon', () =>
         expect(
           shallow(
-            <FieldBaseStateless {...defaultProps} isDisabled isInvalid />,
+            <FieldBaseStateless
+              onFocus={onFocus}
+              onBlur={onBlur}
+              isDisabled
+              isInvalid
+            />,
           ).find(WarningIcon).length,
         ).toBe(0));
     });
@@ -90,7 +108,8 @@ describe('ak-field-base', () => {
         expect(
           shallow(
             <FieldBaseStateless
-              {...defaultProps}
+              onFocus={onFocus}
+              onBlur={onBlur}
               invalidMessage={stringContent}
             />,
           )
@@ -103,7 +122,12 @@ describe('ak-field-base', () => {
     describe('isFocused prop = true AND isInvalid prop = true', () => {
       it('should render with the isFocused styles and not the isInvalid styles', () => {
         const wrapper = shallow(
-          <FieldBaseStateless {...defaultProps} isFocused isInvalid />,
+          <FieldBaseStateless
+            onFocus={onFocus}
+            onBlur={onBlur}
+            isFocused
+            isInvalid
+          />,
         );
         expect(wrapper.find(Content).prop('isFocused')).toBe(true);
         expect(wrapper.find(Content).prop('invalid')).toBe(false);
@@ -113,7 +137,7 @@ describe('ak-field-base', () => {
     describe('isCompact prop = true', () => {
       it('should render the content with the compact prop', () => {
         const wrapper = shallow(
-          <FieldBaseStateless {...defaultProps} isCompact />,
+          <FieldBaseStateless onFocus={onFocus} onBlur={onBlur} isCompact />,
         );
         expect(wrapper.find(ChildWrapper).props().compact).toBe(true);
         expect(wrapper.find(Content).props().compact).toBe(true);
@@ -124,7 +148,8 @@ describe('ak-field-base', () => {
       it('reflects value to InlineDialog isOpen if invalidMessage prop is provided', () => {
         const wrapper = shallow(
           <FieldBaseStateless
-            {...defaultProps}
+            onFocus={onFocus}
+            onBlur={onBlur}
             isDialogOpen
             invalidMessage="test"
           />,
@@ -134,7 +159,7 @@ describe('ak-field-base', () => {
 
       it('reflects value to InlineDialog isOpen if invalidMessage prop is not provided', () => {
         const wrapper = shallow(
-          <FieldBaseStateless {...defaultProps} isDialogOpen />,
+          <FieldBaseStateless onFocus={onFocus} onBlur={onBlur} isDialogOpen />,
         );
         expect(wrapper.find(InlineDialog).props().isOpen).toBe(false);
       });
@@ -143,7 +168,13 @@ describe('ak-field-base', () => {
     describe('appearance', () => {
       it('should render the content with the subtle attribute', () =>
         expect(
-          shallow(<FieldBaseStateless {...defaultProps} appearance="subtle" />)
+          shallow(
+            <FieldBaseStateless
+              onFocus={onFocus}
+              onBlur={onBlur}
+              appearance="subtle"
+            />,
+          )
             .find(Content)
             .prop('subtle'),
         ).toBe(true));
@@ -153,7 +184,7 @@ describe('ak-field-base', () => {
       it('should call onBlur when set', () => {
         const spy = jest.fn();
         const wrapper = mount(
-          <FieldBaseStateless {...defaultProps} onBlur={spy} />,
+          <FieldBaseStateless onFocus={onFocus} onBlur={onBlur} onBlur={spy} />,
         );
         wrapper.setProps({ shouldReset: true });
         expect(spy).toHaveBeenCalled();
@@ -162,7 +193,7 @@ describe('ak-field-base', () => {
     describe('isLoading', () => {
       it('should render Spinner', () => {
         const wrapper = mount(
-          <FieldBaseStateless {...defaultProps} isLoading />,
+          <FieldBaseStateless onFocus={onFocus} onBlur={onBlur} isLoading />,
         );
         expect(wrapper.find(Spinner).length).toBe(1);
         wrapper.setProps({ isLoading: false });
@@ -172,7 +203,12 @@ describe('ak-field-base', () => {
       describe('and isInvalid', () =>
         it('should not render Spinner', () => {
           const wrapper = mount(
-            <FieldBaseStateless {...defaultProps} isLoading isInvalid />,
+            <FieldBaseStateless
+              onFocus={onFocus}
+              onBlur={onBlur}
+              isLoading
+              isInvalid
+            />,
           );
           expect(wrapper.find(Spinner).length).toBe(0);
         }));
@@ -183,20 +219,24 @@ describe('ak-field-base', () => {
     let wrapper;
 
     beforeEach(() => {
-      wrapper = mount(<FieldBaseStateless {...defaultProps} />);
+      wrapper = mount(<FieldBaseStateless onFocus={onFocus} onBlur={onBlur} />);
       wrapper.find(Content).simulate('focus');
     });
 
     it('should call onFocus', () => {
       const spy = jest.fn();
-      wrapper = mount(<FieldBaseStateless {...defaultProps} onFocus={spy} />);
+      wrapper = mount(
+        <FieldBaseStateless onFocus={onFocus} onBlur={onBlur} onFocus={spy} />,
+      );
       wrapper.find(Content).simulate('focus');
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should call onBlur', () => {
       const spy = jest.fn();
-      wrapper = mount(<FieldBaseStateless {...defaultProps} onBlur={spy} />);
+      wrapper = mount(
+        <FieldBaseStateless onFocus={onFocus} onBlur={onBlur} onBlur={spy} />,
+      );
       wrapper.find(Content).simulate('blur');
       expect(spy).toHaveBeenCalledTimes(1);
     });
@@ -248,7 +288,7 @@ describe('ak-field-base', () => {
     });
 
     it('should retain focus when blur and focus happen one by one', () => {
-      const wrapper = mount(<FieldBase {...defaultProps} />);
+      const wrapper = mount(<FieldBase onFocus={onFocus} onBlur={onBlur} />);
       const contentContainer = wrapper.find(Content);
       contentContainer.simulate('blur'); // this should be robust enough to handle even two
       // "blur" events, one by one (faced it in the browser)

@@ -12,11 +12,11 @@ function waitForRender(cb) {
 
 type Props = {|
   /** focus the element when initially rendered */
-  defaultIsFocused: boolean,
+  defaultIsFocused?: boolean,
   /** focus event handler */
-  onFocus: (event: any) => mixed,
+  onFocus?: (event: any) => mixed,
   /** blur event handler */
-  onBlur: (event: any) => mixed,
+  onBlur?: (event: any) => mixed,
 |};
 
 type State = {|
@@ -28,7 +28,8 @@ type State = {|
   shouldIgnoreNextDialogBlur: boolean,
 |};
 
-export default class FieldBase extends Component<Props, State> {
+// TODO: enable type props when spread issue fixed in flow
+export default class FieldBase extends Component<*, State> {
   timers: any;
 
   static defaultProps = {
@@ -42,7 +43,8 @@ export default class FieldBase extends Component<Props, State> {
     isDialogFocused: false,
     shouldIgnoreNextDialogBlur: false,
   };
-
+  // Can't use SyntheticEvent as Flow has issues in current version. TODO: Fix when it's resolved in flow
+  // https://github.com/faceyspacey/redux-first-router-link/issues/62
   onFocus = (e: any) => {
     this.setState({ isFocused: true });
     this.props.onFocus(e);
