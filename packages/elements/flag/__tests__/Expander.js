@@ -2,9 +2,13 @@
 
 import React from 'react';
 import { mount } from 'enzyme';
-import { Description, DismissButton, Title } from '../../Flag/styledFlag';
-import Flag from '../../Flag';
-import ExpanderInternal from '../styledExpander';
+import {
+  Description,
+  DismissButton,
+  Title,
+} from '../src/components/Flag/styledFlag';
+import Flag from '../src';
+import ExpanderInternal from '../src/components/Expander/styledExpander';
 
 describe('Flag Expander', () => {
   const generateFlag = extraProps => (
@@ -12,17 +16,15 @@ describe('Flag Expander', () => {
   );
   let flag;
   beforeEach(() => {
-    flag = mount(generateFlag({ appearance: 'info', isDismissAllowed: true }));
-  });
-  it('should only render children when isExpanded true (and while doing expand/contract animation)', () => {
-    const flag = mount(
+    flag = mount(
       generateFlag({
         appearance: 'info',
         isDismissAllowed: true,
         description: 'Hi!',
       }),
     );
-
+  });
+  it('should only render children when isExpanded true (and while doing expand/contract animation)', () => {
     // Check that default collapsed state doesn't render children
     expect(flag.find(Description).length).toBe(0);
 

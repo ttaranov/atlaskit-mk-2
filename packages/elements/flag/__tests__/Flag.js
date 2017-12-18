@@ -4,8 +4,12 @@ import { shallow, mount } from 'enzyme';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronUpIcon from '@atlaskit/icon/glyph/chevron-up';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
-import Flag from '../index';
-import Container, { Description, DismissButton, Title } from '../styledFlag';
+import Flag from '../src';
+import Container, {
+  Description,
+  DismissButton,
+  Title,
+} from '../src/components/Flag/styledFlag';
 
 describe('Flag', () => {
   const generateFlag = extraProps => (

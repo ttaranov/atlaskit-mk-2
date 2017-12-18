@@ -3,9 +3,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import LayerManager from '@atlaskit/layer-manager';
-import Flag from '../../Flag';
-import Container, { DismissButton } from '../../Flag/styledFlag';
-import FlagGroup from '../index';
+import Flag from '../src';
+import Container, { DismissButton } from '../src/components/Flag/styledFlag';
+import FlagGroup from '../src/components/FlagGroup';
 
 describe('FlagGroup', () => {
   const generateFlag = extraProps => (

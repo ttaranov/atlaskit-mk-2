@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { mount } from 'enzyme';
-import Flag from '../../Flag';
-import Actions from '../index';
-import { Action } from '../styledFlagActions';
+import Flag from '../src';
+import Actions from '../src/components/FlagActions';
+import { Action } from '../src/components/FlagActions/styledFlagActions';
 
 describe('actions prop', () => {
   const generateFlag = extraProps => (
