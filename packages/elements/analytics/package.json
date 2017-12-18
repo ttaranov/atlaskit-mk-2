@@ -6,8 +6,10 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
+  "types": "src/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "src/index.d.ts"
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
