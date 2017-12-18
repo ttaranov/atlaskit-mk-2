@@ -1,15 +1,25 @@
 /* @flow */
 import React, { type ComponentType } from 'react';
-import type { Directory } from '../../../types';
+import type { Directory, NavGroupItem, File } from '../../../types';
 import * as fs from '../../../utils/fs';
+type groupChildType = {
+  to: string,
+  isSelected: boolean,
+  title: string,
+  icon: ComponentType<{}>,
+};
 
+type groupType = {
+  title?: string,
+  items: Array<NavGroupItem>,
+};
 export default function buildNavGroups(
   prefix: string,
   Icon: ComponentType<*>,
   pathname: string,
   dir: Directory,
 ) {
-  return dir.children.map(group => {
+  return dir.children.map((group: File | Directory): groupType => {
     if (group.type === 'file') {
       return {
         items: [

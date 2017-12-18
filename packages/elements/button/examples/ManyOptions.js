@@ -301,7 +301,6 @@ const appearances = [
   'subtle',
   'subtle-link',
   'warning',
-  'help',
 ];
 
 /* eslint-disable react/no-multi-comp */

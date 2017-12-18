@@ -7,6 +7,7 @@ import { colors, gridSize } from '@atlaskit/theme';
 import type { Handler } from '../../types';
 
 type Props = {
+  autoFocus: boolean,
   value: ?string,
   displayValue: string,
   isDisabled: boolean,
@@ -32,6 +33,7 @@ export default class Picker extends Component<Props> {
   field: ?ElementRef<any>;
 
   static defaultProps = {
+    autoFocus: false,
     value: null,
     displayValue: '',
     isDisabled: false,
@@ -112,6 +114,7 @@ export default class Picker extends Component<Props> {
       >
         <Base isDisabled={this.props.isDisabled}>
           <Field
+            autoFocus={this.props.autoFocus}
             onBlur={this.props.onFieldBlur}
             onChange={this.props.onFieldChange}
             onKeyDown={this.props.onFieldKeyDown}

@@ -25,7 +25,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHelp', () => {
       <ToolbarHelp showHelp={false} toggleHelp={noop} />,
     );
     const toolbarButton = toolbarOption.find(ToolbarButton);
-    expect(toolbarButton.isEmpty()).toBe(false);
+    expect(toolbarButton.exists()).toBe(true);
     expect(toolbarButton.prop('title')).toEqual('Open help dialog');
     toolbarOption.unmount();
   });
@@ -36,7 +36,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHelp', () => {
     );
     expect(toolbarHelp.prop('showHelp')).toBe(false);
     const helpDialog = toolbarHelp.find(HelpDialog);
-    expect(helpDialog.isEmpty()).toBe(true);
+    expect(helpDialog.exists()).toBe(false);
     toolbarHelp.unmount();
   });
 
@@ -45,7 +45,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHelp', () => {
       <ToolbarHelp showHelp={true} toggleHelp={noop} />,
     );
     const helpDialog = toolbarHelp.find(HelpDialog);
-    expect(helpDialog.isEmpty()).toBe(false);
+    expect(helpDialog.exists()).toBe(true);
     toolbarHelp.unmount();
   });
 
@@ -55,7 +55,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHelp', () => {
     );
     toolbarHelp.setProps({ closeHelp: true });
     const helpDialog = toolbarHelp.find(HelpDialog);
-    expect(helpDialog.isEmpty()).toBe(true);
+    expect(helpDialog.exists()).toBe(false);
     toolbarHelp.unmount();
   });
 });
