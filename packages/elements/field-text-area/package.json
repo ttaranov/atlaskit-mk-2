@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-text-area",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Field Text Component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -20,23 +20,23 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
-    "styled-components": "^1.4.6",
-    "@atlaskit/theme": "^2.0.1",
-    "@atlaskit/icon": "^10.3.1",
-    "@atlaskit/button": "^6.0.0",
+    "@atlaskit/button": "^6.1.0",
     "@atlaskit/field-base": "^8.1.1",
+    "@atlaskit/icon": "^10.3.1",
+    "@atlaskit/theme": "^2.0.1",
     "@atlaskit/util-readme": "^3.6.5",
     "babel-runtime": "^6.26.0",
-    "prop-types": "^15.5.10"
+    "prop-types": "^15.5.10",
+    "styled-components": "^1.4.6"
   },
   "peerDependencies": {
     "react": "^15.6.1"
   },
   "devDependencies": {
+    "@atlaskit/button": "^6.1.0",
     "@atlaskit/docs": "^2.0.0",
-    "enzyme": "^2.9.1",
-    "@atlaskit/button": "^6.0.0",
-    "@atlaskit/util-readme": "^1.0.0"
+    "@atlaskit/util-readme": "^1.0.0",
+    "enzyme": "^2.9.1"
   },
   "keywords": [
     "atlaskit",
