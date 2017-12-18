@@ -6,10 +6,9 @@ import DateComponent from '../Date';
 import { DateDiv, DateTd } from '../../styled/Date';
 
 const create = props => {
-  const now = new Date();
-  const day: number = now.getDate();
-  const month: number = now.getMonth() + 1;
-  const year: number = now.getFullYear();
+  const day: number = 15;
+  const month: number = 1;
+  const year: number = 2017;
   return shallow(
     <DateComponent month={month} year={year} {...props}>
       {day}
