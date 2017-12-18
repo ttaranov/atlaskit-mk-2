@@ -48,10 +48,10 @@ export const MediaSingleDimensionHelper = ({
 `;
 
 export const Wrapper = styled.div`
+  ${MediaSingleDimensionHelper};
   display: flex;
   justify-content: center;
   margin: 24px auto;
-  ${MediaSingleDimensionHelper};
   // Hack for selection outline
   & .media-wrapper {
     margin-left: -3px;
