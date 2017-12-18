@@ -1,5 +1,8 @@
 # @atlaskit/analytics
 
+## 2.3.4
+- [patch] Restored type exports in analytics [7a4a9d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7a4a9d2)
+
 ## 2.3.3
 - [patch] Migrated to the mk2 repo [eba7e6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eba7e6a)
 

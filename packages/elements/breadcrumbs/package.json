@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/breadcrumbs",
-  "version": "3.1.7",
+  "version": "3.1.8",
   "description": "A component used for navigation, with each item acting as a link",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -15,7 +15,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^6.0.0",
+    "@atlaskit/button": "^6.1.0",
     "@atlaskit/theme": "^2.2.9",
     "@atlaskit/tooltip": "^8.0.10",
     "babel-runtime": "^6.26.0",

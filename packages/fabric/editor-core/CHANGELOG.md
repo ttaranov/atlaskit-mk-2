@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 60.14.13
+
+- [patch] Temporarily hiding tooltips for headings. [ac7d6bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac7d6bd)
+- [patch] Temporarily hiding tooltips for headings. [ac7d6bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac7d6bd)
+
 ## 60.14.12
 - [patch] Fixes issues where an incorrect object comparison would cause cascading telepointer events to fire on each transaction. [c3263c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3263c9)
 - [patch] Fixes issues where an incorrect object comparison would cause cascading telepointer events to fire on each transaction. [c3263c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3263c9)
