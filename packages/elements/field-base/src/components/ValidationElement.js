@@ -26,6 +26,11 @@ type Props = {|
   isLoading: boolean,
 |};
 export default class ValidationElement extends Component<Props, void> {
+  static defaultProps = {
+    isDisabled: false,
+    isInvalid: false,
+    isLoading: false,
+  };
   render() {
     if (!this.props.isDisabled && this.props.isInvalid) {
       return (

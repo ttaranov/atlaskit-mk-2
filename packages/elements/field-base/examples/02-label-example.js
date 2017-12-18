@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
-import FieldBase, { Label } from '@atlaskit/field-base';
 import Input from '@atlaskit/input';
+import FieldBase, { Label } from '../src';
 
 export default class LabelExample extends PureComponent<void, void> {
   render() {

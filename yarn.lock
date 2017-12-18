@@ -273,6 +273,18 @@
     prop-types "^15.5.10"
     styled-components "^1.3.0"
 
+"@atlaskit/field-base@^8.1.5":
+  version "8.1.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/field-base/-/field-base-8.1.5.tgz#efb26e61cd1ee1626cf490fd88d7a7019b5c652e"
+  dependencies:
+    "@atlaskit/icon" "^10.1.3"
+    "@atlaskit/inline-dialog" "^5.0.1"
+    "@atlaskit/spinner" "^4.0.0"
+    "@atlaskit/theme" "^2.0.0"
+    babel-runtime "^6.11.6"
+    prop-types "^15.5.10"
+    styled-components "^1.4.6"
+
 "@atlaskit/field-radio-group@^1.2.1":
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/@atlaskit/field-radio-group/-/field-radio-group-1.7.3.tgz#fe4175ec106b9dba24d8d8e1f63a045695dc87bc"
@@ -820,6 +832,13 @@
   dependencies:
     babel-runtime "^6.11.6"
     styled-components "^1.3.0"
+
+"@atlaskit/util-shared-styles@^2.0.1":
+  version "2.10.6"
+  resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-2.10.6.tgz#56aa25d59cef0324f653a6e857d512a70be47c65"
+  dependencies:
+    babel-runtime "^6.11.6"
+    styled-components "^1.4.6"
 
 "@atlaskit/util-shared-styles@^2.10.5":
   version "2.10.5"

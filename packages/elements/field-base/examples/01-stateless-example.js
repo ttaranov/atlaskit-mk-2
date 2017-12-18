@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { FieldBaseStateless } from '@atlaskit/field-base';
 import Input from '@atlaskit/input';
+import { FieldBaseStateless } from '../src';
 
 export default class StatelessExample extends PureComponent<void, void> {
   render() {

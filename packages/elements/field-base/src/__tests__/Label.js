@@ -3,26 +3,31 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import { Label } from '../../src/';
+// import { type Props } from '../components/Label';
 import { RequiredIndicator, LabelInner } from '../../src/styled/Label';
 
-const defaultProps = {
-  label: 'test',
-  isLabelHidden: true,
-};
+// const defaultProps = {
+//  label: 'test',
+//  isLabelHidden: true,
+// };
+const testLabel: string = 'test';
+const isLabelHidden: boolean = true;
 
 describe('ak-field-base', () =>
   describe('Label', () => {
     describe('by default', () =>
       it('should render a label element', () => {
         expect(
-          shallow(<Label {...defaultProps} />).find(LabelInner).length,
+          shallow(
+            <Label label={testLabel} isLabelHidden={isLabelHidden} />,
+          ).find(LabelInner).length,
         ).toBeGreaterThan(0);
       }));
 
     describe('label prop', () => {
       it('should be reflected in the label element', () => {
         const label = 'This is a label';
-        const wrapper = mount(<Label label={label} />);
+        const wrapper = mount(<Label label={testLabel} />);
         expect(
           wrapper
             .find(LabelInner)
@@ -43,17 +48,23 @@ describe('ak-field-base', () =>
     describe('required prop', () => {
       it('should append an asterisk to the content', () =>
         expect(
-          shallow(<Label {...defaultProps} isRequired />).find(
-            RequiredIndicator,
-          ).length,
+          shallow(
+            <Label
+              label={testLabel}
+              isLabelHidden={isLabelHidden}
+              isRequired
+            />,
+          ).find(RequiredIndicator).length,
         ).toBeGreaterThan(0));
 
       it('should not append an asterisk to the content if required is not set', () => {
         expect(
-          shallow(<Label {...defaultProps} />).find(RequiredIndicator).length,
+          shallow(
+            <Label label={testLabel} isLabelHidden={isLabelHidden} />,
+          ).find(RequiredIndicator).length,
         ).toBe(0);
         expect(
-          shallow(<Label {...defaultProps} />)
+          shallow(<Label label={testLabel} isLabelHidden={isLabelHidden} />)
             .find('span')
             .text(),
         ).toBe('test');
@@ -99,7 +110,13 @@ describe('ak-field-base', () =>
     describe('onClick prop', () =>
       it('should fire handler when the span is clicked', () => {
         const handler = jest.fn();
-        const wrapper = shallow(<Label {...defaultProps} onClick={handler} />);
+        const wrapper = shallow(
+          <Label
+            label={testLabel}
+            isLabelHidden={isLabelHidden}
+            onClick={handler}
+          />,
+        );
         wrapper.find('span').simulate('click');
         expect(handler).toHaveBeenCalledTimes(1);
       }));
@@ -107,7 +124,7 @@ describe('ak-field-base', () =>
     describe('.children', () =>
       it('should render any children passed to it', () => {
         const wrapper = shallow(
-          <Label {...defaultProps}>
+          <Label label={testLabel} isLabelHidden={isLabelHidden}>
             <div className="foo">Here is some child content!</div>
           </Label>,
         );

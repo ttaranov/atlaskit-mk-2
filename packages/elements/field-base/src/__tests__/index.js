@@ -3,9 +3,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import InlineDialog from '@atlaskit/inline-dialog';
 import Spinner from '@atlaskit/spinner';
-
-import FieldBase, { FieldBaseStateless } from '@atlaskit/field-base';
-
+import FieldBase, { FieldBaseStateless } from '../../src';
 import { ChildWrapper, Content } from '../styled/Content';
 import { WarningIcon } from '../components/ValidationElement';
 
