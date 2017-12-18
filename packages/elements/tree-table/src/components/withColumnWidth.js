@@ -34,7 +34,7 @@ export default function withColumnWidth(Cell) {
         width !== null && width !== undefined
           ? width
           : this.context.treeTable.getColumnWidth(columnIndex);
-      return <Cell {...this.props} columnWidth={columnWidth} />;
+      return <Cell {...this.props} width={columnWidth} />;
     }
   };
 }

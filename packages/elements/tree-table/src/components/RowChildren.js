@@ -16,6 +16,10 @@ type State = {
 };
 
 export default class RowChildren extends PureComponent<Props, State> {
+  static defaultProps = {
+    depth: 0,
+  };
+
   constructor() {
     super();
     this.handleLoadingFinished = this.handleLoadingFinished.bind(this);
@@ -46,12 +50,13 @@ export default class RowChildren extends PureComponent<Props, State> {
   }
 
   renderLoader() {
-    const isCompleting = !this.isLoadingData(this.props.childrenData);
+    const { depth, childrenData } = this.props;
+    const isCompleting = !this.isLoadingData(childrenData);
     return (
       <LoaderRow
         isCompleting={isCompleting}
         onComplete={this.handleLoadingFinished}
-        depth={this.props.depth}
+        depth={depth + 1}
       />
     );
   }

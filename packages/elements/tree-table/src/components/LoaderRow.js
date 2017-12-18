@@ -2,8 +2,7 @@
 import React, { PureComponent } from 'react';
 import Spinner from '@atlaskit/spinner';
 
-import DataCell from './DataCell';
-import { TreeRowContainer, ChevronContainer } from '../styled';
+import { DataCell, TreeRowContainer, LoaderContainer } from '../styled';
 
 type Props = {
   isCompleting: boolean,
@@ -20,8 +19,8 @@ export default class LoaderRow extends PureComponent<Props> {
     const { isCompleting, depth, onComplete } = this.props;
     return (
       <TreeRowContainer>
-        <DataCell indentLevel={depth}>
-          <ChevronContainer>
+        <DataCell indentLevel={depth} width={'100%'}>
+          <LoaderContainer isRoot={depth === 1}>
             <Spinner
               isCompleting={isCompleting}
               onComplete={onComplete}
@@ -29,7 +28,7 @@ export default class LoaderRow extends PureComponent<Props> {
               size="small"
               invertColor={false}
             />
-          </ChevronContainer>
+          </LoaderContainer>
         </DataCell>
       </TreeRowContainer>
     );

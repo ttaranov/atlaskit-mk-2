@@ -24,7 +24,7 @@ export default class Row extends PureComponent<Props, State> {
   };
 
   static defaultProps = {
-    depth: 1,
+    depth: 0,
   };
 
   constructor() {
