@@ -79,7 +79,7 @@ function getUser(oldViewModel: OldViewModel) {
 
 function getUsers(oldViewModel: OldViewModel) {
   if (!oldViewModel.details) {
-    return [];
+    return undefined;
   }
   return oldViewModel.details.reduce((users, oldDetail) => {
     if (oldDetail.users) {
@@ -92,7 +92,7 @@ function getUsers(oldViewModel: OldViewModel) {
 
 function getDetails(oldViewModel: OldViewModel) {
   if (!oldViewModel.details) {
-    return [];
+    return undefined;
   }
   return oldViewModel.details.map(oldDetail => ({
     title: oldDetail.title,
@@ -108,7 +108,7 @@ function getActions(
   onActionClick?: OnActionClickCallback,
 ) {
   if (!oldViewModel.actions) {
-    return [];
+    return undefined;
   }
   return oldViewModel.actions.map(oldAction => {
     return {
