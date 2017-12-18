@@ -2,12 +2,12 @@
 
 import React from 'react';
 import { gridSize } from '@atlaskit/theme';
-import Flag from '../src';
 import Error from '@atlaskit/icon/glyph/error';
 import Info from '@atlaskit/icon/glyph/info';
 import Tick from '@atlaskit/icon/glyph/check-circle';
 import Warning from '@atlaskit/icon/glyph/warning';
 import { colors } from '@atlaskit/theme';
+import Flag from '../src';
 
 const actions = [
   { content: 'Understood', onClick: () => {} },
