@@ -8,7 +8,6 @@ import {
 } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { panelNodeView } from '../../nodeviews';
-import inputRulePlugin from './input-rules';
 
 export interface PanelType {
   panelType: 'info' | 'note' | 'tip' | 'warning';
@@ -180,9 +179,7 @@ export const createPlugin = () =>
   });
 
 const plugins = (schema: Schema) => {
-  return [createPlugin(), inputRulePlugin(schema)].filter(
-    plugin => !!plugin,
-  ) as Plugin[];
+  return [createPlugin()].filter(plugin => !!plugin) as Plugin[];
 };
 
 export default plugins;
