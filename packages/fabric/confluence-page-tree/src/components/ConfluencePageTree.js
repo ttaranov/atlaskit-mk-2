@@ -10,7 +10,7 @@ import TreeTable, {
 } from '../../../../elements/tree-table/src';
 import { Contributors } from './Contributors';
 import { ErrorTree } from './ErrorTree';
-import { getChildPageDetails } from '../api/confluence';
+import { getChildren } from '../api/confluence';
 import { getI18n } from '../i18n-text';
 
 type Props = {
@@ -42,9 +42,9 @@ export default class ConfluencePageTree extends Component<Props, State> {
           <ErrorTree type={errorState} />
         ) : (
           <TreeRows
-            data={({ id = contentId } = {}) => {
-              return contentId === id
-                ? getChildPageDetails(id)
+            data={({ id = contentId } = {}) =>
+              contentId === id
+                ? getChildren(id)
                     .then(result => {
                       let newErrorState;
 
@@ -57,8 +57,8 @@ export default class ConfluencePageTree extends Component<Props, State> {
                     .catch(() => {
                       this.setState({ errorState: 'error' });
                     })
-                : getChildPageDetails(id);
-            }}
+                : getChildren(id)
+            }
             render={({
               id,
               title,

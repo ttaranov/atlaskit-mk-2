@@ -13,3 +13,9 @@ export type PageAttribute = {
   id: string,
   history: any,
 };
+
+export type pageAttributesArgs = {
+  contentIds: Array<string>,
+  attributes: string,
+  limit: number,
+};
