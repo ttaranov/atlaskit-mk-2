@@ -18,6 +18,7 @@ const i18n = {
     tableHeaderTitle: 'Title',
     tableHeaderContributors: 'Contributors',
     tableHeaderLastModified: 'Last Modified',
+    viewProfile: 'View Profile',
   },
 };
 

@@ -3,6 +3,7 @@ import React from 'react';
 import Avatar, { AvatarGroup } from '@atlaskit/avatar';
 import { AkProfilecardTrigger, AkProfileClient } from '@atlaskit/profilecard';
 import { getDirectoryServiceEndpoint } from '../api/directory';
+import { getI18n } from '../i18n-text';
 
 type AvatarWithProfileCardProps = {
   userId: string,
@@ -24,7 +25,7 @@ const AvatarWithProfileCard = (props: AvatarWithProfileCardProps) => {
       resourceClient={profileClient}
       actions={[
         {
-          label: 'View profile', //TODO: How to i18n?
+          label: getI18n().viewProfile,
           callback: () => {
             window.location.href = `/wiki/display/~${username}`;
           },
@@ -36,20 +37,11 @@ const AvatarWithProfileCard = (props: AvatarWithProfileCardProps) => {
   );
 };
 
-type User = {
-  displayName: string,
-  profilePicture: {
-    path: string,
-  },
-  accountId: string,
-  username: string,
-};
-
 type ContributorsProps = {
   cloudId: string,
   contributors: {
     publishers: {
-      users: Array<User>,
+      users: Array<any>,
     },
   },
 };
@@ -75,7 +67,7 @@ const Contributors = (props: ContributorsProps) => {
         appearance="stack"
         data={data}
         avatar={AvatarWithCloudId}
-        size="small" //TODO: check this
+        size="small"
         maxCount={3}
       />
     </div>

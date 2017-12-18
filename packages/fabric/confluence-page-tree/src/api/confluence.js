@@ -1,18 +1,16 @@
 // @flow
-import type { PageData, PageAttribute, pageAttributesArgs } from '../types';
+import type {
+  PageData,
+  PageAttribute,
+  pageAttributesArgs,
+  recursiveFetchArgs,
+} from '../types';
 
 const fetchOptions = {
   headers: {
     'Content-Type': 'application/json',
   },
   credentials: 'same-origin',
-};
-
-type recursiveFetchArgs = {
-  currentFetch: Promise<any>,
-  terminatingFn: (response: any) => boolean,
-  getNextFetch: () => Promise<any>,
-  accumulator?: Array<any>,
 };
 
 const recursiveFetch = ({

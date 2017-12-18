@@ -19,3 +19,10 @@ export type pageAttributesArgs = {
   attributes: string,
   limit: number,
 };
+
+export type recursiveFetchArgs = {
+  currentFetch: Promise<any>,
+  terminatingFn: (response: any) => boolean,
+  getNextFetch: () => Promise<any>,
+  accumulator?: Array<any>,
+};
