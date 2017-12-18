@@ -168,6 +168,8 @@ function isNodeSupportedContent(node: Node): boolean {
       case 'P':
       case 'A':
       case 'FAB:MENTION':
+      case 'FAB:MEDIA-GROUP':
+      case 'FAB:MEDIA-SINGLE':
       case 'FAB:MEDIA':
       case 'AC:INLINE-COMMENT-MARKER':
       case 'AC:STRUCTURED-MACRO':
@@ -274,7 +276,7 @@ export function hasClass(node: Element, className: string): boolean {
 }
 
 /*
- * Contructs a struct string of replacement blocks and marks for a given node
+ * Constructs a struct string of replacement blocks and marks for a given node
  */
 export function getContent(
   node: Node,

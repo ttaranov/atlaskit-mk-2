@@ -53,3 +53,9 @@ export { default as CollapsedEditor } from './editor/ui/CollapsedEditor';
 export { default as ToolbarHelp } from './editor/ui/ToolbarHelp';
 
 export { createJIRASchema } from '@atlaskit/editor-common';
+export {
+  MacroProvider,
+  MacroAttributes,
+  ExtensionType,
+} from './editor/plugins/macro';
+export * from './styles';

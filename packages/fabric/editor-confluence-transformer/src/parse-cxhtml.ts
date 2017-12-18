@@ -86,6 +86,8 @@ function isBlock(node: Node) {
     case 'RI:PAGE':
     case 'RI:URL':
     case 'RI:ATTACHMENT':
+    case 'FAB:MEDIA-GROUP':
+    case 'FAB:MEDIA-SINGLE':
       return true;
   }
   return false;

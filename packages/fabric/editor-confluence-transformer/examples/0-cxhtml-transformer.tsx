@@ -1,20 +1,27 @@
 import styled from 'styled-components';
 import * as React from 'react';
 import { Component } from 'react';
+import { pd } from 'pretty-data';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { akColorN80 } from '@atlaskit/util-shared-styles';
-
-import Editor from './../src/editor';
-import EditorContext from './../src/editor/ui/EditorContext';
-import WithEditorActions from './../src/editor/ui/WithEditorActions';
-import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
+import {
+  Editor,
+  EditorContext,
+  WithEditorActions,
+  akEditorCodeBackground,
+  akEditorCodeBlockPadding,
+  akEditorCodeFontFamily,
+} from '@atlaskit/editor-core';
+import {
+  storyMediaProviderFactory,
+  macroProvider,
+} from '@atlaskit/editor-test-helpers';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
-import { ConfluenceTransformer } from '@atlaskit/editor-cq-transformer';
 import Spinner from '@atlaskit/spinner';
-import { pd } from 'pretty-data';
-import { macroProviderPromise } from '../example-helpers/mock-macro-provider';
+import { akBorderRadius } from '@atlaskit/util-shared-styles';
+
 import {
   CODE_MACRO,
   JIRA_ISSUE,
@@ -25,14 +32,7 @@ import {
   BODIED_EXTENSION,
   BODIED_NESTED_EXTENSION,
 } from '../example-helpers/cxhtml-test-data';
-
-import {
-  akEditorCodeBackground,
-  akEditorCodeBlockPadding,
-  akEditorCodeFontFamily,
-} from '../src/styles';
-
-import { akBorderRadius } from '@atlaskit/util-shared-styles';
+import { ConfluenceTransformer } from '../src';
 
 // tslint:disable-next-line:variable-name
 export const TitleInput = styled.input`
@@ -92,6 +92,14 @@ const SaveAndCancelButtons = props => (
     </Button>
   </ButtonGroup>
 );
+
+const providers = {
+  emojiProvider: emojiStoryData.getEmojiResource({ uploadSupported: true }),
+  mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
+  activityProvider: Promise.resolve(new MockActivityResource()),
+  macroProvider: Promise.resolve(macroProvider),
+};
+const mediaProvider = storyMediaProviderFactory();
 
 type ExampleProps = {
   onChange: Function;
@@ -173,15 +181,8 @@ class Example extends Component<ExampleProps, ExampleState> {
                   allowPanel={true}
                   allowExtension={true}
                   allowConfluenceInlineComment={true}
-                  mediaProvider={storyMediaProviderFactory()}
-                  emojiProvider={emojiStoryData.getEmojiResource({
-                    uploadSupported: true,
-                  })}
-                  mentionProvider={Promise.resolve(
-                    mentionStoryData.resourceProvider,
-                  )}
-                  activityProvider={Promise.resolve(new MockActivityResource())}
-                  macroProvider={macroProviderPromise}
+                  {...providers}
+                  media={{ provider: mediaProvider, allowMediaSingle: true }}
                   // tslint:disable-next-line:jsx-no-lambda
                   contentTransformerProvider={schema =>
                     new ConfluenceTransformer(schema)

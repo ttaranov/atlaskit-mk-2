@@ -2,11 +2,8 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as assert from 'assert';
 import { Node as PMNode } from 'prosemirror-model';
+import { confluenceSchemaWithMediaSingle as schema } from '@atlaskit/editor-common';
 import { chaiPlugin } from '@atlaskit/editor-test-helpers';
-import {
-  ConfluenceTransformer,
-  CONFlUENCE_LANGUAGE_MAP as LANGUAGE_MAP,
-} from '../../..';
 import {
   blockquote,
   br,
@@ -39,6 +36,7 @@ import {
   confluenceJiraIssue,
   confluenceInlineComment,
   mediaGroup,
+  mediaSingle,
   media,
   table,
   tr,
@@ -49,8 +47,13 @@ import {
   bodiedExtension,
   emoji,
 } from './_schema-builder';
+
+import {
+  ConfluenceTransformer,
+  CONFLUENCE_LANGUAGE_MAP as LANGUAGE_MAP,
+} from '../../src';
+
 chai.use(chaiPlugin);
-import { confluenceSchema as schema } from '@atlaskit/editor-common';
 
 const transformer = new ConfluenceTransformer(schema);
 const parse = (html: string) => transformer.parse(html);
@@ -1022,12 +1025,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     check(
       'h1 + macro with CDATA',
       '<h1>Code block</h1><ac:structured-macro ac:name="foo"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
-      doc(
-        h1('Code block'),
-        confluenceUnsupportedBlock(
-          '<ac:structured-macro ac:name="foo"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
-        ),
-      ),
+      doc(h1('Code block'), codeblock()('some code')),
     );
 
     describe('ac:link', () => {
@@ -1085,9 +1083,9 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     );
 
     check(
-      'emoticons that will end up mapped to defaul fabric id emoji will preserve original ac:name',
-      '<p><ac:emoticon ac:name="red-star"/></p>',
-      doc(p(emoji({ id: '2b50', shortName: ':red-star:', text: '' }))),
+      'emoticons that will end up mapped to default fabric id emoji will preserve original ac:name',
+      '<p><ac:emoticon ac:name="unknown"/></p>',
+      doc(p(emoji({ id: '2b50', shortName: ':unknown:', text: '' }))),
     );
 
     check(
@@ -1194,7 +1192,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
   describe('media nodes', () => {
     check(
       'with minimal number of attributes',
-      '<p><fab:media media-id="f46de7c0-8b53-49b2-9788-5168361dda1d" media-type="file" media-collection="de7ae355-dcf3-4988-9785-bccb835830c4"></fab:media></p>',
+      '<fab:media-group><fab:media media-id="f46de7c0-8b53-49b2-9788-5168361dda1d" media-type="file" media-collection="de7ae355-dcf3-4988-9785-bccb835830c4"/></fab:media-group>',
       doc(
         mediaGroup(
           media({
@@ -1207,8 +1205,20 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     );
 
     it('should encode/parse media nodes with own attributes', () => {
-      const cxhtml =
-        '<p><fab:media media-collection="de7ae355-dcf3-4988-9785-bccb835830c4" media-type="file" media-id="f46de7c0-8b53-49b2-9788-5168361dda1d" file-mime-type="image/jpeg" file-size="95316" file-name="2017-04-12 07.15.57.jpg"/></p>';
+      const cxhtml = `
+        <fab:media-single>
+          <fab:media
+            media-id="f46de7c0-8b53-49b2-9788-5168361dda1d"
+            media-type="file"
+            media-collection="de7ae355-dcf3-4988-9785-bccb835830c4"
+            file-name="2017-04-12 07.15.57.jpg"
+            file-size="95316"
+            file-mime-type="image/jpeg"
+            width="600"
+            height="400"
+          />
+        </fab:media-single>
+      `;
       const mediaNode = media({
         id: 'f46de7c0-8b53-49b2-9788-5168361dda1d',
         type: 'file',
@@ -1216,8 +1226,10 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         fileName: '2017-04-12 07.15.57.jpg',
         fileSize: 95316,
         fileMimeType: 'image/jpeg',
+        width: 600,
+        height: 400,
       });
-      const docNode = doc(mediaGroup(mediaNode));
+      const docNode = doc(mediaSingle()(mediaNode));
 
       // check that parsing/encoding is working as expected
       // plus takes node own attributes into account
@@ -1234,16 +1246,20 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       expect(parsedMediaNode!.attrs.__fileMimeType).to.equal('image/jpeg');
     });
 
-    it('should put media and paragraph text into different block nodes (simple case)', () => {
-      const cxhtml = `<p>
-        my answer with attachment
-        <fab:media media-collection="de7ae355-dcf3-4988-9785-bccb835830c4" media-type="file" media-id="f46de7c0-8b53-49b2-9788-5168361dda1d" file-mime-type="image/jpeg" file-size="95316" file-name="2017-04-12 07.15.57.jpg"/>
-        <fab:media media-collection="de7ae355-dcf3-4988-9785-bccb835830c4" media-type="file" media-id="f46de7c0-8b53-49b2-9788-5168361dda1d" file-mime-type="image/jpeg" file-size="95316" file-name="2017-04-12 07.15.57.jpg"/>
-        my answer with attachment 2
-        <fab:media media-collection="de7ae355-dcf3-4988-9785-bccb835830c4" media-type="file" media-id="f46de7c0-8b53-49b2-9788-5168361dda1d" file-mime-type="image/jpeg" file-size="95316" file-name="2017-04-12 07.15.57.jpg"/>
-        my answer with attachment 3
-        <fab:link><fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></fab:link>
-      </p>`;
+    it('should handle media-group, media-single and paragraph (simple case)', () => {
+      const cxhtml = `
+        <p>my answer with attachment</p>
+        <fab:media-group>
+          <fab:media media-collection="de7ae355-dcf3-4988-9785-bccb835830c4" media-type="file" media-id="f46de7c0-8b53-49b2-9788-5168361dda1d" file-mime-type="image/jpeg" file-size="95316" file-name="2017-04-12 07.15.57.jpg"/>
+          <fab:media media-collection="de7ae355-dcf3-4988-9785-bccb835830c4" media-type="file" media-id="f46de7c0-8b53-49b2-9788-5168361dda1d" file-mime-type="image/jpeg" file-size="95316" file-name="2017-04-12 07.15.57.jpg"/>
+        </fab:media-group>
+        <p>my answer with attachment 2</p>
+        <fab:media-single layout="wrap-left">
+          <fab:media media-collection="de7ae355-dcf3-4988-9785-bccb835830c4" media-type="file" media-id="f46de7c0-8b53-49b2-9788-5168361dda1d" file-mime-type="image/jpeg" file-size="95316" file-name="2017-04-12 07.15.57.jpg"/>
+        </fab:media-single>
+        <p>my answer with attachment 3 <fab:link><fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></fab:link>
+        </p>
+      `;
 
       const parseWrap = () => parse(cxhtml);
       assert.doesNotThrow(parseWrap, 'Parsing should not throw exception');
@@ -1258,10 +1274,10 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       });
 
       const docNode = doc(
-        p('my answer with attachment '),
+        p('my answer with attachment'),
         mediaGroup(mediaNode, mediaNode),
-        p('my answer with attachment 2 '),
-        mediaGroup(mediaNode),
+        p('my answer with attachment 2'),
+        mediaSingle()(mediaNode),
         p(
           'my answer with attachment 3 ',
           mention({

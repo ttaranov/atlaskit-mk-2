@@ -1,5 +1,7 @@
 import {
   MediaAttributes,
+  MediaSingleAttributes,
+  MediaSingleLayout,
   MediaType,
   acNameToEmoji,
   acShortcutToEmoji,
@@ -28,6 +30,8 @@ import {
   ensureInline,
   docContentWrapper,
 } from './content-wrapper';
+
+const supportedSingleMediaLayouts = ['center'];
 
 const convertedNodes = new WeakMap<Node, Fragment | PMNode>();
 // This reverted mapping is used to map Unsupported Node back to it's original cxhtml
@@ -186,49 +190,19 @@ function converter(
             : listItemContentWrapper(schema, content, convertedNodesReverted),
         );
       case 'P':
-        let output: Fragment = Fragment.from([]);
-        let textNodes: PMNode[] = [];
-        let mediaNodes: PMNode[] = [];
+        const textNodes: PMNode[] = [];
 
         if (!node.childNodes.length) {
           return schema.nodes.paragraph.createChecked({}, content);
         }
 
-        content.forEach((childNode, offset) => {
-          if (childNode.type === schema.nodes.media) {
-            // if there were text nodes before this node
-            // combine them into one paragraph and empty the list
-            if (textNodes.length) {
-              const paragraph = schema.nodes.paragraph.createChecked(
-                {},
-                textNodes,
-              );
-              output = (output as any).addToEnd(paragraph);
-
-              textNodes = [];
-            }
-
-            mediaNodes.push(childNode);
-          } else {
-            // if there were media nodes before this node
-            // combine them into one mediaGroup and empty the list
-            if (mediaNodes.length) {
-              const mediaGroup = schema.nodes.mediaGroup.createChecked(
-                {},
-                mediaNodes,
-              );
-              output = (output as any).addToEnd(mediaGroup);
-
-              mediaNodes = [];
-            }
-
-            textNodes.push(childNode);
-          }
+        content.forEach(childNode => {
+          textNodes.push(childNode);
         });
 
         // combine remaining text nodes
         if (textNodes.length) {
-          const paragraph = schema.nodes.paragraph.createChecked(
+          return schema.nodes.paragraph.createChecked(
             {},
             ensureInline(
               schema,
@@ -236,20 +210,9 @@ function converter(
               convertedNodesReverted,
             ),
           );
-          output = (output as any).addToEnd(paragraph);
         }
 
-        // combine remaining media nodes
-        if (mediaNodes.length) {
-          const mediaGroup = schema.nodes.mediaGroup.createChecked(
-            {},
-            mediaNodes,
-          );
-          output = (output as any).addToEnd(mediaGroup);
-        }
-
-        return output;
-
+        return null;
       case 'AC:HIPCHAT-EMOTICON':
       case 'AC:EMOTICON':
         let emoji = {
@@ -294,12 +257,69 @@ function converter(
           id: node.getAttribute('atlassian-id'),
           text: cdata!.nodeValue,
         });
+      case 'FAB:MEDIA-GROUP':
+        const mediaNodes: PMNode[] = [];
+
+        if (!node.childNodes.length) {
+          throw new Error(
+            '<fab:media-group> must have at least one <fab:media> as child',
+          );
+        }
+
+        content.forEach(childNode => {
+          if (childNode.type === schema.nodes.media) {
+            mediaNodes.push(childNode);
+          } else {
+            throw new Error(
+              '<fab:media-group> can only have <fab:media> as child',
+            );
+          }
+        });
+
+        if (mediaNodes.length) {
+          return schema.nodes.mediaGroup.createChecked({}, mediaNodes);
+        }
+
+        return null;
+      case 'FAB:MEDIA-SINGLE':
+        if (node.childNodes.length !== 1) {
+          throw new Error(
+            '<fab:media-single> must have only one <fab:media> as child',
+          );
+        }
+
+        const mediaNode = content.firstChild;
+        if (!mediaNode || mediaNode.type !== schema.nodes.media) {
+          throw new Error(
+            '<fab:media-single> can only have <fab:media> as child',
+          );
+        }
+
+        const layout = node.getAttribute('layout') || '';
+        const mediaSingleAttrs: MediaSingleAttributes = {
+          layout: (supportedSingleMediaLayouts.indexOf(layout) > -1
+            ? layout
+            : 'center') as MediaSingleLayout,
+        };
+
+        return schema.nodes.mediaSingle.createChecked(
+          mediaSingleAttrs,
+          mediaNode,
+        );
       case 'FAB:MEDIA':
         const mediaAttrs: MediaAttributes = {
           id: node.getAttribute('media-id') || '',
           type: (node.getAttribute('media-type') || 'file') as MediaType,
           collection: node.getAttribute('media-collection') || '',
         };
+
+        if (node.hasAttribute('width')) {
+          mediaAttrs.width = parseInt(node.getAttribute('width')!, 10);
+        }
+
+        if (node.hasAttribute('height')) {
+          mediaAttrs.height = parseInt(node.getAttribute('height')!, 10);
+        }
 
         if (node.hasAttribute('file-name')) {
           mediaAttrs.__fileName = node.getAttribute('file-name')!;
