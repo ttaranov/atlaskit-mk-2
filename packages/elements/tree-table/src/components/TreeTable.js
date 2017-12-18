@@ -85,6 +85,7 @@ export default class TreeTable extends Component<Props, State> {
     const heads = headers && (
       <HeadersRow>
         {headers.map((header, index) => (
+          // eslint-disable-next-line react/no-array-index-key
           <Header key={index} index={index} width={columnWidths[index]}>
             {header}
           </Header>
@@ -99,6 +100,7 @@ export default class TreeTable extends Component<Props, State> {
           render={data => (
             <RowData key={data.id} hasChildren={data.hasChildren}>
               {columns.map((Cell, index) => (
+                // eslint-disable-next-line react/no-array-index-key
                 <DataCell key={index} index={index} width={columnWidths[index]}>
                   <Cell {...data.content} />
                 </DataCell>

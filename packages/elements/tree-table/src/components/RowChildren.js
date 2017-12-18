@@ -27,19 +27,19 @@ export default class RowChildren extends PureComponent<Props, State> {
 
   componentWillMount() {
     this.setState({
-      isLoaderShown: this.isLoadingData(this.props.childrenData),
+      isLoaderShown: RowChildren.isLoadingData(this.props.childrenData),
     });
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.childrenData !== this.props && this.props.childrenData) {
-      if (this.isLoadingData(nextProps.childrenData)) {
+      if (RowChildren.isLoadingData(nextProps.childrenData)) {
         this.setState({ isLoaderShown: true });
       }
     }
   }
 
-  isLoadingData(data) {
+  static isLoadingData(data) {
     return !data;
   }
 
@@ -51,7 +51,7 @@ export default class RowChildren extends PureComponent<Props, State> {
 
   renderLoader() {
     const { depth, childrenData } = this.props;
-    const isCompleting = !this.isLoadingData(childrenData);
+    const isCompleting = !RowChildren.isLoadingData(childrenData);
     return (
       <LoaderRow
         isCompleting={isCompleting}
