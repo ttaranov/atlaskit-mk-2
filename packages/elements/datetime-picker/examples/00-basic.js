@@ -8,7 +8,7 @@ export default () => {
   return (
     <div>
       <Label label="Date picker" />
-      <DatePicker />
+      <DatePicker autoFocus />
       <Label label="Time picker" />
       <TimePicker />
       <Label label="Date / time picker" />
