@@ -18,11 +18,12 @@ import {
   tr,
   tdEmpty,
   tdCursor,
+  defaultSchema,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import blockTypePlugins from '../../../src/plugins/block-type';
 import { analyticsService } from '../../../src/analytics';
 import { setNodeSelection } from '../../../src/utils';
+import { createPlugin as createSaveOnEnterPlugin } from '../../../src/editor/plugins/save-on-enter';
 
 describe('codeBlock - keymaps', () => {
   const editor = (doc: any) =>
@@ -218,6 +219,25 @@ describe('codeBlock - keymaps', () => {
               expect(editorView.state.doc).toEqualDocument(
                 doc(p('hello```    '), p('   hello')),
               );
+              editorView.destroy();
+            });
+          });
+
+          describe('In message editor', () => {
+            it('does not create code block', () => {
+              const editor = (doc: any) =>
+                makeEditor({
+                  doc,
+                  plugins: [
+                    createSaveOnEnterPlugin(() => {})!,
+                    ...blockTypePlugin(defaultSchema, 'message'),
+                  ],
+                });
+              const { editorView } = editor(doc(p('```{<>}')));
+
+              sendKeyToPm(editorView, 'Enter');
+
+              expect(editorView.state.doc).toEqualDocument(doc(p('```')));
               editorView.destroy();
             });
           });
