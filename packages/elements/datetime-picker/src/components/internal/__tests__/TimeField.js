@@ -23,5 +23,12 @@ describe(name, () => {
 
       expect(onKeyDownMock.mock.calls.length).toBe(1);
     });
+
+    describe('passing down props', () => {
+      it('should pass autoFocus down to the underlying Input', () => {
+        const wrapper = shallow(<TimeField autoFocus />);
+        expect(wrapper.find(Input).props().autoFocus).toBeTruthy();
+      });
+    });
   });
 });

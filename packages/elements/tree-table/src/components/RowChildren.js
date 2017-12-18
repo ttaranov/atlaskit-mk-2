@@ -2,18 +2,22 @@
 import React, { PureComponent } from 'react';
 import Row from './Row';
 import LoaderRow from './LoaderRow';
-import { type DataFunction } from './../types';
+import { type DataFunction, type RenderFunction } from './../types';
 
 type Props = {
-  childrenData: Object,
+  childrenData: Array<Object | null> | null,
   getChildrenData: DataFunction,
   depth?: number,
-  render?: Function,
+  render?: RenderFunction,
 };
 
-export default class RowChildren extends PureComponent<Props> {
-  state = {
-    isLoaderShown: this.isLoadingData(this.props && this.props.childrenData),
+type State = {
+  isLoaderShown?: boolean,
+};
+
+export default class RowChildren extends PureComponent<Props, State> {
+  static defaultProps = {
+    depth: 0,
   };
 
   constructor() {
@@ -21,8 +25,14 @@ export default class RowChildren extends PureComponent<Props> {
     this.handleLoadingFinished = this.handleLoadingFinished.bind(this);
   }
 
+  componentWillMount() {
+    this.setState({
+      isLoaderShown: this.isLoadingData(this.props.childrenData),
+    });
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (nextProps.childrenData !== this.props.childrenData) {
+    if (nextProps.childrenData !== this.props && this.props.childrenData) {
       if (this.isLoadingData(nextProps.childrenData)) {
         this.setState({ isLoaderShown: true });
       }
@@ -40,12 +50,13 @@ export default class RowChildren extends PureComponent<Props> {
   }
 
   renderLoader() {
-    const isCompleting = !this.isLoadingData(this.props.childrenData);
+    const { depth, childrenData } = this.props;
+    const isCompleting = !this.isLoadingData(childrenData);
     return (
       <LoaderRow
         isCompleting={isCompleting}
         onComplete={this.handleLoadingFinished}
-        depth={this.props.depth}
+        depth={depth + 1}
       />
     );
   }

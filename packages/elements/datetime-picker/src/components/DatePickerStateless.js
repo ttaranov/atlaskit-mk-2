@@ -7,6 +7,7 @@ import DateDialog from './internal/DateDialog';
 import type { Handler } from '../types';
 
 type Props = {
+  autoFocus: boolean,
   value: ?string,
   displayValue: string,
   isOpen: boolean,
@@ -27,6 +28,7 @@ export default class DatePickerStateless extends Component<Props> {
   picker: ?ElementRef<typeof Picker>;
 
   static defaultProps = {
+    autoFocus: false,
     isDisabled: false,
     isOpen: false,
     value: null,
@@ -53,6 +55,7 @@ export default class DatePickerStateless extends Component<Props> {
   render() {
     return (
       <Picker
+        autoFocus={this.props.autoFocus}
         field={DateField}
         dialog={DateDialog}
         isDisabled={this.props.isDisabled}

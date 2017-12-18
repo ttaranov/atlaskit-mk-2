@@ -7,6 +7,7 @@ import type { Handler } from '../types';
 import { parseDate } from '../util';
 
 type Props = {
+  autoFocus: boolean,
   isDisabled: boolean,
   disabled: Array<string>,
   onChange: Handler,
@@ -23,6 +24,7 @@ export default class DatePicker extends Component<Props, State> {
   datepicker: ?ElementRef<typeof DatePickerStateless>;
 
   static defaultProps = {
+    autoFocus: false,
     isDisabled: false,
     disabled: [],
     onChange() {},
@@ -120,6 +122,7 @@ export default class DatePicker extends Component<Props, State> {
   render() {
     return (
       <DatePickerStateless
+        autoFocus={this.props.autoFocus}
         isDisabled={this.props.isDisabled}
         isOpen={this.state.isOpen}
         shouldShowIcon

@@ -55,7 +55,7 @@ describe(name, () => {
     beforeEach(() => {
       providerFactory = new ProviderFactory();
       const editor = createEditor(
-        [tasksAndDecisionsPlugin, mediaPlugin, hyperlinkPlugin],
+        [tasksAndDecisionsPlugin, mediaPlugin(), hyperlinkPlugin],
         {
           mediaProvider,
           waitForMediaUpload: true,
@@ -268,7 +268,7 @@ describe(name, () => {
       describe('with waitForMediaUpload === false', () => {
         it('should resolve even when media operations are pending', async () => {
           const editor = createEditor(
-            [mediaPlugin, hyperlinkPlugin],
+            [mediaPlugin(), hyperlinkPlugin],
             {
               mediaProvider,
               waitForMediaUpload: false,

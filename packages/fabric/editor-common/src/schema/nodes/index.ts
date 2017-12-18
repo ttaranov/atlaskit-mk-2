@@ -27,7 +27,7 @@ export {
   MediaType,
   Attributes as MediaAttributes,
   DisplayType as MediaDisplayType,
-  copyOptionalAttrs as copyOptionalMediaAttributes,
+  copyPrivateAttributes as copyPrivateMediaAttributes,
   toJSON as mediaToJSON,
 } from './media';
 export { mediaGroup } from './media-group';

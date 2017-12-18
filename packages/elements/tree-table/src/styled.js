@@ -20,13 +20,26 @@ export const TreeRowContainer = styled.div`
   display: flex;
 `;
 
-export const ChevronContainer = styled.span`
+const commonChevronContainer = css`
   margin-left: -24px;
   position: absolute;
   top: 0;
   bottom: 0;
   display: flex;
   align-items: center;
+`;
+
+export const ChevronContainer = styled.span`
+  ${commonChevronContainer};
+`;
+
+export const LoaderContainer = styled.span`
+  ${commonChevronContainer} width: 100%;
+  ${props =>
+    props.isRoot &&
+    css`
+      padding-left: 50%;
+    `};
 `;
 
 const indentWidth = 20;
@@ -36,10 +49,11 @@ const commonCell = css`
   box-sizing: border-box;
   padding: 10px ${defaultToPx(indentWidth)};
   min-height: 40px;
+  position: relative;
   ${props =>
-    props.columnWidth &&
+    props.width &&
     css`
-      width: ${defaultToPx(props.columnWidth)};
+      width: ${defaultToPx(props.width)};
     `};
 `;
 
@@ -47,7 +61,6 @@ export const DataCell = styled.div`
   ${commonCell} white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  position: relative;
   ${props =>
     props.indentLevel &&
     css`

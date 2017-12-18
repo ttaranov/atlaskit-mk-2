@@ -9,15 +9,25 @@ export default md`
   The render prop is called whenever a tree row needs to be displayed.
   It receives row's data and should return a React
   component — a row of data cells.
+  
+  ## Examples
 
   ${(
     <Example
       Component={require('../examples/render-prop-async').default}
       source={require('!!raw-loader!../examples/render-prop-async')}
-      title="Render prop"
+      title="Basic"
     />
   )}
-  
+
+  ${(
+    <Example
+      Component={require('../examples/render-prop-no-headers').default}
+      source={require('!!raw-loader!../examples/render-prop-no-headers')}
+      title="No headers"
+    />
+  )}
+
   ${(
     <Props
       props={require('!!extract-react-types-loader!../src/components/TreeTable')}

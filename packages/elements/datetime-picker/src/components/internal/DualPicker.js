@@ -10,6 +10,7 @@ type DialogProps = {
   [string]: any,
 };
 export type Props = {
+  autoFocus: boolean,
   active: 0 | 1 | 2, // todo: boolean???
   value: [?string, ?string],
   displayValue: [string, string],
@@ -42,6 +43,7 @@ export default class PickerDual extends Component<Props> {
   field2: ?ElementRef<any>;
 
   static defaultProps = {
+    autoFocus: false,
     active: 1,
     value: [null, null],
     displayValue: ['', ''],
@@ -149,6 +151,7 @@ export default class PickerDual extends Component<Props> {
         >
           <Base isDisabled={this.props.isDisabled} onBlur={this.props.onBlur}>
             <Field1
+              autoFocus={this.props.autoFocus}
               onBlur={this.props.onFieldBlur[0]}
               onChange={this.props.onFieldChange[0]}
               onFocus={this.props.onFieldFocus[0]}

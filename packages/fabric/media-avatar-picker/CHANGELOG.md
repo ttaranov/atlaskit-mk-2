@@ -1,5 +1,8 @@
 # @atlaskit/media-avatar-picker
 
+## 4.3.11
+- [patch] apply prettier to avatar picker source to reduce noise on future PRs [cc618e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc618e4)
+
 ## 4.3.10
 
 ## 4.3.9

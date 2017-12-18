@@ -11,18 +11,17 @@ describe('mediaSingle - styled component', () => {
     const layout = 'center';
 
     it('should float none', () => {
-      const wrapper = shallow(<Wrapper layout={layout} />);
+      const wrapper = shallow(
+        <Wrapper layout={layout} height={100} width={100} />,
+      );
       expect(wrapper).toHaveStyleRule('float', 'none');
     });
 
     it('should clear both', () => {
-      const wrapper = shallow(<Wrapper layout={layout} />);
+      const wrapper = shallow(
+        <Wrapper layout={layout} height={100} width={100} />,
+      );
       expect(wrapper).toHaveStyleRule('clear', 'both');
-    });
-
-    it('should text align center', () => {
-      const wrapper = shallow(<Wrapper layout={layout} />);
-      expect(wrapper).toHaveStyleRule('text-align', 'center');
     });
   });
 
@@ -30,18 +29,17 @@ describe('mediaSingle - styled component', () => {
     const layout = 'wrap-right';
 
     it('should float none', () => {
-      const wrapper = shallow(<Wrapper layout={layout} />);
+      const wrapper = shallow(
+        <Wrapper layout={layout} height={100} width={100} />,
+      );
       expect(wrapper).toHaveStyleRule('float', 'right');
     });
 
     it('should clear both', () => {
-      const wrapper = shallow(<Wrapper layout={layout} />);
+      const wrapper = shallow(
+        <Wrapper layout={layout} height={100} width={100} />,
+      );
       expect(wrapper).toHaveStyleRule('clear', 'right');
-    });
-
-    it('should text align left', () => {
-      const wrapper = shallow(<Wrapper layout={layout} />);
-      expect(wrapper).toHaveStyleRule('text-align', 'left');
     });
   });
 
@@ -49,18 +47,17 @@ describe('mediaSingle - styled component', () => {
     const layout = 'wrap-left';
 
     it('should float none', () => {
-      const wrapper = shallow(<Wrapper layout={layout} />);
+      const wrapper = shallow(
+        <Wrapper layout={layout} height={100} width={100} />,
+      );
       expect(wrapper).toHaveStyleRule('float', 'left');
     });
 
     it('should clear both', () => {
-      const wrapper = shallow(<Wrapper layout={layout} />);
+      const wrapper = shallow(
+        <Wrapper layout={layout} height={100} width={100} />,
+      );
       expect(wrapper).toHaveStyleRule('clear', 'left');
-    });
-
-    it('should text align left', () => {
-      const wrapper = shallow(<Wrapper layout={layout} />);
-      expect(wrapper).toHaveStyleRule('text-align', 'left');
     });
   });
 
@@ -68,18 +65,17 @@ describe('mediaSingle - styled component', () => {
     const layout = 'wide';
 
     it('should float none', () => {
-      const wrapper = shallow(<Wrapper layout={layout} />);
+      const wrapper = shallow(
+        <Wrapper layout={layout} height={100} width={100} />,
+      );
       expect(wrapper).toHaveStyleRule('float', 'none');
     });
 
     it('should clear both', () => {
-      const wrapper = shallow(<Wrapper layout={layout} />);
+      const wrapper = shallow(
+        <Wrapper layout={layout} height={100} width={100} />,
+      );
       expect(wrapper).toHaveStyleRule('clear', 'both');
-    });
-
-    it('should text align center', () => {
-      const wrapper = shallow(<Wrapper layout={layout} />);
-      expect(wrapper).toHaveStyleRule('text-align', 'center');
     });
   });
 
@@ -87,18 +83,17 @@ describe('mediaSingle - styled component', () => {
     const layout = 'full-width';
 
     it('should float none', () => {
-      const wrapper = shallow(<Wrapper layout={layout} />);
+      const wrapper = shallow(
+        <Wrapper layout={layout} height={100} width={100} />,
+      );
       expect(wrapper).toHaveStyleRule('float', 'none');
     });
 
     it('should clear both', () => {
-      const wrapper = shallow(<Wrapper layout={layout} />);
+      const wrapper = shallow(
+        <Wrapper layout={layout} height={100} width={100} />,
+      );
       expect(wrapper).toHaveStyleRule('clear', 'both');
-    });
-
-    it('should text align center', () => {
-      const wrapper = shallow(<Wrapper layout={layout} />);
-      expect(wrapper).toHaveStyleRule('text-align', 'center');
     });
   });
 });

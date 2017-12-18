@@ -2,6 +2,26 @@
 import { css } from 'styled-components';
 import { borderRadius, fontSize, gridSize, math } from '@atlaskit/theme';
 import themeDefinitions from './themeDefinitions';
+import { themeNamespace } from '../theme';
+
+const getProvidedTheme = ({ theme }) => (theme && theme[themeNamespace]) || {};
+
+const getAppearanceProperty = (
+  property,
+  appearance,
+  providedTheme,
+  inBuiltTheme,
+) => {
+  const providedAppearanceStyles = providedTheme[appearance];
+  const inBuiltAppearanceStyles = inBuiltTheme[appearance];
+  const defaultAppearanceStyles = inBuiltTheme.default;
+
+  return (
+    (providedAppearanceStyles && providedAppearanceStyles[property]) ||
+    (inBuiltAppearanceStyles && inBuiltAppearanceStyles[property]) ||
+    defaultAppearanceStyles[property]
+  );
+};
 
 const getState = ({ disabled, isActive, isFocus, isHover, isSelected }) => {
   if (disabled) return 'disabled';
@@ -18,10 +38,15 @@ export const getPropertyAppearance = (
   definitions: Object = themeDefinitions,
 ) => {
   const { appearance } = props;
-  const { fallbacks, theme } = definitions;
+  const { fallbacks, theme: inBuiltTheme } = definitions;
+  const providedTheme = getProvidedTheme(props);
 
-  const appearanceStyles = theme[appearance] || theme.default;
-  const propertyStyles = appearanceStyles[property];
+  const propertyStyles = getAppearanceProperty(
+    property,
+    appearance,
+    providedTheme,
+    inBuiltTheme,
+  );
 
   if (!propertyStyles) {
     return fallbacks[property] || 'initial';

@@ -1,16 +1,22 @@
 // @flow
 import React, { PureComponent } from 'react';
 import RowChildren from './RowChildren';
-import { type DataFunction } from './../types';
+import { type DataFunction, type RenderFunction } from './../types';
 
 type Props = {
   data: Object,
   getChildrenData: DataFunction,
   depth?: number,
-  render: Function,
+  render: RenderFunction,
 };
 
-export default class Row extends PureComponent<Props> {
+type State = {
+  isExpanded: boolean,
+  isLoading: boolean,
+  childrenData?: Array<Object>,
+};
+
+export default class Row extends PureComponent<Props, State> {
   state = {
     isExpanded: false,
     isLoading: false,
@@ -18,7 +24,7 @@ export default class Row extends PureComponent<Props> {
   };
 
   static defaultProps = {
-    depth: 1,
+    depth: 0,
   };
 
   constructor() {

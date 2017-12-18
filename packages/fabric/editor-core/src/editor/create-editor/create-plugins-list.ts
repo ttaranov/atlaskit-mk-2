@@ -72,8 +72,8 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(rulePlugin);
   }
 
-  if (props.mediaProvider) {
-    plugins.push(mediaPlugin);
+  if (props.media || props.mediaProvider) {
+    plugins.push(mediaPlugin(props.media));
   }
 
   if (props.allowCodeBlocks) {

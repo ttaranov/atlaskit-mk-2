@@ -25,6 +25,9 @@ const Wrapper = styled.div`
   padding: 0 0 8px 0;
   &&& ul {
     padding: 0;
+    & .media-wrapper {
+      box-sizing: border-box;
+    }
   }
 `;
 

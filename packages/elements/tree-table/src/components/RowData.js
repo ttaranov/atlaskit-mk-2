@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default class RowData extends PureComponent<Props> {
-  renderCell(cell, cellIndex) {
+  renderCell(cell: Node, cellIndex: number) {
     const { hasChildren, depth, isExpanded } = this.props;
     const isFirst = cellIndex === 0;
     const indentLevel = isFirst ? depth : 0;
