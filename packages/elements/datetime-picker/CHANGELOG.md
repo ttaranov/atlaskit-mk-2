@@ -1,5 +1,8 @@
 # @atlaskit/datetime-picker
 
+## 0.3.0
+- [minor] add autoFocus prop to DateTimePicker [c8de434](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8de434)
+
 ## 0.2.2
 
 ## 0.2.1

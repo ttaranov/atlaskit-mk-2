@@ -1,5 +1,9 @@
 # @atlaskit/button
 
+## 6.1.0
+- [minor] Add theming to Button. Deprecate 'help' appearance from Button. [c14ea2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c14ea2e)
+- [minor] Add theming to Button. Deprecate 'help' appearance from Button. [c14ea2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c14ea2e)
+
 ## 6.0.0
 - [major] Remove typescript [4635000](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4635000)
 - [major] Remove typescript [4635000](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4635000)

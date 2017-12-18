@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.1.1",
-    "@atlaskit/editor-bitbucket": "^4.12.5",
+    "@atlaskit/editor-core": "^60.14.9",
     "@atlaskit/editor-common": "^5.1.0",
     "@atlaskit/editor-test-helpers": "^1.3.0",
     "chai-as-promised": "^6.0.0"

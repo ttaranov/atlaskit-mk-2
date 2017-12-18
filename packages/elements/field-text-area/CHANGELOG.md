@@ -1,5 +1,8 @@
 # @atlaskit/field-text-area
 
+## 1.0.5
+- [patch] Fix version ranges on button/layer-manager [7e7a211](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e7a211)
+
 ## 1.0.4
 - [patch] Migrated package to atlaskit-mk-2 [a1950a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a1950a9)
 
