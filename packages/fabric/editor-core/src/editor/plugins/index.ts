@@ -29,4 +29,6 @@ export {
   default as confluenceInlineComment,
 } from './confluence-inline-comment';
 export { default as placeholderCursorPlugin } from './placeholder-cursor';
-export { default as clearMarksOnChangeToEmptyDocumentPlugin } from './clear-marks-on-change-to-empty-document';
+export {
+  default as clearMarksOnChangeToEmptyDocumentPlugin,
+} from './clear-marks-on-change-to-empty-document';

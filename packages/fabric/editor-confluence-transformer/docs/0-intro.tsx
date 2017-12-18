@@ -1,12 +1,12 @@
 import { md } from '@atlaskit/docs';
 
 export default md`
-  # Editor-CQ-Transformer
+  # editor-confluence-transformer
 
   ## Installation
 
   ~~~sh
-  npm install @atlaskit/editor-cq-transformer
+  npm install @atlaskit/editor-confluence-transformer
   ~~~
 
   ## Using the library
@@ -14,7 +14,7 @@ export default md`
   Use the component in your React app as follows:
 
   ~~~js
-  import { ConfluenceTransformer } from '@atlaskit/editor-cq-transformer';
+  import { ConfluenceTransformer } from '@atlaskit/editor-confluence-transformer';
   import { confluenceSchema as schema } from '@atlaskit/editor-common';
 
   const serializer = new ConfluenceTransformer(schema);

@@ -1,5 +1,5 @@
 import { Node as PmNode } from 'prosemirror-model';
-import { MacroProvider, MacroAdf } from '../src/editor/plugins/macro/types';
+import { MacroProvider, MacroAttributes } from '@atlaskit/editor-core';
 import { inlineExtensionData } from './mock-extension-data';
 
 export class MockMacroProvider implements MacroProvider {
@@ -7,11 +7,10 @@ export class MockMacroProvider implements MacroProvider {
     placeholderBaseUrl: '//pug.jira-dev.com',
   };
 
-  openMacroBrowser(macroNode?: PmNode): Promise<MacroAdf> {
+  openMacroBrowser(macroNode?: PmNode): Promise<MacroAttributes> {
     const index = Math.floor(Math.random() * inlineExtensionData.length);
     return Promise.resolve(inlineExtensionData[index]);
   }
 }
 
 export const macroProvider = new MockMacroProvider();
-export const macroProviderPromise = Promise.resolve(macroProvider);

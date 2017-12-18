@@ -6,8 +6,9 @@ import {
   RefsTracker,
 } from '@atlaskit/editor-test-helpers';
 import {
-  confluenceSchema as schema,
+  confluenceSchemaWithMediaSingle as schema,
   MediaAttributes,
+  MediaSingleLayout,
 } from '@atlaskit/editor-common';
 
 export { RefsNode, RefsTracker, Node };
@@ -43,6 +44,9 @@ export const confluenceJiraIssue = (attrs: {
   serverId?: string;
 }) => schema.nodes.confluenceJiraIssue.create(attrs);
 export const mediaGroup = nodeFactory(schema.nodes.mediaGroup);
+export const mediaSingle = (
+  { layout }: { layout?: MediaSingleLayout } = { layout: 'center' },
+) => nodeFactory(schema.nodes.mediaSingle, { layout });
 export const media = (attrs: {
   id: string;
   type: 'file' | 'link';
@@ -51,9 +55,28 @@ export const media = (attrs: {
   fileSize?: number;
   fileMimeType?: string;
   publicId?: string;
+  width?: number;
+  height?: number;
 }) => {
-  const { id, type, collection, fileName, fileSize, fileMimeType } = attrs;
+  const {
+    id,
+    type,
+    collection,
+    fileName,
+    fileSize,
+    fileMimeType,
+    width,
+    height,
+  } = attrs;
   const mediaAttrs: MediaAttributes = { id, type, collection };
+
+  if (width) {
+    mediaAttrs.width = width;
+  }
+
+  if (height) {
+    mediaAttrs.height = height;
+  }
 
   if (fileName) {
     mediaAttrs.__fileName = fileName;

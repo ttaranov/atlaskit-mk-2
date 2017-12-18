@@ -1,4 +1,4 @@
-import { ExtensionType } from '../src/editor/plugins/macro/types';
+import { ExtensionType } from '@atlaskit/editor-core';
 
 export const inlineExtensionData = [
   {

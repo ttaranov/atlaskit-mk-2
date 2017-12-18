@@ -4,6 +4,7 @@ import {
   hexToRgb,
   getPlaceholderUrl,
   getMacroId,
+  MediaSingleAttributes,
 } from '@atlaskit/editor-common';
 import { Fragment, Node as PMNode, Mark, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
@@ -59,6 +60,8 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeUnsupported(node);
     } else if (node.type === schema.nodes.mediaGroup) {
       return encodeMediaGroup(node);
+    } else if (node.type === schema.nodes.mediaSingle) {
+      return encodeMediaSingle(node);
     } else if (node.type === schema.nodes.media) {
       return encodeMedia(node);
     } else if (node.type === schema.nodes.table) {
@@ -120,7 +123,15 @@ export default function encode(node: PMNode, schema: Schema) {
   }
 
   function encodeMediaGroup(node: PMNode) {
-    const elem = doc.createElement('p');
+    const elem = doc.createElementNS(FAB_XMLNS, 'fab:media-group');
+    elem.appendChild(encodeFragment(node.content));
+    return elem;
+  }
+
+  function encodeMediaSingle(node: PMNode) {
+    const elem = doc.createElementNS(FAB_XMLNS, 'fab:media-single');
+    const attrs = node.attrs as MediaSingleAttributes;
+    elem.setAttribute('layout', attrs.layout);
     elem.appendChild(encodeFragment(node.content));
     return elem;
   }
@@ -131,6 +142,12 @@ export default function encode(node: PMNode, schema: Schema) {
     elem.setAttribute('media-id', attrs.id);
     elem.setAttribute('media-type', attrs.type);
     elem.setAttribute('media-collection', attrs.collection);
+    if (attrs.width) {
+      elem.setAttribute('width', `${attrs.width}`);
+    }
+    if (attrs.height) {
+      elem.setAttribute('height', `${attrs.height}`);
+    }
     if (attrs.__fileName) {
       elem.setAttribute('file-name', attrs.__fileName);
     }

@@ -19,7 +19,7 @@
   "dependencies": {
     "@atlaskit/editor-common": "^5.1.0",
     "@atlaskit/editor-core": "^60.14.15",
-    "@atlaskit/editor-cq-transformer": "^2.1.8",
+    "@atlaskit/editor-confluence-transformer": "^2.1.8",
     "@atlaskit/logo": "^6.0.7",
     "@atlaskit/mention": "^8.1.0",
     "@atlaskit/util-shared-styles": "^2.10.3",

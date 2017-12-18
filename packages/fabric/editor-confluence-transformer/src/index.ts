@@ -2,7 +2,7 @@ import { Node as PMNode, Schema } from 'prosemirror-model';
 import { Transformer } from '@atlaskit/editor-common';
 import parse from './parse';
 import encode from './encode';
-export { LANGUAGE_MAP as CONFlUENCE_LANGUAGE_MAP } from './languageMap';
+export { LANGUAGE_MAP as CONFLUENCE_LANGUAGE_MAP } from './languageMap';
 
 export class ConfluenceTransformer implements Transformer<string> {
   private schema: Schema;
