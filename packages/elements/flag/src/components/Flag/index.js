@@ -10,11 +10,11 @@ import Container, {
   Content,
   Title,
   Header,
-} from '../styled/Flag';
-import Expander from './Expander';
-import Actions from './FlagActions';
-import { flagFocusRingColor } from '../theme';
-import type { FlagProps } from '../types';
+} from './styledFlag';
+import Expander from '../Expander';
+import Actions from '../FlagActions';
+import { flagFocusRingColor } from '../../theme';
+import type { FlagProps } from '../../types';
 
 export const DEFAULT_APPEARANCE = 'normal';
 

@@ -2,7 +2,7 @@
 
 import React, { Component, type Node } from 'react';
 import Button from '@atlaskit/button';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 import Flag, { FlagGroup } from '../src';
 
 type State = {
@@ -32,7 +32,7 @@ export default class ProgrammaticFlagDismissExample extends Component<
   render() {
     return (
       <div>
-        <p style={{ padding: `${akGridSizeUnitless * 2}px` }}>
+        <p style={{ padding: `${gridSize() * 2}px` }}>
           <Button appearance="primary" onClick={this.dismissFlag}>
             Dismiss the Flag
           </Button>

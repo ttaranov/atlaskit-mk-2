@@ -2,9 +2,8 @@
 
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
-import { colors } from '@atlaskit/theme';
+import { colors, gridSize } from '@atlaskit/theme';
 import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import { AutoDismissFlag, FlagGroup } from '../src';
 
 const appearances = ['error', 'info', 'normal', 'success', 'warning'];
@@ -46,7 +45,7 @@ export default class AutoDismissExample extends Component<void, State> {
   render() {
     return (
       <div>
-        <p style={{ padding: `${akGridSizeUnitless * 2}px` }}>
+        <p style={{ padding: `${gridSize * 2}px` }}>
           <Button appearance="primary" onClick={this.addFlag}>
             Add another Flag
           </Button>

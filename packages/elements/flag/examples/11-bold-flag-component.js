@@ -1,9 +1,13 @@
 // @flow
 
 import React from 'react';
-import { akGridSizeUnitless as marginTop } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 import Flag from '../src';
-import { getIcon } from './example-utils/utils';
+import Error from '@atlaskit/icon/glyph/error';
+import Info from '@atlaskit/icon/glyph/info';
+import Tick from '@atlaskit/icon/glyph/check-circle';
+import Warning from '@atlaskit/icon/glyph/warning';
+import { colors } from '@atlaskit/theme';
 
 const actions = [
   { content: 'Understood', onClick: () => {} },
@@ -29,10 +33,27 @@ const appearances = {
   },
 };
 
+const iconMap = (key, color) => {
+  const icons = {
+    info: <Info label="Info icon" primaryColor={color || colors.G300} />,
+    success: <Tick label="Success icon" primaryColor={color || colors.G300} />,
+    warning: (
+      <Warning label="Warning icon" primaryColor={color || colors.Y300} />
+    ),
+    error: <Error label="Error icon" primaryColor={color || colors.R300} />,
+  };
+
+  return key ? icons[key] : icons;
+};
+
+const getIcon = (key: string, color: string) => {
+  return iconMap(key, color);
+};
+
 export default () => (
   <div>
     {Object.keys(appearances).map((type, idx) => (
-      <div key={type} style={idx ? { marginTop } : null}>
+      <div key={type} style={idx ? { marginTop: gridSize() } : null}>
         <Flag
           actions={actions}
           appearance={type}

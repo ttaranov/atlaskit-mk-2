@@ -2,12 +2,11 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Spinner from '@atlaskit/spinner';
-import { colors } from '@atlaskit/theme';
+import { colors, gridSize } from '@atlaskit/theme';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import FieldRadioGroup from '@atlaskit/field-radio-group';
 import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import Flag, { FlagGroup } from '../src';
 import { AppearanceArray, type AppearanceTypes } from '../src/types';
 
@@ -22,8 +21,8 @@ const boldAppearanceItems = boldAppearanceNames.map(val => ({
 // We wrap the Spinner in a div the same height as a standard Icon, to avoid the flag height
 // jumping when Flag.appearance is changed.
 const SpinnerContainer = styled.div`
-  height: ${akGridSizeUnitless * 3}px;
-  width: ${akGridSizeUnitless * 3}px;
+  height: ${gridSize() * 3}px;
+  width: ${gridSize() * 3}px;
 `;
 
 type State = {

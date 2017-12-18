@@ -9,7 +9,7 @@ import {
   flagTextColor,
   flagShadowColor,
   flagFocusRingColor,
-} from '../theme';
+} from '../../theme';
 
 const getBoxShadow = props => {
   const borderColor = flagBorderColor(props);

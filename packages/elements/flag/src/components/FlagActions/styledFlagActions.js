@@ -2,19 +2,15 @@
 /* eslint-disable no-confusing-arrow */
 
 import styled, { css } from 'styled-components';
-import {
-  akFontSizeDefault as fontSize,
-  akGridSizeUnitless as spacing,
-} from '@atlaskit/util-shared-styles';
 
-import { borderRadius, gridSize, math } from '@atlaskit/theme';
+import { gridSize, fontSize, borderRadius, math } from '@atlaskit/theme';
 
 import {
   buttonBackgroundColor,
   buttonTextColor,
   flagTextColor,
   flagFocusRingColor,
-} from '../theme';
+} from '../../theme';
 
 // Outputs the styles for actions separator: mid-dot for non-bold flags, or space for bold flags.
 const getDivider = ({ hasDivider, useMidDot }) => css`
@@ -39,7 +35,7 @@ export const Action = styled.div`
   }
 `;
 
-const height = `${spacing * 3 / parseInt(fontSize, 10)}em`;
+const height = `${gridSize * 3 / parseInt(fontSize, 10)}em`;
 export const Button = styled.button`
   align-items: baseline;
   background: ${buttonBackgroundColor};

@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
-import Flag from './Flag';
-import type { AutoDismissFlagProps } from '../types';
+import Flag from '../Flag';
+import type { AutoDismissFlagProps } from '../../types';
 
 export const AUTO_DISMISS_SECONDS = 15;
 

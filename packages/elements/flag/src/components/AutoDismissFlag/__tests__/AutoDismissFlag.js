@@ -1,7 +1,9 @@
+// @flow
+
 import React from 'react';
 import { mount } from 'enzyme';
-import { AUTO_DISMISS_SECONDS } from '../src/components/AutoDismissFlag';
-import Flag, { AutoDismissFlag } from '../src';
+import AutoDismissFlag, { AUTO_DISMISS_SECONDS } from '../index';
+import Flag from '../../Flag';
 
 describe('Auto dismiss flag', () => {
   // Helper function to generate <Flag /> with base required props
@@ -34,7 +36,13 @@ describe('Auto dismiss flag', () => {
       });
 
       it('should auto dismiss after 15 seconds if isDismissAllowed and onDismissed are set on mount', () => {
-        mount(<GenerateAutoDismissFlag id="" isDismissAllowed onDismissed={onDismissedSpy} />);
+        mount(
+          <GenerateAutoDismissFlag
+            id=""
+            isDismissAllowed
+            onDismissed={onDismissedSpy}
+          />,
+        );
         expect(onDismissedSpy).not.toBeCalled();
         runTimer();
         expect(onDismissedSpy).toBeCalled();
@@ -61,7 +69,11 @@ describe('Auto dismiss flag', () => {
 
       it('should not auto dismiss after 15 seconds if isDismissAllowed prop is set on mount but then removed', () => {
         const wrapper = mount(
-          <GenerateAutoDismissFlag id="" isDismissAllowed onDismissed={onDismissedSpy} />
+          <GenerateAutoDismissFlag
+            id=""
+            isDismissAllowed
+            onDismissed={onDismissedSpy}
+          />,
         );
         wrapper.setProps({ isDismissAllowed: false });
         runTimer();
@@ -70,7 +82,11 @@ describe('Auto dismiss flag', () => {
 
       it('should pause the dismiss timer on Flag mouseover, and resume on mouseout', () => {
         const wrapper = mount(
-          <GenerateAutoDismissFlag id="" isDismissAllowed onDismissed={onDismissedSpy} />
+          <GenerateAutoDismissFlag
+            id=""
+            isDismissAllowed
+            onDismissed={onDismissedSpy}
+          />,
         );
         wrapper.find(Flag).simulate('mouseover');
         runTimer();
@@ -82,7 +98,11 @@ describe('Auto dismiss flag', () => {
 
       it('should pause the dismiss timer on Flag focus, and resume on blur', () => {
         const wrapper = mount(
-          <GenerateAutoDismissFlag id="" isDismissAllowed onDismissed={onDismissedSpy} />
+          <GenerateAutoDismissFlag
+            id=""
+            isDismissAllowed
+            onDismissed={onDismissedSpy}
+          />,
         );
         wrapper.find(Flag).simulate('focus');
         runTimer();

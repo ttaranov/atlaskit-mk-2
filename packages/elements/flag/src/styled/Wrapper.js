@@ -1,8 +1,8 @@
 // @flow
 import styled, { keyframes } from 'styled-components';
-import { akGridSizeUnitless as spacing } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 
-export const flagWidth = spacing * 50;
+export const flagWidth = gridSize() * 50;
 
 // This is the translateX position that we target when animating a card out
 // towards the left of screen.
@@ -54,7 +54,7 @@ const Wrapper = styled.div`
   }
 
   &:nth-child(n + 2) {
-    transform: translateX(0) translateY(100%) translateY(${2 * spacing}px);
+    transform: translateX(0) translateY(100%) translateY(${2 * gridSize()}px);
   }
 
   /* Layer the 'primary' flag above the 'secondary' flag */

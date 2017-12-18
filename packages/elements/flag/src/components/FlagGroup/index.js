@@ -3,9 +3,9 @@ import React, { Children, cloneElement, Component } from 'react';
 import { Transition } from 'react-transition-group';
 import { withRenderTarget } from '@atlaskit/layer-manager';
 
-import Wrapper from '../styled/Wrapper';
-import Group, { SROnly, Inner } from '../styled/Group';
-import type { ChildrenType, FunctionType } from '../types';
+import Wrapper from '../../styled/Wrapper';
+import Group, { SROnly, Inner } from './styledFlagGroup';
+import type { ChildrenType, FunctionType } from '../../types';
 
 type Props = {
   /** Flag elements to be displayed. */

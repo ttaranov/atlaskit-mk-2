@@ -1,9 +1,9 @@
 // @flow
 import React, { Component } from 'react';
 import uuid from 'uuid/v1';
-import Container, { Action, Button } from '../styled/Actions';
-import type { ActionsType, AppearanceTypes } from '../types';
-import { DEFAULT_APPEARANCE } from './Flag';
+import Container, { Action, Button } from './styledFlagActions';
+import type { ActionsType, AppearanceTypes } from '../../types';
+import { DEFAULT_APPEARANCE } from '../Flag';
 
 type Props = {
   appearance: AppearanceTypes,

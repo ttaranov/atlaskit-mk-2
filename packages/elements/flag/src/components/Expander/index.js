@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, type Node } from 'react';
-import ExpanderInternal from '../styled/Expander';
+import ExpanderInternal from './styledExpander';
 
 type Props = {
   children?: Node,
