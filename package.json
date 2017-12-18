@@ -239,6 +239,7 @@
     "jest-fixtures": "^0.5.0",
     "jest-styled-components": "^4.9.0",
     "keycode": "^2.1.7",
+    "less-loader": "^4.0.5",
     "linkify-it": "^2.0.3",
     "lodash.debounce": "^4.0.8",
     "lru-fast": "^0.2.2",
