@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.14.14
+- [patch] Fix Single Image margin [54d4681](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/54d4681)
+- [patch] Fix Single Image margin [54d4681](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/54d4681)
+
 ## 60.14.13
 
 - [patch] Temporarily hiding tooltips for headings. [ac7d6bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac7d6bd)
