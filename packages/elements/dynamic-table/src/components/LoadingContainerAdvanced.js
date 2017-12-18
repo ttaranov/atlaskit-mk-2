@@ -122,8 +122,8 @@ export default class LoadingContainerAdvanced extends Component<Props, {}> {
     isFixed?: string,
   ) => {
     spinnerNode.style.position = isFixed ? 'fixed' : ''; // eslint-disable-line no-param-reassign
-    spinnerNode.style.transform =
-      transformY !== 0 ? `translate3d(0, ${transformY}px, 0)` : ''; // eslint-disable-line no-param-reassign
+    spinnerNode.style.transform = // eslint-disable-line no-param-reassign
+      transformY !== 0 ? `translate3d(0, ${transformY}px, 0)` : '';
   };
 
   updateTargetAppearance = () => {
@@ -202,11 +202,17 @@ export default class LoadingContainerAdvanced extends Component<Props, {}> {
     return (
       <Container>
         {React.cloneElement(children, {
-          ref: el => (this.children = el),
+          ref: el => {
+            this.children = el;
+          },
         })}
         {isLoading && (
           <SpinnerBackdrop>
-            <SpinnerContainer ref={el => (this.spinner = el)}>
+            <SpinnerContainer
+              ref={el => {
+                this.spinner = el;
+              }}
+            >
               <Spinner size={spinnerSize} />
             </SpinnerContainer>
           </SpinnerBackdrop>

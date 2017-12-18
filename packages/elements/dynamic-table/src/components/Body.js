@@ -1,10 +1,8 @@
 // @flow
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { ASC, DESC } from '../internal/constants';
 import { getPageRows } from '../internal/helpers';
 import TableRow from './TableRow';
-import props from '../internal/props';
 
 const getSortedRows = (head, rows, sortKey, sortOrder) => {
   if (!sortKey || !head) return rows;
@@ -37,20 +35,10 @@ type Props = {
   rows: Array<*>,
   rowsPerPage: boolean,
   sortKey: string,
-  sortOrder: 'ASC' | 'DESC',
+  sortOrder: ASC | DESC,
 };
 
 export default class Body extends Component<Props, {}> {
-  // static propTypes = {
-  //   head: props.head,
-  //   isFixedSize: PropTypes.bool,
-  //   page: props.isInteger,
-  //   rows: props.rows,
-  //   rowsPerPage: props.isInteger,
-  //   sortKey: props.sortKey,
-  //   sortOrder: PropTypes.oneOf([ASC, DESC]),
-  // };
-
   render() {
     const {
       rows,
@@ -71,7 +59,7 @@ export default class Body extends Component<Props, {}> {
           <TableRow
             head={head}
             isFixedSize={isFixedSize}
-            key={rowIndex}
+            key={rowIndex} // eslint-disable-line react/no-array-index-key
             row={row}
           />
         ))}

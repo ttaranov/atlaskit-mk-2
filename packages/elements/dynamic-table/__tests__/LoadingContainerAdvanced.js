@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { mount } from 'enzyme';
 import styled from 'styled-components';
@@ -5,9 +6,9 @@ import Spinner from '@atlaskit/spinner';
 import {
   Container,
   SpinnerBackdrop,
-} from '../../src/styled/LoadingContainerAdvanced';
+} from '../src/styled/LoadingContainerAdvanced';
 
-import LoadingContainerAdvanced from '../../src/components/LoadingContainerAdvanced';
+import LoadingContainerAdvanced from '../src/components/LoadingContainerAdvanced';
 
 describe('LoadingContainerAdvanced', () => {
   const Contents = styled.div``;
@@ -121,7 +122,11 @@ describe('LoadingContainerAdvanced', () => {
       // Loading and has a valid target
       wrapper = mount(
         <LoadingContainerAdvanced targetRef={() => target}>
-          <Contents innerRef={el => (target = el)} />
+          <Contents
+            innerRef={el => {
+              target = el;
+            }}
+          />
         </LoadingContainerAdvanced>,
       );
       wrappers.push(wrapper);
@@ -147,7 +152,11 @@ describe('LoadingContainerAdvanced', () => {
       const wrapper = mount(
         <LoadingContainerAdvanced targetRef={() => target}>
           <Contents>
-            <InnerComponent ref={el => (target = el)} />
+            <InnerComponent
+              ref={el => {
+                target = el;
+              }}
+            />
           </Contents>
         </LoadingContainerAdvanced>,
       );
@@ -638,7 +647,11 @@ describe('LoadingContainerAdvanced', () => {
       wrappers.push(
         mount(
           <LoadingContainerAdvanced targetRef={() => target}>
-            <Contents innerRef={el => (target = el)} />
+            <Contents
+              innerRef={el => {
+                target = el;
+              }}
+            />
           </LoadingContainerAdvanced>,
         ),
       );
@@ -650,7 +663,11 @@ describe('LoadingContainerAdvanced', () => {
 
       const wrapper = mount(
         <LoadingContainerAdvanced isLoading={false}>
-          <Contents innerRef={el => (target = el)} />
+          <Contents
+            innerRef={el => {
+              target = el;
+            }}
+          />
         </LoadingContainerAdvanced>,
       );
       wrappers.push(wrapper);

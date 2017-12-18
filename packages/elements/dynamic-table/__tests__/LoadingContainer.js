@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { mount } from 'enzyme';
 import Spinner from '@atlaskit/spinner';
@@ -5,9 +6,9 @@ import {
   Container,
   ContentsContainer,
   SpinnerContainer,
-} from '../../src/styled/LoadingContainer';
+} from '../src/styled/LoadingContainer';
 
-import LoadingContainer from '../../src/components/LoadingContainer';
+import LoadingContainer from '../src/components/LoadingContainer';
 
 describe('LoadingContainer', () => {
   const Contents = () => <div>Contents</div>;

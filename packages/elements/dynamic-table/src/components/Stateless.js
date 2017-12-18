@@ -153,7 +153,12 @@ export default class DynamicTable extends Component<Props, {}> {
               />
             )}
             {rowsExist && (
-              <Body {...bodyProps} ref={el => (this.tableBody = el)} />
+              <Body
+                {...bodyProps}
+                ref={el => {
+                  this.tableBody = el;
+                }}
+              />
             )}
           </Table>
         </LoadingContainerAdvanced>

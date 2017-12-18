@@ -1,32 +1,24 @@
 // @flow
 import React, { Component } from 'react';
 import DynamicTableStateless from './Stateless';
+import { ASC, DESC } from '../internal/constants';
 
 // We are disabling prop validation, as the rest of the props passed in are
 // handled by validation of the stateless verion.
 /* eslint-disable react/prop-types */
 
 type Props = {
-  caption: string | null,
   defaultPage?: number,
-  defaultSortKey?: string | null,
-  defaultSortOrder?: 'ASC' | 'DESC' | null,
-  emptyView: null,
-  head: null,
-  loadingSpinnerSize: string | null,
-  isFixedSize?: boolean,
-  isLoading?: boolean,
-  onSort?: Function,
-  onSetPage?: Function,
-  rows?: null | Array<{}>,
-  rowsPerPage?: number,
+  defaultSortKey?: string,
+  defaultSortOrder?: ASC | DESC | null,
 };
 
 type State = {
   page?: number,
-  sortKey?: string | null,
-  sortOrder?: 'ASC' | 'DESC' | null,
+  sortKey?: string,
+  sortOrder?: ASC | DESC | null,
 };
+
 export default class DynamicTable extends Component<Props, State> {
   static defaultProps = {
     caption: null,
@@ -44,13 +36,13 @@ export default class DynamicTable extends Component<Props, State> {
     rowsPerPage: Infinity,
   };
 
-  state: State = {
+  state = {
     page: this.props.defaultPage,
     sortKey: this.props.defaultSortKey,
     sortOrder: this.props.defaultSortOrder,
   };
 
-  componentWillReceiveProps(newProps: Props) {
+  componentWillReceiveProps(newProps) {
     this.setState({
       page: newProps.page,
       sortKey: newProps.defaultSortKey,
@@ -63,15 +55,7 @@ export default class DynamicTable extends Component<Props, State> {
     this.setState({ page });
   };
 
-  onSort = ({
-    key,
-    item,
-    sortOrder,
-  }: {
-    key?: string,
-    item: ?Object,
-    sortOrder: 'ASC' | 'DESC',
-  }) => {
+  onSort = ({ key, item, sortOrder }) => {
     this.props.onSort({ key, item, sortOrder });
     this.setState({ sortKey: key, sortOrder, page: 1 });
   };

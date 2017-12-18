@@ -18,7 +18,7 @@ const Row = ({ row, head, isFixedSize }) => {
           <TableBodyCell
             {...restCellProps}
             isFixedSize={isFixedSize}
-            key={cellIndex}
+            key={cellIndex} // eslint-disable-line react/no-array-index-key
             shouldTruncate={shouldTruncate}
             width={width}
           >
