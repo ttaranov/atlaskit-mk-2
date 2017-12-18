@@ -4,18 +4,16 @@ import React, {
   cloneElement,
   Component,
   type ChildrenArray,
-  type ComponentType,
-  type Element,
 } from 'react';
 import withDeprecationWarnings from './withDeprecationWarnings';
 import Group, { GroupItem } from '../styled/ButtonGroup';
-import type { ButtonProps, ButtonAppearances } from '../types';
+import type { ButtonAppearances } from '../types';
 
 export type ButtonGroupProps = {
   /** The appearance to apply to all buttons. */
   appearance?: ButtonAppearances,
   /** The buttons to render. */
-  children: ChildrenArray<Element<ComponentType<ButtonProps>>>,
+  children: ChildrenArray<*>,
 };
 
 class ButtonGroup extends Component<ButtonGroupProps> {
