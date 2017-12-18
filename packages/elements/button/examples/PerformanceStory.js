@@ -69,7 +69,7 @@ class PerfTest extends Component<{}, State> {
           <Button appearance="default">Button {buttonNumber + 1}</Button>
           <Button appearance="danger">Button {buttonNumber + 2}</Button>
           <Button appearance="primary">Button {buttonNumber + 3}</Button>
-          <Button appearance="help">Button {buttonNumber + 4}</Button>
+          <Button appearance="warning">Button {buttonNumber + 4}</Button>
           <Button component={CustomComponent}>Button {buttonNumber + 5}</Button>
         </Buttons>,
       );

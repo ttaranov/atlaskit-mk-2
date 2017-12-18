@@ -27,12 +27,21 @@ export interface State {
 
 export default class ExtensionComponent extends Component<Props, State> {
   state: State = {};
+  mounted = false;
+
+  componentWillMount() {
+    this.mounted = true;
+  }
 
   componentDidMount() {
     const { macroProvider } = this.props;
     if (macroProvider) {
       macroProvider.then(this.handleMacroProvider);
     }
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -77,7 +86,9 @@ export default class ExtensionComponent extends Component<Props, State> {
   }
 
   private handleMacroProvider = (macroProvider: MacroProvider) => {
-    this.setState({ macroProvider });
+    if (this.mounted) {
+      this.setState({ macroProvider });
+    }
   };
 
   private handleClick = (event: React.SyntheticEvent<any>) => {

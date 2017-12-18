@@ -1,8 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import {
-  akBorderRadius
-} from '@atlaskit/util-shared-styles';
+import { akBorderRadius } from '@atlaskit/util-shared-styles';
 
 export const Container = styled.div`
   position: relative;
@@ -13,10 +11,10 @@ export const Container = styled.div`
 export const Image = styled.img`
   position: absolute;
   /* Is needed so image is not selected, when dragged */
-  -webkit-user-select: none;  /* Chrome all / Safari all */
-  -moz-user-select: none;     /* Firefox all */
-  -ms-user-select: none;      /* IE 10+ */
-  user-select: none;          /* Likely future */
+  -webkit-user-select: none; /* Chrome all / Safari all */
+  -moz-user-select: none; /* Firefox all */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none; /* Likely future */
 `;
 
 export const containerPadding = 20;
@@ -27,7 +25,7 @@ const Mask = styled.div`
   bottom: ${containerPadding}px;
   left: ${containerPadding}px;
   right: ${containerPadding}px;
-  box-shadow: 0 0 0 100px rgba(255,255,255,.5);
+  box-shadow: 0 0 0 100px rgba(255, 255, 255, 0.5);
 `;
 
 export const RectMask = styled(Mask)`
@@ -41,6 +39,6 @@ export const CircularMask = styled(Mask)`
 export const DragOverlay = styled.div`
   position: absolute;
   width: 100%;
-  height:100%;
+  height: 100%;
   cursor: move;
 `;
