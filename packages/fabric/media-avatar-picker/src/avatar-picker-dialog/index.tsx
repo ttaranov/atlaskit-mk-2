@@ -12,6 +12,7 @@ import {
   AvatarPickerViewWrapper,
   ModalHeader,
   CroppingWrapper,
+  ModalFooterButtons,
 } from './styled';
 import { PredefinedAvatarView } from '../predefined-avatar-view';
 
@@ -106,8 +107,8 @@ export class AvatarPickerDialog extends PureComponent<
   render() {
     return (
       <ModalDialog
-        height="437px"
-        width="360px"
+        height="460px"
+        width="375px"
         header={this.headerContent}
         footer={this.footerContent}
         onClose={this.props.onCancel}
@@ -128,7 +129,7 @@ export class AvatarPickerDialog extends PureComponent<
     const { onSaveClick, isDisabled } = this;
     return (
       <ModalFooter>
-        <div>
+        <ModalFooterButtons>
           <Button
             appearance="primary"
             onClick={onSaveClick}
@@ -139,7 +140,7 @@ export class AvatarPickerDialog extends PureComponent<
           <Button appearance="subtle-link" onClick={onCancel}>
             Cancel
           </Button>
-        </div>
+        </ModalFooterButtons>
       </ModalFooter>
     );
   };
