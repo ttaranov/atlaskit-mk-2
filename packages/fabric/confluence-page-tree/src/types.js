@@ -26,3 +26,5 @@ export type recursiveFetchArgs = {
   getNextFetch: () => Promise<any>,
   accumulator?: Array<any>,
 };
+
+export type ErrorTypes = 'error' | 'noaccess' | 'empty' | null;

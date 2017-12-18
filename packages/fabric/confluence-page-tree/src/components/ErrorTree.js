@@ -3,11 +3,12 @@ import React from 'react';
 import Button from '@atlaskit/button';
 import { ErrorTreeContainer, DescriptionContainer } from '../styled';
 import { getI18n } from '../i18n-text';
+import type { ErrorTypes } from '../types';
 import emptyImg from '../assets/empty.png';
 import errorImg from '../assets/error.png';
 
 type ErrorTreeProps = {
-  type?: 'error' | 'noaccess' | 'empty',
+  type: ErrorTypes,
   readOnly?: boolean,
 };
 

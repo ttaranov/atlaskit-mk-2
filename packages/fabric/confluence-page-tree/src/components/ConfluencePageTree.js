@@ -12,6 +12,7 @@ import { Contributors } from './Contributors';
 import { ErrorTree } from './ErrorTree';
 import { getChildren } from '../api/confluence';
 import { getI18n } from '../i18n-text';
+import type { ErrorTypes } from '../types';
 
 type Props = {
   contentId: string,
@@ -19,7 +20,7 @@ type Props = {
 };
 
 type State = {
-  errorState?: 'error' | 'noaccess' | 'empty' | null,
+  errorState: ErrorTypes,
 };
 
 export default class ConfluencePageTree extends Component<Props, State> {
@@ -34,9 +35,9 @@ export default class ConfluencePageTree extends Component<Props, State> {
     return (
       <TreeTable>
         <HeadersRow>
-          <Header width={'30%'}>{getI18n().tableHeaderTitle}</Header>
-          <Header width={'30%'}>{getI18n().tableHeaderContributors}</Header>
-          <Header width={'30%'}>{getI18n().tableHeaderLastModified}</Header>
+          <Header width={'33%'}>{getI18n().tableHeaderTitle}</Header>
+          <Header width={'33%'}>{getI18n().tableHeaderContributors}</Header>
+          <Header width={'33%'}>{getI18n().tableHeaderLastModified}</Header>
         </HeadersRow>
         {errorState ? (
           <ErrorTree type={errorState} />
@@ -46,11 +47,9 @@ export default class ConfluencePageTree extends Component<Props, State> {
               contentId === id
                 ? getChildren(id)
                     .then(result => {
-                      let newErrorState;
+                      const newErrorState =
+                        result.length === 0 ? 'empty' : null;
 
-                      result.length === 0
-                        ? (newErrorState = 'empty')
-                        : (newErrorState = null);
                       this.setState({ errorState: newErrorState });
                       return result;
                     })
@@ -68,13 +67,13 @@ export default class ConfluencePageTree extends Component<Props, State> {
               _links,
             }) => (
               <RowData key={id} hasChildren={childTypes.page.value}>
-                <DataCell width={'30%'}>
+                <DataCell>
                   <a href={_links.webui}>{title}</a>
                 </DataCell>
-                <DataCell width={'30%'}>
+                <DataCell>
                   <Contributors cloudId={cloudId} contributors={contributors} />
                 </DataCell>
-                <DataCell width={'30%'}>
+                <DataCell>
                   <div>{lastUpdated.friendlyWhen}</div>
                 </DataCell>
               </RowData>

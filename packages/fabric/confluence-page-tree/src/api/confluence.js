@@ -19,28 +19,27 @@ const recursiveFetch = ({
   getNextFetch,
   accumulator = [],
 }: recursiveFetchArgs): Promise<any> =>
-  currentFetch.then(response => {
-    const { results } = response;
-    const finalResult = [...accumulator, ...results];
+  currentFetch.then(({ results }) => {
+    const mergedResult = [...accumulator, ...results];
 
-    return terminatingFn(response)
-      ? Promise.resolve(finalResult)
+    return terminatingFn({ results })
+      ? Promise.resolve(mergedResult)
       : recursiveFetch({
           currentFetch: getNextFetch(),
           terminatingFn,
           getNextFetch,
-          accumulator: finalResult,
+          accumulator: mergedResult,
         });
   });
 
 const getChildPages = (contentId: string): Promise<any> => {
-  let start: number = 0;
-  const limit: number = 200;
+  let start = 0;
+  const limit = 200;
 
   return recursiveFetch({
     currentFetch: fetchChildPages(contentId, start),
     //terminatingFn: ({ size }) => size < limit,
-    //TODO: to be removed
+    //TODO: to be removed. Added for testing
     terminatingFn: ({ size }) => start === 0,
     getNextFetch: () => {
       start += limit;
