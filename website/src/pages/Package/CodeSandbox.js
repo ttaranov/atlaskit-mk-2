@@ -13,7 +13,6 @@ import Spinner from '@atlaskit/spinner';
 import { colors } from '@atlaskit/theme';
 
 import sketchLogo from '../../../public/sketch-logo.svg';
-import codesandboxLogo from '../../../public/codesandbox-logo.svg';
 
 export const ButtonGroup = styled.div`
   display: inline-flex;
@@ -28,8 +27,12 @@ export const ButtonGroup = styled.div`
 const SANDBOX_DEPLOY_ENDPOINT =
   'https://atlaskit-deploy-sandbox.glitch.me/deploy';
 
+type RenderArgs = {
+  deploySandbox: () => Promise<void>,
+  loadingSandbox: boolean,
+};
 type Props = {
-  children: Node,
+  children: (args: RenderArgs) => void,
   exampleId?: string | null,
   groupId: string,
   packageId: string,
@@ -101,9 +104,8 @@ export default class CodeSandbox extends Component<Props, State> {
 
     this.setState({ loadingSandbox: true });
 
-    const response = await fetch(
-      `${SANDBOX_DEPLOY_ENDPOINT}/${component}/${example}`,
-    );
+    const URL = `${SANDBOX_DEPLOY_ENDPOINT}/${component}/${example}`;
+    const response = await fetch(URL);
 
     if (response.ok) {
       const url = await response.text();
@@ -125,24 +127,13 @@ export default class CodeSandbox extends Component<Props, State> {
     const { loadingSandbox } = this.state;
     const iconSize = { height: 20, width: 20 };
     const sketchIcon = <img alt="Sketch Logo" src={sketchLogo} {...iconSize} />;
-    const codesandboxIcon = loadingSandbox ? (
-      <Spinner />
-    ) : (
-      <img alt="CodeSandbox Logo" src={codesandboxLogo} {...iconSize} />
-    );
 
     return (
       <div>
-        <ButtonGroup>
-          <Button
-            onClick={this.deploySandbox}
-            iconBefore={codesandboxIcon}
-            isDisabled={loadingSandbox}
-          >
-            {loadingSandbox ? 'Loading...' : 'Sandbox'}
-          </Button>
-          {children}
-        </ButtonGroup>
+        {children({
+          deploySandbox: this.deploySandbox,
+          loadingSandbox,
+        })}
         <FlagGroup>
           {Object.keys(this.state.flags).map(key => this.state.flags[key])}
         </FlagGroup>
