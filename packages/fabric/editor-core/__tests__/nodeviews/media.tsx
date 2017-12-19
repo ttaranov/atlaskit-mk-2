@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { CardDimensions } from '@atlaskit/media-card';
 import { EditorView } from 'prosemirror-view';
 import { media } from '@atlaskit/editor-test-helpers';
-import ProviderFactory from '../../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import UIMedia from '../../src/ui/Media';
 import Media from '../../src/nodeviews/ui/media';
 import {

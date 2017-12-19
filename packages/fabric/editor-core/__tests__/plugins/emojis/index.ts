@@ -1,5 +1,5 @@
 import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
-import { emoji as emojiNode } from '@atlaskit/editor-common';
+import { emoji as emojiNode, ProviderFactory } from '@atlaskit/editor-common';
 import emojiPlugins, { EmojiState } from '../../../src/plugins/emojis';
 import {
   makeEditor,
@@ -17,7 +17,6 @@ import {
   createEvent,
   spyOnReturnValue,
 } from '@atlaskit/editor-test-helpers';
-import ProviderFactory from '../../../src/providerFactory';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
 
@@ -37,14 +36,12 @@ const evilburnsEmojiId = {
 
 describe('emojis', () => {
   const event = createEvent('event');
-  const providerFactory = new ProviderFactory();
+  const providerFactory = ProviderFactory.create({ emojiProvider });
   const editor = (doc: any) =>
     makeEditor<EmojiState>({
       doc,
       plugins: emojiPlugins(defaultSchema, providerFactory),
     });
-
-  providerFactory.setProvider('emojiProvider', emojiProvider);
 
   const forceUpdate = (editorView: any) => {
     editorView.updateState(editorView.state);

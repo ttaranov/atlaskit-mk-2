@@ -2,7 +2,7 @@ import { Plugin, PluginKey, Transaction } from 'prosemirror-state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import { Step, ReplaceStep } from 'prosemirror-transform';
 
-import ProviderFactory from '../../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { isChromeWithSelectionBug } from '../../../utils';
 import { Dispatch } from '../../event-dispatcher';
 import {

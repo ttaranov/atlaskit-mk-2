@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { EmojiProvider, ResourcedEmoji } from '@atlaskit/emoji';
-import ProviderFactory from '../../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import Emoji from '../../src/ui/Emoji';
 
 describe('Emoji', () => {
@@ -23,8 +23,7 @@ describe('Emoji', () => {
   });
 
   it('should still render resourced emoji if allowTextFallback=true', () => {
-    const providerFactory = new ProviderFactory();
-    providerFactory.setProvider('emojiProvider', emojiProvider);
+    const providerFactory = ProviderFactory.create({ emojiProvider });
 
     const component = mount(
       <Emoji
@@ -51,8 +50,7 @@ describe('Emoji', () => {
   });
 
   it('should render a EmojiWrapper component if emojiProvider supplied', () => {
-    const providerFactory = new ProviderFactory();
-    providerFactory.setProvider('emojiProvider', emojiProvider);
+    const providerFactory = ProviderFactory.create({ emojiProvider });
 
     const emojiId = {
       shortName: ':anything:',

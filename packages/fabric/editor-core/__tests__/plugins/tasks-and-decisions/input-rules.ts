@@ -11,10 +11,9 @@ import {
   taskList,
   taskItem,
 } from '@atlaskit/editor-test-helpers';
-import ProviderFactory from '../../../src/providerFactory';
 import tasksAndDecisionsPlugins from '../../../src/plugins/tasks-and-decisions';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { uuid } from '@atlaskit/editor-common';
+import { ProviderFactory, uuid } from '@atlaskit/editor-common';
 
 describe('tasks and decisions - input rules', () => {
   beforeEach(() => {

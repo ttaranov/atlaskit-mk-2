@@ -1,6 +1,7 @@
 import imageUploadPlugins, {
   ImageUploadState,
 } from '../../../src/plugins/image-upload';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   makeEditor,
   img,
@@ -12,7 +13,6 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import { setNodeSelection, setTextSelection } from '../../../src/utils';
-import { ProviderFactory } from '../../../index';
 
 describe('image-upload', () => {
   const testImgSrc =

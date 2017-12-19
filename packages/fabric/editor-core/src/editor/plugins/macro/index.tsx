@@ -1,7 +1,7 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { MacroProvider } from './types';
-import ProviderFactory from '../../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { setMacroProvider } from './actions';
 import { Dispatch } from '../../event-dispatcher';
 

@@ -1,14 +1,11 @@
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import * as assert from 'assert';
-
-import {
-  mediaPluginFactory,
-  MediaPluginState,
-  ProviderFactory,
-} from '../../../src';
+import { ProviderFactory } from '@atlaskit/editor-common';
+import { mediaPluginFactory, MediaPluginState } from '../../../src';
 import { undo, history } from 'prosemirror-history';
 import { EditorView } from 'prosemirror-view';
 import {
+  defaultSchema,
   doc,
   h1,
   makeEditor,
@@ -24,7 +21,6 @@ import {
   sleep,
   insertText,
   getLinkCreateContextMock,
-  defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import { setNodeSelection, setTextSelection } from '../../../src/utils';
 import { AnalyticsHandler, analyticsService } from '../../../src/analytics';
@@ -46,8 +42,7 @@ describe('Media plugin', () => {
   const mediaProvider = getFreshMediaProvider();
   const temporaryFileId = `temporary:${randomId()}`;
 
-  const providerFactory = new ProviderFactory();
-  providerFactory.setProvider('mediaProvider', mediaProvider);
+  const providerFactory = ProviderFactory.create({ mediaProvider });
 
   const editor = (doc: any, uploadErrorHandler?: () => void) =>
     makeEditor<MediaPluginState>({
