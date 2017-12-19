@@ -155,6 +155,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       portal: this.portal,
       rendererContext: this.rendererContext,
       serializer: this,
+      content: node.content ? node.content.toJSON() : undefined,
       ...node.attrs,
     };
   }

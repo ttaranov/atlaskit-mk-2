@@ -28,6 +28,8 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
               ],
             },
           ];
+        case 'originalContent':
+          return param.content;
         case 'error':
           throw new Error('Tong is cursing you...');
         default:
@@ -159,6 +161,40 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
         .first()
         .text(),
     ).to.equal('This is the default content of the extension');
+    extension.unmount();
+  });
+
+  it('should be able to render the oringinlal content', () => {
+    const originalContent = [
+      {
+        type: 'paragraph',
+        content: [
+          {
+            type: 'text',
+            text: 'This is the original content',
+          },
+        ],
+      },
+    ];
+    const extension = mount(
+      <BodiedExtension
+        serializer={serializer}
+        extensionHandlers={extensionHandlers}
+        rendererContext={rendererContext}
+        extensionType="com.atlassian.fabric"
+        extensionKey="originalContent"
+        content={originalContent}
+      >
+        <p>This is the default content of the extension</p>
+      </BodiedExtension>,
+    );
+
+    expect(
+      extension
+        .find('div')
+        .first()
+        .text(),
+    ).to.equal('This is the original content');
     extension.unmount();
   });
 });

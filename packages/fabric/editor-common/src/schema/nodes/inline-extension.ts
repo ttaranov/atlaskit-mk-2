@@ -28,7 +28,6 @@ export const inlineExtension: NodeSpec = {
     extensionKey: { default: '' },
     parameters: { default: null },
     text: { default: null },
-    originalContent: { default: null },
   },
   parseDOM: [
     {
