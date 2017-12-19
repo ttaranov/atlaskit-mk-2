@@ -64,7 +64,7 @@
     "css-color-names": "0.0.4",
     "linkify-it": "^2.0.3",
     "markdown-it-table": "^1.0.0",
-    "mediapicker": "^16.0.1",
+    "mediapicker": "^17.0.1",
     "orderedmap": "^1.0.0",
     "prop-types": "^15.5.10",
     "prosemirror-commands": "^1.0.1",

@@ -412,14 +412,6 @@
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
-"@atlaskit/icon@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-5.0.0.tgz#b71f87d3a6c17d2555779a34d151b150101c8cd4"
-  dependencies:
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-    create-error "^0.3.1"
-
 "@atlaskit/icon@^6.5.2", "@atlaskit/icon@^6.5.4":
   version "6.6.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-6.6.0.tgz#770c7e0c4fa4ff126099bfc2f7d8f70d9e603900"
@@ -620,14 +612,14 @@
     tslib "^1.8.0"
     uuid "^3.1.0"
 
-"@atlaskit/media-editor@3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/media-editor/-/media-editor-3.1.0.tgz#823be9f017c2233cbcd22b76953c72b8cb1821f0"
+"@atlaskit/media-editor@^3.3.6":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@atlaskit/media-editor/-/media-editor-3.3.6.tgz#63728bd6c6500af9af4bb609494f78faeb449288"
   dependencies:
-    "@atlaskit/icon" "^5.0.0"
-    "@atlaskit/util-shared-styles" "^1.0.0"
-    styled-components "^1.3.0"
-    tslib "^1.2.0"
+    "@atlaskit/icon" "^10.3.1"
+    "@atlaskit/util-shared-styles" "^2.10.3"
+    styled-components "^1.4.6"
+    tslib "^1.8.0"
 
 "@atlaskit/mention@^7.0.0":
   version "7.6.0"
@@ -7058,16 +7050,16 @@ mediapicker@^11.1.6:
   version "11.1.9"
   resolved "https://registry.yarnpkg.com/mediapicker/-/mediapicker-11.1.9.tgz#c0eb88a30a5a451b36d8ddd44d9d39607ccd79cd"
 
-mediapicker@^16.0.1:
-  version "16.0.1"
-  resolved "https://registry.yarnpkg.com/mediapicker/-/mediapicker-16.0.1.tgz#5776d78b8b66b8da9e5ae80610855741902262a2"
+mediapicker@^17.0.1:
+  version "17.0.1"
+  resolved "https://registry.yarnpkg.com/mediapicker/-/mediapicker-17.0.1.tgz#885be28b67708f00df6d0f850869d9ef337fe868"
   dependencies:
     "@atlaskit/button" "^1.0.3"
     "@atlaskit/dropdown-menu" "^1.1.0"
     "@atlaskit/flag" "^6.1.0"
     "@atlaskit/icon" "^6.5.4"
     "@atlaskit/media-card" "^22.0.0"
-    "@atlaskit/media-editor" "3.1.0"
+    "@atlaskit/media-editor" "^3.3.6"
     "@atlaskit/modal-dialog" "^3.2.0"
     "@atlaskit/spinner" "^2.2.3"
     "@atlaskit/util-shared-styles" "^2.2.1"
