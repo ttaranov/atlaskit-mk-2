@@ -36,7 +36,9 @@ const flattenChangesets = require('./flattenChangesets');
 */
 
 function getCurrentVersion(packageName, allPackages) {
-  return allPackages.find(pkg => pkg.name === packageName).config.version;
+  const pkg = allPackages.find(pkg => pkg.name === packageName);
+  // When changeset contains deleted package returning null as its version
+  return pkg ? pkg.config.version : null;
 }
 
 function createRelease(changesets, allPackages) {
@@ -60,7 +62,8 @@ function createRelease(changesets, allPackages) {
     .map(({ type, ...rest }) => rest);
 
   return {
-    releases: allReleases,
+    releases: allReleases.filter(release => release.version !== null),
+    deleted: allReleases.filter(release => release.version === null),
     changesets,
   };
 }
