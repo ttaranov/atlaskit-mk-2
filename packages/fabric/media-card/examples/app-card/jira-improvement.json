@@ -1,0 +1,43 @@
+{
+  "text": "BAD-1117: Change wording for Jira Cloud app installation flow",
+  "title": {
+    "text": "BAD-1117: Change wording for Jira Cloud app installation flow"
+  },
+  "details": [
+    {
+      "text": "Improvement",
+      "title": "Type",
+      "icon": {
+        "url": "https://jdog.jira-dev.com/secure/viewavatar?size=xsmall&avatarId=21740&avatarType=issuetype&format=PNG&size=small",
+        "label": "Improvement"
+      }
+    },
+    {
+      "text": "Medium",
+      "title": "Priority",
+      "icon": {
+        "url": "https://jdog.jira-dev.com/images/icons/priorities/medium.svg?format=PNG&size=small",
+        "label": "Medium"
+      }
+    },
+    {
+      "text": "",
+      "title": "Status",
+      "lozenge": {
+        "text": "Done",
+        "appearance": "new",
+        "bold": false
+      }
+    }
+  ],
+  "context": {
+    "text": "Jira / Stride App Development",
+    "icon": {
+      "url": "https://banana-addon-jira.us-west-2.prod.public.atl-paas.net:443/static/images/jira-icon.png",
+      "label": "Stride App Development"
+    }
+  },
+  "link": {
+    "url": "https://jdog.jira-dev.com/browse/BAD-1117"
+  }
+}

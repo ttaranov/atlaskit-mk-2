@@ -12,6 +12,7 @@ export interface Props {
   extensionKey: string;
   originalContent?: any;
   parameters?: any;
+  content?: any;
 }
 
 const BodiedExtension: React.StatelessComponent<Props> = ({
@@ -20,24 +21,26 @@ const BodiedExtension: React.StatelessComponent<Props> = ({
   rendererContext,
   extensionType,
   extensionKey,
-  originalContent,
+  content,
   parameters,
   children,
 }) => {
   try {
     if (extensionHandlers && extensionHandlers[extensionType]) {
-      const content = extensionHandlers[extensionType](
-        { extensionKey, parameters, content: originalContent },
+      const extensionContent = extensionHandlers[extensionType](
+        { extensionKey, parameters, content },
         rendererContext.adDoc,
       );
 
       switch (true) {
-        case content && React.isValidElement(content):
-          // Return the content directly if it's a valid JSX.Element
-          return <div>{content}</div>;
-        case !!content:
+        case extensionContent && React.isValidElement(extensionContent):
+          // Return the extensionContent directly if it's a valid JSX.Element
+          return <div>{extensionContent}</div>;
+        case !!extensionContent:
           // We expect it to be Atlassian Document here
-          const nodes = Array.isArray(content) ? content : [content];
+          const nodes = Array.isArray(extensionContent)
+            ? extensionContent
+            : [extensionContent];
           return renderNodes(
             nodes as ADNode[],
             serializer,

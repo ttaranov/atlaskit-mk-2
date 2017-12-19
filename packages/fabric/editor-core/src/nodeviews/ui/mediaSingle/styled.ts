@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
-import { Layout } from '@atlaskit/editor-common';
+import { MediaSingleLayout } from '@atlaskit/editor-common';
 
-function float(layout: Layout): string {
+function float(layout: MediaSingleLayout): string {
   switch (layout) {
     case 'wrap-right':
       return 'right';
@@ -12,7 +12,7 @@ function float(layout: Layout): string {
   }
 }
 
-function clear(layout: Layout): string {
+function clear(layout: MediaSingleLayout): string {
   switch (layout) {
     case 'wrap-right':
       return 'right';
@@ -24,7 +24,7 @@ function clear(layout: Layout): string {
 }
 
 export interface WrapperProps {
-  layout: Layout;
+  layout: MediaSingleLayout;
   width: number;
   height: number;
 }

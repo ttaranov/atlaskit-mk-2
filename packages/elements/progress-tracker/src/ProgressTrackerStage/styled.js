@@ -1,5 +1,4 @@
 // @flow
-
 import { colors, gridSize, fontSize } from '@atlaskit/theme';
 import styled from 'styled-components';
 import { spacing } from '../constants';
@@ -21,6 +20,28 @@ export const ProgressTrackerStageMarker = styled.div`
   height: ${progressBarHeight}px;
   width: ${progressBarHeight}px;
   border-radius: ${progressBarHeight}px;
+
+  &.fade-appear {
+    opacity: 0.01;
+  }
+
+  &.fade-appear.fade-appear-active {
+    opacity: 1;
+    transition: opacity ${props => props.transitionSpeed}ms
+      ${props => props.transitionEasing};
+    transition-delay: ${props => props.transitionDelay}ms;
+  }
+
+  &.fade-enter {
+    background-color: ${props => props.oldMarkerColor};
+  }
+
+  &.fade-enter.fade-enter-active {
+    background-color: ${props => props.color};
+    transition: background-color ${props => props.transitionSpeed}ms
+      ${props => props.transitionEasing};
+    transition-delay: ${props => props.transitionDelay}ms;
+  }
 `;
 
 export const ProgressTrackerStageBar = styled.div`
@@ -35,6 +56,44 @@ export const ProgressTrackerStageBar = styled.div`
   ); /* account for spacing and radius of marker */
   border-top-right-radius: ${gridSize}px;
   border-bottom-right-radius: ${gridSize}px;
+
+  &.fade-appear {
+    width: calc(
+      ${props => props.oldPercentageComplete}% +
+        ${props => props.oldPercentageComplete}/100*${props =>
+          halfGridSize + spacing[props.theme.spacing]}px
+    ); /* account for spacing and radius of marker */
+  }
+
+  &.fade-appear.fade-appear-active {
+    width: calc(
+      ${props => props.percentageComplete}% +
+        ${props => props.percentageComplete}/100*${props =>
+          halfGridSize + spacing[props.theme.spacing]}px
+    ); /* account for spacing and radius of marker */
+    transition: width ${props => props.transitionSpeed}ms
+      ${props => props.transitionEasing};
+    transition-delay: ${props => props.transitionDelay}ms;
+  }
+
+  &.fade-enter {
+    width: calc(
+      ${props => props.oldPercentageComplete}% +
+        ${props => props.oldPercentageComplete}/100*${props =>
+          halfGridSize + spacing[props.theme.spacing]}px
+    ); /* account for spacing and radius of marker */
+  }
+
+  &.fade-enter.fade-enter-active {
+    width: calc(
+      ${props => props.percentageComplete}% +
+        ${props => props.percentageComplete}/100*${props =>
+          halfGridSize + spacing[props.theme.spacing]}px
+    ); /* account for spacing and radius of marker */
+    transition: width ${props => props.transitionSpeed}ms
+      ${props => props.transitionEasing};
+    transition-delay: ${props => props.transitionDelay}ms;
+  }
 `;
 
 export const ProgressTrackerStageTitle = styled.div`
@@ -46,4 +105,14 @@ export const ProgressTrackerStageTitle = styled.div`
   margin-left: auto;
   margin-right: auto;
   margin-top: ${labelTopSpacing}px;
+
+  &.fade-appear {
+    opacity: 0.01;
+  }
+
+  &.fade-appear.fade-appear-active {
+    opacity: 1;
+    transition: opacity ${props => props.transitionSpeed}ms
+      cubic-bezier(0.2, 0, 0, 1);
+  }
 `;

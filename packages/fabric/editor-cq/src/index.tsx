@@ -48,10 +48,9 @@ import {
 
 import {
   ConfluenceTransformer,
-  CONFlUENCE_LANGUAGE_MAP as LANGUAGE_MAP,
-} from '@atlaskit/editor-cq-transformer';
+  CONFLUENCE_LANGUAGE_MAP as LANGUAGE_MAP,
+} from '@atlaskit/editor-confluence-transformer';
 
-// import { bitbucketSchema as schema } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
 import { EditorState, TextSelection, Plugin } from 'prosemirror-state';
 import { Node as PMNode, Slice } from 'prosemirror-model';

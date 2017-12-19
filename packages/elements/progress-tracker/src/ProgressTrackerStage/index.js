@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import { colors } from '@atlaskit/theme';
 import { GridColumn } from '@atlaskit/page';
 import {
@@ -63,29 +64,115 @@ type Props = {
   item: Stage,
   /** render prop to specify how to render components */
   render: ProgressTrackerStageRenderProp,
+  /** delay before transitioning in ms */
+  transitionDelay: number,
+  /** speed at which to transition in ms */
+  transitionSpeed: number,
+  /** type of easing for transition */
+  transitionEasing: string,
 };
 
-export default class ProgressTrackerStage extends PureComponent<Props> {
+type State = {
+  transitioning: boolean,
+  oldMarkerColor: string | null,
+  oldPercentageComplete: number,
+};
+
+const Fade = ({ children, ...props }: Object) => (
+  <CSSTransition {...props} classNames="fade">
+    {children}
+  </CSSTransition>
+);
+
+export default class ProgressTrackerStage extends PureComponent<Props, State> {
+  constructor(props: Object) {
+    super(props);
+    this.state = {
+      transitioning: false,
+      oldMarkerColor: getMarkerColor(this.props.item.status),
+      oldPercentageComplete: 0,
+    };
+  }
+
+  componentWillMount() {
+    const newState = this.state;
+    newState.transitioning = true;
+    this.setState(newState);
+  }
+
+  componentWillReceiveProps() {
+    const newState = this.state;
+    newState.transitioning = true;
+    this.setState(newState);
+  }
+
   shouldShowLink() {
     return this.props.item.status === 'visited' && !this.props.item.noLink;
   }
 
   render() {
-    const { item, render } = this.props;
+    const {
+      item,
+      render,
+      transitionDelay,
+      transitionSpeed,
+      transitionEasing,
+    } = this.props;
+
+    const onEntered = () => {
+      this.setState({
+        transitioning: false,
+        oldMarkerColor: getMarkerColor(item.status),
+        oldPercentageComplete: item.percentageComplete,
+      });
+    };
 
     return (
       <GridColumn medium={2}>
         <ProgressTrackerStageContainer>
-          <ProgressTrackerStageMarker color={getMarkerColor(item.status)} />
-          <ProgressTrackerStageBar
-            percentageComplete={item.percentageComplete}
-          />
-          <ProgressTrackerStageTitle
-            color={getTextColor(item.status)}
-            fontweight={getFontWeight(item.status)}
+          <Fade
+            appear
+            in={this.state.transitioning}
+            onEntered={onEntered}
+            timeout={transitionDelay + transitionSpeed}
           >
-            {this.shouldShowLink() ? render.link({ item }) : item.label}
-          </ProgressTrackerStageTitle>
+            <ProgressTrackerStageMarker
+              oldMarkerColor={this.state.oldMarkerColor}
+              color={getMarkerColor(item.status)}
+              transitionSpeed={transitionSpeed}
+              transitionDelay={transitionDelay}
+              transitionEasing={transitionEasing}
+            />
+          </Fade>
+          <Fade
+            appear
+            in={this.state.transitioning}
+            onEntered={onEntered}
+            timeout={transitionDelay + transitionSpeed}
+          >
+            <ProgressTrackerStageBar
+              oldPercentageComplete={this.state.oldPercentageComplete}
+              percentageComplete={item.percentageComplete}
+              transitionSpeed={transitionSpeed}
+              transitionDelay={transitionDelay}
+              transitionEasing={transitionEasing}
+            />
+          </Fade>
+          <Fade
+            appear
+            in={this.state.transitioning}
+            onEntered={onEntered}
+            timeout={transitionDelay + transitionSpeed}
+          >
+            <ProgressTrackerStageTitle
+              color={getTextColor(item.status)}
+              fontweight={getFontWeight(item.status)}
+              transitionSpeed={transitionSpeed}
+              transitionDelay={transitionDelay}
+            >
+              {this.shouldShowLink() ? render.link({ item }) : item.label}
+            </ProgressTrackerStageTitle>
+          </Fade>
         </ProgressTrackerStageContainer>
       </GridColumn>
     );

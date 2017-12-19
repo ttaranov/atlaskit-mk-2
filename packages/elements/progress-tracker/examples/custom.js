@@ -5,7 +5,7 @@ import { colors } from '@atlaskit/theme';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import ProgressTracker from '../src/ProgressTracker';
-import type { Stage } from '../src/types';
+import type { Stage, LinkElement } from '../src/types';
 
 const items = [
   {
@@ -69,7 +69,7 @@ class CustomProgressTrackerLink extends PureComponent<Props> {
 }
 
 const render = {
-  link: (props: Props) => <CustomProgressTrackerLink {...props} />,
+  link: (props: Props): LinkElement => <CustomProgressTrackerLink {...props} />,
 };
 
 export default () => <ProgressTracker items={items} render={render} />;

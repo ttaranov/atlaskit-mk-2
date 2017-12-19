@@ -178,13 +178,6 @@ describe('LinkCard', () => {
       expect(element.find(A)).toHaveLength(0);
     });
 
-    it('should render an A tag when status is "complete"', () => {
-      const element = shallow(
-        <LinkCard status="complete" details={genericLinkDetails} />,
-      );
-      expect(element.find(A)).toHaveLength(1);
-    });
-
     it('should not render an A tag when URL is not present', () => {
       const element = shallow(
         <LinkCard status="complete" details={emptyLinkDetails} />,

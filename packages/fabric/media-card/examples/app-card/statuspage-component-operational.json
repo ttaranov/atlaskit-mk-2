@@ -1,0 +1,20 @@
+{
+  "link": {
+    "url": "https://manage.statuspage.io/pages/4trfr6k90168/components?utm_source=stride"
+  },
+  "title": {
+    "text": "Management Portal (example)"
+  },
+  "text": "",
+  "textUrl": "https://manage.statuspage.io/pages/4trfr6k90168/components?utm_source=stride",
+  "details": [
+    {
+      "title": "Status",
+      "icon": {
+        "url": "https://dka575ofm4ao0.cloudfront.net/integration_icons/stride/Operational.png",
+        "label": "Operational"
+      },
+      "text": "OPERATIONAL"
+    }
+  ]
+}
