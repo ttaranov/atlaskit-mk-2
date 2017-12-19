@@ -85,6 +85,7 @@ export default class TimeDialog extends Component<Props> {
         <Droplist
           isKeyboardInteractionDisabled
           isOpen={this.props.isOpen && !!this.props.times.length}
+          shouldFitContainer
           trigger={this.props.children}
         >
           {this.renderItems()}
