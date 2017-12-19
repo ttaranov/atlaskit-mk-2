@@ -1,9 +1,11 @@
 // @flow
 import React from 'react';
-import '../src/index.less';
+// eslint-disable-next-line
+import reducedStyles from '!!raw-loader!../src/bundle.css';
 
 export default () => (
   <form onSubmit={e => e.preventDefault()}>
+    <style>{reducedStyles}</style>
     <h2>Add a comment</h2>
     <div className="ak-field-group">
       <label htmlFor="description">Comment</label>

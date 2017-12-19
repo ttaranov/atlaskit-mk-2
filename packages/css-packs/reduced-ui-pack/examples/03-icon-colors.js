@@ -1,11 +1,22 @@
 // @flow
-import React, { Component } from 'react';
 
-export default class FilledIconExample extends Component {
+import React, { Component } from 'react';
+// eslint-disable-next-line
+import icons from '!!raw-loader!../dist/icons-sprite.svg';
+// eslint-disable-next-line
+import reducedStyles from '!!raw-loader!../src/bundle.css';
+
+// eslint-disable-next-line react/no-danger
+const Spritemap = () => <div dangerouslySetInnerHTML={{ __html: icons }} />;
+
+class FilledIconExample extends Component<*, *> {
   state = {
-    color: '#000000',
-    fill: '#ff0000',
+    color: '#253858',
+    fill: '#36B37E',
   };
+
+  ColorInput: ?HTMLInputElement;
+  FillInput: ?HTMLInputElement;
 
   render() {
     const iconStyles = {
@@ -15,6 +26,7 @@ export default class FilledIconExample extends Component {
 
     return (
       <form>
+        <style>{reducedStyles}</style>
         <div className="ak-field-group">
           <label htmlFor="color">Icon primary colour</label>
           <input
@@ -25,7 +37,9 @@ export default class FilledIconExample extends Component {
               this.ColorInput = input;
             }}
             defaultValue={this.state.color}
-            onChange={() => this.setState({ color: this.ColorInput.value })}
+            onChange={() =>
+              this.setState({ color: this.ColorInput && this.ColorInput.value })
+            }
             name="color"
           />
         </div>
@@ -39,7 +53,9 @@ export default class FilledIconExample extends Component {
               this.FillInput = input;
             }}
             defaultValue={this.state.fill}
-            onChange={() => this.setState({ fill: this.FillInput.value })}
+            onChange={() =>
+              this.setState({ fill: this.FillInput && this.FillInput.value })
+            }
             name="fill"
           />
         </div>
@@ -50,10 +66,17 @@ export default class FilledIconExample extends Component {
             style={iconStyles}
             aria-label="Text colour"
           >
-            <use xlinkHref="#ak-icon-editor/text-color" />
+            <use xlinkHref="#ak-icon-app-access" />
           </svg>
         </p>
       </form>
     );
   }
 }
+
+export default () => (
+  <div>
+    <Spritemap />
+    <FilledIconExample />
+  </div>
+);

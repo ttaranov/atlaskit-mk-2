@@ -5,13 +5,11 @@ import cheerio from 'cheerio'; // eslint-disable-line import/no-extraneous-depen
 import { name } from '../package.json';
 import expectedSvgIds from '../src/internal/iconIds';
 
-const icons = fs.readFileSync(
-  path.join(__dirname, '../dist/icons-sprite.svg'),
-  { encoding: 'utf-8' },
-);
+const icons = fs.readFileSync(path.join(__dirname, '../src/icons-sprite.svg'), {
+  encoding: 'utf-8',
+});
 
 describe(name, () => {
-  // it.skip('default export less file', () => {});
   it('icon export should contain expected SVG symbol ids', () => {
     // NOTE Please remember:
     // An addition is a feature

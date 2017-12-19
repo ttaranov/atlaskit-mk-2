@@ -1,9 +1,11 @@
 // @flow
 import React from 'react';
-import '../src/index.less';
+// eslint-disable-next-line
+import reducedStyles from '!!raw-loader!../src/bundle.css';
 
 export default () => (
   <div>
+    <style>{reducedStyles}</style>
     <div title="Buttons">
       <h1>Buttons</h1>
       <h2>default appearance</h2>
