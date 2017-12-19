@@ -3,7 +3,7 @@ import React from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
 
 export default md`
-  ## Justification
+  ## Why?
   The layer manager is used to render React DOM into a new context (aka "Portal").
   This can be used to implement various UI components such as modals.
 
@@ -39,8 +39,9 @@ export default md`
   )}
 
   ## Helpers
-  There are a few patterns that are common among the supported components. We've
-  abstracted them for use under \`@atlaskit/layer-manager\`.
+  There are a few patterns that are common among the supported packages, and have
+  been abstracted into discrete components. While primarily for use internally,
+  they're available under \`@atlaskit/layer-manager\`.
 
   ${(
     <Example
@@ -55,6 +56,14 @@ export default md`
       Component={require('../examples/focus-lock').default}
       source={require('!!raw-loader!../examples/focus-lock')}
       title="Focus Lock"
+    />
+  )}
+
+  ${(
+    <Example
+      Component={require('../examples/with-context').default}
+      source={require('!!raw-loader!../examples/with-context')}
+      title="With Context from Props"
     />
   )}
 

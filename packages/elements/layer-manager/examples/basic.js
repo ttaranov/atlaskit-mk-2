@@ -2,12 +2,13 @@
 import React, { Component } from 'react';
 import Tooltip from '@atlaskit/tooltip';
 import Modal from '@atlaskit/modal-dialog';
-import LayerManager from '@atlaskit/layer-manager';
-// import { Spotlight, SpotlightManager, SpotlightTarget } from '@atlaskit/onboarding';
+import {
+  Spotlight,
+  SpotlightManager,
+  SpotlightTarget,
+} from '@atlaskit/onboarding';
 
-const Spotlight = props => <div {...props} />;
-const SpotlightManager = props => <div {...props} />;
-const SpotlightTarget = props => <div {...props} />;
+// NOTE: @atlaskit/layer-manager is provided by the website
 
 type Props = {};
 type State = {
@@ -15,6 +16,16 @@ type State = {
   modalTwoIsVisible: boolean,
   spotlightIsVisible: boolean,
 };
+
+const Hr = () => (
+  <div
+    style={{
+      backgroundColor: '#ddd',
+      height: 1,
+      margin: '8px 0',
+    }}
+  />
+);
 
 export default class Example extends Component<Props, State> {
   state: State = {
@@ -37,18 +48,16 @@ export default class Example extends Component<Props, State> {
     }));
   };
   render() {
-    const {
-      modalIsVisible,
-      modalTwoIsVisible,
-      spotlightIsVisible,
-    } = this.state;
+    const { modalIsVisible, spotlightIsVisible } = this.state;
 
     return (
       <SpotlightManager style={{ alignItems: 'center', display: 'flex' }}>
         <Tooltip description="Hello World">
           <button>Tooltip</button>
         </Tooltip>
+        <Hr />
         <button onClick={this.toggleModal}>Modal</button>
+        <Hr />
         <SpotlightTarget name="button">
           <button onClick={this.toggleSpotlight}>Onboarding</button>
         </SpotlightTarget>
@@ -56,7 +65,7 @@ export default class Example extends Component<Props, State> {
         {modalIsVisible && (
           <Modal
             actions={[{ onClick: this.toggleModal, text: 'Close' }]}
-            heading="Modal one"
+            heading="Hello World!"
             onClose={this.toggleModal}
           >
             <p>
@@ -64,22 +73,6 @@ export default class Example extends Component<Props, State> {
               dragée cotton candy. Sesame snaps gingerbread brownie caramels
               liquorice pie bonbon cake gummies.
             </p>
-
-            <button onClick={this.toggleModalTwo}>Modal</button>
-
-            {modalTwoIsVisible && (
-              <Modal
-                actions={[{ onClick: this.toggleModalTwo, text: 'Close' }]}
-                heading="Modal TWO"
-                onClose={this.toggleModalTwo}
-              >
-                <p>
-                  Cupcake ipsum dolor sit amet. Cheesecake fruitcake brownie
-                  donut dragée cotton candy. Sesame snaps gingerbread brownie
-                  caramels liquorice pie bonbon cake gummies.
-                </p>
-              </Modal>
-            )}
           </Modal>
         )}
 
@@ -87,9 +80,10 @@ export default class Example extends Component<Props, State> {
           <Spotlight
             actions={[{ onClick: this.toggleSpotlight, text: 'Close' }]}
             dialogPlacement="bottom left"
-            heading="Spotlight heading"
+            heading="Hello World!"
             key="button"
             target="button"
+            targetRadius={4}
           >
             Cupcake ipsum dolor sit amet. Cheesecake fruitcake brownie donut
             dragée cotton candy. Sesame snaps gingerbread brownie caramels

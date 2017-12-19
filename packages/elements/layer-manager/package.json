@@ -27,7 +27,11 @@
     "react-dom": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.0.0"
+    "@atlaskit/docs": "^2.0.0",
+    "@atlaskit/icon": "^10.3.1",
+    "@atlaskit/modal-dialog": "^3.2.1",
+    "@atlaskit/onboarding": "^2.0.4",
+    "@atlaskit/tooltip": "^8.0.10"
   },
   "keywords": [
     "atlaskit",

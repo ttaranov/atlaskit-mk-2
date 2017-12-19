@@ -1,8 +1,8 @@
 // @flow
 import React, { Component } from 'react';
-import { FocusLock } from '@atlaskit/layer-manager';
 import UnlockIcon from '@atlaskit/icon/glyph/unlock';
 import LockIcon from '@atlaskit/icon/glyph/lock';
+import { FocusLock } from '../src';
 
 type Props = {};
 type State = { isActive: boolean };
@@ -11,21 +11,12 @@ export default class FocusLockExample extends Component<Props, State> {
   target: HTMLElement;
   state: State = { isActive: false };
   toggleLock = () => {
-    this.setState(
-      state => ({ isActive: !state.isActive }),
-      () => {
-        if (this.state.isActive) this.target.focus();
-      },
-    );
-  };
-  getTarget = (ref: HTMLElement) => {
-    this.target = ref;
+    this.setState(state => ({ isActive: !state.isActive }));
   };
   render() {
     const { isActive } = this.state;
     const boxStyle = {
       backgroundColor: isActive ? '#f6f6f6' : '#fafafa',
-      // border: `2px solid ${isActive ? 'dodgerBlue' : '#fafafa'}`,
       borderRadius: 4,
       display: 'flex',
       marginTop: 8,
@@ -40,7 +31,7 @@ export default class FocusLockExample extends Component<Props, State> {
             {isActive ? 'Unlock' : 'Lock'}
           </button>
         </p>
-        <FocusLock enabled={isActive}>
+        <FocusLock autoFocus enabled={isActive}>
           <div style={boxStyle}>
             {isActive ? (
               <LockIcon label="Focus locked icon" />
@@ -53,7 +44,7 @@ export default class FocusLockExample extends Component<Props, State> {
                 descendents they will not be able to tab outside of it.
               </p>
               <p>
-                <button ref={this.getTarget}>Button 1</button>
+                <button>Button 1</button>
                 <button>Button 2</button>
                 <button>Button 3</button>
               </p>

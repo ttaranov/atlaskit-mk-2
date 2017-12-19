@@ -9,7 +9,6 @@ type Props = {
 };
 type State = {
   children: Node,
-  isMounted: boolean,
 };
 type Context = {
   gatewayRegistry: GatewayRegistry,

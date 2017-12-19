@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { ScrollLock } from '@atlaskit/layer-manager';
+import { ScrollLock } from '../src';
 
 type Props = {};
 type State = { isActive: boolean };
