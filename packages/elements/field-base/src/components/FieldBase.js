@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import FieldBaseStateless from './FieldBaseStateless';
+import type { FieldBaseProps, FieldBaseDefaultProps } from '../types';
 
 const ON_BLUR_KEY = 'onBlurKey';
 const ON_CONTENT_BLUR_KEY = 'onContentBlurKey';
@@ -10,42 +11,32 @@ function waitForRender(cb) {
   setTimeout(cb, 0);
 }
 
-type Props = {|
-  /** focus the element when initially rendered */
-  defaultIsFocused?: boolean,
-  /** focus event handler */
-  onFocus?: (event: any) => mixed,
-  /** blur event handler */
-  onBlur?: (event: any) => mixed,
-|};
-
-type State = {|
+type State = {
   /** the element is focussed */
   isFocused: boolean,
   /** the dialog is focussed */
   isDialogFocused: boolean,
   /** ignore the blur event if the dialog is focussed */
   shouldIgnoreNextDialogBlur: boolean,
-|};
+};
 
-// TODO: enable type props when spread issue fixed in flow
-export default class FieldBase extends Component<*, State> {
-  timers: any;
-
-  static defaultProps = {
+export default class FieldBase extends Component<FieldBaseProps, State> {
+  static defaultProps: FieldBaseDefaultProps = {
     defaultIsFocused: false,
     onFocus: () => {},
     onBlur: () => {},
   };
 
-  state = {
+  state: State = {
+    // $FlowFixMe - turning off error 'Property cannot be accessed on any member of intersection type..'
     isFocused: this.props.defaultIsFocused,
     isDialogFocused: false,
     shouldIgnoreNextDialogBlur: false,
   };
-  // Can't use SyntheticEvent as Flow has issues in current version. TODO: Fix when it's resolved in flow
-  // https://github.com/faceyspacey/redux-first-router-link/issues/62
-  onFocus = (e: any) => {
+
+  timers: any;
+
+  onFocus = (e: SyntheticEvent<*>) => {
     this.setState({ isFocused: true });
     this.props.onFocus(e);
     // Escape from a possible race-condition when blur and focus happen one by one
@@ -53,7 +44,7 @@ export default class FieldBase extends Component<*, State> {
     this.cancelSchedule(ON_BLUR_KEY);
   };
 
-  onBlur = (e: any) => {
+  onBlur = (e: SyntheticEvent<*>) => {
     // Because the blur event fires before the focus event, we want to make sure that we don't
     // render and close the dialog before we can check if the dialog is focused.
     this.reschedule(ON_BLUR_KEY, () => this.setState({ isFocused: false }));

@@ -7,11 +7,6 @@ import FieldBase, { FieldBaseStateless } from '../../src';
 import { ChildWrapper, Content } from '../styled/Content';
 import { WarningIcon } from '../components/ValidationElement';
 
-const defaultProps = {
-  onFocus: () => {},
-  onBlur: () => {},
-};
-
 const onFocus = () => {};
 const onBlur = () => {};
 
@@ -184,7 +179,7 @@ describe('ak-field-base', () => {
       it('should call onBlur when set', () => {
         const spy = jest.fn();
         const wrapper = mount(
-          <FieldBaseStateless onFocus={onFocus} onBlur={onBlur} onBlur={spy} />,
+          <FieldBaseStateless onFocus={onFocus} onBlur={spy} />,
         );
         wrapper.setProps({ shouldReset: true });
         expect(spy).toHaveBeenCalled();
@@ -225,18 +220,14 @@ describe('ak-field-base', () => {
 
     it('should call onFocus', () => {
       const spy = jest.fn();
-      wrapper = mount(
-        <FieldBaseStateless onFocus={onFocus} onBlur={onBlur} onFocus={spy} />,
-      );
+      wrapper = mount(<FieldBaseStateless onBlur={onBlur} onFocus={spy} />);
       wrapper.find(Content).simulate('focus');
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should call onBlur', () => {
       const spy = jest.fn();
-      wrapper = mount(
-        <FieldBaseStateless onFocus={onFocus} onBlur={onBlur} onBlur={spy} />,
-      );
+      wrapper = mount(<FieldBaseStateless onFocus={onFocus} onBlur={spy} />);
       wrapper.find(Content).simulate('blur');
       expect(spy).toHaveBeenCalledTimes(1);
     });

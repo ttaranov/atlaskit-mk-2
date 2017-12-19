@@ -27,7 +27,7 @@ describe('ak-field-base', () =>
     describe('label prop', () => {
       it('should be reflected in the label element', () => {
         const label = 'This is a label';
-        const wrapper = mount(<Label label={testLabel} />);
+        const wrapper = mount(<Label label={label} />);
         expect(
           wrapper
             .find(LabelInner)
