@@ -59,18 +59,21 @@ export const createPlugin = (
             (sessionId && participantsChanged)
           ) {
             const selection = getSendableSelection(newState.selection);
-            collabEditProvider.sendMessage({
-              type: 'telepointer',
-              selection,
-              sessionId,
-            });
+            // Delay sending selection till next tick so that participants info
+            // can go before it
+            setTimeout(
+              collabEditProvider.sendMessage.bind(collabEditProvider),
+              0,
+              {
+                type: 'telepointer',
+                selection,
+                sessionId,
+              },
+            );
           }
         }
 
-        dispatch(pluginKey, {
-          activeParticipants: activeParticipants.toArray(),
-          sessionId,
-        });
+        dispatch(pluginKey, { activeParticipants, sessionId });
         return pluginState;
       },
     },

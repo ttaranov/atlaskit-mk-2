@@ -1,5 +1,8 @@
 # @atlaskit/analytics
 
+## 2.3.5
+- [patch] Added type fields to analytics package.json [286cfc4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/286cfc4)
+
 ## 2.3.4
 - [patch] Restored type exports in analytics [7a4a9d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7a4a9d2)
 

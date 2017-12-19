@@ -376,7 +376,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...(schema.nodes.table ? tablePlugins() : []),
           ...reactNodeViewPlugins(schema),
           ...(schema.nodes.taskList && schema.nodes.decisionList
-            ? tasksAndDecisionsPlugin(schema, {})
+            ? tasksAndDecisionsPlugin(schema, {}, this.providerFactory)
             : []),
           history(),
           keymap(baseKeymap), // should be last :(

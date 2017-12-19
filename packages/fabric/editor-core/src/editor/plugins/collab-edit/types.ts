@@ -5,6 +5,7 @@ export interface Participant {
   sessionId: string;
   avatar: string;
   name: string;
+  email: string;
 }
 
 export interface InitData {
