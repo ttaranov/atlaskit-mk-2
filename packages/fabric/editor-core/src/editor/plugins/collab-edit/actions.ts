@@ -78,7 +78,7 @@ export const handleTelePointer = (
   view: EditorView,
 ) => {
   const { state: { tr } } = view;
-  view.dispatch(tr.setMeta('telepointer', telepointerData).scrollIntoView());
+  view.dispatch(tr.setMeta('telepointer', telepointerData));
 };
 
 function isAllSelection(selection: Selection) {
