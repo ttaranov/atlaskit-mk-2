@@ -13,6 +13,9 @@
     "Sean C"
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "scripts": {
+    "build": "lessc src/index.less dist/bundle.css"
+  },
   "dependencies": {
     "@atlaskit/util-shared-styles": "^2.10.3"
   },
