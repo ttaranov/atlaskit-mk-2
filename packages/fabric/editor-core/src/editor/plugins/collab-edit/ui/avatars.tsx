@@ -1,22 +1,20 @@
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
-import Avatar, { AvatarGroup } from '@atlaskit/avatar';
 import { EditorView } from 'prosemirror-view';
+import Avatar, { AvatarGroup } from '@atlaskit/avatar';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+
 import WithPluginState from '../../../ui/WithPluginState';
 import { EventDispatcher } from '../../../event-dispatcher';
-import { pluginKey as collabEditPluginKey } from '../plugin';
+import { pluginKey as collabEditPluginKey, PluginState } from '../plugin';
 import { getAvatarColor } from '../utils';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 export interface Props {
   editorView?: EditorView;
   eventDispatcher?: EventDispatcher;
 }
 
-// Workaround for https://ecosystem.atlassian.net/browse/AK-3872
-// tslint:disable-next-line:variable-name
-const AvatarContainer: any = styled.div`
-  padding-right: ${akGridSizeUnitless}px;
+const AvatarContainer = styled.div`
   margin-right: ${akGridSizeUnitless}px;
 `;
 
@@ -34,7 +32,6 @@ const itemAppear = keyframes`
 }
 `;
 
-// tslint:disable-next-line:variable-name
 const AvatarItem: any = styled.div`
   position: relative;
   align-self: center;
@@ -88,12 +85,14 @@ function Item(props: ItemProps) {
 }
 
 export default class Avatars extends React.Component<Props, any> {
+  private onAvatarClick = event => {};
   private renderAvatars = state => {
     if (!state.data) {
       return null;
     }
-    const { sessionId, activeParticipants } = state.data;
+    const { sessionId, activeParticipants } = state.data as PluginState;
     const avatars = activeParticipants
+      .toArray()
       .map(p => ({
         email: p.email,
         key: p.sessionId,
@@ -114,8 +113,7 @@ export default class Avatars extends React.Component<Props, any> {
           appearance="stack"
           size="medium"
           data={avatars}
-          // Breaks CSS when avatar renders as button, seems like a dependency problem
-          // onAvatarClick={this.onAvatarClick}
+          onAvatarClick={this.onAvatarClick}
           avatar={Item}
         />
       </AvatarContainer>
