@@ -104,6 +104,10 @@ module.exports = function createWebpackConfig(
             },
           },
         },
+        {
+          test: /\.less$/,
+          use: ['style-loader', 'css-loader', 'less-loader'],
+        },
       ],
     },
     resolve: {
