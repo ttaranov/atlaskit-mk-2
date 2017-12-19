@@ -62,6 +62,12 @@ class NodeViewElem implements NodeView {
   private renderReactComponent(node: PMNode) {
     const { getPos, providerFactory, reactNodeViewComponents, view } = this;
 
+    Object.keys(node.attrs || {}).forEach(attr => {
+      if (this.domRef) {
+        this.domRef.setAttribute(attr, node.attrs[attr]);
+      }
+    });
+
     ReactDOM.render(
       <ReactPMNode
         node={node}
