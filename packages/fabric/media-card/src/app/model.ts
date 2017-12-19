@@ -1,4 +1,5 @@
 export interface AppCardModel {
+  link?: AppCardLink;
   title: AppCardTitle;
   description?: AppCardDescription;
   details?: AppCardDetails[];
@@ -6,6 +7,10 @@ export interface AppCardModel {
   actions?: AppCardAction[];
   preview?: { url: string }; // an image URL
   background?: { url: string }; // an image URL
+}
+
+export interface AppCardLink {
+  url: string;
 }
 
 export interface AppCardTitle {
@@ -75,3 +80,8 @@ export interface AppCardActionCallbackHandlers {
   success(message?: string);
   failure(message?: string, tryAgain?: boolean, tryAgainLinkText?: string);
 }
+
+export type OnActionClickCallback = (
+  action: AppCardAction,
+  handlers: AppCardActionCallbackHandlers,
+) => void;

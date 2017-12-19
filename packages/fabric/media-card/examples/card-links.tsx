@@ -18,6 +18,16 @@ const context = createStorybookContext();
 // standard
 const standardCards = [
   {
+    title: 'Auto',
+    content: (
+      <Card
+        identifier={genericUrlPreviewId}
+        context={context}
+        appearance="auto"
+      />
+    ),
+  },
+  {
     title: 'Small',
     content: (
       <Card

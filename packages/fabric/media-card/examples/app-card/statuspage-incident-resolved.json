@@ -1,0 +1,23 @@
+{
+  "link": {
+    "url": "https://casparprivatepage.statuspage.io/incidents/5ljbh0r0sz28?utm_source=stride"
+  },
+  "title": {
+    "text": "This is a test incident"
+  },
+  "text": "This incident has been resolved.",
+  "textUrl": "https://casparprivatepage.statuspage.io/incidents/5ljbh0r0sz28?utm_source=stride",
+  "details": [
+    {
+      "title": "Status",
+      "lozenge": {
+        "text": "Resolved",
+        "bold": true,
+        "appearance": "new"
+      }
+    }
+  ],
+  "description": {
+    "text": "This incident has been resolved."
+  }
+}

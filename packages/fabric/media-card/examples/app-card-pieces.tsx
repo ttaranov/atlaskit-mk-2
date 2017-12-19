@@ -1,8 +1,7 @@
 /* tslint:disable:no-console */
 import * as React from 'react';
-import styled from 'styled-components';
-import { AppCardView } from '../src/app';
 import {
+  AppCardView,
   AppCardModel,
   AppCardDetails,
   AppCardBadge,
@@ -10,7 +9,10 @@ import {
   AppCardContext,
   AppCardAction,
   AppCardUser,
-} from '../src/app/model';
+} from '../src/app_2/AppCardViewV2';
+import { FixedWidthContainer, Section } from './app-card/styled';
+
+const newDesign = true;
 
 const shortTitle =
   'Sascha Reuter commented on a file: Desktop sidebar states.png';
@@ -71,8 +73,11 @@ const modelWithUserInTitle: AppCardModel = {
   },
 };
 
-const modelWithCollapseToggle: AppCardModel = {
+const modelWithLink: AppCardModel = {
   ...modelWithShortTitle,
+  link: {
+    url: 'https://www.atlassian.com/',
+  },
 };
 
 const preview = {
@@ -307,284 +312,6 @@ const modelWithMostOfTheThingsAndWithBackground: AppCardModel = {
   background,
 };
 
-const confluenceActivityModel: AppCardModel = {
-  title: {
-    text: 'Sascha Reuter commented on a file: Desktop sidebar states.png',
-    user: userSaschaReuter,
-  },
-  description: {
-    title: 'Desktop sidebar states.png',
-    text:
-      'Does the consumer actually know what a card is? Should it be "file/link" or something instead?',
-  },
-  context: {
-    icon: { url: contextIcon, label: 'Confluence' },
-    text: 'Design Home / … / Media Cards Design',
-  },
-  actions: [
-    {
-      title: 'Reply',
-      target: {
-        receiver: 'some.receiver1',
-        key: 'test.target.reply',
-      },
-      parameters: {
-        expenseId: 'some-id1',
-      },
-    },
-    {
-      title: 'Other',
-      target: {
-        receiver: 'some.receiver2',
-        key: 'test.target.other',
-      },
-      parameters: {
-        expenseId: 'some-id2',
-      },
-    },
-  ],
-};
-
-const jiraIssueModel: AppCardModel = {
-  title: { text: 'Document specifications for smart cards' },
-  details: [
-    {
-      icon: {
-        url: 'https://drive.google.com/open?id=0B1I77F_P5VV2ZmJzTzhqb2JkVkE',
-        label: 'Issue type',
-      },
-      text: 'Story',
-    },
-    {
-      icon: {
-        url: 'https://drive.google.com/open?id=0B1I77F_P5VV2ZmJzTzhqb2JkVkE',
-        label: 'Priority',
-      },
-      text: 'High',
-    },
-  ],
-  context: {
-    icon: { url: contextIcon, label: 'Jira' },
-    text: 'DPM - 560',
-  },
-  actions: [
-    {
-      title: 'View',
-      target: {
-        receiver: 'some.receiver1',
-        key: 'test.target.view',
-      },
-      parameters: {
-        expenseId: 'some-id1',
-      },
-    },
-    {
-      title: 'Other',
-      target: {
-        receiver: 'some.receiver2',
-        key: 'test.target.other',
-      },
-      parameters: {
-        expenseId: 'some-id2',
-      },
-    },
-  ],
-};
-
-const dropboxFileModel: AppCardModel = {
-  title: { text: 'media_cards_v2.0_final.sketch' },
-  details: [
-    { title: 'Modified', text: '10/5/2017 12:19 PM' },
-    {
-      icon: {
-        url: 'http://www.freeiconspng.com/uploads/links-icon-10.png',
-        label: 'Members',
-      },
-      text: '34 members',
-    },
-  ],
-  context: {
-    icon: {
-      url:
-        'https://cfl.dropboxstatic.com/static/images/brand/glyph-vflK-Wlfk.png',
-      label: 'Dropbox',
-    },
-    text: 'Dropbox',
-  },
-  actions: [
-    {
-      title: 'Download',
-      target: {
-        receiver: 'some.receiver1',
-        key: 'test.target.download',
-      },
-      parameters: {
-        expenseId: 'some-id1',
-      },
-    },
-    {
-      title: 'Other',
-      target: {
-        receiver: 'some.receiver2',
-        key: 'test.target.other',
-      },
-      parameters: {
-        expenseId: 'some-id2',
-      },
-    },
-  ],
-};
-
-const trelloBoardModel: AppCardModel = {
-  background: {
-    url: 'https://dl.dropbox.com/s/8js2m5azvvfzpq2/background.jpg',
-  },
-  title: { text: 'Trello Community Nordics' },
-  details: [
-    {
-      icon: {
-        url: 'https://dl.dropbox.com/s/msppv8d4vrl7msj/icon_team.png',
-        label: 'Wheel',
-      },
-    },
-    {
-      icon: {
-        url: 'https://dl.dropbox.com/s/1341fwjpmjzucqk/icon_member.png',
-        label: 'Members',
-      },
-      text: '438',
-    },
-    {
-      icon: {
-        url: 'https://dl.dropbox.com/s/1341fwjpmjzucqk/icon_member.png',
-        label: 'Stared',
-      },
-      text: '1',
-    },
-    {
-      icon: {
-        url: 'https://dl.dropbox.com/s/mbqwsdc99jzj9pk/icon_activity.png',
-        label: 'Updated',
-      },
-      text: 'Apr 28',
-    },
-  ],
-  context: {
-    icon: {
-      url: 'https://dl.dropbox.com/s/yrdlsc6usuwegym/icon.png',
-      label: 'Trello',
-    },
-    text: 'Trello - Board',
-  },
-  actions: [
-    {
-      title: 'Join',
-      target: {
-        receiver: 'some.receiver1',
-        key: 'test.target.join',
-      },
-      parameters: {
-        expenseId: 'some-id1',
-      },
-    },
-    {
-      title: 'Other',
-      target: {
-        receiver: 'some.receiver2',
-        key: 'test.target.other',
-      },
-      parameters: {
-        expenseId: 'some-id2',
-      },
-    },
-  ],
-};
-
-const trelloCardModel: AppCardModel = {
-  title: { text: 'Media viewer - Inline comment dialog concept' },
-  preview,
-  details: [
-    {
-      icon: {
-        url:
-          'https://drive.google.com/uc?export=download&id=0B1I77F_P5VV2MDdacTFrVkxpNXc',
-        label: 'Watch',
-      },
-    },
-    {
-      icon: {
-        url:
-          'https://drive.google.com/uc?export=download&id=0B1I77F_P5VV2UGxCZ0c2TmRNOVk',
-        label: 'Updated at',
-      },
-      text: 'Jun 15',
-    },
-    {
-      icon: {
-        url:
-          'https://drive.google.com/uc?export=download&id=0B1I77F_P5VV2Znh0TEh1Zm1ZRnc',
-        label: 'Align',
-      },
-    },
-    {
-      icon: {
-        url:
-          'https://drive.google.com/uc?export=download&id=0B1I77F_P5VV2SDhVOVlTak44Q2M',
-        label: 'Comments',
-      },
-      text: '2',
-    },
-    {
-      icon: {
-        url:
-          'https://drive.google.com/uc?export=download&id=0B1I77F_P5VV2WWl2NjNDc0RaNFk',
-        label: 'Attachments',
-      },
-      text: '1',
-    },
-    {
-      icon: {
-        url:
-          'https://drive.google.com/uc?export=download&id=0B1I77F_P5VV2Y2NkOTB0RDNEVGc',
-        label: 'Tasks',
-      },
-      text: '0/1',
-    },
-    {
-      users: [userJonBlower, userScottSimpson, userJamesNewell],
-    },
-  ],
-  context: {
-    icon: {
-      url: 'https://dl.dropbox.com/s/yrdlsc6usuwegym/icon.png',
-      label: 'Trello',
-    },
-    text: 'Trello - Card in list Concepts',
-  },
-  actions: [
-    {
-      title: 'Open',
-      target: {
-        receiver: 'some.receiver1',
-        key: 'test.target.open',
-      },
-      parameters: {
-        expenseId: 'some-id1',
-      },
-    },
-    {
-      title: 'Other',
-      target: {
-        receiver: 'some.receiver2',
-        key: 'test.target.other',
-      },
-      parameters: {
-        expenseId: 'some-id2',
-      },
-    },
-  ],
-};
-
 const handleClick = () => console.log('clicked on the card');
 const handleActionClick = (a: AppCardAction) =>
   console.log('clicked on the action', a.title, a);
@@ -615,92 +342,112 @@ const handleActionWithLoadingStatesClick = (a: AppCardAction, handlers) => {
   }
 };
 
-const FixedWidthContainer = styled.div`
-  width: 450px
-  border: 1px dotted orange;
-`;
-
-const SectionWrapper = styled.div`
-  padding: 1rem;
-`;
-
-const SectionTitle = styled.h1`
-  font-size: 1.25rem;
-`;
-
-const SectionCard = styled.div`
-  margin: 1rem 0;
-`;
-
-const Section = ({ title, children }: { title?: string; children?: any }) => {
-  return (
-    <SectionWrapper>
-      {title && <SectionTitle>{title}</SectionTitle>}
-      {React.Children.map(children, child => (
-        <SectionCard>{child}</SectionCard>
-      ))}
-    </SectionWrapper>
-  );
-};
-
 export default () => (
   <div>
     <div>
-      <h1>Pieces</h1>
-      <Section>
-        <AppCardView model={modelWithShortTitle} />
+      <h1>AppCardView: Pieces</h1>
+      <Section title="With context">
+        <AppCardView model={modelWithContext} />
+        <AppCardView newDesign={newDesign} model={modelWithContext} />
+        <AppCardView model={modelWithIconInContext} />
+        <AppCardView newDesign={newDesign} model={modelWithIconInContext} />
+        <AppCardView model={modelWithLinkInContext} />
+        <AppCardView newDesign={newDesign} model={modelWithLinkInContext} />
       </Section>
 
-      <Section title="With header">
+      <Section title="With link">
+        <AppCardView model={modelWithLink} />
+        <AppCardView newDesign={newDesign} model={modelWithLink} />
+      </Section>
+
+      <Section title="With title">
         <AppCardView model={modelWithShortTitle} />
+        <AppCardView newDesign={newDesign} model={modelWithShortTitle} />
         <AppCardView model={modelWithLoooongTitle} />
-        <AppCardView model={modelWithUserInTitle} />
-        <AppCardView model={modelWithCollapseToggle} />
-      </Section>
-
-      <Section title="With preview">
-        <AppCardView model={modelWithPreview} />
-        <AppCardView model={mostOfTheThingsWithPreview} />
+        <AppCardView newDesign={newDesign} model={modelWithLoooongTitle} />
       </Section>
 
       <Section title="With description">
         <AppCardView model={modelWithDescription} />
+        <AppCardView newDesign={newDesign} model={modelWithDescription} />
         <AppCardView model={modelWithTitleInDescription} />
+        <AppCardView
+          newDesign={newDesign}
+          model={modelWithTitleInDescription}
+        />
+      </Section>
+
+      <Section title="With user">
+        <AppCardView model={modelWithUserInTitle} />
+        <AppCardView newDesign={newDesign} model={modelWithUserInTitle} />
+      </Section>
+
+      <Section title="With preview">
+        <AppCardView model={modelWithPreview} />
+        <AppCardView newDesign={newDesign} model={modelWithPreview} />
+        <AppCardView model={mostOfTheThingsWithPreview} />
+        <AppCardView newDesign={newDesign} model={mostOfTheThingsWithPreview} />
       </Section>
 
       <Section title="With details">
         <AppCardView model={modelWithTitleAndTextInDetails} />
+        <AppCardView
+          newDesign={newDesign}
+          model={modelWithTitleAndTextInDetails}
+        />
         <AppCardView model={modelWithIconInDetails} />
+        <AppCardView newDesign={newDesign} model={modelWithIconInDetails} />
         <AppCardView model={modelWithBadgeInDetails} />
+        <AppCardView newDesign={newDesign} model={modelWithBadgeInDetails} />
         <AppCardView model={modelWithLozengeInDetails} />
+        <AppCardView newDesign={newDesign} model={modelWithLozengeInDetails} />
         <AppCardView model={modelWithUserInDetails} />
+        <AppCardView newDesign={newDesign} model={modelWithUserInDetails} />
         <AppCardView model={modelWithUsersInDetails} />
+        <AppCardView newDesign={newDesign} model={modelWithUsersInDetails} />
         <AppCardView model={modelWithLotsOfDetails} />
-      </Section>
-
-      <Section title="With context">
-        <AppCardView model={modelWithContext} />
-        <AppCardView model={modelWithIconInContext} />
-        <AppCardView model={modelWithLinkInContext} />
+        <AppCardView newDesign={newDesign} model={modelWithLotsOfDetails} />
       </Section>
 
       <Section title="With actions">
         <AppCardView model={detailsWithPrimaryAction} />
+        <AppCardView newDesign={newDesign} model={detailsWithPrimaryAction} />
         <AppCardView model={detailsWithSecondaryActions} />
+        <AppCardView
+          newDesign={newDesign}
+          model={detailsWithSecondaryActions}
+        />
       </Section>
 
       <Section title="With background">
         <AppCardView model={modelWithBackground} />
+        <AppCardView newDesign={newDesign} model={modelWithBackground} />
         <AppCardView model={modelWithMostOfTheThingsAndWithBackground} />
+        <AppCardView
+          newDesign={newDesign}
+          model={modelWithMostOfTheThingsAndWithBackground}
+        />
       </Section>
 
-      <Section title="With event handlers">
+      <Section title="With handlers">
         <AppCardView
           model={modelWithShortTitle}
           onClick={handleClick}
           onActionClick={handleActionClick}
         />
         <AppCardView
+          newDesign={newDesign}
+          model={modelWithBackground}
+          onClick={handleClick}
+          onActionClick={handleActionClick}
+        />
+        <AppCardView
+          model={modelWithMostOfTheThings}
+          onClick={handleClick}
+          onActionClick={handleActionClick}
+        />
+        <AppCardView
+          newDesign={newDesign}
           model={modelWithMostOfTheThings}
           onClick={handleClick}
           onActionClick={handleActionClick}
@@ -711,6 +458,19 @@ export default () => (
         <Section title="In a container">
           <AppCardView model={{ title: { text: 'Short title' } }} />
           <AppCardView
+            newDesign={newDesign}
+            model={{ title: { text: 'Short title' } }}
+          />
+          <AppCardView
+            model={{
+              title: {
+                text:
+                  'Just long enough to wrap inside the container: blah blah blah',
+              },
+            }}
+          />
+          <AppCardView
+            newDesign={newDesign}
             model={{
               title: {
                 text:
@@ -727,8 +487,25 @@ export default () => (
               },
             }}
           />
+          <AppCardView
+            newDesign={newDesign}
+            model={{
+              title: {
+                text: `Super long title, longer than the card max-width: ${
+                  loremIpsum
+                }`,
+              },
+            }}
+          />
 
           <AppCardView
+            model={{
+              title: { text: 'Short description' },
+              description: { text: 'hi' },
+            }}
+          />
+          <AppCardView
+            newDesign={newDesign}
             model={{
               title: { text: 'Short description' },
               description: { text: 'hi' },
@@ -747,6 +524,26 @@ export default () => (
             }}
           />
           <AppCardView
+            newDesign={newDesign}
+            model={{
+              title: {
+                text:
+                  'Just long enough to wrap inside the container description',
+              },
+              description: {
+                text:
+                  'blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah',
+              },
+            }}
+          />
+          <AppCardView
+            model={{
+              title: { text: `Super long description` },
+              description: { text: loremIpsum },
+            }}
+          />
+          <AppCardView
+            newDesign={newDesign}
             model={{
               title: { text: `Super long description` },
               description: { text: loremIpsum },
@@ -754,12 +551,26 @@ export default () => (
           />
 
           <AppCardView model={modelWithLotsOfDetails} />
+          <AppCardView newDesign={newDesign} model={modelWithLotsOfDetails} />
           <AppCardView model={{ preview, ...modelWithLotsOfDetails }} />
+          <AppCardView
+            newDesign={newDesign}
+            model={{ preview, ...modelWithLotsOfDetails }}
+          />
         </Section>
       </FixedWidthContainer>
 
       <Section title="With loading states">
         <AppCardView
+          model={{
+            ...modelWithMostOfTheThings,
+            actions: loadingStatesActions.slice(0, 1),
+          }}
+          onClick={handleClick}
+          onActionClick={handleActionWithLoadingStatesClick}
+        />
+        <AppCardView
+          newDesign={newDesign}
           model={{
             ...modelWithMostOfTheThings,
             actions: loadingStatesActions.slice(0, 1),
@@ -776,6 +587,21 @@ export default () => (
           onActionClick={handleActionWithLoadingStatesClick}
         />
         <AppCardView
+          newDesign={newDesign}
+          model={{
+            ...modelWithMostOfTheThings,
+            actions: loadingStatesActions.slice(0, 2),
+          }}
+          onClick={handleClick}
+          onActionClick={handleActionWithLoadingStatesClick}
+        />
+        <AppCardView
+          model={{ ...modelWithMostOfTheThings, actions: loadingStatesActions }}
+          onClick={handleClick}
+          onActionClick={handleActionWithLoadingStatesClick}
+        />
+        <AppCardView
+          newDesign={newDesign}
           model={{ ...modelWithMostOfTheThings, actions: loadingStatesActions }}
           onClick={handleClick}
           onActionClick={handleActionWithLoadingStatesClick}
@@ -789,6 +615,24 @@ export default () => (
           onActionClick={handleActionWithLoadingStatesClick}
         />
         <AppCardView
+          newDesign={newDesign}
+          model={{
+            ...modelWithMostOfTheThingsAndWithBackground,
+            actions: loadingStatesActions.slice(0, 1),
+          }}
+          onClick={handleClick}
+          onActionClick={handleActionWithLoadingStatesClick}
+        />
+        <AppCardView
+          model={{
+            ...modelWithMostOfTheThingsAndWithBackground,
+            actions: loadingStatesActions.slice(0, 2),
+          }}
+          onClick={handleClick}
+          onActionClick={handleActionWithLoadingStatesClick}
+        />
+        <AppCardView
+          newDesign={newDesign}
           model={{
             ...modelWithMostOfTheThingsAndWithBackground,
             actions: loadingStatesActions.slice(0, 2),
@@ -804,26 +648,15 @@ export default () => (
           onClick={handleClick}
           onActionClick={handleActionWithLoadingStatesClick}
         />
-      </Section>
-    </div>
-    <div>
-      <h1>Examples</h1>
-      <Section title="Confluence">
-        <AppCardView model={confluenceActivityModel} />
-        <AppCardView model={confluenceActivityModel} />
-      </Section>
-
-      <Section title="Jira">
-        <AppCardView model={jiraIssueModel} />
-      </Section>
-
-      <Section title="Dropbox">
-        <AppCardView model={dropboxFileModel} />
-      </Section>
-
-      <Section title="Trello">
-        <AppCardView model={trelloBoardModel} />
-        <AppCardView model={trelloCardModel} />
+        <AppCardView
+          newDesign={newDesign}
+          model={{
+            ...modelWithMostOfTheThingsAndWithBackground,
+            actions: loadingStatesActions,
+          }}
+          onClick={handleClick}
+          onActionClick={handleActionWithLoadingStatesClick}
+        />
       </Section>
     </div>
   </div>

@@ -143,8 +143,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     const { dimensions, actions, onRetry } = this.props;
     const { errorMessage } = this;
 
-    return this.renderInLink(
-      url,
+    return (
       <LinkCardGenericView
         errorMessage={errorMessage}
         linkUrl={url}
@@ -158,7 +157,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         isLoading={this.isLoading}
         actions={actions}
         onRetry={onRetry}
-      />,
+      />
     );
   }
 
