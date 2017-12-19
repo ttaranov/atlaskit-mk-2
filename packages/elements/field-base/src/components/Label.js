@@ -3,7 +3,7 @@ import React, { Component, type Node } from 'react';
 
 import { LabelWrapper, RequiredIndicator, LabelInner } from '../styled/Label';
 
-type Props = {|
+type Props = {
   /** the label text to display */
   label: string,
   /** whether to hide the label */
@@ -22,7 +22,7 @@ type Props = {|
   appearance?: 'default' | 'inline-edit',
   /** controls the top margin of the label */
   isFirstChild?: boolean,
-|};
+};
 
 export default class Label extends Component<Props, void> {
   static defaultProps = {
