@@ -18,11 +18,6 @@ export {
   MentionsResult,
 } from '@atlaskit/mention';
 
-export {
-  TaskDecisionProvider,
-  TaskDecisionResource,
-} from '@atlaskit/task-decision';
-
 import ProviderFactory, { WithProviders } from './providerFactory';
 export { name, version } from './version';
 export * from './config';

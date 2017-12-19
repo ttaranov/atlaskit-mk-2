@@ -1,5 +1,6 @@
 import tasksAndDecisionsPlugins from '../../../src/plugins/tasks-and-decisions';
 import { createPlugin as createSaveOnEnterPlugin } from '../../../src/editor/plugins/save-on-enter';
+import ProviderFactory from '../../../src/providerFactory';
 import {
   makeEditor,
   doc,
@@ -25,7 +26,7 @@ describe('save on enter', () => {
       doc,
       plugins: [
         createSaveOnEnterPlugin(onSaveSpy) as Plugin,
-        ...tasksAndDecisionsPlugins(defaultSchema, {}),
+        ...tasksAndDecisionsPlugins(defaultSchema, {}, new ProviderFactory()),
       ],
     });
 
