@@ -32,7 +32,7 @@ type RenderArgs = {
   loadingSandbox: boolean,
 };
 type Props = {
-  children: (args: RenderArgs) => void,
+  children: (args: RenderArgs) => Node,
   exampleId?: string | null,
   groupId: string,
   packageId: string,
