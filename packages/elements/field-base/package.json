@@ -25,8 +25,7 @@
     "@atlaskit/spinner": "^4.0.0",
     "@atlaskit/theme": "^2.0.0",
     "styled-components": "^1.4.6",
-    "babel-runtime": "^6.26.0",
-    "prop-types": "^15.5.10"
+    "babel-runtime": "^6.26.0"
   },
   "peerDependencies": {
     "react": "^15.6.1"
@@ -37,7 +36,6 @@
     "@atlaskit/button": "^6.0.0",
     "@atlaskit/calendar": "^3.0.3",
     "@atlaskit/input": "^1.6.0",
-    "@atlaskit/util-readme": "^3.6.5",
     "enzyme": "^2.9.1",
     "uid": "^0.0.2"
   },
