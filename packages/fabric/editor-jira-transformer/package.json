@@ -23,7 +23,9 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.1.1",
-    "@atlaskit/editor-jira": "^22.11.12",
+    "@atlaskit/editor-core": "^60.14.9",
+    "@atlaskit/emoji": "^31.0.2",
+    "@atlaskit/mention": "^8.1.0",
     "@atlaskit/editor-test-helpers": "^1.4.1",
     "@types/prosemirror-model": "^1.0.0",
     "chai-as-promised": "^6.0.0"
