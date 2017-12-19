@@ -10,11 +10,6 @@ const contexts = {
     true,
     /^[^_]*.(js|jsx|ts|tsx)$/,
   ),
-  'editor-bitbucket': require.context(
-    '../../packages/fabric/editor-bitbucket/tests/browser/',
-    true,
-    /^[^_]*.(js|jsx|ts|tsx)$/,
-  ),
   'editor-cq': require.context(
     '../../packages/fabric/editor-cq/tests/browser/',
     true,

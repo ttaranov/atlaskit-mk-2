@@ -2,8 +2,6 @@ import * as React from 'react';
 import styled from 'styled-components';
 import {
   Editor,
-  EditorContext,
-  WithEditorActions,
 } from '@atlaskit/editor-core';
 import { JSONTransformer } from '../src';
 

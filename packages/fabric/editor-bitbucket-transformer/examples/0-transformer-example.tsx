@@ -53,7 +53,7 @@ class TransformerPanels extends React.PureComponent<Props, State> {
       <Container>
         <div
           id="source"
-          contentEditable
+          contentEditable={true}
           data-placeholder="Enter HTML to convert"
           onInput={this.handleUpdateToSource}
         >{exampleBitbucketHTML}</div>
