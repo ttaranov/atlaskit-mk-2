@@ -16,8 +16,8 @@ const borderWidthFocused = 2;
 // subtle border needs to match the focused thickness to avoid jank when transitioning on focus
 const borderWidthSubtle = borderWidthFocused;
 const spacing = gridSize();
-const lineHeightBase = 20;
-const lineHeightCompact = 16;
+const lineHeightBase = spacing * 2.5;
+const lineHeightCompact = spacing * 2;
 const heightBase = spacing * 5;
 const heightCompact = spacing * 4;
 const horizontalPadding = spacing;
