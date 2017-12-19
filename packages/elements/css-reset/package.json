@@ -1,0 +1,28 @@
+{
+  "name": "@atlaskit/css-reset",
+  "version": "1.1.6",
+  "description": "ak-css-reset webcomponent",
+  "license": "Apache-2.0",
+  "main": "dist/bundle.css",
+  "atlaskit:src": "src/index.less",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Sean C"
+  ],
+  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "dependencies": {
+    "@atlaskit/util-shared-styles": "^2.10.3"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^2.0.0",
+    "less": "^2.7.1"
+  },
+  "keywords": [
+    "atlaskit",
+    "css",
+    "ui"
+  ]
+}

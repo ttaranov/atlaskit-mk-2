@@ -162,7 +162,6 @@
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/comment": "^2.6.7",
-    "@atlaskit/css-reset": "^1.1.5",
     "@atlaskit/dropdown-menu": "^3.0.1",
     "@atlaskit/droplist": "^4.11.3",
     "@atlaskit/dynamic-table": "^6.0.2",
