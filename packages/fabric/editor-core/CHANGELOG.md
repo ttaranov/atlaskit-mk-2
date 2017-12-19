@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.14.16
+- [patch] Add Serializer for Single image [03405bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03405bf)
+- [patch] Add Serializer for Single image [03405bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03405bf)
+
 ## 60.14.15
 - [patch] Auto-formatting for blocks should work after shift-enter. [12c93ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12c93ca)
 - [patch] Auto-formatting for blocks should work after shift-enter. [12c93ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12c93ca)
