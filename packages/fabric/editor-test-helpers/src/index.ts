@@ -48,7 +48,7 @@ export {
   emojiQuery,
   media,
   mediaGroup,
-  singleImage,
+  mediaSingle,
   textColor,
   table,
   tr,
@@ -80,7 +80,16 @@ export {
   storyMediaProviderFactory,
   getLinkCreateContextMock,
 } from './media-provider';
+export {
+  storyContextIdentifierProviderFactory,
+} from './context-identifier-provider';
 export { default as randomId } from './random-id';
 export { default as sleep } from './sleep';
 export { isMobileBrowser } from './device';
 export { default as spyOnReturnValue } from './spy-on-return-value';
+export { macroProvider, MockMacroProvider } from './mock-macro-provider';
+export {
+  inlineExtensionData,
+  extensionData,
+  bodiedExtensionData,
+} from './mock-extension-data';

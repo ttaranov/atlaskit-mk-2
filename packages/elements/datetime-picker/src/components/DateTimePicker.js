@@ -35,6 +35,7 @@ const defaultTimes = [
 
 type Value = any; // TODO: Replace with [?string, ?string] when TupleTypeAnnotation is supported by extract-react-types.
 type Props = {
+  autoFocus: boolean,
   isDisabled: boolean,
   disabled: Array<string>,
   times: Array<string>,
@@ -58,6 +59,7 @@ export default class DateTimePicker extends Component<Props, State> {
   dateTimePicker: any;
 
   static defaultProps = {
+    autoFocus: false,
     isDisabled: false,
     disabled: [],
     times: defaultTimes,
@@ -331,6 +333,7 @@ export default class DateTimePicker extends Component<Props, State> {
     return (
       <DateTimePickerStateless
         active={this.state.active}
+        autoFocus={this.props.autoFocus}
         isDisabled={this.props.isDisabled}
         isOpen={this.state.isOpen}
         shouldShowIcon

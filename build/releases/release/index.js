@@ -100,6 +100,18 @@ async function run(opts) {
 
   if (successfullyPublished.length > 0) {
     logReleases('successfully', successfullyPublished);
+    // We create the tags after the push above so that we know that HEAD wont change and that pushing
+    // wont suffer from a race condition if another merge happens in the mean time (pushing tags wont
+    // fail if we are behind master).
+    logger.log('Creating tags...');
+    for (let pkg of successfullyPublished) {
+      const tag = `${pkg.name}@${pkg.newVersion}`;
+      logger.log('New tag: ', tag);
+      await git.tag(tag);
+    }
+    logger.log('Pushing tags...');
+    // shouldn't need to worry about rebasing or pushing because we didnt create any new commits
+    await git.push(['--follow-tags']);
   }
 
   if (failedToPublish.length > 0) {

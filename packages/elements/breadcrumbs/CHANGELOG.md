@@ -1,5 +1,13 @@
 # @atlaskit/breadcrumbs
 
+## 3.1.8
+- [patch] update flow dep, fix flow errors  [722ad83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/722ad83)
+- [patch] update flow dep, fix flow errors  [722ad83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/722ad83)
+
+## 3.1.7
+
+## 3.1.6
+
 ## 3.1.5
 
 ## 3.1.4

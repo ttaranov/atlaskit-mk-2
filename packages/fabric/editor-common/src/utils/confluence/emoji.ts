@@ -1,7 +1,7 @@
-// Defaut emoji id for Confluence glyphs that has no match to Fabric Emoji
+// Default emoji id for Confluence glyphs that has no match to Fabric Emoji
 const DEFAULT_EMOJI_ID = '2b50';
 
-// Defaut ac:name for emoticons as a fallback is `blue-star`
+// Default ac:name for emoticons as a fallback is `blue-star`
 const DEFAULT_EMOJI_ACNAME = 'blue-star';
 
 // ac:hipchat-emoticon prefix when converting to Emoji ID
@@ -22,23 +22,23 @@ const acNameToEmojiMap = {
   cheeky: ['1f61b', ':stuck_out_tongue:', '\uD83D\uDE1B'],
   laugh: ['1f600', ':grinning:', '\uD83D\uDE00'],
   wink: ['1f609', ':wink:', '\uD83D\uDE09'],
-  information: ['2139', ':information_source:', 'ℹ'],
-  tick: ['2705', ':white_check_mark:', '✅'],
-  cross: ['274e', ':negative_squared_cross_mark:', '❎'],
-  warning: ['26a0', ':warning:', '⚠'],
-  plus: ['2795', ':heavy_plus_sign:', '➕'],
-  minus: ['2796', ':heavy_minus_sign:', '➖'],
-  question: ['2753', ':question:', '❓'],
-  heart: ['2764', ':heart:', '❤'],
-  'broken-heart': ['1f494', ':broken_heart:', '\uD83D\uDC94'],
+  information: ['2139', ':information_source:', '\u2139'],
+  tick: ['2705', ':white_check_mark:', '\u2705'],
+  cross: ['274c', ':x:', '\u274C'],
+  warning: ['26a0', ':warning:', '\u26A0'],
+  plus: ['2795', ':heavy_plus_sign:', '\u2795'],
+  minus: ['2796', ':heavy_minus_sign:', '\u2796'],
+  question: ['2753', ':question:', '\u003F'],
   'thumbs-up': ['1f44d', ':thumbsup:', '\uD83D\uDC4D'],
   'thumbs-down': ['1f44e', ':thumbsdown:', '\uD83D\uDC4E'],
   'light-on': ['1f4a1', ':bulb:', '\uD83D\uDCA1'],
-  'yellow-star': ['2b50', ':star:', '⭐'],
-  'light-off': null,
-  'red-star': null,
-  'green-star': null,
-  'blue-star': null,
+  'yellow-star': ['2b50', ':star:', '\uD83D\uDC9B'],
+  'light-off': ['1f6ab', ':no_entry_sign:', '\uD83D\uDEAB'],
+  'red-star': ['2764', ':heart:', '\u2764\uFE0F'],
+  'green-star': ['1f49a', ':green_heart:', '\uD83D\uDC9A'],
+  'blue-star': ['1f499', ':blue_heart:', '\uD83D\uDC99'],
+  heart: ['2764', ':heart:', '\u2764\uFE0F'],
+  'broken-heart': ['1f494', ':broken_heart:', '\uD83D\uDC94'],
 };
 
 export function acNameToEmoji(acName: string) {

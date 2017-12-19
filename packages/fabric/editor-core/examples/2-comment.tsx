@@ -91,6 +91,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
               mediaProvider,
               imageUploadProvider,
               onChange,
+              disabled,
             }) => (
               <div style={{ padding: '20px' }}>
                 <CollapsedEditor
@@ -101,6 +102,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                 >
                   <Editor
                     appearance="comment"
+                    placeholder="What do you want to say?"
                     analyticsHandler={analyticsHandler}
                     shouldFocus={true}
                     allowTextFormatting={true}
@@ -112,6 +114,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     allowTables={true}
                     allowHelpDialog={true}
                     allowPlaceholderCursor={true}
+                    disabled={disabled}
                     mentionProvider={mentionProvider}
                     emojiProvider={emojiProvider}
                     mediaProvider={mediaProvider}

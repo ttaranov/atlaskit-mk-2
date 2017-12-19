@@ -1,5 +1,10 @@
 # @atlaskit/calendar
 
+## 3.0.12
+- [patch] Fix calendar dates not being selectable in IE11 [a65e3b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a65e3b0)
+
+## 3.0.11
+
 ## 3.0.10
 - [patch] stopped disabled dates from triggering onClick prop [3b42698](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b42698)
 

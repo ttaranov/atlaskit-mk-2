@@ -1,5 +1,27 @@
 # @atlaskit/editor-cq
 
+## 6.12.9
+- [patch] Add Serializer for Single image [03405bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03405bf)
+- [patch] Add Serializer for Single image [03405bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03405bf)
+
+## 6.12.8
+
+## 6.12.7
+
+## 6.12.6
+
+## 6.12.5
+
+## 6.12.4
+
+## 6.12.3
+
+## 6.12.2
+
+## 6.12.1
+
+## 6.12.0
+
 ## 6.11.5
 
 ## 6.11.4

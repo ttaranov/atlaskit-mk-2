@@ -1,5 +1,13 @@
 # @atlaskit/avatar
 
+## 8.3.10
+- [patch] update flow dep, fix flow errors  [722ad83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/722ad83)
+- [patch] update flow dep, fix flow errors  [722ad83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/722ad83)
+
+## 8.3.9
+
+## 8.3.8
+
 ## 8.3.7
 
 ## 8.3.6

@@ -26,7 +26,7 @@ export default function Component() {
           allowSubSup={true}
           allowTextColor={true}
           allowBlockQuote={true}
-          analyticsHandler={console.log}
+          analyticsHandler={(...args) => console.log.apply(console, args)}
           mediaProvider={storyMediaProviderFactory()}
           mentionProvider={Promise.resolve(new MentionResource())}
           mentionEncoder={mentionEncoder}

@@ -527,6 +527,136 @@ describe('Renderer - Validator', () => {
       });
     });
 
+    describe('bodiedExtension', () => {
+      it('should pass through attrs as extension', () => {
+        const extensionAttrs = {
+          text: 'This is an extension',
+          extensionType: 'com.atlassian.connect.extension',
+          extensionKey: 'CallWithSkype',
+          bodyType: 'none',
+        };
+        const { type, attrs } = getValidNode({
+          type: 'bodiedExtension',
+          attrs: extensionAttrs,
+          content: [],
+        });
+        expect(type).to.equal('bodiedExtension');
+        expect(attrs.originalContent).to.deep.equal([]);
+      });
+
+      it('should reject extensions without extensionType', () => {
+        const extensionAttrs = {
+          text: 'This is an extension',
+          extensionKey: 'CallWithSkype',
+          bodyType: 'none',
+        };
+        const { type } = getValidNode({
+          type: 'extension',
+          attrs: extensionAttrs,
+        });
+        expect(type).to.equal('text');
+      });
+
+      it('should reject extensions without extensionKey', () => {
+        const extensionAttrs = {
+          text: 'This is an extension',
+          extensionType: 'com.atlassian.connect.extension',
+          bodyType: 'none',
+        };
+        const { type } = getValidNode({
+          type: 'extension',
+          attrs: extensionAttrs,
+        });
+        expect(type).to.equal('text');
+      });
+    });
+
+    describe('extension', () => {
+      it('should pass through attrs as extension', () => {
+        const extensionAttrs = {
+          text: 'This is an extension',
+          extensionType: 'com.atlassian.connect.extension',
+          extensionKey: 'CallWithSkype',
+          bodyType: 'none',
+        };
+        const { type, attrs } = getValidNode({
+          type: 'extension',
+          attrs: extensionAttrs,
+        });
+        expect(type).to.equal('extension');
+        expect(attrs).to.deep.equal(extensionAttrs);
+      });
+
+      it('should reject extensions without extensionType', () => {
+        const extensionAttrs = {
+          text: 'This is an extension',
+          extensionKey: 'CallWithSkype',
+          bodyType: 'none',
+        };
+        const { type } = getValidNode({
+          type: 'extension',
+          attrs: extensionAttrs,
+        });
+        expect(type).to.equal('text');
+      });
+
+      it('should reject extensions without extensionKey', () => {
+        const extensionAttrs = {
+          text: 'This is an extension',
+          extensionType: 'com.atlassian.connect.extension',
+          bodyType: 'none',
+        };
+        const { type } = getValidNode({
+          type: 'extension',
+          attrs: extensionAttrs,
+        });
+        expect(type).to.equal('text');
+      });
+    });
+
+    describe('inlineExtension', () => {
+      it('should pass through attrs as inlineExtension', () => {
+        const extensionAttrs = {
+          text: 'This is an inlineExtension',
+          extensionType: 'com.atlassian.connect.inlineExtension',
+          extensionKey: 'CallWithSkype',
+          bodyType: 'none',
+        };
+        const { type, attrs } = getValidNode({
+          type: 'inlineExtension',
+          attrs: extensionAttrs,
+        });
+        expect(type).to.equal('inlineExtension');
+        expect(attrs).to.deep.equal(extensionAttrs);
+      });
+
+      it('should reject inlineExtension without extensionType', () => {
+        const extensionAttrs = {
+          text: 'This is an inlineExtension',
+          extensionKey: 'CallWithSkype',
+          bodyType: 'none',
+        };
+        const { type } = getValidNode({
+          type: 'inlineExtension',
+          attrs: extensionAttrs,
+        });
+        expect(type).to.equal('text');
+      });
+
+      it('should reject inlineExtension without extensionKey', () => {
+        const extensionAttrs = {
+          text: 'This is an inlineExtension',
+          extensionType: 'com.atlassian.connect.inlineExtension',
+          bodyType: 'none',
+        };
+        const { type } = getValidNode({
+          type: 'inlineExtension',
+          attrs: extensionAttrs,
+        });
+        expect(type).to.equal('text');
+      });
+    });
+
     describe('hardBreak', () => {
       it('should return "hardBreak"', () => {
         expect(getValidNode({ type: 'hardBreak' })).to.deep.equal({

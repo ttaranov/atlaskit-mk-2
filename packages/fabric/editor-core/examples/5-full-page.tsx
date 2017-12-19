@@ -7,13 +7,13 @@ import { akColorN80 } from '@atlaskit/util-shared-styles';
 import Editor from './../src/editor';
 import EditorContext from './../src/editor/ui/EditorContext';
 import WithEditorActions from './../src/editor/ui/WithEditorActions';
-import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
+import {
+  storyMediaProviderFactory,
+  macroProvider,
+} from '@atlaskit/editor-test-helpers';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
-import { ConfluenceTransformer } from '@atlaskit/editor-cq-transformer';
-
-import { macroProviderPromise } from '../example-helpers/mock-macro-provider';
 
 import {
   akEditorCodeBackground,
@@ -85,6 +85,14 @@ const SaveAndCancelButtons = props => (
 export type Props = {};
 export type State = { disabled: boolean };
 
+const providers = {
+  emojiProvider: emojiStoryData.getEmojiResource({ uploadSupported: true }),
+  mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
+  activityProvider: Promise.resolve(new MockActivityResource()),
+  macroProvider: Promise.resolve(macroProvider),
+};
+const mediaProvider = storyMediaProviderFactory();
+
 export default class Example extends React.Component<Props, State> {
   state: State = { disabled: true };
 
@@ -106,17 +114,9 @@ export default class Example extends React.Component<Props, State> {
             allowUnsupportedContent={true}
             allowPanel={true}
             allowExtension={true}
-            mediaProvider={storyMediaProviderFactory()}
-            emojiProvider={emojiStoryData.getEmojiResource({
-              uploadSupported: true,
-            })}
-            mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
-            activityProvider={Promise.resolve(new MockActivityResource())}
-            macroProvider={macroProviderPromise}
-            // tslint:disable-next-line:jsx-no-lambda
-            contentTransformerProvider={schema =>
-              new ConfluenceTransformer(schema)
-            }
+            allowPlaceholderCursor={true}
+            {...providers}
+            media={{ provider: mediaProvider, allowMediaSingle: true }}
             placeholder="Write something..."
             shouldFocus={false}
             disabled={this.state.disabled}

@@ -25,7 +25,7 @@ converters.binary = type => {
 };
 
 converters.function = type => {
-  return `(${type.parameters.map(p => p.value).join(', ')}) => ${
+  return `(${type.parameters.map(p => convert(p.value)).join(', ')}) => ${
     type.returnType
   }`;
 };

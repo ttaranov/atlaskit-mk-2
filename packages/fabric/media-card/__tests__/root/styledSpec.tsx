@@ -13,37 +13,130 @@ describe('Root Wrapper', () => {
     height: 300,
   };
 
-  it.skip('should render with default props', () => {
-    const element = shallow(<Wrapper />);
-    expect(element).toMatchSnapshot();
+  describe('File', () => {
+    it('should render properly with default properties', () => {
+      const file = shallow(<Wrapper mediaItemType="file" />);
+      expect(file).toMatchSnapshot();
+    });
+
+    it('should render properly with passed dimensions', () => {
+      const defaultWithDimensions = shallow(
+        <Wrapper mediaItemType="file" dimensions={dimensions} />,
+      );
+      const small = shallow(
+        <Wrapper
+          mediaItemType="file"
+          appearance="small"
+          dimensions={dimensions}
+        />,
+      );
+      const auto = shallow(
+        <Wrapper
+          mediaItemType="file"
+          appearance="auto"
+          dimensions={dimensions}
+        />,
+      );
+
+      expect(defaultWithDimensions).toMatchSnapshot();
+      expect(small).toMatchSnapshot();
+      expect(auto).toMatchSnapshot();
+    });
+
+    it('should render properly with different appeareances', () => {
+      const auto = shallow(<Wrapper mediaItemType="file" appearance="auto" />);
+      const small = shallow(
+        <Wrapper mediaItemType="file" appearance="small" />,
+      );
+      const image = shallow(
+        <Wrapper mediaItemType="file" appearance="image" />,
+      );
+      const square = shallow(
+        <Wrapper mediaItemType="file" appearance="square" />,
+      );
+      const horizontal = shallow(
+        <Wrapper mediaItemType="file" appearance="horizontal" />,
+      );
+
+      expect(auto).toMatchSnapshot();
+      expect(small).toMatchSnapshot();
+      expect(image).toMatchSnapshot();
+      expect(square).toMatchSnapshot();
+      expect(horizontal).toMatchSnapshot();
+    });
+
+    it('should apply breakpoint rules bassed on breakpointSize', () => {
+      const small = shallow(
+        <Wrapper mediaItemType="file" breakpointSize="small" />,
+      );
+      const medium = shallow(
+        <Wrapper mediaItemType="file" breakpointSize="medium" />,
+      );
+      const large = shallow(
+        <Wrapper mediaItemType="file" breakpointSize="large" />,
+      );
+      const xlarge = shallow(
+        <Wrapper mediaItemType="file" breakpointSize="xlarge" />,
+      );
+
+      expect(small).toMatchSnapshot();
+      expect(medium).toMatchSnapshot();
+      expect(large).toMatchSnapshot();
+      expect(xlarge).toMatchSnapshot();
+    });
   });
 
-  it('should render with square appearance', () => {
-    const element = shallow(
-      <Wrapper dimensions={dimensions} appearance="square" />,
-    );
-    expect(element).toMatchSnapshot();
-  });
+  describe('Link', () => {
+    it('should render properly with default properties', () => {
+      const file = shallow(<Wrapper mediaItemType="link" />);
 
-  it('should render with horizontal appearance', () => {
-    const element = shallow(
-      <Wrapper dimensions={dimensions} appearance="horizontal" />,
-    );
-    expect(element).toMatchSnapshot();
-  });
+      expect(file).toMatchSnapshot();
+    });
 
-  it.skip('should render with small appearance', () => {
-    const element = shallow(
-      <Wrapper dimensions={dimensions} appearance="small" />,
-    );
-    expect(element).toMatchSnapshot();
-  });
+    it('should render properly with passed dimensions', () => {
+      const defaultWithDimensions = shallow(
+        <Wrapper mediaItemType="link" dimensions={dimensions} />,
+      );
+      const small = shallow(
+        <Wrapper
+          mediaItemType="link"
+          appearance="small"
+          dimensions={dimensions}
+        />,
+      );
+      const auto = shallow(
+        <Wrapper
+          mediaItemType="link"
+          appearance="auto"
+          dimensions={dimensions}
+        />,
+      );
 
-  it('should render element with the right breakpoints', () => {
-    const largeElement = shallow(<Wrapper breakpointSize="large" />);
-    const xlargeElement = shallow(<Wrapper breakpointSize="xlarge" />);
+      expect(defaultWithDimensions).toMatchSnapshot();
+      expect(small).toMatchSnapshot();
+      expect(auto).toMatchSnapshot();
+    });
 
-    expect(largeElement).toMatchSnapshot();
-    expect(xlargeElement).toMatchSnapshot();
+    it('should render properly with different appeareances', () => {
+      const auto = shallow(<Wrapper mediaItemType="link" appearance="auto" />);
+      const small = shallow(
+        <Wrapper mediaItemType="link" appearance="small" />,
+      );
+      const image = shallow(
+        <Wrapper mediaItemType="link" appearance="image" />,
+      );
+      const square = shallow(
+        <Wrapper mediaItemType="link" appearance="square" />,
+      );
+      const horizontal = shallow(
+        <Wrapper mediaItemType="link" appearance="horizontal" />,
+      );
+
+      expect(auto).toMatchSnapshot();
+      expect(small).toMatchSnapshot();
+      expect(image).toMatchSnapshot();
+      expect(square).toMatchSnapshot();
+      expect(horizontal).toMatchSnapshot();
+    });
   });
 });

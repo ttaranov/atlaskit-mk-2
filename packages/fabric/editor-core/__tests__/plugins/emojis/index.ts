@@ -325,7 +325,7 @@ describe('emojis', () => {
       editorView.destroy();
     });
 
-    it.skip('should insert a space after the emoji-node', () => {
+    it('should insert a space after the emoji-node', () => {
       const { editorView, pluginState } = editor(doc(p(emojiQuery(':gr{<>}'))));
 
       pluginState.insertEmoji(grinEmojiId);

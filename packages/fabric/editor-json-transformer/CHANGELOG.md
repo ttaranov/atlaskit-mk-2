@@ -1,5 +1,23 @@
 # @atlaskit/editor-json-transformer
 
+## 2.1.8
+
+
+
+
+- [patch] Move prosemirror-model to be a dev-dependency [206ce2f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/206ce2f)
+- [patch] Move prosemirror-model to be a dev-dependency [206ce2f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/206ce2f)
+
+## 2.1.7
+
+## 2.1.6
+
+## 2.1.5
+
+## 2.1.4
+
+## 2.1.3
+
 ## 2.1.2
 
 ## 2.1.1

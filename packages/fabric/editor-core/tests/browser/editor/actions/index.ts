@@ -55,7 +55,7 @@ describe(name, () => {
     beforeEach(() => {
       providerFactory = new ProviderFactory();
       const editor = createEditor(
-        [tasksAndDecisionsPlugin, mediaPlugin, hyperlinkPlugin],
+        [tasksAndDecisionsPlugin, mediaPlugin(), hyperlinkPlugin],
         {
           mediaProvider,
           waitForMediaUpload: true,
@@ -99,8 +99,7 @@ describe(name, () => {
         expect(editorView.hasFocus()).to.equal(false);
       });
 
-      // TODO: editor-migration - unskip
-      it.skip('should blur editor if it has focus', () => {
+      it('should blur editor if it has focus', () => {
         editorActions.focus();
         expect(editorActions.blur()).to.equal(true);
         expect(editorView.hasFocus()).to.equal(false);
@@ -269,7 +268,7 @@ describe(name, () => {
       describe('with waitForMediaUpload === false', () => {
         it('should resolve even when media operations are pending', async () => {
           const editor = createEditor(
-            [mediaPlugin, hyperlinkPlugin],
+            [mediaPlugin(), hyperlinkPlugin],
             {
               mediaProvider,
               waitForMediaUpload: false,

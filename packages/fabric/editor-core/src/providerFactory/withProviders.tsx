@@ -20,9 +20,7 @@ export class WithProviders extends PureComponent<Props, { providers: any }> {
       providers[name] = undefined;
     });
 
-    this.state = {
-      providers,
-    };
+    this.state = { providers };
   }
 
   componentWillMount() {

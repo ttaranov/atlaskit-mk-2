@@ -26,10 +26,7 @@ export default class Media extends PureComponent<Props, {}> {
     return <MediaItem {...props} />;
   }
 
-  /**
-   * Get the state manager from the editor plugin to feed to MediaItem as a prop
-   * @returns {MediaStateManager|undefined}
-   */
+  // Get the state manager from the editor plugin to feed to MediaItem as a prop
   getStateManagerFromEditorPlugin(): MediaStateManager | undefined {
     const { editorView } = this.props;
     if (!editorView) {

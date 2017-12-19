@@ -1,5 +1,19 @@
 # @atlaskit/media-image
 
+## 23.0.3
+
+## 23.0.2
+- [patch] Make Card to work with pixel units [dedba4f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dedba4f)
+
+## 23.0.1
+- [patch] Make Card to work properly with pixel units [69c6443](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69c6443)
+- [patch] Dont use default dimensions for link cards [ae94181](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae94181)
+
+## 23.0.0
+- [major] Bump media-core peer dependency to next major versoin (12) [0a84f90](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a84f90)
+
+## 22.4.3
+
 ## 22.4.2
 - [patch] fix z-index issue for app cards [d2e05ae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2e05ae)
 

@@ -202,7 +202,7 @@ describe('editor/plugins/collab-edit', () => {
       const { activeParticipants } = collabEditPluginKey.getState(
         editorView.state,
       );
-      expect(activeParticipants).to.deep.equal([
+      expect(activeParticipants.toArray()).to.deep.equal([
         {
           avatar: 'avatar.png',
           lastActive: 1,
@@ -242,7 +242,7 @@ describe('editor/plugins/collab-edit', () => {
       const { activeParticipants } = collabEditPluginKey.getState(
         editorView.state,
       );
-      expect(activeParticipants).to.deep.equal([
+      expect(activeParticipants.toArray()).to.deep.equal([
         {
           sessionId: 'test-2',
           lastActive: 1,

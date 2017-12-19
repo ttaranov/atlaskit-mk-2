@@ -1,5 +1,8 @@
 # @atlaskit/media-editor
 
+## 3.3.6
+- [patch] Copy binaries into dist folder when building media-editor [a82d5da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a82d5da)
+
 ## 3.3.5
 
 ## 3.3.4
