@@ -45,6 +45,25 @@ export default md`
     />
   )}
 
-  ${<Props props={require('!!extract-react-types-loader!../src')} />}
+  ${(
+    <Props
+      heading="Flag Props"
+      props={require('!!extract-react-types-loader!../src/components/Flag')}
+    />
+  )}
+
+  ${(
+    <Props
+      heading="Auto Dismiss Flag Props"
+      props={require('!!extract-react-types-loader!../src/components/AutoDismissFlag')}
+    />
+  )}
+
+  ${(
+    <Props
+      heading="Flag Group Props"
+      props={require('!!extract-react-types-loader!../src/components/FlagGroup')}
+    />
+  )}
 
 `;
