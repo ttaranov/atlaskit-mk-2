@@ -1,38 +1,69 @@
-// tslint:disable:no-console
 import * as React from 'react';
-import { PureComponent } from 'react';
-import Editor from '@atlaskit/editor-bitbucket';
+import styled from 'styled-components';
+import {
+  Editor,
+  EditorContext,
+  WithEditorActions,
+} from '@atlaskit/editor-core';
 import { JSONTransformer } from '../src';
 
-const CANCEL_ACTION = () => console.log('Cancel');
-const SAVE_ACTION = () => console.log('Save');
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: 50% 50%;
 
-export type Props = {};
-export type State = { json?: {} };
+  #output {
+    border: 2px solid;
+    margin: 8px;
+    padding: 8px;
+    white-space: pre-wrap;
+    font-size: xx-small;
+    &:focus {
+      outline: none;
+    }
+    &:empty:not(:focus):before {
+      content: attr(data-placeholder)
+      font-size: 14px;
+    }
+  }
+`;
 
-const jsonPretty = (obj: any) => JSON.stringify(obj, null, 2);
+export default class Example extends React.PureComponent<
+  {},
+  { output: string }
+> {
+  state = { output: '' };
+  transformer = new JSONTransformer();
 
-export default class Example extends PureComponent<Props, State> {
-  state: State = { json: {} };
-  serializer = new JSONTransformer();
-
-  handleChange = (editor: Editor) => {
-    this.setState({ json: this.serializer.encode(editor.doc!) });
+  handleChangeInTheEditor = editorView => {
+    const output = JSON.stringify(
+      this.transformer.encode(editorView.state.doc),
+      null,
+      2,
+    );
+    this.setState({ output });
   };
 
   render() {
     return (
-      <div ref="root">
+      <Container>
         <Editor
-          onCancel={CANCEL_ACTION}
-          onChange={this.handleChange}
-          onSave={SAVE_ACTION}
+          appearance="comment"
+          allowTextFormatting={true}
+          allowTasksAndDecisions={true}
+          allowHyperlinks={true}
+          allowCodeBlocks={true}
+          allowLists={true}
+          allowRule={true}
+          allowTables={true}
+          onChange={this.handleChangeInTheEditor}
         />
-        <fieldset style={{ marginTop: 20 }}>
-          <legend>Markdown</legend>
-          <pre>{jsonPretty(this.state.json)}</pre>
-        </fieldset>
-      </div>
+        <div
+          id="output"
+          data-placeholder="This is an empty document (or something has gone really wrong)"
+        >
+          {this.state.output}
+        </div>
+      </Container>
     );
   }
 }
