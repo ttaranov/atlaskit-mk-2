@@ -19,7 +19,7 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "scripts": {
-    "build": "node ./build/index.js",
+    "build": "node ./build/index.js && yarn build:babel:cjs",
     "build:babel:cjs": "NODE_ENV=production BABEL_ENV=production:cjs babel src -d es5"
   },
   "dependencies": {
