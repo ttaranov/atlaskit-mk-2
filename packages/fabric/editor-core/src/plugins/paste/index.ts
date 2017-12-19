@@ -61,7 +61,7 @@ const mdToPmMapping = {
     attrs: tok => ({ order: +tok.attrGet('order') || 1 }),
   },
   code_inline: { mark: 'code' },
-  fence: { block: 'codeBlock', attrs: tok => ({ language: tok.info || '' }) },
+  fence: { block: 'codeBlock', attrs: tok => ({ language: tok.info || null }) },
   image: {
     node: 'image',
     attrs: tok => ({
