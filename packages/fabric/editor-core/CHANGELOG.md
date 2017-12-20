@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 60.15.3
+- [patch] Fix hyperlink edit to close on esc keypress [8245c10](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8245c10)
+
 ## 60.15.2
 - [patch] Duplicate imageUploadPlugin paste/drop tests into editor-core. Add ProviderFactory.create({ name: provider }) helper function to reduce boilerplate. [a5a36cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5a36cc)
 

@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 5.1.5
+
 ## 5.1.4
 
 
