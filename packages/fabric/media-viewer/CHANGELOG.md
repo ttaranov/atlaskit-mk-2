@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 9.0.5
+- [patch] Add max-age parameter to media queries in Media Viewer - MSW-328 [4ad5d09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4ad5d09)
+
 ## 9.0.4
 
 ## 9.0.3

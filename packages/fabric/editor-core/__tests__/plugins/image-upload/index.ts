@@ -7,18 +7,24 @@ import {
   doc,
   p,
   code_block,
+  createEvent,
+  dispatchPasteEvent,
 } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import { setNodeSelection, setTextSelection } from '../../../src/utils';
+import { ProviderFactory } from '../../../index';
 
 describe('image-upload', () => {
   const testImgSrc =
     'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>';
   const testImg = () => img({ src: testImgSrc });
-  const editor = (doc: any) =>
+  const editor = (doc: any, imageUploadProvider?: any) =>
     makeEditor<ImageUploadState>({
       doc,
-      plugins: imageUploadPlugins(defaultSchema),
+      plugins: imageUploadPlugins(
+        defaultSchema,
+        ProviderFactory.create({ imageUploadProvider }),
+      ),
     });
 
   it('allows change handler to be registered', () => {
@@ -153,6 +159,50 @@ describe('image-upload', () => {
 
     expect(editorView.state.doc).toEqualDocument(
       doc(p(img({ src: 'atlassian.png' }))),
+    );
+  });
+
+  it('should invoke upload handler after pasting an image', async () => {
+    const imageUploadHandler = jest.fn();
+    const imageUploadProvider = Promise.resolve(imageUploadHandler);
+    const { editorView } = editor(doc(p('{<>}')), imageUploadProvider);
+
+    // Wait for imageUploadProvider to resolve and be ready
+    await imageUploadProvider;
+
+    dispatchPasteEvent(editorView, { types: ['Files'] });
+    expect(imageUploadHandler).toHaveBeenCalledTimes(1);
+    expect(imageUploadHandler.mock.calls[0][0].clipboardData.types).toContain(
+      'Files',
+    );
+  });
+
+  it('should invoke upload handler after dropping an image', async () => {
+    const imageUploadHandler = jest.fn();
+    const imageUploadProvider = Promise.resolve(imageUploadHandler);
+    const { editorView } = editor(doc(p('{<>}')), imageUploadProvider);
+
+    // Wait for imageUploadProvider to resolve and be ready
+    await imageUploadProvider;
+
+    const event = createEvent('drop');
+    Object.defineProperties(event, {
+      dataTransfer: {
+        value: {
+          getData: (type: string) => '',
+          setData: () => {},
+          clearData: () => {},
+          types: ['Files'],
+          files: [],
+          items: [],
+        },
+      },
+    });
+
+    editorView.dom.dispatchEvent(event);
+    expect(imageUploadHandler).toHaveBeenCalledTimes(1);
+    expect(imageUploadHandler.mock.calls[0][0].dataTransfer.types).toContain(
+      'Files',
     );
   });
 });

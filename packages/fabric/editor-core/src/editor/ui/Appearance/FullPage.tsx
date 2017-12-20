@@ -7,7 +7,6 @@ import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import ContentStyles from '../ContentStyles';
 import Avatars from '../../plugins/collab-edit/ui/avatars';
 
-// tslint:disable-next-line:variable-name
 const FullPageEditorWrapper = styled.div`
   height: 100%;
   display: flex;
@@ -15,7 +14,6 @@ const FullPageEditorWrapper = styled.div`
 `;
 FullPageEditorWrapper.displayName = 'FullPageEditorWrapper';
 
-// tslint:disable-next-line:variable-name
 const ScrollContainer = styled(ContentStyles)`
   flex-grow: 1;
   overflow-y: scroll;
@@ -27,11 +25,9 @@ const ScrollContainer = styled(ContentStyles)`
 `;
 ScrollContainer.displayName = 'ScrollContainer';
 
-// tslint:disable-next-line:variable-name
 const ContentArea = styled.div`
   height: 100%;
   width: 100%;
-  max-width: 600px;
   padding-top: 50px;
   margin: 0 auto;
   box-sizing: border-box;
@@ -42,7 +38,13 @@ const ContentArea = styled.div`
   & .ProseMirror {
     flex-grow: 1;
     box-sizing: border-box;
-    padding-bottom: 50px;
+    padding-bottom: 55px;
+  }
+
+  && .ProseMirror > * {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   & .ProseMirror .table-decoration {
@@ -57,7 +59,13 @@ const ContentArea = styled.div`
 `;
 ContentArea.displayName = 'ContentArea';
 
-// tslint:disable-next-line:variable-name
+const ContentAreaCustomComponentsSlot = styled.div`
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+`;
+ContentAreaCustomComponentsSlot.displayName = 'ContentAreaCustomComponentsSlot';
+
 const MainToolbar = styled.div`
   position: relative;
   align-items: center;
@@ -67,7 +75,6 @@ const MainToolbar = styled.div`
 `;
 MainToolbar.displayName = 'MainToolbar';
 
-// tslint:disable-next-line:variable-name
 const MainToolbarCustomComponentsSlot = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -75,7 +82,6 @@ const MainToolbarCustomComponentsSlot = styled.div`
 `;
 MainToolbarCustomComponentsSlot.displayName = 'MainToolbar';
 
-// tslint:disable-next-line:variable-name
 const SecondaryToolbar = styled.div`
   box-sizing: border-box;
   justify-content: flex-end;
@@ -139,7 +145,9 @@ export default class Editor extends React.Component<
             </MainToolbar>
             <ScrollContainer>
               <ContentArea innerRef={this.handleRef}>
-                {customContentComponents}
+                <ContentAreaCustomComponentsSlot>
+                  {customContentComponents}
+                </ContentAreaCustomComponentsSlot>
                 <PluginSlot
                   editorView={editorView}
                   eventDispatcher={eventDispatcher}

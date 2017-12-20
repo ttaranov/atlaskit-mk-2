@@ -47,6 +47,18 @@ describe(`${name}/schema underline emoji node`, () => {
     expect(emoji.attrs.id).toEqual('');
     expect(emoji.attrs.text).toEqual('');
   });
+
+  it('should extract the correct values of emoji from bitbucket (minimal representation)', () => {
+    const doc = fromHTML(
+      '<img class="emoji" data-emoji-short-name="abc" data-emoji-id="123" data-emoji-text="xyz"></img>',
+    );
+    const emoji = doc.firstChild!.firstChild!;
+
+    expect(emoji.type.name).toEqual('emoji');
+    expect(emoji.attrs.shortName).toEqual('abc');
+    expect(emoji.attrs.id).toEqual('123');
+    expect(emoji.attrs.text).toEqual('xyz');
+  });
 });
 
 function makeSchema() {

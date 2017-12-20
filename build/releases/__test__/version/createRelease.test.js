@@ -35,11 +35,22 @@ const changesetWithNone = {
   commit: '695fad0',
 };
 
+const changesetWithDeletedPackage = {
+  summary: 'This is another summary',
+  releases: [{ name: 'package-a', type: 'minor' }],
+  dependents: [
+    { name: 'package-b', type: 'patch', dependencies: ['package-a'] },
+    { name: 'package-c', type: 'patch', dependencies: [] },
+  ],
+  commit: '695fad0',
+};
+
 describe('createRelease', () => {
   it('should handle a single simple changeset', () => {
     const releaseObj = createRelease([simpleChangeset], fakeAllPackages);
     expect(releaseObj).toEqual({
       releases: [{ name: 'package-a', commits: ['dec4a66'], version: '1.1.0' }],
+      deleted: [],
       changesets: [simpleChangeset],
     });
   });
@@ -58,6 +69,7 @@ describe('createRelease', () => {
           version: '1.1.0',
         },
       ],
+      deleted: [],
       changesets: [simpleChangeset, simpleChangeset2],
     });
   });
@@ -70,15 +82,40 @@ describe('createRelease', () => {
         { name: 'package-a', commits: ['695fad0'], version: '1.1.0' },
         { name: 'package-b', commits: ['695fad0'], version: '1.0.1' },
       ],
+      deleted: [],
       changesets: [changesetWithDep],
     });
   });
+
   it('should handle a none release', () => {
     const releaseObj = createRelease([changesetWithNone], fakeAllPackages);
 
     expect(releaseObj).toEqual({
       releases: [{ name: 'package-a', commits: ['695fad0'], version: '1.1.0' }],
+      deleted: [],
       changesets: [changesetWithNone],
+    });
+  });
+
+  it('should handle a deleted package', () => {
+    const releaseObj = createRelease(
+      [changesetWithDeletedPackage],
+      fakeAllPackages,
+    );
+
+    expect(releaseObj).toEqual({
+      releases: [
+        { name: 'package-a', commits: ['695fad0'], version: '1.1.0' },
+        { name: 'package-b', commits: ['695fad0'], version: '1.0.1' },
+      ],
+      deleted: [
+        {
+          commits: ['695fad0'],
+          name: 'package-c',
+          version: null,
+        },
+      ],
+      changesets: [changesetWithDeletedPackage],
     });
   });
 });

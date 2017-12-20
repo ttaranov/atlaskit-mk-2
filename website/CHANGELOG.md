@@ -1,5 +1,7 @@
 # @atlaskit/website
 
+## 1.2.9
+
 ## 1.2.8
 - [patch] update flow dep, fix flow errors  [722ad83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/722ad83)
 - [patch] update flow dep, fix flow errors  [722ad83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/722ad83)
