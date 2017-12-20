@@ -20,25 +20,27 @@ module.exports = (config /*: { maxWidth: number, maxHeight: number }*/) => {
     });
 
   const defaultSVGO = initialiseDefaultSVGO();
-
   return (
     filename /*: string*/,
     rawSVG /*: string*/ /*: Promise<{ info: any, data: any }>*/,
-  ) =>
+  ) => {
     // Run the default optimiser on the SVG
-    new Promise(resolve => defaultSVGO.optimize(rawSVG, resolve))
-      // Check width and height
-      .then(({ info, data }) => {
-        if (info.width > config.maxWidth) {
-          console.warn(
-            `"${filename}" too wide: ${info.width} > ${config.maxWidth}`,
-          );
-        }
-        if (info.height > config.maxHeight) {
-          console.warn(
-            `"${filename}" too wide: ${info.height} > ${config.maxHeight}`,
-          );
-        }
-        return { info, data };
-      });
+    return (
+      new Promise(resolve => defaultSVGO.optimize(rawSVG, resolve))
+        // Check width and height
+        .then(({ info, data }) => {
+          if (info.width > config.maxWidth) {
+            console.warn(
+              `"${filename}" too wide: ${info.width} > ${config.maxWidth}`,
+            );
+          }
+          if (info.height > config.maxHeight) {
+            console.warn(
+              `"${filename}" too wide: ${info.height} > ${config.maxHeight}`,
+            );
+          }
+          return { info, data };
+        })
+    );
+  };
 };

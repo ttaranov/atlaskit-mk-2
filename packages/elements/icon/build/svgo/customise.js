@@ -33,10 +33,25 @@ module.exports = () => {
     });
   };
 
-  return (filename /*: string*/, data /*: string*/ /*: Promise<*>*/) => {
+  const optimiseSVG /*: (string, string) => Promise<*> */ = (
+    filename,
+    data,
+  ) => {
     const customSVGO = initialiseCustomSVGO(filename);
 
     // Run the default optimiser on the SVG
     return new Promise(resolve => customSVGO.optimize(data, resolve));
   };
+  return optimiseSVG;
 };
+
+// const optimiseSVG /*: (string, string) => Promise<*> */ = (
+//   filename,
+//   data,
+// ) => {
+//   const customSVGO = initialiseCustomSVGO(filename);
+//
+//   // Run the default optimiser on the SVG
+//   return new Promise(resolve => customSVGO.optimize(data, resolve));
+// };
+// return optimiseSVG;

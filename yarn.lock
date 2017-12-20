@@ -50,7 +50,7 @@
     babel-runtime "^6.11.6"
     styled-components "^1.4.6"
 
-"@atlaskit/button@^1.0.0", "@atlaskit/button@^1.0.10":
+"@atlaskit/button@^1.0.0":
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-1.1.4.tgz#e294fee6dd02c5b05c40fa6db6966a8a3c12ad4a"
   dependencies:
@@ -82,6 +82,16 @@
 "@atlaskit/button@^5.4.10":
   version "5.4.12"
   resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-5.4.12.tgz#b3a932166aa030417fe31e3ffdfd48d20503657b"
+  dependencies:
+    "@atlaskit/theme" "^2.0.0"
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+    prop-types "^15.5.10"
+    styled-components "^1.4.6"
+
+"@atlaskit/button@^5.4.12":
+  version "5.4.14"
+  resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-5.4.14.tgz#600975141fd356ccbf712885a00f63a1367dd28d"
   dependencies:
     "@atlaskit/theme" "^2.0.0"
     babel-runtime "^6.11.6"
@@ -198,19 +208,19 @@
     url "^0.11.0"
     xregexp "^3.2.0"
 
-"@atlaskit/emoji@^30.3.3":
-  version "30.3.3"
-  resolved "https://registry.yarnpkg.com/@atlaskit/emoji/-/emoji-30.3.3.tgz#9a08eec0c7b9b75c1cfa7ad89740a0a32de8d247"
+"@atlaskit/emoji@^31.0.2":
+  version "31.0.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/emoji/-/emoji-31.0.3.tgz#99f02610175a6ca1ca67944ad5594b97be60a4bf"
   dependencies:
     uid "^0.0.2"
-    "@atlaskit/button" "^1.0.10"
-    "@atlaskit/field-base" "^5.0.0"
-    "@atlaskit/icon" "^9.0.0"
-    "@atlaskit/layer" "^2.5.4"
-    "@atlaskit/spinner" "^2.0.0"
-    "@atlaskit/util-common" "^1.0.0"
+    "@atlaskit/button" "^5.4.12"
+    "@atlaskit/field-base" "^8.1.5"
+    "@atlaskit/icon" "^10.3.2"
+    "@atlaskit/spinner" "^4.0.2"
+    "@atlaskit/theme" "^2.2.4"
+    "@atlaskit/tooltip" "^8.0.7"
+    "@atlaskit/util-common" "^1.5.2"
     "@atlaskit/util-service-support" "^2.0.2"
-    "@atlaskit/util-shared-styles" "^2.0.0"
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
     js-search "^1.4.2"
@@ -220,6 +230,7 @@
     react-virtualized "^9.8.0"
     tslib "^1.2.0"
     typestyle "^1.3.2"
+    ua-parser-js "^0.7.9"
     url "^0.11.0"
     xregexp "^3.2.0"
 
@@ -272,6 +283,18 @@
     babel-runtime "^6.11.6"
     prop-types "^15.5.10"
     styled-components "^1.3.0"
+
+"@atlaskit/field-base@^8.1.5":
+  version "8.1.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/field-base/-/field-base-8.1.5.tgz#efb26e61cd1ee1626cf490fd88d7a7019b5c652e"
+  dependencies:
+    "@atlaskit/icon" "^10.1.3"
+    "@atlaskit/inline-dialog" "^5.0.1"
+    "@atlaskit/spinner" "^4.0.0"
+    "@atlaskit/theme" "^2.0.0"
+    babel-runtime "^6.11.6"
+    prop-types "^15.5.10"
+    styled-components "^1.4.6"
 
 "@atlaskit/field-radio-group@^1.2.1":
   version "1.7.3"
@@ -463,6 +486,16 @@
 "@atlaskit/layer-manager@^2.5.3":
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/@atlaskit/layer-manager/-/layer-manager-2.5.3.tgz#a40e5114c4acbc84422ba559b039c6351ba95287"
+  dependencies:
+    focusin "^2.0.0"
+    prop-types "^15.5.10"
+    react-transition-group "^2.2.1"
+    styled-components "^1.4.6"
+    tabbable "^1.1.0"
+
+"@atlaskit/layer-manager@^2.5.7":
+  version "2.5.7"
+  resolved "https://registry.yarnpkg.com/@atlaskit/layer-manager/-/layer-manager-2.5.7.tgz#dcfdd61ee8db22fc509373245af3036f8c6f29cb"
   dependencies:
     focusin "^2.0.0"
     prop-types "^15.5.10"
@@ -704,6 +737,13 @@
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
+"@atlaskit/theme@^2.2.9":
+  version "2.2.9"
+  resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-2.2.9.tgz#10243d606957f1e1ce8d20247b2f92807dd571d7"
+  dependencies:
+    prop-types "^15.5.10"
+    styled-components "^1.4.6"
+
 "@atlaskit/tooltip@^1.2.0":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/tooltip/-/tooltip-1.2.1.tgz#459ab9601f31b4ea0e8c6f5722f51efcc930d875"
@@ -751,6 +791,15 @@
   dependencies:
     "@atlaskit/layer-manager" "^2.5.3"
     "@atlaskit/theme" "^2.2.7"
+    react-transition-group "^2.2.1"
+    styled-components "^1.4.6"
+
+"@atlaskit/tooltip@^8.0.7":
+  version "8.0.11"
+  resolved "https://registry.yarnpkg.com/@atlaskit/tooltip/-/tooltip-8.0.11.tgz#bfe2a521519da1f80a5efa7ae7fecce9c630be53"
+  dependencies:
+    "@atlaskit/layer-manager" "^2.5.7"
+    "@atlaskit/theme" "^2.2.9"
     react-transition-group "^2.2.1"
     styled-components "^1.4.6"
 
@@ -8473,9 +8522,13 @@ prettier-eslint@^8.2.1:
     typescript "^2.5.1"
     typescript-eslint-parser "^8.0.0"
 
-prettier@^1.7.1, prettier@^1.8.2:
+prettier@^1.7.1:
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.8.2.tgz#bff83e7fd573933c607875e5ba3abbdffb96aeb8"
+
+prettier@^1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.9.2.tgz#96bc2132f7a32338e6078aeb29727178c6335827"
 
 pretty-data@^0.40.0:
   version "0.40.0"
