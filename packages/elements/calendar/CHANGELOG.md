@@ -1,5 +1,8 @@
 # @atlaskit/calendar
 
+## 3.0.13
+- [patch] Fixed issue where hovering over a disabled date would not show a disabled cursor. [5c21f9b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5c21f9b)
+
 ## 3.0.12
 - [patch] Fix calendar dates not being selectable in IE11 [a65e3b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a65e3b0)
 
