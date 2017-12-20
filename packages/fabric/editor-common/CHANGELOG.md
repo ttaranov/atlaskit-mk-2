@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 5.1.4
+
+
+- [patch] Support copy/pasting emoji from Bitbucket into the Editor [a8ca5d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a8ca5d4)
+
 ## 5.1.3
 - [patch] replaced inlineMacro node with inlineExtension node [a43f891](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a43f891)
 

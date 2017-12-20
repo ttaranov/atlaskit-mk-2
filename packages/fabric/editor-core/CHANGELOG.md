@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 60.15.2
+- [patch] Duplicate imageUploadPlugin paste/drop tests into editor-core. Add ProviderFactory.create({ name: provider }) helper function to reduce boilerplate. [a5a36cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5a36cc)
+
+
+- [patch] Setting new mediaProvider will close any existing media picker window [cf4785d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf4785d)
+- [patch] Support breakout mode for block nodes [538fa77](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/538fa77)
+- [patch] Fixing language picker in full-page editor. [9720b28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9720b28)
+
 ## 60.15.1
 - [patch] replaced inlineMacro node with inlineExtension node [a43f891](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a43f891)
 
