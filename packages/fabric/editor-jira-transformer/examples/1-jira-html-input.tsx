@@ -5,7 +5,6 @@ import * as React from 'react';
 import { Editor, EditorContext, CollapsedEditor } from '@atlaskit/editor-core';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
 import { JIRATransformer } from '../src';
-import exampleHTML from '../example-helpers/exampleHTML';
 
 const SAVE_ACTION = () => console.log('Save');
 const CANCEL_ACTION = () => console.log('Cancel');
@@ -63,7 +62,6 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     allowPlaceholderCursor={true}
                     disabled={disabled}
                     mentionProvider={mentionProvider}
-                    defaultValue={exampleHTML}
                     onChange={onChange}
                     onSave={SAVE_ACTION}
                     onCancel={CANCEL_ACTION}
