@@ -42,6 +42,8 @@ function createReleaseCommit(releaseObj) {
       )
       .map(release => `  ${release.name}@${release.version}`)
       .join('\n') || '[]';
+  const deletedLines =
+    releaseObj.deleted.map(deleted => `  ${deleted.name}`).join('\n') || '  []';
 
   return outdent`
     RELEASING: Releasing ${numPackagesReleased} package(s)
@@ -51,6 +53,9 @@ function createReleaseCommit(releaseObj) {
 
     Dependents:
       ${dependentsLines}
+
+    Deleted:
+    ${deletedLines}
 
     ---
     ${JSON.stringify(cleanReleaseObj)}
