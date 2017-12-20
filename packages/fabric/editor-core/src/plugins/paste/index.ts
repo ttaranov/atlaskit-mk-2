@@ -93,9 +93,8 @@ export function createPlugin(
   let atlassianMarkDownParser: MarkdownParser;
 
   const md = MarkdownIt('zero', { html: false });
+  // @see ED-3297 for why we removed the `entity` plugin
   md.enable([
-    // Process html entity - &#123;, &#xAF;, &quot;, ...
-    'entity',
     // Process escaped chars and hardbreaks
     'escape',
   ]);
