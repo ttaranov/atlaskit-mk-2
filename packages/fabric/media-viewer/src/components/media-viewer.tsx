@@ -31,6 +31,7 @@ export interface MediaViewerProps {
   readonly mediaViewerConfiguration?: MediaViewerConfig;
   readonly basePath: string;
   readonly onClose?: () => void;
+  readonly onLoadingError?: (error: Error) => void;
 }
 
 export interface MediaViewerState {}
@@ -48,6 +49,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
           mediaViewerConfiguration={this.props.mediaViewerConfiguration}
           basePath={this.props.basePath}
           onClose={this.props.onClose}
+          onLoadingError={this.props.onLoadingError}
         />
       );
     } else if (this.props.dataSource.collectionName) {
@@ -61,6 +63,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
           mediaViewerConfiguration={this.props.mediaViewerConfiguration}
           basePath={this.props.basePath}
           onClose={this.props.onClose}
+          onLoadingError={this.props.onLoadingError}
         />
       );
     } else {

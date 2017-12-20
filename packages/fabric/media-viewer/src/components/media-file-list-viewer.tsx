@@ -25,6 +25,7 @@ export interface MediaFileListViewerProps {
   readonly basePath: string;
 
   readonly onClose?: () => void;
+  readonly onLoadingError?: (error: Error) => void;
 }
 
 export interface MediaListFileViewerState {
@@ -60,7 +61,7 @@ export class MediaFileListViewer extends Component<
   }
 
   componentDidMount(): void {
-    const { context, selectedItem, list, collectionName, onClose } = this.props;
+    const { context, selectedItem, list, collectionName, onClose, onLoadingError } = this.props;
     const { config } = context;
     const { serviceHost } = config;
     const { mediaViewer } = this.state;
@@ -96,6 +97,11 @@ export class MediaFileListViewer extends Component<
           );
           mediaViewer.open({ id });
         },
+        error: (err) => {
+          if (onLoadingError) {
+            onLoadingError(err);
+          }
+        }
       }),
       mediaViewer,
     };

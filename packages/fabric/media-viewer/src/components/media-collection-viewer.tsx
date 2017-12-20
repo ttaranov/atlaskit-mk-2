@@ -23,6 +23,7 @@ export interface MediaCollectionViewerProps {
   readonly basePath: string;
 
   readonly onClose?: () => void;
+  readonly onLoadingError?: (error: Error) => void;
 }
 
 export interface MediaCollectionViewerState {
@@ -65,7 +66,7 @@ export class MediaCollectionViewer extends Component<
   }
 
   componentDidMount(): void {
-    const { context, selectedItem, onClose } = this.props;
+    const { context, selectedItem, onClose, onLoadingError } = this.props;
     const { config } = context;
     const { serviceHost } = config;
     const { mediaViewer, provider } = this.state;
@@ -94,6 +95,11 @@ export class MediaCollectionViewer extends Component<
           }
         }
       },
+      error: (err) => {
+        if (onLoadingError) {
+          onLoadingError(err);
+        }
+      }
     });
   }
 
