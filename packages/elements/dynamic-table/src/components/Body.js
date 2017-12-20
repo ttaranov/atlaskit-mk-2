@@ -1,9 +1,9 @@
 // @flow
 import React, { Component } from 'react';
-import { ASC, DESC } from '../internal/constants';
+import { ASC } from '../internal/constants';
 import { getPageRows } from '../internal/helpers';
 import TableRow from './TableRow';
-import type { HeadType, RowType } from '../types';
+import type { HeadType, RowType, SortOrderType } from '../types';
 
 const getSortedRows = (head, rows, sortKey, sortOrder) => {
   if (!sortKey || !head) return rows;
@@ -39,7 +39,7 @@ type Props = {
   rows: Array<RowType> | null,
   rowsPerPage?: number,
   sortKey?: null | string,
-  sortOrder: ASC | DESC,
+  sortOrder: SortOrderType,
 };
 
 export default class Body extends Component<Props, {}> {

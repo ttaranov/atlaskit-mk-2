@@ -1,13 +1,12 @@
 // @flow
 import React from 'react';
-import { ASC, DESC } from '../internal/constants';
 import { Head, HeadCell } from '../styled/TableHead';
-import type { HeadType } from '../types';
+import type { HeadType, SortOrderType } from '../types';
 
 type Props = {
   head: HeadType,
   sortKey: ?string,
-  sortOrder?: ASC | DESC,
+  sortOrder?: SortOrderType,
   isFixedSize?: boolean,
   onSort: Function,
 };

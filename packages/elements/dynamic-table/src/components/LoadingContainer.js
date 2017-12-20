@@ -1,14 +1,9 @@
 // @flow
 import React, { Component, type Node } from 'react';
 import Spinner from '@atlaskit/spinner';
+import type { SpinnerSizeType } from '../types';
 
-import {
-  SMALL,
-  MEDIUM,
-  LARGE,
-  XLARGE,
-  LOADING_CONTENTS_OPACITY,
-} from '../internal/constants';
+import { LARGE, LOADING_CONTENTS_OPACITY } from '../internal/constants';
 import {
   Container,
   ContentsContainer,
@@ -18,7 +13,7 @@ import {
 type Props = {
   children: Node,
   isLoading?: boolean,
-  spinnerSize?: number | SMALL | MEDIUM | LARGE | XLARGE,
+  spinnerSize?: SpinnerSizeType,
   contentsOpacity?: number,
 };
 export default class LoadingContainer extends Component<Props, {}> {

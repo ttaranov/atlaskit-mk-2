@@ -6,14 +6,9 @@ import React, {
 } from 'react';
 import { findDOMNode } from 'react-dom';
 import Spinner from '@atlaskit/spinner';
+import type { SpinnerSizeType } from '../types';
 
-import {
-  SMALL,
-  MEDIUM,
-  LARGE,
-  XLARGE,
-  LOADING_CONTENTS_OPACITY,
-} from '../internal/constants';
+import { LARGE, LOADING_CONTENTS_OPACITY } from '../internal/constants';
 import {
   Container,
   SpinnerBackdrop,
@@ -23,8 +18,8 @@ import {
 type Props = {
   children: ReactElement<any>,
   isLoading?: boolean,
-  spinnerSize?: number | SMALL | MEDIUM | LARGE | XLARGE,
-  contentsOpacity: string,
+  spinnerSize?: SpinnerSizeType,
+  contentsOpacity: number,
   targetRef?: Function,
 };
 

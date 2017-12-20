@@ -20,7 +20,13 @@ import {
 
 import { Table, Caption } from '../styled/DynamicTable';
 
-import type { HeadType, RowType, RowCellType } from '../types';
+import type {
+  HeadType,
+  RowType,
+  RowCellType,
+  SortOrderType,
+  LoadingSpinnerSizeType,
+} from '../types';
 
 function toggleSortOrder(currentSortOrder) {
   switch (currentSortOrder) {
@@ -38,7 +44,7 @@ type Props = {
   head?: HeadType,
   rows?: Array<RowType>,
   emptyView?: ReactElement<any>,
-  loadingSpinnerSize?: SMALL | LARGE,
+  loadingSpinnerSize?: LoadingSpinnerSizeType,
   isLoading?: boolean,
   isFixedSize?: boolean,
   rowsPerPage?: number,
@@ -46,7 +52,7 @@ type Props = {
   onSort: Function,
   page?: number,
   sortKey?: string,
-  sortOrder?: ASC | DESC,
+  sortOrder?: SortOrderType,
 };
 
 export default class DynamicTable extends Component<Props, {}> {
