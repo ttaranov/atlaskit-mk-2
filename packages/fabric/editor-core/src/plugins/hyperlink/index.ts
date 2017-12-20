@@ -192,6 +192,12 @@ export class HyperlinkState {
     removePlaceholderCursor(state, dispatch);
   }
 
+  setInactive(state: EditorState, dispatch: (tr: Transaction) => void) {
+    this.active = false;
+    this.changeHandlers.forEach(cb => cb(this));
+    removePlaceholderCursor(state, dispatch);
+  }
+
   getCoordinates(
     editorView: EditorView & { docView?: any },
     offsetParent: Element,
