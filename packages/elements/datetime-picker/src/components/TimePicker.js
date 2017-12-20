@@ -69,7 +69,7 @@ export default class DatePicker extends Component<Props, State> {
     }
   }
 
-  onChange = (value: string) => {
+  onChange = (value: ?string) => {
     if (value !== this.state.value) {
       this.props.onChange(value);
     }
@@ -126,6 +126,7 @@ export default class DatePicker extends Component<Props, State> {
       });
     } else {
       // TODO: Display an error message
+      this.onChange(null);
       this.setState({
         value: null,
         displayValue: '',
