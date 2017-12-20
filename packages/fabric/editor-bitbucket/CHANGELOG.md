@@ -1,5 +1,7 @@
 # @atlaskit/editor-bitbucket
 
+## 4.12.9
+
 ## 4.12.8
 
 - [patch] Bumped emoji to v31 [c4365e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c4365e4)

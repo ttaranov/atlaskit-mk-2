@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 60.15.1
+- [patch] replaced inlineMacro node with inlineExtension node [a43f891](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a43f891)
+
 ## 60.15.0
 
 - [patch] Bumped emoji to v31 [c4365e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c4365e4)
