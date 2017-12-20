@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import '../src/index.less';
+import '!!raw-loader!../src/index.less';
 
 export default () => (
   <div>
