@@ -23,8 +23,10 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.1.1",
-    "@atlaskit/editor-common": "^5.1.5",
     "@atlaskit/editor-core": "^60.15.3",
+    "@atlaskit/emoji": "^31.0.2",
+    "@atlaskit/mention": "^8.1.0",
+    "@atlaskit/editor-common": "^5.1.5",
     "@atlaskit/editor-test-helpers": "^1.4.1",
     "chai-as-promised": "^6.0.0"
   }
