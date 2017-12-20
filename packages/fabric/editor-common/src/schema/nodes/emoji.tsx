@@ -47,6 +47,17 @@ export const emoji: NodeSpec = {
       getAttrs: (dom: Element) =>
         acShortcutToEmoji(dom.getAttribute('data-hipchat-emoticon')!),
     },
+    // Handle copy/paste from bitbucket's <img class="emoji" />
+    {
+      tag: 'img.emoji[data-emoji-short-name]',
+      getAttrs: (dom: Element) => ({
+        shortName:
+          dom.getAttribute('data-emoji-short-name') ||
+          emoji.attrs!.shortName.default,
+        id: dom.getAttribute('data-emoji-id') || emoji.attrs!.id.default,
+        text: dom.getAttribute('data-emoji-text') || emoji.attrs!.text.default,
+      }),
+    },
   ],
   toDOM(node: Node) {
     const { shortName, id, text } = node.attrs;
