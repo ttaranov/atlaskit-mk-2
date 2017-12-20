@@ -2,7 +2,6 @@
 import React, { Children, Component, type Node, type Element } from 'react';
 import EllipsisItem from './EllipsisItem';
 import Container from '../styled/BreadcrumbsContainer';
-import type { ElementType } from '../types';
 
 const defaultMaxItems = 8;
 

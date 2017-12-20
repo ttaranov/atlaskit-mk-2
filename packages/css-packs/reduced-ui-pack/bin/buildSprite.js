@@ -49,6 +49,5 @@ spriter.compile((error, result) => {
   const { path: spritePath, contents } = result.symbol.sprite;
   mkdirp.sync(path.dirname(spritePath));
 
-  console.log(spritePath);
   fs.writeFileSync(spritePath, contents);
 });
