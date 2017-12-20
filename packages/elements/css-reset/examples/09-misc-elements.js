@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
-import '!!raw-loader!../src/index.less';
+// $FlowFixMe
+import '../src/index.less';
 
 export default () => (
   <div>
