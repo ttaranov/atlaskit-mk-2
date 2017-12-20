@@ -75,7 +75,6 @@ export default class ReactProsemirrorNode extends PureComponent<
       }
     });
 
-    // tslint:disable-next-line:variable-name
     const RichNode = components[nodeTypeName]!;
     return <RichNode {...attrs}>{children}</RichNode>;
   }
