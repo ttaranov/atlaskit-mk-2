@@ -1,5 +1,7 @@
 # @atlaskit/editor-test-helpers
 
+## 1.4.1
+
 ## 1.4.0
 - [minor] Add Serializer for Single image [03405bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03405bf)
 - [minor] Add Serializer for Single image [03405bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03405bf)
