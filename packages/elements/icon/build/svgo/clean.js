@@ -20,9 +20,10 @@ module.exports = (config /*: { maxWidth: number, maxHeight: number }*/) => {
     });
 
   const defaultSVGO = initialiseDefaultSVGO();
-  return (
-    filename /*: string*/,
-    rawSVG /*: string*/ /*: Promise<{ info: any, data: any }>*/,
+
+  const cleanSVGO /*: (string, string) => Promise<{ info: any, data: any }> */ = (
+    filename,
+    rawSVG,
   ) => {
     // Run the default optimiser on the SVG
     return (
@@ -43,4 +44,5 @@ module.exports = (config /*: { maxWidth: number, maxHeight: number }*/) => {
         })
     );
   };
+  return cleanSVGO;
 };
