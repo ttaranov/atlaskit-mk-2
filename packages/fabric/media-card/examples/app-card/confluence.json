@@ -1,0 +1,46 @@
+{
+  "text": "Android testing tips and tricks",
+  "title": {
+    "text": "Android testing tips and tricks"
+  },
+  "details": [
+    {
+      "text": "Mobile testing",
+      "title": "",
+      "icon": {
+        "url": "https://rnazarenko.jira-dev.com/wiki/images/logo/default-space-logo-256.png",
+        "label": "Mobile testing"
+      }
+    },
+    {
+      "title": "",
+      "text": "Roman Nazarenko",
+      "users": [
+        {
+          "icon": {
+            "url": "https://rnazarenko.jira-dev.com/wiki/aa-avatar/d2356e02d89b5cc2969e1019861bf63f?s=48&d=https%3A%2F%2Frnazarenko.jira-dev.com%2Fwiki%2Fdownload%2Fattachments%2F32783%2Fuser-avatar%3FnoRedirect%3Dtrue",
+            "label": "Roman Nazarenko"
+          }
+        }
+      ]
+    },
+    {
+      "text": "0",
+      "title": "",
+      "icon": {
+        "url": "https://stride-app-confluence.us-west-2.prod.public.atl-paas.net:443/static/images/comments.png",
+        "label": "0"
+      }
+    }
+  ],
+  "context": {
+    "text": "Confluence / Mobile testing",
+    "icon": {
+      "url": "https://stride-app-confluence.us-west-2.prod.public.atl-paas.net:443/static/images/confluence-icon.png",
+      "label": "Mobile testing"
+    }
+  },
+  "link": {
+    "url": "https://rnazarenko.jira-dev.com/wiki/display/MT/Android+testing+tips+and+tricks"
+  }
+}

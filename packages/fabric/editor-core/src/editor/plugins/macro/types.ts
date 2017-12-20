@@ -2,7 +2,7 @@ import { Node as PmNode } from 'prosemirror-model';
 
 export type ExtensionType = 'extension' | 'bodiedExtension' | 'inlineExtension';
 
-export interface MacroAdf {
+export interface MacroAttributes {
   type: ExtensionType;
   attrs: {
     extensionKey: string;
@@ -23,5 +23,5 @@ export interface MacroProvider {
   /**
    * If "macro" param is passed in, it will open macro browser for editing the macro
    */
-  openMacroBrowser(macroNode?: PmNode): Promise<MacroAdf>;
+  openMacroBrowser(macroNode?: PmNode): Promise<MacroAttributes>;
 }

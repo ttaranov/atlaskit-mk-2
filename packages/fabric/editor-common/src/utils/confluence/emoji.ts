@@ -1,7 +1,7 @@
-// Defaut emoji id for Confluence glyphs that has no match to Fabric Emoji
+// Default emoji id for Confluence glyphs that has no match to Fabric Emoji
 const DEFAULT_EMOJI_ID = '2b50';
 
-// Defaut ac:name for emoticons as a fallback is `blue-star`
+// Default ac:name for emoticons as a fallback is `blue-star`
 const DEFAULT_EMOJI_ACNAME = 'blue-star';
 
 // ac:hipchat-emoticon prefix when converting to Emoji ID

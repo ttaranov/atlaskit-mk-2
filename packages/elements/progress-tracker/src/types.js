@@ -20,8 +20,8 @@ export type LinkComponentProps = {
   item: Stage & any,
 };
 
-export type LinkComponent = Element<ComponentType<LinkComponentProps>>;
+export type LinkElement = Element<ComponentType<LinkComponentProps>>;
 
 export type ProgressTrackerStageRenderProp = {
-  link: (props: LinkComponentProps) => LinkComponent,
+  link: (props: LinkComponentProps) => LinkElement,
 };

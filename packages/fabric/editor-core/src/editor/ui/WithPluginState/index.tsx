@@ -28,7 +28,7 @@ export interface Props {
  *   render={renderComponent}
  * />
  *
- * renderComponent: ({ hyperlink }) => React.Compoment;
+ * renderComponent: ({ hyperlink }) => React.Component;
  */
 export default class WithPluginState extends React.Component<State, any> {
   state = {};

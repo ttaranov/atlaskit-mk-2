@@ -1,6 +1,6 @@
 import { EditorState, Transaction } from 'prosemirror-state';
 import { Node as PmNode } from 'prosemirror-model';
-import { MacroProvider, MacroAdf } from './types';
+import { MacroProvider, MacroAttributes } from './types';
 import { pluginKey } from './';
 import * as assert from 'assert';
 
@@ -17,7 +17,9 @@ export const insertMacroFromMacroBrowser = (
   }
 
   // opens MacroBrowser for editing "macroNode" if passed in
-  const newMacro: MacroAdf = await macroProvider.openMacroBrowser(macroNode);
+  const newMacro: MacroAttributes = await macroProvider.openMacroBrowser(
+    macroNode,
+  );
   if (newMacro) {
     const { schema } = state;
     const { type, attrs } = newMacro;

@@ -1,0 +1,24 @@
+{
+  "link": {
+    "url": "https://manage.statuspage.io/pages/4trfr6k90168?utm_source=stride"
+  },
+  "title": {
+    "text": "Best component"
+  },
+  "text": "",
+  "textUrl": "https://manage.statuspage.io/pages/4trfr6k90168?utm_source=stride",
+  "details": [
+    {
+      "title": "Status",
+      "icon": {
+        "url": "https://dka575ofm4ao0.cloudfront.net/integration_icons/stride/DegradedPerformance.png",
+        "label": "Degraded Performance"
+      },
+      "text": "DEGRADED PERFORMANCE"
+    },
+    {
+      "title": "Updated",
+      "text": "24 hours ago"
+    }
+  ]
+}

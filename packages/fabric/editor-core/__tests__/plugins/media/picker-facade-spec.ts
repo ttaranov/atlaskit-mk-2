@@ -405,6 +405,12 @@ describe('Media PickerFacade', () => {
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
+    it(`calls picker's hide() on hide`, () => {
+      const spy = (mockPopupPicker.hide = jest.fn());
+      facade!.hide();
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
+
     it('for upload that has been cancelled', () => {
       const spy = jest.fn();
       stateManager!.updateState(testTemporaryFileId, {

@@ -1,5 +1,8 @@
 # @atlaskit/layer-manager
 
+## 2.5.7
+- [patch] expose portal from layer-manager [d52913b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d52913b)
+
 ## 2.5.6
 - [patch] update flow dep, fix flow errors  [722ad83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/722ad83)
 

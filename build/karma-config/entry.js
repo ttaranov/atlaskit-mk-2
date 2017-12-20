@@ -30,6 +30,11 @@ const contexts = {
     true,
     /^[^_]*.(js|jsx|ts|tsx)$/,
   ),
+  'editor-confluence-transformer': require.context(
+    '../../packages/fabric/editor-confluence-transformer/tests/browser/',
+    true,
+    /^[^_]*.(js|jsx|ts|tsx)$/,
+  ),
 };
 
 Object.keys(contexts).forEach(key => {

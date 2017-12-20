@@ -1,5 +1,20 @@
 # @atlaskit/editor-common
 
+## 5.1.3
+- [patch] replaced inlineMacro node with inlineExtension node [a43f891](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a43f891)
+
+## 5.1.2
+
+- [patch] Bumped emoji to v31 [c4365e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c4365e4)
+
+- [patch] Bumped emoji to v31 [207e0fc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/207e0fc)
+
+- [patch] Fix the issue where originalContent isn't passed down to extension handlers [c3cdea3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3cdea3)
+
+## 5.1.1
+- [patch] Add Serializer for Single image [03405bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03405bf)
+- [patch] Add Serializer for Single image [03405bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03405bf)
+
 ## 5.1.0
 
 - [minor] FS-1461 added ContextIdentifierProvider interface to editor [0aeea41](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0aeea41)
