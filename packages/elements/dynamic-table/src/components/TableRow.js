@@ -1,10 +1,15 @@
 // @flow
-import PropTypes from 'prop-types';
 import React from 'react';
 import { TableBodyRow, TableBodyCell } from '../styled/TableRow';
-import props from '../internal/props';
+import type { HeadType, RowType } from '../types';
 
-const Row = ({ row, head, isFixedSize }) => {
+type Props = {
+  head: HeadType | null,
+  isFixedSize: boolean,
+  row: RowType,
+};
+
+const Row = ({ row, head, isFixedSize }: Props) => {
   const { cells, ...restRowProps } = row;
 
   return (
@@ -28,12 +33,6 @@ const Row = ({ row, head, isFixedSize }) => {
       })}
     </TableBodyRow>
   );
-};
-
-Row.propTypes = {
-  head: props.head,
-  isFixedSize: PropTypes.bool,
-  row: props.row,
 };
 
 export default Row;

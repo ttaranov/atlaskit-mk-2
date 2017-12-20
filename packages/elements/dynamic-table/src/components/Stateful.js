@@ -10,29 +10,22 @@ import { ASC, DESC } from '../internal/constants';
 type Props = {
   defaultPage?: number,
   defaultSortKey?: string,
-  defaultSortOrder?: ASC | DESC | null,
-};
+  defaultSortOrder?: ASC | DESC,
+} & Object;
 
 type State = {
-  page?: number,
+  page: number,
   sortKey?: string,
-  sortOrder?: ASC | DESC | null,
+  sortOrder?: 'ASC' | 'DESC',
 };
 
 export default class DynamicTable extends Component<Props, State> {
   static defaultProps = {
-    caption: null,
     defaultPage: 1,
-    defaultSortKey: null,
-    defaultSortOrder: null,
-    emptyView: null,
-    head: null,
-    loadingSpinnerSize: null,
     isLoading: false,
     isFixedSize: false,
     onSetPage() {},
     onSort() {},
-    rows: null,
     rowsPerPage: Infinity,
   };
 
@@ -42,20 +35,21 @@ export default class DynamicTable extends Component<Props, State> {
     sortOrder: this.props.defaultSortOrder,
   };
 
-  componentWillReceiveProps(newProps) {
+  componentWillReceiveProps(newProps: Props) {
     this.setState({
+      // $FlowFixMe
       page: newProps.page,
       sortKey: newProps.defaultSortKey,
       sortOrder: newProps.defaultSortOrder,
     });
   }
 
-  onSetPage = page => {
+  onSetPage = (page: number) => {
     this.props.onSetPage(page);
     this.setState({ page });
   };
 
-  onSort = ({ key, item, sortOrder }) => {
+  onSort = ({ key, item, sortOrder }: Object) => {
     this.props.onSort({ key, item, sortOrder });
     this.setState({ sortKey: key, sortOrder, page: 1 });
   };

@@ -4,7 +4,15 @@ import { gridSize, math } from '@atlaskit/theme';
 import { ASC, DESC } from '../internal/constants';
 import { arrow } from '../theme';
 
-export const truncateStyle = ({ width, isFixedSize, shouldTruncate }) => css`
+export const truncateStyle = ({
+  width,
+  isFixedSize,
+  shouldTruncate,
+}: {
+  width: number,
+  isFixedSize: boolean,
+  shouldTruncate: boolean,
+}) => css`
   ${width
     ? css`
         width: ${width}%;
@@ -22,7 +30,7 @@ export const truncateStyle = ({ width, isFixedSize, shouldTruncate }) => css`
     : ''};
 `;
 
-export const onClickStyle = ({ onClick }) =>
+export const onClickStyle = ({ onClick }: { onClick: boolean }) =>
   onClick &&
   css`
     &:hover {
@@ -30,7 +38,7 @@ export const onClickStyle = ({ onClick }) =>
     }
   `;
 
-export const arrowsStyle = props => {
+export const arrowsStyle = (props: Object) => {
   const { isSortable, sortOrder } = props;
 
   if (!isSortable) return '';

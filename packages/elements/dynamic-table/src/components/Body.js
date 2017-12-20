@@ -3,15 +3,18 @@ import React, { Component } from 'react';
 import { ASC, DESC } from '../internal/constants';
 import { getPageRows } from '../internal/helpers';
 import TableRow from './TableRow';
+import type { HeadType, RowType } from '../types';
 
 const getSortedRows = (head, rows, sortKey, sortOrder) => {
   if (!sortKey || !head) return rows;
+  if (!rows) return [];
 
   const getSortingCellValue = cells =>
     cells.reduce(
       (result, cell, index) =>
         result ||
-        (head.cells[index].key === sortKey &&
+        (head &&
+          head.cells[index].key === sortKey &&
           (cell.key !== undefined ? cell.key : cell.content)),
       null,
     );
@@ -21,20 +24,21 @@ const getSortedRows = (head, rows, sortKey, sortOrder) => {
     const valB = getSortingCellValue(b.cells);
 
     const modifier = sortOrder === ASC ? 1 : -1;
-
+    // $FlowFixMe
     if (!valA || valA < valB) return -modifier;
+    // $FlowFixMe
     if (!valB || valA > valB) return modifier;
     return 0;
   });
 };
 
 type Props = {
-  head: Object, // This needs to be converted into a type from internal/Props
+  head: HeadType | null,
   isFixedSize: boolean,
-  page: boolean,
-  rows: Array<*>,
-  rowsPerPage: boolean,
-  sortKey: string,
+  page: number,
+  rows: Array<RowType> | null,
+  rowsPerPage?: number,
+  sortKey?: null | string,
   sortOrder: ASC | DESC,
 };
 

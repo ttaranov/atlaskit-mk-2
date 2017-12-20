@@ -1,5 +1,10 @@
 // @flow
-import React, { Component, type Node } from 'react';
+import React, {
+  Component,
+  type Component as ComponentType,
+  type Element as ReactElement,
+  type Node,
+} from 'react';
 import { PaginationStateless } from '@atlaskit/pagination';
 
 import { ASC, DESC, SMALL, LARGE } from '../internal/constants';
@@ -15,6 +20,8 @@ import {
 
 import { Table, Caption } from '../styled/DynamicTable';
 
+import type { HeadType, RowType, RowCellType } from '../types';
+
 function toggleSortOrder(currentSortOrder) {
   switch (currentSortOrder) {
     case DESC:
@@ -25,54 +32,35 @@ function toggleSortOrder(currentSortOrder) {
       return currentSortOrder;
   }
 }
-type RowCellObject = {
-  key: number | string | boolean,
-  content: Node,
-};
-
-type Row = {
-  cells: Array<RowCellObject>,
-};
-
-type HeadCells = {
-  isSortable: boolean | null,
-  width: number,
-  shouldTruncate: boolean,
-} & RowCellObject;
 
 type Props = {
-  caption: Node,
-  head: Array<HeadCells>,
-  rows: Array<Row>,
-  emptyView: Node,
-  loadingSpinnerSize: 'SMALL' | 'LARGE',
+  caption?: Node,
+  head?: HeadType,
+  rows?: Array<RowType>,
+  emptyView?: ReactElement<any>,
+  loadingSpinnerSize?: SMALL | LARGE,
   isLoading?: boolean,
   isFixedSize?: boolean,
-  rowsPerPage?: number | null,
-  onSetPage?: Function,
-  onSort?: Function,
-  page?: null | number,
-  sortKey?: null | string,
-  sortOrder?: 'ASC' | 'DESC',
+  rowsPerPage?: number,
+  onSetPage: Function,
+  onSort: Function,
+  page?: number,
+  sortKey?: string,
+  sortOrder?: ASC | DESC,
 };
+
 export default class DynamicTable extends Component<Props, {}> {
+  tableBody: ComponentType<any, {}> | null;
   static defaultProps = {
-    caption: null,
-    head: null,
-    rows: null,
-    emptyView: null,
-    loadingSpinnerSize: null,
     isLoading: false,
     isFixedSize: false,
     rowsPerPage: Infinity,
     onSetPage() {},
     onSort() {},
     page: 1,
-    sortKey: null,
-    sortOrder: null,
   };
 
-  onSort = item => () => {
+  onSort = (item: RowCellType) => () => {
     const { sortKey, sortOrder, onSort } = this.props;
     const { key } = item;
     if (!key) return;
@@ -82,7 +70,7 @@ export default class DynamicTable extends Component<Props, {}> {
     onSort({ key, item, sortOrder: sortOrderFormatted });
   };
 
-  onSetPage = page => this.props.onSetPage(page);
+  onSetPage = (page?: number) => this.props.onSetPage(page);
 
   getSpinnerSize = () => {
     const { page, rows, rowsPerPage, loadingSpinnerSize } = this.props;
@@ -129,7 +117,8 @@ export default class DynamicTable extends Component<Props, {}> {
       page,
       isFixedSize,
     };
-    const totalPages = rowsLength ? Math.ceil(rowsLength / rowsPerPage) : 0;
+    const totalPages =
+      rowsLength && rowsPerPage ? Math.ceil(rowsLength / rowsPerPage) : 0;
     const rowsExist = !!rowsLength;
 
     const spinnerSize = this.getSpinnerSize();

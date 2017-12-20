@@ -1,11 +1,24 @@
 // @flow
-import PropTypes from 'prop-types';
 import React from 'react';
 import { ASC, DESC } from '../internal/constants';
 import { Head, HeadCell } from '../styled/TableHead';
-import props from '../internal/props';
+import type { HeadType } from '../types';
 
-const TableHead = ({ head, sortKey, sortOrder, isFixedSize, onSort }) => {
+type Props = {
+  head: HeadType,
+  sortKey: ?string,
+  sortOrder?: ASC | DESC,
+  isFixedSize?: boolean,
+  onSort: Function,
+};
+
+const TableHead = ({
+  head,
+  sortKey,
+  sortOrder,
+  isFixedSize,
+  onSort,
+}: Props) => {
   if (!head) return null;
 
   const { cells, ...rest } = head;
@@ -32,14 +45,6 @@ const TableHead = ({ head, sortKey, sortOrder, isFixedSize, onSort }) => {
       </tr>
     </Head>
   );
-};
-
-TableHead.propTypes = {
-  head: props.head,
-  isFixedSize: PropTypes.bool,
-  onSort: PropTypes.func,
-  sortKey: props.sortKey,
-  sortOrder: PropTypes.oneOf([ASC, DESC]),
 };
 
 export default TableHead;

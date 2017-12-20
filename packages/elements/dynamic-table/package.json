@@ -14,17 +14,16 @@
     "Vitalii B"
   ],
   "atlaskit": {
-    "name": "Button",
+    "name": "Dynamic Table",
     "team": "elements"
   },
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^5.4.5",
+    "@atlaskit/button": "^6.1.0",
     "@atlaskit/pagination": "^3.1.0",
     "@atlaskit/spinner": "^4.0.2",
     "@atlaskit/theme": "^2.0.0",
-    "@atlaskit/util-common": "^1.1.0",
-    "@atlaskit/util-shared-styles": "^2.10.5",
+    "@atlaskit/util-common": "^1.5.2",
     "prop-types": "^15.5.10",
     "styled-components": "^1.4.6"
   },
@@ -33,6 +32,7 @@
     "react-dom": "^15.6.1"
   },
   "devDependencies": {
+    "@atlaskit/docs": "^2.0.0",
     "enzyme": "^2.9.1"
   }
 }

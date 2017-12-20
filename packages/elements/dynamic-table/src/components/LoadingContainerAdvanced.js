@@ -1,5 +1,9 @@
 // @flow
-import React, { Component } from 'react';
+import React, {
+  Component,
+  type Component as ComponentType,
+  type Element as ReactElement,
+} from 'react';
 import { findDOMNode } from 'react-dom';
 import Spinner from '@atlaskit/spinner';
 
@@ -17,16 +21,16 @@ import {
 } from '../styled/LoadingContainerAdvanced';
 
 type Props = {
-  children: Node,
+  children: ReactElement<any>,
   isLoading?: boolean,
   spinnerSize?: number | SMALL | MEDIUM | LARGE | XLARGE,
-  contentsOpacity?: number,
-  targetRef: Function,
+  contentsOpacity: string,
+  targetRef?: Function,
 };
 
 export default class LoadingContainerAdvanced extends Component<Props, {}> {
-  children: HTMLElement;
-  spinner: HTMLElement;
+  children: Element | null;
+  spinner: ComponentType<any> | void | null;
   static defaultProps = {
     isLoading: true,
     spinnerSize: LARGE,
@@ -63,7 +67,7 @@ export default class LoadingContainerAdvanced extends Component<Props, {}> {
     this.detachListeners();
   };
 
-  getTargetNode = (nextProps: Props = this.props): Node | null => {
+  getTargetNode = (nextProps: Props = this.props): Element | Text | null => {
     const { targetRef } = nextProps;
 
     // targetRef prop may be defined but it is not guaranteed it returns an element
@@ -117,11 +121,13 @@ export default class LoadingContainerAdvanced extends Component<Props, {}> {
   };
 
   translateSpinner = (
-    spinnerNode: HTMLElement,
+    spinnerNode: Element | Text | null,
     transformY: number,
-    isFixed?: string,
+    isFixed?: boolean,
   ) => {
+    // $FlowFixMe
     spinnerNode.style.position = isFixed ? 'fixed' : ''; // eslint-disable-line no-param-reassign
+    // $FlowFixMe
     spinnerNode.style.transform = // eslint-disable-line no-param-reassign
       transformY !== 0 ? `translate3d(0, ${transformY}px, 0)` : '';
   };
@@ -129,7 +135,11 @@ export default class LoadingContainerAdvanced extends Component<Props, {}> {
   updateTargetAppearance = () => {
     const targetNode = this.getTargetNode();
     const { isLoading, contentsOpacity } = this.props;
-    if (targetNode) {
+    if (
+      targetNode &&
+      targetNode.style &&
+      typeof targetNode.style === 'object'
+    ) {
       targetNode.style.pointerEvents = isLoading ? 'none' : ''; // eslint-disable-line no-param-reassign
       targetNode.style.opacity = isLoading ? contentsOpacity : ''; // eslint-disable-line no-param-reassign
     }
@@ -141,8 +151,9 @@ export default class LoadingContainerAdvanced extends Component<Props, {}> {
     const spinnerNode = this.getSpinnerNode();
 
     if (!targetNode || !spinnerNode) return;
-
+    // $FlowFixMe
     const targetRect = targetNode.getBoundingClientRect();
+    // $FlowFixMe
     const spinnerRect = spinnerNode.getBoundingClientRect();
     const spinnerHeight = spinnerRect.height;
     const isInViewport = this.isVerticallyVisible(targetRect, viewportHeight);
@@ -191,9 +202,11 @@ export default class LoadingContainerAdvanced extends Component<Props, {}> {
     // 2) the element is too small for the spinner to follow
     // 3) the spinner might still be visible while the element isn't
     const thisNode = this.getThisNode();
-    const thisTop = thisNode.getBoundingClientRect().top;
-    const y = (top - thisTop) / 2;
-    this.translateSpinner(spinnerNode, y, false);
+    if (thisNode && typeof thisNode.getBoundingClientRect === 'function') {
+      const thisTop = thisNode.getBoundingClientRect().top;
+      const y = (top - thisTop) / 2;
+      this.translateSpinner(spinnerNode, y, false);
+    }
   }
 
   render() {
