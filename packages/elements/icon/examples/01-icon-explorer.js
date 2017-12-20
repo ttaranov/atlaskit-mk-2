@@ -25,10 +25,17 @@ const NoIcons = styled.div`
   padding: 10px;
 `;
 
+type iconType = {
+  keywords: string[],
+  component: Class<Component<*>>,
+  componentName: string,
+  package: string,
+};
+
 const filterIcons = (icons, query) => {
   const regex = new RegExp(query);
-
   return Object.values(icons).filter(icon =>
+    // $FlowFixMe - Object.values cannot follow types of object properties
     icon.keywords
       .map(keyword => (regex.test(keyword) ? 1 : 0))
       .reduce((allMatches, match) => allMatches + match, 0),
@@ -51,7 +58,8 @@ class IconAllExample extends Component<{}, State> {
   toggleShowIcons = () => this.setState({ showIcons: !this.state.showIcons });
 
   renderIcons = () => {
-    const icons = filterIcons(allIcons, this.state.query);
+    // $FlowFixMe - Object.values cannot follow types of object properties
+    const icons: iconType[] = filterIcons(allIcons, this.state.query);
 
     return icons.length ? (
       <IconExplorerGrid>

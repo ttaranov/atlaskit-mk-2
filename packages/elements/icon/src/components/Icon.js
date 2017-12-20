@@ -49,7 +49,7 @@ export const IconWrapper = styled.span`
 
 type Props = {
   /** Glyph to show by Icon component (not required when you import a glyph directly) */
-  glyph?: () => Node,
+  glyph?: (props?: {}) => Node,
   /** More performant than the glyph prop, but potentially dangerous if the SVG string hasn't
    been "sanitised" */
   dangerouslySetGlyph?: string,

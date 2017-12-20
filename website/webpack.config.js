@@ -13,9 +13,6 @@ DirectoryWatcher.prototype.createNestedWatcher = function(
 };
 
 // End of the hack
-
-const loaderChain = require('./loader-chain').encode;
-
 const path = require('path');
 const boltQuery = require('bolt-query');
 const webpack = require('webpack');

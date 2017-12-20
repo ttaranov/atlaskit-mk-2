@@ -35,7 +35,7 @@ const IconModalHeader = styled.h3`
 
 type Props = {
   keywords: string[],
-  component: Class<Component<*, *>>,
+  component: Class<Component<*>>,
   componentName: string,
   package: string,
 };

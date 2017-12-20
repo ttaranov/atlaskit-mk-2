@@ -30,7 +30,7 @@ export default class BreadcrumbsStateless extends Component<Props, {}> {
     maxItems: defaultMaxItems,
   };
 
-  renderAllItems(): Array<Element> {
+  renderAllItems(): Array<Element<*>> {
     const allNonEmptyItems = toArray(this.props.children);
     return allNonEmptyItems.map((child, index) =>
       React.cloneElement(child, {

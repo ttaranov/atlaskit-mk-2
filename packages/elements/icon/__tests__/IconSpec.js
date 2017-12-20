@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import { mount, render } from 'enzyme';
 
 import { colors } from '@atlaskit/theme';
@@ -91,12 +91,14 @@ describe(name, () => {
     describe('label property', () => {
       it('is accessed by glyph', () => {
         /* eslint-disable react/prop-types */
-        const LabelWriter = props => <div>{props.label}</div>;
-        /* eslint-enable react/prop-types */
-        const LabelIcon = props => <Icon glyph={LabelWriter} {...props} />;
-
+        const LabelWriter = (props: { label: string }): Node => (
+          <div>{props.label}</div>
+        );
         const labelContent = 'label content';
-        const wrapper = mount(<LabelIcon label={labelContent} />);
+        const wrapper = mount(
+          // $FlowFixMe - LabelWriter function signature interpreted incorrectly
+          <Icon glyph={LabelWriter} label={labelContent} />,
+        );
         expect(wrapper.find('span').is(`[aria-label="${labelContent}"]`)).toBe(
           true,
         );
@@ -104,8 +106,10 @@ describe(name, () => {
     });
 
     describe('size property', () => {
-      Object.values(size).forEach(s => {
+      const sizes = ['small', 'medium', 'large', 'xlarge'];
+      sizes.forEach(s => {
         const span = mount(<Icon glyph={empty} label="My icon" size={s} />);
+        // $FlowFixMe - return type of styled components is bad
         const iconSize = spanStyles[1](span.props());
 
         it(`with value ${s}`, () => {
@@ -117,6 +121,7 @@ describe(name, () => {
     describe('primaryColor property', () => {
       it('is set to inherit the text color by default', () => {
         const span = mount(<MyIcon label="default primaryColor" />);
+        // $FlowFixMe - return type of styled components is bad
         const color = spanStyles[3](span.props());
         expect(color).toBe('currentColor');
       });
@@ -125,6 +130,7 @@ describe(name, () => {
         const span = mount(
           <MyIcon label="hex primaryColor" primaryColor={primaryColor} />,
         );
+        // $FlowFixMe - return type of styled components is bad
         const color = spanStyles[3](span.props());
 
         expect(color).toBe(primaryColor);
@@ -134,6 +140,7 @@ describe(name, () => {
         const span = mount(
           <MyIcon label="hex primaryColor" primaryColor={primaryColor} />,
         );
+        // $FlowFixMe - return type of styled components is bad
         const color = spanStyles[3](span.props());
 
         expect(color).toBe(primaryColor);
@@ -144,6 +151,7 @@ describe(name, () => {
       it('is set to the default theme background color by default', () => {
         const span = mount(<MyIcon label="default secondaryColor" />);
         const props = span.props();
+        // $FlowFixMe - return type of styled components is bad
         const fill = spanStyles[5](props)(props);
 
         expect(fill).toBe(colors.background(props));
@@ -153,6 +161,7 @@ describe(name, () => {
         const span = mount(
           <MyIcon label="hex secondaryColor" secondaryColor={secondaryColor} />,
         );
+        // $FlowFixMe - return type of styled components is bad
         const fill = spanStyles[5](span.props());
 
         expect(fill).toBe(secondaryColor);
@@ -162,6 +171,7 @@ describe(name, () => {
         const span = mount(
           <MyIcon label="hex secondaryColor" secondaryColor={secondaryColor} />,
         );
+        // $FlowFixMe - return type of styled components is bad
         const fill = spanStyles[5](span.props());
 
         expect(fill).toBe(secondaryColor);
