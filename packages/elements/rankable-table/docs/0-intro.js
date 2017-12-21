@@ -18,5 +18,9 @@ export default md`
     />
   )}
 
-  ${<Props props={require('!!extract-react-types-loader!../src/components/RankableTable.js')} />}
+  ${(
+    <Props
+      props={require('!!extract-react-types-loader!../src/components/RankableTable.js')}
+    />
+  )}
 `;

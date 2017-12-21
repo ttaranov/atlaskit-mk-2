@@ -8,11 +8,13 @@ import RankableTableCell from '../src/components/TableCell';
 
 
 
+
+
 export default () => <RankableTable>
   <RankableTableRow>
     <RankableTableCell>One one</RankableTableCell>
     <RankableTableCell>Two one</RankableTableCell>
-    <RankableTableCell>Three one</RankableTableCell>
+    <RankableTableCell>Three one {'data '.repeat(100)}</RankableTableCell>
   </RankableTableRow>
 
   <RankableTableRow>
@@ -26,6 +28,5 @@ export default () => <RankableTable>
     <RankableTableCell>Two three</RankableTableCell>
     <RankableTableCell>Three three</RankableTableCell>
   </RankableTableRow>
-
 
 </RankableTable>;
