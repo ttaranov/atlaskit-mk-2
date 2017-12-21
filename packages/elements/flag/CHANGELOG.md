@@ -1,5 +1,8 @@
 # @atlaskit/flag
 
+## 6.1.9
+- [patch] migrated flag to mk2 [630489e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/630489e)
+
 ## 6.1.8 (2017-11-22)
 
 * bug fix; long messages in Flags start to wrap, not overflow content. ([b69c45f](https://bitbucket.org/atlassian/atlaskit/commits/b69c45f))
