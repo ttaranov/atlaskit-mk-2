@@ -94,8 +94,8 @@ export default class TreeTable extends Component<Props, State> {
           render={data => (
             <RowData key={data.id} hasChildren={data.hasChildren}>
               {columns.map((Cell, index) => (
-                // eslint-disable-next-line react/no-array-index-key
                 <DataCell
+                  // eslint-disable-next-line react/no-array-index-key
                   key={index}
                   columnIndex={index}
                   width={columnWidths[index]}
