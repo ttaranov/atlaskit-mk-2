@@ -156,9 +156,33 @@ describe('Media plugin', () => {
         await mediaProvider;
 
         pluginState.insertFiles([
-          { id: 'foo', fileMimeType: 'image/jpeg' },
-          { id: 'bar', fileMimeType: 'image/png' },
+          {
+            id: 'foo',
+            fileMimeType: 'image/jpeg',
+          },
+          {
+            id: 'bar',
+            fileMimeType: 'image/png',
+          },
         ]);
+
+        stateManager.updateState('foo', {
+          id: 'foo',
+          status: 'uploading',
+          fileName: 'foo.jpg',
+          fileSize: 100,
+          fileMimeType: 'image/jpeg',
+          thumbnail: { width: 100, height: 100, src: '' },
+        });
+
+        stateManager.updateState('bar', {
+          id: 'bar',
+          status: 'uploading',
+          fileName: 'bar.png',
+          fileSize: 200,
+          fileMimeType: 'image/png',
+          thumbnail: { width: 200, height: 200, src: '' },
+        });
 
         expect(editorView.state.doc).toEqualDocument(
           doc(
@@ -169,7 +193,11 @@ describe('Media plugin', () => {
                 id: 'foo',
                 type: 'file',
                 collection: testCollectionName,
+                __fileName: 'foo.jpg',
+                __fileSize: 100,
                 __fileMimeType: 'image/jpeg',
+                height: 100,
+                width: 100,
               }),
             ),
             mediaSingle({
@@ -179,7 +207,11 @@ describe('Media plugin', () => {
                 id: 'bar',
                 type: 'file',
                 collection: testCollectionName,
+                __fileName: 'bar.png',
+                __fileSize: 200,
                 __fileMimeType: 'image/png',
+                height: 200,
+                width: 200,
               }),
             ),
             p(),
