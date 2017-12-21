@@ -1,5 +1,8 @@
 # @atlaskit/tabs
 
+## 4.1.0
+- [minor] Update type for label to accept string [0d0ca5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d0ca5f)
+
 ## 4.0.5
 - [patch] Migrate to ak-mk-2 [4c679a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4c679a0)
 

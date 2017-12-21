@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 60.15.4
+- [patch] Fixes Firefox rendering bug, missing attrs in transformer, new selection [f59e8c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f59e8c4)
+
 ## 60.15.3
 - [patch] Fix hyperlink edit to close on esc keypress [8245c10](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8245c10)
 
