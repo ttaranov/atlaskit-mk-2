@@ -17,22 +17,16 @@ type State = {
 };
 
 export default class Row extends PureComponent<Props, State> {
-  state = {
+  state: State = {
     isExpanded: false,
     isLoading: false,
-    childrenData: null,
   };
 
   static defaultProps = {
     depth: 0,
   };
 
-  constructor() {
-    super();
-    this.handleExpandToggleClick = this.handleExpandToggleClick.bind(this);
-  }
-
-  handleExpandToggleClick() {
+  handleExpandToggleClick = () => {
     const newIsExpanded = !this.state.isExpanded;
     if (newIsExpanded && !this.state.childrenData) {
       this.setState({
@@ -49,7 +43,7 @@ export default class Row extends PureComponent<Props, State> {
     this.setState({
       isExpanded: newIsExpanded,
     });
-  }
+  };
 
   render() {
     const { depth, data, render, getChildrenData } = this.props;
@@ -62,12 +56,10 @@ export default class Row extends PureComponent<Props, State> {
     rowData = React.cloneElement(rowData, {
       onExpandToggle: this.handleExpandToggleClick,
       depth,
-      data,
       isExpanded,
     });
-    const key = rowData.props.key;
     return (
-      <div key={key}>
+      <div>
         {rowData}
         {isExpanded && (
           <RowChildren

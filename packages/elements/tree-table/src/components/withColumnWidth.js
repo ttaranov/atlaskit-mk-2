@@ -1,15 +1,18 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node, type ComponentType } from 'react';
 import PropTypes from 'prop-types';
+import { type CSSWidth } from '../types';
 
-export default function withColumnWidth(Cell) {
-  type Props = {
-    children: Array<Node>,
-    width?: number,
-    columnIndex: number,
-  };
+type Props = {
+  children: Node,
+  width?: CSSWidth,
+  columnIndex: number,
+};
 
-  return class CellWithColumnWidth extends PureComponent<Props> {
+export default function withColumnWidth(
+  Cell: ComponentType<* & { width: CSSWidth }>,
+): ComponentType<* & Props> {
+  return class CellWithColumnWidth extends PureComponent<* & Props> {
     static contextTypes = {
       treeTable: PropTypes.object.isRequired,
     };
@@ -18,13 +21,13 @@ export default function withColumnWidth(Cell) {
       this.setColumnWidth(this.props.width);
     }
 
-    setColumnWidth(width) {
+    setColumnWidth(width: ?CSSWidth) {
       if (width !== undefined) {
-        this.context.treeTable.setColumnWidth(this.props.index, width);
+        this.context.treeTable.setColumnWidth(this.props.columnIndex, width);
       }
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
       this.setColumnWidth(nextProps.width);
     }
 

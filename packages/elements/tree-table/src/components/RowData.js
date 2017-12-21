@@ -1,19 +1,21 @@
 // @flow
-import React, { PureComponent, type Node } from 'react';
+import React, { PureComponent, type ChildrenArray, type Element } from 'react';
 import { TreeRowContainer } from '../styled';
 import Chevron from './Chevron';
+import Header from './Header';
+import Cell from './DataCell';
 
 type Props = {
-  isExpanded: boolean,
+  isExpanded?: boolean,
   hasChildren: boolean,
-  onExpandToggle: Function,
+  onExpandToggle?: Function,
   depth?: number,
-  children: Array<Node>,
+  children: ChildrenArray<Element<typeof Header>>,
 };
 
 export default class RowData extends PureComponent<Props> {
-  renderCell(cell: Node, cellIndex: number) {
-    const { hasChildren, depth, isExpanded } = this.props;
+  renderCell(cell: Element<typeof Cell>, cellIndex: number) {
+    const { hasChildren, depth, isExpanded = false } = this.props;
     const isFirst = cellIndex === 0;
     const indentLevel = isFirst ? depth : 0;
     let cellContent = cell.props.children || [];
@@ -34,7 +36,7 @@ export default class RowData extends PureComponent<Props> {
         columnIndex: cellIndex,
         indentLevel,
       },
-      ...cellContent,
+      cellContent,
     );
   }
 
@@ -48,3 +50,5 @@ export default class RowData extends PureComponent<Props> {
     );
   }
 }
+
+export type RowDataComponentType = RowData;

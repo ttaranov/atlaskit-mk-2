@@ -17,6 +17,7 @@ export default md`
       Component={require('../examples/render-prop-async').default}
       source={require('!!raw-loader!../examples/render-prop-async')}
       title="Basic"
+      language="javascript"
     />
   )}
 
@@ -25,6 +26,7 @@ export default md`
       Component={require('../examples/render-prop-no-headers').default}
       source={require('!!raw-loader!../examples/render-prop-no-headers')}
       title="No headers"
+      language="javascript"
     />
   )}
 

@@ -39,12 +39,6 @@ export default class TreeTable extends Component<Props, State> {
     columnWidths: [],
   };
 
-  constructor() {
-    super();
-    this.setColumnWidth = this.setColumnWidth.bind(this);
-    this.getColumnWidth = this.getColumnWidth.bind(this);
-  }
-
   componentWillMount() {
     const widths = this.props.columnWidths;
     if (widths) {
@@ -52,18 +46,18 @@ export default class TreeTable extends Component<Props, State> {
     }
   }
 
-  setColumnWidth(columnIndex: number, width: CSSWidth) {
+  setColumnWidth = (columnIndex: number, width: CSSWidth) => {
     const columnWidths = this.state.columnWidths;
     if (width === columnWidths[columnIndex]) {
       return;
     }
     columnWidths[columnIndex] = width;
     this.setState({ columnWidths });
-  }
+  };
 
-  getColumnWidth(columnIndex: number): CSSWidth | null {
+  getColumnWidth = (columnIndex: number): CSSWidth | null => {
     return (this.state && this.state.columnWidths[columnIndex]) || null;
-  }
+  };
 
   getChildContext() {
     return {
@@ -86,7 +80,7 @@ export default class TreeTable extends Component<Props, State> {
       <HeadersRow>
         {headers.map((header, index) => (
           // eslint-disable-next-line react/no-array-index-key
-          <Header key={index} index={index} width={columnWidths[index]}>
+          <Header key={index} columnIndex={index} width={columnWidths[index]}>
             {header}
           </Header>
         ))}
@@ -101,7 +95,11 @@ export default class TreeTable extends Component<Props, State> {
             <RowData key={data.id} hasChildren={data.hasChildren}>
               {columns.map((Cell, index) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <DataCell key={index} index={index} width={columnWidths[index]}>
+                <DataCell
+                  key={index}
+                  columnIndex={index}
+                  width={columnWidths[index]}
+                >
                   <Cell {...data.content} />
                 </DataCell>
               ))}

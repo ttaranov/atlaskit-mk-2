@@ -1,10 +1,13 @@
 // @flow
-import { type Node } from 'react';
+import { type Element } from 'react';
+import RowDataComponent from './components/RowData';
 
-export type DataFunction = Object => Array | Promise<Array>;
+export type RowData = Object;
 
-export type RenderFunction = Object => Node;
+export type DataFunction = (
+  ?Object,
+) => Array<RowData> | Promise<Array<RowData>>;
+
+export type RenderFunction = Object => Element<typeof RowDataComponent>;
 
 export type CSSWidth = string | number;
-
-export type RowData = Object<any>;

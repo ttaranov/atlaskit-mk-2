@@ -10,17 +10,17 @@ type Props = {
 };
 
 type State = {
-  rootRowsData: Array<Object>,
+  rootRowsData: Array<Object> | null,
 };
 
 export default class TreeRows extends PureComponent<Props, State> {
-  state = {
+  state: State = {
     rootRowsData: null,
   };
 
   componentDidMount() {
     Promise.resolve()
-      .then(() => this.props.data())
+      .then(() => this.props.data(null))
       .then(rootRowsData => {
         this.setState({
           rootRowsData,
