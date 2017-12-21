@@ -20,7 +20,7 @@ type Props = {
   /** The headers of the table. */
   headers?: Array<string>,
 
-  children?: Array<Node>,
+  children?: Node,
 
   /** The function that will be used to provide data for rows at a particular level in the hierarchy */
   data?: DataFunction,

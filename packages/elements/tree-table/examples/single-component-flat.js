@@ -31,7 +31,7 @@ const Title = props => <span>{props.title}</span>;
 const Description = props => <span>{props.description}</span>;
 
 function getChildrenData(parent = staticData) {
-  return parent.children || [];
+  return (parent && parent.children) || [];
 }
 
 export default () => (

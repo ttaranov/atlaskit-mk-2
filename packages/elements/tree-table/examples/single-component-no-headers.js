@@ -11,7 +11,7 @@ const Title = (props: ExampleItemData) => <span>{props.title}</span>;
 const Numbering = (props: ExampleItemData) => <span>{props.numbering}</span>;
 
 function getChildrenData(parent = staticData) {
-  return parent.children || [];
+  return (parent && parent.children) || [];
 }
 
 export default () => (
