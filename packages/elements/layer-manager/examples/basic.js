@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import Tooltip from '@atlaskit/tooltip';
 import Modal from '@atlaskit/modal-dialog';
+import Button from '@atlaskit/button';
 import {
   Spotlight,
   SpotlightManager,
@@ -53,18 +54,19 @@ export default class Example extends Component<Props, State> {
     return (
       <SpotlightManager style={{ alignItems: 'center', display: 'flex' }}>
         <Tooltip content="Hello World">
-          <button>Tooltip</button>
+          <Button>Tooltip</Button>
         </Tooltip>
         <Hr />
-        <button onClick={this.toggleModal}>Modal</button>
+        <Button onClick={this.toggleModal}>Modal</Button>
         <Hr />
         <SpotlightTarget name="button">
-          <button onClick={this.toggleSpotlight}>Spotlight</button>
+          <Button onClick={this.toggleSpotlight}>Spotlight</Button>
         </SpotlightTarget>
 
         {modalIsVisible && (
           <Modal
             actions={[{ onClick: this.toggleModal, text: 'Close' }]}
+            autoFocus
             heading="Hello World!"
             onClose={this.toggleModal}
           >
@@ -83,6 +85,7 @@ export default class Example extends Component<Props, State> {
             heading="Hello World!"
             key="button"
             target="button"
+            targetBgColor="white"
             targetRadius={4}
           >
             Cupcake ipsum dolor sit amet. Cheesecake fruitcake brownie donut
