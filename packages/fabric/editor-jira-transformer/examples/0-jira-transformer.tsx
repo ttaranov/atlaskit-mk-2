@@ -6,8 +6,9 @@ import {
   EditorContext,
   WithEditorActions,
 } from '@atlaskit/editor-core';
-import { BitbucketTransformer } from '../src';
-import exampleBitbucketHTML from '../example-helpers/exampleHTML';
+import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
+import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { JIRATransformer } from '../src';
 
 const Container = styled.div`
   display: grid;
@@ -30,10 +31,14 @@ const Container = styled.div`
   }
 `;
 
+const emojiProvider = emojiStoryData.getEmojiResource();
+const mentionProvider = Promise.resolve(mentionStoryData.resourceProvider);
+const mentionEncoder = (userId: string) => `/secure/ViewProfile?name=${userId}`;
+
 type Props = { actions: any };
 type State = { source: string; output: string };
 class TransformerPanels extends React.PureComponent<Props, State> {
-  state: State = { source: exampleBitbucketHTML, output: '' };
+  state: State = { source: '', output: '' };
 
   componentDidMount() {
     setTimeout(() => {
@@ -61,9 +66,7 @@ class TransformerPanels extends React.PureComponent<Props, State> {
           contentEditable={true}
           data-placeholder="Enter HTML to convert"
           onInput={this.handleUpdateToSource}
-        >
-          {exampleBitbucketHTML}
-        </div>
+        />
         <div id="editor">
           <Editor
             appearance="comment"
@@ -72,10 +75,13 @@ class TransformerPanels extends React.PureComponent<Props, State> {
             allowHyperlinks={true}
             allowCodeBlocks={true}
             allowLists={true}
+            allowMentions={true}
             allowRule={true}
             allowTables={true}
+            emojiProvider={emojiProvider}
+            mentionProvider={mentionProvider}
             contentTransformerProvider={schema =>
-              new BitbucketTransformer(schema)
+              new JIRATransformer(schema, { mention: mentionEncoder })
             }
             onChange={this.handleChangeInTheEditor}
           />
