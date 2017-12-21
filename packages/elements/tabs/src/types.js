@@ -13,7 +13,7 @@ export type StatefulTab = {
 export type StatelessTab = {
   content?: Node,
   isSelected?: boolean,
-  label: string,
+  label: any,
   onSelect: FunctionType,
 };
 
