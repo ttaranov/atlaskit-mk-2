@@ -35,8 +35,8 @@ const emojiProvider = emojiStoryData.getEmojiResource();
 const mentionProvider = Promise.resolve(mentionStoryData.resourceProvider);
 const mentionEncoder = (userId: string) => `/secure/ViewProfile?name=${userId}`;
 
-export type Props = { actions: any };
-export type State = { source: string; output: string };
+type Props = { actions: any };
+type State = { source: string; output: string };
 class TransformerPanels extends React.PureComponent<Props, State> {
   state: State = { source: '', output: '' };
 
