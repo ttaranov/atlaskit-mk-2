@@ -3,27 +3,27 @@ import type { ComponentType } from 'react';
 
 export type TabData = { [string]: any };
 
-type TabItemElementProps = {
-  'aria-posinset': number,
-  'aria-selected': boolean,
-  'aria-setsize': number,
-  onClick: () => void,
-  onKeyDown: (e: KeyboardEvent) => void,
-  onMouseDown: (e: MouseEvent) => void,
-  role: string,
-  tabIndex: number,
-};
-
-type TabItemElementRef = (ref: HTMLElement) => void;
-
 export type TabItemComponentProvided = {
+  /** HTML attribute. Simply pass this to your custom element. */
+  'aria-posinset': number,
+  /** HTML attribute. Simply pass this to your custom element. */
+  'aria-selected': boolean,
+  /** HTML attribute. Simply pass this to your custom element. */
+  'aria-setsize': number,
   /** The complete tab object which you provided to Tabs in the tabs array. */
   data: TabData,
-  /** Accessibility props and interaction callbacks which should be spread onto
-   * your component. */
-  elementProps: TabItemElementProps,
+  /** Interaction handler. Simply pass this to your custom element. */
+  onClick: () => void,
+  /** Interaction handler. Simply pass this to your custom element. */
+  onKeyDown: (e: KeyboardEvent) => void,
+  /** Interaction handler. Simply pass this to your custom element. */
+  onMouseDown: (e: MouseEvent) => void,
+  /** HTML attribute. Simply pass this to your custom element. */
+  role: string,
+  /** HTML attribute. Simply pass this to your custom element. */
+  tabIndex: number,
   /** A ref callback which you'll need to attach to your underlying DOM node. */
-  elementRef: TabItemElementRef,
+  innerRef: (ref: HTMLElement) => void,
   /** Whether this tab is currently selected. */
   isSelected: boolean,
 };
@@ -31,10 +31,9 @@ export type TabItemComponentProvided = {
 export type TabContentComponentProvided = {
   /** The complete tab object which you provided to Tabs in the tabs array. */
   data: TabData,
-  /** Accessibility props which should be spread onto your component. */
-  elementProps: {
-    role: string,
-  },
+  /** HTML attribute. Simply pass this to your custom element. */
+  role: string,
+  // elementProps: {},
 };
 
 export type TabItemType = ComponentType<TabItemComponentProvided>;

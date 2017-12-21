@@ -27,7 +27,13 @@ export default class TabsNavigation extends Component<TabsNavigationProps> {
     }
 
     this.onSelect(tabs[newselectedIndex], newselectedIndex);
-    this.elementRefs[newselectedIndex].focus();
+
+    if (
+      this.elementRefs[newselectedIndex] &&
+      this.elementRefs[newselectedIndex].focus
+    ) {
+      this.elementRefs[newselectedIndex].focus();
+    }
   };
 
   onSelect = (selected: TabData, selectedIndex: number) => {
@@ -55,15 +61,14 @@ export default class TabsNavigation extends Component<TabsNavigationProps> {
               role: 'tab',
               tabIndex: isSelected ? 0 : -1,
             };
-            const elementRef = (ref: HTMLElement) => {
+            const innerRef = (ref: HTMLElement) => {
               this.elementRefs[index] = ref;
             };
-
             const tabItemProps = {
-              elementProps,
-              elementRef,
               data: tab,
               isSelected,
+              innerRef,
+              ...elementProps,
             };
 
             // eslint-disable-next-line react/no-array-index-key
