@@ -12,7 +12,7 @@ import staticData from './data-freeform-nodes.json';
 function getChildrenData(parent = staticData) {
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve(parent.children);
+      resolve(parent && parent.children);
     }, 3000);
   });
 }
