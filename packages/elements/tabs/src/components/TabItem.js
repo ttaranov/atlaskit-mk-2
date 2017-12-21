@@ -6,25 +6,33 @@ import type { TabItemComponentProvided } from '../types';
 
 const noop = () => {};
 
+const defaultElementProps = {
+  'aria-posinset': 0,
+  'aria-selected': false,
+  'aria-setsize': 0,
+  onClick: noop,
+  onKeyDown: noop,
+  onMouseDown: noop,
+  role: 'tab',
+  tabIndex: (() => -1)(), // Need to write it this way until extract-react-types-loader supports unary expressions
+};
+
 export default class TabItem extends Component<TabItemComponentProvided> {
   static defaultProps = {
-    'aria-posinset': 0,
-    'aria-selected': false,
-    'aria-setsize': 0,
+    elementProps: defaultElementProps,
+    elementRef: noop,
     data: { label: '' },
     isSelected: false,
-    onClick: noop,
-    onKeyDown: noop,
-    onMouseDown: noop,
-    innerRef: noop,
-    role: 'tab',
-    tabIndex: (() => -1)(), // Need to write it this way until extract-react-types-loader supports unary expressions
   };
 
   render() {
-    const { data, isSelected, ...elementProps } = this.props;
+    const { elementProps, elementRef, data, isSelected } = this.props;
     return (
-      <NavItem {...elementProps} status={isSelected ? 'selected' : 'normal'}>
+      <NavItem
+        {...elementProps}
+        innerRef={elementRef}
+        status={isSelected ? 'selected' : 'normal'}
+      >
         {data.label}
         {isSelected ? <NavLine status="selected" /> : null}
       </NavItem>

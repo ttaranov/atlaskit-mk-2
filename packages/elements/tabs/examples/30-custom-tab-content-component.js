@@ -32,10 +32,7 @@ export const tabs = [
   },
 ];
 
-const CustomContent = ({
-  data,
-  ...elementProps
-}: TabContentComponentProvided) => (
+const CustomContent = ({ data, elementProps }: TabContentComponentProvided) => (
   <Content {...elementProps}>
     <h3>{data.heading}</h3>
     <p>{data.body}</p>

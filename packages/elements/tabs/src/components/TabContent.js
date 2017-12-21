@@ -7,10 +7,10 @@ import type { TabContentComponentProvided } from '../types';
 export default class TabContent extends Component<TabContentComponentProvided> {
   static defaultProps = {
     data: { content: '' },
-    role: 'tabpanel',
+    elementProps: { role: 'tabpanel' },
   };
   render() {
-    const { data, ...elementProps } = this.props;
+    const { data, elementProps } = this.props;
     return <TabPane {...elementProps}>{data.content}</TabPane>;
   }
 }

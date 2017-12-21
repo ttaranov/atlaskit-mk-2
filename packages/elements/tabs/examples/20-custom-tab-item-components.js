@@ -42,26 +42,23 @@ const TooltipItem = (props: TabItemComponentProvided) => (
 
 /** This custom component makes the tab items function like regular links */
 const LinkItem = ({
-  // These props will be passed down to the TabItem
-  data,
-  isSelected,
-  // We're opting out of default keyboard navigation so we don't need the
-  // following props
-  innerRef,
-  onKeyDown,
-  tabIndex,
-  // The rest we'll pass to our link
-  ...linkProps
+  elementProps,
+  // We're opting out of default keyboard navigation so we don't need elementRef
+  elementRef,
+  ...tabItemProps
 }: TabItemComponentProvided) => {
+  // We also remove the onKeyDown handler and tabIndex attribute
+  // from elementProps to opt out of default keyboard navigation
+  const { onKeyDown, tabIndex, ...requiredElementProps } = elementProps;
   return (
     <a
-      // We add the interaction and aria props to our <a>...
-      {...linkProps}
-      href={data.href}
+      // We add the rest of the elementProps to our <a>...
+      {...requiredElementProps}
+      href={tabItemProps.data.href}
       style={{ textDecoration: 'none' }}
     >
       {/* ...then pass the data and state params on to the TabItem */}
-      <TabItem data={data} isSelected={isSelected} />
+      <TabItem {...tabItemProps} />
     </a>
   );
 };

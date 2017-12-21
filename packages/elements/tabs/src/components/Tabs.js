@@ -94,7 +94,9 @@ export default class Tabs extends Component<TabsProps, TabsState> {
     const { selected } = this.state;
     const tabContentProps = {
       data: selected,
-      role: 'tabpanel',
+      elementProps: {
+        role: 'tabpanel',
+      },
     };
     return (
       <StyledTabs>
