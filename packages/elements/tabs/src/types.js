@@ -4,17 +4,17 @@ import type { ComponentType } from 'react';
 export type TabData = { [string]: any };
 
 type TabItemElementProps = {
-  'aria-posinset': number,
-  'aria-selected': boolean,
-  'aria-setsize': number,
-  onClick: () => void,
-  onKeyDown: (e: KeyboardEvent) => void,
-  onMouseDown: (e: MouseEvent) => void,
-  role: string,
-  tabIndex: number,
+  'aria-posinset'?: number,
+  'aria-selected'?: boolean,
+  'aria-setsize'?: number,
+  onClick?: () => void,
+  onKeyDown?: (e: KeyboardEvent) => void,
+  onMouseDown?: (e: MouseEvent) => void,
+  role?: string,
+  tabIndex?: number | string,
 };
 
-type TabItemElementRef = (ref: HTMLElement) => void;
+type TabItemInnerRef = (ref: HTMLElement) => void;
 
 export type TabItemComponentProvided = {
   /** The complete tab object which you provided to Tabs in the tabs array. */
@@ -23,7 +23,7 @@ export type TabItemComponentProvided = {
    * your component. */
   elementProps: TabItemElementProps,
   /** A ref callback which you'll need to attach to your underlying DOM node. */
-  elementRef: TabItemElementRef,
+  innerRef: TabItemInnerRef,
   /** Whether this tab is currently selected. */
   isSelected: boolean,
 };
@@ -33,7 +33,7 @@ export type TabContentComponentProvided = {
   data: TabData,
   /** Accessibility props which should be spread onto your component. */
   elementProps: {
-    role: string,
+    role?: string,
   },
 };
 

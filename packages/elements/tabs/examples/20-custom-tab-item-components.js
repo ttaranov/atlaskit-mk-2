@@ -43,8 +43,8 @@ const TooltipItem = (props: TabItemComponentProvided) => (
 /** This custom component makes the tab items function like regular links */
 const LinkItem = ({
   elementProps,
-  // We're opting out of default keyboard navigation so we don't need elementRef
-  elementRef,
+  // We're opting out of default keyboard navigation so we don't need innerRef
+  innerRef,
   ...tabItemProps
 }: TabItemComponentProvided) => {
   // We also remove the onKeyDown handler and tabIndex attribute

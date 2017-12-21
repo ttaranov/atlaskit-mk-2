@@ -55,13 +55,13 @@ export default class TabsNavigation extends Component<TabsNavigationProps> {
               role: 'tab',
               tabIndex: isSelected ? 0 : -1,
             };
-            const elementRef = (ref: HTMLElement) => {
+            const innerRef = (ref: HTMLElement) => {
               this.elementRefs[index] = ref;
             };
 
             const tabItemProps = {
               elementProps,
-              elementRef,
+              innerRef,
               data: tab,
               isSelected,
             };

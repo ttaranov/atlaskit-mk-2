@@ -6,8 +6,8 @@ import type { TabContentComponentProvided } from '../types';
 
 export default class TabContent extends Component<TabContentComponentProvided> {
   static defaultProps = {
-    data: { content: '' },
-    elementProps: { role: 'tabpanel' },
+    data: {},
+    elementProps: {},
   };
   render() {
     const { data, elementProps } = this.props;
