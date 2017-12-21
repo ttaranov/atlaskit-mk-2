@@ -27,7 +27,6 @@ export default class SpotlightAutoscrollExample extends Component<*, State> {
   hide = () => this.setState({ active: false });
   render() {
     const { active } = this.state;
-
     return (
       <SpotlightManager component={Base}>
         <p>
@@ -54,6 +53,10 @@ export default class SpotlightAutoscrollExample extends Component<*, State> {
         </HighlightGroup>
 
         <Lorem count={10} style={{ marginTop: 20 }} />
+
+        <p style={{ marginBottom: '1em' }}>
+          <button onClick={this.show}>Show</button>
+        </p>
 
         {active && (
           <Spotlight
