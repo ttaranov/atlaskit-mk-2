@@ -7,13 +7,13 @@ export type FunctionType = (...args: Array<any>) => mixed;
 export type StatefulTab = {
   content?: any,
   defaultSelected?: boolean,
-  label: string,
+  label: any,
   isSelected?: boolean,
 };
 export type StatelessTab = {
   content?: Node,
   isSelected?: boolean,
-  label: string,
+  label: any,
   onSelect: FunctionType,
 };
 
