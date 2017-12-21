@@ -13,7 +13,7 @@ const ContextTypes = {
 };
 
 const TooltipWithContext = (props: Props, context) => (
-  <Tooltip description={`${context.organisation}/${context.package}`}>
+  <Tooltip content={`${context.organisation}/${context.package}`}>
     {props.children}
   </Tooltip>
 );
@@ -23,8 +23,18 @@ const ContextProvider = withContextFromProps(ContextTypes);
 
 export default () => (
   <ContextProvider organisation="@atlaskit" package="layer-manager">
-    <TooltipWithContext>
-      <button>Package Name</button>
-    </TooltipWithContext>
+    <p>
+      Now that Tooltip, Modal, and Spotlight are rendered in a new sub-tree,
+      using portals, they will not receive context (until React 16).
+    </p>
+    <p>
+      To circumvent this we&apos;ve created an interim solution in the
+      &ldquo;withContextFromProps&rdquo; higher order component.
+    </p>
+    <p>
+      <TooltipWithContext>
+        <button>Package Name</button>
+      </TooltipWithContext>
+    </p>
   </ContextProvider>
 );

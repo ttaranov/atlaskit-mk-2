@@ -81,10 +81,6 @@ type FillProps = {
 
 const Fill = (props: FillProps) => <Fade component={FillScreen} {...props} />;
 
-type State = {|
-  isExiting: boolean,
-|};
-
 /* eslint-disable react/prop-types, react/no-danger */
 const Clone = ({ html }) => (
   <div
@@ -94,9 +90,7 @@ const Clone = ({ html }) => (
 );
 /* eslint-enable react/prop-types, react/no-danger */
 
-class Spotlight extends Component<Props, State> {
-  state: State = { isExiting: false };
-
+class Spotlight extends Component<Props> {
   static defaultProps = {
     dialogWidth: 400,
     pulse: true,
@@ -106,11 +100,6 @@ class Spotlight extends Component<Props, State> {
     const { targetOnClick, target } = this.props;
 
     if (targetOnClick) targetOnClick({ event, target });
-  };
-  handleExit = () => {
-    // NOTE: disable FocusLock *before* unmount. animation may end after a new
-    // spotlight as gained focus, breaking focus behaviour.
-    this.setState({ isExiting: true });
   };
 
   renderTargetClone() {
@@ -167,8 +156,6 @@ class Spotlight extends Component<Props, State> {
       scrollY, // eslint-disable-line react/prop-types
     } = this.props;
 
-    const { isExiting } = this.state;
-
     // warn consumers when they provide conflicting props
     if (header && image) {
       console.warn('Please provide "header" OR "image", not both.'); // eslint-disable-line no-console
@@ -189,7 +176,7 @@ class Spotlight extends Component<Props, State> {
     // build the dialog before passing it to Layer
     const dialog = (
       <ThemeProvider theme={getTheme}>
-        <FocusLock enabled={!isExiting} autoFocus>
+        <FocusLock enabled={transitionIn} autoFocus>
           <Dialog width={dialogWidth} tabIndex="-1">
             {headerElement}
             <DialogBody>
@@ -203,7 +190,7 @@ class Spotlight extends Component<Props, State> {
     );
 
     return (
-      <Fill in={transitionIn} onExit={this.handleExit} scrollDistance={scrollY}>
+      <Fill in={transitionIn} scrollDistance={scrollY}>
         <Layer
           boundariesElement="scrollParent"
           content={dialog}

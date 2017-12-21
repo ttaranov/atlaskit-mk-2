@@ -31,16 +31,18 @@ export default class FocusLockExample extends Component<Props, State> {
             {isActive ? 'Unlock' : 'Lock'}
           </button>
         </p>
-        <FocusLock autoFocus enabled={isActive}>
+        <FocusLock enabled={isActive} autoFocus>
           <div style={boxStyle}>
-            {isActive ? (
-              <LockIcon label="Focus locked icon" />
-            ) : (
-              <UnlockIcon label="Focus unlocked icon" />
-            )}
-            <div style={{ paddingLeft: 8 }}>
+            <div style={{ flexShrink: 0, opacity: isActive ? 1 : 0.5 }}>
+              {isActive ? (
+                <LockIcon label="Focus locked icon" />
+              ) : (
+                <UnlockIcon label="Focus unlocked icon" />
+              )}
+            </div>
+            <div style={{ paddingLeft: 8, paddingRight: 16 }}>
               <p>
-                Once a user moves focus to this element or one of its
+                Once a user moves focus to this element or one of its tabbable
                 descendents they will not be able to tab outside of it.
               </p>
               <p>

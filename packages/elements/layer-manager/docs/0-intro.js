@@ -34,14 +34,14 @@ export default md`
     <Example
       Component={require('../examples/basic').default}
       source={require('!!raw-loader!../examples/basic')}
-      title="Supported Packages"
+      title="Supported Components"
     />
   )}
 
   ## Helpers
   There are a few patterns that are common among the supported packages, and have
   been abstracted into discrete components. While primarily for use internally,
-  they're available under \`@atlaskit/layer-manager\`.
+  they're available as named exports from \`@atlaskit/layer-manager\`.
 
   ${(
     <Example

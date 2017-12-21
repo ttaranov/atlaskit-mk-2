@@ -119,7 +119,7 @@ function ExampleNavigation(props) {
   return (
     <Nav>
       <NavSection style={{ marginLeft: 8 }}>
-        <Tooltip description="Back to docs" position="right">
+        <Tooltip content="Back to docs" position="right">
           <NavLink to={packageUrl(props.groupId, props.packageId)}>
             <ArrowLeftIcon label="Back to docs" />
           </NavLink>
@@ -155,7 +155,7 @@ function ExampleNavigation(props) {
           return (
             <NavSection style={{ marginRight: 8 }}>
               <Tooltip
-                description={
+                content={
                   loadingSandbox ? 'Loading...' : 'Deploy to CodeSandbox'
                 }
                 position="left"
@@ -169,7 +169,7 @@ function ExampleNavigation(props) {
                 </NavButton>
               </Tooltip>
               <Tooltip
-                description={`${props.codeIsVisible ? 'Hide' : 'Show'} source`}
+                content={`${props.codeIsVisible ? 'Hide' : 'Show'} source`}
                 position="left"
               >
                 <NavButton

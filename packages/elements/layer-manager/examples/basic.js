@@ -52,14 +52,14 @@ export default class Example extends Component<Props, State> {
 
     return (
       <SpotlightManager style={{ alignItems: 'center', display: 'flex' }}>
-        <Tooltip description="Hello World">
+        <Tooltip content="Hello World">
           <button>Tooltip</button>
         </Tooltip>
         <Hr />
         <button onClick={this.toggleModal}>Modal</button>
         <Hr />
         <SpotlightTarget name="button">
-          <button onClick={this.toggleSpotlight}>Onboarding</button>
+          <button onClick={this.toggleSpotlight}>Spotlight</button>
         </SpotlightTarget>
 
         {modalIsVisible && (

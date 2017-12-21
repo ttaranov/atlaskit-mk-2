@@ -410,7 +410,7 @@ export default class ExamplesModal extends Component<Props, State> {
                       >
                         Source
                       </Button>
-                      <Tooltip description="Fullscreen" position="bottom">
+                      <Tooltip content="Fullscreen" position="bottom">
                         <Button
                           appearance="subtle"
                           component={Link}
@@ -418,7 +418,7 @@ export default class ExamplesModal extends Component<Props, State> {
                           to={toExampleUrl(groupId, packageId, exampleId)}
                         />
                       </Tooltip>
-                      <Tooltip description="Close" position="bottom">
+                      <Tooltip content="Close" position="bottom">
                         <Button
                           appearance="subtle"
                           iconBefore={<CloseIcon label="Close Modal" />}
