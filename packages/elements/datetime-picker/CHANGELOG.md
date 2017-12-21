@@ -1,5 +1,8 @@
 # @atlaskit/datetime-picker
 
+## 0.3.2
+- [patch] calling onchange on hook when datepickers is set to empty state [9e288cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e288cc)
+
 ## 0.3.1
 
 ## 0.3.0
