@@ -50,8 +50,6 @@ export default class FocusLockRegistry {
       if (!idx || (idx && idx < 0)) boundary.setAttribute('tabindex', '0');
     }
 
-    console.log('addLock', boundary);
-
     // initial focus call
     this.handleFocus();
   }
@@ -68,8 +66,6 @@ export default class FocusLockRegistry {
         this.currentLock.removeAttribute('tabindex');
       }
     }
-
-    console.log('clearLock');
 
     if (options.shouldRestoreFocus) {
       this.restoreFocus();
