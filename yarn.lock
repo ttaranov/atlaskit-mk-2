@@ -199,18 +199,6 @@
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
-"@atlaskit/dynamic-table@^6.0.2":
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/@atlaskit/dynamic-table/-/dynamic-table-6.0.2.tgz#d75de5ffd0145d4376598d67d3b5b797fdb97c6c"
-  dependencies:
-    "@atlaskit/pagination" "^3.1.0"
-    "@atlaskit/theme" "^2.0.0"
-    "@atlaskit/util-common" "^1.1.0"
-    "@atlaskit/util-shared-styles" "^1.0.1"
-    babel-runtime "^6.11.6"
-    prop-types "^15.5.10"
-    styled-components "^1.4.6"
-
 "@atlaskit/emoji@^18.4.2":
   version "18.4.2"
   resolved "https://registry.yarnpkg.com/@atlaskit/emoji/-/emoji-18.4.2.tgz#cf4239f7fc4527117735bc64b0979f81bd3c25b8"
@@ -602,17 +590,6 @@
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
-"@atlaskit/pagination@^3.1.0":
-  version "3.5.6"
-  resolved "https://registry.yarnpkg.com/@atlaskit/pagination/-/pagination-3.5.6.tgz#8454eb241da6270f684da940b8e53bc06cecbf96"
-  dependencies:
-    "@atlaskit/button" "^5.4.2"
-    "@atlaskit/util-common" "^1.1.0"
-    "@atlaskit/util-shared-styles" "^1.0.1"
-    babel-runtime "^6.11.6"
-    prop-types "^15.5.10"
-    styled-components "^1.4.6"
-
 "@atlaskit/polyfills@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/polyfills/-/polyfills-1.1.0.tgz#ce64c358dfaadbce4ac4926f13e3ba3099b6e917"
@@ -804,7 +781,7 @@
     custom-event-polyfill "^0.3.0"
     keycode "^2.1.4"
 
-"@atlaskit/util-common@^1.0.0", "@atlaskit/util-common@^1.1.0", "@atlaskit/util-common@^1.5.2":
+"@atlaskit/util-common@^1.0.0", "@atlaskit/util-common@^1.5.2":
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-common/-/util-common-1.5.2.tgz#ae9e96c540aa2517ca922542333ac24eb3473cbc"
   dependencies:
