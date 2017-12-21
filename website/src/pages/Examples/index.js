@@ -334,7 +334,7 @@ export default class Examples extends React.Component<Props, State> {
     this.setState(state => ({ displayCode: !state.displayCode }));
 
   addFlag = (flagProps: {
-    appearance: string,
+    appearance: 'error' | 'info' | 'normal' | 'success' | 'warning',
     description: string,
     title: string,
   }) => {

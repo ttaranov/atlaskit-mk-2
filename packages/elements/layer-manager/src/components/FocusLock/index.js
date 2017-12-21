@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 import FocusMarshal, {
   type AutoFocus,
+  type Boundary,
   type TeardownOptions,
 } from './FocusMarshal';
 
@@ -38,7 +39,7 @@ const marshal = new FocusMarshal();
 /* eslint-disable react/sort-comp */
 export default class FocusLock extends Component<Props> {
   ariaHiddenNode: HTMLElement;
-  boundary: Element | Text | null;
+  boundary: Boundary;
   initFromProps: boolean = false;
   teardownFromProps: boolean = false;
   static defaultProps = {
@@ -99,7 +100,13 @@ export default class FocusLock extends Component<Props> {
   };
   getBoundary() {
     // eslint-disable-next-line react/no-find-dom-node
-    this.boundary = findDOMNode(this);
+    const boundary = findDOMNode(this);
+
+    // findDOMNode's return type is `Element | Text | null`
+    // This check keeps flow happy
+    if (boundary instanceof HTMLElement) {
+      this.boundary = boundary;
+    }
   }
 
   render() {

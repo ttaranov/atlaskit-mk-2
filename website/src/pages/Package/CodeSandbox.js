@@ -52,7 +52,7 @@ export default class CodeSandbox extends Component<Props, State> {
   };
 
   addFlag = (flagProps: {
-    appearance: string,
+    appearance: 'error' | 'info' | 'normal' | 'success' | 'warning',
     description: string,
     title: string,
   }) => {

@@ -74,7 +74,6 @@ type Props = {|
 
 type FillProps = {
   in: boolean,
-  onExit: Function,
   scrollDistance: number,
   children: ChildrenType,
 };

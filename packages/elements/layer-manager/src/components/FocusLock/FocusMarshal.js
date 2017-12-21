@@ -3,7 +3,7 @@ import tabbable from 'tabbable';
 import focusin from 'focusin';
 
 export type AutoFocus = boolean | (() => HTMLElement);
-type Boundary = HTMLElement;
+export type Boundary = HTMLElement;
 export type TeardownOptions = { shouldRestoreFocus: boolean };
 type LockOptions = { autoFocus: AutoFocus, boundary: Boundary };
 
