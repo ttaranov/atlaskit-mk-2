@@ -14,23 +14,19 @@ const tabs = [
 
 export default class TabsControlledExample extends PureComponent<
   {},
-  { selectedTab: TabData },
+  { selected: TabData },
 > {
-  state = { selectedTab: tabs[0] };
+  state = { selected: tabs[0] };
 
-  handleUpdate = (selectedTab: TabData) => this.setState({ selectedTab });
+  handleUpdate = (selected: TabData) => this.setState({ selected });
 
   render() {
-    const { selectedTab } = this.state;
+    const { selected } = this.state;
     return (
       <div>
-        <Tabs
-          onSelect={this.handleUpdate}
-          selectedTab={selectedTab}
-          tabs={tabs}
-        />
+        <Tabs onSelect={this.handleUpdate} selected={selected} tabs={tabs} />
         <button
-          disabled={selectedTab === tabs[3]}
+          disabled={selected === tabs[3]}
           onClick={() => this.handleUpdate(tabs[3])}
         >
           Select the last tab

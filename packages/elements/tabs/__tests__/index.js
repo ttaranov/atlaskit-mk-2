@@ -35,113 +35,104 @@ describe(name, () => {
     });
 
     describe('props', () => {
-      describe('defaultSelectedTab', () => {
+      describe('defaultSelected', () => {
         it('should set the selected tab on initial mount', () => {
           const wrapper = shallow(
-            <Tabs tabs={tabs} defaultSelectedTab={tabs[1]} />,
+            <Tabs tabs={tabs} defaultSelected={tabs[1]} />,
           );
-          expect(wrapper.state().selectedTab).toEqual(tabs[1]);
+          expect(wrapper.state().selected).toEqual(tabs[1]);
         });
 
         it('should accept an index', () => {
-          const wrapper = shallow(<Tabs tabs={tabs} defaultSelectedTab={2} />);
-          expect(wrapper.state().selectedTab).toEqual(tabs[2]);
+          const wrapper = shallow(<Tabs tabs={tabs} defaultSelected={2} />);
+          expect(wrapper.state().selected).toEqual(tabs[2]);
         });
 
         it('should use the isSelectedTest function if provided', () => {
-          const isSelectedTest = (selectedTab, tab) =>
-            tab.label === selectedTab;
+          const isSelectedTest = (selected, tab) => tab.label === selected;
           const wrapper = shallow(
             <Tabs
               tabs={tabs}
-              defaultSelectedTab={'Tab 2 label'}
+              defaultSelected={'Tab 2 label'}
               isSelectedTest={isSelectedTest}
             />,
           );
-          expect(wrapper.state().selectedTab).toEqual(tabs[1]);
+          expect(wrapper.state().selected).toEqual(tabs[1]);
         });
 
         it('changing this prop should not update the selected tab after the initial mount', () => {
           const wrapper = shallow(
-            <Tabs tabs={tabs} defaultSelectedTab={tabs[1]} />,
+            <Tabs tabs={tabs} defaultSelected={tabs[1]} />,
           );
-          wrapper.setProps({ defaultSelectedTab: tabs[2] });
-          expect(wrapper.state().selectedTab).toEqual(tabs[1]);
+          wrapper.setProps({ defaultSelected: tabs[2] });
+          expect(wrapper.state().selected).toEqual(tabs[1]);
         });
       });
 
-      describe('selectedTab', () => {
+      describe('selected', () => {
         it('should set the selected tab on initial mount', () => {
-          const wrapper = shallow(<Tabs tabs={tabs} selectedTab={tabs[1]} />);
-          expect(wrapper.state().selectedTab).toEqual(tabs[1]);
+          const wrapper = shallow(<Tabs tabs={tabs} selected={tabs[1]} />);
+          expect(wrapper.state().selected).toEqual(tabs[1]);
         });
 
-        it('should take precedence over defaultSelectedTab', () => {
+        it('should take precedence over defaultSelected', () => {
           const wrapper = shallow(
-            <Tabs
-              tabs={tabs}
-              defaultSelectedTab={tabs[1]}
-              selectedTab={tabs[2]}
-            />,
+            <Tabs tabs={tabs} defaultSelected={tabs[1]} selected={tabs[2]} />,
           );
-          expect(wrapper.state().selectedTab).toEqual(tabs[2]);
+          expect(wrapper.state().selected).toEqual(tabs[2]);
         });
 
         it('should use the isSelectedTest function if provided', () => {
-          const isSelectedTest = (selectedTab, tab) =>
-            tab.label === selectedTab;
+          const isSelectedTest = (selected, tab) => tab.label === selected;
           const wrapper = shallow(
             <Tabs
               tabs={tabs}
-              selectedTab={'Tab 2 label'}
+              selected={'Tab 2 label'}
               isSelectedTest={isSelectedTest}
             />,
           );
-          expect(wrapper.state().selectedTab).toEqual(tabs[1]);
+          expect(wrapper.state().selected).toEqual(tabs[1]);
         });
 
         it('changing this prop should update the selected tab after the initial mount', () => {
-          const wrapper = shallow(<Tabs tabs={tabs} selectedTab={tabs[1]} />);
-          wrapper.setProps({ selectedTab: tabs[2] });
-          expect(wrapper.state().selectedTab).toEqual(tabs[2]);
+          const wrapper = shallow(<Tabs tabs={tabs} selected={tabs[1]} />);
+          wrapper.setProps({ selected: tabs[2] });
+          expect(wrapper.state().selected).toEqual(tabs[2]);
         });
 
-        it('should default to the first tab if neither selectedTab nor defaultSelectedTab are set', () => {
+        it('should default to the first tab if neither selected nor defaultSelected are set', () => {
           const wrapper = shallow(<Tabs tabs={tabs} />);
-          expect(wrapper.state().selectedTab).toEqual(tabs[0]);
+          expect(wrapper.state().selected).toEqual(tabs[0]);
         });
 
         it("setting this prop should make the component 'controlled', which means it should not maintain its own internal state", () => {
           const uncontrolledTabs = mount(
-            <Tabs tabs={tabs} defaultSelectedTab={tabs[1]} />,
+            <Tabs tabs={tabs} defaultSelected={tabs[1]} />,
           );
           uncontrolledTabs
             .find(TabItem)
             .at(2)
             .simulate('click');
-          expect(uncontrolledTabs.state().selectedTab).toEqual(tabs[2]);
+          expect(uncontrolledTabs.state().selected).toEqual(tabs[2]);
 
-          const controlledTab = mount(
-            <Tabs tabs={tabs} selectedTab={tabs[1]} />,
-          );
+          const controlledTab = mount(<Tabs tabs={tabs} selected={tabs[1]} />);
           controlledTab
             .find(TabItem)
             .at(2)
             .simulate('click');
-          expect(controlledTab.state().selectedTab).toEqual(tabs[1]);
+          expect(controlledTab.state().selected).toEqual(tabs[1]);
         });
       });
 
       describe('isSelectedTest', () => {
         it('should override the in-built check to determine whether a tab is selected', () => {
-          const isSelectedTest = (selectedTab, tab) =>
-            tab.label === selectedTab;
+          const isSelectedTest = (selected, tab) => tab.label === selected;
           const wrapper = shallow(
             <Tabs tabs={tabs} isSelectedTest={isSelectedTest} />,
           );
-          expect(wrapper.state().selectedTab).toEqual(tabs[0]);
-          wrapper.setProps({ selectedTab: 'Tab 2 label' });
-          expect(wrapper.state().selectedTab).toEqual(tabs[1]);
+          expect(wrapper.state().selected).toEqual(tabs[0]);
+          wrapper.setProps({ selected: 'Tab 2 label' });
+          expect(wrapper.state().selected).toEqual(tabs[1]);
         });
       });
 
@@ -182,10 +173,8 @@ describe(name, () => {
       describe('onSelect', () => {
         it('is not fired for default selected tab', () => {
           const spy = jest.fn();
-          mount(
-            <Tabs onSelect={spy} tabs={tabs} defaultSelectedTab={tabs[0]} />,
-          );
-          mount(<Tabs onSelect={spy} tabs={tabs} selectedTab={tabs[0]} />);
+          mount(<Tabs onSelect={spy} tabs={tabs} defaultSelected={tabs[0]} />);
+          mount(<Tabs onSelect={spy} tabs={tabs} selected={tabs[0]} />);
           expect(spy).not.toHaveBeenCalled();
         });
         it('is fired with the selected tab and its index when selected by click', () => {
@@ -225,33 +214,33 @@ describe(name, () => {
           };
 
           beforeEach(() => {
-            wrapper = mount(<Tabs tabs={tabs} defaultSelectedTab={tabs[1]} />);
+            wrapper = mount(<Tabs tabs={tabs} defaultSelected={tabs[1]} />);
           });
 
           it('pressing LEFT arrow selects the first tab', () => {
-            expect(wrapper.state().selectedTab).toBe(tabs[1]);
+            expect(wrapper.state().selected).toBe(tabs[1]);
             simulateKeyboardNav(1, 'ArrowLeft');
-            expect(wrapper.state().selectedTab).toBe(tabs[0]);
+            expect(wrapper.state().selected).toBe(tabs[0]);
           });
 
           it('pressing the RIGHT arrow selects the last tab', () => {
-            expect(wrapper.state().selectedTab).toBe(tabs[1]);
+            expect(wrapper.state().selected).toBe(tabs[1]);
             simulateKeyboardNav(1, 'ArrowRight');
-            expect(wrapper.state().selectedTab).toBe(tabs[2]);
+            expect(wrapper.state().selected).toBe(tabs[2]);
           });
 
           it('pressing the LEFT arrow twice leaves selection on the first tab', () => {
-            expect(wrapper.state().selectedTab).toBe(tabs[1]);
+            expect(wrapper.state().selected).toBe(tabs[1]);
             simulateKeyboardNav(1, 'ArrowLeft');
             simulateKeyboardNav(0, 'ArrowLeft');
-            expect(wrapper.state().selectedTab).toBe(tabs[0]);
+            expect(wrapper.state().selected).toBe(tabs[0]);
           });
 
           it('pressing the RIGHT arrow twice leaves selection on the last tab', () => {
-            expect(wrapper.state().selectedTab).toBe(tabs[1]);
+            expect(wrapper.state().selected).toBe(tabs[1]);
             simulateKeyboardNav(1, 'ArrowRight');
             simulateKeyboardNav(2, 'ArrowRight');
-            expect(wrapper.state().selectedTab).toBe(tabs[2]);
+            expect(wrapper.state().selected).toBe(tabs[2]);
           });
         });
       });

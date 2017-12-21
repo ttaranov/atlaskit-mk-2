@@ -18,33 +18,33 @@ export default class TabsNavigation extends Component<TabsNavigationProps> {
       return;
     }
 
-    const { selectedTab, tabs } = this.props;
+    const { selected, tabs } = this.props;
     const modifier = e.key === 'ArrowRight' ? 1 : -1;
-    const newSelectedTabIndex = tabs.indexOf(selectedTab) + modifier;
+    const newselectedIndex = tabs.indexOf(selected) + modifier;
 
-    if (newSelectedTabIndex < 0 || newSelectedTabIndex >= tabs.length) {
+    if (newselectedIndex < 0 || newselectedIndex >= tabs.length) {
       return;
     }
 
-    this.onSelect(tabs[newSelectedTabIndex], newSelectedTabIndex);
-    this.elementRefs[newSelectedTabIndex].focus();
+    this.onSelect(tabs[newselectedIndex], newselectedIndex);
+    this.elementRefs[newselectedIndex].focus();
   };
 
-  onSelect = (selectedTab: TabData, selectedTabIndex: number) => {
-    this.props.onSelect(selectedTab, selectedTabIndex);
+  onSelect = (selected: TabData, selectedIndex: number) => {
+    this.props.onSelect(selected, selectedIndex);
   };
 
   tabMouseDownHandler = (e: MouseEvent) => e.preventDefault();
 
   render() {
-    const { selectedTab, tabItemComponent: TabItem, tabs } = this.props;
+    const { selected, tabItemComponent: TabItem, tabs } = this.props;
 
     return (
       <NavWrapper>
         <NavLine status="normal" />
         <Nav role="tablist">
           {tabs.map((tab, index) => {
-            const isSelected = tab === selectedTab;
+            const isSelected = tab === selected;
             const elementProps = {
               'aria-posinset': index + 1,
               'aria-selected': isSelected,

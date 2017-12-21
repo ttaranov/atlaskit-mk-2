@@ -28,21 +28,21 @@ export const tabs = [
   },
 ];
 
-const customIsSelectedFunction = (selectedTab: string, tab: TabData) =>
-  selectedTab === tab.id;
+const customIsSelectedFunction = (selected: string, tab: TabData) =>
+  selected === tab.id;
 
-class TabsWithCustomIsSelected extends Component<{}, { selectedTab: string }> {
+class TabsWithCustomIsSelected extends Component<{}, { selected: string }> {
   state = {
-    selectedTab: 'tab-4',
+    selected: 'tab-4',
   };
 
-  onSelect = ({ id }) => this.setState({ selectedTab: id });
+  onSelect = ({ id }) => this.setState({ selected: id });
 
   render() {
     return (
       <Tabs
         tabs={tabs}
-        selectedTab={this.state.selectedTab}
+        selected={this.state.selected}
         isSelectedTest={customIsSelectedFunction}
         onSelect={this.onSelect}
       />
@@ -53,9 +53,9 @@ class TabsWithCustomIsSelected extends Component<{}, { selectedTab: string }> {
 export default () => (
   <div>
     <h3>Determine selected tab by tab object equality (built-in)</h3>
-    <Tabs tabs={tabs} defaultSelectedTab={tabs[1]} />
+    <Tabs tabs={tabs} defaultSelected={tabs[1]} />
     <h3>Determine selected tab by tab index equality (in-built)</h3>
-    <Tabs tabs={tabs} defaultSelectedTab={2} />
+    <Tabs tabs={tabs} defaultSelected={2} />
     <h3>With a custom isSelectedTest function</h3>
     <TabsWithCustomIsSelected />
   </div>

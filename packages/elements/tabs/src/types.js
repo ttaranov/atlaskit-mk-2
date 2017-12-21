@@ -40,18 +40,18 @@ export type TabContentComponentProvided = {
 export type TabItemType = ComponentType<TabItemComponentProvided>;
 export type TabContentType = ComponentType<TabContentComponentProvided>;
 
-export type SelectedTabProp = any;
+export type selectedProp = any;
 export type IsSelectedTestFunction = (
-  selectedTab: SelectedTabProp,
+  selected: selectedProp,
   tab: TabData,
   tabIndex: number,
 ) => boolean;
-type OnSelectCallback = (selectedTab: TabData, selectedIndex: number) => void;
+type OnSelectCallback = (selected: TabData, selectedIndex: number) => void;
 
 export type TabsProps = {
   /** The tab that will be selected by default when the component mounts. If not
    * set the first tab will be displayed by default. */
-  defaultSelectedTab?: SelectedTabProp,
+  defaultSelected?: selectedProp,
   /** Override the in-built check to determine whether a tab is selected. This
    * function will be passed some information about the selected tab, the tab to
    * be compared, and the index of the tab to be compared, as parameters in that
@@ -66,7 +66,7 @@ export type TabsProps = {
    * 'controlled' component, and will not maintain any internal state. It will
    * be up to you to listen to onSelect changes, update your own state, and pass
    * that information down to this prop accordingly. */
-  selectedTab?: SelectedTabProp,
+  selected?: selectedProp,
   /** A custom component to render instead of the default tab content pane. See
    * tabContentComponent Provided Props below for more information.
    */
@@ -83,12 +83,12 @@ export type TabsProps = {
 };
 
 export type TabsState = {
-  selectedTab: TabData,
+  selected: TabData,
 };
 
 export type TabsNavigationProps = {
   onSelect: OnSelectCallback,
-  selectedTab: TabData,
+  selected: TabData,
   tabItemComponent: TabItemType,
   tabs: Array<TabData>,
 };

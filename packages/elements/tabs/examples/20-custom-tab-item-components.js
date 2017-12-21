@@ -72,6 +72,6 @@ export default () => (
       tabs={tabs}
     />
     <h3>Tabs as links</h3>
-    <Tabs selectedTab={tabs[0]} tabs={tabs} tabItemComponent={LinkItem} />
+    <Tabs selected={tabs[0]} tabs={tabs} tabItemComponent={LinkItem} />
   </div>
 );
