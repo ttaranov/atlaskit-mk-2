@@ -10,9 +10,9 @@ type Props = {
 };
 
 export default function withColumnWidth(
-  Cell: ComponentType<* & { width: CSSWidth }>,
-): ComponentType<* & Props> {
-  return class CellWithColumnWidth extends PureComponent<* & Props> {
+  Cell: ComponentType<*>,
+): ComponentType<*> {
+  return class CellWithColumnWidth extends PureComponent<*> {
     static contextTypes = {
       treeTable: PropTypes.object.isRequired,
     };
