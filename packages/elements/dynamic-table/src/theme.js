@@ -1,3 +1,4 @@
+// @flow
 import { colors, themed } from '@atlaskit/theme';
 
 export const arrow = {

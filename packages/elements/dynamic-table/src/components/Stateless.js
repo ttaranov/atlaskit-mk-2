@@ -8,7 +8,11 @@ import React, {
 import { PaginationStateless } from '@atlaskit/pagination';
 
 import { ASC, DESC, SMALL, LARGE } from '../internal/constants';
-import { getPageRows } from '../internal/helpers';
+import {
+  getPageRows,
+  validateSortKey,
+  assertIsSortable,
+} from '../internal/helpers';
 import TableHead from './TableHead';
 import Body from './Body';
 import LoadingContainer from './LoadingContainer';
@@ -65,7 +69,21 @@ export default class DynamicTable extends Component<Props, {}> {
     onSort() {},
     page: 1,
   };
-
+  componentWillMount() {
+    validateSortKey(this.props.sortKey, this.props.head);
+    assertIsSortable(this.props.head);
+  }
+  componentWillReceiveProps(nextProps: Props) {
+    if (
+      this.props.sortKey !== nextProps.sortKey ||
+      this.props.head !== nextProps.head
+    ) {
+      validateSortKey(nextProps.sortKey, nextProps.head);
+    }
+    if (this.props.head !== nextProps.head) {
+      assertIsSortable(nextProps.head);
+    }
+  }
   onSort = (item: RowCellType) => () => {
     const { sortKey, sortOrder, onSort } = this.props;
     const { key } = item;

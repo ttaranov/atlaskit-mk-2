@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { ASC } from '../internal/constants';
-import { getPageRows } from '../internal/helpers';
+import { getPageRows, validateSortKey } from '../internal/helpers';
 import TableRow from './TableRow';
 import type { HeadType, RowType, SortOrderType } from '../types';
 
@@ -33,16 +33,27 @@ const getSortedRows = (head, rows, sortKey, sortOrder) => {
 };
 
 type Props = {
-  head: HeadType | null,
+  head: HeadType | void,
   isFixedSize: boolean,
   page: number,
-  rows: Array<RowType> | null,
+  rows: Array<RowType> | void,
   rowsPerPage?: number,
-  sortKey?: null | string,
+  sortKey?: void | string,
   sortOrder: SortOrderType,
 };
 
 export default class Body extends Component<Props, {}> {
+  componentWillMount() {
+    validateSortKey(this.props.sortKey, this.props.head);
+  }
+  componentWillReceiveProps(nextProps: Props) {
+    if (
+      this.props.sortKey !== nextProps.sortKey ||
+      this.props.head !== nextProps.head
+    ) {
+      validateSortKey(nextProps.sortKey, nextProps.head);
+    }
+  }
   render() {
     const {
       rows,

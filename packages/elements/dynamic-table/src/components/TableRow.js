@@ -4,7 +4,7 @@ import { TableBodyRow, TableBodyCell } from '../styled/TableRow';
 import type { HeadType, RowType } from '../types';
 
 type Props = {
-  head: HeadType | null,
+  head: HeadType | void,
   isFixedSize: boolean,
   row: RowType,
 };
