@@ -20,7 +20,7 @@ export default class TreeRows extends PureComponent<Props, State> {
 
   componentDidMount() {
     Promise.resolve()
-      .then(() => this.props.data(null))
+      .then(() => this.props.data())
       .then(rootRowsData => {
         this.setState({
           rootRowsData,

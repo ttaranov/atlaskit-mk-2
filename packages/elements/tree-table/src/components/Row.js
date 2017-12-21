@@ -12,14 +12,12 @@ type Props = {
 
 type State = {
   isExpanded: boolean,
-  isLoading: boolean,
   childrenData?: Array<Object>,
 };
 
 export default class Row extends PureComponent<Props, State> {
   state: State = {
     isExpanded: false,
-    isLoading: false,
   };
 
   static defaultProps = {
@@ -29,9 +27,6 @@ export default class Row extends PureComponent<Props, State> {
   handleExpandToggleClick = () => {
     const newIsExpanded = !this.state.isExpanded;
     if (newIsExpanded && !this.state.childrenData) {
-      this.setState({
-        isLoading: true,
-      });
       Promise.resolve()
         .then(() => this.props.getChildrenData(this.props.data))
         .then(childrenData => {
