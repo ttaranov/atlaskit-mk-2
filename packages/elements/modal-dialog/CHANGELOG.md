@@ -1,5 +1,8 @@
 # @atlaskit/modal-dialog
 
+## 3.2.5
+- [patch] Migrate modal-dialog to ak mk 2 update deps and add flow types [a91cefe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a91cefe)
+
 ## 3.2.4 (2017-11-30)
 
 
