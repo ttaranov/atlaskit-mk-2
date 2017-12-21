@@ -1,0 +1,31 @@
+{
+  "name": "@atlaskit/editor-confluence-transformer",
+  "version": "2.2.1",
+  "description": "Editor Confluence Transformer",
+  "license": "Apache-2.0",
+  "main": "dist/es5/index.js",
+  "atlaskit:src": "src/index.ts",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [],
+  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "dependencies": {
+    "@atlaskit/editor-common": "^5.1.2",
+    "prosemirror-model": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react": "^15.6.1"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^2.1.1",
+    "@atlaskit/editor-core": "^60.15.0",
+    "@atlaskit/editor-test-helpers": "^1.4.1",
+    "@types/prosemirror-model": "^1.0.0",
+    "chai-as-promised": "^6.0.0"
+  }
+}

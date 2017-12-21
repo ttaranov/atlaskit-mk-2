@@ -144,6 +144,8 @@ describe('editor/plugins/collab-edit', () => {
         .setMeta('sessionId', { sid: 'test' })
         .setSelection(TextSelection.create(doc, 13));
       editorView.dispatch(tr);
+      // Wait for next tick
+      await new Promise(resolve => setTimeout(resolve, 0));
       sinon.assert.calledOnce(spy);
 
       sinon.assert.calledWith(spy, {

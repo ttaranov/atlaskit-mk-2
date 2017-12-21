@@ -58,6 +58,22 @@ describe('fetchToken', () => {
         .then(resolve, reject);
     }));
 
+it('should add token and client query parameters correctly respecting previous url params', () =>
+  new Promise<void>((resolve, reject) => {
+    fetchToken(authProvider, collectionName)(Mocks.fileWithParams)
+      .then(result => {
+        if (result) {
+          assertUrl(`https://some-host.com/file?max-age=3600&${authQueryString}`, result.src);
+          assertUrl(`https://some-host.com/file/binary?dl=1&${authQueryString}`, result.srcDownload);
+          assertUrl(`https://some-host.com/file/artifact/hd.mp4/binary?${authQueryString}`, result.src_hd);
+          assertUrl(`https://some-host.com/file/artifact/poster.mp4/binary?${authQueryString}`, result.poster);
+        } else {
+          throw new Error('fetchToken did no return anything');
+        }
+      })
+      .then(resolve, reject);
+  }));
+
   it('should refresh token of pre authenticated file', () =>
     new Promise<void>((resolve, reject) => {
       fetchToken(authProvider, collectionName)(Mocks.authenticatedFile)
@@ -102,6 +118,18 @@ class Mocks {
       src_hd: 'https://some-host.com/file/artifact/hd.mp4/binary',
       poster: 'https://some-host.com/file/artifact/poster.mp4/binary',
     },
+  } as MediaFile;
+
+  static fileWithParams = {
+    attributes: {
+      id: 'some-file',
+      src: 'https://some-host.com/file?max-age=3600',
+      srcDownload: 'https://some-host.com/file/binary?dl=1',
+      type: 'video/mp4',
+      title: 'Some File',
+      src_hd: 'https://some-host.com/file/artifact/hd.mp4/binary',
+      poster: 'https://some-host.com/file/artifact/poster.mp4/binary'
+    }
   } as MediaFile;
 
   static readonly oldToken = 'old-token';

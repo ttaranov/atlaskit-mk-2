@@ -1,0 +1,35 @@
+{
+  "title": {
+    "text": "#1: Create android_tests"
+  },
+  "description": {
+    "text": "No description provided."
+  },
+  "link": {
+    "url": "https://github.com/rnazar/mobile_testing/pull/1"
+  },
+  "details": [
+    {
+      "icon": {
+        "url": "https://banana-addon-github.us-west-2.prod.public.atl-paas.net/images/octoicons/repo.png",
+        "label": "Repository"
+      },
+      "text": "rnazar/mobile_testing"
+    },
+    {
+      "icon": {
+        "url": "https://banana-addon-github.us-west-2.prod.public.atl-paas.net/images/octoicons/git-branch.png",
+        "label": "Branch"
+      },
+      "text": "rnazar-dev"
+    },
+    {
+      "icon": {
+        "url": "https://banana-addon-github.us-west-2.prod.public.atl-paas.net/images/octoicons/arrow-right.png",
+        "label": "Target"
+      },
+      "text": "master"
+    }
+  ],
+  "text": ""
+}

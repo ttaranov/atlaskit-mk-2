@@ -24,7 +24,7 @@ import {
 import {
   copyPrivateMediaAttributes,
   MediaType,
-  Layout,
+  MediaSingleLayout,
 } from '@atlaskit/editor-common';
 
 import analyticsService from '../../analytics/service';
@@ -401,7 +401,7 @@ export class MediaPluginState {
     this.mediaNodes = this.mediaNodes.filter(({ node }) => oldNode !== node);
   };
 
-  align = (layout: Layout): boolean => {
+  align = (layout: MediaSingleLayout): boolean => {
     if (!this.isMediaNodeSelection()) {
       return false;
     }
@@ -532,6 +532,10 @@ export class MediaPluginState {
         picker.onNewMedia(this.trackNewMediaEvent(picker.type));
       });
       this.dropzonePicker.onDrag(this.handleDrag);
+    }
+
+    if (this.popupPicker) {
+      this.popupPicker.hide();
     }
 
     // set new upload params for the pickers

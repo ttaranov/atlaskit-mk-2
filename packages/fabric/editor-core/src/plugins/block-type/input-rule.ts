@@ -11,7 +11,12 @@ import {
   isConvertableToCodeBlock,
   transformToCodeBlockAction,
 } from '../block-type/transform-to-code-block';
-import { createInputRule, defaultInputRuleHandler } from '../utils';
+import {
+  createInputRule,
+  defaultInputRuleHandler,
+  leafNodeReplacementCharacter,
+} from '../utils';
+import { insertBlock } from './utils';
 
 export function headingRule(nodeType: NodeType, maxLevel: number) {
   return textblockTypeInputRule(
@@ -46,6 +51,23 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
       return currentHandler(state, match, start, end);
     };
     rules.push(rule);
+    rules.push(
+      createInputRule(
+        new RegExp(`${leafNodeReplacementCharacter}(#{1,5})\\s$`),
+        (state, match, start, end): Transaction | undefined => {
+          const level = match[1].length;
+          return insertBlock(
+            state,
+            schema.nodes.heading,
+            `heading${level}`,
+            start,
+            end,
+            { level },
+          );
+        },
+        true,
+      ),
+    );
   }
 
   if (schema.nodes.blockquote) {
@@ -59,6 +81,21 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
       (rule as any).handler,
     ); // TODO: Fix types (ED-2987)
     rules.push(rule);
+    rules.push(
+      createInputRule(
+        new RegExp(`${leafNodeReplacementCharacter}\\s*>\\s$`),
+        (state, match, start, end): Transaction | undefined => {
+          return insertBlock(
+            state,
+            schema.nodes.blockquote,
+            'blockquote',
+            start,
+            end,
+          );
+        },
+        true,
+      ),
+    );
   }
 
   if (schema.nodes.codeBlock) {
@@ -82,6 +119,28 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
                 .scrollIntoView()
             );
           }
+        },
+        true,
+      ),
+    );
+    rules.push(
+      createInputRule(
+        new RegExp(
+          `((${leafNodeReplacementCharacter}\`{3,})|(\\s\`{3,}))(\\S*)\\s$`,
+        ),
+        (state, match, start, end): Transaction | undefined => {
+          const attributes: any = {};
+          if (match[4]) {
+            attributes.language = match[4];
+          }
+          return insertBlock(
+            state,
+            schema.nodes.codeBlock,
+            'codeblock',
+            start,
+            end,
+            attributes,
+          );
         },
         true,
       ),
