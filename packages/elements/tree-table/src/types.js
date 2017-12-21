@@ -6,7 +6,7 @@ export type RowData = Object;
 
 export type DataFunction = (
   ?Object,
-) => Array<RowData> | Promise<Array<RowData>>;
+) => ?Array<RowData> | Promise<?Array<RowData>>;
 
 export type RenderFunction = Object => Element<typeof RowDataComponent>;
 

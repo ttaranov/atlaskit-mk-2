@@ -7,12 +7,15 @@ import TreeTable, {
   RowData,
   DataCell,
 } from '../src';
+import { type RowData as RowDataType } from '../src/types';
 import staticData from './data-freeform-nodes.json';
 
-function getChildrenData(parent = staticData) {
+function getChildrenData(
+  parent: ?{ children: Array<RowDataType> } = staticData,
+) {
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve(parent && parent.children);
+      resolve((parent && parent.children) || []);
     }, 3000);
   });
 }

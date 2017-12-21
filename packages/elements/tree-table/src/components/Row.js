@@ -12,7 +12,7 @@ type Props = {
 
 type State = {
   isExpanded: boolean,
-  childrenData?: Array<Object>,
+  childrenData?: ?Array<Object>,
 };
 
 export default class Row extends PureComponent<Props, State> {

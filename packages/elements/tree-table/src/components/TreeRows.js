@@ -10,7 +10,7 @@ type Props = {
 };
 
 type State = {
-  rootRowsData: Array<Object> | null,
+  rootRowsData: ?Array<Object>,
 };
 
 export default class TreeRows extends PureComponent<Props, State> {
