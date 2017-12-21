@@ -29,10 +29,4 @@ export default md`
       language="javascript"
     />
   )}
-
-  ${(
-    <Props
-      props={require('!!extract-react-types-loader!../src/components/TreeTable')}
-    />
-  )}
 `;
