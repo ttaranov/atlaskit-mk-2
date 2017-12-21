@@ -50,7 +50,7 @@
     babel-runtime "^6.11.6"
     styled-components "^1.4.6"
 
-"@atlaskit/button@^1.0.0", "@atlaskit/button@^1.0.10":
+"@atlaskit/button@^1.0.0":
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-1.1.4.tgz#e294fee6dd02c5b05c40fa6db6966a8a3c12ad4a"
   dependencies:
@@ -82,6 +82,16 @@
 "@atlaskit/button@^5.4.10":
   version "5.4.12"
   resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-5.4.12.tgz#b3a932166aa030417fe31e3ffdfd48d20503657b"
+  dependencies:
+    "@atlaskit/theme" "^2.0.0"
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+    prop-types "^15.5.10"
+    styled-components "^1.4.6"
+
+"@atlaskit/button@^5.4.12":
+  version "5.4.14"
+  resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-5.4.14.tgz#600975141fd356ccbf712885a00f63a1367dd28d"
   dependencies:
     "@atlaskit/theme" "^2.0.0"
     babel-runtime "^6.11.6"
@@ -198,19 +208,19 @@
     url "^0.11.0"
     xregexp "^3.2.0"
 
-"@atlaskit/emoji@^30.3.3":
-  version "30.3.3"
-  resolved "https://registry.yarnpkg.com/@atlaskit/emoji/-/emoji-30.3.3.tgz#9a08eec0c7b9b75c1cfa7ad89740a0a32de8d247"
+"@atlaskit/emoji@^31.0.2":
+  version "31.0.2"
+  resolved "https://registry.yarnpkg.com/@atlaskit/emoji/-/emoji-31.0.2.tgz#d780aca7b7de81759e313c001f58313ec776d66a"
   dependencies:
     uid "^0.0.2"
-    "@atlaskit/button" "^1.0.10"
-    "@atlaskit/field-base" "^5.0.0"
-    "@atlaskit/icon" "^9.0.0"
-    "@atlaskit/layer" "^2.5.4"
-    "@atlaskit/spinner" "^2.0.0"
-    "@atlaskit/util-common" "^1.0.0"
+    "@atlaskit/button" "^5.4.12"
+    "@atlaskit/field-base" "^8.1.5"
+    "@atlaskit/icon" "^10.3.2"
+    "@atlaskit/spinner" "^4.0.2"
+    "@atlaskit/theme" "^2.2.4"
+    "@atlaskit/tooltip" "^8.0.7"
+    "@atlaskit/util-common" "^1.5.2"
     "@atlaskit/util-service-support" "^2.0.2"
-    "@atlaskit/util-shared-styles" "^2.0.0"
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
     js-search "^1.4.2"
@@ -272,6 +282,18 @@
     babel-runtime "^6.11.6"
     prop-types "^15.5.10"
     styled-components "^1.3.0"
+
+"@atlaskit/field-base@^8.1.5":
+  version "8.1.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/field-base/-/field-base-8.1.5.tgz#efb26e61cd1ee1626cf490fd88d7a7019b5c652e"
+  dependencies:
+    "@atlaskit/icon" "^10.1.3"
+    "@atlaskit/inline-dialog" "^5.0.1"
+    "@atlaskit/spinner" "^4.0.0"
+    "@atlaskit/theme" "^2.0.0"
+    babel-runtime "^6.11.6"
+    prop-types "^15.5.10"
+    styled-components "^1.4.6"
 
 "@atlaskit/field-radio-group@^1.2.1":
   version "1.7.3"
@@ -463,6 +485,16 @@
 "@atlaskit/layer-manager@^2.5.3":
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/@atlaskit/layer-manager/-/layer-manager-2.5.3.tgz#a40e5114c4acbc84422ba559b039c6351ba95287"
+  dependencies:
+    focusin "^2.0.0"
+    prop-types "^15.5.10"
+    react-transition-group "^2.2.1"
+    styled-components "^1.4.6"
+    tabbable "^1.1.0"
+
+"@atlaskit/layer-manager@^2.5.5":
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/@atlaskit/layer-manager/-/layer-manager-2.5.6.tgz#d93b2d79d286ecaa995b198432c4d29387869c70"
   dependencies:
     focusin "^2.0.0"
     prop-types "^15.5.10"
@@ -704,6 +736,13 @@
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
+"@atlaskit/theme@^2.2.9":
+  version "2.2.9"
+  resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-2.2.9.tgz#10243d606957f1e1ce8d20247b2f92807dd571d7"
+  dependencies:
+    prop-types "^15.5.10"
+    styled-components "^1.4.6"
+
 "@atlaskit/tooltip@^1.2.0":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/tooltip/-/tooltip-1.2.1.tgz#459ab9601f31b4ea0e8c6f5722f51efcc930d875"
@@ -751,6 +790,15 @@
   dependencies:
     "@atlaskit/layer-manager" "^2.5.3"
     "@atlaskit/theme" "^2.2.7"
+    react-transition-group "^2.2.1"
+    styled-components "^1.4.6"
+
+"@atlaskit/tooltip@^8.0.7":
+  version "8.0.10"
+  resolved "https://registry.yarnpkg.com/@atlaskit/tooltip/-/tooltip-8.0.10.tgz#bb287e025430f17681502d781aa8580070a1ea0d"
+  dependencies:
+    "@atlaskit/layer-manager" "^2.5.5"
+    "@atlaskit/theme" "^2.2.9"
     react-transition-group "^2.2.1"
     styled-components "^1.4.6"
 
@@ -3436,7 +3484,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-react-class@^15.5.3, create-react-class@^15.6.0:
+create-react-class@^15.5.3:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.2.tgz#cf1ed15f12aad7f14ef5f2dfe05e6c42f91ef02a"
   dependencies:
@@ -8404,7 +8452,7 @@ prop-types@15.5.10:
     fbjs "^0.8.9"
     loose-envify "^1.3.1"
 
-prop-types@^15.5.0, prop-types@^15.5.1, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.8:
+prop-types@^15.5.0, prop-types@^15.5.1, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.8, prop-types@^15.6.0:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
@@ -8648,6 +8696,12 @@ raf-stub@^2.0.1:
   dependencies:
     performance-now "2.1.0"
 
+raf@^3.1.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.0.tgz#a28876881b4bc2ca9117d4138163ddb80f781575"
+  dependencies:
+    performance-now "^2.1.0"
+
 railroad-diagrams@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/railroad-diagrams/-/railroad-diagrams-1.0.0.tgz#eb7e6267548ddedfb899c1b90e57374559cddb7e"
@@ -8713,6 +8767,21 @@ react-base16-styling@^0.5.1:
     lodash.flow "^3.3.0"
     pure-color "^1.2.0"
 
+react-beautiful-dnd@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-beautiful-dnd/-/react-beautiful-dnd-3.0.0.tgz#b07fb06111b7d6ae9908eb71033320fa849b1000"
+  dependencies:
+    babel-runtime "^6.26.0"
+    invariant "^2.2.2"
+    memoize-one "^3.0.1"
+    prop-types "^15.6.0"
+    raf-schd "^2.0.2"
+    react-motion "^0.5.2"
+    react-redux "^5.0.6"
+    redux "^3.7.2"
+    redux-thunk "^2.2.0"
+    reselect "^3.0.1"
+
 react-docgen@^2.13.0:
   version "2.20.0"
   resolved "https://registry.yarnpkg.com/react-docgen/-/react-docgen-2.20.0.tgz#41a6da483a34a4aaed041a9909f5e61864d681cb"
@@ -8732,14 +8801,14 @@ react-dock@^0.2.3:
     lodash.debounce "^3.1.1"
     prop-types "^15.5.8"
 
-react-dom@^15.6.1:
-  version "15.6.2"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.2.tgz#41cfadf693b757faf2708443a1d1fd5a02bef730"
+react-dom@^16.2.0:
+  version "16.2.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.2.0.tgz#69003178601c0ca19b709b33a83369fe6124c044"
   dependencies:
-    fbjs "^0.8.9"
+    fbjs "^0.8.16"
     loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.10"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
 
 react-ga@^2.3.5:
   version "2.3.5"
@@ -8799,7 +8868,15 @@ react-markings@^1.1.7:
     commonmark "^0.27.0"
     commonmark-react-renderer "^4.3.3"
 
-react-redux@^5.0.0:
+react-motion@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/react-motion/-/react-motion-0.5.2.tgz#0dd3a69e411316567927917c6626551ba0607316"
+  dependencies:
+    performance-now "^0.2.0"
+    prop-types "^15.5.8"
+    raf "^3.1.0"
+
+react-redux@^5.0.0, react-redux@^5.0.6:
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.6.tgz#23ed3a4f986359d68b5212eaaa681e60d6574946"
   dependencies:
@@ -8898,15 +8975,14 @@ react-virtualized@^9.8.0:
     loose-envify "^1.3.0"
     prop-types "^15.5.4"
 
-react@^15.6.1:
-  version "15.6.2"
-  resolved "https://registry.yarnpkg.com/react/-/react-15.6.2.tgz#dba0434ab439cfe82f108f0f511663908179aa72"
+react@^16.2.0:
+  version "16.2.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.2.0.tgz#a31bd2dab89bff65d42134fa187f24d054c273ba"
   dependencies:
-    create-react-class "^15.6.0"
-    fbjs "^0.8.9"
+    fbjs "^0.8.16"
     loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.10"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
 
 read-all-stream@^3.0.0:
   version "3.1.0"
@@ -9054,6 +9130,10 @@ reduce-function-call@^1.0.1:
   resolved "https://registry.yarnpkg.com/reduce-function-call/-/reduce-function-call-1.0.2.tgz#5a200bf92e0e37751752fe45b0ab330fd4b6be99"
   dependencies:
     balanced-match "^0.4.2"
+
+redux-thunk@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.2.0.tgz#e615a16e16b47a19a515766133d1e3e99b7852e5"
 
 redux@^3.7.2:
   version "3.7.2"
@@ -9249,6 +9329,10 @@ requireindex@^1.1.0:
 requires-port@1.0.x, requires-port@1.x.x:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
+
+reselect@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/reselect/-/reselect-3.0.1.tgz#efdaa98ea7451324d092b2b2163a6a1d7a9a2147"
 
 resolve-async@^1.0.1:
   version "1.0.1"
