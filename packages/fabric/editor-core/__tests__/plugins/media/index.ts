@@ -514,6 +514,24 @@ describe('Media plugin', () => {
     }
   });
 
+  it('should hide any existing popup picker when new media provider is set', async () => {
+    const { pluginState } = editor(doc(h1('text{<>}')));
+    expect(pluginState.pickers.length).toBe(0);
+
+    const mediaProvider1 = getFreshMediaProvider();
+    pluginState.setMediaProvider(mediaProvider1);
+    const resolvedMediaProvider1 = await mediaProvider1;
+    await resolvedMediaProvider1.uploadContext;
+
+    const spy = jest.spyOn((pluginState as any).popupPicker, 'hide');
+
+    const mediaProvider2 = getFreshMediaProvider();
+    pluginState.setMediaProvider(mediaProvider2);
+    const resolvedMediaProvider2 = await mediaProvider2;
+    await resolvedMediaProvider2.uploadContext;
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
   it('should set new upload params for existing pickers when new media provider is set', async () => {
     const { pluginState } = editor(doc(h1('text{<>}')));
     expect(pluginState.pickers.length).toBe(0);

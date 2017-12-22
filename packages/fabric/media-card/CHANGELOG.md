@@ -1,5 +1,9 @@
 # @atlaskit/media-image
 
+## 23.1.0
+
+- [minor] Added new AppCardView v1.5 designs behind a feature flag. [92bc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92bc6c8)
+
 ## 23.0.3
 
 ## 23.0.2
