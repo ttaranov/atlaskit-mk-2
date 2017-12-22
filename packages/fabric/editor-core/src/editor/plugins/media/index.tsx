@@ -53,7 +53,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
     );
   },
 
-  contentComponent(editorView) {
+  contentComponent({ editorView }) {
     const pluginState = pluginKey.getState(editorView.state);
 
     return <MediaSingleEdit pluginState={pluginState} />;
