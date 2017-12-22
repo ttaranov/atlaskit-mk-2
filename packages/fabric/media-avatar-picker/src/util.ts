@@ -1,4 +1,11 @@
-export function dataURItoFile(dataURI): File {
+export function dataURItoFile(
+  dataURI: string,
+  filename: string = 'untitled',
+): File {
+  if (dataURI.length === 0) {
+    throw new Error('dataURI not found');
+  }
+
   // convert base64/URLEncoded data component to raw binary data held in a string
   const byteString =
     dataURI.split(',')[0].indexOf('base64') >= 0
@@ -6,10 +13,16 @@ export function dataURItoFile(dataURI): File {
       : decodeURIComponent(dataURI.split(',')[1]);
 
   // separate out the mime component
-  const mimeString = dataURI
-    .split(',')[0]
-    .split(':')[1]
-    .split(';')[0];
+  let mimeString;
+  try {
+    mimeString = dataURI
+      .split(',')[0]
+      .split(':')[1]
+      .split(';')[0];
+  } catch (e) {
+    // throw new Error(`Cannot parse mimeString of dataUri: "${dataURI}"`);
+    mimeString = 'unknown';
+  }
 
   // write the bytes of the string to a typed array
   const intArray = new Uint8Array(byteString.length);
@@ -18,7 +31,7 @@ export function dataURItoFile(dataURI): File {
   }
 
   const blob = new Blob([intArray], { type: mimeString });
-  return new File([blob], dataURI, { type: mimeString });
+  return new File([blob], filename, { type: mimeString });
 }
 
 export function fileToDataURI(file: File): Promise<string> {

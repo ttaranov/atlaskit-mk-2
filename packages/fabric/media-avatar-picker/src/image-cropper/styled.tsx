@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { akBorderRadius } from '@atlaskit/util-shared-styles';
+import { akBorderRadius, akColorN50A } from '@atlaskit/util-shared-styles';
 
 export const Container = styled.div`
   position: relative;
@@ -17,7 +17,7 @@ export const Image = styled.img`
   user-select: none; /* Likely future */
 `;
 
-export const containerPadding = 20;
+export const containerPadding = 28;
 
 const Mask = styled.div`
   position: absolute;
@@ -41,4 +41,24 @@ export const DragOverlay = styled.div`
   width: 100%;
   height: 100%;
   cursor: move;
+`;
+
+export const RemoveImageContainer = styled.div`
+  position: absolute;
+  right: 4px;
+  top: 4px;
+`;
+
+export const RemoveImageButton = styled.button`
+  border-radius: ${akBorderRadius};
+  background-color: transparent;
+  width: 24px;
+  height: 24px;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    background-color: ${akColorN50A};
+  }
 `;
