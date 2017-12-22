@@ -15,5 +15,5 @@ function getChildrenData(parent = staticData) {
 }
 
 export default () => (
-  <TreeTable columns={[Title, Numbering]} data={getChildrenData} />
+  <TreeTable columns={[Title, Numbering]} items={getChildrenData} />
 );

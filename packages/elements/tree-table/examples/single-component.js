@@ -19,6 +19,6 @@ export default () => (
     headers={['Title', 'Numbering']}
     columns={[Title, Numbering]}
     columnWidths={['200px', '200px']}
-    data={getChildrenData}
+    items={getChildrenData}
   />
 );

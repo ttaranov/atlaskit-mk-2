@@ -5,7 +5,7 @@ import Items from './Items';
 import { type DataFunction, type RenderFunction } from './../types';
 
 type Props = {
-  data: DataFunction,
+  items: DataFunction,
   render: RenderFunction,
 };
 
@@ -20,7 +20,7 @@ export default class Rows extends PureComponent<Props, State> {
 
   componentDidMount() {
     Promise.resolve()
-      .then(() => this.props.data())
+      .then(() => this.props.items())
       .then(rootRowsData => {
         this.setState({
           rootRowsData,
@@ -30,12 +30,12 @@ export default class Rows extends PureComponent<Props, State> {
 
   render() {
     const { rootRowsData } = this.state;
-    const { data, render } = this.props;
+    const { items, render } = this.props;
     return (
       <div>
         <Items
           childrenData={rootRowsData}
-          getChildrenData={data}
+          getChildrenData={items}
           render={render}
         />
       </div>

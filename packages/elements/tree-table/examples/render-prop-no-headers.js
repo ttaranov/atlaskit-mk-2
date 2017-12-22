@@ -18,7 +18,7 @@ function getChildrenData(parent) {
 export default () => (
   <TreeTable>
     <Rows
-      data={getChildrenData}
+      items={getChildrenData}
       render={({ title, numbering, page, children }) => (
         <Row key={numbering} hasChildren={children.length > 0}>
           <Cell width={300}>{title}</Cell>

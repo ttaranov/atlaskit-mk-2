@@ -23,7 +23,7 @@ export default () => (
       <Header width={100}>Page</Header>
     </Headers>
     <Rows
-      data={getChildrenData}
+      items={getChildrenData}
       render={({ title, numbering, page, children }) => (
         <Row key={numbering} hasChildren={children.length > 0}>
           <Cell>{title}</Cell>

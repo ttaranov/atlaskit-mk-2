@@ -23,7 +23,7 @@ type Props = {
   children?: Node,
 
   /** The function that will be used to provide data for rows at a particular level in the hierarchy */
-  data?: DataFunction,
+  items?: DataFunction,
 };
 
 type State = {
@@ -71,7 +71,7 @@ export default class TreeTable extends Component<Props, State> {
 
   render() {
     const {
-      data: getRowChildrenData,
+      items: getRowChildrenData,
       headers,
       columns,
       columnWidths = [],
@@ -90,7 +90,7 @@ export default class TreeTable extends Component<Props, State> {
     if (columns && getRowChildrenData) {
       rows = (
         <Rows
-          data={getRowChildrenData}
+          items={getRowChildrenData}
           render={data => (
             <Row key={data.id} hasChildren={data.hasChildren}>
               {columns.map((CellContent, index) => (
