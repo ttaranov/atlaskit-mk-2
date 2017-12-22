@@ -127,7 +127,7 @@ export default class Editor extends React.Component<
         <ContentArea innerRef={this.handleRef}>
           {customContentComponents}
           <PluginSlot
-            disabled={disabled}
+            disabled={!!disabled}
             editorView={editorView}
             eventDispatcher={eventDispatcher}
             providerFactory={providerFactory}
