@@ -7,7 +7,7 @@ type Props = {
   children: ChildrenArray<Element<typeof Header>>,
 };
 
-export default class HeadersRow extends PureComponent<Props> {
+export default class Headers extends PureComponent<Props> {
   render() {
     return (
       <TreeRowContainer>

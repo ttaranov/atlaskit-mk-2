@@ -2,11 +2,11 @@
 import React, { Component, type ElementType, type Node } from 'react';
 import PropTypes from 'prop-types';
 import { TreeTableContainer } from '../styled';
-import TreeRows from './TreeRows';
-import RowData from './RowData';
-import HeadersRow from './HeadersRow';
+import Rows from './Rows';
+import Row from './Row';
+import Headers from './Headers';
 import Header from './Header';
-import DataCell from './DataCell';
+import Cell from './Cell';
 
 import { type DataFunction, type CSSWidth } from './../types';
 
@@ -77,33 +77,33 @@ export default class TreeTable extends Component<Props, State> {
       columnWidths = [],
     } = this.props;
     const heads = headers && (
-      <HeadersRow>
+      <Headers>
         {headers.map((header, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <Header key={index} columnIndex={index} width={columnWidths[index]}>
             {header}
           </Header>
         ))}
-      </HeadersRow>
+      </Headers>
     );
     let rows = null;
     if (columns && getRowChildrenData) {
       rows = (
-        <TreeRows
+        <Rows
           data={getRowChildrenData}
           render={data => (
-            <RowData key={data.id} hasChildren={data.hasChildren}>
-              {columns.map((Cell, index) => (
-                <DataCell
+            <Row key={data.id} hasChildren={data.hasChildren}>
+              {columns.map((CellContent, index) => (
+                <Cell
                   // eslint-disable-next-line react/no-array-index-key
                   key={index}
                   columnIndex={index}
                   width={columnWidths[index]}
                 >
-                  <Cell {...data.content} />
-                </DataCell>
+                  <CellContent {...data.content} />
+                </Cell>
               ))}
-            </RowData>
+            </Row>
           )}
         />
       );

@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import RowChildren from './RowChildren';
+import Items from './Items';
 
 import { type DataFunction, type RenderFunction } from './../types';
 
@@ -13,7 +13,7 @@ type State = {
   rootRowsData: ?Array<Object>,
 };
 
-export default class TreeRows extends PureComponent<Props, State> {
+export default class Rows extends PureComponent<Props, State> {
   state: State = {
     rootRowsData: null,
   };
@@ -33,7 +33,7 @@ export default class TreeRows extends PureComponent<Props, State> {
     const { data, render } = this.props;
     return (
       <div>
-        <RowChildren
+        <Items
           childrenData={rootRowsData}
           getChildrenData={data}
           render={render}

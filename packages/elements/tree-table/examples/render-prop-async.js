@@ -1,12 +1,6 @@
 // @flow
 import React from 'react';
-import TreeTable, {
-  HeadersRow,
-  Header,
-  TreeRows,
-  RowData,
-  DataCell,
-} from '../src';
+import TreeTable, { Headers, Header, Rows, Row, Cell } from '../src';
 import staticData from './data-cleancode-toc.json';
 
 function fetchRoots() {
@@ -23,19 +17,19 @@ function getChildrenData(parent) {
 
 export default () => (
   <TreeTable>
-    <HeadersRow>
+    <Headers>
       <Header width={200}>Chapter title</Header>
       <Header width={100}>Numbering</Header>
       <Header width={100}>Page</Header>
-    </HeadersRow>
-    <TreeRows
+    </Headers>
+    <Rows
       data={getChildrenData}
       render={({ title, numbering, page, children }) => (
-        <RowData key={numbering} hasChildren={children.length > 0}>
-          <DataCell>{title}</DataCell>
-          <DataCell>{numbering}</DataCell>
-          <DataCell>{page}</DataCell>
-        </RowData>
+        <Row key={numbering} hasChildren={children.length > 0}>
+          <Cell>{title}</Cell>
+          <Cell>{numbering}</Cell>
+          <Cell>{page}</Cell>
+        </Row>
       )}
     />
   </TreeTable>
