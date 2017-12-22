@@ -59,6 +59,7 @@ converters.external = type => {
   if (type.importKind === 'value') {
     return `${type.moduleSpecifier}.${type.name}`;
   }
+  // eslint-disable-next-line no-console
   console.warn('could not convert external', type);
   return '';
 };
