@@ -21,7 +21,6 @@ import ToolbarButton from '../../src/ui/ToolbarButton';
 import { MediaProvider } from '@atlaskit/media-core';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { analyticsService } from '../../src/analytics';
-import EditorWidth from '../../src/utils/editor-width';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
 
@@ -56,7 +55,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     analyticsService.trackEvent = trackEvent;
   });
 
-  it('should render disabled ToolbarButtons if isDisabled property is true', () => {
+  it('should render disabled DropdownMenu trigger if isDisabled property is true', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarInsertBlock
@@ -68,6 +67,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
             .availableWrapperBlockTypes
         }
         isDisabled={true}
+        buttons={0}
+        isReducedSpacing={false}
       />,
     );
     expect(toolbarOption.find(ToolbarButton).prop('disabled')).toEqual(true);
@@ -76,7 +77,13 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
 
   it('should return null if none of the plugins are present', () => {
     const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(<ToolbarInsertBlock editorView={editorView} />);
+    const toolbarOption = mount(
+      <ToolbarInsertBlock
+        editorView={editorView}
+        buttons={5}
+        isReducedSpacing={false}
+      />,
+    );
     expect(toolbarOption.html()).toEqual(null);
     toolbarOption.unmount();
   });
@@ -92,7 +99,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         mentionsSupported={true}
         mentionsEnabled={false}
         editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint5 - 1}
+        buttons={0}
+        isReducedSpacing={false}
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
@@ -110,7 +118,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         emojiDisabled={false}
         emojiProvider={emojiProvider}
         editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint5 - 1}
+        buttons={5}
+        isReducedSpacing={false}
       />,
     );
     toolbarOption.setState({ emojiPickerOpen: true });
@@ -126,7 +135,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         emojiDisabled={false}
         emojiProvider={emojiProvider}
         editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint4 - 1}
+        buttons={0}
+        isReducedSpacing={false}
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
@@ -145,7 +155,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         emojiDisabled={false}
         emojiProvider={emojiProvider}
         editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint5 - 1}
+        buttons={0}
+        isReducedSpacing={false}
       />,
     );
     toolbarOption.setState({ emojiPickerOpen: true });
@@ -160,46 +171,11 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         mediaSupported={true}
         mediaUploadsEnabled={true}
         editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint6 - 1}
+        buttons={5}
+        isReducedSpacing={false}
       />,
     );
     expect(toolbarOption.find(ToolbarButton).length).toEqual(1);
-    toolbarOption.unmount();
-  });
-
-  it('should have spacing of toolbar button set to none if editorWidth is not defined', () => {
-    const { editorView } = editor(doc(p('text')));
-    const pluginStateBlockType = blockTypePluginsSet[0].getState(
-      editorView.state,
-    );
-    const toolbarOption = mount(
-      <ToolbarInsertBlock
-        editorView={editorView}
-        availableWrapperBlockTypes={
-          pluginStateBlockType.availableWrapperBlockTypes
-        }
-      />,
-    );
-    expect(toolbarOption.find(ToolbarButton).prop('spacing')).toEqual('none');
-    toolbarOption.unmount();
-  });
-
-  it('should have spacing of toolbar button set to none if editorWidth is less then BreakPoint10', () => {
-    const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarInsertBlock
-        mediaSupported={true}
-        mediaUploadsEnabled={true}
-        editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint10 - 1}
-      />,
-    );
-    expect(
-      toolbarOption
-        .find(ToolbarButton)
-        .first()
-        .prop('spacing'),
-    ).toEqual('none');
     toolbarOption.unmount();
   });
 
@@ -212,7 +188,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         mediaUploadsEnabled={true}
         onShowMediaPicker={spy}
         editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint6 - 1}
+        buttons={0}
+        isReducedSpacing={false}
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
@@ -224,32 +201,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     expect(trackEvent).toHaveBeenCalledWith(
       'atlassian.editor.format.media.button',
     );
-    toolbarOption.unmount();
-  });
-
-  it('should have spacing of toolbar button set to default if editorWidth is greater then BreakPoint10', () => {
-    const { editorView } = editor(doc(p('text')));
-    const spy = jest.fn();
-    const toolbarOption = mount(
-      <ToolbarInsertBlock
-        mediaSupported={true}
-        mediaUploadsEnabled={true}
-        onShowMediaPicker={spy}
-        editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint10 + 1}
-      />,
-    );
-    toolbarOption.find(ToolbarButton).simulate('click');
-    const mediaButton = toolbarOption
-      .find(Item)
-      .filterWhere(n => n.text().indexOf('Files and images') >= 0);
-    mediaButton.simulate('click');
-    expect(
-      toolbarOption
-        .find(ToolbarButton)
-        .first()
-        .prop('spacing'),
-    ).toEqual('default');
     toolbarOption.unmount();
   });
 
@@ -267,6 +218,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         }
         onInsertBlockType={spy}
         editorView={editorView}
+        buttons={0}
+        isReducedSpacing={false}
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
@@ -298,6 +251,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         }
         onInsertBlockType={spy}
         editorView={editorView}
+        buttons={0}
+        isReducedSpacing={false}
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
@@ -329,6 +284,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         }
         onInsertBlockType={spy}
         editorView={editorView}
+        buttons={0}
+        isReducedSpacing={false}
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
@@ -351,7 +308,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         tableSupported={true}
         tableHidden={false}
         editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint3 - 1}
+        buttons={0}
+        isReducedSpacing={false}
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
@@ -378,6 +336,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         macroProvider={macroProvider}
         onInsertMacroFromMacroBrowser={() => insertMacroFromMacroBrowser}
         editorView={editorView}
+        buttons={0}
+        isReducedSpacing={false}
       />,
     );
 
@@ -401,7 +361,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
           tableSupported={true}
           tableHidden={false}
           editorView={editorView}
-          editorWidth={EditorWidth.BreakPoint3 - 1}
+          buttons={0}
+          isReducedSpacing={false}
         />,
       );
       toolbarOption.find(ToolbarButton).simulate('click');
@@ -423,101 +384,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
             pluginStateBlockType.availableWrapperBlockTypes
           }
           editorView={editorView}
+          buttons={0}
+          isReducedSpacing={false}
         />,
       );
       const items = toolbarOption.find(DropdownMenu).prop('items');
       expect((items[0] as any).items.length).toEqual(3);
-      toolbarOption.unmount();
-    });
-
-    it('should have link option in dropdown if the width is greater then BreakPoint7', () => {
-      const { editorView } = editor(doc(p('text')));
-      const toolbarOption = mount(
-        <ToolbarInsertBlock
-          editorView={editorView}
-          editorWidth={EditorWidth.BreakPoint7 - 1}
-        />,
-      );
-      toolbarOption.find(ToolbarButton).simulate('click');
-      expect(
-        toolbarOption
-          .find('Item')
-          .filterWhere(n => n.html().indexOf('Add link') > -1).length,
-      ).toEqual(1);
-      toolbarOption.unmount();
-    });
-
-    it('should have media option in dropdown if the width is less then BreakPoint6', () => {
-      const { editorView } = editor(doc(p('text')));
-      const toolbarOption = mount(
-        <ToolbarInsertBlock
-          mediaSupported={true}
-          mediaUploadsEnabled={true}
-          editorView={editorView}
-          editorWidth={EditorWidth.BreakPoint6 - 1}
-        />,
-      );
-      toolbarOption.find(ToolbarButton).simulate('click');
-      expect(
-        toolbarOption
-          .find('Item')
-          .filterWhere(n => n.html().indexOf('Files and images') > -1).length,
-      ).toEqual(1);
-      toolbarOption.unmount();
-    });
-
-    it('should have mention option in dropdown if the width is greater then BreakPoint5', () => {
-      const { editorView } = editor(doc(p('text')));
-      const toolbarOption = mount(
-        <ToolbarInsertBlock
-          mentionsSupported={true}
-          mentionsEnabled={true}
-          editorView={editorView}
-          editorWidth={EditorWidth.BreakPoint5 - 1}
-        />,
-      );
-      toolbarOption.find(ToolbarButton).simulate('click');
-      expect(
-        toolbarOption
-          .find('Item')
-          .filterWhere(n => n.html().indexOf('Mention') > -1).length,
-      ).toEqual(1);
-      toolbarOption.unmount();
-    });
-
-    it('should have emoji option in dropdown if the width is greater then BreakPoint4', () => {
-      const { editorView } = editor(doc(p('text')));
-      const toolbarOption = mount(
-        <ToolbarInsertBlock
-          emojiProvider={emojiProvider}
-          editorView={editorView}
-          editorWidth={EditorWidth.BreakPoint4 - 1}
-        />,
-      );
-      toolbarOption.find(ToolbarButton).simulate('click');
-      expect(
-        toolbarOption
-          .find('Item')
-          .filterWhere(n => n.html().indexOf('Emoji') > -1).length,
-      ).toEqual(1);
-      toolbarOption.unmount();
-    });
-
-    it('should have table option if width is less then BreakPoint3', () => {
-      const { editorView } = editor(doc(p('text')));
-      const toolbarOption = mount(
-        <ToolbarInsertBlock
-          tableSupported={true}
-          editorView={editorView}
-          editorWidth={EditorWidth.BreakPoint3 - 1}
-        />,
-      );
-      toolbarOption.find(ToolbarButton).simulate('click');
-      expect(
-        toolbarOption
-          .find('Item')
-          .filterWhere(n => n.html().indexOf('Table') > -1).length,
-      ).toEqual(1);
       toolbarOption.unmount();
     });
   });
