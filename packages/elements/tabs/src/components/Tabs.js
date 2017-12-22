@@ -93,8 +93,7 @@ export default class Tabs extends Component<TabsProps, TabsState> {
     const { components, tabs } = this.props;
     const { selected } = this.state;
 
-    const renderComponents = { ...defaultComponents, ...components };
-    const { Content, Item } = renderComponents;
+    const { Content, Item } = { ...defaultComponents, ...components };
     const contentProps = {
       data: selected,
       elementProps: {
