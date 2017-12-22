@@ -1,0 +1,49 @@
+// @flow
+import React, { Component } from 'react';
+import { AkFieldRadioGroup } from '../src';
+import type { ItemsPropType } from '../src/types';
+
+type State = {
+  value: string | number,
+  items: ItemsPropType,
+};
+export default class StatelessExample extends Component<void, State> {
+  state = {
+    value: '',
+    items: [
+      { name: 'color', value: 'red', label: 'Red' },
+      { name: 'color', value: 'blue', label: 'Blue' },
+      { name: 'color', value: 'yellow', label: 'Yellow' },
+    ],
+  };
+
+  setValue = (e: any) => {
+    this.setState({
+      value: e.target.value,
+    });
+  };
+
+  render() {
+    return (
+      <div>
+        <AkFieldRadioGroup
+          items={this.state.items}
+          label="Pick a color:"
+          onRadioChange={this.setValue}
+        />
+        <div
+          style={{
+            borderStyle: 'dashed',
+            borderWidth: '1px',
+            borderColor: '#ccc',
+            padding: '0.5em',
+            color: '#ccc',
+            margin: '0.5em',
+          }}
+        >
+          onRadioChange called with value: {this.state.value}
+        </div>
+      </div>
+    );
+  }
+}

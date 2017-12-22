@@ -1,10 +1,12 @@
+// @flow
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Base from '@atlaskit/field-base';
 
-import Radio from '../../src/components/RadioBase';
-import AkFieldRadioGroup from '../../src/components/RadioGroupStateless';
+import Radio from '../../src/RadioBase';
+import AkFieldRadioGroup from '../../src/RadioGroupStateless';
 import { name } from '../../package.json';
+import type { ItemPropTypeSmart } from '../types';
 
 describe(name, () => {
   describe('AkFieldRadioGroup (stateless)', () => {
@@ -48,7 +50,7 @@ describe(name, () => {
           const radios = wrapper.find(Radio);
           for (let i = 0; i < sampleItems.length; i++) {
             const radio = radios.at(i);
-            const item = sampleItems[i];
+            const item: ItemPropTypeSmart = sampleItems[i];
             expect(radio.prop('name')).toBe(item.name);
             expect(radio.prop('value')).toBe(item.value);
             expect(radio.prop('children')).toBe(item.label);

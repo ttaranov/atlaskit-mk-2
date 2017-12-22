@@ -1,13 +1,15 @@
+// @flow
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
 import FieldRadioGroup, { AkFieldRadioGroup } from '../../src';
 import { name } from '../../package.json';
-import Radio from '../../src/components/RadioBase';
+import Radio from '../../src/RadioBase';
+import type { ItemsPropTypeSmart } from '../types';
 
 describe(name, () => {
   describe('FieldRadioGroup (smart)', () => {
-    const sampleItems = [
+    const sampleItems: ItemsPropTypeSmart = [
       { name: 'test', value: '1', label: 'one' },
       { name: 'test', value: '2', label: 'two' },
       { name: 'test', value: '3', label: <i>three</i>, isDisabled: true },
@@ -67,7 +69,9 @@ describe(name, () => {
       });
 
       describe('items prop with defaultValue', () => {
-        const sampleItemsWithDefault = sampleItems.map(item => ({ ...item }));
+        const sampleItemsWithDefault: ItemsPropTypeSmart = sampleItems.map(
+          item => ({ ...item }),
+        );
         sampleItemsWithDefault[2].defaultSelected = true;
 
         it('selects the item by default', () => {

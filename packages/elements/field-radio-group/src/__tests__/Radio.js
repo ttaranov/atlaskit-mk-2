@@ -1,8 +1,9 @@
+// @flow
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
-import AkRadio from '../../src/components/Radio';
-import Radio from '../../src/components/RadioBase';
+import AkRadio from '../../src/Radio';
+import Radio from '../../src/RadioBase';
 import { name } from '../../package.json';
 
 describe(name, () => {
@@ -25,7 +26,7 @@ describe(name, () => {
         const content = 'content';
         const wrapper = mount(<Radio onChange={() => {}}>{content}</Radio>);
         expect(wrapper.find('input').length).toBe(1);
-        expect(wrapper.text()).toBe(`radioIcon${content}`);
+        expect(wrapper.text()).toBe(content);
       });
 
       it('should render content with markup correctly', () => {
