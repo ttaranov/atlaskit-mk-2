@@ -94,7 +94,11 @@ function Indent(props: { children: Node }) {
 }
 
 function resolveFromGeneric(type) {
-  if (type.typeParams && type.value.name === 'Array') return type;
+  if (type.typeParams && type.value.name === 'Array') {
+    // If a generic type is an Array, we don't want to just return the value,
+    // But also the entire type object, so we can parse the typeParams later on.
+    return type;
+  }
   if (type.value.kind === 'generic') {
     return resolveFromGeneric(type.value);
   }
@@ -107,6 +111,8 @@ function print(startType, depth = 1) {
 
   if (type.kind === 'generic') {
     if (type.value && type.value.name === 'Array') {
+      // As Flow does not know what the keyword Array<T> means, we're doing a check here for generic types with a nominal value of 'Array'
+      // If a type meets this criteria, we print out its contents as per below.
       return (
         <span>
           <TypeMeta>
