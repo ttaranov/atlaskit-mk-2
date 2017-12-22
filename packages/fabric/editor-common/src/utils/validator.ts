@@ -356,11 +356,17 @@ export const getValidNode = (
         break;
       }
       case 'inlineExtension':
-      case 'bodiedExtension':
       case 'extension': {
         if (attrs && attrs.extensionType && attrs.extensionKey) {
-          // we want to keep the oringinal Atlassian Document Content here
-          attrs.originalContent = JSON.parse(JSON.stringify(content));
+          return {
+            type,
+            attrs,
+          };
+        }
+        break;
+      }
+      case 'bodiedExtension': {
+        if (attrs && attrs.extensionType && attrs.extensionKey && content) {
           return {
             type,
             attrs,

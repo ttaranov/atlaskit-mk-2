@@ -4,7 +4,6 @@ jest.mock('../src/utils/breakpoint');
 import { shallow, mount } from 'enzyme';
 import { FileDetails, LinkDetails } from '@atlaskit/media-core';
 
-import { ErrorWrapper } from '../src/links/cardGenericView/styled';
 import { Retry } from '../src/utils/cardGenericViewSmall/styled';
 import { CardView } from '../src/root/cardView';
 import { LinkCard } from '../src/links';
@@ -136,19 +135,6 @@ describe('CardView', () => {
     expect(hoverHandlerArg.mediaItemDetails).toEqual(link);
   });
 
-  it('should fire onRetry when there is an error and callback is passed', () => {
-    const onRetryHandler = jest.fn();
-    const card = mount(
-      <CardView status="error" metadata={link} onRetry={onRetryHandler} />,
-    );
-
-    card
-      .find(ErrorWrapper)
-      .find('button')
-      .simulate('click');
-    expect(onRetryHandler).toHaveBeenCalledTimes(1);
-  });
-
   it('should render retry element for small cards when an error occurs', () => {
     const onRetryHandler = jest.fn();
     const linkCard = mount(
@@ -222,23 +208,79 @@ describe('CardView', () => {
     expect(card.find('MediaImage').prop('crop')).toBe(false);
   });
 
-  it('should render wrapper with correct breakpoint size', () => {
-    const dimensions = { width: '100%', height: '50%' };
+  describe('Dimensions', () => {
+    it('should render wrapper with correct breakpoint size', () => {
+      const dimensions = { width: '100%', height: '50%' };
 
-    (breakpointSize as jest.Mock<void>).mockReturnValue('small');
-    const card = shallow(
-      <CardView status="complete" metadata={file} dimensions={dimensions} />,
-    );
-    expect(breakpointSize).toHaveBeenCalledWith('100%');
+      (breakpointSize as jest.Mock<void>).mockReturnValue('small');
+      const card = shallow(
+        <CardView status="complete" metadata={file} dimensions={dimensions} />,
+      );
+      expect(breakpointSize).toHaveBeenCalledWith('100%');
 
-    expect(card.find(Wrapper).props().breakpointSize).toEqual('small');
-  });
+      expect(card.find(Wrapper).props().breakpointSize).toEqual('small');
+    });
 
-  it('should render wrapper with default dimensions when dimensions are not provided', () => {
-    const card = shallow(<CardView status="complete" metadata={file} />);
-    expect(card.find(Wrapper).props().dimensions).toEqual({
-      width: 156,
-      height: 125,
+    it('should render wrapper with default dimensions based on default appearance when dimensions and appearance are not provided', () => {
+      const card = shallow(<CardView status="complete" metadata={file} />);
+      expect(card.find(Wrapper).props().dimensions).toEqual({
+        width: 156,
+        height: 125,
+      });
+    });
+
+    it('should use default dimensions based on passed appearance', () => {
+      const card = shallow(
+        <CardView status="complete" metadata={file} appearance="small" />,
+      );
+      expect(card.find(Wrapper).props().dimensions).toEqual({
+        width: '100%',
+        height: 42,
+      });
+    });
+
+    it('should use passed dimensions when provided', () => {
+      const card = shallow(
+        <CardView
+          status="complete"
+          metadata={file}
+          appearance="small"
+          dimensions={{ width: '70%', height: 100 }}
+        />,
+      );
+      expect(card.find(Wrapper).props().dimensions).toEqual({
+        width: '70%',
+        height: 100,
+      });
+    });
+
+    it('should use item type to calculate default dimensions', () => {
+      const card = shallow(
+        <CardView status="complete" mediaItemType="file" metadata={file} />,
+      );
+      const props = card.find(Wrapper).props();
+
+      expect(props.dimensions).toEqual({
+        width: 156,
+        height: 125,
+      });
+      expect(props.mediaItemType).toEqual('file');
+    });
+
+    it('should not use default dimensions for link cards', () => {
+      const implicitLinkCard = shallow(
+        <CardView status="complete" metadata={link} />,
+      );
+      const explicitLinkCard = shallow(
+        <CardView status="complete" mediaItemType="link" metadata={file} />,
+      );
+
+      expect(implicitLinkCard.find(Wrapper).props().dimensions).toEqual(
+        undefined,
+      );
+      expect(explicitLinkCard.find(Wrapper).props().dimensions).toEqual(
+        undefined,
+      );
     });
   });
 });

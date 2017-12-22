@@ -1,26 +1,16 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import styled from 'styled-components';
-import { ProsemirrorGetPosHandler, ReactNodeProps } from './';
+import { Node as PMNode } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
+import { CardDimensions } from '@atlaskit/media-card';
+
 import UIMedia from '../../ui/Media';
 import ProviderFactory from '../../providerFactory';
 import {
   MediaPluginState,
   stateKey as mediaStateKey,
 } from '../../plugins/media';
-import { Node as PMNode } from 'prosemirror-model';
-import { EditorView } from 'prosemirror-view';
-import { CardDimensions } from '@atlaskit/media-card';
-
-// tslint:disable-next-line:variable-name
-const Wrapper = styled.div`
-  margin: 0;
-  display: inline-block;
-  verticalAlign: middle;
-  userSelect: all;
-  border: 3px solid ${props => (props.selected ? '#8cf' : 'transparent')}
-  border-radius: 5px;
-`;
+import { ProsemirrorGetPosHandler, ReactNodeProps } from './';
 
 export interface MediaNodeProps extends ReactNodeProps {
   getPos: ProsemirrorGetPosHandler;
@@ -29,6 +19,8 @@ export interface MediaNodeProps extends ReactNodeProps {
   providerFactory: ProviderFactory;
   cardDimensions: CardDimensions;
 }
+
+const getId = (props: MediaNodeProps) => props.node.attrs.id;
 
 export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
   private pluginState: MediaPluginState;
@@ -50,7 +42,6 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
   }
 
   shouldComponentUpdate(nextProps) {
-    const getId = (props: MediaNodeProps) => props.node.attrs.id;
     return (
       getId(nextProps) !== getId(this.props) ||
       nextProps.selected !== this.props.selected
@@ -68,18 +59,17 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
     const { id, type, collection } = node.attrs;
 
     return (
-      <Wrapper selected={selected}>
-        <UIMedia
-          key={`medianode-${id}`}
-          editorView={view}
-          id={id!}
-          type={type!}
-          collection={collection!}
-          providers={providerFactory}
-          cardDimensions={cardDimensions}
-          onDelete={this.handleRemove}
-        />
-      </Wrapper>
+      <UIMedia
+        key={`medianode-${id}`}
+        editorView={view}
+        id={id!}
+        type={type!}
+        collection={collection!}
+        providers={providerFactory}
+        cardDimensions={cardDimensions}
+        onDelete={this.handleRemove}
+        selected={selected}
+      />
     );
   }
 

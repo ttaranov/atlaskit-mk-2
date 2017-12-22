@@ -36,6 +36,10 @@ const ModalContent = styled.div`
   min-height: 240px;
   padding-bottom: 20px;
 `;
+
+// This seems to be an issue with styledComponent flow type compatibility
+// intersection type incompatible with expected param type of React.Component.
+// $FlowFixMe:
 const ModalHeader = styled(OgModalHeader)`
   margin-left: 20px;
   margin-right: 20px;

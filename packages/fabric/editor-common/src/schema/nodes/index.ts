@@ -27,11 +27,15 @@ export {
   MediaType,
   Attributes as MediaAttributes,
   DisplayType as MediaDisplayType,
-  copyOptionalAttrs as copyOptionalMediaAttributes,
+  copyPrivateAttributes as copyPrivateMediaAttributes,
   toJSON as mediaToJSON,
 } from './media';
 export { mediaGroup } from './media-group';
-export { mediaSingle, Layout } from './media-single';
+export {
+  mediaSingle,
+  Layout as MediaSingleLayout,
+  Attributes as MediaSingleAttributes,
+} from './media-single';
 export { table, tableCell, tableHeader, tableRow } from './tableNodes';
 export {
   applicationCard,

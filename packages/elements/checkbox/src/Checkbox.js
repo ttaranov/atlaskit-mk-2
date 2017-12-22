@@ -20,7 +20,7 @@ type Props = {|
   /** Function that is called whenever the state of the checkbox changes. It will
   be called with an object containing the react synthetic event as well as the
   new state of the checkbox. */
-  onChange?: ({ event: Event, isChecked: boolean }) => mixed,
+  onChange?: ({ event: SyntheticEvent<any>, isChecked: boolean }) => mixed,
   /** The value to be used in the checkbox input. This is the value that will
    be returned on form submission. */
   value: number | string,
@@ -40,7 +40,9 @@ export default class Checkbox extends Component<Props, State> {
 
   state = { isChecked: !!this.props.initiallyChecked };
 
-  onChange = (event: Event & { currentTarget: HTMLInputElement }) => {
+  onChange = (
+    event: SyntheticEvent<any> & { currentTarget: HTMLInputElement },
+  ) => {
     const { isDisabled, onChange, name, value } = this.props;
     if (isDisabled) return null;
     const isChecked = event.currentTarget.checked;

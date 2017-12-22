@@ -1,5 +1,21 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 2.1.11
+
+## 2.1.10
+
+- [patch] Change to use editor-core instead of editor-bitbucket for examples [aa0c0ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aa0c0ac)
+
+## 2.1.9
+
+## 2.1.8
+
+## 2.1.7
+
+## 2.1.6
+
+## 2.1.5
+
 ## 2.1.4
 
 ## 2.1.3

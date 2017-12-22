@@ -1,5 +1,23 @@
 # @atlaskit/media-avatar-picker
 
+## 4.4.1
+
+## 4.4.0
+
+- [minor] update avatar picker to latest design specs, add snapshot tests [bb4b25d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb4b25d)
+
+## 4.3.11
+- [patch] apply prettier to avatar picker source to reduce noise on future PRs [cc618e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc618e4)
+
+## 4.3.10
+
+## 4.3.9
+
+## 4.3.8
+
+## 4.3.7
+- [patch] Ensure avatar picker with source submits default image [f8c957f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f8c957f)
+
 ## 4.3.6
 
 ## 4.3.5

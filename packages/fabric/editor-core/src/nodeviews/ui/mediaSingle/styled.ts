@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { Layout } from '@atlaskit/editor-common';
+import styled, { css } from 'styled-components';
+import { MediaSingleLayout } from '@atlaskit/editor-common';
 
-function float(layout: Layout): string {
+function float(layout: MediaSingleLayout): string {
   switch (layout) {
     case 'wrap-right':
       return 'right';
@@ -12,7 +12,7 @@ function float(layout: Layout): string {
   }
 }
 
-function clear(layout: Layout): string {
+function clear(layout: MediaSingleLayout): string {
   switch (layout) {
     case 'wrap-right':
       return 'right';
@@ -23,34 +23,37 @@ function clear(layout: Layout): string {
   }
 }
 
-function textAlign(layout: Layout): string {
-  switch (layout) {
-    case 'wide':
-    case 'full-width':
-    case 'center':
-      return 'center';
-    default:
-      return 'left';
-  }
-}
-
 export interface WrapperProps {
-  layout: Layout;
+  layout: MediaSingleLayout;
+  width: number;
+  height: number;
 }
 
-// tslint:disable-next-line:variable-name
-export const Wrapper = styled.div`
-  padding-bottom: 8px;
-  display: block;
-  ${({ layout }: WrapperProps) => {
-    return `
-      float: ${float(layout)};
-      clear: ${clear(layout)};
-      text-align: ${textAlign(layout)};
-    `;
-  }};
-
-  & > * {
-    padding: 5px 10px 0 0;
+export const MediaSingleDimensionHelper = ({
+  layout,
+  width,
+  height,
+}: WrapperProps) => css`
+  margin: 0 auto;
+  float: ${float(layout)};
+  clear: ${clear(layout)};
+  max-width: ${width}px;
+  max-height: ${height}px;
+  width: 100%;
+  &:after {
+    content: '';
+    display: block;
+    padding-bottom: ${height / width * 100}%;
   }
 `;
+
+export const Wrapper = styled.div`
+  ${MediaSingleDimensionHelper};
+  position: relative;
+  margin: 24px auto;
+  & > div {
+    position: absolute;
+    height: 100%;
+  }
+`;
+Wrapper.displayName = 'WrapperMediaSingle';

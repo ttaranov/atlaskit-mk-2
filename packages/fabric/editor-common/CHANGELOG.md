@@ -1,5 +1,46 @@
 # @atlaskit/editor-common
 
+## 5.1.5
+
+## 5.1.4
+
+
+- [patch] Support copy/pasting emoji from Bitbucket into the Editor [a8ca5d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a8ca5d4)
+
+## 5.1.3
+- [patch] replaced inlineMacro node with inlineExtension node [a43f891](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a43f891)
+
+## 5.1.2
+
+- [patch] Bumped emoji to v31 [c4365e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c4365e4)
+
+- [patch] Bumped emoji to v31 [207e0fc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/207e0fc)
+
+- [patch] Fix the issue where originalContent isn't passed down to extension handlers [c3cdea3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3cdea3)
+
+## 5.1.1
+- [patch] Add Serializer for Single image [03405bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03405bf)
+- [patch] Add Serializer for Single image [03405bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03405bf)
+
+## 5.1.0
+
+- [minor] FS-1461 added ContextIdentifierProvider interface to editor [0aeea41](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0aeea41)
+- [minor] FS-1461 added ContextIdentifierProvider interface to editor [0aeea41](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0aeea41)
+
+## 5.0.6
+- [patch] Add default center layout support for single image [6113e02](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6113e02)
+- [patch] Add default center layout support for single image [6113e02](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6113e02)
+
+## 5.0.5
+
+## 5.0.4
+
+## 5.0.3
+- [patch] Only bodiedExtension has content [6d4caae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d4caae)
+- [patch] Only bodiedExtension has content [6d4caae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d4caae)
+
+## 5.0.2
+
 ## 5.0.1
 
 ## 5.0.0

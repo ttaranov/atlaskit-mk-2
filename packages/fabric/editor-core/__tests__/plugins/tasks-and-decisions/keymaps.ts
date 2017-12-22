@@ -1,3 +1,4 @@
+import ProviderFactory from '../../../src/providerFactory';
 import tasksAndDecisionsPlugins from '../../../src/plugins/tasks-and-decisions';
 import {
   makeEditor,
@@ -24,7 +25,11 @@ describe('tasks and decisions - keymaps', () => {
   const editor = (doc: any) =>
     makeEditor({
       doc,
-      plugins: tasksAndDecisionsPlugins(defaultSchema, {}),
+      plugins: tasksAndDecisionsPlugins(
+        defaultSchema,
+        {},
+        new ProviderFactory(),
+      ),
     });
 
   describe('decisions', () => {

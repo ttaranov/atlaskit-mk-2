@@ -6,7 +6,6 @@ import {
   CardDimensions,
   Identifier,
 } from '@atlaskit/media-card';
-
 import {
   MediaItemType,
   ContextConfig,
@@ -20,12 +19,12 @@ import {
   MediaState,
   ImageResizeMode,
 } from '@atlaskit/media-core';
-
 import {
   MediaAttributes,
   CardEventClickHandler,
 } from '@atlaskit/editor-common';
 
+import { isImage } from '../../utils';
 export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
 
 // This is being used by DropPlaceholder now
@@ -40,6 +39,7 @@ export interface Props extends MediaAttributes {
   resizeMode?: ImageResizeMode;
   appearance?: Appearance;
   stateManagerFallback?: MediaStateManager;
+  selected?: boolean;
 }
 
 export interface State extends MediaState {
@@ -60,7 +60,7 @@ function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
       return 'complete';
 
     case 'processing':
-      return 'processing';
+      return 'uploading';
 
     case 'uploading':
       return 'uploading';
@@ -75,14 +75,14 @@ function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
 export default class MediaComponent extends React.PureComponent<Props, State> {
   private destroyed = false;
 
+  static defaultProps = {
+    selected: false,
+  };
+
   state: State = {
     id: '',
     status: 'unknown',
   };
-
-  constructor(props: Props) {
-    super(props);
-  }
 
   componentWillMount() {
     const { mediaProvider } = this.props;
@@ -92,7 +92,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
   }
 
-  public componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
     const { mediaProvider } = nextProps;
 
     if (this.props.mediaProvider !== mediaProvider) {
@@ -104,7 +104,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
   }
 
-  public componentWillUnmount() {
+  componentWillUnmount() {
     this.destroyed = true;
 
     const { id } = this.props;
@@ -208,7 +208,14 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderPublicFile() {
     const { viewContext } = this.state;
-    const { cardDimensions, collection, id, onDelete, onClick } = this.props;
+    const {
+      cardDimensions,
+      collection,
+      id,
+      onDelete,
+      onClick,
+      selected,
+    } = this.props;
     const otherProps: any = {};
 
     if (onDelete) {
@@ -228,7 +235,8 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
           mediaItemType: 'file',
           collectionName: collection,
         }}
-        selectable={false}
+        selectable={true}
+        selected={selected}
         resizeMode={this.resizeMode}
         {...otherProps}
       />
@@ -236,9 +244,8 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private renderTemporaryFile() {
-    const { state } = this;
-    const { thumbnail, fileName, fileSize, fileType } = state;
-    const { onDelete } = this.props;
+    const { thumbnail, fileName, fileSize, fileMimeType, status } = this.state;
+    const { onDelete, cardDimensions, appearance, selected } = this.props;
 
     // Cache the data url for thumbnail, so it's not regenerated on each re-render (prevents flicker)
     let dataURI: string | undefined;
@@ -247,20 +254,19 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     // Make sure that we always display progress bar when the file is uploading (prevents flicker)
-    let progress = state.progress;
-    if (!progress && state.status === 'uploading') {
+    let { progress } = this.state;
+    if (!progress && status === 'uploading') {
       progress = 0.0;
     }
+
+    const isImageFile = isImage(fileMimeType);
 
     // Construct file details object
     const fileDetails = {
       name: fileName,
       size: fileSize,
-      mimeType: fileType,
-      mediaType:
-        thumbnail || (fileType && fileType.indexOf('image/') > -1)
-          ? 'image'
-          : 'unknown',
+      mimeType: fileMimeType,
+      mediaType: thumbnail || isImageFile ? 'image' : 'unknown',
     } as FileDetails;
 
     const otherProps: any = {};
@@ -271,13 +277,17 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     return (
       <CardView
         // CardViewProps
-        status={mapMediaStatusIntoCardStatus(state)}
+        status={mapMediaStatusIntoCardStatus(this.state)}
         mediaItemType="file"
         metadata={fileDetails}
         // FileCardProps
         dataURI={dataURI}
         progress={progress}
         // SharedCardProps
+        dimensions={cardDimensions}
+        appearance={appearance}
+        selectable={true}
+        selected={selected}
         {...otherProps}
       />
     );
@@ -288,11 +298,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       return;
     }
 
-    const newState = {
-      ...mediaState,
-    };
-
-    this.setState(newState);
+    this.setState({ ...mediaState });
   };
 
   private handleMediaProvider = async (mediaProvider: MediaProvider) => {

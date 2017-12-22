@@ -16,7 +16,7 @@ type Props = {|
 // eslint-disable-next-line react/prop-types
 const renderButtonsMap = ({ text, ...rest }, idx) => (
   <ActionItem key={text || idx}>
-    <Button appearance="help" {...rest}>
+    <Button appearance="primary" {...rest}>
       {text}
     </Button>
   </ActionItem>

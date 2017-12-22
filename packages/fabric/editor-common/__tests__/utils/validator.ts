@@ -527,6 +527,49 @@ describe('Renderer - Validator', () => {
       });
     });
 
+    describe('bodiedExtension', () => {
+      it('should pass through attrs as extension', () => {
+        const extensionAttrs = {
+          text: 'This is an extension',
+          extensionType: 'com.atlassian.connect.extension',
+          extensionKey: 'CallWithSkype',
+          bodyType: 'none',
+        };
+        const { type } = getValidNode({
+          type: 'bodiedExtension',
+          attrs: extensionAttrs,
+          content: [],
+        });
+        expect(type).to.equal('bodiedExtension');
+      });
+
+      it('should reject extensions without extensionType', () => {
+        const extensionAttrs = {
+          text: 'This is an extension',
+          extensionKey: 'CallWithSkype',
+          bodyType: 'none',
+        };
+        const { type } = getValidNode({
+          type: 'extension',
+          attrs: extensionAttrs,
+        });
+        expect(type).to.equal('text');
+      });
+
+      it('should reject extensions without extensionKey', () => {
+        const extensionAttrs = {
+          text: 'This is an extension',
+          extensionType: 'com.atlassian.connect.extension',
+          bodyType: 'none',
+        };
+        const { type } = getValidNode({
+          type: 'extension',
+          attrs: extensionAttrs,
+        });
+        expect(type).to.equal('text');
+      });
+    });
+
     describe('extension', () => {
       it('should pass through attrs as extension', () => {
         const extensionAttrs = {
@@ -538,10 +581,9 @@ describe('Renderer - Validator', () => {
         const { type, attrs } = getValidNode({
           type: 'extension',
           attrs: extensionAttrs,
-          content: [],
         });
         expect(type).to.equal('extension');
-        expect(attrs.originalContent).to.deep.equal([]);
+        expect(attrs).to.deep.equal(extensionAttrs);
       });
 
       it('should reject extensions without extensionType', () => {
@@ -582,10 +624,9 @@ describe('Renderer - Validator', () => {
         const { type, attrs } = getValidNode({
           type: 'inlineExtension',
           attrs: extensionAttrs,
-          content: [],
         });
         expect(type).to.equal('inlineExtension');
-        expect(attrs.originalContent).to.deep.equal([]);
+        expect(attrs).to.deep.equal(extensionAttrs);
       });
 
       it('should reject inlineExtension without extensionType', () => {

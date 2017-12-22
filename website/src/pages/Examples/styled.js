@@ -19,12 +19,8 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-  bottom: 0;
-  overflow: auto;
-  position: absolute;
+  position: relative;
   top: 48px;
-  width: 100%;
-  z-index: 1;
 `;
 
 // Example Component / Code

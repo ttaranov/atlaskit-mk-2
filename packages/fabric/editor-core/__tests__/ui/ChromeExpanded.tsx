@@ -249,7 +249,7 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
       toolbarHelp.find(AkButton).simulate('click');
       expect(chromeExpanded.state('showHelp')).toBe(true);
       const helpDialog = toolbarHelp.find(HelpDialog);
-      expect(helpDialog.isEmpty()).toBe(false);
+      expect(helpDialog.exists()).toBe(true);
     });
 
     it('should track analytics when helpDialog is opened using key event Cmd-/', () => {

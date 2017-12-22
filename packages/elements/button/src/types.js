@@ -3,17 +3,19 @@ import type { Node, Element } from 'react';
 
 type Func = () => any;
 
+export type ButtonAppearances =
+  | 'default'
+  | 'danger'
+  | 'link'
+  | 'primary'
+  | 'subtle'
+  | 'subtle-link'
+  | 'warning'
+  | 'help';
+
 export type ButtonProps = {
   /** The base styling to apply to the button. */
-  appearance?:
-    | 'default'
-    | 'danger'
-    | 'link'
-    | 'primary'
-    | 'subtle'
-    | 'subtle-link'
-    | 'warning'
-    | 'help',
+  appearance?: ButtonAppearances,
   /** Pass aria-controls to underlying html button. */
   ariaControls?: string,
   /** Pass aria-expanded to underlying html button. */

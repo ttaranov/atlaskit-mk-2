@@ -40,5 +40,4 @@ export default md`
       props={require('!!extract-react-types-loader!../src/components/ButtonGroup')}
     />
   )}
-
 `;

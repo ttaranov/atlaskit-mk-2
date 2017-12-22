@@ -10,6 +10,7 @@ describe(name, () => {
   describe('Input', () => {
     it('should render an AK Input with the correct props', () => {
       const props = {
+        autoFocus: true,
         isDisabled: true,
         placeholder: 'placeholder',
         value: 'my-value',
@@ -21,6 +22,7 @@ describe(name, () => {
       const wrapper = shallow(<Input {...props} />);
 
       const inputProps = wrapper.find(AkInput).props();
+      expect(inputProps.autoFocus).toBe(props.autoFocus);
       expect(inputProps.disabled).toBe(props.isDisabled);
       expect(inputProps.placeholder).toBe(props.placeholder);
       expect(inputProps.value).toBe(props.value);

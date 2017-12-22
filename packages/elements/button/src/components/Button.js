@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+import withDeprecationWarnings from './withDeprecationWarnings';
 import getButtonProps from './getButtonProps';
 import CustomComponentProxy from './CustomComponentProxy';
 import getButtonStyles from '../styled/getButtonStyles';
@@ -48,7 +49,7 @@ type State = {
   isHover: boolean,
 };
 
-export default class Button extends Component<ButtonProps, State> {
+class Button extends Component<ButtonProps, State> {
   /* eslint-disable react/no-unused-prop-types */
 
   static defaultProps = {
@@ -161,3 +162,8 @@ export default class Button extends Component<ButtonProps, State> {
     );
   }
 }
+
+export type ButtonType = Button;
+export const ButtonBase = Button;
+
+export default withDeprecationWarnings(Button);

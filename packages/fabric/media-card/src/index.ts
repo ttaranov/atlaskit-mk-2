@@ -15,7 +15,7 @@ export * from './root/card';
 export * from './root/cardView';
 export * from './list';
 // TODO: don't expose this directly https://jira.atlassian.com/browse/FIL-4396
-export { AppCardView } from './app';
+export { AppCardView } from './app_2/AppCardViewV2';
 
 export type CardStatus =
   | 'uploading'
