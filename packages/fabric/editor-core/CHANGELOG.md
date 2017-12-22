@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 60.15.5
+
+
+- [patch] Collaborative editing telepointers 2.0 [297afbf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/297afbf)
+
 ## 60.15.4
 - [patch] Fixes Firefox rendering bug, missing attrs in transformer, new selection [f59e8c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f59e8c4)
 
