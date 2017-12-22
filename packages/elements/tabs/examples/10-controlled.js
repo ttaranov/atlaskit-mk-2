@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Tabs from '../src';
 import type { TabData } from '../src/types';
 import { Content } from './shared';
@@ -12,7 +12,7 @@ const tabs = [
   { label: 'Tab 4', content: <Content>Four</Content> },
 ];
 
-export default class TabsControlledExample extends PureComponent<
+export default class TabsControlledExample extends Component<
   {},
   { selected: TabData },
 > {
