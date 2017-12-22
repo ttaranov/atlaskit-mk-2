@@ -59,42 +59,12 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
     return <MediaSingleEdit pluginState={pluginState} />;
   },
 
-  primaryToolbarComponent(
-    editorView,
-    eventDispatcher,
-    providerFactory,
-    appearance,
-    popupsMountPoint,
-    popupsBoundariesElement,
-    disabled,
-    editorWidth,
-  ) {
+  secondaryToolbarComponent({ editorView, disabled }) {
     return (
       <ToolbarMedia
         editorView={editorView}
         pluginKey={pluginKey}
         isDisabled={disabled}
-        editorWidth={editorWidth}
-      />
-    );
-  },
-
-  secondaryToolbarComponent(
-    editorView,
-    eventDispatcher,
-    providerFactory,
-    appearance,
-    popupsMountPoint,
-    popupsBoundariesElement,
-    disabled,
-    editorWidth,
-  ) {
-    return (
-      <ToolbarMedia
-        editorView={editorView}
-        pluginKey={pluginKey}
-        isDisabled={disabled}
-        editorWidth={editorWidth}
       />
     );
   },

@@ -10,7 +10,6 @@ import { toggleBulletList, toggleOrderedList, tooltip } from '../../keymaps';
 import { ListsState } from '../../plugins/lists';
 import { ListsState as FutureListsState } from '../../plugins/lists';
 import ToolbarButton from '../ToolbarButton';
-import EditorWidth from '../../utils/editor-width';
 import DropdownMenu from '../DropdownMenu';
 import { ButtonGroup, Separator, Wrapper, ExpandIconWrapper } from './styles';
 import { changeToTaskDecision } from '../../plugins/tasks-and-decisions/commands';
@@ -19,7 +18,9 @@ export interface Props {
   editorView: EditorView;
   pluginState: ListsState | FutureListsState;
   disabled?: boolean;
-  editorWidth?: number;
+  isSmall?: boolean;
+  isSeparator?: boolean;
+  isReducedSpacing?: boolean;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   enableTaskToolbar?: boolean;
@@ -122,7 +123,13 @@ export default class ToolbarLists extends PureComponent<Props, State> {
   };
 
   render() {
-    const { editorWidth, disabled, enableTaskToolbar } = this.props;
+    const {
+      disabled,
+      isSmall,
+      isReducedSpacing,
+      isSeparator,
+      enableTaskToolbar,
+    } = this.props;
     const {
       bulletListActive,
       bulletListDisabled,
@@ -130,18 +137,12 @@ export default class ToolbarLists extends PureComponent<Props, State> {
       orderedListDisabled,
       isDropdownOpen,
     } = this.state;
-    if (!editorWidth || editorWidth > EditorWidth.BreakPoint9) {
+    if (!isSmall) {
       return (
-        <ButtonGroup
-          width={editorWidth! > EditorWidth.BreakPoint10 ? 'large' : 'small'}
-        >
+        <ButtonGroup width={isReducedSpacing ? 'small' : 'large'}>
           {this.state.bulletListHidden ? null : (
             <ToolbarButton
-              spacing={
-                editorWidth && editorWidth > EditorWidth.BreakPoint10
-                  ? 'default'
-                  : 'none'
-              }
+              spacing={isReducedSpacing ? 'none' : 'default'}
               onClick={this.handleBulletListClick}
               selected={bulletListActive}
               disabled={bulletListDisabled || disabled}
@@ -151,11 +152,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
           )}
           {this.state.orderedListHidden ? null : (
             <ToolbarButton
-              spacing={
-                editorWidth && editorWidth > EditorWidth.BreakPoint10
-                  ? 'default'
-                  : 'none'
-              }
+              spacing={isReducedSpacing ? 'none' : 'default'}
               onClick={this.handleOrderedListClick}
               selected={orderedListActive}
               disabled={orderedListDisabled || disabled}
@@ -165,18 +162,14 @@ export default class ToolbarLists extends PureComponent<Props, State> {
           )}
           {enableTaskToolbar && (
             <ToolbarButton
-              spacing={
-                editorWidth && editorWidth > EditorWidth.BreakPoint10
-                  ? 'default'
-                  : 'none'
-              }
+              spacing={isReducedSpacing ? 'none' : 'default'}
               onClick={this.handleCreateAction}
               disabled={disabled}
               title="Create action ([])"
               iconBefore={<TaskIcon label="Create action" />}
             />
           )}
-          <Separator />
+          {isSeparator && <Separator />}
         </ButtonGroup>
       );
     } else {
@@ -194,11 +187,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
             fitWidth={175}
           >
             <ToolbarButton
-              spacing={
-                editorWidth && editorWidth > EditorWidth.BreakPoint10
-                  ? 'default'
-                  : 'none'
-              }
+              spacing={isReducedSpacing ? 'none' : 'default'}
               selected={bulletListActive || orderedListActive}
               disabled={disabled}
               onClick={this.handleTriggerClick}
@@ -212,6 +201,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
               }
             />
           </DropdownMenu>
+          {isSeparator && <Separator />}
         </Wrapper>
       );
     }
