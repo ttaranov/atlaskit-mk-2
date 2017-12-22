@@ -1,5 +1,10 @@
 // @flow
-import React, { PureComponent, type Node, type ComponentType } from 'react';
+import React, {
+  PureComponent,
+  type Node,
+  type ComponentType,
+  type ElementType,
+} from 'react';
 import PropTypes from 'prop-types';
 import { type CSSWidth } from '../types';
 
@@ -9,9 +14,7 @@ type Props = {
   columnIndex: number,
 };
 
-export default function withColumnWidth(
-  Cell: ComponentType<*>,
-): ComponentType<*> {
+export default function withColumnWidth(Cell: ElementType): ComponentType<*> {
   return class CellWithColumnWidth extends PureComponent<Props> {
     static contextTypes = {
       treeTable: PropTypes.object.isRequired,
