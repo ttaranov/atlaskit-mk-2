@@ -45,7 +45,7 @@ import { MediaPluginOptions } from './media-plugin-options';
 import keymapPlugin from './keymap';
 import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
 import { insertMediaGroupNode } from './media-files';
-import { insertMediaSingleNodes } from './media-single';
+import { insertMediaSingleNode } from './media-single';
 import { removeMediaNode, splitMediaGroup } from './media-common';
 import PickerFacade from './picker-facade';
 
@@ -145,9 +145,7 @@ export class MediaPluginState {
 
       assert(
         resolvedMediaProvider && resolvedMediaProvider.viewContext,
-        `MediaProvider promise did not resolve to a valid instance of MediaProvider - ${
-          resolvedMediaProvider
-        }`,
+        `MediaProvider promise did not resolve to a valid instance of MediaProvider - ${resolvedMediaProvider}`,
       );
     } catch (err) {
       const wrappedError = new Error(
@@ -229,7 +227,12 @@ export class MediaPluginState {
     );
 
     if (this.editorAppearance !== 'message' && areImages && mediaSingle) {
-      insertMediaSingleNodes(this.view, mediaStates, collection);
+      mediaStates.forEach(mediaState =>
+        this.stateManager.subscribe(
+          mediaState.id,
+          this.handleMediaSingleInsertion,
+        ),
+      );
     } else {
       insertMediaGroupNode(this.view, mediaStates, collection);
     }
@@ -258,6 +261,14 @@ export class MediaPluginState {
     if (!view.hasFocus()) {
       view.focus();
     }
+  };
+
+  handleMediaSingleInsertion = (state: MediaState) => {
+    if (state.status === 'uploading') {
+      const collection = this.collectionFromProvider();
+      insertMediaSingleNode(this.view, state, collection);
+    }
+    this.stateManager.unsubscribe(state.id, this.handleMediaSingleInsertion);
   };
 
   insertLinks = async () => {
@@ -532,6 +543,10 @@ export class MediaPluginState {
         picker.onNewMedia(this.trackNewMediaEvent(picker.type));
       });
       this.dropzonePicker.onDrag(this.handleDrag);
+    }
+
+    if (this.popupPicker) {
+      this.popupPicker.hide();
     }
 
     // set new upload params for the pickers

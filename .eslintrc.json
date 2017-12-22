@@ -21,6 +21,7 @@
     "react/prefer-stateless-function": "off",
 
     "no-restricted-syntax": "off",
+    "no-underscore-dangle": "off",
     "no-use-before-define": "off",
 
     "arrow-body-style": "off",

@@ -65,7 +65,7 @@ type Props = {
   size?: 'small' | 'medium' | 'large' | 'xlarge',
 };
 
-class Icon extends Component<Props, {}> {
+export default class Icon extends Component<Props, {}> {
   static defaultProps = {
     onClick: () => {},
   };
@@ -133,10 +133,7 @@ class Icon extends Component<Props, {}> {
   }
 }
 
-const size = Object.keys(sizes).reduce(
+export const size = Object.keys(sizes).reduce(
   (p, c) => Object.assign(p, { [c]: c }),
   {},
 );
-
-export { size };
-export default Icon;

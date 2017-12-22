@@ -1,5 +1,7 @@
 # @atlaskit/media-avatar-picker
 
+## 4.4.1
+
 ## 4.4.0
 
 - [minor] update avatar picker to latest design specs, add snapshot tests [bb4b25d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb4b25d)

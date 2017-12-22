@@ -1,7 +1,4 @@
-import {
-  insertMediaSingleNodes,
-  insertMediaAsMediaSingle,
-} from '../../../src/plugins/media/media-single';
+import { MediaState, MediaStateStatus } from '@atlaskit/media-core';
 import {
   doc,
   p,
@@ -11,7 +8,23 @@ import {
   defaultSchema,
   makeEditor,
 } from '@atlaskit/editor-test-helpers';
+
+import {
+  insertMediaSingleNode,
+  insertMediaAsMediaSingle,
+} from '../../../src/plugins/media/media-single';
 import { MediaPluginState } from '../../../src';
+
+const createMediaState = (
+  id: string,
+  status: MediaStateStatus = 'uploading',
+  width = 100,
+  height = 200,
+): MediaState => ({
+  id,
+  status: 'uploading',
+  thumbnail: { width, height, src: '' },
+});
 
 describe('media-single', () => {
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
@@ -82,14 +95,14 @@ describe('media-single', () => {
     });
   });
 
-  describe('insertMediaSingleNodes', () => {
+  describe('insertMediaSingleNode', () => {
     describe('when there is only one image data', () => {
       it('inserts one mediaSingle node into the document', () => {
         const { editorView } = editor(doc(p('text{<>}')));
 
-        insertMediaSingleNodes(
+        insertMediaSingleNode(
           editorView,
-          [{ id: temporaryFileId, status: 'uploading' }],
+          createMediaState(temporaryFileId),
           testCollectionName,
         );
 
@@ -101,6 +114,8 @@ describe('media-single', () => {
                 id: temporaryFileId,
                 type: 'file',
                 collection: testCollectionName,
+                width: 100,
+                height: 200,
               }),
             ),
             p(),
@@ -113,14 +128,12 @@ describe('media-single', () => {
       it('inserts multiple mediaSingle nodes into the document', () => {
         const { editorView } = editor(doc(p('text{<>}hello')));
 
-        insertMediaSingleNodes(
-          editorView,
-          [
-            { id: temporaryFileId, status: 'uploading' },
-            { id: temporaryFileId + '1', status: 'uploading' },
-            { id: temporaryFileId + '2', status: 'uploading' },
-          ],
-          testCollectionName,
+        ([
+          createMediaState(temporaryFileId),
+          createMediaState(temporaryFileId + '1'),
+          createMediaState(temporaryFileId + '2'),
+        ] as Array<MediaState>).forEach(state =>
+          insertMediaSingleNode(editorView, state, testCollectionName),
         );
 
         expect(editorView.state.doc).toEqualDocument(
@@ -131,6 +144,8 @@ describe('media-single', () => {
                 id: temporaryFileId,
                 type: 'file',
                 collection: testCollectionName,
+                width: 100,
+                height: 200,
               }),
             ),
             mediaSingle({ layout: 'center' })(
@@ -138,6 +153,8 @@ describe('media-single', () => {
                 id: temporaryFileId + '1',
                 type: 'file',
                 collection: testCollectionName,
+                width: 100,
+                height: 200,
               }),
             ),
             mediaSingle({ layout: 'center' })(
@@ -145,6 +162,8 @@ describe('media-single', () => {
                 id: temporaryFileId + '2',
                 type: 'file',
                 collection: testCollectionName,
+                width: 100,
+                height: 200,
               }),
             ),
             p('hello'),
@@ -154,13 +173,13 @@ describe('media-single', () => {
     });
 
     describe('when current selection not empty', () => {
-      describe('at the begining of the doc', () => {
+      describe('at the beginning of the doc', () => {
         it('deletes the selection', () => {
           const { editorView } = editor(doc(p('{<}text{>}')));
 
-          insertMediaSingleNodes(
+          insertMediaSingleNode(
             editorView,
-            [{ id: temporaryFileId, status: 'uploading' }],
+            createMediaState(temporaryFileId),
             testCollectionName,
           );
 
@@ -171,6 +190,8 @@ describe('media-single', () => {
                   id: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
+                  width: 100,
+                  height: 200,
                 }),
               ),
               p(),
@@ -183,9 +204,9 @@ describe('media-single', () => {
         it('deletes the selection', () => {
           const { editorView } = editor(doc(p('hello'), p('{<}text{>}'), p()));
 
-          insertMediaSingleNodes(
+          insertMediaSingleNode(
             editorView,
-            [{ id: temporaryFileId, status: 'uploading' }],
+            createMediaState(temporaryFileId),
             testCollectionName,
           );
 
@@ -197,6 +218,8 @@ describe('media-single', () => {
                   id: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
+                  width: 100,
+                  height: 200,
                 }),
               ),
               p(''),
@@ -211,9 +234,9 @@ describe('media-single', () => {
             doc(p('hello'), p('world'), p('{<}text{>}')),
           );
 
-          insertMediaSingleNodes(
+          insertMediaSingleNode(
             editorView,
-            [{ id: temporaryFileId, status: 'uploading' }],
+            createMediaState(temporaryFileId),
             testCollectionName,
           );
 
@@ -226,6 +249,8 @@ describe('media-single', () => {
                   id: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
+                  width: 100,
+                  height: 200,
                 }),
               ),
               p(''),

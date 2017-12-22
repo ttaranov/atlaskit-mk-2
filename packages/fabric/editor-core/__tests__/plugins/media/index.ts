@@ -156,9 +156,33 @@ describe('Media plugin', () => {
         await mediaProvider;
 
         pluginState.insertFiles([
-          { id: 'foo', fileMimeType: 'image/jpeg' },
-          { id: 'bar', fileMimeType: 'image/png' },
+          {
+            id: 'foo',
+            fileMimeType: 'image/jpeg',
+          },
+          {
+            id: 'bar',
+            fileMimeType: 'image/png',
+          },
         ]);
+
+        stateManager.updateState('foo', {
+          id: 'foo',
+          status: 'uploading',
+          fileName: 'foo.jpg',
+          fileSize: 100,
+          fileMimeType: 'image/jpeg',
+          thumbnail: { width: 100, height: 100, src: '' },
+        });
+
+        stateManager.updateState('bar', {
+          id: 'bar',
+          status: 'uploading',
+          fileName: 'bar.png',
+          fileSize: 200,
+          fileMimeType: 'image/png',
+          thumbnail: { width: 200, height: 200, src: '' },
+        });
 
         expect(editorView.state.doc).toEqualDocument(
           doc(
@@ -169,7 +193,11 @@ describe('Media plugin', () => {
                 id: 'foo',
                 type: 'file',
                 collection: testCollectionName,
+                __fileName: 'foo.jpg',
+                __fileSize: 100,
                 __fileMimeType: 'image/jpeg',
+                height: 100,
+                width: 100,
               }),
             ),
             mediaSingle({
@@ -179,7 +207,11 @@ describe('Media plugin', () => {
                 id: 'bar',
                 type: 'file',
                 collection: testCollectionName,
+                __fileName: 'bar.png',
+                __fileSize: 200,
                 __fileMimeType: 'image/png',
+                height: 200,
+                width: 200,
               }),
             ),
             p(),
@@ -512,6 +544,24 @@ describe('Media plugin', () => {
         pickersAfterMediaProvider2[i],
       );
     }
+  });
+
+  it('should hide any existing popup picker when new media provider is set', async () => {
+    const { pluginState } = editor(doc(h1('text{<>}')));
+    expect(pluginState.pickers.length).toBe(0);
+
+    const mediaProvider1 = getFreshMediaProvider();
+    pluginState.setMediaProvider(mediaProvider1);
+    const resolvedMediaProvider1 = await mediaProvider1;
+    await resolvedMediaProvider1.uploadContext;
+
+    const spy = jest.spyOn((pluginState as any).popupPicker, 'hide');
+
+    const mediaProvider2 = getFreshMediaProvider();
+    pluginState.setMediaProvider(mediaProvider2);
+    const resolvedMediaProvider2 = await mediaProvider2;
+    await resolvedMediaProvider2.uploadContext;
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('should set new upload params for existing pickers when new media provider is set', async () => {

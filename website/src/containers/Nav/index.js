@@ -97,7 +97,7 @@ const SecondaryAnchor = styled.a`
   }
 `;
 const SecondaryAction = ({ href, icon: Icon, label }) => (
-  <Tooltip description={label} position="left">
+  <Tooltip content={label} position="left">
     <SecondaryAnchor href={href} target="_blank">
       <Icon label={label} primaryColor={colors.N0} size="small" />
     </SecondaryAnchor>
@@ -171,18 +171,18 @@ export default class Nav extends Component<{}, State> {
                 isCollapsible={!containerNavAvailable}
                 isResizeable={false}
                 globalPrimaryIcon={
-                  <Tooltip description="Home" position="right">
+                  <Tooltip content="Home" position="right">
                     <AtlaskitIcon />
                   </Tooltip>
                 }
                 globalCreateIcon={
-                  <Tooltip description="Menu" position="right">
+                  <Tooltip content="Menu" position="right">
                     <MenuIcon label="Menu" />
                   </Tooltip>
                 }
                 globalPrimaryItemHref={navigateOut ? OLD_WEBSITE_URL : '/'}
                 globalSearchIcon={
-                  <Tooltip description="Search" position="right">
+                  <Tooltip content="Search" position="right">
                     <SearchIcon label="search" />
                   </Tooltip>
                 }

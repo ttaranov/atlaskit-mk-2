@@ -11,7 +11,7 @@ export default md`
 
   ## Using the library
 
-  Use the encoder with editor-bitbucket as follows:
+  Use the encoder with editor-bitbucket-transformer as follows:
 
   ~~~js
   import { BitbucketTransformer } from '@atlaskit/editor-bitbucket-transformer';
@@ -23,5 +23,4 @@ export default md`
   // To convert HTML to editor content
   serializer.parse(html);
   ~~~
-
 `;

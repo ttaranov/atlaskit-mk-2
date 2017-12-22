@@ -59,8 +59,7 @@ export default class MetaData extends Component<MetaDataProps> {
 const Meta = styled.section`
   display: flex;
   flex-wrap: wrap;
-  margin-left: -0.5em;
-  margin-right: -0.5em;
+  padding-bottom: ${math.multiply(gridSize, 3)}px;
   padding-top: ${math.multiply(gridSize, 1.5)}px;
 
   @media (min-width: 780px) {
@@ -73,13 +72,10 @@ const DI = styled.div`
   display: flex;
   flex-basis: 100%;
   flex-direction: column;
-  padding: 0.5em;
+  padding: 0.4em 0;
 
   @media (min-width: 780px) {
     flex-direction: row;
-  }
-  @media (min-width: 1200px) {
-    flex-basis: 50%;
   }
 `;
 
