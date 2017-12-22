@@ -8,7 +8,7 @@ import Headers from './Headers';
 import Header from './Header';
 import Cell from './Cell';
 
-import { type DataFunction, type CSSWidth } from './../types';
+import { type ItemsProvider, type CSSWidth } from './../types';
 
 type Props = {
   /** An array of React component constructors. Each component will be used to render a cell in a tree row.  */
@@ -23,7 +23,7 @@ type Props = {
   children?: Node,
 
   /** The function that will be used to provide data for rows at a particular level in the hierarchy */
-  items?: DataFunction,
+  items?: ItemsProvider,
 };
 
 type State = {

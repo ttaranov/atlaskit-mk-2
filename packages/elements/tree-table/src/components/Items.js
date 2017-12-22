@@ -2,13 +2,13 @@
 import React, { PureComponent } from 'react';
 import Item from './Item';
 import LoaderItem from './LoaderItem';
-import { type DataFunction, type RenderFunction } from './../types';
+import { type ItemsProvider, type RenderFunction } from './../types';
 
-type ChildrenDataType = Array<Object>;
+type ItemsDataType = Array<Object>;
 
 type Props = {
-  childrenData: ?ChildrenDataType,
-  getChildrenData: DataFunction,
+  childrenData: ?ItemsDataType,
+  getChildrenData: ItemsProvider,
   depth?: number,
   render: RenderFunction,
 };
@@ -36,7 +36,7 @@ export default class Items extends PureComponent<Props, State> {
     }
   }
 
-  static isLoadingData(data: ?ChildrenDataType) {
+  static isLoadingData(data: ?ItemsDataType) {
     return !data;
   }
 

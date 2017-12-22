@@ -2,10 +2,10 @@
 import React, { PureComponent } from 'react';
 import Items from './Items';
 
-import { type DataFunction, type RenderFunction } from './../types';
+import { type ItemsProvider, type RenderFunction } from './../types';
 
 type Props = {
-  items: DataFunction,
+  items: ItemsProvider,
   render: RenderFunction,
 };
 

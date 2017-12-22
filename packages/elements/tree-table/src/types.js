@@ -4,7 +4,7 @@ import Row from './components/Row';
 
 export type RowData = Object;
 
-export type DataFunction = (
+export type ItemsProvider = (
   ?Object,
 ) => ?Array<RowData> | Promise<?Array<RowData>>;
 
