@@ -1,7 +1,11 @@
 // tslint:disable:no-console
 import * as React from 'react';
 import styled from 'styled-components';
-import { Editor, EditorContext, WithEditorActions } from '@atlaskit/editor-core';
+import {
+  Editor,
+  EditorContext,
+  WithEditorActions,
+} from '@atlaskit/editor-core';
 import { BitbucketTransformer } from '../src';
 import exampleBitbucketHTML from '../example-helpers/exampleHTML';
 
@@ -26,8 +30,8 @@ const Container = styled.div`
   }
 `;
 
-export type Props = { actions: any };
-export type State = { source: string, output: string };
+type Props = { actions: any };
+type State = { source: string; output: string };
 class TransformerPanels extends React.PureComponent<Props, State> {
   state: State = { source: exampleBitbucketHTML, output: '' };
 
@@ -39,14 +43,15 @@ class TransformerPanels extends React.PureComponent<Props, State> {
 
   handleUpdateToSource = (e: React.FormEvent<HTMLDivElement>) => {
     const value = e.currentTarget.innerText;
-    this.setState({ source: value}, () => this.props.actions.replaceDocument(value));
-  }
+    this.setState({ source: value }, () =>
+      this.props.actions.replaceDocument(value),
+    );
+  };
 
-  handleChangeInTheEditor = () => {
-    this.props.actions.getValue().then(value => {
-      this.setState({ output: value });
-    });
-  }
+  handleChangeInTheEditor = async () => {
+    const value = await this.props.actions.getValue();
+    this.setState({ output: value });
+  };
 
   render() {
     return (
@@ -56,7 +61,9 @@ class TransformerPanels extends React.PureComponent<Props, State> {
           contentEditable={true}
           data-placeholder="Enter HTML to convert"
           onInput={this.handleUpdateToSource}
-        >{exampleBitbucketHTML}</div>
+        >
+          {exampleBitbucketHTML}
+        </div>
         <div id="editor">
           <Editor
             appearance="comment"
@@ -67,21 +74,27 @@ class TransformerPanels extends React.PureComponent<Props, State> {
             allowLists={true}
             allowRule={true}
             allowTables={true}
-            contentTransformerProvider={schema => new BitbucketTransformer(schema)}
+            contentTransformerProvider={schema =>
+              new BitbucketTransformer(schema)
+            }
             onChange={this.handleChangeInTheEditor}
           />
         </div>
         <div
           id="output"
           data-placeholder="This is an empty document (or something has gone really wrong)"
-        >{this.state.output}</div>
+        >
+          {this.state.output}
+        </div>
       </Container>
-    )
+    );
   }
 }
 
 export default () => (
   <EditorContext>
-    <WithEditorActions render={actions => <TransformerPanels actions={actions} />} />
+    <WithEditorActions
+      render={actions => <TransformerPanels actions={actions} />}
+    />
   </EditorContext>
-)
+);

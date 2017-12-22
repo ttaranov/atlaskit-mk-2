@@ -1,5 +1,4 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import {
   Card,
   CardView,
@@ -26,8 +25,6 @@ import {
 } from '@atlaskit/editor-common';
 
 import { isImage } from '../../utils';
-import { MediaSingleDimensionHelper } from '../../nodeviews/ui/mediaSingle/styled';
-
 export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
 
 // This is being used by DropPlaceholder now
@@ -42,7 +39,7 @@ export interface Props extends MediaAttributes {
   resizeMode?: ImageResizeMode;
   appearance?: Appearance;
   stateManagerFallback?: MediaStateManager;
-  isMediaSingle?: boolean;
+  selected?: boolean;
 }
 
 export interface State extends MediaState {
@@ -50,12 +47,6 @@ export interface State extends MediaState {
   viewContext?: Context;
   linkCreateContext?: Context;
 }
-
-const Wrapper = styled.div`
-  height: 100%;
-  ${MediaSingleDimensionHelper};
-`;
-Wrapper.displayName = 'TemporaryMediaWrapper';
 
 /**
  * Map media state status into CardView processing status
@@ -85,7 +76,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   private destroyed = false;
 
   static defaultProps = {
-    isMediaSingle: false,
+    selected: false,
   };
 
   state: State = {
@@ -165,7 +156,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       cardDimensions,
       onDelete,
       appearance,
-      ...otherProps,
+      ...otherProps
     } = this.props;
     const hasProviders = mediaProvider && linkCreateContext;
 
@@ -217,7 +208,14 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderPublicFile() {
     const { viewContext } = this.state;
-    const { cardDimensions, collection, id, onDelete, onClick } = this.props;
+    const {
+      cardDimensions,
+      collection,
+      id,
+      onDelete,
+      onClick,
+      selected,
+    } = this.props;
     const otherProps: any = {};
 
     if (onDelete) {
@@ -237,7 +235,8 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
           mediaItemType: 'file',
           collectionName: collection,
         }}
-        selectable={false}
+        selectable={true}
+        selected={selected}
         resizeMode={this.resizeMode}
         {...otherProps}
       />
@@ -246,7 +245,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderTemporaryFile() {
     const { thumbnail, fileName, fileSize, fileMimeType, status } = this.state;
-    const { onDelete, isMediaSingle } = this.props;
+    const { onDelete, cardDimensions, appearance, selected } = this.props;
 
     // Cache the data url for thumbnail, so it's not regenerated on each re-render (prevents flicker)
     let dataURI: string | undefined;
@@ -275,15 +274,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       otherProps.actions = [CardDelete(onDelete)];
     }
 
-    if (isMediaSingle) {
-      otherProps.dimensions = { width: '100%', height: '100%' };
-    } else {
-      // Without this initial render will have a 0x0 item
-      otherProps.dimensions = { width: FILE_WIDTH, height: MEDIA_HEIGHT };
-      otherProps.appearance = 'image';
-    }
-
-    const element = (
+    return (
       <CardView
         // CardViewProps
         status={mapMediaStatusIntoCardStatus(this.state)}
@@ -293,21 +284,13 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         dataURI={dataURI}
         progress={progress}
         // SharedCardProps
+        dimensions={cardDimensions}
+        appearance={appearance}
+        selectable={true}
+        selected={selected}
         {...otherProps}
       />
     );
-
-    if (isMediaSingle && thumbnail && thumbnail.width && thumbnail.height) {
-      const { width, height } = thumbnail;
-      // Wrap to create a container so that we can use 100% width & height in media-card
-      return (
-        <Wrapper height={height} width={width} layout="center">
-          {element}
-        </Wrapper>
-      );
-    } else {
-      return element;
-    }
   }
 
   private handleMediaStateChange = (mediaState: MediaState) => {

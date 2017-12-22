@@ -49,12 +49,11 @@ export const MediaSingleDimensionHelper = ({
 
 export const Wrapper = styled.div`
   ${MediaSingleDimensionHelper};
-  display: flex;
-  justify-content: center;
+  position: relative;
   margin: 24px auto;
-  // Hack for selection outline
-  & .media-wrapper {
-    margin-left: -3px;
+  & > div {
+    position: absolute;
+    height: 100%;
   }
 `;
 Wrapper.displayName = 'WrapperMediaSingle';
