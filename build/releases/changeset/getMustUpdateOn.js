@@ -74,9 +74,18 @@ function getMustUpdateOn(
     );
 
   // matching optional (^ or ~) then three numbers (we capture the symbol and the major number)
-  const [wholeMatch, symbol, majorVersion] = range.match(
-    /^([\^~])?(\d+)\.\d+\.\d+$/,
-  );
+  const match = range.match(/^([\^~])?(\d+)\.\d+\.\d+$/);
+
+  if (!match) {
+    throw new Error(
+      `Internal dependency "${nextDependency}" for "${
+        dependent.name
+      }" has an invalid range, "${range}"`,
+    );
+  }
+
+  const [wholeMatch, symbol, majorVersion] = match;
+
   if (wholeMatch !== range) {
     throw new Error(
       `Invalid version range for internal dependency  ${
