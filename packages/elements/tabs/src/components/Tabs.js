@@ -22,10 +22,14 @@ const defaultIsSelectedTestNumber: IsSelectedTestFunction = (
 const defaultIsSelectedTestObject: IsSelectedTestFunction = (selected, tab) =>
   selected === tab;
 
+const defaultComponents = {
+  Content: DefaultTabContent,
+  Item: DefaultTabItem,
+};
+
 export default class Tabs extends Component<TabsProps, TabsState> {
   static defaultProps = {
-    tabItemComponent: DefaultTabItem,
-    tabContentComponent: DefaultTabContent,
+    components: {},
   };
 
   constructor(props: TabsProps) {
@@ -86,13 +90,12 @@ export default class Tabs extends Component<TabsProps, TabsState> {
   };
 
   render() {
-    const {
-      tabContentComponent: TabContent,
-      tabItemComponent,
-      tabs,
-    } = this.props;
+    const { components, tabs } = this.props;
     const { selected } = this.state;
-    const tabContentProps = {
+
+    const renderComponents = { ...defaultComponents, ...components };
+    const { Content, Item } = renderComponents;
+    const contentProps = {
       data: selected,
       elementProps: {
         role: 'tabpanel',
@@ -101,12 +104,12 @@ export default class Tabs extends Component<TabsProps, TabsState> {
     return (
       <StyledTabs>
         <TabsNavigation
+          component={Item}
           onSelect={this.onSelect}
           selected={selected}
-          tabItemComponent={tabItemComponent}
           tabs={tabs}
         />
-        <TabContent {...tabContentProps} />
+        <Content {...contentProps} />
       </StyledTabs>
     );
   }

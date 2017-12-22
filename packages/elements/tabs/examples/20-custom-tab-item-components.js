@@ -67,11 +67,11 @@ export default () => (
   <div>
     <h3>Tabs with tooltips</h3>
     <Tabs
+      components={{ Item: TooltipItem }}
       onSelect={(tab, index) => console.log('Selected Tab', index + 1)}
-      tabItemComponent={TooltipItem}
       tabs={tabs}
     />
     <h3>Tabs as links</h3>
-    <Tabs selected={tabs[0]} tabs={tabs} tabItemComponent={LinkItem} />
+    <Tabs components={{ Item: LinkItem }} selected={tabs[0]} tabs={tabs} />
   </div>
 );

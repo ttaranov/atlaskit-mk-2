@@ -20,9 +20,9 @@ export default md`
     />
   )}
 
-  ### \`tabContentComponent\` Provided Props
+  ### Tab Content Provided Props
 
-  These props are provided to the component that you pass to \`tabContentComponent\`.
+  These props are provided to the component that you pass to \`components.Content\`.
 
   ${(
     <Props
@@ -34,14 +34,14 @@ export default md`
   ${(
     <Example
       Component={require('../examples/30-custom-tab-content-component').default}
-      title="Custom tabContentComponent"
+      title="Custom Content component"
       source={require('!!raw-loader!../examples/30-custom-tab-content-component')}
     />
   )}
 
-  ### \`tabItemComponent\` Provided Props
+  ### Tab Item Provided Props
   
-  These props are provided to the component that you pass to \`tabItemComponent\`.
+  These props are provided to the component that you pass to \`components.Item\`.
 
   ${(
     <Props
@@ -53,7 +53,7 @@ export default md`
   ${(
     <Example
       Component={require('../examples/20-custom-tab-item-components').default}
-      title="Custom tabItemComponent"
+      title="Custom Item component"
       source={require('!!raw-loader!../examples/20-custom-tab-item-components')}
     />
   )}

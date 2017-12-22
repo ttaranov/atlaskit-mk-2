@@ -136,37 +136,31 @@ describe(name, () => {
         });
       });
 
-      describe('tabItemComponent', () => {
-        it('should render a custom tab item component if provided', () => {
-          const TabItemComponent = (props: TabItemComponentProvided) => (
-            <div>{props.data.label}</div>
-          );
-          const wrapper = mount(
-            <Tabs tabs={tabs} tabItemComponent={TabItemComponent} />,
-          );
-          expect(wrapper.find(TabItemComponent)).toHaveLength(tabs.length);
-        });
-
-        it('should render the in-built tab item by default', () => {
-          const wrapper = mount(<Tabs tabs={tabs} />);
-          expect(wrapper.find(TabItem)).toHaveLength(tabs.length);
-        });
-      });
-
-      describe('tabContentComponent', () => {
-        it('should render a custom tab content component if provided', () => {
+      describe('components', () => {
+        it('should render a custom tab content component if components.Content is provided', () => {
           const TabContentComponent = (props: TabContentComponentProvided) => (
             <div>{props.data.content}</div>
           );
           const wrapper = mount(
-            <Tabs tabs={tabs} tabContentComponent={TabContentComponent} />,
+            <Tabs components={{ Content: TabContentComponent }} tabs={tabs} />,
           );
           expect(wrapper.find(TabContentComponent)).toHaveLength(1);
         });
 
-        it('should render the in-built tab content pane by default', () => {
+        it('should render a custom tab item component if components.Item is provided', () => {
+          const TabItemComponent = (props: TabItemComponentProvided) => (
+            <div>{props.data.label}</div>
+          );
+          const wrapper = mount(
+            <Tabs components={{ Item: TabItemComponent }} tabs={tabs} />,
+          );
+          expect(wrapper.find(TabItemComponent)).toHaveLength(tabs.length);
+        });
+
+        it('should render the in-built components by default', () => {
           const wrapper = mount(<Tabs tabs={tabs} />);
           expect(wrapper.find(TabContent)).toHaveLength(1);
+          expect(wrapper.find(TabItem)).toHaveLength(tabs.length);
         });
       });
 

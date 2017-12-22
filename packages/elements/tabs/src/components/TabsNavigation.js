@@ -37,7 +37,7 @@ export default class TabsNavigation extends Component<TabsNavigationProps> {
   tabMouseDownHandler = (e: MouseEvent) => e.preventDefault();
 
   render() {
-    const { selected, tabItemComponent: TabItem, tabs } = this.props;
+    const { selected, component: Item, tabs } = this.props;
 
     return (
       <NavWrapper>
@@ -59,7 +59,7 @@ export default class TabsNavigation extends Component<TabsNavigationProps> {
               this.elementRefs[index] = ref;
             };
 
-            const tabItemProps = {
+            const itemProps = {
               elementProps,
               innerRef,
               data: tab,
@@ -67,7 +67,7 @@ export default class TabsNavigation extends Component<TabsNavigationProps> {
             };
 
             // eslint-disable-next-line react/no-array-index-key
-            return <TabItem key={index} {...tabItemProps} />;
+            return <Item key={index} {...itemProps} />;
           })}
         </Nav>
       </NavWrapper>

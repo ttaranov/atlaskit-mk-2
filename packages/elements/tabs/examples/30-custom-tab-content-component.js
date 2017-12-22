@@ -42,8 +42,8 @@ const CustomContent = ({ data, elementProps }: TabContentComponentProvided) => (
 export default () => (
   <div>
     <Tabs
+      components={{ Content: CustomContent }}
       onSelect={(tab, index) => console.log('Selected Tab', index + 1)}
-      tabContentComponent={CustomContent}
       tabs={tabs}
     />
   </div>

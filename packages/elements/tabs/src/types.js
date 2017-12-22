@@ -49,6 +49,12 @@ export type IsSelectedTestFunction = (
 type OnSelectCallback = (selected: TabData, selectedIndex: number) => void;
 
 export type TabsProps = {
+  /** Custom components to render instead of the default tab item or content.
+   * See Tab Content Provided Props and Tab Item Provided Props below. */
+  components: {
+    Item?: TabItemType,
+    Content?: TabContentType,
+  },
   /** The tab that will be selected by default when the component mounts. If not
    * set the first tab will be displayed by default. */
   defaultSelected?: selectedProp,
@@ -67,18 +73,9 @@ export type TabsProps = {
    * be up to you to listen to onSelect changes, update your own state, and pass
    * that information down to this prop accordingly. */
   selected?: selectedProp,
-  /** A custom component to render instead of the default tab content pane. See
-   * tabContentComponent Provided Props below for more information.
-   */
-  tabContentComponent: TabContentType,
-  /** A custom component to render instead of the default tab item. See
-   * tabItemComponent Provided Props below for more information.
-   */
-  tabItemComponent: TabItemType,
   /** An array of objects containing data for your tabs. By default a tab object
    * must include 'label' and 'content' properties, but if used in conjunction
-   * with the tabItemComponent and tabContentComponent props this object can
-   * have any shape you choose. */
+   * with the components prop this object can have any shape you choose. */
   tabs: Array<TabData>,
 };
 
@@ -87,8 +84,8 @@ export type TabsState = {
 };
 
 export type TabsNavigationProps = {
+  component: TabItemType,
   onSelect: OnSelectCallback,
   selected: TabData,
-  tabItemComponent: TabItemType,
   tabs: Array<TabData>,
 };
