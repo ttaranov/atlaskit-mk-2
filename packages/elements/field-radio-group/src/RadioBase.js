@@ -1,33 +1,31 @@
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+// @flow
+import React, { Component } from 'react';
 import { themed, colors } from '@atlaskit/theme';
 import RadioIcon from '@atlaskit/icon/glyph/radio';
-import { HiddenInput, IconWrapper, Label, Wrapper } from '../styled/Radio';
+import { HiddenInput, IconWrapper, Label, Wrapper } from './styled/Radio';
+import type { RadioBasePropTypes } from './types';
 
 const backgroundColor = themed({ light: colors.N40A, dark: colors.DN10 });
 const transparent = themed({ light: 'transparent', dark: 'transparent' });
 
-/* eslint-disable jsx-a11y/label-has-for */
-export default class Radio extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node,
-    isDisabled: PropTypes.bool,
-    isRequired: PropTypes.bool,
-    isSelected: PropTypes.bool,
-    name: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-    value: PropTypes.string,
-  };
+type State = {
+  isHovered: boolean,
+  isFocused: boolean,
+  isActive: boolean,
+  mouseIsDown: boolean,
+};
 
+export default class Radio extends Component<RadioBasePropTypes, State> {
   static defaultProps = {
     isDisabled: false,
     isSelected: false,
   };
 
-  state = {
+  state: State = {
     isHovered: false,
     isFocused: false,
     isActive: false,
+    mouseIsDown: false,
   };
 
   onBlur = () =>

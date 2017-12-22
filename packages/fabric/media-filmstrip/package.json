@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.0.0",
-    "@atlaskit/field-radio-group": "^1.2.1",
+    "@atlaskit/field-radio-group": "^1.7.5",
     "@atlaskit/field-range": "^2.0.0",
     "@atlaskit/media-card": "^23.0.3",
     "@atlaskit/media-core": "^12.0.1",
