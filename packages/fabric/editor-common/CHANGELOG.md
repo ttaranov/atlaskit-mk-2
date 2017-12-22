@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 5.1.7
+
+- [patch] Updated media-card Appearance type to include "auto" [e1f8390](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e1f8390)
+
 ## 5.1.6
 
 ## 5.1.5

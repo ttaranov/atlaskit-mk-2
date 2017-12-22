@@ -1,5 +1,7 @@
 # @atlaskit/renderer
 
+## 10.1.4
+
 ## 10.1.3
 
 
