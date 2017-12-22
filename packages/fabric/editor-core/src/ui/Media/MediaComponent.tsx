@@ -156,7 +156,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       cardDimensions,
       onDelete,
       appearance,
-      ...otherProps
+      ...otherProps,
     } = this.props;
     const hasProviders = mediaProvider && linkCreateContext;
 
