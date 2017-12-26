@@ -1,5 +1,8 @@
 # @atlaskit/website
 
+## 1.2.10
+- [patch] Bug fix and better error messages for changeset error [7f09b86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f09b86)
+
 ## 1.2.9
 
 ## 1.2.8

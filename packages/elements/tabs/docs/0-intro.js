@@ -3,39 +3,58 @@ import React from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
 
 export default md`
-  Use lozenges to highlight an item's status for quick recognition. Use
-  subtle lozenges by default and in instances where they may dominate the
-  screen, such as in long tables.
+  Use tabs to display multiple panels within a single window.
 
-  ## Stateful Tabs
+  ${(
+    <Example
+      Component={require('../examples/00-basic').default}
+      title="Basic"
+      source={require('!!raw-loader!../examples/00-basic')}
+    />
+  )}
 
   ${(
     <Props
+      heading="Tabs Props"
       props={require('!!extract-react-types-loader!../src/components/Tabs')}
     />
   )}
 
-  ${(
-    <Example
-      Component={require('../examples/0-basic').default}
-      title="Basic"
-      source={require('!!raw-loader!../examples/0-basic')}
-    />
-  )}
+  ### Tab Content Provided Props
 
-  ## Stateless Tabs
+  These props are provided to the component that you pass to \`components.Content\`.
 
   ${(
     <Props
-      props={require('!!extract-react-types-loader!../src/components/TabsStateless')}
+      heading=" "
+      props={require('!!extract-react-types-loader!../src/components/TabContent')}
     />
   )}
 
   ${(
     <Example
-      Component={require('../examples/1-stateless').default}
-      title="Basic"
-      source={require('!!raw-loader!../examples/1-stateless')}
+      Component={require('../examples/30-custom-tab-content-component').default}
+      title="Custom Content component"
+      source={require('!!raw-loader!../examples/30-custom-tab-content-component')}
+    />
+  )}
+
+  ### Tab Item Provided Props
+  
+  These props are provided to the component that you pass to \`components.Item\`.
+
+  ${(
+    <Props
+      heading=" "
+      props={require('!!extract-react-types-loader!../src/components/TabItem')}
+    />
+  )}
+
+  ${(
+    <Example
+      Component={require('../examples/20-custom-tab-item-components').default}
+      title="Custom Item component"
+      source={require('!!raw-loader!../examples/20-custom-tab-item-components')}
     />
   )}
 `;

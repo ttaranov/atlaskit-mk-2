@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 3.0.10
+- [patch] Fix dependencies in CI [670e930](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/670e930)
+
 ## 3.0.9
 
 

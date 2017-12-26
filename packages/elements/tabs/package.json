@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tabs",
-  "version": "4.1.0",
+  "version": "5.0.0",
   "description": "A React component for displaying multiple panels within a single window",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -32,8 +32,9 @@
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/spinner": "^4.0.2",
     "@atlaskit/docs": "^2.0.0",
+    "@atlaskit/spinner": "^4.0.2",
+    "@atlaskit/tooltip": "^8.0.8",
     "enzyme": "^2.9.1",
     "react-lorem-component": "^0.12.2"
   }
