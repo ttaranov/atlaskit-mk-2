@@ -10,6 +10,8 @@ import {
   table,
   tr,
   td,
+  ol,
+  li,
 } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
 
@@ -217,6 +219,17 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         plugin.props.handleDOMEvents!.focus(editorView, event);
         plugin.props.handleDOMEvents!.blur(editorView, event);
         expect(pluginState.toolbarVisible).toBe(false);
+      });
+    });
+
+    describe('when focus is inside a list in panel', () => {
+      it('it is true', () => {
+        const { editorView, plugin, pluginState } = editor(
+          doc(p('text'), panel(p('text'), ol(li(p('te{<>}xt'))))),
+        );
+        plugin.props.handleDOMEvents!.focus(editorView, event);
+        plugin.props.handleClick!(editorView, 2, createEvent('event'));
+        expect(pluginState.toolbarVisible).toBe(true);
       });
     });
   });
