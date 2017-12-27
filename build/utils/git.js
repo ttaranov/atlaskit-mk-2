@@ -211,6 +211,27 @@ async function getUnpublishedChangesetCommits() {
   return unpublishedCommits;
 }
 
+// This function is only used for debugging purposes when we need to know which releases released
+// specific commits
+async function getReleasesForChangesetCommits(changesetCommits) {
+  const allReleaseCommits = await getAllReleaseCommits();
+  const allChangesetCommits = await getAllChangesetCommits();
+  // now map over the changeset commits to find releases for each
+  const changesetsToReleasesMap = changesetCommits.map(cs => {
+    const relevantReleaseCommits = allReleaseCommits.filter(releaseCommit => {
+      return releaseCommit.releases.find(
+        release => release.commits.indexOf(cs) > -1,
+      );
+    });
+    return {
+      changesetCommit: cs,
+      releases: relevantReleaseCommits,
+    };
+  });
+
+  return changesetsToReleasesMap;
+}
+
 module.exports = {
   getCommitsSince,
   getChangedFilesSince,
@@ -225,4 +246,5 @@ module.exports = {
   getAllReleaseCommits,
   getAllChangesetCommits,
   getLastPublishCommit,
+  getReleasesForChangesetCommits,
 };
