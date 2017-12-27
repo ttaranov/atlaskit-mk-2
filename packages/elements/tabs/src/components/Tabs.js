@@ -50,18 +50,21 @@ export default class Tabs extends Component<TabsProps, TabsState> {
       typeof newProps.selected !== 'undefined' &&
       newProps.selected !== this.state.selected
     ) {
-      const selected = this.resolveSelected(newProps.selected);
+      const selected = this.resolveSelected(newProps.selected, newProps);
       this.setState({ selected });
     }
 
     if (newProps.tabs !== this.props.tabs) {
-      const updatedselected = this.resolveSelected(this.state.selected);
+      const updatedselected = this.resolveSelected(
+        this.state.selected,
+        newProps,
+      );
       this.setState({ selected: updatedselected });
     }
   }
 
-  resolveSelected = (selected: selectedProp): TabData => {
-    const { tabs, isSelectedTest } = this.props;
+  resolveSelected = (selected: selectedProp, newProps?: TabsProps): TabData => {
+    const { tabs, isSelectedTest } = newProps || this.props;
 
     const testFunction: IsSelectedTestFunction = (() => {
       if (isSelectedTest) {
