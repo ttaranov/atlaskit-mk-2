@@ -44,7 +44,7 @@
     "build:css-reset": "                     cd packages/elements/css-reset && yarn build"
   },
   "bolt": {
-    "version": ">=0.17.0",
+    "version": ">=0.18.0",
     "workspaces": [
       "build/*",
       "packages/utils/*",
@@ -214,7 +214,7 @@
     "babel-runtime": "^6.26.0",
     "babel-traverse": "^6.26.0",
     "babylon": "^6.18.0",
-    "bolt": "^0.17.0",
+    "bolt": "^0.18.1",
     "bytes": "^2.4.0",
     "calendar-base": "^0.3.0",
     "chalk": "^2.1.0",
