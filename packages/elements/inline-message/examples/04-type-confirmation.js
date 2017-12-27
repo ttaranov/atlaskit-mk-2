@@ -7,7 +7,8 @@ const MessageContent = (
   <div>
     <h4>Authenticate heading</h4>
     <span>
-      Authenticate <a href="#">here</a> to see more information
+      Authenticate <a href="https://atlaskit.atlassian.com/">here</a> to see
+      more information
     </span>
   </div>
 );
