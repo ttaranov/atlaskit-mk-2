@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 10.5.0
+- [minor] Move icon and reduced-ui pack to new repo, update build process [b3977f3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b3977f3)
+
 ## 10.4.0 (2017-12-08)
 
 * feature; added new media layout icons for the editor (issues closed: ak-4012)
