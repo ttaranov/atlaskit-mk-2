@@ -78,4 +78,4 @@ export const Header = styled.div`
   padding-bottom: 8px;
 `;
 
-export const TreeTableContainer = styled.div``;
+export const TableTreeContainer = styled.div``;

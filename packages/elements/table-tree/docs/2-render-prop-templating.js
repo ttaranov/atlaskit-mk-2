@@ -3,7 +3,7 @@ import React from 'react';
 import { md, Example } from '@atlaskit/docs';
 
 export default md`
-  For use cases that need more fine-grained control, the \`TreeTable\` allows for templating based on the 
+  For use cases that need more fine-grained control, the \`TableTree\` allows for templating based on the 
   render prop pattern and several exported subcomponents.
   
   The render prop is called whenever a tree row needs to be displayed.
