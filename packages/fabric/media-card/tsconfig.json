@@ -1,14 +1,3 @@
 {
-  "extends": "../../../tsconfig.fabric.json",
-  "include": [
-    "./src/**/*.ts",
-    "./src/**/*.tsx",
-    "./__tests__/**/*.ts",
-    "./__tests__/**/*.tsx",
-    "./example-helpers/**/*.ts",
-    "./example-helpers/**/*.tsx",
-    "./examples/**/*.ts",
-    "./examples/**/*.tsx",
-    "./docs/**/*.tsx"
-  ]
+  "extends": "../../../tsconfig.fabric.json"
 }

@@ -31,7 +31,7 @@ const Title = props => <span>{props.title}</span>;
 const Description = props => <span>{props.description}</span>;
 
 function getChildrenData(parent = staticData) {
-  return parent.children || [];
+  return (parent && parent.children) || [];
 }
 
 export default () => (
@@ -39,6 +39,6 @@ export default () => (
     columns={[Title, Description]}
     headers={['Title', 'Description']}
     columnWidths={['100px', '300px']}
-    data={getChildrenData}
+    items={getChildrenData}
   />
 );

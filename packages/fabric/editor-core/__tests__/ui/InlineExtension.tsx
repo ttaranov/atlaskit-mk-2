@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
+import {
+  macroProvider,
+  inlineExtensionData,
+} from '@atlaskit/editor-test-helpers';
+
 import InlineExtension from '../../src/ui/Extension/InlineExtension';
-import { macroProvider } from '../../example-helpers/mock-macro-provider';
-import { inlineExtensionData } from '../../example-helpers/mock-extension-data';
 import { PlaceholderFallback } from '../../src/ui/Extension/InlineExtension/styles';
 
 describe('@atlaskit/editor-core/ui/Macro/InlineExtension', () => {

@@ -29,7 +29,6 @@ export default class MediaSingleNode extends PureComponent<
               height: '100%',
             },
             appearance: 'image',
-            isMediaSingle: true,
           } as MediaProps,
         )}
       </Wrapper>

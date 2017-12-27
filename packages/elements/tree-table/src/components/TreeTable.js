@@ -2,13 +2,13 @@
 import React, { Component, type ElementType, type Node } from 'react';
 import PropTypes from 'prop-types';
 import { TreeTableContainer } from '../styled';
-import TreeRows from './TreeRows';
-import RowData from './RowData';
-import HeadersRow from './HeadersRow';
+import Rows from './Rows';
+import Row from './Row';
+import Headers from './Headers';
 import Header from './Header';
-import DataCell from './DataCell';
+import Cell from './Cell';
 
-import { type DataFunction, type CSSWidth } from './../types';
+import { type ItemsProvider, type CSSWidth } from './../types';
 
 type Props = {
   /** An array of React component constructors. Each component will be used to render a cell in a tree row.  */
@@ -20,10 +20,10 @@ type Props = {
   /** The headers of the table. */
   headers?: Array<string>,
 
-  children?: Array<Node>,
+  children?: Node,
 
   /** The function that will be used to provide data for rows at a particular level in the hierarchy */
-  data?: DataFunction,
+  items?: ItemsProvider,
 };
 
 type State = {
@@ -39,12 +39,6 @@ export default class TreeTable extends Component<Props, State> {
     columnWidths: [],
   };
 
-  constructor() {
-    super();
-    this.setColumnWidth = this.setColumnWidth.bind(this);
-    this.getColumnWidth = this.getColumnWidth.bind(this);
-  }
-
   componentWillMount() {
     const widths = this.props.columnWidths;
     if (widths) {
@@ -52,18 +46,18 @@ export default class TreeTable extends Component<Props, State> {
     }
   }
 
-  setColumnWidth(columnIndex: number, width: CSSWidth) {
+  setColumnWidth = (columnIndex: number, width: CSSWidth) => {
     const columnWidths = this.state.columnWidths;
     if (width === columnWidths[columnIndex]) {
       return;
     }
     columnWidths[columnIndex] = width;
     this.setState({ columnWidths });
-  }
+  };
 
-  getColumnWidth(columnIndex: number): CSSWidth | null {
+  getColumnWidth = (columnIndex: number): CSSWidth | null => {
     return (this.state && this.state.columnWidths[columnIndex]) || null;
-  }
+  };
 
   getChildContext() {
     return {
@@ -77,33 +71,39 @@ export default class TreeTable extends Component<Props, State> {
 
   render() {
     const {
-      data: getRowChildrenData,
+      items: getRowChildrenData,
       headers,
       columns,
       columnWidths = [],
     } = this.props;
     const heads = headers && (
-      <HeadersRow>
+      <Headers>
         {headers.map((header, index) => (
-          <Header key={index} index={index} width={columnWidths[index]}>
+          // eslint-disable-next-line react/no-array-index-key
+          <Header key={index} columnIndex={index} width={columnWidths[index]}>
             {header}
           </Header>
         ))}
-      </HeadersRow>
+      </Headers>
     );
     let rows = null;
     if (columns && getRowChildrenData) {
       rows = (
-        <TreeRows
-          data={getRowChildrenData}
+        <Rows
+          items={getRowChildrenData}
           render={data => (
-            <RowData key={data.id} hasChildren={data.hasChildren}>
-              {columns.map((Cell, index) => (
-                <DataCell key={index} index={index} width={columnWidths[index]}>
-                  <Cell {...data.content} />
-                </DataCell>
+            <Row key={data.id} hasChildren={data.hasChildren}>
+              {columns.map((CellContent, index) => (
+                <Cell
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={index}
+                  columnIndex={index}
+                  width={columnWidths[index]}
+                >
+                  <CellContent {...data.content} />
+                </Cell>
               ))}
-            </RowData>
+            </Row>
           )}
         />
       );

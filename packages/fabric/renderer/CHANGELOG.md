@@ -1,5 +1,16 @@
 # @atlaskit/renderer
 
+## 10.1.2
+
+## 10.1.1
+
+## 10.1.0
+
+
+
+- [minor] Add ADF-Encoder utility to simplify using a transformer with the renderer [5b1ea37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b1ea37)
+- [minor] Add ADF-Encoder utility to simplify using a transformer with the renderer [5b1ea37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b1ea37)
+
 ## 10.0.8
 
 ## 10.0.7

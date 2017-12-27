@@ -20,13 +20,13 @@ export interface MediaGroupNodeState {
   offset: number;
 }
 
-// tslint:disable-next-line:variable-name
+// Need `padding-left` override for media item drop-shadow
 const Wrapper = styled.div`
-  padding: 0 0 8px 0;
+  margin-bottom: 8px;
   &&& ul {
     padding: 0;
-    & .media-wrapper {
-      box-sizing: border-box;
+    & li:first-child {
+      padding-left: 2px;
     }
   }
 `;

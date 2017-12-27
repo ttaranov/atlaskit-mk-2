@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example } from '@atlaskit/docs';
 
 export default md`
   For use cases that need more fine-grained control, the \`TreeTable\` allows for templating based on the 
@@ -17,6 +17,7 @@ export default md`
       Component={require('../examples/render-prop-async').default}
       source={require('!!raw-loader!../examples/render-prop-async')}
       title="Basic"
+      language="javascript"
     />
   )}
 
@@ -25,12 +26,7 @@ export default md`
       Component={require('../examples/render-prop-no-headers').default}
       source={require('!!raw-loader!../examples/render-prop-no-headers')}
       title="No headers"
-    />
-  )}
-
-  ${(
-    <Props
-      props={require('!!extract-react-types-loader!../src/components/TreeTable')}
+      language="javascript"
     />
   )}
 `;

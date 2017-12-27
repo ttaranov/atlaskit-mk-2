@@ -57,7 +57,7 @@ const commonCell = css`
     `};
 `;
 
-export const DataCell = styled.div`
+export const Cell = styled.div`
   ${commonCell} white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

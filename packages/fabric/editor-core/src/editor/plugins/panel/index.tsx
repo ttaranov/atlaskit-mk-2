@@ -2,7 +2,6 @@ import * as React from 'react';
 import { panel } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { createPlugin, stateKey } from '../../../plugins/panel';
-import inputRulePlugin from '../../../plugins/panel/input-rules';
 import PanelEdit from '../../../ui/PanelEdit';
 
 const panelPlugin: EditorPlugin = {
@@ -11,10 +10,7 @@ const panelPlugin: EditorPlugin = {
   },
 
   pmPlugins() {
-    return [
-      { rank: 1110, plugin: createPlugin },
-      { rank: 1120, plugin: ({ schema }) => inputRulePlugin(schema) },
-    ];
+    return [{ rank: 1110, plugin: createPlugin }];
   },
 
   contentComponent(editorView) {

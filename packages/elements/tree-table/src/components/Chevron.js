@@ -8,20 +8,16 @@ import { ChevronContainer, iconColor } from '../styled';
 type Props = {
   isExpanded: boolean,
   hasChildren: boolean,
-  onExpandToggle: Function,
+  onExpandToggle?: Function,
+  key?: string,
 };
 
 export default class Chevron extends PureComponent<Props> {
-  constructor() {
-    super();
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    if (this.props.hasChildren) {
+  handleClick = () => {
+    if (this.props.hasChildren && this.props.onExpandToggle) {
       this.props.onExpandToggle();
     }
-  }
+  };
 
   render() {
     const { isExpanded, hasChildren } = this.props;

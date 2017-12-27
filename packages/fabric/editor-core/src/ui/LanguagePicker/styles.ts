@@ -27,7 +27,6 @@ export const FloatingToolbar: ComponentClass<any> = styled(
 export const Separator = styled.span`
   background: ${akColorN30};
   width: 1px;
-  height: 20px;
   display: inline-block;
   margin: 0 8px;
 `;

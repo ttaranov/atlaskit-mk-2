@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
+import { macroProvider, extensionData } from '@atlaskit/editor-test-helpers';
+
 import ProviderFactory from '../../src/providerFactory';
 import Extension from '../../src/ui/Extension';
 import ExtensionComponent from '../../src/ui/Extension/ExtensionComponent';
-import { macroProviderPromise } from '../../example-helpers/mock-macro-provider';
-import { extensionData } from '../../example-helpers/mock-extension-data';
+
+const macroProviderPromise = Promise.resolve(macroProvider);
 
 describe('@atlaskit/editor-core/ui/Extension', () => {
   const node = extensionData[0] as any;

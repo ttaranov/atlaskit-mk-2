@@ -22,11 +22,14 @@ function generateMarkdownTemplate(release, releaseObject, repoUrl) {
   const { changesets, releases } = releaseObject;
   const result = [`## ${release.version}`];
 
-  const releatedChangesets = release.commits.map(commitHash =>
-    changesets.find(c => c.commit === commitHash),
-  );
+  let relatedChangesets = [];
+  for (let commitHash of release.commits) {
+    if (!relatedChangesets.find(c => c.commit === commitHash)) {
+      relatedChangesets.push(changesets.find(c => c.commit === commitHash));
+    }
+  }
 
-  const releaseLines = releatedChangesets
+  const releaseLines = relatedChangesets
     .map(changeset => {
       const changesetRelease = changeset.releases.find(
         r => r.name === release.name,
@@ -49,7 +52,7 @@ function generateMarkdownTemplate(release, releaseObject, repoUrl) {
   result.push(releaseLines);
 
   if (Array.isArray(release.dependencies) && release.dependencies.length > 0) {
-    const dependencyLines = releatedChangesets.map(changeset => {
+    const dependencyLines = relatedChangesets.map(changeset => {
       const dep = changeset.dependents.find(d => d.name === release.name);
       const lines = [];
       lines.push(

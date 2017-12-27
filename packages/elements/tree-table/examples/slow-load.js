@@ -1,35 +1,32 @@
 // @flow
 import React from 'react';
-import TreeTable, {
-  HeadersRow,
-  Header,
-  TreeRows,
-  RowData,
-  DataCell,
-} from '../src';
+import TreeTable, { Headers, Header, Rows, Row, Cell } from '../src';
+import { type RowData as RowDataType } from '../src/types';
 import staticData from './data-freeform-nodes.json';
 
-function getChildrenData(parent = staticData) {
+function getChildrenData(
+  parent: ?{ children: Array<RowDataType> } = staticData,
+) {
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve(parent.children);
+      resolve((parent && parent.children) || []);
     }, 3000);
   });
 }
 
 export default () => (
   <TreeTable>
-    <HeadersRow>
+    <Headers>
       <Header width={200}>Title</Header>
       <Header width={100}>Numbering</Header>
-    </HeadersRow>
-    <TreeRows
-      data={getChildrenData}
+    </Headers>
+    <Rows
+      items={getChildrenData}
       render={({ id, title, numbering, children }) => (
-        <RowData key={id} hasChildren={children.length > 0}>
-          <DataCell>{title}</DataCell>
-          <DataCell>{numbering}</DataCell>
-        </RowData>
+        <Row key={id} hasChildren={children.length > 0}>
+          <Cell>{title}</Cell>
+          <Cell>{numbering}</Cell>
+        </Row>
       )}
     />
   </TreeTable>

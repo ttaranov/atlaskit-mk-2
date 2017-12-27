@@ -1,5 +1,5 @@
 // @flow
-import React, { type ComponentType } from 'react';
+import React from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
 
 import SimpleFacadeExample from '../examples/single-component';
@@ -12,7 +12,14 @@ export default md`
   Several of the props are arrays where each item corresponds to the given
   column.
   
-  ${<Example component={SimpleFacadeExample} />}
+  ${(
+    <Example
+      component={SimpleFacadeExample}
+      source={require('!!raw-loader!../examples/single-component')}
+      title="Single component facade"
+      language="javascript"
+    />
+  )}
 
   ${(
     <Props

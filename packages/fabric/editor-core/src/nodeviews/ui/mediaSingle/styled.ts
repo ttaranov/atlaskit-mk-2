@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
-import { Layout } from '@atlaskit/editor-common';
+import { MediaSingleLayout } from '@atlaskit/editor-common';
 
-function float(layout: Layout): string {
+function float(layout: MediaSingleLayout): string {
   switch (layout) {
     case 'wrap-right':
       return 'right';
@@ -12,7 +12,7 @@ function float(layout: Layout): string {
   }
 }
 
-function clear(layout: Layout): string {
+function clear(layout: MediaSingleLayout): string {
   switch (layout) {
     case 'wrap-right':
       return 'right';
@@ -24,7 +24,7 @@ function clear(layout: Layout): string {
 }
 
 export interface WrapperProps {
-  layout: Layout;
+  layout: MediaSingleLayout;
   width: number;
   height: number;
 }
@@ -48,13 +48,12 @@ export const MediaSingleDimensionHelper = ({
 `;
 
 export const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 24px auto;
   ${MediaSingleDimensionHelper};
-  // Hack for selection outline
-  & .media-wrapper {
-    margin-left: -3px;
+  position: relative;
+  margin: 24px auto;
+  & > div {
+    position: absolute;
+    height: 100%;
   }
 `;
 Wrapper.displayName = 'WrapperMediaSingle';

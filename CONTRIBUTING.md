@@ -136,7 +136,7 @@ If you want to run both type checkers on all files from the command line you can
 run:
 
 ```sh
-bolt check
+bolt typecheck
 ```
 
 ## Linting your code
