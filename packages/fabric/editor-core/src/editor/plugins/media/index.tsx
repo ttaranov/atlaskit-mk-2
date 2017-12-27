@@ -4,6 +4,7 @@ import { MediaProvider } from '@atlaskit/media-core';
 import { EditorPlugin } from '../../types';
 import { stateKey as pluginKey, createPlugin } from '../../../plugins/media';
 import keymapPlugin from '../../../plugins/media/keymap';
+import keymapMediaSinglePlugin from '../../../plugins/media/keymap-media-single';
 import ToolbarMedia from '../../../ui/ToolbarMedia';
 
 export interface MediaOptions {
@@ -41,7 +42,14 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
           ),
       },
       { rank: 1220, plugin: ({ schema }) => keymapPlugin(schema) },
-    ];
+    ].concat(
+      options && options.allowMediaSingle
+        ? {
+            rank: 1250,
+            plugin: ({ schema }) => keymapMediaSinglePlugin(schema),
+          }
+        : [],
+    );
   },
 
   primaryToolbarComponent(
