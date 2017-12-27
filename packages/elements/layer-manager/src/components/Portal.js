@@ -1,6 +1,9 @@
 // @flow
 import React, { Children, Component, type Node } from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
+import {
+  unstable_renderSubtreeIntoContainer,
+  unmountComponentAtNode,
+} from 'react-dom'; // eslint-disable-line
 import { withTheme, ThemeProvider } from 'styled-components';
 import { TransitionGroup } from 'react-transition-group';
 
@@ -31,7 +34,11 @@ class Portal extends Component<Props> {
     const { children } = this.props;
     if (this.portalElement) {
       const portal = this.portalElement;
-      render(this.renderChildren(children), portal);
+      unstable_renderSubtreeIntoContainer(
+        this,
+        this.renderChildren(children),
+        portal,
+      );
     }
   }
   componentWillUnmount() {
@@ -40,17 +47,22 @@ class Portal extends Component<Props> {
     // lifecycle before the portal is removed from the dom entirely
     if (this.portalElement) {
       const portal = this.portalElement;
-      render(this.renderChildren(), portal, () => {
-        // allow time for transitions to complete before the dom is cleaned up
-        // five seconds is an arbitary number, but is more than any of our
-        // animations need to complete
-        setTimeout(() => {
-          const target = document.body;
-          if (!target) return;
-          unmountComponentAtNode(portal);
-          target.removeChild(portal);
-        }, 5000);
-      });
+      unstable_renderSubtreeIntoContainer(
+        this,
+        this.renderChildren(),
+        portal,
+        () => {
+          // allow time for transitions to complete before the dom is cleaned up
+          // five seconds is an arbitary number, but is more than any of our
+          // animations need to complete
+          setTimeout(() => {
+            const target = document.body;
+            if (!target) return;
+            unmountComponentAtNode(portal);
+            target.removeChild(portal);
+          }, 5000);
+        },
+      );
     }
   }
   renderChildren = children => {
