@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 60.15.9
+
 ## 60.15.8
 
 - [patch] Update dependencies [623f8ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623f8ca)
