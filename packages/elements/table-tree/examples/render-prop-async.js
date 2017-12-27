@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import TreeTable, { Headers, Header, Rows, Row, Cell } from '../src';
+import TableTree, { Headers, Header, Rows, Row, Cell } from '../src';
 import staticData from './data-cleancode-toc.json';
 
 function fetchRoots() {
@@ -16,7 +16,7 @@ function getChildrenData(parent) {
 }
 
 export default () => (
-  <TreeTable>
+  <TableTree>
     <Headers>
       <Header width={200}>Chapter title</Header>
       <Header width={100}>Numbering</Header>
@@ -32,5 +32,5 @@ export default () => (
         </Row>
       )}
     />
-  </TreeTable>
+  </TableTree>
 );

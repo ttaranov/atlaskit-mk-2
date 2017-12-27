@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import TreeTable from '../src';
+import TableTree from '../src';
 import staticData from './data-structured-nodes.json';
 
 /* eslint react/no-unused-prop-types: 0 */
@@ -15,10 +15,5 @@ function getChildrenData(parent = staticData) {
 }
 
 export default () => (
-  <TreeTable
-    headers={['Title', 'Numbering']}
-    columns={[Title, Numbering]}
-    columnWidths={['200px', '200px']}
-    items={getChildrenData}
-  />
+  <TableTree columns={[Title, Numbering]} items={getChildrenData} />
 );

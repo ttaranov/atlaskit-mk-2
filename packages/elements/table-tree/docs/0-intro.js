@@ -3,7 +3,7 @@ import React from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
 
 export default md`
-  This package exports the \'TreeTable\' component.
+  This package exports the \'TableTree\' component.
   
   The component displays a table with expandable, nested rows that form a tree-like hierarchy.
   It supports asynchronous loading of child rows.
@@ -19,7 +19,7 @@ export default md`
   
   ${(
     <Props
-      props={require('!!extract-react-types-loader!../src/components/TreeTable')}
+      props={require('!!extract-react-types-loader!../src/components/TableTree')}
     />
   )}
 `;

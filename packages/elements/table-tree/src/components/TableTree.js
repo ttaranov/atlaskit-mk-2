@@ -1,7 +1,7 @@
 // @flow
 import React, { Component, type ElementType, type Node } from 'react';
 import PropTypes from 'prop-types';
-import { TreeTableContainer } from '../styled';
+import { TableTreeContainer } from '../styled';
 import Rows from './Rows';
 import Row from './Row';
 import Headers from './Headers';
@@ -30,9 +30,9 @@ type State = {
   columnWidths: Array<CSSWidth>,
 };
 
-export default class TreeTable extends Component<Props, State> {
+export default class TableTree extends Component<Props, State> {
   static childContextTypes = {
-    treeTable: PropTypes.object.isRequired,
+    tableTree: PropTypes.object.isRequired,
   };
 
   state = {
@@ -61,7 +61,7 @@ export default class TreeTable extends Component<Props, State> {
 
   getChildContext() {
     return {
-      treeTable: {
+      tableTree: {
         columnWidths: this.state.columnWidths,
         setColumnWidth: this.setColumnWidth,
         getColumnWidth: this.getColumnWidth,
@@ -109,11 +109,11 @@ export default class TreeTable extends Component<Props, State> {
       );
     }
     return (
-      <TreeTableContainer>
+      <TableTreeContainer>
         {heads}
         {rows}
         {this.props.children}
-      </TreeTableContainer>
+      </TableTreeContainer>
     );
   }
 }

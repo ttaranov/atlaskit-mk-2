@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import TreeTable from '../src';
+import TableTree from '../src';
 
 const staticData = {
   children: [
@@ -35,7 +35,7 @@ function getChildrenData(parent = staticData) {
 }
 
 export default () => (
-  <TreeTable
+  <TableTree
     columns={[Title, Description]}
     headers={['Title', 'Description']}
     columnWidths={['100px', '300px']}

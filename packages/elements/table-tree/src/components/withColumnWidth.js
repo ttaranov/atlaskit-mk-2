@@ -17,7 +17,7 @@ type Props = {
 export default function withColumnWidth(Cell: ElementType): ComponentType<*> {
   return class CellWithColumnWidth extends PureComponent<Props> {
     static contextTypes = {
-      treeTable: PropTypes.object.isRequired,
+      tableTree: PropTypes.object.isRequired,
     };
 
     componentWillMount() {
@@ -26,7 +26,7 @@ export default function withColumnWidth(Cell: ElementType): ComponentType<*> {
 
     setColumnWidth(width: ?CSSWidth) {
       if (width !== undefined) {
-        this.context.treeTable.setColumnWidth(this.props.columnIndex, width);
+        this.context.tableTree.setColumnWidth(this.props.columnIndex, width);
       }
     }
 
@@ -39,7 +39,7 @@ export default function withColumnWidth(Cell: ElementType): ComponentType<*> {
       const columnWidth =
         width !== null && width !== undefined
           ? width
-          : this.context.treeTable.getColumnWidth(columnIndex);
+          : this.context.tableTree.getColumnWidth(columnIndex);
       return <Cell {...this.props} width={columnWidth} />;
     }
   };
