@@ -10,7 +10,10 @@
           "text": "foo()",
           "marks": [
             {
-              "type": "subsup"
+              "type": "subsup",
+              "attrs": {
+                "type": "sup"
+              }
             }
           ]
         }
