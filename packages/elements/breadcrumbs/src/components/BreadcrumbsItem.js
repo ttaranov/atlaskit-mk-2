@@ -1,21 +1,20 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import ReactDOM from 'react-dom';
 import AKTooltip from '@atlaskit/tooltip';
 import ItemWrapper from '../styled/BreadcrumbsItem';
 import Button from '../styled/Button';
 import Separator from '../styled/Separator';
-import type { ElementType } from '../types';
 
-type Props = {|
+type Props = {
   /** Whether this item will be followed by a separator. */
   hasSeparator?: boolean,
   /** The url or path which the breadcrumb should act as a link to. */
   href?: string,
   /** An icon to display before the breadcrumb. */
-  iconBefore?: ElementType,
+  iconBefore?: Node,
   /** An icon to display after the breadcrumb. */
-  iconAfter?: ElementType,
+  iconAfter?: Node,
   /** Handler to be called on click. **/
   onClick?: Event => mixed,
   /** The text to appear within the breadcrumb as a link. */
@@ -28,23 +27,21 @@ type Props = {|
   /** Provide a custom component to use instead of the default button.
    *  The custom component should accept a className prop so it can be styled
    *  and possibly all action handlers */
-  component?: string | (() => ElementType),
-|};
+  component?: string | (() => Node) | Node,
+};
 
-type State = {|
+type State = {
   hasOverflow: boolean,
-|};
+};
 
 export default class BreadcrumbsItem extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
-  button: ?ElementType;
+  button: ?HTMLButtonElement;
 
   static defaultProps = {
     component: '',
     hasSeparator: false,
     href: '#',
-    iconAfter: null,
-    iconBefore: null,
     truncationWidth: 0,
     onClick: () => {},
     target: '',
@@ -101,6 +98,7 @@ export default class BreadcrumbsItem extends Component<Props, State> {
     const { hasOverflow } = this.state;
 
     return (
+      // $FlowFixMe - styled components return types have gone crazy
       <Button
         truncationWidth={truncationWidth}
         appearance="subtle-link"
@@ -110,7 +108,7 @@ export default class BreadcrumbsItem extends Component<Props, State> {
         spacing="none"
         href={href}
         target={target}
-        ref={(el: ElementType) => {
+        ref={(el: HTMLButtonElement) => {
           this.button = el;
         }}
         component={component}

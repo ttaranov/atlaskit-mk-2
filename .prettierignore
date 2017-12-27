@@ -1,3 +1,6 @@
 *.json
 dist
-packages/elements/logo/src
+.*/packages/elements/logo/src
+packages/elements/icon/es5
+packages/elements/icon/glyph
+packages/elements/icon/utils

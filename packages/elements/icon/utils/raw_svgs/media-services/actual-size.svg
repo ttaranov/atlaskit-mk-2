@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45.1 (43504) - http://www.bohemiancoding.com/sketch -->
+    <title>media-services/actual-size</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Media-services" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="media-services/actual-size" fill="#42526E">
+            <path d="M3,15.9922083 C3,15.4450167 3.32258606,15.3240164 3.71184039,15.7132707 L8.28815961,20.2895899 C8.6812982,20.6827285 8.54902482,21.0014303 8.00922203,21.0014303 L3.99077797,21.0014303 C3.44358641,21.0014303 3,20.5504551 3,20.0106524 L3,15.9922083 Z" id="Rectangle-7"></path>
+            <rect id="Rectangle-8" x="7.00143033" y="8.00143033" width="2" height="8" rx="1"></rect>
+            <rect id="Rectangle-8-Copy" x="15" y="8.00143033" width="2" height="8" rx="1"></rect>
+            <rect id="Rectangle-8-Copy-2" x="11" y="9.00143033" width="2" height="2" rx="1"></rect>
+            <rect id="Rectangle-8-Copy-3" x="11" y="13.0014303" width="2" height="2" rx="1"></rect>
+            <path d="M3.998,3 C3.445,3 3,3.447 3,3.998 L3,8.482 C3,9.035 3.316,9.164 3.705,8.775 L8.771,3.706 C9.165,3.313 9.03,3 8.48,3 L3.998,3 Z" id="Clip-2"></path>
+            <path d="M15.989,3.001 C15.442,3.001 15.321,3.324 15.71,3.713 L20.287,8.29 C20.68,8.683 20.999,8.551 20.999,8.011 L20.999,3.992 C20.999,3.445 20.548,3.001 20.008,3.001 L15.989,3.001 Z" id="Clip-5"></path>
+            <path d="M20.288,15.7134 L15.712,20.2904 C15.319,20.6824 15.451,21.0014 15.991,21.0014 L20.009,21.0014 C20.556,21.0014 21,20.5504 21,20.0114 L21,15.9924 C21,15.6614 20.882,15.4854 20.702,15.4854 C20.585,15.4854 20.442,15.5594 20.288,15.7134 Z" id="Clip-2"></path>
+        </g>
+    </g>
+</svg>

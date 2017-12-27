@@ -68,9 +68,9 @@ function getMustUpdateOn(
   const range = allDependencies.get(nextDependency);
   if (!range)
     throw new Error(
-      `conflicting messages around whether ${
-        nextDependency
-      } is depended on by ${dependent.name}`,
+      `conflicting messages around whether ${nextDependency} is depended on by ${
+        dependent.name
+      }`,
     );
 
   // matching optional (^ or ~) then three numbers (we capture the symbol and the major number)
@@ -88,11 +88,9 @@ function getMustUpdateOn(
 
   if (wholeMatch !== range) {
     throw new Error(
-      `Invalid version range for internal dependency  ${
-        nextDependency
-      } in workspace ${dependent.name} , ${
-        range
-      }. Only caret, tilde or exact semver ranges are accepted.`,
+      `Invalid version range for internal dependency  ${nextDependency} in workspace ${
+        dependent.name
+      } , ${range}. Only caret, tilde or exact semver ranges are accepted.`,
     );
   }
   // See comment at the bottom of this file as to why this logic works

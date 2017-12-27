@@ -10,9 +10,7 @@ const collectionName = 'some-collection';
 const authProvider: AuthProvider = () => Promise.resolve({ clientId, token });
 
 describe('fetchToken', () => {
-  const authQueryString = `client=${clientId}&collection=${
-    collectionName
-  }&token=${token}`;
+  const authQueryString = `client=${clientId}&collection=${collectionName}&token=${token}`;
 
   const assertUrl = (expected: string, actual?: string) => {
     const index = expected.indexOf('?');
@@ -40,15 +38,11 @@ describe('fetchToken', () => {
               result.srcDownload,
             );
             assertUrl(
-              `https://some-host.com/file/artifact/hd.mp4/binary?${
-                authQueryString
-              }`,
+              `https://some-host.com/file/artifact/hd.mp4/binary?${authQueryString}`,
               result.src_hd,
             );
             assertUrl(
-              `https://some-host.com/file/artifact/poster.mp4/binary?${
-                authQueryString
-              }`,
+              `https://some-host.com/file/artifact/poster.mp4/binary?${authQueryString}`,
               result.poster,
             );
           } else {
@@ -72,15 +66,11 @@ describe('fetchToken', () => {
               result.srcDownload,
             );
             assertUrl(
-              `https://some-host.com/file/artifact/hd.mp4/binary?${
-                authQueryString
-              }`,
+              `https://some-host.com/file/artifact/hd.mp4/binary?${authQueryString}`,
               result.src_hd,
             );
             assertUrl(
-              `https://some-host.com/file/artifact/poster.mp4/binary?${
-                authQueryString
-              }`,
+              `https://some-host.com/file/artifact/poster.mp4/binary?${authQueryString}`,
               result.poster,
             );
           } else {
@@ -104,15 +94,11 @@ describe('fetchToken', () => {
               result.srcDownload,
             );
             assertUrl(
-              `https://some-host.com/file/artifact/hd.mp4/binary?${
-                authQueryString
-              }`,
+              `https://some-host.com/file/artifact/hd.mp4/binary?${authQueryString}`,
               result.src_hd,
             );
             assertUrl(
-              `https://some-host.com/file/artifact/poster.mp4/binary?${
-                authQueryString
-              }`,
+              `https://some-host.com/file/artifact/poster.mp4/binary?${authQueryString}`,
               result.poster,
             );
           } else {
@@ -149,9 +135,9 @@ class Mocks {
   } as MediaFile;
 
   static readonly oldToken = 'old-token';
-  static readonly oldAuth = `token=${Mocks.oldToken}&client=${
-    clientId
-  }&collection=${collectionName}`;
+  static readonly oldAuth = `token=${
+    Mocks.oldToken
+  }&client=${clientId}&collection=${collectionName}`;
   static authenticatedFile = {
     attributes: {
       id: 'some-file',
