@@ -398,7 +398,7 @@ export default class ExamplesModal extends Component<Props, State> {
                       <Button
                         onClick={deploySandbox}
                         iconBefore={codesandboxIcon}
-                        isDisabled={loadingSandbox}
+                        isDisabled
                       >
                         {loadingSandbox ? 'Loading...' : 'Sandbox'}
                       </Button>
