@@ -1,12 +1,12 @@
 // @flow
 
-import type { Node } from 'react';
+import type { ComponentType } from 'react';
 
 type IconSize = 'small' | 'medium' | 'large' | 'xlarge';
 
 type Icon = {|
   iconSize: IconSize,
-  icon: Node,
+  icon: ComponentType<{ label: string, size: IconSize }>,
 |};
 
 export type IconTypeMap = {|
