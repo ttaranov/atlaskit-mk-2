@@ -4,8 +4,10 @@ import { PureComponent } from 'react';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import { EditorView } from 'prosemirror-view';
 
+import { TrashToolbarButton } from './styles';
+import Separator from '../Separator';
+import FloatingToolbar from '../FloatingToolbar';
 import { CodeBlockState } from '../../plugins/code-block';
-import { TrashToolbarButton, FloatingToolbar, Separator } from './styles';
 
 import {
   createLanguageList,
@@ -86,7 +88,6 @@ export default class LanguagePicker extends PureComponent<Props, State> {
       languageSelectFocused,
     } = this.state;
 
-    const { popupsMountPoint, popupsBoundariesElement } = this.props;
     const defaultLanguage = activeLanguage
       ? {
           content: activeLanguage.name,
@@ -96,13 +97,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
 
     if (toolbarVisible || languageSelectFocused) {
       return (
-        <FloatingToolbar
-          target={element}
-          offset={[0, 3]}
-          popupsMountPoint={popupsMountPoint}
-          popupsBoundariesElement={popupsBoundariesElement}
-          fitHeight={40}
-        >
+        <FloatingToolbar target={element} offset={[0, 3]} fitHeight={40}>
           <div
             tabIndex={0}
             onMouseDown={this.onLanguageSelectMouseDown}
@@ -117,12 +112,12 @@ export default class LanguagePicker extends PureComponent<Props, State> {
               defaultSelected={defaultLanguage}
               placeholder="Select language"
             />
-            <Separator />
-            <TrashToolbarButton
-              onClick={this.handleRemoveCodeBlock}
-              iconBefore={<RemoveIcon label="Reset block type" />}
-            />
           </div>
+          <Separator />
+          <TrashToolbarButton
+            onClick={this.handleRemoveCodeBlock}
+            iconBefore={<RemoveIcon label="Reset block type" />}
+          />
         </FloatingToolbar>
       );
     }

@@ -9,30 +9,24 @@ export type Coordniates = {
   bottom: number;
 };
 
+export const DEFAULT_HEIGHT = 24;
+
 export interface Props {
-  onOutsideClick?: () => void;
-  className?: string | undefined;
-  children?: any;
   target?: HTMLElement;
   offset?: number[];
   fitWidth?: number;
   fitHeight?: number;
   onPositionCalculated?: (position: any) => any;
-  popupsMountPoint?: HTMLElement;
-  popupsBoundariesElement?: HTMLElement;
 }
 
 export default class FloatingToolbar extends PureComponent<Props, any> {
   render() {
     const {
       children,
-      className,
       target,
       offset,
       fitWidth,
-      fitHeight,
-      popupsMountPoint,
-      popupsBoundariesElement,
+      fitHeight = DEFAULT_HEIGHT,
       onPositionCalculated,
     } = this.props;
 
@@ -46,11 +40,9 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
         offset={offset}
         fitWidth={fitWidth}
         fitHeight={fitHeight}
-        mountTo={popupsMountPoint}
-        boundariesElement={popupsBoundariesElement}
         onPositionCalculated={onPositionCalculated}
       >
-        <Container className={`${className || ''}`}>{children}</Container>
+        <Container height={fitHeight}>{children}</Container>
       </Popup>
     );
   }

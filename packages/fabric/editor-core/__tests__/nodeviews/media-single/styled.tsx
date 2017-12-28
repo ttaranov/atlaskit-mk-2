@@ -4,7 +4,7 @@
  */
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { Wrapper } from '../../../src/nodeviews/ui/mediaSingle/styled';
+import { Wrapper } from '../../../src/nodeviews/ui/media-single/styled';
 
 describe('mediaSingle - styled component', () => {
   describe('when align center', () => {
