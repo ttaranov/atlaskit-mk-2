@@ -1,5 +1,8 @@
 # @atlaskit/inline-message
 
+## 3.0.5
+- [patch] migrate inline-message from ak to mk-2 [2323022](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2323022)
+
 ## 3.0.4 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))
