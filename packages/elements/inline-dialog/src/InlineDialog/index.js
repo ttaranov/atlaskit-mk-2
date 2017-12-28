@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, type Node } from 'react';
+import React, { Component, type Node as NodeType } from 'react';
 import ReactDOM from 'react-dom';
 import Layer from '@atlaskit/layer';
 import { gridSize } from '@atlaskit/theme';
@@ -11,9 +11,9 @@ import type { PositionType, FlipPositionsType } from '../types';
 
 type Props = {
   /** The elements that the InlineDialog will be positioned relative to. */
-  children?: Node,
+  children?: NodeType,
   /** The elements to be displayed within the InlineDialog. */
-  content?: Node,
+  content?: NodeType,
   /** Sets whether to show or hide the dialog. */
   isOpen?: boolean,
   /** Function called when you lose focus on the object. */
@@ -60,7 +60,6 @@ export default class InlineDialog extends Component<Props, {}> {
 
     if (this.props.isOpen) {
       const domNode = ReactDOM.findDOMNode(this); // eslint-disable-line react/no-find-dom-node
-      // $FlowFixMe
       if (
         !domNode ||
         (event.target instanceof Node && !domNode.contains(event.target))
