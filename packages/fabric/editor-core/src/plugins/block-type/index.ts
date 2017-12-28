@@ -21,6 +21,7 @@ import keymapHandler from './keymap';
 import inputRulePlugin from './input-rule';
 
 import { areBlockTypesDisabled } from '../../utils';
+import { EditorAppearance } from '../../editor/types/editor-props';
 
 export type StateChangeHandler = (state: BlockTypeState) => any;
 export type BlockTypeStateSubscriber = (state: BlockTypeState) => any;
@@ -168,31 +169,32 @@ export class BlockTypeState {
 
 export const stateKey = new PluginKey('blockTypePlugin');
 
-export const plugin = new Plugin({
-  state: {
-    init(config, state: EditorState) {
-      return new BlockTypeState(state);
+export const createPlugin = (appearance?: EditorAppearance | undefined) =>
+  new Plugin({
+    state: {
+      init(config, state: EditorState) {
+        return new BlockTypeState(state);
+      },
+      apply(tr, pluginState: BlockTypeState, oldState, newState) {
+        pluginState.update(newState);
+        return pluginState;
+      },
     },
-    apply(tr, pluginState: BlockTypeState, oldState, newState) {
-      pluginState.update(newState);
-      return pluginState;
+    key: stateKey,
+    view: (view: EditorView) => {
+      const pluginState = stateKey.getState(view.state);
+      pluginState.keymapHandler = keymapHandler(view, pluginState, appearance);
+      return {};
     },
-  },
-  key: stateKey,
-  view: (view: EditorView) => {
-    const pluginState = stateKey.getState(view.state);
-    pluginState.keymapHandler = keymapHandler(view, pluginState);
-    return {};
-  },
-  props: {
-    handleKeyDown(view, event) {
-      return stateKey.getState(view.state).keymapHandler(view, event);
+    props: {
+      handleKeyDown(view, event) {
+        return stateKey.getState(view.state).keymapHandler(view, event);
+      },
     },
-  },
-});
+  });
 
-const plugins = (schema: Schema) => {
-  return [plugin, inputRulePlugin(schema)].filter(
+const plugins = (schema: Schema, appearance?: EditorAppearance) => {
+  return [createPlugin(appearance), inputRulePlugin(schema)].filter(
     plugin => !!plugin,
   ) as Plugin[];
 };
