@@ -281,7 +281,7 @@ const ContentStyles = styled.div`
     top: 20px;
   }
 
-  //=============== BREAKOUT STYLES ==================
+  //=============== SINGLE IMAGE STYLES ==================
 
   && .ProseMirror [layout='wide'] {
     max-width: 960px;

@@ -23,23 +23,44 @@ function clear(layout: MediaSingleLayout): string {
   }
 }
 
+function calcWidth(layout: MediaSingleLayout): string {
+  switch (layout) {
+    case 'wrap-right':
+    case 'wrap-left':
+      return '50%';
+    default:
+      return '100%';
+  }
+}
+
+function calcMargin(layout: MediaSingleLayout): string {
+  switch (layout) {
+    case 'wrap-right':
+      return '12px auto 24px 24px';
+    case 'wrap-left':
+      return '12px 24px 24px auto';
+    default:
+      return '24px auto';
+  }
+}
+
 export interface WrapperProps {
   layout: MediaSingleLayout;
   width: number;
   height: number;
 }
 
-export const MediaSingleDimensionHelper = ({
+const MediaSingleDimensionHelper = ({
   layout,
   width,
   height,
 }: WrapperProps) => css`
-  margin: 0 auto;
+  margin: ${calcMargin(layout)};
   float: ${float(layout)};
   clear: ${clear(layout)};
   max-width: ${width}px;
   max-height: ${height}px;
-  width: 100%;
+  width: ${calcWidth(layout)};
   &:after {
     content: '';
     display: block;
@@ -50,7 +71,6 @@ export const MediaSingleDimensionHelper = ({
 export const Wrapper = styled.div`
   ${MediaSingleDimensionHelper};
   position: relative;
-  margin: 24px auto;
   & > div {
     position: absolute;
     height: 100%;

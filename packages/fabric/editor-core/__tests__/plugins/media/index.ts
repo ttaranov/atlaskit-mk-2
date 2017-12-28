@@ -24,8 +24,8 @@ import {
   sleep,
   insertText,
   getLinkCreateContextMock,
+  defaultSchema,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import { setNodeSelection } from '../../../src/utils';
 import { AnalyticsHandler, analyticsService } from '../../../src/analytics';
 

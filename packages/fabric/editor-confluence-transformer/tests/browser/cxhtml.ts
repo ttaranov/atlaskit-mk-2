@@ -1279,7 +1279,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         p('my answer with attachment'),
         mediaGroup(mediaNode, mediaNode),
         p('my answer with attachment 2'),
-        mediaSingle()(mediaNode),
+        mediaSingle({ layout: 'wrap-left' })(mediaNode),
         p(
           'my answer with attachment 3 ',
           mention({
