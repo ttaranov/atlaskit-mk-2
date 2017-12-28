@@ -465,7 +465,9 @@ describe('ConfluenceTransformer: encode - parse:', () => {
 
       it('should not parse any nested marks / <b>', () => {
         const actual = parse('<h1>Read all <b>about</b> it!</h1>');
-        expect(actual).to.deep.equal(doc(h1('Read all about it!')));
+        expect(actual).to.deep.equal(
+          doc(h1('Read all ', strong('about'), ' it!')),
+        );
       });
       check(
         'heading with invalid block content',
@@ -1277,7 +1279,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         p('my answer with attachment'),
         mediaGroup(mediaNode, mediaNode),
         p('my answer with attachment 2'),
-        mediaSingle()(mediaNode),
+        mediaSingle({ layout: 'wrap-left' })(mediaNode),
         p(
           'my answer with attachment 3 ',
           mention({

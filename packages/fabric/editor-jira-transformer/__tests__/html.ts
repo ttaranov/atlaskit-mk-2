@@ -321,7 +321,7 @@ describe('JIRATransformer html:', () => {
         '<h1> with nested <b>',
         schema,
         ['<h1><a name="Readallaboutit%21"></a>Read all <b>about</b> it!</h1>'],
-        doc(h1('Read all about it!')),
+        doc(h1('Read all ', strong('about'), ' it!')),
       );
 
       checkParse(
@@ -330,7 +330,7 @@ describe('JIRATransformer html:', () => {
         [
           '<h1><a name="Readallaboutit%21"></a>Read all <b><em>about</em></b> it!</h1>',
         ],
-        doc(h1('Read all about it!')),
+        doc(h1('Read all ', strong(em('about')), ' it!')),
       );
     });
   });

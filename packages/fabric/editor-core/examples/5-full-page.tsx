@@ -38,6 +38,12 @@ export const TitleInput = styled.input`
 TitleInput.displayName = 'TitleInput';
 
 // tslint:disable-next-line:variable-name
+export const Wrapper = styled.div`
+  height: 500px;
+`;
+Wrapper.displayName = 'Wrapper';
+
+// tslint:disable-next-line:variable-name
 export const Content = styled.div`
   padding: 0 20px;
   height: 100%;
@@ -98,48 +104,50 @@ export default class Example extends React.Component<Props, State> {
 
   render() {
     return (
-      <Content>
-        <EditorContext>
-          <Editor
-            appearance="full-page"
-            analyticsHandler={analyticsHandler}
-            allowTextFormatting={true}
-            allowTasksAndDecisions={true}
-            allowHyperlinks={true}
-            allowCodeBlocks={true}
-            allowLists={true}
-            allowTextColor={true}
-            allowTables={true}
-            allowJiraIssue={true}
-            allowUnsupportedContent={true}
-            allowPanel={true}
-            allowExtension={true}
-            allowPlaceholderCursor={true}
-            {...providers}
-            media={{ provider: mediaProvider, allowMediaSingle: true }}
-            placeholder="Write something..."
-            shouldFocus={false}
-            disabled={this.state.disabled}
-            contentComponents={
-              <TitleInput
-                placeholder="Give this page a title..."
-                // tslint:disable-next-line:jsx-no-lambda
-                innerRef={this.handleTitleRef}
-                onFocus={this.handleTitleOnFocus}
-                onBlur={this.handleTitleOnBlur}
-              />
-            }
-            primaryToolbarComponents={
-              <WithEditorActions
-                // tslint:disable-next-line:jsx-no-lambda
-                render={actions => (
-                  <SaveAndCancelButtons editorActions={actions} />
-                )}
-              />
-            }
-          />
-        </EditorContext>
-      </Content>
+      <Wrapper>
+        <Content>
+          <EditorContext>
+            <Editor
+              appearance="full-page"
+              analyticsHandler={analyticsHandler}
+              allowTextFormatting={true}
+              allowTasksAndDecisions={true}
+              allowHyperlinks={true}
+              allowCodeBlocks={true}
+              allowLists={true}
+              allowTextColor={true}
+              allowTables={true}
+              allowJiraIssue={true}
+              allowUnsupportedContent={true}
+              allowPanel={true}
+              allowExtension={true}
+              allowPlaceholderCursor={true}
+              {...providers}
+              media={{ provider: mediaProvider, allowMediaSingle: true }}
+              placeholder="Write something..."
+              shouldFocus={false}
+              disabled={this.state.disabled}
+              contentComponents={
+                <TitleInput
+                  placeholder="Give this page a title..."
+                  // tslint:disable-next-line:jsx-no-lambda
+                  innerRef={this.handleTitleRef}
+                  onFocus={this.handleTitleOnFocus}
+                  onBlur={this.handleTitleOnBlur}
+                />
+              }
+              primaryToolbarComponents={
+                <WithEditorActions
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={actions => (
+                    <SaveAndCancelButtons editorActions={actions} />
+                  )}
+                />
+              }
+            />
+          </EditorContext>
+        </Content>
+      </Wrapper>
     );
   }
 

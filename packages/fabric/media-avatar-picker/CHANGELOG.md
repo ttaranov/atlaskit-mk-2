@@ -1,5 +1,9 @@
 # @atlaskit/media-avatar-picker
 
+## 4.4.2
+
+- [patch] Update dependencies [623f8ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623f8ca)
+
 ## 4.4.1
 
 ## 4.4.0

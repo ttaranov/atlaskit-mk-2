@@ -1,5 +1,9 @@
 # @atlaskit/media-test-helpers
 
+## 8.5.3
+
+- [patch] Update dependencies [623f8ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623f8ca)
+
 ## 8.5.2
 - [patch] Added new AppCardView v1.5 designs behind a feature flag. [92bc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92bc6c8)
 

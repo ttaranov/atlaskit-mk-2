@@ -61,7 +61,7 @@ export const NavWrapper = styled.div`
   position: relative;
 `;
 
-export const Nav = styled.ul`
+export const Nav = styled.div`
   display: flex;
   font-weight: 500;
   list-style-type: none;
@@ -82,7 +82,7 @@ export const NavLine = styled.span`
   width: inherit;
 `;
 
-export const NavItem = styled.li`
+export const NavItem = styled.div`
   color: ${labelColor};
   cursor: pointer;
   line-height: 1.8;

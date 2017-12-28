@@ -1,13 +1,12 @@
 import { NodeSpec } from 'prosemirror-model';
-import { InlineLinkText } from './doc';
-import { LINK } from '../groups';
+import { Inline } from './doc';
 
 /**
  * @name heading_node
  */
 export interface Definition {
   type: 'heading';
-  content: Array<InlineLinkText>;
+  content: Array<Inline>;
   attrs: {
     /**
      * @minimum 1
@@ -20,7 +19,6 @@ export interface Definition {
 export const heading: NodeSpec = {
   attrs: { level: { default: 1 } },
   content: `inline*`,
-  marks: `${LINK}`,
   group: 'block',
   defining: true,
   parseDOM: [

@@ -1,5 +1,12 @@
 # @atlaskit/onboarding
 
+## 2.0.8
+
+- [patch] Update dependencies [623f8ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623f8ca)
+
+## 2.0.7
+- [patch] more robust implementation of FocusLock [64dd1d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/64dd1d8)
+
 ## 2.0.6
 - [patch] Refactor autoscroll logic in withScrollMeasurement HOC [2e90a74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e90a74)
 

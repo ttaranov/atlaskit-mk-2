@@ -13,7 +13,6 @@ DirectoryWatcher.prototype.createNestedWatcher = function(
 };
 
 // End of the hack
-
 const path = require('path');
 const boltQuery = require('bolt-query');
 const webpack = require('webpack');
@@ -239,6 +238,15 @@ module.exports = async function createWebpackConfig() {
               limit: 512,
             },
           },
+        },
+        {
+          test: /\.less$/,
+          loader: [
+            'style-loader',
+            'css-loader',
+            'postcss-loader',
+            'less-loader',
+          ],
         },
       ],
     },

@@ -1,5 +1,8 @@
 # @atlaskit/dynamic-table
 
+## 6.1.3
+- [patch] Migrate dynamic-table to ak-mk-2 repo  [8402863](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8402863)
+
 ## 6.1.2 (2017-12-07)
 
 * bug fix; add story to demonstrate toggling pagination (issues closed: ak-3052) ([3f66ce8](https://bitbucket.org/atlassian/atlaskit/commits/3f66ce8))

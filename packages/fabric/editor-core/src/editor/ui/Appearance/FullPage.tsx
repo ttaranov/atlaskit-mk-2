@@ -28,6 +28,7 @@ ScrollContainer.displayName = 'ScrollContainer';
 const ContentArea = styled.div`
   height: 100%;
   width: 100%;
+  max-width: 600px;
   padding-top: 50px;
   margin: 0 auto;
   box-sizing: border-box;
@@ -41,10 +42,21 @@ const ContentArea = styled.div`
     padding-bottom: 55px;
   }
 
-  && .ProseMirror > * {
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+  && .ProseMirror {
+    & > * {
+      clear: both;
+    }
+    & > p,
+    & > ul,
+    & > ol,
+    > h1,
+    > h2,
+    > h3,
+    > h4,
+    > h5,
+    > h6 {
+      clear: none;
+    }
   }
 
   & .ProseMirror .table-decoration {
@@ -58,13 +70,6 @@ const ContentArea = styled.div`
   }
 `;
 ContentArea.displayName = 'ContentArea';
-
-const ContentAreaCustomComponentsSlot = styled.div`
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-`;
-ContentAreaCustomComponentsSlot.displayName = 'ContentAreaCustomComponentsSlot';
 
 const MainToolbar = styled.div`
   position: relative;
@@ -145,9 +150,7 @@ export default class Editor extends React.Component<
             </MainToolbar>
             <ScrollContainer>
               <ContentArea innerRef={this.handleRef}>
-                <ContentAreaCustomComponentsSlot>
-                  {customContentComponents}
-                </ContentAreaCustomComponentsSlot>
+                {customContentComponents}
                 <PluginSlot
                   editorView={editorView}
                   eventDispatcher={eventDispatcher}

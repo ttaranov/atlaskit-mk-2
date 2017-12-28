@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.2.3
+- [patch] Fix dependencies in CI [35c5914](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35c5914)
+
 ## 2.2.2
 
 ## 2.2.1

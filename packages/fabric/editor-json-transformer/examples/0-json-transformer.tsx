@@ -1,8 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {
-  Editor,
-} from '@atlaskit/editor-core';
+import { Editor } from '@atlaskit/editor-core';
 import { JSONTransformer } from '../src';
 
 const Container = styled.div`
