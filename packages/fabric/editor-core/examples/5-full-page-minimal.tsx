@@ -14,6 +14,12 @@ import {
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
 
 // tslint:disable-next-line:variable-name
+export const Wrapper = styled.div`
+  height: 500px;
+`;
+Wrapper.displayName = 'Wrapper';
+
+// tslint:disable-next-line:variable-name
 export const TitleInput = styled.input`
   border: none;
   outline: none;
@@ -50,8 +56,10 @@ export type State = { disabled: boolean };
 
 export default function Example() {
   return (
-    <Content>
-      <Editor appearance="full-page" />
-    </Content>
+    <Wrapper>
+      <Content>
+        <Editor appearance="full-page" />
+      </Content>
+    </Wrapper>
   );
 }
