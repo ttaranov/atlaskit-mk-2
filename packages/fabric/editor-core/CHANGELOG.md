@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 60.16.0
+- [minor] Enter keypress should always submit in stride. [51020fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51020fe)
+
 ## 60.15.9
 
 ## 60.15.8
