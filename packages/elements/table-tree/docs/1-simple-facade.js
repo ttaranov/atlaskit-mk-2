@@ -14,7 +14,7 @@ export default md`
   
   ${(
     <Example
-      component={SimpleFacadeExample}
+      Component={SimpleFacadeExample}
       source={require('!!raw-loader!../examples/single-component')}
       title="Single component facade"
       language="javascript"
