@@ -1,109 +1,71 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import Comment from './Comment';
+import Comment from '../containers/Comment';
 import Editor from './Editor';
-import { Comment as CommentType } from '../model';
-import { ResourceProvider } from '../api/ConversationResource';
+import {
+  Comment as CommentType,
+  Conversation as ConversationType,
+} from '../model';
 
 export interface Props {
-  provider: ResourceProvider;
-  containerId: string;
-
   id?: string;
+  localId: string;
+  conversation?: ConversationType;
+  containerId: string;
+  comments: CommentType[];
+  onAddComment: (conversationId: string, parentId: string, value: any) => void;
+  onCreateConversation: (
+    localId: string,
+    containerId: string,
+    value: any,
+    meta: any,
+  ) => void;
+  onCancel?: () => void;
   isExpanded?: boolean;
   meta?: {
     [key: string]: any;
   };
-
-  onCancel?: () => void;
 }
 
-export interface State {
-  id: string;
-  comments: CommentType[];
-}
+export default class Conversation extends React.PureComponent<Props> {
+  private renderComments() {
+    const { comments, conversation, onAddComment } = this.props;
 
-export default class Conversation extends React.Component<Props, State> {
-  static childContextTypes = {
-    userId: PropTypes.string,
-    provider: PropTypes.object,
-  };
-
-  getChildContext() {
-    return {
-      userId: 'mock-user',
-      provider: this.props.provider,
-    };
-  }
-
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      id: props.id || '',
-      comments: [],
-    };
-  }
-
-  async componentDidMount() {
-    const { id, provider } = this.props;
-    if (id && provider) {
-      const conversation = await provider.getConversation(id);
-      if (conversation.children) {
-        this.setState({
-          comments: conversation.children,
-        });
-      }
-    }
-  }
-
-  private onSave = async (value: any) => {
-    const { provider } = this.props;
-    if (!provider) {
-      // Missing Provider
+    if (!conversation) {
       return;
     }
 
-    let { id } = this.state;
-    if (!id) {
-      // Create a new Conversation if none provided
-      const conversation = await this.createConversation();
-      id = conversation.id;
-    }
+    const { conversationId } = conversation;
 
-    const comment = await this.addComment(id, value);
-
-    this.setState(state => ({
-      id,
-      comments: [...state.comments, comment],
-    }));
-  };
-
-  private async createConversation() {
-    const { provider, meta, containerId } = this.props;
-    return await provider.create(containerId, meta);
-  }
-
-  private async addComment(id: string, doc: any) {
-    const { provider } = this.props;
-    return await provider.addComment(id, id, doc);
-  }
-
-  private renderComments() {
-    const { comments, id } = this.state;
     return comments.map(comment => (
-      <Comment conversationId={id} key={comment.id} comment={comment} />
+      <Comment
+        key={comment.commentId}
+        conversationId={conversationId}
+        comment={comment}
+        onAddComment={onAddComment}
+      />
     ));
   }
 
-  private onCancel = () => {
-    if (this.props.onCancel) {
-      this.props.onCancel();
+  private onSave = async (value: any) => {
+    const {
+      containerId,
+      id,
+      localId,
+      meta,
+      onAddComment,
+      onCreateConversation,
+    } = this.props;
+
+    if (!id) {
+      onCreateConversation(localId, containerId, value, meta);
+    } else {
+      onAddComment(id, id, value);
     }
   };
 
   render() {
     const { isExpanded, onCancel, meta } = this.props;
+
     return (
       <div>
         {this.renderComments()}
@@ -111,7 +73,7 @@ export default class Conversation extends React.Component<Props, State> {
           <Editor
             isExpanded={isExpanded}
             onSave={this.onSave}
-            onCancel={onCancel && this.onCancel}
+            onCancel={onCancel}
           />
         ) : null}
       </div>

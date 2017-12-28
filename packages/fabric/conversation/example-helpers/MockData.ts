@@ -7,55 +7,65 @@ export const mockUser: User = {
 };
 
 export const mockConversation: Conversation = {
-  id: 'mock-conversation',
+  conversationId: 'mock-conversation',
   containerId: 'abc:abc:abc/demo',
-  children: [
+  comments: [
     {
-      id: 'mock-comment-1',
+      commentId: 'mock-comment-1',
+      conversationId: 'mock-conversation',
       createdBy: mockUser,
       createdAt: Date.now(),
       document: {
-        version: 1,
-        type: 'doc',
-        content: [
-          {
-            type: 'paragraph',
-            content: [
-              {
-                type: 'text',
-                text: 'Hello World',
-              },
-            ],
-          },
-        ],
+        adf: {
+          version: 1,
+          type: 'doc',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'Hello World',
+                },
+              ],
+            },
+          ],
+        },
       },
+      comments: [],
     },
   ],
+  meta: {},
 };
 
 export const mockInlineConversation: Conversation = {
-  id: 'mock-inline-conversation',
+  conversationId: 'mock-inline-conversation',
   containerId: 'abc:abc:abc/demo',
-  children: [
+  comments: [
     {
-      id: 'mock-comment-2',
+      commentId: 'mock-comment-2',
+      conversationId: 'mock-inline-conversation',
       createdBy: mockUser,
       createdAt: Date.now(),
       document: {
-        version: 1,
-        type: 'doc',
-        content: [
-          {
-            type: 'paragraph',
-            content: [
-              {
-                type: 'text',
-                text: 'Made you should actually do something here?',
-              },
-            ],
-          },
-        ],
+        adf: {
+          version: 1,
+          type: 'doc',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'Maybe you should actually do something here?',
+                },
+              ],
+            },
+          ],
+        },
       },
+      comments: [],
     },
   ],
+  meta: { name: 'main.js', lineNumber: 3 },
 };
