@@ -27,8 +27,8 @@ const appearances = {
   default: 'default',
 };
 
-export const getTextContent = (item: ItemType): string => {
-  if (Object.keys(item).length === 0) {
+export const getTextContent = (item?: ItemType): string => {
+  if (!item || Object.keys(item).length === 0) {
     return '';
   }
 
@@ -63,7 +63,7 @@ const isMatched = (item, matchingValue) => {
 
 type Props = {
   /** Subtle items do not have a background color. */
-  appearance?: 'default' | 'subtle',
+  appearance: 'default' | 'subtle',
   /** Sets whether the dropdown should be constrained to the width of its trigger */
   droplistShouldFitContainer?: boolean,
   /** Value to be used when filtering the items. Compared against 'content'. */
@@ -107,14 +107,14 @@ type Props = {
   name?: string,
   /** Message to display in any group in items if there are no items in it,
    including if there is one item that has been selected. */
-  noMatchesFound?: string,
+  noMatchesFound: string,
   /** Handler called when a selection is made, with the item chosen. */
-  onSelected?: Function,
+  onSelected: Function,
   /** Handler to be called when the filtered items changes. */
-  onFilterChange?: Function,
+  onFilterChange: Function,
   /** Handler called when the select is opened or closed. Called with an object
    that has both the event, and the new isOpen state. */
-  onOpenChange?: ({ event: SyntheticEvent<any>, isOpen: boolean }) => void,
+  onOpenChange: ({ event: SyntheticEvent<any>, isOpen: boolean }) => void,
   /** Text to be shown within the select when no item is selected. */
   placeholder?: string,
   /** Where the select dropdown should be displayed relative to the field position. */
@@ -136,10 +136,15 @@ type State = {
   droplistWidth?: number,
 };
 
+// $FlowFixMe Recursion Limit exceeded error, this should be fixed in the next version of flow-bin
 export default class StatelessSelect extends PureComponent<Props, State> {
-  triggerNode: HTMLElement;
-  inputNode: HTMLElement;
-  droplistNode: HTMLElement;
+  containerNode: HTMLElement | null;
+  triggerNode: HTMLElement | null;
+  inputNode: HTMLElement | null;
+  droplistNode: HTMLElement | null;
+  nativeSearchKey: string;
+  previousKey: string;
+  nativeSearchCounter: number | void;
 
   static defaultProps = {
     appearance: appearances.default,
@@ -192,9 +197,7 @@ export default class StatelessSelect extends PureComponent<Props, State> {
   };
 
   onOpenChange = (attrs: { event: SyntheticEvent<any>, isOpen: boolean }) => {
-    if (this.props.onOpenChange) {
-      this.props.onOpenChange(attrs);
-    }
+    this.props.onOpenChange(attrs);
     this.setState({
       focusedItemIndex: undefined,
     });
@@ -204,7 +207,7 @@ export default class StatelessSelect extends PureComponent<Props, State> {
     }
   };
 
-  getNextFocusable = (indexItem: number, length: number) => {
+  getNextFocusable = (indexItem?: number, length: number) => {
     let currentItem = indexItem;
 
     if (currentItem === undefined) {
@@ -218,10 +221,10 @@ export default class StatelessSelect extends PureComponent<Props, State> {
     return currentItem;
   };
 
-  getPrevFocusable = (indexItem: number, length: number) => {
+  getPrevFocusable = (indexItem?: number, length: number) => {
     let currentItem = indexItem;
 
-    if (currentItem > 0) {
+    if (currentItem && currentItem > 0) {
       currentItem--;
     } else {
       currentItem = length;
@@ -238,8 +241,8 @@ export default class StatelessSelect extends PureComponent<Props, State> {
     return allItems;
   };
 
-  getAllVisibleItems = (groups: Array<GroupType>) =>
-    this.filterItems(this.getAllItems(groups));
+  getAllVisibleItems = (groups?: Array<GroupType>) =>
+    groups ? this.filterItems(this.getAllItems(groups)) : [];
 
   getNextNativeSearchItem = (
     items: Array<ItemType>,
@@ -258,12 +261,13 @@ export default class StatelessSelect extends PureComponent<Props, State> {
     if (!res && !isSecondStep) {
       res = this.getNextNativeSearchItem(items, key, -1, true);
     }
-
     return res;
   };
 
   setDroplistMinWidth = () => {
-    const width = this.triggerNode.getBoundingClientRect().width;
+    const width = this.triggerNode
+      ? this.triggerNode.getBoundingClientRect().width
+      : undefined;
     this.setState({ droplistWidth: width });
   };
 
@@ -276,7 +280,7 @@ export default class StatelessSelect extends PureComponent<Props, State> {
   focus = () => {
     if (this.inputNode) {
       this.inputNode.focus();
-    } else {
+    } else if (this.triggerNode) {
       this.triggerNode.focus();
     }
   };
@@ -291,7 +295,7 @@ export default class StatelessSelect extends PureComponent<Props, State> {
     const trimmedValue = value && value.toLowerCase().trim();
     const selectedItem = this.props.selectedItem;
     const unselectedItems = items.filter(
-      item => selectedItem.value !== item.value,
+      item => selectedItem && selectedItem.value !== item.value,
     );
     const selectedItemContent = getTextContent(selectedItem).toLowerCase();
 
@@ -301,9 +305,9 @@ export default class StatelessSelect extends PureComponent<Props, State> {
   };
 
   scrollToFocused = (index?: number) => {
-    const scrollable = this.containerNode.querySelector(
-      '[data-role="droplistContent"]',
-    );
+    const scrollable = this.containerNode
+      ? this.containerNode.querySelector('[data-role="droplistContent"]')
+      : undefined;
     let item;
 
     if (scrollable && index !== undefined) {
@@ -408,20 +412,19 @@ export default class StatelessSelect extends PureComponent<Props, State> {
       case 'Enter':
         if (isSelectOpen) {
           event.preventDefault();
+          const visibleItems = this.getAllVisibleItems(this.props.items);
           if (this.state.focusedItemIndex !== undefined) {
             this.handleItemSelect(
-              this.getAllVisibleItems(this.props.items)[
-                this.state.focusedItemIndex
-              ],
+              visibleItems.length
+                ? visibleItems[this.state.focusedItemIndex]
+                : undefined,
               { event },
             );
           }
         }
         break;
       default:
-        if (!this.props.hasAutocomplete) {
-          this.handleNativeSearch(event);
-        }
+        this.handleNativeSearch(event);
         break;
     }
   };
@@ -446,13 +449,14 @@ export default class StatelessSelect extends PureComponent<Props, State> {
   };
 
   handleItemSelect = (
-    item: ItemType,
+    item?: ItemType,
     attrs: { event: SyntheticEvent<any> },
   ) => {
     if (item && !item.isDisabled) {
       this.props.onOpenChange({ isOpen: false, event: attrs.event });
       this.props.onSelected(item);
       this.props.onFilterChange(getTextContent(item));
+
       this.setState({ focusedItemIndex: undefined });
     }
   };
@@ -534,7 +538,9 @@ export default class StatelessSelect extends PureComponent<Props, State> {
       readOnly
       required={this.props.isRequired}
       style={{ display: 'none' }}
-      value={this.props.selectedItem.value}
+      value={
+        this.props.selectedItem ? this.props.selectedItem.value : undefined
+      }
     >
       <option value="" />
       {this.renderOptGroups(this.props.items)}
@@ -612,10 +618,10 @@ export default class StatelessSelect extends PureComponent<Props, State> {
               >
                 {!hasAutocomplete || isDisabled ? (
                   <Content>
-                    {selectedItem.elemBefore ? (
+                    {selectedItem && selectedItem.elemBefore ? (
                       <ElemBefore>{selectedItem.elemBefore}</ElemBefore>
                     ) : null}
-                    {selectedItem.content ? (
+                    {selectedItem && selectedItem.content ? (
                       <span>{getTextContent(selectedItem)}</span>
                     ) : (
                       <Placeholder>{placeholder}</Placeholder>
