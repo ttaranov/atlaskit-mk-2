@@ -416,16 +416,6 @@
     prop-types "^15.5.10"
     styled-components "^1.3.0"
 
-"@atlaskit/inline-dialog@^5.0.4":
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/@atlaskit/inline-dialog/-/inline-dialog-5.0.5.tgz#9557da03ce4f87474d2cb76ea8600727891f64f7"
-  dependencies:
-    "@atlaskit/layer" "^2.0.0"
-    "@atlaskit/theme" "^2.0.0"
-    babel-runtime "^6.11.6"
-    prop-types "^15.5.10"
-    styled-components "^1.4.6"
-
 "@atlaskit/inline-edit@^4.5.5":
   version "4.5.5"
   resolved "https://registry.yarnpkg.com/@atlaskit/inline-edit/-/inline-edit-4.5.5.tgz#daab3f056a073ec8f1378d076a90e917cdc8132e"
