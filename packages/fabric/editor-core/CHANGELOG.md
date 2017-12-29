@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 60.17.0
+- [minor] Added floating toolbar to media single [46fdd15](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/46fdd15)
+
 ## 60.16.1
 - [patch] Add support for single image wrap left/right layout [59d9a74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59d9a74)
 
