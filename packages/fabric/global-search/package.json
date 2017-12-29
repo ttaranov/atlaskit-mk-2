@@ -1,0 +1,45 @@
+{
+  "name": "@atlaskit/global-search",
+  "version": "0.0.1",
+  "description": "A cross-product search component (batteries included)",
+  "license": "Apache-2.0",
+  "main": "dist/es5/index.js",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
+  "atlaskit:src": "src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "David R"
+  ],
+  "atlaskit": {
+    "name": "Global search",
+    "team": "fabric"
+  },
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/icon": "^10.3.1",
+    "@atlaskit/navigation": "^26.5.1",
+    "@atlaskit/theme": "^2.2.8",
+    "babel-runtime": "^6.26.0",
+    "date-fns": "^1.29.0",
+    "lodash.debounce": "^4.0.8",
+    "styled-components": "^1.4.6",
+    "tslib": "^1.8.0"
+  },
+  "peerDependencies": {
+    "react": "^15.6.1"
+  },
+  "devDependencies": {
+    "@atlaskit/avatar": "^8.3.8",
+    "@atlaskit/docs": "^2.0.0",
+    "@atlaskit/page": "^5.0.3",
+    "enzyme": "^2.9.1",
+    "fetch-mock": "^5.12.1",
+    "react-dom": "^15.6.1",
+    "react-test-renderer": "^15.6.1"
+  }
+}
