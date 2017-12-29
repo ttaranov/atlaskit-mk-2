@@ -1,8 +1,19 @@
 // @flow
-import React from 'react';
-import { Header } from '../styled';
+import React, { Component } from 'react';
+import { Header as StyledHeader } from '../styled';
 import withColumnWidth from './withColumnWidth';
+import type { CSSWidth } from '../types';
 
-export default withColumnWidth(props => (
-  <Header {...props}>{props.children}</Header>
-));
+type Props = {
+  /** The width of the Headers and Cells in this column. A CSS length string. Unitless numbers are interpreted as pixels. */
+  columnWidth?: Array<CSSWidth>,
+};
+
+class Header extends Component<Props> {
+  render() {
+    const { props } = this;
+    return <StyledHeader {...props}>{props.children}</StyledHeader>;
+  }
+}
+
+export default withColumnWidth(Header);

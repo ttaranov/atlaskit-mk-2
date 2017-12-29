@@ -1,16 +1,24 @@
 // @flow
-import React, { PureComponent, type ChildrenArray, type Element } from 'react';
+import React, { PureComponent, type Element } from 'react';
 import { TreeRowContainer } from '../styled';
 import Chevron from './Chevron';
-import Header from './Header';
 import Cell from './Cell';
 
 type Props = {
-  isExpanded?: boolean,
+  /** Whether this row has any child rows. */
   hasChildren: boolean,
+
+  /** One or more Cell elements that will form this row of data. */
+  children: Node,
+
+  /** Whether the children of this row should currently be visible. */
+  isExpanded?: boolean,
+
+  /** Called whenever the current row gets expanded or collapsed. */
   onExpandToggle?: Function,
+
+  /** The tree-depth (nesting level) of the current row. Used to calculate the indent. */
   depth?: number,
-  children: ChildrenArray<Element<typeof Header>>,
 };
 
 export default class Row extends PureComponent<Props> {
