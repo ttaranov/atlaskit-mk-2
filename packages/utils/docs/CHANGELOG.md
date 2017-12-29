@@ -1,5 +1,8 @@
 # @atlaskit/docs
 
+## 2.2.0
+- [minor] Props  component now understands how to parse members of the Array type [3eebe75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3eebe75)
+
 ## 2.1.1
 - [patch] Convert function parameters [f6c5a21](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6c5a21)
 - [patch] Convert function parameters [f6c5a21](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6c5a21)

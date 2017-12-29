@@ -2,6 +2,7 @@
 /* eslint-disable react/require-default-props */
 
 import React, { Children, Component, type Node, type Element } from 'react';
+import renamePropsWithWarning from 'react-deprecate';
 
 import type { CoordinatesType, PositionType } from '../types';
 import {
@@ -12,7 +13,6 @@ import {
 import Portal from './Portal';
 import TooltipMarshal from './Marshal';
 import Transition from './Transition';
-import renamePropsWithWarning from './renamePropsWithWarning';
 import { getPosition } from './utils';
 
 type Props = {

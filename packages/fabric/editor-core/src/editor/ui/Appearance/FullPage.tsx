@@ -38,7 +38,7 @@ const ContentArea = styled.div`
   & .ProseMirror {
     flex-grow: 1;
     box-sizing: border-box;
-    padding-bottom: 50px;
+    padding-bottom: 55px;
   }
 
   && .ProseMirror > * {

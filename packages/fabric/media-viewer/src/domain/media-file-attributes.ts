@@ -44,14 +44,16 @@ export class MediaFileAttributesFactory {
     const poster640 = getArtifactUrl('poster_640.jpg');
 
     const additionalParams = {
-      'max-age': 3600
+      'max-age': 3600,
     };
 
     const paramsSeparator = resource.indexOf('?') > -1 ? '&' : '?';
 
     return {
       id,
-      src: `${serviceHost}${resource}${paramsSeparator}${stringify(additionalParams)}`,
+      src: `${serviceHost}${resource}${paramsSeparator}${stringify(
+        additionalParams,
+      )}`,
       srcDownload: `${serviceHost}${binary}?dl=1`,
       type: artifactFormat ? artifactFormat.type : details.mediaType,
       title: details.name,

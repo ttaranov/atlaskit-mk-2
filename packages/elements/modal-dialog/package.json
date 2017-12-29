@@ -1,0 +1,52 @@
+{
+  "name": "@atlaskit/modal-dialog",
+  "version": "3.2.6",
+  "description": "A React component that displays content in a layer blocking the interaction with the page.",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Ben G"
+  ],
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/blanket": "^3.0.0",
+    "@atlaskit/button": "^6.2.0",
+    "@atlaskit/icon": "^10.3.1",
+    "@atlaskit/layer-manager": "^2.5.8",
+    "@atlaskit/theme": "^2.0.0",
+    "focusin": "^2.0.0",
+    "prop-types": "^15.5.10",
+    "raf-schd": "^2.0.2",
+    "react-transition-group": "^2.2.1",
+    "styled-components": "^1.4.6",
+    "tabbable": "^1.1.0"
+  },
+  "peerDependencies": {
+    "react": "^15.6.1"
+  },
+  "devDependencies": {
+    "@atlaskit/avatar": "^8.3.9",
+    "@atlaskit/checkbox": "^1.1.4",
+    "@atlaskit/docs": "^2.1.0",
+    "@atlaskit/dropdown-menu": "^3.5.0",
+    "@atlaskit/field-radio-group": "^1.7.5",
+    "@atlaskit/field-text": "^4.1.2",
+    "@atlaskit/inline-dialog": "^5.0.4",
+    "@atlaskit/layer": "^2.5.4",
+    "@atlaskit/navigation": "^26.6.3",
+    "@atlaskit/page": "^5.0.3",
+    "react-lorem-component": "^0.12.2",
+    "enzyme": "^2.9.1"
+  },
+  "keywords": [
+    "atlaskit",
+    "react",
+    "ui"
+  ]
+}

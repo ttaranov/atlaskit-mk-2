@@ -40,7 +40,7 @@ type Props = {
   disabled: Array<string>,
   times: Array<string>,
   width: number,
-  onChange: (date: string, time: string) => void,
+  onChange: (date: ?string, time: ?string) => void,
   /** An array of two strings containing the date and time values respectively.
    * If provided, the component will treat this value as the selected value. */
   value: ?Value,
@@ -98,9 +98,7 @@ export default class DateTimePicker extends Component<Props, State> {
   };
 
   onChange = (dateValue: ?string, timeValue: ?string) => {
-    if (dateValue && timeValue) {
-      this.props.onChange(dateValue, timeValue);
-    }
+    this.props.onChange(dateValue, timeValue);
   };
 
   handleBlur = () => {
@@ -111,7 +109,7 @@ export default class DateTimePicker extends Component<Props, State> {
 
   // DatePicker
 
-  onDateChange = (value: string) => {
+  onDateChange = (value: ?string) => {
     if (value !== this.getState().value[0]) {
       this.setState(prevState => ({
         value: [value, prevState.value[1]],
@@ -122,7 +120,7 @@ export default class DateTimePicker extends Component<Props, State> {
 
   handleDateInputBlur = (e: FocusEvent) => {
     if (e.target instanceof HTMLInputElement) {
-      this.validateDate();
+      this.validateDate(this.state.displayValue[0]);
     }
   };
 
@@ -149,7 +147,7 @@ export default class DateTimePicker extends Component<Props, State> {
   };
 
   handleDateTriggerValidate = () => {
-    this.validateDate();
+    this.validateDate(this.state.displayValue[0]);
     this.selectTimeField();
   };
 
@@ -174,31 +172,30 @@ export default class DateTimePicker extends Component<Props, State> {
   };
 
   handleDateUpdate = (iso: string) => {
-    const parsedDate = parseDate(iso);
-    if (parsedDate) {
-      this.onDateChange(parsedDate.value);
-      this.setState(prevState => ({
-        isOpen: false,
-        displayValue: [parsedDate.display, prevState.displayValue[1]],
-      }));
+    const isDateValid = this.validateDate(iso);
+    if (isDateValid) {
       this.selectTimeField();
     }
   };
 
-  validateDate() {
-    const parsedDate = parseDate(this.state.displayValue[0]);
+  validateDate(date: string) {
+    const parsedDate = parseDate(date);
 
     if (parsedDate) {
       this.onDateChange(parsedDate.value);
       this.setState(prevState => ({
         displayValue: [parsedDate.display, prevState.displayValue[1]],
       }));
-    } else {
-      // TODO: Display error message for invalid date.
-      this.setState(prevState => ({
-        displayValue: ['', prevState.displayValue[1]],
-      }));
+
+      return true;
     }
+    // TODO: Display error message for invalid date.
+    this.onDateChange(null);
+    this.setState(prevState => ({
+      displayValue: ['', prevState.displayValue[1]],
+    }));
+
+    return false;
   }
 
   selectDateField() {
@@ -209,7 +206,7 @@ export default class DateTimePicker extends Component<Props, State> {
 
   // TimePicker
 
-  onTimeChange = (value: string) => {
+  onTimeChange = (value: ?string) => {
     if (value !== this.getState().value[1]) {
       this.setState(prevState => ({
         value: [prevState.value[0], value],
@@ -274,6 +271,7 @@ export default class DateTimePicker extends Component<Props, State> {
       }));
     } else {
       // TODO: Display an error message
+      this.onTimeChange(null);
       this.setState(prevState => ({
         displayValue: [prevState.displayValue[0], ''],
         isOpen: false,

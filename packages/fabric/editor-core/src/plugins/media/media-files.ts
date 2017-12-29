@@ -1,3 +1,9 @@
+import { Node as PMNode, NodeType } from 'prosemirror-model';
+import { EditorState } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+import { MediaState } from '@atlaskit/media-core';
+import { unsupportedNodeTypesForMediaCards } from '@atlaskit/editor-common';
+
 import {
   atTheEndOfDoc,
   atTheEndOfBlock,
@@ -7,12 +13,7 @@ import {
   setNodeSelection,
   setTextSelection,
 } from '../../utils';
-
-import { Node as PMNode, NodeType } from 'prosemirror-model';
-import { EditorState } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
-
-import { MediaState } from '@atlaskit/media-core';
+import analyticsService from '../../analytics/service';
 import {
   posOfPreceedingMediaGroup,
   posOfMediaGroupNearby,
@@ -20,8 +21,7 @@ import {
   isSelectionNonMediaBlockNode,
   isInsidePotentialEmptyParagraph,
 } from './utils';
-import { unsupportedNodeTypesForMediaCards } from '@atlaskit/editor-common';
-import analyticsService from '../../analytics/service';
+import { copyOptionalAttrsFromMediaState } from './media-common';
 
 export interface Range {
   start: number;
@@ -92,18 +92,8 @@ const createMediaFileNodes = (
   const nodes = mediaStates.map(mediaState => {
     const { id } = mediaState;
 
-    const node = media.create({
-      id,
-      type: 'file',
-      collection,
-    });
-
-    ['fileName', 'fileSize', 'fileMimeType'].forEach(key => {
-      if (mediaState[key]) {
-        node.attrs[`__${key}`] = mediaState[key];
-      }
-    });
-
+    const node = media.create({ id, type: 'file', collection });
+    copyOptionalAttrsFromMediaState(mediaState, node);
     return node;
   });
 

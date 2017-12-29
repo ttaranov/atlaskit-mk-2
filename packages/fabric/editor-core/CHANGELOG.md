@@ -1,5 +1,30 @@
 # @atlaskit/editor-core
 
+## 60.15.7
+- [patch] Support old plugins in WithPluginState helper [194bc9c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/194bc9c)
+
+## 60.15.6
+- [patch] Fixed stand alone file and link card rendering [d851bfc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d851bfc)
+
+## 60.15.5
+
+
+- [patch] Collaborative editing telepointers 2.0 [297afbf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/297afbf)
+
+## 60.15.4
+- [patch] Fixes Firefox rendering bug, missing attrs in transformer, new selection [f59e8c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f59e8c4)
+
+## 60.15.3
+- [patch] Fix hyperlink edit to close on esc keypress [8245c10](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8245c10)
+
+## 60.15.2
+- [patch] Duplicate imageUploadPlugin paste/drop tests into editor-core. Add ProviderFactory.create({ name: provider }) helper function to reduce boilerplate. [a5a36cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5a36cc)
+
+
+- [patch] Setting new mediaProvider will close any existing media picker window [cf4785d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf4785d)
+- [patch] Support breakout mode for block nodes [538fa77](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/538fa77)
+- [patch] Fixing language picker in full-page editor. [9720b28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9720b28)
+
 ## 60.15.1
 - [patch] replaced inlineMacro node with inlineExtension node [a43f891](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a43f891)
 
