@@ -21,7 +21,9 @@ export default () => (
       items={getChildrenData}
       render={({ title, numbering, page, children }) => (
         <Row key={numbering} hasChildren={children.length > 0}>
-          <Cell width={300}>{title}</Cell>
+          <Cell width={300} singleLine>
+            {title}
+          </Cell>
           <Cell width={50}>{page}</Cell>
         </Row>
       )}
