@@ -8,7 +8,7 @@ import {
 import {
   confluenceSchemaWithMediaSingle as schema,
   MediaAttributes,
-  MediaSingleLayout,
+  MediaSingleAttributes,
 } from '@atlaskit/editor-common';
 
 export { RefsNode, RefsTracker, Node };
@@ -45,8 +45,8 @@ export const confluenceJiraIssue = (attrs: {
 }) => schema.nodes.confluenceJiraIssue.create(attrs);
 export const mediaGroup = nodeFactory(schema.nodes.mediaGroup);
 export const mediaSingle = (
-  { layout }: { layout?: MediaSingleLayout } = { layout: 'center' },
-) => nodeFactory(schema.nodes.mediaSingle, { layout });
+  attrs: MediaSingleAttributes = { layout: 'center' },
+) => nodeFactory(schema.nodes.mediaSingle, attrs);
 export const media = (attrs: {
   id: string;
   type: 'file' | 'link';

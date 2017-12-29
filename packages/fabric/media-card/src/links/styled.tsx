@@ -5,7 +5,7 @@ import {
   akColorN30,
   akColorB50,
 } from '@atlaskit/util-shared-styles';
-import { CardAppearance } from '../..';
+import { CardAppearance } from '../index';
 import { Root, borderRadius, withAppearance } from '../styles';
 import { getCSSBoundaries } from '../utils/cardDimensions';
 

@@ -2,7 +2,9 @@ node_modules
 coverage
 dist
 flow-typed
-
+packages/elements/icon/glyph/**
+packages/elements/icon/es5/**
+packages/elements/icon/utils/**
 
 
 # tmp

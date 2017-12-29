@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 5.1.8
+- [patch] Allow inline contents inside headings. [738631b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/738631b)
+
 ## 5.1.7
 
 - [patch] Updated media-card Appearance type to include "auto" [e1f8390](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e1f8390)

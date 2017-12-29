@@ -1,10 +1,9 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import BreadcrumbsStateless from './BreadcrumbsStateless';
-import type { ChildrenType } from '../types';
 
 type Props = {
-  children?: ChildrenType,
+  children?: Node,
 };
 
 type State = {|

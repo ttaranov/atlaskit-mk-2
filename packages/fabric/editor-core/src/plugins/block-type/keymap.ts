@@ -15,10 +15,12 @@ import {
   BLOCK_QUOTE,
 } from './types';
 import { BlockTypeState } from './';
+import { EditorAppearance } from '../../editor/types/editor-props';
 
 export function keymapHandler(
   view: EditorView,
   pluginState: BlockTypeState,
+  appearance: EditorAppearance,
 ): Function {
   const list = {};
 

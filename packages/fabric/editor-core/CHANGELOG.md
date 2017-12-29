@@ -1,5 +1,17 @@
 # @atlaskit/editor-core
 
+## 60.16.1
+- [patch] Add support for single image wrap left/right layout [59d9a74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59d9a74)
+
+## 60.16.0
+- [minor] Enter keypress should always submit in stride. [51020fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51020fe)
+
+## 60.15.9
+
+## 60.15.8
+
+- [patch] Update dependencies [623f8ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623f8ca)
+
 ## 60.15.7
 - [patch] Support old plugins in WithPluginState helper [194bc9c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/194bc9c)
 

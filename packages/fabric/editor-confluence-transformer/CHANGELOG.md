@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.2.4
+- [patch] Add support for single image wrap left/right layout [59d9a74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59d9a74)
+
 ## 2.2.3
 - [patch] Fix dependencies in CI [35c5914](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35c5914)
 

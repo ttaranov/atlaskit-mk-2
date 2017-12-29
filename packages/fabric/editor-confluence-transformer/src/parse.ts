@@ -31,7 +31,7 @@ import {
   docContentWrapper,
 } from './content-wrapper';
 
-const supportedSingleMediaLayouts = ['center'];
+const supportedSingleMediaLayouts = ['center', 'wrap-left', 'wrap-right'];
 
 const convertedNodes = new WeakMap<Node, Fragment | PMNode>();
 // This reverted mapping is used to map Unsupported Node back to it's original cxhtml
