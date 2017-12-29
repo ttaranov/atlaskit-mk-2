@@ -6,6 +6,7 @@ import { stateKey as pluginKey, createPlugin } from '../../../plugins/media';
 import keymapPlugin from '../../../plugins/media/keymap';
 import keymapMediaSinglePlugin from '../../../plugins/media/keymap-media-single';
 import ToolbarMedia from '../../../ui/ToolbarMedia';
+import MediaSingleEdit from '../../../ui/MediaSingleEdit';
 
 export interface MediaOptions {
   provider: Promise<MediaProvider>;
@@ -50,6 +51,12 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
           }
         : [],
     );
+  },
+
+  contentComponent(editorView) {
+    const pluginState = pluginKey.getState(editorView.state);
+
+    return <MediaSingleEdit pluginState={pluginState} />;
   },
 
   primaryToolbarComponent(

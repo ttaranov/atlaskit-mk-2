@@ -9,7 +9,8 @@ import { EditorView } from 'prosemirror-view';
 import ToolbarButton from '../ToolbarButton';
 
 import { availablePanelType, PanelState, PanelType } from '../../plugins/panel';
-import { TrashToolbarButton, Separator, FloatingToolbar } from './styles';
+import Separator from '../Separator';
+import FloatingToolbar from '../FloatingToolbar';
 
 const icons = {
   info: InfoIcon,
@@ -64,7 +65,7 @@ export default class PanelEdit extends PureComponent<Props, State> {
             );
           })}
           <Separator />
-          <TrashToolbarButton
+          <ToolbarButton
             onClick={this.handleRemovePanel}
             iconBefore={<RemoveIcon label="Remove panel type" />}
           />
