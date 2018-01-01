@@ -44,18 +44,18 @@ export default class Item extends PureComponent<Props, State> {
     const { depth, data, render, getChildrenData } = this.props;
     const { isExpanded, childrenData } = this.state;
 
-    let rowData = render(data);
-    if (!rowData) {
+    let row = render(data);
+    if (!row) {
       return null;
     }
-    rowData = React.cloneElement(rowData, {
+    row = React.cloneElement(row, {
       onExpandToggle: this.handleExpandToggleClick,
       depth,
       isExpanded,
     });
     return (
       <div>
-        {rowData}
+        {row}
         {isExpanded && (
           <Items
             childrenData={childrenData}
