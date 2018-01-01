@@ -68,10 +68,12 @@ export class MediaPluginState {
   public ignoreLinks: boolean = false;
   public waitForMediaUpload: boolean = true;
   public showDropzone: boolean = false;
+  public element?: HTMLElement;
+  public layout: MediaSingleLayout = 'center';
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private pendingTask = Promise.resolve<MediaState | null>(null);
   private options: MediaPluginOptions;
-  private view: EditorView;
+  private view: EditorView & { docView?: any };
   private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
   private useDefaultStateManager = true;
   private destroyed = false;
@@ -201,6 +203,38 @@ export class MediaPluginState {
 
     this.notifyPluginStateSubscribers();
   };
+
+  updateElement(): void {
+    let newElement;
+    if (this.selectedMediaNode() && this.isMediaSingle()) {
+      newElement = this.getDomElement(this.view.docView);
+    }
+
+    if (this.element !== newElement) {
+      this.element = newElement;
+      this.notifyPluginStateSubscribers();
+    }
+  }
+
+  updateLayout(layout: MediaSingleLayout): void {
+    this.layout = layout;
+    this.notifyPluginStateSubscribers();
+  }
+
+  private isMediaSingle(): boolean {
+    const { selection, schema } = this.view.state;
+    return selection.$from.parent.type === schema.nodes.mediaSingle;
+  }
+
+  private getDomElement(docView: any): HTMLElement | undefined {
+    const { from } = this.view.state.selection;
+    if (this.selectedMediaNode()) {
+      const { node, offset } = docView.domFromPos(from);
+      const domElement = node.childNodes[offset].querySelector('.wrapper');
+
+      return domElement;
+    }
+  }
 
   insertFile = (mediaState: MediaState): void => {
     // tslint:disable-next-line:no-console
@@ -413,10 +447,12 @@ export class MediaPluginState {
   };
 
   align = (layout: MediaSingleLayout): boolean => {
-    if (!this.isMediaNodeSelection()) {
+    if (!this.selectedMediaNode()) {
       return false;
     }
+
     const { selection: { from }, schema, tr } = this.view.state;
+
     this.view.dispatch(
       tr.setNodeMarkup(from - 1, schema.nodes.mediaSingle, {
         layout,
@@ -645,7 +681,7 @@ export class MediaPluginState {
 
   removeSelectedMediaNode = (): boolean => {
     const { view } = this;
-    if (this.isMediaNodeSelection()) {
+    if (this.selectedMediaNode()) {
       const { from, node } = view.state.selection as NodeSelection;
       removeMediaNode(view, node, () => from);
       return true;
@@ -653,12 +689,14 @@ export class MediaPluginState {
     return false;
   };
 
-  private isMediaNodeSelection() {
+  private selectedMediaNode(): PMNode | undefined {
     const { selection, schema } = this.view.state;
-    return (
+    if (
       selection instanceof NodeSelection &&
       selection.node.type === schema.nodes.media
-    );
+    ) {
+      return selection.node;
+    }
   }
 
   /**
@@ -746,10 +784,12 @@ export const createPlugin = (
     view: view => {
       const pluginState = getMediaPluginState(view.state);
       pluginState.setView(view);
+      pluginState.updateElement();
 
       return {
         update: () => {
           pluginState.insertLinks();
+          pluginState.updateElement();
         },
       };
     },

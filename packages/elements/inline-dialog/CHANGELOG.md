@@ -1,5 +1,8 @@
 # @atlaskit/inline-dialog
 
+## 5.0.6
+- [patch] migrated inline dialog from ak to mk2 [9feaa91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9feaa91)
+
 ## 5.0.5 (2017-11-24)
 
 
