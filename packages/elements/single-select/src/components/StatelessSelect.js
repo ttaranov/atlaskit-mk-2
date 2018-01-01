@@ -248,9 +248,10 @@ export default class StatelessSelect extends PureComponent<Props, State> {
     items: Array<ItemType>,
     key: string,
     currentIndex: number,
-    isSecondStep: boolean,
+    isSecondStep?: boolean,
   ) => {
-    let res = items.find((item, index) => {
+    let result;
+    const res = items.find((item, index) => {
       const content = getTextContent(item).toLowerCase();
       if (index <= currentIndex) {
         return false;
@@ -258,10 +259,12 @@ export default class StatelessSelect extends PureComponent<Props, State> {
       return content && content.indexOf(key.toLowerCase()) === 0;
     });
 
-    if (!res && !isSecondStep) {
-      res = this.getNextNativeSearchItem(items, key, -1, true);
+    if (res) {
+      result = res;
+    } else if (!res && !isSecondStep) {
+      result = this.getNextNativeSearchItem(items, key, -1, true);
     }
-    return res;
+    return result;
   };
 
   setDroplistMinWidth = () => {
@@ -340,7 +343,7 @@ export default class StatelessSelect extends PureComponent<Props, State> {
     this.scrollToFocused(index);
   };
 
-  focusItem = (item: ItemType) => {
+  focusItem = (item?: ItemType) => {
     const filteredItems = this.getAllVisibleItems(this.props.items);
     const index = filteredItems.indexOf(item);
     this.setState({
@@ -424,7 +427,9 @@ export default class StatelessSelect extends PureComponent<Props, State> {
         }
         break;
       default:
-        this.handleNativeSearch(event);
+        if (!this.props.hasAutocomplete) {
+          this.handleNativeSearch(event);
+        }
         break;
     }
   };
