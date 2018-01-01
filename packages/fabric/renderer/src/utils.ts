@@ -2,7 +2,7 @@ import { Schema } from 'prosemirror-model';
 import { defaultSchema, Transformer } from '@atlaskit/editor-common';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 
-export const bigEmojiHeight = 48;
+export const bigEmojiHeight = 40;
 
 function createEncoder<T>(parser: Transformer<T>, encoder: Transformer<any>) {
   return (value: T) => encoder.encode(parser.parse(value));
