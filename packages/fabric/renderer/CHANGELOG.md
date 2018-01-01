@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 10.1.5
+- [patch] FS-1581 decreased big emoji size [fe39b29](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe39b29)
+
 ## 10.1.4
 
 ## 10.1.3
