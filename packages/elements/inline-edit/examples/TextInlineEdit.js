@@ -1,7 +1,7 @@
-import { action } from '@kadira/storybook';
+// @flow
 import React, { PureComponent } from 'react';
 import SingleLineTextInput from '@atlaskit/input';
-import uid from 'uid';
+import uuid from 'uuid';
 import InlineEdit from '../src';
 
 /* eslint-disable react/prop-types */

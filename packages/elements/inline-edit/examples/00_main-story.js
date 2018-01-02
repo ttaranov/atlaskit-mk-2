@@ -1,3 +1,4 @@
+// @flow
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import ModalDialog from '@atlaskit/modal-dialog';

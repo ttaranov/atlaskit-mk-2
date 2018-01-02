@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 
 // Display toggle needed to prevent edit click trigger exceeding hover width.

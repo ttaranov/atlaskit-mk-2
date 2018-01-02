@@ -1,10 +1,11 @@
+// @flow
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import ConfirmIcon from '@atlaskit/icon/glyph/check';
 import CancelIcon from '@atlaskit/icon/glyph/cross';
 import FieldBase, { Label } from '@atlaskit/field-base';
 
-import InlineEditStateless from '../../src/components/InlineEditStateless';
+import InlineEditStateless from '../../src/InlineEditStateless';
 import FieldBaseWrapper from '../../src/styled/FieldBaseWrapper';
 
 const noop = () => {};

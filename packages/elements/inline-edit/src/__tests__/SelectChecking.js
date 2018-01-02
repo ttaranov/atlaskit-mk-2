@@ -3,7 +3,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import FieldBaseWrapper from '../../src/styled/FieldBaseWrapper';
-import InlineEditStateless from '../../src/components/InlineEditStateless';
+import InlineEditStateless from '../../src/InlineEditStateless';
 
 const mouseEvent = (eventName, wrapper, clientX, clientY) =>
   wrapper.simulate(eventName, { clientX, clientY });

@@ -1,61 +1,68 @@
-import PropTypes from 'prop-types';
-import React, { PureComponent, cloneElement } from 'react';
+// @flow
+import React, { Component, cloneElement, type Node } from 'react';
 import ReactDOM from 'react-dom';
 import Button from '@atlaskit/button';
 import ConfirmIcon from '@atlaskit/icon/glyph/check';
 import CancelIcon from '@atlaskit/icon/glyph/cross';
 import FieldBase, { Label } from '@atlaskit/field-base';
 
-import RootWrapper from '../styled/RootWrapper';
-import ContentWrapper from '../styled/ContentWrapper';
-import ReadViewContentWrapper from '../styled/ReadViewContentWrapper';
-import FieldBaseWrapper from '../styled/FieldBaseWrapper';
-import ButtonsWrapper from '../styled/ButtonsWrapper';
-import ButtonWrapper from '../styled/ButtonWrapper';
-import EditButton from '../styled/EditButton';
+import RootWrapper from './styled/RootWrapper';
+import ContentWrapper from './styled/ContentWrapper';
+import ReadViewContentWrapper from './styled/ReadViewContentWrapper';
+import FieldBaseWrapper from './styled/FieldBaseWrapper';
+import ButtonsWrapper from './styled/ButtonsWrapper';
+import ButtonWrapper from './styled/ButtonWrapper';
+import EditButton from './styled/EditButton';
 
 const DRAG_THRESHOLD = 5;
 
-export default class InlineEdit extends PureComponent {
-  static propTypes = {
-    /** Label above the input. */
-    label: PropTypes.string.isRequired,
-    /** Component to be shown when reading only */
-    readView: PropTypes.node.isRequired,
-    /** Component to be shown when editing. Should be an @atlaskit/input. */
-    editView: PropTypes.node,
-    /** Whether the component shows the readView or the editView. */
-    isEditing: PropTypes.bool.isRequired,
-    /** Set whether the read view should fit width, most obvious when hovered. */
-    isFitContainerWidthReadView: PropTypes.bool,
-    /** Greys out text and shows spinner. Does not disable input. */
-    isWaiting: PropTypes.bool,
-    /** Sets yellow border with warning symbol at end of input. Removes confirm
-     and cancel buttons. */
-    isInvalid: PropTypes.bool,
-    /** Determine whether the label is shown. */
-    isLabelHidden: PropTypes.bool,
-    /** Sets whether the checkmark and cross are displayed in the bottom right fo the field. */
-    areActionButtonsHidden: PropTypes.bool,
-    /** Sets whether the confirm function is called when the input loses focus. */
-    isConfirmOnBlurDisabled: PropTypes.bool,
-    /** Handler called when the wrapper or the label are clicked. */
-    onEditRequested: PropTypes.func.isRequired,
-    /** Handler called when checkmark is clicked. Also by default
-     called when the input loses focus. */
-    onConfirm: PropTypes.func.isRequired,
-    /** Handler called when the cross is clicked on. */
-    onCancel: PropTypes.func.isRequired,
-    /** html to pass down to the label htmlFor prop. */
-    labelHtmlFor: PropTypes.string,
-    /** Set whether onConfirm is called on pressing enter. */
-    shouldConfirmOnEnter: PropTypes.bool,
-    /** Set whether default stylings should be disabled when editing. */
-    disableEditViewFieldBase: PropTypes.bool,
-    /** Component to be shown in an @atlaskit/inline-dialog when edit view is open. */
-    invalidMessage: PropTypes.node,
-  };
+type Props = {
+  /** Label above the input. */
+  label: string,
+  /** Component to be shown when reading only */
+  readView: Node,
+  /** Component to be shown when editing. Should be an @atlaskit/input. */
+  editView?: Node,
+  /** Whether the component shows the readView or the editView. */
+  isEditing: boolean,
+  /** Set whether the read view should fit width, most obvious when hovered. */
+  isFitContainerWidthReadView?: boolean,
+  /** Greys out text and shows spinner. Does not disable input. */
+  isWaiting?: boolean,
+  /** Sets yellow border with warning symbol at end of input. Removes confirm
+   and cancel buttons. */
+  isInvalid?: boolean,
+  /** Determine whether the label is shown. */
+  isLabelHidden?: boolean,
+  /** Sets whether the checkmark and cross are displayed in the bottom right fo the field. */
+  areActionButtonsHidden?: boolean,
+  /** Sets whether the confirm function is called when the input loses focus. */
+  isConfirmOnBlurDisabled?: boolean,
+  /** Handler called when the wrapper or the label are clicked. */
+  onEditRequested: any => mixed,
+  /** Handler called when checkmark is clicked. Also by default
+   called when the input loses focus. */
+  onConfirm: any => mixed,
+  /** Handler called when the cross is clicked on. */
+  onCancel: any => mixed,
+  /** html to pass down to the label htmlFor prop. */
+  labelHtmlFor?: string,
+  /** Set whether onConfirm is called on pressing enter. */
+  shouldConfirmOnEnter?: boolean,
+  /** Set whether default stylings should be disabled when editing. */
+  disableEditViewFieldBase?: boolean,
+  /** Component to be shown in an @atlaskit/inline-dialog when edit view is open. */
+  invalidMessage?: Node,
+};
 
+type State = {
+  fieldBaseWrapperIsHover?: boolean,
+  resetFieldBase?: boolean,
+  shouldResetFieldBase?: boolean,
+  wasFocusReceivedSinceLastBlur?: boolean,
+};
+
+export default class InlineEdit extends Component<Props, State> {
   static defaultProps = {
     areActionButtonsHidden: false,
     disableEditViewFieldBase: false,

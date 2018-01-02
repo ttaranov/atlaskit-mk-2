@@ -1,3 +1,4 @@
+// @flow
 import { action } from '@kadira/storybook';
 import React, { PureComponent } from 'react';
 import SingleLineTextInput from '@atlaskit/input';

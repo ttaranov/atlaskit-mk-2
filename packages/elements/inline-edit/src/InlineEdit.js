@@ -1,17 +1,21 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import React, { Component } from 'react';
 import InlineEditStateless from './InlineEditStateless';
 
-export default class extends PureComponent {
-  static propTypes = {
-    /** Function passed to stateless component, isEditing will be set to false
-     before the passed function is called. */
-    onConfirm: PropTypes.func.isRequired,
-    /** Function passed to stateless component, isEditing will be set to false
-     before the passed function is called. */
-    onCancel: PropTypes.func.isRequired,
-  };
+type Props = {
+  /** Function passed to stateless component, isEditing will be set to false
+   before the passed function is called. */
+  onConfirm: any => mixed,
+  /** Function passed to stateless component, isEditing will be set to false
+   before the passed function is called. */
+  onCancel: any => mixed,
+};
 
+type State = {
+  isEditing?: boolean,
+};
+
+export default class extends Component<Props, State> {
   state = {
     isEditing: false,
   };

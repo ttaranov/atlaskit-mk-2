@@ -25,11 +25,12 @@
         "classnames": "^2.2.5"
     },
     "peerDependencies": {
-        "react": "^15.6.1"
+        "react": "^15.6.1",
+        "react-dom": "^15.6.1"
     },
     "devDependencies": {
         "@atlaskit/avatar": "^8.0.6",
-        "@atlaskit/inline-dialog": "5.0.6",
+        "@atlaskit/inline-dialog": "5.0.7",
         "@atlaskit/inline-edit": "*",
         "@atlaskit/input": "^1.6.0",
         "@atlaskit/mention": "^8.1.0",

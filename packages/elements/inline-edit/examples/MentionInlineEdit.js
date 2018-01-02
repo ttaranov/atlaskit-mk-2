@@ -1,3 +1,4 @@
+// @flow
 import React, { PureComponent } from 'react';
 import InlineDialog from '@atlaskit/inline-dialog';
 import AkAvatar from '@atlaskit/avatar';

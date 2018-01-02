@@ -1,3 +1,4 @@
+// @flow
 import React, { PureComponent } from 'react';
 import InlineEditor from '@atlaskit/inline-edit';
 import Select from '@atlaskit/single-select';

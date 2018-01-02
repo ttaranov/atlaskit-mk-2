@@ -1,3 +1,4 @@
+// @flow
 import React, { PureComponent } from 'react';
 import { InlineEditStateless } from '@atlaskit/inline-edit';
 import SingleLineTextInput from '@atlaskit/input';
