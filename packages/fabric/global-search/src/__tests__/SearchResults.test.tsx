@@ -7,7 +7,7 @@ import {
 } from '@atlaskit/navigation';
 import { ResultType } from '../model/Result';
 
-const { PersonResult, ObjectResult, ResultBase } = quickSearchResultTypes;
+const { ObjectResult, ResultBase } = quickSearchResultTypes;
 
 enum Group {
   Recent = 0,

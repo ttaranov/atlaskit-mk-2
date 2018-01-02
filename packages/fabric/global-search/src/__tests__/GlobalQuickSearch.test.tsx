@@ -1,11 +1,7 @@
-import { shallow, mount, ShallowWrapper } from 'enzyme';
+import { mount } from 'enzyme';
 import * as React from 'react';
 import GlobalQuickSearch, { Props } from '../components/GlobalQuickSearch';
 import { AkQuickSearch } from '@atlaskit/navigation';
-
-function timeout(ms = 1) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 function noop() {}
 
