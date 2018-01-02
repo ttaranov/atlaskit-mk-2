@@ -79,14 +79,14 @@ export default class BasicNavigation extends React.Component<Props, State> {
             }
             onSearchDrawerOpen={this.openDrawer}
             globalSecondaryActions={[
-              <AkGlobalItem>
+              <AkGlobalItem key="help">
                 <QuestionCircleIcon
                   label="Help icon"
                   secondaryColor="inherit"
                   size="medium"
                 />
               </AkGlobalItem>,
-              <AkGlobalItem>
+              <AkGlobalItem key="profile">
                 <Avatar
                   size="small"
                   src="http://api.adorable.io/avatar/32/luke"
