@@ -1,17 +1,17 @@
 // @flow
 import React, { Component } from 'react';
 import DynamicTableStateless from './Stateless';
-import type { SortOrderType } from '../types';
+import type { SortOrderType, StatelessProps } from '../types';
 
 // We are disabling prop validation, as the rest of the props passed in are
 // handled by validation of the stateless verion.
 /* eslint-disable react/prop-types */
 
 type Props = {
-  defaultPage?: number,
+  defaultPage: number,
   defaultSortKey?: string,
   defaultSortOrder?: SortOrderType,
-} & Object;
+} & StatelessProps;
 
 type State = {
   page: number,

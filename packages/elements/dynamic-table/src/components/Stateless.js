@@ -1,10 +1,5 @@
 // @flow
-import React, {
-  Component,
-  type Component as ComponentType,
-  type Element as ReactElement,
-  type Node,
-} from 'react';
+import React, { Component, type Component as ComponentType } from 'react';
 import { PaginationStateless } from '@atlaskit/pagination';
 
 import { ASC, DESC, SMALL, LARGE } from '../internal/constants';
@@ -24,13 +19,7 @@ import {
 
 import { Table, Caption } from '../styled/DynamicTable';
 
-import type {
-  HeadType,
-  RowType,
-  RowCellType,
-  SortOrderType,
-  LoadingSpinnerSizeType,
-} from '../types';
+import type { StatelessProps as Props, RowCellType } from '../types';
 
 function toggleSortOrder(currentSortOrder) {
   switch (currentSortOrder) {
@@ -42,22 +31,6 @@ function toggleSortOrder(currentSortOrder) {
       return currentSortOrder;
   }
 }
-
-type Props = {
-  caption?: Node,
-  head?: HeadType,
-  rows?: Array<RowType>,
-  emptyView?: ReactElement<any>,
-  loadingSpinnerSize?: LoadingSpinnerSizeType,
-  isLoading?: boolean,
-  isFixedSize?: boolean,
-  rowsPerPage?: number,
-  onSetPage: Function,
-  onSort: Function,
-  page?: number,
-  sortKey?: string,
-  sortOrder?: SortOrderType,
-};
 
 export default class DynamicTable extends Component<Props, {}> {
   tableBody: ComponentType<any, {}> | null;
