@@ -11,17 +11,33 @@ type Props = {
   /** One or more Cell elements that will form this row of data. */
   children: Node,
 
-  /** Whether the children of this row should currently be visible. */
+  /** Called whenever this row's node is expanded to show its child rows. */
+  onExpand?: Function,
+
+  /** Called whenever this row's node is collapsed to hide its child rows. */
+  onCollapse?: Function,
+
+  /** Passed implicitly. Whether the children of this row should currently be visible. */
   isExpanded?: boolean,
 
-  /** Called whenever the current row gets expanded or collapsed. */
+  /** Passed implicitly. Called whenever the current row gets expanded or collapsed. */
   onExpandToggle?: Function,
 
-  /** The tree-depth (nesting level) of the current row. Used to calculate the indent. */
+  /** Passed implicitly. The tree-depth (nesting level) of the current row. Used to calculate the indent. */
   depth?: number,
 };
 
 export default class Row extends PureComponent<Props> {
+  componentWillUpdate(nextProps) {
+    if (Boolean(nextProps.isExpanded) !== Boolean(this.props.isExpanded)) {
+      if (nextProps.isExpanded) {
+        this.props.onExpand();
+      } else {
+        this.props.onCollapse();
+      }
+    }
+  }
+
   renderCell(cell: Element<typeof Cell>, cellIndex: number) {
     const { hasChildren, depth, isExpanded = false } = this.props;
     const isFirst = cellIndex === 0;
