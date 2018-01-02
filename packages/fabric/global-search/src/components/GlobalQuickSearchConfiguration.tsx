@@ -1,5 +1,5 @@
 import * as React from 'react';
-import GlobalQuickSearch from './GlobalQuickSearch';
+import GlobalQuickSearchContainer from './GlobalQuickSearchContainer';
 import configureSearchProviders, {
   SearchProviders,
 } from '../api/configureSearchProviders';
@@ -22,6 +22,6 @@ export default class GlobalQuickSearchConfiguration extends React.Component<
   }
 
   render() {
-    return <GlobalQuickSearch {...this.state} />;
+    return <GlobalQuickSearchContainer {...this.state} />;
   }
 }
