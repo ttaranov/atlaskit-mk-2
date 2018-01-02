@@ -1,0 +1,49 @@
+{
+    "name": "@atlaskit/inline-edit",
+    "version": "4.5.6",
+    "description": "A base component used to build inline-editable components that match the Atlassian Design Guidelines",
+    "license": "Apache-2.0",
+    "main": "dist/cjs/index.js",
+    "module": "dist/esm/index.js",
+    "atlaskit:src": "src/index.js",
+    "files": [
+        "dist"
+    ],
+    "author": "Atlassian Pty Ltd",
+    "maintainers": [
+        {
+            "name": "Mike G"
+        }
+    ],
+    "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+    "dependencies": {
+        "@atlaskit/button": "^6.2.0",
+        "@atlaskit/field-base": "^8.1.1",
+        "@atlaskit/icon": "^10.1.0",
+        "@atlaskit/theme": "^2.0.0",
+        "styled-components": "^1.4.6",
+        "classnames": "^2.2.5"
+    },
+    "peerDependencies": {
+        "react": "^15.6.1"
+    },
+    "devDependencies": {
+        "@atlaskit/avatar": "^8.0.6",
+        "@atlaskit/inline-dialog": "5.0.6",
+        "@atlaskit/inline-edit": "*",
+        "@atlaskit/input": "^1.6.0",
+        "@atlaskit/mention": "^8.1.0",
+        "@atlaskit/modal-dialog": "^3.0.2",
+        "@atlaskit/single-select": "^3.0.1",
+        "@atlaskit/multi-select": "^7.1.7",
+        "@atlaskit/tag": "^3.0.2",
+        "@atlaskit/tag-group": "^3.4.2",
+        "@atlaskit/docs": "^2.1.1",
+        "enzyme": "^2.9.1"
+    },
+    "keywords": [
+        "atlaskit",
+        "react",
+        "ui"
+    ]
+}
