@@ -3,10 +3,13 @@ import React from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
 
 export default md`
-  This package exports the \'TableTree\' component.
+  This package exports the \`TableTree\` component.
   
-  The component displays a table with expandable, nested rows that form a tree-like hierarchy.
-  It supports asynchronous loading of child rows.
+  The component displays a table of expandable, nested rows that form a tree-like hierarchy.
+  Child rows can be loaded asynchronously, on expansion.
+  
+  Simplest use of the API requires only calling the \`TableTree\` component. More powerful API
+  is also exposed, based on multiple subcomponents and the render prop pattern.
   
   ${(
     <Example
