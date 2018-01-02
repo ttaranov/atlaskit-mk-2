@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 60.17.2
+
 ## 60.17.1
 - [patch] validate incoming ADF node inserted from macro browser [e9d0af2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e9d0af2)
 
