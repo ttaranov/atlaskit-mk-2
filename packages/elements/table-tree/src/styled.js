@@ -2,6 +2,10 @@
 import styled, { css } from 'styled-components';
 import { colors } from '@atlaskit/theme';
 
+// Future-proofing: Styled Component 2.x no longer tolerate unitless values for CSS length.
+// See:
+// https://github.com/styled-components/css-to-react-native/issues/20
+// https://github.com/styled-components/polished/issues/234
 function defaultToPx(length) {
   const number = +length;
   if (number === 0) {
