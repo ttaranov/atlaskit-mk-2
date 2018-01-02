@@ -59,9 +59,11 @@ export const renderDocument = <T>(
     return { stat, result: null };
   }
 
-  const { output: node, time: buildTreeTime } = withStopwatch<PMNode>(() =>
-    schema.nodeFromJSON(validDoc),
-  );
+  const { output: node, time: buildTreeTime } = withStopwatch<PMNode>(() => {
+    const pmNode = schema.nodeFromJSON(validDoc);
+    pmNode.check();
+    return pmNode;
+  });
 
   // save build tree time to stats
   stat.buildTreeTime = buildTreeTime;
