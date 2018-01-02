@@ -3,7 +3,7 @@ import React from 'react';
 import { md, Props } from '@atlaskit/docs';
 
 export default md`
-  # Layer
+  # <div id="Layer">Layer</div>
 
   The layer is responsible for the positioning of an element on a page. For example, you wrap a tooltip with a layer to make its position relative to a target. You can specify up to 12 different positions.
 
@@ -97,8 +97,10 @@ export default md`
   Valid values are "window" and "viewport"
   If not set the boundary will be the current viewport.
 
-  **Kind**: instance property of \`[Layer](#Layer)\`
-  **Default**: \`&quot;viewport&quot;\`
+  **Kind**: instance property of [Layer](#Layer)
+
+  **Default**: \`"viewport"\`
+
   **HTML Example**
   \`<Layer autoPosition boundariesElement="window"></Layer>\`
   <a name="Layer+autoPosition"></a>
@@ -111,7 +113,8 @@ export default md`
   it to be outside the viewport (or the boundariesElement if that is set)
   the Layer will instead be positioned in "bottom middle".
 
-  **Kind**: instance property of \`[Layer](#Layer)\`
+  **Kind**: instance property of [Layer](#Layer)
+
   **HTML Example**
   \`<Layer autoPosition={true}></Layer>\`
   <a name="Layer+offset"></a>
@@ -121,7 +124,8 @@ export default md`
   A string representing the offsets from the target element in the format
   "[x-offset][y-offset]", measured in pixels.
 
-  **Kind**: instance property of \`[Layer](#Layer)\`
+  **Kind**: instance property of [Layer](#Layer)
+
   **HTML Example**
   \`<Layer offset="0 2"></Layer>\`
   <a name="Layer+content"></a>
@@ -131,16 +135,17 @@ export default md`
   HTML content to display in the layer. Will be aligned to the target according to
   the \`position\` prop.
 
-  **Kind**: instance property of \`[Layer](#Layer)\`
+  **Kind**: instance property of [Layer](#Layer)
+
   **HTML Example**
-  \`
+  \`\`\`
   const myContent = (<div>Some content</div>);
 
   ReactDOM.render(<Layer position="right middle" content={myContent}>
 
   <div>I'm the target!</div>
 </Layer>, container);
-\`
+\`\`\`
 <a name="Layer+onFlippedChange"></a>
 
   ### layer.onFlippedChange : \`function\`
@@ -159,17 +164,17 @@ export default md`
   | originalPosition    | string | the position that Layer originally tried to position to |
   ~~~
 
-  **Kind**: instance property of \`[Layer](#Layer)\`
+  **Kind**: instance property of [Layer](#Layer)
 
   **HTML Example**
-  \`
+  \`\`\`
   const handleFlipChange = ({ flipped, actualPosition, originalPosition }) => { ... };
 
   ReactDOM.render(<Layer position="right middle" onFlippedChange={handleFlipChange}>
 
   <div>I'm the target!</div>
-</Layer>, container);
-\`
+  </Layer>, container);
+  \`\`\`
 
 
 ${(
@@ -178,6 +183,5 @@ ${(
     props={require('!!extract-react-types-loader!../src/components/Layer')}
   />
 )}
-
 
 `;
