@@ -31,7 +31,7 @@ const mentionListWrapperStyle = {
 };
 
 /* eslint-disable react/prop-types */
-export default class extends PureComponent {
+export default class MentionExample extends PureComponent {
   state = {
     query: null,
     selectedMention: null,

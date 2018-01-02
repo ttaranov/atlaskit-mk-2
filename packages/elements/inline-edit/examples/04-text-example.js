@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
-import { FieldTextAreaStateless } from '../src';
+import SingleLineTextInput from '@atlaskit/input';
+import { InlineEdit } from '../src';
 
 type State = {|
   value: string | number,
@@ -12,13 +13,36 @@ export default class TextExample extends Component<void, State> {
 
   setValue = (e: any) => this.setState({ value: e.target.value });
 
+  onConfirm = () => {
+    this.setState(state => ({ readValue: state.editValue }));
+  };
+
+  onCancel = () => {
+    this.setState(state => ({ editValue: state.readValue }));
+  };
+
+  renderInput = ({ isEditing, id }) => (
+    <SingleLineTextInput
+      id={id}
+      isEditing={isEditing}
+      isInitiallySelected
+      value={this.state.editValue}
+      onChange={this.onChange}
+    />
+  );
+
   render() {
+    const id = 'inline-edit-single';
     return (
       <div>
-        <FieldTextAreaStateless
-          label="Stateless Text Input Example"
-          onChange={this.setValue}
-          value={this.state.value}
+        <InlineEdit
+          label={this.props.label}
+          labelHtmlFor={id}
+          editView={this.renderInput({ isEditing: true, id })}
+          readView={this.renderInput({ isEditing: false, id })}
+          onConfirm={this.onConfirm}
+          onCancel={this.onCancel}
+          {...this.props}
         />
         <div
           style={{

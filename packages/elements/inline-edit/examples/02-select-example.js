@@ -1,24 +1,75 @@
 // @flow
 import React, { Component } from 'react';
-import { FieldTextAreaStateless } from '../src';
+import MultiSelect from '@atlaskit/multi-select';
+import Group from '@atlaskit/tag-group';
+import Tag from '@atlaskit/tag';
+import InlineEdit from '../src';
 
-type State = {|
-  value: string | number,
-|};
+const MultiSelectItems = [
+  { content: 'Apple', value: 'Apple' },
+  { content: 'Banana', value: 'Banana' },
+  { content: 'Cherry', value: 'Cherry' },
+  { content: 'Mango', value: 'Mango' },
+  { content: 'Orange', value: 'Orange' },
+  { content: 'Strawberry', value: 'Strawberry' },
+  { content: 'Watermelon', value: 'Watermelon' },
+];
+
+type State = {
+  onEventResult: string,
+};
+
 export default class SelectExample extends Component<void, State> {
   state = {
-    value: '',
+    editValue: '',
   };
 
-  setValue = (e: any) => this.setState({ value: e.target.value });
+  onConfirmHandler = (event: any) => {
+    this.setState({
+      onEventResult: `onConfirm called with value: ${event.target.value}`,
+      editValue: event.target.value,
+    });
+  };
+
+  onCancelHandler = (event: any) => {
+    this.setState({
+      onEventResult: `onCancel called with value: ${event.target.value}`,
+      editValue: event.target.value,
+    });
+  };
+
+  renderEditView = () => (
+    <MultiSelect
+      defaultSelected={MultiSelectItems}
+      items={MultiSelectItems}
+      isDefaultOpen
+      shouldFitContainer
+      shouldFocus
+    />
+  );
+
+  renderReadView = () => (
+    <Group>
+      <Tag text="Apple" />
+      <Tag text="Banana" />
+      <Tag text="Cherry" />
+      <Tag text="Mango" />
+      <Tag text="Orange" />
+      <Tag text="Strawberry" />
+      <Tag text="Watermelon" />
+    </Group>
+  );
 
   render() {
     return (
       <div>
-        <FieldTextAreaStateless
-          label="Stateless Text Input Example"
-          onChange={this.setValue}
-          value={this.state.value}
+        <InlineEdit
+          label="With Multi Select Edit View"
+          disableEditViewFieldBase
+          editView={this.renderEditView()}
+          readView={this.renderReadView()}
+          onConfirm={this.onConfirmHandler}
+          onCancel={this.onCancelHandler}
         />
         <div
           style={{
@@ -30,7 +81,7 @@ export default class SelectExample extends Component<void, State> {
             margin: '0.5em',
           }}
         >
-          State updated onChange with value: {this.state.value}
+          State updated with value: {this.state.editValue}
         </div>
       </div>
     );

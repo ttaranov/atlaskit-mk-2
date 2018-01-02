@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import InlineEdit from '../src/InlineEdit';
+import InlineEdit from '../src';
 
 type State = {
   onChangeResult: string,
@@ -8,12 +8,19 @@ type State = {
 
 export default class BasicExample extends PureComponent<void, State> {
   state = {
-    onChangeResult: 'Type in the Field Text Area above to trigger onChange',
+    onChangeResult:
+      'Type in the InlinEdit above to trigger onComfirm and onCancel',
   };
 
-  onChange = (event: any) => {
+  onConfirmHandler = (event: any) => {
     this.setState({
-      onChangeResult: `onChange called with value: ${event.target.value}`,
+      onChangeResult: `onConfirm called with value: ${event.target.value}`,
+    });
+  };
+
+  onCancelHandler = (event: any) => {
+    this.setState({
+      onChangeResult: `onCancel called with value: ${event.target.value}`,
     });
   };
 
@@ -21,10 +28,10 @@ export default class BasicExample extends PureComponent<void, State> {
     return (
       <div>
         <InlineEdit
-          autoFocus
-          value=""
-          label="Autofocus, placeholder text & onChange handler shown below"
-          onChange={this.onChange}
+          label="With read only view"
+          readView="Read view"
+          onConfirm={() => {}}
+          onCancel={() => {}}
         />
 
         <div
@@ -39,25 +46,7 @@ export default class BasicExample extends PureComponent<void, State> {
         >
           {this.state.onChangeResult}
         </div>
-        <div>
-          <FieldTextArea
-            label="Required, Spell check disabled & max length (25)"
-            isSpellCheckEnabled={false}
-            required
-            maxLength={10}
-          />
-          <FieldTextArea
-            label="Hidden label"
-            isLabelHidden
-            placeholder="Hidden Label"
-          />
-          <FieldTextArea disabled label="Disabled" value="Disabled" />
-          <FieldTextArea
-            isInvalid
-            label="Is Invalid & showing message"
-            invalidMessage="An invalid message example"
-          />
-        </div>
+        <div />
       </div>
     );
   }

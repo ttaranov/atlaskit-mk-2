@@ -15,7 +15,7 @@ type State = {
   isEditing?: boolean,
 };
 
-export default class extends Component<Props, State> {
+export default class InlineEdit extends Component<Props, State> {
   state = {
     isEditing: false,
   };

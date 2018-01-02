@@ -62,7 +62,7 @@ type State = {
   wasFocusReceivedSinceLastBlur?: boolean,
 };
 
-export default class InlineEdit extends Component<Props, State> {
+export default class InlineEditStateless extends Component<Props, State> {
   static defaultProps = {
     areActionButtonsHidden: false,
     disableEditViewFieldBase: false,
