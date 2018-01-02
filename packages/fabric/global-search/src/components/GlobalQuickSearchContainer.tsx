@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as debounce from 'lodash.debounce';
 import GlobalQuickSearch from './GlobalQuickSearch';
 
-import RecentSearchProvider from '../api/RecentSearchProvider';
-import CrossProductSearchProvider from '../api/CrossProductSearchProvider';
+import { RecentSearchProvider } from '../api/RecentSearchProvider';
+import { CrossProductSearchProvider } from '../api/CrossProductSearchProvider';
 import { Result } from '../model/Result';
 
 export interface Props {
@@ -49,11 +49,9 @@ export default class GlobalQuickSearchContainer extends React.Component<
         jiraResults: [],
         confluenceResults: [],
       });
-
-      return;
+    } else {
+      this.doDebouncedSearch(query);
     }
-
-    this.doDebouncedSearch(query);
   };
 
   doSearch = async (query: string) => {

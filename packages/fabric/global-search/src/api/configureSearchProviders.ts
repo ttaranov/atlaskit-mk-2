@@ -1,5 +1,9 @@
-import RecentSearchProvider from './RecentSearchProvider';
-import CrossProductSearchProvider from './CrossProductSearchProvider';
+import RecentSearchProviderImpl, {
+  RecentSearchProvider,
+} from './RecentSearchProvider';
+import CrossProductSearchProviderImpl, {
+  CrossProductSearchProvider,
+} from './CrossProductSearchProvider';
 
 export interface SearchProviders {
   recentSearchProvider: RecentSearchProvider;
@@ -39,8 +43,11 @@ export default function configureSearchProviders(
   const crossProductSearchUrl = config[environment].crossProductSearch;
 
   return {
-    recentSearchProvider: new RecentSearchProvider(recentSearchUrl, cloudId),
-    crossProductSearchProvider: new CrossProductSearchProvider(
+    recentSearchProvider: new RecentSearchProviderImpl(
+      recentSearchUrl,
+      cloudId,
+    ),
+    crossProductSearchProvider: new CrossProductSearchProviderImpl(
       crossProductSearchUrl,
       cloudId,
     ),

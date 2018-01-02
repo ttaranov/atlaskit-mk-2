@@ -31,14 +31,12 @@ function mockCrossProductSearchApi() {
     };
   }
 
-  fetchMock.get('begin:http://localhost:8080/api/search', function(
-    url: string,
-  ) {
+  fetchMock.get('begin:http://localhost:8080/api/search', (url: string) => {
     const parts = url.split('=');
     let query = parts[1];
     const results = doSearch(decodeURIComponent(query));
 
-    return delay(500, results);
+    return delay(600, results);
   });
 }
 

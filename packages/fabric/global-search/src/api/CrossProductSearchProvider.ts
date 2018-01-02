@@ -18,7 +18,12 @@ interface SearchItem {
   provider: string;
 }
 
-export default class CrossProductSearchProvider {
+export interface CrossProductSearchProvider {
+  search(query: string): Promise<CrossProductResults>;
+}
+
+export default class CrossProductSearchProviderImpl
+  implements CrossProductSearchProvider {
   private url: string;
   private cloudId: string;
 
