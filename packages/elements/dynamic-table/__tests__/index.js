@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { PaginationStateless } from '@atlaskit/pagination';
 import TableHead from '../src/components/TableHead';
 import {
@@ -80,7 +80,7 @@ describe(name, () => {
       const wrapper = mount(<DynamicTableStateless rows={[]} head={head} />);
       const header = wrapper.find(TableHead);
       const table = wrapper.find('table');
-      expect(table.nodes[0].childNodes.length).toBe(1);
+      expect(table.children()).toHaveLength(1);
       expect(header.length).toBe(1);
     });
     it('should render TableHead when items length is 0 and render EmptyViewContainer if emptyView prop is provided', () => {
@@ -265,9 +265,15 @@ describe(name, () => {
 
           wrapper.setProps({ rows: rows.slice(-3) });
           expect(loadingContainer.props().spinnerSize).toBe('large');
+        });
 
-          wrapper.setProps({ rows: rows.slice(-2) });
-          expect(loadingContainer.props().spinnerSize).toBe('small');
+        it('should render a loading container with a small spinner when there is less than 2 rows', () => {
+          const wrapper = shallow(
+            <DynamicTableStateless rows={rows.slice(-2)} isLoading />,
+          );
+          expect(
+            wrapper.find(LoadingContainerAdvanced).props().spinnerSize,
+          ).toBe('small');
         });
 
         it('should render a loading container with a proper loading flag', () => {
@@ -293,7 +299,7 @@ describe(name, () => {
           const loadingContainer = wrapper.find(LoadingContainerAdvanced);
           const body = wrapper.find(Body);
           const target = loadingContainer.props().targetRef();
-          expect(target).toBe(body.node);
+          expect(target).toBe(body.instance());
         });
 
         it('should not render a loading container for the empty view', () => {

@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import Spinner from '@atlaskit/spinner';
 import {
   Container,
@@ -27,7 +27,7 @@ describe('LoadingContainer', () => {
 
   describe('when loading is disabled', () => {
     it('should render children as is right inside the container', () => {
-      const wrapper = mount(
+      const wrapper = shallow(
         <LoadingContainer isLoading={false}>
           <Contents />
         </LoadingContainer>,
@@ -62,7 +62,7 @@ describe('LoadingContainer', () => {
     });
 
     it('should wrap children into another container with a specified opacity', () => {
-      const wrapper = mount(
+      const wrapper = shallow(
         <LoadingContainer contentsOpacity={0.5}>
           <Contents />
         </LoadingContainer>,
