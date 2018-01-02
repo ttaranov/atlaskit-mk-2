@@ -2,6 +2,8 @@
 import { gridSize } from '@atlaskit/theme';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
+import InfoIcon from '@atlaskit/icon/glyph/info';
+import ErrorIcon from '@atlaskit/icon/glyph/error';
 import type { IconTypeMap } from './types';
 
 export const itemSpacing: number = gridSize() / 2;
@@ -13,10 +15,10 @@ export const typesMapping: IconTypeMap = {
   },
   confirmation: {
     icon: CheckCircleIcon,
-    iconSize: 'small',
+    iconSize: 'medium',
   },
   info: {
-    icon: WarningIcon,
+    icon: InfoIcon,
     iconSize: 'medium',
   },
   warning: {
@@ -24,7 +26,7 @@ export const typesMapping: IconTypeMap = {
     iconSize: 'medium',
   },
   error: {
-    icon: WarningIcon,
+    icon: ErrorIcon,
     iconSize: 'medium',
   },
 };

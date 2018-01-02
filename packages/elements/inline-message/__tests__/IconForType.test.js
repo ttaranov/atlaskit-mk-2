@@ -3,6 +3,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
+import InfoIcon from '@atlaskit/icon/glyph/info';
+import ErrorIcon from '@atlaskit/icon/glyph/error';
 import IconForType from '../src/components/IconForType';
 import IconWrapper from '../src/components/IconForType/styledIconForType';
 
@@ -33,7 +35,7 @@ describe('IconForType component', () => {
         const wrapper = shallow(
           <IconForType isHovered={false} isOpen={false} type="info" />,
         );
-        expect(wrapper.find(WarningIcon).length).toBeGreaterThan(0);
+        expect(wrapper.find(InfoIcon).length).toBeGreaterThan(0);
         expect(wrapper.find(IconWrapper).prop('appearance')).toBe('info');
       });
       it('warning type produces warning icon', () => {
@@ -47,7 +49,7 @@ describe('IconForType component', () => {
         const wrapper = shallow(
           <IconForType isHovered={false} isOpen={false} type="error" />,
         );
-        expect(wrapper.find(WarningIcon).length).toBeGreaterThan(0);
+        expect(wrapper.find(ErrorIcon).length).toBeGreaterThan(0);
         expect(wrapper.find(IconWrapper).prop('appearance')).toBe('error');
       });
     });
