@@ -260,20 +260,16 @@ describe(name, () => {
         });
 
         it('should render a loading container with a large spinner when there is more than 2 rows', () => {
-          const loadingContainer = wrapper.find(LoadingContainerAdvanced);
-          expect(loadingContainer.props().spinnerSize).toBe('large');
+          const lc = () => wrapper.find(LoadingContainerAdvanced).props();
+          expect(lc().spinnerSize).toBe('large');
 
           wrapper.setProps({ rows: rows.slice(-3) });
-          expect(loadingContainer.props().spinnerSize).toBe('large');
-        });
+          wrapper.update();
+          expect(lc().spinnerSize).toBe('large');
 
-        it('should render a loading container with a small spinner when there is less than 2 rows', () => {
-          const wrapper = shallow(
-            <DynamicTableStateless rows={rows.slice(-2)} isLoading />,
-          );
-          expect(
-            wrapper.find(LoadingContainerAdvanced).props().spinnerSize,
-          ).toBe('small');
+          wrapper.setProps({ rows: rows.slice(-2) });
+          wrapper.update();
+          expect(lc().spinnerSize).toBe('small');
         });
 
         it('should render a loading container with a proper loading flag', () => {
