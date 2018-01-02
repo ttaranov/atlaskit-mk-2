@@ -1,5 +1,8 @@
 # @atlaskit/inline-dialog
 
+## 5.0.7
+- [patch] moved react-dom to peer dependency [214dd1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/214dd1f)
+
 ## 5.0.6
 - [patch] migrated inline dialog from ak to mk2 [9feaa91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9feaa91)
 
