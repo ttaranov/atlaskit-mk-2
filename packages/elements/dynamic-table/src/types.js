@@ -1,9 +1,25 @@
 // @flow
-import { type Node } from 'react';
+import { type Node, type Element } from 'react';
 
 export type RowCellType = {
   key?: string | number,
   content: Node,
+};
+
+export type StatelessProps = {
+  caption?: Node,
+  head?: HeadType,
+  rows?: Array<RowType>,
+  emptyView?: Element<any>,
+  loadingSpinnerSize?: LoadingSpinnerSizeType,
+  isLoading?: boolean,
+  isFixedSize?: boolean,
+  rowsPerPage?: number,
+  onSetPage: Function,
+  onSort: Function,
+  page?: number,
+  sortKey?: string,
+  sortOrder?: SortOrderType,
 };
 
 export type RowType = {
