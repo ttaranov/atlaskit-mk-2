@@ -18,11 +18,11 @@
   "dependencies": {
     "@atlaskit/layer": "^2.5.4",
     "@atlaskit/theme": "^2.0.0",
-    "react-dom": "^15.6.1",
     "styled-components": "^1.4.6"
   },
   "peerDependencies": {
-    "react": "^15.6.1"
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
   },
   "devDependencies": {
     "@atlaskit/button": "^6.2.0",
