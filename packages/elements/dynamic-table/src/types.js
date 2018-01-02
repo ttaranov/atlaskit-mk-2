@@ -2,7 +2,7 @@
 import { type Node } from 'react';
 
 export type RowCellType = {
-  key?: any,
+  key?: string | number,
   content: Node,
 };
 
@@ -17,11 +17,10 @@ export type SpinnerSizeType = 'small' | 'medium' | 'large' | 'xlarge';
 export type LoadingSpinnerSizeType = 'small' | 'large';
 
 export type HeadCellType = {
+  ...RowCellType,
   isSortable?: boolean,
   width?: number,
   shouldTruncate?: boolean,
-  key?: any,
-  content?: Node,
 };
 
 export type HeadType = { cells: Array<HeadCellType> };
