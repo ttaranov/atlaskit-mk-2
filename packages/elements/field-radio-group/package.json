@@ -13,9 +13,6 @@
     "maintainers": [
         {
             "name": "Mike G"
-        },
-        {
-            "name": "Ben W"
         }
     ],
     "repository": "bitbucket:atlaskit/atlaskit-mk-2",
