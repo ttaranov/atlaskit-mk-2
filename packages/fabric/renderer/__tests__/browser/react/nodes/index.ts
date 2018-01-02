@@ -359,10 +359,10 @@ describe('Renderer - React/Nodes', () => {
       expect(isEmojiDoc(content)).to.equal(false);
     });
 
-    it('should return true at nested level if fitToHeight prop is set to 48', () => {
+    it('should return true at nested level if fitToHeight prop is set to 40', () => {
       const content = createMockFragment({ content: [grinEmoji] });
 
-      expect(isEmojiDoc(content, { fitToHeight: 48 })).to.equal(true);
+      expect(isEmojiDoc(content, { fitToHeight: 40 })).to.equal(true);
     });
 
     it('should return false at nested level if no fitToHeight prop', () => {

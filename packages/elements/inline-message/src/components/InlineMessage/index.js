@@ -3,7 +3,7 @@ import React, { Component, type Node } from 'react';
 import Button from '@atlaskit/button';
 import InlineDialog from '@atlaskit/inline-dialog';
 import IconForType from '../IconForType';
-import type { IconType } from '../../types';
+import type { IconType, PositionType } from '../../types';
 import { Root, ButtonContents, Text, Title } from './styledInlineMessage';
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
   children?: Node,
   /** Position prop to be passed to the inline dialog. Determines where around
    the text the dialog is displayed. */
-  position: InlineDialog.propTypes.position,
+  position?: PositionType,
   /** Text to display second. */
   secondaryText?: string,
   /** Text to display first, bolded for emphasis. */

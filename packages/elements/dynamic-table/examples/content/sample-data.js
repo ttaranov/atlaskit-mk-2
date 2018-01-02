@@ -30,6 +30,7 @@ export const caption = 'List of US Presidents';
 export const head = {
   cells: [
     {
+      key: 'name',
       content: 'Name',
       isSortable: true,
       width: 25,
@@ -49,6 +50,7 @@ export const head = {
       width: 10,
     },
     {
+      key: 'content',
       content: 'Comment',
       shouldTruncate: true,
     },

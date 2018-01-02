@@ -119,6 +119,7 @@ export const applicationCard: NodeSpec = {
   inline: false,
   selectable: true,
   attrs: defaultAttrs,
+  group: 'block',
   parseDOM: [
     {
       tag: 'div[data-node-type="media"]',

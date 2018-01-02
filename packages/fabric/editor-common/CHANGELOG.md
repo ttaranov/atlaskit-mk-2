@@ -1,5 +1,11 @@
 # @atlaskit/editor-common
 
+## 5.1.10
+- [patch] We now use ProseMirror Schema to validate document [d059d6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d059d6a)
+
+## 5.1.9
+- [patch] Added floating toolbar to media single [46fdd15](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/46fdd15)
+
 ## 5.1.8
 - [patch] Allow inline contents inside headings. [738631b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/738631b)
 

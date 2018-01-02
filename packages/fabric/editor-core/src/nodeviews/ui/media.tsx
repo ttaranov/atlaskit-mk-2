@@ -3,6 +3,7 @@ import { PureComponent } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { CardDimensions } from '@atlaskit/media-card';
+import { CardEventHandler } from '@atlaskit/media-core';
 
 import UIMedia from '../../ui/Media';
 import ProviderFactory from '../../providerFactory';
@@ -18,6 +19,7 @@ export interface MediaNodeProps extends ReactNodeProps {
   node: PMNode;
   providerFactory: ProviderFactory;
   cardDimensions: CardDimensions;
+  isMediaSingle?: boolean;
 }
 
 const getId = (props: MediaNodeProps) => props.node.attrs.id;
@@ -55,8 +57,11 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
       selected,
       view,
       cardDimensions,
+      isMediaSingle,
     } = this.props;
     const { id, type, collection } = node.attrs;
+
+    const deleteEventHandler = isMediaSingle ? undefined : this.handleRemove;
 
     return (
       <UIMedia
@@ -67,13 +72,13 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
         collection={collection!}
         providers={providerFactory}
         cardDimensions={cardDimensions}
-        onDelete={this.handleRemove}
+        onDelete={deleteEventHandler}
         selected={selected}
       />
     );
   }
 
-  private handleRemove = (item?: any, event?: Event) => {
+  private handleRemove: CardEventHandler = (item, event) => {
     const { getPos, node } = this.props;
     this.pluginState.handleMediaNodeRemoval(node, getPos);
 

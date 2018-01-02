@@ -180,7 +180,6 @@
     "@atlaskit/field-radio-group": "^1.7.3",
     "@atlaskit/field-range": "^2.0.0",
     "@atlaskit/field-text": "^4.1.2",
-    "@atlaskit/inline-dialog": "^5.0.4",
     "@atlaskit/input": "^1.6.0",
     "@atlaskit/item": "^4.2.3",
     "@atlaskit/mention": "^8.1.0",
