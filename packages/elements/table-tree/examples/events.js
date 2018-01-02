@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import TableTree, { Headers, Header, Rows, Row, Cell } from '../src';
 import staticData from './data-cleancode-toc.json';
 
@@ -15,12 +15,16 @@ function getChildrenData(parent) {
   return parent ? fetchChildrenOf(parent) : fetchRoots();
 }
 
-export default class extends Component {
+type State = {
+  lastEvent: string,
+};
+
+export default class extends PureComponent<{}, State> {
   state = {
     lastEvent: '',
   };
 
-  triggerEvent(name) {
+  triggerEvent(name: string) {
     this.setState({
       lastEvent: name,
     });

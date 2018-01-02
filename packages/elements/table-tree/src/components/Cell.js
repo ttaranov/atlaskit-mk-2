@@ -10,6 +10,9 @@ type Props = {
 
   /** If true, this cell will keep its text on one line and cut overflow with an ellipsis. */
   singleLine?: boolean,
+
+  /** Any content to be rendered inside the cell. */
+  children?: Node,
 };
 
 class Cell extends Component<Props> {
