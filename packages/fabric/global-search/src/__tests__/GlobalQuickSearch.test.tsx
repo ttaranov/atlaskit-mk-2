@@ -24,9 +24,7 @@ function render(partialProps: Partial<Props>) {
 describe('GlobalQuickSearch', () => {
   it('should get recent items on mount', () => {
     const getRecentlyViewedItemsMock = jest.fn();
-    const wrapper = render({
-      getRecentlyViewedItems: getRecentlyViewedItemsMock,
-    });
+    render({ getRecentlyViewedItems: getRecentlyViewedItemsMock });
 
     expect(getRecentlyViewedItemsMock).toHaveBeenCalled();
   });
