@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 60.17.1
+- [patch] validate incoming ADF node inserted from macro browser [e9d0af2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e9d0af2)
+
 ## 60.17.0
 - [minor] Added floating toolbar to media single [46fdd15](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/46fdd15)
 
