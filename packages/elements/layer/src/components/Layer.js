@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, type Node } from 'react';
+import React, { Component, type Node, type ElementRef } from 'react';
 
 import Popper from '../../popper.js/index.min';
 import {
@@ -52,9 +52,8 @@ export default class Layer extends Component<Props, State> {
     destroy: Function,
   };
 
-  targetRef: ?Element;
-
-  contentRef: ?Element;
+  targetRef: ?ElementRef<any>;
+  contentRef: ?ElementRef<any>;
 
   // TODO: get the value of zIndex from theme, not using it now as it is not
   // working with extract-react-types
