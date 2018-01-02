@@ -40,7 +40,7 @@ describe(name, () => {
       expect(calendarProps.year).toBe(2017);
     });
 
-    it('should initialise the calendar date using today\'s date if no value is provided', () => {
+    it("should initialise the calendar date using today's date if no value is provided", () => {
       const wrapper = shallow(<DateDialog isOpen />);
       const calendarProps = getCalendar(wrapper).props();
 
@@ -53,11 +53,14 @@ describe(name, () => {
     it('should update the focused calendar date when the calendar is navigated', () => {
       const wrapper = shallow(<DateDialog isOpen value="2017-10-31" />);
 
-      getCalendar(wrapper).props().onChange({
-        day: 1,
-        month: 11,
-        year: 2017,
-      });
+      getCalendar(wrapper)
+        .props()
+        .onChange({
+          day: 1,
+          month: 11,
+          year: 2017,
+        });
+      wrapper.update();
 
       const calendarProps = getCalendar(wrapper).props();
       expect(calendarProps.focused).toBe(1);
@@ -70,7 +73,9 @@ describe(name, () => {
       const onUpdateMock = jest.fn();
       const wrapper = shallow(<DateDialog isOpen onUpdate={onUpdateMock} />);
 
-      getCalendar(wrapper).props().onSelect({ iso: testIso });
+      getCalendar(wrapper)
+        .props()
+        .onSelect({ iso: testIso });
 
       expect(onUpdateMock.mock.calls.length).toBe(1);
       expect(onUpdateMock.mock.calls[0][0]).toBe(testIso);
@@ -79,20 +84,22 @@ describe(name, () => {
     it('should not call onUpdate when a disabled date is selected', () => {
       const testIso = '2017-12-25';
       const onUpdateMock = jest.fn();
-      const wrapper = shallow(<DateDialog
-        isOpen
-        disabled={[testIso]}
-        onUpdate={onUpdateMock}
-      />);
+      const wrapper = shallow(
+        <DateDialog isOpen disabled={[testIso]} onUpdate={onUpdateMock} />,
+      );
 
-      getCalendar(wrapper).props().onSelect({ iso: testIso });
+      getCalendar(wrapper)
+        .props()
+        .onSelect({ iso: testIso });
 
       expect(onUpdateMock.mock.calls.length).toBe(0);
     });
 
     it('should call onTriggerClose when the Escape key is pressed', () => {
       const onTriggerCloseMock = jest.fn();
-      const wrapper = shallow(<DateDialog isOpen onTriggerClose={onTriggerCloseMock} />);
+      const wrapper = shallow(
+        <DateDialog isOpen onTriggerClose={onTriggerCloseMock} />,
+      );
       const layerContent = shallow(wrapper.find(Layer).props().content);
 
       layerContent.find('div').simulate('keyDown', {
@@ -105,15 +112,17 @@ describe(name, () => {
 
     it('should re-initialize the calendar date when opened', () => {
       const wrapper = shallow(<DateDialog isOpen value="2017-11-30" />, {
-        lifecycleExperimental: true, // Required to trigger componentDidUpdate when using setProps. 
+        lifecycleExperimental: true, // Required to trigger componentDidUpdate when using setProps.
       });
 
       // Navigate to a new date, then open and close the dialog
-      getCalendar(wrapper).props().onChange({
-        day: 15,
-        month: 9,
-        year: 2018,
-      });
+      getCalendar(wrapper)
+        .props()
+        .onChange({
+          day: 15,
+          month: 9,
+          year: 2018,
+        });
       wrapper.setProps({ isOpen: false });
       wrapper.setProps({ isOpen: true });
 

@@ -3,7 +3,7 @@
 import React, { Component, type ElementRef } from 'react';
 import { gridSize } from '@atlaskit/theme';
 import TimePickerStateless from './TimePickerStateless';
-import type { Handler } from '../types';
+import type { Event, Handler } from '../types';
 import { parseTime } from '../util';
 
 const defaultTimes = [
@@ -75,18 +75,14 @@ export default class DatePicker extends Component<Props, State> {
     }
   };
 
-  handleInputBlur = (e: FocusEvent) => {
-    if (e.target instanceof HTMLInputElement) {
-      this.validate(this.state.displayValue);
-    }
+  handleInputBlur = () => {
+    this.validate(this.state.displayValue);
   };
 
   handleInputChange = (e: Event) => {
-    if (e.target instanceof HTMLInputElement) {
-      const value = e.target.value;
-      this.setState({ displayValue: value });
-      this.updateVisibleTimes(value, this.props.times);
-    }
+    const value = e.target.value;
+    this.setState({ displayValue: value });
+    this.updateVisibleTimes(value, this.props.times);
   };
 
   handleInputKeyDown = (e: KeyboardEvent) => {
