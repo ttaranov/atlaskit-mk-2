@@ -25,7 +25,7 @@
     "@atlaskit/docs": "^2.0.0"
   },
   "peerDependencies": {
-    "react": "^15.6.1",
+    "react": "15.6.0 - 16.2.0",
     "styled-components": "^1.4.3"
   },
   "author": "Atlassian Pty. Ltd",

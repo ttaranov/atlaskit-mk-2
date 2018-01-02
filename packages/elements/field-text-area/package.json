@@ -30,13 +30,13 @@
     "styled-components": "^1.4.6"
   },
   "peerDependencies": {
-    "react": "^15.6.1"
+    "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
     "@atlaskit/button": "^6.1.0",
     "@atlaskit/docs": "^2.0.0",
     "@atlaskit/util-readme": "^1.0.0",
-    "enzyme": "^2.9.1"
+    "enzyme": "^3.3.0"
   },
   "keywords": [
     "atlaskit",

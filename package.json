@@ -95,7 +95,8 @@
     "css-loader": "^0.28.0",
     "custom-event-polyfill": "^0.3.0",
     "enhanced-resolve": "3.4.1",
-    "enzyme": "^2.9.1",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.8.0",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-config-prettier": "^2.7.0",
@@ -148,7 +149,7 @@
     "react-live-clock": "^2.0.2",
     "react-lorem-component": "^0.12.2",
     "react-redux": "^5.0.0",
-    "react-test-renderer": "^15.6.1",
+    "react-test-renderer": "^16.2.0",
     "redux": "^3.7.2",
     "sinon": "^2.2.0",
     "string.prototype.repeat": "^0.2.0",
@@ -238,7 +239,7 @@
     "deep-equal": "^1.0.1",
     "deepcopy": "0.6.3",
     "editor": "^1.0.0",
-    "enzyme-to-json": "^2",
+    "enzyme-to-json": "^3.3.0",
     "flow": "^0.2.3",
     "focusin": "^2.0.0",
     "fs-extra": "^4.0.2",
@@ -277,10 +278,10 @@
     "query-string": "^4.3.2",
     "raf-schd": "^2.0.2",
     "raf-stub": "^2.0.1",
-    "react": "^15.6.1",
+    "react": "15.6.0 - 16.2.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-deprecate": "^0.1.0",
-    "react-dom": "^15.6.1",
+    "react-dom": "15.6.0 - 16.2.0",
     "react-ga": "^2.3.5",
     "react-lazily-render": "^0.0.6",
     "react-loadable": "^5.1.0",
@@ -337,6 +338,7 @@
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ],
+    "setupFiles": ["./build/jest-config"],
     "setupTestFrameworkScriptFile": "<rootDir>/jestFrameworkSetup.js"
   },
   "lint-staged": {

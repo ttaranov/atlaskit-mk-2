@@ -29,15 +29,15 @@
     "styled-components": "^1.4.6"
   },
   "peerDependencies": {
-    "react": "^15.6.1"
+    "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
     "@atlaskit/avatar": "^8.3.11",
     "@atlaskit/docs": "^2.1.0",
     "@atlaskit/tag-group": "^3.4.12",
     "@atlaskit/util-common-test": "^2.4.2",
-    "enzyme": "^2.9.1",
-    "react-dom": "^15.6.1",
-    "react-test-renderer": "^15.6.1"
+    "enzyme": "^3.3.0",
+    "react-dom": "15.6.0 - 16.2.0",
+    "react-test-renderer": "^16.2.0"
   }
 }
