@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, type Element } from 'react';
+import React, { PureComponent, type Element, type ChildrenArray } from 'react';
 import { TreeRowContainer } from '../styled';
 import Chevron from './Chevron';
 import Cell from './Cell';
@@ -9,9 +9,8 @@ type Props = {
   hasChildren: boolean,
 
   /** One or more Cell elements that will form this row of data. */
-  children: Node,
+  children: Node | ChildrenArray<Element<*>>,
 
-  /** Called whenever this row's node is expanded to show its child rows. */
   onExpand?: Function,
 
   /** Called whenever this row's node is collapsed to hide its child rows. */
