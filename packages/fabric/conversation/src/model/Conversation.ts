@@ -3,7 +3,7 @@ export interface Conversation {
   conversationId: string;
   containerId: string;
   localId?: string;
-  comments: Comment[];
+  comments?: Comment[];
   meta: {
     [key: string]: any;
   };

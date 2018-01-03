@@ -8,12 +8,12 @@ import {
 
 export interface Props {
   id?: string;
-  localId: string;
+  localId?: string;
   conversation?: ConversationType;
   containerId: string;
-  comments: CommentType[];
-  onAddComment: (conversationId: string, parentId: string, value: any) => void;
-  onCreateConversation: (
+  comments?: CommentType[];
+  onAddComment?: (conversationId: string, parentId: string, value: any) => void;
+  onCreateConversation?: (
     localId: string,
     containerId: string,
     value: any,
@@ -36,7 +36,7 @@ export default class Conversation extends React.PureComponent<Props> {
 
     const { conversationId } = conversation;
 
-    return comments.map(comment => (
+    return (comments || []).map(comment => (
       <Comment
         key={comment.commentId}
         conversationId={conversationId}
@@ -57,9 +57,13 @@ export default class Conversation extends React.PureComponent<Props> {
     } = this.props;
 
     if (!id) {
-      onCreateConversation(localId, containerId, value, meta);
+      if (onCreateConversation) {
+        onCreateConversation(localId!, containerId, value, meta);
+      }
     } else {
-      onAddComment(id, id, value);
+      if (onAddComment) {
+        onAddComment(id, id, value);
+      }
     }
   };
 

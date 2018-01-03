@@ -16,10 +16,10 @@ export const getComments = (
   const conversation = getConversation(state, conversationId);
   if (conversation) {
     if (parentId) {
-      return conversation.comments.filter(c => c.parentId === parentId);
+      return (conversation.comments || []).filter(c => c.parentId === parentId);
     }
 
-    return conversation.comments.filter(
+    return (conversation.comments || []).filter(
       c =>
         (!c.parentId && c.conversationId === conversation.conversationId) ||
         (c.parentId && c.parentId === conversation.conversationId),

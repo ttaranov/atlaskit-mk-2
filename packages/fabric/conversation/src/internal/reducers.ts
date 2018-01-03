@@ -29,9 +29,12 @@ export const reducers = {
 
   [ADD_COMMENT_SUCCESS](state: State, action: Action) {
     const { conversations } = state;
-    conversations
-      .filter(c => c.conversationId === action.payload.conversationId)[0]
-      .comments.push(action.payload);
+    const conversation = conversations.filter(
+      c => c.conversationId === action.payload.conversationId,
+    )[0];
+
+    const { comments = [] } = conversation;
+    conversation.comments = [...comments, action.payload];
 
     return {
       ...state,

@@ -14,10 +14,10 @@ import CommentContainer from '../containers/Comment';
 export interface Props {
   conversationId: string;
   comment: CommentType;
-  comments: CommentType[];
+  comments?: CommentType[];
 
   // Dispatch
-  onAddComment: (conversationId: string, parentId: string, value: any) => void;
+  onAddComment?: (conversationId: string, parentId: string, value: any) => void;
 }
 
 export interface State {
@@ -40,6 +40,11 @@ export default class Comment extends React.PureComponent<Props, State> {
 
   private onSaveReply = async (value: any) => {
     const { conversationId, comment, onAddComment } = this.props;
+
+    if (!onAddComment) {
+      return;
+    }
+
     onAddComment(conversationId, comment.commentId, value);
 
     this.setState({
@@ -94,37 +99,35 @@ export default class Comment extends React.PureComponent<Props, State> {
     // }
 
     return (
-      <div>
-        <AkComment
-          author={<CommentAuthor>{createdBy && createdBy.name}</CommentAuthor>}
-          avatar={<AkAvatar src={createdBy && createdBy.avatarUrl} />}
-          time={
-            <CommentTime>
-              {distanceInWordsToNow(new Date(comment.createdAt), {
-                addSuffix: true,
-              })}
-            </CommentTime>
-          }
-          actions={actions}
-          content={this.getContent()}
-        >
-          {(comments || []).map(child => (
-            <CommentContainer
-              key={child.commentId}
-              comment={child}
-              conversationId={conversationId}
-              onAddComment={this.props.onAddComment}
-            />
-          ))}
-          {isReplying && (
-            <Editor
-              isExpanded={true}
-              onCancel={this.onCancelReply}
-              onSave={this.onSaveReply}
-            />
-          )}
-        </AkComment>
-      </div>
+      <AkComment
+        author={<CommentAuthor>{createdBy && createdBy.name}</CommentAuthor>}
+        avatar={<AkAvatar src={createdBy && createdBy.avatarUrl} />}
+        time={
+          <CommentTime>
+            {distanceInWordsToNow(new Date(comment.createdAt), {
+              addSuffix: true,
+            })}
+          </CommentTime>
+        }
+        actions={actions}
+        content={this.getContent()}
+      >
+        {(comments || []).map(child => (
+          <CommentContainer
+            key={child.commentId}
+            comment={child}
+            conversationId={conversationId}
+            onAddComment={this.props.onAddComment}
+          />
+        ))}
+        {isReplying && (
+          <Editor
+            isExpanded={true}
+            onCancel={this.onCancelReply}
+            onSave={this.onSaveReply}
+          />
+        )}
+      </AkComment>
     );
   }
 }

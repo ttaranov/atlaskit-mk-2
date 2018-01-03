@@ -1,9 +1,9 @@
 import { Conversation } from '../model';
 
 export interface Store {
-  getState(): undefined | any;
+  getState(): undefined | State;
   dispatch(action: Action): void;
-  subscribe(handler: any): void;
+  subscribe(handler: Handler): void;
 }
 
 export interface State {
@@ -16,10 +16,14 @@ export interface Action {
 }
 
 export type Dispatch = (action: Action) => void;
+export type Handler = (state: State) => void;
+export interface Reducer {
+  [key: string]: (state: State, action: Action) => State;
+}
 
-export const createStore = reducer => {
-  let subscribers: any[] = [];
-  let state = {
+export const createStore = (reducer: Reducer) => {
+  let subscribers: Handler[] = [];
+  let state: State = {
     conversations: [],
   };
 
@@ -33,11 +37,11 @@ export const createStore = reducer => {
       subscribers.forEach(cb => cb(state));
     },
 
-    subscribe(handler: any) {
+    subscribe(handler: Handler) {
       subscribers.push(handler);
     },
 
-    unsubscribe(handler: any) {
+    unsubscribe(handler: Handler) {
       subscribers = subscribers.filter(h => h !== handler);
     },
   };
