@@ -17,10 +17,12 @@ const MultiSelectItems = [
 
 type State = {
   onEventResult: string,
+  editValue: string | number,
 };
 
 export default class SelectExample extends Component<void, State> {
   state = {
+    onEventResult: '',
     editValue: '',
   };
 

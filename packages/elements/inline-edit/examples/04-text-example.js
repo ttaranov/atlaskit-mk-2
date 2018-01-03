@@ -9,10 +9,9 @@ type State = {|
 |};
 export default class TextExample extends Component<void, State> {
   state = {
-    value: '',
+    editValue: '',
+    readValue: '',
   };
-
-  setValue = (e: any) => this.setState({ value: e.target.value });
 
   onConfirm = () => {
     this.setState(state => ({ readValue: state.editValue }));

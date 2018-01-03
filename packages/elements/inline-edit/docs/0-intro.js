@@ -60,14 +60,6 @@ export default md`
   )}
 
   ${(
-    <Example
-      Component={require('../examples/05-mention-example').default}
-      title="Form Example"
-      source={require('!!raw-loader!../examples/05-mention-example')}
-    />
-  )}
-
-  ${(
     <Props
       props={require('!!extract-react-types-loader!../src/InlineEdit')}
       heading="InlineEdit Props"

@@ -207,12 +207,11 @@ describe('@atlaskit/inline-edit', () => {
     describe('when isEditing is true', () => {
       let wrapper;
 
-      beforeEach(
-        () =>
-          (wrapper = shallow(
-            <InlineEditStateless {...defaultProps} isWaiting isEditing />,
-          )),
-      );
+      beforeEach(() => {
+        wrapper = shallow(
+          <InlineEditStateless {...defaultProps} isWaiting isEditing />,
+        );
+      });
 
       it('FieldBase should have prop isLoading', () =>
         expect(wrapper.find(FieldBase).prop('isLoading')).toBe(true));

@@ -40,7 +40,7 @@ export default class BasicExample extends PureComponent<void, State> {
         <InlineEdit
           label="With read only view"
           readView="Read view with no edit"
-          onConfirm={this.onConfirmH}
+          onConfirm={this.onConfirm}
           onCancel={this.onCancel}
         />
 
@@ -63,6 +63,8 @@ export default class BasicExample extends PureComponent<void, State> {
           label="With an invalid message shown when in focus"
           isInvalid
           invalidMessage="This error message is shown when the field is focused"
+          onConfirm={this.onConfirm}
+          onCancel={this.onCancel}
         />
         <InlineEdit
           shouldConfirmOnEnter
@@ -75,6 +77,8 @@ export default class BasicExample extends PureComponent<void, State> {
               onChange={this.onChange}
             />
           }
+          onConfirm={this.onConfirm}
+          onCancel={this.onCancel}
         />
         <div
           style={{
