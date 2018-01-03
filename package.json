@@ -186,7 +186,6 @@
     "@atlaskit/navigation": "^26.6.3",
     "@atlaskit/page": "^5.0.3",
     "@atlaskit/profilecard": "^3.7.1",
-    "@atlaskit/single-select": "^3.0.1",
     "@atlaskit/task-decision": "^4.6.0",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-common-test": "^2.4.2",

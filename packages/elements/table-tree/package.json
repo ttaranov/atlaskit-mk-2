@@ -1,7 +1,7 @@
 {
-  "name": "@atlaskit/inline-message",
-  "version": "3.0.6",
-  "description": "A React component for displaying a clickable message which triggers an inline dialog",
+  "name": "@atlaskit/table-tree",
+  "version": "0.2.0",
+  "description": "A React Component for displaying expandable tables with tree-like hierarchies",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -10,24 +10,22 @@
     "dist"
   ],
   "author": "Atlassian Pty Ltd",
-  "maintainers": [
-    "Ben G",
-    "Ajay N Mathur"
-  ],
+  "maintainers": [],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^6.2.0",
     "@atlaskit/icon": "^10.3.1",
-    "@atlaskit/inline-dialog": "^5.0.4",
+    "@atlaskit/spinner": "^4.0.2",
     "@atlaskit/theme": "^2.0.0",
+    "prop-types": "^15.5.10",
+    "react-transition-group": "^2.2.1",
     "styled-components": "^1.4.6"
   },
   "peerDependencies": {
-    "react": "^15.6.1"
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.2.0",
-    "enzyme": "^2.9.1"
+    "@atlaskit/docs": "^2.1.0"
   },
   "keywords": [
     "atlaskit",
