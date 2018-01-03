@@ -1,5 +1,5 @@
 {
-  "presets": [["env", { "modules": false }], "react", "flow"],
+  "presets": [["env", { "modules": false, "useBuiltIns": "usage" }], "react", "flow"],
   "plugins": [
     "transform-class-properties",
     "transform-object-rest-spread",
@@ -7,7 +7,7 @@
   ],
   "env": {
     "production:cjs": {
-      "presets": ["env", "react", "flow"],
+      "presets": [["env", { "useBuiltIns": "usage" }], "react", "flow"],
       "plugins": [
         "transform-class-properties",
         "transform-object-rest-spread",
@@ -16,7 +16,7 @@
       "ignore": ["__mocks__", "__tests__", "__fixtures__", "node_modules"]
     },
     "production:esm": {
-      "presets": [["env", { "modules": false }], "react", "flow"],
+      "presets": [["env", { "modules": false, "useBuiltIns": "usage"  }], "react", "flow"],
       "plugins": [
         "transform-class-properties",
         "transform-object-rest-spread",
