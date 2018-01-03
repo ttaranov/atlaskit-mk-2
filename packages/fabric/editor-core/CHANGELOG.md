@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.17.5
+- [patch] Fixing text padding in message editor. [a4af16c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4af16c)
+- [patch] In message editor pasting content more in size than max allowed limit should show warning and insert toolbar options should be disabled once max size is reached.  [7078916](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7078916)
+
 ## 60.17.4
 - [patch] Fix issue with some of autoformatting using markdown syntax failing for links. [6e5ed2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e5ed2b)
 
