@@ -4,33 +4,24 @@ import React, {
   cloneElement,
   Component,
   type ChildrenArray,
-  type Element,
 } from 'react';
-import Button from './Button';
+import withDeprecationWarnings from './withDeprecationWarnings';
 import Group, { GroupItem } from '../styled/ButtonGroup';
+import type { ButtonAppearances } from '../types';
 
-type Props = {
+export type ButtonGroupProps = {
   /** The appearance to apply to all buttons. */
-  appearance?:
-    | 'default'
-    | 'link'
-    | 'primary'
-    | 'subtle'
-    | 'subtle-link'
-    | 'warning'
-    | 'danger'
-    | 'help',
+  appearance?: ButtonAppearances,
   /** The buttons to render. */
-  children: ChildrenArray<Element<typeof Button>>,
+  children: ChildrenArray<*>,
 };
 
-export default class ButtonGroup extends Component<Props, {}> {
+class ButtonGroup extends Component<ButtonGroupProps> {
   render() {
     const { appearance, children } = this.props;
 
     return (
       <Group>
-        {/* $FlowFixMe - Children.map should be able to iterate over children, unsure why this is invalid */}
         {Children.map(children, (child, idx) => {
           if (child === null || child === false) {
             return child;
@@ -45,3 +36,5 @@ export default class ButtonGroup extends Component<Props, {}> {
     );
   }
 }
+
+export default withDeprecationWarnings(ButtonGroup);

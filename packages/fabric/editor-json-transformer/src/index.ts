@@ -3,9 +3,9 @@ import {
   defaultSchema,
   mediaToJSON,
   mentionToJSON,
+  Transformer,
 } from '@atlaskit/editor-common';
 import { Node as PMNode } from 'prosemirror-model';
-import { Transformer } from '@atlaskit/editor-common';
 
 export type JSONNode = {
   type: string;

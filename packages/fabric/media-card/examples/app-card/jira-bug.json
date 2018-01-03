@@ -1,0 +1,55 @@
+{
+  "text": "BAD-1054: Failed installation doesn't clean up conversation details",
+  "title": {
+    "text": "BAD-1054: Failed installation doesn't clean up conversation details"
+  },
+  "details": [
+    {
+      "text": "Bug",
+      "title": "Type",
+      "icon": {
+        "url": "https://jdog.jira-dev.com/secure/viewavatar?size=xsmall&avatarId=21733&avatarType=issuetype&format=PNG&size=small",
+        "label": "Bug"
+      }
+    },
+    {
+      "text": "Minor",
+      "title": "Priority",
+      "icon": {
+        "url": "https://jdog.jira-dev.com/images/icons/priorities/minor.svg?format=PNG&size=small",
+        "label": "Minor"
+      }
+    },
+    {
+      "text": "",
+      "title": "Status",
+      "lozenge": {
+        "text": "Done",
+        "appearance": "new",
+        "bold": false
+      }
+    },
+    {
+      "title": "Assignee",
+      "text": "Dmytro Rudzik",
+      "users": [
+        {
+          "icon": {
+            "url": "https://d2b6kerldzk1uu.cloudfront.net/e39e0037e1b33099b3274cc0db8b7903?s=32&d=https%3A%2F%2Fseccdn.libravatar.org%2Favatare39e0037e1b33099b3274cc0db8b7903%3Fd%3Dmm%26s%3D32%26noRedirect%3Dtrue&format=PNG",
+            "label": "Dmytro Rudzik"
+          }
+        }
+      ]
+    }
+  ],
+  "context": {
+    "text": "Jira / Stride App Development",
+    "icon": {
+      "url": "https://banana-addon-jira.us-west-2.prod.public.atl-paas.net:443/static/images/jira-icon.png",
+      "label": "Stride App Development"
+    }
+  },
+  "link": {
+    "url": "https://jdog.jira-dev.com/browse/BAD-1054"
+  }
+}

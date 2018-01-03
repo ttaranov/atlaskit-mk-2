@@ -32,6 +32,7 @@ import CodeBlock from '../../components/Code';
 import { packages as packagesData } from '../../site';
 import { packageUrl } from '../../utils/url';
 import CodeSandbox from './CodeSandbox';
+import CodeSandboxLogo from './CodeSandboxLogo';
 
 // ==============================
 // PAGE
@@ -78,6 +79,10 @@ const ModalContent = styled.div`
   min-height: 240px;
   padding-bottom: 20px;
 `;
+
+// This seems to be an issue with styledComponent flow type compatibility
+// intersection type incompatible with expected param type of React.Component.
+// $FlowFixMe:
 const ModalHeader = styled(OgModalHeader)`
   margin-left: 20px;
   margin-right: 20px;
@@ -381,29 +386,48 @@ export default class ExamplesModal extends Component<Props, State> {
                 groupId={groupId}
                 packageId={packageId}
               >
-                <Button
-                  iconBefore={<CodeIcon label="Toggle code snippet" />}
-                  onClick={this.onCodeToggle}
-                  isSelected={displayCode}
-                  title={displayCode ? 'Hide Source' : 'Show Source'}
-                >
-                  Source
-                </Button>
-                <Tooltip description="Fullscreen" position="bottom">
-                  <Button
-                    appearance="subtle"
-                    component={Link}
-                    iconBefore={<ScreenIcon label="Screen Icon" />}
-                    to={toExampleUrl(groupId, packageId, exampleId)}
-                  />
-                </Tooltip>
-                <Tooltip description="Close" position="bottom">
-                  <Button
-                    appearance="subtle"
-                    iconBefore={<CloseIcon label="Close Modal" />}
-                    onClick={this.close}
-                  />
-                </Tooltip>
+                {({ deploySandbox, loadingSandbox }) => {
+                  const codesandboxIcon = loadingSandbox ? (
+                    <Spinner />
+                  ) : (
+                    <CodeSandboxLogo />
+                  );
+
+                  return (
+                    <ButtonGroup>
+                      <Button
+                        onClick={deploySandbox}
+                        iconBefore={codesandboxIcon}
+                        isDisabled
+                      >
+                        {loadingSandbox ? 'Loading...' : 'Sandbox'}
+                      </Button>
+                      <Button
+                        iconBefore={<CodeIcon label="Toggle code snippet" />}
+                        onClick={this.onCodeToggle}
+                        isSelected={displayCode}
+                        title={displayCode ? 'Hide Source' : 'Show Source'}
+                      >
+                        Source
+                      </Button>
+                      <Tooltip content="Fullscreen" position="bottom">
+                        <Button
+                          appearance="subtle"
+                          component={Link}
+                          iconBefore={<ScreenIcon label="Screen Icon" />}
+                          to={toExampleUrl(groupId, packageId, exampleId)}
+                        />
+                      </Tooltip>
+                      <Tooltip content="Close" position="bottom">
+                        <Button
+                          appearance="subtle"
+                          iconBefore={<CloseIcon label="Close Modal" />}
+                          onClick={this.close}
+                        />
+                      </Tooltip>
+                    </ButtonGroup>
+                  );
+                }}
               </CodeSandbox>
             </ModalActions>
           </ModalHeader>

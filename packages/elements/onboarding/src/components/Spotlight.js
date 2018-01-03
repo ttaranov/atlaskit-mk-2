@@ -1,10 +1,12 @@
 // @flow
 /* eslint-disable react/sort-comp, react/no-multi-comp */
 import React, { Component } from 'react';
+import { ThemeProvider } from 'styled-components';
 import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
 import Layer from '@atlaskit/layer';
 import { layers } from '@atlaskit/theme';
 
+import { getTheme } from './theme';
 import type {
   ActionsType,
   ComponentType,
@@ -72,16 +74,11 @@ type Props = {|
 
 type FillProps = {
   in: boolean,
-  onExit: Function,
   scrollDistance: number,
   children: ChildrenType,
 };
 
 const Fill = (props: FillProps) => <Fade component={FillScreen} {...props} />;
-
-type State = {|
-  isExiting: boolean,
-|};
 
 /* eslint-disable react/prop-types, react/no-danger */
 const Clone = ({ html }) => (
@@ -92,9 +89,7 @@ const Clone = ({ html }) => (
 );
 /* eslint-enable react/prop-types, react/no-danger */
 
-class Spotlight extends Component<Props, State> {
-  state: State = { isExiting: false };
-
+class Spotlight extends Component<Props> {
   static defaultProps = {
     dialogWidth: 400,
     pulse: true,
@@ -105,22 +100,20 @@ class Spotlight extends Component<Props, State> {
 
     if (targetOnClick) targetOnClick({ event, target });
   };
-  handleExit = () => {
-    // NOTE: disable FocusLock *before* unmount. animation may end after a new
-    // spotlight as gained focus, breaking focus behaviour.
-    this.setState({ isExiting: true });
-  };
 
   renderTargetClone() {
     // NOTE: `clone` & `rect` are NOT public API
     const {
+      // $FlowFixMe
+      clone, // eslint-disable-line react/prop-types
+      // $FlowFixMe
+      rect, // eslint-disable-line react/prop-types
       pulse,
       target,
       targetBgColor,
       targetOnClick,
       targetRadius,
       targetReplacement: Replacement,
-      ...props
     } = this.props;
 
     if (!target) {
@@ -128,16 +121,16 @@ class Spotlight extends Component<Props, State> {
     }
 
     return Replacement ? (
-      <Replacement {...props.rect} />
+      <Replacement {...rect} />
     ) : (
-      <TargetOuter style={props.rect}>
+      <TargetOuter style={rect}>
         <TargetInner
           pulse={pulse}
           bgColor={targetBgColor}
           radius={targetRadius}
-          style={props.rect}
+          style={rect}
         >
-          <Clone html={props.clone} />
+          <Clone html={clone} />
           <TargetOverlay onClick={targetOnClick && this.handleTargetClick} />
         </TargetInner>
       </TargetOuter>
@@ -155,11 +148,12 @@ class Spotlight extends Component<Props, State> {
       footer,
       header,
       heading,
+      // $FlowFixMe
+      in: transitionIn, // eslint-disable-line react/prop-types
       image,
-      ...props
+      // $FlowFixMe
+      scrollY, // eslint-disable-line react/prop-types
     } = this.props;
-
-    const { isExiting } = this.state;
 
     // warn consumers when they provide conflicting props
     if (header && image) {
@@ -180,24 +174,22 @@ class Spotlight extends Component<Props, State> {
 
     // build the dialog before passing it to Layer
     const dialog = (
-      <FocusLock enabled={!isExiting} autoFocus>
-        <Dialog width={dialogWidth} tabIndex="-1">
-          {headerElement}
-          <DialogBody>
-            {heading && <Heading>{heading}</Heading>}
-            {children}
-          </DialogBody>
-          {footerElement}
-        </Dialog>
-      </FocusLock>
+      <ThemeProvider theme={getTheme}>
+        <FocusLock enabled={transitionIn} autoFocus>
+          <Dialog width={dialogWidth} tabIndex="-1">
+            {headerElement}
+            <DialogBody>
+              {heading && <Heading>{heading}</Heading>}
+              {children}
+            </DialogBody>
+            {footerElement}
+          </Dialog>
+        </FocusLock>
+      </ThemeProvider>
     );
 
     return (
-      <Fill
-        in={props.in}
-        onExit={this.handleExit}
-        scrollDistance={props.scrollY}
-      >
+      <Fill in={transitionIn} scrollDistance={scrollY}>
         <Layer
           boundariesElement="scrollParent"
           content={dialog}

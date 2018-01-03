@@ -5,6 +5,7 @@ import Input from './Input';
 import type { Handler } from '../../types';
 
 type Props = {
+  autoFocus: boolean,
   value: string,
   onChange: Handler,
   onKeyDown: Handler,
@@ -16,6 +17,7 @@ export default class DateField extends Component<Props> {
   input: ?ElementRef<typeof Input>;
 
   static defaultProps = {
+    autoFocus: false,
     value: '',
     onChange() {},
     onKeyDown() {},

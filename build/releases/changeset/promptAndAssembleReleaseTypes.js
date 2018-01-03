@@ -18,10 +18,15 @@ type dependentType = {
   dependencies: Array<string>,
   finalised?: boolean
 }
+type changesetDependentType = {
+  name: string,
+  type?: string,
+  dependencies: Array<string>,
+}
 type changesetType = {
   summary: string,
   releases: Array<releaseType>,
-  dependents: Array<dependentType>,
+  dependents: Array<changesetDependentType>,
   releaseNotes?: any,
 }
 */

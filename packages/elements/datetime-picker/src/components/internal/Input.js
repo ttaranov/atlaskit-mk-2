@@ -6,6 +6,7 @@ import { colors } from '@atlaskit/theme';
 import type { Handler } from '../../types';
 
 type Props = {
+  autoFocus: boolean,
   isDisabled: boolean,
   isActive: boolean,
   placeholder: ?string,
@@ -21,6 +22,7 @@ export default class InputField extends Component<Props> {
   input: ElementRef<typeof Input>;
 
   static defaultProps = {
+    autoFocus: false,
     isDisabled: false,
     isActive: true,
     placeholder: undefined,
@@ -46,6 +48,7 @@ export default class InputField extends Component<Props> {
   render() {
     return (
       <Input
+        autoFocus={this.props.autoFocus}
         disabled={this.props.isDisabled}
         isEditing
         placeholder={this.props.placeholder}

@@ -1,0 +1,45 @@
+{
+  "name": "@atlaskit/flag",
+  "version": "6.1.9",
+  "description": "Flags are used for confirmations, alerts, and acknowledgments that require minimal user interaction.",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Jared Crowe",
+    "Ajay N Mathur"
+  ],
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/button": "^6.0.0",
+    "@atlaskit/icon": "^10.3.1",
+    "@atlaskit/layer-manager": "^2.4.0",
+    "@atlaskit/theme": "^2.0.0",
+    "babel-runtime": "^6.26.0",
+    "react-transition-group": "^2.2.1",
+    "styled-components": "^1.4.6",
+    "uuid": "^3.1.0"
+  },
+  "peerDependencies": {
+    "react": "^15.6.1"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^2.0.0",
+    "@atlaskit/field-radio-group": "^1.7.3",
+    "@atlaskit/modal-dialog": "^3.2.1",
+    "@atlaskit/navigation": "^26.6.3",
+    "@atlaskit/spinner": "^4.0.0",
+    "@atlaskit/theme": "^2.0.0",
+    "enzyme": "^2.9.1"
+  },
+  "keywords": [
+    "atlaskit",
+    "react",
+    "ui"
+  ]
+}

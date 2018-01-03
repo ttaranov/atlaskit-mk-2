@@ -23,6 +23,7 @@ export interface EditableCardState {
   isHeightPercentage: boolean;
   isLazy: boolean;
   useDimensions: boolean;
+  usePixelUnits: boolean;
 }
 
 class EditableCard extends Component<{}, EditableCardState> {
@@ -34,6 +35,7 @@ class EditableCard extends Component<{}, EditableCardState> {
     isHeightPercentage: true,
     isLazy: false,
     useDimensions: true,
+    usePixelUnits: false,
   };
 
   onWidthChange = e => {
@@ -80,6 +82,10 @@ class EditableCard extends Component<{}, EditableCardState> {
     this.setState({ useDimensions: !this.state.useDimensions });
   };
 
+  onPixelsUnitChange = () => {
+    this.setState({ usePixelUnits: !this.state.usePixelUnits });
+  };
+
   render() {
     const {
       identifier,
@@ -89,6 +95,7 @@ class EditableCard extends Component<{}, EditableCardState> {
       parentDimensions,
       isLazy,
       useDimensions,
+      usePixelUnits,
     } = this.state;
     const width = parseInt(`${dimensions.width}`, 0);
     const height = parseInt(`${dimensions.height}`, 0);
@@ -102,6 +109,11 @@ class EditableCard extends Component<{}, EditableCardState> {
 
     if (isHeightPercentage) {
       newDimensions.height = `${height}%`;
+    }
+
+    if (usePixelUnits) {
+      newDimensions.width = `${width}px`;
+      newDimensions.height = `${height}px`;
     }
 
     return (
@@ -160,6 +172,11 @@ class EditableCard extends Component<{}, EditableCardState> {
           <Toggle
             isDefaultChecked={useDimensions}
             onChange={this.onUseDimensionsChange}
+          />
+          use pixels
+          <Toggle
+            isDefaultChecked={usePixelUnits}
+            onChange={this.onPixelsUnitChange}
           />
         </EditableCardOptions>
         <EditableCardContent style={parentStyle}>

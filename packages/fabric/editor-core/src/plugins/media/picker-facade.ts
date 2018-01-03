@@ -149,6 +149,12 @@ export default class PickerFacade {
     }
   }
 
+  hide(): void {
+    if (this.picker instanceof Popup) {
+      this.picker.hide();
+    }
+  }
+
   cancel(tempId: string): void {
     if (this.picker instanceof Popup) {
       const state = this.stateManager.getState(tempId);

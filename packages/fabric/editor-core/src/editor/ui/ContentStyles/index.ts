@@ -106,6 +106,7 @@ const ContentStyles = styled.div`
   }
 
   .ProseMirror blockquote {
+    box-sizing: border-box;
     padding-left: ${akGridSizeUnitless * 2}px;
     border-left: 2px solid ${akEditorBlockquoteBorderColor};
     margin: ${akGridSizeUnitless * 1.5}px 0 0 0;
@@ -130,6 +131,7 @@ const ContentStyles = styled.div`
   }
 
   .ProseMirror pre {
+    box-sizing: border-box;
     white-space: pre-wrap;
   }
 
@@ -153,6 +155,7 @@ const ContentStyles = styled.div`
   .ProseMirror ol {
     padding-left: 30px;
     cursor: default;
+    box-sizing: border-box;
   }
 
   .ProseMirror li {
@@ -278,6 +281,18 @@ const ContentStyles = styled.div`
     top: 20px;
   }
 
+  //=============== SINGLE IMAGE STYLES ==================
+
+  && .ProseMirror [layout='wide'] {
+    max-width: 960px;
+    width: 100%;
+  }
+
+  && .ProseMirror [layout='full-width'] {
+    max-width: 100%;
+    width: 100%;
+  }
+
   //=============== PLACEHOLDER CURSOR STYLES=========
 
   & .ProseMirror-placeholder-cursor {
@@ -295,8 +310,6 @@ const ContentStyles = styled.div`
     height: 100%;
     border-right: 1px solid rgba(0, 0, 0, 0.4);
   }
-
-  //=============== PLACEHOLDER CURSOR STYLES================
 `;
 
 export default ContentStyles;

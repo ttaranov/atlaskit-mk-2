@@ -29,6 +29,7 @@ const defaultTimes = [
 ];
 
 type Props = {
+  autoFocus: boolean,
   isDisabled: boolean,
   times: Array<string>,
   width: number,
@@ -47,6 +48,7 @@ export default class DatePicker extends Component<Props, State> {
   timepicker: ?ElementRef<typeof TimePickerStateless>;
 
   static defaultProps = {
+    autoFocus: false,
     isDisabled: false,
     times: defaultTimes,
     width: gridSize() * 20,
@@ -67,7 +69,7 @@ export default class DatePicker extends Component<Props, State> {
     }
   }
 
-  onChange = (value: string) => {
+  onChange = (value: ?string) => {
     if (value !== this.state.value) {
       this.props.onChange(value);
     }
@@ -124,6 +126,7 @@ export default class DatePicker extends Component<Props, State> {
       });
     } else {
       // TODO: Display an error message
+      this.onChange(null);
       this.setState({
         value: null,
         displayValue: '',
@@ -177,6 +180,7 @@ export default class DatePicker extends Component<Props, State> {
   render() {
     return (
       <TimePickerStateless
+        autoFocus={this.props.autoFocus}
         isDisabled={this.props.isDisabled}
         isOpen={this.state.isOpen}
         displayValue={this.state.displayValue}

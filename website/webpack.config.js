@@ -13,7 +13,6 @@ DirectoryWatcher.prototype.createNestedWatcher = function(
 };
 
 // End of the hack
-
 const path = require('path');
 const boltQuery = require('bolt-query');
 const webpack = require('webpack');
@@ -54,7 +53,7 @@ function getPackagesGlobs(subsetName /*?: string */) {
   switch (subsetName) {
     case 'editor':
       return createGlob(
-        'fabric/+(code|conversation|editor-core|editor-common|editor-bitbucket|editor-cq|editor-jira|renderer)',
+        'fabric/+(code|conversation|editor-core|editor-common|editor-cq|renderer)',
       );
 
     case 'media':
@@ -239,6 +238,15 @@ module.exports = async function createWebpackConfig() {
               limit: 512,
             },
           },
+        },
+        {
+          test: /\.less$/,
+          loader: [
+            'style-loader',
+            'css-loader',
+            'postcss-loader',
+            'less-loader',
+          ],
         },
       ],
     },
