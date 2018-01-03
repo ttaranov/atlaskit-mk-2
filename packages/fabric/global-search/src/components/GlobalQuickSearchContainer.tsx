@@ -3,12 +3,16 @@ import * as debounce from 'lodash.debounce';
 import GlobalQuickSearch from './GlobalQuickSearch';
 
 import { RecentSearchProvider } from '../api/RecentSearchProvider';
-import { CrossProductSearchProvider } from '../api/CrossProductSearchProvider';
+import {
+  CrossProductSearchProvider,
+  CrossProductResults,
+} from '../api/CrossProductSearchProvider';
 import { Result } from '../model/Result';
 
 export interface Props {
   recentSearchProvider: RecentSearchProvider;
   crossProductSearchProvider: CrossProductSearchProvider;
+  debounceMillis?: number; // for testing only
 }
 
 export interface State {
@@ -24,6 +28,10 @@ export default class GlobalQuickSearchContainer extends React.Component<
   Props,
   State
 > {
+  static defaultProps: Partial<Props> = {
+    debounceMillis: 150,
+  };
+
   constructor(props: Props) {
     super(props);
 
@@ -54,25 +62,41 @@ export default class GlobalQuickSearchContainer extends React.Component<
     }
   };
 
+  async searchRecent(query: string) {
+    const results = await this.props.recentSearchProvider.search(query);
+
+    if (this.state.query === query) {
+      this.setState({
+        recentResults: results,
+      });
+    }
+
+    return results;
+  }
+
+  async searchCrossProduct(query: string): Promise<CrossProductResults> {
+    const results = await this.props.crossProductSearchProvider.search(query);
+
+    if (this.state.query === query) {
+      this.setState({
+        jiraResults: results.jira,
+        confluenceResults: results.confluence,
+      });
+    }
+
+    return results;
+  }
+
   doSearch = async (query: string) => {
-    this.setState({
-      isLoading: true,
-    });
-
-    const recentSearch = this.props.recentSearchProvider.search(query);
-    const crossProductSearch = this.props.crossProductSearchProvider.search(
-      query,
-    );
-
     try {
       this.setState({
-        recentResults: await recentSearch,
+        isLoading: true,
       });
 
-      this.setState({
-        jiraResults: (await crossProductSearch).jira,
-        confluenceResults: (await crossProductSearch).confluence,
-      });
+      await Promise.all([
+        this.searchRecent(query),
+        this.searchCrossProduct(query),
+      ]);
     } catch (error) {
       // something bad happened. handle it. analytics
       // console.error('ERROR ERROR ERROR', error);
@@ -83,8 +107,10 @@ export default class GlobalQuickSearchContainer extends React.Component<
     }
   };
 
-  // leading so that we start searching as soon as the user typed in 2 characters since we don't search before that
-  doDebouncedSearch = debounce(this.doSearch, 150, { leading: true });
+  // leading:true so that we start searching as soon as the user typed in 2 characters since we don't search before that
+  doDebouncedSearch = debounce(this.doSearch, this.props.debounceMillis, {
+    leading: true,
+  });
 
   handleGetRecentItems = async () => {
     this.setState({
