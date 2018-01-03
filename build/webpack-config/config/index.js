@@ -5,6 +5,25 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { createDefaultGlob } = require('./utils');
 
+function createEntries({ env, entry, host, port, mocks }) {
+  const entries = {
+    main: [path.join(process.cwd(), entry)],
+    vendor: ['react', 'react-dom', 'styled-components', 'highlight.js'],
+  };
+
+  if (env === 'development' && host && port) {
+    entries.main.push(
+      `${require.resolve('webpack-dev-server/client')}?http://${host}:${port}/`,
+    );
+  }
+
+  if (mocks) {
+    entries.main.push(path.join(process.cwd(), 'mocks.js'));
+  }
+
+  return entries;
+}
+
 module.exports = function createWebpackConfig(
   {
     entry,
@@ -13,21 +32,11 @@ module.exports = function createWebpackConfig(
     globs = createDefaultGlob(),
     includePatterns = false,
     env = 'development',
-  } /*: { entry: string, host?: string, port?: number, globs?: Array<string>, includePatterns: boolean, env: string } */,
+    mocks,
+  } /*: { entry: string, host?: string, port?: number, globs?: Array<string>, includePatterns: boolean, env: string, mocks?: boolean } */,
 ) {
   return {
-    entry: {
-      main:
-        env === 'development' && host && port
-          ? [
-              `${require.resolve(
-                'webpack-dev-server/client',
-              )}?http://${host}:${port}/`,
-              path.join(process.cwd(), entry),
-            ]
-          : path.join(process.cwd(), entry),
-      vendor: ['react', 'react-dom', 'styled-components', 'highlight.js'],
-    },
+    entry: createEntries({ env, entry, host, port, mocks }),
     output: {
       filename: '[name].js',
       path: path.resolve(process.cwd(), 'dist'),

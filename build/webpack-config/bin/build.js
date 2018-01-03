@@ -8,9 +8,11 @@ const createConfig = require('../config');
 const { print, buildBanner } = require('../banner');
 
 async function runDevServer() {
-  const [entry] = process.argv.slice(2);
+  const args = process.argv.slice(2);
+  const [entry] = args;
   const env = 'production';
   const includePatterns = true;
+  const mocks = args.indexOf('--with-mocks') !== -1;
 
   print(buildBanner());
 
@@ -18,7 +20,7 @@ async function runDevServer() {
   // Creating webpack instance
   //
 
-  const config = createConfig({ entry, env, includePatterns });
+  const config = createConfig({ entry, env, includePatterns, mocks });
   const compiler = webpack(config);
 
   //
