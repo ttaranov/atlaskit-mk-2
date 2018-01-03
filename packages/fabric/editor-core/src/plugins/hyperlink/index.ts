@@ -391,7 +391,13 @@ function updateLinkOnChange(
         href = newNodeBefore.text;
       }
     } else if (
-      oldLinkMarkBefore.attrs.href === normalizeUrl(oldNodeBefore.text || '')
+      // The if else condition takes care of condition where text was linkified as it was valid link,
+      // even if a href is not explicitly added.
+      // In those cases if replaced text is no more a valid link it should be de-linkified.
+      oldLinkMarkBefore.attrs.href === normalizeUrl(oldNodeBefore.text || '') &&
+      // The following condition ensures that delinkification is done only if
+      // the new replaced text does not adds a new mark. Ref: #ED-3369.
+      oldLinkMarkBefore === newLinkMarkBefore
     ) {
       hasSameUrlAndTitle = true;
       // End of a link https://google.com/<|>
