@@ -63,7 +63,6 @@
   "devDependencies": {
     "@atlaskit/eslint-config-base": "^2.0.7",
     "@atlaskit/inline-edit": "^4.5.5",
-    "@atlaskit/layer": "^2.5.4",
     "@atlaskit/util-data-test": "^7.0.0",
     "@types/chai": "^4.0.4",
     "@types/enzyme": "^2.8.12",
