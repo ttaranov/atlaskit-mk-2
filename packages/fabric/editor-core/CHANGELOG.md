@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.17.3
+- [patch] Mod-Enter should submit editor content for all products. [65ede03](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65ede03)
+- [patch] Fix for issue that panel toolbar is not visible when cursor is inside a list in panel. [dce5d66](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dce5d66)
+
 ## 60.17.2
 
 ## 60.17.1

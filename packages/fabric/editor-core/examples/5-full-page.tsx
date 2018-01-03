@@ -70,6 +70,8 @@ Content.displayName = 'Content';
 
 // tslint:disable-next-line:no-console
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
+// tslint:disable-next-line:no-console
+const SAVE_ACTION = () => console.log('Save');
 
 const SaveAndCancelButtons = props => (
   <ButtonGroup>
@@ -150,6 +152,7 @@ export default class Example extends React.Component<Props, State> {
                   )}
                 />
               }
+              onSave={SAVE_ACTION}
             />
           </EditorContext>
         </Content>

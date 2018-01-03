@@ -5,6 +5,7 @@ import {
   mediaPlugin,
   helpDialogPlugin,
   placeholderCursorPlugin,
+  submitEditorPlugin,
 } from '../../../src/editor/plugins';
 import createPluginsList from '../../../src/editor/create-editor/create-plugins-list';
 
@@ -22,6 +23,11 @@ describe('createPluginsList', () => {
   it('should add tablePlugin if allowTables is true', () => {
     const plugins = createPluginsList({ allowTables: true });
     expect(plugins).toContain(tablePlugin);
+  });
+
+  it('should always add submitEditorPlugin to the editor', () => {
+    const plugins = createPluginsList({});
+    expect(plugins).toContain(submitEditorPlugin);
   });
 
   it('should add mediaPlugin if media prop is provided', () => {
