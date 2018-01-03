@@ -9,6 +9,9 @@
   "files": [
     "dist"
   ],
+  "scripts": {
+    "build": "mkdir -p dist && cp -r popper.js dist"
+  },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     "Luke B",
