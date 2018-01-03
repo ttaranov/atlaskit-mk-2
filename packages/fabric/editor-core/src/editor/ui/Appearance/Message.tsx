@@ -34,6 +34,7 @@ export interface MessageEditorProps {
 // tslint:disable-next-line:variable-name
 const MessageEditor: any = styled.div`
   display: flex;
+  align-items: center;
   border: 1px solid
     ${(props: MessageEditorProps) =>
       props.isMaxContentSizeReached ? '#FF8F73' : '#C1C7D0'};
