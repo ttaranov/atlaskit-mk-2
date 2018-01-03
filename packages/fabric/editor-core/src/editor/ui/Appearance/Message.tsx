@@ -139,7 +139,7 @@ export default class Editor extends React.Component<
         </ContentArea>
         <SecondaryToolbarContainer>
           <PluginSlot
-            disabled={disabled}
+            disabled={disabled || maxContentSizeReached}
             editorView={editorView}
             eventDispatcher={eventDispatcher}
             providerFactory={providerFactory}
