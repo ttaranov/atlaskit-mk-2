@@ -726,7 +726,7 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
   width: 100%;
 }
 .ak-field-checkbox > input[type='checkbox'] + label::after {
-  background: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%22%23F4F5F7%22%3E%3C%2Frect%3E%0A%3C%2Fsvg%3E%0A") no-repeat 0 0;
+  background: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%22rgba(9%2C%2030%2C%2066%2C%200.13)%22%20stroke%3D%22rgba(9%2C%2030%2C%2066%2C%200.25)%22%3E%3C%2Frect%3E%0A%3C%2Fsvg%3E%0A") no-repeat 0 0;
   border-color: transparent;
   border-radius: 5px;
   border-style: solid;
@@ -743,16 +743,16 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
   border-color: #4C9AFF;
 }
 .ak-field-checkbox > input[type='checkbox']:not([disabled]) + label:hover::after {
-  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%22%23DFE1E6%22%3E%3C%2Frect%3E%0A%3C%2Fsvg%3E%0A");
+  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%20%22rgba(9%2C%2030%2C%2066%2C%200.25)%22%20stroke%3D%22rgba(9%2C%2030%2C%2066%2C%200.25)%22%3E%3C%2Frect%3E%0A%3C%2Fsvg%3E%0A");
 }
 .ak-field-checkbox > input[type='checkbox'][disabled] + label {
   opacity: 0.5;
 }
 .ak-field-checkbox > input[type='checkbox']:checked + label::after {
-  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%22%230052CC%22%3E%3C%2Frect%3E%0A%20%20%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M9.374%204.914L5.456%208.832a.769.769%200%200%201-1.088%200L2.626%207.091a.769.769%200%201%201%201.088-1.089L4.912%207.2l3.374-3.374a.769.769%200%201%201%201.088%201.088%22%3E%3C%2Fpath%3E%0A%3C%2Fsvg%3E%0A");
+  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%20%22%230052CC%22%3E%3C%2Frect%3E%0A%20%20%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M9.374%204.914L5.456%208.832a.769.769%200%200%201-1.088%200L2.626%207.091a.769.769%200%201%201%201.088-1.089L4.912%207.2l3.374-3.374a.769.769%200%201%201%201.088%201.088%22%3E%3C%2Fpath%3E%0A%3C%2Fsvg%3E%0A");
 }
 .ak-field-checkbox > input[type='checkbox']:checked:not([disabled]) + label:hover::after {
-  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%22%230747A6%22%3E%3C%2Frect%3E%0A%20%20%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M9.374%204.914L5.456%208.832a.769.769%200%200%201-1.088%200L2.626%207.091a.769.769%200%201%201%201.088-1.089L4.912%207.2l3.374-3.374a.769.769%200%201%201%201.088%201.088%22%3E%3C%2Fpath%3E%0A%3C%2Fsvg%3E%0A");
+  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%20%22%230065FF%22%20stroke%3D%22%234C9AFF%22%3E%3C%2Frect%3E%0A%20%20%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M9.374%204.914L5.456%208.832a.769.769%200%200%201-1.088%200L2.626%207.091a.769.769%200%201%201%201.088-1.089L4.912%207.2l3.374-3.374a.769.769%200%201%201%201.088%201.088%22%3E%3C%2Fpath%3E%0A%3C%2Fsvg%3E%0A");
 }
 .ak-field-radio {
   clear: both;
@@ -776,7 +776,7 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
   width: 100%;
 }
 .ak-field-radio > input[type='radio'] + label::after {
-  background: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Ccircle%20fill%3D%22%23F4F5F7%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%226%22%3E%3C%2Fcircle%3E%0A%3C%2Fsvg%3E%0A") no-repeat 0 0;
+  background: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Ccircle%20fill%3D%22rgba(9%2C%2030%2C%2066%2C%200.13)%22%20stroke%3D%22rgba(9%2C%2030%2C%2066%2C%200.25)%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%226%22%3E%3C%2Fcircle%3E%0A%3C%2Fsvg%3E%0A") no-repeat 0 0;
   border-color: transparent;
   border-radius: 50%;
   border-style: solid;
@@ -793,7 +793,7 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
   border-color: #4C9AFF;
 }
 .ak-field-radio > input[type='radio']:not([disabled]) + label:hover::after {
-  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Ccircle%20fill%3D%22%23DFE1E6%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%226%22%3E%3C%2Fcircle%3E%0A%3C%2Fsvg%3E%0A");
+  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Ccircle%20fill%3D%22rgba(9%2C%2030%2C%2066%2C%200.25)%22%20stroke%3D%22rgba(9%2C%2030%2C%2066%2C%200.25)%22fill%3D%22%23DFE1E6%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%226%22%3E%3C%2Fcircle%3E%0A%3C%2Fsvg%3E%0A");
 }
 .ak-field-radio > input[type='radio'][disabled] + label {
   opacity: 0.5;
@@ -802,7 +802,7 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
   background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Ccircle%20fill%3D%22%230052CC%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%226%22%3E%3C%2Fcircle%3E%0A%20%20%3Ccircle%20fill%3D%22%23FFFFFF%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%222%22%3E%3C%2Fcircle%3E%0A%3C%2Fsvg%3E%0A");
 }
 .ak-field-radio > input[type='radio']:checked:not([disabled]) + label:hover::after {
-  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Ccircle%20fill%3D%22%230747A6%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%226%22%3E%3C%2Fcircle%3E%0A%20%20%3Ccircle%20fill%3D%22%23FFFFFF%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%222%22%3E%3C%2Fcircle%3E%0A%3C%2Fsvg%3E%0A");
+  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Ccircle%20fill%3D%22%230065FF%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%226%22%3E%3C%2Fcircle%3E%0A%20%20%3Ccircle%20fill%3D%22%23FFFFFF%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%222%22%3E%3C%2Fcircle%3E%0A%3C%2Fsvg%3E%0A");
 }
 .ak-field__width-xsmall {
   max-width: 80px;
