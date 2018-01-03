@@ -7,7 +7,7 @@ import Button from '@atlaskit/button';
 import { Content, ButtonGroup } from './styles';
 import imageUploadHandler from './imageUpload';
 
-import { MentionResource } from '../src';
+import { MentionResource, EmojiResource } from '../src';
 import { toJSON } from '../src/utils';
 import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 
@@ -33,6 +33,19 @@ const providers = {
   },
   emojiProvider: {
     resolved: emojiStoryData.getEmojiResource({ uploadSupported: true }),
+    external: Promise.resolve(
+      new EmojiResource({
+        providers: [
+          {
+            url: 'https://api-private.stg.atlassian.com/emoji/standard',
+          },
+          {
+            url: `https://api-private.stg.atlassian.com/emoji/${testCloudId}/site`,
+          },
+        ],
+        allowUpload: true,
+      }),
+    ),
     pending: pendingPromise,
     rejected: rejectedPromise,
     undefined: undefined,
