@@ -28,7 +28,7 @@ export default class StatelessExample extends Component<void, State> {
       <div>
         <AkFieldRadioGroup
           items={this.state.items}
-          label="Pick a color:"
+          label="Pick a color (Checked state isn't managed by the component):"
           onRadioChange={this.setValue}
         />
         <div
