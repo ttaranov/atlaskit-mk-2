@@ -10,7 +10,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "mkdir -p dist && cp -r popper.js dist"
+    "build": "mkdir -p dist && cp -r popper dist"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
