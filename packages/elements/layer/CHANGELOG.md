@@ -1,5 +1,8 @@
 # @atlaskit/layer
 
+## 2.5.10
+- [patch] migrated layer from ak to mk-2 [3eec864](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3eec864)
+
 ## 2.5.9 (2017-12-06)
 
 
