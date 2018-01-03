@@ -1,7 +1,7 @@
 // @flow
 import React, { Component, type Node, type ElementRef } from 'react';
 
-import Popper from '../../popper.js/index.min';
+import Popper from '../../popper/index-min';
 import {
   getFlipBehavior,
   positionPropToPopperPosition,
