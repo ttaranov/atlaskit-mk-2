@@ -1,5 +1,8 @@
 # @atlaskit/single-select
 
+## 3.1.3
+- [patch] Migrate signle-select to atlaskit-mk-2 repo [ee8d580](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee8d580)
+
 ## 3.1.2 (2017-11-24)
 
 * bug fix; prevent inline-dialog from closing when event is prevented and prevent default for c (issues closed: ak-3870) ([8ae0c3b](https://bitbucket.org/atlassian/atlaskit/commits/8ae0c3b))
