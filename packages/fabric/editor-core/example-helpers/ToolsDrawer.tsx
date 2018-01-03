@@ -16,15 +16,15 @@ const rejectedPromise = Promise.reject(
 );
 const pendingPromise = new Promise<any>(() => {});
 
+const testCloudId = 'f7ebe2c0-0309-4687-b913-41d422f2110b';
 const providers = {
   mentionProvider: {
     resolved: Promise.resolve(mentionStoryData.resourceProvider),
-    'resolved 2': Promise.resolve(
+    external: Promise.resolve(
       new MentionResource({
-        url:
-          'https://pf-mentions-service.staging.atlassian.io/mentions/f7ebe2c0-0309-4687-b913-41d422f2110b',
+        url: `https://api-private.stg.atlassian.com/mentions/${testCloudId}`,
         containerId: 'b0d035bd-9b98-4386-863b-07286c34dc14',
-        productId: 'hipchat',
+        productId: 'chat',
       }),
     ),
     pending: pendingPromise,
