@@ -8,6 +8,7 @@ import { changeToTaskDecision } from '../../plugins/tasks-and-decisions/commands
 
 export interface Props {
   editorView?: EditorView;
+  isDisabled?: boolean;
 }
 
 export interface State {
@@ -19,11 +20,12 @@ export default class ToolbarDecision extends PureComponent<Props, State> {
 
   render() {
     const { disabled } = this.state;
+    const { isDisabled } = this.props;
 
     return (
       <ToolbarButton
         onClick={this.handleInsertDecision}
-        disabled={disabled}
+        disabled={disabled || isDisabled}
         title="Create decision (<>)"
         iconBefore={<DecisionIcon label="Create decision" />}
       />
