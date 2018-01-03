@@ -1,5 +1,8 @@
 # @atlaskit/inline-message
 
+## 3.0.6
+- [patch] updated icons for error, info and udpated size of icon for confirmation [824c40d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/824c40d)
+
 ## 3.0.5
 - [patch] migrate inline-message from ak to mk-2 [2323022](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2323022)
 

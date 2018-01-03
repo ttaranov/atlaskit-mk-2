@@ -1,16 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
-    <title>icons/switcher</title>
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>icon sym</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="icons/switcher" fill="#42526E">
-            <path d="M5,5 C5,3.8954305 5.89451376,3 6.99406028,3 L17.0059397,3 C18.1072288,3 19,3.89444002 19,5 L5,5 Z" id="Combined-Shape-path"></path>
-            <path d="M5,19 L19,19 C19,20.10556 18.1072288,21 17.0059397,21 L6.99406028,21 C5.89451376,21 5,20.1045695 5,19 Z" id="Combined-Shape-path"></path>
-            <path d="M6,9 C5.44771525,9 5,9.44771525 5,10 L5,14 C5,14.5522847 5.44771525,15 6,15 L18,15 C18.5522847,15 19,14.5522847 19,14 L19,10 C19,9.44771525 18.5522847,9 18,9 L6,9 Z M6,7 L18,7 C19.6568542,7 21,8.34314575 21,10 L21,14 C21,15.6568542 19.6568542,17 18,17 L6,17 C4.34314575,17 3,15.6568542 3,14 L3,10 C3,8.34314575 4.34314575,7 6,7 Z" id="Rectangle-12" fill-rule="nonzero"></path>
-            <polygon id="Line" fill-rule="nonzero" points="8 7.5 8 16.5 10 16.5 10 7.5"></polygon>
-            <polygon id="Line-Copy" fill-rule="nonzero" points="14 7.5 14 16.5 16 16.5 16 7.5"></polygon>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon-sym" fill="#42526E" fill-rule="nonzero">
+            <path d="M3.50682184,15 L16.5,15 C16.4932689,15.0000017 16.4931782,5 16.4931782,5 L3.5,5 C3.50673113,4.99999829 3.50682184,15 3.50682184,15 Z M1.5,4.99406028 C1.5,3.8927712 2.26348052,3 3.19217587,3 L16.8078242,3 C17.7423871,3 18.5,3.89451376 18.5,4.99406028 L18.5,15.0059397 C18.5,16.1072288 17.7365195,17 16.8078242,17 L3.19217587,17 C2.25761294,17 1.5,16.1054862 1.5,15.0059397 L1.5,4.99406028 Z M6.5,5 L6.5,15 L8.5,15 L8.5,5 L6.5,5 Z M11.5,5 L11.5,15 L13.5,15 L13.5,5 L11.5,5 Z" id="Rectangle-8"></path>
+            <path d="M20.5,5 L20.5059397,5 C21.6072288,5 22.5,5.89451376 22.5,6.99406028 L22.5,19.0059397 C22.5,20.1072288 21.6054862,21 20.5059397,21 L8.49406028,21 C7.3927712,21 6.5,20.1054862 6.5,19.0059397 L6.5,19 L19.4991283,19 C20.0553691,19 20.5,18.5518945 20.5,17.9991283 L20.5,5 Z" id="Combined-Shape"></path>
         </g>
     </g>
 </svg>
