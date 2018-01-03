@@ -53,9 +53,17 @@ export default md`
 
   ${(
     <Example
-      Component={require('../examples/04-mention-example').default}
+      Component={require('../examples/04-text-example').default}
       title="Form Example"
-      source={require('!!raw-loader!../examples/04-mention-example')}
+      source={require('!!raw-loader!../examples/04-text-example')}
+    />
+  )}
+
+  ${(
+    <Example
+      Component={require('../examples/05-mention-example').default}
+      title="Form Example"
+      source={require('!!raw-loader!../examples/05-mention-example')}
     />
   )}
 

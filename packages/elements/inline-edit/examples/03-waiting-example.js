@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
-import { FieldTextAreaStateless } from '../src';
+import SingleLineTextInput from '@atlaskit/input';
+import { InlineEdit } from '../src';
 
 type State = {
   onEventResult: string,
@@ -11,13 +12,13 @@ export default class WaitingExample extends Component<void, State> {
       'Type in the InlinEdit above to trigger onComfirm and onCancel',
   };
 
-  onConfirmHandler = (event: any) => {
+  onConfirm = (event: any) => {
     this.setState({
       onEventResult: `onConfirm called with value: ${event.target.value}`,
     });
   };
 
-  onCancelHandler = (event: any) => {
+  onCancel = (event: any) => {
     this.setState({
       onEventResult: `onCancel called with value: ${event.target.value}`,
     });
@@ -26,7 +27,7 @@ export default class WaitingExample extends Component<void, State> {
   render() {
     return (
       <div>
-        <InlineEditor
+        <InlineEdit
           label="Waiting State"
           isWaiting
           editView={<SingleLineTextInput isEditing isInitiallySelected />}
@@ -36,8 +37,8 @@ export default class WaitingExample extends Component<void, State> {
               value={'This will be styled as disabled'}
             />
           }
-          onConfirm={() => {}}
-          onCancel={() => console.log('cancel')}
+          onConfirm={this.onConfirm}
+          onCancel={this.onCancel}
         />
 
         <div
@@ -50,7 +51,7 @@ export default class WaitingExample extends Component<void, State> {
             margin: '0.5em',
           }}
         >
-          {this.state.value}
+          {this.state.onEventResult}
         </div>
       </div>
     );

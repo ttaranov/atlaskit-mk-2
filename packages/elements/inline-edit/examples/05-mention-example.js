@@ -30,6 +30,55 @@ const mentionListWrapperStyle = {
   marginTop: 4,
 };
 
+const mentions = [
+  {
+    id: '2234',
+    avatarUrl: '//cdn-img.fimfiction.net/user/xb2v-1431833233-195398-64',
+    name: 'Jack Sparrow',
+    mentionName: 'captainjack',
+    presence: {
+      status: 'offline',
+    },
+  },
+  {
+    id: '55',
+    avatarUrl: '//68.media.tumblr.com/avatar_e67523761e14_64.png',
+    name: 'Captain Mal',
+    mentionName: 'captaintightpants',
+    presence: {
+      status: 'offline',
+      time: '12:57pm',
+    },
+  },
+  {
+    id: '11',
+    avatarUrl: '//66.media.tumblr.com/avatar_2072eeb45575_64.png',
+    name: 'Doctor Who',
+    mentionName: 'thedoctor',
+    presence: {
+      status: 'busy',
+    },
+  },
+  {
+    id: '27',
+    avatarUrl:
+      '//seatfleet.io/system/users/pictures/54a7/6630/7365/6111/ba00/0000/thumb/picard_s5hq_pbvariant.jpg?1420256904',
+    name: 'Jean Luc Picard',
+    mentionName: 'makeitso',
+    presence: {
+      status: 'none',
+      time: '1:57am',
+    },
+  },
+  {
+    id: '1701',
+    avatarUrl:
+      '//cdn.akamai.steamstatic.com/steamcommunity/public/images/avatars/ab/abee9ce4fbd1c9c94b695b16062b8fdf57a21de7_medium.jpg',
+    name: 'James T. Kirk',
+    mentionName: 'wheresmyshirt',
+  },
+];
+
 /* eslint-disable react/prop-types */
 export default class MentionExample extends PureComponent {
   state = {
@@ -146,7 +195,7 @@ export default class MentionExample extends PureComponent {
   renderMentionsList = () => (
     <InlineDialog open target={this.field}>
       <MentionList
-        mentions={this.props.mentions}
+        mentions={mentions}
         onSelection={this.onSelection}
         ref={mentionList => {
           this.mentionList = mentionList;

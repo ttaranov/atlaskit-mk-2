@@ -24,14 +24,14 @@ export default class SelectExample extends Component<void, State> {
     editValue: '',
   };
 
-  onConfirmHandler = (event: any) => {
+  onConfirm = (event: any) => {
     this.setState({
       onEventResult: `onConfirm called with value: ${event.target.value}`,
       editValue: event.target.value,
     });
   };
 
-  onCancelHandler = (event: any) => {
+  onCancel = (event: any) => {
     this.setState({
       onEventResult: `onCancel called with value: ${event.target.value}`,
       editValue: event.target.value,
@@ -68,8 +68,8 @@ export default class SelectExample extends Component<void, State> {
           disableEditViewFieldBase
           editView={this.renderEditView()}
           readView={this.renderReadView()}
-          onConfirm={this.onConfirmHandler}
-          onCancel={this.onCancelHandler}
+          onConfirm={this.onConfirm}
+          onCancel={this.onCancel}
         />
         <div
           style={{

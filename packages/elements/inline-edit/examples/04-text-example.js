@@ -4,7 +4,8 @@ import SingleLineTextInput from '@atlaskit/input';
 import { InlineEdit } from '../src';
 
 type State = {|
-  value: string | number,
+  editValue: string | number,
+  readValue: string | number,
 |};
 export default class TextExample extends Component<void, State> {
   state = {
@@ -36,7 +37,7 @@ export default class TextExample extends Component<void, State> {
     return (
       <div>
         <InlineEdit
-          label={this.props.label}
+          label="With Text Input"
           labelHtmlFor={id}
           editView={this.renderInput({ isEditing: true, id })}
           readView={this.renderInput({ isEditing: false, id })}
