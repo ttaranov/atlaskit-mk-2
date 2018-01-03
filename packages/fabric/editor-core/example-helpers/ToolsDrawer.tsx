@@ -114,7 +114,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
   };
 
   private toggleDisabled = () =>
-    this.setState(prevState => ({ editorEnabled: !prevState.editorEnabled }))
+    this.setState(prevState => ({ editorEnabled: !prevState.editorEnabled }));
 
   private onChange = editorView => {
     this.setState({
@@ -157,8 +157,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
               emojiProvider: providers.emojiProvider[emojiProvider],
               activityProvider: providers.activityProvider[activityProvider],
               onChange: this.onChange,
-            })
-        }
+            })}
         <div className="toolsDrawer">
           {Object.keys(providers).map(providerKey => (
             <div key={providerKey}>
@@ -188,10 +187,18 @@ export default class ToolsDrawer extends React.Component<any, State> {
           ))}
           <div>
             <ButtonGroup>
-              <Button onClick={this.toggleDisabled} theme="dark" spacing="compact">
-                { this.state.editorEnabled ? 'Disable editor' : 'Enable editor' }
+              <Button
+                onClick={this.toggleDisabled}
+                theme="dark"
+                spacing="compact"
+              >
+                {this.state.editorEnabled ? 'Disable editor' : 'Enable editor'}
               </Button>
-              <Button onClick={this.reloadEditor} theme="dark" spacing="compact">
+              <Button
+                onClick={this.reloadEditor}
+                theme="dark"
+                spacing="compact"
+              >
                 Reload Editor
               </Button>
             </ButtonGroup>
