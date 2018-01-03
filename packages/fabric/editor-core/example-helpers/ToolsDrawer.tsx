@@ -140,7 +140,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
           logged into{' '}
           <a href="https://id.stg.internal.atlassian.com" target="_blank">
             staging Identity server
-          </a>
+          </a>{' '}
           and run your browser{' '}
           <a href="https://stackoverflow.com/a/42024918" target="_blank">
             with CORS disabled
