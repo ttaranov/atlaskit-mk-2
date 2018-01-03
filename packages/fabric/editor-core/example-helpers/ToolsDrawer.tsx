@@ -142,7 +142,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
             staging Identity server
           </a>{' '}
           and run your browser{' '}
-          <a href="https://stackoverflow.com/a/42024918" target="_blank">
+          <a href="https://stackoverflow.com/a/43996863/658086" target="_blank">
             with CORS disabled
           </a>.
         </div>
