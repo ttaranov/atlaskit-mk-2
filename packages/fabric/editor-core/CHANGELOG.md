@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 60.17.4
+- [patch] Fix issue with some of autoformatting using markdown syntax failing for links. [6e5ed2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e5ed2b)
+
 ## 60.17.3
 - [patch] Mod-Enter should submit editor content for all products. [65ede03](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65ede03)
 - [patch] Fix for issue that panel toolbar is not visible when cursor is inside a list in panel. [dce5d66](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dce5d66)
