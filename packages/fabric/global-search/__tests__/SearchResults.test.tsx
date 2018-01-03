@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
-import searchResults, { Props } from '../components/SearchResults';
+import searchResults, { Props } from '../src/components/SearchResults';
 import {
   AkNavigationItemGroup,
   quickSearchResultTypes,
 } from '@atlaskit/navigation';
-import { ResultType } from '../model/Result';
+import { ResultType } from '../src/model/Result';
 
 const { ObjectResult, ResultBase } = quickSearchResultTypes;
 

@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import GlobalQuickSearch, { Props } from '../components/GlobalQuickSearch';
+import GlobalQuickSearch, { Props } from '../src/components/GlobalQuickSearch';
 import { AkQuickSearch } from '@atlaskit/navigation';
 
 function noop() {}

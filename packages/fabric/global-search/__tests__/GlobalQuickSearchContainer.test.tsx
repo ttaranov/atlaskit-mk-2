@@ -1,9 +1,9 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import * as React from 'react';
-import GlobalQuickSearchContainer from '../components/GlobalQuickSearchContainer';
-import GlobalQuickSearch from '../components/GlobalQuickSearch';
-import { RecentSearchProvider } from '../api/RecentSearchProvider';
-import { CrossProductSearchProvider } from '../api/CrossProductSearchProvider';
+import GlobalQuickSearchContainer from '../src/components/GlobalQuickSearchContainer';
+import GlobalQuickSearch from '../src/components/GlobalQuickSearch';
+import { RecentSearchProvider } from '../src/api/RecentSearchProvider';
+import { CrossProductSearchProvider } from '../src/api/CrossProductSearchProvider';
 
 function timeout(ms = 1) {
   return new Promise(resolve => setTimeout(resolve, ms));

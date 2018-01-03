@@ -1,4 +1,6 @@
-import RecentSearchProvider, { RecentItem } from '../api/RecentSearchProvider';
+import RecentSearchProvider, {
+  RecentItem,
+} from '../src/api/RecentSearchProvider';
 import * as fetchMock from 'fetch-mock';
 
 function apiWillReturn(state: RecentItem[]) {
