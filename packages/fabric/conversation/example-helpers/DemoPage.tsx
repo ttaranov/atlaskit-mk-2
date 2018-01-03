@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { ResourceProvider } from '../src/api/ConversationResource';
-import Conversation from '../src/components/Conversation';
+import { Conversation } from '../src';
 import {
   Comment as CommentType,
   Conversation as ConversationType,
@@ -54,7 +54,7 @@ interface FileProps {
   provider: ResourceProvider;
 }
 
-const containerId = 'container:abc:abc/123';
+const containerId = 'container:abc:abc/1234567';
 
 class File extends React.Component<FileProps, { addAt?: number }> {
   constructor(props) {
@@ -89,10 +89,10 @@ class File extends React.Component<FileProps, { addAt?: number }> {
       return (
         <ConvoWrapper>
           <Conversation
-            id={conversation.id}
+            id={conversation.conversationId}
             provider={provider}
             isExpanded={false}
-            meta={{ lineNumber: index }}
+            meta={{ name, lineNumber: index }}
             containerId={containerId}
           />
         </ConvoWrapper>
@@ -177,7 +177,7 @@ export class Demo extends React.Component<
 
     return conversations.map(conversation => (
       <div
-        key={conversation.id}
+        key={conversation.conversationId}
         style={{
           borderBottom: '1px solid #ccc',
           paddingBottom: '10px',
@@ -186,7 +186,7 @@ export class Demo extends React.Component<
       >
         <Conversation
           provider={provider}
-          id={conversation.id}
+          id={conversation.conversationId}
           containerId={containerId}
         />
       </div>
@@ -196,28 +196,27 @@ export class Demo extends React.Component<
   render() {
     const { conversations } = this.state;
     const { provider } = this.props;
-    const prConverations = conversations.filter(c => !c.meta);
+    const prConversations = conversations.filter(
+      c => !Object.keys(c.meta).length,
+    );
+
     return (
       <div style={{ margin: '20px' }}>
-        {this.renderConversations(prConverations)}
-        {prConverations.length === 0 ? (
+        {this.renderConversations(prConversations)}
+        {prConversations.length === 0 ? (
           <Conversation provider={provider} containerId={containerId} />
         ) : null}
         <File
           name="main.js"
           code={DUMMY_CODE}
           provider={provider}
-          conversations={conversations.filter(
-            c => c.meta && c.meta.name === 'main.js',
-          )}
+          conversations={conversations.filter(c => c.meta.name === 'main.js')}
         />
         <File
           name="stuff.js"
           code={DUMMY_CODE}
           provider={provider}
-          conversations={conversations.filter(
-            c => c.meta && c.meta.name === 'stuff.js',
-          )}
+          conversations={conversations.filter(c => c.meta.name === 'stuff.js')}
         />
       </div>
     );

@@ -1,3 +1,11 @@
+import { createStore, Store, Action } from '../internal/store';
+import {
+  FETCH_CONVERSATIONS,
+  FETCH_CONVERSATIONS_SUCCESS,
+  ADD_COMMENT_SUCCESS,
+  CREATE_CONVERSATION_SUCCESS,
+} from '../internal/actions';
+import { reducers } from '../internal/reducers';
 import { Comment, Conversation } from '../model';
 
 export interface ConversationResourceConfig {
@@ -5,9 +13,13 @@ export interface ConversationResourceConfig {
 }
 
 export interface ResourceProvider {
-  getConversations(containerId: string): Promise<any>;
-  getConversation(id: string): Promise<Conversation>;
-  create(containerId: string, meta: any): Promise<Conversation>;
+  getConversations(containerId: string): Promise<Conversation[]>;
+  create(
+    localId: string,
+    containerId: string,
+    value: any,
+    meta: any,
+  ): Promise<Conversation>;
   addComment(
     conversationId: string,
     parentId: string,
@@ -20,14 +32,75 @@ export interface ResourceProvider {
   ): Promise<Comment>;
 }
 
-export class ConversationResource implements ResourceProvider {
+export class AbstractConversationResource implements ResourceProvider {
+  private _store: Store;
+
+  get store() {
+    return this._store;
+  }
+
+  dispatch = (action: Action) => {
+    this.store.dispatch(action);
+  };
+
+  constructor() {
+    this._store = createStore(reducers);
+  }
+
+  /**
+   * Retrieve the IDs (and meta-data) for all conversations associated with the container ID.
+   */
+  getConversations(containerId: string): Promise<Conversation[]> {
+    return Promise.reject('Not implemented');
+  }
+
+  /**
+   * Creates a new Conversation and associates it with the containerId provided.
+   */
+  create(
+    localId: string,
+    containerId: string,
+    value: any,
+    meta: any,
+  ): Promise<Conversation> {
+    return Promise.reject('Not implemented');
+  }
+
+  /**
+   * Adds a comment to a parent. ParentId can be either a conversation or another comment.
+   */
+  async addComment(
+    conversationId: string,
+    parentId: string,
+    doc: any,
+  ): Promise<Comment> {
+    return Promise.reject('Not implemented');
+  }
+
+  /**
+   * Updates a comment based on ID. Returns updated content
+   */
+  async updateComment(
+    conversationId: string,
+    commentId: string,
+    document: any,
+  ): Promise<Comment> {
+    return Promise.reject('Not implemented');
+  }
+}
+
+export class ConversationResource extends AbstractConversationResource {
   private config: ConversationResourceConfig;
 
   constructor(config: ConversationResourceConfig) {
+    super();
     this.config = config;
   }
 
-  private async makeRequest(path: string, options: RequestInit = {}) {
+  private async makeRequest<T>(
+    path: string,
+    options: RequestInit = {},
+  ): Promise<T> {
     const { url } = this.config;
     const fetchOptions = {
       credentials: 'include',
@@ -41,9 +114,7 @@ export class ConversationResource implements ResourceProvider {
     const response = await fetch(`${url}${path}`, fetchOptions as any);
 
     if (!response.ok) {
-      // tslint:disable-next-line no-console
-      console.log(response);
-      return null; // Should probably return an error
+      throw new Error(response.statusText);
     }
 
     return await response.json();
@@ -53,63 +124,79 @@ export class ConversationResource implements ResourceProvider {
    * Retrieve the IDs (and meta-data) for all conversations associated with the container ID.
    */
   async getConversations(containerId: string) {
-    return await this.makeRequest(`/conversation?containerId=${containerId}`, {
-      method: 'GET',
-    });
+    const { dispatch } = this;
+    dispatch({ type: FETCH_CONVERSATIONS });
+
+    const { values } = await this.makeRequest<{ values: Conversation[] }>(
+      `/conversation?containerId=${containerId}&expand=comments.document.adf`,
+      {
+        method: 'GET',
+      },
+    );
+
+    dispatch({ type: FETCH_CONVERSATIONS_SUCCESS, payload: values });
+
+    return values;
   }
 
   /**
-   * Get Conversation by ID
+   * Creates a new Conversation and associates it with the containerId provided.
    */
-  async getConversation(id: string): Promise<Conversation> {
-    return await this.makeRequest(`/conversation/${id}`, {
-      method: 'GET',
-    });
-  }
-
-  /**
-   * Creates a new Conversation and associates it with the
-   * containerId provided.
-   */
-  async create(containerId: string, meta: any): Promise<Conversation> {
-    return await this.makeRequest('/conversation', {
-      method: 'POST',
-      body: JSON.stringify({ containerId, meta }),
-    });
-  }
-
-  /**
-   * Adds a comment to a parent. ParentId can be either a
-   * conversation or another comment.
-   */
-  async addComment(
-    conversationId: string,
-    parentId: string,
-    document: any,
-  ): Promise<Comment> {
-    const createdBy = {
-      id: 'abc',
-      avatarUrl:
-        'https://avatar-cdn.atlassian.com/491866d8ecb0256e17e8195ab3cdb233?s=32',
-      name: 'Oscar Wallhult',
-    };
-
-    const result = await this.makeRequest(
-      `/conversation/${conversationId}/comment`,
+  async create(
+    localId: string,
+    containerId: string,
+    value: any,
+    meta: any,
+  ): Promise<Conversation> {
+    const result = await this.makeRequest<Conversation>(
+      '/conversation?expand=comments.document.adf',
       {
         method: 'POST',
         body: JSON.stringify({
-          parentId,
-          createdBy,
-          document,
+          containerId,
+          meta,
+          comment: {
+            document: {
+              adf: value,
+            },
+          },
         }),
       },
     );
 
-    return {
-      ...result,
-      document,
-    };
+    result.localId = localId;
+
+    const { dispatch } = this;
+    dispatch({ type: CREATE_CONVERSATION_SUCCESS, payload: result });
+
+    return result;
+  }
+
+  /**
+   * Adds a comment to a parent. ParentId can be either a conversation or another comment.
+   */
+  async addComment(
+    conversationId: string,
+    parentId: string,
+    doc: any,
+  ): Promise<Comment> {
+    const result = await this.makeRequest<Comment>(
+      `/conversation/${conversationId}/comment?expand=document.adf`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          parentId,
+          document: {
+            adf: doc,
+          },
+        }),
+      },
+    );
+
+    const { dispatch } = this;
+    dispatch({ type: ADD_COMMENT_SUCCESS, payload: result });
+
+    return result;
   }
 
   /**
@@ -120,7 +207,7 @@ export class ConversationResource implements ResourceProvider {
     commentId: string,
     document: any,
   ): Promise<Comment> {
-    const result = await this.makeRequest(
+    const result = await this.makeRequest<Comment>(
       `/conversation/${conversationId}/comment/${commentId}`,
       {
         method: 'PUT',

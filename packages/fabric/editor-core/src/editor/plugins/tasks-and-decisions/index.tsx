@@ -44,11 +44,19 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
     ];
   },
 
-  secondaryToolbarComponent(editorView) {
+  secondaryToolbarComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    disabled,
+  ) {
     return (
       <TaskDecisionToolbarGroup>
-        <ToolbarDecision editorView={editorView} />
-        <ToolbarTask editorView={editorView} />
+        <ToolbarDecision editorView={editorView} isDisabled={disabled} />
+        <ToolbarTask editorView={editorView} isDisabled={disabled} />
       </TaskDecisionToolbarGroup>
     );
   },

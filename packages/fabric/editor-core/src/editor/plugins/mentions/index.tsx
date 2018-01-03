@@ -79,8 +79,22 @@ const mentionsPlugin: EditorPlugin = {
     );
   },
 
-  secondaryToolbarComponent(editorView) {
-    return <ToolbarMention editorView={editorView} pluginKey={pluginKey} />;
+  secondaryToolbarComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    disabled,
+  ) {
+    return (
+      <ToolbarMention
+        editorView={editorView}
+        pluginKey={pluginKey}
+        isDisabled={disabled}
+      />
+    );
   },
 };
 

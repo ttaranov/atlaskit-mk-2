@@ -391,7 +391,13 @@ function updateLinkOnChange(
         href = newNodeBefore.text;
       }
     } else if (
-      oldLinkMarkBefore.attrs.href === normalizeUrl(oldNodeBefore.text || '')
+      // The if else condition takes care of condition where text was linkified as it was valid link,
+      // even if a href is not explicitly added.
+      // In those cases if replaced text is no more a valid link it should be de-linkified.
+      oldLinkMarkBefore.attrs.href === normalizeUrl(oldNodeBefore.text || '') &&
+      // The following condition ensures that delinkification is done only if
+      // the new replaced text does not adds a new mark. Ref: #ED-3369.
+      oldLinkMarkBefore === newLinkMarkBefore
     ) {
       hasSameUrlAndTitle = true;
       // End of a link https://google.com/<|>
@@ -459,11 +465,18 @@ export const createPlugin = (schema: Schema, editorProps: EditorProps = {}) =>
         const { clipboardData } = event;
         const html = clipboardData && clipboardData.getData('text/html');
         if (html) {
+          const sizeBeforePaste = view.state.doc.nodeSize;
           const contentSlices = linkifyContent(view.state.schema, slice);
           if (contentSlices) {
             const { dispatch } = view;
             dispatch(view.state.tr.replaceSelection(contentSlices));
-            dispatch(view.state.tr.setStoredMarks([]));
+            const sizeAfterPaste = view.state.doc.nodeSize;
+            // Following if condition is to ensure that second transaction is executed only if first one
+            // is successful. Paste can fail if size of pasted content is larger then maxContentSize of the editor.
+            // In that case execution of second transaction is not required and can create wrong results. Ref: #ED-3189.
+            if (sizeBeforePaste !== sizeAfterPaste) {
+              dispatch(view.state.tr.setStoredMarks([]));
+            }
             return true;
           }
         }
