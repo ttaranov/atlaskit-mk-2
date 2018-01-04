@@ -12,5 +12,6 @@
 */
 
 require('./array-prototype-includes');
+require('./array-prototype-find');
 require('./object-assign');
 require('./string-prototype-includes');
