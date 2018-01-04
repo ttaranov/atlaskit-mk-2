@@ -7,7 +7,7 @@ import Button from '@atlaskit/button';
 import { Content, ButtonGroup } from './styles';
 import imageUploadHandler from './imageUpload';
 
-import { MentionResource } from '../src';
+import { MentionResource, EmojiResource } from '../src';
 import { toJSON } from '../src/utils';
 import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 
@@ -16,15 +16,15 @@ const rejectedPromise = Promise.reject(
 );
 const pendingPromise = new Promise<any>(() => {});
 
+const testCloudId = 'f7ebe2c0-0309-4687-b913-41d422f2110b';
 const providers = {
   mentionProvider: {
     resolved: Promise.resolve(mentionStoryData.resourceProvider),
-    'resolved 2': Promise.resolve(
+    external: Promise.resolve(
       new MentionResource({
-        url:
-          'https://pf-mentions-service.staging.atlassian.io/mentions/f7ebe2c0-0309-4687-b913-41d422f2110b',
+        url: `https://api-private.stg.atlassian.com/mentions/${testCloudId}`,
         containerId: 'b0d035bd-9b98-4386-863b-07286c34dc14',
-        productId: 'hipchat',
+        productId: 'chat',
       }),
     ),
     pending: pendingPromise,
@@ -33,6 +33,19 @@ const providers = {
   },
   emojiProvider: {
     resolved: emojiStoryData.getEmojiResource({ uploadSupported: true }),
+    external: Promise.resolve(
+      new EmojiResource({
+        providers: [
+          {
+            url: 'https://api-private.stg.atlassian.com/emoji/standard',
+          },
+          {
+            url: `https://api-private.stg.atlassian.com/emoji/${testCloudId}/site`,
+          },
+        ],
+        allowUpload: true,
+      }),
+    ),
     pending: pendingPromise,
     rejected: rejectedPromise,
     undefined: undefined,
@@ -101,7 +114,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
   };
 
   private toggleDisabled = () =>
-    this.setState(prevState => ({ editorEnabled: !prevState.editorEnabled }))
+    this.setState(prevState => ({ editorEnabled: !prevState.editorEnabled }));
 
   private onChange = editorView => {
     this.setState({
@@ -127,9 +140,9 @@ export default class ToolsDrawer extends React.Component<any, State> {
           logged into{' '}
           <a href="https://id.stg.internal.atlassian.com" target="_blank">
             staging Identity server
-          </a>
+          </a>{' '}
           and run your browser{' '}
-          <a href="https://stackoverflow.com/a/42024918" target="_blank">
+          <a href="https://stackoverflow.com/a/43996863/658086" target="_blank">
             with CORS disabled
           </a>.
         </div>
@@ -144,8 +157,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
               emojiProvider: providers.emojiProvider[emojiProvider],
               activityProvider: providers.activityProvider[activityProvider],
               onChange: this.onChange,
-            })
-        }
+            })}
         <div className="toolsDrawer">
           {Object.keys(providers).map(providerKey => (
             <div key={providerKey}>
@@ -175,10 +187,18 @@ export default class ToolsDrawer extends React.Component<any, State> {
           ))}
           <div>
             <ButtonGroup>
-              <Button onClick={this.toggleDisabled} theme="dark" spacing="compact">
-                { this.state.editorEnabled ? 'Disable editor' : 'Enable editor' }
+              <Button
+                onClick={this.toggleDisabled}
+                theme="dark"
+                spacing="compact"
+              >
+                {this.state.editorEnabled ? 'Disable editor' : 'Enable editor'}
               </Button>
-              <Button onClick={this.reloadEditor} theme="dark" spacing="compact">
+              <Button
+                onClick={this.reloadEditor}
+                theme="dark"
+                spacing="compact"
+              >
                 Reload Editor
               </Button>
             </ButtonGroup>
