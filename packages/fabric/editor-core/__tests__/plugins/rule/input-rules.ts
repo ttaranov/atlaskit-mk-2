@@ -6,6 +6,8 @@ import {
   makeEditor,
   p,
   code_block,
+  hardBreak,
+  blockquote,
 } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../src/analytics';
@@ -39,6 +41,19 @@ describe('inputrules', () => {
       );
     });
 
+    it('should convert "***" in the start of a line after shift+enter to a horizontal rule', () => {
+      let trackEvent = jest.fn();
+      analyticsService.trackEvent = trackEvent;
+      const { editorView, sel } = editor(doc(p('test', hardBreak(), '{<>}')));
+
+      insertText(editorView, '***', sel);
+
+      expect(editorView.state.doc).toEqualDocument(doc(p('test'), hr, p()));
+      expect(trackEvent).toHaveBeenCalledWith(
+        'atlassian.editor.format.horizontalrule.autoformatting',
+      );
+    });
+
     it('should convert "---" at the start of a line to horizontal rule', () => {
       let trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
@@ -47,6 +62,38 @@ describe('inputrules', () => {
       insertText(editorView, '---', sel);
 
       expect(editorView.state.doc).toEqualDocument(doc(p(), hr, p()));
+      expect(trackEvent).toHaveBeenCalledWith(
+        'atlassian.editor.format.horizontalrule.autoformatting',
+      );
+    });
+
+    it('should not convert "---" inside a block to horizontal rule', () => {
+      let trackEvent = jest.fn();
+      analyticsService.trackEvent = trackEvent;
+      const { editorView, sel } = editor(doc(p(blockquote(p('text{<>}')))));
+
+      insertText(editorView, '---', sel);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(blockquote(p('text---')))),
+      );
+      expect(trackEvent).not.toHaveBeenCalledWith(
+        'atlassian.editor.format.horizontalrule.autoformatting',
+      );
+    });
+
+    it('should convert "---" in the start of a line after shift+enter to a horizontal rule', () => {
+      let trackEvent = jest.fn();
+      analyticsService.trackEvent = trackEvent;
+      const { editorView, sel } = editor(
+        doc(p('test', hardBreak(), '{<>}test')),
+      );
+
+      insertText(editorView, '---', sel);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('test'), hr, p('test')),
+      );
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.horizontalrule.autoformatting',
       );
