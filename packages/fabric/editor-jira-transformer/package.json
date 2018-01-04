@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-jira-transformer",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Editor JIRA transformer's",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
