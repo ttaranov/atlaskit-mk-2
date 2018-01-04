@@ -2,13 +2,15 @@ import * as React from 'react';
 import { GlobalQuickSearch } from '../src/index';
 import BasicNavigation from '../example-helpers/BasicNavigation';
 import * as fetchMock from 'fetch-mock';
+import {
+  peopleData,
+  recentData,
+  crossProductData,
+} from '../example-helpers/mockData';
 
-// tslint:disable-next-line
-const recentResponse = require('../example-helpers/recent.json');
-// tslint:disable-next-line
-const searchResponse = require('../example-helpers/search.json');
-// tslint:disable-next-line
-const peopleResponse = require('../example-helpers/people.json');
+const recentResponse = recentData();
+const searchResponse = crossProductData();
+const peopleResponse = peopleData();
 
 function delay<T>(millis: number, value?: T): Promise<T> {
   return new Promise(resolve => setTimeout(() => resolve(value), millis));

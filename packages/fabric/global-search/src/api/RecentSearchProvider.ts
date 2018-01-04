@@ -1,7 +1,7 @@
 import { Result, ResultType } from '../model/Result';
 import makeRequest from './makeRequest';
 
-interface RecentItemsResponse {
+export interface RecentItemsResponse {
   data: RecentItem[];
 }
 
