@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 4.0.0
+- [major] New API [41633b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41633b9)
+
 ## 3.0.11
 
 ## 3.0.10

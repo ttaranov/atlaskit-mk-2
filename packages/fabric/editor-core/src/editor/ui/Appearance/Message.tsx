@@ -34,6 +34,7 @@ export interface MessageEditorProps {
 // tslint:disable-next-line:variable-name
 const MessageEditor: any = styled.div`
   display: flex;
+  align-items: center;
   border: 1px solid
     ${(props: MessageEditorProps) =>
       props.isMaxContentSizeReached ? '#FF8F73' : '#C1C7D0'};
@@ -138,7 +139,7 @@ export default class Editor extends React.Component<
         </ContentArea>
         <SecondaryToolbarContainer>
           <PluginSlot
-            disabled={disabled}
+            disabled={disabled || maxContentSizeReached}
             editorView={editorView}
             eventDispatcher={eventDispatcher}
             providerFactory={providerFactory}
