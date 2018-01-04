@@ -13,6 +13,11 @@ export interface Props {
   containerId: string;
   comments?: CommentType[];
   onAddComment?: (conversationId: string, parentId: string, value: any) => void;
+  onUpdateComment?: (
+    conversationId: string,
+    commentId: string,
+    value: any,
+  ) => void;
   onCreateConversation?: (
     localId: string,
     containerId: string,
@@ -28,7 +33,12 @@ export interface Props {
 
 export default class Conversation extends React.PureComponent<Props> {
   private renderComments() {
-    const { comments, conversation, onAddComment } = this.props;
+    const {
+      comments,
+      conversation,
+      onAddComment,
+      onUpdateComment,
+    } = this.props;
 
     if (!conversation) {
       return;
@@ -42,6 +52,7 @@ export default class Conversation extends React.PureComponent<Props> {
         conversationId={conversationId}
         comment={comment}
         onAddComment={onAddComment}
+        onUpdateComment={onUpdateComment}
       />
     ));
   }

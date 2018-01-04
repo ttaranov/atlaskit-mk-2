@@ -1,7 +1,11 @@
 import * as React from 'react';
 import Conversation from '../components/Conversation';
 import { connect, withProvider, Dispatch } from '../internal/connect';
-import { addComment, createConversation } from '../internal/actions';
+import {
+  addComment,
+  updateComment,
+  createConversation,
+} from '../internal/actions';
 import { getComments, getConversation } from '../internal/selectors';
 import { uuid } from '../internal/uuid';
 import { State } from '../internal/store';
@@ -27,6 +31,10 @@ const mapStateToProps = (state: State, ownProps: Props) => {
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   onAddComment(conversationId: string, parentId: string, value: any) {
     dispatch(addComment(conversationId, parentId, value));
+  },
+
+  onUpdateComment(conversationId: string, commentId: string, value: any) {
+    dispatch(updateComment(conversationId, commentId, value));
   },
 
   onCreateConversation(

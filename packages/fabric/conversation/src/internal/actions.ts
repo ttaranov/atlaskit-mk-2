@@ -1,10 +1,13 @@
 import { ResourceProvider } from '../api/ConversationResource';
 
 export const FETCH_CONVERSATIONS = 'fetchConversations';
-export const FETCH_CONVERSATIONS_SUCCESS = 'fetchConversationsSucess';
+export const FETCH_CONVERSATIONS_SUCCESS = 'fetchConversationsSuccess';
 
 export const ADD_COMMENT = 'addComment';
-export const ADD_COMMENT_SUCCESS = 'addCommentSucess';
+export const ADD_COMMENT_SUCCESS = 'addCommentSuccess';
+
+export const UPDATE_COMMENT = 'updateComment';
+export const UPDATE_COMMENT_SUCCESS = 'updateCommentSuccess';
 
 export const CREATE_CONVERSATION = 'createConversation';
 export const CREATE_CONVERSATION_SUCCESS = 'createConversationSuccess';
@@ -15,6 +18,14 @@ export const addComment = (
   value: any,
 ) => async (provider: ResourceProvider) => {
   provider.addComment(conversationId, parentId, value);
+};
+
+export const updateComment = (
+  conversationId: string,
+  commentId: string,
+  value: any,
+) => async (provider: ResourceProvider) => {
+  provider.updateComment(conversationId, commentId, value);
 };
 
 export const createConversation = (
