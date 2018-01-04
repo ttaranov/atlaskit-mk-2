@@ -3,7 +3,6 @@ import {
   BlockTypeState,
 } from '../../../src/plugins/block-type';
 import {
-  sendKeyToPm,
   blockquote,
   br,
   code_block,
@@ -189,10 +188,10 @@ describe('inputrules', () => {
   describe('codeblock rule', () => {
     describe('when node is convertable to code block', () => {
       describe('when three backticks are entered followed by space', () => {
-        it('should convert "``` " to a code block', () => {
+        it('should convert "```" to a code block', () => {
           const { editorView, sel } = editor(doc(p('{<>}hello', br, 'world')));
 
-          insertText(editorView, '``` ', sel);
+          insertText(editorView, '```', sel);
           expect(editorView.state.doc).toEqualDocument(
             doc(code_block()('hello\nworld')),
           );
@@ -202,12 +201,12 @@ describe('inputrules', () => {
           editorView.destroy();
         });
 
-        it('should convert "``` " after shift+enter to a code block', () => {
+        it('should convert "```" after shift+enter to a code block', () => {
           const { editorView, sel } = editor(
             doc(p('test', hardBreak(), '{<>}')),
           );
 
-          insertText(editorView, '``` ', sel);
+          insertText(editorView, '```', sel);
           expect(editorView.state.doc).toEqualDocument(
             doc(p('test'), code_block()()),
           );
@@ -217,53 +216,14 @@ describe('inputrules', () => {
           editorView.destroy();
         });
 
-        it('should convert "```java " to a code block with language java', () => {
-          const { editorView, sel } = editor(doc(p('{<>}hello', br, 'world')));
-
-          insertText(editorView, '```java ', sel);
-          expect(editorView.state.doc).toEqualDocument(
-            doc(code_block({ language: 'java' })('hello\nworld')),
-          );
-          editorView.destroy();
-        });
-
-        it('should convert "``` " in middle of paragraph to a code block', () => {
-          const { editorView, sel } = editor(doc(p('code ```{<>}')));
-          insertText(editorView, ' ', sel);
+        it('should convert "```" in middle of paragraph to a code block', () => {
+          const { editorView, sel } = editor(doc(p('code ``{<>}')));
+          insertText(editorView, '`', sel);
           expect(editorView.state.doc).toEqualDocument(
             doc(code_block()('code ')),
           );
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.codeblock.autoformatting',
-          );
-        });
-
-        it('should convert "``` " in middle of paragraph to a code block and set language correctly', () => {
-          const { editorView, sel } = editor(doc(p('code ```java{<>}')));
-          insertText(editorView, ' ', sel);
-          expect(editorView.state.doc).toEqualDocument(
-            doc(code_block({ language: 'java' })('code ')),
-          );
-          expect(trackEvent).toHaveBeenCalledWith(
-            'atlassian.editor.format.codeblock.autoformatting',
-          );
-        });
-      });
-
-      describe('when there are more than 3 backticks', () => {
-        it('should convert "`````js" to a code block with attr "language: js"', () => {
-          const { editorView } = editor(doc(p('`````js{<>}')));
-          sendKeyToPm(editorView, 'Enter');
-          expect(editorView.state.doc).toEqualDocument(
-            doc(code_block({ language: 'js' })('')),
-          );
-          editorView.destroy();
-        });
-        it('should convert "code `````js" to a code block with attr "language: js" in middle of paragraph', () => {
-          const { editorView } = editor(doc(p('code `````js{<>}')));
-          sendKeyToPm(editorView, 'Enter');
-          expect(editorView.state.doc).toEqualDocument(
-            doc(code_block({ language: 'js' })('code ')),
           );
         });
       });
