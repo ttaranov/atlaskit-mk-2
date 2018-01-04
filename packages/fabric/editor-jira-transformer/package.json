@@ -16,7 +16,8 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "@atlaskit/editor-common": "^5.2.0",
-    "prosemirror-model": "^1.0.0"
+    "prosemirror-model": "^1.0.0",
+    "collapse-whitespace": "^1.1.6"
   },
   "peerDependencies": {
     "react": "^15.6.1"
