@@ -116,7 +116,8 @@ export default class GlobalQuickSearchContainer extends React.Component<
       ]);
     } catch (error) {
       // something bad happened. handle it. analytics
-      // console.error('ERROR ERROR ERROR', error);
+      // tslint:disable
+      console.error('Search error:', error);
     } finally {
       this.setState({
         isLoading: false,
