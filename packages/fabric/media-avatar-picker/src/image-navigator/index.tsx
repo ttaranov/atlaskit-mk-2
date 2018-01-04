@@ -64,16 +64,19 @@ export interface State {
 }
 
 export class ImageNavigator extends Component<Props, State> {
-  state = {
-    imageWidth: undefined,
-    imagePos: { x: 0, y: 0 },
-    minScale: 1,
-    scale: 1,
-    isDragging: false,
-    imageDragStartPos: { x: 0, y: 0 },
-    fileImageSource: '',
-    isDroppingFile: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      imageWidth: undefined,
+      imagePos: { x: 0, y: 0 },
+      minScale: 1,
+      scale: 1,
+      isDragging: false,
+      imageDragStartPos: { x: 0, y: 0 },
+      fileImageSource: '',
+      isDroppingFile: false,
+    };
+  }
 
   componentWillMount() {
     document.addEventListener('mousemove', this.onMouseMove);
