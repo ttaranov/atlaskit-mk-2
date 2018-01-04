@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
-type State = { value: number | null };
+type State = { active: boolean };
 
 export default class SpotlightDialogWidthExample extends Component<{}, State> {
   state: State = { active: false };
