@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.18.0
+- [minor] add version to editor.start analytics [3b4c21b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b4c21b)
+- [minor] add name and version to editor.start analytics [d8d2388](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d8d2388)
+
 ## 60.17.6
 - [patch] Improve emoji and mention providers in editor's examples [bd68138](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd68138)
 
