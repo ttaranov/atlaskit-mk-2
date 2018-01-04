@@ -26,15 +26,14 @@
     "@atlaskit/spinner": "^4.0.2",
     "@atlaskit/theme": "^2.0.1",
     "classnames": "^2.2.5",
-    "react": "^15.6.1",
     "styled-components": "^1.4.6"
   },
   "peerDependencies": {
-    "react": "^15.3.2 || ^16.0.0"
+    "react": "^15.6.1"
   },
   "devDependencies": {
     "@atlaskit/avatar": "^8.0.9",
-    "@atlaskit/docs": "^2.0.0",
+    "@atlaskit/docs": "^2.1.0",
     "@atlaskit/tooltip": "^8.0.12",
     "enzyme": "^2.9.1"
   }
