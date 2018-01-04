@@ -74,6 +74,12 @@ const renderConfluence = (results: Result[], query: string) => (
   </AkNavigationItemGroup>
 );
 
+const renderPeople = (results: Result[], query: string) => (
+  <AkNavigationItemGroup title="People" key="people">
+    {resultsToComponents(results)}
+  </AkNavigationItemGroup>
+);
+
 function take(array: Array<any>, n: number) {
   return array.slice(0, n);
 }
@@ -84,6 +90,7 @@ export interface Props {
   recentResults: Result[];
   jiraResults: Result[];
   confluenceResults: Result[];
+  peopleResults: Result[];
 }
 
 // TODO: We can only make this a react component once quick-search is fixed. Currently, AkNavigationItemGroup must be a direct child of
@@ -97,6 +104,7 @@ export default function searchResults(
     recentResults,
     jiraResults,
     confluenceResults,
+    peopleResults,
   } = props;
 
   if (query.length < 2) {
@@ -107,5 +115,6 @@ export default function searchResults(
     renderRecent(take(recentResults, 5)),
     renderJira(take(jiraResults, 5), query),
     renderConfluence(take(confluenceResults, 5), query),
+    renderPeople(take(peopleResults, 3), query),
   ];
 }

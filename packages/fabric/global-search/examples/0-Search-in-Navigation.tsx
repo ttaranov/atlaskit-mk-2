@@ -7,6 +7,8 @@ import * as fetchMock from 'fetch-mock';
 const recentResponse = require('../example-helpers/recent.json');
 // tslint:disable-next-line
 const searchResponse = require('../example-helpers/search.json');
+// tslint:disable-next-line
+const peopleResponse = require('../example-helpers/people.json');
 
 function delay<T>(millis: number, value?: T): Promise<T> {
   return new Promise(resolve => setTimeout(() => resolve(value), millis));
@@ -36,7 +38,30 @@ function mockCrossProductSearchApi() {
     let query = parts[1];
     const results = doSearch(decodeURIComponent(query));
 
-    return delay(600, results);
+    return delay(650, results);
+  });
+}
+
+function mockPeopleApi() {
+  function doSearch(term) {
+    term = term.toLowerCase();
+    const items = peopleResponse.data.AccountCentricUserSearch.filter(item => {
+      return item.fullName.toLowerCase().indexOf(term) > -1;
+    });
+
+    return {
+      data: {
+        AccountCentricUserSearch: items,
+      },
+    };
+  }
+
+  fetchMock.post('http://localhost:8080/graphql', (url, opts) => {
+    const body = JSON.parse(opts.body);
+    const query = body.variables.displayName;
+    const results = doSearch(query);
+
+    return delay(500, results);
   });
 }
 
@@ -44,6 +69,7 @@ export default class extends React.Component {
   componentWillMount() {
     mockRecentApi();
     mockCrossProductSearchApi();
+    mockPeopleApi();
   }
 
   componentWillUnmount() {

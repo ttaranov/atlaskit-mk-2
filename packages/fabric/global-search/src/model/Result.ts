@@ -4,7 +4,7 @@ export interface Result {
   name: string;
   href: string;
   avatarUrl: string;
-  [key: string]: any;
+  containerName?: string;
 }
 
 // Use string enum here because the type prop in ResultBase is a string and used in callbacks/analytics

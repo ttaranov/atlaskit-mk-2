@@ -1,4 +1,5 @@
 import { Result, ResultType } from '../model/Result';
+import makeRequest from './makeRequest';
 
 interface RecentItemsResponse {
   data: RecentItem[];
@@ -17,7 +18,7 @@ export interface RecentSearchProvider {
   search(query: string): Promise<Result[]>;
 }
 
-export default class RecentSearchProviderImpl {
+export default class RecentSearchProviderImpl implements RecentSearchProvider {
   private url: string;
   private cloudId: string;
   private getRecentRequestPromise: Promise<RecentItemsResponse>;
@@ -61,24 +62,6 @@ export default class RecentSearchProviderImpl {
     const response = await this.getRecentRequestPromise;
     return response.data;
   }
-}
-
-async function makeRequest(url: string, path: string): Promise<any> {
-  const fetchOptions: RequestInit = {
-    credentials: 'include',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  };
-
-  const response = await fetch(`${url}${path}`, fetchOptions);
-
-  if (!response.ok) {
-    throw new Error(`${response.status} ${response.statusText}`);
-  }
-
-  return await response.json();
 }
 
 function recentItemToResult(recentItem: RecentItem): Result {

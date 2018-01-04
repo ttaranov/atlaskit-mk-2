@@ -3,13 +3,16 @@ import * as React from 'react';
 import GlobalQuickSearchContainer, {
   Props,
 } from '../src/components/GlobalQuickSearchContainer';
-import GlobalQuickSearch from '../src/components/GlobalQuickSearch';
+import GlobalQuickSearch, {
+  Props as GlobalQuickSearchProps,
+} from '../src/components/GlobalQuickSearch';
 import { RecentSearchProvider } from '../src/api/RecentSearchProvider';
 import {
   CrossProductSearchProvider,
   CrossProductResults,
 } from '../src/api/CrossProductSearchProvider';
 import { Result, ResultType } from '../src/model/Result';
+import { PeopleSearchProvider } from '../src/api/PeopleSearchProvider';
 
 function delay<T>(millis: number = 1, value?: T): Promise<T> {
   return new Promise(resolve => setTimeout(() => resolve(value), millis));
@@ -45,6 +48,12 @@ const noResultsCrossProductSearchProvider: CrossProductSearchProvider = {
   },
 };
 
+const noResultsPeopleSearchProvider: PeopleSearchProvider = {
+  search(query: string) {
+    return Promise.resolve([]);
+  },
+};
+
 function makeResult(partial?: Partial<Result>): Result {
   return {
     resultId: '' + Math.random,
@@ -60,6 +69,7 @@ function render(partialProps?: Partial<Props>) {
   const props: Props = {
     recentSearchProvider: noResultsRecentSearchProvider,
     crossProductSearchProvider: noResultsCrossProductSearchProvider,
+    peopleSearchProvider: noResultsPeopleSearchProvider,
     debounceMillis: 1,
     ...partialProps,
   };
@@ -101,6 +111,85 @@ describe('GlobalQuickSearchContainer', () => {
 
     searchFor('da', wrapper);
     expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBeTruthy();
+  });
+
+  it('should render recent results', async () => {
+    const wrapper = render({
+      recentSearchProvider: {
+        search() {
+          return Promise.resolve([makeResult()]);
+        },
+        getRecentItems() {
+          return Promise.resolve([]);
+        },
+      },
+    });
+
+    searchFor('query', wrapper);
+    await delay();
+    expect(wrapper.find(GlobalQuickSearch).prop('recentResults')).toHaveLength(
+      1,
+    );
+  });
+
+  it('should render recently viewed items', async () => {
+    const mockRecentProvider = {
+      getRecentItems() {
+        return Promise.resolve([makeResult()]);
+      },
+      search(query: string) {
+        return Promise.resolve([]);
+      },
+    };
+
+    const wrapper = render({
+      recentSearchProvider: mockRecentProvider,
+    });
+
+    const getRecentlyViewedItems = wrapper
+      .find(GlobalQuickSearch)
+      .prop('getRecentlyViewedItems');
+    getRecentlyViewedItems();
+    await delay();
+    expect(
+      wrapper.find(GlobalQuickSearch).prop('recentlyViewedItems'),
+    ).toHaveLength(1);
+  });
+
+  it('should render jira and confluence results', async () => {
+    const wrapper = render({
+      crossProductSearchProvider: {
+        search() {
+          return Promise.resolve({
+            jira: [makeResult()],
+            confluence: [makeResult()],
+          });
+        },
+      },
+    });
+
+    searchFor('query', wrapper);
+    await delay();
+    expect(wrapper.find(GlobalQuickSearch).prop('jiraResults')).toHaveLength(1);
+    expect(
+      wrapper.find(GlobalQuickSearch).prop('confluenceResults'),
+    ).toHaveLength(1);
+  });
+
+  it('should render people results', async () => {
+    const wrapper = render({
+      peopleSearchProvider: {
+        search() {
+          return Promise.resolve([makeResult()]);
+        },
+      },
+    });
+
+    searchFor('query', wrapper);
+    await delay();
+    expect(wrapper.find(GlobalQuickSearch).prop('peopleResults')).toHaveLength(
+      1,
+    );
   });
 
   it('should perform searches in parallel', async () => {
@@ -190,28 +279,5 @@ describe('GlobalQuickSearchContainer', () => {
 
     const jiraResults = wrapper.find(GlobalQuickSearch).prop('jiraResults');
     expect(jiraResults[0].name).toBe('current result');
-  });
-
-  it('should get recent items', async () => {
-    const getRecentItemsMock = jest.fn();
-
-    const mockRecentProvider = {
-      getRecentItems: getRecentItemsMock,
-      search(query: string) {
-        return Promise.resolve([]);
-      },
-    };
-
-    const wrapper = render({
-      recentSearchProvider: mockRecentProvider,
-      crossProductSearchProvider: noResultsCrossProductSearchProvider,
-    });
-
-    const getRecentlyViewedItems = wrapper
-      .find(GlobalQuickSearch)
-      .prop('getRecentlyViewedItems');
-
-    getRecentlyViewedItems();
-    expect(getRecentItemsMock).toHaveBeenCalledTimes(1);
   });
 });

@@ -7,12 +7,13 @@ import {
 } from '@atlaskit/navigation';
 import { ResultType } from '../src/model/Result';
 
-const { ObjectResult, ResultBase } = quickSearchResultTypes;
+const { ObjectResult, PersonResult, ResultBase } = quickSearchResultTypes;
 
 enum Group {
   Recent = 0,
   Jira = 1,
   Confluence = 2,
+  People = 3,
 }
 
 function findGroup(group: Group, wrapper: ShallowWrapper) {
@@ -29,6 +30,7 @@ describe('SearchResults', () => {
       recentResults: [],
       jiraResults: [],
       confluenceResults: [],
+      peopleResults: [],
       ...partialProps,
     };
 
@@ -142,6 +144,27 @@ describe('SearchResults', () => {
 
     expect(group.prop('title')).toEqual('Confluence pages and blogs');
     expect(group.find(ObjectResult).prop('name')).toEqual('name');
+  });
+
+  it('should render people results when there are results', () => {
+    const props = {
+      query: 'na',
+      peopleResults: [
+        {
+          type: ResultType.Person,
+          name: 'name',
+          href: 'href',
+          avatarUrl: 'avatarUrl',
+          resultId: 'p1',
+        },
+      ],
+    };
+
+    const wrapper = render(props);
+    const group = findGroup(Group.People, wrapper);
+
+    expect(group.prop('title')).toEqual('People');
+    expect(group.find(PersonResult).prop('name')).toEqual('name');
   });
 
   it('should render a jira result item to search jira', () => {

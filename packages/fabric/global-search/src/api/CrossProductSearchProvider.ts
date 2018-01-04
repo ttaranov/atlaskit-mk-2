@@ -1,4 +1,5 @@
 import { Result, ResultType } from '../model/Result';
+import makeRequest from './makeRequest';
 
 export interface CrossProductResults {
   jira: Result[];
@@ -57,25 +58,6 @@ export default class CrossProductSearchProviderImpl
       confluence: confResults,
     });
   }
-}
-
-// TODO dedupe
-async function makeRequest(url: string, path: string): Promise<any> {
-  const fetchOptions: RequestInit = {
-    credentials: 'include',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  };
-
-  const response = await fetch(`${url}${path}`, fetchOptions);
-
-  if (!response.ok) {
-    throw new Error(`${response.status} ${response.statusText}`);
-  }
-
-  return await response.json();
 }
 
 function searchItemToResult(searchItem: SearchItem): Result {

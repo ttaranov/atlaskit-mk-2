@@ -15,6 +15,7 @@ function render(partialProps: Partial<Props>) {
     recentResults: [],
     jiraResults: [],
     confluenceResults: [],
+    peopleResults: [],
     ...partialProps,
   };
 

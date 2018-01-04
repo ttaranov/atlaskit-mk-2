@@ -14,6 +14,7 @@ export interface Props {
   recentResults: Result[];
   jiraResults: Result[];
   confluenceResults: Result[];
+  peopleResults: Result[];
 }
 
 export default class GlobalQuickSearch extends React.Component<Props> {
@@ -34,6 +35,7 @@ export default class GlobalQuickSearch extends React.Component<Props> {
       recentResults,
       jiraResults,
       confluenceResults,
+      peopleResults,
     } = this.props;
 
     return (
@@ -48,6 +50,7 @@ export default class GlobalQuickSearch extends React.Component<Props> {
           recentResults,
           jiraResults,
           confluenceResults,
+          peopleResults,
         })}
       </AkQuickSearch>
     );

@@ -8,10 +8,12 @@ import {
   CrossProductResults,
 } from '../api/CrossProductSearchProvider';
 import { Result } from '../model/Result';
+import { PeopleSearchProvider } from '../api/PeopleSearchProvider';
 
 export interface Props {
   recentSearchProvider: RecentSearchProvider;
   crossProductSearchProvider: CrossProductSearchProvider;
+  peopleSearchProvider: PeopleSearchProvider;
   debounceMillis?: number; // for testing only
 }
 
@@ -22,6 +24,7 @@ export interface State {
   recentResults: Result[];
   jiraResults: Result[];
   confluenceResults: Result[];
+  peopleResults: Result[];
 }
 
 export default class GlobalQuickSearchContainer extends React.Component<
@@ -42,6 +45,7 @@ export default class GlobalQuickSearchContainer extends React.Component<
       recentResults: [],
       jiraResults: [],
       confluenceResults: [],
+      peopleResults: [],
     };
   }
 
@@ -87,6 +91,18 @@ export default class GlobalQuickSearchContainer extends React.Component<
     return results;
   }
 
+  async searchPeople(query: string): Promise<Result[]> {
+    const results = await this.props.peopleSearchProvider.search(query);
+
+    if (this.state.query === query) {
+      this.setState({
+        peopleResults: results,
+      });
+    }
+
+    return results;
+  }
+
   doSearch = async (query: string) => {
     try {
       this.setState({
@@ -96,6 +112,7 @@ export default class GlobalQuickSearchContainer extends React.Component<
       await Promise.all([
         this.searchRecent(query),
         this.searchCrossProduct(query),
+        this.searchPeople(query),
       ]);
     } catch (error) {
       // something bad happened. handle it. analytics
