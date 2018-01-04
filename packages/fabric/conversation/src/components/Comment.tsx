@@ -18,6 +18,11 @@ export interface Props {
 
   // Dispatch
   onAddComment?: (conversationId: string, parentId: string, value: any) => void;
+  onUpdateComment?: (
+    conversationId: string,
+    commentId: string,
+    value: any,
+  ) => void;
 }
 
 export interface State {
@@ -29,7 +34,9 @@ export default class Comment extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      isEditing: false,
+    };
   }
 
   private onReply = () => {
@@ -58,6 +65,32 @@ export default class Comment extends React.PureComponent<Props, State> {
     });
   };
 
+  private onEdit = () => {
+    this.setState({
+      isEditing: true,
+    });
+  };
+
+  private onSaveEdit = async (value: any) => {
+    const { conversationId, comment, onUpdateComment } = this.props;
+
+    if (!onUpdateComment) {
+      return;
+    }
+
+    onUpdateComment(conversationId, comment.commentId, value);
+
+    this.setState({
+      isEditing: false,
+    });
+  };
+
+  private onCancelEdit = () => {
+    this.setState({
+      isEditing: false,
+    });
+  };
+
   private getContent() {
     const { comment } = this.props;
     const { isEditing } = this.state;
@@ -65,11 +98,11 @@ export default class Comment extends React.PureComponent<Props, State> {
     if (isEditing) {
       return (
         <Editor
-          defaultValue={comment.document}
+          defaultValue={comment.document.adf}
           isExpanded={true}
-          // TODO: Add these back! (ED-3471)
-          // onSave={this.onSaveEdit}
-          // onCancel={this.onCancelEdit}
+          isEditing={isEditing}
+          onSave={this.onSaveEdit}
+          onCancel={this.onCancelEdit}
         />
       );
     }
@@ -79,24 +112,27 @@ export default class Comment extends React.PureComponent<Props, State> {
 
   render() {
     const { conversationId, comment, comments } = this.props;
-    const { isReplying } = this.state;
+    const { isReplying, isEditing } = this.state;
     const { createdBy } = comment;
+    let actions;
 
-    let actions = [
-      <CommentAction key="reply" onClick={this.onReply}>
-        Reply
-      </CommentAction>,
-    ];
+    if (!isEditing) {
+      actions = [
+        <CommentAction key="reply" onClick={this.onReply}>
+          Reply
+        </CommentAction>,
+      ];
 
-    // TODO: Add these back! (ED-3471)
-    // if (createdBy && userId === createdBy.id) {
-    //   actions = [
-    //     ...actions,
-    //     <CommentAction key="edit" /*onClick={this.onEdit}*/>
-    //       Edit
-    //     </CommentAction>,
-    //   ];
-    // }
+      // @TODO
+      // if (createdBy && userId === createdBy.id) {
+      actions = [
+        ...actions,
+        <CommentAction key="edit" onClick={this.onEdit}>
+          Edit
+        </CommentAction>,
+      ];
+      // }
+    }
 
     return (
       <AkComment

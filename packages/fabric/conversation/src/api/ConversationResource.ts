@@ -3,6 +3,7 @@ import {
   FETCH_CONVERSATIONS,
   FETCH_CONVERSATIONS_SUCCESS,
   ADD_COMMENT_SUCCESS,
+  UPDATE_COMMENT_SUCCESS,
   CREATE_CONVERSATION_SUCCESS,
 } from '../internal/actions';
 import { reducers } from '../internal/reducers';
@@ -208,15 +209,20 @@ export class ConversationResource extends AbstractConversationResource {
     document: any,
   ): Promise<Comment> {
     const result = await this.makeRequest<Comment>(
-      `/conversation/${conversationId}/comment/${commentId}`,
+      `/conversation/${conversationId}/comment/${commentId}?expand=document.adf`,
       {
         method: 'PUT',
         body: JSON.stringify({
           id: commentId,
-          document,
+          document: {
+            adf: document,
+          },
         }),
       },
     );
+
+    const { dispatch } = this;
+    dispatch({ type: UPDATE_COMMENT_SUCCESS, payload: result });
 
     return result;
   }
