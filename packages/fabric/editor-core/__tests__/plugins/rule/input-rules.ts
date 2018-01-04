@@ -35,7 +35,7 @@ describe('inputrules', () => {
 
       insertText(editorView, '***', sel);
 
-      expect(editorView.state.doc).toEqualDocument(doc(p(), hr, p()));
+      expect(editorView.state.doc).toEqualDocument(doc(hr, p()));
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.horizontalrule.autoformatting',
       );
@@ -61,7 +61,7 @@ describe('inputrules', () => {
 
       insertText(editorView, '---', sel);
 
-      expect(editorView.state.doc).toEqualDocument(doc(p(), hr, p()));
+      expect(editorView.state.doc).toEqualDocument(doc(hr, p()));
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.horizontalrule.autoformatting',
       );

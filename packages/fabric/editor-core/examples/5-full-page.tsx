@@ -105,7 +105,9 @@ const providers = {
   activityProvider: Promise.resolve(new MockActivityResource()),
   macroProvider: Promise.resolve(macroProvider),
 };
-const mediaProvider = storyMediaProviderFactory();
+const mediaProvider = storyMediaProviderFactory({
+  includeUserAuthProvider: true,
+});
 
 export default class Example extends React.Component<Props, State> {
   state: State = { disabled: true };
@@ -130,6 +132,7 @@ export default class Example extends React.Component<Props, State> {
               allowPanel={true}
               allowExtension={true}
               allowPlaceholderCursor={true}
+              allowRule={true}
               {...providers}
               media={{ provider: mediaProvider, allowMediaSingle: true }}
               placeholder="Write something..."
