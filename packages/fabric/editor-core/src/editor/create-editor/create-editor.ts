@@ -11,6 +11,7 @@ import {
 import ProviderFactory from '../../providerFactory';
 import ErrorReporter from '../../utils/error-reporter';
 import { EventDispatcher, createDispatch, Dispatch } from '../event-dispatcher';
+import { name, version } from '../../version';
 
 export function sortByRank(a: { rank: number }, b: { rank: number }): number {
   return a.rank - b.rank;
@@ -138,7 +139,10 @@ export function createErrorReporter(errorReporterHandler) {
 
 export function initAnalytics(analyticsHandler?: AnalyticsHandler) {
   analyticsService.handler = analyticsHandler || (() => {});
-  analyticsService.trackEvent('atlassian.editor.start');
+  analyticsService.trackEvent('atlassian.editor.start', {
+    name,
+    version,
+  });
 }
 
 export function processDefaultDocument(
@@ -171,9 +175,7 @@ export function processDefaultDocument(
   if (Array.isArray(doc)) {
     // tslint:disable-next-line:no-console
     console.error(
-      `Error processing default value: ${
-        doc
-      } is an array, but it must be an object with the following shape { type: 'doc', content: [...] }`,
+      `Error processing default value: ${doc} is an array, but it must be an object with the following shape { type: 'doc', content: [...] }`,
     );
     return;
   }

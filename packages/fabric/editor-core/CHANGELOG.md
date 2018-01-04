@@ -1,5 +1,16 @@
 # @atlaskit/editor-core
 
+## 60.18.1
+
+- [patch] Fix insert single image from 3rd party integration [a337df1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a337df1)
+
+## 60.18.0
+- [minor] add version to editor.start analytics [3b4c21b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b4c21b)
+- [minor] add name and version to editor.start analytics [d8d2388](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d8d2388)
+
+## 60.17.6
+- [patch] Improve emoji and mention providers in editor's examples [bd68138](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd68138)
+
 ## 60.17.5
 - [patch] Fixing text padding in message editor. [a4af16c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4af16c)
 - [patch] In message editor pasting content more in size than max allowed limit should show warning and insert toolbar options should be disabled once max size is reached.  [7078916](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7078916)
