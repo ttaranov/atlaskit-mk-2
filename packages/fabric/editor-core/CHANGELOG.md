@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 60.19.0
+- [patch] Remove duplicate implementation of ProviderFactory from @atlaskit/editor-core, in favour of only one implementation in @atlaskit/editor-common [535cb8c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/535cb8c)
+- [minor] bump prosemirror-tables to 0.5.2 [32b6bbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/32b6bbe)
+
+- [minor] added tasks/actions to full-page editor [49d3343](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d3343)
+- [patch] Horizontal rule autoformatting should work after shift+enter. [f600f0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f600f0e)
+
 ## 60.18.1
 
 - [patch] Fix insert single image from 3rd party integration [a337df1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a337df1)
