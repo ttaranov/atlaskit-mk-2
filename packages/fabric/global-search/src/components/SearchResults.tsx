@@ -6,6 +6,7 @@ import {
 } from '@atlaskit/navigation';
 import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
+import PeopleIcon from '@atlaskit/icon/glyph/people';
 import { Result, ResultType } from '../model/Result';
 
 const {
@@ -54,6 +55,16 @@ const searchJiraItem = (query: string) => (
   />
 );
 
+const searchPeopleItem = () => (
+  <ResultBase
+    href="/home/people"
+    icon={<PeopleIcon size="large" label="Search Peopls" />}
+    key="search_people"
+    resultId="search_people"
+    text="Search for more people"
+  />
+);
+
 const renderRecent = (results: Result[]) => (
   <AkNavigationItemGroup title="Recently viewed" key="recent">
     {resultsToComponents(results)}
@@ -77,6 +88,7 @@ const renderConfluence = (results: Result[], query: string) => (
 const renderPeople = (results: Result[], query: string) => (
   <AkNavigationItemGroup title="People" key="people">
     {resultsToComponents(results)}
+    {searchPeopleItem()}
   </AkNavigationItemGroup>
 );
 

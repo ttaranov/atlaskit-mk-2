@@ -193,6 +193,18 @@ describe('SearchResults', () => {
     );
   });
 
+  it('should render a people result item to search people', () => {
+    const props = {
+      query: 'na',
+    };
+
+    const wrapper = render(props);
+    const group = findGroup(Group.People, wrapper);
+
+    expect(group.prop('title')).toEqual('People');
+    expect(group.find(ResultBase).prop('resultId')).toEqual('search_people');
+  });
+
   it('should only render result types that it understands', () => {
     const props = {
       query: '',
