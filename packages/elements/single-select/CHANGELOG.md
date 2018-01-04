@@ -1,5 +1,9 @@
 # @atlaskit/single-select
 
+## 3.1.4
+
+- [patch] Remove index.js from root, fix flow type, remove react from dep [4f1e6d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f1e6d1)
+
 ## 3.1.3
 - [patch] Migrate signle-select to atlaskit-mk-2 repo [ee8d580](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee8d580)
 
