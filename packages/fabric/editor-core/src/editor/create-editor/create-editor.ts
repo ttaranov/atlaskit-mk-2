@@ -8,7 +8,7 @@ import {
   EditorProps,
   EditorConfig,
 } from '../types';
-import ProviderFactory from '../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import ErrorReporter from '../../utils/error-reporter';
 import { EventDispatcher, createDispatch, Dispatch } from '../event-dispatcher';
 import { name, version } from '../../version';

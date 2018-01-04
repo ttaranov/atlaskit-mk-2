@@ -6,7 +6,7 @@ import { CardDimensions } from '@atlaskit/media-card';
 import { CardEventHandler } from '@atlaskit/media-core';
 
 import UIMedia from '../../ui/Media';
-import ProviderFactory from '../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   MediaPluginState,
   stateKey as mediaStateKey,

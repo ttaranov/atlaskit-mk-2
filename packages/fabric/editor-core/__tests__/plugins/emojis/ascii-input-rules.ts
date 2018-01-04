@@ -1,6 +1,6 @@
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { EmojiDescription } from '@atlaskit/emoji';
 import asciiEmojiPlugins from '../../../src/plugins/emojis/ascii-input-rules';
-import ProviderFactory from '../../../src/providerFactory';
 import {
   insertText,
   makeEditor,
@@ -15,9 +15,8 @@ import {
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 
-const providerFactory = new ProviderFactory();
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
-providerFactory.setProvider('emojiProvider', emojiProvider);
+const providerFactory = ProviderFactory.create({ emojiProvider });
 
 const plugins = asciiEmojiPlugins(defaultSchema, providerFactory);
 

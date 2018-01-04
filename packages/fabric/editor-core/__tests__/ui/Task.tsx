@@ -2,7 +2,7 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import { ResourcedTaskItem, TaskItem } from '@atlaskit/task-decision';
 import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
-import ProviderFactory from '../../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import Task from '../../src/ui/Task';
 
 const taskDecisionProvider = Promise.resolve(

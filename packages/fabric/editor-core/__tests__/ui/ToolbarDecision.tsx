@@ -9,7 +9,7 @@ import {
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import ToolbarButton from '../../src/ui/ToolbarButton';
-import ProviderFactory from '../../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 describe('@atlaskit/editor-core/ui/ToolbarDecision', () => {
   const providerFactory = new ProviderFactory();
