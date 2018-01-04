@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 import InlineEditStateless from './InlineEditStateless';
 
 type Props = {
+  /** Label above the input. */
+  label: string,
+  /** Component to be shown when reading only */
+  readView: Node | string | Object,
   /** Function passed to stateless component, isEditing will be set to false
    before the passed function is called. */
   onConfirm: any => mixed,
@@ -12,12 +16,22 @@ type Props = {
 };
 
 type State = {
-  isEditing?: boolean,
+  isEditing: boolean,
+};
+
+type DefaultProps = {
+  label: string,
+  readView: string,
 };
 
 export default class InlineEdit extends Component<Props, State> {
   state = {
     isEditing: false,
+  };
+
+  static defaultProps: DefaultProps = {
+    label: '',
+    readView: '',
   };
 
   onConfirm = () => {
@@ -38,6 +52,8 @@ export default class InlineEdit extends Component<Props, State> {
   render() {
     return (
       <InlineEditStateless
+        label={this.props.label}
+        readView={this.props.readView}
         isEditing={this.state.isEditing}
         {...this.props}
         onEditRequested={this.enterEditingMode}

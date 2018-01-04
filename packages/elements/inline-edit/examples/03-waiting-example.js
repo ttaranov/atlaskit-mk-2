@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import SingleLineTextInput from '@atlaskit/input';
-import { InlineEdit } from '../src';
+import InlineEdit from '../src';
 
 type State = {
   onEventResult: string,

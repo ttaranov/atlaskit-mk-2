@@ -20,7 +20,7 @@ type Props = {
   /** Label above the input. */
   label: string,
   /** Component to be shown when reading only */
-  readView: Node,
+  readView: Node | string | Object,
   /** Component to be shown when editing. Should be an @atlaskit/input. */
   editView?: Node,
   /** Whether the component shows the readView or the editView. */
@@ -60,9 +60,14 @@ type State = {
   resetFieldBase?: boolean,
   shouldResetFieldBase?: boolean,
   wasFocusReceivedSinceLastBlur?: boolean,
+  startX?: number,
+  startY?: number,
 };
 
 export default class InlineEditStateless extends Component<Props, State> {
+  confirmButtonRef: HTMLElement | null;
+  cancelButtonRef: HTMLElement | null;
+
   static defaultProps = {
     areActionButtonsHidden: false,
     disableEditViewFieldBase: false,
@@ -79,9 +84,11 @@ export default class InlineEditStateless extends Component<Props, State> {
     resetFieldBase: false,
     shouldResetFieldBase: false,
     wasFocusReceivedSinceLastBlur: false,
+    startX: 0,
+    startY: 0,
   };
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     this.setState({
       shouldResetFieldBase: this.props.isEditing && !nextProps.isEditing,
     });
@@ -94,10 +101,10 @@ export default class InlineEditStateless extends Component<Props, State> {
     });
   }
 
-  onMouseDown = ({ clientX, clientY }) =>
-    this.setState({ startX: clientX, startY: clientY });
+  onMouseDown = (client: { clientX: number, clientY: number }) =>
+    this.setState({ startX: client.clientX, startY: client.clientY });
 
-  onWrapperClick = e => {
+  onWrapperClick = (e: any) => {
     if (!this.isReadOnly() && !this.props.isEditing && !this.mouseHasMoved(e)) {
       this.props.onEditRequested();
     } else {
@@ -124,23 +131,23 @@ export default class InlineEditStateless extends Component<Props, State> {
     this.setState({ wasFocusReceivedSinceLastBlur: true });
   };
 
-  onConfirmClick = event => {
-    // eslint-disable-next-line react/no-find-dom-node
-    ReactDOM.findDOMNode(this.confirmButtonRef).focus();
-
+  onConfirmClick = (event: any) => {
+    //$FlowFixMe because Flow cant be sure the node will be a HTMLElement
+    ReactDOM.findDOMNode(this.confirmButtonRef).focus(); //eslint-disable-line react/no-find-dom-node
     event.preventDefault();
     this.props.onConfirm();
   };
 
-  onCancelClick = event => {
-    // eslint-disable-next-line react/no-find-dom-node
-    ReactDOM.findDOMNode(this.cancelButtonRef).focus();
-
+  onCancelClick = (event: any) => {
+    if (this.cancelButtonRef && this.cancelButtonRef instanceof HTMLElement) {
+      //$FlowFixMe because Flow cant be sure the node will be a HTMLElement
+      ReactDOM.findDOMNode(this.cancelButtonRef).focus(); // eslint-disable-line react/no-find-dom-node
+    }
     event.preventDefault();
     this.props.onCancel();
   };
 
-  onDialogClick = event => {
+  onDialogClick = (event: any) => {
     event.stopPropagation();
   };
 
@@ -150,11 +157,13 @@ export default class InlineEditStateless extends Component<Props, State> {
   onFieldBaseWrapperMouseLeave = () =>
     this.setState({ fieldBaseWrapperIsHover: false });
 
-  mouseHasMoved = ({ clientX, clientY }) => {
+  mouseHasMoved = (client: { clientX: number, clientY: number }) => {
     const { startX, startY } = this.state;
     return (
-      Math.abs(startX - clientX) >= DRAG_THRESHOLD ||
-      Math.abs(startY - clientY) >= DRAG_THRESHOLD
+      //$FlowFixMe
+      Math.abs(startX - client.clientX) >= DRAG_THRESHOLD ||
+      //$FlowFixMe
+      Math.abs(startY - client.clientY) >= DRAG_THRESHOLD
     );
   };
 
@@ -172,7 +181,7 @@ export default class InlineEditStateless extends Component<Props, State> {
 
   shouldRenderSpinner = () => this.props.isWaiting && this.props.isEditing;
 
-  wrapWithFieldBase = children => {
+  wrapWithFieldBase = (children: any) => {
     const {
       invalidMessage,
       isEditing,
@@ -235,7 +244,8 @@ export default class InlineEditStateless extends Component<Props, State> {
 
   renderEditView = () => {
     const editView = this.props.shouldConfirmOnEnter
-      ? cloneElement(this.props.editView, {
+      ? //$FlowFixMe
+        cloneElement(this.props.editView, {
           onConfirm: this.props.onConfirm,
         })
       : this.props.editView;

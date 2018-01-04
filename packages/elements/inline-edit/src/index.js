@@ -1,3 +1,3 @@
 // @flow
 export { default } from './InlineEdit';
-export { InlineEditStateless } from './InlineEditStateless';
+export { default as InlineEditStateless } from './InlineEditStateless';
