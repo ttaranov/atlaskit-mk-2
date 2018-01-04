@@ -2,7 +2,6 @@
 import type { Node } from 'react';
 
 export type GroupType = {
-  ...Object,
   heading?: string,
   items: Array<ItemType>,
 };
