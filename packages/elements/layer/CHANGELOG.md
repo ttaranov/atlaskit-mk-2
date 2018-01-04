@@ -1,5 +1,8 @@
 # @atlaskit/layer
 
+## 2.5.13
+- [patch] prettier ignored popper, copied popper js [88e38de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/88e38de)
+
 ## 2.5.12
 - [patch] renamed popper.js to popper and index.min to index-min in popper js [06718c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06718c1)
 
