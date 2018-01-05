@@ -3,7 +3,7 @@ import * as React from 'react';
 import { name } from '../../../../package.json';
 import tablePlugins from '../../../../src/plugins/table';
 import tableCommands from '../../../../src/plugins/table/commands';
-import ToolbarTable from '../../../../src/editor/plugins/table/ui/ToolbarTable';
+import ToolbarTable from '../../../../src/ui/ToolbarTable';
 import ToolbarButton from '../../../../src/ui/ToolbarButton';
 import { analyticsService } from '../../../../src/analytics';
 import EditorWidth from '../../../../src/utils/editor-width';
