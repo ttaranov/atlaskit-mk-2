@@ -1,5 +1,27 @@
 # @atlaskit/editor-test-helpers
 
+## 1.5.0
+
+## 1.4.5
+- [patch] Add support for single image wrap left/right layout [59d9a74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59d9a74)
+
+## 1.4.4
+
+## 1.4.3
+
+## 1.4.2
+
+## 1.4.1
+
+## 1.4.0
+- [minor] Add Serializer for Single image [03405bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03405bf)
+- [minor] Add Serializer for Single image [03405bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03405bf)
+
+## 1.3.0
+
+- [minor] FS-1461 added ContextIdentifierProvider interface to editor [0aeea41](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0aeea41)
+- [minor] FS-1461 added ContextIdentifierProvider interface to editor [0aeea41](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0aeea41)
+
 ## 1.2.9
 
 ## 1.2.8

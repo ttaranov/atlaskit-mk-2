@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
-import ProviderFactory from '../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import ReactPMNode from './ui/prosemirror-node';
 
 type getPosHandler = () => number;
@@ -61,6 +61,12 @@ class NodeViewElem implements NodeView {
 
   private renderReactComponent(node: PMNode) {
     const { getPos, providerFactory, reactNodeViewComponents, view } = this;
+
+    Object.keys(node.attrs || {}).forEach(attr => {
+      if (this.domRef) {
+        this.domRef.setAttribute(attr, node.attrs[attr]);
+      }
+    });
 
     ReactDOM.render(
       <ReactPMNode

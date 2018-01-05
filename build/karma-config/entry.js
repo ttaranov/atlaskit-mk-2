@@ -10,11 +10,6 @@ const contexts = {
     true,
     /^[^_]*.(js|jsx|ts|tsx)$/,
   ),
-  'editor-bitbucket': require.context(
-    '../../packages/fabric/editor-bitbucket/tests/browser/',
-    true,
-    /^[^_]*.(js|jsx|ts|tsx)$/,
-  ),
   'editor-cq': require.context(
     '../../packages/fabric/editor-cq/tests/browser/',
     true,
@@ -27,6 +22,11 @@ const contexts = {
   ),
   'editor-common': require.context(
     '../../packages/fabric/editor-common/tests/browser/',
+    true,
+    /^[^_]*.(js|jsx|ts|tsx)$/,
+  ),
+  'editor-confluence-transformer': require.context(
+    '../../packages/fabric/editor-confluence-transformer/tests/browser/',
     true,
     /^[^_]*.(js|jsx|ts|tsx)$/,
   ),

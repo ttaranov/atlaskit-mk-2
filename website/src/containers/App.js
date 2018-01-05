@@ -15,14 +15,15 @@ import FourOhFour from '../pages/FourOhFour';
 import Pattern from '../pages/Pattern';
 import PatternsInfo from '../pages/PatternsInfo';
 import Document from '../pages/Document';
-
 import Package from '../pages/Package';
 import PackagesList from '../pages/PackagesList';
 import PackageDocument from '../pages/PackageDocument';
 import ChangelogModal from '../pages/Package/ChangelogModal';
 import ExamplesModal from '../pages/Package/ExamplesModal';
+import GoogleAnalyticsListener from '../components/GoogleAnalyticsListener';
 
 import Nav from './Nav';
+import { GOOGLE_ANALYTICS_ID } from '../constants';
 
 // eslint-disable-next-line
 injectGlobal`
@@ -50,54 +51,67 @@ const AppContent = styled.div`
   flex: 1 1 auto;
 `;
 
+const SiteAnlaytics = ({ children }) => {
+  return (
+    <GoogleAnalyticsListener gaId={GOOGLE_ANALYTICS_ID}>
+      {children}
+    </GoogleAnalyticsListener>
+  );
+};
+
 export default function App() {
   return (
     <BrowserRouter>
-      <Switch>
-        <Route
-          path="/examples/:groupId?/:pkgId?/:exampleId*"
-          component={Examples}
-        />
-        <Route>
-          <LayerManager>
-            <AppContainer>
-              <Nav />
-              <AppContent>
-                <Switch>
-                  <Route exact path="/" component={Home} />
-                  <Route path="/docs/:docId*" component={Document} />
-                  <Route path="/patterns" component={PatternsInfo} exact />
-                  <Route path="/patterns/:patternId*" component={Pattern} />
-                  <Route
-                    path="/mk-2/packages/:groupId/:pkgId/docs/:docId"
-                    component={PackageDocument}
-                  />
-                  <Route path="/packages/:groupId/:pkgId" component={Package} />
-                  <Route
-                    path="/mk-2/packages/:groupId/:pkgId"
-                    component={Package}
-                  />
-                  <Route path="/packages" component={PackagesList} />
-                  <Route
-                    path="/changelog/:groupId/:pkgId/:semver?"
-                    component={ChangeLogExplorer}
-                  />
-                  <Route component={FourOhFour} />
-                </Switch>
+      <SiteAnlaytics>
+        <Switch>
+          <Route
+            path="/examples/:groupId?/:pkgId?/:exampleId*"
+            component={Examples}
+          />
+          <Route>
+            <LayerManager>
+              <AppContainer>
+                <Nav />
+                <AppContent>
+                  <Switch>
+                    <Route exact path="/" component={Home} />
+                    <Route path="/docs/:docId*" component={Document} />
+                    <Route path="/patterns" component={PatternsInfo} exact />
+                    <Route path="/patterns/:patternId*" component={Pattern} />
+                    <Route
+                      path="/mk-2/packages/:groupId/:pkgId/docs/:docId"
+                      component={PackageDocument}
+                    />
+                    <Route
+                      path="/packages/:groupId/:pkgId"
+                      component={Package}
+                    />
+                    <Route
+                      path="/mk-2/packages/:groupId/:pkgId"
+                      component={Package}
+                    />
+                    <Route path="/packages" component={PackagesList} />
+                    <Route
+                      path="/changelog/:groupId/:pkgId/:semver?"
+                      component={ChangeLogExplorer}
+                    />
+                    <Route component={FourOhFour} />
+                  </Switch>
 
-                <Route
-                  path="/mk-2/packages/:groupId/:pkgId/changelog/:semver?"
-                  component={ChangelogModal}
-                />
-                <Route
-                  path="/mk-2/packages/:groupId/:pkgId/example/:exampleId"
-                  component={ExamplesModal}
-                />
-              </AppContent>
-            </AppContainer>
-          </LayerManager>
-        </Route>
-      </Switch>
+                  <Route
+                    path="/mk-2/packages/:groupId/:pkgId/changelog/:semver?"
+                    component={ChangelogModal}
+                  />
+                  <Route
+                    path="/mk-2/packages/:groupId/:pkgId/example/:exampleId"
+                    component={ExamplesModal}
+                  />
+                </AppContent>
+              </AppContainer>
+            </LayerManager>
+          </Route>
+        </Switch>
+      </SiteAnlaytics>
     </BrowserRouter>
   );
 }

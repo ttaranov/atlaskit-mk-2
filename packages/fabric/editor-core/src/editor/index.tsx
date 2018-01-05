@@ -5,7 +5,7 @@ import { DirectEditorProps } from 'prosemirror-view';
 import { createEditor, getUiComponent } from './create-editor';
 import { createPluginsList } from './create-editor';
 import EditorActions from './actions';
-import ProviderFactory from '../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   EditorProps,
   EditorInstance,
@@ -145,10 +145,14 @@ export default class Editor extends React.Component<EditorProps, State> {
       presenceProvider,
       macroProvider,
       legacyImageUploadProvider,
+      media,
     } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
-    this.providerFactory.setProvider('mediaProvider', mediaProvider);
+    this.providerFactory.setProvider(
+      'mediaProvider',
+      media ? media.provider : mediaProvider,
+    );
     this.providerFactory.setProvider(
       'imageUploadProvider',
       legacyImageUploadProvider,

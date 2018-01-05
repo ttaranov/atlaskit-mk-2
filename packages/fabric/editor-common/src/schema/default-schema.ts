@@ -27,8 +27,6 @@ export const defaultSchema: Schema = createSchema({
     'bodiedExtension',
     'hardBreak',
     'emoji',
-    'extension',
-    'inlineExtension',
     'table',
     'tableCell',
     'tableHeader',

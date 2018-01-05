@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
-import ProviderFactory from '../../../../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import PluginSlot from '../../../../src/editor/ui/PluginSlot';
 
 describe('@atlaskit/editor-core/editor/plugins/PluginSlot', () => {

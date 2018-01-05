@@ -22,7 +22,6 @@ export default class Gateway extends Component<Props> {
     super(props, context);
     this.gatewayRegistry = context.gatewayRegistry;
   }
-
   componentWillMount() {
     this.id = this.gatewayRegistry.register(
       this.props.into,

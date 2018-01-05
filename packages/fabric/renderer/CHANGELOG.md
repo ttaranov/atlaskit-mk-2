@@ -1,5 +1,36 @@
 # @atlaskit/renderer
 
+## 11.1.1
+
+## 11.1.0
+
+## 11.0.0
+- [major] We now use ProseMirror Schema to validate document [d059d6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d059d6a)
+
+## 10.1.5
+- [patch] FS-1581 decreased big emoji size [fe39b29](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe39b29)
+
+## 10.1.4
+
+## 10.1.3
+
+
+
+- [patch] Fixed stand alone file and link card rendering [9b467a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b467a6)
+
+## 10.1.2
+
+## 10.1.1
+
+## 10.1.0
+
+
+
+- [minor] Add ADF-Encoder utility to simplify using a transformer with the renderer [5b1ea37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b1ea37)
+- [minor] Add ADF-Encoder utility to simplify using a transformer with the renderer [5b1ea37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b1ea37)
+
+## 10.0.8
+
 ## 10.0.7
 
 ## 10.0.6

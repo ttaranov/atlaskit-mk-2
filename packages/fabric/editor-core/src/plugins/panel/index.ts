@@ -8,7 +8,6 @@ import {
 } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { panelNodeView } from '../../nodeviews';
-import inputRulePlugin from './input-rules';
 
 export interface PanelType {
   panelType: 'info' | 'note' | 'tip' | 'warning';
@@ -101,9 +100,11 @@ export class PanelState {
     const { state } = this;
     if (state.selection instanceof TextSelection) {
       const { $from } = state.selection;
-      const node = $from.node($from.depth - 1);
-      if (node && node.type === state.schema.nodes.panel) {
-        return node;
+      for (let i = $from.depth; i >= 1; i--) {
+        const node = $from.node(i);
+        if (node && node.type === state.schema.nodes.panel) {
+          return node;
+        }
       }
     }
   }
@@ -180,9 +181,7 @@ export const createPlugin = () =>
   });
 
 const plugins = (schema: Schema) => {
-  return [createPlugin(), inputRulePlugin(schema)].filter(
-    plugin => !!plugin,
-  ) as Plugin[];
+  return [createPlugin()].filter(plugin => !!plugin) as Plugin[];
 };
 
 export default plugins;

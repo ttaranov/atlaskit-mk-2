@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { EditorView } from 'prosemirror-view';
-import ProviderFactory from '../../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { EditorAppearance } from '../../types';
 import { EventDispatcher } from '../../event-dispatcher';
 

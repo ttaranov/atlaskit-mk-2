@@ -29,25 +29,29 @@ class Portal extends Component<Props> {
   }
   componentDidUpdate() {
     const { children } = this.props;
-    render(this.renderChildren(children), this.portalElement);
+    if (this.portalElement) {
+      const portal = this.portalElement;
+      render(this.renderChildren(children), portal);
+    }
   }
   componentWillUnmount() {
     // re-render an empty react tree into the portal element so that any
     // mounted components get cleaned up and have a chance to complete their
     // lifecycle before the portal is removed from the dom entirely
-    render(this.renderChildren(), this.portalElement, () => {
-      // allow time for transitions to complete before the dom is cleaned up
-      // five seconds is an arbitary number, but is more than any of our
-      // animations need to complete
-      setTimeout(() => {
-        const target = document.body;
-        const portal = this.portalElement;
-        if (target && portal) {
+    if (this.portalElement) {
+      const portal = this.portalElement;
+      render(this.renderChildren(), portal, () => {
+        // allow time for transitions to complete before the dom is cleaned up
+        // five seconds is an arbitary number, but is more than any of our
+        // animations need to complete
+        setTimeout(() => {
+          const target = document.body;
+          if (!target) return;
           unmountComponentAtNode(portal);
           target.removeChild(portal);
-        }
-      }, 5000);
-    });
+        }, 5000);
+      });
+    }
   }
   renderChildren = children => {
     const { theme, withTransitionGroup } = this.props;

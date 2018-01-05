@@ -28,16 +28,39 @@ export interface Props {
  *   render={renderComponent}
  * />
  *
- * renderComponent: ({ hyperlink }) => React.Compoment;
+ * renderComponent: ({ hyperlink }) => React.Component;
  */
 export default class WithPluginState extends React.Component<State, any> {
   state = {};
   private listeners = {};
+  private debounce: number | null = null;
+  private notAppliedState = {};
 
-  private handlePluginStateChange(propName: string, pluginState: any): void {
-    if (this.state[propName] !== pluginState) {
-      this.setState({ [propName]: pluginState });
+  private handlePluginStateChange = (
+    propName: string,
+    skipEqualityCheck?: boolean,
+  ) => (pluginState: any) => {
+    // skipEqualityCheck is being used for old plugins since they are mutating plugin state instead of creating a new one
+    if (this.state[propName] !== pluginState || skipEqualityCheck) {
+      this.updateState({ [propName]: pluginState });
     }
+  };
+
+  /**
+   * Debounces setState calls in order to reduce number of re-renders caused by several plugin state changes.
+   */
+  private updateState(stateSubset) {
+    this.notAppliedState = { ...this.notAppliedState, ...stateSubset };
+
+    if (this.debounce) {
+      clearTimeout(this.debounce);
+    }
+
+    this.debounce = setTimeout(() => {
+      this.setState(this.notAppliedState);
+      this.debounce = null;
+      this.notAppliedState = {};
+    }, 10);
   }
 
   private subscribe(props: Props): void {
@@ -51,12 +74,22 @@ export default class WithPluginState extends React.Component<State, any> {
       if (!pluginKey) {
         return acc;
       }
-      const handler = this.handlePluginStateChange.bind(this, propName);
-      eventDispatcher.on((pluginKey as any).key, handler);
-
-      this.listeners[(pluginKey as any).key] = handler;
-
       acc[propName] = pluginKey.getState(editorView.state);
+
+      const isPluginWithSubscribe = acc[propName] && acc[propName].subscribe;
+      const handler = this.handlePluginStateChange(
+        propName,
+        isPluginWithSubscribe,
+      );
+
+      if (isPluginWithSubscribe) {
+        acc[propName].subscribe(handler);
+      } else {
+        eventDispatcher.on((pluginKey as any).key, handler);
+      }
+
+      this.listeners[(pluginKey as any).key] = { handler, pluginKey };
+
       return acc;
     }, {});
 
@@ -83,9 +116,18 @@ export default class WithPluginState extends React.Component<State, any> {
       return;
     }
 
-    Object.keys(this.listeners).forEach(key =>
-      eventDispatcher.off(key, this.listeners[key]),
-    );
+    Object.keys(this.listeners).forEach(key => {
+      const pluginState = this.listeners[key].pluginKey.getState(
+        this.props.editorView.state,
+      );
+      if (pluginState && pluginState.unsubscribe) {
+        pluginState.unsubscribe(this.listeners[key].handler);
+      } else {
+        eventDispatcher.off(key, this.listeners[key].handler);
+      }
+    });
+
+    this.listeners = [];
   }
 
   render() {

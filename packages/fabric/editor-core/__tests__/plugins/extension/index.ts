@@ -1,22 +1,25 @@
-import createPlugin, {
-  pluginKey,
-  ExtensionState,
-} from '../../../src/editor/plugins/extension/plugin';
-import ProviderFactory from '../../../src/providerFactory';
-import { macroProviderPromise } from '../../../example-helpers/mock-macro-provider';
+import { NodeSelection } from 'prosemirror-state';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   doc,
   makeEditor,
   p as paragraph,
   bodiedExtension,
+  macroProvider,
 } from '@atlaskit/editor-test-helpers';
+
 import {
   setExtensionElement,
   editExtension,
   removeExtension,
   selectExtension,
 } from '../../../src/editor/plugins/extension/actions';
-import { NodeSelection } from 'prosemirror-state';
+import createPlugin, {
+  pluginKey,
+  ExtensionState,
+} from '../../../src/editor/plugins/extension/plugin';
+
+const macroProviderPromise = Promise.resolve(macroProvider);
 
 describe('extension', () => {
   const editor = (doc: any) => {

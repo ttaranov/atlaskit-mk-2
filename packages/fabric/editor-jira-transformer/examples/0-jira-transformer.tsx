@@ -1,75 +1,106 @@
 // tslint:disable:no-console
 import * as React from 'react';
-import Editor from '@atlaskit/editor-jira';
-import ExampleWrapper from '../example-helpers/ExampleWrapper';
-import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
-import MentionResource from '../example-helpers/mentions/mention-resource';
+import styled from 'styled-components';
+import {
+  Editor,
+  EditorContext,
+  WithEditorActions,
+} from '@atlaskit/editor-core';
+import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
+import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { JIRATransformer } from '../src';
 
-const CANCEL_ACTION = () => console.log('Cancel');
-const SAVE_ACTION = () => console.log('Save');
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  #source,#output {
+    border: 2px solid;
+    margin: 8px;
+    padding: 8px;
+    white-space: pre-wrap;
+    &:focus {
+      outline: none;
+    }
+    &:empty:not(:focus):before {
+      content: attr(data-placeholder)
+      font-size: 14px;
+    }
+  }
+  #source {
+    font-size: xx-small;
+  }
+`;
 
+const emojiProvider = emojiStoryData.getEmojiResource();
+const mentionProvider = Promise.resolve(mentionStoryData.resourceProvider);
 const mentionEncoder = (userId: string) => `/secure/ViewProfile?name=${userId}`;
 
-export type Props = { handleChange: any };
-export type State = { input: string; output: string; key: number };
+type Props = { actions: any };
+type State = { source: string; output: string };
+class TransformerPanels extends React.PureComponent<Props, State> {
+  state: State = { source: '', output: '' };
 
-export class Demo extends React.Component<Props, State> {
-  state = { input: '', output: '', key: 1 };
-  refs: {
-    input: HTMLTextAreaElement;
+  componentDidMount() {
+    setTimeout(() => {
+      this.props.actions.replaceDocument(this.state.source);
+    });
+  }
+
+  handleUpdateToSource = (e: React.FormEvent<HTMLDivElement>) => {
+    const value = e.currentTarget.innerText;
+    this.setState({ source: value }, () =>
+      this.props.actions.replaceDocument(value),
+    );
+  };
+
+  handleChangeInTheEditor = async () => {
+    const value = await this.props.actions.getValue();
+    this.setState({ output: value });
   };
 
   render() {
     return (
-      <div ref="root">
-        <fieldset style={{ marginTop: 20, marginBottom: 20 }}>
-          <legend>Input</legend>
-          <textarea
-            style={{
-              boxSizing: 'border-box',
-              border: '1px solid lightgray',
-              fontFamily: 'monospace',
-              padding: 10,
-              width: '100%',
-              height: 100,
-            }}
-            ref="input"
-          />
-          <button onClick={this.handleImportClick}>Import</button>
-        </fieldset>
-        <Editor
-          isExpandedByDefault={true}
-          onCancel={CANCEL_ACTION}
-          onChange={this.props.handleChange}
-          onSave={SAVE_ACTION}
-          defaultValue={this.state.input}
-          key={this.state.key}
-          allowLists={true}
-          allowLinks={true}
-          allowCodeBlock={true}
-          allowAdvancedTextFormatting={true}
-          allowSubSup={true}
-          allowTextColor={true}
-          allowBlockQuote={true}
-          mediaProvider={storyMediaProviderFactory()}
-          mentionProvider={Promise.resolve(new MentionResource())}
-          mentionEncoder={mentionEncoder}
+      <Container>
+        <div
+          id="source"
+          contentEditable={true}
+          data-placeholder="Enter HTML to convert"
+          onInput={this.handleUpdateToSource}
         />
-      </div>
+        <div id="editor">
+          <Editor
+            appearance="comment"
+            allowTextFormatting={true}
+            allowTasksAndDecisions={true}
+            allowHyperlinks={true}
+            allowCodeBlocks={true}
+            allowLists={true}
+            allowMentions={true}
+            allowRule={true}
+            allowTables={true}
+            emojiProvider={emojiProvider}
+            mentionProvider={mentionProvider}
+            contentTransformerProvider={schema =>
+              new JIRATransformer(schema, { mention: mentionEncoder })
+            }
+            onChange={this.handleChangeInTheEditor}
+          />
+        </div>
+        <div
+          id="output"
+          data-placeholder="This is an empty document (or something has gone really wrong)"
+        >
+          {this.state.output}
+        </div>
+      </Container>
     );
   }
-
-  private handleImportClick = () =>
-    this.setState({
-      input: this.refs.input.value,
-      key: this.state.key + 1,
-    });
 }
 
-export default function Component() {
-  return (
-    <ExampleWrapper
-      render={handleChange => <Demo handleChange={handleChange} />}
+export default () => (
+  <EditorContext>
+    <WithEditorActions
+      render={actions => <TransformerPanels actions={actions} />}
     />
-  );
-}
+  </EditorContext>
+);

@@ -3,11 +3,13 @@ import UnlinkIcon from '@atlaskit/icon/glyph/editor/unlink';
 import { ActivityProvider } from '@atlaskit/activity';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { EditorView } from 'prosemirror-view';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import PanelTextInput from '../PanelTextInput';
-import { Separator, Container, FloatingToolbar, ToolbarButton } from './styles';
-import { EditorView } from 'prosemirror-view';
+import ToolbarButton from '../ToolbarButton';
+import FloatingToolbar from '../FloatingToolbar';
 import { normalizeUrl } from '../../plugins/hyperlink/utils';
+import Separator from '../Separator';
 import RecentSearch from '../RecentSearch';
 import {
   addPlaceholderCursor,
@@ -160,30 +162,23 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
         <FloatingToolbar
           target={popupTarget}
           offset={[0, 3]}
-          fitWidth={230}
           onPositionCalculated={this.adjustPosition}
-          popupsMountPoint={this.props.popupsMountPoint}
-          popupsBoundariesElement={this.props.popupsBoundariesElement}
         >
-          <Container>
-            {!showOpenButton ? null : (
-              <ToolbarButton
-                href={href}
-                target="_blank"
-                title="Open link in new tab"
-                iconBefore={<OpenIcon label="Open link" />}
-              />
-            )}
-            {!showUnlinkButton ? null : (
-              <ToolbarButton
-                title="Unlink"
-                onClick={this.handleUnlink}
-                iconBefore={<UnlinkIcon label="Unlink" />}
-              />
-            )}
-            {!showUnlinkButton ? null : <Separator />}
-            {this.renderInput()}
-          </Container>
+          {showOpenButton && (
+            <ToolbarButton
+              href={href}
+              target="_blank"
+              iconBefore={<OpenIcon label="Open link" />}
+            />
+          )}
+          {showUnlinkButton && (
+            <ToolbarButton
+              onClick={this.handleUnlink}
+              iconBefore={<UnlinkIcon label="Unlink" />}
+            />
+          )}
+          {showUnlinkButton && <Separator />}
+          {this.renderInput()}
         </FloatingToolbar>
       );
     } else {

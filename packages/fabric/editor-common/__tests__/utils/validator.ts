@@ -535,13 +535,12 @@ describe('Renderer - Validator', () => {
           extensionKey: 'CallWithSkype',
           bodyType: 'none',
         };
-        const { type, attrs } = getValidNode({
+        const { type } = getValidNode({
           type: 'bodiedExtension',
           attrs: extensionAttrs,
           content: [],
         });
         expect(type).to.equal('bodiedExtension');
-        expect(attrs.originalContent).to.deep.equal([]);
       });
 
       it('should reject extensions without extensionType', () => {

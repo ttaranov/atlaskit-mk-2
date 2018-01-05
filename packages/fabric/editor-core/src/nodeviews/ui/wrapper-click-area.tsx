@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { ProsemirrorGetPosHandler, ReactComponentConstructor } from './';
-import { ReactNodeViewComponents } from '../factory';
-import { ReactNodeViewState } from '../../plugins/react-nodeview';
-import ProviderFactory from '../../providerFactory';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
+import styled from 'styled-components';
+
+import { ReactNodeViewComponents } from '../factory';
+import { ReactNodeViewState } from '../../plugins/react-nodeview';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { setNodeSelection } from '../../utils';
+import { ProsemirrorGetPosHandler, ReactComponentConstructor } from './';
 
 interface Props {
   components: ReactNodeViewComponents;
@@ -16,6 +18,11 @@ interface Props {
   providerFactory: ProviderFactory;
   view: EditorView;
 }
+
+const Wrapper = styled.div`
+  width: 100%;
+`;
+Wrapper.displayName = 'WrapperClickArea';
 
 interface State {
   selected: boolean;
@@ -40,9 +47,9 @@ export default function wrapComponentWithClickArea(
 
     render() {
       return (
-        <div onClick={this.onClick}>
+        <Wrapper onClick={this.onClick}>
           <ReactComponent {...this.props} selected={this.state.selected} />
-        </div>
+        </Wrapper>
       );
     }
 

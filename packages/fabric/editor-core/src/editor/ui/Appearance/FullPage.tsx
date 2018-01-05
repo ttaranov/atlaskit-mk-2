@@ -7,7 +7,6 @@ import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import ContentStyles from '../ContentStyles';
 import Avatars from '../../plugins/collab-edit/ui/avatars';
 
-// tslint:disable-next-line:variable-name
 const FullPageEditorWrapper = styled.div`
   height: 100%;
   display: flex;
@@ -15,7 +14,6 @@ const FullPageEditorWrapper = styled.div`
 `;
 FullPageEditorWrapper.displayName = 'FullPageEditorWrapper';
 
-// tslint:disable-next-line:variable-name
 const ScrollContainer = styled(ContentStyles)`
   flex-grow: 1;
   overflow-y: scroll;
@@ -27,7 +25,6 @@ const ScrollContainer = styled(ContentStyles)`
 `;
 ScrollContainer.displayName = 'ScrollContainer';
 
-// tslint:disable-next-line:variable-name
 const ContentArea = styled.div`
   height: 100%;
   width: 100%;
@@ -42,7 +39,24 @@ const ContentArea = styled.div`
   & .ProseMirror {
     flex-grow: 1;
     box-sizing: border-box;
-    padding-bottom: 50px;
+    padding-bottom: 55px;
+  }
+
+  && .ProseMirror {
+    & > * {
+      clear: both;
+    }
+    & > p,
+    & > ul,
+    & > ol,
+    > h1,
+    > h2,
+    > h3,
+    > h4,
+    > h5,
+    > h6 {
+      clear: none;
+    }
   }
 
   & .ProseMirror .table-decoration {
@@ -57,7 +71,6 @@ const ContentArea = styled.div`
 `;
 ContentArea.displayName = 'ContentArea';
 
-// tslint:disable-next-line:variable-name
 const MainToolbar = styled.div`
   position: relative;
   align-items: center;
@@ -67,7 +80,6 @@ const MainToolbar = styled.div`
 `;
 MainToolbar.displayName = 'MainToolbar';
 
-// tslint:disable-next-line:variable-name
 const MainToolbarCustomComponentsSlot = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -75,7 +87,6 @@ const MainToolbarCustomComponentsSlot = styled.div`
 `;
 MainToolbarCustomComponentsSlot.displayName = 'MainToolbar';
 
-// tslint:disable-next-line:variable-name
 const SecondaryToolbar = styled.div`
   box-sizing: border-box;
   justify-content: flex-end;

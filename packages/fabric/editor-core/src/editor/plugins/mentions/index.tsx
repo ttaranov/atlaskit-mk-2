@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { mention, mentionQuery } from '@atlaskit/editor-common';
+import { mention, mentionQuery, WithProviders } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { WithProviders } from '../../../providerFactory/withProviders';
 import { createPlugin } from '../../../plugins/mentions';
 import inputRulePlugin from '../../../plugins/mentions/input-rules';
 import keymap from '../../../plugins/mentions/keymap';
@@ -79,8 +78,22 @@ const mentionsPlugin: EditorPlugin = {
     );
   },
 
-  secondaryToolbarComponent(editorView) {
-    return <ToolbarMention editorView={editorView} pluginKey={pluginKey} />;
+  secondaryToolbarComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    disabled,
+  ) {
+    return (
+      <ToolbarMention
+        editorView={editorView}
+        pluginKey={pluginKey}
+        isDisabled={disabled}
+      />
+    );
   },
 };
 

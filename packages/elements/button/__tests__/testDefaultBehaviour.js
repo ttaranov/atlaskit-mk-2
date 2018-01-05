@@ -1,12 +1,16 @@
 // @flow
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import React from 'react';
 
-import Button from '../src/index';
+import Button, { ButtonBase } from '../src/components/Button';
 
 describe('ak-button/default-behaviour', () => {
   it('button should have type="button" by default', () =>
-    expect(shallow(<Button />).instance().props.type).toBe('button'));
+    expect(
+      mount(<Button />)
+        .find(ButtonBase)
+        .props().type,
+    ).toBe('button'));
 
   it('should render button if there is no href property', () => {
     const wrapper = mount(<Button />);

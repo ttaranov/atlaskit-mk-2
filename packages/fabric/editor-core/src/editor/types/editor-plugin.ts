@@ -3,7 +3,7 @@ import { Schema } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
-import ProviderFactory from '../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import ErrorReporter from '../../utils/error-reporter';
 import { NodeConfig, MarkConfig } from './editor-config';
 import { EditorProps, EditorAppearance } from './editor-props';

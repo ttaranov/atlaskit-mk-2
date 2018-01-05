@@ -2,6 +2,8 @@ import { deleteSelection, splitBlock } from 'prosemirror-commands';
 import { Node as PMNode } from 'prosemirror-model';
 import { NodeSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import { MediaState } from '@atlaskit/media-core';
+
 import { createParagraphNear } from '../../commands';
 import { moveLeft, atTheBeginningOfDoc, isTemporary } from '../../utils';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
@@ -60,4 +62,22 @@ export const splitMediaGroup = (view: EditorView): boolean => {
   }
 
   return true;
+};
+
+const isOptionalAttr = (attr: string) =>
+  attr.length > 1 && attr[0] === '_' && attr[1] === '_';
+
+export const copyOptionalAttrsFromMediaState = (
+  mediaState: MediaState,
+  node: PMNode,
+) => {
+  Object.keys(node.attrs)
+    .filter(isOptionalAttr)
+    .forEach(key => {
+      const mediaStateKey = key.substring(2);
+      const attrValue = mediaState[mediaStateKey];
+      if (attrValue !== undefined) {
+        node.attrs[key] = attrValue;
+      }
+    });
 };

@@ -1,9 +1,11 @@
 // @flow
 import React, { Component } from 'react';
+import { ThemeProvider } from 'styled-components';
 import Modal from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 
 import { Actions, ActionItem, Body, Heading, Image } from '../styled/Modal';
+import { getModalTheme } from './theme';
 import type { ActionsType, ChildrenType, ElementType } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
@@ -47,18 +49,20 @@ export default class OnboardingModal extends Component<Props, null> {
       footer ||
       (safeActions
         ? () => (
-            <Actions>
-              {safeActions.map(({ text, ...rest }, idx) => {
-                const variant = idx ? 'subtle-link' : 'help';
-                return (
-                  <ActionItem key={text || idx}>
-                    <Button appearance={variant} autoFocus={!idx} {...rest}>
-                      {text}
-                    </Button>
-                  </ActionItem>
-                );
-              })}
-            </Actions>
+            <ThemeProvider theme={getModalTheme}>
+              <Actions>
+                {safeActions.map(({ text, ...rest }, idx) => {
+                  const variant = idx ? 'subtle-link' : 'primary';
+                  return (
+                    <ActionItem key={text || idx}>
+                      <Button appearance={variant} autoFocus={!idx} {...rest}>
+                        {text}
+                      </Button>
+                    </ActionItem>
+                  );
+                })}
+              </Actions>
+            </ThemeProvider>
           )
         : null);
 

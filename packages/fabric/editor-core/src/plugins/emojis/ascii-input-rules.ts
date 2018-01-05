@@ -4,7 +4,7 @@ import { Schema, Node } from 'prosemirror-model';
 import { EditorState, Transaction, Plugin, PluginKey } from 'prosemirror-state';
 import { createInputRule, leafNodeReplacementCharacter } from '../utils';
 import { isMarkTypeAllowedInCurrentSelection } from '../../utils';
-import ProviderFactory from '../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 let matcher: AsciiEmojiMatcher;
 

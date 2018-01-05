@@ -34,9 +34,9 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
       { rank: 50, plugin: () => pastePlugin() }, // must before default paste plugin
       {
         rank: 500,
-        plugin: ({ props }) => {
+        plugin: ({ schema, props, dispatch, providerFactory }) => {
           const { delegateAnalyticsEvent } = props;
-          return createPlugin({ delegateAnalyticsEvent });
+          return createPlugin({ delegateAnalyticsEvent }, providerFactory);
         },
       },
       { rank: 510, plugin: ({ schema }) => inputRulePlugin(schema) },
@@ -44,11 +44,19 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
     ];
   },
 
-  secondaryToolbarComponent(editorView) {
+  secondaryToolbarComponent(
+    editorView,
+    eventDispatcher,
+    providerFactory,
+    appearance,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    disabled,
+  ) {
     return (
       <TaskDecisionToolbarGroup>
-        <ToolbarDecision editorView={editorView} />
-        <ToolbarTask editorView={editorView} />
+        <ToolbarDecision editorView={editorView} isDisabled={disabled} />
+        <ToolbarTask editorView={editorView} isDisabled={disabled} />
       </TaskDecisionToolbarGroup>
     );
   },

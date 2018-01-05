@@ -283,7 +283,7 @@ export const imageLinkDetails: UrlPreview = {
   title: 'A joke that took a life of its own',
   resources: {
     image: {
-      url: 'image-url.png',
+      url: 'http://i.imgur.com/KL5g7xl.png',
       type: 'image/png',
       width: 500,
       height: 500,

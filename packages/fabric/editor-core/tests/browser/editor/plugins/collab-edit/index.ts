@@ -5,7 +5,7 @@ import createEditor from '../../../../helpers/create-editor';
 import collabEdit, {
   pluginKey as collabEditPluginKey,
 } from '../../../../../src/editor/plugins/collab-edit';
-import ProviderFactory from '../../../../../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { collabEditProvider } from '../../../../../example-helpers/mock-collab-provider';
 import { findPointers } from '../../../../../src/editor/plugins/collab-edit/utils';
 
@@ -144,6 +144,8 @@ describe('editor/plugins/collab-edit', () => {
         .setMeta('sessionId', { sid: 'test' })
         .setSelection(TextSelection.create(doc, 13));
       editorView.dispatch(tr);
+      // Wait for next tick
+      await new Promise(resolve => setTimeout(resolve, 0));
       sinon.assert.calledOnce(spy);
 
       sinon.assert.calledWith(spy, {
@@ -202,7 +204,7 @@ describe('editor/plugins/collab-edit', () => {
       const { activeParticipants } = collabEditPluginKey.getState(
         editorView.state,
       );
-      expect(activeParticipants).to.deep.equal([
+      expect(activeParticipants.toArray()).to.deep.equal([
         {
           avatar: 'avatar.png',
           lastActive: 1,
@@ -242,7 +244,7 @@ describe('editor/plugins/collab-edit', () => {
       const { activeParticipants } = collabEditPluginKey.getState(
         editorView.state,
       );
-      expect(activeParticipants).to.deep.equal([
+      expect(activeParticipants.toArray()).to.deep.equal([
         {
           sessionId: 'test-2',
           lastActive: 1,

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { md, Example } from '@atlaskit/docs';
+import { md, Example, code } from '@atlaskit/docs';
 
 export default md`
 # Renderer
@@ -14,10 +14,10 @@ npm install @atlaskit/renderer
 
 Use the component in your React app as follows:
 
-\`\`\`js
+${code`
 import { ReactRenderer } from '@atlaskit/renderer';
 ReactDOM.render(<ReactRenderer document={DOCUMENT} />, container);
-\`\`\`
+`}
 
 ## Example
 
@@ -28,6 +28,20 @@ ${(
     source={require('!!raw-loader!../examples/1-with-providers')}
   />
 )}
+
+## Using transformers with the renderer
+You will need to use a transformer to convert your own storage format into the ADF before you pass it to the renderer.
+We have provided helper utility to simplify this process:
+
+${code`
+import { BitbucketTransformer } from '@atlaskit/editor-bitbucket-transformer';
+import { ReactRenderer, ADFEncoder } from '@atlaskit/renderer';
+
+const adfEncoder = new ADFEncoder(schema => new BitbucketTransformer(schema));
+const document = adfEncoder.encode(DOCUMENT);
+
+ReactDOM.render(<ReactRenderer document={document} />, container);
+`}
 
 ## Polyfills
 

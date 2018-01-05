@@ -4,7 +4,6 @@ jest.mock('../src/utils/breakpoint');
 import { shallow, mount } from 'enzyme';
 import { FileDetails, LinkDetails } from '@atlaskit/media-core';
 
-import { ErrorWrapper } from '../src/links/cardGenericView/styled';
 import { Retry } from '../src/utils/cardGenericViewSmall/styled';
 import { CardView } from '../src/root/cardView';
 import { LinkCard } from '../src/links';
@@ -134,19 +133,6 @@ describe('CardView', () => {
     expect(hoverHandler).toHaveBeenCalledTimes(1);
     const hoverHandlerArg = hoverHandler.mock.calls[0][0];
     expect(hoverHandlerArg.mediaItemDetails).toEqual(link);
-  });
-
-  it('should fire onRetry when there is an error and callback is passed', () => {
-    const onRetryHandler = jest.fn();
-    const card = mount(
-      <CardView status="error" metadata={link} onRetry={onRetryHandler} />,
-    );
-
-    card
-      .find(ErrorWrapper)
-      .find('button')
-      .simulate('click');
-    expect(onRetryHandler).toHaveBeenCalledTimes(1);
   });
 
   it('should render retry element for small cards when an error occurs', () => {

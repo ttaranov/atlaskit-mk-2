@@ -10,7 +10,7 @@ import {
   taskItem,
 } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { uuid } from '@atlaskit/editor-common';
+import { ProviderFactory, uuid } from '@atlaskit/editor-common';
 
 describe('tasks and decisions - keymaps', () => {
   beforeEach(() => {
@@ -24,7 +24,11 @@ describe('tasks and decisions - keymaps', () => {
   const editor = (doc: any) =>
     makeEditor({
       doc,
-      plugins: tasksAndDecisionsPlugins(defaultSchema, {}),
+      plugins: tasksAndDecisionsPlugins(
+        defaultSchema,
+        {},
+        new ProviderFactory(),
+      ),
     });
 
   describe('decisions', () => {

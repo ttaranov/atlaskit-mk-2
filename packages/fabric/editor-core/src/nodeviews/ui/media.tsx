@@ -1,26 +1,17 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import styled from 'styled-components';
-import { ProsemirrorGetPosHandler, ReactNodeProps } from './';
+import { Node as PMNode } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
+import { CardDimensions } from '@atlaskit/media-card';
+import { CardEventHandler } from '@atlaskit/media-core';
+
 import UIMedia from '../../ui/Media';
-import ProviderFactory from '../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   MediaPluginState,
   stateKey as mediaStateKey,
 } from '../../plugins/media';
-import { Node as PMNode } from 'prosemirror-model';
-import { EditorView } from 'prosemirror-view';
-import { CardDimensions } from '@atlaskit/media-card';
-
-// tslint:disable-next-line:variable-name
-const Wrapper = styled.div`
-  margin: 0;
-  display: inline-block;
-  verticalAlign: middle;
-  userSelect: all;
-  border: 3px solid ${props => (props.selected ? '#8cf' : 'transparent')}
-  border-radius: 5px;
-`;
+import { ProsemirrorGetPosHandler, ReactNodeProps } from './';
 
 export interface MediaNodeProps extends ReactNodeProps {
   getPos: ProsemirrorGetPosHandler;
@@ -28,7 +19,10 @@ export interface MediaNodeProps extends ReactNodeProps {
   node: PMNode;
   providerFactory: ProviderFactory;
   cardDimensions: CardDimensions;
+  isMediaSingle?: boolean;
 }
+
+const getId = (props: MediaNodeProps) => props.node.attrs.id;
 
 export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
   private pluginState: MediaPluginState;
@@ -50,7 +44,6 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
   }
 
   shouldComponentUpdate(nextProps) {
-    const getId = (props: MediaNodeProps) => props.node.attrs.id;
     return (
       getId(nextProps) !== getId(this.props) ||
       nextProps.selected !== this.props.selected
@@ -64,26 +57,28 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
       selected,
       view,
       cardDimensions,
+      isMediaSingle,
     } = this.props;
     const { id, type, collection } = node.attrs;
 
+    const deleteEventHandler = isMediaSingle ? undefined : this.handleRemove;
+
     return (
-      <Wrapper selected={selected}>
-        <UIMedia
-          key={`medianode-${id}`}
-          editorView={view}
-          id={id!}
-          type={type!}
-          collection={collection!}
-          providers={providerFactory}
-          cardDimensions={cardDimensions}
-          onDelete={this.handleRemove}
-        />
-      </Wrapper>
+      <UIMedia
+        key={`medianode-${id}`}
+        editorView={view}
+        id={id!}
+        type={type!}
+        collection={collection!}
+        providers={providerFactory}
+        cardDimensions={cardDimensions}
+        onDelete={deleteEventHandler}
+        selected={selected}
+      />
     );
   }
 
-  private handleRemove = (item?: any, event?: Event) => {
+  private handleRemove: CardEventHandler = (item, event) => {
     const { getPos, node } = this.props;
     this.pluginState.handleMediaNodeRemoval(node, getPos);
 

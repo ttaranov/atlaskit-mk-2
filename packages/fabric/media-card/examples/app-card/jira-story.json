@@ -1,0 +1,55 @@
+{
+  "text": "MT-4: New cards implementation",
+  "title": {
+    "text": "MT-4: New cards implementation"
+  },
+  "details": [
+    {
+      "text": "Story",
+      "title": "Type",
+      "icon": {
+        "url": "https://rnazar.jira-dev.com/secure/viewavatar?size=xsmall&avatarId=10315&avatarType=issuetype&format=PNG&size=small",
+        "label": "Story"
+      }
+    },
+    {
+      "text": "High",
+      "title": "Priority",
+      "icon": {
+        "url": "https://rnazar.jira-dev.com/images/icons/priorities/high.svg?format=PNG&size=small",
+        "label": "High"
+      }
+    },
+    {
+      "text": "",
+      "title": "Status",
+      "lozenge": {
+        "text": "To Do",
+        "appearance": "new",
+        "bold": false
+      }
+    },
+    {
+      "title": "Assignee",
+      "text": "Atlassian OnDemand  [Administrator]",
+      "users": [
+        {
+          "icon": {
+            "url": "https://rnazar.jira-dev.com/secure/useravatar?size=medium&avatarId=10348&format=PNG",
+            "label": "Atlassian OnDemand  [Administrator]"
+          }
+        }
+      ]
+    }
+  ],
+  "context": {
+    "text": "Jira / Mobile testing",
+    "icon": {
+      "url": "https://banana-addon-jira.us-west-2.prod.public.atl-paas.net:443/static/images/jira-icon.png",
+      "label": "Mobile testing"
+    }
+  },
+  "link": {
+    "url": "https://rnazar.jira-dev.com/browse/MT-4"
+  }
+}

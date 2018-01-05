@@ -1,5 +1,5 @@
 import { EditorView } from 'prosemirror-view';
-import ProviderFactory from '../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { EventDispatcher } from '../event-dispatcher';
 import { UIComponentFactory, ReactElement } from '../types';
 

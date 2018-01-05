@@ -20,13 +20,12 @@ import {
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import { EditorView } from 'prosemirror-view';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
-import { Transformer } from '@atlaskit/editor-common';
+import { Transformer, ProviderFactory } from '@atlaskit/editor-common';
 import tasksAndDecisionsPlugin from '../../../../src/editor/plugins/tasks-and-decisions';
 import mediaPlugin from '../../../../src/editor/plugins/media';
 import hyperlinkPlugin from '../../../../src/editor/plugins/hyperlink';
 import EditorActions from '../../../../src/editor/actions';
 import { toJSON } from '../../../../src/utils';
-import ProviderFactory from '../../../../src/providerFactory';
 
 const jsonTransformer = new JSONTransformer();
 
@@ -55,7 +54,7 @@ describe(name, () => {
     beforeEach(() => {
       providerFactory = new ProviderFactory();
       const editor = createEditor(
-        [tasksAndDecisionsPlugin, mediaPlugin, hyperlinkPlugin],
+        [tasksAndDecisionsPlugin, mediaPlugin(), hyperlinkPlugin],
         {
           mediaProvider,
           waitForMediaUpload: true,
@@ -268,7 +267,7 @@ describe(name, () => {
       describe('with waitForMediaUpload === false', () => {
         it('should resolve even when media operations are pending', async () => {
           const editor = createEditor(
-            [mediaPlugin, hyperlinkPlugin],
+            [mediaPlugin(), hyperlinkPlugin],
             {
               mediaProvider,
               waitForMediaUpload: false,

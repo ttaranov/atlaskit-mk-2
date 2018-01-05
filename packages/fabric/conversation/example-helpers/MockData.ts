@@ -6,56 +6,90 @@ export const mockUser: User = {
   avatarUrl: 'https://api.adorable.io/avatars/80/mockuser.png',
 };
 
-export const mockConversation: Conversation = {
-  id: 'mock-conversation',
-  containerId: 'abc:abc:abc/demo',
-  children: [
-    {
-      id: 'mock-comment-1',
-      createdBy: mockUser,
-      createdAt: Date.now(),
-      document: {
-        version: 1,
-        type: 'doc',
-        content: [
-          {
-            type: 'paragraph',
-            content: [
-              {
-                type: 'text',
-                text: 'Hello World',
-              },
-            ],
-          },
-        ],
-      },
+export const mockComment: Comment = {
+  commentId: 'mock-comment-1',
+  conversationId: 'mock-conversation',
+  createdBy: mockUser,
+  createdAt: Date.now(),
+  document: {
+    adf: {
+      version: 1,
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Hello World',
+            },
+          ],
+        },
+      ],
     },
-  ],
+  },
+};
+
+export const mockInlineComment: Comment = {
+  commentId: 'mock-comment-2',
+  conversationId: 'mock-inline-conversation',
+  createdBy: mockUser,
+  createdAt: Date.now(),
+  document: {
+    adf: {
+      version: 1,
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Maybe you should actually do something here?',
+            },
+          ],
+        },
+      ],
+    },
+  },
+};
+
+export const mockReplyComment: Comment = {
+  commentId: 'mock-reply-comment-1',
+  parentId: 'mock-comment-1',
+  conversationId: 'mock-conversation',
+  createdBy: mockUser,
+  createdAt: Date.now(),
+  document: {
+    adf: {
+      version: 1,
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Reply!',
+            },
+          ],
+        },
+      ],
+    },
+  },
+};
+
+export const mockConversation: Conversation = {
+  conversationId: 'mock-conversation',
+  containerId: 'abc:abc:abc/demo',
+  comments: [mockComment, mockReplyComment],
+  meta: {},
+  localId: 'local-conversation',
 };
 
 export const mockInlineConversation: Conversation = {
-  id: 'mock-inline-conversation',
+  conversationId: 'mock-inline-conversation',
   containerId: 'abc:abc:abc/demo',
-  children: [
-    {
-      id: 'mock-comment-2',
-      createdBy: mockUser,
-      createdAt: Date.now(),
-      document: {
-        version: 1,
-        type: 'doc',
-        content: [
-          {
-            type: 'paragraph',
-            content: [
-              {
-                type: 'text',
-                text: 'Made you should actually do something here?',
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
+  comments: [mockInlineComment],
+  meta: { name: 'main.js', lineNumber: 3 },
 };

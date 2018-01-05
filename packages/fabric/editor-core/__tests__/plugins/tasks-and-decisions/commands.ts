@@ -2,6 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import { NodeSelection } from 'prosemirror-state';
 import tasksAndDecisionsPlugins from '../../../src/plugins/tasks-and-decisions';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   chaiPlugin,
   makeEditor,
@@ -33,7 +34,11 @@ describe('tasks and decisions - commands', () => {
   const editor = (doc: any) =>
     makeEditor({
       doc,
-      plugins: tasksAndDecisionsPlugins(defaultSchema, {}),
+      plugins: tasksAndDecisionsPlugins(
+        defaultSchema,
+        {},
+        new ProviderFactory(),
+      ),
     });
 
   describe('changeToTaskDecision', () => {
