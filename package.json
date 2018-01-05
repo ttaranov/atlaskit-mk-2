@@ -177,7 +177,6 @@
     "@atlaskit/droplist": "^4.11.3",
     "@atlaskit/emoji": "^31.0.2",
     "@atlaskit/field-base": "^8.1.1",
-    "@atlaskit/field-range": "^2.0.0",
     "@atlaskit/field-text": "^4.1.2",
     "@atlaskit/input": "^1.6.0",
     "@atlaskit/item": "^4.2.3",
