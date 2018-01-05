@@ -4,12 +4,12 @@ const path = require('path');
 const bolt = require('bolt');
 const git = require('../utils/git');
 
-async function getChangedPackages() {
-  const lastRelease = await git.getLastPublishCommit();
-  const changedFiles = await git.getChangedFilesSince(lastRelease, true);
+async function getChangedPackagesSinceCommit(commit) {
+  const changedFiles = await git.getChangedFilesSince(commit, true);
   const allPackages = await bolt.getWorkspaces();
 
-  const fileNameToPackage = fileName => allPackages.find(pkg => fileName.startsWith(pkg.dir));
+  const fileNameToPackage = fileName =>
+    allPackages.find(pkg => fileName.startsWith(pkg.dir));
   const fileExistsInPackage = fileName => !!fileNameToPackage(fileName);
   const fileNameToPackageName = fileName => fileNameToPackage(fileName).name;
 
@@ -22,4 +22,19 @@ async function getChangedPackages() {
   );
 }
 
-module.exports = { getChangedPackages };
+async function getChangedPackagesSincePublishCommit() {
+  const lastRelease = await git.getLastPublishCommit();
+  return getChangedPackagesSinceCommit(lastRelease);
+}
+
+// Note: This returns the packages that have changed AND been committed since master,
+// it wont include staged/unstaged changes
+async function getChangedPackagesSinceMaster() {
+  const masterRef = await git.getMasterRef();
+  return getChangedPackagesSinceCommit(masterRef);
+}
+
+module.exports = {
+  getChangedPackagesSincePublishCommit,
+  getChangedPackagesSinceMaster,
+};

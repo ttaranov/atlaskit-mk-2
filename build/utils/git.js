@@ -32,6 +32,11 @@ async function getBranchName() {
   return gitCmd.stdout.trim().split('\n');
 }
 
+async function getMasterRef() {
+  const gitCmd = await spawn('git', ['rev-parse', 'master']);
+  return gitCmd.stdout.trim().split('\n')[0];
+}
+
 async function add(pathToFile) {
   const gitCmd = await spawn('git', ['add', pathToFile]);
   return gitCmd.code === 0;
@@ -215,6 +220,7 @@ module.exports = {
   getCommitsSince,
   getChangedFilesSince,
   getBranchName,
+  getMasterRef,
   add,
   commit,
   push,
