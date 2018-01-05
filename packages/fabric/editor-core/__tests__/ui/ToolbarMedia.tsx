@@ -7,7 +7,7 @@ import mediaPlugins, {
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import ToolbarMedia from '../../src/ui/ToolbarMedia';
 import { MediaProvider } from '@atlaskit/media-core';
-import ProviderFactory from '../../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   doc,
   p,
@@ -21,8 +21,7 @@ const mediaProvider: Promise<MediaProvider> = Promise.resolve({
   uploadContext: Promise.resolve({} as any),
 });
 
-const providerFactory = new ProviderFactory();
-providerFactory.setProvider('mediaProvider', mediaProvider);
+const providerFactory = ProviderFactory.create({ mediaProvider });
 
 describe('ToolbarMedia', () => {
   const editor = (doc: any) =>

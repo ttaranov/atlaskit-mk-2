@@ -19,7 +19,7 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import { MediaProvider } from '@atlaskit/media-core';
-import ProviderFactory from '../../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { analyticsService } from '../../src/analytics';
 import EditorWidth from '../../src/utils/editor-width';
 
@@ -30,8 +30,7 @@ const mediaProvider: Promise<MediaProvider> = Promise.resolve({
   uploadContext: Promise.resolve({} as any),
 });
 
-const providerFactory = new ProviderFactory();
-providerFactory.setProvider('mediaProvider', mediaProvider);
+const providerFactory = ProviderFactory.create({ mediaProvider });
 
 describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
   const blockTypePluginsSet = blockTypePlugins(defaultSchema);

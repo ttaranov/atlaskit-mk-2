@@ -3,6 +3,7 @@ import { Node as PmNode } from 'prosemirror-model';
 import { MacroProvider, MacroAttributes } from './types';
 import { pluginKey } from './';
 import * as assert from 'assert';
+import { getValidNode } from '@atlaskit/editor-common';
 
 export const insertMacroFromMacroBrowser = (
   macroProvider: MacroProvider,
@@ -22,7 +23,7 @@ export const insertMacroFromMacroBrowser = (
   );
   if (newMacro) {
     const { schema } = state;
-    const { type, attrs } = newMacro;
+    const { type, attrs } = getValidNode(newMacro, schema);
     let node;
 
     if (type === 'extension') {
@@ -53,9 +54,7 @@ export const setMacroProvider = (provider: Promise<MacroProvider>) => async (
     resolvedProvider = await provider;
     assert(
       resolvedProvider && resolvedProvider.openMacroBrowser,
-      `MacroProvider promise did not resolve to a valid instance of MacroProvider - ${
-        resolvedProvider
-      }`,
+      `MacroProvider promise did not resolve to a valid instance of MacroProvider - ${resolvedProvider}`,
     );
   } catch (err) {
     resolvedProvider = null;

@@ -1,4 +1,3 @@
-import ProviderFactory from '../../../src/providerFactory';
 import tasksAndDecisionsPlugins from '../../../src/plugins/tasks-and-decisions';
 import {
   makeEditor,
@@ -11,7 +10,7 @@ import {
   taskItem,
 } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { uuid } from '@atlaskit/editor-common';
+import { ProviderFactory, uuid } from '@atlaskit/editor-common';
 
 describe('tasks and decisions - keymaps', () => {
   beforeEach(() => {

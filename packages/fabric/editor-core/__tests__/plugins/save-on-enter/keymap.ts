@@ -1,6 +1,6 @@
 import tasksAndDecisionsPlugins from '../../../src/plugins/tasks-and-decisions';
 import { createPlugin as createSaveOnEnterPlugin } from '../../../src/editor/plugins/save-on-enter';
-import ProviderFactory from '../../../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   makeEditor,
   doc,
@@ -47,17 +47,5 @@ describe('save on enter', () => {
     const { editorView } = editor(doc(taskList()(taskItem()('1{<>}'))));
     sendKeyToPm(editorView!, 'Enter');
     expect(onSaveSpy).toHaveBeenCalledWith(editorView);
-  });
-
-  it('should not trigger onSubmit when user presses Enter in empty decisionItem', () => {
-    const { editorView } = editor(doc(decisionList()(decisionItem()('{<>}'))));
-    sendKeyToPm(editorView!, 'Enter');
-    expect(onSaveSpy).not.toHaveBeenCalledWith(editorView);
-  });
-
-  it('should not trigger onSubmit when user presses Enter inside empty taskItem', () => {
-    const { editorView } = editor(doc(taskList()(taskItem()('{<>}'))));
-    sendKeyToPm(editorView!, 'Enter');
-    expect(onSaveSpy).not.toHaveBeenCalledWith(editorView);
   });
 });

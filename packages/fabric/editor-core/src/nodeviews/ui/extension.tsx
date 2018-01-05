@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { EditorView, NodeView } from 'prosemirror-view';
-import ProviderFactory from '../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { Node as PmNode } from 'prosemirror-model';
 import Extension from '../../ui/Extension';
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { emoji, emojiQuery } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { WithProviders } from '../../../providerFactory/withProviders';
+import { WithProviders } from '@atlaskit/editor-common';
 import { createPlugin } from '../../../plugins/emojis';
 import inputRulePlugin from '../../../plugins/emojis/input-rules';
 import keymap from '../../../plugins/emojis/keymap';

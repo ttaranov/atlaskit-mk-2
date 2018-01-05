@@ -1,14 +1,11 @@
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import * as assert from 'assert';
-
-import {
-  mediaPluginFactory,
-  MediaPluginState,
-  ProviderFactory,
-} from '../../../src';
+import { ProviderFactory } from '@atlaskit/editor-common';
+import { mediaPluginFactory, MediaPluginState } from '../../../src';
 import { undo, history } from 'prosemirror-history';
 import { EditorView } from 'prosemirror-view';
 import {
+  defaultSchema,
   doc,
   h1,
   makeEditor,
@@ -25,8 +22,7 @@ import {
   insertText,
   getLinkCreateContextMock,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { setNodeSelection } from '../../../src/utils';
+import { setNodeSelection, setTextSelection } from '../../../src/utils';
 import { AnalyticsHandler, analyticsService } from '../../../src/analytics';
 
 const stateManager = new DefaultMediaStateManager();
@@ -46,8 +42,7 @@ describe('Media plugin', () => {
   const mediaProvider = getFreshMediaProvider();
   const temporaryFileId = `temporary:${randomId()}`;
 
-  const providerFactory = new ProviderFactory();
-  providerFactory.setProvider('mediaProvider', mediaProvider);
+  const providerFactory = ProviderFactory.create({ mediaProvider });
 
   const editor = (doc: any, uploadErrorHandler?: () => void) =>
     makeEditor<MediaPluginState>({
@@ -156,9 +151,33 @@ describe('Media plugin', () => {
         await mediaProvider;
 
         pluginState.insertFiles([
-          { id: 'foo', fileMimeType: 'image/jpeg' },
-          { id: 'bar', fileMimeType: 'image/png' },
+          {
+            id: 'foo',
+            fileMimeType: 'image/jpeg',
+          },
+          {
+            id: 'bar',
+            fileMimeType: 'image/png',
+          },
         ]);
+
+        stateManager.updateState('foo', {
+          id: 'foo',
+          status: 'uploading',
+          fileName: 'foo.jpg',
+          fileSize: 100,
+          fileMimeType: 'image/jpeg',
+          thumbnail: { width: 100, height: 100, src: '' },
+        });
+
+        stateManager.updateState('bar', {
+          id: 'bar',
+          status: 'uploading',
+          fileName: 'bar.png',
+          fileSize: 200,
+          fileMimeType: 'image/png',
+          thumbnail: { width: 200, height: 200, src: '' },
+        });
 
         expect(editorView.state.doc).toEqualDocument(
           doc(
@@ -169,7 +188,11 @@ describe('Media plugin', () => {
                 id: 'foo',
                 type: 'file',
                 collection: testCollectionName,
+                __fileName: 'foo.jpg',
+                __fileSize: 100,
                 __fileMimeType: 'image/jpeg',
+                height: 100,
+                width: 100,
               }),
             ),
             mediaSingle({
@@ -179,7 +202,11 @@ describe('Media plugin', () => {
                 id: 'bar',
                 type: 'file',
                 collection: testCollectionName,
+                __fileName: 'bar.png',
+                __fileSize: 200,
                 __fileMimeType: 'image/png',
+                height: 200,
+                width: 200,
               }),
             ),
             p(),
@@ -1167,6 +1194,262 @@ describe('Media plugin', () => {
       // MediaPicker DropZone has a 50ms timeout on dragleave event, so we have to wait for at least 50ms
       await sleep(50);
       expect(getWidgetDom(editorView)).toEqual(null);
+    });
+  });
+
+  describe('element', () => {
+    describe('when cursor is on a media node of a single image', () => {
+      it('returns dom', () => {
+        const { editorView, pluginState } = editor(
+          doc(
+            mediaSingle({ layout: 'wrap-left' })(
+              media({
+                id: 'media',
+                type: 'file',
+                collection: testCollectionName,
+              }),
+            ),
+          ),
+        );
+        setNodeSelection(editorView, 1);
+
+        expect(pluginState.element).not.toBeUndefined();
+        expect(pluginState.element!.className).toBe('wrapper');
+      });
+    });
+
+    describe('when cursor is on one of the media nodes inside media group', () => {
+      it('returns dom', () => {
+        const { editorView, pluginState } = editor(
+          doc(
+            mediaGroup(
+              media({
+                id: 'media',
+                type: 'file',
+                collection: testCollectionName,
+              }),
+            ),
+          ),
+        );
+        setNodeSelection(editorView, 1);
+
+        expect(pluginState.element).toBeUndefined();
+      });
+    });
+
+    describe('when cursor is not on a media node', () => {
+      it('returns undefined', () => {
+        const { pluginState } = editor(
+          doc(
+            mediaSingle({ layout: 'wrap-left' })(
+              media({
+                id: 'media',
+                type: 'file',
+                collection: testCollectionName,
+              }),
+            ),
+            p('{<>}'),
+          ),
+        );
+
+        expect(pluginState.element).toBeUndefined();
+      });
+    });
+
+    describe('when cursor move from a media node to another media node', () => {
+      let pluginState;
+      let editorView;
+
+      beforeEach(() => {
+        const createdEditor = editor(
+          doc(
+            mediaSingle({ layout: 'wrap-left' })(
+              media({
+                id: 'media1',
+                type: 'file',
+                collection: testCollectionName,
+              }),
+            ),
+            mediaSingle({ layout: 'center' })(
+              media({
+                id: 'media2',
+                type: 'file',
+                collection: testCollectionName,
+              }),
+            ),
+            p(''),
+          ),
+        );
+
+        pluginState = createdEditor.pluginState;
+        editorView = createdEditor.editorView;
+
+        setNodeSelection(editorView, 1);
+      });
+
+      it('returns dom', () => {
+        setNodeSelection(editorView, 4);
+
+        expect(pluginState.element).not.toBeUndefined();
+      });
+
+      it('notified subscriber', () => {
+        const subscriber = jest.fn();
+        pluginState.subscribe(subscriber);
+
+        setNodeSelection(editorView, 4);
+
+        expect(subscriber).toHaveBeenCalledTimes(2);
+      });
+    });
+
+    describe('when cursor move to a media node', () => {
+      let pluginState;
+      let editorView;
+
+      beforeEach(() => {
+        const createdEditor = editor(
+          doc(
+            mediaSingle({ layout: 'wrap-left' })(
+              media({
+                id: 'media',
+                type: 'file',
+                collection: testCollectionName,
+              }),
+            ),
+            p('{<>}'),
+          ),
+        );
+
+        pluginState = createdEditor.pluginState;
+        editorView = createdEditor.editorView;
+      });
+
+      it('returns dom', () => {
+        setNodeSelection(editorView, 1);
+
+        expect(pluginState.element).not.toBeUndefined();
+      });
+
+      it('notified subscriber', () => {
+        const subscriber = jest.fn();
+        pluginState.subscribe(subscriber);
+
+        setNodeSelection(editorView, 1);
+
+        expect(subscriber).toHaveBeenCalledTimes(2);
+      });
+    });
+
+    describe('when cursor move away from a media node', () => {
+      let pluginState;
+      let editorView;
+      let refs;
+
+      beforeEach(() => {
+        const createdEditor = editor(
+          doc(
+            mediaSingle({ layout: 'wrap-left' })(
+              media({
+                id: 'media',
+                type: 'file',
+                collection: testCollectionName,
+              }),
+            ),
+            p('{nextPos}'),
+          ),
+        );
+
+        pluginState = createdEditor.pluginState;
+        editorView = createdEditor.editorView;
+        refs = createdEditor.refs;
+
+        setNodeSelection(editorView, 1);
+      });
+
+      it('returns undefined', () => {
+        const { nextPos } = refs;
+
+        setTextSelection(editorView, nextPos);
+
+        expect(pluginState.element).toBeUndefined();
+      });
+
+      it('notified subscriber', () => {
+        const subscriber = jest.fn();
+        pluginState.subscribe(subscriber);
+        const { nextPos } = refs;
+
+        setTextSelection(editorView, nextPos);
+
+        expect(subscriber).toHaveBeenCalledTimes(2);
+      });
+    });
+
+    describe('when element has not been changed', () => {
+      it('does not notified subscriber', () => {
+        const { pluginState, editorView, refs } = editor(
+          doc(
+            mediaSingle({ layout: 'wrap-left' })(
+              media({
+                id: 'media',
+                type: 'file',
+                collection: testCollectionName,
+              }),
+            ),
+            p('{<>}hello{nextPos}'),
+          ),
+        );
+
+        const subscriber = jest.fn();
+        pluginState.subscribe(subscriber);
+        const { nextPos } = refs;
+
+        setTextSelection(editorView, nextPos);
+
+        expect(subscriber).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
+  describe('updateLayout', () => {
+    it('updates the plugin layout', () => {
+      const { pluginState } = editor(
+        doc(
+          mediaSingle({ layout: 'wrap-left' })(
+            media({
+              id: 'media',
+              type: 'file',
+              collection: testCollectionName,
+            }),
+          ),
+        ),
+      );
+
+      pluginState.updateLayout('center');
+
+      expect(pluginState.layout).toBe('center');
+    });
+
+    it('notifies subscriber', () => {
+      const { pluginState } = editor(
+        doc(
+          mediaSingle({ layout: 'center' })(
+            media({
+              id: 'media',
+              type: 'file',
+              collection: testCollectionName,
+            }),
+          ),
+        ),
+      );
+
+      const subscriber = jest.fn();
+      pluginState.subscribe(subscriber);
+
+      pluginState.updateLayout('wrap-right');
+
+      expect(subscriber).toHaveBeenCalledTimes(2);
     });
   });
 });

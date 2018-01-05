@@ -1155,18 +1155,6 @@ System.out.println("There are " + count + " values >= 5");`,
       attrs: {
         localId: 'empty-list-should-not-render',
       },
-    },
-    {
-      type: 'taskList',
-      attrs: {
-        localId: 'empty-list-should-not-render',
-      },
-    },
-    {
-      type: 'decisionList',
-      attrs: {
-        localId: 'empty-list-should-not-render',
-      },
       content: [
         {
           type: 'decisionItem',

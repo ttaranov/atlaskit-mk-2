@@ -30,8 +30,8 @@ const Container = styled.div`
   }
 `;
 
-export type Props = { actions: any };
-export type State = { source: string; output: string };
+type Props = { actions: any };
+type State = { source: string; output: string };
 class TransformerPanels extends React.PureComponent<Props, State> {
   state: State = { source: exampleBitbucketHTML, output: '' };
 
@@ -48,10 +48,9 @@ class TransformerPanels extends React.PureComponent<Props, State> {
     );
   };
 
-  handleChangeInTheEditor = () => {
-    this.props.actions.getValue().then(value => {
-      this.setState({ output: value });
-    });
+  handleChangeInTheEditor = async () => {
+    const value = await this.props.actions.getValue();
+    this.setState({ output: value });
   };
 
   render() {

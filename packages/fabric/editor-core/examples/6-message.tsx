@@ -29,6 +29,7 @@ export default function Example() {
               analyticsHandler={analyticsHandler}
               disabled={disabled}
               maxHeight={305}
+              maxContentSize={500}
               mentionProvider={mentionProvider}
               emojiProvider={emojiProvider}
               mediaProvider={mediaProvider}

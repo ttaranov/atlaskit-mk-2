@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import { browser } from '@atlaskit/editor-common';
 import hyperlinkPlugins, {
   HyperlinkState,
+  stateKey as hyperlinkStateKey,
 } from '../../../../src/plugins/hyperlink';
 import pastePlugins from '../../../../src/plugins/paste';
 import {
@@ -17,6 +18,7 @@ import {
   dispatchPasteEvent,
   defaultSchema,
   isMobileBrowser,
+  sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
 
 chai.use(chaiPlugin);
@@ -363,6 +365,22 @@ describe('hyperlink', () => {
           );
           editorView.destroy();
         });
+      });
+    });
+
+    describe('edit toolbar', () => {
+      it('should be hidden when the esc key is pressed', async () => {
+        const { editorView } = editor(
+          doc(paragraph('http://www.atlassian.com')),
+        );
+        const hyperlinkState = hyperlinkStateKey.getState(editorView.state);
+        hyperlinkState.active = true;
+        sendKeyToPm(editorView, 'Esc');
+        expect(
+          hyperlinkState.active,
+          'Hyperlink plugin state.active should be false',
+        ).to.equal(false);
+        editorView.destroy();
       });
     });
   }

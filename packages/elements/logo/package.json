@@ -25,7 +25,7 @@
   "devDependencies": {
     "@atlaskit/button": "^6.0.0",
     "@atlaskit/docs": "^2.1.0",
-    "@atlaskit/field-radio-group": "^1.2.1",
+    "@atlaskit/field-radio-group": "^1.7.5",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "enzyme": "^2.9.1"
   }

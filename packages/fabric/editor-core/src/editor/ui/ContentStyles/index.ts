@@ -6,6 +6,8 @@ import {
   akEditorTableBorder,
   akEditorTableBorderSelected,
   akEditorTableFloatingControls,
+  akEditorRuleBackground,
+  akEditorRuleBorderRadius,
 } from '../../../styles';
 import {
   akGridSizeUnitless,
@@ -72,12 +74,10 @@ const tableStyle = `
   }
 `;
 
-// tslint:disable-next-line:variable-name
 export const StyledTable = styled.table`
   ${tableStyle};
 `;
 
-// tslint:disable-next-line:variable-name
 const ContentStyles = styled.div`
   // Hack for ie11 that is being used in code block.
   // https://bitbucket.org/atlassian/atlaskit/src/ad09f6361109ece1aab316c8cbd8116ffb7963ef/packages/editor-core/src/schema/nodes/code-block.ts?fileviewer=file-view-default#code-block.ts-110
@@ -224,6 +224,13 @@ const ContentStyles = styled.div`
     pointer-events: auto;
   }
 
+  .ProseMirror hr {
+    height: 0;
+    border: 1px solid ${akEditorRuleBackground};
+    border-radius: ${akEditorRuleBorderRadius};
+    margin: 24px 0;
+  }
+
   .ProseMirror-hideselection *::selection {
     background: transparent;
   }
@@ -281,7 +288,7 @@ const ContentStyles = styled.div`
     top: 20px;
   }
 
-  //=============== BREAKOUT STYLES ==================
+  //=============== SINGLE IMAGE STYLES ==================
 
   && .ProseMirror [layout='wide'] {
     max-width: 960px;

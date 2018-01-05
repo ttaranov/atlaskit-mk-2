@@ -31,7 +31,9 @@ describe('MediaFileAttributes', () => {
         serviceHost,
       );
       expect(attributes.id).toBe('gif-file-some-occurrenceKey');
-      expect(attributes.src).toBe('https://filestore.io/file/gif-file/binary?max-age=3600');
+      expect(attributes.src).toBe(
+        'https://filestore.io/file/gif-file/binary?max-age=3600',
+      );
       expect(attributes.srcDownload).toBe(
         'https://filestore.io/file/gif-file/binary?dl=1',
       );
@@ -45,7 +47,9 @@ describe('MediaFileAttributes', () => {
         serviceHost,
       );
       expect(attributes.id).toBe('jpg-file-some-occurrenceKey');
-      expect(attributes.src).toBe('https://filestore.io/file/jpg-file/image?max-age=3600');
+      expect(attributes.src).toBe(
+        'https://filestore.io/file/jpg-file/image?max-age=3600',
+      );
       expect(attributes.srcDownload).toBe(
         'https://filestore.io/file/jpg-file/binary?dl=1',
       );
@@ -95,15 +99,26 @@ describe('MediaFileAttributes', () => {
       );
     });
 
-  it('should handle artifacts with existent URL params', () => {
-      const attributes = MediaFileAttributesFactory.fromFileItem(Mocks.fileWithParamsInArtifactUrl, serviceHost);
+    it('should handle artifacts with existent URL params', () => {
+      const attributes = MediaFileAttributesFactory.fromFileItem(
+        Mocks.fileWithParamsInArtifactUrl,
+        serviceHost,
+      );
       expect(attributes.id).toBe('hd-file-some-occurrenceKey');
-      expect(attributes.src).toBe('https://filestore.io/file/hd-file/artifact/video_640.mp4/binary?param=1&max-age=3600');
-      expect(attributes.srcDownload).toBe('https://filestore.io/file/hd-file/binary?dl=1');
+      expect(attributes.src).toBe(
+        'https://filestore.io/file/hd-file/artifact/video_640.mp4/binary?param=1&max-age=3600',
+      );
+      expect(attributes.srcDownload).toBe(
+        'https://filestore.io/file/hd-file/binary?dl=1',
+      );
       expect(attributes.type).toBe('video/mp4');
       expect(attributes.title).toBe('Some HD Video');
-      expect(attributes.src_hd).toBe('https://filestore.io/file/hd-file/artifact/video_1280.mp4/binary?param=1');
-      expect(attributes.poster).toBe('https://filestore.io/file/hd-file/artifact/poster_1280.mp4/binary?param=1');
+      expect(attributes.src_hd).toBe(
+        'https://filestore.io/file/hd-file/artifact/video_1280.mp4/binary?param=1',
+      );
+      expect(attributes.poster).toBe(
+        'https://filestore.io/file/hd-file/artifact/poster_1280.mp4/binary?param=1',
+      );
     });
 
     it('should return download url from binary', () => {
@@ -208,19 +223,19 @@ class Mocks {
       mediaType: 'video',
       artifacts: {
         'video_640.mp4': {
-          url: '/file/hd-file/artifact/video_640.mp4/binary?param=1'
+          url: '/file/hd-file/artifact/video_640.mp4/binary?param=1',
         },
         'video_1280.mp4': {
-          url: '/file/hd-file/artifact/video_1280.mp4/binary?param=1'
+          url: '/file/hd-file/artifact/video_1280.mp4/binary?param=1',
         },
         'poster_640.jpg': {
-          url: '/file/hd-file/artifact/poster_640.mp4/binary?param=1'
+          url: '/file/hd-file/artifact/poster_640.mp4/binary?param=1',
         },
         'poster_1280.jpg': {
-          url: '/file/hd-file/artifact/poster_1280.mp4/binary?param=1'
-        }
-      }
+          url: '/file/hd-file/artifact/poster_1280.mp4/binary?param=1',
+        },
+      },
     },
-    occurrenceKey: 'some-occurrenceKey'
+    occurrenceKey: 'some-occurrenceKey',
   } as FileItemWithOccurrenceKey;
 }

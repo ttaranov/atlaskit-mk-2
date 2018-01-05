@@ -14,9 +14,7 @@ const IMPORTANT_MESSAGE_START = `${RED_START}${BOLD_START}`;
 const IMPORTANT_MESSAGE_END = `${BOLD_END}${RED_END}`;
 
 async function fetchJSONSchema(version: string) {
-  const url = `https://unpkg.com/@atlaskit/editor-common@${
-    version
-  }/dist/json-schema/v1/full.json`;
+  const url = `https://unpkg.com/@atlaskit/editor-common@${version}/dist/json-schema/v1/full.json`;
   const res = await axios.get(url);
 
   return res.data;
@@ -66,11 +64,7 @@ describe('JSON schema', () => {
     } catch (ex) {
       throw new Error(
         'JSON schema backwards compatibility test failed. ' +
-          `${
-            IMPORTANT_MESSAGE_START
-          }Have you tried rebasing your current branch against target branch?${
-            IMPORTANT_MESSAGE_END
-          }\n` +
+          `${IMPORTANT_MESSAGE_START}Have you tried rebasing your current branch against target branch?${IMPORTANT_MESSAGE_END}\n` +
           ex.message,
       );
     }

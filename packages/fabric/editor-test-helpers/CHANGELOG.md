@@ -1,5 +1,14 @@
 # @atlaskit/editor-test-helpers
 
+## 1.5.0
+
+## 1.4.5
+- [patch] Add support for single image wrap left/right layout [59d9a74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59d9a74)
+
+## 1.4.4
+
+## 1.4.3
+
 ## 1.4.2
 
 ## 1.4.1

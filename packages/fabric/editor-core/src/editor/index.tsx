@@ -5,7 +5,7 @@ import { DirectEditorProps } from 'prosemirror-view';
 import { createEditor, getUiComponent } from './create-editor';
 import { createPluginsList } from './create-editor';
 import EditorActions from './actions';
-import ProviderFactory from '../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   EditorProps,
   EditorInstance,

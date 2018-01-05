@@ -68,22 +68,29 @@ function getMustUpdateOn(
   const range = allDependencies.get(nextDependency);
   if (!range)
     throw new Error(
-      `conflicting messages around whether ${
-        nextDependency
-      } is depended on by ${dependent.name}`,
+      `conflicting messages around whether ${nextDependency} is depended on by ${
+        dependent.name
+      }`,
     );
 
   // matching optional (^ or ~) then three numbers (we capture the symbol and the major number)
-  const [wholeMatch, symbol, majorVersion] = range.match(
-    /^([\^~])?(\d+)\.\d+\.\d+$/,
-  );
+  const match = range.match(/^([\^~])?(\d+)\.\d+\.\d+$/);
+
+  if (!match) {
+    throw new Error(
+      `Internal dependency "${nextDependency}" for "${
+        dependent.name
+      }" has an invalid range, "${range}"`,
+    );
+  }
+
+  const [wholeMatch, symbol, majorVersion] = match;
+
   if (wholeMatch !== range) {
     throw new Error(
-      `Invalid version range for internal dependency  ${
-        nextDependency
-      } in workspace ${dependent.name} , ${
-        range
-      }. Only caret, tilde or exact semver ranges are accepted.`,
+      `Invalid version range for internal dependency  ${nextDependency} in workspace ${
+        dependent.name
+      } , ${range}. Only caret, tilde or exact semver ranges are accepted.`,
     );
   }
   // See comment at the bottom of this file as to why this logic works

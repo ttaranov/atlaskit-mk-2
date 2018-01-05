@@ -7,6 +7,7 @@ import {
   akColorB75,
   akColorN0,
   akColorN20,
+  akColorN30,
   akColorN40,
   akColorN50,
   akColorN100,
@@ -40,3 +41,5 @@ export const akEditorTableCellSelected = akColorB75;
 export const akEditorTableToolbarSelected = akColorB100;
 export const akEditorTableBorderSelected = akColorB300;
 export const akEditorTableBorderRadius = '3px';
+export const akEditorRuleBackground = akColorN30;
+export const akEditorRuleBorderRadius = '1px';

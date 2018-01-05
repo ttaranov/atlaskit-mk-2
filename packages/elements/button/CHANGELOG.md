@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 6.2.0
+- [minor] replace flow type to be less restrictive [a28cdbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a28cdbd)
+
 ## 6.1.0
 - [minor] Add theming to Button. Deprecate 'help' appearance from Button. [c14ea2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c14ea2e)
 - [minor] Add theming to Button. Deprecate 'help' appearance from Button. [c14ea2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c14ea2e)

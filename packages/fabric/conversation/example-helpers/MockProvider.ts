@@ -1,66 +1,100 @@
 import {
   ConversationResourceConfig,
-  ResourceProvider,
+  AbstractConversationResource,
 } from '../src/api/ConversationResource';
 import { Comment, Conversation, User } from '../src/model';
 import { mockConversation, mockInlineConversation, mockUser } from './MockData';
 
-export class MockProvider implements ResourceProvider {
+import {
+  FETCH_CONVERSATIONS,
+  FETCH_CONVERSATIONS_SUCCESS,
+  ADD_COMMENT_SUCCESS,
+  CREATE_CONVERSATION_SUCCESS,
+} from '../src/internal/actions';
+
+export class MockProvider extends AbstractConversationResource {
   private config: ConversationResourceConfig;
   private conversations: Map<string, Conversation> = new Map();
 
   constructor(config: ConversationResourceConfig) {
+    super();
     this.config = config;
     this.conversations.set('mock-conversation', mockConversation);
     this.conversations.set('mock-inline-conversation', mockInlineConversation);
   }
 
-  async getConversations(): Promise<any> {
-    return [
-      { id: 'mock-conversation', meta: null },
-      {
-        id: 'mock-inline-conversation',
-        meta: { name: 'main.js', lineNumber: 3 },
-      },
-    ];
+  /**
+   * Retrieve the IDs (and meta-data) for all conversations associated with the container ID.
+   */
+  async getConversations(): Promise<Conversation[]> {
+    const { dispatch } = this;
+    dispatch({ type: FETCH_CONVERSATIONS });
+
+    const values = [mockConversation, mockInlineConversation];
+    dispatch({ type: FETCH_CONVERSATIONS_SUCCESS, payload: values });
+
+    return values;
   }
 
-  async getConversation(id: string): Promise<Conversation> {
-    const conversation = this.conversations.get(id);
-    return Promise.resolve(conversation);
-  }
+  /**
+   * Creates a new Conversation and associates it with the containerId provided.
+   */
+  async create(
+    localId: string,
+    containerId: string,
+    value: any,
+    meta: any,
+  ): Promise<Conversation> {
+    const conversationId = `conversation-${Math.floor(
+      Math.random() * 1000,
+    )}-${Math.floor(Math.random() * 1000)}`;
 
-  async create(containerId: string, meta: any): Promise<Conversation> {
-    const conversation = {
-      id: `conversation-${Math.floor(Math.random() * 1000)}-${Math.floor(
-        Math.random() * 1000,
-      )}`,
+    const result = {
+      conversationId,
       containerId,
-      children: [],
+      localId,
+      comments: [this.createComment(conversationId, conversationId, value)],
+      meta: meta,
     };
 
-    this.conversations.set(conversation.id, conversation);
-    return Promise.resolve(conversation);
+    const { dispatch } = this;
+    dispatch({ type: CREATE_CONVERSATION_SUCCESS, payload: result });
+
+    return result;
   }
 
-  async addComment(conversationId: string, parentId: string, document: any) {
-    const comment: Comment = {
-      document,
+  /**
+   * Adds a comment to a parent. ParentId can be either a conversation or another comment.
+   */
+  async addComment(
+    conversationId: string,
+    parentId: string,
+    doc: any,
+  ): Promise<Comment> {
+    const result = this.createComment(conversationId, parentId, doc);
+    const { dispatch } = this;
+    dispatch({ type: ADD_COMMENT_SUCCESS, payload: result });
+
+    return result;
+  }
+
+  private createComment(
+    conversationId: string,
+    parentId: string,
+    doc: any,
+  ): Comment {
+    return {
       createdBy: mockUser,
       createdAt: Date.now(),
-      id: `comment-${Math.floor(Math.random() * 1000)}-${Math.floor(
+      commentId: `comment-${Math.floor(Math.random() * 1000)}-${Math.floor(
         Math.random() * 1000,
       )}`,
+      document: {
+        adf: doc,
+      },
+      conversationId,
+      parentId,
+      comments: [],
     };
-
-    return Promise.resolve(comment);
-  }
-
-  async updateComment(
-    conversationId: string,
-    commentId: string,
-    document: any,
-  ): Promise<any> {
-    return Promise.resolve({ document });
   }
 }

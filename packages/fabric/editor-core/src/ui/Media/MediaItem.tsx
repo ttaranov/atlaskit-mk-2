@@ -1,17 +1,18 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import MediaComponent, { Appearance } from './MediaComponent';
-import { MediaType, CardEventClickHandler } from '@atlaskit/editor-common';
+import {
+  MediaType,
+  CardEventClickHandler,
+  ProviderFactory,
+  WithProviders,
+} from '@atlaskit/editor-common';
 import { CardDimensions } from '@atlaskit/media-card';
 import {
   CardEventHandler,
   MediaStateManager,
   ImageResizeMode,
 } from '@atlaskit/media-core';
-import {
-  default as ProviderFactory,
-  WithProviders,
-} from '../../providerFactory';
 
 export interface Props {
   id: string;
@@ -24,7 +25,7 @@ export interface Props {
   onDelete?: CardEventHandler;
   appearance?: Appearance;
   stateManagerFallback?: MediaStateManager;
-  isMediaSingle?: boolean;
+  selected: boolean;
 }
 
 export default class MediaItem extends PureComponent<Props, {}> {
@@ -54,7 +55,7 @@ export default class MediaItem extends PureComponent<Props, {}> {
       resizeMode,
       appearance,
       stateManagerFallback,
-      isMediaSingle,
+      selected,
     } = this.props;
 
     return (
@@ -69,7 +70,7 @@ export default class MediaItem extends PureComponent<Props, {}> {
         onClick={onClick}
         appearance={appearance}
         stateManagerFallback={stateManagerFallback}
-        isMediaSingle={isMediaSingle}
+        selected={selected}
       />
     );
   };

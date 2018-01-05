@@ -1,10 +1,10 @@
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
 import codeBlockPlugins, { CodeBlockState } from '../../src/plugins/code-block';
-import { FloatingToolbar } from '../../src/ui/LanguagePicker/styles';
 import Select from '@atlaskit/single-select';
 import { TrashToolbarButton } from '../../src/ui/LanguagePicker/styles';
 import LanguagePicker from '../../src/ui/LanguagePicker';
+import FloatingToolbar from '../../src/ui/FloatingToolbar';
 import {
   code_block,
   doc,

@@ -1,7 +1,7 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { ExtensionNodeView } from '../../../nodeviews';
-import ProviderFactory from '../../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { Dispatch } from '../../event-dispatcher';
 import { setExtensionElement } from './actions';
 import { getExtensionNode } from './utils';

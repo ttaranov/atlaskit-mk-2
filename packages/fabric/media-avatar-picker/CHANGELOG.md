@@ -1,5 +1,12 @@
 # @atlaskit/media-avatar-picker
 
+## 4.4.3
+- [patch] Fix console error when running under a React 16 environment. [36d5c0d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36d5c0d)
+
+## 4.4.2
+
+- [patch] Update dependencies [623f8ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623f8ca)
+
 ## 4.4.1
 
 ## 4.4.0

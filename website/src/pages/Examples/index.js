@@ -22,6 +22,8 @@ import type { Directory, RouterMatch } from '../../types';
 import CodeBlock from '../../components/Code';
 import { packages as packagesData } from '../../site';
 import { packageUrl } from '../../utils/url';
+import CodeSandbox from '../Package/CodeSandbox';
+import CodeSandboxLogo from '../Package/CodeSandboxLogo';
 import {
   CodeContainer,
   ComponentContainer,
@@ -112,10 +114,12 @@ function ExampleSelector(props) {
 }
 
 function ExampleNavigation(props) {
+  const { exampleId, groupId, packageId } = props;
+
   return (
     <Nav>
       <NavSection style={{ marginLeft: 8 }}>
-        <Tooltip description="Back to docs" position="right">
+        <Tooltip content="Back to docs" position="right">
           <NavLink to={packageUrl(props.groupId, props.packageId)}>
             <ArrowLeftIcon label="Back to docs" />
           </NavLink>
@@ -124,31 +128,61 @@ function ExampleNavigation(props) {
 
       <NavSection>
         <PackageSelector
-          groupId={props.groupId}
-          packageId={props.packageId}
+          groupId={groupId}
+          packageId={packageId}
           groups={props.groups}
           onSelected={props.onPackageSelected}
         />
         <ExampleSelector
           examples={props.examples}
-          exampleId={props.exampleId}
+          exampleId={exampleId}
           onSelected={props.onExampleSelected}
         />
       </NavSection>
 
-      <NavSection style={{ marginRight: 8 }}>
-        <Tooltip
-          description={`${props.codeIsVisible ? 'Hide' : 'Show'} source`}
-          position="left"
-        >
-          <NavButton
-            isSelected={props.codeIsVisible}
-            onClick={props.onCodeToggle}
-          >
-            <CodeIcon label="Show source" />
-          </NavButton>
-        </Tooltip>
-      </NavSection>
+      <CodeSandbox
+        exampleId={exampleId}
+        groupId={groupId}
+        packageId={packageId}
+      >
+        {({ deploySandbox, loadingSandbox }) => {
+          const codesandboxIcon = loadingSandbox ? (
+            <Spinner />
+          ) : (
+            <CodeSandboxLogo />
+          );
+
+          return (
+            <NavSection style={{ marginRight: 8 }}>
+              <Tooltip
+                content={
+                  loadingSandbox ? 'Loading...' : 'Deploy to CodeSandbox'
+                }
+                position="left"
+              >
+                <NavButton
+                  onClick={deploySandbox}
+                  isDisabled={loadingSandbox}
+                  style={{ marginRight: 8 }}
+                >
+                  {codesandboxIcon}
+                </NavButton>
+              </Tooltip>
+              <Tooltip
+                content={`${props.codeIsVisible ? 'Hide' : 'Show'} source`}
+                position="left"
+              >
+                <NavButton
+                  isSelected={props.codeIsVisible}
+                  onClick={props.onCodeToggle}
+                >
+                  <CodeIcon label="Show source" />
+                </NavButton>
+              </Tooltip>
+            </NavSection>
+          );
+        }}
+      </CodeSandbox>
     </Nav>
   );
 }
@@ -300,7 +334,7 @@ export default class Examples extends React.Component<Props, State> {
     this.setState(state => ({ displayCode: !state.displayCode }));
 
   addFlag = (flagProps: {
-    appearance: string,
+    appearance: 'error' | 'info' | 'normal' | 'success' | 'warning',
     description: string,
     title: string,
   }) => {

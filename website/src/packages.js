@@ -50,6 +50,7 @@ const allPackages = {
   theme: { key: 'theme', name: 'Theme' },
   toggle: { key: 'toggle', name: 'Toggle' },
   tooltip: { key: 'tooltip', name: 'Tooltip' },
+  'tree-table': { key: 'tree-table', name: 'Tree Table' },
 };
 
 export default allPackages;

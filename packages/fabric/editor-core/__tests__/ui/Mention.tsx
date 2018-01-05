@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { ResourcedMention } from '@atlaskit/mention';
-import ProviderFactory from '../../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import Mention from '../../src/ui/Mention';
 
 describe('@atlaskit/editor-core/ui/Mention', () => {
@@ -16,9 +16,8 @@ describe('@atlaskit/editor-core/ui/Mention', () => {
   });
 
   it('should not render ResourcedMentionWithProfilecard if profilecardProvider is not set', () => {
-    const providerFactory = new ProviderFactory();
     const mentionProvider = Promise.resolve({});
-    providerFactory.setProvider('mentionProvider', mentionProvider);
+    const providerFactory = ProviderFactory.create({ mentionProvider });
 
     const mention = mount(
       <Mention
@@ -32,9 +31,8 @@ describe('@atlaskit/editor-core/ui/Mention', () => {
   });
 
   it('should pass provider into resourced mention', () => {
-    const providerFactory = new ProviderFactory();
     const mentionProvider = Promise.resolve({});
-    providerFactory.setProvider('mentionProvider', mentionProvider);
+    const providerFactory = ProviderFactory.create({ mentionProvider });
 
     const mention = mount(
       <Mention
@@ -50,9 +48,8 @@ describe('@atlaskit/editor-core/ui/Mention', () => {
   });
 
   it('should not render ResourcedMentionWithProfilecard if profilecardProvider promise is rejected', async () => {
-    const providerFactory = new ProviderFactory();
     const profilecardProvider = Promise.reject(new Error());
-    providerFactory.setProvider('profilecardProvider', profilecardProvider);
+    const providerFactory = ProviderFactory.create({ profilecardProvider });
 
     const mention = mount(
       <Mention
@@ -71,12 +68,9 @@ describe('@atlaskit/editor-core/ui/Mention', () => {
   });
 
   ['HipChat', 'all', 'here'].forEach(genericUserId => {
-    it(`should not render ResourcedMentionWithProfilecard if id is generic (${
-      genericUserId
-    })`, async () => {
-      const providerFactory = new ProviderFactory();
+    it(`should not render ResourcedMentionWithProfilecard if id is generic (${genericUserId})`, async () => {
       const profilecardProvider = Promise.resolve({});
-      providerFactory.setProvider('profilecardProvider', profilecardProvider);
+      const providerFactory = ProviderFactory.create({ profilecardProvider });
 
       const mention = mount(
         <Mention

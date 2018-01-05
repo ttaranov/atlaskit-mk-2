@@ -4,7 +4,7 @@ import { Schema, Node } from 'prosemirror-model';
 import { EditorState, Transaction, Plugin, PluginKey } from 'prosemirror-state';
 import { createInputRule, leafNodeReplacementCharacter } from '../utils';
 import { isMarkTypeAllowedInCurrentSelection } from '../../utils';
-import ProviderFactory from '../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 let matcher: AsciiEmojiMatcher;
 
@@ -113,9 +113,7 @@ class AsciiEmojiMatcher {
    * See https://regex101.com/r/HRS9O2/2
    */
   static REGEX = new RegExp(
-    `((?:^|[\\s${leafNodeReplacementCharacter}])(?:\\(*?))(\\(y\\)|[^:\\s${
-      leafNodeReplacementCharacter
-    }\\(]\\S{1,3}|:\\S{1,3}( ))$`,
+    `((?:^|[\\s${leafNodeReplacementCharacter}])(?:\\(*?))(\\(y\\)|[^:\\s${leafNodeReplacementCharacter}\\(]\\S{1,3}|:\\S{1,3}( ))$`,
   );
 
   private static REGEX_LEADING_CAPTURE_INDEX = 1;

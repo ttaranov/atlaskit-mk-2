@@ -1,3 +1,4 @@
 // @flow
 export { default } from './components/Tabs';
-export { default as TabsStateless } from './components/TabsStateless';
+export { default as TabContent } from './components/TabContent';
+export { default as TabItem } from './components/TabItem';

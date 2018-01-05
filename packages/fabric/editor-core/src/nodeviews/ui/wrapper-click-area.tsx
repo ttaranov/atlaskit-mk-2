@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import { ReactNodeViewComponents } from '../factory';
 import { ReactNodeViewState } from '../../plugins/react-nodeview';
-import ProviderFactory from '../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { setNodeSelection } from '../../utils';
 import { ProsemirrorGetPosHandler, ReactComponentConstructor } from './';
 
