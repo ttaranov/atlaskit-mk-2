@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 60.20.1
+- [patch] Autoformatting for task and decision items should work inside tables. [13c90ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13c90ff)
+
 ## 60.20.0
 - [minor] Add horizontal rule support in full-page editor [9cefb57](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cefb57)
 
