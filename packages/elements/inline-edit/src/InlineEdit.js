@@ -24,7 +24,7 @@ type DefaultProps = {
   readView: string,
 };
 
-export default class InlineEdit extends Component<Props, State> {
+export default class InlineEditor extends Component<Props, State> {
   state = {
     isEditing: false,
   };
@@ -45,15 +45,19 @@ export default class InlineEdit extends Component<Props, State> {
     this.props.onCancel();
   };
 
-  enterEditingMode = () => this.setState({ isEditing: true });
+  enterEditingMode = () => {
+    //this.setState({ isEditing: true })
+    console.log('Inline Edit - entering');
+  };
 
-  exitEditingMode = () => this.setState({ isEditing: false });
+  exitEditingMode = () => {
+    //this.setState({ isEditing: false })
+    console.log('Inline Edit - exiting');
+  };
 
   render() {
     return (
       <InlineEditStateless
-        label={this.props.label}
-        readView={this.props.readView}
         isEditing={this.state.isEditing}
         {...this.props}
         onEditRequested={this.enterEditingMode}

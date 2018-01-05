@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import MultiSelect from '@atlaskit/multi-select';
 import Group from '@atlaskit/tag-group';
 import Tag from '@atlaskit/tag';
-import InlineEdit from '../src';
+import InlineEditor from '../src';
 
 const MultiSelectItems = [
   { content: 'Apple', value: 'Apple' },
@@ -65,7 +65,7 @@ export default class SelectExample extends Component<void, State> {
   render() {
     return (
       <div>
-        <InlineEdit
+        <InlineEditor
           label="With Multi Select Edit View"
           disableEditViewFieldBase
           editView={this.renderEditView()}

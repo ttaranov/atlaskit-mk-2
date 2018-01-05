@@ -19,8 +19,8 @@
     "dependencies": {
         "@atlaskit/button": "^6.2.0",
         "@atlaskit/field-base": "^8.1.1",
-        "@atlaskit/icon": "^10.1.0",
-        "@atlaskit/theme": "^2.0.0",
+        "@atlaskit/icon": "^10.6.0",
+        "@atlaskit/theme": "^2.2.9",
         "styled-components": "^1.4.6",
         "classnames": "^2.2.5"
     },
@@ -31,7 +31,6 @@
     "devDependencies": {
         "@atlaskit/avatar": "^8.0.6",
         "@atlaskit/inline-dialog": "5.0.7",
-        "@atlaskit/inline-edit": "*",
         "@atlaskit/input": "^1.6.0",
         "@atlaskit/mention": "^8.1.0",
         "@atlaskit/modal-dialog": "^3.0.2",

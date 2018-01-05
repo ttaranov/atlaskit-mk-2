@@ -64,7 +64,7 @@ type State = {
   startY?: number,
 };
 
-export default class InlineEditStateless extends Component<Props, State> {
+export default class InlineEdit extends Component<Props, State> {
   confirmButtonRef: HTMLElement | null;
   cancelButtonRef: HTMLElement | null;
 
@@ -84,8 +84,6 @@ export default class InlineEditStateless extends Component<Props, State> {
     resetFieldBase: false,
     shouldResetFieldBase: false,
     wasFocusReceivedSinceLastBlur: false,
-    startX: 0,
-    startY: 0,
   };
 
   componentWillReceiveProps(nextProps: Props) {
@@ -139,10 +137,9 @@ export default class InlineEditStateless extends Component<Props, State> {
   };
 
   onCancelClick = (event: any) => {
-    if (this.cancelButtonRef && this.cancelButtonRef instanceof HTMLElement) {
-      //$FlowFixMe because Flow cant be sure the node will be a HTMLElement
-      ReactDOM.findDOMNode(this.cancelButtonRef).focus(); // eslint-disable-line react/no-find-dom-node
-    }
+    //$FlowFixMe because Flow cant be sure the node will be a HTMLElement
+    ReactDOM.findDOMNode(this.cancelButtonRef).focus(); // eslint-disable-line react/no-find-dom-node
+
     event.preventDefault();
     this.props.onCancel();
   };
@@ -157,13 +154,14 @@ export default class InlineEditStateless extends Component<Props, State> {
   onFieldBaseWrapperMouseLeave = () =>
     this.setState({ fieldBaseWrapperIsHover: false });
 
-  mouseHasMoved = (client: { clientX: number, clientY: number }) => {
+  mouseHasMoved = (event: { clientX: number, clientY: number }) => {
+    // const startX = this.state.startX || 0;
+    //const startY = this.state.startY || 0;
+
     const { startX, startY } = this.state;
     return (
-      //$FlowFixMe
-      Math.abs(startX - client.clientX) >= DRAG_THRESHOLD ||
-      //$FlowFixMe
-      Math.abs(startY - client.clientY) >= DRAG_THRESHOLD
+      Math.abs(startX - event.clientX) >= DRAG_THRESHOLD ||
+      Math.abs(startY - event.clientY) >= DRAG_THRESHOLD
     );
   };
 
@@ -244,12 +242,13 @@ export default class InlineEditStateless extends Component<Props, State> {
 
   renderEditView = () => {
     const editView = this.props.shouldConfirmOnEnter
-      ? //$FlowFixMe
+      ? //$FlowFixMe - suppress errors because of issues with not being able to define iterable
         cloneElement(this.props.editView, {
           onConfirm: this.props.onConfirm,
         })
       : this.props.editView;
 
+    console.log('InlineEditStateless - renderEdit');
     return this.props.disableEditViewFieldBase
       ? editView
       : this.wrapWithFieldBase(editView);
@@ -259,7 +258,7 @@ export default class InlineEditStateless extends Component<Props, State> {
     const showEditView = this.shouldShowEditView();
     const displayFullWidth =
       showEditView || this.props.isFitContainerWidthReadView;
-
+    console.log('InlineEditStateless - render');
     return (
       <RootWrapper isEditing={this.props.isEditing}>
         <div

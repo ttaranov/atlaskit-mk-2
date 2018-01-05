@@ -13,11 +13,11 @@ export default md`
   import InlineEditor, { InlineEdit } from '@atlaskit/inline-edit';
   ~~~
 
-  The stateful inline editor manages the ~~~onEditRequested~~~,{' '}
-  ~~~onCancel~~~, and ~~~onConfirm~~~ events and exposes{' '}
-  ~~~onCancel~~~ and ~~~onConfirm~~~ handlers. All other props
-  passed to the ~~~InlineEditor~~~ component are passed directly
-  through to the stateless ~~~InlineEdit~~~ component.
+  The stateful inline editor manages the onEditRequested,{' '}
+  onCancel, and onConfirm events and exposes{' '}
+  onCancel and onConfirm handlers. All other props
+  passed to the InlineEditor component are passed directly
+  through to the stateless InlineEdit component.
 
   ${(
     <Example

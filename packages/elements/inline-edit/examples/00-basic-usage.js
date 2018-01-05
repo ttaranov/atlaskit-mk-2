@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import SingleLineTextInput from '@atlaskit/input';
-import InlineEdit from '../src';
+import InlineEditor from '../src';
 
 type State = {
   onEventResult: string,
@@ -12,7 +12,7 @@ export default class BasicExample extends PureComponent<void, State> {
   state = {
     editValue: '',
     onEventResult:
-      'Type in the InlinEdit above to trigger onComfirm and onCancel',
+      'Type in the InlineEditor above to trigger onComfirm and onCancel',
   };
 
   onConfirm = (event: any) => {
@@ -37,14 +37,33 @@ export default class BasicExample extends PureComponent<void, State> {
   render() {
     return (
       <div>
-        <InlineEdit
+        <InlineEditor
+          label="Inline Edit Field"
+          editView={
+            <SingleLineTextInput
+              isEditing
+              isInitiallySelected
+              onChange={e => this.setState({ editValue: e.target.value })}
+            />
+          }
+          readView={
+            <SingleLineTextInput
+              isEditing={false}
+              value={this.state.editValue || 'Field value'}
+            />
+          }
+          onConfirm={() => {}}
+          onCancel={() => console.log('cancel')}
+        />
+
+        <InlineEditor
           label="With read only view"
           readView="Read view with no edit"
           onConfirm={this.onConfirm}
           onCancel={this.onCancel}
         />
 
-        <InlineEdit
+        <InlineEditor
           label="With edit & read views"
           readView="Read view"
           editView={
@@ -59,14 +78,14 @@ export default class BasicExample extends PureComponent<void, State> {
           onConfirm={this.onConfirm}
           onCancel={this.onCancel}
         />
-        <InlineEdit
+        <InlineEditor
           label="With an invalid message shown when in focus"
           isInvalid
           invalidMessage="This error message is shown when the field is focused"
           onConfirm={this.onConfirm}
           onCancel={this.onCancel}
         />
-        <InlineEdit
+        <InlineEditor
           shouldConfirmOnEnter
           editView={
             <SingleLineTextInput
