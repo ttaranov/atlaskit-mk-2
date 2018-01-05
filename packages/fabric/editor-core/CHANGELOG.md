@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 60.20.0
+- [minor] Add horizontal rule support in full-page editor [9cefb57](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cefb57)
+
 ## 60.19.0
 - [patch] Remove duplicate implementation of ProviderFactory from @atlaskit/editor-core, in favour of only one implementation in @atlaskit/editor-common [535cb8c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/535cb8c)
 - [minor] bump prosemirror-tables to 0.5.2 [32b6bbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/32b6bbe)
