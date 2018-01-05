@@ -1,17 +1,18 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import MediaComponent, { Appearance } from './MediaComponent';
-import { MediaType, CardEventClickHandler } from '@atlaskit/editor-common';
+import {
+  MediaType,
+  CardEventClickHandler,
+  ProviderFactory,
+  WithProviders,
+} from '@atlaskit/editor-common';
 import { CardDimensions } from '@atlaskit/media-card';
 import {
   CardEventHandler,
   MediaStateManager,
   ImageResizeMode,
 } from '@atlaskit/media-core';
-import {
-  default as ProviderFactory,
-  WithProviders,
-} from '../../providerFactory';
 
 export interface Props {
   id: string;

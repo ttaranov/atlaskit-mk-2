@@ -1,5 +1,8 @@
 # @atlaskit/reduced-ui-pack
 
+## 8.6.0
+- [minor] Update svg stroke and fill color to match the spec for checkbox and radio button [aaeb66a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aaeb66a)
+
 ## 8.5.0
 - [minor] Updated switcher icon [2815441](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2815441)
 

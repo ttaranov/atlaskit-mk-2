@@ -135,3 +135,7 @@ export const emoji = (attrs: {
 }) => schema.nodes.emoji.create(attrs);
 export const confluenceInlineComment = (attrs: { reference: string }) =>
   markFactory(schema.marks.confluenceInlineComment, attrs ? attrs : {}, true);
+export const taskList = (attrs: { localId?: string } = {}) =>
+  nodeFactory(schema.nodes.taskList, attrs);
+export const taskItem = (attrs: { localId?: string; state?: string } = {}) =>
+  nodeFactory(schema.nodes.taskItem, attrs);

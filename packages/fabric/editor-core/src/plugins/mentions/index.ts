@@ -11,7 +11,7 @@ import {
   isMarkTypeAllowedInCurrentSelection,
   isChromeWithSelectionBug,
 } from '../../utils';
-import ProviderFactory from '../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { analyticsService } from '../../analytics';
 import mentionNodeView from './../../nodeviews/ui/mention';
 import nodeViewFactory from '../../nodeviews/factory';

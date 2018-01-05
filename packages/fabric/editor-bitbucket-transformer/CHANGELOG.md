@@ -1,5 +1,7 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 2.2.0
+
 ## 2.1.12
 - [patch] Fix dependencies in CI [670e930](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/670e930)
 

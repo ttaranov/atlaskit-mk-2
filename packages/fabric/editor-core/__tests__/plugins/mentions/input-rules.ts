@@ -1,5 +1,5 @@
 import mentionsPlugins, { MentionsState } from '../../../src/plugins/mentions';
-import ProviderFactory from '../../../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   insertText,
   makeEditor,

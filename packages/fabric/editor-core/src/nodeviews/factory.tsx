@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
-import ProviderFactory from '../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import ReactPMNode from './ui/prosemirror-node';
 
 type getPosHandler = () => number;

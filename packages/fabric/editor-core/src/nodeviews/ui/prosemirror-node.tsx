@@ -6,7 +6,7 @@ import { EditorView } from 'prosemirror-view';
 import { ReactComponentConstructor } from './';
 import wrapComponentWithClickArea from './wrapper-click-area';
 import { ReactNodeViewComponents } from '../factory';
-import ProviderFactory from '../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { stateKey as reactNodeViewStateKey } from '../../plugins/react-nodeview';
 
 export interface ReactProsemirrorNodeProps {

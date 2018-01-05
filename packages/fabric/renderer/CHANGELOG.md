@@ -1,5 +1,9 @@
 # @atlaskit/renderer
 
+## 11.1.1
+
+## 11.1.0
+
 ## 11.0.0
 - [major] We now use ProseMirror Schema to validate document [d059d6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d059d6a)
 

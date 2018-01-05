@@ -17,7 +17,7 @@ import {
 import { EditorView } from 'prosemirror-view';
 
 import { default as schemaFull } from './schema';
-import ProviderFactory from '../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { AnalyticsHandler, analyticsService } from '../src/analytics';
 
 import {

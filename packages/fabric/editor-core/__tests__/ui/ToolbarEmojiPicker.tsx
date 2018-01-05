@@ -16,10 +16,9 @@ import ToolbarButton from '../../src/ui/ToolbarButton';
 import EditorWidth from '../../src/utils/editor-width';
 import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
-import ProviderFactory from '../../src/providerFactory';
 import { analyticsService } from '../../src/analytics';
 import pluginKey from '../../src/plugins/emojis/plugin-key';
-import { Popup } from '@atlaskit/editor-common';
+import { Popup, ProviderFactory } from '@atlaskit/editor-common';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
 const grinEmoji = emojiTestData.grinEmoji;
@@ -30,8 +29,7 @@ const grinEmojiId = {
 };
 
 describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
-  const providerFactory = new ProviderFactory();
-  providerFactory.setProvider('emojiProvider', emojiProvider);
+  const providerFactory = ProviderFactory.create({ emojiProvider });
   const editor = (doc: any) =>
     makeEditor<EmojiState>({
       doc,
