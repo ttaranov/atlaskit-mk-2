@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { heading, blockquote, hardBreak } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { createPlugin, stateKey } from '../../../plugins/block-type';
+import { plugin, stateKey } from '../../../plugins/block-type';
 import inputRulePlugin from '../../../plugins/block-type/input-rule';
 import ToolbarBlockType from '../../../ui/ToolbarBlockType';
 
@@ -16,7 +16,7 @@ const blockType: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 500, plugin: ({ props }) => createPlugin(props.appearance) },
+      { rank: 500, plugin: () => plugin },
       { rank: 510, plugin: ({ schema }) => inputRulePlugin(schema) },
     ];
   },
