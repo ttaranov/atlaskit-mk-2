@@ -77,7 +77,7 @@ describe('MediaCard', () => {
       expect(element.props().error).toBe(undefined);
     });
 
-    it('should pass onClick to root node', function() {
+    it('should pass onClick to root node', () => {
       const clickHandler = (result: CardEvent) => {};
       const card = shallow(
         <MediaCard provider={createNoopProvider()} onClick={clickHandler} />,
@@ -86,7 +86,7 @@ describe('MediaCard', () => {
       expect(card.props().onClick).toEqual(clickHandler);
     });
 
-    it('should pass onMouseEnter to root node', function() {
+    it('should pass onMouseEnter to root node', () => {
       const hoverHandler = (result: CardEvent) => {};
       const card = shallow(
         <MediaCard
@@ -157,6 +157,7 @@ describe('MediaCard', () => {
           provider={createNoopProvider()}
           onLoadingChange={onLoadingChange}
         />,
+        { disableLifecycleMethods: true },
       ) as any;
 
       (element.instance() as MediaCard).componentDidMount();
@@ -273,9 +274,9 @@ describe('MediaCard', () => {
         observable: () => newObservable,
       };
 
-      const element = shallow(
-        <MediaCard provider={firstProvider as any} />,
-      ) as any;
+      const element = shallow(<MediaCard provider={firstProvider as any} />, {
+        disableLifecycleMethods: true,
+      }) as any;
 
       (element.instance() as MediaCard).componentDidMount();
       element.setProps({ provider: secondProvider });
@@ -312,7 +313,7 @@ describe('MediaCard', () => {
       const instance = element.instance() as MediaCard;
 
       expect(element.find(CardOverlay).prop('onRetry')).toEqual(
-        instance['onRetry'],
+        instance.onRetry,
       );
     });
   });
