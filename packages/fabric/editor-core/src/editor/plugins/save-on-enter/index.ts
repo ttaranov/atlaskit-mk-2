@@ -22,7 +22,7 @@ export function createPlugin(
 
 const saveOnEnterPlugin: EditorPlugin = {
   pmPlugins() {
-    return [{ rank: 300, plugin: ({ props }) => createPlugin(props.onSave) }];
+    return [{ rank: 420, plugin: ({ props }) => createPlugin(props.onSave) }];
   },
 };
 
