@@ -56,6 +56,8 @@ export default function Example() {
             mentionProvider,
             emojiProvider,
             mediaProvider,
+            taskDecisionProvider,
+            contextIdentifierProvider,
             onChange,
           }) => (
             <Editor
@@ -70,6 +72,8 @@ export default function Example() {
               saveOnEnter={true}
               mentionProvider={mentionProvider}
               emojiProvider={emojiProvider}
+              taskDecisionProvider={taskDecisionProvider}
+              contextIdentifierProvider={contextIdentifierProvider}
               mediaProvider={mediaProvider}
               onChange={onChange}
               onSave={SAVE_ACTION}
