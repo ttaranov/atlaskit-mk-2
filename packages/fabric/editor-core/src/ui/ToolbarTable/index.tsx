@@ -1,12 +1,12 @@
 import * as React from 'react';
 import TableIcon from '@atlaskit/icon/glyph/editor/table';
 import { EditorView } from 'prosemirror-view';
-import { TableState } from '../../../../../plugins/table';
-import { analyticsService as analytics } from '../../../../../analytics';
-import { toggleTable, tooltip } from '../../../../../keymaps';
-import ToolbarButton from '../../../../../ui/ToolbarButton';
-import EditorWidth from '../../../../../utils/editor-width';
-import tableCommands from '../../../../../plugins/table/commands';
+import { TableState } from '../../plugins/table';
+import { analyticsService as analytics } from '../../analytics';
+import { toggleTable, tooltip } from '../../keymaps';
+import ToolbarButton from '../ToolbarButton';
+import EditorWidth from '../../utils/editor-width';
+import tableCommands from '../../plugins/table/commands';
 import { Wrapper } from './styles';
 
 export interface Props {
