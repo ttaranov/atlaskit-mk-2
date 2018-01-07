@@ -34,7 +34,7 @@ const filterItems = (
 };
 
 const getNextFocusable = (
-  indexItem?: number,
+  indexItem?: number | null,
   length: number,
   footerIsFocusable: boolean = false,
 ) => {

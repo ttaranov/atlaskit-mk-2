@@ -34,6 +34,6 @@ export type ItemType = {
 };
 
 export type TagType = {
-  appearance: string,
-  elemBefore: Node,
+  appearance?: string,
+  elemBefore?: Node,
 };

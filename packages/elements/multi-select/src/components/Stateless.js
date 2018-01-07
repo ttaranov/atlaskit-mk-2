@@ -50,7 +50,7 @@ type Props = {
   /** Value to be used when filtering the items. Compared against "item's filterValues". */
   filterValue: string,
   /** Element to show after the list of item. Accepts an object of the specific shape */
-  footer: FooterType | void,
+  footer?: FooterType,
   /** id property to be passed down to the html select component. */
   id?: string,
   /** message to show on the dialog when isInvalid is true */

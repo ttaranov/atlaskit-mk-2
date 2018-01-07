@@ -168,7 +168,7 @@ export default class MultiSelect extends PureComponent<Props, State> {
     this.setState({ isOpen: attrs.isOpen });
   };
 
-  handleNewItemCreate = ({ value: textValue }: { value: string }) => {
+  handleNewItemCreate = ({ value: textValue }: Object) => {
     // eslint-disable-line react/no-unused-prop-types
     const { items, selectedItems } = this.state;
     const id = uid();
