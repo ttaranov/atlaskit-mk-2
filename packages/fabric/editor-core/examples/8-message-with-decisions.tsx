@@ -43,10 +43,24 @@ class DecisionBuilderToolsDrawer extends Component<Props, State> {
   };
 
   private handleProviders(props: EditorProps) {
-    const { emojiProvider, mentionProvider, mediaProvider } = props;
+    const {
+      emojiProvider,
+      mentionProvider,
+      mediaProvider,
+      taskDecisionProvider,
+      contextIdentifierProvider,
+    } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.providerFactory.setProvider('mediaProvider', mediaProvider);
+    this.providerFactory.setProvider(
+      'taskDecisionProvider',
+      taskDecisionProvider,
+    );
+    this.providerFactory.setProvider(
+      'contextIdentifierProvider',
+      contextIdentifierProvider,
+    );
   }
 
   render() {
@@ -69,12 +83,16 @@ class DecisionBuilderToolsDrawer extends Component<Props, State> {
             mentionProvider,
             emojiProvider,
             mediaProvider,
+            taskDecisionProvider,
+            contextIdentifierProvider,
             onChange,
           }) => {
             this.handleProviders({
               mentionProvider,
               emojiProvider,
               mediaProvider,
+              taskDecisionProvider,
+              contextIdentifierProvider,
             });
 
             return (
@@ -86,6 +104,8 @@ class DecisionBuilderToolsDrawer extends Component<Props, State> {
                 mentionProvider={mentionProvider}
                 emojiProvider={emojiProvider}
                 mediaProvider={mediaProvider}
+                taskDecisionProvider={taskDecisionProvider}
+                contextIdentifierProvider={contextIdentifierProvider}
                 onChange={this.onChange(onChange)}
                 onSave={SAVE_ACTION}
               />

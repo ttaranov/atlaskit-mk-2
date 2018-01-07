@@ -6,7 +6,7 @@ import { EditorView } from 'prosemirror-view';
 import * as MarkdownIt from 'markdown-it';
 import table from 'markdown-it-table';
 import { stateKey as tableStateKey } from '../table';
-import { containsTable } from '../table/utils';
+import { containsTable } from '../../editor/plugins/table/utils';
 import { insertMediaAsMediaSingle } from '../media/media-single';
 import {
   isSingleLine,
@@ -225,7 +225,7 @@ export function createPlugin(
           if (
             tableState &&
             tableState.isRequiredToAddHeader() &&
-            containsTable(view, slice)
+            containsTable(view.state, slice)
           ) {
             const { state, dispatch } = view;
             const selectionStart = state.selection.$from.pos;

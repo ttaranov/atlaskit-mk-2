@@ -1,6 +1,6 @@
 import { analyticsService } from '../../../analytics';
 import { keymap } from 'prosemirror-keymap';
-import { EditorState, Plugin } from 'prosemirror-state';
+import { EditorState, Plugin, TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { EditorPlugin } from '../../types';
 
@@ -13,16 +13,35 @@ export function createPlugin(
 
   return keymap({
     Enter(state: EditorState, dispatch: (tr) => void, editorView: EditorView) {
-      analyticsService.trackEvent('atlassian.editor.stop.submit');
-      onSave(editorView);
-      return true;
+      if (canSaveOnEnter(editorView)) {
+        analyticsService.trackEvent('atlassian.editor.stop.submit');
+        onSave(editorView);
+        return true;
+      }
+      return false;
     },
   });
 }
 
+function canSaveOnEnter(editorView: EditorView) {
+  const { $cursor } = editorView.state.selection as TextSelection;
+  const { decisionItem, paragraph, taskItem } = editorView.state.schema.nodes;
+  return (
+    !$cursor ||
+    ($cursor.parent.type === paragraph && $cursor.depth === 1) ||
+    ($cursor.parent.type === decisionItem && !isEmptyAtCursor($cursor)) ||
+    ($cursor.parent.type === taskItem && !isEmptyAtCursor($cursor))
+  );
+}
+
+function isEmptyAtCursor($cursor) {
+  const { content } = $cursor.parent;
+  return !(content && content.size);
+}
+
 const saveOnEnterPlugin: EditorPlugin = {
   pmPlugins() {
-    return [{ rank: 300, plugin: ({ props }) => createPlugin(props.onSave) }];
+    return [{ rank: 9700, plugin: ({ props }) => createPlugin(props.onSave) }];
   },
 };
 

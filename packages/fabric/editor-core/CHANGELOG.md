@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 60.20.2
+- [patch] added createStep to collab provider [139e70d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/139e70d)
+- [patch] Revert change os enter keypress in stride. [4eac0d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4eac0d8)
+
 ## 60.20.1
 - [patch] Autoformatting for task and decision items should work inside tables. [13c90ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13c90ff)
 
