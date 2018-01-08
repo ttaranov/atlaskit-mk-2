@@ -1,0 +1,55 @@
+{
+  "name": "@atlaskit/blanket",
+  "version": "4.0.3",
+  "config": {
+    "access": "public"
+  },
+  "description": "A React component that covers the underlying UI for a layered component.",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "jsnext:experimental:main": "dist/es/index.js",
+  "ak:webpack:raw": "src/index.jsx",
+  "ak:component": {
+    "name": "Blanket",
+    "dark": true
+  },
+  "scripts": {
+    "eslint": "../../build/bin/lint.eslint.sh",
+    "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'",
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/blanket; } || ../../node_modules/.bin/not-in-publish",
+    "storybook": "../../build/bin/storybook/run.local.js",
+    "storybook:static": "../../build/bin/storybook/build.static.js",
+    "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@atlaskit/theme": "^2.2.0",
+    "babel-runtime": "^6.11.6",
+    "styled-components": "^1.4.6"
+  },
+  "devDependencies": {
+    "@atlaskit/blanket": "*",
+    "@atlaskit/util-readme": "^3.0.0",
+    "@atlaskit/button": "^5.4.8"
+  },
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Luke B"
+    }
+  ],
+  "license": "Apache-2.0",
+  "peerDependencies": {
+    "react": "^15.3.2 || ^16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
+}
