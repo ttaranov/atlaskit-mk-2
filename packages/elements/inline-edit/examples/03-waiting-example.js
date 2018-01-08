@@ -8,19 +8,18 @@ type State = {
 };
 export default class WaitingExample extends Component<void, State> {
   state = {
-    onEventResult:
-      'Type in the InlinEdit above to trigger onComfirm and onCancel',
+    onEventResult: 'Click on a field above to show edit view',
   };
 
-  onConfirm = (event: any) => {
+  onConfirm = () => {
     this.setState({
-      onEventResult: `onConfirm called with value: ${event.target.value}`,
+      onEventResult: `onConfirm called`,
     });
   };
 
-  onCancel = (event: any) => {
+  onCancel = () => {
     this.setState({
-      onEventResult: `onCancel called with value: ${event.target.value}`,
+      onEventResult: `onCancel called`,
     });
   };
 
@@ -34,7 +33,7 @@ export default class WaitingExample extends Component<void, State> {
           readView={
             <SingleLineTextInput
               isEditing={false}
-              value={'This will be styled as disabled'}
+              value={'Click to edit & field will be styled as disabled'}
             />
           }
           onConfirm={this.onConfirm}

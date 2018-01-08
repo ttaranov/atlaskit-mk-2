@@ -6,12 +6,41 @@ import { InlineEdit } from '../src';
 type State = {|
   value: string | number,
   isEditing: boolean,
+  onEventResult: string,
 |};
 
 export default class StatelessExample extends Component<void, State> {
   state = {
     value: '',
     isEditing: false,
+    onEventResult: 'Click on a field above to show edit view',
+  };
+
+  onEditRequested = () => {
+    this.setState({
+      isEditing: true,
+      onEventResult: `onEditRequested called`,
+    });
+  };
+  onConfirm = () => {
+    this.setState({
+      isEditing: false,
+      onEventResult: `onConfirm called`,
+    });
+  };
+
+  onCancel = () => {
+    this.setState({
+      isEditing: false,
+      onEventResult: `onCancel called`,
+    });
+  };
+
+  onChange = (event: any) => {
+    this.setState({
+      value: event.target.value,
+      onEventResult: `onChange called with value: ${event.target.value}`,
+    });
   };
 
   render() {
@@ -20,13 +49,13 @@ export default class StatelessExample extends Component<void, State> {
         <InlineEdit
           label="Stateless Inline Edit"
           isEditing={this.state.isEditing}
-          onEditRequested={() => this.setState({ isEditing: true })}
-          onCancel={() => this.setState({ isEditing: false })}
-          onConfirm={() => this.setState({ isEditing: false })}
+          onEditRequested={this.onEditRequested}
+          onCancel={this.onCancel}
+          onConfirm={this.onConfirm}
           readView={
             <SingleLineTextInput
               isEditing={false}
-              value={this.state.value || 'Field value'}
+              value={this.state.value || 'A field value'}
             />
           }
           editView={
@@ -34,7 +63,7 @@ export default class StatelessExample extends Component<void, State> {
               isEditing
               isInitiallySelected
               value={this.state.value}
-              onChange={e => this.setState({ value: e.target.value })}
+              onChange={this.onChange}
             />
           }
         />
@@ -48,7 +77,7 @@ export default class StatelessExample extends Component<void, State> {
             margin: '0.5em',
           }}
         >
-          State updated onChange with value: {this.state.value}
+          {this.state.onEventResult}
         </div>
       </div>
     );

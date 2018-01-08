@@ -11,19 +11,18 @@ type State = {
 export default class BasicExample extends PureComponent<void, State> {
   state = {
     editValue: '',
-    onEventResult:
-      'Type in the InlineEditor above to trigger onComfirm and onCancel',
+    onEventResult: 'Click on a field above to show edit view',
   };
 
-  onConfirm = (event: any) => {
+  onConfirm = () => {
     this.setState({
-      onEventResult: `onConfirm called with value: ${event.target.value}`,
+      onEventResult: `onConfirm called`,
     });
   };
 
-  onCancel = (event: any) => {
+  onCancel = () => {
     this.setState({
-      onEventResult: `onCancel called with value: ${event.target.value}`,
+      onEventResult: `onCancel called`,
     });
   };
 
@@ -43,7 +42,7 @@ export default class BasicExample extends PureComponent<void, State> {
             <SingleLineTextInput
               isEditing
               isInitiallySelected
-              onChange={e => this.setState({ editValue: e.target.value })}
+              onChange={this.onChange}
             />
           }
           readView={
@@ -52,8 +51,8 @@ export default class BasicExample extends PureComponent<void, State> {
               value={this.state.editValue || 'Field value'}
             />
           }
-          onConfirm={() => {}}
-          onCancel={() => console.log('cancel')}
+          onConfirm={this.onConfirm}
+          onCancel={this.onCancel}
         />
 
         <InlineEditor
@@ -82,11 +81,23 @@ export default class BasicExample extends PureComponent<void, State> {
           label="With an invalid message shown when in focus"
           isInvalid
           invalidMessage="This error message is shown when the field is focused"
+          readView="Click to edit and show invalid message"
+          editView={
+            <SingleLineTextInput
+              id="inline-edit-text-input"
+              isEditing
+              isInitiallySelected
+              value={this.state.editValue}
+              onChange={this.onChange}
+            />
+          }
           onConfirm={this.onConfirm}
           onCancel={this.onCancel}
         />
         <InlineEditor
+          label="With confirm on enter enabled "
           shouldConfirmOnEnter
+          readView="Click to edit and enter to confirm"
           editView={
             <SingleLineTextInput
               id="inline-confirm-enter"
@@ -111,7 +122,6 @@ export default class BasicExample extends PureComponent<void, State> {
         >
           {this.state.onEventResult}
         </div>
-        <div />
       </div>
     );
   }

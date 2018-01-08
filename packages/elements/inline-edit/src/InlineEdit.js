@@ -46,13 +46,11 @@ export default class InlineEditor extends Component<Props, State> {
   };
 
   enterEditingMode = () => {
-    //this.setState({ isEditing: true })
-    console.log('Inline Edit - entering');
+    this.setState({ isEditing: true });
   };
 
   exitEditingMode = () => {
-    //this.setState({ isEditing: false })
-    console.log('Inline Edit - exiting');
+    this.setState({ isEditing: false });
   };
 
   render() {

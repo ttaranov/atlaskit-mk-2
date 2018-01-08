@@ -38,7 +38,7 @@ export default md`
   ${(
     <Example
       Component={require('../examples/02-select-example').default}
-      title="Form Example"
+      title="Select Example"
       source={require('!!raw-loader!../examples/02-select-example')}
     />
   )}
@@ -46,7 +46,7 @@ export default md`
   ${(
     <Example
       Component={require('../examples/03-waiting-example').default}
-      title="Form Example"
+      title="Waiting Example"
       source={require('!!raw-loader!../examples/03-waiting-example')}
     />
   )}
@@ -54,7 +54,7 @@ export default md`
   ${(
     <Example
       Component={require('../examples/04-text-example').default}
-      title="Form Example"
+      title="Text Example"
       source={require('!!raw-loader!../examples/04-text-example')}
     />
   )}

@@ -12,7 +12,7 @@ export default class TextExample extends Component<void, State> {
   state = {
     editValue: '',
     readValue: '',
-    onEventResult: '',
+    onEventResult: 'Click on a field above to show edit view',
   };
 
   onConfirm = () => {
@@ -45,6 +45,7 @@ export default class TextExample extends Component<void, State> {
     return (
       <div>
         <InlineEditor
+          isFitContainerWidthReadView
           label="With Text Input"
           labelHtmlFor={id}
           editView={this.renderInput({ isEditing: true, id })}

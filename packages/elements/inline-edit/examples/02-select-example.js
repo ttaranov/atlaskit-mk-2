@@ -22,20 +22,20 @@ type State = {
 
 export default class SelectExample extends Component<void, State> {
   state = {
-    onEventResult: '',
+    onEventResult: 'Click on a field above to show edit view',
     editValue: '',
   };
 
   onConfirm = (event: any) => {
     this.setState({
-      onEventResult: `onConfirm called with value: ${event.target.value}`,
+      onEventResult: `onConfirm called`,
       editValue: event.target.value,
     });
   };
 
   onCancel = (event: any) => {
     this.setState({
-      onEventResult: `onCancel called with value: ${event.target.value}`,
+      onEventResult: `onCancel called`,
       editValue: event.target.value,
     });
   };
@@ -83,7 +83,7 @@ export default class SelectExample extends Component<void, State> {
             margin: '0.5em',
           }}
         >
-          State updated with value: {this.state.editValue}
+          {this.state.onEventResult}
         </div>
       </div>
     );

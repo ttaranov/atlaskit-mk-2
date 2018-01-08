@@ -93,10 +93,12 @@ export default class InlineEdit extends Component<Props, State> {
   }
 
   componentDidUpdate() {
+    // Code below triggered an infinite loop when using Component vs PureComponent.
+    // TODO: Find out why this was here and ensure it's not needed.
     // eslint-disable-next-line react/no-did-update-set-state
-    this.setState({
-      shouldResetFieldBase: false,
-    });
+    // this.setState({
+    //   shouldResetFieldBase: false,
+    // });
   }
 
   onMouseDown = (client: { clientX: number, clientY: number }) =>
@@ -248,7 +250,6 @@ export default class InlineEdit extends Component<Props, State> {
         })
       : this.props.editView;
 
-    console.log('InlineEditStateless - renderEdit');
     return this.props.disableEditViewFieldBase
       ? editView
       : this.wrapWithFieldBase(editView);
@@ -258,7 +259,6 @@ export default class InlineEdit extends Component<Props, State> {
     const showEditView = this.shouldShowEditView();
     const displayFullWidth =
       showEditView || this.props.isFitContainerWidthReadView;
-    console.log('InlineEditStateless - render');
     return (
       <RootWrapper isEditing={this.props.isEditing}>
         <div
