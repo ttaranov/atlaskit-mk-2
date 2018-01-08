@@ -1,16 +1,12 @@
-# Inline Dialog
+# Inline Edit
 
 A component for displaying and editing values in fields.
 
-![Example inline edit](https://i.imgur.com/S3Czgdz.gif)
-
-## Try it out
-
-Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
-
 ## Installation
 
-```sh
-npm install @NAME@
-```
+npm install @atlaskit/inline-edit
+
+## Uage
+
+See [here](https://ak-mk-2-prod.netlify.com/mk-2/packages/elements/inline-edit)
 

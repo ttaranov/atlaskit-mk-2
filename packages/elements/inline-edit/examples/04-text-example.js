@@ -10,8 +10,8 @@ type State = {|
 |};
 export default class TextExample extends Component<void, State> {
   state = {
-    editValue: '',
-    readValue: '',
+    editValue: 'Read value of the field',
+    readValue: 'Read value of the field',
     onEventResult: 'Click on a field above to show edit view',
   };
 
