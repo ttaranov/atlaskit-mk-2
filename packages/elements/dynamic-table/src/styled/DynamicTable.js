@@ -10,10 +10,16 @@ export const Table = styled.table`
     `};
   border-collapse: collapse;
   width: 100%;
+
+  box-sizing: border-box;
+  * {
+    box-sizing: border-box;
+  }
 `;
 
 export const Caption = styled.caption`
   font-size: 1.42857143em;
+  will-change: transform; // DnD operation will cause caption to jump in Safari
   font-style: inherit;
   font-weight: 500;
   letter-spacing: -0.008em;

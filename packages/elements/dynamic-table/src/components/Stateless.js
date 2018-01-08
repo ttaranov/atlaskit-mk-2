@@ -36,11 +36,14 @@ export default class DynamicTable extends Component<Props, {}> {
   tableBody: ComponentType<any, {}> | null;
   static defaultProps = {
     isLoading: false,
+    isRankable: false,
     isFixedSize: false,
     rowsPerPage: Infinity,
     onSetPage() {},
     onSort() {},
     page: 1,
+    onRankStart: () => {},
+    onRankEnd: () => {},
   };
   componentWillMount() {
     validateSortKey(this.props.sortKey, this.props.head);

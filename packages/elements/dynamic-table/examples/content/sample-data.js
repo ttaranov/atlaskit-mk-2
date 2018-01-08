@@ -57,7 +57,8 @@ export const head = {
   ],
 };
 
-export const rows = presidents.map(president => ({
+export const rows = presidents.map((president, index) => ({
+  key: index,
   cells: [
     {
       key: createKey(president.nm),
