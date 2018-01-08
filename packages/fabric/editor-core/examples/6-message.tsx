@@ -4,9 +4,14 @@ import { AnalyticsDecorator, AnalyticsListener } from '@atlaskit/analytics';
 import { EditorWithAnalytics } from './../src/editor';
 import getPropsPreset from './../src/editor/create-editor/get-props-preset';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
+import { EditorView } from 'prosemirror-view';
 
-// tslint:disable-next-line:no-console
-const SAVE_ACTION = () => console.log('Save');
+const SAVE_ACTION = (editorView: EditorView) => {
+  // tslint:disable-next-line:no-console
+  console.log('Save');
+  const { state, dispatch } = editorView;
+  dispatch(state.tr.delete(0, state.doc.content.size));
+};
 
 // tslint:disable-next-line:no-console
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
