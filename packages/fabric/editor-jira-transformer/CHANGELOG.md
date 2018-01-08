@@ -1,5 +1,10 @@
 # @atlaskit/editor-jira-transformer
 
+## 2.3.0
+
+## 2.2.1
+- [patch] Adding missing dependency collapse-whitespace in editor-jira-transformer. [79a668e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79a668e)
+
 ## 2.2.0
 
 ## 2.1.9

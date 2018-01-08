@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import Button from '@atlaskit/button';
 
@@ -9,7 +10,10 @@ import imageUploadHandler from './imageUpload';
 
 import { MentionResource, EmojiResource } from '../src';
 import { toJSON } from '../src/utils';
-import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
+import {
+  storyContextIdentifierProviderFactory,
+  storyMediaProviderFactory,
+} from '@atlaskit/editor-test-helpers';
 
 const rejectedPromise = Promise.reject(
   new Error('Simulated provider rejection'),
@@ -50,6 +54,20 @@ const providers = {
     rejected: rejectedPromise,
     undefined: undefined,
   },
+  taskDecisionProvider: {
+    resolved: Promise.resolve(
+      taskDecisionStoryData.getMockTaskDecisionResource(),
+    ),
+    pending: pendingPromise,
+    rejected: rejectedPromise,
+    undefined: undefined,
+  },
+  contextIdentifierProvider: {
+    resolved: storyContextIdentifierProviderFactory(),
+    pending: pendingPromise,
+    rejected: rejectedPromise,
+    undefined: undefined,
+  },
   mediaProvider: {
     resolved: storyMediaProviderFactory({ includeUserAuthProvider: true }),
     pending: pendingPromise,
@@ -83,6 +101,8 @@ interface State {
   mentionProvider: string;
   mediaProvider: string;
   emojiProvider: string;
+  taskDecisionProvider: string;
+  contextIdentifierProvider: string;
   activityProvider: string;
   jsonDocument?: string;
 }
@@ -98,6 +118,8 @@ export default class ToolsDrawer extends React.Component<any, State> {
       mentionProvider: 'resolved',
       mediaProvider: 'resolved',
       emojiProvider: 'resolved',
+      taskDecisionProvider: 'resolved',
+      contextIdentifierProvider: 'resolved',
       activityProvider: 'resolved',
       jsonDocument: '{}',
     };
@@ -126,6 +148,8 @@ export default class ToolsDrawer extends React.Component<any, State> {
     const {
       mentionProvider,
       emojiProvider,
+      taskDecisionProvider,
+      contextIdentifierProvider,
       mediaProvider,
       activityProvider,
       imageUploadProvider,
@@ -155,6 +179,10 @@ export default class ToolsDrawer extends React.Component<any, State> {
               mediaProvider: providers.mediaProvider[mediaProvider],
               mentionProvider: providers.mentionProvider[mentionProvider],
               emojiProvider: providers.emojiProvider[emojiProvider],
+              taskDecisionProvider:
+                providers.taskDecisionProvider[taskDecisionProvider],
+              contextIdentifierProvider:
+                providers.contextIdentifierProvider[contextIdentifierProvider],
               activityProvider: providers.activityProvider[activityProvider],
               onChange: this.onChange,
             })}

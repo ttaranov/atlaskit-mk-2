@@ -111,7 +111,10 @@ export const createPlugin = (
               .on('error', err => {
                 // TODO: Handle errors property (ED-2580)
               })
-              .initialize(() => view.state);
+              .initialize(
+                () => view.state,
+                json => Step.fromJSON(view.state.schema, json),
+              );
           } else {
             collabEditProvider = null;
             isReady = false;

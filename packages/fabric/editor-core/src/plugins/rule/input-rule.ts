@@ -24,7 +24,13 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
   if (schema.nodes.rule) {
     // '---' and '***' for hr
     rules.push(
-      createInputRule(/^\-\-\-$|^\*\*\*$/, createHorizontalRule, true),
+      // -1, so that it also replaces the container paragraph
+      createInputRule(
+        /^\-\-\-$|^\*\*\*$/,
+        (state, match, start, end) =>
+          createHorizontalRule(state, match, start - 1, end),
+        true,
+      ),
     );
 
     // '---' and '***' after shift+enter for hr

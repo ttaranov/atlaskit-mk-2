@@ -45,6 +45,9 @@ module.exports = {
     },
   },
   moduleFileExtensions: ['js', 'ts', 'tsx'],
+  moduleNameMapper: {
+    '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/fileMock.js',
+  },
   snapshotSerializers: ['enzyme-to-json/serializer'],
   setupTestFrameworkScriptFile: `${__dirname}/jestFrameworkSetup.js`,
 };

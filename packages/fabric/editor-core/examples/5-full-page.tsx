@@ -9,10 +9,12 @@ import EditorContext from './../src/editor/ui/EditorContext';
 import WithEditorActions from './../src/editor/ui/WithEditorActions';
 import {
   storyMediaProviderFactory,
+  storyContextIdentifierProviderFactory,
   macroProvider,
 } from '@atlaskit/editor-test-helpers';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 
 import {
@@ -102,10 +104,16 @@ export type State = { disabled: boolean };
 const providers = {
   emojiProvider: emojiStoryData.getEmojiResource({ uploadSupported: true }),
   mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
+  taskDecisionProvider: Promise.resolve(
+    taskDecisionStoryData.getMockTaskDecisionResource(),
+  ),
+  contextIdentifierProvider: storyContextIdentifierProviderFactory(),
   activityProvider: Promise.resolve(new MockActivityResource()),
   macroProvider: Promise.resolve(macroProvider),
 };
-const mediaProvider = storyMediaProviderFactory();
+const mediaProvider = storyMediaProviderFactory({
+  includeUserAuthProvider: true,
+});
 
 export default class Example extends React.Component<Props, State> {
   state: State = { disabled: true };
@@ -130,6 +138,7 @@ export default class Example extends React.Component<Props, State> {
               allowPanel={true}
               allowExtension={true}
               allowPlaceholderCursor={true}
+              allowRule={true}
               {...providers}
               media={{ provider: mediaProvider, allowMediaSingle: true }}
               placeholder="Write something..."

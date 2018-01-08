@@ -14,10 +14,12 @@ import {
 } from '@atlaskit/editor-core';
 import {
   storyMediaProviderFactory,
+  storyContextIdentifierProviderFactory,
   macroProvider,
 } from '@atlaskit/editor-test-helpers';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import Spinner from '@atlaskit/spinner';
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
@@ -98,6 +100,10 @@ const providers = {
   mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
   activityProvider: Promise.resolve(new MockActivityResource()),
   macroProvider: Promise.resolve(macroProvider),
+  taskDecisionProvider: Promise.resolve(
+    taskDecisionStoryData.getMockTaskDecisionResource(),
+  ),
+  contextIdentifierProvider: storyContextIdentifierProviderFactory(),
 };
 const mediaProvider = storyMediaProviderFactory();
 

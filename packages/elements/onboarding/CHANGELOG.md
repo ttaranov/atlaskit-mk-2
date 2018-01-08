@@ -1,5 +1,8 @@
 # @atlaskit/onboarding
 
+## 2.1.0
+- [minor] add subtle-link button appearance theme to spotlight [24d1fa2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24d1fa2)
+
 ## 2.0.8
 
 - [patch] Update dependencies [623f8ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623f8ca)

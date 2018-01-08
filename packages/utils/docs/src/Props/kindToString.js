@@ -18,6 +18,27 @@ converters.id = type => {
   return type.name;
 };
 
+converters.JSXMemberExpression = type => {
+  return `${convert(type.object)}.${convert(type.property)}`;
+};
+converters.JSXExpressionContainer = type => {
+  return `{ ${convert(type.expression)} }`;
+};
+
+converters.JSXElement = type => {
+  return `<${convert(type.value.name)} ${type.value.attributes.map(attribute =>
+    convert(attribute),
+  )} />`;
+};
+
+converters.JSXIdentifier = type => {
+  return `${type.value}`;
+};
+
+converters.JSXAttribute = type => {
+  return `${convert(type.name)}= ${convert(type.value)}`;
+};
+
 converters.binary = type => {
   const left = convert(type.left);
   const right = convert(type.right);

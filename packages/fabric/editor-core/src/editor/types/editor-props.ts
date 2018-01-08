@@ -2,10 +2,15 @@ import * as React from 'react';
 import { Node, Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { MediaProvider, MediaState } from '@atlaskit/media-core';
-import { Transformer } from '@atlaskit/editor-common';
+import {
+  Transformer,
+  ContextIdentifierProvider,
+} from '@atlaskit/editor-common';
 import { ActivityProvider } from '@atlaskit/activity';
 import { DelegateAnalyticsEvent } from '@atlaskit/analytics';
 import { MentionProvider } from '@atlaskit/mention';
+import { EmojiProvider } from '@atlaskit/emoji';
+import { TaskDecisionProvider } from '@atlaskit/task-decision';
 
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { AnalyticsHandler } from '../../analytics';
@@ -64,7 +69,10 @@ export interface EditorProps {
   activityProvider?: Promise<ActivityProvider>;
   collabEditProvider?: Promise<CollabEditProvider>;
   presenceProvider?: Promise<any>;
-  emojiProvider?: Promise<any>;
+  emojiProvider?: Promise<EmojiProvider>;
+  taskDecisionProvider?: Promise<TaskDecisionProvider>;
+  contextIdentifierProvider?: Promise<ContextIdentifierProvider>;
+
   legacyImageUploadProvider?: Promise<ImageUploadHandler>;
   mentionProvider?: Promise<MentionProvider>;
   mediaProvider?: Promise<MediaProvider>;
