@@ -6,11 +6,11 @@ export interface CrossProductResults {
   confluence: Result[];
 }
 
-interface SearchItemsResponse {
+export interface SearchItemsResponse {
   data: SearchItem[];
 }
 
-interface SearchItem {
+export interface SearchItem {
   objectId: string;
   name: string;
   iconUrl: string;
@@ -33,6 +33,7 @@ export default class CrossProductSearchProviderImpl
     this.cloudId = cloudId;
   }
 
+  // TODO replace with real xpsearch backend
   public async search(query: string): Promise<CrossProductResults> {
     const response: SearchItemsResponse = await makeRequest(
       this.url,
