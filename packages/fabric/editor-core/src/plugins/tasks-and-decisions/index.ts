@@ -1,10 +1,9 @@
 import { Schema } from 'prosemirror-model';
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { AnalyticsDelegateProps } from '@atlaskit/analytics';
-import { uuid } from '@atlaskit/editor-common';
+import { uuid, ProviderFactory } from '@atlaskit/editor-common';
 import inputRulePlugin from './input-rules';
 import keymapsPlugin from './keymaps';
-import ProviderFactory from '../../providerFactory';
 import { taskItemNodeViewFactory, decisionItemNodeView } from '../../nodeviews';
 
 export const stateKey = new PluginKey('tasksAndDecisionsPlugin');

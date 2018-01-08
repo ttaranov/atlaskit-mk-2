@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import { Step } from 'prosemirror-transform';
 import {
   CollabEditProvider,
   CollabEvent,
@@ -81,6 +82,7 @@ const mediator = new Mediator();
 
 export class MockCollabEditProvider implements CollabEditProvider {
   protected getState = () => {};
+  protected createStep = (json: object) => {};
   protected sid;
   protected eventBus: EventEmitter;
 
@@ -94,8 +96,9 @@ export class MockCollabEditProvider implements CollabEditProvider {
     }
   }
 
-  initialize(getState: () => any) {
+  initialize(getState: () => any, createStep: (json: object) => Step) {
     this.getState = getState;
+    this.createStep = createStep;
     const doc = {
       type: 'doc',
       content: [

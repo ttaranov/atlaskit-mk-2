@@ -1,5 +1,14 @@
 # @atlaskit/renderer
 
+## 11.2.0
+
+## 11.1.1
+
+## 11.1.0
+
+## 11.0.0
+- [major] We now use ProseMirror Schema to validate document [d059d6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d059d6a)
+
 ## 10.1.5
 - [patch] FS-1581 decreased big emoji size [fe39b29](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe39b29)
 

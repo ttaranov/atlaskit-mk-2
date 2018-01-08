@@ -160,11 +160,7 @@ var Icon = function (_Component) {
 Icon.defaultProps = {
   onClick: function onClick() {}
 };
-
-
-var size = (0, _keys2.default)(sizes).reduce(function (p, c) {
+exports.default = Icon;
+var size = exports.size = (0, _keys2.default)(sizes).reduce(function (p, c) {
   return (0, _assign2.default)(p, (0, _defineProperty3.default)({}, c, c));
 }, {});
-
-exports.size = size;
-exports.default = Icon;

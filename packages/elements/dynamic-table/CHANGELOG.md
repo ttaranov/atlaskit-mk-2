@@ -1,5 +1,8 @@
 # @atlaskit/dynamic-table
 
+## 6.1.4
+- [patch] fix examples so that name is truly sortable, resolve prop error, fix rowCellType key prop type [e5981fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5981fb)
+
 ## 6.1.3
 - [patch] Migrate dynamic-table to ak-mk-2 repo  [8402863](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8402863)
 

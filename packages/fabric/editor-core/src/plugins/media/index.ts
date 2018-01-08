@@ -301,8 +301,15 @@ export class MediaPluginState {
     if (state.status === 'uploading') {
       const collection = this.collectionFromProvider();
       insertMediaSingleNode(this.view, state, collection);
+    } else {
+      /**
+       * There might be multiple `uploading` events for same id,
+       * introduced in 72ccc. Need to wait for other subsequent event
+       * to unsubscribe. It's ideal to have a new event for dimension but
+       * we are planning to get rid of `media-core` in near future.
+       */
+      this.stateManager.unsubscribe(state.id, this.handleMediaSingleInsertion);
     }
-    this.stateManager.unsubscribe(state.id, this.handleMediaSingleInsertion);
   };
 
   insertLinks = async () => {

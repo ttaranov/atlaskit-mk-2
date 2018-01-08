@@ -17,7 +17,7 @@ export type Props = {
   isDisabled: boolean,
   isOpen: boolean,
   shouldShowIcon: boolean,
-  width: number,
+  width: ?number,
   onBlur: Handler,
   onIconClick: Handler,
   onFieldBlur: [Handler, Handler],
@@ -108,7 +108,7 @@ export default class PickerDual extends Component<Props> {
 
   getFieldWidth() {
     if (!this.props.width) {
-      return undefined;
+      return '50%';
     }
 
     let fieldWidth = this.props.width - gridSize() * 2;
@@ -116,6 +116,10 @@ export default class PickerDual extends Component<Props> {
       fieldWidth -= gridSize() * 3;
     }
     return fieldWidth / 2;
+  }
+
+  getFitContainerWidthEnabled(): boolean {
+    return !this.props.width;
   }
 
   render() {
@@ -149,7 +153,11 @@ export default class PickerDual extends Component<Props> {
             this.dialog1 = ref;
           }}
         >
-          <Base isDisabled={this.props.isDisabled} onBlur={this.props.onBlur}>
+          <Base
+            isDisabled={this.props.isDisabled}
+            onBlur={this.props.onBlur}
+            isFitContainerWidthEnabled={this.getFitContainerWidthEnabled()}
+          >
             <Field1
               autoFocus={this.props.autoFocus}
               onBlur={this.props.onFieldBlur[0]}

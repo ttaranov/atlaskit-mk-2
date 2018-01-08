@@ -1,5 +1,5 @@
+import { ProviderFactory } from '@atlaskit/editor-common';
 import emojiPlugins, { EmojiState } from '../../../src/plugins/emojis';
-import ProviderFactory from '../../../src/providerFactory';
 import {
   insertText,
   makeEditor,
@@ -14,11 +14,9 @@ import {
 import { defaultSchema } from '@atlaskit/editor-test-helpers';
 
 describe('emojis - input rules', () => {
-  const providerFactory = new ProviderFactory();
-  providerFactory.setProvider(
-    'emojiProvider',
-    Promise.resolve({ unsubscribe() {} }),
-  );
+  const providerFactory = ProviderFactory.create({
+    emojiProvider: Promise.resolve({ unsubscribe() {} }),
+  });
   const editor = (doc: any) =>
     makeEditor<EmojiState>({
       doc,

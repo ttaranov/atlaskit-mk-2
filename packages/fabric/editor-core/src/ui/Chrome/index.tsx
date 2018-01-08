@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { ActivityProvider } from '@atlaskit/activity';
+import { ContextIdentifierProvider } from '@atlaskit/editor-common';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
+import { TaskDecisionProvider } from '@atlaskit/task-decision';
 import { EditorView } from 'prosemirror-view';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
@@ -45,6 +47,8 @@ export interface Props {
   presenceResourceProvider?: any; // AbstractPresenceResource
   emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
+  taskDecisionProvider?: Promise<TaskDecisionProvider>;
+  contextIdentifierProvider?: Promise<ContextIdentifierProvider>;
   activityProvider?: Promise<ActivityProvider>;
   onCollapsedChromeFocus: () => void;
   saveDisabled?: boolean;

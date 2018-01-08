@@ -8,3 +8,5 @@ export * from './story-styles';
 export * from './collectionNames';
 export * from './exampleMediaItems';
 export * from './createMouseEvent';
+export * from './userAuthProvider';
+export * from './mediaPickerAuthProvider';

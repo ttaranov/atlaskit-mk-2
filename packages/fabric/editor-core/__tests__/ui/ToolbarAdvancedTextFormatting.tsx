@@ -402,7 +402,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
 
     [
       { value: 'code', name: 'Code' },
-      { value: 'strikethrough', name: 'Strikethrough' },
+      { value: 'strike', name: 'Strikethrough' },
       { value: 'subscript', name: 'Subscript' },
       { value: 'superscript', name: 'Superscript' },
       { value: 'clear', name: 'Clear Formatting' },

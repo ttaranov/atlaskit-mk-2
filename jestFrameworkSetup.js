@@ -2,6 +2,11 @@
 
 import 'jest-styled-components';
 
+// URL is not available for non Node environment
+if (global.URL) {
+  global.URL.createObjectURL = () => 'mock result of URL.createObjectURL()';
+}
+
 /*
   This file is executed after the test framework is setup for each test file. Addons that modify
   the `expect` object can be applied here.

@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.0.0",
-    "@atlaskit/field-radio-group": "^1.7.3",
+    "@atlaskit/field-radio-group": "^1.7.5",
     "@atlaskit/modal-dialog": "^3.2.1",
     "@atlaskit/navigation": "^26.6.3",
     "@atlaskit/spinner": "^4.0.0",

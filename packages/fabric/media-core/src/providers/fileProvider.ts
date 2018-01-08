@@ -46,7 +46,7 @@ export class FileProvider {
                   subscriber.complete();
                 } else {
                   subscriber.next(fileItem);
-                  handle = setTimeout(() => fetch(), timeout);
+                  handle = window.setTimeout(() => fetch(), timeout);
                 }
               },
               error => {

@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component, type ElementRef } from 'react';
-import { gridSize } from '@atlaskit/theme';
 import TimePickerStateless from './TimePickerStateless';
 import type { Event, Handler } from '../types';
 import { parseTime } from '../util';
@@ -32,7 +31,7 @@ type Props = {
   autoFocus: boolean,
   isDisabled: boolean,
   times: Array<string>,
-  width: number,
+  width: ?number,
   onChange: Handler,
 };
 
@@ -51,7 +50,7 @@ export default class DatePicker extends Component<Props, State> {
     autoFocus: false,
     isDisabled: false,
     times: defaultTimes,
-    width: gridSize() * 20,
+    width: null,
     onChange() {},
   };
 

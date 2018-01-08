@@ -1,9 +1,10 @@
 import { Comment } from './Comment';
 export interface Conversation {
-  id: string;
+  conversationId: string;
   containerId: string;
-  children?: Comment[];
-  meta?: {
+  localId?: string;
+  comments?: Comment[];
+  meta: {
     [key: string]: any;
   };
 }

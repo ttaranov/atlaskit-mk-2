@@ -216,7 +216,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
         this.addRecordToItems(
           items,
           'Strikethrough',
-          'strikethrough',
+          'strike',
           tooltip(toggleStrikethrough),
         );
       }
@@ -313,7 +313,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
       case 'code':
         pluginStateTextFormatting!.toggleCode(this.props.editorView);
         break;
-      case 'strikethrough':
+      case 'strike':
         pluginStateTextFormatting!.toggleStrike(this.props.editorView);
         break;
       case 'subscript':

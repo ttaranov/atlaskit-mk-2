@@ -1,5 +1,8 @@
 # @atlaskit/datetime-picker
 
+## 0.4.0
+- [minor] datetime picker will take full width if width is not passes [7a9add1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7a9add1)
+
 ## 0.3.3
 
 - [patch] Update dependencies [623f8ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623f8ca)

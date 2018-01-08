@@ -8,6 +8,7 @@ import {
   emojiPlugin,
   tasksAndDecisionsPlugin,
   saveOnEnterPlugin,
+  submitEditorPlugin,
   mediaPlugin,
   imageUploadPlugin,
   maxContentSizePlugin,
@@ -146,6 +147,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   // UI only plugins
   plugins.push(insertBlockPlugin);
+  plugins.push(submitEditorPlugin);
 
   return plugins;
 }

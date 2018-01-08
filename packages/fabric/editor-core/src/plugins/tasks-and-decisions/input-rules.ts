@@ -1,7 +1,12 @@
 import { uuid } from '@atlaskit/editor-common';
 import { inputRules, InputRule } from 'prosemirror-inputrules';
 import { Schema } from 'prosemirror-model';
-import { NodeSelection, Plugin, EditorState } from 'prosemirror-state';
+import {
+  NodeSelection,
+  Plugin,
+  EditorState,
+  TextSelection,
+} from 'prosemirror-state';
 import { analyticsService } from '../../analytics';
 import { createInputRule, leafNodeReplacementCharacter } from '../utils';
 
@@ -13,7 +18,7 @@ const createListRule = (
   schema: Schema,
   analyticType: string,
 ) => {
-  const { paragraph, hardBreak } = schema.nodes;
+  const { paragraph, hardBreak, tableCell, tableHeader } = schema.nodes;
 
   return createInputRule(
     regex,
@@ -25,8 +30,22 @@ const createListRule = (
     ) => {
       const { tr, selection: { $from } } = state;
 
-      // Only allow creating list from top-level paragraphs
-      if ($from.node(1).type !== paragraph) {
+      const content = $from.node($from.depth).content;
+      let shouldBreakNode = false;
+      content.forEach((node, offset) => {
+        if (node.type === hardBreak && offset < start) {
+          shouldBreakNode = true;
+        }
+      });
+
+      // Only allow creating list from top-level paragraphs in beginning or after shift+enter
+      // or inside table.
+      if (
+        ($from.node(1).type !== paragraph &&
+          $from.node($from.depth - 1).type !== tableCell &&
+          $from.node($from.depth - 1).type !== tableHeader) ||
+        (shouldBreakNode && $from.node(1).type !== paragraph)
+      ) {
         return;
       }
 
@@ -35,14 +54,6 @@ const createListRule = (
       analyticsService.trackEvent(
         `atlassian.fabric.${analyticType}.trigger.shortcut`,
       );
-      const content = $from.node($from.depth).content;
-      let shouldBreakNode = false;
-
-      content.forEach((node, offset) => {
-        if (node.type === hardBreak && offset < start) {
-          shouldBreakNode = true;
-        }
-      });
 
       if (!shouldBreakNode) {
         tr
@@ -52,7 +63,8 @@ const createListRule = (
               item.create({}, content),
             ]),
           )
-          .delete(start + 1, end + 1);
+          .delete(start + 1, end + 1)
+          .setSelection(new TextSelection(tr.doc.resolve(start + 1)));
       } else {
         tr
           .split($from.pos)
