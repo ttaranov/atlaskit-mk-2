@@ -308,7 +308,7 @@
     "sentence-case": "^2.1.1",
     "sinon-chai": "^2.9.0",
     "styled-components": "^1.4.6",
-    "svg-inline-react": "^1.0.3",
+    "svg-inline-react": "^3.0.0",
     "svg-url-loader": "^2.3.0",
     "svgo": "^0.7.0",
     "tabbable": "^1.1.0",
