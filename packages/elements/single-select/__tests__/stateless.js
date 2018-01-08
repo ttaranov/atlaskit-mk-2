@@ -303,7 +303,7 @@ describe(name, () => {
       expect(hiddenSelect.props().value).toEqual(selectedItem.value);
 
       wrapper.setProps({ selectedItem: item });
-      expect(hiddenSelect.props().value).toEqual(item.value);
+      expect(wrapper.find('select').props().value).toEqual(item.value);
     });
 
     it('select tag should have "readOnly" attribute', () => {
@@ -523,8 +523,12 @@ describe(name, () => {
         });
         const event = { key: 'ArrowDown', preventDefault: () => {} };
         instance.handleKeyboardInteractions(event);
+        wrapper.update();
         expect(
-          wrapper.find(Item).nodes.filter(item => item.props.isFocused).length,
+          wrapper
+            .find(Item)
+            .getElements()
+            .filter(item => item.props.isFocused).length,
         ).toBe(1);
       });
     });
