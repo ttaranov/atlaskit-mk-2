@@ -1,5 +1,4 @@
 import { keymap } from 'prosemirror-keymap';
-import { MarkdownParser } from 'prosemirror-markdown';
 import { MarkdownTransformer } from '@atlaskit/editor-markdown-transformer';
 import { Schema, Slice } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
@@ -21,7 +20,7 @@ export function createPlugin(
   schema: Schema,
   editorAppearance?: EditorAppearance,
 ) {
-  let atlassianMarkDownParser: MarkdownParser;
+  let atlassianMarkDownParser: MarkdownTransformer;
 
   const md = MarkdownIt('zero', { html: false });
   md.enable([
@@ -123,7 +122,7 @@ export function createPlugin(
         // If the clipboard only contains plain text, attempt to parse it as Markdown
         if (text && !html && atlassianMarkDownParser) {
           analyticsService.trackEvent('atlassian.editor.paste.markdown');
-          const doc = (atlassianMarkDownParser as any).parse(escapeLinks(text));
+          const doc = atlassianMarkDownParser.parse(escapeLinks(text));
           if (doc && doc.content) {
             const tr = view.state.tr.replaceSelection(
               new Slice(doc.content, slice.openStart, slice.openEnd),
