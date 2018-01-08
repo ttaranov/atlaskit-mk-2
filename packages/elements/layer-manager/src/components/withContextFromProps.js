@@ -1,7 +1,12 @@
 // @flow
-import React, { Component, type Node, type ComponentType } from 'react';
+import React, {
+  Component,
+  type ComponentType,
+  type ChildrenArray,
+  type Element,
+} from 'react';
 
-type Props = { children: Node };
+type Props = { children: ChildrenArray<Element<*>> };
 
 const DefaultBaseComponent = props => <div {...props} />;
 
@@ -23,12 +28,14 @@ const withContextFromProps = (
 
     render() {
       const { children, ...props } = this.props;
-      return BaseComponent !== null ? (
-        <BaseComponent>{this.props.children}</BaseComponent>
-      ) : (
+      if (BaseComponent !== null) {
+        return <BaseComponent>{this.props.children}</BaseComponent>;
+      } else if (React.Children.count(children) === 1) {
+        const onlyChild = ((children: any): Element<*>);
         // Hacky fix to work with TransitionGroup in withRenderTarget
-        React.Children.only(React.cloneElement(children, props))
-      );
+        return React.Children.only(React.cloneElement(onlyChild, props));
+      }
+      throw Error('Only one child should exist when base component is null');
     }
   }
 
