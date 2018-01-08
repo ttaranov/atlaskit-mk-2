@@ -1,4 +1,4 @@
-import { Conversation } from '../model';
+import { Conversation, User } from '../model';
 
 export interface Store {
   getState(): undefined | State;
@@ -8,6 +8,7 @@ export interface Store {
 
 export interface State {
   conversations: Conversation[];
+  user?: User;
 }
 
 export interface Action {

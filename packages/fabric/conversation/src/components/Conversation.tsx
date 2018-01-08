@@ -4,6 +4,7 @@ import Editor from './Editor';
 import {
   Comment as CommentType,
   Conversation as ConversationType,
+  User,
 } from '../model';
 
 export interface Props {
@@ -12,6 +13,7 @@ export interface Props {
   conversation?: ConversationType;
   containerId: string;
   comments?: CommentType[];
+  user?: User;
   onAddComment?: (conversationId: string, parentId: string, value: any) => void;
   onUpdateComment?: (
     conversationId: string,
@@ -38,6 +40,7 @@ export default class Conversation extends React.PureComponent<Props> {
       conversation,
       onAddComment,
       onUpdateComment,
+      user,
     } = this.props;
 
     if (!conversation) {
@@ -51,6 +54,7 @@ export default class Conversation extends React.PureComponent<Props> {
         key={comment.commentId}
         conversationId={conversationId}
         comment={comment}
+        user={user}
         onAddComment={onAddComment}
         onUpdateComment={onUpdateComment}
       />
