@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component } from 'react';
-import { gridSize } from '@atlaskit/theme';
 import DateField from './internal/DateField';
 import DateDialog from './internal/DateDialog';
 import DateTimePickerStateless from './DateTimePickerStateless';
@@ -39,7 +38,7 @@ type Props = {
   isDisabled: boolean,
   disabled: Array<string>,
   times: Array<string>,
-  width: number,
+  width: ?number,
   onChange: (date: ?string, time: ?string) => void,
   /** An array of two strings containing the date and time values respectively.
    * If provided, the component will treat this value as the selected value. */
@@ -63,7 +62,7 @@ export default class DateTimePicker extends Component<Props, State> {
     isDisabled: false,
     disabled: [],
     times: defaultTimes,
-    width: gridSize() * 30,
+    width: null,
     onChange() {},
     value: null,
   };

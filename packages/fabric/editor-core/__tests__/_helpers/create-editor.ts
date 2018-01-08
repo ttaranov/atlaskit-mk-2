@@ -1,3 +1,4 @@
+import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   EditorPlugin,
   EditorProps,
@@ -5,7 +6,6 @@ import {
 } from '../../src/editor/types';
 import { createEditor } from '../../src/editor/create-editor';
 import { getDefaultPluginsList } from '../../src/editor/create-editor/create-plugins-list';
-import ProviderFactory from '../../src/providerFactory';
 
 export { EditorInstance };
 

@@ -46,6 +46,8 @@ import {
   extension,
   bodiedExtension,
   emoji,
+  taskList,
+  taskItem,
 } from './_schema-builder';
 
 import {
@@ -715,9 +717,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         ['warning', 'tip', 'info', 'note'].forEach(panelType => {
           check(
             `${panelType} panel`,
-            `<ac:structured-macro ac:name="${
-              panelType
-            }" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><ac:structured-macro ac:name="info" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p></p></ac:rich-text-body></ac:structured-macro></ac:rich-text-body></ac:structured-macro>`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><ac:structured-macro ac:name="info" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p></p></ac:rich-text-body></ac:structured-macro></ac:rich-text-body></ac:structured-macro>`,
             doc(panel({ panelType })(panel('info')(p()))),
           );
         });
@@ -727,9 +727,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         ['warning', 'tip', 'info', 'note'].forEach(panelType => {
           check(
             `${panelType} panel`,
-            `<ac:structured-macro ac:name="${
-              panelType
-            }" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p></p></ac:rich-text-body></ac:structured-macro>`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p></p></ac:rich-text-body></ac:structured-macro>`,
             doc(panel({ panelType })(p())),
           );
         });
@@ -739,11 +737,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         ['warning', 'tip', 'info', 'note'].forEach(panelType => {
           check(
             `${panelType} panel`,
-            `<ac:structured-macro ac:name="${
-              panelType
-            }" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p>${
-              panelType
-            } panel</p></ac:rich-text-body></ac:structured-macro>`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p>${panelType} panel</p></ac:rich-text-body></ac:structured-macro>`,
             doc(panel({ panelType })(p(`${panelType} panel`))),
           );
         });
@@ -754,13 +748,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         ['warning', 'tip', 'info', 'note'].forEach(panelType => {
           check(
             `${panelType} panel`,
-            `<ac:structured-macro ac:name="${
-              panelType
-            }" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">${
-              title
-            }</ac:parameter><ac:rich-text-body><p>${
-              panelType
-            } panel</p></ac:rich-text-body></ac:structured-macro>`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">${title}</ac:parameter><ac:rich-text-body><p>${panelType} panel</p></ac:rich-text-body></ac:structured-macro>`,
             doc(panel({ panelType })(h3(title), p(`${panelType} panel`))),
           );
         });
@@ -771,11 +759,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         ['warning', 'tip', 'info', 'note'].forEach(panelType => {
           check(
             `${panelType} panel`,
-            `<ac:structured-macro ac:name="${
-              panelType
-            }" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">${
-              title
-            }</ac:parameter><ac:rich-text-body><p>p1</p><p>p2</p><h5>h5</h5></ac:rich-text-body></ac:structured-macro>`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">${title}</ac:parameter><ac:rich-text-body><p>p1</p><p>p2</p><h5>h5</h5></ac:rich-text-body></ac:structured-macro>`,
             doc(panel({ panelType })(h3(title), p('p1'), p('p2'), h5('h5'))),
           );
         });
@@ -874,6 +858,30 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         doc(bodiedExtension(attrs, p('little', strong('piggy')))),
       );
     });
+  });
+
+  describe('taskList', () => {
+    check(
+      'taskList with incomplete task items',
+      '<ac:task-list><ac:task><ac:task-id>1</ac:task-id><ac:task-status>incomplete</ac:task-status><ac:task-body><span class="placeholder-inline-tasks">hello</span></ac:task-body></ac:task><ac:task><ac:task-id>2</ac:task-id><ac:task-status>incomplete</ac:task-status><ac:task-body><span class="placeholder-inline-tasks">there</span></ac:task-body></ac:task></ac:task-list>',
+      doc(
+        taskList({})(
+          taskItem({ localId: '1' })('hello'),
+          taskItem({ localId: '2' })('there'),
+        ),
+      ),
+    );
+
+    check(
+      'taskList with complete task items',
+      '<ac:task-list><ac:task><ac:task-id>1</ac:task-id><ac:task-status>incomplete</ac:task-status><ac:task-body><span class="placeholder-inline-tasks">hello</span></ac:task-body></ac:task><ac:task><ac:task-id>2</ac:task-id><ac:task-status>complete</ac:task-status></ac:task></ac:task-list>',
+      doc(
+        taskList({})(
+          taskItem({ localId: '1' })('hello'),
+          taskItem({ localId: '2', state: 'DONE' })(''),
+        ),
+      ),
+    );
   });
 
   describe('unsupported content', () => {

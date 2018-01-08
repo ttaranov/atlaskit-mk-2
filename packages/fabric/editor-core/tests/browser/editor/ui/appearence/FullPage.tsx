@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
 import Editor from '../../../../../src/editor/ui/Appearance/FullPage';
-import ProviderFactory from '../../../../../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 describe('@atlaskit/editor-core/editor/plugins/FullPage', () => {
   const providerFactory = new ProviderFactory();

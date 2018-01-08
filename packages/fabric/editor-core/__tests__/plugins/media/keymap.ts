@@ -1,8 +1,4 @@
-import {
-  MediaPluginState,
-  mediaPluginFactory,
-  ProviderFactory,
-} from '../../../src';
+import { MediaPluginState, mediaPluginFactory } from '../../../src';
 import {
   doc,
   makeEditor,
@@ -10,6 +6,7 @@ import {
   sendKeyToPm,
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 describe('media - keymaps', () => {
   const providerFactory = new ProviderFactory();

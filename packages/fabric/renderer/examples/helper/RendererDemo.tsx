@@ -57,11 +57,12 @@ const profilecardProvider = Promise.resolve({
   },
 });
 
-const providerFactory = new ProviderFactory();
-providerFactory.setProvider('mentionProvider', mentionProvider);
-providerFactory.setProvider('mediaProvider', mediaProvider);
-providerFactory.setProvider('emojiProvider', emojiProvider);
-providerFactory.setProvider('profilecardProvider', profilecardProvider);
+const providerFactory = ProviderFactory.create({
+  mentionProvider,
+  mediaProvider,
+  emojiProvider,
+  profilecardProvider,
+});
 
 const extensionHandlers: ExtensionHandlers = {
   'com.atlassian.fabric': (ext, doc) => {

@@ -13,7 +13,7 @@ import {
 } from '../../utils';
 import { inputRulePlugin } from './input-rules';
 import keymapPlugin from './keymap';
-import ProviderFactory from '../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import emojiNodeView from './../../nodeviews/ui/emoji';
 import nodeViewFactory from '../../nodeviews/factory';
 

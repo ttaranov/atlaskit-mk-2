@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
-import {
-  default as ProviderFactory,
-  WithProviders,
-} from '../../providerFactory';
+import { ProviderFactory, WithProviders } from '@atlaskit/editor-common';
 import TaskItemWithProviders from './task-item-with-providers';
 
 export interface TaskProps {

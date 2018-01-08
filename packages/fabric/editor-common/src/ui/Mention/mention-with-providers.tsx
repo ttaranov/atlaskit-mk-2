@@ -38,14 +38,19 @@ export default class MentionWithProviders extends PureComponent<Props, State> {
     }
   }
 
-  private async updateProfilecardProvider(props: Props) {
+  private updateProfilecardProvider(props: Props) {
+    // We are not using async/await here to avoid having an intermediate Promise
+    // introduced by the transpiler.
+    // This will allow consumer to use a SynchronousPromise.resolve and avoid useless
+    // rerendering
     if (props.profilecardProvider) {
-      try {
-        const resolvedProfilecardProvider = await props.profilecardProvider;
-        this.setState({ profilecardProvider: resolvedProfilecardProvider });
-      } catch (err) {
-        this.setState({ profilecardProvider: null });
-      }
+      props.profilecardProvider
+        .then(profilecardProvider => {
+          this.setState({ profilecardProvider });
+        })
+        .catch(err => {
+          this.setState({ profilecardProvider: null });
+        });
     } else {
       this.setState({ profilecardProvider: null });
     }

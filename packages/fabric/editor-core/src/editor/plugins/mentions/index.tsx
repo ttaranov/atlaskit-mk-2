@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { mention, mentionQuery } from '@atlaskit/editor-common';
+import { mention, mentionQuery, WithProviders } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { WithProviders } from '../../../providerFactory/withProviders';
 import { createPlugin } from '../../../plugins/mentions';
 import inputRulePlugin from '../../../plugins/mentions/input-rules';
 import keymap from '../../../plugins/mentions/keymap';

@@ -17,12 +17,9 @@ const listPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 450, plugin: () => plugin },
-      { rank: 460, plugin: ({ schema }) => inputRulePlugin(schema) },
-      {
-        rank: 470,
-        plugin: ({ schema, props }) => keymapPlugin(schema, props.appearance),
-      },
+      { rank: 600, plugin: () => plugin },
+      { rank: 620, plugin: ({ schema }) => inputRulePlugin(schema) },
+      { rank: 640, plugin: ({ schema }) => keymapPlugin(schema) },
     ];
   },
 
@@ -43,6 +40,9 @@ const listPlugin: EditorPlugin = {
         pluginState={pluginState}
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
+        enableTaskToolbar={
+          !!editorView.state.schema.nodes.taskItem && appearance === 'full-page'
+        }
       />
     );
   },

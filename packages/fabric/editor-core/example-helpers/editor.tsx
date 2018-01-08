@@ -3,6 +3,8 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
+import { TaskDecisionProvider } from '@atlaskit/task-decision';
+import { ContextIdentifierProvider } from '@atlaskit/editor-common';
 
 import { baseKeymap } from 'prosemirror-commands';
 import { history } from 'prosemirror-history';
@@ -17,7 +19,7 @@ import {
 import { EditorView } from 'prosemirror-view';
 
 import { default as schemaFull } from './schema';
-import ProviderFactory from '../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { AnalyticsHandler, analyticsService } from '../src/analytics';
 
 import {
@@ -77,6 +79,8 @@ export interface Props {
   imageUploadHandler?: ImageUploadHandler;
   mentionProvider?: Promise<MentionProvider>;
   emojiProvider?: Promise<EmojiProvider>;
+  taskDecisionProvider?: Promise<TaskDecisionProvider>;
+  contextIdentifierProvider?: Promise<ContextIdentifierProvider>;
   mediaProvider?: Promise<MediaProvider>;
   activityProvider?: Promise<any>;
   analyticsHandler?: AnalyticsHandler;
@@ -93,6 +97,8 @@ export interface State {
   isExpanded?: boolean;
   mentionProvider?: Promise<MentionProvider>;
   emojiProvider?: Promise<EmojiProvider>;
+  taskDecisionProvider?: Promise<TaskDecisionProvider>;
+  contextIdentifierProvider?: Promise<ContextIdentifierProvider>;
 }
 
 export default class Editor extends PureComponent<Props, State> {
@@ -150,6 +156,8 @@ export default class Editor extends PureComponent<Props, State> {
       props.mentionProvider !== nextProps.mentionProvider ||
       props.mediaProvider !== nextProps.mediaProvider ||
       props.emojiProvider !== nextProps.emojiProvider ||
+      props.taskDecisionProvider !== nextProps.taskDecisionProvider ||
+      props.contextIdentifierProvider !== nextProps.contextIdentifierProvider ||
       props.activityProvider !== nextProps.activityProvider ||
       props.imageUploadHandler !== nextProps.imageUploadHandler
     ) {
@@ -162,11 +170,21 @@ export default class Editor extends PureComponent<Props, State> {
       emojiProvider,
       mediaProvider,
       mentionProvider,
+      taskDecisionProvider,
+      contextIdentifierProvider,
       activityProvider,
       imageUploadHandler,
     } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
+    this.providerFactory.setProvider(
+      'taskDecisionProvider',
+      taskDecisionProvider,
+    );
+    this.providerFactory.setProvider(
+      'contextIdentifierProvider',
+      contextIdentifierProvider,
+    );
     this.providerFactory.setProvider('mediaProvider', mediaProvider);
     this.providerFactory.setProvider('activityProvider', activityProvider);
     this.providerFactory.setProvider(
@@ -177,6 +195,8 @@ export default class Editor extends PureComponent<Props, State> {
     this.setState({
       emojiProvider,
       mentionProvider,
+      taskDecisionProvider,
+      contextIdentifierProvider,
     });
   };
 
@@ -239,7 +259,12 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   render() {
-    const { mentionProvider, emojiProvider } = this.state;
+    const {
+      mentionProvider,
+      emojiProvider,
+      taskDecisionProvider,
+      contextIdentifierProvider,
+    } = this.state;
     const { activityProvider } = this.props;
 
     const getState = (editorState: EditorState | undefined) => (
@@ -292,6 +317,8 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateTable={tableState}
         mentionProvider={mentionProvider}
         emojiProvider={emojiProvider}
+        taskDecisionProvider={taskDecisionProvider}
+        contextIdentifierProvider={contextIdentifierProvider}
         activityProvider={activityProvider}
         popupsMountPoint={this.props.popupsMountPoint}
         popupsBoundariesElement={this.props.popupsBoundariesElement}

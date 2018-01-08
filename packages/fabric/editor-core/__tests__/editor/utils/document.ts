@@ -3,6 +3,7 @@ import { Node } from 'prosemirror-model';
 import {
   doc,
   p,
+  hr,
   decisionList,
   decisionItem,
   defaultSchema as schema,
@@ -73,6 +74,10 @@ describe(name, () => {
       it('should return false if node has block content', () => {
         const node = doc(decisionList({})(decisionItem({})()));
         expect(isEmptyDocument(node)).toBe(false);
+      });
+
+      it('should return false if node has hr', () => {
+        expect(isEmpty(doc(p(), hr))).toBe(false);
       });
     });
 

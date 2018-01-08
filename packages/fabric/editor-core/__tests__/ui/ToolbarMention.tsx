@@ -9,7 +9,7 @@ import {
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
-import ProviderFactory from '../../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import pluginKey from '../../src/plugins/mentions/plugin-key';
 import { analyticsService } from '../../src/analytics';

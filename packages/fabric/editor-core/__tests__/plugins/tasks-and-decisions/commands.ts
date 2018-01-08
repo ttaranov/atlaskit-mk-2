@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import { NodeSelection } from 'prosemirror-state';
 import tasksAndDecisionsPlugins from '../../../src/plugins/tasks-and-decisions';
-import ProviderFactory from '../../../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   chaiPlugin,
   makeEditor,

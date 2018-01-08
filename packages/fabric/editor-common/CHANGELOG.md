@@ -1,5 +1,15 @@
 # @atlaskit/editor-common
 
+## 5.4.0
+
+## 5.3.0
+- [patch] Remove duplicate implementation of ProviderFactory from @atlaskit/editor-core, in favour of only one implementation in @atlaskit/editor-common [535cb8c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/535cb8c)
+- [minor] bump prosemirror-tables to 0.5.2 [32b6bbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/32b6bbe)
+- [patch] FS-1601 Don't use async/await in mention-with-providers to allow usage of synchronous promise by consumer [e464412](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e464412)
+- [minor] added tasks/actions to full-page editor [49d3343](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d3343)
+
+## 5.2.0
+
 ## 5.1.10
 - [patch] We now use ProseMirror Schema to validate document [d059d6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d059d6a)
 
