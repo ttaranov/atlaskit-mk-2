@@ -137,7 +137,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
         emojiProvider={emojiProvider}
         editorView={editorView}
         numFollowingButtons={0}
-        isDisabled={true}
+        isDisabled
       />,
     );
     expect(toolbarOption.find(ToolbarButton).prop('disabled')).toEqual(true);
@@ -274,7 +274,8 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
     toolbarEmojiPicker
       .find(EmojiIcon)
-      .parent()
+      .parents()
+      .at(0)
       .simulate('click');
     expect(toolbarEmojiPicker.state('isOpen')).toEqual(false);
     toolbarEmojiPicker.unmount();

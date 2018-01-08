@@ -273,9 +273,9 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     );
     toolbarOption.setState({ strikeHidden: true });
     toolbarOption.find(ToolbarButton).simulate('click');
-    const strikeButton = toolbarOption
-      .find('span')
-      .findWhere(wrapper => wrapper.text() === 'Strikethrough');
+    const strikeButton = toolbarOption.findWhere(
+      wrapper => wrapper.is('span') && wrapper.text() === 'Strikethrough',
+    );
     expect(strikeButton.length).toEqual(0);
     toolbarOption.unmount();
   });
@@ -321,7 +321,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
           editorView.state,
         )}
         editorView={editorView}
-        isDisabled={true}
+        isDisabled
       />,
     );
     expect(toolbarOption.find(ToolbarButton).prop('disabled')).toBe(true);

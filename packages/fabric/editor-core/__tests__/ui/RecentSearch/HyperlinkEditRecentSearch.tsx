@@ -66,6 +66,7 @@ async function openLinkPanel(editorView, pluginState) {
   );
   hyperlinkEdit.setState({ inputActive: true });
   pluginState.showLinkPanel(editorView);
+  hyperlinkEdit.update();
   await timeout();
 
   return hyperlinkEdit;
