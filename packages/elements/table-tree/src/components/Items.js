@@ -7,14 +7,15 @@ import { type ItemsProvider, type RenderFunction } from './../types';
 type ItemsDataType = Array<Object>;
 
 type Props = {
-  childrenData: ?ItemsDataType,
-  getChildrenData: ItemsProvider,
+  parentData?: Object,
+  getItemsData: ItemsProvider,
   depth?: number,
   render: RenderFunction,
 };
 
 type State = {
-  isLoaderShown?: boolean,
+  isLoaderShown: boolean,
+  itemsData: ?ItemsDataType,
 };
 
 export default class Items extends PureComponent<Props, State> {
@@ -22,17 +23,24 @@ export default class Items extends PureComponent<Props, State> {
     depth: 0,
   };
 
-  componentWillMount() {
-    this.setState({
-      isLoaderShown: Items.isLoadingData(this.props.childrenData),
-    });
-  }
+  state = {
+    isLoaderShown: false,
+    itemsData: null,
+  };
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.childrenData !== this.props && this.props.childrenData) {
-      if (Items.isLoadingData(nextProps.childrenData)) {
-        this.setState({ isLoaderShown: true });
-      }
+  componentWillMount() {
+    const isLoading = Items.isLoadingData(this.state.itemsData);
+    this.setState({
+      isLoaderShown: isLoading,
+    });
+    if (isLoading) {
+      Promise.resolve()
+        .then(() => this.props.getItemsData(this.props.parentData))
+        .then(itemsData => {
+          this.setState({
+            itemsData,
+          });
+        });
     }
   }
 
@@ -47,8 +55,9 @@ export default class Items extends PureComponent<Props, State> {
   };
 
   renderLoader() {
-    const { depth, childrenData } = this.props;
-    const isCompleting = !Items.isLoadingData(childrenData);
+    const { depth } = this.props;
+    const { itemsData } = this.state;
+    const isCompleting = !Items.isLoadingData(itemsData);
     return (
       <LoaderItem
         isCompleting={isCompleting}
@@ -58,16 +67,17 @@ export default class Items extends PureComponent<Props, State> {
     );
   }
 
-  renderChildItems() {
-    const { childrenData, getChildrenData, render, depth = 0 } = this.props;
+  renderItems() {
+    const { getItemsData, render, depth = 0 } = this.props;
+    const { itemsData } = this.state;
     return (
-      childrenData &&
-      childrenData.map((childRowData: Object, index: number) => (
+      itemsData &&
+      itemsData.map((itemData: Object, index: number) => (
         <Item
-          data={childRowData}
-          getChildrenData={getChildrenData}
+          data={itemData}
+          getChildrenData={getItemsData}
           depth={depth + 1}
-          key={(childRowData && childRowData.id) || index}
+          key={(itemData && itemData.id) || index}
           render={render}
         />
       ))
@@ -77,7 +87,7 @@ export default class Items extends PureComponent<Props, State> {
   render() {
     const { isLoaderShown } = this.state;
     return (
-      <div>{isLoaderShown ? this.renderLoader() : this.renderChildItems()}</div>
+      <div>{isLoaderShown ? this.renderLoader() : this.renderItems()}</div>
     );
   }
 }
