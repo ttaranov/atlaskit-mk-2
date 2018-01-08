@@ -1,5 +1,8 @@
 # @atlaskit/editor-test-helpers
 
+## 1.6.1
+- [patch] Use media-test-helpers instead of hardcoded values [f2b92f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f2b92f8)
+
 ## 1.6.0
 
 ## 1.5.0
