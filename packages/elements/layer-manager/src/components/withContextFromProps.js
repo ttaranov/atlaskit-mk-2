@@ -7,11 +7,11 @@ const DefaultBaseComponent = props => <div {...props} />;
 
 const withContextFromProps = (
   propTypes: {},
-  BaseComponent: ComponentType<*> = DefaultBaseComponent,
+  BaseComponent: ComponentType<*> | null = DefaultBaseComponent,
 ) => {
   class ContextProps extends Component<Props> {
     getChildContext() {
-      const props = Object.keys(this.props).reduce((result, key) => {
+      const props = Object.keys(propTypes).reduce((result, key) => {
         // eslint-disable-next-line no-param-reassign
         if (key !== 'children') result[key] = this.props[key];
 
@@ -22,7 +22,13 @@ const withContextFromProps = (
     }
 
     render() {
-      return <BaseComponent>{this.props.children}</BaseComponent>;
+      const { children, ...props } = this.props;
+      return BaseComponent !== null ? (
+        <BaseComponent>{this.props.children}</BaseComponent>
+      ) : (
+        // Hacky fix to work with TransitionGroup in withRenderTarget
+        React.Children.only(React.cloneElement(children, props))
+      );
     }
   }
 
