@@ -1,12 +1,9 @@
 // @flow
-import React, { Component, type Node } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Modal from '@atlaskit/modal-dialog';
 import { withContextFromProps, withContextAcrossPortal } from '../src';
 
-type Props = {
-  children: Node,
-};
 type State = {
   isModalWithContextOpen: boolean,
   isModalWithoutContextOpen: boolean,
