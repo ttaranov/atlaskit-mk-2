@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.0.1
+- [patch] Fix analytics event name for strikethrough button. [ac96c66](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac96c66)
+
 ## 61.0.0
 - [patch] cleanup tables [372ac9b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/372ac9b)
 - [major] FS-1461 added TaskDecisionProvider and ContextIdentifierProvider to editor props [62fca1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62fca1e)
