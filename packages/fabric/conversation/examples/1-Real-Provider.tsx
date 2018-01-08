@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ConversationResource } from '../src/api/ConversationResource';
-import { Demo, MOCK_USERS } from '../example-helpers/DemoPage';
+import { Demo } from '../example-helpers/DemoPage';
+import { MOCK_USERS } from '../example-helpers/MockData';
 
 const provider = new ConversationResource({
   url: 'http://localhost:8080',

@@ -155,6 +155,7 @@ export default class Comment extends React.PureComponent<Props, State> {
             user={user}
             conversationId={conversationId}
             onAddComment={this.props.onAddComment}
+            onUpdateComment={this.props.onUpdateComment}
           />
         ))}
         {isReplying && (

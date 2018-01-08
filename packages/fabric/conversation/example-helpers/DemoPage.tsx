@@ -8,6 +8,7 @@ import {
   Conversation as ConversationType,
   User,
 } from '../src/model';
+import { MOCK_USERS } from './MockData';
 
 const DUMMY_CODE = `
 class Main() {
@@ -16,17 +17,6 @@ class Main() {
   }
 }
 `;
-
-export const MOCK_USERS: User[] = [
-  {
-    id: 'ari:cloud:identity::user/3f000e23-3588-4e5d-aa4b-99mock_user',
-    name: 'Mock User 1',
-  },
-  {
-    id: 'ari:cloud:identity::user/3f000e23-3588-4e5d-aa4b-99mock_user2',
-    name: 'Mock User 2',
-  },
-];
 
 const Line = styled.div`
   display: flex;
