@@ -4,11 +4,13 @@ import { connect, withProvider, Dispatch } from '../internal/connect';
 import {
   addComment,
   updateComment,
+  updateUser,
   createConversation,
 } from '../internal/actions';
-import { getComments, getConversation } from '../internal/selectors';
+import { getComments, getConversation, getUser } from '../internal/selectors';
 import { uuid } from '../internal/uuid';
 import { State } from '../internal/store';
+import { User } from '../model';
 
 export interface Props {
   id?: string;
@@ -20,11 +22,13 @@ const mapStateToProps = (state: State, ownProps: Props) => {
   const { id, localId, containerId } = ownProps;
   const conversation = getConversation(state, id || localId);
   const comments = getComments(state, id || localId);
+  const user = getUser(state);
 
   return {
     conversation,
     comments,
     containerId,
+    user,
   };
 };
 
@@ -35,6 +39,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
   onUpdateComment(conversationId: string, commentId: string, value: any) {
     dispatch(updateComment(conversationId, commentId, value));
+  },
+
+  onUpdateUser(user: User) {
+    dispatch(updateUser(user));
   },
 
   onCreateConversation(

@@ -8,13 +8,14 @@ import AkComment, {
 } from '@atlaskit/comment';
 import { ReactRenderer } from '@atlaskit/renderer';
 import Editor from './Editor';
-import { Comment as CommentType } from '../model';
+import { Comment as CommentType, User } from '../model';
 import CommentContainer from '../containers/Comment';
 
 export interface Props {
   conversationId: string;
   comment: CommentType;
   comments?: CommentType[];
+  user?: User;
 
   // Dispatch
   onAddComment?: (conversationId: string, parentId: string, value: any) => void;
@@ -111,7 +112,7 @@ export default class Comment extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { conversationId, comment, comments } = this.props;
+    const { conversationId, comment, comments, user } = this.props;
     const { isReplying, isEditing } = this.state;
     const { createdBy } = comment;
     let actions;
@@ -123,15 +124,14 @@ export default class Comment extends React.PureComponent<Props, State> {
         </CommentAction>,
       ];
 
-      // @TODO
-      // if (createdBy && userId === createdBy.id) {
-      actions = [
-        ...actions,
-        <CommentAction key="edit" onClick={this.onEdit}>
-          Edit
-        </CommentAction>,
-      ];
-      // }
+      if (createdBy && user && user.id === createdBy.id) {
+        actions = [
+          ...actions,
+          <CommentAction key="edit" onClick={this.onEdit}>
+            Edit
+          </CommentAction>,
+        ];
+      }
     }
 
     return (
@@ -152,6 +152,7 @@ export default class Comment extends React.PureComponent<Props, State> {
           <CommentContainer
             key={child.commentId}
             comment={child}
+            user={user}
             conversationId={conversationId}
             onAddComment={this.props.onAddComment}
           />

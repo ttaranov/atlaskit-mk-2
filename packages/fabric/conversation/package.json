@@ -27,6 +27,7 @@
     "@atlaskit/comment": "^2.6.7",
     "@atlaskit/editor-core": "^60.17.4",
     "@atlaskit/renderer": "^11.0.0",
+    "@atlaskit/single-select": "^3.1.4",
     "date-fns": "^1.29.0",
     "prop-types": "^15.5.10",
     "styled-components": "^1.4.6",
