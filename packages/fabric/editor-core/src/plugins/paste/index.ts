@@ -1,89 +1,19 @@
 import { keymap } from 'prosemirror-keymap';
 import { MarkdownParser } from 'prosemirror-markdown';
+import { MarkdownTransformer } from '@atlaskit/editor-markdown-transformer';
 import { Schema, Slice } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import * as MarkdownIt from 'markdown-it';
-import table from 'markdown-it-table';
 import { stateKey as tableStateKey } from '../table';
 import { containsTable } from '../../editor/plugins/table/utils';
 import { insertMediaAsMediaSingle } from '../media/media-single';
-import {
-  isSingleLine,
-  isCode,
-  filterMdToPmSchemaMapping,
-  escapeLinks,
-} from './util';
+import { isSingleLine, isCode, escapeLinks } from './util';
 import { analyticsService } from '../../analytics';
 import * as keymaps from '../../keymaps';
 import { EditorAppearance } from '../../editor/index';
 import linkify from './linkify-md-plugin';
 import * as clipboard from '../../utils/clipboard';
-
-const pmSchemaToMdMapping = {
-  nodes: {
-    blockquote: 'blockquote',
-    paragraph: 'paragraph',
-    rule: 'hr',
-    // lheading (---, ===)
-    heading: ['heading', 'lheading'],
-    codeBlock: ['code', 'fence'],
-    listItem: 'list',
-    image: 'image',
-  },
-  marks: {
-    em: 'emphasis',
-    strong: 'text',
-    link: ['link', 'autolink', 'reference', 'linkify'],
-    strike: 'strikethrough',
-    code: 'backticks',
-  },
-};
-
-const mdToPmMapping = {
-  blockquote: { block: 'blockquote' },
-  paragraph: { block: 'paragraph' },
-  em: { mark: 'em' },
-  strong: { mark: 'strong' },
-  link: {
-    mark: 'link',
-    attrs: tok => ({
-      href: tok.attrGet('href'),
-      title: tok.attrGet('title') || null,
-    }),
-  },
-  hr: { node: 'rule' },
-  heading: { block: 'heading', attrs: tok => ({ level: +tok.tag.slice(1) }) },
-  code_block: { block: 'codeBlock' },
-  list_item: { block: 'listItem' },
-  bullet_list: { block: 'bulletList' },
-  ordered_list: {
-    block: 'orderedList',
-    attrs: tok => ({ order: +tok.attrGet('order') || 1 }),
-  },
-  code_inline: { mark: 'code' },
-  fence: { block: 'codeBlock', attrs: tok => ({ language: tok.info || '' }) },
-  image: {
-    node: 'image',
-    attrs: tok => ({
-      src: tok.attrGet('src'),
-      title: tok.attrGet('title') || null,
-      alt: (tok.children[0] && tok.children[0].content) || null,
-    }),
-  },
-  emoji: {
-    node: 'emoji',
-    attrs: tok => ({
-      shortName: `:${tok.markup}:`,
-      text: tok.content,
-    }),
-  },
-  table: { block: 'table' },
-  tr: { block: 'tableRow' },
-  th: { block: 'tableHeader' },
-  td: { block: 'tableCell' },
-  s: { mark: 'strike' },
-};
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -101,28 +31,11 @@ export function createPlugin(
     'escape',
   ]);
 
-  // Enable markdown plugins based on schema
-  ['nodes', 'marks'].forEach(key => {
-    for (const idx in pmSchemaToMdMapping[key]) {
-      if (schema[key][idx]) {
-        md.enable(pmSchemaToMdMapping[key][idx]);
-      }
-    }
-  });
-
-  if (schema.nodes.table) {
-    md.use(table);
-  }
-
   // enable modified version of linkify plugin
   // @see https://product-fabric.atlassian.net/browse/ED-3097
   md.use(linkify);
 
-  atlassianMarkDownParser = new MarkdownParser(
-    schema,
-    md,
-    filterMdToPmSchemaMapping(schema, mdToPmMapping),
-  );
+  atlassianMarkDownParser = new MarkdownTransformer(schema, md);
 
   return new Plugin({
     key: stateKey,
