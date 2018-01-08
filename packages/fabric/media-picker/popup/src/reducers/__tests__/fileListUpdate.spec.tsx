@@ -8,7 +8,7 @@ describe('fileListUpdate() reducer', () => {
   const currentPath = [{ id: 'folder1' }, { id: 'folder2' }];
   const accountId = 'account1';
 
-  const state: Partial<State> = {
+  const state: State = {
     view: {
       path: currentPath,
       isLoading: true,
@@ -16,7 +16,7 @@ describe('fileListUpdate() reducer', () => {
         accountId,
       },
     } as View,
-  };
+  } as State;
 
   it('adding items to state for current folder', () => {
     const items = ['item1', 'item2'];
