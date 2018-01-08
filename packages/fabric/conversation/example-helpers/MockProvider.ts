@@ -10,6 +10,7 @@ import {
   FETCH_CONVERSATIONS_SUCCESS,
   ADD_COMMENT_SUCCESS,
   CREATE_CONVERSATION_SUCCESS,
+  UPDATE_USER,
 } from '../src/internal/actions';
 
 export class MockProvider extends AbstractConversationResource {
@@ -96,5 +97,15 @@ export class MockProvider extends AbstractConversationResource {
       parentId,
       comments: [],
     };
+  }
+
+  /**
+   * Updates a user in the store. Returns updated user
+   */
+  async updateUser(user: User): Promise<User> {
+    const { dispatch } = this;
+    dispatch({ type: UPDATE_USER, payload: { user } });
+
+    return user;
   }
 }
