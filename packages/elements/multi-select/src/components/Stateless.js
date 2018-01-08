@@ -390,7 +390,7 @@ export default class StatelessMultiSelect extends PureComponent<Props, State> {
       case 'Enter':
         if (isSelectOpen) {
           event.preventDefault();
-          if (focusedItemIndex !== undefined) {
+          if (focusedItemIndex != null) {
             this.handleItemSelect(
               this.getAllVisibleItems(items)[focusedItemIndex],
               { event },

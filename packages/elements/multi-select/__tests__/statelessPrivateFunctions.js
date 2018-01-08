@@ -204,14 +204,14 @@ describe(`${name} - stateless`, () => {
       it('should call onFilterChange every time the value is changed', () => {
         const value1 = '1';
         const value2 = '2';
-        let event = { key: '', target: { value: value1 } };
+        let event = { key: '', currentTarget: { value: value1 } };
         instance.handleOnChange(event);
         expect(onFilterChangeSpy).toHaveBeenCalledTimes(1);
         expect(onFilterChangeSpy).toHaveBeenCalledWith(value1);
         onFilterChangeSpy.mockClear();
 
         wrapper.setProps({ filterValue: value1 });
-        event = { key: '', target: { value: value2 } };
+        event = { key: '', currentTarget: { value: value2 } };
         instance.handleOnChange(event);
         expect(onFilterChangeSpy).toHaveBeenCalledTimes(1);
         expect(onFilterChangeSpy).toHaveBeenCalledWith(value2);
@@ -219,18 +219,18 @@ describe(`${name} - stateless`, () => {
 
       it('should not call onFilterChange when value is the same', () => {
         const value = '1';
-        const event = { key: '', target: { value } };
+        const event = { key: '', currentTarget: { value } };
         wrapper.setProps({ filterValue: value });
         instance.handleOnChange(event);
         expect(onFilterChangeSpy).not.toHaveBeenCalled();
       });
 
       it('should reset focus if shouldAllowCreateItem is set to true', () => {
-        const event = { key: '', target: { value: '1' } };
+        const event = { key: '', currentTarget: { value: '1' } };
         wrapper.setProps({ shouldAllowCreateItem: true });
         wrapper.setState({ focusedItemIndex: 1 });
         instance.handleOnChange(event);
-        expect(wrapper.state().focusedItemIndex).toBe(null);
+        expect(wrapper.state().focusedItemIndex).toBe(undefined);
       });
     });
 
@@ -283,14 +283,14 @@ describe(`${name} - stateless`, () => {
         wrapper.setProps({ isOpen: false });
         wrapper.setProps({ selectedItems: [items[0]] });
         wrapper.setProps({ placeholder });
-        expect(instance.getPlaceholder()).toBe(null);
+        expect(instance.getPlaceholder()).toBe(undefined);
       });
 
       it('should return null if the select is opened', () => {
         wrapper.setProps({ isOpen: true });
         wrapper.setProps({ selectedItems: [] });
         wrapper.setProps({ placeholder });
-        expect(instance.getPlaceholder()).toBe(null);
+        expect(instance.getPlaceholder()).toBe(undefined);
       });
     });
 
