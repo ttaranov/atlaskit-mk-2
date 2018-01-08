@@ -176,7 +176,7 @@
     "@atlaskit/droplist": "^4.11.3",
     "@atlaskit/emoji": "^31.0.2",
     "@atlaskit/input": "^1.6.0",
-    "@atlaskit/mention": "^8.1.0",
+    "@atlaskit/item": "^4.2.3",
     "@atlaskit/navigation": "^26.6.3",
     "@atlaskit/profilecard": "^3.7.1",
     "@atlaskit/task-decision": "^4.6.0",
@@ -323,7 +323,9 @@
     "uglify-js": "^3.1.7",
     "url": "^0.11.0",
     "url-search-params": "^0.6.1",
-    "uuid": "^3.1.0"
+    "uid": "^0.0.2",
+    "uuid": "^3.1.0",
+    "xregexp": "^3.2.0"
   },
   "engines": {
     "node": "^8.4.0"
