@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.4.1
+- [patch] Minor bump of editor-confluence transformer to update editor-core [01a4a8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/01a4a8b)
+
 ## 2.4.0
 
 
