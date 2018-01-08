@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 5.4.0
+
 ## 5.3.0
 - [patch] Remove duplicate implementation of ProviderFactory from @atlaskit/editor-core, in favour of only one implementation in @atlaskit/editor-common [535cb8c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/535cb8c)
 - [minor] bump prosemirror-tables to 0.5.2 [32b6bbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/32b6bbe)

@@ -1,5 +1,7 @@
 # @atlaskit/editor-cq
 
+## 6.14.0
+
 ## 6.13.0
 - [minor] add version to editor.start analytics [3b4c21b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b4c21b)
 - [minor] add name and version to editor.start analytics [d8d2388](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d8d2388)

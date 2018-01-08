@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component, type ElementRef } from 'react';
-import { gridSize } from '@atlaskit/theme';
 import DatePickerStateless from './DatePickerStateless';
 import type { Handler } from '../types';
 import { parseDate } from '../util';
@@ -11,7 +10,7 @@ type Props = {
   isDisabled: boolean,
   disabled: Array<string>,
   onChange: Handler,
-  width: number,
+  width: ?number,
 };
 
 type State = {
@@ -28,7 +27,7 @@ export default class DatePicker extends Component<Props, State> {
     isDisabled: false,
     disabled: [],
     onChange() {},
-    width: gridSize() * 20,
+    width: null,
   };
 
   state = {
