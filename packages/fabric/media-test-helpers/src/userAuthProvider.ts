@@ -1,5 +1,5 @@
-// TODO: Add typings
-// This method requires CORS to be enabled
+// TODO [MSW-387]: Add typings
+// This method requires CORS to be disabled
 import { ClientBasedAuth } from '@atlaskit/media-core';
 export const userAuthProvider = (): Promise<ClientBasedAuth> => {
   const url =
