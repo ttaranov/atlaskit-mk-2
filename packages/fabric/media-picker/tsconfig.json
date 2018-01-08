@@ -11,5 +11,9 @@
     "./examples/*.tsx",
     "./example-helpers/*.ts",
     "./example-helpers/*.tsx"
-  ]
+  ],
+  "typeRoots": ["./typings", "./node_modules/@types"],
+  "files": [
+    "./typings/@atlaskit/dynamic-table.d.ts"
+  ]  
 }

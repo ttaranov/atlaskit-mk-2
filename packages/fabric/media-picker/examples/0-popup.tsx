@@ -60,6 +60,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     });
 
     this.popup.onAny(this.onPopupEvent);
+    this.onShow();
   }
 
   componentWillUnmount() {
