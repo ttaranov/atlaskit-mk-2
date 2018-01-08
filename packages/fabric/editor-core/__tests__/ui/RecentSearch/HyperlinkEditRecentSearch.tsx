@@ -66,8 +66,8 @@ async function openLinkPanel(editorView, pluginState) {
   );
   hyperlinkEdit.setState({ inputActive: true });
   pluginState.showLinkPanel(editorView);
-  hyperlinkEdit.update();
   await timeout();
+  hyperlinkEdit.update();
 
   return hyperlinkEdit;
 }
@@ -141,9 +141,10 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
   it('should search recent items when typing into the input field', async () => {
     const { editorView, pluginState } = editor(doc(paragraph('{<>}')));
     const hyperlinkEdit = await openLinkPanel(editorView, pluginState);
-    const recentSearch = hyperlinkEdit.find(RecentSearch);
 
-    await changeTextInput(recentSearch, 'recent item 1');
+    await changeTextInput(hyperlinkEdit.find(RecentSearch), 'recent item 1');
+    hyperlinkEdit.update();
+    const recentSearch = hyperlinkEdit.find(RecentSearch);
 
     expect(recentSearch.find(RecentItem)).toHaveLength(1);
     expect(
