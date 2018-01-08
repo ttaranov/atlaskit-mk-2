@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as axios from 'axios';
+import axios from 'axios';
 
 import {
   MediaClient,
@@ -226,23 +226,23 @@ describe('MediaClient', () => {
     const mediaApiMethod = 'some-method';
 
     let authProvider: sinon.SinonStub;
-    let axiosRequestStub: sinon.SinonStub;
     let mediaClient: MediaClient;
 
     beforeEach(() => {
       authProvider = sinon.stub();
-      axiosRequestStub = sinon.stub(axios, 'request' as any);
       mediaClient = new MediaClient(apiUrl, authProvider);
     });
 
     afterEach(() => {
-      axiosRequestStub.restore();
+      if (axios) {
+        (axios.request as any).mockClear();
+      }
     });
 
     it('should reject if token can not be retrieved', done => {
       const error = new Error('No network connection');
       authProvider.rejects(error);
-      axiosRequestStub.resolves(response);
+      (axios.request as any).mockReturnValue(Promise.resolve(response));
 
       mediaClient
         .call({
@@ -258,7 +258,7 @@ describe('MediaClient', () => {
     it('should attach credentials to the request', () => {
       authProvider.resolves(auth);
 
-      axiosRequestStub.callsFake(params => {
+      (axios.request as any).mockImplementationOnce((params: any) => {
         expect(params.headers).contain({
           Authorization: 'Bearer some-token',
           'X-Client-Id': 'some-client-id',
@@ -280,7 +280,7 @@ describe('MediaClient', () => {
     it('should format url and pass provided parameters to Media API', () => {
       authProvider.resolves(auth);
 
-      axiosRequestStub.callsFake(params => {
+      (axios.request as any).mockImplementationOnce((params: any) => {
         expect(params).to.deep.equal({
           url: 'https://media.api/some-method',
           method: 'POST',
@@ -329,7 +329,7 @@ describe('MediaClient', () => {
     it('should add Content-Type header if the request contains data', () => {
       authProvider.resolves(auth);
 
-      axiosRequestStub.callsFake(params => {
+      (axios.request as any).mockImplementationOnce((params: any) => {
         expect(params.headers).to.contain({
           'Content-Type': 'application/json; charset=utf-8',
         });
@@ -347,7 +347,7 @@ describe('MediaClient', () => {
     it('should not add Content-Type header if the request contains no data', () => {
       authProvider.resolves(auth);
 
-      axiosRequestStub.callsFake(params => {
+      (axios.request as any).mockImplementationOnce((params: any) => {
         expect(params.headers).to.not.contain({
           'Content-Type': 'application/json; charset=utf-8',
         });
@@ -372,8 +372,8 @@ describe('MediaClient', () => {
           },
         },
       };
-      axiosRequestStub.onFirstCall().rejects(error);
-      axiosRequestStub.onSecondCall().resolves(response);
+      (axios.request as any).mockReturnValueOnce(Promise.reject(error));
+      (axios.request as any).mockReturnValueOnce(Promise.resolve(response));
 
       return mediaClient
         .call({
@@ -396,8 +396,8 @@ describe('MediaClient', () => {
           },
         },
       };
-      axiosRequestStub.onFirstCall().rejects(error);
-      axiosRequestStub.onSecondCall().resolves(response);
+      (axios.request as any).mockReturnValueOnce(Promise.reject(error));
+      (axios.request as any).mockReturnValueOnce(Promise.resolve(response));
 
       return mediaClient
         .call({
@@ -414,8 +414,8 @@ describe('MediaClient', () => {
       authProvider.onFirstCall().resolves(auth);
       authProvider.onSecondCall().rejects(new Error());
 
-      axiosRequestStub.onFirstCall().resolves(response);
-      axiosRequestStub.onSecondCall().resolves(response);
+      (axios.request as any).mockReturnValueOnce(Promise.resolve(response));
+      (axios.request as any).mockReturnValueOnce(Promise.resolve(response));
 
       return mediaClient
         .call({

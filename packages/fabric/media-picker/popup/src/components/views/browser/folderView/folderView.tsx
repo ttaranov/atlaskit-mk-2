@@ -64,7 +64,7 @@ export interface FolderViewerStateProps {
   readonly service: ServiceAccountLink;
   readonly items: ServiceFolderItem[];
   readonly selectedItems: SelectedItem[];
-  readonly loading: boolean;
+  readonly isLoading: boolean;
 
   readonly currentCursor?: string;
   readonly nextCursor?: string;
@@ -119,11 +119,11 @@ export class FolderViewer extends Component<FolderViewerProps, {}> {
   }
 
   private get isPageInitialLoading() {
-    return this.props.loading && !this.props.currentCursor;
+    return this.props.isLoading && !this.props.currentCursor;
   }
 
   private get isPageMoreLoading() {
-    return this.props.loading && this.props.currentCursor;
+    return this.props.isLoading && this.props.currentCursor;
   }
 
   private renderFolderContent(items: ServiceFolderItem[]): JSX.Element | null {
@@ -210,10 +210,10 @@ export class FolderViewer extends Component<FolderViewerProps, {}> {
   }
 
   private renderLoadMoreButton(): JSX.Element | null {
-    const { nextCursor, loading } = this.props;
+    const { nextCursor, isLoading } = this.props;
 
     if (nextCursor || this.isPageMoreLoading) {
-      const label = loading ? 'Loading...' : 'Load more';
+      const label = isLoading ? 'Loading...' : 'Load more';
       return (
         <MoreBtnWrapper>
           <AkButton
@@ -231,8 +231,14 @@ export class FolderViewer extends Component<FolderViewerProps, {}> {
   }
 
   private onLoadMoreButtonClick = (): void => {
-    const { service, path, nextCursor, loading, onLoadMoreClick } = this.props;
-    if (!loading) {
+    const {
+      service,
+      path,
+      nextCursor,
+      isLoading,
+      onLoadMoreClick,
+    } = this.props;
+    if (!isLoading) {
       onLoadMoreClick(service.name, service.accountId, path, nextCursor || '');
     }
   };
@@ -258,7 +264,7 @@ export default connect<FolderViewerStateProps, FolderViewDispatchProps, {}>(
     service: view.service,
     items: view.items,
     selectedItems,
-    loading: view.loading,
+    isLoading: view.isLoading,
     currentCursor: view.currentCursor,
     nextCursor: view.nextCursor,
   }),

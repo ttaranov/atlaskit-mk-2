@@ -1,10 +1,14 @@
-import { ServiceFile, SelectedItem } from '../domain';
+import { Action } from 'redux';
 
-export const FILE_CLICK = 'FILE_CLICK';
+import { ServiceFile, SelectedItem } from '../domain';
 
 export interface FileClickAction {
   readonly type: 'FILE_CLICK';
   readonly file: SelectedItem;
+}
+
+export function isFileClickAction(action: Action): action is FileClickAction {
+  return action.type === 'FILE_CLICK';
 }
 
 export function fileClick(
@@ -13,7 +17,7 @@ export function fileClick(
   accountId?: string,
 ): FileClickAction {
   return {
-    type: FILE_CLICK,
+    type: 'FILE_CLICK',
     file: {
       ...file,
       accountId,

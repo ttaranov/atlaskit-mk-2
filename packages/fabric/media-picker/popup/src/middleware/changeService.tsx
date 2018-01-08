@@ -1,16 +1,21 @@
-import { changeAccount, CHANGE_SERVICE } from '../actions';
+import { Store, Dispatch, Action } from 'redux';
 
-export const changeService = (store: any) => (next: any) => (action: any) => {
-  if (action.type === CHANGE_SERVICE) {
+import { State } from '../domain';
+import { changeAccount, isChangeServiceAction } from '../actions';
+
+export const changeService = (store: Store<State>) => (
+  next: Dispatch<State>,
+) => (action: Action) => {
+  if (isChangeServiceAction(action)) {
+    const { serviceName } = action;
     const accounts = store.getState().accounts;
-    if (accounts) {
-      const firstAcc = accounts.filter(
-        (account: any) => account.type === action.serviceName,
-      )[0];
-      const accountId = firstAcc ? firstAcc.id : undefined;
 
-      store.dispatch(changeAccount(action.serviceName, accountId));
-    }
+    const firstAcc = accounts.filter(
+      account => account.type === action.serviceName,
+    )[0];
+    const accountId = firstAcc ? firstAcc.id : '';
+
+    store.dispatch(changeAccount(serviceName, accountId));
   }
 
   return next(action);

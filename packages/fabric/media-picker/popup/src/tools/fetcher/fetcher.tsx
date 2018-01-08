@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as url from 'url';
-import { Auth } from '@atlaskit/media-core';
+import { Auth, FileDetails } from '@atlaskit/media-core';
 import { Preview } from '../../../../src/domain/preview';
 import getPreviewFromBlob from '../../../../src/util/getPreview';
 
@@ -33,6 +33,43 @@ type Method = 'GET' | 'POST' | 'DELETE';
 export interface CopyFileDestination {
   readonly auth: Auth;
   readonly collection?: string;
+}
+
+export interface GiphyImage {
+  url: string;
+  width: string;
+  height: string;
+  size: string;
+  mp4: string;
+  mp4_size: string;
+  webp: string;
+  webp_size: string;
+}
+
+export interface GiphyResponse {
+  data: [
+    {
+      id: string;
+      slug: string;
+      images: { fixed_width: GiphyImage; original: GiphyImage };
+    }
+  ];
+  pagination: {
+    total_count: number;
+    count: number;
+    offset: number;
+  };
+}
+
+export interface GiphyData {
+  cardModels: ImageCardModel[];
+  totalResultCount: number;
+}
+
+export interface ImageCardModel {
+  metadata: FileDetails;
+  dataURI: string;
+  dimensions: { width: number; height: number };
 }
 
 export interface Fetcher {
@@ -81,6 +118,8 @@ export interface Fetcher {
     destination: CopyFileDestination,
     collection?: string,
   ): Promise<File>;
+  fetchTrendingGifs(offset?: number): Promise<GiphyData>;
+  fetchGifsRelevantToSearch(query: string, offset?: number): Promise<GiphyData>;
 }
 
 export class MediaApiFetcher implements Fetcher {
@@ -259,6 +298,75 @@ export class MediaApiFetcher implements Fetcher {
       mapAuthToAuthHeaders(auth),
     ).then(({ data: file }) => file);
   }
+
+  fetchTrendingGifs = (offset?: number): Promise<GiphyData> => {
+    const baseUrl = 'https://api.giphy.com/v1/gifs/trending';
+
+    const requestConfig = {
+      url: `${baseUrl}`,
+      params: {
+        api_key: 'lBOxhhz1BM62Y3JsK0iQv1pRYyOGUjR8',
+        offset,
+      },
+    };
+
+    return Promise.resolve(axios.request(requestConfig)).then(response =>
+      this.mapGiphyResponseToViewModel(response.data),
+    );
+  };
+
+  fetchGifsRelevantToSearch = (
+    query: string,
+    offset?: number,
+  ): Promise<GiphyData> => {
+    const baseUrl = 'https://api.giphy.com/v1/gifs/search';
+
+    const requestConfig = {
+      url: `${baseUrl}`,
+      params: {
+        api_key: 'lBOxhhz1BM62Y3JsK0iQv1pRYyOGUjR8',
+        q: query,
+        offset,
+      },
+    };
+
+    return Promise.resolve(axios.request(requestConfig)).then(response =>
+      this.mapGiphyResponseToViewModel(response.data),
+    );
+  };
+
+  private mapGiphyResponseToViewModel = (
+    response: GiphyResponse,
+  ): GiphyData => {
+    const { data, pagination } = response;
+
+    const cardModels = data.map(gif => {
+      const { id, slug } = gif;
+      const { size, url, width, height } = gif.images.fixed_width;
+
+      const name = slug.replace(new RegExp(`-${id}`), '');
+      const metadata: FileDetails = {
+        id,
+        name,
+        mediaType: 'image',
+        size: Number.parseInt(size),
+      };
+
+      return {
+        metadata,
+        dataURI: url,
+        dimensions: {
+          width: Number.parseInt(width),
+          height: Number.parseInt(height),
+        },
+      };
+    });
+
+    return {
+      cardModels,
+      totalResultCount: pagination.total_count,
+    };
+  };
 
   private parsePayload(
     method: Method,

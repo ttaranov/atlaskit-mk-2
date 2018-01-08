@@ -10,6 +10,7 @@ export {
 } from './changeCloudAccountFolder';
 export {
   CHANGE_SERVICE,
+  isChangeServiceAction,
   changeService,
   ChangeServiceAction,
 } from './changeService';
@@ -31,6 +32,7 @@ export {
   FetchNextCloudFilesPageAction,
   isFetchNextCloudFilesPageAction,
 } from './fetchNextCloudFilesPage';
+export * from './fileClick';
 export {
   FILE_LIST_UPDATE,
   fileListUpdate,
@@ -62,3 +64,4 @@ export {
   updateServiceList,
   UpdateServiceListAction,
 } from './updateServiceList';
+export * from './searchGiphy';

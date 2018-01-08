@@ -122,7 +122,6 @@ describe('<UploadView />', () => {
           name: 'some-name',
           size: 42,
           date: 0,
-          parentId: '',
         },
         'google',
       ),

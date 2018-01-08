@@ -19,6 +19,8 @@ export {
   hasLocalUploadStartedProcessing,
 } from './local-upload';
 
+import { ImageCardModel } from '../tools/fetcher/fetcher';
+
 export interface State {
   readonly apiUrl: string;
   readonly redirectUrl: string;
@@ -35,11 +37,17 @@ export interface State {
   readonly userAuthProvider: AuthProvider;
 
   readonly lastUploadIndex: number;
+  readonly giphy: GiphyState;
 
   readonly onCancelUpload: CancelUploadHandler;
 }
 
 export type CancelUploadHandler = (uploadId: string) => void;
+
+export interface GiphyState {
+  readonly imageCardModels: ImageCardModel[];
+  readonly totalResultCount?: number;
+}
 
 export interface Recents {
   readonly nextKey: string;
@@ -55,7 +63,8 @@ export type RemoteUploads = { [uploadId: string]: RemoteUpload };
 export interface View {
   readonly isVisible: boolean;
   readonly items: ServiceFolderItem[];
-  readonly loading: boolean;
+  readonly isLoading: boolean;
+  readonly hasError: boolean;
   readonly path: Path;
   readonly service: ServiceAccountLink;
   readonly isUploading: boolean;
@@ -88,7 +97,11 @@ export interface UploadParams {
   autoFinalize?: boolean;
 }
 
-export type ServiceName = 'google' | 'dropbox' | 'upload';
+export type ServiceName = 'google' | 'dropbox' | 'upload' | 'giphy';
+
+export const isRemoteCloudAccount = (serviceName: ServiceName): boolean => {
+  return serviceName === 'google' || serviceName === 'dropbox';
+};
 
 export type ServiceStatus =
   | 'forbidden'
@@ -132,7 +145,6 @@ export interface ServiceFile {
   readonly mimeType: string;
   readonly id: string;
   readonly name: string;
-  readonly parentId: string;
   readonly size: number;
   readonly date: number;
 }

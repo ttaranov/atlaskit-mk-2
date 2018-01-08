@@ -29,11 +29,11 @@ export interface RemoteFileItem extends SelectedItem {
 export const isRemoteFileItem = (
   item: SelectedItem,
 ): item is RemoteFileItem => {
-  return ['dropbox', 'google'].indexOf(item.serviceName) !== -1;
+  return ['dropbox', 'google', 'giphy'].indexOf(item.serviceName) !== -1;
 };
 
 export const isRemoteService = (serviceName: string) => {
-  return ['dropbox', 'google'].indexOf(serviceName) !== -1;
+  return ['dropbox', 'google', 'giphy'].indexOf(serviceName) !== -1;
 };
 
 type SelectedUploadFile = {
@@ -179,20 +179,29 @@ export const importFilesFromRemoteService = (
   const uploadActivity = new RemoteUploadActivity(
     uploadId,
     (event, payload) => {
-      store.dispatch(handleCloudFetchingEvent(file, event, payload));
+      // TODO figure out the difference between this uploadId and the last
+      const { uploadId } = payload;
+      const newFile: MediaFile = {
+        ...file,
+        id: uploadId,
+        creationDate: Date.now(),
+      };
+
+      store.dispatch(handleCloudFetchingEvent(newFile, event, payload));
     },
   );
-  wsConnectionHolder.openConnection(uploadActivity);
 
   uploadActivity.on('Started', () => {
     store.dispatch(remoteUploadStart(uploadId, tenant));
   });
 
+  wsConnectionHolder.openConnection(uploadActivity);
+
   wsConnectionHolder.send({
     type: 'fetchFile',
     params: {
-      serviceName: serviceName,
-      accountId: accountId,
+      serviceName,
+      accountId,
       fileId: file.id,
       fileName: file.name,
       collection: RECENTS_COLLECTION,
