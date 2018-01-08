@@ -92,15 +92,6 @@ export default class InlineEdit extends Component<Props, State> {
     });
   }
 
-  componentDidUpdate() {
-    // Code below triggered an infinite loop when using Component vs PureComponent.
-    // TODO: Find out why this was here and ensure it's not needed.
-    // eslint-disable-next-line react/no-did-update-set-state
-    // this.setState({
-    //   shouldResetFieldBase: false,
-    // });
-  }
-
   onMouseDown = (client: { clientX: number, clientY: number }) =>
     this.setState({ startX: client.clientX, startY: client.clientY });
 
@@ -157,10 +148,9 @@ export default class InlineEdit extends Component<Props, State> {
     this.setState({ fieldBaseWrapperIsHover: false });
 
   mouseHasMoved = (event: { clientX: number, clientY: number }) => {
-    // const startX = this.state.startX || 0;
-    //const startY = this.state.startY || 0;
+    const startX: number = this.state.startX || 0;
+    const startY: number = this.state.startY || 0;
 
-    const { startX, startY } = this.state;
     return (
       Math.abs(startX - event.clientX) >= DRAG_THRESHOLD ||
       Math.abs(startY - event.clientY) >= DRAG_THRESHOLD
