@@ -149,13 +149,14 @@ export class StatelessUploadView extends Component<
     const bottomShadow = !this.state.endVisible ? (
       <div className="bottomShadow" style={shadowStyle} />
     ) : null;
+    const { context } = this.props;
 
     return (
       <Wrapper onScroll={this.updateShadows} innerRef={this.saveViewRef}>
         <Dropzone mpBrowser={this.props.mpBrowser} />
         <div className="cards">
           <div className="recentUploadsTitle">Recent Uploads</div>
-          <MediaListItems>
+          <MediaListItems context={context} collectionName="recents">
             {({ items }) => {
               return <MediaList items={items} />;
             }}

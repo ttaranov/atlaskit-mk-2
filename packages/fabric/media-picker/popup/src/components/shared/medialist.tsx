@@ -3,7 +3,8 @@ import { ReactElement, Component, ReactNode } from 'react';
 
 import DynamicTable, { HeadType } from '@atlaskit/dynamic-table';
 import { smallImage } from '@atlaskit/media-test-helpers';
-
+import { Context, FileItem } from '@atlaskit/media-core';
+import { MediaApiFetcher } from '../../tools/fetcher/fetcher';
 import { MediaListItemThumbnail, MediaListItemNameCell } from './styled';
 
 export type MediaListProps = {
@@ -11,7 +12,8 @@ export type MediaListProps = {
 };
 
 export type MediaListItem = {
-  readonly thumbnailSrc: string;
+  readonly id: string;
+  thumbnailSrc: string;
   readonly fileName: string;
   readonly timestamp: number;
   readonly size: number;
@@ -59,31 +61,73 @@ export function MediaList({
 }
 
 export type MediaListItemsProps = {
+  context: Context;
+  collectionName: string;
   children: (props: { items: MediaListItem[] }) => ReactNode;
 };
 
-export class MediaListItems extends Component<MediaListItemsProps> {
-  // TODO: retrieve items and pass to children;
+export type MediaListItemsState = {
+  items: MediaListItem[];
+};
+
+export class MediaListItems extends Component<
+  MediaListItemsProps,
+  MediaListItemsState
+> {
+  state: MediaListItemsState = {
+    items: [],
+  };
+
+  componentDidMount() {
+    const { collectionName, context } = this.props;
+    const fetcher = new MediaApiFetcher();
+
+    context.config
+      .authProvider({
+        collectionName,
+      })
+      .then(auth => {
+        fetcher
+          .getRecentFiles(context.config.serviceHost, auth, 30, 'desc')
+          .then(recentItems => {
+            const items = recentItems.contents.map(item => {
+              const id = item.id;
+              const mediaItem: FileItem = { type: 'file', details: { id } };
+
+              context
+                .getDataUriService(collectionName)
+                .fetchImageDataUri(mediaItem, {
+                  width: 32,
+                  height: 32,
+                  // allowAnimated
+                })
+                .then(dataUri => {
+                  const { items } = this.state;
+                  const item = items.filter(item => item.id === id)[0];
+
+                  item.thumbnailSrc = dataUri;
+
+                  this.setState({ items });
+                });
+
+              return {
+                id,
+                thumbnailSrc: smallImage,
+                fileName: item.details.name,
+                timestamp: item.insertedAt,
+                size: item.details.size,
+                progress: 1.0,
+                isSelected: false,
+              };
+            });
+
+            this.setState({ items });
+          });
+      });
+  }
+
   render() {
-    return <div>{this.props.children({ items: dummyItems })}</div>;
+    const { items } = this.state;
+    return <div>{this.props.children({ items })}</div>;
   }
 }
-
-const dummyItems: MediaListItem[] = [
-  {
-    thumbnailSrc: smallImage,
-    fileName: 'scotty-simpson.png',
-    timestamp: Date.now(),
-    size: 123123,
-    progress: 1.0,
-    isSelected: false,
-  },
-  {
-    thumbnailSrc: smallImage,
-    fileName: 'teams-working.jpg',
-    timestamp: Date.now(),
-    size: 345345,
-    progress: 0.5,
-    isSelected: true,
-  },
-];
