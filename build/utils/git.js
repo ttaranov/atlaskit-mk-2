@@ -21,7 +21,13 @@ async function getCommitsSince(ref) {
 }
 
 async function getChangedFilesSince(ref, fullPath = false) {
-  const gitCmd = await spawn('git', ['diff', '--name-only', `${ref}..HEAD`]);
+  // we use the git-merge in a subshell method so that "changed" tells us what we added in our branch
+  // not which files are different between two refs (like `git diff --name-only ref..HEAD`)
+  const gitCmd = await spawn('git', [
+    'diff',
+    '--name-only',
+    `$( git merge-base ${ref} HEAD )`,
+  ]);
   const files = gitCmd.stdout.trim().split('\n');
   if (!fullPath) return files;
   return files.map(file => path.resolve(file));
