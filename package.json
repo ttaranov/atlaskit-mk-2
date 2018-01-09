@@ -20,7 +20,8 @@
     "delete:build": "                        rm -rf packages/*/*/dist website/dist",
     "precommit": "                           lint-staged",
     "test": "                                yarn run test:jest",
-    "test:ci": "                             yarn run test:jest -- --runInBand",
+    "test:ci:branch": "                      RUN_ONLY=$(node build/ci-scripts/get.changed.packages.since.master.js) yarn run test:jest -- --runInBand",
+    "test:ci:master": "                      yarn run test:jest -- --runInBand",
     "test:jest": "                           jest --coverage",
     "test:browser": "                        projector ./projector testBrowser",
     "test:browser:watch": "                  projector ./projector testBrowser --watch",
@@ -251,6 +252,7 @@
     "identity-obj-proxy": "^3.0.0",
     "inquirer": "^3.3.0",
     "jest-fixtures": "^0.5.0",
+    "jest-junit": "^3.4.1",
     "jest-styled-components": "^4.9.0",
     "keycode": "^2.1.7",
     "less-loader": "^4.0.5",
@@ -320,38 +322,6 @@
   },
   "engines": {
     "node": "^8.4.0"
-  },
-  "jest": {
-    "modulePathIgnorePatterns": [
-      "./node_modules"
-    ],
-    "transformIgnorePatterns": [
-      "\\/node_modules\\/(?!@atlaskit)"
-    ],
-    "resolver": "./resolver.js",
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest/preprocessor",
-      "^.+\\.js$": "babel-jest"
-    },
-    "globals": {
-      "ts-jest": {
-        "tsConfigFile": "./tsconfig.fabric.json",
-        "skipBabel": true
-      }
-    },
-    "testRegex": "(/(__tests?__/)([^_].*/)*?[^_][^/]*?\\.?(test|spec)?\\.(js|tsx?))$",
-    "moduleFileExtensions": [
-      "js",
-      "ts",
-      "tsx"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "setupTestFrameworkScriptFile": "<rootDir>/jestFrameworkSetup.js",
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|svg)$": "<rootDir>/fileMock.js"
-    }
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
