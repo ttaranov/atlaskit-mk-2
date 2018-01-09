@@ -21,14 +21,12 @@ async function getCommitsSince(ref) {
 }
 
 async function getChangedFilesSince(ref, fullPath = false) {
-  // we use the git-merge in a subshell method so that "changed" tells us what we added in our branch
-  // not which files are different between two refs (like `git diff --name-only ref..HEAD`)
-  const gitCmd = await spawn('git', [
-    'diff',
-    '--name-only',
-    `$( git merge-base ${ref} HEAD )`,
-  ]);
-  const files = gitCmd.stdout.trim().split('\n');
+  // First we need to find the commit where we diverged from `ref` at using `git merge-base`
+  let cmd = await spawn('git', ['merge-base', ref, 'HEAD']);
+  const diveredAt = cmd.stdout.trim();
+  // Now we can find which files we added
+  cmd = await spawn('git', ['diff', '--name-only', diveredAt]);
+  const files = cmd.stdout.trim().split('\n');
   if (!fullPath) return files;
   return files.map(file => path.resolve(file));
 }
