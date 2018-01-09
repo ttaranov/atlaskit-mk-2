@@ -6,20 +6,21 @@ import {
   quickSearchResultTypes,
 } from '@atlaskit/navigation';
 import { ResultType } from '../src/model/Result';
+import { wrap } from 'module';
 
 const { ObjectResult, PersonResult, ResultBase } = quickSearchResultTypes;
 
 enum Group {
-  Recent = 0,
-  Jira = 1,
-  Confluence = 2,
-  People = 3,
+  Recent = 'recent',
+  Jira = 'jira',
+  Confluence = 'confluence',
+  People = 'people',
 }
 
 function findGroup(group: Group, wrapper: ShallowWrapper) {
-  const groups = wrapper.find(AkNavigationItemGroup);
-  const index = group.valueOf();
-  return groups.at(index);
+  return wrapper
+    .find(AkNavigationItemGroup)
+    .findWhere(n => n.prop('test-selector') === group.valueOf());
 }
 
 describe('SearchResults', () => {
@@ -210,21 +211,37 @@ describe('SearchResults', () => {
       query: '',
       recentlyViewedItems: [
         {
-          type: 'unknown' as ResultType,
+          type: ResultType.Object,
           name: 'name',
           containerName: 'container',
           href: 'href',
           avatarUrl: 'avatarUrl',
           resultId: 'rv1',
         },
+        {
+          type: 'unknown' as ResultType,
+          name: 'name',
+          containerName: 'container',
+          href: 'href',
+          avatarUrl: 'avatarUrl',
+          resultId: 'rv2',
+        },
       ],
     };
 
     const wrapper = render(props);
-    const groups = wrapper.find(AkNavigationItemGroup);
+    const group = findGroup(Group.Recent, wrapper);
+    expect(group.children()).toHaveLength(1);
+  });
 
-    expect(groups).toHaveLength(1);
-    expect(groups.at(0).prop('title')).toEqual('Recently viewed');
-    expect(groups.at(0).find(ResultBase)).toHaveLength(0);
+  it('should not render recent results group when there are no recent results', () => {
+    const props = {
+      query: 'aslfkj',
+      recentResults: [],
+    };
+
+    const wrapper = render(props);
+    const group = findGroup(Group.Recent, wrapper);
+    expect(group.exists()).toBe(false);
   });
 });

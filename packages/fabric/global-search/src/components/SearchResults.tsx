@@ -22,17 +22,21 @@ const resultTypesToComponents = new Map<ResultType, ComponentClass>([
   [ResultType.Container, ContainerResult],
 ]);
 
-function resultsToComponents(results: Result[]) {
-  return results.map(result => {
-    const Result = resultTypesToComponents.get(result.type);
-    if (!Result) {
-      // tslint:disable-next-line
-      console.error(`Unknown result type: ${result.type}`);
-      return null;
-    }
+const isNotNull = n => n !== null;
 
-    return <Result key={result.resultId} {...result} />;
-  });
+function resultsToComponents(results: Result[]) {
+  return results
+    .map(result => {
+      const Result = resultTypesToComponents.get(result.type);
+      if (!Result) {
+        // tslint:disable-next-line
+        console.error(`Unknown result type: ${result.type}`);
+        return null;
+      }
+
+      return <Result key={result.resultId} {...result} />;
+    })
+    .filter(isNotNull);
 }
 
 const searchConfluenceItem = (query: string) => (
@@ -65,28 +69,43 @@ const searchPeopleItem = () => (
   />
 );
 
-const renderRecent = (results: Result[]) => (
-  <AkNavigationItemGroup title="Recently viewed" key="recent">
-    {resultsToComponents(results)}
-  </AkNavigationItemGroup>
-);
+const renderRecent = (results: Result[]) => {
+  const resultComponents = resultsToComponents(results);
+  if (resultComponents.length === 0) {
+    return null;
+  }
+
+  return (
+    <AkNavigationItemGroup
+      title="Recently viewed"
+      key="recent"
+      test-selector="recent"
+    >
+      {resultComponents}
+    </AkNavigationItemGroup>
+  );
+};
 
 const renderJira = (results: Result[], query: string) => (
-  <AkNavigationItemGroup title="Jira issues" key="jira">
+  <AkNavigationItemGroup title="Jira issues" key="jira" test-selector="jira">
     {resultsToComponents(results)}
     {searchJiraItem(query)}
   </AkNavigationItemGroup>
 );
 
 const renderConfluence = (results: Result[], query: string) => (
-  <AkNavigationItemGroup title="Confluence pages and blogs" key="confluence">
+  <AkNavigationItemGroup
+    title="Confluence pages and blogs"
+    key="confluence"
+    test-selector="confluence"
+  >
     {resultsToComponents(results)}
     {searchConfluenceItem(query)}
   </AkNavigationItemGroup>
 );
 
 const renderPeople = (results: Result[], query: string) => (
-  <AkNavigationItemGroup title="People" key="people">
+  <AkNavigationItemGroup title="People" key="people" test-selector="people">
     {resultsToComponents(results)}
     {searchPeopleItem()}
   </AkNavigationItemGroup>
@@ -107,9 +126,7 @@ export interface Props {
 
 // TODO: We can only make this a react component once quick-search is fixed. Currently, AkNavigationItemGroup must be a direct child of
 // QuickSearch. This is required for QuickSearch's keyboard controls to work
-export default function searchResults(
-  props: Props,
-): JSX.Element | JSX.Element[] {
+export default function searchResults(props: Props) {
   const {
     query,
     recentlyViewedItems,

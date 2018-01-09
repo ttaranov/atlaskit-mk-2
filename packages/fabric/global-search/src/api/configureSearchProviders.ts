@@ -14,6 +14,7 @@ export interface SearchProviders {
   peopleSearchProvider: PeopleSearchProvider;
 }
 
+// TODO provide real URLs
 const config = {
   local: {
     recentSearch: 'http://localhost:8080',
