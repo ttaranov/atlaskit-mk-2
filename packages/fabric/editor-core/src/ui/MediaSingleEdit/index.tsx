@@ -4,6 +4,7 @@ import WrapRightIcon from '@atlaskit/icon/glyph/editor/media-wrap-right';
 import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import { MediaSingleLayout } from '@atlaskit/editor-common';
+
 import { MediaPluginState } from '../../plugins/media';
 import ToolbarButton from '../ToolbarButton';
 import Separator from '../Separator';
@@ -21,11 +22,11 @@ export interface State {
 const icons = {
   'wrap-left': {
     icon: WrapLeftIcon,
-    lable: 'wrap left',
+    label: 'wrap left',
   },
   center: {
     icon: CenterIcon,
-    lable: 'center',
+    label: 'center',
   },
   'wrap-right': {
     icon: WrapRightIcon,
@@ -45,14 +46,13 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
   }
 
   render() {
-    const target = this.state.target;
-    const selectedLayout = this.state.layout;
+    const { target, layout: selectedLayout } = this.state;
     if (target) {
       return (
         <FloatingToolbar target={target} offset={[0, 3]}>
           {Object.keys(icons).map((layout, index) => {
             const Icon = icons[layout].icon;
-            const label = icons[layout].lable;
+            const label = icons[layout].label;
             return (
               <ToolbarButton
                 selected={layout === selectedLayout}
@@ -85,9 +85,6 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
 
   private handlePluginStateChange = (pluginState: MediaPluginState) => {
     const { element: target, layout } = pluginState;
-    this.setState({
-      target,
-      layout: layout,
-    });
+    this.setState({ target, layout });
   };
 }
