@@ -1,5 +1,7 @@
 # @atlaskit/media-image
 
+## 2.2.4
+
 ## 2.2.3
 
 - [patch] Update dependencies [623f8ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623f8ca)

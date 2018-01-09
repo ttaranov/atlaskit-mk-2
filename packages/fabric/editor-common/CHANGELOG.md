@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 5.4.1
+- [patch] Use media-test-helpers instead of hardcoded values [f2b92f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f2b92f8)
+
 ## 5.4.0
 
 ## 5.3.0

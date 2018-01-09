@@ -100,8 +100,10 @@ const providers = {
   mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
   activityProvider: Promise.resolve(new MockActivityResource()),
   macroProvider: Promise.resolve(macroProvider),
-  taskDecisionProvider: Promise.resolve(taskDecisionStoryData.getMockTaskDecisionResource()),
-  contextIdentifierProvider: storyContextIdentifierProviderFactory()
+  taskDecisionProvider: Promise.resolve(
+    taskDecisionStoryData.getMockTaskDecisionResource(),
+  ),
+  contextIdentifierProvider: storyContextIdentifierProviderFactory(),
 };
 const mediaProvider = storyMediaProviderFactory();
 
