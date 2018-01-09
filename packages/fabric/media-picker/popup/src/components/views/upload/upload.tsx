@@ -149,7 +149,7 @@ export class StatelessUploadView extends Component<
     const bottomShadow = !this.state.endVisible ? (
       <div className="bottomShadow" style={shadowStyle} />
     ) : null;
-    const { context } = this.props;
+    const { context, onFileClick } = this.props;
 
     return (
       <Wrapper onScroll={this.updateShadows} innerRef={this.saveViewRef}>
@@ -162,7 +162,17 @@ export class StatelessUploadView extends Component<
                 <MediaList
                   items={items}
                   isLoading={isLoading}
-                  onItemClick={() => onFileClick()}
+                  onItemClick={item =>
+                    onFileClick(
+                      {
+                        id: item.id,
+                        mimeType: '', // TODO: what to do here?
+                        name: item.fileName,
+                        size: item.size,
+                      },
+                      'recent_files',
+                    )
+                  }
                 />
               );
             }}
