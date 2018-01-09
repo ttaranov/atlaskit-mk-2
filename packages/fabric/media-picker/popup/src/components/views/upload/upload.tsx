@@ -42,7 +42,7 @@ import {
 } from '../../../domain';
 
 import { menuEdit } from '../editor/phrases';
-import { Wrapper } from './styled';
+import { Wrapper, AppearanceWrapper } from './styled';
 
 const createEditCardAction = (handler: CardEventHandler): CardAction => {
   return {
@@ -167,7 +167,7 @@ export class StatelessUploadView extends Component<
         <Dropzone mpBrowser={this.props.mpBrowser} />
         <div className="cards">
           <div className="recentUploadsTitle">Recent Uploads</div>
-          <div>
+          <AppearanceWrapper>
             <Button
               onClick={this.setListAppearance('grid')}
               isSelected={listAppearance === 'grid'}
@@ -178,7 +178,7 @@ export class StatelessUploadView extends Component<
               isSelected={listAppearance === 'list'}
               iconBefore={<ListIcon label="" />}
             />
-          </div>
+          </AppearanceWrapper>
           <MediaListItems
             context={context}
             collectionName="recents"

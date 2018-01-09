@@ -122,3 +122,8 @@ export const Wrapper = styled.div`
     }
   }
 `;
+
+export const AppearanceWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
