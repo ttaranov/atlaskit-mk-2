@@ -5,6 +5,7 @@ import { ReactElement, Component, ReactNode } from 'react';
 import ImageIcon from '@atlaskit/icon/glyph/image';
 import DynamicTable, { HeadType } from '@atlaskit/dynamic-table';
 import { Context, FileItem } from '@atlaskit/media-core';
+
 import { MediaApiFetcher } from '../../tools/fetcher/fetcher';
 import {
   MediaListItemThumbnail,
@@ -54,7 +55,7 @@ export function MediaList({
   onItemClick,
 }: MediaListProps): ReactElement<MediaListProps> {
   const rows = items.map(item => {
-    const { thumbnailSrc, fileName, timestamp, size } = item;
+    const { thumbnailSrc, fileName, timestamp, size, isSelected } = item;
     // TODO: Use mediaType to render right placeholder (image, video, etc)
     const thumbnail = thumbnailSrc ? (
       <MediaListItemThumbnail src={thumbnailSrc} />
@@ -71,6 +72,7 @@ export function MediaList({
             <MediaListItemNameCell>
               {thumbnail}
               <MediaListItemName>{fileName}</MediaListItemName>
+              {isSelected ? '*' : ''}
             </MediaListItemNameCell>
           ),
         },
@@ -95,8 +97,10 @@ export function MediaList({
 }
 
 export type MediaListItemsProps = {
-  context: Context;
-  collectionName: string;
+  readonly context: Context;
+  readonly collectionName: string;
+  readonly selectedItemIds: string[];
+
   children: (
     props: { items: MediaListItem[]; isLoading: boolean },
   ) => ReactNode;
@@ -164,7 +168,18 @@ export class MediaListItems extends Component<
   }
 
   render() {
+    const { selectedItemIds } = this.props;
     const { items, isLoading } = this.state;
-    return <div>{this.props.children({ items, isLoading })}</div>;
+    return (
+      <div>
+        {this.props.children({
+          items: items.map(item => ({
+            ...item,
+            isSelected: selectedItemIds.indexOf(item.id) >= 0,
+          })),
+          isLoading,
+        })}
+      </div>
+    );
   }
 }

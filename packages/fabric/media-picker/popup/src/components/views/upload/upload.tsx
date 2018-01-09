@@ -149,14 +149,21 @@ export class StatelessUploadView extends Component<
     const bottomShadow = !this.state.endVisible ? (
       <div className="bottomShadow" style={shadowStyle} />
     ) : null;
-    const { context, onFileClick } = this.props;
+    const { context, onFileClick, selectedItems } = this.props;
+    const selectedRecentFiles = selectedItems
+      .filter(item => item.serviceName === 'recent_files')
+      .map(item => item.id);
 
     return (
       <Wrapper onScroll={this.updateShadows} innerRef={this.saveViewRef}>
         <Dropzone mpBrowser={this.props.mpBrowser} />
         <div className="cards">
           <div className="recentUploadsTitle">Recent Uploads</div>
-          <MediaListItems context={context} collectionName="recents">
+          <MediaListItems
+            context={context}
+            collectionName="recents"
+            selectedItemIds={selectedRecentFiles}
+          >
             {({ items, isLoading }) => {
               return (
                 <MediaList
@@ -263,7 +270,7 @@ export class StatelessUploadView extends Component<
       const { dataURI } = file;
 
       const mediaType = isImage(file.metadata.mimeType) ? 'image' : 'unknown';
-      //const metadata = Object.assign({}, file.metadata, { mediaType });
+      // const metadata = Object.assign({}, file.metadata, { mediaType });
       const metadata = { ...file.metadata, mimeType: mediaType };
       const { id } = metadata;
 
