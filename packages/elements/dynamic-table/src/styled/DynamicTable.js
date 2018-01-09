@@ -10,11 +10,6 @@ export const Table = styled.table`
     `};
   border-collapse: collapse;
   width: 100%;
-
-  box-sizing: border-box;
-  * {
-    box-sizing: border-box;
-  }
 `;
 
 export const Caption = styled.caption`

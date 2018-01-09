@@ -39,11 +39,9 @@ class RankableBody extends Component<Props, State> {
     this.props.onRankEnd(rankEnd);
   }
 
-  setRef = (innerRefFn: Function) => {
-    return (ref: HTMLElement) => {
-      innerRefFn(ref);
-      this.props.innerRef(ref);
-    }
+  innerRef = (innerRefFn: Function) => (ref: HTMLElement) => {
+    innerRefFn(ref);
+    this.props.innerRef(ref);
   }
 
   render() {
@@ -62,7 +60,7 @@ class RankableBody extends Component<Props, State> {
         <Droppable droppableId="dynamic-table-droppable">
           {(provided) => (
             <RankableTableBody 
-              innerRef={this.setRef(provided.innerRef)}
+              innerRef={this.innerRef(provided.innerRef)}
               isRanking={isRanking} 
               width={width}
             >

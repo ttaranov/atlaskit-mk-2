@@ -1,9 +1,9 @@
 // @flow
 import React, { Component } from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 import { RankableTableBodyRow } from '../../styled/rankable/TableRow';
 import { RowPlaceholderCell, RowPlaceholderWrapper } from '../../styled/rankable/RowPlaceholder';
 import type { HeadType, RowType } from '../../types';
-import { Draggable } from 'react-beautiful-dnd';
 import withDimensions, {type WithDimensionsProps} from '../../hoc/withDimensions';
 import TableCell from './TableCell';
 
@@ -24,11 +24,9 @@ class RankableTableRow extends Component<Props, {}> {
     }
   }  
 
-  addRef = (innerRefFn) => {
-    return (ref) => {
-      innerRefFn(ref);
-      this.props.innerRef(ref);
-    }
+  innerRef = (innerRefFn) => (ref) => {
+    innerRefFn(ref);
+    this.props.innerRef(ref);
   }
 
   render() {
@@ -39,7 +37,7 @@ class RankableTableRow extends Component<Props, {}> {
       <Draggable draggableId={row.key}>
       {(provided, snapshot) => [
         <RankableTableBodyRow {...restRowProps} 
-          innerRef={this.addRef(provided.innerRef)} 
+          innerRef={this.innerRef(provided.innerRef)} 
           {...provided.dragHandleProps}
           style={provided.draggableStyle}
           isRanking={isRanking}
