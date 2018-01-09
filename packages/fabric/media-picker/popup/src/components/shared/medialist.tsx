@@ -1,3 +1,4 @@
+import { format } from 'bytes';
 import * as React from 'react';
 import { ReactElement, Component, ReactNode } from 'react';
 
@@ -47,7 +48,7 @@ export function MediaList({
         ),
       },
       { content: new Date(timestamp).toLocaleDateString() },
-      { content: size },
+      { content: format(size, { decimalPlaces: 1 }) },
     ],
   }));
   return (
