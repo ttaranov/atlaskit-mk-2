@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.0.3
+- [patch] Fix update single image toolbar state on selection change [bea78aa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bea78aa)
+
 ## 61.0.2
 
 ## 61.0.1
