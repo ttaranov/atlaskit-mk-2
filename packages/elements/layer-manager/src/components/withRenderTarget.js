@@ -26,6 +26,7 @@ export default function withRenderTarget(
 
   // eslint-disable-next-line react/prefer-stateless-function
   return class extends Component<Props> {
+    GatewayOrPortalChildRef: HTMLElement | null;
     static contextTypes = {
       gatewayRegistry: PropTypes.instanceOf(GatewayRegistry),
       ...analyticsContextTypes,
@@ -37,11 +38,17 @@ export default function withRenderTarget(
 
       return (
         <GatewayOrPortal
+          id={process.env.NODE_ENV === 'test' ? 'gateway-or-portal' : ''}
           into={target}
           withTransitionGroup={withTransitionGroup}
         >
           <ContextProvider {...analyticsContext}>
-            <WrappedComponent {...this.props} />
+            <WrappedComponent
+              ref={ref => {
+                this.wrappedComponentRef = ref;
+              }}
+              {...this.props}
+            />
           </ContextProvider>
         </GatewayOrPortal>
       );
