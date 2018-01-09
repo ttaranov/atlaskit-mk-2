@@ -9,10 +9,9 @@ type Props = {
   isTinted: boolean,
   /** Handler function to be called when the blanket is clicked */
   onBlanketClicked: () => void,
-}
+};
 
-export default class Blanket extends PureComponent {
-  props: Props // eslint-disable-line react/sort-comp
+export default class Blanket extends PureComponent<Props, void> {
   static defaultProps = {
     canClickThrough: false,
     isTinted: false,
