@@ -1,9 +1,14 @@
+// @flow
 import styled from 'styled-components';
 
 import { defaultGridColumnWidth, spacing } from './vars';
 
-const getMargin = props => (props.theme.isNestedGrid ? (`-${spacing[props.theme.spacing]}px`) : 'auto');
-const getMaxWidth = props => (props.layout === 'fixed' ? `${defaultGridColumnWidth * props.theme.columns}px` : '100%');
+const getMargin = props =>
+  props.theme.isNestedGrid ? `-${spacing[props.theme.spacing]}px` : 'auto';
+const getMaxWidth = props =>
+  props.layout === 'fixed'
+    ? `${defaultGridColumnWidth * props.theme.columns}px`
+    : '100%';
 const getPadding = props => `${spacing[props.theme.spacing] / 2}px`;
 
 const Grid = styled.div`

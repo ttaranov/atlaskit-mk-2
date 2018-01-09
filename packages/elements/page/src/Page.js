@@ -1,3 +1,4 @@
+// @flow
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
@@ -17,7 +18,8 @@ const NavigationAndContent = styled.div`
 const BannerContainer = styled.div`
   flex: 1 0 auto;
   transition: max-height 0.25s ease-in-out;
-  max-height: ${props => (props.isBannerOpen ? 52 : 0)}px; /* 52 is line height (20) + 4*grid */
+  max-height: ${props =>
+    props.isBannerOpen ? 52 : 0}px; /* 52 is line height (20) + 4*grid */
   position: relative;
   width: 100%;
   z-index: 3;
@@ -49,11 +51,11 @@ export default class Page extends PureComponent {
     children: PropTypes.node,
     isBannerOpen: PropTypes.bool,
     navigation: PropTypes.node,
-  }
+  };
 
   static defaultProps = {
     isBannerOpen: false,
-  }
+  };
   render() {
     return (
       <ThemeProvider theme={emptyTheme}>
@@ -63,18 +65,12 @@ export default class Page extends PureComponent {
               aria-hidden={this.props.isBannerOpen}
               isBannerOpen={this.props.isBannerOpen}
             >
-              <Banner>
-                {this.props.banner}
-              </Banner>
+              <Banner>{this.props.banner}</Banner>
             </BannerContainer>
           ) : null}
           <NavigationAndContent>
-            <Navigation>
-              {this.props.navigation}
-            </Navigation>
-            <PageContent>
-              {this.props.children}
-            </PageContent>
+            <Navigation>{this.props.navigation}</Navigation>
+            <PageContent>{this.props.children}</PageContent>
           </NavigationAndContent>
         </Wrapper>
       </ThemeProvider>

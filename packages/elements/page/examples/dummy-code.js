@@ -4,15 +4,18 @@ import { arduinoLight } from 'react-syntax-highlighter/dist/styles';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  border: 1px solid #97A0AF;
+  border: 1px solid #97a0af;
   border-radius: 3px;
   margin-top: 20px;
 `;
 
 const Actions = styled.div`
-  background: #DFE1E6;
+  background: #dfe1e6;
   padding: 8px;
-  + pre { margin-top: 0; background-color: transparent !important; }
+  + pre {
+    margin-top: 0;
+    background-color: transparent !important;
+  }
 `;
 
 const Code = () => {

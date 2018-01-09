@@ -1,6 +1,10 @@
 import React, { PureComponent } from 'react';
 import Avatar from '@atlaskit/avatar';
-import Comment, { CommentAction, CommentAuthor, CommentTime } from '@atlaskit/comment';
+import Comment, {
+  CommentAction,
+  CommentAuthor,
+  CommentTime,
+} from '@atlaskit/comment';
 
 import sampleAvatarImg from './sample-avatar.png';
 
@@ -9,7 +13,9 @@ export default class DummyComment extends PureComponent {
     return (
       <Comment
         author={<CommentAuthor>John Smith</CommentAuthor>}
-        avatar={<Avatar src={sampleAvatarImg} name="User avatar" size="large" />}
+        avatar={
+          <Avatar src={sampleAvatarImg} name="User avatar" size="large" />
+        }
         time={<CommentTime>30, August 2016</CommentTime>}
         type="internal"
         content={'This is some content'}
