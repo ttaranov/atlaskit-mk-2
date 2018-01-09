@@ -28,27 +28,43 @@ export default class Items extends PureComponent<Props, State> {
     itemsData: null,
   };
 
-  componentWillMount() {
-    const isLoading = Items.isLoadingData(this.state.itemsData);
-    this.setState({
-      isLoaderShown: isLoading,
-    });
-    if (isLoading) {
-      Promise.resolve()
-        .then(() => this.props.getItemsData(this.props.parentData))
-        .then(itemsData => {
-          this.setState({
-            itemsData,
-          });
-        });
+  cancelPendingLoad = () => {};
+
+  componentDidMount() {
+    if (!Items.isDataReady(this.state.itemsData)) {
+      this.cancelPendingLoad();
+      this.cancelPendingLoad = this.load();
     }
   }
 
-  static isLoadingData(data: ?ItemsDataType) {
-    return !data;
+  componentWillUnmount() {
+    this.cancelPendingLoad();
   }
 
-  handleLoadingFinished = () => {
+  load() {
+    this.setState({
+      isLoaderShown: true,
+    });
+    let cancelled = false;
+    Promise.resolve()
+      .then(() => this.props.getItemsData(this.props.parentData))
+      .then(itemsData => {
+        if (!cancelled) {
+          this.setState({
+            itemsData,
+          });
+        }
+      });
+    return function cancel() {
+      cancelled = true;
+    };
+  }
+
+  static isDataReady(data: ?ItemsDataType): boolean {
+    return !!data;
+  }
+
+  handleLoaderComplete = () => {
     this.setState({
       isLoaderShown: false,
     });
@@ -57,11 +73,11 @@ export default class Items extends PureComponent<Props, State> {
   renderLoader() {
     const { depth } = this.props;
     const { itemsData } = this.state;
-    const isCompleting = !Items.isLoadingData(itemsData);
+    const isCompleting = Items.isDataReady(itemsData);
     return (
       <LoaderItem
         isCompleting={isCompleting}
-        onComplete={this.handleLoadingFinished}
+        onComplete={this.handleLoaderComplete}
         depth={depth + 1}
       />
     );
