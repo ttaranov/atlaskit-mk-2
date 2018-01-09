@@ -24,12 +24,12 @@ const config = {
   development: {
     recentSearch: 'https://activity.domain.dev.atlassian.io',
     crossProductSearch: 'dev.net/search',
-    peopleSearch: 'https://pf-directory-service.atlassian.io',
+    peopleSearch: 'https://pf-directory-service.domain.dev.atlassian.io',
   },
   staging: {
     recentSearch: 'https://activity.staging.atlassian.io',
     crossProductSearch: 'stg.net/search',
-    peopleSearch: 'https://pf-directory-service.atlassian.io',
+    peopleSearch: 'https://pf-directory-service.staging.atlassian.io',
   },
   production: {
     recentSearch: 'https://activity.atlassian.io',

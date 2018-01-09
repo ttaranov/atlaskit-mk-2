@@ -1,27 +1,30 @@
 import * as React from 'react';
 import GlobalQuickSearchContainer from './GlobalQuickSearchContainer';
-import configureSearchProviders, {
-  SearchProviders,
-} from '../api/configureSearchProviders';
+import configureSearchProviders from '../api/configureSearchProviders';
+import memoizeOne from 'memoize-one';
+
+const memoizeOneTyped: <T extends Function>(func: T) => T = memoizeOne;
 
 export interface Props {
   cloudId: string;
   environment: 'local' | 'development' | 'staging' | 'production';
 }
 
-export interface State extends SearchProviders {}
-
+/**
+ * Component that exposes the public API for global quick search.
+ */
 export default class GlobalQuickSearchConfiguration extends React.Component<
-  Props,
-  State
+  Props
 > {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = configureSearchProviders(props.cloudId, props.environment);
-  }
+  // configureSearchProviders is a potentially expensive function that we don't want to invoke on re-renders
+  memoizedConfigureSearchProviders = memoizeOneTyped(configureSearchProviders);
 
   render() {
-    return <GlobalQuickSearchContainer {...this.state} />;
+    const searchProviders = this.memoizedConfigureSearchProviders(
+      this.props.cloudId,
+      this.props.environment,
+    );
+
+    return <GlobalQuickSearchContainer {...searchProviders} />;
   }
 }
