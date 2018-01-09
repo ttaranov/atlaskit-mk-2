@@ -16,6 +16,7 @@ import {
 export type MediaListProps = {
   readonly items: MediaListItem[];
   readonly isLoading?: boolean;
+  readonly onItemClick?: (item: MediaListItem) => void;
 };
 
 export type MediaListItem = {
@@ -50,16 +51,20 @@ function formatDate(date: Date): string {
 export function MediaList({
   items,
   isLoading,
+  onItemClick,
 }: MediaListProps): ReactElement<MediaListProps> {
-  const rows = items.map(({ thumbnailSrc, fileName, timestamp, size }) => {
+  const rows = items.map(item => {
+    const { thumbnailSrc, fileName, timestamp, size } = item;
     // TODO: Use mediaType to render right placeholder (image, video, etc)
     const thumbnail = thumbnailSrc ? (
       <MediaListItemThumbnail src={thumbnailSrc} />
     ) : (
       <ImageIcon label="" size="large" />
     );
+    const onClick = onItemClick ? () => onItemClick(item) : undefined;
 
     return {
+      onClick,
       cells: [
         {
           content: (
@@ -74,6 +79,7 @@ export function MediaList({
       ],
     };
   });
+
   return (
     <MediaListWrapper>
       <DynamicTable

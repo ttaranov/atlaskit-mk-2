@@ -158,7 +158,13 @@ export class StatelessUploadView extends Component<
           <div className="recentUploadsTitle">Recent Uploads</div>
           <MediaListItems context={context} collectionName="recents">
             {({ items, isLoading }) => {
-              return <MediaList items={items} isLoading={isLoading} />;
+              return (
+                <MediaList
+                  items={items}
+                  isLoading={isLoading}
+                  onItemClick={() => onFileClick()}
+                />
+              );
             }}
           </MediaListItems>
         </div>
