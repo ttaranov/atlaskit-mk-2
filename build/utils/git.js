@@ -23,9 +23,9 @@ async function getCommitsSince(ref) {
 async function getChangedFilesSince(ref, fullPath = false) {
   // First we need to find the commit where we diverged from `ref` at using `git merge-base`
   let cmd = await spawn('git', ['merge-base', ref, 'HEAD']);
-  const diveredAt = cmd.stdout.trim();
+  const divergedAt = cmd.stdout.trim();
   // Now we can find which files we added
-  cmd = await spawn('git', ['diff', '--name-only', diveredAt]);
+  cmd = await spawn('git', ['diff', '--name-only', divergedAt]);
   const files = cmd.stdout.trim().split('\n');
   if (!fullPath) return files;
   return files.map(file => path.resolve(file));
