@@ -299,7 +299,7 @@ export class CardList extends Component<CardListProps, CardListState> {
                   dimensions={dimensions}
                   onClick={handleCardClick(mediaItem)}
                   actions={cardActions(mediaItem)}
-                  selectable={isGridLayout}
+                  selectable={isGridLayout} // TODO: this should probably be based on a different prop
                   selected={selectedItemIds.indexOf(id) > -1}
                 />
               </CardListItemWrapper>
