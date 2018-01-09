@@ -2,6 +2,7 @@
 import styled, { keyframes, css } from 'styled-components';
 import { getCSSUnitValue } from '../utils/getCSSUnitValue';
 import { size } from '../styles';
+import { CardLayout } from '..';
 
 const cardEntryAnimation = keyframes`
   0% {
@@ -31,6 +32,7 @@ const cardEntryAnimation = keyframes`
 export interface CardListItemWrapperProps {
   readonly key?: string;
   readonly cardWidth?: string | number;
+  readonly layout?: CardLayout;
   shouldAnimate?: boolean;
 }
 
@@ -39,15 +41,21 @@ export const Spinner = styled.div`
 `;
 
 export const CardListItemWrapper = styled.div`
-  ${({ cardWidth }: CardListItemWrapperProps) => {
-    if (cardWidth) {
-      return css`
-        width: ${getCSSUnitValue(cardWidth)};
-      `;
-    } else {
-      return '';
-    }
-  }} margin-top: 5px;
+  ${({ layout }) =>
+    layout === 'grid'
+      ? `
+    display: inline-block;
+    margin: 5px;
+  `
+      : ''} ${({ cardWidth }: CardListItemWrapperProps) => {
+      if (cardWidth) {
+        return css`
+          width: ${getCSSUnitValue(cardWidth)};
+        `;
+      } else {
+        return '';
+      }
+    }} margin-top: 5px;
 
   ${({ shouldAnimate }) =>
     (shouldAnimate &&
@@ -58,3 +66,5 @@ export const CardListItemWrapper = styled.div`
   `) ||
     ''};
 `;
+
+CardListItemWrapper.displayName = 'CardListItemWrapper';

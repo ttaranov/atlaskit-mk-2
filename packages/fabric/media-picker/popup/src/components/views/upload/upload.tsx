@@ -7,6 +7,7 @@ import {
   CardView,
   CardEvent,
   OnLoadingChangeState,
+  CardList,
 } from '@atlaskit/media-card';
 import {
   Context,
@@ -127,7 +128,7 @@ export class StatelessUploadView extends Component<
     const cards = this.cards();
 
     if (cards.length > 0) {
-      return this.recentView(cards);
+      return this.recentView();
     } else {
       return this.emptyView();
     }
@@ -151,16 +152,64 @@ export class StatelessUploadView extends Component<
     };
   };
 
-  recentView(cards: JSX.Element[]) {
+  renderList = () => {
+    const { listAppearance } = this.state;
+    const { context, onFileClick, selectedItems } = this.props;
+    const selectedRecentFiles = selectedItems
+      .filter(item => item.serviceName === 'recent_files')
+      .map(item => item.id);
+
+    return (
+      <MediaListItems
+        context={context}
+        collectionName="recents"
+        selectedItemIds={selectedRecentFiles}
+      >
+        {({ items, isLoading }) => {
+          return (
+            <MediaList
+              items={items}
+              isLoading={isLoading}
+              appearance={listAppearance}
+              onItemClick={item =>
+                onFileClick(
+                  {
+                    id: item.id,
+                    mimeType: '', // TODO: what to do here?
+                    name: item.fileName,
+                    size: item.size,
+                  },
+                  'recent_files',
+                )
+              }
+            />
+          );
+        }}
+      </MediaListItems>
+    );
+  };
+
+  renderGrid = () => {
+    const { context } = this.props;
+
+    return (
+      <CardList
+        context={context}
+        collectionName="recents"
+        layout="grid"
+        pageSize={30}
+      />
+    );
+  };
+
+  recentView() {
     const { listAppearance, contentWidth, endVisible } = this.state;
     const shadowStyle = contentWidth ? { width: contentWidth } : {};
     const bottomShadow = !endVisible ? (
       <div className="bottomShadow" style={shadowStyle} />
     ) : null;
-    const { context, onFileClick, selectedItems } = this.props;
-    const selectedRecentFiles = selectedItems
-      .filter(item => item.serviceName === 'recent_files')
-      .map(item => item.id);
+    const cards =
+      listAppearance === 'list' ? this.renderList() : this.renderGrid();
 
     return (
       <Wrapper onScroll={this.updateShadows} innerRef={this.saveViewRef}>
@@ -179,32 +228,7 @@ export class StatelessUploadView extends Component<
               iconBefore={<ListIcon label="" />}
             />
           </AppearanceWrapper>
-          <MediaListItems
-            context={context}
-            collectionName="recents"
-            selectedItemIds={selectedRecentFiles}
-          >
-            {({ items, isLoading }) => {
-              return (
-                <MediaList
-                  items={items}
-                  isLoading={isLoading}
-                  appearance={listAppearance}
-                  onItemClick={item =>
-                    onFileClick(
-                      {
-                        id: item.id,
-                        mimeType: '', // TODO: what to do here?
-                        name: item.fileName,
-                        size: item.size,
-                      },
-                      'recent_files',
-                    )
-                  }
-                />
-              );
-            }}
-          </MediaListItems>
+          {cards}
         </div>
         {bottomShadow}
         {this.state.isWebGLWarningFlagVisible

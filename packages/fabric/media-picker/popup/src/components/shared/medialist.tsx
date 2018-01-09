@@ -19,7 +19,6 @@ export type MediaListProps = {
   readonly items: MediaListItem[];
   readonly isLoading?: boolean;
   readonly onItemClick?: (item: MediaListItem) => void;
-  readonly appearance?: 'grid' | 'list';
 };
 
 export type MediaListItem = {
@@ -93,22 +92,16 @@ const renderList = (items, isLoading, onItemClick) => {
   );
 };
 
-const renderGrid = () => {
-  return <div>Grid!</div>;
-};
-
 export function MediaList({
   items,
   isLoading,
   onItemClick,
-  appearance = 'list',
 }: MediaListProps): ReactElement<MediaListProps> {
-  const list =
-    appearance === 'list'
-      ? renderList(items, isLoading, onItemClick)
-      : renderGrid();
-
-  return <MediaListWrapper>{list}</MediaListWrapper>;
+  return (
+    <MediaListWrapper>
+      {renderList(items, isLoading, onItemClick)}
+    </MediaListWrapper>
+  );
 }
 
 export type MediaListItemsProps = {

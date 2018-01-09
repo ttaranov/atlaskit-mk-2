@@ -23,6 +23,8 @@ import { Provider, MediaCard, CardView } from '../root';
 import { InfiniteScroll } from './infiniteScroll';
 import { CardListItemWrapper, Spinner } from './styled';
 
+export type CardLayout = 'grid' | 'list';
+
 export interface CardListProps {
   context: Context;
   collectionName: string;
@@ -35,6 +37,8 @@ export interface CardListProps {
 
   onCardClick?: (result: CardListEvent) => void;
   actions?: Array<CollectionAction>;
+
+  layout?: CardLayout;
 
   /**
    * Infinite scrolling is only enabled when height has also been specified.
@@ -77,6 +81,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     errorComponent: ErrorComponent,
     loadingComponent: LoadingComponent,
     emptyComponent: EmptyComponent,
+    layout: 'list',
   };
 
   state: CardListState = {
@@ -242,8 +247,9 @@ export class CardList extends Component<CardListProps, CardListState> {
       dataURIService,
       handleCardClick,
       placeholder,
+      isGridLayout,
     } = this;
-    const { cardAppearance, shouldLazyLoadCards } = this.props;
+    const { cardAppearance, shouldLazyLoadCards, layout } = this.props;
     const actions = this.props.actions || [];
     const cardActions = (collectionItem: MediaCollectionItem) =>
       actions.map(action => {
@@ -276,6 +282,7 @@ export class CardList extends Component<CardListProps, CardListState> {
               <CardListItemWrapper
                 shouldAnimate={shouldAnimate}
                 cardWidth={cardWidth}
+                layout={layout}
               >
                 <MediaCard
                   provider={providersByMediaItemId[mediaItem.details.id]}
@@ -289,7 +296,8 @@ export class CardList extends Component<CardListProps, CardListState> {
             </CSSTransition>
           );
           // We don't want to wrap new items into LazyContent aka lazy load new items
-          const useLazyContent = shouldLazyLoadCards && !shouldAnimate;
+          const useLazyContent =
+            shouldLazyLoadCards && !shouldAnimate && !isGridLayout;
           return useLazyContent ? (
             <LazyContent key={key} placeholder={placeholder}>
               {cardListItem}
@@ -366,6 +374,9 @@ export class CardList extends Component<CardListProps, CardListState> {
     }
   }
 
+  get isGridLayout() {
+    return this.props.layout === 'grid';
+  }
   private get useInfiniteScroll(): boolean {
     return this.props.useInfiniteScroll
       ? true
