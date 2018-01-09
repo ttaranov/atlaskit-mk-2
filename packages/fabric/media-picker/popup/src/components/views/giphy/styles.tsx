@@ -10,8 +10,7 @@ export const Container = styled.div`
 `;
 
 export const GridCell = styled.div`
-  width: 180px;
-  margin-top: 5px;
+  ${({ width }: { width: number }) => `width: ${width}px;`} margin-top: 5px;
 `;
 
 export const Title = styled.div`

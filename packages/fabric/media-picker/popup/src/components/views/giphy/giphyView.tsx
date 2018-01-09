@@ -26,6 +26,10 @@ import {
 } from './styles';
 import { britney } from './images';
 
+const NUMBER_OF_COLUMNS = 4;
+const GAP_SIZE = 5;
+const CONTAINER_WIDTH = 677;
+
 export interface GiphyViewStateProps {
   hasError: boolean;
   isLoading: boolean;
@@ -160,7 +164,7 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
       const dimensions = this.scaleThumbnailGif(actualDimensions);
 
       return (
-        <GridCell key={`${i}-metadata.id`}>
+        <GridCell key={`${i}-metadata.id`} width={dimensions.width}>
           <CardView
             status="complete"
             dataURI={dataURI}
@@ -177,7 +181,7 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
     return (
       <BricksLayout
         id="mediapicker-gif-layout"
-        sizes={[{ columns: 3, gutter: 5 }]}
+        sizes={[{ columns: NUMBER_OF_COLUMNS, gutter: GAP_SIZE }]}
       >
         {cards}
       </BricksLayout>
@@ -208,7 +212,10 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
     width: number;
     height: number;
   }) => {
-    const desiredWith = 180;
+    const desiredWith = Math.floor(
+      (CONTAINER_WIDTH - GAP_SIZE * (NUMBER_OF_COLUMNS - 1)) /
+        NUMBER_OF_COLUMNS,
+    );
 
     return {
       width: desiredWith,

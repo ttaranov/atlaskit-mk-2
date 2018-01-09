@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 
-import Bricks from 'bricks.js';
+import * as Bricks from 'bricks.js';
 import { BricksInstance, SizeDetail } from 'bricks.js';
 
 export interface BricksLayoutProps {
@@ -31,7 +31,7 @@ export class BricksLayout extends Component<
       sizes = [{ columns: 3, gutter: 10 }],
     } = this.props;
 
-    const instance = Bricks({
+    const instance = (Bricks as any)({
       container: `#${id}`,
       packed,
       sizes,
@@ -58,10 +58,6 @@ export class BricksLayout extends Component<
 
   render() {
     const { id, children } = this.props;
-    return (
-      <div id={id} style={{ width: '200px' }}>
-        {children}
-      </div>
-    );
+    return <div id={id}>{children}</div>;
   }
 }
