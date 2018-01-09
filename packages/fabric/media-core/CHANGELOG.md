@@ -1,5 +1,8 @@
 # @atlaskit/media-core
 
+## 12.0.3
+- [patch] Use media-test-helpers instead of hardcoded values [f2b92f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f2b92f8)
+
 ## 12.0.2
 
 ## 12.0.1

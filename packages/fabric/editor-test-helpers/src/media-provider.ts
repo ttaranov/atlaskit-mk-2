@@ -8,6 +8,8 @@ import {
   StoryBookAuthProvider,
   StoryBookUserAuthProvider,
   defaultParams,
+  defaultServiceHost,
+  userAuthProviderBaseURL,
 } from '@atlaskit/media-test-helpers';
 
 export interface MediaProviderFactoryConfig {
@@ -52,7 +54,7 @@ export function storyMediaProviderFactory(
       includeUploadContext === false
         ? undefined
         : Promise.resolve<MediaContextConfig>({
-            serviceHost: 'https://dt-api.internal.app.dev.atlassian.io',
+            serviceHost: userAuthProviderBaseURL,
             authProvider: StoryBookAuthProvider.create(false, {
               [`urn:filestore:collection:${collection}`]: ['read', 'insert'],
               'urn:filestore:chunk:*': ['create', 'read'],
@@ -67,8 +69,7 @@ export function storyMediaProviderFactory(
       includeLinkCreateContext === false
         ? undefined
         : Promise.resolve<MediaContextConfig>({
-            serviceHost:
-              'https://dt-api-filestore.internal.app.dev.atlassian.io',
+            serviceHost: defaultServiceHost,
             authProvider: StoryBookAuthProvider.create(false, {
               [`urn:filestore:collection:${collection}`]: ['read', 'update'],
               'urn:filestore:file:*': ['read'],

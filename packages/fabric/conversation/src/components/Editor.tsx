@@ -14,10 +14,12 @@ export interface Props {
   isExpanded?: boolean;
   onCancel?: () => void;
   onSave?: (value: any) => void;
+  isEditing?: boolean;
 }
 
 export interface State {
   isExpanded?: boolean;
+  isEditing?: boolean;
 }
 
 const Container = styled.div`
@@ -54,6 +56,7 @@ export default class Editor extends React.Component<Props, State> {
 
     this.state = {
       isExpanded: props.isExpanded,
+      isEditing: props.isEditing,
     };
   }
 
@@ -66,6 +69,7 @@ export default class Editor extends React.Component<Props, State> {
     } else {
       this.setState({
         isExpanded: false,
+        isEditing: false,
       });
     }
   };
@@ -74,22 +78,27 @@ export default class Editor extends React.Component<Props, State> {
     if (this.props.onSave) {
       const value = await actions.getValue();
       this.props.onSave(value);
+    } else {
+      this.setState({
+        isExpanded: false,
+        isEditing: false,
+      });
     }
 
     actions.clear();
-
-    this.setState({
-      isExpanded: false,
-    });
   };
 
   render() {
+    const { isEditing } = this.state;
+
     return (
       <EditorContext>
         <Container>
-          <AvatarSection>
-            <AkAvatar />
-          </AvatarSection>
+          {!isEditing && (
+            <AvatarSection>
+              <AkAvatar />
+            </AvatarSection>
+          )}
           <EditorSection>
             <WithEditorActions
               render={actions => (

@@ -7,7 +7,7 @@ const {
   getKarmaConfig,
   getPackagesWithKarmaTests,
 } = require('./build/karma-config');
-const { getChangedPackages } = require('./build/utils/packages');
+const { getChangedPackagesSinceMaster } = require('./build/utils/packages');
 
 exports.release = async () => {
   await release.run({ cwd: __dirname });
@@ -31,7 +31,7 @@ exports.testBrowser = async (
 exports.testBrowserCI = async (
   { watch, browserstack } /*: { watch: boolean, browserstack: boolean }*/,
 ) => {
-  const changedPackages = await getChangedPackages();
+  const changedPackages = await getChangedPackagesSinceMaster();
   const packagesWithKarmaTests = await getPackagesWithKarmaTests();
   const changedPackagesWithKarmaTests = packagesWithKarmaTests.filter(
     pkg => changedPackages.indexOf(pkg) !== -1,
