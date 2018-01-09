@@ -6,15 +6,15 @@ import { changeService, searchGiphy } from '../../../actions';
 import { StatelessSidebarItem } from './sidebarItem';
 import { GiphyIcon } from '../icons';
 
-interface SidebarItemOwnProps {
+export interface SidebarItemOwnProps {
   readonly isActive: boolean;
 }
 
-interface SidebarItemDispatchProps {
+export interface SidebarItemDispatchProps {
   readonly onChangeService: () => void;
 }
 
-type SidebarItemProps = SidebarItemOwnProps & SidebarItemDispatchProps;
+export type SidebarItemProps = SidebarItemOwnProps & SidebarItemDispatchProps;
 
 export class StatelessGiphySidebarItem extends Component<SidebarItemProps> {
   render() {

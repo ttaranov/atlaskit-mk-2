@@ -349,15 +349,15 @@ export class MediaApiFetcher implements Fetcher {
         id,
         name,
         mediaType: 'image',
-        size: Number.parseInt(size),
+        size: parseInt(size, 10),
       };
 
       return {
         metadata,
         dataURI: url,
         dimensions: {
-          width: Number.parseInt(width),
-          height: Number.parseInt(height),
+          width: parseInt(width, 10),
+          height: parseInt(height, 10),
         },
       };
     });

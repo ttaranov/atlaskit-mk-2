@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component, FormEvent } from 'react';
 import { connect } from 'react-redux';
-import debounce = require('lodash.debounce');
+import * as debounce from 'lodash.debounce';
 
 import FieldText from '@atlaskit/field-text';
 import Button from '@atlaskit/button';

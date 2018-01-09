@@ -7,9 +7,7 @@ const bricksInstanceStub = {
 const BricksStub = jest.fn().mockReturnValue(bricksInstanceStub);
 
 jest.mock('bricks.js', () => {
-  return {
-    default: BricksStub,
-  };
+  return BricksStub;
 });
 
 import { shallow } from 'enzyme';
