@@ -5,6 +5,7 @@ import TableRow from './TableRow';
 import type { HeadType, RowType, RankStart, RankEnd } from '../../types';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import withSortedPageRows from '../../hoc/withSortedPageRows';
+import withDimensions, {type WithDimensionsProps} from '../../hoc/withDimensions';
 
 type Props = {
   onRankStart: (RankStart) => void,
@@ -12,25 +13,23 @@ type Props = {
   pageRows: RowType[],
   isFixedSize: boolean,
   head: HeadType | void,
-};
+} & WithDimensionsProps;
 
 type State = {
   isRanking: boolean,
-  width: number
 };
 
 class RankableBody extends Component<Props, State> {
   state = {
     isRanking: false,
-    width: 0,
   }
 
   ref: ?HTMLElement;
 
   dragStart = (rankStart: RankStart) => {
+    this.props.updateDimensions();
     this.setState({
       isRanking: true,
-      width: this.ref ? this.ref.offsetWidth : 0,
     });
     this.props.onRankStart(rankStart);
   }
@@ -45,8 +44,7 @@ class RankableBody extends Component<Props, State> {
   setRef = (innerRefFn: Function) => {
     return (ref: HTMLElement) => {
       innerRefFn(ref);
-
-      this.ref = ref;
+      this.props.innerRef(ref);
     }
   }
 
@@ -55,10 +53,10 @@ class RankableBody extends Component<Props, State> {
       pageRows,
       head,  
       isFixedSize,
+      width,
     } = this.props;
     const {
       isRanking,
-      width,
     } = this.state;
 
     return (
@@ -88,4 +86,4 @@ class RankableBody extends Component<Props, State> {
   }
 }
 
-export default withSortedPageRows(RankableBody);
+export default withDimensions(withSortedPageRows(RankableBody));

@@ -3,14 +3,14 @@
 import styled, { css } from 'styled-components';
 import { TableBodyRow } from '../TableRow';
 
-const draggableStyle = ({ isRanking, isRankingItem, width }) => css`
+const draggableStyle = ({ isRanking, isRankingItem, rankWidth }) => css`
   &:hover {
     cursor: ${isRankingItem ? "grabbing" : "grab"};
   }
 
   ${isRanking && css`
     display: block; 
-    width: ${width}px;
+    width: ${rankWidth}px;
   `}
 
   ${isRankingItem && css`

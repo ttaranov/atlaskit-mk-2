@@ -1,8 +1,10 @@
 // @flow
 import React, { Component } from 'react';
 import { RankableTableBodyRow } from '../../styled/rankable/TableRow';
+import { RowPlaceholderCell, RowPlaceholderWrapper } from '../../styled/rankable/RowPlaceholder';
 import type { HeadType, RowType } from '../../types';
 import { Draggable } from 'react-beautiful-dnd';
+import withDimensions, {type WithDimensionsProps} from '../../hoc/withDimensions';
 import TableCell from './TableCell';
 
 type Props = {
@@ -10,42 +12,27 @@ type Props = {
   isFixedSize: boolean,
   row: RowType,
   isRanking: boolean,
-};
+} & WithDimensionsProps;
 
-type State = {
-  width: number,
-}
-
-export default class RankableRow extends Component<Props, State> {
-  ref: ?HTMLElement
-
-  state = {
-    width: 0,
-  }
-
+class RankableTableRow extends Component<Props, {}> {
   componentWillReceiveProps(nextProps: Props) {
     const wasRanking = this.props.isRanking;
     const willRanking = nextProps.isRanking;
 
-    if (!willRanking && !wasRanking && this.ref) {
-      this.setState({
-        width: this.ref.offsetWidth
-      });
+    if (!willRanking && !wasRanking) {
+      this.props.updateDimensions();
     }
   }  
 
   addRef = (innerRefFn) => {
     return (ref) => {
       innerRefFn(ref);
-      this.ref = ref;
+      this.props.innerRef(ref);
     }
   }
 
   render() {
-
-    const width = this.state.width;
-
-    const { row, head, isFixedSize, isRanking } = this.props;
+    const { row, head, isFixedSize, isRanking, width, height } = this.props;
     const { cells, ...restRowProps } = row;
 
     return (
@@ -57,7 +44,7 @@ export default class RankableRow extends Component<Props, State> {
           style={provided.draggableStyle}
           isRanking={isRanking}
           isRankingItem={snapshot.isDragging}
-          width={width}
+          rankWidth={width}
         >
         {cells.map((cell, cellIndex) => {
           const headCell = (head || { cells: [] }).cells[cellIndex];
@@ -73,14 +60,19 @@ export default class RankableRow extends Component<Props, State> {
       </RankableTableBodyRow>,
    
       provided.placeholder ? <tr>
-        <td colSpan="4" style={{padding: "0"}}>
-          <div style={{height: '48px', width: `${width}px`}}>
+        <RowPlaceholderCell colSpan={cells.length}>
+          <RowPlaceholderWrapper
+            height={height}
+            width={width}
+          >
             {provided.placeholder}
-          </div>
-        </td>
+          </RowPlaceholderWrapper>
+        </RowPlaceholderCell>
       </tr> : null
       ]}
       </Draggable>
     );
   }
 };
+
+export default withDimensions(RankableTableRow);

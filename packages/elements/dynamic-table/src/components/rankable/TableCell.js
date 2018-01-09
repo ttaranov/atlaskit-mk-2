@@ -3,45 +3,30 @@ import React, { Component } from 'react';
 import { RankableTableBodyCell } from '../../styled/rankable/TableCell';
 import type { HeadCellType, RowCellType } from '../../types';
 import { Draggable } from 'react-beautiful-dnd';
+import withDimensions, {type WithDimensionsProps} from '../../hoc/withDimensions';
 
 type Props = {
   head: HeadCellType | void,
   cell: RowCellType,
   isFixedSize: boolean,
   isRanking: boolean,
-};
+} & WithDimensionsProps;
 
-type State = {
-  width: number,
-};
-
-export default class Cell extends Component<Props, State> {
-  ref: ?HTMLElement
-
-  state = {
-    width: 0,
-  }
-
-  static defaultProps = {
-    isRanking: false,
-  }
+class RankableTableCell extends Component<Props, {}> {
 
   componentWillReceiveProps(nextProps: Props) {
     const wasDragging = this.props.isRanking;
     const willDragging = nextProps.isRanking;
 
-    if (!willDragging && !wasDragging && this.ref) {
-      this.setState({
-        width: this.ref.offsetWidth
-      });
+    if (!willDragging && !wasDragging) {
+      this.props.updateDimensions();
     }
   }  
 
   render() {
-    const { cell, head, isFixedSize, isRanking } = this.props;
+    const { cell, head, isFixedSize, isRanking, width: rankingWidth } = this.props;
     const { content, ...restCellProps } = cell;
     const { shouldTruncate, width } = head || {};
-    const { width: rankingWidth } = this.state;
 
     return (
       <RankableTableBodyCell
@@ -51,10 +36,12 @@ export default class Cell extends Component<Props, State> {
         width={width}
         isRanking={isRanking}
         rankingWidth={rankingWidth}
-        innerRef={ref => {this.ref = ref}}
+        innerRef={this.props.innerRef}
       >
         {content}
       </RankableTableBodyCell>
     );
   }
 };
+
+export default withDimensions(RankableTableCell);
