@@ -28,36 +28,28 @@ export default class Items extends PureComponent<Props, State> {
     itemsData: null,
   };
 
-  cancelPendingLoad = () => {};
+  loadCancelled = false;
 
-  componentDidMount() {
+  componentWillMount() {
     if (!Items.isDataReady(this.state.itemsData)) {
-      this.cancelPendingLoad();
-      this.cancelPendingLoad = this.load();
+      this.setState({
+        isLoaderShown: true,
+      });
+      this.loadCancelled = false;
+      Promise.resolve()
+        .then(() => this.props.getItemsData(this.props.parentData))
+        .then(itemsData => {
+          if (!this.loadCancelled) {
+            this.setState({
+              itemsData,
+            });
+          }
+        });
     }
   }
 
   componentWillUnmount() {
-    this.cancelPendingLoad();
-  }
-
-  load() {
-    this.setState({
-      isLoaderShown: true,
-    });
-    let cancelled = false;
-    Promise.resolve()
-      .then(() => this.props.getItemsData(this.props.parentData))
-      .then(itemsData => {
-        if (!cancelled) {
-          this.setState({
-            itemsData,
-          });
-        }
-      });
-    return function cancel() {
-      cancelled = true;
-    };
+    this.loadCancelled = true;
   }
 
   static isDataReady(data: ?ItemsDataType): boolean {
