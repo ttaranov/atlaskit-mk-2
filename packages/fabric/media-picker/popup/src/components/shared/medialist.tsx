@@ -19,6 +19,7 @@ export type MediaListProps = {
   readonly items: MediaListItem[];
   readonly isLoading?: boolean;
   readonly onItemClick?: (item: MediaListItem) => void;
+  readonly appearance?: 'grid' | 'list';
 };
 
 export type MediaListItem = {
@@ -50,11 +51,7 @@ function formatDate(date: Date): string {
   }
 }
 
-export function MediaList({
-  items,
-  isLoading,
-  onItemClick,
-}: MediaListProps): ReactElement<MediaListProps> {
+const renderList = (items, isLoading, onItemClick) => {
   const rows = items.map(item => {
     const { thumbnailSrc, fileName, timestamp, size, isSelected } = item;
     // TODO: Use mediaType to render right placeholder (image, video, etc)
@@ -85,17 +82,33 @@ export function MediaList({
   });
 
   return (
-    <MediaListWrapper>
-      <DynamicTable
-        defaultPage={0}
-        head={head}
-        rows={rows}
-        onSetPage={() => {}}
-        onSort={() => {}}
-        isLoading={isLoading}
-      />
-    </MediaListWrapper>
+    <DynamicTable
+      defaultPage={0}
+      head={head}
+      rows={rows}
+      onSetPage={() => {}}
+      onSort={() => {}}
+      isLoading={isLoading}
+    />
   );
+};
+
+const renderGrid = () => {
+  return <div>Grid!</div>;
+};
+
+export function MediaList({
+  items,
+  isLoading,
+  onItemClick,
+  appearance = 'list',
+}: MediaListProps): ReactElement<MediaListProps> {
+  const list =
+    appearance === 'list'
+      ? renderList(items, isLoading, onItemClick)
+      : renderGrid();
+
+  return <MediaListWrapper>{list}</MediaListWrapper>;
 }
 
 export type MediaListItemsProps = {

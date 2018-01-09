@@ -16,10 +16,11 @@ import {
   FileDetails,
   CardAction,
 } from '@atlaskit/media-core';
-
+import Button from '@atlaskit/button';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import EditorInfoIcon from '@atlaskit/icon/glyph/error';
-
+import MediaServicesGridIcon from '@atlaskit/icon/glyph/media-services/grid';
+import ListIcon from '@atlaskit/icon/glyph/list';
 import { Browser } from '../../../../../src';
 import { MediaList, MediaListItems } from '../../shared/medialist';
 
@@ -93,6 +94,7 @@ export interface UploadViewState {
   readonly contentWidth?: number;
   readonly startVisible?: boolean;
   readonly endVisible?: boolean;
+  listAppearance: 'list' | 'grid';
 }
 
 export class StatelessUploadView extends Component<
@@ -109,6 +111,7 @@ export class StatelessUploadView extends Component<
       hasPopupBeenVisible: false,
       isWebGLWarningFlagVisible: false,
       shouldDismissWebGLWarningFlag: false,
+      listAppearance: 'list',
     };
   }
 
@@ -142,11 +145,16 @@ export class StatelessUploadView extends Component<
     this.view = input;
   };
 
+  setListAppearance = listAppearance => {
+    return () => {
+      this.setState({ listAppearance });
+    };
+  };
+
   recentView(cards: JSX.Element[]) {
-    const shadowStyle = this.state.contentWidth
-      ? { width: this.state.contentWidth }
-      : {};
-    const bottomShadow = !this.state.endVisible ? (
+    const { listAppearance, contentWidth, endVisible } = this.state;
+    const shadowStyle = contentWidth ? { width: contentWidth } : {};
+    const bottomShadow = !endVisible ? (
       <div className="bottomShadow" style={shadowStyle} />
     ) : null;
     const { context, onFileClick, selectedItems } = this.props;
@@ -159,6 +167,18 @@ export class StatelessUploadView extends Component<
         <Dropzone mpBrowser={this.props.mpBrowser} />
         <div className="cards">
           <div className="recentUploadsTitle">Recent Uploads</div>
+          <div>
+            <Button
+              onClick={this.setListAppearance('grid')}
+              isSelected={listAppearance === 'grid'}
+              iconBefore={<MediaServicesGridIcon label="" />}
+            />
+            <Button
+              onClick={this.setListAppearance('list')}
+              isSelected={listAppearance === 'list'}
+              iconBefore={<ListIcon label="" />}
+            />
+          </div>
           <MediaListItems
             context={context}
             collectionName="recents"
@@ -169,6 +189,7 @@ export class StatelessUploadView extends Component<
                 <MediaList
                   items={items}
                   isLoading={isLoading}
+                  appearance={listAppearance}
                   onItemClick={item =>
                     onFileClick(
                       {
