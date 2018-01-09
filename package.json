@@ -37,7 +37,7 @@
     "start:elements": "                      yarn run website:start **/packages/elements/**",
     "start:fabric": "                        yarn run website:start **/packages/fabric/**",
     "start:media": "                         yarn run website:start **/packages/fabric/media-*",
-    "start:editor": "                        yarn run website:start '**/packages/fabric/+(code|editor-core|editor-common|editor-cq|renderer)'",
+    "start:editor": "                        yarn run website:start '**/packages/fabric/+(code|editor-core|editor-common|renderer)'",
     "changeset": "                           node ./runChangeset",
     "release": "                             projector ./projector release",
     "build:editor-common:json-schema": "     cd packages/fabric/editor-common && yarn run build:json-schema && echo 'Done.'",
