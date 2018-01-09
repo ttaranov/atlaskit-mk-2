@@ -158,6 +158,13 @@ const ContentStyles = styled.div`
     box-sizing: border-box;
   }
 
+  .ProseMirror ul ul,
+  .ProseMirror ul ol,
+  .ProseMirror ol ul,
+  .ProseMirror ol ol {
+    padding-left: 17px;
+  }
+
   .ProseMirror li {
     position: relative;
     /* Dont do weird stuff with marker clicks */
