@@ -31,6 +31,8 @@ describe('media', () => {
     const resolvedMediaProvider = await resolvedProvider;
     await resolvedMediaProvider.uploadContext;
 
+    editor.update();
+
     expect(
       editor
         .find(ToolbarButton)
@@ -126,6 +128,8 @@ describe('media', () => {
     const resolvedMediaProvider = await resolvedProvider;
     await resolvedMediaProvider.uploadContext;
 
+    editor.update();
+
     expect(
       editor
         .find(ToolbarButton)
@@ -156,13 +160,15 @@ describe('media', () => {
       id: 'tmp:123',
       status: 'unknown',
     });
+    editor.update();
     expect(editor.state('showSpinner')).to.equal(false);
 
     editor
       .find('button')
-      .findWhere(node => node.text() === 'Save')
+      .findWhere(node => !!node.type() && node.text() === 'Save')
       .first()
       .simulate('click');
+
     expect(editor.state('showSpinner')).to.equal(true);
 
     stateManager.updateState('tmp:123', {
