@@ -5,7 +5,7 @@ import {
   akColorN900,
 } from '@atlaskit/util-shared-styles';
 import Button from '@atlaskit/button';
-import * as InlineSvg from 'svg-inline-react';
+import InlineSvg from 'svg-inline-react';
 import styled from 'styled-components';
 
 export const ErrorPopup = styled.div`

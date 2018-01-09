@@ -10,6 +10,7 @@ import {
   getComponentClassWithStore,
   mockIsWebGLNotAvailable,
 } from '../../../../mocks';
+
 mockIsWebGLNotAvailable(); // mock WebGL fail check before StatelessUploadView is imported
 import { isWebGLAvailable } from '../../../../tools/webgl';
 import { StatelessUploadView, default as ConnectedUploadView } from '../upload';
@@ -29,15 +30,16 @@ const createConnectedComponent = (
   const context = mockContext();
   const store = mockStore(state);
   const dispatch = store.dispatch;
-  const component = enzymeMethod(
+  const root = enzymeMethod(
     <ConnectedUploadViewWithStore
       store={store}
       mpBrowser={{} as any}
       context={context}
       recentsCollection="some-collection-name"
     />,
-  ).find(StatelessUploadView);
-  return { component, dispatch };
+  );
+  const component = root.find(StatelessUploadView);
+  return { component, dispatch, root };
 };
 
 describe('<StatelessUploadView />', () => {
@@ -152,14 +154,20 @@ describe('<UploadView />', () => {
   });
 
   it('should display a flag if WebGL is not available', () => {
-    const { component } = createConnectedComponent(state, mount);
-    const mockAnnotationClick = component.node.onAnnotateActionClick(() => {});
+    const { component, root } = createConnectedComponent(state, mount);
+    const mockAnnotationClick = component
+      .instance()
+      .onAnnotateActionClick(() => {});
+
+    root.update();
 
     expect(isWebGLAvailable).not.toHaveBeenCalled();
-    expect(component.find(FlagGroup)).toHaveLength(0);
+    expect(root.find(FlagGroup)).toHaveLength(0);
     mockAnnotationClick();
 
-    expect(component.find(FlagGroup)).toHaveLength(1);
+    root.update();
+
+    expect(root.find(FlagGroup)).toHaveLength(1);
     expect(isWebGLAvailable).toHaveBeenCalled();
   });
 });
