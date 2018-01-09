@@ -5,7 +5,11 @@ import DynamicTable, { HeadType } from '@atlaskit/dynamic-table';
 import { smallImage } from '@atlaskit/media-test-helpers';
 import { Context, FileItem } from '@atlaskit/media-core';
 import { MediaApiFetcher } from '../../tools/fetcher/fetcher';
-import { MediaListItemThumbnail, MediaListItemNameCell } from './styled';
+import {
+  MediaListItemThumbnail,
+  MediaListItemNameCell,
+  MediaListItemName,
+} from './styled';
 
 export type MediaListProps = {
   readonly items: MediaListItem[];
@@ -38,7 +42,7 @@ export function MediaList({
         content: (
           <MediaListItemNameCell>
             <MediaListItemThumbnail src={thumbnailSrc} />
-            <span>{fileName}</span>
+            <MediaListItemName>{fileName}</MediaListItemName>
           </MediaListItemNameCell>
         ),
       },
@@ -47,16 +51,13 @@ export function MediaList({
     ],
   }));
   return (
-    <div>
-      <h1>Media List</h1>
-      <DynamicTable
-        defaultPage={0}
-        head={head}
-        rows={rows}
-        onSetPage={() => {}}
-        onSort={() => {}}
-      />
-    </div>
+    <DynamicTable
+      defaultPage={0}
+      head={head}
+      rows={rows}
+      onSetPage={() => {}}
+      onSort={() => {}}
+    />
   );
 }
 
