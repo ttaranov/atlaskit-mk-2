@@ -12,6 +12,7 @@ import {
   MediaListItemNameCell,
   MediaListItemName,
   MediaListWrapper,
+  selectedStyles,
 } from './styled';
 
 export type MediaListProps = {
@@ -63,8 +64,10 @@ export function MediaList({
       <ImageIcon label="" size="large" />
     );
     const onClick = onItemClick ? () => onItemClick(item) : undefined;
+    const style = isSelected ? selectedStyles : undefined;
 
     return {
+      style,
       onClick,
       cells: [
         {
@@ -72,7 +75,6 @@ export function MediaList({
             <MediaListItemNameCell>
               {thumbnail}
               <MediaListItemName>{fileName}</MediaListItemName>
-              {isSelected ? '*' : ''}
             </MediaListItemNameCell>
           ),
         },

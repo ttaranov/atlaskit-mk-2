@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const MediaListItemNameCell = styled.div`
   display: flex;
   align-items: center;
+  padding-left: 10px;
 `;
 
 export const MediaListItemThumbnail = styled.img`
@@ -32,3 +33,9 @@ export const MediaListWrapper = styled.div`
     }
   }
 `;
+
+export const selectedStyles = {
+  backgroundColor: '#3384ff',
+  color: 'rgba(255,255,255, 0.5)',
+  borderBottom: '1px solid #ccc',
+};
