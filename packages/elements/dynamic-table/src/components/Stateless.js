@@ -10,6 +10,7 @@ import {
 } from '../internal/helpers';
 import TableHead from './TableHead';
 import Body from './Body';
+import RankableBody from './rankable/Body';
 import LoadingContainer from './LoadingContainer';
 import LoadingContainerAdvanced from './LoadingContainerAdvanced';
 import {
@@ -33,7 +34,7 @@ function toggleSortOrder(currentSortOrder) {
 }
 
 export default class DynamicTable extends Component<Props, {}> {
-  tableBody: ComponentType<any, {}> | null;
+  tableBody: ComponentType<any, any> | null;
   static defaultProps = {
     isLoading: false,
     isRankable: false,
@@ -99,6 +100,9 @@ export default class DynamicTable extends Component<Props, {}> {
       caption,
       head,
       isFixedSize,
+      isRankable,
+      onRankStart,
+      onRankEnd,
       page,
       rows,
       rowsPerPage,
@@ -116,6 +120,8 @@ export default class DynamicTable extends Component<Props, {}> {
       rowsPerPage,
       page,
       isFixedSize,
+      onRankStart,
+      onRankEnd,
     };
     const totalPages =
       rowsLength && rowsPerPage ? Math.ceil(rowsLength / rowsPerPage) : 0;
@@ -141,7 +147,15 @@ export default class DynamicTable extends Component<Props, {}> {
                 sortOrder={sortOrder}
               />
             )}
-            {rowsExist && (
+            {rowsExist && isRankable ? (
+              <RankableBody
+                {...bodyProps}
+                ref={el => {
+                  this.tableBody = el;
+                }}
+                
+              />
+            ) : (
               <Body
                 {...bodyProps}
                 ref={el => {

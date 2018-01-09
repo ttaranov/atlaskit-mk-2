@@ -22,8 +22,8 @@ export type StatelessProps = {
   sortKey?: string,
   sortOrder?: SortOrderType,
   isRankable?: boolean,
-  onRankStart?: () => {},
-  onRankEnd?: () => {},
+  onRankStart?: (RankStart) => void,
+  onRankEnd?: (RankEnd) => void,
 };
 
 export type RowType = {
@@ -46,5 +46,4 @@ export type HeadCellType = {
 
 export type HeadType = { cells: Array<HeadCellType> };
 
-export type RankStart;
-export type RankEnd;
+export type {RankStart, RankEnd};

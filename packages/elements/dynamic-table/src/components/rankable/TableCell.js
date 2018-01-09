@@ -1,14 +1,14 @@
 // @flow
 import React, { Component } from 'react';
-import { TableBodyCell } from '../styled/TableCell';
-import type { HeadCellType, RowCellType } from '../types';
+import { RankableTableBodyCell } from '../../styled/rankable/TableCell';
+import type { HeadCellType, RowCellType } from '../../types';
 import { Draggable } from 'react-beautiful-dnd';
 
 type Props = {
   head: HeadCellType | void,
   cell: RowCellType,
   isFixedSize: boolean,
-  isDragging: boolean,
+  isRanking: boolean,
 };
 
 type State = {
@@ -16,19 +16,21 @@ type State = {
 };
 
 export default class Cell extends Component<Props, State> {
+  ref: ?HTMLElement
+
   state = {
     width: 0,
   }
 
   static defaultProps = {
-    isDragging: false,
+    isRanking: false,
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const wasDragging = this.props.isDragging;
-    const willDragging = nextProps.isDragging;
+    const wasDragging = this.props.isRanking;
+    const willDragging = nextProps.isRanking;
 
-    if (!willDragging && !wasDragging) {
+    if (!willDragging && !wasDragging && this.ref) {
       this.setState({
         width: this.ref.offsetWidth
       });
@@ -36,24 +38,23 @@ export default class Cell extends Component<Props, State> {
   }  
 
   render() {
-    const { cell, head, isFixedSize, isDragging } = this.props;
+    const { cell, head, isFixedSize, isRanking } = this.props;
     const { content, ...restCellProps } = cell;
     const { shouldTruncate, width } = head || {};
-    const { width: dragWidth } = this.state;
+    const { width: rankingWidth } = this.state;
 
     return (
-      <TableBodyCell
+      <RankableTableBodyCell
         {...restCellProps}
         isFixedSize={isFixedSize}
         shouldTruncate={shouldTruncate}
         width={width}
-        isDragging={isDragging}
-        dragWidth={dragWidth}
-        isDraggable
+        isRanking={isRanking}
+        rankingWidth={rankingWidth}
         innerRef={ref => {this.ref = ref}}
       >
         {content}
-      </TableBodyCell>
+      </RankableTableBodyCell>
     );
   }
 };
