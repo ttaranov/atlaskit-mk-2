@@ -50,4 +50,5 @@ module.exports = {
   },
   snapshotSerializers: ['enzyme-to-json/serializer'],
   setupTestFrameworkScriptFile: `${__dirname}/jestFrameworkSetup.js`,
+  testResultsProcessor: 'jest-junit',
 };
