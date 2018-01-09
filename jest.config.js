@@ -14,6 +14,8 @@ if (RUN_ONLY !== 'all') {
   const packagesToRun = JSON.parse(RUN_ONLY);
   testMatchArr = packagesToRun.map(generateTestMatchGlob);
   if (testMatchArr.length === 0) {
+    // annoyingly, if the array is empty, jest will fallback to its defaults and run everything
+    testMatchArr = ['DONT-RUN-ANYTHING'];
     console.log('No packages were changed, so no tests should be run.');
   } else {
     console.log(

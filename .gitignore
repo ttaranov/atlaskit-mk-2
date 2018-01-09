@@ -7,6 +7,7 @@ dist
 # ignore generated files
 coverage/
 **/.netlify
+junit.xml
 
 # ignore yarn.locks generated in packages
 packages/**/**/yarn.lock
