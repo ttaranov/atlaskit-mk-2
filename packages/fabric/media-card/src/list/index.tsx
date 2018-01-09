@@ -39,6 +39,7 @@ export interface CardListProps {
   actions?: Array<CollectionAction>;
 
   layout?: CardLayout;
+  readonly selectedItemIds?: string[];
 
   /**
    * Infinite scrolling is only enabled when height has also been specified.
@@ -53,6 +54,7 @@ export interface CardListProps {
 export interface CardListState {
   loading: boolean;
   shouldAnimate: boolean;
+  selectedCards: string[];
   firstItemKey?: string;
   subscription?: Subscription;
   loadNextPage?: () => void;
@@ -87,6 +89,7 @@ export class CardList extends Component<CardListProps, CardListState> {
   state: CardListState = {
     loading: true,
     shouldAnimate: false,
+    selectedCards: [],
   };
 
   providersByMediaItemId: { [id: string]: Provider } = {};
@@ -249,7 +252,12 @@ export class CardList extends Component<CardListProps, CardListState> {
       placeholder,
       isGridLayout,
     } = this;
-    const { cardAppearance, shouldLazyLoadCards, layout } = this.props;
+    const {
+      cardAppearance,
+      shouldLazyLoadCards,
+      layout,
+      selectedItemIds = [],
+    } = this.props;
     const actions = this.props.actions || [];
     const cardActions = (collectionItem: MediaCollectionItem) =>
       actions.map(action => {
@@ -263,12 +271,12 @@ export class CardList extends Component<CardListProps, CardListState> {
           },
         };
       });
-
     const cards = collection
       ? collection.items.map((mediaItem: MediaCollectionItem) => {
           if (!mediaItem.details || !mediaItem.details.id) {
             return null;
           }
+          const id = mediaItem.details.id;
           const key = this.getItemKey(mediaItem);
           const cardListItem = (
             <CSSTransition
@@ -285,12 +293,14 @@ export class CardList extends Component<CardListProps, CardListState> {
                 layout={layout}
               >
                 <MediaCard
-                  provider={providersByMediaItemId[mediaItem.details.id]}
+                  provider={providersByMediaItemId[id]}
                   dataURIService={dataURIService}
                   appearance={cardAppearance}
                   dimensions={dimensions}
-                  onClick={handleCardClick.bind(this, mediaItem)}
+                  onClick={handleCardClick(mediaItem)}
                   actions={cardActions(mediaItem)}
+                  selectable={isGridLayout}
+                  selected={selectedItemIds.indexOf(id) > -1}
                 />
               </CardListItemWrapper>
             </CSSTransition>
@@ -311,7 +321,9 @@ export class CardList extends Component<CardListProps, CardListState> {
     return <TransitionGroup>{cards}</TransitionGroup>;
   }
 
-  private handleCardClick(oldItem: MediaCollectionItem, cardEvent: CardEvent) {
+  private handleCardClick = (oldItem: MediaCollectionItem) => (
+    cardEvent: CardEvent,
+  ) => {
     const { collectionName, onCardClick } = this.props;
 
     if (!onCardClick) {
@@ -336,7 +348,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     };
 
     onCardClick(cardListEvent);
-  }
+  };
 
   /*
     We only want to apply default width (hardcoded value) for normal cards,

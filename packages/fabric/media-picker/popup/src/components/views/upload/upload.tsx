@@ -8,6 +8,7 @@ import {
   CardEvent,
   OnLoadingChangeState,
   CardList,
+  CardListEvent,
 } from '@atlaskit/media-card';
 import {
   Context,
@@ -112,7 +113,7 @@ export class StatelessUploadView extends Component<
       hasPopupBeenVisible: false,
       isWebGLWarningFlagVisible: false,
       shouldDismissWebGLWarningFlag: false,
-      listAppearance: 'list',
+      listAppearance: 'grid',
     };
   }
 
@@ -153,11 +154,8 @@ export class StatelessUploadView extends Component<
   };
 
   renderList = () => {
-    const { listAppearance } = this.state;
-    const { context, onFileClick, selectedItems } = this.props;
-    const selectedRecentFiles = selectedItems
-      .filter(item => item.serviceName === 'recent_files')
-      .map(item => item.id);
+    const { selectedRecentFiles } = this;
+    const { context, onFileClick } = this.props;
 
     return (
       <MediaListItems
@@ -170,7 +168,6 @@ export class StatelessUploadView extends Component<
             <MediaList
               items={items}
               isLoading={isLoading}
-              appearance={listAppearance}
               onItemClick={item =>
                 onFileClick(
                   {
@@ -189,7 +186,23 @@ export class StatelessUploadView extends Component<
     );
   };
 
+  onCardClick = (result: CardListEvent) => {
+    const { onFileClick } = this.props;
+    const item = result.mediaCollectionItem.details;
+
+    onFileClick(
+      {
+        id: item.id || '',
+        mimeType: '', // TODO: what to do here?
+        name: 'item.fileName', // TODO: what to do here?
+        size: 0, // TODO: what to do here?
+      },
+      'recent_files',
+    );
+  };
+
   renderGrid = () => {
+    const { selectedRecentFiles } = this;
     const { context } = this.props;
 
     return (
@@ -198,6 +211,8 @@ export class StatelessUploadView extends Component<
         collectionName="recents"
         layout="grid"
         pageSize={30}
+        onCardClick={this.onCardClick}
+        selectedItemIds={selectedRecentFiles}
       />
     );
   };
@@ -353,20 +368,22 @@ export class StatelessUploadView extends Component<
     });
   }
 
+  get selectedRecentFiles() {
+    return this.props.selectedItems
+      .filter(item => item.serviceName === 'recent_files')
+      .map(item => item.id);
+  }
+
   private recentFilesCards(): JSX.Element[] {
     const {
       context,
       recents,
       recentsCollection,
-      selectedItems,
       onFileClick,
       onEditRemoteImage,
     } = this.props;
+    const { selectedRecentFiles } = this;
     const { items } = recents;
-
-    const selectedRecentFiles = selectedItems
-      .filter(item => item.serviceName === 'recent_files')
-      .map(item => item.id);
 
     const onClick = ({ mediaItemDetails }: CardEvent) => {
       const fileDetails = mediaItemDetails as FileDetails;
