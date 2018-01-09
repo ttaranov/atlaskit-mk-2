@@ -157,11 +157,10 @@ export class StatelessUploadView extends Component<
         <div className="cards">
           <div className="recentUploadsTitle">Recent Uploads</div>
           <MediaListItems context={context} collectionName="recents">
-            {({ items }) => {
-              return <MediaList items={items} />;
+            {({ items, isLoading }) => {
+              return <MediaList items={items} isLoading={isLoading} />;
             }}
           </MediaListItems>
-          {cards}
         </div>
         {bottomShadow}
         {this.state.isWebGLWarningFlagVisible

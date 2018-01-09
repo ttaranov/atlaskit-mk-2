@@ -16,4 +16,19 @@ export const MediaListItemThumbnail = styled.img`
 
 export const MediaListItemName = styled.span`
   padding-left: 16px;
+  white-space: nowrap;
+  max-width: 500px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const MediaListWrapper = styled.div`
+  tbody tr {
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #3384ff;
+    }
+  }
 `;
