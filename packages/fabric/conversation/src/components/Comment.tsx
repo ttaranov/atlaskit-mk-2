@@ -8,16 +8,22 @@ import AkComment, {
 } from '@atlaskit/comment';
 import { ReactRenderer } from '@atlaskit/renderer';
 import Editor from './Editor';
-import { Comment as CommentType } from '../model';
+import { Comment as CommentType, User } from '../model';
 import CommentContainer from '../containers/Comment';
 
 export interface Props {
   conversationId: string;
   comment: CommentType;
   comments?: CommentType[];
+  user?: User;
 
   // Dispatch
   onAddComment?: (conversationId: string, parentId: string, value: any) => void;
+  onUpdateComment?: (
+    conversationId: string,
+    commentId: string,
+    value: any,
+  ) => void;
 }
 
 export interface State {
@@ -29,7 +35,9 @@ export default class Comment extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      isEditing: false,
+    };
   }
 
   private onReply = () => {
@@ -58,6 +66,32 @@ export default class Comment extends React.PureComponent<Props, State> {
     });
   };
 
+  private onEdit = () => {
+    this.setState({
+      isEditing: true,
+    });
+  };
+
+  private onSaveEdit = async (value: any) => {
+    const { conversationId, comment, onUpdateComment } = this.props;
+
+    if (!onUpdateComment) {
+      return;
+    }
+
+    onUpdateComment(conversationId, comment.commentId, value);
+
+    this.setState({
+      isEditing: false,
+    });
+  };
+
+  private onCancelEdit = () => {
+    this.setState({
+      isEditing: false,
+    });
+  };
+
   private getContent() {
     const { comment } = this.props;
     const { isEditing } = this.state;
@@ -65,11 +99,11 @@ export default class Comment extends React.PureComponent<Props, State> {
     if (isEditing) {
       return (
         <Editor
-          defaultValue={comment.document}
+          defaultValue={comment.document.adf}
           isExpanded={true}
-          // TODO: Add these back! (ED-3471)
-          // onSave={this.onSaveEdit}
-          // onCancel={this.onCancelEdit}
+          isEditing={isEditing}
+          onSave={this.onSaveEdit}
+          onCancel={this.onCancelEdit}
         />
       );
     }
@@ -78,25 +112,27 @@ export default class Comment extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { conversationId, comment, comments } = this.props;
-    const { isReplying } = this.state;
+    const { conversationId, comment, comments, user } = this.props;
+    const { isReplying, isEditing } = this.state;
     const { createdBy } = comment;
+    let actions;
 
-    let actions = [
-      <CommentAction key="reply" onClick={this.onReply}>
-        Reply
-      </CommentAction>,
-    ];
+    if (!isEditing) {
+      actions = [
+        <CommentAction key="reply" onClick={this.onReply}>
+          Reply
+        </CommentAction>,
+      ];
 
-    // TODO: Add these back! (ED-3471)
-    // if (createdBy && userId === createdBy.id) {
-    //   actions = [
-    //     ...actions,
-    //     <CommentAction key="edit" /*onClick={this.onEdit}*/>
-    //       Edit
-    //     </CommentAction>,
-    //   ];
-    // }
+      if (createdBy && user && user.id === createdBy.id) {
+        actions = [
+          ...actions,
+          <CommentAction key="edit" onClick={this.onEdit}>
+            Edit
+          </CommentAction>,
+        ];
+      }
+    }
 
     return (
       <AkComment
@@ -116,8 +152,10 @@ export default class Comment extends React.PureComponent<Props, State> {
           <CommentContainer
             key={child.commentId}
             comment={child}
+            user={user}
             conversationId={conversationId}
             onAddComment={this.props.onAddComment}
+            onUpdateComment={this.props.onUpdateComment}
           />
         ))}
         {isReplying && (
