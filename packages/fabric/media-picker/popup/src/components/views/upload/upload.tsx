@@ -21,7 +21,7 @@ import Flag, { FlagGroup } from '@atlaskit/flag';
 import EditorInfoIcon from '@atlaskit/icon/glyph/error';
 
 import { Browser } from '../../../../../src';
-import { MediaList } from '../../shared/medialist';
+import { MediaList, MediaListItems } from '../../shared/medialist';
 
 import { isImage } from '../../../tools/isImage';
 import { isWebGLAvailable } from '../../../tools/webgl';
@@ -150,14 +150,16 @@ export class StatelessUploadView extends Component<
       <div className="bottomShadow" style={shadowStyle} />
     ) : null;
 
-    console.log(this.props, this.state);
-
     return (
       <Wrapper onScroll={this.updateShadows} innerRef={this.saveViewRef}>
         <Dropzone mpBrowser={this.props.mpBrowser} />
         <div className="cards">
           <div className="recentUploadsTitle">Recent Uploads</div>
-          <MediaList />
+          <MediaListItems>
+            {({ items }) => {
+              return <MediaList items={items} />;
+            }}
+          </MediaListItems>
           {cards}
         </div>
         {bottomShadow}
