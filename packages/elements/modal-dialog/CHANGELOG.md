@@ -1,5 +1,7 @@
 # @atlaskit/modal-dialog
 
+## 3.2.7
+
 ## 3.2.6
 
 ## 3.2.5

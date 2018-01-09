@@ -1,5 +1,7 @@
 # @atlaskit/flag
 
+## 6.1.10
+
 ## 6.1.9
 - [patch] migrated flag to mk2 [630489e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/630489e)
 

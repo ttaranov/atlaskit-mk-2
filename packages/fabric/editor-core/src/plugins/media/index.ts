@@ -765,13 +765,19 @@ export const createPlugin = (
 
         // Ignore creating link cards during link editing
         const { link } = oldState.schema.marks;
-        const { nodeAfter, nodeBefore } = newState.selection.$from;
+        const { nodeAfter, nodeBefore, parent } = newState.selection.$from;
 
         if (
           (nodeAfter && link.isInSet(nodeAfter.marks)) ||
           (nodeBefore && link.isInSet(nodeBefore.marks))
         ) {
           pluginState.ignoreLinks = true;
+        }
+
+        // Update Layout
+        const { mediaSingle } = oldState.schema.nodes;
+        if (parent.type === mediaSingle) {
+          pluginState.layout = parent.attrs.layout;
         }
 
         const meta = tr.getMeta(stateKey);
