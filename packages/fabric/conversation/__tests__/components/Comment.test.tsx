@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import * as sinon from 'sinon';
+import * as sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
 import AkAvatar from '@atlaskit/avatar';
 import AkComment, { CommentAuthor, CommentAction } from '@atlaskit/comment';
@@ -67,15 +67,19 @@ describe('Comment', () => {
   describe('edit link', () => {
     let user;
     let editLink;
+    let onUpdateComment;
 
     beforeEach(() => {
       user = MOCK_USERS[0];
+
+      onUpdateComment = sinon.stub();
 
       comment = mount(
         <Comment
           conversationId={mockComment.conversationId}
           comment={mockComment}
           user={user}
+          onUpdateComment={onUpdateComment}
         />,
       );
 
@@ -84,6 +88,10 @@ describe('Comment', () => {
         .find(CommentAction)
         .findWhere(item => item.text() === 'Edit')
         .first();
+    });
+
+    afterEach(() => {
+      comment.unmount();
     });
 
     it('should be shown for comments by the logged in user only', () => {
@@ -105,12 +113,79 @@ describe('Comment', () => {
         .first();
 
       expect(secondCommentEditLink.length).toEqual(0);
+
+      secondComment.unmount();
     });
 
-    it('should show an editor when clicked', () => {
-      expect(comment.find(Editor).length).toBe(0);
-      editLink.simulate('click');
-      expect(comment.find(Editor).length).toBe(1);
+    describe('when clicked', () => {
+      let editor;
+
+      beforeEach(() => {
+        expect(comment.find(Editor).length).toBe(0);
+        editLink.simulate('click');
+        editor = comment.find(Editor);
+      });
+
+      it('should show an editor containing the comment text', () => {
+        expect(editor.length).toBe(1);
+        expect(editor.first().props()).toHaveProperty(
+          'defaultValue',
+          mockComment.document.adf,
+        );
+      });
+
+      describe('and saved', () => {
+        let newDoc;
+
+        beforeEach(() => {
+          newDoc = {
+            ...mockComment.document.adf,
+            content: [
+              {
+                type: 'paragraph',
+                content: [
+                  {
+                    type: 'text',
+                    text: 'New content',
+                  },
+                ],
+              },
+            ],
+          };
+
+          const { onSave } = editor.first().props();
+          onSave(newDoc);
+        });
+
+        it('should update the comment', () => {
+          expect(
+            onUpdateComment.calledWith(
+              mockComment.conversationId,
+              mockComment.commentId,
+              newDoc,
+            ),
+          ).toBe(true);
+        });
+
+        it('should hide the editor', () => {
+          expect(comment.first().find(Editor).length).toBe(0);
+        });
+      });
+
+      describe('and cancelled', () => {
+        beforeEach(() => {
+          const { onCancel } = editor.first().props();
+          onCancel();
+        });
+
+        it('should not update the comment', () => {
+          expect(onUpdateComment.called).toBe(false);
+        });
+
+        it('should hide the editor', () => {
+          expect(comment.first().find(Editor).length).toBe(0);
+        });
+      });
     });
   });
 });
