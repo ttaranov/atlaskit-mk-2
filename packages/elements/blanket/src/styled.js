@@ -1,9 +1,11 @@
+// @flow
 import styled from 'styled-components';
 import { colors, themed, layers } from '@atlaskit/theme';
 
 const backgroundColor = themed({ light: colors.N100A, dark: colors.DN90A });
-export const opacity = p => (p.isTinted ? 1 : 0);
-export const pointerEvents = p => (p.canClickThrough ? 'none' : 'initial');
+export const opacity = (p: any) => (p.isTinted ? 1 : 0);
+export const pointerEvents = (p: any) =>
+  p.canClickThrough ? 'none' : 'initial';
 
 export default styled.div`
   background: ${backgroundColor};

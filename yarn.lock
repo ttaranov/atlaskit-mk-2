@@ -42,14 +42,6 @@
     prop-types-extra "^1.0.1"
     styled-components "^1.4.6"
 
-"@atlaskit/blanket@^3.0.0":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@atlaskit/blanket/-/blanket-3.0.3.tgz#845729e629ea0fbcca8f96c98ccf353469f6f6f2"
-  dependencies:
-    "@atlaskit/theme" "^2.0.0"
-    babel-runtime "^6.11.6"
-    styled-components "^1.4.6"
-
 "@atlaskit/blanket@^4.0.0":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@atlaskit/blanket/-/blanket-4.0.2.tgz#988889212c62a4200ac285b5b9b06df9bd2ea9fa"

@@ -170,7 +170,6 @@
   },
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
-    "@atlaskit/blanket": "^3.0.0",
     "@atlaskit/button-group": "^1.5.3",
     "@atlaskit/comment": "^2.6.7",
     "@atlaskit/dropdown-menu": "^3.5.0",
