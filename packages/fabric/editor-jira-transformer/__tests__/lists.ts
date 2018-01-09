@@ -45,6 +45,20 @@ describe('JIRATransformer', () => {
     );
 
     checkParseEncodeRoundTrips(
+      'nested unordered list with no text content',
+      schema,
+      '<ul class="alternate" type="disc"><li data-parent="ul"><ul class="alternate" type="circle"><li data-parent="ul"><ul class="alternate" type="square"><li data-parent="ul">test</li></ul></li></ul></li></ul>',
+      doc(ul(li(p(''), ul(li(p(''), ul(li(p('test')))))))),
+    );
+
+    checkParseEncodeRoundTrips(
+      'nested ordered list with no text content',
+      schema,
+      '<ol><li data-parent="ol"><ol><li data-parent="ol"><ol><li data-parent="ol">test</li></ol></li></ol></li></ol>',
+      doc(ol(li(p(''), ol(li(p(''), ol(li(p('test')))))))),
+    );
+
+    checkParseEncodeRoundTrips(
       'nested ordered list',
       schema,
       '<ol><li data-parent="ol">one</li><li data-parent="ol">two<ol><li data-parent="ol">two.one</li><li data-parent="ol">two.two</li><li data-parent="ol">two.three</li></ol></li><li data-parent="ol">three</li></ol>',

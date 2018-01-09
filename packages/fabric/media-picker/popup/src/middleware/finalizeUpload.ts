@@ -1,0 +1,158 @@
+import { Store, Dispatch, Middleware } from 'redux';
+
+import { Fetcher } from '../tools/fetcher/fetcher';
+import {
+  FinalizeUploadAction,
+  isFinalizeUploadAction,
+} from '../actions/finalizeUpload';
+import { State, Tenant, SourceFile } from '../domain';
+import { mapAuthToSourceFileOwner } from '../domain/source-file';
+import { MediaFile } from '../../../src/domain/file';
+import {
+  sendUploadEvent,
+  SendUploadEventAction,
+} from '../actions/sendUploadEvent';
+import { AuthService } from '../../../src/domain/auth';
+
+export default function(
+  fetcher: Fetcher,
+  authService: AuthService,
+): Middleware {
+  return <State>(store) => (next: Dispatch<State>) => action => {
+    if (isFinalizeUploadAction(action)) {
+      finalizeUpload(fetcher, authService, store, action);
+    }
+    return next(action);
+  };
+}
+
+export function finalizeUpload(
+  fetcher: Fetcher,
+  authService: AuthService,
+  store: Store<State>,
+  { file, uploadId, source, tenant }: FinalizeUploadAction,
+): Promise<SendUploadEventAction> {
+  return authService
+    .getUserAuth()
+    .then(mapAuthToSourceFileOwner)
+    .then(owner => {
+      const sourceFile = {
+        ...source,
+        owner,
+      };
+      const copyFileParams = {
+        store,
+        fetcher,
+        file,
+        uploadId,
+        sourceFile,
+        tenant,
+      };
+
+      if (tenant.uploadParams.autoFinalize === false) {
+        return store.dispatch(
+          sendUploadEvent({
+            event: {
+              name: 'upload-finalize-ready',
+              data: {
+                file,
+                finalize: () => copyFile(copyFileParams),
+              },
+            },
+            uploadId,
+          }),
+        );
+      } else {
+        return copyFile(copyFileParams);
+      }
+    });
+}
+
+type CopyFileParams = {
+  store: Store<State>;
+  fetcher: Fetcher;
+  file: MediaFile;
+  uploadId: string;
+  sourceFile: SourceFile;
+  tenant: Tenant;
+};
+
+function copyFile({
+  store,
+  fetcher,
+  file,
+  uploadId,
+  sourceFile,
+  tenant,
+}: CopyFileParams): Promise<SendUploadEventAction> {
+  const { apiUrl } = store.getState();
+  const destination = {
+    auth: tenant.auth,
+    collection: tenant.uploadParams.collection,
+  };
+  return fetcher
+    .copyFile(apiUrl, sourceFile, destination)
+    .then(destinationFile => {
+      const { fetchMetadata } = tenant.uploadParams;
+
+      if (fetchMetadata) {
+        store.dispatch(
+          sendUploadEvent({
+            event: {
+              name: 'upload-processing',
+              data: {
+                file: {
+                  ...file,
+                  publicId: destinationFile.id,
+                },
+              },
+            },
+            uploadId,
+          }),
+        );
+
+        return fetcher.pollFile(
+          apiUrl,
+          tenant.auth,
+          destinationFile.id,
+          tenant.uploadParams.collection,
+        );
+      } else {
+        return Promise.resolve({ id: destinationFile.id });
+      }
+    })
+    .then(processedDestinationFile => {
+      return store.dispatch(
+        sendUploadEvent({
+          event: {
+            name: 'upload-end',
+            data: {
+              file: {
+                ...file,
+                publicId: processedDestinationFile.id,
+              },
+              public: processedDestinationFile,
+            },
+          },
+          uploadId,
+        }),
+      );
+    })
+    .catch(error => {
+      return store.dispatch(
+        sendUploadEvent({
+          event: {
+            name: 'upload-error',
+            data: {
+              file,
+              error: {
+                name: 'object_create_fail',
+                description: error.message,
+              },
+            },
+          },
+          uploadId,
+        }),
+      );
+    });
+}
