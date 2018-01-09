@@ -1,3 +1,9 @@
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+// https://github.com/airbnb/enzyme#installation
+Enzyme.configure({ adapter: new Adapter() });
+
 // hack around require.context not being dynamic.
 // we use require.context here to grab all the files in each of the packages that have browser tests
 // since require.context will walk every node in the file tree, if we try do this from the root of

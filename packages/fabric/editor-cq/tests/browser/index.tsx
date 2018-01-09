@@ -89,13 +89,8 @@ describe('@atlaskit/editor-cq', () => {
     });
 
     it('should focus the editor only when editorView exists', done => {
-      const spy = sinon.spy();
+      const spy = sinon.spy(Editor.prototype, 'focus');
       const editor = mount(<Editor isExpandedByDefault={false} />);
-
-      (editor as any).node.focus = () => {
-        expect(editor.state().editorView).to.not.equal(undefined);
-        spy();
-      };
 
       editor.setProps({ expanded: true });
 
