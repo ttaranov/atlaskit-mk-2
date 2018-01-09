@@ -3,11 +3,11 @@ import * as React from 'react';
 import GlobalQuickSearch, { Props } from '../src/components/GlobalQuickSearch';
 import { AkQuickSearch } from '@atlaskit/navigation';
 
-function noop() {}
+const noop = () => {};
 
 function render(partialProps: Partial<Props>) {
   const props: Props = {
-    search: noop,
+    onSearch: noop,
     getRecentlyViewedItems: noop,
     isLoading: false,
     query: '',
@@ -19,7 +19,7 @@ function render(partialProps: Partial<Props>) {
     ...partialProps,
   };
 
-  return mount(<GlobalQuickSearch {...props} />);
+  return mount<Props>(<GlobalQuickSearch {...props} />);
 }
 
 describe('GlobalQuickSearch', () => {
@@ -32,9 +32,9 @@ describe('GlobalQuickSearch', () => {
 
   it('should handle search input', () => {
     const searchMock = jest.fn();
-    const wrapper = render({ search: searchMock });
+    const wrapper = render({ onSearch: searchMock });
 
-    const onSearchInput: any = wrapper
+    const onSearchInput: Function = wrapper
       .find(AkQuickSearch)
       .prop('onSearchInput');
     onSearchInput({ target: { value: 'foo' } });

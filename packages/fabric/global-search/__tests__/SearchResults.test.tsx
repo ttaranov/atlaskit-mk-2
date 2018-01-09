@@ -6,7 +6,6 @@ import {
   quickSearchResultTypes,
 } from '@atlaskit/navigation';
 import { ResultType } from '../src/model/Result';
-import { wrap } from 'module';
 
 const { ObjectResult, PersonResult, ResultBase } = quickSearchResultTypes;
 

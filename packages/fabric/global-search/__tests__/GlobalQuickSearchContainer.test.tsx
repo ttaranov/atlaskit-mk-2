@@ -20,8 +20,8 @@ function delay<T>(millis: number = 1, value?: T): Promise<T> {
 
 function searchFor(query: string, wrapper: ShallowWrapper) {
   const quicksearch = wrapper.find(GlobalQuickSearch);
-  const onSearchInput = quicksearch.props()['search'];
-  onSearchInput(query);
+  const onSearchFn = quicksearch.prop('onSearch');
+  onSearchFn(query);
 }
 
 const noResultsRecentSearchProvider: RecentSearchProvider = {
@@ -82,7 +82,7 @@ describe('GlobalQuickSearchContainer', () => {
     const wrapper = render();
 
     searchFor('dav', wrapper);
-    expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBeTruthy();
+    expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(true);
   });
 
   it('should unset loading state when search has finished', async () => {
@@ -90,7 +90,7 @@ describe('GlobalQuickSearchContainer', () => {
 
     searchFor('dav', wrapper);
     await delay();
-    expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBeFalsy();
+    expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(false);
   });
 
   it('should should reset loading state when an error happened', async () => {
@@ -100,17 +100,17 @@ describe('GlobalQuickSearchContainer', () => {
 
     searchFor('dav', wrapper);
     await delay();
-    expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBeFalsy();
+    expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(false);
   });
 
   it('should start searching when more than one character is typed', async () => {
     const wrapper = render();
 
     searchFor('d', wrapper);
-    expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBeFalsy();
+    expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(false);
 
     searchFor('da', wrapper);
-    expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBeTruthy();
+    expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(true);
   });
 
   it('should render recent results', async () => {
@@ -127,9 +127,9 @@ describe('GlobalQuickSearchContainer', () => {
 
     searchFor('query', wrapper);
     await delay();
-    expect(wrapper.find(GlobalQuickSearch).prop('recentResults')).toHaveLength(
-      1,
-    );
+
+    const recentResults = wrapper.find(GlobalQuickSearch).prop('recentResults');
+    expect(recentResults).toHaveLength(1);
   });
 
   it('should render recently viewed items', async () => {
@@ -151,17 +151,43 @@ describe('GlobalQuickSearchContainer', () => {
       .prop('getRecentlyViewedItems');
     getRecentlyViewedItems();
     await delay();
-    expect(
-      wrapper.find(GlobalQuickSearch).prop('recentlyViewedItems'),
-    ).toHaveLength(1);
+
+    const recentlyViewedItems = wrapper
+      .find(GlobalQuickSearch)
+      .prop('recentlyViewedItems');
+    expect(recentlyViewedItems).toHaveLength(1);
   });
 
-  it('should render jira and confluence results', async () => {
+  it('should render jira results', async () => {
     const wrapper = render({
       crossProductSearchProvider: {
         search() {
           return Promise.resolve({
             jira: [makeResult()],
+            confluence: [],
+          });
+        },
+      },
+    });
+
+    searchFor('query', wrapper);
+    await delay();
+
+    const jiraResults = wrapper.find(GlobalQuickSearch).prop('jiraResults');
+    expect(jiraResults).toHaveLength(1);
+
+    const confluenceResults = wrapper
+      .find(GlobalQuickSearch)
+      .prop('confluenceResults');
+    expect(confluenceResults).toHaveLength(0);
+  });
+
+  it('should render confluence results', async () => {
+    const wrapper = render({
+      crossProductSearchProvider: {
+        search() {
+          return Promise.resolve({
+            jira: [],
             confluence: [makeResult()],
           });
         },
@@ -170,10 +196,14 @@ describe('GlobalQuickSearchContainer', () => {
 
     searchFor('query', wrapper);
     await delay();
-    expect(wrapper.find(GlobalQuickSearch).prop('jiraResults')).toHaveLength(1);
-    expect(
-      wrapper.find(GlobalQuickSearch).prop('confluenceResults'),
-    ).toHaveLength(1);
+
+    const jiraResults = wrapper.find(GlobalQuickSearch).prop('jiraResults');
+    expect(jiraResults).toHaveLength(0);
+
+    const confluenceResults = wrapper
+      .find(GlobalQuickSearch)
+      .prop('confluenceResults');
+    expect(confluenceResults).toHaveLength(1);
   });
 
   it('should render people results', async () => {
@@ -187,9 +217,9 @@ describe('GlobalQuickSearchContainer', () => {
 
     searchFor('query', wrapper);
     await delay();
-    expect(wrapper.find(GlobalQuickSearch).prop('peopleResults')).toHaveLength(
-      1,
-    );
+
+    const peopleResults = wrapper.find(GlobalQuickSearch).prop('peopleResults');
+    expect(peopleResults).toHaveLength(1);
   });
 
   it('should perform searches in parallel', async () => {

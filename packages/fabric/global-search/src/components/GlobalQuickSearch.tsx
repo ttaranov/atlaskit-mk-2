@@ -6,7 +6,7 @@ import renderSearchResults from '../components/SearchResults';
 
 export interface Props {
   getRecentlyViewedItems();
-  search(query: string);
+  onSearch(query: string);
 
   isLoading: boolean;
   query: string;
@@ -24,7 +24,7 @@ export default class GlobalQuickSearch extends React.Component<Props> {
 
   handleSearchInput = ({ target }) => {
     const query = target.value;
-    this.props.search(query);
+    this.props.onSearch(query);
   };
 
   render() {

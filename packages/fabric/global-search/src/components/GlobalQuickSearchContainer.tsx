@@ -140,7 +140,7 @@ export default class GlobalQuickSearchContainer extends React.Component<
     return (
       <GlobalQuickSearch
         getRecentlyViewedItems={this.handleGetRecentItems}
-        search={this.handleSearch}
+        onSearch={this.handleSearch}
         {...this.state}
       />
     );
