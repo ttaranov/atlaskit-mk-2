@@ -24,8 +24,6 @@ class RankableBody extends Component<Props, State> {
     isRanking: false,
   }
 
-  ref: ?HTMLElement;
-
   dragStart = (rankStart: RankStart) => {
     this.props.updateDimensions();
     this.setState({
