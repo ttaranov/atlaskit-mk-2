@@ -6,7 +6,7 @@ import Avatar from '../Avatar';
 import AvatarImage from '../AvatarImage';
 import Presence from '../Presence';
 import { getSize } from '../../styled/utils';
-import { AVATAR_SIZES } from '../../styled/constants';
+// import { AVATAR_SIZES } from '../../styled/constants';
 
 const busy = 'busy';
 const offline = 'offline';
@@ -28,7 +28,7 @@ describe('Avatar', () => {
       describe(`when is set to ${size}`, () => {
         it('should have the correct dimensions', () => {
           const result = getSize({ size });
-          expect(result).toBe(AVATAR_SIZES[size]);
+          expect(result).toBe('SOMETHING DUMB');
         });
       });
     });
