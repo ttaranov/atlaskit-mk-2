@@ -1,4 +1,5 @@
-import { format } from 'bytes';
+import { format as formatBytes } from 'bytes';
+import * as dateFormat from 'dateformat';
 import * as React from 'react';
 import { ReactElement, Component, ReactNode } from 'react';
 
@@ -28,11 +29,22 @@ export type MediaListItem = {
 
 const head: HeadType = {
   cells: [
-    { content: 'Name', width: 8 },
-    { content: 'Date', width: 2 },
-    { content: 'Size', width: 2 },
+    { content: 'Name', width: 12 },
+    { content: 'Date', width: 5 },
+    { content: 'Size', width: 5 },
   ],
 };
+
+function formatDate(date: Date): string {
+  const mask = 'd mmm yyyy';
+  const formattedDate = dateFormat(date, mask);
+
+  if (formattedDate === dateFormat(Date.now(), mask)) {
+    return dateFormat(date, 'h:MM TT');
+  } else {
+    return formattedDate;
+  }
+}
 
 export function MediaList({
   items,
@@ -47,8 +59,8 @@ export function MediaList({
           </MediaListItemNameCell>
         ),
       },
-      { content: new Date(timestamp).toLocaleDateString() },
-      { content: format(size, { decimalPlaces: 1 }) },
+      { content: formatDate(new Date(timestamp)) },
+      { content: formatBytes(size, { decimalPlaces: 1 }) },
     ],
   }));
   return (
