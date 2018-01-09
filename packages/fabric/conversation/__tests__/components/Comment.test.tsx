@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
 import AkAvatar from '@atlaskit/avatar';
 import AkComment, { CommentAuthor, CommentAction } from '@atlaskit/comment';
@@ -72,7 +71,7 @@ describe('Comment', () => {
     beforeEach(() => {
       user = MOCK_USERS[0];
 
-      onUpdateComment = sinon.stub();
+      onUpdateComment = jest.fn();
 
       comment = mount(
         <Comment
@@ -109,6 +108,7 @@ describe('Comment', () => {
       const secondCommentEditLink = secondComment
         .first()
         .find(CommentAction)
+        // @TODO ED-3521 - Remove the hardcoded string and find by a unique identifier instead
         .findWhere(item => item.text() === 'Edit')
         .first();
 
@@ -158,13 +158,11 @@ describe('Comment', () => {
         });
 
         it('should update the comment', () => {
-          expect(
-            onUpdateComment.calledWith(
-              mockComment.conversationId,
-              mockComment.commentId,
-              newDoc,
-            ),
-          ).toBe(true);
+          expect(onUpdateComment).toBeCalledWith(
+            mockComment.conversationId,
+            mockComment.commentId,
+            newDoc,
+          );
         });
 
         it('should hide the editor', () => {
@@ -179,7 +177,7 @@ describe('Comment', () => {
         });
 
         it('should not update the comment', () => {
-          expect(onUpdateComment.called).toBe(false);
+          expect(onUpdateComment.mock.calls.length).toBe(0);
         });
 
         it('should hide the editor', () => {
