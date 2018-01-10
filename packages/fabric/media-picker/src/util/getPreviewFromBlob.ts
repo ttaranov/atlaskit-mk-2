@@ -3,7 +3,10 @@ import { Preview } from '../domain/preview';
 import { fileToBase64 } from '../../popup/src/tools/fileToBase64';
 import { ImagePreview } from '../index';
 
-export default (file: Blob, mediaType: MediaType): Promise<Preview> =>
+export const getPreviewFromBlob = (
+  file: Blob,
+  mediaType: MediaType,
+): Promise<Preview> =>
   new Promise((resolve, reject) => {
     fileToBase64(file)
       .then(src => {

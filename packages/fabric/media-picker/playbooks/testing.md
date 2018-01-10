@@ -15,20 +15,21 @@ If it's not getting mapped properly (you'll spot that immediately), clean up web
 
 ### Functional smoke testing
 
-Testing is carried out locally on an example application `./lib/example/popup.html`. As a general rule,
+Testing is carried out locally on the Popup example. As a general rule,
 to be performed **before** PR is opened or during peer review process.
 
-1. Upload files from `./lib/example/files` directory via **drag and drop**. Ensure that:
-    * emitted events do not contain any errors,
-    * files can be retrieved in **recent** browser,
-    * no visual artefacts or issues.
+1. Local uploads
+    1. Upload multiple small files (<10 MB) from your local machine via **drag and drop** and **browse** button
+    2. Upload multiple large files (> 200 MB) from your local machine via **drag and drop** or **browse** button. Ensure that:
+        * emitted events do not contain any errors,
+        * files can be retrieved in **recent** browser,
+        * no visual artefacts or issues (browser lag/crashes).
 2. Abort an upload by reloading the page. Ensure that:
     * file can be reuploaded,
     * cancellation is handled by **recent** browser properly.
 3. Ensure that in **cloud upload**:
-    * users are able to authenticate an application and revoke authentication
+    * users are able to authenticate an application (google drive or dropbox) and revoke authentication
     * users can copy files from their cloud storages to their collection and then to application's collection
-4. Ensure that popup falls back to native browser upload when an authentication token can't be fetched and popup can't be opened
 
 
 ### Full functional testing
@@ -36,8 +37,8 @@ to be performed **before** PR is opened or during peer review process.
 In addition to smoke testing test cases. To be performed after major architectural changes which involve changes to 
 interfaces between components. Data should be extended with large files and a large number of files as well.
 
-5. Ensure that:
-    * editor functions as it should: adds annotations, saves a new file on Save, cancels the progress on Cancel
+4. Ensure that:
+    * Media editor functions as it should: adds annotations, saves a new file on Save, cancels the progress on Cancel
     * **teardown** function works
         * should remove popup iframe from the dom
     * **autoFinalize** option works
