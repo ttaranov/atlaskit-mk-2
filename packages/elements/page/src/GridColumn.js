@@ -1,20 +1,19 @@
 // @flow
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node } from 'react';
 import { ThemeProvider, withTheme } from 'styled-components';
 
-import { defaultColumns } from './internal/vars';
+import { defaultGridColumns } from './internal/vars';
 import GridColumn from './internal/GridColumnElement';
 
 const defaultSpacing = 'cosy';
 
-export default withTheme(
-  class AkGridColumn extends PureComponent {
-    static propTypes = {
-      medium: PropTypes.number,
-      children: PropTypes.node,
-    };
+type Props = {
+  medium?: number,
+  children?: Node,
+};
 
+export default withTheme(
+  class AkGridColumn extends PureComponent<Props, void> {
     static defaultProps = {
       medium: 0,
     };
@@ -23,7 +22,7 @@ export default withTheme(
       columns:
         props.theme && props.theme.columns
           ? props.theme.columns
-          : defaultColumns,
+          : defaultGridColumns,
       spacing:
         props.theme && props.theme.spacing
           ? props.theme.spacing

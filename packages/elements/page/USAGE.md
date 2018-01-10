@@ -1,24 +1,11 @@
 # Page
 
-This is a template for Atlaskit components. Update this file with usage instructions and examples.
-
-![Example @NAME@](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/@NAME@/docs/screencast.gif)
-
-## Try it out
-
-Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
+Provides Grid layouts for content & components
 
 ## Installation
 
-```sh
-npm install @NAME@
-```
+npm install @atlaskit/page
 
-## Using the component
+## Uage
 
-Use the component in your React app as follows:
-
-```
-import Page from '@NAME@';
-ReactDOM.render(<Page />, container);
-```
+See [here](https://ak-mk-2-prod.netlify.com/mk-2/packages/elements/page)

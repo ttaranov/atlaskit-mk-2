@@ -1,19 +1,18 @@
 // @flow
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { ThemeProvider, withTheme } from 'styled-components';
 
-import { defaultGridColumns, layout, spacing } from './internal/vars';
+import { defaultGridColumns } from './internal/vars';
 import Grid from './internal/GridElement';
 
-export default withTheme(
-  class AkGrid extends PureComponent {
-    static propTypes = {
-      children: PropTypes.node,
-      spacing: PropTypes.oneOf(Object.keys(spacing)),
-      layout: PropTypes.oneOf(layout),
-    };
+type Props = {
+  children: Node,
+  spacing: 'cosy' | 'comfortable' | 'compact',
+  layout: 'fixed' | 'fuild',
+};
 
+export default withTheme(
+  class AkGrid extends PureComponent<Props, void> {
     static defaultProps = {
       spacing: 'cosy',
       layout: 'fixed',

@@ -1,6 +1,5 @@
 // @flow
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 
 const Wrapper = styled.div`
@@ -43,19 +42,20 @@ const PageContent = styled.div`
 
 const emptyTheme = {};
 
-export default class Page extends PureComponent {
-  static displayName = 'AkPage';
+type Props = {
+  banner?: Node,
+  children?: Node,
+  isBannerOpen?: boolean,
+  navigation?: boolean,
+};
 
-  static propTypes = {
-    banner: PropTypes.node,
-    children: PropTypes.node,
-    isBannerOpen: PropTypes.bool,
-    navigation: PropTypes.node,
-  };
+export default class Page extends PureComponent<Props, void> {
+  static displayName = 'AkPage';
 
   static defaultProps = {
     isBannerOpen: false,
   };
+
   render() {
     return (
       <ThemeProvider theme={emptyTheme}>
