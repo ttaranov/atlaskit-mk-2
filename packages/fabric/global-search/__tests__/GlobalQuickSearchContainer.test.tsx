@@ -1,6 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import * as React from 'react';
-import GlobalQuickSearchContainer, {
+import {
+  GlobalQuickSearchContainer,
   Props,
 } from '../src/components/GlobalQuickSearchContainer';
 import GlobalQuickSearch, {
@@ -309,5 +310,25 @@ describe('GlobalQuickSearchContainer', () => {
 
     const jiraResults = wrapper.find(GlobalQuickSearch).prop('jiraResults');
     expect(jiraResults[0].name).toBe('current result');
+  });
+
+  describe('Analytics', () => {
+    it('should log when a request fails', async () => {
+      const firePrivateAnalyticsEventMock = jest.fn();
+
+      const wrapper = render({
+        peopleSearchProvider: {
+          search(query: string) {
+            return Promise.reject(new TypeError('failed'));
+          },
+        },
+        firePrivateAnalyticsEvent: firePrivateAnalyticsEventMock,
+      });
+
+      searchFor('err', wrapper);
+      await delay();
+
+      expect(firePrivateAnalyticsEventMock).toHaveBeenCalled();
+    });
   });
 });

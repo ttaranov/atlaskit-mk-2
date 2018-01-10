@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as debounce from 'lodash.debounce';
+import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 import GlobalQuickSearch from './GlobalQuickSearch';
-
 import { RecentSearchProvider } from '../api/RecentSearchProvider';
 import {
   CrossProductSearchProvider,
@@ -15,6 +15,7 @@ export interface Props {
   crossProductSearchProvider: CrossProductSearchProvider;
   peopleSearchProvider: PeopleSearchProvider;
   debounceMillis?: number; // for testing only
+  firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 }
 
 export interface State {
@@ -27,10 +28,7 @@ export interface State {
   peopleResults: Result[];
 }
 
-export default class GlobalQuickSearchContainer extends React.Component<
-  Props,
-  State
-> {
+export class GlobalQuickSearchContainer extends React.Component<Props, State> {
   static defaultProps: Partial<Props> = {
     debounceMillis: 150,
   };
@@ -115,9 +113,17 @@ export default class GlobalQuickSearchContainer extends React.Component<
         this.searchPeople(query),
       ]);
     } catch (error) {
-      // something bad happened. handle it. analytics
-      // tslint:disable
-      console.error('Search error:', error);
+      // log error to analytics
+      const { firePrivateAnalyticsEvent } = this.props;
+      if (firePrivateAnalyticsEvent) {
+        firePrivateAnalyticsEvent(
+          'atlassian.fabric.global-search.search-error',
+          {
+            name: error.name,
+            message: error.message,
+          },
+        );
+      }
     } finally {
       this.setState({
         isLoading: false,
@@ -146,3 +152,5 @@ export default class GlobalQuickSearchContainer extends React.Component<
     );
   }
 }
+
+export default withAnalytics(GlobalQuickSearchContainer, {}, {});
