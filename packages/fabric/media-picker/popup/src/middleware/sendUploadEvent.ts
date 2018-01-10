@@ -1,0 +1,55 @@
+import { Dispatch, Middleware } from 'redux';
+
+import { PopupUploadEventEmitter } from '../../../src/components/popup';
+import { State } from '../domain';
+import { isSendUploadEventAction } from '../actions/sendUploadEvent';
+import {
+  copyMediaFileForUpload,
+  copyPublicMediaFileForUpload,
+} from '../../../src/domain/file';
+import { handleError } from '../../../src/util/handleError';
+
+export default function(eventEmitter: PopupUploadEventEmitter): Middleware {
+  return store => (next: Dispatch<State>) => action => {
+    if (isSendUploadEventAction(action)) {
+      const { event, uploadId } = action.payload;
+
+      switch (event.name) {
+        case 'upload-finalize-ready': {
+          const file = copyMediaFileForUpload(event.data.file, uploadId);
+          eventEmitter.emitUploadFinalizeReady(file, event.data.finalize);
+          break;
+        }
+        case 'upload-status-update': {
+          const file = copyMediaFileForUpload(event.data.file, uploadId);
+          eventEmitter.emitUploadProgress(file, event.data.progress);
+          break;
+        }
+        case 'upload-preview-update': {
+          const { preview } = event.data;
+          const file = copyMediaFileForUpload(event.data.file, uploadId);
+          eventEmitter.emitUploadPreviewUpdate(file, preview);
+          break;
+        }
+        case 'upload-processing': {
+          const file = copyPublicMediaFileForUpload(event.data.file, uploadId);
+          eventEmitter.emitUploadProcessing(file);
+          break;
+        }
+        case 'upload-end': {
+          const file = copyPublicMediaFileForUpload(event.data.file, uploadId);
+          eventEmitter.emitUploadEnd(file, event.data.public);
+          break;
+        }
+        case 'upload-error': {
+          const file = copyMediaFileForUpload(event.data.file, uploadId);
+          const { error } = event.data;
+          eventEmitter.emitUploadError(file, error);
+          handleError(error.name, error.description);
+          break;
+        }
+      }
+    }
+    return next(action);
+  };
+}

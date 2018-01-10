@@ -10,7 +10,7 @@ import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from '../../../plugins/table';
 import hoverSelectionPlugin from './hover-selection-plugin';
 import TableFloatingToolbar from '../../../ui/TableFloatingToolbar';
-import ToolbarTable from './ui/ToolbarTable';
+import ToolbarTable from '../../../ui/ToolbarTable';
 
 const tablesPlugin: EditorPlugin = {
   nodes() {

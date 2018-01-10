@@ -1,5 +1,11 @@
 # @atlaskit/dynamic-table
 
+## 6.1.5
+- [patch] Fix manual bump bug from migration [fefd96c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fefd96c)
+
+## 7.0.0
+- There were no major changes in this release.
+
 ## 6.1.4
 - [patch] fix examples so that name is truly sortable, resolve prop error, fix rowCellType key prop type [e5981fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5981fb)
 

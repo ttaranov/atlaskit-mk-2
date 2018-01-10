@@ -5,12 +5,8 @@ import * as keymaps from '../../keymaps';
 import * as commands from '../../commands';
 import { trackAndInvoke } from '../../analytics';
 import { enterKeyCommand } from './commands';
-import { EditorAppearance } from '../../editor/types/editor-props';
 
-export function keymapPlugin(
-  schema: Schema,
-  appearance?: EditorAppearance,
-): Plugin | undefined {
+export function keymapPlugin(schema: Schema): Plugin | undefined {
   const list = {};
 
   keymaps.bindKeymapWithCommand(
@@ -46,13 +42,6 @@ export function keymapPlugin(
     list,
   );
   keymaps.bindKeymapWithCommand(keymaps.enter.common!!, enterKeyCommand, list);
-  if (appearance === 'message') {
-    keymaps.bindKeymapWithCommand(
-      keymaps.insertNewLine.common!!,
-      enterKeyCommand,
-      list,
-    );
-  }
 
   return keymap(list);
 }

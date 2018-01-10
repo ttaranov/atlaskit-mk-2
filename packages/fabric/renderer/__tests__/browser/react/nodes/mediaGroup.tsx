@@ -16,8 +16,7 @@ describe('MediaGroup', () => {
 
   const mediaProvider = storyMediaProviderFactory();
 
-  const providerFactory = new ProviderFactory();
-  providerFactory.setProvider('mediaProvider', mediaProvider);
+  const providerFactory = ProviderFactory.create({ mediaProvider });
 
   beforeEach(() => {
     fixture = document.createElement('div');
@@ -90,6 +89,7 @@ describe('MediaGroup', () => {
     await provider.viewContext;
     await provider.linkCreateContext;
     await provider.uploadContext;
+    mediaGroup.update();
 
     const card = mediaGroup
       .find(FilmstripView)

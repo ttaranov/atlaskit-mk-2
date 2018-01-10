@@ -14,7 +14,7 @@ describe('Renderer - React/Marks/TextColor', () => {
 
   it('should output correct html', () => {
     expect(mark.html()).to.equal(
-      '<span style="color:#ff0000;">This is a red text</span>',
+      '<span style="color:#ff0000">This is a red text</span>',
     );
   });
 });

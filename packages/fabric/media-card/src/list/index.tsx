@@ -210,9 +210,8 @@ export class CardList extends Component<CardListProps, CardListState> {
     if (error) {
       if (error.response && error.response.status === 404) {
         return emptyComponent;
-      } else {
-        return errorComponent;
       }
+      return errorComponent;
     }
 
     if (!collection) {
@@ -228,9 +227,8 @@ export class CardList extends Component<CardListProps, CardListState> {
           {this.renderList()}
         </InfiniteScroll>
       );
-    } else {
-      return this.renderList();
     }
+    return this.renderList();
   }
 
   private renderList(): JSX.Element {

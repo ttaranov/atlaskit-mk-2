@@ -1,5 +1,14 @@
 # @atlaskit/layer
 
+## 2.5.13
+- [patch] prettier ignored popper, copied popper js [88e38de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/88e38de)
+
+## 2.5.12
+- [patch] renamed popper.js to popper and index.min to index-min in popper js [06718c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06718c1)
+
+## 2.5.11
+- [patch] added custom build to copy popper js [08c5c5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08c5c5b)
+
 ## 2.5.10
 - [patch] migrated layer from ak to mk-2 [3eec864](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3eec864)
 

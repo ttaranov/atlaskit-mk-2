@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { EditorPlugin } from '../../types';
-import { WithProviders } from '../../../providerFactory/withProviders';
+import { WithProviders } from '@atlaskit/editor-common';
 import {
   stateKey as blockTypeStateKey,
   BlockTypeState,

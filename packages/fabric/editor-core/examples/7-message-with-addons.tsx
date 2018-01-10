@@ -91,6 +91,8 @@ export default function Example() {
           disabled,
           mentionProvider,
           emojiProvider,
+          taskDecisionProvider,
+          contextIdentifierProvider,
           mediaProvider,
           onChange,
         }) => (
@@ -106,6 +108,8 @@ export default function Example() {
             saveOnEnter={true}
             mentionProvider={mentionProvider}
             emojiProvider={emojiProvider}
+            taskDecisionProvider={taskDecisionProvider}
+            contextIdentifierProvider={contextIdentifierProvider}
             mediaProvider={mediaProvider}
             onChange={onChange}
             onSave={SAVE_ACTION}

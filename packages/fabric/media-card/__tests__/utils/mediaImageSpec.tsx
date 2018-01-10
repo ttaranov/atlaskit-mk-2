@@ -23,15 +23,18 @@ describe('MediaImage', () => {
       <MediaImage
         dataURI={validURI}
         transparentFallback={false}
-        crop={true}
+        crop
         width={'50px'}
         height={'25px'}
       />,
     );
 
-    expect(mediaImg.find('.media-card').prop('className')).not.toContain(
-      'crop',
-    );
+    expect(
+      mediaImg
+        .find('.media-card')
+        .at(0)
+        .prop('className'),
+    ).not.toContain('crop');
   });
 
   it('Only adds the image to the background when transparentFallback is disabled', () => {
@@ -39,8 +42,11 @@ describe('MediaImage', () => {
       <MediaImage dataURI={validURI} transparentFallback={false} />,
     ) as any;
 
-    expect(mediaImg.find('.media-card').prop('style').backgroundImage).toBe(
-      `url(${validURI})`,
-    );
+    expect(
+      mediaImg
+        .find('.media-card')
+        .at(0)
+        .prop('style').backgroundImage,
+    ).toBe(`url(${validURI})`);
   });
 });

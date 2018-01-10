@@ -1,39 +1,39 @@
 {
-    "name": "@atlaskit/field-radio-group",
-    "version": "1.7.5",
-    "description": "A radio group React component used for selecting discrete values in a form",
-    "license": "Apache-2.0",
-    "main": "dist/cjs/index.js",
-    "module": "dist/esm/index.js",
-    "atlaskit:src": "src/index.js",
-    "files": [
-        "dist"
-    ],
-    "author": "Atlassian Pty Ltd",
-    "maintainers": [
-        {
-            "name": "Mike G"
-        }
-    ],
-    "repository": "bitbucket:atlaskit/atlaskit-mk-2",
-    "dependencies": {
-        "@atlaskit/field-base": "^8.1.1",
-        "@atlaskit/theme": "^2.0.1",
-        "@atlaskit/icon": "^10.3.1",
-        "styled-components": "^1.4.6"
-    },
-    "peerDependencies": {
-        "react": "^15.6.1"
-    },
-    "devDependencies": {
-        "@atlaskit/button": "^6.1.0",
-        "@atlaskit/docs": "^2.1.1",
-        "@atlaskit/logo": "^6.0.9",
-        "enzyme": "^2.9.1"
-    },
-    "keywords": [
-        "atlaskit",
-        "react",
-        "ui"
-    ]
+  "name": "@atlaskit/field-radio-group",
+  "version": "1.7.5",
+  "description": "A radio group React component used for selecting discrete values in a form",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Mike G"
+    }
+  ],
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/field-base": "^8.1.1",
+    "@atlaskit/theme": "^2.0.1",
+    "@atlaskit/icon": "^10.3.1",
+    "styled-components": "^1.4.6"
+  },
+  "peerDependencies": {
+    "react": "15.6.0 - 16.2.0"
+  },
+  "devDependencies": {
+    "@atlaskit/button": "^6.1.0",
+    "@atlaskit/docs": "^2.1.1",
+    "@atlaskit/logo": "^6.0.9",
+    "enzyme": "^3.3.0"
+  },
+  "keywords": [
+    "atlaskit",
+    "react",
+    "ui"
+  ]
 }

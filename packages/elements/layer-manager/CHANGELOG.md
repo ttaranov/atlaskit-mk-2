@@ -1,5 +1,8 @@
 # @atlaskit/layer-manager
 
+## 2.5.9
+- [patch] Update layer manager enabled components to work with analytics [28077f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28077f5)
+
 ## 2.5.8
 - [patch] more robust implementation of FocusLock [64dd1d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/64dd1d8)
 

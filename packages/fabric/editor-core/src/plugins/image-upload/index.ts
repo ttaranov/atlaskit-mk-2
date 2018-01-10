@@ -7,7 +7,7 @@ import {
 } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { analyticsService } from '../../analytics';
-import { default as ProviderFactory } from '../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import inputRulePlugin from './input-rule';
 
 export type StateChangeHandler = (state: ImageUploadState) => any;

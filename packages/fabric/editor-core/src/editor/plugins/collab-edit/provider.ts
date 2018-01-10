@@ -1,4 +1,5 @@
 import { Transaction, EditorState } from 'prosemirror-state';
+import { Step } from 'prosemirror-transform';
 import {
   InitData,
   ConnectionData,
@@ -25,7 +26,7 @@ export interface CollabEventData {
 }
 
 export interface CollabEditProvider {
-  initialize(getState: () => any): this;
+  initialize(getState: () => any, createStep: (json: object) => Step): this;
   send(tr: Transaction, oldState: EditorState, newState: EditorState): void;
   on(evt: CollabEvent, handler: (...args) => void): this;
   sendMessage<T extends keyof CollabEventData>(

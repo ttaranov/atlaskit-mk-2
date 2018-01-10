@@ -12,13 +12,23 @@ import {
   normalizeHexColor,
 } from '@atlaskit/editor-common';
 
-import { Fragment, Mark, Node as PMNode, Schema } from 'prosemirror-model';
+import {
+  Fragment,
+  Mark,
+  Node as PMNode,
+  Schema,
+  NodeType,
+} from 'prosemirror-model';
 
 /**
  * Ensure that each node in the fragment is a block, wrapping
  * in a block node if necessary.
  */
-export function ensureBlocks(fragment: Fragment, schema: Schema): Fragment {
+export function ensureBlocks(
+  fragment: Fragment,
+  schema: Schema,
+  nodeType?: NodeType,
+): Fragment {
   // If all the nodes are inline, we want to wrap in a single paragraph.
   if (schema.nodes.paragraph.validContent(fragment)) {
     return Fragment.fromArray([
@@ -29,6 +39,19 @@ export function ensureBlocks(fragment: Fragment, schema: Schema): Fragment {
   // Either all the nodes are blocks, or a mix of inline and blocks.
   // We convert each (if any) inline nodes to blocks.
   const blockNodes: PMNode[] = [];
+
+  // Following if condition has been added as fix for #ED-3431.
+  // First child of list-item should be paragraph,
+  // if that is not the case paragraph requires to be added.
+  if (
+    nodeType &&
+    nodeType === schema.nodes.listItem &&
+    fragment.firstChild &&
+    (fragment.firstChild.type === schema.nodes.bulletList ||
+      fragment.firstChild.type === schema.nodes.orderedList)
+  ) {
+    blockNodes.push(schema.nodes.paragraph.createAndFill()!);
+  }
 
   fragment.forEach(child => {
     if (child.isBlock) {
@@ -256,7 +279,7 @@ export function convert(
         case 'LI':
           const compatibleContent = schema.nodes.listItem!.validContent(content)
             ? content
-            : ensureBlocks(content, schema);
+            : ensureBlocks(content, schema, schema.nodes.listItem);
           return schema.nodes.listItem!.createChecked({}, compatibleContent);
       }
     }

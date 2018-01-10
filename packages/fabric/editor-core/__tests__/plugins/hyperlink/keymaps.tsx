@@ -132,7 +132,8 @@ describe('hyperlink - keymap', () => {
         <HyperlinkEdit pluginState={pluginState} editorView={editorView} />,
       );
       sendKeyToPm(editorView, 'Mod-k');
-      let input = hyperlinkEdit.find(PanelTextInput);
+      hyperlinkEdit.update();
+      const input = hyperlinkEdit.find(PanelTextInput);
       expect(input.length).toEqual(1);
       hyperlinkEdit.unmount();
     });
@@ -148,7 +149,7 @@ describe('hyperlink - keymap', () => {
         <HyperlinkEdit pluginState={pluginState} editorView={editorView} />,
       );
       sendKeyToPm(editorView, 'Mod-k');
-      let input = hyperlinkEdit.find(PanelTextInput);
+      const input = hyperlinkEdit.find(PanelTextInput);
       expect(input.length).toEqual(0);
       hyperlinkEdit.unmount();
     });
@@ -159,7 +160,7 @@ describe('hyperlink - keymap', () => {
         <HyperlinkEdit pluginState={pluginState} editorView={editorView} />,
       );
       sendKeyToPm(editorView, 'Mod-k');
-      let input = hyperlinkEdit.find(PanelTextInput);
+      const input = hyperlinkEdit.find(PanelTextInput);
       expect(input.exists()).toBe(false);
       hyperlinkEdit.unmount();
     });

@@ -26,6 +26,7 @@ export const assertIsSortable = (head?: HeadType) => {
           "isSortable can't be set to true, if the 'key' prop is missing.",
         );
       } catch (e) {
+        // eslint-disable-next-line
         console.error(e);
       }
     }
@@ -45,6 +46,7 @@ export const validateSortKey = (
     try {
       throw Error(`Cell with ${sortKey} key not found in head.`);
     } catch (e) {
+      // eslint-disable-next-line
       console.error(e);
     }
   }

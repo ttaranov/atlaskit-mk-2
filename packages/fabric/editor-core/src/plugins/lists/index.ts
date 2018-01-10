@@ -12,7 +12,6 @@ import { findAncestorPosition } from '../../utils';
 import { toggleList } from './commands';
 import keymapPlugin from './keymap';
 import inputRulePlugin from './input-rule';
-import { EditorAppearance } from '../../editor/types/editor-props';
 
 export type StateChangeHandler = (state: ListsState) => any;
 
@@ -153,12 +152,10 @@ export const plugin = new Plugin({
   },
 });
 
-const plugins = (schema: Schema, appearance?: EditorAppearance) => {
-  return [
-    plugin,
-    inputRulePlugin(schema),
-    keymapPlugin(schema, appearance),
-  ].filter(plugin => !!plugin) as Plugin[];
+const plugins = (schema: Schema) => {
+  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter(
+    plugin => !!plugin,
+  ) as Plugin[];
 };
 
 export default plugins;

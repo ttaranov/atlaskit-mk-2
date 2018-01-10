@@ -87,12 +87,17 @@ export default class Picker extends Component<Props> {
     }
   };
 
-  getFieldWidth(): number {
+  getFieldWidth(): number | string {
     const { shouldShowIcon, width } = this.props;
     if (!width) {
-      return 0;
+      return '100%';
     }
     return shouldShowIcon ? width - gridSize() * 5 : width - gridSize() * 2;
+  }
+
+  getFitContainerWidthEnabled(): boolean {
+    const { width } = this.props;
+    return !width;
   }
 
   render() {
@@ -112,7 +117,10 @@ export default class Picker extends Component<Props> {
           this.dialog = ref;
         }}
       >
-        <Base isDisabled={this.props.isDisabled}>
+        <Base
+          isDisabled={this.props.isDisabled}
+          isFitContainerWidthEnabled={this.getFitContainerWidthEnabled()}
+        >
           <Field
             autoFocus={this.props.autoFocus}
             onBlur={this.props.onFieldBlur}

@@ -1,5 +1,7 @@
 # @atlaskit/tooltip
 
+## 8.0.13
+
 ## 8.0.12
 - [patch] replace internal deprecation warning hoc with package [c399777](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c399777)
 

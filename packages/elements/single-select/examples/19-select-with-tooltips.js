@@ -24,25 +24,45 @@ const SelectWithTooltips = () => (
   <div style={{ display: 'flex', alignItems: 'center' }}>
     <Select
       items={[
-        { items: selectItems.map(i => ({ ...i, tooltipPosition: 'right' })) },
+        {
+          items: selectItems.map((i): Object => ({
+            ...i,
+            tooltipPosition: 'right',
+          })),
+        },
       ]}
       placeholder="Aligned to right"
     />
     <Select
       items={[
-        { items: selectItems.map(i => ({ ...i, tooltipPosition: 'top' })) },
+        {
+          items: selectItems.map((i): Object => ({
+            ...i,
+            tooltipPosition: 'top',
+          })),
+        },
       ]}
       placeholder="Aligned to top"
     />
     <Select
       items={[
-        { items: selectItems.map(i => ({ ...i, tooltipPosition: 'bottom' })) },
+        {
+          items: selectItems.map((i): Object => ({
+            ...i,
+            tooltipPosition: 'bottom',
+          })),
+        },
       ]}
       placeholder="Aligned to bottom"
     />
     <Select
       items={[
-        { items: selectItems.map(i => ({ ...i, tooltipPosition: 'left' })) },
+        {
+          items: selectItems.map((i): Object => ({
+            ...i,
+            tooltipPosition: 'left',
+          })),
+        },
       ]}
       placeholder="Aligned to left"
     />

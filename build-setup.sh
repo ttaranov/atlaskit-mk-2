@@ -6,13 +6,18 @@ git config --global user.email "$BOT_ACCOUNT_EMAIL"
 git config --global user.name "$BOT_ACCOUNT_NAME"
 git config --global push.default simple
 
+# We fetch and checkout master here so that we have a local reference to "master" in other commands
+# (avoids the "ambiguous argument 'master': unknown revision or path not in the working tree" error)
+git fetch origin master
+git checkout master # (master doesn't exist until we do this checkout)
+git checkout - # checks out the previous ref
+
 # we rebase at the very top of build so that we'll get any missing release commits.
 # This can introduce a tiny race condition where anything that was merged between us
 # starting and this rebase will get pulled in and released in this build. This is much
 # better than the alternative of pulling later and not testing the code
 if [ "$BITBUCKET_BRANCH" = "master" ]; then
   echo "Rebasing on master to ensure we have all release commits from master..."
-  git fetch
   git pull --rebase origin master
 fi
 

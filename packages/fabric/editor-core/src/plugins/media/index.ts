@@ -301,8 +301,15 @@ export class MediaPluginState {
     if (state.status === 'uploading') {
       const collection = this.collectionFromProvider();
       insertMediaSingleNode(this.view, state, collection);
+    } else {
+      /**
+       * There might be multiple `uploading` events for same id,
+       * introduced in 72ccc. Need to wait for other subsequent event
+       * to unsubscribe. It's ideal to have a new event for dimension but
+       * we are planning to get rid of `media-core` in near future.
+       */
+      this.stateManager.unsubscribe(state.id, this.handleMediaSingleInsertion);
     }
-    this.stateManager.unsubscribe(state.id, this.handleMediaSingleInsertion);
   };
 
   insertLinks = async () => {
@@ -758,13 +765,19 @@ export const createPlugin = (
 
         // Ignore creating link cards during link editing
         const { link } = oldState.schema.marks;
-        const { nodeAfter, nodeBefore } = newState.selection.$from;
+        const { nodeAfter, nodeBefore, parent } = newState.selection.$from;
 
         if (
           (nodeAfter && link.isInSet(nodeAfter.marks)) ||
           (nodeBefore && link.isInSet(nodeBefore.marks))
         ) {
           pluginState.ignoreLinks = true;
+        }
+
+        // Update Layout
+        const { mediaSingle } = oldState.schema.nodes;
+        if (parent.type === mediaSingle) {
+          pluginState.layout = parent.attrs.layout;
         }
 
         const meta = tr.getMeta(stateKey);

@@ -11,8 +11,8 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Luke B",
-    "Nadia M"
+    "Ajay N Mathur",
+    "Luke B"
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
@@ -21,15 +21,15 @@
     "styled-components": "^1.4.6"
   },
   "peerDependencies": {
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react": "15.6.0 - 16.2.0",
+    "react-dom": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
     "@atlaskit/button": "^6.2.0",
     "@atlaskit/docs": "^2.2.0",
     "@atlaskit/icon": "^10.5.0",
     "@atlaskit/single-select": "^3.0.1",
-    "enzyme": "^2.9.1"
+    "enzyme": "^3.3.0"
   },
   "keywords": [
     "atlaskit",

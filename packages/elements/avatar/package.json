@@ -11,7 +11,7 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Atlassian Pty Ltd"
+    "Alex R"
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
@@ -23,14 +23,14 @@
     "styled-components": "^1.4.6"
   },
   "peerDependencies": {
-    "react": "^15.6.1"
+    "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
     "@atlaskit/button": "^6.1.0",
     "@atlaskit/docs": "^2.1.0",
     "@atlaskit/icon": "^10.3.1",
     "@atlaskit/lozenge": "^3.4.10",
-    "enzyme": "^2.9.1"
+    "enzyme": "^3.3.0"
   },
   "keywords": [
     "atlaskit",
