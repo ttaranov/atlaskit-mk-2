@@ -13,10 +13,10 @@ export const Wrapper = styled.li`
   list-style-type: none;
   opacity: 1;
 
-  ${({ isActive }: WrapperProps) => (!isActive ? 'cursor: pointer' : '')};
+  ${({ isActive }: WrapperProps) => (isActive ? '' : 'cursor: pointer')};
   &:hover {
     ${({ isActive }: WrapperProps) =>
-      !isActive ? 'background-color: #E5E8EC' : ''};
+      isActive ? '' : 'background-color: #E5E8EC'};
   }
 `;
 
