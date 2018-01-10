@@ -1,5 +1,5 @@
 // @flow
-import { md, code } from '@atlaskit/docs';
+import { md } from '@atlaskit/docs';
 
 export default md`
   # Installing @atlaskit/editor-core
