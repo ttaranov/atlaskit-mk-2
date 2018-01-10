@@ -31,7 +31,9 @@ export default function withRenderTarget(
       gatewayRegistry: PropTypes.instanceOf(GatewayRegistry),
       ...analyticsContextTypes,
     };
-
+    getWrappedComponentRef = ref => {
+      this.gatewayOrPortalChildRef = ref;
+    };
     render() {
       const { gatewayRegistry, ...analyticsContext } = this.context;
       const GatewayOrPortal = gatewayRegistry ? Gateway : Portal;
@@ -43,9 +45,7 @@ export default function withRenderTarget(
         >
           <ContextProvider {...analyticsContext}>
             <WrappedComponent
-              ref={ref => {
-                this.gatewayOrPortalChildRef = ref;
-              }}
+              ref={this.getWrappedComponentRef}
               {...this.props}
             />
           </ContextProvider>
