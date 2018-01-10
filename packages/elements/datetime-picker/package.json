@@ -10,7 +10,10 @@
     "dist"
   ],
   "author": "Atlassian Pty Ltd",
-  "maintainers": [],
+  "maintainers": [
+    "Ajay N Mathur",
+    "Trey S"
+  ],
   "atlaskit": {
     "name": "Date-time picker",
     "team": "elements"
