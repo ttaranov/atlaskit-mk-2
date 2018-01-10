@@ -2,10 +2,13 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { ResourceProvider } from '../src/api/ConversationResource';
 import { Conversation } from '../src';
+import SingleSelect from '@atlaskit/single-select';
 import {
   Comment as CommentType,
   Conversation as ConversationType,
+  User,
 } from '../src/model';
+import { MOCK_USERS } from './MockData';
 
 const DUMMY_CODE = `
 class Main() {
@@ -81,9 +84,9 @@ class File extends React.Component<FileProps, { addAt?: number }> {
     const { addAt } = this.state;
     const { conversations, name, provider } = this.props;
 
-    const conversation =
+    const [conversation] =
       conversations &&
-      conversations.find(c => c.meta && c.meta.lineNumber === index);
+      conversations.filter(c => c.meta && c.meta.lineNumber === index);
 
     if (conversation) {
       return (
@@ -151,13 +154,14 @@ class File extends React.Component<FileProps, { addAt?: number }> {
 
 export class Demo extends React.Component<
   { provider: ResourceProvider },
-  { conversations: any[] }
+  { conversations: any[]; selectedUser: User }
 > {
   constructor(props) {
     super(props);
 
     this.state = {
       conversations: [],
+      selectedUser: MOCK_USERS[0],
     };
   }
 
@@ -171,6 +175,18 @@ export class Demo extends React.Component<
       // Handle error
     }
   }
+
+  private onUserSelect = (selected: any) => {
+    const { item } = selected;
+    const userId = item.value;
+    const { provider } = this.props;
+    const [selectedUser] = MOCK_USERS.filter(user => user.id === userId);
+    provider.updateUser(selectedUser);
+
+    this.setState({
+      selectedUser,
+    });
+  };
 
   private renderConversations(conversations: ConversationType[]) {
     const { provider } = this.props;
@@ -193,6 +209,37 @@ export class Demo extends React.Component<
     ));
   }
 
+  private renderUserSelect() {
+    const { selectedUser } = this.state;
+    const users = {
+      heading: 'Users',
+      items: MOCK_USERS.map((user: User) => {
+        return {
+          content: user.name,
+          value: user.id,
+          isSelected: selectedUser.id === user.id,
+        };
+      }),
+    };
+
+    return (
+      <div
+        style={{
+          marginBottom: '10px',
+          paddingBottom: '10px',
+          borderBottom: '1px solid #ccc',
+        }}
+      >
+        <SingleSelect
+          label="Change User"
+          defaultSelected={users.items[0]}
+          items={[users]}
+          onSelected={this.onUserSelect}
+        />
+      </div>
+    );
+  }
+
   render() {
     const { conversations } = this.state;
     const { provider } = this.props;
@@ -202,6 +249,7 @@ export class Demo extends React.Component<
 
     return (
       <div style={{ margin: '20px' }}>
+        {this.renderUserSelect()}
         {this.renderConversations(prConversations)}
         {prConversations.length === 0 ? (
           <Conversation provider={provider} containerId={containerId} />

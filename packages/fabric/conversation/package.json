@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/conversation",
-  "version": "4.2.1",
+  "version": "4.3.0",
   "config": {
     "access": "public"
   },
@@ -31,5 +31,8 @@
     "prop-types": "^15.5.10",
     "styled-components": "^1.4.6",
     "tslib": "^1.8.0"
+  },
+  "devDependencies": {
+    "@atlaskit/single-select": "^3.1.4"
   }
 }

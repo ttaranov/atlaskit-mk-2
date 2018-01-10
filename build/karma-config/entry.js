@@ -16,11 +16,6 @@ const contexts = {
     true,
     /^[^_]*.(js|jsx|ts|tsx)$/,
   ),
-  'editor-cq': require.context(
-    '../../packages/fabric/editor-cq/tests/browser/',
-    true,
-    /^[^_]*.(js|jsx|ts|tsx)$/,
-  ),
   'editor-test-helpers': require.context(
     '../../packages/fabric/editor-test-helpers/tests/browser/',
     true,
