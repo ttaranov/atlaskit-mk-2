@@ -34,8 +34,8 @@
   "devDependencies": {
     "@atlaskit/avatar": "^8.4.0",
     "@atlaskit/docs": "^2.4.0",
-    "@atlaskit/dropdown-menu": "^3.5.0",
-    "@atlaskit/navigation": "^26.6.3",
+    "@atlaskit/dropdown-menu": "^3.11.4",
+    "@atlaskit/navigation": "^27.0.4",
     "@atlaskit/tooltip": "^8.1.0"
   }
 }

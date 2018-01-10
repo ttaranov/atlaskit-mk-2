@@ -50,7 +50,7 @@
     "@atlaskit/media-filmstrip": "^5.8.0",
     "@atlaskit/media-test-helpers": "^8.6.0",
     "@atlaskit/modal-dialog": "^3.3.0",
-    "@atlaskit/navigation": "^26.6.3",
+    "@atlaskit/navigation": "^27.0.4",
     "@atlaskit/single-select": "^3.2.0",
     "@atlaskit/tag": "^3.1.0",
     "@atlaskit/tag-group": "^3.5.0",

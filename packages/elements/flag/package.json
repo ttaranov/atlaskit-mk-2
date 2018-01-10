@@ -32,7 +32,7 @@
     "@atlaskit/docs": "^2.4.0",
     "@atlaskit/field-radio-group": "^1.8.0",
     "@atlaskit/modal-dialog": "^3.3.0",
-    "@atlaskit/navigation": "^26.6.3",
+    "@atlaskit/navigation": "^27.0.4",
     "@atlaskit/spinner": "^4.1.0",
     "@atlaskit/theme": "^2.3.0",
     "enzyme": "^3.3.0"
