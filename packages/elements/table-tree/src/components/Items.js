@@ -31,7 +31,7 @@ export default class Items extends PureComponent<Props, State> {
   loadCancelled = false;
 
   componentWillMount() {
-    if (!Items.isDataReady(this.state.itemsData)) {
+    if (!this.state.itemsData) {
       this.setState({
         isLoaderShown: true,
       });
@@ -52,10 +52,6 @@ export default class Items extends PureComponent<Props, State> {
     this.loadCancelled = true;
   }
 
-  static isDataReady(data: ?ItemsDataType): boolean {
-    return !!data;
-  }
-
   handleLoaderComplete = () => {
     this.setState({
       isLoaderShown: false,
@@ -65,10 +61,9 @@ export default class Items extends PureComponent<Props, State> {
   renderLoader() {
     const { depth } = this.props;
     const { itemsData } = this.state;
-    const isCompleting = Items.isDataReady(itemsData);
     return (
       <LoaderItem
-        isCompleting={isCompleting}
+        isCompleting={!!itemsData}
         onComplete={this.handleLoaderComplete}
         depth={depth + 1}
       />
