@@ -67,7 +67,7 @@
     "@atlaskit/inline-edit": "^4.5.5",
     "@atlaskit/util-data-test": "^7.0.0",
     "@types/chai": "^4.0.4",
-    "@types/enzyme": "^2.8.12",
+    "@types/enzyme": "^3.1.6",
     "@types/jest": "^20.0.8",
     "@types/mocha": "^2.2.39",
     "@types/prop-types": "^15.5.1",
