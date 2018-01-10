@@ -11,7 +11,8 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Ben G"
+    "Joss M",
+    "Charles L"
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {

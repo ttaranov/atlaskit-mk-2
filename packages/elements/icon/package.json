@@ -15,7 +15,8 @@
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     "Jared C",
-    "Luke B"
+    "Sean C",
+    "Ben C"
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "scripts": {
