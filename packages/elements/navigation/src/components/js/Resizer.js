@@ -1,3 +1,4 @@
+// @flow
 import React, { PureComponent } from 'react';
 import { withTheme } from 'styled-components';
 import rafSchedule from 'raf-schd';
@@ -18,10 +19,10 @@ type Props = {
   navigationWidth?: number,
   showResizeButton?: boolean,
   theme?: {},
-}
+};
 
 class Resizer extends PureComponent {
-  props: Props // eslint-disable-line react/sort-comp
+  props: Props; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
     onResizeStart: () => {},
@@ -31,20 +32,20 @@ class Resizer extends PureComponent {
     navigationWidth: standardOpenWidth(false),
     showResizeButton: true,
     theme: {},
-  }
+  };
   state = {
     startScreenX: 0,
     isHovering: false,
     isResizing: false,
-  }
+  };
 
-  scheduleResize = rafSchedule((delta) => {
+  scheduleResize = rafSchedule(delta => {
     if (this.state.isResizing) {
       this.props.onResize(delta);
     }
-  })
+  });
 
-  mouseDownHandler = (e) => {
+  mouseDownHandler = e => {
     e.preventDefault();
     if (!this.resizerNode || e.target !== this.resizerNode) {
       return;
@@ -64,7 +65,7 @@ class Resizer extends PureComponent {
     window.addEventListener('mousemove', this.mouseMoveHandler);
     window.addEventListener('mouseup', this.mouseUpHandler);
     window.addEventListener('mouseout', this.handleOutofBounds);
-  }
+  };
 
   mouseUpHandler = (e, outOfBounds = false) => {
     window.removeEventListener('mousemove', this.mouseMoveHandler);
@@ -74,11 +75,10 @@ class Resizer extends PureComponent {
       isResizing: false,
     });
 
-    const screenX = outOfBounds ?
-    // If we have gone out of bounds, reduce the nav width so the resizer is still visible
-      e.screenX - (2 * resizerClickableWidth)
-    :
-      e.screenX;
+    const screenX = outOfBounds
+      ? // If we have gone out of bounds, reduce the nav width so the resizer is still visible
+        e.screenX - 2 * resizerClickableWidth
+      : e.screenX;
 
     const delta = screenX - this.state.startScreenX;
 
@@ -90,43 +90,46 @@ class Resizer extends PureComponent {
     this.props.onResize(delta);
 
     this.props.onResizeEnd(delta);
-  }
+  };
 
-  mouseMoveHandler = (e) => {
+  mouseMoveHandler = e => {
     this.scheduleResize(e.screenX - this.state.startScreenX);
-  }
+  };
 
   mouseEnterHandler = () => {
     this.setState({
       isHovering: true,
     });
-  }
+  };
 
   mouseLeaveHandler = () => {
     this.setState({
       isHovering: false,
     });
-  }
+  };
 
   // Handle when mouse moves over an element that won't fire mouse events.
   // Fires a mouseup immediately to prevent mouseup not being fired at all.
-  handleOutofBounds = (e) => {
+  handleOutofBounds = e => {
     const toEl = e.relatedTarget;
     const disableResizeNodes = [
-      'IFRAME',     // Moving into an iframe
-      'HTML',       // Moving out of an iframe or root window - Safari
-      null,         // Moving out of an iframe or root window - Other browsers
+      'IFRAME', // Moving into an iframe
+      'HTML', // Moving out of an iframe or root window - Safari
+      null, // Moving out of an iframe or root window - Other browsers
     ];
 
-    if (this.state.isResizing && disableResizeNodes.includes(toEl && toEl.nodeName)) {
+    if (
+      this.state.isResizing &&
+      disableResizeNodes.includes(toEl && toEl.nodeName)
+    ) {
       this.mouseUpHandler(e, true);
     }
-  }
+  };
 
-  isElectronMac = () => isElectronMac(this.props.theme)
+  isElectronMac = () => isElectronMac(this.props.theme);
 
   isPointingRight = () =>
-    this.props.navigationWidth < standardOpenWidth(this.isElectronMac())
+    this.props.navigationWidth < standardOpenWidth(this.isElectronMac());
 
   resizeButtonHandler = () => {
     const isElectron = this.isElectronMac();
@@ -146,7 +149,7 @@ class Resizer extends PureComponent {
         width: globalOpenWidth(isElectron),
       });
     }
-  }
+  };
 
   render() {
     const resizerButton = this.props.showResizeButton ? (
@@ -159,7 +162,7 @@ class Resizer extends PureComponent {
 
     return (
       <ResizerInner
-        innerRef={(resizerNode) => {
+        innerRef={resizerNode => {
           this.resizerNode = resizerNode;
         }}
         onMouseDown={this.mouseDownHandler}

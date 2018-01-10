@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 import { gridSize } from '../../shared-variables';
 import { whenCollapsed, whenNotInOverflowDropdown } from '../../theme/util';
@@ -11,11 +12,9 @@ const NavigationItemGroupAction = styled.div`
 
   ${whenCollapsed`
     display: none;
-  `}
-
-  ${whenNotInOverflowDropdown`
+  `} ${whenNotInOverflowDropdown`
     margin-top: ${gridSize}px;
-  `}
+  `};
 `;
 
 NavigationItemGroupAction.displayName = 'NavigationItemGroupAction';

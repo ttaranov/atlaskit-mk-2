@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 
 // We need to wrap the NavigationItems in a parent that is constrained to the same width

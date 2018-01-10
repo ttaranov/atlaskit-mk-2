@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 import { gridSize } from '../../shared-variables';
 import {
@@ -11,15 +12,13 @@ const NavigationItemGroupHeader = styled.div`
   ${whenNotInOverflowDropdown`
     margin-left: -${gridSize}px;
     margin-top: ${gridSize * 1.5}px;
-  `}
-
-  ${whenCollapsedAndNotInOverflowDropdown`
+  `} ${whenCollapsedAndNotInOverflowDropdown`
     margin-left: -${gridSize}px;
     margin-right: -${gridSize}px;
     margin-top: ${gridSize}px;
     margin-bottom: ${gridSize}px;
     border-top: 1px solid ${({ theme }) => getProvided(theme).keyline};
-  `}
+  `};
 `;
 
 NavigationItemGroupHeader.displayName = 'NavigationItemGroupHeader';

@@ -1,14 +1,23 @@
+// @flow
 import styled from 'styled-components';
-import { animationTime, animationTimeUnitless, unthemedColors, gridSize, resizerVisibleWidth } from '../../shared-variables';
+import {
+  animationTime,
+  animationTimeUnitless,
+  unthemedColors,
+  gridSize,
+  resizerVisibleWidth,
+} from '../../shared-variables';
 import { focusOutline } from '../../utils/mixins';
 
 const toggleButtonHeight = gridSize * 4.5;
 const toggleArrowHeight = gridSize * 2;
 const toggleArrowWidth = 2;
-const toggleArrowTopVerticalOffset = (toggleButtonHeight - toggleArrowHeight) / 2;
+const toggleArrowTopVerticalOffset =
+  (toggleButtonHeight - toggleArrowHeight) / 2;
 const toggleArrowBottomVerticalOffset =
-  (toggleArrowTopVerticalOffset - toggleArrowWidth) + (toggleArrowHeight / 2);
-const opacityTransition = `opacity ${animationTimeUnitless + 100}ms ease-in-out`;
+  toggleArrowTopVerticalOffset - toggleArrowWidth + toggleArrowHeight / 2;
+const opacityTransition = `opacity ${animationTimeUnitless +
+  100}ms ease-in-out`;
 const transformTransition = `transform ${animationTime} ease-in-out`;
 
 const ResizerButtonInner = styled.button`
@@ -23,10 +32,11 @@ const ResizerButtonInner = styled.button`
   cursor: pointer;
 
   &:focus {
-    ${focusOutline(unthemedColors.resizer)}
+    ${focusOutline(unthemedColors.resizer)};
   }
 
-  &:before, &:after {
+  &:before,
+  &:after {
     content: '';
     background-color: ${unthemedColors.resizer};
     width: ${toggleArrowWidth}px;
@@ -41,7 +51,8 @@ const ResizerButtonInner = styled.button`
 
   &:before {
     top: ${toggleArrowTopVerticalOffset}px;
-    transform-origin: ${toggleArrowWidth / 2}px ${(toggleArrowHeight / 2) - (toggleArrowWidth / 2)}px;
+    transform-origin: ${toggleArrowWidth / 2}px
+      ${toggleArrowHeight / 2 - toggleArrowWidth / 2}px;
   }
 
   &:after {
@@ -49,15 +60,21 @@ const ResizerButtonInner = styled.button`
     transform-origin: ${toggleArrowWidth / 2}px ${toggleArrowWidth / 2}px;
   }
 
-  &:hover, &:focus {
-    &:before, &:after {
+  &:hover,
+  &:focus {
+    &:before,
+    &:after {
       opacity: 1;
     }
     &:before {
-      transform: rotate(${({ isPointingRight }) => (isPointingRight ? '-40deg' : '40deg')});
+      transform: rotate(
+        ${({ isPointingRight }) => (isPointingRight ? '-40deg' : '40deg')}
+      );
     }
     &:after {
-      transform: rotate(${({ isPointingRight }) => (isPointingRight ? '40deg' : '-40deg')});
+      transform: rotate(
+        ${({ isPointingRight }) => (isPointingRight ? '40deg' : '-40deg')}
+      );
     }
   }
 `;

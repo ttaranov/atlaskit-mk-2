@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 
 const GlobalNavigationPrimaryContainer = styled.div`
@@ -7,5 +8,6 @@ const GlobalNavigationPrimaryContainer = styled.div`
   flex-basis: 0;
 `;
 
-GlobalNavigationPrimaryContainer.displayName = 'GlobalNavigationPrimaryContainer';
+GlobalNavigationPrimaryContainer.displayName =
+  'GlobalNavigationPrimaryContainer';
 export default GlobalNavigationPrimaryContainer;

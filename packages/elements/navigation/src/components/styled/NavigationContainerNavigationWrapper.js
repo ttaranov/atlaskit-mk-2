@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 import { containerClosedWidth } from '../../shared-variables';
 import { isElectronMac } from '../../theme/util';
@@ -14,12 +15,10 @@ const NavigationContainerNavigationWrapper = styled.div`
   flex-shrink: 1;
   /* allowing the container to collapse down to its min width */
   min-width: ${props => containerClosedWidth(isElectronMac(props.theme))}px;
-  ${getTransform}
-
-   /* make full height */
-  display: flex;
+  ${getTransform} display: flex;
 `;
 
-NavigationContainerNavigationWrapper.displayName = 'NavigationContainerNavigationWrapper';
+NavigationContainerNavigationWrapper.displayName =
+  'NavigationContainerNavigationWrapper';
 
 export default NavigationContainerNavigationWrapper;

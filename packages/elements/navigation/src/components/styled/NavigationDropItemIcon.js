@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 import NavigationItemIcon from '../styled/NavigationItemIcon';
 import { whenCollapsed } from '../../theme/util';
@@ -7,7 +8,7 @@ const NavigationDropItemIcon = styled(NavigationItemIcon)`
 
   ${whenCollapsed`
     display: none;
-  `}
+  `};
 `;
 
 NavigationDropItemIcon.displayName = 'NavigationDropItemIcon';

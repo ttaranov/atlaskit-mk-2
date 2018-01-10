@@ -1,3 +1,4 @@
+// @flow
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import ContainerHeaderWrapper from '../styled/ContainerHeaderWrapper';
@@ -9,18 +10,14 @@ export default class ContainerHeader extends PureComponent {
     iconOffset: PropTypes.number,
     isFullWidth: PropTypes.bool,
     isInDrawer: PropTypes.bool,
-  }
+  };
   static defaultProps = {
     iconOffset: globalItemSizes.medium,
     isInDrawer: false,
-  }
+  };
 
   render() {
-    const {
-      iconOffset,
-      isFullWidth,
-      isInDrawer,
-    } = this.props;
+    const { iconOffset, isFullWidth, isInDrawer } = this.props;
     return (
       <ContainerHeaderWrapper
         isInDrawer={isInDrawer}

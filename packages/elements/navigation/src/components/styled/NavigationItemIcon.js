@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 import { gridSize } from '../../shared-variables';
 import { isCollapsed } from '../../theme/util';

@@ -1,5 +1,10 @@
+// @flow
 import styled from 'styled-components';
-import { unthemedColors, resizerClickableWidth, resizerVisibleWidth } from '../../shared-variables';
+import {
+  unthemedColors,
+  resizerClickableWidth,
+  resizerVisibleWidth,
+} from '../../shared-variables';
 
 const ResizerInner = styled.div`
   cursor: ew-resize;

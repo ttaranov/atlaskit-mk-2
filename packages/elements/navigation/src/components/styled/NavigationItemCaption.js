@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 import { getProvided } from '../../theme/util';
 import { layout } from '../../shared-variables';
