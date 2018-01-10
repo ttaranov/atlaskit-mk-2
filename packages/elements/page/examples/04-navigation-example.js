@@ -1,13 +1,11 @@
-import { storiesOf } from '@kadira/storybook';
-import React from 'react';
+// @flow
+import React, { PureComponent } from 'react';
 import Navigation from '@atlaskit/navigation';
 import Banner from '@atlaskit/banner';
 import AkToggle from '@atlaskit/toggle';
-
 import Page, { Grid, GridColumn } from '../src';
-import { name } from '../package.json';
 
-class ToggleBannerPage extends React.PureComponent {
+export default class NavigationExample extends PureComponent {
   state = {
     isBannerOpen: false,
   };
@@ -18,8 +16,7 @@ class ToggleBannerPage extends React.PureComponent {
         isBannerOpen={this.state.isBannerOpen}
         banner={
           <Banner appearance="error" isOpen={this.state.isBannerOpen}>
-            Your JIRA OnDemand license is about to expire. There are two days
-            left to renew your license
+            Example Banner
           </Banner>
         }
         navigation={
@@ -33,11 +30,20 @@ class ToggleBannerPage extends React.PureComponent {
               });
             }}
           >
-            Hello world
+            Example Navigation
           </Navigation>
         }
       >
         <Grid>
+          <GridColumn>
+            <h2>Switch to fullscreen display to view the Navigation Example</h2>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Blanditiis voluptatum perspiciatis doloribus dignissimos accusamus
+              commodi, nobis ut, error iusto, quas vitae nesciunt consequatur
+              possimus labore! Mollitia est quis minima asperiores.
+            </p>
+          </GridColumn>
           <GridColumn>
             <p>Toggle banner</p>
             <AkToggle
@@ -57,5 +63,3 @@ class ToggleBannerPage extends React.PureComponent {
     );
   }
 }
-
-storiesOf(name, module).add('navigation', () => <ToggleBannerPage />);
