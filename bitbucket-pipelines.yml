@@ -31,7 +31,7 @@ pipelines:
           # - bolt build
           # - bolt lint
           # - bolt typecheck
-          - bolt test:ci:branch
+          - yarn jest --maxWorkers=2
           # - bolt test:browser:browserstack
           # - (cd website && bolt deploy-staging:no-minimize)
 
