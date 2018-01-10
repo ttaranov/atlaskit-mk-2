@@ -11,7 +11,7 @@ type Props = {
   medium?: number,
   children?: Node,
 };
-// $FlowFixMe
+
 export default withTheme(
   class AkGridColumn extends Component<Props, void> {
     static defaultProps = {

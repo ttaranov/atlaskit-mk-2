@@ -9,7 +9,7 @@ const getColumnRatio = props => {
   }
   return `99.9999% / ${props.theme.columns} * ${props.medium}`;
 };
-const getColumnWidth = props =>
+const getColumnWidth = (props: any) =>
   props.medium > 0
     ? `calc(${getColumnRatio(props)} - ${spacing[props.theme.spacing]}px)`
     : 'auto';

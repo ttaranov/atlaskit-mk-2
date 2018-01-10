@@ -10,7 +10,7 @@ type Props = {
   spacing?: 'cosy' | 'comfortable' | 'compact',
   layout?: 'fixed' | 'fuild',
 };
-// $FlowFixMe
+
 export default withTheme(
   class AkGrid extends Component<Props, void> {
     static defaultProps = {
