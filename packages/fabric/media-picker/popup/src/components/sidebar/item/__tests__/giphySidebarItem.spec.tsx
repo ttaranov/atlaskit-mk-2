@@ -10,7 +10,6 @@ import {
 } from '../giphySidebarItem';
 import { GiphyIcon } from '../../icons';
 
-// tslint:disable-next-line:variable-name
 const ConnectedSidebarItemStoreWithStore = getComponentClassWithStore(
   ConnectedGiphySidebarItem,
 );

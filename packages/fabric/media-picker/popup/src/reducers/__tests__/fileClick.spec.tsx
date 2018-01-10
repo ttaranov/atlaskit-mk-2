@@ -1,4 +1,3 @@
-// import { fileClick as createFileClickAction } from '../actions';
 import fileClick from '../fileClick';
 
 describe('fileClick()', () => {

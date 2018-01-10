@@ -23,7 +23,6 @@ import {
 } from '../styles';
 import { searchGiphy, fileClick } from '../../../../actions';
 
-// tslint:disable-next-line:variable-name
 const ConnectedGiphyViewWithStore = getComponentClassWithStore(
   ConnectedGiphyView,
 );

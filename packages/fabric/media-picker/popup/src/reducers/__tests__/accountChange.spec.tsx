@@ -1,5 +1,4 @@
 import { changeAccount } from '../../actions';
-// import { giphySearchStarted, giphySearchFullfilled, giphySearchFailed } from './searchGiphy';
 import accountChange from '../accountChange';
 
 describe('accountChange()', () => {

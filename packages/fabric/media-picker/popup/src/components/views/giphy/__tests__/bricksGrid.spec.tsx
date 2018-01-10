@@ -3,7 +3,6 @@ const bricksInstanceStub = {
   pack: jest.fn(),
 };
 
-// tslint:disable-next-line:variable-name
 const BricksStub = jest.fn().mockReturnValue(bricksInstanceStub);
 
 jest.mock('bricks.js', () => {

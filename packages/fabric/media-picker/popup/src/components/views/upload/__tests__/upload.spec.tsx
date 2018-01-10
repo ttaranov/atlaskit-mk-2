@@ -17,7 +17,6 @@ import { fileClick } from '../../../../actions/fileClick';
 import { editorShowImage } from '../../../../actions/editorShowImage';
 import { editRemoteImage } from '../../../../actions/editRemoteImage';
 
-// tslint:disable-next-line:variable-name
 const ConnectedUploadViewWithStore = getComponentClassWithStore(
   ConnectedUploadView,
 );
