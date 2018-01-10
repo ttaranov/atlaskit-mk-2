@@ -22,7 +22,6 @@ import {
   ControlsWrapper,
   Controls,
   ControlButton,
-  ControlSeparator,
   BreadCrumbs,
   BreadCrumbLink,
   BreadCrumbLinkLabel,
@@ -88,7 +87,6 @@ export class Navigation extends Component<NavigationProps, NavigationState> {
               onClick={this.onRefreshButtonClick}
               iconBefore={<RefreshIcon label="refresh" />}
             />
-            <ControlSeparator />
             {accountsDropdown}
           </Controls>
         </ControlsWrapper>
