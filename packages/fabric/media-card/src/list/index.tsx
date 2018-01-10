@@ -22,6 +22,10 @@ import { CardDimensions, CardListEvent, CardEvent } from '..';
 import { Provider, MediaCard, CardView } from '../root';
 import { InfiniteScroll } from './infiniteScroll';
 import { CardListItemWrapper, Spinner } from './styled';
+import {
+  CollectionRenderer,
+  CollectionItem,
+} from '../renderers/collectionRenderer';
 
 export type CardLayout = 'grid' | 'list';
 
@@ -102,56 +106,54 @@ export class CardList extends Component<CardListProps, CardListState> {
     }
   }
 
-  handleNextItems(nextProps: CardListProps) {
-    const { collectionName, context } = nextProps;
+  // handleNextItems(nextProps: CardListProps) {
+  //   const { collectionName, context } = nextProps;
 
-    return (collection: MediaCollection) => {
-      const { firstItemKey } = this.state;
-      const newFirstItemKey = collection.items[0]
-        ? this.getItemKey(collection.items[0])
-        : undefined;
-      const shouldAnimate = !!firstItemKey && firstItemKey !== newFirstItemKey;
-      this.providersByMediaItemId = {};
-      collection.items.forEach(mediaItem => {
-        if (!mediaItem.details || !mediaItem.details.id) {
-          return;
-        }
+  //   return (collection: MediaCollection) => {
+  //     const { firstItemKey } = this.state;
+  //     const newFirstItemKey = collection.items[0]
+  //       ? this.getItemKey(collection.items[0])
+  //       : undefined;
+  //     const shouldAnimate = !!firstItemKey && firstItemKey !== newFirstItemKey;
+  //     this.providersByMediaItemId = {};
+  //     collection.items.forEach(mediaItem => {
+  //       if (!mediaItem.details || !mediaItem.details.id) {
+  //         return;
+  //       }
 
-        this.providersByMediaItemId[
-          mediaItem.details.id
-        ] = context.getMediaItemProvider(
-          mediaItem.details.id,
-          mediaItem.type,
-          collectionName,
-          mediaItem,
-        );
-      });
+  //       this.providersByMediaItemId[
+  //         mediaItem.details.id
+  //       ] = context.getMediaItemProvider(
+  //         mediaItem.details.id,
+  //         mediaItem.type,
+  //         collectionName,
+  //         mediaItem,
+  //         );
+  //     });
 
-      this.setState({
-        collection,
-        shouldAnimate,
-        loading: false,
-        firstItemKey: newFirstItemKey,
-      });
-    };
-  }
+  //     this.setState({
+  //       collection,
+  //       shouldAnimate,
+  //       loading: false,
+  //       firstItemKey: newFirstItemKey,
+  //     });
+  //   };
+  // }
 
   private subscribe(nextProps: CardListProps) {
-    const { collectionName, context } = nextProps;
-    const pageSize = this.props.pageSize || CardList.defaultPageSize;
-    const provider = context.getMediaCollectionProvider(
-      collectionName,
-      pageSize,
-    );
-
-    const subscription = provider.observable().subscribe({
-      next: this.handleNextItems(nextProps),
-      error: (error: AxiosError): void => {
-        this.setState({ collection: undefined, error, loading: false });
-      },
-    });
-
-    this.setState({ subscription });
+    // const { collectionName, context } = nextProps;
+    // const pageSize = this.props.pageSize || CardList.defaultPageSize;
+    // const provider = context.getMediaCollectionProvider(
+    //   collectionName,
+    //   pageSize,
+    // );
+    // const subscription = provider.observable().subscribe({
+    //   next: this.handleNextItems(nextProps),
+    //   error: (error: AxiosError): void => {
+    //     this.setState({ collection: undefined, error, loading: false });
+    //   },
+    // });
+    // this.setState({ subscription });
   }
 
   private shouldUpdateState(nextProps: CardListProps): boolean {
@@ -205,44 +207,50 @@ export class CardList extends Component<CardListProps, CardListState> {
   };
 
   render(): JSX.Element {
-    const { height } = this.props;
-    const { loading, error, collection } = this.state;
-    const emptyComponent = this.props.emptyComponent || EmptyComponent;
+    const { context, collectionName, height } = this.props;
+    // const { loading, error, collection } = this.state;
+    // const emptyComponent = this.props.emptyComponent || EmptyComponent;
     const loadingComponent = this.props.loadingComponent || LoadingComponent;
-    const errorComponent = this.props.errorComponent || ErrorComponent;
+    // const errorComponent = this.props.errorComponent || ErrorComponent;
 
-    if (loading) {
-      return loadingComponent;
-    }
+    // if (loading) {
+    //   return loadingComponent;
+    // }
 
-    if (error) {
-      if (error.response && error.response.status === 404) {
-        return emptyComponent;
-      } else {
-        return errorComponent;
-      }
-    }
+    // if (error) {
+    //   if (error.response && error.response.status === 404) {
+    //     return emptyComponent;
+    //   } else {
+    //     return errorComponent;
+    //   }
+    // }
 
-    if (!collection) {
-      return loadingComponent;
-    }
+    // if (!collection) {
+    //   return loadingComponent;
+    // }
 
-    if (this.useInfiniteScroll) {
-      return (
-        <InfiniteScroll
-          height={height}
-          onThresholdReached={this.handleInfiniteScrollThresholdReached}
-        >
-          {this.renderList()}
-        </InfiniteScroll>
-      );
-    } else {
-      return this.renderList();
-    }
+    // TODO: Error State needs to be handled;
+
+    return (
+      <CollectionRenderer
+        context={context}
+        collectionName={collectionName}
+        useInfiniteScroll={this.useInfiniteScroll}
+        height={height}
+      >
+        {({ items, isLoading }) => {
+          if (isLoading) {
+            return loadingComponent;
+          } else {
+            return this.renderList(items);
+          }
+        }}
+      </CollectionRenderer>
+    );
   }
 
-  private renderList(): JSX.Element {
-    const { collection, shouldAnimate } = this.state;
+  private renderList(items: CollectionItem[]): JSX.Element {
+    const { shouldAnimate } = this.state;
     const {
       cardWidth,
       dimensions,
@@ -259,69 +267,78 @@ export class CardList extends Component<CardListProps, CardListState> {
       selectedItemIds = [],
     } = this.props;
     const actions = this.props.actions || [];
-    const cardActions = (collectionItem: MediaCollectionItem) =>
-      actions.map(action => {
-        return {
-          label: action.label,
-          type: action.type,
-          handler: (item: MediaItem, event: Event) => {
-            if (collection) {
-              action.handler(collectionItem, collection, event);
-            }
-          },
-        };
-      });
-    const cards = collection
-      ? collection.items.map((mediaItem: MediaCollectionItem) => {
-          if (!mediaItem.details || !mediaItem.details.id) {
-            return null;
-          }
-          const id = mediaItem.details.id;
-          const key = this.getItemKey(mediaItem);
-          const cardListItem = (
-            <CSSTransition
-              key={key}
-              classNames="card-list-item"
-              timeout={{ enter: 750 }}
-              exit={false}
-              component="div"
-              className="card-list"
-            >
-              <CardListItemWrapper
-                shouldAnimate={shouldAnimate}
-                cardWidth={cardWidth}
-                layout={layout}
-              >
-                <MediaCard
-                  provider={providersByMediaItemId[id]}
-                  dataURIService={dataURIService}
-                  appearance={cardAppearance}
-                  dimensions={dimensions}
-                  onClick={handleCardClick(mediaItem)}
-                  actions={cardActions(mediaItem)}
-                  selectable={isGridLayout} // TODO: this should probably be based on a different prop
-                  selected={selectedItemIds.indexOf(id) > -1}
-                />
-              </CardListItemWrapper>
-            </CSSTransition>
-          );
-          // We don't want to wrap new items into LazyContent aka lazy load new items
-          const useLazyContent =
-            shouldLazyLoadCards && !shouldAnimate && !isGridLayout;
-          return useLazyContent ? (
-            <LazyContent key={key} placeholder={placeholder}>
-              {cardListItem}
-            </LazyContent>
-          ) : (
-            cardListItem
-          );
-        })
-      : null;
+    // const cardActions = (collectionItem: MediaCollectionItem) =>
+    //   actions.map(action => {
+    //     return {
+    //       label: action.label,
+    //       type: action.type,
+    //       handler: (item: MediaItem, event: Event) => {
+    //         if (collection) {
+    //           action.handler(collectionItem, collection, event);
+    //         }
+    //       },
+    //     };
+    //   });
+    const cards = items.map(mediaItem => {
+      const { id } = mediaItem;
+      const key = this.getItemKey(mediaItem);
+      const cardListItem = (
+        <CSSTransition
+          key={key}
+          classNames="card-list-item"
+          timeout={{ enter: 750 }}
+          exit={false}
+          component="div"
+          className="card-list"
+        >
+          <CardListItemWrapper
+            shouldAnimate={shouldAnimate}
+            cardWidth={cardWidth}
+            layout={layout}
+          >
+            {/* <MediaCard
+              provider={providersByMediaItemId[id]}
+              dataURIService={dataURIService}
+              appearance={cardAppearance}
+              dimensions={dimensions}
+              onClick={handleCardClick(mediaItem)}
+              actions={cardActions(mediaItem)}
+              selectable={isGridLayout} // TODO: this should probably be based on a different prop
+              selected={selectedItemIds.indexOf(id) > -1}
+            /> */}
+            <CardView
+              status="complete"
+              dataURI={mediaItem.thumbnailSrc}
+              metadata={{
+                name: mediaItem.fileName,
+                size: mediaItem.size,
+                mediaType: mediaItem.mediaType,
+              }}
+              appearance={cardAppearance}
+              dimensions={dimensions}
+              onClick={handleCardClick(mediaItem)}
+              selectable={isGridLayout}
+              selected={mediaItem.isSelected}
+            />
+          </CardListItemWrapper>
+        </CSSTransition>
+      );
+      // We don't want to wrap new items into LazyContent aka lazy load new items
+      const useLazyContent =
+        shouldLazyLoadCards && !shouldAnimate && !isGridLayout;
+      return useLazyContent ? (
+        <LazyContent key={key} placeholder={placeholder}>
+          {cardListItem}
+        </LazyContent>
+      ) : (
+        cardListItem
+      );
+    });
 
     return <TransitionGroup>{cards}</TransitionGroup>;
   }
 
-  private handleCardClick = (oldItem: MediaCollectionItem) => (
+  private handleCardClick = (oldItem: CollectionItem) => (
     cardEvent: CardEvent,
   ) => {
     const { collectionName, onCardClick } = this.props;
@@ -336,7 +353,9 @@ export class CardList extends Component<CardListProps, CardListState> {
     const newItem: MediaCollectionItem = {
       type: oldItem.type,
       details: {
-        ...oldItem.details,
+        id: oldItem.id,
+        name: oldItem.fileName, // TODO: probably need to copy more things from item to event payload
+
         ...mediaItemDetails,
       },
     } as MediaCollectionItem;
@@ -399,8 +418,8 @@ export class CardList extends Component<CardListProps, CardListState> {
     return value === null || value === undefined;
   }
 
-  private getItemKey(item: MediaCollectionItem): string {
-    return `${item.details.id}-${item.details.occurrenceKey}`;
+  private getItemKey({ id, occurrenceKey }: CollectionItem): string {
+    return `${id}-${occurrenceKey}`;
   }
 
   private get dimensions(): CardDimensions {
