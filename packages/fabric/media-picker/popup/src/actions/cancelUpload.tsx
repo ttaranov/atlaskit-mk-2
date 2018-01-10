@@ -1,5 +1,7 @@
 import { Action } from 'redux';
 
+export const CANCEL_UPLOAD = 'CANCEL_UPLOAD';
+
 export interface CancelUploadActionPayload {
   readonly tenantUploadId: string;
 }
@@ -12,14 +14,14 @@ export interface CancelUploadAction extends Action {
 export function isCancelUploadAction(
   action: Action,
 ): action is CancelUploadAction {
-  return action.type === 'CANCEL_UPLOAD';
+  return action.type === CANCEL_UPLOAD;
 }
 
 export function cancelUpload(
   payload: CancelUploadActionPayload,
 ): CancelUploadAction {
   return {
-    type: 'CANCEL_UPLOAD',
+    type: CANCEL_UPLOAD,
     payload,
   };
 }

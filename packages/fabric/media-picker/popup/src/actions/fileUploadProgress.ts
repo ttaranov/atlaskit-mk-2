@@ -6,6 +6,8 @@ import {
 } from '../../../src/domain/uploadEvent';
 import { MediaFile } from '../../../src/domain/file';
 
+export const FILE_UPLOAD_PROGRESS = 'FILE_UPLOAD_PROGRESS';
+
 export interface FileUploadProgressAction extends Action {
   readonly type: 'FILE_UPLOAD_PROGRESS';
   readonly file: MediaFile;
@@ -16,14 +18,14 @@ export interface FileUploadProgressAction extends Action {
 export function isFileUploadProgressAction(
   action: Action,
 ): action is FileUploadProgressAction {
-  return action.type === 'FILE_UPLOAD_PROGRESS';
+  return action.type === FILE_UPLOAD_PROGRESS;
 }
 
 export function fileUploadProgress(
   payload: UploadStatusUpdateEventPayload,
 ): FileUploadProgressAction {
   return {
-    type: 'FILE_UPLOAD_PROGRESS',
+    type: FILE_UPLOAD_PROGRESS,
     file: payload.file,
     progress: payload.progress.portion,
     originalEvent: {

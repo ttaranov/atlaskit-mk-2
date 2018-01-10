@@ -6,6 +6,8 @@ import {
 } from '../../../src/domain/uploadEvent';
 import { MediaFile } from '../../../src/domain/file';
 
+export const FILE_PREVIEW_UPDATE = 'FILE_PREVIEW_UPDATE';
+
 export interface FileUploadPreviewUpdateAction extends Action {
   readonly type: 'FILE_PREVIEW_UPDATE';
   readonly file: MediaFile;
@@ -16,14 +18,14 @@ export interface FileUploadPreviewUpdateAction extends Action {
 export function isFileUploadPreviewUpdateAction(
   action: Action,
 ): action is FileUploadPreviewUpdateAction {
-  return action.type === 'FILE_PREVIEW_UPDATE';
+  return action.type === FILE_PREVIEW_UPDATE;
 }
 
 export function fileUploadPreviewUpdate(
   payload: UploadPreviewUpdateEventPayload,
 ): FileUploadPreviewUpdateAction {
   return {
-    type: 'FILE_PREVIEW_UPDATE',
+    type: FILE_PREVIEW_UPDATE,
     file: payload.file,
     preview: payload.preview.src,
     originalEvent: {
