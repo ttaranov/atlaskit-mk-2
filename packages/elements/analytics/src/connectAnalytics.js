@@ -45,11 +45,7 @@ const connectAnalytics = (
       }
       const fullEventData =
         typeof getParentAnalyticsData === 'function'
-          ? Object.assign(
-              {},
-              eventData,
-              this.context.getParentAnalyticsData(eventName, false),
-            )
+          ? this.context.getParentAnalyticsData(eventName, false, eventData)
           : eventData;
       this.collectedEvents[eventName] = fullEventData;
     };

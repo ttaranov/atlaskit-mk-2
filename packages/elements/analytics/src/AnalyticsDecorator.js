@@ -81,14 +81,21 @@ class AnalyticsDecorator extends Component<Props, {}> {
     onAnalyticsEvent(name, decoratedData, isPrivate);
   };
 
-  getParentAnalyticsData = (name: string, isPrivate: boolean) => {
-    const parentData = this.getDecoratedAnalyticsData(name, {}, isPrivate);
+  getParentAnalyticsData = (
+    name: string,
+    isPrivate: boolean,
+    srcData: Object = {},
+  ) => {
+    const decoratedData = this.getDecoratedAnalyticsData(
+      name,
+      srcData,
+      isPrivate,
+    );
     // Get any analytics data from any decorators up the hierarchy
     const { getParentAnalyticsData } = this.context;
-    if (typeof getParentAnalyticsData === 'function') {
-      Object.assign(parentData, getParentAnalyticsData(name, isPrivate));
-    }
-    return parentData;
+    return typeof getParentAnalyticsData === 'function'
+      ? getParentAnalyticsData(name, isPrivate, decoratedData)
+      : decoratedData;
   };
 
   render() {
