@@ -8,24 +8,20 @@ import type { ReactElement } from '../../../types';
 type Props = {
   children: ReactElement,
   onHeightChange: (height: number) => {},
-}
+};
 
-export default class HeightDetector extends Component {
-  props: Props
-
-  notifyHeight = rafSchd((height) => {
+export default class HeightDetector extends Component<Props> {
+  notifyHeight = rafSchd(height => {
     this.props.onHeightChange(height);
-  })
+  });
 
   render() {
     return (
       <SizeDetector>
-        {
-          (size) => {
-            this.notifyHeight(size.height);
-            return this.props.children;
-          }
-        }
+        {size => {
+          this.notifyHeight(size.height);
+          return this.props.children;
+        }}
       </SizeDetector>
     );
   }

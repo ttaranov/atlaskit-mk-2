@@ -1,20 +1,18 @@
 // @flow
 
 import React, { Component } from 'react';
+import type { Node } from 'react';
 import PropTypes from 'prop-types';
 import { shouldReportItemHeight } from './shared-variables';
-import type { ReactElement } from '../../../types';
 
 type Props = {
-  children: ReactElement,
+  children: Node,
 };
 
-export default class OverflowHeightReportEnabler extends Component {
-  props: Props; // eslint-disable-line react/sort-comp
-
+export default class OverflowHeightReportEnabler extends Component<Props> {
   static childContextTypes = {
     [shouldReportItemHeight]: PropTypes.bool,
-  }
+  };
 
   getChildContext() {
     return {

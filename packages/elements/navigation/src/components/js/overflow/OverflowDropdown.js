@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
+import type { Node } from 'react';
 import { ThemeProvider } from 'styled-components';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 import Item from '@atlaskit/item';
@@ -8,32 +9,28 @@ import MoreVerticalIcon from '@atlaskit/icon/glyph/more-vertical';
 import Tooltip from '@atlaskit/tooltip';
 import OverflowDropdownButtonWrapper from '../../styled/OverflowDropdownButtonWrapper';
 import { isDropdownOverflowKey } from '../../../theme/util';
-import type { ReactElement } from '../../../types';
 
-type State = {|
+type State = {
   isOpen: boolean,
-|}
+};
 
-type Props = {|
-  children?: ReactElement,
-|}
+type Props = {
+  children?: Node,
+};
 
 const theme = {
   [isDropdownOverflowKey]: true,
 };
 
-export default class OverflowDropdown extends Component {
+export default class OverflowDropdown extends Component<Props, State> {
   constructor(props: Props, context: any) {
     super(props, context);
     this.state = { isOpen: false };
   }
 
-  state: State
-  props: Props // eslint-disable-line react/sort-comp
-
   handleDropdownToggle = ({ isOpen }: any) => {
     this.setState({ isOpen });
-  }
+  };
 
   render() {
     // The OverflowDropdownButtonWrapper is used to control the width of the button, because
@@ -54,11 +51,10 @@ export default class OverflowDropdown extends Component {
           onOpenChange={this.handleDropdownToggle}
           shouldFlip={false}
           trigger={
-            this.state.isOpen ? dropdownTrigger : (
-              <Tooltip
-                content="Show more"
-                position="right"
-              >
+            this.state.isOpen ? (
+              dropdownTrigger
+            ) : (
+              <Tooltip content="Show more" position="right">
                 {dropdownTrigger}
               </Tooltip>
             )

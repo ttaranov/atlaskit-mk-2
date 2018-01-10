@@ -1,19 +1,19 @@
 // @flow
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type ElementRef, type Node } from 'react';
 import SpacerInner from '../styled/SpacerInner';
 
-export default class Spacer extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node,
-    innerRef: PropTypes.func,
-    onTransitionEnd: PropTypes.func,
-    shouldAnimate: PropTypes.bool,
-    width: PropTypes.number,
-  };
+type Props = {
+  children: Node,
+  innerRef: (ref: ElementRef<*>) => void,
+  onTransitionEnd: () => void,
+  shouldAnimate: boolean,
+  width: number,
+};
+
+export default class Spacer extends PureComponent<Props> {
   static defaultProps = {
-    width: 0,
     shouldAnimate: false,
+    width: 0,
   };
   render() {
     const {

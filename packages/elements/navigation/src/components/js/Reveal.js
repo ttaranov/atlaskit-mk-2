@@ -1,24 +1,28 @@
 // @flow
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import RevealInner from '../styled/RevealInner';
 
-export default class Reveal extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node,
-    isOpen: PropTypes.bool.isRequired,
-    openHeight: PropTypes.number.isRequired,
-    shouldAnimate: PropTypes.bool.isRequired,
-  };
+type Props = {
+  children: Node,
+  isOpen: boolean,
+  openHeight: number,
+  shouldAnimate: boolean,
+};
 
-  constructor(props, context) {
+type State = {
+  isAnimatingInOnMount: boolean,
+  shouldRenderChildren: boolean,
+};
+
+export default class Reveal extends PureComponent<Props, State> {
+  constructor(props: Props, context: {}) {
     super(props, context);
 
     const { isOpen, shouldAnimate } = props;
 
     this.state = {
-      shouldRenderChildren: isOpen,
       isAnimatingInOnMount: isOpen && shouldAnimate,
+      shouldRenderChildren: isOpen,
     };
   }
 
@@ -39,7 +43,7 @@ export default class Reveal extends PureComponent {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     const isClosed = !this.props.isOpen;
     const willClose = !nextProps.isOpen;
     const willOpen = nextProps.isOpen;

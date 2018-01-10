@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import type { Node } from 'react';
 import PropTypes from 'prop-types';
 import OverflowHeightReportEnabler from './OverflowHeightReportEnabler';
 import OverflowDropdown from './OverflowDropdown';
@@ -10,19 +11,20 @@ import {
   reservedGapHeight,
   isArrayFilled,
 } from './shared-variables';
-import type { ReactElement } from '../../../types';
 
 type Props = {
   groupCount: number,
-  children: ReactElement,
-}
+  children: Node,
+};
 
-export default class OverflowManager extends Component {
-  props: Props; // eslint-disable-line react/sort-comp
+type State = {
+  breakAt: { group: number, item: number },
+};
 
+export default class OverflowManager extends Component<Props, State> {
   static childContextTypes = {
     [overflowManagerNamespace]: PropTypes.object,
-  }
+  };
 
   getChildContext() {
     return {
@@ -42,26 +44,27 @@ export default class OverflowManager extends Component {
     this.groupHeights = new Array(this.props.groupCount);
   }
 
-  state = { // eslint-disable-line react/sort-comp
+  state = {
+    // eslint-disable-line react/sort-comp
     breakAt: { group: 999, item: 999 },
-  }
+  };
 
   availableHeight = 0;
-  groupHeights = []
+  groupHeights = [];
 
-  isGroupVisibleInNav = (groupIndex: number) => (
+  isGroupVisibleInNav = (groupIndex: number) =>
     groupIndex < this.state.breakAt.group ||
-    (groupIndex === this.state.breakAt.group && this.state.breakAt.item !== 0)
-  )
-  isGroupItemVisibleInNav = (groupIndex: number, itemIndex: number) => (
+    (groupIndex === this.state.breakAt.group && this.state.breakAt.item !== 0);
+  isGroupItemVisibleInNav = (groupIndex: number, itemIndex: number) =>
     groupIndex < this.state.breakAt.group ||
-    (groupIndex === this.state.breakAt.group && itemIndex < this.state.breakAt.item)
-  )
-  isGroupVisibleInDropdown = (groupIndex: number) => groupIndex >= this.state.breakAt.group
-  isGroupItemVisibleInDropdown = (groupIndex: number, itemIndex: number) => (
+    (groupIndex === this.state.breakAt.group &&
+      itemIndex < this.state.breakAt.item);
+  isGroupVisibleInDropdown = (groupIndex: number) =>
+    groupIndex >= this.state.breakAt.group;
+  isGroupItemVisibleInDropdown = (groupIndex: number, itemIndex: number) =>
     groupIndex > this.state.breakAt.group ||
-    (groupIndex === this.state.breakAt.group && itemIndex >= this.state.breakAt.item)
-  )
+    (groupIndex === this.state.breakAt.group &&
+      itemIndex >= this.state.breakAt.item);
 
   //  works out the first group+item that CANNOT fit in the nav
   calculateBreakItem = () => {
@@ -72,8 +75,8 @@ export default class OverflowManager extends Component {
     const newBreak = { group: 999, item: 999 };
     const { availableHeight, groupHeights } = this;
     let cumulativeHeight = dropdownHeight + reservedGapHeight;
-    groupLoop: // eslint-disable-line no-restricted-syntax,no-labels
-    for (let g = 0; g < this.props.groupCount; g++) {
+    // eslint-disable-line no-restricted-syntax,no-labels
+    groupLoop: for (let g = 0; g < this.props.groupCount; g++) {
       const group = groupHeights[g];
 
       cumulativeHeight += group.nonItemHeight;
@@ -92,17 +95,20 @@ export default class OverflowManager extends Component {
         }
       }
     }
-    if (this.state.breakAt.group !== newBreak.group || this.state.breakAt.item !== newBreak.item) {
+    if (
+      this.state.breakAt.group !== newBreak.group ||
+      this.state.breakAt.item !== newBreak.item
+    ) {
       this.setState({ breakAt: newBreak });
     }
-  }
+  };
 
   hasAllGroupHeights = () => isArrayFilled(this.groupHeights);
 
   handleItemGroupHeightReport = ({ groupIndex, ...groupHeightInfo }) => {
     this.groupHeights[groupIndex] = groupHeightInfo;
     this.calculateBreakItem();
-  }
+  };
 
   handleAvailableHeightChange = (availableHeight: number) => {
     if (availableHeight === this.availableHeight) {
@@ -110,7 +116,7 @@ export default class OverflowManager extends Component {
     }
     this.availableHeight = availableHeight;
     this.calculateBreakItem();
-  }
+  };
 
   render() {
     return (
@@ -119,13 +125,9 @@ export default class OverflowManager extends Component {
           <OverflowHeightReportEnabler>
             {this.props.children}
           </OverflowHeightReportEnabler>
-          {
-            this.state.breakAt.group <= this.props.groupCount ? (
-              <OverflowDropdown>
-                {this.props.children}
-              </OverflowDropdown>
-            ) : null
-          }
+          {this.state.breakAt.group <= this.props.groupCount ? (
+            <OverflowDropdown>{this.props.children}</OverflowDropdown>
+          ) : null}
         </HeightDetector>
       </div>
     );

@@ -1,46 +1,45 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node } from 'react';
 import FieldBase from '@atlaskit/field-base';
 import SearchBox from '../styled/SearchBox';
 import SearchFieldBaseInner from '../styled/SearchFieldBaseInner';
 import SearchInner from '../styled/SearchInner';
 import SearchInput from '../styled/SearchInput';
-import type { ReactElement } from '../../types';
 
 const controlKeys = ['ArrowUp', 'ArrowDown', 'Enter'];
 
-type Props = {|
+type Props = {
   /** The elements to render as options to search from. */
-  children?: ReactElement,
+  children?: Node,
   /** Set whether the loading state should be shown. */
   isLoading?: boolean,
   /** Function to be called when the search input loses focus. */
-  onBlur: () => mixed,
+  onBlur: () => void,
   /** Function to be called when a input action occurs (native `oninput` event). */
-  onInput: (?Event) => mixed,
+  onInput: (?Event) => void,
   /** Function to be called when the user hits the escape key.  */
-  onKeyDown: (?Event) => mixed,
+  onKeyDown: (?Event) => void,
   /** Placeholder text for search field. */
   placeholder?: string,
   /** Current value of search field. */
   value?: string,
-|}
+};
 
-type State = {|
+type State = {
   /** Current value of search field. */
-  value?: string
-|}
+  value?: string,
+};
 
-export default class Search extends PureComponent {
+export default class Search extends PureComponent<Props, State> {
   static defaultProps = {
     isLoading: false,
     onBlur: () => {},
     placeholder: 'Search',
-  }
+  };
 
-  state: State = {
+  state = {
     value: this.props.value,
-  }
+  };
 
   onInputKeyDown = (event: KeyboardEvent) => {
     const { onKeyDown } = this.props;
@@ -51,39 +50,32 @@ export default class Search extends PureComponent {
       onKeyDown(event);
     }
     event.stopPropagation();
-  }
+  };
 
-  onInput = (event:any) => {
+  onInput = (event: any) => {
     const { onInput } = this.props;
     this.setState({ value: event.target.value });
     if (onInput) {
       onInput(event);
     }
-  }
-  onSearchBoxMouseDown: mixed
+  };
+  onSearchBoxMouseDown: mixed;
 
   setInputRef = (ref: any) => {
     this.inputRef = ref;
-  }
+  };
 
-  inputRef: mixed
-  props: Props
+  inputRef: mixed;
+  props: Props;
 
   render() {
-    const {
-      children,
-      onBlur,
-      placeholder,
-      isLoading,
-    } = this.props;
+    const { children, onBlur, placeholder, isLoading } = this.props;
 
     const { value } = this.state;
 
     return (
       <SearchInner>
-        <SearchBox
-          onMouseDown={this.onSearchBoxMouseDown}
-        >
+        <SearchBox onMouseDown={this.onSearchBoxMouseDown}>
           <FieldBase
             appearance="none"
             isFitContainerWidthEnabled

@@ -1,14 +1,14 @@
 // @flow
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node } from 'react';
 import GlobalItem from './GlobalItem';
 import DrawerTriggerInner from '../styled/DrawerTriggerInner';
 
-export default class DrawerTrigger extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node,
-    onActivate: PropTypes.func,
-  };
+type Props = {
+  children: Node,
+  onActivate: (event: Event) => void,
+};
+
+export default class DrawerTrigger extends PureComponent<Props> {
   static defaultProps = {
     onActivate: () => {},
   };

@@ -1,6 +1,5 @@
 // @flow
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node, type ComponentType } from 'react';
 import GlobalItem from './GlobalItem';
 import DrawerTrigger from './DrawerTrigger';
 import DefaultLinkComponent from './DefaultLinkComponent';
@@ -8,20 +7,21 @@ import GlobalPrimaryActionsList from './GlobalPrimaryActionsList';
 import GlobalPrimaryActionsInner from '../styled/GlobalPrimaryActionsInner';
 import GlobalPrimaryActionsPrimaryItem from '../styled/GlobalPrimaryActionsPrimaryItem';
 import GlobalPrimaryActionsItemsWrapper from '../styled/GlobalPrimaryActionsItemsWrapper';
+import type { IconAppearance } from '../../types';
 
-export default class GlobalPrimaryActions extends PureComponent {
-  static propTypes = {
-    actions: PropTypes.arrayOf(PropTypes.node),
-    createIcon: PropTypes.node,
-    linkComponent: PropTypes.func,
-    onCreateActivate: PropTypes.func,
-    onSearchActivate: PropTypes.func,
-    primaryIcon: PropTypes.node,
-    primaryIconAppearance: PropTypes.string,
-    primaryItemHref: PropTypes.string,
-    searchIcon: PropTypes.node,
-  };
+type Props = {
+  actions: Array<Node>,
+  createIcon: Node,
+  linkComponent: ComponentType<*>,
+  onCreateActivate: (event: Event) => void,
+  onSearchActivate: (event: Event) => void,
+  primaryIcon: () => {},
+  primaryIconAppearance: IconAppearance,
+  primaryItemHref: string,
+  searchIcon: Node,
+};
 
+export default class GlobalPrimaryActions extends PureComponent<Props> {
   static defaultProps = {
     linkComponent: DefaultLinkComponent,
   };

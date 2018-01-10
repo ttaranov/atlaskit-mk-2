@@ -1,6 +1,7 @@
 // @flow
+
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import type { ComponentType, Node } from 'react';
 import { AnalyticsDecorator } from '@atlaskit/analytics';
 import isReactElement from './isReactElement';
 import { QS_ANALYTICS_EV_SUBMIT } from './constants';
@@ -9,15 +10,15 @@ const escapeRegexString = regexString =>
   regexString.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const matchQsEvents = RegExp(`${escapeRegexString(QS_ANALYTICS_EV_SUBMIT)}`);
 
-export default WrappedQuickSearch =>
-  class extends Component {
-    static propTypes = {
-      /** Search results in the form of AkNavigationItemGroups containing Result components */
-      children: PropTypes.node,
-      /** Value of the search input field */
-      value: PropTypes.string,
-    };
+type Props = {
+  /** Search results in the form of AkNavigationItemGroups containing Result components */
+  children: Node,
+  /** Value of the search input field */
+  value: string,
+};
 
+export default (WrappedQuickSearch: ComponentType<*>) =>
+  class extends Component<Props> {
     static defaultProps = {
       children: [],
       value: '',

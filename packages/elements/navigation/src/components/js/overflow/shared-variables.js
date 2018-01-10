@@ -12,7 +12,7 @@ export const overflowGroupNamespace = prefix('group_ns');
 export const dropdownHeight = gridSize * 5;
 export const reservedGapHeight = gridSize * 4;
 
-export const isArrayFilled = (testArray: []): boolean => {
+export const isArrayFilled = (testArray: mixed[]): boolean => {
   // Note: we can't use a simple testArray.length check here because it is a set-length
   // array; We also can't use .filter(Boolean).length because that skips any undefined items.
   for (let i = 0; i < testArray.length; i++) {

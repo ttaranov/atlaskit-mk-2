@@ -1,5 +1,4 @@
 // @flow
-
 import styled from 'styled-components';
 import { gridSize } from '../../shared-variables';
 

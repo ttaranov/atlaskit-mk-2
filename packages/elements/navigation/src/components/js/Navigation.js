@@ -1,6 +1,6 @@
 // @flow
 import '@atlaskit/polyfills/object-assign';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node, type ComponentType } from 'react';
 import { getTheme } from '@atlaskit/theme';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
@@ -9,7 +9,7 @@ import NavigationGlobalNavigationWrapper from '../styled/NavigationGlobalNavigat
 import NavigationContainerNavigationWrapper from '../styled/NavigationContainerNavigationWrapper';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import Resizer from './Resizer';
-import type { ReactElement, ReactClass, IconAppearance } from '../../types';
+import type { IconAppearance } from '../../types';
 import type { Provided } from '../../theme/types';
 import Spacer from './Spacer';
 import {
@@ -35,50 +35,50 @@ const warnIfCollapsedPropsAreInvalid = ({ isCollapsible, isOpen }) => {
 
 const defaultWidth = globalOpenWidth() + containerOpenWidth;
 
-type resizeObj = {|
+type resizeObj = {
   width: number,
-  isOpen: boolean
-|}
+  isOpen: boolean,
+};
 
-type Props = {|
+type Props = {
   /** Elements to be displayed in the ContainerNavigationComponent */
-  children?: ReactElement,
+  children?: Node,
   /** Theme object to be used to color the navigation container. */
   containerTheme?: Provided,
   /** Component(s) to be rendered as the header of the container.  */
-  containerHeaderComponent?: () => ReactElement[],
+  containerHeaderComponent?: () => Array<Node>,
   /** Standard React ref for the container navigation scrollable element. */
-  containerScrollRef?: (ReactElement) => void,
+  containerScrollRef?: Node => void,
   /** Location to pass in an array of drawers (AkCreateDrawer, AkSearchDrawer, AkCustomDrawer)
-  to be rendered. There is no decoration done to the components passed in here. */
-  drawers?: ReactElement[],
+   to be rendered. There is no decoration done to the components passed in here. */
+  drawers?: Array<Node>,
   /** Theme object to be used to color the global container. */
   globalTheme?: Provided,
   /** Icon to be used as the 'create' icon. onCreateDrawerOpen is called when it
-  is clicked. */
-  globalCreateIcon?: ReactElement,
+   is clicked. */
+  globalCreateIcon?: Node,
   /** Icon to be displayed at the top of the GlobalNavigation. This is wrapped in
-  the linkComponent. */
-  globalPrimaryIcon?: ReactElement,
+   the linkComponent. */
+  globalPrimaryIcon?: Node,
   /** Appearance of globalPrimaryIcon for shape styling of drop shadows */
   globalPrimaryIconAppearance?: IconAppearance,
   /** Link to be passed to the linkComponent that wraps the globalCreateIcon. */
   globalPrimaryItemHref?: string,
   /** Icon to be used as the 'create' icon. onSearchDrawerOpen is called when it
-  is clicked. */
-  globalSearchIcon?: ReactElement,
+   is clicked. */
+  globalSearchIcon?: Node,
   /** A list of nodes to be rendered as the global primary actions. They appear
-  directly underneath the global primary icon. This must not exceed three nodes */
-  globalPrimaryActions?: ReactElement[],
+   directly underneath the global primary icon. This must not exceed three nodes */
+  globalPrimaryActions?: Array<Node>,
   /** An array of elements to be displayed at the bottom of the global component.
   These should be icons or other small elements. There must be no more than five.
   Secondary Actions will not be visible when nav is collapsed. */
-  globalSecondaryActions?: ReactElement[],
+  globalSecondaryActions?: Array<Node>,
   /** Whether to display a scroll hint shadow at the top of the ContainerNavigation
    * wrapper. */
   hasScrollHintTop?: boolean,
   /** Set whether collapse should be allowed. If false, the nav cannot be dragged
-  to be smaller. */
+   to be smaller. */
   isCollapsible?: boolean,
   /** Set whether the nav is collapsed or not. Note that this is never controlled
   internally as state, so if it is collapsible, you need to manually listen to onResize
@@ -90,11 +90,11 @@ type Props = {|
   /** Causes leftmost navigation section to be slightly wider to accommodate macOS buttons. */
   isElectronMac: boolean,
   /** A component to be used as a link. By Default this is an anchor. when a href
-  is passed to it, and otherwise is a button. */
-  linkComponent?: ReactClass,
+   is passed to it, and otherwise is a button. */
+  linkComponent?: ComponentType<*>,
   /** Function called at the end of a resize event. It is called with an object
-  containing a width and an isOpen. These can be used to update the props of Navigation. */
-  onResize?: (obj: resizeObj) => void,
+   containing a width and an isOpen. These can be used to update the props of Navigation. */
+  onResize?: (resizeState: resizeObj) => void,
   /** Function to be called when a resize event starts. */
   onResizeStart?: () => void,
   /** Function called when the globalCreateIcon is clicked. */
@@ -111,21 +111,21 @@ type Props = {|
   are animated. The string is any valid css height value */
   topOffset?: number,
   /** Width of the navigation. Width cannot be reduced below the minimum, and the
-  collapsed with will be respected above the provided width. */
+   collapsed with will be respected above the provided width. */
   width?: number,
 
   /** todo */
   // isCreateDrawerOpen: boolean,
   // isSearchDrawerOpen: boolean,
-|}
+};
 
-type State = {|
+type State = {
   containerTheme: Provided,
   globalTheme: Provided,
   isResizing: boolean,
   isTogglingIsOpen: boolean,
   resizeDelta: number,
-|}
+};
 
 // NOTE: Dark mode is a user preference that takes precedence over provided themes
 function defaultContainerTheme(containerTheme, mode) {
@@ -145,12 +145,7 @@ function defaultGlobalTheme(globalTheme, mode) {
   return globalTheme || presets.global;
 }
 
-export default class Navigation extends PureComponent {
-  /* eslint-disable react/sort-comp */
-  props: Props
-  state: State
-  /* eslint-enable react/sort-comp */
-
+export default class Navigation extends PureComponent<Props, State> {
   static defaultProps = {
     drawers: [],
     globalPrimaryIconAppearance: 'round',
@@ -161,7 +156,7 @@ export default class Navigation extends PureComponent {
     isElectronMac: false,
     linkComponent: DefaultLinkComponent,
     onCreateDrawerOpen: () => {},
-    onResize: (state) => {}, // eslint-disable-line no-unused-vars
+    onResize: () => {},
     onResizeStart: () => {},
     onToggleStart: () => {},
     onToggleEnd: () => {},
@@ -187,13 +182,17 @@ export default class Navigation extends PureComponent {
     warnIfCollapsedPropsAreInvalid(props);
   }
 
-  spacerRef: ?Node
+  spacerRef: ?Node;
 
   // It is possible that Navigation.width will not be supplied by the product, which means the
   // default width will be used, which assumes a non-Electron environment. We update the width
   // for this specific case in componentDidMount.
   componentDidMount() {
-    if (this.props.isElectronMac && this.props.isOpen && this.props.width === defaultWidth) {
+    if (
+      this.props.isElectronMac &&
+      this.props.isOpen &&
+      this.props.width === defaultWidth
+    ) {
       this.props.onResize({
         isOpen: true,
         width: globalOpenWidth(true) + containerOpenWidth,
@@ -239,7 +238,10 @@ export default class Navigation extends PureComponent {
     }
 
     // Snap open if in between the closed breakpoint and the standard width
-    if (width > resizeClosedBreakpointResult && width < standardOpenWidth(isElectronMac)) {
+    if (
+      width > resizeClosedBreakpointResult &&
+      width < standardOpenWidth(isElectronMac)
+    ) {
       return standardOpenWidth(isElectronMac);
     }
 
@@ -248,30 +250,32 @@ export default class Navigation extends PureComponent {
     return width;
   };
 
-  // eslint-disable-next-line react/sort-comp
   onResize = (resizeDelta: number) => {
     this.setState({
       isResizing: true,
       resizeDelta,
     });
-  }
+  };
 
   onResizeEnd = () => {
     const width = this.getRenderedWidth();
     const snappedWidth = this.getSnappedWidth(width);
 
     const resizeState = {
-      isOpen: (snappedWidth >= standardOpenWidth(this.props.isElectronMac)),
+      isOpen: snappedWidth >= standardOpenWidth(this.props.isElectronMac),
       width: snappedWidth,
     };
 
-    this.setState({
-      resizeDelta: 0,
-      isResizing: false,
-    }, function callOnResizeAfterSetState() {
-      this.props.onResize(resizeState);
-    });
-  }
+    this.setState(
+      {
+        resizeDelta: 0,
+        isResizing: false,
+      },
+      function callOnResizeAfterSetState() {
+        this.props.onResize(resizeState);
+      },
+    );
+  };
 
   getRenderedWidth = () => {
     const { isOpen, width, isCollapsible, isElectronMac } = this.props;
@@ -279,28 +283,25 @@ export default class Navigation extends PureComponent {
     const minWidth = isCollapsible
       ? containerClosedWidth(isElectronMac)
       : standardOpenWidth(isElectronMac);
-    return Math.max(
-      minWidth,
-      baselineWidth + this.state.resizeDelta
-    );
-  }
-
-  props: ReactElement
+    return Math.max(minWidth, baselineWidth + this.state.resizeDelta);
+  };
 
   triggerResizeButtonHandler = (resizeState: resizeObj) => {
     if (resizeState) {
       this.props.onResize(resizeState);
     }
-  }
+  };
 
-  registerSpacerRef = (spacerRef: Node) => { this.spacerRef = spacerRef; }
+  registerSpacerRef = (spacerRef: Node) => {
+    this.spacerRef = spacerRef;
+  };
 
   onSpacerTransitionEnd = (e: TransitionEvent) => {
     if (!this.spacerRef || e.target !== this.spacerRef) {
       return;
     }
     this.props.onToggleEnd();
-  }
+  };
 
   render() {
     const {
@@ -343,22 +344,27 @@ export default class Navigation extends PureComponent {
     const globalOpenWidthResult = globalOpenWidth(isElectronMac);
     const containerClosedWidthResult = containerClosedWidth(isElectronMac);
 
-    const isGlobalNavPartiallyCollapsed = isResizing &&
-      renderedWidth < (globalOpenWidthResult + containerClosedWidthResult);
+    const isGlobalNavPartiallyCollapsed =
+      isResizing &&
+      renderedWidth < globalOpenWidthResult + containerClosedWidthResult;
 
     // Cover over the global navigation when it is partially collapsed
-    const containerOffsetX = isGlobalNavPartiallyCollapsed ?
-      renderedWidth - (globalOpenWidthResult + containerClosedWidthResult) : 0;
+    const containerOffsetX = isGlobalNavPartiallyCollapsed
+      ? renderedWidth - (globalOpenWidthResult + containerClosedWidthResult)
+      : 0;
 
     // always show global navigation if it is not collapsible
     const showGlobalNavigation = !isCollapsible || isOpen || isResizing;
 
-    const containerWidth = showGlobalNavigation ?
-      Math.max(renderedWidth - globalOpenWidthResult, containerClosedWidthResult) :
-      containerClosedWidthResult;
+    const containerWidth = showGlobalNavigation
+      ? Math.max(
+          renderedWidth - globalOpenWidthResult,
+          containerClosedWidthResult,
+        )
+      : containerClosedWidthResult;
 
-    const isContainerCollapsed = !showGlobalNavigation ||
-      containerWidth === containerClosedWidthResult;
+    const isContainerCollapsed =
+      !showGlobalNavigation || containerWidth === containerClosedWidthResult;
     const shouldAnimateContainer = isTogglingIsOpen && !isResizing;
 
     // When the navigation is not collapsible, and the width is expanded.
@@ -404,7 +410,7 @@ export default class Navigation extends PureComponent {
             shouldAnimate={shouldAnimateContainer}
             width={renderedWidth}
           >
-            <NavigationFixedContainer topOffset={topOffset} >
+            <NavigationFixedContainer topOffset={topOffset}>
               {globalNavigation}
               <NavigationContainerNavigationWrapper
                 horizontalOffset={containerOffsetX}

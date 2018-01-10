@@ -1,6 +1,5 @@
 // @flow
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node } from 'react';
 
 export const maxSecondaryItems = 5;
 
@@ -13,17 +12,17 @@ function checkIfTooManySecondaryActions(actions = []) {
   }
 }
 
-export default class GlobalSecondaryActions extends PureComponent {
-  static propTypes = {
-    actions: PropTypes.arrayOf(PropTypes.node).isRequired,
-  };
+type Props = {
+  actions: Array<Node>,
+};
 
-  constructor(props, context) {
+export default class GlobalSecondaryActions extends PureComponent<Props> {
+  constructor(props: Props, context: {}) {
     super(props, context);
     checkIfTooManySecondaryActions(props.actions);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     checkIfTooManySecondaryActions(nextProps.actions);
   }
 
@@ -32,6 +31,7 @@ export default class GlobalSecondaryActions extends PureComponent {
       <div>
         {this.props.actions.map(
           (action, index) =>
+            // eslint-disable-next-line react/no-array-index-key
             index < maxSecondaryItems ? <div key={index}>{action}</div> : null,
         )}
       </div>
