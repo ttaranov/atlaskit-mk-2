@@ -11,8 +11,8 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Luke B",
-    "Nadia M"
+    "Ajay N Mathur",
+    "Luke B"
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {

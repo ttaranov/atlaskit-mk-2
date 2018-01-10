@@ -8,6 +8,7 @@ dist
 coverage/
 **/.netlify
 junit.xml
+test-reports/
 
 # ignore yarn.locks generated in packages
 packages/**/**/yarn.lock
