@@ -205,34 +205,6 @@ describe('SearchResults', () => {
     expect(group.find(ResultBase).prop('resultId')).toEqual('search_people');
   });
 
-  it('should only render result types that it understands', () => {
-    const props = {
-      query: '',
-      recentlyViewedItems: [
-        {
-          type: ResultType.Object,
-          name: 'name',
-          containerName: 'container',
-          href: 'href',
-          avatarUrl: 'avatarUrl',
-          resultId: 'rv1',
-        },
-        {
-          type: 'unknown' as ResultType,
-          name: 'name',
-          containerName: 'container',
-          href: 'href',
-          avatarUrl: 'avatarUrl',
-          resultId: 'rv2',
-        },
-      ],
-    };
-
-    const wrapper = render(props);
-    const group = findGroup(Group.Recent, wrapper);
-    expect(group.children()).toHaveLength(1);
-  });
-
   it('should not render recent results group when there are no recent results', () => {
     const props = {
       query: 'aslfkj',

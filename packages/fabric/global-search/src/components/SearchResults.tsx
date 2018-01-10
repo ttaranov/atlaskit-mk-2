@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ComponentClass } from 'react';
 import {
   AkNavigationItemGroup,
   quickSearchResultTypes,
@@ -8,6 +7,7 @@ import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
 import { Result, ResultType } from '../model/Result';
+import { ComponentClass } from 'react';
 
 const {
   PersonResult,
@@ -16,27 +16,32 @@ const {
   ResultBase,
 } = quickSearchResultTypes;
 
-const resultTypesToComponents = new Map<ResultType, ComponentClass>([
-  [ResultType.Person, PersonResult],
-  [ResultType.Object, ObjectResult],
-  [ResultType.Container, ContainerResult],
-]);
-
-const isNotNull = n => n !== null;
+function getResultComponent(resultType: ResultType): ComponentClass {
+  switch (resultType) {
+    case ResultType.Container: {
+      return ContainerResult;
+    }
+    case ResultType.Object: {
+      return ObjectResult;
+    }
+    case ResultType.Person: {
+      return PersonResult;
+    }
+    default: {
+      // Make the TS compiler verify that all enums have been matched
+      const _nonExhaustiveMatch: never = resultType;
+      throw new Error(
+        `Non-exhaustive match for result type: ${_nonExhaustiveMatch}`,
+      );
+    }
+  }
+}
 
 function resultsToComponents(results: Result[]) {
-  return results
-    .map(result => {
-      const Result = resultTypesToComponents.get(result.type);
-      if (!Result) {
-        // tslint:disable-next-line
-        console.error(`Unknown result type: ${result.type}`);
-        return null;
-      }
-
-      return <Result key={result.resultId} {...result} />;
-    })
-    .filter(isNotNull);
+  return results.map(result => {
+    const Result = getResultComponent(result.type);
+    return <Result key={result.resultId} {...result} />;
+  });
 }
 
 const searchConfluenceItem = (query: string) => (
@@ -70,8 +75,7 @@ const searchPeopleItem = () => (
 );
 
 const renderRecent = (results: Result[]) => {
-  const resultComponents = resultsToComponents(results);
-  if (resultComponents.length === 0) {
+  if (results.length === 0) {
     return null;
   }
 
@@ -81,7 +85,7 @@ const renderRecent = (results: Result[]) => {
       key="recent"
       test-selector="recent"
     >
-      {resultComponents}
+      {resultsToComponents(results)}
     </AkNavigationItemGroup>
   );
 };
