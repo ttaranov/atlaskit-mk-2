@@ -5,6 +5,7 @@ export interface MediaCollectionFileItemDetails extends FileDetails {
 }
 
 export interface MediaCollectionFileItem extends FileItem {
+  insertedAt: number;
   details: MediaCollectionFileItemDetails;
 }
 
@@ -13,6 +14,7 @@ export interface MediaCollectionLinkItemDetails extends LinkDetails {
 }
 
 export interface MediaCollectionLinkItem extends LinkItem {
+  insertedAt: number;
   details: MediaCollectionLinkItemDetails;
 }
 

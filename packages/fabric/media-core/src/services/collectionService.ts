@@ -15,6 +15,7 @@ export interface RemoteCollectionFileItem {
   readonly id: string;
   readonly occurrenceKey: string;
   readonly type: 'file';
+  readonly insertedAt: number;
   readonly details: RemoteCollectionFileItemDetails;
 }
 
@@ -28,6 +29,7 @@ export interface RemoteCollectionLinkItem {
   readonly id: string;
   readonly occurrenceKey: string;
   readonly type: 'link';
+  readonly insertedAt: number;
   readonly details: RemoteCollectionLinkItemDetails;
 }
 
@@ -60,11 +62,12 @@ export class MediaCollectionService implements CollectionService {
   private mapToMediaCollectionItem(
     item: RemoteCollectionItem,
   ): MediaCollectionItem {
-    const { id, type, occurrenceKey, details } = item;
+    const { id, type, occurrenceKey, insertedAt, details } = item;
     if (type === 'file') {
       const fileDetails = details as RemoteCollectionFileItemDetails;
       return {
         type: 'file',
+        insertedAt,
         details: {
           id,
           occurrenceKey,
@@ -75,6 +78,7 @@ export class MediaCollectionService implements CollectionService {
       const linkDetails = details as RemoteCollectionLinkItemDetails;
       return {
         type: 'link',
+        insertedAt,
         details: {
           id,
           type: 'link',
