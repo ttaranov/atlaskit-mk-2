@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 import { whenCollapsed } from '../../theme/util';
 import { gridSize } from '../../shared-variables';
@@ -13,7 +14,7 @@ const NavigationItemAction = styled.div`
     flex-shrink: 1;
     margin: 0;
     opacity: 0;
-  `}
+  `};
 `;
 
 NavigationItemAction.displayName = 'NavigationItemAction';

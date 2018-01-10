@@ -1,3 +1,4 @@
+// @flow
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
@@ -21,7 +22,7 @@ export default class ResultBase extends PureComponent {
     /** Text to appear to the right of the text. It has a lower font-weight. */
     caption: PropTypes.string,
     /** Content to be shown after the main content. Shown to the right of content
-    (or to the left in RTL mode). */
+     (or to the left in RTL mode). */
     elemAfter: PropTypes.node,
     /** Location to link out to on click. */
     href: PropTypes.string,
@@ -30,7 +31,7 @@ export default class ResultBase extends PureComponent {
     /** Reduces padding and font size. */
     isCompact: PropTypes.bool,
     /** Set whether the item should be highlighted as selected. Selected items have
-    a different background color. */
+     a different background color. */
     isSelected: PropTypes.bool,
     /** Triggered by mouseClick event. Called with { `resultId`,  `type` }. */
     onClick: PropTypes.func,
@@ -39,7 +40,8 @@ export default class ResultBase extends PureComponent {
     /** Standard onMouseLeave event. */
     onMouseLeave: PropTypes.func,
     /** Unique ID of the result. This is passed as a parameter to certain callbacks */
-    resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+      .isRequired,
     /** Text to be shown alongside the main `text`. */
     subText: PropTypes.string,
     /** Main text to be displayed as the item. */
@@ -49,7 +51,7 @@ export default class ResultBase extends PureComponent {
 
     /** Fires an analytics event */
     sendAnalytics: PropTypes.func,
-  }
+  };
 
   static defaultProps = {
     isCompact: false,
@@ -60,25 +62,29 @@ export default class ResultBase extends PureComponent {
     onMouseLeave: noOp,
     sendAnalytics: noOp,
     type: BASE_RESULT_TYPE,
-  }
+  };
 
   handleClick = () => {
-    const { analyticsData, onClick, resultId, sendAnalytics, type } = this.props;
-    sendAnalytics(
-      QS_ANALYTICS_EV_SUBMIT,
-      {
-        ...analyticsData,
-        method: 'click',
-        type,
-      }
-    );
+    const {
+      analyticsData,
+      onClick,
+      resultId,
+      sendAnalytics,
+      type,
+    } = this.props;
+    sendAnalytics(QS_ANALYTICS_EV_SUBMIT, {
+      ...analyticsData,
+      method: 'click',
+      type,
+    });
     onClick({ resultId, type });
-  }
+  };
 
-  handleMouseEnter = () => this.props.onMouseEnter({
-    resultId: this.props.resultId,
-    type: this.props.type,
-  });
+  handleMouseEnter = () =>
+    this.props.onMouseEnter({
+      resultId: this.props.resultId,
+      type: this.props.type,
+    });
 
   render() {
     const {

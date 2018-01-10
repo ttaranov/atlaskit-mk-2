@@ -1,3 +1,4 @@
+// @flow
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
@@ -17,7 +18,7 @@ export default class PersonResult extends PureComponent {
     /** Src URL of the image to be used as the result's icon */
     avatarUrl: PropTypes.string,
     /** Content to be shown after the main content. Shown to the right of content
-    (or to the left in RTL mode). */
+     (or to the left in RTL mode). */
     elemAfter: PropTypes.node,
     /** Location to link out to on click. */
     href: PropTypes.string,
@@ -26,10 +27,10 @@ export default class PersonResult extends PureComponent {
     /** Reduces padding and font size. */
     isCompact: PropTypes.bool,
     /** Set whether the item should be highlighted as selected. Selected items have
-    a different background color. */
+     a different background color. */
     isSelected: PropTypes.bool,
     /** A user's custom handle. Appears to the right of their `name`. It has a lower
-    font-weight. */
+     font-weight. */
     mentionName: PropTypes.string,
     /** A character with which to prefix the `mentionName`. Defaults to '@' */
     mentionPrefix: PropTypes.string,
@@ -46,10 +47,11 @@ export default class PersonResult extends PureComponent {
     /** Sets the appearance of the presence indicator */
     presenceState: PropTypes.oneOf(['online', 'busy', 'offline']),
     /** Unique ID of the result. This is passed as a parameter to certain callbacks */
-    resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+      .isRequired,
     /** Type of the result. This is passed as a parameter to certain callbacks. */
     type: PropTypes.string,
-  }
+  };
 
   static defaultProps = {
     isSelected: false,
@@ -61,25 +63,17 @@ export default class PersonResult extends PureComponent {
     presenceState: null, // No presence indicator by default
   };
 
-  getMention = () => (
+  getMention = () =>
     this.props.mentionName
       ? `${this.props.mentionPrefix}${this.props.mentionName}`
-      : null
-  );
+      : null;
 
   getAvatar = () => (
-    <Avatar
-      presence={this.props.presenceState}
-      src={this.props.avatarUrl}
-    />
+    <Avatar presence={this.props.presenceState} src={this.props.avatarUrl} />
   );
 
   render() {
-    const {
-      name,
-      presenceMessage,
-      ...resultBaseProps
-    } = this.props;
+    const { name, presenceMessage, ...resultBaseProps } = this.props;
     return (
       <ResultBase
         {...resultBaseProps}

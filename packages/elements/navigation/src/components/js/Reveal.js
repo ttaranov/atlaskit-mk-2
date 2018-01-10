@@ -1,3 +1,4 @@
+// @flow
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import RevealInner from '../styled/RevealInner';
@@ -8,7 +9,7 @@ export default class Reveal extends PureComponent {
     isOpen: PropTypes.bool.isRequired,
     openHeight: PropTypes.number.isRequired,
     shouldAnimate: PropTypes.bool.isRequired,
-  }
+  };
 
   constructor(props, context) {
     super(props, context);
@@ -68,7 +69,7 @@ export default class Reveal extends PureComponent {
     this.setState({
       shouldRenderChildren: false,
     });
-  }
+  };
 
   render() {
     const { children, isOpen, openHeight, shouldAnimate } = this.props;

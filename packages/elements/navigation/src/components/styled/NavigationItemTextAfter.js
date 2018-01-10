@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 import { whenCollapsed } from '../../theme/util';
 
@@ -7,7 +8,7 @@ const NavigationItemTextAfter = styled.div`
 
   ${whenCollapsed`
     opacity: 0;
-  `}
+  `};
 `;
 
 NavigationItemTextAfter.displayName = 'NavigationItemTextAfter';

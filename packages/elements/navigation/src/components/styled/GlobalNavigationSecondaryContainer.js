@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 import { globalItemSizes } from '../../shared-variables';
 
@@ -13,5 +14,6 @@ const GlobalNavigationSecondaryContainer = styled.div`
   width: ${globalItemSizes.small}px;
 `;
 
-GlobalNavigationSecondaryContainer.displayName = 'GlobalNavigationSecondaryContainer';
+GlobalNavigationSecondaryContainer.displayName =
+  'GlobalNavigationSecondaryContainer';
 export default GlobalNavigationSecondaryContainer;

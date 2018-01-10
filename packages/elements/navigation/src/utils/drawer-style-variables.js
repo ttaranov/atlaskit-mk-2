@@ -1,3 +1,4 @@
+// @flow
 import { gridSize } from '../shared-variables';
 
 const fullWidth = '100vw';

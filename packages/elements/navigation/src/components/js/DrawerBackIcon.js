@@ -1,3 +1,4 @@
+// @flow
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import DrawerBackIconInner from '../styled/DrawerBackIconInner';
@@ -11,16 +12,15 @@ export default class DrawerBackIcon extends PureComponent {
 
   static defaultProps = {
     isVisible: false,
-  }
+  };
 
   render() {
-    const {
-      children,
-      isVisible,
-    } = this.props;
+    const { children, isVisible } = this.props;
     return (
       <DrawerBackIconOuter>
-        <DrawerBackIconInner isVisible={isVisible}>{children}</DrawerBackIconInner>
+        <DrawerBackIconInner isVisible={isVisible}>
+          {children}
+        </DrawerBackIconInner>
       </DrawerBackIconOuter>
     );
   }

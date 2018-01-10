@@ -1,10 +1,12 @@
+// @flow
 import styled from 'styled-components';
 import { drawerBackIconSize } from '../../utils/drawer-style-variables';
 import { getProvided } from '../../theme/util';
 
 const DrawerBackIconOuter = styled.div`
   background-color: red;
-  background-color: ${({ theme }) => getProvided(theme).item.default.background};
+  background-color: ${({ theme }) =>
+    getProvided(theme).item.default.background};
   border-radius: 50%;
   color: ${({ theme }) => getProvided(theme).text};
   cursor: pointer;
@@ -14,7 +16,8 @@ const DrawerBackIconOuter = styled.div`
   width: ${drawerBackIconSize}px;
 
   &:active {
-    background-color: ${({ theme }) => getProvided(theme).item.active.background};
+    background-color: ${({ theme }) =>
+      getProvided(theme).item.active.background};
   }
 `;
 

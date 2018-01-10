@@ -1,10 +1,10 @@
+// @flow
 import styled from 'styled-components';
 import { layout } from '../../shared-variables';
 import { isElectronMac, electronMacTopPadding } from '../../theme/util';
 
-const getTopPadding = (props) => (
-  layout.padding.top + (isElectronMac(props.theme) ? electronMacTopPadding : 0)
-);
+const getTopPadding = props =>
+  layout.padding.top + (isElectronMac(props.theme) ? electronMacTopPadding : 0);
 
 const DrawerMain = styled.div`
   box-sizing: border-box;

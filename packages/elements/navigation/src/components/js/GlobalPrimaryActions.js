@@ -1,3 +1,4 @@
+// @flow
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import GlobalItem from './GlobalItem';
@@ -23,7 +24,7 @@ export default class GlobalPrimaryActions extends PureComponent {
 
   static defaultProps = {
     linkComponent: DefaultLinkComponent,
-  }
+  };
 
   render() {
     const {
@@ -39,7 +40,7 @@ export default class GlobalPrimaryActions extends PureComponent {
     } = this.props;
     return (
       <GlobalPrimaryActionsInner>
-        {primaryIcon ?
+        {primaryIcon ? (
           <GlobalPrimaryActionsPrimaryItem>
             <GlobalItem
               href={primaryItemHref}
@@ -50,23 +51,23 @@ export default class GlobalPrimaryActions extends PureComponent {
               {primaryIcon}
             </GlobalItem>
           </GlobalPrimaryActionsPrimaryItem>
-        : null}
+        ) : null}
 
         <GlobalPrimaryActionsItemsWrapper>
           {actions ? (
             <GlobalPrimaryActionsList actions={actions} />
           ) : (
             <div>
-              {searchIcon ?
+              {searchIcon ? (
                 <DrawerTrigger onActivate={onSearchActivate}>
                   {searchIcon}
                 </DrawerTrigger>
-              : null}
-              {createIcon ?
+              ) : null}
+              {createIcon ? (
                 <DrawerTrigger onActivate={onCreateActivate}>
                   {createIcon}
                 </DrawerTrigger>
-              : null}
+              ) : null}
             </div>
           )}
         </GlobalPrimaryActionsItemsWrapper>
