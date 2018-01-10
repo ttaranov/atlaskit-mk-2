@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 10.7.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
 ## 10.6.0
 - [minor] Updated switcher icon [2815441](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2815441)
 
