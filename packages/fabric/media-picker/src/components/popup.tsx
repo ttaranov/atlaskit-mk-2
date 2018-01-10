@@ -1,4 +1,9 @@
-import { AuthProvider, UploadParams } from '@atlaskit/media-core';
+import {
+  AuthProvider,
+  UploadParams,
+  ContextFactory,
+  Context,
+} from '@atlaskit/media-core';
 import { Store } from 'redux';
 import * as React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
@@ -59,6 +64,8 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
   implements PopupUploadEventEmitter {
   private readonly container: HTMLElement;
   private readonly store: Store<State>;
+  private readonly userContext: Context;
+
   private uploadParams: UploadParams;
 
   constructor(
@@ -94,6 +101,11 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
       ...defaultUploadParams,
       ...config.uploadParams,
     };
+
+    this.userContext = ContextFactory.create({
+      serviceHost: apiUrl,
+      authProvider: userAuthProvider,
+    });
 
     const popup = this.renderPopup();
 
@@ -150,7 +162,7 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
 
   private renderPopup(): HTMLElement {
     const container = document.createElement('div');
-    render(<App store={this.store} />, container);
+    render(<App context={this.userContext} store={this.store} />, container);
     return container;
   }
 }

@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { Dispatch, Store } from 'redux';
 import { connect, Provider } from 'react-redux';
 
-import { AuthProvider, Context, ContextFactory } from '@atlaskit/media-core';
+import { AuthProvider, Context } from '@atlaskit/media-core';
 import ModalDialog from '@atlaskit/modal-dialog';
 
 import { ServiceName, State } from '../domain';
@@ -74,7 +74,8 @@ export interface AppDispatchProps {
 }
 
 export interface AppOwnProps {
-  store: Store<State>;
+  readonly context: Context;
+  readonly store: Store<State>;
 }
 
 export type AppProps = AppStateProps & AppOwnProps & AppDispatchProps;
@@ -87,7 +88,6 @@ export class App extends Component<AppProps, AppState> {
   private readonly mpBrowser: MpBrowser;
   private readonly mpDropzone: MpDropzone;
   private readonly mpBinary: MpBinary;
-  private readonly mpContext: Context;
 
   constructor(props: AppProps) {
     super(props);
@@ -142,11 +142,6 @@ export class App extends Component<AppProps, AppState> {
     this.mpBinary.on('upload-end', onUploadEnd);
     this.mpBinary.on('upload-error', onUploadError);
 
-    this.mpContext = ContextFactory.create({
-      serviceHost: apiUrl,
-      authProvider: userAuthProvider,
-    });
-
     onStartApp(uploadId => {
       this.mpBrowser.cancel(uploadId);
       this.mpDropzone.cancel(uploadId);
@@ -191,7 +186,7 @@ export class App extends Component<AppProps, AppState> {
       return (
         <UploadView
           mpBrowser={this.mpBrowser}
-          context={this.mpContext}
+          context={this.props.context}
           recentsCollection={RECENTS_COLLECTION}
         />
       );

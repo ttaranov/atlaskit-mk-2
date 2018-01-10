@@ -4,7 +4,12 @@ import * as React from 'react';
 import { ReactElement, Component, ReactNode } from 'react';
 import ImageIcon from '@atlaskit/icon/glyph/image';
 import DynamicTable, { HeadType } from '@atlaskit/dynamic-table';
-import { Context, FileItem } from '@atlaskit/media-core';
+import {
+  Context,
+  FileItem,
+  MediaCollectionItem,
+  MediaCollectionFileItem,
+} from '@atlaskit/media-core';
 
 import { MediaApiFetcher } from '../../tools/fetcher/fetcher';
 import {
@@ -119,6 +124,12 @@ export type MediaListItemsState = {
   isLoading: boolean;
 };
 
+function isMediaCollectionFileItem(
+  item: MediaCollectionItem,
+): item is MediaCollectionFileItem {
+  return item.type === 'file';
+}
+
 export class MediaListItems extends Component<
   MediaListItemsProps,
   MediaListItemsState
@@ -132,16 +143,16 @@ export class MediaListItems extends Component<
     const { collectionName, context } = this.props;
     const fetcher = new MediaApiFetcher();
 
-    context.config
-      .authProvider({
-        collectionName,
-      })
-      .then(auth => {
-        fetcher
-          .getRecentFiles(context.config.serviceHost, auth, 30, 'desc')
-          .then(recentItems => {
-            const items = recentItems.contents.map(item => {
-              const id = item.id;
+    context
+      .getMediaCollectionProvider(collectionName, 30)
+      .observable()
+      .subscribe({
+        next: ({ items: recentItems }) => {
+          const items = recentItems
+            .filter(isMediaCollectionFileItem)
+            .map(item => {
+              const { insertedAt, details } = item;
+              const id = details.id!;
               const mediaItem: FileItem = { type: 'file', details: { id } };
 
               context
@@ -162,16 +173,16 @@ export class MediaListItems extends Component<
 
               return {
                 id,
-                fileName: item.details.name,
-                timestamp: item.insertedAt,
-                size: item.details.size,
+                fileName: details.name!,
+                timestamp: insertedAt,
+                size: details.size!,
                 progress: 1.0,
                 isSelected: false,
               };
             });
 
-            this.setState({ items, isLoading: false });
-          });
+          this.setState({ items, isLoading: false });
+        },
       });
   }
 

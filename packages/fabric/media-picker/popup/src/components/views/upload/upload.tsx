@@ -126,13 +126,8 @@ export class StatelessUploadView extends Component<
   }
 
   render() {
-    const cards = this.cards();
-
-    if (cards.length > 0) {
-      return this.recentView();
-    } else {
-      return this.emptyView();
-    }
+    // TODO: render emptyView given no items
+    return this.recentView();
   }
 
   emptyView() {
@@ -203,12 +198,12 @@ export class StatelessUploadView extends Component<
 
   renderGrid = () => {
     const { selectedRecentFiles } = this;
-    const { context } = this.props;
+    const { context, recentsCollection } = this.props;
 
     return (
       <CardList
         context={context}
-        collectionName="recents"
+        collectionName={recentsCollection}
         layout="grid"
         pageSize={30}
         onCardClick={this.onCardClick}

@@ -20,13 +20,12 @@ export const getFilesInRecentsCollection = (
   userAuthProvider: AuthProvider,
 ) => (store: Store<State>) => (next: Dispatch<Action>) => (action: Action) => {
   if (isGetFilesInRecentsCollectionAction(action)) {
-    const { apiUrl } = store.getState();
-
-    userAuthProvider()
-      .then(auth => fetcher.getRecentFiles(apiUrl, auth, 30, 'desc'))
-      .then(({ contents, nextInclusiveStartKey }) =>
-        store.dispatch(updateRecentFiles(contents, nextInclusiveStartKey)),
-      );
+    // const { apiUrl } = store.getState();
+    // userAuthProvider()
+    //   .then(auth => fetcher.getRecentFiles(apiUrl, auth, 30, 'desc'))
+    //   .then(({ contents, nextInclusiveStartKey }) =>
+    //     store.dispatch(updateRecentFiles(contents, nextInclusiveStartKey)),
+    //   );
   }
 
   return next(action);
