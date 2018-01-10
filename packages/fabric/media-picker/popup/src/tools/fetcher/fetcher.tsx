@@ -305,6 +305,7 @@ export class MediaApiFetcher implements Fetcher {
     const requestConfig = {
       url: `${baseUrl}`,
       params: {
+        // TODO Move these keys somewhere in config MSW-406
         api_key: 'lBOxhhz1BM62Y3JsK0iQv1pRYyOGUjR8',
         offset,
       },

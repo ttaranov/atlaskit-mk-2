@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Component } from 'react';
 import { StyledIcon, StyledSvgGroup, IconProps } from './styled';
 
+// TODO this file should be replaced with ak/icons icon MSW-404
+
 export class GiphyIcon extends Component<IconProps, {}> {
   render() {
     const { active } = this.props;
