@@ -29,6 +29,7 @@ export default function withRenderTarget(
     gatewayOrPortalChildRef: ElementRef<any> | null;
     static contextTypes = {
       gatewayRegistry: PropTypes.instanceOf(GatewayRegistry),
+      renderDescendantGateways: PropTypes.bool,
       ...analyticsContextTypes,
     };
     getWrappedComponentRef = (ref: ElementRef<any> | null): mixed => {
@@ -37,11 +38,14 @@ export default function withRenderTarget(
     render() {
       const { gatewayRegistry, ...analyticsContext } = this.context;
       const GatewayOrPortal = gatewayRegistry ? Gateway : Portal;
+      const shouldRender = this.context.renderDescendantGateways !== false;
+
       return (
         <GatewayOrPortal
           id={process.env.NODE_ENV === 'test' ? 'gateway-or-portal' : ''}
           into={target}
           withTransitionGroup={withTransitionGroup}
+          shouldRender={shouldRender}
         >
           <ContextProvider {...analyticsContext}>
             <WrappedComponent

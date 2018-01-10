@@ -36,6 +36,7 @@ export default class GatewayDest extends Component<Props, State> {
   componentWillUnmount() {
     this.gatewayRegistry.removeContainer(this.props.name);
   }
+
   render() {
     const { component, ...attrs } = this.props;
     delete attrs.name;
