@@ -85,7 +85,7 @@ const connectAnalytics = (
     render() {
       return (
         <WrappedComponent
-          addAnalyticsPayload={this.addAnalyticsPayload}
+          getAnalyticsPayload={this.getAnalyticsPayload}
           {...this.props}
         />
       );
