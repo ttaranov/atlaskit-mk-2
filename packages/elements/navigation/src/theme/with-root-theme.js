@@ -1,22 +1,19 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { itemThemeNamespace } from '@atlaskit/item';
 import memoizeOne from 'memoize-one';
 import createItemTheme from './map-navigation-theme-to-item-theme';
 import type { Provided, RootTheme } from './types';
-import type { ReactElement } from '../../src/types';
 import { rootKey } from './util';
 
 type Props = {
+  children?: Node,
+  isCollapsed: boolean,
   provided: Provided,
-  isCollapsed?: boolean,
-  children?: ReactElement,
 };
 
-export default class WithRootTheme extends PureComponent {
-  props: Props; // eslint-disable-line react/sort-comp
-
+export default class WithRootTheme extends PureComponent<Props> {
   static defaultProps = {
     isCollapsed: false,
   };
@@ -37,7 +34,7 @@ export default class WithRootTheme extends PureComponent {
       return {
         ...outerTheme,
         [rootKey]: theme,
-        [itemThemeNamespace]: createItemTheme(provided, isCollapsed),
+        [itemThemeNamespace]: createItemTheme(provided),
       };
     },
   );

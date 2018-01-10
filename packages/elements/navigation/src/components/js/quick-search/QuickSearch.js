@@ -1,7 +1,8 @@
 // @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withAnalytics } from '@atlaskit/analytics';
+
+import { type ResultData } from './results/types';
 import AkSearch from '../Search';
 
 import decorateWithAnalyticsData from './decorateWithAnalyticsData';
@@ -30,8 +31,12 @@ const flattenChildren = children =>
  * Get the result ID of a result by its index in the flatResults array
  * Returns null for a failed index or if resultId is empty|undefined
  */
-const getResultIdByIndex = (array, index) =>
-  array && array[index] && array[index].props && array[index].props.resultId;
+const getResultIdByIndex = (array: Array<any>, index: number | null) =>
+  array &&
+  index &&
+  array[index] &&
+  array[index].props &&
+  array[index].props.resultId;
 
 /**
  * Find a result in the flatResults array by its ID
@@ -73,29 +78,32 @@ const adjustIndex = (arrayLength, currentIndex, adjustment) => {
   return adjustedIndex >= 0 ? adjustedIndex : adjustedIndex + arrayLength;
 };
 
-export class QuickSearch extends Component {
-  static propTypes = {
-    /** Search results in the form of AkNavigationItemGroups containing Result components */
-    children: PropTypes.node,
-    /** Set search loading state */
-    isLoading: PropTypes.bool,
-    /** onBlur callback for search input */
-    onSearchBlur: PropTypes.func,
-    /** onInput callback for search input */
-    onSearchInput: PropTypes.func.isRequired,
-    /** onKeyDown callback for search input */
-    onSearchKeyDown: PropTypes.func,
-    /** Placeholder text for search input field */
-    placeholder: PropTypes.string,
-    /** Value of the search input field */
-    value: PropTypes.string,
-    /** Corresponds to the `resultId` of the selected result */
-    selectedResultId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+type Props = {
+  /** Search results in the form of AkNavigationItemGroups containing Result components */
+  children: Node,
+  /** Set search loading state */
+  isLoading: boolean,
+  /** onBlur callback for search input */
+  onSearchBlur: () => void,
+  /** onInput callback for search input */
+  onSearchInput: () => void,
+  /** onKeyDown callback for search input */
+  onSearchKeyDown: () => void,
+  /** Placeholder text for search input field */
+  placeholder: string,
+  /** Value of the search input field */
+  value: string,
+  /** Corresponds to the `resultId` of the selected result */
+  selectedResultId: number | string,
+  // Internal: injected by withAnalytics(). Fire a private analytics event
+  firePrivateAnalyticsEvent: (eventName: string, eventData?: {}) => {},
+};
 
-    // Internal: injected by withAnalytics(). Fire a private analytics event
-    firePrivateAnalyticsEvent: PropTypes.func,
-  };
+type State = {
+  selectedResultId: number | string | null,
+};
 
+export class QuickSearch extends Component<Props, State> {
   static defaultProps = {
     children: [],
     firePrivateAnalyticsEvent: noOp,
@@ -107,7 +115,9 @@ export class QuickSearch extends Component {
   };
 
   // eslint-disable-next-line react/sort-comp
-  flatResults = flattenChildren(this.props.children);
+  flatResults: Array<any> = flattenChildren(this.props.children);
+  hasSearchQueryEventFired: boolean = false;
+  hasKeyDownEventFired: boolean = false;
 
   /** Select first result by default if `selectedResultId` prop is not provider */
   state = {
@@ -124,7 +134,7 @@ export class QuickSearch extends Component {
   }
 
   /** Update flatResults array whenever `children` prop changes */
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (nextProps.children) {
       this.flatResults = flattenChildren(nextProps.children);
       this.setState({
@@ -157,12 +167,12 @@ export class QuickSearch extends Component {
    * 2. Increments or decrements this index by the supplied adjustment amount,
    * 3. Sets the new selectedResultId based on the modifed index
    */
-  adjustSelectedResultIndex = adjustment => {
+  adjustSelectedResultIndex = (adjustment: number) => {
     const currentIndex = getResultIndexById(
       this.flatResults,
       this.state.selectedResultId,
     );
-    const newIndex = adjustIndex(
+    const newIndex: number | null = adjustIndex(
       this.flatResults.length,
       currentIndex,
       adjustment,
@@ -186,7 +196,7 @@ export class QuickSearch extends Component {
    * Callback for mouseEnter events on individual results
    * Move selection to hovered result
    */
-  handleResultMouseEnter = resultData => {
+  handleResultMouseEnter = (resultData: ResultData) => {
     this.setState({ selectedResultId: resultData && resultData.resultId });
   };
 
@@ -212,7 +222,7 @@ export class QuickSearch extends Component {
    * Down - Select next result
    * Enter - Submit selected result
    */
-  handleSearchKeyDown = event => {
+  handleSearchKeyDown = (event: Event) => {
     const { firePrivateAnalyticsEvent } = this.props;
     this.props.onSearchKeyDown();
 
@@ -244,7 +254,7 @@ export class QuickSearch extends Component {
       );
 
       // Capture when users are using the keyboard to submit
-      if (typeof firePrivateAnalyticsEvent === 'function') {
+      if (typeof firePrivateAnalyticsEvent === 'function' && result) {
         firePrivateAnalyticsEvent(QS_ANALYTICS_EV_SUBMIT, {
           index: this.flatResults.indexOf(result),
           method: 'keyboard',
@@ -252,16 +262,16 @@ export class QuickSearch extends Component {
         });
       }
 
-      if (!result.props) {
+      if (result && !result.props) {
         return;
       }
-      if (result.props.onClick) {
+      if (result && result.props.onClick) {
         result.props.onClick({
           resultId: result.props.resultId,
           type: result.props.type,
         });
       }
-      if (result.props.href) {
+      if (result && result.props.href) {
         window.location.assign(result.props.href);
       }
     }
@@ -282,6 +292,7 @@ export class QuickSearch extends Component {
       const isSelected =
         Boolean(result.props) &&
         result.props.resultId === this.state.selectedResultId;
+
       return React.cloneElement(result, {
         analyticsData: { ...result.props.analyticsData, index: ii++ },
         isSelected,

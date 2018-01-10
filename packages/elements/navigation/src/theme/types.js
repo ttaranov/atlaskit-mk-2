@@ -4,45 +4,45 @@ export type Background = Color;
 export type Text = Color;
 export type Line = Color;
 
-export type ItemTheme = {|
-  default: {|
+export type ItemTheme = {
+  default: {
     background: Background,
-  |},
-  hover: {|
+  },
+  hover: {
     background: Background,
-  |},
-  active: {|
+  },
+  active: {
     background: Background,
     text?: Text,
-  |},
-  focus: {|
+  },
+  focus: {
     outline?: Line,
-  |},
-  selected: {|
+  },
+  selected: {
     background: Background,
     text?: Text,
-  |},
-  dragging: {|
+  },
+  dragging: {
     background: Background,
-  |},
-|};
+  },
+};
 
-export type ScrollBarTheme = {|
-  default: {|
+export type ScrollBarTheme = {
+  default: {
     background: Background,
-  |},
-  hover: {|
+  },
+  hover: {
     background: Background,
-  |},
-|};
+  },
+};
 
-export type Provided = {|
-  background: {|
+export type Provided = {
+  background: {
     primary: Background,
     secondary: Background,
     // currently used for drawer
     tertiary: Background,
-  |},
+  },
   text: Text,
   subText: Text,
   keyline: Line,
@@ -50,50 +50,50 @@ export type Provided = {|
   dropdown: ItemTheme,
   hasDarkmode?: boolean,
   scrollBar?: ScrollBarTheme,
-|};
+};
 
-export type RootTheme = {|
+export type RootTheme = {
   provided: Provided,
   isCollapsed: boolean,
-|};
+};
 
 // Ideally GenericItemTheme would be imported from @atlaskit/item.
 // I've tried it locally and not working at the moment, can revisit
 // once Flow is fully supported and documented in the repo.
-type GenericItemState = {|
+type GenericItemState = {
   background: Color,
   text?: Color,
   secondaryText?: Color,
-|};
+};
 
-type GenericItemPadding = {|
+type GenericItemPadding = {
   bottom: number,
   left: number,
   right: number,
   top: number,
-|};
+};
 
-export type GenericItemTheme = {|
+export type GenericItemTheme = {
   borderRadius: number,
-  height?: {|
+  height?: {
     compact: number,
     default: number,
-  |},
-  focus: {|
+  },
+  focus: {
     outline: Color,
-  |},
-  padding: {|
+  },
+  padding: {
     compact: GenericItemPadding,
     default: GenericItemPadding,
-  |},
-  beforeItemSpacing: {|
+  },
+  beforeItemSpacing: {
     compact: number,
     default: number,
-  |},
+  },
   default: GenericItemState,
   selected: GenericItemState,
   hover: GenericItemState,
   active: GenericItemState,
   dragging?: GenericItemState,
   disabled?: GenericItemState,
-|};
+};

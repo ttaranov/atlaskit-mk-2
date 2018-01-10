@@ -4,30 +4,24 @@ import React, { PureComponent } from 'react';
 import ContainerNavigationNestedPage from './ContainerNavigationNestedPage';
 import NestedNavigationWrapper from '../../styled/NestedNavigationWrapper';
 import type {
-  OnAnimationEnd,
   Stack,
   TraversalDirection,
+  ContainerNavigationNestedType as Props,
 } from './types';
 
-export default class ContainerNavigationNested extends PureComponent {
-  // eslint-disable-next-line react/sort-comp
-  props: {|
-    /** Callback function which will be executed when the transition animation completes. */
-    onAnimationEnd?: OnAnimationEnd,
-    /**
-     * An array of arrays representing the current state of the nested navigation.
-     * The last item is rendered and the other items represent its ancestors in the menu tree.
-     */
-    stack: Stack,
-  |}
+type State = {
+  stack: Stack,
+  traversalDirection: TraversalDirection,
+};
 
-  state: {|
-    stack: Stack,
-    traversalDirection: TraversalDirection,
-  |} = {
+export default class ContainerNavigationNested extends PureComponent<
+  Props,
+  State,
+> {
+  state = {
     stack: this.props.stack,
     traversalDirection: 'down',
-  }
+  };
 
   componentWillReceiveProps({ stack }: { stack: Stack }): any {
     const traversalDirection = (() => {
@@ -50,7 +44,7 @@ export default class ContainerNavigationNested extends PureComponent {
     >
       {this.state.stack[this.state.stack.length - 1]}
     </ContainerNavigationNestedPage>
-  )
+  );
 
   render() {
     return (

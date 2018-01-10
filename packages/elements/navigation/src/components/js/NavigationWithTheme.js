@@ -8,7 +8,7 @@ const NavigationWithTheme = withTheme(Navigation);
 
 const emptyTheme = {};
 
-export default function (props) {
+export default function(props: {}) {
   return (
     <ThemeProvider theme={emptyTheme}>
       <NavigationWithTheme {...props} />

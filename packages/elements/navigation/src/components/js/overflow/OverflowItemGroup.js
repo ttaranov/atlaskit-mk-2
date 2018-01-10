@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
+import type { Node } from 'react';
 import PropTypes from 'prop-types';
 import {
   overflowManagerNamespace,
@@ -8,27 +9,25 @@ import {
   shouldReportItemHeight,
   isArrayFilled,
 } from './shared-variables';
-import type { ReactElement } from '../../../types';
 
 type Props = {
   overflowGroupIndex: number,
   itemCount: number,
-  children: ReactElement,
-}
+  children: Node,
+};
 
-export default class OverflowItemGroup extends Component {
-  props: Props // eslint-disable-line react/sort-comp
-  rootNode: ?HTMLElement
-  heights: []
+export default class OverflowItemGroup extends Component<Props> {
+  rootNode: ?HTMLElement;
+  heights: [];
 
   static childContextTypes = {
     [overflowGroupNamespace]: PropTypes.object,
-  }
+  };
 
   static contextTypes = {
     [overflowManagerNamespace]: PropTypes.object,
     [shouldReportItemHeight]: PropTypes.bool,
-  }
+  };
 
   constructor(props: Props) {
     super(props);
@@ -36,35 +35,40 @@ export default class OverflowItemGroup extends Component {
     this.heights = new Array(this.props.itemCount);
   }
 
-  isInNavigation = () => !!this.context[shouldReportItemHeight]
+  isInNavigation = () => !!this.context[shouldReportItemHeight];
 
   shouldRender = () => {
     const { overflowGroupIndex } = this.props;
     if (this.isInNavigation()) {
-      return this.context[overflowManagerNamespace].isGroupVisibleInNav(overflowGroupIndex);
+      return this.context[overflowManagerNamespace].isGroupVisibleInNav(
+        overflowGroupIndex,
+      );
     }
-    return this.context[overflowManagerNamespace].isGroupVisibleInDropdown(overflowGroupIndex);
+    return this.context[overflowManagerNamespace].isGroupVisibleInDropdown(
+      overflowGroupIndex,
+    );
   };
 
   shouldRenderItem = (overflowItemIndex: number) => {
     if (this.isInNavigation()) {
       return this.context[overflowManagerNamespace].isGroupItemVisibleInNav(
         this.props.overflowGroupIndex,
-        overflowItemIndex
+        overflowItemIndex,
       );
     }
     return this.context[overflowManagerNamespace].isGroupItemVisibleInDropdown(
       this.props.overflowGroupIndex,
-      overflowItemIndex
+      overflowItemIndex,
     );
-  }
+  };
 
-  hasAllItemHeights = () => isArrayFilled(this.heights)
+  hasAllItemHeights = () => isArrayFilled(this.heights);
 
   combinedItemHeights = () =>
-    this.heights.reduce((sum, value, i) => (
-      sum + (this.shouldRenderItem(i) ? value : 0)
-    ), 0)
+    this.heights.reduce(
+      (sum, value, i) => sum + (this.shouldRenderItem(i) ? value : 0),
+      0,
+    );
 
   nonItemHeight = () => this.groupHeight() - this.combinedItemHeights();
 
@@ -79,12 +83,12 @@ export default class OverflowItemGroup extends Component {
       itemHeights: this.heights,
       nonItemHeight: this.nonItemHeight(),
     });
-  }
+  };
 
   handleItemHeightReport = (overflowItemIndex: number, height: number) => {
     this.heights[overflowItemIndex] = height;
     this.reportHeightsToOverflowManager();
-  }
+  };
 
   getChildContext() {
     return {
@@ -98,7 +102,7 @@ export default class OverflowItemGroup extends Component {
   handleRootNodeRef = (ref?: HTMLElement) => {
     this.rootNode = ref;
     this.reportHeightsToOverflowManager();
-  }
+  };
 
   render() {
     if (!this.shouldRender()) {
@@ -106,11 +110,7 @@ export default class OverflowItemGroup extends Component {
     }
 
     if (this.context[shouldReportItemHeight]) {
-      return (
-        <div ref={this.handleRootNodeRef}>
-          {this.props.children}
-        </div>
-      );
+      return <div ref={this.handleRootNodeRef}>{this.props.children}</div>;
     }
 
     return this.props.children;

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node } from 'react';
 import Blanket from '@atlaskit/blanket';
 import { withAnalytics } from '@atlaskit/analytics';
 import DrawerTrigger from './DrawerTrigger';
@@ -14,48 +14,51 @@ import DrawerContent from '../styled/DrawerContent';
 import DrawerBackIconWrapper from '../styled/DrawerBackIconWrapper';
 import { WithRootTheme } from '../../theme/util';
 import { container } from '../../theme/presets';
-import type { ReactElement } from '../../types';
 
 const escKeyCode = 27;
 export const analyticsNamespace = 'atlaskit.navigation.drawer';
 
 type Props = {
   /** The icon to use as the back icon for this drawer */
-  backIcon: ReactElement,
+  backIcon: Node,
   /** The drawer contents */
-  children?: ReactElement,
+  children?: Node,
   /** The header for this Drawer – often the ContainerTitle for a given Container */
-  header?: ReactElement,
+  header?: Node,
   /** Distance to offset the drawer contents and back icon from the top in px */
-  iconOffset?: number,
+  iconOffset: number,
   /** Set whether the drawer is visible. */
-  isOpen?: boolean,
+  isOpen: boolean,
   /** A function to call when the backIcon button is clicked, the blanket
-  behind the Drawer is clicked or the escape key is pressed */
-  onBackButton: () => void,
+   behind the Drawer is clicked or the escape key is pressed */
+  onBackButton: (event: Event, data?: {}) => void,
   /** Standard onKeyDown callback */
-  onKeyDown?: () => void,
+  onKeyDown?: (event: Event, data?: {}) => void,
   /** The primary icon in the Drawer – usually the globalPrimaryIcon that was
-  given to the GlobalNavigation component */
-  primaryIcon?: ReactElement,
+   given to the GlobalNavigation component */
+  primaryIcon: Node,
   /** Controls the width of the drawer */
-  width?: 'narrow' | 'wide' | 'full',
+  width: 'narrow' | 'wide' | 'full',
   /** Fires anayltics event. Injected by withAnalytics. */
   fireAnalyticsEvent: (eventName: string, eventData?: Object) => void,
-}
+};
 
-export class DrawerImpl extends PureComponent {
-  props: Props // eslint-disable-line react/sort-comp
+type State = {
+  isAnimating: boolean,
+};
 
+export class DrawerImpl extends PureComponent<Props, State> {
   static defaultProps = {
     iconOffset: 0,
-    onBackButton: () => { },
+    isOpen: false,
+    onBackButton: () => {},
     primaryIcon: null,
     width: 'narrow',
-    isOpen: false,
-  }
+  };
 
-  state = { isAnimating: false }
+  state = {
+    isAnimating: false,
+  };
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
@@ -79,13 +82,12 @@ export class DrawerImpl extends PureComponent {
   }
 
   // eslint-disable-next-line react/sort-comp
-  createBackButtonHandler = (method: string) =>
-    (e: Event) => {
-      if (this.props.isOpen) {
-        this.props.onBackButton(e);
-        this.props.fireAnalyticsEvent('close', { method });
-      }
+  createBackButtonHandler = (method: string) => (e: Event) => {
+    if (this.props.isOpen) {
+      this.props.onBackButton(e);
+      this.props.fireAnalyticsEvent('close', { method });
     }
+  };
 
   onBackButtonByBackButton = this.createBackButtonHandler('back-btn');
   onBackButtonByBlanket = this.createBackButtonHandler('blanket');
@@ -104,7 +106,7 @@ export class DrawerImpl extends PureComponent {
     if (!event.defaultPrevented && event.keyCode === escKeyCode) {
       this.onBackButtonByEscKey(event);
     }
-  }
+  };
 
   handleAnimationEnd = () => this.setState({ isAnimating: false });
 
@@ -122,14 +124,10 @@ export class DrawerImpl extends PureComponent {
 
     const sidebar = isOpen ? (
       <DrawerSide>
-        <DrawerPrimaryIcon>
-          {primaryIcon}
-        </DrawerPrimaryIcon>
+        <DrawerPrimaryIcon>{primaryIcon}</DrawerPrimaryIcon>
         <DrawerBackIconWrapper iconOffset={iconOffset}>
           <DrawerTrigger onActivate={this.onBackButtonByBackButton}>
-            <DrawerBackIcon isVisible={isOpen}>
-              {backIcon}
-            </DrawerBackIcon>
+            <DrawerBackIcon isVisible={isOpen}>{backIcon}</DrawerBackIcon>
           </DrawerTrigger>
         </DrawerBackIconWrapper>
       </DrawerSide>
@@ -137,12 +135,14 @@ export class DrawerImpl extends PureComponent {
 
     const content = isOpen ? (
       <DrawerMain>
-        <ContainerHeader isInDrawer iconOffset={iconOffset} isFullWidth={actualFullWidth}>
-          {(width !== 'full') ? header : null}
+        <ContainerHeader
+          isInDrawer
+          iconOffset={iconOffset}
+          isFullWidth={actualFullWidth}
+        >
+          {width !== 'full' ? header : null}
         </ContainerHeader>
-        <DrawerContent>
-          {this.props.children}
-        </DrawerContent>
+        <DrawerContent>{this.props.children}</DrawerContent>
       </DrawerMain>
     ) : null;
 
@@ -156,19 +156,17 @@ export class DrawerImpl extends PureComponent {
             canClickThrough={!isOpen}
             onBlanketClicked={this.onBackButtonByBlanket}
           />
-          {
-            (this.state.isAnimating || isOpen) && (
-              <DrawerInner
-                isOpen={isOpen}
-                width={width}
-                isAnimating={this.state.isAnimating}
-                onAnimationEnd={this.handleAnimationEnd}
-              >
-                {sidebar}
-                {content}
-              </DrawerInner>
-            )
-          }
+          {(this.state.isAnimating || isOpen) && (
+            <DrawerInner
+              isOpen={isOpen}
+              width={width}
+              isAnimating={this.state.isAnimating}
+              onAnimationEnd={this.handleAnimationEnd}
+            >
+              {sidebar}
+              {content}
+            </DrawerInner>
+          )}
         </div>
       </WithRootTheme>
     );
@@ -178,5 +176,5 @@ export class DrawerImpl extends PureComponent {
 export default withAnalytics(
   DrawerImpl,
   {},
-  { analyticsId: analyticsNamespace }
+  { analyticsId: analyticsNamespace },
 );

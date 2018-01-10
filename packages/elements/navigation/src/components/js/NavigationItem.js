@@ -1,5 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
+import type { ComponentType, Node } from 'react';
 import { withTheme } from 'styled-components';
 import baseItem, { withItemClick, withItemFocus } from '@atlaskit/item';
 
@@ -10,46 +11,49 @@ import NavigationItemIcon from '../styled/NavigationItemIcon';
 import NavigationItemTextAfter from '../styled/NavigationItemTextAfter';
 import NavigationItemAfterWrapper from '../styled/NavigationItemAfterWrapper';
 import { isInOverflowDropdown } from '../../theme/util';
-import type { ReactElement, ReactClass, DragProvided } from '../../types';
 
 const Item = withItemClick(withItemFocus(baseItem));
 
-type Props = {|
-  action?: ReactElement,
+type Props = {
+  action?: Node,
   /** Text to appear to the right of the text. It has a lower font-weight. */
   caption?: string,
-  dnd?: DragProvided,
+  dnd?: {
+    innerRef: Function,
+    placeholder?: Node,
+    draggableStyle: Object,
+  },
   /** Location to link out to on click. This is passed down to the custom link
-  component if one is provided. */
+   component if one is provided. */
   href?: string,
   /** Target frame for item `href` link to be aimed at. */
   target?: string,
   /** React element to appear to the left of the text. This should be an
-  @atlaskit/icon component. */
-  icon?: ReactElement,
+   @atlaskit/icon component. */
+  icon?: Node,
   /** Element displayed to the right of the item. The dropIcon should generally be
-  an appropriate @atlaskit icon, such as the ExpandIcon. */
-  dropIcon?: ReactElement,
+   an appropriate @atlaskit icon, such as the ExpandIcon. */
+  dropIcon?: Node,
   /** Makes the navigation item appear with reduced padding and font size. */
   isCompact?: boolean,
   /** Used to apply correct dragging styles when also using react-beautiful-dnd. */
   isDragging?: boolean,
   /** Set whether the item should be highlighted as selected. Selected items have
-  a different background color. */
+   a different background color. */
   isSelected?: boolean,
   /** Set whether the item should be used to trigger a dropdown. If this is true,
-  The href property will be disabled. */
+   The href property will be disabled. */
   isDropdownTrigger?: boolean,
   /** Component to be used as link, if default link component does not suit, such
   as if you are using a different router. Component is passed a href prop, and the content
   of the title as children. Any custom link component must accept a className prop so that
   it can be styled. */
-  linkComponent?: ReactClass,
+  linkComponent?: ComponentType<any>,
   /** Function to be called on click. This is passed down to a custom link component,
-  if one is provided.  */
+   if one is provided.  */
   onClick?: (?MouseEvent) => void,
   /** Function to be called on click. This is passed down to a custom link component,
-  if one is provided.  */
+   if one is provided.  */
   onKeyDown?: (e: KeyboardEvent) => void,
   /** Standard onmouseenter event */
   onMouseEnter?: (e: MouseEvent) => void,
@@ -58,41 +62,40 @@ type Props = {|
   /** Text to be shown alongside the main `text`. */
   subText?: ?string,
   /** Main text to be displayed as the item. Accepts a react component but in most
-  cases this should just be a string. */
-  text?: ReactElement,
+   cases this should just be a string. */
+  text?: Node,
   /** React component to be placed to the right of the main text. */
-  textAfter ?: ReactElement,
+  textAfter?: Node,
   /** Whether the Item should attempt to gain browser focus when mounted */
-  autoFocus?: boolean
-|}
+  autoFocus?: boolean,
+};
 
-class NavigationItem extends PureComponent {
+class NavigationItem extends PureComponent<Props> {
   static defaultProps = {
     isSelected: false,
     isDropdownTrigger: false,
     autoFocus: false,
-  }
-
-  props: Props
+  };
 
   render() {
-    const icon = this.props.icon
-      ? <NavigationItemIcon>{this.props.icon}</NavigationItemIcon>
-      : null;
-
-    const dropIcon = this.props.dropIcon && this.props.isDropdownTrigger ? (
-      <NavigationItemIcon isDropdownTrigger>
-        {this.props.dropIcon}
-      </NavigationItemIcon>
+    const icon = this.props.icon ? (
+      <NavigationItemIcon>{this.props.icon}</NavigationItemIcon>
     ) : null;
 
-    const textAfter = this.props.textAfter
-      ? <NavigationItemTextAfter>{this.props.textAfter}</NavigationItemTextAfter>
-      : null;
+    const dropIcon =
+      this.props.dropIcon && this.props.isDropdownTrigger ? (
+        <NavigationItemIcon isDropdownTrigger>
+          {this.props.dropIcon}
+        </NavigationItemIcon>
+      ) : null;
 
-    const action = this.props.action
-      ? <NavigationItemAction>{this.props.action}</NavigationItemAction>
-      : null;
+    const textAfter = this.props.textAfter ? (
+      <NavigationItemTextAfter>{this.props.textAfter}</NavigationItemTextAfter>
+    ) : null;
+
+    const action = this.props.action ? (
+      <NavigationItemAction>{this.props.action}</NavigationItemAction>
+    ) : null;
 
     const after = this.props.textAfter ? (
       <NavigationItemAfter
@@ -105,17 +108,18 @@ class NavigationItem extends PureComponent {
 
     // There are various 'after' elements which are all optional. If any of them are present we
     // render those inside a shared wrapper.
-    const allAfter = (after || dropIcon || action) ? (
-      <NavigationItemAfterWrapper>
-        {after}
-        {dropIcon}
-        {action}
-      </NavigationItemAfterWrapper>
-    ) : null;
+    const allAfter =
+      after || dropIcon || action ? (
+        <NavigationItemAfterWrapper>
+          {after}
+          {dropIcon}
+          {action}
+        </NavigationItemAfterWrapper>
+      ) : null;
 
-    const wrappedCaption = this.props.caption
-      ? <NavigationItemCaption>{this.props.caption}</NavigationItemCaption>
-      : null;
+    const wrappedCaption = this.props.caption ? (
+      <NavigationItemCaption>{this.props.caption}</NavigationItemCaption>
+    ) : null;
 
     const interactiveWrapperProps = {
       onClick: this.props.onClick,
@@ -127,8 +131,10 @@ class NavigationItem extends PureComponent {
     };
 
     // Theme prop is provided via withTheme(...) and is not public API
-    // eslint-disable-next-line react/prop-types
+    /* eslint-disable react/prop-types */
+    // $FlowFixMe
     const role = isInOverflowDropdown(this.props.theme) ? 'menuitem' : null;
+    /* eslint-enable react/prop-types */
 
     return (
       <Item
@@ -152,4 +158,7 @@ class NavigationItem extends PureComponent {
   }
 }
 
+// TODO: Review if the error is an issue with Flow of 'Too many type arguments. Expected at most 2...'
+// possible reported related issue https://github.com/apollographql/react-apollo/issues/1220
+// $FlowFixMe
 export default withTheme(NavigationItem);

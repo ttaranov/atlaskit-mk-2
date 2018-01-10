@@ -1,6 +1,5 @@
 // @flow
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node } from 'react';
 
 export const maxPrimaryItems = 3;
 
@@ -13,17 +12,17 @@ function checkIfTooManyPrimaryActions(actions = []) {
   }
 }
 
-export default class GlobalPrimaryActionsList extends PureComponent {
-  static propTypes = {
-    actions: PropTypes.arrayOf(PropTypes.node).isRequired,
-  };
+type Props = {
+  actions: Array<Node>,
+};
 
-  constructor(props, context) {
+export default class GlobalPrimaryActionsList extends PureComponent<Props> {
+  constructor(props: Props, context: {}) {
     super(props, context);
     checkIfTooManyPrimaryActions(props.actions);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     checkIfTooManyPrimaryActions(nextProps.actions);
   }
 
@@ -32,6 +31,7 @@ export default class GlobalPrimaryActionsList extends PureComponent {
       <div>
         {this.props.actions.map(
           (action, index) =>
+            // eslint-disable-next-line react/no-array-index-key
             index < maxPrimaryItems ? <div key={index}>{action}</div> : null,
         )}
       </div>

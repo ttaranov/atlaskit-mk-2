@@ -1,15 +1,14 @@
 // @flow
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node } from 'react';
 import DrawerBackIconInner from '../styled/DrawerBackIconInner';
 import DrawerBackIconOuter from '../styled/DrawerBackIconOuter';
 
-export default class DrawerBackIcon extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node,
-    isVisible: PropTypes.bool,
-  };
+type Props = {
+  children: Node,
+  isVisible: boolean,
+};
 
+export default class DrawerBackIcon extends PureComponent<Props> {
   static defaultProps = {
     isVisible: false,
   };

@@ -1,9 +1,9 @@
 // @flow
-import React, { PureComponent } from 'react';
-import type { ReactElement, IconAppearance } from '../../types';
+import React, { PureComponent, type Node } from 'react';
+import type { IconAppearance } from '../../types';
 
-type Props = {|
-  children?: ReactElement,
+type Props = {
+  children?: Node,
   className?: string,
   href?: string,
   onClick?: () => mixed,
@@ -12,11 +12,9 @@ type Props = {|
   onMouseLeave?: () => mixed,
   tabIndex?: number,
   appearance?: IconAppearance,
-|}
+};
 
-export default class DefaultLinkComponent extends PureComponent {
-  props: Props
-
+export default class DefaultLinkComponent extends PureComponent<Props> {
   render() {
     const {
       children,
@@ -31,7 +29,7 @@ export default class DefaultLinkComponent extends PureComponent {
       ...otherProps
     } = this.props;
 
-    return (href ? (
+    return href ? (
       <a
         className={className}
         href={href}
@@ -41,7 +39,11 @@ export default class DefaultLinkComponent extends PureComponent {
         onMouseLeave={onMouseLeave}
         tabIndex={tabIndex}
         {...otherProps}
-      >{children}</a>
-    ) : children);
+      >
+        {children}
+      </a>
+    ) : (
+      children
+    );
   }
 }

@@ -1,16 +1,16 @@
 // @flow
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node } from 'react';
 import ContainerHeaderWrapper from '../styled/ContainerHeaderWrapper';
 import { globalItemSizes } from '../../shared-variables';
 
-export default class ContainerHeader extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node,
-    iconOffset: PropTypes.number,
-    isFullWidth: PropTypes.bool,
-    isInDrawer: PropTypes.bool,
-  };
+type Props = {
+  children: Node,
+  iconOffset: number,
+  isFullWidth: boolean,
+  isInDrawer: boolean,
+};
+
+export default class ContainerHeader extends PureComponent<Props> {
   static defaultProps = {
     iconOffset: globalItemSizes.medium,
     isInDrawer: false,

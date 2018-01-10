@@ -1,4 +1,5 @@
 // @flow
+
 /* eslint-disable import/prefer-default-export */
 export const ATLASKIT_QUICKSEARCH_NS = 'atlaskit.navigation.quick-search';
 export const QS_ANALYTICS_EV_CLOSE = `${ATLASKIT_QUICKSEARCH_NS}.close`;

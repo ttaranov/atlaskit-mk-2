@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type ElementRef } from 'react';
 import { withTheme } from 'styled-components';
 import rafSchedule from 'raf-schd';
 import ResizerInner from '../styled/ResizerInner';
@@ -12,18 +12,22 @@ import {
 import { isElectronMac } from '../../theme/util';
 
 type Props = {
-  onResizeStart?: () => {},
-  onResizeEnd?: (resizeDelta: number) => {},
-  onResizeButton?: () => {},
-  onResize?: (resizeDelta: number) => {},
-  navigationWidth?: number,
-  showResizeButton?: boolean,
-  theme?: {},
+  onResizeStart: () => {},
+  onResizeEnd: (resizeDelta: number) => void,
+  onResizeButton: ({ isOpen: boolean, width: number }) => void,
+  onResize: (resizeDelta: number) => void,
+  navigationWidth: number,
+  showResizeButton: boolean,
+  theme: {},
 };
 
-class Resizer extends PureComponent {
-  props: Props; // eslint-disable-line react/sort-comp
+type State = {
+  startScreenX: number,
+  isHovering: boolean,
+  isResizing: boolean,
+};
 
+class Resizer extends PureComponent<Props, State> {
   static defaultProps = {
     onResizeStart: () => {},
     onResizeEnd: () => {},
@@ -40,10 +44,12 @@ class Resizer extends PureComponent {
   };
 
   scheduleResize = rafSchedule(delta => {
-    if (this.state.isResizing) {
+    if (this.state.isResizing && delta) {
       this.props.onResize(delta);
     }
   });
+
+  resizerNode: ElementRef<*>;
 
   mouseDownHandler = e => {
     e.preventDefault();
