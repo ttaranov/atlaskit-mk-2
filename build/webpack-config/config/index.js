@@ -35,7 +35,7 @@ module.exports = function createWebpackConfig(
     mocks,
   } /*: { entry: string, host?: string, port?: number, globs?: Array<string>, includePatterns: boolean, env: string, mocks?: boolean } */,
 ) {
-  return {
+  const config = {
     entry: createEntries({ env, entry, host, port, mocks }),
     output: {
       filename: '[name].js',
@@ -187,4 +187,14 @@ module.exports = function createWebpackConfig(
       }),
     ],
   };
+
+  if (mocks) {
+    config.module.rules.push({
+      enforce: 'pre',
+      test: /mocks\.js/,
+      loader: require.resolve('import-glob'),
+    });
+  }
+
+  return config;
 };
