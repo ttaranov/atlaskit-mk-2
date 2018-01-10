@@ -296,27 +296,19 @@ export class CardList extends Component<CardListProps, CardListState> {
             cardWidth={cardWidth}
             layout={layout}
           >
-            {/* <MediaCard
-              provider={providersByMediaItemId[id]}
-              dataURIService={dataURIService}
-              appearance={cardAppearance}
-              dimensions={dimensions}
-              onClick={handleCardClick(mediaItem)}
-              actions={cardActions(mediaItem)}
-              selectable={isGridLayout} // TODO: this should probably be based on a different prop
-              selected={selectedItemIds.indexOf(id) > -1}
-            /> */}
             <CardView
               status="complete"
               dataURI={mediaItem.thumbnailSrc}
               metadata={{
                 name: mediaItem.fileName,
                 size: mediaItem.size,
+                type: mediaItem.type,
                 mediaType: mediaItem.mediaType,
               }}
               appearance={cardAppearance}
               dimensions={dimensions}
               onClick={handleCardClick(mediaItem)}
+              // actions={cardActions(mediaItem)} TODO: implement actions
               selectable={isGridLayout}
               selected={mediaItem.isSelected}
             />

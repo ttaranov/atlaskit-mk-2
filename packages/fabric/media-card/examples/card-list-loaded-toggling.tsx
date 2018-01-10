@@ -69,7 +69,7 @@ class CardSwitcher extends Component<CardSwitcherProps, CardSwitcherState> {
 
   toggle = () => {
     const index =
-      this.collections.indexOf(this.state.collectionName) === 0 ? 1 : 0;
+      this.collections.indexOf(this.state.collectionName) === 0 ? 2 : 0;
 
     this.setState({ collectionName: this.collections[index] });
   };
