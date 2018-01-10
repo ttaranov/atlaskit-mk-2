@@ -113,7 +113,8 @@ describe(`${name} - stateless`, () => {
       expect(hiddenSelect.props().value).toEqual([selectedItems[0].value]);
 
       wrapper.setProps({ selectedItems: items });
-      expect(hiddenSelect.props().value).toEqual(itemsValues);
+      wrapper.update();
+      expect(wrapper.find('select').props().value).toEqual(itemsValues);
     });
 
     it('select tag should have "multiple" attribute', () => {

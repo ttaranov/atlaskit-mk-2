@@ -25,9 +25,9 @@ describe(`${name} - stateless`, () => {
     describe('focus', () => {
       it('should focus the input field if shouldFocus is set to true', () => {
         const input = select.find('input');
-        expect(document.activeElement).not.toBe(input.node);
+        expect(document.activeElement).not.toBe(input.instance());
         select.setProps({ shouldFocus: true });
-        expect(document.activeElement).toBe(input.node);
+        expect(document.activeElement).toBe(input.instance());
       });
     });
   });

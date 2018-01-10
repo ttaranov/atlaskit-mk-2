@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent, type Node } from 'react';
-import uid from 'uid';
+import uuid from 'uuid';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 
 import MultiSelectStateless from './Stateless';
@@ -171,7 +171,7 @@ export default class MultiSelect extends PureComponent<Props, State> {
   handleNewItemCreate = ({ value: textValue }: Object) => {
     // eslint-disable-line react/no-unused-prop-types
     const { items, selectedItems } = this.state;
-    const id = uid();
+    const id = uuid();
     const newItem = { value: id, content: textValue };
     const newItemsArray = [...items];
     newItemsArray[newItemsArray.length - 1].items.push(newItem);
