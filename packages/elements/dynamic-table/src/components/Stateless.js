@@ -20,7 +20,7 @@ import {
 
 import { Table, Caption } from '../styled/DynamicTable';
 
-import type { StatelessProps as Props, RowCellType } from '../types';
+import type { StatelessProps as Props, RowCellType, RankStart, RankEnd } from '../types';
 
 function toggleSortOrder(currentSortOrder) {
   switch (currentSortOrder) {
@@ -33,8 +33,17 @@ function toggleSortOrder(currentSortOrder) {
   }
 }
 
-export default class DynamicTable extends Component<Props, {}> {
+type State = {
+  isRanking: boolean,
+}
+
+export default class DynamicTable extends Component<Props, State> {
   tableBody: ComponentType<any, any> | null;
+
+  state = {
+    isRanking: false,
+  }
+
   static defaultProps = {
     isLoading: false,
     isRankable: false,
@@ -73,6 +82,26 @@ export default class DynamicTable extends Component<Props, {}> {
 
   onSetPage = (page?: number) => this.props.onSetPage(page);
 
+  onRankStart = (params: RankStart) => {
+    this.setState({
+      isRanking: true,
+    });
+
+    if (this.props.onRankStart) {
+      this.props.onRankStart(params);
+    }
+  }
+
+  onRankEnd = (params: RankEnd) => {
+    this.setState({
+      isRanking: false,
+    });
+
+    if (this.props.onRankEnd) {
+      this.props.onRankEnd(params);
+    }
+  }
+
   getSpinnerSize = () => {
     const { page, rows, rowsPerPage, loadingSpinnerSize } = this.props;
 
@@ -101,8 +130,6 @@ export default class DynamicTable extends Component<Props, {}> {
       head,
       isFixedSize,
       isRankable,
-      onRankStart,
-      onRankEnd,
       page,
       rows,
       rowsPerPage,
@@ -120,8 +147,9 @@ export default class DynamicTable extends Component<Props, {}> {
       rowsPerPage,
       page,
       isFixedSize,
-      onRankStart,
-      onRankEnd,
+      ref: el => {
+        this.tableBody = el;
+      }
     };
     const totalPages =
       rowsLength && rowsPerPage ? Math.ceil(rowsLength / rowsPerPage) : 0;
@@ -150,17 +178,13 @@ export default class DynamicTable extends Component<Props, {}> {
             {rowsExist && isRankable ? (
               <RankableBody
                 {...bodyProps}
-                ref={el => {
-                  this.tableBody = el;
-                }}
-                
+                isRanking={this.state.isRanking}
+                onRankStart={this.onRankStart}
+                onRankEnd={this.onRankEnd}
               />
             ) : (
               <Body
                 {...bodyProps}
-                ref={el => {
-                  this.tableBody = el;
-                }}
               />
             )}
           </Table>

@@ -1,9 +1,9 @@
 // @flow
 import React, { Component } from 'react';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { RankableTableBody } from '../../styled/rankable/TableBody';
 import TableRow from './TableRow';
 import type { HeadType, RowType, RankStart, RankEnd } from '../../types';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import withSortedPageRows from '../../hoc/withSortedPageRows';
 import withDimensions, {type WithDimensionsProps} from '../../hoc/withDimensions';
 
@@ -12,30 +12,18 @@ type Props = {
   onRankEnd: (RankEnd) => void,
   pageRows: RowType[],
   isFixedSize: boolean,
+  isRanking: boolean,
   head: HeadType | void,
 } & WithDimensionsProps;
 
-type State = {
-  isRanking: boolean,
-};
-
-class RankableBody extends Component<Props, State> {
-  state = {
-    isRanking: false,
-  }
+class RankableBody extends Component<Props, {}> {
 
   dragStart = (rankStart: RankStart) => {
     this.props.updateDimensions();
-    this.setState({
-      isRanking: true,
-    });
     this.props.onRankStart(rankStart);
   }
 
   dragEnd = (rankEnd: RankEnd) => {
-    this.setState({
-      isRanking: false,
-    });
     this.props.onRankEnd(rankEnd);
   }
 
@@ -49,11 +37,9 @@ class RankableBody extends Component<Props, State> {
       pageRows,
       head,  
       isFixedSize,
+      isRanking,
       width,
     } = this.props;
-    const {
-      isRanking,
-    } = this.state;
 
     return (
       <DragDropContext onDragStart={this.dragStart} onDragEnd={this.dragEnd}>
