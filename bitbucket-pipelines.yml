@@ -28,12 +28,12 @@ pipelines:
         script:
           - source ./build-setup.sh
           - bolt install --pure-lockfile
-          - bolt build
-          - bolt lint
-          - bolt typecheck
+          # - bolt build
+          # - bolt lint
+          # - bolt typecheck
           - bolt test:ci:branch
-          - bolt test:browser:browserstack
-          - (cd website && bolt deploy-staging:no-minimize)
+          # - bolt test:browser:browserstack
+          # - (cd website && bolt deploy-staging:no-minimize)
 
   custom: # Pipelines that can be scheduled or triggered manually
 
