@@ -22,7 +22,7 @@
     "test": "                                yarn run test:jest",
     "test:ci:branch": "                      RUN_ONLY=$(node build/ci-scripts/get.changed.packages.since.master.js) yarn run test:jest -- --runInBand",
     "test:ci:master": "                      yarn run test:jest -- --runInBand",
-    "test:jest": "                           jest --coverage --maxWorkers=2",
+    "test:jest": "                           jest --coverage --maxWorkers=3",
     "test:browser": "                        projector ./projector testBrowser",
     "test:browser:watch": "                  projector ./projector testBrowser --watch",
     "test:browser:browserstack": "           projector ./projector testBrowserCI --browserstack",
