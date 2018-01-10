@@ -1,18 +1,18 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { ThemeProvider, withTheme } from 'styled-components';
 
 import { defaultGridColumns } from './internal/vars';
 import Grid from './internal/GridElement';
 
 type Props = {
-  children: Node,
-  spacing: 'cosy' | 'comfortable' | 'compact',
-  layout: 'fixed' | 'fuild',
+  children?: any,
+  spacing?: 'cosy' | 'comfortable' | 'compact',
+  layout?: 'fixed' | 'fuild',
 };
-
+// $FlowFixMe
 export default withTheme(
-  class AkGrid extends PureComponent<Props, void> {
+  class AkGrid extends Component<Props, void> {
     static defaultProps = {
       spacing: 'cosy',
       layout: 'fixed',

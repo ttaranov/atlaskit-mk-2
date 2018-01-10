@@ -5,9 +5,17 @@ import Banner from '@atlaskit/banner';
 import AkToggle from '@atlaskit/toggle';
 import Page, { Grid, GridColumn } from '../src';
 
-export default class NavigationExample extends PureComponent {
+type State = {
+  isBannerOpen: boolean,
+  navigationWidth?: number,
+  isNavigationOpen?: boolean,
+};
+
+export default class NavigationExample extends PureComponent<void, State> {
   state = {
     isBannerOpen: false,
+    navigationWidth: 0,
+    isNavigationOpen: false,
   };
 
   render() {

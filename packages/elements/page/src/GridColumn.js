@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, type Node } from 'react';
+import React, { Component, type Node } from 'react';
 import { ThemeProvider, withTheme } from 'styled-components';
 
 import { defaultGridColumns } from './internal/vars';
@@ -11,9 +11,9 @@ type Props = {
   medium?: number,
   children?: Node,
 };
-
+// $FlowFixMe
 export default withTheme(
-  class AkGridColumn extends PureComponent<Props, void> {
+  class AkGridColumn extends Component<Props, void> {
     static defaultProps = {
       medium: 0,
     };

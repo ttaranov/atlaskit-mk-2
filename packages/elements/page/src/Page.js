@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, type Node } from 'react';
+import React, { Component, type Node } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 
 const Wrapper = styled.div`
@@ -46,10 +46,10 @@ type Props = {
   banner?: Node,
   children?: Node,
   isBannerOpen?: boolean,
-  navigation?: boolean,
+  navigation?: Node,
 };
 
-export default class Page extends PureComponent<Props, void> {
+export default class Page extends Component<Props, void> {
   static displayName = 'AkPage';
 
   static defaultProps = {

@@ -3,13 +3,13 @@ import styled from 'styled-components';
 
 import { defaultGridColumnWidth, spacing } from './vars';
 
-const getMargin = props =>
+const getMargin = (props: any) =>
   props.theme.isNestedGrid ? `-${spacing[props.theme.spacing]}px` : 'auto';
-const getMaxWidth = props =>
+const getMaxWidth = (props: any) =>
   props.layout === 'fixed'
     ? `${defaultGridColumnWidth * props.theme.columns}px`
     : '100%';
-const getPadding = props => `${spacing[props.theme.spacing] / 2}px`;
+const getPadding = (props: any) => `${spacing[props.theme.spacing] / 2}px`;
 
 const Grid = styled.div`
   align-items: flex-start;
