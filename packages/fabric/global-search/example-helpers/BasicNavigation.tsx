@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AtlaskitThemeProvider } from '@atlaskit/theme';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import Navigation, {
   AkGlobalItem,
   AkCreateDrawer,
