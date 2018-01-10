@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as url from 'url';
 import { Auth } from '@atlaskit/media-core';
 import { Preview } from '../../../../src/domain/preview';
-import getPreviewFromBlob from '../../../../src/util/getPreview';
+import { getPreviewFromBlob } from '../../../../src/util/getPreviewFromBlob';
 
 import {
   AuthHeaders,
