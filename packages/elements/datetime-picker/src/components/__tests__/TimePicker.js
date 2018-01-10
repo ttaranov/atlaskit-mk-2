@@ -39,9 +39,9 @@ describe(name, () => {
       const testValue = 'new value';
       const wrapper = mount(<TimePicker />);
 
-      const input = wrapper.find('input');
-      input.get(0).value = testValue;
-      input.simulate('change');
+      wrapper
+        .find('input')
+        .simulate('change', { target: { value: testValue } });
 
       expect(wrapper.find(TimePickerStateless).props().displayValue).toBe(
         testValue,
@@ -54,6 +54,7 @@ describe(name, () => {
         .find(TimePickerStateless)
         .props()
         .onFieldKeyDown({ key: 'ArrowDown' });
+      wrapper.update();
       expect(wrapper.find(TimePickerStateless).props().isOpen).toBe(true);
     });
 
@@ -65,7 +66,7 @@ describe(name, () => {
         .find(TimePickerStateless)
         .props()
         .onFieldKeyDown({ key: 'Escape' });
-
+      wrapper.update();
       expect(wrapper.find(TimePickerStateless).props().isOpen).toBe(false);
     });
 
@@ -90,16 +91,15 @@ describe(name, () => {
         .find(TimePickerStateless)
         .props()
         .onPickerUpdate(testValue);
+      wrapper.update();
 
       expect(onChangeMock.mock.calls).toHaveLength(1);
       expect(onChangeMock.mock.calls[0][0]).toBe(testValue);
-
-      const datePickerStatelessProps = wrapper
-        .find(TimePickerStateless)
-        .props();
-      expect(datePickerStatelessProps.isOpen).toBe(false);
-      expect(datePickerStatelessProps.value).toBe(testValue);
-      expect(datePickerStatelessProps.displayValue).toBe(testValue);
+      expect(wrapper.props()).toMatchObject({
+        displayValue: testValue,
+        isOpen: false,
+        value: testValue,
+      });
     });
   });
 });

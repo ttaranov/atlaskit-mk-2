@@ -54,9 +54,7 @@ export const setMacroProvider = (provider: Promise<MacroProvider>) => async (
     resolvedProvider = await provider;
     assert(
       resolvedProvider && resolvedProvider.openMacroBrowser,
-      `MacroProvider promise did not resolve to a valid instance of MacroProvider - ${
-        resolvedProvider
-      }`,
+      `MacroProvider promise did not resolve to a valid instance of MacroProvider - ${resolvedProvider}`,
     );
   } catch (err) {
     resolvedProvider = null;
