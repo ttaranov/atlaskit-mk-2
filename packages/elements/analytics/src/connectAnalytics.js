@@ -7,10 +7,10 @@ type CollectedEvents = {
 };
 
 /*
-The connectAnalytics HOC wraps a component and provides the `addAnalyticsPayload` method to it's
-props. The method adds an analytics payload to a dispatch prop callback for an event that has been
-captured by the component as per event names specified in `eventsToConnect`.
-*/
+ * The connectAnalytics HOC wraps a component and provides the `getAnalyticsPayload` method to it's
+ * props. The method allows retrieval of event payloads that have been captured by the component for use in
+ * dispatching side-effect events. Only event names specified in `eventsToConnect` will be captured and stored.
+ */
 const connectAnalytics = (
   WrappedComponent: ComponentType<*>,
   eventsToConnect: string[],
