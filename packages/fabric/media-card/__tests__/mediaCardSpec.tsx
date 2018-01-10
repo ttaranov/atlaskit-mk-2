@@ -313,7 +313,7 @@ describe('MediaCard', () => {
       const instance = element.instance() as MediaCard;
 
       expect(element.find(CardOverlay).prop('onRetry')).toEqual(
-        instance.onRetry,
+        instance[/* prettier-ignore */ 'onRetry'],
       );
     });
   });
