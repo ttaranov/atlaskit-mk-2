@@ -27,19 +27,18 @@
     "@atlaskit/tag-group": "^3.0.0",
     "@atlaskit/theme": "^2.0.1",
     "classnames": "^2.2.5",
-    "styled-components": "^1.4.6",
-    "uid": "^0.0.2"
+    "styled-components": "^1.4.6"
   },
   "peerDependencies": {
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react": "15.6.0 - 16.2.0",
+    "react-dom": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
     "@atlaskit/avatar": "^8.0.8",
     "@atlaskit/button": "^6.2.0",
     "@atlaskit/code": "^2.1.1",
     "@atlaskit/docs": "^2.0.0",
-    "enzyme": "^2.9.1",
-    "react-test-renderer": "^15.6.1"
+    "enzyme": "^3.3.0",
+    "react-test-renderer": "^16.2.0"
   }
 }
