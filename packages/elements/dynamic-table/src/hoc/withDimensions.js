@@ -2,8 +2,8 @@
 import React, { Component, type ComponentType } from 'react';
 
 type State = {
-  width: number,
-  height: number,
+  refWidth: number,
+  refHeight: number,
 };
 
 export type WithDimensionsProps = {
@@ -12,21 +12,31 @@ export type WithDimensionsProps = {
 } & State;
 
 
-export default function withWidthAndHeight<WrappedProps: {}>(
-  WrappedComponent: ComponentType<WrappedProps>
-): ComponentType<$Diff<WrappedProps, WithDimensionsProps>> {
+export default function withDimensions<WrappedProps: {}>(
+  WrappedComponent: ComponentType<WrappedProps>): ComponentType<$Diff<WrappedProps, WithDimensionsProps>> {
   return class extends Component<any, State> {
     ref: ?HTMLElement
 
     state = {
-      width: 0,
-      height: 0,
+      refWidth: 0,
+      refHeight: 0,
     }
 
     innerRef = (ref: HTMLElement) => {
-      this.ref = ref;      
+      if (ref !== null && !this.props.isRanking) {
+        this.ref = ref;      
+      }
     }
 
+    componentWillReceiveProps(nextProps) {
+      const wasRanking = this.props.isRanking;
+      const willRanking = nextProps.isRanking;
+  
+      if (willRanking && !wasRanking) {
+        this.updateDimensions();
+      }
+    }  
+  
     updateDimensions = () => {
       if (!this.ref) {
         return;   
@@ -35,19 +45,18 @@ export default function withWidthAndHeight<WrappedProps: {}>(
       const width = this.ref.offsetWidth;
       const height = this.ref.offsetHeight;
 
-      if (width !== this.state.width || height !== this.state.height) {
-        this.setState({width, height});
+      if (width !== this.state.refWidth || height !== this.state.refHeight) {
+        this.setState({refWidth: width, refHeight: height});
       }
     }
     
     render() {
-      const {width, height} = this.state;
+      const {refWidth, refHeight} = this.state;
 
       return <WrappedComponent 
-        width={width}
-        height={height}
+        refWidth={refWidth}
+        refHeight={refHeight}
         innerRef={this.innerRef}
-        updateDimensions={this.updateDimensions}
         {...this.props} />;
     }
   };

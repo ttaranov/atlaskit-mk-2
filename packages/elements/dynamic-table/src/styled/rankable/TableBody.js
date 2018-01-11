@@ -1,9 +1,8 @@
 // @flow
 import styled, { css } from 'styled-components';
 
-const rankingStyles = ({isRanking, width}) => isRanking && css`
+const rankingStyles = ({isRanking}) => isRanking && css`
   display: block;
-  width: ${width}px;
 `;
 
 export const RankableTableBody = styled.tbody`

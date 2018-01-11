@@ -15,14 +15,6 @@ type Props = {
 } & WithDimensionsProps;
 
 class RankableTableRow extends Component<Props, {}> {
-  componentWillReceiveProps(nextProps: Props) {
-    const wasRanking = this.props.isRanking;
-    const willRanking = nextProps.isRanking;
-
-    if (!willRanking && !wasRanking) {
-      this.props.updateDimensions();
-    }
-  }  
 
   innerRef = (innerRefFn) => (ref) => {
     innerRefFn(ref);
@@ -30,8 +22,9 @@ class RankableTableRow extends Component<Props, {}> {
   }
 
   render() {
-    const { row, head, isFixedSize, isRanking, width, height } = this.props;
+    const { row, head, isFixedSize, isRanking, refWidth, refHeight } = this.props;
     const { cells, ...restRowProps } = row;
+    const inlineStyle = isRanking ? {width: refWidth} : {};
 
     return (
       <Draggable draggableId={row.key}>
@@ -39,10 +32,9 @@ class RankableTableRow extends Component<Props, {}> {
         <RankableTableBodyRow {...restRowProps} 
           innerRef={this.innerRef(provided.innerRef)} 
           {...provided.dragHandleProps}
-          style={provided.draggableStyle}
+          style={{...provided.draggableStyle, ...inlineStyle}}
           isRanking={isRanking}
           isRankingItem={snapshot.isDragging}
-          rankWidth={width}
         >
         {cells.map((cell, cellIndex) => {
           const headCell = (head || { cells: [] }).cells[cellIndex];
@@ -59,12 +51,9 @@ class RankableTableRow extends Component<Props, {}> {
    
       provided.placeholder ? <tr>
         <RowPlaceholderCell colSpan={cells.length}>
-          <RowPlaceholderWrapper
-            height={height}
-            width={width}
-          >
+          <div style={{width: refWidth, height: refHeight}}>
             {provided.placeholder}
-          </RowPlaceholderWrapper>
+          </div>
         </RowPlaceholderCell>
       </tr> : null
       ]}

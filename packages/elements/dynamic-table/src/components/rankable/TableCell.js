@@ -14,19 +14,11 @@ type Props = {
 
 class RankableTableCell extends Component<Props, {}> {
 
-  componentWillReceiveProps(nextProps: Props) {
-    const wasDragging = this.props.isRanking;
-    const willDragging = nextProps.isRanking;
-
-    if (!willDragging && !wasDragging) {
-      this.props.updateDimensions();
-    }
-  }  
-
   render() {
-    const { cell, head, isFixedSize, isRanking, width: rankingWidth } = this.props;
+    const { cell, head, isFixedSize, isRanking, innerRef, refWidth } = this.props;
     const { content, ...restCellProps } = cell;
     const { shouldTruncate, width } = head || {};
+    const inlineStyles = isRanking ? {width: refWidth} : {};
 
     return (
       <RankableTableBodyCell
@@ -35,8 +27,8 @@ class RankableTableCell extends Component<Props, {}> {
         shouldTruncate={shouldTruncate}
         width={width}
         isRanking={isRanking}
-        rankingWidth={rankingWidth}
-        innerRef={this.props.innerRef}
+        style={inlineStyles}
+        innerRef={innerRef}
       >
         {content}
       </RankableTableBodyCell>

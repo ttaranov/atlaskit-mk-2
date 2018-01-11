@@ -2,11 +2,10 @@
 import styled, {css} from 'styled-components';
 import { TableBodyCell } from '../TableCell';
 
-const rankableStyles = ({ isRanking, rankingWidth }) =>
+const rankableStyles = ({ isRanking }) =>
 isRanking &&
   css`
     box-sizing: border-box;
-    width: ${rankingWidth}px;
   `;
 
 export const RankableTableBodyCell = styled(TableBodyCell)`

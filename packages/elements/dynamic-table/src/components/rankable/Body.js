@@ -18,15 +18,6 @@ type Props = {
 
 class RankableBody extends Component<Props, {}> {
 
-  dragStart = (rankStart: RankStart) => {
-    this.props.updateDimensions();
-    this.props.onRankStart(rankStart);
-  }
-
-  dragEnd = (rankEnd: RankEnd) => {
-    this.props.onRankEnd(rankEnd);
-  }
-
   innerRef = (innerRefFn: Function) => (ref: HTMLElement) => {
     innerRefFn(ref);
     this.props.innerRef(ref);
@@ -38,17 +29,20 @@ class RankableBody extends Component<Props, {}> {
       head,  
       isFixedSize,
       isRanking,
-      width,
+      refWidth,
+      onRankStart,
+      onRankEnd,
     } = this.props;
+    const inlineStyle = isRanking ? {width: refWidth} : {};
 
     return (
-      <DragDropContext onDragStart={this.dragStart} onDragEnd={this.dragEnd}>
+      <DragDropContext onDragStart={onRankStart} onDragEnd={onRankEnd}>
         <Droppable droppableId="dynamic-table-droppable">
           {(provided) => (
             <RankableTableBody 
               innerRef={this.innerRef(provided.innerRef)}
               isRanking={isRanking} 
-              width={width}
+              style={inlineStyle}
             >
               {pageRows.map((row, rowIndex) => (
                 <TableRow
@@ -68,4 +62,6 @@ class RankableBody extends Component<Props, {}> {
   }
 }
 
-export default withDimensions(withSortedPageRows(RankableBody));
+export default withDimensions(
+  withSortedPageRows(RankableBody)
+);

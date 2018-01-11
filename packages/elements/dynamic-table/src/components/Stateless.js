@@ -173,6 +173,8 @@ export default class DynamicTable extends Component<Props, State> {
                 onSort={this.onSort}
                 sortKey={sortKey}
                 sortOrder={sortOrder}
+                isRanking={this.state.isRanking}
+                isRankable={isRankable}
               />
             )}
             {rowsExist && isRankable ? (
