@@ -12,6 +12,7 @@ type Props = {
   isFixedSize: boolean,
   row: RowType,
   isRanking: boolean,
+  rowIndex: number,
 } & WithDimensionsProps;
 
 class RankableTableRow extends Component<Props, {}> {
@@ -22,17 +23,18 @@ class RankableTableRow extends Component<Props, {}> {
   }
 
   render() {
-    const { row, head, isFixedSize, isRanking, refWidth, refHeight } = this.props;
+    const { row, head, isFixedSize, isRanking, refWidth, refHeight, rowIndex } = this.props;
     const { cells, ...restRowProps } = row;
     const inlineStyle = isRanking ? {width: refWidth} : {};
 
     return (
-      <Draggable draggableId={row.key}>
+      <Draggable draggableId={typeof(row.key) === 'undefined' ? row.key : rowIndex} index={rowIndex}>
       {(provided, snapshot) => [
         <RankableTableBodyRow {...restRowProps} 
           innerRef={this.innerRef(provided.innerRef)} 
           {...provided.dragHandleProps}
-          style={{...provided.draggableStyle, ...inlineStyle}}
+          {...provided.draggableProps}
+          style={{...provided.draggableProps.style, ...inlineStyle}}
           isRanking={isRanking}
           isRankingItem={snapshot.isDragging}
         >

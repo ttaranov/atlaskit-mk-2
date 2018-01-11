@@ -50,6 +50,7 @@ class RankableBody extends Component<Props, {}> {
                   isRanking={isRanking}
                   isFixedSize={isFixedSize}
                   key={rowIndex} // eslint-disable-line react/no-array-index-key
+                  rowIndex={rowIndex + 1}
                   row={row}
                 />
               ))}
