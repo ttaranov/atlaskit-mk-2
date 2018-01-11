@@ -28,35 +28,38 @@ describe('Image navigator', () => {
           onSizeChanged={onSizeChanged}
         />,
       );
-      imageCropper = component.find(ImageCropper);
-      slider = component.find(Slider);
+      imageCropper = () => component.find(ImageCropper);
+      slider = () => component.find(Slider);
     });
 
     it('should have image cropper', () => {
-      expect(imageCropper.length).toBe(1);
+      expect(imageCropper().length).toBe(1);
     });
 
     it('should have slider', () => {
-      expect(slider.length).toBe(1);
+      expect(slider().length).toBe(1);
     });
 
     describe('when landscape image is loaded', () => {
-      let imageHeight = CONTAINER_SIZE * 2;
-      let imageWidth = CONTAINER_SIZE * 4;
+      const imageHeight = CONTAINER_SIZE * 2;
+      const imageWidth = CONTAINER_SIZE * 4;
       beforeEach(() => {
-        imageCropper.props().onImageSize(imageWidth, imageHeight);
+        imageCropper()
+          .props()
+          .onImageSize(imageWidth, imageHeight);
+        component.update();
       });
 
       it('should have image width set', () => {
-        expect(imageCropper.props().imageWidth).toBe(imageWidth);
+        expect(imageCropper().props().imageWidth).toBe(imageWidth);
       });
 
       it('should have slider value set', () => {
-        expect(slider.props().value).toBe(50);
+        expect(slider().props().value).toBe(50);
       });
 
       it('should have image scale set', () => {
-        expect(imageCropper.props().scale).toBe(0.5);
+        expect(imageCropper().props().scale).toBe(0.5);
       });
 
       it('should have min scale set to minimum allowed', () => {
@@ -64,57 +67,73 @@ describe('Image navigator', () => {
           CONTAINER_SIZE / imageWidth,
           CONTAINER_SIZE / imageHeight,
         );
-        expect(slider.props().min).toBe(expectedMinScale * 100);
+        expect(slider().props().min).toBe(expectedMinScale * 100);
       });
     });
 
     describe('when portrait image is loaded', () => {
-      let imageHeight = CONTAINER_SIZE * 4;
-      let imageWidth = CONTAINER_SIZE * 2;
+      const imageHeight = CONTAINER_SIZE * 4;
+      const imageWidth = CONTAINER_SIZE * 2;
       beforeEach(() => {
-        imageCropper.props().onImageSize(imageWidth, imageHeight);
+        imageCropper()
+          .props()
+          .onImageSize(imageWidth, imageHeight);
+        component.update();
       });
 
       it('should have image scale set', () => {
-        expect(imageCropper.props().scale).toBe(0.5);
+        expect(imageCropper().props().scale).toBe(0.5);
       });
     });
 
     describe('when image is smaller then container', () => {
-      let imageHeight = CONTAINER_SIZE / 2;
-      let imageWidth = CONTAINER_SIZE / 2;
+      const imageHeight = CONTAINER_SIZE / 2;
+      const imageWidth = CONTAINER_SIZE / 2;
 
       beforeEach(() => {
-        imageCropper.props().onImageSize(imageWidth, imageHeight);
+        imageCropper()
+          .props()
+          .onImageSize(imageWidth, imageHeight);
+        component.update();
       });
 
       it('should have image scale maxed to fit CONTAINER_SIZE', () => {
-        expect(imageCropper.props().scale).toBe(2);
+        expect(imageCropper().props().scale).toBe(2);
       });
     });
 
     it('should change scale in state when slider is moved', () => {
-      slider.props().onChange(20);
+      slider()
+        .props()
+        .onChange(20);
       expect(component.state().scale).toBe(0.2);
     });
 
     it('should mark state as is dragging when mouse pressed down', () => {
-      imageCropper.props().onDragStarted();
+      imageCropper()
+        .props()
+        .onDragStarted();
       expect(component.state().isDragging).toBe(true);
     });
 
     it('should mark state as is not dragging when mouse unpressed', () => {
-      imageCropper.props().onDragStarted();
+      imageCropper()
+        .props()
+        .onDragStarted();
       document.dispatchEvent(createMouseEvent('mouseup'));
       expect(component.state().isDragging).toBe(false);
     });
 
     describe('when image is dragged', () => {
-      let imageHeight = CONTAINER_SIZE * 2;
-      let imageWidth = CONTAINER_SIZE * 2;
+      const imageHeight = CONTAINER_SIZE * 2;
+      const imageWidth = CONTAINER_SIZE * 2;
       beforeEach(() => {
-        imageCropper.props().onImageSize(imageWidth, imageHeight);
-        slider.props().onChange(100);
+        imageCropper()
+          .props()
+          .onImageSize(imageWidth, imageHeight);
+        slider()
+          .props()
+          .onChange(100);
         onPositionChanged = jest.fn();
         component.setProps({ onPositionChanged });
       });
@@ -122,7 +141,9 @@ describe('Image navigator', () => {
       it('should change state during drag', () => {
         const imageDragStartPos = component.state().imageDragStartPos;
 
-        imageCropper.props().onDragStarted();
+        imageCropper()
+          .props()
+          .onDragStarted();
         document.dispatchEvent(
           createMouseEvent('mousemove', { screenX: 0, screenY: 0 }),
         );
@@ -148,7 +169,9 @@ describe('Image navigator', () => {
       it('should call onPositionChanged on drop', () => {
         const imageDragStartPos = component.state().imageDragStartPos;
 
-        imageCropper.props().onDragStarted();
+        imageCropper()
+          .props()
+          .onDragStarted();
         document.dispatchEvent(
           createMouseEvent('mousemove', { screenX: 0, screenY: 0 }),
         );
@@ -170,9 +193,11 @@ describe('Image navigator', () => {
       it('should call onSizeChanged with new size', () => {
         const imageWidth = 20;
         component.setState({ imageWidth });
-        const { value } = slider.props();
+        const { value } = slider().props();
         // decrease the slider by 5%
-        slider.props().onChange(value * 0.95);
+        slider()
+          .props()
+          .onChange(value * 0.95);
 
         // this need to be more specific
         expect(onSizeChanged).toHaveBeenCalled();
@@ -180,9 +205,11 @@ describe('Image navigator', () => {
       it('should call onPositionChanged with new coordinates', () => {
         const imageWidth = 20;
         component.setState({ imageWidth });
-        const { value } = slider.props();
+        const { value } = slider().props();
         // decrease the slider by 5%
-        slider.props().onChange(value * 0.95);
+        slider()
+          .props()
+          .onChange(value * 0.95);
 
         // this need to be more specific
         expect(onPositionChanged).toHaveBeenCalled();

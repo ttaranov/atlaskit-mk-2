@@ -3,9 +3,13 @@ import {
   FETCH_CONVERSATIONS_SUCCESS,
   ADD_COMMENT,
   ADD_COMMENT_SUCCESS,
+  UPDATE_COMMENT,
+  UPDATE_COMMENT_SUCCESS,
+  UPDATE_USER,
   CREATE_CONVERSATION_SUCCESS,
 } from './actions';
 import { Action, State } from './store';
+import { User, Conversation } from '../model';
 
 export const reducers = {
   [FETCH_CONVERSATIONS](state: State, action: Action) {
@@ -17,7 +21,7 @@ export const reducers = {
   [FETCH_CONVERSATIONS_SUCCESS](state: State, action: Action) {
     return {
       ...state,
-      conversations: action.payload,
+      conversations: <Conversation[]>action.payload,
     };
   },
 
@@ -42,9 +46,41 @@ export const reducers = {
     };
   },
 
+  [UPDATE_COMMENT](state: State, action: Action) {
+    return {
+      ...state,
+    };
+  },
+
+  [UPDATE_COMMENT_SUCCESS](state: State, action: Action) {
+    const { conversations } = state;
+    const [conversation] = conversations.filter(
+      c => c.conversationId === action.payload.conversationId,
+    );
+
+    const { comments = [] } = conversation;
+    const [comment] = comments.filter(
+      c => c.commentId === action.payload.commentId,
+    );
+
+    comment.document = action.payload.document;
+
+    return {
+      ...state,
+      conversations,
+    };
+  },
+
+  [UPDATE_USER](state: State, action: Action) {
+    return {
+      ...state,
+      user: <User>action.payload.user,
+    };
+  },
+
   [CREATE_CONVERSATION_SUCCESS](state: State, action: Action) {
     const { conversations } = state;
-    conversations.push(action.payload);
+    conversations.push(<Conversation>action.payload);
 
     return {
       ...state,

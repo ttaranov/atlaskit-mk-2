@@ -1,5 +1,8 @@
 # @atlaskit/table-tree
 
+## 0.3.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
 ## 0.2.2
 - [patch] Styling/spacing adjustments [0c29170](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c29170)
 

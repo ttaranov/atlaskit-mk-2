@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { EditorView } from 'prosemirror-view';
 import { Node as PMNode } from 'prosemirror-model';
 import { mediaSingle, media } from '@atlaskit/editor-test-helpers';
@@ -8,6 +8,7 @@ import {
   stateKey as mediaStateKey,
 } from '../../../src/plugins/media';
 import MediaSingle from '../../../src/nodeviews/ui/media-single';
+
 interface MediaProps {
   node: PMNode;
 }
@@ -35,7 +36,7 @@ describe('nodeviews/mediaSingle', () => {
     const view = {} as EditorView;
     const mediaSingleNode = mediaSingle({ layout: 'wrap-right' })(mediaNode);
 
-    const wrapper = mount(
+    const wrapper = shallow(
       <MediaSingle view={view} node={mediaSingleNode}>
         <Media node={mediaNode} />
       </MediaSingle>,

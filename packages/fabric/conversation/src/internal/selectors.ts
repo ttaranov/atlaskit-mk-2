@@ -1,5 +1,5 @@
 import { State } from './store';
-import { Comment, Conversation } from '../model';
+import { Comment, Conversation, User } from '../model';
 
 export const getConversation = (
   state: State,
@@ -27,3 +27,5 @@ export const getComments = (
   }
   return [];
 };
+
+export const getUser = (state: State): User | undefined => state.user;

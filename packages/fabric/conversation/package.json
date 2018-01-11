@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/conversation",
-  "version": "4.2.1",
+  "version": "4.4.0",
   "config": {
     "access": "public"
   },
@@ -19,17 +19,20 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "peerDependencies": {
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react": "15.6.0 - 16.2.0",
+    "react-dom": "15.6.0 - 16.2.0"
   },
   "dependencies": {
-    "@atlaskit/avatar": "^8.3.11",
+    "@atlaskit/avatar": "^8.4.0",
     "@atlaskit/comment": "^2.6.7",
-    "@atlaskit/editor-core": "^61.0.2",
-    "@atlaskit/renderer": "^11.2.1",
+    "@atlaskit/editor-core": "^61.1.0",
+    "@atlaskit/renderer": "^11.3.0",
     "date-fns": "^1.29.0",
     "prop-types": "^15.5.10",
     "styled-components": "^1.4.6",
     "tslib": "^1.8.0"
+  },
+  "devDependencies": {
+    "@atlaskit/single-select": "^3.2.0"
   }
 }

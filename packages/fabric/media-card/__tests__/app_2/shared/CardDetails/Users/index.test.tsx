@@ -6,7 +6,7 @@ import Users from '../../../../../src/app_2/shared/CardDetails/Users';
 describe('Users', () => {
   it('should render zero users as null', () => {
     const element = shallow(<Users users={[]} />);
-    expect(element.getNode()).toBeNull();
+    expect(element.getElement()).toBeNull();
   });
 
   it('should render avatars', () => {

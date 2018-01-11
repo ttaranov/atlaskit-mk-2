@@ -46,6 +46,7 @@ describe('Layer', () => {
         },
       };
       wrapper.instance().extractStyles(dummyPopperState);
+      wrapper.update();
       expect(wrapper.find('div[style]').props().style.opacity).toBe(undefined);
     });
   });

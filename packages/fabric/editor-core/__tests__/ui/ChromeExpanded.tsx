@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import * as React from 'react';
 import AkButton from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
@@ -57,7 +57,7 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
 
     it('should render Spinner if showSpinner=true and saveDisabled=true', () => {
       const { editorView } = editor(doc(p()));
-      const chrome = mount(
+      const chrome = shallow(
         <ChromeExpanded
           editorView={editorView}
           onSave={noop}
@@ -247,8 +247,9 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
       expect(chromeExpanded.state('showHelp')).toBe(false);
       const toolbarHelp = chromeExpanded.find(ToolbarHelp);
       toolbarHelp.find(AkButton).simulate('click');
+      chromeExpanded.update();
       expect(chromeExpanded.state('showHelp')).toBe(true);
-      const helpDialog = toolbarHelp.find(HelpDialog);
+      const helpDialog = chromeExpanded.find(HelpDialog);
       expect(helpDialog.exists()).toBe(true);
     });
 
