@@ -24,6 +24,7 @@
     "@atlaskit/droplist": "^4.11.3",
     "@atlaskit/field-base": "^8.1.1",
     "@atlaskit/icon": "^10.7.0",
+    "@atlaskit/polyfills": "^1.4.0",
     "@atlaskit/spinner": "^4.1.0",
     "@atlaskit/theme": "^2.3.0",
     "classnames": "^2.2.5",
