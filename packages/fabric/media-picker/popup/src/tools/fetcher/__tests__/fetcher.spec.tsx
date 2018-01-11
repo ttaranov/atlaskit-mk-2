@@ -1,3 +1,4 @@
+jest.mock('axios');
 jest.mock('../../../../../src/util/getPreviewFromBlob');
 
 import axios from 'axios';
@@ -240,6 +241,7 @@ describe('Fetcher', () => {
         const fetcher = new MediaApiFetcher();
 
         fetcher.fetchGifsRelevantToSearch(queryString, offset);
+
         expect(axios.request).toHaveBeenCalledTimes(1);
         expect((axios.request as any).mock.calls[0][0].params.offset).toEqual(
           offset,

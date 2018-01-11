@@ -1,28 +1,26 @@
+jest.mock('bricks.js');
+
+import { shallow } from 'enzyme';
+import * as React from 'react';
+import * as BricksStub from 'bricks.js';
+import { BricksLayout } from '../bricksGrid';
+
 const bricksInstanceStub = {
   resize: jest.fn(),
   pack: jest.fn(),
 };
 
-const BricksStub = jest.fn().mockReturnValue(bricksInstanceStub);
-
-jest.mock('bricks.js', () => {
-  return BricksStub;
-});
-
-import { shallow } from 'enzyme';
-import * as React from 'react';
-import { BricksLayout } from '../bricksGrid';
-
 describe('StatelessGiphySidebarItem component', () => {
-  afterEach(() => {
+  beforeEach(() => {
+    (BricksStub as any).mockReset();
+    (BricksStub as any).mockReturnValue(bricksInstanceStub);
     bricksInstanceStub.pack.mockReset();
     bricksInstanceStub.resize.mockReset();
   });
 
   describe('#componentDidMount()', () => {
     it('should create an instance of Brick class from bricks.js', () => {
-      const element = shallow(<BricksLayout id={'some-id'}>{[]}</BricksLayout>);
-      (element.instance() as any).componentDidMount();
+      shallow(<BricksLayout id={'some-id'}>{[]}</BricksLayout>);
 
       expect(BricksStub).toHaveBeenCalledTimes(1);
       expect(BricksStub).toHaveBeenCalledWith({
@@ -34,27 +32,15 @@ describe('StatelessGiphySidebarItem component', () => {
 
     it('should set the created instance of Brick class from bricks.js into the component state', () => {
       const element = shallow(<BricksLayout id={'some-id'}>{[]}</BricksLayout>);
-      (element.instance() as any).componentDidMount();
 
       expect(element.state('instance')).toBe(bricksInstanceStub);
     });
 
     it('should call resize(true) on the created instance of Brick class from bricks.js', () => {
-      const element = shallow(<BricksLayout id={'some-id'}>{[]}</BricksLayout>);
-      (element.instance() as any).componentDidMount();
+      shallow(<BricksLayout id={'some-id'}>{[]}</BricksLayout>);
 
       expect(bricksInstanceStub.resize).toHaveBeenCalledTimes(1);
       expect(bricksInstanceStub.resize).toHaveBeenCalledWith(true);
-    });
-
-    it('should pack the Bricks instance when children have length greater than 0', () => {
-      const id = 'some-id';
-      const child = [<div key="first-child">This is some child</div>];
-
-      const element = shallow(<BricksLayout id={id}>{child}</BricksLayout>);
-      (element.instance() as any).componentDidMount();
-
-      expect(bricksInstanceStub.pack).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -81,11 +67,11 @@ describe('StatelessGiphySidebarItem component', () => {
   describe('#componentWillUnmount()', () => {
     it('should set the instance resize to false', () => {
       const element = shallow(<BricksLayout id={'some-id'}>{[]}</BricksLayout>);
-
       element.setState({ instance: bricksInstanceStub });
       (element.instance() as any).componentWillUnmount();
-      expect(bricksInstanceStub.resize).toHaveBeenCalledTimes(1);
-      expect(bricksInstanceStub.resize).toHaveBeenCalledWith(false);
+      expect(bricksInstanceStub.resize).toHaveBeenCalledTimes(2);
+      expect(bricksInstanceStub.resize).toHaveBeenCalledWith(true);
+      expect(bricksInstanceStub.resize).toHaveBeenLastCalledWith(false);
     });
   });
 

@@ -1,3 +1,5 @@
+jest.mock('axios');
+
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import axios from 'axios';
@@ -234,9 +236,7 @@ describe('MediaClient', () => {
     });
 
     afterEach(() => {
-      if (axios) {
-        (axios.request as any).mockClear();
-      }
+      (axios.request as any).mockReset();
     });
 
     it('should reject if token can not be retrieved', done => {
