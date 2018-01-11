@@ -16,7 +16,7 @@ import Comment, {
   CommentTime,
 } from '../src/';
 import { ActionsContainer } from '../src/styled/FooterStyles';
-import { TopItem, TopItemsContainer } from '../src/styled/HeaderStyles';
+import { TopItem } from '../src/styled/HeaderStyles';
 import { Container, Highlight } from '../src/styled/LayoutStyles';
 import { Content } from '../src/styled/CommentStyles';
 import HeaderItems from '../src/components/Header';

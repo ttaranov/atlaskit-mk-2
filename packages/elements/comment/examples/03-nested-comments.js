@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, type Node } from 'react';
+import React, { type Node } from 'react';
 import Avatar from '@atlaskit/avatar';
 import Comment, { CommentAuthor } from '../src';
 import avatarImg from './utils/sample-avatar.png';
