@@ -24,21 +24,25 @@ export const TreeRowContainer = styled.div`
   display: flex;
 `;
 
+const indentWidth = 20;
+
 const commonChevronContainer = css`
-  margin-left: -24px;
+  display: flex;
+  align-items: center;
   position: absolute;
   top: 0;
   bottom: 0;
-  display: flex;
-  align-items: center;
+  margin-left: -22px;
 `;
 
 export const ChevronContainer = styled.span`
   ${commonChevronContainer};
 `;
 
-export const LoaderContainer = styled.span`
-  ${commonChevronContainer} width: 100%;
+export const LoaderItemContainer = styled.span`
+  ${commonChevronContainer} padding-top: 5px;
+  width: 100%;
+
   ${props =>
     props.isRoot &&
     css`
@@ -46,14 +50,15 @@ export const LoaderContainer = styled.span`
     `};
 `;
 
-const indentWidth = 20;
-
 const commonCell = css`
-  color: ${colors.N800};
-  box-sizing: border-box;
-  padding: 10px ${defaultToPx(indentWidth)};
-  min-height: 40px;
+  display: flex;
+  align-items: center;
   position: relative;
+  box-sizing: border-box;
+  min-height: 40px;
+  padding: 8px ${defaultToPx(indentWidth)};
+  color: ${colors.N800};
+  line-height: 20px;
   ${props =>
     props.width &&
     css`
@@ -81,8 +86,6 @@ export const Header = styled.div`
   font-weight: bold;
   line-height: 1.67;
   letter-spacing: -0.1px;
-  padding-left: ${defaultToPx(indentWidth)};
-  padding-bottom: 8px;
 `;
 
 export const TableTreeContainer = styled.div``;

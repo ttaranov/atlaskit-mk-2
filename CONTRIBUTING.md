@@ -106,13 +106,19 @@ bolt workspaces <add/remove/upgrade> <dep>[@<version>] [--dev/peer/etc]
 You can run the unit tests by running:
 
 ```sh
-bolt test
+yarn jest
 ```
 
 If you want to run them continuously, you can run:
 
 ```sh
-bolt test --watch
+yarn jest --watch
+```
+
+You can also choose to only run the tests under certain directories by passing a path in as well
+
+```sh
+yarn jest packages/elements/
 ```
 
 ## Type checking your code

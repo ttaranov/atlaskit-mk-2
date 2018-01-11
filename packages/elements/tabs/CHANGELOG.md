@@ -1,5 +1,8 @@
 # @atlaskit/tabs
 
+## 5.1.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
 ## 5.0.1
 - [patch] fix tabs so that it re-renders when content props update [9b039dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b039dd)
 

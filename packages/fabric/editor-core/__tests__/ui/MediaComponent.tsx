@@ -80,6 +80,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
 
     const resolvedMediaProvider = await mediaProvider;
     await resolvedMediaProvider.viewContext;
+    mediaComponent.update();
 
     expect(mediaComponent.find(Card).length).toEqual(1);
   });
@@ -116,7 +117,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     const linkCreateContext = ContextFactory.create(
       resolvedLinkCreateContextConfig,
     ) as Context;
-    mediaComponent.setState({ linkCreateContext: linkCreateContext });
+    mediaComponent.setState({ linkCreateContext });
 
     expect(mediaComponent.find(Card).length).toEqual(0);
   });
@@ -153,7 +154,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     const linkCreateContext = ContextFactory.create(
       resolvedLinkCreateContextConfig,
     ) as Context;
-    mediaComponent.setState({ linkCreateContext: linkCreateContext });
+    mediaComponent.setState({ linkCreateContext });
 
     expect(mediaComponent.find(Card).length).toEqual(1);
   });
@@ -176,7 +177,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
       const linkCreateContext = ContextFactory.create(
         resolvedLinkCreateContextConfig,
       ) as Context;
-      mediaComponent.setState({ linkCreateContext: linkCreateContext });
+      mediaComponent.setState({ linkCreateContext });
 
       const props: CardProps = mediaComponent.find(Card).props();
       expect(props.appearance).toEqual('square');
@@ -200,7 +201,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
       const linkCreateContext = ContextFactory.create(
         resolvedLinkCreateContextConfig,
       ) as Context;
-      mediaComponent.setState({ linkCreateContext: linkCreateContext });
+      mediaComponent.setState({ linkCreateContext });
 
       const props: CardProps = mediaComponent.find(Card).props();
       expect(props.appearance).toEqual('horizontal');
@@ -246,7 +247,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     );
 
     const resolvedMediaProvider = await mediaProvider;
-    await (media as any).node.handleMediaProvider(resolvedMediaProvider);
+    await (media as any).instance().handleMediaProvider(resolvedMediaProvider);
     media.unmount();
   });
 });

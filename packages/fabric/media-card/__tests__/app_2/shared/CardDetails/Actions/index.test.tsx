@@ -22,7 +22,7 @@ const reportAction = {
 describe('Actions', () => {
   it('should render zero actions as null', () => {
     const element = shallow(<Actions actions={[]} />);
-    expect(element.getNode()).toBeNull();
+    expect(element.getElement()).toBeNull();
   });
 
   it('should render a single action as a drop down menu when compact=true', () => {

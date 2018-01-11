@@ -25,7 +25,7 @@ describe('@atlaskit/editor-core/ui/Task', () => {
   });
 
   it('should render resourced task item', () => {
-    const task = mount(<Task taskId="abcd-abcd-abcd" isDone={true} />);
+    const task = mount(<Task taskId="abcd-abcd-abcd" isDone />);
     const resourcedTask = task.find(ResourcedTaskItem);
 
     expect(resourcedTask.prop('taskId')).toEqual('abcd-abcd-abcd');
@@ -37,11 +37,7 @@ describe('@atlaskit/editor-core/ui/Task', () => {
     providerFactory.setProvider('taskDecisionProvider', taskDecisionProvider);
 
     const task = mount(
-      <Task
-        taskId="abcd-abcd-abcd"
-        isDone={true}
-        providers={providerFactory}
-      />,
+      <Task taskId="abcd-abcd-abcd" isDone providers={providerFactory} />,
     );
     const resourcedTaskItem = task.find(ResourcedTaskItem);
 
@@ -57,14 +53,11 @@ describe('@atlaskit/editor-core/ui/Task', () => {
       contextIdentifierProvider,
     );
     const task = mount(
-      <Task
-        taskId="abcd-abcd-abcd"
-        isDone={true}
-        providers={providerFactory}
-      />,
+      <Task taskId="abcd-abcd-abcd" isDone providers={providerFactory} />,
     );
 
     await contextIdentifierProvider;
+    task.update();
     const resourcedTaskItem = task.find(ResourcedTaskItem);
     expect(resourcedTaskItem.prop('objectAri')).toEqual('abc');
     expect(resourcedTaskItem.prop('containerAri')).toEqual('def');
@@ -78,17 +71,15 @@ describe('@atlaskit/editor-core/ui/Task', () => {
       contextIdentifierProvider,
     );
     const task = mount(
-      <Task
-        taskId="abcd-abcd-abcd"
-        isDone={true}
-        providers={providerFactory}
-      />,
+      <Task taskId="abcd-abcd-abcd" isDone providers={providerFactory} />,
     );
 
     await contextIdentifierProvider;
-    const taskItem = task.find(TaskItem);
-    taskItem.find('input').simulate('change');
-    expect(taskItem.prop('isDone')).toBe(false);
+    task
+      .find(TaskItem)
+      .find('input')
+      .simulate('change');
+    expect(task.find(TaskItem).prop('isDone')).toBe(false);
     task.unmount();
   });
 
@@ -98,11 +89,7 @@ describe('@atlaskit/editor-core/ui/Task', () => {
       contextIdentifierProvider,
     );
     const task = mount(
-      <Task
-        taskId="abcd-abcd-abcd"
-        isDone={true}
-        providers={providerFactory}
-      />,
+      <Task taskId="abcd-abcd-abcd" isDone providers={providerFactory} />,
     );
 
     const taskItem = task.find(TaskItem);
@@ -114,11 +101,7 @@ describe('@atlaskit/editor-core/ui/Task', () => {
   it('should not change state of task if no contextIdentifierProvider', () => {
     providerFactory.setProvider('taskDecisionProvider', taskDecisionProvider);
     const task = mount(
-      <Task
-        taskId="abcd-abcd-abcd"
-        isDone={true}
-        providers={providerFactory}
-      />,
+      <Task taskId="abcd-abcd-abcd" isDone providers={providerFactory} />,
     );
 
     const taskItem = task.find(TaskItem);

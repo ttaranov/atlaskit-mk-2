@@ -12,22 +12,11 @@ function float(layout: MediaSingleLayout): string {
   }
 }
 
-function clear(layout: MediaSingleLayout): string {
-  switch (layout) {
-    case 'wrap-right':
-      return 'right';
-    case 'wrap-left':
-      return 'left';
-    default:
-      return 'both';
-  }
-}
-
 function calcWidth(layout: MediaSingleLayout): string {
   switch (layout) {
     case 'wrap-right':
     case 'wrap-left':
-      return '50%';
+      return 'calc(50% - 12px)';
     default:
       return '100%';
   }
@@ -57,7 +46,6 @@ const MediaSingleDimensionHelper = ({
 }: WrapperProps) => css`
   margin: ${calcMargin(layout)};
   float: ${float(layout)};
-  clear: ${clear(layout)};
   max-width: ${width}px;
   max-height: ${height}px;
   width: ${calcWidth(layout)};

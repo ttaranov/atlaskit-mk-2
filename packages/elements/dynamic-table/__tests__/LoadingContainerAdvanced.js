@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import styled from 'styled-components';
 import Spinner from '@atlaskit/spinner';
 import {
@@ -37,7 +37,7 @@ describe('LoadingContainerAdvanced', () => {
   });
 
   it('should always render children as is right inside the container', () => {
-    const wrapper = mount(
+    const wrapper = shallow(
       <LoadingContainerAdvanced isLoading={false}>
         <Contents />
       </LoadingContainerAdvanced>,

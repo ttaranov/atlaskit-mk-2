@@ -182,7 +182,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     );
     hyperlinkEdit.setState({ editorFocused: true });
     const input = hyperlinkEdit.find('PanelTextInput').find('input');
-    (input.get(0) as any).value = 'Atlasian';
+    (input.getDOMNode() as any).value = 'Atlasian';
     input.simulate('change');
     input.simulate('keydown', { keyCode: 13 });
     setTextSelection(editorView, 10, 10);

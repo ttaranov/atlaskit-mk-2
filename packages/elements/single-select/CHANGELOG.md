@@ -1,5 +1,8 @@
 # @atlaskit/single-select
 
+## 3.2.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
 ## 3.1.4
 
 - [patch] Remove index.js from root, fix flow type, remove react from dep [4f1e6d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f1e6d1)

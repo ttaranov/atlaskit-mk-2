@@ -1,5 +1,10 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.5.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
+## 2.4.2
+
 ## 2.4.1
 - [patch] Minor bump of editor-confluence transformer to update editor-core [01a4a8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/01a4a8b)
 
