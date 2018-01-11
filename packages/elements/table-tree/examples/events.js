@@ -11,7 +11,7 @@ function fetchChildrenOf(node) {
   return Promise.resolve(node.children);
 }
 
-function getChildrenData(parent) {
+function getItemsData(parent) {
   return parent ? fetchChildrenOf(parent) : fetchRoots();
 }
 
@@ -56,7 +56,7 @@ export default class extends PureComponent<{}, State> {
             </Header>
           </Headers>
           <Rows
-            items={getChildrenData}
+            items={getItemsData}
             render={({ title, numbering, page, children }) => (
               <Row
                 key={numbering}
