@@ -8,7 +8,6 @@ import ToolbarButton from '../ToolbarButton';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import TextColourIcon from '@atlaskit/icon/glyph/editor/text-color';
 import ColorPalette from './ColorPalette';
-import EditorWidth from '../../utils/editor-width';
 import {
   TriggerWrapper,
   Separator,
@@ -23,7 +22,7 @@ export interface Props {
   disabled?: boolean;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
-  editorWidth?: number;
+  isReducedSpacing?: boolean;
 }
 
 export interface State {
@@ -52,12 +51,8 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
     const {
       popupsMountPoint,
       popupsBoundariesElement,
-      editorWidth,
+      isReducedSpacing,
     } = this.props;
-
-    if (editorWidth && editorWidth < EditorWidth.BreakPoint8) {
-      return null;
-    }
 
     return (
       <Wrapper>
@@ -70,7 +65,7 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
           fitHeight={80}
           trigger={
             <ToolbarButton
-              spacing={editorWidth ? 'default' : 'none'}
+              spacing={isReducedSpacing ? 'none' : 'default'}
               disabled={disabled || this.props.disabled}
               selected={isOpen}
               title="Text color"

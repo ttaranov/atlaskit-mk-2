@@ -5,7 +5,6 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { EditorAppearance } from '../../types';
 import { EventDispatcher } from '../../event-dispatcher';
 
-// tslint:disable-next-line:variable-name
 const PluginsComponentsWrapper = styled.div`
   display: flex;
 `;
@@ -18,8 +17,7 @@ export interface Props {
   appearance: EditorAppearance;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
-  disabled?: boolean;
-  editorWidth?: number;
+  disabled: boolean;
 }
 
 export default class PluginSlot extends React.Component<Props, any> {
@@ -32,7 +30,6 @@ export default class PluginSlot extends React.Component<Props, any> {
       popupsMountPoint,
       popupsBoundariesElement,
       disabled,
-      editorWidth,
     } = this.props;
     return !(
       nextProps.editorView === editorView &&
@@ -41,15 +38,13 @@ export default class PluginSlot extends React.Component<Props, any> {
       nextProps.eventDispatcher === eventDispatcher &&
       nextProps.popupsMountPoint === popupsMountPoint &&
       nextProps.popupsBoundariesElement === popupsBoundariesElement &&
-      nextProps.disabled === disabled &&
-      nextProps.editorWidth === editorWidth
+      nextProps.disabled === disabled
     );
   }
 
   render() {
     const {
       items,
-      editorWidth,
       editorView,
       eventDispatcher,
       providerFactory,
@@ -67,10 +62,7 @@ export default class PluginSlot extends React.Component<Props, any> {
       <PluginsComponentsWrapper>
         {items.map((component, key) => {
           const props: any = { key };
-          if (editorWidth) {
-            props.editorWidth = editorWidth;
-          }
-          const element = component(
+          const element = component({
             editorView,
             eventDispatcher,
             providerFactory,
@@ -78,8 +70,7 @@ export default class PluginSlot extends React.Component<Props, any> {
             popupsMountPoint,
             popupsBoundariesElement,
             disabled,
-            editorWidth,
-          );
+          });
           return element && React.cloneElement(element, props);
         })}
       </PluginsComponentsWrapper>

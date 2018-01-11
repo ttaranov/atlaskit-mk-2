@@ -13,9 +13,8 @@ const panelPlugin: EditorPlugin = {
     return [{ rank: 1110, plugin: createPlugin }];
   },
 
-  contentComponent(editorView) {
+  contentComponent({ editorView }) {
     const pluginState = stateKey.getState(editorView.state);
-
     return <PanelEdit editorView={editorView} pluginState={pluginState} />;
   },
 };

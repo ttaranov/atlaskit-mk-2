@@ -44,15 +44,7 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
     ];
   },
 
-  secondaryToolbarComponent(
-    editorView,
-    eventDispatcher,
-    providerFactory,
-    appearance,
-    popupsMountPoint,
-    popupsBoundariesElement,
-    disabled,
-  ) {
+  secondaryToolbarComponent({ editorView, disabled }) {
     return (
       <TaskDecisionToolbarGroup>
         <ToolbarDecision editorView={editorView} isDisabled={disabled} />

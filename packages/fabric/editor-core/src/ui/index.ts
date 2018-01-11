@@ -12,7 +12,6 @@ export { default as ToolbarButton } from './ToolbarButton';
 export { default as ToolbarDecision } from './ToolbarDecision';
 export { default as ToolbarEmojiPicker } from './ToolbarEmojiPicker';
 export { default as ToolbarFeedback } from './ToolbarFeedback';
-export { default as ToolbarHyperlink } from './ToolbarHyperlink';
 export { default as ToolbarLists } from './ToolbarLists';
 export { default as ToolbarTask } from './ToolbarTask';
 export { default as ToolbarTextFormatting } from './ToolbarTextFormatting';

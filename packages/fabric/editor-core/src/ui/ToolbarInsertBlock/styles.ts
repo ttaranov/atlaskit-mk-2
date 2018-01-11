@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 // tslint:disable-next-line:variable-name
 export const Wrapper = styled.span`
+  width: 42px;
   display: flex;
   align-items: center;
   > div > div {

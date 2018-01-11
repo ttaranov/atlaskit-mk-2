@@ -12,7 +12,6 @@ import {
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../src/analytics';
-import EditorWidth from '../../src/utils/editor-width';
 
 describe('ToolbarTextColor', () => {
   const editor = (doc: any) =>
@@ -20,34 +19,6 @@ describe('ToolbarTextColor', () => {
       doc,
       plugins: textColorPlugin(defaultSchema),
     });
-
-  it('should have spacing of toolbar button set to default', () => {
-    const { pluginState, editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarTextColor
-        pluginState={pluginState}
-        editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint7 + 1}
-      />,
-    );
-    expect(toolbarOption.find(ToolbarButton).prop('spacing')).toEqual(
-      'default',
-    );
-    toolbarOption.unmount();
-  });
-
-  it('should return null if editor width is less then BreakPoint8', () => {
-    const { pluginState, editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarTextColor
-        pluginState={pluginState}
-        editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint8 - 1}
-      />,
-    );
-    expect(toolbarOption.html()).toEqual(null);
-    toolbarOption.unmount();
-  });
 
   describe('when plugin is enabled', () => {
     it('sets disabled to false', () => {
