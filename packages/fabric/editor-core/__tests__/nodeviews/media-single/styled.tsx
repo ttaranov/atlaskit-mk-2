@@ -16,13 +16,6 @@ describe('mediaSingle - styled component', () => {
       );
       expect(wrapper).toHaveStyleRule('float', 'none');
     });
-
-    it('should clear both', () => {
-      const wrapper = shallow(
-        <Wrapper layout={layout} height={100} width={100} />,
-      );
-      expect(wrapper).toHaveStyleRule('clear', 'both');
-    });
   });
 
   describe('when wrap right', () => {
@@ -33,13 +26,6 @@ describe('mediaSingle - styled component', () => {
         <Wrapper layout={layout} height={100} width={100} />,
       );
       expect(wrapper).toHaveStyleRule('float', 'right');
-    });
-
-    it('should clear both', () => {
-      const wrapper = shallow(
-        <Wrapper layout={layout} height={100} width={100} />,
-      );
-      expect(wrapper).toHaveStyleRule('clear', 'right');
     });
   });
 
@@ -52,13 +38,6 @@ describe('mediaSingle - styled component', () => {
       );
       expect(wrapper).toHaveStyleRule('float', 'left');
     });
-
-    it('should clear both', () => {
-      const wrapper = shallow(
-        <Wrapper layout={layout} height={100} width={100} />,
-      );
-      expect(wrapper).toHaveStyleRule('clear', 'left');
-    });
   });
 
   describe('when wide', () => {
@@ -70,13 +49,6 @@ describe('mediaSingle - styled component', () => {
       );
       expect(wrapper).toHaveStyleRule('float', 'none');
     });
-
-    it('should clear both', () => {
-      const wrapper = shallow(
-        <Wrapper layout={layout} height={100} width={100} />,
-      );
-      expect(wrapper).toHaveStyleRule('clear', 'both');
-    });
   });
 
   describe('when full width', () => {
@@ -87,13 +59,6 @@ describe('mediaSingle - styled component', () => {
         <Wrapper layout={layout} height={100} width={100} />,
       );
       expect(wrapper).toHaveStyleRule('float', 'none');
-    });
-
-    it('should clear both', () => {
-      const wrapper = shallow(
-        <Wrapper layout={layout} height={100} width={100} />,
-      );
-      expect(wrapper).toHaveStyleRule('clear', 'both');
     });
   });
 });

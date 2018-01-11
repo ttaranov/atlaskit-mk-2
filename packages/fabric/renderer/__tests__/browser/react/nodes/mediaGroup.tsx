@@ -89,6 +89,7 @@ describe('MediaGroup', () => {
     await provider.viewContext;
     await provider.linkCreateContext;
     await provider.uploadContext;
+    mediaGroup.update();
 
     const card = mediaGroup
       .find(FilmstripView)

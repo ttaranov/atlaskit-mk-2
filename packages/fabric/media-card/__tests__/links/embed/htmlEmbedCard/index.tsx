@@ -29,6 +29,7 @@ describe('HTMLEmbedCard', () => {
         },
       }),
     );
+    element.update();
 
     expect(element.find(Iframe).prop('isLoading')).toBeFalsy();
   });
@@ -79,6 +80,7 @@ describe('HTMLEmbedCard', () => {
         },
       }),
     );
+    element.update();
 
     expect(element.find(Iframe).prop('style')).toMatchObject({
       width: '123px',

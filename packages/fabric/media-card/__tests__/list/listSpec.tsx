@@ -120,6 +120,7 @@ describe('CardList', () => {
     const context = fakeContext();
     const card = shallow<CardListProps, CardListState>(
       <CardList context={context} collectionName={collectionName} />,
+      { disableLifecycleMethods: true },
     );
     expect(card.state().loading).toBe(true);
   });
@@ -148,6 +149,7 @@ describe('CardList', () => {
     const collection = { items: [item] };
     const list = shallow<CardListProps, CardListState>(
       <CardList context={context} collectionName={collectionName} />,
+      { disableLifecycleMethods: true },
     ) as any;
     list.setState({ loading: false, error: undefined, collection });
     expect(list.state('shouldAnimate')).toBe(false);
@@ -175,6 +177,7 @@ describe('CardList', () => {
     const collectionName = 'MyMedia';
     const list = shallow<CardListProps, CardListState>(
       <CardList context={context} collectionName={collectionName} />,
+      { disableLifecycleMethods: true },
     ) as any;
     const instance = list.instance();
 
@@ -215,6 +218,7 @@ describe('CardList', () => {
     const collectionName = 'MyMedia';
     const list = shallow<CardListProps, CardListState>(
       <CardList context={context} collectionName={collectionName} />,
+      { disableLifecycleMethods: true },
     ) as any;
     const spy = jest.fn();
 
@@ -268,6 +272,7 @@ describe('CardList', () => {
         collectionName={collectionName}
         onCardClick={onCardClickHandler}
       />,
+      { disableLifecycleMethods: true },
     ) as any;
     wrapper.setState({ loading: false, error: undefined, collection });
     wrapper
@@ -289,6 +294,7 @@ describe('CardList', () => {
       const context = fakeContext();
       const list = shallow<CardListProps, CardListState>(
         <CardList context={context} collectionName={collectionName} />,
+        { disableLifecycleMethods: true },
       ) as any;
       list.setState({ loading: true });
       expect(list.children().text()).toContain('loading...');
@@ -298,6 +304,7 @@ describe('CardList', () => {
       const context = fakeContext();
       const list = shallow<CardListProps, CardListState>(
         <CardList context={context} collectionName={collectionName} />,
+        { disableLifecycleMethods: true },
       ) as any;
       list.setState({ loading: false, error: { response: { status: 404 } } });
       expect(list.children().text()).toContain('No items');
@@ -307,6 +314,7 @@ describe('CardList', () => {
       const context = fakeContext();
       const list = shallow<CardListProps, CardListState>(
         <CardList context={context} collectionName={collectionName} />,
+        { disableLifecycleMethods: true },
       ) as any;
       list.setState({ loading: false, error: new Error() });
       expect(list.children().text()).toContain('ERROR');
@@ -317,6 +325,7 @@ describe('CardList', () => {
       const context = fakeContext();
       const list = shallow<CardListProps, CardListState>(
         <CardList context={context} collectionName={collectionName} />,
+        { disableLifecycleMethods: true },
       ) as any;
       list.setState({
         loading: false,
@@ -334,6 +343,7 @@ describe('CardList', () => {
           collectionName={collectionName}
           useInfiniteScroll={true}
         />,
+        { disableLifecycleMethods: true },
       ) as any;
       list.setState({
         loading: false,
@@ -351,6 +361,7 @@ describe('CardList', () => {
           collectionName={collectionName}
           useInfiniteScroll={false}
         />,
+        { disableLifecycleMethods: true },
       ) as any;
       list.setState({
         loading: false,

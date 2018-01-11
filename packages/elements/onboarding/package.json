@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/onboarding",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "Highlight elements of the UI to the user and display a complementary dialog.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -10,29 +10,32 @@
     "dist"
   ],
   "author": "Atlassian Pty Ltd",
-  "maintainers": ["Charles L", "Joss M"],
+  "maintainers": [
+    "Charles L",
+    "Joss M"
+  ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^6.1.0",
-    "@atlaskit/icon": "^10.5.0",
-    "@atlaskit/layer": "^2.5.4",
-    "@atlaskit/layer-manager": "^2.5.9",
-    "@atlaskit/modal-dialog": "^3.2.7",
-    "@atlaskit/theme": "^2.2.1",
+    "@atlaskit/button": "^6.3.0",
+    "@atlaskit/icon": "^10.7.0",
+    "@atlaskit/layer": "^2.6.0",
+    "@atlaskit/layer-manager": "^2.6.0",
+    "@atlaskit/modal-dialog": "^3.3.0",
+    "@atlaskit/theme": "^2.3.0",
     "prop-types": "^15.5.10",
     "react-lorem-component": "^0.12.2",
     "react-transition-group": "^2.2.1",
     "styled-components": "^1.4.6"
   },
   "peerDependencies": {
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react": "15.6.0 - 16.2.0",
+    "react-dom": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^8.3.11",
-    "@atlaskit/docs": "^2.0.0",
+    "@atlaskit/avatar": "^8.4.0",
+    "@atlaskit/docs": "^2.4.0",
     "@atlaskit/dropdown-menu": "^3.5.0",
     "@atlaskit/navigation": "^26.6.3",
-    "@atlaskit/tooltip": "^8.0.13"
+    "@atlaskit/tooltip": "^8.1.0"
   }
 }

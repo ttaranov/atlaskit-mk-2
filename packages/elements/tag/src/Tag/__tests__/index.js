@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import Chrome from '../../Chrome';
 import Content from '../../Content';
@@ -132,7 +132,7 @@ describe('Tag component', () => {
     });
 
     it('should render the elemBefore before the content', () => {
-      const wrapper = mount(
+      const wrapper = shallow(
         <Tag text="foo" elemBefore={<div className="test" />} />,
       );
       const chrome = wrapper.find(Chrome);

@@ -1,5 +1,8 @@
 # @atlaskit/editor-jira-transformer
 
+## 2.4.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
 ## 2.3.2
 - [patch] Fix transformation of list with empty text child and a sublist. [ad5441f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad5441f)
 

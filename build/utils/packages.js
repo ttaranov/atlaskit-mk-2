@@ -9,7 +9,7 @@ async function getChangedPackagesSinceCommit(commit) {
   const allPackages = await bolt.getWorkspaces();
 
   const fileNameToPackage = fileName =>
-    allPackages.find(pkg => fileName.startsWith(pkg.dir));
+    allPackages.find(pkg => fileName.startsWith(pkg.dir + path.sep));
   const fileExistsInPackage = fileName => !!fileNameToPackage(fileName);
   const fileNameToPackageName = fileName => fileNameToPackage(fileName).name;
 

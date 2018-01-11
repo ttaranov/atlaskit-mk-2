@@ -1,5 +1,11 @@
 # @atlaskit/layer-manager
 
+## 2.7.0
+- [minor] Fixed minor bug in utils/packages added ref to wrappedcomponent of withRenderTarget HoC for better testability [58be62a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/58be62a)
+
+## 2.6.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
 ## 2.5.9
 - [patch] Update layer manager enabled components to work with analytics [28077f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28077f5)
 
