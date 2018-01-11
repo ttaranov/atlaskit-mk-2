@@ -1,5 +1,8 @@
 # @atlaskit/blanket
 
+## 4.0.4
+- [patch] Migration of Blanket to mk2 repo [1c55d97](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c55d97)
+
 ## 4.0.3 (2017-12-21)
 
 * bug fix; Minor change to storybook to test new s3 bucket ([97cbb7d](https://bitbucket.org/atlassian/atlaskit/commits/97cbb7d))
