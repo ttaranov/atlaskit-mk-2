@@ -473,8 +473,8 @@ export function wrapIn(
   return tr;
 }
 
+const transformer = new JSONTransformer();
 export function toJSON(node: Node): JSONDocNode {
-  const transformer = new JSONTransformer();
   return transformer.encode(node);
 }
 
