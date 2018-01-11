@@ -22,6 +22,8 @@ pipelines:
             - bolt test:browser:browserstack
             - bolt release
             - (cd build/ci-scripts && bolt restart-stopped-build)
+          caches:
+            - node
 
   default:
     - step:
@@ -34,6 +36,8 @@ pipelines:
           - bolt test:ci:branch
           - bolt test:browser:browserstack
           - (cd website && bolt deploy-staging:no-minimize)
+        caches:
+          - node
 
   custom: # Pipelines that can be scheduled or triggered manually
 
@@ -44,3 +48,5 @@ pipelines:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
             - (cd website && bolt deploy)
+          caches:
+            - node
