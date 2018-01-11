@@ -165,6 +165,8 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
   return config;
 }
 
+// Returns the relative paths of all the packages that have browser tests
+// i.e ['packages/fabric/editor-core', 'packages/fabric/test-helpers', ...]
 async function getPackagesWithKarmaTests() /*: Promise<Array<string>> */ {
   const project /*: any */ = await boltQuery({
     cwd: __dirname,
@@ -173,7 +175,7 @@ async function getPackagesWithKarmaTests() /*: Promise<Array<string>> */ {
 
   return project.workspaces
     .filter(workspace => workspace.files.karma.length)
-    .map(workspace => workspace.pkg.name);
+    .map(workspace => path.relative(project.dir, workspace.dir));
 }
 
 module.exports = { getKarmaConfig, getPackagesWithKarmaTests };
