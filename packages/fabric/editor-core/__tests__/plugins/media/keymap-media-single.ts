@@ -9,11 +9,10 @@ import {
   code_block,
   sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
-import {
+import mediaPluginFactory, {
   MediaPluginState,
-  mediaPluginFactory,
-  ProviderFactory,
-} from '../../../src';
+} from '../../../src/plugins/media';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { keymapPlugin } from '../../../src/plugins/media/keymap-media-single';
 
 describe('mediaSingle - keymap', () => {

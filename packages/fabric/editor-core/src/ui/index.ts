@@ -1,6 +1,3 @@
-export { default as Chrome } from './Chrome';
-export { default as ChromeCollapsed } from './ChromeCollapsed';
-export { default as ChromeExpanded } from './ChromeExpanded';
 export { default as EmojiTypeAhead } from './EmojiTypeAhead';
 export { default as HyperlinkEdit } from './HyperlinkEdit';
 export { default as LanguagePicker } from './LanguagePicker';

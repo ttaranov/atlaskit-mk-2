@@ -1,6 +1,28 @@
 import * as React from 'react';
 import Editor from '../../../editor';
-import ChromeCollapsed from '../../../ui/ChromeCollapsed';
+
+import { akEditorSubtleAccent } from '../../../styles';
+import { akBorderRadius, akColorN50 } from '@atlaskit/util-shared-styles';
+import styled from 'styled-components';
+
+export const Input = styled.input`
+  // Normal .className gets overridden by input[type=text] hence this hack to produce input.className
+  input& {
+    background-color: white;
+    border: 1px solid ${akEditorSubtleAccent};
+    border-radius: ${akBorderRadius};
+    box-sizing: border-box;
+    height: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 100%;
+
+    &:hover {
+      border-color: ${akColorN50};
+      cursor: pointer;
+    }
+  }
+`;
 
 export interface Props {
   placeholder?: string;
@@ -11,9 +33,7 @@ export interface Props {
   onExpand?: () => void;
 }
 
-export interface State {}
-
-export default class CollapsedEditor extends React.Component<Props, State> {
+export default class CollapsedEditor extends React.PureComponent<Props, {}> {
   editorComponent?: Editor;
   shouldTriggerExpandEvent?: boolean;
 
@@ -32,11 +52,33 @@ export default class CollapsedEditor extends React.Component<Props, State> {
     }
   }
 
-  handleEditorRef = (editorRef?: Editor, editorRefCallback?: any) => {
+  private handleEditorRef = (editorRef?: Editor, editorRefCallback?: any) => {
     if (editorRefCallback && typeof editorRefCallback === 'function') {
       editorRefCallback(editorRef);
     }
     this.editorComponent = editorRef;
+  };
+
+  private input?: HTMLElement;
+
+  private focusHandler = e => {
+    /**
+     * We need this magic for FireFox.
+     * The reason we need it is, when, in FireFox, we have focus inside input,
+     * and then we remove that input and move focus to another place programmatically,
+     * for whatever reason UP/DOWN arrows don't work until you blur and focus editor manually.
+     */
+    if (this.input) {
+      this.input.blur();
+    }
+
+    if (this.props.onFocus) {
+      this.props.onFocus(e);
+    }
+  };
+
+  private handleInputRef = ref => {
+    this.input = ref;
   };
 
   render() {
@@ -46,10 +88,12 @@ export default class CollapsedEditor extends React.Component<Props, State> {
     }
 
     if (!this.props.isExpanded) {
+      const placeholder = this.props.placeholder || 'Type something…';
       return (
-        <ChromeCollapsed
-          onFocus={this.props.onFocus}
-          text={this.props.placeholder}
+        <Input
+          innerRef={this.handleInputRef}
+          onFocus={this.focusHandler}
+          placeholder={placeholder}
         />
       );
     }

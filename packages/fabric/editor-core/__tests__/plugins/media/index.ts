@@ -1,7 +1,9 @@
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import * as assert from 'assert';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { mediaPluginFactory, MediaPluginState } from '../../../src';
+import mediaPluginFactory, {
+  MediaPluginState,
+} from '../../../src/plugins/media';
 import { undo, history } from 'prosemirror-history';
 import { EditorView } from 'prosemirror-view';
 import {

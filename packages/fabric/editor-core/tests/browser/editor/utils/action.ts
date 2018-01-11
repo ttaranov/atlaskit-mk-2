@@ -2,11 +2,10 @@ import { name } from '../../../../package.json';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
-import {
-  mediaPluginFactory,
+import mediaPluginFactory, {
   MediaPluginState,
-  ProviderFactory,
-} from '../../../../src';
+} from '../../../../src/plugins/media';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   doc,
   p,

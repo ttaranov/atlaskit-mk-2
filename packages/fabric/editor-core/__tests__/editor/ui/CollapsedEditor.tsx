@@ -2,8 +2,7 @@ import { name } from '../../../package.json';
 import { mount } from 'enzyme';
 import * as React from 'react';
 import Editor from '../../../src/editor';
-import CollapsedEditor from '../../../src/editor/ui/CollapsedEditor';
-import ChromeCollapsed from '../../../src/ui/ChromeCollapsed';
+import CollapsedEditor, { Input } from '../../../src/editor/ui/CollapsedEditor';
 
 describe(name, () => {
   describe('CollapsedEditor', () => {
@@ -14,7 +13,7 @@ describe(name, () => {
         </CollapsedEditor>,
       );
       expect(wrapper.find(Editor).exists()).toBe(false);
-      expect(wrapper.find(ChromeCollapsed).exists()).toBe(true);
+      expect(wrapper.find(Input).exists()).toBe(true);
     });
 
     it('should render the editor when isExpanded is true', () => {
@@ -24,7 +23,7 @@ describe(name, () => {
         </CollapsedEditor>,
       );
       expect(wrapper.find(Editor).exists()).toBe(true);
-      expect(wrapper.find(ChromeCollapsed).exists()).toBe(false);
+      expect(wrapper.find(Input).exists()).toBe(false);
     });
 
     it('should call onFocus when collapsed editor is clicked', () => {
@@ -34,7 +33,7 @@ describe(name, () => {
           <Editor />
         </CollapsedEditor>,
       );
-      wrapper.find(ChromeCollapsed).simulate('focus');
+      wrapper.find(Input).simulate('focus');
       expect(onFocus).toHaveBeenCalledTimes(1);
     });
 

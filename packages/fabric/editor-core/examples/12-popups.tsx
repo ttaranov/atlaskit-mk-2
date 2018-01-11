@@ -5,7 +5,7 @@ import { PureComponent } from 'react';
 import styled from 'styled-components';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import Editor from '../example-helpers/editor';
+import { Editor } from '../src';
 import { Content } from '../example-helpers/styles';
 import imageUploadHandler from '../example-helpers/imageUpload';
 import { akColorN40 } from '@atlaskit/util-shared-styles';
@@ -28,15 +28,14 @@ class CustomBoundryExample extends PureComponent<any, any> {
     return (
       <Boundary innerRef={this.handleBoundryRef}>
         <Editor
-          imageUploadHandler={props.imageUploadHandler}
+          appearance="comment"
+          allowCodeBlocks
           analyticsHandler={props.analyticsHandler}
           onCancel={props.onCancel}
           onSave={props.onSave}
           mentionProvider={props.mentionProvider}
           emojiProvider={props.emojiProvider}
-          isExpandedByDefault={true}
           popupsBoundariesElement={this.state.boundary}
-          devTools={props.devTools}
         />
       </Boundary>
     );
@@ -59,15 +58,14 @@ class PortalExample extends PureComponent<any, any> {
       <div>
         <div style={{ overflow: 'hidden' }}>
           <Editor
-            imageUploadHandler={props.imageUploadHandler}
+            appearance="comment"
+            allowCodeBlocks
             analyticsHandler={props.analyticsHandler}
             onCancel={props.onCancel}
             onSave={props.onSave}
             mentionProvider={props.mentionProvider}
             emojiProvider={props.emojiProvider}
-            isExpandedByDefault={true}
             popupsMountPoint={this.state.portal}
-            devTools={props.devTools}
           />
         </div>
         <div ref={this.handleRef} />
@@ -95,16 +93,15 @@ class PortalWithCustomBoundaryExample extends PureComponent<any, any> {
         <Boundary innerRef={this.handleBoundryRef}>
           <div style={{ overflow: 'hidden' }}>
             <Editor
-              imageUploadHandler={props.imageUploadHandler}
+              appearance="comment"
+              allowCodeBlocks
               analyticsHandler={props.analyticsHandler}
               onCancel={props.onCancel}
               onSave={props.onSave}
               mentionProvider={props.mentionProvider}
               emojiProvider={props.emojiProvider}
-              isExpandedByDefault={true}
               popupsMountPoint={this.state.portal}
               popupsBoundariesElement={this.state.boundary}
-              devTools={props.devTools}
             />
           </div>
         </Boundary>
@@ -140,32 +137,30 @@ class PortalInScrollContainerExample extends PureComponent<any, any> {
       >
         <div style={{ minHeight: 500, width: '120%' }}>
           <Editor
-            imageUploadHandler={props.imageUploadHandler}
+            appearance="comment"
             analyticsHandler={props.analyticsHandler}
+            allowCodeBlocks
             onCancel={props.onCancel}
             onSave={props.onSave}
             mentionProvider={props.mentionProvider}
             emojiProvider={props.emojiProvider}
-            isExpandedByDefault={true}
             popupsMountPoint={this.state.portal}
             popupsBoundariesElement={this.state.boundary}
-            devTools={props.devTools1}
           />
         </div>
 
         <div ref={this.handlePortalRef} />
 
         <Editor
-          imageUploadHandler={props.imageUploadHandler}
+          appearance="comment"
           analyticsHandler={props.analyticsHandler}
+          allowCodeBlocks
           onCancel={props.onCancel}
           onSave={props.onSave}
           mentionProvider={props.mentionProvider}
           emojiProvider={props.emojiProvider}
-          isExpandedByDefault={true}
           popupsMountPoint={this.state.portal}
           popupsBoundariesElement={this.state.boundary}
-          devTools={props.devTools2}
         />
       </div>
     );
@@ -191,13 +186,13 @@ export default function Example() {
         </p>
         <div style={{ width: 300, overflow: 'hidden' }}>
           <Editor
-            imageUploadHandler={imageUploadHandler}
+            appearance="comment"
             analyticsHandler={analyticsHandler}
+            allowCodeBlocks
             onCancel={CANCEL_ACTION}
             onSave={SAVE_ACTION}
             mentionProvider={mentionProvider}
             emojiProvider={emojiProvider}
-            isExpandedByDefault={true}
           />
         </div>
       </Content>
@@ -211,13 +206,13 @@ export default function Example() {
         </p>
         <div style={{ width: 300 }}>
           <Editor
-            imageUploadHandler={imageUploadHandler}
+            appearance="comment"
             analyticsHandler={analyticsHandler}
+            allowCodeBlocks
             onCancel={CANCEL_ACTION}
             onSave={SAVE_ACTION}
             mentionProvider={mentionProvider}
             emojiProvider={emojiProvider}
-            isExpandedByDefault={true}
           />
         </div>
       </Content>
@@ -229,6 +224,7 @@ export default function Example() {
         </p>
         <div style={{ width: 500 }}>
           <CustomBoundryExample
+            appearance="comment"
             imageUploadHandler={imageUploadHandler}
             analyticsHandler={analyticsHandler}
             onCancel={CANCEL_ACTION}

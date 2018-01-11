@@ -13,7 +13,7 @@ import {
   insertMediaSingleNode,
   insertMediaAsMediaSingle,
 } from '../../../src/plugins/media/media-single';
-import { MediaPluginState } from '../../../src';
+import { MediaPluginState } from '../../../src/plugins/media';
 
 const createMediaState = (
   id: string,

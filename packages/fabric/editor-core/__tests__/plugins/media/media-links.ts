@@ -1,9 +1,6 @@
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
-import {
-  MediaPluginState,
-  AnalyticsHandler,
-  analyticsService,
-} from '../../../src';
+import { MediaPluginState } from '../../../src/plugins/media';
+import { AnalyticsHandler, analyticsService } from '../../../src';
 import {
   a,
   blockquote,
