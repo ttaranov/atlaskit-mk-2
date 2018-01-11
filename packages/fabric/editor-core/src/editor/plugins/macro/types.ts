@@ -17,9 +17,7 @@ export interface MacroAttributes {
 }
 
 export interface MacroProvider {
-  config: {
-    placeholderBaseUrl: string;
-  };
+  config: {};
   /**
    * If "macro" param is passed in, it will open macro browser for editing the macro
    */
