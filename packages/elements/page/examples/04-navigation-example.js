@@ -44,7 +44,7 @@ export default class NavigationExample extends PureComponent<void, State> {
       >
         <Grid>
           <GridColumn>
-            <h2>Switch to fullscreen display to view the Navigation Example</h2>
+            <h2>Use fullscreen display to view this example</h2>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Blanditiis voluptatum perspiciatis doloribus dignissimos accusamus
