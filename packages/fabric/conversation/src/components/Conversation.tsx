@@ -87,6 +87,8 @@ export default class Conversation extends React.PureComponent<Props> {
 
   render() {
     const { isExpanded, onCancel, meta } = this.props;
+    // @TODO the handler is invoked but it's not on state.providers
+    // console.log(this.state);
 
     return (
       <div>
