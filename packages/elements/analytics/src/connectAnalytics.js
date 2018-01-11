@@ -41,7 +41,7 @@ const connectAnalytics = (
     setAnalyticsPayload = (eventName: string, eventData: Object) => {
       const { getParentAnalyticsData } = this.context;
       if (this.collectedEvents[eventName] != null) {
-        console.error('Event payload already exists, possible race condition.');
+        console.debug('Event payload already exists, overriding.');
       }
       const fullEventData =
         typeof getParentAnalyticsData === 'function'
