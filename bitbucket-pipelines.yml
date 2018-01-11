@@ -50,3 +50,18 @@ pipelines:
             - (cd website && bolt deploy)
           caches:
             - node
+
+    # This will run essentially the branch builds, but without any optimizations and should be manually
+    # run in any potentially risky builds
+    run-full-suite:
+      - step:
+          script:
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - bolt build
+            - bolt lint
+            - bolt typecheck
+            - bolt test
+            - bolt test:browser:browserstack
+            - (cd website && bolt deploy-staging:no-minimize)
+    # We deliberately don't use the cache here as well
