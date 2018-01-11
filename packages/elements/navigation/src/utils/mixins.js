@@ -9,7 +9,7 @@ export const truncate = (width: string = '100%') => css`
   width: ${width};
 `;
 
-export const focusOutline = (color: Color) => css`
+export const focusOutline = (color?: Color) => css`
   outline: none;
-  box-shadow: 0px 0px 0px 2px ${color};
+  box-shadow: 0px 0px 0px 2px ${color || ''};
 `;

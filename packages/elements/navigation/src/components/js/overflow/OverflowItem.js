@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type ElementRef } from 'react';
 import type { Node } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -19,11 +19,11 @@ export default class OverflowItem extends Component<Props> {
     [shouldReportItemHeight]: PropTypes.bool,
   };
 
-  measureHeight = (rootNode: HTMLElement) => {
-    if (rootNode) {
+  measureHeight = (ref: ElementRef<*>) => {
+    if (ref) {
       this.context[overflowGroupNamespace].reportItemHeightToGroup(
         this.props.overflowItemIndex,
-        rootNode.clientHeight,
+        ref.clientHeight,
       );
     }
   };

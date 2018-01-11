@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, type Node, type ComponentType } from 'react';
+import React, { PureComponent, type Element, type ComponentType } from 'react';
 import { WithRootTheme } from '../../theme/util';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
 import GlobalSecondaryActions from './GlobalSecondaryActions';
@@ -13,25 +13,25 @@ import type { Provided } from '../../theme/types';
 
 type Props = {
   /** The icon to be used for the create button */
-  createIcon?: Node,
+  createIcon?: Element<any>,
   /** A component that will be used to render links. A default link component is
    used if none is provided. */
-  linkComponent?: ComponentType<*>,
+  linkComponent: ComponentType<*>,
   /** A list of nodes to be rendered as the global primary actions.  They appear
    directly underneath the global primary icon. This must not exceed three nodes */
-  primaryActions?: Array<Node>,
+  primaryActions?: Array<Element<any>>,
   /** The topmost icon to be placed in the global navigation - usually the product
    logo, or the product home icon */
-  primaryIcon?: Node,
+  primaryIcon?: Element<any>,
   /** The appearance of the primary icon for custom styling purposes */
   primaryIconAppearance: IconAppearance,
   /** A link to place around the primary icon. */
   primaryItemHref?: string,
   /** A list of nodes to be placed in the secondary actions slot at the bottom of
    the global sidebar. This must not exceed five nodes. */
-  secondaryActions: Array<Node>,
+  secondaryActions: Array<Element<any>>,
   /** The icon to use in the global navigation for the global search button */
-  searchIcon?: Node,
+  searchIcon?: Element<any>,
   /** A handler that is called when the search drawer is requesting to be opened */
   onSearchActivate?: () => void,
   /** A handler that is called when the createIcon is clicked */
@@ -45,7 +45,6 @@ type Props = {
 export default class GlobalNavigation extends PureComponent<Props> {
   static defaultProps = {
     linkComponent: DefaultLinkComponent,
-    primaryIcon: null,
     primaryIconAppearance: 'round',
     secondaryActions: [],
     theme: presets.global,

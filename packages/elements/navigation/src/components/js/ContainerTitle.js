@@ -88,4 +88,5 @@ class ContainerTitle extends PureComponent<Props> {
   }
 }
 
+// $FlowFixMe
 export default withTheme(ContainerTitle);

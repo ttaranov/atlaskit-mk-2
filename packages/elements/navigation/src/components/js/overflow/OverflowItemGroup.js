@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type ElementRef } from 'react';
 import type { Node } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -17,8 +17,8 @@ type Props = {
 };
 
 export default class OverflowItemGroup extends Component<Props> {
-  rootNode: ?HTMLElement;
-  heights: [];
+  rootNode: ElementRef<*>;
+  heights: Array<number>;
 
   static childContextTypes = {
     [overflowGroupNamespace]: PropTypes.object,
@@ -99,7 +99,7 @@ export default class OverflowItemGroup extends Component<Props> {
     };
   }
 
-  handleRootNodeRef = (ref?: HTMLElement) => {
+  handleRootNodeRef = (ref: ElementRef<*>) => {
     this.rootNode = ref;
     this.reportHeightsToOverflowManager();
   };

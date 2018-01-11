@@ -16,7 +16,7 @@ type Props = {
   isSelected?: boolean,
   /** Component to be used to create the link in the global item. A default
    component is used if none is provided. */
-  linkComponent: ComponentType<*>,
+  linkComponent: ComponentType<any>,
   /** Standard onClick event */
   onClick?: (event: Event, data?: {}) => void,
   onMouseDown: (event: MouseEvent) => void,
@@ -61,6 +61,7 @@ export default class GlobalItem extends PureComponent<Props> {
       role,
       onKeyDown: this.handleKeyDown,
     };
+    // $FlowFixMe
     const ActualLink = styled(Link)`
       ${globalItemStyles} &:hover {
         color: inherit;

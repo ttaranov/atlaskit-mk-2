@@ -50,7 +50,7 @@ export default class OverflowManager extends Component<Props, State> {
   };
 
   availableHeight = 0;
-  groupHeights = [];
+  groupHeights: Array<{ nonItemHeight: number, itemHeights: Array<any> }> = [];
 
   isGroupVisibleInNav = (groupIndex: number) =>
     groupIndex < this.state.breakAt.group ||
@@ -76,6 +76,7 @@ export default class OverflowManager extends Component<Props, State> {
     const { availableHeight, groupHeights } = this;
     let cumulativeHeight = dropdownHeight + reservedGapHeight;
     // eslint-disable-line no-restricted-syntax,no-labels
+
     groupLoop: for (let g = 0; g < this.props.groupCount; g++) {
       const group = groupHeights[g];
 
@@ -105,7 +106,15 @@ export default class OverflowManager extends Component<Props, State> {
 
   hasAllGroupHeights = () => isArrayFilled(this.groupHeights);
 
-  handleItemGroupHeightReport = ({ groupIndex, ...groupHeightInfo }) => {
+  handleItemGroupHeightReport = ({
+    groupIndex,
+    ...groupHeightInfo
+  }: {
+    groupIndex: number,
+    nonItemHeight: number,
+    itemHeights: Array<any>,
+  }) => {
+    //eslint-disable-line react/no-unused-prop-types
     this.groupHeights[groupIndex] = groupHeightInfo;
     this.calculateBreakItem();
   };

@@ -1,26 +1,33 @@
 // @flow
 import styled, { keyframes } from 'styled-components';
-import { animationTimeUnitless, scrollHintSpacing, gridSize } from '../../shared-variables';
+import {
+  animationTimeUnitless,
+  scrollHintSpacing,
+  gridSize,
+} from '../../shared-variables';
 import ScrollHintScrollContainer from '../styled/ScrollHintScrollContainer';
 import { whenCollapsed } from '../../theme/util';
 
 const animationTime = animationTimeUnitless / 1000;
 
-export const getAnimation = ({ isEntering, isLeaving, traversalDirection }: Object) => (
-  (isEntering || isLeaving) ? (
-    `animation: ${animationTime}s ${keyframes`
-      from { transform: translateX(${traversalDirection === 'down' ? 100 : -100}%); }
+export const getAnimation = ({
+  isEntering,
+  isLeaving,
+  traversalDirection,
+}: Object) =>
+  isEntering || isLeaving
+    ? `animation: ${animationTime}s ${keyframes`
+      from { transform: translateX(${
+        traversalDirection === 'down' ? 100 : -100
+      }%); }
       to { transform: translateX(0); }
     `};`
-  ) : (
-    null
-  )
-);
+    : null;
 
 // Use the same scrollbar styling as the main container navigation
+// $FlowFixMe
 const NestedNavigationPage = styled(ScrollHintScrollContainer)`
-  ${getAnimation}
-  flex-shrink: 0;
+  ${getAnimation} flex-shrink: 0;
   /* we want each page to have internal scrolling */
   overflow-y: auto;
   /* The parent container nav scroll container already sets padding left/right.
@@ -32,7 +39,7 @@ const NestedNavigationPage = styled(ScrollHintScrollContainer)`
 
   ${whenCollapsed`
     padding-right: ${gridSize}px;
-  `}
+  `};
 `;
 
 NestedNavigationPage.displayName = 'NestedNavigationPage';

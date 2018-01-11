@@ -25,4 +25,5 @@ class ContainerLogo extends PureComponent<Props> {
   }
 }
 
+// $FlowFixMe
 export default withTheme(ContainerLogo);

@@ -84,11 +84,11 @@ type Props = {
   /** Set search loading state */
   isLoading: boolean,
   /** onBlur callback for search input */
-  onSearchBlur: () => void,
+  onSearchBlur: (event: Event) => mixed,
   /** onInput callback for search input */
-  onSearchInput: () => void,
+  onSearchInput?: (event: Event) => mixed,
   /** onKeyDown callback for search input */
-  onSearchKeyDown: () => void,
+  onSearchKeyDown: (event: Event) => mixed,
   /** Placeholder text for search input field */
   placeholder: string,
   /** Value of the search input field */
@@ -211,8 +211,8 @@ export class QuickSearch extends Component<Props, State> {
   /**
    * Clear result selection when search input is blurred
    */
-  handleSearchBlur = () => {
-    this.props.onSearchBlur();
+  handleSearchBlur = (event: Event) => {
+    this.props.onSearchBlur(event);
     this.setState({ selectedResultId: null });
   };
 
@@ -224,7 +224,7 @@ export class QuickSearch extends Component<Props, State> {
    */
   handleSearchKeyDown = (event: Event) => {
     const { firePrivateAnalyticsEvent } = this.props;
-    this.props.onSearchKeyDown();
+    this.props.onSearchKeyDown(event);
 
     // Capture whether users are using keyboard controls
     if (
