@@ -4,7 +4,6 @@ import { Component } from 'react';
 import { Subscription } from 'rxjs/Subscription';
 import { AxiosError } from 'axios';
 import {
-  MediaItem,
   MediaCollection,
   MediaCollectionItem,
   Context,
@@ -19,51 +18,48 @@ import {
 } from '../utils';
 import { LazyContent } from '../utils/lazyContent';
 import { CardDimensions, CardListEvent, CardEvent } from '..';
-import { Provider, MediaCard, CardView } from '../root';
-import { InfiniteScroll } from './infiniteScroll';
+import { Provider, CardView } from '../root';
 import { CardListItemWrapper, Spinner } from './styled';
-import {
-  CollectionRenderer,
-  CollectionItem,
-} from '../renderers/collectionRenderer';
+import { CollectionRenderer } from '../renderers/collectionRenderer';
+import { DataUriRenderer } from '../renderers/dataUriRenderer';
 
 export type CardLayout = 'grid' | 'list';
 
 export interface CardListProps {
-  context: Context;
-  collectionName: string;
+  readonly context: Context;
+  readonly collectionName: string;
 
-  height?: number;
-  pageSize?: number;
+  readonly height?: number;
+  readonly pageSize?: number;
 
-  cardDimensions?: CardDimensions;
-  cardAppearance?: 'small' | 'image';
+  readonly cardDimensions?: CardDimensions;
+  readonly cardAppearance?: 'small' | 'image';
 
-  onCardClick?: (result: CardListEvent) => void;
-  actions?: Array<CollectionAction>;
+  readonly onCardClick?: (result: CardListEvent) => void;
+  readonly actions?: Array<CollectionAction>;
 
-  layout?: CardLayout;
+  readonly layout?: CardLayout;
   readonly selectedItemIds?: string[];
 
   /**
    * Infinite scrolling is only enabled when height has also been specified.
    */
-  useInfiniteScroll?: boolean;
-  shouldLazyLoadCards?: boolean;
-  errorComponent?: JSX.Element;
-  loadingComponent?: JSX.Element;
-  emptyComponent?: JSX.Element;
+  readonly useInfiniteScroll?: boolean;
+  readonly shouldLazyLoadCards?: boolean;
+  readonly errorComponent?: JSX.Element;
+  readonly loadingComponent?: JSX.Element;
+  readonly emptyComponent?: JSX.Element;
 }
 
 export interface CardListState {
-  loading: boolean;
-  shouldAnimate: boolean;
-  selectedCards: string[];
-  firstItemKey?: string;
-  subscription?: Subscription;
-  loadNextPage?: () => void;
-  collection?: MediaCollection;
-  error?: AxiosError;
+  readonly loading: boolean;
+  readonly shouldAnimate: boolean;
+  readonly selectedCards: string[];
+  readonly firstItemKey?: string;
+  readonly subscription?: Subscription;
+  readonly loadNextPage?: () => void;
+  readonly collection?: MediaCollection;
+  readonly error?: AxiosError;
 }
 
 // FIXME: these aren't "components", they're actually "elements"... we should rename these or change the signature to be a "component" e.g. () => (<Spinner.../>);. Will clean up the tests a bit too.
@@ -238,18 +234,18 @@ export class CardList extends Component<CardListProps, CardListState> {
         useInfiniteScroll={this.useInfiniteScroll}
         height={height}
       >
-        {({ items, isLoading }) => {
+        {({ collection, isLoading }) => {
           if (isLoading) {
             return loadingComponent;
           } else {
-            return this.renderList(items);
+            return this.renderList(collection);
           }
         }}
       </CollectionRenderer>
     );
   }
 
-  private renderList(items: CollectionItem[]): JSX.Element {
+  private renderList(collection?: MediaCollection): JSX.Element {
     const { shouldAnimate } = this.state;
     const {
       cardWidth,
@@ -261,11 +257,14 @@ export class CardList extends Component<CardListProps, CardListState> {
       isGridLayout,
     } = this;
     const {
+      context,
+      collectionName,
       cardAppearance,
       shouldLazyLoadCards,
       layout,
       selectedItemIds = [],
     } = this.props;
+    const items = collection ? collection.items : [];
     const actions = this.props.actions || [];
     // const cardActions = (collectionItem: MediaCollectionItem) =>
     //   actions.map(action => {
@@ -279,9 +278,9 @@ export class CardList extends Component<CardListProps, CardListState> {
     //       },
     //     };
     //   });
-    const cards = items.map(mediaItem => {
-      const { id } = mediaItem;
-      const key = this.getItemKey(mediaItem);
+    const cards = items.map(item => {
+      const { details } = item;
+      const key = this.getItemKey(item);
       const cardListItem = (
         <CSSTransition
           key={key}
@@ -296,22 +295,27 @@ export class CardList extends Component<CardListProps, CardListState> {
             cardWidth={cardWidth}
             layout={layout}
           >
-            <CardView
-              status="complete"
-              dataURI={mediaItem.thumbnailSrc}
-              metadata={{
-                name: mediaItem.fileName,
-                size: mediaItem.size,
-                type: mediaItem.type,
-                mediaType: mediaItem.mediaType,
+            <DataUriRenderer
+              context={context}
+              collectionName={collectionName}
+              mediaItem={item}
+            >
+              {({ dataUri, isLoading }) => {
+                return (
+                  <CardView
+                    status="complete"
+                    dataURI={dataUri}
+                    metadata={details}
+                    appearance={cardAppearance}
+                    dimensions={dimensions}
+                    onClick={handleCardClick(item)}
+                    // actions={cardActions(mediaItem)} TODO: implement actions
+                    selectable={isGridLayout}
+                    selected={false} // TODO: calculate selected flag here
+                  />
+                );
               }}
-              appearance={cardAppearance}
-              dimensions={dimensions}
-              onClick={handleCardClick(mediaItem)}
-              // actions={cardActions(mediaItem)} TODO: implement actions
-              selectable={isGridLayout}
-              selected={mediaItem.isSelected}
-            />
+            </DataUriRenderer>
           </CardListItemWrapper>
         </CSSTransition>
       );
@@ -330,7 +334,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     return <TransitionGroup>{cards}</TransitionGroup>;
   }
 
-  private handleCardClick = (oldItem: CollectionItem) => (
+  private handleCardClick = (oldItem: MediaCollectionItem) => (
     cardEvent: CardEvent,
   ) => {
     const { collectionName, onCardClick } = this.props;
@@ -345,9 +349,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     const newItem: MediaCollectionItem = {
       type: oldItem.type,
       details: {
-        id: oldItem.id,
-        name: oldItem.fileName, // TODO: probably need to copy more things from item to event payload
-
+        ...oldItem.details,
         ...mediaItemDetails,
       },
     } as MediaCollectionItem;
@@ -410,7 +412,9 @@ export class CardList extends Component<CardListProps, CardListState> {
     return value === null || value === undefined;
   }
 
-  private getItemKey({ id, occurrenceKey }: CollectionItem): string {
+  private getItemKey({
+    details: { id, occurrenceKey },
+  }: MediaCollectionItem): string {
     return `${id}-${occurrenceKey}`;
   }
 
