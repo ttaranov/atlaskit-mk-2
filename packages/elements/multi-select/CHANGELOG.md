@@ -1,5 +1,8 @@
 # @atlaskit/multi-select
 
+## 7.1.8
+- [patch] migrate multi-select to ak-mk-2 [ea69e2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea69e2e)
+
 ## 7.1.7 (2017-11-30)
 
 * bug fix; release stories with fixed console errors ([3321c2b](https://bitbucket.org/atlassian/atlaskit/commits/3321c2b))
