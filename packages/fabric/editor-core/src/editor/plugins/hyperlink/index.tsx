@@ -6,7 +6,6 @@ import { createInputRulePlugin } from '../../../plugins/hyperlink/input-rule';
 import { createKeymapPlugin } from '../../../plugins/hyperlink/keymap';
 import pluginKey from '../../../plugins/hyperlink/plugin-key';
 import HyperlinkEdit from '../../../ui/HyperlinkEdit';
-import ToolbarHyperlink from '../../../ui/ToolbarHyperlink';
 
 const hyperlinkPlugin: EditorPlugin = {
   marks() {
@@ -24,33 +23,13 @@ const hyperlinkPlugin: EditorPlugin = {
     ];
   },
 
-  primaryToolbarComponent(
+  contentComponent({
     editorView,
-    eventDispatcher,
     providerFactory,
     appearance,
     popupsMountPoint,
     popupsBoundariesElement,
-    disabled,
-  ) {
-    const pluginState = pluginKey.getState(editorView.state);
-    return (
-      <ToolbarHyperlink
-        disabled={disabled}
-        editorView={editorView}
-        pluginState={pluginState}
-      />
-    );
-  },
-
-  contentComponent(
-    editorView,
-    dispatch,
-    providerFactory,
-    appearance,
-    popupsMountPoint,
-    popupsBoundariesElement,
-  ) {
+  }) {
     if (appearance === 'message') {
       return null;
     }

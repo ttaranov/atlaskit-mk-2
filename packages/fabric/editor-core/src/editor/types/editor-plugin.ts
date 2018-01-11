@@ -8,6 +8,7 @@ import ErrorReporter from '../../utils/error-reporter';
 import { NodeConfig, MarkConfig } from './editor-config';
 import { EditorProps, EditorAppearance } from './editor-props';
 import { Dispatch, EventDispatcher } from '../event-dispatcher';
+import { ToolbarSize } from '../ui/Toolbar';
 
 export type PMPluginFactory = (
   params: {
@@ -19,15 +20,27 @@ export type PMPluginFactory = (
   },
 ) => Plugin | undefined;
 
+export type UiComponentFactoryParams = {
+  editorView: EditorView;
+  eventDispatcher: EventDispatcher;
+  providerFactory: ProviderFactory;
+  appearance: EditorAppearance;
+  popupsMountPoint?: HTMLElement;
+  popupsBoundariesElement?: HTMLElement;
+  disabled: boolean;
+};
+
+export type ToolbarUiComponentFactoryParams = UiComponentFactoryParams & {
+  toolbarSize: ToolbarSize;
+  isToolbarReducedSpacing: boolean;
+};
+
 export type UIComponentFactory = (
-  editorView: EditorView,
-  eventDispatcher: EventDispatcher,
-  providerFactory: ProviderFactory,
-  appearance: EditorAppearance,
-  popupsMountPoint?: HTMLElement,
-  popupsBoundariesElement?: HTMLElement,
-  disabled?: boolean,
-  editorWidth?: number,
+  params: UiComponentFactoryParams,
+) => React.ReactElement<any> | null;
+
+export type ToolbarUIComponentFactory = (
+  params: ToolbarUiComponentFactoryParams,
 ) => React.ReactElement<any> | null;
 
 export interface EditorPlugin {
@@ -54,7 +67,7 @@ export interface EditorPlugin {
   /*
    * Optional UI-component that will be added to the toolbar at the top of the editor (doesn't exist in the compact-editor).
    */
-  primaryToolbarComponent?: UIComponentFactory;
+  primaryToolbarComponent?: ToolbarUIComponentFactory;
 
   /*
    * Optional UI-component that will be added to the toolbar at the bottom right of the editor. (doesn't exist in the full-page editor)

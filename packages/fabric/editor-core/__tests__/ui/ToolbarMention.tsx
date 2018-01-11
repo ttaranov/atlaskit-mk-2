@@ -10,10 +10,8 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import ToolbarButton from '../../src/ui/ToolbarButton';
 import pluginKey from '../../src/plugins/mentions/plugin-key';
 import { analyticsService } from '../../src/analytics';
-import EditorWidth from '../../src/utils/editor-width';
 
 describe('ToolbarMention', () => {
   const editor = (doc: any) =>
@@ -31,34 +29,6 @@ describe('ToolbarMention', () => {
     const { state } = editorView;
     expect(state.doc.rangeHasMark(0, 2, state.schema.marks.mentionQuery)).toBe(
       true,
-    );
-    toolbarMention.unmount();
-  });
-
-  it('should return null if EditorWidth is less then BreakPoint5', () => {
-    const { editorView } = editor(doc(p('{<>}')));
-    const toolbarMention = mount(
-      <ToolbarMention
-        pluginKey={pluginKey}
-        editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint5 - 1}
-      />,
-    );
-    expect(toolbarMention.html()).toEqual(null);
-    toolbarMention.unmount();
-  });
-
-  it('should have spacing of ToolbarButton set to default if editorWidth is present', () => {
-    const { editorView } = editor(doc(p('{<>}')));
-    const toolbarMention = mount(
-      <ToolbarMention
-        pluginKey={pluginKey}
-        editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint5 + 1}
-      />,
-    );
-    expect(toolbarMention.find(ToolbarButton).prop('spacing')).toEqual(
-      'default',
     );
     toolbarMention.unmount();
   });

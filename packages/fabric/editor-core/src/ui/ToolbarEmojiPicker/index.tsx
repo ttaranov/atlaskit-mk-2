@@ -8,7 +8,6 @@ import { analyticsDecorator as analytics } from '../../analytics';
 import { EmojiState } from '../../plugins/emojis';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { EmojiPicker as AkEmojiPicker, EmojiProvider } from '@atlaskit/emoji';
-import EditorWidth from '../../utils/editor-width';
 import ToolbarButton from '../ToolbarButton';
 import { OuterContainer } from './styles';
 
@@ -25,7 +24,6 @@ export interface Props {
   numFollowingButtons: number;
   popupsMountPoint?: HTMLElement | undefined;
   popupsBoundariesElement?: HTMLElement | undefined;
-  editorWidth?: number;
 }
 
 export interface State {
@@ -183,14 +181,10 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   }
 
   render() {
-    const { editorWidth, isDisabled } = this.props;
+    const { isDisabled } = this.props;
     const { isOpen, disabled } = this.state;
-    if (editorWidth && editorWidth < EditorWidth.BreakPoint4) {
-      return null;
-    }
     const toolbarButton = (
       <ToolbarButton
-        spacing={editorWidth ? 'default' : 'none'}
         selected={isOpen}
         disabled={disabled || isDisabled}
         onClick={this.toggleOpen}
@@ -201,12 +195,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
       />
     );
     return (
-      <OuterContainer
-        width={
-          editorWidth &&
-          (editorWidth > EditorWidth.BreakPoint10 ? 'large' : 'small')
-        }
-      >
+      <OuterContainer>
         {toolbarButton}
         {this.renderPopup()}
       </OuterContainer>
