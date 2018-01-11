@@ -1,5 +1,8 @@
 # @atlaskit/inline-edit
 
+## 4.5.7
+- [patch] Migrated to new mk2 repo & build system  [99089df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99089df)
+
 ## 4.5.6 (2017-11-30)
 
 * bug fix; release stories with fixed console errors ([3321c2b](https://bitbucket.org/atlassian/atlaskit/commits/3321c2b))
