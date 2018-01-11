@@ -31,10 +31,12 @@ pipelines:
           - source ./build-setup.sh
           - bolt install --pure-lockfile
           - bolt build
-          - bolt lint
-          - bolt typecheck
+          - (node build/ci-scripts/should.run.js eslint) && bolt lint:eslint
+          - (node build/ci-scripts/should.run.js tslint) && bolt lint:tslint
+          - (node build/ci-scripts/should.run.js flow) && bolt typecheck:flow
+          - (node build/ci-scripts/should.run.js tsc) && bolt typecheck:typescript
           - bolt test:changed
-          - bolt test:browser:browserstack
+          - (node build/ci-scripts/should.run.js browserstack) && bolt test:browser:browserstack
           - (cd website && bolt deploy-staging:no-minimize)
         caches:
           - node

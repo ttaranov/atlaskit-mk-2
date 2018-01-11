@@ -9,7 +9,8 @@ const createChangesetCommit = require('./createChangesetCommit');
 
 async function run() {
   const changedPackages = await getChangedPackagesSinceMaster();
-  const newChangeset = await createChangeset(changedPackages);
+  const changePackagesName = changedPackages.map(pkg => pkg.name);
+  const newChangeset = await createChangeset(changePackagesName);
   const changesetCommitStr = createChangesetCommit(newChangeset);
 
   console.log(chalk.green('Creating new Changeset commit...\n'));

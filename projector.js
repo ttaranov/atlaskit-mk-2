@@ -32,9 +32,10 @@ exports.testBrowserCI = async (
   { watch, browserstack } /*: { watch: boolean, browserstack: boolean }*/,
 ) => {
   const changedPackages = await getChangedPackagesSinceMaster();
+  const changedPackagesNames = changedPackages.map(pkg => pkg.name);
   const packagesWithKarmaTests = await getPackagesWithKarmaTests();
   const changedPackagesWithKarmaTests = packagesWithKarmaTests.filter(
-    pkg => changedPackages.indexOf(pkg) !== -1,
+    pkg => changedPackagesNames.indexOf(pkg) !== -1,
   );
 
   if (!changedPackagesWithKarmaTests.length) {
