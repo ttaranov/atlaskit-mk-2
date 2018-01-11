@@ -2,9 +2,11 @@
 import React, { PureComponent } from 'react';
 import Item from './Item';
 import LoaderItem from './LoaderItem';
-import { type ItemsProvider, type RenderFunction } from './../types';
-
-type ItemsDataType = Array<Object>;
+import {
+  type ItemsProvider,
+  type RenderFunction,
+  type ItemsDataType,
+} from './../types';
 
 type Props = {
   parentData?: Object,
@@ -15,7 +17,7 @@ type Props = {
 
 type State = {
   isLoaderShown: boolean,
-  itemsData: ?ItemsDataType,
+  itemsData?: ItemsDataType,
 };
 
 export default class Items extends PureComponent<Props, State> {
@@ -23,9 +25,8 @@ export default class Items extends PureComponent<Props, State> {
     depth: 0,
   };
 
-  state = {
+  state: State = {
     isLoaderShown: false,
-    itemsData: null,
   };
 
   loadCancelled = false;
