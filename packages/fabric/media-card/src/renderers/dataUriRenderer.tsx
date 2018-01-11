@@ -14,9 +14,7 @@ export type DataUriRendererProps = {
   readonly collectionName: string;
   readonly mediaItem: MediaItem;
 
-  readonly children: (
-    props: { dataUri?: string; isLoading: boolean },
-  ) => ReactNode;
+  readonly children: (state: DataUriRendererState) => ReactNode;
 };
 
 export type DataUriRendererState = {
@@ -67,12 +65,7 @@ export class DataUriRenderer extends Component<
   }
 
   render() {
-    const { dataUri, isLoading } = this.state;
-    const children = this.props.children({
-      dataUri,
-      isLoading,
-    });
-
+    const children = this.props.children(this.state);
     return <div>{children}</div>;
   }
 
@@ -83,18 +76,22 @@ export class DataUriRenderer extends Component<
   }: DataUriRendererProps): void {
     this.unsubscribe();
     this.setState(INITIAL_STATE, () => {
-      this.subscription = Observable.fromPromise(
-        context.getDataUriService(collectionName).fetchImageDataUri(mediaItem, {
-          width: 640,
-          height: 480,
-        }),
-      ).subscribe({
-        next: dataUri =>
-          this.setState({
-            dataUri,
-            isLoading: false,
-          }),
-      });
+      if (mediaItem.type === 'file') {
+        this.subscription = Observable.fromPromise(
+          context
+            .getDataUriService(collectionName)
+            .fetchImageDataUri(mediaItem, {
+              width: 640,
+              height: 480,
+            }),
+        ).subscribe({
+          next: dataUri =>
+            this.setState({
+              dataUri,
+              isLoading: false,
+            }),
+        });
+      }
     });
   }
 

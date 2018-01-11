@@ -14,6 +14,7 @@ export const DEFAULT_PAGE_SIZE = 30;
 const INITIAL_STATE = {
   collection: undefined,
   isLoading: true,
+  error: undefined,
 };
 
 export type CollectionRendererProps = {
@@ -24,14 +25,13 @@ export type CollectionRendererProps = {
   readonly useInfiniteScroll?: boolean;
   readonly height?: number;
 
-  readonly children: (
-    props: { collection?: MediaCollection; isLoading: boolean },
-  ) => ReactNode;
+  readonly children: (state: CollectionRendererState) => ReactNode;
 };
 
 export type CollectionRendererState = {
   readonly collection?: MediaCollection;
   readonly isLoading: boolean;
+  readonly error?: any;
 };
 
 export class CollectionRenderer extends Component<
@@ -63,11 +63,7 @@ export class CollectionRenderer extends Component<
 
   render() {
     const { useInfiniteScroll, height } = this.props;
-    const { collection, isLoading } = this.state;
-    const children = this.props.children({
-      collection,
-      isLoading,
-    });
+    const children = this.props.children(this.state);
 
     if (useInfiniteScroll) {
       return (
@@ -99,12 +95,12 @@ export class CollectionRenderer extends Component<
     );
     this.setState(INITIAL_STATE, () => {
       this.subscription = this.collectionProvider.observable().subscribe({
-        next: collection => {
+        next: collection =>
           this.setState({
             collection,
             isLoading: false,
-          });
-        },
+          }),
+        error: error => this.setState({ error, isLoading: false }),
       });
     });
   }

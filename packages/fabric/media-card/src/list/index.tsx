@@ -195,39 +195,32 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   render(): JSX.Element {
-    const { context, collectionName, height } = this.props;
-    // const { loading, error, collection } = this.state;
-    // const emptyComponent = this.props.emptyComponent || EmptyComponent;
-    const loadingComponent = this.props.loadingComponent || LoadingComponent;
-    // const errorComponent = this.props.errorComponent || ErrorComponent;
-
-    // if (loading) {
-    //   return loadingComponent;
-    // }
-
-    // if (error) {
-    //   if (error.response && error.response.status === 404) {
-    //     return emptyComponent;
-    //   } else {
-    //     return errorComponent;
-    //   }
-    // }
-
-    // if (!collection) {
-    //   return loadingComponent;
-    // }
-
-    // TODO: Error State needs to be handled;
+    const {
+      context,
+      collectionName,
+      pageSize,
+      height,
+      emptyComponent = EmptyComponent,
+      loadingComponent = LoadingComponent,
+      errorComponent = ErrorComponent,
+    } = this.props;
 
     return (
       <CollectionRenderer
         context={context}
         collectionName={collectionName}
+        pageSize={pageSize}
         useInfiniteScroll={this.useInfiniteScroll}
         height={height}
       >
-        {({ collection, isLoading }) => {
-          if (isLoading) {
+        {({ collection, isLoading, error }) => {
+          if (error) {
+            if (error.response && error.response.status === 404) {
+              return emptyComponent;
+            } else {
+              return errorComponent;
+            }
+          } else if (isLoading) {
             return loadingComponent;
           } else {
             return this.renderList(collection);
@@ -238,7 +231,6 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private renderList(collection?: MediaCollection): JSX.Element {
-    const { shouldAnimate } = this.state;
     const {
       cardWidth,
       dimensions,
@@ -267,6 +259,10 @@ export class CardList extends Component<CardListProps, CardListState> {
           },
         };
       });
+    const { firstItemKey } = this.state;
+    const newFirstItemKey = items[0] ? this.getItemKey(items[0]) : undefined;
+    const shouldAnimate = !!firstItemKey && firstItemKey !== newFirstItemKey;
+
     const cards = items.map(item => {
       const { details } = item;
       const key = this.getItemKey(item);
