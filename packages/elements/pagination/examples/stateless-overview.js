@@ -2,7 +2,7 @@
 
 /* eslint-disable no-console */
 import React from 'react';
-import { PaginationStateless } from '../';
+import { PaginationStateless } from '../src';
 
 export default () => (
   <PaginationStateless
