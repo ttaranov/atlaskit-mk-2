@@ -3,6 +3,7 @@ import { Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { analyticsService } from '../../analytics';
 import { taskDecisionSliceFilter } from '../../utils/filter';
+import * as clipboard from '../../utils/clipboard';
 
 export const stateKey = new PluginKey('tasksAndDecisionsPlugin');
 
@@ -23,7 +24,7 @@ export default function createPlugin() {
         }
 
         // Bail if copied content has files
-        if (event.clipboardData.types.indexOf('Files') > -1) {
+        if (clipboard.isPastedFile(event)) {
           return true;
         }
 
