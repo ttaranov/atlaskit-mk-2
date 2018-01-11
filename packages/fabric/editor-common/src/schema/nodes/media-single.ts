@@ -13,8 +13,12 @@ export type Layout =
  */
 export interface Definition {
   type: 'mediaSingle';
-  content: Media;
-  attrs: Attributes;
+  /**
+   * @minItems 1
+   * @maxItems 1
+   */
+  content: Array<Media>;
+  attrs?: Attributes;
 }
 export interface Attributes {
   layout: Layout;
