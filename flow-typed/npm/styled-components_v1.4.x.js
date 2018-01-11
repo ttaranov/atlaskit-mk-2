@@ -21,7 +21,7 @@ type $npm$styledComponents$ThemeProviderProps = {
     | ((outerTheme: $npm$styledComponents$Theme) => void),
 };
 type $npm$styledComponents$Component =
-  | React$Component<*, *>
+  | Class<React$Component<*, *>>
   | ((props: *) => React$Element<*>);
 
 class Npm$StyledComponents$ThemeProvider extends React$Component<
@@ -53,7 +53,7 @@ declare module 'styled-components' {
     ) => string,
     withTheme: (
       component: Component,
-    ) => React$Component<*, ThemeProviderProps, *>,
+    ) => Class<React$Component<*, ThemeProviderProps>>,
     ThemeProvider: typeof Npm$StyledComponents$ThemeProvider,
     (baseComponent: Component): StyledComponent,
     a: StyledComponent,
@@ -201,16 +201,23 @@ declare module 'styled-components/native' {
 
   declare type Theme = $npm$styledComponents$Theme;
   declare type ThemeProviderProps = $npm$styledComponents$ThemeProviderProps;
-  declare type Component = $npm$styledComponents$Component;
+  //declare type Component = $npm$styledComponents$Component;
+  declare type Component =
+    | Class<React$Component<*, *, *>>
+    | ((props: *) => React$Element<*>);
 
   declare module.exports: {
     css: (
       strings: Array<string>,
       ...interpolations: Array<Interpolation>
     ) => Array<Interpolation>,
+    // withTheme: (
+    //   component: Component,
+    // ) => React$Component<*, ThemeProviderProps, *>,
     withTheme: (
       component: Component,
-    ) => React$Component<*, ThemeProviderProps, *>,
+    ) => Class<React$Component<*, ThemeProviderProps, *>>,
+
     keyframes: (
       strings: Array<string>,
       ...interpolations: Array<Interpolation>
