@@ -119,7 +119,7 @@ describe('Comment', () => {
       secondComment.unmount();
     });
 
-    describe('when clicked', () => {
+    describe.skip('when clicked', () => {
       let editor;
 
       beforeEach(() => {
