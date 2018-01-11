@@ -12,7 +12,11 @@ import DropdownItemClickManager from './context/DropdownItemClickManager';
 import DropdownItemSelectionCache from './context/DropdownItemSelectionCache';
 import WidthConstrainer from '../styled/WidthConstrainer';
 import { KEY_DOWN, KEY_SPACE, KEY_ENTER } from '../util/keys';
-import type { DeprecatedItem, DeprecatedItemGroup, DropdownMenuStatelessProps } from '../types';
+import type {
+  DeprecatedItem,
+  DeprecatedItemGroup,
+  DropdownMenuStatelessProps,
+} from '../types';
 
 type OpenCloseArgs = {
   event: MouseEvent | KeyboardEvent,
@@ -20,7 +24,7 @@ type OpenCloseArgs = {
 };
 
 export default class DropdownMenuStateless extends Component {
-  props: DropdownMenuStatelessProps // eslint-disable-line react/sort-comp
+  props: DropdownMenuStatelessProps; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
     appearance: 'default',
@@ -36,43 +40,51 @@ export default class DropdownMenuStateless extends Component {
     shouldFlip: true,
     triggerButtonProps: {},
     triggerType: 'default',
-  }
+  };
 
   state = {
     id: uid(),
-  }
+  };
 
   componentDidMount = () => {
     if (this.isUsingDeprecatedAPI()) {
-      if (process.env.NODE_ENV !== 'test' && process.env.NODE_ENV !== 'production') {
+      if (
+        process.env.NODE_ENV !== 'test' &&
+        process.env.NODE_ENV !== 'production'
+      ) {
         // eslint-disable-next-line no-console
-        console.log('DropdownMenu.items is deprecated. Please switch to the declarative API.');
+        console.log(
+          'DropdownMenu.items is deprecated. Please switch to the declarative API.',
+        );
       }
 
       if (this.domItemsList) {
         this.focusFirstItem();
       }
     }
-  }
+  };
 
   componentDidUpdate = (prevProp: DropdownMenuStatelessProps) => {
     if (this.isUsingDeprecatedAPI() && this.props.isOpen && !prevProp.isOpen) {
       this.focusFirstItem();
     }
-  }
+  };
 
   getNextFocusable = (indexItem?: ?number, available?: number) => {
     if (!this.domItemsList) {
       return null;
     }
 
-    let currentItem = (typeof indexItem !== 'number') ? -1 : indexItem;
-    const latestAvailable = (typeof available !== 'number') ? currentItem : available;
+    let currentItem = typeof indexItem !== 'number' ? -1 : indexItem;
+    const latestAvailable =
+      typeof available !== 'number' ? currentItem : available;
 
     if (currentItem < this.domItemsList.length - 1) {
       currentItem++;
 
-      if (this.domItemsList[currentItem].getAttribute('aria-hidden') !== 'true') {
+      if (
+        this.domItemsList[currentItem].getAttribute('aria-hidden') !== 'true'
+      ) {
         return currentItem;
       }
 
@@ -80,20 +92,23 @@ export default class DropdownMenuStateless extends Component {
     }
 
     return latestAvailable;
-  }
+  };
 
   getPrevFocusable = (indexItem?: ?number, available?: number) => {
     if (!this.domItemsList) {
       return null;
     }
 
-    let currentItem = (typeof indexItem !== 'number') ? -1 : indexItem;
-    const latestAvailable = (typeof available !== 'number') ? currentItem : available;
+    let currentItem = typeof indexItem !== 'number' ? -1 : indexItem;
+    const latestAvailable =
+      typeof available !== 'number' ? currentItem : available;
 
     if (currentItem && currentItem > 0) {
       currentItem--;
 
-      if (this.domItemsList[currentItem].getAttribute('aria-hidden') !== 'true') {
+      if (
+        this.domItemsList[currentItem].getAttribute('aria-hidden') !== 'true'
+      ) {
         return currentItem;
       }
 
@@ -101,29 +116,29 @@ export default class DropdownMenuStateless extends Component {
     }
 
     return latestAvailable || currentItem;
-  }
+  };
 
-  domItemsList: ?NodeList<HTMLElement>
+  domItemsList: ?NodeList<HTMLElement>;
 
-  focusedItem: ?number
+  focusedItem: ?number;
 
-  triggerContainer: HTMLElement
+  triggerContainer: HTMLElement;
 
-  sourceOfIsOpen: ?string
+  sourceOfIsOpen: ?string;
 
   focusFirstItem = () => {
     if (this.sourceOfIsOpen === 'keydown') {
       this.focusItem(this.getNextFocusable());
     }
-  }
+  };
 
   focusNextItem = () => {
     this.focusItem(this.getNextFocusable(this.focusedItem));
-  }
+  };
 
   focusPreviousItem = () => {
     this.focusItem(this.getPrevFocusable(this.focusedItem));
-  }
+  };
 
   focusItem = (index: ?number) => {
     if (!this.domItemsList || !index) {
@@ -132,7 +147,7 @@ export default class DropdownMenuStateless extends Component {
 
     this.focusedItem = index;
     this.domItemsList[this.focusedItem].focus();
-  }
+  };
 
   isTargetChildItem = (target: Element) => {
     if (!target) return false;
@@ -142,7 +157,7 @@ export default class DropdownMenuStateless extends Component {
     // eslint-disable-next-line react/no-find-dom-node
     const thisDom = findDOMNode(this);
     return isDroplistItem && thisDom ? thisDom.contains(target) : false;
-  }
+  };
 
   handleKeyboardInteractionForClosed = (event: KeyboardEvent) => {
     if (this.props.isOpen) {
@@ -159,7 +174,7 @@ export default class DropdownMenuStateless extends Component {
       default:
         break;
     }
-  }
+  };
 
   handleKeyboardInteractionsDeprecated = (event: KeyboardEvent) => {
     // KeyboardEvent.target is typed as an EventTarget but we need to access methods on it which
@@ -204,9 +219,9 @@ export default class DropdownMenuStateless extends Component {
           break;
       }
     }
-  }
+  };
 
-  domMenuContainer: ?HTMLElement
+  domMenuContainer: ?HTMLElement;
 
   handleClickDeprecated = (event: MouseEvent) => {
     const menuContainer = this.domMenuContainer;
@@ -215,9 +230,9 @@ export default class DropdownMenuStateless extends Component {
     if (!menuContainer || (menuContainer && !menuContainer.contains(target))) {
       this.toggle({ source: 'click', event });
     }
-  }
+  };
 
-  isUsingDeprecatedAPI = () => Boolean(this.props.items.length)
+  isUsingDeprecatedAPI = () => Boolean(this.props.items.length);
 
   handleClick = (event: MouseEvent) => {
     if (this.isUsingDeprecatedAPI()) {
@@ -228,16 +243,28 @@ export default class DropdownMenuStateless extends Component {
     const { triggerContainer } = this;
     // Casting target to Element. See comment in `handleKeyboardInteractionsDeprecated`.
     const target: Element = (event.target: Object);
-    if (triggerContainer && triggerContainer.contains(target) && target.disabled !== true) {
+    if (
+      triggerContainer &&
+      triggerContainer.contains(target) &&
+      target.disabled !== true
+    ) {
       const { isOpen } = this.props;
       this.sourceOfIsOpen = 'mouse';
       this.props.onOpenChange({ isOpen: !isOpen, event });
     }
-  }
+  };
 
   triggerContent = () => {
-    const { children, trigger, isOpen, triggerButtonProps, triggerType } = this.props;
-    const insideTriggerContent = this.isUsingDeprecatedAPI() ? children : trigger;
+    const {
+      children,
+      trigger,
+      isOpen,
+      triggerButtonProps,
+      triggerType,
+    } = this.props;
+    const insideTriggerContent = this.isUsingDeprecatedAPI()
+      ? children
+      : trigger;
 
     if (triggerType !== 'button') {
       return insideTriggerContent;
@@ -258,17 +285,17 @@ export default class DropdownMenuStateless extends Component {
         {insideTriggerContent}
       </Button>
     );
-  }
+  };
 
   open = (attrs: OpenCloseArgs) => {
     this.sourceOfIsOpen = attrs.source;
     this.props.onOpenChange({ isOpen: true, event: attrs.event });
-  }
+  };
 
   close = (attrs: OpenCloseArgs) => {
     this.sourceOfIsOpen = null;
     this.props.onOpenChange({ isOpen: false, event: attrs.event });
-  }
+  };
 
   toggle = (attrs: OpenCloseArgs) => {
     if (attrs.source === 'keydown') return;
@@ -278,38 +305,50 @@ export default class DropdownMenuStateless extends Component {
     } else {
       this.open(attrs);
     }
-  }
+  };
 
   handleItemClicked = (event: MouseEvent | KeyboardEvent) => {
     this.props.onOpenChange({ isOpen: false, event });
-  }
+  };
 
   renderTrigger = () => {
     const triggerContent = this.triggerContent();
-    return this.isUsingDeprecatedAPI() ? triggerContent : (
-      <div ref={(ref) => { this.triggerContainer = ref; }}>
+    return this.isUsingDeprecatedAPI() ? (
+      triggerContent
+    ) : (
+      <div
+        ref={ref => {
+          this.triggerContainer = ref;
+        }}
+      >
         {triggerContent}
       </div>
     );
   };
 
-  renderItems = (items: DeprecatedItem[]) => items.map((item: DeprecatedItem, itemIndex: number) =>
-    <Item
-      {...item}
-      key={itemIndex}
-      onActivate={({ event }) => {
-        this.props.onItemActivated({ item, event });
-      }}
-    >
-      {item.content}
-    </Item>
-  )
+  renderItems = (items: DeprecatedItem[]) =>
+    items.map((item: DeprecatedItem, itemIndex: number) => (
+      <Item
+        {...item}
+        key={itemIndex}
+        onActivate={({ event }) => {
+          this.props.onItemActivated({ item, event });
+        }}
+      >
+        {item.content}
+      </Item>
+    ));
 
-  renderGroups = (groups: DeprecatedItemGroup[]) => groups.map((group, groupIndex) =>
-    <Group heading={group.heading} elemAfter={group.elemAfter} key={groupIndex}>
-      {this.renderItems(group.items)}
-    </Group>
-  )
+  renderGroups = (groups: DeprecatedItemGroup[]) =>
+    groups.map((group, groupIndex) => (
+      <Group
+        heading={group.heading}
+        elemAfter={group.elemAfter}
+        key={groupIndex}
+      >
+        {this.renderItems(group.items)}
+      </Group>
+    ));
 
   renderDeprecated = () => {
     const { items, shouldFitContainer } = this.props;
@@ -318,7 +357,7 @@ export default class DropdownMenuStateless extends Component {
     return (
       <div
         id={id}
-        ref={(ref) => {
+        ref={ref => {
           this.domMenuContainer = ref;
           this.domItemsList = ref
             ? ref.querySelectorAll('[data-role="droplistItem"]')
@@ -330,22 +369,32 @@ export default class DropdownMenuStateless extends Component {
         {this.renderGroups(items)}
       </div>
     );
-  }
+  };
 
   render() {
     const {
-      appearance, boundariesElement, children, isLoading, isOpen, onOpenChange, position,
-      shouldAllowMultilineItems, shouldFitContainer, shouldFlip,
+      appearance,
+      boundariesElement,
+      children,
+      isLoading,
+      isOpen,
+      onOpenChange,
+      position,
+      shouldAllowMultilineItems,
+      shouldFitContainer,
+      shouldFlip,
     } = this.props;
     const { id } = this.state;
     const isDeprecated = this.isUsingDeprecatedAPI();
 
-    const deprecatedProps = isDeprecated ? {
-      onKeyDown: this.handleKeyboardInteractionsDeprecated,
-      shouldAllowMultilineItems,
-    } : {
-      onKeyDown: this.handleKeyboardInteractionForClosed,
-    };
+    const deprecatedProps = isDeprecated
+      ? {
+          onKeyDown: this.handleKeyboardInteractionsDeprecated,
+          shouldAllowMultilineItems,
+        }
+      : {
+          onKeyDown: this.handleKeyboardInteractionForClosed,
+        };
 
     return (
       <DropdownItemSelectionCache>
@@ -362,21 +411,23 @@ export default class DropdownMenuStateless extends Component {
           trigger={this.renderTrigger()}
           {...deprecatedProps}
         >
-          {
-            isDeprecated ? this.renderDeprecated() : (
-              <WidthConstrainer
-                id={id}
-                role="menu"
-                shouldFitContainer={shouldFitContainer}
-              >
-                <DropdownItemClickManager onItemClicked={this.handleItemClicked}>
-                  <DropdownItemFocusManager autoFocus={this.sourceOfIsOpen === 'keydown'}>
-                    {children}
-                  </DropdownItemFocusManager>
-                </DropdownItemClickManager>
-              </WidthConstrainer>
-            )
-          }
+          {isDeprecated ? (
+            this.renderDeprecated()
+          ) : (
+            <WidthConstrainer
+              id={id}
+              role="menu"
+              shouldFitContainer={shouldFitContainer}
+            >
+              <DropdownItemClickManager onItemClicked={this.handleItemClicked}>
+                <DropdownItemFocusManager
+                  autoFocus={this.sourceOfIsOpen === 'keydown'}
+                >
+                  {children}
+                </DropdownItemFocusManager>
+              </DropdownItemClickManager>
+            </WidthConstrainer>
+          )}
         </Droplist>
       </DropdownItemSelectionCache>
     );

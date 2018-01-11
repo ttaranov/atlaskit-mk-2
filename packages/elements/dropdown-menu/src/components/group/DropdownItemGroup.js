@@ -12,16 +12,14 @@ export default class DropdownItemGroup extends Component {
     title: PropTypes.string,
     /** Content to be shown to the right of the title heading. Not shown if no title is set. */
     elemAfter: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-  }
+  };
 
   render() {
     const { children, elemAfter, title } = this.props;
     return (
-      <ItemGroup
-        elemAfter={elemAfter}
-        title={title}
-        role="menu"
-      >{children}</ItemGroup>
+      <ItemGroup elemAfter={elemAfter} title={title} role="menu">
+        {children}
+      </ItemGroup>
     );
   }
 }

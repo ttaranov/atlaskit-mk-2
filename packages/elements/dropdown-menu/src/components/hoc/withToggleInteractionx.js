@@ -15,28 +15,28 @@ import { KEY_ENTER, KEY_SPACE } from '../../util/keys';
 const withToggleInteraction = (
   WrappedComponent: ReactElement,
   SelectionIcon: ReactElement,
-  ariaRole: Behaviors
+  ariaRole: Behaviors,
 ) => {
   class WithToggleInteraction extends Component {
     static propTypes = {
       /** Content to be displayed inside the item. Same as @atlaskit/item `children` prop. */
       children: PropTypes.node,
       /** Unique identifier for the item, so that selection state can be tracked when the dropdown
-        * is opened/closed. */
+       * is opened/closed. */
       id: PropTypes.string.isRequired,
       /** Set at mount to make the item appear checked. The user may interact with the
        * item after mount. See isSelected if you want to control the item state manually. */
       defaultSelected: PropTypes.bool,
       /** Causes the item to appear visually checked. Can be set at mount time, and updated after
-        * mount. Changing the value will not cause onClick to be called. */
+       * mount. Changing the value will not cause onClick to be called. */
       isSelected: PropTypes.bool,
       /** Standard optional onClick handler */
       onClick: PropTypes.func,
-    }
+    };
 
     static defaultProps = {
       onClick: () => {},
-    }
+    };
 
     static contextTypes = {
       [selectionManagerContext]: PropTypes.object.isRequired,
@@ -61,18 +61,20 @@ const withToggleInteraction = (
         return { primary: akColorB400, secondary: akColorN40 };
       }
       return { primary: akColorN40, secondary: akColorN40 };
-    }
+    };
 
     warnIfUseControlledAndUncontrolledState = () => {
       if (process.env.NODE_ENV !== 'production') {
         if (this.props.defaultSelected && this.props.isSelected) {
           // eslint-disable-next-line no-console
-          console.warn('DropdownItem defaultSelected and isSelected props should not be used at the same time.');
+          console.warn(
+            'DropdownItem defaultSelected and isSelected props should not be used at the same time.',
+          );
         }
       }
-    }
+    };
 
-    callContextFn = safeContextCall(this, selectionManagerContext)
+    callContextFn = safeContextCall(this, selectionManagerContext);
 
     handleKeyboard = (event: KeyboardEvent) => {
       const { key } = event;
@@ -82,16 +84,15 @@ const withToggleInteraction = (
 
         this.handleItemActivated(event);
       }
-    }
+    };
 
     handleItemActivated = (event: Event) => {
       this.props.onClick(event);
       this.callContextFn('itemClicked', this.props.id);
-    }
+    };
 
-    isSelectedInDropdown = () => (
-      this.callContextFn('isItemSelected', this.props.id)
-    )
+    isSelectedInDropdown = () =>
+      this.callContextFn('isItemSelected', this.props.id);
 
     render() {
       const { children, ...otherProps } = this.props;
@@ -120,7 +121,9 @@ const withToggleInteraction = (
       );
     }
   }
-  WithToggleInteraction.displayName = `WithToggleInteraction(${getDisplayName(WrappedComponent)})`;
+  WithToggleInteraction.displayName = `WithToggleInteraction(${getDisplayName(
+    WrappedComponent,
+  )})`;
   return WithToggleInteraction;
 };
 

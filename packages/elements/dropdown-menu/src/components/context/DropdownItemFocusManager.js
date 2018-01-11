@@ -11,7 +11,7 @@ export default class DropdownItemFocusManager extends Component {
     /** Causes first registered item to receive focus */
     autoFocus: PropTypes.bool,
     children: PropTypes.node,
-  }
+  };
 
   static childContextTypes = {
     [focusManagerContext]: PropTypes.object,
@@ -39,15 +39,17 @@ export default class DropdownItemFocusManager extends Component {
       this.focusedItemId = itemId;
       itemNode.focus();
     }
-  }
+  };
 
   handleItemDeregistered = (itemId: ItemId): void => {
-    this.registeredItems = this.registeredItems.filter(item => item.itemId !== itemId);
-  }
+    this.registeredItems = this.registeredItems.filter(
+      item => item.itemId !== itemId,
+    );
+  };
 
   handleItemFocused = (itemId: ItemId): void => {
     this.focusedItemId = itemId;
-  }
+  };
 
   handleItemUpdated = (itemId: ItemId, itemNode: HTMLElement) => {
     let matchingIndex = -1;
@@ -67,7 +69,7 @@ export default class DropdownItemFocusManager extends Component {
     if (this.focusedItemIndex() === matchingIndex) {
       itemNode.focus();
     }
-  }
+  };
 
   focusedItemIndex = (): number => {
     const { focusedItemId, registeredItems } = this;
@@ -77,7 +79,7 @@ export default class DropdownItemFocusManager extends Component {
       }
     }
     return -1;
-  }
+  };
 
   handleKeyboard = (event: KeyboardEvent): void => {
     const { key } = event;
@@ -91,12 +93,13 @@ export default class DropdownItemFocusManager extends Component {
         return;
       }
 
-      const nextItemIndex = key === KEY_UP
-        ? Math.max(0, focusedItemIndex - 1)
-        : Math.min(this.registeredItems.length - 1, focusedItemIndex + 1);
+      const nextItemIndex =
+        key === KEY_UP
+          ? Math.max(0, focusedItemIndex - 1)
+          : Math.min(this.registeredItems.length - 1, focusedItemIndex + 1);
       this.registeredItems[nextItemIndex].itemNode.focus();
     }
-  }
+  };
 
   render() {
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions

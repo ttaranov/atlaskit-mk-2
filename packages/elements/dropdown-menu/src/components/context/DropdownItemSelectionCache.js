@@ -5,14 +5,15 @@ import find from 'array-find';
 import { selectionCacheContext } from '../../util/contextNamespace';
 import type { CachedItem, GroupId, ItemId } from '../../types';
 
-const isItemInList = (itemList, itemId: ItemId, groupId: GroupId) => Boolean(
-  find(itemList, item => item.id === itemId && item.groupId === groupId)
-);
+const isItemInList = (itemList, itemId: ItemId, groupId: GroupId) =>
+  Boolean(
+    find(itemList, item => item.id === itemId && item.groupId === groupId),
+  );
 
 export default class DropdownItemSelectionCache extends Component {
   static propTypes = {
     children: PropTypes.node,
-  }
+  };
 
   static childContextTypes = {
     [selectionCacheContext]: PropTypes.shape({
@@ -27,9 +28,9 @@ export default class DropdownItemSelectionCache extends Component {
   // is updated.
   state = {
     lastCacheUpdate: 0,
-  }
+  };
 
-  selectedItems: Array<CachedItem> = [] // eslint-disable-line react/sort-comp
+  selectedItems: Array<CachedItem> = []; // eslint-disable-line react/sort-comp
 
   // If any radio/checkbox items have defaultSelected applied, we need to keep track of whether
   // each of those items has had it's state set to 'selected'. This is because when the dropdown
@@ -37,7 +38,7 @@ export default class DropdownItemSelectionCache extends Component {
   // try to again apply their defaultSelected status. defaultSelected should only be applied on
   // the initial mount, as users can change the value post-mount. Alternatively, products can use
   // the isSelected prop with the onClick handler to control the selected state manually if needed.
-  alreadyDefaultedItems: Array<CachedItem> = [] // eslint-disable-line react/sort-comp
+  alreadyDefaultedItems: Array<CachedItem> = []; // eslint-disable-line react/sort-comp
 
   getChildContext() {
     return {
@@ -46,16 +47,17 @@ export default class DropdownItemSelectionCache extends Component {
         // (which must have a unique item and group ID) is currently selected - this is used
         // by radio and checkbox dropdown items to retreive their 'selected' state when they
         // re-mount, which happens when the dropdown is closed and then re-opened.
-        isItemSelected: (groupId: GroupId, itemId: ItemId): boolean => (
-          isItemInList(this.selectedItems, itemId, groupId)
-        ),
-        itemsInGroup: (groupId: GroupId) => (
-          this.selectedItems.filter((item: CachedItem) => item.groupId === groupId)
-        ),
+        isItemSelected: (groupId: GroupId, itemId: ItemId): boolean =>
+          isItemInList(this.selectedItems, itemId, groupId),
+        itemsInGroup: (groupId: GroupId) =>
+          this.selectedItems.filter(
+            (item: CachedItem) => item.groupId === groupId,
+          ),
         itemSelectionsChanged: this.handleItemSelectionsChanged,
-        hasItemAlreadyHadDefaultSelectedApplied: (groupId: GroupId, itemId: ItemId): boolean => (
-          isItemInList(this.alreadyDefaultedItems, itemId, groupId)
-        ),
+        hasItemAlreadyHadDefaultSelectedApplied: (
+          groupId: GroupId,
+          itemId: ItemId,
+        ): boolean => isItemInList(this.alreadyDefaultedItems, itemId, groupId),
         markItemAsDefaultApplied: (groupId: GroupId, itemId: ItemId) => {
           this.alreadyDefaultedItems.push({ id: itemId, groupId });
         },
@@ -63,7 +65,10 @@ export default class DropdownItemSelectionCache extends Component {
     };
   }
 
-  handleItemSelectionsChanged = (groupId: string, newGroupSelections: Array<CachedItem>): void => {
+  handleItemSelectionsChanged = (
+    groupId: string,
+    newGroupSelections: Array<CachedItem>,
+  ): void => {
     const newSelectedItems: Array<CachedItem> = [
       ...this.selectedItems.filter(item => item.groupId !== groupId),
       ...newGroupSelections,
@@ -76,7 +81,7 @@ export default class DropdownItemSelectionCache extends Component {
     // behaviour due to the asynchronous behaviour of setState. So we need to trigger setState
     // with a different value to cause the children to be updated with their new selection values.
     this.setState({ lastCacheUpdate: Date.now() });
-  }
+  };
 
   render() {
     return <div>{this.props.children}</div>;

@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default class DropdownItemClickManager extends Component {
-  props: Props // eslint-disable-line react/sort-comp
+  props: Props; // eslint-disable-line react/sort-comp
 
   static childContextTypes = {
     [clickManagerContext]: PropTypes.object,
@@ -27,7 +27,7 @@ export default class DropdownItemClickManager extends Component {
 
   handleItemClicked = (event: MouseEvent | KeyboardEvent) => {
     this.props.onItemClicked(event);
-  }
+  };
 
   render() {
     return this.props.children;

@@ -4,7 +4,7 @@ import StatelessMenu from './DropdownMenuStateless';
 import type { DropdownMenuStatefulProps, OpenChangeObj } from '../types';
 
 export default class DropdownMenu extends Component {
-  props: DropdownMenuStatefulProps // eslint-disable-line react/sort-comp
+  props: DropdownMenuStatefulProps; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
     appearance: 'default',
@@ -21,12 +21,12 @@ export default class DropdownMenu extends Component {
     shouldFlip: true,
     triggerButtonProps: {},
     triggerType: 'default',
-  }
+  };
 
   state = {
     isOpen: this.props.defaultOpen,
     items: [...this.props.items],
-  }
+  };
 
   componentWillReceiveProps(nextProps: DropdownMenuStatefulProps) {
     if (nextProps.items !== this.state.items) {
@@ -37,7 +37,8 @@ export default class DropdownMenu extends Component {
     }
   }
 
-  findActivatedGroup = (item: Object) => this.state.items.filter(group => group.items.indexOf(item) > -1)[0]// eslint-disable-line
+  findActivatedGroup = (item: Object) =>
+    this.state.items.filter(group => group.items.indexOf(item) > -1)[0]; // eslint-disable-line
 
   handleItemActivation = (attrs: { event?: Event, item: Object }) => {
     const activatedItem = attrs.item;
@@ -67,24 +68,33 @@ export default class DropdownMenu extends Component {
         this.close();
         break;
     }
-  }
+  };
 
   handleOpenChange = (attrs: OpenChangeObj) => {
     this.setState({ isOpen: attrs.isOpen });
     this.props.onOpenChange(attrs);
-  }
+  };
 
   close = () => {
     this.setState({ isOpen: false });
     this.props.onOpenChange({ isOpen: false });
-  }
+  };
 
   render() {
     const { isOpen } = this.state;
     const {
-      appearance, boundariesElement, children, isLoading, items, position,
-      shouldAllowMultilineItems, shouldFitContainer, shouldFlip, trigger,
-      triggerButtonProps, triggerType,
+      appearance,
+      boundariesElement,
+      children,
+      isLoading,
+      items,
+      position,
+      shouldAllowMultilineItems,
+      shouldFitContainer,
+      shouldFlip,
+      trigger,
+      triggerButtonProps,
+      triggerType,
     } = this.props;
 
     return (
