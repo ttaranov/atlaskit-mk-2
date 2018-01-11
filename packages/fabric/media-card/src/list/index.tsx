@@ -1,8 +1,6 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
 import { Component } from 'react';
-import { Subscription } from 'rxjs/Subscription';
-import { AxiosError } from 'axios';
 import {
   MediaCollection,
   MediaCollectionItem,
@@ -17,7 +15,7 @@ import {
 } from '../utils';
 import { LazyContent } from '../utils/lazyContent';
 import { CardDimensions, CardListEvent, CardEvent } from '..';
-import { Provider, CardView } from '../root';
+import { CardView } from '../root';
 import { CardListItemWrapper, Spinner } from './styled';
 import { CollectionRenderer } from '../renderers/collectionRenderer';
 import { DataUriRenderer } from '../renderers/dataUriRenderer';
@@ -50,17 +48,6 @@ export interface CardListProps {
   readonly emptyComponent?: JSX.Element;
 }
 
-export interface CardListState {
-  readonly loading: boolean;
-  readonly shouldAnimate: boolean;
-  readonly selectedCards: string[];
-  readonly firstItemKey?: string;
-  readonly subscription?: Subscription;
-  readonly loadNextPage?: () => void;
-  readonly collection?: MediaCollection;
-  readonly error?: AxiosError;
-}
-
 // FIXME: these aren't "components", they're actually "elements"... we should rename these or change the signature to be a "component" e.g. () => (<Spinner.../>);. Will clean up the tests a bit too.
 const LoadingComponent = (
   <Spinner className="spinner" style={{ width: '100%', height: '100%' }}>
@@ -70,7 +57,7 @@ const LoadingComponent = (
 const EmptyComponent = <div>No items</div>;
 const ErrorComponent = <div>ERROR</div>;
 
-export class CardList extends Component<CardListProps, CardListState> {
+export class CardList extends Component<CardListProps> {
   static defaultPageSize = 10;
 
   static defaultProps = {
@@ -84,115 +71,6 @@ export class CardList extends Component<CardListProps, CardListState> {
     emptyComponent: EmptyComponent,
     layout: 'list',
   };
-
-  state: CardListState = {
-    loading: true,
-    shouldAnimate: false,
-    selectedCards: [],
-  };
-
-  providersByMediaItemId: { [id: string]: Provider } = {};
-
-  private unsubscribe() {
-    const { subscription } = this.state;
-    if (subscription) {
-      subscription.unsubscribe();
-    }
-  }
-
-  // handleNextItems(nextProps: CardListProps) {
-  //   const { collectionName, context } = nextProps;
-
-  //   return (collection: MediaCollection) => {
-  //     const { firstItemKey } = this.state;
-  //     const newFirstItemKey = collection.items[0]
-  //       ? this.getItemKey(collection.items[0])
-  //       : undefined;
-  //     const shouldAnimate = !!firstItemKey && firstItemKey !== newFirstItemKey;
-  //     this.providersByMediaItemId = {};
-  //     collection.items.forEach(mediaItem => {
-  //       if (!mediaItem.details || !mediaItem.details.id) {
-  //         return;
-  //       }
-
-  //       this.providersByMediaItemId[
-  //         mediaItem.details.id
-  //       ] = context.getMediaItemProvider(
-  //         mediaItem.details.id,
-  //         mediaItem.type,
-  //         collectionName,
-  //         mediaItem,
-  //         );
-  //     });
-
-  //     this.setState({
-  //       collection,
-  //       shouldAnimate,
-  //       loading: false,
-  //       firstItemKey: newFirstItemKey,
-  //     });
-  //   };
-  // }
-
-  private subscribe(nextProps: CardListProps) {
-    // const { collectionName, context } = nextProps;
-    // const pageSize = this.props.pageSize || CardList.defaultPageSize;
-    // const provider = context.getMediaCollectionProvider(
-    //   collectionName,
-    //   pageSize,
-    // );
-    // const subscription = provider.observable().subscribe({
-    //   next: this.handleNextItems(nextProps),
-    //   error: (error: AxiosError): void => {
-    //     this.setState({ collection: undefined, error, loading: false });
-    //   },
-    // });
-    // this.setState({ subscription });
-  }
-
-  private shouldUpdateState(nextProps: CardListProps): boolean {
-    return (
-      nextProps.collectionName !== this.props.collectionName ||
-      nextProps.context !== this.props.context ||
-      nextProps.pageSize !== this.props.pageSize
-    );
-  }
-
-  private updateState(nextProps: CardListProps): void {
-    const { collectionName, context } = nextProps;
-    const pageSize = this.props.pageSize || CardList.defaultPageSize;
-    const provider = context.getMediaCollectionProvider(
-      collectionName,
-      pageSize,
-    );
-
-    this.unsubscribe();
-
-    // Setting the subscription after the state has been applied
-    this.setState(
-      {
-        loadNextPage: () => provider.loadNextPage(),
-        error: undefined,
-        collection: undefined,
-        firstItemKey: undefined,
-      },
-      () => this.subscribe(nextProps),
-    );
-  }
-
-  componentDidMount() {
-    this.updateState(this.props);
-  }
-
-  componentWillReceiveProps(nextProps: CardListProps): void {
-    if (this.shouldUpdateState(nextProps)) {
-      this.updateState(nextProps);
-    }
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
 
   render(): JSX.Element {
     const {
@@ -213,7 +91,7 @@ export class CardList extends Component<CardListProps, CardListState> {
         useInfiniteScroll={this.useInfiniteScroll}
         height={height}
       >
-        {({ collection, isLoading, error }) => {
+        {({ collection, isLoading, error, hasNewItems }) => {
           if (error) {
             if (error.response && error.response.status === 404) {
               return emptyComponent;
@@ -223,14 +101,17 @@ export class CardList extends Component<CardListProps, CardListState> {
           } else if (isLoading) {
             return loadingComponent;
           } else {
-            return this.renderList(collection);
+            return this.renderList(collection, hasNewItems);
           }
         }}
       </CollectionRenderer>
     );
   }
 
-  private renderList(collection?: MediaCollection): JSX.Element {
+  private renderList(
+    collection: MediaCollection | undefined,
+    shouldAnimate: boolean,
+  ): JSX.Element {
     const {
       cardWidth,
       dimensions,
@@ -259,9 +140,6 @@ export class CardList extends Component<CardListProps, CardListState> {
           },
         };
       });
-    const { firstItemKey } = this.state;
-    const newFirstItemKey = items[0] ? this.getItemKey(items[0]) : undefined;
-    const shouldAnimate = !!firstItemKey && firstItemKey !== newFirstItemKey;
 
     const cards = items.map(item => {
       const { details } = item;
@@ -422,7 +300,4 @@ export class CardList extends Component<CardListProps, CardListState> {
       </CardListItemWrapper>
     );
   }
-
-  loadNextPage = (): void =>
-    this.state.loadNextPage && this.state.loadNextPage();
 }

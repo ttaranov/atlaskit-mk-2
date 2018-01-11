@@ -5,6 +5,7 @@ import {
   Context,
   MediaCollectionProvider,
   MediaCollection,
+  MediaCollectionItem,
 } from '@atlaskit/media-core';
 
 import { InfiniteScroll } from '../list/infiniteScroll';
@@ -15,6 +16,7 @@ const INITIAL_STATE = {
   collection: undefined,
   isLoading: true,
   error: undefined,
+  hasNewItems: false,
 };
 
 export type CollectionRendererProps = {
@@ -32,6 +34,7 @@ export type CollectionRendererState = {
   readonly collection?: MediaCollection;
   readonly isLoading: boolean;
   readonly error?: any;
+  readonly hasNewItems: boolean;
 };
 
 export class CollectionRenderer extends Component<
@@ -41,16 +44,20 @@ export class CollectionRenderer extends Component<
   private collectionProvider: MediaCollectionProvider;
   private subscription: Subscription;
 
-  constructor(props: CollectionRendererProps) {
-    super(props);
-    this.state = INITIAL_STATE;
-  }
+  state: CollectionRendererState = INITIAL_STATE;
 
   componentWillReceiveProps(
     nextProps: Readonly<CollectionRendererProps>,
     nextContext: any,
   ): void {
-    this.loadCollection(nextProps);
+    const { context, collectionName, pageSize } = this.props;
+    if (
+      nextProps.context !== context ||
+      nextProps.collectionName !== collectionName ||
+      nextProps.pageSize !== pageSize
+    ) {
+      this.loadCollection(nextProps);
+    }
   }
 
   componentDidMount() {
@@ -95,11 +102,21 @@ export class CollectionRenderer extends Component<
     );
     this.setState(INITIAL_STATE, () => {
       this.subscription = this.collectionProvider.observable().subscribe({
-        next: collection =>
-          this.setState({
-            collection,
-            isLoading: false,
-          }),
+        next: collection => {
+          this.setState(({ collection: previousCollection }, props) => {
+            const previousKey = previousCollection
+              ? this.getItemKey(previousCollection.items[0])
+              : undefined;
+            const currentKey = this.getItemKey(collection.items[0]);
+
+            const hasNewItems = previousKey && previousKey !== currentKey;
+            return {
+              collection,
+              isLoading: false,
+              hasNewItems,
+            };
+          });
+        },
         error: error => this.setState({ error, isLoading: false }),
       });
     });
@@ -109,5 +126,11 @@ export class CollectionRenderer extends Component<
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  private getItemKey({
+    details: { id, occurrenceKey },
+  }: MediaCollectionItem): string {
+    return `${id}-${occurrenceKey}`;
   }
 }
