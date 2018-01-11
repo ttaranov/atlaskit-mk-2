@@ -83,9 +83,9 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
       fieldValues: {
         description: `Please describe the problem you're having or feature you'd like to see:\n\n\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n version: ${
           this.props.packageName
-        }@${this.props.packageVersion} (${
-          coreVersion
-        })\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n\n`,
+        }@${
+          this.props.packageVersion
+        } (${coreVersion})\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n\n`,
       },
       environment: {
         'Editor Package': this.props.packageName,
