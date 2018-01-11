@@ -4,6 +4,7 @@ import React from 'react';
 import { withTheme, ThemeProvider } from 'styled-components';
 import Navigation from './Navigation';
 
+// $FlowFixMe
 const NavigationWithTheme = withTheme(Navigation);
 
 const emptyTheme = {};

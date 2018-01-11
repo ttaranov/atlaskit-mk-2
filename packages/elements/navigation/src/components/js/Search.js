@@ -12,15 +12,15 @@ type Props = {
   /** The elements to render as options to search from. */
   children?: Node,
   /** Set whether the loading state should be shown. */
-  isLoading?: boolean,
+  isLoading: boolean,
   /** Function to be called when the search input loses focus. */
-  onBlur: () => void,
+  onBlur: (event: Event) => mixed,
   /** Function to be called when a input action occurs (native `oninput` event). */
-  onInput: (?Event) => void,
+  onInput?: (event: Event) => mixed,
   /** Function to be called when the user hits the escape key.  */
-  onKeyDown: (?Event) => void,
+  onKeyDown?: (event: Event) => mixed,
   /** Placeholder text for search field. */
-  placeholder?: string,
+  placeholder: string,
   /** Current value of search field. */
   value?: string,
 };

@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, type Node } from 'react';
+import React, { PureComponent, type Element } from 'react';
 
 export const maxPrimaryItems = 3;
 
@@ -13,7 +13,7 @@ function checkIfTooManyPrimaryActions(actions = []) {
 }
 
 type Props = {
-  actions: Array<Node>,
+  actions: Array<Element<any>>,
 };
 
 export default class GlobalPrimaryActionsList extends PureComponent<Props> {

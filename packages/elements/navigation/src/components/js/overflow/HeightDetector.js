@@ -1,13 +1,12 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import SizeDetector from '@atlaskit/size-detector';
 import rafSchd from 'raf-schd';
-import type { ReactElement } from '../../../types';
 
 type Props = {
-  children: ReactElement,
-  onHeightChange: (height: number) => {},
+  children: Node,
+  onHeightChange: (height: number) => void,
 };
 
 export default class HeightDetector extends Component<Props> {

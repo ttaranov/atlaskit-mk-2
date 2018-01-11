@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, type Node } from 'react';
+import React, { PureComponent, type Element } from 'react';
 
 export const maxSecondaryItems = 5;
 
@@ -13,7 +13,7 @@ function checkIfTooManySecondaryActions(actions = []) {
 }
 
 type Props = {
-  actions: Array<Node>,
+  actions: Array<Element<any>>,
 };
 
 export default class GlobalSecondaryActions extends PureComponent<Props> {

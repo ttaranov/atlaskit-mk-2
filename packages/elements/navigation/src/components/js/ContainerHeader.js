@@ -4,9 +4,9 @@ import ContainerHeaderWrapper from '../styled/ContainerHeaderWrapper';
 import { globalItemSizes } from '../../shared-variables';
 
 type Props = {
-  children: Node,
+  children?: Node,
   iconOffset: number,
-  isFullWidth: boolean,
+  isFullWidth?: boolean,
   isInDrawer: boolean,
 };
 

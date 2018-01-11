@@ -1,9 +1,9 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node } from 'react';
 import RevealInner from '../styled/RevealInner';
 
 type Props = {
-  children: Node,
+  children?: Node,
   isOpen: boolean,
   openHeight: number,
   shouldAnimate: boolean,

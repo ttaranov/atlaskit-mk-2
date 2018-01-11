@@ -16,7 +16,8 @@ export type ItemTheme = {
     text?: Text,
   },
   focus: {
-    outline?: Line,
+    background?: Background,
+    outline?: Color,
   },
   selected: {
     background: Background,
@@ -49,7 +50,22 @@ export type Provided = {
   item: ItemTheme,
   dropdown: ItemTheme,
   hasDarkmode?: boolean,
-  scrollBar?: ScrollBarTheme,
+  scrollBar: ScrollBarTheme,
+};
+
+export type CustomisableThemeProperties = {
+  background: {
+    primary: Background,
+    secondary: Background,
+    // currently used for drawer
+    tertiary: Background,
+  },
+  text: Text,
+  subText: Text,
+  keyline: Line,
+  item: ItemTheme,
+  dropdown: ItemTheme,
+  hasDarkmode?: boolean,
 };
 
 export type RootTheme = {
@@ -80,7 +96,7 @@ export type GenericItemTheme = {
     default: number,
   },
   focus: {
-    outline: Color,
+    outline?: Color,
   },
   padding: {
     compact: GenericItemPadding,

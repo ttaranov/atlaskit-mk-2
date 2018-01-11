@@ -5,7 +5,7 @@ import SpacerInner from '../styled/SpacerInner';
 type Props = {
   children: Node,
   innerRef: (ref: ElementRef<*>) => void,
-  onTransitionEnd: () => void,
+  onTransitionEnd: (e: TransitionEvent) => void,
   shouldAnimate: boolean,
   width: number,
 };

@@ -3,7 +3,13 @@
 // 'chromatism' adds 1.9kb to the bundle.
 // After the nwb merge it should be able to be tree shaken out for those who are not using it
 import chromatism from 'chromatism';
-import type { Text, Background, Provided, ItemTheme } from './types';
+import type {
+  Text,
+  Background,
+  Provided,
+  ItemTheme,
+  CustomisableThemeProperties,
+} from './types';
 import * as presets from './presets';
 
 const { global: globalTheme } = presets;
@@ -12,7 +18,7 @@ const { global: globalTheme } = presets;
 export const createGlobalTheme = (
   text: Text,
   background: Background,
-): Provided => {
+): CustomisableThemeProperties => {
   const active: Background = chromatism.brightness(10, background).hex;
 
   const item: ItemTheme = {
@@ -40,7 +46,7 @@ export const createGlobalTheme = (
   // Here we take the default global theme and selectively override some of the customisable values
   // with values based on the function input. We are currently not encouraging the overriding of
   // these default properties.
-  const customisedGlobal: Provided = {
+  const customisedGlobal: CustomisableThemeProperties = {
     background: {
       primary: background,
       secondary: background,

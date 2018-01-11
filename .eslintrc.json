@@ -20,6 +20,7 @@
     "import/prefer-default-export": "off",
     "react/prefer-stateless-function": "off",
 
+    "no-labels": "off",
     "no-restricted-syntax": "off",
     "no-underscore-dangle": "off",
     "no-use-before-define": "off",

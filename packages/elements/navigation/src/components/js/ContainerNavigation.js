@@ -1,5 +1,10 @@
 // @flow
-import React, { Component, type Node, type ComponentType } from 'react';
+import React, {
+  Component,
+  type Node,
+  type ComponentType,
+  type Element,
+} from 'react';
 import { WithRootTheme } from '../../theme/util';
 import ContainerHeader from './ContainerHeader';
 import ContainerNavigationChildren from './ContainerNavigationChildren';
@@ -21,32 +26,32 @@ type Props = {
   /** Icon to be rendered in the globalPrimaryActions internal component when
   isCollapsed is true. When clicked, onGlobalCreateActivate is called. It is
   recommended that you use an atlaskit icon. */
-  globalCreateIcon?: Node,
+  globalCreateIcon?: Element<any>,
   /** A list of nodes to be rendered as the global primary actions.  They appear
    directly underneath the global primary icon. This must not exceed three nodes */
-  globalPrimaryActions?: Array<Node>,
+  globalPrimaryActions?: Array<Element<any>>,
   /** Icon to be rendered at the top of the globalPrimaryActions internal component
   when isCollapsed is true. It is renered as a linkComponent, using the
   globalPrimaryItemHref. It is recommended that you use an atlaskit icon. */
-  globalPrimaryIcon?: Node,
+  globalPrimaryIcon?: Element<any>,
   /** href to be used around the globalPrimaryIcon. */
   globalPrimaryItemHref?: string,
   /** Icon to be displayed in the middle of the internal globalPrimaryActions
   component. On click, onGlobalSearchActivate is called. It is recommended
   that you use an atlaskit icon. */
-  globalSearchIcon?: Node,
+  globalSearchIcon?: Element<any>,
   /** Whether to display a scroll hint shadow at the top of the ContainerNavigation
    * wrapper. */
   hasScrollHintTop?: boolean,
   /** Functional react component that is passed the prop isCollapsed. The AkContainerTitle
    component is designed to be used as the headerComponent. */
-  headerComponent?: ({}) => mixed,
+  headerComponent?: ({}) => Node,
   /** Set to determine whether the ContainerNavigation should be rendered in its
    open state or closed state. Passed through to the headerComponent. */
-  isCollapsed?: boolean,
+  isCollapsed: boolean,
   /** A component to be used as a link. By Default this is an anchor. when a href
    is passed to it, and otherwise is a button. */
-  linkComponent?: ComponentType<*>,
+  linkComponent: ComponentType<*>,
   /** Function to be called when the globalCreateIcon is clicked on. */
   onGlobalCreateActivate?: () => void,
   /** Function to be called when the globalSearchIcon is clicked on. */
@@ -56,11 +61,11 @@ type Props = {
   /** Sets whether the globalyPrimaryActions should be displayed. These should be
   components shared with the GlobalNavigation component, so they can be included
   in the ContainerNavigation when Navigation is collapsed. */
-  showGlobalActions?: boolean,
+  showGlobalActions: boolean,
   /** Theme object. Custom theme objects should be generated using the createGlobalTheme
    function. */
-  theme?: Provided, // eslint-disable-line react/forbid-prop-types
-  globalSecondaryActions: Array<Node>,
+  theme: Provided,
+  globalSecondaryActions: Array<Element<any>>,
 };
 
 type State = {
@@ -149,7 +154,7 @@ export default class ContainerNavigation extends Component<Props, State> {
             />
           </Reveal>
           <ContainerHeader>
-            {headerComponent ? headerComponent({ isCollapsed }) : null}
+            {headerComponent ? headerComponent({ isCollapsed }) : undefined}
           </ContainerHeader>
           <ContainerNavigationChildren
             hasScrollHintTop={hasScrollHintTop}

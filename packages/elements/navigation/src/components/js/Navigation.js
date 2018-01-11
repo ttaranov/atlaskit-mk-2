@@ -1,6 +1,12 @@
 // @flow
 import '@atlaskit/polyfills/object-assign';
-import React, { PureComponent, type Node, type ComponentType } from 'react';
+import React, {
+  PureComponent,
+  type Node,
+  type ComponentType,
+  type Element,
+  type ElementRef,
+} from 'react';
 import { getTheme } from '@atlaskit/theme';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
@@ -48,32 +54,32 @@ type Props = {
   /** Component(s) to be rendered as the header of the container.  */
   containerHeaderComponent?: () => Array<Node>,
   /** Standard React ref for the container navigation scrollable element. */
-  containerScrollRef?: Node => void,
+  containerScrollRef?: (ref: ElementRef<*>) => void,
   /** Location to pass in an array of drawers (AkCreateDrawer, AkSearchDrawer, AkCustomDrawer)
    to be rendered. There is no decoration done to the components passed in here. */
-  drawers?: Array<Node>,
+  drawers: Array<Element<any>>,
   /** Theme object to be used to color the global container. */
   globalTheme?: Provided,
   /** Icon to be used as the 'create' icon. onCreateDrawerOpen is called when it
    is clicked. */
-  globalCreateIcon?: Node,
+  globalCreateIcon?: Element<any>,
   /** Icon to be displayed at the top of the GlobalNavigation. This is wrapped in
    the linkComponent. */
-  globalPrimaryIcon?: Node,
+  globalPrimaryIcon?: Element<any>,
   /** Appearance of globalPrimaryIcon for shape styling of drop shadows */
-  globalPrimaryIconAppearance?: IconAppearance,
+  globalPrimaryIconAppearance: IconAppearance,
   /** Link to be passed to the linkComponent that wraps the globalCreateIcon. */
   globalPrimaryItemHref?: string,
   /** Icon to be used as the 'create' icon. onSearchDrawerOpen is called when it
    is clicked. */
-  globalSearchIcon?: Node,
+  globalSearchIcon?: Element<any>,
   /** A list of nodes to be rendered as the global primary actions. They appear
    directly underneath the global primary icon. This must not exceed three nodes */
-  globalPrimaryActions?: Array<Node>,
+  globalPrimaryActions?: Array<Element<any>>,
   /** An array of elements to be displayed at the bottom of the global component.
   These should be icons or other small elements. There must be no more than five.
   Secondary Actions will not be visible when nav is collapsed. */
-  globalSecondaryActions?: Array<Node>,
+  globalSecondaryActions: Array<Element<any>>,
   /** Whether to display a scroll hint shadow at the top of the ContainerNavigation
    * wrapper. */
   hasScrollHintTop?: boolean,
@@ -94,13 +100,13 @@ type Props = {
   linkComponent?: ComponentType<*>,
   /** Function called at the end of a resize event. It is called with an object
    containing a width and an isOpen. These can be used to update the props of Navigation. */
-  onResize?: (resizeState: resizeObj) => void,
+  onResize: (resizeState: resizeObj) => void,
   /** Function to be called when a resize event starts. */
-  onResizeStart?: () => void,
+  onResizeStart: () => void,
   /** Function called when the globalCreateIcon is clicked. */
-  onCreateDrawerOpen?: () => void,
+  onCreateDrawerOpen: () => void,
   /** Function called when the globalSearchIcon is clicked. */
-  onSearchDrawerOpen?: () => void,
+  onSearchDrawerOpen: () => void,
   /** Function called when a collapse/expand starts */
   onToggleStart: () => void,
   /** Function called when a collapse/expand finishes */
@@ -109,10 +115,10 @@ type Props = {
   absolute items such as a banner to be placed above nav, without lower nav items
   being pushed off the screen. **DO NOT** use this outside of this use-case. Changes
   are animated. The string is any valid css height value */
-  topOffset?: number,
+  topOffset: number,
   /** Width of the navigation. Width cannot be reduced below the minimum, and the
    collapsed with will be respected above the provided width. */
-  width?: number,
+  width: number,
 
   /** todo */
   // isCreateDrawerOpen: boolean,
@@ -158,11 +164,11 @@ export default class Navigation extends PureComponent<Props, State> {
     onCreateDrawerOpen: () => {},
     onResize: () => {},
     onResizeStart: () => {},
-    onToggleStart: () => {},
-    onToggleEnd: () => {},
     onSearchDrawerOpen: () => {},
-    width: defaultWidth,
+    onToggleEnd: () => {},
+    onToggleStart: () => {},
     topOffset: 0,
+    width: defaultWidth,
   };
 
   constructor(props: Props, context: mixed) {
