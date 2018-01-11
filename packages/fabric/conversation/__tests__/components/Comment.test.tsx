@@ -204,7 +204,7 @@ describe('Comment', () => {
     });
   });
 
-  describe('delete link', () => {
+  describe.skip('delete link', () => {
     let user;
     let deleteLink;
     let onDeleteComment;
