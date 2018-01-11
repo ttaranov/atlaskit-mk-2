@@ -8,7 +8,6 @@ import {
   MediaCollectionItem,
   Context,
   CollectionAction,
-  DataUriService,
 } from '@atlaskit/media-core';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
@@ -93,7 +92,6 @@ export class CardList extends Component<CardListProps, CardListState> {
   };
 
   providersByMediaItemId: { [id: string]: Provider } = {};
-  private dataURIService: DataUriService;
 
   private unsubscribe() {
     const { subscription } = this.state;
@@ -170,8 +168,6 @@ export class CardList extends Component<CardListProps, CardListState> {
 
     this.unsubscribe();
 
-    this.dataURIService = context.getDataUriService(collectionName);
-
     // Setting the subscription after the state has been applied
     this.setState(
       {
@@ -197,10 +193,6 @@ export class CardList extends Component<CardListProps, CardListState> {
   componentWillUnmount() {
     this.unsubscribe();
   }
-
-  private handleInfiniteScrollThresholdReached = () => {
-    this.loadNextPage();
-  };
 
   render(): JSX.Element {
     const { context, collectionName, height } = this.props;
@@ -250,8 +242,6 @@ export class CardList extends Component<CardListProps, CardListState> {
     const {
       cardWidth,
       dimensions,
-      providersByMediaItemId,
-      dataURIService,
       handleCardClick,
       placeholder,
       isGridLayout,
@@ -262,22 +252,21 @@ export class CardList extends Component<CardListProps, CardListState> {
       cardAppearance,
       shouldLazyLoadCards,
       layout,
-      selectedItemIds = [],
     } = this.props;
     const items = collection ? collection.items : [];
     const actions = this.props.actions || [];
-    // const cardActions = (collectionItem: MediaCollectionItem) =>
-    //   actions.map(action => {
-    //     return {
-    //       label: action.label,
-    //       type: action.type,
-    //       handler: (item: MediaItem, event: Event) => {
-    //         if (collection) {
-    //           action.handler(collectionItem, collection, event);
-    //         }
-    //       },
-    //     };
-    //   });
+    const cardActions = (item: MediaCollectionItem) =>
+      actions.map(({ label, type, handler }) => {
+        return {
+          label,
+          type,
+          handler: (item: MediaCollectionItem, event: Event) => {
+            if (collection) {
+              handler(item, collection, event);
+            }
+          },
+        };
+      });
     const cards = items.map(item => {
       const { details } = item;
       const key = this.getItemKey(item);
@@ -309,9 +298,7 @@ export class CardList extends Component<CardListProps, CardListState> {
                     appearance={cardAppearance}
                     dimensions={dimensions}
                     onClick={handleCardClick(item)}
-                    // actions={cardActions(mediaItem)} TODO: implement actions
-                    selectable={isGridLayout}
-                    selected={false} // TODO: calculate selected flag here
+                    actions={cardActions(item)}
                   />
                 );
               }}
