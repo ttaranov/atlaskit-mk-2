@@ -61,7 +61,7 @@ export const dialogHeight = ({
   - only active when popper.js children envoked below the dialog
 */
 export const FillScreen = styled.div`
-  height: 100%;
+  height: 100vh;
   left: 0;
   overflow-y: auto;
   position: absolute;
