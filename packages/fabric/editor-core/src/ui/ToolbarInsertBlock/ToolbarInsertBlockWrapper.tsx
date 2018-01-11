@@ -34,7 +34,7 @@ export interface State {
   insertMentionQuery: () => void;
 }
 
-// TODO: deprecate me when we move to new architecture
+// TODO: delete me when we move to new architecture
 export default class ToolbarInsertBlockWrapper extends React.Component<
   Props,
   State

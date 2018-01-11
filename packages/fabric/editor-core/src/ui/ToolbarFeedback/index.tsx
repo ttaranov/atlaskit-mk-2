@@ -5,7 +5,6 @@ import Spinner from '@atlaskit/spinner';
 import { analyticsDecorator as analytics } from '../../analytics';
 import ToolbarButton from '../ToolbarButton';
 import { version as coreVersion } from '../../../package.json';
-import EditorWidth from '../../utils/editor-width';
 
 import { Wrapper, ButtonContent } from './styles';
 
@@ -15,7 +14,6 @@ const JIRA_ISSUE_COLLECTOR_URL =
 export interface Props {
   packageVersion?: string;
   packageName?: string;
-  editorWidth?: number;
 }
 
 export interface State {
@@ -44,25 +42,14 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
     ) : (
       undefined
     );
-    const { editorWidth } = this.props;
 
     // JIRA issue collector script is using jQuery internally
     return this.hasJquery() ? (
-      <Wrapper
-        width={
-          editorWidth &&
-          (editorWidth > EditorWidth.BreakPoint10 ? 'large' : 'small')
-        }
-      >
+      <Wrapper>
         <ToolbarButton
           iconBefore={iconBefore}
           onClick={this.openFeedbackPopup}
           selected={false}
-          spacing={
-            editorWidth && editorWidth > EditorWidth.BreakPoint10
-              ? 'default'
-              : 'none'
-          }
         >
           <ButtonContent>Feedback</ButtonContent>
         </ToolbarButton>

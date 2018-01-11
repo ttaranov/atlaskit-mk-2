@@ -113,7 +113,9 @@ describe(name, () => {
         render={() => null}
       />,
     );
-    const wpsInstance = (wrapper.find(WithPluginState) as any).nodes[0];
+    const wpsInstance = (wrapper.find(WithPluginState) as any)
+      .first()
+      .instance();
 
     wrapper.unmount();
     editorView.destroy();

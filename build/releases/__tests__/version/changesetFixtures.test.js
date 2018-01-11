@@ -107,23 +107,23 @@ describe('createChangeset', () => {
       // The others are tested to ensure the test's slightly flakey dependency
       // on how the packages are pulled in is maintained.
       expect(cli.askList.mock.calls[0]).toEqual([
-        'What kind of change is this for \u001b[32mpkg-a\u001b[39m?',
+        'What kind of change is this for pkg-a?',
         ['patch', 'minor', 'major'],
       ]);
       expect(cli.askList.mock.calls[1]).toEqual([
-        'What kind of change is this for \u001b[32mpkg-b\u001b[39m?',
+        'What kind of change is this for pkg-b?',
         ['none', 'patch', 'minor', 'major'],
       ]);
       expect(cli.askList.mock.calls[2]).toEqual([
-        'What kind of change is this for \u001b[32mpkg-c\u001b[39m?',
+        'What kind of change is this for pkg-c?',
         ['none', 'patch', 'minor', 'major'],
       ]);
       expect(cli.askList.mock.calls[3]).toEqual([
-        'What kind of change is this for \u001b[32mpkg-a\u001b[39m?',
+        'What kind of change is this for pkg-a?',
         ['none', 'patch', 'minor', 'major'],
       ]);
       expect(cli.askList.mock.calls[4]).toEqual([
-        'What kind of change is this for \u001b[32mpkg-b\u001b[39m?',
+        'What kind of change is this for pkg-b?',
         ['patch', 'minor', 'major'],
       ]);
     });
@@ -168,21 +168,21 @@ describe('createChangeset', () => {
 
       // First call is for bump of pkg-a (the package we are releasing)
       expect(cli.askList.mock.calls[0]).toEqual([
-        'What kind of change is this for \u001b[32mpkg-a\u001b[39m?',
+        'What kind of change is this for pkg-a?',
         ['patch', 'minor', 'major'],
       ]);
       // second and third are for dependents (should have no "none" choice)
       expect(cli.askList.mock.calls[1]).toEqual([
-        'What kind of change is this for \u001b[32mpkg-b\u001b[39m?',
+        'What kind of change is this for pkg-b?',
         ['patch', 'minor', 'major'],
       ]);
       expect(cli.askList.mock.calls[2]).toEqual([
-        'What kind of change is this for \u001b[32mpkg-c\u001b[39m?',
+        'What kind of change is this for pkg-c?',
         ['patch', 'minor', 'major'],
       ]);
       // last is for pkg-a as a dependent (should be allowed to select none as not a caret dep)
       expect(cli.askList.mock.calls[3]).toEqual([
-        'What kind of change is this for \u001b[32mpkg-a\u001b[39m?',
+        'What kind of change is this for pkg-a?',
         ['none', 'patch', 'minor', 'major'],
       ]);
     });

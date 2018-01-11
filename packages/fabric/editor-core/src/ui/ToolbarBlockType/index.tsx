@@ -8,7 +8,6 @@ import { BlockTypeState } from '../../plugins/block-type';
 import { BlockType } from '../../plugins/block-type/types';
 import { EditorView } from 'prosemirror-view';
 import DropdownMenu from '../DropdownMenu';
-import EditorWidth from '../../utils/editor-width';
 import {
   ButtonContent,
   Separator,
@@ -19,7 +18,8 @@ import {
 
 export interface Props {
   isDisabled?: boolean;
-  editorWidth?: number;
+  isSmall?: boolean;
+  isReducedSpacing?: boolean;
   editorView: EditorView;
   pluginState: BlockTypeState;
   popupsMountPoint?: HTMLElement;
@@ -70,7 +70,8 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
     const {
       popupsMountPoint,
       popupsBoundariesElement,
-      editorWidth,
+      isSmall,
+      isReducedSpacing,
     } = this.props;
     const blockTypeTitles = availableBlockTypes
       .filter(blockType => blockType.name === currentBlockType.name)
@@ -78,29 +79,21 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
 
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
-        spacing={
-          editorWidth && editorWidth > EditorWidth.BreakPoint10
-            ? 'default'
-            : 'none'
-        }
+        spacing={isReducedSpacing ? 'none' : 'default'}
         selected={active}
         disabled={disabled}
         onClick={this.handleTriggerClick}
         iconAfter={
           <Wrapper>
-            {editorWidth! <= EditorWidth.BreakPoint1 && (
-              <TextStyleIcon label="Change formatting" />
-            )}
+            {isSmall && <TextStyleIcon label="Change formatting" />}
             <ExpandIconWrapper>
               <ExpandIcon label="Change formatting" />
             </ExpandIconWrapper>
           </Wrapper>
         }
       >
-        {(!editorWidth || editorWidth > EditorWidth.BreakPoint1) && (
-          <ButtonContent width={editorWidth}>
-            {blockTypeTitles[0] || 'Normal text'}
-          </ButtonContent>
+        {!isSmall && (
+          <ButtonContent>{blockTypeTitles[0] || 'Normal text'}</ButtonContent>
         )}
       </ToolbarButton>
     );

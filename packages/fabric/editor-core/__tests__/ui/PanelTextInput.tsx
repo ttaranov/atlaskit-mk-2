@@ -11,7 +11,7 @@ describe('@atlaskit/editor-core/ui/PanelTextInput', () => {
     const panel = mount(<PanelTextInput onSubmit={onSubmitHandler} />);
 
     const input = panel.find('input');
-    (input.get(0) as any).value = 'http://atlassian.com';
+    (input.getDOMNode() as any).value = 'http://atlassian.com';
     input.simulate('keydown', { which: 'enter', keyCode: 13 });
 
     expect(onSubmitHandler).toHaveBeenCalledWith('http://atlassian.com');

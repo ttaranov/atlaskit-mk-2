@@ -1,5 +1,8 @@
 # @atlaskit/progress-indicator
 
+## 2.1.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
 ## 2.0.3
 - [patch] migrated page indicator to mk2 [4a011bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4a011bb)
 

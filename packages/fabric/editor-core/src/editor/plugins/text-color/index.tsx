@@ -13,19 +13,18 @@ const textColorPlugin: EditorPlugin = {
     return [{ rank: 600, plugin: () => plugin }];
   },
 
-  primaryToolbarComponent(
+  primaryToolbarComponent({
     editorView,
-    eventDispatcher,
-    providerFactory,
-    appearance,
     popupsMountPoint,
     popupsBoundariesElement,
     disabled,
-  ) {
+    isToolbarReducedSpacing,
+  }) {
     const pluginState = stateKey.getState(editorView.state);
     return (
       <ToolbarTextColor
         disabled={disabled}
+        isReducedSpacing={isToolbarReducedSpacing}
         editorView={editorView}
         pluginState={pluginState}
         popupsMountPoint={popupsMountPoint}

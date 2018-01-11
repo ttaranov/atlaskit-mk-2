@@ -17,14 +17,12 @@ const codeBlockPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent(
+  contentComponent({
     editorView,
-    dispatch,
-    providerFactory,
     appearance,
     popupsMountPoint,
     popupsBoundariesElement,
-  ) {
+  }) {
     if (appearance === 'message') {
       return null;
     }

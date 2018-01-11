@@ -82,7 +82,10 @@ describe('Avatar', () =>
 
         it('should set the background image on the internal span to src', () => {
           expect(wrapper.prop('src')).toBe(src);
-          const span = wrapper.find(imgSpan).getDOMNode();
+          const span = wrapper
+            .find(imgSpan)
+            .at(0)
+            .getDOMNode();
           expect(span.style.backgroundImage).toBe(`url(${src})`);
         });
 

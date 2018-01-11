@@ -75,10 +75,10 @@ describe('createChangeset', () => {
         'Which packages would you like to include?',
       );
       expect(askPackagesCalls[0][1]).toEqual([
-        { type: 'separator', line: '\u001b[2mchanged packages\u001b[22m' },
+        { type: 'separator', line: 'changed packages' },
         'pkg-a',
-        { type: 'separator', line: '\u001b[2munchanged packages\u001b[22m' },
-        { type: 'separator', line: '\u001b[2m──────────────\u001b[22m' },
+        { type: 'separator', line: 'unchanged packages' },
+        { type: 'separator', line: '──────────────' },
       ]);
       expect(askPackagesCalls.length).toEqual(1);
       assertBumpTypePrompts(['pkg-a']);
@@ -142,11 +142,11 @@ describe('createChangeset', () => {
       );
 
       expect(askPackagesCalls[0][1]).toEqual([
-        { type: 'separator', line: '\u001b[2mchanged packages\u001b[22m' },
+        { type: 'separator', line: 'changed packages' },
         'pkg-a',
-        { type: 'separator', line: '\u001b[2munchanged packages\u001b[22m' },
+        { type: 'separator', line: 'unchanged packages' },
         'pkg-b',
-        { type: 'separator', line: '\u001b[2m──────────────\u001b[22m' },
+        { type: 'separator', line: '──────────────' },
       ]);
       expect(askPackagesCalls.length).toEqual(1);
 
@@ -240,12 +240,12 @@ describe('createChangeset', () => {
       );
 
       expect(askPackagesCalls[0][1]).toEqual([
-        { type: 'separator', line: '\u001b[2mchanged packages\u001b[22m' },
+        { type: 'separator', line: 'changed packages' },
         'pkg-a',
-        { type: 'separator', line: '\u001b[2munchanged packages\u001b[22m' },
+        { type: 'separator', line: 'unchanged packages' },
         'pkg-c',
         'pkg-b',
-        { type: 'separator', line: '\u001b[2m──────────────\u001b[22m' },
+        { type: 'separator', line: '──────────────' },
       ]);
       expect(askPackagesCalls.length).toEqual(1);
       // Will ask 4 times, one for release and 3 for dependents

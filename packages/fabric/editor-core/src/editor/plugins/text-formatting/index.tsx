@@ -21,7 +21,6 @@ import textFormattingInputRulePlugin from '../../../plugins/text-formatting/inpu
 import clearFormattingKeymapPlugin from '../../../plugins/clear-formatting/keymap';
 import ToolbarTextFormatting from '../../../ui/ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../../../ui/ToolbarAdvancedTextFormatting';
-import EditorWidth from '../../../utils/editor-width';
 
 // tslint:disable-next-line:variable-name
 const ButtonsGroup = styled.div`
@@ -76,16 +75,12 @@ const textFormatting = (options: TextFormattingOptions = {}): EditorPlugin => ({
     ];
   },
 
-  primaryToolbarComponent(
+  primaryToolbarComponent({
     editorView,
-    eventDispatcher,
-    providerFactory,
-    appearance,
     popupsMountPoint,
-    popupsBoundariesElement,
+    isToolbarReducedSpacing,
     disabled,
-    editorWidth,
-  ) {
+  }) {
     const textFormattingPluginState = textFormattingStateKey.getState(
       editorView.state,
     );
@@ -94,22 +89,20 @@ const textFormatting = (options: TextFormattingOptions = {}): EditorPlugin => ({
     );
 
     return (
-      <ButtonsGroup
-        width={editorWidth! > EditorWidth.BreakPoint10 ? 'large' : 'small'}
-      >
+      <ButtonsGroup width={isToolbarReducedSpacing ? 'small' : 'large'}>
         <ToolbarTextFormatting
           disabled={disabled}
           editorView={editorView}
           pluginState={textFormattingPluginState}
-          editorWidth={editorWidth}
+          isReducedSpacing={isToolbarReducedSpacing}
         />
         <ToolbarAdvancedTextFormatting
           editorView={editorView}
           isDisabled={disabled}
+          isReducedSpacing={isToolbarReducedSpacing}
           pluginStateTextFormatting={textFormattingPluginState}
           pluginStateClearFormatting={clearFormattingPluginState}
           popupsMountPoint={popupsMountPoint}
-          editorWidth={editorWidth}
         />
       </ButtonsGroup>
     );

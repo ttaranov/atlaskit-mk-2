@@ -91,6 +91,7 @@ export default class Editor extends React.Component<
       maxHeight,
       popupsMountPoint,
       popupsBoundariesElement,
+      disabled,
     } = this.props;
     const maxContentSizeReached =
       maxContentSize && maxContentSize.maxContentSizeReached;
@@ -112,6 +113,7 @@ export default class Editor extends React.Component<
             items={contentComponents}
             popupsMountPoint={popupsMountPoint}
             popupsBoundariesElement={popupsBoundariesElement}
+            disabled={!!disabled}
           />
         </ContentArea>
       </ChromelessEditor>

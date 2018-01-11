@@ -1,9 +1,9 @@
-jest.mock('../../../../../src/util/getPreview');
+jest.mock('../../../../../src/util/getPreviewFromBlob');
 
 import { Service } from '../../../domain';
 import { isImagePreview } from '../../../../../src/domain/preview';
 import { flattenAccounts, MediaApiFetcher } from '../fetcher';
-import getPreviewFromBlob from '../../../../../src/util/getPreview';
+import { getPreviewFromBlob } from '../../../../../src/util/getPreviewFromBlob';
 
 describe('Fetcher', () => {
   const apiUrl = 'api-url';

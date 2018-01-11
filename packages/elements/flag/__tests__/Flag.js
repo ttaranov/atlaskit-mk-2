@@ -71,7 +71,7 @@ describe('Flag', () => {
       expect(
         flag
           .find(Description)
-          .find('> span > a')
+          .find('span > a')
           .exists(),
       ).toBe(true);
     });

@@ -68,9 +68,7 @@ describe('@atlaskit/editor-core/ui/Mention', () => {
   });
 
   ['HipChat', 'all', 'here'].forEach(genericUserId => {
-    it(`should not render ResourcedMentionWithProfilecard if id is generic (${
-      genericUserId
-    })`, async () => {
+    it(`should not render ResourcedMentionWithProfilecard if id is generic (${genericUserId})`, async () => {
       const profilecardProvider = Promise.resolve({});
       const providerFactory = ProviderFactory.create({ profilecardProvider });
 

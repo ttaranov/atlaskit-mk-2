@@ -2,7 +2,7 @@
 
 import React, { Component, type ElementRef } from 'react';
 import DatePickerStateless from './DatePickerStateless';
-import type { Handler } from '../types';
+import type { Event, Handler } from '../types';
 import { parseDate } from '../util';
 
 type Props = {
@@ -42,16 +42,12 @@ export default class DatePicker extends Component<Props, State> {
     }
   };
 
-  handleInputBlur = (e: FocusEvent) => {
-    if (e.target instanceof HTMLInputElement) {
-      this.validate();
-    }
+  handleInputBlur = () => {
+    this.validate();
   };
 
   handleInputChange = (e: Event) => {
-    if (e.target instanceof HTMLInputElement) {
-      this.setState({ displayValue: e.target.value });
-    }
+    this.setState({ displayValue: e.target.value });
   };
 
   handleTriggerValidate = () => {

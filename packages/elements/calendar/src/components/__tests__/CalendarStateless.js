@@ -56,7 +56,7 @@ test('should call onSelect', () => {
 });
 
 test('specifying selected days should select the specified days', () => {
-  const wrapper = mount(
+  const wrapper = shallow(
     <CalendarStateless
       month={1}
       year={2016}
@@ -64,13 +64,13 @@ test('specifying selected days should select the specified days', () => {
     />,
   );
 
+  expect(wrapper.find({ selected: true })).toHaveLength(2);
   expect(
     wrapper.find({
       children: 1,
       selected: true,
     }),
   ).toHaveLength(1);
-
   expect(
     wrapper.find({
       children: 2,

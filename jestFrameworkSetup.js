@@ -1,8 +1,6 @@
 /* eslint-disable */
 
 import 'jest-styled-components';
-import { replaceRaf } from 'raf-stub';
-replaceRaf([global, typeof window !== 'undefined' ? window : {}]);
 
 // URL is not available for non Node environment
 if (global.URL) {
