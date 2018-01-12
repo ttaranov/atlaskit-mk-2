@@ -24,6 +24,7 @@ import {
   WarningImage,
   WarningHeading,
   WarningSuggestion,
+  SpinnerWrapper,
 } from './styles';
 import { britney } from './images';
 
@@ -138,14 +139,20 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
     const isThereAreMoreResults =
       totalResultCount === undefined ||
       cardModels.length < totalResultCount - 1;
-    const shouldShowLoadMoreButton = isLoading || isThereAreMoreResults;
+    const isEmpty = cardModels.length === 0;
+    const shouldShowLoadMoreButton =
+      !isEmpty && (isLoading || isThereAreMoreResults);
+    const shouldShowInitialPreloader = isLoading && isEmpty;
 
     const loadMoreButton =
       shouldShowLoadMoreButton && this.renderLoadMoreButton();
+    const initialPreloadAnimation =
+      shouldShowInitialPreloader && this.renderInitialPreloadAnimation();
 
     return (
       <div>
         {this.renderMasonaryLayout(this.props.cardModels)}
+        {initialPreloadAnimation}
         {loadMoreButton}
       </div>
     );
@@ -195,6 +202,14 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
     );
   };
 
+  private renderInitialPreloadAnimation = () => {
+    return (
+      <SpinnerWrapper>
+        <Spinner size="large" />
+      </SpinnerWrapper>
+    );
+  };
+
   private renderLoadMoreButton = () => {
     const { isLoading } = this.props;
     const iconAfter = isLoading ? <Spinner /> : undefined;
@@ -211,24 +226,6 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
       </ButtonContainer>
     );
   };
-
-  // private scaleThumbnailGif = ({
-  //   width,
-  //   height,
-  // }: {
-  //   width: number;
-  //   height: number;
-  // }) => {
-  //   const desiredWith = Math.floor(
-  //     (CONTAINER_WIDTH - GAP_SIZE * (NUMBER_OF_COLUMNS - 1)) /
-  //       NUMBER_OF_COLUMNS,
-  //   );
-  //
-  //   return {
-  //     width: desiredWith,
-  //     height: Math.round(desiredWith / width * height),
-  //   };
-  // };
 
   private createSearchChangeHandler = () => {
     const { onSearchQueryChange } = this.props;

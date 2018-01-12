@@ -50,3 +50,13 @@ export const WarningSuggestion = styled.p`
   font-size: 14px;
   margin-top: 5px;
 `;
+
+export const SpinnerWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+
+  /* Take up all of the available space between header and footer */
+  flex: 1;
+`;
