@@ -26,7 +26,7 @@ export default md`
   ${(
     <Example
       Component={require('../examples/01-stateless-example').default}
-      title="With click through enabled"
+      title="Stateless Example"
       source={require('!!raw-loader!../examples/01-stateless-example')}
     />
   )}
@@ -34,7 +34,7 @@ export default md`
   ${(
     <Example
       Component={require('../examples/02-form-example').default}
-      title="With click through enabled"
+      title="Form Example"
       source={require('!!raw-loader!../examples/02-form-example')}
     />
   )}
