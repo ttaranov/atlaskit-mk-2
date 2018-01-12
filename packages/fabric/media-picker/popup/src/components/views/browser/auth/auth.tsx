@@ -44,11 +44,13 @@ export type AuthProps = AuthStateProps & AuthDispatchProps;
 export class StatelessAuth extends Component<AuthProps> {
   render() {
     const { service } = this.props;
-    if (service.name === 'upload') {
+    const details = serviceDetails[service.name];
+
+    if (!details) {
       return null;
     }
 
-    const { name, icon } = serviceDetails[service.name];
+    const { name, icon } = details;
     const btnLabel = `Connect to ${name}`;
 
     return (

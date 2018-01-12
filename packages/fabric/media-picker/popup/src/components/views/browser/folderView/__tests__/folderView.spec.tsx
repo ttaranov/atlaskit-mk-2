@@ -15,7 +15,7 @@ describe('<FolderViewr />', () => {
       },
       items: [],
       selectedItems: [],
-      loading: false,
+      isLoading: false,
       onFileClick: jest.fn(),
       onFolderClick: jest.fn(),
       onLoadMoreClick: jest.fn(),
@@ -29,7 +29,7 @@ describe('<FolderViewr />', () => {
     const wrapper = shallow(
       <FolderViewer
         {...props}
-        loading={true}
+        isLoading={true}
         currentCursor="some-current-cursor"
       />,
     );
@@ -46,7 +46,7 @@ describe('<FolderViewr />', () => {
     const wrapper = shallow(
       <FolderViewer
         {...props}
-        loading={true}
+        isLoading={true}
         currentCursor="some-current-cursor"
       />,
     );

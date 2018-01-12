@@ -8,7 +8,7 @@ export default function pathChangeRequest(state: State, action: Action): State {
     const view = {
       ...state.view,
       ...{
-        loading: true,
+        isLoading: true,
         path: action.path,
         currentCursor: undefined,
         nextCursor: undefined,

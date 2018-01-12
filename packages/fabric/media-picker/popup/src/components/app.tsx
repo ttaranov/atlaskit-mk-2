@@ -18,6 +18,7 @@ import {
 import Footer from './footer/footer';
 import Sidebar from './sidebar/sidebar';
 import UploadView from './views/upload/upload';
+import GiphyView from './views/giphy/giphyView';
 import Browser from './views/browser/browser';
 import { Dropzone } from './dropzone/dropzone';
 import MainEditorView from './views/editor/mainEditorView';
@@ -44,12 +45,7 @@ import {
   UploadEndEventPayload,
   UploadErrorEventPayload,
 } from '../../../src/domain/uploadEvent';
-import {
-  ContentWrapper,
-  MediaPickerPopupWrapper,
-  SidebarWrapper,
-  ViewWrapper,
-} from './styled';
+import { MediaPickerPopupWrapper, SidebarWrapper, ViewWrapper } from './styled';
 
 export interface AppStateProps {
   readonly apiUrl: string;
@@ -170,12 +166,8 @@ export class App extends Component<AppProps, AppState> {
                 <Sidebar />
               </SidebarWrapper>
               <ViewWrapper>
-                <div>
-                  <ContentWrapper>
-                    {this.renderCurrentView(selectedServiceName)}
-                  </ContentWrapper>
-                  <Footer />
-                </div>
+                {this.renderCurrentView(selectedServiceName)}
+                <Footer />
               </ViewWrapper>
               <Dropzone isActive={isDropzoneActive} />
               <MainEditorView binaryUploader={this.mpBinary} />
@@ -195,6 +187,8 @@ export class App extends Component<AppProps, AppState> {
           recentsCollection={RECENTS_COLLECTION}
         />
       );
+    } else if (selectedServiceName === 'giphy') {
+      return <GiphyView />;
     } else {
       return <Browser />;
     }

@@ -50,7 +50,7 @@ describe('StatelessSidebarItem component', () => {
   });
 
   describe('#render()', () => {
-    test('should render ServiceIcon, ServiceName and props.children', () => {
+    it('should render ServiceIcon, ServiceName and props.children', () => {
       const element = shallow(
         <StatelessSidebarItem
           serviceName="dropbox"
@@ -67,7 +67,7 @@ describe('StatelessSidebarItem component', () => {
       expect(element.find(ServiceIcon).childAt(0)).toHaveLength(1);
     });
 
-    test('should pass isActive prop through to ServiceName component', () => {
+    it('should pass isActive prop through to ServiceName component', () => {
       const element = shallow(
         <StatelessSidebarItem
           serviceName="upload"

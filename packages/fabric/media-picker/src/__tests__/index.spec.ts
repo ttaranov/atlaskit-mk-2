@@ -171,10 +171,5 @@ describe('MediaPicker', () => {
       popup.on('upload-end', payload => {});
       popup.on('upload-error', payload => {});
     });
-
-    it('should be able to register listener to ready event', () => {
-      const popup = MediaPicker('popup', moduleConfig, popupConfig);
-      popup.on('ready', () => {});
-    });
   });
 });

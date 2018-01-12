@@ -1,6 +1,6 @@
 // @flow
 import styled, { css } from 'styled-components';
-import { borderRadius, colors, themed } from '@atlaskit/theme';
+import { borderRadius, colors, themed, layers } from '@atlaskit/theme';
 import { WIDTH_ENUM } from '../shared-variables';
 
 import {
@@ -61,7 +61,7 @@ export const dialogHeight = ({
   - only active when popper.js children envoked below the dialog
 */
 export const FillScreen = styled.div`
-  height: 100%;
+  height: 100vh;
   left: 0;
   overflow-y: auto;
   position: absolute;
@@ -83,11 +83,13 @@ export const PositionerAbsolute = styled.div`
   right: 0;
   top: ${gutter}px;
   width: ${dialogWidth};
+  z-index: ${layers.modal};
 `;
 export const PositionerRelative = styled.div`
   margin: ${gutter}px auto;
   position: relative;
   width: ${dialogWidth};
+  z-index: ${layers.modal};
 `;
 
 export const Dialog = styled.div`

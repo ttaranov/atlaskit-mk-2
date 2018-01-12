@@ -6,7 +6,7 @@ import { UploadIcon } from '../icons';
 
 describe('<Dropzone>', () => {
   describe('#render()', () => {
-    test('should render correct components', () => {
+    it('should render correct components', () => {
       const element = shallow(<Dropzone isActive={true} />);
 
       expect(element).toHaveLength(1);
@@ -16,7 +16,7 @@ describe('<Dropzone>', () => {
       expect(element.find(UploadIcon)).toHaveLength(1);
     });
 
-    test('should pass through isActive to Wrapper', () => {
+    it('should pass through isActive to Wrapper', () => {
       const element = shallow(<Dropzone isActive={true} />);
 
       expect(element.find(Wrapper).prop('isActive')).toBe(true);

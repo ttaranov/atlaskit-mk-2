@@ -7,41 +7,51 @@ import {
   akColorN900,
 } from '@atlaskit/util-shared-styles';
 
+export const FolderViewerWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+`;
+
 export const SpinnerWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
-`;
 
-export const FolderViewerWrapper = styled.div`
-  width: 100%;
-  position: relative;
+  /* Take up all of the available space between header and footer */
+  flex: 1;
 `;
 
 export const FolderViewerContent = styled.ul`
-  margin: 60px 0 0 0;
-  padding: 0;
-  position: relative;
-  z-index: 10;
-  overflow-y: auto;
+  /* Take up all of the available space between header and footer */
+  flex: 1;
+
+  /* Ensure navigation header is pinned to top */
+  overflow: auto;
+
+  list-style: none;
+
+  /* Override default list styles */
+  margin-top: 0;
+  padding-left: 0;
 `;
 
 export interface SelectableProps {
-  isSelected: boolean;
+  isSelected?: boolean;
 }
 
 export const FolderViewerRow = styled.li`
-  list-style-type: none;
-  position: relative;
-  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-  float: left;
   width: 100%;
-  font-size: 14px;
   height: 48px;
+
+  margin-top: 0;
   padding: 8px 28px 8px 28px;
+
   cursor: pointer;
 
   ${({ isSelected }: SelectableProps) =>
@@ -55,64 +65,52 @@ export const FolderViewerRow = styled.li`
   }
 `;
 
-export const SelectedFileIconWrapper = styled.div`
-  color: ${akColorB400} !important;
-  position: absolute;
-  right: 23px;
-  top: 12px;
+export const FileMetadataGroup = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
-const FolderViewerColumn = styled.div`
-  display: table-cell;
-  vertical-align: middle;
-  white-space: nowrap;
-`;
+export const FileIcon = styled.div`
+  /* vertically center icon */
+  display: flex;
+  align-items: center;
 
-export const IconFolderViewerColumn = styled(FolderViewerColumn)`
   width: 32px;
   height: 32px;
-  min-width: 32px;
-  max-width: 32px;
-  text-align: center;
-  vertical-align: middle;
-
-  svg,
-  img {
-    vertical-align: middle;
-  }
 `;
 
-export const NameFolderViewerColumn = styled(FolderViewerColumn)`
-  width: 100%;
-  box-sizing: border-box;
+export const FileName = styled.div`
   padding-left: 17px;
-  overflow: hidden;
   vertical-align: middle;
-
-  max-width: 0;
+  overflow: hidden;
   text-overflow: ellipsis;
 
   ${({ isSelected }: SelectableProps) =>
     isSelected ? 'color: white;' : `color: ${akColorN900}`};
 `;
 
-export const DateFolderViewerColumn = styled(FolderViewerColumn)`
+export const FileCreateDate = styled.div`
   color: ${akColorN90};
   text-align: right;
   padding: 0 10px 0 10px;
-  ${({ isSelected }: SelectableProps) => (isSelected ? 'display: none;' : '')};
 `;
 
-export const SizeFolderViewerColumn = styled(FolderViewerColumn)`
+export const FileSize = styled.div`
   color: ${akColorN90};
   min-width: 70px;
   text-align: right;
   padding: 0 0 0 10px;
-  ${({ isSelected }: SelectableProps) => (isSelected ? 'display: none;' : '')};
+`;
+
+export const SelectedFileIconWrapper = styled.div`
+  color: ${akColorB400} !important;
+  right: 23px;
+  top: 12px;
 `;
 
 export const MoreBtnWrapper = styled.div`
-  float: left;
-  width: 100%;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+
+  margin-top: 10px;
 `;

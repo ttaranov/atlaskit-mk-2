@@ -1,5 +1,8 @@
 # @atlaskit/website
 
+## 1.3.1
+- [patch] package bump to resolve discrepencies with npm [be745da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/be745da)
+
 ## 1.3.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
 

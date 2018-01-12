@@ -2,7 +2,7 @@ declare var global: any; // we need define an interface for the Node global obje
 jest.mock('../../../popup/src/tools/fileToBase64');
 
 import { fileToBase64 } from '../../../popup/src/tools/fileToBase64';
-import getPreview from '../getPreview';
+import { getPreviewFromBlob } from '../getPreviewFromBlob';
 
 describe('getPreview helper method', () => {
   const img = {
@@ -31,7 +31,7 @@ describe('getPreview helper method', () => {
 
   describe('mediaType === "image"', () => {
     it('should return the img dimensions', () => {
-      const promise = getPreview(file, 'image');
+      const promise = getPreviewFromBlob(file, 'image');
       fileToBase64Promise.then(() => img.onload());
 
       return expect(promise).resolves.toMatchObject(
@@ -40,14 +40,14 @@ describe('getPreview helper method', () => {
     });
 
     it('should return error if image failed to load', () => {
-      const promise = getPreview(file, 'image');
+      const promise = getPreviewFromBlob(file, 'image');
       fileToBase64Promise.then(() => img.onerror(new Error('some error')));
 
       return expect(promise).rejects.toBeInstanceOf(Error);
     });
 
     it('should return dimensions in addition to src', () => {
-      const promise = getPreview(file, 'image');
+      const promise = getPreviewFromBlob(file, 'image');
       fileToBase64Promise.then(() => img.onload());
 
       return expect(promise).resolves.toMatchObject({
@@ -62,7 +62,7 @@ describe('getPreview helper method', () => {
 
   describe('mediaType !== "image"', () => {
     it('should not return preview for non images', () => {
-      const promise = getPreview(file, 'unknown');
+      const promise = getPreviewFromBlob(file, 'unknown');
       fileToBase64Promise.then(() => img.onload());
 
       return expect(promise).resolves.toMatchObject({ src: someImgSource });

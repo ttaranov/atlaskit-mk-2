@@ -12,7 +12,6 @@ import {
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../src/analytics';
-import EditorWidth from '../../src/utils/editor-width';
 
 describe('ToolbarLists', () => {
   const editor = (doc: any) =>
@@ -37,65 +36,16 @@ describe('ToolbarLists', () => {
     toolbarLists.unmount();
   });
 
-  it('should have spacing of toolbar button set to none if editorWidth is less then BreakPoint10', () => {
+  it('should have a dropdown if option isSmall = true', () => {
     const { pluginState, editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarLists
         pluginState={pluginState}
         editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint10 - 1}
-      />,
-    );
-    expect(
-      toolbarOption
-        .find(ToolbarButton)
-        .at(0)
-        .prop('spacing'),
-    ).toBe('none');
-    toolbarOption.unmount();
-  });
-
-  it('should have spacing of toolbar button set to default if editorWidth is greater then BreakPoint10', () => {
-    const { pluginState, editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarLists
-        pluginState={pluginState}
-        editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint10 + 1}
-      />,
-    );
-    expect(
-      toolbarOption
-        .find(ToolbarButton)
-        .at(0)
-        .prop('spacing'),
-    ).toBe('default');
-    toolbarOption.unmount();
-  });
-
-  it('should have a dropdown if editor-width is less then BreakPoint9', () => {
-    const { pluginState, editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarLists
-        pluginState={pluginState}
-        editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint9 - 1}
+        isSmall={true}
       />,
     );
     expect(toolbarOption.find(DropdownMenu).length).toEqual(1);
-    toolbarOption.unmount();
-  });
-
-  it('should not have a dropdown if editor-width is less then BreakPoint9', () => {
-    const { pluginState, editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarLists
-        pluginState={pluginState}
-        editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint9 + 1}
-      />,
-    );
-    expect(toolbarOption.find(DropdownMenu).length).toEqual(0);
     toolbarOption.unmount();
   });
 

@@ -1,7 +1,7 @@
 import { isWebGLAvailable } from '../webgl';
 
 describe('isWebGLAvailable helper method', () => {
-  test('should create only 1 canvas context and cache the return value from getContext', () => {
+  it('should create only 1 canvas context and cache the return value from getContext', () => {
     const fn = jest.fn();
 
     fn.mockReturnValue(true);
@@ -12,7 +12,7 @@ describe('isWebGLAvailable helper method', () => {
     expect(fn).toHaveBeenCalledTimes(1);
   });
 
-  test('should return false when the canvas context is not available', () => {
+  it('should return false when the canvas context is not available', () => {
     const fn = jest.fn();
 
     fn.mockReturnValue(null);

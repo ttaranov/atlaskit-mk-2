@@ -4,9 +4,11 @@ import Row from './components/Row';
 
 export type RowData = Object;
 
+export type ItemsDataType = Array<RowData>;
+
 export type ItemsProvider = (
   ?Object,
-) => ?Array<RowData> | Promise<?Array<RowData>>;
+) => void | ItemsDataType | Promise<void | ItemsDataType>;
 
 export type RenderFunction = Object => Element<typeof Row>;
 

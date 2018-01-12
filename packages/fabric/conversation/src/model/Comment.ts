@@ -11,4 +11,5 @@ export interface Comment extends Pick<Conversation, 'comments'> {
   };
   createdBy: User;
   createdAt: number;
+  deleted?: boolean;
 }

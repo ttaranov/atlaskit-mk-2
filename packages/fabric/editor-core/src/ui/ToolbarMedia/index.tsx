@@ -6,12 +6,10 @@ import { EditorView } from 'prosemirror-view';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { MediaPluginState } from '../../plugins/media';
 import ToolbarButton from '../ToolbarButton';
-import EditorWidth from '../../utils/editor-width';
 
 export interface Props {
   editorView: EditorView;
   pluginKey: PluginKey;
-  editorWidth?: number;
   isDisabled?: boolean;
 }
 
@@ -42,14 +40,13 @@ export default class ToolbarMedia extends PureComponent<Props, State> {
   }
 
   render() {
-    const { editorWidth, isDisabled } = this.props;
+    const { isDisabled } = this.props;
     const { disabled } = this.state;
-    if (disabled || (editorWidth && editorWidth <= EditorWidth.BreakPoint6)) {
+    if (disabled) {
       return null;
     }
     return (
       <ToolbarButton
-        spacing={editorWidth ? 'default' : 'none'}
         onClick={this.handleClickMediaButton}
         disabled={isDisabled}
         title="Insert files and images"

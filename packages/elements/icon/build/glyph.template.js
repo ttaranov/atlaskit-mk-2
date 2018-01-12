@@ -9,8 +9,6 @@ module.exports = (
 ) => `import React from 'react';
 import Icon from '${wayHome}';
 
-const ${
-  displayName
-} = props => (<Icon dangerouslySetGlyph={\`${svg.toString()}\`} {...props} />);
+const ${displayName} = props => (<Icon dangerouslySetGlyph={\`${svg.toString()}\`} {...props} />);
 export default ${displayName};
 `;

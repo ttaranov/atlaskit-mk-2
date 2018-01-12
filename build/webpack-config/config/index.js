@@ -20,9 +20,9 @@ module.exports = function createWebpackConfig(
       main:
         env === 'development' && host && port
           ? [
-              `${require.resolve('webpack-dev-server/client')}?http://${host}:${
-                port
-              }/`,
+              `${require.resolve(
+                'webpack-dev-server/client',
+              )}?http://${host}:${port}/`,
               path.join(process.cwd(), entry),
             ]
           : path.join(process.cwd(), entry),
