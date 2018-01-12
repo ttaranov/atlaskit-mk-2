@@ -8,7 +8,7 @@ import {
   Dropzone,
   Clipboard,
   BinaryUploader,
-} from 'mediapicker';
+} from '@atlaskit/media-picker';
 import {
   StoryBookAuthProvider,
   StoryBookUserAuthProvider,

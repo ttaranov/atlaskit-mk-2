@@ -664,13 +664,14 @@ export class MediaPluginState {
       return;
     }
 
+    const width = thumbnail && thumbnail.dimensions.width;
+    const height = thumbnail && thumbnail.dimensions.height;
     const { getPos, node: mediaNode } = mediaNodeWithPos;
-
     const newNode = view.state.schema.nodes.media!.create({
       ...mediaNode.attrs,
       id: publicId,
-      width: thumbnail && thumbnail.width,
-      height: thumbnail && thumbnail.height,
+      width,
+      height,
     });
 
     // Copy all optional attributes from old node

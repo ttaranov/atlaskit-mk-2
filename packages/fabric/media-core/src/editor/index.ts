@@ -20,8 +20,10 @@ export interface MediaState {
   progress?: number;
   thumbnail?: {
     src: string;
-    height?: number;
-    width?: number;
+    dimensions: {
+      width: number;
+      height: number;
+    };
   };
   finalizeCb?: () => void;
   error?: {

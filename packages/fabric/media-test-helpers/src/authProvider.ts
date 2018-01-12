@@ -47,7 +47,7 @@ export class StoryBookAuthProvider {
 }
 
 export class StoryBookUserAuthProvider {
-  static create(apiURL: string = userAuthProviderBaseURL) {
+  static create(apiURL: string = authProviderBaseURL) {
     return async (authContext?: AuthContext): Promise<Auth> => {
       const config: AxiosRequestConfig = {
         baseURL: apiURL,
@@ -61,9 +61,8 @@ export class StoryBookUserAuthProvider {
         return Promise.resolve(cachedAuth);
       }
 
-      const response = await axios.get('/picker/auth/cookie', config);
-
-      const { id: clientId, token } = response.data.data.client;
+      const response = await axios.get('/token/user/impersonation', config);
+      const { clientId, token } = response.data;
       const auth = { clientId, token };
 
       cachedAuths[cacheKey] = auth;
