@@ -35,7 +35,7 @@ export interface Props {
   };
 
   // Provider
-  dataProviderFactory: ProviderFactoryWithList;
+  dataProviderFactory?: ProviderFactoryWithList;
 }
 
 export default class Conversation extends React.PureComponent<Props> {

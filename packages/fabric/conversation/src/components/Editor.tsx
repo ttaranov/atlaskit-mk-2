@@ -18,7 +18,7 @@ export interface Props {
   isEditing?: boolean;
 
   // Provider
-  dataProviderFactory: ProviderFactoryWithList;
+  dataProviderFactory?: ProviderFactoryWithList;
 }
 
 export interface State {
@@ -95,6 +95,12 @@ export default class Editor extends React.Component<Props, State> {
   render() {
     const { isEditing } = this.state;
     const { dataProviderFactory } = this.props;
+    let providers = {};
+
+    // @TODO Remove and just pass the factory through once AkEditor is updated
+    if (dataProviderFactory) {
+      providers = { ...dataProviderFactory.listProviders() };
+    }
 
     return (
       <EditorContext>
@@ -121,7 +127,7 @@ export default class Editor extends React.Component<Props, State> {
                     allowLists={true}
                     onSave={() => this.onSave(actions)}
                     onCancel={this.onCancel}
-                    {...dataProviderFactory.listProviders()}
+                    {...providers}
                   />
                 </CollapsedEditor>
               )}

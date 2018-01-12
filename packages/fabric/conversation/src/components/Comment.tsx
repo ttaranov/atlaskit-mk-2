@@ -28,7 +28,7 @@ export interface Props {
   onDeleteComment?: (conversationId: string, commentId: string) => void;
 
   // Provider
-  dataProviderFactory: ProviderFactoryWithList;
+  dataProviderFactory?: ProviderFactoryWithList;
 }
 
 export interface State {
