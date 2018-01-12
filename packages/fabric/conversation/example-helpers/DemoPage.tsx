@@ -9,7 +9,7 @@ import {
   User,
 } from '../src/model';
 import { MOCK_USERS } from './MockData';
-import { ProviderFactory } from '@atlaskit/editor-common';
+import ProviderFactoryWithList from '../src/api/ProviderFactoryWithList';
 
 const DUMMY_CODE = `
 class Main() {
@@ -56,7 +56,7 @@ interface FileProps {
   code: string;
   conversations: ConversationType[];
   provider: ResourceProvider;
-  dataProviderFactory?: ProviderFactory;
+  dataProviderFactory?: ProviderFactoryWithList;
 }
 
 const containerId = 'container:abc:abc/1234567';
@@ -157,7 +157,7 @@ class File extends React.Component<FileProps, { addAt?: number }> {
 }
 
 export class Demo extends React.Component<
-  { provider: ResourceProvider; dataProviderFactory: ProviderFactory },
+  { provider: ResourceProvider; dataProviderFactory: ProviderFactoryWithList },
   { conversations: any[]; selectedUser: User }
 > {
   constructor(props) {

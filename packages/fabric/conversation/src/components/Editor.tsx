@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import AkAvatar from '@atlaskit/avatar';
+import ProviderFactoryWithList from '../api/ProviderFactoryWithList';
 
 import {
   Editor as AkEditor,
@@ -15,6 +16,9 @@ export interface Props {
   onCancel?: () => void;
   onSave?: (value: any) => void;
   isEditing?: boolean;
+
+  // Provider
+  dataProviderFactory: ProviderFactoryWithList;
 }
 
 export interface State {
@@ -90,6 +94,7 @@ export default class Editor extends React.Component<Props, State> {
 
   render() {
     const { isEditing } = this.state;
+    const { dataProviderFactory } = this.props;
 
     return (
       <EditorContext>
@@ -116,6 +121,7 @@ export default class Editor extends React.Component<Props, State> {
                     allowLists={true}
                     onSave={() => this.onSave(actions)}
                     onCancel={this.onCancel}
+                    {...dataProviderFactory.listProviders()}
                   />
                 </CollapsedEditor>
               )}

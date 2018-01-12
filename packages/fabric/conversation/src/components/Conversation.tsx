@@ -6,6 +6,7 @@ import {
   Conversation as ConversationType,
   User,
 } from '../model';
+import ProviderFactoryWithList from '../api/ProviderFactoryWithList';
 
 export interface Props {
   id?: string;
@@ -32,6 +33,9 @@ export interface Props {
   meta?: {
     [key: string]: any;
   };
+
+  // Provider
+  dataProviderFactory: ProviderFactoryWithList;
 }
 
 export default class Conversation extends React.PureComponent<Props> {
@@ -43,6 +47,7 @@ export default class Conversation extends React.PureComponent<Props> {
       onUpdateComment,
       onDeleteComment,
       user,
+      dataProviderFactory,
     } = this.props;
 
     if (!conversation) {
@@ -60,6 +65,7 @@ export default class Conversation extends React.PureComponent<Props> {
         onAddComment={onAddComment}
         onUpdateComment={onUpdateComment}
         onDeleteComment={onDeleteComment}
+        dataProviderFactory={dataProviderFactory}
       />
     ));
   }
@@ -86,9 +92,7 @@ export default class Conversation extends React.PureComponent<Props> {
   };
 
   render() {
-    const { isExpanded, onCancel, meta } = this.props;
-    // @TODO the handler is invoked but it's not on state.providers
-    // console.log(this.state);
+    const { isExpanded, onCancel, meta, dataProviderFactory } = this.props;
 
     return (
       <div>
@@ -98,6 +102,7 @@ export default class Conversation extends React.PureComponent<Props> {
             isExpanded={isExpanded}
             onSave={this.onSave}
             onCancel={onCancel}
+            dataProviderFactory={dataProviderFactory}
           />
         ) : null}
       </div>

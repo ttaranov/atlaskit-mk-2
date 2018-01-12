@@ -1,4 +1,3 @@
-import { ProviderFactory, WithProviders } from '@atlaskit/editor-common';
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { State } from './store';
@@ -16,9 +15,6 @@ export interface Props {
   mapDispatchToProps?: MapDispatchToProps;
   provider: ResourceProvider;
   renderComponent: (props: any) => JSX.Element;
-
-  // Provider factory for Editor
-  dataProviderFactory: ProviderFactory;
 }
 
 export class Connect extends React.Component<Props, any> {
@@ -84,24 +80,11 @@ export class Connect extends React.Component<Props, any> {
     this.setState(newState);
   };
 
-  private renderWithState = (handler, state) => providerStates =>
-    handler({ ...providerStates, ...state });
-
   render() {
     const { props, state } = this;
-    const { renderComponent, dataProviderFactory } = props;
+    const { renderComponent } = props;
 
-    if (!dataProviderFactory) {
-      return renderComponent(state);
-    }
-
-    return (
-      <WithProviders
-        providers={['mentionProvider']}
-        providerFactory={dataProviderFactory}
-        renderNode={this.renderWithState(renderComponent, state)}
-      />
-    );
+    return renderComponent(state);
   }
 }
 

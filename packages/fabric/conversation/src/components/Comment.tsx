@@ -10,6 +10,7 @@ import { ReactRenderer } from '@atlaskit/renderer';
 import Editor from './Editor';
 import { Comment as CommentType, User } from '../model';
 import CommentContainer from '../containers/Comment';
+import ProviderFactoryWithList from '../api/ProviderFactoryWithList';
 
 export interface Props {
   conversationId: string;
@@ -25,6 +26,9 @@ export interface Props {
     value: any,
   ) => void;
   onDeleteComment?: (conversationId: string, commentId: string) => void;
+
+  // Provider
+  dataProviderFactory: ProviderFactoryWithList;
 }
 
 export interface State {
@@ -106,7 +110,7 @@ export default class Comment extends React.PureComponent<Props, State> {
   };
 
   private getContent() {
-    const { comment } = this.props;
+    const { comment, dataProviderFactory } = this.props;
     const { isEditing } = this.state;
 
     if (comment.deleted) {
@@ -121,6 +125,7 @@ export default class Comment extends React.PureComponent<Props, State> {
           isEditing={isEditing}
           onSave={this.onSaveEdit}
           onCancel={this.onCancelEdit}
+          dataProviderFactory={dataProviderFactory}
         />
       );
     }
@@ -129,7 +134,13 @@ export default class Comment extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { conversationId, comment, comments, user } = this.props;
+    const {
+      conversationId,
+      comment,
+      comments,
+      user,
+      dataProviderFactory,
+    } = this.props;
     const { isReplying, isEditing } = this.state;
     const { createdBy } = comment;
     let actions;
@@ -177,6 +188,7 @@ export default class Comment extends React.PureComponent<Props, State> {
             onAddComment={this.props.onAddComment}
             onUpdateComment={this.props.onUpdateComment}
             onDeleteComment={this.props.onDeleteComment}
+            dataProviderFactory={dataProviderFactory}
           />
         ))}
         {isReplying && (
@@ -184,6 +196,7 @@ export default class Comment extends React.PureComponent<Props, State> {
             isExpanded={true}
             onCancel={this.onCancelReply}
             onSave={this.onSaveReply}
+            dataProviderFactory={dataProviderFactory}
           />
         )}
       </AkComment>

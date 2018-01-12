@@ -8,14 +8,14 @@ import { MockProvider as ConversationResource } from '../example-helpers/MockPro
 import { Demo } from '../example-helpers/DemoPage';
 import { MOCK_USERS } from '../example-helpers/MockData';
 import { providers } from '../example-helpers/ToolsDrawer';
-import ProviderFactory from '../../editor-common/src/providerFactory/index';
+import ProviderFactoryWithList from '../src/api/ProviderFactoryWithList';
 
 const provider = new ConversationResource({
   url: 'http://localhost:8080',
   user: MOCK_USERS[0],
 });
 
-const dataProviderFactory = new ProviderFactory();
+const dataProviderFactory = new ProviderFactoryWithList();
 Object.keys(providers).forEach(provider => {
   dataProviderFactory.setProvider(provider, providers[provider].resolved);
 });
