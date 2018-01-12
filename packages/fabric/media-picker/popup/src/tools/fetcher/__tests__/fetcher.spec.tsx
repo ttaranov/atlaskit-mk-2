@@ -29,9 +29,10 @@ describe('Fetcher', () => {
   let querySpy = jest.fn();
 
   beforeEach(() => {
+    (axios.request as any).mockReturnValue(Promise.resolve({}));
     fetcher = new MediaApiFetcher();
-    querySpy = jest.fn();
 
+    querySpy = jest.fn();
     querySpy.mockReturnValue(Promise.resolve({}));
   });
 
@@ -158,7 +159,7 @@ describe('Fetcher', () => {
     };
 
     describe('fetchTrendingGifs()', () => {
-      it('ignore the offset when it is 0', () => {
+      it('should ignore the offset when it is 0', () => {
         const offset = 0;
         const fetcher = new MediaApiFetcher();
 
@@ -171,7 +172,7 @@ describe('Fetcher', () => {
         ).toBe(-1);
       });
 
-      it('appends passed in offset to the query string when it is greater than 0', () => {
+      it('should append passed in offset to the query string when it is greater than 0', () => {
         const offset = 25;
         const fetcher = new MediaApiFetcher();
 
@@ -182,9 +183,11 @@ describe('Fetcher', () => {
         );
       });
 
-      it('maps the GiphyResponse into GiphyCardModels', async () => {
+      it('should map the GiphyResponse into GiphyCardModels', async () => {
         const fetcher = new MediaApiFetcher();
-        (axios.request as any).mockReturnValue({ data: response });
+        (axios.request as any).mockReturnValue(
+          Promise.resolve({ data: response }),
+        );
 
         const result = await fetcher.fetchTrendingGifs();
         expect(axios.request).toHaveBeenCalledTimes(1);
@@ -210,7 +213,7 @@ describe('Fetcher', () => {
     });
 
     describe('fetchGifsRelevantToSearch()', () => {
-      it('ignore the offset when it is 0', () => {
+      it('should ignore the offset when it is 0', () => {
         const queryString = 'some-gif-search';
         const offset = 0;
         const fetcher = new MediaApiFetcher();
@@ -224,7 +227,7 @@ describe('Fetcher', () => {
         ).toBe(-1);
       });
 
-      it('appends passed in query string to the queried url', () => {
+      it('should append passed in query string to the queried url', () => {
         const queryString = 'some-gif-search';
         const fetcher = new MediaApiFetcher();
 
@@ -235,7 +238,7 @@ describe('Fetcher', () => {
         );
       });
 
-      it('appends passed in offset to the query string when it is greater than 0', () => {
+      it('should append passed in offset to the query string when it is greater than 0', () => {
         const queryString = 'some-gif-search';
         const offset = 25;
         const fetcher = new MediaApiFetcher();
@@ -248,10 +251,12 @@ describe('Fetcher', () => {
         );
       });
 
-      it('maps the GiphyResponse into GiphyCardModels', async () => {
+      it('should map the GiphyResponse into GiphyCardModels', async () => {
         const queryString = 'some-gif-search';
         const fetcher = new MediaApiFetcher();
-        (axios.request as any).mockReturnValue({ data: response });
+        (axios.request as any).mockReturnValue(
+          Promise.resolve({ data: response }),
+        );
 
         const result = await fetcher.fetchGifsRelevantToSearch(queryString);
         expect(axios.request).toHaveBeenCalledTimes(1);

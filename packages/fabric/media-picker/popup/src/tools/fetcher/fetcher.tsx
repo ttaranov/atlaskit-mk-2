@@ -311,9 +311,9 @@ export class MediaApiFetcher implements Fetcher {
       },
     };
 
-    return Promise.resolve(axios.request(requestConfig)).then(response =>
-      this.mapGiphyResponseToViewModel(response.data),
-    );
+    return axios
+      .request(requestConfig)
+      .then(response => this.mapGiphyResponseToViewModel(response.data));
   };
 
   fetchGifsRelevantToSearch = (
@@ -331,9 +331,9 @@ export class MediaApiFetcher implements Fetcher {
       },
     };
 
-    return Promise.resolve(axios.request(requestConfig)).then(response =>
-      this.mapGiphyResponseToViewModel(response.data),
-    );
+    return axios
+      .request(requestConfig)
+      .then(response => this.mapGiphyResponseToViewModel(response.data));
   };
 
   private mapGiphyResponseToViewModel = (
@@ -416,9 +416,7 @@ export class MediaApiFetcher implements Fetcher {
       responseType,
     };
 
-    return Promise.resolve(
-      axios.request(config).then(response => response.data),
-    );
+    return axios.request(config).then(response => response.data);
   }
 
   private isFolder(item: ServiceFolderItem): boolean {
