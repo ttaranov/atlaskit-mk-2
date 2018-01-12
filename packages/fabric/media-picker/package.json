@@ -21,8 +21,8 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/button": "^6.3.0",
-    "@atlaskit/dropdown-menu": "^3.5.0",
-    "@atlaskit/field-text": "^4.1.2",
+    "@atlaskit/dropdown-menu": "^3.11.5",
+    "@atlaskit/field-text": "^4.1.4",
     "@atlaskit/flag": "^6.2.0",
     "@atlaskit/icon": "^10.7.0",
     "@atlaskit/media-card": "^23.2.0",
