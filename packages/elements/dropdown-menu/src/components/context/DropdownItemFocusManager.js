@@ -1,18 +1,18 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import PropTypes from 'prop-types';
 import { focusManagerContext } from '../../util/contextNamespace';
 import type { ItemId, FocusItem } from '../../../src/types';
 import { KEY_DOWN, KEY_UP } from '../../util/keys';
 
-export default class DropdownItemFocusManager extends Component {
-  static propTypes = {
-    /** Causes first registered item to receive focus */
-    autoFocus: PropTypes.bool,
-    children: PropTypes.node,
-  };
+type Props = {
+  /** Causes first registered item to receive focus */
+  autoFocus?: boolean,
+  children?: Node,
+};
 
+export default class DropdownItemFocusManager extends Component<Props> {
   static childContextTypes = {
     [focusManagerContext]: PropTypes.object,
   };

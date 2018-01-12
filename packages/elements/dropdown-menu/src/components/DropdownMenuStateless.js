@@ -1,8 +1,8 @@
 // @flow
-
+/* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
-import uid from 'uid';
+import uuid from 'uuid/v1';
 import Button from '@atlaskit/button';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
@@ -19,12 +19,25 @@ import type {
 } from '../types';
 
 type OpenCloseArgs = {
-  event: MouseEvent | KeyboardEvent,
+  event: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>,
   source?: 'click' | 'keydown',
 };
 
-export default class DropdownMenuStateless extends Component {
-  props: DropdownMenuStatelessProps; // eslint-disable-line react/sort-comp
+type State = {
+  id: string,
+};
+
+export default class DropdownMenuStateless extends Component<
+  DropdownMenuStatelessProps,
+  State,
+> {
+  domItemsList: ?NodeList<HTMLElement>;
+
+  focusedItem: ?number;
+
+  triggerContainer: ?HTMLElement;
+
+  sourceOfIsOpen: ?string;
 
   static defaultProps = {
     appearance: 'default',
@@ -43,7 +56,7 @@ export default class DropdownMenuStateless extends Component {
   };
 
   state = {
-    id: uid(),
+    id: uuid(),
   };
 
   componentDidMount = () => {
@@ -118,14 +131,6 @@ export default class DropdownMenuStateless extends Component {
     return latestAvailable || currentItem;
   };
 
-  domItemsList: ?NodeList<HTMLElement>;
-
-  focusedItem: ?number;
-
-  triggerContainer: HTMLElement;
-
-  sourceOfIsOpen: ?string;
-
   focusFirstItem = () => {
     if (this.sourceOfIsOpen === 'keydown') {
       this.focusItem(this.getNextFocusable());
@@ -159,7 +164,7 @@ export default class DropdownMenuStateless extends Component {
     return isDroplistItem && thisDom ? thisDom.contains(target) : false;
   };
 
-  handleKeyboardInteractionForClosed = (event: KeyboardEvent) => {
+  handleKeyboardInteractionForClosed = (event: SyntheticKeyboardEvent<any>) => {
     if (this.props.isOpen) {
       return;
     }
@@ -176,7 +181,9 @@ export default class DropdownMenuStateless extends Component {
     }
   };
 
-  handleKeyboardInteractionsDeprecated = (event: KeyboardEvent) => {
+  handleKeyboardInteractionsDeprecated = (
+    event: SyntheticKeyboardEvent<any>,
+  ) => {
     // KeyboardEvent.target is typed as an EventTarget but we need to access methods on it which
     // are specific to Element. Due limitations of the HTML spec flow doesn't know that an
     // EventTarget can have these methods, so we cast it to Element through Object. This is the
@@ -223,7 +230,7 @@ export default class DropdownMenuStateless extends Component {
 
   domMenuContainer: ?HTMLElement;
 
-  handleClickDeprecated = (event: MouseEvent) => {
+  handleClickDeprecated = (event: SyntheticMouseEvent<any>) => {
     const menuContainer = this.domMenuContainer;
     // Casting target to Element. See comment in `handleKeyboardInteractionsDeprecated`.
     const target: Element = (event.target: Object);
@@ -234,7 +241,7 @@ export default class DropdownMenuStateless extends Component {
 
   isUsingDeprecatedAPI = () => Boolean(this.props.items.length);
 
-  handleClick = (event: MouseEvent) => {
+  handleClick = (event: SyntheticMouseEvent<any>) => {
     if (this.isUsingDeprecatedAPI()) {
       this.handleClickDeprecated(event);
       return;
@@ -307,7 +314,9 @@ export default class DropdownMenuStateless extends Component {
     }
   };
 
-  handleItemClicked = (event: MouseEvent | KeyboardEvent) => {
+  handleItemClicked = (
+    event: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>,
+  ) => {
     this.props.onOpenChange({ isOpen: false, event });
   };
 

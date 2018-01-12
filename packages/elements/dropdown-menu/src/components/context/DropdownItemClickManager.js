@@ -1,18 +1,17 @@
 // @flow
 
-import { Component } from 'react';
+import { Component, type Element } from 'react';
 import PropTypes from 'prop-types';
 import { clickManagerContext } from '../../util/contextNamespace';
-import type { ReactElement } from '../../../src/types';
 
 type Props = {
-  children?: ReactElement,
-  onItemClicked: (event: MouseEvent | KeyboardEvent) => void,
+  children?: Element<any>,
+  onItemClicked: (
+    event: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>,
+  ) => void,
 };
 
-export default class DropdownItemClickManager extends Component {
-  props: Props; // eslint-disable-line react/sort-comp
-
+export default class DropdownItemClickManager extends Component<Props> {
   static childContextTypes = {
     [clickManagerContext]: PropTypes.object,
   };
@@ -25,7 +24,9 @@ export default class DropdownItemClickManager extends Component {
     };
   }
 
-  handleItemClicked = (event: MouseEvent | KeyboardEvent) => {
+  handleItemClicked = (
+    event: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>,
+  ) => {
     this.props.onItemClicked(event);
   };
 

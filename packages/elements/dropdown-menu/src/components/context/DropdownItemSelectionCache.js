@@ -1,20 +1,27 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import PropTypes from 'prop-types';
 import find from 'array-find';
 import { selectionCacheContext } from '../../util/contextNamespace';
 import type { CachedItem, GroupId, ItemId } from '../../types';
+
+type Props = {
+  children?: Node,
+};
+
+type State = {
+  lastCacheUpdate: number,
+};
 
 const isItemInList = (itemList, itemId: ItemId, groupId: GroupId) =>
   Boolean(
     find(itemList, item => item.id === itemId && item.groupId === groupId),
   );
 
-export default class DropdownItemSelectionCache extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-  };
-
+export default class DropdownItemSelectionCache extends Component<
+  Props,
+  State,
+> {
   static childContextTypes = {
     [selectionCacheContext]: PropTypes.shape({
       isItemSelected: PropTypes.func,

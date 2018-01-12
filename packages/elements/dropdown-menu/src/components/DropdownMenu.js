@@ -1,9 +1,22 @@
 // @flow
 import React, { Component } from 'react';
 import StatelessMenu from './DropdownMenuStateless';
-import type { DropdownMenuStatefulProps, OpenChangeObj } from '../types';
+import type {
+  DropdownMenuStatefulProps,
+  DeprecatedItemGroup,
+  OnItemActivatedArgs,
+  OnOpenChangeArgs,
+} from '../types';
 
-export default class DropdownMenu extends Component {
+type State = {
+  isOpen: boolean,
+  items: Array<DeprecatedItemGroup>,
+};
+
+export default class DropdownMenu extends Component<
+  DropdownMenuStatefulProps,
+  State,
+> {
   props: DropdownMenuStatefulProps; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
@@ -40,7 +53,7 @@ export default class DropdownMenu extends Component {
   findActivatedGroup = (item: Object) =>
     this.state.items.filter(group => group.items.indexOf(item) > -1)[0]; // eslint-disable-line
 
-  handleItemActivation = (attrs: { event?: Event, item: Object }) => {
+  handleItemActivation = (attrs: OnItemActivatedArgs) => {
     const activatedItem = attrs.item;
     const activatedGroup = this.findActivatedGroup(activatedItem);
     const items = [...this.state.items];
@@ -52,11 +65,11 @@ export default class DropdownMenu extends Component {
         this.setState({ items });
         break;
       case 'radio':
-        activatedGroup.items.forEach((i: Object) => {
+        activatedGroup.items.forEach(i => {
           if (i === activatedItem) {
-            i.isChecked = true;
+            i.isChecked = true; // eslint-disable-line no-param-reassign
           } else {
-            i.isChecked = false;
+            i.isChecked = false; // eslint-disable-line no-param-reassign
           }
         });
         this.props.onItemActivated({ item: activatedItem });
@@ -70,7 +83,7 @@ export default class DropdownMenu extends Component {
     }
   };
 
-  handleOpenChange = (attrs: OpenChangeObj) => {
+  handleOpenChange = (attrs: OnOpenChangeArgs) => {
     this.setState({ isOpen: attrs.isOpen });
     this.props.onOpenChange(attrs);
   };

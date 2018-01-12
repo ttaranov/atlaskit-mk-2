@@ -1,20 +1,20 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import PropTypes from 'prop-types';
 import {
   selectionCacheContext,
   selectionManagerContext,
 } from '../../util/contextNamespace';
-import type { CachedItem, ItemId } from '../../types';
+import type { CachedItem, ItemId, Behaviors } from '../../types';
 
-export default class DropdownItemSelectionManager extends Component {
-  static propTypes = {
-    behavior: PropTypes.oneOf(['checkbox', 'radio']).isRequired,
-    groupId: PropTypes.string.isRequired,
-    children: PropTypes.node,
-  };
+type Props = {
+  behavior: Behaviors,
+  groupId: string,
+  children?: Node,
+};
 
+export default class DropdownItemSelectionManager extends Component<Props> {
   static childContextTypes = {
     [selectionManagerContext]: PropTypes.object,
   };

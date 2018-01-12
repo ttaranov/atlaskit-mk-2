@@ -1,3 +1,5 @@
+// @flow
+
 export const KEY_UP = 'ArrowUp';
 export const KEY_DOWN = 'ArrowDown';
 export const KEY_SPACE = ' ';

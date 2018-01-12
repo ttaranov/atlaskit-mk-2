@@ -1,39 +1,38 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type Node, type ComponentType } from 'react';
+import { colors } from '@atlaskit/theme';
 import PropTypes from 'prop-types';
-import { akColorB400, akColorN40 } from '@atlaskit/util-shared-styles';
-
 import getDisplayName from '../../util/getDisplayName';
 import safeContextCall from '../../util/safeContextCall';
 import { selectionManagerContext } from '../../util/contextNamespace';
-import type { ReactElement, Behaviors } from '../../types';
+import type { Behaviors } from '../../types';
 
 import { KEY_ENTER, KEY_SPACE } from '../../util/keys';
 
+type Props = {
+  /** Content to be displayed inside the item. Same as @atlaskit/item `children` prop. */
+  children?: Node,
+  /** Unique identifier for the item, so that selection state can be tracked when the dropdown
+   * is opened/closed. */
+  id: string,
+  /** Set at mount to make the item appear checked. The user may interact with the
+   * item after mount. See isSelected if you want to control the item state manually. */
+  defaultSelected?: boolean,
+  /** Causes the item to appear visually checked. Can be set at mount time, and updated after
+   * mount. Changing the value will not cause onClick to be called. */
+  isSelected?: boolean,
+  /** Standard optional onClick handler */
+  onClick?: Function,
+};
+
 // HOC that typically wraps @atlaskit/item
 const withToggleInteraction = (
-  WrappedComponent: ReactElement,
-  SelectionIcon: ReactElement,
+  WrappedComponent: ComponentType<any>,
+  SelectionIcon: ComponentType<any>,
   ariaRole: Behaviors,
 ) => {
-  class WithToggleInteraction extends Component {
-    static propTypes = {
-      /** Content to be displayed inside the item. Same as @atlaskit/item `children` prop. */
-      children: PropTypes.node,
-      /** Unique identifier for the item, so that selection state can be tracked when the dropdown
-       * is opened/closed. */
-      id: PropTypes.string.isRequired,
-      /** Set at mount to make the item appear checked. The user may interact with the
-       * item after mount. See isSelected if you want to control the item state manually. */
-      defaultSelected: PropTypes.bool,
-      /** Causes the item to appear visually checked. Can be set at mount time, and updated after
-       * mount. Changing the value will not cause onClick to be called. */
-      isSelected: PropTypes.bool,
-      /** Standard optional onClick handler */
-      onClick: PropTypes.func,
-    };
-
+  class WithToggleInteraction extends Component<Props> {
     static defaultProps = {
       onClick: () => {},
     };
@@ -58,9 +57,9 @@ const withToggleInteraction = (
 
     getIconColors = (isSelected: boolean = false) => {
       if (isSelected) {
-        return { primary: akColorB400, secondary: akColorN40 };
+        return { primary: colors.B400, secondary: colors.N40 };
       }
-      return { primary: akColorN40, secondary: akColorN40 };
+      return { primary: colors.N40, secondary: colors.N40 };
     };
 
     warnIfUseControlledAndUncontrolledState = () => {
@@ -87,7 +86,9 @@ const withToggleInteraction = (
     };
 
     handleItemActivated = (event: Event) => {
-      this.props.onClick(event);
+      if (this.props.onClick) {
+        this.props.onClick(event);
+      }
       this.callContextFn('itemClicked', this.props.id);
     };
 

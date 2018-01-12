@@ -1,3 +1,5 @@
+// @flow
+
 import DropdownItemGroup from './DropdownItemGroup';
 import withItemSelectionManager from '../hoc/withItemSelectionManager';
 
