@@ -1,5 +1,5 @@
 // @flow
-
+import { type StatelessFunctionalComponent } from 'react';
 import styled, { css } from 'styled-components';
 import { fontSize } from '@atlaskit/theme';
 import {
@@ -17,7 +17,7 @@ export const InputWrapper = styled.span`
 `;
 
 // Elements injected before/after the children
-const BeforeAfterBase = styled.span`
+const BeforeAfterBase: StatelessFunctionalComponent<any> = styled.span`
   align-items: center;
   display: flex;
   flex-shrink: 0;
@@ -34,7 +34,9 @@ const getBeforeSpacing = ({ isCompact, theme }) => {
     margin-right: ${space}px;
   `;
 };
-export const Before = styled(BeforeAfterBase)`
+export const Before: StatelessFunctionalComponent<any> = styled(
+  BeforeAfterBase,
+)`
   ${getBeforeSpacing};
 `;
 
