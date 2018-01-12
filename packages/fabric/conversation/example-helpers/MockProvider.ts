@@ -7,7 +7,6 @@ import { Comment, Conversation, User } from '../src/model';
 import { mockConversation, mockInlineConversation } from './MockData';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
 
 import {
   FETCH_CONVERSATIONS,
@@ -23,9 +22,6 @@ const MockDataProviders = {
   mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
   emojiProvider: Promise.resolve(
     emojiStoryData.getEmojiResource({ uploadSupported: true }),
-  ),
-  taskDecisionProvider: Promise.resolve(
-    taskDecisionStoryData.getMockTaskDecisionResource(),
   ),
 };
 
