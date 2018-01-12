@@ -7,6 +7,11 @@ dist
 # ignore generated files
 coverage/
 **/.netlify
+junit.xml
+test-reports/
+
+# created by build-stats tool
+.data/
 
 # ignore yarn.locks generated in packages
 packages/**/**/yarn.lock

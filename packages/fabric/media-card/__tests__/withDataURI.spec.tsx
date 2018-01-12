@@ -174,6 +174,7 @@ describe('WithDataURI', () => {
           dataURIService={dataURIService}
           metadata={metadata}
         />,
+        { disableLifecycleMethods: true },
       );
 
       const instance = element.instance() as WithDataURI;

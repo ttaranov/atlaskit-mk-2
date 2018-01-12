@@ -265,16 +265,19 @@ describe('ak-field-base', () => {
     });
     it('should close the dialog when focus goes away from both the element and the dialog', () => {
       const invalidMessage = <snap className="errorMessage">foo</snap>;
-      const wrapper = mount(<FieldBase invalidMessage={invalidMessage} />);
+      const wrapper = mount(
+        <FieldBase isInvalid invalidMessage={invalidMessage} />,
+      );
 
       openDialog(wrapper);
+
       wrapper.find('.errorMessage').simulate('focus');
 
       wrapper.find('.errorMessage').simulate('blur');
       wrapper.find(Content).simulate('blur');
 
       jest.runTimersToTime(10);
-
+      wrapper.update();
       expect(isDialogOpened(wrapper)).toBe(false);
     });
 

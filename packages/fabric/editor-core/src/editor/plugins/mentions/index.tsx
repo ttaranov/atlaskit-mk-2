@@ -28,14 +28,12 @@ const mentionsPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent(
+  contentComponent({
     editorView,
-    eventDispatcher,
     providerFactory,
-    appearance,
     popupsMountPoint,
     popupsBoundariesElement,
-  ) {
+  }) {
     const renderNode = providers => {
       return (
         <MentionPicker
@@ -58,35 +56,7 @@ const mentionsPlugin: EditorPlugin = {
     );
   },
 
-  primaryToolbarComponent(
-    editorView,
-    eventDispatcher,
-    providerFactory,
-    appearance,
-    popupsMountPoint,
-    popupsBoundariesElement,
-    disabled,
-    editorWidth,
-  ) {
-    return (
-      <ToolbarMention
-        editorView={editorView}
-        pluginKey={pluginKey}
-        editorWidth={editorWidth}
-        isDisabled={disabled}
-      />
-    );
-  },
-
-  secondaryToolbarComponent(
-    editorView,
-    eventDispatcher,
-    providerFactory,
-    appearance,
-    popupsMountPoint,
-    popupsBoundariesElement,
-    disabled,
-  ) {
+  secondaryToolbarComponent({ editorView, disabled }) {
     return (
       <ToolbarMention
         editorView={editorView}

@@ -1,5 +1,12 @@
 # @atlaskit/editor-json-transformer
 
+## 2.4.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
+## 2.3.1
+
+## 2.3.0
+
 ## 2.2.0
 
 ## 2.1.11

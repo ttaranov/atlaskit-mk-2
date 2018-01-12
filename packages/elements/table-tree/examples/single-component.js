@@ -10,7 +10,7 @@ type ExampleItemData = { title: string, numbering: string };
 const Title = (props: ExampleItemData) => <span>{props.title}</span>;
 const Numbering = (props: ExampleItemData) => <span>{props.numbering}</span>;
 
-function getChildrenData(parent = staticData) {
+function getItemsData(parent = staticData) {
   return (parent && parent.children) || [];
 }
 
@@ -19,6 +19,6 @@ export default () => (
     headers={['Title', 'Numbering']}
     columns={[Title, Numbering]}
     columnWidths={['200px', '200px']}
-    items={getChildrenData}
+    items={getItemsData}
   />
 );

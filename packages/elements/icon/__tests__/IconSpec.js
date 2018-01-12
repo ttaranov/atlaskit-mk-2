@@ -51,7 +51,14 @@ describe(name, () => {
         );
         const uuidLength = 7;
 
-        const gradientDomId = icon.find('lineargradient').prop('id');
+        // for some reason cheerio will no longer find linear gradient elements. Instead we look
+        // inside defs and confirm that we have a linearGradient
+        const gradientEls = icon.find('defs > *');
+        expect(gradientEls.length).toBe(1);
+        expect(gradientEls[0].name).toBe('linearGradient');
+
+        // now we can check the id of it
+        const gradientDomId = gradientEls[0].attribs.id;
         expect(typeof gradientDomId).toBe('string');
         expect(gradientDomId).not.toBe(gradientId);
         expect(gradientDomId.length).toBeGreaterThan(uuidLength);

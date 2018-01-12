@@ -9,6 +9,7 @@ import { EditorView } from 'prosemirror-view';
 import { analyticsService } from '../../analytics';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import inputRulePlugin from './input-rule';
+import { isPastedFile } from '../../utils/clipboard';
 
 export type StateChangeHandler = (state: ImageUploadState) => any;
 export interface ImageUploadPluginOptions {
@@ -29,11 +30,6 @@ function isDroppedFile(e: DragEvent): boolean {
   return (
     Array.prototype.slice.call(e.dataTransfer.types).indexOf('Files') !== -1
   );
-}
-
-function isPastedFile(e: ClipboardEvent): boolean {
-  const types = e.clipboardData && e.clipboardData.types;
-  return types && Array.prototype.slice.call(types).indexOf('Files') !== -1;
 }
 
 export class ImageUploadState {

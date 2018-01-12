@@ -18,7 +18,6 @@ const toolbarComponent = (
   popupsMountPoint,
   popupsBoundariesElement,
   disabled,
-  editorWidth,
 ) => {
   const renderNode = providers => {
     // numFollowingButtons must be changed if buttons are added after ToolbarEmojiPicker to the message editor
@@ -28,7 +27,6 @@ const toolbarComponent = (
         pluginKey={pluginKey}
         emojiProvider={providers.emojiProvider}
         numFollowingButtons={4}
-        editorWidth={editorWidth}
         isDisabled={disabled}
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
@@ -70,14 +68,12 @@ const emojiPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent(
+  contentComponent({
     editorView,
-    eventDispatcher,
     providerFactory,
-    appearance,
     popupsMountPoint,
     popupsBoundariesElement,
-  ) {
+  }) {
     const renderNode = providers => {
       return (
         <EmojiTypeAhead
@@ -99,7 +95,7 @@ const emojiPlugin: EditorPlugin = {
     );
   },
 
-  secondaryToolbarComponent(
+  secondaryToolbarComponent({
     editorView,
     eventDispatcher,
     providerFactory,
@@ -107,8 +103,7 @@ const emojiPlugin: EditorPlugin = {
     popupsMountPoint,
     popupsBoundariesElement,
     disabled,
-    editorWidth,
-  ) {
+  }) {
     return toolbarComponent(
       editorView,
       eventDispatcher,
@@ -117,29 +112,6 @@ const emojiPlugin: EditorPlugin = {
       popupsMountPoint,
       popupsBoundariesElement,
       disabled,
-      editorWidth,
-    );
-  },
-
-  primaryToolbarComponent(
-    editorView,
-    eventDispatcher,
-    providerFactory,
-    appearance,
-    popupsMountPoint,
-    popupsBoundariesElement,
-    disabled,
-    editorWidth,
-  ) {
-    return toolbarComponent(
-      editorView,
-      eventDispatcher,
-      providerFactory,
-      appearance,
-      popupsMountPoint,
-      popupsBoundariesElement,
-      disabled,
-      editorWidth,
     );
   },
 };

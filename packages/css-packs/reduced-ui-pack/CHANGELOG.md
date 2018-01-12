@@ -1,5 +1,8 @@
 # @atlaskit/reduced-ui-pack
 
+## 8.7.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
 ## 8.6.0
 - [minor] Update svg stroke and fill color to match the spec for checkbox and radio button [aaeb66a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aaeb66a)
 

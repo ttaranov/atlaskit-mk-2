@@ -6,7 +6,7 @@ import { EditorView } from 'prosemirror-view';
 import * as MarkdownIt from 'markdown-it';
 import table from 'markdown-it-table';
 import { stateKey as tableStateKey } from '../table';
-import { containsTable } from '../table/utils';
+import { containsTable } from '../../editor/plugins/table/utils';
 import { insertMediaAsMediaSingle } from '../media/media-single';
 import {
   isSingleLine,
@@ -18,6 +18,7 @@ import { analyticsService } from '../../analytics';
 import * as keymaps from '../../keymaps';
 import { EditorAppearance } from '../../editor/index';
 import linkify from './linkify-md-plugin';
+import * as clipboard from '../../utils/clipboard';
 
 const pmSchemaToMdMapping = {
   nodes: {
@@ -132,7 +133,7 @@ export function createPlugin(
         }
 
         // Bail if copied content has files
-        if (event.clipboardData.types.indexOf('Files') > -1) {
+        if (clipboard.isPastedFile(event)) {
           return true;
         }
 
@@ -225,7 +226,7 @@ export function createPlugin(
           if (
             tableState &&
             tableState.isRequiredToAddHeader() &&
-            containsTable(view, slice)
+            containsTable(view.state, slice)
           ) {
             const { state, dispatch } = view;
             const selectionStart = state.selection.$from.pos;

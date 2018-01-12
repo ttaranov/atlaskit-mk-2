@@ -110,6 +110,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
       plugin.props.handleClick!(editorView, sel, event);
       trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
+      toolbarOption.update();
     });
     afterEach(() => {
       toolbarOption.unmount();

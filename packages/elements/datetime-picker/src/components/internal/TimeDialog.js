@@ -56,12 +56,18 @@ export default class TimeDialog extends Component<Props> {
 
   getItemWrapperStyle() {
     if (!this.props.width) {
-      return {};
+      return {
+        width: `100%`,
+      };
     }
 
     return {
       width: `${this.props.width}px`,
     };
+  }
+
+  getShouldFitContainer(): boolean {
+    return !this.props.width;
   }
 
   renderItems = () =>
@@ -86,6 +92,7 @@ export default class TimeDialog extends Component<Props> {
           isKeyboardInteractionDisabled
           isOpen={this.props.isOpen && !!this.props.times.length}
           trigger={this.props.children}
+          shouldFitContainer={this.getShouldFitContainer()}
         >
           {this.renderItems()}
         </Droplist>

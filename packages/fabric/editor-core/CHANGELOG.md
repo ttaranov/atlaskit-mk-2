@@ -1,5 +1,31 @@
 # @atlaskit/editor-core
 
+## 61.2.1
+- [patch] Fix accessing clipboardData.types in Edge (fixes paste) [91b921b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91b921b)
+- [patch] Updates in responsive editor [353c5d6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/353c5d6)
+
+## 61.2.0
+- [minor] Grid layout for Single Image [59a8e22](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59a8e22)
+
+## 61.1.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
+## 61.0.3
+- [patch] Fix update single image toolbar state on selection change [bea78aa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bea78aa)
+
+## 61.0.2
+
+## 61.0.1
+- [patch] Fix analytics event name for strikethrough button. [ac96c66](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac96c66)
+
+## 61.0.0
+- [patch] cleanup tables [372ac9b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/372ac9b)
+- [major] FS-1461 added TaskDecisionProvider and ContextIdentifierProvider to editor props [62fca1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62fca1e)
+
+## 60.20.2
+- [patch] added createStep to collab provider [139e70d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/139e70d)
+- [patch] Revert change os enter keypress in stride. [4eac0d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4eac0d8)
+
 ## 60.20.1
 - [patch] Autoformatting for task and decision items should work inside tables. [13c90ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13c90ff)
 

@@ -1,5 +1,15 @@
 # @atlaskit/conversation
 
+## 4.4.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
+## 4.3.0
+- [minor] feature/ED-3471 Add comment edit functionality [c474f67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c474f67)
+
+## 4.2.1
+
+## 4.2.0
+
 ## 4.1.0
 
 ## 4.0.0

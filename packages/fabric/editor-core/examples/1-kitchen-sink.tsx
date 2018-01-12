@@ -30,6 +30,8 @@ class DemoEditor extends React.PureComponent<any, any> {
       mediaProvider,
       mentionProvider,
       emojiProvider,
+      taskDecisionProvider,
+      contextIdentifierProvider,
       activityProvider,
     } = this.props;
     return (
@@ -41,6 +43,8 @@ class DemoEditor extends React.PureComponent<any, any> {
         mediaProvider={mediaProvider}
         mentionProvider={mentionProvider}
         emojiProvider={emojiProvider}
+        taskDecisionProvider={taskDecisionProvider}
+        contextIdentifierProvider={contextIdentifierProvider}
         activityProvider={activityProvider}
         isExpandedByDefault={true}
         ref={this.handleEditorRef}
@@ -57,6 +61,8 @@ export default function Example() {
         mediaProvider,
         mentionProvider,
         emojiProvider,
+        taskDecisionProvider,
+        contextIdentifierProvider,
         activityProvider,
         onChange,
       }) => (
@@ -65,6 +71,8 @@ export default function Example() {
           mediaProvider={mediaProvider}
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}
+          taskDecisionProvider={taskDecisionProvider}
+          contextIdentifierProvider={contextIdentifierProvider}
           activityProvider={activityProvider}
         />
       )}

@@ -14,7 +14,6 @@ import {
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../src/analytics';
-import EditorWidth from '../../src/utils/editor-width';
 
 describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
   const textFormattingPluginSet = textFormattingPlugins(defaultSchema);
@@ -34,25 +33,22 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     toolbarOption.unmount();
   });
 
-  it('should have spacing of toolbar button set to none if editorWidth is less then BreakPoint10', () => {
+  it('should have spacing of toolbar button set to none if isReducedSpacing=true', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
         editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint10 - 1}
+        isReducedSpacing={true}
       />,
     );
     expect(toolbarOption.find(ToolbarButton).prop('spacing')).toEqual('none');
     toolbarOption.unmount();
   });
 
-  it('should have spacing of toolbar button set to default if editorWidth is greater then BreakPoint10', () => {
+  it('should have spacing of toolbar button set to default if isReducedSpacing=false', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
-      <ToolbarAdvancedTextFormatting
-        editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint10 + 1}
-      />,
+      <ToolbarAdvancedTextFormatting editorView={editorView} />,
     );
     expect(toolbarOption.find(ToolbarButton).prop('spacing')).toEqual(
       'default',
@@ -60,7 +56,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     toolbarOption.unmount();
   });
 
-  it('should not have option to underline if EditorWidth is not defined', () => {
+  it('should have only 6 child elements if both pluginStateTextFormatting and pluginStateClearFormatting are defined', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
@@ -71,73 +67,18 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
           editorView.state,
         )}
         editorView={editorView}
-      />,
-    );
-    toolbarOption.find(ToolbarButton).simulate('click');
-    expect(
-      toolbarOption
-        .find('Item')
-        .filterWhere(n => n.text().indexOf('Underline') >= 0).length,
-    ).toEqual(0);
-    toolbarOption.unmount();
-  });
-
-  it('should have option to underline text if editor editorWidth is less than BreakPoint2', () => {
-    const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarAdvancedTextFormatting
-        pluginStateTextFormatting={textFormattingPluginSet[0].getState(
-          editorView.state,
-        )}
-        pluginStateClearFormatting={clearformattingPluginSet[0].getState(
-          editorView.state,
-        )}
-        editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint2 - 1}
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
     expect(toolbarOption.find(DropList).find(Item).length).toEqual(6);
-    expect(
-      toolbarOption
-        .find(Item)
-        .filterWhere(n => n.text().indexOf('Underline') >= 0).length,
-    ).toEqual(1);
     toolbarOption.unmount();
   });
 
-  it('should not have option to underline text if editor editorWidth is greater than BreakPoint2', () => {
+  it('should return only 5 items if only pluginStateTextFormatting is defined', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
         pluginStateTextFormatting={textFormattingPluginSet[0].getState(
-          editorView.state,
-        )}
-        pluginStateClearFormatting={clearformattingPluginSet[0].getState(
-          editorView.state,
-        )}
-        editorView={editorView}
-        editorWidth={EditorWidth.BreakPoint2 + 1}
-      />,
-    );
-    toolbarOption.find(ToolbarButton).simulate('click');
-    expect(toolbarOption.find(DropList).find(Item).length).toEqual(5);
-    expect(
-      toolbarOption
-        .find(Item)
-        .filterWhere(n => n.text().indexOf('Underline') >= 0).length,
-    ).toEqual(0);
-    toolbarOption.unmount();
-  });
-
-  it('should have only 5 child elements if both pluginStateTextFormatting and pluginStateClearFormatting are defined and editorWidth is not defined', () => {
-    const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarAdvancedTextFormatting
-        pluginStateTextFormatting={textFormattingPluginSet[0].getState(
-          editorView.state,
-        )}
-        pluginStateClearFormatting={clearformattingPluginSet[0].getState(
           editorView.state,
         )}
         editorView={editorView}
@@ -145,21 +86,6 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     );
     toolbarOption.find(ToolbarButton).simulate('click');
     expect(toolbarOption.find(DropList).find(Item).length).toEqual(5);
-    toolbarOption.unmount();
-  });
-
-  it('should return only 4 items if only pluginStateTextFormatting is defined', () => {
-    const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarAdvancedTextFormatting
-        pluginStateTextFormatting={textFormattingPluginSet[0].getState(
-          editorView.state,
-        )}
-        editorView={editorView}
-      />,
-    );
-    toolbarOption.find(ToolbarButton).simulate('click');
-    expect(toolbarOption.find(DropList).find(Item).length).toEqual(4);
     toolbarOption.unmount();
   });
 
@@ -273,9 +199,9 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     );
     toolbarOption.setState({ strikeHidden: true });
     toolbarOption.find(ToolbarButton).simulate('click');
-    const strikeButton = toolbarOption
-      .find('span')
-      .findWhere(wrapper => wrapper.text() === 'Strikethrough');
+    const strikeButton = toolbarOption.findWhere(
+      wrapper => wrapper.is('span') && wrapper.text() === 'Strikethrough',
+    );
     expect(strikeButton.length).toEqual(0);
     toolbarOption.unmount();
   });
@@ -321,7 +247,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
           editorView.state,
         )}
         editorView={editorView}
-        isDisabled={true}
+        isDisabled
       />,
     );
     expect(toolbarOption.find(ToolbarButton).prop('disabled')).toBe(true);
@@ -402,7 +328,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
 
     [
       { value: 'code', name: 'Code' },
-      { value: 'strikethrough', name: 'Strikethrough' },
+      { value: 'strike', name: 'Strikethrough' },
       { value: 'subscript', name: 'Subscript' },
       { value: 'superscript', name: 'Superscript' },
       { value: 'clear', name: 'Clear Formatting' },

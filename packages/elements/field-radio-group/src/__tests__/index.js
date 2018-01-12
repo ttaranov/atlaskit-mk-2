@@ -91,8 +91,8 @@ describe(name, () => {
             <FieldRadioGroup items={sampleItemsWithDefault} />,
           );
 
-          const radios = wrapper.find(Radio);
-          radios
+          const radios = () => wrapper.find(Radio);
+          radios()
             .at(0)
             .find('input')
             .simulate('change');
@@ -100,9 +100,10 @@ describe(name, () => {
           expect(wrapper.state('selectedValue')).toBe(
             sampleItemsWithDefault[0].value,
           );
-          expect(radios.at(0).prop('isSelected')).toBe(true);
-          expect(radios.at(1).prop('isSelected')).toBe(false);
-          expect(radios.at(2).prop('isSelected')).toBe(false);
+          const r = radios();
+          expect(r.at(0).prop('isSelected')).toBe(true);
+          expect(r.at(1).prop('isSelected')).toBe(false);
+          expect(r.at(2).prop('isSelected')).toBe(false);
         });
       });
 

@@ -48,7 +48,7 @@ export default class BasicExample extends PureComponent<void, State> {
           <Input isEditing />
         </FieldBase>
         <Label label="With isInvalid" />
-        <FieldBase isInvalid>
+        <FieldBase isInvalid invalidMessage="This is an invalid field message">
           <Input isEditing />
         </FieldBase>
         <Label label="With isCompact" />

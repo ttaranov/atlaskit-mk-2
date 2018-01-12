@@ -19,30 +19,11 @@ type State = {
 };
 
 export default class Rows extends PureComponent<Props, State> {
-  state: State = {
-    rootRowsData: null,
-  };
-
-  componentDidMount() {
-    Promise.resolve()
-      .then(() => this.props.items())
-      .then(rootRowsData => {
-        this.setState({
-          rootRowsData,
-        });
-      });
-  }
-
   render() {
-    const { rootRowsData } = this.state;
     const { items, render } = this.props;
     return (
       <div>
-        <Items
-          childrenData={rootRowsData}
-          getChildrenData={items}
-          render={render}
-        />
+        <Items getItemsData={items} render={render} />
       </div>
     );
   }

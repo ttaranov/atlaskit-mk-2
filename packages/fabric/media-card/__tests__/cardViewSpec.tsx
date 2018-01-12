@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 jest.mock('../src/utils/breakpoint');
 
 import { shallow, mount } from 'enzyme';
@@ -175,7 +176,7 @@ describe('CardView', () => {
         status="loading"
         metadata={file}
         onSelectChange={handler}
-        selectable={true}
+        selectable
       />,
     );
     card.setProps({ selected: true });
@@ -215,6 +216,7 @@ describe('CardView', () => {
       (breakpointSize as jest.Mock<void>).mockReturnValue('small');
       const card = shallow(
         <CardView status="complete" metadata={file} dimensions={dimensions} />,
+        { disableLifecycleMethods: true },
       );
       expect(breakpointSize).toHaveBeenCalledWith('100%');
 
@@ -247,6 +249,7 @@ describe('CardView', () => {
           appearance="small"
           dimensions={{ width: '70%', height: 100 }}
         />,
+        { disableLifecycleMethods: true },
       );
       expect(card.find(Wrapper).props().dimensions).toEqual({
         width: '70%',
