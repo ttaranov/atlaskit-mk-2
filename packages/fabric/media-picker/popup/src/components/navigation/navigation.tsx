@@ -167,6 +167,7 @@ export class Navigation extends Component<NavigationProps, NavigationState> {
         <DropdownMenu
           onOpenChange={this.handleOpenChange}
           trigger={this.getAccountButton()}
+          position="bottom right"
         >
           {items}
         </DropdownMenu>
