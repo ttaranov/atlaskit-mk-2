@@ -1,5 +1,8 @@
 # @atlaskit/modal-dialog
 
+## 3.3.2
+- [patch] Fix modal height being clipped by destination parent [c30e7b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c30e7b0)
+
 ## 3.3.1
 - [patch] Migration of Blanket to mk2 repo [1c55d97](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c55d97)
 

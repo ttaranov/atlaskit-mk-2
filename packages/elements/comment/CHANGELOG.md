@@ -1,5 +1,8 @@
 # @atlaskit/comment
 
+## 2.6.8
+- [patch] migrated ak to mk-2 [c3d17da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3d17da)
+
 ## 2.6.7 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))
