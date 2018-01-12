@@ -12,22 +12,6 @@ export const Wrapper = styled.div`
   background-color: white;
   box-sizing: border-box;
 
-  .topShadow {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 2px;
-    background-color: rgba(0, 30, 66, 0.1);
-  }
-
-  .bottomShadow {
-    position: fixed;
-    bottom: 80px;
-    width: 100%;
-    height: 2px;
-    background-color: rgba(0, 30, 66, 0.1);
-  }
-
   .dropzoneWrapper {
     float: left;
     width: 100%;

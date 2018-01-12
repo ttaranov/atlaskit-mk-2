@@ -88,36 +88,18 @@ export interface UploadViewState {
 
   readonly isWebGLWarningFlagVisible: boolean;
   readonly shouldDismissWebGLWarningFlag: boolean;
-
-  readonly contentWidth?: number;
-  readonly startVisible?: boolean;
-  readonly endVisible?: boolean;
 }
 
 export class StatelessUploadView extends Component<
   UploadViewProps,
   UploadViewState
 > {
-  private view: HTMLDivElement | null;
-
-  constructor(props: UploadViewProps) {
-    super(props);
-    this.view = null;
-    this.state = {
-      imageIds: [],
-      hasPopupBeenVisible: false,
-      isWebGLWarningFlagVisible: false,
-      shouldDismissWebGLWarningFlag: false,
-    };
-  }
-
-  componentDidMount() {
-    this.updateShadows();
-  }
-
-  componentDidUpdate() {
-    this.updateShadows();
-  }
+  state: UploadViewState = {
+    imageIds: [],
+    hasPopupBeenVisible: false,
+    isWebGLWarningFlagVisible: false,
+    shouldDismissWebGLWarningFlag: false,
+  };
 
   render() {
     const cards = this.cards();
@@ -137,26 +119,14 @@ export class StatelessUploadView extends Component<
     );
   }
 
-  saveViewRef = (input: HTMLDivElement) => {
-    this.view = input;
-  };
-
   recentView(cards: JSX.Element[]) {
-    const shadowStyle = this.state.contentWidth
-      ? { width: this.state.contentWidth }
-      : {};
-    const bottomShadow = !this.state.endVisible ? (
-      <div className="bottomShadow" style={shadowStyle} />
-    ) : null;
-
     return (
-      <Wrapper onScroll={this.updateShadows} innerRef={this.saveViewRef}>
+      <Wrapper>
         <Dropzone mpBrowser={this.props.mpBrowser} />
         <div className="cards">
           <div className="recentUploadsTitle">Recent Uploads</div>
           {cards}
         </div>
-        {bottomShadow}
         {this.state.isWebGLWarningFlagVisible
           ? this.renderWebGLWarningFlag()
           : null}
@@ -186,29 +156,6 @@ export class StatelessUploadView extends Component<
       />
     </FlagGroup>
   );
-
-  private updateShadows = () => {
-    if (this.view) {
-      const scrollHeight = this.view.scrollHeight;
-      const viewPosTop = this.view.scrollTop;
-      const viewPosBottom = viewPosTop + this.view.offsetHeight;
-
-      const startVisible = viewPosTop === 0;
-      const endVisible = scrollHeight === viewPosBottom;
-
-      if (
-        this.state.startVisible !== startVisible ||
-        this.state.endVisible !== endVisible ||
-        this.state.contentWidth !== this.view.clientWidth
-      ) {
-        this.setState({
-          startVisible,
-          endVisible,
-          contentWidth: this.view.clientWidth,
-        });
-      }
-    }
-  };
 
   private cards() {
     const { hasPopupBeenVisible } = this.props;
@@ -241,7 +188,6 @@ export class StatelessUploadView extends Component<
       const { dataURI } = file;
 
       const mediaType = isImage(file.metadata.mimeType) ? 'image' : 'unknown';
-      //const metadata = Object.assign({}, file.metadata, { mediaType });
       const metadata = { ...file.metadata, mimeType: mediaType };
       const { id } = metadata;
 
