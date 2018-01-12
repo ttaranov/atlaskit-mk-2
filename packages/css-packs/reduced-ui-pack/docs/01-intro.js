@@ -41,5 +41,4 @@ export default md`
 
   The examples are written in react, however the rendered html code should be
   copyable into your application, if it has the reduced-ui-pack styles.
-
 `;
