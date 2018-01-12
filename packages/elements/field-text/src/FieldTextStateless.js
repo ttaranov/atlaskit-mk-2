@@ -1,13 +1,14 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Base, { Label } from '@atlaskit/field-base';
-import Input from '../styled/Input';
-import type { FieldTextProps } from '../types';
+import Input from './styled/Input';
+import type { FieldTextProps } from './types';
 
-export default class FieldTextStateless extends PureComponent {
-  props: FieldTextProps // eslint-disable-line react/sort-comp
-
+export default class FieldTextStateless extends Component<
+  FieldTextProps,
+  void,
+> {
   static defaultProps = {
     compact: false,
     disabled: false,
@@ -17,9 +18,9 @@ export default class FieldTextStateless extends PureComponent {
     onChange: () => {},
     required: false,
     type: 'text',
-  }
+  };
 
-  input: ?HTMLInputElement
+  input: ?HTMLInputElement;
 
   focus() {
     if (this.input) {
@@ -29,7 +30,7 @@ export default class FieldTextStateless extends PureComponent {
 
   handleInputRef = (input: HTMLInputElement) => {
     this.input = input;
-  }
+  };
 
   render() {
     return (

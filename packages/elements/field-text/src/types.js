@@ -1,6 +1,5 @@
 // @flow
-
-export type ReactElement = any;
+import type { Node } from 'react';
 
 export type FieldTextProps = {
   /** Standard HTML input autocomplete attribute. */
@@ -35,24 +34,24 @@ export type FieldTextProps = {
   /** The value of the input. */
   value?: string,
   /** Handler to be called when the input loses focus. */
-  onBlur?: (e: Event) => {},
+  onBlur?: (e: Event) => mixed,
   /** Handler to be called when the input changes. */
-  onChange?: (e: Event) => {},
+  onChange?: (e: Event) => mixed,
   /** Handler to be called when the input receives focus. */
-  onFocus?: (e: Event) => {},
+  onFocus?: (e: Event) => mixed,
   /** Standard input onkeydown event. */
-  onKeyDown?: (e: KeyboardEvent) => {},
+  onKeyDown?: (e: KeyboardEvent) => mixed,
   /** Standard input onkeypress event. */
-  onKeyPress?: (e: KeyboardEvent) => {},
+  onKeyPress?: (e: KeyboardEvent) => mixed,
   /** Standard input onkeyup event. */
-  onKeyUp?: (e: KeyboardEvent) => {},
+  onKeyUp?: (e: KeyboardEvent) => mixed,
   /** Id value to be passed to the html input. */
   id?: string,
   /** Sets whether to show or hide the label. */
   isLabelHidden?: boolean,
   /** Provided component is rendered inside a modal dialogue when the field is
    selected. */
-  invalidMessage?: ReactElement,
+  invalidMessage?: Node,
   /** Ensure the input fits in to its containing element. */
   shouldFitContainer?: boolean,
   /** Sets whether to apply spell checking to the content. */

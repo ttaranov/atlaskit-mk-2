@@ -1,12 +1,17 @@
-import React, { PureComponent } from 'react';
+// @flow
+import React, { Component } from 'react';
 import { FieldTextStateless } from '@atlaskit/field-text';
 
-export default class Example extends PureComponent {
+type State = {
+  value: string | number,
+};
+
+export default class StatelessExample extends Component<void, State> {
   state = {
     value: '',
   };
 
-  setValue = e => this.setState({ value: e.target.value });
+  setValue = (e: any) => this.setState({ value: e.target.value });
 
   render() {
     return (

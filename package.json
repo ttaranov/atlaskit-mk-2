@@ -173,7 +173,6 @@
     "@atlaskit/dropdown-menu": "^3.5.0",
     "@atlaskit/droplist": "^4.11.3",
     "@atlaskit/emoji": "^31.0.2",
-    "@atlaskit/field-text": "^4.1.2",
     "@atlaskit/input": "^1.6.0",
     "@atlaskit/item": "^4.2.3",
     "@atlaskit/mention": "^8.1.0",
