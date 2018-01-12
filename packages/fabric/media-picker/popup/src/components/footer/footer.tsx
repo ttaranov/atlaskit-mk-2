@@ -57,8 +57,8 @@ export class Footer extends Component<FooterProps> {
   render(): JSX.Element {
     return (
       <Wrapper>
-        {this.renderCancelButton()}
         {this.renderInsertButton()}
+        {this.renderCancelButton()}
       </Wrapper>
     );
   }

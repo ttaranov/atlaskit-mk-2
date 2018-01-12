@@ -44,12 +44,7 @@ import {
   UploadEndEventPayload,
   UploadErrorEventPayload,
 } from '../../../src/domain/uploadEvent';
-import {
-  ContentWrapper,
-  MediaPickerPopupWrapper,
-  SidebarWrapper,
-  ViewWrapper,
-} from './styled';
+import { MediaPickerPopupWrapper, SidebarWrapper, ViewWrapper } from './styled';
 
 export interface AppStateProps {
   readonly apiUrl: string;
@@ -170,12 +165,8 @@ export class App extends Component<AppProps, AppState> {
                 <Sidebar />
               </SidebarWrapper>
               <ViewWrapper>
-                <div>
-                  <ContentWrapper>
-                    {this.renderCurrentView(selectedServiceName)}
-                  </ContentWrapper>
-                  <Footer />
-                </div>
+                {this.renderCurrentView(selectedServiceName)}
+                <Footer />
               </ViewWrapper>
               <Dropzone isActive={isDropzoneActive} />
               <MainEditorView binaryUploader={this.mpBinary} />

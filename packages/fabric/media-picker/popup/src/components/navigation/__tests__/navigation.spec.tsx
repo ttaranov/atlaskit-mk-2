@@ -27,7 +27,6 @@ import {
   ControlsWrapper,
   Controls,
   ControlButton,
-  ControlSeparator,
   BreadCrumbs,
   BreadCrumbLink,
   BreadCrumbLinkLabel,
@@ -164,7 +163,6 @@ describe('<Navigation />', () => {
       expect(element.find(ControlsWrapper)).toHaveLength(1);
       expect(element.find(Controls)).toHaveLength(1);
       expect(element.find(ControlButton)).toHaveLength(1);
-      expect(element.find(ControlSeparator)).toHaveLength(1);
       expect(element.find(ControlButton).prop('iconBefore')).toEqual(
         <RefreshIcon label="refresh" />,
       );

@@ -32,10 +32,11 @@ import {
   SpinnerWrapper,
   FolderViewerWrapper,
   FolderViewerRow,
-  IconFolderViewerColumn,
-  NameFolderViewerColumn,
-  DateFolderViewerColumn,
-  SizeFolderViewerColumn,
+  FileMetadataGroup,
+  FileIcon,
+  FileName,
+  FileCreateDate,
+  FileSize,
   MoreBtnWrapper,
   FolderViewerContent,
   SelectedFileIconWrapper,
@@ -92,31 +93,36 @@ export interface FolderViewDispatchProps {
 export type FolderViewerProps = FolderViewerStateProps &
   FolderViewDispatchProps;
 
+const selectedTick = (
+  <SelectedFileIconWrapper>
+    <CheckCircleIcon label="check" />
+  </SelectedFileIconWrapper>
+);
+
 /**
  * Routing class that displays view depending on situation.
  */
 export class FolderViewer extends Component<FolderViewerProps, {}> {
   render(): JSX.Element {
+    return (
+      <FolderViewerWrapper>
+        <Navigation />
+        {this.renderContents()}
+      </FolderViewerWrapper>
+    );
+  }
+
+  private renderContents = () => {
     if (this.isPageInitialLoading) {
       return (
         <SpinnerWrapper>
-          <Navigation />
-          <Spinner size="xlarge" />
+          <Spinner size="large" />
         </SpinnerWrapper>
       );
     }
 
-    const folderContent = this.renderFolderContent(this.props.items);
-    const moreBtn = this.renderLoadMoreButton();
-
-    return (
-      <FolderViewerWrapper>
-        <Navigation />
-        {folderContent}
-        {moreBtn}
-      </FolderViewerWrapper>
-    );
-  }
+    return this.renderFolderContent(this.props.items);
+  };
 
   private get isPageInitialLoading() {
     return this.props.loading && !this.props.currentCursor;
@@ -145,69 +151,65 @@ export class FolderViewer extends Component<FolderViewerProps, {}> {
         if (isServiceFile(item)) {
           return this.renderServiceFile(item, itemIcon, isSelected);
         } else {
-          return this.renderServiceFolder(item, itemIcon, isSelected);
+          return this.renderServiceFolder(item, itemIcon);
         }
       });
 
-    return <FolderViewerContent>{folderItems}</FolderViewerContent>;
-  }
-
-  private renderSelectedTick() {
     return (
-      <SelectedFileIconWrapper>
-        <CheckCircleIcon label="check" />
-      </SelectedFileIconWrapper>
+      <FolderViewerContent>
+        {[folderItems, this.renderLoadMoreButton()]}
+      </FolderViewerContent>
     );
   }
 
-  private renderServiceFile(
+  private renderServiceFolder = (
+    item: ServiceFolder,
+    itemIcon: JSX.Element,
+  ): JSX.Element => {
+    return (
+      <FolderViewerRow onClick={this.itemClicked(item)} key={item.id}>
+        <FileMetadataGroup>
+          <FileIcon>{itemIcon}</FileIcon>
+          <FileName>{item.name}</FileName>
+        </FileMetadataGroup>
+      </FolderViewerRow>
+    );
+  };
+
+  private renderServiceFile = (
     serviceFile: ServiceFile,
     itemIcon: JSX.Element,
     isSelected: boolean,
-  ): JSX.Element {
-    const icon = isSelected ? this.renderSelectedTick() : null;
+  ): JSX.Element => {
+    const tail = isSelected
+      ? selectedTick
+      : this.renderFileCreateDateAndSize(serviceFile);
+
     return (
       <FolderViewerRow
         isSelected={isSelected}
         onClick={this.itemClicked(serviceFile)}
         key={serviceFile.id}
       >
-        <IconFolderViewerColumn>{itemIcon}</IconFolderViewerColumn>
-        <NameFolderViewerColumn type="name" isSelected={isSelected}>
-          {serviceFile.name}
-        </NameFolderViewerColumn>
-        <DateFolderViewerColumn type="date" isSelected={isSelected}>
-          {getDateString(serviceFile.date)}
-        </DateFolderViewerColumn>
-        <SizeFolderViewerColumn type="size" isSelected={isSelected}>
-          {filesize(serviceFile.size)}
-        </SizeFolderViewerColumn>
-        {icon}
+        <FileMetadataGroup>
+          <FileIcon>{itemIcon}</FileIcon>
+          <FileName type="name" isSelected={isSelected}>
+            {serviceFile.name}
+          </FileName>
+        </FileMetadataGroup>
+        {tail}
       </FolderViewerRow>
     );
-  }
+  };
 
-  private renderServiceFolder(
-    item: ServiceFolder,
-    itemIcon: JSX.Element,
-    isSelected: boolean,
-  ): JSX.Element {
-    const icon = isSelected ? this.renderSelectedTick() : null;
-
+  private renderFileCreateDateAndSize = ({ date, size }) => {
     return (
-      <FolderViewerRow
-        isSelected={isSelected}
-        onClick={this.itemClicked(item)}
-        key={item.id}
-      >
-        <IconFolderViewerColumn>{itemIcon}</IconFolderViewerColumn>
-        <NameFolderViewerColumn isSelected={isSelected}>
-          {item.name}
-        </NameFolderViewerColumn>
-        {icon}
-      </FolderViewerRow>
+      <FileMetadataGroup>
+        <FileCreateDate type="date">{getDateString(date)}</FileCreateDate>
+        <FileSize type="size">{filesize(size)}</FileSize>
+      </FileMetadataGroup>
     );
-  }
+  };
 
   private renderLoadMoreButton(): JSX.Element | null {
     const { nextCursor, loading } = this.props;
@@ -215,11 +217,12 @@ export class FolderViewer extends Component<FolderViewerProps, {}> {
     if (nextCursor || this.isPageMoreLoading) {
       const label = loading ? 'Loading...' : 'Load more';
       return (
-        <MoreBtnWrapper>
+        // Key is required as this component is used in array
+        <MoreBtnWrapper key="load-more-button-wrapper">
           <AkButton
-            appearance="subtle"
             className="moreBtn"
             onClick={this.onLoadMoreButtonClick}
+            isDisabled={loading}
           >
             {label}
           </AkButton>
