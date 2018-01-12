@@ -1,4 +1,3 @@
-/* tslint:disable:variable-name */
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import {
@@ -28,7 +27,7 @@ export const Controls = styled.div`
 
 export const ControlButton = styled(Button)`
   margin-right: 5px;
-`;
+` as any;
 
 export const BreadCrumbs = styled.div`
   text-overflow: ellipsis;

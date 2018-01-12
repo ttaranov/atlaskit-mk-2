@@ -1,4 +1,3 @@
-/* tslint:disable:variable-name */
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
 
@@ -12,6 +11,6 @@ export const Wrapper = styled.div`
 
 export const InsertButton = styled(Button)`
   margin-right: 5px;
-`;
+` as any;
 
-export const CancelButton = styled(Button)``;
+export const CancelButton = styled(Button)`` as any;
