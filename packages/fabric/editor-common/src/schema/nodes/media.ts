@@ -98,9 +98,7 @@ export const media: NodeSpec = {
       title: 'Attachment',
       // Manually kept in sync with the style of media cards. The goal is to render a plain grey
       // rectangle that provides an affordance for media.
-      style: `display: inline-block; border-radius: 3px; background: ${
-        akColorN30
-      }; box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px 0 rgba(9, 30, 66, 0.24);`,
+      style: `display: inline-block; border-radius: 3px; background: ${akColorN30}; box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px 0 rgba(9, 30, 66, 0.24);`,
     };
 
     copyPrivateAttributes(
