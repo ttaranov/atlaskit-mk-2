@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-picker",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Library for handling file uploads",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -27,7 +27,7 @@
     "@atlaskit/icon": "^10.7.0",
     "@atlaskit/media-card": "^23.2.0",
     "@atlaskit/media-editor": "^3.4.0",
-    "@atlaskit/modal-dialog": "^3.3.0",
+    "@atlaskit/modal-dialog": "^3.3.2",
     "@atlaskit/spinner": "^4.1.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/bricks.js": "^1.8.0",

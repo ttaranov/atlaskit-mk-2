@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-edit",
-  "version": "4.5.7",
+  "version": "4.5.8",
   "description": "A base component used to build inline-editable components that match the Atlassian Design Guidelines",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -30,15 +30,15 @@
   },
   "devDependencies": {
     "@atlaskit/avatar": "^8.0.6",
+    "@atlaskit/docs": "^2.1.1",
     "@atlaskit/inline-dialog": "5.1.0",
     "@atlaskit/input": "^1.6.0",
     "@atlaskit/mention": "^8.1.0",
-    "@atlaskit/modal-dialog": "^3.0.2",
+    "@atlaskit/modal-dialog": "^3.3.2",
+    "@atlaskit/multi-select": "^8.0.1",
     "@atlaskit/single-select": "^3.0.1",
-    "@atlaskit/multi-select": "^8.0.0",
     "@atlaskit/tag": "^3.0.2",
     "@atlaskit/tag-group": "^3.4.2",
-    "@atlaskit/docs": "^2.1.1",
     "enzyme": "^3.3.0"
   },
   "keywords": [

@@ -1,5 +1,9 @@
 # @atlaskit/media-picker
 
+## 0.2.0
+
+- [minor] Added GIPHY file picking support to Media Picker Popup [d6be99c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6be99c)
+
 ## 0.1.2
 - [patch] Fixed header styles in Popup [48555ce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48555ce)
 
