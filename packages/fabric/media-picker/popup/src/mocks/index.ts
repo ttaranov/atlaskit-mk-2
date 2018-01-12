@@ -8,7 +8,8 @@ export const mockState: State = {
   view: {
     isVisible: true,
     items: [],
-    loading: false,
+    isLoading: false,
+    hasError: false,
     path: [],
     service: {
       accountId: 'some-view-service-account-id',
@@ -37,6 +38,10 @@ export const mockState: State = {
   isCancelling: false,
   isUploading: false,
   userAuthProvider: jest.fn(),
+  giphy: {
+    imageCardModels: [],
+    totalResultCount: 100,
+  },
   onCancelUpload: jest.fn(),
 };
 
@@ -98,6 +103,8 @@ export const mockFetcher = () => ({
   unlinkCloudAccount: jest.fn(),
   fetchCloudAccountFile: jest.fn(),
   copyFile: jest.fn(),
+  fetchTrendingGifs: jest.fn(),
+  fetchGifsRelevantToSearch: jest.fn(),
 });
 
 export const mockIsWebGLNotAvailable = () => {

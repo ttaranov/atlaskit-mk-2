@@ -11,8 +11,13 @@ export const Wrapper = styled.li`
     isActive ? akColorB400 : akColorN500};
   padding: 6px 25px;
   list-style-type: none;
-  cursor: pointer;
   opacity: 1;
+
+  ${({ isActive }: WrapperProps) => (isActive ? '' : 'cursor: pointer')};
+  &:hover {
+    ${({ isActive }: WrapperProps) =>
+      isActive ? '' : 'background-color: #E5E8EC'};
+  }
 `;
 
 export const ServiceIcon = styled.div`

@@ -36,3 +36,16 @@ export const SeparatorLine = styled.div`
   border-top: 1px solid rgba(9, 30, 66, 0.06);
   height: 0;
 `;
+
+export interface IconProps {
+  active: boolean;
+}
+
+export const StyledIcon = styled.svg`
+  width: 22px;
+  height: 22px;
+`;
+
+export const StyledSvgGroup = styled.g`
+  fill: ${({ active }: IconProps) => (active ? '#0061C5' : '#42526E')};
+`;

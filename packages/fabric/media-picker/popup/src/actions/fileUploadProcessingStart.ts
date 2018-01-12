@@ -6,6 +6,8 @@ import {
 } from '../../../src/domain/uploadEvent';
 import { MediaFile } from '../../../src/domain/file';
 
+export const FILE_UPLOAD_PROCESSING_START = 'FILE_UPLOAD_PROCESSING_START';
+
 export interface FileUploadProcessingStartAction extends Action {
   readonly type: 'FILE_UPLOAD_PROCESSING_START';
   readonly file: MediaFile;
@@ -15,14 +17,14 @@ export interface FileUploadProcessingStartAction extends Action {
 export function isFileUploadProcessingStartAction(
   action: Action,
 ): action is FileUploadProcessingStartAction {
-  return action.type === 'FILE_UPLOAD_PROCESSING_START';
+  return action.type === FILE_UPLOAD_PROCESSING_START;
 }
 
 export function fileUploadProcessingStart(
   payload: UploadProcessingEventPayload,
 ): FileUploadProcessingStartAction {
   return {
-    type: 'FILE_UPLOAD_PROCESSING_START',
+    type: FILE_UPLOAD_PROCESSING_START,
     file: payload.file,
     originalEvent: {
       name: 'upload-processing',

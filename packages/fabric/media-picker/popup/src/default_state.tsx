@@ -23,7 +23,8 @@ const state: State = {
       name: 'upload',
       accountId: '',
     },
-    loading: false,
+    hasError: false,
+    isLoading: false,
     path: [],
     items: [],
     hasPopupBeenVisible: false,
@@ -35,6 +36,10 @@ const state: State = {
   isUploading: false,
   isCancelling: false,
   lastUploadIndex: 0,
+  giphy: {
+    imageCardModels: [],
+    totalResultCount: undefined,
+  },
   onCancelUpload: () => {
     throw new Error('onCancelUpload has not been set yet.');
   },

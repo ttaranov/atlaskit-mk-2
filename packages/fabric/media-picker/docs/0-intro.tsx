@@ -381,7 +381,5 @@ export default md`
 
   #### Special events
 
-  **ready** — emits when user is authorized and popup is ready to show
-
   **closed** - emitted when the popup its disappears, this can happen when its either closed or submitted.
 `;

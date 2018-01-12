@@ -6,6 +6,7 @@ import DropboxIcon from '@atlaskit/icon/glyph/dropbox';
 import GoogleDriveIcon from '@atlaskit/icon/glyph/googledrive';
 import { State } from '../../domain';
 import SidebarItem from './item/sidebarItem';
+import GiphySidebarItem from './item/giphySidebarItem';
 import { Wrapper, ServiceList, Separator, SeparatorLine } from './styled';
 
 export interface SidebarStateProps {
@@ -40,6 +41,7 @@ export class StatelessSidebar extends Component<SidebarProps> {
       <Separator key="seperator">
         <SeparatorLine />
       </Separator>,
+      <GiphySidebarItem key="giphy" isActive={selected === 'giphy'} />,
       <SidebarItem
         key="dropbox"
         serviceName="dropbox"

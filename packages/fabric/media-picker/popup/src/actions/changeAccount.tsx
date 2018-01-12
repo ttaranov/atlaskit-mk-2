@@ -1,6 +1,7 @@
 import { Action } from 'redux';
 
 import { ServiceName } from '../domain';
+export const CHANGE_ACCOUNT = 'CHANGE_ACCOUNT';
 
 export interface ChangeAccountAction {
   readonly type: 'CHANGE_ACCOUNT';
@@ -11,7 +12,7 @@ export interface ChangeAccountAction {
 export function isChangeAccountAction(
   action: Action,
 ): action is ChangeAccountAction {
-  return action.type === 'CHANGE_ACCOUNT';
+  return action.type === CHANGE_ACCOUNT;
 }
 
 export function changeAccount(
@@ -19,7 +20,7 @@ export function changeAccount(
   accountId: string,
 ): ChangeAccountAction {
   return {
-    type: 'CHANGE_ACCOUNT',
+    type: CHANGE_ACCOUNT,
     serviceName,
     accountId,
   };

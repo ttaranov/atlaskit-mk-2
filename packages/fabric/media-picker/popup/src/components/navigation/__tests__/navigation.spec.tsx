@@ -27,7 +27,6 @@ import {
   ControlsWrapper,
   Controls,
   ControlButton,
-  ControlSeparator,
   BreadCrumbs,
   BreadCrumbLink,
   BreadCrumbLinkLabel,
@@ -108,13 +107,13 @@ describe('<Navigation />', () => {
   });
 
   describe('Connected Navigation component', () => {
-    test('should dispatch an action when onChangeAccount is called', () => {
+    it('should dispatch an action when onChangeAccount is called', () => {
       const { component, dispatch } = createConnectedComponent();
       component.props().onChangeAccount(SERVICE_NAME, ACCOUNT_ID);
       expect(dispatch).toBeCalledWith(changeAccount(SERVICE_NAME, ACCOUNT_ID));
     });
 
-    test('should dispatch an action when onChangePath is called', () => {
+    it('should dispatch an action when onChangePath is called', () => {
       const { component, dispatch } = createConnectedComponent();
       component.props().onChangePath(SERVICE_NAME, ACCOUNT_ID, PATH);
       expect(dispatch).toBeCalledWith(
@@ -122,13 +121,13 @@ describe('<Navigation />', () => {
       );
     });
 
-    test('should dispatch an action when onStartAuth is called', () => {
+    it('should dispatch an action when onStartAuth is called', () => {
       const { component, dispatch } = createConnectedComponent();
       component.props().onStartAuth(SERVICE_NAME);
       expect(dispatch).toBeCalledWith(startAuth(SERVICE_NAME));
     });
 
-    test('should dispatch an action when onUnlinkAccount is called', () => {
+    it('should dispatch an action when onUnlinkAccount is called', () => {
       const { component, dispatch } = createConnectedComponent();
       component.props().onUnlinkAccount(SERVICE_NAME, ACCOUNT_ID);
       expect(dispatch).toBeCalledWith(
@@ -136,7 +135,7 @@ describe('<Navigation />', () => {
       );
     });
 
-    test('should pass all required state through to component props', () => {
+    it('should pass all required state through to component props', () => {
       const { component } = createConnectedComponent();
       const props = component.props();
 
@@ -147,7 +146,7 @@ describe('<Navigation />', () => {
   });
 
   describe('#render()', () => {
-    test('should render correct components', () => {
+    it('should render correct components', () => {
       const element = shallow(
         <Navigation
           accounts={ACCOUNTS}
@@ -164,7 +163,6 @@ describe('<Navigation />', () => {
       expect(element.find(ControlsWrapper)).toHaveLength(1);
       expect(element.find(Controls)).toHaveLength(1);
       expect(element.find(ControlButton)).toHaveLength(1);
-      expect(element.find(ControlSeparator)).toHaveLength(1);
       expect(element.find(ControlButton).prop('iconBefore')).toEqual(
         <RefreshIcon label="refresh" />,
       );
@@ -182,7 +180,7 @@ describe('<Navigation />', () => {
       expect(element.find(BreadCrumbLinkSeparator)).toHaveLength(2);
     });
 
-    test('responds to click on Refresh', () => {
+    it('should respond to click on Refresh', () => {
       const element = shallow(
         <Navigation
           accounts={ACCOUNTS}
@@ -199,7 +197,7 @@ describe('<Navigation />', () => {
       expect(onChangePath).toBeCalledWith(SERVICE_NAME, ACCOUNT_ID, PATH);
     });
 
-    test('responds to openChange on Accounts DropDown', () => {
+    it('should respond to openChange on Accounts DropDown', () => {
       const element = shallow(
         <Navigation
           accounts={ACCOUNTS}
@@ -224,7 +222,7 @@ describe('<Navigation />', () => {
   });
 
   describe('#getAccountsDropdownItems()', () => {
-    test('retrieves available Google Accounts', () => {
+    it('should retrieve available Google Accounts', () => {
       const component = shallow(
         <Navigation
           accounts={ACCOUNTS}
@@ -254,7 +252,7 @@ describe('<Navigation />', () => {
       );
     });
 
-    test('retrieves available Dropbox Accounts', () => {
+    it('should retrieve available Dropbox Accounts', () => {
       const component = shallow(
         <Navigation
           accounts={ACCOUNTS}
@@ -284,7 +282,7 @@ describe('<Navigation />', () => {
       );
     });
 
-    test('Should switch active account when clicking on inactive one', () => {
+    it('should switch active account when clicking on inactive one', () => {
       const component = shallow(
         <Navigation
           accounts={ACCOUNTS}
