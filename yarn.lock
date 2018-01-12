@@ -107,17 +107,6 @@
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
-"@atlaskit/comment@^2.6.7":
-  version "2.6.7"
-  resolved "https://registry.yarnpkg.com/@atlaskit/comment/-/comment-2.6.7.tgz#55d90874fdb5e1523e72346588f88dd2b922cb17"
-  dependencies:
-    "@atlaskit/button" "^5.4.2"
-    "@atlaskit/icon" "^10.1.0"
-    "@atlaskit/lozenge" "^3.4.2"
-    "@atlaskit/util-shared-styles" "^2.0.0"
-    prop-types "^15.5.10"
-    styled-components "^1.4.6"
-
 "@atlaskit/dropdown-menu@^3.0.1", "@atlaskit/dropdown-menu@^3.8.0":
   version "3.10.3"
   resolved "https://registry.yarnpkg.com/@atlaskit/dropdown-menu/-/dropdown-menu-3.10.3.tgz#37200fe60b355fe63687098d2e451a551d854bb9"
