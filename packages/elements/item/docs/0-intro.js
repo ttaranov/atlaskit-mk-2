@@ -19,8 +19,30 @@ export default md`
 
   ${(
     <Props
-      heading="Props"
+      heading="Item Props"
       props={require('!!extract-react-types-loader!../src/components/Item')}
     />
   )}
+
+  ${(
+    <Props
+      heading="ItemGroup Props"
+      props={require('!!extract-react-types-loader!../src/components/ItemGroup')}
+    />
+  )}
+
+  ${(
+    <Props
+      heading="withItemClick Props"
+      props={require('!!extract-react-types-loader!../src/components/ItemGroup')}
+    />
+  )}
+
+  ${(
+    <Props
+      heading="withItemFocus Props"
+      props={require('!!extract-react-types-loader!../src/components/ItemGroup')}
+    />
+  )}
+
 `;

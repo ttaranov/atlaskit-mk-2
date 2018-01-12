@@ -37,11 +37,11 @@ const withItemFocus = (WrappedComponent: any) =>
       }
 
       this.contextId = uuid();
-      // eslint-disable-next-line react/no-find-dom-node
+
       this.callContextFn(
         'registerItem',
         this.contextId,
-        ReactDOM.findDOMNode(this),
+        ReactDOM.findDOMNode(this), // eslint-disable-line react/no-find-dom-node
       );
     }
 
@@ -50,11 +50,10 @@ const withItemFocus = (WrappedComponent: any) =>
         return;
       }
 
-      // eslint-disable-next-line react/no-find-dom-node
       this.callContextFn(
         'updateItem',
         this.contextId,
-        ReactDOM.findDOMNode(this),
+        ReactDOM.findDOMNode(this), // eslint-disable-line react/no-find-dom-node
       );
     }
 
