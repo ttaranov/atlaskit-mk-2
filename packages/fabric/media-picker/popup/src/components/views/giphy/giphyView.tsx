@@ -11,6 +11,7 @@ import { CardView } from '@atlaskit/media-card';
 import { BricksLayout } from './bricksGrid';
 import { fileClick } from '../../../actions/fileClick';
 import { ImageCardModel } from '../../../tools/fetcher/fetcher';
+import gridCellScaler from '../../../tools/gridCellScaler';
 import { State, SelectedItem } from '../../../domain';
 import { searchGiphy } from '../../../actions/searchGiphy';
 
@@ -134,12 +135,13 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
   private renderSearchResults = () => {
     const { isLoading, cardModels, totalResultCount } = this.props;
 
-    const loadMoreButton =
-      isLoading ||
+    const isThereAreMoreResults =
       totalResultCount === undefined ||
-      cardModels.length < totalResultCount - 1
-        ? this.renderLoadMoreButton()
-        : null;
+      cardModels.length < totalResultCount - 1;
+    const shouldShowLoadMoreButton = isLoading || isThereAreMoreResults;
+
+    const loadMoreButton =
+      shouldShowLoadMoreButton && this.renderLoadMoreButton();
 
     return (
       <div>
@@ -161,7 +163,12 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
       const selected = selectedItems.some(
         item => item.id === metadata.id && item.serviceName === 'giphy',
       );
-      const dimensions = this.scaleThumbnailGif(actualDimensions);
+      const dimensions = gridCellScaler({
+        ...actualDimensions,
+        gapSize: GAP_SIZE,
+        containerWidth: CONTAINER_WIDTH,
+        numberOfColumns: NUMBER_OF_COLUMNS,
+      });
 
       return (
         <GridCell key={`${i}-metadata.id`} width={dimensions.width}>
@@ -205,30 +212,30 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
     );
   };
 
-  private scaleThumbnailGif = ({
-    width,
-    height,
-  }: {
-    width: number;
-    height: number;
-  }) => {
-    const desiredWith = Math.floor(
-      (CONTAINER_WIDTH - GAP_SIZE * (NUMBER_OF_COLUMNS - 1)) /
-        NUMBER_OF_COLUMNS,
-    );
-
-    return {
-      width: desiredWith,
-      height: Math.round(desiredWith / width * height),
-    };
-  };
+  // private scaleThumbnailGif = ({
+  //   width,
+  //   height,
+  // }: {
+  //   width: number;
+  //   height: number;
+  // }) => {
+  //   const desiredWith = Math.floor(
+  //     (CONTAINER_WIDTH - GAP_SIZE * (NUMBER_OF_COLUMNS - 1)) /
+  //       NUMBER_OF_COLUMNS,
+  //   );
+  //
+  //   return {
+  //     width: desiredWith,
+  //     height: Math.round(desiredWith / width * height),
+  //   };
+  // };
 
   private createSearchChangeHandler = () => {
     const { onSearchQueryChange } = this.props;
     const debouncedOnSearchQueryChange = debounce(onSearchQueryChange, 1000);
 
     return (e: FormEvent<HTMLInputElement>) => {
-      const query: string = (e.target as any).value;
+      const query: string = e.currentTarget.value;
       this.setState({
         query,
       });
@@ -237,10 +244,8 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
     };
   };
 
-  private createClickHandler = (cardModel: ImageCardModel) => {
-    return () => {
-      this.props.onCardClick(cardModel);
-    };
+  private createClickHandler = (cardModel: ImageCardModel) => () => {
+    this.props.onCardClick(cardModel);
   };
 
   private handleLoadMoreButtonClick = () => {

@@ -1,3 +1,5 @@
+jest.mock('../../../../tools/gridCellScaler');
+
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
@@ -22,6 +24,7 @@ import {
   WarningSuggestion,
 } from '../styles';
 import { searchGiphy, fileClick } from '../../../../actions';
+import gridCellScaler from '../../../../tools/gridCellScaler';
 
 const ConnectedGiphyViewWithStore = getComponentClassWithStore(
   ConnectedGiphyView,
@@ -98,6 +101,13 @@ describe('<ConnectedGiphyView />', () => {
     const onLoadMoreButtonClick = jest.fn();
     const onCardClick = jest.fn();
 
+    beforeEach(() => {
+      (gridCellScaler as jest.Mock<typeof gridCellScaler>).mockReturnValue({
+        width: 10,
+        height: 10,
+      });
+    });
+
     afterEach(() => {
       onSearchQueryChange.mockClear();
       onLoadMoreButtonClick.mockClear();
@@ -139,6 +149,20 @@ describe('<ConnectedGiphyView />', () => {
       );
 
       expect(giphyView.find(CardView)).toHaveLength(5);
+      expect(
+        giphyView
+          .find(CardView)
+          .first()
+          .props(),
+      ).toEqual(
+        expect.objectContaining({
+          status: 'complete',
+          dimensions: { width: 10, height: 10 },
+          dataURI: cardModels[0].dataURI,
+          metadata: cardModels[0].metadata,
+          selectable: true,
+        }),
+      );
     });
 
     it('should render CardView with selected=true for selectedItems which are in items', () => {
@@ -312,7 +336,7 @@ describe('<ConnectedGiphyView />', () => {
 
       giphyView
         .find(FieldText)
-        .simulate('change', { target: { value: 'some-search-query' } });
+        .simulate('change', { currentTarget: { value: 'some-search-query' } });
       expect(onSearchQueryChange).toHaveBeenCalledTimes(1);
     });
 

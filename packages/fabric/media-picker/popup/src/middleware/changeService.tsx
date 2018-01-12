@@ -10,10 +10,10 @@ export const changeService = (store: Store<State>) => (
     const { serviceName } = action;
     const accounts = store.getState().accounts;
 
-    const firstAcc = accounts.filter(
+    const firstAccount = accounts.filter(
       account => account.type === action.serviceName,
     )[0];
-    const accountId = firstAcc ? firstAcc.id : '';
+    const accountId = firstAccount ? firstAccount.id : '';
 
     store.dispatch(changeAccount(serviceName, accountId));
   }
