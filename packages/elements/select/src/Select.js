@@ -8,6 +8,8 @@ import * as defaultComponents from './components';
 // NOTE in the future, `Props` and `defaultProps` should come
 // directly from react-select
 
+type fn = () => void;
+
 type Props = {
   /* Remove the currently focused option when the user presses backspace */
   backspaceRemovesValue: boolean,
@@ -21,7 +23,7 @@ type Props = {
   /* Clear all values when the user presses escape AND the menu is closed */
   escapeClearsValue: boolean,
   /* Functions to manipulate how the options data is represented when rendered */
-  formatters: Formatters,
+  formatters: {},
   /* Hide the selected option from the menu */
   hideSelectedOptions: boolean,
   /* Define an id prefix for the select components e.g. {your-id}-value */
@@ -39,17 +41,17 @@ type Props = {
   /* Maximum height of the value container before scrolling */
   maxValueHeight: number,
   /* Handle change events on the select */
-  onChange: (ValueType, ActionMeta) => void,
+  onChange: fn,
   /* Handle key down events on the select */
-  onKeyDown: (SyntheticKeyboardEvent<HTMLElement>) => void,
+  onKeyDown: fn,
   /* Array of options that populate the select menu */
-  options: OptionsType,
+  options: Array<{ [key: string]: any }>,
   /* Placeholder text for the select value */
   placeholder?: string,
   /* Select the currently focused option when the user presses tab */
   tabSelectsValue: boolean,
   /* The value of the select; reflected by the selected option */
-  value: ValueType,
+  value: any,
 };
 
 const defaultProps = {
@@ -72,11 +74,11 @@ const defaultProps = {
 export default class AtlaskitSelect extends Component<Props> {
   components: SelectComponents;
   static defaultProps = defaultProps;
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.cacheComponents(props.components);
   }
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (nextProps.components !== this.props.components) {
       // TODO just watching that this isn't running too often,
       // remove warning when things settle down
@@ -86,7 +88,7 @@ export default class AtlaskitSelect extends Component<Props> {
       this.cacheComponents(nextProps.components);
     }
   }
-  cacheComponents = components => {
+  cacheComponents = (components: SelectComponents) => {
     this.components = {
       ...defaultComponents,
       ...animatedComponents,

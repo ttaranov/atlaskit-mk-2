@@ -11,7 +11,13 @@ export const cities = [
   { label: 'Sydney', value: 'sydney' },
 ];
 
-export const countries = [
+export const countries: Array<{
+  abbr: string,
+  code: string,
+  icon: string,
+  name: string,
+  suggested?: boolean,
+}> = [
   { icon: '🇦🇫', name: 'Afghanistan', abbr: 'AF', code: '93' },
   { icon: '🇦🇱', name: 'Albania', abbr: 'AL', code: '355' },
   { icon: '🇩🇿', name: 'Algeria', abbr: 'DZ', code: '213' },

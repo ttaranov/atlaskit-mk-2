@@ -4,7 +4,7 @@ import React from 'react';
 import Select from './Select';
 import { CheckboxOption } from './components';
 
-const CheckboxSelect = props => (
+const CheckboxSelect = (props: any) => (
   <Select
     closeMenuOnSelect={false}
     hideSelectedOptions={false}

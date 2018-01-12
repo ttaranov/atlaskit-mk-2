@@ -6,13 +6,13 @@ import CrossIcon from '@atlaskit/icon/glyph/editor/close';
 import DownIcon from '@atlaskit/icon/glyph/hipchat/chevron-down';
 
 // indicators
-export const ClearIndicator = p => (
-  <components.ClearIndicator {...p}>
+export const ClearIndicator = (props: any) => (
+  <components.ClearIndicator {...props}>
     <CrossIcon />
   </components.ClearIndicator>
 );
-export const DropdownIndicator = p => (
-  <components.DropdownIndicator {...p}>
+export const DropdownIndicator = (props: any) => (
+  <components.DropdownIndicator {...props}>
     <DownIcon />
   </components.DropdownIndicator>
 );
