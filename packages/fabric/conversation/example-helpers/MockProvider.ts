@@ -10,6 +10,7 @@ import {
   FETCH_CONVERSATIONS_SUCCESS,
   ADD_COMMENT_SUCCESS,
   UPDATE_COMMENT_SUCCESS,
+  DELETE_COMMENT_SUCCESS,
   CREATE_CONVERSATION_SUCCESS,
   UPDATE_USER,
 } from '../src/internal/actions';
@@ -122,6 +123,31 @@ export class MockProvider extends AbstractConversationResource {
 
     const { dispatch } = this;
     dispatch({ type: UPDATE_COMMENT_SUCCESS, payload: result });
+
+    return result;
+  }
+
+  /**
+   * Deletes a comment based on ID. Returns deleted comment
+   * @param {string} conversationId
+   * @param {string} commentId
+   * @returns {Promise<Comment>}
+   */
+  async deleteComment(
+    conversationId: string,
+    commentId: string,
+  ): Promise<Comment> {
+    const result = {
+      createdBy: this.config.user,
+      createdAt: Date.now(),
+      document: {},
+      conversationId,
+      commentId,
+      deleted: true,
+    };
+
+    const { dispatch } = this;
+    dispatch({ type: DELETE_COMMENT_SUCCESS, payload: result });
 
     return result;
   }

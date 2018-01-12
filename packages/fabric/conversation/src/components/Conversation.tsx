@@ -20,6 +20,7 @@ export interface Props {
     commentId: string,
     value: any,
   ) => void;
+  onDeleteComment?: (conversationId: string, commentId: string) => void;
   onCreateConversation?: (
     localId: string,
     containerId: string,
@@ -40,6 +41,7 @@ export default class Conversation extends React.PureComponent<Props> {
       conversation,
       onAddComment,
       onUpdateComment,
+      onDeleteComment,
       user,
     } = this.props;
 
@@ -57,6 +59,7 @@ export default class Conversation extends React.PureComponent<Props> {
         user={user}
         onAddComment={onAddComment}
         onUpdateComment={onUpdateComment}
+        onDeleteComment={onDeleteComment}
       />
     ));
   }

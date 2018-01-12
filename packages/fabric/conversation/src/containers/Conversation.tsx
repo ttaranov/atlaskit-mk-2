@@ -4,6 +4,7 @@ import { connect, withProvider, Dispatch } from '../internal/connect';
 import {
   addComment,
   updateComment,
+  deleteComment,
   updateUser,
   createConversation,
 } from '../internal/actions';
@@ -39,6 +40,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
   onUpdateComment(conversationId: string, commentId: string, value: any) {
     dispatch(updateComment(conversationId, commentId, value));
+  },
+
+  onDeleteComment(conversationId: string, commentId: string) {
+    dispatch(deleteComment(conversationId, commentId));
   },
 
   onUpdateUser(user: User) {

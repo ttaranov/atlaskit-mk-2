@@ -7,6 +7,9 @@ export const FETCH_CONVERSATIONS_SUCCESS = 'fetchConversationsSuccess';
 export const ADD_COMMENT = 'addComment';
 export const ADD_COMMENT_SUCCESS = 'addCommentSuccess';
 
+export const DELETE_COMMENT = 'deleteComment';
+export const DELETE_COMMENT_SUCCESS = 'deleteCommentSuccess';
+
 export const UPDATE_COMMENT = 'updateComment';
 export const UPDATE_COMMENT_SUCCESS = 'updateCommentSuccess';
 
@@ -29,6 +32,13 @@ export const updateComment = (
   value: any,
 ) => async (provider: ResourceProvider) => {
   provider.updateComment(conversationId, commentId, value);
+};
+
+export const deleteComment = (
+  conversationId: string,
+  commentId: string,
+) => async (provider: ResourceProvider) => {
+  provider.deleteComment(conversationId, commentId);
 };
 
 export const updateUser = (user: User) => async (

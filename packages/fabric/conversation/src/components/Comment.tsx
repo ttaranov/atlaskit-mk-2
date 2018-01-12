@@ -24,12 +24,15 @@ export interface Props {
     commentId: string,
     value: any,
   ) => void;
+  onDeleteComment?: (conversationId: string, commentId: string) => void;
 }
 
 export interface State {
   isEditing?: boolean;
   isReplying?: boolean;
 }
+
+export const DeletedMessage = () => <em>Comment deleted by the author</em>;
 
 export default class Comment extends React.PureComponent<Props, State> {
   constructor(props) {
@@ -66,6 +69,16 @@ export default class Comment extends React.PureComponent<Props, State> {
     });
   };
 
+  private onDelete = () => {
+    const { onDeleteComment, conversationId, comment } = this.props;
+
+    if (!onDeleteComment) {
+      return;
+    }
+
+    onDeleteComment(conversationId, comment.commentId);
+  };
+
   private onEdit = () => {
     this.setState({
       isEditing: true,
@@ -96,6 +109,10 @@ export default class Comment extends React.PureComponent<Props, State> {
     const { comment } = this.props;
     const { isEditing } = this.state;
 
+    if (comment.deleted) {
+      return <DeletedMessage />;
+    }
+
     if (isEditing) {
       return (
         <Editor
@@ -117,7 +134,7 @@ export default class Comment extends React.PureComponent<Props, State> {
     const { createdBy } = comment;
     let actions;
 
-    if (!isEditing) {
+    if (!isEditing && !comment.deleted) {
       actions = [
         <CommentAction key="reply" onClick={this.onReply}>
           Reply
@@ -129,6 +146,9 @@ export default class Comment extends React.PureComponent<Props, State> {
           ...actions,
           <CommentAction key="edit" onClick={this.onEdit}>
             Edit
+          </CommentAction>,
+          <CommentAction key="delete" onClick={this.onDelete}>
+            Delete
           </CommentAction>,
         ];
       }
@@ -156,6 +176,7 @@ export default class Comment extends React.PureComponent<Props, State> {
             conversationId={conversationId}
             onAddComment={this.props.onAddComment}
             onUpdateComment={this.props.onUpdateComment}
+            onDeleteComment={this.props.onDeleteComment}
           />
         ))}
         {isReplying && (
