@@ -17,6 +17,7 @@ import {
 } from '../../domain';
 
 import { mapAuthToAuthHeaders } from '../../domain/auth';
+import { GIPHY_API_KEY } from '../../config';
 
 const METADATA_POLL_INTERVAL_MS = 2000;
 const NON_IMAGE_PREVIEW_WIDTH = 640;
@@ -305,8 +306,7 @@ export class MediaApiFetcher implements Fetcher {
     const requestConfig = {
       url: `${baseUrl}`,
       params: {
-        // TODO Move these keys somewhere in config MSW-406
-        api_key: 'lBOxhhz1BM62Y3JsK0iQv1pRYyOGUjR8',
+        api_key: GIPHY_API_KEY,
         offset,
       },
     };
@@ -325,7 +325,7 @@ export class MediaApiFetcher implements Fetcher {
     const requestConfig = {
       url: `${baseUrl}`,
       params: {
-        api_key: 'lBOxhhz1BM62Y3JsK0iQv1pRYyOGUjR8',
+        api_key: GIPHY_API_KEY,
         q: query,
         offset,
       },
