@@ -29,10 +29,12 @@ export default class PanelTextInput extends PureComponent<Props, State> {
     };
   }
 
-  componentWillReceiveProps(props: Props) {
-    this.setState({
-      value: props.defaultValue || '',
-    });
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.defaultValue !== this.props.defaultValue) {
+      this.setState({
+        value: nextProps.defaultValue,
+      });
+    }
   }
 
   onMouseDown = () => {
