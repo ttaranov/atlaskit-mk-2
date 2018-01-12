@@ -3,7 +3,6 @@ import * as React from 'react';
 import { Component } from 'react';
 import Button from '@atlaskit/button';
 import Toggle from '@atlaskit/toggle';
-import Spinner from '@atlaskit/spinner';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
 import {
   userAuthProvider,
@@ -22,7 +21,6 @@ import {
 import { AuthEnvironment } from '../example-helpers';
 
 export interface PopupWrapperState {
-  isPopupReady: boolean;
   isAutoFinalizeActive: boolean;
   isFetchMetadataActive: boolean;
   collectionName: string;
@@ -37,7 +35,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   popup: Popup;
 
   state: PopupWrapperState = {
-    isPopupReady: false,
     isAutoFinalizeActive: true,
     isFetchMetadataActive: true,
     collectionName: defaultMediaPickerCollectionName,
@@ -81,11 +78,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       } else {
         console.error(JSON.stringify(data));
       }
-      return;
-    }
-
-    if (eventName === 'ready') {
-      this.setState({ isPopupReady: true });
       return;
     }
 
@@ -163,17 +155,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     );
   }
 
-  renderLoadingState = () => {
-    return (
-      <p style={{ display: 'flex', alignItems: 'center' }}>
-        <Spinner size="medium" />
-        <h3 style={{ margin: '0 20px' }}>
-          Popup is NOT ready (i.e. "ready" event has NOT been fired by Popup)
-        </h3>
-      </p>
-    );
-  };
-
   renderEvents(events) {
     return events.map(({ eventName, data }, key) => {
       if (eventName === 'uploads-start') {
@@ -244,7 +225,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
 
   render() {
     const {
-      isPopupReady,
       isAutoFinalizeActive,
       isFetchMetadataActive,
       closedTimes,
@@ -262,7 +242,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
           <Button
             appearance="primary"
             onClick={this.onShow}
-            isDisabled={!isPopupReady || hasTorndown}
+            isDisabled={hasTorndown}
           >
             Show
           </Button>
@@ -304,9 +284,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
           />
           Closed times: {closedTimes}
         </PopupHeader>
-        <PopupEventsWrapper>
-          {isPopupReady ? this.renderEvents(events) : this.renderLoadingState()}
-        </PopupEventsWrapper>
+        <PopupEventsWrapper>{this.renderEvents(events)}</PopupEventsWrapper>
       </PopupContainer>
     );
   }

@@ -93,6 +93,12 @@ export interface FolderViewDispatchProps {
 export type FolderViewerProps = FolderViewerStateProps &
   FolderViewDispatchProps;
 
+const selectedTick = (
+  <SelectedFileIconWrapper>
+    <CheckCircleIcon label="check" />
+  </SelectedFileIconWrapper>
+);
+
 /**
  * Routing class that displays view depending on situation.
  */
@@ -176,7 +182,7 @@ export class FolderViewer extends Component<FolderViewerProps, {}> {
     isSelected: boolean,
   ): JSX.Element => {
     const tail = isSelected
-      ? this.renderSelectedTick()
+      ? selectedTick
       : this.renderFileCreateDateAndSize(serviceFile);
 
     return (
@@ -193,14 +199,6 @@ export class FolderViewer extends Component<FolderViewerProps, {}> {
         </FileMetadataGroup>
         {tail}
       </FolderViewerRow>
-    );
-  };
-
-  private renderSelectedTick = () => {
-    return (
-      <SelectedFileIconWrapper>
-        <CheckCircleIcon label="check" />
-      </SelectedFileIconWrapper>
     );
   };
 
