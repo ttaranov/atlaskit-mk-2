@@ -130,7 +130,12 @@ export default class Comment extends React.PureComponent<Props, State> {
       );
     }
 
-    return <ReactRenderer document={comment.document.adf} />;
+    return (
+      <ReactRenderer
+        document={comment.document.adf}
+        dataProviders={dataProviderFactory}
+      />
+    );
   }
 
   render() {
