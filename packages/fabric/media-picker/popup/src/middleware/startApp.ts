@@ -23,8 +23,6 @@ export default function(eventEmitter: PopupUploadEventEmitter) {
       store.dispatch(updatePopupUrls({ apiUrl, redirectUrl }));
       store.dispatch(getConnectedRemoteAccounts());
       store.dispatch(getFilesInRecentsCollection());
-
-      eventEmitter.emitReady();
     }
     return next(action);
   };

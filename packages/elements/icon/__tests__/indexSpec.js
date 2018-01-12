@@ -426,16 +426,30 @@ describe(name, () => {
   describe('gradients', () => {
     it('multiple gradients in a single icon should use unique ids', () => {
       const wrapper = render(<ConfluenceIcon label="My icon" />);
-      const gradientIds = wrapper
-        .find('lineargradient')
-        .map((i, el) => el.attribs.id);
+      // For some reason cheerio will not find linearGradient elements anymore.
+      // Instead we find all the elements inside <defs> and confirm that they are linearGradients
+      const linearGradients = wrapper.find('defs > *');
 
-      expect(gradientIds[0]).not.toBe(gradientIds[1]);
+      expect(linearGradients.length).toBe(2);
+      expect(linearGradients[0].name).toBe('linearGradient');
+      expect(linearGradients[1].name).toBe('linearGradient');
+
+      // now check that they id's are different
+      expect(linearGradients[0].attribs.id).not.toBe(
+        linearGradients[1].attribs.id,
+      );
     });
 
     it('ids should be referenced correctly in fill properties', () => {
       const wrapper = render(<BitbucketIcon label="My icon" />);
-      const gradientId = wrapper.find('linearGradient').prop('id');
+      // for some reason cheerio will no longer find linear gradient elements. Instead we look
+      // inside defs and confirm that we have a linearGradient
+      const gradientEls = wrapper.find('defs > *');
+      expect(gradientEls.length).toBe(1);
+      expect(gradientEls[0].name).toBe('linearGradient');
+
+      // now we can get the ide
+      const gradientId = gradientEls[0].attribs.id;
       const gradientFillPaths = wrapper
         .find('path')
         .filter((i, el) => /^url\(#/.test(el.attribs.fill));
@@ -448,14 +462,24 @@ describe(name, () => {
     });
 
     it('should have unique ids across icon instances', () => {
-      const gradientId = render(<BitbucketIcon label="My icon" />)
-        .find('linearGradient')
-        .prop('id');
-      const otherGradientId = render(<BitbucketIcon label="My icon" />)
-        .find('linearGradient')
-        .prop('id');
+      const icon1 = render(<BitbucketIcon label="My icon" />);
+      const icon2 = render(<BitbucketIcon label="My icon" />);
+      // Again, for some reason cheerio will no longer find linear gradient elements.
+      // Instead we look inside defs and confirm that we have a linearGradient
+      const gradientEls1 = icon1.find('defs > *');
+      expect(gradientEls1.length).toBe(1);
+      expect(gradientEls1[0].name).toBe('linearGradient');
 
-      expect(gradientId).not.toBe(otherGradientId);
+      // and again
+      const gradientEls2 = icon2.find('defs > *');
+      expect(gradientEls2.length).toBe(1);
+      expect(gradientEls2[0].name).toBe('linearGradient');
+
+      // now we can check the id's
+      const gradientId1 = gradientEls1[0].attribs.id;
+      const gradientId2 = gradientEls2[0].attribs.id;
+
+      expect(gradientId1).not.toBe(gradientId2);
     });
   });
 });

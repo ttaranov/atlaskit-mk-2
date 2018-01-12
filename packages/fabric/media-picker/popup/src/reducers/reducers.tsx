@@ -24,6 +24,11 @@ import deselectItem from './deselectItem';
 import setTenant from './setTenant';
 import isUploading from './isUploading';
 import remoteUploadStart from './remoteUploadStart';
+import {
+  giphySearchStarted,
+  giphySearchFullfilled,
+  giphySearchFailed,
+} from './searchGiphy';
 import showPopup from './showPopup';
 import hidePopup from './hidePopup';
 import startApp from './startApp';
@@ -55,6 +60,9 @@ const reducers = combineReducers([
   setTenant,
   isUploading,
   remoteUploadStart,
+  giphySearchStarted,
+  giphySearchFullfilled,
+  giphySearchFailed,
   showPopup,
   hidePopup,
   startApp,

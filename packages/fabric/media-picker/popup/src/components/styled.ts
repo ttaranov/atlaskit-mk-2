@@ -1,32 +1,31 @@
 import styled from 'styled-components';
 import { akColorN30, akFontFamily } from '@atlaskit/util-shared-styles';
+
 export const MediaPickerPopupWrapper = styled.div`
   * {
     box-sizing: border-box;
   }
-  font-family: ${akFontFamily};
-  user-select: none;
-  cursor: default;
-  border-radius: 3px;
+
   display: flex;
-  overflow: hidden;
+  cursor: default;
+  user-select: none;
+  font-family: ${akFontFamily};
+  border-radius: 3px;
 `;
 
 export const SidebarWrapper = styled.div`
   width: 235px;
   min-width: 235px;
   background-color: ${akColorN30};
-  position: relative;
-  z-index: 60;
 `;
 
 export const ViewWrapper = styled.div`
-  background-color: white;
-  position: relative;
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
   flex: 1;
-`;
 
-export const ContentWrapper = styled.div`
+  /* Height of the Popup should never change */
   height: calc(100vh - 200px);
+
+  background-color: white;
 `;

@@ -27,7 +27,6 @@ describe('<Footer />', () => {
     mimeType: 'image/jpg',
     id: 'some-id',
     name: 'some-name',
-    parentId: 'some-parent-id',
     size: 123456,
     date: Date.now(),
   };

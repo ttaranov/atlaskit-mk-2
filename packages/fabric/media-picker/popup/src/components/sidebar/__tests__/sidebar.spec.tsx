@@ -28,7 +28,7 @@ describe('<Sidebar />', () => {
   });
 
   describe('#render()', () => {
-    test('should render ServiceList, 3 SidebarItems and Separator', () => {
+    it('should render ServiceList, 3 SidebarItems and Separator', () => {
       const element = shallow(<StatelessSidebar selected="" />);
 
       expect(element.find(ServiceList)).toHaveLength(1);
@@ -36,7 +36,7 @@ describe('<Sidebar />', () => {
       expect(element.find(Separator)).toHaveLength(1);
     });
 
-    test('should use selected prop to pass isActive prop to SidebarItem components', () => {
+    it('should use selected prop to pass isActive prop to SidebarItem components', () => {
       const uploadElement = shallow(<StatelessSidebar selected="upload" />);
 
       const dropBoxElement = shallow(<StatelessSidebar selected="dropbox" />);

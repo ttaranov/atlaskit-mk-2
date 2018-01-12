@@ -11,14 +11,14 @@ function fetchChildrenOf(node) {
   return Promise.resolve(node.children);
 }
 
-function getChildrenData(parent) {
+function getItemsData(parent) {
   return parent ? fetchChildrenOf(parent) : fetchRoots();
 }
 
 export default () => (
   <TableTree>
     <Rows
-      items={getChildrenData}
+      items={getItemsData}
       render={({ title, numbering, page, children }) => (
         <Row key={numbering} hasChildren={children.length > 0}>
           <Cell width={300} singleLine>

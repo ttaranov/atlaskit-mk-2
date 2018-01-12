@@ -4,6 +4,7 @@ import {
   FETCH_CONVERSATIONS_SUCCESS,
   ADD_COMMENT_SUCCESS,
   UPDATE_COMMENT_SUCCESS,
+  DELETE_COMMENT_SUCCESS,
   UPDATE_USER,
   CREATE_CONVERSATION_SUCCESS,
 } from '../internal/actions';
@@ -33,6 +34,7 @@ export interface ResourceProvider {
     commentId: string,
     document: any,
   ): Promise<Comment>;
+  deleteComment(conversationId: string, commentId: string): Promise<Comment>;
   updateUser(user: User): Promise<User>;
 }
 
@@ -88,6 +90,16 @@ export class AbstractConversationResource implements ResourceProvider {
     conversationId: string,
     commentId: string,
     document: any,
+  ): Promise<Comment> {
+    return Promise.reject('Not implemented');
+  }
+
+  /**
+   * Deletes a comment based on ID. Returns updated comment.
+   */
+  async deleteComment(
+    conversationId: string,
+    commentId: string,
   ): Promise<Comment> {
     return Promise.reject('Not implemented');
   }
@@ -237,6 +249,26 @@ export class ConversationResource extends AbstractConversationResource {
 
     const { dispatch } = this;
     dispatch({ type: UPDATE_COMMENT_SUCCESS, payload: result });
+
+    return result;
+  }
+
+  /**
+   * Deletes a comment based on ID. Returns updated comment.
+   */
+  async deleteComment(
+    conversationId: string,
+    commentId: string,
+  ): Promise<Comment> {
+    const result = await this.makeRequest<Comment>(
+      `/conversation/${conversationId}/comment/${commentId}`,
+      {
+        method: 'DELETE',
+      },
+    );
+
+    const { dispatch } = this;
+    dispatch({ type: DELETE_COMMENT_SUCCESS, payload: result });
 
     return result;
   }

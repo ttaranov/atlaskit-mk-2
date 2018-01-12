@@ -2,19 +2,22 @@
 import React, { PureComponent } from 'react';
 import Item from './Item';
 import LoaderItem from './LoaderItem';
-import { type ItemsProvider, type RenderFunction } from './../types';
-
-type ItemsDataType = Array<Object>;
+import {
+  type ItemsProvider,
+  type RenderFunction,
+  type ItemsDataType,
+} from './../types';
 
 type Props = {
-  childrenData: ?ItemsDataType,
-  getChildrenData: ItemsProvider,
+  parentData?: Object,
+  getItemsData: ItemsProvider,
   depth?: number,
   render: RenderFunction,
 };
 
 type State = {
-  isLoaderShown?: boolean,
+  isLoaderShown: boolean,
+  itemsData?: ItemsDataType,
 };
 
 export default class Items extends PureComponent<Props, State> {
@@ -22,52 +25,63 @@ export default class Items extends PureComponent<Props, State> {
     depth: 0,
   };
 
-  componentWillMount() {
-    this.setState({
-      isLoaderShown: Items.isLoadingData(this.props.childrenData),
-    });
-  }
+  state: State = {
+    isLoaderShown: false,
+  };
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.childrenData !== this.props && this.props.childrenData) {
-      if (Items.isLoadingData(nextProps.childrenData)) {
-        this.setState({ isLoaderShown: true });
-      }
+  loadCancelled = false;
+
+  componentWillMount() {
+    if (!this.state.itemsData) {
+      this.setState({
+        isLoaderShown: true,
+      });
+      this.loadCancelled = false;
+      Promise.resolve()
+        .then(() => this.props.getItemsData(this.props.parentData))
+        .then(itemsData => {
+          if (!this.loadCancelled) {
+            this.setState({
+              itemsData,
+            });
+          }
+        });
     }
   }
 
-  static isLoadingData(data: ?ItemsDataType) {
-    return !data;
+  componentWillUnmount() {
+    this.loadCancelled = true;
   }
 
-  handleLoadingFinished = () => {
+  handleLoaderComplete = () => {
     this.setState({
       isLoaderShown: false,
     });
   };
 
   renderLoader() {
-    const { depth, childrenData } = this.props;
-    const isCompleting = !Items.isLoadingData(childrenData);
+    const { depth } = this.props;
+    const { itemsData } = this.state;
     return (
       <LoaderItem
-        isCompleting={isCompleting}
-        onComplete={this.handleLoadingFinished}
+        isCompleting={!!itemsData}
+        onComplete={this.handleLoaderComplete}
         depth={depth + 1}
       />
     );
   }
 
-  renderChildItems() {
-    const { childrenData, getChildrenData, render, depth = 0 } = this.props;
+  renderItems() {
+    const { getItemsData, render, depth = 0 } = this.props;
+    const { itemsData } = this.state;
     return (
-      childrenData &&
-      childrenData.map((childRowData: Object, index: number) => (
+      itemsData &&
+      itemsData.map((itemData: Object, index: number) => (
         <Item
-          data={childRowData}
-          getChildrenData={getChildrenData}
+          data={itemData}
+          getChildrenData={getItemsData}
           depth={depth + 1}
-          key={(childRowData && childRowData.id) || index}
+          key={(itemData && itemData.id) || index}
           render={render}
         />
       ))
@@ -77,7 +91,7 @@ export default class Items extends PureComponent<Props, State> {
   render() {
     const { isLoaderShown } = this.state;
     return (
-      <div>{isLoaderShown ? this.renderLoader() : this.renderChildItems()}</div>
+      <div>{isLoaderShown ? this.renderLoader() : this.renderItems()}</div>
     );
   }
 }

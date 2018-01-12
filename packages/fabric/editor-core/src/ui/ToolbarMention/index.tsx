@@ -5,13 +5,11 @@ import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { MentionsState } from '../../plugins/mentions';
-import EditorWidth from '../../utils/editor-width';
 import { ToolbarButton } from './styles';
 
 export interface Props {
   editorView?: EditorView;
   pluginKey: PluginKey;
-  editorWidth?: number;
   isDisabled?: boolean;
 }
 
@@ -43,12 +41,9 @@ export default class ToolbarMention extends PureComponent<Props, State> {
 
   render() {
     const { disabled } = this.state;
-    const { editorWidth, isDisabled } = this.props;
+    const { isDisabled } = this.props;
 
-    if (
-      !this.pluginState ||
-      (editorWidth && editorWidth < EditorWidth.BreakPoint5)
-    ) {
+    if (!this.pluginState) {
       return null;
     }
 
@@ -58,7 +53,6 @@ export default class ToolbarMention extends PureComponent<Props, State> {
         disabled={disabled || isDisabled}
         title="Mention a person (@)"
         iconBefore={<MentionIcon label="Add mention" />}
-        spacing={editorWidth ? 'default' : 'none'}
       />
     );
   }

@@ -7,6 +7,8 @@ import {
 } from '../../../src/domain/uploadEvent';
 import { MediaFile } from '../../../src/domain/file';
 
+export const FILE_UPLOAD_ERROR = 'FILE_UPLOAD_ERROR';
+
 export interface FileUploadErrorAction extends Action {
   readonly type: 'FILE_UPLOAD_ERROR';
   readonly file?: MediaFile;
@@ -17,14 +19,14 @@ export interface FileUploadErrorAction extends Action {
 export function isFileUploadErrorAction(
   action: Action,
 ): action is FileUploadErrorAction {
-  return action.type === 'FILE_UPLOAD_ERROR';
+  return action.type === FILE_UPLOAD_ERROR;
 }
 
 export function fileUploadError(
   payload: UploadErrorEventPayload,
 ): FileUploadErrorAction {
   return {
-    type: 'FILE_UPLOAD_ERROR',
+    type: FILE_UPLOAD_ERROR,
     file: payload.file,
     error: payload.error,
     originalEvent: {

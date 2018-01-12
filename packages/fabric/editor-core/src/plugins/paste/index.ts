@@ -18,6 +18,7 @@ import { analyticsService } from '../../analytics';
 import * as keymaps from '../../keymaps';
 import { EditorAppearance } from '../../editor/index';
 import linkify from './linkify-md-plugin';
+import * as clipboard from '../../utils/clipboard';
 
 const pmSchemaToMdMapping = {
   nodes: {
@@ -132,7 +133,7 @@ export function createPlugin(
         }
 
         // Bail if copied content has files
-        if (event.clipboardData.types.indexOf('Files') > -1) {
+        if (clipboard.isPastedFile(event)) {
           return true;
         }
 

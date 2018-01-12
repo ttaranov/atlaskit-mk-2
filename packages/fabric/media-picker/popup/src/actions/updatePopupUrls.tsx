@@ -1,6 +1,8 @@
 import { Action } from 'redux';
 import { PopupUrls } from '../../../src/domain';
 
+export const UPDATE_POPUP_URLS = 'UPDATE_POPUP_URLS';
+
 export interface UpdatePopupUrlsAction extends Action {
   readonly type: 'UPDATE_POPUP_URLS';
   readonly urls: PopupUrls;
@@ -8,7 +10,7 @@ export interface UpdatePopupUrlsAction extends Action {
 
 export const updatePopupUrls = (urls: PopupUrls): UpdatePopupUrlsAction => {
   return {
-    type: 'UPDATE_POPUP_URLS',
+    type: UPDATE_POPUP_URLS,
     urls,
   };
 };
@@ -16,5 +18,5 @@ export const updatePopupUrls = (urls: PopupUrls): UpdatePopupUrlsAction => {
 export function isUpdatePopupUrlsAction(
   action: Action,
 ): action is UpdatePopupUrlsAction {
-  return action.type === 'UPDATE_POPUP_URLS';
+  return action.type === UPDATE_POPUP_URLS;
 }

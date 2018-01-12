@@ -18,10 +18,12 @@ pipelines:
             - bolt build
             - bolt lint
             - bolt typecheck
-            - bolt test:ci:master
+            - bolt test
             - bolt test:browser:browserstack
             - bolt release
             - (cd build/ci-scripts && bolt restart-stopped-build)
+          caches:
+            - node
 
   default:
     - step:
@@ -29,11 +31,15 @@ pipelines:
           - source ./build-setup.sh
           - bolt install --pure-lockfile
           - bolt build
-          - bolt lint
-          - bolt typecheck
-          - bolt test:ci:branch
-          - bolt test:browser:browserstack
+          - (node build/ci-scripts/should.run.js eslint) && bolt lint:eslint
+          - (node build/ci-scripts/should.run.js tslint) && bolt lint:tslint
+          - (node build/ci-scripts/should.run.js flow) && bolt typecheck:flow
+          - (node build/ci-scripts/should.run.js tsc) && bolt typecheck:typescript
+          - bolt test:changed
+          - (node build/ci-scripts/should.run.js browserstack) && bolt test:browser:browserstack
           - (cd website && bolt deploy-staging:no-minimize)
+        caches:
+          - node
 
   custom: # Pipelines that can be scheduled or triggered manually
 
@@ -44,3 +50,20 @@ pipelines:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
             - (cd website && bolt deploy)
+          caches:
+            - node
+
+    # This will run essentially the branch builds, but without any optimizations and should be manually
+    # run in any potentially risky builds
+    run-full-suite:
+      - step:
+          script:
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - bolt build
+            - bolt lint
+            - bolt typecheck
+            - bolt test
+            - bolt test:browser:browserstack
+            - (cd website && bolt deploy-staging:no-minimize)
+    # We deliberately don't use the cache here as well

@@ -25,6 +25,7 @@ import { editRemoteImageMiddleware } from '../../popup/src/middleware/editRemote
 import finalizeUploadMiddleware from '../../popup/src/middleware/finalizeUpload';
 import getPreviewMiddleware from '../../popup/src/middleware/getPreview';
 import { handleCloudFetchingEvent } from '../../popup/src/middleware/handleCloudFetchingEvent';
+import searchGiphy from '../../popup/src/middleware/searchGiphy';
 import hidePopupMiddleware from '../../popup/src/middleware/hidePopup';
 import sendUploadEventMiddleware from '../../popup/src/middleware/sendUploadEvent';
 import { PopupUploadEventEmitter } from '../components/popup';
@@ -52,7 +53,7 @@ export default (
       applyMiddleware(
         startAppMiddleware(eventEmitter) as Middleware,
         getFilesInRecentsCollection(fetcher, userAuthProvider) as Middleware,
-        changeService,
+        changeService as Middleware,
         changeAccount as Middleware,
         changeCloudAccountFolderMiddleware(fetcher, authService) as Middleware,
         fetchNextCloudFilesPageMiddleware(fetcher, authService) as Middleware,
@@ -70,6 +71,7 @@ export default (
         finalizeUploadMiddleware(fetcher, authService),
         proxyUploadEvents as Middleware,
         handleCloudFetchingEvent as Middleware,
+        searchGiphy(fetcher) as Middleware,
         hidePopupMiddleware(eventEmitter) as Middleware,
         sendUploadEventMiddleware(eventEmitter),
       ),
