@@ -30,3 +30,5 @@ packages/**/**/yarn.lock
 # hardcoded
 releases/new-release.md
 website/dist.zip
+
+*.iml
