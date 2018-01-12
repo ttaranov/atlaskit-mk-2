@@ -18,6 +18,7 @@ import {
 import Footer from './footer/footer';
 import Sidebar from './sidebar/sidebar';
 import UploadView from './views/upload/upload';
+import GiphyView from './views/giphy/giphyView';
 import Browser from './views/browser/browser';
 import { Dropzone } from './dropzone/dropzone';
 import MainEditorView from './views/editor/mainEditorView';
@@ -186,6 +187,8 @@ export class App extends Component<AppProps, AppState> {
           recentsCollection={RECENTS_COLLECTION}
         />
       );
+    } else if (selectedServiceName === 'giphy') {
+      return <GiphyView />;
     } else {
       return <Browser />;
     }

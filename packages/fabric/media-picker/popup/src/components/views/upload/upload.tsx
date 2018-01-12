@@ -355,7 +355,6 @@ const mapDispatchToProps = (
           id,
           mimeType,
           name,
-          parentId: '',
           size,
         },
         serviceName,

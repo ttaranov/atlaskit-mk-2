@@ -2,6 +2,8 @@ import { Action } from 'redux';
 
 import { ServiceName, Path } from '../domain';
 
+export const CHANGE_CLOUD_ACCOUNT_FOLDER = 'CHANGE_CLOUD_ACCOUNT_FOLDER';
+
 export interface ChangeCloudAccountFolderAction {
   readonly type: 'CHANGE_CLOUD_ACCOUNT_FOLDER';
   readonly serviceName: ServiceName;
@@ -15,7 +17,7 @@ export function changeCloudAccountFolder(
   path: Path,
 ): ChangeCloudAccountFolderAction {
   return {
-    type: 'CHANGE_CLOUD_ACCOUNT_FOLDER',
+    type: CHANGE_CLOUD_ACCOUNT_FOLDER,
     serviceName,
     accountId,
     path,
@@ -25,5 +27,5 @@ export function changeCloudAccountFolder(
 export function isChangeCloudAccountFolderAction(
   action: Action,
 ): action is ChangeCloudAccountFolderAction {
-  return action.type === 'CHANGE_CLOUD_ACCOUNT_FOLDER';
+  return action.type === CHANGE_CLOUD_ACCOUNT_FOLDER;
 }
