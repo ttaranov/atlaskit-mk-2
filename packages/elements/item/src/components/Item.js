@@ -195,9 +195,9 @@ export default class Item extends Component<Props, {}> {
     const patchedInnerRef = ref => {
       this.setRef(ref);
 
-      if (!dnd) return;
-      const refinedDnD = dnd;
-      refinedDnD.innerRef(ref);
+      if (dnd && dnd.innerRef) {
+        dnd.innerRef(ref);
+      }
     };
 
     return (
