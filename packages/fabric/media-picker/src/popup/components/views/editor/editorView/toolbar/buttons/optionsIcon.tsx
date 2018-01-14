@@ -4,8 +4,7 @@ import { Component } from 'react';
 import { OptionsAreaNormal, OptionsAreaActive } from './styles';
 
 // The icon is inlined because we need to change its color
-// tslint:disable:no-var-requires
-const svg = require('!raw-loader!./icons/options.svg');
+import svg from '!!raw-loader!./icons/options.svg';
 
 export interface OptionsIconProps {
   readonly isActive: boolean;

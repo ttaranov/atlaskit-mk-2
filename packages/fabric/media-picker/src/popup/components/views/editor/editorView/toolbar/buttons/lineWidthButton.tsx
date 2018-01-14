@@ -6,8 +6,7 @@ import { OptionsIcon } from './optionsIcon';
 import { LineWidthIcon } from './styles';
 
 // The icon is inlined because we need to change its color
-// tslint:disable:no-var-requires
-const svg = require('!raw-loader!./icons/lineWidth.svg');
+import svg from '!!raw-loader!./icons/lineWidth.svg';
 
 export interface LineWidthButtonProps {
   readonly isActive: boolean;

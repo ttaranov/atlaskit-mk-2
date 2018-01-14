@@ -21,8 +21,7 @@ import {
 
 // The error icon is inlined because the error message can be shown if there is no network connection.
 // If we had this svg in a separate file, it wouldn't be loaded and the user would see a "no image" box.
-// tslint:disable:no-var-requires
-const errorIcon = require('!raw-loader!../icons/error.svg');
+import errorIcon from '!!raw-loader!../icons/error.svg';
 
 export interface ErrorViewProps {
   readonly message: string;
