@@ -1,9 +1,10 @@
+// @flow
 import React, { PureComponent } from 'react';
 import { shallow, mount } from 'enzyme';
-import Reveal from '../../src/components/js/Reveal';
-import RevealInner from '../../src/components/styled/RevealInner';
+import Reveal from '../src/components/js/Reveal';
+import RevealInner from '../src/components/styled/RevealInner';
 
-class Child extends PureComponent {
+class Child extends PureComponent<any> {
   render() {
     return <div />;
   }

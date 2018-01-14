@@ -1,9 +1,10 @@
+// @flow
 import React from 'react';
-import GlobalPrimaryActions from '../../src/components/js/GlobalPrimaryActions';
+import GlobalPrimaryActions from '../src/components/js/GlobalPrimaryActions';
 import { mountWithRootTheme, shallowWithTheme } from './_theme-util';
-import GlobalItem from '../../src/components/js/GlobalItem';
-import DrawerTrigger from '../../src/components/js/DrawerTrigger';
-import GlobalPrimaryActionsList from '../../src/components/js/GlobalPrimaryActionsList';
+import GlobalItem from '../src/components/js/GlobalItem';
+import DrawerTrigger from '../src/components/js/DrawerTrigger';
+import GlobalPrimaryActionsList from '../src/components/js/GlobalPrimaryActionsList';
 
 describe('<GlobalPrimaryActions />', () => {
   describe('renders', () => {
@@ -101,8 +102,8 @@ describe('<GlobalPrimaryActions />', () => {
       expect(
         mountWithRootTheme(
           <GlobalPrimaryActions
-            searchIcon={'s'}
-            createIcon={'c'}
+            searchIcon={<span>fake search icon</span>}
+            createIcon={<span>fake create icon</span>}
             onSearchActivate={handler}
           />,
         )
@@ -116,8 +117,8 @@ describe('<GlobalPrimaryActions />', () => {
       expect(
         mountWithRootTheme(
           <GlobalPrimaryActions
-            searchIcon={'s'}
-            createIcon={'c'}
+            searchIcon={<span>fake search icon</span>}
+            createIcon={<span>fake create icon</span>}
             onCreateActivate={handler}
           />,
         )

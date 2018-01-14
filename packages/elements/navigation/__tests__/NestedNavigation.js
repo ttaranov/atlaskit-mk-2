@@ -1,9 +1,10 @@
+// @flow
 import React, { PureComponent } from 'react';
 import { mount } from 'enzyme';
-import ContainerNavigationNested from '../../src/components/js/nested/ContainerNavigationNested';
-import { getAnimation } from '../../src/components/styled/NestedNavigationPage';
+import ContainerNavigationNested from '../src/components/js/nested/ContainerNavigationNested';
+import { getAnimation } from '../src/components/styled/NestedNavigationPage';
 
-class Child extends PureComponent {
+class Child extends PureComponent<any> {
   render() {
     return <div />;
   }

@@ -1,14 +1,15 @@
+// @flow
 import React from 'react';
 import { mount } from 'enzyme';
 import { replaceRaf } from 'raf-stub';
-import OverflowHandler from '../../../src/components/js/overflow/OverflowHandler';
-import OverflowItem from '../../../src/components/js/overflow/OverflowItem';
-import OverflowItemGroup from '../../../src/components/js/overflow/OverflowItemGroup';
-import OverflowDropdown from '../../../src/components/js/overflow/OverflowDropdown';
+import OverflowHandler from '../../src/components/js/overflow/OverflowHandler';
+import OverflowItem from '../../src/components/js/overflow/OverflowItem';
+import OverflowItemGroup from '../../src/components/js/overflow/OverflowItemGroup';
+import OverflowDropdown from '../../src/components/js/overflow/OverflowDropdown';
 import {
   dropdownHeight,
   reservedGapHeight,
-} from '../../../src/components/js/overflow/shared-variables';
+} from '../../src/components/js/overflow/shared-variables';
 
 describe('<AkCollapseOverflow />', () => {
   describe('calculateBreakItem', () => {

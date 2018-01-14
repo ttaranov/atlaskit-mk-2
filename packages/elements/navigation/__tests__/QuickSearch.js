@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -6,14 +7,14 @@ import {
   AkNavigationItemGroup,
   AkSearch,
   quickSearchResultTypes,
-} from '../../src';
+} from '../src';
 import {
   QS_ANALYTICS_EV_CLOSE,
   QS_ANALYTICS_EV_KB_CTRLS_USED,
   QS_ANALYTICS_EV_OPEN,
   QS_ANALYTICS_EV_QUERY_ENTERED,
   QS_ANALYTICS_EV_SUBMIT,
-} from '../../src/components/js/quick-search/constants';
+} from '../src/components/js/quick-search/constants';
 import { mountWithRootTheme } from './_theme-util';
 
 const { PersonResult } = quickSearchResultTypes;
@@ -25,7 +26,7 @@ const isInputFocused = wrapper =>
 
 describe('<QuickSearch />', () => {
   const onAnalyticsEventSpy = jest.fn();
-  const onClickSpy = jest.fn();
+  const onClickSpy: Object = jest.fn();
 
   const exampleChildren = [
     <AkNavigationItemGroup key={0} title="test group 1">

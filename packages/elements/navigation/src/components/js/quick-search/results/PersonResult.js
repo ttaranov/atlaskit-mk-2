@@ -15,6 +15,7 @@ const PERSON_RESULT_TYPE = 'person';
 
 export default class PersonResult extends PureComponent<Props> {
   static defaultProps = {
+    isCompact: false,
     isSelected: false,
     mentionPrefix: '@',
     onClick: () => {},

@@ -1,7 +1,8 @@
+// @flow
 import { shallow } from 'enzyme';
 import React from 'react';
-import DrawerBackIcon from '../../src/components/js/DrawerBackIcon';
-import DrawerBackIconInner from '../../src/components/styled/DrawerBackIconInner';
+import DrawerBackIcon from '../src/components/js/DrawerBackIcon';
+import DrawerBackIconInner from '../src/components/styled/DrawerBackIconInner';
 
 describe('<DrawerBackIcon />', () => {
   describe('props', () => {
@@ -12,16 +13,17 @@ describe('<DrawerBackIcon />', () => {
       ).toBe(true);
     });
     it('isVisible controls the presence of the isVisible class', () => {
-      expect(
-        shallow(<DrawerBackIcon isVisible />)
-          .find(DrawerBackIconInner)
-          .props().isVisible,
-      ).toBe(true);
-      expect(
-        shallow(<DrawerBackIcon />)
-          .find(DrawerBackIconInner)
-          .props().isVisible,
-      ).toBe(false);
+      const visibleIcon = shallow(
+        <DrawerBackIcon isVisible>icon</DrawerBackIcon>,
+      );
+      const invisibleIcon = shallow(<DrawerBackIcon>icon</DrawerBackIcon>);
+
+      expect(visibleIcon.find(DrawerBackIconInner).props().isVisible).toBe(
+        true,
+      );
+      expect(invisibleIcon.find(DrawerBackIconInner).props().isVisible).toBe(
+        false,
+      );
     });
   });
 });

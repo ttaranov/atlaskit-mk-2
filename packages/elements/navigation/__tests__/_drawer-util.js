@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 
 // Note: There are a lot of required props without any default, so they are

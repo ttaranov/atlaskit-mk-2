@@ -1,14 +1,15 @@
+// @flow
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import styled from 'styled-components';
-import ContainerNavigation from '../../src/components/js/ContainerNavigation';
-import { globalSecondaryActions } from '../../src/shared-variables';
-import { isCollapsed } from '../../src/theme/util';
-import * as presets from '../../src/theme/presets';
-import Reveal from '../../src/components/js/Reveal';
-import GlobalNavigationSecondaryContainer from '../../src/components/styled/GlobalNavigationSecondaryContainer';
-import GlobalSecondaryActions from '../../src/components/js/GlobalSecondaryActions';
-import ScrollHintScrollContainer from '../../src/components/styled/ScrollHintScrollContainer';
+import ContainerNavigation from '../src/components/js/ContainerNavigation';
+import { globalSecondaryActions } from '../src/shared-variables';
+import { isCollapsed } from '../src/theme/util';
+import * as presets from '../src/theme/presets';
+import Reveal from '../src/components/js/Reveal';
+import GlobalNavigationSecondaryContainer from '../src/components/styled/GlobalNavigationSecondaryContainer';
+import GlobalSecondaryActions from '../src/components/js/GlobalSecondaryActions';
+import ScrollHintScrollContainer from '../src/components/styled/ScrollHintScrollContainer';
 
 describe('<ContainerNavigation />', () => {
   describe('props', () => {

@@ -1,7 +1,8 @@
+// @flow
 import React from 'react';
 import FieldBase from '@atlaskit/field-base';
 import { mountWithRootTheme } from './_theme-util';
-import Search from '../../src/components/js/Search';
+import Search from '../src/components/js/Search';
 
 const describe = window.describe;
 const it = window.it;

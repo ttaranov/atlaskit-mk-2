@@ -1,13 +1,14 @@
+// @flow
 import { mount } from 'enzyme';
 import React from 'react';
-import Resizer from '../../src/components/js/Resizer';
-import ResizerInner from '../../src/components/styled/ResizerInner';
-import ResizerButton from '../../src/components/js/ResizerButton';
-import WithElectronTheme from '../../src/theme/with-electron-theme';
+import Resizer from '../src/components/js/Resizer';
+import ResizerInner from '../src/components/styled/ResizerInner';
+import ResizerButton from '../src/components/js/ResizerButton';
+import WithElectronTheme from '../src/theme/with-electron-theme';
 import {
   standardOpenWidth as standardOpenWidthGenerator,
   globalOpenWidth as globalOpenWidthGenerator,
-} from '../../src/shared-variables';
+} from '../src/shared-variables';
 import { dispatchMouseEvent } from './_event-util';
 
 const standardOpenWidth = standardOpenWidthGenerator(false);
@@ -37,12 +38,10 @@ describe('<Resizer />', () => {
     });
     it('mousedown default is prevented', () => {
       const preventDefaultSpy = jest.fn();
-      resizer
-        .find(ResizerInner)
-        .simulate('mousedown', {
-          screenX: 100,
-          preventDefault: preventDefaultSpy,
-        });
+      resizer.find(ResizerInner).simulate('mousedown', {
+        screenX: 100,
+        preventDefault: preventDefaultSpy,
+      });
       expect(preventDefaultSpy).toHaveBeenCalled();
     });
     it('mousedown triggers onResizeStart', () => {
@@ -128,7 +127,7 @@ describe('<Resizer />', () => {
       expect(addSpy).toHaveBeenCalled();
       expect(removeSpy).not.toHaveBeenCalled();
 
-      dispatchMouseEvent('mouseup', 100);
+      dispatchMouseEvent('mouseup');
 
       expect(addSpy.mock.calls.length).toBe(removeSpy.mock.calls.length);
 

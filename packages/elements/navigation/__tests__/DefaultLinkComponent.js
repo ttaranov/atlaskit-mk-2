@@ -1,6 +1,7 @@
+// @flow
 import { shallow } from 'enzyme';
 import React from 'react';
-import DefaultLinkComponent from '../../src/components/js/DefaultLinkComponent';
+import DefaultLinkComponent from '../src/components/js/DefaultLinkComponent';
 
 describe('<DefaultLinkComponent />', () => {
   describe('props', () => {

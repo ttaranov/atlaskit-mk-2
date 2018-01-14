@@ -34,7 +34,7 @@ type CommonResultProps = {
 
 export type ResultType = CommonResultProps & {
   /** Data to be sent with analytics events */
-  analyticsData: AnalyticsData,
+  analyticsData?: AnalyticsData,
   /** Text to appear to the right of the text. It has a lower font-weight. */
   caption?: string,
   /** React element to appear to the left of the text. */
@@ -49,11 +49,11 @@ export type ResultType = CommonResultProps & {
 
 export type ContainerResultType = CommonResultProps & {
   /** Src URL of the image to be used as the result's icon */
-  avatarUrl: string,
+  avatarUrl?: string,
   /** Text to appear to the right of the text. It has a lower font-weight. */
   caption?: string,
   /** Set whether to display a lock on the result's icon */
-  isPrivate: boolean,
+  isPrivate?: boolean,
   /** Name of the container. Provides the main text to be displayed as the item. */
   name: Element<any> | string,
   /** Text to be shown alongside the main `text`. */
@@ -90,5 +90,5 @@ export type PersonResultType = CommonResultProps & {
   /** Text to be shown alongside the main `text`. */
   presenceMessage?: string,
   /** Sets the appearance of the presence indicator */
-  presenceState: 'online' | 'busy' | 'offline',
+  presenceState: 'online' | 'busy' | 'offline' | null,
 };

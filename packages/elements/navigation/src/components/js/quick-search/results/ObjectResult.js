@@ -17,6 +17,7 @@ const OBJECT_RESULT_TYPE = 'object';
  */
 export default class ObjectResult extends PureComponent<Props> {
   static defaultProps = {
+    isCompact: false,
     isSelected: false,
     onClick: () => {},
     onMouseEnter: () => {},

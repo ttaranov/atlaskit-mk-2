@@ -1,6 +1,9 @@
+// @flow
+/* eslint-disable */
 const bytes = require('bytes');
 const fs = require('fs');
 const path = require('path');
+// $FlowFixMe
 const sourceTrace = require('source-trace');
 // This threshold corresponds to 5% of the latest bundle value
 const thresholdBundle = 3300;
