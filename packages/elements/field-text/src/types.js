@@ -32,7 +32,7 @@ export type FieldTextProps = {
   /** Text to display in the input if the input is empty. */
   placeholder?: string,
   /** The value of the input. */
-  value?: string,
+  value?: string | number,
   /** Handler to be called when the input loses focus. */
   onBlur?: (e: Event) => mixed,
   /** Handler to be called when the input changes. */

@@ -5,7 +5,7 @@ import FieldTextStateless from './FieldTextStateless';
 import type { FieldTextProps } from './types';
 
 type State = {
-  value?: string,
+  value?: string | number,
 };
 export default class FieldText extends Component<FieldTextProps, State> {
   static defaultProps = {
