@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import TextField from '@atlaskit/field-text';
+import TextField from '../src';
 
 type State = {|
   eventResult: string,

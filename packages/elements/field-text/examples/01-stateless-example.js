@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { FieldTextStateless } from '@atlaskit/field-text';
+import { FieldTextStateless } from '../src';
 
 type State = {
   value: string | number,
