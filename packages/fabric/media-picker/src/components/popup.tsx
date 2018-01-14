@@ -46,12 +46,10 @@ export interface PopupConstructor {
 }
 
 export type PopupUploadEventPayloadMap = UploadEventPayloadMap & {
-  readonly ready: undefined;
   readonly closed: undefined;
 };
 
 export interface PopupUploadEventEmitter extends UploadEventEmitter {
-  emitReady(): void;
   emitClosed(): void;
 }
 
@@ -140,9 +138,6 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
     };
   }
 
-  public emitReady(): void {
-    this.emit('ready', undefined);
-  }
   public emitClosed(): void {
     this.emit('closed', undefined);
     this.context.trackEvent(new MPPopupHidden());

@@ -9,7 +9,7 @@ export default function fetchNextPage(state: State, action: Action): State {
       ...state,
       view: {
         ...state.view,
-        loading: true,
+        isLoading: true,
         currentCursor: action.nextCursor,
         nextCursor: undefined,
       },

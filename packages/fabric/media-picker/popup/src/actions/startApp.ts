@@ -2,6 +2,8 @@ import { Action } from 'redux';
 
 import { CancelUploadHandler } from '../domain';
 
+export const START_APP = 'START_APP';
+
 export interface StartAppActionPayload {
   readonly onCancelUpload: CancelUploadHandler;
 }
@@ -12,12 +14,12 @@ export interface StartAppAction extends Action {
 }
 
 export function isStartAppAction(action: Action): action is StartAppAction {
-  return action.type === 'START_APP';
+  return action.type === START_APP;
 }
 
 export function startApp(payload: StartAppActionPayload): StartAppAction {
   return {
-    type: 'START_APP',
+    type: START_APP,
     payload,
   };
 }

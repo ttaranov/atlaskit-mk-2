@@ -10,6 +10,7 @@ export default function accountChange(state: State, action: Action): State {
       ...state,
       view: {
         ...state.view,
+        hasError: false,
         service: {
           accountId,
           name: serviceName,

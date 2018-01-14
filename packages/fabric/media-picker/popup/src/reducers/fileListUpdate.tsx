@@ -17,7 +17,7 @@ export default function fileListUpdate(
         view: {
           ...state.view,
           items: action.items,
-          loading: false,
+          isLoading: false,
           currentCursor: action.currentCursor,
           nextCursor: action.nextCursor,
         },
