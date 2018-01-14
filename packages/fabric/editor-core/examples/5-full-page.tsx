@@ -139,6 +139,7 @@ export default class Example extends React.Component<Props, State> {
               allowExtension={true}
               allowPlaceholderCursor={true}
               allowRule={true}
+              allowDate={true}
               {...providers}
               media={{ provider: mediaProvider, allowMediaSingle: true }}
               placeholder="Write something..."

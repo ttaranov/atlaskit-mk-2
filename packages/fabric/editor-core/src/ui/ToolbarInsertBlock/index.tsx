@@ -12,6 +12,7 @@ import QuoteIcon from '@atlaskit/icon/glyph/quote';
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import LinkIcon from '@atlaskit/icon/glyph/editor/link';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
+import DateIcon from '@atlaskit/icon/glyph/editor/date';
 import {
   EmojiId,
   EmojiPicker as AkEmojiPicker,
@@ -35,6 +36,7 @@ import DropdownMenu from '../DropdownMenu';
 import ToolbarButton from '../ToolbarButton';
 import { MacroProvider } from '../../editor/plugins/macro/types';
 import tableCommands from '../../plugins/table/commands';
+import { insertDate, openDatePicker } from '../../editor/plugins/date/actions';
 import { Wrapper, ExpandIconWrapper } from './styles';
 
 export interface Props {
@@ -50,6 +52,7 @@ export interface Props {
   insertMentionQuery?: () => void;
   mediaUploadsEnabled?: boolean;
   mediaSupported?: boolean;
+  dateEnabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   availableWrapperBlockTypes?: BlockType[];
   linkSupported?: boolean;
@@ -274,6 +277,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       linkDisabled,
       emojiDisabled,
       emojiProvider,
+      dateEnabled,
     } = this.props;
     let items: any[] = [];
 
@@ -340,6 +344,15 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         });
       });
     }
+    if (dateEnabled) {
+      items.push({
+        content: 'Date',
+        value: { name: 'date' },
+        tooltipDescription: 'Insert date',
+        tooltipPosition: 'right',
+        elemBefore: <DateIcon label="Insert date" />,
+      });
+    }
     if (typeof macroProvider !== 'undefined' && macroProvider) {
       items.push({
         content: 'View more',
@@ -373,6 +386,17 @@ export default class ToolbarInsertBlock extends React.PureComponent<
     return true;
   };
 
+  @analyticsDecorator('atlassian.editor.format.date.button')
+  private createDate = (): boolean => {
+    const { editorView } = this.props;
+    insertDate()(editorView.state, editorView.dispatch);
+    openDatePicker(editorView.domAtPos.bind(editorView))(
+      editorView.state,
+      editorView.dispatch,
+    );
+    return true;
+  };
+
   @analyticsDecorator('atlassian.editor.format.media.button')
   private openMediaPicker = (): boolean => {
     const { onShowMediaPicker } = this.props;
@@ -402,9 +426,6 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       case 'table':
         this.createTable();
         break;
-      case 'table':
-        this.createTable();
-        break;
       case 'media':
         this.openMediaPicker();
         break;
@@ -430,6 +451,10 @@ export default class ToolbarInsertBlock extends React.PureComponent<
           editorView.state,
           editorView.dispatch,
         );
+        break;
+      case 'date':
+        this.createDate();
+        break;
     }
     this.setState({ isOpen: false });
   };

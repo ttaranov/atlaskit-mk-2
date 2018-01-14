@@ -33,6 +33,7 @@ import {
   EXTENSION,
   BODIED_EXTENSION,
   BODIED_NESTED_EXTENSION,
+  DATE,
 } from '../example-helpers/cxhtml-test-data';
 import { ConfluenceTransformer } from '../src';
 
@@ -166,6 +167,7 @@ class Example extends Component<ExampleProps, ExampleState> {
           <button onClick={this.handleInsertNestedMacroClick}>
             Nested Extensions
           </button>
+          <button onClick={this.handleInsertDateClick}>Date</button>
         </fieldset>
         <Content>
           <EditorContext>
@@ -187,6 +189,7 @@ class Example extends Component<ExampleProps, ExampleState> {
                   allowPanel={true}
                   allowExtension={true}
                   allowConfluenceInlineComment={true}
+                  allowDate={true}
                   {...providers}
                   media={{ provider: mediaProvider, allowMediaSingle: true }}
                   // tslint:disable-next-line:jsx-no-lambda
@@ -238,6 +241,7 @@ class Example extends Component<ExampleProps, ExampleState> {
     this.setState({ input: BODIED_EXTENSION });
   private handleInsertNestedMacroClick = () =>
     this.setState({ input: BODIED_NESTED_EXTENSION });
+  private handleInsertDateClick = () => this.setState({ input: DATE });
 }
 
 export type ExampleWrapperProps = {};

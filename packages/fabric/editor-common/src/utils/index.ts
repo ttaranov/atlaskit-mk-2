@@ -10,3 +10,4 @@ export {
   default as ErrorReporter,
   ErrorReportingHandler,
 } from './error-reporter';
+export * from './date';

@@ -2,7 +2,10 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as assert from 'assert';
 import { Node as PMNode } from 'prosemirror-model';
-import { confluenceSchemaWithMediaSingle as schema } from '@atlaskit/editor-common';
+import {
+  confluenceSchemaWithMediaSingle as schema,
+  parseDate,
+} from '@atlaskit/editor-common';
 import { chaiPlugin } from '@atlaskit/editor-test-helpers';
 import {
   blockquote,
@@ -48,6 +51,7 @@ import {
   emoji,
   taskList,
   taskItem,
+  date,
 } from './_schema-builder';
 
 import {
@@ -858,6 +862,15 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         doc(bodiedExtension(attrs, p('little', strong('piggy')))),
       );
     });
+  });
+
+  describe('date', () => {
+    const iso = '2018-03-23';
+    check(
+      'date node',
+      `<time datetime="${iso}"></time>`,
+      doc(p(date({ timestamp: parseDate(iso).valueOf() }))),
+    );
   });
 
   describe('taskList', () => {

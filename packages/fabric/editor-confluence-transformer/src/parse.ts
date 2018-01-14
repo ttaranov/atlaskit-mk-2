@@ -5,6 +5,7 @@ import {
   MediaType,
   acNameToEmoji,
   acShortcutToEmoji,
+  parseDate,
 } from '@atlaskit/editor-common';
 import { Fragment, Node as PMNode, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
@@ -360,7 +361,14 @@ function converter(
           return convertTable(schema, node);
         }
         return unsupportedInline;
-
+      case 'TIME':
+        const iso = node.getAttribute('datetime');
+        if (iso) {
+          const date = parseDate(iso);
+          const timestamp = date.valueOf();
+          return schema.nodes.date.create({ timestamp });
+        }
+        return unsupportedInline;
       case 'DIV':
         if (hasClass(node, 'codeHeader')) {
           const codeHeader = schema.text(node.textContent || '', [
