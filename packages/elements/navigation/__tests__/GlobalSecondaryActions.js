@@ -1,13 +1,14 @@
+// @flow
 import React, { PureComponent } from 'react';
 import { shallow, mount } from 'enzyme';
 import GlobalSecondaryActions, {
   maxSecondaryItems,
-} from '../../src/components/js/GlobalSecondaryActions';
+} from '../src/components/js/GlobalSecondaryActions';
 
 const describe = window.describe;
 const it = window.it;
 
-class Child extends PureComponent {
+class Child extends PureComponent<any> {
   render() {
     return <div>Hi there</div>;
   }

@@ -4,7 +4,7 @@ import GlobalItem from './GlobalItem';
 import DrawerTriggerInner from '../styled/DrawerTriggerInner';
 
 type Props = {
-  children: Node,
+  children?: Node,
   onActivate: (event: Event) => void,
 };
 
@@ -14,7 +14,7 @@ export default class DrawerTrigger extends PureComponent<Props> {
   };
 
   render() {
-    if (this.props.children === null) return null;
+    if (this.props.children == null) return null;
     return (
       <DrawerTriggerInner>
         <GlobalItem

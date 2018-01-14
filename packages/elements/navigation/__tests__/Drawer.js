@@ -1,23 +1,27 @@
+// @flow
 import { mount } from 'enzyme';
 import React, { PropTypes } from 'react';
 import Blanket from '@atlaskit/blanket';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
-import Drawer, { analyticsNamespace } from '../../src/components/js/Drawer';
-import ContainerHeader from '../../src/components/js/ContainerHeader';
-import DrawerBackIcon from '../../src/components/js/DrawerBackIcon';
-import DrawerSide from '../../src/components/styled/DrawerSide';
-import DrawerPrimaryIcon from '../../src/components/styled/DrawerPrimaryIcon';
-import GlobalItem from '../../src/components/js/GlobalItem';
-import DrawerTrigger from '../../src/components/js/DrawerTrigger';
-import DrawerBackIconWrapper from '../../src/components/styled/DrawerBackIconWrapper';
+import Drawer, { analyticsNamespace } from '../src/components/js/Drawer';
+import ContainerHeader from '../src/components/js/ContainerHeader';
+import DrawerBackIcon from '../src/components/js/DrawerBackIcon';
+import DrawerSide from '../src/components/styled/DrawerSide';
+import DrawerPrimaryIcon from '../src/components/styled/DrawerPrimaryIcon';
+import GlobalItem from '../src/components/js/GlobalItem';
+import DrawerTrigger from '../src/components/js/DrawerTrigger';
+import DrawerBackIconWrapper from '../src/components/styled/DrawerBackIconWrapper';
 
 describe('<Drawer />', () => {
   const escKeyCode = 27;
   const delKeyCode = 26;
-  let event;
+  let event: Event;
   const keyDown = (keyCode: number) => {
     event = document.createEvent('Events');
     event.initEvent('keydown', true, true);
+    // KeyboardEvent.keyCode is deprecated, but the replacement(KeyboardEvent.code)
+    // has limited support. #FML
+    // $FlowFixMe
     event.keyCode = keyCode;
     window.dispatchEvent(event);
   };

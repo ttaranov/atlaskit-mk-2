@@ -17,6 +17,7 @@ const CONTAINER_RESULT_TYPE = 'container';
  */
 export default class ContainerResult extends PureComponent<Props> {
   static defaultProps = {
+    isCompact: false,
     isSelected: false,
     onClick: () => {},
     onMouseEnter: () => {},

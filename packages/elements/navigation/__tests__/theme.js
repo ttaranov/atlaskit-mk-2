@@ -3,15 +3,15 @@ import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { mount } from 'enzyme';
 import chromatism from 'chromatism';
-import * as presets from '../../src/theme/presets';
+import * as presets from '../src/theme/presets';
 import {
   prefix,
   getProvided,
   WithRootTheme,
   whenCollapsed,
-} from '../../src/theme/util';
-import { createGlobalTheme } from '../../src/theme/create-provided-theme';
-import { getRootTheme } from './_theme-util';
+} from '../src/theme/util';
+import { createGlobalTheme } from '../src/theme/create-provided-theme';
+import { withRootTheme } from './_theme-util';
 
 describe('theme', () => {
   describe('WithRootTheme', () => {
@@ -27,7 +27,7 @@ describe('theme', () => {
         </WithRootTheme>,
       );
       expect(stub).toHaveBeenCalledWith({
-        theme: getRootTheme(presets.container),
+        theme: withRootTheme(presets.container),
       });
     });
 
@@ -47,10 +47,10 @@ describe('theme', () => {
       });
 
       expect(stub.mock.calls[0][0]).toEqual({
-        theme: getRootTheme(presets.container),
+        theme: withRootTheme(presets.container),
       });
       expect(stub.mock.calls[1][0]).toEqual({
-        theme: getRootTheme(presets.settings),
+        theme: withRootTheme(presets.settings),
       });
     });
 
@@ -70,10 +70,10 @@ describe('theme', () => {
       });
 
       expect(stub.mock.calls[0][0]).toEqual({
-        theme: getRootTheme(presets.container, true),
+        theme: withRootTheme(presets.container, true),
       });
       expect(stub.mock.calls[1][0]).toEqual({
-        theme: getRootTheme(presets.container, false),
+        theme: withRootTheme(presets.container, false),
       });
     });
 
@@ -91,7 +91,7 @@ describe('theme', () => {
       wrapper.update();
 
       expect(stub.mock.calls[0][0]).toEqual({
-        theme: getRootTheme(presets.container, true),
+        theme: withRootTheme(presets.container, true),
       });
       expect(stub.mock.calls.length).toEqual(1);
     });
@@ -118,7 +118,7 @@ describe('theme', () => {
 
       expect(arg).toEqual({
         theme: {
-          ...getRootTheme(presets.container),
+          ...withRootTheme(presets.container),
           myCustomRule: 'hello',
         },
       });
@@ -143,7 +143,7 @@ describe('theme', () => {
       );
 
       expect(stub).toHaveBeenCalledWith({
-        theme: getRootTheme(presets.container),
+        theme: withRootTheme(presets.container),
       });
     });
   });

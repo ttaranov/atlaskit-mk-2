@@ -1,10 +1,11 @@
+// @flow
 import React from 'react';
 import { ItemGroup } from '@atlaskit/item';
-import NavigationItemGroup from '../../src/components/js/NavigationItemGroup';
+import NavigationItemGroup from '../src/components/js/NavigationItemGroup';
 import { mountWithRootTheme } from './_theme-util';
-import NavigationItemGroupTitle from '../../src/components/styled/NavigationItemGroupTitle';
-import NavigationItemGroupSeparator from '../../src/components/styled/NavigationItemGroupSeparator';
-import NavigationItemGroupAction from '../../src/components/styled/NavigationItemGroupAction';
+import NavigationItemGroupTitle from '../src/components/styled/NavigationItemGroupTitle';
+import NavigationItemGroupSeparator from '../src/components/styled/NavigationItemGroupSeparator';
+import NavigationItemGroupAction from '../src/components/styled/NavigationItemGroupAction';
 
 describe('<NavigationItemGroup />', () => {
   describe('props', () => {

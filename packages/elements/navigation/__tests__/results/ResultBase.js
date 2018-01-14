@@ -1,5 +1,6 @@
+// @flow
 import React from 'react';
-import { quickSearchResultTypes } from '../../../src';
+import { quickSearchResultTypes } from '../../src';
 import { mountWithRootTheme } from '../_theme-util';
 
 const { ResultBase } = quickSearchResultTypes;

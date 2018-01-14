@@ -1,11 +1,12 @@
+// @flow
 import React, { PureComponent } from 'react';
 import { shallow, mount } from 'enzyme';
-import GlobalPrimaryActionsList from '../../src/components/js/GlobalPrimaryActionsList';
+import GlobalPrimaryActionsList from '../src/components/js/GlobalPrimaryActionsList';
 
 const describe = window.describe;
 const it = window.it;
 
-class Child extends PureComponent {
+class Child extends PureComponent<any> {
   render() {
     return <div>Hi there</div>;
   }

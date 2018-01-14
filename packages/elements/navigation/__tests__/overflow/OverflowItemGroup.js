@@ -1,10 +1,11 @@
+// @flow
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import OverflowItemGroup from '../../../src/components/js/overflow/OverflowItemGroup';
+import OverflowItemGroup from '../../src/components/js/overflow/OverflowItemGroup';
 import {
   overflowManagerNamespace,
   shouldReportItemHeight,
-} from '../../../src/components/js/overflow/shared-variables';
+} from '../../src/components/js/overflow/shared-variables';
 
 describe('<AkCollapseOverflowItemGroup />', () => {
   const createContext = (
@@ -17,8 +18,7 @@ describe('<AkCollapseOverflowItemGroup />', () => {
       isGroupVisibleInNav: () => isGroupVisibleInNavBool,
       isGroupVisibleInDropdown: () => isGroupVisibleInDropdownBool,
       isGroupItemVisibleInNav: () => true,
-      reportGroupHeightToManager: argsObj =>
-        reportGroupHeightToManagerFn(argsObj),
+      reportGroupHeightToManager: () => reportGroupHeightToManagerFn(),
     },
     [shouldReportItemHeight]: shouldReportItemHeightBool,
   });

@@ -1,10 +1,11 @@
+// @flow
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import OverflowItem from '../../../src/components/js/overflow/OverflowItem';
+import OverflowItem from '../../src/components/js/overflow/OverflowItem';
 import {
   overflowGroupNamespace,
   shouldReportItemHeight,
-} from '../../../src/components/js/overflow/shared-variables';
+} from '../../src/components/js/overflow/shared-variables';
 
 describe('<AkCollapseOverflowItem />', () => {
   const createContext = (

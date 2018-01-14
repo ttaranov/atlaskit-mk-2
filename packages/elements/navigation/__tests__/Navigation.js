@@ -1,25 +1,26 @@
+// @flow
 /* eslint-disable no-console */
 import { shallow, mount } from 'enzyme';
 import React, { PureComponent } from 'react';
 import sinon from 'sinon';
-import Navigation from '../../src/components/js/Navigation';
-import ContainerNavigationChildren from '../../src/components/js/ContainerNavigationChildren';
-import Drawer from '../../src/components/js/Drawer';
-import GlobalNavigation from '../../src/components/js/GlobalNavigation';
-import ContainerNavigation from '../../src/components/js/ContainerNavigation';
-import GlobalSecondaryActions from '../../src/components/js/GlobalSecondaryActions';
-import Resizer from '../../src/components/js/Resizer';
-import Spacer from '../../src/components/js/Spacer';
-import SpacerInner from '../../src/components/styled/SpacerInner';
-import WithElectronTheme from '../../src/theme/with-electron-theme';
-import * as presets from '../../src/theme/presets';
+import Navigation from '../src/components/js/Navigation';
+import ContainerNavigationChildren from '../src/components/js/ContainerNavigationChildren';
+import Drawer from '../src/components/js/Drawer';
+import GlobalNavigation from '../src/components/js/GlobalNavigation';
+import ContainerNavigation from '../src/components/js/ContainerNavigation';
+import GlobalSecondaryActions from '../src/components/js/GlobalSecondaryActions';
+import Resizer from '../src/components/js/Resizer';
+import Spacer from '../src/components/js/Spacer';
+import SpacerInner from '../src/components/styled/SpacerInner';
+import WithElectronTheme from '../src/theme/with-electron-theme';
+import * as presets from '../src/theme/presets';
 import {
   containerClosedWidth as containerClosedWidthFn,
   globalOpenWidth as globalOpenWidthFn,
   standardOpenWidth as standardOpenWidthFn,
   containerOpenWidth,
   resizeClosedBreakpoint as resizeClosedBreakpointFn,
-} from '../../src/shared-variables';
+} from '../src/shared-variables';
 
 const containerClosedWidth = containerClosedWidthFn(false);
 const globalOpenWidth = globalOpenWidthFn(false);
@@ -28,7 +29,7 @@ const resizeClosedBreakpoint = resizeClosedBreakpointFn(false);
 
 const expect = window.expect;
 
-class Child extends PureComponent {
+class Child extends PureComponent<any> {
   render() {
     return <div>Hi there</div>;
   }
@@ -280,7 +281,7 @@ describe('<Navigation />', () => {
 
   describe('forwarding props', () => {
     it('containerHeaderComponent - passes a func for the container header component to <ContainerNavigation />', () => {
-      const header = () => <div>foo</div>;
+      const header = () => [<div>foo</div>];
       expect(
         shallow(<Navigation containerHeaderComponent={header} />)
           .find(ContainerNavigation)

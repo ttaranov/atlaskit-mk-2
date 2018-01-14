@@ -1,13 +1,14 @@
+// @flow
 /* eslint-disable no-console */
 import { shallow, mount } from 'enzyme';
 import React, { PureComponent } from 'react';
-import GlobalNavigation from '../../src/components/js/GlobalNavigation';
-import * as presets from '../../src/theme/presets';
-import GlobalItem from '../../src/components/js/GlobalItem';
-import GlobalPrimaryActions from '../../src/components/js/GlobalPrimaryActions';
-import GlobalSecondaryActions from '../../src/components/js/GlobalSecondaryActions';
+import GlobalNavigation from '../src/components/js/GlobalNavigation';
+import * as presets from '../src/theme/presets';
+import GlobalItem from '../src/components/js/GlobalItem';
+import GlobalPrimaryActions from '../src/components/js/GlobalPrimaryActions';
+import GlobalSecondaryActions from '../src/components/js/GlobalSecondaryActions';
 
-class Child extends PureComponent {
+class Child extends PureComponent<any> {
   render() {
     return <div>Hi there</div>;
   }
@@ -54,7 +55,10 @@ describe('<GlobalNavigation />', () => {
       const linkComponent = () => null;
       expect(
         shallow(
-          <GlobalNavigation primaryIcon="foo" linkComponent={linkComponent} />,
+          <GlobalNavigation
+            primaryIcon={<span>Fake icon</span>}
+            linkComponent={linkComponent}
+          />,
         )
           .find(GlobalPrimaryActions)
           .props().linkComponent,

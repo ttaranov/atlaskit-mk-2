@@ -1,8 +1,9 @@
+// @flow
 import { mount } from 'enzyme';
 import React from 'react';
-import { AkCreateDrawer } from '../../../src/index';
-import { drawerIconOffset } from '../../../src/shared-variables';
-import Drawer from '../../../src/components/js/Drawer';
+import { AkCreateDrawer } from '../../src/index';
+import { drawerIconOffset } from '../../src/shared-variables';
+import Drawer from '../../src/components/js/Drawer';
 import requiredProps from '../_drawer-util';
 
 describe('<CreateDrawer />', () => {

@@ -1,7 +1,8 @@
+// @flow
 import { mount } from 'enzyme';
 import React from 'react';
-import ResizerButton from '../../src/components/js/ResizerButton';
-import ResizerButtonInner from '../../src/components/styled/ResizerButtonInner';
+import ResizerButton from '../src/components/js/ResizerButton';
+import ResizerButtonInner from '../src/components/styled/ResizerButtonInner';
 
 describe('<ResizerButton />', () => {
   describe('renders', () => {

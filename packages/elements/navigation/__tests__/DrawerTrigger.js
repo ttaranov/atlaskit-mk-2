@@ -1,7 +1,8 @@
+// @flow
 import { mount } from 'enzyme';
 import React from 'react';
-import DrawerTrigger from '../../src/components/js/DrawerTrigger';
-import GlobalItem from '../../src/components/js/GlobalItem';
+import DrawerTrigger from '../src/components/js/DrawerTrigger';
+import GlobalItem from '../src/components/js/GlobalItem';
 
 describe('<DrawerTrigger />', () => {
   describe('interacting', () => {

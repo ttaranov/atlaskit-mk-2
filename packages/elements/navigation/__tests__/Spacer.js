@@ -1,7 +1,8 @@
+// @flow
 import { shallow } from 'enzyme';
 import React from 'react';
-import Spacer from '../../src/components/js/Spacer';
-import SpacerInner from '../../src/components/styled/SpacerInner';
+import Spacer from '../src/components/js/Spacer';
+import SpacerInner from '../src/components/styled/SpacerInner';
 
 describe('<Spacer />', () => {
   describe('props', () => {

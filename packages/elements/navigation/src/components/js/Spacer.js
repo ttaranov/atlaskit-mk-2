@@ -3,9 +3,9 @@ import React, { PureComponent, type ElementRef, type Node } from 'react';
 import SpacerInner from '../styled/SpacerInner';
 
 type Props = {
-  children: Node,
-  innerRef: (ref: ElementRef<*>) => void,
-  onTransitionEnd: (e: TransitionEvent) => void,
+  children?: Node,
+  innerRef?: (ref: ElementRef<*>) => void,
+  onTransitionEnd?: (e: TransitionEvent) => void,
   shouldAnimate: boolean,
   width: number,
 };

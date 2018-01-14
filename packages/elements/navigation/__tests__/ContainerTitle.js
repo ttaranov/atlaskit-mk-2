@@ -1,5 +1,6 @@
+// @flow
 import React from 'react';
-import ContainerTitle from '../../src/components/js/ContainerTitle';
+import ContainerTitle from '../src/components/js/ContainerTitle';
 import { mountWithRootTheme } from './_theme-util';
 
 describe('<ContainerTitle />', () => {

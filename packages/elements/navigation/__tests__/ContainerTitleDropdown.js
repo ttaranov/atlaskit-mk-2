@@ -1,10 +1,11 @@
+// @flow
 import React from 'react';
 import AkDropdownMenu, {
   DropdownItem,
   DropdownItemGroup,
 } from '@atlaskit/dropdown-menu';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
-import ContainerTitleDropdown from '../../src/components/js/ContainerTitleDropdown';
+import ContainerTitleDropdown from '../src/components/js/ContainerTitleDropdown';
 import { mountWithRootTheme } from './_theme-util';
 
 describe('<ContainerTitleDropdown />', () => {
