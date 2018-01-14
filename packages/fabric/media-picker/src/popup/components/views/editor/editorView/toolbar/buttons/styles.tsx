@@ -4,7 +4,7 @@ import {
   akColorN0,
   akColorN500,
 } from '@atlaskit/util-shared-styles';
-import * as InlineSvg from 'svg-inline-react';
+import InlineSvg from 'svg-inline-react';
 import styled from 'styled-components';
 
 const transparent = 'rgba(0, 0, 0, 0)';
