@@ -56,6 +56,7 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
     } else if (!isSelected) {
       color = transparent;
     }
+    // $FlowFixMe TEMPORARY
     return color(rest);
   };
   // The secondary color represents the outer circle
@@ -76,7 +77,7 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
     } else if (isSelected) {
       color = colors.blue;
     }
-
+    // $FlowFixMe TEMPORARY
     return color(rest);
   };
 

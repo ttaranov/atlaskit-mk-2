@@ -12,8 +12,9 @@ type Props = {
 
 const getMargin = (props: Props) => {
   if (props.spacing === 'none') return 0;
+  // $FlowFixMe TEMPORARY
   if (props.isOnlyChild) return `0 -${math.divide(gridSize, 4)(props)}px`;
-
+  // $FlowFixMe TEMPORARY
   return `0 ${math.divide(gridSize, 2)(props)}px`;
 };
 

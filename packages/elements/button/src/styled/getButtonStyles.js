@@ -58,13 +58,16 @@ export const getPropertyAppearance = (
 };
 
 export default function getButtonStyles(props: Object) {
+  // $FlowFixMe TEMPORARY
   const baseSize = fontSize(props);
   const buttonHeight = `${math.divide(math.multiply(gridSize, 4), baseSize)(
+    // $FlowFixMe TEMPORARY
     props,
   )}em`;
   const compactButtonHeight = `${math.divide(
     math.multiply(gridSize, 3),
     baseSize,
+    // $FlowFixMe TEMPORARY
   )(props)}em`;
 
   /**
@@ -74,6 +77,7 @@ export default function getButtonStyles(props: Object) {
   let height = buttonHeight;
   let lineHeight = buttonHeight;
   let outline = 'none';
+  // $FlowFixMe TEMPORARY
   let padding = `0 ${gridSize(props)}px`;
   let transitionDuration = '0.1s, 0.15s';
   let transition =

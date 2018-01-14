@@ -18,23 +18,30 @@ export default md`
   Blanket does not have its own show/hide functionality, as it should be
   shown or hidden with its parent element.
 
-  ${(
-    <Example
-      Component={require('../examples/00-basic-usage').default}
-      title="Basic"
-      source={require('!!raw-loader!../examples/00-basic-usage')}
-    />
-  )}
 
-  ${(
-    <Example
-      Component={require('../examples/01-click-through').default}
-      title="With click through enabled"
-      source={require('!!raw-loader!../examples/01-click-through')}
-    />
-  )}
+  ${
+    (
+      // $FlowFixMe TEMPORARY
+      <Example
+        Component={require('../examples/00-basic-usage').default}
+        title="Basic"
+        source={require('!!raw-loader!../examples/00-basic-usage')}
+      />
+    )
+  }
 
-  
+  ${
+    (
+      // $FlowFixMe TEMPORARY
+      <Example
+        Component={require('../examples/01-click-through').default}
+        title="With click through enabled"
+        source={require('!!raw-loader!../examples/01-click-through')}
+      />
+    )
+  }
+
+
   ${(
     <Props
       props={require('!!extract-react-types-loader!../src/Blanket')}
