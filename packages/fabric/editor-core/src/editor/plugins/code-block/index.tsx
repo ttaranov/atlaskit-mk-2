@@ -19,13 +19,9 @@ const codeBlockPlugin: EditorPlugin = {
 
   contentComponent({
     editorView,
-    appearance,
     popupsMountPoint,
     popupsBoundariesElement,
   }) {
-    if (appearance === 'message') {
-      return null;
-    }
 
     const pluginState = stateKey.getState(editorView.state);
     return (
