@@ -1,13 +1,13 @@
 import { Dispatch, Middleware } from 'redux';
 
-import { PopupUploadEventEmitter } from '../../../src/components/popup';
+import { PopupUploadEventEmitter } from '../../components/popup';
 import { State } from '../domain';
 import { isSendUploadEventAction } from '../actions/sendUploadEvent';
 import {
   copyMediaFileForUpload,
   copyPublicMediaFileForUpload,
-} from '../../../src/domain/file';
-import { handleError } from '../../../src/util/handleError';
+} from '../../domain/file';
+import { handleError } from '../../util/handleError';
 
 export default function(eventEmitter: PopupUploadEventEmitter): Middleware {
   return store => (next: Dispatch<State>) => action => {

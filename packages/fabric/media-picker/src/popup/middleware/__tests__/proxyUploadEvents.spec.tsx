@@ -1,4 +1,4 @@
-import { UploadProcessingEvent } from '../../../../src/domain/uploadEvent';
+import { UploadProcessingEvent } from '../../../domain/uploadEvent';
 import { mockStore } from '../../mocks';
 import { proxyUploadEvents } from '../proxyUploadEvents';
 import { FINALIZE_UPLOAD } from '../../actions/finalizeUpload';

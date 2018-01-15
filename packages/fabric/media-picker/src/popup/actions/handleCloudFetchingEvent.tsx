@@ -1,5 +1,5 @@
 import { WsUploadEvents } from '../tools/websocket/upload/wsUploadEvents';
-import { MediaFile } from '../../../src/domain/file';
+import { MediaFile } from '../../domain/file';
 
 export const HANDLE_CLOUD_FETCHING_EVENT = 'HANDLE_CLOUD_FETCHING_EVENT';
 

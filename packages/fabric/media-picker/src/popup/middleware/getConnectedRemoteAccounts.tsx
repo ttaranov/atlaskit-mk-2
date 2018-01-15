@@ -7,7 +7,7 @@ import {
   GET_CONNECTED_REMOTE_ACCOUNTS,
   GetConnectedRemoteAccountsAction,
 } from '../actions/getConnectedRemoteAccounts';
-import { AuthService } from '../../../src/domain/auth';
+import { AuthService } from '../../domain/auth';
 
 const isGetConnectedRemoteAccountsAction = (
   action: Action,

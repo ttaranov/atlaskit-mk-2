@@ -16,10 +16,10 @@ import { RECENTS_COLLECTION } from '../config';
 import { WsProvider } from '../tools/websocket/wsProvider';
 import { WsConnectionHolder } from '../tools/websocket/wsConnectionHolder';
 import { RemoteUploadActivity } from '../tools/websocket/upload/remoteUploadActivity';
-import { MediaFile, copyMediaFileForUpload } from '../../../src/domain/file';
-import { PopupUploadEventEmitter } from '../../../src/components/popup';
+import { MediaFile, copyMediaFileForUpload } from '../../domain/file';
+import { PopupUploadEventEmitter } from '../../components/popup';
 import { sendUploadEvent } from '../actions/sendUploadEvent';
-import { AuthService } from '../../../src/domain/auth';
+import { AuthService } from '../../domain/auth';
 
 export interface RemoteFileItem extends SelectedItem {
   accountId: string;

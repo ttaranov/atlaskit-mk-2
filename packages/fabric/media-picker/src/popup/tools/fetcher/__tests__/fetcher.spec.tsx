@@ -1,16 +1,16 @@
 jest.mock('axios');
-jest.mock('../../../../../src/util/getPreviewFromBlob');
+jest.mock('../../../../util/getPreviewFromBlob');
 
 import axios from 'axios';
 import { Service } from '../../../domain';
-import { isImagePreview } from '../../../../../src/domain/preview';
+import { isImagePreview } from '../../../../domain/preview';
 import {
   MediaApiFetcher,
   flattenAccounts,
   GiphyResponse,
   GiphyImage,
 } from '../fetcher';
-import { getPreviewFromBlob } from '../../../../../src/util/getPreviewFromBlob';
+import { getPreviewFromBlob } from '../../../../util/getPreviewFromBlob';
 
 describe('Fetcher', () => {
   const apiUrl = 'api-url';

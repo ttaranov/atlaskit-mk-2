@@ -7,9 +7,9 @@ import { getConnectedRemoteAccounts } from '../actions/getConnectedRemoteAccount
 
 import { State } from '../domain';
 
-import { ModuleConfig } from '../../../src/domain/config';
+import { ModuleConfig } from '../../domain/config';
 
-import { PopupUploadEventEmitter } from '../../../src/components/popup';
+import { PopupUploadEventEmitter } from '../../components/popup';
 
 export type SetConfig = (config: ModuleConfig) => void;
 

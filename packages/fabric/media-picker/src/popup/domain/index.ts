@@ -1,6 +1,6 @@
 import { Auth, AuthProvider, MediaType } from '@atlaskit/media-core';
 
-import { MediaArtifact } from '../../../src/service/mediaApi';
+import { MediaArtifact } from '../../service/mediaApi';
 import { LocalUploads } from './local-upload';
 
 export { AuthHeaders } from './auth';

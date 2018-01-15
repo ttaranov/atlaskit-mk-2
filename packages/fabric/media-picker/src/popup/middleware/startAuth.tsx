@@ -5,7 +5,7 @@ import { changeAccount } from '../actions/changeAccount';
 import { State } from '../domain';
 import { Fetcher } from '../tools/fetcher/fetcher';
 import { CloudService } from '../services/cloud-service';
-import { AuthService } from '../../../src/domain/auth';
+import { AuthService } from '../../domain/auth';
 
 export const startCloudAccountOAuthFlow = (
   fetcher: Fetcher,

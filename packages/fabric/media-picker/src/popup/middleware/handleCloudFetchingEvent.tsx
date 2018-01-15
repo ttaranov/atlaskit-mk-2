@@ -1,4 +1,4 @@
-import { SmartMediaProgress } from '../../../src/domain/progress';
+import { SmartMediaProgress } from '../../domain/progress';
 import { Action, Dispatch, Store } from 'redux';
 
 import { finalizeUpload } from '../actions/finalizeUpload';
@@ -17,7 +17,7 @@ import {
   RemoteUploadEndPayload,
   RemoteUploadFailPayload,
 } from '../tools/websocket/upload/wsUploadEvents';
-import { MediaFile } from '../../../src/domain/file';
+import { MediaFile } from '../../domain/file';
 import { sendUploadEvent } from '../actions/sendUploadEvent';
 
 type CloudFetchingEventAction = HandleCloudFetchingEventAction<

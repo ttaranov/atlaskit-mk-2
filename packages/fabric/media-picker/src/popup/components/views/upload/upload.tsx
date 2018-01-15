@@ -20,7 +20,7 @@ import {
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import EditorInfoIcon from '@atlaskit/icon/glyph/error';
 
-import { Browser } from '../../../../../src';
+import { Browser } from '../../../..';
 
 import { isImage } from '../../../tools/isImage';
 import { isWebGLAvailable } from '../../../tools/webgl';

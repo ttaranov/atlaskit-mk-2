@@ -1,7 +1,7 @@
 import { mockPopupUploadEventEmitter, mockStore } from '../../mocks';
 import sendUploadEventMiddleware from '../sendUploadEvent';
 import { sendUploadEvent } from '../../actions/sendUploadEvent';
-import { MediaError } from '../../../../src/domain/error';
+import { MediaError } from '../../../domain/error';
 
 describe('sendUploadEvent middleware', () => {
   const uploadId = 'some-upload-id';

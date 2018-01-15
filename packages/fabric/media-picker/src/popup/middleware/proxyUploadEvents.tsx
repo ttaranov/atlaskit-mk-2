@@ -1,11 +1,11 @@
 import { Store, Dispatch, Action } from 'redux';
 
-import { UploadEvent } from '../../../src/domain/uploadEvent';
+import { UploadEvent } from '../../domain/uploadEvent';
 import { uploadHasProxy } from '../tools/uploadHasProxy';
 import { finalizeUpload } from '../actions/finalizeUpload';
 import { State } from '../domain';
 import { RECENTS_COLLECTION } from '../config';
-import { MediaFile } from '../../../src/domain/file';
+import { MediaFile } from '../../domain/file';
 import { sendUploadEvent } from '../actions/sendUploadEvent';
 
 export interface ProxyUploadEventsAction extends Action {

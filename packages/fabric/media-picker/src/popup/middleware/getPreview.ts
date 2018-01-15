@@ -7,7 +7,7 @@ import {
   sendUploadEvent,
   SendUploadEventAction,
 } from '../actions/sendUploadEvent';
-import { AuthService } from '../../../src/domain/auth';
+import { AuthService } from '../../domain/auth';
 
 export default function(
   fetcher: Fetcher,

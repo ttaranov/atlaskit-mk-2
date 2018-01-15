@@ -8,7 +8,7 @@ import {
 } from '../actions';
 import { State } from '../domain';
 import { Fetcher } from '../tools/fetcher/fetcher';
-import { AuthService } from '../../../src/domain/auth';
+import { AuthService } from '../../domain/auth';
 
 export default (fetcher: Fetcher, authService: AuthService) => (
   store: Store<State>,

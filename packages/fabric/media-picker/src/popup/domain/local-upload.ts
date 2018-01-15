@@ -1,4 +1,4 @@
-import { UploadEvent } from '../../../src/domain/uploadEvent';
+import { UploadEvent } from '../../domain/uploadEvent';
 import { Tenant } from './index';
 
 export interface LocalUploadFileMetadata {

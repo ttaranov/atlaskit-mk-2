@@ -7,12 +7,12 @@ import {
 } from '../actions/finalizeUpload';
 import { State, Tenant, SourceFile } from '../domain';
 import { mapAuthToSourceFileOwner } from '../domain/source-file';
-import { MediaFile } from '../../../src/domain/file';
+import { MediaFile } from '../../domain/file';
 import {
   sendUploadEvent,
   SendUploadEventAction,
 } from '../actions/sendUploadEvent';
-import { AuthService } from '../../../src/domain/auth';
+import { AuthService } from '../../domain/auth';
 
 export default function(
   fetcher: Fetcher,

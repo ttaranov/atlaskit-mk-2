@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { PopupUrls } from '../../../src/domain';
+import { PopupUrls } from '../../domain';
 
 export const UPDATE_POPUP_URLS = 'UPDATE_POPUP_URLS';
 

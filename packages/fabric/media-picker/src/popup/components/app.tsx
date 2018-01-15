@@ -12,7 +12,7 @@ import {
   BinaryUploader as MpBinary,
   Browser as MpBrowser,
   Dropzone as MpDropzone,
-} from '../../../src';
+} from '../..';
 
 /* Components */
 import Footer from './footer/footer';
@@ -35,7 +35,7 @@ import { fileUploadProgress } from '../actions/fileUploadProgress';
 import { fileUploadProcessingStart } from '../actions/fileUploadProcessingStart';
 import { fileUploadEnd } from '../actions/fileUploadEnd';
 import { fileUploadError } from '../actions/fileUploadError';
-import { MediaPicker } from '../../../src';
+import { MediaPicker } from '../..';
 import PassContext from './passContext';
 import {
   UploadsStartEventPayload,
@@ -44,7 +44,7 @@ import {
   UploadProcessingEventPayload,
   UploadEndEventPayload,
   UploadErrorEventPayload,
-} from '../../../src/domain/uploadEvent';
+} from '../../domain/uploadEvent';
 import { MediaPickerPopupWrapper, SidebarWrapper, ViewWrapper } from './styled';
 
 export interface AppStateProps {

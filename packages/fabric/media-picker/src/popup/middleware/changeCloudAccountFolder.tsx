@@ -7,7 +7,7 @@ import {
 import { fileListUpdate } from '../actions/fileListUpdate';
 import { Fetcher } from '../tools/fetcher/fetcher';
 import { State } from '../domain';
-import { AuthService } from '../../../src/domain/auth';
+import { AuthService } from '../../domain/auth';
 
 export const changeCloudAccountFolderMiddleware = (
   fetcher: Fetcher,

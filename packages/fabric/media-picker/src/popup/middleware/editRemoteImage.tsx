@@ -11,7 +11,7 @@ import {
   EditRemoteImageAction,
 } from '../actions/editRemoteImage';
 import { State } from '../domain';
-import { AuthService } from '../../../src/domain/auth';
+import { AuthService } from '../../domain/auth';
 
 // When we complete upload, we need to check if we can open the editor.
 // What can be changed:

@@ -24,7 +24,7 @@ import {
   UploadPreviewUpdateEvent,
   UploadProcessingEvent,
   UploadEventName,
-} from '../../../../src/domain/uploadEvent';
+} from '../../../domain/uploadEvent';
 import MockContext = jest.MockContext;
 import { Action, Dispatch } from 'redux';
 import {
@@ -33,7 +33,7 @@ import {
 } from '../../actions/setEventProxy';
 import { getPreview } from '../../actions/getPreview';
 import { hidePopup } from '../../actions/hidePopup';
-import { MediaFile } from '../../../../src/domain/file';
+import { MediaFile } from '../../../domain/file';
 import {
   isSendUploadEventAction,
   SendUploadEventAction,
