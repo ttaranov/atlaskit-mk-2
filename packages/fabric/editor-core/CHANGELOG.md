@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.3.3
+- [patch] Addes in editor-markdown-transformer package [10042be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10042be)
+
 ## 61.3.2
 - [patch] Fix cursor position after mention and emoji [330b8d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/330b8d2)
 
