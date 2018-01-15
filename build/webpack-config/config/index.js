@@ -18,7 +18,7 @@ function createEntries({ env, entry, host, port, mocks }) {
   }
 
   if (mocks) {
-    entries.main.push(path.join(process.cwd(), 'mocks.js'));
+    entries.xhrmocks = [path.join(process.cwd(), 'mocks.js')];
   }
 
   return entries;
