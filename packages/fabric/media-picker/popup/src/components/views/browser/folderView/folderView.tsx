@@ -222,7 +222,7 @@ export class FolderViewer extends Component<FolderViewerProps, {}> {
           <AkButton
             className="moreBtn"
             onClick={this.onLoadMoreButtonClick}
-            isDisabled={loading}
+            isDisabled={isLoading}
           >
             {label}
           </AkButton>

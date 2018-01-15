@@ -1,5 +1,12 @@
 # @atlaskit/multi-select
 
+## 8.0.1
+- [patch] Manually bumped package ver to account for desync between ak and ak mk 2 versions [5518730](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5518730)
+
+## 8.0.0
+- Manual bump to fix desync between ak and ak-mk-2 versions
+- No breaking changes
+
 ## 7.1.8
 - [patch] migrate multi-select to ak-mk-2 [ea69e2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea69e2e)
 
