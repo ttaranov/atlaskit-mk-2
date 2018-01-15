@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.3.2
+- [patch] Fix cursor position after mention and emoji [330b8d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/330b8d2)
+
 ## 61.3.1
 - [patch] Fix spacing and toolbar alignment for message editor [98b961e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/98b961e)
 
