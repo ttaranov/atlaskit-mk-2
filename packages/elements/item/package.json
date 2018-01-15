@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/item",
-  "version": "4.2.5",
+  "version": "4.2.6",
   "description": "A generic item component to be used within other components",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -10,7 +10,9 @@
     "dist"
   ],
   "author": "Atlassian Pty Ltd",
-  "maintainers": ["Sean C"],
+  "maintainers": [
+    "Sean C"
+  ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/theme": "^2.1.0",

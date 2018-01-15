@@ -1,5 +1,8 @@
 # @atlaskit/item
 
+## 4.2.6
+- [patch] Updated inline-edit test type, migrated item, updated pagination imports to account for removed root index file [b48c074](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b48c074)
+
 ## 4.2.5 (2017-11-28)
 
 

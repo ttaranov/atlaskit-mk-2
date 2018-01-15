@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.3.1
+- [patch] Fix spacing and toolbar alignment for message editor [98b961e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/98b961e)
+
 ## 61.3.0
 - [minor] added date plugin [f7b8a33](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7b8a33)
 - [patch] fixed insertion of a table when selection has a mark [3d8226e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d8226e)
