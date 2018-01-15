@@ -17,7 +17,6 @@ import {
   UploadErrorEventPayload,
   UploadEndEventPayload,
   MediaFile,
-  PublicMediaFile,
 } from '@atlaskit/media-picker';
 import {
   ContextConfig,
@@ -201,15 +200,16 @@ export default class PickerFacade {
   }
 
   private newState = (
-    file: MediaFile | PublicMediaFile,
+    file: MediaFile,
     status: MediaStateStatus,
+    publicId?: string,
   ): MediaState => {
     const tempId = this.generateTempId(file.id);
 
     return {
       id: tempId,
       status: status,
-      publicId: file['publicId'],
+      publicId,
       fileName: file.name,
       fileSize: file.size,
       fileMimeType: file.type,
@@ -310,7 +310,7 @@ export default class PickerFacade {
   private handleUploadEnd = (event: UploadEndEventPayload) => {
     const { file } = event;
 
-    const state = this.newState(file, 'ready');
+    const state = this.newState(file, 'ready', file.publicId);
     this.stateManager.updateState(state.id, state);
   };
 
