@@ -3,10 +3,12 @@ import { Component, FormEvent } from 'react';
 import { connect } from 'react-redux';
 import * as debounce from 'lodash.debounce';
 
+import ErrorIcon from '@atlaskit/icon/glyph/error';
 import FieldText from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 import { CardView } from '@atlaskit/media-card';
+import Flag, { FlagGroup } from '@atlaskit/flag';
 
 import { BricksLayout } from './bricksGrid';
 import { fileClick } from '../../../actions/fileClick';
@@ -96,15 +98,42 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
   private getContent = () => {
     const { hasError, isLoading, cardModels } = this.props;
 
+    const notResults = cardModels.length === 0;
     if (hasError) {
-      return this.renderError();
+      if (notResults) {
+        return this.renderError();
+      } else {
+        return (
+          <div>
+            {this.renderErrorFlag()}
+            {this.renderSearchResults()}
+          </div>
+        );
+      }
     }
 
-    if (!isLoading && cardModels.length === 0) {
+    if (!isLoading && notResults) {
       return this.renderEmptyState();
     }
 
     return this.renderSearchResults();
+  };
+
+  private renderErrorFlag = () => {
+    return (
+      <FlagGroup>
+        <Flag
+          appearance="error"
+          title="We've failed to load more results"
+          description="Check your network connection and feel free to try again."
+          icon={<ErrorIcon label="error" />}
+          id="giphy-search-failed-flag"
+          actions={[
+            { content: 'Try again', onClick: this.handleLoadMoreButtonClick },
+          ]}
+        />
+      </FlagGroup>
+    );
   };
 
   private renderError = () => {

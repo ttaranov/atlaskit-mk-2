@@ -3,6 +3,7 @@ jest.mock('../../../../tools/gridCellScaler');
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
+import Flag from '@atlaskit/flag';
 import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 import FieldText from '@atlaskit/field-text';
@@ -225,7 +226,31 @@ describe('<ConnectedGiphyView />', () => {
       expect(giphyView.find(BricksLayout)).toHaveLength(0);
     });
 
-    it('should call onSearchQueryChange() when the "Try again" button is clicked', () => {
+    it('should call onSearchQueryChange() when the "Try again" button is clicked', done => {
+      const giphyView = shallow(
+        <GiphyView
+          hasError={true}
+          isLoading={false}
+          cardModels={[]}
+          selectedItems={[]}
+          totalResultCount={totalResultCount}
+          onSearchQueryChange={onSearchQueryChange}
+          onLoadMoreButtonClick={onLoadMoreButtonClick}
+          onCardClick={onCardClick}
+        />,
+      );
+
+      giphyView.setState({ query: 'some-search-query' });
+      giphyView.find(Button).simulate('click');
+
+      setImmediate(() => {
+        expect(onSearchQueryChange).toHaveBeenCalledTimes(1);
+        expect(onSearchQueryChange).toHaveBeenCalledWith('some-search-query');
+        done();
+      });
+    });
+
+    it('should render a Flag with error message when non-initial load failed', () => {
       const giphyView = shallow(
         <GiphyView
           hasError={true}
@@ -240,10 +265,28 @@ describe('<ConnectedGiphyView />', () => {
       );
 
       giphyView.setState({ query: 'some-search-query' });
-      giphyView.find(Button).simulate('click');
+      expect(giphyView.find(Flag)).toHaveLength(1);
+    });
 
-      expect(onSearchQueryChange).toHaveBeenCalledTimes(1);
-      expect(onSearchQueryChange).toHaveBeenCalledWith('some-search-query');
+    it("should call onLoadMoreButtonClick() when Flag's action is triggered", () => {
+      const giphyView = shallow(
+        <GiphyView
+          hasError={true}
+          isLoading={false}
+          cardModels={cardModels}
+          selectedItems={[]}
+          totalResultCount={totalResultCount}
+          onSearchQueryChange={onSearchQueryChange}
+          onLoadMoreButtonClick={onLoadMoreButtonClick}
+          onCardClick={onCardClick}
+        />,
+      );
+
+      const actions: { onClick: () => {} }[] = giphyView
+        .find(Flag)
+        .prop('actions');
+      actions[0].onClick();
+      expect(onLoadMoreButtonClick).toHaveBeenCalledTimes(1);
     });
 
     it('should render empty state when isLoading is false and items is an empty array', () => {

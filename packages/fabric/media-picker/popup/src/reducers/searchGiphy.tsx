@@ -64,10 +64,6 @@ export const giphySearchFailed = (state: State, action: Action): State => {
         isLoading: false,
         hasError: true,
       },
-      giphy: {
-        imageCardModels: [],
-        totalResultCount: undefined,
-      },
     };
   } else {
     return state;
