@@ -1,5 +1,14 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@atlaskit/*": [
+        "./packages/css-packs/*/src",
+        "./packages/elements/*/src",
+        "./packages/fabric/*/src",
+        "./packages/utils/*/src"
+      ]
+    },
     "allowJs": false,
     "alwaysStrict": true,
     "declaration": true,
