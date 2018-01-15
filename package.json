@@ -173,7 +173,6 @@
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/button-group": "^1.5.3",
-    "@atlaskit/dropdown-menu": "^3.5.0",
     "@atlaskit/droplist": "^4.11.3",
     "@atlaskit/emoji": "^31.0.2",
     "@atlaskit/field-text": "^4.1.2",
@@ -214,6 +213,7 @@
     "@types/redux": "^3.6.0",
     "@types/sinon-chai": "^2.7.27",
     "ajv": "^4.11.3",
+    "array-find": "^1.0.0",
     "axios": "^0.17.1",
     "babel-core": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
