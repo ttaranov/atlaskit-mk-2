@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 61.3.4
+- [patch] Remove placeholderBaseUrl config option from the Confluence Macro Provider [1583960](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1583960)
+- [patch] Fix Extension Header img height to 24px, center elements vertically [49f48bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49f48bb)
+
 ## 61.3.3
 - [patch] Addes in editor-markdown-transformer package [10042be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10042be)
 
