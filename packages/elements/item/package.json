@@ -1,0 +1,43 @@
+{
+  "name": "@atlaskit/item",
+  "version": "4.2.5",
+  "description": "A generic item component to be used within other components",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": ["Sean C"],
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/theme": "^2.1.0",
+    "prop-types": "^15.5.10",
+    "react-addons-text-content": "^0.0.4",
+    "styled-components": "^1.4.6",
+    "uuid": "^3.1.0"
+  },
+  "peerDependencies": {
+    "react": "15.6.0 - 16.2.0",
+    "react-dom": "15.6.0 - 16.2.0"
+  },
+  "devDependencies": {
+    "@atlaskit/avatar": "^8.4.0",
+    "@atlaskit/docs": "^2.4.0",
+    "@atlaskit/dropdown-menu": "^3.5.0",
+    "@atlaskit/droplist": "^4.11.3",
+    "@atlaskit/icon": "^10.2.0",
+    "@atlaskit/lozenge": "^3.5.0",
+    "@atlaskit/page": "^5.0.3",
+    "@atlaskit/tooltip": "^8.0.2",
+    "enzyme": "^3.3.0",
+    "polished": "1.5.0"
+  },
+  "keywords": [
+    "atlaskit",
+    "react",
+    "ui"
+  ]
+}
