@@ -10,7 +10,7 @@ import { ReactRenderer } from '@atlaskit/renderer';
 import Editor from './Editor';
 import { Comment as CommentType, User } from '../model';
 import CommentContainer from '../containers/Comment';
-import ProviderFactoryWithList from '../api/ProviderFactoryWithList';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 export interface Props {
   conversationId: string;
@@ -28,7 +28,7 @@ export interface Props {
   onDeleteComment?: (conversationId: string, commentId: string) => void;
 
   // Provider
-  dataProviderFactory?: ProviderFactoryWithList;
+  dataProviders?: ProviderFactory;
 }
 
 export interface State {
@@ -110,7 +110,7 @@ export default class Comment extends React.PureComponent<Props, State> {
   };
 
   private getContent() {
-    const { comment, dataProviderFactory } = this.props;
+    const { comment, dataProviders } = this.props;
     const { isEditing } = this.state;
 
     if (comment.deleted) {
@@ -125,7 +125,7 @@ export default class Comment extends React.PureComponent<Props, State> {
           isEditing={isEditing}
           onSave={this.onSaveEdit}
           onCancel={this.onCancelEdit}
-          dataProviderFactory={dataProviderFactory}
+          dataProviders={dataProviders}
         />
       );
     }
@@ -133,7 +133,7 @@ export default class Comment extends React.PureComponent<Props, State> {
     return (
       <ReactRenderer
         document={comment.document.adf}
-        dataProviders={dataProviderFactory}
+        dataProviders={dataProviders}
       />
     );
   }
@@ -144,7 +144,7 @@ export default class Comment extends React.PureComponent<Props, State> {
       comment,
       comments,
       user,
-      dataProviderFactory,
+      dataProviders,
     } = this.props;
     const { isReplying, isEditing } = this.state;
     const { createdBy } = comment;
@@ -193,7 +193,7 @@ export default class Comment extends React.PureComponent<Props, State> {
             onAddComment={this.props.onAddComment}
             onUpdateComment={this.props.onUpdateComment}
             onDeleteComment={this.props.onDeleteComment}
-            dataProviderFactory={dataProviderFactory}
+            dataProviders={dataProviders}
           />
         ))}
         {isReplying && (
@@ -201,7 +201,7 @@ export default class Comment extends React.PureComponent<Props, State> {
             isExpanded={true}
             onCancel={this.onCancelReply}
             onSave={this.onSaveReply}
-            dataProviderFactory={dataProviderFactory}
+            dataProviders={dataProviders}
           />
         )}
       </AkComment>

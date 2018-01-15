@@ -2,7 +2,7 @@ import {
   ConversationResourceConfig,
   AbstractConversationResource,
 } from '../src/api/ConversationResource';
-import ProviderFactoryWithList from '../src/api/ProviderFactoryWithList';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { Comment, Conversation, User } from '../src/model';
 import { mockConversation, mockInlineConversation } from './MockData';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
@@ -26,7 +26,7 @@ const MockDataProviders = {
 };
 
 export const getDataProviderFactory = () => {
-  const dataProviderFactory = new ProviderFactoryWithList();
+  const dataProviderFactory = new ProviderFactory();
   Object.keys(MockDataProviders).forEach(provider => {
     dataProviderFactory.setProvider(provider, MockDataProviders[provider]);
   });

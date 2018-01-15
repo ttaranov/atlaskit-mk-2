@@ -17,7 +17,5 @@ const provider = new ConversationResource({
 });
 
 export default function Example() {
-  return (
-    <Demo provider={provider} dataProviderFactory={getDataProviderFactory()} />
-  );
+  return <Demo provider={provider} dataProviders={getDataProviderFactory()} />;
 }

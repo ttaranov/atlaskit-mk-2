@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import AkAvatar from '@atlaskit/avatar';
-import ProviderFactoryWithList from '../api/ProviderFactoryWithList';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 import {
   Editor as AkEditor,
@@ -18,7 +18,7 @@ export interface Props {
   isEditing?: boolean;
 
   // Provider
-  dataProviderFactory?: ProviderFactoryWithList;
+  dataProviders?: ProviderFactory;
 }
 
 export interface State {
@@ -94,12 +94,14 @@ export default class Editor extends React.Component<Props, State> {
 
   render() {
     const { isEditing } = this.state;
-    const { dataProviderFactory } = this.props;
+    const { dataProviders } = this.props;
     let providers = {};
 
     // @TODO Remove and just pass the factory through once AkEditor is updated
-    if (dataProviderFactory) {
-      providers = { ...dataProviderFactory.listProviders() };
+    if (dataProviders) {
+      (dataProviders as any).providers.forEach((provider, key) => {
+        providers[key] = provider;
+      });
     }
 
     return (

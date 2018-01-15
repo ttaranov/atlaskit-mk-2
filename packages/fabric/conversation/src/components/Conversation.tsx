@@ -6,7 +6,7 @@ import {
   Conversation as ConversationType,
   User,
 } from '../model';
-import ProviderFactoryWithList from '../api/ProviderFactoryWithList';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 export interface Props {
   id?: string;
@@ -35,7 +35,7 @@ export interface Props {
   };
 
   // Provider
-  dataProviderFactory?: ProviderFactoryWithList;
+  dataProviders?: ProviderFactory;
 }
 
 export default class Conversation extends React.PureComponent<Props> {
@@ -47,7 +47,7 @@ export default class Conversation extends React.PureComponent<Props> {
       onUpdateComment,
       onDeleteComment,
       user,
-      dataProviderFactory,
+      dataProviders,
     } = this.props;
 
     if (!conversation) {
@@ -65,7 +65,7 @@ export default class Conversation extends React.PureComponent<Props> {
         onAddComment={onAddComment}
         onUpdateComment={onUpdateComment}
         onDeleteComment={onDeleteComment}
-        dataProviderFactory={dataProviderFactory}
+        dataProviders={dataProviders}
       />
     ));
   }
@@ -92,7 +92,7 @@ export default class Conversation extends React.PureComponent<Props> {
   };
 
   render() {
-    const { isExpanded, onCancel, meta, dataProviderFactory } = this.props;
+    const { isExpanded, onCancel, meta, dataProviders } = this.props;
 
     return (
       <div>
@@ -102,7 +102,7 @@ export default class Conversation extends React.PureComponent<Props> {
             isExpanded={isExpanded}
             onSave={this.onSave}
             onCancel={onCancel}
-            dataProviderFactory={dataProviderFactory}
+            dataProviders={dataProviders}
           />
         ) : null}
       </div>

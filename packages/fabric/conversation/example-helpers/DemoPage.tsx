@@ -9,7 +9,7 @@ import {
   User,
 } from '../src/model';
 import { MOCK_USERS } from './MockData';
-import ProviderFactoryWithList from '../src/api/ProviderFactoryWithList';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 const DUMMY_CODE = `
 class Main() {
@@ -56,7 +56,7 @@ interface FileProps {
   code: string;
   conversations: ConversationType[];
   provider: ResourceProvider;
-  dataProviderFactory?: ProviderFactoryWithList;
+  dataProviders?: ProviderFactory;
 }
 
 const containerId = 'container:abc:abc/1234567';
@@ -84,7 +84,7 @@ class File extends React.Component<FileProps, { addAt?: number }> {
 
   private renderConvoForLine = (index: number) => {
     const { addAt } = this.state;
-    const { conversations, name, provider, dataProviderFactory } = this.props;
+    const { conversations, name, provider, dataProviders } = this.props;
 
     const [conversation] =
       conversations &&
@@ -96,7 +96,7 @@ class File extends React.Component<FileProps, { addAt?: number }> {
           <Conversation
             id={conversation.conversationId}
             provider={provider}
-            dataProviderFactory={dataProviderFactory}
+            dataProviders={dataProviders}
             isExpanded={false}
             meta={{ name, lineNumber: index }}
             containerId={containerId}
@@ -111,7 +111,7 @@ class File extends React.Component<FileProps, { addAt?: number }> {
           <Conversation
             onCancel={this.onCancel}
             provider={provider}
-            dataProviderFactory={dataProviderFactory}
+            dataProviders={dataProviders}
             isExpanded={true}
             meta={{ name, lineNumber: index }}
             containerId={containerId}
@@ -157,7 +157,7 @@ class File extends React.Component<FileProps, { addAt?: number }> {
 }
 
 export class Demo extends React.Component<
-  { provider: ResourceProvider; dataProviderFactory: ProviderFactoryWithList },
+  { provider: ResourceProvider; dataProviders: ProviderFactory },
   { conversations: any[]; selectedUser: User }
 > {
   constructor(props) {
@@ -193,7 +193,7 @@ export class Demo extends React.Component<
   };
 
   private renderConversations(conversations: ConversationType[]) {
-    const { provider, dataProviderFactory } = this.props;
+    const { provider, dataProviders } = this.props;
 
     return conversations.map(conversation => (
       <div
@@ -206,7 +206,7 @@ export class Demo extends React.Component<
       >
         <Conversation
           provider={provider}
-          dataProviderFactory={dataProviderFactory}
+          dataProviders={dataProviders}
           id={conversation.conversationId}
           containerId={containerId}
         />
@@ -247,7 +247,7 @@ export class Demo extends React.Component<
 
   render() {
     const { conversations } = this.state;
-    const { provider, dataProviderFactory } = this.props;
+    const { provider, dataProviders } = this.props;
     const prConversations = conversations.filter(
       c => !Object.keys(c.meta).length,
     );
@@ -259,7 +259,7 @@ export class Demo extends React.Component<
         {prConversations.length === 0 ? (
           <Conversation
             provider={provider}
-            dataProviderFactory={dataProviderFactory}
+            dataProviders={dataProviders}
             containerId={containerId}
           />
         ) : null}
@@ -268,14 +268,14 @@ export class Demo extends React.Component<
           code={DUMMY_CODE}
           provider={provider}
           conversations={conversations.filter(c => c.meta.name === 'main.js')}
-          dataProviderFactory={dataProviderFactory}
+          dataProviders={dataProviders}
         />
         <File
           name="stuff.js"
           code={DUMMY_CODE}
           provider={provider}
           conversations={conversations.filter(c => c.meta.name === 'stuff.js')}
-          dataProviderFactory={dataProviderFactory}
+          dataProviders={dataProviders}
         />
       </div>
     );
