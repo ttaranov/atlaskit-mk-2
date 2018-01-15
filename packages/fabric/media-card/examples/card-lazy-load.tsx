@@ -1,10 +1,23 @@
 import * as React from 'react';
 import * as scrollParent from 'scrollparent';
+import styled from 'styled-components';
 import {
   createStorybookContext,
   genericFileId,
 } from '@atlaskit/media-test-helpers';
 import { Card } from '../src';
+
+const GradientBackground = styled.div`
+  background: linear-gradient(
+    to bottom,
+    rgba(226, 226, 226, 1) 0%,
+    rgba(254, 254, 254, 1) 100%
+  );
+`;
+
+const DummyContent = styled.div`
+  height: 125vh;
+`;
 
 const context = createStorybookContext();
 
@@ -19,16 +32,11 @@ class Example extends React.Component<{}, {}> {
   render() {
     return (
       <div ref={this.handleMount}>
-        <div
-          style={{
-            background:
-              'linear-gradient(to bottom, rgba(226,226,226,1) 0%, rgba(254,254,254,1) 100%)',
-          }}
-        >
-          <div style={{ height: '125vh' }} />
+        <GradientBackground>
+          <DummyContent />
           <Card context={context} identifier={genericFileId} />
-          <div style={{ height: '125vh' }} />
-        </div>
+          <DummyContent />
+        </GradientBackground>
       </div>
     );
   }
