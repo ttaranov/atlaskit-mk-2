@@ -8,6 +8,7 @@ import { ChevronContainer, iconColor } from '../styled';
 type Props = {
   isExpanded: boolean,
   hasChildren: boolean,
+  ariaControls?: string,
   onExpandToggle?: Function,
   key?: string,
 };
@@ -20,7 +21,7 @@ export default class Chevron extends PureComponent<Props> {
   };
 
   render() {
-    const { isExpanded, hasChildren } = this.props;
+    const { isExpanded, hasChildren, ariaControls } = this.props;
     const iconProps = {
       onClick: this.handleClick,
       size: 'medium',
@@ -28,12 +29,15 @@ export default class Chevron extends PureComponent<Props> {
     };
     return (
       <ChevronContainer>
-        {hasChildren &&
-          (isExpanded ? (
-            <ChevronDownIcon label="Collapse" {...iconProps} />
-          ) : (
-            <ChevronRightIcon label="Expand" {...iconProps} />
-          ))}
+        {hasChildren && (
+          <button aria-expanded={isExpanded} aria-controls={ariaControls}>
+            {isExpanded ? (
+              <ChevronDownIcon label="Collapse" {...iconProps} />
+            ) : (
+              <ChevronRightIcon label="Expand" {...iconProps} />
+            )}
+          </button>
+        )}
       </ChevronContainer>
     );
   }

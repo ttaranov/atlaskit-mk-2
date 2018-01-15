@@ -33,6 +33,20 @@ const commonChevronContainer = css`
   top: 0;
   bottom: 0;
   margin-left: -22px;
+
+  button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    outline: none;
+  }
+
+  button:focus {
+  }
+
+  button:active {
+    outline: none;
+  }
 `;
 
 export const ChevronContainer = styled.span`

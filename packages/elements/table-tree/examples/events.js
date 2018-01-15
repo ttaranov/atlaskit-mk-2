@@ -59,7 +59,7 @@ export default class extends PureComponent<{}, State> {
             items={getItemsData}
             render={({ title, numbering, page, children }) => (
               <Row
-                key={numbering}
+                itemId={numbering}
                 hasChildren={children.length > 0}
                 onExpand={() => this.triggerEvent(`Node Expanded (${title})`)}
                 onCollapse={() =>

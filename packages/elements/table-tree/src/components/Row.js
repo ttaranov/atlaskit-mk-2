@@ -3,6 +3,7 @@ import React, { PureComponent, type Element, type ChildrenArray } from 'react';
 import { TreeRowContainer } from '../styled';
 import Chevron from './Chevron';
 import Cell from './Cell';
+import toItemId from '../utils/toItemId';
 
 type Props = {
   /** Whether this row has any child rows. */
@@ -11,6 +12,10 @@ type Props = {
   /** One or more Cell elements that will form this row of data. */
   children: Node | ChildrenArray<Element<*>>,
 
+  /** Unique, stable ID for the row. Can be used for accessibility, caching etc. */
+  itemId: string, // eslint-disable-line react/no-unused-prop-types
+
+  /** Called whenever this row's node is expanded to show its child rows. */
   onExpand?: Function,
 
   /** Called whenever this row's node is collapsed to hide its child rows. */
@@ -52,6 +57,7 @@ export default class Row extends PureComponent<Props> {
           isExpanded={isExpanded}
           hasChildren={hasChildren}
           onExpandToggle={this.props.onExpandToggle}
+          ariaControls={toItemId(this.props.itemId)}
         />,
       ].concat(cellContent);
     }
