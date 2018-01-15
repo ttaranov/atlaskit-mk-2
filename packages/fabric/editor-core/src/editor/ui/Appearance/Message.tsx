@@ -34,7 +34,6 @@ export interface MessageEditorProps {
 // tslint:disable-next-line:variable-name
 const MessageEditor: any = styled.div`
   display: flex;
-  align-items: center;
   border: 1px solid
     ${(props: MessageEditorProps) =>
       props.isMaxContentSizeReached ? '#FF8F73' : '#C1C7D0'};
@@ -66,7 +65,7 @@ const MessageEditor: any = styled.div`
 
 // tslint:disable-next-line:variable-name
 const ContentArea = styled(ContentStyles)`
-  padding: 4px 16px 4px 8px;
+  padding: 6px 16px 4px 8px;
   flex-grow: 1;
   overflow-x: hidden;
   overflow-y: auto;
@@ -75,7 +74,7 @@ const ContentArea = styled(ContentStyles)`
 // tslint:disable-next-line:variable-name
 const SecondaryToolbarContainer = styled.div`
   padding: 2px 4px 0 0;
-  margin-bottom: -2px;
+  margin-bottom: -1px;
   box-sizing: border-box;
   justify-content: flex-end;
   align-items: flex-end;

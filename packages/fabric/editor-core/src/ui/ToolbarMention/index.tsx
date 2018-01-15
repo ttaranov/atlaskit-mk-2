@@ -11,6 +11,7 @@ export interface Props {
   editorView?: EditorView;
   pluginKey: PluginKey;
   isDisabled?: boolean;
+  isReducedSpacing?: boolean;
 }
 
 export interface State {
@@ -41,7 +42,7 @@ export default class ToolbarMention extends PureComponent<Props, State> {
 
   render() {
     const { disabled } = this.state;
-    const { isDisabled } = this.props;
+    const { isDisabled, isReducedSpacing } = this.props;
 
     if (!this.pluginState) {
       return null;
@@ -49,6 +50,7 @@ export default class ToolbarMention extends PureComponent<Props, State> {
 
     return (
       <ToolbarButton
+        spacing={isReducedSpacing ? 'none' : 'default'}
         onClick={this.handleInsertMention}
         disabled={disabled || isDisabled}
         title="Mention a person (@)"
