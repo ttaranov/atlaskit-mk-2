@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 5.6.0
+- [minor] added date plugin [f7b8a33](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7b8a33)
+
 ## 5.5.1
 - [patch] Fix schema definition of mediaSingle node [ade0fc9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ade0fc9)
 
