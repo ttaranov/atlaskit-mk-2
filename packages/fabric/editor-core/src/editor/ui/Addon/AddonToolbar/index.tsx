@@ -15,6 +15,7 @@ const POPUP_WIDTH = 136;
 
 export interface Props {
   dropdownItems?: React.ReactElement<any> | React.ReactElement<any>[];
+  isReducedSpacing?: boolean;
 }
 
 export interface State {
@@ -52,7 +53,7 @@ export default class AddonToolbar extends React.Component<Props, State> {
   };
 
   render() {
-    const { dropdownItems } = this.props;
+    const { dropdownItems, isReducedSpacing } = this.props;
     const { addonDropdownContent, isOpen } = this.state;
 
     if (
@@ -66,6 +67,7 @@ export default class AddonToolbar extends React.Component<Props, State> {
       <div ref={this.handleRef}>
         <ToolbarButton
           selected={isOpen}
+          spacing={isReducedSpacing ? 'none' : 'default'}
           onClick={this.togglePopup}
           title="Insert addon"
           iconBefore={<MoreIcon label="Insert addon" />}

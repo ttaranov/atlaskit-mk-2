@@ -148,7 +148,10 @@ export default class Editor extends React.Component<
             popupsBoundariesElement={popupsBoundariesElement}
           />
           {customSecondaryToolbarComponents}
-          <AddonToolbar dropdownItems={addonToolbarComponents} />
+          <AddonToolbar
+            dropdownItems={addonToolbarComponents}
+            isReducedSpacing={true}
+          />
         </SecondaryToolbarContainer>
       </MessageEditor>
     );
