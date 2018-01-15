@@ -14,7 +14,7 @@ import {
 import styled from 'styled-components';
 
 // tslint:disable-next-line:variable-name
-export const Wrapper: ComponentClass<any> = styled.div`
+const Wrapper: ComponentClass<any> = styled.div`
   color: ${akColorN800};
 
   & span.akActionMark {
@@ -151,3 +151,5 @@ export const Wrapper: ComponentClass<any> = styled.div`
     max-width: 100%;
   }
 `;
+
+export default Wrapper;

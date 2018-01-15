@@ -2,15 +2,16 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { Schema } from 'prosemirror-model';
 import {
-  UnsupportedBlock,
   ProviderFactory,
   defaultSchema,
   EventHandlers,
   ADNode,
 } from '@atlaskit/editor-common';
+
 import { ReactSerializer, renderDocument, RendererContext } from '../../';
 import { RenderOutputStat } from '../../';
-import { Wrapper } from './style';
+import Boundary from '../Boundary';
+import Wrapper from '../Wrapper';
 
 export interface Extension<T> {
   extensionKey: string;
@@ -80,26 +81,23 @@ export default class Renderer extends PureComponent<Props, {}> {
 
   render() {
     const { document, onComplete, schema } = this.props;
+    const { result, stat } = renderDocument(
+      document,
+      this.serializer,
+      schema || defaultSchema,
+    );
 
-    try {
-      const { result, stat } = renderDocument(
-        document,
-        this.serializer,
-        schema || defaultSchema,
-      );
-
-      if (onComplete) {
-        onComplete(stat);
-      }
-
-      return <Wrapper>{result}</Wrapper>;
-    } catch (ex) {
-      return (
-        <Wrapper>
-          <UnsupportedBlock />
-        </Wrapper>
-      );
+    if (onComplete) {
+      onComplete(stat);
     }
+
+    return (
+      <Boundary>
+        <Wrapper>
+          {result}
+        </Wrapper>
+      </Boundary>
+    );
   }
 
   componentWillUnmount() {
@@ -110,5 +108,9 @@ export default class Renderer extends PureComponent<Props, {}> {
     if (!dataProviders) {
       this.providerFactory.destroy();
     }
+  }
+
+  componentDidCatch(error, errorInfo) {
+
   }
 }
