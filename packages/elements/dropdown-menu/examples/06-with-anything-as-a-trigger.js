@@ -1,4 +1,5 @@
 // @flow
+/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
@@ -17,6 +18,8 @@ const getDropDownData = () => (
   </DropdownItemGroup>
 );
 
+// added tabIndex in dropdown trigger for keyboard naviagtion support
+
 export default () => (
   <div
     style={{
@@ -27,11 +30,15 @@ export default () => (
       padding: '20px 0',
     }}
   >
-    <Dropdown trigger={<span>click me</span>}>{getDropDownData()}</Dropdown>
-    <Dropdown trigger={<span>{<Avatar />}</span>}>{getDropDownData()}</Dropdown>
+    <Dropdown trigger={<span tabIndex="0">click me</span>}>
+      {getDropDownData()}
+    </Dropdown>
+    <Dropdown trigger={<span tabIndex="0">{<Avatar />}</span>}>
+      {getDropDownData()}
+    </Dropdown>
     <Dropdown
       trigger={
-        <span>
+        <span tabIndex="0">
           <Question label="dropdown`s trigger" />
         </span>
       }
