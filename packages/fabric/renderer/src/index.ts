@@ -7,10 +7,10 @@ import {
 import { Node as PMNode, Schema, Fragment } from 'prosemirror-model';
 
 import { Serializer } from './serializer';
+import { default as ReactRenderer } from './ui/Renderer';
 
 export { default as ReactSerializer } from './react';
 export { default as TextSerializer } from './text';
-export { default as ReactRenderer } from './ui/Renderer';
 export { RendererContext } from './react';
 export { ADFEncoder } from './utils';
 
@@ -91,4 +91,5 @@ export const renderNodes = <T>(
   return serializer.serializeFragment(pmFragment, {}, target, 'node-0');
 };
 
-export { Serializer };
+export { ReactRenderer, Serializer };
+export default ReactRenderer;
