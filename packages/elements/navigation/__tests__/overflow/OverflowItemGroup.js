@@ -110,6 +110,7 @@ describe('<AkCollapseOverflowItemGroup />', () => {
         { context: createContext(true, false, true, reportSpy) },
       );
       instance = wrapper.instance();
+      wrapper.update();
       jest.spyOn(wrapper.instance(), 'groupHeight').mockReturnValue(100);
     });
 

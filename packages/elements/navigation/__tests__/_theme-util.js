@@ -1,5 +1,6 @@
 // @flow
-import { PropTypes, type Node } from 'react';
+import PropTypes from 'prop-types';
+import { type Node } from 'react';
 import { mount, shallow } from 'enzyme';
 import { itemThemeNamespace } from '@atlaskit/item';
 import { prefix } from '../src/theme/util';
