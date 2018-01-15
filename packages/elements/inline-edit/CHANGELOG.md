@@ -1,5 +1,8 @@
 # @atlaskit/inline-edit
 
+## 4.5.8
+- [patch] Manually bumped package ver to account for desync between ak and ak mk 2 versions [5518730](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5518730)
+
 ## 4.5.7
 - [patch] Migrated to new mk2 repo & build system  [99089df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99089df)
 
