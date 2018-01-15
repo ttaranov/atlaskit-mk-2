@@ -1,3 +1,4 @@
+// @flow
 import { colors } from '@atlaskit/theme';
 
 export function getInputBackground({
