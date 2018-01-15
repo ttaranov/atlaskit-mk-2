@@ -31,8 +31,9 @@ describe('<ResizerButton />', () => {
 
   it('should pass isVisible prop on to ResizerButtonInner', () => {
     const wrapper = mount(<ResizerButton />);
-    expect(wrapper.find(ResizerButtonInner).prop('isVisible')).toBe(undefined);
+    expect(wrapper.find(ResizerButtonInner).prop('isVisible')).toBe(false);
     wrapper.setProps({ isVisible: true });
+    wrapper.update();
     expect(wrapper.find(ResizerButtonInner).prop('isVisible')).toBe(true);
   });
 });

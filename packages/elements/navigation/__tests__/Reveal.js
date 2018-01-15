@@ -70,6 +70,7 @@ describe('Reveal', () => {
 
       jest.runOnlyPendingTimers();
       requestAnimationFrame.step();
+      wrapper.update();
 
       expect(wrapper.find(RevealInner).props().isOpen).toBe(true);
 
