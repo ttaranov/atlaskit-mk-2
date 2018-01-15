@@ -33,6 +33,7 @@
     "@atlaskit/item": "^4.2.6",
     "@atlaskit/layer": "^2.6.0",
     "@atlaskit/logo": "^6.1.0",
+    "@atlaskit/editor-markdown-transformer": "^0.0.1",
     "@atlaskit/media-card": "^23.2.0",
     "@atlaskit/media-core": "^12.1.0",
     "@atlaskit/media-filmstrip": "^5.8.0",
