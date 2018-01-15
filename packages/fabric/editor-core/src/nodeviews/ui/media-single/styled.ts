@@ -12,11 +12,15 @@ function float(layout: MediaSingleLayout): string {
   }
 }
 
-function calcWidth(layout: MediaSingleLayout): string {
+function calcWidth(layout: MediaSingleLayout, fixedWidth: number = 0): string {
   switch (layout) {
     case 'wrap-right':
     case 'wrap-left':
       return 'calc(50% - 12px)';
+    case 'wide':
+      return `${Math.min(960, fixedWidth)}px`;
+    case 'full-width':
+      return `${fixedWidth}px`;
     default:
       return '100%';
   }
@@ -35,24 +39,26 @@ function calcMargin(layout: MediaSingleLayout): string {
 
 export interface WrapperProps {
   layout: MediaSingleLayout;
-  width: number;
-  height: number;
+  width?: number;
+  maxWidth: number;
+  maxHeight: number;
 }
 
 const MediaSingleDimensionHelper = ({
   layout,
   width,
-  height,
+  maxWidth,
+  maxHeight,
 }: WrapperProps) => css`
   margin: ${calcMargin(layout)};
   float: ${float(layout)};
-  max-width: ${width}px;
-  max-height: ${height}px;
-  width: ${calcWidth(layout)};
+  max-width: ${maxWidth}px;
+  max-height: ${maxHeight}px;
+  width: ${calcWidth(layout, width)};
   &:after {
     content: '';
     display: block;
-    padding-bottom: ${height / width * 100}%;
+    padding-bottom: ${maxHeight / maxWidth * 100}%;
   }
 `;
 

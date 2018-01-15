@@ -30,7 +30,7 @@ export interface Props {
  *
  * renderComponent: ({ hyperlink }) => React.Component;
  */
-export default class WithPluginState extends React.Component<State, any> {
+export default class WithPluginState extends React.Component<Props, State> {
   state = {};
   private listeners = {};
   private debounce: number | null = null;
@@ -111,14 +111,14 @@ export default class WithPluginState extends React.Component<State, any> {
   }
 
   componentWillUnmount() {
-    const { eventDispatcher } = this.props;
-    if (!eventDispatcher) {
+    const { eventDispatcher, editorView } = this.props;
+    if (!eventDispatcher || !editorView) {
       return;
     }
 
     Object.keys(this.listeners).forEach(key => {
       const pluginState = this.listeners[key].pluginKey.getState(
-        this.props.editorView.state,
+        editorView.state,
       );
       if (pluginState && pluginState.unsubscribe) {
         pluginState.unsubscribe(this.listeners[key].handler);

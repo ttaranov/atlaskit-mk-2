@@ -297,14 +297,10 @@ const ContentStyles = styled.div`
 
   //=============== SINGLE IMAGE STYLES ==================
   && .ProseMirror {
-    [layout='wide'] {
-      max-width: 960px;
-      width: 100%;
-    }
-
-    & [layout='full-width'] {
-      max-width: 100%;
-      width: 100%;
+    & [layout='full-width'] > div,
+    & [layout='wide'] > div {
+      margin-left: 50%;
+      transform: translateX(-50%);
     }
 
     & [layout='wrap-left'] + [layout='wrap-right'],

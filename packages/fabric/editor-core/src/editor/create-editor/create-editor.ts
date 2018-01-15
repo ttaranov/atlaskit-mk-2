@@ -7,6 +7,7 @@ import {
   EditorPlugin,
   EditorProps,
   EditorConfig,
+  NodeViewsFactory,
 } from '../types';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import ErrorReporter from '../../utils/error-reporter';
@@ -81,6 +82,10 @@ export function processPluginsList(plugins: EditorPlugin[]): EditorConfig {
         acc.secondaryToolbarComponents.push(plugin.secondaryToolbarComponent);
       }
 
+      if (plugin.nodeViews) {
+        acc.nodeViewsFactories.push(plugin.nodeViews);
+      }
+
       return acc;
     },
     {
@@ -90,6 +95,7 @@ export function processPluginsList(plugins: EditorPlugin[]): EditorConfig {
       contentComponents: [],
       primaryToolbarComponents: [],
       secondaryToolbarComponents: [],
+      nodeViewsFactories: [],
     } as EditorConfig,
   );
 }
@@ -127,6 +133,20 @@ export function createPMPlugins(
       plugin({ schema, props, dispatch, providerFactory, errorReporter }),
     )
     .filter(plugin => !!plugin) as Plugin[];
+}
+
+export function createNodeViews(
+  editorConfig: EditorConfig,
+  providerFactory: ProviderFactory,
+  eventDispatcher: EventDispatcher,
+): NodeViewsFactory {
+  return editorConfig.nodeViewsFactories.reduce(
+    (acc, createNodeViewsFactory) => ({
+      ...acc,
+      ...createNodeViewsFactory(providerFactory, eventDispatcher),
+    }),
+    {},
+  );
 }
 
 export function createErrorReporter(errorReporterHandler) {
@@ -223,6 +243,11 @@ export default function createEditor(
     providerFactory,
     errorReporter,
   );
+  const nodeViews = createNodeViews(
+    editorConfig,
+    providerFactory,
+    eventDispatcher,
+  );
   const contentTransformer = contentTransformerProvider
     ? contentTransformerProvider(schema)
     : undefined;
@@ -243,6 +268,7 @@ export default function createEditor(
       }
     },
     editable: () => true,
+    nodeViews,
   });
 
   return {

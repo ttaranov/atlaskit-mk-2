@@ -35,3 +35,4 @@ export { default as placeholderCursorPlugin } from './placeholder-cursor';
 export {
   default as clearMarksOnChangeToEmptyDocumentPlugin,
 } from './clear-marks-on-change-to-empty-document';
+export { default as widthPlugin } from './width';

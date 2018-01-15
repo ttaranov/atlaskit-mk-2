@@ -1,6 +1,10 @@
 import { NodeSpec, MarkSpec } from 'prosemirror-model';
 import { NodeView } from 'prosemirror-view';
-import { PMPluginFactory, UIComponentFactory } from './editor-plugin';
+import {
+  PMPluginFactory,
+  UIComponentFactory,
+  UINodeViewsFactory,
+} from './editor-plugin';
 
 export interface NodeConfig {
   name: string;
@@ -26,4 +30,5 @@ export interface EditorConfig {
   contentComponents: UIComponentFactory[];
   primaryToolbarComponents: UIComponentFactory[];
   secondaryToolbarComponents: UIComponentFactory[];
+  nodeViewsFactories: UINodeViewsFactory[];
 }

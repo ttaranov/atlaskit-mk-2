@@ -30,15 +30,9 @@ import {
 import analyticsService from '../../analytics/service';
 import { ErrorReporter, isImage } from '../../utils';
 import { Dispatch } from '../../editor/event-dispatcher';
-import { nodeViewFactory } from '../../nodeviews';
 import { EditorAppearance } from '../../editor/types/editor-props';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import DropPlaceholder from '../../ui/Media/DropPlaceholder';
-import {
-  ReactMediaGroupNode,
-  ReactMediaNode,
-  ReactMediaSingleNode,
-} from '../../nodeviews';
 
 import PickerFacadeType from './picker-facade';
 import { MediaPluginOptions } from './media-plugin-options';
@@ -835,24 +829,6 @@ export const createPlugin = (
           Decoration.widget(pos, dropPlaceholder, { key: 'drop-placeholder' }),
         ];
         return DecorationSet.create(state.doc, dropPlaceholders);
-      },
-      nodeViews: {
-        mediaGroup: nodeViewFactory(
-          options.providerFactory,
-          {
-            mediaGroup: ReactMediaGroupNode,
-            media: ReactMediaNode,
-          },
-          true,
-        ),
-        mediaSingle: nodeViewFactory(
-          options.providerFactory,
-          {
-            mediaSingle: ReactMediaSingleNode,
-            media: ReactMediaNode,
-          },
-          true,
-        ),
       },
       handleTextInput(
         view: EditorView,

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Schema } from 'prosemirror-model';
+import { Schema, Node as ProseMirrorNode } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import { EditorView, NodeView, Decoration } from 'prosemirror-view';
 
 import { ProviderFactory } from '@atlaskit/editor-common';
 import ErrorReporter from '../../utils/error-reporter';
@@ -43,6 +43,20 @@ export type ToolbarUIComponentFactory = (
   params: ToolbarUiComponentFactoryParams,
 ) => React.ReactElement<any> | null;
 
+export type NodeViewsFactory = {
+  [name: string]: (
+    node: ProseMirrorNode,
+    view: EditorView,
+    getPos: () => number,
+    decorations: Decoration[],
+  ) => NodeView;
+};
+
+export type UINodeViewsFactory = (
+  providerFactory: ProviderFactory,
+  eventDispatcher: EventDispatcher,
+) => NodeViewsFactory;
+
 export interface EditorPlugin {
   /*
    * List of ProseMirror-plugins. This is where we define which plugins will be added to EditorView (main-plugin, keybindings, input-rules, etc.).
@@ -74,4 +88,9 @@ export interface EditorPlugin {
    * In compact mode this toolbar lives on the right-hand side of the editor.
    */
   secondaryToolbarComponent?: UIComponentFactory;
+
+  /*
+   * Optional UI-component, Map of nodes/marks to NodeViews.
+   */
+  nodeViews?: UINodeViewsFactory;
 }

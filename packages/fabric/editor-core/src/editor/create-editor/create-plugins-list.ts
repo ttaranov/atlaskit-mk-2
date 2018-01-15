@@ -31,6 +31,7 @@ import {
   rulePlugin,
   clearMarksOnChangeToEmptyDocumentPlugin,
   datePlugin,
+  widthPlugin,
 } from '../plugins';
 
 /**
@@ -43,6 +44,7 @@ export function getDefaultPluginsList(): EditorPlugin[] {
     blockTypePlugin,
     placeholderPlugin,
     clearMarksOnChangeToEmptyDocumentPlugin,
+    widthPlugin,
   ];
 }
 

@@ -1,9 +1,11 @@
 import * as React from 'react';
+import { MediaSingleLayout } from '@atlaskit/editor-common';
 import WrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import WrapRightIcon from '@atlaskit/icon/glyph/editor/media-wrap-right';
 import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
+import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
+import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import { MediaSingleLayout } from '@atlaskit/editor-common';
 
 import { MediaPluginState } from '../../plugins/media';
 import ToolbarButton from '../ToolbarButton';
@@ -31,6 +33,14 @@ const icons = {
   'wrap-right': {
     icon: WrapRightIcon,
     label: 'wrap right',
+  },
+  wide: {
+    icon: WideIcon,
+    label: 'wide',
+  },
+  'full-width': {
+    icon: FullWidthIcon,
+    label: 'full width',
   },
 };
 
