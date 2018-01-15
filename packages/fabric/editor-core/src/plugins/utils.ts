@@ -8,6 +8,7 @@ export type InputRuleHandler =
 export function defaultInputRuleHandler(
   inputRule: InputRule,
   isBlockNodeRule: boolean = false,
+  isCodeMarkRule: boolean = false,
 ): InputRule {
   const originalHandler = (inputRule as any).handler;
   // TODO: Fix types (ED-2987)
@@ -16,7 +17,7 @@ export function defaultInputRuleHandler(
     // https://product-fabric.atlassian.net/wiki/spaces/E/pages/37945345/Editor+content+feature+rules#Editorcontent/featurerules-Rawtextblocks
     const unsupportedMarks = isBlockNodeRule
       ? hasMarksNotSupportedByBlocks(state, start, end)
-      : hasCodeMark(state, start, end);
+      : !isCodeMarkRule && hasCodeMark(state, start, end);
     if (state.selection.$from.parent.type.spec.code || unsupportedMarks) {
       return;
     }
@@ -29,10 +30,12 @@ export function createInputRule(
   match: RegExp,
   handler: InputRuleHandler,
   isBlockNodeRule: boolean = false,
+  isCodeMarkRule: boolean = false,
 ): InputRule {
   return defaultInputRuleHandler(
     new InputRule(match, handler),
     isBlockNodeRule,
+    isCodeMarkRule,
   );
 }
 

@@ -455,6 +455,17 @@ describe('text-formatting input rules', () => {
       expect(editorView.state.doc).toEqualDocument(doc(p('` text`')));
     });
 
+    it('should convert "`text code(\'text\')`" to code text', () => {
+      const { editorView, sel } = editor(
+        doc(p('`testing ', code('text'), '{<>}')),
+      );
+
+      insertText(editorView, '`', sel);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(code('testing text'))),
+      );
+    });
+
     it('should convert "some`texts`" to code', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 

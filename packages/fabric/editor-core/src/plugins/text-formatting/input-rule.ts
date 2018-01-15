@@ -130,6 +130,8 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
       createInputRule(
         /(`[^\s`].*`)$/,
         addCodeMark(schema.marks.code, schema, '`'),
+        false,
+        true,
       ),
     );
   }
