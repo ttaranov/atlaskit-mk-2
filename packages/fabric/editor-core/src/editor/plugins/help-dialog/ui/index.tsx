@@ -287,7 +287,8 @@ export default class HelpDialog extends React.Component<Props, any> {
               <div>
                 {this.formatting.map(
                   form =>
-                    form.keymap && (
+                    form.keymap &&
+                    form.keymap[browser.mac ? 'mac' : 'windows'] && (
                       <Row key={`textFormatting-${form.name}`}>
                         <span>{form.name}</span>
                         {getComponentFromKeymap(form.keymap)}
