@@ -4,6 +4,7 @@
   "description": "Editor Markdown transformer",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
+  "atlaskit:src": "src/index.ts",
   "types": "dist/es5/index.d.ts",
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "files": [
