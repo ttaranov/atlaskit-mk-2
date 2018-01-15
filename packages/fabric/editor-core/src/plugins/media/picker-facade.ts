@@ -16,6 +16,7 @@ import {
   UploadFinalizeReadyEventPayload,
   UploadErrorEventPayload,
   UploadEndEventPayload,
+  MediaFile,
   PublicMediaFile,
 } from '@atlaskit/media-picker';
 import {
@@ -200,7 +201,7 @@ export default class PickerFacade {
   }
 
   private newState = (
-    file: PublicMediaFile,
+    file: MediaFile | PublicMediaFile,
     status: MediaStateStatus,
   ): MediaState => {
     const tempId = this.generateTempId(file.id);
@@ -208,7 +209,7 @@ export default class PickerFacade {
     return {
       id: tempId,
       status: status,
-      publicId: file.publicId, // TODO: Is this safe?
+      publicId: file['publicId'],
       fileName: file.name,
       fileSize: file.size,
       fileMimeType: file.type,

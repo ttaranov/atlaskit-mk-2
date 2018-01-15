@@ -664,8 +664,11 @@ export class MediaPluginState {
       return;
     }
 
-    const width = thumbnail && thumbnail.dimensions.width;
-    const height = thumbnail && thumbnail.dimensions.height;
+    const dimensions = (thumbnail && thumbnail.dimensions) || {
+      width: undefined,
+      height: undefined,
+    };
+    const { width, height } = dimensions;
     const { getPos, node: mediaNode } = mediaNodeWithPos;
     const newNode = view.state.schema.nodes.media!.create({
       ...mediaNode.attrs,

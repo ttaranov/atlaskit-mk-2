@@ -20,7 +20,7 @@ export interface MediaState {
   progress?: number;
   thumbnail?: {
     src: string;
-    dimensions: {
+    dimensions?: {
       width: number;
       height: number;
     };
