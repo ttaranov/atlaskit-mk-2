@@ -229,14 +229,15 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
 
   private createSearchChangeHandler = () => {
     const { onSearchQueryChange } = this.props;
-    const debouncedOnSearchQueryChange = debounce(onSearchQueryChange, 1000);
-
-    return (e: FormEvent<HTMLInputElement>) => {
-      const query: string = e.currentTarget.value;
+    const debouncedOnSearchQueryChange = debounce(query => {
+      onSearchQueryChange(query);
       this.setState({
         query,
       });
+    }, 1000);
 
+    return (e: FormEvent<HTMLInputElement>) => {
+      const query: string = e.currentTarget.value;
       debouncedOnSearchQueryChange(query);
     };
   };

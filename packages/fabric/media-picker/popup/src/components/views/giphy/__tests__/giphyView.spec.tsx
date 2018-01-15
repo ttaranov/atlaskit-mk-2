@@ -267,7 +267,7 @@ describe('<ConnectedGiphyView />', () => {
       expect(giphyView.find(WarningHeading)).toHaveLength(1);
     });
 
-    it('should show the load more button when totalResultCount is undefined', () => {
+    it('should show the general spinner when totalResultCount is undefined', () => {
       const giphyView = shallow(
         <GiphyView
           hasError={false}
@@ -281,7 +281,7 @@ describe('<ConnectedGiphyView />', () => {
         />,
       );
 
-      expect(giphyView.find(Button)).toHaveLength(1);
+      expect(giphyView.find(Spinner)).toHaveLength(1);
     });
 
     it('should disable the load more button and show a spinner when isLoading is true', () => {
