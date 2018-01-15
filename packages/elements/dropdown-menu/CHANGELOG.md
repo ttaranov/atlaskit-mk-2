@@ -1,5 +1,8 @@
 # @atlaskit/dropdown-menu
 
+## 3.11.5
+- [patch] migrate from ak to mk-2 [34a9cbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/34a9cbb)
+
 ## 3.11.4 (2017-11-30)
 
 * bug fix; fix dropdown menu opening on disabled button click (issues closed: ak-3644) ([4d8c35d](https://bitbucket.org/atlassian/atlaskit/commits/4d8c35d))
