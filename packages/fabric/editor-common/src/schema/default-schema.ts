@@ -36,6 +36,7 @@ export const defaultSchema: Schema = createSchema({
     'taskList',
     'taskItem',
     'unknownBlock',
+    'date',
   ],
   marks: [
     'action',
