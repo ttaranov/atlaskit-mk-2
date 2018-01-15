@@ -1,9 +1,7 @@
-import imageUploadPlugins, {
-  ImageUploadState,
-} from '../../../src/plugins/image-upload';
+import { stateKey as imageUploadPluginKey } from '../../../src/plugins/image-upload';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import {
-  makeEditor,
+  createEditor,
   img,
   doc,
   p,
@@ -11,21 +9,23 @@ import {
   createEvent,
   dispatchPasteEvent,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import { setNodeSelection, setTextSelection } from '../../../src/utils';
+import imageUpload from '../../../src/editor/plugins/image-upload';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 
 describe('image-upload', () => {
   const testImgSrc =
     'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>';
-  const testImg = () => img({ src: testImgSrc });
-  const editor = (doc: any, imageUploadProvider?: any) =>
-    makeEditor<ImageUploadState>({
+  const testImg = () => img({ src: testImgSrc })();
+  const editor = (doc: any, imageUploadProvider?: any) => {
+    const editor = createEditor({
       doc,
-      plugins: imageUploadPlugins(
-        defaultSchema,
-        ProviderFactory.create({ imageUploadProvider }),
-      ),
+      editorPlugins: [imageUpload, codeBlockPlugin],
+      providerFactory: ProviderFactory.create({ imageUploadProvider }),
     });
+    const pluginState = imageUploadPluginKey.getState(editor.editorView.state);
+    return { ...editor, pluginState };
+  };
 
   it('allows change handler to be registered', () => {
     const { pluginState } = editor(doc(p('')));
@@ -158,7 +158,7 @@ describe('image-upload', () => {
     pluginState.updateImage(editorView)({ src: 'atlassian.png' });
 
     expect(editorView.state.doc).toEqualDocument(
-      doc(p(img({ src: 'atlassian.png' }))),
+      doc(p(img({ src: 'atlassian.png' })())),
     );
   });
 

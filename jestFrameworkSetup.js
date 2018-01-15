@@ -88,6 +88,7 @@ if (typeof window !== 'undefined' && !('cancelAnimationFrame' in window)) {
 /* eslint-disable no-undef */
 expect.extend({
   toEqualDocument(actual, expected) {
+    expected = expected(actual.type.schema);
     if (
       !(expected instanceof pmModel.Node) ||
       !(actual instanceof pmModel.Node)

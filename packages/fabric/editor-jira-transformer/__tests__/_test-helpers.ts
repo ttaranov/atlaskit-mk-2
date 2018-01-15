@@ -8,7 +8,7 @@ export function parseWithSchema(html: string, schema: Schema) {
 }
 
 export function encode(
-  node: Node,
+  node: (schema: Schema) => Node,
   schema: Schema,
   customEncoders: JIRACustomEncoders = {},
   mediaContextInfo?: MediaContextInfo,
@@ -18,14 +18,14 @@ export function encode(
     customEncoders,
     mediaContextInfo,
   );
-  return transformer.encode(node);
+  return transformer.encode(node(schema));
 }
 
 export function checkParse(
   description: string,
   schema: Schema,
   htmls: string[],
-  node: Node,
+  node: (schema: Schema) => Node,
 ) {
   it(`parses HTML: ${description}`, () => {
     for (const html of htmls) {
@@ -38,7 +38,7 @@ export function checkParse(
 export function checkEncode(
   description: string,
   schema: Schema,
-  node: Node,
+  node: (schema: Schema) => Node,
   html: string,
   customEncoders: JIRACustomEncoders = {},
   mediaContextInfo?: MediaContextInfo,
@@ -53,7 +53,7 @@ export function checkParseEncodeRoundTrips(
   description: string,
   schema: Schema,
   html: string,
-  node: Node,
+  node: (schema: Schema) => Node,
   customEncoders: JIRACustomEncoders = {},
   mediaContextInfo?: MediaContextInfo,
 ) {

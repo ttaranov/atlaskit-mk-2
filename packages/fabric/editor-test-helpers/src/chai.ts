@@ -30,7 +30,19 @@ export default (chai: any) => {
     return function(right: any) {
       const left: any = this._obj;
       const deep = util.flag(this, 'deep');
-      if (deep && isNodeOrFragment(left) && isNodeOrFragment(right)) {
+      if (
+        deep &&
+        isNodeOrFragment(left) &&
+        (typeof right === 'function' || isNodeOrFragment(right))
+      ) {
+        if (
+          typeof right === 'function' &&
+          left['type'] &&
+          left['type'].schema
+        ) {
+          right = right(left['type'].schema);
+        }
+
         this.assert(
           (left as any).eq(right),
           `expected ${left.toString()} to equal ${right.toString()}`,

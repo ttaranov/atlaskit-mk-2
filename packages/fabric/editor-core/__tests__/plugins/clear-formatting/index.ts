@@ -1,8 +1,6 @@
 import { browser } from '@atlaskit/editor-common';
-import clearFormattingPlugins, {
-  ClearFormattingState,
-} from '../../../src/plugins/clear-formatting';
 import {
+  createEditor,
   a as link,
   blockquote,
   code_block,
@@ -12,7 +10,6 @@ import {
   h1,
   subsup,
   li,
-  makeEditor,
   ol,
   p,
   panel,
@@ -22,15 +19,38 @@ import {
   underline,
   textColor,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { analyticsService } from '../../../src/analytics';
+import textFormatting from '../../../src/editor/plugins/text-formatting';
+import { stateKey as clearFormattingPluginKey } from '../../../src/plugins/clear-formatting';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import textColorPlugin from '../../../src/editor/plugins/text-color';
+import listPlugin from '../../../src/editor/plugins/lists';
+import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
+import panelPlugin from '../../../src/editor/plugins/panel';
 
 describe('clear-formatting', () => {
-  const editor = (doc: any) =>
-    makeEditor<ClearFormattingState>({
+  const editor = (
+    doc: any,
+    { trackEvent }: { trackEvent: () => void } = { trackEvent: () => {} },
+  ) => {
+    const editor = createEditor({
       doc,
-      plugins: clearFormattingPlugins(defaultSchema),
+      editorPlugins: [
+        textFormatting(),
+        codeBlockPlugin,
+        textColorPlugin,
+        listPlugin,
+        hyperlinkPlugin,
+        panelPlugin,
+      ],
+      editorProps: {
+        analyticsHandler: trackEvent,
+      },
     });
+    const pluginState = clearFormattingPluginKey.getState(
+      editor.editorView.state,
+    );
+    return { ...editor, pluginState };
+  };
 
   describe('formattingIsPresent', () => {
     it('should be true if some marks are present', () => {
@@ -39,7 +59,7 @@ describe('clear-formatting', () => {
     });
 
     it('should be true if a header is present', () => {
-      const { pluginState } = editor(doc(p(h1('t{<}ex{>}t'))));
+      const { pluginState } = editor(doc(h1('t{<}ex{>}t')));
       expect(pluginState.formattingIsPresent).toBe(true);
     });
 
@@ -153,10 +173,10 @@ describe('clear-formatting', () => {
     });
 
     it('should not remove panel block if present', () => {
-      const { editorView, pluginState } = editor(doc(panel(p('te{<>}xt'))));
+      const { editorView, pluginState } = editor(doc(panel()(p('te{<>}xt'))));
 
       pluginState.clearFormatting(editorView);
-      expect(editorView.state.doc).toEqualDocument(doc(panel(p('text'))));
+      expect(editorView.state.doc).toEqualDocument(doc(panel()(p('text'))));
 
       editorView.destroy();
     });
@@ -198,8 +218,9 @@ describe('clear-formatting', () => {
   describe('keymap', () => {
     it('should clear formatting', () => {
       const trackEvent = jest.fn();
-      analyticsService.trackEvent = trackEvent;
-      const { editorView, pluginState } = editor(doc(p(strong('t{<}ex{>}t'))));
+      const { editorView, pluginState } = editor(doc(p(strong('t{<}ex{>}t'))), {
+        trackEvent,
+      });
       expect(pluginState.formattingIsPresent).toBe(true);
 
       if (browser.mac) {

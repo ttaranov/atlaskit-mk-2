@@ -1,14 +1,10 @@
 import { TextSelection, Selection } from 'prosemirror-state';
 import { DecorationSet } from 'prosemirror-view';
 import { Slice } from 'prosemirror-model';
-import hyperlinkPlugins, {
-  HyperlinkState,
-} from '../../../src/plugins/hyperlink';
 import {
   doc,
-  makeEditor,
+  createEditor,
   p as paragraph,
-  defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import {
   addPlaceholderCursor,
@@ -17,12 +13,13 @@ import {
   drawPlaceholderCursor,
   PlaceholderBookmark,
 } from '../../../src/plugins/placeholder-cursor/cursor';
+import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 
 describe('placeholdercursor', () => {
   const editor = (doc: any) =>
-    makeEditor<HyperlinkState>({
+    createEditor({
       doc,
-      plugins: hyperlinkPlugins(defaultSchema),
+      editorPlugins: [hyperlinkPlugin],
     });
 
   describe('addPlaceholderCursor', () => {

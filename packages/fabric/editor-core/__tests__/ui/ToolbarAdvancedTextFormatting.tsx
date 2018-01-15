@@ -10,18 +10,21 @@ import {
   doc,
   p,
   strike,
-  makeEditor,
+  createEditor,
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
-import { analyticsService } from '../../src/analytics';
+import textFormatting from '../../src/editor/plugins/text-formatting';
 
 describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
   const textFormattingPluginSet = textFormattingPlugins(defaultSchema);
   const clearformattingPluginSet = clearFormattingPlugins(defaultSchema);
-  const editor = (doc: any) =>
-    makeEditor({
+  const editor = (doc: any, trackEvent = () => {}) =>
+    createEditor({
       doc,
-      plugins: [...textFormattingPluginSet, ...clearformattingPluginSet],
+      editorPlugins: [textFormatting()],
+      editorProps: {
+        analyticsHandler: trackEvent,
+      },
     });
 
   it('should render disabled ToolbarButton if both pluginStateTextFormatting and pluginStateClearFormatting are undefined', () => {
@@ -305,7 +308,8 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     let trackEvent;
     let toolbarOption;
     beforeEach(() => {
-      const { editorView } = editor(doc(p('text')));
+      trackEvent = jest.fn();
+      const { editorView } = editor(doc(p('text')), trackEvent);
       toolbarOption = mount(
         <ToolbarAdvancedTextFormatting
           pluginStateTextFormatting={textFormattingPluginSet[0].getState(
@@ -318,8 +322,6 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
         />,
       );
       toolbarOption.find('button').simulate('click');
-      trackEvent = jest.fn();
-      analyticsService.trackEvent = trackEvent;
     });
 
     afterEach(() => {

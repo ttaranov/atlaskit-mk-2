@@ -1,7 +1,7 @@
 import { browser } from '@atlaskit/editor-common';
-import listsPlugins, { ListsState } from '../../../src/plugins/lists';
+import { stateKey as listPluginKey } from '../../../src/plugins/lists';
 import {
-  makeEditor,
+  createEditor,
   sendKeyToPm,
   doc,
   h1,
@@ -11,27 +11,30 @@ import {
   p,
   panel,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../src/utils';
-import { analyticsService } from '../../../src/analytics';
+import listPlugin from '../../../src/editor/plugins/lists';
+import panelPlugin from '../../../src/editor/plugins/panel';
 
 describe('lists', () => {
-  const editor = (doc: any) =>
-    makeEditor<ListsState>({
+  const editor = (doc: any, trackEvent?: () => {}) => {
+    const editor = createEditor({
       doc,
-      plugins: listsPlugins(defaultSchema),
+      editorPlugins: [listPlugin, panelPlugin],
+      editorProps: { analyticsHandler: trackEvent },
     });
+    const pluginState = listPluginKey.getState(editor.editorView.state);
+    return { ...editor, pluginState };
+  };
 
   describe('keymap', () => {
     let trackEvent;
     beforeEach(() => {
       trackEvent = jest.fn();
-      analyticsService.trackEvent = trackEvent;
     });
 
     describe('when hit enter', () => {
       it('should split list item', () => {
-        const { editorView } = editor(doc(ul(li(p('text{<>}')))));
+        const { editorView } = editor(doc(ul(li(p('text{<>}')))), trackEvent);
         sendKeyToPm(editorView, 'Enter');
         expect(editorView.state.doc).toEqualDocument(
           doc(ul(li(p('text')), li(p()))),
@@ -43,6 +46,7 @@ describe('lists', () => {
       it('should call indent analytics event', () => {
         const { editorView } = editor(
           doc(ol(li(p('text')), li(p('text{<>}')))),
+          trackEvent,
         );
         sendKeyToPm(editorView, 'Tab');
         expect(trackEvent).toHaveBeenCalledWith(
@@ -55,6 +59,7 @@ describe('lists', () => {
       it('should call outdent analytics event', () => {
         const { editorView } = editor(
           doc(ol(li(p('One'), ul(li(p('Two{<>}')))))),
+          trackEvent,
         );
         sendKeyToPm(editorView, 'Shift-Tab');
         expect(trackEvent).toHaveBeenCalledWith(
@@ -292,8 +297,8 @@ describe('lists', () => {
       });
 
       it('should convert selection inside panel to list', () => {
-        const expectedOutput = doc(panel(ul(li(p('text')))));
-        const { editorView, pluginState } = editor(doc(panel(p('te{<>}xt'))));
+        const expectedOutput = doc(panel()(ul(li(p('text')))));
+        const { editorView, pluginState } = editor(doc(panel()(p('te{<>}xt'))));
 
         pluginState.toggleBulletList(editorView);
         expect(editorView.state.doc).toEqualDocument(expectedOutput);
@@ -730,14 +735,14 @@ describe('lists', () => {
       describe('when Enter key is pressed on non-empty top level list item inside panel', () => {
         it('should created new list item at top level', () => {
           const { editorView } = editor(
-            doc(panel(ol(li(p('text')), li(p('test{<>}')), li(p('text'))))),
+            doc(panel()(ol(li(p('text')), li(p('test{<>}')), li(p('text'))))),
           );
 
           sendKeyToPm(editorView, 'Enter');
 
           expect(editorView.state.doc).toEqualDocument(
             doc(
-              panel(
+              panel()(
                 ol(li(p('text')), li(p('test')), li(p('{<>}')), li(p('text'))),
               ),
             ),
@@ -762,13 +767,13 @@ describe('lists', () => {
       describe('when Enter key is pressed on empty top level list item inside panel', () => {
         it('should create new paragraph outside the list', () => {
           const { editorView } = editor(
-            doc(panel(ol(li(p('text')), li(p('{<>}')), li(p('text'))))),
+            doc(panel()(ol(li(p('text')), li(p('{<>}')), li(p('text'))))),
           );
 
           sendKeyToPm(editorView, 'Enter');
 
           expect(editorView.state.doc).toEqualDocument(
-            doc(panel(ol(li(p('text'))), p('{<>}'), ol(li(p('text'))))),
+            doc(panel()(ol(li(p('text'))), p('{<>}'), ol(li(p('text'))))),
           );
         });
       });

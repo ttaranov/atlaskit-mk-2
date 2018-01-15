@@ -1,4 +1,5 @@
 // Usefull Exports
+
 export { name, version } from './version';
 
 export { default as Editor, EditorWithAnalytics } from './editor';
@@ -22,8 +23,15 @@ export {
 } from './utils';
 
 // Used in editor-test-helpers
+
 export { keyCodes } from './keymaps';
 export { reactNodeViewPlugins } from './plugins';
+export { createEditor } from './editor/create-editor';
+export {
+  getDefaultPluginsList,
+} from './editor/create-editor/create-plugins-list';
+export { EditorPlugin, EditorProps, EditorInstance } from './editor/types';
+export { default as EditorActions } from './editor/actions';
 
 // Useles exports
 

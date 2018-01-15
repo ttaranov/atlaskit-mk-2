@@ -19,9 +19,9 @@ export interface Props {
   hoverColumn?: (column: number) => Command;
   selectTable?: Command;
   hoverTable?: Command;
-  isTableSelected?: (state: EditorState) => boolean;
-  isColumnSelected?: (column: number, state: EditorState) => boolean;
-  isRowSelected?: (row: number, state: EditorState) => boolean;
+  isTableSelected: (state: EditorState) => boolean;
+  isColumnSelected: (column: number, state: EditorState) => boolean;
+  isRowSelected: (row: number, state: EditorState) => boolean;
 }
 
 export interface State {

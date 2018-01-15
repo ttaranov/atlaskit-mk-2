@@ -1,6 +1,6 @@
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
-import tablePlugins, { TableState } from '../../src/plugins/table';
+import { TableState, stateKey } from '../../src/plugins/table';
 import TableFloatingControls from '../../src/ui/TableFloatingControls';
 import CornerControls from '../../src/ui/TableFloatingControls/CornerControls';
 import ColumnControls from '../../src/ui/TableFloatingControls/ColumnControls';
@@ -21,7 +21,7 @@ import {
   createEvent,
   doc,
   p,
-  makeEditor,
+  createEditor,
   table,
   tr,
   tdEmpty,
@@ -33,24 +33,29 @@ import {
   isRowSelected,
   isColumnSelected,
 } from '../../src/editor/plugins/table/utils';
+import tablesPlugin from '../../src/editor/plugins/table';
 
 describe('TableFloatingControls', () => {
   const event = createEvent('event');
   const editor = (doc: any) =>
-    makeEditor<TableState>({
+    createEditor<TableState>({
       doc,
-      plugins: tablePlugins(),
+      editorPlugins: [tablesPlugin],
+      pluginKey: stateKey,
     });
 
   describe('when pluginState.tableElement is undefined', () => {
     it('should not render table header', () => {
-      const { editorView, pluginState } = editor(
+      const { editorView } = editor(
         doc(p('text'), table(tr(tdEmpty, tdEmpty, tdEmpty))),
       );
       const floatingControls = mount(
         <TableFloatingControls
-          pluginState={pluginState}
+          pluginState={{ tableElement: undefined } as TableState}
           editorView={editorView}
+          isTableSelected={() => false}
+          isColumnSelected={() => false}
+          isRowSelected={() => false}
         />,
       );
       expect(floatingControls.html()).toEqual(null);
@@ -67,6 +72,9 @@ describe('TableFloatingControls', () => {
         <TableFloatingControls
           pluginState={pluginState}
           editorView={editorView}
+          isTableSelected={() => false}
+          isColumnSelected={() => false}
+          isRowSelected={() => false}
         />,
       );
       floatingControls.setProps({

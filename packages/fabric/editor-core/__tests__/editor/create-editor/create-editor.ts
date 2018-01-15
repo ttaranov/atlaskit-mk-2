@@ -1,7 +1,7 @@
 import { name } from '../../../package.json';
 import { Schema, Node } from 'prosemirror-model';
 import { Selection } from 'prosemirror-state';
-import createEditor from '../../_helpers/create-editor';
+import { createEditor } from '@atlaskit/editor-test-helpers';
 import {
   sortByRank,
   fixExcludes,
@@ -91,7 +91,7 @@ describe(name, () => {
     let consoleError: any;
 
     beforeEach(() => {
-      const editor = createEditor();
+      const editor = createEditor({});
       schema = editor.editorView.state.schema;
       consoleError = jest.spyOn(console, 'error');
       consoleError.mockImplementation(() => {});
@@ -169,7 +169,7 @@ describe(name, () => {
   describe('onChange', () => {
     it('should call onChange only when document changes', () => {
       const onChange = jest.fn();
-      const editor = createEditor([], { onChange });
+      const editor = createEditor({ editorProps: { onChange } });
       const { editorView } = editor;
       editorView.dispatch(editorView.state.tr.insertText('hello'));
       expect(onChange).toHaveBeenCalledTimes(1);

@@ -1,27 +1,15 @@
-import {
-  makeEditor,
-  doc,
-  code_block,
-  defaultSchema,
-} from '@atlaskit/editor-test-helpers';
-import { CodeBlockState, codeBlockPlugins } from '../../../src/plugins';
-import codeMirrorPlugins from '../../../src/plugins/code-mirror';
+import { createEditor, doc, code_block } from '@atlaskit/editor-test-helpers';
+import { stateKey as codeBlockPluginKey } from '../../../src/plugins/code-block';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import codeMirrorPlugin from '../../../src/editor/plugins/code-mirror';
 import codeMirrorNodeView from '../../../src/nodeviews/ui/code-mirror';
 
 describe('@atlaskit/nodeviews/code-mirror', () => {
   const editor = (doc: any) =>
-    makeEditor({
+    createEditor({
       doc,
-      plugins: [
-        ...codeBlockPlugins(defaultSchema),
-        ...codeMirrorPlugins(defaultSchema),
-      ],
-      nodeViews: { codeBlock: codeMirrorNodeView },
+      editorPlugins: [codeBlockPlugin, codeMirrorPlugin],
     });
-
-  it('should export code-mirror nodeview factory', () => {
-    expect(codeMirrorNodeView instanceof Function).toBe(true);
-  });
 
   it('should be possible to create a code-block', () => {
     const { editorView } = editor(
@@ -88,29 +76,25 @@ describe('@atlaskit/nodeviews/code-mirror', () => {
   });
 
   it('should call unsubscribeFocusHandlers menthod of code-block plugin editor is destroyed', () => {
-    const { editorView, pluginStates } = editor(
+    const { editorView } = editor(
       doc(code_block({ language: 'java' })('{<>}codeBlock')),
     );
+    const pluginState = codeBlockPluginKey.getState(editorView.state);
     const func = jest.fn();
-    const codeBlockPlugin = pluginStates.filter(
-      state => state instanceof CodeBlockState,
-    );
-    expect(codeBlockPlugin.length).toBeGreaterThan(0);
-    codeBlockPlugin[0].unsubscribeFocusHandlers = func;
+    expect(pluginState).toBeDefined();
+    pluginState.unsubscribeFocusHandlers = func;
     editorView.destroy();
     expect(func).toHaveBeenCalled();
   });
 
   it('should call unsubscribe menthod of code-block plugin editor is destroyed', () => {
-    const { editorView, pluginStates } = editor(
+    const { editorView } = editor(
       doc(code_block({ language: 'java' })('{<>}codeBlock')),
     );
+    const pluginState = codeBlockPluginKey.getState(editorView.state);
     const func = jest.fn();
-    const codeBlockPlugin = pluginStates.filter(
-      state => state instanceof CodeBlockState,
-    );
-    expect(codeBlockPlugin.length).toBeGreaterThan(0);
-    codeBlockPlugin[0].unsubscribe = func;
+    expect(pluginState).toBeDefined();
+    pluginState.unsubscribeFocusHandlers = func;
     editorView.destroy();
     expect(func).toHaveBeenCalled();
   });

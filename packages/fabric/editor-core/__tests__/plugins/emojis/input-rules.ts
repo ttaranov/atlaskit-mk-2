@@ -1,8 +1,9 @@
 import { ProviderFactory } from '@atlaskit/editor-common';
-import emojiPlugins, { EmojiState } from '../../../src/plugins/emojis';
+import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
+import { stateKey as emojiPluginKey } from '../../../src/plugins/emojis';
 import {
   insertText,
-  makeEditor,
+  createEditor,
   doc,
   p,
   code,
@@ -11,17 +12,30 @@ import {
   mention,
   code_block,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
+import emojiPlugin from '../../../src/editor/plugins/emoji';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import mentionsPlugin from '../../../src/editor/plugins/mentions';
+import textFormatting from '../../../src/editor/plugins/text-formatting';
+
+const emojiProvider = emojiTestData.getEmojiResourcePromise();
 
 describe('emojis - input rules', () => {
-  const providerFactory = ProviderFactory.create({
-    emojiProvider: Promise.resolve({ unsubscribe() {} }),
-  });
-  const editor = (doc: any) =>
-    makeEditor<EmojiState>({
+  const providerFactory = ProviderFactory.create({ emojiProvider });
+
+  const editor = (doc: any) => {
+    const editor = createEditor({
       doc,
-      plugins: emojiPlugins(defaultSchema, providerFactory),
+      editorPlugins: [
+        emojiPlugin,
+        codeBlockPlugin,
+        mentionsPlugin,
+        textFormatting(),
+      ],
+      providerFactory,
     });
+    const pluginState = emojiPluginKey.getState(editor.editorView.state);
+    return { ...editor, pluginState };
+  };
 
   const assert = (what: string, expected: boolean, docContents?: any) => {
     const { editorView, pluginState, sel, refs } = editor(
@@ -60,11 +74,11 @@ describe('emojis - input rules', () => {
   });
 
   it('should replace ":" if there is another emoji node in front of it', () => {
-    assert(':', true, p(emoji({ shortName: ':smiley:' }), '{<>}'));
+    assert(':', true, p(emoji({ shortName: ':smiley:' })(), '{<>}'));
   });
 
   it('should replace ":" if there is a mention node in front of it', () => {
-    assert(':', true, p(mention({ id: '1234', text: '@SpongeBob' }), '{<>}'));
+    assert(':', true, p(mention({ id: '1234', text: '@SpongeBob' })(), '{<>}'));
   });
 
   it('should not replace ":" when in an unsupported node', () => {

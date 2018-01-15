@@ -7,12 +7,19 @@ import ToolbarBlockType from '../../../ui/ToolbarBlockType';
 import { ToolbarSize } from '../../ui/Toolbar';
 
 const blockType: EditorPlugin = {
-  nodes() {
-    return [
+  nodes({ allowBlockType }) {
+    const nodes = [
       { name: 'heading', node: heading, rank: 600 },
       { name: 'blockquote', node: blockquote, rank: 700 },
       { name: 'hardBreak', node: hardBreak, rank: 1500 },
     ];
+
+    if (allowBlockType && allowBlockType.exclude) {
+      const exclude = allowBlockType.exclude ? allowBlockType.exclude : [];
+      return nodes.filter(node => exclude.indexOf(node.name) === -1);
+    }
+
+    return nodes;
   },
 
   pmPlugins() {

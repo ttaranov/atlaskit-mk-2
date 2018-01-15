@@ -1,9 +1,6 @@
 import { browser } from '@atlaskit/editor-common';
 import { TextSelection } from 'prosemirror-state';
-import hyperlinkPlugins, {
-  HyperlinkState,
-} from '../../../src/plugins/hyperlink';
-import pastePlugins from '../../../src/plugins/paste';
+import { stateKey as hyperlinkPluginKey } from '../../../src/plugins/hyperlink';
 import {
   createEvent,
   doc,
@@ -12,25 +9,33 @@ import {
   a as link,
   code_block,
   code,
-  makeEditor,
+  createEditor,
   p as paragraph,
   sendKeyToPm,
-  defaultSchema,
   isMobileBrowser,
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../src/utils';
 import { analyticsService } from '../../../src/analytics';
 import { PlaceholderCursor } from '../../../src/plugins/placeholder-cursor/cursor';
+import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import textFormatting from '../../../src/editor/plugins/text-formatting';
 
 describe('hyperlink', () => {
-  const editor = (doc: any) =>
-    makeEditor<HyperlinkState>({
+  const editor = (doc: any, trackEvent?: () => {}) => {
+    const editor = createEditor({
       doc,
-      plugins: [
-        ...hyperlinkPlugins(defaultSchema),
-        ...pastePlugins(defaultSchema),
-      ],
+      editorPlugins: [hyperlinkPlugin, codeBlockPlugin, textFormatting()],
+      editorProps: {
+        analyticsHandler: trackEvent,
+      },
     });
+    const pluginState = hyperlinkPluginKey.getState(editor.editorView.state);
+    const plugin = editor.editorView.state.plugins.find(
+      plugin => (plugin as any).key === (hyperlinkPluginKey as any).key,
+    );
+    return { ...editor, pluginState, plugin: plugin! };
+  };
 
   const event = createEvent('event');
 
@@ -1038,7 +1043,10 @@ describe('hyperlink', () => {
       it('should call subscribers', () => {
         const trackEvent = jest.fn();
         analyticsService.trackEvent = trackEvent;
-        const { editorView, pluginState } = editor(doc(paragraph('testing')));
+        const { editorView, pluginState } = editor(
+          doc(paragraph('testing')),
+          trackEvent,
+        );
         const spy = jest.fn();
         pluginState.subscribe(spy);
 
@@ -1090,9 +1098,12 @@ describe('hyperlink', () => {
 
   describe('Message Appearance', () => {
     const messageEditor = (doc: any) =>
-      makeEditor<HyperlinkState>({
+      createEditor({
         doc,
-        plugins: hyperlinkPlugins(defaultSchema, { appearance: 'message' }),
+        editorPlugins: [hyperlinkPlugin],
+        editorProps: {
+          appearance: 'message',
+        },
       });
 
     it('should remove link mark if visible text is not a valid link - 1', () => {

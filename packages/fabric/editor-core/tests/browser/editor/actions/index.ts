@@ -1,11 +1,7 @@
-import {
-  MediaPluginState,
-  stateKey as mediaPluginStateKey,
-} from './../../../../src/plugins/media/index';
-import { name } from '../../../../package.json';
+import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import createEditor from '../../../helpers/create-editor';
+import { createEditor, chaiPlugin } from '@atlaskit/editor-test-helpers';
 import {
   doc,
   p,
@@ -20,17 +16,27 @@ import {
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import { EditorView } from 'prosemirror-view';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
-import { Transformer, ProviderFactory } from '@atlaskit/editor-common';
+import {
+  Transformer,
+  ProviderFactory,
+  defaultSchema,
+} from '@atlaskit/editor-common';
+import {
+  MediaPluginState,
+  stateKey as mediaPluginStateKey,
+} from './../../../../src/plugins/media/index';
+import { name } from '../../../../package.json';
 import tasksAndDecisionsPlugin from '../../../../src/editor/plugins/tasks-and-decisions';
 import mediaPlugin from '../../../../src/editor/plugins/media';
 import hyperlinkPlugin from '../../../../src/editor/plugins/hyperlink';
 import EditorActions from '../../../../src/editor/actions';
 import { toJSON } from '../../../../src/utils';
+chai.use(chaiPlugin);
 
 const jsonTransformer = new JSONTransformer();
 
 const dummyTransformer: Transformer<string> = {
-  parse: content => doc(blockquote(content)),
+  parse: content => doc(blockquote(p(content)))(defaultSchema),
   encode: node => node.textContent,
 };
 
@@ -53,15 +59,19 @@ describe(name, () => {
 
     beforeEach(() => {
       providerFactory = new ProviderFactory();
-      const editor = createEditor(
-        [tasksAndDecisionsPlugin, mediaPlugin(), hyperlinkPlugin],
-        {
+      const editor = createEditor({
+        editorPlugins: [
+          tasksAndDecisionsPlugin,
+          mediaPlugin(),
+          hyperlinkPlugin,
+        ],
+        editorProps: {
           mediaProvider,
           waitForMediaUpload: true,
           uploadErrorHandler: () => {},
         },
         providerFactory,
-      );
+      });
       providerFactory.setProvider('mediaProvider', mediaProvider);
       editorActions = new EditorActions();
       editorActions._privateRegisterEditor(editor.editorView);
@@ -118,7 +128,7 @@ describe(name, () => {
 
     describe('#getValue', () => {
       it('should return current editor value', async () => {
-        const result = doc(p('some text'));
+        const result = doc(p('some text'))(defaultSchema);
         const tr = editorView.state.tr;
         tr.insertText('some text', 1);
         editorView.dispatch(tr);
@@ -133,12 +143,12 @@ describe(name, () => {
           decisionList({})(decisionItem({})()),
           taskList({})(taskItem({})()),
           p('text'),
-        );
-        const expected = toJSON(doc(p('text')));
+        )(defaultSchema);
+        const expected = doc(p('text'))(defaultSchema);
         editorActions.replaceDocument(decisionsAndTasks);
 
         const actual = await editorActions.getValue();
-        expect(actual).to.deep.equal(expected);
+        expect(actual).to.deep.equal({ ...expected.toJSON(), version: 1 });
       });
 
       describe('with waitForMediaUpload === true', () => {
@@ -266,14 +276,14 @@ describe(name, () => {
 
       describe('with waitForMediaUpload === false', () => {
         it('should resolve even when media operations are pending', async () => {
-          const editor = createEditor(
-            [mediaPlugin(), hyperlinkPlugin],
-            {
+          const editor = createEditor({
+            editorPlugins: [mediaPlugin(), hyperlinkPlugin],
+            editorProps: {
               mediaProvider,
               waitForMediaUpload: false,
             },
             providerFactory,
-          );
+          });
           providerFactory.setProvider('mediaProvider', mediaProvider);
           editorActions = new EditorActions();
           editorActions._privateRegisterEditor(editor.editorView);
@@ -310,21 +320,21 @@ describe(name, () => {
     });
 
     describe('#replaceDocument', () => {
-      const newDoc = doc(p('some new content'));
+      const newDoc = doc(p('some new content'))(defaultSchema);
       beforeEach(() => {
         const tr = editorView.state.tr;
         tr.insertText('some text', 1);
         editorView.dispatch(tr);
       });
 
-      it('should update the document using the transformer when a transformer is set', async () => {
+      it('should update the document using the transformer when a transformer is set', () => {
         editorActions._privateRegisterEditor(editorView, dummyTransformer);
 
         const wasSuccessful = editorActions.replaceDocument('Hello World!');
         expect(wasSuccessful).to.equal(true);
         const actual = editorView.state.doc;
-        const expected = doc(blockquote('Hello World!'));
-        expect(actual!.toJSON()).to.deep.equal(expected.toJSON());
+        const expected = doc(blockquote(p('Hello World!')));
+        expect(actual).to.deep.equal(expected);
       });
 
       it('should accept a prosemirror node', async () => {
@@ -362,8 +372,8 @@ describe(name, () => {
 
     describe('#appendText', () => {
       it('should append text to a document', async () => {
-        const newDoc = doc(p('some text'));
-        const expected = doc(p('some text appended'));
+        const newDoc = doc(p('some text'))(defaultSchema);
+        const expected = doc(p('some text appended'))(defaultSchema);
         editorActions.replaceDocument(newDoc);
         editorActions.appendText(' appended');
         const val = await editorActions.getValue();
@@ -371,12 +381,14 @@ describe(name, () => {
       });
 
       it('should append text to a complex document', async () => {
-        const newDoc = doc(p('some text'), blockquote(p('some quote')), p(''));
+        const newDoc = doc(p('some text'), blockquote(p('some quote')), p(''))(
+          defaultSchema,
+        );
         const expected = doc(
           p('some text'),
           blockquote(p('some quote')),
           p(' appended'),
-        );
+        )(defaultSchema);
         editorActions.replaceDocument(newDoc);
         editorActions.appendText(' appended');
         const val = await editorActions.getValue();
@@ -384,7 +396,11 @@ describe(name, () => {
       });
 
       it(`should return false if the last node of a document isn't a paragraph`, async () => {
-        const newDoc = doc(p('some text'), blockquote(p('some quote')));
+        const newDoc = doc(
+          p('some text'),
+          blockquote(p('some quote')),
+          decisionList({})(decisionItem({})()),
+        )(defaultSchema);
         editorActions.replaceDocument(newDoc);
         expect(editorActions.appendText(' appended')).to.equal(false);
       });

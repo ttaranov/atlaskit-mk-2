@@ -21,9 +21,14 @@ const tablesPlugin: EditorPlugin = {
     ];
   },
 
-  pmPlugins() {
+  pmPlugins({ allowTables }) {
+    const pluginConfig =
+      typeof allowTables === 'boolean' ? undefined : allowTables;
     return [
-      { rank: 900, plugin: () => plugin() },
+      {
+        rank: 900,
+        plugin: () => plugin(pluginConfig),
+      },
       { rank: 910, plugin: () => tableEditing() },
       { rank: 920, plugin: () => hoverSelectionPlugin },
     ];

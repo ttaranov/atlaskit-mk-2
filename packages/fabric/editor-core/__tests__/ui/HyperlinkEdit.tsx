@@ -1,7 +1,10 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
 
-import hyperlinkPlugins, { HyperlinkState } from '../../src/plugins/hyperlink';
+import {
+  HyperlinkState,
+  stateKey as hyperlinkPluginKey,
+} from '../../src/plugins/hyperlink';
 import HyperlinkEdit from '../../src/ui/HyperlinkEdit';
 import PanelTextInput from '../../src/ui/PanelTextInput';
 import {
@@ -9,17 +12,18 @@ import {
   doc,
   p as paragraph,
   a as link,
-  makeEditor,
-  defaultSchema,
+  createEditor,
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../src/utils';
 import { PlaceholderCursor } from '../../src/plugins/placeholder-cursor/cursor';
+import hyperlinkPlugin from '../../src/editor/plugins/hyperlink';
 
 describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   const editor = (doc: any) =>
-    makeEditor<HyperlinkState>({
+    createEditor<HyperlinkState>({
       doc,
-      plugins: hyperlinkPlugins(defaultSchema),
+      editorPlugins: [hyperlinkPlugin],
+      pluginKey: hyperlinkPluginKey,
     });
   const blurEvent = createEvent('blur');
   const focusEvent = createEvent('focus');

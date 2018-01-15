@@ -36,19 +36,22 @@ export function fixExcludes(marks: {
   return marks;
 }
 
-export function processPluginsList(plugins: EditorPlugin[]): EditorConfig {
+export function processPluginsList(
+  plugins: EditorPlugin[],
+  editorProps: EditorProps,
+): EditorConfig {
   return plugins.reduce(
     (acc, plugin) => {
       if (plugin.pmPlugins) {
-        acc.pmPlugins.push(...plugin.pmPlugins());
+        acc.pmPlugins.push(...plugin.pmPlugins(editorProps));
       }
 
       if (plugin.nodes) {
-        acc.nodes.push(...plugin.nodes());
+        acc.nodes.push(...plugin.nodes(editorProps));
       }
 
       if (plugin.marks) {
-        acc.marks.push(...plugin.marks());
+        acc.marks.push(...plugin.marks(editorProps));
       }
 
       if (plugin.contentComponent) {
@@ -183,7 +186,7 @@ export default function createEditor(
   props: EditorProps,
   providerFactory: ProviderFactory,
 ): EditorInstance {
-  const editorConfig = processPluginsList(editorPlugins);
+  const editorConfig = processPluginsList(editorPlugins, props);
   const {
     contentComponents,
     primaryToolbarComponents,
