@@ -2,12 +2,15 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@atlaskit/*": [
-        "./packages/css-packs/*/src",
-        "./packages/elements/*/src",
-        "./packages/fabric/*/src",
-        "./packages/utils/*/src"
-      ]
+      "!note": [
+        "We need to manually map local packages to their src directory because",
+        "the `package.json#types` will point to `dist`. There are also some",
+        "old Atlaskit packages outside this repo which have a src directory so",
+        "we have to override the re-mapping to use the `package.json` again."
+      ],
+      "@atlaskit/emoji": ["./node_modules/@atlaskit/emoji"],
+      "@atlaskit/mention": ["./node_modules/@atlaskit/mention"],
+      "@atlaskit/*": ["./node_modules/@atlaskit/*/src"]
     },
     "allowJs": false,
     "alwaysStrict": true,
