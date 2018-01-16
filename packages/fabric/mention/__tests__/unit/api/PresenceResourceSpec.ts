@@ -19,6 +19,7 @@ const apiConfig = {
 };
 
 const testIds = ['0', '1', '2', '3', '4', '5', '6', '7', '8'];
+const parser = new DefaultPresenceParser();
 
 describe('PresenceParser', () => {
   // Suppress console errors in tests
@@ -33,7 +34,6 @@ describe('PresenceParser', () => {
   });
 
   it('should parse presences into correct states', () => {
-    const parser = new DefaultPresenceParser();
     const parsedPresences = parser.parse(validPresenceData);
     expect(parsedPresences['0'].status).toEqual('offline');
     expect(parsedPresences['1'].status).toEqual('online');
@@ -42,13 +42,11 @@ describe('PresenceParser', () => {
   });
 
   it('should parse presences despite invalid presence data', () => {
-    const parser = new DefaultPresenceParser();
     const parsedPresences = parser.parse(invalidPresenceData);
     expect(Object.keys(parsedPresences)).toHaveLength(3);
   });
 
   it('should ignore presence stateMetadata if not valid JSON', () => {
-    const parser = new DefaultPresenceParser();
     const parsedPresences = parser.parse(invalidPresenceData);
     expect(parsedPresences['42563'].status).toEqual('busy');
   });
@@ -56,20 +54,17 @@ describe('PresenceParser', () => {
 
 describe('PresenceCache', () => {
   let cache: DefaultPresenceCache;
-  let parser: DefaultPresenceParser;
   let testPresenceMap: PresenceMap;
   let extraPresences: PresenceMap;
 
   beforeEach(() => {
-    const beforeParser = new DefaultPresenceParser();
-    testPresenceMap = beforeParser.parse(validPresenceData);
+    testPresenceMap = parser.parse(validPresenceData);
     extraPresences = {
       '13-thirteen-13': { status: 'available' },
       'Roger-rolo-the-steam-roller-Lo': { status: 'busy' },
     };
     // Setup presence resource and cache
     cache = new DefaultPresenceCache();
-    parser = new DefaultPresenceParser();
   });
 
   it('should know whether it contains a user by ID', () => {
@@ -200,7 +195,6 @@ describe('PresenceResource', () => {
     it('should result in one callback after injecting a cache and only hitting existing ids', done => {
       try {
         // Setup parser and cache with data
-        const parser = new DefaultPresenceParser();
         const populatedCache = new DefaultPresenceCache();
         const update = parser.parse(validPresenceData);
         populatedCache.update(update);

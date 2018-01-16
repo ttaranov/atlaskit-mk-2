@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 
 export interface Props {
@@ -14,7 +13,7 @@ export interface Props {
 /*
  * Simple implementation of popup while waiting for ak-inline-dialog
  */
-export default class Popup extends PureComponent<Props, {}> {
+export default class Popup extends React.PureComponent<Props, {}> {
   private popup: HTMLElement;
 
   static defaultProps = {

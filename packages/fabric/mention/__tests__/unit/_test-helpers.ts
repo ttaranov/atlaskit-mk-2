@@ -1,5 +1,6 @@
 import { ReactWrapper } from 'enzyme';
 import MentionItem from '../../src/components/MentionItem';
+import MentionResource from '../../src/api/MentionResource';
 /* Component structure:
   ak-mention-picker
    > ak-popup (optional)
@@ -8,6 +9,20 @@ import MentionItem from '../../src/components/MentionItem';
          > ak-scrollable
            > ak-mention-item (0..n)
  */
+
+export const mockMentionData = {
+  id: 'ABCD-ABCD-ABCD',
+  text: '@Oscar Wallhult',
+};
+
+const mentionResource = new MentionResource({
+  url: 'dummyurl',
+
+  shouldHighlightMention(mention) {
+    return mention.id === 'oscar';
+  },
+});
+export const mockMentionProvider = Promise.resolve(mentionResource);
 
 export function getMentionItemById(
   component: ReactWrapper<any, any>,

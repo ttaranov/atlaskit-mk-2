@@ -1,12 +1,8 @@
 import { Search } from 'js-search';
 
-import { MentionDescription } from '../types';
+import { MentionDescription, MentionsResult } from '../types';
 import debug from '../util/logger';
-import {
-  AbstractMentionResource,
-  HttpError,
-  MentionsResult,
-} from '../api/MentionResource';
+import { AbstractMentionResource, HttpError } from '../api/MentionResource';
 import mentionData from './mention-data';
 import { MockMentionConfig } from './support-types';
 

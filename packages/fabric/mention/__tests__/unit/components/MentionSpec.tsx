@@ -6,7 +6,10 @@ import { MentionStyle } from '../../../src/components/Mention/styles';
 import { MentionType } from '../../../src/types';
 import Mention from '../../../src/components/Mention';
 import ResourcedMention from '../../../src/components/Mention/ResourcedMention';
-import { mentionData, mentionProvider } from '../_mock-mention-provider';
+import {
+  mockMentionData as mentionData,
+  mockMentionProvider as mentionProvider,
+} from '../_test-helpers';
 
 describe('<Mention />', () => {
   describe('Mention', () => {

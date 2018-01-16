@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 import {
   MentionListErrorStyle,
   MentionListErrorHeadlineStyle,
@@ -20,7 +19,7 @@ type ErrorMessage = {
   advisedAction: string;
 };
 
-export default class MentionListError extends PureComponent<Props, {}> {
+export default class MentionListError extends React.PureComponent<Props, {}> {
   /**
    * Translate the supplied Error into a message suitable for display in the MentionList.
    *

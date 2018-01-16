@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { MouseEvent } from 'react';
-import { PureComponent } from 'react';
 
 import { MentionListStyle } from './styles';
 import MentionListError from '../MentionListError';
@@ -58,7 +56,7 @@ export interface Items {
   [index: string]: MentionItem;
 }
 
-export default class MentionList extends PureComponent<Props, State> {
+export default class MentionList extends React.PureComponent<Props, State> {
   private lastMousePosition: Position | undefined;
   private scrollable: Scrollable;
   private items: Items;
@@ -181,7 +179,7 @@ export default class MentionList extends PureComponent<Props, State> {
 
   private selectIndexOnHover = (
     mention: MentionDescription,
-    event: MouseEvent<any>,
+    event: React.MouseEvent<any>,
   ) => {
     const mousePosition = mouseLocation(event);
     if (actualMouseMove(this.lastMousePosition, mousePosition)) {

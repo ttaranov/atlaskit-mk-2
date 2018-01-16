@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 
 import { MentionPickerStyle, MentionPickerInfoStyle } from './styles';
 import { OnMentionEvent } from '../../types';
@@ -44,7 +43,7 @@ export interface State {
 /**
  * @class MentionPicker
  */
-export default class MentionPicker extends PureComponent<Props, State> {
+export default class MentionPicker extends React.PureComponent<Props, State> {
   private subscriberKey: string;
   private mentionListRef: ResourcedMentionList;
 

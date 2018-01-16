@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 import { GenericErrorVisualStyle } from './styles';
 
 export interface Props {
   title?: string;
 }
 
-export class GenericErrorIllustration extends PureComponent<Props, {}> {
+export class GenericErrorIllustration extends React.PureComponent<Props, {}> {
   render() {
     return (
       <GenericErrorVisualStyle>

@@ -31,6 +31,17 @@ export interface MentionDescription {
   userType?: string;
 }
 
+export interface MentionsResult {
+  mentions: MentionDescription[];
+  query: string;
+}
+
+export type MentionEventHandler = (
+  mentionId: string,
+  text: string,
+  event?: SyntheticEvent<HTMLSpanElement>,
+) => void;
+
 export interface OnMentionEvent {
   (mention: MentionDescription, event?: SyntheticEvent<any>): void;
 }

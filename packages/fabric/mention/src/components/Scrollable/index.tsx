@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { PureComponent, ReactNode } from 'react';
 import { findDOMNode } from 'react-dom';
 import { ScrollableStyle } from './styles';
 
 export interface Props {
-  children?: ReactNode | ReactNode[];
+  children?: React.ReactNode | React.ReactNode[];
 }
 
-export default class Scrollable extends PureComponent<Props, {}> {
+export default class Scrollable extends React.PureComponent<Props, {}> {
   private scrollableDiv: Element;
 
   // API

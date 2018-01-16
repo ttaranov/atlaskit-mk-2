@@ -1,19 +1,16 @@
 import * as React from 'react';
-import { PureComponent, SyntheticEvent } from 'react';
 import { MentionStyle, MentionContainer } from './styles';
 import Tooltip from '@atlaskit/tooltip';
-import { isRestricted, MentionType } from '../../types';
-import { isSpecialMentionText } from '../../types';
+import {
+  isRestricted,
+  MentionType,
+  isSpecialMentionText,
+  MentionEventHandler,
+} from '../../types';
 import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
 
 const MENTION_ANALYTICS_PREFIX = 'atlassian.fabric.mention';
 const ANALYTICS_HOVER_DELAY = 1000;
-
-export type MentionEventHandler = (
-  mentionId: string,
-  text: string,
-  event?: SyntheticEvent<HTMLSpanElement>,
-) => void;
 
 export interface Props {
   id: string;
@@ -28,10 +25,10 @@ export interface Props {
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 }
 
-export class MentionInternal extends PureComponent<Props, {}> {
+export class MentionInternal extends React.PureComponent<Props, {}> {
   private startTime: number = 0;
 
-  private handleOnClick = (e: SyntheticEvent<HTMLSpanElement>) => {
+  private handleOnClick = (e: React.SyntheticEvent<HTMLSpanElement>) => {
     const { id, text, onClick } = this.props;
     if (onClick) {
       onClick(id, text, e);
@@ -39,7 +36,7 @@ export class MentionInternal extends PureComponent<Props, {}> {
     this.fireAnalytics('lozenge.select');
   };
 
-  private handleOnMouseEnter = (e: SyntheticEvent<HTMLSpanElement>) => {
+  private handleOnMouseEnter = (e: React.SyntheticEvent<HTMLSpanElement>) => {
     const { id, text, onMouseEnter } = this.props;
     this.startTime = Date.now();
     if (onMouseEnter) {
@@ -47,7 +44,7 @@ export class MentionInternal extends PureComponent<Props, {}> {
     }
   };
 
-  private handleOnMouseLeave = (e: SyntheticEvent<HTMLSpanElement>) => {
+  private handleOnMouseLeave = (e: React.SyntheticEvent<HTMLSpanElement>) => {
     const { id, text, onMouseLeave } = this.props;
     if (onMouseLeave) {
       onMouseLeave(id, text, e);

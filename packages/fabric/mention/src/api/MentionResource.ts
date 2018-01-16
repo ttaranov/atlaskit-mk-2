@@ -2,7 +2,7 @@ import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
 
-import { MentionDescription, isAppMention } from '../types';
+import { MentionDescription, isAppMention, MentionsResult } from '../types';
 import debug from '../util/logger';
 import { SearchIndex, compareMentionDescription } from '../util/searchIndex';
 
@@ -44,11 +44,6 @@ export interface ErrorCallback {
 
 export interface InfoCallback {
   (info: string): void;
-}
-
-export interface MentionsResult {
-  mentions: MentionDescription[];
-  query: string;
 }
 
 export interface MentionResourceConfig {

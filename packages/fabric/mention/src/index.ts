@@ -1,7 +1,6 @@
 import MentionResource, {
   AbstractMentionResource,
   MentionProvider,
-  MentionsResult,
 } from './api/MentionResource';
 import PresenceResource, {
   PresenceProvider,
@@ -13,7 +12,7 @@ import ResourcedMentionList from './components/ResourcedMentionList';
 import MentionPicker from './components/MentionPicker';
 import Mention from './components/Mention';
 import ResourcedMention from './components/Mention/ResourcedMention';
-import { MentionDescription, isSpecialMention } from './types';
+import { MentionDescription, MentionsResult, isSpecialMention } from './types';
 import { SearchIndex } from './util/searchIndex';
 
 export {

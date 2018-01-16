@@ -1,12 +1,17 @@
 import * as React from 'react';
-import { MouseEvent } from 'react';
-import { PureComponent } from 'react';
-import Avatar from '@atlaskit/avatar/dist/cjs/components/Avatar';
+import Avatar from '@atlaskit/avatar/dist/esm/components/Avatar';
 import Lozenge from '@atlaskit/lozenge';
 import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
 import Tooltip from '@atlaskit/tooltip';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
-
+import {
+  HighlightDetail,
+  MentionDescription,
+  OnMentionEvent,
+  Presence,
+  isRestricted,
+} from '../../types';
+import { leftClick } from '../../util/mouse';
 import {
   AvatarStyle,
   FullNameStyle,
@@ -20,15 +25,6 @@ import {
 } from './styles';
 
 type ReactComponentConstructor = new () => React.Component<any, any>;
-
-import {
-  HighlightDetail,
-  MentionDescription,
-  OnMentionEvent,
-  Presence,
-  isRestricted,
-} from '../../types';
-import { leftClick } from '../../util/mouse';
 
 interface Part {
   value: string;
@@ -114,16 +110,16 @@ export interface Props {
   onSelection?: OnMentionEvent;
 }
 
-export default class MentionItem extends PureComponent<Props, {}> {
+export default class MentionItem extends React.PureComponent<Props, {}> {
   // internal, used for callbacks
-  private onMentionSelected = (event: MouseEvent<any>) => {
+  private onMentionSelected = (event: React.MouseEvent<any>) => {
     if (leftClick(event) && this.props.onSelection) {
       event.preventDefault();
       this.props.onSelection(this.props.mention, event);
     }
   };
 
-  private onMentionMenuItemMouseMove = (event: MouseEvent<any>) => {
+  private onMentionMenuItemMouseMove = (event: React.MouseEvent<any>) => {
     if (this.props.onMouseMove) {
       this.props.onMouseMove(this.props.mention, event);
     }

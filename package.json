@@ -177,7 +177,6 @@
     "@atlaskit/droplist": "^4.11.3",
     "@atlaskit/emoji": "^31.0.2",
     "@atlaskit/input": "^1.6.0",
-    "@atlaskit/item": "^4.2.3",
     "@atlaskit/navigation": "^26.6.3",
     "@atlaskit/profilecard": "^3.7.1",
     "@atlaskit/task-decision": "^4.6.0",

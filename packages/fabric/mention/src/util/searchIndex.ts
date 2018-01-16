@@ -1,8 +1,8 @@
 import { Search, UnorderedSearchIndex, ITokenizer } from 'js-search';
-import { MentionsResult } from '../api/MentionResource';
 import {
   HighlightDetail,
   MentionDescription,
+  MentionsResult,
   isSpecialMention,
 } from '../types';
 import * as XRegExp from 'xregexp/src/xregexp'; // Not using 'xregexp' directly to only include what we use

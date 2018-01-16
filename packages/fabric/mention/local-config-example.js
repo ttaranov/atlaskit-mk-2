@@ -6,6 +6,7 @@ export default {
       headers: {
         'X-Bogus-Authorization': 'Bearer asap_token',
       },
+      omitCredentials: true,
     }),
   },
   sessionservice: {

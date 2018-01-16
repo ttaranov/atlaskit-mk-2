@@ -15,7 +15,7 @@ import MentionPicker, {
 import MentionList from '../../../src/components/MentionList';
 import MentionListError from '../../../src/components/MentionListError';
 import MentionItem from '../../../src/components/MentionItem';
-import { isMentionItemSelected, getMentionItemById } from '../_ak-selectors';
+import { isMentionItemSelected, getMentionItemById } from '../_test-helpers';
 
 const mentions = mentionData.mentions;
 const MAX_NOTIFIED_ITEMS = 20;

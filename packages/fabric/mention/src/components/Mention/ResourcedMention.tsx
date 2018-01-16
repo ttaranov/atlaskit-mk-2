@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 import { MentionProvider } from '../../api/MentionResource';
-import Mention, { MentionEventHandler } from './';
+import Mention from './';
+import { MentionEventHandler } from '../../types';
 
 export interface Props {
   id: string;
@@ -17,7 +17,10 @@ export interface State {
   isHighlighted: boolean;
 }
 
-export default class ResourcedMention extends PureComponent<Props, State> {
+export default class ResourcedMention extends React.PureComponent<
+  Props,
+  State
+> {
   constructor(props) {
     super(props);
 

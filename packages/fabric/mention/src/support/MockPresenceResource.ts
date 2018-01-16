@@ -10,7 +10,7 @@ export default class MockPresenceProvider extends AbstractPresenceResource {
     super();
     this.minTimeout = minTimeout || 0;
     this.maxTimeout = maxTimeout || 0;
-    this.statuses = ['online', 'offline', 'busy', 'focus', 'none', undefined];
+    this.statuses = ['online', 'offline', 'busy', 'focus', undefined];
   }
 
   private getTimeout() {

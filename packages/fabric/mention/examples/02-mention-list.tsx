@@ -1,24 +1,14 @@
 import * as React from 'react';
-import { Component } from 'react';
-import { storiesOf, action } from '@kadira/storybook';
 
-import { name } from '../package.json';
+import { randomMentions, onSelection } from '../example-helpers';
 import { MentionDescription } from '../src/types';
-import { HttpError } from '../src/api/MentionResource';
 import MentionList from '../src/components/MentionList';
-import { mentions } from '../src/support/story-data';
-
-function randomMentions() {
-  return mentions.filter(() => Math.random() < 0.7);
-}
-
-export interface Props {}
 
 export interface State {
   mentions: MentionDescription[];
 }
 
-class RefreshableMentionList extends Component<Props, State> {
+export default class DemoMentionList extends React.Component<any, State> {
   private mentionListRef: MentionList;
 
   constructor(props) {
@@ -55,7 +45,7 @@ class RefreshableMentionList extends Component<Props, State> {
     const mentionList = (
       <MentionList
         mentions={this.state.mentions}
-        onSelection={action('onSelection')}
+        onSelection={onSelection}
         ref={this.handleMentionListRef}
       />
     );
@@ -87,27 +77,3 @@ class RefreshableMentionList extends Component<Props, State> {
     );
   }
 }
-
-storiesOf(`${name}/MentionList`, module)
-  .add('simple mention list', () => <RefreshableMentionList />)
-  .add('generic error mention list', () => (
-    <div style={{ padding: '10px' }}>
-      <MentionList resourceError={new Error('monkey trousers')} mentions={[]} />
-    </div>
-  ))
-  .add('error mention list for 401', () => (
-    <div style={{ padding: '10px' }}>
-      <MentionList
-        resourceError={new HttpError(401, 'not used')}
-        mentions={[]}
-      />
-    </div>
-  ))
-  .add('error mention list for 403', () => (
-    <div style={{ padding: '10px' }}>
-      <MentionList
-        resourceError={new HttpError(403, 'not used')}
-        mentions={[]}
-      />
-    </div>
-  ));

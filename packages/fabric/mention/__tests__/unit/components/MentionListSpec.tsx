@@ -7,7 +7,7 @@ import mentionData, {
 } from '../../../src/support/mention-data';
 import MentionList, { Props, State } from '../../../src/components/MentionList';
 import MentionItem from '../../../src/components/MentionItem';
-import { isMentionItemSelected } from '../_ak-selectors';
+import { isMentionItemSelected } from '../_test-helpers';
 
 describe('MentionList', () => {
   let component;

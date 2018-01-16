@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 
 import { MentionDescription, OnMentionEvent } from '../../types';
 import { MentionProvider } from '../../api/MentionResource';
@@ -48,7 +47,10 @@ export interface State {
   mentions: MentionDescription[];
 }
 
-export default class ResourcedMentionList extends PureComponent<Props, State> {
+export default class ResourcedMentionList extends React.PureComponent<
+  Props,
+  State
+> {
   private subscriberKey: string;
   private mentionListRef: MentionList;
 

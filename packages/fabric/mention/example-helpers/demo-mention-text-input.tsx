@@ -1,6 +1,4 @@
-import { action } from '@kadira/storybook';
 import * as React from 'react';
-import { Component } from 'react';
 
 import MentionPicker, { Position } from '../src/components/MentionPicker';
 import { MentionDescription, OnMentionEvent } from '../src/types';
@@ -10,12 +8,16 @@ import { PresenceProvider } from '../src/api/PresenceResource';
 import SearchTextInput from './demo-search-text-input';
 import debug from '../src/util/logger';
 
+const onOpen = () => debug('picker opened');
+const onClose = () => debug('picker closed');
+
 export interface Props {
   label: string;
   onSelection?: OnMentionEvent;
   resourceProvider?: MentionProvider;
   presenceProvider?: PresenceProvider;
   relativePosition?: Position;
+  zIndex?: number;
 }
 
 export interface State {
@@ -23,7 +25,7 @@ export interface State {
   query: string;
 }
 
-export default class MentionTextInput extends Component<Props, State> {
+export default class MentionTextInput extends React.Component<Props, State> {
   private mentionPickerRef: MentionPicker;
 
   constructor(props: Props) {
@@ -77,6 +79,7 @@ export default class MentionTextInput extends Component<Props, State> {
       relativePosition,
       resourceProvider,
       presenceProvider,
+      zIndex,
     } = this.props;
     const searchInput = (
       <SearchTextInput
@@ -102,10 +105,11 @@ export default class MentionTextInput extends Component<Props, State> {
           resourceProvider={resourceProvider as MentionProvider}
           presenceProvider={presenceProvider}
           onSelection={this.handleSelection}
-          onOpen={action('picker opened')}
-          onClose={action('picker closed')}
+          onOpen={onOpen}
+          onClose={onClose}
           ref={this.handleMentionPickerRef}
           query={this.state.query}
+          zIndex={zIndex}
         />
       );
     }

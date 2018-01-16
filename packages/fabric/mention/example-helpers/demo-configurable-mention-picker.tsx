@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Component } from 'react';
 
 import MentionResource, {
   MentionResourceConfig,
@@ -37,7 +36,10 @@ export interface State {
   resourceProvider: MentionResource;
 }
 
-export default class ConfigurableMentionPicker extends Component<Props, State> {
+export default class ConfigurableMentionPicker extends React.Component<
+  Props,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
