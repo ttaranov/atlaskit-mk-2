@@ -108,9 +108,7 @@ export class MediaCollectionViewer extends Component<
 
   private onClose(): void {
     const { onClose } = this.props;
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscription.unsubscribe();
     if (onClose) {
       onClose();
     }
