@@ -1,6 +1,6 @@
 import { MediaType } from '@atlaskit/media-core';
 import { Preview } from '../domain/preview';
-import { fileToBase64 } from '../../popup/src/tools/fileToBase64';
+import { fileToBase64 } from '../popup/tools/fileToBase64';
 import { ImagePreview } from '../index';
 
 export const getPreviewFromBlob = (

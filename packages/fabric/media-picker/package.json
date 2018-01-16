@@ -41,8 +41,9 @@
     "postis": "^2.2.0",
     "react-redux": "^5.0.0",
     "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.2",
     "resumablejs": "1.0.2",
-    "rusha": "0.8.7",
+    "rusha": "^0.8.11",
     "styled-components": "^1.4.6",
     "svg-inline-react": "^3.0.0",
     "url": "^0.11.0",
@@ -67,7 +68,6 @@
     "@types/react-redux": "^4.4.0",
     "@types/redux": "^3.6.0",
     "identity-obj-proxy": "^3.0.0",
-    "lodash.chunk": "^4.2.0",
-    "redux-devtools-extension": "^2.13.2"
+    "lodash.chunk": "^4.2.0"
   }
 }
