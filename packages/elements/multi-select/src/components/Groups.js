@@ -22,7 +22,6 @@ const renderItems = ({
     return items.map((item, itemIndex) => (
       <Item
         {...item}
-        // $FlowFixMe there's definitely an item here, flow is complaining because it can't guarantee it, despite the previous length check
         elemBefore={item.elemBefore}
         isFocused={itemIndex === focusedItemIndex}
         key={itemIndex} // eslint-disable-line react/no-array-index-key
