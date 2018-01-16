@@ -156,11 +156,12 @@ describe('<MediaCollectionViewer />', () => {
     );
 
     const { mediaViewer } = wrapper.state();
-
-    expect(mediaViewer.on).toHaveBeenCalledWith('fv.close', onClose);
+    expect(mediaViewer.on).toHaveBeenCalledTimes(2);
+    expect((mediaViewer.on as any).mock.calls[0][0]).toBe('fv.close');
 
     wrapper.unmount();
-    expect(mediaViewer.off).toHaveBeenCalledWith('fv.close', onClose);
+    expect(mediaViewer.off).toHaveBeenCalledTimes(2);
+    expect((mediaViewer.off as any).mock.calls[0][0]).toBe('fv.close');
   });
 
   it('should not listen on fv.close given no onClose handler', () => {
@@ -196,13 +197,13 @@ describe('<MediaCollectionViewer />', () => {
 
     const { mediaViewer } = wrapper.state();
 
-    expect(mediaViewer.on).toHaveBeenCalledTimes(1);
-    expect((mediaViewer.on as any).mock.calls[0][0]).toBe('fv.changeFile');
+    expect(mediaViewer.on).toHaveBeenCalledTimes(2);
+    expect((mediaViewer.on as any).mock.calls[1][0]).toBe('fv.changeFile');
 
     wrapper.unmount();
 
-    expect(mediaViewer.off).toHaveBeenCalledTimes(1);
-    expect((mediaViewer.off as any).mock.calls[0][0]).toBe('fv.changeFile');
+    expect(mediaViewer.off).toHaveBeenCalledTimes(2);
+    expect((mediaViewer.off as any).mock.calls[1][0]).toBe('fv.changeFile');
   });
 
   it('should open media viewer with query, given media viewer is not open', () => {
