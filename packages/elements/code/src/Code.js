@@ -13,7 +13,7 @@ type CodeProps = {
   theme?: Theme,
 };
 
-export default class Code extends PureComponent<CodeProps> {
+export default class Code extends PureComponent<CodeProps, {}> {
   static defaultProps = {
     language: 'md',
     theme: {},
