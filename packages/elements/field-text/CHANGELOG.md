@@ -1,5 +1,8 @@
 # @atlaskit/field-text
 
+## 4.1.4
+- [patch] Migration to mk2 repo [786df25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/786df25)
+
 ## 4.1.3 (2017-12-01)
 
 * bug fix; fix field text types ([2f46ff0](https://bitbucket.org/atlassian/atlaskit/commits/2f46ff0))
