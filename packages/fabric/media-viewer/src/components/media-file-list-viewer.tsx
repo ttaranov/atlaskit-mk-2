@@ -65,7 +65,7 @@ export class MediaFileListViewer extends Component<
     const { serviceHost } = config;
     const { mediaViewer } = this.state;
 
-    mediaViewer.on('fv.close', this.onClose.bind(this));
+    mediaViewer.on('fv.close', this.onClose);
 
     const filesToProcess = list.filter(item => item.type === 'file'); // for now we only support files
 
@@ -104,14 +104,14 @@ export class MediaFileListViewer extends Component<
     if (subscription) {
       subscription.unsubscribe();
     }
-    mediaViewer.off('fv.close', this.onClose.bind(this));
+    mediaViewer.off('fv.close', this.onClose);
   }
 
   render(): JSX.Element {
     return <div />;
   }
 
-  private onClose(): void {
+  private onClose = () => {
     const { onClose } = this.props;
     const { subscription } = this.state;
     if (subscription) {
