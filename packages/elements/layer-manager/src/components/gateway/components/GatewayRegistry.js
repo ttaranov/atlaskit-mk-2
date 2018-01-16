@@ -10,7 +10,7 @@ type GatewayID = string;
 type Name = string;
 
 const contextTypes = {
-  renderDescendantGateways: PropTypes.bool,
+  blockChildGatewayRender: PropTypes.bool,
 };
 
 const ContextProvider = withContextFromProps(contextTypes, null);
@@ -46,12 +46,12 @@ export default class GatewayRegistry {
         });
         // Do not re-render nested gateways when a gateway is added to prevent an infinite loop
         // caused by an added gateway triggering a re-render of its parent and then itself.
-        const renderDescendantGateways =
-          addedGateway == null || i >= addedGatewayIndex;
+        const blockChildGatewayRender =
+          addedGateway != null && i < addedGatewayIndex;
 
         return (
           <ContextProvider
-            renderDescendantGateways={renderDescendantGateways}
+            blockChildGatewayRender={blockChildGatewayRender}
             key={key}
           >
             {element}

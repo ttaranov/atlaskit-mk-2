@@ -6,12 +6,14 @@ import LayerManager from '../src';
 type State = {
   isOuterModalOpen: boolean,
   isInnerModalOpen: boolean,
+  isInnerInnerModalOpen: boolean,
 };
 
 export default class App extends React.Component<{}, State> {
   state = {
     isOuterModalOpen: false,
     isInnerModalOpen: false,
+    isInnerInnerModalOpen: false,
   };
 
   openOuterModal = () => {
@@ -38,12 +40,31 @@ export default class App extends React.Component<{}, State> {
     });
   };
 
+  openInnerInnerModal = () => {
+    this.setState({
+      isInnerInnerModalOpen: true,
+    });
+  };
+
+  onInnerInnerClose = () => {
+    this.setState({
+      isInnerInnerModalOpen: false,
+    });
+  };
+
   render() {
-    const { isOuterModalOpen, isInnerModalOpen } = this.state;
+    const {
+      isOuterModalOpen,
+      isInnerModalOpen,
+      isInnerInnerModalOpen,
+    } = this.state;
     return (
       <LayerManager>
         <div style={{ height: '100vh' }}>
-          Test&nbsp;
+          <p>
+            It is not recommended to nest modals however layer manager should
+            still handle them correctly.
+          </p>
           <button onClick={this.openOuterModal}>Open outer modal</button>
           {isOuterModalOpen && (
             <Modal onClose={this.onOuterClose}>
@@ -51,7 +72,14 @@ export default class App extends React.Component<{}, State> {
               {isInnerModalOpen && (
                 <Modal onClose={this.onInnerClose}>
                   Inner Modal{' '}
-                  <button onClick={this.onInnerClose}>Close modal</button>
+                  <button onClick={this.openInnerInnerModal}>
+                    Open inner inner modal
+                  </button>
+                  {isInnerInnerModalOpen && (
+                    <Modal onClose={this.onInnerInnerClose}>
+                      Inner Inner Modal
+                    </Modal>
+                  )}
                 </Modal>
               )}
             </Modal>
