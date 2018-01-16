@@ -92,10 +92,10 @@ const renderRow = (
             {null}
 
             {/* {publishTime ? (
-                <Time dateTime={component.publishedDate}>
-                  {' '}({component.publishedDate && new Date(component.publishedDate).toLocaleDateString()})
-                </Time>
-              ) : null} */}
+                  <Time dateTime={component.publishedDate}>
+                    {' '}({component.publishedDate && new Date(component.publishedDate).toLocaleDateString()})
+                  </Time>
+                ) : null} */}
           </RowCell>
         ),
       },
@@ -106,7 +106,7 @@ const renderRow = (
       {
         content: (
           <RowCell>
-            {maintainers.map(val => val.name || val).join(', ')}
+            {maintainers && maintainers.map(val => val.name || val).join(', ')}
           </RowCell>
         ),
       },
@@ -148,7 +148,7 @@ export default function PackagesList() {
       </Section>
     ),
   });
-
+  console.log('Hello');
   return (
     <Page width="large">
       <Title>All Packages</Title>
