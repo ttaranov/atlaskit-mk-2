@@ -47,15 +47,14 @@ export default class Row extends PureComponent<Props> {
 
   renderCell(cell: Element<typeof Cell>, cellIndex: number) {
     const { hasChildren, depth, isExpanded = false } = this.props;
-    const isFirst = cellIndex === 0;
-    const indentLevel = isFirst ? depth : 0;
+    const isFirstCell = cellIndex === 0;
+    const indentLevel = isFirstCell ? depth : 0;
     let cellContent = cell.props.children || [];
-    if (isFirst) {
+    if (isFirstCell && hasChildren) {
       cellContent = [
         <Chevron
           key="chevron"
           isExpanded={isExpanded}
-          hasChildren={hasChildren}
           onExpandToggle={this.props.onExpandToggle}
           ariaControls={toItemId(this.props.itemId)}
         />,

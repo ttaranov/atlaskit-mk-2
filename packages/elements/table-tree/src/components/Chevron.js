@@ -7,8 +7,7 @@ import { ChevronContainer, iconColor, iconColorFocus } from '../styled';
 
 type Props = {
   isExpanded: boolean,
-  hasChildren: boolean,
-  ariaControls?: string,
+  ariaControls: string,
   onExpandToggle?: Function,
   key?: string,
 };
@@ -25,7 +24,7 @@ export default class Chevron extends PureComponent<Props, State> {
   };
 
   handleClick = () => {
-    if (this.props.hasChildren && this.props.onExpandToggle) {
+    if (this.props.onExpandToggle) {
       this.props.onExpandToggle();
     }
   };
@@ -47,7 +46,7 @@ export default class Chevron extends PureComponent<Props, State> {
   };
 
   render() {
-    const { isExpanded, hasChildren, ariaControls } = this.props;
+    const { isExpanded, ariaControls } = this.props;
     const { isFocused, isHovered } = this.state;
     const iconProps = {
       size: 'medium',
@@ -55,23 +54,21 @@ export default class Chevron extends PureComponent<Props, State> {
     };
     return (
       <ChevronContainer>
-        {hasChildren && (
-          <button
-            type={'button'}
-            aria-controls={ariaControls}
-            onClick={this.handleClick}
-            onFocus={this.handleFocus}
-            onBlur={this.handleBlur}
-            onMouseOver={this.handleMouseOver}
-            onMouseOut={this.handleMouseOut}
-          >
-            {isExpanded ? (
-              <ChevronDownIcon label="Collapse" {...iconProps} />
-            ) : (
-              <ChevronRightIcon label="Expand" {...iconProps} />
-            )}
-          </button>
-        )}
+        <button
+          type={'button'}
+          aria-controls={ariaControls}
+          onClick={this.handleClick}
+          onFocus={this.handleFocus}
+          onBlur={this.handleBlur}
+          onMouseOver={this.handleMouseOver}
+          onMouseOut={this.handleMouseOut}
+        >
+          {isExpanded ? (
+            <ChevronDownIcon label="Collapse" {...iconProps} />
+          ) : (
+            <ChevronRightIcon label="Expand" {...iconProps} />
+          )}
+        </button>
       </ChevronContainer>
     );
   }
