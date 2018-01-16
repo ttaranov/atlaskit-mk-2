@@ -1,5 +1,8 @@
 # @atlaskit/blanket
 
+## 4.0.5
+- [patch] Resolved low hanging flow errors in field-base field-text comment icon item and website, $ [007de27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/007de27)
+
 ## 4.0.4
 - [patch] Migration of Blanket to mk2 repo [1c55d97](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c55d97)
 

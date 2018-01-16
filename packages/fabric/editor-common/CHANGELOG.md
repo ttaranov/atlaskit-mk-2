@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 5.7.0
+
+- [minor] Fixing JSON schema for block nesting. [92c8f93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92c8f93)
+
 ## 5.6.0
 - [minor] added date plugin [f7b8a33](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7b8a33)
 

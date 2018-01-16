@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/comment",
-  "version": "2.6.8",
+  "version": "2.6.9",
   "description": "Comments enable discussions on an entity such as a page, blog post, issue or pull request",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -15,10 +15,10 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^6.2.0",
-    "@atlaskit/icon": "^10.6.0",
+    "@atlaskit/button": "^6.3.1",
+    "@atlaskit/icon": "^10.7.1",
     "@atlaskit/lozenge": "^3.4.10",
-    "@atlaskit/theme": "^2.2.9",
+    "@atlaskit/theme": "^2.3.1",
     "styled-components": "^1.4.6"
   },
   "peerDependencies": {
