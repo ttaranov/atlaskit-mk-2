@@ -10,7 +10,7 @@ type Props = {
 export default class Headers extends PureComponent<Props> {
   render() {
     return (
-      <TreeRowContainer>
+      <TreeRowContainer role={'row'}>
         {React.Children.map(this.props.children, (header, index) =>
           React.cloneElement(header, { key: index, columnIndex: index }),
         )}

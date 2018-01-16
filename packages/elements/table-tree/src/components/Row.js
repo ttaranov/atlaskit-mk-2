@@ -13,7 +13,7 @@ type Props = {
   children: Node | ChildrenArray<Element<*>>,
 
   /** Unique, stable ID for the row. Can be used for accessibility, caching etc. */
-  itemId: string, // eslint-disable-line react/no-unused-prop-types
+  itemId: string,
 
   /** Called whenever this row's node is expanded to show its child rows. */
   onExpand?: Function,

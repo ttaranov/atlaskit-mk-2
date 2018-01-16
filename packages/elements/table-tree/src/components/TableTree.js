@@ -109,7 +109,7 @@ export default class TableTree extends Component<Props, State> {
       );
     }
     return (
-      <TableTreeContainer role={'treegrid'}>
+      <TableTreeContainer role={'treegrid'} aria-readonly>
         {heads}
         {rows}
         {this.props.children}
