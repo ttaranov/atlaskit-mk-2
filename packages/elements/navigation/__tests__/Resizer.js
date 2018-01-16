@@ -1,5 +1,6 @@
 // @flow
-import { mount } from 'enzyme';
+import { mount, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import Resizer from '../src/components/js/Resizer';
 import ResizerInner from '../src/components/styled/ResizerInner';
@@ -10,6 +11,8 @@ import {
   globalOpenWidth as globalOpenWidthGenerator,
 } from '../src/shared-variables';
 import { dispatchMouseEvent } from './_event-util';
+
+configure({ adapter: new Adapter() });
 
 const standardOpenWidth = standardOpenWidthGenerator(false);
 const globalOpenWidth = globalOpenWidthGenerator(false);

@@ -1,10 +1,13 @@
 // @flow
-import { mount } from 'enzyme';
+import { mount, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import { AkSearchDrawer } from '../../src/index';
 import { drawerIconOffset } from '../../src/shared-variables';
 import Drawer from '../../src/components/js/Drawer';
 import requiredProps from '../_drawer-util';
+
+configure({ adapter: new Adapter() });
 
 describe('<SearchDrawer />', () => {
   describe('the inner Drawer', () => {

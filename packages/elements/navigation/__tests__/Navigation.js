@@ -1,6 +1,7 @@
 // @flow
 /* eslint-disable no-console */
-import { shallow, mount } from 'enzyme';
+import { shallow, mount, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import React, { PureComponent } from 'react';
 import sinon from 'sinon';
 import Navigation from '../src/components/js/Navigation';
@@ -22,6 +23,7 @@ import {
   resizeClosedBreakpoint as resizeClosedBreakpointFn,
 } from '../src/shared-variables';
 
+configure({ adapter: new Adapter() });
 const containerClosedWidth = containerClosedWidthFn(false);
 const globalOpenWidth = globalOpenWidthFn(false);
 const standardOpenWidth = standardOpenWidthFn(false);

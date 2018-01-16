@@ -1,8 +1,11 @@
 // @flow
-import { shallow } from 'enzyme';
+import { shallow, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import DrawerBackIcon from '../src/components/js/DrawerBackIcon';
 import DrawerBackIconInner from '../src/components/styled/DrawerBackIconInner';
+
+configure({ adapter: new Adapter() });
 
 describe('<DrawerBackIcon />', () => {
   describe('props', () => {

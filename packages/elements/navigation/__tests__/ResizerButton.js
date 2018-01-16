@@ -1,8 +1,11 @@
 // @flow
-import { mount } from 'enzyme';
+import { mount, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import ResizerButton from '../src/components/js/ResizerButton';
 import ResizerButtonInner from '../src/components/styled/ResizerButtonInner';
+
+configure({ adapter: new Adapter() });
 
 describe('<ResizerButton />', () => {
   describe('renders', () => {

@@ -59,6 +59,7 @@
     "@atlaskit/page": "^5.0.3",
     "@atlaskit/single-select": "^3.1.4",
     "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "raf-stub": "^2.0.1",
     "react-beautiful-dnd": "^2.0.1",
     "react-lorem-component": "^0.12.2",

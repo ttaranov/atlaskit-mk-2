@@ -1,8 +1,11 @@
 // @flow
-import { shallow } from 'enzyme';
+import { shallow, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import Spacer from '../src/components/js/Spacer';
 import SpacerInner from '../src/components/styled/SpacerInner';
+
+configure({ adapter: new Adapter() });
 
 describe('<Spacer />', () => {
   describe('props', () => {

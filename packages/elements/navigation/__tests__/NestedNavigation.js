@@ -1,8 +1,11 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { mount } from 'enzyme';
+import { mount, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import ContainerNavigationNested from '../src/components/js/nested/ContainerNavigationNested';
 import { getAnimation } from '../src/components/styled/NestedNavigationPage';
+
+configure({ adapter: new Adapter() });
 
 class Child extends PureComponent<any> {
   render() {
@@ -46,7 +49,8 @@ describe('Nested Navigation', () => {
 
     it('should render two children while transitioning', () => {
       const stack = [page, ...wrapper.state().stack];
-      wrapper.setProps({ stack }).update();
+      wrapper.setProps({ stack });
+      wrapper.update();
       expect(wrapper.children().length).toBe(2);
     });
 

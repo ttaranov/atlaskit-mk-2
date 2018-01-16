@@ -1,8 +1,11 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow, mount, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import Reveal from '../src/components/js/Reveal';
 import RevealInner from '../src/components/styled/RevealInner';
+
+configure({ adapter: new Adapter() });
 
 class Child extends PureComponent<any> {
   render() {

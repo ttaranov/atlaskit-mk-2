@@ -1,11 +1,14 @@
 // @flow
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount, shallow, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import OverflowItemGroup from '../../src/components/js/overflow/OverflowItemGroup';
 import {
   overflowManagerNamespace,
   shouldReportItemHeight,
 } from '../../src/components/js/overflow/shared-variables';
+
+configure({ adapter: new Adapter() });
 
 describe('<AkCollapseOverflowItemGroup />', () => {
   const createContext = (
@@ -18,7 +21,8 @@ describe('<AkCollapseOverflowItemGroup />', () => {
       isGroupVisibleInNav: () => isGroupVisibleInNavBool,
       isGroupVisibleInDropdown: () => isGroupVisibleInDropdownBool,
       isGroupItemVisibleInNav: () => true,
-      reportGroupHeightToManager: () => reportGroupHeightToManagerFn(),
+      reportGroupHeightToManager: argsObj =>
+        reportGroupHeightToManagerFn(argsObj),
     },
     [shouldReportItemHeight]: shouldReportItemHeightBool,
   });
@@ -117,7 +121,6 @@ describe('<AkCollapseOverflowItemGroup />', () => {
     it('should report height of items and non-item height to the overflow manager via context', () => {
       instance.handleItemHeightReport(0, 40);
       instance.handleItemHeightReport(1, 50);
-
       expect(reportSpy).toHaveBeenCalledTimes(1);
       expect(reportSpy).toHaveBeenCalledWith({
         groupIndex: 0,
