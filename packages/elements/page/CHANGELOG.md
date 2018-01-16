@@ -1,5 +1,8 @@
 # @atlaskit/page
 
+## 5.0.6
+- [patch] Migrated to mk2 repo, build system & docs. [64e83f3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/64e83f3)
+
 ## 5.0.5 (2017-12-05)
 
 * bug fix; remove the object literal being passed to the ThemeProvider which was causing unnece (issues closed: ak-3988) ([96ebc12](https://bitbucket.org/atlassian/atlaskit/commits/96ebc12))
