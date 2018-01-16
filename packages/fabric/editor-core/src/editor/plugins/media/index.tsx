@@ -4,7 +4,9 @@ import { MediaProvider } from '@atlaskit/media-core';
 import { EditorPlugin } from '../../types';
 import { stateKey as pluginKey, createPlugin } from '../../../plugins/media';
 import keymapPlugin from '../../../plugins/media/keymap';
+import keymapMediaSinglePlugin from '../../../plugins/media/keymap-media-single';
 import ToolbarMedia from '../../../ui/ToolbarMedia';
+import MediaSingleEdit from '../../../ui/MediaSingleEdit';
 
 export interface MediaOptions {
   provider: Promise<MediaProvider>;
@@ -41,45 +43,29 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
           ),
       },
       { rank: 1220, plugin: ({ schema }) => keymapPlugin(schema) },
-    ];
-  },
-
-  primaryToolbarComponent(
-    editorView,
-    eventDispatcher,
-    providerFactory,
-    appearance,
-    popupsMountPoint,
-    popupsBoundariesElement,
-    disabled,
-    editorWidth,
-  ) {
-    return (
-      <ToolbarMedia
-        editorView={editorView}
-        pluginKey={pluginKey}
-        isDisabled={disabled}
-        editorWidth={editorWidth}
-      />
+    ].concat(
+      options && options.allowMediaSingle
+        ? {
+            rank: 1250,
+            plugin: ({ schema }) => keymapMediaSinglePlugin(schema),
+          }
+        : [],
     );
   },
 
-  secondaryToolbarComponent(
-    editorView,
-    eventDispatcher,
-    providerFactory,
-    appearance,
-    popupsMountPoint,
-    popupsBoundariesElement,
-    disabled,
-    editorWidth,
-  ) {
+  contentComponent({ editorView }) {
+    const pluginState = pluginKey.getState(editorView.state);
+
+    return <MediaSingleEdit pluginState={pluginState} />;
+  },
+
+  secondaryToolbarComponent({ editorView, disabled }) {
     return (
       <ToolbarMedia
         editorView={editorView}
         pluginKey={pluginKey}
         isDisabled={disabled}
-        editorWidth={editorWidth}
+        isReducedSpacing={true}
       />
     );
   },

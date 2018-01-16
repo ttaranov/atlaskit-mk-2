@@ -1,5 +1,18 @@
 # @atlaskit/media-test-helpers
 
+## 8.6.1
+- [patch] Update atlassian.io domains [6ac1a8f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6ac1a8f)
+
+## 8.6.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
+## 8.5.4
+- [patch] Use media-test-helpers instead of hardcoded values [f2b92f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f2b92f8)
+
+## 8.5.3
+
+- [patch] Update dependencies [623f8ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623f8ca)
+
 ## 8.5.2
 - [patch] Added new AppCardView v1.5 designs behind a feature flag. [92bc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92bc6c8)
 

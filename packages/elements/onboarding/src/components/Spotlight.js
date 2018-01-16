@@ -6,7 +6,7 @@ import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
 import Layer from '@atlaskit/layer';
 import { layers } from '@atlaskit/theme';
 
-import { getTheme } from './theme';
+import { getSpotlightTheme } from './theme';
 import type {
   ActionsType,
   ComponentType,
@@ -174,11 +174,13 @@ class Spotlight extends Component<Props> {
 
     // build the dialog before passing it to Layer
     const dialog = (
-      <ThemeProvider theme={getTheme}>
+      <ThemeProvider theme={getSpotlightTheme}>
         <FocusLock enabled={transitionIn} autoFocus>
           <Dialog width={dialogWidth} tabIndex="-1">
             {headerElement}
+            {/* // $FlowFixMe TEMPORARY */}
             <DialogBody>
+              {/* // $FlowFixMe TEMPORARY */}
               {heading && <Heading>{heading}</Heading>}
               {children}
             </DialogBody>
@@ -195,6 +197,7 @@ class Spotlight extends Component<Props> {
           content={dialog}
           offset="0 8"
           position={dialogPlacement}
+          // $FlowFixMe TEMPORARY
           zIndex={layers.spotlight(this.props)}
         >
           {this.renderTargetClone()}
@@ -210,6 +213,7 @@ export default withScrollMeasurements(
       target: 'spotlight',
       withTransitionGroup: true,
     },
+    // $FlowFixMe TEMPORARY
     Spotlight,
   ),
 );

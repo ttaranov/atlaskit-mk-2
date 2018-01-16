@@ -1,12 +1,17 @@
 import { NodeSpec } from 'prosemirror-model';
-import { TopLevel } from './doc';
+import { Definition as Paragraph } from './paragraph';
+import { Definition as OrderedList } from './ordered-list';
+import { Definition as BulletList } from './bullet-list';
 
 /**
  * @name listItem_node
  */
 export interface Definition {
   type: 'listItem';
-  content: TopLevel;
+  /**
+   * @minItems 1
+   */
+  content: Array<Paragraph | OrderedList | BulletList>;
 }
 
 export const listItem: NodeSpec = {

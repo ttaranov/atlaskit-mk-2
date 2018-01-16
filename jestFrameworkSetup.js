@@ -1,8 +1,11 @@
 /* eslint-disable */
 
 import 'jest-styled-components';
-import { replaceRaf } from 'raf-stub';
-replaceRaf([global, typeof window !== 'undefined' ? window : {}]);
+
+// URL is not available for non Node environment
+if (global.URL) {
+  global.URL.createObjectURL = () => 'mock result of URL.createObjectURL()';
+}
 
 /*
   This file is executed after the test framework is setup for each test file. Addons that modify

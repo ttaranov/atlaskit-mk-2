@@ -7,6 +7,7 @@ import {
   NodeType,
   ResolvedPos,
   Slice,
+  Schema,
 } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import {
@@ -323,7 +324,7 @@ export function getGroupsInRange(
 
       const endPos = doc.resolve(
         Math.min(
-          // should not be smaller then start position in case of an empty paragpraph for example.
+          // should not be smaller then start position in case of an empty paragraph for example.
           Math.max(
             ancestorPos.start(ancestorPos.depth),
             ancestorPos.end(ancestorPos.depth) - 3,
@@ -548,7 +549,65 @@ export const isTemporary = (id: string): boolean => {
   return id.indexOf('temporary:') === 0;
 };
 
-// See: https://github.com/ProseMirror/prosemirror/issues/710
-export const isChromeWithSelectionBug = !!navigator.userAgent.match(
-  /Chrome\/(5[89]|6[012])/,
-);
+// @see: https://github.com/ProseMirror/prosemirror/issues/710
+// @see: https://bugs.chromium.org/p/chromium/issues/detail?id=740085
+// Chrome > 58
+export const isChromeWithSelectionBug =
+  parseInt((navigator.userAgent.match(/Chrome\/(\d{2})/) || [])[1], 10) > 58;
+
+export const isEmptyNode = (schema: Schema) => {
+  const {
+    doc,
+    paragraph,
+    codeBlock,
+    blockquote,
+    panel,
+    heading,
+    listItem,
+    bulletList,
+    orderedList,
+    taskList,
+    taskItem,
+    decisionList,
+    decisionItem,
+    media,
+    mediaGroup,
+    mediaSingle,
+  } = schema.nodes;
+  const innerIsEmptyNode = (node: Node) => {
+    switch (node.type) {
+      case media:
+      case mediaGroup:
+      case mediaSingle:
+        return false;
+      case paragraph:
+      case codeBlock:
+      case heading:
+        return node.content.size === 0;
+      case blockquote:
+      case panel:
+      case listItem:
+      case taskItem:
+      case decisionItem:
+        return (
+          node.content.size === 2 && innerIsEmptyNode(node.content.firstChild!)
+        );
+      case bulletList:
+      case orderedList:
+      case taskList:
+      case decisionList:
+        return (
+          node.content.size === 4 && innerIsEmptyNode(node.content.firstChild!)
+        );
+      case doc:
+        let isEmpty = true;
+        node.content.forEach(child => {
+          isEmpty = isEmpty && innerIsEmptyNode(child);
+        });
+        return isEmpty;
+      default:
+        throw new Error(`${node.type.name} node is not implemented`);
+    }
+  };
+  return innerIsEmptyNode;
+};

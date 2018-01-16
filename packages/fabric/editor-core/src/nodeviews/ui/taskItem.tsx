@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 
-import ProviderFactory from '../../providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { AnalyticsDelegate, AnalyticsDelegateProps } from '@atlaskit/analytics';
 import TaskItem from '../../ui/Task';
 

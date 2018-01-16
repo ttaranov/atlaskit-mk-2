@@ -10,7 +10,6 @@ import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from '../../../plugins/table';
 import hoverSelectionPlugin from './hover-selection-plugin';
 import TableFloatingToolbar from '../../../ui/TableFloatingToolbar';
-import ToolbarTable from './ui/ToolbarTable';
 
 const tablesPlugin: EditorPlugin = {
   nodes() {
@@ -30,41 +29,11 @@ const tablesPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent(
-    editorView,
-    eventDispatcher,
-    providerFactory,
-    appearance,
-    popupsMountPoint,
-    popupsBoundariesElement,
-  ) {
+  contentComponent({ editorView, popupsMountPoint, popupsBoundariesElement }) {
     const pluginState = stateKey.getState(editorView.state);
 
     return (
       <TableFloatingToolbar
-        editorView={editorView}
-        pluginState={pluginState}
-        popupsMountPoint={popupsMountPoint}
-        popupsBoundariesElement={popupsBoundariesElement}
-      />
-    );
-  },
-
-  primaryToolbarComponent(
-    editorView,
-    eventDispatcher,
-    providerFactory,
-    appearance,
-    popupsMountPoint,
-    popupsBoundariesElement,
-    disabled,
-    editorWidth,
-  ) {
-    const pluginState = stateKey.getState(editorView.state);
-    return (
-      <ToolbarTable
-        isDisabled={disabled}
-        editorWidth={editorWidth}
         editorView={editorView}
         pluginState={pluginState}
         popupsMountPoint={popupsMountPoint}

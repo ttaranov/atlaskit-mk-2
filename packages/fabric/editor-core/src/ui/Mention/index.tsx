@@ -4,13 +4,11 @@ import MentionWithProviders from './mention-with-providers';
 import {
   MentionUserType as UserType,
   MentionEventHandlers,
+  ProviderFactory,
+  WithProviders,
 } from '@atlaskit/editor-common';
 
 import { ProfilecardProvider } from './types';
-import {
-  default as ProviderFactory,
-  WithProviders,
-} from '../../providerFactory';
 
 export interface MentionProps {
   id: string;

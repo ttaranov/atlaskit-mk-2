@@ -164,6 +164,7 @@ class Modal extends Component<Props, State> {
 
   handleOverlayClick = e => {
     if (this.props.shouldCloseOnOverlayClick) {
+      // $FlowFixMe TEMPORARY
       this.props.onClose(e);
     }
   };
@@ -266,5 +267,6 @@ export default withRenderTarget(
     target: 'modal',
     withTransitionGroup: true,
   },
+  // $FlowFixMe TEMPORARY
   Modal,
 );

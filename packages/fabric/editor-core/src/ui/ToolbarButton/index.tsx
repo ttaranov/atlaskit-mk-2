@@ -36,7 +36,7 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
         isDisabled={this.props.disabled}
         isSelected={this.props.selected}
         onClick={this.handleClick}
-        spacing={this.props.spacing || 'none'}
+        spacing={this.props.spacing || 'default'}
         target={this.props.target}
         theme={this.props.theme}
         shouldFitContainer={true}

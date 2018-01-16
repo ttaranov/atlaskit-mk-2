@@ -15,7 +15,6 @@ import {
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
 import { stateKey as emojiPluginKey } from '../../plugins/emojis';
-import { stateKey as mediaPluginKey } from '../../plugins/media';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ImageUploadState } from '../../plugins/image-upload';
 import { ListsState } from '../../plugins/lists';
@@ -35,12 +34,9 @@ import LanguagePicker from '../LanguagePicker';
 import MentionPicker from '../MentionPicker';
 import PanelEdit from '../PanelEdit';
 import ToolbarBlockType from '../ToolbarBlockType';
-import ToolbarEmojiPicker from '../ToolbarEmojiPicker';
 import ToolbarFeedback from '../ToolbarFeedback';
 import ToolbarHelp from '../ToolbarHelp';
-import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarLists from '../ToolbarLists';
-import ToolbarMedia from '../ToolbarMedia';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
 import ToolbarInsertBlock from '../ToolbarInsertBlock';
@@ -284,30 +280,6 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
             />
           ) : null}
-          {pluginStateHyperlink ? (
-            <ToolbarHyperlink
-              disabled={disabled}
-              pluginState={pluginStateHyperlink}
-              editorView={editorView}
-            />
-          ) : null}
-          {emojiPluginKey &&
-            emojiProvider && (
-              <ToolbarEmojiPicker
-                isDisabled={disabled}
-                editorView={editorView}
-                pluginKey={emojiPluginKey}
-                emojiProvider={emojiProvider}
-                numFollowingButtons={4}
-              />
-            )}
-          {pluginStateMedia && (
-            <ToolbarMedia
-              isDisabled={disabled}
-              editorView={editorView}
-              pluginKey={mediaPluginKey}
-            />
-          )}
           {(pluginStateTable ||
             pluginStateMedia ||
             pluginStateBlockType ||
@@ -323,6 +295,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               render={state => (
                 <ToolbarInsertBlock
                   isDisabled={disabled}
+                  isReducedSpacing={false}
                   editorView={editorView}
                   tableActive={state.tableActive}
                   tableHidden={state.tableHidden}
@@ -335,6 +308,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
                   mediaSupported={state.mediaSupported}
                   availableWrapperBlockTypes={state.availableWrapperBlockTypes}
                   onInsertBlockType={state.insertBlockType}
+                  buttons={3}
                 />
               )}
             />

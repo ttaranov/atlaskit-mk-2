@@ -16,22 +16,12 @@ export interface Props {
 
 export default class InlineExtension extends Component<Props, any> {
   render() {
-    const { macroProvider, node, onClick } = this.props;
+    const { node, onClick } = this.props;
     const { extensionKey } = node.attrs;
 
     // TODO: handle other extension types to get "placeholderUrl"
-    let placeholderUrl;
-    let placeholderFallbackUrl;
-
-    if (macroProvider) {
-      const { config: { placeholderBaseUrl } } = macroProvider;
-      const imageUrl = getPlaceholderUrl({ node, type: 'image' });
-      const iconUrl = getPlaceholderUrl({ node, type: 'icon' });
-      placeholderUrl = imageUrl ? `${placeholderBaseUrl}${imageUrl}` : null;
-      placeholderFallbackUrl = iconUrl
-        ? `${placeholderBaseUrl}${iconUrl}`
-        : null;
-    }
+    const placeholderUrl = getPlaceholderUrl({ node, type: 'image' });
+    const placeholderFallbackUrl = getPlaceholderUrl({ node, type: 'icon' });
 
     return (
       <Wrapper onClick={onClick} className="with-overlay">
@@ -45,7 +35,7 @@ export default class InlineExtension extends Component<Props, any> {
     );
   }
 
-  private renderPlaceholderFallback = (placeholderUrl: string) => {
+  private renderPlaceholderFallback = (placeholderUrl?: string) => {
     const { parameters, extensionKey } = this.props.node.attrs;
     const params =
       parameters && parameters.macroParams ? parameters.macroParams : null;

@@ -13,7 +13,6 @@ import {
   clearFormatting,
   tooltip,
 } from '../../keymaps';
-import EditorWidth from '../../utils/editor-width';
 import DropdownMenu from '../DropdownMenu';
 import { TriggerWrapper, Wrapper, Separator } from './styles';
 
@@ -24,7 +23,7 @@ export interface Props {
   pluginStateClearFormatting?: ClearFormattingState | undefined;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
-  editorWidth?: number;
+  isReducedSpacing?: boolean;
 }
 
 export interface State {
@@ -117,19 +116,15 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
     const {
       popupsMountPoint,
       popupsBoundariesElement,
-      editorWidth,
+      isReducedSpacing,
     } = this.props;
-    const items = this.createItems(editorWidth);
+    const items = this.createItems();
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
-        spacing={
-          editorWidth && editorWidth > EditorWidth.BreakPoint10
-            ? 'default'
-            : 'none'
-        }
+        spacing={isReducedSpacing ? 'none' : 'default'}
         selected={
           isOpen ||
-          (underlineActive && editorWidth! <= EditorWidth.BreakPoint2) ||
+          underlineActive ||
           codeActive ||
           strikethroughActive ||
           subscriptActive ||
@@ -153,8 +148,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
         codeDisabled &&
         subscriptDisabled &&
         superscriptDisabled &&
-        (underlineDisabled &&
-          (!editorWidth || editorWidth <= EditorWidth.BreakPoint2))
+        underlineDisabled
       ) &&
       items[0].items.length > 0
     ) {
@@ -185,7 +179,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
     }
   }
 
-  private createItems = (editorWidth?: number) => {
+  private createItems = () => {
     const {
       pluginStateTextFormatting,
       pluginStateClearFormatting,
@@ -200,11 +194,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
         subscriptHidden,
         superscriptHidden,
       } = this.state;
-      if (
-        !underlineHidden &&
-        editorWidth &&
-        editorWidth <= EditorWidth.BreakPoint2
-      ) {
+      if (!underlineHidden) {
         this.addRecordToItems(
           items,
           'Underline',
@@ -216,7 +206,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
         this.addRecordToItems(
           items,
           'Strikethrough',
-          'strikethrough',
+          'strike',
           tooltip(toggleStrikethrough),
         );
       }
@@ -313,7 +303,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
       case 'code':
         pluginStateTextFormatting!.toggleCode(this.props.editorView);
         break;
-      case 'strikethrough':
+      case 'strike':
         pluginStateTextFormatting!.toggleStrike(this.props.editorView);
         break;
       case 'subscript':

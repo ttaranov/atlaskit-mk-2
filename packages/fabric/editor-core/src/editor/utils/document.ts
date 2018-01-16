@@ -37,8 +37,11 @@ export function isEmpty(node?: Node): boolean {
     !nonBlock.length &&
     !block.filter(
       childNode =>
-        !!childNode.childCount &&
-        !(childNode.childCount === 1 && isEmptyParagraph(childNode.firstChild)),
+        (!!childNode.childCount &&
+          !(
+            childNode.childCount === 1 && isEmptyParagraph(childNode.firstChild)
+          )) ||
+        childNode.isAtom,
     ).length
   );
 }

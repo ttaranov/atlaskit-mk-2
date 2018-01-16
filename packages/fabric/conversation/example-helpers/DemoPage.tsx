@@ -1,11 +1,14 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { ResourceProvider } from '../src/api/ConversationResource';
-import Conversation from '../src/components/Conversation';
+import { Conversation } from '../src';
+import SingleSelect from '@atlaskit/single-select';
 import {
   Comment as CommentType,
   Conversation as ConversationType,
+  User,
 } from '../src/model';
+import { MOCK_USERS } from './MockData';
 
 const DUMMY_CODE = `
 class Main() {
@@ -54,7 +57,7 @@ interface FileProps {
   provider: ResourceProvider;
 }
 
-const containerId = 'container:abc:abc/123';
+const containerId = 'container:abc:abc/1234567';
 
 class File extends React.Component<FileProps, { addAt?: number }> {
   constructor(props) {
@@ -81,18 +84,18 @@ class File extends React.Component<FileProps, { addAt?: number }> {
     const { addAt } = this.state;
     const { conversations, name, provider } = this.props;
 
-    const conversation =
+    const [conversation] =
       conversations &&
-      conversations.find(c => c.meta && c.meta.lineNumber === index);
+      conversations.filter(c => c.meta && c.meta.lineNumber === index);
 
     if (conversation) {
       return (
         <ConvoWrapper>
           <Conversation
-            id={conversation.id}
+            id={conversation.conversationId}
             provider={provider}
             isExpanded={false}
-            meta={{ lineNumber: index }}
+            meta={{ name, lineNumber: index }}
             containerId={containerId}
           />
         </ConvoWrapper>
@@ -151,13 +154,14 @@ class File extends React.Component<FileProps, { addAt?: number }> {
 
 export class Demo extends React.Component<
   { provider: ResourceProvider },
-  { conversations: any[] }
+  { conversations: any[]; selectedUser: User }
 > {
   constructor(props) {
     super(props);
 
     this.state = {
       conversations: [],
+      selectedUser: MOCK_USERS[0],
     };
   }
 
@@ -172,12 +176,24 @@ export class Demo extends React.Component<
     }
   }
 
+  private onUserSelect = (selected: any) => {
+    const { item } = selected;
+    const userId = item.value;
+    const { provider } = this.props;
+    const [selectedUser] = MOCK_USERS.filter(user => user.id === userId);
+    provider.updateUser(selectedUser);
+
+    this.setState({
+      selectedUser,
+    });
+  };
+
   private renderConversations(conversations: ConversationType[]) {
     const { provider } = this.props;
 
     return conversations.map(conversation => (
       <div
-        key={conversation.id}
+        key={conversation.conversationId}
         style={{
           borderBottom: '1px solid #ccc',
           paddingBottom: '10px',
@@ -186,38 +202,69 @@ export class Demo extends React.Component<
       >
         <Conversation
           provider={provider}
-          id={conversation.id}
+          id={conversation.conversationId}
           containerId={containerId}
         />
       </div>
     ));
   }
 
+  private renderUserSelect() {
+    const { selectedUser } = this.state;
+    const users = {
+      heading: 'Users',
+      items: MOCK_USERS.map((user: User) => {
+        return {
+          content: user.name,
+          value: user.id,
+          isSelected: selectedUser.id === user.id,
+        };
+      }),
+    };
+
+    return (
+      <div
+        style={{
+          marginBottom: '10px',
+          paddingBottom: '10px',
+          borderBottom: '1px solid #ccc',
+        }}
+      >
+        <SingleSelect
+          label="Change User"
+          defaultSelected={users.items[0]}
+          items={[users]}
+          onSelected={this.onUserSelect}
+        />
+      </div>
+    );
+  }
+
   render() {
     const { conversations } = this.state;
     const { provider } = this.props;
-    const prConverations = conversations.filter(c => !c.meta);
+    const prConversations = conversations.filter(
+      c => !Object.keys(c.meta).length,
+    );
+
     return (
       <div style={{ margin: '20px' }}>
-        {this.renderConversations(prConverations)}
-        {prConverations.length === 0 ? (
+        {this.renderUserSelect()}
+        {this.renderConversations(prConversations)}
+        {prConversations.length === 0 ? (
           <Conversation provider={provider} containerId={containerId} />
         ) : null}
         <File
           name="main.js"
           code={DUMMY_CODE}
           provider={provider}
-          conversations={conversations.filter(
-            c => c.meta && c.meta.name === 'main.js',
-          )}
+          conversations={conversations.filter(c => c.meta.name === 'main.js')}
         />
         <File
           name="stuff.js"
           code={DUMMY_CODE}
           provider={provider}
-          conversations={conversations.filter(
-            c => c.meta && c.meta.name === 'stuff.js',
-          )}
+          conversations={conversations.filter(c => c.meta.name === 'stuff.js')}
         />
       </div>
     );

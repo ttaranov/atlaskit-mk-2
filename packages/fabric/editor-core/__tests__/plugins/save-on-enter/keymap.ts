@@ -1,6 +1,6 @@
 import tasksAndDecisionsPlugins from '../../../src/plugins/tasks-and-decisions';
 import { createPlugin as createSaveOnEnterPlugin } from '../../../src/editor/plugins/save-on-enter';
-import ProviderFactory from '../../../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   makeEditor,
   doc,

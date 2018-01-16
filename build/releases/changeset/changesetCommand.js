@@ -3,13 +3,14 @@ const chalk = require('chalk');
 // TODO: Make these pull from the actual packages once we have a firm repo structure
 const cli = require('../../utils/cli');
 const git = require('../../utils/git');
-const { getChangedPackages } = require('../../utils/packages');
+const { getChangedPackagesSinceMaster } = require('../../utils/packages');
 const createChangeset = require('./createChangeset');
 const createChangesetCommit = require('./createChangesetCommit');
 
 async function run() {
-  const changedPackages = await getChangedPackages();
-  const newChangeset = await createChangeset(changedPackages);
+  const changedPackages = await getChangedPackagesSinceMaster();
+  const changePackagesName = changedPackages.map(pkg => pkg.name);
+  const newChangeset = await createChangeset(changePackagesName);
   const changesetCommitStr = createChangesetCommit(newChangeset);
 
   console.log(chalk.green('Creating new Changeset commit...\n'));

@@ -34,9 +34,19 @@ const createTable = (): Command => {
     }
     pluginState.focusEditor();
     const table = createTableNode(3, 3, state.schema);
-    const tr = state.tr.replaceSelectionWith(table);
-    tr.setSelection(Selection.near(tr.doc.resolve(state.selection.from)));
-    dispatch(tr.scrollIntoView());
+    const { tr, selection: { $from }, storedMarks } = state;
+    const marks =
+      storedMarks && storedMarks.length ? storedMarks : $from.marks();
+    if (marks && marks.length) {
+      // @see https://product-fabric.atlassian.net/browse/ED-3516
+      tr.setStoredMarks([]);
+    }
+    dispatch(
+      tr
+        .replaceSelectionWith(table)
+        .setSelection(Selection.near(tr.doc.resolve($from.pos)))
+        .scrollIntoView(),
+    );
     return true;
   };
 };

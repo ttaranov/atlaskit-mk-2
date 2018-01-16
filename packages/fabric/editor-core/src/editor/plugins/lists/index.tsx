@@ -5,6 +5,7 @@ import { plugin, stateKey } from '../../../plugins/lists';
 import inputRulePlugin from '../../../plugins/lists/input-rule';
 import keymapPlugin from '../../../plugins/lists/keymap';
 import ToolbarLists from '../../../ui/ToolbarLists';
+import { ToolbarSize } from '../../ui/Toolbar';
 
 const listPlugin: EditorPlugin = {
   nodes() {
@@ -23,23 +24,31 @@ const listPlugin: EditorPlugin = {
     ];
   },
 
-  primaryToolbarComponent(
+  primaryToolbarComponent({
     editorView,
-    eventDispatcher,
-    providerFactory,
     appearance,
     popupsMountPoint,
     popupsBoundariesElement,
+    toolbarSize,
     disabled,
-  ) {
+    isToolbarReducedSpacing,
+  }) {
     const pluginState = stateKey.getState(editorView.state);
+    const isSmall = toolbarSize < ToolbarSize.L;
+    const isSeparator = toolbarSize >= ToolbarSize.S;
     return (
       <ToolbarLists
+        isSmall={isSmall}
+        isSeparator={isSeparator}
+        isReducedSpacing={isToolbarReducedSpacing}
         disabled={disabled}
         editorView={editorView}
         pluginState={pluginState}
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
+        enableTaskToolbar={
+          !!editorView.state.schema.nodes.taskItem && appearance === 'full-page'
+        }
       />
     );
   },

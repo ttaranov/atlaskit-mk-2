@@ -13,13 +13,11 @@ import {
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import ToolbarButton from '../../src/ui/ToolbarButton';
-import EditorWidth from '../../src/utils/editor-width';
 import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
-import ProviderFactory from '../../src/providerFactory';
 import { analyticsService } from '../../src/analytics';
 import pluginKey from '../../src/plugins/emojis/plugin-key';
-import { Popup } from '@atlaskit/editor-common';
+import { Popup, ProviderFactory } from '@atlaskit/editor-common';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
 const grinEmoji = emojiTestData.grinEmoji;
@@ -30,8 +28,7 @@ const grinEmojiId = {
 };
 
 describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
-  const providerFactory = new ProviderFactory();
-  providerFactory.setProvider('emojiProvider', emojiProvider);
+  const providerFactory = ProviderFactory.create({ emojiProvider });
   const editor = (doc: any) =>
     makeEditor<EmojiState>({
       doc,
@@ -68,21 +65,6 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
     const popup = toolbarEmojiPicker.find(Popup);
     expect(popup.length > 0).toEqual(true);
-    toolbarEmojiPicker.unmount();
-  });
-
-  it('should return null if EditorWidth is less then BreakPoint4', () => {
-    const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(
-      <ToolbarEmojiPicker
-        pluginKey={pluginKey}
-        emojiProvider={emojiProvider}
-        editorView={editorView}
-        numFollowingButtons={0}
-        editorWidth={EditorWidth.BreakPoint4 - 1}
-      />,
-    );
-    expect(toolbarEmojiPicker.html()).toEqual(null);
     toolbarEmojiPicker.unmount();
   });
 
@@ -137,27 +119,10 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
         emojiProvider={emojiProvider}
         editorView={editorView}
         numFollowingButtons={0}
-        isDisabled={true}
+        isDisabled
       />,
     );
     expect(toolbarOption.find(ToolbarButton).prop('disabled')).toEqual(true);
-    toolbarOption.unmount();
-  });
-
-  it('should have spacing of toolbar button set to default', () => {
-    const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarEmojiPicker
-        pluginKey={pluginKey}
-        emojiProvider={emojiProvider}
-        editorView={editorView}
-        numFollowingButtons={0}
-        editorWidth={EditorWidth.BreakPoint4 + 1}
-      />,
-    );
-    expect(toolbarOption.find(ToolbarButton).prop('spacing')).toEqual(
-      'default',
-    );
     toolbarOption.unmount();
   });
 
@@ -274,7 +239,8 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
     toolbarEmojiPicker
       .find(EmojiIcon)
-      .parent()
+      .parents()
+      .at(0)
       .simulate('click');
     expect(toolbarEmojiPicker.state('isOpen')).toEqual(false);
     toolbarEmojiPicker.unmount();

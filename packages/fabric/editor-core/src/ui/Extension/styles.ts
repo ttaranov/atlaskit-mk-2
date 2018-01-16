@@ -48,9 +48,8 @@ export const Overlay = styled.div`
 
 // tslint:disable-next-line:variable-name
 export const PlaceholderFallback = styled.div`
-  & > span {
-    vertical-align: middle;
-  }
+  display: inline-flex;
+  align-items: center;
 `;
 
 // tslint:disable-next-line:variable-name

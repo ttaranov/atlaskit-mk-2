@@ -51,6 +51,7 @@ export const redo = makeKeymap('Redo', 'Ctrl-y', 'Cmd-Shift-z');
 export const redoBarred = makeKeymap('Redo Barred', 'Ctrl-Shift-z', 'Cmd-y');
 export const openHelp = makeKeyMapWithCommon('Open Help', 'Mod-/');
 export const addLink = makeKeyMapWithCommon('Insert link', 'Mod-k');
+export const submit = makeKeyMapWithCommon('Submit Content', 'Mod-Enter');
 export const enter = makeKeyMapWithCommon('Enter', 'Enter');
 export const tab = makeKeyMapWithCommon('Tab', 'Tab');
 export const backspace = makeKeyMapWithCommon('Backspace', 'Backspace');

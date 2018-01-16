@@ -8,6 +8,7 @@ import {
   emojiPlugin,
   tasksAndDecisionsPlugin,
   saveOnEnterPlugin,
+  submitEditorPlugin,
   mediaPlugin,
   imageUploadPlugin,
   maxContentSizePlugin,
@@ -29,6 +30,7 @@ import {
   extensionPlugin,
   rulePlugin,
   clearMarksOnChangeToEmptyDocumentPlugin,
+  datePlugin,
 } from '../plugins';
 
 /**
@@ -144,8 +146,13 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(placeholderCursorPlugin);
   }
 
+  if (props.allowDate) {
+    plugins.push(datePlugin);
+  }
+
   // UI only plugins
   plugins.push(insertBlockPlugin);
+  plugins.push(submitEditorPlugin);
 
   return plugins;
 }

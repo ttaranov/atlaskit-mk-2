@@ -1,6 +1,6 @@
 // @flow
 
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import React from 'react';
 
 import Lozenge, { APPEARANCE_ENUM } from '../src/Lozenge';
@@ -27,8 +27,8 @@ describe('Lozenge', () => {
     });
     it('should revert to "default" when set to an invalid value', () => {
       expect(
-        mount(<Lozenge appearance={('foo': any)} />)
-          .getNode()
+        shallow(<Lozenge appearance={('foo': any)} />)
+          .instance()
           .validAppearance(),
       ).toBe('default');
     });

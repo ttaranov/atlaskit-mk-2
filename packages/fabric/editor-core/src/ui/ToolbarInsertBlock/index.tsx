@@ -12,6 +12,7 @@ import QuoteIcon from '@atlaskit/icon/glyph/quote';
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import LinkIcon from '@atlaskit/icon/glyph/editor/link';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
+import DateIcon from '@atlaskit/icon/glyph/editor/date';
 import {
   EmojiId,
   EmojiPicker as AkEmojiPicker,
@@ -33,12 +34,14 @@ import {
 } from '../../keymaps';
 import DropdownMenu from '../DropdownMenu';
 import ToolbarButton from '../ToolbarButton';
-import EditorWidth from '../../utils/editor-width';
 import { MacroProvider } from '../../editor/plugins/macro/types';
 import tableCommands from '../../plugins/table/commands';
+import { insertDate, openDatePicker } from '../../editor/plugins/date/actions';
 import { Wrapper, ExpandIconWrapper } from './styles';
 
 export interface Props {
+  buttons: number;
+  isReducedSpacing: boolean;
   isDisabled?: boolean;
   editorView: EditorView;
   tableActive?: boolean;
@@ -49,15 +52,16 @@ export interface Props {
   insertMentionQuery?: () => void;
   mediaUploadsEnabled?: boolean;
   mediaSupported?: boolean;
+  dateEnabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   availableWrapperBlockTypes?: BlockType[];
+  linkSupported?: boolean;
   linkDisabled?: boolean;
   showLinkPanel?: (editorView: EditorView) => void;
   emojiDisabled?: boolean;
   insertEmoji?: (emojiId: EmojiId) => void;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
-  editorWidth?: number;
   macroProvider?: MacroProvider | null;
   onShowMediaPicker?: () => void;
   onInsertBlockType?: (name: string, view: EditorView) => void;
@@ -81,8 +85,12 @@ const blockTypeIcons = {
  * Checks if an element is detached (i.e. not in the current document)
  */
 const isDetachedElement = el => !document.contains(el);
+const noop = () => {};
 
-export default class ToolbarInsertBlock extends React.Component<Props, State> {
+export default class ToolbarInsertBlock extends React.PureComponent<
+  Props,
+  State
+> {
   private pickerRef: ReactElement<any>;
   private button?;
 
@@ -90,6 +98,13 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
     isOpen: false,
     emojiPickerOpen: false,
   };
+
+  componentWillReceiveProps(nextProps: Props) {
+    // If number of visible buttons changed, close emoji picker
+    if (nextProps.buttons !== this.props.buttons) {
+      this.setState({ emojiPickerOpen: false });
+    }
+  }
 
   private onOpenChange = (attrs: any) => {
     const state: any = { isOpen: attrs.isOpen };
@@ -145,6 +160,10 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
     }
   };
 
+  private handleDropDownButtonRef = (ref, items) => {
+    items.forEach(item => item.handleRef && item.handleRef(ref));
+  };
+
   private onPickerRef = (ref: any) => {
     if (ref) {
       document.addEventListener('click', this.handleClickOutside);
@@ -171,37 +190,28 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
   render() {
     const { isOpen } = this.state;
     const {
-      tableSupported,
-      mediaSupported,
-      mentionsSupported,
       popupsMountPoint,
       popupsBoundariesElement,
-      editorWidth,
       isDisabled,
+      buttons: numberOfButtons,
+      isReducedSpacing,
     } = this.props;
 
-    const items = this.createItems(editorWidth);
+    const items = this.createItems();
+    const buttons = items.slice(0, numberOfButtons);
+    const dropdownItems = items.slice(numberOfButtons);
 
-    if (
-      !tableSupported &&
-      !mediaSupported &&
-      !mentionsSupported &&
-      items[0].items.length === 0
-    ) {
+    if (items.length === 0) {
       return null;
     }
 
-    const toolbarButtonFactory = (disabled: boolean) => (
+    const toolbarButtonFactory = (disabled: boolean, items) => (
       <ToolbarButton
-        ref={this.handleButtonRef}
-        spacing={
-          editorWidth && editorWidth > EditorWidth.BreakPoint10
-            ? 'default'
-            : 'none'
-        }
+        ref={el => this.handleDropDownButtonRef(el, items)}
         selected={isOpen}
         disabled={disabled}
         onClick={this.handleTriggerClick}
+        spacing={isReducedSpacing ? 'none' : 'default'}
         iconBefore={
           <Wrapper>
             <AddIcon label="Open or close insert block dropdown" />
@@ -214,32 +224,45 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
     );
 
     return (
-      <Wrapper>
-        {this.renderPopup()}
-        {items[0].items.length > 0 &&
-          (!isDisabled ? (
-            <DropdownMenu
-              items={items}
-              onItemActivated={this.onItemActivated}
-              onOpenChange={this.onOpenChange}
-              mountTo={popupsMountPoint}
-              boundariesElement={popupsBoundariesElement}
-              isOpen={isOpen}
-              fitHeight={188}
-              fitWidth={175}
-            >
-              {toolbarButtonFactory(false)}
-            </DropdownMenu>
-          ) : (
-            <div>
-              <div>{toolbarButtonFactory(true)}</div>
-            </div>
-          ))}
-      </Wrapper>
+      <div style={{ display: 'flex' }}>
+        {buttons.map(btn => (
+          <ToolbarButton
+            ref={btn.handleRef || noop}
+            key={btn.content}
+            spacing={isReducedSpacing ? 'none' : 'default'}
+            disabled={isDisabled || btn.isDisabled}
+            iconBefore={btn.elemBefore}
+            selected={btn.isActive}
+            onClick={() => this.onItemActivated({ item: btn })}
+          />
+        ))}
+        <Wrapper>
+          {this.renderPopup()}
+          {dropdownItems.length > 0 &&
+            (!isDisabled ? (
+              <DropdownMenu
+                items={[{ items: dropdownItems }]}
+                onItemActivated={this.onItemActivated}
+                onOpenChange={this.onOpenChange}
+                mountTo={popupsMountPoint}
+                boundariesElement={popupsBoundariesElement}
+                isOpen={isOpen}
+                fitHeight={188}
+                fitWidth={175}
+              >
+                {toolbarButtonFactory(false, dropdownItems)}
+              </DropdownMenu>
+            ) : (
+              <div>
+                <div>{toolbarButtonFactory(true, dropdownItems)}</div>
+              </div>
+            ))}
+        </Wrapper>
+      </div>
     );
   }
 
-  private createItems = (editorWidth?: number) => {
+  private createItems = () => {
     const {
       tableHidden,
       tableActive,
@@ -250,12 +273,15 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
       mentionsSupported,
       availableWrapperBlockTypes,
       macroProvider,
+      linkSupported,
       linkDisabled,
       emojiDisabled,
       emojiProvider,
+      dateEnabled,
     } = this.props;
     let items: any[] = [];
-    if (editorWidth! <= EditorWidth.BreakPoint7) {
+
+    if (linkSupported) {
       items.push({
         content: 'Add link',
         value: { name: 'link' },
@@ -265,11 +291,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
         elemBefore: <LinkIcon label="Add link" />,
       });
     }
-    if (
-      mediaSupported &&
-      mediaUploadsEnabled &&
-      editorWidth! <= EditorWidth.BreakPoint6
-    ) {
+    if (mediaSupported && mediaUploadsEnabled) {
       items.push({
         content: 'Files and images',
         value: { name: 'media' },
@@ -278,7 +300,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
         elemBefore: <AttachmentIcon label="Insert files and images" />,
       });
     }
-    if (mentionsSupported && editorWidth! <= EditorWidth.BreakPoint5) {
+    if (mentionsSupported) {
       items.push({
         content: 'Mention',
         value: { name: 'mention' },
@@ -288,7 +310,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
         elemBefore: <MentionIcon label="Add mention" />,
       });
     }
-    if (emojiProvider && editorWidth! <= EditorWidth.BreakPoint4) {
+    if (emojiProvider) {
       items.push({
         content: 'Emoji',
         value: { name: 'emoji' },
@@ -296,9 +318,10 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
         tooltipDescription: 'Insert emoji (:)',
         tooltipPosition: 'right',
         elemBefore: <EmojiIcon label="Insert emoji" />,
+        handleRef: this.handleButtonRef,
       });
     }
-    if (tableSupported && editorWidth! <= EditorWidth.BreakPoint3) {
+    if (tableSupported) {
       items.push({
         content: 'Table',
         value: { name: 'table' },
@@ -311,7 +334,6 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
     }
     if (availableWrapperBlockTypes) {
       availableWrapperBlockTypes.forEach(blockType => {
-        // tslint:disable-next-line:variable-name
         const BlockTypeIcon = blockTypeIcons[blockType.name];
         items.push({
           content: blockType.title,
@@ -320,6 +342,15 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
           tooltipPosition: 'right',
           elemBefore: <BlockTypeIcon label={`Insert ${blockType} block`} />,
         });
+      });
+    }
+    if (dateEnabled) {
+      items.push({
+        content: 'Date',
+        value: { name: 'date' },
+        tooltipDescription: 'Insert date',
+        tooltipPosition: 'right',
+        elemBefore: <DateIcon label="Insert date" />,
       });
     }
     if (typeof macroProvider !== 'undefined' && macroProvider) {
@@ -331,11 +362,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
         elemBefore: <EditorMoreIcon label="View more" />,
       });
     }
-    return [
-      {
-        items,
-      },
-    ];
+    return items;
   };
 
   @analyticsDecorator('atlassian.editor.format.hyperlink.button')
@@ -356,6 +383,17 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
   private createTable = (): boolean => {
     const { editorView } = this.props;
     tableCommands.createTable()(editorView.state, editorView.dispatch);
+    return true;
+  };
+
+  @analyticsDecorator('atlassian.editor.format.date.button')
+  private createDate = (): boolean => {
+    const { editorView } = this.props;
+    insertDate()(editorView.state, editorView.dispatch);
+    openDatePicker(editorView.domAtPos.bind(editorView))(
+      editorView.state,
+      editorView.dispatch,
+    );
     return true;
   };
 
@@ -388,9 +426,6 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
       case 'table':
         this.createTable();
         break;
-      case 'table':
-        this.createTable();
-        break;
       case 'media':
         this.openMediaPicker();
         break;
@@ -416,6 +451,10 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
           editorView.state,
           editorView.dispatch,
         );
+        break;
+      case 'date':
+        this.createDate();
+        break;
     }
     this.setState({ isOpen: false });
   };

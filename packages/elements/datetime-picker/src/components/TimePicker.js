@@ -1,9 +1,8 @@
 // @flow
 
 import React, { Component, type ElementRef } from 'react';
-import { gridSize } from '@atlaskit/theme';
 import TimePickerStateless from './TimePickerStateless';
-import type { Handler } from '../types';
+import type { Event, Handler } from '../types';
 import { parseTime } from '../util';
 
 const defaultTimes = [
@@ -32,7 +31,7 @@ type Props = {
   autoFocus: boolean,
   isDisabled: boolean,
   times: Array<string>,
-  width: number,
+  width: ?number,
   onChange: Handler,
 };
 
@@ -51,7 +50,7 @@ export default class DatePicker extends Component<Props, State> {
     autoFocus: false,
     isDisabled: false,
     times: defaultTimes,
-    width: gridSize() * 20,
+    width: null,
     onChange() {},
   };
 
@@ -75,18 +74,14 @@ export default class DatePicker extends Component<Props, State> {
     }
   };
 
-  handleInputBlur = (e: FocusEvent) => {
-    if (e.target instanceof HTMLInputElement) {
-      this.validate(this.state.displayValue);
-    }
+  handleInputBlur = () => {
+    this.validate(this.state.displayValue);
   };
 
   handleInputChange = (e: Event) => {
-    if (e.target instanceof HTMLInputElement) {
-      const value = e.target.value;
-      this.setState({ displayValue: value });
-      this.updateVisibleTimes(value, this.props.times);
-    }
+    const value = e.target.value;
+    this.setState({ displayValue: value });
+    this.updateVisibleTimes(value, this.props.times);
   };
 
   handleInputKeyDown = (e: KeyboardEvent) => {

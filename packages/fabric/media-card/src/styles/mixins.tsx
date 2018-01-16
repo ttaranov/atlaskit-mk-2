@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
-import { CardAppearance } from '../../index';
+import { CardAppearance } from '../index';
 import { defaultTransitionDuration } from './config';
 
 export const ellipsis = (maxWidth: string | number = '100%') => {

@@ -5,6 +5,7 @@ import {
   getPlaceholderUrl,
   getMacroId,
   MediaSingleAttributes,
+  timestampToIso,
 } from '@atlaskit/editor-common';
 import { Fragment, Node as PMNode, Mark, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
@@ -74,6 +75,11 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeExtension(node);
     } else if (node.type === schema.nodes.emoji) {
       return encodeEmoji(node);
+    } else if (node.type === schema.nodes.taskList) {
+      return encodeTaskList(node);
+    }
+    if (node.type === schema.nodes.date) {
+      return encodeDate(node);
     } else {
       throw new Error(
         `Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`,
@@ -471,5 +477,46 @@ export default function encode(node: PMNode, schema: Schema) {
     marker.setAttributeNS(AC_XMLNS, 'ac:ref', reference);
 
     return marker;
+  }
+
+  function encodeTaskList(node: PMNode): Element {
+    const elem = doc.createElementNS(AC_XMLNS, 'ac:task-list');
+
+    node.descendants(item => {
+      if (item.type === schema.nodes.taskItem) {
+        const taskItem = doc.createElementNS(AC_XMLNS, 'ac:task');
+        const id = doc.createElementNS(AC_XMLNS, 'ac:task-id');
+        const status = doc.createElementNS(AC_XMLNS, 'ac:task-status');
+
+        id.textContent = item.attrs.localId;
+        status.textContent =
+          item.attrs.state === 'DONE' ? 'complete' : 'incomplete';
+        taskItem.appendChild(id);
+        taskItem.appendChild(status);
+
+        if (item.content.size) {
+          const body = doc.createElementNS(AC_XMLNS, 'ac:task-body');
+          const span: HTMLSpanElement = doc.createElement('span');
+          span.setAttribute('class', 'placeholder-inline-tasks');
+          span.appendChild(encodeFragment(item.content));
+          body.appendChild(span);
+          taskItem.appendChild(body);
+        }
+
+        elem.appendChild(taskItem);
+      }
+      return false;
+    });
+
+    return elem;
+  }
+
+  function encodeDate(node: PMNode): Element {
+    const elem = doc.createElement('time');
+    const { timestamp } = node.attrs;
+    if (timestamp) {
+      elem.setAttribute('datetime', timestampToIso(timestamp));
+    }
+    return elem;
   }
 }

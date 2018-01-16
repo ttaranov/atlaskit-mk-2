@@ -1,5 +1,11 @@
 # @atlaskit/polyfills
 
+## 1.4.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
+## 1.3.0
+- [minor] added array.prototype.find polyfull to package [d1eb5b7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1eb5b7)
+
 ## 1.2.4
 
 ## 1.2.3

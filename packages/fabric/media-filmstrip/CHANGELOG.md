@@ -1,5 +1,10 @@
 # @atlaskit/media-filmstrip
 
+## 5.8.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
+## 5.7.8
+
 ## 5.7.7
 
 ## 5.7.6

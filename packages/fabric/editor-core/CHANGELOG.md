@@ -1,5 +1,105 @@
 # @atlaskit/editor-core
 
+## 61.3.5
+
+## 61.3.4
+- [patch] Remove placeholderBaseUrl config option from the Confluence Macro Provider [1583960](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1583960)
+- [patch] Fix Extension Header img height to 24px, center elements vertically [49f48bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49f48bb)
+
+## 61.3.3
+- [patch] Addes in editor-markdown-transformer package [10042be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10042be)
+
+## 61.3.2
+- [patch] Fix cursor position after mention and emoji [330b8d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/330b8d2)
+
+## 61.3.1
+- [patch] Fix spacing and toolbar alignment for message editor [98b961e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/98b961e)
+
+## 61.3.0
+- [minor] added date plugin [f7b8a33](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7b8a33)
+- [patch] fixed insertion of a table when selection has a mark [3d8226e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d8226e)
+
+## 61.2.1
+- [patch] Fix accessing clipboardData.types in Edge (fixes paste) [91b921b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91b921b)
+- [patch] Updates in responsive editor [353c5d6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/353c5d6)
+
+## 61.2.0
+- [minor] Grid layout for Single Image [59a8e22](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59a8e22)
+
+## 61.1.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
+## 61.0.3
+- [patch] Fix update single image toolbar state on selection change [bea78aa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bea78aa)
+
+## 61.0.2
+
+## 61.0.1
+- [patch] Fix analytics event name for strikethrough button. [ac96c66](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac96c66)
+
+## 61.0.0
+- [patch] cleanup tables [372ac9b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/372ac9b)
+- [major] FS-1461 added TaskDecisionProvider and ContextIdentifierProvider to editor props [62fca1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62fca1e)
+
+## 60.20.2
+- [patch] added createStep to collab provider [139e70d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/139e70d)
+- [patch] Revert change os enter keypress in stride. [4eac0d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4eac0d8)
+
+## 60.20.1
+- [patch] Autoformatting for task and decision items should work inside tables. [13c90ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13c90ff)
+
+## 60.20.0
+- [minor] Add horizontal rule support in full-page editor [9cefb57](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cefb57)
+
+## 60.19.0
+- [patch] Remove duplicate implementation of ProviderFactory from @atlaskit/editor-core, in favour of only one implementation in @atlaskit/editor-common [535cb8c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/535cb8c)
+- [minor] bump prosemirror-tables to 0.5.2 [32b6bbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/32b6bbe)
+
+- [minor] added tasks/actions to full-page editor [49d3343](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d3343)
+- [patch] Horizontal rule autoformatting should work after shift+enter. [f600f0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f600f0e)
+
+## 60.18.1
+
+- [patch] Fix insert single image from 3rd party integration [a337df1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a337df1)
+
+## 60.18.0
+- [minor] add version to editor.start analytics [3b4c21b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b4c21b)
+- [minor] add name and version to editor.start analytics [d8d2388](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d8d2388)
+
+## 60.17.6
+- [patch] Improve emoji and mention providers in editor's examples [bd68138](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd68138)
+
+## 60.17.5
+- [patch] Fixing text padding in message editor. [a4af16c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4af16c)
+- [patch] In message editor pasting content more in size than max allowed limit should show warning and insert toolbar options should be disabled once max size is reached.  [7078916](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7078916)
+
+## 60.17.4
+- [patch] Fix issue with some of autoformatting using markdown syntax failing for links. [6e5ed2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e5ed2b)
+
+## 60.17.3
+- [patch] Mod-Enter should submit editor content for all products. [65ede03](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65ede03)
+- [patch] Fix for issue that panel toolbar is not visible when cursor is inside a list in panel. [dce5d66](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dce5d66)
+
+## 60.17.2
+
+## 60.17.1
+- [patch] validate incoming ADF node inserted from macro browser [e9d0af2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e9d0af2)
+
+## 60.17.0
+- [minor] Added floating toolbar to media single [46fdd15](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/46fdd15)
+
+## 60.16.1
+- [patch] Add support for single image wrap left/right layout [59d9a74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59d9a74)
+
+## 60.16.0
+- [minor] Enter keypress should always submit in stride. [51020fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51020fe)
+
+## 60.15.9
+
+## 60.15.8
+
+- [patch] Update dependencies [623f8ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623f8ca)
+
 ## 60.15.7
 - [patch] Support old plugins in WithPluginState helper [194bc9c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/194bc9c)
 

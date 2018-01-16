@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/datetime-picker",
-  "version": "0.3.2",
+  "version": "0.5.1",
   "description": "A React component for picking date/time values",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -10,32 +10,35 @@
     "dist"
   ],
   "author": "Atlassian Pty Ltd",
-  "maintainers": [],
+  "maintainers": [
+    "Ajay N Mathur",
+    "Trey S"
+  ],
   "atlaskit": {
     "name": "Date-time picker",
     "team": "elements"
   },
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/calendar": "^3.0.13",
+    "@atlaskit/calendar": "^3.1.0",
     "@atlaskit/droplist": "^4.11.3",
     "@atlaskit/field-base": "^8.1.1",
-    "@atlaskit/icon": "^10.3.1",
+    "@atlaskit/icon": "^10.7.0",
     "@atlaskit/input": "^1.6.0",
-    "@atlaskit/layer": "^2.5.4",
-    "@atlaskit/theme": "^2.2.8",
+    "@atlaskit/layer": "^2.6.0",
+    "@atlaskit/theme": "^2.3.0",
     "babel-runtime": "^6.26.0",
     "date-fns": "^1.29.0",
     "styled-components": "^1.4.6"
   },
   "peerDependencies": {
-    "react": "^15.6.1"
+    "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.0.0",
-    "@atlaskit/field-text": "^4.1.2",
-    "enzyme": "^2.9.1",
-    "react-dom": "^15.6.1",
-    "react-test-renderer": "^15.6.1"
+    "@atlaskit/docs": "^2.4.0",
+    "@atlaskit/field-text": "^4.1.4",
+    "enzyme": "^3.3.0",
+    "react-dom": "15.6.0 - 16.2.0",
+    "react-test-renderer": "^16.2.0"
   }
 }

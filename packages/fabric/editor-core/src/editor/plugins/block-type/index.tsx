@@ -4,6 +4,7 @@ import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from '../../../plugins/block-type';
 import inputRulePlugin from '../../../plugins/block-type/input-rule';
 import ToolbarBlockType from '../../../ui/ToolbarBlockType';
+import { ToolbarSize } from '../../ui/Toolbar';
 
 const blockType: EditorPlugin = {
   nodes() {
@@ -21,19 +22,21 @@ const blockType: EditorPlugin = {
     ];
   },
 
-  primaryToolbarComponent(
+  primaryToolbarComponent({
     editorView,
-    eventDispatcher,
-    providerFactory,
-    appearance,
     popupsMountPoint,
     popupsBoundariesElement,
+    toolbarSize,
     disabled,
-  ) {
+    isToolbarReducedSpacing,
+  }) {
     const pluginState = stateKey.getState(editorView.state);
+    const isSmall = toolbarSize < ToolbarSize.XL;
     return (
       <ToolbarBlockType
+        isSmall={isSmall}
         isDisabled={disabled}
+        isReducedSpacing={isToolbarReducedSpacing}
         editorView={editorView}
         pluginState={pluginState}
         popupsMountPoint={popupsMountPoint}

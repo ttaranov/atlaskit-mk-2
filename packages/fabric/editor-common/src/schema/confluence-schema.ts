@@ -30,6 +30,9 @@ const nodes = [
   'tableHeader',
   'tableRow',
   'emoji',
+  'taskList',
+  'taskItem',
+  'date',
 ];
 
 const marks = [

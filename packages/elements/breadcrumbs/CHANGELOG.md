@@ -1,5 +1,12 @@
 # @atlaskit/breadcrumbs
 
+## 3.2.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
+## 3.1.10
+
+- [patch] Update types [2fe5453](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2fe5453)
+
 ## 3.1.9
 
 ## 3.1.8

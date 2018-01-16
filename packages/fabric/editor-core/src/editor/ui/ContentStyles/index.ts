@@ -6,6 +6,8 @@ import {
   akEditorTableBorder,
   akEditorTableBorderSelected,
   akEditorTableFloatingControls,
+  akEditorRuleBackground,
+  akEditorRuleBorderRadius,
 } from '../../../styles';
 import {
   akGridSizeUnitless,
@@ -72,12 +74,10 @@ const tableStyle = `
   }
 `;
 
-// tslint:disable-next-line:variable-name
 export const StyledTable = styled.table`
   ${tableStyle};
 `;
 
-// tslint:disable-next-line:variable-name
 const ContentStyles = styled.div`
   // Hack for ie11 that is being used in code block.
   // https://bitbucket.org/atlassian/atlaskit/src/ad09f6361109ece1aab316c8cbd8116ffb7963ef/packages/editor-core/src/schema/nodes/code-block.ts?fileviewer=file-view-default#code-block.ts-110
@@ -158,6 +158,13 @@ const ContentStyles = styled.div`
     box-sizing: border-box;
   }
 
+  .ProseMirror ul ul,
+  .ProseMirror ul ol,
+  .ProseMirror ol ul,
+  .ProseMirror ol ol {
+    padding-left: 17px;
+  }
+
   .ProseMirror li {
     position: relative;
     /* Dont do weird stuff with marker clicks */
@@ -224,6 +231,13 @@ const ContentStyles = styled.div`
     pointer-events: auto;
   }
 
+  .ProseMirror hr {
+    height: 0;
+    border: 1px solid ${akEditorRuleBackground};
+    border-radius: ${akEditorRuleBorderRadius};
+    margin: 24px 0;
+  }
+
   .ProseMirror-hideselection *::selection {
     background: transparent;
   }
@@ -281,16 +295,29 @@ const ContentStyles = styled.div`
     top: 20px;
   }
 
-  //=============== BREAKOUT STYLES ==================
+  //=============== SINGLE IMAGE STYLES ==================
+  && .ProseMirror {
+    [layout='wide'] {
+      max-width: 960px;
+      width: 100%;
+    }
 
-  && .ProseMirror [layout='wide'] {
-    max-width: 960px;
-    width: 100%;
-  }
+    & [layout='full-width'] {
+      max-width: 100%;
+      width: 100%;
+    }
 
-  && .ProseMirror [layout='full-width'] {
-    max-width: 100%;
-    width: 100%;
+    & [layout='wrap-left'] + [layout='wrap-right'],
+    & [layout='wrap-right'] + [layout='wrap-left'] {
+      clear: none;
+      & + p {
+        clear: both;
+      }
+      & > div {
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
   }
 
   //=============== PLACEHOLDER CURSOR STYLES=========

@@ -14,10 +14,12 @@ import {
 } from '@atlaskit/editor-core';
 import {
   storyMediaProviderFactory,
+  storyContextIdentifierProviderFactory,
   macroProvider,
 } from '@atlaskit/editor-test-helpers';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import Spinner from '@atlaskit/spinner';
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
@@ -31,6 +33,7 @@ import {
   EXTENSION,
   BODIED_EXTENSION,
   BODIED_NESTED_EXTENSION,
+  DATE,
 } from '../example-helpers/cxhtml-test-data';
 import { ConfluenceTransformer } from '../src';
 
@@ -98,6 +101,10 @@ const providers = {
   mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
   activityProvider: Promise.resolve(new MockActivityResource()),
   macroProvider: Promise.resolve(macroProvider),
+  taskDecisionProvider: Promise.resolve(
+    taskDecisionStoryData.getMockTaskDecisionResource(),
+  ),
+  contextIdentifierProvider: storyContextIdentifierProviderFactory(),
 };
 const mediaProvider = storyMediaProviderFactory();
 
@@ -160,6 +167,7 @@ class Example extends Component<ExampleProps, ExampleState> {
           <button onClick={this.handleInsertNestedMacroClick}>
             Nested Extensions
           </button>
+          <button onClick={this.handleInsertDateClick}>Date</button>
         </fieldset>
         <Content>
           <EditorContext>
@@ -181,6 +189,7 @@ class Example extends Component<ExampleProps, ExampleState> {
                   allowPanel={true}
                   allowExtension={true}
                   allowConfluenceInlineComment={true}
+                  allowDate={true}
                   {...providers}
                   media={{ provider: mediaProvider, allowMediaSingle: true }}
                   // tslint:disable-next-line:jsx-no-lambda
@@ -232,6 +241,7 @@ class Example extends Component<ExampleProps, ExampleState> {
     this.setState({ input: BODIED_EXTENSION });
   private handleInsertNestedMacroClick = () =>
     this.setState({ input: BODIED_NESTED_EXTENSION });
+  private handleInsertDateClick = () => this.setState({ input: DATE });
 }
 
 export type ExampleWrapperProps = {};

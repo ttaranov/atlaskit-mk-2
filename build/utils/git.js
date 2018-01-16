@@ -21,8 +21,12 @@ async function getCommitsSince(ref) {
 }
 
 async function getChangedFilesSince(ref, fullPath = false) {
-  const gitCmd = await spawn('git', ['diff', '--name-only', `${ref}..HEAD`]);
-  const files = gitCmd.stdout.trim().split('\n');
+  // First we need to find the commit where we diverged from `ref` at using `git merge-base`
+  let cmd = await spawn('git', ['merge-base', ref, 'HEAD']);
+  const divergedAt = cmd.stdout.trim();
+  // Now we can find which files we added
+  cmd = await spawn('git', ['diff', '--name-only', divergedAt]);
+  const files = cmd.stdout.trim().split('\n');
   if (!fullPath) return files;
   return files.map(file => path.resolve(file));
 }
@@ -30,6 +34,11 @@ async function getChangedFilesSince(ref, fullPath = false) {
 async function getBranchName() {
   const gitCmd = await spawn('git', ['rev-parse', '--abrev-ref', 'HEAD']);
   return gitCmd.stdout.trim().split('\n');
+}
+
+async function getMasterRef() {
+  const gitCmd = await spawn('git', ['rev-parse', 'master']);
+  return gitCmd.stdout.trim().split('\n')[0];
 }
 
 async function add(pathToFile) {
@@ -49,7 +58,9 @@ async function push(args = []) {
 
 // used to create a single tag at a time for the current head only
 async function tag(tagStr) {
-  const gitCmd = await spawn('git', ['tag', tagStr]);
+  // NOTE: it's important we use the -m flag otherwise 'git push --follow-tags' wont actually push
+  // the tags
+  const gitCmd = await spawn('git', ['tag', tagStr, '-m', tagStr]);
   return gitCmd.code === 0;
 }
 
@@ -215,6 +226,7 @@ module.exports = {
   getCommitsSince,
   getChangedFilesSince,
   getBranchName,
+  getMasterRef,
   add,
   commit,
   push,

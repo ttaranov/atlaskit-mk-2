@@ -8,7 +8,7 @@ import {
 import {
   confluenceSchemaWithMediaSingle as schema,
   MediaAttributes,
-  MediaSingleLayout,
+  MediaSingleAttributes,
 } from '@atlaskit/editor-common';
 
 export { RefsNode, RefsTracker, Node };
@@ -45,8 +45,8 @@ export const confluenceJiraIssue = (attrs: {
 }) => schema.nodes.confluenceJiraIssue.create(attrs);
 export const mediaGroup = nodeFactory(schema.nodes.mediaGroup);
 export const mediaSingle = (
-  { layout }: { layout?: MediaSingleLayout } = { layout: 'center' },
-) => nodeFactory(schema.nodes.mediaSingle, { layout });
+  attrs: MediaSingleAttributes = { layout: 'center' },
+) => nodeFactory(schema.nodes.mediaSingle, attrs);
 export const media = (attrs: {
   id: string;
   type: 'file' | 'link';
@@ -135,3 +135,9 @@ export const emoji = (attrs: {
 }) => schema.nodes.emoji.create(attrs);
 export const confluenceInlineComment = (attrs: { reference: string }) =>
   markFactory(schema.marks.confluenceInlineComment, attrs ? attrs : {}, true);
+export const taskList = (attrs: { localId?: string } = {}) =>
+  nodeFactory(schema.nodes.taskList, attrs);
+export const taskItem = (attrs: { localId?: string; state?: string } = {}) =>
+  nodeFactory(schema.nodes.taskItem, attrs);
+export const date = (attrs: { timestamp: string | number }) =>
+  nodeFactory(schema.nodes.date, attrs)();

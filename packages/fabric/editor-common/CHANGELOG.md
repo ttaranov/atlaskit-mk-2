@@ -1,5 +1,40 @@
 # @atlaskit/editor-common
 
+## 5.7.0
+
+- [minor] Fixing JSON schema for block nesting. [92c8f93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92c8f93)
+
+## 5.6.0
+- [minor] added date plugin [f7b8a33](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7b8a33)
+
+## 5.5.1
+- [patch] Fix schema definition of mediaSingle node [ade0fc9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ade0fc9)
+
+## 5.5.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
+## 5.4.1
+- [patch] Use media-test-helpers instead of hardcoded values [f2b92f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f2b92f8)
+
+## 5.4.0
+
+## 5.3.0
+- [patch] Remove duplicate implementation of ProviderFactory from @atlaskit/editor-core, in favour of only one implementation in @atlaskit/editor-common [535cb8c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/535cb8c)
+- [minor] bump prosemirror-tables to 0.5.2 [32b6bbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/32b6bbe)
+- [patch] FS-1601 Don't use async/await in mention-with-providers to allow usage of synchronous promise by consumer [e464412](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e464412)
+- [minor] added tasks/actions to full-page editor [49d3343](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d3343)
+
+## 5.2.0
+
+## 5.1.10
+- [patch] We now use ProseMirror Schema to validate document [d059d6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d059d6a)
+
+## 5.1.9
+- [patch] Added floating toolbar to media single [46fdd15](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/46fdd15)
+
+## 5.1.8
+- [patch] Allow inline contents inside headings. [738631b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/738631b)
+
 ## 5.1.7
 
 - [patch] Updated media-card Appearance type to include "auto" [e1f8390](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e1f8390)

@@ -27,15 +27,14 @@ const imageUpload: EditorPlugin = {
     ];
   },
 
-  secondaryToolbarComponent(
-    editorView,
-    eventDispatcher,
-    providerFactory,
-    appearance,
-  ) {
+  secondaryToolbarComponent({ editorView }) {
     const imageUploadState = stateKey.getState(editorView.state);
     return (
-      <ToolbarImage editorView={editorView} pluginState={imageUploadState} />
+      <ToolbarImage
+        editorView={editorView}
+        pluginState={imageUploadState}
+        isReducedSpacing={true}
+      />
     );
   },
 };

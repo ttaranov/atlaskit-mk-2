@@ -1,5 +1,17 @@
 # @atlaskit/datetime-picker
 
+## 0.5.1
+
+## 0.5.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
+## 0.4.0
+- [minor] datetime picker will take full width if width is not passes [7a9add1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7a9add1)
+
+## 0.3.3
+
+- [patch] Update dependencies [623f8ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623f8ca)
+
 ## 0.3.2
 - [patch] calling onchange on hook when datepickers is set to empty state [9e288cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e288cc)
 

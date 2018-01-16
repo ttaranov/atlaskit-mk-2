@@ -16,6 +16,7 @@ import {
   code_block,
   code,
   thCursor,
+  strong,
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../src/utils';
 import { analyticsService } from '../../../src/analytics';
@@ -216,6 +217,26 @@ describe('table plugin', () => {
           tr(tdEmpty, tdEmpty, tdEmpty),
         );
         expect(editorView.state.doc).toEqualDocument(doc(tableNode));
+        editorView.destroy();
+      });
+    });
+
+    describe('when selection has a mark', () => {
+      it('it should create a new table and return true', () => {
+        const { editorView } = editor(doc(p(strong('text{<>}'))));
+        expect(
+          tableCommands.createTable()(editorView.state, editorView.dispatch),
+        ).toEqual(true);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            p(strong('text')),
+            table(
+              tr(thEmpty, thEmpty, thEmpty),
+              tr(tdEmpty, tdEmpty, tdEmpty),
+              tr(tdEmpty, tdEmpty, tdEmpty),
+            ),
+          ),
+        );
         editorView.destroy();
       });
     });

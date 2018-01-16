@@ -1,5 +1,6 @@
 import BulletListIcon from '@atlaskit/icon/glyph/editor/bullet-list';
 import NumberListIcon from '@atlaskit/icon/glyph/editor/number-list';
+import TaskIcon from '@atlaskit/icon/glyph/editor/task';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -9,17 +10,20 @@ import { toggleBulletList, toggleOrderedList, tooltip } from '../../keymaps';
 import { ListsState } from '../../plugins/lists';
 import { ListsState as FutureListsState } from '../../plugins/lists';
 import ToolbarButton from '../ToolbarButton';
-import EditorWidth from '../../utils/editor-width';
 import DropdownMenu from '../DropdownMenu';
 import { ButtonGroup, Separator, Wrapper, ExpandIconWrapper } from './styles';
+import { changeToTaskDecision } from '../../plugins/tasks-and-decisions/commands';
 
 export interface Props {
   editorView: EditorView;
   pluginState: ListsState | FutureListsState;
   disabled?: boolean;
-  editorWidth?: number;
+  isSmall?: boolean;
+  isSeparator?: boolean;
+  isReducedSpacing?: boolean;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  enableTaskToolbar?: boolean;
 }
 
 export interface State {
@@ -100,6 +104,17 @@ export default class ToolbarLists extends PureComponent<Props, State> {
       tooltipPosition: 'right',
       elemBefore: <NumberListIcon label="Ordered list" />,
     });
+    if (this.props.enableTaskToolbar) {
+      items.push({
+        content: 'Create action',
+        value: { name: 'action' },
+        isDisabled: false,
+        isActive: false,
+        tooltipDescription: 'Create action',
+        tooltipPosition: 'right',
+        elemBefore: <TaskIcon label="Create action" />,
+      });
+    }
     return [
       {
         items,
@@ -108,7 +123,13 @@ export default class ToolbarLists extends PureComponent<Props, State> {
   };
 
   render() {
-    const { editorWidth, disabled } = this.props;
+    const {
+      disabled,
+      isSmall,
+      isReducedSpacing,
+      isSeparator,
+      enableTaskToolbar,
+    } = this.props;
     const {
       bulletListActive,
       bulletListDisabled,
@@ -116,18 +137,12 @@ export default class ToolbarLists extends PureComponent<Props, State> {
       orderedListDisabled,
       isDropdownOpen,
     } = this.state;
-    if (!editorWidth || editorWidth > EditorWidth.BreakPoint9) {
+    if (!isSmall) {
       return (
-        <ButtonGroup
-          width={editorWidth! > EditorWidth.BreakPoint10 ? 'large' : 'small'}
-        >
+        <ButtonGroup width={isReducedSpacing ? 'small' : 'large'}>
           {this.state.bulletListHidden ? null : (
             <ToolbarButton
-              spacing={
-                editorWidth && editorWidth > EditorWidth.BreakPoint10
-                  ? 'default'
-                  : 'none'
-              }
+              spacing={isReducedSpacing ? 'none' : 'default'}
               onClick={this.handleBulletListClick}
               selected={bulletListActive}
               disabled={bulletListDisabled || disabled}
@@ -137,11 +152,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
           )}
           {this.state.orderedListHidden ? null : (
             <ToolbarButton
-              spacing={
-                editorWidth && editorWidth > EditorWidth.BreakPoint10
-                  ? 'default'
-                  : 'none'
-              }
+              spacing={isReducedSpacing ? 'none' : 'default'}
               onClick={this.handleOrderedListClick}
               selected={orderedListActive}
               disabled={orderedListDisabled || disabled}
@@ -149,7 +160,16 @@ export default class ToolbarLists extends PureComponent<Props, State> {
               iconBefore={<NumberListIcon label="Ordered list" />}
             />
           )}
-          <Separator />
+          {enableTaskToolbar && (
+            <ToolbarButton
+              spacing={isReducedSpacing ? 'none' : 'default'}
+              onClick={this.handleCreateAction}
+              disabled={disabled}
+              title="Create action ([])"
+              iconBefore={<TaskIcon label="Create action" />}
+            />
+          )}
+          {isSeparator && <Separator />}
         </ButtonGroup>
       );
     } else {
@@ -167,11 +187,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
             fitWidth={175}
           >
             <ToolbarButton
-              spacing={
-                editorWidth && editorWidth > EditorWidth.BreakPoint10
-                  ? 'default'
-                  : 'none'
-              }
+              spacing={isReducedSpacing ? 'none' : 'default'}
               selected={bulletListActive || orderedListActive}
               disabled={disabled}
               onClick={this.handleTriggerClick}
@@ -185,6 +201,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
               }
             />
           </DropdownMenu>
+          {isSeparator && <Separator />}
         </Wrapper>
       );
     }
@@ -242,6 +259,16 @@ export default class ToolbarLists extends PureComponent<Props, State> {
     return false;
   };
 
+  @analytics('atlassian.fabric.action.trigger.button')
+  private handleCreateAction = (): boolean => {
+    const { editorView } = this.props;
+    if (!editorView) {
+      return false;
+    }
+    changeToTaskDecision(editorView, 'taskList');
+    return true;
+  };
+
   private onItemActivated = ({ item }) => {
     this.setState({ isDropdownOpen: false });
     switch (item.value.name) {
@@ -250,6 +277,9 @@ export default class ToolbarLists extends PureComponent<Props, State> {
         break;
       case 'ordered_list':
         this.handleOrderedListClick();
+        break;
+      case 'action':
+        this.handleCreateAction();
         break;
     }
   };

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { macroProvider, extensionData } from '@atlaskit/editor-test-helpers';
 
-import ProviderFactory from '../../src/providerFactory';
 import Extension from '../../src/ui/Extension';
 import ExtensionComponent from '../../src/ui/Extension/ExtensionComponent';
 
@@ -27,8 +27,9 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
   });
 
   it('should pass macroProvider into ExtensionComponent', () => {
-    const providerFactory = new ProviderFactory();
-    providerFactory.setProvider('macroProvider', macroProviderPromise);
+    const providerFactory = ProviderFactory.create({
+      macroProvider: macroProviderPromise,
+    });
 
     const extension = mount(
       <Extension

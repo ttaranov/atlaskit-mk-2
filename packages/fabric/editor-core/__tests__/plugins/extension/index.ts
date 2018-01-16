@@ -1,4 +1,5 @@
 import { NodeSelection } from 'prosemirror-state';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   doc,
   makeEditor,
@@ -17,7 +18,6 @@ import createPlugin, {
   pluginKey,
   ExtensionState,
 } from '../../../src/editor/plugins/extension/plugin';
-import ProviderFactory from '../../../src/providerFactory';
 
 const macroProviderPromise = Promise.resolve(macroProvider);
 

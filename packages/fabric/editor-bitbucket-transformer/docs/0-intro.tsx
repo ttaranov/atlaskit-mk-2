@@ -23,5 +23,4 @@ export default md`
   // To convert HTML to editor content
   serializer.parse(html);
   ~~~
-
 `;

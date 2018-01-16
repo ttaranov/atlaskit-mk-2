@@ -1,5 +1,13 @@
 # @atlaskit/docs
 
+## 2.4.1
+
+## 2.4.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
+## 2.3.0
+- [minor] Added support for JSX Elements in default prop declarations [8030309](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8030309)
+
 ## 2.2.0
 - [minor] Props  component now understands how to parse members of the Array type [3eebe75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3eebe75)
 

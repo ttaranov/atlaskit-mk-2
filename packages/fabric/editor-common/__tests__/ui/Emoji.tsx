@@ -24,8 +24,7 @@ describe('Emoji', () => {
   });
 
   it('should still render resourced emoji if allowTextFallback=true', () => {
-    const providerFactory = new ProviderFactory();
-    providerFactory.setProvider('emojiProvider', emojiProvider);
+    const providerFactory = ProviderFactory.create({ emojiProvider });
 
     const component = mount(
       <Emoji
@@ -52,8 +51,7 @@ describe('Emoji', () => {
   });
 
   it('should render a EmojiWrapper component if emojiProvider supplied', () => {
-    const providerFactory = new ProviderFactory();
-    providerFactory.setProvider('emojiProvider', emojiProvider);
+    const providerFactory = ProviderFactory.create({ emojiProvider });
 
     const emojiId = {
       shortName: ':anything:',
@@ -70,8 +68,7 @@ describe('Emoji', () => {
   });
 
   it('should pass fitToHeight down to ResourcedEmoji if there is a provider', () => {
-    const providerFactory = new ProviderFactory();
-    providerFactory.setProvider('emojiProvider', emojiProvider);
+    const providerFactory = ProviderFactory.create({ emojiProvider });
 
     const emojiId = {
       shortName: ':anything:',

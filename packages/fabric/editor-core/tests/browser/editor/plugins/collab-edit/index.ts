@@ -5,7 +5,7 @@ import createEditor from '../../../../helpers/create-editor';
 import collabEdit, {
   pluginKey as collabEditPluginKey,
 } from '../../../../../src/editor/plugins/collab-edit';
-import ProviderFactory from '../../../../../src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { collabEditProvider } from '../../../../../example-helpers/mock-collab-provider';
 import { findPointers } from '../../../../../src/editor/plugins/collab-edit/utils';
 

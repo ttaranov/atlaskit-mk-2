@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import AkAvatar from '@atlaskit/avatar';
 import AkComment, {
@@ -9,71 +8,58 @@ import AkComment, {
 } from '@atlaskit/comment';
 import { ReactRenderer } from '@atlaskit/renderer';
 import Editor from './Editor';
-import { ResourceProvider } from '../api/ConversationResource';
-import { Comment as CommentType } from '../model';
+import { Comment as CommentType, User } from '../model';
+import CommentContainer from '../containers/Comment';
 
 export interface Props {
   conversationId: string;
   comment: CommentType;
+  comments?: CommentType[];
+  user?: User;
+
+  // Dispatch
+  onAddComment?: (conversationId: string, parentId: string, value: any) => void;
+  onUpdateComment?: (
+    conversationId: string,
+    commentId: string,
+    value: any,
+  ) => void;
+  onDeleteComment?: (conversationId: string, commentId: string) => void;
 }
 
 export interface State {
-  comment: CommentType;
   isEditing?: boolean;
   isReplying?: boolean;
 }
 
+export const DeletedMessage = () => <em>Comment deleted by the author</em>;
+
 export default class Comment extends React.PureComponent<Props, State> {
-  context: { userId: string; provider: ResourceProvider };
-
-  static contextTypes = {
-    userId: PropTypes.string,
-    provider: PropTypes.object,
-  };
-
   constructor(props) {
     super(props);
 
     this.state = {
-      comment: props.comment,
+      isEditing: false,
     };
   }
-
-  private onEdit = () => {
-    this.setState({
-      isEditing: true,
-    });
-  };
-
-  private onCancelEdit = () => {
-    this.setState({
-      isEditing: false,
-    });
-  };
-
-  private onSaveEdit = async (value: any) => {
-    const { provider } = this.context;
-    const { comment: { id }, conversationId } = this.props;
-
-    const { document } = await provider.updateComment(
-      conversationId,
-      id,
-      value,
-    );
-
-    this.setState((state: State) => {
-      const { comment } = state;
-      comment.document = document;
-      return {
-        comment,
-        isEditing: false,
-      };
-    });
-  };
 
   private onReply = () => {
     this.setState({
       isReplying: true,
+    });
+  };
+
+  private onSaveReply = async (value: any) => {
+    const { conversationId, comment, onAddComment } = this.props;
+
+    if (!onAddComment) {
+      return;
+    }
+
+    onAddComment(conversationId, comment.commentId, value);
+
+    this.setState({
+      isReplying: false,
     });
   };
 
@@ -83,92 +69,124 @@ export default class Comment extends React.PureComponent<Props, State> {
     });
   };
 
-  private onSaveReply = async (value: any) => {
-    const { provider } = this.context;
-    const { comment: { id }, conversationId } = this.props;
-    const newComment = await provider.addComment(conversationId, id, value);
+  private onDelete = () => {
+    const { onDeleteComment, conversationId, comment } = this.props;
 
-    this.setState((state: State) => {
-      const { comment } = state;
-      comment.children = [...(comment.children || []), newComment];
-      return {
-        comment,
-        isReplying: false,
-      };
+    if (!onDeleteComment) {
+      return;
+    }
+
+    onDeleteComment(conversationId, comment.commentId);
+  };
+
+  private onEdit = () => {
+    this.setState({
+      isEditing: true,
+    });
+  };
+
+  private onSaveEdit = async (value: any) => {
+    const { conversationId, comment, onUpdateComment } = this.props;
+
+    if (!onUpdateComment) {
+      return;
+    }
+
+    onUpdateComment(conversationId, comment.commentId, value);
+
+    this.setState({
+      isEditing: false,
+    });
+  };
+
+  private onCancelEdit = () => {
+    this.setState({
+      isEditing: false,
     });
   };
 
   private getContent() {
-    const { comment, isEditing } = this.state;
+    const { comment } = this.props;
+    const { isEditing } = this.state;
+
+    if (comment.deleted) {
+      return <DeletedMessage />;
+    }
 
     if (isEditing) {
       return (
         <Editor
-          defaultValue={comment.document}
+          defaultValue={comment.document.adf}
           isExpanded={true}
+          isEditing={isEditing}
           onSave={this.onSaveEdit}
           onCancel={this.onCancelEdit}
         />
       );
     }
 
-    return <ReactRenderer document={comment.document} />;
+    return <ReactRenderer document={comment.document.adf} />;
   }
 
   render() {
-    const { userId } = this.context;
-    const { conversationId } = this.props;
-    const { comment, isReplying } = this.state;
+    const { conversationId, comment, comments, user } = this.props;
+    const { isReplying, isEditing } = this.state;
     const { createdBy } = comment;
+    let actions;
 
-    let actions = [
-      <CommentAction key="reply" onClick={this.onReply}>
-        Reply
-      </CommentAction>,
-    ];
-
-    if (createdBy && userId === createdBy.id) {
+    if (!isEditing && !comment.deleted) {
       actions = [
-        ...actions,
-        <CommentAction key="edit" onClick={this.onEdit}>
-          Edit
+        <CommentAction key="reply" onClick={this.onReply}>
+          Reply
         </CommentAction>,
       ];
+
+      if (createdBy && user && user.id === createdBy.id) {
+        actions = [
+          ...actions,
+          <CommentAction key="edit" onClick={this.onEdit}>
+            Edit
+          </CommentAction>,
+          <CommentAction key="delete" onClick={this.onDelete}>
+            Delete
+          </CommentAction>,
+        ];
+      }
     }
 
-    const { children } = comment;
-
     return (
-      <div>
-        <AkComment
-          author={<CommentAuthor>{createdBy && createdBy.name}</CommentAuthor>}
-          avatar={<AkAvatar src={createdBy && createdBy.avatarUrl} />}
-          time={
-            <CommentTime>
-              {distanceInWordsToNow(new Date(comment.createdAt), {
-                addSuffix: true,
-              })}
-            </CommentTime>
-          }
-          actions={actions}
-          content={this.getContent()}
-        >
-          {(children || []).map(child => (
-            <Comment
-              key={child.id}
-              comment={child}
-              conversationId={conversationId}
-            />
-          ))}
-          {isReplying && (
-            <Editor
-              isExpanded={true}
-              onCancel={this.onCancelReply}
-              onSave={this.onSaveReply}
-            />
-          )}
-        </AkComment>
-      </div>
+      <AkComment
+        author={<CommentAuthor>{createdBy && createdBy.name}</CommentAuthor>}
+        avatar={<AkAvatar src={createdBy && createdBy.avatarUrl} />}
+        time={
+          <CommentTime>
+            {distanceInWordsToNow(new Date(comment.createdAt), {
+              addSuffix: true,
+            })}
+          </CommentTime>
+        }
+        actions={actions}
+        content={this.getContent()}
+      >
+        {(comments || []).map(child => (
+          <CommentContainer
+            key={child.commentId}
+            comment={child}
+            user={user}
+            conversationId={conversationId}
+            onAddComment={this.props.onAddComment}
+            onUpdateComment={this.props.onUpdateComment}
+            onDeleteComment={this.props.onDeleteComment}
+          />
+        ))}
+        {isReplying && (
+          <Editor
+            isExpanded={true}
+            onCancel={this.onCancelReply}
+            onSave={this.onSaveReply}
+          />
+        )}
+      </AkComment>
     );
   }
 }

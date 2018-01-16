@@ -13,7 +13,7 @@ import {
 describe('Widgets', () => {
   it('should render zero details as null', () => {
     const element = shallow(<Widgets details={[]} />);
-    expect(element.getNode()).toBeNull();
+    expect(element.getElement()).toBeNull();
   });
 
   it('should render a title and some text', () => {

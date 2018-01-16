@@ -24,7 +24,6 @@ export interface Props {
 export default class Extension extends Component<Props, any> {
   render() {
     const {
-      macroProvider,
       node,
       onClick,
       handleContentDOMRef,
@@ -32,18 +31,8 @@ export default class Extension extends Component<Props, any> {
     } = this.props;
     const { extensionKey } = node.attrs;
 
-    let placeholderUrl;
-    let placeholderFallbackUrl;
-
-    if (macroProvider) {
-      const { config: { placeholderBaseUrl } } = macroProvider;
-      const imageUrl = getPlaceholderUrl({ node, type: 'image' });
-      const iconUrl = getPlaceholderUrl({ node, type: 'icon' });
-      placeholderUrl = imageUrl ? `${placeholderBaseUrl}${imageUrl}` : null;
-      placeholderFallbackUrl = iconUrl
-        ? `${placeholderBaseUrl}${iconUrl}`
-        : null;
-    }
+    const placeholderUrl = getPlaceholderUrl({ node, type: 'image' });
+    const placeholderFallbackUrl = getPlaceholderUrl({ node, type: 'icon' });
 
     const hasBody = node.type.name === 'bodiedExtension';
 
@@ -69,7 +58,7 @@ export default class Extension extends Component<Props, any> {
     );
   }
 
-  private renderPlaceholderFallback = (placeholderUrl: string) => {
+  private renderPlaceholderFallback = (placeholderUrl?: string) => {
     const { parameters, extensionKey } = this.props.node.attrs;
     const params =
       parameters && parameters.macroParams ? parameters.macroParams : null;

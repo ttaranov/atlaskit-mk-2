@@ -1,5 +1,8 @@
 # @atlaskit/analytics
 
+## 2.4.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
 ## 2.3.5
 - [patch] Added type fields to analytics package.json [286cfc4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/286cfc4)
 

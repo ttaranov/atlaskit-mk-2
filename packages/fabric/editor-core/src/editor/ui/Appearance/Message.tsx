@@ -65,7 +65,7 @@ const MessageEditor: any = styled.div`
 
 // tslint:disable-next-line:variable-name
 const ContentArea = styled(ContentStyles)`
-  padding: 4px 16px 4px 8px;
+  padding: 6px 16px 4px 8px;
   flex-grow: 1;
   overflow-x: hidden;
   overflow-y: auto;
@@ -74,7 +74,7 @@ const ContentArea = styled(ContentStyles)`
 // tslint:disable-next-line:variable-name
 const SecondaryToolbarContainer = styled.div`
   padding: 2px 4px 0 0;
-  margin-bottom: -2px;
+  margin-bottom: -1px;
   box-sizing: border-box;
   justify-content: flex-end;
   align-items: flex-end;
@@ -126,7 +126,7 @@ export default class Editor extends React.Component<
         <ContentArea innerRef={this.handleRef}>
           {customContentComponents}
           <PluginSlot
-            disabled={disabled}
+            disabled={!!disabled}
             editorView={editorView}
             eventDispatcher={eventDispatcher}
             providerFactory={providerFactory}
@@ -138,7 +138,7 @@ export default class Editor extends React.Component<
         </ContentArea>
         <SecondaryToolbarContainer>
           <PluginSlot
-            disabled={disabled}
+            disabled={disabled || maxContentSizeReached}
             editorView={editorView}
             eventDispatcher={eventDispatcher}
             providerFactory={providerFactory}
@@ -148,7 +148,10 @@ export default class Editor extends React.Component<
             popupsBoundariesElement={popupsBoundariesElement}
           />
           {customSecondaryToolbarComponents}
-          <AddonToolbar dropdownItems={addonToolbarComponents} />
+          <AddonToolbar
+            dropdownItems={addonToolbarComponents}
+            isReducedSpacing={true}
+          />
         </SecondaryToolbarContainer>
       </MessageEditor>
     );

@@ -47,7 +47,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
       <PanelEdit pluginState={pluginState} editorView={editorView} />,
     );
     panelEditOptions.setState({ toolbarVisible: true });
-    expect(panelEditOptions.find(ToolbarButton).length).toEqual(4);
+    expect(panelEditOptions.find(ToolbarButton).length).toEqual(5);
   });
 
   it('should set toolbarVisible to true when panel is clicked', () => {
@@ -110,14 +110,13 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
       plugin.props.handleClick!(editorView, sel, event);
       trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
+      toolbarOption.update();
     });
     afterEach(() => {
       toolbarOption.unmount();
     });
     ['info', 'note', 'tip', 'warning'].forEach((panelType, index) => {
-      it(`should trigger analyticsService.trackEvent when ${
-        panelType
-      } button is clicked`, () => {
+      it(`should trigger analyticsService.trackEvent when ${panelType} button is clicked`, () => {
         toolbarOption
           .find(AkButton)
           .at(index)

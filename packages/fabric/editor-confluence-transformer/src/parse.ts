@@ -5,6 +5,7 @@ import {
   MediaType,
   acNameToEmoji,
   acShortcutToEmoji,
+  parseDate,
 } from '@atlaskit/editor-common';
 import { Fragment, Node as PMNode, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
@@ -31,7 +32,7 @@ import {
   docContentWrapper,
 } from './content-wrapper';
 
-const supportedSingleMediaLayouts = ['center'];
+const supportedSingleMediaLayouts = ['center', 'wrap-left', 'wrap-right'];
 
 const convertedNodes = new WeakMap<Node, Fragment | PMNode>();
 // This reverted mapping is used to map Unsupported Node back to it's original cxhtml
@@ -344,6 +345,9 @@ function converter(
           schema.marks.confluenceInlineComment.create(attrs),
         ]);
 
+      case 'AC:TASK-LIST':
+        return convertTaskList(schema, node) || unsupportedInline;
+
       case 'PRE':
         return schema.nodes.codeBlock.create(
           { language: null },
@@ -357,7 +361,14 @@ function converter(
           return convertTable(schema, node);
         }
         return unsupportedInline;
-
+      case 'TIME':
+        const iso = node.getAttribute('datetime');
+        if (iso) {
+          const date = parseDate(iso);
+          const timestamp = date.valueOf();
+          return schema.nodes.date.create({ timestamp });
+        }
+        return unsupportedInline;
       case 'DIV':
         if (hasClass(node, 'codeHeader')) {
           const codeHeader = schema.text(node.textContent || '', [
@@ -564,4 +575,46 @@ function convertTable(schema: Schema, node: Element) {
     rowNodes.push(tableRow.create(undefined, Fragment.from(cellNodes)));
   }
   return table.create(undefined, Fragment.from(rowNodes));
+}
+
+function convertTaskList(schema: Schema, node: Element) {
+  const nodes: PMNode[] = [];
+
+  for (let i = 0, count = node.childNodes.length; i < count; i++) {
+    const child = node.childNodes[i] as Element;
+    if (child.nodeName.toLowerCase() === 'ac:task') {
+      nodes.push(convertTaskItem(schema, child));
+    }
+  }
+
+  return nodes.length ? schema.nodes.taskList.createChecked({}, nodes) : null;
+}
+
+function convertTaskItem(schema: Schema, node: Element) {
+  const id = getAcTagNode(node, 'ac:task-id');
+  const status = getAcTagNode(node, 'ac:task-status');
+  const body = getAcTagNode(node, 'ac:task-body');
+  const nodes: PMNode[] = [];
+
+  if (body) {
+    const { content } = parseDomNode(schema, body);
+    content.forEach(child => {
+      child.descendants(node => {
+        // only nested inline nodes are supported (for now)
+        if (node.isInline) {
+          nodes.push(node);
+        }
+      });
+    });
+  }
+
+  const attrs = {};
+  if (id) {
+    attrs['localId'] = id.textContent;
+  }
+  if (status) {
+    attrs['state'] = status.textContent === 'complete' ? 'DONE' : 'TODO';
+  }
+
+  return schema.nodes.taskItem.createChecked(attrs, nodes);
 }
