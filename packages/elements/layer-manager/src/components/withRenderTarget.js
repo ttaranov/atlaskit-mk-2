@@ -38,14 +38,13 @@ export default function withRenderTarget(
     render() {
       const { gatewayRegistry, ...analyticsContext } = this.context;
       const GatewayOrPortal = gatewayRegistry ? Gateway : Portal;
-      const shouldBlockRender = this.context.blockChildGatewayRender === true;
 
       return (
         <GatewayOrPortal
           id={process.env.NODE_ENV === 'test' ? 'gateway-or-portal' : ''}
           into={target}
           withTransitionGroup={withTransitionGroup}
-          shouldBlockRender={shouldBlockRender}
+          shouldBlockRender={this.context.blockChildGatewayRender}
         >
           <ContextProvider {...analyticsContext}>
             <WrappedComponent
