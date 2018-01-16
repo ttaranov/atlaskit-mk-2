@@ -60,14 +60,12 @@ export class MediaFileListViewer extends Component<
   }
 
   componentDidMount(): void {
-    const { context, selectedItem, list, collectionName, onClose } = this.props;
+    const { context, selectedItem, list, collectionName } = this.props;
     const { config } = context;
     const { serviceHost } = config;
     const { mediaViewer } = this.state;
 
-    if (onClose) {
-      mediaViewer.on('fv.close', onClose);
-    }
+    mediaViewer.on('fv.close', this.onClose);
 
     const filesToProcess = list.filter(item => item.type === 'file'); // for now we only support files
 
@@ -102,18 +100,26 @@ export class MediaFileListViewer extends Component<
   }
 
   componentWillUnmount(): void {
-    const { onClose } = this.props;
     const { mediaViewer, subscription } = this.state;
-
     if (subscription) {
       subscription.unsubscribe();
     }
-    if (onClose) {
-      mediaViewer.off('fv.close', onClose);
-    }
+    mediaViewer.off('fv.close', this.onClose);
   }
 
   render(): JSX.Element {
     return <div />;
   }
+
+  private onClose = () => {
+    const { onClose } = this.props;
+    const { subscription } = this.state;
+    if (subscription) {
+      subscription.unsubscribe();
+    }
+    if (onClose) {
+      onClose();
+    }
+  }
+
 }

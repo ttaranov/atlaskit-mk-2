@@ -65,15 +65,12 @@ export class MediaCollectionViewer extends Component<
   }
 
   componentDidMount(): void {
-    const { context, selectedItem, onClose } = this.props;
+    const { context, selectedItem } = this.props;
     const { config } = context;
     const { serviceHost } = config;
     const { mediaViewer, provider } = this.state;
 
-    if (onClose) {
-      mediaViewer.on('fv.close', onClose);
-    }
-
+    mediaViewer.on('fv.close', this.onClose);
     mediaViewer.on('fv.changeFile', this.loadNextPageIfRequired);
 
     this.subscription = provider.observable().subscribe({
@@ -98,18 +95,22 @@ export class MediaCollectionViewer extends Component<
   }
 
   componentWillUnmount(): void {
-    const { onClose } = this.props;
     const { mediaViewer } = this.state;
-
     this.subscription.unsubscribe();
-    if (onClose) {
-      mediaViewer.off('fv.close', onClose);
-    }
+    mediaViewer.off('fv.close', this.onClose);
     mediaViewer.off('fv.changeFile', this.loadNextPageIfRequired);
   }
 
   render(): JSX.Element {
     return <div />;
+  }
+
+  private onClose = () => {
+    const { onClose } = this.props;
+    this.subscription.unsubscribe();
+    if (onClose) {
+      onClose();
+    }
   }
 
   private loadNextPageIfRequired = () => {
