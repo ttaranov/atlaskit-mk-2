@@ -58,7 +58,6 @@ export default class Chevron extends PureComponent<Props, State> {
         {hasChildren && (
           <button
             type={'button'}
-            aria-expanded={isExpanded}
             aria-controls={ariaControls}
             onClick={this.handleClick}
             onFocus={this.handleFocus}

@@ -73,8 +73,12 @@ export default class Row extends PureComponent<Props> {
   }
 
   render() {
+    const { hasChildren, isExpanded } = this.props;
+    const childrenContainerAttrs = hasChildren
+      ? { 'aria-expanded': isExpanded }
+      : {};
     return (
-      <TreeRowContainer>
+      <TreeRowContainer role={'row'} {...childrenContainerAttrs}>
         {React.Children.map(this.props.children, (cell, index) =>
           this.renderCell(cell, index),
         )}

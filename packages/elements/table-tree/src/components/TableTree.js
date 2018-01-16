@@ -109,7 +109,7 @@ export default class TableTree extends Component<Props, State> {
       );
     }
     return (
-      <TableTreeContainer>
+      <TableTreeContainer role={'treegrid'}>
         {heads}
         {rows}
         {this.props.children}

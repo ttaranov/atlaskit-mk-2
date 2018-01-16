@@ -90,8 +90,11 @@ export default class Items extends PureComponent<Props, State> {
 
   render() {
     const { isLoaderShown } = this.state;
+    const busyAttrs = isLoaderShown ? { 'aria-busy': true } : {};
     return (
-      <div>{isLoaderShown ? this.renderLoader() : this.renderItems()}</div>
+      <div role={'rowgroup'} {...busyAttrs}>
+        {isLoaderShown ? this.renderLoader() : this.renderItems()}
+      </div>
     );
   }
 }
