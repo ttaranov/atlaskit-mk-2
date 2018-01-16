@@ -1,3 +1,4 @@
+// @flow
 import { shallow } from 'enzyme';
 import * as React from 'react';
 import CodeBlock from '../src/CodeBlock';

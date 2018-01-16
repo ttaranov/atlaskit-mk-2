@@ -1,4 +1,5 @@
-import * as React from 'react';
+// @flow
+import React from 'react';
 import { AkCode } from '../src';
 
 const exampleInlineCode = `const map = new Map({ key: 'value' })`;

@@ -1,30 +1,22 @@
-import * as React from 'react';
-import { PureComponent } from 'react';
-import * as PropTypes from 'prop-types';
+// @flow
+import React, { PureComponent } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { normalizeLanguage, languageList } from './supportedLanguages';
-import { Theme, applyTheme } from './themes/themeBuilder';
+import { normalizeLanguage } from './supportedLanguages';
+import { type Theme, applyTheme } from './themes/themeBuilder';
 
-export interface CodeBlockProps {
+type CodeBlockProps = {
   /** The code to be formatted */
-  text: string;
+  text: string,
   /** The language in which the code is written */
-  language?: string;
+  language?: string,
   /** Indicates whether or not to show line numbers */
-  showLineNumbers?: boolean;
+  showLineNumbers?: boolean,
   /** A custom theme to be applied, implements the Theme interface */
-  theme?: Theme;
-}
+  theme?: Theme,
+};
 
 export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
   static displayName = 'CodeBlock';
-
-  static propTypes = {
-    text: PropTypes.string.isRequired,
-    language: PropTypes.oneOf(languageList),
-    showLineNumbers: PropTypes.bool,
-    theme: PropTypes.object,
-  };
 
   static defaultProps = {
     showLineNumbers: true,
@@ -32,7 +24,7 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
     theme: {},
   };
 
-  handleCopy(event: any) {
+  handleCopy = (event: any) => {
     /**
      * We don't want to copy the markup after highlighting, but rather the preformatted text in the selection
      */
@@ -40,14 +32,12 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
     if (data) {
       event.preventDefault();
       const selectedText = window.getSelection().toString();
-      const document = `<!doctype html><html><head></head><body><pre>${
-        selectedText
-      }</pre></body></html>`;
+      const document = `<!doctype html><html><head></head><body><pre>${selectedText}</pre></body></html>`;
       data.clearData();
       data.setData('text/html', document);
       data.setData('text/plain', selectedText);
     }
-  }
+  };
 
   render() {
     const { language } = this.props;
@@ -61,7 +51,7 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
       style: codeBlockStyle,
       showLineNumbers: this.props.showLineNumbers,
       PreTag: 'span',
-      codeTagProps: { style: codeContainerStyle } as HTMLElement,
+      codeTagProps: { style: codeContainerStyle },
       lineNumberContainerStyle,
     };
     const codeText = this.props.text.toString();
