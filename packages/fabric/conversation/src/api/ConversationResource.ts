@@ -16,12 +16,6 @@ export interface ConversationResourceConfig {
   user?: User;
 }
 
-export interface DeletedComment {
-  conversationId: string;
-  commentId: string;
-  deleted: boolean;
-}
-
 export interface ResourceProvider {
   getConversations(containerId: string): Promise<Conversation[]>;
   create(
@@ -43,7 +37,7 @@ export interface ResourceProvider {
   deleteComment(
     conversationId: string,
     commentId: string,
-  ): Promise<DeletedComment>;
+  ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'deleted'>>;
   updateUser(user: User): Promise<User>;
 }
 
@@ -109,7 +103,7 @@ export class AbstractConversationResource implements ResourceProvider {
   async deleteComment(
     conversationId: string,
     commentId: string,
-  ): Promise<DeletedComment> {
+  ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'deleted'>> {
     return Promise.reject('Not implemented');
   }
 
@@ -273,8 +267,8 @@ export class ConversationResource extends AbstractConversationResource {
   async deleteComment(
     conversationId: string,
     commentId: string,
-  ): Promise<DeletedComment> {
-    await this.makeRequest<Comment>(
+  ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'deleted'>> {
+    await this.makeRequest<{}>(
       `/conversation/${conversationId}/comment/${commentId}`,
       {
         method: 'DELETE',
