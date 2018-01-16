@@ -64,7 +64,7 @@ const LogWrapper = styled.div`
 
 type HeaderProps = {
   isInvalid: boolean,
-  onChange: (event: KeyboardEvent) => mixed,
+  onChange: (event: SyntheticEvent<HTMLInputElement>) => mixed,
   onClose: () => mixed,
   showKeyline: boolean,
   value: string,
@@ -131,7 +131,7 @@ export default class ExamplesModal extends Component<Props, State> {
       });
   }
 
-  handleChange = (event: KeyboardEvent) => {
+  handleChange = (event: SyntheticEvent<HTMLInputElement>) => {
     const { groupId, pkgId } = this.props.match.params;
     const { target } = event;
 
