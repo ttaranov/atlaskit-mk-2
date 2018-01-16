@@ -13,7 +13,7 @@ import {
 import { CenterView } from '../styles';
 import {
   ErrorPopup,
-  ErrorIcon,
+  ErrorIconWrapper,
   ErrorMessage,
   ErrorHint,
   ErrorButton,
@@ -42,7 +42,7 @@ export class ErrorView extends Component<ErrorViewProps> {
     return (
       <CenterView>
         <ErrorPopup>
-          <ErrorIcon src={errorIcon} />
+          <ErrorIconWrapper>{errorIcon}</ErrorIconWrapper>
           <ErrorMessage>{this.props.message}</ErrorMessage>
           <ErrorHint>{this.renderHint()}</ErrorHint>
           {this.renderTryAgainButton()}

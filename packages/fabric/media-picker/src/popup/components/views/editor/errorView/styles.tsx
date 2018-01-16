@@ -18,7 +18,7 @@ export const ErrorPopup = styled.div`
   flex-direction: column;
 `;
 
-export const ErrorIcon = styled.img`
+export const ErrorIconWrapper = styled.div`
   width: 92px;
 `;
 

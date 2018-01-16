@@ -51,22 +51,16 @@ export interface OptionsIconWrapperProps {
 
 export const OptionsIconWrapper = styled.div`
   position: absolute;
-  width: 4px;
-  height: 4px;
-  right: 4px;
-  bottom: 4px;
+  right: -7px;
+  bottom: -10px;
 
   color: ${({ isActive }: OptionsIconWrapperProps) =>
     isActive ? optionsColorActive : optionsColorNormal};
-
-  svg {
-    transform: translateY(-9px);
-  }
 `;
 
 export const ColorSample = styled.div`
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border-radius: 3px;
   border-style: solid;
   border-width: 1px;
