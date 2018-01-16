@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
-import { expect } from 'chai';
 import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
 
 import { MentionDescription } from '../../../src/types';
@@ -34,12 +33,12 @@ function setupMentionItem(
 describe('MentionItem', () => {
   it('should display @-nickname if nickname is present', () => {
     const component = setupMentionItem(mentionWithNickname);
-    expect(component.html()).contains(`@${mentionWithNickname.nickname}`);
+    expect(component.html()).toContain(`@${mentionWithNickname.nickname}`);
   });
 
   it('should not display @-name if nickname is not present', () => {
     const component = setupMentionItem(mentionWithoutNickname);
-    expect(component.html()).to.not.contains('@');
+    expect(component.html()).not.toContain('@');
   });
 
   it('should display access restriction if accessLevel is not CONTAINER', () => {
@@ -50,7 +49,7 @@ describe('MentionItem', () => {
       avatarUrl: '',
       accessLevel: 'SITE',
     });
-    expect(component.find(LockCircleIcon).length).to.equal(1);
+    expect(component.find(LockCircleIcon)).toHaveLength(1);
   });
 
   it('should not display access restriction if accessLevel is CONTAINER', () => {
@@ -61,7 +60,7 @@ describe('MentionItem', () => {
       avatarUrl: '',
       accessLevel: 'CONTAINER',
     });
-    expect(component.find(LockCircleIcon).length).to.equal(0);
+    expect(component.find(LockCircleIcon)).toHaveLength(0);
   });
 
   it('should not display access restriction if no accessLevel data', () => {
@@ -71,6 +70,6 @@ describe('MentionItem', () => {
       mentionName: 'Fidela',
       avatarUrl: '',
     });
-    expect(component.find(LockCircleIcon).length).to.equal(0);
+    expect(component.find(LockCircleIcon)).toHaveLength(0);
   });
 });

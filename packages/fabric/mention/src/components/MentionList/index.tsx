@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MouseEvent } from '@types/react';
+import { MouseEvent } from 'react';
 import { PureComponent } from 'react';
 
 import { MentionListStyle } from './styles';

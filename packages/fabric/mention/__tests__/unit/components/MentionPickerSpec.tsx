@@ -1,8 +1,6 @@
 import { waitUntil } from '@atlaskit/util-common-test';
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { expect } from 'chai';
-import * as sinon from 'sinon';
 
 import { MentionDescription } from '../../../src/types';
 import mentionData from '../../../src/support/mention-data';
@@ -40,26 +38,33 @@ function createDefaultMentionItemsShowTest(
   mentionsComponent: ReactWrapper<Props, State>,
 ) {
   return () =>
+    mentionsComponent.update() &&
     mentionsComponent.find(MentionItem).length === MAX_NOTIFIED_ITEMS;
 }
 
 function createNoMentionItemsShownTest(
   mentionsComponent: ReactWrapper<Props, State>,
 ) {
-  return () => mentionsComponent.find(MentionItem).length === 0;
+  return () =>
+    mentionsComponent.update() &&
+    mentionsComponent.find(MentionItem).length === 0;
 }
 
 function createMentionErrorShownTest(
   mentionsComponent: ReactWrapper<Props, State>,
 ) {
-  return () => mentionsComponent.find(MentionListError).length > 0;
+  return () =>
+    mentionsComponent.update() &&
+    mentionsComponent.find(MentionListError).length > 0;
 }
 
 describe('MentionPicker', () => {
   it('should accept all mention names by default', () => {
     const component = setupPicker();
     const hasExpectedItems = () =>
+      component.update() &&
       component.find(MentionItem).length === MAX_NOTIFIED_ITEMS;
+
     return waitUntil(hasExpectedItems);
   });
 
@@ -67,7 +72,8 @@ describe('MentionPicker', () => {
     const component = setupPicker({
       query: 's',
     } as Props);
-    const hasExpectedItems = () => component.find(MentionItem).length === 5;
+    const hasExpectedItems = () =>
+      component.update() && component.find(MentionItem).length === 5;
     return waitUntil(hasExpectedItems);
   });
 
@@ -75,7 +81,8 @@ describe('MentionPicker', () => {
     const component = setupPicker({
       query: 'shae',
     } as Props);
-    const hasExpectedItems = () => component.find(MentionItem).length === 1;
+    const hasExpectedItems = () =>
+      component.update() && component.find(MentionItem).length === 1;
     return waitUntil(hasExpectedItems);
   });
 
@@ -106,8 +113,8 @@ describe('MentionPicker', () => {
         return waitUntil(createMentionErrorShownTest(component)).then(() => {
           let errorMention = component.find(MentionListError);
           let err = errorMention.prop('error') as HttpError;
-          expect(err.statusCode).to.equal(401);
-          expect(errorMention.text()).to.contain('logging out');
+          expect(err.statusCode).toEqual(401);
+          expect(errorMention.text()).toContain('logging out');
         });
       });
   });
@@ -125,8 +132,8 @@ describe('MentionPicker', () => {
         return waitUntil(createMentionErrorShownTest(component)).then(() => {
           let errorMention = component.find(MentionListError);
           let err = errorMention.prop('error') as HttpError;
-          expect(err.statusCode).to.equal(403);
-          expect(errorMention.text()).to.contain('different text');
+          expect(err.statusCode).toEqual(403);
+          expect(errorMention.text()).toContain('different text');
         });
       });
   });
@@ -137,6 +144,7 @@ describe('MentionPicker', () => {
       component,
     );
     const mentionErrorProcessed = () => {
+      component.update();
       const mentionList = component.find(MentionList);
       return mentionList.prop('resourceError');
     };
@@ -157,6 +165,7 @@ describe('MentionPicker', () => {
     return waitUntil(createDefaultMentionItemsShowTest(component)).then(() => {
       const mentionPicker = component.instance() as MentionPicker;
       mentionPicker.selectNext();
+      component.update();
       return waitUntil(secondItemSelected);
     });
   });
@@ -169,6 +178,7 @@ describe('MentionPicker', () => {
     return waitUntil(createDefaultMentionItemsShowTest(component)).then(() => {
       const mentionPicker = component.instance() as MentionPicker;
       mentionPicker.selectIndex(2);
+      component.update();
       return waitUntil(thirdItemSelected);
     });
   });
@@ -181,6 +191,7 @@ describe('MentionPicker', () => {
     return waitUntil(createDefaultMentionItemsShowTest(component)).then(() => {
       const mentionPicker = component.instance() as MentionPicker;
       mentionPicker.selectId(mentions[2].id);
+      component.update();
       return waitUntil(thirdItemSelected);
     });
   });
@@ -193,6 +204,7 @@ describe('MentionPicker', () => {
     return waitUntil(createDefaultMentionItemsShowTest(component)).then(() => {
       const mentionPicker = component.instance() as MentionPicker;
       mentionPicker.selectPrevious();
+      component.update();
       return waitUntil(lastItemSelected);
     });
   });
@@ -214,11 +226,13 @@ describe('MentionPicker', () => {
       .then(() => {
         const mentionPicker = component.instance() as MentionPicker;
         mentionPicker.selectNext();
+        component.update();
         return waitUntil(secondItemSelected);
       })
       .then(() => {
         const mentionPicker = component.instance() as MentionPicker;
         mentionPicker.chooseCurrentSelection();
+        component.update();
         return waitUntil(chooseSecondItem);
       });
   });
@@ -242,8 +256,8 @@ describe('MentionPicker', () => {
   });
 
   it('should fire onOpen when first result shown', () => {
-    const onOpen = sinon.spy();
-    const onClose = sinon.spy();
+    const onOpen = jest.fn();
+    const onClose = jest.fn();
 
     const component = setupPicker({
       onOpen: onOpen as OnOpen,
@@ -251,37 +265,38 @@ describe('MentionPicker', () => {
     } as Props);
 
     return waitUntil(createDefaultMentionItemsShowTest(component)).then(() => {
-      expect(onOpen.callCount, 'opened').to.equal(1);
-      expect(onClose.callCount, 'closed').to.equal(0);
+      expect(onOpen).toHaveBeenCalledTimes(1);
+      expect(onClose).toHaveBeenCalledTimes(0);
     });
   });
 
   it('should fire onClose when no matches', () => {
-    const onOpen = sinon.spy();
-    const onClose = sinon.spy();
+    const onOpen = jest.fn();
+    const onClose = jest.fn();
 
     const component = setupPicker({
       onOpen: onOpen as OnOpen,
       onClose: onClose as OnClose,
     } as Props);
-    const noMentionItemsShown = () => component.find(MentionItem).length === 0;
+    const noMentionItemsShown = () =>
+      component.update() && component.find(MentionItem).length === 0;
 
     return waitUntil(createDefaultMentionItemsShowTest(component))
       .then(() => {
-        expect(onOpen.callCount, 'opened 1').to.equal(1);
-        expect(onClose.callCount, 'closed 1').to.equal(0);
+        expect(onOpen).toHaveBeenCalledTimes(1);
+        expect(onClose).toHaveBeenCalledTimes(0);
         component.setProps({ query: 'nothing' });
         return waitUntil(noMentionItemsShown);
       })
       .then(() => {
-        expect(onOpen.callCount, 'opened 2').to.equal(1);
-        expect(onClose.callCount, 'closed 2').to.equal(1);
+        expect(onOpen).toHaveBeenCalledTimes(1);
+        expect(onClose).toHaveBeenCalledTimes(1);
       });
   });
 
   it('should fire onOpen when error to display', () => {
-    const onOpen = sinon.spy();
-    const onClose = sinon.spy();
+    const onOpen = jest.fn();
+    const onClose = jest.fn();
 
     const component = setupPicker({
       query: 'error',
@@ -290,8 +305,8 @@ describe('MentionPicker', () => {
     } as Props);
 
     return waitUntil(createMentionErrorShownTest(component)).then(() => {
-      expect(onOpen.callCount, 'opened').to.equal(1);
-      expect(onClose.callCount, 'closed').to.equal(0);
+      expect(onOpen).toHaveBeenCalledTimes(1);
+      expect(onClose).toHaveBeenCalledTimes(0);
     });
   });
 
@@ -300,7 +315,7 @@ describe('MentionPicker', () => {
 
     return waitUntil(createDefaultMentionItemsShowTest(component)).then(() => {
       const mentionPicker = component.instance() as MentionPicker;
-      expect(mentionPicker.mentionsCount()).to.equal(MAX_NOTIFIED_ITEMS);
+      expect(mentionPicker.mentionsCount()).toEqual(MAX_NOTIFIED_ITEMS);
     });
   });
 });

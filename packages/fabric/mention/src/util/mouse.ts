@@ -1,4 +1,4 @@
-import { MouseEvent } from '@types/react';
+import { MouseEvent } from 'react';
 
 export interface Position {
   x: number;

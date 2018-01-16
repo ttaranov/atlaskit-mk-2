@@ -1,7 +1,6 @@
 import { waitUntil } from '@atlaskit/util-common-test';
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { expect } from 'chai';
 
 import mentionData, {
   mentionDataSize,
@@ -10,21 +9,27 @@ import MentionList, { Props, State } from '../../../src/components/MentionList';
 import MentionItem from '../../../src/components/MentionItem';
 import { isMentionItemSelected } from '../_ak-selectors';
 
-const mentions = mentionData.mentions;
-
-function setupList(props?: Props): ReactWrapper<Props, State> {
-  return mount(<MentionList mentions={mentions} {...props} />) as ReactWrapper<
-    Props,
-    State
-  >;
-}
-
 describe('MentionList', () => {
+  let component;
+  let defaultMentionItemsShow;
+  const mentions = mentionData.mentions;
+  const setupList = (props?: Props) =>
+    mount(<MentionList mentions={mentions} {...props} />) as ReactWrapper<
+      Props,
+      State
+    >;
+
+  beforeEach(() => {
+    component = setupList();
+    defaultMentionItemsShow = () =>
+      component.find(MentionItem).length === mentionDataSize;
+  });
+
+  afterEach(() => {
+    component.unmount();
+  });
+
   it('should have first item selected by default', () => {
-    const component = setupList();
-    const defaultMentionItemsShow = () => {
-      return component.find(MentionItem).length === mentionDataSize;
-    };
     const firstItemSelected = () =>
       isMentionItemSelected(component, mentions[0].id);
 
@@ -34,56 +39,44 @@ describe('MentionList', () => {
   });
 
   it('selectIndex selects correct item', () => {
-    const component = setupList();
-    const defaultMentionItemsShow = () =>
-      component.find(MentionItem).length === mentionDataSize;
-    const thirdItemSelected = () =>
-      isMentionItemSelected(component, mentions[2].id);
+    const thirdItemSelected = () => {
+      return isMentionItemSelected(component, mentions[2].id);
+    };
 
     return waitUntil(defaultMentionItemsShow).then(() => {
       const mentionList = component.instance() as MentionList;
       mentionList.selectIndex(2);
+      component.update();
       return waitUntil(thirdItemSelected);
     });
   });
 
   it('selectId selects correct item', () => {
-    const component = setupList();
-    const defaultMentionItemsShow = () =>
-      component.find(MentionItem).length === mentionDataSize;
     const thirdItemSelected = () =>
       isMentionItemSelected(component, mentions[2].id);
 
     return waitUntil(defaultMentionItemsShow).then(() => {
       const mentionList = component.instance() as MentionList;
       mentionList.selectId(mentions[2].id);
+      component.update();
       return waitUntil(thirdItemSelected);
     });
   });
 
   it('mentionsCount returns the number of mentions in the list', () => {
-    const component = setupList();
-    const defaultMentionItemsShow = () =>
-      component.find(MentionItem).length === mentionDataSize;
-
     return waitUntil(defaultMentionItemsShow).then(() => {
       const mentionList = component.instance() as MentionList;
-      expect(mentionList.mentionsCount()).to.equal(mentionDataSize);
+      expect(mentionList.mentionsCount()).toEqual(mentionDataSize);
     });
   });
 
   it('should retain a deliberate selection across changing list of mentions', () => {
-    const component = setupList();
-    const defaultMentionItemsShow = () => {
-      return component.find(MentionItem).length === mentionDataSize;
-    };
-
     return waitUntil(defaultMentionItemsShow).then(() => {
       const mentionList = component.instance() as MentionList;
 
       // select item 3 in the mention list
       mentionList.selectIndex(2);
-
+      component.update();
       const thirdItemSelected = () =>
         isMentionItemSelected(component, mentions[2].id);
 
@@ -104,7 +97,7 @@ describe('MentionList', () => {
           // ensure item 2 is now selected
           const secondItemSelected = () =>
             isMentionItemSelected(component, reducedMentionsList[1].id);
-
+          component.update();
           return waitUntil(secondItemSelected);
         });
       });
@@ -112,11 +105,6 @@ describe('MentionList', () => {
   });
 
   it('should select first item for each changing set of mentions if no deliberate selection is made', () => {
-    const component = setupList();
-    const defaultMentionItemsShow = () => {
-      return component.find(MentionItem).length === mentionDataSize;
-    };
-
     return waitUntil(defaultMentionItemsShow).then(() => {
       const firstItemSelected = () =>
         isMentionItemSelected(component, mentions[0].id);
