@@ -1,6 +1,9 @@
+jest.mock('rusha');
+
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { ResumableChunk } from 'resumablejs';
+import * as Rusha from 'rusha';
 
 import { WorkerHasher } from '../workerHasher';
 
@@ -29,6 +32,8 @@ describe('WorkerHasher', () => {
     fakeWorkers = [];
     fakeWorkerIndex = 0;
     createFakeWorkers(5);
+
+    (Rusha.createWorker as any).mockReturnValue(fakeWorkers[0]);
 
     // Replace Worker property of the window
     workerStub = sinon.stub().returns(fakeWorkers[fakeWorkerIndex++]);

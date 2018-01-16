@@ -11,7 +11,12 @@ import {
   errorButtonCancel,
   errorButtonClose,
 } from '../../phrases';
-import { ErrorPopup, ErrorIcon, ErrorMessage, ErrorHint } from '../styles';
+import {
+  ErrorPopup,
+  ErrorIconWrapper,
+  ErrorMessage,
+  ErrorHint,
+} from '../styles';
 
 describe('ErrorView', () => {
   const message = 'some-message';
@@ -23,7 +28,7 @@ describe('ErrorView', () => {
       <ErrorView message={message} onCancel={onCancel} />,
     );
     expect(errorView.find(ErrorPopup)).to.have.length(1);
-    expect(errorView.find(ErrorIcon)).to.have.length(1);
+    expect(errorView.find(ErrorIconWrapper)).to.have.length(1);
 
     const mainMessage = errorView.find(ErrorMessage);
     expect(mainMessage).to.have.length(1);
@@ -43,7 +48,7 @@ describe('ErrorView', () => {
       <ErrorView message={message} onRetry={onRetry} onCancel={onCancel} />,
     );
     expect(errorView.find(ErrorPopup)).to.have.length(1);
-    expect(errorView.find(ErrorIcon)).to.have.length(1);
+    expect(errorView.find(ErrorIconWrapper)).to.have.length(1);
 
     const mainMessage = errorView.find(ErrorMessage);
     expect(mainMessage).to.have.length(1);

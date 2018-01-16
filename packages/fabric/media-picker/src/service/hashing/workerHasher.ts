@@ -2,7 +2,7 @@
 import { ResumableChunk } from 'resumablejs';
 
 import { Hasher } from './hasher';
-import Rusha from 'rusha';
+import * as Rusha from 'rusha';
 
 interface HasherWorker {
   worker: Worker;
