@@ -83,15 +83,13 @@ describe('Fetcher', () => {
 
       return fetcher.getPreview(apiUrl, auth, fileId).then(preview => {
         if (!isImagePreview(preview)) {
-          return Promise.reject('no preview returned');
+          throw new Error('no preview returned');
         }
 
         expect(preview.dimensions).toEqual({
           width: 100,
           height: 100,
         });
-
-        return Promise.resolve();
       });
     });
   });
