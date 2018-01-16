@@ -95,3 +95,4 @@ export {
   extensionData,
   bodiedExtensionData,
 } from './mock-extension-data';
+export * from './schema-element-builder';
