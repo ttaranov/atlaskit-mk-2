@@ -19,7 +19,7 @@ const getSortedRows = (head, rows, sortKey, sortOrder) => {
       null,
     );
 
-  return rows.sort((a, b) => {
+  return Array.from(rows).sort((a, b) => {
     const valA = getSortingCellValue(a.cells);
     const valB = getSortingCellValue(b.cells);
 

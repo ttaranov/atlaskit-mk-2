@@ -71,12 +71,23 @@ export default class DynamicTable extends Component<Props, State> {
     }
   }
   onSort = (item: RowCellType) => () => {
-    const { sortKey, sortOrder, onSort } = this.props;
+    const { sortKey, sortOrder, onSort, isRankable } = this.props;
     const { key } = item;
     if (!key) return;
+    this.onSetPage(1);
+
+    if (isRankable && key === sortKey && sortOrder === DESC) {
+      onSort({
+        key: null,
+        sortOrder: null,
+        item,
+      });
+
+      return;
+    }
+
     const sortOrderFormatted =
       key !== sortKey ? ASC : toggleSortOrder(sortOrder);
-    this.onSetPage(1);
     onSort({ key, item, sortOrder: sortOrderFormatted });
   };
 
@@ -137,6 +148,7 @@ export default class DynamicTable extends Component<Props, State> {
       sortOrder,
       isLoading,
     } = this.props;
+    const canRank = isRankable && !sortKey;
 
     const rowsLength = rows && rows.length;
     const bodyProps = {
@@ -174,10 +186,10 @@ export default class DynamicTable extends Component<Props, State> {
                 sortKey={sortKey}
                 sortOrder={sortOrder}
                 isRanking={this.state.isRanking}
-                isRankable={isRankable}
+                isRankable={canRank}
               />
             )}
-            {rowsExist && isRankable ? (
+            {rowsExist && canRank ? (
               <RankableBody
                 {...bodyProps}
                 isRanking={this.state.isRanking}

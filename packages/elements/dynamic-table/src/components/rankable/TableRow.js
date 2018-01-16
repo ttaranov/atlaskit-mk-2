@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { RankableTableBodyRow } from '../../styled/rankable/TableRow';
-import { RowPlaceholderCell, RowPlaceholderWrapper } from '../../styled/rankable/RowPlaceholder';
+import { RowPlaceholderCell } from '../../styled/rankable/RowPlaceholder';
 import type { HeadType, RowType } from '../../types';
 import withDimensions, {type WithDimensionsProps} from '../../hoc/withDimensions';
 import TableCell from './TableCell';
@@ -27,8 +27,12 @@ class RankableTableRow extends Component<Props, {}> {
     const { cells, ...restRowProps } = row;
     const inlineStyle = isRanking ? {width: refWidth} : {};
 
+    if (!row.key) {
+      throw new Error(`Key should be provided to row with index ${rowIndex} to enable ranking`);
+    }
+
     return (
-      <Draggable draggableId={typeof(row.key) === 'undefined' ? row.key : rowIndex} index={rowIndex}>
+      <Draggable draggableId={row.key} index={rowIndex}>
       {(provided, snapshot) => [
         <RankableTableBodyRow {...restRowProps} 
           innerRef={this.innerRef(provided.innerRef)} 

@@ -19,8 +19,8 @@ export default class extends Component<{}, {}> {
           rowsPerPage={5}
           defaultPage={1}
           isRankable
-          defaultSortKey="term"
-          defaultSortOrder="ASC"
+          onRankStart={params => console.log('onRankStart', params)}
+          onRankEnd={params => console.log('onRankEnd', params)}
           onSort={() => console.log('onSort')}
           onSetPage={() => console.log('onSetPage')}
         />

@@ -1,9 +1,8 @@
 // @flow
 import { type Node, type Element } from 'react';
-import { type DragStart as RankStart, type DropResult as RankEnd } from 'react-beautiful-dnd';
 
 export type RowCellType = {
-  key?: string | number,
+  key?: string,
   content: Node,
 };
 
@@ -28,7 +27,7 @@ export type StatelessProps = {
 
 export type RowType = {
   cells: Array<RowCellType>,
-  key?: string | number,
+  key?: string,
 };
 
 export type SortOrderType = 'ASC' | 'DESC';
@@ -44,6 +43,21 @@ export type HeadCellType = {
   shouldTruncate?: boolean,
 };
 
-export type HeadType = { cells: Array<HeadCellType> };
+export type RankEndLocation = {
+  index: number, // index on current page
+  afterKey: ?string,
+  beforeKey: ?string,
+}
 
-export type {RankStart, RankEnd};
+export type RankEnd = {
+  sourceIndex: number,
+  sourceKey: string,
+  destination: ?RankEndLocation,
+}
+
+export type RankStart = {
+  index: number,
+  key: string,
+}
+
+export type HeadType = { cells: Array<HeadCellType> };

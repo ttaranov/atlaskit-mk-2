@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import DynamicTableStateless from './Stateless';
-import type { SortOrderType, StatelessProps } from '../types';
+import type { SortOrderType, StatelessProps, RankEnd, RankEndLocation, RowType } from '../types';
 
 // We are disabling prop validation, as the rest of the props passed in are
 // handled by validation of the stateless verion.
@@ -17,6 +17,7 @@ type State = {
   page: number,
   sortKey?: string,
   sortOrder?: 'ASC' | 'DESC',
+  rows: RowType[],
 };
 
 export default class DynamicTable extends Component<Props, State> {
@@ -34,6 +35,7 @@ export default class DynamicTable extends Component<Props, State> {
     page: this.props.defaultPage,
     sortKey: this.props.defaultSortKey,
     sortOrder: this.props.defaultSortOrder,
+    rows: this.props.rows,
   };
 
   componentWillReceiveProps(newProps: Props) {
@@ -42,6 +44,7 @@ export default class DynamicTable extends Component<Props, State> {
       page: newProps.page,
       sortKey: newProps.defaultSortKey,
       sortOrder: newProps.defaultSortOrder,
+      rows: newProps.rows,
     });
   }
 
@@ -55,8 +58,49 @@ export default class DynamicTable extends Component<Props, State> {
     this.setState({ sortKey: key, sortOrder, page: 1 });
   };
 
+  onRankEndIfExists = (params: RankEnd) => {
+    if (this.props.onRankEnd) {
+      this.props.onRankEnd(params);
+    }
+  }
+
+  computeRankEndIndex = (rankEndLocation: RankEndLocation) => {
+    const { afterKey } = rankEndLocation;
+    const { rowsPerPage } = this.props;
+
+    if (!afterKey) {
+      // beginning of current page
+      return rowsPerPage ? (this.state.page - 1) * rowsPerPage : 0;
+    }
+
+    return this.state.rows.findIndex((row) => row.key === afterKey);
+  }
+
+  onRankEnd = (params: RankEnd) => {
+    const { destination, sourceKey } = params;
+
+    if (!destination) {
+      this.onRankEndIfExists(params);
+      return;
+    }
+
+    const { rows } = this.state;
+    const fromIndex = rows.findIndex(({key}) => key === sourceKey);
+    const toIndex = this.computeRankEndIndex(destination);
+
+    const result = rows.slice();
+    const [removed] = result.splice(fromIndex, 1);
+    result.splice(toIndex, 0, removed);
+
+    this.setState({
+      rows: result
+    });
+
+    this.onRankEndIfExists(params);
+  }
+
   render() {
-    const { page, sortKey, sortOrder } = this.state;
+    const { page, sortKey, sortOrder, rows } = this.state;
     const {
       caption,
       emptyView,
@@ -64,7 +108,6 @@ export default class DynamicTable extends Component<Props, State> {
       loadingSpinnerSize,
       isLoading,
       isFixedSize,
-      rows,
       isRankable,
       rowsPerPage,
     } = this.props;
@@ -85,8 +128,8 @@ export default class DynamicTable extends Component<Props, State> {
         sortKey={sortKey}
         sortOrder={sortOrder}
         isRankable={isRankable}
-        onRankEnd={() => {}}
-        onRankStart={() => {}}
+        onRankEnd={this.onRankEnd}
+        onRankStart={this.props.onRankStart}
       />
     );
   }
