@@ -18,13 +18,6 @@ type CodeBlockProps = {
 export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
   static displayName = 'CodeBlock';
 
-  // static propTypes = {
-  //   text: PropTypes.string.isRequired,
-  //   language: PropTypes.oneOf(languageList),
-  //   showLineNumbers: PropTypes.bool,
-  //   theme: PropTypes.object,
-  // };
-
   static defaultProps = {
     showLineNumbers: true,
     language: 'md',
