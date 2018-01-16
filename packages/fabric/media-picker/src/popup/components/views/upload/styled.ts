@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-// tslint:disable:no-var-requires
-const borderIcon = require('./icons/border.png');
+import { borderIcon } from '../../../../icons';
 
 export const Wrapper = styled.div`
   width: 100%;

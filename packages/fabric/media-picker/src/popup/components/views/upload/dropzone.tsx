@@ -3,8 +3,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import Button from '@atlaskit/button';
 
-// tslint:disable-next-line:no-var-requires
-const filesIcon = require('./icons/files.png');
+import { filesIcon } from '../../../../icons';
 
 export class Dropzone extends Component<any, any> {
   render(): JSX.Element {

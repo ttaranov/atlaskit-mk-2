@@ -5,7 +5,6 @@ import {
   akColorN900,
 } from '@atlaskit/util-shared-styles';
 import Button from '@atlaskit/button';
-import InlineSvg from 'svg-inline-react';
 import styled from 'styled-components';
 
 export const ErrorPopup = styled.div`
@@ -19,13 +18,8 @@ export const ErrorPopup = styled.div`
   flex-direction: column;
 `;
 
-export interface ErrorIconProps {
-  src: string;
-}
-
-export const ErrorIcon = styled(InlineSvg)`
+export const ErrorIcon = styled.img`
   width: 92px;
-  ${(props: ErrorIconProps) => ''};
 `;
 
 export const ErrorMessage = styled.div`

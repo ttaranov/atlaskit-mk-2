@@ -1,12 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react';
-
+import MediaServicesLineThicknessIcon from '@atlaskit/icon/glyph/media-services/line-thickness';
 import { GenericButton } from './genericButton';
 import { OptionsIcon } from './optionsIcon';
-import { LineWidthIcon } from './styles';
-
-// The icon is inlined because we need to change its color
-import svg from '!!raw-loader!./icons/lineWidth.svg';
 
 export interface LineWidthButtonProps {
   readonly isActive: boolean;
@@ -19,7 +15,7 @@ export class LineWidthButton extends Component<LineWidthButtonProps> {
 
     return (
       <GenericButton isActive={isActive} onClick={onClick}>
-        <LineWidthIcon src={svg} />
+        <MediaServicesLineThicknessIcon label="line width" />
         <OptionsIcon isActive={isActive} />
       </GenericButton>
     );

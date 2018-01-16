@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
-
-import { OptionsAreaNormal, OptionsAreaActive } from './styles';
-
-// The icon is inlined because we need to change its color
-import svg from '!!raw-loader!./icons/options.svg';
+import MediaServicesButtonOptionIcon from '@atlaskit/icon/glyph/media-services/button-option';
+import { OptionsIconWrapper } from './styles';
 
 export interface OptionsIconProps {
   readonly isActive: boolean;
@@ -13,8 +10,12 @@ export interface OptionsIconProps {
 // Small triangle in the right bottom corner of the buttons for color and line width
 export class OptionsIcon extends Component<OptionsIconProps> {
   render() {
-    const Icon = this.props.isActive ? OptionsAreaActive : OptionsAreaNormal;
+    const { isActive } = this.props;
 
-    return <Icon src={svg} />;
+    return (
+      <OptionsIconWrapper isActive={isActive}>
+        <MediaServicesButtonOptionIcon label="options" />
+      </OptionsIconWrapper>
+    );
   }
 }

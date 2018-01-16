@@ -4,7 +4,6 @@ import {
   akColorN0,
   akColorN500,
 } from '@atlaskit/util-shared-styles';
-import InlineSvg from 'svg-inline-react';
 import styled from 'styled-components';
 
 const transparent = 'rgba(0, 0, 0, 0)';
@@ -46,28 +45,23 @@ export const ButtonActive = styled(ButtonBase)`
   color: ${akColorN500};
 `;
 
-const OptionsAreaBase = styled(InlineSvg)`
+export interface OptionsIconWrapperProps {
+  isActive: boolean;
+}
+
+export const OptionsIconWrapper = styled.div`
   position: absolute;
   width: 4px;
   height: 4px;
   right: 4px;
   bottom: 4px;
 
+  color: ${({ isActive }: OptionsIconWrapperProps) =>
+    isActive ? optionsColorActive : optionsColorNormal};
+
   svg {
     transform: translateY(-9px);
   }
-`;
-
-export interface OptionsProps {
-  src: string;
-}
-
-export const OptionsAreaNormal = styled(OptionsAreaBase)`
-  ${(props: OptionsProps) => ''} color: ${optionsColorNormal};
-`;
-
-export const OptionsAreaActive = styled(OptionsAreaBase)`
-  ${(props: OptionsProps) => ''} color: ${optionsColorActive};
 `;
 
 export const ColorSample = styled.div`
@@ -77,13 +71,4 @@ export const ColorSample = styled.div`
   border-style: solid;
   border-width: 1px;
   border-color: ${colorSampleOutlineColor};
-`;
-
-export interface LineWidthIconProps {
-  src: string;
-}
-
-export const LineWidthIcon = styled(InlineSvg)`
-  ${(props: LineWidthIconProps) => ''} width: 18px;
-  height: 16px;
 `;
