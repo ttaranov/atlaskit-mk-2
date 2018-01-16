@@ -41,7 +41,7 @@ const getPrimaryColor = ({
   } else if (isSelected) {
     color = colors.blue;
   }
-
+  // $FlowFixMe: TEMPORARY
   return color(rest);
 };
 
@@ -61,6 +61,7 @@ const getSecondaryColor = ({
   } else if (!isSelected) {
     color = transparent;
   }
+  // $FlowFixMe: TEMPORARY
   return color(rest);
 };
 

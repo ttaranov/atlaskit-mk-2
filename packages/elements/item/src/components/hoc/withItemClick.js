@@ -4,7 +4,7 @@
 // requirement, we could just use a native click event all the way up to DropdownMenuStateless,
 // and could get rid of this HOC and DropdownItemClickManager.
 
-import React, { Component, type Element, type ComponentType } from 'react';
+import React, { Component, type Node, type ComponentType } from 'react';
 import PropTypes from 'prop-types';
 
 import getDisplayName from '../../util/getDisplayName';
@@ -13,17 +13,17 @@ import { clickManagerContext } from '../../util/contextNamespace';
 
 type Props = {
   /** Content to be displayed inside the item. Same as @atlaskit/item `children` prop. */
-  children?: Element<any>,
+  children?: Node,
   /** If true, the item appears greyed out and does not fire click events. */
   isDisabled?: boolean,
   /** If true, the item appears greyed out and does not fire click events. */
   href?: string,
   /** Standard onClick handler */
-  onClick: (event?: Event) => void,
+  onClick: Function,
 };
 
 // HOC that typically wraps @atlaskit/item
-const withItemClick = (WrappedItem: ComponentType<{}>) =>
+const withItemClick = (WrappedItem: ComponentType<any>) =>
   class WithItemClick extends Component<Props> {
     static displayName = `WithItemClick(${getDisplayName(WrappedItem)})`;
 
