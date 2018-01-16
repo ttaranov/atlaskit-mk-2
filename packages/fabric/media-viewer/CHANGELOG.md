@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 9.1.1
+- [patch] Fixes being unable to close Media Viewer when we open a file that is processing [5f63f6c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f63f6c)
+
 ## 9.1.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
 
