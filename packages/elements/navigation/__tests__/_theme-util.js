@@ -1,12 +1,15 @@
 // @flow
 import PropTypes from 'prop-types';
 import { type Node } from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount, shallow, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import { itemThemeNamespace } from '@atlaskit/item';
 import { prefix } from '../src/theme/util';
 import * as presets from '../src/theme/presets';
 import type { RootTheme, Provided } from '../src/theme/types';
 import createItemTheme from '../src/theme/map-navigation-theme-to-item-theme';
+
+configure({ adapter: new Adapter() });
 
 export const withRootTheme = (
   provided: Provided,

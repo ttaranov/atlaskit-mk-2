@@ -1,5 +1,6 @@
 // @flow
-import { shallow, mount } from 'enzyme';
+import { shallow, mount, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import styled from 'styled-components';
 import ContainerNavigation from '../src/components/js/ContainerNavigation';
@@ -10,6 +11,8 @@ import Reveal from '../src/components/js/Reveal';
 import GlobalNavigationSecondaryContainer from '../src/components/styled/GlobalNavigationSecondaryContainer';
 import GlobalSecondaryActions from '../src/components/js/GlobalSecondaryActions';
 import ScrollHintScrollContainer from '../src/components/styled/ScrollHintScrollContainer';
+
+configure({ adapter: new Adapter() });
 
 describe('<ContainerNavigation />', () => {
   describe('props', () => {

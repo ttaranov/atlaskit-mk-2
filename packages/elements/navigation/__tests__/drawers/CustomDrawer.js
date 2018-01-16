@@ -1,10 +1,13 @@
 // @flow
-import { mount } from 'enzyme';
+import { mount, configure } from 'enzyme';
 import React from 'react';
+import Adapter from 'enzyme-adapter-react-16';
 import { AkCustomDrawer } from '../../src/index';
 import { drawerIconOffset } from '../../src/shared-variables';
 import Drawer from '../../src/components/js/Drawer';
 import requiredProps from '../_drawer-util';
+
+configure({ adapter: new Adapter() });
 
 describe('<CustomDrawer />', () => {
   describe('the inner Drawer', () => {

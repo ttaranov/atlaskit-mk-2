@@ -1,12 +1,15 @@
 // @flow
 /* eslint-disable no-console */
-import { shallow, mount } from 'enzyme';
+import { shallow, mount, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import React, { PureComponent } from 'react';
 import GlobalNavigation from '../src/components/js/GlobalNavigation';
 import * as presets from '../src/theme/presets';
 import GlobalItem from '../src/components/js/GlobalItem';
 import GlobalPrimaryActions from '../src/components/js/GlobalPrimaryActions';
 import GlobalSecondaryActions from '../src/components/js/GlobalSecondaryActions';
+
+configure({ adapter: new Adapter() });
 
 class Child extends PureComponent<any> {
   render() {

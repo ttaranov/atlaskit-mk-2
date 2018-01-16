@@ -226,6 +226,7 @@ describe('<QuickSearch />', () => {
       searchInput.simulate('keydown', { key: 'ArrowDown' });
       searchInput.simulate('keydown', { key: 'ArrowDown' });
       searchInput.simulate('keydown', { key: 'ArrowDown' });
+      wrapper.update();
       expect(
         wrapper
           .find(AkNavigationItem)
@@ -256,6 +257,7 @@ describe('<QuickSearch />', () => {
           ),
         });
         searchInput.simulate('keydown', { key: 'Enter' });
+        wrapper.update();
         expect(locationAssignSpy).toHaveBeenCalledWith(url);
       } finally {
         locationAssignSpy.mockRestore();
@@ -271,8 +273,9 @@ describe('<QuickSearch />', () => {
         .simulate('click');
       expect(onClickSpy.args).toEqual(paramsKeyboard);
     });
-    it("should run the onClick callback with the result's data on ENTER keystroke", () => {
+    it.only("should run the onClick callback with the result's data on ENTER keystroke", () => {
       searchInput.simulate('keydown', { key: 'Enter' });
+      wrapper.update();
       expect(onClickSpy).toHaveBeenCalledTimes(1);
       expect(isInputFocused(searchInput)).toBe(true);
     });
@@ -284,6 +287,7 @@ describe('<QuickSearch />', () => {
         </AkNavigationItemGroup>
       );
       wrapper.setProps({ children: newChildren });
+      wrapper.update();
       expect(
         wrapper
           .find(AkNavigationItem)

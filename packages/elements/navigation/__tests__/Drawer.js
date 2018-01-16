@@ -1,6 +1,8 @@
 // @flow
-import { mount } from 'enzyme';
-import React, { PropTypes } from 'react';
+import { mount, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Blanket from '@atlaskit/blanket';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Drawer, { analyticsNamespace } from '../src/components/js/Drawer';
@@ -12,6 +14,7 @@ import GlobalItem from '../src/components/js/GlobalItem';
 import DrawerTrigger from '../src/components/js/DrawerTrigger';
 import DrawerBackIconWrapper from '../src/components/styled/DrawerBackIconWrapper';
 
+configure({ adapter: new Adapter() });
 describe('<Drawer />', () => {
   const escKeyCode = 27;
   const delKeyCode = 26;

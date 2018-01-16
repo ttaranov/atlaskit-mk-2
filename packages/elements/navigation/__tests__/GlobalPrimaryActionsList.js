@@ -1,7 +1,10 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow, mount, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import GlobalPrimaryActionsList from '../src/components/js/GlobalPrimaryActionsList';
+
+configure({ adapter: new Adapter() });
 
 const describe = window.describe;
 const it = window.it;

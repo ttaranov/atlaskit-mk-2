@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import { replaceRaf } from 'raf-stub';
 import OverflowHandler from '../../src/components/js/overflow/OverflowHandler';
 import OverflowItem from '../../src/components/js/overflow/OverflowItem';
@@ -10,6 +11,8 @@ import {
   dropdownHeight,
   reservedGapHeight,
 } from '../../src/components/js/overflow/shared-variables';
+
+configure({ adapter: new Adapter() });
 
 describe('<AkCollapseOverflow />', () => {
   describe('calculateBreakItem', () => {

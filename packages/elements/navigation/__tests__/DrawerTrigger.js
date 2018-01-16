@@ -1,9 +1,11 @@
 // @flow
-import { mount } from 'enzyme';
+import { mount, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import DrawerTrigger from '../src/components/js/DrawerTrigger';
 import GlobalItem from '../src/components/js/GlobalItem';
 
+configure({ adapter: new Adapter() });
 describe('<DrawerTrigger />', () => {
   describe('interacting', () => {
     it('click should call the onActivate handler', () => {
