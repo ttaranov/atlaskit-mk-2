@@ -162,7 +162,7 @@ const codeBlockStyle = (theme: Theme) => ({
   },
   'hljs-comment': {
     color: theme.commentColor,
-    fontFamily: `SFMono-MediumItalic, ${codeFontFamily}`,
+    fontFamily: `SFMono-MediumItalic, ${codeFontFamily()}`,
     fontStyle: 'italic',
   },
   'hljs-meta-keyword': {

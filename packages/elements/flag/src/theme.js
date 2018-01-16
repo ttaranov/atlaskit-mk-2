@@ -13,6 +13,7 @@ export const flagBackgroundColor = themed('appearance', {
 });
 
 export const flagBorderColor = themed('appearance', {
+  // $FlowFixMe TEMPORARY
   normal: { light: colors.N60A },
 });
 
@@ -31,7 +32,7 @@ export const flagShadowColor = themed('appearance', {
   success: { light: colors.N50A, dark: colors.N50A },
   warning: { light: colors.N50A, dark: colors.N50A },
 });
-
+// $FlowFixMe TEMPORARY
 export const flagFocusRingColor = themed('appearance', {
   error: { light: colors.N40, dark: colors.N40 },
   info: { light: colors.N40, dark: colors.N40 },
@@ -47,7 +48,7 @@ export const buttonBackgroundColor = themed('appearance', {
   success: { light: lightButtonBackground, dark: colors.N30A },
   warning: { light: colors.N30A, dark: colors.N30A },
 });
-
+// $FlowFixMe TEMPORARY
 export const buttonTextColor = themed('appearance', {
   error: { light: colors.N0, dark: colors.DN40 },
   info: { light: colors.N0, dark: colors.DN600 },

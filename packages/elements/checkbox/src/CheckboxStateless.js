@@ -98,6 +98,7 @@ class CheckboxStateless extends Component<Props, State> {
     } else if (!isChecked) {
       color = transparent;
     }
+    // $FlowFixMe TEMPORARY
     return color(rest);
   };
   // The secondary color represents the box color
@@ -116,7 +117,7 @@ class CheckboxStateless extends Component<Props, State> {
     } else if (isChecked) {
       color = colors.blue;
     }
-
+    // $FlowFixMe TEMPORARY
     return color(rest);
   };
 

@@ -34,17 +34,17 @@ export type FieldTextProps = {
   /** The value of the input. */
   value?: string | number,
   /** Handler to be called when the input loses focus. */
-  onBlur?: (e: Event) => mixed,
+  onBlur?: (e: SyntheticEvent<>) => mixed,
   /** Handler to be called when the input changes. */
-  onChange?: (e: Event) => mixed,
+  onChange?: (e: SyntheticEvent<HTMLInputElement>) => mixed,
   /** Handler to be called when the input receives focus. */
-  onFocus?: (e: Event) => mixed,
+  onFocus?: (e: SyntheticEvent<>) => mixed,
   /** Standard input onkeydown event. */
-  onKeyDown?: (e: KeyboardEvent) => mixed,
+  onKeyDown?: (e: SyntheticKeyboardEvent<>) => mixed,
   /** Standard input onkeypress event. */
-  onKeyPress?: (e: KeyboardEvent) => mixed,
+  onKeyPress?: (e: SyntheticKeyboardEvent<>) => mixed,
   /** Standard input onkeyup event. */
-  onKeyUp?: (e: KeyboardEvent) => mixed,
+  onKeyUp?: (e: SyntheticKeyboardEvent<>) => mixed,
   /** Id value to be passed to the html input. */
   id?: string,
   /** Sets whether to show or hide the label. */
