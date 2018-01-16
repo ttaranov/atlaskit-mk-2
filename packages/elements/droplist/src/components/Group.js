@@ -1,35 +1,41 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import React, { Component, type Node } from 'react';
 import Group, { Heading, HeadingText, HeadingAfter } from '../styled/Group';
 
-class DroplistGroup extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node,
-    elemAfter: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-    heading: PropTypes.string,
-  }
+type Props = {
+  children?: any,
+  elemAfter?: Node | string,
+  heading?: string,
+};
 
-  state = { ariaLabel: this.props.heading }
+type State = {
+  ariaLabel?: string,
+};
+
+class DroplistGroup extends Component<Props, State> {
+  state = { ariaLabel: this.props.heading };
+  headingElement: HTMLElement;
 
   componentDidMount = () => {
     if (this.props.heading || this.props.elemAfter) {
       this.setState({ ariaLabel: this.getAriaLabel() });
     }
-  }
+  };
   componentDidUpdate = () => {
     if (this.props.heading || this.props.elemAfter) {
       this.setState({ ariaLabel: this.getAriaLabel() });
     }
-  }
+  };
 
   getAriaLabel = () => {
     const { elemAfter, heading } = this.props;
-    const afterText = elemAfter && (typeof elemAfter === 'string')
+    const afterText =
+      elemAfter && typeof elemAfter === 'string'
         ? elemAfter
         : this.headingElement && this.headingElement.textContent;
 
-    return `${heading} ${afterText || ''}`;
-  }
+    return `${heading || ''} ${afterText || ''}`;
+  };
 
   render() {
     const { children, elemAfter, heading } = this.props;
@@ -41,7 +47,11 @@ class DroplistGroup extends PureComponent {
           <Heading aria-hidden="true" data-role="droplistGroupHeading">
             <HeadingText>{heading}</HeadingText>
             {elemAfter ? (
-              <HeadingAfter innerRef={r => (this.headingElement = r)}>
+              <HeadingAfter
+                innerRef={r => {
+                  this.headingElement = r;
+                }}
+              >
                 {elemAfter}
               </HeadingAfter>
             ) : null}

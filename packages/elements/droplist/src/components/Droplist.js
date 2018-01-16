@@ -1,54 +1,58 @@
 // @flow
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, type Node } from 'react';
 import ReactDOM from 'react-dom';
 import Layer from '@atlaskit/layer';
 import Spinner from '@atlaskit/spinner';
 import { ThemeProvider } from 'styled-components';
 import { gridSize } from '@atlaskit/theme';
-import Wrapper, { Content, SpinnerContainer, Trigger } from '../styled/Droplist';
+import Wrapper, {
+  Content,
+  SpinnerContainer,
+  Trigger,
+} from '../styled/Droplist';
 import itemTheme from '../theme/item-theme';
 
 const halfFocusRing = 1;
 const dropOffset = `0 ${gridSize()}px`;
 
-export default class Droplist extends Component {
-  static propTypes = {
-    /**
-      * Controls the appearance of the menu.
-      * Default menu has scroll after its height exceeds the pre-defined amount.
-      * Tall menu has no restrictions.
-      */
-    appearance: PropTypes.oneOf(['default', 'tall']),
-    /** Value passed to the Layer component to determine when to reposition the droplist */
-    boundariesElement: PropTypes.oneOf(['viewport', 'window', 'scrollParent']),
-    /** Content that will be rendered inside the layer element. Should typically be
-      * `DropdownItemGroup` or `DropdownItem`, or checkbox / radio variants of those. */
-    children: PropTypes.node,
-    /** If true, a Spinner is rendered instead of the items */
-    isLoading: PropTypes.bool,
-    /** Controls the open state of the drop list. */
-    isOpen: PropTypes.bool,
-    onClick: PropTypes.func,
-    onKeyDown: PropTypes.func,
-    onOpenChange: PropTypes.func,
-    /** Position of the menu. See the documentation of @atlastkit/layer for more details. */
-    position: PropTypes.string,
-    /** Deprecated. Option to display multiline items when content is too long.
-      * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
-      */
-    shouldAllowMultilineItems: PropTypes.bool,
-    /** Option to fit dropdown menu width to its parent width */
-    shouldFitContainer: PropTypes.bool,
-    /** Allows the dropdown menu to be placed on the opposite side of its trigger if it does not
-      * fit in the viewport. */
-    shouldFlip: PropTypes.bool,
-    /** Controls the height at which scroll bars will appear on the drop list. */
-    maxHeight: PropTypes.number,
-    /** Content which will trigger the drop list to open and close. */
-    trigger: PropTypes.node,
-  }
+type Props = {
+  /**
+   * Controls the appearance of the menu.
+   * Default menu has scroll after its height exceeds the pre-defined amount.
+   * Tall menu has no restrictions.
+   */
+  appearance?: 'default' | 'tall',
+  /** Value passed to the Layer component to determine when to reposition the droplist */
+  boundariesElement?: 'viewport' | 'window' | 'scrollParent',
+  /** Content that will be rendered inside the layer element. Should typically be
+   * `ItemGroup` or `Item`, or checkbox / radio variants of those. */
+  children?: Node,
+  /** If true, a Spinner is rendered instead of the items */
+  isLoading?: boolean,
+  /** Controls the open state of the drop list. */
+  isOpen?: boolean,
+  onClick?: any => mixed,
+  onKeyDown?: any => mixed,
+  onOpenChange?: any => mixed,
+  /** Position of the menu. See the documentation of @atlastkit/layer for more details. */
+  position?: string,
+  /** Deprecated. Option to display multiline items when content is too long.
+   * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
+   */
+  shouldAllowMultilineItems?: boolean,
+  /** Option to fit dropdown menu width to its parent width */
+  shouldFitContainer?: boolean,
+  /** Allows the dropdown menu to be placed on the opposite side of its trigger if it does not
+   * fit in the viewport. */
+  shouldFlip?: boolean,
+  /** Controls the height at which scroll bars will appear on the drop list. */
+  maxHeight?: number,
+  /** Content which will trigger the drop list to open and close. */
+  trigger?: Node,
+};
+
+export default class Droplist extends Component<Props, void> {
   static defaultProps = {
     appearance: 'default',
     boundariesElement: 'viewport',
@@ -63,12 +67,9 @@ export default class Droplist extends Component {
     shouldFitContainer: false,
     shouldFlip: true,
     trigger: null,
-  }
+  };
 
-  static childContextTypes = {
-    shouldAllowMultilineItems: PropTypes.bool,
-  }
-
+  //static childContextTypes = {shouldAllowMultilineItems}
   getChildContext() {
     return { shouldAllowMultilineItems: this.props.shouldAllowMultilineItems };
   }
@@ -80,18 +81,18 @@ export default class Droplist extends Component {
     // from detecting the actual source of this original click event.
     document.addEventListener('click', this.handleClickOutside, true);
     document.addEventListener('keydown', this.handleEsc);
-  }
+  };
 
   componentDidUpdate = () => {
     if (this.props.isOpen) {
       this.setContentWidth();
     }
-  }
+  };
 
   componentWillUnmount = () => {
     document.removeEventListener('click', this.handleClickOutside, true);
     document.removeEventListener('keydown', this.handleEsc);
-  }
+  };
 
   setContentWidth = (): void => {
     const { dropContentRef, triggerRef } = this;
@@ -100,31 +101,38 @@ export default class Droplist extends Component {
     // We need to manually set the content width to match the trigger width
     // if props.shouldFitContainer is true
     if (shouldFitContainer && dropContentRef && triggerRef) {
-      dropContentRef.style.width = `${triggerRef.offsetWidth - (halfFocusRing * 2)}px`;
+      dropContentRef.style.width = `${triggerRef.offsetWidth -
+        halfFocusRing * 2}px`;
     }
-  }
+  };
 
-  dropContentRef: HTMLElement
-  triggerRef: HTMLElement
+  dropContentRef: HTMLElement;
+  triggerRef: HTMLElement;
 
   handleEsc = (event: KeyboardEvent): void => {
     if (event.key === 'Escape') {
       this.close(event);
     }
-  }
+  };
 
   handleClickOutside = (event: Event): void => {
     if (this.props.isOpen) {
       const domNode = ReactDOM.findDOMNode(this); // eslint-disable-line react/no-find-dom-node
-      if (!domNode || (event.target instanceof Node && !domNode.contains(event.target))) {
+      // $FlowFixMe
+      if (
+        !domNode ||
+        (event.target instanceof Node && !domNode.contains(event.target))
+      ) {
         this.close(event);
       }
     }
-  }
+  };
 
   close = (event: Event): void => {
-    this.props.onOpenChange({ isOpen: false, event });
-  }
+    if (this.props.onOpenChange) {
+      this.props.onOpenChange({ isOpen: false, event });
+    }
+  };
 
   handleContentRef = (ref: HTMLElement) => {
     this.dropContentRef = ref;
@@ -135,9 +143,11 @@ export default class Droplist extends Component {
     if (ref) {
       ref.focus();
     }
-  }
+  };
 
-  handleTriggerRef = (ref: HTMLElement) => (this.triggerRef = ref)
+  handleTriggerRef = (ref: HTMLElement) => {
+    this.triggerRef = ref;
+  };
 
   render() {
     const {
@@ -168,20 +178,14 @@ export default class Droplist extends Component {
           </SpinnerContainer>
         ) : (
           <ThemeProvider theme={itemTheme}>
-            <div>
-              {children}
-            </div>
+            <div>{children}</div>
           </ThemeProvider>
-          )}
+        )}
       </Content>
     ) : null;
 
     return (
-      <Wrapper
-        fit={shouldFitContainer}
-        onClick={onClick}
-        onKeyDown={onKeyDown}
-      >
+      <Wrapper fit={shouldFitContainer} onClick={onClick} onKeyDown={onKeyDown}>
         <Layer
           autoFlip={shouldFlip}
           boundariesElement={boundariesElement}
@@ -189,10 +193,7 @@ export default class Droplist extends Component {
           offset={dropOffset}
           position={position}
         >
-          <Trigger
-            fit={shouldFitContainer}
-            innerRef={this.handleTriggerRef}
-          >
+          <Trigger fit={shouldFitContainer} innerRef={this.handleTriggerRef}>
             {trigger}
           </Trigger>
         </Layer>

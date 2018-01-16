@@ -18,22 +18,24 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/icon": "^10.1.3",
-    "@atlaskit/item": "^4.1.0",
+    "@atlaskit/item": "^4.2.3",
     "@atlaskit/layer": "^2.5.3",
     "@atlaskit/spinner": "^4.0.0",
     "@atlaskit/tooltip": "^8.0.1",
     "classnames": "^2.2.5",
-    "keycode": "^2.1.9",
+    "keycode": "^2.1.7",
     "@atlaskit/theme": "^2.0.1",
     "styled-components": "^1.4.6",
     "babel-runtime": "^6.26.0"
   },
   "peerDependencies": {
-    "react": "15.6.0 - 16.2.0"
+    "react": "15.6.0 - 16.2.0",
+    "react-dom": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
     "@atlaskit/avatar": "^8.0.1",
-    "@atlaskit/button": "^5.1.1",
+    "@atlaskit/field-base": "^8.1.6",
+    "@atlaskit/button": "^6.3.0",
     "@atlaskit/lozenge": "^3.4.2",
     "@atlaskit/docs": "^2.0.0",
     "enzyme": "^3.3.0"

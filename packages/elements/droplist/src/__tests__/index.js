@@ -1,20 +1,22 @@
+// @flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Layer from '@atlaskit/layer';
 import Spinner from '@atlaskit/spinner';
+import Item, { ItemGroup } from '@atlaskit/item';
 
-import { name } from '../../../package.json';
+import { name } from '../../package.json';
 
-import Droplist, { Item, Group } from '../../../src';
-import { Content, Trigger } from '../../../src/styled/Droplist';
+import Droplist from '../../src';
+import { Trigger, Content } from '../../src/styled/Droplist';
 
 const itemsList = (
-  <Group heading="test1">
+  <ItemGroup heading="test1">
     <Item>Some text</Item>
-  </Group>
+  </ItemGroup>
 );
 
-describe(`${name} - deprecated API - core`, () => {
+describe(`${name} - core`, () => {
   it('should be possible to create a component', () => {
     expect(shallow(<Droplist>test</Droplist>)).not.toBe(undefined);
   });
@@ -35,7 +37,7 @@ describe(`${name} - deprecated API - core`, () => {
       const layerNode = layer.node;
       expect(layerNode instanceof Layer).toBe(true);
       // Check that layer received our content
-      expect(layer.find(Group).length).toBe(1);
+      expect(layer.find(ItemGroup).length).toBe(1);
       expect(layer.find(Trigger).length).toBe(1);
     });
 
@@ -44,16 +46,22 @@ describe(`${name} - deprecated API - core`, () => {
       expect(layer.prop('offset')).toBe('0 8px');
       expect(layer.prop('position')).toBe('bottom left');
       expect(layer.prop('autoFlip')).toBe(wrapper.props().shouldFlip);
+      expect(layer.prop('boundariesElement')).toBe('viewport');
       expect(layer.prop('content')).not.toBe(undefined);
     });
 
     it('should render dropdown list content with height of maxHeight', () => {
-      expect(wrapper.find(Content).prop('maxHeight')).toBe(100);
+      expect(
+        wrapper
+          .find(Content)
+          .at(0)
+          .prop('maxHeight'),
+      ).toBe(100);
     });
 
     it('should render droplist content', () => {
       // We passed a group as content so we should be able to find one
-      expect(wrapper.find(Group).length).toBe(1);
+      expect(wrapper.find(ItemGroup).length).toBe(1);
     });
 
     it('should render trigger', () => {
@@ -62,37 +70,52 @@ describe(`${name} - deprecated API - core`, () => {
     });
   });
 
+  describe('max height (appearance prop)', () => {
+    it('should constrain max height on content by default', () => {
+      expect(
+        mount(<Droplist isOpen />)
+          .find(Content)
+          .prop('isTall'),
+      ).toBe(false);
+    });
+    it('should not set max height if appearance = tall', () => {
+      expect(
+        mount(<Droplist isOpen appearance="tall" />)
+          .find(Content)
+          .prop('isTall'),
+      ).toBe(true);
+    });
+  });
+
   describe('onOpenChange', () => {
     it('should be open when the isOpen property set to true', () => {
-      expect(
-        mount(<Droplist trigger="text">{itemsList}</Droplist>).find(Group)
-          .length,
-      ).toBe(0);
-      expect(
-        mount(
-          <Droplist trigger="text" isOpen>
-            {itemsList}
-          </Droplist>,
-        ).find(Group).length,
-      ).toBe(1);
+      const wrapper = mount(<Droplist trigger="text">{itemsList}</Droplist>);
+      const hasItemGroup = () => wrapper.find(ItemGroup).length === 1;
+      const isContentVisible = () => wrapper.find(Content).length === 1;
+
+      expect(hasItemGroup()).toBe(false);
+      expect(isContentVisible()).toBe(false);
+
+      wrapper.setProps({ isOpen: true });
+      expect(hasItemGroup()).toBe(true);
+      expect(isContentVisible()).toBe(true);
     });
   });
 
   describe('loading', () => {
     it('should show a Spinner (and no Groups) when it is loading and open', () => {
-      const mounted = mount(
+      const wrapper = mount(
         <Droplist isLoading isOpen>
           {itemsList}
         </Droplist>,
       );
-      expect(mounted.find(Spinner).length).toBe(1);
-      expect(mounted.find(Group).length).toBe(0);
+      expect(wrapper.find(Spinner).length).toBe(1);
+      expect(wrapper.find(ItemGroup).length).toBe(0);
     });
 
     it('should not show a Spinner when it is loading but not open', () => {
-      expect(
-        mount(<Droplist isLoading>{itemsList}</Droplist>).find(Spinner).length,
-      ).toBe(0);
+      const wrapper = mount(<Droplist isLoading>{itemsList}</Droplist>);
+      expect(wrapper.find(Spinner).length).toBe(0);
     });
   });
 });

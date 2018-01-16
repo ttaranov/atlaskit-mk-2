@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import React, { Component, type Node } from 'react';
 import Radio from '@atlaskit/icon/glyph/radio';
 import Checkbox from '@atlaskit/icon/glyph/checkbox';
 import Tooltip from '@atlaskit/tooltip';
@@ -18,29 +18,33 @@ import Element from './Element';
 
 const inputTypes = { checkbox: Checkbox, radio: Radio };
 
-/* eslint-disable react/no-unused-prop-types */
-export default class Item extends PureComponent {
-  static propTypes = {
-    appearance: PropTypes.oneOf(['default', 'primary']),
-    children: PropTypes.node,
-    description: PropTypes.string,
-    elemAfter: PropTypes.node,
-    elemBefore: PropTypes.node,
-    href: PropTypes.string,
-    isActive: PropTypes.bool,
-    isChecked: PropTypes.bool,
-    isDisabled: PropTypes.bool,
-    isFocused: PropTypes.bool,
-    isHidden: PropTypes.bool,
-    isSelected: PropTypes.bool,
-    onActivate: PropTypes.func,
-    target: PropTypes.string,
-    title: PropTypes.string,
-    // Could be renamed to 'tooltipContent' to match tooltip api
-    tooltipDescription: PropTypes.string,
-    tooltipPosition: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
-    type: PropTypes.oneOf(['link', 'radio', 'checkbox', 'option']),
-  }
+type Props = {
+  appearance: 'default' | 'primary',
+  children?: Node,
+  description?: string,
+  elemAfter?: Node,
+  elemBefore?: Node,
+  href?: string,
+  isActive?: boolean,
+  isChecked?: boolean,
+  isDisabled?: boolean,
+  isFocused?: boolean,
+  isHidden?: boolean,
+  isSelected?: boolean,
+  onActivate?: any => mixed,
+  target?: string,
+  title?: string,
+  tooltipDescription?: string,
+  tooltipPosition?: 'top' | 'bottom' | 'left' | 'right',
+  type?: 'link' | 'radio' | 'checkbox' | 'option',
+};
+
+type State = {
+  isHovered: boolean,
+  isPressed: boolean,
+};
+
+export default class Item extends Component<Props, State> {
   static defaultProps = {
     appearance: 'default',
     children: null,
@@ -61,52 +65,54 @@ export default class Item extends PureComponent {
     tooltipDescription: null,
     tooltipPosition: 'right',
     type: 'link',
-  }
-  static contextTypes = {
-    shouldAllowMultilineItems: PropTypes.bool,
-  }
+  };
 
   state = {
     isHovered: false,
     isPressed: false,
-  }
+  };
 
-  componentDidMount = () => document.addEventListener('mouseup', this.handleMouseUp)
-  componentWillUnmount = () => document.removeEventListener('mouseup', this.handleMouseUp)
+  componentDidMount = () =>
+    document.addEventListener('mouseup', this.handleMouseUp);
+  componentWillUnmount = () =>
+    document.removeEventListener('mouseup', this.handleMouseUp);
 
-  guardedActivate = (event) => {
+  guardedActivate = (event: SyntheticEvent<*>) => {
     const { isDisabled, onActivate } = this.props;
 
-    if (!isDisabled) onActivate({ item: this, event });
-  }
+    if (!isDisabled && onActivate) onActivate({ item: this, event });
+  };
 
-  handleClick = event => this.guardedActivate(event)
-  handleKeyPress = (event) => {
+  handleClick = (event: SyntheticEvent<*>) => this.guardedActivate(event);
+  handleKeyPress = (event: SyntheticKeyboardEvent<*>) => {
     const keyIsValid = ['Enter', ' '].indexOf(event.key) > -1;
 
     if (keyIsValid) this.guardedActivate(event);
-  }
-  handleMouseDown = () => this.setState({ isPressed: true })
-  handleMouseUp = () => this.setState({ isPressed: false })
-  handleMouseOut = () => this.setState({ isHovered: false })
-  handleMouseOver = () => this.setState({ isHovered: true })
+  };
+  handleMouseDown = () => this.setState({ isPressed: true });
+  handleMouseUp = () => this.setState({ isPressed: false });
+  handleMouseOut = () => this.setState({ isHovered: false });
+  handleMouseOver = () => this.setState({ isHovered: true });
 
   render() {
     const { props } = this;
     const { isHovered, isPressed } = this.state;
 
-    const hasInput = ['checkbox', 'radio'].indexOf(props.type) > -1;
-    const Input = inputTypes[props.type];
+    const type: string = props.type || '';
+    const hasInput = ['checkbox', 'radio'].indexOf(type) > -1;
+    const Input = inputTypes[type];
 
     const appearanceProps = {
-      isActive: (props.type === 'link' && props.isActive) || (props.type === 'option' && props.isSelected),
-      isChecked: (['checkbox', 'radio'].indexOf(props.type) > -1) && props.isChecked,
+      isActive:
+        (props.type === 'link' && props.isActive) ||
+        (props.type === 'option' && props.isSelected),
+      isChecked: ['checkbox', 'radio'].indexOf(type) > -1 && props.isChecked,
       isDisabled: props.isDisabled,
       isFocused: props.isFocused,
       isHidden: props.isHidden,
       isHovered,
       isPressed,
-      isSelected: props.type === 'option' && props.isSelected,
+      isSelected: type === 'option' && props.isSelected,
       isPrimary: props.appearance === 'primary',
     };
 
@@ -139,7 +145,9 @@ export default class Item extends PureComponent {
           <Content allowMultiline={this.context.shouldAllowMultilineItems}>
             {props.children}
           </Content>
-          {!!props.description && <Description>{props.description}</Description>}
+          {!!props.description && (
+            <Description>{props.description}</Description>
+          )}
         </ContentWrapper>
         {!!props.elemAfter && <After>{props.elemAfter}</After>}
       </Element>
@@ -148,10 +156,15 @@ export default class Item extends PureComponent {
     return (
       <span role="presentation">
         {props.tooltipDescription ? (
-          <Tooltip content={props.tooltipDescription} position={props.tooltipPosition}>
+          <Tooltip
+            content={props.tooltipDescription}
+            position={props.tooltipPosition}
+          >
             {element}
           </Tooltip>
-        ) : element}
+        ) : (
+          element
+        )}
       </span>
     );
   }

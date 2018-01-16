@@ -1,36 +1,63 @@
 // @flow
 import React, { PureComponent } from 'react';
-import Input from '@atlaskit/input';
-import FieldBase, { Label } from '../src';
+import { Label } from '@atlaskit/field-base';
+import Button from '@atlaskit/button';
+import Item, { ItemGroup } from '@atlaskit/item';
+import DropList from '../src';
 
 type State = {|
   eventResult: string,
 |};
 export default class BasicExample extends PureComponent<void, State> {
   state = {
-    eventResult:
-      'Click into and out of the input above to trigger onBlur & onFocus in the Fieldbase',
+    eventResult: 'Click into and out of the content to trigger event handlers',
   };
 
-  onBlur = () => {
+  onKeyDown = () => {
     this.setState({
-      eventResult: 'onBlur called from FieldBase above',
+      eventResult: 'onKeyDown called',
     });
   };
 
-  onFocus = () => {
+  onClick = () => {
     this.setState({
-      eventResult: 'onFocus called from FieldBase above',
+      eventResult: 'onClick called',
+    });
+  };
+  onOpenChange = () => {
+    this.setState({
+      eventResult: 'onOpenChange called',
+    });
+  };
+  onItemActivated = () => {
+    this.setState({
+      eventResult: 'Item onActivated called',
     });
   };
 
   render() {
     return (
       <div>
-        <Label label="With onBlur & onFocus event handlers" />
-        <FieldBase onBlur={this.onBlur} onFocus={this.onFocus}>
-          <Input isEditing />
-        </FieldBase>
+        <Label label="With event handlers" />
+        <DropList
+          appearance="default"
+          position="right top"
+          isTriggerNotTabbable
+          onOpenChange={this.onOpenChange}
+          onClick={this.onClick}
+          isOpen
+          trigger={<Button isSelected>...</Button>}
+        >
+          <ItemGroup title="Australia">
+            <Item href="//atlassian.com" target="_blank">
+              Sydney
+            </Item>
+            <Item isHidden>Hidden item</Item>
+            <Item isDisabled>Brisbane</Item>
+            <Item>Canberra</Item>
+            <Item onActivated={this.onItemActivated}>Melbourne</Item>
+          </ItemGroup>
+        </DropList>
         <div
           style={{
             borderStyle: 'dashed',
@@ -43,38 +70,29 @@ export default class BasicExample extends PureComponent<void, State> {
         >
           {this.state.eventResult}
         </div>
-        <Label label="With isDisabled" />
-        <FieldBase isDisabled>
-          <Input isEditing />
-        </FieldBase>
-        <Label label="With isInvalid" />
-        <FieldBase isInvalid invalidMessage="This is an invalid field message">
-          <Input isEditing />
-        </FieldBase>
-        <Label label="With isCompact" />
-        <FieldBase isCompact>
-          <Input isEditing />
-        </FieldBase>
-        <Label label="With isLoading" />
-        <FieldBase isLoading>
-          <Input isEditing />
-        </FieldBase>
-        <Label label="With isRequired, maxWidth(100) & isPaddingDisabled" />
-        <FieldBase isRequired maxWidth={100} isPaddingDisabled>
-          <Input isEditing />
-        </FieldBase>
-        <Label label="With appearance none" />
-        <FieldBase appearance="none">
-          <Input isEditing />
-        </FieldBase>
-        <Label label="With appearance subtle" />
-        <FieldBase appearance="subtle">
-          <Input isEditing />
-        </FieldBase>
-        <Label label="With isFitContainerWidthEnabled" />
-        <FieldBase isFitContainerWidthEnabled>
-          <Input isEditing />
-        </FieldBase>
+        <Label label="Fit Container" />
+        <DropList shouldFitContainer isOpen trigger={<Button>...</Button>}>
+          <ItemGroup title="Australia">
+            <Item>Sydney</Item>
+            <Item isHidden>Hidden item</Item>
+            <Item isDisabled>Brisbane</Item>
+            <Item>Canberra</Item>
+            <Item>Melbourne</Item>
+          </ItemGroup>
+        </DropList>
+        <Label label="Multiline Items" />
+        <DropList isOpen trigger={<Button>...</Button>}>
+          <ItemGroup>
+            <Item shouldAllowMultiline>
+              What about if we put some really long content inside this dropdown
+              menu
+            </Item>
+            <Item shouldAllowMultiline>
+              And then we see how the text is hidden, okey now its going to be
+              hidden
+            </Item>
+          </ItemGroup>
+        </DropList>
       </div>
     );
   }

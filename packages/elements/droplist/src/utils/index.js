@@ -6,7 +6,7 @@ export function getInputBackground({
   isDisabled,
   isHovered,
   isPressed,
-}) {
+}: Object) {
   let background = colors.N40;
 
   if (isHovered) background = colors.N50;
@@ -18,6 +18,6 @@ export function getInputBackground({
   return background;
 }
 
-export function getInputFill({ isChecked }) {
-  return isChecked ? colors.N0 : 'transparent';
+export function getInputFill(appearanceProps: Object) {
+  return appearanceProps.isChecked ? colors.N0 : 'transparent';
 }

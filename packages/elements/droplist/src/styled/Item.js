@@ -1,3 +1,4 @@
+// @flow
 import styled, { css } from 'styled-components';
 import { colors, fontSize, gridSize, math, themed } from '@atlaskit/theme';
 
@@ -5,21 +6,38 @@ const activeBackgroundColor = themed({ light: colors.B75, dark: colors.DN30 });
 const hoverBackgroundColor = themed({ light: colors.N20, dark: colors.DN60 });
 const selectedBackgroundColor = themed({ light: colors.N0, dark: colors.DN30 });
 
-const activePrimaryTextColor = themed({ light: colors.N800, dark: colors.DN300 });
-const defaultPrimaryTextColor = themed({ light: colors.N800, dark: colors.DN600 });
-const disabledPrimaryTextColor = themed({ light: colors.N70, dark: colors.DN70 });
-const primaryPrimaryTextColor = themed({ light: colors.B400, dark: colors.B400 });
-const selectedPrimaryTextColor = themed({ light: colors.N800, dark: colors.N800 });
+const activePrimaryTextColor = themed({
+  light: colors.N800,
+  dark: colors.DN300,
+});
+const defaultPrimaryTextColor = themed({
+  light: colors.N800,
+  dark: colors.DN600,
+});
+const disabledPrimaryTextColor = themed({
+  light: colors.N70,
+  dark: colors.DN70,
+});
+const primaryPrimaryTextColor = themed({
+  light: colors.B400,
+  dark: colors.B400,
+});
+const selectedPrimaryTextColor = themed({
+  light: colors.N800,
+  dark: colors.N800,
+});
 
 const focusedStyles = css`
-  box-shadow: 0 0 0 2px ${themed({ light: colors.B100, dark: colors.B75 })} inset;
+  box-shadow: 0 0 0 2px ${themed({ light: colors.B100, dark: colors.B75 })}
+    inset;
   outline: none;
   outline-offset: 0;
   position: relative; /* prevents bgcolor of a hovered element from obfuscating focus ring of a focused sibling element */
 `;
 
 const activeStyles = css`
-  &, &:hover {
+  &,
+  &:hover {
     background-color: ${selectedBackgroundColor};
     color: ${selectedPrimaryTextColor};
   }
@@ -33,8 +51,7 @@ const sharedStyles = props => css`
   box-sizing: border-box;
   color: ${props.isDisabled
     ? disabledPrimaryTextColor
-    : defaultPrimaryTextColor
-  };
+    : defaultPrimaryTextColor};
   cursor: ${props.isDisabled ? 'not-allowed' : 'pointer'};
   display: ${props.isHidden ? 'none' : 'flex'};
   flex-wrap: nowrap;
@@ -47,30 +64,30 @@ const sharedStyles = props => css`
     background-color: ${!props.isDisabled && hoverBackgroundColor};
     color: ${props.isDisabled
       ? disabledPrimaryTextColor
-      : defaultPrimaryTextColor
-    };
+      : defaultPrimaryTextColor};
     text-decoration: none;
 
-    ${props.isPrimary && primaryStyles}
+    ${props.isPrimary && primaryStyles};
   }
   &:active {
     background-color: ${!props.isDisabled && activeBackgroundColor};
     color: ${!props.isDisabled && activePrimaryTextColor};
 
-    ${props.isPrimary && primaryStyles}
+    ${props.isPrimary && primaryStyles};
   }
-  &:focus { ${focusedStyles} }
+  &:focus {
+    ${focusedStyles};
+  }
 
-  ${props.isFocused && focusedStyles}
-  ${props.isActive && activeStyles}
-  ${props.isPrimary && primaryStyles}
+  ${props.isFocused && focusedStyles} ${props.isActive &&
+      activeStyles} ${props.isPrimary && primaryStyles};
 `;
 
 export const Anchor = styled.a`
-  ${props => sharedStyles(props)}
+  ${props => sharedStyles(props)};
 `;
 export const Span = styled.span`
-  ${props => sharedStyles(props)}
+  ${props => sharedStyles(props)};
 `;
 
 // Checkbox/Radio wrapper -- sits left of the children
@@ -96,14 +113,20 @@ export const ContentWrapper = styled.span`
   padding: ${gridSize}px 0;
   overflow: hidden;
 
-  &:first-child { margin: 0; }
+  &:first-child {
+    margin: 0;
+  }
 `;
 export const Content = styled.span`
   flex: 1 1 auto;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  ${props => (props.allowMultiline && css`white-space: normal;`)}
+  ${props =>
+    props.allowMultiline &&
+    css`
+      white-space: normal;
+    `};
 `;
 
 // Description is a block element below the children, like a subtitle

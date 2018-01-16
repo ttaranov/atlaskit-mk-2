@@ -1,13 +1,11 @@
 # Droplist
 
-This is a base component which should be used to build all the 'dropdown' lists.
-
-## Try it out
-
-Docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
+This is a base (internal) component which should be used to build all the 'dropdown' lists.
 
 ## Installation
 
-```sh
-npm install @NAME@
-```
+npm install @atlaskit/droplist
+
+## Usage
+
+See [here](https://ak-mk-2-prod.netlify.com/mk-2/packages/elements/droplist)

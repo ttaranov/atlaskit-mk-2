@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import React, { Component, type Node } from 'react';
 import { Anchor, Span } from '../styled/Item';
 
 export const supportsVoiceOver = /Mac OS X/.test(navigator.userAgent);
@@ -15,40 +15,47 @@ export const baseTypes = {
   values: ['link', 'radio', 'checkbox', 'option'],
 };
 
-/* eslint-disable react/no-unused-prop-types, react/prefer-stateless-function */
-export default class Element extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node,
-    handleClick: PropTypes.func,
-    handleKeyPress: PropTypes.func,
-    handleMouseDown: PropTypes.func.isRequired,
-    handleMouseOut: PropTypes.func.isRequired,
-    handleMouseOver: PropTypes.func.isRequired,
-    handleMouseUp: PropTypes.func.isRequired,
-    href: PropTypes.string,
-    isActive: PropTypes.bool,
-    isChecked: PropTypes.bool,
-    isDisabled: PropTypes.bool,
-    isFocused: PropTypes.bool,
-    isHidden: PropTypes.bool,
-    isPrimary: PropTypes.bool,
-    isSelected: PropTypes.bool,
-    target: PropTypes.string,
-    title: PropTypes.string,
-    type: PropTypes.oneOf(baseTypes.values),
-  }
+type Props = {
+  children?: Node,
+  handleClick?: any => mixed,
+  handleKeyPress?: any => mixed,
+  handleMouseDown: any => mixed,
+  handleMouseOut: any => mixed,
+  handleMouseOver: any => mixed,
+  handleMouseUp: any => mixed,
+  href?: string,
+  isActive?: boolean,
+  isChecked?: boolean,
+  isDisabled?: boolean,
+  isFocused?: boolean,
+  isHidden?: boolean,
+  isPrimary?: boolean,
+  isSelected?: boolean,
+  target?: string,
+  title?: string,
+  type?: 'link' | 'radio' | 'checkbox' | 'option',
+};
 
+export default class Element extends Component<Props, void> {
   // this prevents the focus ring from appearing when the element is clicked.
   // It doesn't interfere with the onClick handler
-  handleMouseDown = (e) => {
+  handleMouseDown = (e: Event) => {
     e.preventDefault();
     this.props.handleMouseDown();
-  }
+  };
 
   render() {
     const { props } = this;
-    const { isActive, isChecked, isDisabled, isFocused, isHidden, isSelected, isPrimary } = props;
-
+    const {
+      isActive,
+      isChecked,
+      isDisabled,
+      isFocused,
+      isHidden,
+      isSelected,
+      isPrimary,
+    } = props;
+    const type: string = this.props.type || '';
     const appearanceProps = {
       isActive,
       isChecked,
@@ -73,18 +80,26 @@ export default class Element extends PureComponent {
       onMouseOut: props.handleMouseOut,
       onMouseOver: props.handleMouseOver,
       onMouseUp: props.handleMouseUp,
-      role: ariaRoles[props.type],
+      role: ariaRoles[type],
       title: props.title,
       tabIndex: props.type === 'option' ? null : 0,
     };
-    const testingProps = process.env.NODE_ENV === 'test' ? {
-      'data-test-active': isActive,
-      'data-test-checked': isChecked,
-      'data-test-disabled': isDisabled,
-      'data-test-hidden': isHidden,
-      'data-test-selected': isSelected,
-    } : {};
-    const consolidatedProps = { ...appearanceProps, ...ariaProps, ...commonProps, ...testingProps };
+    const testingProps =
+      process.env.NODE_ENV === 'test'
+        ? {
+            'data-test-active': isActive,
+            'data-test-checked': isChecked,
+            'data-test-disabled': isDisabled,
+            'data-test-hidden': isHidden,
+            'data-test-selected': isSelected,
+          }
+        : {};
+    const consolidatedProps = {
+      ...appearanceProps,
+      ...ariaProps,
+      ...commonProps,
+      ...testingProps,
+    };
 
     if (props.href && !isDisabled) {
       return (
@@ -94,10 +109,6 @@ export default class Element extends PureComponent {
       );
     }
 
-    return (
-      <Span {...consolidatedProps}>
-        {props.children}
-      </Span>
-    );
+    return <Span {...consolidatedProps}>{props.children}</Span>;
   }
 }

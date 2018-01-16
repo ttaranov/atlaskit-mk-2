@@ -1,3 +1,4 @@
+// @flow
 import styled, { css } from 'styled-components';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
@@ -10,8 +11,8 @@ const getMaxHeight = ({ isTall, maxHeight, ...rest }) => {
 
   const heightWithoutPadding = 17;
   const verticalPadding = gridSize(rest);
-  const height = heightWithoutPadding + (verticalPadding * 2);
-  const defaultMaxHeight = (9.5 * height) + (verticalPadding / 2);
+  const height = heightWithoutPadding + verticalPadding * 2;
+  const defaultMaxHeight = 9.5 * height + verticalPadding / 2;
 
   return isTall ? 'none' : `${defaultMaxHeight}px`;
 };
@@ -19,15 +20,20 @@ const getMaxHeight = ({ isTall, maxHeight, ...rest }) => {
 export default styled.div`
   display: inline-flex;
 
-  ${props => (props.fit && `
+  ${props =>
+    props.fit &&
+    `
     display: block;
     flex: 1 1 auto;
-  `)}
+  `};
 `;
 
 const backgroundColor = themed({ light: colors.N0, dark: colors.DN50 });
 const boxShadow = css`
-  0 ${math.divide(gridSize, 2)}px ${gridSize}px -${math.divide(gridSize, 4)}px ${colors.N50A},
+  0 ${math.divide(gridSize, 2)}px ${gridSize}px -${math.divide(
+  gridSize,
+  4,
+)}px ${colors.N50A},
   0 0 1px ${colors.N60A}
 `;
 
@@ -54,8 +60,10 @@ export const Trigger = styled.div`
   transition-duration: 0.2s;
   transition: box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
 
-  ${props => (props.fit && `
+  ${props =>
+    props.fit &&
+    `
     box-sizing: border-box;
     display: block;
-  `)}
+  `};
 `;
