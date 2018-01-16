@@ -1,5 +1,7 @@
 # @atlaskit/website
 
+## 1.3.2
+
 ## 1.3.1
 - [patch] package bump to resolve discrepencies with npm [be745da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/be745da)
 
