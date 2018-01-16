@@ -1,5 +1,6 @@
+// @flow
 import { shallow } from 'enzyme';
-import * as React from 'react';
+import React from 'react';
 import Code from '../src/Code';
 
 const input = `

@@ -1,54 +1,51 @@
-import {
-  akCodeFontFamily,
-  akBorderRadius,
-  akGridSize,
-} from '@atlaskit/util-shared-styles';
+// @flow
+import { codeFontFamily, borderRadius, gridSize } from '@atlaskit/theme';
 
 import { defaultColors } from './defaultTheme';
 
-export interface Theme {
-  lineNumberColor?: string;
-  lineNumberBgColor?: string;
-  backgroundColor?: string;
-  textColor?: string;
-  substringColor?: string;
-  keywordColor?: string;
-  attributeColor?: string;
-  selectorTagColor?: string;
-  docTagColor?: string;
-  nameColor?: string;
-  builtInColor?: string;
-  literalColor?: string;
-  bulletColor?: string;
-  codeColor?: string;
-  additionColor?: string;
-  regexpColor?: string;
-  symbolColor?: string;
-  variableColor?: string;
-  templateVariableColor?: string;
-  linkColor?: string;
-  selectorAttributeColor?: string;
-  selectorPseudoColor?: string;
-  typeColor?: string;
-  stringColor?: string;
-  selectorIdColor?: string;
-  selectorClassColor?: string;
-  quoteColor?: string;
-  templateTagColor?: string;
-  deletionColor?: string;
-  titleColor?: string;
-  sectionColor?: string;
-  commentColor?: string;
-  metaKeywordColor?: string;
-  metaColor?: string;
-  functionColor?: string;
-  numberColor?: string;
-}
+export type Theme = {
+  lineNumberColor?: string,
+  lineNumberBgColor?: string,
+  backgroundColor?: string,
+  textColor?: string,
+  substringColor?: string,
+  keywordColor?: string,
+  attributeColor?: string,
+  selectorTagColor?: string,
+  docTagColor?: string,
+  nameColor?: string,
+  builtInColor?: string,
+  literalColor?: string,
+  bulletColor?: string,
+  codeColor?: string,
+  additionColor?: string,
+  regexpColor?: string,
+  symbolColor?: string,
+  variableColor?: string,
+  templateVariableColor?: string,
+  linkColor?: string,
+  selectorAttributeColor?: string,
+  selectorPseudoColor?: string,
+  typeColor?: string,
+  stringColor?: string,
+  selectorIdColor?: string,
+  selectorClassColor?: string,
+  quoteColor?: string,
+  templateTagColor?: string,
+  deletionColor?: string,
+  titleColor?: string,
+  sectionColor?: string,
+  commentColor?: string,
+  metaKeywordColor?: string,
+  metaColor?: string,
+  functionColor?: string,
+  numberColor?: string,
+};
 
 const codeContainerStyle = {
-  fontFamily: akCodeFontFamily,
+  fontFamily: codeFontFamily,
   fontSize: '12px',
-  top: akGridSize,
+  top: gridSize(),
   left: '16px', // 2x akGridSize
   position: 'relative',
   paddingRight: '16px', // 2x akGridSize
@@ -60,7 +57,7 @@ const lineNumberContainerStyle = (theme: Theme) => ({
   lineHeight: '20px',
   color: theme.lineNumberColor,
   backgroundColor: theme.lineNumberBgColor,
-  padding: akGridSize,
+  padding: gridSize(),
   float: 'left',
   textAlign: 'right',
   userSelect: 'none',
@@ -69,12 +66,12 @@ const lineNumberContainerStyle = (theme: Theme) => ({
 const codeBlockStyle = (theme: Theme) => ({
   // These properties map to highlightjs css selectors
   hljs: {
-    fontFamily: akCodeFontFamily,
+    fontFamily: codeFontFamily,
     fontSize: '12px',
     lineHeight: '20px',
     background: theme.backgroundColor,
     color: theme.textColor,
-    borderRadius: akBorderRadius,
+    borderRadius: borderRadius(),
     display: 'block',
     overflowX: 'auto',
     whiteSpace: 'pre',
@@ -165,7 +162,7 @@ const codeBlockStyle = (theme: Theme) => ({
   },
   'hljs-comment': {
     color: theme.commentColor,
-    fontFamily: `SFMono-MediumItalic, ${akCodeFontFamily}`,
+    fontFamily: `SFMono-MediumItalic, ${codeFontFamily}`,
     fontStyle: 'italic',
   },
   'hljs-meta-keyword': {
@@ -190,11 +187,11 @@ const codeBlockStyle = (theme: Theme) => ({
 
 const inlineCodeStyle = (theme: Theme) => ({
   hljs: {
-    fontFamily: akCodeFontFamily,
+    fontFamily: codeFontFamily,
     fontSize: '12px',
     background: theme.backgroundColor,
     color: theme.textColor,
-    borderRadius: akBorderRadius,
+    borderRadius: borderRadius(),
     display: 'inline',
     overflowX: 'auto',
     padding: '2px 4px',

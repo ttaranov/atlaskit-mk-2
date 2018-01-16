@@ -1,25 +1,24 @@
-import * as React from 'react';
-import { PureComponent } from 'react';
-import * as PropTypes from 'prop-types';
+// @flow
+import React, { PureComponent } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { normalizeLanguage, languageList } from './supportedLanguages';
-import { Theme, applyTheme } from './themes/themeBuilder';
+import { normalizeLanguage } from './supportedLanguages';
+import { type Theme, applyTheme } from './themes/themeBuilder';
 
-export interface CodeProps {
+type CodeProps = {
   /** The code to be formatted */
-  text: string;
+  text: string,
   /** The language in which the code is written */
-  language?: string;
+  language?: string,
   /** A custom theme to be applied, implements the Theme interface */
-  theme?: Theme;
-}
+  theme?: Theme,
+};
 
 export default class Code extends PureComponent<CodeProps> {
-  static propTypes = {
-    text: PropTypes.string.isRequired,
-    language: PropTypes.oneOf(languageList),
-    theme: PropTypes.object,
-  };
+  // static propTypes = {
+  //   text: PropTypes.string.isRequired,
+  //   language: PropTypes.oneOf(languageList),
+  //   theme: PropTypes.object,
+  // };
 
   static defaultProps = {
     language: 'md',

@@ -1,3 +1,4 @@
+// @flow
 export const SUPPORTED_LANGUAGES = [
   {
     name: 'PHP',
@@ -387,7 +388,7 @@ export const languageList: string[] = SUPPORTED_LANGUAGES.reduce(
 
 export function normalizeLanguage(language?: string): string {
   const match = SUPPORTED_LANGUAGES.filter(val => {
-    return val.name === language || val.alias.indexOf(language!) !== -1;
+    return val.name === language || val.alias.indexOf(language) !== -1;
   }).shift();
   return match ? match.value : 'md'; // default to markdown because highlightjs nas no option for plain text
 }
