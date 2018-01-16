@@ -47,8 +47,16 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
   secondaryToolbarComponent({ editorView, disabled }) {
     return (
       <TaskDecisionToolbarGroup>
-        <ToolbarDecision editorView={editorView} isDisabled={disabled} />
-        <ToolbarTask editorView={editorView} isDisabled={disabled} />
+        <ToolbarDecision
+          editorView={editorView}
+          isDisabled={disabled}
+          isReducedSpacing={true}
+        />
+        <ToolbarTask
+          editorView={editorView}
+          isDisabled={disabled}
+          isReducedSpacing={true}
+        />
       </TaskDecisionToolbarGroup>
     );
   },

@@ -31,7 +31,7 @@ const selectItems: Array<GroupType> = [
   },
 ];
 
-export default (
+export default () => (
   <Select
     items={selectItems}
     label="Select users to invite"

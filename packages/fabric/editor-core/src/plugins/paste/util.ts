@@ -1,5 +1,3 @@
-import { Schema } from 'prosemirror-model';
-
 export const isSingleLine = (text: string): boolean => {
   return !!text && text.trim().split('\n').length === 1;
 };
@@ -42,18 +40,6 @@ export function isCode(str) {
     }
   });
   return 4 <= weight && weight >= 0.5 * lines.length;
-}
-
-export function filterMdToPmSchemaMapping(schema: Schema, map) {
-  return Object.keys(map).reduce((newMap, key) => {
-    const value = map[key];
-    const block = value.block || value.node;
-    const mark = value.mark;
-    if ((block && schema.nodes[block]) || (mark && schema.marks[mark])) {
-      newMap[key] = value;
-    }
-    return newMap;
-  }, {});
 }
 
 // @see https://product-fabric.atlassian.net/browse/ED-3159

@@ -1,5 +1,11 @@
 # @atlaskit/multi-select
 
+## 8.0.3
+- [patch] Resolved low hanging flow errors in field-base field-text comment icon item and website, $ [007de27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/007de27)
+- [patch] Fix regression from migration in example 10 [a46dfd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a46dfd2)
+
+## 8.0.2
+
 ## 8.0.1
 - [patch] Manually bumped package ver to account for desync between ak and ak mk 2 versions [5518730](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5518730)
 

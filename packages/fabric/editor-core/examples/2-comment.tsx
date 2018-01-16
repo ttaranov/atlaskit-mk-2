@@ -89,6 +89,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
               mentionProvider,
               emojiProvider,
               mediaProvider,
+              activityProvider,
               taskDecisionProvider,
               contextIdentifierProvider,
               imageUploadProvider,
@@ -121,6 +122,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     mentionProvider={mentionProvider}
                     emojiProvider={emojiProvider}
                     mediaProvider={mediaProvider}
+                    activityProvider={activityProvider}
                     taskDecisionProvider={taskDecisionProvider}
                     contextIdentifierProvider={contextIdentifierProvider}
                     legacyImageUploadProvider={imageUploadProvider}

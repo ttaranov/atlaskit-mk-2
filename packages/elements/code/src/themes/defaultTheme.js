@@ -1,0 +1,43 @@
+// @flow
+import { colors } from '@atlaskit/theme';
+
+import type { Theme } from './themeBuilder';
+
+export const defaultColors: Theme = {
+  lineNumberColor: colors.N90,
+  lineNumberBgColor: colors.N30,
+  backgroundColor: colors.N20,
+  textColor: colors.N800,
+  substringColor: colors.N400,
+  keywordColor: colors.B500,
+  attributeColor: colors.T500,
+  selectorTagColor: colors.B500,
+  docTagColor: colors.Y300,
+  nameColor: colors.B500,
+  builtInColor: colors.B500,
+  literalColor: colors.B500,
+  bulletColor: colors.B500,
+  codeColor: colors.B500,
+  additionColor: colors.B500,
+  regexpColor: colors.T300,
+  symbolColor: colors.T300,
+  variableColor: colors.T300,
+  templateVariableColor: colors.T300,
+  linkColor: colors.P300,
+  selectorAttributeColor: colors.T300,
+  selectorPseudoColor: colors.T300,
+  typeColor: colors.T500,
+  stringColor: colors.G400,
+  selectorIdColor: colors.T500,
+  selectorClassColor: colors.T500,
+  quoteColor: colors.T500,
+  templateTagColor: colors.T500,
+  deletionColor: colors.T500,
+  titleColor: colors.P300,
+  sectionColor: colors.P300,
+  commentColor: colors.N400,
+  metaKeywordColor: colors.G400,
+  metaColor: colors.N400,
+  functionColor: colors.N800,
+  numberColor: colors.B500,
+};

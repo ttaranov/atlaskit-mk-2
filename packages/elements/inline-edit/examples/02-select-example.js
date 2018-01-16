@@ -5,7 +5,7 @@ import Group from '@atlaskit/tag-group';
 import Tag from '@atlaskit/tag';
 import InlineEditor from '../src';
 
-const MultiSelectItems = [
+const MultiSelectItems: Array<any> = [
   { content: 'Apple', value: 'Apple' },
   { content: 'Banana', value: 'Banana' },
   { content: 'Cherry', value: 'Cherry' },
@@ -43,6 +43,7 @@ export default class SelectExample extends Component<void, State> {
   renderEditView = () => (
     <MultiSelect
       defaultSelected={MultiSelectItems}
+      // $FlowFixMe TEMPORARY
       items={MultiSelectItems}
       isDefaultOpen
       shouldFitContainer

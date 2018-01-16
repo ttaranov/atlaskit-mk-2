@@ -66,14 +66,18 @@ const commonCell = css`
     `};
 `;
 
+export const OverflowContainer = styled.span`
+  ${props =>
+    props.singleLine &&
+    css`
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    `};
+`;
+
 export const Cell = styled.div`
   ${commonCell} ${props =>
-      props.singleLine &&
-      css`
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      `} ${props =>
       props.indentLevel &&
       css`
         padding-left: ${defaultToPx(indentWidth * props.indentLevel)};

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/icon",
-  "version": "10.7.0",
+  "version": "10.7.1",
   "description": "A React package that contains icons",
   "license": "SEE LICENSE IN LICENSE",
   "main": "es5/index.js",
@@ -25,7 +25,7 @@
     "build:babel:cjs": "NODE_ENV=production BABEL_ENV=production:cjs babel src -d es5"
   },
   "dependencies": {
-    "@atlaskit/theme": "^2.3.0",
+    "@atlaskit/theme": "^2.3.1",
     "babel-runtime": "^6.26.0",
     "styled-components": "^1.4.6",
     "uuid": "^3.1.0"
@@ -34,11 +34,11 @@
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^6.3.0",
+    "@atlaskit/button": "^6.3.1",
     "@atlaskit/docs": "^2.4.0",
-    "@atlaskit/field-text": "^4.1.2",
-    "@atlaskit/modal-dialog": "^3.3.0",
-    "@atlaskit/tooltip": "^8.1.0",
+    "@atlaskit/field-text": "^4.1.5",
+    "@atlaskit/modal-dialog": "^3.3.3",
+    "@atlaskit/tooltip": "^8.1.1",
     "babel-core": "^6.26.0",
     "classnames": "^2.2.5",
     "enzyme": "^3.3.0",

@@ -8,7 +8,7 @@ export const Header = styled.div`
   vertical-align: middle;
 
   img {
-    display: flex;
+    height: 24px;
     padding: ${padding / 2}px;
   }
 `;

@@ -9,8 +9,6 @@ export type Coordniates = {
   bottom: number;
 };
 
-export const DEFAULT_HEIGHT = 24;
-
 export interface Props {
   target?: HTMLElement;
   offset?: number[];
@@ -26,7 +24,7 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
       target,
       offset,
       fitWidth,
-      fitHeight = DEFAULT_HEIGHT,
+      fitHeight,
       onPositionCalculated,
     } = this.props;
 

@@ -13,31 +13,40 @@ export default md`
 
   Text Field Area exports both a stateful default component, and a stateless
   component. The stateful component manages the value of the input for you
-  and passes all other props on to the stateless version. 
+  and passes all other props on to the stateless version.
 
-  ${(
-    <Example
-      Component={require('../examples/00-basic-usage').default}
-      title="Basic"
-      source={require('!!raw-loader!../examples/00-basic-usage')}
-    />
-  )}
+  ${
+    (
+      // $FlowFixMe TEMPORARY
+      <Example
+        Component={require('../examples/00-basic-usage').default}
+        title="Basic"
+        source={require('!!raw-loader!../examples/00-basic-usage')}
+      />
+    )
+  }
 
-  ${(
-    <Example
-      Component={require('../examples/01-stateless-example').default}
-      title="Stateless Example"
-      source={require('!!raw-loader!../examples/01-stateless-example')}
-    />
-  )}
+  ${
+    (
+      // $FlowFixMe TEMPORARY
+      <Example
+        Component={require('../examples/01-stateless-example').default}
+        title="Stateless Example"
+        source={require('!!raw-loader!../examples/01-stateless-example')}
+      />
+    )
+  }
 
-  ${(
-    <Example
-      Component={require('../examples/02-form-example').default}
-      title="Form Example"
-      source={require('!!raw-loader!../examples/02-form-example')}
-    />
-  )}
+  ${
+    (
+      // $FlowFixMe TEMPORARY
+      <Example
+        Component={require('../examples/02-form-example').default}
+        title="Form Example"
+        source={require('!!raw-loader!../examples/02-form-example')}
+      />
+    )
+  }
 
   ${(
     <Props

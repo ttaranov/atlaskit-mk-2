@@ -28,7 +28,7 @@ export type ItemType = {
    tag instead of in the drop list. */
   isSelected?: boolean,
   /** Element before item. Used to provide avatar when desired. */
-  // elemBefore?: Node,
+  elemBefore?: Node,
   /** Object which will pass on some properties to the @atlaskit/tag element when selected. */
   tag?: TagType, // eslint-disable-line react/no-unused-prop-types
 };

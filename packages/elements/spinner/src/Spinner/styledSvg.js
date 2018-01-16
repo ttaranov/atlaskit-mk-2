@@ -18,6 +18,7 @@ export const getStrokeColor = ({
   ...props
 }: {
   invertColor?: boolean,
+  // $FlowFixMe TEMPORARY
 }): string => (invertColor ? spinnerColorInverted(props) : spinnerColor(props));
 
 export const svgStyles = css`

@@ -81,7 +81,9 @@ class IconAllExample extends Component<{}, State> {
           isLabelHidden
           key="Icon search"
           label=""
-          onChange={event => this.updateQuery(event.target.value)}
+          onChange={(event: SyntheticEvent<HTMLInputElement>) =>
+            this.updateQuery(event.currentTarget.value)
+          }
           placeholder="Search for an icon..."
           shouldFitContainer
           value={this.state.query}

@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import Paginate from '../';
+import Paginate from '../src';
 
 export default () => (
   <div>

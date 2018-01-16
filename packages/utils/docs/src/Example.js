@@ -6,7 +6,7 @@ import { AkCodeBlock } from '@atlaskit/code';
 import ToggleIcon from '@atlaskit/icon/glyph/code';
 
 type Props = {
-  Component: ComponentType<*>,
+  Component: ComponentType<any>,
   language: string,
   source: string,
   title: string,

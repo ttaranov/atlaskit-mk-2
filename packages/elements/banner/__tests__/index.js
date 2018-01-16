@@ -23,7 +23,9 @@ describe('banner', () => {
         expect(mount(<Banner />).prop('appearance')).toBe('warning'));
       it('should apply error styles when error appearance supplied', () => {
         const props = { appearance: 'error' };
+        // $FlowFixMe TEMPORARY FIXME
         expect(backgroundColor(props)).toBe(testErrorBackgroundColor);
+        // $FlowFixMe TEMPORARY FIXME
         expect(textColor(props)).toBe(testErrorTextColor);
       });
     });

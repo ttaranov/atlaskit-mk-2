@@ -9,6 +9,7 @@ import ToolbarButton from '../ToolbarButton';
 export interface Props {
   editorView: EditorView;
   pluginState: ImageUploadState;
+  isReducedSpacing?: boolean;
 }
 
 export interface State {
@@ -34,6 +35,7 @@ export default class ToolbarImage extends PureComponent<Props, State> {
         onClick={this.handleInsertImage}
         title="Insert image"
         disabled={disabled}
+        spacing={this.props.isReducedSpacing ? 'none' : 'default'}
         iconBefore={<ImageIcon label="Add image" />}
       />
     );

@@ -3,7 +3,7 @@
 import { ClientBasedAuth } from '@atlaskit/media-core';
 export const userAuthProvider = (): Promise<ClientBasedAuth> => {
   const url =
-    'https://media-playground.internal.app.dev.atlassian.io/token/user/impersonation';
+    'https://media-playground.dev.atl-paas.net/token/user/impersonation';
 
   return fetch(url, {
     method: 'GET',

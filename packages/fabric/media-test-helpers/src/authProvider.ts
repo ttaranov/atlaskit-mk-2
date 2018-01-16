@@ -3,10 +3,8 @@ import { defaultCollectionName } from './collectionNames';
 import { Auth, AuthProvider, AuthContext } from '@atlaskit/media-core';
 
 const cachedAuths: { [key: string]: Auth } = {};
-const authProviderBaseURL =
-  'https://media-playground.internal.app.dev.atlassian.io';
-export const userAuthProviderBaseURL =
-  'https://dt-api.internal.app.dev.atlassian.io';
+const authProviderBaseURL = 'https://media-playground.dev.atl-paas.net';
+export const userAuthProviderBaseURL = 'https://dt-api.dev.atl-paas.net';
 
 export class StoryBookAuthProvider {
   static create(
