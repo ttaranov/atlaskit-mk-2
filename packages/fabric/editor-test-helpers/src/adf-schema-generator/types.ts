@@ -24,7 +24,7 @@ export interface ArrayNode {
 
 export interface ObjectNode {
   type: 'object';
-  properties: { [key: string]: SchemaNode };
+  properties: { [key: string]: SchemaNode } & { type: EnumNode };
   required: string[];
 }
 
