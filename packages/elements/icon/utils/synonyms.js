@@ -126,6 +126,7 @@ module.exports = {
   'editor/remove': ['bin', 'trash', 'recycle', 'delete'],
   'editor/search': ['magnifying', 'glass', 'find'],
   'editor/strikethrough': ['strikethrough', 'type', 'font', 'typography'],
+  'editor/success': ['luck', 'achievement'],
   'editor/table': ['grid'],
   'editor/task': ['checkbox', 'tick'],
   'editor/text-color': ['font'],
