@@ -46,7 +46,7 @@
     "build:layer": "                         cd packages/elements/layer && yarn build"
   },
   "bolt": {
-    "version": "^0.18.3",
+    "version": "^0.18.3 || ^0.19.0",
     "workspaces": [
       "build/*",
       "packages/utils/*",
