@@ -23,6 +23,8 @@ export declare function withAnalytics<C>(
   withDelegation?: boolean,
 ): C;
 
+export declare function cleanProps<Function>(props: Object): Function;
+
 export type FireAnalyticsEvent = (name: string, data: Object) => any;
 export type DelegateAnalyticsEvent = (
   analyticsId: string,
