@@ -2,7 +2,6 @@
 import React, { PureComponent, type ComponentType, type Element } from 'react';
 import GlobalItem from './GlobalItem';
 import DrawerTrigger from './DrawerTrigger';
-import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActionsList from './GlobalPrimaryActionsList';
 import GlobalPrimaryActionsInner from '../styled/GlobalPrimaryActionsInner';
 import GlobalPrimaryActionsPrimaryItem from '../styled/GlobalPrimaryActionsPrimaryItem';
@@ -22,10 +21,6 @@ type Props = {
 };
 
 export default class GlobalPrimaryActions extends PureComponent<Props> {
-  static defaultProps = {
-    linkComponent: DefaultLinkComponent,
-  };
-
   render() {
     const {
       actions,

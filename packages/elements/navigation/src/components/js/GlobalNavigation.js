@@ -3,7 +3,6 @@ import React, { PureComponent, type Element, type ComponentType } from 'react';
 import { WithRootTheme } from '../../theme/util';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
 import GlobalSecondaryActions from './GlobalSecondaryActions';
-import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalNavigationInner from '../styled/GlobalNavigationInner';
 import GlobalNavigationPrimaryContainer from '../styled/GlobalNavigationPrimaryContainer';
 import GlobalNavigationSecondaryContainer from '../styled/GlobalNavigationSecondaryContainer';
@@ -44,7 +43,6 @@ type Props = {
 
 export default class GlobalNavigation extends PureComponent<Props> {
   static defaultProps = {
-    linkComponent: DefaultLinkComponent,
     primaryIconAppearance: 'round',
     secondaryActions: [],
     theme: presets.global,
