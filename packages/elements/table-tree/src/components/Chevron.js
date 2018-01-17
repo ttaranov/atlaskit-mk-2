@@ -9,7 +9,6 @@ type Props = {
   isExpanded: boolean,
   ariaControls: string,
   onExpandToggle?: Function,
-  key?: string,
 };
 
 type State = {
