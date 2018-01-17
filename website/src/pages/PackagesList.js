@@ -148,7 +148,6 @@ export default function PackagesList() {
       </Section>
     ),
   });
-  console.log('Hello');
   return (
     <Page width="large">
       <Title>All Packages</Title>
