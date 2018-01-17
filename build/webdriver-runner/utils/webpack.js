@@ -48,7 +48,6 @@ async function startDevServer() {
   const includePatterns = workspacesGlob ? false : true; // if glob exists we just want to show what matches it
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
   const workspaces = await bolt.getWorkspaces();
-  console.log('helo');
   const filteredWorkspaces = workspacesGlob
     ? workspacesGlob.map(package =>
         workspaces.filter(ws =>
@@ -61,7 +60,6 @@ async function startDevServer() {
   const globs = workspacesGlob
     ? utils.createWorkspacesGlob(_.flatten(filteredWorkspaces), projectRoot)
     : utils.createDefaultGlob();
-  console.log('globs', globs);
   if (!globs.length) {
     print(
       errorMsg({
