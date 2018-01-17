@@ -47,7 +47,7 @@ export type WithSortedPageRowsProps = {
 export default function withSortedPageRows(
   WrappedComponent: ComponentType<any>,
 ){
-  return class extends Component<any> {
+  return class WithSortedPageRows extends Component<any> {
     componentWillMount() {
       validateSortKey(this.props.sortKey, this.props.head);
     }

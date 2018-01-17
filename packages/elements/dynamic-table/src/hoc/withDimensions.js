@@ -17,7 +17,7 @@ type Props = {
 export default function withDimensions<WrappedComponentProps: {}>(
   WrappedComponent: ComponentType<WrappedComponentProps>,
 ): ComponentType<$Diff<WrappedComponentProps, WithDimensionsProps>> {
-  return class extends Component<any, State> {
+  return class WithDimensions extends Component<any, State> {
     ref: ?HTMLElement;
 
     state = {

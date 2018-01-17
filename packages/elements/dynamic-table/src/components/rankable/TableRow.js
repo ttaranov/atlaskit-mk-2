@@ -41,6 +41,7 @@ class RankableTableRow extends Component<Props, {}> {
           style={{...provided.draggableProps.style, ...inlineStyle}}
           isRanking={isRanking}
           isRankingItem={snapshot.isDragging}
+          key={0}
         >
         {cells.map((cell, cellIndex) => {
           const headCell = (head || { cells: [] }).cells[cellIndex];
@@ -55,7 +56,7 @@ class RankableTableRow extends Component<Props, {}> {
         })}
       </RankableTableBodyRow>,
    
-      provided.placeholder ? <tr>
+      provided.placeholder ? <tr key={1}>
         <RowPlaceholderCell colSpan={cells.length}>
           <div style={{width: refWidth, height: refHeight}}>
             {provided.placeholder}
