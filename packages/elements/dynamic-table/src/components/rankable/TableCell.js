@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { RankableTableBodyCell } from '../../styled/rankable/TableCell';
+import { RankableTableBodyCell, RankableTableBodyCellContent } from '../../styled/rankable/TableCell';
 import type { HeadCellType, RowCellType } from '../../types';
 import withDimensions, {
   type WithDimensionsProps,
@@ -12,6 +12,8 @@ type Props = {
   isFixedSize: boolean,
   isRanking: boolean,
 } & WithDimensionsProps;
+
+const stopPropagation = e => e.stopPropagation();
 
 class RankableTableCell extends Component<Props, {}> {
   render() {
@@ -37,7 +39,12 @@ class RankableTableCell extends Component<Props, {}> {
         style={inlineStyles}
         innerRef={innerRef}
       >
-        {content}
+        <RankableTableBodyCellContent
+          onKeyDown={stopPropagation}
+          role="presentation"
+        >
+          {content}
+        </RankableTableBodyCellContent>
       </RankableTableBodyCell>
     );
   }

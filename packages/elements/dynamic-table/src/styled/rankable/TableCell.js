@@ -11,3 +11,7 @@ isRanking &&
 export const RankableTableBodyCell = styled(TableBodyCell)`
   ${props => rankableStyles(props)}
 `;
+
+export const RankableTableBodyCellContent = styled.div`
+  display: inline-block;
+`;
