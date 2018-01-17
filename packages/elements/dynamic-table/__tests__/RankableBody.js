@@ -1,18 +1,8 @@
 // @flow
 import React from 'react';
 import { mount } from 'enzyme';
-import { PaginationStateless } from '@atlaskit/pagination';
-import TableHead from '../src/components/TableHead';
-import {
-  EmptyViewContainer,
-  EmptyViewWithFixedHeight,
-} from '../src/styled/EmptyBody';
 import Body from '../src/components/Body';
 import RankableBody from '../src/components/rankable/Body';
-import LoadingContainer from '../src/components/LoadingContainer';
-import LoadingContainerAdvanced from '../src/components/LoadingContainerAdvanced';
-import { Caption } from '../src/styled/DynamicTable';
-import DynamicTable, { DynamicTableStateless } from '../src';
 
 import { name } from '../package.json';
 
