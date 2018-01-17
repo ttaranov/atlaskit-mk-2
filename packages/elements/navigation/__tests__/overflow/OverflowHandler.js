@@ -115,11 +115,13 @@ describe('<AkCollapseOverflow />', () => {
         itemHeights: [10, 10, 10, 10, 10, 10, 10],
         nonItemHeight: 32,
       });
+      wrapper.update();
 
       expect(instance.state.breakAt).toEqual({ group: 0, item: 0 });
       expect(wrapper.find(OverflowDropdown).length).toBe(1);
 
       instance.handleAvailableHeightChange(999);
+      wrapper.update();
       expect(wrapper.find(OverflowDropdown).length).toBe(0);
     });
   });
