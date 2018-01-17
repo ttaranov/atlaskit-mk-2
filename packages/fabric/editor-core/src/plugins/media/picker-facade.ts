@@ -69,7 +69,7 @@ export default class PickerFacade {
       if (contextConfig.userAuthProvider) {
         componentConfig = { userAuthProvider: contextConfig.userAuthProvider };
       } else {
-        pickerType = 'browser';
+        pickerType = 'broser';
       }
     }
 
@@ -321,7 +321,15 @@ export default class PickerFacade {
 
     if (preview !== undefined) {
       const state = this.newState(file, 'uploading');
-      state.thumbnail = preview;
+      const { width, height } = preview['dimensions']
+        ? preview['dimensions']
+        : { width: undefined, height: undefined };
+
+      state.thumbnail = {
+        src: preview.src,
+        width,
+        height,
+      };
       this.stateManager.updateState(state.id, state);
     }
   };
