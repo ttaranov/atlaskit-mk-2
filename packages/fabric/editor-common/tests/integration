@@ -1,0 +1,23 @@
+// @flow
+
+import { BrowserTestCase } from '../../../../../build/webdriver-runner/runner';
+
+//TODO: Fix flow and lint
+// $FlowFixMe
+BrowserTestCase(
+  'should skip test on one browser',
+  async client => {
+    await client.url('http://google.com/');
+    const title = await client.getTitle();
+    // eslint-disable-next-line
+    expect(title).toBe('Google');
+  },
+  { skip: ['firefox'] },
+);
+
+BrowserTestCase('more tests', async client => {
+  await client.url('http://google.com/');
+  const title = await client.getTitle();
+  // eslint-disable-next-line
+  expect(title).toBe('Google');
+});
