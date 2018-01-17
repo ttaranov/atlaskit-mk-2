@@ -1,4 +1,4 @@
-//TODO :remove require webdriverio
+//TODO :move this to a new npm-pkg
 const webdriverio = require('webdriverio');
 
 export default class Page {

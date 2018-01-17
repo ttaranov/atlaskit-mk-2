@@ -1,11 +1,9 @@
-const jestPackageJson = require('./../../package.json').jest;
-const path = require('path');
 const child = require('child_process');
 const writeJsonFile = require('write-json-file');
 const browserstack = require('./utils/browserstack');
 const selenium = require('./utils/selenium');
 const webpack = require('./utils/webpack');
-const package = process.argv[2];
+const jestPackageJson = require('../../jest.config');
 
 async function writeFileToJson() {
   const { testRegex, ...newConfig } = jestPackageJson;
@@ -13,14 +11,12 @@ async function writeFileToJson() {
   newConfig['testMatch'] = [
     '<rootDir>/packages/**/**/tests/integration/*.(js|jsx)',
   ];
-  newConfig['globals']['__baseUrl__'] = 'http://google.com';
-  newConfig['globals']['browser'] = ['chrome'];
-  writeJsonFile(
-    './build/bolt-webdriver-runner/testConfig.json',
-    newConfig,
-  ).then(() => {
-    console.log('Build config');
-  });
+  newConfig['globals']['__baseUrl__'] = 'http://localhost:9000';
+  writeJsonFile('./build/webdriver-runner/testConfig.json', newConfig).then(
+    () => {
+      console.log('Build config');
+    },
+  );
 }
 
 async function setupAndTest() {
@@ -50,7 +46,7 @@ async function setupAndTestAll() {
 }
 
 function runTests() {
-  let cmd = 'jest -c ./build/bolt-webdriver-runner/testConfig.json';
+  let cmd = 'jest -c ./build/webdriver-runner/testConfig.json';
   tests = child.spawn(cmd, {
     stdio: 'inherit',
     shell: true,
