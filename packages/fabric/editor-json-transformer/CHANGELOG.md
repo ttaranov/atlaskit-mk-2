@@ -1,5 +1,7 @@
 # @atlaskit/editor-json-transformer
 
+## 2.5.1
+
 ## 2.5.0
 - [minor] Implement JSONTransformer::parse to enable ADF -> PM conversion [c8c3c9e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8c3c9e)
 

@@ -1,5 +1,7 @@
 # @atlaskit/conversation
 
+## 4.7.1
+
 ## 4.7.0
 - [minor] Add emoji/mention support [846baed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/846baed)
 

@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 61.3.9
+
 ## 61.3.8
 - [patch] Keymaps not supported on windows should not be visible in help dialog on windows. [6872f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6872f52)
 
