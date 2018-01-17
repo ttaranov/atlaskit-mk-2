@@ -20,7 +20,6 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/button": "^6.3.0",
-    "@atlaskit/dropdown-menu": "^3.5.0",
     "@atlaskit/pagination": "^3.6.0",
     "@atlaskit/spinner": "^4.1.0",
     "@atlaskit/theme": "^2.3.0",
@@ -35,8 +34,9 @@
     "react-dom": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^8.3.11",
+    "@atlaskit/avatar": "^8.4.0",
     "@atlaskit/docs": "^2.4.0",
+    "@atlaskit/dropdown-menu": "^3.11.5",
     "enzyme": "^3.3.0"
   }
 }
