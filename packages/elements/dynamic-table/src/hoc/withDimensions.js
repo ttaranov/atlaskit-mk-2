@@ -14,9 +14,9 @@ type Props = {
   isRanking: boolean,
 };
 
-export default function withDimensions(
-  WrappedComponent: ComponentType<any>,
-) {
+export default function withDimensions<WrappedComponentProps: {}>(
+  WrappedComponent: ComponentType<WrappedComponentProps>,
+): ComponentType<$Diff<WrappedComponentProps, WithDimensionsProps>> {
   return class extends Component<any, State> {
     ref: ?HTMLElement;
 
