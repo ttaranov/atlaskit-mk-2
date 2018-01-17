@@ -5,6 +5,7 @@ import {
   getPlaceholderUrl,
   getMacroId,
   MediaSingleAttributes,
+  timestampToIso,
 } from '@atlaskit/editor-common';
 import { Fragment, Node as PMNode, Mark, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
@@ -76,6 +77,9 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeEmoji(node);
     } else if (node.type === schema.nodes.taskList) {
       return encodeTaskList(node);
+    }
+    if (node.type === schema.nodes.date) {
+      return encodeDate(node);
     } else {
       throw new Error(
         `Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`,
@@ -504,6 +508,15 @@ export default function encode(node: PMNode, schema: Schema) {
       return false;
     });
 
+    return elem;
+  }
+
+  function encodeDate(node: PMNode): Element {
+    const elem = doc.createElement('time');
+    const { timestamp } = node.attrs;
+    if (timestamp) {
+      elem.setAttribute('datetime', timestampToIso(timestamp));
+    }
     return elem;
   }
 }

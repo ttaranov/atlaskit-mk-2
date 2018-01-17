@@ -10,6 +10,7 @@ import { ReactRenderer } from '@atlaskit/renderer';
 import Editor from './Editor';
 import { Comment as CommentType, User } from '../model';
 import CommentContainer from '../containers/Comment';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 export interface Props {
   conversationId: string;
@@ -24,12 +25,18 @@ export interface Props {
     commentId: string,
     value: any,
   ) => void;
+  onDeleteComment?: (conversationId: string, commentId: string) => void;
+
+  // Provider
+  dataProviders?: ProviderFactory;
 }
 
 export interface State {
   isEditing?: boolean;
   isReplying?: boolean;
 }
+
+export const DeletedMessage = () => <em>Comment deleted by the author</em>;
 
 export default class Comment extends React.PureComponent<Props, State> {
   constructor(props) {
@@ -66,6 +73,16 @@ export default class Comment extends React.PureComponent<Props, State> {
     });
   };
 
+  private onDelete = () => {
+    const { onDeleteComment, conversationId, comment } = this.props;
+
+    if (!onDeleteComment) {
+      return;
+    }
+
+    onDeleteComment(conversationId, comment.commentId);
+  };
+
   private onEdit = () => {
     this.setState({
       isEditing: true,
@@ -93,8 +110,12 @@ export default class Comment extends React.PureComponent<Props, State> {
   };
 
   private getContent() {
-    const { comment } = this.props;
+    const { comment, dataProviders } = this.props;
     const { isEditing } = this.state;
+
+    if (comment.deleted) {
+      return <DeletedMessage />;
+    }
 
     if (isEditing) {
       return (
@@ -104,20 +125,32 @@ export default class Comment extends React.PureComponent<Props, State> {
           isEditing={isEditing}
           onSave={this.onSaveEdit}
           onCancel={this.onCancelEdit}
+          dataProviders={dataProviders}
         />
       );
     }
 
-    return <ReactRenderer document={comment.document.adf} />;
+    return (
+      <ReactRenderer
+        document={comment.document.adf}
+        dataProviders={dataProviders}
+      />
+    );
   }
 
   render() {
-    const { conversationId, comment, comments, user } = this.props;
+    const {
+      conversationId,
+      comment,
+      comments,
+      user,
+      dataProviders,
+    } = this.props;
     const { isReplying, isEditing } = this.state;
     const { createdBy } = comment;
     let actions;
 
-    if (!isEditing) {
+    if (!isEditing && !comment.deleted) {
       actions = [
         <CommentAction key="reply" onClick={this.onReply}>
           Reply
@@ -129,6 +162,9 @@ export default class Comment extends React.PureComponent<Props, State> {
           ...actions,
           <CommentAction key="edit" onClick={this.onEdit}>
             Edit
+          </CommentAction>,
+          <CommentAction key="delete" onClick={this.onDelete}>
+            Delete
           </CommentAction>,
         ];
       }
@@ -156,6 +192,8 @@ export default class Comment extends React.PureComponent<Props, State> {
             conversationId={conversationId}
             onAddComment={this.props.onAddComment}
             onUpdateComment={this.props.onUpdateComment}
+            onDeleteComment={this.props.onDeleteComment}
+            dataProviders={dataProviders}
           />
         ))}
         {isReplying && (
@@ -163,6 +201,7 @@ export default class Comment extends React.PureComponent<Props, State> {
             isExpanded={true}
             onCancel={this.onCancelReply}
             onSave={this.onSaveReply}
+            dataProviders={dataProviders}
           />
         )}
       </AkComment>

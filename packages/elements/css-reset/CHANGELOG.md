@@ -1,5 +1,8 @@
 # @atlaskit/css-reset
 
+## 1.2.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
 ## 1.1.7
 - [patch] migrated css reset from ak to ak-mk2 [53ce5eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/53ce5eb)
 

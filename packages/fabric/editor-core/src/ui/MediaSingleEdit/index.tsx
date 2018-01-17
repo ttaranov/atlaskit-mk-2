@@ -49,7 +49,7 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
     const { target, layout: selectedLayout } = this.state;
     if (target) {
       return (
-        <FloatingToolbar target={target} offset={[0, 3]}>
+        <FloatingToolbar target={target} offset={[0, 3]} fitHeight={24}>
           {Object.keys(icons).map((layout, index) => {
             const Icon = icons[layout].icon;
             const label = icons[layout].label;

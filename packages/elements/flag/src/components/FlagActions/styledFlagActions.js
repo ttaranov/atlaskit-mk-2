@@ -35,6 +35,7 @@ export const Action = styled.div`
   }
 `;
 
+// $FlowFixMe TEMPORARY
 const height = `${gridSize * 3 / parseInt(fontSize, 10)}em`;
 export const Button = styled.button`
   align-items: baseline;
@@ -52,7 +53,10 @@ export const Button = styled.button`
   line-height: ${height};
   margin: 0;
   outline: 0;
-  padding: 0 ${p => (p.appearance === 'normal' ? 0 : gridSize(p))}px;
+  padding: 0
+    ${p =>
+      // $FlowFixMe TEMPORARY
+      p.appearance === 'normal' ? 0 : gridSize(p)}px;
   text-align: center;
   text-decoration: none;
   user-select: none;

@@ -1,5 +1,44 @@
 # @atlaskit/editor-core
 
+## 61.3.8
+- [patch] Keymaps not supported on windows should not be visible in help dialog on windows. [6872f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6872f52)
+
+## 61.3.7
+
+- [patch] Improvements in code block. [da0fee1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da0fee1)
+
+## 61.3.6
+- [patch] Fix link dialog styling issues with recent items search [667aaa7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/667aaa7)
+
+## 61.3.5
+
+## 61.3.4
+- [patch] Remove placeholderBaseUrl config option from the Confluence Macro Provider [1583960](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1583960)
+- [patch] Fix Extension Header img height to 24px, center elements vertically [49f48bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49f48bb)
+
+## 61.3.3
+- [patch] Addes in editor-markdown-transformer package [10042be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10042be)
+
+## 61.3.2
+- [patch] Fix cursor position after mention and emoji [330b8d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/330b8d2)
+
+## 61.3.1
+- [patch] Fix spacing and toolbar alignment for message editor [98b961e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/98b961e)
+
+## 61.3.0
+- [minor] added date plugin [f7b8a33](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7b8a33)
+- [patch] fixed insertion of a table when selection has a mark [3d8226e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d8226e)
+
+## 61.2.1
+- [patch] Fix accessing clipboardData.types in Edge (fixes paste) [91b921b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91b921b)
+- [patch] Updates in responsive editor [353c5d6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/353c5d6)
+
+## 61.2.0
+- [minor] Grid layout for Single Image [59a8e22](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59a8e22)
+
+## 61.1.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
 ## 61.0.3
 - [patch] Fix update single image toolbar state on selection change [bea78aa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bea78aa)
 

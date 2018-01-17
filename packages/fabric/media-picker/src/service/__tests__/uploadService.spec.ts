@@ -15,6 +15,7 @@ createHasherSpy.mockImplementation(() => {
   return hasher;
 });
 
+import * as getPreviewModule from '../../util/getPreviewFromBlob';
 import { UploadService } from '../uploadService';
 import { AuthProvider } from '@atlaskit/media-core';
 
@@ -257,8 +258,8 @@ describe('UploadService', () => {
     });
     const resumable: Resumable = uploadService['resumable'];
 
-    const file = new File([new Blob()], 'filename');
-    uploadService.addFile(file);
+    const file = { size: 1000, type: 'image/png', name: 'some-file-name' };
+    uploadService.addFile(file as File);
     resumable.upload();
     return new Promise(resolve => {
       resumable.on('uploadStart', () => resolve(resumable));
@@ -327,18 +328,28 @@ describe('UploadService', () => {
 
   describe('add', () => {
     const setup = () => {
+      (getPreviewModule.getPreviewFromBlob as any) = jest
+        .fn()
+        .mockReturnValue(Promise.resolve());
+
       const uploadService = new UploadService(apiUrl, clientBasedAuthProvider, {
         collection: '',
       });
+
       const resumable = uploadService['resumable'];
-      return { uploadService, resumable };
+
+      const filesAddedPromise = new Promise(resolve =>
+        uploadService.on('files-added', () => resolve()),
+      );
+
+      return { uploadService, resumable, filesAddedPromise };
     };
 
     it('should call createHasher once and its hash function twice for different UploadService instance', () => {
       const { uploadService: uploadService1, resumable: resumable1 } = setup();
       const { uploadService: uploadService2, resumable: resumable2 } = setup();
 
-      const file = new File([new Blob()], 'filename');
+      const file = { size: 100, name: 'some-filename', type: '' };
 
       const promise1 = new Promise(resolve =>
         resumable1.on('filesAdded', () => resolve()),
@@ -347,12 +358,42 @@ describe('UploadService', () => {
         resumable2.on('filesAdded', () => resolve()),
       );
 
-      uploadService1.addFile(file);
-      uploadService2.addFile(file);
+      uploadService1.addFile(file as File);
+      uploadService2.addFile(file as File);
 
       return Promise.all([promise1, promise2]).then(() => {
         expect(hasherHashSpy).toHaveBeenCalledTimes(2);
         expect(createHasherSpy).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    it('should emit file upload event when file type is "image" and file size is less than 10 MB', () => {
+      const { uploadService, filesAddedPromise } = setup();
+      const file = { size: 100, name: 'some-filename', type: 'image/png' };
+
+      uploadService.addFile(file as File);
+      return filesAddedPromise.then(() => {
+        expect(getPreviewModule.getPreviewFromBlob).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    it('should NOT emit file upload event when file type is NOT "image"', () => {
+      const { uploadService, filesAddedPromise } = setup();
+      const file = { size: 100, name: 'some-filename', type: 'unknown' };
+
+      uploadService.addFile(file as File);
+      return filesAddedPromise.then(() => {
+        expect(getPreviewModule.getPreviewFromBlob).toHaveBeenCalledTimes(0);
+      });
+    });
+
+    it('should NOT emit file upload event when file size is greater than 10MB', () => {
+      const { uploadService, filesAddedPromise } = setup();
+      const file = { size: 10e7, name: 'some-filename', type: 'image/png' };
+
+      uploadService.addFile(file as File);
+      return filesAddedPromise.then(() => {
+        expect(getPreviewModule.getPreviewFromBlob).toHaveBeenCalledTimes(0);
       });
     });
   });
@@ -372,6 +413,7 @@ describe('UploadService', () => {
         uniqueIdentifier: 'some-unique-identifier',
         file: {
           name: 'some-file-name',
+          size: 1000,
           type: 'jpg',
         },
         chunks: [] as ResumableChunk[],
@@ -492,6 +534,10 @@ describe('UploadService', () => {
     });
 
     it('should fire "file-upload-error" with associated file and error', () => {
+      // avoid polluting test logs with error message in console
+      const consoleError = console.error;
+      console.error = jest.fn();
+
       const { resumable, resumableFile, emitter } = setup();
       const description = 'some-error-description';
 
@@ -511,6 +557,8 @@ describe('UploadService', () => {
           },
         }),
       );
+
+      console.error = consoleError;
     });
   });
 

@@ -12,7 +12,6 @@ type Props = {
 
 type State = {
   isExpanded: boolean,
-  childrenData?: ?Array<Object>,
 };
 
 export default class Item extends PureComponent<Props, State> {
@@ -25,24 +24,14 @@ export default class Item extends PureComponent<Props, State> {
   };
 
   handleExpandToggleClick = () => {
-    const newIsExpanded = !this.state.isExpanded;
-    if (newIsExpanded && !this.state.childrenData) {
-      Promise.resolve()
-        .then(() => this.props.getChildrenData(this.props.data))
-        .then(childrenData => {
-          this.setState({
-            childrenData,
-          });
-        });
-    }
     this.setState({
-      isExpanded: newIsExpanded,
+      isExpanded: !this.state.isExpanded,
     });
   };
 
   render() {
     const { depth, data, render, getChildrenData } = this.props;
-    const { isExpanded, childrenData } = this.state;
+    const { isExpanded } = this.state;
 
     let row = render(data);
     if (!row) {
@@ -58,9 +47,9 @@ export default class Item extends PureComponent<Props, State> {
         {row}
         {isExpanded && (
           <Items
-            childrenData={childrenData}
+            parentData={data}
             depth={depth}
-            getChildrenData={getChildrenData}
+            getItemsData={getChildrenData}
             render={render}
           />
         )}

@@ -1,5 +1,11 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.6.0
+- [minor] added date plugin [f7b8a33](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7b8a33)
+
+## 2.5.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
 ## 2.4.2
 
 ## 2.4.1

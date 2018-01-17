@@ -45,6 +45,7 @@ export default createSchema({
     'extension',
     'inlineExtension',
     'bodiedExtension',
+    'date',
   ],
   marks: [
     'em',

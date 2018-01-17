@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/build-utils",
-  "version": "1.11.0",
+  "version": "1.12.1",
   "description": "Collection of utilities to used during the release process of Atlaskit",
   "main": "index.js",
   "scripts": {
@@ -9,9 +9,11 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
+    "bitbucket-build-status": "^1.0.3",
     "chalk": "^2.1.0",
     "editor": "^1.0.0",
     "inquirer": "^3.3.0",
+    "npm-run": "^4.1.2",
     "projector-spawn": "^1.0.1",
     "uuid": "^3.1.0"
   }

@@ -5,7 +5,10 @@ import WarningIcon from '@atlaskit/icon/glyph/warning';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { NodeSpec, Node } from 'prosemirror-model';
-import { TopLevel } from './doc';
+import { Definition as Paragraph } from './paragraph';
+import { Definition as OrderedList } from './ordered-list';
+import { Definition as BulletList } from './bullet-list';
+import { Definition as Heading } from './heading';
 
 export type PanelType = 'info' | 'note' | 'tip' | 'warning';
 
@@ -19,7 +22,10 @@ export interface Attributes {
 export interface Definition {
   type: 'panel';
   attrs: Attributes;
-  content: TopLevel;
+  /**
+   * @minItems 1
+   */
+  content: Array<Paragraph | Heading | OrderedList | BulletList>;
 }
 
 const panelIcons = {

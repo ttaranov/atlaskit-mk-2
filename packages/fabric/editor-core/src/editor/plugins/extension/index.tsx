@@ -30,7 +30,7 @@ const extensionPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent(editorView, eventDispatcher, providerFactory, appearance) {
+  contentComponent({ editorView, eventDispatcher }) {
     const { dispatch } = editorView;
     return (
       <WithPluginState
@@ -40,7 +40,6 @@ const extensionPlugin: EditorPlugin = {
           macroState: macroPluginKey,
           extensionState: pluginKey,
         }}
-        // tslint:disable-next-line:jsx-no-lambda
         render={({
           macroState = {} as MacroState,
           extensionState = {} as ExtensionState,

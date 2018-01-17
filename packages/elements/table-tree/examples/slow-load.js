@@ -4,9 +4,7 @@ import TableTree, { Headers, Header, Rows, Row, Cell } from '../src';
 import { type RowData as RowDataType } from '../src/types';
 import staticData from './data-freeform-nodes.json';
 
-function getChildrenData(
-  parent: ?{ children: Array<RowDataType> } = staticData,
-) {
+function getItemsData(parent: ?{ children: Array<RowDataType> } = staticData) {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve((parent && parent.children) || []);
@@ -21,7 +19,7 @@ export default () => (
       <Header width={100}>Numbering</Header>
     </Headers>
     <Rows
-      items={getChildrenData}
+      items={getItemsData}
       render={({ id, title, numbering, children }) => (
         <Row key={id} hasChildren={children.length > 0}>
           <Cell>{title}</Cell>

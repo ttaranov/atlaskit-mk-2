@@ -139,3 +139,5 @@ export const taskList = (attrs: { localId?: string } = {}) =>
   nodeFactory(schema.nodes.taskList, attrs);
 export const taskItem = (attrs: { localId?: string; state?: string } = {}) =>
   nodeFactory(schema.nodes.taskItem, attrs);
+export const date = (attrs: { timestamp: string | number }) =>
+  nodeFactory(schema.nodes.date, attrs)();

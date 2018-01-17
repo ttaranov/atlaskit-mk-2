@@ -3,11 +3,9 @@ import { EditorPlugin } from '../../types';
 import { keymap } from 'prosemirror-keymap';
 import { Schema } from 'prosemirror-model';
 import { Plugin, PluginKey, Transaction, EditorState } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
 import WithPluginState from '../../ui/WithPluginState';
 import HelpDialog from './ui';
 import * as keymaps from '../../../keymaps';
-import { EventDispatcher } from '../../event-dispatcher';
 import { analyticsService } from '../../../analytics';
 
 export const pluginKey = new PluginKey('helpDialogPlugin');
@@ -53,7 +51,7 @@ const helpDialog: EditorPlugin = {
     ];
   },
 
-  contentComponent(editorView: EditorView, eventDispatcher: EventDispatcher) {
+  contentComponent({ editorView, eventDispatcher }) {
     return (
       <WithPluginState
         editorView={editorView}
@@ -61,7 +59,6 @@ const helpDialog: EditorPlugin = {
         plugins={{
           helpDialog: pluginKey,
         }}
-        // tslint:disable-next-line:jsx-no-lambda
         render={({ helpDialog = {} as any }) => (
           <HelpDialog
             editorView={editorView}

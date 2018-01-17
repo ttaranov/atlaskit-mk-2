@@ -10,7 +10,7 @@ import { MediaError, MediaErrorName } from '../domain/error';
 import { MediaFile, validateMediaFile, PublicMediaFile } from '../domain/file';
 import { SmartMediaProgress } from '../domain/progress';
 import { defaultUploadParams } from '../domain/uploadParams';
-import getPreview from '../util/getPreview';
+import { getPreviewFromBlob } from '../util/getPreviewFromBlob';
 
 import { createHasher } from './hashing/hasherCreator';
 
@@ -21,7 +21,7 @@ import { Preview } from '../domain/preview';
 import {
   SourceFile,
   mapAuthToSourceFileOwner,
-} from '../../popup/src/domain/source-file';
+} from '../popup/domain/source-file';
 
 type UploadId = string;
 type ChunkId = string;
@@ -312,6 +312,8 @@ export class UploadService {
     // To make sure that MediaClient stores a valid token, we refresh it before upload starts.
     const { collection } = uploadParams;
     const mediaClient = this.mediaClientPool.getMediaClient(collection);
+    const maxFileSizeForPreview = 10e6; // 10 MB
+
     mediaClient.refreshAuth().then(
       () => {
         this.retry = 0;
@@ -320,12 +322,16 @@ export class UploadService {
           const file = this.mapResumableFileToMediaFile(resumableFile);
           const mediaType = file.type.match(/^image\//) ? 'image' : 'unknown';
 
-          getPreview(resumableFile.file, mediaType).then(preview => {
-            this.emit('file-preview-update', {
-              file,
-              preview,
+          // TODO MSW-396 Replace this check after RFC from ticket has been decided
+          // https://product-fabric.atlassian.net/browse/MSW-396
+          if (file.size < maxFileSizeForPreview && mediaType === 'image') {
+            getPreviewFromBlob(resumableFile.file, mediaType).then(preview => {
+              this.emit('file-preview-update', {
+                file,
+                preview,
+              });
             });
-          });
+          }
 
           return file;
         });

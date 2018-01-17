@@ -1,8 +1,7 @@
-/* tslint:disable:variable-name */
 import styled from 'styled-components';
 import { akColorN0, akColorN900 } from '@atlaskit/util-shared-styles';
 import { absolute, size } from '../../styles';
-import { colorWithAlpha } from '../../utils/colorWithAlpha';
+import { colorWithAlpha } from '../colorWithAlpha';
 
 const bodyHeight = 26;
 

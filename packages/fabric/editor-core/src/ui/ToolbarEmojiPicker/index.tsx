@@ -8,11 +8,11 @@ import { analyticsDecorator as analytics } from '../../analytics';
 import { EmojiState } from '../../plugins/emojis';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { EmojiPicker as AkEmojiPicker, EmojiProvider } from '@atlaskit/emoji';
-import EditorWidth from '../../utils/editor-width';
 import ToolbarButton from '../ToolbarButton';
 import { OuterContainer } from './styles';
 
 export interface Props {
+  isReducedSpacing?: boolean;
   isDisabled?: boolean;
   editorView: EditorView;
   pluginKey: PluginKey;
@@ -25,7 +25,6 @@ export interface Props {
   numFollowingButtons: number;
   popupsMountPoint?: HTMLElement | undefined;
   popupsBoundariesElement?: HTMLElement | undefined;
-  editorWidth?: number;
 }
 
 export interface State {
@@ -183,14 +182,10 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   }
 
   render() {
-    const { editorWidth, isDisabled } = this.props;
+    const { isDisabled, isReducedSpacing } = this.props;
     const { isOpen, disabled } = this.state;
-    if (editorWidth && editorWidth < EditorWidth.BreakPoint4) {
-      return null;
-    }
     const toolbarButton = (
       <ToolbarButton
-        spacing={editorWidth ? 'default' : 'none'}
         selected={isOpen}
         disabled={disabled || isDisabled}
         onClick={this.toggleOpen}
@@ -198,15 +193,11 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
         ref={this.handleButtonRef}
         title="Insert emoji (:)"
         hideTooltip={isOpen}
+        spacing={isReducedSpacing ? 'none' : 'default'}
       />
     );
     return (
-      <OuterContainer
-        width={
-          editorWidth &&
-          (editorWidth > EditorWidth.BreakPoint10 ? 'large' : 'small')
-        }
-      >
+      <OuterContainer width={isReducedSpacing ? 'large' : 'small'}>
         {toolbarButton}
         {this.renderPopup()}
       </OuterContainer>

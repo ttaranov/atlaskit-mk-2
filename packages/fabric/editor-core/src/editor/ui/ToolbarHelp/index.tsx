@@ -2,20 +2,11 @@ import * as React from 'react';
 import QuestionIcon from '@atlaskit/icon/glyph/question';
 import ToolbarButton from '../../../ui/ToolbarButton';
 import WithHelpTrigger from '../WithHelpTrigger';
-import EditorWidth from '../../../utils/editor-width';
 
-// tslint:disable-next-line:variable-name
-const ToolbarHelp = (
-  props: { editorWidth: number | undefined } = { editorWidth: undefined },
-) => (
+const ToolbarHelp = () => (
   <WithHelpTrigger
     render={showHelp => (
       <ToolbarButton
-        spacing={
-          props.editorWidth && props.editorWidth! > EditorWidth.BreakPoint10
-            ? 'default'
-            : 'none'
-        }
         onClick={showHelp}
         title="Open help dialog"
         titlePosition="left"

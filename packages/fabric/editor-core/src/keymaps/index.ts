@@ -37,10 +37,6 @@ export const insertRule = makeKeyMapWithCommon(
   'Mod-Shift--',
 );
 export const undo = makeKeyMapWithCommon('Undo', 'Mod-z');
-export const createCodeBlock = makeKeyMapWithCommon(
-  'Create code block',
-  'Enter',
-);
 export const moveUp = makeKeyMapWithCommon('Move up', 'ArrowUp');
 export const moveDown = makeKeyMapWithCommon('Move down', 'ArrowDown');
 export const moveLeft = makeKeyMapWithCommon('Move left', 'ArrowLeft');

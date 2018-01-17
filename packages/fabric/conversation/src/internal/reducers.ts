@@ -5,6 +5,8 @@ import {
   ADD_COMMENT_SUCCESS,
   UPDATE_COMMENT,
   UPDATE_COMMENT_SUCCESS,
+  DELETE_COMMENT,
+  DELETE_COMMENT_SUCCESS,
   UPDATE_USER,
   CREATE_CONVERSATION_SUCCESS,
 } from './actions';
@@ -64,6 +66,31 @@ export const reducers = {
     );
 
     comment.document = action.payload.document;
+
+    return {
+      ...state,
+      conversations,
+    };
+  },
+
+  [DELETE_COMMENT](state: State, action: Action) {
+    return {
+      ...state,
+    };
+  },
+
+  [DELETE_COMMENT_SUCCESS](state: State, action: Action) {
+    const { conversations } = state;
+    const [conversation] = conversations.filter(
+      c => c.conversationId === action.payload.conversationId,
+    );
+
+    const { comments = [] } = conversation;
+    const [comment] = comments.filter(
+      c => c.commentId === action.payload.commentId,
+    );
+
+    comment.deleted = action.payload.deleted;
 
     return {
       ...state,

@@ -12,7 +12,7 @@ type $npm$styledComponents$NameGenerator = (hash: number) => string;
 type $npm$styledComponents$StyledComponent = (
   strings: Array<string>,
   ...interpolations: Array<$npm$styledComponents$Interpolation>
-) => React$ComponentType<*> & { displayName: string };
+) => React$StatelessFunctionalComponent<*> & { displayName: string };
 
 type $npm$styledComponents$Theme = { +[key: string]: mixed };
 type $npm$styledComponents$ThemeProviderProps = {
@@ -21,8 +21,9 @@ type $npm$styledComponents$ThemeProviderProps = {
     | ((outerTheme: $npm$styledComponents$Theme) => void),
 };
 type $npm$styledComponents$Component =
-  | React$Component<*, *>
-  | ((props: *) => React$Element<*>);
+  | Class<React$Component<*, *>>
+  | ((props: *) => React$Element<*>)
+  | React$StatelessFunctionalComponent<*>;
 
 class Npm$StyledComponents$ThemeProvider extends React$Component<
   $npm$styledComponents$ThemeProviderProps,
@@ -53,7 +54,7 @@ declare module 'styled-components' {
     ) => string,
     withTheme: (
       component: Component,
-    ) => React$Component<*, ThemeProviderProps, *>,
+    ) => Class<React$Component<*, ThemeProviderProps>>,
     ThemeProvider: typeof Npm$StyledComponents$ThemeProvider,
     (baseComponent: Component): StyledComponent,
     a: StyledComponent,
@@ -201,16 +202,24 @@ declare module 'styled-components/native' {
 
   declare type Theme = $npm$styledComponents$Theme;
   declare type ThemeProviderProps = $npm$styledComponents$ThemeProviderProps;
-  declare type Component = $npm$styledComponents$Component;
+  //declare type Component = $npm$styledComponents$Component;
+  declare type Component =
+    | Class<React$Component<*, *, *>>
+    | ((props: *) => React$Element<*>)
+    | React$Element<*>;
 
   declare module.exports: {
     css: (
       strings: Array<string>,
       ...interpolations: Array<Interpolation>
     ) => Array<Interpolation>,
+    // withTheme: (
+    //   component: Component,
+    // ) => React$Component<*, ThemeProviderProps, *>,
     withTheme: (
       component: Component,
-    ) => React$Component<*, ThemeProviderProps, *>,
+    ) => Class<React$Component<*, ThemeProviderProps, *>>,
+
     keyframes: (
       strings: Array<string>,
       ...interpolations: Array<Interpolation>

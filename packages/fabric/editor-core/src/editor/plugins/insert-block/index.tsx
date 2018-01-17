@@ -14,21 +14,40 @@ import {
   MacroState,
   insertMacroFromMacroBrowser,
 } from '../macro';
+import { pluginKey as dateStateKey } from '../date/plugin';
 import { stateKey as emojiStateKey } from '../../../plugins/emojis';
 import WithPluginState from '../../ui/WithPluginState';
 import ToolbarInsertBlock from '../../../ui/ToolbarInsertBlock';
+import { ToolbarSize } from '../../ui/Toolbar';
+
+const toolbarSizeToButtons = toolbarSize => {
+  switch (toolbarSize) {
+    case ToolbarSize.XXL:
+    case ToolbarSize.XL:
+    case ToolbarSize.L:
+    case ToolbarSize.M:
+      return 5;
+
+    case ToolbarSize.S:
+      return 2;
+
+    default:
+      return 0;
+  }
+};
 
 const insertBlockPlugin: EditorPlugin = {
-  primaryToolbarComponent(
+  primaryToolbarComponent({
     editorView,
     eventDispatcher,
     providerFactory,
-    appearance,
     popupsMountPoint,
     popupsBoundariesElement,
+    toolbarSize,
     disabled,
-    editorWidth,
-  ) {
+    isToolbarReducedSpacing,
+  }) {
+    const buttons = toolbarSizeToButtons(toolbarSize);
     const renderNode = providers => {
       return (
         <WithPluginState
@@ -42,6 +61,7 @@ const insertBlockPlugin: EditorPlugin = {
             macroState: macroStateKey,
             hyperlinkState: hyperlinkStateKey,
             emojiState: emojiStateKey,
+            dateState: dateStateKey,
           }}
           render={({
             blockTypeState = {} as BlockTypeState,
@@ -51,15 +71,18 @@ const insertBlockPlugin: EditorPlugin = {
             macroState = {} as MacroState,
             hyperlinkState,
             emojiState,
+            dateState,
           }) => (
             <ToolbarInsertBlock
+              buttons={buttons}
+              isReducedSpacing={isToolbarReducedSpacing}
               isDisabled={disabled}
               editorView={editorView}
-              editorWidth={editorWidth}
               tableActive={tablesState && tablesState.tableActive}
               tableHidden={tablesState && tablesState.tableHidden}
               tableSupported={!!tablesState}
               mentionsEnabled={mentionsState && mentionsState.enabled}
+              dateEnabled={!!dateState}
               insertMentionQuery={
                 mentionsState && mentionsState.insertMentionQuery
               }
@@ -70,6 +93,7 @@ const insertBlockPlugin: EditorPlugin = {
               availableWrapperBlockTypes={
                 blockTypeState.availableWrapperBlockTypes
               }
+              linkSupported={!!hyperlinkState}
               linkDisabled={
                 !hyperlinkState ||
                 !hyperlinkState.linkable ||

@@ -95,6 +95,7 @@ export default class FieldTextAreaStateless extends Component<any, void> {
 
     return (
       <div>
+        {/* // $FlowFixMe TEMPORARY */}
         <Label
           htmlFor={id}
           isDisabled={disabled}

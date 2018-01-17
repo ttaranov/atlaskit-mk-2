@@ -1,5 +1,17 @@
 # @atlaskit/conversation
 
+## 4.7.0
+- [minor] Add emoji/mention support [846baed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/846baed)
+
+## 4.6.0
+- [minor] Fix delete comment to accept 204 [83b5f70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/83b5f70)
+
+## 4.5.0
+- [minor] Add comment delete functionality [e26446a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e26446a)
+
+## 4.4.0
+- [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
+
 ## 4.3.0
 - [minor] feature/ED-3471 Add comment edit functionality [c474f67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c474f67)
 

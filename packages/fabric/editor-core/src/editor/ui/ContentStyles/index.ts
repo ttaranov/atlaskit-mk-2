@@ -158,6 +158,13 @@ const ContentStyles = styled.div`
     box-sizing: border-box;
   }
 
+  .ProseMirror ul ul,
+  .ProseMirror ul ol,
+  .ProseMirror ol ul,
+  .ProseMirror ol ol {
+    padding-left: 17px;
+  }
+
   .ProseMirror li {
     position: relative;
     /* Dont do weird stuff with marker clicks */
@@ -289,15 +296,28 @@ const ContentStyles = styled.div`
   }
 
   //=============== SINGLE IMAGE STYLES ==================
+  && .ProseMirror {
+    [layout='wide'] {
+      max-width: 960px;
+      width: 100%;
+    }
 
-  && .ProseMirror [layout='wide'] {
-    max-width: 960px;
-    width: 100%;
-  }
+    & [layout='full-width'] {
+      max-width: 100%;
+      width: 100%;
+    }
 
-  && .ProseMirror [layout='full-width'] {
-    max-width: 100%;
-    width: 100%;
+    & [layout='wrap-left'] + [layout='wrap-right'],
+    & [layout='wrap-right'] + [layout='wrap-left'] {
+      clear: none;
+      & + p {
+        clear: both;
+      }
+      & > div {
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
   }
 
   //=============== PLACEHOLDER CURSOR STYLES=========

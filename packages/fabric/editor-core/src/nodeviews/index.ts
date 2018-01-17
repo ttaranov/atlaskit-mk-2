@@ -8,6 +8,7 @@ export { default as ReactJIRAIssueNode } from './ui/jira-issue';
 export { UnsupportedBlock as ReactUnsupportedBlockNode } from '../ui/';
 export { default as ReactUnsupportedInlineNode } from './ui/unsupported-inline';
 export { default as ExtensionNodeView } from './ui/extension';
+export { default as DateNodeView } from './ui/date';
 
 export { panelNodeView } from './ui/panel';
 export { taskItemNodeViewFactory } from './ui/taskItem';

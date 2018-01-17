@@ -3,19 +3,20 @@ import { Store } from 'redux';
 import * as React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 
+import App from '../popup/components/app';
+import { cancelUpload } from '../popup/actions/cancelUpload';
+import { showPopup } from '../popup/actions/showPopup';
+import { resetView } from '../popup/actions/resetView';
+import { setTenant } from '../popup/actions/setTenant';
+import { getFilesInRecentsCollection } from '../popup/actions/getFilesInRecentsCollection';
+import { WsProvider } from '../popup/tools/websocket/wsProvider';
+import { State } from '../popup/domain';
+
+import { MediaApiFetcher } from '../popup/tools/fetcher/fetcher';
+import { CloudService } from '../popup/services/cloud-service';
+import { hidePopup } from '../popup/actions/hidePopup';
+
 import appConfig from '../config';
-import { cancelUpload } from '../../popup/src/actions/cancelUpload';
-import { showPopup } from '../../popup/src/actions/showPopup';
-import { resetView } from '../../popup/src/actions/resetView';
-import { setTenant } from '../../popup/src/actions/setTenant';
-import { getFilesInRecentsCollection } from '../../popup/src/actions/getFilesInRecentsCollection';
-import { WsProvider } from '../../popup/src/tools/websocket/wsProvider';
-import { State } from '../../popup/src/domain';
-import App from '../../popup/src/components/app';
-
-import { MediaApiFetcher } from '../../popup/src/tools/fetcher/fetcher';
-import { CloudService } from '../../popup/src/services/cloud-service';
-
 import { createStore } from '../store';
 import { UploadComponent, UploadEventEmitter } from './component';
 
@@ -28,7 +29,6 @@ import { defaultUploadParams } from '../domain/uploadParams';
 import { MediaPickerContext } from '../domain/context';
 import { ModuleConfig } from '../domain/config';
 import { UploadEventPayloadMap } from '../domain/uploadEvent';
-import { hidePopup } from '../../popup/src/actions/hidePopup';
 
 export interface PopupConfig {
   readonly userAuthProvider: AuthProvider;
@@ -46,12 +46,10 @@ export interface PopupConstructor {
 }
 
 export type PopupUploadEventPayloadMap = UploadEventPayloadMap & {
-  readonly ready: undefined;
   readonly closed: undefined;
 };
 
 export interface PopupUploadEventEmitter extends UploadEventEmitter {
-  emitReady(): void;
   emitClosed(): void;
 }
 
@@ -140,9 +138,6 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
     };
   }
 
-  public emitReady(): void {
-    this.emit('ready', undefined);
-  }
   public emitClosed(): void {
     this.emit('closed', undefined);
     this.context.trackEvent(new MPPopupHidden());

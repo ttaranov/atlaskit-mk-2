@@ -89,6 +89,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
               mentionProvider,
               emojiProvider,
               mediaProvider,
+              activityProvider,
               taskDecisionProvider,
               contextIdentifierProvider,
               imageUploadProvider,
@@ -111,6 +112,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     allowTasksAndDecisions={true}
                     allowHyperlinks={true}
                     allowCodeBlocks={true}
+                    allowTextColor={true}
                     allowLists={true}
                     allowRule={true}
                     allowTables={true}
@@ -120,6 +122,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     mentionProvider={mentionProvider}
                     emojiProvider={emojiProvider}
                     mediaProvider={mediaProvider}
+                    activityProvider={activityProvider}
                     taskDecisionProvider={taskDecisionProvider}
                     contextIdentifierProvider={contextIdentifierProvider}
                     legacyImageUploadProvider={imageUploadProvider}
@@ -132,10 +135,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                         packageName={name}
                         key="toolbar-feedback"
                       />,
-                      <ToolbarHelp
-                        editorWidth={undefined}
-                        key="toolbar-help"
-                      />,
+                      <ToolbarHelp key="toolbar-help" />,
                     ]}
                   />
                 </CollapsedEditor>
