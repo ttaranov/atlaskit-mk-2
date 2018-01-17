@@ -1,5 +1,3 @@
-import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
-import 'whatwg-fetch';
 import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
 
 import { MentionDescription, isAppMention, MentionsResult } from '../types';
@@ -113,15 +111,13 @@ const buildUrl = (
 ) => {
   const searchParam = new URLSearchParams();
   for (const key in data) {
-    // eslint-disable-line no-restricted-syntax
-    if ({}.hasOwnProperty.call(data, key)) {
+    if (Object.hasOwnProperty.call(data, key)) {
       searchParam.append(key, data[key]);
     }
   }
   if (secOptions && secOptions.params) {
     for (const key in secOptions.params) {
-      // eslint-disable-line no-restricted-syntax
-      if ({}.hasOwnProperty.call(secOptions.params, key)) {
+      if (Object.hasOwnProperty.call(secOptions.params, key)) {
         const values = secOptions.params[key];
         if (Array.isArray(values)) {
           for (let i = 0; i < values.length; i++) {
@@ -144,8 +140,7 @@ const buildHeaders = (secOptions: SecurityOptions) => {
   const headers = new Headers();
   if (secOptions && secOptions.headers) {
     for (const key in secOptions.headers) {
-      // eslint-disable-line no-restricted-syntax
-      if ({}.hasOwnProperty.call(secOptions.headers, key)) {
+      if (Object.hasOwnProperty.call(secOptions.headers, key)) {
         const values = secOptions.headers[key];
         if (Array.isArray(values)) {
           for (let i = 0; i < values.length; i++) {

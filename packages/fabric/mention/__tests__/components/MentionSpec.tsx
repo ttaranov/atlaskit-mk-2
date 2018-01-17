@@ -2,10 +2,10 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import Tooltip from '@atlaskit/tooltip';
 import { AnalyticsListener } from '@atlaskit/analytics';
-import { MentionStyle } from '../../../src/components/Mention/styles';
-import { MentionType } from '../../../src/types';
-import Mention from '../../../src/components/Mention';
-import ResourcedMention from '../../../src/components/Mention/ResourcedMention';
+import { MentionStyle } from '../../src/components/Mention/styles';
+import { MentionType } from '../../src/types';
+import Mention from '../../src/components/Mention';
+import ResourcedMention from '../..//src/components/Mention/ResourcedMention';
 import {
   mockMentionData as mentionData,
   mockMentionProvider as mentionProvider,

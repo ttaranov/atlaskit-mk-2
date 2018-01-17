@@ -4,11 +4,11 @@ import PresenceResource, {
   DefaultPresenceCache,
   DefaultPresenceParser,
   PresenceMap,
-} from '../../../src/api/PresenceResource';
+} from '../../src/api/PresenceResource';
 import {
   validPresenceData,
   invalidPresenceData,
-} from '../../../src/support/presence-data';
+} from '../../src/support/presence-data';
 
 const baseUrl = 'https://bogus/presence';
 const dummyId = 'DUMMY-a5a01d21-1cc3-4f29-9565-f2bb8cd969f5';

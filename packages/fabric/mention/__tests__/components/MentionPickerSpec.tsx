@@ -2,19 +2,19 @@ import { waitUntil } from '@atlaskit/util-common-test';
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { MentionDescription } from '../../../src/types';
-import mentionData from '../../../src/support/mention-data';
-import { HttpError } from '../../../src/api/MentionResource';
-import MentionResource from '../../../src/support/MockMentionResource';
+import { MentionDescription } from '../../src/types';
+import mentionData from '../../src/support/mention-data';
+import { HttpError } from '../../src/api/MentionResource';
+import MentionResource from '../../src/support/MockMentionResource';
 import MentionPicker, {
   OnClose,
   OnOpen,
   Props,
   State,
-} from '../../../src/components/MentionPicker';
-import MentionList from '../../../src/components/MentionList';
-import MentionListError from '../../../src/components/MentionListError';
-import MentionItem from '../../../src/components/MentionItem';
+} from '../../src/components/MentionPicker';
+import MentionList from '../../src/components/MentionList';
+import MentionListError from '../../src/components/MentionListError';
+import MentionItem from '../../src/components/MentionItem';
 import { isMentionItemSelected, getMentionItemById } from '../_test-helpers';
 
 const mentions = mentionData.mentions;

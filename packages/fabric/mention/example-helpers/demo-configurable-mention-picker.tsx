@@ -70,11 +70,11 @@ export default class ConfigurableMentionPicker extends React.Component<
       <div style={{ padding: '10px' }}>
         {React.cloneElement(this.props.children, { resourceProvider })}
         <p>
-          <label htmlFor="emoji-urls">MentionResource config</label>
+          <label htmlFor="mention-urls">MentionResource config</label>
         </p>
         <p>
           <textarea
-            id="emoji-urls"
+            id="mention-urls"
             rows={15}
             style={{ width: '400px' }}
             onChange={this.mentionConfigChange}

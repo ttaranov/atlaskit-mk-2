@@ -1,5 +1,14 @@
 # @atlaskit/mention
 
+## 8.5.1 (2018-01-09)
+
+* bug fix; removed chai and sinon from tests (issues closed: fs-1606) ([f3a65cd](https://bitbucket.org/atlassian/atlaskit/commits/f3a65cd))
+## 8.5.0 (2018-01-08)
+
+
+
+
+* feature; allow MentionResource to optionally exclude the credentials from the request (issues closed: fs-1602) ([cbf913c](https://bitbucket.org/atlassian/atlaskit/commits/cbf913c))
 ## 8.4.1 (2017-12-20)
 
 * bug fix; added minimum avatar dependency that has dist/esm folder for mention ([c90fbfa](https://bitbucket.org/atlassian/atlaskit/commits/c90fbfa))

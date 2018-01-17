@@ -1,5 +1,4 @@
-import Picker, * as other from '../../src';
-import { name } from '../../package.json';
+import Picker, * as other from '../src';
 
 describe(name, () => {
   describe('exports', () => {

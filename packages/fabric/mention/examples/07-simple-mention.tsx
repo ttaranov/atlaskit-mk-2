@@ -3,7 +3,7 @@ import Mention from '../src/components/Mention';
 import { AnalyticsListener } from '@atlaskit/analytics';
 import debug from '../src/util/logger';
 import { onMentionEvent } from '../example-helpers/index';
-import { mockMentionData as mentionData } from '../__tests__/unit/_test-helpers';
+import { mockMentionData as mentionData } from '../__tests__/_test-helpers';
 
 const padding = { padding: '10px' };
 

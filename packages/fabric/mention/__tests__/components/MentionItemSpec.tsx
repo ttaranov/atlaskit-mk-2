@@ -2,9 +2,9 @@ import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
 
-import { MentionDescription } from '../../../src/types';
-import { Props, State } from '../../../src/components/MentionList';
-import MentionItem from '../../../src/components/MentionItem';
+import { MentionDescription } from '../../src/types';
+import { Props, State } from '../../src/components/MentionList';
+import MentionItem from '../../src/components/MentionItem';
 
 const mentionWithNickname = {
   id: '0',

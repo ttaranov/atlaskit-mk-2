@@ -1,3 +1,3 @@
-import * as uid from 'uid';
+import * as uuid from 'uuid';
 
-export default (prefix: string = ''): string => `${prefix}_${uid()}`;
+export default (prefix: string = ''): string => `${prefix}_${uuid()}`;

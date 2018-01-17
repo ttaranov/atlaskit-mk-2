@@ -2,7 +2,7 @@ import {
   Highlighter,
   SearchIndex,
   compareMentionDescription,
-} from '../../../src/util/searchIndex';
+} from '../../src/util/searchIndex';
 
 describe('SearchIndex', () => {
   let searchIndex: SearchIndex;

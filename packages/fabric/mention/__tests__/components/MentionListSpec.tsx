@@ -2,11 +2,9 @@ import { waitUntil } from '@atlaskit/util-common-test';
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import mentionData, {
-  mentionDataSize,
-} from '../../../src/support/mention-data';
-import MentionList, { Props, State } from '../../../src/components/MentionList';
-import MentionItem from '../../../src/components/MentionItem';
+import mentionData, { mentionDataSize } from '../../src/support/mention-data';
+import MentionList, { Props, State } from '../../src/components/MentionList';
+import MentionItem from '../../src/components/MentionItem';
 import { isMentionItemSelected } from '../_test-helpers';
 
 describe('MentionList', () => {

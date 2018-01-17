@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ChangeEventHandler, Component, FocusEventHandler } from 'react';
 
-import uid from 'uid';
+import * as uuid from 'uuid/v1';
 
 function noModifiers(event) {
   return !event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey;
@@ -68,7 +68,7 @@ class SearchTextInput extends Component<Props, {}> {
     // const { onUp, onDown, onEnter, onEscape, label, inputRef, inputId, ...other } = this.props;
     const { label, inputId, onBlur, onChange, onFocus } = this.props;
     let labelComponent;
-    const id = inputId || uid();
+    const id = inputId || uuid();
     if (label) {
       labelComponent = <label htmlFor={id}>{label}</label>;
     }
