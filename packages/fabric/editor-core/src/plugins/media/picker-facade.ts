@@ -266,7 +266,7 @@ export default class PickerFacade {
   private handleUploadProcessing = (event: UploadProcessingEventPayload) => {
     const { file } = event;
 
-    const state = this.newState(file, 'processing');
+    const state = this.newState(file, 'processing', file.publicId);
     this.stateManager.updateState(state.id, state);
   };
 
