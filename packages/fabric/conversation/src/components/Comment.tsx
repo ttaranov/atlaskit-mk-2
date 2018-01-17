@@ -194,8 +194,8 @@ export default class Comment extends React.PureComponent<Props, State> {
     return (
       <AkComment
         author={
-          // Render with onClick/href if there's an onUserClick handler
-          onUserClick ? (
+          // Render with onClick/href if they're supplied
+          onUserClick || createdBy.profileUrl ? (
             <CommentAuthor
               onClick={this.handleUserClick(createdBy)}
               href={createdBy.profileUrl || '#'}
