@@ -1,5 +1,3 @@
-import 'babel-polyfill';
-
 import { BinaryUploader, BinaryUploaderConstructor } from './components/binary';
 import {
   Browser,
