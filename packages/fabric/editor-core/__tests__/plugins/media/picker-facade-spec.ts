@@ -243,6 +243,7 @@ describe('Media PickerFacade', () => {
         expect(cb).toHaveBeenCalledWith({
           id: testTemporaryFileId,
           status: 'processing',
+          publicId: testFilePublicId,
           fileName: testFileData.name,
           fileSize: testFileData.size,
           fileMimeType: testFileData.type,
