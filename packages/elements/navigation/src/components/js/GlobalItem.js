@@ -16,7 +16,7 @@ type Props = {
   isSelected?: boolean,
   /** Component to be used to create the link in the global item. A default
    component is used if none is provided. */
-  linkComponent: ComponentType<any>,
+  linkComponent?: ComponentType<any>,
   /** Standard onClick event */
   onClick?: (event: Event, data?: {}) => void,
   onMouseDown: (event: MouseEvent) => void,
@@ -30,7 +30,6 @@ type Props = {
 
 export default class GlobalItem extends PureComponent<Props> {
   static defaultProps = {
-    linkComponent: DefaultLinkComponent,
     onMouseDown: () => {},
     size: 'small',
     appearance: 'round',
@@ -44,8 +43,9 @@ export default class GlobalItem extends PureComponent<Props> {
 
   render() {
     const {
+      children,
       href,
-      linkComponent: Link,
+      linkComponent: CustomComponent,
       isSelected,
       size,
       'aria-haspopup': ariaHasPopup, // eslint-disable-line react/prop-types
@@ -62,30 +62,46 @@ export default class GlobalItem extends PureComponent<Props> {
       onKeyDown: this.handleKeyDown,
     };
     // $FlowFixMe
-    const ActualLink = styled(Link)`
-      ${globalItemStyles} &:hover {
-        color: inherit;
-      }
-    `;
-
-    const onMouseDown = e => {
-      providedMouseDown(e);
-      e.preventDefault();
-    };
-
-    if (href) {
+    if (CustomComponent) {
+      const StyledComponent = styled(CustomComponent)`
+        ${globalItemStyles};
+      `;
       return (
-        <ActualLink
+        <StyledComponent
+          appearance={appearance}
+          href={href}
+          isSelected={isSelected}
+          onMouseDown={providedMouseDown}
+          size={size}
+          {...allyAndEventProps}
+        >
+          {children}
+        </StyledComponent>
+      );
+    }
+    if (href) {
+      const StyledLink = styled(props => <DefaultLinkComponent {...props} />)`
+        ${globalItemStyles} &:hover {
+          color: inherit;
+        }
+      `;
+      return (
+        <StyledLink
           href={href}
           size={size}
           onMouseDown={providedMouseDown}
           appearance={appearance}
           {...allyAndEventProps}
         >
-          {this.props.children}
-        </ActualLink>
+          {children}
+        </StyledLink>
       );
     }
+
+    const onMouseDown = e => {
+      providedMouseDown(e);
+      e.preventDefault();
+    };
 
     return (
       <GlobalItemInner
@@ -96,7 +112,7 @@ export default class GlobalItem extends PureComponent<Props> {
         appearance={appearance}
         {...allyAndEventProps}
       >
-        {this.props.children}
+        {children}
       </GlobalItemInner>
     );
   }

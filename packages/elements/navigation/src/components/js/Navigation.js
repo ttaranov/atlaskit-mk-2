@@ -13,7 +13,6 @@ import ContainerNavigation from './ContainerNavigation';
 import NavigationFixedContainer from '../styled/NavigationFixedContainer';
 import NavigationGlobalNavigationWrapper from '../styled/NavigationGlobalNavigationWrapper';
 import NavigationContainerNavigationWrapper from '../styled/NavigationContainerNavigationWrapper';
-import DefaultLinkComponent from './DefaultLinkComponent';
 import Resizer from './Resizer';
 import type { IconAppearance } from '../../types';
 import type { Provided } from '../../theme/types';
@@ -160,7 +159,6 @@ export default class Navigation extends PureComponent<Props, State> {
     isOpen: true,
     isResizeable: true,
     isElectronMac: false,
-    linkComponent: DefaultLinkComponent,
     onCreateDrawerOpen: () => {},
     onResize: () => {},
     onResizeStart: () => {},
