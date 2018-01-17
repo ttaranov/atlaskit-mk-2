@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 4.7.0
+- [minor] Add emoji/mention support [846baed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/846baed)
+
 ## 4.6.0
 - [minor] Fix delete comment to accept 204 [83b5f70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/83b5f70)
 

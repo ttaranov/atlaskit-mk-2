@@ -10,6 +10,7 @@ import { ReactRenderer } from '@atlaskit/renderer';
 import Editor from './Editor';
 import { Comment as CommentType, User } from '../model';
 import CommentContainer from '../containers/Comment';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 export interface Props {
   conversationId: string;
@@ -25,6 +26,9 @@ export interface Props {
     value: any,
   ) => void;
   onDeleteComment?: (conversationId: string, commentId: string) => void;
+
+  // Provider
+  dataProviders?: ProviderFactory;
 }
 
 export interface State {
@@ -106,7 +110,7 @@ export default class Comment extends React.PureComponent<Props, State> {
   };
 
   private getContent() {
-    const { comment } = this.props;
+    const { comment, dataProviders } = this.props;
     const { isEditing } = this.state;
 
     if (comment.deleted) {
@@ -121,15 +125,27 @@ export default class Comment extends React.PureComponent<Props, State> {
           isEditing={isEditing}
           onSave={this.onSaveEdit}
           onCancel={this.onCancelEdit}
+          dataProviders={dataProviders}
         />
       );
     }
 
-    return <ReactRenderer document={comment.document.adf} />;
+    return (
+      <ReactRenderer
+        document={comment.document.adf}
+        dataProviders={dataProviders}
+      />
+    );
   }
 
   render() {
-    const { conversationId, comment, comments, user } = this.props;
+    const {
+      conversationId,
+      comment,
+      comments,
+      user,
+      dataProviders,
+    } = this.props;
     const { isReplying, isEditing } = this.state;
     const { createdBy } = comment;
     let actions;
@@ -177,6 +193,7 @@ export default class Comment extends React.PureComponent<Props, State> {
             onAddComment={this.props.onAddComment}
             onUpdateComment={this.props.onUpdateComment}
             onDeleteComment={this.props.onDeleteComment}
+            dataProviders={dataProviders}
           />
         ))}
         {isReplying && (
@@ -184,6 +201,7 @@ export default class Comment extends React.PureComponent<Props, State> {
             isExpanded={true}
             onCancel={this.onCancelReply}
             onSave={this.onSaveReply}
+            dataProviders={dataProviders}
           />
         )}
       </AkComment>

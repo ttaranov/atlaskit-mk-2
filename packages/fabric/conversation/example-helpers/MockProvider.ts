@@ -2,8 +2,11 @@ import {
   ConversationResourceConfig,
   AbstractConversationResource,
 } from '../src/api/ConversationResource';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { Comment, Conversation, User } from '../src/model';
 import { mockConversation, mockInlineConversation } from './MockData';
+import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
+import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 
 import {
   FETCH_CONVERSATIONS,
@@ -14,6 +17,21 @@ import {
   CREATE_CONVERSATION_SUCCESS,
   UPDATE_USER,
 } from '../src/internal/actions';
+
+const MockDataProviders = {
+  mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
+  emojiProvider: Promise.resolve(
+    emojiStoryData.getEmojiResource({ uploadSupported: true }),
+  ),
+};
+
+export const getDataProviderFactory = () => {
+  const dataProviderFactory = new ProviderFactory();
+  Object.keys(MockDataProviders).forEach(provider => {
+    dataProviderFactory.setProvider(provider, MockDataProviders[provider]);
+  });
+  return dataProviderFactory;
+};
 
 export class MockProvider extends AbstractConversationResource {
   private config: ConversationResourceConfig;
