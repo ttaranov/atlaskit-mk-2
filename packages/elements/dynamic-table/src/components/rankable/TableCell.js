@@ -2,8 +2,9 @@
 import React, { Component } from 'react';
 import { RankableTableBodyCell } from '../../styled/rankable/TableCell';
 import type { HeadCellType, RowCellType } from '../../types';
-import { Draggable } from 'react-beautiful-dnd';
-import withDimensions, {type WithDimensionsProps} from '../../hoc/withDimensions';
+import withDimensions, {
+  type WithDimensionsProps,
+} from '../../hoc/withDimensions';
 
 type Props = {
   head: HeadCellType | void,
@@ -13,12 +14,18 @@ type Props = {
 } & WithDimensionsProps;
 
 class RankableTableCell extends Component<Props, {}> {
-
   render() {
-    const { cell, head, isFixedSize, isRanking, innerRef, refWidth } = this.props;
+    const {
+      cell,
+      head,
+      isFixedSize,
+      isRanking,
+      innerRef,
+      refWidth,
+    } = this.props;
     const { content, ...restCellProps } = cell;
     const { shouldTruncate, width } = head || {};
-    const inlineStyles = isRanking ? {width: refWidth} : {};
+    const inlineStyles = isRanking ? { width: refWidth } : {};
 
     return (
       <RankableTableBodyCell
@@ -34,6 +41,6 @@ class RankableTableCell extends Component<Props, {}> {
       </RankableTableBodyCell>
     );
   }
-};
+}
 
 export default withDimensions(RankableTableCell);

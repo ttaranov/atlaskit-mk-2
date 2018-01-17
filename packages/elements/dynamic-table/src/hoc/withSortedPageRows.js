@@ -4,7 +4,6 @@ import { ASC } from '../internal/constants';
 import { getPageRows, validateSortKey } from '../internal/helpers';
 import type { HeadType, RowType, SortOrderType } from '../types';
 
-
 const getSortedRows = (head, rows, sortKey, sortOrder) => {
   if (!sortKey || !head) return rows;
   if (!rows) return [];
@@ -38,7 +37,7 @@ type NotPassedProps = {
   rowsPerPage?: number,
   sortKey?: void | string,
   sortOrder: SortOrderType | void,
-}
+};
 
 type Props = {
   head: HeadType | void,
@@ -46,10 +45,10 @@ type Props = {
 
 type AddedProps = {
   pageRows: RowType[],
-}
+};
 
-export default function withSortedPageRows<WrappedProps: {}>(
-  WrappedComponent: ComponentType<WrappedProps>
+export default function withSortedPageRows<WrappedProps: AddedProps>(
+  WrappedComponent: ComponentType<WrappedProps>,
 ): ComponentType<$Diff<WrappedProps, AddedProps>> {
   return class extends Component<any> {
     componentWillMount() {
@@ -74,11 +73,13 @@ export default function withSortedPageRows<WrappedProps: {}>(
         page,
         ...restProps
       } = this.props;
-  
+
       const sortedRows = getSortedRows(head, rows, sortKey, sortOrder) || [];
       const pageRows = getPageRows(page, sortedRows, rowsPerPage);
-  
-      return <WrappedComponent pageRows={pageRows} head={head} {...restProps} />;
+
+      return (
+        <WrappedComponent pageRows={pageRows} head={head} {...restProps} />
+      );
     }
   };
 }

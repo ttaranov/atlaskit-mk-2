@@ -12,7 +12,7 @@ type Props = {
   sortOrder?: SortOrderType,
   isFixedSize?: boolean,
   onSort: Function,
-  isRankable: boolean,
+  isRankable?: boolean,
   isRanking: boolean,
 };
 
@@ -29,7 +29,15 @@ class TableHead extends Component<Props, {}> {
     }
   }
   render() {
-    const { head, sortKey, sortOrder, isFixedSize, onSort, isRanking, isRankable } = this.props;
+    const {
+      head,
+      sortKey,
+      sortOrder,
+      isFixedSize,
+      onSort,
+      isRanking,
+      isRankable,
+    } = this.props;
 
     if (!head) return null;
 

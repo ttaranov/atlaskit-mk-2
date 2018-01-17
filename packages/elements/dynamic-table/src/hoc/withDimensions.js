@@ -7,57 +7,63 @@ type State = {
 };
 
 export type WithDimensionsProps = {
-  updateDimensions: () => void,
   innerRef: (?HTMLElement) => void,
 } & State;
 
+type NeededProps = {
+  isRanking: boolean,
+} & WithDimensionsProps;
 
 export default function withDimensions<WrappedProps: {}>(
-  WrappedComponent: ComponentType<WrappedProps>): ComponentType<$Diff<WrappedProps, WithDimensionsProps>> {
+  WrappedComponent: ComponentType<WrappedProps>,
+): ComponentType<$Diff<WrappedProps, WithDimensionsProps>> {
   return class extends Component<any, State> {
-    ref: ?HTMLElement
+    ref: ?HTMLElement;
 
     state = {
       refWidth: 0,
       refHeight: 0,
-    }
+    };
 
     innerRef = (ref: HTMLElement) => {
       if (ref !== null && !this.props.isRanking) {
-        this.ref = ref;      
+        this.ref = ref;
       }
-    }
+    };
 
     componentWillReceiveProps(nextProps) {
       const wasRanking = this.props.isRanking;
       const willRanking = nextProps.isRanking;
-  
+
       if (willRanking && !wasRanking) {
         this.updateDimensions();
       }
-    }  
-  
+    }
+
     updateDimensions = () => {
       if (!this.ref) {
-        return;   
+        return;
       }
 
       const width = this.ref.offsetWidth;
       const height = this.ref.offsetHeight;
 
       if (width !== this.state.refWidth || height !== this.state.refHeight) {
-        this.setState({refWidth: width, refHeight: height});
+        this.setState({ refWidth: width, refHeight: height });
       }
-    }
-    
-    render() {
-      const {refWidth, refHeight} = this.state;
+    };
 
-      return <WrappedComponent 
-        refWidth={refWidth}
-        refHeight={refHeight}
-        innerRef={this.innerRef}
-        {...this.props} />;
+    render() {
+      const { refWidth, refHeight } = this.state;
+
+      return (
+        <WrappedComponent
+          refWidth={refWidth}
+          refHeight={refHeight}
+          innerRef={this.innerRef}
+          {...this.props}
+        />
+      );
     }
   };
 }
