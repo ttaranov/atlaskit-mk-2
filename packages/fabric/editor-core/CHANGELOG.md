@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 61.3.7
+
+- [patch] Improvements in code block. [da0fee1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da0fee1)
+
 ## 61.3.6
 - [patch] Fix link dialog styling issues with recent items search [667aaa7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/667aaa7)
 
