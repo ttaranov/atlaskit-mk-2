@@ -6,9 +6,11 @@ export type RowData = Object;
 
 export type ItemsDataType = Array<RowData>;
 
-export type ItemsProvider = (
-  ?Object,
-) => void | ItemsDataType | Promise<void | ItemsDataType>;
+export type SyncItemsData = void | ItemsDataType;
+
+export type AsyncItemsData = Promise<SyncItemsData>;
+
+export type ItemsProvider = (Object | void) => SyncItemsData | AsyncItemsData;
 
 export type RenderFunction = Object => Element<typeof Row>;
 

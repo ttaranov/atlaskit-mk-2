@@ -6,6 +6,8 @@ import {
   type ItemsProvider,
   type RenderFunction,
   type ItemsDataType,
+  type SyncItemsData,
+  type AsyncItemsData,
 } from './../types';
 
 type Props = {
@@ -37,11 +39,12 @@ export default class Items extends PureComponent<Props, State> {
     }
     const itemsResult = this.props.getItemsData(this.props.parentData);
     if (itemsResult && typeof itemsResult.then === 'function') {
+      const asyncItemsResult = ((itemsResult: any): AsyncItemsData);
       this.setState({
         isLoaderShown: true,
       });
       this.loadCancelled = false;
-      itemsResult.then(itemsData => {
+      asyncItemsResult.then(itemsData => {
         if (this.loadCancelled) {
           return;
         }
@@ -50,8 +53,9 @@ export default class Items extends PureComponent<Props, State> {
         });
       });
     } else {
+      const syncItemsResult = ((itemsResult: any): SyncItemsData);
       this.setState({
-        itemsData: itemsResult,
+        itemsData: syncItemsResult,
       });
     }
   }
