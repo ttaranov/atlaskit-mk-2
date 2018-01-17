@@ -273,7 +273,7 @@ describe('<QuickSearch />', () => {
         .simulate('click');
       expect(onClickSpy.args).toEqual(paramsKeyboard);
     });
-    it.only("should run the onClick callback with the result's data on ENTER keystroke", () => {
+    it("should run the onClick callback with the result's data on ENTER keystroke", () => {
       searchInput.simulate('keydown', { key: 'Enter' });
       wrapper.update();
       expect(onClickSpy).toHaveBeenCalledTimes(1);

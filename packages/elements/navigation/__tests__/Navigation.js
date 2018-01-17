@@ -147,6 +147,8 @@ describe('<Navigation />', () => {
         .props()
         .onResize(2000);
 
+      wrapper.update();
+
       expect(
         wrapper
           .find(Spacer)
@@ -175,6 +177,7 @@ describe('<Navigation />', () => {
         .props()
         .onResize(-300);
 
+      wrapper.update();
       expect(getSpacerWidth(wrapper)).toBe(globalOpenWidth);
     });
 
@@ -186,6 +189,7 @@ describe('<Navigation />', () => {
         .props()
         .onResize(5);
 
+      wrapper.update();
       expect(getSpacerWidth(wrapper)).toBe(
         globalOpenWidth + containerOpenWidth + 5,
       );
@@ -514,6 +518,8 @@ describe('<Navigation />', () => {
         .find(Resizer)
         .props()
         .onResize(1);
+
+      wrapper.update();
 
       expect(wrapper.find(Resizer).props().showResizeButton).toBe(true);
     });

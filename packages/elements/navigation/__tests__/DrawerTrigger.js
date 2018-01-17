@@ -10,14 +10,22 @@ describe('<DrawerTrigger />', () => {
   describe('interacting', () => {
     it('click should call the onActivate handler', () => {
       const spy = jest.fn();
-      mount(<DrawerTrigger onActivate={spy} />)
+      mount(
+        <DrawerTrigger onActivate={spy}>
+          <span>Test Child</span>
+        </DrawerTrigger>,
+      )
         .find(GlobalItem)
         .simulate('click');
       expect(spy).toHaveBeenCalled();
     });
     it('Enter key should call the onActivate handler', () => {
       const spy = jest.fn();
-      mount(<DrawerTrigger onActivate={spy} />)
+      mount(
+        <DrawerTrigger onActivate={spy}>
+          <span>Test Child</span>
+        </DrawerTrigger>,
+      )
         .find(GlobalItem)
         .simulate('keydown', {
           key: 'Enter',

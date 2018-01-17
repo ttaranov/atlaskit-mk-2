@@ -116,20 +116,38 @@ describe('<ContainerNavigation />', () => {
 
     it('should animate the global secondary actions after any change', () => {
       wrapper.setProps({ showGlobalActions: true });
-      expect(globalSecondaryReveal.prop('shouldAnimate')).toBe(true);
+      wrapper.update();
+      const updatedGlobalSecondaryReveal = wrapper
+        .find(GlobalNavigationSecondaryContainer)
+        .find(Reveal);
+      expect(updatedGlobalSecondaryReveal.prop('shouldAnimate')).toBe(true);
     });
 
     it('should set the global secondary actions container height based on the number of actions', () => {
       const expectedHeight = childCount =>
         globalSecondaryActions.height(childCount).outer;
-
-      expect(globalSecondaryReveal.prop('openHeight')).toBe(expectedHeight(0));
-
+      let updatedGlobalSecondaryReveal = wrapper
+        .find(GlobalNavigationSecondaryContainer)
+        .find(Reveal);
+      expect(updatedGlobalSecondaryReveal.prop('openHeight')).toBe(
+        expectedHeight(0),
+      );
       wrapper.setProps({ globalSecondaryActions: [<div />, <div />] });
-      expect(globalSecondaryReveal.prop('openHeight')).toBe(expectedHeight(2));
-
+      wrapper.update();
+      updatedGlobalSecondaryReveal = wrapper
+        .find(GlobalNavigationSecondaryContainer)
+        .find(Reveal);
+      expect(updatedGlobalSecondaryReveal.prop('openHeight')).toBe(
+        expectedHeight(2),
+      );
       wrapper.setProps({ globalSecondaryActions: [<div />, <div />, <div />] });
-      expect(globalSecondaryReveal.prop('openHeight')).toBe(expectedHeight(3));
+      wrapper.update();
+      updatedGlobalSecondaryReveal = wrapper
+        .find(GlobalNavigationSecondaryContainer)
+        .find(Reveal);
+      expect(updatedGlobalSecondaryReveal.prop('openHeight')).toBe(
+        expectedHeight(3),
+      );
     });
 
     it('should only render GlobalSecondaryActions if showGlobalActions is true and globalSecondaryActions has item(s)', () => {
