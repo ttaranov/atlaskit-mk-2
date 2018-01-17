@@ -17,7 +17,7 @@ type State = {
   page: number,
   sortKey?: string,
   sortOrder?: 'ASC' | 'DESC',
-  rows: RowType[],
+  rows?: RowType[],
 };
 
 export default class DynamicTable extends Component<Props, State> {
@@ -64,27 +64,28 @@ export default class DynamicTable extends Component<Props, State> {
     }
   }
 
-  computeRankEndIndex = (rankEndLocation: RankEndLocation) => {
+  computeRankEndIndex = (rankEndLocation: RankEndLocation): number => {
     const { afterKey } = rankEndLocation;
     const { rowsPerPage } = this.props;
+    const { page, rows } = this.state;
 
     if (!afterKey) {
       // beginning of current page
-      return rowsPerPage ? (this.state.page - 1) * rowsPerPage : 0;
+      return rowsPerPage ? (page - 1) * rowsPerPage : 0;
     }
 
-    return this.state.rows.findIndex((row) => row.key === afterKey);
+    return rows ? rows.findIndex((row) => row.key === afterKey) : 0;
   }
 
   onRankEnd = (params: RankEnd) => {
     const { destination, sourceKey } = params;
+    const { rows } = this.state;
 
-    if (!destination) {
+    if (!destination || !rows) {
       this.onRankEndIfExists(params);
       return;
     }
 
-    const { rows } = this.state;
     const fromIndex = rows.findIndex(({key}) => key === sourceKey);
     const toIndex = this.computeRankEndIndex(destination);
 

@@ -117,5 +117,4 @@ class RankableBody extends Component<Props, {}> {
   }
 }
 
-// $FlowFixMe
 export default withDimensions(withSortedPageRows(RankableBody));

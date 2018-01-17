@@ -26,7 +26,7 @@
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "prop-types": "^15.5.10",
-    "react-beautiful-dnd": "^4.0.0",
+    "react-beautiful-dnd": "^4.0.1",
     "styled-components": "^1.4.6"
   },
   "peerDependencies": {

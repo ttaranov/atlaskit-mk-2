@@ -38,7 +38,7 @@ type State = {
 }
 
 export default class DynamicTable extends Component<Props, State> {
-  tableBody: ComponentType<any, any> | null;
+  tableBody: ?ComponentType<any, any>;
 
   state = {
     isRanking: false,

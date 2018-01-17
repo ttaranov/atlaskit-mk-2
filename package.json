@@ -290,7 +290,7 @@
     "react": "15.6.0 - 16.2.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-addons-text-content": "^0.0.4",
-    "react-beautiful-dnd": "^4.0.0",
+    "react-beautiful-dnd": "^4.0.1",
     "react-deprecate": "^0.1.0",
     "react-dom": "15.6.0 - 16.2.0",
     "react-ga": "^2.3.5",

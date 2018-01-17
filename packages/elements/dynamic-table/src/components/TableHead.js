@@ -54,11 +54,11 @@ class TableHead extends Component<Props, {}> {
             return (
               <HeadCellComponent
                 isFixedSize={isFixedSize}
-                isSortable={isSortable}
+                isSortable={!!isSortable}
                 isRanking={isRanking}
                 key={key || index}
-                onClick={isSortable && onSort(cell)}
-                sortOrder={key === sortKey && sortOrder}
+                onClick={isSortable ? onSort(cell) : undefined}
+                sortOrder={key === sortKey ? sortOrder : undefined}
                 {...restCellProps}
               />
             );

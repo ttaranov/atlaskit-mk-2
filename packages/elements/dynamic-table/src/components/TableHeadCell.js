@@ -1,18 +1,17 @@
 // @flow
-import React, { Component } from 'react';
+import React, { type Node, Component } from 'react';
 import { HeadCell } from '../styled/TableHead';
-import type { SortOrderType, HeadCellType } from '../types';
+import type { SortOrderType } from '../types';
 
 export type Props = {
-  cell: HeadCellType,
-  index: number,
-  sortKey: ?string,
+  sortKey?: string,
+  isSortable?: boolean,
   sortOrder?: SortOrderType,
   isFixedSize?: boolean,
-  onSort: Function,
   innerRef?: (?HTMLElement) => void,
   inlineStyles?: {},
   content: Node,
+  onClick: ?Function,
 };
 
 class TableHeadCell extends Component<Props, {}> {
@@ -24,7 +23,7 @@ class TableHeadCell extends Component<Props, {}> {
 
   render() {
     const { content, inlineStyles, ...restCellProps } = this.props;
-
+    
     return (
       <HeadCell
         style={inlineStyles}
