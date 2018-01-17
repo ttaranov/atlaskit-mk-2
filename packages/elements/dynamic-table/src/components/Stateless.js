@@ -148,7 +148,6 @@ export default class DynamicTable extends Component<Props, State> {
       sortOrder,
       isLoading,
     } = this.props;
-    const canRank = isRankable && !sortKey;
 
     const rowsLength = rows && rows.length;
     const bodyProps = {
@@ -169,6 +168,7 @@ export default class DynamicTable extends Component<Props, State> {
 
     const spinnerSize = this.getSpinnerSize();
     const emptyBody = this.renderEmptyBody();
+    const canRank = isRankable && !sortKey;
 
     return (
       <div>
@@ -189,7 +189,7 @@ export default class DynamicTable extends Component<Props, State> {
                 isRankable={canRank}
               />
             )}
-            {rowsExist && canRank ? (
+            {rowsExist && (canRank ? (
               <RankableBody
                 {...bodyProps}
                 isRanking={this.state.isRanking}
@@ -200,7 +200,7 @@ export default class DynamicTable extends Component<Props, State> {
               <Body
                 {...bodyProps}
               />
-            )}
+            ))}
           </Table>
         </LoadingContainerAdvanced>
         {!totalPages ? null : (
