@@ -14,7 +14,7 @@ module.exports = function createWebpackConfig(
     includePatterns = false,
     env = 'development',
     cwd = process.cwd(),
-  } /*: { entry: string, host?: string, port?: number, globs?: Array<string>, includePatterns: boolean, env: string } */,
+  } /*: { entry: string, host?: string, port?: number, globs?: Array<string>, cwd?: string, includePatterns: boolean, env: string } */,
 ) {
   return {
     entry: {
