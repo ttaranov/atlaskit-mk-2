@@ -37,6 +37,7 @@
     "@atlaskit/avatar": "^8.4.0",
     "@atlaskit/docs": "^2.4.0",
     "@atlaskit/dropdown-menu": "^3.11.5",
+    "@atlaskit/toggle": "^2.8.0",
     "enzyme": "^3.3.0"
   }
 }

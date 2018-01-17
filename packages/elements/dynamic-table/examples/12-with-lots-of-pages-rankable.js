@@ -1,20 +1,36 @@
 // @flow
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { ToggleStateless as Toggle } from '@atlaskit/toggle';
 import DynamicTable from '../src';
-import { caption, head, rows } from './content/sample-data';
+import { caption, createHead, rows } from './content/sample-data';
 
 const Wrapper = styled.div`
   min-width: 600px;
 `;
 
-export default class extends Component<{}, {}> {
+type State = {
+  fixedSize: boolean,
+}
+export default class extends Component<{}, State> {
+
+  state = {
+    fixedSize: false,
+  }
+
+  onToggleFixedChange = () => {
+    this.setState({
+      fixedSize: !this.state.fixedSize,
+    })
+  }
+
   render() {
     return (
       <Wrapper>
+        <Toggle onChange={this.onToggleFixedChange} isChecked={this.state.fixedSize}/>Fixed size
         <DynamicTable
           caption={caption}
-          head={head}
+          head={createHead(this.state.fixedSize)}
           rows={rows}
           rowsPerPage={5}
           defaultPage={1}
