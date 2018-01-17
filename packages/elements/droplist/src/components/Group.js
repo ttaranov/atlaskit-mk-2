@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, type Node } from 'react';
+import React, { PureComponent, type Node } from 'react';
 import Group, { Heading, HeadingText, HeadingAfter } from '../styled/Group';
 
 type Props = {
@@ -12,7 +12,7 @@ type State = {
   ariaLabel?: string,
 };
 
-class DroplistGroup extends Component<Props, State> {
+class DroplistGroup extends PureComponent<Props, State> {
   state = { ariaLabel: this.props.heading };
   headingElement: HTMLElement;
 

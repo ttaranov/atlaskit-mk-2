@@ -34,8 +34,6 @@ describe(`${name} - core`, () => {
 
     it('should render Layer component', () => {
       const layer = wrapper.find(Layer);
-      const layerNode = layer.node;
-      expect(layerNode instanceof Layer).toBe(true);
       // Check that layer received our content
       expect(layer.find(ItemGroup).length).toBe(1);
       expect(layer.find(Trigger).length).toBe(1);

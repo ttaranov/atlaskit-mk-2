@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, type Node } from 'react';
+import React, { PureComponent, type Node } from 'react';
 import { Anchor, Span } from '../styled/Item';
 
 export const supportsVoiceOver = /Mac OS X/.test(navigator.userAgent);
@@ -23,7 +23,7 @@ type Props = {
   handleMouseOut: any => mixed,
   handleMouseOver: any => mixed,
   handleMouseUp: any => mixed,
-  href?: string,
+  href?: ?string,
   isActive?: boolean,
   isChecked?: boolean,
   isDisabled?: boolean,
@@ -31,12 +31,13 @@ type Props = {
   isHidden?: boolean,
   isPrimary?: boolean,
   isSelected?: boolean,
-  target?: string,
-  title?: string,
-  type?: 'link' | 'radio' | 'checkbox' | 'option',
+  target?: ?string,
+  title?: ?string,
+  /** Expects 'link' | 'radio' | 'checkbox' | 'option' */
+  type?: string,
 };
 
-export default class Element extends Component<Props, void> {
+export default class Element extends PureComponent<Props, void> {
   // this prevents the focus ring from appearing when the element is clicked.
   // It doesn't interfere with the onClick handler
   handleMouseDown = (e: Event) => {

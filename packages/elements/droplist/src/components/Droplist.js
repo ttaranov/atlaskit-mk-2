@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component, type Node } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Layer from '@atlaskit/layer';
 import Spinner from '@atlaskit/spinner';
@@ -69,7 +70,10 @@ export default class Droplist extends Component<Props, void> {
     trigger: null,
   };
 
-  //static childContextTypes = {shouldAllowMultilineItems}
+  static childContextTypes = {
+    shouldAllowMultilineItems: PropTypes.bool,
+  };
+
   getChildContext() {
     return { shouldAllowMultilineItems: this.props.shouldAllowMultilineItems };
   }
@@ -118,9 +122,10 @@ export default class Droplist extends Component<Props, void> {
   handleClickOutside = (event: Event): void => {
     if (this.props.isOpen) {
       const domNode = ReactDOM.findDOMNode(this); // eslint-disable-line react/no-find-dom-node
-      // $FlowFixMe
+
       if (
         !domNode ||
+        // $FlowFixMe
         (event.target instanceof Node && !domNode.contains(event.target))
       ) {
         this.close(event);
@@ -191,6 +196,7 @@ export default class Droplist extends Component<Props, void> {
           boundariesElement={boundariesElement}
           content={layerContent}
           offset={dropOffset}
+          // $FlowFixMe
           position={position}
         >
           <Trigger fit={shouldFitContainer} innerRef={this.handleTriggerRef}>

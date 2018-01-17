@@ -5,7 +5,7 @@ import { md, Example, Props } from '@atlaskit/docs';
 export default md`
   ### Usage
 
-  An internal base component for dropdown and select components & should not have to use this directly. 
+  An internal base component for implementing dropdown and select components. 
 
   ~~~js
   import DropList, {

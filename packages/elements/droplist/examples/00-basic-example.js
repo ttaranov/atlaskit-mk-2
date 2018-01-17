@@ -39,6 +39,18 @@ export default class BasicExample extends PureComponent<void, State> {
     return (
       <div>
         <Label label="With event handlers" />
+        <div
+          style={{
+            borderStyle: 'dashed',
+            borderWidth: '1px',
+            borderColor: '#ccc',
+            padding: '0.5em',
+            color: '#ccc',
+            margin: '0.5em',
+          }}
+        >
+          {this.state.eventResult}
+        </div>
         <DropList
           appearance="default"
           position="right top"
@@ -54,43 +66,7 @@ export default class BasicExample extends PureComponent<void, State> {
             </Item>
             <Item isHidden>Hidden item</Item>
             <Item isDisabled>Brisbane</Item>
-            <Item>Canberra</Item>
             <Item onActivated={this.onItemActivated}>Melbourne</Item>
-          </ItemGroup>
-        </DropList>
-        <div
-          style={{
-            borderStyle: 'dashed',
-            borderWidth: '1px',
-            borderColor: '#ccc',
-            padding: '0.5em',
-            color: '#ccc',
-            margin: '0.5em',
-          }}
-        >
-          {this.state.eventResult}
-        </div>
-        <Label label="Fit Container" />
-        <DropList shouldFitContainer isOpen trigger={<Button>...</Button>}>
-          <ItemGroup title="Australia">
-            <Item>Sydney</Item>
-            <Item isHidden>Hidden item</Item>
-            <Item isDisabled>Brisbane</Item>
-            <Item>Canberra</Item>
-            <Item>Melbourne</Item>
-          </ItemGroup>
-        </DropList>
-        <Label label="Multiline Items" />
-        <DropList isOpen trigger={<Button>...</Button>}>
-          <ItemGroup>
-            <Item shouldAllowMultiline>
-              What about if we put some really long content inside this dropdown
-              menu
-            </Item>
-            <Item shouldAllowMultiline>
-              And then we see how the text is hidden, okey now its going to be
-              hidden
-            </Item>
           </ItemGroup>
         </DropList>
       </div>

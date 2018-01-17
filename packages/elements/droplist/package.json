@@ -26,7 +26,8 @@
     "keycode": "^2.1.7",
     "@atlaskit/theme": "^2.0.1",
     "styled-components": "^1.4.6",
-    "babel-runtime": "^6.26.0"
+    "babel-runtime": "^6.26.0",
+    "prop-types": "^15.5.10"
   },
   "peerDependencies": {
     "react": "15.6.0 - 16.2.0",

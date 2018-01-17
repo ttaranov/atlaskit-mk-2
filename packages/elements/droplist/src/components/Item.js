@@ -1,5 +1,6 @@
 // @flow
-import React, { Component, type Node } from 'react';
+import React, { PureComponent, type Node } from 'react';
+import PropTypes from 'prop-types';
 import Radio from '@atlaskit/icon/glyph/radio';
 import Checkbox from '@atlaskit/icon/glyph/checkbox';
 import Tooltip from '@atlaskit/tooltip';
@@ -22,9 +23,9 @@ type Props = {
   appearance: 'default' | 'primary',
   children?: Node,
   description?: string,
-  elemAfter?: Node,
-  elemBefore?: Node,
-  href?: string,
+  elemAfter?: ?Node,
+  elemBefore?: ?Node,
+  href?: ?string,
   isActive?: boolean,
   isChecked?: boolean,
   isDisabled?: boolean,
@@ -32,11 +33,11 @@ type Props = {
   isHidden?: boolean,
   isSelected?: boolean,
   onActivate?: any => mixed,
-  target?: string,
-  title?: string,
-  tooltipDescription?: string,
+  target?: ?string,
+  title?: ?string,
+  tooltipDescription?: ?string,
   tooltipPosition?: 'top' | 'bottom' | 'left' | 'right',
-  type?: 'link' | 'radio' | 'checkbox' | 'option',
+  type?: string,
 };
 
 type State = {
@@ -44,7 +45,7 @@ type State = {
   isPressed: boolean,
 };
 
-export default class Item extends Component<Props, State> {
+export default class Item extends PureComponent<Props, State> {
   static defaultProps = {
     appearance: 'default',
     children: null,
@@ -70,6 +71,10 @@ export default class Item extends Component<Props, State> {
   state = {
     isHovered: false,
     isPressed: false,
+  };
+
+  static contextTypes = {
+    shouldAllowMultilineItems: PropTypes.bool,
   };
 
   componentDidMount = () =>

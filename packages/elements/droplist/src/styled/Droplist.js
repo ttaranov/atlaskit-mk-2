@@ -6,11 +6,11 @@ import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
  * it should have scroll and cut off half of the 10th item to indicate that there are more
  * items then are seen. This was previously calculated by mapping over children, but with
  * the current composed API it is simpler to just assume 9 items. */
-const getMaxHeight = ({ isTall, maxHeight, ...rest }) => {
+const getMaxHeight = ({ isTall, maxHeight }) => {
   if (maxHeight) return `${maxHeight}px`;
 
   const heightWithoutPadding = 17;
-  const verticalPadding = gridSize(rest);
+  const verticalPadding = gridSize();
   const height = heightWithoutPadding + verticalPadding * 2;
   const defaultMaxHeight = 9.5 * height + verticalPadding / 2;
 
