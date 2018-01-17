@@ -8,6 +8,7 @@ import {
   EmptyViewWithFixedHeight,
 } from '../src/styled/EmptyBody';
 import Body from '../src/components/Body';
+import RankableBody from '../src/components/rankable/Body';
 import LoadingContainer from '../src/components/LoadingContainer';
 import LoadingContainerAdvanced from '../src/components/LoadingContainerAdvanced';
 import { Caption } from '../src/styled/DynamicTable';
@@ -64,6 +65,13 @@ const rows = [
     ],
   },
 ];
+
+const rowsWithKeys = rows.map((row, rowIndex) => {
+  return {
+    key: `${rowIndex}`,
+    ...row
+  }
+});
 
 describe(name, () => {
   describe('stateless', () => {
@@ -127,6 +135,23 @@ describe(name, () => {
       expect(emptyView.length).toBe(1);
       expect(caption.length).toBe(1);
       expect(body.length).toBe(0);
+    });
+
+    it('should render RankableTableBody if table is rankable', () => {
+      const wrapper = mount(
+        <DynamicTableStateless
+          rowsPerPage={2}
+          page={2}
+          head={head}
+          rows={rowsWithKeys}
+          isRankable
+        />,
+      );
+      
+      const body = wrapper.find(Body);
+      const rankableBody = wrapper.find(RankableBody);
+      expect(body.length).toBe(0);
+      expect(rankableBody.length).toBe(1);
     });
 
     it('should display paginated data', () => {
