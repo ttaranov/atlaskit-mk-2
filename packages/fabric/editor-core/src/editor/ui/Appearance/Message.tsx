@@ -34,7 +34,9 @@ export interface MessageEditorProps {
 // tslint:disable-next-line:variable-name
 const MessageEditor: any = styled.div`
   display: flex;
-  border: 1px solid ${(props: MessageEditorProps) => props.isMaxContentSizeReached ? '#FF8F73' : '#C1C7D0'};
+  border: 1px solid
+    ${(props: MessageEditorProps) =>
+      props.isMaxContentSizeReached ? '#FF8F73' : '#C1C7D0'};
   border-radius: 3px;
   height: auto;
   min-height: 34px;
@@ -109,6 +111,15 @@ export default class Editor extends React.Component<
     const maxContentSizeReached =
       maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
+
+    if (!editorView) {
+      return (
+        <MessageEditor maxHeight={maxHeight}>
+          <ContentArea>{editorDOMElement}</ContentArea>
+          <SecondaryToolbarContainer />
+        </MessageEditor>
+      );
+    }
 
     return (
       <MessageEditor

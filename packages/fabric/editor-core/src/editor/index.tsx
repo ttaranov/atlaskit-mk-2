@@ -1,13 +1,10 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { withAnalytics } from '@atlaskit/analytics';
-import { DirectEditorProps } from 'prosemirror-view';
 import { getUiComponent } from './create-editor';
 import EditorActions from './actions';
 import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
-import {
-  EditorProps,
-} from './types';
+import { EditorProps } from './types';
 import { ReactEditorView } from './create-editor';
 import { moveCursorToTheEnd } from '../utils';
 import { EditorView } from 'prosemirror-view';
@@ -47,7 +44,10 @@ export default class Editor extends React.Component<EditorProps, {}> {
     this.providerFactory.destroy();
   }
 
-  onEditorCreated = (instance: { view: EditorView, transformer?: Transformer<string> }) => {
+  onEditorCreated = (instance: {
+    view: EditorView;
+    transformer?: Transformer<string>;
+  }) => {
     this.registerEditorForActions(instance.view, instance.transformer);
     if (this.props.shouldFocus) {
       if (!instance.view.hasFocus()) {
@@ -55,15 +55,24 @@ export default class Editor extends React.Component<EditorProps, {}> {
         moveCursorToTheEnd(instance.view);
       }
     }
-  }
+  };
 
-  onEditorDestroyed = (instance: { view: EditorView, transformer?: Transformer<string> }) => {
+  onEditorDestroyed = (instance: {
+    view: EditorView;
+    transformer?: Transformer<string>;
+  }) => {
     this.unregisterEditorFromActions();
-  }
+  };
 
-  private registerEditorForActions(editorView: EditorView, contentTransformer?: Transformer<string>) {
+  private registerEditorForActions(
+    editorView: EditorView,
+    contentTransformer?: Transformer<string>,
+  ) {
     if (this.context && this.context.editorActions) {
-      this.context.editorActions._privateRegisterEditor(editorView, contentTransformer);
+      this.context.editorActions._privateRegisterEditor(
+        editorView,
+        contentTransformer,
+      );
     }
   }
 
@@ -116,7 +125,6 @@ export default class Editor extends React.Component<EditorProps, {}> {
 
     return (
       <ReactEditorView
-        disabled={this.props.disabled}
         editorProps={this.props}
         providerFactory={this.providerFactory}
         onEditorCreated={this.onEditorCreated}
@@ -124,28 +132,23 @@ export default class Editor extends React.Component<EditorProps, {}> {
         render={({ editor, view, state, eventDispatcher, config }) => (
           <Component
             disabled={this.props.disabled}
-
             editorDOMElement={editor}
             editorView={view}
             providerFactory={this.providerFactory}
-
             eventDispatcher={eventDispatcher}
-
             maxHeight={this.props.maxHeight}
             onSave={this.props.onSave}
             onCancel={this.props.onCancel}
-
             popupsMountPoint={this.props.popupsMountPoint}
             popupsBoundariesElement={this.props.popupsBoundariesElement}
-
             contentComponents={config.contentComponents}
             primaryToolbarComponents={config.primaryToolbarComponents}
             secondaryToolbarComponents={config.secondaryToolbarComponents}
-
             customContentComponents={this.props.contentComponents}
             customPrimaryToolbarComponents={this.props.primaryToolbarComponents}
-            customSecondaryToolbarComponents={this.props.secondaryToolbarComponents}
-
+            customSecondaryToolbarComponents={
+              this.props.secondaryToolbarComponents
+            }
             addonToolbarComponents={this.props.addonToolbarComponents}
           />
         )}

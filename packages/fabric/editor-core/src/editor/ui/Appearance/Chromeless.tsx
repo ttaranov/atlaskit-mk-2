@@ -75,14 +75,9 @@ export default class Editor extends React.Component<
 
   private appearance: EditorAppearance = 'chromeless';
 
-  private handleRef = ref => {
-    if (this.props.onUiReady) {
-      this.props.onUiReady(ref);
-    }
-  };
-
   private renderChrome = ({ maxContentSize }) => {
     const {
+      editorDOMElement,
       editorView,
       eventDispatcher,
       providerFactory,
@@ -97,13 +92,22 @@ export default class Editor extends React.Component<
       maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
+    if (!editorView) {
+      return (
+        <ChromelessEditor maxHeight={maxHeight}>
+          <ContentArea>{editorDOMElement}</ContentArea>
+        </ChromelessEditor>
+      );
+    }
+
     return (
       <ChromelessEditor
         className={this.flashToggle ? '-flash' : ''}
         isMaxContentSizeReached={maxContentSizeReached}
         maxHeight={maxHeight}
       >
-        <ContentArea innerRef={this.handleRef}>
+        <ContentArea>
+          {editorDOMElement}
           {customContentComponents}
           <PluginSlot
             editorView={editorView}
