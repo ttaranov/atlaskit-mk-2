@@ -10,9 +10,9 @@ export type WithDimensionsProps = {
   innerRef: (?HTMLElement) => void,
 } & State;
 
-type NeededProps = {
+type Props = {
   isRanking: boolean,
-} & WithDimensionsProps;
+};
 
 export default function withDimensions<WrappedProps: {}>(
   WrappedComponent: ComponentType<WrappedProps>,
@@ -31,7 +31,7 @@ export default function withDimensions<WrappedProps: {}>(
       }
     };
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
       const wasRanking = this.props.isRanking;
       const willRanking = nextProps.isRanking;
 

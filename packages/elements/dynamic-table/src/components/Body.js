@@ -1,12 +1,13 @@
 // @flow
 import React, { Component } from 'react';
 import TableRow from './TableRow';
-import withSortedPageRows from '../hoc/withSortedPageRows';
-import type { HeadType, RowType } from '../types';
+import withSortedPageRows, {
+  type WithSortedPageRowsProps
+} from '../hoc/withSortedPageRows';
+import type { HeadType } from '../types';
 
-type Props = {
+type Props = WithSortedPageRowsProps & {
   head: HeadType | void,
-  pageRows: Array<RowType>,
   isFixedSize: boolean,
 };
 

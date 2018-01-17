@@ -15,15 +15,16 @@ import type {
   RankEnd,
   RankEndLocation,
 } from '../../types';
-import withSortedPageRows from '../../hoc/withSortedPageRows';
+import withSortedPageRows, { 
+  type WithSortedPageRowsProps 
+} from '../../hoc/withSortedPageRows';
 import withDimensions, {
   type WithDimensionsProps,
 } from '../../hoc/withDimensions';
 
-type Props = WithDimensionsProps & {
+type Props = WithDimensionsProps & WithSortedPageRowsProps & {
   onRankStart: RankStart => void,
   onRankEnd: RankEnd => void,
-  pageRows: RowType[],
   isFixedSize: boolean,
   isRanking: boolean,
   head: HeadType | void,
@@ -116,4 +117,5 @@ class RankableBody extends Component<Props, {}> {
   }
 }
 
+// $FlowFixMe
 export default withDimensions(withSortedPageRows(RankableBody));
