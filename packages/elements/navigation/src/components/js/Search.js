@@ -16,7 +16,7 @@ type Props = {
   /** Function to be called when the search input loses focus. */
   onBlur: (event: Event) => mixed,
   /** Function to be called when a input action occurs (native `oninput` event). */
-  onInput?: (event: Event) => mixed,
+  onInput?: (event: SyntheticInputEvent<any>) => mixed,
   /** Function to be called when the user hits the escape key.  */
   onKeyDown?: (event: Event) => mixed,
   /** Placeholder text for search field. */

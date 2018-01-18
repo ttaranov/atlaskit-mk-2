@@ -173,6 +173,7 @@ export default class Navigation extends PureComponent<Props, State> {
     super(props, context);
 
     const { containerTheme, globalTheme } = props;
+    // $FlowFixMe TEMPORARY
     const { mode } = getTheme(props);
 
     this.state = {
@@ -208,6 +209,8 @@ export default class Navigation extends PureComponent<Props, State> {
     const { containerTheme, globalTheme } = nextProps;
     // TODO work out why nextProps.theme.__ATLASKIT_THEME__.mode always returns the mode
     // that was applied at time of first page load.
+
+    // $FlowFixMe TEMPORARY
     const { mode } = getTheme(nextProps);
 
     const isTogglingIsOpen = this.props.isOpen !== nextProps.isOpen;

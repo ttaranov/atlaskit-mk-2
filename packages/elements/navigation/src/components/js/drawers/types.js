@@ -15,7 +15,7 @@ export type DrawerProps = {
   isFullWidth?: boolean,
   /** A function to call when the backIcon button is clicked, or when the blanket
    behind the Drawer is clicked */
-  onBackButton: () => void,
+  onBackButton: () => mixed,
   /** The primary icon in the Drawer – usually the globalPrimaryIcon that was
    given to the GlobalNavigation component */
   primaryIcon: ReactElement,
