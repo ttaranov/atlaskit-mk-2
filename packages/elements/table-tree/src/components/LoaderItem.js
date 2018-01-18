@@ -18,6 +18,12 @@ type State = {
 export default class LoaderItem extends PureComponent<Props, State> {
   static defaultProps = {
     depth: 1,
+
+    /* This basically reimplements the `delay` property of @atlaskit/spinner.
+     * Unfortunately, spinner's implementation is currently broken / not useful:
+     * it displays the 'completing' animation even if data is loaded
+     * within the delay time. We want to completely hide the spinner for fast loads.
+     */
     delay: 100,
   };
 
