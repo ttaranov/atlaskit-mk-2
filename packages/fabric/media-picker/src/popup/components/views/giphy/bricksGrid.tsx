@@ -34,7 +34,9 @@ export class BricksLayout extends Component<
       sizes = [{ columns: 3, gutter: 10 }],
     } = this.props;
     // We try to use the TS import, otherwise we use the "default" export
-    const BricksConstructor = (Bricks || DefaultImportBricks) as any;
+    const BricksConstructor = (typeof Bricks === 'function'
+      ? Bricks
+      : DefaultImportBricks) as any;
     const instance = BricksConstructor({
       container: `#${id}`,
       packed,

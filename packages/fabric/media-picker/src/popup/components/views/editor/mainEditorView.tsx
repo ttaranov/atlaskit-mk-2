@@ -1,3 +1,5 @@
+declare var require: any;
+
 import { deselectItem } from '../../../actions/deselectItem';
 import * as React from 'react';
 import { Component } from 'react';
