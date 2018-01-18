@@ -95,7 +95,7 @@
     "@atlaskit/layer-manager": "^2.6.0",
     "@atlaskit/media-test-helpers": "^8.6.0",
     "@atlaskit/renderer": "^11.3.2",
-    "@atlaskit/util-data-test": "^7.0.0",
+    "@atlaskit/util-data-test": "^7.2.1",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "chai-as-promised": "^6.0.0",
     "fetch-mock": "^5.12.1",
