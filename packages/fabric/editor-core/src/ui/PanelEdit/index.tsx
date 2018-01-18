@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import TipIcon from '@atlaskit/icon/glyph/editor/hint';
+import SuccessIcon from '@atlaskit/icon/glyph/editor/success';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import NoteIcon from '@atlaskit/icon/glyph/editor/note';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
+import ErrorIcon from '@atlaskit/icon/glyph/editor/error';
 import { EditorView } from 'prosemirror-view';
 import ToolbarButton from '../ToolbarButton';
 
@@ -15,8 +16,9 @@ import FloatingToolbar from '../FloatingToolbar';
 const icons = {
   info: InfoIcon,
   note: NoteIcon,
-  tip: TipIcon,
+  success: SuccessIcon,
   warning: WarningIcon,
+  error: ErrorIcon,
 };
 
 export interface Props {

@@ -10,35 +10,41 @@ import {
   akColorP50,
   akColorB50,
   akColorY50,
+  akColorR50,
   akColorG400,
   akColorP400,
   akColorB400,
   akColorY400,
+  akColorR400,
 } from '@atlaskit/util-shared-styles';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
-import TipIcon from '@atlaskit/icon/glyph/editor/hint';
+import SuccessIcon from '@atlaskit/icon/glyph/editor/success';
 import NoteIcon from '@atlaskit/icon/glyph/editor/note';
-import WarningIcon from '@atlaskit/icon/glyph/warning';
+import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
+import ErrorIcon from '@atlaskit/icon/glyph/editor/error';
 
 const panelColor = {
   info: akColorB50,
   note: akColorP50,
-  tip: akColorG50,
+  success: akColorG50,
   warning: akColorY50,
+  error: akColorR50,
 };
 
 const iconColor = {
   info: akColorB400,
   note: akColorP400,
-  tip: akColorG400,
+  success: akColorG400,
   warning: akColorY400,
+  error: akColorR400,
 };
 
 const panelIcons = {
   info: InfoIcon,
-  tip: TipIcon,
+  success: SuccessIcon,
   note: NoteIcon,
   warning: WarningIcon,
+  error: ErrorIcon,
 };
 
 // tslint:disable-next-line:variable-name
