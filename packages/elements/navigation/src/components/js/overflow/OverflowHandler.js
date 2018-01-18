@@ -106,6 +106,7 @@ export default class OverflowManager extends Component<Props, State> {
 
   hasAllGroupHeights = () => isArrayFilled(this.groupHeights);
 
+  /* eslint-disable react/no-unused-prop-types */
   handleItemGroupHeightReport = ({
     groupIndex,
     ...groupHeightInfo
@@ -114,10 +115,10 @@ export default class OverflowManager extends Component<Props, State> {
     nonItemHeight: number,
     itemHeights: Array<any>,
   }) => {
-    //eslint-disable-line react/no-unused-prop-types
     this.groupHeights[groupIndex] = groupHeightInfo;
     this.calculateBreakItem();
   };
+  /* eslint-enable react/no-unused-prop-types */
 
   handleAvailableHeightChange = (availableHeight: number) => {
     if (availableHeight === this.availableHeight) {
