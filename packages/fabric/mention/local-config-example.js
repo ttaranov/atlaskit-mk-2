@@ -1,3 +1,4 @@
+/* eslint-disable */
 // Copy this file to local-config.js and customise.
 export default {
   asap: {
