@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Avatar from '@atlaskit/avatar/dist/esm/components/Avatar';
+import Avatar from '@atlaskit/avatar';
 import Lozenge from '@atlaskit/lozenge';
 import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
 import Tooltip from '@atlaskit/tooltip';
