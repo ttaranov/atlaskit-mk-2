@@ -237,8 +237,8 @@ export const siteSettings: Provided = ((): Provided => {
 })();
 
 export const global: Provided = ((): Provided => {
-  const primaryBackground: Background = colors.B500;
-  const activeBackground: Background = colors.B200;
+  const primaryBackground: string = colors.B500;
+  const activeBackground: string = colors.B200;
   const item: ItemTheme = {
     default: {
       background: 'transparent',
