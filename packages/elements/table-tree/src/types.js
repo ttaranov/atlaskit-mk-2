@@ -7,7 +7,7 @@ export type RowData = Object;
 export type ItemsDataType = Array<RowData>;
 
 export type ItemsProvider = (
-  ?Object,
+  Object | void,
 ) => void | ItemsDataType | Promise<void | ItemsDataType>;
 
 export type RenderFunction = Object => Element<typeof Row>;
