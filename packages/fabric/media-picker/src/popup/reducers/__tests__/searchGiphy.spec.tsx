@@ -169,15 +169,15 @@ describe('searchGiphy', () => {
       expect(newState.view.isLoading).toBe(false);
     });
 
-    it('removes previously stored imageResults', () => {
+    it('should not remove previously stored imageResults', () => {
       const oldState: any = { ...state };
       const newState = giphySearchFailed(oldState, searchGiphyFailed());
 
       expect(oldState).toEqual(state);
-      expect(newState.giphy.imageCardModels).toEqual([]);
+      expect(newState.giphy.imageCardModels).toHaveLength(2);
     });
 
-    it('should set giphy.totalResultCount to undefined', () => {
+    it('should keep existing giphy.totalResultCount', () => {
       const oldState: any = {
         ...state,
         view: { hasError: true },
@@ -185,10 +185,10 @@ describe('searchGiphy', () => {
       };
       const newState = giphySearchFailed(oldState, searchGiphyFailed());
 
-      expect(newState.giphy.totalResultCount).toEqual(undefined);
+      expect(newState.giphy.totalResultCount).toEqual(100);
     });
 
-    it('sets the view error state to true', () => {
+    it('should set the view error state to true', () => {
       const oldState: any = { ...state };
       const newState = giphySearchFailed(oldState, searchGiphyFailed());
 
