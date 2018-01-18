@@ -31,12 +31,18 @@ const flattenChildren = children =>
  * Get the result ID of a result by its index in the flatResults array
  * Returns null for a failed index or if resultId is empty|undefined
  */
-const getResultIdByIndex = (array: Array<any>, index: number | null) =>
-  array &&
-  index &&
-  array[index] &&
-  array[index].props &&
-  array[index].props.resultId;
+const getResultIdByIndex = (array: Array<any>, index: number | null) => {
+  if (
+    array &&
+    index != null &&
+    array[index] &&
+    array[index].props &&
+    array[index].props.resultId
+  ) {
+    return array[index].props.resultId;
+  }
+  return null;
+};
 
 /**
  * Find a result in the flatResults array by its ID

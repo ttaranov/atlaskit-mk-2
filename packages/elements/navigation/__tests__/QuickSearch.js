@@ -203,6 +203,8 @@ describe('<QuickSearch />', () => {
         .find(AkSearch)
         .find('input')
         .simulate('keydown', { key: 'ArrowDown' });
+
+      wrapper.update();
       expect(
         wrapper
           .find(AkNavigationItem)
@@ -214,6 +216,7 @@ describe('<QuickSearch />', () => {
     it('should select the previous result on UP keystroke', () => {
       searchInput.simulate('keydown', { key: 'ArrowDown' });
       searchInput.simulate('keydown', { key: 'ArrowUp' });
+      wrapper.update();
       expect(
         wrapper
           .find(AkNavigationItem)
