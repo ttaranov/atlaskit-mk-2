@@ -6,7 +6,6 @@ import EditorActions from './actions';
 import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
 import { EditorProps } from './types';
 import { ReactEditorView } from './create-editor';
-import { moveCursorToTheEnd } from '../utils';
 import { EditorView } from 'prosemirror-view';
 export * from './types';
 
@@ -52,7 +51,6 @@ export default class Editor extends React.Component<EditorProps, {}> {
     if (this.props.shouldFocus) {
       if (!instance.view.hasFocus()) {
         instance.view.focus();
-        moveCursorToTheEnd(instance.view);
       }
     }
   };

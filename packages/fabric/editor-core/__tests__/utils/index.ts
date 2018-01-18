@@ -25,7 +25,6 @@ import { toggleMark } from 'prosemirror-commands';
 import {
   isMarkTypeAllowedInCurrentSelection,
   areBlockTypesDisabled,
-  moveCursorToTheEnd,
   isEmptyNode,
 } from '../../src/utils';
 
@@ -185,23 +184,6 @@ describe('@atlaskit/editore-core/utils', () => {
       const { editorView } = editor(doc(p('te{<}xt'), panel(p('te{>}xt'))));
       const result = areBlockTypesDisabled(editorView.state);
       expect(result).toBe(false);
-    });
-  });
-
-  describe('#moveCursorToTheEnd', () => {
-    it('should move cursor to the end of a document', () => {
-      const { editorView, refs: { endPos } } = editor(
-        doc(p('Som{<>}e text after the cursor{endPos}')),
-      );
-      moveCursorToTheEnd(editorView);
-      expect(typeof endPos).toBe('number');
-      expect(editorView.state.selection.anchor).toBe(endPos);
-    });
-    it('should not blow up on empty document', () => {
-      const { editorView, refs: { endPos } } = editor(doc(p('{<>}{endPos}')));
-      moveCursorToTheEnd(editorView);
-      expect(typeof endPos).toBe('number');
-      expect(editorView.state.selection.anchor).toBe(endPos);
     });
   });
 
