@@ -98,21 +98,21 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
   private getContent = () => {
     const { hasError, isLoading, cardModels } = this.props;
 
-    const notResults = cardModels.length === 0;
+    const hasResults = cardModels.length > 0;
     if (hasError) {
-      if (notResults) {
-        return this.renderError();
-      } else {
+      if (hasResults) {
         return (
           <div>
             {this.renderErrorFlag()}
             {this.renderSearchResults()}
           </div>
         );
+      } else {
+        return this.renderError();
       }
     }
 
-    if (!isLoading && notResults) {
+    if (!isLoading && !hasResults) {
       return this.renderEmptyState();
     }
 

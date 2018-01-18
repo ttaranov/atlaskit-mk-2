@@ -226,7 +226,7 @@ describe('<ConnectedGiphyView />', () => {
       expect(giphyView.find(BricksLayout)).toHaveLength(0);
     });
 
-    it('should call onSearchQueryChange() when the "Try again" button is clicked', done => {
+    it('should call onSearchQueryChange() when the "Try again" button is clicked', () => {
       const giphyView = shallow(
         <GiphyView
           hasError={true}
@@ -243,11 +243,8 @@ describe('<ConnectedGiphyView />', () => {
       giphyView.setState({ query: 'some-search-query' });
       giphyView.find(Button).simulate('click');
 
-      setImmediate(() => {
-        expect(onSearchQueryChange).toHaveBeenCalledTimes(1);
-        expect(onSearchQueryChange).toHaveBeenCalledWith('some-search-query');
-        done();
-      });
+      expect(onSearchQueryChange).toHaveBeenCalledTimes(1);
+      expect(onSearchQueryChange).toHaveBeenCalledWith('some-search-query');
     });
 
     it('should render a Flag with error message when non-initial load failed', () => {
