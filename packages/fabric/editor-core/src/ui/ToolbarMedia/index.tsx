@@ -11,6 +11,7 @@ export interface Props {
   editorView: EditorView;
   pluginKey: PluginKey;
   isDisabled?: boolean;
+  isReducedSpacing?: boolean;
 }
 
 export interface State {
@@ -40,7 +41,7 @@ export default class ToolbarMedia extends PureComponent<Props, State> {
   }
 
   render() {
-    const { isDisabled } = this.props;
+    const { isDisabled, isReducedSpacing } = this.props;
     const { disabled } = this.state;
     if (disabled) {
       return null;
@@ -50,6 +51,7 @@ export default class ToolbarMedia extends PureComponent<Props, State> {
         onClick={this.handleClickMediaButton}
         disabled={isDisabled}
         title="Insert files and images"
+        spacing={isReducedSpacing ? 'none' : 'default'}
         iconBefore={<AttachmentIcon label="Insert files and images" />}
       />
     );

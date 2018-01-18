@@ -14,6 +14,7 @@ import {
   MacroState,
   insertMacroFromMacroBrowser,
 } from '../macro';
+import { pluginKey as dateStateKey } from '../date/plugin';
 import { stateKey as emojiStateKey } from '../../../plugins/emojis';
 import WithPluginState from '../../ui/WithPluginState';
 import ToolbarInsertBlock from '../../../ui/ToolbarInsertBlock';
@@ -60,6 +61,7 @@ const insertBlockPlugin: EditorPlugin = {
             macroState: macroStateKey,
             hyperlinkState: hyperlinkStateKey,
             emojiState: emojiStateKey,
+            dateState: dateStateKey,
           }}
           render={({
             blockTypeState = {} as BlockTypeState,
@@ -69,6 +71,7 @@ const insertBlockPlugin: EditorPlugin = {
             macroState = {} as MacroState,
             hyperlinkState,
             emojiState,
+            dateState,
           }) => (
             <ToolbarInsertBlock
               buttons={buttons}
@@ -79,6 +82,7 @@ const insertBlockPlugin: EditorPlugin = {
               tableHidden={tablesState && tablesState.tableHidden}
               tableSupported={!!tablesState}
               mentionsEnabled={mentionsState && mentionsState.enabled}
+              dateEnabled={!!dateState}
               insertMentionQuery={
                 mentionsState && mentionsState.insertMentionQuery
               }

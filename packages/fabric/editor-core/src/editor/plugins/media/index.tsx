@@ -65,6 +65,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
         editorView={editorView}
         pluginKey={pluginKey}
         isDisabled={disabled}
+        isReducedSpacing={true}
       />
     );
   },

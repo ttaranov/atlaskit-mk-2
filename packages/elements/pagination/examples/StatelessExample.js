@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { PaginationStateless } from '../';
+import { PaginationStateless } from '../src';
 
 export default class PaginationExample extends Component<
   {},

@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Cell as StyledCell } from '../styled';
+import { Cell as StyledCell, OverflowContainer } from '../styled';
 import withColumnWidth from './withColumnWidth';
 import type { CSSWidth } from '../types';
 
@@ -18,7 +18,13 @@ type Props = {
 class Cell extends Component<Props> {
   render() {
     const { props } = this;
-    return <StyledCell {...props}>{props.children}</StyledCell>;
+    return (
+      <StyledCell {...props}>
+        <OverflowContainer singleLine={props.singleLine}>
+          {props.children}
+        </OverflowContainer>
+      </StyledCell>
+    );
   }
 }
 

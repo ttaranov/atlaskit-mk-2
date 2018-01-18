@@ -12,7 +12,7 @@ type $npm$styledComponents$NameGenerator = (hash: number) => string;
 type $npm$styledComponents$StyledComponent = (
   strings: Array<string>,
   ...interpolations: Array<$npm$styledComponents$Interpolation>
-) => React$ComponentType<*> & { displayName: string };
+) => React$StatelessFunctionalComponent<*> & { displayName: string };
 
 type $npm$styledComponents$Theme = { +[key: string]: mixed };
 type $npm$styledComponents$ThemeProviderProps = {
@@ -22,7 +22,8 @@ type $npm$styledComponents$ThemeProviderProps = {
 };
 type $npm$styledComponents$Component =
   | Class<React$Component<*, *>>
-  | ((props: *) => React$Element<*>);
+  | ((props: *) => React$Element<*>)
+  | React$StatelessFunctionalComponent<*>;
 
 class Npm$StyledComponents$ThemeProvider extends React$Component<
   $npm$styledComponents$ThemeProviderProps,
@@ -204,7 +205,8 @@ declare module 'styled-components/native' {
   //declare type Component = $npm$styledComponents$Component;
   declare type Component =
     | Class<React$Component<*, *, *>>
-    | ((props: *) => React$Element<*>);
+    | ((props: *) => React$Element<*>)
+    | React$Element<*>;
 
   declare module.exports: {
     css: (

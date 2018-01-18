@@ -32,6 +32,7 @@ const nodes = [
   'emoji',
   'taskList',
   'taskItem',
+  'date',
 ];
 
 const marks = [

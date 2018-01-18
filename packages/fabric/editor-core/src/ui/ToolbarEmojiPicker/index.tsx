@@ -12,6 +12,7 @@ import ToolbarButton from '../ToolbarButton';
 import { OuterContainer } from './styles';
 
 export interface Props {
+  isReducedSpacing?: boolean;
   isDisabled?: boolean;
   editorView: EditorView;
   pluginKey: PluginKey;
@@ -181,7 +182,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   }
 
   render() {
-    const { isDisabled } = this.props;
+    const { isDisabled, isReducedSpacing } = this.props;
     const { isOpen, disabled } = this.state;
     const toolbarButton = (
       <ToolbarButton
@@ -192,10 +193,11 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
         ref={this.handleButtonRef}
         title="Insert emoji (:)"
         hideTooltip={isOpen}
+        spacing={isReducedSpacing ? 'none' : 'default'}
       />
     );
     return (
-      <OuterContainer>
+      <OuterContainer width={isReducedSpacing ? 'large' : 'small'}>
         {toolbarButton}
         {this.renderPopup()}
       </OuterContainer>

@@ -8,9 +8,6 @@ type Props = {
   /** The width of the Headers and Cells in this column. A CSS length string. Unitless numbers are interpreted as pixels. */
   columnWidth?: Array<CSSWidth>,
 
-  /** If true, this cell will keep its text on one line and cut overflow with an ellipsis. */
-  singleLine?: boolean,
-
   /** Any content to be rendered inside the header. */
   children?: Node,
 };

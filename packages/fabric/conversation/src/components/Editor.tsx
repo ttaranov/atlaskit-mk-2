@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import AkAvatar from '@atlaskit/avatar';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 import {
   Editor as AkEditor,
@@ -15,6 +16,9 @@ export interface Props {
   onCancel?: () => void;
   onSave?: (value: any) => void;
   isEditing?: boolean;
+
+  // Provider
+  dataProviders?: ProviderFactory;
 }
 
 export interface State {
@@ -90,6 +94,15 @@ export default class Editor extends React.Component<Props, State> {
 
   render() {
     const { isEditing } = this.state;
+    const { dataProviders } = this.props;
+    let providers = {};
+
+    // @TODO Remove and just pass the factory through once AkEditor is updated
+    if (dataProviders) {
+      (dataProviders as any).providers.forEach((provider, key) => {
+        providers[key] = provider;
+      });
+    }
 
     return (
       <EditorContext>
@@ -116,6 +129,7 @@ export default class Editor extends React.Component<Props, State> {
                     allowLists={true}
                     onSave={() => this.onSave(actions)}
                     onCancel={this.onCancel}
+                    {...providers}
                   />
                 </CollapsedEditor>
               )}

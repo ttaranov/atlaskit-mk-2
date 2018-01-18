@@ -51,6 +51,7 @@ import {
   extension,
   inlineExtension,
   bodiedExtension,
+  date,
 } from './nodes';
 
 function addItems(
@@ -145,6 +146,7 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'decisionItem', spec: decisionItem },
   { name: 'taskList', spec: taskList },
   { name: 'taskItem', spec: taskItem },
+  { name: 'date', spec: date },
   { name: 'extension', spec: extension },
   { name: 'inlineExtension', spec: inlineExtension },
   { name: 'bodiedExtension', spec: bodiedExtension },

@@ -6,7 +6,7 @@ import {
   addAuthToQueryParameters,
 } from './mediaClient';
 import { retryTask } from '../util/promises';
-import { SourceFile } from '../../popup/src/domain/source-file';
+import { SourceFile } from '../popup/domain/source-file';
 
 export interface MediaArtifact {
   processingStatus: string;

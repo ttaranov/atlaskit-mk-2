@@ -62,6 +62,7 @@ const mentionsPlugin: EditorPlugin = {
         editorView={editorView}
         pluginKey={pluginKey}
         isDisabled={disabled}
+        isReducedSpacing={true}
       />
     );
   },

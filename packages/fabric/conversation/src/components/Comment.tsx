@@ -10,12 +10,14 @@ import { ReactRenderer } from '@atlaskit/renderer';
 import Editor from './Editor';
 import { Comment as CommentType, User } from '../model';
 import CommentContainer from '../containers/Comment';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
-export interface Props {
-  conversationId: string;
-  comment: CommentType;
-  comments?: CommentType[];
+/**
+ * Props which are passed down from the parent Conversation/Comment
+ */
+export interface SharedProps {
   user?: User;
+  comments?: CommentType[];
 
   // Dispatch
   onAddComment?: (conversationId: string, parentId: string, value: any) => void;
@@ -25,6 +27,17 @@ export interface Props {
     value: any,
   ) => void;
   onDeleteComment?: (conversationId: string, commentId: string) => void;
+
+  // Provider
+  dataProviders?: ProviderFactory;
+
+  // Event Hooks
+  onUserClick?: (user: User) => void;
+}
+
+export interface Props extends SharedProps {
+  conversationId: string;
+  comment: CommentType;
 }
 
 export interface State {
@@ -105,8 +118,19 @@ export default class Comment extends React.PureComponent<Props, State> {
     });
   };
 
+  /**
+   * Username click handler - pass a User object, returns a handler which will invoke onUserClick with it
+   * @param {User} user
+   */
+  private handleUserClick = (user: User) => () => {
+    const { onUserClick } = this.props;
+    if (onUserClick && typeof onUserClick === 'function') {
+      onUserClick(user);
+    }
+  };
+
   private getContent() {
-    const { comment } = this.props;
+    const { comment, dataProviders } = this.props;
     const { isEditing } = this.state;
 
     if (comment.deleted) {
@@ -121,15 +145,28 @@ export default class Comment extends React.PureComponent<Props, State> {
           isEditing={isEditing}
           onSave={this.onSaveEdit}
           onCancel={this.onCancelEdit}
+          dataProviders={dataProviders}
         />
       );
     }
 
-    return <ReactRenderer document={comment.document.adf} />;
+    return (
+      <ReactRenderer
+        document={comment.document.adf}
+        dataProviders={dataProviders}
+      />
+    );
   }
 
   render() {
-    const { conversationId, comment, comments, user } = this.props;
+    const {
+      conversationId,
+      comment,
+      comments,
+      user,
+      dataProviders,
+      onUserClick,
+    } = this.props;
     const { isReplying, isEditing } = this.state;
     const { createdBy } = comment;
     let actions;
@@ -156,7 +193,20 @@ export default class Comment extends React.PureComponent<Props, State> {
 
     return (
       <AkComment
-        author={<CommentAuthor>{createdBy && createdBy.name}</CommentAuthor>}
+        author={
+          // Render with onClick/href if they're supplied
+          onUserClick || createdBy.profileUrl ? (
+            <CommentAuthor
+              onClick={this.handleUserClick(createdBy)}
+              href={createdBy.profileUrl || '#'}
+            >
+              {createdBy && createdBy.name}
+            </CommentAuthor>
+          ) : (
+            // Otherwise just render text
+            <CommentAuthor>{createdBy && createdBy.name}</CommentAuthor>
+          )
+        }
         avatar={<AkAvatar src={createdBy && createdBy.avatarUrl} />}
         time={
           <CommentTime>
@@ -177,6 +227,8 @@ export default class Comment extends React.PureComponent<Props, State> {
             onAddComment={this.props.onAddComment}
             onUpdateComment={this.props.onUpdateComment}
             onDeleteComment={this.props.onDeleteComment}
+            onUserClick={onUserClick}
+            dataProviders={dataProviders}
           />
         ))}
         {isReplying && (
@@ -184,6 +236,7 @@ export default class Comment extends React.PureComponent<Props, State> {
             isExpanded={true}
             onCancel={this.onCancelReply}
             onSave={this.onSaveReply}
+            dataProviders={dataProviders}
           />
         )}
       </AkComment>

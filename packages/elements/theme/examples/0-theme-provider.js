@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
-import { AtlaskitThemeProvider } from '../';
+import { AtlaskitThemeProvider } from '../src';
 
 type Props = {};
 type State = { themeMode: 'light' | 'dark' };

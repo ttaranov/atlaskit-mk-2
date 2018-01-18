@@ -11,13 +11,16 @@ export default md`
 
   ## Examples
 
-  ${(
-    <Example
-      Component={require('../examples/01-basic').default}
-      title="Basic"
-      source={require('!!raw-loader!../examples/01-basic')}
-    />
-  )}
+  ${
+    (
+      // $FlowFixMe TEMPORARY
+      <Example
+        Component={require('../examples/01-basic').default}
+        title="Basic"
+        source={require('!!raw-loader!../examples/01-basic')}
+      />
+    )
+  }
 
   ${(
     <Props

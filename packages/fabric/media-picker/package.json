@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-picker",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Library for handling file uploads",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -25,7 +25,7 @@
     "@atlaskit/field-text": "^4.1.2",
     "@atlaskit/flag": "^6.2.0",
     "@atlaskit/icon": "^10.7.0",
-    "@atlaskit/media-card": "^23.2.0",
+    "@atlaskit/media-card": "^23.2.1",
     "@atlaskit/media-editor": "^3.4.0",
     "@atlaskit/modal-dialog": "^3.3.2",
     "@atlaskit/spinner": "^4.1.0",
@@ -41,8 +41,9 @@
     "postis": "^2.2.0",
     "react-redux": "^5.0.0",
     "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.2",
     "resumablejs": "1.0.2",
-    "rusha": "0.8.7",
+    "rusha": "^0.8.11",
     "styled-components": "^1.4.6",
     "svg-inline-react": "^3.0.0",
     "url": "^0.11.0",
@@ -67,7 +68,6 @@
     "@types/react-redux": "^4.4.0",
     "@types/redux": "^3.6.0",
     "identity-obj-proxy": "^3.0.0",
-    "lodash.chunk": "^4.2.0",
-    "redux-devtools-extension": "^2.13.2"
+    "lodash.chunk": "^4.2.0"
   }
 }

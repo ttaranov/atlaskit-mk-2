@@ -24,6 +24,7 @@ type LabelProps = {
 export const Label = styled.label`
   display: 'block';
   color: ${(props: LabelProps): string =>
+    // $FlowFixMe TEMPORARY
     props.isDisabled ? disabledColor(props) : colors.text(props)};
   ${({ isDisabled }: LabelProps) =>
     isDisabled

@@ -30,7 +30,7 @@ export PATH=$HOME/.yarn/bin:$PATH
 ## version that satisfies that
 BOLT_VERSION=`node -e 'console.log(require("./package.json").bolt.version)'`
 echo "Installing bolt@$BOLT_VERSION"
-yarn global add bolt@$BOLT_VERSION
+yarn global add "bolt@$BOLT_VERSION"
 
 
 # $NPM_TOKEN is the auth token for the "atlaskit" user

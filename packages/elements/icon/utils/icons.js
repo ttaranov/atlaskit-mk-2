@@ -132,6 +132,7 @@ import EditorRedoIcon from '../glyph/editor/redo';
 import EditorRemoveIcon from '../glyph/editor/remove';
 import EditorSearchIcon from '../glyph/editor/search';
 import EditorStrikethroughIcon from '../glyph/editor/strikethrough';
+import EditorSuccessIcon from '../glyph/editor/success';
 import EditorTableIcon from '../glyph/editor/table';
 import EditorTaskIcon from '../glyph/editor/task';
 import EditorTextColorIcon from '../glyph/editor/text-color';
@@ -1066,6 +1067,12 @@ export default {
     component: EditorStrikethroughIcon,
     componentName: 'EditorStrikethroughIcon',
     package: '@atlaskit/icon/glyph/editor/strikethrough',
+  },
+  'editor/success': {
+    keywords: ['editor/success', 'editorsuccess', 'luck', 'achievement'],
+    component: EditorSuccessIcon,
+    componentName: 'EditorSuccessIcon',
+    package: '@atlaskit/icon/glyph/editor/success',
   },
   'editor/table': {
     keywords: ['editor/table', 'editortable', 'grid'],

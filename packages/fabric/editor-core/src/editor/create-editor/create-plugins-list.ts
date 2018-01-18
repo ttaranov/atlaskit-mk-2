@@ -30,6 +30,7 @@ import {
   extensionPlugin,
   rulePlugin,
   clearMarksOnChangeToEmptyDocumentPlugin,
+  datePlugin,
 } from '../plugins';
 
 /**
@@ -143,6 +144,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.allowPlaceholderCursor) {
     plugins.push(placeholderCursorPlugin);
+  }
+
+  if (props.allowDate) {
+    plugins.push(datePlugin);
   }
 
   // UI only plugins

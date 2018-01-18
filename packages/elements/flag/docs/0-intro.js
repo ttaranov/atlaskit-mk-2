@@ -37,13 +37,16 @@ export default md`
     />
   )}
 
-  ${(
-    <Example
-      Component={require('../examples/12-flag-group').default}
-      title="Flag Component"
-      source={require('!!raw-loader!../examples/12-flag-group')}
-    />
-  )}
+  ${
+    (
+      // $FlowFixMe TEMPORARY
+      <Example
+        Component={require('../examples/12-flag-group').default}
+        title="Flag Component"
+        source={require('!!raw-loader!../examples/12-flag-group')}
+      />
+    )
+  }
 
   ${(
     <Props

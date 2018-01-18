@@ -473,8 +473,8 @@ export function wrapIn(
   return tr;
 }
 
+const transformer = new JSONTransformer();
 export function toJSON(node: Node): JSONDocNode {
-  const transformer = new JSONTransformer();
   return transformer.encode(node);
 }
 
@@ -549,10 +549,11 @@ export const isTemporary = (id: string): boolean => {
   return id.indexOf('temporary:') === 0;
 };
 
-// See: https://github.com/ProseMirror/prosemirror/issues/710
-export const isChromeWithSelectionBug = !!navigator.userAgent.match(
-  /Chrome\/(5[89]|6[012])/,
-);
+// @see: https://github.com/ProseMirror/prosemirror/issues/710
+// @see: https://bugs.chromium.org/p/chromium/issues/detail?id=740085
+// Chrome > 58
+export const isChromeWithSelectionBug =
+  parseInt((navigator.userAgent.match(/Chrome\/(\d{2})/) || [])[1], 10) > 58;
 
 export const isEmptyNode = (schema: Schema) => {
   const {
