@@ -80,7 +80,7 @@ export default class GlobalItem extends PureComponent<Props> {
       );
     }
     if (href) {
-      const StyledLink = styled(props => <DefaultLinkComponent {...props} />)`
+      const StyledLink = styled(DefaultLinkComponent)`
         ${globalItemStyles} &:hover {
           color: inherit;
         }

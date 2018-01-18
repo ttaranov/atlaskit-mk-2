@@ -15,7 +15,7 @@ type Props = {
   createIcon?: Element<any>,
   /** A component that will be used to render links. A default link component is
    used if none is provided. */
-  linkComponent: ComponentType<*>,
+  linkComponent?: ComponentType<*>,
   /** A list of nodes to be rendered as the global primary actions.  They appear
    directly underneath the global primary icon. This must not exceed three nodes */
   primaryActions?: Array<Element<any>>,

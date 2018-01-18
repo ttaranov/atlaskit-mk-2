@@ -15,7 +15,7 @@ describe('<AkCollapseOverflowItemGroup />', () => {
     isGroupVisibleInNavBool = false,
     isGroupVisibleInDropdownBool = false,
     shouldReportItemHeightBool = false, // usually true only when in nav, not dropdown
-    reportGroupHeightToManagerFn = () => {},
+    reportGroupHeightToManagerFn = argsObj => {}, // eslint-disable-line no-unused-vars
   ) => ({
     [overflowManagerNamespace]: {
       isGroupVisibleInNav: () => isGroupVisibleInNavBool,

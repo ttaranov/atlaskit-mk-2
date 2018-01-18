@@ -92,7 +92,7 @@ type Props = {
   /** onBlur callback for search input */
   onSearchBlur: (event: Event) => mixed,
   /** onInput callback for search input */
-  onSearchInput?: (event: Event) => mixed,
+  onSearchInput?: (event: SyntheticInputEvent<any>) => mixed,
   /** onKeyDown callback for search input */
   onSearchKeyDown: (event: Event) => mixed,
   /** Placeholder text for search input field */
