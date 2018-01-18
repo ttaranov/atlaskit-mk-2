@@ -127,12 +127,19 @@ describe('<Resizer />', () => {
         .find(ResizerInner)
         .simulate('mousedown', { screenX: 100, preventDefault: () => {} });
 
-      expect(addSpy).toHaveBeenCalled();
-      expect(removeSpy).not.toHaveBeenCalled();
+      // Filter out React 16 error boundary handlers.
+      const addCalls = () =>
+        addSpy.mock.calls.map(a => a[0]).filter(a => a !== 'error');
+      const removeCalls = () =>
+        removeSpy.mock.calls.map(a => a[0]).filter(a => a !== 'error');
+
+      // Testing to ensure it was called
+      expect(addCalls()).toEqual(['mousemove', 'mouseup', 'mouseout']);
+      expect(removeCalls()).toEqual([]);
 
       dispatchMouseEvent('mouseup');
 
-      expect(addSpy.mock.calls.length).toBe(removeSpy.mock.calls.length);
+      expect(addCalls()).toEqual(removeCalls());
 
       // cleanup
       addSpy.mockRestore();
