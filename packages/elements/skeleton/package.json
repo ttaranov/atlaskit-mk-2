@@ -1,0 +1,31 @@
+{
+  "name": "@atlaskit/skeleton",
+  "version": "0.1.0",
+  "description": "React components for various loading state primitives.",
+  "license": "Apache-2.0",
+  "main": "dist/cjs",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Trey S"
+  ],
+  "atlaskit": {
+    "name": "Skeleton",
+    "team": "elements"
+  },
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "dependencies": {
+    "styled-components": "^1.4.6"
+  },
+  "peerDependencies": {
+    "react": "15.6.0 - 16.2.0"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^2.4.0",
+    "@atlaskit/theme": "^2.3.0",
+    "enzyme": "^3.3.0"
+  }
+}
