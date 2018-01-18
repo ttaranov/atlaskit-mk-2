@@ -14,9 +14,16 @@ const draggableStyle = ({ isRanking, isRankingItem }) => css`
     display: block; 
   `}
 
+  &:focus {
+    outline-style: solid;
+    outline-color: ${colors.B100};
+    outline-width: 2px;
+  }
+
   ${isRankingItem && css`
     background-color: ${colors.N20};
     ${akElevationMixins.e500}
+    border-radius: 2px;
   `}
 `;
 
