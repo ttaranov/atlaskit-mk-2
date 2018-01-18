@@ -1,5 +1,4 @@
-/* eslint-disable */
-// Copy this file to local-config.js and customise.
+// Copy this file to local-config.ts and customise.
 export default {
   asap: {
     url: 'http://www.example.org/mentions',
