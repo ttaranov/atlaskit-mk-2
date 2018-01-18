@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import Button from '@atlaskit/button';
-
 import Tooltip from '../src';
 
 export default () => (

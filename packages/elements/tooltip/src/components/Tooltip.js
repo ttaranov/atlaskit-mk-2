@@ -1,14 +1,17 @@
 // @flow
 /* eslint-disable react/require-default-props */
 
-import React, { Children, Component, type Node, type Element } from 'react';
+import React, {
+  Children,
+  Component,
+  type Node,
+  type Element,
+  type ComponentType,
+} from 'react';
 import renamePropsWithWarning from 'react-deprecate';
 
 import type { CoordinatesType, PositionType } from '../types';
-import {
-  Tooltip as StyledTooltip,
-  TruncatedTooltip as StyledTruncatedTooltip,
-} from '../styled';
+import { Tooltip as StyledTooltip } from '../styled';
 
 import Portal from './Portal';
 import TooltipMarshal from './Marshal';
@@ -20,6 +23,8 @@ type Props = {
   children: Element<*>,
   /** The content of the tooltip */
   content: Node,
+  /** Component to be used as tooltip */
+  component: ComponentType<{ innerRef: HTMLElement => void }>,
   /** Hide the tooltip when the element is clicked */
   hideTooltipOnClick?: boolean,
   /** Function to be called when a mouse leaves the target */
@@ -65,6 +70,7 @@ class Tooltip extends Component<Props, State> {
   state = getInitialState(this.props);
   wrapper: HTMLElement | null;
   static defaultProps = {
+    component: StyledTooltip,
     position: 'bottom',
     tag: 'div',
   };
@@ -104,7 +110,7 @@ class Tooltip extends Component<Props, State> {
   };
 
   renderTooltip() {
-    const { content, truncate } = this.props;
+    const { content, truncate, component } = this.props;
     const {
       immediatelyHide,
       immediatelyShow,
@@ -118,21 +124,22 @@ class Tooltip extends Component<Props, State> {
 
     // render node for measuring in alternate tree via portal
     if (!coordinates) {
-      const Measure = truncate ? StyledTruncatedTooltip : StyledTooltip;
+      const MeasurableTooltip = component;
       return (
         <Portal>
-          <Measure
+          <MeasurableTooltip
             innerRef={this.handleMeasureRef}
             style={{ visibility: 'hidden' }}
           >
             {content}
-          </Measure>
+          </MeasurableTooltip>
         </Portal>
       );
     }
 
     // render and animate tooltip when coordinates available
     const transitionProps = {
+      component,
       immediatelyHide,
       immediatelyShow,
       position,
@@ -186,12 +193,14 @@ class Tooltip extends Component<Props, State> {
   render() {
     // NOTE removing props from rest:
     // - `content` is a valid HTML attribute, but has a different semantic meaning
+    // - `component` is NOT valid and react will warn
     // - `hideTooltipOnClick` is NOT valid and react will warn
     // - `position` is NOT valid and react will warn
     // - `truncate` is NOT valid and react will warn
     // eslint-disable-next-line no-unused-vars
     const {
       children,
+      component,
       content,
       hideTooltipOnClick,
       position,

@@ -41,9 +41,5 @@ export default md`
   but will log a deprecation warning. Support will be removed from version
   \`8.0.0\` onwards.
 
-  ${(
-    <Props
-      props={require('!!extract-react-types-loader!../src/components/Tooltip')}
-    />
-  )}
+
 `;

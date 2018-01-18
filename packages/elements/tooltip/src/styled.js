@@ -12,7 +12,17 @@ const textColor = themed({
   dark: colors.DN600,
 });
 
-const common = css`
+const truncate = p =>
+  p.truncate
+    ? css`
+        max-width: 420px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      `
+    : '';
+
+export const Tooltip = styled.div`
   background-color: ${backgroundColor};
   border-radius: ${borderRadius}px;
   box-sizing: border-box;
@@ -26,16 +36,8 @@ const common = css`
   position: fixed;
   top: 0;
   z-index: 1000;
-`;
 
-export const Tooltip = styled.div`
-  ${common};
-`;
-export const TruncatedTooltip = styled.div`
-  ${common} max-width: 420px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  ${truncate};
 `;
 
 // The inline-block here is needed to keep the tooltip appearing in the correct position
