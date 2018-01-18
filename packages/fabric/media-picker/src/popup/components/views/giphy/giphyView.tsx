@@ -9,6 +9,7 @@ import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 import { CardView } from '@atlaskit/media-card';
 import Flag, { FlagGroup } from '@atlaskit/flag';
+import { colors } from '@atlaskit/theme';
 
 import { BricksLayout } from './bricksGrid';
 import { fileClick } from '../../../actions/fileClick';
@@ -120,13 +121,14 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
   };
 
   private renderErrorFlag = () => {
+    const errorIcon = <ErrorIcon label="error" secondaryColor={colors.R400} />;
     return (
       <FlagGroup>
         <Flag
           appearance="error"
           title="We've failed to load more results"
           description="Check your network connection and feel free to try again."
-          icon={<ErrorIcon label="error" />}
+          icon={errorIcon}
           id="giphy-search-failed-flag"
           actions={[
             { content: 'Try again', onClick: this.handleLoadMoreButtonClick },
@@ -165,12 +167,11 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
   private renderSearchResults = () => {
     const { isLoading, cardModels, totalResultCount } = this.props;
 
-    const isThereAreMoreResults =
+    const hasMoreResults =
       totalResultCount === undefined ||
       cardModels.length < totalResultCount - 1;
     const isEmpty = cardModels.length === 0;
-    const shouldShowLoadMoreButton =
-      !isEmpty && (isLoading || isThereAreMoreResults);
+    const shouldShowLoadMoreButton = !isEmpty && (isLoading || hasMoreResults);
     const shouldShowInitialPreloader = isLoading && isEmpty;
 
     const loadMoreButton =
