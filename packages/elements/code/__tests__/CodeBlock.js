@@ -10,10 +10,8 @@ const input = `
 `;
 
 describe('CodeBlock', () => {
-  it('should have "markdown" as default language', () => {
-    expect(shallow(<CodeBlock text={input} />).prop('language')).toBe(
-      'markdown',
-    );
+  it('should have an empty string as the default language', () => {
+    expect(shallow(<CodeBlock text={input} />).prop('language')).toBe('');
   });
 
   it('should have "showLineNumbers" enabled by default', () => {

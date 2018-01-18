@@ -15,7 +15,7 @@ type CodeProps = {
 
 export default class Code extends PureComponent<CodeProps, {}> {
   static defaultProps = {
-    language: 'md',
+    language: '',
     theme: {},
   };
 
