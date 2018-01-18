@@ -22,6 +22,7 @@ const getStrokeCircumference = (size: number) => {
 export const keyframeNames = {
   noop: 'atlaskitSpinnerNoop',
   rotate: 'atlaskitSpinnerRotate',
+  enter_opacity: 'atlaskitSpinnerEnterOpacity',
   enter_stroke_small: 'atlaskitSpinnerEnterStrokeSmall',
   enter_stroke_medium: 'atlaskitSpinnerEnterStrokeMedium',
   enter_stroke_large: 'atlaskitSpinnerEnterStrokeLarge',
@@ -42,6 +43,11 @@ injectGlobal`
 
   @keyframes ${keyframeNames.rotate} {
     to { transform: rotate(360deg);
+  }
+
+  @keyframes {$keyframeNames.enter_opacity} {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
   @keyframes ${keyframeNames.enter_stroke_small} {
@@ -110,7 +116,7 @@ export const svgStyles = css`
       props.size,
     )}`;
 
-    const spinUpOpacity = `0.2s ease-in-out akSpinnerContainerLeaveOpacity`;
+    const spinUpOpacity = `0.2s ease-in-out ${keyframes.enter_opacity}`;
 
     const activeAnimations = [idleRotation];
     if (props.phase === 'ENTER') {
