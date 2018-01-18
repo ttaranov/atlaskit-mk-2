@@ -40,14 +40,11 @@ export default class LoaderItem extends PureComponent<Props, State> {
           phase: 'loading',
         });
       }
-      this.delayTimeoutId = null;
     }, this.props.delay);
   }
 
   componentWillUnmount() {
-    if (this.delayTimeoutId !== null) {
-      clearTimeout(this.delayTimeoutId);
-    }
+    clearTimeout(this.delayTimeoutId);
   }
 
   componentWillReceiveProps(nextProps: Props) {
