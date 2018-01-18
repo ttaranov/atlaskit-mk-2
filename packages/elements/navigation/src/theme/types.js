@@ -1,5 +1,5 @@
 // @flow
-export type Color = string | (() => string);
+export type Color = string | Function;
 export type Background = Color;
 export type Text = Color;
 export type Line = Color;
