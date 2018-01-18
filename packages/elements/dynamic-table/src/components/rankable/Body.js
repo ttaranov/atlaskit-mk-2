@@ -83,8 +83,8 @@ class RankableBody extends Component<Props, {}> {
   };
 
   render() {
-    const { pageRows, head, isFixedSize, isRanking, refWidth } = this.props;
-    const inlineStyle = isRanking ? { width: refWidth } : {};
+    const { pageRows, head, isFixedSize, isRanking, refWidth, refHeight } = this.props;
+    const inlineStyle = isRanking ? { width: refWidth, height: refHeight } : {};
 
     return (
       <DragDropContext

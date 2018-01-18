@@ -58,7 +58,7 @@ class RankableTableRow extends Component<Props, {}> {
    
       provided.placeholder ? <tr key={1}>
         <RowPlaceholderCell colSpan={cells.length}>
-          <div style={{width: refWidth, height: refHeight}}>
+          <div style={{width: refWidth, height: refHeight }}>
             {provided.placeholder}
           </div>
         </RowPlaceholderCell>

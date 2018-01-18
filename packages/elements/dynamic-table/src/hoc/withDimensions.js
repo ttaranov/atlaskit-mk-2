@@ -45,8 +45,10 @@ export default function withDimensions<WrappedComponentProps: {}>(
         return;
       }
 
-      const width = this.ref.offsetWidth;
-      const height = this.ref.offsetHeight;
+      const clientRect = this.ref.getBoundingClientRect();
+
+      const width = clientRect.width;
+      const height = clientRect.height;
 
       if (width !== this.state.refWidth || height !== this.state.refHeight) {
         this.setState({ refWidth: width, refHeight: height });

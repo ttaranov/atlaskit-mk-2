@@ -9,4 +9,5 @@ export const RankableTableBody = styled.tbody`
   ${rankingStyles}
 
   cursor: ${({isRanking}) => isRanking ? "grabbing" : "grab"}
+  box-sizing: border-box;
 `;

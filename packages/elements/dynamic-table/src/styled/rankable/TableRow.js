@@ -30,4 +30,3 @@ const draggableStyle = ({ isRanking, isRankingItem }) => css`
 export const RankableTableBodyRow = styled(TableBodyRow)`
   ${props => draggableStyle(props)}
 `;
-
