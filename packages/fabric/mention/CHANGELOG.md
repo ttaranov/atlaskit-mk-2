@@ -1,5 +1,9 @@
 # @atlaskit/mention
 
+## 9.0.0
+- [patch] Added eslint-disable to example file [49491a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49491a9)
+- [major] Migrated mentions to new atlaskit-mk2 [dad3ccc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dad3ccc)
+
 ## 8.5.1 (2018-01-09)
 
 * bug fix; removed chai and sinon from tests (issues closed: fs-1606) ([f3a65cd](https://bitbucket.org/atlassian/atlaskit/commits/f3a65cd))

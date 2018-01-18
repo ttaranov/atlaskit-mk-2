@@ -1,5 +1,11 @@
 # @atlaskit/conversation
 
+## 4.8.0
+
+
+
+- [minor] Add optional onUserClick handler [40f2e90](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40f2e90)
+
 ## 4.7.1
 
 ## 4.7.0

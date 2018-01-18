@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 61.3.10
+
+
+- [patch] Change line length in Full Screen editor from 600px to 680px [6dacbbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6dacbbe)
+
 ## 61.3.9
 
 ## 61.3.8
