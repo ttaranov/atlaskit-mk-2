@@ -3,17 +3,18 @@
   "type": "doc",
   "content": [
     {
-      "type": "bulletList",
+      "type": "orderedList",
       "content": [
         {
           "type": "listItem",
           "content": [
             {
-              "type": "paragraph",
-              "content": [{
-                "type": "text",
-                "text": "foo"
-              }]
+              "type": "codeBlock",
+              "content": [],
+              "attrs": {
+                "language": "javascript"
+              },
+              "marks": []
             }
           ]
         }

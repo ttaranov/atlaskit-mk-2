@@ -6,11 +6,15 @@
       "type": "panel",
       "content": [
         {
-          "type": "paragraph",
+          "type": "panel",
           "content": [{
-            "type": "text",
-            "text": "foo"
-          }]
+            "type": "paragraph",
+            "content": [{
+              "type": "text",
+              "text": "foo"
+            }]
+          }],
+          "attrs": {}
         }
       ],
       "attrs": {
