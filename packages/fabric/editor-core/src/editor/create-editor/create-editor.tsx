@@ -189,6 +189,28 @@ export function processDefaultDocument(
   }
 }
 
+export const reconfigureState = (
+  oldState: EditorState,
+  newSchema: Schema,
+  newPlugins?: Plugin[],
+  newDoc?: Node,
+) => {
+  // Since the schema has changed, we need to transform doc/selection/storedMarks ourselves
+  // see https://github.com/ProseMirror/prosemirror/issues/754
+  const newState = oldState.reconfigure({
+    schema: newSchema,
+    plugins: newPlugins,
+  });
+  const doc = newDoc || newSchema.nodeFromJSON(oldState.doc.toJSON());
+  const selection = Selection.fromJSON(doc, oldState.selection.toJSON());
+  const storedMarks = oldState.storedMarks
+    ? oldState.storedMarks.map(mark => Mark.fromJSON(newSchema, mark.toJSON()))
+    : undefined;
+
+  doc.check(); // Ensure the new document is valid the with schema
+  return Object.assign(newState, { doc, selection, storedMarks });
+};
+
 export interface EditorViewProps {
   editorProps: EditorProps;
   providerFactory: ProviderFactory;
@@ -272,6 +294,7 @@ export default class ReactEditorView extends React.Component<
 
     const {
       contentTransformerProvider,
+      defaultValue,
       errorReporterHandler,
     } = this.props.editorProps;
 
@@ -293,32 +316,16 @@ export default class ReactEditorView extends React.Component<
 
     let doc;
     if (options.replaceDoc) {
-      const { defaultValue } = options.props.editorProps;
       doc =
         this.contentTransformer && typeof defaultValue === 'string'
           ? this.contentTransformer.parse(defaultValue)
           : processDefaultDocument(schema, defaultValue);
     }
 
-    if (
-      this.view /* && this.view.state.schema !== schema; - this is implicit */
-    ) {
-      const prevEditorState = options.state!.editorState;
-      const editorState = prevEditorState.reconfigure({ schema, plugins });
-      doc = doc || schema.nodeFromJSON(prevEditorState.doc.toJSON());
-      const selection = Selection.fromJSON(
-        doc,
-        prevEditorState.selection.toJSON(),
-      );
-      const storedMarks = prevEditorState.storedMarks
-        ? prevEditorState.storedMarks.map(mark =>
-            Mark.fromJSON(schema, mark.toJSON()),
-          )
-        : undefined;
-
-      doc.check();
-      Object.assign(editorState, { doc, selection, storedMarks });
+    if (this.view && this.view.state.schema !== schema) {
+      return reconfigureState(options.state!.editorState, schema, plugins, doc);
     }
+
     return EditorState.create({
       schema,
       plugins,
