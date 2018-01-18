@@ -238,9 +238,8 @@ describe('<NavigationItem />', () => {
           </ThemeProvider>
         </Navigation>,
       );
-      const navItem = wrapper.find(Item).find('[role]');
+      const navItem = wrapper.find(Item).find('span[role="menuitem"]');
       expect(navItem.length).toBe(1);
-      expect(navItem.props().role).toBe('menuitem');
     });
 
     it('should not apply role when not in the context of an overflow dropdown', () => {
@@ -249,8 +248,8 @@ describe('<NavigationItem />', () => {
           <NavigationItem />
         </Navigation>,
       );
-      const navItem = wrapper.find(Item).find('[role]');
-      expect(navItem.props().role).toBe(null);
+      const navItem = wrapper.find(Item).find('span[role="menuitem"]');
+      expect(navItem.length).toBe(0);
     });
   });
 });
