@@ -6,7 +6,6 @@ import chromatism from 'chromatism';
 import type {
   Text,
   Background,
-  Provided,
   ItemTheme,
   CustomisableThemeProperties,
 } from './types';
