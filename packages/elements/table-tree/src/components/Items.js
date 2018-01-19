@@ -6,6 +6,7 @@ import {
   type ItemsProvider,
   type RenderFunction,
   type ItemsDataType,
+  type ItemsRenderedFunction,
 } from './../types';
 
 type Props = {
@@ -13,6 +14,7 @@ type Props = {
   getItemsData: ItemsProvider,
   depth?: number,
   render: RenderFunction,
+  onItemsRendered?: ItemsRenderedFunction,
 };
 
 type State = {
@@ -32,18 +34,26 @@ export default class Items extends PureComponent<Props, State> {
   loadCancelled = false;
 
   componentWillMount() {
+    const { parentData } = this.props;
     if (!this.state.itemsData) {
       this.setState({
         isLoaderShown: true,
       });
       this.loadCancelled = false;
       Promise.resolve()
-        .then(() => this.props.getItemsData(this.props.parentData))
+        .then(() => this.props.getItemsData(parentData))
         .then(itemsData => {
           if (!this.loadCancelled) {
-            this.setState({
-              itemsData,
-            });
+            this.setState(
+              {
+                itemsData,
+              },
+              () => {
+                if (this.props.onItemsRendered) {
+                  this.props.onItemsRendered(parentData, itemsData);
+                }
+              },
+            );
           }
         });
     }
@@ -72,7 +82,7 @@ export default class Items extends PureComponent<Props, State> {
   }
 
   renderItems() {
-    const { getItemsData, render, depth = 0 } = this.props;
+    const { getItemsData, render, depth = 0, onItemsRendered } = this.props;
     const { itemsData } = this.state;
     return (
       itemsData &&
@@ -83,6 +93,7 @@ export default class Items extends PureComponent<Props, State> {
           depth={depth + 1}
           key={(itemData && itemData.id) || index}
           render={render}
+          onItemsRendered={onItemsRendered}
         />
       ))
     );

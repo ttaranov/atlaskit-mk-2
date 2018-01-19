@@ -13,4 +13,6 @@ export type ItemsProvider = (
 
 export type RenderFunction = Object => Element<typeof Row>;
 
+export type ItemsRenderedFunction = Function;
+
 export type CSSWidth = string | number;

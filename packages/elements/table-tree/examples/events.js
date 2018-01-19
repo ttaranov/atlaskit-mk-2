@@ -16,22 +16,22 @@ function getItemsData(parent) {
 }
 
 type State = {
-  lastEvent: string,
+  eventsLog: Array<string>,
 };
 
 export default class extends PureComponent<{}, State> {
-  state = {
-    lastEvent: '',
+  state: State = {
+    eventsLog: [],
   };
 
   triggerEvent(name: string) {
     this.setState({
-      lastEvent: name,
+      eventsLog: [...this.state.eventsLog, name],
     });
   }
 
   render() {
-    const { lastEvent } = this.state;
+    const events = this.state.eventsLog;
     return (
       <div>
         <TableTree>
@@ -57,13 +57,22 @@ export default class extends PureComponent<{}, State> {
           </Headers>
           <Rows
             items={getItemsData}
+            onItemsRendered={(parentData, itemsData) => {
+              this.triggerEvent(
+                `Items rendered ${
+                  parentData
+                    ? `(${itemsData.length} children of ‘${parentData.title}’)`
+                    : `(${itemsData.length} roots)`
+                }`,
+              );
+            }}
             render={({ title, numbering, page, children }) => (
               <Row
                 key={numbering}
                 hasChildren={children.length > 0}
-                onExpand={() => this.triggerEvent(`Node Expanded (${title})`)}
+                onExpand={() => this.triggerEvent(`Node Expanded (‘${title}’)`)}
                 onCollapse={() =>
-                  this.triggerEvent(`Node Collapsed (${title})`)
+                  this.triggerEvent(`Node Collapsed (‘${title}’)`)
                 }
               >
                 <Cell singleLine>{title}</Cell>
@@ -73,15 +82,26 @@ export default class extends PureComponent<{}, State> {
             )}
           />
         </TableTree>
-        <p>
-          {lastEvent ? (
-            <span>
-              <strong>Last event: </strong> {lastEvent}
-            </span>
-          ) : (
-            <i>Click around to see events</i>
-          )}
-        </p>
+        <section style={{ 'margin-top': '20px' }}>
+          <h4>Events</h4>
+          <div style={{ overflow: 'scroll', 'max-height': '5.0em' }}>
+            {events.length > 0 ? (
+              events
+                .map((event, i) => [event, i + 1])
+                .reverse()
+                .map(([event, n]) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <div key={n}>
+                    {n}. {event}
+                  </div>
+                ))
+            ) : (
+              <p>
+                <i>Click around to see events</i>
+              </p>
+            )}
+          </div>
+        </section>
       </div>
     );
   }
