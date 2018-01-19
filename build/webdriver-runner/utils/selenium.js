@@ -1,39 +1,24 @@
+// @flow
+'use strict';
+
 const Selenium = require('selenium-standalone');
-const seleniumInstallArgs = {};
-const seleniumArgs = {};
-let process;
+const util = require('util');
 
-function startSelenium() {
-  return installSelenium(seleniumInstallArgs).then(
-    () =>
-      new Promise((resolve, reject) =>
-        Selenium.start(seleniumArgs, (err, child) => {
-          if (err) {
-            return reject(err);
-          }
-          console.log('Starting selenium server');
-          process = child;
-          resolve();
-        }),
-      ),
-  );
-}
+const install = util.promisify(Selenium.install);
+const start = util.promisify(Selenium.start);
 
-function installSelenium(seleniumInstallArgs) {
-  return new Promise((resolve, reject) =>
-    Selenium.install(seleniumInstallArgs, err => {
-      if (err) {
-        return reject(err);
-      }
-      resolve();
-    }),
-  );
+let child;
+
+async function startSelenium() {
+  await install({});
+  child = await start({});
+  console.log('Started selenium server');
 }
 
 function stopSelenium() {
-  if (process) {
+  if (child) {
     console.log('Stopping selenium server');
-    process.kill();
+    child.kill();
   }
 }
 
