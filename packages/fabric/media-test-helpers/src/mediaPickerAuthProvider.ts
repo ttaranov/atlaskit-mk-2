@@ -27,7 +27,7 @@ export const mediaPickerAuthProvider = component => context => {
     return Promise.resolve(tokenCache[cacheKey]);
   } else {
     const url = `https://media-playground.dev.atl-paas.net/token/tenant?environment=${authEnvironment}`;
-    const body = JSON.stringify({
+    const body = {
       access: accessUrns[collectionName],
     };
     const headers = new Headers();

@@ -10,6 +10,8 @@ import {
   defaultCollectionName,
   defaultMediaPickerCollectionName,
   userAuthProviderBaseURL,
+  enableMock,
+  disableMock,
 } from '@atlaskit/media-test-helpers';
 import { MediaPicker, Popup } from '../src';
 import {
@@ -29,6 +31,7 @@ export interface PopupWrapperState {
   authEnvironment: AuthEnvironment;
   inflightUploads: string[];
   hasTorndown: boolean;
+  mocked: boolean;
 }
 
 class PopupWrapper extends Component<{}, PopupWrapperState> {
@@ -43,6 +46,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     authEnvironment: 'client',
     inflightUploads: [],
     hasTorndown: false,
+    mocked: false,
   };
 
   componentDidMount() {
@@ -223,6 +227,11 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     this.setState({ inflightUploads: [] });
   };
 
+  toggleMock = () => {
+    this.state.mocked ? disableMock() : enableMock();
+    this.state.mocked = !this.state.mocked;
+  };
+
   render() {
     const {
       isAutoFinalizeActive,
@@ -233,12 +242,19 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       collectionName,
       inflightUploads,
       hasTorndown,
+      mocked,
     } = this.state;
     const isCancelButtonDisabled = inflightUploads.length === 0;
 
     return (
       <PopupContainer>
         <PopupHeader>
+          <Button
+            onClick={this.toggleMock}
+            appearance={this.state.mocked ? 'danger' : 'primary'}
+          >
+            {this.state.mocked ? 'Mocked!' : 'Mock XHR'}
+          </Button>
           <Button
             appearance="primary"
             onClick={this.onShow}

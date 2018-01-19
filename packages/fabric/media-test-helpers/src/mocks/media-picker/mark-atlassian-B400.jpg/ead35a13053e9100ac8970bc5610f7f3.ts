@@ -1,0 +1,92 @@
+const responseArray = <any>[];
+let callIndex = 0;
+
+export function getNext() {
+  const fn = responseArray[callIndex];
+  callIndex += 1;
+  if (callIndex === responseArray.length) {
+    callIndex = 0;
+  }
+  return fn;
+}
+
+let uploadId;
+
+export function matchesRequest(req) {
+  return [
+    function(req) {
+      return req.method() === 'POST';
+    },
+    function(req) {
+      return (
+        req.url().path === '/file/upload' &&
+        req.url().query.collection === 'recents'
+      );
+    },
+    function(req) {
+      return (
+        req.body() &&
+        JSON.parse(req.body()).name === 'mark-atlassian-B400.jpg' &&
+        JSON.parse(req.body()).mimeType === 'image/jpeg' &&
+        (function() {
+          if (/[a-z0-9\-]+/.test(JSON.parse(req.body()).uploadId)) {
+            uploadId = JSON.parse(req.body()).uploadId;
+            return true;
+          } else {
+            return false;
+          }
+        })()
+      );
+    },
+  ].reduce((res, fn) => res && fn(req), true);
+}
+
+responseArray.push(
+  /**
+   * POST /file/upload?collection=recents
+   *
+   * host: dt-api--app.ap-southeast-2.dev.atl-paas.net
+   * connection: keep-alive
+   * content-length: 108
+   * accept: application/json, text/plain, * / *
+   * x-client-id: 870431f7-a507-4480-907b-90a1eebb64a5
+   * authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bnNhZmUiOnRydWUsImlzcyI6Ijg3MDQzMWY3LWE1MDctNDQ4MC05MDdiLTkwYTFlZWJiNjRhNSJ9.hjkpyjQZlUdQAVgY4GKKdQEzY-W0duSvNS86Ryvz5yw
+   * user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36
+   * origin: http://localhost:8081
+   * content-type: application/json; charset=UTF-8
+   * referer: http://localhost:8081/example/basic.html
+   * accept-encoding: gzip, deflate, br
+   * accept-language: en-GB,en-US;q=0.9,en;q=0.8
+   */
+
+  function(req, res) {
+    res.status(201);
+
+    res.header('date', 'Wed, 03 Jan 2018 02:26:20 GMT');
+    res.header('content-type', 'application/json');
+    res.header('content-length', '190');
+    res.header('connection', 'keep-alive');
+    res.header('server', 'nginx/1.10.1');
+    res.header('access-control-allow-origin', '*');
+    res.header(
+      'access-control-expose-headers',
+      'Accept-Ranges, Content-Encoding, Content-Length, Content-Range',
+    );
+    res.header(
+      'strict-transport-security',
+      'max-age=15552000; includeSubDomains',
+    );
+    res.header('x-b3-spanid', 'c93eafa858414973');
+    res.header('x-b3-traceid', 'c93eafa858414973');
+    res.header('x-content-type-options', 'nosniff');
+    res.header('x-dns-prefetch-control', 'off');
+    res.header('x-download-options', 'noopen');
+    res.header('x-frame-options', 'SAMEORIGIN');
+    res.header('x-xss-protection', '1; mode=block');
+
+    res.body(
+      `{"data":{"mediaType":"unknown","mimeType":"image/jpeg","name":"mark-atlassian-B400.jpg","size":79725,"processingStatus":"pending","artifacts":{},"id":"${uploadId}"}}`,
+    );
+    return res;
+  },
+);

@@ -17,10 +17,6 @@ function createEntries({ env, entry, host, port, mocks }) {
     );
   }
 
-  if (mocks) {
-    entries.xhrmocks = [path.join(process.cwd(), 'mocks.js')];
-  }
-
   return entries;
 }
 
@@ -191,7 +187,7 @@ module.exports = function createWebpackConfig(
   if (mocks) {
     config.module.rules.push({
       enforce: 'pre',
-      test: /mocks\.js/,
+      test: /\.ts/,
       loader: require.resolve('import-glob'),
     });
   }
