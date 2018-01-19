@@ -1,6 +1,6 @@
 // @flow
 // eslint-disable-next-line import/prefer-default-export
-import type { HeadType, RowType, RankEnd, RankEndLocation } from '../types';
+import type { HeadType, RowType, RankEnd } from '../types';
 
 export const getPageRows = (
   pageNumber?: number,

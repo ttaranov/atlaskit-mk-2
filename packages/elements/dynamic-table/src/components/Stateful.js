@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import DynamicTableStateless from './Stateless';
-import type { SortOrderType, StatelessProps, RankEnd, RankEndLocation, RowType } from '../types';
+import type { SortOrderType, StatelessProps, RankEnd, RowType } from '../types';
 import { reorderRows } from '../internal/helpers';
 
 // We are disabling prop validation, as the rest of the props passed in are
