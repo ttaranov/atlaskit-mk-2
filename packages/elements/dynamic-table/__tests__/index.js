@@ -108,7 +108,7 @@ describe(name, () => {
         />,
       );
       const bodyRows = wrapper.find('tbody tr');
-      expect(bodyRows.length).toBe(1);
+      expect(bodyRows.length).toBe(2);
       expect(
         bodyRows
           .at(0)

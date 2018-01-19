@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import DynamicTableStateless from './Stateless';
 import type { SortOrderType, StatelessProps, RankEnd, RankEndLocation, RowType } from '../types';
+import { reorderRows } from '../internal/helpers';
 
 // We are disabling prop validation, as the rest of the props passed in are
 // handled by validation of the stateless verion.
@@ -64,37 +65,20 @@ export default class DynamicTable extends Component<Props, State> {
     }
   }
 
-  computeRankEndIndex = (rankEndLocation: RankEndLocation): number => {
-    const { afterKey } = rankEndLocation;
-    const { rowsPerPage } = this.props;
-    const { page, rows } = this.state;
-
-    if (!afterKey) {
-      // beginning of current page
-      return rowsPerPage ? (page - 1) * rowsPerPage : 0;
-    }
-
-    return rows ? rows.findIndex((row) => row.key === afterKey) : 0;
-  }
-
   onRankEnd = (params: RankEnd) => {
-    const { destination, sourceKey } = params;
-    const { rows } = this.state;
+    const { destination } = params;
+    const { rows, page } = this.state;
+    const { rowsPerPage } = this.props;
 
     if (!destination || !rows) {
       this.onRankEndIfExists(params);
       return;
     }
 
-    const fromIndex = rows.findIndex(({key}) => key === sourceKey);
-    const toIndex = this.computeRankEndIndex(destination);
-
-    const result = rows.slice();
-    const [removed] = result.splice(fromIndex, 1);
-    result.splice(toIndex, 0, removed);
+    const reordered = reorderRows(params, rows, page, rowsPerPage);
 
     this.setState({
-      rows: result
+      rows: reordered
     });
 
     this.onRankEndIfExists(params);

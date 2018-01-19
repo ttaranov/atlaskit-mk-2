@@ -129,10 +129,8 @@ describe('rankable/Body', () => {
       expect(onRankEnd).toHaveBeenLastCalledWith({ sourceKey, sourceIndex });
     });
 
-    it('onRankEnd is called with proper destination if was dropped on fist position', () => {
+    const testOnRankEnd = (sourceIndex, destinationIndex, afterKey, beforeKey) => {
       const sourceKey = 'source-key-draggable';
-      const sourceIndex = 1;
-      const destinationIndex = 0;
 
       const wrapper = shallow(<RankableBody 
           {...defaultProps}
@@ -148,60 +146,29 @@ describe('rankable/Body', () => {
         sourceIndex,
         destination: {
           index: destinationIndex,
-          afterKey: undefined,
-          beforeKey: rowsWithKeys[0].key,
+          afterKey,
+          beforeKey,
         }
       });
+    }
+
+    const getKey = index => rowsWithKeys[index].key;
+
+    it('onRankEnd is called with proper destination if was dropped on fist position', () => {
+      testOnRankEnd(2, 0, undefined, getKey(0))
     });
 
-    it('onRankEnd is called with proper destination if was dropped in the middle of list', () => {
-      const sourceKey = 'source-key-draggable';
-      const sourceIndex = 1;
-      const destinationIndex = 1;
+    it('onRankEnd is called with proper destination if was dropped in the middle of list (move to the greater index)', () => {
+      testOnRankEnd(0, 2, getKey(2), getKey(3));
+    });
 
-      const wrapper = shallow(<RankableBody 
-          {...defaultProps}
-      />);
-
-      const dndContext = wrapper.find(DragDropContext);
-      dndContext.simulate('dragEnd', createDragEndProps(sourceKey, sourceIndex, destinationIndex));
-
-      const onRankEnd = defaultProps.onRankEnd;
-      expect(onRankEnd).toHaveBeenCalledTimes(1);
-      expect(onRankEnd).toHaveBeenLastCalledWith({ 
-        sourceKey, 
-        sourceIndex,
-        destination: {
-          index: destinationIndex,
-          afterKey: rowsWithKeys[destinationIndex].key,
-          beforeKey: rowsWithKeys[destinationIndex+1].key,
-        }
-      });
+    it('onRankEnd is called with proper destination if was dropped in the middle of list before an item', () => {
+      testOnRankEnd(3, 1, getKey(0), getKey(1));
     });
 
     it('onRankEnd is called with proper destination if was dropped on the last position', () => {
-      const sourceKey = 'source-key-draggable';
-      const sourceIndex = 1;
-      const destinationIndex = rowsWithKeys.length - 1;
-
-      const wrapper = shallow(<RankableBody 
-          {...defaultProps}
-      />);
-
-      const dndContext = wrapper.find(DragDropContext);
-      dndContext.simulate('dragEnd', createDragEndProps(sourceKey, sourceIndex, destinationIndex));
-
-      const onRankEnd = defaultProps.onRankEnd;
-      expect(onRankEnd).toHaveBeenCalledTimes(1);
-      expect(onRankEnd).toHaveBeenLastCalledWith({ 
-        sourceKey, 
-        sourceIndex,
-        destination: {
-          index: destinationIndex,
-          afterKey: rowsWithKeys[destinationIndex].key,
-          beforeKey: undefined,
-        }
-      });
+      const lastIndex = rowsWithKeys.length - 1;
+      testOnRankEnd(1, lastIndex, getKey(lastIndex), undefined);
     });
   });
 

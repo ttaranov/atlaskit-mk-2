@@ -1,6 +1,6 @@
 // @flow
 // eslint-disable-next-line import/prefer-default-export
-import type { HeadType, RowType, RankEnd } from '../types';
+import type { HeadType, RowType, RankEnd, RankEndLocation } from '../types';
 
 export const getPageRows = (
   pageNumber?: number,
@@ -64,6 +64,25 @@ export const inlineStylesIfRanking = (isRanking: boolean, width: number, height:
   return { width };
 }
 
-// export const reorderRows = (rankEnd: RankEnd, rows: RowType[], page?: number): RowType[] => {
+export const computeIndex = (index: number, page: number, rowsPerPage: ?number): number => {
+  const itemOnPreviousPages = rowsPerPage && isFinite(rowsPerPage) ? (page - 1) * rowsPerPage : 0;
 
-// };
+  return index + itemOnPreviousPages;
+}
+
+export const reorderRows = (rankEnd: RankEnd, rows: RowType[], page: number, rowsPerPage: ?number): RowType[] => {
+  const { destination, sourceIndex } = rankEnd;
+
+  if (!destination) {
+    return rows;
+  }
+
+  const fromIndex = computeIndex(sourceIndex, page, rowsPerPage);
+  const toIndex = computeIndex(destination.index, page, rowsPerPage);
+
+  const reordered = rows.slice();
+  const [removed] = reordered.splice(fromIndex, 1);
+  reordered.splice(toIndex, 0, removed);
+
+  return reordered;
+};

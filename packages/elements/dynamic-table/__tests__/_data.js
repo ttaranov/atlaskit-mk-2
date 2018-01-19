@@ -47,15 +47,25 @@ export const rows = [{
       content: 'Clinton',
     },
   ],
-},
+}, {
+  cells: [
+    {
+      key: 'tjeff',
+      content: 'Thomas',
+    },
+    {
+      content: 'Jefferson',
+    },
+],
+}
 ];
 
 export const row = rows[0];
 
-export const rowsWithKeys = rows.map((row, rowIndex) => {
+export const rowsWithKeys = rows.map((tRow, rowIndex) => {
   return {
     key: `${rowIndex}`,
-    ...row
+    ...tRow
   }
 });
 

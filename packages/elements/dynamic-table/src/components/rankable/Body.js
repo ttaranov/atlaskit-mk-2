@@ -35,11 +35,13 @@ const computeRankDestination = (
   result: DropResult,
   pageRows: RowType[],
 ): ?RankEndLocation => {
-  if (result.destination) {
-    const { index } = result.destination;
+  const { source: { index: sourceIndex }, destination } = result;
+  if (destination) {
+    const { index } = destination;
 
-    const afterKey = index !== 0 ? pageRows[index].key : undefined;
-    const beforeIndex = index === 0 ? 0 : index + 1;
+    const keyIndex = index < sourceIndex ? index - 1: index;
+    const afterKey = keyIndex !== -1 ? pageRows[keyIndex].key : undefined;
+    const beforeIndex = keyIndex === -1  ? 0 : keyIndex + 1;
     const beforeKey =
       beforeIndex < pageRows.length ? pageRows[beforeIndex].key : undefined;
 
