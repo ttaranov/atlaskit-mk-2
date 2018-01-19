@@ -1,8 +1,10 @@
 // @flow
 import React, { Component } from 'react';
-import { Head, HeadCell } from '../styled/TableHead';
+import { Head } from '../styled/TableHead';
 import { validateSortKey } from '../internal/helpers';
 import type { HeadType, SortOrderType } from '../types';
+import HeadCell from './TableHeadCell';
+import RankableHeadCell from './rankable/TableHeadCell';
 
 type Props = {
   head: HeadType,
@@ -10,6 +12,8 @@ type Props = {
   sortOrder?: SortOrderType,
   isFixedSize?: boolean,
   onSort: Function,
+  isRankable?: boolean,
+  isRanking: boolean,
 };
 
 class TableHead extends Component<Props, {}> {
@@ -25,29 +29,38 @@ class TableHead extends Component<Props, {}> {
     }
   }
   render() {
-    const { head, sortKey, sortOrder, isFixedSize, onSort } = this.props;
+    const {
+      head,
+      sortKey,
+      sortOrder,
+      isFixedSize,
+      onSort,
+      isRanking,
+      isRankable,
+    } = this.props;
 
     if (!head) return null;
+
+    const HeadCellComponent = isRankable ? RankableHeadCell : HeadCell;
 
     const { cells, ...rest } = head;
 
     return (
-      <Head {...rest}>
+      <Head {...rest} isRanking={isRanking}>
         <tr>
           {cells.map((cell, index) => {
-            const { isSortable, key, content, ...restCellProps } = cell;
+            const { isSortable, key, ...restCellProps } = cell;
 
             return (
-              <HeadCell
+              <HeadCellComponent
                 isFixedSize={isFixedSize}
-                isSortable={isSortable}
+                isSortable={!!isSortable}
+                isRanking={isRanking}
                 key={key || index}
-                onClick={isSortable && onSort(cell)}
-                sortOrder={key === sortKey && sortOrder}
+                onClick={isSortable ? onSort(cell) : undefined}
+                sortOrder={key === sortKey ? sortOrder : undefined}
                 {...restCellProps}
-              >
-                <span>{content}</span>
-              </HeadCell>
+              />
             );
           })}
         </tr>

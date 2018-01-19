@@ -20,10 +20,14 @@ export type StatelessProps = {
   page?: number,
   sortKey?: string,
   sortOrder?: SortOrderType,
+  isRankable?: boolean,
+  onRankStart?: RankStart => void,
+  onRankEnd?: RankEnd => void,
 };
 
 export type RowType = {
   cells: Array<RowCellType>,
+  key?: string,
 };
 
 export type SortOrderType = 'ASC' | 'DESC';
@@ -37,6 +41,23 @@ export type HeadCellType = {
   isSortable?: boolean,
   width?: number,
   shouldTruncate?: boolean,
+};
+
+export type RankEndLocation = {
+  index: number, // index on current page
+  afterKey: ?string,
+  beforeKey: ?string,
+};
+
+export type RankEnd = {
+  sourceIndex: number,
+  sourceKey: string,
+  destination: ?RankEndLocation,
+};
+
+export type RankStart = {
+  index: number,
+  key: string,
 };
 
 export type HeadType = { cells: Array<HeadCellType> };

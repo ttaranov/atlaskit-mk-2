@@ -14,6 +14,7 @@ export const Table = styled.table`
 
 export const Caption = styled.caption`
   font-size: 1.42857143em;
+  will-change: transform;
   font-style: inherit;
   font-weight: 500;
   letter-spacing: -0.008em;

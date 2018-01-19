@@ -10,6 +10,7 @@ import {
 } from '../internal/helpers';
 import TableHead from './TableHead';
 import Body from './Body';
+import RankableTableBody from './rankable/Body';
 import LoadingContainer from './LoadingContainer';
 import LoadingContainerAdvanced from './LoadingContainerAdvanced';
 import {
@@ -19,7 +20,12 @@ import {
 
 import { Table, Caption } from '../styled/DynamicTable';
 
-import type { StatelessProps as Props, RowCellType } from '../types';
+import type {
+  StatelessProps as Props,
+  RowCellType,
+  RankStart,
+  RankEnd,
+} from '../types';
 
 function toggleSortOrder(currentSortOrder) {
   switch (currentSortOrder) {
@@ -32,15 +38,27 @@ function toggleSortOrder(currentSortOrder) {
   }
 }
 
-export default class DynamicTable extends Component<Props, {}> {
-  tableBody: ComponentType<any, {}> | null;
+type State = {
+  isRanking: boolean,
+};
+
+export default class DynamicTable extends Component<Props, State> {
+  tableBody: ?ComponentType<any, any>;
+
+  state = {
+    isRanking: false,
+  };
+
   static defaultProps = {
     isLoading: false,
+    isRankable: false,
     isFixedSize: false,
     rowsPerPage: Infinity,
     onSetPage() {},
     onSort() {},
     page: 1,
+    onRankStart: () => {},
+    onRankEnd: () => {},
   };
   componentWillMount() {
     validateSortKey(this.props.sortKey, this.props.head);
@@ -58,16 +76,47 @@ export default class DynamicTable extends Component<Props, {}> {
     }
   }
   onSort = (item: RowCellType) => () => {
-    const { sortKey, sortOrder, onSort } = this.props;
+    const { sortKey, sortOrder, onSort, isRankable } = this.props;
     const { key } = item;
     if (!key) return;
+    this.onSetPage(1);
+
+    if (isRankable && key === sortKey && sortOrder === DESC) {
+      onSort({
+        key: null,
+        sortOrder: null,
+        item,
+      });
+
+      return;
+    }
+
     const sortOrderFormatted =
       key !== sortKey ? ASC : toggleSortOrder(sortOrder);
-    this.onSetPage(1);
     onSort({ key, item, sortOrder: sortOrderFormatted });
   };
 
   onSetPage = (page?: number) => this.props.onSetPage(page);
+
+  onRankStart = (params: RankStart) => {
+    this.setState({
+      isRanking: true,
+    });
+
+    if (this.props.onRankStart) {
+      this.props.onRankStart(params);
+    }
+  };
+
+  onRankEnd = (params: RankEnd) => {
+    this.setState({
+      isRanking: false,
+    });
+
+    if (this.props.onRankEnd) {
+      this.props.onRankEnd(params);
+    }
+  };
 
   getSpinnerSize = () => {
     const { page, rows, rowsPerPage, loadingSpinnerSize } = this.props;
@@ -96,6 +145,7 @@ export default class DynamicTable extends Component<Props, {}> {
       caption,
       head,
       isFixedSize,
+      isRankable,
       page,
       rows,
       rowsPerPage,
@@ -113,6 +163,9 @@ export default class DynamicTable extends Component<Props, {}> {
       rowsPerPage,
       page,
       isFixedSize,
+      ref: el => {
+        this.tableBody = el;
+      },
     };
     const totalPages =
       rowsLength && rowsPerPage ? Math.ceil(rowsLength / rowsPerPage) : 0;
@@ -120,6 +173,7 @@ export default class DynamicTable extends Component<Props, {}> {
 
     const spinnerSize = this.getSpinnerSize();
     const emptyBody = this.renderEmptyBody();
+    const canRank = isRankable && !sortKey;
 
     return (
       <div>
@@ -136,16 +190,21 @@ export default class DynamicTable extends Component<Props, {}> {
                 onSort={this.onSort}
                 sortKey={sortKey}
                 sortOrder={sortOrder}
+                isRanking={this.state.isRanking}
+                isRankable={canRank}
               />
             )}
-            {rowsExist && (
-              <Body
-                {...bodyProps}
-                ref={el => {
-                  this.tableBody = el;
-                }}
-              />
-            )}
+            {rowsExist &&
+              (canRank ? (
+                <RankableTableBody
+                  {...bodyProps}
+                  isRanking={this.state.isRanking}
+                  onRankStart={this.onRankStart}
+                  onRankEnd={this.onRankEnd}
+                />
+              ) : (
+                <Body {...bodyProps} />
+              ))}
           </Table>
         </LoadingContainerAdvanced>
         {!totalPages ? null : (
