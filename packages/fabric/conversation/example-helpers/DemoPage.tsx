@@ -10,6 +10,7 @@ import {
 } from '../src/model';
 import { MOCK_USERS } from './MockData';
 import { ProviderFactory } from '@atlaskit/editor-common';
+import { selectAll } from 'prosemirror-commands';
 
 const DUMMY_CODE = `
 class Main() {
@@ -182,10 +183,16 @@ export class Demo extends React.Component<
 
   private onUserSelect = (selected: any) => {
     const { item } = selected;
-    const userId = item.value;
     const { provider } = this.props;
+    const userId = item.value;
+
     const [selectedUser] = MOCK_USERS.filter(user => user.id === userId);
-    provider.updateUser(selectedUser);
+
+    if (userId === undefined) {
+      provider.updateUser(undefined);
+    } else {
+      provider.updateUser(selectedUser);
+    }
 
     this.setState({
       selectedUser,
