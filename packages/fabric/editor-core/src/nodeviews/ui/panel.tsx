@@ -72,8 +72,10 @@ class Panel implements NodeView {
   private domRef: HTMLElement | undefined;
   private contentDOMRef: HTMLElement | undefined;
   private panelType: string;
+  private node: PMNode;
 
   constructor(node: PMNode, view: EditorView, getPos: getPosHandler) {
+    this.node = node;
     this.panelType = node.attrs.panelType;
     this.renderReactComponent();
   }
@@ -109,12 +111,14 @@ class Panel implements NodeView {
     return this.contentDOMRef;
   }
 
-  update() {
-    /**
-     * Returning false here fixes an error where the editor fails to set selection
-     * inside the contentDOM after a transaction. See ED-2374.
-     */
-    return false;
+  update(node) {
+    if (
+      node.attrs.panelType !== this.node.attrs.panelType ||
+      node.type !== this.node.type
+    ) {
+      return false;
+    }
+    return true;
   }
 
   destroy() {
