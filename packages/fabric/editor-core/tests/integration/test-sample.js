@@ -1,8 +1,8 @@
 // @flow
-
-//replace the path with @atlaskit/bolt-webdriver-runner once we have a package.
-import { BrowserTestCase } from '../../../../../build/webdriver-runner/runner';
-import Page from '../../../../../build/webdriver-runner/wd-wrapper';
+// eslint-disable-next-line
+import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
+// eslint-disable-next-line
+import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 
 //TODO: Fix flow and lint
 // $FlowFixMe

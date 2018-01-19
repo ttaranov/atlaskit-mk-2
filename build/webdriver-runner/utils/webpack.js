@@ -1,3 +1,6 @@
+//@flow
+'use strict';
+
 // Start of the hack for the issue with the webpack watcher that leads to it dying in attempt of watching files
 // in node_modules folder which contains circular symbolic links
 
@@ -20,8 +23,13 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const historyApiFallback = require('connect-history-api-fallback');
 
-const createConfig = require('../../../build/webpack-config/config');
-const utils = require('../../../build/webpack-config/config/utils');
+const createConfig = require('@atlaskit/webpack-config');
+const {
+  print,
+  devServerBanner,
+  errorMsg,
+} = require('@atlaskit/webpack-config/banner');
+const utils = require('@atlaskit/webpack-config/config/utils');
 
 const HOST = 'localhost';
 const PORT = 9000;
@@ -33,7 +41,7 @@ let config;
 async function getPackagesWithWebdriverTests() /*: Promise<Array<string>> */ {
   const project /*: any */ = await boltQuery({
     cwd: path.join(__dirname, '..'),
-    workspaceFiles: { webdriver: 'tests/integration/*.+(js|jsx)' },
+    workspaceFiles: { webdriver: 'tests/integration/*.+(js|ts|tsx)' },
   });
   return project.workspaces
     .filter(workspace => workspace.files.webdriver.length)
@@ -49,14 +57,11 @@ async function startDevServer() {
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
   const workspaces = await bolt.getWorkspaces();
   const filteredWorkspaces = workspacesGlob
-    ? workspacesGlob.map(package =>
-        workspaces.filter(ws =>
-          minimatch(ws.dir, package, { matchBase: true }),
-        ),
+    ? workspacesGlob.map(pkg =>
+        workspaces.filter(ws => minimatch(ws.dir, pkg, { matchBase: true })),
       )
     : workspaces;
 
-  // console.log( _.flatten(filteredWorkspaces))
   const globs = workspacesGlob
     ? utils.createWorkspacesGlob(_.flatten(filteredWorkspaces), projectRoot)
     : utils.createDefaultGlob();
@@ -64,10 +69,9 @@ async function startDevServer() {
     print(
       errorMsg({
         title: 'Nothing to run',
-        msg: `Pattern "${workspacesGlob}" doesn't match anything.`,
+        msg: `Pattern doesn't match anything.`,
       }),
     );
-
     process.exit(2);
   }
 
@@ -76,6 +80,7 @@ async function startDevServer() {
     host: HOST,
     port: PORT,
     globs,
+    includePatterns,
     env,
     cwd: path.join(__dirname, '../../..', 'website'),
   });

@@ -1,11 +1,74 @@
 'use strict';
+//increase test timeout
+//fix flow on this
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 90e3;
 const webdriverio = require('webdriverio');
-const CHROME_BINARY =
-  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 120e3;
-
 let clients = [];
+
+process.env.TEST_ENV === 'browserstack'
+  ? (clients = setBrowserStackClients())
+  : (clients = setLocalClients());
+
+function BrowserTestCase(...args) {
+  const testcase = args.shift();
+  const tester =
+    typeof args[args.length - 1] === 'function' ? args.pop() : null;
+  const skipForBrowser = args.length > 0 ? args.shift() : null;
+
+  describe(testcase, () => {
+    beforeAll(async function() {
+      for (let i in clients) {
+        if (clients[i].isReady) continue;
+        await clients[i].client.init();
+        clients[i].isReady = true;
+      }
+    });
+
+    for (let i in clients) {
+      testRun(testcase, tester, clients[i].client, skipForBrowser);
+    }
+
+    afterAll(async function() {
+      for (let i in clients) {
+        await clients[i].client.end();
+        clients[i].isReady = false;
+      }
+    });
+  });
+}
+
+function testRun(testCase, tester, client, skipBrowser) {
+  let testFn;
+  let skipForBrowser;
+  const browserName = client.desiredCapabilities.browserName;
+  client.desiredCapabilities.name = testCase;
+
+  if (skipBrowser) {
+    skipBrowser.skip.forEach(browser => {
+      if (browser.match(browserName)) {
+        console.log(`skipping - '${testCase}' on browser:${browserName}`);
+        skipForBrowser = true;
+      }
+    });
+  }
+
+  if (testCase.only) {
+    testFn = test.only;
+  } else if (testCase.skip) {
+    testFn = test.skip;
+  } else if (skipForBrowser) {
+    testFn = test.skip;
+  } else {
+    testFn = test;
+  }
+  let callbk;
+  if (tester && tester.length > 1) {
+    callbk = done => tester(client, done);
+  } else {
+    callbk = () => tester(client);
+  }
+  testFn(browserName, callbk);
+}
 
 function setLocalClients() {
   const launchers = {
@@ -73,7 +136,7 @@ function setBrowserStackClients() {
     const option = {
       desiredCapabilities: {
         os: launchers[key].os,
-        browser: launchers[key].browserName,
+        browserName: launchers[key].browserName,
         browser_version: launchers[key].browser_version,
         project: 'Atlaskit MK2',
         build: process.env.BUILD_NUMBER || '1',
@@ -82,73 +145,13 @@ function setBrowserStackClients() {
       },
       host: 'hub.browserstack.com',
       port: 80,
-      user: process.env.BROWSERSTACK_USER || 'tongli2',
-      key: process.env.BROWSERSTACK_KEY || 'FxSSGEnzpd4FSXtvHxtL',
+      user: process.env.BROWSERSTACK_USER,
+      key: process.env.BROWSERSTACK_KEY,
     };
     let client = webdriverio.remote(option);
     clis.push({ client: client, isReady: false });
   });
   return clis;
-}
-
-process.env.TEST_ENV === 'browserstack'
-  ? (clients = setBrowserStackClients())
-  : (clients = setLocalClients());
-
-function BrowserTestCase(testcase, tester, skipForBrowser) {
-  describe(testcase, () => {
-    beforeAll(async function() {
-      for (let i in clients) {
-        if (clients[i].isReady) continue;
-        await clients[i].client.init();
-        clients[i].isReady = true;
-      }
-    });
-
-    for (let i in clients) {
-      testRun(testcase, tester, clients[i].client, skipForBrowser);
-    }
-
-    afterAll(async function() {
-      for (let i in clients) {
-        await clients[i].client.end();
-        clients[i].isReady = false;
-      }
-    });
-  });
-}
-
-function testRun(testCase, tester, client, skipBrowser) {
-  let testFn;
-  let skipForBrowser;
-  let browserName = client.desiredCapabilities.browserName;
-  client.desiredCapabilities.name = testCase;
-
-  if (skipBrowser) {
-    skipBrowser.skip.forEach(browser => {
-      if (browser.match(browserName)) {
-        console.log(`skipping - '${testCase}' on browser:${browserName}`);
-        skipForBrowser = true;
-      }
-    });
-  }
-
-  if (testCase.only) {
-    testFn = test.only;
-  } else if (testCase.skip) {
-    testFn = test.skip;
-  } else if (skipForBrowser) {
-    testFn = test.skip;
-  } else {
-    testFn = test;
-  }
-  let callbk;
-  if (tester.length > 1) {
-    callbk = done => tester(client, done);
-  } else {
-    callbk = () => tester(client);
-  }
-  testFn(browserName, callbk);
 }
 
 module.exports = { BrowserTestCase };

@@ -1,75 +1,46 @@
+// @flow
+'use strict';
+
 const child = require('child_process');
-const writeJsonFile = require('write-json-file');
 const browserstack = require('./utils/browserstack');
 const selenium = require('./utils/selenium');
 const webpack = require('./utils/webpack');
-const jestPackageJson = require('../../jest.config');
 
-async function writeFileToJson() {
-  const { testRegex, ...newConfig } = jestPackageJson;
-  newConfig['rootDir'] = '../../';
-  newConfig['testMatch'] = [
-    '<rootDir>/packages/**/**/tests/integration/*.(js|jsx)',
-  ];
-  newConfig['globals']['__baseUrl__'] = 'http://localhost:9000';
-  writeJsonFile('./build/webdriver-runner/testConfig.json', newConfig).then(
-    () => {
-      console.log('Build config');
-    },
-  );
+function runTests() {
+  return new Promise((resolve, reject) => {
+    let cmd = `INTEGRATION_TESTS=true jest`;
+
+    let tests = child.spawn(cmd, {
+      stdio: 'inherit',
+      shell: true,
+    });
+
+    tests.on('error', err => reject(err));
+
+    tests.on('close', (code, signal) => {
+      resolve({ code, signal });
+    });
+  });
 }
 
-async function setupAndTest() {
-  await writeFileToJson();
-  await webpack.startDevServer().catch(err => {
-    process.exit(err);
-  });
+async function main() {
+  await webpack.startDevServer();
+
   process.env.TEST_ENV === 'browserstack'
     ? await browserstack.startBrowserStack()
     : await selenium.startSelenium();
-  runTests();
+
+  let { code, signal } = await runTests();
+
+  console.log(`Exiting tests with exit code: ${code} and signal: ${signal}`);
+
+  webpack.stopDevServer();
+  process.env.TEST_ENV === 'browserstack'
+    ? browserstack.stopBrowserStack()
+    : selenium.stopSelenium();
 }
 
-async function setupAndTestAll() {
-  await writeFileToJson();
-  await webpack
-    .startDevServer()
-    .catch(err => {
-      process.exit(err);
-    })
-    .then(async () => {
-      process.env.TEST_ENV === 'browserstack'
-        ? await browserstack.startBrowserStack()
-        : await selenium.startSelenium();
-      runTests();
-    });
-}
-
-function runTests() {
-  let cmd = 'jest -c ./build/webdriver-runner/testConfig.json';
-  tests = child.spawn(cmd, {
-    stdio: 'inherit',
-    shell: true,
-  });
-
-  tests.on('data', function(data) {
-    console.log(data.toString());
-  });
-
-  tests.on('error', function(error) {
-    console.log(error.toString());
-  });
-
-  tests.on('close', function(code, signal) {
-    console.log(`Exiting tests with exit code: ${code} and signal: ${signal}`);
-
-    webpack.stopDevServer();
-    process.env.TEST_ENV === 'browserstack'
-      ? browserstack.stopBrowserStack()
-      : selenium.stopSelenium();
-  });
-}
-
-setupAndTestAll();
-
-module.exports = {};
+main().catch(err => {
+  console.error(err.toString());
+  process.exit(1);
+});

@@ -46,6 +46,7 @@
   "peerDependencies": {},
   "devDependencies": {
     "@atlaskit/editor-test-helpers": "^1.8.0",
+    "@atlaskit/webdriver-runner": "^0.0.1",
     "@types/chai": "^4.0.4",
     "chai": "^4.1.2",
     "json-schema-diff-validator": "^0.0.5",

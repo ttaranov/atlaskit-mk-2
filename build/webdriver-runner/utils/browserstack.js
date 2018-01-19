@@ -1,14 +1,16 @@
+//@flow
+
 const browserstack = require('browserstack-local');
 const bsLocal = new browserstack.Local();
+const bsKey = process.env.BROWSERSTACK_KEY;
 
-function startBrowserStack() {
-  return new Promise(function(resolve, reject) {
-    bsLocal.start({ key: process.env.BROWSERSTACK_KEY }, error => {
+async function startBrowserStack() {
+  return new Promise((resolve, reject) => {
+    bsLocal.start({ key: bsKey }, error => {
       if (error) {
-        reject(error);
-        return;
+        return reject(error);
       }
-      resolve(() => console.log('Connected to BrowserStack'));
+      setTimeout(() => resolve(), 1000);
     });
   });
 }

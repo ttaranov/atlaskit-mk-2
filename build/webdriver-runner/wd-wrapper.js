@@ -6,30 +6,30 @@ export default class Page {
     this.browser = client;
   }
   // Navigation
-  async goto(url) {
+  goto(url) {
     return this.browser.url(url);
   }
 
   // Get
-  async getAttribute(selector, attributeName) {
+  getAttribute(selector, attributeName) {
     return this.browser.getAttribute(selector, attributeName);
   }
-  async getCssProperty(selector, cssProperty) {
+  getCssProperty(selector, cssProperty) {
     return this.browser.getCssProperty(selector, cssProperty);
   }
-  async getElementSize(selector, prop) {
+  getElementSize(selector, prop) {
     return this.browser.getElementSize(selector, prop);
   }
-  async getText(selector) {
+  getText(selector) {
     return this.browser.getText(selector);
   }
-  async getTitle() {
+  getTitle() {
     return this.browser.getTitle();
   }
-  async getUrl() {
+  getUrl() {
     return this.browser.getUrl();
   }
-  async getValue(selector) {
+  getValue(selector) {
     return this.browser.getValue(selector);
   }
   // Protocol
