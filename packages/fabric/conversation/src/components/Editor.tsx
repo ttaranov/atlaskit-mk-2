@@ -10,6 +10,8 @@ import {
   CollapsedEditor,
 } from '@atlaskit/editor-core';
 
+import { User } from '../model';
+
 export interface Props {
   defaultValue?: any;
   isExpanded?: boolean;
@@ -19,6 +21,7 @@ export interface Props {
 
   // Provider
   dataProviders?: ProviderFactory;
+  user?: User;
 }
 
 export interface State {
@@ -92,8 +95,22 @@ export default class Editor extends React.Component<Props, State> {
     actions.clear();
   };
 
-  render() {
+  renderAvatar() {
     const { isEditing } = this.state;
+    const { user } = this.props;
+
+    if (isEditing) {
+      return null;
+    }
+
+    return (
+      <AvatarSection>
+        <AkAvatar src={user && user.avatarUrl} />
+      </AvatarSection>
+    );
+  }
+
+  render() {
     const { dataProviders } = this.props;
     let providers = {};
 
@@ -107,11 +124,7 @@ export default class Editor extends React.Component<Props, State> {
     return (
       <EditorContext>
         <Container>
-          {!isEditing && (
-            <AvatarSection>
-              <AkAvatar />
-            </AvatarSection>
-          )}
+          {this.renderAvatar()}
           <EditorSection>
             <WithEditorActions
               render={actions => (

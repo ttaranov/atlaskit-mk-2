@@ -1,5 +1,7 @@
 # @atlaskit/media-picker
 
+## 0.2.1
+
 ## 0.2.0
 
 - [minor] Added GIPHY file picking support to Media Picker Popup [d6be99c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6be99c)

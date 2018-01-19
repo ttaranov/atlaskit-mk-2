@@ -1,5 +1,7 @@
 # @atlaskit/inline-edit
 
+## 4.5.11
+
 ## 4.5.10
 - [patch] Resolved low hanging flow errors in field-base field-text comment icon item and website, $ [007de27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/007de27)
 
