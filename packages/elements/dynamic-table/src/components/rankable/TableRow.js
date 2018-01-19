@@ -6,6 +6,7 @@ import { RowPlaceholderCell } from '../../styled/rankable/RowPlaceholder';
 import type { HeadType, RowType } from '../../types';
 import withDimensions, {type WithDimensionsProps} from '../../hoc/withDimensions';
 import TableCell from './TableCell';
+import { inlineStylesIfRanking } from '../../internal/helpers';
 
 type Props = {
   head: HeadType | void,
@@ -15,9 +16,9 @@ type Props = {
   rowIndex: number,
 } & WithDimensionsProps;
 
-class RankableTableRow extends Component<Props, {}> {
+export class RankableTableRow extends Component<Props, {}> {
 
-  innerRef = (innerRefFn) => (ref) => {
+  innerRef = (innerRefFn: Function) => (ref: ?HTMLElement) => {
     innerRefFn(ref);
     this.props.innerRef(ref);
   }
@@ -25,20 +26,22 @@ class RankableTableRow extends Component<Props, {}> {
   render() {
     const { row, head, isFixedSize, isRanking, refWidth, refHeight, rowIndex } = this.props;
     const { cells, ...restRowProps } = row;
-    const inlineStyle = isRanking ? {width: refWidth} : {};
+    const inlineStyles = inlineStylesIfRanking(isRanking, refWidth);
 
     if (!row.key) {
-      throw new Error(`Key should be provided to row with index ${rowIndex} to enable ranking`);
+      console.warn(`Ranking may not work properly because key was not pass to table row. Row index (${rowIndex}) will be used instead`); // eslint-disable-line
     }
 
+    const key = row.key ? row.key : rowIndex.toString();
+
     return (
-      <Draggable draggableId={row.key} index={rowIndex}>
+      <Draggable draggableId={key} index={rowIndex}>
       {(provided, snapshot) => [
         <RankableTableBodyRow {...restRowProps} 
           innerRef={this.innerRef(provided.innerRef)} 
           {...provided.dragHandleProps}
           {...provided.draggableProps}
-          style={{...provided.draggableProps.style, ...inlineStyle}}
+          style={{...provided.draggableProps.style, ...inlineStyles}}
           isRanking={isRanking}
           isRankingItem={snapshot.isDragging}
           key={0}
@@ -58,7 +61,7 @@ class RankableTableRow extends Component<Props, {}> {
    
       provided.placeholder ? <tr key={1}>
         <RowPlaceholderCell colSpan={cells.length}>
-          <div style={{width: refWidth, height: refHeight }}>
+          <div style={inlineStylesIfRanking(isRanking, refWidth, refHeight)}>
             {provided.placeholder}
           </div>
         </RowPlaceholderCell>

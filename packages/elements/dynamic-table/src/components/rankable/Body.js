@@ -21,6 +21,7 @@ import withSortedPageRows, {
 import withDimensions, {
   type WithDimensionsProps,
 } from '../../hoc/withDimensions';
+import { inlineStylesIfRanking } from '../../internal/helpers';
 
 type Props = WithDimensionsProps & WithSortedPageRowsProps & {
   onRankStart: RankStart => void,
@@ -52,7 +53,7 @@ const computeRankDestination = (
   return undefined;
 };
 
-class RankableBody extends Component<Props, {}> {
+export class RankableBody extends Component<Props, {}> {
   innerRef = (innerRefFn: Function) => (ref: HTMLElement) => {
     innerRefFn(ref);
     this.props.innerRef(ref);
@@ -84,7 +85,7 @@ class RankableBody extends Component<Props, {}> {
 
   render() {
     const { pageRows, head, isFixedSize, isRanking, refWidth, refHeight } = this.props;
-    const inlineStyle = isRanking ? { width: refWidth, height: refHeight } : {};
+    const inlineStyle = inlineStylesIfRanking(isRanking, refWidth, refHeight);
 
     return (
       <DragDropContext

@@ -5,6 +5,7 @@ import type { HeadCellType, RowCellType } from '../../types';
 import withDimensions, {
   type WithDimensionsProps,
 } from '../../hoc/withDimensions';
+import { inlineStylesIfRanking } from '../../internal/helpers';
 
 type Props = {
   head: HeadCellType | void,
@@ -15,7 +16,7 @@ type Props = {
 
 const stopPropagation = e => e.stopPropagation();
 
-class RankableTableCell extends Component<Props, {}> {
+export class RankableTableCell extends Component<Props, {}> {
   render() {
     const {
       cell,
@@ -27,7 +28,7 @@ class RankableTableCell extends Component<Props, {}> {
     } = this.props;
     const { content, ...restCellProps } = cell;
     const { shouldTruncate, width } = head || {};
-    const inlineStyles = isRanking ? { width: refWidth } : {};
+    const inlineStyles = inlineStylesIfRanking(isRanking, refWidth);
 
     return (
       <RankableTableBodyCell

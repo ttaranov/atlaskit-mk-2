@@ -10,7 +10,7 @@ import {
 } from '../internal/helpers';
 import TableHead from './TableHead';
 import Body from './Body';
-import RankableBody from './rankable/Body';
+import RankableTableBody from './rankable/Body';
 import LoadingContainer from './LoadingContainer';
 import LoadingContainerAdvanced from './LoadingContainerAdvanced';
 import {
@@ -190,7 +190,7 @@ export default class DynamicTable extends Component<Props, State> {
               />
             )}
             {rowsExist && (canRank ? (
-              <RankableBody
+              <RankableTableBody
                 {...bodyProps}
                 isRanking={this.state.isRanking}
                 onRankStart={this.onRankStart}

@@ -1,6 +1,6 @@
 // @flow
 // eslint-disable-next-line import/prefer-default-export
-import type { HeadType, RowType } from '../types';
+import type { HeadType, RowType, RankEnd } from '../types';
 
 export const getPageRows = (
   pageNumber?: number,
@@ -52,3 +52,18 @@ export const validateSortKey = (
   }
   return null;
 };
+
+export const inlineStylesIfRanking = (isRanking: boolean, width: number, height: ?number = undefined): {} => {
+  if (!isRanking) {
+    return {};
+  }
+
+  if (height) {
+    return { width, height };
+  } 
+  return { width };
+}
+
+// export const reorderRows = (rankEnd: RankEnd, rows: RowType[], page?: number): RowType[] => {
+
+// };

@@ -8,70 +8,14 @@ import {
   EmptyViewWithFixedHeight,
 } from '../src/styled/EmptyBody';
 import Body from '../src/components/Body';
-import RankableBody from '../src/components/rankable/Body';
+import RankableTableBody from '../src/components/rankable/Body';
 import LoadingContainer from '../src/components/LoadingContainer';
 import LoadingContainerAdvanced from '../src/components/LoadingContainerAdvanced';
 import { Caption } from '../src/styled/DynamicTable';
 import DynamicTable, { DynamicTableStateless } from '../src';
 
 import { name } from '../package.json';
-
-const head = {
-  cells: [
-    {
-      key: 'first_name',
-      content: 'First name',
-      isSortable: true,
-    },
-    {
-      key: 'last_name',
-      content: 'Last name',
-    },
-  ],
-};
-
-const rows = [
-  {
-    cells: [
-      {
-        key: 'baob',
-        content: 'Barak',
-      },
-      {
-        content: 'Obama',
-      },
-    ],
-  },
-  {
-    cells: [
-      {
-        key: 'dotr',
-        content: 'Donald',
-      },
-      {
-        content: 'Trump',
-      },
-    ],
-  },
-  {
-    cells: [
-      {
-        key: 'hicl',
-        content: 'Hillary',
-      },
-      {
-        content: 'Clinton',
-      },
-    ],
-  },
-];
-
-const rowsWithKeys = rows.map((row, rowIndex) => {
-  return {
-    key: `${rowIndex}`,
-    ...row
-  }
-});
+import { rows, head, rowsWithKeys } from './_data';
 
 describe(name, () => {
   describe('stateless', () => {
@@ -149,7 +93,7 @@ describe(name, () => {
       );
       
       const body = wrapper.find(Body);
-      const rankableBody = wrapper.find(RankableBody);
+      const rankableBody = wrapper.find(RankableTableBody);
       expect(body.length).toBe(0);
       expect(rankableBody.length).toBe(1);
     });
@@ -181,7 +125,8 @@ describe(name, () => {
       ).toBe('Clinton');
     });
 
-    it('should display sorted data', () => {
+
+    const checkSortedData = (isRankable) => {
       const headCells = head.cells.map(cell => ({
         ...cell,
         isSortable: true,
@@ -190,8 +135,9 @@ describe(name, () => {
         <DynamicTableStateless
           defaultSortKey="last_name"
           defaultSortOrder="DESC"
+          isRankable={isRankable}
           head={{ cells: headCells }}
-          rows={rows}
+          rows={rowsWithKeys}
         />,
       );
       const bodyRows = wrapper.find('tbody tr');
@@ -237,6 +183,14 @@ describe(name, () => {
           .at(1)
           .text(),
       ).toBe('Clinton');
+    };
+
+    it('should display sorted data', () => {
+      checkSortedData(false);
+    });
+
+    it('should display sorted data in rankable table', () => {
+      checkSortedData(true);
     });
 
     it('should pass down extra props', () => {

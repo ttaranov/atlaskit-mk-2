@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import withDimensions, {type WithDimensionsProps} from '../../hoc/withDimensions';
 import HeadCell, {type Props as HeadCellProps} from "../TableHeadCell";
+import { inlineStylesIfRanking } from '../../internal/helpers';
 
 type Props = {
   isRanking: boolean,
@@ -11,8 +12,7 @@ class RankableTableHeadCell extends Component<Props, {}> {
 
   render() {
     const { isRanking, refHeight, refWidth, innerRef, ...restProps} = this.props;
-
-    const inlineStyles = isRanking ? {width: refWidth} : {};
+    const inlineStyles = inlineStylesIfRanking(isRanking, refWidth);
 
     return (
       <HeadCell
