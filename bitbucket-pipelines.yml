@@ -37,7 +37,7 @@ pipelines:
           - (node build/ci-scripts/should.run.js tsc) && bolt typecheck:typescript
           - bolt test:changed
           - (node build/ci-scripts/should.run.js browserstack) && bolt test:browser:browserstack
-          - bolt test:browser:browserstack
+          - bolt test:webdriver:browserstack
           - (cd website && bolt deploy-staging:no-minimize) | tee output.txt
           - node build/ci-scripts/update.build.status.with.netlify.link.js
         caches:
@@ -61,7 +61,7 @@ pipelines:
           script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
-            - bolt test:browser:browserstack
+            - test:webdriver:browserstack
 
     # This will run essentially the branch builds, but without any optimizations and should be manually
     # run in any potentially risky builds
