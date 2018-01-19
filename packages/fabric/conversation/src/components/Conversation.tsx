@@ -59,6 +59,23 @@ export default class Conversation extends React.PureComponent<Props> {
     ));
   }
 
+  private renderEditor() {
+    const { isExpanded, onCancel, meta, dataProviders, user } = this.props;
+    const canReply = !!user;
+
+    if (canReply && (isExpanded || !meta)) {
+      return (
+        <Editor
+          isExpanded={isExpanded}
+          onSave={this.onSave}
+          onCancel={onCancel}
+          dataProviders={dataProviders}
+          user={user}
+        />
+      );
+    }
+  }
+
   private onSave = async (value: any) => {
     const {
       containerId,
@@ -81,19 +98,10 @@ export default class Conversation extends React.PureComponent<Props> {
   };
 
   render() {
-    const { isExpanded, onCancel, meta, dataProviders } = this.props;
-
     return (
       <div>
         {this.renderComments()}
-        {isExpanded || !meta ? (
-          <Editor
-            isExpanded={isExpanded}
-            onSave={this.onSave}
-            onCancel={onCancel}
-            dataProviders={dataProviders}
-          />
-        ) : null}
+        {this.renderEditor()}
       </div>
     );
   }
