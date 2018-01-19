@@ -2,6 +2,7 @@ jest.mock('../../../../tools/gridCellScaler');
 
 import * as React from 'react';
 import { shallow } from 'enzyme';
+import * as debounce from 'lodash.debounce';
 
 import Flag from '@atlaskit/flag';
 import Button from '@atlaskit/button';
@@ -42,6 +43,10 @@ const createConnectedComponent = () => {
 };
 
 describe('<ConnectedGiphyView />', () => {
+  afterEach(() => {
+    (debounce as any).mockImplementation(fn => fn);
+  });
+
   it('should deliver all required props to stateless component', () => {
     const { component } = createConnectedComponent();
     const props = component.props();
@@ -361,6 +366,13 @@ describe('<ConnectedGiphyView />', () => {
     });
 
     it('should call onSearchQueryChange() when FieldText fires onChange after one second', () => {
+      let debouncedFn = (newQuery: string) => {};
+      const debounceResult = jest.fn();
+      (debounce as any).mockImplementation(fn => {
+        debouncedFn = fn;
+        return debounceResult;
+      });
+
       const giphyView = shallow(
         <GiphyView
           hasError={false}
@@ -374,10 +386,27 @@ describe('<ConnectedGiphyView />', () => {
         />,
       );
 
+      // Change query field with new string
       giphyView
         .find(FieldText)
-        .simulate('change', { currentTarget: { value: 'some-search-query' } });
+        .simulate('change', {
+          currentTarget: { value: 'some-new-search-query' },
+        });
+      // Original prop callback hasn't been called yet
+      expect(onSearchQueryChange).toHaveBeenCalledTimes(0);
+      // Debounced version has been called with a new string.
+      expect(debounceResult).toHaveBeenCalledTimes(1);
+      expect(debounceResult).toHaveBeenCalledWith('some-new-search-query');
+      // State hasn't change immediately
+      expect(giphyView.state().query).not.toEqual('some-new-search-query');
+
+      // 1 second just passed (virtually)
+      debouncedFn('some-new-search-query');
+
+      // Original popup callback has been called now
       expect(onSearchQueryChange).toHaveBeenCalledTimes(1);
+      // State has change now
+      expect(giphyView.state().query).toEqual('some-new-search-query');
     });
 
     it('should call onLoadMoreButtonClick() when the load more button is clicked', () => {
