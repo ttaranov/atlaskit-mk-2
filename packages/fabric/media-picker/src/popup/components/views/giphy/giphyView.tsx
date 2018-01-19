@@ -96,12 +96,15 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
     );
   }
 
-  private getContent = () => {
-    const { hasError, isLoading, cardModels } = this.props;
+  get hasResults(): boolean {
+    return this.props.cardModels.length > 0;
+  }
 
-    const hasResults = cardModels.length > 0;
+  private getContent = () => {
+    const { hasError, isLoading } = this.props;
+
     if (hasError) {
-      if (hasResults) {
+      if (this.hasResults) {
         return (
           <div>
             {this.renderErrorFlag()}
@@ -113,7 +116,7 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
       }
     }
 
-    if (!isLoading && !hasResults) {
+    if (!isLoading && !this.hasResults) {
       return this.renderEmptyState();
     }
 
@@ -170,9 +173,9 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
     const hasMoreResults =
       totalResultCount === undefined ||
       cardModels.length < totalResultCount - 1;
-    const isEmpty = cardModels.length === 0;
-    const shouldShowLoadMoreButton = !isEmpty && (isLoading || hasMoreResults);
-    const shouldShowInitialPreloader = isLoading && isEmpty;
+    const shouldShowLoadMoreButton =
+      this.hasResults && (isLoading || hasMoreResults);
+    const shouldShowInitialPreloader = isLoading && !this.hasResults;
 
     const loadMoreButton =
       shouldShowLoadMoreButton && this.renderLoadMoreButton();
