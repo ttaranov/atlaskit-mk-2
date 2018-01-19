@@ -48,6 +48,8 @@ export class MediaFileAttributesFactory {
     };
 
     const paramsSeparator = resource.indexOf('?') > -1 ? '&' : '?';
+    const processed = details.processingStatus === 'succeeded';
+    const type = artifactFormat ? artifactFormat.type : details.mediaType;
 
     return {
       id,
@@ -55,9 +57,10 @@ export class MediaFileAttributesFactory {
         additionalParams,
       )}`,
       srcDownload: `${serviceHost}${binary}?dl=1`,
-      type: artifactFormat ? artifactFormat.type : details.mediaType,
+      type: processed ? type : 'non-supported',
       title: details.name,
       src_hd: video1280 && `${serviceHost}${video1280}`,
+      processed: processed,
       poster: poster1280
         ? `${serviceHost}${poster1280}`
         : poster640 && `${serviceHost}${poster640}`,
