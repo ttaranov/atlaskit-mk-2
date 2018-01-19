@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import { EmojiProvider } from '@atlaskit/emoji';
 import EditorEmojiTypeAhead from '../../src/ui/EmojiTypeAhead';
-
 import { analyticsService } from '../../src/analytics';
 
 describe('EmojiTypeAhead', () => {
@@ -25,14 +24,17 @@ describe('EmojiTypeAhead', () => {
 
     const pluginKey = {
       getState: jest.fn(),
-    };
+    } as any;
+
     const editorView = {
-      state: {},
-    };
+      insertEmoji: jest.fn(),
+    } as any;
+
     const emojiTypeAheadMock = {
       selectNext: selectNextMock,
       selectPrevious: selectPreviousMock,
-    };
+    } as any;
+
     let trackEvent;
     let component;
     let componentInstance;
