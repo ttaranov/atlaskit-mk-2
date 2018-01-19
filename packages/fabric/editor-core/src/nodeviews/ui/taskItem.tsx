@@ -21,7 +21,7 @@ class Task implements NodeView {
   private node: PMNode;
   private view: EditorView;
   private getPos: getPosHandler;
-  private showPlaceholder: boolean = false;
+  private isContentEmpty: boolean = false;
   private analyticsDelegateContext: AnalyticsDelegateProps;
   private providerFactory: ProviderFactory;
 
@@ -35,7 +35,7 @@ class Task implements NodeView {
     this.node = node;
     this.view = view;
     this.getPos = getPos;
-    this.showPlaceholder = node.content.childCount === 0;
+    this.isContentEmpty = node.content.childCount === 0;
     this.analyticsDelegateContext = analyticsDelegateContext;
     this.providerFactory = providerFactory;
     this.renderReactComponent();
@@ -77,7 +77,7 @@ class Task implements NodeView {
         contentRef={this.handleRef}
         isDone={state === 'DONE'}
         onChange={this.handleOnChange}
-        showPlaceholder={this.showPlaceholder}
+        showPlaceholder={this.isContentEmpty}
         providers={this.providerFactory}
       />
     );
@@ -97,12 +97,12 @@ class Task implements NodeView {
     return this.contentDOMRef;
   }
 
-  update() {
+  update(node: PMNode) {
     /**
-     * Returning false here fixes an error where the editor fails to set selection
+     * Returning false here when the previous content was empty – fixes an error where the editor fails to set selection
      * inside the contentDOM after a transaction. See ED-2374.
      */
-    return false;
+    return !this.isContentEmpty || node.type !== this.node.type;
   }
 
   destroy() {

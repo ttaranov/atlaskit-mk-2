@@ -1,5 +1,8 @@
 # @atlaskit/code
 
+## 3.0.1
+- [patch] Resolved low hanging flow errors in field-base field-text comment icon item and website, $ [007de27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/007de27)
+
 ## 3.0.0
 - [major] Moved to elements repo converted to flow typing, stripped out typescript types [235e392](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/235e392)
 

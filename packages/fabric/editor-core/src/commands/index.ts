@@ -12,10 +12,6 @@ import * as baseCommand from 'prosemirror-commands';
 import * as baseListCommand from 'prosemirror-schema-list';
 import * as blockTypes from '../plugins/block-type/types';
 import {
-  isConvertableToCodeBlock,
-  transformToCodeBlockAction,
-} from '../plugins/block-type/transform-to-code-block';
-import {
   isRangeOfType,
   canMoveDown,
   canMoveUp,
@@ -297,57 +293,6 @@ export function insertCodeBlock(): Command {
     );
     dispatch(tr);
     return true;
-  };
-}
-
-export function createCodeBlockFromFenceFormat(): Command {
-  return function(state, dispatch) {
-    const { codeBlock } = state.schema.nodes;
-    const { $from } = state.selection;
-    const parentBlock = $from.parent;
-    if (!parentBlock.isTextblock || parentBlock.type === codeBlock) {
-      return false;
-    }
-    const startPos = $from.start($from.depth);
-
-    let textOnly = true;
-
-    state.doc.nodesBetween(startPos, $from.pos, node => {
-      if (node.childCount === 0 && !node.isText && !node.isTextblock) {
-        textOnly = false;
-      }
-    });
-
-    if (!textOnly) {
-      return false;
-    }
-
-    if (!state.schema.nodes.codeBlock) {
-      return false;
-    }
-
-    const fencePart = parentBlock.textContent.slice(0, $from.pos - startPos);
-
-    const matcheStart = /(^`{3,}(\S*)\s*$)/.exec(fencePart);
-    const matchMiddle = /\s(`{3,}(\S*)\s*$)/.exec(fencePart);
-    const matches = matcheStart || matchMiddle;
-
-    if (matches && isConvertableToCodeBlock(state)) {
-      const attributes: { language?: string } = {};
-
-      if (matches[2]) {
-        attributes.language = matches[2];
-      }
-      dispatch(
-        transformToCodeBlockAction(state, attributes).delete(
-          $from.pos - matches[1].length,
-          $from.pos,
-        ),
-      );
-      return true;
-    }
-
-    return false;
   };
 }
 

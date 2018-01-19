@@ -17,6 +17,6 @@ var _index2 = _interopRequireDefault(_index);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var EditorInfoIcon = function EditorInfoIcon(props) {
-  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M13 11.792A2.492 2.492 0 0 1 12 12c-.356 0-.694-.074-1-.208v4.717c0 .263.226.491.505.491h.99a.49.49 0 0 0 .505-.491v-4.717zM12 20a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm0-10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
+  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M12 20a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm0-8.5a1 1 0 0 0-1 1V15a1 1 0 0 0 2 0v-2.5a1 1 0 0 0-1-1zm0-1.125a1.375 1.375 0 1 0 0-2.75 1.375 1.375 0 0 0 0 2.75z" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
 };
 exports.default = EditorInfoIcon;

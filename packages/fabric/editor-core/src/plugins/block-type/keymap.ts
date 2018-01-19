@@ -47,14 +47,6 @@ export function keymapHandler(
     list,
   );
   keymaps.bindKeymapWithCommand(
-    keymaps.createCodeBlock.common!,
-    trackAndInvoke(
-      analyticsEventName('codeblock', 'autoformatting'),
-      commands.createCodeBlockFromFenceFormat(),
-    ),
-    list,
-  );
-  keymaps.bindKeymapWithCommand(
     keymaps.findKeyMapForBrowser(keymaps.redo)!,
     trackAndInvoke('atlassian.editor.redo.keyboard', redo),
     list,

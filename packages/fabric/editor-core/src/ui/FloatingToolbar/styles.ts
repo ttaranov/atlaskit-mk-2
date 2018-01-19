@@ -1,6 +1,6 @@
 import { akColorN10 } from '@atlaskit/util-shared-styles';
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 // tslint:disable-next-line:variable-name
 export const Container = styled.div`
@@ -10,5 +10,10 @@ export const Container = styled.div`
   align-items: center;
   padding: 4px 8px 4px 4px;
   background-color: ${akColorN10};
-  height: ${(props: any) => `${props.height}px`};
+  ${({ height }) =>
+    height
+      ? css`
+          height: ${height}px;
+        `
+      : ''};
 `;

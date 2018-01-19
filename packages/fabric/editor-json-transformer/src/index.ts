@@ -75,6 +75,11 @@ export class JSONTransformer implements Transformer<JSONDocNode> {
   }
 
   parse(content: JSONDocNode): PMNode {
-    return defaultSchema.nodes.doc.create();
+    if (content.type !== 'doc') {
+      throw new Error('Expected content format to be ADF');
+    }
+    const doc = defaultSchema.nodeFromJSON(content);
+    doc.check();
+    return doc;
   }
 }

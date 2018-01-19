@@ -1,7 +1,7 @@
 declare var global: any; // we need define an interface for the Node global object when overwriting global objects, in this case Image
-jest.mock('../../../popup/src/tools/fileToBase64');
+jest.mock('../../popup/tools/fileToBase64');
 
-import { fileToBase64 } from '../../../popup/src/tools/fileToBase64';
+import { fileToBase64 } from '../../popup/tools/fileToBase64';
 import { getPreviewFromBlob } from '../getPreviewFromBlob';
 
 describe('getPreview helper method', () => {

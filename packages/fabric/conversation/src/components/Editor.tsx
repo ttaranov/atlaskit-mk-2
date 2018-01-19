@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import AkAvatar from '@atlaskit/avatar';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 import {
   Editor as AkEditor,
@@ -9,12 +10,18 @@ import {
   CollapsedEditor,
 } from '@atlaskit/editor-core';
 
+import { User } from '../model';
+
 export interface Props {
   defaultValue?: any;
   isExpanded?: boolean;
   onCancel?: () => void;
   onSave?: (value: any) => void;
   isEditing?: boolean;
+
+  // Provider
+  dataProviders?: ProviderFactory;
+  user?: User;
 }
 
 export interface State {
@@ -88,17 +95,36 @@ export default class Editor extends React.Component<Props, State> {
     actions.clear();
   };
 
-  render() {
+  renderAvatar() {
     const { isEditing } = this.state;
+    const { user } = this.props;
+
+    if (isEditing) {
+      return null;
+    }
+
+    return (
+      <AvatarSection>
+        <AkAvatar src={user && user.avatarUrl} />
+      </AvatarSection>
+    );
+  }
+
+  render() {
+    const { dataProviders } = this.props;
+    let providers = {};
+
+    // @TODO Remove and just pass the factory through once AkEditor is updated
+    if (dataProviders) {
+      (dataProviders as any).providers.forEach((provider, key) => {
+        providers[key] = provider;
+      });
+    }
 
     return (
       <EditorContext>
         <Container>
-          {!isEditing && (
-            <AvatarSection>
-              <AkAvatar />
-            </AvatarSection>
-          )}
+          {this.renderAvatar()}
           <EditorSection>
             <WithEditorActions
               render={actions => (
@@ -116,6 +142,7 @@ export default class Editor extends React.Component<Props, State> {
                     allowLists={true}
                     onSave={() => this.onSave(actions)}
                     onCancel={this.onCancel}
+                    {...providers}
                   />
                 </CollapsedEditor>
               )}

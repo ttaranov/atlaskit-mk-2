@@ -101,7 +101,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
   if (schema.nodes.codeBlock) {
     rules.push(
       createInputRule(
-        /((^`{3,})|(\s`{3,}))(\S*)\s$/,
+        /((^`{3,})|(\s`{3,}))(\S*)$/,
         (state, match, start, end): Transaction | undefined => {
           const attributes: any = {};
           if (match[4]) {
@@ -126,7 +126,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
     rules.push(
       createInputRule(
         new RegExp(
-          `((${leafNodeReplacementCharacter}\`{3,})|(\\s\`{3,}))(\\S*)\\s$`,
+          `((${leafNodeReplacementCharacter}\`{3,})|(\\s\`{3,}))(\\S*)$`,
         ),
         (state, match, start, end): Transaction | undefined => {
           const attributes: any = {};

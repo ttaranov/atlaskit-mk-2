@@ -4,7 +4,10 @@ import {
   Comment as CommentType,
   Conversation as ConversationType,
 } from '../src/model';
-import { MockProvider as ConversationResource } from '../example-helpers/MockProvider';
+import {
+  MockProvider as ConversationResource,
+  getDataProviderFactory,
+} from '../example-helpers/MockProvider';
 import { Demo } from '../example-helpers/DemoPage';
 import { MOCK_USERS } from '../example-helpers/MockData';
 
@@ -14,5 +17,5 @@ const provider = new ConversationResource({
 });
 
 export default function Example() {
-  return <Demo provider={provider} />;
+  return <Demo provider={provider} dataProviders={getDataProviderFactory()} />;
 }
