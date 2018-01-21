@@ -23,7 +23,7 @@ type Props = {
   children: Element<*>,
   /** The content of the tooltip */
   content: Node,
-  /** Component to be used as tooltip */
+  /** Component to be used as tooltip. Component needs to have "position: fixed;" and "pointer-events: none" styles */
   component: ComponentType<{ innerRef: HTMLElement => void }>,
   /** Hide the tooltip when the element is clicked */
   hideTooltipOnClick?: boolean,
