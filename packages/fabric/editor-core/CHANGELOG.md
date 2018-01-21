@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.3.12
+- [patch] Fix list shortcuts [c25601a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c25601a)
+
 ## 61.3.11
 - [patch] Fixes nodeviews becoming empty after some transactions [c8ba47c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8ba47c)
 
