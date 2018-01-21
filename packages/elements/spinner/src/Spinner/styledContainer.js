@@ -1,6 +1,6 @@
 // @flow
 
-import styled, { injectGlobal } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import type { SpinnerPhases } from '../types';
 
 type AnimationParams = {
@@ -8,40 +8,29 @@ type AnimationParams = {
   phase: SpinnerPhases,
 };
 
-export const keyframeNames = {
-  noop: 'atlaskitSpinnerNoop',
-  enter_rotate: 'atlaskitSpinnerEnterRotate',
-  leave_rotate: 'atlaskitSpinnerLeaveRotate',
-  leave_opacity: 'atlaskitSpinnerLeaveOpacity',
-};
-
 /* Define keyframes statically to prevent a perfomance issue in styled components v1 where the keyframes function
  * does not cache previous values resulting in each spinner injecting the same keyframe definition
  * in the DOM.
- * This can be reverted to use the keyframes fn when we upgrade to styled components v2
+ * This can be reverted to use dynamic keyframes when we upgrade to styled components v2
  */
-// eslint-disable-next-line no-unused-expressions
-injectGlobal`
-  @keyframes ${keyframeNames.noop} {
+export const keyframeNames = {
+  noop: keyframes`
     from { opacity: 0; }
     to { opacity: 0; }
-  }
-
-  @keyframes ${keyframeNames.enter_rotate} {
+  `,
+  enterRotate: keyframes`
     from { transform: rotate(50deg); }
     to { transform: rotate(230deg); }
-  }
-
-  @keyframes ${keyframeNames.leave_rotate} {
+  `,
+  leaveRotate: keyframes`
     from { transform: rotate(230deg); }
     to { transform: rotate(510deg); }
-  }
-
-  @keyframes ${keyframeNames.leave_opacity} {
+  `,
+  leaveOpacity: keyframes`
     from { opacity: 1; }
     to { opacity: 0; }
-  }
-`;
+  `,
+};
 
 export const getContainerAnimation = ({ delay, phase }: AnimationParams) => {
   if (phase === 'DELAY') {
@@ -51,12 +40,12 @@ export const getContainerAnimation = ({ delay, phase }: AnimationParams) => {
   }
 
   if (phase === 'ENTER' || phase === 'IDLE') {
-    return `animation: 1s ease-in-out forwards ${keyframeNames.enter_rotate};`;
+    return `animation: 1s ease-in-out forwards ${keyframeNames.enterRotate};`;
   }
 
   if (phase === 'LEAVE') {
-    return `animation: 0.53s ease-in-out forwards ${keyframeNames.leave_rotate},
-      0.2s ease-in-out 0.33s ${keyframeNames.leave_opacity};`;
+    return `animation: 0.53s ease-in-out forwards ${keyframeNames.leaveRotate},
+      0.2s ease-in-out 0.33s ${keyframeNames.leaveOpacity};`;
   }
 
   return '';

@@ -1,6 +1,6 @@
 // @flow
 
-import styled, { css, injectGlobal, keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { colors, themed } from '@atlaskit/theme';
 import type { SpinnerPhases } from '../types';
 import { SIZES_MAP } from './constants';
@@ -19,61 +19,44 @@ const getStrokeCircumference = (size: number) => {
   return Math.PI * strokeRadius * 2;
 };
 
-export const keyframeNames = {
-  noop: 'atlaskitSpinnerNoop',
-  rotate: 'atlaskitSpinnerRotate',
-  enter_opacity: 'atlaskitSpinnerEnterOpacity',
-  enter_stroke_small: 'atlaskitSpinnerEnterStrokeSmall',
-  enter_stroke_medium: 'atlaskitSpinnerEnterStrokeMedium',
-  enter_stroke_large: 'atlaskitSpinnerEnterStrokeLarge',
-  enter_stroke_xlarge: 'atlaskitSpinnerEnterStrokeXLarge',
-};
-
 /* Define keyframes statically to prevent a perfomance issue in styled components v1 where the keyframes function
  * does not cache previous values resulting in each spinner injecting the same keyframe definition
  * in the DOM.
- * This can be reverted to use the keyframes fn when we upgrade to styled components v2
+ * This can be reverted to dynamic keyframes when we upgrade to styled components v2
  */
-// eslint-disable-next-line no-unused-expressions
-injectGlobal`
-  @keyframes ${keyframeNames.noop} {
+export const keyframeNames = {
+  noop: keyframes`
     from { opacity: 0; }
     to { opacity: 0; }
-  }
-
-  @keyframes ${keyframeNames.rotate} {
-    to { transform: rotate(360deg);
-  }
-
-  @keyframes {$keyframeNames.enter_opacity} {
+  `,
+  rotate: keyframes`
+    to { transform: rotate(360deg); }
+  `,
+  enterOpacity: keyframes`
     from { opacity: 0; }
     to { opacity: 1; }
-  }
-
-  @keyframes ${keyframeNames.enter_stroke_small} {
+  `,
+  smallEnterStroke: keyframes`
     from { stroke-dashoffset: ${getStrokeCircumference(SIZES_MAP.small)}px; }
     to { stroke-dashoffset: ${getStrokeCircumference(SIZES_MAP.small) *
       0.8}px; }
-  }
-
-  @keyframes ${keyframeNames.enter_stroke_medium} {
+  `,
+  mediumEnterStroke: keyframes`
     from { stroke-dashoffset: ${getStrokeCircumference(SIZES_MAP.medium)}px; }
     to { stroke-dashoffset: ${getStrokeCircumference(SIZES_MAP.medium) *
       0.8}px; }
-  }
-
-  @keyframes ${keyframeNames.enter_stroke_large} {
+  `,
+  largeEnterStroke: keyframes`
     from { stroke-dashoffset: ${getStrokeCircumference(SIZES_MAP.large)}px; }
     to { stroke-dashoffset: ${getStrokeCircumference(SIZES_MAP.large) *
       0.8}px; }
-  }
-
-  @keyframes ${keyframeNames.enter_stroke_xlarge} {
+  `,
+  xlargeEnterStroke: keyframes`
     from { stroke-dashoffset: ${getStrokeCircumference(SIZES_MAP.xlarge)}px; }
     to { stroke-dashoffset: ${getStrokeCircumference(SIZES_MAP.xlarge) *
       0.8}px; }
-  }
-`;
+  `,
+};
 
 /* If a standard size is used, we can use one of our statically defined keyframes, otherwise
  * we're forced to dynamically create the keyframe and incur a performance cost.
@@ -83,7 +66,7 @@ const getEnterStrokeKeyframe = (size: number) => {
     sizeName => size === SIZES_MAP[sizeName],
   );
   if (standardSizeName) {
-    return keyframeNames[`enter_stroke_${standardSizeName}`];
+    return keyframeNames[`${standardSizeName}EnterStroke`];
   }
 
   const circumference = getStrokeCircumference(size);
@@ -116,7 +99,7 @@ export const svgStyles = css`
       props.size,
     )}`;
 
-    const spinUpOpacity = `0.2s ease-in-out ${keyframes.enter_opacity}`;
+    const spinUpOpacity = `0.2s ease-in-out ${keyframes.enterOpacity}`;
 
     const activeAnimations = [idleRotation];
     if (props.phase === 'ENTER') {
