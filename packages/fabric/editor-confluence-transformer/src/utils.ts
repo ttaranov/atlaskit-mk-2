@@ -329,3 +329,29 @@ export const getExtensionMacroParams = (params: object) => {
   });
   return macroParams;
 };
+
+export const mapPanelTypeToPm = (panelType: string) => {
+  switch (panelType) {
+    case 'warning':
+      return 'error';
+    case 'note':
+      return 'warning';
+    case 'tip':
+      return 'success';
+  }
+  return panelType;
+};
+
+export const mapPanelTypeToCxhtml = (panelType: string) => {
+  switch (panelType) {
+    case 'error':
+      return 'warning';
+    case 'warning':
+      return 'note';
+    case 'success':
+      return 'tip';
+    case 'note':
+      return 'panel';
+  }
+  return panelType;
+};
