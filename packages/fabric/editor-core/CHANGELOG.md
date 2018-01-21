@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.4.0
+- [minor] added new panelType [9f693b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f693b9)
+
 ## 61.3.12
 - [patch] Fix list shortcuts [c25601a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c25601a)
 

@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.7.0
+- [minor] added new panelType [9f693b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f693b9)
+
 ## 2.6.1
 
 ## 2.6.0
