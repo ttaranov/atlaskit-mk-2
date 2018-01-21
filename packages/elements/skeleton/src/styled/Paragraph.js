@@ -1,15 +1,12 @@
 // @flow
 
-import React from 'react';
 import styled from 'styled-components';
-import type { Paragraph as ParagraphProps } from '../types';
+import { getColor } from './utils';
 
-const Paragraph = styled.div`
+export default styled.div`
   height: 18px;
-  background-color: ${props => props.color || 'currentColor'};
+  background-color: ${props => getColor(props.color)};
   border-radius: 4px;
   opacity: 0.15;
   margin: 8px;
 `;
-
-export default (props: ParagraphProps) => <Paragraph {...props} />;
