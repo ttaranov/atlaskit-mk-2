@@ -1,43 +1,55 @@
 'use strict';
 //increase test timeout
-//fix flow on this
+//@flow
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 90e3;
 const webdriverio = require('webdriverio');
-let clients = [];
+let clients /*: Array<?Object>*/ = [];
 
 process.env.TEST_ENV === 'browserstack'
   ? (clients = setBrowserStackClients())
   : (clients = setLocalClients());
 
-function BrowserTestCase(...args) {
+function BrowserTestCase(...args /*:Array<any> */) {
   const testcase = args.shift();
-  const tester =
-    typeof args[args.length - 1] === 'function' ? args.pop() : null;
+  const tester = args.pop();
   const skipForBrowser = args.length > 0 ? args.shift() : null;
 
   describe(testcase, () => {
     beforeAll(async function() {
-      for (let i in clients) {
-        if (clients[i].isReady) continue;
-        await clients[i].client.init();
-        clients[i].isReady = true;
+      for (let client of clients) {
+        if (client) {
+          if (client.isReady) continue;
+          await client.driver.init();
+          client.isReady = true;
+        }
       }
     });
 
-    for (let i in clients) {
-      testRun(testcase, tester, clients[i].client, skipForBrowser);
+    for (let client of clients) {
+      if (client) testRun(testcase, tester, client.driver, skipForBrowser);
     }
 
     afterAll(async function() {
-      for (let i in clients) {
-        await clients[i].client.end();
-        clients[i].isReady = false;
+      for (let client of clients) {
+        if (client) {
+          await client.driver.end();
+          client.isReady = false;
+        }
       }
     });
   });
 }
 
-function testRun(testCase, tester, client, skipBrowser) {
+/*::
+type Tester<Object> = (opts: Object, done?: () => void) => ?Promise<mixed>;
+*/
+
+function testRun(
+  testCase /*: string*/,
+  tester /*: Tester<Object>*/,
+  client /*: Object*/,
+  skipBrowser /*: ?{skip:Array<string>}*/,
+) {
   let testFn;
   let skipForBrowser;
   const browserName = client.desiredCapabilities.browserName;
@@ -62,7 +74,7 @@ function testRun(testCase, tester, client, skipBrowser) {
     testFn = test;
   }
   let callbk;
-  if (tester && tester.length > 1) {
+  if (client && tester && tester.length > 1) {
     callbk = done => tester(client, done);
   } else {
     callbk = () => tester(client);
@@ -85,13 +97,13 @@ function setLocalClients() {
       desiredCapabilities: {
         browserName: launchers[key].browserName,
         //Disable headless here to run on real browsers
-        chromeOptions: {
-          args: ['--headless', '--disable-gpu'],
-        },
+        // chromeOptions: {
+        //   args: ['--headless', '--disable-gpu'],
+        // },
       },
     };
-    const client = webdriverio.remote(option);
-    clis.push({ client: client, isReady: false });
+    const driver = webdriverio.remote(option);
+    clis.push({ driver: driver, isReady: false });
   });
   return clis;
 }
@@ -148,8 +160,8 @@ function setBrowserStackClients() {
       user: process.env.BROWSERSTACK_USER,
       key: process.env.BROWSERSTACK_KEY,
     };
-    let client = webdriverio.remote(option);
-    clis.push({ client: client, isReady: false });
+    let driver = webdriverio.remote(option);
+    clis.push({ driver: driver, isReady: false });
   });
   return clis;
 }
