@@ -5,10 +5,9 @@
  */
 // @flow
 
-import Paragraph from '../Paragraph';
-
+import Avatar from '../Avatar';
 import { assertCorrectColors } from './util';
 
 test('correctly sets color from prop', () => {
-  assertCorrectColors(Paragraph);
+  assertCorrectColors(Avatar);
 });

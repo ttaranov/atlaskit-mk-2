@@ -5,20 +5,9 @@
  */
 // @flow
 
-import { shallow } from 'enzyme';
-import React from 'react';
-
 import Icon from '../Icon';
+import { assertCorrectColors } from './util';
 
-test('sets background colour to currentColor by default', () => {
-  // $FlowFixMe - invalid intersection error.
-  expect(shallow(<Icon />)).toHaveStyleRule('background-color', 'currentColor');
-});
-
-test('sets background colour from prop', () => {
-  // $FlowFixMe - invalid intersection error.
-  expect(shallow(<Icon color={'#FFFFFF'} />)).toHaveStyleRule(
-    'background-color',
-    '#FFFFFF',
-  );
+test('correctly sets color from prop', () => {
+  assertCorrectColors(Icon);
 });

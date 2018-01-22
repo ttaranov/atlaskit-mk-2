@@ -2,19 +2,19 @@
 
 import React, { Component } from 'react';
 
-import Icon from '../styled/Icon';
+import StyledIcon from '../styled/Icon';
 
 type Props = {
   color?: string,
   size: 'small' | 'medium' | 'large' | 'xlarge',
 };
 
-export default class extends Component<Props> {
+export class Icon extends Component<Props> {
   static defaultProps = {
     size: 'medium',
   };
 
   render() {
-    return <Icon {...this.props} />;
+    return <StyledIcon {...this.props} />;
   }
 }

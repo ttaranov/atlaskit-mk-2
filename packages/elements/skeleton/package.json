@@ -18,14 +18,14 @@
   },
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
-    "styled-components": "^1.4.6"
+    "styled-components": "^1.4.6",
+    "@atlaskit/theme": "^2.3.0"
   },
   "peerDependencies": {
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.4.0",
-    "@atlaskit/theme": "^2.3.0",
     "enzyme": "^3.3.0"
   }
 }
