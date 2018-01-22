@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { CONTAINER_SIZE, ImageNavigator } from '../src/image-navigator';
 import { ImageUploader, DragZone } from '../src/image-navigator/styled';
 import { ImageCropper } from '../src/image-cropper';
@@ -11,11 +11,15 @@ describe('Image navigator', () => {
   let onImageChanged;
   let onPositionChanged;
   let onSizeChanged;
+  let onRemoveImage;
+
   beforeEach(() => {
     onImageChanged = jest.fn();
     onPositionChanged = jest.fn();
     onSizeChanged = jest.fn();
+    onRemoveImage = jest.fn();
   });
+
   describe('with an imageSource', () => {
     let imageCropper;
     let slider;
@@ -26,6 +30,7 @@ describe('Image navigator', () => {
           onImageChanged={onImageChanged}
           onPositionChanged={onPositionChanged}
           onSizeChanged={onSizeChanged}
+          onRemoveImage={onRemoveImage}
         />,
       );
       imageCropper = () => component.find(ImageCropper);
@@ -216,6 +221,7 @@ describe('Image navigator', () => {
       });
     });
   });
+
   describe('with no imageSource', () => {
     beforeEach(() => {
       component = mount(
@@ -223,12 +229,15 @@ describe('Image navigator', () => {
           onImageChanged={onImageChanged}
           onPositionChanged={onPositionChanged}
           onSizeChanged={onSizeChanged}
+          onRemoveImage={onRemoveImage}
         />,
       );
     });
+
     it('should render ImageUploader to allow users to pick an image', () => {
       expect(component.find(ImageUploader)).toHaveLength(1);
     });
+
     describe('when a file is dropped', () => {
       const mockDropEvent = file => ({
         stopPropagation: jest.fn(),
@@ -237,6 +246,7 @@ describe('Image navigator', () => {
           files: [file],
         },
       });
+
       it('should set imageFile state with the image', done => {
         const droppedImage = new File(['dsjklDFljk'], 'nice-photo.png', {
           type: 'image/png',
@@ -252,6 +262,7 @@ describe('Image navigator', () => {
         // a better test would be something like
         // expect(onImageChanged).toHaveBeenCalledWith(droppedImage, { x: 0, y: 0, size: width });
       });
+
       it('should not call onImageDropped when file is not an image', () => {
         const droppedImage = new File(['not an image'], 'text.txt', {
           type: 'text/plain',
@@ -262,6 +273,26 @@ describe('Image navigator', () => {
 
         expect(onImageChanged).not.toHaveBeenCalled();
       });
+    });
+  });
+
+  describe('when an image is removed', () => {
+    it('should clear state', () => {
+      component = shallow(
+        <ImageNavigator
+          imageSource={smallImage}
+          onImageChanged={onImageChanged}
+          onPositionChanged={onPositionChanged}
+          onSizeChanged={onSizeChanged}
+          onRemoveImage={onRemoveImage}
+        />,
+      );
+      const { onRemoveImage: onRemoveImageProp } = component
+        .find(ImageCropper)
+        .props();
+      onRemoveImageProp();
+      expect(component.state().fileImageSource).toBeUndefined();
+      expect(component.state().imageFile).toBeUndefined();
     });
   });
 });

@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 import { Avatar } from '../src/avatar-list';
-import { ImageNavigator } from '../src/image-navigator';
+import { ImageNavigator, CONTAINER_SIZE } from '../src/image-navigator';
 import { PredefinedAvatarList } from '../src/predefined-avatar-list';
 import {
   AvatarPickerDialog,
@@ -11,11 +11,11 @@ import {
   DEFAULT_VISIBLE_PREDEFINED_AVATARS,
 } from '../src/avatar-picker-dialog';
 import { dataURItoFile, fileToDataURI } from '../src/util';
-import { tallImage } from '@atlaskit/media-test-helpers';
+import { smallImage } from '@atlaskit/media-test-helpers';
 
 describe('Avatar Picker Dialog', () => {
-  const renderWithProps = (props: Partial<AvatarPickerDialogProps>) =>
-    shallow(
+  const renderWithProps = (props: Partial<AvatarPickerDialogProps>) => {
+    const component = shallow(
       <AvatarPickerDialog
         avatars={[]}
         onAvatarPicked={jest.fn()}
@@ -25,7 +25,23 @@ describe('Avatar Picker Dialog', () => {
       />,
     );
 
-  const newImage = dataURItoFile(tallImage);
+    // when you pass an image it normally renders the image (which triggers load event and selectedImage back-propagation)...
+    // since we are rendering in js-dom, we have to force the load mechanism
+
+    if (props.imageSource) {
+      updateComponentWithNewImage(component);
+    }
+    return component;
+  };
+
+  const newImage = dataURItoFile(smallImage);
+
+  const updateComponentWithNewImage = component => {
+    // get the handler which the ImageNavigator triggers when the image loads, fire it
+    const { onImageChanged } = component.find(ImageNavigator).props();
+    onImageChanged(newImage, { x: 0, y: 0, size: CONTAINER_SIZE });
+    component.update();
+  };
 
   const renderSaveButton = (props: Partial<AvatarPickerDialogProps> = {}) => {
     const component = renderWithProps(props);
@@ -39,11 +55,14 @@ describe('Avatar Picker Dialog', () => {
   it('when save button is clicked call onSaveImage should be called', () => {
     const onImagePicked = jest.fn();
 
-    const component = renderWithProps({ onImagePicked });
-    const { onImageChanged } = component.find(ImageNavigator).props();
-    onImageChanged(newImage, { x: 0, y: 0, size: 30 });
+    const component = renderWithProps({
+      onImagePicked,
+      imageSource: smallImage,
+    });
 
-    const { footer } = component.find(ModalDialog).props() as { footer: any };
+    const { footer } = component.find(ModalDialog).props() as {
+      footer: any;
+    };
 
     // click on the save button
     shallow(footer())
@@ -51,7 +70,11 @@ describe('Avatar Picker Dialog', () => {
       .find({ appearance: 'primary' })
       .simulate('click');
 
-    expect(onImagePicked).toBeCalledWith(newImage, { x: 0, y: 0, size: 30 });
+    expect(onImagePicked).toBeCalledWith(newImage, {
+      x: 0,
+      y: 0,
+      size: CONTAINER_SIZE,
+    });
   });
 
   it('when save button is clicked call onSaveAvatar should be called', () => {
@@ -74,16 +97,16 @@ describe('Avatar Picker Dialog', () => {
   });
 
   it('should not render avatar list when imageSource is passed', () => {
-    const imageSource = 'some-src';
-    const component = renderWithProps({ imageSource });
-
+    const component = renderWithProps({
+      imageSource: smallImage,
+    });
     expect(component.find(PredefinedAvatarList)).toHaveLength(0);
   });
 
   it('should not render avatar list when there is an image selected', () => {
     const component = renderWithProps({});
-
-    component.setState({ selectedImage: newImage });
+    expect(component.find(PredefinedAvatarList)).toHaveLength(1);
+    updateComponentWithNewImage(component);
     expect(component.find(PredefinedAvatarList)).toHaveLength(0);
   });
 
@@ -93,8 +116,9 @@ describe('Avatar Picker Dialog', () => {
   });
 
   it('should allow save with selected image passed as default', () => {
-    const imageSource = 'some-src';
-    const saveButton = renderSaveButton({ imageSource });
+    const saveButton = renderSaveButton({
+      imageSource: smallImage,
+    });
     expect(saveButton.props().isDisabled).toBeFalsy();
   });
 
@@ -182,18 +206,17 @@ describe('Avatar Picker Dialog', () => {
     ).toBe('test-primary-text');
   });
 
-  it('should return same File when image source is provided by default', async () => {
+  it('should return same File when image source is provided by default', () => {
     const onImagePicked = jest.fn();
 
     const component = renderWithProps({
-      imageSource: tallImage,
+      imageSource: smallImage,
       onImagePicked,
     });
 
-    const { onImageChanged } = component.find(ImageNavigator).props();
-    onImageChanged(newImage, { x: 0, y: 0, size: 30 });
-
-    const { footer } = component.find(ModalDialog).props() as { footer: any };
+    const { footer } = component.find(ModalDialog).props() as {
+      footer: any;
+    };
 
     shallow(footer())
       .find(Button)
@@ -204,7 +227,26 @@ describe('Avatar Picker Dialog', () => {
     expect(onImagePicked).toBeCalled();
     expect(savedImage).toBeInstanceOf(File);
 
-    const dataUri = await fileToDataURI(savedImage);
-    expect(dataUri).toBe(tallImage);
+    return fileToDataURI(savedImage).then(dataURI => {
+      expect(dataURI).toBe(smallImage);
+    });
+  });
+
+  it('should clear selected image when cross clicked', () => {
+    const component = renderWithProps({
+      imageSource: smallImage,
+    });
+    const imageNavigator = component.find(ImageNavigator);
+    const { onRemoveImage } = imageNavigator.props() as {
+      onRemoveImage: any;
+    };
+
+    expect(component.state().selectedImage).toBeInstanceOf(File);
+    expect(component.state().selectedImageSource).toBe(smallImage);
+
+    onRemoveImage();
+
+    expect(component.state().selectedImage).toBeUndefined();
+    expect(component.state().selectedImageSource).toBeUndefined();
   });
 });

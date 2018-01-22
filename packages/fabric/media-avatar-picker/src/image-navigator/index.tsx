@@ -42,6 +42,7 @@ export interface Props {
   onLoad?: OnLoadHandler;
   onPositionChanged: (x: number, y: number) => void;
   onSizeChanged: (size: number) => void;
+  onRemoveImage: () => void;
 }
 
 export interface Position {
@@ -66,14 +67,18 @@ export interface State {
 export class ImageNavigator extends Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = this.defaultState;
+  }
+
+  get defaultState() {
+    return {
       imageWidth: undefined,
       imagePos: { x: 0, y: 0 },
       minScale: 1,
       scale: 1,
       isDragging: false,
       imageDragStartPos: { x: 0, y: 0 },
-      fileImageSource: '',
+      fileImageSource: undefined,
       isDroppingFile: false,
     };
   }
@@ -196,7 +201,7 @@ export class ImageNavigator extends Component<Props, State> {
     const scale = this.calculateMinScale(width, height);
     // imageFile will not exist if imageSource passed through props.
     // therefore we have to create a File, as one needs to be raised by dialog parent component when Save clicked.
-    const file: File = imageFile || dataURItoFile(this.dataURI);
+    const file = imageFile || (this.dataURI && dataURItoFile(this.dataURI));
     if (file) {
       this.props.onImageChanged(file, {
         ...imagePos,
@@ -304,8 +309,15 @@ export class ImageNavigator extends Component<Props, State> {
     );
   }
 
+  onRemoveImage = () => {
+    this.setState(this.defaultState);
+    this.props.onRemoveImage();
+  };
+
   renderImageCropper(dataURI: string) {
     const { imageWidth, imagePos, scale, isDragging } = this.state;
+    const { onLoad } = this.props;
+    const { onDragStarted, onImageSize, onRemoveImage } = this;
 
     const minScale = this.state.minScale as number;
 
@@ -319,9 +331,10 @@ export class ImageNavigator extends Component<Props, State> {
           isCircularMask={false}
           top={imagePos.y}
           left={imagePos.x}
-          onDragStarted={this.onDragStarted}
-          onImageSize={this.onImageSize}
-          onLoad={this.props.onLoad}
+          onDragStarted={onDragStarted}
+          onImageSize={onImageSize}
+          onLoad={onLoad}
+          onRemoveImage={onRemoveImage}
         />
         <SliderContainer>
           <ScaleSmallIcon label="scale-small-icon" />
