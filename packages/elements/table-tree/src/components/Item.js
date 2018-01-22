@@ -1,10 +1,14 @@
 // @flow
 import React, { PureComponent } from 'react';
 import Items from './Items';
-import { type ItemsProvider, type RenderFunction } from './../types';
+import {
+  type ItemsProvider,
+  type RenderFunction,
+  type RowData,
+} from './../types';
 
 type Props = {
-  data: Object,
+  data: RowData,
   getChildrenData: ItemsProvider,
   depth?: number,
   render: RenderFunction,
@@ -41,6 +45,7 @@ export default class Item extends PureComponent<Props, State> {
       onExpandToggle: this.handleExpandToggleClick,
       depth,
       isExpanded,
+      data,
     });
     return (
       <div>
