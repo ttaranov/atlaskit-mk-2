@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 27.0.5
+- [patch] Migrate Navigation from Ak repo to ak mk 2 repo, Fixed flow typing inconsistencies in ak mk 2 [bdeef5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdeef5b)
+
 ## 27.0.4 (2017-12-13)
 
 * bug fix; use vh instead of percent ([e138d4b](https://bitbucket.org/atlassian/atlaskit/commits/e138d4b))

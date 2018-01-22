@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 61.4.1
+- [patch] fixed typescript validation error in the EmojiTypeAhread test [c56d564](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c56d564)
+
+- [patch] added analytics for EmojiTypeAhead component [021d6f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/021d6f8)
+
 ## 61.4.0
 - [minor] added new panelType [9f693b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f693b9)
 
