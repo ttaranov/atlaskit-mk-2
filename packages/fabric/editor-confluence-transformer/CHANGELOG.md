@@ -1,5 +1,7 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.6.1
+
 ## 2.6.0
 - [minor] added date plugin [f7b8a33](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7b8a33)
 

@@ -271,4 +271,40 @@ describe('Comment', () => {
       );
     });
   });
+
+  describe('username link', () => {
+    let user;
+    let usernameLink;
+    let onUserClick;
+
+    beforeEach(() => {
+      user = MOCK_USERS[0];
+
+      onUserClick = jest.fn();
+
+      comment = mount(
+        <Comment
+          conversationId={mockComment.conversationId}
+          comment={mockComment}
+          user={user}
+          onUserClick={onUserClick}
+        />,
+      );
+
+      usernameLink = comment
+        .first()
+        .find(CommentAuthor)
+        .first();
+    });
+
+    afterEach(() => {
+      comment.unmount();
+    });
+
+    it('should invoke the onUserClick with the clicked user if specified', () => {
+      expect(onUserClick.mock.calls.length).toBe(0);
+      usernameLink.simulate('click');
+      expect(onUserClick).toHaveBeenCalledWith(user);
+    });
+  });
 });
