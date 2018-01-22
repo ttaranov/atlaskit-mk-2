@@ -24,7 +24,7 @@ export interface Definition {
 export const bodiedExtension: NodeSpec = {
   inline: false,
   group: 'block',
-  content: 'block*',
+  content: 'block+',
   selectable: true,
   attrs: {
     extensionType: { default: '' },
