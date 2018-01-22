@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 61.4.2
+- [patch] fixed typescript error [19630c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/19630c5)
+- [patch] added mention picker space analytics [05fa937](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05fa937)
+
 ## 61.4.1
 - [patch] fixed typescript validation error in the EmojiTypeAhread test [c56d564](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c56d564)
 
