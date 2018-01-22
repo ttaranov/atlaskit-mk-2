@@ -17,7 +17,6 @@ export interface MediaFileAttributes {
   readonly poster?: string;
   readonly thumbnail?: string;
   readonly downlodable?: boolean;
-  readonly processed?: boolean;
 }
 
 export interface MediaFile {

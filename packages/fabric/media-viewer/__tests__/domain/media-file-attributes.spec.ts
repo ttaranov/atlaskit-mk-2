@@ -139,14 +139,6 @@ describe('MediaFileAttributes', () => {
       expect(attributes.id).toBe('basic-file-no-occurrenceKey');
     });
 
-    it('should mark processed files as processed', () => {
-      const attributes = MediaFileAttributesFactory.fromFileItem(
-        Mocks.basicFileWithoutOcurrenceKey,
-        serviceHost,
-      );
-      expect(attributes.processed).toBe(true);
-    });
-
     it('should mark unprocessed files as unsupported so they can be processed propertly by MediaViewer classic', () => {
       const attributes = MediaFileAttributesFactory.fromFileItem(
         Mocks.unprocessedFile,
