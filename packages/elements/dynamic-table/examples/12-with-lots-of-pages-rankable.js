@@ -10,33 +10,50 @@ const Wrapper = styled.div`
 `;
 
 type State = {
-  fixedSize: boolean,
+  isFixedSize: boolean,
+  isLoading: boolean,
 };
 export default class extends Component<{}, State> {
   state = {
-    fixedSize: false,
+    isFixedSize: false,
+    isLoading: false,
   };
 
   onToggleFixedChange = () => {
     this.setState({
-      fixedSize: !this.state.fixedSize,
+      isFixedSize: !this.state.isFixedSize,
+    });
+  };
+
+  onLoadingChange = () => {
+    this.setState({
+      isLoading: !this.state.isLoading,
     });
   };
 
   render() {
     return (
       <Wrapper>
-        <Toggle
-          onChange={this.onToggleFixedChange}
-          isChecked={this.state.fixedSize}
-        />Fixed size
+        <div>
+          <Toggle
+            onChange={this.onToggleFixedChange}
+            isChecked={this.state.isFixedSize}
+          />Fixed size
+        </div>
+        <div>
+          <Toggle
+            onChange={this.onLoadingChange}
+            isChecked={this.state.isLoading}
+          />Loading
+        </div>
         <DynamicTable
           caption={caption}
-          head={createHead(this.state.fixedSize)}
+          head={createHead(this.state.isFixedSize)}
           rows={rows}
           rowsPerPage={5}
           defaultPage={1}
           isRankable
+          isLoading={this.state.isLoading}
           onRankStart={params => console.log('onRankStart', params)}
           onRankEnd={params => console.log('onRankEnd', params)}
           onSort={() => console.log('onSort')}
