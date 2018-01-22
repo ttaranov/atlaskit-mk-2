@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { image } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import {
