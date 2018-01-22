@@ -6,11 +6,12 @@
       "type": "panel",
       "content": [
         {
-          "type": "paragraph",
-          "content": [{
-            "type": "text",
-            "text": "foo"
-          }]
+          "type": "codeBlock",
+          "content": [],
+          "attrs": {
+            "language": "javascript"
+          },
+          "marks": []
         }
       ],
       "attrs": {

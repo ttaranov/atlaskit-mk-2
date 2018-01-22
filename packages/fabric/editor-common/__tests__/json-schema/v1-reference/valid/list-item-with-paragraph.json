@@ -3,10 +3,9 @@
   "type": "doc",
   "content": [
     {
-      "type": "blockquote",
-      "content": [{
-        "type": "bulletList",
-        "content": [{
+      "type": "orderedList",
+      "content": [
+        {
           "type": "listItem",
           "content": [
             {
@@ -16,8 +15,8 @@
                 "text": "foo"
               }]
             }
-          ]}
-        ]}
+          ]
+        }
       ]
     }
   ]
