@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 5.9.0
+- [minor] move table nodes from prosemirror-tables to editor-common [630c9ae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/630c9ae)
+- [patch] fixed extension node content field [41c7958](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41c7958)
+
 ## 5.8.1
 - [patch] Fixing nesting of blocks in JSON schema. [ed5c5ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed5c5ca)
 
