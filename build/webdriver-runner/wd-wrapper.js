@@ -78,11 +78,15 @@ export default class Page {
     return this.browser.setValue(selector, values);
   }
   // State
-  // hasFocus
-  // isEnabled
-  // isExisting
-  // isVisible
-
+  hasFocus(selector) {
+    return this.browser.hasFocus(selector);
+  }
+  isEnabled(selector) {
+    return this.browser.isEnabled(selector);
+  }
+  isVisible(selector) {
+    return this.browser.isVisible(selector);
+  }
   // Wait
   waitForSelector(selector) {
     return this.browser.waitForSelector(selector);
