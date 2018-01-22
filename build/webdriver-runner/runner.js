@@ -1,7 +1,7 @@
 'use strict';
 //increase test timeout
 //@flow
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 60e3;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 90e3;
 const webdriverio = require('webdriverio');
 let clients /*: Array<?Object>*/ = [];
 
