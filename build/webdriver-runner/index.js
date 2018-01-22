@@ -25,11 +25,6 @@ function runTests() {
 
 async function main() {
   await webpack.startDevServer();
-  console.log(
-    'User / Key',
-    process.env.BROWSERSTACK_USER,
-    process.env.BROWSERSTACK_KEY,
-  );
   process.env.TEST_ENV === 'browserstack'
     ? await browserstack.startBrowserStack()
     : await selenium.startSelenium();
@@ -42,6 +37,7 @@ async function main() {
   process.env.TEST_ENV === 'browserstack'
     ? browserstack.stopBrowserStack()
     : selenium.stopSelenium();
+  process.exit(code);
 }
 
 main().catch(err => {
