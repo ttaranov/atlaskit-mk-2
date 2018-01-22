@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, type Element } from 'react';
+import React, { Component, type Node } from 'react';
 import rafSchedule from 'raf-schd';
 
 // Need to make outer div full height in case consumer wants to align
@@ -33,7 +33,7 @@ type SizeMetrics = {
 
 type Props = {
   /** Function that accepts an object parameter containing 'height' and 'width' properties */
-  children: SizeMetrics => Element<any>,
+  children: SizeMetrics => Node,
   /** Optional styles object to be applied to the containing element */
   containerStyle?: Object,
 };

@@ -15,7 +15,7 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
-    "@atlaskit/dropdown-menu": "^3.5.0",
+    "@atlaskit/dropdown-menu": "^3.11.4",
     "@atlaskit/item": "^4.2.3",
     "@atlaskit/polyfills": "^1.4.0",
     "@atlaskit/theme": "^2.3.0",
