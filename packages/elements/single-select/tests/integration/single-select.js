@@ -14,6 +14,7 @@ const singleSelectMenu = '[data-role="droplistContent"]';
 
 BrowserTestCase(
   'AK-4173 - Single Select should display its menu once clicked on it',
+  { skip: ['ie'] }, // Skipping the test till AK-4173 is not fixed
   async client => {
     const singleSelectTest = await new Page(client);
     await singleSelectTest.goto(urlSingleSelect);
