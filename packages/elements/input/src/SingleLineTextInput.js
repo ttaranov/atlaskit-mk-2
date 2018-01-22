@@ -1,13 +1,13 @@
 // @flow
 import React, { Component } from 'react';
 import keyCode from 'keycode';
-import { akFontSizeDefault } from '@atlaskit/util-shared-styles';
+import { fontSize } from '@atlaskit/theme';
 import styled from 'styled-components';
 
 const common = `
   appearance: none;
   color: inherit;
-  font-size: ${akFontSizeDefault};
+  font-size: ${fontSize()};
   font-family: inherit;
   letter-spacing: inherit;
 `;
