@@ -133,4 +133,26 @@ describe('extension', () => {
       });
     });
   });
+
+  describe('when pasted bodiedExtension inside another bodiedExtension with empty content', () => {
+    it('should not replace the original node', () => {
+      const { editorView } = editor(
+        doc(bodiedExtension(extensionAttrs, paragraph('{<>}'))),
+      );
+      const node = editorView.state.schema.nodes.bodiedExtension.create(
+        extensionAttrs,
+        editorView.state.schema.nodes.paragraph.createChecked(),
+      );
+      editorView.dispatch(editorView.state.tr.replaceSelectionWith(node));
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          bodiedExtension(
+            extensionAttrs,
+            bodiedExtension(extensionAttrs, paragraph('')),
+          ),
+        ),
+      );
+    });
+  });
 });

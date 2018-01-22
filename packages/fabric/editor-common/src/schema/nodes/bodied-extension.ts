@@ -25,6 +25,7 @@ export const bodiedExtension: NodeSpec = {
   inline: false,
   group: 'block',
   content: 'block+',
+  defining: true,
   selectable: true,
   attrs: {
     extensionType: { default: '' },
