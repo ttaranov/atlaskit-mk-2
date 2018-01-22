@@ -19,7 +19,7 @@ type Props = {
 };
 
 export default class InputField extends Component<Props> {
-  input: ElementRef<typeof Input>;
+  input: null | ElementRef<typeof Input>;
 
   static defaultProps = {
     autoFocus: false,

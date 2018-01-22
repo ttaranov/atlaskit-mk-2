@@ -36,12 +36,12 @@ const EditView = styled.input`
 `;
 
 type Props = {
-  value?: string,
+  value?: string | number,
   style?: Object,
   isInitiallySelected?: boolean,
   isEditing: boolean,
-  onConfirm?: () => mixed,
-  onKeyDown?: () => mixed,
+  onConfirm?: (e: KeyboardEvent) => mixed,
+  onKeyDown?: (e: KeyboardEvent) => mixed,
 };
 
 export default class SingleLineTextInput extends Component<Props, {}> {
@@ -51,23 +51,24 @@ export default class SingleLineTextInput extends Component<Props, {}> {
     onConfirm: () => {},
     onKeyDown: () => {},
   };
+  inputRef: ?HTMLInputElement;
 
   componentDidMount() {
     this.selectInputIfNecessary();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (!prevProps.isEditing) {
       this.selectInputIfNecessary();
     }
   }
 
-  onKeyDown = event => {
+  onKeyDown = (event: KeyboardEvent) => {
     if (this.props.onKeyDown) {
       this.props.onKeyDown(event);
     }
     if (event.keyCode === keyCode('enter')) {
-      this.props.onConfirm(event);
+      if (this.props.onConfirm) this.props.onConfirm(event);
     }
   };
 
