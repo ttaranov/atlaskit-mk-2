@@ -1,7 +1,7 @@
 'use strict';
 //increase test timeout
 //@flow
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 90e3;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 60e3;
 const webdriverio = require('webdriverio');
 let clients /*: Array<?Object>*/ = [];
 
@@ -97,9 +97,9 @@ function setLocalClients() {
       desiredCapabilities: {
         browserName: launchers[key].browserName,
         //Disable headless here to run on real browsers
-        chromeOptions: {
-          args: ['--headless', '--disable-gpu'],
-        },
+        // chromeOptions: {
+        //   args: ['--headless', '--disable-gpu'],
+        // },
       },
     };
     const driver = webdriverio.remote(option);
@@ -113,7 +113,7 @@ function setBrowserStackClients() {
     chrome: {
       os: 'Windows',
       browserName: 'Chrome',
-      browser_version: '62.0',
+      browser_version: '63.0',
       resolution: '1440x900',
     },
     firefox: {
@@ -137,7 +137,7 @@ function setBrowserStackClients() {
     edge: {
       os: 'Windows',
       browserName: 'edge',
-      browser_version: '15',
+      browser_version: '16',
       resolution: '1440x900',
     },
   };
@@ -151,8 +151,9 @@ function setBrowserStackClients() {
         browserName: launchers[key].browserName,
         browser_version: launchers[key].browser_version,
         project: 'Atlaskit MK2',
-        build: process.env.BUILD_NUMBER || '1',
+        build: process.env.BITBUCKET_BRANCH || '1',
         'browserstack.local': true,
+        'browserstack.debug': true,
         project: 'Atlaskit MK-2 Webdriver Tests',
       },
       host: 'hub.browserstack.com',
