@@ -146,7 +146,7 @@ describe(name, () => {
           .find('td')
           .at(0)
           .text(),
-      ).toBe('Barak');
+      ).toBe('Barack');
       expect(
         bodyRows
           .at(0)
@@ -393,7 +393,7 @@ describe(name, () => {
           .find('td')
           .at(0)
           .text(),
-      ).toBe('Barak');
+      ).toBe('Barack');
       expect(
         bodyRows
           .at(0)
@@ -431,7 +431,7 @@ describe(name, () => {
           .find('td')
           .at(0)
           .text(),
-      ).toBe('Barak');
+      ).toBe('Barack');
       expect(
         bodyRows
           .at(0)
