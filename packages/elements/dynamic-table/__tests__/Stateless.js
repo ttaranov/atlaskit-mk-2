@@ -50,7 +50,7 @@ test('onSort should change to none if table is rankable and sort order was DESC'
   });
 });
 
-test('onSort should change to DESC if table is rankable and sort order was ACS', () => {
+test('onSort should change to DESC if table is rankable and sort order was ASC', () => {
   const props = createProps();
   const wrapper = shallow(
     <StatelessDynamicTable {...props} sortOrder="ASC" isRankable />,
@@ -65,7 +65,7 @@ test('onSort should change to DESC if table is rankable and sort order was ACS',
   });
 });
 
-test('onSort should change to ASC if table is rankable was sorted on different row', () => {
+test('onSort should change to ASC if table is rankable and was sorted using on different row', () => {
   const props = createProps();
   const wrapper = shallow(
     <StatelessDynamicTable

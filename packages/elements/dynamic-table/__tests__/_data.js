@@ -22,7 +22,7 @@ export const rows = [
     cells: [
       {
         key: 'baob',
-        content: 'Barak',
+        content: 'Barack',
       },
       {
         content: 'Obama',

@@ -2,17 +2,16 @@
 
 import { computeIndex, reorderRows } from '../src/internal/helpers';
 import { rowsWithKeys } from './_data';
+import { type RankEnd } from '../src/types';
 
 const getKey = rowIndex => rowsWithKeys[rowIndex].key;
 
-const rankEnd = (sourceIndex, afterIndex) => {
+const rankEnd = (sourceIndex, afterIndex): RankEnd => {
   return {
     sourceIndex,
     sourceKey: getKey(sourceIndex),
     destination: {
       index: afterIndex,
-      beforeKey: undefined,
-      afterKey: undefined,
     },
   };
 };
@@ -22,10 +21,10 @@ const getKeys = (...params) => Array.from(params).map(getKey);
 
 test('computeIndex - if rowsPerPage are not passed, index is on first page', () => {
   const index = 5;
-  expect(computeIndex(index, 1, undefined)).toBe(index);
+  expect(computeIndex(index, 1)).toBe(index);
 });
 
-test('computeIndex - if rowsPerPage are inifnite, index is on first page', () => {
+test('computeIndex - if rowsPerPage are infinite, index is on first page', () => {
   const index = 40;
   expect(computeIndex(index, 4, Infinity)).toBe(index);
 });

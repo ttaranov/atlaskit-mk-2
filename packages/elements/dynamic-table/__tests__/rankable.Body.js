@@ -150,7 +150,7 @@ const testOnRankEnd = (sourceIndex, destinationIndex, afterKey, beforeKey) => {
 
 const getKey = index => rowsWithKeys[index].key;
 
-test('onDragEnd - onRankEnd is called with proper destination if was dropped on fist position', () => {
+test('onDragEnd - onRankEnd is called with proper destination if was dropped on first position', () => {
   testOnRankEnd(2, 0, undefined, getKey(0));
 });
 
