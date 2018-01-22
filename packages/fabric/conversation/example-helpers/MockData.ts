@@ -11,6 +11,10 @@ export const MOCK_USERS: User[] = [
     name: 'Mock User 2',
     avatarUrl: 'https://api.adorable.io/avatars/80/mockuser.png',
   },
+  {
+    id: undefined,
+    name: 'Undefined',
+  },
 ];
 
 export const mockComment: Comment = {

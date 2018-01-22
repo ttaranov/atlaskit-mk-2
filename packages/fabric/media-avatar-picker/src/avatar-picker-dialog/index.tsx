@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-
 import ModalDialog, { ModalFooter } from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
-
 import { Avatar } from '../avatar-list';
 import { ImageNavigator, CropProperties } from '../image-navigator';
 import { PredefinedAvatarList } from '../predefined-avatar-list';
-
 import {
   AvatarPickerViewWrapper,
   ModalHeader,
@@ -15,6 +12,8 @@ import {
   ModalFooterButtons,
 } from './styled';
 import { PredefinedAvatarView } from '../predefined-avatar-view';
+import { dataURItoFile, fileToDataURI } from '../util';
+import { CONTAINER_SIZE } from '../image-navigator/index';
 
 export const DEFAULT_VISIBLE_PREDEFINED_AVATARS = 5;
 
@@ -38,6 +37,7 @@ export interface AvatarPickerDialogState {
   mode: Mode;
   selectedAvatar?: Avatar;
   selectedImage?: File;
+  selectedImageSource?: string;
   crop: CropProperties;
 }
 
@@ -54,13 +54,20 @@ export class AvatarPickerDialog extends PureComponent<
     crop: {
       x: 0,
       y: 0,
-      size: 0,
+      size: CONTAINER_SIZE,
     },
     selectedAvatar: this.props.defaultSelectedAvatar,
+    selectedImageSource: this.props.imageSource,
+    selectedImage: undefined,
   };
 
   setSelectedImageState = (selectedImage: File, crop: CropProperties) => {
+    // this is the main method to update the image state,
+    // it is bubbled from the ImageCropper component through ImageNavigator when the image is loaded.
     this.setState({ selectedImage, crop });
+    fileToDataURI(selectedImage).then(dataURI => {
+      this.setState({ selectedImageSource: dataURI });
+    });
   };
 
   setSelectedAvatarState = (avatar: Avatar) => {
@@ -86,11 +93,14 @@ export class AvatarPickerDialog extends PureComponent<
   };
 
   onSaveClick = () => {
-    const { onImagePicked, onAvatarPicked } = this.props;
+    const { imageSource, onImagePicked, onAvatarPicked } = this.props;
     const { selectedImage, crop, selectedAvatar } = this.state;
+    const image = selectedImage
+      ? selectedImage
+      : imageSource && dataURItoFile(imageSource);
 
-    if (selectedImage) {
-      onImagePicked(selectedImage, crop);
+    if (image) {
+      onImagePicked(image, crop);
     } else if (selectedAvatar) {
       onAvatarPicked(selectedAvatar);
     }
@@ -102,6 +112,15 @@ export class AvatarPickerDialog extends PureComponent<
 
   onGoBack = () => {
     this.setState({ mode: Mode.Cropping });
+  };
+
+  onRemoveImage = () => {
+    // TODO: clear scale from child components
+    this.setState({
+      selectedImageSource: undefined,
+      selectedImage: undefined,
+      mode: Mode.Cropping,
+    });
   };
 
   render() {
@@ -153,13 +172,6 @@ export class AvatarPickerDialog extends PureComponent<
     );
   }
 
-  get isAvatarListVisible() {
-    const { imageSource } = this.props;
-    const { selectedImage } = this.state;
-
-    return !imageSource && !selectedImage;
-  }
-
   getPredefinedAvatars() {
     const { avatars } = this.props;
     const { selectedAvatar } = this.state;
@@ -174,10 +186,10 @@ export class AvatarPickerDialog extends PureComponent<
   }
 
   renderPredefinedAvatarList() {
-    const { selectedAvatar } = this.state;
-    const { isAvatarListVisible } = this;
+    const { selectedAvatar, selectedImage, selectedImageSource } = this.state;
     const avatars = this.getPredefinedAvatars();
-    if (!isAvatarListVisible) {
+
+    if (selectedImage || selectedImageSource) {
       return null;
     }
 
@@ -192,18 +204,19 @@ export class AvatarPickerDialog extends PureComponent<
   }
 
   renderBody() {
-    const { imageSource, avatars } = this.props;
-    const { mode, selectedAvatar } = this.state;
+    const { avatars } = this.props;
+    const { mode, selectedImageSource, selectedAvatar } = this.state;
 
     switch (mode) {
       case Mode.Cropping:
         return (
           <CroppingWrapper>
             <ImageNavigator
-              imageSource={imageSource}
+              imageSource={selectedImageSource}
               onImageChanged={this.setSelectedImageState}
               onPositionChanged={this.setPositionState}
               onSizeChanged={this.setSizeState}
+              onRemoveImage={this.onRemoveImage}
             />
             {this.renderPredefinedAvatarList()}
           </CroppingWrapper>

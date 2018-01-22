@@ -1,5 +1,28 @@
 # @atlaskit/editor-core
 
+## 61.4.2
+- [patch] fixed typescript error [19630c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/19630c5)
+- [patch] added mention picker space analytics [05fa937](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05fa937)
+
+## 61.4.1
+- [patch] fixed typescript validation error in the EmojiTypeAhread test [c56d564](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c56d564)
+
+- [patch] added analytics for EmojiTypeAhead component [021d6f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/021d6f8)
+
+## 61.4.0
+- [minor] added new panelType [9f693b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f693b9)
+
+## 61.3.12
+- [patch] Fix list shortcuts [c25601a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c25601a)
+
+## 61.3.11
+- [patch] Fixes nodeviews becoming empty after some transactions [c8ba47c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8ba47c)
+
+## 61.3.10
+
+
+- [patch] Change line length in Full Screen editor from 600px to 680px [6dacbbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6dacbbe)
+
 ## 61.3.9
 
 ## 61.3.8
