@@ -24,6 +24,11 @@ export const TreeRowContainer = styled.div`
   display: flex;
 `;
 
+export const HeadersContainer = styled.div`
+  border-bottom: solid 2px #dfe1e6;
+  display: flex;
+`;
+
 const indentWidth = 20;
 
 const commonChevronContainer = css`
@@ -90,6 +95,7 @@ export const Header = styled.div`
   font-weight: bold;
   line-height: 1.67;
   letter-spacing: -0.1px;
+  color: ${colors.N300};
 `;
 
 export const TableTreeContainer = styled.div``;
