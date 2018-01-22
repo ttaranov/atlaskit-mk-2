@@ -26,5 +26,11 @@ export default () => (
     <Icon color={colors.B300} size="medium" />
     <Icon color={colors.R500} size="large" />
     <Icon color={colors.N200} size="xlarge" />
+
+    <p>With a strong appearance</p>
+    <Icon appearance="strong" color={colors.R500} size="small" />
+    <Icon appearance="strong" color={colors.Y300} size="medium" />
+    <Icon appearance="strong" color={colors.B500} size="large" />
+    <Icon appearance="strong" size="xlarge" />
   </div>
 );

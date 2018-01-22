@@ -48,5 +48,18 @@ export default () => (
     <Avatar color={colors.N200} size="xlarge" />
     <Gap />
     <Avatar color={colors.T500} size="xxlarge" />
+
+    <p>With a strong appearance</p>
+    <Avatar appearance="strong" color={colors.Y500} size="xsmall" />
+    <Gap />
+    <Avatar appearance="strong" color={colors.G500} size="small" />
+    <Gap />
+    <Avatar appearance="strong" color={colors.B300} size="medium" />
+    <Gap />
+    <Avatar appearance="strong" color={colors.R500} size="large" />
+    <Gap />
+    <Avatar appearance="strong" color={colors.N200} size="xlarge" />
+    <Gap />
+    <Avatar appearance="strong" color={colors.T500} size="xxlarge" />
   </div>
 );

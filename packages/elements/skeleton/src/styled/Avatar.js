@@ -3,7 +3,7 @@
 import styled from 'styled-components';
 
 import { gridSize } from '@atlaskit/theme';
-import { getColor } from './utils';
+import { getColor, getOpacity } from './utils';
 
 const gridSizeValue: number = gridSize();
 
@@ -32,5 +32,5 @@ export default styled.div`
   display: inline-block;
   border-radius: ${props => radiusSizes[props.size]}px;
   background-color: ${props => getColor(props.color)};
-  opacity: 0.15;
+  opacity: ${props => getOpacity(props.appearance)};
 `;

@@ -17,3 +17,16 @@ export const assertCorrectColors = (
     '#FFFFFF',
   );
 };
+
+export const assertCorrectOpacity = (
+  Component: ComponentType<{ color: string }>,
+) => {
+  // $FlowFixMe - invalid intersection error.
+  expect(shallow(<Component />)).toHaveStyleRule('opacity', '0.15');
+
+  // $FlowFixMe - invalid intersection error.
+  expect(shallow(<Component appearance="strong" />)).toHaveStyleRule(
+    'opacity',
+    '0.3',
+  );
+};
