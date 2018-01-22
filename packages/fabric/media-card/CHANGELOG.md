@@ -1,5 +1,8 @@
 # @atlaskit/media-image
 
+## 23.2.1
+- [patch] added an offset to load lazily loaded cards earlier [d1d891c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1d891c)
+
 ## 23.2.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
 

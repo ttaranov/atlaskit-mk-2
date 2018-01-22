@@ -8933,6 +8933,10 @@ raf-schd@^2.0.1, raf-schd@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/raf-schd/-/raf-schd-2.0.2.tgz#7cf60f260c2d97ba2ba2a448c73604c5bed8cf08"
 
+raf-schd@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/raf-schd/-/raf-schd-2.1.0.tgz#64d645723380ec25cc1714e909b953ef1cf254bf"
+
 raf-stub@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/raf-stub/-/raf-stub-2.0.1.tgz#fa04aefa3f3b4bd89712b24187b622f24265bf12"
@@ -9066,11 +9070,11 @@ react-json-tree@^0.10.7:
     prop-types "^15.5.8"
     react-base16-styling "^0.5.1"
 
-react-lazily-render@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/react-lazily-render/-/react-lazily-render-0.0.6.tgz#8ec775e01983d81d879de8f97df2b86842e7c38a"
+react-lazily-render@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/react-lazily-render/-/react-lazily-render-0.0.8.tgz#8c2a070e72044dcda56fbf4cac5aa45da95f27a4"
   dependencies:
-    lodash "^4.17.4"
+    raf-schd "^2.1.0"
     scrollparent "^2.0.1"
 
 react-live-clock@^2.0.2:

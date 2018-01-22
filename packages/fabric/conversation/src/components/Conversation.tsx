@@ -1,27 +1,16 @@
 import * as React from 'react';
 import Comment from '../containers/Comment';
 import Editor from './Editor';
-import {
-  Comment as CommentType,
-  Conversation as ConversationType,
-  User,
-} from '../model';
-import { ProviderFactory } from '@atlaskit/editor-common';
+import { Conversation as ConversationType } from '../model';
+import { SharedProps } from './Comment';
 
-export interface Props {
+export interface Props extends SharedProps {
   id?: string;
   localId?: string;
   conversation?: ConversationType;
   containerId: string;
-  comments?: CommentType[];
-  user?: User;
-  onAddComment?: (conversationId: string, parentId: string, value: any) => void;
-  onUpdateComment?: (
-    conversationId: string,
-    commentId: string,
-    value: any,
-  ) => void;
-  onDeleteComment?: (conversationId: string, commentId: string) => void;
+
+  // Dispatch
   onCreateConversation?: (
     localId: string,
     containerId: string,
@@ -29,13 +18,11 @@ export interface Props {
     meta: any,
   ) => void;
   onCancel?: () => void;
+
   isExpanded?: boolean;
   meta?: {
     [key: string]: any;
   };
-
-  // Provider
-  dataProviders?: ProviderFactory;
 }
 
 export default class Conversation extends React.PureComponent<Props> {
@@ -46,6 +33,7 @@ export default class Conversation extends React.PureComponent<Props> {
       onAddComment,
       onUpdateComment,
       onDeleteComment,
+      onUserClick,
       user,
       dataProviders,
     } = this.props;
@@ -65,6 +53,7 @@ export default class Conversation extends React.PureComponent<Props> {
         onAddComment={onAddComment}
         onUpdateComment={onUpdateComment}
         onDeleteComment={onDeleteComment}
+        onUserClick={onUserClick}
         dataProviders={dataProviders}
       />
     ));

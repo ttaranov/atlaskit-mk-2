@@ -1,5 +1,19 @@
 # @atlaskit/editor-core
 
+## 61.3.10
+
+
+- [patch] Change line length in Full Screen editor from 600px to 680px [6dacbbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6dacbbe)
+
+## 61.3.9
+
+## 61.3.8
+- [patch] Keymaps not supported on windows should not be visible in help dialog on windows. [6872f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6872f52)
+
+## 61.3.7
+
+- [patch] Improvements in code block. [da0fee1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da0fee1)
+
 ## 61.3.6
 - [patch] Fix link dialog styling issues with recent items search [667aaa7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/667aaa7)
 
