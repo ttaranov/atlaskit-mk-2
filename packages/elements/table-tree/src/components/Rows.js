@@ -2,11 +2,7 @@
 import React, { PureComponent } from 'react';
 import Items from './Items';
 
-import {
-  type ItemsProvider,
-  type RenderFunction,
-  type ItemsRenderedFunction,
-} from './../types';
+import { type ItemsProvider, type RenderFunction } from './../types';
 
 type Props = {
   /** Called when a row is expanded and data is needed for its children. The data should be an array of data items, or
@@ -16,9 +12,6 @@ type Props = {
   /** The render prop called each time a row needs to be rendered. Receives item data as its only argument. Should
    * return a Row. */
   render: RenderFunction,
-
-  /** Called whenever items are loaded and fully rendered. Happens for roots and for children, after the parent got expanded. */
-  onItemsRendered?: ItemsRenderedFunction,
 };
 
 type State = {
@@ -30,11 +23,7 @@ export default class Rows extends PureComponent<Props, State> {
     const { items, render } = this.props;
     return (
       <div>
-        <Items
-          getItemsData={items}
-          render={render}
-          onItemsRendered={this.props.onItemsRendered}
-        />
+        <Items getItemsData={items} render={render} />
       </div>
     );
   }

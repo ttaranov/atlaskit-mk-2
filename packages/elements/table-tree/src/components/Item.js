@@ -1,18 +1,13 @@
 // @flow
 import React, { PureComponent } from 'react';
 import Items from './Items';
-import {
-  type ItemsProvider,
-  type RenderFunction,
-  type ItemsRenderedFunction,
-} from './../types';
+import { type ItemsProvider, type RenderFunction } from './../types';
 
 type Props = {
   data: Object,
   getChildrenData: ItemsProvider,
   depth?: number,
   render: RenderFunction,
-  onItemsRendered?: ItemsRenderedFunction,
 };
 
 type State = {
@@ -35,13 +30,7 @@ export default class Item extends PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      depth,
-      data,
-      render,
-      getChildrenData,
-      onItemsRendered,
-    } = this.props;
+    const { depth, data, render, getChildrenData } = this.props;
     const { isExpanded } = this.state;
 
     let row = render(data);
@@ -62,7 +51,6 @@ export default class Item extends PureComponent<Props, State> {
             depth={depth}
             getItemsData={getChildrenData}
             render={render}
-            onItemsRendered={onItemsRendered}
           />
         )}
       </div>
