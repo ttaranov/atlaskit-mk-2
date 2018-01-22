@@ -31,17 +31,6 @@ export default () => (
     <div style={containerStyle}>
       {createSingleLineTextInput({ isEditing: true })}
     </div>
-    <h3>with auto focus</h3>
-    <div style={containerStyle}>
-      {createSingleLineTextInput({ isEditing: true, autoFocus: true })}
-    </div>
-    <h3>with auto selection</h3>
-    <div style={containerStyle}>
-      {createSingleLineTextInput({
-        isEditing: true,
-        isInitiallySelected: true,
-      })}
-    </div>
     <h3>with custom font size</h3>
     <div style={containerStyle}>
       {createSingleLineTextInput({ style: customTextStyle })}
