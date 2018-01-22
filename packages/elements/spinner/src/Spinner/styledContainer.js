@@ -13,7 +13,7 @@ type AnimationParams = {
  * in the DOM.
  * This can be reverted to use dynamic keyframes when we upgrade to styled components v2
  */
-export const keyframeNames = {
+const keyframeNames = {
   noop: keyframes`
     from { opacity: 0; }
     to { opacity: 0; }
