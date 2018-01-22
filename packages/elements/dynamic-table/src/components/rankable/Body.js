@@ -80,7 +80,7 @@ export class RankableBody extends Component<Props, {}> {
     const rankEndProps = {
       sourceIndex,
       sourceKey,
-      destination,
+      destination: destination || undefined,
     };
 
     onRankEnd(rankEndProps);

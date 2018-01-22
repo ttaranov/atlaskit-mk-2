@@ -56,7 +56,7 @@ export const validateSortKey = (
 export const inlineStylesIfRanking = (
   isRanking: boolean,
   width: number,
-  height: ?number = undefined,
+  height?: number,
 ): {} => {
   if (!isRanking) {
     return {};
@@ -71,7 +71,7 @@ export const inlineStylesIfRanking = (
 export const computeIndex = (
   index: number,
   page: number,
-  rowsPerPage: ?number,
+  rowsPerPage?: number,
 ): number => {
   const itemOnPreviousPages =
     rowsPerPage && isFinite(rowsPerPage) ? (page - 1) * rowsPerPage : 0;
@@ -83,7 +83,7 @@ export const reorderRows = (
   rankEnd: RankEnd,
   rows: RowType[],
   page: number,
-  rowsPerPage: ?number,
+  rowsPerPage?: number,
 ): RowType[] => {
   const { destination, sourceIndex } = rankEnd;
 

@@ -5,84 +5,82 @@ import StatelessDynamicTable from '../src/components/Stateless';
 import TableHead from '../src/components/TableHead';
 import { head, rowsWithKeys, sortKey, secondSortKey } from './_data';
 
-describe('Stateless dynamic table', () => {
-  let defaultProps;
+const simulateOnSort = wrapper => {
+  const tableHead = wrapper.find(TableHead);
+  const item = { key: sortKey };
+  tableHead.prop('onSort')(item)();
+  return item;
+};
 
-  beforeEach(() => {
-    defaultProps = {
-      head,
-      rows: rowsWithKeys,
-      sortKey,
-      sortOrder: 'ASC',
-      onSort: jest.fn(),
-    };
+const createProps = () => ({
+  head,
+  rows: rowsWithKeys,
+  sortKey,
+  sortOrder: 'ASC',
+  onSort: jest.fn(),
+});
+
+test('onSort should change to ASC from DESC if table is not rankable', () => {
+  const props = createProps();
+  const wrapper = shallow(
+    <StatelessDynamicTable {...props} sortOrder="DESC" />,
+  );
+
+  const item = simulateOnSort(wrapper);
+  expect(props.onSort).toHaveBeenCalledTimes(1);
+  expect(props.onSort).toHaveBeenLastCalledWith({
+    key: sortKey,
+    item,
+    sortOrder: 'ASC',
   });
+});
 
-  const simulateOnSort = wrapper => {
-    const tableHead = wrapper.find(TableHead);
-    const item = { key: sortKey };
-    tableHead.prop('onSort')(item)();
-    return item;
-  };
+test('onSort should change to none if table is rankable and sort order was DESC', () => {
+  const props = createProps();
+  const wrapper = shallow(
+    <StatelessDynamicTable {...props} sortOrder="DESC" isRankable />,
+  );
 
-  it('onSort should change to ASC from DESC if table is not rankable', () => {
-    const wrapper = shallow(
-      <StatelessDynamicTable {...defaultProps} sortOrder="DESC" />,
-    );
-
-    const item = simulateOnSort(wrapper);
-    expect(defaultProps.onSort).toHaveBeenCalledTimes(1);
-    expect(defaultProps.onSort).toHaveBeenLastCalledWith({
-      key: sortKey,
-      item,
-      sortOrder: 'ASC',
-    });
+  const item = simulateOnSort(wrapper);
+  expect(props.onSort).toHaveBeenCalledTimes(1);
+  expect(props.onSort).toHaveBeenLastCalledWith({
+    key: null,
+    item,
+    sortOrder: null,
   });
+});
 
-  it('onSort should change to none if table is rankable and sort order was DESC', () => {
-    const wrapper = shallow(
-      <StatelessDynamicTable {...defaultProps} sortOrder="DESC" isRankable />,
-    );
+test('onSort should change to DESC if table is rankable and sort order was ACS', () => {
+  const props = createProps();
+  const wrapper = shallow(
+    <StatelessDynamicTable {...props} sortOrder="ASC" isRankable />,
+  );
 
-    const item = simulateOnSort(wrapper);
-    expect(defaultProps.onSort).toHaveBeenCalledTimes(1);
-    expect(defaultProps.onSort).toHaveBeenLastCalledWith({
-      key: null,
-      item,
-      sortOrder: null,
-    });
+  const item = simulateOnSort(wrapper);
+  expect(props.onSort).toHaveBeenCalledTimes(1);
+  expect(props.onSort).toHaveBeenLastCalledWith({
+    key: sortKey,
+    item,
+    sortOrder: 'DESC',
   });
+});
 
-  it('onSort should change to DESC if table is rankable and sort order was ACS', () => {
-    const wrapper = shallow(
-      <StatelessDynamicTable {...defaultProps} sortOrder="ASC" isRankable />,
-    );
+test('onSort should change to ASC if table is rankable was sorted on different row', () => {
+  const props = createProps();
+  const wrapper = shallow(
+    <StatelessDynamicTable
+      {...props}
+      sortOrder="DESC"
+      sortKey={secondSortKey}
+      isRankable
+    />,
+  );
 
-    const item = simulateOnSort(wrapper);
-    expect(defaultProps.onSort).toHaveBeenCalledTimes(1);
-    expect(defaultProps.onSort).toHaveBeenLastCalledWith({
-      key: sortKey,
-      item,
-      sortOrder: 'DESC',
-    });
-  });
-
-  it('onSort should change to ASC if table is rankable was sorted on different row', () => {
-    const wrapper = shallow(
-      <StatelessDynamicTable
-        {...defaultProps}
-        sortOrder="DESC"
-        sortKey={secondSortKey}
-        isRankable
-      />,
-    );
-
-    const item = simulateOnSort(wrapper);
-    expect(defaultProps.onSort).toHaveBeenCalledTimes(1);
-    expect(defaultProps.onSort).toHaveBeenLastCalledWith({
-      key: sortKey,
-      item,
-      sortOrder: 'ASC',
-    });
+  const item = simulateOnSort(wrapper);
+  expect(props.onSort).toHaveBeenCalledTimes(1);
+  expect(props.onSort).toHaveBeenLastCalledWith({
+    key: sortKey,
+    item,
+    sortOrder: 'ASC',
   });
 });

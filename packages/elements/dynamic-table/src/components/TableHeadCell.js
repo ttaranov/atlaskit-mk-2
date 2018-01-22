@@ -11,7 +11,7 @@ export type Props = {
   innerRef?: (?HTMLElement) => void,
   inlineStyles?: {},
   content: Node,
-  onClick: ?Function,
+  onClick?: Function,
 };
 
 class TableHeadCell extends Component<Props, {}> {
@@ -24,7 +24,7 @@ class TableHeadCell extends Component<Props, {}> {
     const { content, inlineStyles, ...restCellProps } = this.props;
 
     return (
-      <HeadCell style={inlineStyles} {...restCellProps}>
+      <HeadCell {...restCellProps} style={inlineStyles}>
         <span>{content}</span>
       </HeadCell>
     );

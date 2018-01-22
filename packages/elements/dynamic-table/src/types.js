@@ -45,14 +45,14 @@ export type HeadCellType = {
 
 export type RankEndLocation = {
   index: number, // index on current page
-  afterKey: ?string,
-  beforeKey: ?string,
+  afterKey?: string,
+  beforeKey?: string,
 };
 
 export type RankEnd = {
   sourceIndex: number,
   sourceKey: string,
-  destination: ?RankEndLocation,
+  destination?: RankEndLocation,
 };
 
 export type RankStart = {
