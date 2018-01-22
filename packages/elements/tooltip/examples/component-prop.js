@@ -13,7 +13,7 @@ const InlineDialog = styled.div`
   max-height: 300px;
   max-width: 300px;
   padding: 8px 12px;
-  z-index: 500;
+  z-index: 600;
   /* required by component */
   pointer-events: none;
   position: fixed;
