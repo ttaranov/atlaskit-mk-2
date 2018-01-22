@@ -6,7 +6,7 @@ import {
   MouseEvent,
 } from 'react';
 
-import uid from 'uid';
+import * as uuid from 'uuid/v1';
 
 function noModifiers(event: MouseEvent<any>): boolean {
   return !event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey;
@@ -76,7 +76,7 @@ class SearchTextInput extends PureComponent<Props, {}> {
       ...other
     } = this.props;
     let labelComponent;
-    const id = inputId || uid();
+    const id = inputId || uuid();
     if (label) {
       labelComponent = (
         <label htmlFor={id}>

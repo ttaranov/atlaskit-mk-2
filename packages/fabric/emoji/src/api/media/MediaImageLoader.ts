@@ -48,11 +48,14 @@ export default class MediaImageLoader {
       });
       this.processFromQueue();
     })
-      .then(result => {
+      .then((result: string) => {
         this.pendingRequests.delete(url);
         return result;
       })
-      .catch(() => this.pendingRequests.delete(url));
+      .catch((result: string) => {
+        this.pendingRequests.delete(url);
+        return result;
+      });
 
     this.pendingRequests.set(url, pending);
 

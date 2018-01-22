@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { MouseEvent, PureComponent } from 'react';
 import * as classNames from 'classnames';
-import * as uid from 'uid';
+import * as uuid from 'uuid/v1';
 import { List as VirtualList } from 'react-virtualized/dist/commonjs/List';
 
 import {
@@ -154,7 +154,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
     onSearch: () => {},
   };
 
-  private idSuffix = uid();
+  private idSuffix = uuid();
   private allEmojiGroups: EmojiGroup[];
   private activeCategory: string | undefined | null;
   private virtualItems: VirtualItem<any>[] = [];

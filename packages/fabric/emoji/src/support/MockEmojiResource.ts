@@ -1,4 +1,4 @@
-import * as uid from 'uid';
+import * as uuid from 'uuid/v1';
 import { AbstractResource } from '@atlaskit/util-service-support';
 
 import { customCategory, customType } from '../constants';
@@ -21,7 +21,7 @@ import { MockEmojiResourceConfig, PromiseBuilder } from './support-types';
 const emojiFromUpload = (upload: EmojiUpload) => {
   const { shortName, name, dataURL, height, width } = upload;
   return {
-    id: uid(),
+    id: uuid(),
     shortName,
     name,
     fallback: shortName,
