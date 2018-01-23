@@ -88,10 +88,10 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
             renderEditor={({
               mentionProvider,
               emojiProvider,
-              mediaProvider,
               activityProvider,
               taskDecisionProvider,
               contextIdentifierProvider,
+              imageUploadProvider,
               onChange,
               disabled,
             }) => (
@@ -104,25 +104,22 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                 >
                   <Editor
                     appearance="comment"
-                    placeholder="What do you want to say?"
                     analyticsHandler={analyticsHandler}
-                    shouldFocus={true}
-                    allowTextFormatting={true}
-                    allowTasksAndDecisions={true}
-                    allowHyperlinks={true}
                     allowCodeBlocks={true}
-                    allowTextColor={true}
+                    allowHyperlinks={true}
                     allowLists={true}
-                    allowRule={true}
+                    allowMentions={true}
                     allowTables={true}
+                    allowTextFormatting={{
+                      disableSuperscriptAndSubscript: true,
+                      disableUnderline: true,
+                    }}
                     allowHelpDialog={true}
-                    allowPlaceholderCursor={true}
                     disabled={disabled}
                     mentionProvider={mentionProvider}
                     emojiProvider={emojiProvider}
-                    mediaProvider={mediaProvider}
-                    taskDecisionProvider={taskDecisionProvider}
-                    contextIdentifierProvider={contextIdentifierProvider}
+                    legacyImageUploadProvider={imageUploadProvider}
+                    shouldFocus={true}
                     onChange={onChange}
                     onSave={SAVE_ACTION}
                     onCancel={CANCEL_ACTION}

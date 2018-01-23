@@ -8,13 +8,11 @@ import { State, EditorData, EditorError, FileReference } from '../../../domain';
 import { ErrorView } from './errorView/errorView';
 import { SpinnerView } from './spinnerView/spinnerView';
 import { MainContainer } from './styles';
-import { couldNotLoadEditor } from './phrases';
 import { editorClose } from '../../../actions/editorClose';
 import { editorShowError } from '../../../actions/editorShowError';
 import { editorShowImage } from '../../../actions/editorShowImage';
-
-let editorViewModule: any;
-
+// TODO [MSW-421]: re-enable code splitting once Stride support is merged
+import { EditorView } from './editorView/editorView';
 export interface MainEditorViewStateProps {
   readonly editorData?: EditorData;
 }
@@ -37,29 +35,7 @@ export type MainEditorViewProps = MainEditorViewStateProps &
   MainEditorViewOwnProps &
   MainEditorViewDispatchProps;
 
-export interface MainEditorViewState {
-  readonly isEditorViewLoaded: boolean;
-}
-
-export class MainEditorView extends Component<
-  MainEditorViewProps,
-  MainEditorViewState
-> {
-  constructor(props: MainEditorViewProps) {
-    super(props);
-    this.state = {
-      isEditorViewLoaded: !!editorViewModule,
-    };
-  }
-
-  componentDidMount() {
-    this.ensureEditorViewModuleLoaded(this.props);
-  }
-
-  componentWillReceiveProps(newProps: MainEditorViewProps) {
-    this.ensureEditorViewModuleLoaded(newProps);
-  }
-
+export class MainEditorView extends Component<MainEditorViewProps, {}> {
   render(): JSX.Element | null {
     const { editorData } = this.props;
     if (editorData) {
@@ -74,8 +50,7 @@ export class MainEditorView extends Component<
 
     if (error) {
       return this.renderError(error);
-    } else if (editorViewModule && imageUrl && originalFile) {
-      const { EditorView } = editorViewModule;
+    } else if (imageUrl && originalFile) {
       return (
         <EditorView
           imageUrl={imageUrl}
@@ -97,40 +72,6 @@ export class MainEditorView extends Component<
         onCancel={this.onCancel}
       />
     );
-  }
-
-  private ensureEditorViewModuleLoaded(props: MainEditorViewProps): void {
-    const { editorData, onShowEditorImage } = props;
-
-    if (editorData) {
-      const { imageUrl, originalFile } = editorData;
-
-      // Without '&& imageUrl' there will be a lot of frequent attempts to load the editor module:
-      //
-      // 1) The module can fail to load due to connectivity problems.
-      // 2) It calls this._onEditorError.
-      // 3) It modifies the state of the app: adds error to editorData and removes imageUrl.
-      // 4) This leads to changes of MainEditorView properties and componentWillReceiveProps is called.
-      // 5) It calls _ensureEditorViewModuleLoaded which tries to reload the module, most probably unsuccessfully, go to step 2.
-      // Checking `&& imageUrl` helps because this becomes undefined after first loading failed.
-      //
-      // In other words, we try to load the editor module if we have something to dipslay (imageUrl is set).
-      if (!editorViewModule && imageUrl) {
-        (require as any).ensure(
-          ['./editorView/editorView'],
-          (require: any) => {
-            editorViewModule = require('./editorView/editorView');
-            this.setState({ isEditorViewLoaded: true });
-          },
-          () => {
-            const retryHandler = () => {
-              onShowEditorImage(imageUrl, originalFile);
-            };
-            this.onEditorError(couldNotLoadEditor, retryHandler);
-          },
-        );
-      }
-    }
   }
 
   private onEditorError = (

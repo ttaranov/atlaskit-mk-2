@@ -270,7 +270,6 @@
     "lru-fast": "^0.2.2",
     "markdown-it": "^8.4.0",
     "markdown-it-table": "^1.0.0",
-    "mediapicker": "^12.0.0",
     "memoize-one": "^3.0.1",
     "minimatch": "^3.0.4",
     "npm-run": "^4.1.2",
