@@ -3,8 +3,9 @@ import React from 'react';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import Tooltip from '../src';
+import { ContentBase } from '../src/styled';
 
-const InlineDialog = styled.div`
+const InlineDialog = styled(ContentBase)`
   background: white;
   border-radius: 4px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
@@ -13,10 +14,6 @@ const InlineDialog = styled.div`
   max-height: 300px;
   max-width: 300px;
   padding: 8px 12px;
-  z-index: 600;
-  /* required by component */
-  pointer-events: none;
-  position: fixed;
 `;
 
 export default () => (

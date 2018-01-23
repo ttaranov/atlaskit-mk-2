@@ -22,7 +22,13 @@ const truncate = p =>
       `
     : '';
 
-export const Tooltip = styled.div`
+export const ContentBase = styled.div`
+  z-index: 1000;
+  pointer-events: none;
+  position: fixed;
+`;
+
+export const Tooltip = styled(ContentBase)`
   background-color: ${backgroundColor};
   border-radius: ${borderRadius}px;
   box-sizing: border-box;
@@ -32,11 +38,7 @@ export const Tooltip = styled.div`
   line-height: 1.3;
   max-width: 240px;
   padding: 2px 6px;
-  pointer-events: none;
-  position: fixed;
   top: 0;
-  z-index: 1000;
-
   ${truncate};
 `;
 
