@@ -1,5 +1,8 @@
 # @atlaskit/page
 
+## 5.0.7
+- [patch] Enabling syntax highlighter language auto-detect [4831bd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4831bd2)
+
 ## 5.0.6
 - [patch] Migrated to mk2 repo, build system & docs. [64e83f3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/64e83f3)
 
