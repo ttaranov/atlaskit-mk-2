@@ -34,7 +34,10 @@ export interface ResourceProvider {
     commentId: string,
     document: any,
   ): Promise<Comment>;
-  deleteComment(conversationId: string, commentId: string): Promise<Comment>;
+  deleteComment(
+    conversationId: string,
+    commentId: string,
+  ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'deleted'>>;
   updateUser(user: User): Promise<User>;
 }
 
@@ -100,7 +103,7 @@ export class AbstractConversationResource implements ResourceProvider {
   async deleteComment(
     conversationId: string,
     commentId: string,
-  ): Promise<Comment> {
+  ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'deleted'>> {
     return Promise.reject('Not implemented');
   }
 
@@ -142,6 +145,11 @@ export class ConversationResource extends AbstractConversationResource {
 
     if (!response.ok) {
       throw new Error(response.statusText);
+    }
+
+    // Content deleted
+    if (response.status === 204) {
+      return <T>{};
     }
 
     return await response.json();
@@ -259,13 +267,19 @@ export class ConversationResource extends AbstractConversationResource {
   async deleteComment(
     conversationId: string,
     commentId: string,
-  ): Promise<Comment> {
-    const result = await this.makeRequest<Comment>(
+  ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'deleted'>> {
+    await this.makeRequest<{}>(
       `/conversation/${conversationId}/comment/${commentId}`,
       {
         method: 'DELETE',
       },
     );
+
+    const result = {
+      conversationId,
+      commentId,
+      deleted: true,
+    };
 
     const { dispatch } = this;
     dispatch({ type: DELETE_COMMENT_SUCCESS, payload: result });

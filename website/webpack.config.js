@@ -103,7 +103,7 @@ function createEntryPoint(subsetName /*?: string */) {
     '@atlaskit/task-decision',
     // '@atlaskit/tooltip',
     '@atlaskit/util-shared-styles',
-    'mediapicker',
+    '@atlaskit/media-picker',
     'prosemirror-commands',
     'prosemirror-history',
     'prosemirror-inputrules',

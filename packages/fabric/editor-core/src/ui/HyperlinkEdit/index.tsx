@@ -149,6 +149,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       inputActive,
       showToolbarPanel,
     } = this.state;
+    const { popupsBoundariesElement, popupsMountPoint } = this.props;
 
     if ((active || showToolbarPanel) && (editorFocused || inputActive)) {
       const popupTarget = this.getPopupTarget();
@@ -163,6 +164,8 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
           target={popupTarget}
           offset={[0, 3]}
           onPositionCalculated={this.adjustPosition}
+          popupsBoundariesElement={popupsBoundariesElement}
+          popupsMountPoint={popupsMountPoint}
         >
           {showOpenButton && (
             <ToolbarButton

@@ -25,6 +25,7 @@ type LabelProps = {
 export const Label = styled.label`
   display: ${({ isFullWidth }) => (isFullWidth ? 'block' : 'inline-block')}
   color: ${(props: LabelProps): string =>
+    // $FlowFixMe TEMPORARY
     props.isDisabled ? disabledColor(props) : colors.text(props)};
   ${({ isDisabled }: LabelProps) =>
     isDisabled

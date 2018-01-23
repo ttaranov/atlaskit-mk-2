@@ -1,5 +1,12 @@
 # @atlaskit/editor-test-helpers
 
+## 1.8.4
+
+## 1.8.3
+- [patch] fix extension replacement with empty content [e151446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e151446)
+
+## 1.8.2
+
 ## 1.8.1
 - [patch] Remove placeholderBaseUrl config option from the Confluence Macro Provider [1583960](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1583960)
 

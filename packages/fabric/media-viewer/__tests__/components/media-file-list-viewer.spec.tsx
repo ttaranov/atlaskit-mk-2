@@ -211,4 +211,29 @@ describe('<MediaFileListViewer />', () => {
       'some-collection',
     );
   });
+
+  it('should listen on fv.close given an onClose handler', () => {
+    const mediaViewerConstructor = Stubs.mediaViewerConstructor();
+    const onClose = jest.fn();
+
+    const wrapper = mount(
+      <MediaFileListViewer
+        selectedItem={selectedItem}
+        list={[selectedItem]}
+        context={Stubs.context(contextConfig) as any}
+        collectionName={collectionName}
+        MediaViewer={mediaViewerConstructor as any}
+        basePath={basePath}
+        onClose={onClose}
+      />,
+    );
+
+    const { mediaViewer } = wrapper.state();
+    expect(mediaViewer.on).toHaveBeenCalledTimes(1);
+    expect((mediaViewer.on as any).mock.calls[0][0]).toBe('fv.close');
+
+    wrapper.unmount();
+    expect(mediaViewer.off).toHaveBeenCalledTimes(1);
+    expect((mediaViewer.off as any).mock.calls[0][0]).toBe('fv.close');
+  });
 });

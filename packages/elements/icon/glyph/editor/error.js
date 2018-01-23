@@ -17,6 +17,6 @@ var _index2 = _interopRequireDefault(_index);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var EditorErrorIcon = function EditorErrorIcon(props) {
-  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M12.706 3.706a1.003 1.003 0 0 0-1.412 0l-7.588 7.588a1.003 1.003 0 0 0 0 1.412l7.588 7.588c.39.39 1.026.386 1.412 0l7.588-7.588c.39-.39.386-1.026 0-1.412l-7.588-7.588zM13 12.208v-3.71A.496.496 0 0 0 12.495 8h-.99a.494.494 0 0 0-.505.498v3.71A2.492 2.492 0 0 1 12 12c.356 0 .694.074 1 .208zM12 16a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
+  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M13.485 11.929l2.122-2.121a1 1 0 0 0-1.415-1.415l-2.12 2.122L9.95 8.393a1 1 0 0 0-1.414 1.415l2.12 2.12-2.12 2.122a1 1 0 0 0 1.414 1.414l2.121-2.12 2.121 2.12a1 1 0 1 0 1.415-1.414l-2.122-2.121zM12 20a8 8 0 1 1 0-16 8 8 0 0 1 0 16z" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
 };
 exports.default = EditorErrorIcon;

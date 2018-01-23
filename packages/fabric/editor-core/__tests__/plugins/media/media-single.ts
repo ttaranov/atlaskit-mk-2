@@ -23,7 +23,7 @@ const createMediaState = (
 ): MediaState => ({
   id,
   status: 'uploading',
-  thumbnail: { width, height, src: '' },
+  thumbnail: { dimensions: { width, height }, src: '' },
 });
 
 describe('media-single', () => {

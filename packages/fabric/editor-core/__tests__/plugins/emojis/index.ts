@@ -156,10 +156,12 @@ describe('emojis', () => {
         );
         const spy = spyOnReturnValue(pluginState, 'onSelectCurrent');
         (pluginState as any).emojiProvider = true;
+        pluginState.onSearchResult({ emojis: [grinEmoji] });
+
         forceUpdate(editorView); // Force update to ensure active query.
 
         sendKeyToPm(editorView, 'Enter');
-        expect(spy).toBeCalled();
+        expect(spy).toHaveBeenCalledWith('Enter');
         expect(spy.returnValue).toBe(false);
         editorView.destroy();
       });
@@ -195,10 +197,12 @@ describe('emojis', () => {
         );
         const spy = spyOnReturnValue(pluginState, 'onSelectCurrent');
         (pluginState as any).emojiProvider = true;
+        pluginState.onSearchResult({ emojis: [grinEmoji] });
+
         forceUpdate(editorView); // Force update to ensure active query.
 
         sendKeyToPm(editorView, 'Shift-Enter');
-        expect(spy).toBeCalled();
+        expect(spy).toHaveBeenCalledWith('Shift-Enter');
         expect(spy.returnValue).toBe(false);
         editorView.destroy();
       });
@@ -209,7 +213,7 @@ describe('emojis', () => {
         const { editorView, pluginState } = editor(
           doc(p(emojiQuery(':grin{<>}'))),
         );
-        const spy = jest.spyOn(pluginState, 'trySelectCurrent');
+        const spy = jest.spyOn(pluginState, 'trySelectCurrentWithSpace');
 
         forceUpdate(editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'Space');
@@ -219,7 +223,7 @@ describe('emojis', () => {
 
       it('should be ignored if there is no active query', () => {
         const { editorView, pluginState } = editor(doc(p('Hello')));
-        const spy = jest.spyOn(pluginState, 'trySelectCurrent');
+        const spy = jest.spyOn(pluginState, 'trySelectCurrentWithSpace');
         (pluginState as any).emojiProvider = true;
         forceUpdate(editorView); // Force update to ensure active query.
 
@@ -228,17 +232,19 @@ describe('emojis', () => {
         editorView.destroy();
       });
 
-      it('should call "trySelectCurrent" which should return false', () => {
+      it('should call "trySelectCurrentWithSpace" which should return false', () => {
         const { editorView, pluginState } = editor(
           doc(p(emojiQuery(':grin{<>}'))),
         );
-        const spy = spyOnReturnValue(pluginState, 'trySelectCurrent');
+        const spy = spyOnReturnValue(pluginState, 'trySelectCurrentWithSpace');
+        const spyOnSpaceTyped = jest.spyOn(pluginState, 'onSpaceTyped');
         (pluginState as any).emojiProvider = true;
         forceUpdate(editorView); // Force update to ensure active query.
 
         sendKeyToPm(editorView, 'Space');
         expect(spy).toBeCalled();
         expect(spy.returnValue).toBe(false);
+        expect(spyOnSpaceTyped).toBeCalled();
         editorView.destroy();
       });
 
@@ -247,12 +253,25 @@ describe('emojis', () => {
           doc(p(emojiQuery(':grin{<>}'))),
         );
         const spy = jest.spyOn(pluginState, 'insertEmoji');
+        const spyOnSpaceSelectCurrent = jest.spyOn(
+          pluginState,
+          'onSpaceSelectCurrent',
+        );
+        const spyOnSpaceTyped = jest.spyOn(pluginState, 'onSpaceTyped');
+
         (pluginState as any).emojiProvider = true;
         forceUpdate(editorView); // Force update to ensure active query.
         pluginState.onSearchResult({ emojis: [grinEmoji] });
 
         sendKeyToPm(editorView, 'Space');
         expect(spy).toHaveBeenCalledWith(grinEmoji);
+
+        expect(spyOnSpaceSelectCurrent).toHaveBeenCalledWith(
+          grinEmoji,
+          'Space',
+          ':grin',
+        );
+        expect(spyOnSpaceTyped).not.toBeCalled();
         editorView.destroy();
       });
 
@@ -297,11 +316,15 @@ describe('emojis', () => {
           doc(p(emojiQuery(':grin{<>}'))),
         );
         const spy = spyOnReturnValue(pluginState, 'dismiss');
+        const spyOnDismiss = spyOnReturnValue(pluginState, 'onDismiss');
         (pluginState as any).emojiProvider = true;
         forceUpdate(editorView); // Force update to ensure active query.
 
         sendKeyToPm(editorView, 'Esc');
         expect(spy).toBeCalled();
+
+        // onDismiss handler should be called
+        expect(spyOnDismiss).toBeCalled();
         expect(spy.returnValue).toBe(true);
         editorView.destroy();
       });

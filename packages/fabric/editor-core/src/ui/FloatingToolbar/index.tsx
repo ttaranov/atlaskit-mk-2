@@ -9,10 +9,10 @@ export type Coordniates = {
   bottom: number;
 };
 
-export const DEFAULT_HEIGHT = 24;
-
 export interface Props {
   target?: HTMLElement;
+  popupsMountPoint?: HTMLElement;
+  popupsBoundariesElement?: HTMLElement;
   offset?: number[];
   fitWidth?: number;
   fitHeight?: number;
@@ -26,8 +26,10 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
       target,
       offset,
       fitWidth,
-      fitHeight = DEFAULT_HEIGHT,
+      fitHeight,
       onPositionCalculated,
+      popupsMountPoint,
+      popupsBoundariesElement,
     } = this.props;
 
     if (!target) {
@@ -37,6 +39,8 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
     return (
       <Popup
         target={target}
+        mountTo={popupsMountPoint}
+        boundariesElement={popupsBoundariesElement}
         offset={offset}
         fitWidth={fitWidth}
         fitHeight={fitHeight}

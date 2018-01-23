@@ -9,6 +9,8 @@ import {
   User,
 } from '../src/model';
 import { MOCK_USERS } from './MockData';
+import { ProviderFactory } from '@atlaskit/editor-common';
+import { selectAll } from 'prosemirror-commands';
 
 const DUMMY_CODE = `
 class Main() {
@@ -55,6 +57,7 @@ interface FileProps {
   code: string;
   conversations: ConversationType[];
   provider: ResourceProvider;
+  dataProviders?: ProviderFactory;
 }
 
 const containerId = 'container:abc:abc/1234567';
@@ -82,7 +85,7 @@ class File extends React.Component<FileProps, { addAt?: number }> {
 
   private renderConvoForLine = (index: number) => {
     const { addAt } = this.state;
-    const { conversations, name, provider } = this.props;
+    const { conversations, name, provider, dataProviders } = this.props;
 
     const [conversation] =
       conversations &&
@@ -94,6 +97,7 @@ class File extends React.Component<FileProps, { addAt?: number }> {
           <Conversation
             id={conversation.conversationId}
             provider={provider}
+            dataProviders={dataProviders}
             isExpanded={false}
             meta={{ name, lineNumber: index }}
             containerId={containerId}
@@ -108,6 +112,7 @@ class File extends React.Component<FileProps, { addAt?: number }> {
           <Conversation
             onCancel={this.onCancel}
             provider={provider}
+            dataProviders={dataProviders}
             isExpanded={true}
             meta={{ name, lineNumber: index }}
             containerId={containerId}
@@ -153,7 +158,7 @@ class File extends React.Component<FileProps, { addAt?: number }> {
 }
 
 export class Demo extends React.Component<
-  { provider: ResourceProvider },
+  { provider: ResourceProvider; dataProviders: ProviderFactory },
   { conversations: any[]; selectedUser: User }
 > {
   constructor(props) {
@@ -178,10 +183,16 @@ export class Demo extends React.Component<
 
   private onUserSelect = (selected: any) => {
     const { item } = selected;
-    const userId = item.value;
     const { provider } = this.props;
+    const userId = item.value;
+
     const [selectedUser] = MOCK_USERS.filter(user => user.id === userId);
-    provider.updateUser(selectedUser);
+
+    if (userId === undefined) {
+      provider.updateUser(undefined);
+    } else {
+      provider.updateUser(selectedUser);
+    }
 
     this.setState({
       selectedUser,
@@ -189,7 +200,7 @@ export class Demo extends React.Component<
   };
 
   private renderConversations(conversations: ConversationType[]) {
-    const { provider } = this.props;
+    const { provider, dataProviders } = this.props;
 
     return conversations.map(conversation => (
       <div
@@ -202,6 +213,7 @@ export class Demo extends React.Component<
       >
         <Conversation
           provider={provider}
+          dataProviders={dataProviders}
           id={conversation.conversationId}
           containerId={containerId}
         />
@@ -242,7 +254,7 @@ export class Demo extends React.Component<
 
   render() {
     const { conversations } = this.state;
-    const { provider } = this.props;
+    const { provider, dataProviders } = this.props;
     const prConversations = conversations.filter(
       c => !Object.keys(c.meta).length,
     );
@@ -252,19 +264,25 @@ export class Demo extends React.Component<
         {this.renderUserSelect()}
         {this.renderConversations(prConversations)}
         {prConversations.length === 0 ? (
-          <Conversation provider={provider} containerId={containerId} />
+          <Conversation
+            provider={provider}
+            dataProviders={dataProviders}
+            containerId={containerId}
+          />
         ) : null}
         <File
           name="main.js"
           code={DUMMY_CODE}
           provider={provider}
           conversations={conversations.filter(c => c.meta.name === 'main.js')}
+          dataProviders={dataProviders}
         />
         <File
           name="stuff.js"
           code={DUMMY_CODE}
           provider={provider}
           conversations={conversations.filter(c => c.meta.name === 'stuff.js')}
+          dataProviders={dataProviders}
         />
       </div>
     );

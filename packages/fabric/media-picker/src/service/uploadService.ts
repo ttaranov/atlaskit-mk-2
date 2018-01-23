@@ -21,7 +21,7 @@ import { Preview } from '../domain/preview';
 import {
   SourceFile,
   mapAuthToSourceFileOwner,
-} from '../../popup/src/domain/source-file';
+} from '../popup/domain/source-file';
 
 type UploadId = string;
 type ChunkId = string;

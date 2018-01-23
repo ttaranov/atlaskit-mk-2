@@ -10,14 +10,15 @@ import { EditorView } from 'prosemirror-view';
 import { panelNodeView } from '../../nodeviews';
 
 export interface PanelType {
-  panelType: 'info' | 'note' | 'tip' | 'warning';
+  panelType: 'info' | 'note' | 'success' | 'warning' | 'error';
 }
 
 export const availablePanelType = [
   { panelType: 'info' },
   { panelType: 'note' },
-  { panelType: 'tip' },
+  { panelType: 'success' },
   { panelType: 'warning' },
+  { panelType: 'error' },
 ];
 
 export class PanelState {

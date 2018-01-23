@@ -30,7 +30,7 @@ export default md`
   The easiest integration may look like this:
 
   ~~~javascript
-  import { MediaPicker } from 'mediapicker';
+  import { MediaPicker } from '@atlaskit/media-picker';
 
   const config = {
     apiUrl: 'https://media-api.atlassian.io',

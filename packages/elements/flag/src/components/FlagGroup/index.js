@@ -58,5 +58,6 @@ export default withRenderTarget(
     target: 'flag',
     withTransitionGroup: false,
   },
+  // $FlowFixMe TEMPORARY
   FlagGroup,
 );

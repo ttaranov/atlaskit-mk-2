@@ -3,13 +3,16 @@ import React from 'react';
 import { md, Example } from '@atlaskit/docs';
 
 export default md`
-  ${(
-    <Example
-      Component={require('../examples/position').default}
-      source={require('!!raw-loader!../examples/position')}
-      title="Position"
-    />
-  )}
+  ${
+    (
+      // $FlowFixMe TEMPORARY
+      <Example
+        Component={require('../examples/position').default}
+        source={require('!!raw-loader!../examples/position')}
+        title="Position"
+      />
+    )
+  }
 
   Tooltips have four positions available; "top", "right", "bottom", and "left".
   Each position center-aligns itself along the appropriate axis. Click the target

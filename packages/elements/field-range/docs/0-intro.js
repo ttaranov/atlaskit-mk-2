@@ -13,13 +13,16 @@ export default md`
 
   The onChange prop provides a way to subscribe to changes in the value.
 
-  ${(
-    <Example
-      Component={require('../examples/00-basic-example').default}
-      title="Basic"
-      source={require('!!raw-loader!../examples/00-basic-example')}
-    />
-  )}
+  ${
+    (
+      // $FlowFixMe TEMPORARY
+      <Example
+        Component={require('../examples/00-basic-example').default}
+        title="Basic"
+        source={require('!!raw-loader!../examples/00-basic-example')}
+      />
+    )
+  }
 
   ${(
     <Props

@@ -1,13 +1,10 @@
-import * as React from 'react';
 import { image } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import {
   createPlugin,
-  stateKey,
   ImageUploadHandler,
 } from '../../../plugins/image-upload';
 import inputRulePlugin from '../../../plugins/image-upload/input-rule';
-import ToolbarImage from '../../../ui/ToolbarImage';
 
 export { ImageUploadHandler };
 
@@ -25,17 +22,6 @@ const imageUpload: EditorPlugin = {
       },
       { rank: 1299, plugin: ({ schema }) => inputRulePlugin(schema) },
     ];
-  },
-
-  secondaryToolbarComponent({ editorView }) {
-    const imageUploadState = stateKey.getState(editorView.state);
-    return (
-      <ToolbarImage
-        editorView={editorView}
-        pluginState={imageUploadState}
-        isReducedSpacing={true}
-      />
-    );
   },
 };
 

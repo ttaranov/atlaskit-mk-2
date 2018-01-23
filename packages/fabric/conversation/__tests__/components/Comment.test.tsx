@@ -82,6 +82,47 @@ describe('Comment', () => {
     });
   });
 
+  describe('reply link', () => {
+    const [user] = MOCK_USERS;
+
+    it('should render reply link if user is set', () => {
+      const comment = mount(
+        <Comment
+          conversationId={mockComment.conversationId}
+          comment={mockComment}
+          user={user}
+        />,
+      );
+
+      const replyLink = comment
+        .first()
+        .find(CommentAction)
+        .findWhere(item => item.is(CommentAction) && item.text() === 'Reply')
+        .first();
+
+      expect(replyLink.length).toEqual(1);
+      comment.unmount();
+    });
+
+    it('should not render reply link if user is not set', () => {
+      const comment = mount(
+        <Comment
+          conversationId={mockComment.conversationId}
+          comment={mockComment}
+        />,
+      );
+
+      const replyLink = comment
+        .first()
+        .find(CommentAction)
+        .findWhere(item => item.is(CommentAction) && item.text() === 'Reply')
+        .first();
+
+      expect(replyLink.length).toEqual(0);
+      comment.unmount();
+    });
+  });
+
   describe('edit link', () => {
     let user;
     let editLink;
@@ -269,6 +310,42 @@ describe('Comment', () => {
         mockComment.conversationId,
         mockComment.commentId,
       );
+    });
+  });
+
+  describe('username link', () => {
+    let user;
+    let usernameLink;
+    let onUserClick;
+
+    beforeEach(() => {
+      user = MOCK_USERS[0];
+
+      onUserClick = jest.fn();
+
+      comment = mount(
+        <Comment
+          conversationId={mockComment.conversationId}
+          comment={mockComment}
+          user={user}
+          onUserClick={onUserClick}
+        />,
+      );
+
+      usernameLink = comment
+        .first()
+        .find(CommentAuthor)
+        .first();
+    });
+
+    afterEach(() => {
+      comment.unmount();
+    });
+
+    it('should invoke the onUserClick with the clicked user if specified', () => {
+      expect(onUserClick.mock.calls.length).toBe(0);
+      usernameLink.simulate('click');
+      expect(onUserClick).toHaveBeenCalledWith(user);
     });
   });
 });

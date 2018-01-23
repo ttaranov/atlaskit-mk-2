@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { Popup } from '@atlaskit/editor-common';
-import FloatingToolbar, { DEFAULT_HEIGHT } from '../../src/ui/FloatingToolbar';
+import FloatingToolbar from '../../src/ui/FloatingToolbar';
 import { Container } from '../../src/ui/FloatingToolbar/styles';
 
 describe('FloatingToolbar', () => {
@@ -22,17 +22,7 @@ describe('FloatingToolbar', () => {
     expect(wrapper.find(Container).length).toBe(1);
   });
 
-  it('defaults popup height', () => {
-    const wrapper = mount(<FloatingToolbar target={target} />);
-    expect(wrapper.find(Popup).props().fitHeight).toBe(DEFAULT_HEIGHT);
-  });
-
-  it('defaults container height', () => {
-    const wrapper = mount(<FloatingToolbar target={target} />);
-    expect(wrapper.find(Container).props().height).toBe(DEFAULT_HEIGHT);
-  });
-
-  it('passes height to container', () => {
+  it('passes height to popup', () => {
     const wrapper = mount(<FloatingToolbar target={target} fitHeight={30} />);
     expect(wrapper.find(Popup).props().fitHeight).toBe(30);
   });

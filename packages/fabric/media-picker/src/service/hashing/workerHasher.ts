@@ -2,13 +2,7 @@
 import { ResumableChunk } from 'resumablejs';
 
 import { Hasher } from './hasher';
-
-// TODO: why can't we use
-// const worker = Rusha.createWorker();
-
-// We require the hasher library as raw file in order to create a worker with it without making an extra request
-// We locked the version to 0.8.7 as major ones doesn't work properly this way
-const rushaWorkerInline = require('!!raw-loader!../../../node_modules/rusha/rusha.js');
+import * as Rusha from 'rusha';
 
 interface HasherWorker {
   worker: Worker;
@@ -30,10 +24,7 @@ export class WorkerHasher implements Hasher {
   }
 
   private createWorker(): HasherWorker {
-    const workerBlob = new Blob([rushaWorkerInline]);
-    const blobURL = URL.createObjectURL(workerBlob);
-
-    const worker = new Worker(blobURL);
+    const worker = Rusha.createWorker();
     const hasherWorker = { worker, activeJobs: 0 };
 
     worker.addEventListener('message', (event: MessageEvent) => {

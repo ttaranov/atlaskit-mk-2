@@ -40,7 +40,7 @@ export default class FieldTextStateless extends Component<
           isDisabled={this.props.disabled}
           isLabelHidden={this.props.isLabelHidden}
           isRequired={this.props.required}
-          label={this.props.label}
+          label={this.props.label || ''}
         />
         <Base
           invalidMessage={this.props.invalidMessage}
