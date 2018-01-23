@@ -1,5 +1,9 @@
 # @atlaskit/media-avatar-picker
 
+## 4.6.0
+
+- [minor] [MSW-338] feat - ability to remove [9905003](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9905003)
+
 ## 4.5.1
 
 ## 4.5.0

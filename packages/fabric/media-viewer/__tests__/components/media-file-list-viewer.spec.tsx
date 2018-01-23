@@ -236,5 +236,4 @@ describe('<MediaFileListViewer />', () => {
     expect(mediaViewer.off).toHaveBeenCalledTimes(1);
     expect((mediaViewer.off as any).mock.calls[0][0]).toBe('fv.close');
   });
-
 });

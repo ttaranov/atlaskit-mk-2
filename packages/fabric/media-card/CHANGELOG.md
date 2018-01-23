@@ -1,5 +1,9 @@
 # @atlaskit/media-image
 
+## 23.2.2
+
+- [patch] Migrate Navigation from Ak repo to ak mk 2 repo, Fixed flow typing inconsistencies in ak mk 2 [bdeef5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdeef5b)
+
 ## 23.2.1
 - [patch] added an offset to load lazily loaded cards earlier [d1d891c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1d891c)
 
