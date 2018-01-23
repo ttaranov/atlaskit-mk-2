@@ -10,7 +10,7 @@ const input = `
 `;
 
 describe('Code', () => {
-  it('should have "markdown" as default language', () => {
-    expect(shallow(<Code text={input} />).prop('language')).toBe('markdown');
+  it('should have an empty string as the default language', () => {
+    expect(shallow(<Code text={input} />).prop('language')).toBe('');
   });
 });
