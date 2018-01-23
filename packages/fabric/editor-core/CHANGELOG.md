@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.4.4
+- [patch] fix extension replacement with empty content [e151446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e151446)
+
 ## 61.4.3
 
 - [patch] fixed extension node content field [41c7958](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41c7958)
