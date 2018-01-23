@@ -451,13 +451,10 @@ export const getValidNode = (
         break;
       }
       case 'paragraph': {
-        if (content) {
-          return {
-            type,
-            content,
-          };
-        }
-        break;
+        return {
+          type,
+          content: content || [],
+        };
       }
       case 'rule': {
         return {
