@@ -37,7 +37,6 @@ pipelines:
           - (node build/ci-scripts/should.run.js tsc) && bolt typecheck:typescript
           - bolt test:changed
           - (node build/ci-scripts/should.run.js browserstack) && bolt test:browser:browserstack
-          - bolt test:webdriver:browserstack
           - (cd website && bolt deploy-staging:no-minimize) | tee output.txt
           - node build/ci-scripts/update.build.status.with.netlify.link.js
         caches:
