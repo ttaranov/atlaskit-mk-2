@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.4.5
+- [patch] Add image upload icon back [768c601](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/768c601)
+
 ## 61.4.4
 - [patch] fix extension replacement with empty content [e151446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e151446)
 
