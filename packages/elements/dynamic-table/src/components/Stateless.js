@@ -201,6 +201,7 @@ export default class DynamicTable extends Component<Props, State> {
                   isRanking={this.state.isRanking}
                   onRankStart={this.onRankStart}
                   onRankEnd={this.onRankEnd}
+                  isRankingDisabled={isLoading}
                 />
               ) : (
                 <Body {...bodyProps} />

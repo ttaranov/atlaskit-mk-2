@@ -16,6 +16,7 @@ type Props = {
   row: RowType,
   isRanking: boolean,
   rowIndex: number,
+  isRankingDisabled: boolean,
 } & WithDimensionsProps;
 
 export class RankableTableRow extends Component<Props, {}> {
@@ -33,26 +34,32 @@ export class RankableTableRow extends Component<Props, {}> {
       refWidth,
       refHeight,
       rowIndex,
+      isRankingDisabled,
     } = this.props;
     const { cells, ...restRowProps } = row;
     const inlineStyles = inlineStylesIfRanking(isRanking, refWidth);
 
     if (!row.key) {
+      // eslint-disable-next-line
       console.warn(
         `Ranking may not work properly because key was not pass to table row. Row index (${rowIndex}) will be used instead`,
-      ); // eslint-disable-line
+      );
     }
 
     const key = row.key ? row.key : rowIndex.toString();
 
     return (
-      <Draggable draggableId={key} index={rowIndex}>
+      <Draggable
+        draggableId={key}
+        index={rowIndex}
+        isDragDisabled={isRankingDisabled}
+      >
         {(provided, snapshot) => [
           <RankableTableBodyRow
             {...restRowProps}
-            innerRef={this.innerRef(provided.innerRef)}
             {...provided.dragHandleProps}
             {...provided.draggableProps}
+            innerRef={this.innerRef(provided.innerRef)}
             style={{ ...provided.draggableProps.style, ...inlineStyles }}
             isRanking={isRanking}
             isRankingItem={snapshot.isDragging}

@@ -29,6 +29,7 @@ type Props = WithDimensionsProps &
     onRankEnd: RankEnd => void,
     isFixedSize: boolean,
     isRanking: boolean,
+    isRankingDisabled: boolean,
     head: HeadType | void,
   };
 
@@ -94,6 +95,7 @@ export class RankableBody extends Component<Props, {}> {
       isRanking,
       refWidth,
       refHeight,
+      isRankingDisabled,
     } = this.props;
     const inlineStyle = inlineStylesIfRanking(isRanking, refWidth, refHeight);
 
@@ -117,6 +119,7 @@ export class RankableBody extends Component<Props, {}> {
                   key={row.key}
                   rowIndex={rowIndex}
                   row={row}
+                  isRankingDisabled={isRankingDisabled}
                 />
               ))}
               {provided.placeholder}
