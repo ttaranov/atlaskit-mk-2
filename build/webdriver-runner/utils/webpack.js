@@ -13,7 +13,7 @@ DirectoryWatcher.prototype.createNestedWatcher = function(
   _oldcreateNestedWatcher.call(this, dirPath);
 };
 
-const _ = require('underscore');
+const flattenDeep = require('lodash.flattendeep');
 const bolt = require('bolt');
 const boltQuery = require('bolt-query');
 const glob = require('glob');
@@ -63,7 +63,7 @@ async function startDevServer() {
     : workspaces;
 
   const globs = workspacesGlob
-    ? utils.createWorkspacesGlob(_.flatten(filteredWorkspaces), projectRoot)
+    ? utils.createWorkspacesGlob(flattenDeep(filteredWorkspaces), projectRoot)
     : utils.createDefaultGlob();
   if (!globs.length) {
     print(
@@ -86,7 +86,11 @@ async function startDevServer() {
   });
 
   const compiler = webpack(config);
-  compiler.plugin('invalid', () => console.log('Failure'));
+  compiler.plugin('invalid', () =>
+    console.log(
+      'Something has changed and Webpack needs to invalidate dependencies graph',
+    ),
+  );
   compiler.plugin('done', () => console.log('Compiled Packages!!'));
 
   //
