@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { mockConversation } from '../../example-helpers/MockData';
+import { mockConversation, MOCK_USERS } from '../../example-helpers/MockData';
 import Conversation from '../../src/components/Conversation';
 import Editor from '../../src/components/Editor';
 import CommentContainer from '../../src/containers/Comment';
 
 const containerId = 'abc:abc:abc/demo';
 const { comments } = mockConversation;
+const [user] = MOCK_USERS;
 
 describe('Conversation', () => {
   const conversation = shallow(
@@ -14,6 +15,7 @@ describe('Conversation', () => {
       containerId={containerId}
       conversation={mockConversation}
       comments={comments}
+      user={user}
     />,
   );
 
@@ -30,7 +32,11 @@ describe('Conversation', () => {
 
     it('should not render if meta is set', () => {
       const conversation = shallow(
-        <Conversation containerId={containerId} meta={{ test: 'testing' }} />,
+        <Conversation
+          containerId={containerId}
+          meta={{ test: 'testing' }}
+          user={user}
+        />,
       );
       expect(conversation.find(Editor).length).toBe(0);
     });
@@ -41,9 +47,37 @@ describe('Conversation', () => {
           containerId={containerId}
           meta={{ test: 'testing' }}
           isExpanded={true}
+          user={user}
         />,
       );
       expect(conversation.find(Editor).length).toBe(1);
+    });
+
+    describe('no user', () => {
+      it('should not render if meta is not set', () => {
+        const conversation = shallow(
+          <Conversation containerId={containerId} />,
+        );
+        expect(conversation.find(Editor).length).toBe(0);
+      });
+
+      it('should not render if meta is set', () => {
+        const conversation = shallow(
+          <Conversation containerId={containerId} meta={{ test: 'testing' }} />,
+        );
+        expect(conversation.find(Editor).length).toBe(0);
+      });
+
+      it('should not render if isExpanded is true', () => {
+        const conversation = shallow(
+          <Conversation
+            containerId={containerId}
+            meta={{ test: 'testing' }}
+            isExpanded={true}
+          />,
+        );
+        expect(conversation.find(Editor).length).toBe(0);
+      });
     });
   });
 });

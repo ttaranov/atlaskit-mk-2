@@ -26,6 +26,7 @@
     "@atlaskit/icon": "^10.7.0",
     "@atlaskit/spinner": "^4.1.0",
     "@atlaskit/theme": "^2.3.0",
+    "@atlaskit/webdriver-runner": "^0.0.1",
     "classnames": "^2.2.5",
     "styled-components": "^1.4.6"
   },

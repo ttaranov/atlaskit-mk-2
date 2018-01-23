@@ -6,6 +6,7 @@ import {
   p as paragraph,
   bodiedExtension,
   macroProvider,
+  sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
 
 import {
@@ -36,6 +37,25 @@ describe('extension', () => {
     extensionType: 'com.atlassian.confluence.macro',
     extensionKey: 'expand',
   };
+
+  describe('when cursor is at the beginning of the content', () => {
+    it('should create a paragraph above extension node on Enter', () => {
+      const { editorView } = editor(
+        doc(
+          bodiedExtension(extensionAttrs, [
+            paragraph('{<>}'),
+            paragraph('text'),
+          ]),
+        ),
+      );
+
+      sendKeyToPm(editorView, 'Enter');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(paragraph(''), bodiedExtension(extensionAttrs, paragraph('text'))),
+      );
+    });
+  });
 
   describe('actions', () => {
     describe('setExtensionElement', () => {

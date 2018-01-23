@@ -19,8 +19,8 @@ export const toggleHeading2 = makeKeymap('Heading 2', '', 'Cmd-Alt-2');
 export const toggleHeading3 = makeKeymap('Heading 3', '', 'Cmd-Alt-3');
 export const toggleHeading4 = makeKeymap('Heading 4', '', 'Cmd-Alt-4');
 export const toggleHeading5 = makeKeymap('Heading 5', '', 'Cmd-Alt-5');
-export const toggleOrderedList = makeKeymap('Numbered list', '', 'Cmd-Alt-7');
-export const toggleBulletList = makeKeymap('Bullet list', '', 'Cmd-Alt-8');
+export const toggleOrderedList = makeKeymap('Numbered list', '', 'Cmd-Shift-7');
+export const toggleBulletList = makeKeymap('Bullet list', '', 'Cmd-Shift-8');
 export const toggleBlockQuote = makeKeymap('Block quote', '', 'Cmd-Alt-9');
 export const insertNewLine = makeKeyMapWithCommon(
   'Insert new line',

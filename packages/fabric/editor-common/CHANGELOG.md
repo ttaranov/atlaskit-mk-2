@@ -1,5 +1,11 @@
 # @atlaskit/editor-common
 
+## 5.8.1
+- [patch] Fixing nesting of blocks in JSON schema. [ed5c5ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed5c5ca)
+
+## 5.8.0
+- [minor] added new panelType [9f693b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f693b9)
+
 ## 5.7.3
 - [patch] Revert the change of block nesting in JSON schema. [dd19d0f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd19d0f)
 

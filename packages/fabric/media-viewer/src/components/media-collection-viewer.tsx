@@ -111,7 +111,7 @@ export class MediaCollectionViewer extends Component<
     if (onClose) {
       onClose();
     }
-  }
+  };
 
   private loadNextPageIfRequired = () => {
     const { mediaViewer, provider } = this.state;
