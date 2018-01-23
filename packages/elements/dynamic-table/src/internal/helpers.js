@@ -82,7 +82,7 @@ export const computeIndex = (
 export const reorderRows = (
   rankEnd: RankEnd,
   rows: RowType[],
-  page: number,
+  page?: number = 1,
   rowsPerPage?: number,
 ): RowType[] => {
   const { destination, sourceIndex } = rankEnd;
