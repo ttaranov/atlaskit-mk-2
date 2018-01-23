@@ -8,7 +8,7 @@ const INTEGRATION_TESTS =
 
 function generateTestMatchGlob(packagePath) {
   if (INTEGRATION_TESTS) {
-    return `${__dirname}/${packagePath}/**/tests/integration/**/*.(js|tsx|ts)`;
+    return `${__dirname}/${packagePath}/**/__tests__/integration/**/*.(js|tsx|ts)`;
   }
   return `${__dirname}/${packagePath}/**/__tests__/**/*.(js|tsx|ts)`;
 }

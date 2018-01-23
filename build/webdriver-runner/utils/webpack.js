@@ -41,7 +41,7 @@ let config;
 async function getPackagesWithWebdriverTests() /*: Promise<Array<string>> */ {
   const project /*: any */ = await boltQuery({
     cwd: path.join(__dirname, '..'),
-    workspaceFiles: { webdriver: 'tests/integration/*.+(js|ts|tsx)' },
+    workspaceFiles: { webdriver: '__tests__/integration/*.+(js|ts|tsx)' },
   });
   return project.workspaces
     .filter(workspace => workspace.files.webdriver.length)
