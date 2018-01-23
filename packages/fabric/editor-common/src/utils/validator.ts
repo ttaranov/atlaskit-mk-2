@@ -75,10 +75,18 @@ export const getValidDocument = (
   const node = getValidNode(doc as ADNode, schema);
 
   if (node.type === 'doc') {
+    node.content = wrapInlineNodes(node.content);
     return node as ADDoc;
   }
 
   return null;
+};
+
+const wrapInlineNodes = (nodes: ADNode[] = []): ADNode[] => {
+  return nodes.map(
+    node =>
+      node.type === 'text' ? { type: 'paragraph', content: [node] } : node,
+  );
 };
 
 export const getValidContent = (
@@ -152,13 +160,8 @@ export const getValidUnknownNode = (node: ADNode): ADNode => {
 
   if (!content || !content.length) {
     const unknownInlineNode: ADNode = {
-      type: 'paragraph',
-      content: [
-        {
-          type: 'text',
-          text: text || attrs.text || `[${type}]`,
-        },
-      ],
+      type: 'text',
+      text: text || attrs.text || `[${type}]`,
     };
 
     if (attrs.textUrl) {
@@ -448,13 +451,10 @@ export const getValidNode = (
         break;
       }
       case 'paragraph': {
-        if (content) {
-          return {
-            type,
-            content,
-          };
-        }
-        break;
+        return {
+          type,
+          content: content || [],
+        };
       }
       case 'rule': {
         return {
