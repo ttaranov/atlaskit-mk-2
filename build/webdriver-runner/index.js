@@ -15,7 +15,7 @@ function runTests() {
       shell: true,
     });
 
-    tests.on('error', err => reject(err));
+    tests.on('error', reject);
 
     tests.on('close', (code, signal) => {
       resolve({ code, signal });
