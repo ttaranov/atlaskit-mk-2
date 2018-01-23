@@ -10,7 +10,7 @@ function generateTestMatchGlob(packagePath) {
   if (INTEGRATION_TESTS) {
     return `${__dirname}/${packagePath}/**/__tests__/integration/**/*.(js|tsx|ts)`;
   }
-  return `${__dirname}/${packagePath}/**/__tests__/**/*.(js|tsx|ts)`;
+  return `${__dirname}/${packagePath}/**/__tests__/!(integration)/**/*.(js|tsx|ts)`;
 }
 
 // by default we'll run tests in all directories (local and master builds)
@@ -18,6 +18,7 @@ let testMatchArr = [generateTestMatchGlob('**')];
 
 // If the RUN_ONLY variable is set, we parse the array and use that to generate the globs
 if (RUN_ONLY !== 'all') {
+  // Workaround to avoid running integration tests currently
   const packagesToRun = JSON.parse(RUN_ONLY);
   testMatchArr = packagesToRun.map(generateTestMatchGlob);
   if (testMatchArr.length === 0) {
