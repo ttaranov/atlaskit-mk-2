@@ -219,7 +219,7 @@
     "babel-traverse": "^6.26.0",
     "babylon": "^6.18.0",
     "bitbucket-build-status": "^1.0.3",
-    "bolt": "^0.18.3",
+    "bolt": "^0.19.2",
     "bricks.js": "^1.8.0",
     "bytes": "^2.4.0",
     "calendar-base": "^0.3.0",
