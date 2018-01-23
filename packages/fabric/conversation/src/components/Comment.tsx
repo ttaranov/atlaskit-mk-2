@@ -130,7 +130,7 @@ export default class Comment extends React.PureComponent<Props, State> {
   };
 
   private getContent() {
-    const { comment, dataProviders } = this.props;
+    const { comment, dataProviders, user } = this.props;
     const { isEditing } = this.state;
 
     if (comment.deleted) {
@@ -146,6 +146,7 @@ export default class Comment extends React.PureComponent<Props, State> {
           onSave={this.onSaveEdit}
           onCancel={this.onCancelEdit}
           dataProviders={dataProviders}
+          user={user}
         />
       );
     }
@@ -158,20 +159,61 @@ export default class Comment extends React.PureComponent<Props, State> {
     );
   }
 
-  render() {
+  private renderComments() {
     const {
-      conversationId,
-      comment,
       comments,
+      conversationId,
       user,
-      dataProviders,
       onUserClick,
+      dataProviders,
     } = this.props;
-    const { isReplying, isEditing } = this.state;
+
+    if (!comments || comments.length === 0) {
+      return null;
+    }
+
+    return comments.map(child => (
+      <CommentContainer
+        key={child.commentId}
+        comment={child}
+        user={user}
+        conversationId={conversationId}
+        onAddComment={this.props.onAddComment}
+        onUpdateComment={this.props.onUpdateComment}
+        onDeleteComment={this.props.onDeleteComment}
+        onUserClick={onUserClick}
+        dataProviders={dataProviders}
+      />
+    ));
+  }
+
+  private renderEditor() {
+    const { isReplying } = this.state;
+    if (!isReplying) {
+      return null;
+    }
+
+    const { dataProviders, user } = this.props;
+
+    return (
+      <Editor
+        isExpanded={true}
+        onCancel={this.onCancelReply}
+        onSave={this.onSaveReply}
+        dataProviders={dataProviders}
+        user={user}
+      />
+    );
+  }
+
+  render() {
+    const { comment, user, onUserClick } = this.props;
+    const { isEditing } = this.state;
     const { createdBy } = comment;
+    const canReply = !!user && !isEditing && !comment.deleted;
     let actions;
 
-    if (!isEditing && !comment.deleted) {
+    if (canReply) {
       actions = [
         <CommentAction key="reply" onClick={this.onReply}>
           Reply
@@ -190,6 +232,9 @@ export default class Comment extends React.PureComponent<Props, State> {
         ];
       }
     }
+
+    const comments = this.renderComments();
+    const editor = this.renderEditor();
 
     return (
       <AkComment
@@ -218,27 +263,12 @@ export default class Comment extends React.PureComponent<Props, State> {
         actions={actions}
         content={this.getContent()}
       >
-        {(comments || []).map(child => (
-          <CommentContainer
-            key={child.commentId}
-            comment={child}
-            user={user}
-            conversationId={conversationId}
-            onAddComment={this.props.onAddComment}
-            onUpdateComment={this.props.onUpdateComment}
-            onDeleteComment={this.props.onDeleteComment}
-            onUserClick={onUserClick}
-            dataProviders={dataProviders}
-          />
-        ))}
-        {isReplying && (
-          <Editor
-            isExpanded={true}
-            onCancel={this.onCancelReply}
-            onSave={this.onSaveReply}
-            dataProviders={dataProviders}
-          />
-        )}
+        {editor || comments ? (
+          <div>
+            {comments}
+            {editor}
+          </div>
+        ) : null}
       </AkComment>
     );
   }

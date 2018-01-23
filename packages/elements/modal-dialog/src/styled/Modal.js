@@ -67,7 +67,7 @@ export const FillScreen = styled.div`
   position: absolute;
   top: ${p => p.scrollDistance}px;
   width: 100%;
-  z-index: 300;
+  z-index: ${layers.modal};
   -webkit-overflow-scrolling: touch;
 `;
 

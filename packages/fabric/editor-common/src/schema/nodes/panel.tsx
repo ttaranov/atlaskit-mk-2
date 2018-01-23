@@ -1,13 +1,24 @@
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import TipIcon from '@atlaskit/icon/glyph/editor/hint';
 import NoteIcon from '@atlaskit/icon/glyph/editor/note';
-import WarningIcon from '@atlaskit/icon/glyph/warning';
+import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
+import ErrorIcon from '@atlaskit/icon/glyph/editor/error';
+import SuccessIcon from '@atlaskit/icon/glyph/editor/success';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { NodeSpec, Node } from 'prosemirror-model';
-import { TopLevel } from './doc';
+import { Definition as Paragraph } from './paragraph';
+import { Definition as OrderedList } from './ordered-list';
+import { Definition as BulletList } from './bullet-list';
+import { Definition as Heading } from './heading';
 
-export type PanelType = 'info' | 'note' | 'tip' | 'warning';
+export type PanelType =
+  | 'info'
+  | 'note'
+  | 'tip'
+  | 'warning'
+  | 'error'
+  | 'success';
 
 export interface Attributes {
   panelType: PanelType;
@@ -19,7 +30,10 @@ export interface Attributes {
 export interface Definition {
   type: 'panel';
   attrs: Attributes;
-  content: TopLevel;
+  /**
+   * @minItems 1
+   */
+  content: Array<Paragraph | Heading | OrderedList | BulletList>;
 }
 
 const panelIcons = {
@@ -27,6 +41,8 @@ const panelIcons = {
   tip: TipIcon,
   note: NoteIcon,
   warning: WarningIcon,
+  success: SuccessIcon,
+  error: ErrorIcon,
 };
 
 const getIconDom = function(panelType: PanelType): HTMLElement {

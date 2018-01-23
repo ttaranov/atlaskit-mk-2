@@ -120,6 +120,5 @@ export class MediaFileListViewer extends Component<
     if (onClose) {
       onClose();
     }
-  }
-
+  };
 }

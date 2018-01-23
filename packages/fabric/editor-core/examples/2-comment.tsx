@@ -92,7 +92,6 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
               activityProvider,
               taskDecisionProvider,
               contextIdentifierProvider,
-              imageUploadProvider,
               onChange,
               disabled,
             }) => (
@@ -122,10 +121,8 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     mentionProvider={mentionProvider}
                     emojiProvider={emojiProvider}
                     mediaProvider={mediaProvider}
-                    activityProvider={activityProvider}
                     taskDecisionProvider={taskDecisionProvider}
                     contextIdentifierProvider={contextIdentifierProvider}
-                    legacyImageUploadProvider={imageUploadProvider}
                     onChange={onChange}
                     onSave={SAVE_ACTION}
                     onCancel={CANCEL_ACTION}

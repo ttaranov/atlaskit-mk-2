@@ -1,5 +1,7 @@
 # @atlaskit/media-viewer
 
+## 10.0.0
+
 ## 9.1.1
 - [patch] Fixes being unable to close Media Viewer when we open a file that is processing [5f63f6c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f63f6c)
 

@@ -1,14 +1,18 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
 import { Component } from 'react';
+import { isImageRemote } from '@atlaskit/media-core';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
 import {
   CircularMask,
   Container,
   DragOverlay,
   RectMask,
   Image,
+  RemoveImageContainer,
+  RemoveImageButton,
+  containerPadding,
 } from './styled';
-import { isImageRemote } from '@atlaskit/media-core';
 
 export interface LoadParameters {
   export: () => string;
@@ -25,8 +29,9 @@ export interface ImageCropperProp {
   left: number;
   imageWidth?: number;
   onDragStarted?: () => void;
-  onImageSize?: (width: number, height: number) => void;
+  onImageSize: (width: number, height: number) => void;
   onLoad?: OnLoadHandler;
+  onRemoveImage: () => void;
 }
 
 const defaultScale = 1;
@@ -43,8 +48,9 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
   };
 
   componentDidMount() {
-    if (this.props.onLoad) {
-      this.props.onLoad({
+    const { onLoad } = this.props;
+    if (onLoad) {
+      onLoad({
         export: this.export,
       });
     }
@@ -53,9 +59,7 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
   onDragStarted = () => this.props.onDragStarted && this.props.onDragStarted();
 
   onImageLoaded = e => {
-    if (this.props.onImageSize) {
-      this.props.onImageSize(e.target.naturalWidth, e.target.naturalHeight);
-    }
+    this.props.onImageSize(e.target.naturalWidth, e.target.naturalHeight);
     this.imageElement = e.target;
   };
 
@@ -66,15 +70,13 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
       top,
       left,
       imageSource,
+      onRemoveImage,
     } = this.props;
-
     const containerStyle = {
       width: `${containerSize}px`,
       height: `${containerSize}px`,
     };
-
     const width = this.width ? `${this.width}px` : 'auto';
-
     const imageStyle = {
       width,
       display: width === 'auto' ? 'none' : 'block',
@@ -93,6 +95,11 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
         />
         {isCircularMask ? <CircularMask /> : <RectMask />}
         <DragOverlay onMouseDown={this.onDragStarted} />
+        <RemoveImageContainer>
+          <RemoveImageButton onClick={onRemoveImage}>
+            <CrossIcon size="small" label="Remove image" />
+          </RemoveImageButton>
+        </RemoveImageContainer>
       </Container>
     );
   }
@@ -105,7 +112,6 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
 
   export = (): string => {
     let imageData = '';
-    const containerPadding = 20;
     const canvas = document.createElement('canvas');
     const { top, left, scale, containerSize } = this.props;
     const size = containerSize || 0;
