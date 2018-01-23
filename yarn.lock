@@ -7368,10 +7368,6 @@ mediapicker@^11.1.6:
   version "11.1.9"
   resolved "https://registry.yarnpkg.com/mediapicker/-/mediapicker-11.1.9.tgz#c0eb88a30a5a451b36d8ddd44d9d39607ccd79cd"
 
-mediapicker@^12.0.0:
-  version "12.0.0"
-  resolved "https://registry.yarnpkg.com/mediapicker/-/mediapicker-12.0.0.tgz#9a4c77ebab07195ec3bc5cd06ac7fca78cabfb88"
-
 mem@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/mem/-/mem-1.1.0.tgz#5edd52b485ca1d900fe64895505399a0dfa45f76"

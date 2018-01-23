@@ -1,11 +1,14 @@
 // @flow
 import styled from 'styled-components';
 import { getProvided, whenNotCollapsed } from '../../theme/util';
-import { scrollBarSize, scrollHintSpacing, scrollHintHeight } from '../../shared-variables';
+import {
+  scrollBarSize,
+  scrollHintSpacing,
+  scrollHintHeight,
+} from '../../shared-variables';
 
-const doubleIfNotWebkit = (width) => (
-  width * (window.navigator.userAgent.indexOf('AppleWebKit') >= 0 ? 1 : 2)
-);
+const doubleIfNotWebkit = width =>
+  width * (window.navigator.userAgent.indexOf('AppleWebKit') >= 0 ? 1 : 2);
 
 const ContainerNavigationChildrenWrapper = styled.div`
   display: flex;
@@ -34,9 +37,10 @@ const ContainerNavigationChildrenWrapper = styled.div`
 
     &:before {
       top: 0;
-      content: ${({ hasScrollHintTop }) => (hasScrollHintTop ? '\'\'' : 'none')};
+      content: ${({ hasScrollHintTop }) => (hasScrollHintTop ? "''" : 'none')};
     }
-  `}
+  `};
 `;
-ContainerNavigationChildrenWrapper.displayName = 'ContainerNavigationChildrenWrapper';
+ContainerNavigationChildrenWrapper.displayName =
+  'ContainerNavigationChildrenWrapper';
 export default ContainerNavigationChildrenWrapper;

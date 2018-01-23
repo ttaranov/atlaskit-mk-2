@@ -1,5 +1,3 @@
-import 'babel-polyfill';
-
 import { BinaryUploader, BinaryUploaderConstructor } from './components/binary';
 import {
   Browser,
@@ -38,7 +36,7 @@ export {
   UploadEventPayloadMap,
 } from './domain/uploadEvent';
 
-export { MediaFile } from './domain/file';
+export { MediaFile, PublicMediaFile } from './domain/file';
 export { MediaProgress } from './domain/progress';
 export { MediaError } from './domain/error';
 export { ImagePreview, Preview, NonImagePreview } from './domain/preview';

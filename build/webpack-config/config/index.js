@@ -156,11 +156,7 @@ module.exports = function createWebpackConfig(
         async: 'media-packages',
         minChunks(module, count) {
           const context = module.context;
-          return (
-            context &&
-            (context.includes('fabric/media') ||
-              context.includes('mediapicker'))
-          );
+          return context && context.includes('fabric/media');
         },
       }),
 

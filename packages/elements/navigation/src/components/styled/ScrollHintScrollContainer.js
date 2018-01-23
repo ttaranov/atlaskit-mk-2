@@ -7,7 +7,12 @@ import {
   scrollHintSpacing,
   scrollHintHeight,
 } from '../../shared-variables';
-import { whenCollapsed, whenNotCollapsed, getProvided, getProvidedScrollbar } from '../../theme/util';
+import {
+  whenCollapsed,
+  whenNotCollapsed,
+  getProvided,
+  getProvidedScrollbar,
+} from '../../theme/util';
 
 const bottomPadding = gridSize;
 
@@ -29,14 +34,14 @@ const ScrollHintScrollContainer = styled.div`
   ${whenCollapsed`
     overflow-x: hidden;
     padding: 0 ${gridSize}px;
-  `}
-
-  ${whenNotCollapsed`
+  `} ${whenNotCollapsed`
     overflow-y: auto;
 
     &:before,
     &:after {
-      background: ${({ theme }) => getProvided(theme).background.secondary || getProvided(theme).background.primary};
+      background: ${({ theme }) =>
+        getProvided(theme).background.secondary ||
+        getProvided(theme).background.primary};
       content: '';
       display: block;
       flex: 0;
@@ -62,13 +67,15 @@ const ScrollHintScrollContainer = styled.div`
       background-color: rgba(0, 0, 0, 0);
     }
     &:hover::-webkit-scrollbar-thumb {
-      background-color: ${({ theme }) => getProvidedScrollbar(theme).default.background};
+      background-color: ${({ theme }) =>
+        getProvidedScrollbar(theme).default.background};
       border-radius: ${scrollBarSize}px;
     }
     &::-webkit-scrollbar-thumb:hover {
-      background-color: ${({ theme }) => getProvidedScrollbar(theme).hover.background};
+      background-color: ${({ theme }) =>
+        getProvidedScrollbar(theme).hover.background};
     }
-  `}
+  `};
 `;
 ScrollHintScrollContainer.displayName = 'ScrollHintScrollContainer';
 export default ScrollHintScrollContainer;

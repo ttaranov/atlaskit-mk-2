@@ -65,7 +65,7 @@
     "css-color-names": "0.0.4",
     "linkify-it": "^2.0.3",
     "markdown-it-table": "^1.0.0",
-    "mediapicker": "^12.0.0",
+    "@atlaskit/media-picker": "^0.2.0",
     "orderedmap": "^1.0.0",
     "prop-types": "^15.5.10",
     "prosemirror-commands": "^1.0.1",
