@@ -5,13 +5,12 @@ import React, { Component } from 'react';
 import StyledParagraph from '../styled/Paragraph';
 import type { SkeletonComponentProps } from '../types';
 
-type Props = SkeletonComponentProps & {
-  color?: string,
-};
+// Intersection with an empty type is needed for the
+// prop types to be extracted in the docs
+type Props = SkeletonComponentProps & {};
 
 export class Paragraph extends Component<Props> {
   static defaultProps = {
-    size: 'medium',
     appearance: 'normal',
   };
 

@@ -6,7 +6,6 @@ import StyledIcon from '../styled/Icon';
 import type { SkeletonComponentProps } from '../types';
 
 type Props = SkeletonComponentProps & {
-  color?: string,
   size: 'small' | 'medium' | 'large' | 'xlarge',
 };
 
