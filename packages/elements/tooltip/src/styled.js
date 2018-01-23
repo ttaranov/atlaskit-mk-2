@@ -1,7 +1,7 @@
 // @flow
 
 import styled, { css } from 'styled-components';
-import { borderRadius, colors, themed } from '@atlaskit/theme';
+import { borderRadius, colors, themed, layers } from '@atlaskit/theme';
 
 const backgroundColor = themed({
   light: colors.N800,
@@ -22,13 +22,13 @@ const truncate = p =>
       `
     : '';
 
-export const ContentBase = styled.div`
-  z-index: 1000;
+export const TooltipPrimitive = styled.div`
+  z-index: ${layers.tooltip};
   pointer-events: none;
   position: fixed;
 `;
 
-export const Tooltip = styled(ContentBase)`
+export const Tooltip = styled(TooltipPrimitive)`
   background-color: ${backgroundColor};
   border-radius: ${borderRadius}px;
   box-sizing: border-box;

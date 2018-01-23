@@ -3,9 +3,9 @@ import React from 'react';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import Tooltip from '../src';
-import { ContentBase } from '../src/styled';
+import { TooltipPrimitive } from '../src/styled';
 
-const InlineDialog = styled(ContentBase)`
+const InlineDialog = styled(TooltipPrimitive)`
   background: white;
   border-radius: 4px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
