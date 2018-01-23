@@ -51,12 +51,13 @@ export default class DynamicTable extends Component<Props, State> {
 
   static defaultProps = {
     isLoading: false,
-    isRankable: false,
     isFixedSize: false,
     rowsPerPage: Infinity,
     onSetPage() {},
     onSort() {},
     page: 1,
+    isRankable: false,
+    isRankingDisabled: false,
     onRankStart: () => {},
     onRankEnd: () => {},
   };
@@ -145,13 +146,14 @@ export default class DynamicTable extends Component<Props, State> {
       caption,
       head,
       isFixedSize,
-      isRankable,
       page,
       rows,
       rowsPerPage,
       sortKey,
       sortOrder,
       isLoading,
+      isRankable,
+      isRankingDisabled,
     } = this.props;
 
     const rowsLength = rows && rows.length;
@@ -201,7 +203,7 @@ export default class DynamicTable extends Component<Props, State> {
                   isRanking={this.state.isRanking}
                   onRankStart={this.onRankStart}
                   onRankEnd={this.onRankEnd}
-                  isRankingDisabled={isLoading}
+                  isRankingDisabled={isRankingDisabled || isLoading}
                 />
               ) : (
                 <Body {...bodyProps} />

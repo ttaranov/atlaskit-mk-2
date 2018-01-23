@@ -21,6 +21,7 @@ export type StatelessProps = {
   sortKey?: string,
   sortOrder?: SortOrderType,
   isRankable?: boolean,
+  isRankingDisabled?: boolean,
   onRankStart?: RankStart => void,
   onRankEnd?: RankEnd => void,
 };

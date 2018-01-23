@@ -94,6 +94,7 @@ export default class DynamicTable extends Component<Props, State> {
       isLoading,
       isFixedSize,
       isRankable,
+      isRankingDisabled,
       rowsPerPage,
     } = this.props;
 
@@ -113,6 +114,7 @@ export default class DynamicTable extends Component<Props, State> {
         sortKey={sortKey}
         sortOrder={sortOrder}
         isRankable={isRankable}
+        isRankingDisabled={isRankingDisabled}
         onRankEnd={this.onRankEnd}
         onRankStart={this.props.onRankStart}
       />

@@ -104,7 +104,10 @@ export class RankableBody extends Component<Props, {}> {
         onDragStart={this.onDragStart}
         onDragEnd={this.onDragEnd}
       >
-        <Droppable droppableId="dynamic-table-droppable">
+        <Droppable
+          droppableId="dynamic-table-droppable"
+          isDropDisabled={isRankingDisabled}
+        >
           {provided => (
             <RankableTableBody
               innerRef={this.innerRef(provided.innerRef)}
