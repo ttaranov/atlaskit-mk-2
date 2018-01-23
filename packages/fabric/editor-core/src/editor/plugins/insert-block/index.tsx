@@ -9,6 +9,7 @@ import { stateKey as mediaStateKey } from '../../../plugins/media';
 import { stateKey as hyperlinkStateKey } from '../../../plugins/hyperlink';
 import { stateKey as mentionStateKey } from '../../../plugins/mentions';
 import { stateKey as tablesStateKey } from '../../../plugins/table';
+import { stateKey as imageUploadStateKey } from '../../../plugins/image-upload';
 import {
   pluginKey as macroStateKey,
   MacroState,
@@ -62,6 +63,7 @@ const insertBlockPlugin: EditorPlugin = {
             hyperlinkState: hyperlinkStateKey,
             emojiState: emojiStateKey,
             dateState: dateStateKey,
+            imageUpload: imageUploadStateKey,
           }}
           render={({
             blockTypeState = {} as BlockTypeState,
@@ -72,6 +74,7 @@ const insertBlockPlugin: EditorPlugin = {
             hyperlinkState,
             emojiState,
             dateState,
+            imageUpload,
           }) => (
             <ToolbarInsertBlock
               buttons={buttons}
@@ -90,6 +93,11 @@ const insertBlockPlugin: EditorPlugin = {
               mediaUploadsEnabled={mediaState && mediaState.allowsUploads}
               onShowMediaPicker={mediaState && mediaState.showMediaPicker}
               mediaSupported={!!mediaState}
+              imageUploadSupported={!!imageUpload}
+              imageUploadEnabled={imageUpload && imageUpload.enabled}
+              handleImageUpload={
+                imageUpload && imageUpload.handleImageUpload.bind(imageUpload)
+              }
               availableWrapperBlockTypes={
                 blockTypeState.availableWrapperBlockTypes
               }

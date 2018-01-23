@@ -9,15 +9,15 @@ import {
   Dropzone,
   Clipboard,
   BinaryUploader,
-  UploadsStartPayload,
-  UploadPreviewUpdatePayload,
-  UploadStatusUpdatePayload,
-  UploadProcessingPayload,
-  UploadFinalizeReadyPayload,
-  UploadErrorPayload,
-  UploadEndPayload,
-  SerialisedMediaFile,
-} from 'mediapicker';
+  UploadsStartEventPayload,
+  UploadPreviewUpdateEventPayload,
+  UploadStatusUpdateEventPayload,
+  UploadProcessingEventPayload,
+  UploadFinalizeReadyEventPayload,
+  UploadErrorEventPayload,
+  UploadEndEventPayload,
+  MediaFile,
+} from '@atlaskit/media-picker';
 import {
   ContextConfig,
   MediaStateManager,
@@ -199,13 +199,17 @@ export default class PickerFacade {
     this.onDragListeners.push(cb);
   }
 
-  private newState = (file: SerialisedMediaFile, status: MediaStateStatus) => {
+  private newState = (
+    file: MediaFile,
+    status: MediaStateStatus,
+    publicId?: string,
+  ): MediaState => {
     const tempId = this.generateTempId(file.id);
 
     return {
       id: tempId,
       status: status,
-      publicId: file.publicId,
+      publicId,
       fileName: file.name,
       fileSize: file.size,
       fileMimeType: file.type,
@@ -230,7 +234,7 @@ export default class PickerFacade {
     return `temporary:${id}`;
   }
 
-  private handleUploadsStart = (event: UploadsStartPayload) => {
+  private handleUploadsStart = (event: UploadsStartEventPayload) => {
     const { files } = event;
 
     const states = files.map(file => {
@@ -242,7 +246,9 @@ export default class PickerFacade {
     this.onStartListeners.forEach(cb => cb.call(cb, states));
   };
 
-  private handleUploadStatusUpdate = (event: UploadStatusUpdatePayload) => {
+  private handleUploadStatusUpdate = (
+    event: UploadStatusUpdateEventPayload,
+  ) => {
     const { file, progress } = event;
     const tempId = this.generateTempId(file.id);
     const currentState = this.stateManager.getState(tempId);
@@ -257,14 +263,16 @@ export default class PickerFacade {
     this.stateManager.updateState(state.id, state);
   };
 
-  private handleUploadProcessing = (event: UploadProcessingPayload) => {
+  private handleUploadProcessing = (event: UploadProcessingEventPayload) => {
     const { file } = event;
 
-    const state = this.newState(file, 'processing');
+    const state = this.newState(file, 'processing', file.publicId);
     this.stateManager.updateState(state.id, state);
   };
 
-  private handleUploadFinalizeReady = (event: UploadFinalizeReadyPayload) => {
+  private handleUploadFinalizeReady = (
+    event: UploadFinalizeReadyEventPayload,
+  ) => {
     const { file, finalize } = event;
 
     if (!finalize) {
@@ -278,7 +286,7 @@ export default class PickerFacade {
     this.stateManager.updateState(state.id, state);
   };
 
-  private handleUploadError = ({ error }: UploadErrorPayload) => {
+  private handleUploadError = ({ error }: UploadErrorEventPayload) => {
     if (!error || !error.fileId) {
       const err = new Error(
         `Media: unknown upload-error received from Media Picker: ${error &&
@@ -299,19 +307,21 @@ export default class PickerFacade {
     });
   };
 
-  private handleUploadEnd = (event: UploadEndPayload) => {
+  private handleUploadEnd = (event: UploadEndEventPayload) => {
     const { file } = event;
 
-    const state = this.newState(file, 'ready');
+    const state = this.newState(file, 'ready', file.publicId);
     this.stateManager.updateState(state.id, state);
   };
 
-  private handleUploadPreviewUpdate = (event: UploadPreviewUpdatePayload) => {
+  private handleUploadPreviewUpdate = (
+    event: UploadPreviewUpdateEventPayload,
+  ) => {
     const { file, preview } = event;
 
     if (preview !== undefined) {
       const state = this.newState(file, 'uploading');
-      state['thumbnail'] = preview;
+      state.thumbnail = preview;
       this.stateManager.updateState(state.id, state);
     }
   };

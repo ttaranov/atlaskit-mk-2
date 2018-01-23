@@ -1,5 +1,11 @@
 # @atlaskit/media-core
 
+## 13.0.0
+
+
+
+- [major] change thumbnail interface according to new MediaPicker one [5c889c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5c889c4)
+
 ## 12.1.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
 

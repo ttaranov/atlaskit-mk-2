@@ -1,5 +1,5 @@
 /* tslint:disable:no-var-requires */
-const rusha = require('rusha');
+import * as Rusha from 'rusha';
 
 import { Hasher } from './hasher';
 
@@ -13,7 +13,7 @@ export class SimpleHasher implements Hasher {
     const fileReader = new FileReader();
     fileReader.onload = event => {
       const arrayBuffer = (event.target as FileReader).result;
-      chunk.hash = new rusha(estimatedChunkSize).digestFromArrayBuffer(
+      chunk.hash = new Rusha(estimatedChunkSize).digestFromArrayBuffer(
         arrayBuffer,
       );
       chunk.preprocessFinished();

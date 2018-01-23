@@ -1,5 +1,19 @@
 # @atlaskit/editor-core
 
+## 61.4.6
+- [patch] use new MediaPicker package [c652ed4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c652ed4)
+
+## 61.4.5
+- [patch] Add image upload icon back [768c601](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/768c601)
+
+## 61.4.4
+- [patch] fix extension replacement with empty content [e151446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e151446)
+
+## 61.4.3
+
+- [patch] fixed extension node content field [41c7958](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41c7958)
+- [patch] Add analytics for hyperlink autocomplete [345b082](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/345b082)
+
 ## 61.4.2
 - [patch] fixed typescript error [19630c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/19630c5)
 - [patch] added mention picker space analytics [05fa937](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05fa937)
