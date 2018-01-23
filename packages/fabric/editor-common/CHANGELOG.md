@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 5.9.3
+- [patch] Fix getValidDocument to wrap top level inline nodes [c82a941](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c82a941)
+- [patch] Fix unknown node validator [419f4fc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/419f4fc)
+
 ## 5.9.2
 
 ## 5.9.1
