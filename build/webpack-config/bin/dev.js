@@ -29,12 +29,10 @@ const HOST = 'localhost';
 const PORT = 9000;
 
 async function runDevServer() {
-  const args = process.argv.slice(2);
-  const [entry, workspacesGlobRaw = ''] = args;
+  const [entry, workspacesGlobRaw = ''] = process.argv.slice(2);
   const workspacesGlob = workspacesGlobRaw.replace(/^['"](.+)['"]$/, '$1'); // Unwrap string from quotes
   const env = 'development';
   const includePatterns = workspacesGlob ? false : true; // if glob exists we just want to show what matches it
-  const mocks = args.indexOf('--with-mocks') !== -1;
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
   const workspaces = await bolt.getWorkspaces();
 
@@ -81,7 +79,6 @@ async function runDevServer() {
     globs,
     env,
     includePatterns,
-    mocks,
   });
 
   const compiler = webpack(config);

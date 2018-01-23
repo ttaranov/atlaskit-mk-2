@@ -5,21 +5,6 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { createDefaultGlob } = require('./utils');
 
-function createEntries({ env, entry, host, port, mocks }) {
-  const entries = {
-    main: [path.join(process.cwd(), entry)],
-    vendor: ['react', 'react-dom', 'styled-components', 'highlight.js'],
-  };
-
-  if (env === 'development' && host && port) {
-    entries.main.push(
-      `${require.resolve('webpack-dev-server/client')}?http://${host}:${port}/`,
-    );
-  }
-
-  return entries;
-}
-
 module.exports = function createWebpackConfig(
   {
     entry,
@@ -28,11 +13,21 @@ module.exports = function createWebpackConfig(
     globs = createDefaultGlob(),
     includePatterns = false,
     env = 'development',
-    mocks,
-  } /*: { entry: string, host?: string, port?: number, globs?: Array<string>, includePatterns: boolean, env: string, mocks?: boolean } */,
+  } /*: { entry: string, host?: string, port?: number, globs?: Array<string>, includePatterns: boolean, env: string } */,
 ) {
-  const config = {
-    entry: createEntries({ env, entry, host, port, mocks }),
+  return {
+    entry: {
+      main:
+        env === 'development' && host && port
+          ? [
+              `${require.resolve(
+                'webpack-dev-server/client',
+              )}?http://${host}:${port}/`,
+              path.join(process.cwd(), entry),
+            ]
+          : path.join(process.cwd(), entry),
+      vendor: ['react', 'react-dom', 'styled-components', 'highlight.js'],
+    },
     output: {
       filename: '[name].js',
       path: path.resolve(process.cwd(), 'dist'),
@@ -113,6 +108,11 @@ module.exports = function createWebpackConfig(
           test: /\.less$/,
           use: ['style-loader', 'css-loader', 'less-loader'],
         },
+        {
+          enforce: 'pre',
+          test: /.*test-helpers\/.*\.ts/,
+          loader: require.resolve('import-glob'),
+        },
       ],
     },
     resolve: {
@@ -183,14 +183,4 @@ module.exports = function createWebpackConfig(
       }),
     ],
   };
-
-  if (mocks) {
-    config.module.rules.push({
-      enforce: 'pre',
-      test: /\.ts/,
-      loader: require.resolve('import-glob'),
-    });
-  }
-
-  return config;
 };
