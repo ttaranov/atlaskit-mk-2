@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { ActivityProvider, ActivityItem } from '@atlaskit/activity';
 
 import { HyperlinkState } from '../../plugins/hyperlink';
+import { analyticsService } from '../../analytics';
 import PanelTextInput from '../PanelTextInput';
 import { EditorView } from 'prosemirror-view';
 import RecentList from './RecentList';
@@ -101,12 +102,19 @@ export default class RecentSearch extends PureComponent<Props, State> {
           items={items}
           isLoading={isLoading}
           selectedIndex={selectedIndex}
-          onSelect={this.addLink}
+          onSelect={this.handleSelected}
           onMouseMove={this.handleMouseMove}
         />
       </Container>
     );
   }
+
+  private handleSelected = (href: string, text: string) => {
+    this.addLink(href, text);
+    this.trackAutoCompleteAnalyticsEvent(
+      'atlassian.editor.format.hyperlink.autocomplete.click',
+    );
+  };
 
   private handleMouseMove = (objectId: string) => {
     const { items } = this.state;
@@ -126,8 +134,14 @@ export default class RecentSearch extends PureComponent<Props, State> {
     if (items && items.length > 0 && selectedIndex > -1) {
       const item = items[selectedIndex];
       this.addLink(item.url, item.name);
+      this.trackAutoCompleteAnalyticsEvent(
+        'atlassian.editor.format.hyperlink.autocomplete.keyboard',
+      );
     } else if (input && input.length > 0) {
       this.addLink(input);
+      this.trackAutoCompleteAnalyticsEvent(
+        'atlassian.editor.format.hyperlink.autocomplete.notselected',
+      );
     }
   };
 
@@ -185,6 +199,12 @@ export default class RecentSearch extends PureComponent<Props, State> {
       },
     );
   };
+
+  private trackAutoCompleteAnalyticsEvent(name: string) {
+    const numChars = this.state.input ? this.state.input.length : 0;
+
+    analyticsService.trackEvent(name, { numChars: numChars });
+  }
 }
 
 const findIndex = (array: any[], predicate: (item: any) => boolean): number => {

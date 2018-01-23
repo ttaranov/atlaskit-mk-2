@@ -10,7 +10,7 @@
     "import/no-extraneous-dependencies": ["error", {
       "devDependencies": [
         "**/docs/**/*.js",
-        "**/__tests__/*.js",
+        "**/__tests__/**/*.js",
         "**/examples/**/*.js",
         "./projector.js",
         "./resolver.js"
@@ -20,6 +20,7 @@
     "import/prefer-default-export": "off",
     "react/prefer-stateless-function": "off",
 
+    "no-labels": "off",
     "no-restricted-syntax": "off",
     "no-underscore-dangle": "off",
     "no-use-before-define": "off",

@@ -1,5 +1,9 @@
 # @atlaskit/media-picker
 
+## 0.2.2
+
+- [patch] Migrate Navigation from Ak repo to ak mk 2 repo, Fixed flow typing inconsistencies in ak mk 2 [bdeef5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdeef5b)
+
 ## 0.2.1
 
 ## 0.2.0

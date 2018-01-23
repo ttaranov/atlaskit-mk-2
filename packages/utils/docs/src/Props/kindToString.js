@@ -93,6 +93,10 @@ converters.variable = type => {
   return convert(val.id);
 };
 
+converters.templateExpression = ({ tag }) => {
+  return `${convert(tag.object)} ${convert(tag.property)}`;
+};
+
 export default function convert(type: { kind: string }) {
   const converter = converters[type.kind];
   if (!converter) {

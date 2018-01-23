@@ -37,7 +37,14 @@ export class EmojiState {
 
   onSelectPrevious = (): boolean => false;
   onSelectNext = (): boolean => false;
-  onSelectCurrent = (): boolean => false;
+  onSelectCurrent = (key?: string): boolean => false;
+  onSpaceSelectCurrent = (
+    emoji: EmojiDescription,
+    key?: string,
+    query?: string,
+  ): void => {};
+  onSpaceTyped = (): void => {};
+  onDismiss = (): void => {};
 
   private changeHandlers: StateChangeHandler[] = [];
   private state: EditorState;
@@ -131,7 +138,7 @@ export class EmojiState {
           .removeStoredMark(markType),
       );
     }
-
+    this.onDismiss();
     return true;
   }
 
@@ -220,15 +227,17 @@ export class EmojiState {
     }
   };
 
-  trySelectCurrent = (): boolean => {
+  trySelectCurrentWithSpace = (key?: string): boolean => {
     const emojisCount = this.getEmojisCount();
     if (emojisCount === 1) {
+      const lastQuery = this.query;
       this.insertEmoji(this.queryResult[0]);
+      this.onSpaceSelectCurrent(this.queryResult[0], key, lastQuery);
       return true;
     } else if (emojisCount === 0 || this.isEmptyQuery()) {
       this.dismiss();
     }
-
+    this.onSpaceTyped();
     return false;
   };
 

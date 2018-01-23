@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { ImageCropper, ImageCropperProp } from '../src/image-cropper';
-import { Container, DragOverlay } from '../src/image-cropper/styled';
+import {
+  Container,
+  DragOverlay,
+  RemoveImageButton,
+} from '../src/image-cropper/styled';
 import { smallImage } from '@atlaskit/media-test-helpers';
 
 const imageWidth = 600;
@@ -17,12 +21,17 @@ describe('Image cropper', () => {
   let img;
   let container;
   let dragOverlay;
+  let removeImageButton;
   let onDragStartedSpy;
   let onImageSizeSpy;
+  let onLoadSpy;
+  let onRemoveImageSpy;
 
   const createComponent = (props = {}) => {
     onDragStartedSpy = jest.fn();
     onImageSizeSpy = jest.fn();
+    onLoadSpy = jest.fn();
+    onRemoveImageSpy = jest.fn();
     const allProps: ImageCropperProp = {
       imageSource,
       scale,
@@ -31,11 +40,14 @@ describe('Image cropper', () => {
       left,
       onDragStarted: onDragStartedSpy,
       onImageSize: onImageSizeSpy,
+      onLoad: onLoadSpy,
+      onRemoveImage: onRemoveImageSpy,
       ...props,
     };
     component = mount(<ImageCropper {...allProps} />);
     img = component.find('img');
     container = component.find(Container);
+    removeImageButton = component.find(RemoveImageButton);
     dragOverlay = component.find(DragOverlay);
   };
 
@@ -84,6 +96,17 @@ describe('Image cropper', () => {
       });
       expect(onImageSizeSpy).toHaveBeenCalledTimes(1);
       expect(onImageSizeSpy).toHaveBeenCalledWith(imageWidth, imageHeight);
+    });
+  });
+
+  describe('when an image is removed', () => {
+    beforeEach(() => {
+      createComponent();
+    });
+
+    it('should call onRemoveImage prop when cross clicked', () => {
+      removeImageButton.simulate('click');
+      expect(onRemoveImageSpy).toHaveBeenCalledTimes(1);
     });
   });
 });

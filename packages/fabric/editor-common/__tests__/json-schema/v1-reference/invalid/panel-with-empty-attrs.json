@@ -6,7 +6,11 @@
       "type": "panel",
       "content": [
         {
-          "type": "rule"
+          "type": "paragraph",
+          "content": [{
+            "type": "text",
+            "text": "foo"
+          }]
         }
       ],
       "attrs": {}
