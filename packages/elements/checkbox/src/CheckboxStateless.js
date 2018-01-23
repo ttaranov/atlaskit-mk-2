@@ -176,9 +176,7 @@ class CheckboxStateless extends Component<Props, State> {
     );
   }
 }
-// TODO: Review if the error is an issue with Flow of 'Too many type arguments. Expected at most 2...'
-// possible reported related issue https://github.com/apollographql/react-apollo/issues/1220
-// $FlowFixMe
+
 const CheckboxWithTheme = withTheme(CheckboxStateless);
 
 const emptyTheme = {};
