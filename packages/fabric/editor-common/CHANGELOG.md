@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 5.9.2
+
 ## 5.9.1
 - [patch] fix extension replacement with empty content [e151446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e151446)
 

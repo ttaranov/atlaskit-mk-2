@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.4.6
+- [patch] use new MediaPicker package [c652ed4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c652ed4)
+
 ## 61.4.5
 - [patch] Add image upload icon back [768c601](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/768c601)
 
