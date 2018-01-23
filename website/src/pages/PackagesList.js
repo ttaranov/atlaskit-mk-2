@@ -2,13 +2,14 @@
 
 import React from 'react';
 import Page, { Title, Section } from '../components/Page';
-import { packages } from '../site';
+import { externalPackages as packages } from '../site';
 import Table from '@atlaskit/dynamic-table';
 import styled from 'styled-components';
 import * as fs from '../utils/fs';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 import Loadable from 'react-loadable';
 import Loading from '../components/Loading';
+import NAV_DATA from '../NAV_DATA';
 
 const head = {
   cells: [
@@ -49,6 +50,10 @@ const head = {
   ],
 };
 
+const getConfig = (groupId, pkgId) => {
+  return NAV_DATA[groupId] && NAV_DATA[groupId].find(a => a.name === pkgId);
+};
+
 const renderRow = (
   {
     name: packageName,
@@ -60,8 +65,6 @@ const renderRow = (
   { id },
   groupId,
 ) => {
-  // const publishTime = new Date(lastPublishedOn);
-
   return {
     cells: [
       {
@@ -114,44 +117,32 @@ const renderRow = (
   };
 };
 
-const makeRows = () =>
-  Promise.all(
-    fs.getDirectories(packages.children).reduce(
-      (acc, team) =>
-        acc.concat(
-          fs.getDirectories(team.children).map(pkg => {
-            const pkgJSON = fs.getById(pkg.children, 'package.json');
-            if (pkgJSON.type !== 'file')
-              throw new Error(`package.json was not a file`);
-            return pkgJSON
-              .exports()
-              .then(pkgJSON => renderRow(pkgJSON, pkg, team.id));
-          }),
-        ),
-      [],
-    ),
+const StatRows = () =>
+  fs.getDirectories(packages.children).reduce(
+    (acc, team) =>
+      acc.concat(
+        fs.getDirectories(team.children).map(pkg => {
+          const pkgJSON = getConfig(team.id, pkg.id).config;
+
+          return renderRow(pkgJSON, pkg, team.id);
+        }),
+      ),
+    [],
   );
 
 export default function PackagesList() {
-  const LoadedTable = Loadable({
-    loading: Loading,
-    loader: makeRows,
-    render: Rows => (
+  return (
+    <Page width="large">
+      <Title>All Packages</Title>
       <Section>
         <Table
           head={head}
-          rows={Rows}
+          rows={StatRows()}
           isFixedSize
           defaultSortKey="name"
           defaultSortOrder="ASC"
         />
       </Section>
-    ),
-  });
-  return (
-    <Page width="large">
-      <Title>All Packages</Title>
-      <LoadedTable />
     </Page>
   );
 }
