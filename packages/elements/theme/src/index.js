@@ -34,5 +34,5 @@ export const layers = {
   modal: () => 510,
   flag: () => 600,
   spotlight: () => 700,
-  tooltip: () => 1000,
+  tooltip: () => 800,
 };
