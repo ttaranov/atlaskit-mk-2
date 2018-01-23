@@ -1,11 +1,5 @@
 /* tslint:disable:no-console */
-
 import * as React from 'react';
-import {
-  tallImage,
-  smallImage,
-  remoteImage,
-} from '@atlaskit/media-test-helpers';
 import { ImageNavigator } from '../src/image-navigator';
 
 let onLoadParams;
@@ -28,16 +22,17 @@ export default () => (
   <div>
     <h1>Uploader</h1>
     <ImageNavigator
-      onImageChanged={() => {
-        console.log('onImageChanged');
+      onPositionChanged={(x, y) => {
+        console.log('onPositionChanged', x, y);
       }}
-      onPositionChanged={() => {
-        console.log('onPositionChanged');
-      }}
-      onSizeChanged={() => {
-        console.log('onSizeChanged');
+      onSizeChanged={size => {
+        console.log('onSizeChanged', size);
       }}
       onLoad={onLoad}
+      onRemoveImage={() => console.log('onRemoveImage')}
+      onImageError={errorMessage => console.log('onImageError', errorMessage)}
+      onImageLoaded={(file, crop) => console.log('onImageLoaded', file, crop)}
+      onImageUploaded={file => console.log('onImageLoaded', file)}
     />
     <button onClick={exportImage}>Export</button>
     <img
