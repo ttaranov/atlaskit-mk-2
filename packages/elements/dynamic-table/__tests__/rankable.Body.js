@@ -16,6 +16,7 @@ const createProps = () => ({
   refWidth: -1,
   refHeight: -1,
   pageRows: rowsWithKeys,
+  isRankingDisabled: false,
 });
 
 const createDragEndProps = (
