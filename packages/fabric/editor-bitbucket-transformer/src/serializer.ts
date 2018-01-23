@@ -35,7 +35,7 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
         // If child is an empty Textblock we need to insert a zwnj-character in order to preserve that line in markdown
         child.isTextblock &&
         !child.textContent &&
-        // If child is a Codeblock we need to handle this seperately as we want to preserve empty code blocks
+        // If child is a Codeblock we need to handle this separately as we want to preserve empty code blocks
         !(child.type.name === 'codeBlock') &&
         !(child.content && (child.content as any).size > 0)
       ) {
@@ -274,7 +274,7 @@ const editorNodes = {
       '![' +
         escapeMarkdown(node.attrs.alt) +
         '](' +
-        escapeMarkdown(node.attrs.src) +
+        node.attrs.src +
         (node.attrs.title ? ` '${escapeMarkdown(node.attrs.title)}'` : '') +
         ')',
     );
