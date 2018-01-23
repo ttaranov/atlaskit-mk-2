@@ -152,8 +152,13 @@ export const getValidUnknownNode = (node: ADNode): ADNode => {
 
   if (!content || !content.length) {
     const unknownInlineNode: ADNode = {
-      type: 'text',
-      text: text || attrs.text || `[${type}]`,
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: text || attrs.text || `[${type}]`,
+        },
+      ],
     };
 
     if (attrs.textUrl) {
