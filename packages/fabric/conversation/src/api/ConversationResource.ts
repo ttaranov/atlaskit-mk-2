@@ -2,14 +2,18 @@ import { createStore, Store, Action } from '../internal/store';
 import {
   FETCH_CONVERSATIONS,
   FETCH_CONVERSATIONS_SUCCESS,
+  ADD_COMMENT,
   ADD_COMMENT_SUCCESS,
+  UPDATE_COMMENT,
   UPDATE_COMMENT_SUCCESS,
   DELETE_COMMENT_SUCCESS,
   UPDATE_USER,
+  CREATE_CONVERSATION,
   CREATE_CONVERSATION_SUCCESS,
 } from '../internal/actions';
 import { reducers } from '../internal/reducers';
 import { Comment, Conversation, User } from '../model';
+import { uuid } from '../internal/uuid';
 
 export interface ConversationResourceConfig {
   url: string;
@@ -183,6 +187,23 @@ export class ConversationResource extends AbstractConversationResource {
     value: any,
     meta: any,
   ): Promise<Conversation> {
+    const { dispatch } = this;
+    const tempConversation = this.createConversation(
+      localId,
+      containerId,
+      value,
+      meta,
+    );
+
+    if (tempConversation) {
+      dispatch({
+        type: CREATE_CONVERSATION,
+        payload: {
+          ...tempConversation,
+        },
+      });
+    }
+
     const result = await this.makeRequest<Conversation>(
       '/conversation?expand=comments.document.adf',
       {
@@ -199,12 +220,18 @@ export class ConversationResource extends AbstractConversationResource {
       },
     );
 
-    result.localId = localId;
+    dispatch({
+      type: CREATE_CONVERSATION_SUCCESS,
+      payload: {
+        ...result,
+        localId,
+      },
+    });
 
-    const { dispatch } = this;
-    dispatch({ type: CREATE_CONVERSATION_SUCCESS, payload: result });
-
-    return result;
+    return {
+      ...result,
+      localId,
+    };
   }
 
   /**
@@ -215,6 +242,12 @@ export class ConversationResource extends AbstractConversationResource {
     parentId: string,
     doc: any,
   ): Promise<Comment> {
+    const { dispatch } = this;
+
+    const tempComment = this.createComment(conversationId, parentId, doc);
+    const { localId } = tempComment;
+    dispatch({ type: ADD_COMMENT, payload: tempComment });
+
     const result = await this.makeRequest<Comment>(
       `/conversation/${conversationId}/comment?expand=document.adf`,
       {
@@ -228,10 +261,18 @@ export class ConversationResource extends AbstractConversationResource {
       },
     );
 
-    const { dispatch } = this;
-    dispatch({ type: ADD_COMMENT_SUCCESS, payload: result });
+    dispatch({
+      type: ADD_COMMENT_SUCCESS,
+      payload: {
+        ...result,
+        localId,
+      },
+    });
 
-    return result;
+    return {
+      ...result,
+      localId,
+    };
   }
 
   /**
@@ -242,6 +283,21 @@ export class ConversationResource extends AbstractConversationResource {
     commentId: string,
     document: any,
   ): Promise<Comment> {
+    const { dispatch } = this;
+    const tempComment = this.getComment(conversationId, commentId);
+
+    if (tempComment) {
+      dispatch({
+        type: UPDATE_COMMENT,
+        payload: {
+          ...tempComment,
+          document: {
+            adf: document,
+          },
+        },
+      });
+    }
+
     const result = await this.makeRequest<Comment>(
       `/conversation/${conversationId}/comment/${commentId}?expand=document.adf`,
       {
@@ -255,7 +311,6 @@ export class ConversationResource extends AbstractConversationResource {
       },
     );
 
-    const { dispatch } = this;
     dispatch({ type: UPDATE_COMMENT_SUCCESS, payload: result });
 
     return result;
@@ -295,5 +350,69 @@ export class ConversationResource extends AbstractConversationResource {
     dispatch({ type: UPDATE_USER, payload: { user } });
 
     return user;
+  }
+
+  /**
+   * Internal helper methods for optimistic updates
+   */
+  private createConversation(
+    localId: string,
+    containerId: string,
+    value: any,
+    meta: any,
+  ): Conversation {
+    return {
+      localId,
+      containerId,
+      meta,
+      conversationId: localId,
+      comments: [this.createComment(localId, localId, value)],
+    };
+  }
+
+  protected createComment(
+    conversationId: string,
+    parentId: string,
+    doc: any,
+    localId: string = <string>uuid.generate(),
+  ): Comment {
+    return {
+      createdBy: this.config.user!,
+      createdAt: Date.now(),
+      commentId: <string>uuid.generate(),
+      document: {
+        adf: doc,
+      },
+      conversationId,
+      parentId,
+      comments: [],
+      localId,
+    };
+  }
+
+  protected getComment(
+    conversationId: string,
+    commentId: string,
+  ): Comment | undefined {
+    const { store } = this;
+    const state = store.getState();
+
+    if (!state) {
+      return undefined;
+    }
+
+    const [conversation] = state.conversations.filter(
+      c => c.conversationId === conversationId,
+    );
+    if (!conversation) {
+      return undefined;
+    }
+
+    const [comment] = (conversation.comments || []).filter(
+      c => c.commentId === commentId,
+    );
+    return {
+      ...comment,
+    };
   }
 }
