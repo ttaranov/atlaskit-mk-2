@@ -22,20 +22,8 @@ export const insertMacroFromMacroBrowser = (
     macroNode,
   );
   if (newMacro) {
-    const { schema } = state;
-    const { type, attrs } = getValidNode(newMacro, schema);
-    let node;
+    const node = resolveMacro(newMacro, state);
 
-    if (type === 'extension') {
-      node = schema.nodes.extension.create(attrs);
-    } else if (type === 'bodiedExtension') {
-      node = schema.nodes.bodiedExtension.create(
-        attrs,
-        schema.nodeFromJSON(newMacro).content,
-      );
-    } else if (type === 'inlineExtension') {
-      node = schema.nodes.inlineExtension.create(attrs);
-    }
     if (node) {
       dispatch((tr || state.tr).replaceSelectionWith(node).scrollIntoView());
     }
@@ -43,6 +31,29 @@ export const insertMacroFromMacroBrowser = (
   }
 
   return false;
+};
+
+export const resolveMacro = (macro?: MacroAttributes, state?: EditorState) => {
+  if (!macro || !state) {
+    return null;
+  }
+
+  const { schema } = state;
+  const { type, attrs } = getValidNode(macro, schema);
+  let node;
+
+  if (type === 'extension') {
+    node = schema.nodes.extension.create(attrs);
+  } else if (type === 'bodiedExtension') {
+    node = schema.nodes.bodiedExtension.create(
+      attrs,
+      schema.nodeFromJSON(macro).content,
+    );
+  } else if (type === 'inlineExtension') {
+    node = schema.nodes.inlineExtension.create(attrs);
+  }
+
+  return node;
 };
 
 export const setMacroProvider = (provider: Promise<MacroProvider>) => async (

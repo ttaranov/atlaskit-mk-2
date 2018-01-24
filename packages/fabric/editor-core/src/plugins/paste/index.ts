@@ -6,6 +6,7 @@ import { EditorView } from 'prosemirror-view';
 import * as MarkdownIt from 'markdown-it';
 import { stateKey as tableStateKey } from '../table';
 import { containsTable } from '../../editor/plugins/table/utils';
+import { pluginKey, resolveMacro } from '../../editor/plugins/macro';
 import { insertMediaAsMediaSingle } from '../media/media-single';
 import { isSingleLine, isCode, escapeLinks } from './util';
 import { analyticsService } from '../../analytics';
@@ -77,6 +78,22 @@ export function createPlugin(
         const text = event.clipboardData.getData('text/plain');
         const html = event.clipboardData.getData('text/html');
         const node = slice.content.firstChild;
+
+        const { macroProvider } = pluginKey.getState(view.state);
+
+        // if autoConvert is provided, runs is first.
+        if (macroProvider && macroProvider.autoConvert) {
+          const macroAttributes = macroProvider.autoConvert(text);
+          // decides which kind of macro to render (inline|bodied|bodyless) - will be just inline atm.
+          const macro = resolveMacro(macroAttributes, view.state);
+          if (macro) {
+            view.dispatch(
+              view.state.tr.replaceSelectionWith(macro).scrollIntoView(),
+            );
+            return true;
+          }
+        }
+
         const { schema } = view.state;
         const selectedNode = $from.node($from.depth);
 
