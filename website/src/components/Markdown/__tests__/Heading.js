@@ -2,8 +2,6 @@ import React from 'react';
 import Heading from '../Heading';
 import { mount } from 'enzyme';
 
-const id = wrapper => wrapper.children(0).prop('id');
-
 test('children', () => {
   const wrapper1 = mount(<Heading />);
   const wrapper2 = mount(<Heading>testing content</Heading>);
@@ -13,6 +11,7 @@ test('children', () => {
 });
 
 test('id', () => {
+  const id = wrapper => wrapper.children(0).prop('id');
   const wrapper1 = mount(<Heading>test</Heading>);
   const wrapper2 = mount(<Heading>test some more</Heading>);
   const wrapper3 = mount(<Heading>way-cool @)(*U()#*$(#$U* heading</Heading>);
