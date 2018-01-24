@@ -5,7 +5,9 @@ import { connect, Provider } from 'react-redux';
 
 import { AuthProvider, Context, ContextFactory } from '@atlaskit/media-core';
 import ModalDialog from '@atlaskit/modal-dialog';
-
+import Flag, { FlagGroup } from '@atlaskit/flag';
+import ErrorIcon from '@atlaskit/icon/glyph/error';
+import { colors } from '@atlaskit/theme';
 import { ServiceName, State } from '../domain';
 
 import {
@@ -150,7 +152,7 @@ export class App extends Component<AppProps, AppState> {
   }
 
   render() {
-    const { selectedServiceName, isVisible, onClose, store } = this.props;
+    const { selectedServiceName, isVisible, onClose, store, hasError } = this.props;
     const { isDropzoneActive } = this.state;
 
     if (!isVisible) {
@@ -249,13 +251,14 @@ const mapDispatchToProps = (dispatch: Dispatch<State>): AppDispatchProps => ({
         public: publicFileDetails,
       }),
     ),
-  onUploadError: ({ file, error }) =>
-    dispatch(
+  onUploadError: ({ file, error }) => {
+    return dispatch(
       fileUploadError({
         file,
         error,
       }),
-    ),
+    )
+  }
 });
 
 export default connect<AppStateProps, AppDispatchProps, AppOwnProps>(

@@ -32,6 +32,7 @@ import {
 import showPopup from './showPopup';
 import hidePopup from './hidePopup';
 import startApp from './startApp';
+import fileUploadError from './fileUploadError';
 
 const reducers = combineReducers([
   fileClick,
@@ -47,6 +48,7 @@ const reducers = combineReducers([
   fileUploadsAdd,
   filePreviewUpdate,
   fileUploadProgress,
+  fileUploadError,
   fileUploadProcessingStart,
   fileUploadEnd,
   setEventProxy,
