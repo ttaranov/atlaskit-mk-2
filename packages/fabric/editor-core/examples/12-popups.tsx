@@ -173,7 +173,7 @@ class PortalInScrollContainerExample extends PureComponent<any, any> {
 }
 
 class JiraSidebarEditor extends PureComponent<any, any> {
-  state = { portal: undefined, boundary: undefined };
+  state = { portal: undefined, boundary: undefined, scrollable: undefined };
 
   handlePortalRef = portal => {
     this.setState({ portal });
@@ -184,12 +184,10 @@ class JiraSidebarEditor extends PureComponent<any, any> {
   };
 
   handleScrollableRef = scrollable => {
-    this.scrollable = scrollable;
+    this.setState({ scrollable });
   };
 
   render() {
-    const props = this.props;
-
     return (
       <div ref={this.handleBoundryRef}>
         <div style={{ display: 'table' }}>
@@ -210,7 +208,7 @@ class JiraSidebarEditor extends PureComponent<any, any> {
                   isExpandedByDefault={true}
                   popupsMountPoint={this.state.portal}
                   popupsBoundariesElement={this.state.boundary}
-                  popupsScrollableElement={this.scrollable}
+                  popupsScrollableElement={this.state.scrollable}
                 />
               </div>
             </div>
