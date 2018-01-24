@@ -11,7 +11,7 @@ type Props = SkeletonComponentProps & {};
 
 export class Paragraph extends Component<Props> {
   static defaultProps = {
-    appearance: 'normal',
+    weight: 'normal',
   };
 
   render() {

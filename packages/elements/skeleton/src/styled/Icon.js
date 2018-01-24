@@ -19,5 +19,5 @@ export default styled.div`
   display: inline-block;
   border-radius: 50%;
   background-color: ${props => getColor(props.color)};
-  opacity: ${props => getOpacity(props.appearance)};
+  opacity: ${props => getOpacity(props.weight)};
 `;

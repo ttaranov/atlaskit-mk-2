@@ -30,7 +30,8 @@ export default styled.div`
   width: ${props => sizes[props.size]}px;
   height: ${props => sizes[props.size]}px;
   display: inline-block;
-  border-radius: ${props => radiusSizes[props.size]}px;
+  border-radius: ${props =>
+    props.appearance === 'square' ? `${radiusSizes[props.size]}px` : '50%'};
   background-color: ${props => getColor(props.color)};
-  opacity: ${props => getOpacity(props.appearance)};
+  opacity: ${props => getOpacity(props.weight)};
 `;

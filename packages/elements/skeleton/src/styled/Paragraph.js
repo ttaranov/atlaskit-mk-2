@@ -7,6 +7,6 @@ export default styled.div`
   height: 18px;
   background-color: ${props => getColor(props.color)};
   border-radius: 4px;
-  opacity: ${props => getOpacity(props.appearance)};
+  opacity: ${props => getOpacity(props.weight)};
   margin: 8px;
 `;

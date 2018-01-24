@@ -17,7 +17,7 @@ export default md`
   )}
 
   All the components in this package allow their color to be set either directly via the \`color\` prop,
-  or by inheriting the current text color. The \`appearance\` prop can also be used to emphasise important
+  or by inheriting the current text color. The \`weight\` prop can also be used to emphasise important
   parts of the skeleton.
 
   ${(

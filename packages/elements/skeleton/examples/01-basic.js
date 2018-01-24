@@ -8,11 +8,11 @@ import { ComponentDisplay, Gap } from './util';
 export default () => (
   <ComponentDisplay>
     <div>
-      <Avatar size="small" />
+      <Avatar appearance="square" size="small" />
       <Gap />
-      <Avatar size="medium" />
+      <Avatar appearance="circle" size="medium" />
       <Gap />
-      <Avatar size="large" />
+      <Avatar appearance="square" size="large" />
     </div>
     <div>
       <Icon />

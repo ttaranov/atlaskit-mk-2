@@ -12,7 +12,7 @@ type Props = SkeletonComponentProps & {
 export class Icon extends Component<Props> {
   static defaultProps = {
     size: 'medium',
-    appearance: 'normal',
+    weight: 'normal',
   };
 
   render() {

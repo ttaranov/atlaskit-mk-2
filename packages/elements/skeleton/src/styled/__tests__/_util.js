@@ -25,7 +25,7 @@ export const assertCorrectOpacity = (
   expect(shallow(<Component />)).toHaveStyleRule('opacity', '0.15');
 
   // $FlowFixMe - invalid intersection error.
-  expect(shallow(<Component appearance="strong" />)).toHaveStyleRule(
+  expect(shallow(<Component weight="strong" />)).toHaveStyleRule(
     'opacity',
     '0.3',
   );

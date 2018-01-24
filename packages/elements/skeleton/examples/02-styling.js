@@ -3,7 +3,7 @@
 import React from 'react';
 import { colors } from '@atlaskit/theme';
 
-import { Paragraph, Icon, Avatar } from '../src';
+import { Icon } from '../src';
 import { ComponentDisplay, Gap } from './util';
 
 export default () => (
@@ -23,11 +23,11 @@ export default () => (
       <Icon size="xlarge" color={colors.Y500} />
     </div>
     <div>
-      <Icon appearance="strong" />
+      <Icon weight="strong" />
       <Gap />
-      <Icon size="large" appearance="strong" color={colors.T500} />
+      <Icon size="large" weight="strong" color={colors.T500} />
       <Gap />
-      <Icon size="xlarge" appearance="strong" color={colors.Y500} />
+      <Icon size="xlarge" weight="strong" color={colors.Y500} />
     </div>
   </ComponentDisplay>
 );

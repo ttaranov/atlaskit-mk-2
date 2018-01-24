@@ -24,9 +24,9 @@ export default () => (
     <Paragraph color={colors.B300} />
     <Paragraph color={colors.R500} />
 
-    <p>With a strong appearance</p>
-    <Paragraph appearance="strong" />
-    <Paragraph appearance="strong" color={colors.P500} />
-    <Paragraph appearance="strong" color={colors.Y500} />
+    <p>With a strong weight</p>
+    <Paragraph weight="strong" />
+    <Paragraph weight="strong" color={colors.P500} />
+    <Paragraph weight="strong" color={colors.Y500} />
   </div>
 );

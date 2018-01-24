@@ -8,7 +8,7 @@ import { Gap } from './util';
 
 export default () => (
   <div>
-    <p>Basic avatars of different sizes</p>
+    <p>Basic circle avatars of different sizes</p>
     <Avatar size="xsmall" />
     <Gap />
     <Avatar size="small" />
@@ -20,6 +20,19 @@ export default () => (
     <Avatar size="xlarge" />
     <Gap />
     <Avatar size="xxlarge" />
+
+    <p>Basic square avatars of different sizes</p>
+    <Avatar appearance="square" size="xsmall" />
+    <Gap />
+    <Avatar appearance="square" size="small" />
+    <Gap />
+    <Avatar appearance="square" size="medium" />
+    <Gap />
+    <Avatar appearance="square" size="large" />
+    <Gap />
+    <Avatar appearance="square" size="xlarge" />
+    <Gap />
+    <Avatar appearance="square" size="xxlarge" />
 
     <p>Changing color via inheritance</p>
     <div style={{ color: colors.P500 }}>
@@ -49,17 +62,17 @@ export default () => (
     <Gap />
     <Avatar color={colors.T500} size="xxlarge" />
 
-    <p>With a strong appearance</p>
-    <Avatar appearance="strong" color={colors.Y500} size="xsmall" />
+    <p>With a strong weight</p>
+    <Avatar weight="strong" color={colors.Y500} size="xsmall" />
     <Gap />
-    <Avatar appearance="strong" color={colors.G500} size="small" />
+    <Avatar weight="strong" color={colors.G500} size="small" />
     <Gap />
-    <Avatar appearance="strong" color={colors.B300} size="medium" />
+    <Avatar weight="strong" color={colors.B300} size="medium" />
     <Gap />
-    <Avatar appearance="strong" color={colors.R500} size="large" />
+    <Avatar weight="strong" color={colors.R500} size="large" />
     <Gap />
-    <Avatar appearance="strong" color={colors.N200} size="xlarge" />
+    <Avatar weight="strong" color={colors.N200} size="xlarge" />
     <Gap />
-    <Avatar appearance="strong" color={colors.T500} size="xxlarge" />
+    <Avatar weight="strong" color={colors.T500} size="xxlarge" />
   </div>
 );
