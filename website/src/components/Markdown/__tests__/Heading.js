@@ -27,7 +27,7 @@ test('anchor - hidden', () => {
   expect(wrapper.find('a')).toHaveLength(0);
 });
 
-test('anchor - shown', () => {
+test('anchor - show', () => {
   const wrapper = mount(<Heading>test content</Heading>);
   const heading = wrapper.children(0);
 
@@ -37,4 +37,19 @@ test('anchor - shown', () => {
   const a = wrapper.find('a');
   expect(a.text()).toBe('#');
   expect(a.prop('href')).toBe(`#${heading.prop('id')}`);
+});
+
+test('anchor - hide', () => {
+  const wrapper = mount(<Heading />);
+  const heading = wrapper.children(0);
+
+  heading.simulate('mouseenter');
+  wrapper.update();
+
+  expect(wrapper.find('a')).toHaveLength(1);
+
+  heading.simulate('mouseleave');
+  wrapper.update();
+
+  expect(wrapper.find('a')).toHaveLength(0);
 });
