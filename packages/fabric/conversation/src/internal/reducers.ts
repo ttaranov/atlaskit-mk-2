@@ -8,10 +8,50 @@ import {
   DELETE_COMMENT,
   DELETE_COMMENT_SUCCESS,
   UPDATE_USER,
+  CREATE_CONVERSATION,
   CREATE_CONVERSATION_SUCCESS,
 } from './actions';
 import { Action, State } from './store';
-import { User, Conversation } from '../model';
+import { User, Conversation, Comment } from '../model';
+
+const updateCommentInConversation = (
+  conversations: Conversation[],
+  conversationId: string,
+  predicate: (comment: Comment) => boolean,
+  newComment: Comment,
+) =>
+  conversations.map(
+    conversation =>
+      conversation.conversationId !== conversationId
+        ? conversation
+        : {
+            ...conversation,
+            comments: (conversation.comments || []).map(
+              comment =>
+                !predicate(comment)
+                  ? comment
+                  : {
+                      ...comment,
+                      ...newComment,
+                    },
+            ),
+          },
+  );
+
+const addCommentToConversation = (
+  conversations: Conversation[],
+  conversationId: string,
+  newComment: Comment,
+) =>
+  conversations.map(
+    conversation =>
+      conversation.conversationId !== conversationId
+        ? conversation
+        : {
+            ...conversation,
+            comments: [...(conversation.comments || []), newComment],
+          },
+  );
 
 export const reducers = {
   [FETCH_CONVERSATIONS](state: State, action: Action) {
@@ -28,48 +68,77 @@ export const reducers = {
   },
 
   [ADD_COMMENT](state: State, action: Action) {
+    const { conversations } = state;
+    const { payload } = action;
+
     return {
       ...state,
+      conversations: addCommentToConversation(
+        conversations,
+        payload.conversationId,
+        {
+          ...payload,
+          state: 'SAVING',
+        },
+      ),
     };
   },
 
   [ADD_COMMENT_SUCCESS](state: State, action: Action) {
     const { conversations } = state;
-    const conversation = conversations.filter(
-      c => c.conversationId === action.payload.conversationId,
-    )[0];
-
-    const { comments = [] } = conversation;
-    conversation.comments = [...comments, action.payload];
+    const { payload } = action;
 
     return {
       ...state,
-      conversations,
+      conversations: payload.localId
+        ? updateCommentInConversation(
+            conversations,
+            payload.conversationId,
+            comment => comment.localId === payload.localId,
+            {
+              ...payload,
+              state: undefined,
+            },
+          )
+        : addCommentToConversation(conversations, payload.conversationId, {
+            ...payload,
+          }),
     };
   },
 
   [UPDATE_COMMENT](state: State, action: Action) {
+    const { conversations } = state;
+    const { payload } = action;
+
     return {
       ...state,
+      conversations: updateCommentInConversation(
+        conversations,
+        payload.conversationId,
+        comment => comment.commentId === payload.commentId,
+        {
+          ...payload,
+          state: 'SAVING',
+        },
+      ),
     };
   },
 
   [UPDATE_COMMENT_SUCCESS](state: State, action: Action) {
     const { conversations } = state;
-    const [conversation] = conversations.filter(
-      c => c.conversationId === action.payload.conversationId,
-    );
-
-    const { comments = [] } = conversation;
-    const [comment] = comments.filter(
-      c => c.commentId === action.payload.commentId,
-    );
-
-    comment.document = action.payload.document;
+    const { payload } = action;
 
     return {
       ...state,
-      conversations,
+      conversations: updateCommentInConversation(
+        conversations,
+        payload.conversationId,
+        comment => comment.commentId === payload.commentId,
+        {
+          ...payload,
+          state: undefined,
+        },
+      ),
     };
   },
 
@@ -105,13 +174,40 @@ export const reducers = {
     };
   },
 
-  [CREATE_CONVERSATION_SUCCESS](state: State, action: Action) {
+  [CREATE_CONVERSATION](state: State, action: Action) {
     const { conversations } = state;
-    conversations.push(<Conversation>action.payload);
+    const { payload } = action;
+    const [comment] = payload.comments!;
 
     return {
       ...state,
-      conversations,
+      conversations: [
+        ...conversations,
+        {
+          ...payload,
+          comments: [
+            {
+              ...comment,
+              state: 'SAVING',
+            },
+          ],
+        },
+      ],
+    };
+  },
+
+  [CREATE_CONVERSATION_SUCCESS](state: State, action: Action) {
+    const { conversations } = state;
+    const { payload } = action;
+
+    return {
+      ...state,
+      conversations: conversations.map(
+        conversation =>
+          conversation.localId && conversation.localId === payload.localId
+            ? payload
+            : conversation,
+      ),
     };
   },
 };

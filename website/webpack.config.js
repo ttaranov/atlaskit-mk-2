@@ -184,6 +184,27 @@ module.exports = async function createWebpackConfig() {
           },
         },
         {
+          test: /NAV_DATA$/,
+          loader: 'nav-info-loader',
+          options: {
+            include: [
+              'docs/**/*.md',
+              'patterns/**/*.js',
+              ...getPackagesGlobs(WEBSITE_SUBSET),
+            ]
+              .filter(p => p.includes('package.json'))
+              .map(p => p.replace('/package.json', '')),
+            exclude: ['**/node_modules/**', 'packages/utils/docs/**'],
+            configProps: [
+              'name',
+              'version',
+              'description',
+              'atlaskit',
+              'maintainers',
+            ],
+          },
+        },
+        {
           test: /CHANGELOG\.md$/,
           exclude: /node_modules/,
           loader: 'changelog-md-loader',
