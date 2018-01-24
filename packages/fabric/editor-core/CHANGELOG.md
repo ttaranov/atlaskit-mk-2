@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.4.9
+- [patch] Backtick should be removed at paste if its followed by code. [d74188d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d74188d)
+
 ## 61.4.8
 
 
