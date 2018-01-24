@@ -6,6 +6,7 @@ import type { Directory, File } from './types';
 // depending on the subset of packages we want to represent on the website.
 // $FlowFixMe
 import data from './SITE_DATA';
+// $FlowFixMe
 import NAV_DATA from './NAV_DATA';
 import * as fs from './utils/fs';
 

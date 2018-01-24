@@ -50,7 +50,7 @@ module.exports = function createWebpackConfig(
         },
         {
           test: /NAV_DATA$/,
-          loader: 'nav-info-loader',
+          loader: require.resolve('nav-info-loader'),
           options: {
             include: [...globs]
               .filter(p => p.includes('package.json'))
