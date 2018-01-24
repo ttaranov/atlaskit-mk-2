@@ -43,6 +43,7 @@
   },
   "peerDependencies": {},
   "devDependencies": {
+    "@atlaskit/webdriver-runner": "^0.0.1",
     "@atlaskit/editor-test-helpers": "^1.8.4",
     "@types/chai": "^4.0.4",
     "chai": "^4.1.2",

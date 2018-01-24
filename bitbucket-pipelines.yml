@@ -54,6 +54,14 @@ pipelines:
           caches:
             - node
 
+    # This will run with the webdriver tests
+    build-webdriver:
+      - step:
+          script:
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - bolt test:webdriver:browserstack
+
     # This will run essentially the branch builds, but without any optimizations and should be manually
     # run in any potentially risky builds
     run-full-suite:
