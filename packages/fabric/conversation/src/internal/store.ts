@@ -34,6 +34,10 @@ export const createStore = (reducer: Reducer) => {
     },
 
     dispatch(action: Action) {
+      if (!reducer[action.type]) {
+        return;
+      }
+
       state = reducer[action.type](state, action);
       subscribers.forEach(cb => cb(state));
     },

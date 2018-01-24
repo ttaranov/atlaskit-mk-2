@@ -4,6 +4,7 @@ import {
 } from '../src/api/ConversationResource';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { Comment, Conversation, User } from '../src/model';
+import { uuid } from '../src/internal/uuid';
 import { mockConversation, mockInlineConversation } from './MockData';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
@@ -11,12 +12,16 @@ import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import {
   FETCH_CONVERSATIONS,
   FETCH_CONVERSATIONS_SUCCESS,
+  ADD_COMMENT,
   ADD_COMMENT_SUCCESS,
+  UPDATE_COMMENT,
   UPDATE_COMMENT_SUCCESS,
   DELETE_COMMENT_SUCCESS,
+  CREATE_CONVERSATION,
   CREATE_CONVERSATION_SUCCESS,
   UPDATE_USER,
 } from '../src/internal/actions';
+import { setTimeout } from 'timers';
 
 const MockDataProviders = {
   mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
@@ -67,9 +72,7 @@ export class MockProvider extends AbstractConversationResource {
     value: any,
     meta: any,
   ): Promise<Conversation> {
-    const conversationId = `conversation-${Math.floor(
-      Math.random() * 1000,
-    )}-${Math.floor(Math.random() * 1000)}`;
+    const conversationId = <string>uuid.generate();
 
     const result = {
       conversationId,
@@ -80,7 +83,12 @@ export class MockProvider extends AbstractConversationResource {
     };
 
     const { dispatch } = this;
-    dispatch({ type: CREATE_CONVERSATION_SUCCESS, payload: result });
+
+    dispatch({ type: CREATE_CONVERSATION, payload: result });
+
+    setTimeout(() => {
+      dispatch({ type: CREATE_CONVERSATION_SUCCESS, payload: result });
+    }, 1000);
 
     return result;
   }
@@ -95,7 +103,12 @@ export class MockProvider extends AbstractConversationResource {
   ): Promise<Comment> {
     const result = this.createComment(conversationId, parentId, doc);
     const { dispatch } = this;
-    dispatch({ type: ADD_COMMENT_SUCCESS, payload: result });
+
+    dispatch({ type: ADD_COMMENT, payload: result });
+
+    setTimeout(() => {
+      dispatch({ type: ADD_COMMENT_SUCCESS, payload: result });
+    }, 1000);
 
     return result;
   }
@@ -104,19 +117,19 @@ export class MockProvider extends AbstractConversationResource {
     conversationId: string,
     parentId: string,
     doc: any,
+    localId: string = <string>uuid.generate(),
   ): Comment {
     return {
       createdBy: this.config.user,
       createdAt: Date.now(),
-      commentId: `comment-${Math.floor(Math.random() * 1000)}-${Math.floor(
-        Math.random() * 1000,
-      )}`,
+      commentId: <string>uuid.generate(),
       document: {
         adf: doc,
       },
       conversationId,
       parentId,
       comments: [],
+      localId,
     };
   }
 
@@ -140,7 +153,11 @@ export class MockProvider extends AbstractConversationResource {
     };
 
     const { dispatch } = this;
-    dispatch({ type: UPDATE_COMMENT_SUCCESS, payload: result });
+    dispatch({ type: UPDATE_COMMENT, payload: result });
+
+    setTimeout(() => {
+      dispatch({ type: UPDATE_COMMENT_SUCCESS, payload: result });
+    }, 1000);
 
     return result;
   }
