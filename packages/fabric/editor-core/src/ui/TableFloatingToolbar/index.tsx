@@ -20,6 +20,7 @@ export interface Props {
   pluginState: TableState;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
 }
 
 export interface State {
@@ -68,6 +69,7 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
           offset={[0, 3]}
           mountTo={popupsMountPoint}
           boundariesElement={popupsBoundariesElement}
+          scrollableElement={popupsScrollableElement}
           alignY="top"
         >
           <Toolbar>

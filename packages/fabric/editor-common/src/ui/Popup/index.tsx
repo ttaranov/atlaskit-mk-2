@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { findDOMNode } from 'react-dom';
 import { PureComponent } from 'react';
 import rafSchedule from 'raf-schd';
 import { akEditorFloatingPanelZIndex } from '../../styles';
@@ -142,10 +141,7 @@ export default class Popup extends PureComponent<Props, State> {
 
     const { scrollableElement } = this.props;
     if (scrollableElement) {
-      findDOMNode(scrollableElement).addEventListener(
-        'scroll',
-        this.handleReposition,
-      );
+      scrollableElement.addEventListener('scroll', this.handleReposition);
     }
   }
 
@@ -157,10 +153,7 @@ export default class Popup extends PureComponent<Props, State> {
 
     const { scrollableElement } = this.props;
     if (scrollableElement) {
-      findDOMNode(scrollableElement).removeEventListener(
-        'scroll',
-        this.handleReposition,
-      );
+      scrollableElement.removeEventListener('scroll', this.handleReposition);
     }
   }
 
