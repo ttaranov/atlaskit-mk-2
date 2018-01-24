@@ -2,14 +2,15 @@
 
 import React from 'react';
 import Page, { Title, Section } from '../components/Page';
-import { externalPackages as packages } from '../site';
+import { externalPackages as packages, pkgData } from '../site';
 import Table from '@atlaskit/dynamic-table';
 import styled from 'styled-components';
 import * as fs from '../utils/fs';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 import Loadable from 'react-loadable';
 import Loading from '../components/Loading';
-import NAV_DATA from '../NAV_DATA';
+
+const navdata: Object = pkgData;
 
 const head = {
   cells: [
@@ -51,7 +52,7 @@ const head = {
 };
 
 const getConfig = (groupId, pkgId) => {
-  return NAV_DATA[groupId] && NAV_DATA[groupId].find(a => a.name === pkgId);
+  return pkgData[groupId] && pkgData[groupId].find(a => a.name === pkgId);
 };
 
 const renderRow = (

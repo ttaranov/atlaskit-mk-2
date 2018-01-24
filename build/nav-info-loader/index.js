@@ -20,16 +20,12 @@ module.exports = async function boltNavLoader() {
     loaderUtils.getOptions(this) || {},
   );
 
-  // 1. We load all getWorkspaces
-  let workspaces = await bolt.getWorkspaces({
-    cwd: path.join(process.cwd(), '../packages'),
-  });
+  let workspaces = await bolt.getWorkspaces({ cwd: process.cwd() });
 
-  // 2. We filter workspaces based on our include list
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
 
   workspaces = workspaces.map(w =>
-    Object.assign({}, w, { relativeDir: w.dir.replace(`${projectRoot}/`, '') }),
+    Object.assign({}, w, { relativeDir: path.relative(projectRoot, w.dir) }),
   );
 
   const patterns = []
@@ -42,6 +38,22 @@ module.exports = async function boltNavLoader() {
     cwd: projectRoot,
   });
 
+  /*
+    Packages will be an object containing the name in the file structure, and
+    the team. Information from the package.json is placed in the config object.
+    Only Requested fields are added to config.
+    The name and team at root act as keys to look up information.
+    The packages object has arrays of packages divided by team. Example:
+    {
+      elements: [
+        {
+          name: 'analytics',
+          team: 'elements',
+          config: { name: '@atlaskit/analytics', version: '2.5.0' },
+        }
+      ]
+    }
+    */
   let packages = {};
 
   for (let workspace of workspaces) {

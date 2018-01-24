@@ -56,7 +56,13 @@ module.exports = function createWebpackConfig(
               .filter(p => p.includes('package.json'))
               .map(p => p.replace('/package.json', '')),
             exclude: ['**/node_modules/**', 'packages/utils/docs/**'],
-            configProps: ['version', 'description', 'atlaskit', 'maintainers'],
+            configProps: [
+              'name',
+              'version',
+              'description',
+              'atlaskit',
+              'maintainers',
+            ],
           },
         },
         {
