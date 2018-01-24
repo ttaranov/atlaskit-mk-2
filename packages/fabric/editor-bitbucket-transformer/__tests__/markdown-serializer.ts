@@ -85,6 +85,10 @@ describe('BitbucketTransformer: serializer', () => {
     );
   });
 
+  it('should not escape leading apostrophe characters', () => {
+    expect(markdownSerializer.serialize(doc(p(`'bar`)))).toEqual(`'bar`);
+  });
+
   describe('mentions', () => {
     it('should serialize mentions', () => {
       const node = doc(p(mention({ text: 'Oscar Wallhult', id: 'oscar' })));
