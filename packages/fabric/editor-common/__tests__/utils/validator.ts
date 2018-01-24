@@ -737,8 +737,14 @@ describe('Renderer - Validator', () => {
     });
 
     describe('paragraph', () => {
-      it('should return "text" if content-field is missing', () => {
-        expect(getValidNode({ type: 'paragraph' }).type).to.equal('text');
+      it('should return with an empty content node if content-field is missing', () => {
+        const newDoc = getValidNode({ type: 'paragraph' });
+        expect(newDoc)
+          .to.have.property('type')
+          .which.is.equal('paragraph');
+        expect(newDoc)
+          .to.have.property('content')
+          .which.is.deep.equal([]);
       });
 
       it('should return "paragraph" if content-field is empty array', () => {
@@ -1665,6 +1671,58 @@ describe('Renderer - Validator', () => {
       // Ensure original is not mutated
       expect(originalCopy, 'Original unchanged').to.deep.equal(original);
       expect(newDoc, 'New doc valid').to.deep.equal(expectedValidDoc);
+    });
+
+    it('should wrap top level text nodes to ensure the document is valid', () => {
+      const original: ADDoc = {
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+          },
+          {
+            type: 'foo', // Should be wrapped
+          },
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'bar', // Should be a text node
+              },
+            ],
+          },
+        ],
+      };
+      const expectedValidDoc: ADNode = {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [],
+          },
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: '[foo]',
+              },
+            ],
+          },
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: '[bar]',
+              },
+            ],
+          },
+        ],
+      };
+      const newDoc = getValidDocument(original);
+      expect(newDoc).to.deep.equal(expectedValidDoc);
     });
   });
 });

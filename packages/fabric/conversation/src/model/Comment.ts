@@ -12,4 +12,6 @@ export interface Comment extends Pick<Conversation, 'comments'> {
   createdBy: User;
   createdAt: number;
   deleted?: boolean;
+  state?: 'SUCCESS' | 'SAVING' | 'ERROR';
+  localId?: string;
 }

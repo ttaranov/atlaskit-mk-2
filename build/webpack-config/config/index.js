@@ -50,6 +50,23 @@ module.exports = function createWebpackConfig(
           },
         },
         {
+          test: /NAV_DATA$/,
+          loader: require.resolve('nav-info-loader'),
+          options: {
+            include: [...globs]
+              .filter(p => p.includes('package.json'))
+              .map(p => p.replace('/package.json', '')),
+            exclude: ['**/node_modules/**', 'packages/utils/docs/**'],
+            configProps: [
+              'name',
+              'version',
+              'description',
+              'atlaskit',
+              'maintainers',
+            ],
+          },
+        },
+        {
           test: /CHANGELOG\.md$/,
           exclude: /node_modules/,
           loader: require.resolve('changelog-md-loader'),

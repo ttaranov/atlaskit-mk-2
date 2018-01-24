@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 61.4.7
+
+
+- [patch] Fixes hyperlink popup positioning when popupMountPount is provided [ff2c8c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ff2c8c9)
+
 ## 61.4.6
 - [patch] use new MediaPicker package [c652ed4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c652ed4)
 

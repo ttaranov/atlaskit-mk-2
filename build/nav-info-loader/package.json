@@ -1,7 +1,8 @@
 {
-  "name": "bolt-fs-loader",
+  "name": "nav-info-loader",
   "version": "0.0.0",
   "main": "index.js",
+  "private": true,
   "dependencies": {
     "bolt": "^0.19.2",
     "loader-utils": "^1.1.0",

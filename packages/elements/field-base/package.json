@@ -35,6 +35,9 @@
     "@atlaskit/input": "^1.6.0",
     "enzyme": "^3.3.0"
   },
+  "atlaskit": {
+    "internal": true
+  },
   "keywords": [
     "atlaskit",
     "react",

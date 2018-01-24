@@ -209,7 +209,7 @@ export default class Comment extends React.PureComponent<Props, State> {
   render() {
     const { comment, user, onUserClick } = this.props;
     const { isEditing } = this.state;
-    const { createdBy } = comment;
+    const { createdBy, state: commentState } = comment;
     const canReply = !!user && !isEditing && !comment.deleted;
     let actions;
 
@@ -262,6 +262,7 @@ export default class Comment extends React.PureComponent<Props, State> {
         }
         actions={actions}
         content={this.getContent()}
+        isSaving={commentState === 'SAVING'}
       >
         {editor || comments ? (
           <div>

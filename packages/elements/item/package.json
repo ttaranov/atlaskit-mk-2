@@ -37,6 +37,9 @@
     "enzyme": "^3.3.0",
     "polished": "1.5.0"
   },
+  "atlaskit": {
+    "internal": true
+  },
   "keywords": [
     "atlaskit",
     "react",

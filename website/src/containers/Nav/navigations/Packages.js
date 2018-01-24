@@ -12,7 +12,7 @@ import renderNav from '../utils/renderNav';
 import type { Directory, File, NavGroupItem } from '../../../types';
 import * as fs from '../../../utils/fs';
 import allPackages, { packageNames } from '../../../packages';
-import { OLD_WEBSITE_URL, NEW_WEBSITE_PREFIX } from '../../../utils/constants';
+import { OLD_WEBSITE_URL } from '../../../utils/constants';
 import {
   packageUrl,
   packageDocUrl,
@@ -35,7 +35,7 @@ export function buildSubNavGroup(
       });
       return acc;
     },
-    { items: [] }
+    { items: [] },
   );
 }
 
