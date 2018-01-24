@@ -21,7 +21,6 @@ import {
   CREATE_CONVERSATION_SUCCESS,
   UPDATE_USER,
 } from '../src/internal/actions';
-import { setTimeout } from 'timers';
 
 const MockDataProviders = {
   mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
