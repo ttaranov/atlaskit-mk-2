@@ -29,6 +29,7 @@
     "@atlaskit/theme": "^2.3.0",
     "babel-runtime": "^6.26.0",
     "date-fns": "^1.29.0",
+    "react-value": "^0.2.0",
     "styled-components": "^1.4.6"
   },
   "peerDependencies": {
