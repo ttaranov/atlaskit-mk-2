@@ -11,7 +11,7 @@ import { Fragment, Node as PMNode, Mark, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
 import { AC_XMLNS, FAB_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 import { mapCodeLanguage } from './languageMap';
-import { getNodeMarkOfType } from './utils';
+import { getNodeMarkOfType, mapPanelTypeToCxhtml } from './utils';
 
 export default function encode(node: PMNode, schema: Schema) {
   const docType = document.implementation.createDocumentType(
@@ -333,7 +333,8 @@ export default function encode(node: PMNode, schema: Schema) {
   }
 
   function encodePanel(node: PMNode) {
-    const elem = createMacroElement(node.attrs.panelType);
+    const panelType = mapPanelTypeToCxhtml(node.attrs.panelType);
+    const elem = createMacroElement(panelType);
     const body = doc.createElementNS(AC_XMLNS, 'ac:rich-text-body');
     const fragment = doc.createDocumentFragment();
 
@@ -358,6 +359,20 @@ export default function encode(node: PMNode, schema: Schema) {
 
       return false;
     });
+
+    // special treatment for <ac:structured-macro ac:name="panel" />
+    // it should be converted to "purple" Confluence panel
+    if (panelType === 'panel') {
+      const borderColor = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+      borderColor.setAttributeNS(AC_XMLNS, 'ac:name', 'borderColor');
+      borderColor.textContent = '#998DD9';
+      elem.appendChild(borderColor);
+
+      const bgColor = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+      bgColor.setAttributeNS(AC_XMLNS, 'ac:name', 'bgColor');
+      bgColor.textContent = '#EAE6FF';
+      elem.appendChild(bgColor);
+    }
 
     body.appendChild(fragment);
     elem.appendChild(body);

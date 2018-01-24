@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { Component } from 'react';
 
+// We need to import Bricks in both ways because the way they create the dist doesn't play well with TS
+import DefaultImportBricks from 'bricks.js';
 import * as Bricks from 'bricks.js';
+
 import { BricksInstance, SizeDetail } from 'bricks.js';
 
 export interface BricksLayoutProps {
@@ -30,8 +33,11 @@ export class BricksLayout extends Component<
       packed = 'data-packed',
       sizes = [{ columns: 3, gutter: 10 }],
     } = this.props;
-
-    const instance = (Bricks as any)({
+    // We try to use the TS import, otherwise we use the "default" export
+    const BricksConstructor = (typeof Bricks === 'function'
+      ? Bricks
+      : DefaultImportBricks) as any;
+    const instance = BricksConstructor({
       container: `#${id}`,
       packed,
       sizes,

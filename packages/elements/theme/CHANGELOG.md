@@ -1,5 +1,8 @@
 # @atlaskit/theme
 
+## 2.3.2
+- [patch] added a new layer tooltip [2215bc7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2215bc7)
+
 ## 2.3.1
 - [patch] Resolved low hanging flow errors in field-base field-text comment icon item and website, $ [007de27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/007de27)
 

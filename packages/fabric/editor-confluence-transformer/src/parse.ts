@@ -23,6 +23,7 @@ import {
   marksFromStyle,
   getContent,
   getExtensionMacroParams,
+  mapPanelTypeToPm,
 } from './utils';
 import {
   blockquoteContentWrapper,
@@ -434,8 +435,16 @@ function convertConfluenceMacro(
       } else {
         panelBody.push(schema.nodes.paragraph.create({}));
       }
+      return schema.nodes.panel.create(
+        { panelType: mapPanelTypeToPm(macroName) },
+        panelBody,
+      );
 
-      return schema.nodes.panel.create({ panelType: macroName }, panelBody);
+    case 'PANEL':
+      return schema.nodes.panel.create(
+        { panelType: 'note' },
+        richTextBody || [schema.nodes.paragraph.create()],
+      );
 
     case 'JIRA':
       const schemaVersion = node.getAttributeNS(AC_XMLNS, 'schema-version');

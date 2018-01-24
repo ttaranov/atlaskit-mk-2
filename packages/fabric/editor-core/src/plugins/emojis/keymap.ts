@@ -41,7 +41,7 @@ export function keymapPlugin(schema: Schema): Plugin {
         return false;
       }
 
-      return emojisPlugin.onSelectCurrent();
+      return emojisPlugin.onSelectCurrent(keymaps.enter.common);
     },
     list,
   );
@@ -54,7 +54,7 @@ export function keymapPlugin(schema: Schema): Plugin {
         return false;
       }
 
-      emojisPlugin.onSelectCurrent();
+      emojisPlugin.onSelectCurrent(keymaps.insertNewLine.common);
       return false;
     },
     list,
@@ -68,7 +68,7 @@ export function keymapPlugin(schema: Schema): Plugin {
         return false;
       }
 
-      return emojisPlugin.onSelectCurrent();
+      return emojisPlugin.onSelectCurrent(keymaps.tab.common);
     },
     list,
   );
@@ -94,7 +94,7 @@ export function keymapPlugin(schema: Schema): Plugin {
         return false;
       }
 
-      return emojisPlugin.trySelectCurrent();
+      return emojisPlugin.trySelectCurrentWithSpace(keymaps.space.common);
     },
     list,
   );

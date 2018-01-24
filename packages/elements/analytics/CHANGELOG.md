@@ -1,5 +1,9 @@
 # @atlaskit/analytics
 
+## 2.4.1
+- [patch] Fix clean props type [b0a2cf0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b0a2cf0)
+- [patch] Add a typescript definition for clean props [88cc4be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/88cc4be)
+
 ## 2.4.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
 

@@ -1,4 +1,8 @@
-import { EmojiTypeAhead as AkEmojiTypeAhead } from '@atlaskit/emoji';
+import {
+  EmojiTypeAhead as AkEmojiTypeAhead,
+  EmojiDescription,
+  OptionalEmojiDescription,
+} from '@atlaskit/emoji';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { EmojiProvider } from '@atlaskit/emoji';
@@ -6,6 +10,11 @@ import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { Popup } from '@atlaskit/editor-common';
 import { EmojiState } from '../../plugins/emojis';
+import { analyticsService } from '../../analytics';
+import {
+  getInsertTypeForKey,
+  InsertType,
+} from '../../analytics/fabric-analytics-helper';
 
 export interface Props {
   editorView?: EditorView;
@@ -25,6 +34,9 @@ export interface State {
 
 export default class EmojiTypeAhead extends PureComponent<Props, State> {
   private pluginState?: EmojiState;
+  private openTime: number = 0;
+  private lastKeyTyped?: string;
+
   state: State = {};
   typeAhead?: AkEmojiTypeAhead;
 
@@ -59,9 +71,16 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
       this.pluginState = pluginState;
 
       pluginState.subscribe(this.handlePluginStateChange);
+
+      // note: these bindings are required otherwise 'this' context won't be available
       pluginState.onSelectPrevious = this.handleSelectPrevious;
       pluginState.onSelectNext = this.handleSelectNext;
       pluginState.onSelectCurrent = this.handleSelectCurrent;
+
+      // note: AkEmojiTypeAhead.onClose does not work (product-fabric.atlassian.net/browse/FS-1640)
+      pluginState.onDismiss = this.handleOnClose;
+      pluginState.onSpaceSelectCurrent = this.handleSpaceSelectCurrent;
+      pluginState.onSpaceTyped = this.handleSpaceTyped;
     }
   }
 
@@ -70,7 +89,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     this.setState({ anchorElement, query, queryActive, focused });
   };
 
-  private handleEmojiTypeAheadRef = ref => {
+  handleEmojiTypeAheadRef = ref => {
     this.typeAhead = ref;
   };
 
@@ -104,6 +123,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
         <AkEmojiTypeAhead
           emojiProvider={emojiProvider}
           onSelection={this.handleSelectedEmoji}
+          onOpen={this.handleOnOpen}
           query={query}
           ref={this.handleEmojiTypeAheadRef}
         />
@@ -111,27 +131,72 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     );
   }
 
-  private handleSelectedEmoji = (emojiId: any, emoji: any) => {
+  private calculateElapsedTime = () => Date.now() - this.openTime;
+
+  private handleSelectedEmoji = (
+    emojiId: any,
+    emoji: OptionalEmojiDescription,
+  ) => {
+    const _emoji = emoji as EmojiDescription;
+    this.fireTypeAheadSelectedAnalytics(
+      _emoji,
+      this.lastKeyTyped,
+      this.pluginState!.query,
+    );
     this.pluginState!.insertEmoji(emojiId);
   };
 
   private handleSelectPrevious = (): boolean => {
     if (this.typeAhead) {
       (this.typeAhead as AkEmojiTypeAhead).selectPrevious();
+      analyticsService.trackEvent('atlassian.fabric.emoji.typeahead.keyup', {});
     }
-
     return true;
   };
 
   private handleSelectNext = (): boolean => {
     if (this.typeAhead) {
       (this.typeAhead as AkEmojiTypeAhead).selectNext();
+      analyticsService.trackEvent(
+        'atlassian.fabric.emoji.typeahead.keydown',
+        {},
+      );
     }
-
     return true;
   };
 
-  private handleSelectCurrent = (): boolean => {
+  private fireTypeAheadSelectedAnalytics = (
+    emoji?: EmojiDescription,
+    key?: string,
+    query?: string,
+  ): void => {
+    const queryLength = (query && query.length) || 0;
+    const insertType = getInsertTypeForKey(key) || InsertType.SELECTED;
+
+    analyticsService.trackEvent('atlassian.fabric.emoji.typeahead.select', {
+      mode: insertType,
+      duration: this.calculateElapsedTime() || 0,
+      emojiId: (emoji && emoji.id) || '',
+      type: (emoji && emoji.type) || '',
+      queryLength,
+    });
+  };
+
+  handleSpaceTyped = (): void => {
+    analyticsService.trackEvent('atlassian.fabric.emoji.typeahead.space', {});
+  };
+
+  private handleSpaceSelectCurrent = (
+    emoji: EmojiDescription,
+    key?: string,
+    query?: string,
+  ): void => {
+    this.fireTypeAheadSelectedAnalytics(emoji, key, query);
+  };
+
+  private handleSelectCurrent = (key?: string): boolean => {
+    this.lastKeyTyped = key;
+
     if (this.getEmojisCount() > 0) {
       (this.typeAhead as AkEmojiTypeAhead).chooseCurrentSelection();
     } else {
@@ -144,4 +209,14 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   private getEmojisCount(): number {
     return (this.typeAhead && this.typeAhead.count()) || 0;
   }
+
+  handleOnOpen = (): void => {
+    this.lastKeyTyped = undefined;
+    this.openTime = Date.now();
+    analyticsService.trackEvent('atlassian.fabric.emoji.typeahead.open', {});
+  };
+
+  handleOnClose = (): void => {
+    analyticsService.trackEvent('atlassian.fabric.emoji.typeahead.close', {});
+  };
 }

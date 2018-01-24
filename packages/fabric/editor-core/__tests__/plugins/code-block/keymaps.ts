@@ -17,24 +17,22 @@ describe('codeBlock - keymaps', () => {
     });
 
   describe('Enter keypress', () => {
-    describe('when enter key is pressed 2 times', () => {
+    describe('when enter key is pressed 1 time', () => {
       it('it should not exit code block', () => {
         const { editorView } = editor(doc(code_block()('codeBlock{<>}')));
 
         sendKeyToPm(editorView, 'Enter');
-        sendKeyToPm(editorView, 'Enter');
         expect(editorView.state.doc).toEqualDocument(
-          doc(code_block()('codeBlock\n\n')),
+          doc(code_block()('codeBlock\n')),
         );
         editorView.destroy();
       });
     });
 
-    describe('when enter key is pressed 3 times', () => {
+    describe('when enter key is pressed 2 times', () => {
       it('it should exit code block', () => {
         const { editorView } = editor(doc(code_block()('codeBlock{<>}')));
 
-        sendKeyToPm(editorView, 'Enter');
         sendKeyToPm(editorView, 'Enter');
         sendKeyToPm(editorView, 'Enter');
         expect(editorView.state.doc).toEqualDocument(

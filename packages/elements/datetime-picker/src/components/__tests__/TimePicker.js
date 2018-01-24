@@ -70,9 +70,7 @@ describe(name, () => {
       expect(wrapper.find(TimePickerStateless).props().isOpen).toBe(false);
     });
 
-    // TODO: AK-3790 - Enable test when issue with window.cancelAnimationFrame is resolved.
-    // eslint-disable-next-line jest/no-disabled-tests
-    it.skip('closes the dialog when the input loses focus', () => {
+    it('closes the dialog when the input loses focus', () => {
       const wrapper = mount(<TimePicker />);
 
       wrapper.setState({ isOpen: true });

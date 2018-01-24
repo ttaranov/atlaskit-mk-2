@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-picker",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Library for handling file uploads",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -21,13 +21,13 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/button": "^6.3.0",
-    "@atlaskit/dropdown-menu": "^3.5.0",
-    "@atlaskit/field-text": "^4.1.2",
-    "@atlaskit/flag": "^6.2.0",
+    "@atlaskit/dropdown-menu": "^3.11.5",
+    "@atlaskit/field-text": "^4.1.4",
+    "@atlaskit/flag": "^6.2.2",
     "@atlaskit/icon": "^10.7.0",
-    "@atlaskit/media-card": "^23.2.0",
-    "@atlaskit/media-editor": "^3.4.0",
-    "@atlaskit/modal-dialog": "^3.3.2",
+    "@atlaskit/media-card": "^24.0.0",
+    "@atlaskit/media-editor": "^4.0.0",
+    "@atlaskit/modal-dialog": "^3.3.5",
     "@atlaskit/spinner": "^4.1.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/bricks.js": "^1.8.0",
@@ -50,14 +50,14 @@
     "uuid": "^3.1.0"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^12.1.0",
+    "@atlaskit/media-core": "^13.0.0",
     "react": "15.6.0 - 16.2.0",
     "rxjs": "^5.1.0"
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.4.0",
-    "@atlaskit/media-core": "^12.1.0",
-    "@atlaskit/media-test-helpers": "^8.6.0",
+    "@atlaskit/media-core": "^13.0.0",
+    "@atlaskit/media-test-helpers": "^9.0.0",
     "@atlaskit/toggle": "^2.8.0",
     "@types/dateformat": "^1.0.1",
     "@types/enzyme": "^3.1.6",

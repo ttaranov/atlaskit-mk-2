@@ -1,8 +1,8 @@
 import {
-  GenericUploadEvents,
+  UploadEventPayloadMap,
   ModuleConfig,
   ComponentConfigs,
-} from 'mediapicker';
+} from '@atlaskit/media-picker';
 import { PickerType } from '../../../src/plugins/media/picker-facade';
 
 export default class MockMediaPicker {
@@ -57,9 +57,9 @@ export default class MockMediaPicker {
     this.listeners = {};
   }
 
-  __triggerEvent<K extends keyof GenericUploadEvents>(
+  __triggerEvent<K extends keyof UploadEventPayloadMap>(
     eventName: K,
-    event: GenericUploadEvents[K],
+    event: UploadEventPayloadMap[K],
   ) {
     const { listeners } = this;
 

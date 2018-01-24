@@ -1,5 +1,56 @@
 # @atlaskit/editor-core
 
+## 61.4.7
+
+
+- [patch] Fixes hyperlink popup positioning when popupMountPount is provided [ff2c8c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ff2c8c9)
+
+## 61.4.6
+- [patch] use new MediaPicker package [c652ed4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c652ed4)
+
+## 61.4.5
+- [patch] Add image upload icon back [768c601](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/768c601)
+
+## 61.4.4
+- [patch] fix extension replacement with empty content [e151446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e151446)
+
+## 61.4.3
+
+- [patch] fixed extension node content field [41c7958](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41c7958)
+- [patch] Add analytics for hyperlink autocomplete [345b082](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/345b082)
+
+## 61.4.2
+- [patch] fixed typescript error [19630c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/19630c5)
+- [patch] added mention picker space analytics [05fa937](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05fa937)
+
+## 61.4.1
+- [patch] fixed typescript validation error in the EmojiTypeAhread test [c56d564](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c56d564)
+
+- [patch] added analytics for EmojiTypeAhead component [021d6f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/021d6f8)
+
+## 61.4.0
+- [minor] added new panelType [9f693b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f693b9)
+
+## 61.3.12
+- [patch] Fix list shortcuts [c25601a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c25601a)
+
+## 61.3.11
+- [patch] Fixes nodeviews becoming empty after some transactions [c8ba47c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8ba47c)
+
+## 61.3.10
+
+
+- [patch] Change line length in Full Screen editor from 600px to 680px [6dacbbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6dacbbe)
+
+## 61.3.9
+
+## 61.3.8
+- [patch] Keymaps not supported on windows should not be visible in help dialog on windows. [6872f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6872f52)
+
+## 61.3.7
+
+- [patch] Improvements in code block. [da0fee1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da0fee1)
+
 ## 61.3.6
 - [patch] Fix link dialog styling issues with recent items search [667aaa7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/667aaa7)
 
