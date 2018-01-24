@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 61.4.8
+
+
+- [patch] Add timestamp with filename on paste [18b1108](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18b1108)
+
 ## 61.4.7
 
 
