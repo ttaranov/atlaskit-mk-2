@@ -61,13 +61,11 @@ export default function getButtonStyles(props: Object) {
   // $FlowFixMe TEMPORARY
   const baseSize = fontSize(props);
   const buttonHeight = `${math.divide(math.multiply(gridSize, 4), baseSize)(
-    // $FlowFixMe TEMPORARY
     props,
   )}em`;
   const compactButtonHeight = `${math.divide(
     math.multiply(gridSize, 3),
     baseSize,
-    // $FlowFixMe TEMPORARY
   )(props)}em`;
 
   /**
