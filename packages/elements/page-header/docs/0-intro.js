@@ -3,8 +3,7 @@ import React from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
 
 export default md`
-  The layer manager is used to render React DOM into a new context (aka "Portal").
-  This can be used to implement various UI components such as modals.
+  The page header pattern is a template that helps combine other components (breadcrumbs, headings, actions, and selects) to create a consistent user experience.
 
   ${(
     <Example
