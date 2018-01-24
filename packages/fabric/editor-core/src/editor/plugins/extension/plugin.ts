@@ -1,39 +1,53 @@
-import { Plugin, PluginKey } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import { Plugin, PluginKey, EditorState } from 'prosemirror-state';
+import { DecorationSet, EditorView } from 'prosemirror-view';
 import { ExtensionNodeView } from '../../../nodeviews';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { Dispatch } from '../../event-dispatcher';
 import { setExtensionElement } from './actions';
-import { getExtensionNode } from './utils';
+import { getExtensionNode, createEditMenuDecoration } from './utils';
 
 export const pluginKey = new PluginKey('extensionPlugin');
 
 export type ExtensionState = {
   element: HTMLElement | null;
+  set: DecorationSet;
+  view?: EditorView;
+};
+
+const handleStateChange = (prevState: ExtensionState, action) => {
+  const state = { ...prevState, ...action };
+  const { element, view } = state;
+  if (element !== prevState.element) {
+    state.set = createEditMenuDecoration(element, view);
+  }
+  return state;
 };
 
 export default (dispatch: Dispatch, providerFactory: ProviderFactory) =>
   new Plugin({
     state: {
-      init: () => ({ element: null }),
+      init: () => ({ element: null, set: DecorationSet.empty }),
 
-      apply(tr, state: ExtensionState) {
-        const meta = tr.getMeta(pluginKey);
-        if (meta) {
-          const newState = { ...state, ...meta };
-          dispatch(pluginKey, newState);
-
-          return newState;
+      apply(tr, prevState: ExtensionState) {
+        const action = tr.getMeta(pluginKey);
+        if (action) {
+          return handleStateChange(prevState, action);
         }
 
-        return state;
+        return prevState;
       },
     },
     view: () => {
       return {
-        update: (view: EditorView) => {
-          const { state, dispatch } = view;
-          const { element } = pluginKey.getState(state);
+        update: (editorView: EditorView) => {
+          const { state, dispatch } = editorView;
+          const { element, view } = pluginKey.getState(state);
+          if (!view) {
+            editorView.dispatch(
+              state.tr.setMeta(pluginKey, { view: editorView }),
+            );
+          }
+
           if (
             element &&
             (!document.contains(element) || !getExtensionNode(state))
@@ -45,6 +59,8 @@ export default (dispatch: Dispatch, providerFactory: ProviderFactory) =>
     },
     key: pluginKey,
     props: {
+      decorations: (state: EditorState) => pluginKey.getState(state).set,
+
       nodeViews: {
         extension: ExtensionNodeView(providerFactory),
         bodiedExtension: ExtensionNodeView(providerFactory),

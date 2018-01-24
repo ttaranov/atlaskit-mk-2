@@ -20,6 +20,8 @@ import createPlugin, {
   ExtensionState,
 } from '../../../src/editor/plugins/extension/plugin';
 
+import { createPlugin as createMacroPlugin } from '../../../src/editor/plugins/macro';
+
 const macroProviderPromise = Promise.resolve(macroProvider);
 
 describe('extension', () => {
@@ -28,7 +30,10 @@ describe('extension', () => {
 
     return makeEditor<ExtensionState>({
       doc,
-      plugins: [createPlugin(() => {}, providerFactory)],
+      plugins: [
+        createPlugin(() => {}, providerFactory),
+        createMacroPlugin(() => {}, providerFactory),
+      ],
     });
   };
 

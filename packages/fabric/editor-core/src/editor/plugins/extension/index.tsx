@@ -1,15 +1,10 @@
-import * as React from 'react';
 import {
   inlineExtension,
   extension,
   bodiedExtension,
 } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import createPlugin, { pluginKey, ExtensionState } from './plugin';
-import { editExtension, removeExtension } from './actions';
-import { MacroState, pluginKey as macroPluginKey } from '../macro';
-import ExtensionEditPanel from '../../../ui/ExtensionEditPanel';
-import WithPluginState from '../../ui/WithPluginState';
+import createPlugin from './plugin';
 
 const extensionPlugin: EditorPlugin = {
   nodes() {
@@ -28,35 +23,6 @@ const extensionPlugin: EditorPlugin = {
           createPlugin(dispatch, providerFactory),
       },
     ];
-  },
-
-  contentComponent({ editorView, eventDispatcher }) {
-    const { dispatch } = editorView;
-    return (
-      <WithPluginState
-        editorView={editorView}
-        eventDispatcher={eventDispatcher}
-        plugins={{
-          macroState: macroPluginKey,
-          extensionState: pluginKey,
-        }}
-        render={({
-          macroState = {} as MacroState,
-          extensionState = {} as ExtensionState,
-        }) => (
-          <ExtensionEditPanel
-            element={extensionState.element}
-            onEdit={() =>
-              editExtension(macroState.macroProvider)(
-                editorView.state,
-                dispatch,
-              )
-            }
-            onRemove={() => removeExtension(editorView.state, dispatch)}
-          />
-        )}
-      />
-    );
   },
 };
 
