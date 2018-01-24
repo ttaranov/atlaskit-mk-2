@@ -59,7 +59,11 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
 
   render() {
     const { cellElement, isOpen, advancedMenuDisabled } = this.state;
-    const { popupsMountPoint, popupsBoundariesElement } = this.props;
+    const {
+      popupsMountPoint,
+      popupsBoundariesElement,
+      popupsScrollableElement,
+    } = this.props;
     const items = this.createItems();
 
     if (cellElement) {

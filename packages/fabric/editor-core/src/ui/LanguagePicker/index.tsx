@@ -22,6 +22,7 @@ export interface Props {
   pluginState: CodeBlockState;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
 }
 
 export interface State {
