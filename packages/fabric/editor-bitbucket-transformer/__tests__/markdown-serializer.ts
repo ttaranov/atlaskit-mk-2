@@ -610,7 +610,23 @@ describe('BitbucketTransformer: serializer', () => {
           ),
         ),
       ).toEqual(
-        "![an \\(\\)example](http://exa\\(\\)mple.com 'An image \\(\\)example')",
+        "![an \\(\\)example](http://exa()mple.com 'An image \\(\\)example')",
+      );
+    });
+
+    it(`shouldn't escape src`, () => {
+      expect(
+        markdownSerializer.serialize(
+          doc(
+            img({
+              src: 'http://example.com/a_test_image-*+_|([]{}.png',
+              alt: 'test image',
+              title: 'A Test Image',
+            }),
+          ),
+        ),
+      ).toEqual(
+        "![test image](http://example.com/a_test_image-*+_|([]{}.png 'A Test Image')",
       );
     });
   });
