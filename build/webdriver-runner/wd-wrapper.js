@@ -37,6 +37,10 @@ export default class Page {
     return this.browser.back();
   }
 
+  debug() {
+    return this.browser.debug();
+  }
+
   // Selenium Actions
   addValue(selector, values) {
     return this.browser.addValue(selector, values);
@@ -76,6 +80,9 @@ export default class Page {
   }
   setValue(selector, values) {
     return this.browser.setValue(selector, values);
+  }
+  uploadFile(localPath) {
+    return this.browser.chooseFile('input[type=file]', localPath);
   }
   // State
   hasFocus(selector) {

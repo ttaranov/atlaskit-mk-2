@@ -86,9 +86,6 @@ function setLocalClients() {
     chrome: {
       browserName: 'chrome',
     },
-    firefox: {
-      browserName: 'firefox',
-    },
   };
   let clis = [];
   Object.keys(launchers).forEach(key => {

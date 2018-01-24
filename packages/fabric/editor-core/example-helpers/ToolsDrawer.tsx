@@ -15,6 +15,9 @@ import {
   storyMediaProviderFactory,
 } from '@atlaskit/editor-test-helpers';
 import { enableMock, disableMock } from '@atlaskit/media-test-helpers';
+
+enableMock();
+
 const rejectedPromise = Promise.reject(
   new Error('Simulated provider rejection'),
 );

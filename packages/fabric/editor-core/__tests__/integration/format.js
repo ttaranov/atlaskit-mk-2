@@ -3,6 +3,7 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 // eslint-disable-next-line
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
+import fs from 'fs';
 
 const messageEditor = `${
   global.__baseUrl__
@@ -76,5 +77,24 @@ BrowserTestCase(
     await sample.setValue(editable, ['`this`', space]);
     // eslint-disable-next-line
     expect(await sample.getText('[class="code"]')).toBe('this');
+  },
+);
+
+BrowserTestCase(
+  'picks up media',
+  { skip: ['edge', 'ie', 'safari', 'firefox'] },
+  async client => {
+    const sample = await new Page(client);
+    sample.goto(messageEditor);
+    await sample.click('[aria-label="Insert files and images"]');
+    await sample.uploadFile(__dirname + '/mark-atlassian-B400.jpg');
+    await sample.click('//span[contains(.,"Insert")]/parent::button');
+    await sample.element('div.media-card');
+    await sample.element('div=mark-atlassian-B400.jpg');
+    await sample.element(
+      `div[style="${fs
+        .readFileSync(__dirname + '/mark-atlassian-B400-data')
+        .toString()}"]`,
+    );
   },
 );
