@@ -25,6 +25,7 @@ export interface Props {
   numFollowingButtons: number;
   popupsMountPoint?: HTMLElement | undefined;
   popupsBoundariesElement?: HTMLElement | undefined;
+  popupsScrollableElement?: HTMLElement | undefined;
 }
 
 export interface State {
@@ -157,6 +158,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     const {
       popupsMountPoint,
       popupsBoundariesElement,
+      popupsScrollableElement,
       emojiProvider,
     } = this.props;
     if (disabled || !isOpen || !button) {
@@ -171,6 +173,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
         offset={[0, 3]}
         mountTo={popupsMountPoint}
         boundariesElement={popupsBoundariesElement}
+        scrollableElement={popupsScrollableElement}
       >
         <AkEmojiPicker
           emojiProvider={emojiProvider}

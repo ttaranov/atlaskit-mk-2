@@ -24,6 +24,7 @@ export interface Props {
   activityProvider?: Promise<ActivityProvider>;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
 }
 
 export interface State {

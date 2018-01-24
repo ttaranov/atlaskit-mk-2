@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { findDOMNode } from 'react-dom';
 import { PureComponent } from 'react';
 import rafSchedule from 'raf-schd';
 import { akEditorFloatingPanelZIndex } from '../../styles';
@@ -22,6 +23,7 @@ export interface Props {
   offset?: number[];
   onPositionCalculated?: (position: Position) => Position;
   onPlacementChanged?: (placement: [string, string]) => void;
+  scrollableElement?: HTMLElement;
 }
 
 export interface State {
@@ -127,7 +129,7 @@ export default class Popup extends PureComponent<Props, State> {
 
   private scheduledUpdatePosition = rafSchedule(() => this.updatePosition());
 
-  private handleResize = () => {
+  private handleReposition = () => {
     this.scheduledResizeFrame = this.scheduledUpdatePosition();
   };
 
@@ -136,13 +138,29 @@ export default class Popup extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.handleReposition);
+
+    const { scrollableElement } = this.props;
+    if (scrollableElement) {
+      findDOMNode(scrollableElement).addEventListener(
+        'scroll',
+        this.handleReposition,
+      );
+    }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.handleReposition);
     if (this.scheduledResizeFrame) {
       cancelAnimationFrame(this.scheduledResizeFrame);
+    }
+
+    const { scrollableElement } = this.props;
+    if (scrollableElement) {
+      findDOMNode(scrollableElement).removeEventListener(
+        'scroll',
+        this.handleReposition,
+      );
     }
   }
 

@@ -122,6 +122,7 @@ export default class Editor extends React.Component<
       customContentComponents,
       popupsMountPoint,
       popupsBoundariesElement,
+      popupsScrollableElement,
       disabled,
     } = this.props;
 
@@ -136,6 +137,7 @@ export default class Editor extends React.Component<
             items={primaryToolbarComponents}
             popupsMountPoint={popupsMountPoint}
             popupsBoundariesElement={popupsBoundariesElement}
+            popupsScrollableElement={popupsScrollableElement}
             disabled={!!disabled}
           />
           <MainToolbarCustomComponentsSlot>
@@ -157,6 +159,7 @@ export default class Editor extends React.Component<
               items={contentComponents}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
+              popupsScrollableElement={popupsScrollableElement}
               disabled={!!disabled}
             />
           </ContentArea>

@@ -84,6 +84,7 @@ export interface Props {
   pluginStatePanel?: PanelState;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
   height?: number;
   maxHeight?: number | undefined;
 }
@@ -210,6 +211,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       showSpinner,
       popupsMountPoint,
       popupsBoundariesElement,
+      popupsScrollableElement,
       activityProvider,
     } = this.props;
 
@@ -245,6 +247,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
+              popupsScrollableElement={popupsScrollableElement}
             />
           ) : null}
           {pluginStateTextFormatting ? (
@@ -262,6 +265,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
+              popupsScrollableElement={popupsScrollableElement}
             />
           ) : null}
           {pluginStateTextColor ? (
@@ -271,6 +275,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
+              popupsScrollableElement={popupsScrollableElement}
             />
           ) : null}
           {pluginStateLists ? (
@@ -291,6 +296,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               pluginStateMentions={pluginStateMentions}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
+              popupsScrollableElement={popupsScrollableElement}
               // tslint:disable-next-line:jsx-no-lambda
               render={state => (
                 <ToolbarInsertBlock
@@ -337,6 +343,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
+              popupsScrollableElement={popupsScrollableElement}
               activityProvider={activityProvider}
             />
           ) : null}
@@ -347,6 +354,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
+              popupsScrollableElement={popupsScrollableElement}
             />
           ) : null}
 
@@ -366,6 +374,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               pluginKey={mentionPluginKey}
               popupsBoundariesElement={popupsBoundariesElement}
               popupsMountPoint={popupsMountPoint}
+              popupsScrollableElement={popupsScrollableElement}
               mentionProvider={mentionProvider}
             />
           ) : null}
@@ -376,6 +385,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
               popupsBoundariesElement={popupsBoundariesElement}
               popupsMountPoint={popupsMountPoint}
+              popupsScrollableElement={popupsScrollableElement}
               emojiProvider={emojiProvider}
             />
           ) : null}

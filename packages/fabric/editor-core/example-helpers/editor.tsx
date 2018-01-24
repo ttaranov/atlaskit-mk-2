@@ -88,6 +88,7 @@ export interface Props {
   uploadErrorHandler?: (state: MediaState) => void;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
   height?: number;
   schema?: Schema;
 }
@@ -322,6 +323,7 @@ export default class Editor extends PureComponent<Props, State> {
         activityProvider={activityProvider}
         popupsMountPoint={this.props.popupsMountPoint}
         popupsBoundariesElement={this.props.popupsBoundariesElement}
+        popupsScrollableElement={this.props.popupsScrollableElement}
         helpDialogPresent={true}
         maxHeight={200}
         height={this.props.height}

@@ -89,6 +89,7 @@ export interface EditorProps {
 
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
 
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;

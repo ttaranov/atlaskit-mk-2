@@ -55,6 +55,7 @@ export interface Props {
   showSpinner?: boolean;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
   height?: number;
   maxHeight?: number | undefined;
 }
@@ -93,6 +94,7 @@ export default class Chrome extends PureComponent<Props, {}> {
         packageName={props.packageName}
         popupsBoundariesElement={props.popupsBoundariesElement}
         popupsMountPoint={props.popupsMountPoint}
+        popupsScrollableElement={props.popupsScrollableElement}
         maxHeight={props.maxHeight}
         height={props.height}
       >

@@ -172,6 +172,56 @@ class PortalInScrollContainerExample extends PureComponent<any, any> {
   }
 }
 
+class JiraSidebarEditor extends PureComponent<any, any> {
+  state = { portal: undefined, boundary: undefined };
+
+  handlePortalRef = portal => {
+    this.setState({ portal });
+  };
+
+  handleBoundryRef = boundary => {
+    this.setState({ boundary });
+  };
+
+  handleScrollableRef = scrollable => {
+    this.scrollable = scrollable;
+  };
+
+  render() {
+    const props = this.props;
+
+    return (
+      <div ref={this.handleBoundryRef}>
+        <div style={{ display: 'table' }}>
+          <div style={{ display: 'table-cell', width: 480 }}>JIRA</div>
+          <div style={{ display: 'table-cell' }}>
+            <div
+              style={{ width: 300, 'overflow-y': 'scroll', height: 200 }}
+              ref={this.handleScrollableRef}
+            >
+              <div style={{ height: 500 }}>
+                <Editor
+                  imageUploadHandler={imageUploadHandler}
+                  analyticsHandler={analyticsHandler}
+                  onCancel={CANCEL_ACTION}
+                  onSave={SAVE_ACTION}
+                  mentionProvider={mentionProvider}
+                  emojiProvider={emojiProvider}
+                  isExpandedByDefault={true}
+                  popupsMountPoint={this.state.portal}
+                  popupsBoundariesElement={this.state.boundary}
+                  popupsScrollableElement={this.scrollable}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ref={this.handlePortalRef} />
+      </div>
+    );
+  }
+}
+
 const CANCEL_ACTION = () => console.log('Cancel');
 const SAVE_ACTION = () => console.log('Save');
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
@@ -291,6 +341,13 @@ export default function Example() {
             emojiProvider={emojiProvider}
           />
         </div>
+      </Content>
+
+      <hr />
+
+      <Content>
+        <h2>Portal with custom scroll container</h2>
+        <JiraSidebarEditor />
       </Content>
     </div>
   );

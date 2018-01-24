@@ -26,6 +26,7 @@ const blockType: EditorPlugin = {
     editorView,
     popupsMountPoint,
     popupsBoundariesElement,
+    popupsScrollableElement,
     toolbarSize,
     disabled,
     isToolbarReducedSpacing,
@@ -41,6 +42,7 @@ const blockType: EditorPlugin = {
         pluginState={pluginState}
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
+        popupsScrollableElement={popupsScrollableElement}
       />
     );
   },

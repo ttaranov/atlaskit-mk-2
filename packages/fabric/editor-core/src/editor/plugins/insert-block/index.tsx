@@ -43,6 +43,7 @@ const insertBlockPlugin: EditorPlugin = {
     providerFactory,
     popupsMountPoint,
     popupsBoundariesElement,
+    popupsScrollableElement,
     toolbarSize,
     disabled,
     isToolbarReducedSpacing,
@@ -108,6 +109,7 @@ const insertBlockPlugin: EditorPlugin = {
               macroProvider={macroState.macroProvider}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
+              popupsScrollableElement={popupsScrollableElement}
             />
           )}
         />
