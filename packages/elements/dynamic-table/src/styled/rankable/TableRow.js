@@ -5,10 +5,6 @@ import { colors } from '@atlaskit/theme';
 import { TableBodyRow } from '../TableRow';
 
 const draggableStyle = ({ isRanking, isRankingItem }) => css`
-  &:hover {
-    cursor: ${isRankingItem ? 'grabbing' : 'grab'};
-  }
-
   ${isRanking &&
     css`
       display: block;
