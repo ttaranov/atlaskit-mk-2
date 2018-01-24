@@ -13,10 +13,8 @@ We want to keep this model very simple. At it's core, we make the assumptions th
 
 The process is very simple and consists of:
 
-1. Raise an issue for discussion.
+1. Raise an issue for discussion. This step may not even be necessary as this could all be done in a PR, depending on if the contributor is willing to lose work if the contribution doesn't get accepted.
 2. Submit a PR resolving the raised issue.
-3. Discuss.
-4. Merge when ready.
 
 This is super simple and the PR guidelines can be derived from the rest of our conventions and documentation. It's also compatible with the inter-team model, because, at the very worst, internal teams would still be able to follow this process.
 
@@ -37,10 +35,10 @@ The steps for the inter-team model are as follows.
 
 The contribution may be initially sparked by several methods:
 
-- Water-cooler discussion with a colleague.
-- Issue raised by another team.
-- Atlaskit team member noticing similar implementations in products and raising it.
-- Any sync meetings between teams.
+* Water-cooler discussion with a colleague.
+* Issue raised by another team.
+* Atlaskit team member noticing similar implementations in products and raising it.
+* Any sync meetings between teams.
 
 ### Initial discussion
 
@@ -62,9 +60,9 @@ Since these two components can affect one another, everyone involved should keep
 
 Some examples of this are:
 
-- Daily stand-ups
-- Weekly catch-ups
-- Demos every other day
+* Daily stand-ups
+* Weekly catch-ups
+* Demos every other day
 
 The people involved in these catch-ups will vary, as well. For example, it may simply be the contributor and shepherd. It may have a designer present. Other team members may be involved depending on the complexity.
 
@@ -74,9 +72,9 @@ _The key here is that everyone shares knowledge and can hold each other accounta
 
 Every contribution will have a shepherd, but to the extent at which this shepherd will be involved will vary. For example, a shepherd may not be a developer at all, or might decide that part-time development is a good idea. A shepherd may even take over development at some point. Whatever the case, the shepherd must at the very least be dedicated to:
 
-- Reviewing relevant PRs.
-- Meeting with contributors, or involved parties.
-- Planning any follow ups after the final contribution and handover has been made.
+* Reviewing relevant PRs.
+* Meeting with contributors, or involved parties.
+* Planning any follow ups after the final contribution and handover has been made.
 
 ### Tracking
 
