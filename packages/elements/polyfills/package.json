@@ -7,6 +7,9 @@
   "files": [
     "*.js"
   ],
+  "atlaskit": {
+    "internal": true
+  },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     "Sean C"
