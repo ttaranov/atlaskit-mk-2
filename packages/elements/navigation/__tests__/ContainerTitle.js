@@ -14,6 +14,8 @@ describe('<ContainerTitle />', () => {
     });
 
     it('linkComponent can be used to render an arbitrary link', () => {
+      // TODO: Please see - AK-4242
+      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
       const wrapper = mountWithRootTheme(
         <ContainerTitle
           href="http://google.com"
@@ -28,6 +30,7 @@ describe('<ContainerTitle />', () => {
       expect(wrapper.find('linkComponent').props().href).toBe(
         'http://google.com',
       );
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should render its title', () => {

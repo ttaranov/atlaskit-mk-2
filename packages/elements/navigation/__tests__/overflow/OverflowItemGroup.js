@@ -119,6 +119,8 @@ describe('<AkCollapseOverflowItemGroup />', () => {
     });
 
     it('should report height of items and non-item height to the overflow manager via context', () => {
+      // TODO: Please see - AK-4242
+      const spy = jest.spyOn(console, 'warn').mockImplementation(() => {});
       instance.handleItemHeightReport(0, 40);
       instance.handleItemHeightReport(1, 50);
       expect(reportSpy).toHaveBeenCalledTimes(1);
@@ -127,6 +129,7 @@ describe('<AkCollapseOverflowItemGroup />', () => {
         itemHeights: [40, 50],
         nonItemHeight: 10,
       });
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should not report height of items to manager until all item heights are known', () => {

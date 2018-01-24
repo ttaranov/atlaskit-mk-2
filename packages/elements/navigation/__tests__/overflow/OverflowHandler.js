@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { mount, configure } from 'enzyme';
+import sinon from 'sinon';
 import Adapter from 'enzyme-adapter-react-16';
 import { replaceRaf } from 'raf-stub';
 import OverflowHandler from '../../src/components/js/overflow/OverflowHandler';
@@ -17,7 +18,6 @@ configure({ adapter: new Adapter() });
 describe('<AkCollapseOverflow />', () => {
   describe('calculateBreakItem', () => {
     let instance;
-
     beforeEach(() => {
       instance = mount(
         <OverflowHandler groupCount={1}>
@@ -76,7 +76,6 @@ describe('<AkCollapseOverflow />', () => {
         itemHeights: [10, 10, 10, 10, 10, 10, 10],
         nonItemHeight: 32,
       });
-
       expect(instance.state.breakAt).toEqual({ group: 0, item: 0 });
     });
   });
@@ -102,6 +101,8 @@ describe('<AkCollapseOverflow />', () => {
       );
       instance = wrapper.instance();
       requestAnimationFrame.step(); // needed for SizeDetector
+      // TODO: Please see - AK-4242
+      sinon.stub(console, 'warn');
     });
 
     it('should render dropdown only if break is needed', () => {
@@ -109,20 +110,21 @@ describe('<AkCollapseOverflow />', () => {
         dropdownHeight + reservedGapHeight + 32 + 10,
       );
       expect(wrapper.find(OverflowDropdown).length).toBe(0);
-
       instance.handleItemGroupHeightReport({
         groupIndex: 0,
         itemHeights: [10, 10, 10, 10, 10, 10, 10],
         nonItemHeight: 32,
       });
-      wrapper.update();
 
+      wrapper.update();
       expect(instance.state.breakAt).toEqual({ group: 0, item: 0 });
       expect(wrapper.find(OverflowDropdown).length).toBe(1);
-
       instance.handleAvailableHeightChange(999);
       wrapper.update();
       expect(wrapper.find(OverflowDropdown).length).toBe(0);
+      // TODO: Please see - AK-4242
+      /* eslint-disable no-console */
+      sinon.assert.callCount(console.warn, 2);
     });
   });
 });

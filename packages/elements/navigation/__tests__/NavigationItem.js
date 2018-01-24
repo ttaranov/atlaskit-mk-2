@@ -80,6 +80,8 @@ describe('<NavigationItem />', () => {
       expect(navigation.find('a').props().target).toBe('_blank');
     });
     it('linkComponent should render a custom link component', () => {
+      // TODO: Please see - AK-4242
+      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
       const customLink = mountWithRootTheme(
         <NavigationItem
           href="#custom-href"
@@ -92,6 +94,7 @@ describe('<NavigationItem />', () => {
       ).find('.custom');
       expect(customLink).not.toBe(undefined);
       expect(customLink.props().href).toBe('#custom-href');
+      expect(spy).toHaveBeenCalled();
     });
     it('textAfter should render in the navigation item', () => {
       expect(
