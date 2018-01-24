@@ -45,7 +45,7 @@
     "build:media-editor:copy-binaries": "    cd packages/fabric/media-editor && cp -r src/engine/core/binaries dist/es5/engine/core && cp -r src/engine/core/binaries dist/es2015/engine/core",
     "build:icon": "                          cd packages/elements/icon && yarn build",
     "build:reduced-ui-pack": "               cd packages/css-packs/reduced-ui-pack && yarn build",
-    "build:css-reset": "                     cd packages/elements/css-reset && yarn build",
+    "build:css-reset": "                     cd packages/css-packs/css-reset && yarn build",
     "build:layer": "                         cd packages/elements/layer && yarn build",
     "build:mention:json": "                  cd packages/fabric/mention && cp -r src/support/json-data dist/es5/support/json-data && cp -r src/support/json-data dist/es2015/support/json-data"
   },
