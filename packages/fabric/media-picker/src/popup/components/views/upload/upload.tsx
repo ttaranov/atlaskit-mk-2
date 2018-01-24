@@ -127,9 +127,7 @@ export class StatelessUploadView extends Component<
           <div className="recentUploadsTitle">Recent Uploads</div>
           {cards}
         </div>
-        {this.state.isWebGLWarningFlagVisible
-          ? this.renderWebGLWarningFlag()
-          : null}
+        {this.renderWebGLWarningFlag()}
       </Wrapper>
     );
   }
