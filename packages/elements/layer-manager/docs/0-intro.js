@@ -32,8 +32,8 @@ export default md`
 
   ${(
     <Example
-      Component={require('../examples/basic').default}
-      source={require('!!raw-loader!../examples/basic')}
+      Component={require('../examples/0-basic').default}
+      source={require('!!raw-loader!../examples/0-basic')}
       title="Supported Components"
     />
   )}
@@ -45,24 +45,24 @@ export default md`
 
   ${(
     <Example
-      Component={require('../examples/scroll-lock').default}
-      source={require('!!raw-loader!../examples/scroll-lock')}
+      Component={require('../examples/1-scroll-lock').default}
+      source={require('!!raw-loader!../examples/1-scroll-lock')}
       title="Scroll Lock"
     />
   )}
 
   ${(
     <Example
-      Component={require('../examples/focus-lock').default}
-      source={require('!!raw-loader!../examples/focus-lock')}
+      Component={require('../examples/2-focus-lock').default}
+      source={require('!!raw-loader!../examples/2-focus-lock')}
       title="Focus Lock"
     />
   )}
 
   ${(
     <Example
-      Component={require('../examples/with-context').default}
-      source={require('!!raw-loader!../examples/with-context')}
+      Component={require('../examples/3-with-context').default}
+      source={require('!!raw-loader!../examples/3-with-context')}
       title="With Context from Props"
     />
   )}

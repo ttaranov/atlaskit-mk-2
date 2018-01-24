@@ -1,11 +1,19 @@
 // @flow
-import { cloneElement, type Node } from 'react';
+import React, { cloneElement, type Node } from 'react';
+import PropTypes from 'prop-types';
+import withContextFromProps from '../../withContextFromProps';
 import type GatewayDest from './GatewayDest';
 
 type Child = Node;
 type Container = GatewayDest;
 type GatewayID = string;
 type Name = string;
+
+const contextTypes = {
+  blockChildGatewayRender: PropTypes.bool,
+};
+
+const ContextProvider = withContextFromProps(contextTypes, null);
 
 export default class GatewayRegistry {
   containers: {} = {};
@@ -20,20 +28,35 @@ export default class GatewayRegistry {
    *   - stackIndex
    *   - stackTotal
    */
-  renderContainer(name: Name) {
+  renderContainer(name: Name, addedGateway?: GatewayID) {
     if (!this.containers[name] || !this.children[name]) {
       return;
     }
 
-    const childrenKeys = Object.keys(this.children[name]);
+    const childrenKeys = Object.keys(this.children[name]).sort();
     const stackTotal = childrenKeys.length;
+    const addedGatewayIndex = childrenKeys.indexOf(addedGateway);
 
     this.containers[name].setState({
-      children: childrenKeys.sort().map((key, i) => {
+      children: childrenKeys.map((key, i) => {
         const stackIndex = stackTotal - (i + 1);
-        const element = this.children[name][key];
+        const element = cloneElement(this.children[name][key].child, {
+          stackIndex,
+          stackTotal,
+        });
+        // Do not re-render nested gateways when a gateway is added to prevent an infinite loop
+        // caused by an added gateway triggering a re-render of its parent and then itself.
+        const blockChildGatewayRender =
+          addedGateway != null && i < addedGatewayIndex;
 
-        return cloneElement(element, { key, stackIndex, stackTotal });
+        return (
+          <ContextProvider
+            blockChildGatewayRender={blockChildGatewayRender}
+            key={key}
+          >
+            {element}
+          </ContextProvider>
+        );
       }),
     });
   }
@@ -48,8 +71,10 @@ export default class GatewayRegistry {
   }
 
   addChild(name: Name, gatewayId: GatewayID, child: Child) {
-    this.children[name][gatewayId] = child;
-    this.renderContainer(name);
+    this.children[name][gatewayId] = {
+      child,
+    };
+    this.renderContainer(name, gatewayId);
   }
 
   clearChild(name: Name, gatewayId: GatewayID) {
@@ -60,7 +85,9 @@ export default class GatewayRegistry {
     this.children[name] = this.children[name] || {};
 
     const gatewayId = `${name}_${this.currentId}`;
-    this.children[name][gatewayId] = child;
+    this.children[name][gatewayId] = {
+      child,
+    };
     this.currentId += 1;
 
     return gatewayId;
