@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import SingleLineTextInput from '@atlaskit/input';
-import InlineEditor from '../src';
+import InlineEdit from '../src';
 
 type State = {
   onEventResult: string,
@@ -26,7 +26,7 @@ export default class WaitingExample extends Component<void, State> {
   render() {
     return (
       <div>
-        <InlineEditor
+        <InlineEdit
           label="Waiting State"
           isWaiting
           editView={<SingleLineTextInput isEditing isInitiallySelected />}
