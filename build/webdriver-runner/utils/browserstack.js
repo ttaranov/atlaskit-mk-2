@@ -10,7 +10,7 @@ async function startBrowserStack() {
       if (error) {
         return reject(error);
       }
-      setTimeout(() => resolve(), 1000);
+      resolve();
     });
   });
 }
