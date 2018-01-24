@@ -324,7 +324,8 @@ export class UploadService {
 
           // TODO MSW-396 Replace this check after RFC from ticket has been decided
           // https://product-fabric.atlassian.net/browse/MSW-396
-          if (file.size < maxFileSizeForPreview && mediaType === 'image') {
+          if (mediaType === 'image') {
+            console.log('uploadService getPreviewFromBlob');
             getPreviewFromBlob(resumableFile.file, mediaType).then(preview => {
               this.emit('file-preview-update', {
                 file,
