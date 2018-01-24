@@ -1,5 +1,9 @@
 # @atlaskit/layer
 
+## 2.6.1
+
+- [patch] Mark packages as internal [016d74d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/016d74d)
+
 ## 2.6.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
 

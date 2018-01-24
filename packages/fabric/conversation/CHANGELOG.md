@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 4.9.0
+- [minor] Adding optimistic updates [45922f3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/45922f3)
+
 ## 4.8.2
 
 ## 4.8.1

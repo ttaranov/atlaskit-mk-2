@@ -1,5 +1,8 @@
 # @atlaskit/code
 
+## 3.0.4
+- [patch] Minor manual bump for packages desync'd from npm [e988c58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e988c58)
+
 ## 3.0.3
 - Manual bump to resolve desync with npm package version.
 
