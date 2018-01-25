@@ -8,11 +8,15 @@ import {
   akEditorTableFloatingControls,
   akEditorRuleBackground,
   akEditorRuleBorderRadius,
+  akEditorCodeBackground,
+  akEditorCodeFontFamily,
+  akEditorCodeBlockPadding,
 } from '../../../styles';
 import {
   akGridSizeUnitless,
   akColorN80,
   akColorN20,
+  akBorderRadius,
 } from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
 
@@ -133,6 +137,10 @@ const ContentStyles = styled.div`
   .ProseMirror pre {
     box-sizing: border-box;
     white-space: pre-wrap;
+    font-family: ${akEditorCodeFontFamily};
+    background: ${akEditorCodeBackground};
+    padding: ${akEditorCodeBlockPadding};
+    border-radius: ${akBorderRadius};
   }
 
   .ProseMirror .code {
