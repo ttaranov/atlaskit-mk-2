@@ -3,6 +3,7 @@ import React, { PureComponent, type Element, type ChildrenArray } from 'react';
 import { TreeRowContainer } from '../styled';
 import Chevron from './Chevron';
 import Cell from './Cell';
+import toItemId from '../utils/toItemId';
 import { type RowData } from '../types';
 
 type Props = {
@@ -12,8 +13,14 @@ type Props = {
   /** One or more Cell elements that will form this row of data. */
   children: Node | ChildrenArray<Element<*>>,
 
+  /** Unique, stable ID for the row. Can be used for accessibility, caching etc. */
+  itemId: string,
+
   /** Called whenever this row's node is expanded to show its child rows. */
   onExpand?: RowData => void,
+
+  /** Called whenever this row's node is expanded to show its child rows. */
+  onExpand?: Function,
 
   /** Called whenever this row's node is collapsed to hide its child rows. */
   onCollapse?: RowData => void,
@@ -47,16 +54,16 @@ export default class Row extends PureComponent<Props> {
 
   renderCell(cell: Element<typeof Cell>, cellIndex: number) {
     const { hasChildren, depth, isExpanded = false } = this.props;
-    const isFirst = cellIndex === 0;
-    const indentLevel = isFirst ? depth : 0;
+    const isFirstCell = cellIndex === 0;
+    const indentLevel = isFirstCell ? depth : 0;
     let cellContent = cell.props.children || [];
-    if (isFirst) {
+    if (isFirstCell && hasChildren) {
       cellContent = [
         <Chevron
           key="chevron"
           isExpanded={isExpanded}
-          hasChildren={hasChildren}
           onExpandToggle={this.props.onExpandToggle}
+          ariaControls={toItemId(this.props.itemId)}
         />,
       ].concat(cellContent);
     }
@@ -72,8 +79,16 @@ export default class Row extends PureComponent<Props> {
   }
 
   render() {
+    const { hasChildren, isExpanded, depth } = this.props;
+    const ariaAttrs = {};
+    if (hasChildren) {
+      ariaAttrs['aria-expanded'] = isExpanded;
+    }
+    if (depth !== undefined) {
+      ariaAttrs['aria-level'] = depth;
+    }
     return (
-      <TreeRowContainer>
+      <TreeRowContainer role={'row'} {...ariaAttrs}>
         {React.Children.map(this.props.children, (cell, index) =>
           this.renderCell(cell, index),
         )}

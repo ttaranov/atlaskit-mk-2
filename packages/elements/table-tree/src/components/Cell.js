@@ -19,7 +19,7 @@ class Cell extends Component<Props> {
   render() {
     const { props } = this;
     return (
-      <StyledCell {...props}>
+      <StyledCell role={'gridcell'} {...props}>
         <OverflowContainer singleLine={props.singleLine}>
           {props.children}
         </OverflowContainer>

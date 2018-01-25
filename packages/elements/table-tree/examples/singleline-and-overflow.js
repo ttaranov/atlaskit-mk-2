@@ -39,7 +39,7 @@ export default () => (
     <Rows
       items={getItemsData}
       render={({ title, description }) => (
-        <Row key={title} hasChildren={false}>
+        <Row itemId={title} hasChildren={false}>
           <Cell singleLine>{title}</Cell>
           <Cell>
             {description} <OverflowingBox>Overflowing box</OverflowingBox>

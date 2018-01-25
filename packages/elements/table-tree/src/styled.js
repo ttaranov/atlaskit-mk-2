@@ -18,6 +18,7 @@ function defaultToPx(length) {
 }
 
 export const iconColor = colors.N800;
+export const iconColorFocus = colors.linkHover;
 
 export const TreeRowContainer = styled.div`
   border-bottom: 1px solid ${colors.N30};
@@ -38,6 +39,14 @@ const commonChevronContainer = css`
   top: 0;
   bottom: 0;
   margin-left: -22px;
+
+  button {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+    outline: none;
+  }
 `;
 
 export const ChevronContainer = styled.span`
