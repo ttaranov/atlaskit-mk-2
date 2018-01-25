@@ -265,6 +265,5 @@ export default withRenderTarget(
     target: 'modal',
     withTransitionGroup: true,
   },
-  // $FlowFixMe TEMPORARY
   Modal,
 );

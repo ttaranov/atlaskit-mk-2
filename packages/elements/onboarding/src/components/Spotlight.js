@@ -213,7 +213,6 @@ export default withScrollMeasurements(
       target: 'spotlight',
       withTransitionGroup: true,
     },
-    // $FlowFixMe TEMPORARY
     Spotlight,
   ),
 );

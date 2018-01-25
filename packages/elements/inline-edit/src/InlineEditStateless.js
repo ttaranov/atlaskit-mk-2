@@ -1,5 +1,10 @@
 // @flow
-import React, { Component, cloneElement, type Node } from 'react';
+import React, {
+  Component,
+  cloneElement,
+  type Node,
+  type ElementRef,
+} from 'react';
 import ReactDOM from 'react-dom';
 import Button from '@atlaskit/button';
 import ConfirmIcon from '@atlaskit/icon/glyph/check';
@@ -65,8 +70,8 @@ type State = {
 };
 
 export default class InlineEdit extends Component<Props, State> {
-  confirmButtonRef: HTMLElement | null;
-  cancelButtonRef: HTMLElement | null;
+  confirmButtonRef: ElementRef<any> | null;
+  cancelButtonRef: ElementRef<any> | null;
 
   static defaultProps = {
     areActionButtonsHidden: false,
@@ -205,7 +210,6 @@ export default class InlineEdit extends Component<Props, State> {
             iconBefore={<ConfirmIcon label="confirm" size="small" />}
             onClick={this.onConfirmClick}
             ref={ref => {
-              // $FlowFixMe TEMPORARY
               this.confirmButtonRef = ref;
             }}
           />
@@ -215,7 +219,6 @@ export default class InlineEdit extends Component<Props, State> {
             iconBefore={<CancelIcon label="cancel" size="small" />}
             onClick={this.onCancelClick}
             ref={ref => {
-              // $FlowFixMe TEMPORARY
               this.cancelButtonRef = ref;
             }}
           />

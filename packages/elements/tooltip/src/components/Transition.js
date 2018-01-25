@@ -51,6 +51,5 @@ export default withRenderTarget(
     target: 'tooltip',
     withTransitionGroup: true,
   },
-  // $FlowFixMe TEMPORARY
   Tip,
 );
