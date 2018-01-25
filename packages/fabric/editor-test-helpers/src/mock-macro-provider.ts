@@ -6,7 +6,7 @@ import {
 } from '@atlaskit/editor-core';
 import { bodiedExtensionData } from './mock-extension-data';
 
-const getMacroADFNode = (macroName, macroParams) => {
+const getMacroADFNode = (macroName, macroParams): MacroAttributes => {
   return {
     type: 'inlineExtension' as ExtensionType,
     attrs: {
@@ -36,16 +36,16 @@ export class MockMacroProvider implements MacroProvider {
     return Promise.resolve(bodiedExtensionData[index]);
   }
 
-  autoConvert(link: String) {
+  autoConvert(link: String): MacroAttributes | null {
     switch (link) {
-      case 'www.trello.com?board=CFE':
-        return getMacroADFNode('trello', {
-          board: { value: 'CFE' },
+      case 'www.dumbmacro.com?paramA=CFE':
+        return getMacroADFNode('dumbMacro', {
+          paramA: { value: 'CFE' },
         });
-      case 'www.trello.com':
-        return getMacroADFNode('trello', {});
-      case 'www.twitter.com':
-        return getMacroADFNode('twitter', {});
+      case 'www.smartmacro.com?paramB=CFE':
+        return getMacroADFNode('smartMacro', {
+          paramB: { value: 'CFE' },
+        });
       default:
         return null;
     }

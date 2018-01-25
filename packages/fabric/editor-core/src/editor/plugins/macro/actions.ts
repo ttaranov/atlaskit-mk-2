@@ -59,6 +59,27 @@ export const resolveMacro = (
   return node;
 };
 
+// gets the macroProvider from the state and tries to autoConvert a given text
+export const runMacroAutoConvert = (
+  state: EditorState,
+  text: String,
+): PmNode | null => {
+  const macroPluginState = pluginKey.getState(state);
+
+  const macroProvider = macroPluginState && macroPluginState.macroProvider;
+  if (!macroProvider || !macroProvider.autoConvert) {
+    return null;
+  }
+
+  const macroAttributes = macroProvider.autoConvert(text);
+  if (!macroAttributes) {
+    return null;
+  }
+
+  // decides which kind of macro to render (inline|bodied|bodyless) - will be just inline atm.
+  return resolveMacro(macroAttributes, state);
+};
+
 export const setMacroProvider = (provider: Promise<MacroProvider>) => async (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
