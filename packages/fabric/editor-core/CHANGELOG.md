@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.4.12
+- [patch] Code block in JIRA has no formatting and not distinguishable from normal text. [5bdb48f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bdb48f)
+
 ## 61.4.11
 
 - [patch] Insert media group instead of single image inside table [5b4aaa0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b4aaa0)
