@@ -31,77 +31,33 @@ export default class Page {
   }
 
   // Get
-  //remove the below as needed
-  getAttribute(selector, attributeName) {
-    return this.browser.getAttribute(selector, attributeName);
-  }
-  getCssProperty(selector, cssProperty) {
+  getProperty(selector, cssProperty) {
     return this.browser.getCssProperty(selector, cssProperty);
   }
-  getElementSize(selector, prop) {
-    return this.browser.getElementSize(selector, prop);
-  }
-  getText(selector) {
+  eval(selector) {
     return this.browser.getText(selector);
+    // For later, this is how we will get the text in Puppeeter:
+    // const textContent = await page.evaluate(() => document.querySelector('p').textContent);
+    // const innerText = await page.evaluate(() => document.querySelector('p').innerText);
   }
-  getTitle() {
-    return this.browser.getTitle();
-  }
-  getUrl() {
+  url() {
     return this.browser.getUrl();
   }
-  getValue(selector) {
-    return this.browser.getValue(selector);
-  }
   // Protocol
-  back() {
+  goBack() {
     return this.browser.back();
   }
+  close() {
+    return this.browser.close();
+  }
 
-  // Selenium Actions
-  addValue(selector, values) {
-    return this.browser.addValue(selector, values);
-  }
-  clearElement(selector) {
-    return this.browser.clearElement(selector);
-  }
-  click(selector) {
-    return this.browser.click(selector);
-  }
-  doubleClick(selector) {
-    return this.browser.doubleClick(selector);
-  }
-  dragAndDrop(sourceElem, destinationElem) {
-    return this.browser.dragAndDrop(sourceElem, destinationElem);
-  }
-  element(selector) {
-    return this.browser.element(selector);
-  }
-  elements(selector) {
-    return this.browser.elements(selector);
-  }
   keys(value) {
-    return this.browser.keys(value); // more documentation - https://w3c.github.io/webdriver/webdriver-spec.html#keyboard-actions
+    return this.browser.keys(value);
   }
-  select(selector) {
-    return this.browser.element(selector);
-  }
-  selectByAttribute(selector, attribute, value) {
-    return this.browser.selectByAttribute(selector, attribute, value);
-  }
-  selectByValue(selector, value) {
-    return this.browser.selectByValue(selector, value);
-  }
-  selectByVisibleText(selector, text) {
-    return this.browser.selectByVisibleText(selector, text);
-  }
-  setValue(selector, values) {
-    return this.browser.setValue(selector, values);
-  }
-  // State
-  hasFocus(selector) {
-    return this.browser.hasFocus(selector);
-  }
+  // To be replaced by those puppeeter fucntions
+  //  keyboard.down('KeyA');
+  //  keyboard.press('KeyA');
+  //  keyboard.up('Shift');
 
   //will need to have wrapper for these once moved to puppeteer
   isEnabled(selector) {
@@ -114,14 +70,13 @@ export default class Page {
   waitForSelector(selector) {
     return this.browser.waitForSelector(selector);
   }
-  waitForVisible(selector, [, ms], [, reverse]) {
+  waitFor(selector, [, ms], [, reverse]) {
     return this.browser.waitForVisible(selector, [, ms], [, reverse]);
   }
   // Window
-  // close
-  // getViewportSize
-  // setViewPortSize
-  // switchTab
+  setViewPort(size, type) {
+    return this.browser.setViewPort(size, type);
+  }
 }
 //TODO: Maybe wrapping all functions?
 async function wrapper(fn) {
