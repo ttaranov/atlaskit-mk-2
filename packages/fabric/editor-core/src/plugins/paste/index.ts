@@ -6,7 +6,10 @@ import { EditorView } from 'prosemirror-view';
 import * as MarkdownIt from 'markdown-it';
 import { stateKey as tableStateKey } from '../table';
 import { containsTable } from '../../editor/plugins/table/utils';
-import { pluginKey, resolveMacro } from '../../editor/plugins/macro';
+import {
+  pluginKey as macroPluginKey,
+  resolveMacro,
+} from '../../editor/plugins/macro';
 import { insertMediaAsMediaSingle } from '../media/media-single';
 import { isSingleLine, isCode, escapeLinks } from './util';
 import { analyticsService } from '../../analytics';
@@ -79,7 +82,9 @@ export function createPlugin(
         const html = event.clipboardData.getData('text/html');
         const node = slice.content.firstChild;
 
-        const { macroProvider } = pluginKey.getState(view.state);
+        const macroPluginState = macroPluginKey.getState(view.state);
+        const macroProvider =
+          macroPluginState && macroPluginState.macroProvider;
 
         // if autoConvert is provided, runs is first.
         if (macroProvider && macroProvider.autoConvert) {
