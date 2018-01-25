@@ -1,5 +1,7 @@
 # @atlaskit/item
 
+## 4.2.9
+
 ## 4.2.8
 
 - [patch] Mark packages as internal [016d74d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/016d74d)

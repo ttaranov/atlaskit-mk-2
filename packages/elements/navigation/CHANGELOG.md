@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 27.0.8
+- [patch] creating patch to handle avatar release [0356e85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0356e85)
+
 ## 27.0.7
 - [patch] Minor manual bump for packages desync'd from npm [e988c58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e988c58)
 

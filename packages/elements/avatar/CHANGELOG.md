@@ -1,5 +1,12 @@
 # @atlaskit/avatar
 
+## 9.0.0
+
+
+
+
+- [major] update api onAvatarClick for Avatar Group [23a488e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23a488e)
+
 ## 8.4.1
 
 - [patch] Migrate Navigation from Ak repo to ak mk 2 repo, Fixed flow typing inconsistencies in ak mk 2 [bdeef5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdeef5b)

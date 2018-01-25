@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/item",
-  "version": "4.2.8",
+  "version": "4.2.9",
   "description": "A generic item component to be used within other components",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -26,13 +26,13 @@
     "react-dom": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^8.4.0",
+    "@atlaskit/avatar": "^9.0.0",
     "@atlaskit/docs": "^2.4.0",
-    "@atlaskit/dropdown-menu": "^3.5.0",
+    "@atlaskit/dropdown-menu": "^3.11.6",
     "@atlaskit/droplist": "^4.11.3",
     "@atlaskit/icon": "^10.7.1",
     "@atlaskit/lozenge": "^3.5.0",
-    "@atlaskit/page": "^5.0.9",
+    "@atlaskit/page": "^5.0.10",
     "@atlaskit/tooltip": "^8.1.1",
     "enzyme": "^3.3.0",
     "polished": "1.5.0"

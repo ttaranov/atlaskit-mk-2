@@ -1,5 +1,10 @@
 # @atlaskit/field-base
 
+## 8.1.9
+
+
+- [patch] Minor documentation fixes [f0e96bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0e96bd)
+
 ## 8.1.8
 
 - [patch] Mark packages as internal [016d74d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/016d74d)
