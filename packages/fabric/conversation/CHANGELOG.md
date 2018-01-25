@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 5.0.0
+- [major] Added some tests for reducer/store and renamed actions [ba629ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ba629ef)
+
 ## 4.9.1
 
 ## 4.9.0
