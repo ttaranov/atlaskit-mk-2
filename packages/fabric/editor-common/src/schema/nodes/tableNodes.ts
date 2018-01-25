@@ -118,7 +118,8 @@ const cellAttrs = {
 };
 
 export const tableCell: any = {
-  content: 'block+',
+  content:
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension | bodiedExtension)+',
   attrs: cellAttrs,
   tableRole: 'cell',
   isolating: true,
@@ -134,7 +135,8 @@ export const tableCell: any = {
 };
 
 export const tableHeader: any = {
-  content: 'block+',
+  content:
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension | bodiedExtension)+',
   attrs: cellAttrs,
   tableRole: 'header_cell',
   isolating: true,

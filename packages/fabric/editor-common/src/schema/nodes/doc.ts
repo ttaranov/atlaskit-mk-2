@@ -74,12 +74,10 @@ export type TableCellContent = Array<
   | Heading
   | CodeBlock
   | MediaGroup
-  | MediaSingle
   | ApplicationCard
   | DecisionList
   | TaskList
   | Extension
-  | InlineExtension
   | BodiedExtension
 >;
 

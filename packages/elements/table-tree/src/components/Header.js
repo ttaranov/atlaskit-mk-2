@@ -15,7 +15,11 @@ type Props = {
 class Header extends Component<Props> {
   render() {
     const { props } = this;
-    return <StyledHeader {...props}>{props.children}</StyledHeader>;
+    return (
+      <StyledHeader role={'columnheader'} {...props}>
+        {props.children}
+      </StyledHeader>
+    );
   }
 }
 

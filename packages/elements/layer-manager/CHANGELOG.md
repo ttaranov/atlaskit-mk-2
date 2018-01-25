@@ -1,5 +1,8 @@
 # @atlaskit/layer-manager
 
+## 2.7.1
+- [patch] Fix infinite loop caused by nested layer components (e.g. modals) of the same type [d48686d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d48686d)
+
 ## 2.7.0
 - [minor] Fixed minor bug in utils/packages added ref to wrappedcomponent of withRenderTarget HoC for better testability [58be62a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/58be62a)
 

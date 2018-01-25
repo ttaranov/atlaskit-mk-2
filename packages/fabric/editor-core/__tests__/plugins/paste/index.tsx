@@ -259,6 +259,15 @@ if (!browser.ie && !isMobileBrowser()) {
         );
       });
 
+      it('should remove ` if code mark is pasted immediately after it', () => {
+        const { editorView } = editor(doc(p('`{<>}')));
+        dispatchPasteEvent(editorView, {
+          plain: 'hello',
+          html: '<pre>hello</pre>',
+        });
+        expect(editorView.state.doc).toEqualDocument(doc(p(code('hello'))));
+      });
+
       it('should not create code block for whitespace pre-wrap css', () => {
         const { editorView } = editor(doc(p('{<>}')));
         dispatchPasteEvent(editorView, {

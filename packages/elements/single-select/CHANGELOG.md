@@ -1,5 +1,10 @@
 # @atlaskit/single-select
 
+## 3.2.2
+- [patch] Fixes dependency on @atlaskit/webdriver-runner to be a devDependency [4567857](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4567857)
+
+## 3.2.1
+
 ## 3.2.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
 

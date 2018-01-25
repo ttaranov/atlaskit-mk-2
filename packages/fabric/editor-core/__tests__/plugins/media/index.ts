@@ -15,6 +15,11 @@ import {
   p,
   a,
   hr,
+  table,
+  tr,
+  td,
+  tdCursor,
+  tdEmpty,
   code_block,
   storyMediaProviderFactory,
   randomId,
@@ -212,6 +217,72 @@ describe('Media plugin', () => {
             p(),
           ),
         );
+      });
+
+      describe('when inserting inside table cell', () => {
+        it('inserts media group', async () => {
+          const { editorView, pluginState } = editor(
+            doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+          );
+          await mediaProvider;
+
+          pluginState.insertFiles([
+            {
+              id: 'foo',
+              fileMimeType: 'image/jpeg',
+            },
+            {
+              id: 'bar',
+              fileMimeType: 'image/png',
+            },
+          ]);
+
+          stateManager.updateState('foo', {
+            id: 'foo',
+            status: 'uploading',
+            fileName: 'foo.jpg',
+            fileSize: 100,
+            fileMimeType: 'image/jpeg',
+            thumbnail: { dimensions: { width: 100, height: 100 }, src: '' },
+          });
+
+          stateManager.updateState('bar', {
+            id: 'bar',
+            status: 'uploading',
+            fileName: 'bar.png',
+            fileSize: 200,
+            fileMimeType: 'image/png',
+            thumbnail: { dimensions: { width: 200, height: 200 }, src: '' },
+          });
+
+          // Different from media single that those optional properties are copied over only when the thumbnail is ready in media group.
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              table(
+                tr(
+                  td({})(
+                    mediaGroup(
+                      media({
+                        id: 'foo',
+                        type: 'file',
+                        collection: testCollectionName,
+                        __fileMimeType: 'image/jpeg',
+                      }),
+                      media({
+                        id: 'bar',
+                        type: 'file',
+                        collection: testCollectionName,
+                        __fileMimeType: 'image/png',
+                      }),
+                    ),
+                  ),
+                  tdEmpty,
+                  tdEmpty,
+                ),
+              ),
+            ),
+          );
+        });
       });
     });
 

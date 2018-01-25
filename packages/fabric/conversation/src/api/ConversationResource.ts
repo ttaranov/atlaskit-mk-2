@@ -1,14 +1,14 @@
 import { createStore, Store, Action } from '../internal/store';
 import {
-  FETCH_CONVERSATIONS,
+  FETCH_CONVERSATIONS_REQUEST,
   FETCH_CONVERSATIONS_SUCCESS,
-  ADD_COMMENT,
+  ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
-  UPDATE_COMMENT,
+  UPDATE_COMMENT_REQUEST,
   UPDATE_COMMENT_SUCCESS,
   DELETE_COMMENT_SUCCESS,
-  UPDATE_USER,
-  CREATE_CONVERSATION,
+  UPDATE_USER_SUCCESS,
+  CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
 } from '../internal/actions';
 import { reducers } from '../internal/reducers';
@@ -164,7 +164,7 @@ export class ConversationResource extends AbstractConversationResource {
    */
   async getConversations(containerId: string) {
     const { dispatch } = this;
-    dispatch({ type: FETCH_CONVERSATIONS });
+    dispatch({ type: FETCH_CONVERSATIONS_REQUEST });
 
     const { values } = await this.makeRequest<{ values: Conversation[] }>(
       `/conversation?containerId=${containerId}&expand=comments.document.adf`,
@@ -197,7 +197,7 @@ export class ConversationResource extends AbstractConversationResource {
 
     if (tempConversation) {
       dispatch({
-        type: CREATE_CONVERSATION,
+        type: CREATE_CONVERSATION_REQUEST,
         payload: {
           ...tempConversation,
         },
@@ -246,7 +246,7 @@ export class ConversationResource extends AbstractConversationResource {
 
     const tempComment = this.createComment(conversationId, parentId, doc);
     const { localId } = tempComment;
-    dispatch({ type: ADD_COMMENT, payload: tempComment });
+    dispatch({ type: ADD_COMMENT_REQUEST, payload: tempComment });
 
     const result = await this.makeRequest<Comment>(
       `/conversation/${conversationId}/comment?expand=document.adf`,
@@ -288,7 +288,7 @@ export class ConversationResource extends AbstractConversationResource {
 
     if (tempComment) {
       dispatch({
-        type: UPDATE_COMMENT,
+        type: UPDATE_COMMENT_REQUEST,
         payload: {
           ...tempComment,
           document: {
@@ -347,7 +347,7 @@ export class ConversationResource extends AbstractConversationResource {
    */
   async updateUser(user: User): Promise<User> {
     const { dispatch } = this;
-    dispatch({ type: UPDATE_USER, payload: { user } });
+    dispatch({ type: UPDATE_USER_SUCCESS, payload: { user } });
 
     return user;
   }

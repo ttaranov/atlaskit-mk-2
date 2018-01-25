@@ -1,5 +1,9 @@
 # @atlaskit/dropdown-menu
 
+## 3.11.6
+
+- [patch] updated item dependency version [23771b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23771b9)
+
 ## 3.11.5
 - [patch] migrate from ak to mk-2 [34a9cbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/34a9cbb)
 

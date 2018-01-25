@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/input",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -27,7 +27,7 @@
     "react-dom": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/field-base": "^8.0.2",
+    "@atlaskit/field-base": "^8.1.9",
     "enzyme": "^3.3.0"
   },
   "keywords": [

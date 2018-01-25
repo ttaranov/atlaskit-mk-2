@@ -6,8 +6,9 @@ export type RowData = Object;
 
 export type ItemsDataType = Array<RowData>;
 
+// prettier-ignore
 export type ItemsProvider = (
-  ?Object,
+  Object | void
 ) => void | ItemsDataType | Promise<void | ItemsDataType>;
 
 export type RenderFunction = Object => Element<typeof Row>;
