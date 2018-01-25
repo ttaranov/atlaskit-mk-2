@@ -118,6 +118,15 @@ const mediaProvider = storyMediaProviderFactory({
 export default class Example extends React.Component<Props, State> {
   state: State = { disabled: true };
 
+  componentDidMount() {
+    console.log(`To try the macro paste handler, paste one of the following links:
+
+  www.trello.com?board=CFE
+  www.trello.com
+  www.twitter.com
+    `);
+  }
+
   render() {
     return (
       <Wrapper>
