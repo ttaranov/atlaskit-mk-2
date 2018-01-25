@@ -14,4 +14,10 @@ export interface Comment extends Pick<Conversation, 'comments' | 'error'> {
   deleted?: boolean;
   state?: 'SUCCESS' | 'SAVING' | 'ERROR';
   localId?: string;
+  oldDocument?: {
+    // Old document - used for restoring state
+    adf?: any; // ADF
+    md?: string;
+    html?: string;
+  };
 }

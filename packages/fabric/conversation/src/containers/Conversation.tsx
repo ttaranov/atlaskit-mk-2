@@ -5,13 +5,14 @@ import {
   addComment,
   updateComment,
   deleteComment,
+  revertComment,
   updateUser,
   createConversation,
 } from '../internal/actions';
 import { getComments, getConversation, getUser } from '../internal/selectors';
 import { uuid } from '../internal/uuid';
 import { State } from '../internal/store';
-import { User } from '../model';
+import { User, Comment } from '../model';
 
 export interface Props {
   id?: string;
@@ -44,6 +45,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
   onDeleteComment(conversationId: string, commentId: string) {
     dispatch(deleteComment(conversationId, commentId));
+  },
+
+  onRevertComment(comment: Comment) {
+    dispatch(revertComment(comment));
   },
 
   onUpdateUser(user: User) {

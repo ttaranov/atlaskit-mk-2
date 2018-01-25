@@ -8,6 +8,7 @@ import {
   UPDATE_COMMENT_SUCCESS,
   DELETE_COMMENT_SUCCESS,
   DELETE_COMMENT_ERROR,
+  REVERT_COMMENT,
   UPDATE_USER_SUCCESS,
   CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
@@ -44,6 +45,7 @@ export interface ResourceProvider {
     conversationId: string,
     commentId: string,
   ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'deleted'>>;
+  revertComment(comment: Comment): Promise<Comment>;
   updateUser(user: User): Promise<User>;
 }
 
@@ -110,6 +112,13 @@ export class AbstractConversationResource implements ResourceProvider {
     conversationId: string,
     commentId: string,
   ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'deleted'>> {
+    return Promise.reject('Not implemented');
+  }
+
+  /**
+   * Reverts a comment based on ID. Returns updated comment.
+   */
+  async revertComment(comment: Comment): Promise<Comment> {
     return Promise.reject('Not implemented');
   }
 
@@ -349,6 +358,17 @@ export class ConversationResource extends AbstractConversationResource {
     dispatch({ type: DELETE_COMMENT_SUCCESS, payload: result });
 
     return result;
+  }
+
+  /**
+   * Reverts a comment based on ID. Returns updated comment.
+   */
+  async revertComment(comment: Comment): Promise<Comment> {
+    const { dispatch } = this;
+
+    dispatch({ type: REVERT_COMMENT, payload: comment });
+
+    return comment;
   }
 
   /**

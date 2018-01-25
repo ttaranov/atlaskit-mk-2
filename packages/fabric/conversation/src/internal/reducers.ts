@@ -5,9 +5,11 @@ import {
   ADD_COMMENT_SUCCESS,
   UPDATE_COMMENT_REQUEST,
   UPDATE_COMMENT_SUCCESS,
+  UPDATE_COMMENT_ERROR,
   DELETE_COMMENT_REQUEST,
   DELETE_COMMENT_SUCCESS,
   DELETE_COMMENT_ERROR,
+  REVERT_COMMENT,
   UPDATE_USER_SUCCESS,
   CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
@@ -19,15 +21,22 @@ import { User, Conversation, Comment } from '../model';
 const updateComment = (
   comments: Comment[] | undefined,
   newComment: Comment,
+  storeOriginal?: boolean,
 ) => {
   return (comments || []).map(comment => {
     if (
-      comment.localId === newComment.localId ||
+      (newComment.localId && comment.localId === newComment.localId) ||
       comment.commentId === newComment.commentId
     ) {
+      console.log(
+        comment.document.adf.content[0].content[0].text,
+        comment.oldDocument &&
+          comment.oldDocument.adf.content[0].content[0].text,
+      );
       return {
         ...comment,
         ...newComment,
+        oldDocument: storeOriginal ? comment.document : comment.oldDocument,
       };
     }
     return comment;
@@ -61,10 +70,15 @@ const updateConversation = (
 const updateCommentInConversation = (
   conversations: Conversation[],
   newComment: Comment,
+  storeOriginal?: boolean,
 ) => {
   return conversations.map(conversation => {
     if (conversation.conversationId === newComment.conversationId) {
-      const comments = updateComment(conversation.comments, newComment);
+      const comments = updateComment(
+        conversation.comments,
+        newComment,
+        storeOriginal,
+      );
       return {
         ...conversation,
         comments,
@@ -164,10 +178,14 @@ export const reducers = {
   [UPDATE_COMMENT_REQUEST](state: State, action: Action) {
     const { payload } = action;
 
-    const conversations = updateCommentInConversation(state.conversations, {
-      ...payload,
-      state: 'SAVING',
-    });
+    const conversations = updateCommentInConversation(
+      state.conversations,
+      {
+        ...payload,
+        state: 'SAVING',
+      },
+      true,
+    );
 
     return {
       ...state,
@@ -181,6 +199,20 @@ export const reducers = {
     const conversations = updateCommentInConversation(state.conversations, {
       ...payload,
       state: undefined,
+    });
+
+    return {
+      ...state,
+      conversations,
+    };
+  },
+
+  [UPDATE_COMMENT_ERROR](state: State, action: Action) {
+    const { payload } = action;
+
+    const conversations = updateCommentInConversation(state.conversations, {
+      ...payload,
+      state: 'ERROR',
     });
 
     return {
@@ -214,6 +246,21 @@ export const reducers = {
     const conversations = updateCommentInConversation(state.conversations, {
       ...payload,
       state: 'ERROR',
+    });
+
+    return {
+      ...state,
+      conversations,
+    };
+  },
+
+  [REVERT_COMMENT](state: State, action: Action) {
+    const { payload } = action;
+
+    const conversations = updateCommentInConversation(state.conversations, {
+      ...payload,
+      state: undefined,
+      document: payload.oldDocument,
     });
 
     return {

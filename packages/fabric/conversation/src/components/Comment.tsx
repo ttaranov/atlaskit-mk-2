@@ -28,6 +28,7 @@ export interface SharedProps {
     value: any,
   ) => void;
   onDeleteComment?: (conversationId: string, commentId: string) => void;
+  onRevertComment?: (comment: CommentType) => void;
 
   // Provider
   dataProviders?: ProviderFactory;
@@ -167,6 +168,16 @@ export default class Comment extends React.Component<Props, State> {
     });
   };
 
+  private onErrorCancel = () => {
+    const { comment, onRevertComment } = this.props;
+
+    if (!onRevertComment) {
+      return;
+    }
+
+    onRevertComment(comment);
+  };
+
   /**
    * Username click handler - pass a User object, returns a handler which will invoke onUserClick with it
    * @param {User} user
@@ -230,6 +241,7 @@ export default class Comment extends React.Component<Props, State> {
         onAddComment={this.props.onAddComment}
         onUpdateComment={this.props.onUpdateComment}
         onDeleteComment={this.props.onDeleteComment}
+        onRevertComment={this.props.onRevertComment}
         onUserClick={onUserClick}
         dataProviders={dataProviders}
       />
@@ -266,7 +278,7 @@ export default class Comment extends React.Component<Props, State> {
     } = {};
     let actions;
 
-    // @TODO onRetry, onCancel (dispatch something), add update/create error states
+    // @TODO onRetry, add update/create error states
 
     if (canReply) {
       actions = [
@@ -301,7 +313,7 @@ export default class Comment extends React.Component<Props, State> {
 
       errorProps.actions = [
         ...errorProps.actions,
-        <CommentAction key="cancel" onClick={this.onDelete}>
+        <CommentAction key="cancel" onClick={this.onErrorCancel}>
           Cancel
         </CommentAction>,
       ];

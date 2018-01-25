@@ -17,8 +17,10 @@ import {
   ADD_COMMENT_SUCCESS,
   UPDATE_COMMENT_REQUEST,
   UPDATE_COMMENT_SUCCESS,
+  UPDATE_COMMENT_ERROR,
   DELETE_COMMENT_SUCCESS,
   DELETE_COMMENT_ERROR,
+  REVERT_COMMENT,
   CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
   UPDATE_USER_SUCCESS,
@@ -154,8 +156,14 @@ export class MockProvider extends AbstractConversationResource {
     dispatch({ type: UPDATE_COMMENT_REQUEST, payload: result });
 
     setTimeout(() => {
-      dispatch({ type: UPDATE_COMMENT_SUCCESS, payload: result });
-    }, 1000);
+      // dispatch({ type: UPDATE_COMMENT_SUCCESS, payload: result });
+      const errResult = {
+        conversationId,
+        commentId,
+        error: new HttpError(503, 'ruh roh'),
+      };
+      dispatch({ type: UPDATE_COMMENT_ERROR, payload: errResult });
+    }, 200);
 
     return result;
   }
@@ -169,26 +177,32 @@ export class MockProvider extends AbstractConversationResource {
   async deleteComment(
     conversationId: string,
     commentId: string,
-  ): Promise<Comment> {
+  ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'error'>> {
     const result = {
-      // createdBy: this.config.user,
-      // createdAt: Date.now(),
-      // document: {},
       conversationId,
       commentId,
-      // deleted: true,
       error: new HttpError(500, 'yeh nah'),
     };
 
     const { dispatch } = this;
-    dispatch({ type: UPDATE_COMMENT, payload: result });
 
-    setTimeout(() => {
-      dispatch({ type: DELETE_COMMENT_ERROR, payload: result });
-    }, 1000);
+    // setTimeout(() => {
+    dispatch({ type: DELETE_COMMENT_ERROR, payload: result });
+    // }, 1000);
     // dispatch({ type: DELETE_COMMENT_SUCCESS, payload: result });
 
     return result;
+  }
+
+  /**
+   * Reverts a comment based on ID. Returns updated comment.
+   */
+  async revertComment(comment: Comment): Promise<Comment> {
+    const { dispatch } = this;
+
+    dispatch({ type: REVERT_COMMENT, payload: comment });
+
+    return comment;
   }
 
   /**

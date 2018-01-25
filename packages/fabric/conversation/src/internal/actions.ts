@@ -1,5 +1,5 @@
 import { ResourceProvider } from '../api/ConversationResource';
-import { User } from '../model';
+import { User, Comment } from '../model';
 
 export const FETCH_CONVERSATIONS_REQUEST = 'fetchConversationsRequest';
 export const FETCH_CONVERSATIONS_SUCCESS = 'fetchConversationsSuccess';
@@ -15,6 +15,8 @@ export const DELETE_COMMENT_ERROR = 'deleteCommentError';
 export const UPDATE_COMMENT_REQUEST = 'updateCommentRequest';
 export const UPDATE_COMMENT_SUCCESS = 'updateCommentSuccess';
 export const UPDATE_COMMENT_ERROR = 'updateCommentError';
+
+export const REVERT_COMMENT = 'revertComment';
 
 export const UPDATE_USER_SUCCESS = 'updateUserSuccess';
 
@@ -43,6 +45,12 @@ export const deleteComment = (
   commentId: string,
 ) => async (provider: ResourceProvider) => {
   provider.deleteComment(conversationId, commentId);
+};
+
+export const revertComment = (comment: Comment) => async (
+  provider: ResourceProvider,
+) => {
+  provider.revertComment(comment);
 };
 
 export const updateUser = (user: User) => async (

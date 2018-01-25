@@ -33,6 +33,7 @@ export default class Conversation extends React.PureComponent<Props> {
       onAddComment,
       onUpdateComment,
       onDeleteComment,
+      onRevertComment,
       onUserClick,
       user,
       dataProviders,
@@ -53,6 +54,7 @@ export default class Conversation extends React.PureComponent<Props> {
         onAddComment={onAddComment}
         onUpdateComment={onUpdateComment}
         onDeleteComment={onDeleteComment}
+        onRevertComment={onRevertComment}
         onUserClick={onUserClick}
         dataProviders={dataProviders}
       />
