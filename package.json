@@ -180,7 +180,6 @@
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/app-switcher": "^3.3.0",
     "@atlaskit/button-group": "^1.5.3",
-    "@atlaskit/droplist": "^4.11.3",
     "@atlaskit/emoji": "^31.0.2",
     "@atlaskit/profilecard": "^3.7.1",
     "@atlaskit/task-decision": "^4.6.0",
