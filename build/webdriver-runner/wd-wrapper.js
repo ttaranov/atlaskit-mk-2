@@ -29,6 +29,9 @@ export default class Page {
   click(selector) {
     return this.browser.click(selector);
   }
+  keys(value) {
+    return this.browser.keys(value);
+  }
 
   // Get
   getProperty(selector, cssProperty) {
@@ -51,9 +54,6 @@ export default class Page {
     return this.browser.close();
   }
 
-  keys(value) {
-    return this.browser.keys(value);
-  }
   // To be replaced by those puppeeter fucntions
   //  keyboard.down('KeyA');
   //  keyboard.press('KeyA');
