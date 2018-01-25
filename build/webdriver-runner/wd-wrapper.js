@@ -10,7 +10,28 @@ export default class Page {
     return this.browser.url(url);
   }
 
+  title() {
+    return this.browser.getTitle();
+  }
+
+  $(selector) {
+    return this.browser.element(selector);
+  }
+
+  $$(selector) {
+    return this.browser.elements(selector);
+  }
+
+  type(selector, text) {
+    return this.browser.addValue(selector, text);
+  }
+
+  click(selector) {
+    return this.browser.click(selector);
+  }
+
   // Get
+  //remove the below as needed
   getAttribute(selector, attributeName) {
     return this.browser.getAttribute(selector, attributeName);
   }
@@ -81,6 +102,8 @@ export default class Page {
   hasFocus(selector) {
     return this.browser.hasFocus(selector);
   }
+
+  //will need to have wrapper for these once moved to puppeteer
   isEnabled(selector) {
     return this.browser.isEnabled(selector);
   }
