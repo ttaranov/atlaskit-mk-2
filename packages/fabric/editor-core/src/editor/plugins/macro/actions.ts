@@ -33,7 +33,10 @@ export const insertMacroFromMacroBrowser = (
   return false;
 };
 
-export const resolveMacro = (macro?: MacroAttributes, state?: EditorState) => {
+export const resolveMacro = (
+  macro?: MacroAttributes,
+  state?: EditorState,
+): PmNode | null => {
   if (!macro || !state) {
     return null;
   }

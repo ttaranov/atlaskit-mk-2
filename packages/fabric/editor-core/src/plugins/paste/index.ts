@@ -82,20 +82,22 @@ export function createPlugin(
         const html = event.clipboardData.getData('text/html');
         const node = slice.content.firstChild;
 
-        const macroPluginState = macroPluginKey.getState(view.state);
-        const macroProvider =
-          macroPluginState && macroPluginState.macroProvider;
+        if (text && !html) {
+          const macroPluginState = macroPluginKey.getState(view.state);
+          const macroProvider =
+            macroPluginState && macroPluginState.macroProvider;
 
-        // if autoConvert is provided, runs is first.
-        if (macroProvider && macroProvider.autoConvert) {
-          const macroAttributes = macroProvider.autoConvert(text);
-          // decides which kind of macro to render (inline|bodied|bodyless) - will be just inline atm.
-          const macro = resolveMacro(macroAttributes, view.state);
-          if (macro) {
-            view.dispatch(
-              view.state.tr.replaceSelectionWith(macro).scrollIntoView(),
-            );
-            return true;
+          // if autoConvert is provided, runs is first.
+          if (macroProvider && macroProvider.autoConvert) {
+            const macroAttributes = macroProvider.autoConvert(text);
+            // decides which kind of macro to render (inline|bodied|bodyless) - will be just inline atm.
+            const macro = resolveMacro(macroAttributes, view.state);
+            if (macro) {
+              view.dispatch(
+                view.state.tr.replaceSelectionWith(macro).scrollIntoView(),
+              );
+              return true;
+            }
           }
         }
 

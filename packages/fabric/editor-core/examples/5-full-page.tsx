@@ -119,6 +119,7 @@ export default class Example extends React.Component<Props, State> {
   state: State = { disabled: true };
 
   componentDidMount() {
+    // tslint:disable-next-line:no-console
     console.log(`To try the macro paste handler, paste one of the following links:
 
   www.trello.com?board=CFE
