@@ -52,6 +52,7 @@ import {
   inlineExtension,
   bodiedExtension,
   date,
+  placeholderText,
 } from './nodes';
 
 function addItems(
@@ -132,6 +133,7 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'media', spec: media },
   { name: 'mediaGroup', spec: mediaGroup },
   { name: 'mediaSingle', spec: mediaSingle },
+  { name: 'placeholderText', spec: placeholderText },
   { name: 'hardBreak', spec: hardBreak },
   { name: 'emoji', spec: emoji },
   { name: 'table', spec: table },
