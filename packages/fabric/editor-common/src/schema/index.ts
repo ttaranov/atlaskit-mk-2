@@ -2,7 +2,7 @@ export * from './marks';
 export * from './nodes';
 export * from './unsupported';
 
-export { createSchema } from './create-schema';
+export { sanitizeNodes, createSchema } from './create-schema';
 export { bitbucketSchema } from './bitbucket-schema';
 export {
   confluenceSchema,

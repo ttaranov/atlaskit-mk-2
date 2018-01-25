@@ -1,6 +1,7 @@
-import { Node, NodeSpec, Schema, MarkSpec } from 'prosemirror-model';
+import { Node, Schema, MarkSpec } from 'prosemirror-model';
 import { EditorState, Plugin, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import { sanitizeNodes } from '@atlaskit/editor-common';
 import { analyticsService, AnalyticsHandler } from '../../analytics';
 import {
   EditorInstance,
@@ -33,25 +34,6 @@ export function fixExcludes(marks: {
     }
   });
   return marks;
-}
-
-export function fixNodeContentSchema(
-  nodes: { [key: string]: NodeSpec },
-  supportedMarks: { [key: string]: MarkSpec },
-): { [key: string]: NodeSpec } {
-  Object.keys(nodes).forEach(nodeKey => {
-    const node = nodes[nodeKey];
-    if (node.marks && node.marks !== '_') {
-      node.marks = node.marks
-        .split(' ')
-        .filter(mark => !!supportedMarks[mark])
-        .join(' ');
-    }
-    if (node.content && !supportedMarks['link']) {
-      node.content = node.content.replace('<link>', '');
-    }
-  });
-  return nodes;
 }
 
 export function processPluginsList(plugins: EditorPlugin[]): EditorConfig {
@@ -102,7 +84,7 @@ export function createSchema(editorConfig: EditorConfig) {
     }, {}),
   );
 
-  const nodes = fixNodeContentSchema(
+  const nodes = sanitizeNodes(
     editorConfig.nodes.sort(sortByRank).reduce((acc, node) => {
       acc[node.name] = node.node;
       return acc;
