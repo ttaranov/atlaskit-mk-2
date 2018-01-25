@@ -243,7 +243,7 @@ describe('Media plugin', () => {
             fileName: 'foo.jpg',
             fileSize: 100,
             fileMimeType: 'image/jpeg',
-            thumbnail: { width: 100, height: 100, src: '' },
+            thumbnail: { dimensions: { width: 100, height: 100 }, src: '' },
           });
 
           stateManager.updateState('bar', {
@@ -252,7 +252,7 @@ describe('Media plugin', () => {
             fileName: 'bar.png',
             fileSize: 200,
             fileMimeType: 'image/png',
-            thumbnail: { width: 200, height: 200, src: '' },
+            thumbnail: { dimensions: { width: 200, height: 200 }, src: '' },
           });
 
           // Different from media single that those optional properties are copied over only when the thumbnail is ready in media group.
