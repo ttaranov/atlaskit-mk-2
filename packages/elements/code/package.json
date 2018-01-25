@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/code",
-  "version": "3.0.1",
+  "version": "3.0.4",
   "config": {
     "access": "public"
   },
   "description": "Renders inline code snippets and code blocks",
-  "main": "dist/es5/index.js",
-  "module": "dist/es2015/index.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
   "files": [
     "dist",
@@ -14,7 +14,7 @@
   ],
   "dependencies": {
     "@atlaskit/theme": "^2.3.1",
-    "react-syntax-highlighter": "^5.7.0",
+    "react-syntax-highlighter": "^6.0.2",
     "styled-components": "^1.4.6"
   },
   "devDependencies": {
@@ -31,8 +31,7 @@
     }
   ],
   "atlaskit": {
-    "name": "Code",
-    "team": "fabric"
+    "name": "Code"
   },
   "license": "Apache-2.0",
   "repository": {
@@ -41,7 +40,7 @@
   },
   "keywords": [
     "atlaskit",
-    "ui",
-    "internal"
+    "react",
+    "ui"
   ]
 }

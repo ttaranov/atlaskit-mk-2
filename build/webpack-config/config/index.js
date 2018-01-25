@@ -13,7 +13,8 @@ module.exports = function createWebpackConfig(
     globs = createDefaultGlob(),
     includePatterns = false,
     env = 'development',
-  } /*: { entry: string, host?: string, port?: number, globs?: Array<string>, includePatterns: boolean, env: string } */,
+    cwd = process.cwd(),
+  } /*: { entry: string, host?: string, port?: number, globs?: Array<string>, cwd?: string, includePatterns: boolean, env: string } */,
 ) {
   return {
     entry: {
@@ -25,12 +26,12 @@ module.exports = function createWebpackConfig(
               )}?http://${host}:${port}/`,
               path.join(process.cwd(), entry),
             ]
-          : path.join(process.cwd(), entry),
+          : path.join(cwd, entry),
       vendor: ['react', 'react-dom', 'styled-components', 'highlight.js'],
     },
     output: {
       filename: '[name].js',
-      path: path.resolve(process.cwd(), 'dist'),
+      path: path.resolve(cwd, 'dist'),
       publicPath: '/',
     },
     devtool: env === 'production' ? false : 'cheap-module-source-map',
@@ -46,6 +47,23 @@ module.exports = function createWebpackConfig(
               ...globs,
             ].filter(p => !!p),
             exclude: ['**/node_modules/**', 'packages/utils/docs/**'],
+          },
+        },
+        {
+          test: /NAV_DATA$/,
+          loader: require.resolve('nav-info-loader'),
+          options: {
+            include: [...globs]
+              .filter(p => p.includes('package.json'))
+              .map(p => p.replace('/package.json', '')),
+            exclude: ['**/node_modules/**', 'packages/utils/docs/**'],
+            configProps: [
+              'name',
+              'version',
+              'description',
+              'atlaskit',
+              'maintainers',
+            ],
           },
         },
         {
@@ -169,8 +187,8 @@ module.exports = function createWebpackConfig(
       }),
 
       new HtmlWebpackPlugin({
-        template: path.join(process.cwd(), 'public/index.html.ejs'),
-        favicon: path.join(process.cwd(), 'public/favicon.ico'),
+        template: path.join(cwd, 'public/index.html.ejs'),
+        favicon: path.join(cwd, 'public/favicon.ico'),
       }),
 
       new webpack.DefinePlugin({

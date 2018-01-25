@@ -22,11 +22,12 @@ export interface Reducer {
   [key: string]: (state: State, action: Action) => State;
 }
 
-export const createStore = (reducer: Reducer) => {
+export const createStore = (
+  reducer: Reducer,
+  initialState: State = { conversations: [] },
+) => {
   let subscribers: Handler[] = [];
-  let state: State = {
-    conversations: [],
-  };
+  let state: State = initialState;
 
   return {
     getState() {
@@ -34,6 +35,10 @@ export const createStore = (reducer: Reducer) => {
     },
 
     dispatch(action: Action) {
+      if (!reducer[action.type]) {
+        return;
+      }
+
       state = reducer[action.type](state, action);
       subscribers.forEach(cb => cb(state));
     },

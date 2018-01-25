@@ -1,5 +1,10 @@
 # @atlaskit/input
 
+## 1.6.3
+
+
+- [patch] Minor documentation fixes [f0e96bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0e96bd)
+
 ## 1.6.2
 - [patch] Move input to new repository [0d7c5fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d7c5fd)
 

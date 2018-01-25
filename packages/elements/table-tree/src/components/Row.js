@@ -4,6 +4,7 @@ import { TreeRowContainer } from '../styled';
 import Chevron from './Chevron';
 import Cell from './Cell';
 import toItemId from '../utils/toItemId';
+import { type RowData } from '../types';
 
 type Props = {
   /** Whether this row has any child rows. */
@@ -16,10 +17,13 @@ type Props = {
   itemId: string,
 
   /** Called whenever this row's node is expanded to show its child rows. */
+  onExpand?: RowData => void,
+
+  /** Called whenever this row's node is expanded to show its child rows. */
   onExpand?: Function,
 
   /** Called whenever this row's node is collapsed to hide its child rows. */
-  onCollapse?: Function,
+  onCollapse?: RowData => void,
 
   /** Passed implicitly. Whether the children of this row should currently be visible. */
   isExpanded?: boolean,
@@ -29,19 +33,22 @@ type Props = {
 
   /** Passed implicitly. The tree-depth (nesting level) of the current row. Used to calculate the indent. */
   depth?: number,
+
+  /** Passed implicitly. The data that this row represents. */
+  data?: RowData,
 };
 
 export default class Row extends PureComponent<Props> {
   componentWillUpdate(nextProps: Props) {
     const isExpandChanged =
       Boolean(nextProps.isExpanded) !== Boolean(this.props.isExpanded);
-    if (!isExpandChanged) {
+    if (!isExpandChanged || !nextProps.data) {
       return;
     }
     if (nextProps.isExpanded && this.props.onExpand) {
-      this.props.onExpand();
+      this.props.onExpand(nextProps.data);
     } else if (!nextProps.isExpanded && this.props.onCollapse) {
-      this.props.onCollapse();
+      this.props.onCollapse(nextProps.data);
     }
   }
 

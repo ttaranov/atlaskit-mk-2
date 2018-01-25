@@ -18,6 +18,7 @@ export const MOCK_USERS: User[] = [
 ];
 
 export const mockComment: Comment = {
+  localId: 'mock-comment-1-local',
   commentId: 'mock-comment-1',
   conversationId: 'mock-conversation',
   createdBy: MOCK_USERS[0],
@@ -41,8 +42,34 @@ export const mockComment: Comment = {
   },
 };
 
-export const mockInlineComment: Comment = {
+export const mockComment2: Comment = {
+  localId: 'mock-comment-2-local',
   commentId: 'mock-comment-2',
+  conversationId: 'mock-conversation',
+  createdBy: MOCK_USERS[0],
+  createdAt: Date.now(),
+  document: {
+    adf: {
+      version: 1,
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Hello World',
+            },
+          ],
+        },
+      ],
+    },
+  },
+};
+
+export const mockInlineComment: Comment = {
+  localId: 'mock-inline-comment-local',
+  commentId: 'mock-inline-comment',
   conversationId: 'mock-inline-conversation',
   createdBy: MOCK_USERS[0],
   createdAt: Date.now(),

@@ -59,6 +59,8 @@ const lineNumberContainerStyle = (theme: Theme) => ({
   backgroundColor: theme.lineNumberBgColor,
   padding: gridSize(),
   float: 'left',
+  top: '0',
+  left: '0',
   textAlign: 'right',
   userSelect: 'none',
 });

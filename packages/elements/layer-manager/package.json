@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/layer-manager",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "description": "A React Component for managing layers",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -31,7 +31,7 @@
     "@atlaskit/button": "^6.3.0",
     "@atlaskit/docs": "^2.4.0",
     "@atlaskit/icon": "^10.7.0",
-    "@atlaskit/modal-dialog": "^3.3.0",
+    "@atlaskit/modal-dialog": "^3.3.6",
     "@atlaskit/onboarding": "^2.2.0",
     "@atlaskit/tooltip": "^8.1.0"
   },

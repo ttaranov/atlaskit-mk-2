@@ -1,5 +1,7 @@
 # @atlaskit/mention
 
+## 9.0.1
+
 ## 9.0.0
 - [patch] Added eslint-disable to example file [49491a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49491a9)
 - [major] Migrated mentions to new atlaskit-mk2 [dad3ccc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dad3ccc)

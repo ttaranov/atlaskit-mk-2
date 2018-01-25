@@ -1,5 +1,10 @@
 # @atlaskit/field-radio-group
 
+## 1.8.2
+
+
+- [patch] Minor documentation fixes [f0e96bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0e96bd)
+
 ## 1.8.1
 - [patch] Resolved low hanging flow errors in field-base field-text comment icon item and website, $ [007de27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/007de27)
 

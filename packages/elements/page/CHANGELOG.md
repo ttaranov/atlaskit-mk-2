@@ -1,5 +1,19 @@
 # @atlaskit/page
 
+## 5.0.10
+
+
+- [patch] Minor documentation fixes [f0e96bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0e96bd)
+
+## 5.0.9
+- [patch] Minor manual bump for packages desync'd from npm [e988c58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e988c58)
+
+## 5.0.8
+- Manual bump to resolve desync with npm package version.
+
+## 5.0.7
+- [patch] Enabling syntax highlighter language auto-detect [4831bd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4831bd2)
+
 ## 5.0.6
 - [patch] Migrated to mk2 repo, build system & docs. [64e83f3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/64e83f3)
 

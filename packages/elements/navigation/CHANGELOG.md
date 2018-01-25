@@ -1,5 +1,14 @@
 # @atlaskit/navigation
 
+## 27.0.8
+- [patch] creating patch to handle avatar release [0356e85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0356e85)
+
+## 27.0.7
+- [patch] Minor manual bump for packages desync'd from npm [e988c58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e988c58)
+
+## 27.0.6
+- Manual bump to resolve desync with npm package version. 
+
 ## 27.0.5
 - [patch] Migrate Navigation from Ak repo to ak mk 2 repo, Fixed flow typing inconsistencies in ak mk 2 [bdeef5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdeef5b)
 

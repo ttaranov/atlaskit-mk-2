@@ -1,9 +1,16 @@
 //@flow
 /* eslint-disable no-console */
 const RUN_ONLY = process.env.RUN_ONLY || 'all';
+const INTEGRATION_TESTS =
+  typeof process.env.INTEGRATION_TESTS === 'undefined'
+    ? false
+    : process.env.INTEGRATION_TESTS;
 
 function generateTestMatchGlob(packagePath) {
-  return `${__dirname}/${packagePath}/**/__tests__/**/*.(js|tsx|ts)`;
+  if (INTEGRATION_TESTS) {
+    return `${__dirname}/${packagePath}/**/__tests__/integration/**/*.(js|tsx|ts)`;
+  }
+  return `${__dirname}/${packagePath}/**/__tests__/!(integration)/**/*.(js|tsx|ts)`;
 }
 
 // by default we'll run tests in all directories (local and master builds)
@@ -11,6 +18,7 @@ let testMatchArr = [generateTestMatchGlob('**')];
 
 // If the RUN_ONLY variable is set, we parse the array and use that to generate the globs
 if (RUN_ONLY !== 'all') {
+  // Workaround to avoid running integration tests currently
   const packagesToRun = JSON.parse(RUN_ONLY);
   testMatchArr = packagesToRun.map(generateTestMatchGlob);
   if (testMatchArr.length === 0) {
@@ -25,7 +33,7 @@ if (RUN_ONLY !== 'all') {
   }
 }
 
-module.exports = {
+const config = {
   testMatch: testMatchArr,
   testPathIgnorePatterns: [
     // ignore files that are under a directory starting with "_" at the root of __tests__
@@ -45,6 +53,7 @@ module.exports = {
       tsConfigFile: './tsconfig.fabric.json',
       skipBabel: true,
     },
+    __baseUrl__: 'http://localhost:9000',
   },
   moduleFileExtensions: ['js', 'ts', 'tsx'],
   moduleNameMapper: {
@@ -55,3 +64,5 @@ module.exports = {
   setupTestFrameworkScriptFile: `${__dirname}/jestFrameworkSetup.js`,
   testResultsProcessor: 'jest-junit',
 };
+
+module.exports = config;

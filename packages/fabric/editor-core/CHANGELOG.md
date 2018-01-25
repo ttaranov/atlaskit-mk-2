@@ -1,5 +1,20 @@
 # @atlaskit/editor-core
 
+## 61.4.10
+
+## 61.4.9
+- [patch] Backtick should be removed at paste if its followed by code. [d74188d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d74188d)
+
+## 61.4.8
+
+
+- [patch] Add timestamp with filename on paste [18b1108](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18b1108)
+
+## 61.4.7
+
+
+- [patch] Fixes hyperlink popup positioning when popupMountPount is provided [ff2c8c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ff2c8c9)
+
 ## 61.4.6
 - [patch] use new MediaPicker package [c652ed4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c652ed4)
 
