@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 61.4.11
+
+- [patch] Insert media group instead of single image inside table [5b4aaa0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b4aaa0)
+
 ## 61.4.10
 
 ## 61.4.9
