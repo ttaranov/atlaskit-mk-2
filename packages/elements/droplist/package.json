@@ -34,7 +34,7 @@
     "react-dom": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^8.0.1",
+    "@atlaskit/avatar": "^9.0.0",
     "@atlaskit/field-base": "^8.1.6",
     "@atlaskit/button": "^6.3.0",
     "@atlaskit/lozenge": "^3.4.2",
