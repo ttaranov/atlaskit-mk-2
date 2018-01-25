@@ -1,5 +1,8 @@
 # @atlaskit/droplist
 
+## 4.11.5
+- [patch] migrate from ak to mk2 -> droplist [3b0ae0c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b0ae0c)
+
 ## 4.11.4 (2017-12-04)
 
 * bug fix; updated backgorund and color for droplist item in selected mode (issues closed: ak-3624) ([c1cb987](https://bitbucket.org/atlassian/atlaskit/commits/c1cb987))
