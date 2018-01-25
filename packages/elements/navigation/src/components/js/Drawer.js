@@ -31,9 +31,9 @@ type Props = {
   isOpen: boolean,
   /** A function to call when the backIcon button is clicked, the blanket
    behind the Drawer is clicked or the escape key is pressed */
-  onBackButton: (event: Event, data?: {}) => void,
+  onBackButton: (event: SyntheticEvent<any>, data?: {}) => void,
   /** Standard onKeyDown callback */
-  onKeyDown?: (event: Event, data?: {}) => void,
+  onKeyDown?: (event: SyntheticKeyboardEvent<any>, data?: {}) => void,
   /** The primary icon in the Drawer – usually the globalPrimaryIcon that was
    given to the GlobalNavigation component */
   primaryIcon: Node,
@@ -82,7 +82,7 @@ export class DrawerImpl extends PureComponent<Props, State> {
   }
 
   // eslint-disable-next-line react/sort-comp
-  createBackButtonHandler = (method: string) => (e: Event) => {
+  createBackButtonHandler = (method: string) => (e: SyntheticEvent<any>) => {
     if (this.props.isOpen) {
       this.props.onBackButton(e);
       this.props.fireAnalyticsEvent('close', { method });
@@ -93,7 +93,7 @@ export class DrawerImpl extends PureComponent<Props, State> {
   onBackButtonByBlanket = this.createBackButtonHandler('blanket');
   onBackButtonByEscKey = this.createBackButtonHandler('esc-key');
 
-  handleKeyDown = (event: KeyboardEvent) => {
+  handleKeyDown = (event: SyntheticKeyboardEvent<any>) => {
     // The reason we have onKeyDown living together with onBackButton is because
     // some apps living in Focused task need the ability to handle on key down by itself.
     // However, some other apps don't really care about it

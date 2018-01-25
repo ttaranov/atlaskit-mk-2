@@ -9,7 +9,6 @@ import type {
   ComponentType,
   ElementType,
   FunctionType,
-  KeyboardOrMouseEvent,
 } from '../types';
 import { WIDTH_ENUM } from '../shared-variables';
 
@@ -95,7 +94,7 @@ type Props = {
   /**
     Function that will be called to initiate the exit transition.
   */
-  onClose: KeyboardOrMouseEvent => void,
+  onClose: (SyntheticEvent<any>) => void,
   /**
     Function that will be called when the exit transition is complete.
   */
@@ -162,9 +161,8 @@ class Modal extends Component<Props, State> {
   //   this.setState(state => !state.dialogNode && ({ dialogNode }));
   // }
 
-  handleOverlayClick = e => {
+  handleOverlayClick = (e: SyntheticEvent<any>) => {
     if (this.props.shouldCloseOnOverlayClick) {
-      // $FlowFixMe TEMPORARY
       this.props.onClose(e);
     }
   };

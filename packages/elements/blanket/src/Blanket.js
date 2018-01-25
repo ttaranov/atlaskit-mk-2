@@ -8,7 +8,7 @@ type Props = {
   /** Whether the blanket has a tinted background color. */
   isTinted: boolean,
   /** Handler function to be called when the blanket is clicked */
-  onBlanketClicked: (event: Event) => void,
+  onBlanketClicked: (event: SyntheticEvent<any>) => void,
 };
 
 export default class Blanket extends PureComponent<Props, void> {

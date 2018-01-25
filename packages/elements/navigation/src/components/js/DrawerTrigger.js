@@ -5,7 +5,7 @@ import DrawerTriggerInner from '../styled/DrawerTriggerInner';
 
 type Props = {
   children?: Node,
-  onActivate: (event: Event) => void,
+  onActivate: (event: SyntheticEvent<any>) => void,
 };
 
 export default class DrawerTrigger extends PureComponent<Props> {
