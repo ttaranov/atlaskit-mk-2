@@ -28,21 +28,29 @@ pipelines:
   default:
     - step:
         script:
-          - source ./build-setup.sh
-          - bolt install --pure-lockfile
-          - yarn build
-          - (node build/ci-scripts/should.run.js eslint) && yarn lint:eslint
-          - (node build/ci-scripts/should.run.js tslint) && yarn lint:tslint
-          - (node build/ci-scripts/should.run.js flow) && yarn typecheck:flow
-          - (node build/ci-scripts/should.run.js tsc) && yarn typecheck:typescript
-          - yarn test:changed
-          - (node build/ci-scripts/should.run.js browserstack) && yarn test:browser:browserstack
-          - (cd website && yarn deploy-staging:no-minimize) | tee output.txt
-          - node build/ci-scripts/update.build.status.with.netlify.link.js
+          - echo "We'll shorten this default build whilst testing"
+          # - source ./build-setup.sh
+          # - bolt install --pure-lockfile
+          # - yarn build
+          # - (node build/ci-scripts/should.run.js eslint) && yarn lint:eslint
+          # - (node build/ci-scripts/should.run.js tslint) && yarn lint:tslint
+          # - (node build/ci-scripts/should.run.js flow) && yarn typecheck:flow
+          # - (node build/ci-scripts/should.run.js tsc) && yarn typecheck:typescript
+          # - yarn test:changed
+          # - (node build/ci-scripts/should.run.js browserstack) && yarn test:browser:browserstack
+          # - (cd website && yarn deploy-staging:no-minimize) | tee output.txt
+          # - node build/ci-scripts/update.build.status.with.netlify.link.js
         caches:
           - node
 
   custom: # Pipelines that can be scheduled or triggered manually
+
+    landkid:
+      - step:
+          script:
+            - echo "This is a landkid build"
+            - echo "Here, we would rebase on master then run our normal build"
+            - echo "If this build succeeds, our PR will merge automatically"
 
     # This should only be called by a scheduled build
     build-website-production:
