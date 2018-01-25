@@ -7,9 +7,11 @@ import {
   UPDATE_COMMENT_SUCCESS,
   DELETE_COMMENT_REQUEST,
   DELETE_COMMENT_SUCCESS,
+  DELETE_COMMENT_ERROR,
   UPDATE_USER_SUCCESS,
   CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
+  // CREATE_CONVERSATION_ERROR,
 } from './actions';
 import { Action, State } from './store';
 import { User, Conversation, Comment } from '../model';
@@ -199,6 +201,20 @@ export const reducers = {
       state.conversations,
       payload,
     );
+
+    return {
+      ...state,
+      conversations,
+    };
+  },
+
+  [DELETE_COMMENT_ERROR](state: State, action: Action) {
+    const { payload } = action;
+
+    const conversations = updateCommentInConversation(state.conversations, {
+      ...payload,
+      state: 'ERROR',
+    });
 
     return {
       ...state,

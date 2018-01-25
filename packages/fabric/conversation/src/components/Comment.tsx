@@ -11,6 +11,7 @@ import Editor from './Editor';
 import { Comment as CommentType, User } from '../model';
 import CommentContainer from '../containers/Comment';
 import { ProviderFactory } from '@atlaskit/editor-common';
+import { HttpError } from '../api/HttpError';
 
 /**
  * Props which are passed down from the parent Conversation/Comment
@@ -257,9 +258,15 @@ export default class Comment extends React.Component<Props, State> {
   render() {
     const { comment, user, onUserClick } = this.props;
     const { isEditing } = this.state;
-    const { createdBy, state: commentState } = comment;
+    const { createdBy, state: commentState, error } = comment;
     const canReply = !!user && !isEditing && !comment.deleted;
+    const errorProps: {
+      actions?: any[];
+      message?: string;
+    } = {};
     let actions;
+
+    // @TODO onRetry, onCancel (dispatch something), add update/create error states
 
     if (canReply) {
       actions = [
@@ -279,6 +286,27 @@ export default class Comment extends React.Component<Props, State> {
           </CommentAction>,
         ];
       }
+    }
+
+    if (error) {
+      errorProps.actions = [];
+
+      if ((error as HttpError).canRetry) {
+        errorProps.actions = [
+          <CommentAction key="retry" onClick={this.onEdit}>
+            Retry
+          </CommentAction>,
+        ];
+      }
+
+      errorProps.actions = [
+        ...errorProps.actions,
+        <CommentAction key="cancel" onClick={this.onDelete}>
+          Cancel
+        </CommentAction>,
+      ];
+
+      errorProps.message = error.message;
     }
 
     const comments = this.renderComments();
@@ -311,6 +339,9 @@ export default class Comment extends React.Component<Props, State> {
         actions={actions}
         content={this.getContent()}
         isSaving={commentState === 'SAVING'}
+        isError={commentState === 'ERROR'}
+        errorActions={errorProps.actions}
+        errorIconLabel={errorProps.message}
       >
         {editor || comments ? (
           <div>

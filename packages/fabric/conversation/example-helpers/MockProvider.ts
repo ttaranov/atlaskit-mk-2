@@ -8,6 +8,7 @@ import { uuid } from '../src/internal/uuid';
 import { generateMockConversation, mockInlineConversation } from './MockData';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { HttpError } from '../src/api/HttpError';
 
 import {
   FETCH_CONVERSATIONS_REQUEST,
@@ -17,6 +18,7 @@ import {
   UPDATE_COMMENT_REQUEST,
   UPDATE_COMMENT_SUCCESS,
   DELETE_COMMENT_SUCCESS,
+  DELETE_COMMENT_ERROR,
   CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
   UPDATE_USER_SUCCESS,
@@ -169,16 +171,22 @@ export class MockProvider extends AbstractConversationResource {
     commentId: string,
   ): Promise<Comment> {
     const result = {
-      createdBy: this.config.user,
-      createdAt: Date.now(),
-      document: {},
+      // createdBy: this.config.user,
+      // createdAt: Date.now(),
+      // document: {},
       conversationId,
       commentId,
-      deleted: true,
+      // deleted: true,
+      error: new HttpError(500, 'yeh nah'),
     };
 
     const { dispatch } = this;
-    dispatch({ type: DELETE_COMMENT_SUCCESS, payload: result });
+    dispatch({ type: UPDATE_COMMENT, payload: result });
+
+    setTimeout(() => {
+      dispatch({ type: DELETE_COMMENT_ERROR, payload: result });
+    }, 1000);
+    // dispatch({ type: DELETE_COMMENT_SUCCESS, payload: result });
 
     return result;
   }

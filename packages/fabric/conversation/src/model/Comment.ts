@@ -1,6 +1,6 @@
 import { Conversation } from './Conversation';
 import { User } from './User';
-export interface Comment extends Pick<Conversation, 'comments'> {
+export interface Comment extends Pick<Conversation, 'comments' | 'error'> {
   commentId: string;
   conversationId: string;
   parentId?: string;

@@ -6,17 +6,21 @@ export const FETCH_CONVERSATIONS_SUCCESS = 'fetchConversationsSuccess';
 
 export const ADD_COMMENT_REQUEST = 'addCommentRequest';
 export const ADD_COMMENT_SUCCESS = 'addCommentSuccess';
+export const ADD_COMMENT_ERROR = 'addCommentError';
 
 export const DELETE_COMMENT_REQUEST = 'deleteCommentRequest';
 export const DELETE_COMMENT_SUCCESS = 'deleteCommentSuccess';
+export const DELETE_COMMENT_ERROR = 'deleteCommentError';
 
 export const UPDATE_COMMENT_REQUEST = 'updateCommentRequest';
 export const UPDATE_COMMENT_SUCCESS = 'updateCommentSuccess';
+export const UPDATE_COMMENT_ERROR = 'updateCommentError';
 
 export const UPDATE_USER_SUCCESS = 'updateUserSuccess';
 
 export const CREATE_CONVERSATION_REQUEST = 'createConversationRequest';
 export const CREATE_CONVERSATION_SUCCESS = 'createConversationSuccess';
+export const CREATE_CONVERSATION_ERROR = 'createConversationError';
 
 export const addComment = (
   conversationId: string,

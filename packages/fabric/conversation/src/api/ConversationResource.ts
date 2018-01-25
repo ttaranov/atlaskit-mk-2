@@ -7,6 +7,7 @@ import {
   UPDATE_COMMENT_REQUEST,
   UPDATE_COMMENT_SUCCESS,
   DELETE_COMMENT_SUCCESS,
+  DELETE_COMMENT_ERROR,
   UPDATE_USER_SUCCESS,
   CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
@@ -14,6 +15,7 @@ import {
 import { reducers } from '../internal/reducers';
 import { Comment, Conversation, User } from '../model';
 import { uuid } from '../internal/uuid';
+import { HttpError } from './HttpError';
 
 export interface ConversationResourceConfig {
   url: string;
@@ -148,7 +150,7 @@ export class ConversationResource extends AbstractConversationResource {
     const response = await fetch(`${url}${path}`, fetchOptions as any);
 
     if (!response.ok) {
-      throw new Error(response.statusText);
+      throw new HttpError(response.status, response.statusText);
     }
 
     // Content deleted
@@ -323,12 +325,20 @@ export class ConversationResource extends AbstractConversationResource {
     conversationId: string,
     commentId: string,
   ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'deleted'>> {
-    await this.makeRequest<{}>(
-      `/conversation/${conversationId}/comment/${commentId}`,
-      {
-        method: 'DELETE',
-      },
-    );
+    const { dispatch } = this;
+
+    try {
+      await this.makeRequest<{}>(
+        `/conversation/${conversationId}/comment/${commentId}`,
+        {
+          method: 'DELETE',
+        },
+      );
+    } catch (error) {
+      const result = { conversationId, commentId, error };
+      dispatch({ type: DELETE_COMMENT_ERROR, payload: result });
+      return result;
+    }
 
     const result = {
       conversationId,
@@ -336,7 +346,6 @@ export class ConversationResource extends AbstractConversationResource {
       deleted: true,
     };
 
-    const { dispatch } = this;
     dispatch({ type: DELETE_COMMENT_SUCCESS, payload: result });
 
     return result;
