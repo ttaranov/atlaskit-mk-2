@@ -3,6 +3,7 @@ import {
   FETCH_CONVERSATIONS_SUCCESS,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
+  ADD_COMMENT_ERROR,
   UPDATE_COMMENT_REQUEST,
   UPDATE_COMMENT_SUCCESS,
   UPDATE_COMMENT_ERROR,
@@ -21,34 +22,18 @@ import { User, Conversation, Comment } from '../model';
 const updateComment = (
   comments: Comment[] | undefined,
   newComment: Comment,
-  storeOriginal?: boolean,
 ) => {
   return (comments || []).map(comment => {
     if (
       (newComment.localId && comment.localId === newComment.localId) ||
       comment.commentId === newComment.commentId
     ) {
-      console.log(
-        comment.document.adf.content[0].content[0].text,
-        comment.oldDocument &&
-          comment.oldDocument.adf.content[0].content[0].text,
-      );
       return {
         ...comment,
         ...newComment,
-        oldDocument: storeOriginal ? comment.document : comment.oldDocument,
-      };
-    }
-    return comment;
-  });
-};
-
-const deleteComment = (comments: Comment[] | undefined, commentId: string) => {
-  return (comments || []).map(comment => {
-    if (comment.commentId === commentId) {
-      return {
-        ...comment,
-        deleted: true,
+        oldDocument: comment.oldDocument
+          ? comment.oldDocument
+          : comment.document,
       };
     }
     return comment;
@@ -70,15 +55,10 @@ const updateConversation = (
 const updateCommentInConversation = (
   conversations: Conversation[],
   newComment: Comment,
-  storeOriginal?: boolean,
 ) => {
   return conversations.map(conversation => {
     if (conversation.conversationId === newComment.conversationId) {
-      const comments = updateComment(
-        conversation.comments,
-        newComment,
-        storeOriginal,
-      );
+      const comments = updateComment(conversation.comments, newComment);
       return {
         ...conversation,
         comments,
@@ -98,25 +78,6 @@ const addCommentToConversation = (
       return {
         ...conversation,
         comments: [...comments, newComment],
-      };
-    }
-    return conversation;
-  });
-};
-
-const deleteCommentInConversation = (
-  conversations: Conversation[],
-  deletedComment: Comment,
-) => {
-  return conversations.map(conversation => {
-    if (conversation.conversationId === deletedComment.conversationId) {
-      const comments = deleteComment(
-        conversation.comments,
-        deletedComment.commentId,
-      );
-      return {
-        ...conversation,
-        comments,
       };
     }
     return conversation;
@@ -164,6 +125,7 @@ export const reducers = {
       conversations = updateCommentInConversation(state.conversations, {
         ...payload,
         state: undefined,
+        oldDocument: undefined,
       });
     } else {
       conversations = addCommentToConversation(state.conversations, payload);
@@ -175,17 +137,27 @@ export const reducers = {
     };
   },
 
+  [ADD_COMMENT_ERROR](state: State, action: Action) {
+    const { payload } = action;
+
+    const conversations = updateCommentInConversation(state.conversations, {
+      ...payload,
+      state: 'ERROR',
+    });
+
+    return {
+      ...state,
+      conversations,
+    };
+  },
+
   [UPDATE_COMMENT_REQUEST](state: State, action: Action) {
     const { payload } = action;
 
-    const conversations = updateCommentInConversation(
-      state.conversations,
-      {
-        ...payload,
-        state: 'SAVING',
-      },
-      true,
-    );
+    const conversations = updateCommentInConversation(state.conversations, {
+      ...payload,
+      state: 'SAVING',
+    });
 
     return {
       ...state,
@@ -199,6 +171,7 @@ export const reducers = {
     const conversations = updateCommentInConversation(state.conversations, {
       ...payload,
       state: undefined,
+      oldDocument: undefined,
     });
 
     return {
@@ -222,17 +195,26 @@ export const reducers = {
   },
 
   [DELETE_COMMENT_REQUEST](state: State, action: Action) {
+    const { payload } = action;
+    const conversations = updateCommentInConversation(state.conversations, {
+      ...payload,
+      state: 'SAVING',
+      deleted: true,
+    });
+
     return {
       ...state,
+      conversations,
     };
   },
 
   [DELETE_COMMENT_SUCCESS](state: State, action: Action) {
     const { payload } = action;
-    const conversations = deleteCommentInConversation(
-      state.conversations,
-      payload,
-    );
+    const conversations = updateCommentInConversation(state.conversations, {
+      ...payload,
+      state: undefined,
+      oldDocument: undefined,
+    });
 
     return {
       ...state,
@@ -261,6 +243,8 @@ export const reducers = {
       ...payload,
       state: undefined,
       document: payload.oldDocument,
+      deleted: false,
+      oldDocument: undefined,
     });
 
     return {

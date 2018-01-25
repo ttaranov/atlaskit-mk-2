@@ -15,9 +15,11 @@ import {
   FETCH_CONVERSATIONS_SUCCESS,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
+  ADD_COMMENT_ERROR,
   UPDATE_COMMENT_REQUEST,
   UPDATE_COMMENT_SUCCESS,
   UPDATE_COMMENT_ERROR,
+  DELETE_COMMENT_REQUEST,
   DELETE_COMMENT_SUCCESS,
   DELETE_COMMENT_ERROR,
   REVERT_COMMENT,
@@ -40,6 +42,8 @@ export const getDataProviderFactory = () => {
   });
   return dataProviderFactory;
 };
+
+let i = 0;
 
 export class MockProvider extends AbstractConversationResource {
   private config: ConversationResourceConfig;
@@ -107,7 +111,14 @@ export class MockProvider extends AbstractConversationResource {
     dispatch({ type: ADD_COMMENT_REQUEST, payload: result });
 
     setTimeout(() => {
-      dispatch({ type: ADD_COMMENT_SUCCESS, payload: result });
+      // @TODO toggler
+      const errResult = {
+        ...result,
+        error: new HttpError(500, 'oops'),
+      };
+      let type = i++ > 1 ? ADD_COMMENT_SUCCESS : ADD_COMMENT_ERROR;
+      let payload = i > 1 ? result : errResult;
+      dispatch({ type, payload });
     }, 1000);
 
     return result;
@@ -162,7 +173,11 @@ export class MockProvider extends AbstractConversationResource {
         commentId,
         error: new HttpError(503, 'ruh roh'),
       };
-      dispatch({ type: UPDATE_COMMENT_ERROR, payload: errResult });
+
+      // @TODO toggler
+      let type = i++ > 1 ? UPDATE_COMMENT_SUCCESS : UPDATE_COMMENT_ERROR;
+      let payload = i > 1 ? result : errResult;
+      dispatch({ type, payload });
     }, 200);
 
     return result;
@@ -185,11 +200,14 @@ export class MockProvider extends AbstractConversationResource {
     };
 
     const { dispatch } = this;
+    dispatch({ type: DELETE_COMMENT_REQUEST, payload: result });
 
-    // setTimeout(() => {
-    dispatch({ type: DELETE_COMMENT_ERROR, payload: result });
-    // }, 1000);
-    // dispatch({ type: DELETE_COMMENT_SUCCESS, payload: result });
+    setTimeout(() => {
+      let type = i++ > 1 ? DELETE_COMMENT_SUCCESS : DELETE_COMMENT_ERROR;
+      dispatch({ type, payload: result });
+      // dispatch({ type: DELETE_COMMENT_ERROR, payload: result });
+      // dispatch({ type: DELETE_COMMENT_SUCCESS, payload: result });
+    }, 1000);
 
     return result;
   }
