@@ -14,7 +14,7 @@ import {
   storyContextIdentifierProviderFactory,
   storyMediaProviderFactory,
 } from '@atlaskit/editor-test-helpers';
-
+import { enableMock, disableMock } from '@atlaskit/media-test-helpers';
 const rejectedPromise = Promise.reject(
   new Error('Simulated provider rejection'),
 );
@@ -105,6 +105,7 @@ interface State {
   contextIdentifierProvider: string;
   activityProvider: string;
   jsonDocument?: string;
+  mocked: boolean;
 }
 
 export default class ToolsDrawer extends React.Component<any, State> {
@@ -122,6 +123,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
       contextIdentifierProvider: 'resolved',
       activityProvider: 'resolved',
       jsonDocument: '{}',
+      mocked: false,
     };
   }
 
@@ -144,6 +146,11 @@ export default class ToolsDrawer extends React.Component<any, State> {
     });
   };
 
+  private toggleMock = () => {
+    this.state.mocked ? disableMock() : enableMock();
+    this.setState(state => ({ mocked: !this.state.mocked }));
+  };
+
   render() {
     const {
       mentionProvider,
@@ -156,6 +163,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
       jsonDocument,
       reloadEditor,
       editorEnabled,
+      mocked,
     } = this.state;
     return (
       <Content>
@@ -215,6 +223,13 @@ export default class ToolsDrawer extends React.Component<any, State> {
           ))}
           <div>
             <ButtonGroup>
+              <Button
+                onClick={this.toggleMock}
+                appearance={this.state.mocked ? 'danger' : 'primary'}
+                spacing="compact"
+              >
+                {this.state.mocked ? 'Mocked!' : 'Mock XHR'}
+              </Button>
               <Button
                 onClick={this.toggleDisabled}
                 theme="dark"

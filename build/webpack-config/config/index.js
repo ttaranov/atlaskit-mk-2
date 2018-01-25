@@ -126,6 +126,11 @@ module.exports = function createWebpackConfig(
           test: /\.less$/,
           use: ['style-loader', 'css-loader', 'less-loader'],
         },
+        {
+          enforce: 'pre',
+          test: /.*test-helpers\/.*\.ts/,
+          loader: require.resolve('import-glob'),
+        },
       ],
     },
     resolve: {

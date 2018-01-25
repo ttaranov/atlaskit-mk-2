@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const tokenCache = {};
 const accessUrns = {
   MediaServicesSample: {
@@ -25,20 +27,21 @@ export const mediaPickerAuthProvider = component => context => {
     return Promise.resolve(tokenCache[cacheKey]);
   } else {
     const url = `https://media-playground.dev.atl-paas.net/token/tenant?environment=${authEnvironment}`;
-    const body = JSON.stringify({
+    const body = {
       access: accessUrns[collectionName],
-    });
+    };
     const headers = new Headers();
 
     headers.append('Content-Type', 'application/json; charset=utf-8');
     headers.append('Accept', 'text/plain, */*; q=0.01');
 
-    return fetch(url, {
+    return axios(url, {
       method: 'POST',
-      body,
-      headers,
+      data: body,
+      headers: headers,
+      withCredentials: true,
     })
-      .then(r => r.json())
+      .then(r => r.data)
       .then(data => {
         tokenCache[cacheKey] = data;
 
