@@ -52,6 +52,9 @@ export interface MediaViewerConfig {
   readonly embedded?: boolean;
   readonly contained?: boolean;
   readonly i18n?: Object;
+  
+  readonly isPreviewGenerated?: (file: MediaFileAttributes) => any;
+  readonly generatePreview?: (file: MediaFileAttributes) => any;
 }
 
 export type MediaViewerMode = 'BASE' | 'PRESENTATION' | 'CONTAINED';
