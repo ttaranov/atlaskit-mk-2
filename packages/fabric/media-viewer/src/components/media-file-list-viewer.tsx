@@ -77,11 +77,25 @@ export class MediaFileListViewer extends Component<
 
     const filesToProcess = list.filter(item => item.type === 'file'); // for now we only support files
 
-    const observableFileItems = filesToProcess
-      .map(file =>
-        context.getMediaItemProvider(file.id, file.type, collectionName),
-      )
-      .map(provider => provider.observable().map(item => item as FileItem));
+    const erroedObservable = (file: MediaViewerItem) => {
+      return Observable.create((observer) => {
+        observer.next({
+          details: {
+            id: file.id
+          }
+        });
+        observer.complete();
+      });  
+    };
+
+    const errorAwareObservableFromFile = (file: MediaViewerItem) => {
+      const provider = context.getMediaItemProvider(file.id, file.type, collectionName);
+      return provider.observable()
+        .catch((error: Error) => erroedObservable(file))
+        .map(item => item as FileItem);
+    };
+
+    const observableFileItems = filesToProcess.map(errorAwareObservableFromFile);
 
     this.state = {
       subscription: Observable.zip(...observableFileItems).subscribe({

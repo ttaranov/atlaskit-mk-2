@@ -144,10 +144,8 @@ describe('MediaFileAttributes', () => {
         Mocks.unprocessedFile,
         serviceHost,
       );
-      expect(attributes.proccessed).toBe(false);
       expect(attributes.type).toBe('non-supported');
     });
-
   });
 });
 
@@ -187,7 +185,7 @@ class Mocks {
     occurrenceKey: 'some-occurrenceKey',
   } as FileItemWithOccurrenceKey;
 
-static unprocessedFile = {
+  static unprocessedFile = {
     details: {
       id: 'jpg-file',
       name: 'Some JPG',

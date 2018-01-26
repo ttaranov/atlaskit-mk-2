@@ -236,4 +236,73 @@ describe('<MediaFileListViewer />', () => {
     expect(mediaViewer.off).toHaveBeenCalledTimes(1);
     expect((mediaViewer.off as any).mock.calls[0][0]).toBe('fv.close');
   });
+
+  it('should deal with provider errors', (done) => {
+    const list = [
+      {
+        id: 'some-id',
+        occurrenceKey: 'some-custom-occurrence-key',
+        type: 'file' as MediaItemType,
+      },
+      {
+        id: 'some-id-2',
+        occurrenceKey: 'some-custom-occurrence-key-2',
+        type: 'file' as MediaItemType,
+      }
+    ];  
+    
+    const subject = new Subject<MediaItem>();
+    const context = Stubs.context(
+      contextConfig,
+      undefined,
+      Stubs.mediaItemProvider(subject),
+    ) as any;
+
+    const setFiles = (files) => {
+      expect(files.length).toEqual(2);
+      expect(files[0].id).toEqual('some-id-some-custom-occurrence-key');
+      expect(files[0].type).toEqual('non-supported');
+      
+      expect(files[1].id).toEqual('some-id-2-some-custom-occurrence-key-2');
+      expect(files[1].type).toEqual('non-supported');
+    };
+
+    const open = ({ id }) => {
+      expect(id).toEqual('some-id-some-custom-occurrence-key');
+      done();
+    };
+
+    const mediaViewerConstructor = Stubs.mediaViewerConstructor({
+      setFiles,
+      open,
+    });
+
+    const additionalConfiguration = { enableMiniMode: true };
+    mount(
+      <MediaFileListViewer
+        selectedItem={selectedItem}
+        list={list}
+        context={context}
+        collectionName={collectionName}
+        mediaViewerConfiguration={additionalConfiguration}
+        MediaViewer={mediaViewerConstructor as any}
+        basePath={basePath}
+      />,
+    );
+
+    // make all underlying observable from MediaItemProviders fail
+    subject.error({});
+
+    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(2);
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith(
+      'some-id',
+      'file',
+      'some-collection',
+    );
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith(
+      'some-id-2',
+      'file',
+      'some-collection',
+    );
+  });
 });

@@ -1,15 +1,20 @@
-import { MediaFileAttributes } from '../mediaviewer';
+export interface BackBoneModel {
+  get(id: string): any;
+}
 
-export const isPreviewGenerated = (file: MediaFileAttributes) : any => {
-    return {
-      // HACK: this code depends heavily on MediaViewer Classic internals.
-      // isPreviewGenerated is only going to be called here when there is not a supported type
-      // passed (that will happen when the file is not processed),
-      // so we can just return "false" here instead of "file.processed".
-      // Since we are in the process of rewritting this component and deprecating MediaViewer Classic and this wrapper,
-      // we judged there was not much of a point on dramatically refactoring both components.
-      pipe: (cb: (isPreviewGenerated: boolean) => JQueryPromise<any>) => cb(false),
-    };
-  }
+// HACK: 
+// This code depends heavily on MediaViewer Classic internals.
+// isPreviewGenerated is only going to be called here when there is not a supported type
+// passed across (that will happen when the file is not processed).
+//
+// We will be using this trick to handle errors.
+//
+// Since we are in the process of rewritting this component and deprecating MediaViewer Classic and this wrapper,
+// we judged there was not much of a point on dramatically refactoring both components.
+export const isPreviewGenerated = (file: BackBoneModel) => {
+  return {
+    pipe: (cb: (isPreviewGenerated: boolean) => JQueryPromise<any>) => cb(false),
+  };
+}
 
-export const generatePreview = Promise.resolve;
+export const generatePreview = (file: BackBoneModel) => Promise.resolve;

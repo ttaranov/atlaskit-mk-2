@@ -5,6 +5,7 @@
 // TODO MSW-216 move type definitions into the @atlassian/mediaviewer package and remove this file
 
 import 'jquery';
+import {BackBoneModel} from './domain/preview';
 
 export interface MediaFileAttributes {
   readonly src: string;
@@ -53,8 +54,8 @@ export interface MediaViewerConfig {
   readonly contained?: boolean;
   readonly i18n?: Object;
   
-  readonly isPreviewGenerated?: (file: MediaFileAttributes) => any;
-  readonly generatePreview?: (file: MediaFileAttributes) => any;
+  readonly isPreviewGenerated?: (file: BackBoneModel) => any;
+  readonly generatePreview?: (file: BackBoneModel) => any;
 }
 
 export type MediaViewerMode = 'BASE' | 'PRESENTATION' | 'CONTAINED';
