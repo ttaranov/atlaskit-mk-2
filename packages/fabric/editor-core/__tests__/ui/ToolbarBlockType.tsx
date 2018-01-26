@@ -163,6 +163,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
       { value: 'heading3', name: 'Heading 3' },
       { value: 'heading4', name: 'Heading 4' },
       { value: 'heading5', name: 'Heading 5' },
+      { value: 'heading6', name: 'Heading 6' },
     ].forEach(blockType => {
       it(`should trigger analyticsService.trackEvent when ${
         blockType.name
