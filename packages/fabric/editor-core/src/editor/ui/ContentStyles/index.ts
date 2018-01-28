@@ -110,13 +110,8 @@ const ContentStyles = styled.div`
     }
   }
 
-  .ProseMirror span[data-placeholder-text] {
-    display: inline-block;
-
-    &:after {
-      content: attr(data-placeholder-text);
-      color: ${akColorN80};
-    }
+  .ProseMirror span[data-placeholder] {
+    color: ${akColorN80};
   }
 
   .ProseMirror blockquote {

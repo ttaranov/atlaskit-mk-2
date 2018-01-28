@@ -4,7 +4,6 @@ export const placeholder: NodeSpec = {
   inline: true,
   group: 'inline',
   selectable: false,
-  atom: true,
   attrs: {
     text: { default: '' },
   },
@@ -22,7 +21,8 @@ export const placeholder: NodeSpec = {
     const { text } = node.attrs;
     const attrs = {
       'data-placeholder': text,
+      contenteditable: 'false',
     };
-    return ['span', attrs];
+    return ['span', attrs, text];
   },
 };

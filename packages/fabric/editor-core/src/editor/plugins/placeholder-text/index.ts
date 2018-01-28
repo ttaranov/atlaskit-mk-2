@@ -1,6 +1,6 @@
 import { Plugin, NodeSelection, TextSelection } from 'prosemirror-state';
 import { PluginKey } from 'prosemirror-state';
-import { placeholderText } from '@atlaskit/editor-common';
+import { placeholder } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 
 export const pluginKey = new PluginKey('placeholderTextPlugin');
@@ -8,14 +8,16 @@ export const pluginKey = new PluginKey('placeholderTextPlugin');
 export function createPlugin(): Plugin | undefined {
   return new Plugin({
     key: pluginKey,
+    state: {
+      init: () => ({}),
+      apply: (tr, state) => state,
+    },
     props: {
       handleClick(view, pos, event) {
-        const maybeNode = view.state.doc.nodeAt(pos - 1);
-        if (maybeNode && maybeNode.type.name === 'placeholderText') {
-          const maybeSelection = TextSelection.create(
-            view.state.tr.doc,
-            pos - 1,
-          );
+        const maybeNode = view.state.doc.nodeAt(pos);
+        const { schema } = view.state;
+        if (maybeNode && maybeNode.type === schema.nodes.placeholder) {
+          const maybeSelection = TextSelection.create(view.state.tr.doc, pos);
           if (maybeSelection) {
             document.getSelection().empty();
             view.dispatch(view.state.tr.setSelection(maybeSelection));
@@ -32,9 +34,10 @@ export function createPlugin(): Plugin | undefined {
           newState.selection.$head.nodeAfter;
         const adjacentNode = newState.selection.$head.nodeAfter;
         const adjacentNodePos = newState.selection.$head.pos;
+        const placeholderNodeType = newState.schema.nodes.placeholder;
         if (
           adjacentNode &&
-          adjacentNode.type.name === 'placeholderText' &&
+          adjacentNode.type === placeholderNodeType &&
           didPlaceholderExistBeforeTxn
         ) {
           const { $from, $to } = NodeSelection.create(
@@ -50,7 +53,7 @@ export function createPlugin(): Plugin | undefined {
 
 const placeholderTextPlugin: EditorPlugin = {
   nodes() {
-    return [{ name: 'placeholderText', node: placeholderText, rank: 1600 }];
+    return [{ name: 'placeholder', node: placeholder, rank: 1600 }];
   },
 
   pmPlugins() {
