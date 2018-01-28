@@ -17,6 +17,7 @@ import {
   loadedMediaEmoji,
   mediaEmoji,
 } from '../../../src/support/test-data';
+import { hasSelector } from '../../_emoji-selectors';
 
 describe('<CachingEmoji />', () => {
   describe('Non-media emoji', () => {
@@ -71,7 +72,7 @@ describe('<CachingEmoji />', () => {
         component.find(CachingMediaEmoji).length,
         'CachingMediaEmoji',
       ).to.equal(1);
-      return waitUntil(() => component.find(Emoji).length > 0).then(() => {
+      return waitUntil(() => hasSelector(component, Emoji)).then(() => {
         const emoji = component.find(Emoji);
         expect(emoji.length, 'Emoji').to.equal(1);
         const emojiDescription = emoji.prop('emoji');
@@ -94,7 +95,7 @@ describe('<CachingEmoji />', () => {
         component.find(CachingMediaEmoji).length,
         'CachingMediaEmoji',
       ).to.equal(1);
-      return waitUntil(() => component.find(Emoji).length > 0).then(() => {
+      return waitUntil(() => hasSelector(component, Emoji)).then(() => {
         const emoji = component.find(Emoji);
         expect(emoji.length, 'Emoji').to.equal(1);
         const emojiDescription = emoji.prop('emoji');
@@ -115,7 +116,7 @@ describe('<CachingEmoji />', () => {
         component.find(CachingMediaEmoji).length,
         'CachingMediaEmoji',
       ).to.equal(1);
-      return waitUntil(() => component.find(Emoji).length > 0).then(() => {
+      return waitUntil(() => hasSelector(component, Emoji)).then(() => {
         const emoji = component.find(Emoji);
         expect(emoji.length, 'Emoji').to.equal(1);
         const emojiDescription = emoji.prop('emoji');

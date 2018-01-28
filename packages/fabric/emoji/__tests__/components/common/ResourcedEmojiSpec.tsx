@@ -17,12 +17,12 @@ import {
   getEmojiResourcePromise,
 } from '../../../src/support/test-data';
 
-const findEmoji = component => component.find(Emoji);
+const findEmoji = component => component.update() && component.find(Emoji);
 const emojiVisible = component => findEmoji(component).length === 1;
 const emojiVisibleById = (component, id) =>
   emojiVisible(component) && findEmoji(component).prop('emoji').id === id;
 const emojiPlaceHolderVisible = component =>
-  component.find(EmojiPlaceholder).length === 1;
+  component.update() && component.find(EmojiPlaceholder).length === 1;
 
 describe('<ResourcedEmoji />', () => {
   it('should render emoji', () => {

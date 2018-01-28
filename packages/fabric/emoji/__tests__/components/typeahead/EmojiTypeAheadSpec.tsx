@@ -14,9 +14,10 @@ import {
 } from '../../../src/support/test-data';
 import { MockEmojiResource } from '../../../src/support/MockEmojiResource';
 import {
-  isEmojiTypeAheadItemSelected,
+  hasSelector,
   getEmojiTypeAheadItemById,
   getSelectedEmojiTypeAheadItem,
+  isEmojiTypeAheadItemSelected,
 } from '../../_emoji-selectors';
 
 import { defaultListLimit } from '../../../src/constants';
@@ -45,9 +46,9 @@ function setupTypeAhead(props?: Props): Promise<ReactWrapper<any, any>> {
     />,
   );
 
-  return waitUntil(
-    () => component.find(EmojiTypeAheadComponent).length > 0,
-  ).then(() => component);
+  return waitUntil(() => hasSelector(component, EmojiTypeAheadComponent)).then(
+    () => component,
+  );
 }
 
 const allEmojis = newEmojiRepository().all().emojis;
@@ -56,11 +57,12 @@ const leftClick = {
   button: 0,
 };
 
-const findEmojiItems = component => component.find(EmojiTypeAheadItem);
+const findEmojiItems = component =>
+  component.update() && component.find(EmojiTypeAheadItem);
 const itemsVisibleCount = component => findEmojiItems(component).length;
 const itemsVisible = component => itemsVisibleCount(component) > 0;
 const doneLoading = (component: ReactWrapper<TypeAheadProps, TypeAheadState>) =>
-  !component.state('loading');
+  component.update() && !component.state('loading');
 
 describe('EmojiTypeAhead', () => {
   it('should display max emoji by default', () =>

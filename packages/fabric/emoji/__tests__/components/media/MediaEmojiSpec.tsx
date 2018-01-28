@@ -19,6 +19,11 @@ import {
   mediaEmojiId,
   newSiteEmojiRepository,
 } from '../../../src/support/test-data';
+import { hasSelector } from '../../_emoji-selectors';
+import {
+  setupPicker,
+  emojisVisible,
+} from '../picker/_emoji-picker-test-helpers';
 
 describe('Media Emoji Handling across components', () => {
   let emojiProvider: Promise<EmojiProvider>;
@@ -34,7 +39,7 @@ describe('Media Emoji Handling across components', () => {
       const component = mount(
         <ResourcedEmoji emojiProvider={emojiProvider} emojiId={mediaEmojiId} />,
       );
-      return waitUntil(() => component.find(Emoji).length > 0).then(() => {
+      return waitUntil(() => hasSelector(component, Emoji)).then(() => {
         const emojiDescription = component.find(Emoji).prop('emoji');
         expect(emojiDescription, 'Is media emoji').to.deep.equal(mediaEmoji);
         expect(
@@ -48,11 +53,11 @@ describe('Media Emoji Handling across components', () => {
   describe('<EmojiPicker/>', () => {
     it('Media emoji rendered in picker', () => {
       const component = mount(<EmojiPicker emojiProvider={emojiProvider} />);
-      return waitUntil(() => component.find(EmojiPickerList).length > 0).then(
+      return waitUntil(() => hasSelector(component, EmojiPickerList)).then(
         () => {
           const list = component.find(EmojiPickerList);
           expect(list.length, 'List exists').to.equal(1);
-          return waitUntil(() => list.find(Emoji).length > 0).then(() => {
+          return waitUntil(() => emojisVisible(component, list)).then(() => {
             const emojiDescription = component.find(Emoji).prop('emoji');
             expect(emojiDescription, 'Is media emoji').to.deep.equal(
               mediaEmoji,
@@ -66,48 +71,43 @@ describe('Media Emoji Handling across components', () => {
       );
     });
 
-    it('Media emoji rendered in picker preview', () => {
-      const component = mount(<EmojiPicker emojiProvider={emojiProvider} />);
-      return waitUntil(() => component.find(EmojiPickerList).length > 0).then(
-        () => {
-          const list = component.find(EmojiPickerList);
-          expect(list.length, 'List exists').to.equal(1);
-          return waitUntil(() => list.find(Emoji).length > 0).then(() => {
-            const emoji = component.find(Emoji);
-            const emojiDescription = emoji.prop('emoji');
-            expect(emojiDescription, 'Is media emoji').to.deep.equal(
-              mediaEmoji,
-            );
-            expect(
-              list.find(CachingMediaEmoji).length,
-              'Rendered via CachingMediaEmoji',
-            ).to.equal(1);
-            const preview = component.find(EmojiPreview);
-            expect(preview.length, 'Preview').to.equal(1);
+    it('Media emoji rendered in picker preview', async () => {
+      const component = await setupPicker({ emojiProvider });
+      await waitUntil(() => hasSelector(component, EmojiPickerList));
+      const list = component.find(EmojiPickerList);
+      expect(list.length, 'List exists').to.equal(1);
+      await waitUntil(() => emojisVisible(component, list));
+      const emoji = component.find(Emoji);
+      const emojiDescription = emoji.prop('emoji');
+      expect(emojiDescription, 'Is media emoji').to.deep.equal(mediaEmoji);
+      expect(
+        list.find(CachingMediaEmoji).length,
+        'Rendered via CachingMediaEmoji',
+      ).to.equal(1);
+      let preview = component.find(EmojiPreview);
+      expect(preview.length, 'Preview').to.equal(1);
 
-            // Hover to force preview
-            emoji.simulate('mousemove');
+      // Hover to force preview
+      emoji.simulate('mousemove');
 
-            return waitUntil(() => preview.find(Emoji).length > 0).then(() => {
-              const previewEmojiDescription = preview.find(Emoji).prop('emoji');
-              expect(previewEmojiDescription, 'Is media emoji').to.deep.equal(
-                mediaEmoji,
-              );
-              expect(
-                preview.find(CachingMediaEmoji).length,
-                'Rendered via CachingMediaEmoji',
-              ).to.equal(1);
-            });
-          });
-        },
+      await waitUntil(() =>
+        hasSelector(component, Emoji, (preview = component.find(EmojiPreview))),
       );
+      const previewEmojiDescription = preview.find(Emoji).prop('emoji');
+      expect(previewEmojiDescription, 'Is media emoji').to.deep.equal(
+        mediaEmoji,
+      );
+      expect(
+        preview.find(CachingMediaEmoji).length,
+        'Rendered via CachingMediaEmoji',
+      ).to.equal(1);
     });
   });
 
   describe('<EmojiTypeAhead/>', () => {
     it('Media emoji rendered in type ahead', () => {
       const component = mount(<EmojiTypeAhead emojiProvider={emojiProvider} />);
-      return waitUntil(() => component.find(Emoji).length > 0).then(() => {
+      return waitUntil(() => hasSelector(component, Emoji)).then(() => {
         const emojiDescription = component.find(Emoji).prop('emoji');
         expect(emojiDescription, 'Is media emoji').to.deep.equal(mediaEmoji);
         expect(

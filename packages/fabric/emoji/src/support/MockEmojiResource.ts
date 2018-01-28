@@ -163,6 +163,7 @@ export class MockNonUploadingEmojiResource extends AbstractResource<
           tone ? tone.toString() : '',
         );
       } catch (e) {
+        // tslint:disable-next-line:no-console
         console.error('failed to store selected emoji skin tone', e);
       }
     }

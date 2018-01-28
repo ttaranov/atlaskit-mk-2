@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import { expect } from 'chai';
 
 import { waitUntil } from '@atlaskit/util-common-test';
 
@@ -26,7 +25,7 @@ describe('<LoadingEmojiComponent />', () => {
       const component = mount(
         <TestLoadingComponent emojiProvider={providerPromise} />,
       );
-      expect(component.isEmptyRender(), 'Nothing rendered').to.equal(true);
+      expect(component.isEmptyRender()).toBe(true);
     });
 
     it('Rendered once Promise resolved', () => {
@@ -34,8 +33,10 @@ describe('<LoadingEmojiComponent />', () => {
       const component = mount(
         <TestLoadingComponent emojiProvider={providerPromise} />,
       );
-      return waitUntil(() => !component.isEmptyRender()).then(() => {
-        expect(component.isEmptyRender(), 'Content rendered').to.equal(false);
+      return waitUntil(
+        () => component.update() && !component.isEmptyRender(),
+      ).then(() => {
+        expect(component.isEmptyRender()).toBe(false);
       });
     });
   });

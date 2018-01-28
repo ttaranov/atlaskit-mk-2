@@ -143,6 +143,7 @@ describe('<EmojiPreview />', () => {
 
       const instance = wrapper.instance() as EmojiPreview;
       instance.onToneButtonClick();
+      wrapper.update();
 
       expect(wrapper.find(ToneSelector).prop('onToneSelected')).to.equal(
         instance.onToneSelected,
