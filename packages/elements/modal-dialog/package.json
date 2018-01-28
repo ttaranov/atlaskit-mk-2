@@ -23,7 +23,7 @@
     "@atlaskit/theme": "^2.3.1",
     "focusin": "^2.0.0",
     "prop-types": "^15.5.10",
-    "raf-schd": "^2.0.2",
+    "raf-schd": "^2.1.0",
     "react-transition-group": "^2.2.1",
     "styled-components": "^1.4.6",
     "tabbable": "^1.1.0"

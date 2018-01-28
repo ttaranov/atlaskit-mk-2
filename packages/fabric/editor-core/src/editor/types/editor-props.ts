@@ -59,6 +59,7 @@ export interface EditorProps {
   allowConfluenceInlineComment?: boolean;
   allowPlaceholderCursor?: boolean;
   allowDate?: boolean;
+  allowTableColumnResizing?: boolean;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;

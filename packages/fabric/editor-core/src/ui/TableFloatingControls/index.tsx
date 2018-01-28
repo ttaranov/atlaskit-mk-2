@@ -1,119 +1,95 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
-import { TableState } from '../../plugins/table';
 import CornerControls from './CornerControls';
-import ColumnControls from './ColumnControls';
 import RowControls from './RowControls';
 import { Container } from './styles';
 import { EditorState } from 'prosemirror-state';
 import { Command } from '../../editor';
 
+export interface State {
+  scroll: number;
+}
+
 export interface Props {
-  pluginState: TableState;
   editorView: EditorView;
-  selectRow?: (row: number) => Command;
-  hoverRow?: (row: number) => Command;
+  tableElement?: HTMLElement;
+  isTableHovered?: boolean;
   resetHoverSelection?: Command;
-  selectColumn?: (column: number) => Command;
-  hoverColumn?: (column: number) => Command;
   selectTable?: Command;
   hoverTable?: Command;
-  isTableSelected?: (state: EditorState) => boolean;
-  isColumnSelected?: (column: number, state: EditorState) => boolean;
-  isRowSelected?: (row: number, state: EditorState) => boolean;
+  selectRow?: (row: number) => Command;
+  hoverRow?: (row: number) => Command;
+  selectColumn?: (column: number) => Command;
+  hoverColumn?: (column: number) => Command;
+  checkIfTableSelected?: (state: EditorState) => boolean;
+  checkIfColumnSelected?: (column: number, state: EditorState) => boolean;
+  checkIfRowSelected?: (row: number, state: EditorState) => boolean;
+  insertColumn?: (column: number) => void;
+  insertRow?: (row: number) => void;
 }
 
-export interface State {
-  tableHovered: boolean;
-}
-
-export default class TableFloatingControls extends PureComponent<Props, State> {
+export default class TableFloatingControls extends Component<Props, State> {
   state: State = {
-    tableHovered: false,
-  };
-
-  handleMouseDown = event => {
-    event.preventDefault();
-  };
-
-  handleKeyDown = event => {
-    const { editorView, pluginState } = this.props;
-    const result = pluginState.keymapHandler(editorView, event.nativeEvent);
-    if (result) {
-      event.preventDefault();
-    }
-    if (!pluginState.cellSelection) {
-      this.setState({ tableHovered: false });
-    }
-  };
-
-  handleCornerMouseOver = () => {
-    const { editorView: { state, dispatch }, hoverTable } = this.props;
-    this.setState({ tableHovered: true });
-    hoverTable!(state, dispatch);
-  };
-
-  handleCornerMouseOut = () => {
-    const { editorView: { state, dispatch }, resetHoverSelection } = this.props;
-    this.setState({ tableHovered: false });
-    resetHoverSelection!(state, dispatch);
+    scroll: 0,
   };
 
   render() {
     const {
       editorView,
-      pluginState,
       selectTable,
-      selectColumn,
       selectRow,
-      hoverColumn,
       hoverRow,
       resetHoverSelection,
-      isTableSelected,
-      isColumnSelected,
-      isRowSelected,
+      checkIfTableSelected,
+      checkIfRowSelected,
+      tableElement,
+      insertColumn,
+      insertRow,
+      hoverTable,
+      isTableHovered,
     } = this.props;
-    const { tableElement } = pluginState;
+
     if (!tableElement) {
       return null;
     }
 
     return (
-      <Container
-        onMouseDown={this.handleMouseDown}
-        className={this.state.tableHovered ? 'tableHovered' : ''}
-        onKeyDown={this.handleKeyDown}
-      >
+      <Container onMouseDown={this.handleMouseDown}>
         <CornerControls
           editorView={editorView}
           tableElement={tableElement}
-          isSelected={isTableSelected!}
+          checkIfSelected={checkIfTableSelected!}
           selectTable={selectTable!}
-          insertColumn={pluginState.insertColumn}
-          insertRow={pluginState.insertRow}
-          onMouseOver={this.handleCornerMouseOver}
-          onMouseOut={this.handleCornerMouseOut}
-        />
-        <ColumnControls
-          editorView={editorView}
-          tableElement={tableElement}
-          isSelected={isColumnSelected!}
-          selectColumn={selectColumn!}
-          insertColumn={pluginState.insertColumn}
-          hoverColumn={hoverColumn!}
+          insertColumn={insertColumn!}
+          insertRow={insertRow!}
+          hoverTable={hoverTable!}
           resetHoverSelection={resetHoverSelection!}
+          updateScroll={this.updateScroll}
+          scroll={this.state.scroll}
         />
         <RowControls
           editorView={editorView}
           tableElement={tableElement}
-          isSelected={isRowSelected!}
+          checkIfSelected={checkIfRowSelected!}
+          isTableHovered={isTableHovered!}
           selectRow={selectRow!}
-          insertRow={pluginState.insertRow}
+          insertRow={insertRow!}
           hoverRow={hoverRow!}
           resetHoverSelection={resetHoverSelection!}
+          updateScroll={this.updateScroll}
+          scroll={this.state.scroll}
         />
       </Container>
     );
   }
+
+  handleMouseDown = event => {
+    event.preventDefault();
+  };
+
+  updateScroll = () => {
+    const { parentElement } = this.props.tableElement!;
+    this.setState({ scroll: parentElement!.scrollLeft });
+  };
 }

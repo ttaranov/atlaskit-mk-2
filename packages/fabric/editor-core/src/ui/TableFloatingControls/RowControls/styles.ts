@@ -19,16 +19,17 @@ export const RowContainer = styled.div`
   left: -${akEditorTableToolbarSize - 1}px;
   width: ${akEditorTableToolbarSize}px;
   box-sizing: border-box;
+  display: none;
+
+  .ProseMirror .with-controls & {
+    display: block;
+  }
 `;
 // tslint:disable-next-line:variable-name
 export const RowInner = styled.div`
   display: flex;
   flex-direction: column;
-  & > div button {
-    border-radius: 0;
-  }
-  & > div:last-child button {
-    border-radius: 0;
+  & > div:last-child > button {
     border-bottom-left-radius: ${akEditorTableBorderRadius};
   }
 `;
@@ -45,6 +46,7 @@ export const RowControlsButtonWrap = styled.div`
 export const HeaderButton = styled(HeaderButtonDefault)`
   border-right: none;
   border-bottom: 1px solid ${akEditorTableBorder};
+  border-radius: 0;
   height: 100%;
   width: ${akEditorTableToolbarSize - 1}px;
 

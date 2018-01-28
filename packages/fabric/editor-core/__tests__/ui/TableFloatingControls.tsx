@@ -1,5 +1,6 @@
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
+import { DecorationSet } from 'prosemirror-view';
 import tablePlugins, { TableState } from '../../src/plugins/table';
 import TableFloatingControls from '../../src/ui/TableFloatingControls';
 import CornerControls from '../../src/ui/TableFloatingControls/CornerControls';
@@ -27,11 +28,16 @@ import {
   tdEmpty,
   tdCursor,
 } from '@atlaskit/editor-test-helpers';
-import { selectTable } from '../../src/editor/plugins/table/actions';
 import {
-  isTableSelected,
-  isRowSelected,
-  isColumnSelected,
+  selectTable,
+  selectColumn,
+  hoverColumn,
+  resetHoverSelection,
+} from '../../src/editor/plugins/table/actions';
+import {
+  checkIfRowSelected,
+  checkIfColumnSelected,
+  checkIfTableSelected,
 } from '../../src/editor/plugins/table/utils';
 
 describe('TableFloatingControls', () => {
@@ -42,78 +48,70 @@ describe('TableFloatingControls', () => {
       plugins: tablePlugins(),
     });
 
-  describe('when pluginState.tableElement is undefined', () => {
+  describe('when tableElement is undefined', () => {
     it('should not render table header', () => {
-      const { editorView, pluginState } = editor(
+      const { editorView } = editor(
         doc(p('text'), table(tr(tdEmpty, tdEmpty, tdEmpty))),
       );
       const floatingControls = mount(
-        <TableFloatingControls
-          pluginState={pluginState}
-          editorView={editorView}
-        />,
+        <TableFloatingControls editorView={editorView} />,
       );
       expect(floatingControls.html()).toEqual(null);
       floatingControls.unmount();
     });
   });
 
-  describe('when pluginState.tableElement is defined', () => {
-    it('should render CornerControls, ColumnControls and RowControls', () => {
-      const { editorView, pluginState } = editor(
+  describe('when tableElement is defined', () => {
+    it('should render CornerControls and RowControls', () => {
+      const { editorView } = editor(
         doc(p('text'), table(tr(tdEmpty, tdEmpty, tdEmpty))),
       );
       const floatingControls = shallow(
-        <TableFloatingControls
-          pluginState={pluginState}
-          editorView={editorView}
-        />,
+        <TableFloatingControls editorView={editorView} />,
       );
       floatingControls.setProps({
-        pluginState: {
-          tableElement: document.createElement('table'),
-        },
+        tableElement: document.createElement('table'),
       });
-      expect(floatingControls.find(CornerControls).length).toBe(1);
-      expect(floatingControls.find(ColumnControls).length).toBe(1);
-      expect(floatingControls.find(RowControls).length).toBe(1);
+      floatingControls.update();
+      expect(floatingControls.find(CornerControls).length).toEqual(1);
+      expect(floatingControls.find(RowControls).length).toEqual(1);
     });
   });
 
-  describe('when editor is not focused', () => {
-    it('should not render table controls', () => {
+  describe('when editor is focused', () => {
+    it('should add a node decoration to table nodeView with class="with-controls"', () => {
       const { plugin, pluginState, editorView } = editor(
         doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
       );
       plugin.props.handleDOMEvents!.focus(editorView, event);
-      const decoration = pluginState.decorations.find()[0] as any;
+      const decoration = pluginState.set.find()[0] as any;
       expect(
-        decoration.type.widget.className.indexOf('table-decoration') > -1,
-      ).toBe(true);
+        decoration.type.attrs.class.indexOf('with-controls'),
+      ).toBeGreaterThan(-1);
       plugin.props.handleDOMEvents!.blur(editorView, event);
-      expect(pluginState.decorations.find().length).toBe(0);
+      expect(pluginState.set).toEqual(DecorationSet.empty);
     });
   });
 
   describe('CornerControls', () => {
-    describe('when isTableSelected is true', () => {
+    describe('when checkIfTableSelected is true', () => {
       it('should render selected header', () => {
-        const { editorView, plugin, pluginState } = editor(
+        const { editorView, plugin, pluginState: { tableElement } } = editor(
           doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
         );
         const floatingControls = mount(
           <TableFloatingControls
-            isTableSelected={isTableSelected}
-            isRowSelected={isRowSelected}
-            isColumnSelected={isColumnSelected}
-            pluginState={pluginState}
+            tableElement={tableElement}
+            checkIfTableSelected={checkIfTableSelected}
+            checkIfRowSelected={checkIfRowSelected}
+            checkIfColumnSelected={checkIfColumnSelected}
             editorView={editorView}
           />,
         );
         plugin.props.handleDOMEvents!.focus(editorView, event);
         selectTable(editorView.state, editorView.dispatch);
         expect(
-          floatingControls.find(CornerControls).prop('isSelected')(
+          floatingControls.find(CornerControls).prop('checkIfSelected')(
             editorView.state,
           ),
         ).toBe(true);
@@ -134,11 +132,14 @@ describe('TableFloatingControls', () => {
             doc(p('text'), table(tr(...nodes))),
           );
           const floatingControls = mount(
-            <TableFloatingControls
-              isTableSelected={isTableSelected}
-              isRowSelected={isRowSelected}
-              isColumnSelected={isColumnSelected}
-              pluginState={pluginState}
+            <ColumnControls
+              isTableHovered={false}
+              checkIfSelected={checkIfColumnSelected}
+              selectColumn={selectColumn}
+              insertColumn={pluginState.insertColumn}
+              hoverColumn={hoverColumn}
+              resetHoverSelection={resetHoverSelection}
+              tableElement={pluginState.tableElement!}
               editorView={editorView}
             />,
           );
@@ -163,12 +164,14 @@ describe('TableFloatingControls', () => {
             calledWithArgs = args;
           });
           const floatingControls = mount(
-            <TableFloatingControls
+            <ColumnControls
+              isTableHovered={false}
+              checkIfSelected={checkIfColumnSelected}
               selectColumn={col => () => spy(col)}
-              isTableSelected={isTableSelected}
-              isRowSelected={isRowSelected}
-              isColumnSelected={isColumnSelected}
-              pluginState={pluginState}
+              insertColumn={pluginState.insertColumn}
+              hoverColumn={hoverColumn}
+              resetHoverSelection={resetHoverSelection}
+              tableElement={pluginState.tableElement!}
               editorView={editorView}
             />,
           );
@@ -178,7 +181,7 @@ describe('TableFloatingControls', () => {
             .at(column)
             .find('button')
             .first()
-            .simulate('click');
+            .simulate('mousedown');
           expect(spy).toHaveBeenCalledTimes(1);
           expect(calledWithArgs![0]).toEqual(column);
           floatingControls.unmount();
@@ -195,15 +198,15 @@ describe('TableFloatingControls', () => {
           for (let i = 1; i < row; i++) {
             rows.push(tr(tdEmpty));
           }
-          const { editorView, plugin, pluginState } = editor(
+          const { editorView, plugin, pluginState: { tableElement } } = editor(
             doc(p('text'), table(...rows)),
           );
           const floatingControls = mount(
             <TableFloatingControls
-              isTableSelected={isTableSelected}
-              isRowSelected={isRowSelected}
-              isColumnSelected={isColumnSelected}
-              pluginState={pluginState}
+              checkIfTableSelected={checkIfTableSelected}
+              checkIfRowSelected={checkIfRowSelected}
+              checkIfColumnSelected={checkIfColumnSelected}
+              tableElement={tableElement}
               editorView={editorView}
             />,
           );
@@ -219,7 +222,7 @@ describe('TableFloatingControls', () => {
     [0, 1, 2].forEach(row => {
       describe(`when HeaderButton in row ${row + 1} is clicked`, () => {
         it(`should call selectRow(${row})`, () => {
-          const { editorView, plugin, pluginState } = editor(
+          const { editorView, plugin, pluginState: { tableElement } } = editor(
             doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))),
           );
           const spy = jest.fn();
@@ -230,10 +233,10 @@ describe('TableFloatingControls', () => {
           const floatingControls = mount(
             <TableFloatingControls
               selectRow={row => () => spy(row)}
-              isTableSelected={isTableSelected}
-              isRowSelected={isRowSelected}
-              isColumnSelected={isColumnSelected}
-              pluginState={pluginState}
+              checkIfTableSelected={checkIfTableSelected}
+              checkIfRowSelected={checkIfRowSelected}
+              checkIfColumnSelected={checkIfColumnSelected}
+              tableElement={tableElement}
               editorView={editorView}
             />,
           );

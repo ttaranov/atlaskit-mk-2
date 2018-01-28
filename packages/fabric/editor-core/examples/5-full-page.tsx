@@ -140,6 +140,7 @@ export default class Example extends React.Component<Props, State> {
               allowPlaceholderCursor={true}
               allowRule={true}
               allowDate={true}
+              allowTableColumnResizing={true}
               {...providers}
               media={{ provider: mediaProvider, allowMediaSingle: true }}
               placeholder="Write something..."

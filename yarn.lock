@@ -775,12 +775,13 @@
     "@types/prosemirror-transform" "*"
     "@types/prosemirror-view" "*"
 
-"@types/prosemirror-tables@^0.1.0":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@types/prosemirror-tables/-/prosemirror-tables-0.1.1.tgz#faab14e52ee5211562ede441c2761cbf4c7ff647"
+"@types/prosemirror-tables@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@types/prosemirror-tables/-/prosemirror-tables-0.1.2.tgz#8505ce74a0806c23b3c34d27d562f09c7d45eba9"
   dependencies:
     "@types/prosemirror-model" "*"
     "@types/prosemirror-state" "*"
+    "@types/prosemirror-view" "*"
 
 "@types/prosemirror-transform@*", "@types/prosemirror-transform@^1.0.0":
   version "1.0.0"
@@ -8974,9 +8975,9 @@ prosemirror-state@*, prosemirror-state@^1.0.0, prosemirror-state@^1.0.1:
     prosemirror-model "^1.0.0"
     prosemirror-transform "^1.0.0"
 
-prosemirror-tables@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/prosemirror-tables/-/prosemirror-tables-0.5.2.tgz#52c04ddb0d9bafe59fe1867bbe5f002867638307"
+prosemirror-tables@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/prosemirror-tables/-/prosemirror-tables-0.6.1.tgz#ed40ca57e026aba050927da719f281ff51d2cee0"
   dependencies:
     prosemirror-keymap "^1.0.0"
     prosemirror-model "^1.0.0"
