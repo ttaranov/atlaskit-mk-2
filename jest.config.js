@@ -10,7 +10,7 @@ function generateTestMatchGlob(packagePath) {
   if (INTEGRATION_TESTS) {
     return `${__dirname}/${packagePath}/**/__tests__/integration/**/*.(js|tsx|ts)`;
   }
-  return `${__dirname}/${packagePath}/**/__tests__/!(integration)/**/*.(js|tsx|ts)`;
+  return `${__dirname}/${packagePath}/**/__tests__/(!(integration)/**/|)*.(js|tsx|ts)`;
 }
 
 // by default we'll run tests in all directories (local and master builds)
