@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.5.0
+- [minor] FS-1624 Add new popupsScrollableElement props to editor to handle case when mountPoint is different than the scrollable element. [7d669bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d669bc)
+
 ## 61.4.12
 - [patch] Code block in JIRA has no formatting and not distinguishable from normal text. [5bdb48f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bdb48f)
 
