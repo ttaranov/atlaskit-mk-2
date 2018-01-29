@@ -9,7 +9,7 @@ import LinkIcon from '../../shared/LinkIcon';
 import CardDetails from '../shared/CardDetails';
 import AlertView from '../shared/AlertView';
 import ActionsView, { Action } from '../shared/ActionsView';
-import Transition from '../shared/Transition';
+import Transition from './Transition';
 import { ActionsStateWrapper, AlertWrapper } from './styled';
 
 export interface ApplicationCardProps extends ViewModel {}
@@ -85,14 +85,7 @@ export default class ApplicationCard extends React.Component<
       success: (message: string) => {
         this.setState(success(message), () => {
           // hide the alert after 2s
-          this.timeout = setTimeout(
-            () =>
-              this.setState({
-                alertType: undefined,
-                alertMessage: undefined,
-              }),
-            2000,
-          );
+          this.timeout = setTimeout(() => this.setState(dismiss()), 2000);
         });
       },
       failure: () => {
@@ -145,24 +138,28 @@ export default class ApplicationCard extends React.Component<
   }
 
   renderAlert() {
-    const { alertType, alertMessage } = this.state;
+    const { actionState, alertType, alertMessage } = this.state;
 
-    const visible = Boolean(alertType) && Boolean(alertMessage);
+    const visible =
+      (actionState === 'success' || actionState === 'failure') &&
+      alertType !== undefined &&
+      alertMessage !== undefined;
 
     return (
       <AlertWrapper>
         <Transition
-          visible={visible}
           enter={['fade', 'slide-up']}
           exit={['fade', 'slide-down']}
           timeout={600}
         >
-          <AlertView
-            type={alertType || 'failure'}
-            message={alertMessage}
-            onTryAgain={this.handleTryAgain}
-            onCancel={this.handleCancel}
-          />
+          {visible ? (
+            <AlertView
+              type={alertType || 'failure'}
+              message={alertMessage}
+              onTryAgain={this.handleTryAgain}
+              onCancel={this.handleCancel}
+            />
+          ) : null}
         </Transition>
       </AlertWrapper>
     );

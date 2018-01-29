@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ComponentTransition from 'react-transition-group/Transition';
 
-type TransitionState = 'entering' | 'entered' | 'exiting' | 'exited';
+type State = 'entering' | 'entered' | 'exiting' | 'exited';
 type EnterTransition = 'fade' | 'slide-up';
 type ExitTransition = 'fade' | 'slide-down';
 
@@ -47,7 +47,7 @@ const styles = {
 function getStyle(
   type: 'enter' | 'exit',
   name: EnterTransition | ExitTransition,
-  state: TransitionState,
+  state: State,
 ): {} {
   return (
     styles && styles[type] && styles[type][name] && styles[type][name][state]
@@ -55,14 +55,60 @@ function getStyle(
 }
 
 export interface TransitionProps {
-  visible: boolean;
   enter?: ('fade' | 'slide-up')[];
   exit?: ('fade' | 'slide-down')[];
   timeout: number | { enter: number; exit: number };
-  children: React.ReactElement<any>;
+  children: null | React.ReactElement<any>;
 }
 
-export default class Transition extends React.Component<TransitionProps> {
+export interface TransitionState {
+  visible: boolean;
+  children: null | React.ReactElement<any>;
+}
+
+export default class Transition extends React.Component<
+  TransitionProps,
+  TransitionState
+> {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      visible: props.children !== null,
+      children: props.children,
+    };
+  }
+
+  componentWillReceiveProps(nextProps: TransitionProps) {
+    const { children: nextChildren } = nextProps;
+    const { children: prevChildren } = this.props;
+
+    // when exiting, show the old element until the transition is finished - otherwise the Alert changes mid-transition
+    if (nextChildren !== prevChildren) {
+      if (nextChildren === null) {
+        this.setState({
+          visible: false,
+        });
+      } else {
+        this.setState({
+          visible: true,
+          children: nextChildren,
+        });
+      }
+    }
+  }
+
+  handleExited = () => {
+    const { timeout, children } = this.props;
+    setTimeout(
+      () =>
+        this.setState({
+          visible: false,
+          children,
+        }),
+      timeout,
+    ); // hmm not sure why we have to wait
+  };
+
   getStyle(status): {} {
     const { enter = [], exit = [], timeout } = this.props;
 
@@ -120,7 +166,8 @@ export default class Transition extends React.Component<TransitionProps> {
   }
 
   render() {
-    const { visible, timeout, children } = this.props;
+    const { timeout } = this.props;
+    const { visible, children } = this.state;
     return (
       <ComponentTransition
         appear={true}
@@ -128,10 +175,17 @@ export default class Transition extends React.Component<TransitionProps> {
         exit={true}
         in={visible}
         timeout={timeout}
+        onExited={this.handleExited}
       >
-        {status =>
-          React.cloneElement(children, { style: this.getStyle(status) })
-        }
+        {status => {
+          if (children) {
+            return React.cloneElement(children, {
+              style: this.getStyle(status),
+            });
+          } else {
+            return children;
+          }
+        }}
       </ComponentTransition>
     );
   }

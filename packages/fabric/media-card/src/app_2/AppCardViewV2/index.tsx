@@ -17,7 +17,7 @@ import {
 } from '../../app/model';
 import ApplicationCard from '../ApplicationCard';
 import { AppCardView } from '../../app/components/AppCardView';
-import { ActionHandlerCallbacks } from '../shared/CardDetails/ActionsView/index';
+import { ActionHandlerCallbacks } from '../shared/ActionsView';
 
 function convertUser(oldUser: OldUserViewModel) {
   return {
@@ -124,7 +124,7 @@ function getActions(
               message?: string,
               tryAgain?: boolean,
               tryAgainLinkText?: string,
-            ) => actionCallbackHandlers.failure(message || ''),
+            ) => actionCallbackHandlers.failure(),
           });
         }
       },
@@ -140,14 +140,8 @@ export interface AppCardViewV2Props {
 }
 
 class AppCardViewV2 extends React.Component<AppCardViewV2Props> {
-  state = {
-    actionState: undefined,
-    actionMessage: undefined,
-  };
-
   render() {
     const { newDesign, model, onClick, onActionClick } = this.props;
-    const { actionState } = this.state;
     if (newDesign) {
       return (
         <ApplicationCard
