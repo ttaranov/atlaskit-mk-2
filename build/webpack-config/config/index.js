@@ -187,7 +187,22 @@ function plugins(
           context &&
           (context.includes('fabric/editor') ||
             context.includes('fabric/renderer') ||
+            context.includes('fabric/conversation') ||
             context.includes('prosemirror'))
+        );
+      },
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      async: 'fabric-elements-packages',
+      minChunks(module, count) {
+        const context = module.context;
+        return (
+          context &&
+          (context.includes('fabric/mention') ||
+            context.includes('fabric/emoji') ||
+            context.includes('fabric/task-decision') ||
+            context.includes('fabric/reactions'))
         );
       },
     }),
