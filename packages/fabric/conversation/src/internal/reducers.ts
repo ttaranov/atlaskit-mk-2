@@ -11,6 +11,7 @@ import {
   DELETE_COMMENT_SUCCESS,
   DELETE_COMMENT_ERROR,
   REVERT_COMMENT,
+  CANCEL_COMMENT,
   UPDATE_USER_SUCCESS,
   CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
@@ -30,13 +31,26 @@ const updateComment = (
     ) {
       return {
         ...comment,
-        ...newComment,
         oldDocument: comment.oldDocument
           ? comment.oldDocument
           : comment.document,
+        ...newComment,
       };
     }
     return comment;
+  });
+};
+
+const removeComment = (
+  comments: Comment[] | undefined,
+  commentToRemove: Comment,
+) => {
+  return (comments || []).filter(comment => {
+    return (
+      (commentToRemove.localId &&
+        comment.localId !== commentToRemove.localId) ||
+      comment.commentId !== commentToRemove.commentId
+    );
   });
 };
 
@@ -84,6 +98,30 @@ const addCommentToConversation = (
   });
 };
 
+const removeCommentFromConversation = (
+  conversations: Conversation[],
+  commentToRemove: Comment,
+): Conversation[] => {
+  return conversations
+    .map(conversation => {
+      if (conversation.conversationId === commentToRemove.conversationId) {
+        const comments = removeComment(conversation.comments, commentToRemove);
+
+        // If there's no comments, remove the conversation as wel
+        if (comments.length === 0) {
+          return null;
+        }
+
+        return {
+          ...conversation,
+          comments,
+        };
+      }
+      return conversation;
+    })
+    .filter(conversation => conversation !== null) as Conversation[];
+};
+
 export const reducers = {
   [FETCH_CONVERSATIONS_REQUEST](state: State, action: Action) {
     return {
@@ -109,6 +147,7 @@ export const reducers = {
     const { payload } = action;
     const conversations = addCommentToConversation(state.conversations, {
       ...payload,
+      isPlaceholder: true,
       state: 'SAVING',
     });
 
@@ -128,6 +167,7 @@ export const reducers = {
         ...payload,
         state: undefined,
         oldDocument: undefined,
+        isPlaceholder: false,
       });
     } else {
       conversations = addCommentToConversation(state.conversations, payload);
@@ -241,12 +281,33 @@ export const reducers = {
   [REVERT_COMMENT](state: State, action: Action) {
     const { payload } = action;
 
-    const conversations = updateCommentInConversation(state.conversations, {
+    let conversations: Conversation[];
+
+    if (payload.isPlaceholder) {
+      conversations = removeCommentFromConversation(state.conversations, {
+        ...payload,
+      });
+    } else {
+      conversations = updateCommentInConversation(state.conversations, {
+        ...payload,
+        state: undefined,
+        document: payload.oldDocument,
+        deleted: false,
+        oldDocument: undefined,
+      });
+    }
+
+    return {
+      ...state,
+      conversations,
+    };
+  },
+
+  [CANCEL_COMMENT](state: State, action: Action) {
+    const { payload } = action;
+
+    const conversations = removeCommentFromConversation(state.conversations, {
       ...payload,
-      state: undefined,
-      document: payload.oldDocument,
-      deleted: false,
-      oldDocument: undefined,
     });
 
     return {

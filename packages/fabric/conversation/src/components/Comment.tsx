@@ -29,6 +29,7 @@ export interface SharedProps {
   ) => void;
   onDeleteComment?: (conversationId: string, commentId: string) => void;
   onRevertComment?: (comment: CommentType) => void;
+  onCancelComment?: (comment: CommentType) => void;
 
   // Provider
   dataProviders?: ProviderFactory;
