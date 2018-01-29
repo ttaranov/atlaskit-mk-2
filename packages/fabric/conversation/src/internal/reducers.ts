@@ -14,7 +14,7 @@ import {
   UPDATE_USER_SUCCESS,
   CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
-  // CREATE_CONVERSATION_ERROR,
+  CREATE_CONVERSATION_ERROR,
 } from './actions';
 import { Action, State } from './store';
 import { User, Conversation, Comment } from '../model';
@@ -102,6 +102,8 @@ export const reducers = {
       conversations,
     };
   },
+
+  // @TODO fetch conversations error
 
   [ADD_COMMENT_REQUEST](state: State, action: Action) {
     const { payload } = action;
@@ -285,6 +287,23 @@ export const reducers = {
   [CREATE_CONVERSATION_SUCCESS](state: State, action: Action) {
     const { payload } = action;
     const conversations = updateConversation(state.conversations, payload);
+
+    return {
+      ...state,
+      conversations,
+    };
+  },
+
+  [CREATE_CONVERSATION_ERROR](state: State, action: Action) {
+    const { payload } = action;
+
+    const conversations = [
+      ...state.conversations,
+      {
+        ...payload,
+        comments: [],
+      },
+    ];
 
     return {
       ...state,

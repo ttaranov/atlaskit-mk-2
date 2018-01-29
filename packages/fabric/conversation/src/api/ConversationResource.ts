@@ -4,14 +4,18 @@ import {
   FETCH_CONVERSATIONS_SUCCESS,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
+  ADD_COMMENT_ERROR,
   UPDATE_COMMENT_REQUEST,
   UPDATE_COMMENT_SUCCESS,
+  UPDATE_COMMENT_ERROR,
+  DELETE_COMMENT_REQUEST,
   DELETE_COMMENT_SUCCESS,
   DELETE_COMMENT_ERROR,
   REVERT_COMMENT,
   UPDATE_USER_SUCCESS,
   CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
+  CREATE_CONVERSATION_ERROR,
 } from '../internal/actions';
 import { reducers } from '../internal/reducers';
 import { Comment, Conversation, User } from '../model';
@@ -177,6 +181,7 @@ export class ConversationResource extends AbstractConversationResource {
     const { dispatch } = this;
     dispatch({ type: FETCH_CONVERSATIONS_REQUEST });
 
+    // @TODO dispatch and handle error
     const { values } = await this.makeRequest<{ values: Conversation[] }>(
       `/conversation?containerId=${containerId}&expand=comments.document.adf`,
       {
@@ -205,6 +210,7 @@ export class ConversationResource extends AbstractConversationResource {
       value,
       meta,
     );
+    let result: Conversation;
 
     if (tempConversation) {
       dispatch({
@@ -215,21 +221,27 @@ export class ConversationResource extends AbstractConversationResource {
       });
     }
 
-    const result = await this.makeRequest<Conversation>(
-      '/conversation?expand=comments.document.adf',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          containerId,
-          meta,
-          comment: {
-            document: {
-              adf: value,
+    try {
+      result = await this.makeRequest<Conversation>(
+        '/conversation?expand=comments.document.adf',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            containerId,
+            meta,
+            comment: {
+              document: {
+                adf: value,
+              },
             },
-          },
-        }),
-      },
-    );
+          }),
+        },
+      );
+    } catch (error) {
+      result = { ...tempConversation, error };
+      dispatch({ type: CREATE_CONVERSATION_ERROR, payload: result });
+      return result as Conversation;
+    }
 
     dispatch({
       type: CREATE_CONVERSATION_SUCCESS,
@@ -254,23 +266,30 @@ export class ConversationResource extends AbstractConversationResource {
     doc: any,
   ): Promise<Comment> {
     const { dispatch } = this;
-
     const tempComment = this.createComment(conversationId, parentId, doc);
     const { localId } = tempComment;
+    let result: Comment;
+
     dispatch({ type: ADD_COMMENT_REQUEST, payload: tempComment });
 
-    const result = await this.makeRequest<Comment>(
-      `/conversation/${conversationId}/comment?expand=document.adf`,
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          parentId,
-          document: {
-            adf: doc,
-          },
-        }),
-      },
-    );
+    try {
+      result = await this.makeRequest<Comment>(
+        `/conversation/${conversationId}/comment?expand=document.adf`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            parentId,
+            document: {
+              adf: doc,
+            },
+          }),
+        },
+      );
+    } catch (error) {
+      const result = { conversationId, parentId, document: doc, error };
+      dispatch({ type: ADD_COMMENT_ERROR, payload: result });
+      return result as Comment;
+    }
 
     dispatch({
       type: ADD_COMMENT_SUCCESS,
@@ -296,6 +315,7 @@ export class ConversationResource extends AbstractConversationResource {
   ): Promise<Comment> {
     const { dispatch } = this;
     const tempComment = this.getComment(conversationId, commentId);
+    let result: Comment;
 
     if (tempComment) {
       dispatch({
@@ -309,18 +329,24 @@ export class ConversationResource extends AbstractConversationResource {
       });
     }
 
-    const result = await this.makeRequest<Comment>(
-      `/conversation/${conversationId}/comment/${commentId}?expand=document.adf`,
-      {
-        method: 'PUT',
-        body: JSON.stringify({
-          id: commentId,
-          document: {
-            adf: document,
-          },
-        }),
-      },
-    );
+    try {
+      result = await this.makeRequest<Comment>(
+        `/conversation/${conversationId}/comment/${commentId}?expand=document.adf`,
+        {
+          method: 'PUT',
+          body: JSON.stringify({
+            id: commentId,
+            document: {
+              adf: document,
+            },
+          }),
+        },
+      );
+    } catch (error) {
+      const result = { conversationId, commentId, document, error };
+      dispatch({ type: UPDATE_COMMENT_ERROR, payload: result });
+      return result as Comment;
+    }
 
     dispatch({ type: UPDATE_COMMENT_SUCCESS, payload: result });
 
@@ -335,6 +361,11 @@ export class ConversationResource extends AbstractConversationResource {
     commentId: string,
   ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'deleted'>> {
     const { dispatch } = this;
+
+    dispatch({
+      type: DELETE_COMMENT_REQUEST,
+      payload: { commentId, conversationId },
+    });
 
     try {
       await this.makeRequest<{}>(

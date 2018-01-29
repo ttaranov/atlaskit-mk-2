@@ -196,7 +196,7 @@ export class MockProvider extends AbstractConversationResource {
       };
 
       const type =
-        responseCode >= 400 ? UPDATE_COMMENT_SUCCESS : UPDATE_COMMENT_ERROR;
+        responseCode >= 400 ? UPDATE_COMMENT_ERROR : UPDATE_COMMENT_SUCCESS;
       const payload = responseCode >= 400 ? errResult : result;
       dispatch({ type, payload });
     }, 500);
