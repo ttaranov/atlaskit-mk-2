@@ -5,7 +5,7 @@ import { connect, Provider } from 'react-redux';
 
 import { AuthProvider, Context, ContextFactory } from '@atlaskit/media-core';
 import ModalDialog from '@atlaskit/modal-dialog';
-
+      
 import { ServiceName, State } from '../domain';
 
 import {
@@ -34,7 +34,7 @@ import { fileUploadPreviewUpdate } from '../actions/fileUploadPreviewUpdate';
 import { fileUploadProgress } from '../actions/fileUploadProgress';
 import { fileUploadProcessingStart } from '../actions/fileUploadProcessingStart';
 import { fileUploadEnd } from '../actions/fileUploadEnd';
-import { fileUploadError } from '../actions/fileUploadError';
+import { fileUploadError, dismissUploadError } from '../actions/fileUploadError';
 import { MediaPicker } from '../..';
 import PassContext from './passContext';
 import {
@@ -46,6 +46,7 @@ import {
   UploadErrorEventPayload,
 } from '../../domain/uploadEvent';
 import { MediaPickerPopupWrapper, SidebarWrapper, ViewWrapper } from './styled';
+import ErrorRenderer from './ErrorRenderer';
 
 export interface AppStateProps {
   readonly apiUrl: string;
@@ -150,7 +151,12 @@ export class App extends Component<AppProps, AppState> {
   }
 
   render() {
-    const { selectedServiceName, isVisible, onClose, store } = this.props;
+    const {
+      selectedServiceName,
+      isVisible,
+      onClose,
+      store,
+    } = this.props;
     const { isDropzoneActive } = this.state;
 
     if (!isVisible) {
@@ -161,6 +167,7 @@ export class App extends Component<AppProps, AppState> {
       <Provider store={store}>
         <ModalDialog onClose={onClose} width="x-large" isChromeless={true}>
           <PassContext store={store}>
+            <ErrorRenderer/>
             <MediaPickerPopupWrapper>
               <SidebarWrapper>
                 <Sidebar />

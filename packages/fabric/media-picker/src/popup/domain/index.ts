@@ -1,3 +1,4 @@
+import { ViewErrorType } from './index';
 import { Auth, AuthProvider, MediaType } from '@atlaskit/media-core';
 
 import { MediaArtifact } from '../../service/mediaApi';
@@ -64,7 +65,6 @@ export interface View {
   readonly isVisible: boolean;
   readonly items: ServiceFolderItem[];
   readonly isLoading: boolean;
-  readonly hasError: boolean;
   readonly path: Path;
   readonly service: ServiceAccountLink;
   readonly isUploading: boolean;
@@ -73,6 +73,14 @@ export interface View {
 
   readonly currentCursor?: string;
   readonly nextCursor?: string;
+  readonly error?: ViewError;
+}
+
+export type ViewErrorType = 
+| 'FILE_UPLOAD_ERROR'
+
+export interface ViewError {
+  readonly type: ViewErrorType;
 }
 
 export interface EditorData {

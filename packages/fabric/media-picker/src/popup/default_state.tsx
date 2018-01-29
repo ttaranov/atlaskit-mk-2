@@ -23,7 +23,7 @@ const state: State = {
       name: 'upload',
       accountId: '',
     },
-    hasError: false,
+    error: undefined,
     isLoading: false,
     path: [],
     items: [],
