@@ -248,7 +248,6 @@ export const reducers = {
     const conversations = updateCommentInConversation(state.conversations, {
       ...payload,
       state: 'SAVING',
-      deleted: true,
     });
 
     return {
@@ -262,6 +261,7 @@ export const reducers = {
     const conversations = updateCommentInConversation(state.conversations, {
       ...payload,
       state: undefined,
+      deleted: true,
       oldDocument: undefined,
     });
 

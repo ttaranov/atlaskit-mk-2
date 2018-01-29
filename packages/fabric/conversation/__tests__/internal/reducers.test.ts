@@ -107,6 +107,7 @@ describe('Reducers', () => {
               {
                 ...mockComment2,
                 state: 'SAVING',
+                isPlaceholder: true,
               },
             ],
           },
@@ -114,7 +115,7 @@ describe('Reducers', () => {
       });
     });
 
-    it('should remove SAVING state from comment on SUCCESS', () => {
+    it('should cleanup comment state properties on SUCCESS', () => {
       dispatch({
         type: ADD_COMMENT_SUCCESS,
         payload: mockComment2,
@@ -126,7 +127,15 @@ describe('Reducers', () => {
         conversations: [
           {
             ...mockConversation,
-            comments: [...comments, mockComment2],
+            comments: [
+              ...comments,
+              {
+                ...mockComment2,
+                state: undefined,
+                oldDocument: undefined,
+                isPlaceholder: false,
+              },
+            ],
           },
         ],
       });
@@ -155,6 +164,7 @@ describe('Reducers', () => {
               {
                 ...firstComment,
                 state: 'SAVING',
+                oldDocument: firstComment.document,
               },
               ...otherComments,
             ],
@@ -197,6 +207,8 @@ describe('Reducers', () => {
               {
                 ...firstComment,
                 deleted: true,
+                oldDocument: undefined,
+                state: undefined,
               },
               ...otherComments,
             ],
