@@ -9211,25 +9211,15 @@ react-base16-styling@^0.5.1:
     lodash.flow "^3.3.0"
     pure-color "^1.2.0"
 
-<<<<<<< HEAD
 react-beautiful-dnd@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/react-beautiful-dnd/-/react-beautiful-dnd-4.0.1.tgz#3b0a49bf6be75af351176c904f012611dd292b81"
-=======
-react-beautiful-dnd@^2.0.1:
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/react-beautiful-dnd/-/react-beautiful-dnd-2.6.4.tgz#e1632696aeeec5b20720037c348834eb3e8e22cf"
->>>>>>> origin/master
   dependencies:
     babel-runtime "^6.26.0"
     invariant "^2.2.2"
     memoize-one "^3.0.1"
     prop-types "^15.6.0"
-<<<<<<< HEAD
     raf-schd "^2.1.0"
-=======
-    raf-schd "^2.0.2"
->>>>>>> origin/master
     react-motion "^0.5.2"
     react-redux "^5.0.6"
     redux "^3.7.2"
