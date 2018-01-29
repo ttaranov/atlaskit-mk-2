@@ -73,6 +73,14 @@ React component which allows selection of an item or items from a dropdown list.
   )}
 
   ${(
+    <Example
+      Component={require('../examples/05-validation').default}
+      source={require('!!raw-loader!../examples/05-validation')}
+      title="Validation"
+    />
+  )}
+
+  ${(
     <Props
       heading="Select Props"
       props={require('!!extract-react-types-loader!../src/Select')}
