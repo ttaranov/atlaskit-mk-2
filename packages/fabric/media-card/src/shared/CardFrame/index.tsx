@@ -9,7 +9,6 @@ import {
 } from './styled';
 
 export interface CardFrameProps {
-  innerRef?: (instance: any) => void;
   isPlaceholder?: boolean;
   href?: string;
   icon?: React.ReactElement<any>;
@@ -58,11 +57,10 @@ export default class CardFrame extends React.Component<CardFrameProps> {
 
   render() {
     const { isInteractive } = this;
-    const { innerRef, isPlaceholder, href, minWidth, maxWidth } = this.props;
+    const { isPlaceholder, href, minWidth, maxWidth } = this.props;
     if (!isPlaceholder && href) {
       return (
         <LinkWrapper
-          innerRef={innerRef}
           target="_blank"
           rel="noopener"
           className={className}
@@ -79,7 +77,6 @@ export default class CardFrame extends React.Component<CardFrameProps> {
     } else {
       return (
         <Wrapper
-          innerRef={innerRef}
           className={className}
           isInteractive={isInteractive}
           minWidth={minWidth}

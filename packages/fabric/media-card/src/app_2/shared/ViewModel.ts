@@ -1,4 +1,4 @@
-import { Action } from '../shared/CardDetails/ActionsView';
+import { Action } from '../shared/ActionsView';
 
 // TODO: in v1.6 move these types into the specific views, then the parent views can import the types from there, like the ^^^ actions
 
