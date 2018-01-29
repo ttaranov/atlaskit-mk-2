@@ -45,6 +45,13 @@ ${(
 
 ${(
   <Props
+    heading="Comment Props"
+    props={require('!!extract-react-types-loader!../src/components/Comment')}
+  />
+)}
+
+${(
+  <Props
     heading="CommentAction Props"
     props={require('!!extract-react-types-loader!../src/components/ActionItem')}
   />
