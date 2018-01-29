@@ -92,7 +92,7 @@ export default class TableTree extends Component<Props, State> {
         <Rows
           items={getRowChildrenData}
           render={data => (
-            <Row key={data.id} hasChildren={data.hasChildren}>
+            <Row itemId={data.id} hasChildren={data.hasChildren}>
               {columns.map((CellContent, index) => (
                 <Cell
                   // eslint-disable-next-line react/no-array-index-key
@@ -109,7 +109,7 @@ export default class TableTree extends Component<Props, State> {
       );
     }
     return (
-      <TableTreeContainer>
+      <TableTreeContainer role={'treegrid'} aria-readonly>
         {heads}
         {rows}
         {this.props.children}

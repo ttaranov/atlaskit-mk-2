@@ -1,5 +1,11 @@
 # @atlaskit/inline-dialog
 
+## 5.1.2
+
+
+
+- [patch] Revert name of stateless export to InlineEditStateless [fffacd6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fffacd6)
+
 ## 5.1.1
 - [patch] Resolved low hanging flow errors in field-base field-text comment icon item and website, $ [007de27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/007de27)
 

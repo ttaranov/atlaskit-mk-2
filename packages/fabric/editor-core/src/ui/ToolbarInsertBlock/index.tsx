@@ -5,6 +5,7 @@ import AddIcon from '@atlaskit/icon/glyph/editor/add';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import TableIcon from '@atlaskit/icon/glyph/editor/table';
 import AttachmentIcon from '@atlaskit/icon/glyph/editor/attachment';
+import EditorImageIcon from '@atlaskit/icon/glyph/editor/image';
 import CodeIcon from '@atlaskit/icon/glyph/editor/code';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
@@ -52,6 +53,9 @@ export interface Props {
   insertMentionQuery?: () => void;
   mediaUploadsEnabled?: boolean;
   mediaSupported?: boolean;
+  imageUploadSupported?: boolean;
+  imageUploadEnabled?: boolean;
+  handleImageUpload?: (editorView: EditorView) => {};
   dateEnabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   availableWrapperBlockTypes?: BlockType[];
@@ -62,6 +66,7 @@ export interface Props {
   insertEmoji?: (emojiId: EmojiId) => void;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
   macroProvider?: MacroProvider | null;
   onShowMediaPicker?: () => void;
   onInsertBlockType?: (name: string, view: EditorView) => void;
@@ -129,6 +134,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
     const {
       popupsMountPoint,
       popupsBoundariesElement,
+      popupsScrollableElement,
       emojiProvider,
     } = this.props;
     if (!emojiPickerOpen || !this.button || !emojiProvider) {
@@ -143,6 +149,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         offset={[0, 3]}
         mountTo={popupsMountPoint}
         boundariesElement={popupsBoundariesElement}
+        scrollableElement={popupsScrollableElement}
       >
         <AkEmojiPicker
           emojiProvider={emojiProvider}
@@ -192,6 +199,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
     const {
       popupsMountPoint,
       popupsBoundariesElement,
+      popupsScrollableElement,
       isDisabled,
       buttons: numberOfButtons,
       isReducedSpacing,
@@ -246,6 +254,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
                 onOpenChange={this.onOpenChange}
                 mountTo={popupsMountPoint}
                 boundariesElement={popupsBoundariesElement}
+                scrollableElement={popupsScrollableElement}
                 isOpen={isOpen}
                 fitHeight={188}
                 fitWidth={175}
@@ -269,6 +278,8 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       tableSupported,
       mediaUploadsEnabled,
       mediaSupported,
+      imageUploadSupported,
+      imageUploadEnabled,
       mentionsEnabled,
       mentionsSupported,
       availableWrapperBlockTypes,
@@ -298,6 +309,16 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         tooltipDescription: 'Files and Images',
         tooltipPosition: 'right',
         elemBefore: <AttachmentIcon label="Insert files and images" />,
+      });
+    }
+    if (imageUploadSupported) {
+      items.push({
+        content: 'Insert image',
+        value: { name: 'image upload' },
+        isDisabled: !imageUploadEnabled,
+        tooltipDescription: 'Insert image',
+        tooltipPosition: 'right',
+        elemBefore: <EditorImageIcon label="Insert image" />,
       });
     }
     if (mentionsSupported) {
@@ -417,6 +438,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       onInsertBlockType,
       onInsertMacroFromMacroBrowser,
       macroProvider,
+      handleImageUpload,
     } = this.props;
 
     switch (item.value.name) {
@@ -425,6 +447,11 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         break;
       case 'table':
         this.createTable();
+        break;
+      case 'image upload':
+        if (handleImageUpload) {
+          handleImageUpload(editorView);
+        }
         break;
       case 'media':
         this.openMediaPicker();

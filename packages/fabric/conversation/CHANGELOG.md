@@ -1,5 +1,15 @@
 # @atlaskit/conversation
 
+## 5.0.0
+- [major] Added some tests for reducer/store and renamed actions [ba629ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ba629ef)
+
+## 4.9.1
+
+## 4.9.0
+- [minor] Adding optimistic updates [45922f3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/45922f3)
+
+## 4.8.2
+
 ## 4.8.1
 - [patch] Fixes the avatar next to the editor and hides reply functionality if user isn't set [0123c1d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0123c1d)
 

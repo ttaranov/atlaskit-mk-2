@@ -6,6 +6,7 @@ describe('dataURItoFile, fileToDataURI Util', () => {
 
   it('should convert dataURI to File', () => {
     expect(tallImageFile).toBeInstanceOf(File);
+    // TODO: https://product-fabric.atlassian.net/browse/MSW-398
   });
 
   it('should convert File to dataURI', async () => {

@@ -1,5 +1,10 @@
 # @atlaskit/media-editor
 
+## 4.0.1
+- [patch] Fix eidtorCore binary [add6f5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/add6f5f)
+
+## 4.0.0
+
 ## 3.4.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
 

@@ -1,6 +1,5 @@
 import { name } from '../../package.json';
-import { code as codeBase, createSchema } from '../../src';
-
+import { code as codeBase, createSchema, sanitizeNodes } from '../../src';
 const filterGroupDecMark = marks =>
   marks.filter(mark => mark[0] !== '_' || mark[1] !== '_');
 
@@ -90,5 +89,114 @@ describe(`${name}/schema createSchema helper`, () => {
       customMarkSpecs: { code },
     });
     expect(schema.marks.code.spec).toEqual(code);
+  });
+
+  describe('fixNodeContentSchema', () => {
+    it('excludes unsupported nodes in node content', () => {
+      const nodes = {
+        node1: {
+          content: 'node1 | nodeDoesNotExist | node2 | anotherNodeDoesNotExist',
+        },
+        node2: {
+          content: 'node2',
+        },
+      };
+      const sanitizedNodes = sanitizeNodes(nodes, {});
+
+      expect(sanitizedNodes).toEqual({
+        node1: {
+          content: 'node1 | node2',
+        },
+        node2: {
+          content: 'node2',
+        },
+      });
+    });
+
+    it('excludes unsupported nodes in node content - 2', () => {
+      const nodes = {
+        node1: {
+          content:
+            '(node1 | nodeDoesNotExist | anotherNodeDoesNotExist | node2)*',
+        },
+        node2: {
+          content: 'node2',
+        },
+      };
+      const sanitizedNodes = sanitizeNodes(nodes, {});
+
+      expect(sanitizedNodes).toEqual({
+        node1: {
+          content: '(node1 | node2)*',
+        },
+        node2: {
+          content: 'node2',
+        },
+      });
+    });
+
+    it('does not generate invalid content', () => {
+      const nodes = {
+        node1: {
+          content: 'nodeDoesNotExist | anotherNodeDoesNotExist',
+        },
+        node2: {
+          content: 'node2 | nodeDoesNotExist',
+        },
+      };
+      const sanitizedNodes = sanitizeNodes(nodes, {});
+
+      expect(sanitizedNodes).toEqual({
+        node1: {
+          content: '',
+        },
+        node2: {
+          content: 'node2',
+        },
+      });
+    });
+
+    it('modifies node immutably', () => {
+      const nodeSpec = {
+        content: 'nodeDoesNotExist',
+      };
+      const nodes = {
+        node: nodeSpec,
+      };
+      const sanitizedNodes = sanitizeNodes(nodes, {});
+
+      expect(sanitizedNodes).toEqual({
+        node: {
+          content: '',
+        },
+      });
+
+      expect(nodeSpec).toEqual({
+        content: 'nodeDoesNotExist',
+      });
+    });
+
+    it('recognizes node from group', () => {
+      const nodes = {
+        node1: {
+          content: 'inline+',
+          group: 'block',
+        },
+        node2: {
+          group: 'inline',
+        },
+      };
+      const sanitizedNodes = sanitizeNodes(nodes, {});
+
+      expect(sanitizedNodes).toEqual({
+        node1: {
+          content: 'inline+',
+          group: 'block',
+        },
+        node2: {
+          group: 'inline',
+        },
+      });
+    });
   });
 });

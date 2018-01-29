@@ -44,6 +44,7 @@ export class MentionsState {
   onSelectNext = (): boolean => false;
   onSelectCurrent = (key?: string): boolean => false;
   onDismiss = (): void => {};
+  onSpaceTyped = (): void => {};
 
   private changeHandlers: StateChangeHandler[] = [];
   private state: EditorState;
@@ -380,6 +381,7 @@ export class MentionsState {
       this.dismiss();
     }
 
+    this.onSpaceTyped();
     return false;
   }
 

@@ -29,6 +29,7 @@ const listPlugin: EditorPlugin = {
     appearance,
     popupsMountPoint,
     popupsBoundariesElement,
+    popupsScrollableElement,
     toolbarSize,
     disabled,
     isToolbarReducedSpacing,
@@ -46,6 +47,7 @@ const listPlugin: EditorPlugin = {
         pluginState={pluginState}
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
+        popupsScrollableElement={popupsScrollableElement}
         enableTaskToolbar={
           !!editorView.state.schema.nodes.taskItem && appearance === 'full-page'
         }

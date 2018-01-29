@@ -26,7 +26,7 @@ export function escapeMarkdown(str: string, startOfLine?: boolean): string {
   strToEscape = strToEscape.replace(/[`*\\+_|()\[\]{}]/g, '\\$&');
   if (startOfLine) {
     strToEscape = strToEscape
-      .replace(/^[#-*]/, '\\$&')
+      .replace(/^[#-&(-*]/, '\\$&') // Don't escape ' character
       .replace(/^(\d+)\./, '$1\\.');
   }
   return strToEscape;

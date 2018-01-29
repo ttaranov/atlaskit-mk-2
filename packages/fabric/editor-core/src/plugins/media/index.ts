@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Node as PMNode, Schema } from 'prosemirror-model';
+import { Node as PMNode, Schema, Fragment } from 'prosemirror-model';
 import { insertPoint } from 'prosemirror-transform';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
 import {
@@ -260,7 +260,18 @@ export class MediaPluginState {
       this.stateManager.subscribe(mediaState.id, this.handleMediaState),
     );
 
-    if (this.editorAppearance !== 'message' && areImages && mediaSingle) {
+    const grandParentNode = this.view.state.selection.$from.node(-1);
+
+    const allowMediaSingle =
+      mediaSingle &&
+      grandParentNode.type.validContent(Fragment.from(mediaSingle.create()));
+
+    if (
+      this.editorAppearance !== 'message' &&
+      areImages &&
+      mediaSingle &&
+      allowMediaSingle
+    ) {
       mediaStates.forEach(mediaState =>
         this.stateManager.subscribe(
           mediaState.id,
@@ -664,13 +675,16 @@ export class MediaPluginState {
       return;
     }
 
+    const { width, height } = (thumbnail && thumbnail.dimensions) || {
+      width: undefined,
+      height: undefined,
+    };
     const { getPos, node: mediaNode } = mediaNodeWithPos;
-
     const newNode = view.state.schema.nodes.media!.create({
       ...mediaNode.attrs,
       id: publicId,
-      width: thumbnail && thumbnail.width,
-      height: thumbnail && thumbnail.height,
+      width,
+      height,
     });
 
     // Copy all optional attributes from old node

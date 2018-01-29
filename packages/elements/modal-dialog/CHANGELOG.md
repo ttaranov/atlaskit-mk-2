@@ -1,5 +1,13 @@
 # @atlaskit/modal-dialog
 
+## 3.3.7
+
+## 3.3.6
+
+## 3.3.5
+
+- [patch] Migrate Navigation from Ak repo to ak mk 2 repo, Fixed flow typing inconsistencies in ak mk 2 [bdeef5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdeef5b)
+
 ## 3.3.4
 - [patch] Fix modal appearing behind navigation's drawer blanket when layer manager is not used [a6c6e5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6c6e5e)
 

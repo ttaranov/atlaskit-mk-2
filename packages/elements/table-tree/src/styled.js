@@ -18,9 +18,15 @@ function defaultToPx(length) {
 }
 
 export const iconColor = colors.N800;
+export const iconColorFocus = colors.linkHover;
 
 export const TreeRowContainer = styled.div`
   border-bottom: 1px solid ${colors.N30};
+  display: flex;
+`;
+
+export const HeadersContainer = styled.div`
+  border-bottom: solid 2px #dfe1e6;
   display: flex;
 `;
 
@@ -33,6 +39,14 @@ const commonChevronContainer = css`
   top: 0;
   bottom: 0;
   margin-left: -22px;
+
+  button {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+    outline: none;
+  }
 `;
 
 export const ChevronContainer = styled.span`
@@ -90,6 +104,7 @@ export const Header = styled.div`
   font-weight: bold;
   line-height: 1.67;
   letter-spacing: -0.1px;
+  color: ${colors.N300};
 `;
 
 export const TableTreeContainer = styled.div``;

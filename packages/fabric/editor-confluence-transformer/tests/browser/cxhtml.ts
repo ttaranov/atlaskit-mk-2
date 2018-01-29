@@ -58,6 +58,7 @@ import {
   ConfluenceTransformer,
   CONFLUENCE_LANGUAGE_MAP as LANGUAGE_MAP,
 } from '../../src';
+import { mapPanelTypeToPm } from '../../src/utils';
 
 chai.use(chaiPlugin);
 
@@ -722,7 +723,11 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           check(
             `${panelType} panel`,
             `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><ac:structured-macro ac:name="info" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p></p></ac:rich-text-body></ac:structured-macro></ac:rich-text-body></ac:structured-macro>`,
-            doc(panel({ panelType })(panel('info')(p()))),
+            doc(
+              panel({ panelType: mapPanelTypeToPm(panelType) })(
+                panel('info')(p()),
+              ),
+            ),
           );
         });
       });
@@ -732,7 +737,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           check(
             `${panelType} panel`,
             `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p></p></ac:rich-text-body></ac:structured-macro>`,
-            doc(panel({ panelType })(p())),
+            doc(panel({ panelType: mapPanelTypeToPm(panelType) })(p())),
           );
         });
       });
@@ -742,7 +747,11 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           check(
             `${panelType} panel`,
             `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p>${panelType} panel</p></ac:rich-text-body></ac:structured-macro>`,
-            doc(panel({ panelType })(p(`${panelType} panel`))),
+            doc(
+              panel({ panelType: mapPanelTypeToPm(panelType) })(
+                p(`${panelType} panel`),
+              ),
+            ),
           );
         });
       });
@@ -753,7 +762,12 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           check(
             `${panelType} panel`,
             `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">${title}</ac:parameter><ac:rich-text-body><p>${panelType} panel</p></ac:rich-text-body></ac:structured-macro>`,
-            doc(panel({ panelType })(h3(title), p(`${panelType} panel`))),
+            doc(
+              panel({ panelType: mapPanelTypeToPm(panelType) })(
+                h3(title),
+                p(`${panelType} panel`),
+              ),
+            ),
           );
         });
       });
@@ -764,9 +778,24 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           check(
             `${panelType} panel`,
             `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">${title}</ac:parameter><ac:rich-text-body><p>p1</p><p>p2</p><h5>h5</h5></ac:rich-text-body></ac:structured-macro>`,
-            doc(panel({ panelType })(h3(title), p('p1'), p('p2'), h5('h5'))),
+            doc(
+              panel({ panelType: mapPanelTypeToPm(panelType) })(
+                h3(title),
+                p('p1'),
+                p('p2'),
+                h5('h5'),
+              ),
+            ),
           );
         });
+      });
+
+      describe('panel macro', () => {
+        check(
+          `panel macro = "note" (purple) panel`,
+          `<ac:structured-macro ac:name="panel" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p>note panel</p></ac:rich-text-body><ac:parameter ac:name="borderColor">#998DD9</ac:parameter><ac:parameter ac:name="bgColor">#EAE6FF</ac:parameter></ac:structured-macro>`,
+          doc(panel({ panelType: 'note' })(p('note panel'))),
+        );
       });
     });
 

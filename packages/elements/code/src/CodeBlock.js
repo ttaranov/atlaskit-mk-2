@@ -20,7 +20,7 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
 
   static defaultProps = {
     showLineNumbers: true,
-    language: 'md',
+    language: '',
     theme: {},
   };
 

@@ -1,0 +1,50 @@
+// @flow
+import React from 'react';
+import ContainerTitle from '../src/components/js/ContainerTitle';
+import { mountWithRootTheme } from './_theme-util';
+
+describe('<ContainerTitle />', () => {
+  describe('props', () => {
+    it('icon should render an image', () => {
+      expect(
+        mountWithRootTheme(<ContainerTitle icon={<img alt="foo" />} />).find(
+          'img',
+        ),
+      ).toHaveLength(1);
+    });
+
+    it('linkComponent can be used to render an arbitrary link', () => {
+      // TODO: Please see - AK-4242
+      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const wrapper = mountWithRootTheme(
+        <ContainerTitle
+          href="http://google.com"
+          linkComponent={({ href, children }) => (
+            <a href={href} data-foo="foo">
+              {children}
+            </a>
+          )}
+        />,
+      );
+      expect(wrapper.find('[data-foo]').length).toBe(1);
+      expect(wrapper.find('linkComponent').props().href).toBe(
+        'http://google.com',
+      );
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should render its title', () => {
+      const wrapper = mountWithRootTheme(<ContainerTitle text="Main text" />);
+
+      expect(wrapper.text()).toBe('Main text');
+    });
+
+    it('should render subText if it is provided', () => {
+      const wrapper = mountWithRootTheme(
+        <ContainerTitle text="Main text" subText="sub text" />,
+      );
+
+      expect(wrapper.text()).toBe('Main textsub text');
+    });
+  });
+});

@@ -6,6 +6,7 @@ import {
   p as paragraph,
   bodiedExtension,
   macroProvider,
+  sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
 
 import {
@@ -36,6 +37,25 @@ describe('extension', () => {
     extensionType: 'com.atlassian.confluence.macro',
     extensionKey: 'expand',
   };
+
+  describe('when cursor is at the beginning of the content', () => {
+    it('should create a paragraph above extension node on Enter', () => {
+      const { editorView } = editor(
+        doc(
+          bodiedExtension(extensionAttrs, [
+            paragraph('{<>}'),
+            paragraph('text'),
+          ]),
+        ),
+      );
+
+      sendKeyToPm(editorView, 'Enter');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(paragraph(''), bodiedExtension(extensionAttrs, paragraph('text'))),
+      );
+    });
+  });
 
   describe('actions', () => {
     describe('setExtensionElement', () => {
@@ -111,6 +131,28 @@ describe('extension', () => {
           true,
         );
       });
+    });
+  });
+
+  describe('when pasted bodiedExtension inside another bodiedExtension with empty content', () => {
+    it('should not replace the original node', () => {
+      const { editorView } = editor(
+        doc(bodiedExtension(extensionAttrs, paragraph('{<>}'))),
+      );
+      const node = editorView.state.schema.nodes.bodiedExtension.create(
+        extensionAttrs,
+        editorView.state.schema.nodes.paragraph.createChecked(),
+      );
+      editorView.dispatch(editorView.state.tr.replaceSelectionWith(node));
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          bodiedExtension(
+            extensionAttrs,
+            bodiedExtension(extensionAttrs, paragraph('')),
+          ),
+        ),
+      );
     });
   });
 });

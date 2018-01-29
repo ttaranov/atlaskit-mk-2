@@ -15,6 +15,7 @@ export interface Props {
   pluginStateHyperlink?: HyperlinkState;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
   render: (pluginsState: State) => React.ReactElement<any>;
 }
 

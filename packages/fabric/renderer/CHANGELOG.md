@@ -1,5 +1,12 @@
 # @atlaskit/renderer
 
+## 11.3.6
+- [patch] Bump editor versions [afa6885](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/afa6885)
+
+## 11.3.5
+
+## 11.3.4
+
 ## 11.3.3
 
 ## 11.3.2

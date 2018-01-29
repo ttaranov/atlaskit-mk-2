@@ -1,5 +1,33 @@
 # @atlaskit/editor-common
 
+## 5.10.1
+
+## 5.10.0
+- [minor] FS-1624 Add new popupsScrollableElement props to editor to handle case when mountPoint is different than the scrollable element. [7d669bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d669bc)
+
+## 5.9.4
+
+- [patch] Insert media group instead of single image inside table [5b4aaa0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b4aaa0)
+
+## 5.9.3
+- [patch] Fix getValidDocument to wrap top level inline nodes [c82a941](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c82a941)
+- [patch] Fix unknown node validator [419f4fc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/419f4fc)
+
+## 5.9.2
+
+## 5.9.1
+- [patch] fix extension replacement with empty content [e151446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e151446)
+
+## 5.9.0
+- [minor] move table nodes from prosemirror-tables to editor-common [630c9ae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/630c9ae)
+- [patch] fixed extension node content field [41c7958](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41c7958)
+
+## 5.8.1
+- [patch] Fixing nesting of blocks in JSON schema. [ed5c5ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed5c5ca)
+
+## 5.8.0
+- [minor] added new panelType [9f693b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f693b9)
+
 ## 5.7.3
 - [patch] Revert the change of block nesting in JSON schema. [dd19d0f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd19d0f)
 

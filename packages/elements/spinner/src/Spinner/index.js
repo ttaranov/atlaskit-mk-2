@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { Transition } from 'react-transition-group';
 import styled from 'styled-components';
 
+import { SIZES_MAP, DEFAULT_SIZE } from './constants';
 import Container from './styledContainer';
 import Svg from './styledSvg';
 import type { SpinnerProps, SpinnerState } from '../types';
@@ -12,14 +13,6 @@ const Outer = styled.div`
   display: inline-block;
 `;
 Outer.displayName = 'Outer';
-
-const SIZES_MAP = {
-  small: 20,
-  medium: 30,
-  large: 50,
-  xlarge: 100,
-};
-const DEFAULT_SIZE = SIZES_MAP.small;
 
 export default class Spinner extends Component<SpinnerProps, SpinnerState> {
   static defaultProps = {

@@ -14,14 +14,14 @@ pipelines:
             # Note: in master, this script will rebase you onto latest origin/master
             - source ./build-setup.sh
             - bolt install --pure-lockfile
-            - (cd build/ci-scripts && bolt stop-if-older-build)
-            - bolt build
-            - bolt lint
-            - bolt typecheck
-            - bolt test
-            - bolt test:browser:browserstack
-            - bolt release
-            - (cd build/ci-scripts && bolt restart-stopped-build)
+            - (cd build/ci-scripts && yarn stop-if-older-build)
+            - yarn build
+            - yarn lint
+            - yarn typecheck
+            - yarn test
+            - yarn test:browser:browserstack
+            - yarn release
+            - (cd build/ci-scripts && yarn restart-stopped-build)
           caches:
             - node
 
@@ -30,14 +30,14 @@ pipelines:
         script:
           - source ./build-setup.sh
           - bolt install --pure-lockfile
-          - bolt build
-          - (node build/ci-scripts/should.run.js eslint) && bolt lint:eslint
-          - (node build/ci-scripts/should.run.js tslint) && bolt lint:tslint
-          - (node build/ci-scripts/should.run.js flow) && bolt typecheck:flow
-          - (node build/ci-scripts/should.run.js tsc) && bolt typecheck:typescript
-          - bolt test:changed
-          - (node build/ci-scripts/should.run.js browserstack) && bolt test:browser:browserstack
-          - (cd website && bolt deploy-staging:no-minimize) | tee output.txt
+          - yarn build
+          - (node build/ci-scripts/should.run.js eslint) && yarn lint:eslint
+          - (node build/ci-scripts/should.run.js tslint) && yarn lint:tslint
+          - (node build/ci-scripts/should.run.js flow) && yarn typecheck:flow
+          - (node build/ci-scripts/should.run.js tsc) && yarn typecheck:typescript
+          - yarn test:changed
+          - (node build/ci-scripts/should.run.js browserstack) && yarn test:browser:browserstack
+          - (cd website && yarn deploy-staging:no-minimize) | tee output.txt
           - node build/ci-scripts/update.build.status.with.netlify.link.js
         caches:
           - node
@@ -50,9 +50,17 @@ pipelines:
           script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
-            - (cd website && bolt deploy)
+            - (cd website && yarn deploy)
           caches:
             - node
+
+    # This will run with the webdriver tests
+    build-webdriver:
+      - step:
+          script:
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - bolt test:webdriver:browserstack
 
     # This will run essentially the branch builds, but without any optimizations and should be manually
     # run in any potentially risky builds
@@ -61,10 +69,10 @@ pipelines:
           script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
-            - bolt build
-            - bolt lint
-            - bolt typecheck
-            - bolt test
-            - bolt test:browser:browserstack
-            - (cd website && bolt deploy-staging:no-minimize)
+            - yarn build
+            - yarn lint
+            - yarn typecheck
+            - yarn test
+            - yarn test:browser:browserstack
+            - (cd website && yarn deploy-staging:no-minimize)
     # We deliberately don't use the cache here as well

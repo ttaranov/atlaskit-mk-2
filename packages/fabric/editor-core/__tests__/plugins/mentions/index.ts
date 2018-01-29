@@ -326,7 +326,7 @@ describe('mentions', () => {
         id: '1234',
       });
 
-      expect(editorView.state.doc.nodeAt(1)!.type.spec).toBe(mentionNode);
+      expect(editorView.state.doc.nodeAt(1)!.type.spec).toEqual(mentionNode);
       editorView.destroy();
     });
 
@@ -534,7 +534,7 @@ describe('mentions', () => {
         ),
       );
 
-      expect(editorView.state.doc.nodeAt(8)!.type.spec).toBe(mentionNode);
+      expect(editorView.state.doc.nodeAt(8)!.type.spec).toEqual(mentionNode);
       expect(editorView.state.doc.nodeAt(10)).toBe(null);
       editorView.destroy();
     });
@@ -854,7 +854,7 @@ describe('mentions', () => {
 
         sendKeyToPm(editorView, 'Space');
 
-        expect(editorView.state.doc.nodeAt(1)!.type.spec).toBe(mentionNode);
+        expect(editorView.state.doc.nodeAt(1)!.type.spec).toEqual(mentionNode);
         expect(trackEvent).toHaveBeenCalledWith(
           'atlassian.fabric.mention.insert.auto',
           { match: true },

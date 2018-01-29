@@ -8,7 +8,7 @@ import {
   Dropzone,
   Clipboard,
   BinaryUploader,
-} from 'mediapicker';
+} from '@atlaskit/media-picker';
 import {
   StoryBookAuthProvider,
   StoryBookUserAuthProvider,
@@ -42,7 +42,6 @@ describe('Media PickerFacade', () => {
     size: Math.round(Math.random() * 1047552),
     type: 'test/file',
     creationDate: new Date().getTime(),
-    toPureJSON: () => ({}),
   };
   const testFileProgress = {
     absolute: 1,
@@ -56,6 +55,8 @@ describe('Media PickerFacade', () => {
     captureException: (err: any) => {},
     captureMessage: (msg: any) => {},
   };
+  const apiUrl = '';
+  const authProvider = () => Promise.resolve({ clientId: '', token: '' });
 
   describe('Generic Picker', () => {
     beforeEach(() => {
@@ -221,7 +222,7 @@ describe('Media PickerFacade', () => {
 
       it('for upload preview availability', () => {
         const cb = jest.fn();
-        const preview = new Blob();
+        const preview = { src: '' };
         stateManager!.subscribe(testTemporaryFileId, cb);
         mockPicker.__triggerEvent('upload-preview-update', {
           file: testFileData,
@@ -241,8 +242,8 @@ describe('Media PickerFacade', () => {
         });
         expect(cb).toHaveBeenCalledWith({
           id: testTemporaryFileId,
-          publicId: testFilePublicId,
           status: 'processing',
+          publicId: testFilePublicId,
           fileName: testFileData.name,
           fileSize: testFileData.size,
           fileMimeType: testFileData.type,
@@ -254,12 +255,11 @@ describe('Media PickerFacade', () => {
         const finalizeCb = () => {};
         stateManager!.subscribe(testTemporaryFileId, cb);
         mockPicker.__triggerEvent('upload-finalize-ready', {
-          file: { ...testFileData, publicId: testFilePublicId },
+          file: { ...testFileData },
           finalize: finalizeCb,
         });
         expect(cb).toHaveBeenCalledWith({
           id: testTemporaryFileId,
-          publicId: testFilePublicId,
           status: 'unfinalized',
           finalizeCb: finalizeCb,
           fileName: testFileData.name,
@@ -314,18 +314,17 @@ describe('Media PickerFacade', () => {
       });
 
       mockPicker.__triggerEvent('upload-finalize-ready', {
-        file: { ...testFileData, publicId: testFilePublicId },
+        file: { ...testFileData },
         finalize: finalizeCb,
       });
 
       mockPicker.__triggerEvent('upload-status-update', {
-        file: { ...testFileData, publicId: testFilePublicId },
+        file: { ...testFileData },
         progress: testFileProgress,
       });
 
       expect(stateManager!.getState(testTemporaryFileId)).toEqual({
         id: testTemporaryFileId,
-        publicId: testFilePublicId,
         status: 'unfinalized',
         progress: testFileProgress.portion,
         fileName: testFileData.name,
@@ -361,13 +360,49 @@ describe('Media PickerFacade', () => {
         'ready',
       );
     });
+
+    it('should update the filename and append timestamp for clipboard picker', () => {
+      facade = new PickerFacade(
+        'clipboard',
+        uploadParams,
+        contextConfig,
+        stateManager!,
+        errorReporter,
+        mockPickerFactory,
+      );
+
+      const cb = jest.fn();
+      stateManager!.subscribe(testTemporaryFileId, cb);
+
+      const preview = { src: 'https://domain.com/path' };
+      const tmpImageFile = {
+        id: testFileId,
+        name: 'image.png',
+        size: Math.round(Math.random() * 1047552),
+        type: 'image/png',
+        creationDate: Date.UTC(0, 1),
+      };
+      mockPicker.__triggerEvent('upload-preview-update', {
+        file: tmpImageFile,
+        preview,
+      });
+
+      expect(cb).toHaveBeenLastCalledWith({
+        id: testTemporaryFileId,
+        status: 'uploading',
+        fileName: 'image-19000201-000000.png',
+        fileSize: tmpImageFile.size,
+        fileMimeType: tmpImageFile.type,
+        thumbnail: preview,
+      });
+    });
   });
 
   describe('Popup Picker', () => {
     const mockPopupPicker = new Popup(
       { trackEvent: () => {} },
-      { apiUrl: '', authProvider: () => {} },
-      { userAuthProvider: () => {}, container: document.body },
+      { apiUrl, authProvider },
+      { userAuthProvider: authProvider, container: document.body },
     );
 
     beforeEach(() => {
@@ -430,7 +465,10 @@ describe('Media PickerFacade', () => {
   });
 
   describe('Browser Picker', () => {
-    const mockBrowserPicker = new Browser({ trackEvent() {} }, {});
+    const mockBrowserPicker = new Browser(
+      { trackEvent() {} },
+      { apiUrl, authProvider },
+    );
 
     beforeEach(() => {
       stateManager = new DefaultMediaStateManager();
@@ -469,7 +507,10 @@ describe('Media PickerFacade', () => {
   });
 
   describe('Clipboard Picker', () => {
-    const mockClipboardPicker = new Clipboard({ trackEvent() {} }, {});
+    const mockClipboardPicker = new Clipboard(
+      { trackEvent() {} },
+      { apiUrl, authProvider },
+    );
     const activateSpy = (mockClipboardPicker.activate = jest.fn());
 
     beforeEach(() => {
@@ -508,7 +549,10 @@ describe('Media PickerFacade', () => {
   });
 
   describe('Dropzone Picker', () => {
-    const mockDropzonePicker = new Dropzone({ trackEvent() {} }, {});
+    const mockDropzonePicker = new Dropzone(
+      { trackEvent() {} },
+      { apiUrl, authProvider },
+    );
     const activateSpy = (mockDropzonePicker.activate = jest.fn());
 
     beforeEach(() => {
@@ -548,7 +592,7 @@ describe('Media PickerFacade', () => {
   describe('BinaryUploader Picker', () => {
     const mockBinaryUploaderPicker = new BinaryUploader(
       { trackEvent() {} },
-      {},
+      { apiUrl, authProvider },
     );
 
     beforeEach(() => {

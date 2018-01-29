@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/conversation",
-  "version": "4.8.1",
+  "version": "5.0.0",
   "config": {
     "access": "public"
   },
@@ -23,11 +23,11 @@
     "react-dom": "15.6.0 - 16.2.0"
   },
   "dependencies": {
-    "@atlaskit/avatar": "^8.4.0",
-    "@atlaskit/comment": "^2.6.10",
-    "@atlaskit/editor-common": "^5.7.2",
-    "@atlaskit/editor-core": "^61.3.11",
-    "@atlaskit/renderer": "^11.3.3",
+    "@atlaskit/avatar": "^9.0.0",
+    "@atlaskit/comment": "^2.6.11",
+    "@atlaskit/editor-common": "^5.9.3",
+    "@atlaskit/editor-core": "^61.4.10",
+    "@atlaskit/renderer": "^11.3.5",
     "date-fns": "^1.29.0",
     "prop-types": "^15.5.10",
     "styled-components": "^1.4.6",
@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@atlaskit/emoji": "^31.0.2",
-    "@atlaskit/mention": "^9.0.0",
-    "@atlaskit/single-select": "^3.2.0"
+    "@atlaskit/mention": "^9.0.1",
+    "@atlaskit/single-select": "^3.2.1"
   }
 }

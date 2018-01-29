@@ -6,7 +6,11 @@
       "type": "bulletList",
       "content": [
         {
-          "type": "rule"
+          "type": "paragraph",
+          "content": [{
+            "type": "text",
+            "text": "foo"
+          }]
         }
       ]
     }

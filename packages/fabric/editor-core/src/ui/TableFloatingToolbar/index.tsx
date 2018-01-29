@@ -20,6 +20,7 @@ export interface Props {
   pluginState: TableState;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
 }
 
 export interface State {
@@ -58,7 +59,11 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
 
   render() {
     const { cellElement, isOpen, advancedMenuDisabled } = this.state;
-    const { popupsMountPoint, popupsBoundariesElement } = this.props;
+    const {
+      popupsMountPoint,
+      popupsBoundariesElement,
+      popupsScrollableElement,
+    } = this.props;
     const items = this.createItems();
 
     if (cellElement) {
@@ -68,6 +73,7 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
           offset={[0, 3]}
           mountTo={popupsMountPoint}
           boundariesElement={popupsBoundariesElement}
+          scrollableElement={popupsScrollableElement}
           alignY="top"
         >
           <Toolbar>

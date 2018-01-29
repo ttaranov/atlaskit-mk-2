@@ -11,15 +11,10 @@ import { EditorView } from 'prosemirror-view';
 import { MentionsState } from '../../plugins/mentions';
 import { Popup } from '@atlaskit/editor-common';
 import { analyticsService } from '../../analytics';
-import * as keymaps from '../../keymaps';
-
-enum InsertType {
-  SELECTED = 'selected',
-  ENTER = 'enter',
-  SHIFT_ENTER = 'shift-enter',
-  SPACE = 'space',
-  TAB = 'tab',
-}
+import {
+  getInsertTypeForKey,
+  InsertType,
+} from '../../analytics/fabric-analytics-helper';
 
 export interface Props {
   editorView?: EditorView;
@@ -30,6 +25,7 @@ export interface Props {
   target?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
 }
 
 export interface State {
@@ -94,6 +90,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
       pluginState.onSelectNext = this.handleSelectNext;
       pluginState.onSelectCurrent = this.handleSelectCurrent;
       pluginState.onDismiss = this.handleOnClose;
+      pluginState.onSpaceTyped = this.handleSpaceTyped;
     }
   }
 
@@ -136,6 +133,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
       popupsBoundariesElement,
       popupsMountPoint,
       presenceProvider,
+      popupsScrollableElement,
     } = this.props;
 
     if (!focused || !anchorElement || query === undefined || !mentionProvider) {
@@ -149,6 +147,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
         fitWidth={340}
         boundariesElement={popupsBoundariesElement}
         mountTo={popupsMountPoint}
+        scrollableElement={popupsScrollableElement}
         offset={[0, 3]}
       >
         <AkMentionPicker
@@ -190,25 +189,9 @@ export default class MentionPicker extends PureComponent<Props, State> {
     return true;
   };
 
-  private getInsertTypeForKey(key?: string) {
-    if (key === keymaps.space.common) {
-      return InsertType.SPACE;
-    }
-    if (key === keymaps.enter.common) {
-      return InsertType.ENTER;
-    }
-    if (key === keymaps.tab.common) {
-      return InsertType.TAB;
-    }
-    if (key === keymaps.insertNewLine.common) {
-      return InsertType.SHIFT_ENTER;
-    }
-    return undefined;
-  }
-
   private handleSelectCurrent = (key): boolean => {
     if (this.getMentionsCount() > 0 && this.picker) {
-      this.insertType = this.getInsertTypeForKey(key);
+      this.insertType = getInsertTypeForKey(key);
 
       (this.picker as AkMentionPicker).chooseCurrentSelection();
     } else {
@@ -238,4 +221,8 @@ export default class MentionPicker extends PureComponent<Props, State> {
   private getMentionsCount(): number {
     return (this.picker && this.picker.mentionsCount()) || 0;
   }
+
+  handleSpaceTyped = (): void => {
+    analyticsService.trackEvent('atlassian.fabric.mention.picker.space', {});
+  };
 }
