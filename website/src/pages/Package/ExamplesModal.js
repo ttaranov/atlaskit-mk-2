@@ -31,8 +31,8 @@ import Loading from '../../components/Loading';
 import CodeBlock from '../../components/Code';
 import { packages as packagesData } from '../../site';
 import { packageUrl } from '../../utils/url';
-import CodeSandbox from './CodeSandbox';
 import CodeSandboxLogo from './CodeSandboxLogo';
+import CodeSandbox from './CodeSandbox';
 
 // ==============================
 // PAGE
@@ -370,6 +370,11 @@ export default class ExamplesModal extends Component<Props, State> {
     );
 
     const { displayCode } = this.state;
+    const example = fs.getById(fs.getFiles(examples.children), exampleId);
+    const pkgJSON = fs.getById(
+      fs.getById(packages, packageId).children,
+      'package.json',
+    );
 
     if (hasChanged) {
       return <Redirect to={toUrl(groupId, packageId, exampleId)} />;
@@ -381,54 +386,36 @@ export default class ExamplesModal extends Component<Props, State> {
           <ModalHeader showKeyline={showKeyline}>
             <ModalTitle>{fs.titleize(packageId)} Examples</ModalTitle>
             <ModalActions>
-              <CodeSandbox
-                exampleId={exampleId}
-                groupId={groupId}
-                packageId={packageId}
-              >
-                {({ deploySandbox, loadingSandbox }) => {
-                  const codesandboxIcon = loadingSandbox ? (
-                    <Spinner />
-                  ) : (
-                    <CodeSandboxLogo />
-                  );
-
-                  return (
-                    <ButtonGroup>
-                      <Button
-                        onClick={deploySandbox}
-                        iconBefore={codesandboxIcon}
-                        isDisabled
-                      >
-                        {loadingSandbox ? 'Loading...' : 'Sandbox'}
-                      </Button>
-                      <Button
-                        iconBefore={<CodeIcon label="Toggle code snippet" />}
-                        onClick={this.onCodeToggle}
-                        isSelected={displayCode}
-                        title={displayCode ? 'Hide Source' : 'Show Source'}
-                      >
-                        Source
-                      </Button>
-                      <Tooltip content="Fullscreen" position="bottom">
-                        <Button
-                          appearance="subtle"
-                          component={Link}
-                          iconBefore={<ScreenIcon label="Screen Icon" />}
-                          to={toExampleUrl(groupId, packageId, exampleId)}
-                        />
-                      </Tooltip>
-                      <Tooltip content="Close" position="bottom">
-                        <Button
-                          appearance="subtle"
-                          iconBefore={<CloseIcon label="Close Modal" />}
-                          onClick={this.close}
-                        />
-                      </Tooltip>
-                    </ButtonGroup>
-                  );
-                }}
-              </CodeSandbox>
+              <ButtonGroup>
+                <CodeSandbox
+                  example={example}
+                  pkgJSON={pkgJSON}
+                  iconBefore={<CodeSandboxLogo />}
+                />
+                <Button
+                  iconBefore={<CodeIcon label="Toggle code snippet" />}
+                  onClick={this.onCodeToggle}
+                  isSelected={displayCode}
+                  title={displayCode ? 'Hide Source' : 'Show Source'}
+                >
+                  Source
+                </Button>
+                <Tooltip content="Fullscreen" position="bottom">
+                  <Button
+                    appearance="subtle"
+                    component={Link}
+                    iconBefore={<ScreenIcon label="Screen Icon" />}
+                    to={toExampleUrl(groupId, packageId, exampleId)}
+                  />
+                </Tooltip>
+                <Tooltip content="Close" position="bottom">
+                  <Button
+                    appearance="subtle"
+                    iconBefore={<CloseIcon label="Close Modal" />}
+                    onClick={this.close}
+                  />
+                </Tooltip>
+              </ButtonGroup>
             </ModalActions>
           </ModalHeader>
         )}
@@ -449,10 +436,7 @@ export default class ExamplesModal extends Component<Props, State> {
           />
           <ModalContent>
             {examples && exampleId ? (
-              <ExampleDisplay
-                displayCode={displayCode}
-                example={fs.getById(fs.getFiles(examples.children), exampleId)}
-              />
+              <ExampleDisplay displayCode={displayCode} example={example} />
             ) : (
               <Content>
                 <ErrorMessage>

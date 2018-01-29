@@ -231,6 +231,7 @@
     "chromatism": "^2.6.0",
     "classnames": "^2.2.5",
     "codemirror": "^5.26.0",
+    "codesandbox": "^1.1.14",
     "collapse-whitespace": "^1.1.6",
     "commonmark": "^0.27.0",
     "commonmark-react-renderer": "^4.3.3",
