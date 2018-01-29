@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { AppCardView as OldAppCardView } from '../../../src/app';
-import StandaloneApplicationCardView from '../../../src/app_2/StandaloneApplicationCardView';
+import ApplicationCard from '../../../src/app_2/ApplicationCard';
 import { AppCardView, AppCardModel } from '../../../src/app_2/AppCardViewV2';
 
 const exampleURL = 'https://www.example.com/test-image.png';
@@ -14,14 +14,14 @@ const modelWithTitle = {
 
 function convertModel(model: AppCardModel) {
   const element = shallow(<AppCardView newDesign={true} model={model} />);
-  return element.find(StandaloneApplicationCardView).props();
+  return element.find(ApplicationCard).props();
 }
 
 describe('AppCardViewV2', () => {
   it('should not render the old design by default', () => {
     const element = shallow(<AppCardView model={modelWithTitle} />);
     expect(element.find(OldAppCardView)).toHaveLength(1);
-    expect(element.find(StandaloneApplicationCardView)).toHaveLength(0);
+    expect(element.find(ApplicationCard)).toHaveLength(0);
   });
 
   it('should not render the old design when newDesign=false', () => {
@@ -29,7 +29,7 @@ describe('AppCardViewV2', () => {
       <AppCardView newDesign={false} model={modelWithTitle} />,
     );
     expect(element.find(OldAppCardView)).toHaveLength(1);
-    expect(element.find(StandaloneApplicationCardView)).toHaveLength(0);
+    expect(element.find(ApplicationCard)).toHaveLength(0);
   });
 
   it('should render the new design when newDesign=true', () => {
@@ -37,7 +37,7 @@ describe('AppCardViewV2', () => {
       <AppCardView newDesign={true} model={modelWithTitle} />,
     );
     expect(element.find(OldAppCardView)).toHaveLength(0);
-    expect(element.find(StandaloneApplicationCardView)).toHaveLength(1);
+    expect(element.find(ApplicationCard)).toHaveLength(1);
   });
 
   it('should not convert context when context is missing', () => {
@@ -421,7 +421,7 @@ describe('AppCardViewV2', () => {
       />,
     );
     const actions = element
-      .find(StandaloneApplicationCardView)
+      .find(ApplicationCard)
       .first()
       .prop('actions');
     if (actions && actions.length) {
