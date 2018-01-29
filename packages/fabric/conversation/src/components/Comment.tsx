@@ -21,7 +21,12 @@ export interface SharedProps {
   comments?: CommentType[];
 
   // Dispatch
-  onAddComment?: (conversationId: string, parentId: string, value: any) => void;
+  onAddComment?: (
+    conversationId: string,
+    parentId: string,
+    value: any,
+    comment?: CommentType,
+  ) => void;
   onUpdateComment?: (
     conversationId: string,
     commentId: string,
@@ -41,6 +46,7 @@ export interface SharedProps {
 export interface Props extends SharedProps {
   conversationId: string;
   comment: CommentType;
+  onRetry?: (comment: CommentType) => void;
 }
 
 export interface State {
@@ -180,6 +186,11 @@ export default class Comment extends React.Component<Props, State> {
 
   private onRequestRetry = () => {
     const { lastDispatch } = this.state;
+    const { onRetry, comment } = this.props;
+
+    if (onRetry && comment.isPlaceholder) {
+      return onRetry(comment);
+    }
 
     if (!lastDispatch) {
       return;
@@ -236,6 +247,11 @@ export default class Comment extends React.Component<Props, State> {
       user,
       onUserClick,
       dataProviders,
+      onAddComment,
+      onUpdateComment,
+      onDeleteComment,
+      onRevertComment,
+      onRetry,
     } = this.props;
 
     if (!comments || comments.length === 0) {
@@ -248,10 +264,11 @@ export default class Comment extends React.Component<Props, State> {
         comment={child}
         user={user}
         conversationId={conversationId}
-        onAddComment={this.props.onAddComment}
-        onUpdateComment={this.props.onUpdateComment}
-        onDeleteComment={this.props.onDeleteComment}
-        onRevertComment={this.props.onRevertComment}
+        onAddComment={onAddComment}
+        onUpdateComment={onUpdateComment}
+        onDeleteComment={onDeleteComment}
+        onRevertComment={onRevertComment}
+        onRetry={onRetry}
         onUserClick={onUserClick}
         dataProviders={dataProviders}
       />

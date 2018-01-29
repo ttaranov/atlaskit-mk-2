@@ -39,6 +39,7 @@ export interface ResourceProvider {
     conversationId: string,
     parentId: string,
     document: any,
+    comment?: Comment,
   ): Promise<Comment>;
   updateComment(
     conversationId: string,
@@ -94,6 +95,7 @@ export class AbstractConversationResource implements ResourceProvider {
     conversationId: string,
     parentId: string,
     doc: any,
+    comment?: Comment,
   ): Promise<Comment> {
     return Promise.reject('Not implemented');
   }
@@ -264,9 +266,11 @@ export class ConversationResource extends AbstractConversationResource {
     conversationId: string,
     parentId: string,
     doc: any,
+    comment?: Comment,
   ): Promise<Comment> {
     const { dispatch } = this;
-    const tempComment = this.createComment(conversationId, parentId, doc);
+    const tempComment =
+      comment || this.createComment(conversationId, parentId, doc);
     const { localId } = tempComment;
     let result: Comment;
 

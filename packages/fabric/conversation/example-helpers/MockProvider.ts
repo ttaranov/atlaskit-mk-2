@@ -126,8 +126,9 @@ export class MockProvider extends AbstractConversationResource {
     conversationId: string,
     parentId: string,
     doc: any,
+    comment?: Comment,
   ): Promise<Comment> {
-    const result = this.createComment(conversationId, parentId, doc);
+    const result = comment || this.createComment(conversationId, parentId, doc);
     const { dispatch, responseCode } = this;
 
     dispatch({ type: ADD_COMMENT_REQUEST, payload: result });

@@ -20,5 +20,5 @@ export interface Comment extends Pick<Conversation, 'comments' | 'error'> {
     md?: string;
     html?: string;
   };
-  isPlaceholder: boolean; // Whether this has been generated as a placeholder comment
+  isPlaceholder?: boolean; // Whether this has been generated as a placeholder comment
 }

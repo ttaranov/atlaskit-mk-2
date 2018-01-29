@@ -35,8 +35,13 @@ const mapStateToProps = (state: State, ownProps: Props) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onAddComment(conversationId: string, parentId: string, value: any) {
-    dispatch(addComment(conversationId, parentId, value));
+  onAddComment(
+    conversationId: string,
+    parentId: string,
+    value: any,
+    comment?: Comment,
+  ) {
+    dispatch(addComment(conversationId, parentId, value, comment));
   },
 
   onUpdateComment(conversationId: string, commentId: string, value: any) {

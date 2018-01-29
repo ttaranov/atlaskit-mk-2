@@ -28,8 +28,9 @@ export const addComment = (
   conversationId: string,
   parentId: string,
   value: any,
+  comment?: Comment,
 ) => async (provider: ResourceProvider) => {
-  provider.addComment(conversationId, parentId, value);
+  provider.addComment(conversationId, parentId, value, comment);
 };
 
 export const updateComment = (

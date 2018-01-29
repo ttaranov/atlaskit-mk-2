@@ -1,7 +1,10 @@
 import * as React from 'react';
 import Comment from '../containers/Comment';
 import Editor from './Editor';
-import { Conversation as ConversationType } from '../model';
+import {
+  Conversation as ConversationType,
+  Comment as CommentType,
+} from '../model';
 import { SharedProps } from './Comment';
 
 export interface Props extends SharedProps {
@@ -55,6 +58,7 @@ export default class Conversation extends React.PureComponent<Props> {
         onUpdateComment={onUpdateComment}
         onDeleteComment={onDeleteComment}
         onRevertComment={onRevertComment}
+        onRetry={this.onRetry}
         onUserClick={onUserClick}
         dataProviders={dataProviders}
       />
@@ -87,7 +91,11 @@ export default class Conversation extends React.PureComponent<Props> {
     }
   }
 
-  private onSave = async (value: any) => {
+  private onRetry = (comment: CommentType) => {
+    this.onSave(comment.document, comment);
+  };
+
+  private onSave = async (value: any, comment?: CommentType) => {
     const {
       containerId,
       id,
@@ -103,7 +111,7 @@ export default class Conversation extends React.PureComponent<Props> {
       }
     } else {
       if (onAddComment) {
-        onAddComment(id, id, value);
+        onAddComment(id, id, value, comment);
       }
     }
   };

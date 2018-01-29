@@ -11,7 +11,6 @@ import {
   DELETE_COMMENT_SUCCESS,
   DELETE_COMMENT_ERROR,
   REVERT_COMMENT,
-  CANCEL_COMMENT,
   UPDATE_USER_SUCCESS,
   CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
@@ -89,6 +88,16 @@ const addCommentToConversation = (
   return conversations.map(conversation => {
     if (conversation.conversationId === newComment.conversationId) {
       const { comments = [] } = conversation;
+
+      // If the comment already exists, update the existing one
+      if (comments.some(comment => newComment.localId === comment.localId)) {
+        return {
+          ...conversation,
+          comments: [...updateComment(comments, newComment)],
+        };
+      }
+
+      // Otherwise, add it
       return {
         ...conversation,
         comments: [...comments, newComment],
@@ -296,19 +305,6 @@ export const reducers = {
         oldDocument: undefined,
       });
     }
-
-    return {
-      ...state,
-      conversations,
-    };
-  },
-
-  [CANCEL_COMMENT](state: State, action: Action) {
-    const { payload } = action;
-
-    const conversations = removeCommentFromConversation(state.conversations, {
-      ...payload,
-    });
 
     return {
       ...state,
