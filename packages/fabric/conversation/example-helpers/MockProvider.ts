@@ -25,6 +25,7 @@ import {
   REVERT_COMMENT,
   CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
+  CREATE_CONVERSATION_ERROR,
   UPDATE_USER_SUCCESS,
 } from '../src/internal/actions';
 
@@ -35,6 +36,18 @@ const MockDataProviders = {
   ),
 };
 
+const RESPONSE_MESSAGES = {
+  200: 'OK',
+  201: 'OK',
+  204: 'No Content',
+
+  400: 'Bad Request',
+  403: 'Forbidden',
+  404: 'Not Found',
+  500: 'Server error',
+  503: 'Unauthorised',
+};
+
 export const getDataProviderFactory = () => {
   const dataProviderFactory = new ProviderFactory();
   Object.keys(MockDataProviders).forEach(provider => {
@@ -43,15 +56,15 @@ export const getDataProviderFactory = () => {
   return dataProviderFactory;
 };
 
-let i = 0;
-
 export class MockProvider extends AbstractConversationResource {
   private config: ConversationResourceConfig;
+  private responseCode: number;
 
   constructor(config: ConversationResourceConfig) {
     super();
     this.config = config;
     this.updateUser(config.user);
+    this.responseCode = 200;
   }
 
   /**
@@ -86,12 +99,21 @@ export class MockProvider extends AbstractConversationResource {
       meta: meta,
     };
 
-    const { dispatch } = this;
+    const { dispatch, responseCode } = this;
 
     dispatch({ type: CREATE_CONVERSATION_REQUEST, payload: result });
 
     setTimeout(() => {
-      dispatch({ type: CREATE_CONVERSATION_SUCCESS, payload: result });
+      const errResult = {
+        ...result,
+        error: new HttpError(responseCode, RESPONSE_MESSAGES[responseCode]),
+      };
+      const type =
+        responseCode >= 400
+          ? CREATE_CONVERSATION_ERROR
+          : CREATE_CONVERSATION_SUCCESS;
+      const payload = responseCode >= 400 ? errResult : result;
+      dispatch({ type, payload });
     }, 1000);
 
     return result;
@@ -106,18 +128,18 @@ export class MockProvider extends AbstractConversationResource {
     doc: any,
   ): Promise<Comment> {
     const result = this.createComment(conversationId, parentId, doc);
-    const { dispatch } = this;
+    const { dispatch, responseCode } = this;
 
     dispatch({ type: ADD_COMMENT_REQUEST, payload: result });
 
     setTimeout(() => {
-      // @TODO toggler
       const errResult = {
         ...result,
-        error: new HttpError(500, 'oops'),
+        error: new HttpError(responseCode, RESPONSE_MESSAGES[responseCode]),
       };
-      let type = i++ > 1 ? ADD_COMMENT_SUCCESS : ADD_COMMENT_ERROR;
-      let payload = i > 1 ? result : errResult;
+      const type =
+        responseCode >= 400 ? ADD_COMMENT_ERROR : ADD_COMMENT_SUCCESS;
+      const payload = responseCode >= 400 ? errResult : result;
       dispatch({ type, payload });
     }, 1000);
 
@@ -163,22 +185,21 @@ export class MockProvider extends AbstractConversationResource {
       comments: [],
     };
 
-    const { dispatch } = this;
+    const { dispatch, responseCode } = this;
     dispatch({ type: UPDATE_COMMENT_REQUEST, payload: result });
 
     setTimeout(() => {
-      // dispatch({ type: UPDATE_COMMENT_SUCCESS, payload: result });
       const errResult = {
         conversationId,
         commentId,
-        error: new HttpError(503, 'ruh roh'),
+        error: new HttpError(responseCode, RESPONSE_MESSAGES[responseCode]),
       };
 
-      // @TODO toggler
-      let type = i++ > 1 ? UPDATE_COMMENT_SUCCESS : UPDATE_COMMENT_ERROR;
-      let payload = i > 1 ? result : errResult;
+      const type =
+        responseCode >= 400 ? UPDATE_COMMENT_SUCCESS : UPDATE_COMMENT_ERROR;
+      const payload = responseCode >= 400 ? errResult : result;
       dispatch({ type, payload });
-    }, 200);
+    }, 500);
 
     return result;
   }
@@ -193,21 +214,19 @@ export class MockProvider extends AbstractConversationResource {
     conversationId: string,
     commentId: string,
   ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'error'>> {
+    const { dispatch, responseCode } = this;
     const result = {
       conversationId,
       commentId,
-      error: new HttpError(500, 'yeh nah'),
+      error: new HttpError(responseCode, RESPONSE_MESSAGES[responseCode]),
     };
-
-    const { dispatch } = this;
     dispatch({ type: DELETE_COMMENT_REQUEST, payload: result });
 
     setTimeout(() => {
-      let type = i++ > 1 ? DELETE_COMMENT_SUCCESS : DELETE_COMMENT_ERROR;
+      const type =
+        responseCode >= 400 ? DELETE_COMMENT_ERROR : DELETE_COMMENT_SUCCESS;
       dispatch({ type, payload: result });
-      // dispatch({ type: DELETE_COMMENT_ERROR, payload: result });
-      // dispatch({ type: DELETE_COMMENT_SUCCESS, payload: result });
-    }, 1000);
+    }, 500);
 
     return result;
   }
@@ -233,4 +252,8 @@ export class MockProvider extends AbstractConversationResource {
 
     return user;
   }
+
+  updateResponseCode = (code: number): void => {
+    this.responseCode = code;
+  };
 }
