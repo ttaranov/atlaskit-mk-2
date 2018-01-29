@@ -67,7 +67,7 @@ export default class ApplicationCard extends React.Component<
   ApplicationCardProps,
   ApplicationCardState
 > {
-  state = {
+  state: ApplicationCardState = {
     actionState: 'success',
     alertType: 'success',
     alertMessage:
@@ -182,7 +182,6 @@ export default class ApplicationCard extends React.Component<
     } = this.props;
     return (
       <CardFrame
-        innerRef={this.handleMount}
         minWidth={240}
         maxWidth={Boolean(preview) ? 400 : 664}
         href={link}
