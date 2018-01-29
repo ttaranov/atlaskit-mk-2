@@ -152,7 +152,13 @@ export class App extends Component<AppProps, AppState> {
   }
 
   render() {
-    const { selectedServiceName, isVisible, onClose, store, hasError } = this.props;
+    const {
+      selectedServiceName,
+      isVisible,
+      onClose,
+      store,
+      hasError,
+    } = this.props;
     const { isDropzoneActive } = this.state;
 
     if (!isVisible) {
@@ -163,6 +169,7 @@ export class App extends Component<AppProps, AppState> {
       <Provider store={store}>
         <ModalDialog onClose={onClose} width="x-large" isChromeless={true}>
           <PassContext store={store}>
+            <ErrorRenderer hasError={hasError} />
             <MediaPickerPopupWrapper>
               <SidebarWrapper>
                 <Sidebar />
@@ -212,6 +219,7 @@ const mapStateToProps = ({
   userAuthProvider,
   selectedServiceName: view.service.name,
   isVisible: view.isVisible,
+  hasError: view.hasError,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<State>): AppDispatchProps => ({
@@ -257,9 +265,32 @@ const mapDispatchToProps = (dispatch: Dispatch<State>): AppDispatchProps => ({
         file,
         error,
       }),
-    )
-  }
+    );
+  },
 });
+
+export class ErrorRenderer extends Component {
+  render() {
+    const { hasError } = this.props;
+    if (hasError) {
+      return (
+        <FlagGroup>
+          <Flag
+            appearance="error"
+            icon={<ErrorIcon label="Error" secondaryColor={colors.R400} />}
+            id="error"
+            key="error"
+            title="We couldn't connect"
+            description="Sorry about that. Try checking your internet connection or check the status on our end."
+            actions={[{ content: 'Check StatusPage', onClick: () => {} }]}
+          />
+        </FlagGroup>
+      );
+    }
+
+    return null;
+  }
+}
 
 export default connect<AppStateProps, AppDispatchProps, AppOwnProps>(
   mapStateToProps,
