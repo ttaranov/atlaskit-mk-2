@@ -4,7 +4,7 @@ const name = 'unknownBlock';
 
 export default {
   group: 'block',
-  content: '(text | hardBreak)*',
+  content: '(text | hardBreak | image | inlineExtension | emoji | mention)*',
   marks: '_',
   toDOM() {
     return ['div', { 'data-node-type': name }, 0];
