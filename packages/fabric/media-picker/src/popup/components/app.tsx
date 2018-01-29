@@ -36,7 +36,7 @@ import { fileUploadPreviewUpdate } from '../actions/fileUploadPreviewUpdate';
 import { fileUploadProgress } from '../actions/fileUploadProgress';
 import { fileUploadProcessingStart } from '../actions/fileUploadProcessingStart';
 import { fileUploadEnd } from '../actions/fileUploadEnd';
-import { fileUploadError } from '../actions/fileUploadError';
+import { fileUploadError, dismissUploadError } from '../actions/fileUploadError';
 import { MediaPicker } from '../..';
 import PassContext from './passContext';
 import {
@@ -69,6 +69,7 @@ export interface AppDispatchProps {
   readonly onUploadProcessing: (payload: UploadProcessingEventPayload) => void;
   readonly onUploadEnd: (payload: UploadEndEventPayload) => void;
   readonly onUploadError: (payload: UploadErrorEventPayload) => void;
+  readonly onDismissUploadError: () => void
 }
 
 export interface AppOwnProps {
@@ -99,6 +100,7 @@ export class App extends Component<AppProps, AppState> {
       onUploadProcessing,
       onUploadEnd,
       onUploadError,
+      onDismissUploadError,
     } = props;
 
     this.state = {
@@ -158,6 +160,7 @@ export class App extends Component<AppProps, AppState> {
       onClose,
       store,
       hasError,
+      onDismissUploadError,
     } = this.props;
     const { isDropzoneActive } = this.state;
 
@@ -169,7 +172,7 @@ export class App extends Component<AppProps, AppState> {
       <Provider store={store}>
         <ModalDialog onClose={onClose} width="x-large" isChromeless={true}>
           <PassContext store={store}>
-            <ErrorRenderer hasError={hasError} />
+            <ErrorRenderer hasError={hasError} dismissUploadErrorFlag={onDismissUploadError} />
             <MediaPickerPopupWrapper>
               <SidebarWrapper>
                 <Sidebar />
@@ -267,20 +270,26 @@ const mapDispatchToProps = (dispatch: Dispatch<State>): AppDispatchProps => ({
       }),
     );
   },
+  onDismissUploadError: () => {
+    return dispatch(
+      dismissUploadError()
+    );
+  }
 });
 
 export class ErrorRenderer extends Component {
   render() {
-    const { hasError } = this.props;
+    const { hasError, dismissUploadErrorFlag } = this.props;
+
     if (hasError) {
       return (
-        <FlagGroup onDismissed={() => console.log('close')}>
+        <FlagGroup onDismissed={dismissUploadErrorFlag}>
           <Flag
             shouldDismiss={true}
-            description="Something went wrong during file upload. Please try again."
+            description="Couldn\'t upload file. Please try again."
             icon={<ErrorIcon label="error" />}
             id="file-upload-error-flag"
-            title="Something went wrong during file upload"
+            title="Something went wrong"
           />
         </FlagGroup>
       );
