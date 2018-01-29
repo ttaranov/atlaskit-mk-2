@@ -48,6 +48,7 @@
     "@types/chai": "^4.0.4",
     "chai": "^4.1.2",
     "json-schema-diff-validator": "^0.0.5",
-    "sinon": "^2.2.0"
+    "sinon": "^2.2.0",
+    "json-schema-faker": "0.4.6"
   }
 }
