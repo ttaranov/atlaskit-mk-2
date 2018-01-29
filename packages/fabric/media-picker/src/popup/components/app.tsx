@@ -274,15 +274,13 @@ export class ErrorRenderer extends Component {
     const { hasError } = this.props;
     if (hasError) {
       return (
-        <FlagGroup>
+        <FlagGroup onDismissed={() => console.log('close')}>
           <Flag
-            appearance="error"
-            icon={<ErrorIcon label="Error" secondaryColor={colors.R400} />}
-            id="error"
-            key="error"
-            title="We couldn't connect"
-            description="Sorry about that. Try checking your internet connection or check the status on our end."
-            actions={[{ content: 'Check StatusPage', onClick: () => {} }]}
+            shouldDismiss={true}
+            description="Something went wrong during file upload. Please try again."
+            icon={<ErrorIcon label="error" />}
+            id="file-upload-error-flag"
+            title="Something went wrong during file upload"
           />
         </FlagGroup>
       );

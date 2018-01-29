@@ -8,6 +8,7 @@ export interface CancelUploadActionPayload {
 
 export interface CancelUploadAction extends Action {
   readonly type: 'CANCEL_UPLOAD';
+  
   readonly payload: CancelUploadActionPayload;
 }
 
