@@ -150,8 +150,6 @@ export const reducers = {
     };
   },
 
-  // @TODO fetch conversations error
-
   [ADD_COMMENT_REQUEST](state: State, action: Action) {
     const { payload } = action;
     const conversations = addCommentToConversation(state.conversations, {

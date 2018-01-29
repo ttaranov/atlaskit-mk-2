@@ -120,7 +120,7 @@ export class MockProvider extends AbstractConversationResource {
   }
 
   /**
-   * Adds a comment to a parent. ParentId can be either a conversation or another comment.
+   * Adds a comment to a parent, or update if existing. ParentId can be either a conversation or another comment.
    */
   async addComment(
     conversationId: string,

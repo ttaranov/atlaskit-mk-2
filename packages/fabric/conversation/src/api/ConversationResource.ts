@@ -89,7 +89,7 @@ export class AbstractConversationResource implements ResourceProvider {
   }
 
   /**
-   * Adds a comment to a parent. ParentId can be either a conversation or another comment.
+   * Adds a comment to a parent, or update if existing. ParentId can be either a conversation or another comment.
    */
   async addComment(
     conversationId: string,
@@ -183,7 +183,6 @@ export class ConversationResource extends AbstractConversationResource {
     const { dispatch } = this;
     dispatch({ type: FETCH_CONVERSATIONS_REQUEST });
 
-    // @TODO dispatch and handle error
     const { values } = await this.makeRequest<{ values: Conversation[] }>(
       `/conversation?containerId=${containerId}&expand=comments.document.adf`,
       {
@@ -260,7 +259,7 @@ export class ConversationResource extends AbstractConversationResource {
   }
 
   /**
-   * Adds a comment to a parent. ParentId can be either a conversation or another comment.
+   * Adds a comment to a parent, or update if existing. ParentId can be either a conversation or another comment.
    */
   async addComment(
     conversationId: string,
