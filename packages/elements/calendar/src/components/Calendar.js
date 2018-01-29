@@ -6,6 +6,8 @@ import CalendarStateless from './CalendarStateless';
 import type { EventChange, EventSelect } from '../types';
 
 type Props = {
+  /** Function called when a day is clicked on. Calls with an ISO string of the selected date in the
+   format YYYY-MM-DD. */
   onUpdate: (iso: string) => void,
 };
 

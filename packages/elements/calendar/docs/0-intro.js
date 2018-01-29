@@ -21,7 +21,15 @@ export default md`
 
   ${(
     <Props
+      heading="Calendar Props"
       props={require('!!extract-react-types-loader!../src/components/Calendar')}
+    />
+  )}
+
+  ${(
+    <Props
+      heading="CalendarStateless Props"
+      props={require('!!extract-react-types-loader!../src/components/CalendarStateless')}
     />
   )}
 `;
