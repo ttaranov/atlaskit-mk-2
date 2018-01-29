@@ -25,7 +25,7 @@ const createConfig = require('../config');
 const utils = require('../config/utils');
 const { print, devServerBanner, errorMsg } = require('../banner');
 
-const HOST = '0.0.0.0';
+const HOST = 'localhost';
 const PORT = 9000;
 
 async function runDevServer() {
@@ -107,7 +107,6 @@ async function runDevServer() {
       chunks: false,
       chunkModules: true,
     },
-    allowedHosts: ['localhost', '172.22.72.42', '192.168.1.18'],
   });
 
   return new Promise((resolve, reject) => {
