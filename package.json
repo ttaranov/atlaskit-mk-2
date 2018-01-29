@@ -174,7 +174,8 @@
     "webpack": "^3.7.1",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.2",
-    "whatwg-fetch": "^2.0.3"
+    "whatwg-fetch": "^2.0.3",
+    "json-schema-faker": "0.4.6"
   },
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
