@@ -67,6 +67,11 @@ export const borderRadiusLeft = `
   border-bottom-left-radius: ${akBorderRadius};
 `;
 
+export const borderRadiusBottom = `
+  border-bottom-left-radius: ${akBorderRadius};
+  border-bottom-right-radius: ${akBorderRadius};
+`;
+
 export const spaceAround = `
   display: flex;
   flex-direction: column;

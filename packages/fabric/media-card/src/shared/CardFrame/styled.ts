@@ -134,6 +134,8 @@ export const TextWrapper = styled.div`
 `;
 
 export const Content = styled.div`
+  position: relative;
+
   ${borderRadius} ${linkCardShadow} background-color: white;
   transition: box-shadow 0.3s;
 

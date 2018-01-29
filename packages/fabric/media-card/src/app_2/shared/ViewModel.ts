@@ -1,3 +1,7 @@
+import { Action } from '../shared/CardDetails/ActionsView';
+
+// TODO: in v1.6 move these types into the specific views, then the parent views can import the types from there, like the ^^^ actions
+
 export interface ContextViewModel {
   icon?: string;
   text: string;
@@ -46,14 +50,6 @@ export interface DetailViewModel {
   tooltip?: string;
 }
 
-export interface ActionViewModel {
-  text: string;
-
-  // I chose an action handler over a generic data blob because there's no ambiguity in which action the
-  // blob originated from when multiple actions contain the same blob - edge case I know, but why not
-  handler: () => void;
-}
-
 export default interface ViewModel {
   context?: ContextViewModel;
   link?: string;
@@ -64,6 +60,6 @@ export default interface ViewModel {
   description?: TextWithTooltip;
   details?: DetailViewModel[];
   users?: UserViewModel[];
-  actions?: ActionViewModel[];
+  actions?: Action[];
   onClick?: () => void;
 };
