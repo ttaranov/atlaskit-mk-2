@@ -5,16 +5,32 @@ import DropdownMenu, {
   DropdownItemGroup,
   DropdownItem,
 } from '@atlaskit/dropdown-menu';
-import { ActionViewModel } from '../../../shared/ViewModel';
 import { Wrapper } from './styled';
 
-export interface UsersProps {
-  compact?: boolean;
-  actions?: ActionViewModel[];
+export interface ActionHandlerCallbacks {
+  progress: () => void;
+  success: (message?: string) => void;
+  failure: () => void;
 }
 
-export default class Actions extends React.Component<UsersProps> {
-  createActionHandler = (handler?: () => void) => {
+export interface ActionHandler {
+  (callbacks: ActionHandlerCallbacks): void;
+}
+
+export interface Action {
+  text: string;
+  // I chose an action handler over a generic data blob because there's no ambiguity in which action the
+  // blob originated from when multiple actions contain the same blob - edge case I know, but why not
+  handler: ActionHandler;
+}
+
+export interface ActionsViewProps {
+  actions?: Action[];
+  onAction?: (action: Action) => void;
+}
+
+export default class ActionsView extends React.Component<ActionsViewProps> {
+  createActionHandler = (action: Action) => {
     return (event?: MouseEvent) => {
       /* prevent the parent link handler from opening a URL when clicked */
       if (event) {
@@ -22,8 +38,9 @@ export default class Actions extends React.Component<UsersProps> {
         event.stopPropagation();
       }
 
-      if (handler) {
-        handler();
+      const { onAction } = this.props;
+      if (onAction) {
+        onAction(action);
       }
     };
   };
@@ -37,36 +54,37 @@ export default class Actions extends React.Component<UsersProps> {
   };
 
   render() {
-    const { compact = false, actions = [] } = this.props;
+    const { actions = [] } = this.props;
 
-    if (actions.length === 0) {
+    // display a maximum of 3 actions
+    const limitedActions = actions.slice(0, 3);
+
+    if (limitedActions.length === 0) {
       return null;
     }
 
     let firstAction;
     let secondAction;
     let otherActions;
-    if (compact) {
-      otherActions = actions;
-    } else if (actions.length === 2) {
-      firstAction = actions[0];
-      secondAction = actions[1];
+    if (limitedActions.length === 2) {
+      firstAction = limitedActions[0];
+      secondAction = limitedActions[1];
       otherActions = [];
     } else {
-      firstAction = actions[0];
-      otherActions = actions.slice(1);
+      firstAction = limitedActions[0];
+      otherActions = limitedActions.slice(1);
     }
 
     return (
       <Wrapper>
         <ButtonGroup>
           {firstAction ? (
-            <Button onClick={this.createActionHandler(firstAction.handler)}>
+            <Button onClick={this.createActionHandler(firstAction)}>
               {firstAction.text}
             </Button>
           ) : null}
           {secondAction ? (
-            <Button onClick={this.createActionHandler(secondAction.handler)}>
+            <Button onClick={this.createActionHandler(secondAction)}>
               {secondAction.text}
             </Button>
           ) : null}
@@ -74,6 +92,7 @@ export default class Actions extends React.Component<UsersProps> {
             <DropdownMenu
               triggerType="button"
               triggerButtonProps={{
+                appearance: 'subtle',
                 iconAfter: <MeatballIcon label="actions" size="medium" />,
               }}
               onOpenChange={this.handleOpenChange}
@@ -82,7 +101,7 @@ export default class Actions extends React.Component<UsersProps> {
                 {otherActions.map(action => (
                   <DropdownItem
                     key={action.text}
-                    onClick={this.createActionHandler(action.handler)}
+                    onClick={this.createActionHandler(action)}
                   >
                     {action.text}
                   </DropdownItem>
