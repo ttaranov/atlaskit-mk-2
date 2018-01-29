@@ -4,4 +4,6 @@ This is a spike of the potential new build system to be shared by Atlaskit, Medi
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for more details on how to get started.
 
-Another change to trigger a separate PR
+Another change to trigger a separate PR.
+
+# THIS ONE WILL FAIL!!!

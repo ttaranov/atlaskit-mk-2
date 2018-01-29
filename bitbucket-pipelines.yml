@@ -49,8 +49,8 @@ pipelines:
       - step:
           script:
             - echo "This is a landkid build"
-            - echo "Here, we would rebase on master then run our normal build"
-            - echo "If this build succeeds, our PR will merge automatically"
+            - echo "But it will fail!"
+            - exit 1
 
     # This should only be called by a scheduled build
     build-website-production:
