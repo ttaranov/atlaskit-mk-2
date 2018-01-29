@@ -23,6 +23,7 @@ export interface Props {
   isReducedSpacing?: boolean;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
   enableTaskToolbar?: boolean;
 }
 
@@ -174,7 +175,11 @@ export default class ToolbarLists extends PureComponent<Props, State> {
       );
     } else {
       const items = this.createItems();
-      const { popupsMountPoint, popupsBoundariesElement } = this.props;
+      const {
+        popupsMountPoint,
+        popupsBoundariesElement,
+        popupsScrollableElement,
+      } = this.props;
       return (
         <Wrapper>
           <DropdownMenu
@@ -182,6 +187,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
             onItemActivated={this.onItemActivated}
             mountTo={popupsMountPoint}
             boundariesElement={popupsBoundariesElement}
+            scrollableElement={popupsScrollableElement}
             isOpen={isDropdownOpen}
             fitHeight={188}
             fitWidth={175}

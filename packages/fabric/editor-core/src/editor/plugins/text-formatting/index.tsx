@@ -78,6 +78,7 @@ const textFormatting = (options: TextFormattingOptions = {}): EditorPlugin => ({
   primaryToolbarComponent({
     editorView,
     popupsMountPoint,
+    popupsScrollableElement,
     isToolbarReducedSpacing,
     disabled,
   }) {
@@ -103,6 +104,7 @@ const textFormatting = (options: TextFormattingOptions = {}): EditorPlugin => ({
           pluginStateTextFormatting={textFormattingPluginState}
           pluginStateClearFormatting={clearFormattingPluginState}
           popupsMountPoint={popupsMountPoint}
+          popupsScrollableElement={popupsScrollableElement}
         />
       </ButtonsGroup>
     );

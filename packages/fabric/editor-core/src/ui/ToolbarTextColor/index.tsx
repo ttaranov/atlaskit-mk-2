@@ -22,6 +22,7 @@ export interface Props {
   disabled?: boolean;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
   isReducedSpacing?: boolean;
 }
 
@@ -51,6 +52,7 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
     const {
       popupsMountPoint,
       popupsBoundariesElement,
+      popupsScrollableElement,
       isReducedSpacing,
     } = this.props;
 
@@ -59,6 +61,7 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
         <Dropdown
           mountTo={popupsMountPoint}
           boundariesElement={popupsBoundariesElement}
+          scrollableElement={popupsScrollableElement}
           isOpen={isOpen && !disabled && !this.props.disabled}
           onOpenChange={this.handleOpenChange}
           fitWidth={242}

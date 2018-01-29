@@ -27,6 +27,7 @@ export type UiComponentFactoryParams = {
   appearance: EditorAppearance;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
   disabled: boolean;
 };
 

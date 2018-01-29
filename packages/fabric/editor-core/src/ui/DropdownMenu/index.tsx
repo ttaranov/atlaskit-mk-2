@@ -10,6 +10,7 @@ import withOuterListeners from '../with-outer-listeners';
 export interface Props {
   mountTo?: HTMLElement;
   boundariesElement?: HTMLElement;
+  scrollableElement?: HTMLElement;
   isOpen?: boolean;
   onOpenChange?: (attrs) => void;
   onItemActivated?: (attrs) => void;
@@ -113,6 +114,7 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
       items,
       mountTo,
       boundariesElement,
+      scrollableElement,
       onItemActivated,
       fitHeight,
       fitWidth,
@@ -124,6 +126,7 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
         target={isOpen ? target : undefined}
         mountTo={mountTo}
         boundariesElement={boundariesElement}
+        scrollableElement={scrollableElement}
         onPlacementChanged={this.updatePopupPlacement}
         fitHeight={fitHeight}
         fitWidth={fitWidth}

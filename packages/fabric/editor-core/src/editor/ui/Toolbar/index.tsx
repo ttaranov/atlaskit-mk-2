@@ -44,6 +44,7 @@ export interface ToolbarProps {
   appearance: EditorAppearance;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
   disabled: boolean;
   width?: number;
 }
@@ -71,6 +72,7 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
       items,
       popupsMountPoint,
       popupsBoundariesElement,
+      popupsScrollableElement,
       toolbarSize,
       disabled,
       isToolbarReducedSpacing,
@@ -91,6 +93,7 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
             appearance,
             popupsMountPoint,
             popupsBoundariesElement,
+            popupsScrollableElement,
             disabled,
             toolbarSize,
             isToolbarReducedSpacing,

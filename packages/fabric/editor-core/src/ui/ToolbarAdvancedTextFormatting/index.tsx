@@ -23,6 +23,7 @@ export interface Props {
   pluginStateClearFormatting?: ClearFormattingState | undefined;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
   isReducedSpacing?: boolean;
 }
 
@@ -116,6 +117,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
     const {
       popupsMountPoint,
       popupsBoundariesElement,
+      popupsScrollableElement,
       isReducedSpacing,
     } = this.props;
     const items = this.createItems();
@@ -160,6 +162,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
             onOpenChange={this.onOpenChange}
             mountTo={popupsMountPoint}
             boundariesElement={popupsBoundariesElement}
+            scrollableElement={popupsScrollableElement}
             isOpen={isOpen}
             fitHeight={188}
             fitWidth={136}

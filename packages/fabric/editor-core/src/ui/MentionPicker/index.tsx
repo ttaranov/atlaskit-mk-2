@@ -25,6 +25,7 @@ export interface Props {
   target?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
 }
 
 export interface State {
@@ -132,6 +133,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
       popupsBoundariesElement,
       popupsMountPoint,
       presenceProvider,
+      popupsScrollableElement,
     } = this.props;
 
     if (!focused || !anchorElement || query === undefined || !mentionProvider) {
@@ -145,6 +147,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
         fitWidth={340}
         boundariesElement={popupsBoundariesElement}
         mountTo={popupsMountPoint}
+        scrollableElement={popupsScrollableElement}
         offset={[0, 3]}
       >
         <AkMentionPicker
