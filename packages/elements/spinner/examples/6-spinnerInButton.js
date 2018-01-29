@@ -37,7 +37,7 @@ class SpinnerButton extends React.PureComponent<{}, State> {
             onComplete={this.completeLoad}
           />
         }
-        onClick={!isLoading && this.fetchStuff}
+        onClick={!isLoading ? this.fetchStuff : null}
       >
         Load something
       </Button>
