@@ -63,17 +63,29 @@ converters.object = type => {
 
 converters.memberExpression = type => {
   const property = type.property.name;
-  const mem = type.object.members.find(m => m.key.name === property);
-  if (mem) {
-    // we should have a convertToStringFunction that is called here, as we cannot
-    // really assume the value type.
-    return convert(mem.value);
+  if (type.object.kind === 'object') {
+    const mem =
+      type.object.kind === 'object' &&
+      type.object.members.find(m => m.key.name === property);
+    if (mem) {
+      // we should have a convertToStringFunction that is called here, as we cannot
+      // really assume the value type.
+      return convert(mem.value);
+    }
+  } else if (type.object.kind === 'call') {
+    const convertedObject = convert(type.object);
+    if (convertedObject) {
+      return `${convertedObject}.${property}`;
+    }
   }
   return property;
 };
 
 converters.call = type => {
-  return `${convert(type.callee)}(${type.args.map(convert).join(', ')})`;
+  const prefix = type.isConstructor === true ? 'new ' : '';
+  return `${prefix}${convert(type.callee)}(${type.args
+    .map(convert)
+    .join(', ')})`;
 };
 
 converters.external = type => {
@@ -95,6 +107,10 @@ converters.variable = type => {
 
 converters.templateExpression = ({ tag }) => {
   return `${convert(tag.object)} ${convert(tag.property)}`;
+};
+
+converters.FunctionDeclaration = type => {
+  return `${convert(type.id)}`;
 };
 
 export default function convert(type: { kind: string }) {
