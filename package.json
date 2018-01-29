@@ -173,9 +173,9 @@
     "typescript": "^2.5.1",
     "url-loader": "^0.5.9",
     "webdriverio": "^4.10.1",
-    "webpack": "^3.7.1",
+    "webpack": "^3.10.0",
     "webpack-bundle-analyzer": "^2.9.0",
-    "webpack-dev-server": "^2.9.2",
+    "webpack-dev-server": "^2.11.1",
     "whatwg-fetch": "^2.0.3"
   },
   "dependencies": {
