@@ -5,23 +5,51 @@ import {
   FETCH_CONVERSATIONS_SUCCESS,
   CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
+  CREATE_CONVERSATION_ERROR,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
+  ADD_COMMENT_ERROR,
   UPDATE_COMMENT_REQUEST,
   UPDATE_COMMENT_SUCCESS,
+  UPDATE_COMMENT_ERROR,
+  DELETE_COMMENT_REQUEST,
   DELETE_COMMENT_SUCCESS,
+  DELETE_COMMENT_ERROR,
+  REVERT_COMMENT,
 } from '../../src/internal/actions';
 
 import {
-  mockConversation,
-  mockComment2,
-  mockComment,
+  mockInlineConversation as mockInlineConversationClean,
+  mockConversation as mockConversationClean,
+  mockComment2 as mockComment2Clean,
+  mockComment as mockCommentClean,
 } from '../../example-helpers/MockData';
 
 describe('Reducers', () => {
+  let mockInlineConversation;
+  let mockConversation;
+  let mockComment2;
+  let mockComment;
+  let store;
+  let dispatch;
+
+  beforeEach(() => {
+    mockInlineConversation = mockInlineConversationClean;
+    mockConversation = mockConversationClean;
+    mockComment2 = mockComment2Clean;
+    mockComment = mockCommentClean;
+
+    store = createStore(reducers, {
+      conversations: [mockConversation],
+    });
+    dispatch = store.dispatch;
+  });
+
   describe('Fetch Conversations', () => {
-    const store = createStore(reducers);
-    const { dispatch } = store;
+    beforeEach(() => {
+      store = createStore(reducers);
+      dispatch = store.dispatch;
+    });
 
     it('should return initial state on REQUEST', () => {
       dispatch({
@@ -46,10 +74,10 @@ describe('Reducers', () => {
   });
 
   describe('Create Conversation', () => {
-    const store = createStore(reducers);
-    const { dispatch } = store;
-
     it('should optimistically add a conversation to state on REQUEST', () => {
+      store = createStore(reducers);
+      dispatch = store.dispatch;
+
       dispatch({
         type: CREATE_CONVERSATION_REQUEST,
         payload: mockConversation,
@@ -82,14 +110,28 @@ describe('Reducers', () => {
         conversations: [mockConversation],
       });
     });
+
+    it('should remove the pending comment on ERROR', () => {
+      store = createStore(reducers);
+      dispatch = store.dispatch;
+
+      dispatch({
+        type: CREATE_CONVERSATION_ERROR,
+        payload: mockConversation,
+      });
+
+      expect(store.getState()).toEqual({
+        conversations: [
+          {
+            ...mockConversation,
+            comments: [],
+          },
+        ],
+      });
+    });
   });
 
   describe('Add Comment', () => {
-    const store = createStore(reducers, {
-      conversations: [mockConversation],
-    });
-    const { dispatch } = store;
-
     it('should optimistically add a comment to conversation on REQUEST', () => {
       dispatch({
         type: ADD_COMMENT_REQUEST,
@@ -118,7 +160,10 @@ describe('Reducers', () => {
     it('should cleanup comment state properties on SUCCESS', () => {
       dispatch({
         type: ADD_COMMENT_SUCCESS,
-        payload: mockComment2,
+        payload: {
+          ...mockComment2,
+          localId: undefined, // Will update existing if defined
+        },
       });
 
       const { comments } = mockConversation;
@@ -134,20 +179,67 @@ describe('Reducers', () => {
                 state: undefined,
                 oldDocument: undefined,
                 isPlaceholder: false,
+                localId: undefined,
               },
             ],
           },
         ],
       });
     });
+
+    it('should apply ERROR state to the comment on ERROR', () => {
+      dispatch({
+        type: ADD_COMMENT_REQUEST,
+        payload: mockComment2,
+      });
+
+      dispatch({
+        type: ADD_COMMENT_ERROR,
+        payload: mockComment2,
+      });
+
+      const { comments } = mockConversation;
+
+      expect(store.getState()).toEqual({
+        conversations: [
+          {
+            ...mockConversation,
+            comments: [
+              ...comments,
+              {
+                ...mockComment2,
+                state: 'ERROR',
+                oldDocument: mockComment2.document,
+                isPlaceholder: true,
+              },
+            ],
+          },
+        ],
+      });
+    });
+
+    it('should not duplicate the comment on RETRY', () => {
+      expect(store.getState().conversations[0].comments.length).toEqual(2);
+
+      // First request - pending
+      dispatch({
+        type: ADD_COMMENT_REQUEST,
+        payload: mockComment2,
+      });
+
+      expect(store.getState().conversations[0].comments.length).toEqual(3);
+
+      // Retry
+      dispatch({
+        type: ADD_COMMENT_REQUEST,
+        payload: mockComment2,
+      });
+
+      expect(store.getState().conversations[0].comments.length).toEqual(3);
+    });
   });
 
   describe('Update Comment', () => {
-    const store = createStore(reducers, {
-      conversations: [mockConversation],
-    });
-    const { dispatch } = store;
-
     it('should optimistically update the comment on REQUEST', () => {
       dispatch({
         type: UPDATE_COMMENT_REQUEST,
@@ -183,13 +275,58 @@ describe('Reducers', () => {
         conversations: [mockConversation],
       });
     });
+
+    it('should apply ERROR state to the comment on ERROR', () => {
+      dispatch({
+        type: UPDATE_COMMENT_ERROR,
+        payload: mockComment,
+      });
+
+      const [firstComment, ...otherComments] = mockConversation.comments;
+
+      expect(store.getState()).toEqual({
+        conversations: [
+          {
+            ...mockConversation,
+            comments: [
+              {
+                ...firstComment,
+                oldDocument: firstComment.document,
+                state: 'ERROR',
+              },
+              ...otherComments,
+            ],
+          },
+        ],
+      });
+    });
   });
 
   describe('Delete Comment', () => {
-    const store = createStore(reducers, {
-      conversations: [mockConversation],
+    it('should optimistically update the comment on REQUEST', () => {
+      dispatch({
+        type: DELETE_COMMENT_REQUEST,
+        payload: mockComment,
+      });
+
+      const [firstComment, ...otherComments] = mockConversation.comments;
+
+      expect(store.getState()).toEqual({
+        conversations: [
+          {
+            ...mockConversation,
+            comments: [
+              {
+                ...firstComment,
+                state: 'SAVING',
+                oldDocument: firstComment.document,
+              },
+              ...otherComments,
+            ],
+          },
+        ],
+      });
     });
-    const { dispatch } = store;
 
     it('should mark comment as deleted on SUCCESS', () => {
       dispatch({
@@ -215,6 +352,127 @@ describe('Reducers', () => {
           },
         ],
       });
+    });
+
+    it('should apply ERROR state to the comment on ERROR', () => {
+      dispatch({
+        type: DELETE_COMMENT_ERROR,
+        payload: mockComment,
+      });
+
+      const [firstComment, ...otherComments] = mockConversation.comments;
+
+      expect(store.getState()).toEqual({
+        conversations: [
+          {
+            ...mockConversation,
+            comments: [
+              {
+                ...firstComment,
+                oldDocument: firstComment.document,
+                state: 'ERROR',
+              },
+              ...otherComments,
+            ],
+          },
+        ],
+      });
+    });
+  });
+
+  describe('Revert comment', () => {
+    it('should restore the comment to its previous state', () => {
+      dispatch({
+        type: UPDATE_COMMENT_REQUEST,
+        payload: {
+          ...mockComment,
+          document: {
+            adf: {
+              content: [
+                {
+                  type: 'text',
+                  text: 'foo bar',
+                },
+              ],
+            },
+          },
+        },
+      });
+
+      const state = store.getState();
+      const [comment] = state.conversations[0].comments.filter(
+        comment => comment.localId === mockComment.localId,
+      );
+      expect(comment.document.adf.content).toEqual([
+        {
+          type: 'text',
+          text: 'foo bar',
+        },
+      ]);
+
+      dispatch({
+        type: REVERT_COMMENT,
+        payload: {
+          ...mockComment,
+          oldDocument: mockComment.document,
+        },
+      });
+
+      const newState = store.getState();
+      const [revertedComment] = newState.conversations[0].comments.filter(
+        comment => comment.localId === mockComment.localId,
+      );
+      expect(revertedComment.document).toEqual(mockComment.document);
+    });
+
+    it('should remove the comment if it is an optimistic placeholder', () => {
+      dispatch({
+        type: ADD_COMMENT_REQUEST,
+        payload: mockComment2,
+      });
+
+      dispatch({
+        type: REVERT_COMMENT,
+        payload: {
+          ...mockComment2,
+          isPlaceholder: true,
+        },
+      });
+
+      const state = store.getState();
+      const [comment] = state.conversations[0].comments.filter(
+        comment => comment.localId === mockComment2.localId,
+      );
+      expect(comment).toBeUndefined();
+    });
+
+    it('should remove the conversation if the removed comment was the only one', () => {
+      const dummyComment = {
+        ...mockComment2,
+        conversationId: mockInlineConversation.conversationId,
+      };
+
+      dispatch({
+        type: CREATE_CONVERSATION_REQUEST,
+        payload: {
+          ...mockInlineConversation,
+          comments: [dummyComment],
+        },
+      });
+
+      const state = store.getState();
+      expect(state.conversations.length).toEqual(2);
+
+      dispatch({
+        type: REVERT_COMMENT,
+        payload: {
+          ...dummyComment,
+          isPlaceholder: true,
+        },
+      });
+
+      const newState = store.getState();
+      expect(newState.conversations.length).toEqual(1);
     });
   });
 });

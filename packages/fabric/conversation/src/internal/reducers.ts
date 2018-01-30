@@ -30,9 +30,7 @@ const updateComment = (
     ) {
       return {
         ...comment,
-        oldDocument: comment.oldDocument
-          ? comment.oldDocument
-          : comment.document,
+        oldDocument: comment.oldDocument || comment.document,
         ...newComment,
       };
     }
@@ -90,7 +88,10 @@ const addCommentToConversation = (
       const { comments = [] } = conversation;
 
       // If the comment already exists, update the existing one
-      if (comments.some(comment => newComment.localId === comment.localId)) {
+      if (
+        newComment.localId &&
+        comments.some(comment => newComment.localId === comment.localId)
+      ) {
         return {
           ...conversation,
           comments: [...updateComment(comments, newComment)],
@@ -169,16 +170,12 @@ export const reducers = {
 
     let conversations: Conversation[];
 
-    if (payload.localId) {
-      conversations = updateCommentInConversation(state.conversations, {
-        ...payload,
-        state: undefined,
-        oldDocument: undefined,
-        isPlaceholder: false,
-      });
-    } else {
-      conversations = addCommentToConversation(state.conversations, payload);
-    }
+    conversations = addCommentToConversation(state.conversations, {
+      ...payload,
+      state: undefined,
+      oldDocument: undefined,
+      isPlaceholder: false,
+    });
 
     return {
       ...state,
