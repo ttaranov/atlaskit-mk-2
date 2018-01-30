@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { AppCardView as OldAppCardView } from '../../../src/app';
 import ApplicationCard from '../../../src/app_2/ApplicationCard';
 import { AppCardView, AppCardModel } from '../../../src/app_2/AppCardViewV2';
@@ -410,7 +410,7 @@ describe('AppCardViewV2', () => {
       },
     };
     const onActionClick = jest.fn();
-    const element = shallow(
+    const element = mount(
       <AppCardView
         newDesign={true}
         model={{
@@ -420,21 +420,14 @@ describe('AppCardViewV2', () => {
         onActionClick={onActionClick}
       />,
     );
-    const actions = element
-      .find(ApplicationCard)
-      .first()
-      .prop('actions');
-    if (actions && actions.length) {
-      const handler = actions[0].handler;
-      handler();
-      expect(onActionClick).toBeCalledWith(
-        action,
-        expect.objectContaining({
-          progress: expect.any(Function),
-          success: expect.any(Function),
-          failure: expect.any(Function),
-        }),
-      );
-    }
+    element.find('button').simulate('click');
+    expect(onActionClick).toBeCalledWith(
+      action,
+      expect.objectContaining({
+        progress: expect.any(Function),
+        success: expect.any(Function),
+        failure: expect.any(Function),
+      }),
+    );
   });
 });
