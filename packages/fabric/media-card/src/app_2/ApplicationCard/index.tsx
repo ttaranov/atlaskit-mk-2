@@ -18,38 +18,23 @@ export interface ApplicationCardState {
   action?: Action;
   actionState?: 'pending' | 'success' | 'failure';
   actionMessage?: string;
-
-  // these fields are duplicated because the Alert state isn't persisted by CSSTransition as it is exiting
-  // so it will shrinks in height and/or change type as it is exiting if we're using actionState/actionMessage
-  alertType?: 'success' | 'failure';
-  alertMessage?: string;
 }
 
 function success(
   message?: string,
-): Pick<
-  ApplicationCardState,
-  'actionState' | 'actionMessage' | 'alertType' | 'alertMessage'
-> {
+): Pick<ApplicationCardState, 'actionState' | 'actionMessage'> {
   return {
     actionState: 'success',
     actionMessage: message,
-    alertType: 'success',
-    alertMessage: message,
   };
 }
 
 function failure(
   message?: string,
-): Pick<
-  ApplicationCardState,
-  'actionState' | 'actionMessage' | 'alertType' | 'alertMessage'
-> {
+): Pick<ApplicationCardState, 'actionState' | 'actionMessage'> {
   return {
     actionState: 'failure',
     actionMessage: message,
-    alertType: 'failure',
-    alertMessage: message,
   };
 }
 
@@ -137,12 +122,11 @@ export default class ApplicationCard extends React.Component<
   }
 
   renderAlert() {
-    const { actionState, alertType, alertMessage } = this.state;
+    const { actionState, actionMessage } = this.state;
 
     const visible =
       (actionState === 'success' || actionState === 'failure') &&
-      alertType !== undefined &&
-      alertMessage !== undefined;
+      Boolean(actionMessage);
 
     return (
       <AlertWrapper>
@@ -153,8 +137,8 @@ export default class ApplicationCard extends React.Component<
         >
           {visible ? (
             <AlertView
-              type={alertType || 'failure'}
-              message={alertMessage}
+              type={actionState || 'failure'}
+              message={actionMessage}
               onTryAgain={this.handleTryAgain}
               onCancel={this.handleCancel}
             />

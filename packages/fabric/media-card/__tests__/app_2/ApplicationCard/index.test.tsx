@@ -15,7 +15,12 @@ const pendingAction = {
   handler: ({ progress }) => progress(),
 };
 
-const successAction = {
+const successActionWithoutMessage = {
+  text: 'Like',
+  handler: ({ success }) => success(),
+};
+
+const successActionWithMessage = {
   text: 'Like',
   handler: ({ success }) => success('Yey!'),
 };
@@ -137,19 +142,36 @@ describe('ApplicationCard', () => {
     expect(element.find(ActionsView).exists()).toBeFalsy();
   });
 
-  it('should render the alert when an action succeeds', () => {
-    const element = mount(<ApplicationCard actions={[successAction]} />);
+  it('should render the alert when an action succeeds with a message', () => {
+    const element = mount(
+      <ApplicationCard actions={[successActionWithMessage]} />,
+    );
     const onAction = element
       .find(ActionsView)
       .first()
       .prop('onAction');
     if (onAction) {
-      onAction(successAction);
+      onAction(successActionWithMessage);
     }
     element.update();
     expect(element.find(AlertView).exists()).toBeTruthy();
     expect(element.find(AlertView).prop('type')).toEqual('success');
     expect(element.find(AlertView).prop('message')).toEqual('Yey!');
+  });
+
+  it('should not render the alert when an action succeeds', () => {
+    const element = mount(
+      <ApplicationCard actions={[successActionWithoutMessage]} />,
+    );
+    const onAction = element
+      .find(ActionsView)
+      .first()
+      .prop('onAction');
+    if (onAction) {
+      onAction(successActionWithoutMessage);
+    }
+    element.update();
+    expect(element.find(AlertView).exists()).toBeFalsy();
   });
 
   it('should render the alert when an action failed', () => {
@@ -168,13 +190,15 @@ describe('ApplicationCard', () => {
 
   it('should not render the alert after 2 seconds when an action succeeds', done => {
     jest.useFakeTimers();
-    const element = mount(<ApplicationCard actions={[successAction]} />);
+    const element = mount(
+      <ApplicationCard actions={[successActionWithMessage]} />,
+    );
     const onAction = element
       .find(ActionsView)
       .first()
       .prop('onAction');
     if (onAction) {
-      onAction(successAction);
+      onAction(successActionWithMessage);
     }
     setTimeout(() => {
       element.update();
