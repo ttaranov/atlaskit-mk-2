@@ -311,7 +311,12 @@ export class MediaPluginState {
   handleMediaSingleInsertion = (state: MediaState) => {
     if (state.status === 'uploading') {
       const collection = this.collectionFromProvider();
-      insertMediaSingleNode(this.view, state, collection);
+      if (insertMediaSingleNode(this.view, state, collection)) {
+        this.stateManager.unsubscribe(
+          state.id,
+          this.handleMediaSingleInsertion,
+        );
+      }
     } else {
       /**
        * There might be multiple `uploading` events for same id,

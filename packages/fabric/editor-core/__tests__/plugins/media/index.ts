@@ -1,9 +1,9 @@
-import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import * as assert from 'assert';
-import { ProviderFactory } from '@atlaskit/editor-common';
-import { mediaPluginFactory, MediaPluginState } from '../../../src';
 import { undo, history } from 'prosemirror-history';
 import { EditorView } from 'prosemirror-view';
+
+import { ProviderFactory } from '@atlaskit/editor-common';
+import { DefaultMediaStateManager, MediaState } from '@atlaskit/media-core';
 import {
   defaultSchema,
   doc,
@@ -27,6 +27,8 @@ import {
   insertText,
   getLinkCreateContextMock,
 } from '@atlaskit/editor-test-helpers';
+
+import { mediaPluginFactory, MediaPluginState } from '../../../src';
 import { setNodeSelection, setTextSelection } from '../../../src/utils';
 import { AnalyticsHandler, analyticsService } from '../../../src/analytics';
 
@@ -212,6 +214,99 @@ describe('Media plugin', () => {
                 __fileMimeType: 'image/png',
                 height: 200,
                 width: 200,
+              }),
+            ),
+            p(),
+          ),
+        );
+      });
+
+      it(`shouldn't insert multiple media in uploading triggers multiple times`, async () => {
+        const { editorView, pluginState } = editor(doc(p('')));
+        await mediaProvider;
+
+        pluginState.insertFiles([
+          {
+            id: 'foo',
+            fileMimeType: 'image/jpeg',
+          },
+        ]);
+
+        const eventPayload: MediaState = {
+          id: 'foo',
+          status: 'uploading',
+          fileName: 'foo.jpg',
+          fileSize: 100,
+          fileMimeType: 'image/jpeg',
+          thumbnail: { dimensions: { width: 100, height: 100 }, src: '' },
+        };
+
+        stateManager.updateState('foo', eventPayload);
+        stateManager.updateState('foo', eventPayload);
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            mediaSingle({
+              layout: 'center',
+            })(
+              media({
+                id: 'foo',
+                type: 'file',
+                collection: testCollectionName,
+                __fileName: 'foo.jpg',
+                __fileSize: 100,
+                __fileMimeType: 'image/jpeg',
+                height: 100,
+                width: 100,
+              }),
+            ),
+            p(),
+          ),
+        );
+      });
+
+      it('should wait for next uploading event if current one is unsuccessful', async () => {
+        const { editorView, pluginState } = editor(doc(p('')));
+        await mediaProvider;
+
+        pluginState.insertFiles([
+          {
+            id: 'foo',
+            fileMimeType: 'image/jpeg',
+          },
+        ]);
+
+        stateManager.updateState('foo', {
+          id: 'foo',
+          status: 'uploading',
+          fileName: 'foo.jpg',
+          fileSize: 100,
+          fileMimeType: 'image/jpeg',
+        });
+
+        stateManager.updateState('foo', {
+          id: 'foo',
+          status: 'uploading',
+          fileName: 'foo.jpg',
+          fileSize: 100,
+          fileMimeType: 'image/jpeg',
+          thumbnail: { dimensions: { width: 100, height: 100 }, src: '' },
+        });
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            mediaSingle({
+              layout: 'center',
+            })(
+              media({
+                id: 'foo',
+                type: 'file',
+                collection: testCollectionName,
+                __fileName: 'foo.jpg',
+                __fileSize: 100,
+                __fileMimeType: 'image/jpeg',
+                height: 100,
+                width: 100,
               }),
             ),
             p(),
