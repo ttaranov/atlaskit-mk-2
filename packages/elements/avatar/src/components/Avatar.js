@@ -7,16 +7,10 @@ import Presence from './Presence';
 import AvatarImage from './AvatarImage';
 import Status from './Status';
 import Outer, { PresenceWrapper, StatusWrapper } from '../styled/Avatar';
-import { omit } from '../utils';
+import { omit, warn } from '../utils';
 import { getProps, getStyledAvatar } from '../helpers';
 import { mapProps, withPseudoState } from '../hoc';
 import type { AvatarPropTypes, SupportedSizeWithAnIcon } from '../types';
-
-const warn = (message: string) => {
-  if (process.env.NODE_ENV !== 'production') {
-    console.warn(message); // eslint-disable-line no-console
-  }
-};
 
 class Avatar extends Component<AvatarPropTypes> {
   ref: ?HTMLElement;

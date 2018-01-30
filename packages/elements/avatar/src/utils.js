@@ -14,3 +14,9 @@ export function getDisplayName(prefix: string, Component: ComponentType) {
 
   return componentName ? `${prefix}(${componentName})` : prefix;
 }
+
+export function warn(message: string) {
+  if (process.env.NODE_ENV !== 'production') {
+    console.warn(message); // eslint-disable-line no-console
+  }
+}

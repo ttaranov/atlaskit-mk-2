@@ -2,16 +2,23 @@
 import React, { cloneElement, Component } from 'react';
 
 import { propsOmittedFromClickData } from './constants';
-import { omit } from '../utils';
+import { omit, warn } from '../utils';
 import {
   getBackgroundColor,
   Content,
+  TextWithContent,
   PrimaryText,
+  AdditionalContent,
   SecondaryText,
 } from '../styled/AvatarItem';
 import { getProps, getStyledAvatarItem } from '../helpers';
 import { withPseudoState } from '../hoc';
-import type { AvatarClickType, ComponentType, ElementType } from '../types';
+import type {
+  AvatarClickType,
+  ChildrenType,
+  ComponentType,
+  ElementType,
+} from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
@@ -42,12 +49,29 @@ type Props = {
   target?: '_blank' | '_self' | '_top' | '_parent',
   /** Whether or not overflowing primary and secondary text is truncated */
   enableTextTruncate?: boolean,
+  /** Indicate where to place the provided children. */
+  childrenPlacement?:
+    | 'content'
+    | 'beforePrimaryText'
+    | 'afterPrimaryText'
+    | 'beforeSecondaryText'
+    | 'afterSecondaryText',
+  /**
+   * Content to be displayed.
+   * If no children are provided, the component falls back to displaying "primaryText"
+   * and "secondaryText" properties.
+   * If children are provided, their location depends on the value of "childrenPlacement".
+   */
+  children?: ChildrenType,
 };
 
 class AvatarItem extends Component<Props> {
   node: ?HTMLElement;
 
-  static defaultProps = { enableTextTruncate: true };
+  static defaultProps = {
+    enableTextTruncate: true,
+    childrenPlacement: 'content',
+  };
 
   // expose blur/focus to consumers via ref
   blur = () => {
@@ -56,6 +80,12 @@ class AvatarItem extends Component<Props> {
   focus = () => {
     if (this.node) this.node.focus();
   };
+
+  isClickable() {
+    const { isDisabled, onClick } = this.props;
+
+    return !isDisabled && typeof onClick === 'function';
+  }
 
   // disallow click on disabled avatars
   guardedClick = (event: KeyboardEvent | MouseEvent) => {
@@ -73,12 +103,7 @@ class AvatarItem extends Component<Props> {
   };
 
   render() {
-    const {
-      avatar,
-      enableTextTruncate,
-      primaryText,
-      secondaryText,
-    } = this.props;
+    const { avatar } = this.props;
 
     // maintain the illusion of a mask around presence/status
     const borderColor = getBackgroundColor(this.props);
@@ -93,17 +118,134 @@ class AvatarItem extends Component<Props> {
       <StyledComponent
         innerRef={this.setNode}
         {...enhancedProps}
-        onClick={this.guardedClick}
+        onClick={this.isClickable() ? this.guardedClick : undefined}
       >
-        {cloneElement(avatar, { borderColor })}
+        {avatar && cloneElement(avatar, { borderColor })}
+        {this.getContent()}
+      </StyledComponent>
+    );
+  }
+
+  getContent() {
+    const {
+      enableTextTruncate,
+      primaryText,
+      secondaryText,
+      childrenPlacement,
+      children,
+    } = this.props;
+
+    if (React.Children.count(children) === 0) {
+      return (
         <Content truncate={enableTextTruncate}>
           <PrimaryText truncate={enableTextTruncate}>{primaryText}</PrimaryText>
           <SecondaryText truncate={enableTextTruncate}>
             {secondaryText}
           </SecondaryText>
         </Content>
-      </StyledComponent>
+      );
+    }
+
+    if (childrenPlacement === 'content') {
+      if (primaryText || secondaryText) {
+        warn(
+          '"primaryText" and "secondaryText" have no effect when children are provided and "childrenPlacement" is set to "content"',
+        );
+      }
+
+      return <Content truncate={enableTextTruncate}>{children}</Content>;
+    }
+
+    return (
+      <Content truncate={enableTextTruncate}>
+        {this.getPrimaryContent()}
+        {this.getSecondaryContent()}
+      </Content>
     );
+  }
+
+  getPrimaryContent() {
+    const {
+      enableTextTruncate,
+      primaryText,
+      childrenPlacement,
+      children,
+    } = this.props;
+
+    switch (childrenPlacement) {
+      case 'beforePrimaryText': {
+        return (
+          <TextWithContent>
+            <PrimaryText>
+              <AdditionalContent position="pre">{children}</AdditionalContent>
+            </PrimaryText>
+            <PrimaryText truncate={enableTextTruncate}>
+              {primaryText}
+            </PrimaryText>
+          </TextWithContent>
+        );
+      }
+      case 'afterPrimaryText': {
+        return (
+          <TextWithContent>
+            <PrimaryText truncate={enableTextTruncate}>
+              {primaryText}
+            </PrimaryText>
+            <PrimaryText>
+              <AdditionalContent position="post">{children}</AdditionalContent>
+            </PrimaryText>
+          </TextWithContent>
+        );
+      }
+      default: {
+        return (
+          <PrimaryText truncate={enableTextTruncate}>{primaryText}</PrimaryText>
+        );
+      }
+    }
+  }
+
+  getSecondaryContent() {
+    const {
+      enableTextTruncate,
+      secondaryText,
+      childrenPlacement,
+      children,
+    } = this.props;
+
+    switch (childrenPlacement) {
+      case 'beforeSecondaryText': {
+        return (
+          <TextWithContent>
+            <SecondaryText>
+              <AdditionalContent position="pre">{children}</AdditionalContent>
+            </SecondaryText>
+            <SecondaryText truncate={enableTextTruncate}>
+              {secondaryText}
+            </SecondaryText>
+          </TextWithContent>
+        );
+      }
+      case 'afterSecondaryText': {
+        return (
+          <TextWithContent>
+            <SecondaryText truncate={enableTextTruncate}>
+              {secondaryText}
+            </SecondaryText>
+            <SecondaryText>
+              <AdditionalContent position="post">{children}</AdditionalContent>
+            </SecondaryText>
+          </TextWithContent>
+        );
+      }
+      default: {
+        return (
+          <SecondaryText truncate={enableTextTruncate}>
+            {secondaryText}
+          </SecondaryText>
+        );
+      }
+    }
   }
 }
 

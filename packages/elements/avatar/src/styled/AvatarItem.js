@@ -106,15 +106,33 @@ const truncateTextFlexParent = p =>
     min-width: 0;
   `;
 
+export const Truncate = styled.div`
+  ${truncateText};
+`;
+
 export const Content = styled.div`
   ${truncateTextFlexParent} flex: 1 1 100%;
   line-height: 1.4;
   padding-left: ${gridSize}px;
 `;
-export const PrimaryText = styled.div`
-  ${truncateText} color: ${colors.text};
+export const TextWithContent = styled.div`
+  display: flex;
 `;
-export const SecondaryText = styled.div`
-  ${truncateText} color: ${colors.subtleText};
+export const PrimaryText = styled(Truncate)`
+  color: ${colors.text};
+`;
+export const AdditionalContent = styled.div`
+  white-space: nowrap;
+  ${({ position }) =>
+    position === 'pre'
+      ? css`
+          margin-right: ${gridSize}px;
+        `
+      : css`
+          margin-left: ${gridSize}px;
+        `};
+`;
+export const SecondaryText = styled(Truncate)`
+  color: ${colors.subtleText};
   font-size: 0.85em;
 `;
