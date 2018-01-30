@@ -101,7 +101,9 @@ export default class ApplicationCard extends React.Component<
     this.setState({ action });
 
     // clear previous success alerts that haven't been cleared
-    if (this.timeout) clearTimeout(this.timeout);
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
     action.handler(this.actionHandlerCallbacks);
   };
 
