@@ -30,7 +30,10 @@ const PORT = 9000;
 
 async function runDevServer() {
   const [entry, workspacesGlobRaw = ''] = process.argv.slice(2);
-  const workspacesGlob = workspacesGlobRaw.replace(/^['"](.+)['"]$/, '$1'); // Unwrap string from quotes
+  const report = !!process.argv.find(arg => arg.startsWith('--report'));
+  const workspacesGlob = workspacesGlobRaw.startsWith('--')
+    ? ''
+    : workspacesGlobRaw.replace(/^['"](.+)['"]$/, '$1'); // Unwrap string from quotes
   const env = 'development';
   const includePatterns = workspacesGlob ? false : true; // if glob exists we just want to show what matches it
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
@@ -79,6 +82,7 @@ async function runDevServer() {
     globs,
     env,
     includePatterns,
+    report,
   });
 
   const compiler = webpack(config);

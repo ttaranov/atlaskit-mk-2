@@ -4,6 +4,8 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin;
 const { createDefaultGlob } = require('./utils');
 
 module.exports = function createWebpackConfig(
@@ -16,6 +18,7 @@ module.exports = function createWebpackConfig(
     env = 'development',
     cwd = process.cwd(),
     noMinimize = false,
+    report = false,
   } /*: {
     entry: string,
     host?: string,
@@ -24,7 +27,8 @@ module.exports = function createWebpackConfig(
     cwd?: string,
     includePatterns: boolean,
     env: string,
-    noMinimize?: boolean
+    noMinimize?: boolean,
+    report?: boolean,
   }*/,
 ) {
   return {
@@ -149,7 +153,7 @@ module.exports = function createWebpackConfig(
         'node_modules',
       ],
     },
-    plugins: plugins({ cwd, env, noMinimize }),
+    plugins: plugins({ cwd, env, noMinimize, report }),
   };
 };
 
@@ -158,7 +162,8 @@ function plugins(
     cwd,
     env,
     noMinimize,
-  } /*: { cwd: string, env: string, noMinimize?: boolean } */,
+    report,
+  } /*: { cwd: string, env: string, noMinimize: boolean, report: boolean } */,
 ) {
   const plugins = [
     //
@@ -232,6 +237,17 @@ function plugins(
       'process.env.NODE_ENV': `"${env}"`,
     }),
   ];
+
+  if (report) {
+    plugins.push(
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        openAnalyzer: true,
+        generateStatsFile: true,
+        logLevel: 'error',
+      }),
+    );
+  }
 
   if (env === 'production' && !noMinimize) {
     plugins.push(uglify());
