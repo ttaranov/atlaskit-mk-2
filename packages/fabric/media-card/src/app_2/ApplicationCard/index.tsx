@@ -67,12 +67,7 @@ export default class ApplicationCard extends React.Component<
   ApplicationCardProps,
   ApplicationCardState
 > {
-  state: ApplicationCardState = {
-    actionState: 'success',
-    alertType: 'success',
-    alertMessage:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur accumsan egestas orci, pellentesque porttitor dolor vulputate tincidunt. Vivamus vulputate urna nec justo molestie, eu finibus ligula volutpat. Phasellus aliquet tortor eget auctor congue. Pellentesque bibendum quis nunc at fermentum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam hendrerit tortor ac mauris ultricies efficitur. Donec pellentesque elit justo, eget volutpat est convallis ac. Fusce et sollicitudin lacus, eget sollicitudin libero. Fusce blandit neque id mi semper, id fermentum lacus commodo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  };
+  state: ApplicationCardState = {};
 
   timeout?: number;
 

@@ -346,7 +346,7 @@ export default () => (
   <div>
     <div>
       <h1>AppCardView: Pieces</h1>
-      {/* <Section title="With context">
+      <Section title="With context">
         <AppCardView model={modelWithContext} />
         <AppCardView newDesign={newDesign} model={modelWithContext} />
         <AppCardView model={modelWithIconInContext} />
@@ -427,9 +427,9 @@ export default () => (
           newDesign={newDesign}
           model={modelWithMostOfTheThingsAndWithBackground}
         />
-      </Section> */}
+      </Section>
 
-      {/* <Section title="With handlers">
+      <Section title="With handlers">
         <AppCardView
           model={modelWithShortTitle}
           onClick={handleClick}
@@ -452,8 +452,8 @@ export default () => (
           onClick={handleClick}
           onActionClick={handleActionClick}
         />
-      </Section> */}
-      {/* 
+      </Section>
+
       <FixedWidthContainer>
         <Section title="In a container">
           <AppCardView model={{ title: { text: 'Short title' } }} />
@@ -481,9 +481,7 @@ export default () => (
           <AppCardView
             model={{
               title: {
-                text: `Super long title, longer than the card max-width: ${
-                  loremIpsum
-                }`,
+                text: `Super long title, longer than the card max-width: ${loremIpsum}`,
               },
             }}
           />
@@ -491,9 +489,7 @@ export default () => (
             newDesign={newDesign}
             model={{
               title: {
-                text: `Super long title, longer than the card max-width: ${
-                  loremIpsum
-                }`,
+                text: `Super long title, longer than the card max-width: ${loremIpsum}`,
               },
             }}
           />
@@ -558,7 +554,7 @@ export default () => (
             model={{ preview, ...modelWithLotsOfDetails }}
           />
         </Section>
-      </FixedWidthContainer> */}
+      </FixedWidthContainer>
 
       <Section title="With loading states">
         <AppCardView
