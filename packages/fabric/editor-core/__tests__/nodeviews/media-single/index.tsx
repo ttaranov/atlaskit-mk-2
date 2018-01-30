@@ -3,6 +3,7 @@ import { mount, shallow } from 'enzyme';
 import { EditorView } from 'prosemirror-view';
 import { Node as PMNode } from 'prosemirror-model';
 import { mediaSingle, media } from '@atlaskit/editor-test-helpers';
+import { defaultSchema } from '@atlaskit/editor-common';
 import {
   MediaPluginState,
   stateKey as mediaStateKey,
@@ -25,7 +26,7 @@ describe('nodeviews/mediaSingle', () => {
     id: 'foo',
     type: 'file',
     collection: 'collection',
-  });
+  })();
 
   beforeEach(() => {
     pluginState = {} as MediaPluginState;
@@ -37,8 +38,8 @@ describe('nodeviews/mediaSingle', () => {
     const mediaSingleNode = mediaSingle({ layout: 'wrap-right' })(mediaNode);
 
     const wrapper = shallow(
-      <MediaSingle view={view} node={mediaSingleNode}>
-        <Media node={mediaNode} />
+      <MediaSingle view={view} node={mediaSingleNode(defaultSchema)}>
+        <Media node={mediaNode(defaultSchema)} />
       </MediaSingle>,
     );
 
@@ -48,15 +49,17 @@ describe('nodeviews/mediaSingle', () => {
 
   it('notifies plugin if node layout is updated', () => {
     const view = {} as EditorView;
-    const mediaSingleNode = mediaSingle({ layout: 'wrap-right' })();
-    const updatedMediaSingleNode = mediaSingle({ layout: 'center' })();
+    const mediaSingleNode = mediaSingle({ layout: 'wrap-right' })(mediaNode);
+    const updatedMediaSingleNode = mediaSingle({ layout: 'center' })(mediaNode)(
+      defaultSchema,
+    );
 
     const updateLayoutSpy = jest.fn();
     pluginState.updateLayout = updateLayoutSpy;
 
     const wrapper = mount(
-      <MediaSingle view={view} node={mediaSingleNode}>
-        <Media node={mediaNode} />
+      <MediaSingle view={view} node={mediaSingleNode(defaultSchema)}>
+        <Media node={mediaNode(defaultSchema)} />
       </MediaSingle>,
     );
 

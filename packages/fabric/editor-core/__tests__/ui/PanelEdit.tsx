@@ -1,30 +1,34 @@
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
-import panelPlugins, { PanelState } from '../../src/plugins/panel';
+import { PanelState, stateKey } from '../../src/plugins/panel';
 import PanelEdit from '../../src/ui/PanelEdit';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import AkButton from '@atlaskit/button';
-import { analyticsService } from '../../src/analytics';
 
 import {
   doc,
   panel,
   p,
-  makeEditor,
+  createEditor,
   createEvent,
-  defaultSchema,
 } from '@atlaskit/editor-test-helpers';
+import panelPlugin from '../../src/editor/plugins/panel';
+import listPlugin from '../../src/editor/plugins/lists';
 
 describe('@atlaskit/editor-core ui/PanelEdit', () => {
   const event = createEvent('event');
-  const editor = (doc: any) =>
-    makeEditor<PanelState>({
+  const editor = (doc: any, trackEvent = () => {}) =>
+    createEditor<PanelState>({
       doc,
-      plugins: panelPlugins(defaultSchema),
+      editorPlugins: [panelPlugin, listPlugin],
+      editorProps: {
+        analyticsHandler: trackEvent,
+      },
+      pluginKey: stateKey,
     });
 
   it('should return null if state variable toolbarVisible is false', () => {
-    const { editorView, pluginState } = editor(doc(panel(p('te{<>}xt'))));
+    const { editorView, pluginState } = editor(doc(panel()(p('te{<>}xt'))));
     const panelEditOptions = shallow(
       <PanelEdit pluginState={pluginState} editorView={editorView} />,
     );
@@ -33,7 +37,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
   });
 
   it('should not return null if state variable toolbarVisible is true', () => {
-    const { editorView, pluginState } = editor(doc(panel(p('te{<>}xt'))));
+    const { editorView, pluginState } = editor(doc(panel()(p('te{<>}xt'))));
     const panelEditOptions = shallow(
       <PanelEdit pluginState={pluginState} editorView={editorView} />,
     );
@@ -42,7 +46,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
   });
 
   it('should have 6 buttons in it', () => {
-    const { editorView, pluginState } = editor(doc(panel(p('te{<>}xt'))));
+    const { editorView, pluginState } = editor(doc(panel()(p('te{<>}xt'))));
     const panelEditOptions = shallow(
       <PanelEdit pluginState={pluginState} editorView={editorView} />,
     );
@@ -52,7 +56,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
 
   it('should set toolbarVisible to true when panel is clicked', () => {
     const { plugin, editorView, pluginState, sel } = editor(
-      doc(panel(p('text'))),
+      doc(panel()(p('text'))),
     );
     const panelEditOptions = mount(
       <PanelEdit pluginState={pluginState} editorView={editorView} />,
@@ -65,7 +69,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
   });
 
   it('should set toolbarVisible to false when panel is blur', () => {
-    const { plugin, editorView, pluginState } = editor(doc(panel(p('text'))));
+    const { plugin, editorView, pluginState } = editor(doc(panel()(p('text'))));
     const panelEditOptions = mount(
       <PanelEdit pluginState={pluginState} editorView={editorView} />,
     );
@@ -75,7 +79,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
   });
 
   it('should continue toolbarVisible to true when panelType is changed', () => {
-    const { plugin, editorView, pluginState } = editor(doc(panel(p('text'))));
+    const { plugin, editorView, pluginState } = editor(doc(panel()(p('text'))));
     const panelEditOptions = mount(
       <PanelEdit pluginState={pluginState} editorView={editorView} />,
     );
@@ -86,7 +90,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
   });
 
   it('should set toolbarVisible to false when panel is removed', () => {
-    const { plugin, editorView, pluginState } = editor(doc(panel(p('text'))));
+    const { plugin, editorView, pluginState } = editor(doc(panel()(p('text'))));
     const panelEditOptions = mount(
       <PanelEdit pluginState={pluginState} editorView={editorView} />,
     );
@@ -100,16 +104,16 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     let trackEvent;
     let toolbarOption;
     beforeEach(() => {
+      trackEvent = jest.fn();
       const { plugin, editorView, pluginState, sel } = editor(
-        doc(panel(p('text{<>}'))),
+        doc(panel()(p('text{<>}'))),
+        trackEvent,
       );
       toolbarOption = mount(
         <PanelEdit pluginState={pluginState} editorView={editorView} />,
       );
       plugin.props.handleDOMEvents!.focus(editorView, event);
       plugin.props.handleClick!(editorView, sel, event);
-      trackEvent = jest.fn();
-      analyticsService.trackEvent = trackEvent;
       toolbarOption.update();
     });
     afterEach(() => {

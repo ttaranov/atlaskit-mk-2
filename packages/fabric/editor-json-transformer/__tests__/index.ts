@@ -1,5 +1,5 @@
 import {
-  makeEditor,
+  createEditor,
   doc,
   defaultSchema,
   // Node
@@ -33,19 +33,44 @@ import {
   textColor,
   underline,
 } from '@atlaskit/editor-test-helpers';
+import { ProviderFactory } from '@atlaskit/editor-common';
+import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 
 import { JSONTransformer } from '../src';
+import textFormatting from '../../editor-core/src/editor/plugins/text-formatting';
+import emojiPlugin from '../../editor-core/src/editor/plugins/emoji';
+import mentionsPlugin from '../../editor-core/src/editor/plugins/mentions';
+import codeBlockPlugin from '../../editor-core/src/editor/plugins/code-block';
+import mediaPlugin from '../../editor-core/src/editor/plugins/media';
+import hyperlinkPlugin from '../../editor-core/src/editor/plugins/hyperlink';
+import textColorPlugin from '../../editor-core/src/editor/plugins/text-color';
+import panelPlugin from '../../editor-core/src/editor/plugins/panel';
+import listPlugin from '../../editor-core/src/editor/plugins/lists';
+import rulePlugin from '../../editor-core/src/editor/plugins/rule';
 
 const transformer = new JSONTransformer();
 const toJSON = node => transformer.encode(node);
 const parseJSON = node => transformer.parse(node);
+const emojiProvider = emojiTestData.getEmojiResourcePromise();
 
 describe('JSONTransformer:', () => {
   describe('encode', () => {
-    const editor = (doc: any, schema: any = defaultSchema) =>
-      makeEditor({
+    const editor = (doc: any) =>
+      createEditor({
         doc,
-        schema: defaultSchema,
+        editorPlugins: [
+          textFormatting(),
+          emojiPlugin,
+          mentionsPlugin,
+          codeBlockPlugin,
+          mediaPlugin(),
+          hyperlinkPlugin,
+          textColorPlugin,
+          panelPlugin,
+          listPlugin,
+          rulePlugin,
+        ],
+        providerFactory: ProviderFactory.create({ emojiProvider }),
       });
 
     it('should serialize common nodes/marks as ProseMirror does', () => {
@@ -54,7 +79,7 @@ describe('JSONTransformer:', () => {
           p(
             strong('>'),
             ' Atlassian: ',
-            br,
+            br(),
             a({ href: 'https://atlassian.com' })('Atlassian'),
           ),
           p(
@@ -66,19 +91,19 @@ describe('JSONTransformer:', () => {
             strike('hey'),
             textColor({ color: 'red' })('Red :D'),
           ),
-          ul(li('ichi'), li('ni'), li('san')),
-          ol(li('ek'), li('dui'), li('tin')),
-          blockquote(),
+          ul(li(p('ichi')), li(p('ni')), li(p('san'))),
+          ol(li(p('ek')), li(p('dui')), li(p('tin'))),
+          blockquote(p('1')),
           h1('H1'),
           h2('H2'),
           h3('H3'),
           h4('H4'),
           h5('H5'),
           h6('H6'),
-          emoji({ shortName: ':joy:' }),
-          panel('hello from panel'),
-          panelNote('hello from note panel'),
-          hr,
+          p(emoji({ shortName: ':joy:' })()),
+          panel()(p('hello from panel')),
+          panelNote(p('hello from note panel')),
+          hr(),
         ),
       );
       const pmDoc = editorView.state.doc;
@@ -100,7 +125,7 @@ describe('JSONTransformer:', () => {
               __displayType: 'thumbnail',
               __fileMimeType: 'image/png',
               __fileSize: 1234,
-            }),
+            })(),
           ),
         ),
       );
@@ -132,7 +157,7 @@ describe('JSONTransformer:', () => {
             mention({
               id: 'id-rick',
               text: '@Rick Sanchez',
-            }),
+            })(),
           ),
         ),
       );
@@ -167,7 +192,7 @@ describe('JSONTransformer:', () => {
               id: 'foo',
               text: 'fallback',
               userType: 'APP',
-            }),
+            })(),
           ),
         ),
       );

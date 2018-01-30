@@ -1,59 +1,29 @@
-import { browser } from '@atlaskit/editor-common';
-import rulePlugins from '../../../src/plugins/rule';
 import {
   doc,
   hr,
-  makeEditor,
+  createEditor,
   p,
   sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { analyticsService } from '../../../src/analytics';
+import rulePlugin from '../../../src/editor/plugins/rule';
 
 describe('rule', () => {
-  const editor = (doc: any) =>
-    makeEditor({
+  const editor = (doc: any, trackEvent = () => {}) =>
+    createEditor({
       doc,
-      plugins: rulePlugins(defaultSchema),
+      editorPlugins: [rulePlugin],
+      editorProps: {
+        analyticsHandler: trackEvent,
+      },
     });
 
   describe('keymap', () => {
-    if (browser.mac) {
-      // Need to unskip after ED-2305
-      describe.skip('when hits Shift-Cmd--', () => {
-        it('calls splitCodeBlock', () => {
-          const trackEvent = jest.fn();
-          analyticsService.trackEvent = trackEvent;
-          const { editorView } = editor(doc(p('text{<>}')));
-
-          sendKeyToPm(editorView, 'Shift-Cmd--');
-
-          expect(editorView.state.doc).toEqualDocument(doc(p('text'), hr));
-          expect(trackEvent).toHaveBeenCalledWith(
-            'atlassian.editor.format.horizontalrule.keyboard',
-          );
-        });
+    describe('when hits Shift-Ctrl--', () => {
+      it('calls splitCodeBlock', () => {
+        const { editorView } = editor(doc(p('text{<>}')));
+        sendKeyToPm(editorView, 'Shift-Ctrl--');
+        expect(editorView.state.doc).toEqualDocument(doc(p('text'), hr()));
       });
-      describe('when hits Escape', () => {
-        it('selection should not change', () => {
-          const { editorView } = editor(doc(p('te{<>}xt')));
-          const selectionFrom = editorView.state.selection.from;
-          sendKeyToPm(editorView, 'Escape');
-          const newSelectionFrom = editorView.state.selection.from;
-          expect(selectionFrom).toBe(newSelectionFrom);
-        });
-      });
-    } else {
-      // Need to unskip after ED-2305
-      describe.skip('when hits Shift-Ctrl--', () => {
-        it('calls splitCodeBlock', () => {
-          const { editorView } = editor(doc(p('text{<>}')));
-
-          sendKeyToPm(editorView, 'Shift-Ctrl--');
-
-          expect(editorView.state.doc).toEqualDocument(doc(p('text'), hr));
-        });
-      });
-    }
+    });
   });
 });

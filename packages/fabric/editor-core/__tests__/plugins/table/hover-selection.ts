@@ -2,7 +2,7 @@ import {
   createEvent,
   doc,
   p,
-  makeEditor,
+  createEditor,
   table,
   tr,
   tdEmpty,
@@ -17,20 +17,25 @@ import {
 } from '../../../src/editor/plugins/table/actions';
 import { tableStartPos } from '../../../src/editor/plugins/table/utils';
 import { pluginKey as hoverPluginKey } from '../../../src/editor/plugins/table/hover-selection-plugin';
-import tablePlugins, { TableState } from '../../../src/plugins/table';
+import {
+  TableState,
+  stateKey as tablePluginKey,
+} from '../../../src/plugins/table';
 import {
   getColumnPos,
   getRowPos,
   getTablePos,
 } from '../../../src/editor/plugins/table/utils';
+import tablesPlugin from '../../../src/editor/plugins/table';
 
 describe('table hover selection plugin', () => {
   const event = createEvent('event');
 
   const editor = (doc: any) =>
-    makeEditor<TableState>({
+    createEditor<TableState>({
       doc,
-      plugins: tablePlugins(),
+      editorPlugins: [tablesPlugin],
+      pluginKey: tablePluginKey,
     });
 
   describe('hoverColumn(number)', () => {

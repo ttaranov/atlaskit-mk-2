@@ -1,4 +1,5 @@
 import {
+  createEditor,
   blockquote,
   code_block,
   panel,
@@ -9,20 +10,23 @@ import {
   h4,
   h5,
   h6,
-  makeEditor,
   p,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import blockTypePlugins, {
+import {
+  stateKey as blockTypePluginKey,
   BlockTypeState,
 } from '../../../src/plugins/block-type';
 import { setTextSelection } from '../../../src/utils';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import panelPlugin from '../../../src/editor/plugins/panel';
+import listPlugin from '../../../src/editor/plugins/lists';
 
 describe('block-type', () => {
   const editor = (doc: any) =>
-    makeEditor<BlockTypeState>({
+    createEditor<BlockTypeState>({
       doc,
-      plugins: blockTypePlugins(defaultSchema),
+      editorPlugins: [codeBlockPlugin, panelPlugin, listPlugin],
+      pluginKey: blockTypePluginKey,
     });
 
   it('should be able to change to normal', () => {
@@ -120,9 +124,7 @@ describe('block-type', () => {
   });
 
   it('should have all of the present blocks type panel, blockQuote, codeBlock in availableWrapperBlockTypes', () => {
-    const { pluginState } = editor(
-      doc(panel(blockquote(code_block()('te{<>}xt')))),
-    );
+    const { pluginState } = editor(doc(p('te{<>}xt')));
     expect(pluginState.availableWrapperBlockTypes.length).toBe(3);
     expect(
       pluginState.availableWrapperBlockTypes.some(
@@ -268,14 +270,16 @@ describe('block-type', () => {
     it('should be able to insert panel', () => {
       const { pluginState, editorView } = editor(doc(p()));
       pluginState.insertBlockType('panel', editorView);
-      expect(editorView.state.doc).toEqualDocument(doc(panel(p())));
+      expect(editorView.state.doc).toEqualDocument(doc(panel()(p())));
       editorView.destroy();
     });
 
     it('should wrap current selection in panel if possible', () => {
       const { pluginState, editorView } = editor(doc(h1('test{<>}')));
       pluginState.insertBlockType('panel', editorView);
-      expect(editorView.state.doc).toEqualDocument(doc(panel(h1('test{<>}'))));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(panel()(h1('test{<>}'))),
+      );
       editorView.destroy();
     });
 
@@ -285,7 +289,7 @@ describe('block-type', () => {
       );
       pluginState.insertBlockType('panel', editorView);
       expect(editorView.state.doc).toEqualDocument(
-        doc(blockquote(p('test')), panel(p())),
+        doc(blockquote(p('test')), panel()(p())),
       );
       editorView.destroy();
     });
@@ -339,7 +343,7 @@ describe('block-type', () => {
     });
 
     it('should be false if current selection is wrapped in panel', () => {
-      const { pluginState } = editor(doc(panel(p('text{<>}'))));
+      const { pluginState } = editor(doc(panel()(p('text{<>}'))));
       expect(pluginState.blockTypesDisabled).toBe(false);
     });
 

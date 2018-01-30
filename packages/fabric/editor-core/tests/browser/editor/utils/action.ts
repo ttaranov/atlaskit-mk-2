@@ -2,19 +2,17 @@ import { name } from '../../../../package.json';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
-import mediaPluginFactory, {
-  MediaPluginState,
-} from '../../../../src/plugins/media';
+import { MediaPluginState, stateKey } from '../../../../src/plugins/media';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   doc,
   p,
   randomId,
-  makeEditor,
+  createEditor,
   storyMediaProviderFactory,
-  defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import { insertFileFromDataUrl } from '../../../../src/editor/utils/action';
+import mediaPlugin from '../../../../src/editor/plugins/media';
 
 const stateManager = new DefaultMediaStateManager();
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
@@ -28,15 +26,11 @@ const providerFactory = new ProviderFactory();
 providerFactory.setProvider('mediaProvider', mediaProvider);
 
 const editor = (doc: any, uploadErrorHandler?: () => void) =>
-  makeEditor<MediaPluginState>({
+  createEditor<MediaPluginState>({
     doc,
-    plugins: [
-      ...mediaPluginFactory(defaultSchema, {
-        providerFactory,
-        uploadErrorHandler,
-      }),
-    ],
-    schema: defaultSchema,
+    editorPlugins: [mediaPlugin()],
+    pluginKey: stateKey,
+    providerFactory,
   });
 
 describe(name, () => {

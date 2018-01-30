@@ -5,15 +5,15 @@ import {
   mediaSingle,
   media,
   randomId,
-  defaultSchema,
-  makeEditor,
+  createEditor,
 } from '@atlaskit/editor-test-helpers';
 
 import {
   insertMediaSingleNode,
   insertMediaAsMediaSingle,
 } from '../../../src/plugins/media/media-single';
-import { MediaPluginState } from '../../../src/plugins/media';
+import mediaPlugin from '../../../src/editor/plugins/media';
+import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 
 const createMediaState = (
   id: string,
@@ -29,17 +29,20 @@ const createMediaState = (
 describe('media-single', () => {
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
   const temporaryFileId = `temporary:${randomId()}`;
-  const editor = (doc: any, uploadErrorHandler?: () => void) =>
-    makeEditor<MediaPluginState>({
+  const editor = (doc: any) =>
+    createEditor({
       doc,
-      schema: defaultSchema,
+      editorPlugins: [mediaPlugin({ allowMediaSingle: true }), hyperlinkPlugin],
     });
 
   describe('insertMediaAsMediaSingle', () => {
     describe('when inserting node that is not a media node', () => {
       it('does not insert mediaSingle', () => {
         const { editorView } = editor(doc(p('text{<>}')));
-        insertMediaAsMediaSingle(editorView, p('world'));
+        insertMediaAsMediaSingle(
+          editorView,
+          p('world')(editorView.state.schema),
+        );
 
         expect(editorView.state.doc).toEqualDocument(doc(p('text')));
       });
@@ -56,7 +59,7 @@ describe('media-single', () => {
               type: 'file',
               collection: testCollectionName,
               __fileMimeType: 'pdf',
-            }),
+            })()(editorView.state.schema),
           );
 
           expect(editorView.state.doc).toEqualDocument(doc(p('text')));
@@ -73,7 +76,7 @@ describe('media-single', () => {
               type: 'file',
               collection: testCollectionName,
               __fileMimeType: 'image/png',
-            }),
+            })()(editorView.state.schema),
           );
 
           expect(editorView.state.doc).toEqualDocument(
@@ -85,7 +88,7 @@ describe('media-single', () => {
                   type: 'file',
                   collection: testCollectionName,
                   __fileMimeType: 'image/png',
-                }),
+                })(),
               ),
               p(),
             ),
@@ -116,7 +119,7 @@ describe('media-single', () => {
                 collection: testCollectionName,
                 width: 100,
                 height: 200,
-              }),
+              })(),
             ),
             p(),
           ),
@@ -146,7 +149,7 @@ describe('media-single', () => {
                 collection: testCollectionName,
                 width: 100,
                 height: 200,
-              }),
+              })(),
             ),
             mediaSingle({ layout: 'center' })(
               media({
@@ -155,7 +158,7 @@ describe('media-single', () => {
                 collection: testCollectionName,
                 width: 100,
                 height: 200,
-              }),
+              })(),
             ),
             mediaSingle({ layout: 'center' })(
               media({
@@ -164,7 +167,7 @@ describe('media-single', () => {
                 collection: testCollectionName,
                 width: 100,
                 height: 200,
-              }),
+              })(),
             ),
             p('hello'),
           ),
@@ -192,7 +195,7 @@ describe('media-single', () => {
                   collection: testCollectionName,
                   width: 100,
                   height: 200,
-                }),
+                })(),
               ),
               p(),
             ),
@@ -220,7 +223,7 @@ describe('media-single', () => {
                   collection: testCollectionName,
                   width: 100,
                   height: 200,
-                }),
+                })(),
               ),
               p(''),
             ),
@@ -251,7 +254,7 @@ describe('media-single', () => {
                   collection: testCollectionName,
                   width: 100,
                   height: 200,
-                }),
+                })(),
               ),
               p(''),
             ),
