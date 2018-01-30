@@ -2,7 +2,7 @@ import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chro
 
 import { MentionDescription, isAppMention, MentionsResult } from '../types';
 import debug from '../util/logger';
-import { SearchIndex, compareMentionDescription } from '../util/searchIndex';
+import { SearchIndex, mentionDescriptionComparator } from '../util/searchIndex';
 
 const MAX_QUERY_ITEMS = 100;
 const MAX_NOTIFIED_ITEMS = 20;
@@ -356,15 +356,17 @@ class MentionResource extends AbstractMentionResource {
   }
 
   notify(searchTime: number, mentionResult: MentionsResult, query?: string) {
-    if (searchTime > this.lastReturnedSearch) {
-      this.lastReturnedSearch = searchTime;
-      this._notifyListeners(mentionResult);
-    } else {
-      const date = new Date(searchTime).toISOString().substr(17, 6);
-      debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
-    }
+    this.sortMentionsResult(mentionResult).then(sortedMentionsResult => {
+      if (searchTime > this.lastReturnedSearch) {
+        this.lastReturnedSearch = searchTime;
+        this._notifyListeners(sortedMentionsResult);
+      } else {
+        const date = new Date(searchTime).toISOString().substr(17, 6);
+        debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
+      }
 
-    this._notifyAllResultsListeners(mentionResult);
+      this._notifyAllResultsListeners(sortedMentionsResult);
+    });
   }
 
   notifyError(error: Error, query?: string) {
@@ -403,37 +405,19 @@ class MentionResource extends AbstractMentionResource {
   }
 
   private initialState(): Promise<MentionsResult> {
-    return this.initialStateFromContext().then(inContextMentions => {
-      const inContextResultMap = inContextMentions.reduce(
-        (acc, value) => acc.set(value.id, value),
-        new Map(),
-      );
-      return this.remoteInitialState().then(results => {
-        results.mentions = results.mentions.map(result => ({
-          ...result,
-          inContext: inContextResultMap.has(result.id),
-        }));
-        results.mentions.sort(compareMentionDescription);
-
-        return results;
-      });
-    });
+    return this.remoteInitialState();
   }
 
-  private initialStateFromContext(): Promise<MentionDescription[]> {
-    this.searchIndex.reset();
+  private getUserIdsInContext(): Promise<Set<string>> {
     if (this.config.getUsersInContext) {
-      return this.config.getUsersInContext().then(users => {
-        const usersInContext = users.map(user => {
-          return { ...user, inContext: true };
-        });
-
-        this.searchIndex.indexResults(usersInContext);
-        return usersInContext;
-      });
+      return this.config
+        .getUsersInContext()
+        .then(users =>
+          users.reduce((acc, value) => acc.add(value.id), new Set()),
+        );
     }
 
-    return Promise.resolve([]);
+    return Promise.resolve(new Set());
   }
 
   /**
@@ -475,33 +459,41 @@ class MentionResource extends AbstractMentionResource {
   }
 
   private search(query: string): Promise<MentionsResult> {
-    return this.localSearch(query).then(localResults => {
-      const searchTime = Date.now() + 1; // Ensure that search time is different than the local search time
-      this.remoteSearch(query)
-        .then(result => {
-          this.activeSearches.delete(query);
-          this.searchIndex.indexResults(result.mentions);
-          return this.localSearch(query);
-        })
-        .then(
-          result => this.notify(searchTime, result, query),
+    if (this.searchIndex.hasDocuments()) {
+      return this.searchIndex.search(query).then(result => {
+        const searchTime = Date.now() + 1; // Ensure that search time is different than the local search time
+        this.remoteSearch(query).then(
+          result => {
+            this.activeSearches.delete(query);
+            this.notify(searchTime, result, query);
+            this.searchIndex.indexResults(result.mentions);
+          },
           err => {
             this._notifyErrorListeners(err);
           },
         );
 
-      return localResults;
+        return result;
+      });
+    }
+
+    return this.remoteSearch(query).then(result => {
+      this.searchIndex.indexResults(result.mentions);
+      return result;
     });
   }
 
-  private localSearch(query: string) {
-    if (this.searchIndex.hasDocuments()) {
-      return this.searchIndex.search(query);
-    } else {
-      return this.initialStateFromContext().then(() =>
-        this.searchIndex.search(query),
-      );
-    }
+  private sortMentionsResult(
+    mentionsResult: MentionsResult,
+  ): Promise<MentionsResult> {
+    return this.getUserIdsInContext().then(userIdsInContext => {
+      return {
+        ...mentionsResult,
+        mentions: mentionsResult.mentions.sort(
+          mentionDescriptionComparator(userIdsInContext),
+        ),
+      };
+    });
   }
 
   private remoteSearch(query: string): Promise<MentionsResult> {
