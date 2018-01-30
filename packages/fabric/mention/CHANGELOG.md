@@ -1,5 +1,8 @@
 # @atlaskit/mention
 
+## 9.1.0
+- [minor] FS-1633 Change the way we use getUsersInContext [86b615c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86b615c)
+
 ## 9.0.1
 
 ## 9.0.0

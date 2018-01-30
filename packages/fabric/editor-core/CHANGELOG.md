@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 61.6.5
+
 ## 61.6.4
 - [patch] Removes components, examples, and tests, for old arch editor [9fd0649](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9fd0649)
 
