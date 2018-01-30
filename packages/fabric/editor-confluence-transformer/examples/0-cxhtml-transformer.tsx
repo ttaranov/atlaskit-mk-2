@@ -8,9 +8,6 @@ import {
   Editor,
   EditorContext,
   WithEditorActions,
-  akEditorCodeBackground,
-  akEditorCodeBlockPadding,
-  akEditorCodeFontFamily,
 } from '@atlaskit/editor-core';
 import {
   storyMediaProviderFactory,
@@ -22,7 +19,6 @@ import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import Spinner from '@atlaskit/spinner';
-import { akBorderRadius } from '@atlaskit/util-shared-styles';
 
 import {
   CODE_MACRO,
@@ -57,15 +53,6 @@ export const Content = styled.div`
   height: 100%;
   background: #fff;
   box-sizing: border-box;
-
-  & .ProseMirror {
-    & pre {
-      font-family: ${akEditorCodeFontFamily};
-      background: ${akEditorCodeBackground};
-      padding: ${akEditorCodeBlockPadding};
-      border-radius: ${akBorderRadius};
-    }
-  }
 }`;
 Content.displayName = 'Content';
 
