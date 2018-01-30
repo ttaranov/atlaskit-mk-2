@@ -64,7 +64,6 @@ export default class AlertView extends React.Component<
 
     const text = type === 'success' ? message : 'Something went wrong.';
 
-    console.log('width', width);
     if (width && width < contentWidthWhenCardIs400px) {
       return <Ellipsify text={text} lines={2} inline />;
     } else {
