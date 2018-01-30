@@ -77,7 +77,7 @@ export default class ApplicationCard extends React.Component<
   }
 
   handleAction = (action: Action) => {
-    // store the action so we can try again later
+    // store the action so we can try it again later if it fails
     this.setState({ action });
 
     // clear previous success alerts that haven't been cleared
@@ -127,6 +127,7 @@ export default class ApplicationCard extends React.Component<
     const visible =
       (actionState === 'success' || actionState === 'failure') &&
       Boolean(actionMessage);
+    const alertType = actionState === 'success' ? 'success' : 'failure';
 
     return (
       <AlertWrapper>
@@ -137,7 +138,7 @@ export default class ApplicationCard extends React.Component<
         >
           {visible ? (
             <AlertView
-              type={actionState || 'failure'}
+              type={alertType}
               message={actionMessage}
               onTryAgain={this.handleTryAgain}
               onCancel={this.handleCancel}
