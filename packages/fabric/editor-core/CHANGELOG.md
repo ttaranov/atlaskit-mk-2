@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.7.0
+- [minor] The allowPlaceholderCursor prop has been removed in favour of always showing the (now renamed) fake text-cursor. [c5da217](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5da217)
+
 ## 61.6.5
 
 ## 61.6.4
