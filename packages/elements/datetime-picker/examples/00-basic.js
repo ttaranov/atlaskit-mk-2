@@ -8,7 +8,7 @@ export default () => {
   return (
     <div>
       <Label label="Date picker" />
-      <DatePicker />
+      <DatePicker defaults={{ value: '2018-01-02' }} />
       <Label label="Time picker" />
       <TimePicker />
       <Label label="Date / time picker" />
