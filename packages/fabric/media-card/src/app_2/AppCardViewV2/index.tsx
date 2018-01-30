@@ -119,7 +119,7 @@ function getActions(
           onActionClick(oldAction, {
             progress: actionCallbackHandlers.progress,
             success: (message?: string) =>
-              actionCallbackHandlers.success(message || 'Success!'),
+              actionCallbackHandlers.success(message),
             failure: (
               message?: string,
               tryAgain?: boolean,

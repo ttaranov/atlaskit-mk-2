@@ -1,6 +1,13 @@
 import * as React from 'react';
 import ComponentTransition from 'react-transition-group/Transition';
 
+/*
+  I extracted Transition into its own component for two reasons:
+    1. To make the exit transition work... react-transition-group@^2 doesn't persist the state of the rendered component as it transitions out
+    which (unless you maintain extra state in your component) results in the alert changing types and losing its message during transition
+    2. I thought it would probably be reused one-day
+*/
+
 type State = 'entering' | 'entered' | 'exiting' | 'exited';
 type EnterTransition = 'fade' | 'slide-up';
 type ExitTransition = 'fade' | 'slide-down';
@@ -106,7 +113,7 @@ export default class Transition extends React.Component<
           children,
         }),
       timeout,
-    ); // hmm not sure why we have to wait
+    ); // FIXME: hmm not sure why we have to wait - it should have already finished
   };
 
   getStyle(status): {} {
