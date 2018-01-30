@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import { colors } from '@atlaskit/theme';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import ProgressTracker from '../src/ProgressTracker';
+import { ProgressTracker } from '../src';
 import type { Stage, LinkElement } from '../src/types';
 
 const items = [

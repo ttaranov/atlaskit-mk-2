@@ -9,6 +9,7 @@ const items = [
     percentageComplete: 100,
     status: 'visited',
     href: '#',
+    noLink: true,
   },
   {
     id: '2',
@@ -16,6 +17,7 @@ const items = [
     percentageComplete: 100,
     status: 'visited',
     href: '#',
+    noLink: true,
   },
   {
     id: '3',
@@ -23,6 +25,7 @@ const items = [
     percentageComplete: 100,
     status: 'visited',
     href: '#',
+    noLink: true,
   },
   {
     id: '4',
@@ -30,6 +33,7 @@ const items = [
     percentageComplete: 100,
     status: 'visited',
     href: '#',
+    noLink: true,
   },
   {
     id: '5',
@@ -37,6 +41,7 @@ const items = [
     percentageComplete: 100,
     status: 'visited',
     href: '#',
+    noLink: true,
   },
   {
     id: '6',
