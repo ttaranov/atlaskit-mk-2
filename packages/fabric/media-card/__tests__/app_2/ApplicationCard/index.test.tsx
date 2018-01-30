@@ -178,7 +178,6 @@ describe('ApplicationCard', () => {
     }
     setTimeout(() => {
       element.update();
-      console.log(element.update());
       try {
         expect(element.find(AlertView).exists()).toBeFalsy();
         done();
