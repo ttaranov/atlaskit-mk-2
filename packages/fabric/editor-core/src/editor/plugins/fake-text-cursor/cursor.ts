@@ -9,7 +9,7 @@ import { Decoration, DecorationSet } from 'prosemirror-view';
 import { Slice, Node, ResolvedPos } from 'prosemirror-model';
 import { Mappable } from 'prosemirror-transform';
 
-export class PlaceholderBookmark {
+export class FakeTextCursorBookmark {
   pos: undefined | number = undefined;
   visible: boolean = false;
 
@@ -17,8 +17,8 @@ export class PlaceholderBookmark {
     this.pos = pos;
   }
 
-  map(mapping: Mappable): PlaceholderBookmark {
-    return new PlaceholderBookmark(mapping.map(this.pos!));
+  map(mapping: Mappable): FakeTextCursorBookmark {
+    return new FakeTextCursorBookmark(mapping.map(this.pos!));
   }
 
   resolve(doc: Node): Selection {
@@ -27,14 +27,14 @@ export class PlaceholderBookmark {
   }
 }
 
-export class PlaceholderCursor extends Selection {
+export class FakeTextCursorSelection extends Selection {
   constructor($pos: ResolvedPos) {
     super($pos, $pos);
   }
 
   map(doc: Node, mapping: Mappable): Selection {
     const $pos = doc.resolve(mapping.map(this.$head.pos));
-    return new PlaceholderCursor($pos);
+    return new FakeTextCursorSelection($pos);
   }
 
   static content(): Slice {
@@ -42,7 +42,7 @@ export class PlaceholderCursor extends Selection {
   }
 
   eq(other): boolean {
-    return other instanceof PlaceholderCursor && other.head === this.head;
+    return other instanceof FakeTextCursorSelection && other.head === this.head;
   }
 
   toJSON(): any {
@@ -50,45 +50,45 @@ export class PlaceholderCursor extends Selection {
   }
 
   static fromJSON(doc: Node, json: any): Selection {
-    return new PlaceholderCursor(doc.resolve(json.pos));
+    return new FakeTextCursorSelection(doc.resolve(json.pos));
   }
 
   getBookmark(): SelectionBookmark {
-    return new PlaceholderBookmark(this.anchor) as SelectionBookmark;
+    return new FakeTextCursorBookmark(this.anchor) as SelectionBookmark;
   }
 }
 
-Selection.jsonID('placeholder-cursor', PlaceholderCursor);
+Selection.jsonID('fake-text-cursor', FakeTextCursorSelection);
 
-export const addPlaceholderCursor = (
+export const addFakeTextCursor = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ) => {
   const { selection } = state;
   if (selection.empty) {
     const { selection: { $from } } = state;
-    dispatch(state.tr.setSelection(new PlaceholderCursor($from) as any));
+    dispatch(state.tr.setSelection(new FakeTextCursorSelection($from) as any));
   }
 };
 
-export const removePlaceholderCursor = (
+export const removeFakeTextCursor = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ) => {
-  if (state.selection instanceof PlaceholderCursor) {
+  if (state.selection instanceof FakeTextCursorSelection) {
     const { $from } = state.selection;
     dispatch(state.tr.setSelection(new TextSelection($from) as any));
   }
 };
 
-export const drawPlaceholderCursor = (
+export const drawFakeTextCursor = (
   state: EditorState,
 ): DecorationSet | null => {
-  if (!(state.selection instanceof PlaceholderCursor)) {
+  if (!(state.selection instanceof FakeTextCursorSelection)) {
     return null;
   }
   const node = document.createElement('div');
-  node.className = 'ProseMirror-placeholder-cursor';
+  node.className = 'ProseMirror-fake-text-cursor';
   return DecorationSet.create(state.doc, [
     Decoration.widget(state.selection.head, node, { key: 'Cursor' }),
   ]);

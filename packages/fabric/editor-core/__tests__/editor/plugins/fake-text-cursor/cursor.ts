@@ -3,7 +3,7 @@ import { DecorationSet } from 'prosemirror-view';
 import { Slice } from 'prosemirror-model';
 import hyperlinkPlugins, {
   HyperlinkState,
-} from '../../../src/plugins/hyperlink';
+} from '../../../../src/plugins/hyperlink';
 import {
   doc,
   makeEditor,
@@ -11,65 +11,65 @@ import {
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import {
-  addPlaceholderCursor,
-  removePlaceholderCursor,
-  PlaceholderCursor,
-  drawPlaceholderCursor,
-  PlaceholderBookmark,
-} from '../../../src/plugins/placeholder-cursor/cursor';
+  addFakeTextCursor,
+  removeFakeTextCursor,
+  FakeTextCursorSelection,
+  drawFakeTextCursor,
+  FakeTextCursorBookmark,
+} from '../../../../src/editor/plugins/fake-text-cursor/cursor';
 
-describe('placeholdercursor', () => {
+describe('FakeTextCursor -> Cursor', () => {
   const editor = (doc: any) =>
     makeEditor<HyperlinkState>({
       doc,
       plugins: hyperlinkPlugins(defaultSchema),
     });
 
-  describe('addPlaceholderCursor', () => {
+  describe('addFakeTextCursor', () => {
     it('should add placeholder cursor', () => {
       const { editorView } = editor(doc(paragraph('{<>}')));
       expect(editorView.state.selection instanceof TextSelection).toEqual(true);
-      addPlaceholderCursor(editorView.state, editorView.dispatch);
-      expect(editorView.state.selection instanceof PlaceholderCursor).toEqual(
-        true,
-      );
+      addFakeTextCursor(editorView.state, editorView.dispatch);
+      expect(
+        editorView.state.selection instanceof FakeTextCursorSelection,
+      ).toEqual(true);
       editorView.destroy();
     });
   });
 
-  describe('removePlaceholderCursor', () => {
+  describe('removeFakeTextCursor', () => {
     it('should remove placeholder cursor', () => {
       const { editorView } = editor(doc(paragraph('{<>}')));
-      addPlaceholderCursor(editorView.state, editorView.dispatch);
-      expect(editorView.state.selection instanceof PlaceholderCursor).toEqual(
-        true,
-      );
-      removePlaceholderCursor(editorView.state, editorView.dispatch);
+      addFakeTextCursor(editorView.state, editorView.dispatch);
+      expect(
+        editorView.state.selection instanceof FakeTextCursorSelection,
+      ).toEqual(true);
+      removeFakeTextCursor(editorView.state, editorView.dispatch);
       expect(editorView.state.selection instanceof TextSelection).toEqual(true);
       editorView.destroy();
     });
   });
 
-  describe('drawPlaceholderCursor', () => {
-    it('should return null if selection is not of type PlaceholderCursor', () => {
+  describe('drawFakeTextCursor', () => {
+    it('should return null if selection is not of type FakeTextCursor', () => {
       const { editorView } = editor(doc(paragraph('{<>}')));
-      const decoration = drawPlaceholderCursor(editorView.state);
+      const decoration = drawFakeTextCursor(editorView.state);
       expect(decoration).toEqual(null);
       editorView.destroy();
     });
 
-    it('should return DecorationSet if selection is of type PlaceholderCursor', () => {
+    it('should return DecorationSet if selection is of type FakeTextCursor', () => {
       const { editorView } = editor(doc(paragraph('{<>}')));
-      addPlaceholderCursor(editorView.state, editorView.dispatch);
-      const decoration = drawPlaceholderCursor(editorView.state);
+      addFakeTextCursor(editorView.state, editorView.dispatch);
+      const decoration = drawFakeTextCursor(editorView.state);
       expect(decoration instanceof DecorationSet).toEqual(true);
       editorView.destroy();
     });
   });
 
-  describe('PlaceholderBookmark', () => {
+  describe('FakeTextCursorBookmark', () => {
     const { editorView } = editor(doc(paragraph('{<>}')));
-    const linkFakeBookmark = new PlaceholderBookmark(
+    const linkFakeBookmark = new FakeTextCursorBookmark(
       editorView.state.selection.$from.pos,
     );
     it('should have instance method map defined', () => {
@@ -81,32 +81,30 @@ describe('placeholdercursor', () => {
     });
   });
 
-  describe('PlaceholderCursor', () => {
+  describe('FakeTextCursor', () => {
     const { editorView } = editor(doc(paragraph('{<>}')));
-    const linkPlaceholderCursor = new PlaceholderCursor(
+    const linkFakeTextCursor = new FakeTextCursorSelection(
       editorView.state.selection.$from,
     );
     it('should extend Selection', () => {
-      expect(linkPlaceholderCursor instanceof Selection).toEqual(true);
+      expect(linkFakeTextCursor instanceof Selection).toEqual(true);
     });
 
-    it('should return instance of PlaceholderBookmark when getBookmark is called', () => {
+    it('should return instance of FakeTextCursorBookmark when getBookmark is called', () => {
       expect(
-        linkPlaceholderCursor.getBookmark() instanceof PlaceholderBookmark,
+        linkFakeTextCursor.getBookmark() instanceof FakeTextCursorBookmark,
       ).toEqual(true);
     });
 
-    it('should return true when eq() is called with PlaceholderCursor having same head', () => {
-      const linkPlaceholderCursorOther = new PlaceholderCursor(
+    it('should return true when eq() is called with FakeTextCursor having same head', () => {
+      const linkFakeTextCursorOther = new FakeTextCursorSelection(
         editorView.state.selection.$from,
       );
-      expect(linkPlaceholderCursor.eq(linkPlaceholderCursorOther)).toEqual(
-        true,
-      );
+      expect(linkFakeTextCursor.eq(linkFakeTextCursorOther)).toEqual(true);
     });
 
     it('should return empty Slice when content() is called', () => {
-      expect(linkPlaceholderCursor.content()).toEqual(Slice.empty);
+      expect(linkFakeTextCursor.content()).toEqual(Slice.empty);
     });
   });
 });

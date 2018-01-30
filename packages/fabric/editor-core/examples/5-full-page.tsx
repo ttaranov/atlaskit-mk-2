@@ -137,7 +137,6 @@ export default class Example extends React.Component<Props, State> {
               allowUnsupportedContent={true}
               allowPanel={true}
               allowExtension={true}
-              allowPlaceholderCursor={true}
               allowRule={true}
               allowDate={true}
               allowTableColumnResizing={true}
