@@ -238,7 +238,6 @@
     "dateformat": "^1.0.12",
     "debounce": "^1.0.0",
     "debug": "^2.2.0",
-    "decamelize": "^2.0.0",
     "deep-equal": "^1.0.1",
     "deepcopy": "0.6.3",
     "domready": "^1.0.8",
