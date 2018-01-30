@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.6.4
+- [patch] Removes components, examples, and tests, for old arch editor [9fd0649](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9fd0649)
+
 ## 61.6.3
 - [patch] Reducing min-width of comment editor to 272px. [c71ff58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c71ff58)
 
