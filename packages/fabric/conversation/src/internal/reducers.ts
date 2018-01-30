@@ -94,7 +94,7 @@ const addCommentToConversation = (
       ) {
         return {
           ...conversation,
-          comments: [...updateComment(comments, newComment)],
+          comments: updateComment(comments, newComment),
         };
       }
 
@@ -117,7 +117,7 @@ const removeCommentFromConversation = (
       if (conversation.conversationId === commentToRemove.conversationId) {
         const comments = removeComment(conversation.comments, commentToRemove);
 
-        // If there's no comments, remove the conversation as wel
+        // If there's no comments, remove the conversation as well
         if (comments.length === 0) {
           return null;
         }

@@ -45,7 +45,7 @@ const RESPONSE_MESSAGES = {
   403: 'Forbidden',
   404: 'Not Found',
   500: 'Server error',
-  503: 'Unauthorised',
+  503: 'Service Unavailable',
 };
 
 export const getDataProviderFactory = () => {
