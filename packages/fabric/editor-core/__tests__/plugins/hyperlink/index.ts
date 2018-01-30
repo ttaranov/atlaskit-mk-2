@@ -20,7 +20,7 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../src/utils';
 import { analyticsService } from '../../../src/analytics';
-import { PlaceholderCursor } from '../../../src/plugins/placeholder-cursor/cursor';
+import { FakeTextCursorSelection } from '../../../src/plugins/fake-text-cursor/cursor';
 
 describe('hyperlink', () => {
   const editor = (doc: any) =>
@@ -1009,24 +1009,24 @@ describe('hyperlink', () => {
         editorView.destroy();
       });
 
-      it('should add placeholder cursor in the editor', () => {
+      it('should add fake text cursor in the editor', () => {
         const { editorView, pluginState } = editor(doc(paragraph('{<>}')));
         pluginState.showLinkPanel(editorView);
-        expect(editorView.state.selection instanceof PlaceholderCursor).toEqual(
-          true,
-        );
+        expect(
+          editorView.state.selection instanceof FakeTextCursorSelection,
+        ).toEqual(true);
         editorView.destroy();
       });
     });
   });
 
   describe('hideLinkPanel', () => {
-    it('should remove placeholder cursor from the editor', () => {
+    it('should remove fake text cursor from the editor', () => {
       const { editorView, pluginState } = editor(doc(paragraph('{<>}')));
       pluginState.showLinkPanel(editorView);
-      expect(editorView.state.selection instanceof PlaceholderCursor).toEqual(
-        true,
-      );
+      expect(
+        editorView.state.selection instanceof FakeTextCursorSelection,
+      ).toEqual(true);
       pluginState.hideLinkPanel(editorView.state, editorView.dispatch);
       expect(editorView.state.selection instanceof TextSelection).toEqual(true);
       editorView.destroy();

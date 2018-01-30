@@ -12,9 +12,9 @@ import { normalizeUrl } from '../../plugins/hyperlink/utils';
 import Separator from '../Separator';
 import RecentSearch from '../RecentSearch';
 import {
-  addPlaceholderCursor,
-  removePlaceholderCursor,
-} from '../../plugins/placeholder-cursor/cursor';
+  addFakeTextCursor,
+  removeFakeTextCursor,
+} from '../../plugins/fake-text-cursor/cursor';
 
 const TEXT_NODE = 3;
 
@@ -72,7 +72,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     });
     if (this.state.editorFocused) {
       const { editorView } = this.props;
-      addPlaceholderCursor(editorView.state, editorView.dispatch);
+      addFakeTextCursor(editorView.state, editorView.dispatch);
     }
   };
 
@@ -82,7 +82,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     });
     if (!this.state.editorFocused) {
       const { editorView } = this.props;
-      removePlaceholderCursor(editorView.state, editorView.dispatch);
+      removeFakeTextCursor(editorView.state, editorView.dispatch);
     }
   };
 

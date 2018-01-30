@@ -1,13 +1,13 @@
 import { Plugin } from 'prosemirror-state';
-import { drawPlaceholderCursor } from './cursor';
+import { drawFakeTextCursor } from './cursor';
 import { PluginKey } from 'prosemirror-state';
 
-const stateKey = new PluginKey('placeHolderPlugin');
+const stateKey = new PluginKey('fakeTextCursorPlugin');
 export { stateKey };
 
 export const plugin = new Plugin({
   props: {
-    decorations: drawPlaceholderCursor,
+    decorations: drawFakeTextCursor,
   },
   key: stateKey,
 });

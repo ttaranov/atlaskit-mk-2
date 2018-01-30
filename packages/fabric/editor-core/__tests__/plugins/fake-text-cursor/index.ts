@@ -1,14 +1,14 @@
 import { DecorationSet } from 'prosemirror-view';
 import placeholderPlugin, {
   stateKey,
-} from '../../../src/plugins/placeholder-cursor';
+} from '../../../src/plugins/fake-text-cursor';
 import { doc, makeEditor, p as paragraph } from '@atlaskit/editor-test-helpers';
 import {
-  addPlaceholderCursor,
-  drawPlaceholderCursor,
-} from '../../../src/plugins/placeholder-cursor/cursor';
+  addFakeTextCursor,
+  drawFakeTextCursor,
+} from '../../../src/plugins/fake-text-cursor/cursor';
 
-describe('placeholderplugin', () => {
+describe('fakeTextCursorPlugin', () => {
   const editor = (doc: any) =>
     makeEditor<any>({
       doc,
@@ -27,10 +27,10 @@ describe('placeholderplugin', () => {
       expect(plugin.props.decorations).not.toEqual(undefined);
     });
 
-    it('should add placeholder cursor', () => {
+    it('should add fake text-cursor', () => {
       const { editorView } = editor(doc(paragraph('{<>}')));
-      addPlaceholderCursor(editorView.state, editorView.dispatch);
-      const decorators = drawPlaceholderCursor(editorView.state);
+      addFakeTextCursor(editorView.state, editorView.dispatch);
+      const decorators = drawFakeTextCursor(editorView.state);
       expect(decorators instanceof DecorationSet).toEqual(true);
       editorView.destroy();
     });
