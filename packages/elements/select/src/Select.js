@@ -5,12 +5,12 @@ import { colors } from '@atlaskit/theme';
 
 import * as animatedComponents from 'react-select/lib/animated';
 import * as defaultComponents from './components';
-import { type ValidationState } from './ValidationWrapper';
 
 // NOTE in the future, `Props` and `defaultProps` should come
 // directly from react-select
 
 type fn = () => void;
+type ValidationState = 'default' | 'error' | 'success';
 
 type Props = {
   /* Remove the currently focused option when the user presses backspace */
@@ -109,7 +109,7 @@ export default class AtlaskitSelect extends Component<Props> {
     // props must be spread first to stop `components` being overridden
     return (
       <Select
-        {...this.props}
+        {...props}
         components={this.components}
         styles={{
           control: (styles, { isFocused }) => ({
