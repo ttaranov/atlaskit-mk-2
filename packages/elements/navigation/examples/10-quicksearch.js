@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type Element, type Node } from 'react';
 import PropTypes from 'prop-types';
 
 import Navigation, {
@@ -22,8 +22,27 @@ const getRoomAvatarUrl: GetURLSignature = idx =>
 
 const noop = () => {};
 
-type RoomResultProps = ContainerResultType & {
+type ResultData = {|
+  resultId: string | number,
+  type: string,
+|};
+
+type RoomResultProps = {
+  avatarUrl?: string,
+  caption?: string,
+  elemAfter?: Node,
+  href?: string,
+  isCompact: boolean,
+  isPrivate?: boolean,
+  isSelected: boolean,
+  name: Element<any> | string,
+  onClick: (resultData: ResultData) => mixed,
+  onMouseEnter: (resultData: ResultData) => mixed,
+  onMouseLeave: () => mixed,
+  resultId: string | number,
+  subText?: string,
   topic?: string,
+  type: string,
 };
 
 class RoomResult extends Component<RoomResultProps> {
