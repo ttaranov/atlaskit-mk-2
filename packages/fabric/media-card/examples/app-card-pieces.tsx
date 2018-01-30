@@ -321,7 +321,7 @@ const handleActionWithLoadingStatesClick = (a: AppCardAction, handlers) => {
   switch (a.target.key) {
     case 'success':
       setTimeout(() => {
-        handlers.success('Yey. It works. blah blah blah blah blah!');
+        handlers.success('Yey. It works.');
       }, 2000);
       break;
     case 'failure':

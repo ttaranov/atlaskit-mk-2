@@ -159,7 +159,7 @@ describe('ApplicationCard', () => {
     expect(element.find(AlertView).prop('message')).toEqual('Yey!');
   });
 
-  it('should not render the alert when an action succeeds', () => {
+  it('should not render the alert when an action succeeds without a message', () => {
     const element = mount(
       <ApplicationCard actions={[successActionWithoutMessage]} />,
     );

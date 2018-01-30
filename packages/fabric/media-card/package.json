@@ -25,6 +25,7 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/theme": "^2.3.2",
     "@atlaskit/avatar": "^9.0.0",
     "@atlaskit/badge": "^6.2.0",
     "@atlaskit/button": "^6.3.0",
