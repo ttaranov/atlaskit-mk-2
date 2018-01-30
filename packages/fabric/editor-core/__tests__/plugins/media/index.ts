@@ -28,7 +28,9 @@ import {
   getLinkCreateContextMock,
 } from '@atlaskit/editor-test-helpers';
 
-import { mediaPluginFactory, MediaPluginState } from '../../../src';
+import mediaPluginFactory, {
+  MediaPluginState,
+} from '../../../src/plugins/media';
 import { setNodeSelection, setTextSelection } from '../../../src/utils';
 import { AnalyticsHandler, analyticsService } from '../../../src/analytics';
 
