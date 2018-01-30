@@ -14,8 +14,9 @@ import { Command } from '../../../editor';
 
 export interface Props {
   editorView: EditorView;
-  tableElement: HTMLElement;
-  isSelected: (column: number, state: EditorState) => boolean;
+  tableElement?: HTMLElement;
+  isTableHovered: boolean;
+  checkIfSelected: (column: number, state: EditorState) => boolean;
   selectColumn: (column: number) => Command;
   insertColumn: (column: number) => void;
   hoverColumn: (column: number) => Command;
@@ -24,21 +25,32 @@ export interface Props {
 
 export default class ColumnControls extends Component<Props, any> {
   render() {
-    const { editorView: { state, dispatch } } = this.props;
-    const cols = this.props.tableElement.querySelector('tr')!.children;
+    const {
+      editorView: { state, dispatch },
+      tableElement,
+      checkIfSelected,
+      isTableHovered,
+    } = this.props;
+    if (!tableElement) {
+      return null;
+    }
+    const cols = tableElement.querySelector('tr')!.children;
     const nodes: any = [];
-    const tableHeight = this.props.tableElement.offsetHeight;
+    const tableHeight = tableElement.offsetHeight;
 
     for (let i = 0, len = cols.length; i < len; i++) {
+      const className =
+        checkIfSelected(i, state) || isTableHovered ? 'active' : '';
       nodes.push(
         <ColumnControlsButtonWrap
           key={i}
-          className={this.props.isSelected(i, state) ? 'active' : ''}
+          className={`${className} table-column`}
           style={{ width: (cols[i] as HTMLElement).offsetWidth + 1 }}
+          onMouseDown={this.handleMouseDown}
         >
           {/* tslint:disable:jsx-no-lambda */}
           <HeaderButton
-            onClick={() => this.props.selectColumn(i)(state, dispatch)}
+            onMouseDown={() => this.props.selectColumn(i)(state, dispatch)}
             onMouseOver={() => this.props.hoverColumn(i)(state, dispatch)}
             onMouseOut={() => this.props.resetHoverSelection(state, dispatch)}
           />
@@ -58,4 +70,8 @@ export default class ColumnControls extends Component<Props, any> {
       </ColumnContainer>
     );
   }
+
+  private handleMouseDown = event => {
+    event.preventDefault();
+  };
 }

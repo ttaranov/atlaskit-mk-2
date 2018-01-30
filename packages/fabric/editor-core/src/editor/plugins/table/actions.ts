@@ -19,7 +19,10 @@ export const resetHoverSelection: Command = (
   dispatch: (tr: Transaction) => void,
 ): boolean => {
   dispatch(
-    state.tr.setMeta(hoverSelectionPluginKey, { set: DecorationSet.empty }),
+    state.tr.setMeta(hoverSelectionPluginKey, {
+      decorationSet: DecorationSet.empty,
+      isTableHovered: false,
+    }),
   );
   return true;
 };
@@ -32,7 +35,7 @@ export const hoverColumn = (column: number): Command => (
   const { from, to } = getColumnPos(column, tableNode);
   dispatch(
     state.tr.setMeta(hoverSelectionPluginKey, {
-      set: createHoverDecorationSet(from, to, tableNode, state),
+      decorationSet: createHoverDecorationSet(from, to, tableNode, state),
     }),
   );
   return true;
@@ -46,7 +49,7 @@ export const hoverRow = (row: number): Command => (
   const { from, to } = getRowPos(row, tableNode);
   dispatch(
     state.tr.setMeta(hoverSelectionPluginKey, {
-      set: createHoverDecorationSet(from, to, tableNode, state),
+      decorationSet: createHoverDecorationSet(from, to, tableNode, state),
     }),
   );
   return true;
@@ -60,7 +63,8 @@ export const hoverTable: Command = (
   const { from, to } = getTablePos(tableNode);
   dispatch(
     state.tr.setMeta(hoverSelectionPluginKey, {
-      set: createHoverDecorationSet(from, to, tableNode, state),
+      decorationSet: createHoverDecorationSet(from, to, tableNode, state),
+      isTableHovered: true,
     }),
   );
   return true;

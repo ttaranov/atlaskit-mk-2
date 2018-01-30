@@ -39,7 +39,7 @@
     "lodash.clonedeep": "^4.5.0",
     "memoize-one": "^3.0.1",
     "prop-types": "^15.5.10",
-    "raf-schd": "^2.0.2",
+    "raf-schd": "^2.1.0",
     "react-transition-group": "^2.2.1",
     "styled-components": "^1.4.6"
   },
