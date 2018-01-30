@@ -9,7 +9,6 @@ import Navigation, {
   AkNavigationItemGroup,
   quickSearchResultTypes,
 } from '../src';
-import { type ContainerResultType } from '../src/components/js/quick-search/results/types';
 
 const { ContainerResult, PersonResult } = quickSearchResultTypes;
 const ROOM_RESULT_TYPE = 'room';
