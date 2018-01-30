@@ -1,10 +1,11 @@
 import { NodeSpec } from 'prosemirror-model';
+import { inlineNodes } from '../inline-nodes';
 
 const name = 'unknownBlock';
 
 export default {
   group: 'block',
-  content: '(text | hardBreak | image | inlineExtension | emoji | mention)*',
+  content: `(${Array.from(inlineNodes.values()).join(' | ')})*`,
   marks: '_',
   toDOM() {
     return ['div', { 'data-node-type': name }, 0];
