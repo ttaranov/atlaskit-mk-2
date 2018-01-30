@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.6.3
+- [patch] Reducing min-width of comment editor to 272px. [c71ff58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c71ff58)
+
 ## 61.6.2
 - [patch] Fix uploading a big image causes many duplicated uploading [27b6510](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27b6510)
 
