@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 61.6.1
+
 ## 61.6.0
 
 - [minor] added table column resizing plugin [c61e092](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c61e092)
