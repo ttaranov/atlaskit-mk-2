@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.6.2
+- [patch] Fix uploading a big image causes many duplicated uploading [27b6510](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27b6510)
+
 ## 61.6.1
 
 ## 61.6.0
