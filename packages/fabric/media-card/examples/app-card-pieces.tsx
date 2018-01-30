@@ -346,7 +346,7 @@ export default () => (
   <div>
     <div>
       <h1>AppCardView: Pieces</h1>
-      <Section title="With context">
+      {/* <Section title="With context">
         <AppCardView model={modelWithContext} />
         <AppCardView newDesign={newDesign} model={modelWithContext} />
         <AppCardView model={modelWithIconInContext} />
@@ -554,17 +554,17 @@ export default () => (
             model={{ preview, ...modelWithLotsOfDetails }}
           />
         </Section>
-      </FixedWidthContainer>
+      </FixedWidthContainer> */}
 
       <Section title="With loading states">
-        <AppCardView
+        {/* <AppCardView
           model={{
             ...modelWithMostOfTheThings,
             actions: loadingStatesActions.slice(0, 1),
           }}
           onClick={handleClick}
           onActionClick={handleActionWithLoadingStatesClick}
-        />
+        /> */}
         <AppCardView
           newDesign={newDesign}
           model={{
@@ -574,14 +574,14 @@ export default () => (
           onClick={handleClick}
           onActionClick={handleActionWithLoadingStatesClick}
         />
-        <AppCardView
+        {/* <AppCardView
           model={{
             ...modelWithMostOfTheThings,
             actions: loadingStatesActions.slice(0, 2),
           }}
           onClick={handleClick}
           onActionClick={handleActionWithLoadingStatesClick}
-        />
+        /> */}
         <AppCardView
           newDesign={newDesign}
           model={{
@@ -591,25 +591,25 @@ export default () => (
           onClick={handleClick}
           onActionClick={handleActionWithLoadingStatesClick}
         />
+        {/* <AppCardView
+          model={{ ...modelWithMostOfTheThings, actions: loadingStatesActions }}
+          onClick={handleClick}
+          onActionClick={handleActionWithLoadingStatesClick}
+        /> */}
         <AppCardView
+          newDesign={newDesign}
           model={{ ...modelWithMostOfTheThings, actions: loadingStatesActions }}
           onClick={handleClick}
           onActionClick={handleActionWithLoadingStatesClick}
         />
-        <AppCardView
-          newDesign={newDesign}
-          model={{ ...modelWithMostOfTheThings, actions: loadingStatesActions }}
-          onClick={handleClick}
-          onActionClick={handleActionWithLoadingStatesClick}
-        />
-        <AppCardView
+        {/* <AppCardView
           model={{
             ...modelWithMostOfTheThingsAndWithBackground,
             actions: loadingStatesActions.slice(0, 1),
           }}
           onClick={handleClick}
           onActionClick={handleActionWithLoadingStatesClick}
-        />
+        /> */}
         <AppCardView
           newDesign={newDesign}
           model={{
@@ -619,14 +619,14 @@ export default () => (
           onClick={handleClick}
           onActionClick={handleActionWithLoadingStatesClick}
         />
-        <AppCardView
+        {/* <AppCardView
           model={{
             ...modelWithMostOfTheThingsAndWithBackground,
             actions: loadingStatesActions.slice(0, 2),
           }}
           onClick={handleClick}
           onActionClick={handleActionWithLoadingStatesClick}
-        />
+        /> */}
         <AppCardView
           newDesign={newDesign}
           model={{
@@ -636,14 +636,14 @@ export default () => (
           onClick={handleClick}
           onActionClick={handleActionWithLoadingStatesClick}
         />
-        <AppCardView
+        {/* <AppCardView
           model={{
             ...modelWithMostOfTheThingsAndWithBackground,
             actions: loadingStatesActions,
           }}
           onClick={handleClick}
           onActionClick={handleActionWithLoadingStatesClick}
-        />
+        /> */}
         <AppCardView
           newDesign={newDesign}
           model={{
