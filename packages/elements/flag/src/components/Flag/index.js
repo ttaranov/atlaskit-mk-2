@@ -87,7 +87,7 @@ export default class Flag extends Component<FlagProps, State> {
         onClick={buttonAction}
         type="button"
       >
-        <ButtonIcon label={buttonLabel} />
+        <ButtonIcon label={buttonLabel} size="large" />
       </DismissButton>
     );
   };
