@@ -24,7 +24,7 @@ import {
   JSONDocNode,
   JSONNode,
 } from '@atlaskit/editor-json-transformer';
-import { FakeTextCursorSelection } from '../plugins/fake-text-cursor/cursor';
+import { FakeTextCursorSelection } from '../editor/plugins/fake-text-cursor/cursor';
 
 export {
   default as ErrorReporter,

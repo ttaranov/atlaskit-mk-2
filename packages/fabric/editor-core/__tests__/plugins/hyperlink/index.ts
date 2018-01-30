@@ -20,7 +20,7 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../src/utils';
 import { analyticsService } from '../../../src/analytics';
-import { FakeTextCursorSelection } from '../../../src/plugins/fake-text-cursor/cursor';
+import { FakeTextCursorSelection } from '../../../src/editor/plugins/fake-text-cursor/cursor';
 
 describe('hyperlink', () => {
   const editor = (doc: any) =>

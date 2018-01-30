@@ -3,7 +3,7 @@ import { DecorationSet } from 'prosemirror-view';
 import { Slice } from 'prosemirror-model';
 import hyperlinkPlugins, {
   HyperlinkState,
-} from '../../../src/plugins/hyperlink';
+} from '../../../../src/plugins/hyperlink';
 import {
   doc,
   makeEditor,
@@ -16,7 +16,7 @@ import {
   FakeTextCursorSelection,
   drawFakeTextCursor,
   FakeTextCursorBookmark,
-} from '../../../src/plugins/fake-text-cursor/cursor';
+} from '../../../../src/editor/plugins/fake-text-cursor/cursor';
 
 describe('FakeTextCursor -> Cursor', () => {
   const editor = (doc: any) =>

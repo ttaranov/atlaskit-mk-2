@@ -15,7 +15,7 @@ import { EditorProps } from '../../editor/types/editor-props';
 import {
   addFakeTextCursor,
   removeFakeTextCursor,
-} from '../fake-text-cursor/cursor';
+} from '../../editor/plugins/fake-text-cursor/cursor';
 
 import stateKey from './plugin-key';
 export { stateKey };

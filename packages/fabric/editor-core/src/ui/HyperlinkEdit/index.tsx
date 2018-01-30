@@ -14,7 +14,7 @@ import RecentSearch from '../RecentSearch';
 import {
   addFakeTextCursor,
   removeFakeTextCursor,
-} from '../../plugins/fake-text-cursor/cursor';
+} from '../../editor/plugins/fake-text-cursor/cursor';
 
 const TEXT_NODE = 3;
 
