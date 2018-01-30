@@ -249,8 +249,8 @@ describe('<MediaFileListViewer />', () => {
         occurrenceKey: 'some-custom-occurrence-key-2',
         type: 'file' as MediaItemType,
       }
-    ];  
-    
+    ];
+
     const subject = new Subject<MediaItem>();
     const context = Stubs.context(
       contextConfig,
@@ -261,10 +261,10 @@ describe('<MediaFileListViewer />', () => {
     const setFiles = (files) => {
       expect(files.length).toEqual(2);
       expect(files[0].id).toEqual('some-id-some-custom-occurrence-key');
-      expect(files[0].type).toEqual('non-supported');
-      
+      expect(files[0].type).toEqual('error');
+
       expect(files[1].id).toEqual('some-id-2-some-custom-occurrence-key-2');
-      expect(files[1].type).toEqual('non-supported');
+      expect(files[1].type).toEqual('error');
     };
 
     const open = ({ id }) => {
@@ -277,7 +277,10 @@ describe('<MediaFileListViewer />', () => {
       open,
     });
 
-    const additionalConfiguration = { enableMiniMode: true };
+    const additionalConfiguration = {
+      enableMiniMode: true
+    };
+
     mount(
       <MediaFileListViewer
         selectedItem={selectedItem}
@@ -290,19 +293,8 @@ describe('<MediaFileListViewer />', () => {
       />,
     );
 
-    // make all underlying observable from MediaItemProviders fail
+    // make all underlying observables from MediaItemProviders fail
     subject.error({});
 
-    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(2);
-    expect(context.getMediaItemProvider).toHaveBeenCalledWith(
-      'some-id',
-      'file',
-      'some-collection',
-    );
-    expect(context.getMediaItemProvider).toHaveBeenCalledWith(
-      'some-id-2',
-      'file',
-      'some-collection',
-    );
   });
 });

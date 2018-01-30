@@ -50,8 +50,8 @@ export class MediaFileListViewer extends Component<
 
     const config = {
       ...mediaViewerConfiguration,
-      isPreviewGenerated: isPreviewGenerated,
-      generatePreview: generatePreview
+      isPreviewGenerated: isPreviewGenerated(MediaViewer),
+      generatePreview: generatePreview(MediaViewer)
     }
 
     const { config: { authProvider } } = context;

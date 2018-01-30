@@ -48,8 +48,12 @@ export class MediaFileAttributesFactory {
     };
 
     const paramsSeparator = resource.indexOf('?') > -1 ? '&' : '?';
+
+    // If the processing status is empty means the observable resolved with error
+    const isError = !details.processingStatus;
     const processed = details.processingStatus === 'succeeded';
-    const type = artifactFormat ? artifactFormat.type : details.mediaType;
+    const mediaType = artifactFormat ? artifactFormat.type : details.mediaType;
+    const type = isError ? 'error' : (processed ? mediaType : 'non-supported');
 
     return {
       id,
@@ -57,7 +61,7 @@ export class MediaFileAttributesFactory {
         additionalParams,
       )}`,
       srcDownload: `${serviceHost}${binary}?dl=1`,
-      type: processed ? type : 'non-supported',
+      type,
       title: details.name,
       src_hd: video1280 && `${serviceHost}${video1280}`,
       poster: poster1280
