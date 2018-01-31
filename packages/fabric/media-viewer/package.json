@@ -20,6 +20,8 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "query-string": "^4.3.2",
+    "styled-components": "^1.4.6",
+    "@atlaskit/util-shared-styles": "^2.10.3",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
@@ -30,6 +32,7 @@
   "devDependencies": {
     "@atlaskit/docs": "^2.4.0",
     "@atlaskit/media-core": "^13.0.0",
+    "@atlaskit/media-test-helpers": "^9.0.0",
     "@types/jquery": "^2.0.41",
     "@types/query-string": "^4.3.1",
     "@types/sinon-chai": "^2.7.27",

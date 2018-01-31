@@ -4,6 +4,7 @@ import { Context, MediaItemType } from '@atlaskit/media-core';
 
 import { MediaCollectionViewer } from './media-collection-viewer';
 import { MediaFileListViewer } from './media-file-list-viewer';
+import { MediaViewer as ExperimentalMediaViewer } from '../newgen';
 
 import { MediaViewerConstructor, MediaViewerConfig } from '../mediaviewer';
 
@@ -19,6 +20,9 @@ export interface MediaViewerDataSource {
 }
 
 export interface MediaViewerProps {
+
+  readonly experimentalMode?: boolean; // new media-viewer
+
   readonly context: Context;
 
   readonly selectedItem: MediaViewerItem;
@@ -37,6 +41,24 @@ export interface MediaViewerState {}
 
 export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
   render(): JSX.Element {
+    if (this.props.experimentalMode) {
+      
+      const {selectedItem} = this.props;
+
+      const selectedItemId = {
+        id: selectedItem.id,
+        occurrenceKey: selectedItem.occurrenceKey,
+        mediaItemType: selectedItem.type
+      }
+      return (
+        <ExperimentalMediaViewer
+          context={this.props.context}
+          selectedItemid={selectedItemId}
+          dataSource={this.props.dataSource}
+        />
+      );
+    }
+
     if (this.props.dataSource.list) {
       return (
         <MediaFileListViewer
