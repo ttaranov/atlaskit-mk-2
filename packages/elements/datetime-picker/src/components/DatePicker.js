@@ -8,16 +8,18 @@ import { parseDate } from '../util';
 
 type Props = {
   autoFocus: boolean,
+  defaultIsOpen: boolean,
+  defaultValue: string,
   disabled: Array<string>,
   formatValue: string => string,
   isDisabled: boolean,
   onChange: Handler,
-  value: string,
   width: number,
 };
 
 type State = {
   isOpen: boolean,
+  value: string,
 };
 
 function parse(date: string): string {
@@ -29,36 +31,36 @@ class DatePicker extends Component<Props, State> {
 
   static defaultProps = {
     autoFocus: false,
+    defaultIsOpen: false,
+    defaultValue: '',
     disabled: [],
     formatValue: date => date.replace(/-/g, '/'),
     isDisabled: false,
-    value: '',
+    onChange: () => {},
     width: null,
   };
 
   state = {
-    isOpen: false,
+    isOpen: this.props.defaultIsOpen,
+    value: this.props.defaultValue,
   };
 
-  handleInputBlur = (e: Event) => {
+  handleFieldBlur = (e: Event) => {
     this.props.onChange(parse(e.target.value));
   };
 
-  handleInputChange = (e: Event) => {
-    this.props.onChange(e.target.value);
+  handleFieldChange = (e: Event) => {
+    const { value } = e.target;
+    this.props.onChange(value);
+    this.setState({ value });
   };
 
-  handleTriggerValidate = () => {
-    this.validate(this.props.value);
-  };
-
-  handleTriggerOpen = () => {
+  handleFieldTriggerOpen = () => {
     this.setState({ isOpen: true });
   };
 
-  handleTriggerClose = () => {
-    this.setState({ isOpen: false });
-    this.selectField();
+  handleFieldTriggerValidate = () => {
+    this.validate(this.state.value);
   };
 
   handleIconClick = () => {
@@ -74,20 +76,19 @@ class DatePicker extends Component<Props, State> {
     this.setState({ isOpen: false });
   };
 
-  handleUpdate = (value: string) => {
+  handlePickerTriggerClose = () => {
+    this.setState({ isOpen: false });
+    this.selectField();
+  };
+
+  handlePickerUpdate = (value: string) => {
     const parsed = parse(value);
     if (parsed) {
       this.props.onChange(parsed);
-      this.setState({ isOpen: false });
+      this.setState({ isOpen: false, value: parsed });
       this.selectField();
     }
   };
-
-  // TODO: Check that the date is not disabled.
-  // TODO: Display error message for invalid date.
-  validate(value?: string) {
-    this.props.onChange(parse(value));
-  }
 
   selectField() {
     if (this.datepicker) {
@@ -95,8 +96,17 @@ class DatePicker extends Component<Props, State> {
     }
   }
 
+  // TODO: Check that the date is not disabled.
+  // TODO: Display error message for invalid date.
+  validate(value: string) {
+    const parsed = parse(value);
+    this.setState({ value: parsed });
+    this.props.onChange(parsed);
+  }
+
   render() {
-    const { formatValue, value } = this.props;
+    const { formatValue } = this.props;
+    const { value } = this.state;
     return (
       <DatePickerStateless
         autoFocus={this.props.autoFocus}
@@ -107,14 +117,14 @@ class DatePicker extends Component<Props, State> {
         value={value}
         disabled={this.props.disabled}
         width={this.props.width}
-        onFieldBlur={this.handleInputBlur}
-        onFieldChange={this.handleInputChange}
-        onFieldTriggerOpen={this.handleTriggerOpen}
-        onFieldTriggerValidate={this.handleTriggerValidate}
+        onFieldBlur={this.handleFieldBlur}
+        onFieldChange={this.handleFieldChange}
+        onFieldTriggerOpen={this.handleFieldTriggerOpen}
+        onFieldTriggerValidate={this.handleFieldTriggerValidate}
         onIconClick={this.handleIconClick}
         onPickerBlur={this.handlePickerBlur}
-        onPickerTriggerClose={this.handleTriggerClose}
-        onPickerUpdate={this.handleUpdate}
+        onPickerTriggerClose={this.handlePickerTriggerClose}
+        onPickerUpdate={this.handlePickerUpdate}
         ref={ref => {
           this.datepicker = ref;
         }}
