@@ -11,6 +11,7 @@ export {
 } from './editor/create-editor/get-props-preset';
 export { default as CollapsedEditor } from './editor/ui/CollapsedEditor';
 export { default as ToolbarHelp } from './editor/ui/ToolbarHelp';
+export { default as ToolbarFeedback } from './ui/ToolbarFeedback';
 
 export {
   ErrorReporter,
