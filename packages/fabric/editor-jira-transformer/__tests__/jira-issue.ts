@@ -1,15 +1,8 @@
-import { markFactory, nodeFactory } from '@atlaskit/editor-test-helpers';
+import { doc, p, a } from '@atlaskit/editor-test-helpers';
 import { createJIRASchema } from '@atlaskit/editor-common';
 import { parseWithSchema, encode } from './_test-helpers';
 
 const schema = createJIRASchema({ allowLinks: true });
-
-// Nodes
-const doc = nodeFactory(schema.nodes.doc);
-const p = nodeFactory(schema.nodes.paragraph);
-
-// Marks
-const linkMark = attrs => markFactory(schema.marks.link!, attrs);
 
 describe('JIRATransformer', () => {
   describe('JIRA issue keys', () => {
@@ -29,7 +22,7 @@ describe('JIRATransformer', () => {
 
       const node = doc(
         p(
-          linkMark({
+          a({
             href: 'https://product-fabric.atlassian.net/browse/ED-1',
           })('ED-1'),
         ),
@@ -40,7 +33,7 @@ describe('JIRATransformer', () => {
     it('encodes HTML', () => {
       const node = doc(
         p(
-          linkMark({
+          a({
             href: 'https://product-fabric.atlassian.net/browse/ED-1',
           })('ED-1'),
         ),

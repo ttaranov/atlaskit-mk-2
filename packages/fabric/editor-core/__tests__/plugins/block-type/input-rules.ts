@@ -1,8 +1,4 @@
 import {
-  default as blockTypePlugins,
-  BlockTypeState,
-} from '../../../src/plugins/block-type';
-import {
   blockquote,
   br,
   code_block,
@@ -11,20 +7,33 @@ import {
   h2,
   h3,
   insertText,
-  makeEditor,
+  createEditor,
   p,
   code,
   hardBreak,
   a as link,
-  defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../src/analytics';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import panelPlugin from '../../../src/editor/plugins/panel';
+import listPlugin from '../../../src/editor/plugins/lists';
+import textFormatting from '../../../src/editor/plugins/text-formatting';
+import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 
 describe('inputrules', () => {
   const editor = (doc: any) =>
-    makeEditor<BlockTypeState>({
+    createEditor({
       doc,
-      plugins: blockTypePlugins(defaultSchema),
+      editorPlugins: [
+        textFormatting(),
+        listPlugin,
+        codeBlockPlugin,
+        panelPlugin,
+        hyperlinkPlugin,
+      ],
+      editorProps: {
+        analyticsHandler: trackEvent,
+      },
     });
   let trackEvent;
   beforeEach(() => {
@@ -189,7 +198,9 @@ describe('inputrules', () => {
     describe('when node is convertable to code block', () => {
       describe('when three backticks are entered followed by space', () => {
         it('should convert "```" to a code block', () => {
-          const { editorView, sel } = editor(doc(p('{<>}hello', br, 'world')));
+          const { editorView, sel } = editor(
+            doc(p('{<>}hello', br(), 'world')),
+          );
 
           insertText(editorView, '```', sel);
           expect(editorView.state.doc).toEqualDocument(

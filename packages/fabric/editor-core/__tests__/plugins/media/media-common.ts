@@ -1,7 +1,6 @@
-import { MediaPluginState } from '../../../src/plugins/media';
 import {
   doc,
-  makeEditor,
+  createEditor,
   mediaGroup,
   media,
   p,
@@ -9,23 +8,30 @@ import {
   mention,
   randomId,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { undo, history } from 'prosemirror-history';
+import { undo } from 'prosemirror-history';
 import { NodeSelection, TextSelection } from 'prosemirror-state';
 import { setNodeSelection } from '../../../src/utils';
 import {
   removeMediaNode,
   splitMediaGroup,
 } from '../../../src/plugins/media/media-common';
+import mediaPlugin from '../../../src/editor/plugins/media';
+import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
+import mentionsPlugin from '../../../src/editor/plugins/mentions';
+import rulePlugin from '../../../src/editor/plugins/rule';
 
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
 describe('media-common', () => {
   const editor = (doc: any, uploadErrorHandler?: () => void) =>
-    makeEditor<MediaPluginState>({
+    createEditor({
       doc,
-      plugins: [history()],
-      schema: defaultSchema,
+      editorPlugins: [
+        mediaPlugin(),
+        hyperlinkPlugin,
+        mentionsPlugin,
+        rulePlugin,
+      ],
     });
 
   describe('removeMediaNode', () => {
@@ -38,7 +44,7 @@ describe('media-common', () => {
           id: deletingMediaNodeId,
           type: 'file',
           collection: testCollectionName,
-        });
+        })();
 
         it('removes the media node', () => {
           const { editorView, sel } = editor(
@@ -49,7 +55,7 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 deletingMediaNode,
               ),
             ),
@@ -59,7 +65,7 @@ describe('media-common', () => {
 
           removeMediaNode(
             editorView,
-            deletingMediaNode,
+            deletingMediaNode(editorView.state.schema),
             () => positionOfDeletingNode,
           );
 
@@ -71,7 +77,7 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
             ),
           );
@@ -87,7 +93,7 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 deletingMediaNode,
               ),
             ),
@@ -97,7 +103,7 @@ describe('media-common', () => {
 
           removeMediaNode(
             editorView,
-            deletingMediaNode,
+            deletingMediaNode(editorView.state.schema),
             () => positionOfDeletingNode,
           );
 
@@ -111,7 +117,7 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
             ),
           );
@@ -125,7 +131,7 @@ describe('media-common', () => {
           id: deletingMediaNodeId,
           type: 'file',
           collection: testCollectionName,
-        });
+        })();
 
         it('removes the media node', () => {
           const { editorView, sel } = editor(
@@ -136,7 +142,7 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 deletingMediaNode,
               ),
             ),
@@ -146,7 +152,7 @@ describe('media-common', () => {
 
           removeMediaNode(
             editorView,
-            deletingMediaNode,
+            deletingMediaNode(editorView.state.schema),
             () => positionOfDeletingNode,
           );
 
@@ -158,7 +164,7 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
             ),
           );
@@ -174,7 +180,7 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 deletingMediaNode,
               ),
             ),
@@ -184,7 +190,7 @@ describe('media-common', () => {
 
           removeMediaNode(
             editorView,
-            deletingMediaNode,
+            deletingMediaNode(editorView.state.schema),
             () => positionOfDeletingNode,
           );
 
@@ -198,7 +204,7 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 deletingMediaNode,
               ),
             ),
@@ -214,7 +220,7 @@ describe('media-common', () => {
               id: 'media1',
               type: 'file',
               collection: testCollectionName,
-            });
+            })();
             const { editorView, sel } = editor(
               doc(
                 p('hello{<>}'),
@@ -224,12 +230,12 @@ describe('media-common', () => {
                     id: 'media2',
                     type: 'file',
                     collection: testCollectionName,
-                  }),
+                  })(),
                   media({
                     id: 'media3',
                     type: 'file',
                     collection: testCollectionName,
-                  }),
+                  })(),
                 ),
                 p('world'),
               ),
@@ -239,7 +245,7 @@ describe('media-common', () => {
 
             removeMediaNode(
               editorView,
-              deletingMediaNode,
+              deletingMediaNode(editorView.state.schema),
               () => positionOfDeletingNode,
             );
 
@@ -254,7 +260,7 @@ describe('media-common', () => {
               id: 'media1',
               type: 'file',
               collection: testCollectionName,
-            });
+            })();
             const { editorView } = editor(
               doc(
                 mediaGroup(
@@ -263,12 +269,12 @@ describe('media-common', () => {
                     id: 'media2',
                     type: 'file',
                     collection: testCollectionName,
-                  }),
+                  })(),
                   media({
                     id: 'media3',
                     type: 'file',
                     collection: testCollectionName,
-                  }),
+                  })(),
                 ),
                 p('hello'),
               ),
@@ -278,7 +284,7 @@ describe('media-common', () => {
 
             removeMediaNode(
               editorView,
-              deletingMediaNode,
+              deletingMediaNode(editorView.state.schema),
               () => positionOfDeletingNode,
             );
 
@@ -296,7 +302,7 @@ describe('media-common', () => {
             id: 'media2',
             type: 'file',
             collection: testCollectionName,
-          });
+          })();
           const { editorView } = editor(
             doc(
               mediaGroup(
@@ -304,13 +310,13 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 deletingMediaNode,
                 media({
                   id: 'media3',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
             ),
           );
@@ -319,7 +325,7 @@ describe('media-common', () => {
 
           removeMediaNode(
             editorView,
-            deletingMediaNode,
+            deletingMediaNode(editorView.state.schema),
             () => positionOfDeletingNode,
           );
 
@@ -337,7 +343,7 @@ describe('media-common', () => {
             id: 'media2',
             type: 'file',
             collection: testCollectionName,
-          });
+          })();
           const { editorView } = editor(
             doc(
               mediaGroup(
@@ -345,13 +351,13 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 deletingMediaNode,
                 media({
                   id: 'media3',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
             ),
           );
@@ -360,7 +366,7 @@ describe('media-common', () => {
 
           removeMediaNode(
             editorView,
-            deletingMediaNode,
+            deletingMediaNode(editorView.state.schema),
             () => positionOfDeletingNode,
           );
 
@@ -376,7 +382,7 @@ describe('media-common', () => {
             id: 'media2',
             type: 'file',
             collection: testCollectionName,
-          });
+          })();
           const { editorView } = editor(
             doc(
               mediaGroup(
@@ -384,13 +390,13 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 deletingMediaNode,
                 media({
                   id: 'media3',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
             ),
           );
@@ -399,7 +405,7 @@ describe('media-common', () => {
 
           removeMediaNode(
             editorView,
-            deletingMediaNode,
+            deletingMediaNode(editorView.state.schema),
             () => positionOfDeletingNode,
           );
 
@@ -410,12 +416,12 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 media({
                   id: 'media3',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
             ),
           );
@@ -429,7 +435,7 @@ describe('media-common', () => {
             id: 'media3',
             type: 'file',
             collection: testCollectionName,
-          });
+          })();
           const { editorView } = editor(
             doc(
               mediaGroup(
@@ -437,12 +443,12 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 media({
                   id: 'media2',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 deletingMediaNode,
               ),
             ),
@@ -452,7 +458,7 @@ describe('media-common', () => {
 
           removeMediaNode(
             editorView,
-            deletingMediaNode,
+            deletingMediaNode(editorView.state.schema),
             () => positionOfDeletingNode,
           );
 
@@ -471,17 +477,18 @@ describe('media-common', () => {
               id: 'media',
               type: 'file',
               collection: testCollectionName,
-            });
+            })();
             const { editorView } = editor(
               doc(p('hello'), mediaGroup(deletingMediaNode), p('world')),
             );
 
-            const positionOfDeletingNode = p('hello').nodeSize + 1;
+            const positionOfDeletingNode =
+              p('hello')(editorView.state.schema).nodeSize + 1;
             setNodeSelection(editorView, positionOfDeletingNode);
 
             removeMediaNode(
               editorView,
-              deletingMediaNode,
+              deletingMediaNode(editorView.state.schema),
               () => positionOfDeletingNode,
             );
 
@@ -501,7 +508,7 @@ describe('media-common', () => {
               id: 'media',
               type: 'file',
               collection: testCollectionName,
-            });
+            })();
             const { editorView } = editor(
               doc(mediaGroup(deletingMediaNode), p('hello')),
             );
@@ -511,7 +518,7 @@ describe('media-common', () => {
 
             removeMediaNode(
               editorView,
-              deletingMediaNode,
+              deletingMediaNode(editorView.state.schema),
               () => positionOfDeletingNode,
             );
 
@@ -538,7 +545,7 @@ describe('media-common', () => {
                 id: 'media',
                 type: 'file',
                 collection: testCollectionName,
-              }),
+              })(),
             ),
             p('text'),
           ),
@@ -561,17 +568,17 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 media({
                   id: 'media2',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 media({
                   id: 'media3',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
               p('text'),
             ),
@@ -589,12 +596,12 @@ describe('media-common', () => {
                   id: 'media2',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 media({
                   id: 'media3',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
               p('text'),
             ),
@@ -612,17 +619,17 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 media({
                   id: 'media2',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 media({
                   id: 'media3',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
               p('text'),
             ),
@@ -639,7 +646,7 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
               p(),
               mediaGroup(
@@ -647,7 +654,7 @@ describe('media-common', () => {
                   id: 'media3',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
               p('text'),
             ),
@@ -665,17 +672,17 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 media({
                   id: 'media2',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 media({
                   id: 'media3',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
               p('text'),
             ),
@@ -691,12 +698,12 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 media({
                   id: 'media2',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
               p('text'),
             ),
@@ -709,12 +716,12 @@ describe('media-common', () => {
                   id: 'media1',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 media({
                   id: 'media2',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
               p('text'),
             ),
@@ -732,7 +739,7 @@ describe('media-common', () => {
                   id: 'media',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
               p('text'),
             ),
@@ -758,7 +765,7 @@ describe('media-common', () => {
                 id: 'media',
                 type: 'file',
                 collection: testCollectionName,
-              }),
+              })(),
             ),
             p('text'),
           ),
@@ -779,7 +786,7 @@ describe('media-common', () => {
                 id: 'media',
                 type: 'file',
                 collection: testCollectionName,
-              }),
+              })(),
             ),
             p('te{<>}xt'),
           ),
@@ -795,7 +802,7 @@ describe('media-common', () => {
                 id: 'media',
                 type: 'file',
                 collection: testCollectionName,
-              }),
+              })(),
             ),
             p('text'),
           ),
@@ -808,13 +815,13 @@ describe('media-common', () => {
       it('returns false', () => {
         const { editorView } = editor(
           doc(
-            hr,
+            hr(),
             mediaGroup(
               media({
                 id: 'media',
                 type: 'file',
                 collection: testCollectionName,
-              }),
+              })(),
             ),
             p('text'),
           ),
@@ -830,13 +837,13 @@ describe('media-common', () => {
       it('does nothing', () => {
         const { editorView } = editor(
           doc(
-            p(mention({ id: 'foo1', text: '@bar1' })),
+            p(mention({ id: 'foo1', text: '@bar1' })()),
             mediaGroup(
               media({
                 id: 'media',
                 type: 'file',
                 collection: testCollectionName,
-              }),
+              })(),
             ),
             p('text'),
           ),
@@ -847,13 +854,13 @@ describe('media-common', () => {
 
         expect(editorView.state.doc).toEqualDocument(
           doc(
-            p(mention({ id: 'foo1', text: '@bar1' })),
+            p(mention({ id: 'foo1', text: '@bar1' })()),
             mediaGroup(
               media({
                 id: 'media',
                 type: 'file',
                 collection: testCollectionName,
-              }),
+              })(),
             ),
             p('text'),
           ),

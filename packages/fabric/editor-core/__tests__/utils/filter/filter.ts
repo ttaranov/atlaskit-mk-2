@@ -10,7 +10,7 @@ import {
 describe('@atlaskit/editor-core/utils/filter', () => {
   describe('filterContentByType', () => {
     it('filtering by type', () => {
-      const jsonDoc = toJSON(doc(p('some text')));
+      const jsonDoc = toJSON(doc(p('some text'))(defaultSchema));
       const content = filterContentByType(jsonDoc, new Set(['text']));
       expect(content).toEqual([
         {
@@ -21,7 +21,7 @@ describe('@atlaskit/editor-core/utils/filter', () => {
     });
 
     it('marks preserved', () => {
-      const jsonDoc = toJSON(doc(p('some ', strong('text'))));
+      const jsonDoc = toJSON(doc(p('some ', strong('text')))(defaultSchema));
       const content = filterContentByType(jsonDoc, new Set(['text']));
       expect(content).toEqual([
         {
@@ -40,7 +40,9 @@ describe('@atlaskit/editor-core/utils/filter', () => {
       ]);
     });
     it('filtering multiple paragraphs add breaks', () => {
-      const jsonDoc = toJSON(doc(p('some text'), p('some other text')));
+      const jsonDoc = toJSON(
+        doc(p('some text'), p('some other text'))(defaultSchema),
+      );
       const content = filterContentByType(
         jsonDoc,
         new Set(['text']),
@@ -62,7 +64,9 @@ describe('@atlaskit/editor-core/utils/filter', () => {
       ]);
     });
     it('filtering multiple paragraphs does not breaks when option false', () => {
-      const jsonDoc = toJSON(doc(p('some text'), p('some other text')));
+      const jsonDoc = toJSON(
+        doc(p('some text'), p('some other text'))(defaultSchema),
+      );
       const content = filterContentByType(
         jsonDoc,
         new Set(['text']),
@@ -83,7 +87,7 @@ describe('@atlaskit/editor-core/utils/filter', () => {
   });
   describe('filterSliceByType', () => {
     it('filtering by type', () => {
-      const jsonDoc = toJSON(doc(p('some text')));
+      const jsonDoc = toJSON(doc(p('some text'))(defaultSchema));
       const content = filterSliceByType(
         Slice.fromJSON(defaultSchema, { content: jsonDoc.content }),
         new Set(['text']),
@@ -99,7 +103,7 @@ describe('@atlaskit/editor-core/utils/filter', () => {
     });
 
     it('marks preserved', () => {
-      const jsonDoc = toJSON(doc(p('some ', strong('text'))));
+      const jsonDoc = toJSON(doc(p('some ', strong('text')))(defaultSchema));
       const content = filterSliceByType(
         Slice.fromJSON(defaultSchema, { content: jsonDoc.content }),
         new Set(['text']),
@@ -123,7 +127,9 @@ describe('@atlaskit/editor-core/utils/filter', () => {
       ]);
     });
     it('filtering multiple paragraphs add breaks', () => {
-      const jsonDoc = toJSON(doc(p('some text'), p('some other text')));
+      const jsonDoc = toJSON(
+        doc(p('some text'), p('some other text'))(defaultSchema),
+      );
       const content = filterSliceByType(
         Slice.fromJSON(defaultSchema, { content: jsonDoc.content }),
         new Set(['text']),
@@ -145,7 +151,9 @@ describe('@atlaskit/editor-core/utils/filter', () => {
       ]);
     });
     it('filtering multiple paragraphs does not breaks when option false', () => {
-      const jsonDoc = toJSON(doc(p('some text'), p('some other text')));
+      const jsonDoc = toJSON(
+        doc(p('some text'), p('some other text'))(defaultSchema),
+      );
       const content = filterSliceByType(
         Slice.fromJSON(defaultSchema, { content: jsonDoc.content }),
         new Set(['text']),

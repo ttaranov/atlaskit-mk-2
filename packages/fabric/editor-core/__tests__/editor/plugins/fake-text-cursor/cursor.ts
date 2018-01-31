@@ -1,14 +1,11 @@
 import { TextSelection, Selection } from 'prosemirror-state';
 import { DecorationSet } from 'prosemirror-view';
 import { Slice } from 'prosemirror-model';
-import hyperlinkPlugins, {
-  HyperlinkState,
-} from '../../../../src/plugins/hyperlink';
+import { HyperlinkState } from '../../../../src/plugins/hyperlink';
 import {
   doc,
-  makeEditor,
+  createEditor,
   p as paragraph,
-  defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import {
   addFakeTextCursor,
@@ -17,12 +14,13 @@ import {
   drawFakeTextCursor,
   FakeTextCursorBookmark,
 } from '../../../../src/editor/plugins/fake-text-cursor/cursor';
+import hyperlinkPlugin from '../../../../src/editor/plugins/hyperlink';
 
 describe('FakeTextCursor -> Cursor', () => {
   const editor = (doc: any) =>
-    makeEditor<HyperlinkState>({
+    createEditor<HyperlinkState>({
       doc,
-      plugins: hyperlinkPlugins(defaultSchema),
+      editorPlugins: [hyperlinkPlugin],
     });
 
   describe('addFakeTextCursor', () => {

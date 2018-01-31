@@ -1,11 +1,8 @@
 import { expect } from 'chai';
 import { EditorView } from 'prosemirror-view';
-import {
-  sendKeyToPm,
-  insertText,
-} from '@atlaskit/editor-test-helpers';
+import { sendKeyToPm, insertText } from '@atlaskit/editor-test-helpers';
 
-import createEditor from '../../../helpers/create-editor';
+import { createEditor } from '@atlaskit/editor-test-helpers';
 import textFormattingPlugins from '../../../../src/editor/plugins/text-formatting';
 
 /**
@@ -14,10 +11,14 @@ import textFormattingPlugins from '../../../../src/editor/plugins/text-formattin
 const backspace = (view: EditorView) => {
   const { state: { tr, selection: { $head } } } = view;
   view.dispatch(tr.delete($head.pos - 1, $head.pos));
-}
+};
 
 describe('clear-marks-on-empty-document-change', () => {
-  const editor = () => createEditor([textFormattingPlugins(), ], { shouldFocus: true });
+  const editor = () =>
+    createEditor({
+      editorPlugins: [textFormattingPlugins()],
+      editorProps: { shouldFocus: true },
+    });
 
   it('should clear any stored marks when the document changes to be empty', () => {
     const { editorView } = editor();
@@ -35,11 +36,11 @@ describe('clear-marks-on-empty-document-change', () => {
           content: [
             {
               type: 'text',
-              text: 'b'
-            }
-          ]
-        }
-      ]
+              text: 'b',
+            },
+          ],
+        },
+      ],
     });
     editorView.destroy();
   });
@@ -49,7 +50,7 @@ describe('clear-marks-on-empty-document-change', () => {
 
     sendKeyToPm(editorView, 'Mod-b');
     insertText(editorView, 'ab', editorView.state.selection.$head.pos);
-    backspace(editorView)
+    backspace(editorView);
     insertText(editorView, 'c', editorView.state.selection.$head.pos);
 
     expect(editorView.state.doc.toJSON()).to.deep.equal({
@@ -61,11 +62,11 @@ describe('clear-marks-on-empty-document-change', () => {
             {
               type: 'text',
               marks: [{ type: 'strong' }],
-              text: 'ac'
-            }
-          ]
-        }
-      ]
+              text: 'ac',
+            },
+          ],
+        },
+      ],
     });
     editorView.destroy();
   });
@@ -85,11 +86,11 @@ describe('clear-marks-on-empty-document-change', () => {
             {
               type: 'text',
               marks: [{ type: 'strong' }],
-              text: 'a'
-            }
-          ]
-        }
-      ]
+              text: 'a',
+            },
+          ],
+        },
+      ],
     });
     editorView.destroy();
   });

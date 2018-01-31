@@ -4,18 +4,17 @@ import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import Item from '@atlaskit/item';
 import DropdownMenu from '../../src/ui/DropdownMenu';
-import tablePlugins, { TableState } from '../../src/plugins/table';
+import { TableState, stateKey } from '../../src/plugins/table';
 import tableCommands from '../../src/plugins/table/commands';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import TableFloatingToolbar from '../../src/ui/TableFloatingToolbar';
 import { Toolbar } from '../../src/ui/TableFloatingToolbar/styles';
-import { analyticsService } from '../../src/analytics';
 
 import {
   createEvent,
   doc,
   p,
-  makeEditor,
+  createEditor,
   table,
   tr,
   tdEmpty,
@@ -25,19 +24,23 @@ import {
   selectRow,
   selectColumn,
 } from '../../src/editor/plugins/table/actions';
+import tablesPlugin from '../../src/editor/plugins/table';
 
 describe('TableFloatingToolbar', () => {
+  let trackEvent;
   const event = createEvent('event');
   const editor = (doc: any) =>
-    makeEditor<TableState>({
+    createEditor<TableState>({
       doc,
-      plugins: tablePlugins(),
+      editorPlugins: [tablesPlugin],
+      editorProps: {
+        analyticsHandler: trackEvent,
+      },
+      pluginKey: stateKey,
     });
-  let trackEvent;
 
   beforeEach(() => {
     trackEvent = jest.fn();
-    analyticsService.trackEvent = trackEvent;
   });
 
   describe('when cellElement is undefined', () => {
@@ -238,9 +241,7 @@ describe('TableFloatingToolbar', () => {
       });
 
       ['cut', 'copy', 'paste'].forEach((command, i) => {
-        it(`should call "${command}" command when "${
-          command
-        }" item is clicked`, () => {
+        it(`should call "${command}" command when "${command}" item is clicked`, () => {
           const { pluginState, editorView } = editor(
             doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
           );
