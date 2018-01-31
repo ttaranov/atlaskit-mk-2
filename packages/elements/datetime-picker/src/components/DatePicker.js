@@ -23,7 +23,8 @@ type State = {
 };
 
 function parse(date: string): string {
-  return (parseDate(date) || { value: '' }).value;
+  const parsed = parseDate(date);
+  return parsed ? parsed.value : '';
 }
 
 class DatePicker extends Component<Props, State> {
