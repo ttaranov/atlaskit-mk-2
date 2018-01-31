@@ -4,6 +4,10 @@ import { AuthProvider } from '../auth';
 
 export type DataUri = string;
 export type ImageResizeMode = 'crop' | 'fit' | 'full-fit';
+// TODO: make cache optional in the MediaDataUriService constructor to make it testeable
+// TODO: use LRU cache ?
+
+const cache = {};
 
 export interface FetchImageOptions {
   width: number;
@@ -44,11 +48,25 @@ export class MediaDataUriService implements DataUriService {
     });
   }
 
-  fetchImageDataUri(
+  async fetchImageDataUri(
     mediaItem: MediaItem,
     { width, height, mode = 'crop', allowAnimated = true }: FetchImageOptions,
   ): Promise<DataUri> {
-    return this.fetchSomeDataUri(`/file/${mediaItem.details.id}/image`, {
+    const id = mediaItem.details.id;
+    const key = this.createCacheKey(
+      id || '',
+      width,
+      height,
+      mode,
+      allowAnimated,
+      this.collectionName,
+    );
+
+    if (cache[key]) {
+      return Promise.resolve(cache[key]);
+    }
+
+    const src = await this.fetchSomeDataUri(`/file/${id}/image`, {
       width,
       height,
       mode,
@@ -56,6 +74,10 @@ export class MediaDataUriService implements DataUriService {
       'max-age': 3600,
       collection: this.collectionName,
     });
+
+    cache[key] = src;
+
+    return src;
   }
 
   fetchSomeDataUri(url: string, params: Object): Promise<DataUri> {
@@ -66,14 +88,20 @@ export class MediaDataUriService implements DataUriService {
     }).then(this.readBlob);
   }
 
-  private readBlob(blob: Blob): Promise<DataUri> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
+  private createCacheKey(
+    id: string,
+    width: number,
+    height: number,
+    mode: ImageResizeMode,
+    allowAnimated: boolean,
+    collectionName?: string,
+  ): string {
+    return `${id}:${width}x${height}:${mode}:${allowAnimated}:${collectionName}`;
+  }
 
-      reader.addEventListener('load', () => resolve(reader.result));
-      reader.addEventListener('error', () => reject(reader.error));
+  private readBlob(blob: Blob): DataUri {
+    const preview = URL.createObjectURL(blob);
 
-      reader.readAsDataURL(blob);
-    });
+    return preview;
   }
 }
