@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { action } from '@kadira/storybook';
 
 import EmojiTypeAheadList from '../src/components/typeahead/EmojiTypeAheadList';
 import { EmojiDescription } from '../src/types';
 import { getEmojis } from '../src/support/story-data';
+import { onSelection } from '../example-helpers';
 
 function randomEmojis(): EmojiDescription[] {
   return getEmojis()
@@ -54,7 +54,7 @@ export default class RefreshableEmojiList extends PureComponent<Props, State> {
     const emojiList = (
       <EmojiTypeAheadList
         emojis={this.state.emojis}
-        onEmojiSelected={action('onSelection')}
+        onEmojiSelected={onSelection}
         ref={this.handleEmojiTypeAheadListRef}
       />
     );

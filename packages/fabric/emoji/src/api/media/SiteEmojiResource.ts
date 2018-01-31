@@ -2,7 +2,7 @@ import {
   ServiceConfig,
   utils as serviceUtils,
 } from '@atlaskit/util-service-support';
-import { MediaPicker } from 'mediapicker';
+import { MediaPicker } from '@atlaskit/media-picker';
 
 import {
   EmojiDescription,

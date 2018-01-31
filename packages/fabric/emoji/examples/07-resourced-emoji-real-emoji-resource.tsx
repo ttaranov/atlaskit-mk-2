@@ -1,52 +1,29 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-
-import { EmojiDescription, EmojiId, EmojiSearchResult } from '../src/types';
-import { toEmojiId } from '../src/type-helpers';
+import ResourcedEmojiControl, {
+  getEmojiConfig,
+  getRealEmojiResource,
+} from '../example-helpers/demo-resource-control';
 import { EmojiProvider, OnEmojiProviderChange } from '../src/api/EmojiResource';
 import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
+import { toEmojiId } from '../src/type-helpers';
+import { EmojiSearchResult, EmojiDescription } from '../src/types';
+import { customCategory } from '../src/constants';
 
-export interface EmojiFilter {
-  (emoji: EmojiDescription): boolean;
-}
+const customFilter = (emoji: EmojiDescription) =>
+  emoji.category === customCategory;
 
-export interface Props {
-  emojiIds: EmojiId[];
+interface FilteredProps {
   emojiProvider: Promise<EmojiProvider>;
   fitToHeight?: number;
 }
 
-export class ResourcedEmojiList extends PureComponent<Props, {}> {
-  render() {
-    const { emojiIds, emojiProvider, fitToHeight } = this.props;
-
-    return (
-      <p style={{ padding: '10px', lineHeight: '24px' }}>
-        {emojiIds.map(emojiId => (
-          <ResourcedEmoji
-            key={emojiId.id}
-            emojiProvider={emojiProvider}
-            emojiId={emojiId}
-            fitToHeight={fitToHeight}
-          />
-        ))}
-      </p>
-    );
-  }
-}
-
-export interface FilteredProps {
-  emojiProvider: Promise<EmojiProvider>;
-  filter: EmojiFilter;
-  fitToHeight?: number;
-}
-
-export interface FilteredState {
+interface FilteredState {
   unfilteredEmojis: EmojiDescription[];
   emojis: EmojiDescription[];
 }
 
-export class ResourcedFilteredEmojiList extends PureComponent<
+class ResourcedFilteredEmojiList extends PureComponent<
   FilteredProps,
   FilteredState
 > {
@@ -72,11 +49,6 @@ export class ResourcedFilteredEmojiList extends PureComponent<
         });
       }
     }
-    if (this.props.filter !== nextProps.filter) {
-      this.setState({
-        emojis: this.state.unfilteredEmojis.filter(nextProps.filter),
-      });
-    }
   }
 
   componentDidMount() {
@@ -99,7 +71,7 @@ export class ResourcedFilteredEmojiList extends PureComponent<
   private onSearchResult = (result: EmojiSearchResult) => {
     this.setState({
       unfilteredEmojis: result.emojis,
-      emojis: result.emojis.filter(this.props.filter),
+      emojis: result.emojis.filter(customFilter),
     });
   };
 
@@ -124,4 +96,17 @@ export class ResourcedFilteredEmojiList extends PureComponent<
       </p>
     );
   }
+}
+
+export default function Example() {
+  const emojiList = (
+    <ResourcedFilteredEmojiList emojiProvider={getRealEmojiResource()} />
+  );
+  return (
+    <ResourcedEmojiControl
+      emojiConfig={getEmojiConfig()}
+      customEmojiProvider={getRealEmojiResource()}
+      children={emojiList}
+    />
+  );
 }

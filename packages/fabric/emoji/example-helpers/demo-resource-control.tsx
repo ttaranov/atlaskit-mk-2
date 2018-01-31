@@ -5,6 +5,26 @@ import EmojiResource, {
   EmojiResourceConfig,
   EmojiProvider,
 } from '../src/api/EmojiResource';
+import UploadingEmojiResource from '../src/api/EmojiResource';
+
+export function getEmojiConfig() {
+  let emojiConfig;
+  try {
+    // tslint:disable-next-line import/no-unresolved, no-var-requires
+    emojiConfig = require('../local-config')['default'];
+  } catch (e) {
+    // tslint:disable-next-line import/no-unresolved, no-var-requires
+    emojiConfig = require('../local-config-example')['default'];
+  }
+
+  emojiConfig.allowUpload = true;
+  return emojiConfig;
+}
+
+export function getRealEmojiResource() {
+  const resource = new UploadingEmojiResource(getEmojiConfig());
+  return Promise.resolve(resource);
+}
 
 // FIXME FAB-1732 - extract or replace with third-party implementation
 const toJavascriptString = (obj: any): string => {
@@ -33,6 +53,7 @@ export interface Props {
   children: ReactElement<any>;
   emojiConfig: EmojiResourceConfig;
   customEmojiProvider?: Promise<EmojiProvider>;
+  customPadding?: number;
 }
 
 export interface State {
@@ -72,23 +93,29 @@ export default class ResourcedEmojiControl extends PureComponent<Props, State> {
   };
 
   render() {
+    const { customPadding } = this.props;
     const { emojiProvider } = this.state;
+    const paddingBottom = customPadding ? `${customPadding}px` : '30px';
 
     return (
       <div style={{ padding: '10px' }}>
-        {React.cloneElement(this.props.children, { emojiProvider })}
-        <p>
-          <label htmlFor="emoji-urls">EmojiLoader config</label>
-        </p>
-        <p>
-          <textarea
-            id="emoji-urls"
-            rows={15}
-            style={{ width: '400px' }}
-            onChange={this.emojiConfigChange}
-            defaultValue={toJavascriptString(this.props.emojiConfig)}
-          />
-        </p>
+        <div style={{ paddingBottom }}>
+          {React.cloneElement(this.props.children, { emojiProvider })}
+        </div>
+        <div>
+          <p>
+            <label htmlFor="emoji-urls">EmojiLoader config</label>
+          </p>
+          <p>
+            <textarea
+              id="emoji-urls"
+              rows={15}
+              style={{ height: '280px', width: '500px' }}
+              onChange={this.emojiConfigChange}
+              defaultValue={toJavascriptString(this.props.emojiConfig)}
+            />
+          </p>
+        </div>
       </div>
     );
   }

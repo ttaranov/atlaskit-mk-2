@@ -1,28 +1,9 @@
-import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 
-import { name } from '../package.json';
 import Emoji from '../src/components/common/Emoji';
 import { getEmojiRepository } from '../src/support/story-data';
 
 const emojiService = getEmojiRepository();
-
-const emoji = {
-  id: 'atlassian-zoidberg',
-  name: 'Zoidberg',
-  shortName: ':zoidberg:',
-  type: 'ATLASSIAN',
-  category: 'ATLASSIAN',
-  order: 2147483647,
-  skinVariations: [],
-  representation: {
-    imagePath:
-      'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/zoidberg-1417754444.png',
-    height: 24,
-    width: 30,
-  },
-  searchable: true,
-};
 
 const renderEmoji = (fitToHeight: number = 24) => {
   const zoidberg = emojiService.findByShortName(':zoidberg:');
@@ -33,7 +14,12 @@ const renderEmoji = (fitToHeight: number = 24) => {
   );
   const awthanks = emojiService.findByShortName(':awthanks:');
   const awthanksEmoji = awthanks ? (
-    <Emoji emoji={awthanks} showTooltip={true} fitToHeight={fitToHeight} />
+    <Emoji
+      emoji={awthanks}
+      showTooltip={true}
+      fitToHeight={fitToHeight}
+      selected={true}
+    />
   ) : (
     <span>[awthanks emoji not found]</span>
   );
@@ -52,15 +38,13 @@ const renderEmoji = (fitToHeight: number = 24) => {
   );
 };
 
-storiesOf(`${name}/Emoji`, module)
-  .add('simple emoji', () => (
+export default function Example() {
+  return (
     <div>
       <p>{renderEmoji()}</p>
       <p>{renderEmoji(32)}</p>
       <p>{renderEmoji(48)}</p>
       <p>{renderEmoji(128)}</p>
     </div>
-  ))
-  .add('simple emoji selected', () => (
-    <Emoji emoji={emoji} selected={true} showTooltip={true} />
-  ));
+  );
+}

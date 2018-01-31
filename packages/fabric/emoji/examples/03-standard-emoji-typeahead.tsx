@@ -1,33 +1,22 @@
-import { action } from '@kadira/storybook';
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { Component } from 'react';
 
 import EmojiTypeAhead from '../src/components/typeahead/EmojiTypeAhead';
-import { EmojiProvider } from '../src/api/EmojiResource';
 import debug from '../src/util/logger';
-import { OnEmojiEvent, RelativePosition } from '../src/types';
 
-import SearchTextInput from './demo-search-text-input';
-import { lorem } from '../src/support/story-data';
+import { onOpen, onClose, onSelection } from '../example-helpers';
+import {
+  TypeaheadProps,
+  TypeaheadState,
+} from '../example-helpers/typeahead-props';
+import SearchTextInput from '../example-helpers/demo-search-text-input';
+import { lorem, getEmojiResource } from '../src/support/story-data';
 
-export interface Props {
-  label: string;
-  onSelection: OnEmojiEvent;
-  emojiProvider: Promise<EmojiProvider>;
-  position?: RelativePosition;
-  beforeContent?: boolean;
-  afterContent?: boolean;
-  disableBlur?: boolean;
-}
+import { akZIndexModal } from '@atlaskit/util-shared-styles';
 
-export interface State {
-  active: boolean;
-  query?: string;
-}
-
-export default class EmojiTypeAheadTextInput extends PureComponent<
-  Props,
-  State
+export class EmojiTypeAheadTextInput extends Component<
+  TypeaheadProps,
+  TypeaheadState
 > {
   private emojiTypeAheadRef: EmojiTypeAhead;
 
@@ -64,7 +53,7 @@ export default class EmojiTypeAheadTextInput extends PureComponent<
     if (this.state.active) {
       this.setState({
         query: event.target.value || '',
-      } as State);
+      } as TypeaheadState);
     }
   };
 
@@ -88,17 +77,9 @@ export default class EmojiTypeAheadTextInput extends PureComponent<
   };
 
   render() {
-    const {
-      label,
-      emojiProvider,
-      position,
-      beforeContent,
-      afterContent,
-      disableBlur,
-    } = this.props;
+    const { label, emojiProvider, position } = this.props;
     debug('demo-emoji-text-input.render', position);
     const target = position ? '#demo-input' : undefined;
-    const onBlur = disableBlur ? () => {} : this.hideEmojiPopup;
     const searchInput = (
       <SearchTextInput
         inputId="demo-input"
@@ -109,7 +90,7 @@ export default class EmojiTypeAheadTextInput extends PureComponent<
         onEnter={this.handleSearchTextInputEnter}
         onEscape={this.hideEmojiPopup}
         onFocus={this.showEmojiPopup}
-        onBlur={onBlur}
+        onBlur={this.hideEmojiPopup}
       />
     );
 
@@ -121,11 +102,12 @@ export default class EmojiTypeAheadTextInput extends PureComponent<
           target={target}
           position={position}
           onSelection={this.handleEmojiTypeAheadSelection}
-          onOpen={action('picker opened')}
-          onClose={action('picker closed')}
+          onOpen={onOpen}
+          onClose={onClose}
           ref={this.handleEmojiTypeAheadRef}
           query={this.state.query}
           emojiProvider={emojiProvider}
+          zIndex={akZIndexModal}
         />
       );
     }
@@ -136,16 +118,24 @@ export default class EmojiTypeAheadTextInput extends PureComponent<
         <p style={{ width: '400px' }}>{lorem}</p>
       </div>
     );
-    const before = beforeContent ? loremContent : null;
-    const after = afterContent ? loremContent : null;
 
     return (
       <div style={{ padding: '10px' }}>
-        {before}
         {searchInput}
         {emojiTypeAhead}
-        {after}
+        {loremContent}
       </div>
     );
   }
+}
+
+export default function Example() {
+  return (
+    <EmojiTypeAheadTextInput
+      label="Emoji search"
+      onSelection={onSelection}
+      emojiProvider={getEmojiResource()}
+      position="below"
+    />
+  );
 }
