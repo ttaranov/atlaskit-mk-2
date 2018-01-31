@@ -20,10 +20,11 @@ import Loading from '../../components/Loading';
 import * as fs from '../../utils/fs';
 import type { Directory, RouterMatch } from '../../types';
 import CodeBlock from '../../components/Code';
-import { packages as packagesData } from '../../site';
+import { packages as packagesData, getConfig } from '../../site';
 import { packageUrl } from '../../utils/url';
 import CodeSandbox from '../Package/CodeSandbox';
 import CodeSandboxLogo from '../Package/CodeSandboxLogo';
+
 import {
   CodeContainer,
   ComponentContainer,
@@ -114,7 +115,17 @@ function ExampleSelector(props) {
 }
 
 function ExampleNavigation(props) {
-  const { exampleId, groupId, packageId } = props;
+  const {
+    onExampleSelected,
+    examples,
+    onPackageSelected,
+    groups,
+    exampleId,
+    groupId,
+    packageId,
+    config,
+  } = props;
+  const example = examples && examples.children.find(e => e.id === exampleId);
 
   return (
     <Nav>
@@ -130,59 +141,51 @@ function ExampleNavigation(props) {
         <PackageSelector
           groupId={groupId}
           packageId={packageId}
-          groups={props.groups}
-          onSelected={props.onPackageSelected}
+          groups={groups}
+          onSelected={onPackageSelected}
         />
         <ExampleSelector
-          examples={props.examples}
+          examples={examples}
           exampleId={exampleId}
-          onSelected={props.onExampleSelected}
+          onSelected={onExampleSelected}
         />
       </NavSection>
-
-      <CodeSandbox
-        exampleId={exampleId}
-        groupId={groupId}
-        packageId={packageId}
-      >
-        {({ deploySandbox, loadingSandbox }) => {
-          const codesandboxIcon = loadingSandbox ? (
-            <Spinner />
-          ) : (
-            <CodeSandboxLogo />
-          );
-
-          return (
-            <NavSection style={{ marginRight: 8 }}>
-              <Tooltip
-                content={
-                  loadingSandbox ? 'Loading...' : 'Deploy to CodeSandbox'
-                }
-                position="left"
+      <NavSection style={{ marginRight: 8 }}>
+        <Tooltip content="Deploy to CodeSandbox" position="left">
+          <CodeSandbox
+            example={example}
+            groupId={groupId}
+            packageId={packageId}
+            pkgJSON={config}
+            loadingButton={() => (
+              <NavButton style={{ marginRight: 8 }} type="Submit" disabled>
+                <CodeSandboxLogo />
+              </NavButton>
+            )}
+            deployButton={({ isDisabled }) => (
+              <NavButton
+                style={{ marginRight: 8 }}
+                type="Submit"
+                disabled={isDisabled}
               >
-                <NavButton
-                  onClick={deploySandbox}
-                  isDisabled={loadingSandbox}
-                  style={{ marginRight: 8 }}
-                >
-                  {codesandboxIcon}
-                </NavButton>
-              </Tooltip>
-              <Tooltip
-                content={`${props.codeIsVisible ? 'Hide' : 'Show'} source`}
-                position="left"
-              >
-                <NavButton
-                  isSelected={props.codeIsVisible}
-                  onClick={props.onCodeToggle}
-                >
-                  <CodeIcon label="Show source" />
-                </NavButton>
-              </Tooltip>
-            </NavSection>
-          );
-        }}
-      </CodeSandbox>
+                {isDisabled ? <CodeSandboxLogo /> : ''}
+              </NavButton>
+            )}
+            useNavButton
+          />
+        </Tooltip>
+        <Tooltip
+          content={`${props.codeIsVisible ? 'Hide' : 'Show'} source`}
+          position="left"
+        >
+          <NavButton
+            isSelected={props.codeIsVisible}
+            onClick={props.onCodeToggle}
+          >
+            <CodeIcon label="Show source" />
+          </NavButton>
+        </Tooltip>
+      </NavSection>
     </Nav>
   );
 }
@@ -212,7 +215,7 @@ function ExampleDisplay(props) {
     loader: () => props.example.contents(),
     loading: Loading,
     render(loaded) {
-      return <CodeBlock grammar="jsx" content={loaded} />;
+      return <CodeBlock grammar="jsx" content={loaded} name={props.name} />;
     },
   });
 
@@ -425,7 +428,7 @@ export default class Examples extends React.Component<Props, State> {
     if (hasChanged) {
       return <Redirect to={this.toUrl(groupId, packageId, exampleId)} />;
     }
-
+    const config = getConfig(groupId, packageId).config;
     return (
       <Container>
         <ExampleNavigation
@@ -440,11 +443,13 @@ export default class Examples extends React.Component<Props, State> {
           onCodeToggle={this.onCodeToggle}
           deploySandbox={this.deploySandbox}
           loadingSandbox={this.state.loadingSandbox}
+          config={config}
         />
         {examples && exampleId ? (
           <ExampleDisplay
             displayCode={this.state.displayCode}
             example={fs.getById(fs.getFiles(examples.children), exampleId)}
+            name={config.name}
           />
         ) : (
           <Content>

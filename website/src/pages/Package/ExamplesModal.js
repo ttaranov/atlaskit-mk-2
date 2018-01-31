@@ -29,10 +29,10 @@ import * as fs from '../../utils/fs';
 import type { Directory, RouterMatch } from '../../types';
 import Loading from '../../components/Loading';
 import CodeBlock from '../../components/Code';
-import { packages as packagesData } from '../../site';
+import { packages as packagesData, getConfig } from '../../site';
 import { packageUrl } from '../../utils/url';
-import CodeSandboxLogo from './CodeSandboxLogo';
 import CodeSandbox from './CodeSandbox';
+import CodeSandboxLogo from './CodeSandboxLogo';
 
 // ==============================
 // PAGE
@@ -167,13 +167,14 @@ function ExampleNavigation({ examples, exampleId, onExampleSelected }) {
 
 function ExampleDisplay(props) {
   const ExampleComponent = Loadable({
-    loader: () => props.example.exports(),
+    loader: () => props.example && props.example.exports(),
     loading: Loading,
     render(loaded) {
       if (!loaded.default) {
         return (
           <ErrorMessage>
-            Example "{props.example.id}" doesn't have default export.
+            Example{props.example ? ` "${props.example.id}"` : ''} doesn't have
+            default export.
           </ErrorMessage>
         );
       }
@@ -187,12 +188,12 @@ function ExampleDisplay(props) {
   });
 
   const ExampleCode = Loadable({
-    loader: () => props.example.contents(),
+    loader: () => props.example && props.example.contents(),
     loading: Loading,
     render(loaded) {
       return (
         <CodeContainer>
-          <CodeBlock grammar="jsx" content={loaded} />
+          <CodeBlock grammar="jsx" content={loaded} name={props.name} />
         </CodeContainer>
       );
     },
@@ -369,17 +370,17 @@ export default class ExamplesModal extends Component<Props, State> {
       this.props.match.params.exampleId,
     );
 
+    let example;
+    if (exampleId && examples) {
+      example = fs.getById(fs.getFiles(examples.children), exampleId);
+    }
+
     const { displayCode } = this.state;
-    const example = fs.getById(fs.getFiles(examples.children), exampleId);
-    const pkgJSON = fs.getById(
-      fs.getById(packages, packageId).children,
-      'package.json',
-    );
+    const pkgJSON = getConfig(groupId, packageId).config;
 
     if (hasChanged) {
       return <Redirect to={toUrl(groupId, packageId, exampleId)} />;
     }
-
     return (
       <Modal
         header={({ showKeyline }) => (
@@ -389,8 +390,28 @@ export default class ExamplesModal extends Component<Props, State> {
               <ButtonGroup>
                 <CodeSandbox
                   example={example}
+                  examples={examples}
+                  groupId={groupId}
+                  packageId={packageId}
                   pkgJSON={pkgJSON}
-                  iconBefore={<CodeSandboxLogo />}
+                  loadingButton={() => (
+                    <Button
+                      type="submit"
+                      isDisabled
+                      iconBefore={<CodeSandboxLogo />}
+                    >
+                      Loading...
+                    </Button>
+                  )}
+                  deployButton={({ isDisabled }) => (
+                    <Button
+                      type="submit"
+                      isDisabled={isDisabled}
+                      iconBefore={<CodeSandboxLogo />}
+                    >
+                      Sandbox
+                    </Button>
+                  )}
                 />
                 <Button
                   iconBefore={<CodeIcon label="Toggle code snippet" />}
@@ -436,7 +457,11 @@ export default class ExamplesModal extends Component<Props, State> {
           />
           <ModalContent>
             {examples && exampleId ? (
-              <ExampleDisplay displayCode={displayCode} example={example} />
+              <ExampleDisplay
+                displayCode={displayCode}
+                example={example}
+                name={pkgJSON.name}
+              />
             ) : (
               <Content>
                 <ErrorMessage>
