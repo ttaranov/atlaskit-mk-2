@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 6.0.0
+- [patch] cket-transformer/__tests__/_schema-builder.ts [a6e77ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6e77ff)
+- [major] move MediaItem to renderer, bump icons [5e71725](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e71725)
+
 ## 5.10.3
 
 - [patch] Change JSON schema to ensure that first child of list-item is always paragraph [9a36594](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a36594)
