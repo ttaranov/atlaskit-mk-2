@@ -1,0 +1,27 @@
+{
+  "name": "@atlaskit/notification-log-client",
+  "version": "1.0.0",
+  "description": "Client APIs for notification-log service",
+  "main": "dist/es5/index.js",
+  "atlaskit:src": "src/index.ts",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Atlassian Home",
+    "Jimmy Kurniawan",
+    "Ryan Braganza"
+  ],
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/util-service-support": "^2.0.3",
+    "tslib": "^1.8.0"
+  },
+  "devDependencies": {
+    "whatwg-fetch": "^2.0.3",
+    "fetch-mock": "^5.12.1"
+  }
+}
