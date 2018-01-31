@@ -24,11 +24,7 @@ export interface Props {
 
 export default class CornerControls extends Component<Props, any> {
   render() {
-    const {
-      tableElement,
-      editorView: { state, dispatch },
-      scroll,
-    } = this.props;
+    const { tableElement, editorView: { state }, scroll } = this.props;
     const tableHeight = tableElement.offsetHeight;
     const lineMarkerWidth = getLineMarkerWidth(tableElement, scroll);
 
@@ -37,9 +33,9 @@ export default class CornerControls extends Component<Props, any> {
         className={this.props.checkIfSelected(state) ? 'active' : ''}
       >
         <CornerButton
-          onClick={() => this.props.selectTable(state, dispatch)}
-          onMouseOver={() => this.props.hoverTable(state, dispatch)}
-          onMouseOut={() => this.props.resetHoverSelection(state, dispatch)}
+          onClick={this.selectTable}
+          onMouseOver={this.hoverTable}
+          onMouseOut={this.resetHoverSelection}
         />
         <InsertColumnButton
           style={{ right: -toolbarSize, top: -toolbarSize - 8 }}
@@ -57,4 +53,19 @@ export default class CornerControls extends Component<Props, any> {
       </CornerContainer>
     );
   }
+
+  private selectTable = () => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.selectTable(state, dispatch);
+  };
+
+  private hoverTable = () => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.hoverTable(state, dispatch);
+  };
+
+  private resetHoverSelection = () => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.resetHoverSelection(state, dispatch);
+  };
 }
