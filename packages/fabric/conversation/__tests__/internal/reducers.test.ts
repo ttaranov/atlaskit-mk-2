@@ -93,6 +93,7 @@ describe('Reducers', () => {
               {
                 ...comment,
                 state: 'SAVING',
+                isPlaceholder: true,
               },
             ],
           },
@@ -111,20 +112,35 @@ describe('Reducers', () => {
       });
     });
 
-    it('should remove the pending comment on ERROR', () => {
-      store = createStore(reducers);
-      dispatch = store.dispatch;
+    it('should apply ERROR state to the comment on ERROR', () => {
+      const err = new Error('foo');
+      dispatch({
+        type: CREATE_CONVERSATION_REQUEST,
+        payload: mockInlineConversation,
+      });
 
       dispatch({
         type: CREATE_CONVERSATION_ERROR,
-        payload: mockConversation,
+        payload: {
+          ...mockInlineConversation,
+          error: err,
+        },
       });
 
       expect(store.getState()).toEqual({
         conversations: [
+          mockConversation,
           {
-            ...mockConversation,
-            comments: [],
+            ...mockInlineConversation,
+            comments: [
+              {
+                ...mockInlineConversation.comments[0],
+                state: 'ERROR',
+                error: err,
+                isPlaceholder: true,
+                oldDocument: mockInlineConversation.comments[0].document,
+              },
+            ],
           },
         ],
       });

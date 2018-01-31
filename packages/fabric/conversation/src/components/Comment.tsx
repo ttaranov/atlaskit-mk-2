@@ -35,6 +35,7 @@ export interface SharedProps {
   onDeleteComment?: (conversationId: string, commentId: string) => void;
   onRevertComment?: (comment: CommentType) => void;
   onCancelComment?: (comment: CommentType) => void;
+  onCancel?: () => void;
 
   // Provider
   dataProviders?: ProviderFactory;
@@ -117,7 +118,7 @@ export default class Comment extends React.Component<Props, State> {
     return false;
   }
 
-  private dispatch(dispatch: string, ...args) {
+  private dispatch = (dispatch: string, ...args) => {
     const handler = this.props[dispatch];
 
     if (handler) {
@@ -127,7 +128,7 @@ export default class Comment extends React.Component<Props, State> {
         lastDispatch: { handler: dispatch, args },
       });
     }
-  }
+  };
 
   private onReply = () => {
     this.setState({
@@ -180,7 +181,13 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onRequestCancel = () => {
-    const { comment } = this.props;
+    const { comment, onCancel } = this.props;
+
+    // Invoke optional onCancel hook
+    if (onCancel) {
+      onCancel();
+    }
+
     this.dispatch('onRevertComment', comment);
   };
 
@@ -252,6 +259,7 @@ export default class Comment extends React.Component<Props, State> {
       onDeleteComment,
       onRevertComment,
       onRetry,
+      onCancel,
     } = this.props;
 
     if (!comments || comments.length === 0) {
@@ -269,6 +277,7 @@ export default class Comment extends React.Component<Props, State> {
         onDeleteComment={onDeleteComment}
         onRevertComment={onRevertComment}
         onRetry={onRetry}
+        onCancel={onCancel}
         onUserClick={onUserClick}
         dataProviders={dataProviders}
       />

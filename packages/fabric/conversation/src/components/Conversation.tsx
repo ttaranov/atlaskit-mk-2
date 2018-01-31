@@ -20,7 +20,6 @@ export interface Props extends SharedProps {
     value: any,
     meta: any,
   ) => void;
-  onCancel?: () => void;
 
   isExpanded?: boolean;
   meta?: {
@@ -38,6 +37,7 @@ export default class Conversation extends React.PureComponent<Props> {
       onDeleteComment,
       onRevertComment,
       onUserClick,
+      onCancel,
       user,
       dataProviders,
     } = this.props;
@@ -59,6 +59,7 @@ export default class Conversation extends React.PureComponent<Props> {
         onDeleteComment={onDeleteComment}
         onRevertComment={onRevertComment}
         onRetry={this.onRetry}
+        onCancel={onCancel}
         onUserClick={onUserClick}
         dataProviders={dataProviders}
       />
@@ -98,14 +99,14 @@ export default class Conversation extends React.PureComponent<Props> {
   private onSave = async (value: any, comment?: CommentType) => {
     const {
       containerId,
-      id,
+      id = '',
       localId,
       meta,
       onAddComment,
       onCreateConversation,
     } = this.props;
 
-    if (!id) {
+    if (!id && !comment) {
       if (onCreateConversation) {
         onCreateConversation(localId!, containerId, value, meta);
       }

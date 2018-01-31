@@ -112,24 +112,25 @@ const removeCommentFromConversation = (
   conversations: Conversation[],
   commentToRemove: Comment,
 ): Conversation[] => {
-  return conversations
-    .map(conversation => {
-      if (conversation.conversationId === commentToRemove.conversationId) {
-        const comments = removeComment(conversation.comments, commentToRemove);
+  return conversations.reduce((current, conversation) => {
+    if (conversation.conversationId === commentToRemove.conversationId) {
+      const comments = removeComment(conversation.comments, commentToRemove);
 
-        // If there's no comments, remove the conversation as well
-        if (comments.length === 0) {
-          return null;
-        }
+      // If there's no comments, don't add the conversation
+      if (comments.length === 0) {
+        return current;
+      }
 
-        return {
+      return [
+        ...current,
+        {
           ...conversation,
           comments,
-        };
-      }
-      return conversation;
-    })
-    .filter(conversation => conversation !== null) as Conversation[];
+        },
+      ];
+    }
+    return [...current, conversation];
+  }, []);
 };
 
 export const reducers = {
@@ -325,6 +326,7 @@ export const reducers = {
           {
             ...comment,
             state: 'SAVING',
+            isPlaceholder: true,
           },
         ],
       },
@@ -347,15 +349,13 @@ export const reducers = {
   },
 
   [CREATE_CONVERSATION_ERROR](state: State, action: Action) {
-    const { payload } = action;
+    const { payload: { comments: [comment], error } } = action;
 
-    const conversations = [
-      ...state.conversations,
-      {
-        ...payload,
-        comments: [],
-      },
-    ];
+    const conversations = updateCommentInConversation(state.conversations, {
+      ...comment,
+      state: 'ERROR',
+      error,
+    });
 
     return {
       ...state,
