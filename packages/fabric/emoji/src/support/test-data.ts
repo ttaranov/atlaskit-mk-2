@@ -211,9 +211,9 @@ declare var require: {
 };
 
 // tslint:disable-next-line:no-var-requires
-export const standardServiceEmojis: EmojiServiceResponse = require('./test-emoji-standard.json') as EmojiServiceResponse;
+export const standardServiceEmojis: EmojiServiceResponse = require('./json-data/test-emoji-standard.json') as EmojiServiceResponse;
 // tslint:disable-next-line:no-var-requires
-export const atlassianServiceEmojis: EmojiServiceResponse = require('./test-emoji-atlassian.json') as EmojiServiceResponse;
+export const atlassianServiceEmojis: EmojiServiceResponse = require('./json-data/test-emoji-atlassian.json') as EmojiServiceResponse;
 export const siteServiceEmojis = (): EmojiServiceResponse => ({
   emojis: [mediaServiceEmoji],
   meta: {

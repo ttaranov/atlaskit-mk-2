@@ -25,7 +25,7 @@ const downPage: React.CSSProperties = {
   top: '400px',
 };
 
-class EmojiTextInput extends Component<Props, State> {
+class EmojiTextInput extends Component<TypeaheadProps, TypeaheadState> {
   private emojiTypeAheadRef: EmojiTypeAhead;
 
   static defaultProps = {
@@ -61,7 +61,7 @@ class EmojiTextInput extends Component<Props, State> {
     if (this.state.active) {
       this.setState({
         query: event.target.value || '',
-      } as State);
+      } as TypeaheadState);
     }
   };
 

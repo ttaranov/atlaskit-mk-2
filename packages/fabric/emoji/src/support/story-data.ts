@@ -15,9 +15,9 @@ declare var require: {
 let emojisSets: Map<string, EmojiDescription[]>;
 
 export const getStandardEmojiData = (): EmojiServiceResponse =>
-  require('./service-data-standard.json') as EmojiServiceResponse;
+  require('./json-data/service-data-standard.json') as EmojiServiceResponse;
 export const getAtlassianEmojiData = (): EmojiServiceResponse =>
-  require('./service-data-atlassian.json') as EmojiServiceResponse;
+  require('./json-data/service-data-atlassian.json') as EmojiServiceResponse;
 
 export const getAllEmojiData = (): EmojiServiceResponse => {
   const standardEmojis = getStandardEmojiData();
