@@ -7,7 +7,7 @@ import {
   preprocessDoc,
 } from '../utils';
 import { toJSON } from '../../utils';
-import { Transformer } from '@atlaskit/editor-common';
+import { Transformer, getValidNode } from '@atlaskit/editor-common';
 export default class EditorActions {
   private editorView?: EditorView;
   private contentTransformer?: Transformer<any>;
@@ -139,6 +139,33 @@ export default class EditorActions {
     }
 
     const tr = state.tr.insertText(text).scrollIntoView();
+    this.editorView.dispatch(tr);
+
+    return true;
+  }
+
+  insertExtension(extension: any): boolean {
+    if (!this.editorView || !extension) {
+      return false;
+    }
+
+    let node;
+    const { state } = this.editorView;
+    const { schema } = state;
+    const { type, attrs } = getValidNode(extension, schema);
+
+    if (type === 'extension') {
+      node = schema.nodes.extension.create(attrs);
+    } else if (type === 'bodiedExtension') {
+      node = schema.nodes.bodiedExtension.create(
+        attrs,
+        schema.nodeFromJSON(extension).content,
+      );
+    } else if (type === 'inlineExtension') {
+      node = schema.nodes.inlineExtension.create(attrs);
+    }
+
+    const tr = state.tr.replaceSelectionWith(node).scrollIntoView();
     this.editorView.dispatch(tr);
 
     return true;

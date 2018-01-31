@@ -151,7 +151,12 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   }
 
   // UI only plugins
-  plugins.push(insertBlockPlugin);
+  plugins.push(
+    insertBlockPlugin({
+      insertMenuItems: props.insertMenuItems,
+    }),
+  );
+
   plugins.push(submitEditorPlugin);
 
   return plugins;

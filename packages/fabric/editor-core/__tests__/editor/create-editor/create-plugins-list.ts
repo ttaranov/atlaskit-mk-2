@@ -1,4 +1,7 @@
-jest.mock('../../../src/editor/plugins', () => ({ mediaPlugin: jest.fn() }));
+jest.mock('../../../src/editor/plugins', () => ({
+  mediaPlugin: jest.fn(),
+  insertBlockPlugin: jest.fn(),
+}));
 
 import {
   tablePlugin,
@@ -7,6 +10,7 @@ import {
   placeholderCursorPlugin,
   submitEditorPlugin,
 } from '../../../src/editor/plugins';
+
 import createPluginsList from '../../../src/editor/create-editor/create-plugins-list';
 
 describe('createPluginsList', () => {

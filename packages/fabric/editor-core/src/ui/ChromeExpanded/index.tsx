@@ -298,11 +298,12 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               popupsBoundariesElement={popupsBoundariesElement}
               popupsScrollableElement={popupsScrollableElement}
               // tslint:disable-next-line:jsx-no-lambda
-              render={state => (
+              render={(state, editorActions) => (
                 <ToolbarInsertBlock
                   isDisabled={disabled}
                   isReducedSpacing={false}
                   editorView={editorView}
+                  editorActions={editorActions}
                   tableActive={state.tableActive}
                   tableHidden={state.tableHidden}
                   tableSupported={state.tableSupported}

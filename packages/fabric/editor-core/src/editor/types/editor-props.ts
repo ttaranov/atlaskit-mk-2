@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Node, Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
+import EditorActions from '../actions';
 import { MediaProvider, MediaState } from '@atlaskit/media-core';
 import {
   Transformer,
@@ -29,6 +30,14 @@ export type EditorAppearance =
   | undefined;
 
 export type ReactElement = React.ReactElement<any> | React.ReactElement<any>[];
+
+export type InsertMenuCustomItem = {
+  content: string;
+  value: { name: string };
+  tooltipDescription: string;
+  tooltipPosition: string;
+  onClick: (editorActions: EditorActions) => void;
+};
 
 export interface EditorProps {
   appearance?: EditorAppearance;
@@ -91,6 +100,8 @@ export interface EditorProps {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
+
+  insertMenuItems?: InsertMenuCustomItem[];
 
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;

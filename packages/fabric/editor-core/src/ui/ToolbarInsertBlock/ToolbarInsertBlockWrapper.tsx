@@ -6,6 +6,8 @@ import { BlockTypeState } from '../../plugins/block-type';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { BlockType } from '../../plugins/block-type/types';
 import { EditorView } from 'prosemirror-view';
+import WithEditorActions from '../../editor/ui/WithEditorActions';
+import EditorActions from '../../editor/actions';
 
 export interface Props {
   pluginStateTable?: TableState;
@@ -16,7 +18,10 @@ export interface Props {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
-  render: (pluginsState: State) => React.ReactElement<any>;
+  render: (
+    pluginsState: State,
+    editorActions: EditorActions,
+  ) => React.ReactElement<any>;
 }
 
 export interface State {
@@ -219,6 +224,8 @@ export default class ToolbarInsertBlockWrapper extends React.Component<
   render() {
     const { render } = this.props;
 
-    return render(this.state);
+    return (
+      <WithEditorActions render={actions => render(this.state, actions)} />
+    );
   }
 }

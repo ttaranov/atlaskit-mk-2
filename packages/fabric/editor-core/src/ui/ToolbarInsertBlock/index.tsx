@@ -22,6 +22,7 @@ import {
 import { Popup } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
 import { EditorState, Transaction } from 'prosemirror-state';
+import EditorActions from '../../editor/actions';
 import {
   analyticsService as analytics,
   analyticsDecorator,
@@ -40,11 +41,14 @@ import tableCommands from '../../plugins/table/commands';
 import { insertDate, openDatePicker } from '../../editor/plugins/date/actions';
 import { Wrapper, ExpandIconWrapper } from './styles';
 
+import { InsertMenuCustomItem } from '../../editor/types';
+
 export interface Props {
   buttons: number;
   isReducedSpacing: boolean;
   isDisabled?: boolean;
   editorView: EditorView;
+  editorActions: EditorActions;
   tableActive?: boolean;
   tableHidden?: boolean;
   tableSupported?: boolean;
@@ -68,6 +72,7 @@ export interface Props {
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
   macroProvider?: MacroProvider | null;
+  insertMenuItems?: InsertMenuCustomItem[];
   onShowMediaPicker?: () => void;
   onInsertBlockType?: (name: string, view: EditorView) => void;
   onInsertMacroFromMacroBrowser?: (
@@ -288,6 +293,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       linkDisabled,
       emojiDisabled,
       emojiProvider,
+      insertMenuItems,
       dateEnabled,
     } = this.props;
     let items: any[] = [];
@@ -374,6 +380,9 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         elemBefore: <DateIcon label="Insert date" />,
       });
     }
+    if (insertMenuItems && insertMenuItems instanceof Array) {
+      items = items.concat(insertMenuItems);
+    }
     if (typeof macroProvider !== 'undefined' && macroProvider) {
       items.push({
         content: 'View more',
@@ -435,10 +444,12 @@ export default class ToolbarInsertBlock extends React.PureComponent<
   private onItemActivated = ({ item }): void => {
     const {
       editorView,
+      editorActions,
       onInsertBlockType,
       onInsertMacroFromMacroBrowser,
       macroProvider,
       handleImageUpload,
+      insertMenuItems,
     } = this.props;
 
     switch (item.value.name) {
@@ -482,6 +493,16 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       case 'date':
         this.createDate();
         break;
+      default:
+        const match =
+          insertMenuItems &&
+          insertMenuItems.find(
+            menuItem => menuItem.value.name === item.value.name,
+          );
+        if (match && match.onClick) {
+          match.onClick(editorActions);
+          break;
+        }
     }
     this.setState({ isOpen: false });
   };
