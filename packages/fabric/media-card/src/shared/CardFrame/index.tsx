@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+  className,
   LinkWrapper,
   Wrapper,
   Header,
@@ -18,8 +19,6 @@ export interface CardFrameProps {
   children?: React.ReactNode;
   onClick?: () => void;
 }
-
-const className = 'media-card-frame';
 
 export default class CardFrame extends React.Component<CardFrameProps> {
   get isInteractive() {

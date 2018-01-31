@@ -10,6 +10,7 @@ import {
 import { borderRadius, size, linkCardShadow, ellipsis } from '../../styles';
 
 const wrapperPadding = 8;
+export const className = 'media-card-frame';
 
 export interface WrapperProps {
   isInteractive?: boolean;
@@ -139,7 +140,7 @@ export const Content = styled.div`
   ${borderRadius} ${linkCardShadow} background-color: white;
   transition: box-shadow 0.3s;
 
-  .media-card-frame:hover & {
+  .${className}:hover & {
     box-shadow: 0 4px 8px -2px rgba(23, 43, 77, 0.32),
       0 0 1px rgba(23, 43, 77, 0.25);
   }
