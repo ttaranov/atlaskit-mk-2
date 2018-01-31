@@ -19,16 +19,15 @@
     "@atlaskit/icon": "^10.7.0",
     "@atlaskit/spinner": "^4.1.0",
     "@atlaskit/theme": "^2.3.0",
-    "enzyme": "^3.3.0",
     "prop-types": "^15.5.10",
-    "react-transition-group": "^2.2.1",
     "styled-components": "^1.4.6"
   },
   "peerDependencies": {
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.4.0"
+    "@atlaskit/docs": "^2.4.0",
+    "enzyme": "^3.3.0"
   },
   "keywords": [
     "atlaskit",
