@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.7.1
+- [patch] added ContentNodeView class to fix nodeViews that has contentDOM ref [53f2a38](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/53f2a38)
+
 ## 61.7.0
 - [minor] The allowPlaceholderCursor prop has been removed in favour of always showing the (now renamed) fake text-cursor. [c5da217](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5da217)
 
