@@ -1,13 +1,12 @@
 import {
   insertText,
-  makeEditor,
+  createEditor,
   doc,
   blockquote,
   p,
   decisionList,
   decisionItem,
   hardBreak,
-  text,
   taskList,
   taskItem,
   thEmpty,
@@ -19,9 +18,9 @@ import {
   tdCursor,
   thCursor,
 } from '@atlaskit/editor-test-helpers';
-import tasksAndDecisionsPlugins from '../../../src/plugins/tasks-and-decisions';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { ProviderFactory, uuid } from '@atlaskit/editor-common';
+import { uuid } from '@atlaskit/editor-common';
+import tasksAndDecisionsPlugin from '../../../src/editor/plugins/tasks-and-decisions';
+import tablesPlugin from '../../../src/editor/plugins/table';
 
 describe('tasks and decisions - input rules', () => {
   beforeEach(() => {
@@ -33,13 +32,9 @@ describe('tasks and decisions - input rules', () => {
   });
 
   const editor = (doc: any) =>
-    makeEditor({
+    createEditor({
       doc,
-      plugins: tasksAndDecisionsPlugins(
-        defaultSchema,
-        {},
-        new ProviderFactory(),
-      ),
+      editorPlugins: [tasksAndDecisionsPlugin, tablesPlugin],
     });
 
   describe('decisions', () => {
@@ -109,13 +104,7 @@ describe('tasks and decisions - input rules', () => {
         doc(
           table(
             tr(thEmpty),
-            tr(
-              p(
-                text('Hello', defaultSchema),
-                hardBreak(),
-                text('{<>}', defaultSchema),
-              ),
-            ),
+            tr(td({})(p('Hello', hardBreak(), '{<>}'))),
             tr(tdEmpty),
           ),
         ),
@@ -127,13 +116,7 @@ describe('tasks and decisions - input rules', () => {
         doc(
           table(
             tr(thEmpty),
-            tr(
-              p(
-                text('Hello', defaultSchema),
-                hardBreak(),
-                text('<> ', defaultSchema),
-              ),
-            ),
+            tr(td({})(p('Hello', hardBreak(), '<> '))),
             tr(tdEmpty),
           ),
         ),
@@ -155,13 +138,7 @@ describe('tasks and decisions - input rules', () => {
 
     it('should split on hardBreak and preserve content when converting', () => {
       const { editorView, sel } = editor(
-        doc(
-          p(
-            text('Hello', defaultSchema),
-            hardBreak(),
-            text('{<>}World', defaultSchema),
-          ),
-        ),
+        doc(p('Hello', hardBreak(), '{<>}World')),
       );
       insertText(editorView, '<> ', sel);
 
@@ -214,13 +191,7 @@ describe('tasks and decisions - input rules', () => {
 
     it('should split on hardBreak and preserve content when converting', () => {
       const { editorView, sel } = editor(
-        doc(
-          p(
-            text('Hello', defaultSchema),
-            hardBreak(),
-            text('{<>}World', defaultSchema),
-          ),
-        ),
+        doc(p('Hello', hardBreak(), '{<>}World')),
       );
       insertText(editorView, '[] ', sel);
 
@@ -286,13 +257,7 @@ describe('tasks and decisions - input rules', () => {
         doc(
           table(
             tr(thEmpty),
-            tr(
-              p(
-                text('Hello', defaultSchema),
-                hardBreak(),
-                text('{<>}', defaultSchema),
-              ),
-            ),
+            tr(td({})(p('Hello', hardBreak(), '{<>}'))),
             tr(tdEmpty),
           ),
         ),
@@ -304,13 +269,7 @@ describe('tasks and decisions - input rules', () => {
         doc(
           table(
             tr(thEmpty),
-            tr(
-              p(
-                text('Hello', defaultSchema),
-                hardBreak(),
-                text('[] ', defaultSchema),
-              ),
-            ),
+            tr(td({})(p('Hello', hardBreak(), '[] '))),
             tr(tdEmpty),
           ),
         ),

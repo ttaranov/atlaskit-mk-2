@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 61.7.3
+- [patch] cket-transformer/__tests__/_schema-builder.ts [a6e77ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6e77ff)
+- [patch] move MediaItem to renderer, bump icons [5e71725](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e71725)
+
 ## 61.7.2
 - [patch] Clear formatting advance option should remove panel, blockquote and code block node types. [966a444](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/966a444)
 

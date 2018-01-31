@@ -1,5 +1,9 @@
 # @atlaskit/renderer
 
+## 11.3.7
+
+- [patch] move MediaItem to renderer, bump icons [5e71725](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e71725)
+
 ## 11.3.6
 - [patch] Bump editor versions [afa6885](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/afa6885)
 

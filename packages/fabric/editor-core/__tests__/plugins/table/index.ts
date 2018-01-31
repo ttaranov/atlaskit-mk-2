@@ -1,11 +1,14 @@
-import tablePlugins, { TableState } from '../../../src/plugins/table';
+import {
+  TableState,
+  stateKey as tablePluginKey,
+} from '../../../src/plugins/table';
 import tableCommands from '../../../src/plugins/table/commands';
 import { CellSelection, TableMap } from 'prosemirror-tables';
 import {
   createEvent,
   doc,
   p,
-  makeEditor,
+  createEditor,
   thEmpty,
   table,
   tr,
@@ -19,7 +22,6 @@ import {
   strong,
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../src/utils';
-import { analyticsService } from '../../../src/analytics';
 import {
   selectRow,
   selectColumn,
@@ -29,18 +31,25 @@ import {
   checkIfColumnSelected,
   checkIfRowSelected,
 } from '../../../src/editor/plugins/table/utils';
+import tablesPlugin from '../../../src/editor/plugins/table';
+import textFormatting from '../../../src/editor/plugins/text-formatting';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 
 describe('table plugin', () => {
   const event = createEvent('event');
-  const editor = (doc: any) =>
-    makeEditor<TableState>({
+  const editor = (doc: any, trackEvent = () => {}) =>
+    createEditor<TableState>({
       doc,
-      plugins: tablePlugins(),
+      editorPlugins: [tablesPlugin, textFormatting(), codeBlockPlugin],
+      editorProps: {
+        analyticsHandler: trackEvent,
+      },
+      pluginKey: tablePluginKey,
     });
+
   let trackEvent;
   beforeEach(() => {
     trackEvent = jest.fn();
-    analyticsService.trackEvent = trackEvent;
   });
 
   describe('subscribe', () => {
@@ -248,6 +257,7 @@ describe('table plugin', () => {
         it("it should prepend a new column and move cursor inside it's first cell", () => {
           const { plugin, pluginState, editorView } = editor(
             doc(p('text'), table(tr(td({})(p('c1')), td({})(p('c2{<>}'))))),
+            trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertColumn(0);
@@ -268,6 +278,7 @@ describe('table plugin', () => {
         it("it should insert a new column in the middle and move cursor inside it's first cell", () => {
           const { plugin, pluginState, editorView } = editor(
             doc(p('text'), table(tr(td({})(p('c1{<>}')), td({})(p('c2'))))),
+            trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertColumn(1);
@@ -288,6 +299,7 @@ describe('table plugin', () => {
         it("it should append a new column and move cursor inside it's first cell", () => {
           const { plugin, pluginState, editorView } = editor(
             doc(p('text'), table(tr(td({})(p('c1{<>}')), td({})(p('c2'))))),
+            trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertColumn(2);
@@ -315,6 +327,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(td({})(p('row1'))), tr(td({})(p('row2{<>}')))),
             ),
+            trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertRow(0);
@@ -338,6 +351,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(td({})(p('row1{<>}'))), tr(td({})(p('row2')))),
             ),
+            trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertRow(1);
@@ -363,6 +377,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(td({})(p('row1{<>}'))), tr(td({})(p('row2')))),
             ),
+            trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertRow(2);
@@ -496,6 +511,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(td({})(p('{nextPos}')), tdCursor, tdEmpty)),
             ),
+            trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
@@ -519,6 +535,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(td({})(p('{nextPos}')), tdCursor, tdEmpty)),
             ),
+            trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
@@ -537,10 +554,17 @@ describe('table plugin', () => {
 
       describe('when the header row is selected', () => {
         const editorTableHeader = (doc: any) =>
-          makeEditor<TableState>({
+          createEditor<TableState>({
             doc,
-            plugins: tablePlugins({ isHeaderRowRequired: true }),
+            editorPlugins: [tablesPlugin],
+            editorProps: {
+              allowTables: {
+                isHeaderRowRequired: true,
+              },
+            },
+            pluginKey: tablePluginKey,
           });
+
         it('it should convert first following row to header if pluginState.isHeaderRowRequired is true', () => {
           const { plugin, pluginState, editorView } = editorTableHeader(
             doc(table(tr(thCursor), tr(tdEmpty), tr(tdEmpty))),
@@ -581,6 +605,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(tdCursor, td({})(p('{nextPos}')), tdCursor)),
             ),
+            trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
@@ -606,6 +631,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(td({})(p('{nextPos}'))), tr(tdCursor), tr(tdEmpty)),
             ),
+            trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
@@ -629,6 +655,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(tdCursor), tr(td({})(p('{nextPos}'))), tr(tdEmpty)),
             ),
+            trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
@@ -652,6 +679,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(tdCursor), tr(td({})(p('{nextPos}'))), tr(tdEmpty)),
             ),
+            trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);

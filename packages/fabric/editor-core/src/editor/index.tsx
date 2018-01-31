@@ -161,7 +161,7 @@ export default class Editor extends React.Component<EditorProps, State> {
     );
     this.providerFactory.setProvider(
       'mediaProvider',
-      media ? media.provider : mediaProvider,
+      media && media.provider ? media.provider : mediaProvider,
     );
     this.providerFactory.setProvider(
       'imageUploadProvider',

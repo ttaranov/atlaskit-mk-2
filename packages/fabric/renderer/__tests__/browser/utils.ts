@@ -18,7 +18,9 @@ describe('Renderer - ADFEncoder', () => {
   });
 
   it('should use the provided transformer to parse a given value', () => {
-    transformer.parse.mockReturnValue(doc(p('hello ', strong('world'))));
+    transformer.parse.mockReturnValue(
+      doc(p('hello ', strong('world')))(defaultSchema),
+    );
     const encoder = new ADFEncoder(transformerProvider);
     expect(encoder.encode('stubbed')).toEqual({
       version: 1,
