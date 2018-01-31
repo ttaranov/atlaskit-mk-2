@@ -20,6 +20,7 @@
     "@atlaskit/editor-json-transformer": "^2.5.3",
     "@atlaskit/icon": "^10.7.0",
     "@atlaskit/media-card": "^24.0.0",
+    "@atlaskit/media-core": "^13.0.0",
     "@atlaskit/media-filmstrip": "^6.0.0",
     "@atlaskit/mention": "^9.1.1",
     "@atlaskit/task-decision": "^4.8.0",
