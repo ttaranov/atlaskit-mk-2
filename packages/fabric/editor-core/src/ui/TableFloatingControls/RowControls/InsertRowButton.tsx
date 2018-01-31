@@ -14,6 +14,7 @@ export interface ButtonProps {
   style?: object;
   insertRow: (row: number) => void;
   lineMarkerWidth?: number;
+  onMouseOver?: () => void;
 }
 
 export default class InsertRowButton extends Component<ButtonProps, any> {
@@ -21,7 +22,10 @@ export default class InsertRowButton extends Component<ButtonProps, any> {
 
   render() {
     return (
-      <InsertRowButtonWrap style={this.props.style}>
+      <InsertRowButtonWrap
+        style={this.props.style}
+        onMouseOver={this.props.onMouseOver}
+      >
         <InsertRowButtonInner>
           <AkButton
             onClick={this.handleInsert}

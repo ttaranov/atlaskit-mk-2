@@ -1,5 +1,12 @@
 # @atlaskit/editor-common
 
+## 5.10.2
+
+## 5.10.1
+
+## 5.10.0
+- [minor] FS-1624 Add new popupsScrollableElement props to editor to handle case when mountPoint is different than the scrollable element. [7d669bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d669bc)
+
 ## 5.9.4
 
 - [patch] Insert media group instead of single image inside table [5b4aaa0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b4aaa0)

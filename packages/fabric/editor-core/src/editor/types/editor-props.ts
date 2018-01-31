@@ -59,6 +59,7 @@ export interface EditorProps {
   allowConfluenceInlineComment?: boolean;
   allowPlaceholderCursor?: boolean;
   allowDate?: boolean;
+  allowTableColumnResizing?: boolean;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;
@@ -89,6 +90,7 @@ export interface EditorProps {
 
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
 
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;

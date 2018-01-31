@@ -1,4 +1,4 @@
-import { MediaPluginState } from '../../../src';
+import { MediaPluginState } from '../../../src/plugins/media';
 import {
   doc,
   makeEditor,

@@ -13,7 +13,7 @@ import {
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../src/utils';
-import { PlaceholderCursor } from '../../src/plugins/placeholder-cursor/cursor';
+import { FakeTextCursorSelection } from '../../src/editor/plugins/fake-text-cursor/cursor';
 
 describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   const editor = (doc: any) =>
@@ -286,8 +286,8 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     hyperlinkEdit.setState({ editorFocused: true });
     const input = hyperlinkEdit.find(PanelTextInput);
     input.simulate('mouseDown');
-    expect(editorView.state.selection instanceof PlaceholderCursor).toEqual(
-      true,
-    );
+    expect(
+      editorView.state.selection instanceof FakeTextCursorSelection,
+    ).toEqual(true);
   });
 });

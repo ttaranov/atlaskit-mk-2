@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import ProgressTracker from '../src/ProgressTracker';
+import { ProgressTracker } from '../src';
 
 const items = [
   {

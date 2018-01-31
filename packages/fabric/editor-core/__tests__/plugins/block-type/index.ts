@@ -8,6 +8,7 @@ import {
   h3,
   h4,
   h5,
+  h6,
   makeEditor,
   p,
 } from '@atlaskit/editor-test-helpers';
@@ -69,6 +70,14 @@ describe('block-type', () => {
 
     pluginState.toggleBlockType('heading5', editorView);
     expect(editorView.state.doc).toEqualDocument(doc(h5('text')));
+    editorView.destroy();
+  });
+
+  it('should be able to change to heading6', () => {
+    const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
+
+    pluginState.toggleBlockType('heading6', editorView);
+    expect(editorView.state.doc).toEqualDocument(doc(h6('text')));
     editorView.destroy();
   });
 

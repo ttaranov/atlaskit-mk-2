@@ -11,6 +11,9 @@ async function runDevServer() {
   const [entry] = process.argv.slice(2);
   const env = 'production';
   const includePatterns = true;
+  const noMinimize = !!process.argv.find(arg =>
+    arg.startsWith('--no-minimize'),
+  );
 
   print(buildBanner());
 
@@ -18,7 +21,7 @@ async function runDevServer() {
   // Creating webpack instance
   //
 
-  const config = createConfig({ entry, env, includePatterns });
+  const config = createConfig({ entry, env, includePatterns, noMinimize });
   const compiler = webpack(config);
 
   //

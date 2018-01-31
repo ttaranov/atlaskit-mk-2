@@ -26,8 +26,8 @@ import {
   selectTable,
 } from '../../../src/editor/plugins/table/actions';
 import {
-  isColumnSelected,
-  isRowSelected,
+  checkIfColumnSelected,
+  checkIfRowSelected,
 } from '../../../src/editor/plugins/table/utils';
 
 describe('table plugin', () => {
@@ -445,7 +445,7 @@ describe('table plugin', () => {
     });
   });
 
-  describe('isColumnSelected(number)', () => {
+  describe('checkIfColumnSelected(number)', () => {
     describe('when table has 3 columns', () => {
       [0, 1, 2].forEach(column => {
         describe(`when column ${column} is selected`, () => {
@@ -456,7 +456,9 @@ describe('table plugin', () => {
               );
               plugin.props.handleDOMEvents!.focus(editorView, event);
               selectColumn(column)(editorView.state, editorView.dispatch);
-              expect(isColumnSelected(column, editorView.state)).toEqual(true);
+              expect(checkIfColumnSelected(column, editorView.state)).toEqual(
+                true,
+              );
               editorView.destroy();
             });
           });
@@ -465,7 +467,7 @@ describe('table plugin', () => {
     });
   });
 
-  describe('isRowSelected(number)', () => {
+  describe('checkIfRowSelected(number)', () => {
     describe('when table has 3 rows', () => {
       [0, 1, 2].forEach(row => {
         describe(`when row ${row} is selected`, () => {
@@ -476,7 +478,7 @@ describe('table plugin', () => {
               );
               plugin.props.handleDOMEvents!.focus(editorView, event);
               selectRow(row)(editorView.state, editorView.dispatch);
-              expect(isRowSelected(row, editorView.state)).toEqual(true);
+              expect(checkIfRowSelected(row, editorView.state)).toEqual(true);
               editorView.destroy();
             });
           });

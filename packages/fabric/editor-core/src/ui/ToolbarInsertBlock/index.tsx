@@ -66,6 +66,7 @@ export interface Props {
   insertEmoji?: (emojiId: EmojiId) => void;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
   macroProvider?: MacroProvider | null;
   onShowMediaPicker?: () => void;
   onInsertBlockType?: (name: string, view: EditorView) => void;
@@ -133,6 +134,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
     const {
       popupsMountPoint,
       popupsBoundariesElement,
+      popupsScrollableElement,
       emojiProvider,
     } = this.props;
     if (!emojiPickerOpen || !this.button || !emojiProvider) {
@@ -147,6 +149,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         offset={[0, 3]}
         mountTo={popupsMountPoint}
         boundariesElement={popupsBoundariesElement}
+        scrollableElement={popupsScrollableElement}
       >
         <AkEmojiPicker
           emojiProvider={emojiProvider}
@@ -196,6 +199,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
     const {
       popupsMountPoint,
       popupsBoundariesElement,
+      popupsScrollableElement,
       isDisabled,
       buttons: numberOfButtons,
       isReducedSpacing,
@@ -250,6 +254,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
                 onOpenChange={this.onOpenChange}
                 mountTo={popupsMountPoint}
                 boundariesElement={popupsBoundariesElement}
+                scrollableElement={popupsScrollableElement}
                 isOpen={isOpen}
                 fitHeight={188}
                 fitWidth={175}

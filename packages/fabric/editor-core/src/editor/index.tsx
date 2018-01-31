@@ -201,6 +201,7 @@ export default class Editor extends React.Component<EditorProps, State> {
         onCancel={this.props.onCancel}
         popupsMountPoint={this.props.popupsMountPoint}
         popupsBoundariesElement={this.props.popupsBoundariesElement}
+        popupsScrollableElement={this.props.popupsScrollableElement}
         contentComponents={contentComponents}
         primaryToolbarComponents={primaryToolbarComponents}
         secondaryToolbarComponents={secondaryToolbarComponents}

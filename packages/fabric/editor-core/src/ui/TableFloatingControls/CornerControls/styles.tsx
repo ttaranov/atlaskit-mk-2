@@ -15,6 +15,12 @@ export const CornerContainer = styled.div`
   left: -${akEditorTableToolbarSize}px;
   width: ${akEditorTableToolbarSize}px;
   height: ${akEditorTableToolbarSize}px;
+
+  display: none;
+
+  .ProseMirror .with-controls & {
+    display: block;
+  }
 `;
 
 // tslint:disable-next-line:variable-name

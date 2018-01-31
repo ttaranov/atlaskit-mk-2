@@ -54,38 +54,45 @@ export class Tokenizer implements ITokenizer {
 }
 
 /**
- * MentionDescription compare function.
- * Order mention descriptions by: context, weight
+ * Returns a comparator function for MentionDescription object.
  *
- * @param {MentionDescription} a
- * @param {MentionDescription} b
- * @returns {number}
+ * @param {Set<string>} inContextUsers
+ * @returns {(a: MentionDescription, b: MentionDescription) => number}
  */
-export function compareMentionDescription(
-  a: MentionDescription,
-  b: MentionDescription,
-) {
-  let aIsSpecialMention = isSpecialMention(a);
-  let bIsSpecialMention = isSpecialMention(b);
-  if (aIsSpecialMention && !bIsSpecialMention) {
-    return -1;
-  }
+export function mentionDescriptionComparator(inContextUsers: Set<string>) {
+  return (a: MentionDescription, b: MentionDescription) => {
+    let aIsSpecialMention = isSpecialMention(a);
+    let bIsSpecialMention = isSpecialMention(b);
+    if (aIsSpecialMention && !bIsSpecialMention) {
+      return -1;
+    }
 
-  if (bIsSpecialMention && !aIsSpecialMention) {
-    return 1;
-  }
+    if (bIsSpecialMention && !aIsSpecialMention) {
+      return 1;
+    }
 
-  if (a.inContext && !b.inContext) {
-    return -1;
-  }
+    const aInContext = inContextUsers.has(a.id);
+    const bInContext = inContextUsers.has(b.id);
+    if (aInContext && !bInContext) {
+      return -1;
+    }
 
-  if (b.inContext && !a.inContext) {
-    return 1;
-  }
+    if (bInContext && !aInContext) {
+      return 1;
+    }
 
-  const aWeight = a.weight !== undefined ? a.weight : DEFAULT_WEIGHT;
-  const bWeight = b.weight !== undefined ? b.weight : DEFAULT_WEIGHT;
-  return aWeight - bWeight;
+    const aWeight = a.weight !== undefined ? a.weight : DEFAULT_WEIGHT;
+    const bWeight = b.weight !== undefined ? b.weight : DEFAULT_WEIGHT;
+    if (aWeight !== bWeight) {
+      return aWeight - bWeight;
+    }
+
+    if (a.name && b.name) {
+      return a.name.localeCompare(b.name);
+    }
+
+    return a.id.localeCompare(b.id);
+  };
 }
 
 export class Highlighter {
@@ -166,8 +173,6 @@ export class SearchIndex {
 
           return true;
         });
-
-      localResults.sort(compareMentionDescription);
 
       resolve({
         mentions: localResults,

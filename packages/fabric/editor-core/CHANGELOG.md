@@ -1,5 +1,37 @@
 # @atlaskit/editor-core
 
+## 61.7.0
+- [minor] The allowPlaceholderCursor prop has been removed in favour of always showing the (now renamed) fake text-cursor. [c5da217](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5da217)
+
+## 61.6.5
+
+## 61.6.4
+- [patch] Removes components, examples, and tests, for old arch editor [9fd0649](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9fd0649)
+
+## 61.6.3
+- [patch] Reducing min-width of comment editor to 272px. [c71ff58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c71ff58)
+
+## 61.6.2
+- [patch] Fix uploading a big image causes many duplicated uploading [27b6510](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27b6510)
+
+## 61.6.1
+
+## 61.6.0
+
+- [minor] added table column resizing plugin [c61e092](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c61e092)
+
+## 61.5.2
+
+- [patch] Adding support for heading6. [147cd8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/147cd8e)
+
+## 61.5.1
+
+## 61.5.0
+- [minor] FS-1624 Add new popupsScrollableElement props to editor to handle case when mountPoint is different than the scrollable element. [7d669bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d669bc)
+
+## 61.4.12
+- [patch] Code block in JIRA has no formatting and not distinguishable from normal text. [5bdb48f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bdb48f)
+
 ## 61.4.11
 
 - [patch] Insert media group instead of single image inside table [5b4aaa0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b4aaa0)
