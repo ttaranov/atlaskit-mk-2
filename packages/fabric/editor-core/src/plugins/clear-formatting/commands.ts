@@ -1,7 +1,13 @@
 import { EditorState, Transaction } from 'prosemirror-state';
+import { liftTarget } from 'prosemirror-transform';
 import { Command } from '../../commands';
 
-export const FORMATTING_NODE_TYPES = ['heading'];
+export const FORMATTING_NODE_TYPES = [
+  'heading',
+  'codeBlock',
+  'blockquote',
+  'panel',
+];
 export const FORMATTING_MARK_TYPES = [
   'em',
   'code',
@@ -31,8 +37,20 @@ export function clearFormatting(): Command {
       const { $from, $to } = tr.selection;
       tr.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
         if (node.hasMarkup(formattedNodeType)) {
-          tr.setNodeMarkup(pos, state.schema.nodes.paragraph);
-          return false;
+          if (formattedNodeType.isTextblock) {
+            tr.setNodeMarkup(pos, state.schema.nodes.paragraph);
+            return false;
+          } else {
+            let fromPos = tr.doc.resolve(pos + 1);
+            let toPos = tr.doc.resolve(pos + node.nodeSize - 1);
+            const nodeRange = fromPos.blockRange(toPos);
+            if (nodeRange) {
+              const targetLiftDepth = liftTarget(nodeRange);
+              if (targetLiftDepth !== null) {
+                tr.lift(nodeRange, targetLiftDepth!);
+              }
+            }
+          }
         }
         return true;
       });

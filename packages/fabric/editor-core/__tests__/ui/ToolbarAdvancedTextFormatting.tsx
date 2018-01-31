@@ -9,6 +9,7 @@ import ToolbarButton from '../../src/ui/ToolbarButton';
 import {
   doc,
   p,
+  panel,
   strike,
   makeEditor,
   defaultSchema,
@@ -305,7 +306,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     let trackEvent;
     let toolbarOption;
     beforeEach(() => {
-      const { editorView } = editor(doc(p('text')));
+      const { editorView } = editor(doc(panel(p('text'))));
       toolbarOption = mount(
         <ToolbarAdvancedTextFormatting
           pluginStateTextFormatting={textFormattingPluginSet[0].getState(
@@ -331,7 +332,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       { value: 'strike', name: 'Strikethrough' },
       { value: 'subscript', name: 'Subscript' },
       { value: 'superscript', name: 'Superscript' },
-      { value: 'clear', name: 'Clear Formatting' },
+      { value: 'clearFormatting', name: 'Clear Formatting' },
     ].forEach(type => {
       it(`should trigger analyticsService.trackEvent when ${
         type.name

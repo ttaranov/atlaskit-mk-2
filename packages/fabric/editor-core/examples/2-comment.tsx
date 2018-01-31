@@ -116,8 +116,8 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     allowRule={true}
                     allowTables={true}
                     allowHelpDialog={true}
-                    allowPlaceholderCursor={true}
                     disabled={disabled}
+                    activityProvider={activityProvider}
                     mentionProvider={mentionProvider}
                     emojiProvider={emojiProvider}
                     mediaProvider={mediaProvider}

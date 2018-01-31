@@ -1,5 +1,11 @@
 # @atlaskit/editor-common
 
+## 5.10.3
+
+- [patch] Change JSON schema to ensure that first child of list-item is always paragraph [9a36594](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a36594)
+
+## 5.10.2
+
 ## 5.10.1
 
 ## 5.10.0

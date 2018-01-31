@@ -42,7 +42,7 @@ const CommentEditor: any = styled.div`
   display: flex;
   flex-direction: column;
 
-  min-width: 340px;
+  min-width: 272px;
   min-height: 30px;
   height: auto;
   ${(props: CommentEditorProps) =>

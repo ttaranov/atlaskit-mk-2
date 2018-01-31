@@ -3,6 +3,11 @@ import { Definition as Paragraph } from './paragraph';
 import { Definition as OrderedList } from './ordered-list';
 import { Definition as BulletList } from './bullet-list';
 
+export interface ListItemArray
+  extends Array<Paragraph | OrderedList | BulletList> {
+  0: Paragraph;
+}
+
 /**
  * @name listItem_node
  */
@@ -11,7 +16,7 @@ export interface Definition {
   /**
    * @minItems 1
    */
-  content: Array<Paragraph | OrderedList | BulletList>;
+  content: ListItemArray;
 }
 
 export const listItem: NodeSpec = {
