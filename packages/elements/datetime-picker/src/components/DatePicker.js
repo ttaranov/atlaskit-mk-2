@@ -46,7 +46,10 @@ class DatePicker extends Component<Props, State> {
   };
 
   handleFieldBlur = (e: Event) => {
-    this.props.onChange(parse(e.target.value));
+    const parsed = parse(e.target.value);
+    if (parsed) {
+      this.props.onChange(parsed);
+    }
   };
 
   handleFieldChange = (e: Event) => {
