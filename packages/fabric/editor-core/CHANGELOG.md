@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.7.2
+- [patch] Clear formatting advance option should remove panel, blockquote and code block node types. [966a444](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/966a444)
+
 ## 61.7.1
 - [patch] added ContentNodeView class to fix nodeViews that has contentDOM ref [53f2a38](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/53f2a38)
 
