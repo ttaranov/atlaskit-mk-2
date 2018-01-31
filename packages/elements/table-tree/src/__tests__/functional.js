@@ -21,7 +21,7 @@ describe('TableTree', () => {
         <Rows
           items={getFlatItems}
           render={({ title, page }) => (
-            <Row key={title} hasChildren={false}>
+            <Row itemId={title} hasChildren={false}>
               <Cell>{title}</Cell>
               <Cell>{page}</Cell>
             </Row>
@@ -64,7 +64,7 @@ describe('TableTree', () => {
         <Rows
           items={getNestedItems}
           render={({ title, page, children }) => (
-            <Row key={title} hasChildren={!!children}>
+            <Row itemId={title} hasChildren={!!children}>
               <Cell className={'title'}>{title}</Cell>
               <Cell className={'page'}>{page}</Cell>
             </Row>
