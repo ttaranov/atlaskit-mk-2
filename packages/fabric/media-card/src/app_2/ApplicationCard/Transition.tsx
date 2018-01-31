@@ -142,7 +142,7 @@ export default class Transition extends React.Component<
           }),
           {},
         ),
-        transition: `all ${timeout}ms`,
+        transition: `all ${timeout}ms ease-in-out`,
       };
     }
 
@@ -165,7 +165,7 @@ export default class Transition extends React.Component<
           (accum, name) => ({ ...accum, ...getStyle('exit', name, 'exited') }),
           {},
         ),
-        transition: `all ${timeout}ms`,
+        transition: `all ${timeout}ms ease-in-out`,
       };
     }
 

@@ -134,7 +134,7 @@ export default class ApplicationCard extends React.Component<
         <Transition
           enter={['fade', 'slide-up']}
           exit={['fade', 'slide-down']}
-          timeout={600}
+          timeout={300}
         >
           {visible ? (
             <AlertView
