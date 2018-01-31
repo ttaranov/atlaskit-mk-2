@@ -16,10 +16,11 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/code": "^3.0.0",
-    "@atlaskit/editor-common": "^5.10.1",
+    "@atlaskit/editor-common": "^5.10.2",
     "@atlaskit/editor-json-transformer": "^2.5.1",
-    "@atlaskit/icon": "^10.7.0",
+    "@atlaskit/icon": "^10.8.0",
     "@atlaskit/media-card": "^24.0.0",
+    "@atlaskit/media-core": "^13.0.0",
     "@atlaskit/media-filmstrip": "^6.0.0",
     "@atlaskit/mention": "^9.0.0",
     "@atlaskit/task-decision": "^4.6.0",

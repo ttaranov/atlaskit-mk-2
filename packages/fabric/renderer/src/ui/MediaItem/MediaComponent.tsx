@@ -21,8 +21,10 @@ import {
   ImageResizeMode,
 } from '@atlaskit/media-core';
 
-import { MediaAttributes } from '../..';
-import { CardEventClickHandler } from '../EventHandlers';
+import {
+  CardEventClickHandler,
+  MediaAttributes,
+} from '@atlaskit/editor-common';
 
 export type Appearance = 'auto' | 'small' | 'image' | 'horizontal' | 'square';
 
@@ -154,7 +156,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       cardDimensions,
       onDelete,
       appearance,
-      ...otherProps,
+      ...otherProps
     } = this.props;
     const hasProviders = mediaProvider && linkCreateContext;
 
