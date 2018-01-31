@@ -47,7 +47,6 @@ import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
 import { insertMediaGroupNode } from './media-files';
 import { insertMediaSingleNode } from './media-single';
 import { removeMediaNode, splitMediaGroup } from './media-common';
-import PickerFacade from './picker-facade';
 
 const MEDIA_END_STATES = ['ready', 'error', 'cancelled'];
 
@@ -193,7 +192,7 @@ export class MediaPluginState {
       const uploadContext = await resolvedMediaProvider.uploadContext;
 
       if (resolvedMediaProvider.uploadParams && uploadContext) {
-        this.initPickers(resolvedMediaProvider.uploadParams, uploadContext);
+        await this.initPickers(resolvedMediaProvider.uploadParams, uploadContext);
       } else {
         this.destroyPickers();
       }
@@ -551,12 +550,13 @@ export class MediaPluginState {
     this.binaryPicker = undefined;
   };
 
-  private initPickers(uploadParams: UploadParams, context: ContextConfig) {
+  private async initPickers(uploadParams: UploadParams, context: ContextConfig) {
     if (this.destroyed) {
       return;
     }
 
     const { errorReporter, pickers, stateManager } = this;
+    const PickerFacade = (await import('./picker-facade')).default;
 
     // create pickers if they don't exist, re-use otherwise
     if (!pickers.length) {

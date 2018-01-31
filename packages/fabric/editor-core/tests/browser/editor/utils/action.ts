@@ -39,6 +39,9 @@ const editor = (doc: any, uploadErrorHandler?: () => void) =>
     schema: defaultSchema,
   });
 
+const waitForPluginStateChange = async (pluginState: MediaPluginState) => 
+  new Promise(resolve => pluginState.subscribe(resolve));
+
 describe(name, () => {
   describe('Utils -> Action', () => {
     describe('#insertFileFromDataUrl', () => {
@@ -49,7 +52,8 @@ describe(name, () => {
           .returns(testCollectionName);
         const provider = await mediaProvider;
         await provider.uploadContext;
-
+        await waitForPluginStateChange(pluginState);
+        
         pluginState.binaryPicker!.upload = sinon.spy();
 
         insertFileFromDataUrl(
