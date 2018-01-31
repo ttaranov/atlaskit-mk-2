@@ -77,7 +77,7 @@ export class MediaFileListViewer extends Component<
 
     const filesToProcess = list.filter(item => item.type === 'file'); // for now we only support files
 
-    const erroedObservable = (file: MediaViewerItem) => {
+    const erroredObservable = (file: MediaViewerItem) => {
       return Observable.create((observer) => {
         observer.next({
           details: {
@@ -85,13 +85,13 @@ export class MediaFileListViewer extends Component<
           }
         });
         observer.complete();
-      });  
+      });
     };
 
     const errorAwareObservableFromFile = (file: MediaViewerItem) => {
       const provider = context.getMediaItemProvider(file.id, file.type, collectionName);
       return provider.observable()
-        .catch((error: Error) => erroedObservable(file))
+        .catch((error: Error) => erroredObservable(file))
         .map(item => item as FileItem);
     };
 
