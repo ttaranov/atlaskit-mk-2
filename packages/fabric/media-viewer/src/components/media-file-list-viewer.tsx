@@ -79,6 +79,8 @@ export class MediaFileListViewer extends Component<
 
     const erroredObservable = (file: MediaViewerItem) => {
       return Observable.create((observer) => {
+        // a media item with no processingStatus will be treated as error downstream
+        // so we will be able to provide the correct error handling
         observer.next({
           details: {
             id: file.id
