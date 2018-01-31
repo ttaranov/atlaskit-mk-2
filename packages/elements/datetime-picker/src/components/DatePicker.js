@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component, type ElementRef } from 'react';
-import { withValue } from 'react-value';
+import withCtrl from 'react-ctrl';
 import DatePickerStateless from './DatePickerStateless';
 import type { Event, Handler } from '../types';
 import { parseDate } from '../util';
@@ -84,8 +84,8 @@ class DatePicker extends Component<Props, State> {
   handlePickerUpdate = (value: string) => {
     const parsed = parse(value);
     if (parsed) {
-      this.props.onChange(parsed);
       this.setState({ isOpen: false, value: parsed });
+      this.props.onChange(parsed);
       this.selectField();
     }
   };
@@ -133,4 +133,4 @@ class DatePicker extends Component<Props, State> {
   }
 }
 
-export default withValue(DatePicker);
+export default withCtrl(DatePicker);
