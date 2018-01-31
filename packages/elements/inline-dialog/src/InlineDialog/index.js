@@ -14,7 +14,7 @@ type Props = {
   The InlineDialog Layer will not sit outside this element if it can help it.
   If, through it's normal positoning,
   it would end up outside the boundary
-  the layer will flip positions if the autoPosition prop is set. */
+  the layer will flip positions. */
   boundariesElement?: 'viewport' | 'window' | 'scrollParent',
   /** The elements that the InlineDialog will be positioned relative to. */
   children?: NodeType,
