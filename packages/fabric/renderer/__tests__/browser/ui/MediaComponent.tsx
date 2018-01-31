@@ -9,8 +9,8 @@ import {
   MediaStateManager,
   DefaultMediaStateManager,
 } from '@atlaskit/media-core';
-import MediaComponent from '../../src/ui/MediaItem/MediaComponent';
-import { MediaType } from '../../src';
+import MediaComponent from '../../../src/ui/MediaItem/MediaComponent';
+import { MediaType } from '@atlaskit/editor-common';
 import { Card, CardView, CardProps } from '@atlaskit/media-card';
 import {
   storyMediaProviderFactory,

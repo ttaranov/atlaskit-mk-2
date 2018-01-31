@@ -23,8 +23,7 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/emoji": "^31.0.2",
-    "@atlaskit/icon": "^10.7.1",
-    "@atlaskit/media-card": "^24.0.0",
+    "@atlaskit/icon": "^10.8.0",
     "@atlaskit/media-core": "^13.0.0",
     "@atlaskit/mention": "^9.1.0",
     "@atlaskit/profilecard": "^3.7.1",
@@ -45,6 +44,7 @@
   "devDependencies": {
     "@atlaskit/webdriver-runner": "^0.0.1",
     "@atlaskit/editor-test-helpers": "^1.8.4",
+    "@atlaskit/media-card": "^24.0.0",
     "@types/chai": "^4.0.4",
     "chai": "^4.1.2",
     "json-schema-diff-validator": "^0.0.5",
