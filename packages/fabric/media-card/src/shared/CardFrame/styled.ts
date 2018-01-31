@@ -134,14 +134,26 @@ export const TextWrapper = styled.div`
   ${ellipsis('none')};
 `;
 
+export interface ContentProps {
+  isInteractive: boolean;
+}
+
 export const Content = styled.div`
   position: relative;
 
   ${borderRadius} ${linkCardShadow} background-color: white;
   transition: box-shadow 0.3s;
 
-  .${className}:hover & {
-    box-shadow: 0 4px 8px -2px rgba(23, 43, 77, 0.32),
-      0 0 1px rgba(23, 43, 77, 0.25);
-  }
+  ${({ isInteractive }: ContentProps) => {
+    if (isInteractive) {
+      return ` 
+          .${className}:hover & {
+            box-shadow: 0 4px 8px -2px rgba(23, 43, 77, 0.32),
+              0 0 1px rgba(23, 43, 77, 0.25);
+          }
+        `;
+    } else {
+      return '';
+    }
+  }};
 `;

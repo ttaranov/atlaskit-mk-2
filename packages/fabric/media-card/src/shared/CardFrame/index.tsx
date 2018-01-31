@@ -50,8 +50,9 @@ export default class CardFrame extends React.Component<CardFrameProps> {
   }
 
   renderContent() {
+    const { isInteractive } = this;
     const { children } = this.props;
-    return <Content>{children}</Content>;
+    return <Content isInteractive={isInteractive}>{children}</Content>;
   }
 
   render() {
