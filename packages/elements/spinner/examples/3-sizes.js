@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import Spinner from '@atlaskit/spinner';
+import Spinner from '../src';
 
 export default () => (
   <div>
