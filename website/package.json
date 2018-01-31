@@ -66,6 +66,7 @@
     "prismjs": "^1.6.0",
     "prop-types": "^15.5.10",
     "react": "15.6.0 - 16.2.0",
+    "react-addons-text-content": "^0.0.4",
     "react-dom": "15.6.0 - 16.2.0",
     "react-ga": "^2.3.5",
     "react-loadable": "^5.1.0",
@@ -74,6 +75,7 @@
     "react-router-dom": "^4.2.2",
     "semver": "^5.4.1",
     "sentence-case": "^2.1.1",
+    "snake-case": "^2.1.0",
     "styled-components": "^1.4.6",
     "uglify-js": "^3.1.7"
   }
