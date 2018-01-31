@@ -91,10 +91,14 @@ describe('Media plugin', () => {
     return mediaNodeWithPos!.getPos();
   };
 
+  const waitForPluginStateChange = async (pluginState: MediaPluginState) => 
+    new Promise(resolve => pluginState.subscribe(resolve));
+  
+
   afterAll(() => {
     providerFactory.destroy();
   });
-
+  
   it('should invoke binary picker when calling insertFileFromDataUrl', async () => {
     const { pluginState } = editor(doc(p('{<>}')));
     const collectionFromProvider = jest.spyOn(
@@ -104,9 +108,11 @@ describe('Media plugin', () => {
     collectionFromProvider.mockImplementation(() => testCollectionName);
     const provider = await mediaProvider;
     await provider.uploadContext;
+    
+    await waitForPluginStateChange(pluginState);
 
     expect(typeof pluginState.binaryPicker!).toBe('object');
-
+    
     pluginState.binaryPicker!.upload = jest.fn();
 
     pluginState.insertFileFromDataUrl(
@@ -459,6 +465,7 @@ describe('Media plugin', () => {
     const provider = await mediaProvider;
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
+    await waitForPluginStateChange(pluginState);
 
     pluginState.insertFiles([
       { id: firstTemporaryFileId, status: 'uploading' },
@@ -617,9 +624,9 @@ describe('Media plugin', () => {
     expect(pluginState.pickers.length).toBe(0);
 
     const mediaProvider1 = getFreshMediaProvider();
-    pluginState.setMediaProvider(mediaProvider1);
+    await pluginState.setMediaProvider(mediaProvider1);
     const mediaProvider2 = getFreshMediaProvider();
-    pluginState.setMediaProvider(mediaProvider2);
+    await pluginState.setMediaProvider(mediaProvider2);
 
     const resolvedMediaProvider1 = await mediaProvider1;
     const resolvedMediaProvider2 = await mediaProvider2;
@@ -634,14 +641,14 @@ describe('Media plugin', () => {
     expect(pluginState.pickers.length).toBe(0);
 
     const mediaProvider1 = getFreshMediaProvider();
-    pluginState.setMediaProvider(mediaProvider1);
+    await pluginState.setMediaProvider(mediaProvider1);
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
     const pickersAfterMediaProvider1 = pluginState.pickers;
     expect(pickersAfterMediaProvider1.length).toBe(4);
 
     const mediaProvider2 = getFreshMediaProvider();
-    pluginState.setMediaProvider(mediaProvider2);
+    await pluginState.setMediaProvider(mediaProvider2);
     const resolvedMediaProvider2 = await mediaProvider2;
     await resolvedMediaProvider2.uploadContext;
     const pickersAfterMediaProvider2 = pluginState.pickers;
@@ -661,14 +668,14 @@ describe('Media plugin', () => {
     expect(pluginState.pickers.length).toBe(0);
 
     const mediaProvider1 = getFreshMediaProvider();
-    pluginState.setMediaProvider(mediaProvider1);
+    await pluginState.setMediaProvider(mediaProvider1);
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
 
     const spy = jest.spyOn((pluginState as any).popupPicker, 'hide');
 
     const mediaProvider2 = getFreshMediaProvider();
-    pluginState.setMediaProvider(mediaProvider2);
+    await pluginState.setMediaProvider(mediaProvider2);
     const resolvedMediaProvider2 = await mediaProvider2;
     await resolvedMediaProvider2.uploadContext;
     expect(spy).toHaveBeenCalledTimes(1);
@@ -679,7 +686,7 @@ describe('Media plugin', () => {
     expect(pluginState.pickers.length).toBe(0);
 
     const mediaProvider1 = getFreshMediaProvider();
-    pluginState.setMediaProvider(mediaProvider1);
+    await pluginState.setMediaProvider(mediaProvider1);
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
 
@@ -688,7 +695,7 @@ describe('Media plugin', () => {
     });
 
     const mediaProvider2 = getFreshMediaProvider();
-    pluginState.setMediaProvider(mediaProvider2);
+    await pluginState.setMediaProvider(mediaProvider2);
     const resolvedMediaProvider2 = await mediaProvider2;
     await resolvedMediaProvider2.uploadContext;
 
@@ -708,6 +715,8 @@ describe('Media plugin', () => {
 
     const provider = await mediaProvider;
     await provider.uploadContext;
+
+    await waitForPluginStateChange(pluginState);
 
     expect(typeof pluginState.binaryPicker!).toBe('object');
 

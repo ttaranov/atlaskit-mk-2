@@ -38,7 +38,7 @@ import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
 import { insertMediaGroupNode } from './media-files';
 import { insertMediaSingleNode } from './media-single';
 import { removeMediaNode, splitMediaGroup } from './media-common';
-import PickerFacade, { PickerFacadeConfig } from './picker-facade';
+import PickerFacadeType, { PickerFacadeConfig } from './picker-facade';
 import {
   MediaState,
   MediaProvider,
@@ -64,8 +64,8 @@ export class MediaPluginState {
   public allowsUploads: boolean = false;
   public allowsLinks: boolean = false;
   public stateManager: MediaStateManager;
-  public pickers: PickerFacade[] = [];
-  public binaryPicker?: PickerFacade;
+  public pickers: PickerFacadeType[] = [];
+  public binaryPicker?: PickerFacadeType;
   public ignoreLinks: boolean = false;
   public waitForMediaUpload: boolean = true;
   public showDropzone: boolean = false;
@@ -80,9 +80,9 @@ export class MediaPluginState {
   private destroyed = false;
   private mediaProvider: MediaProvider;
   private errorReporter: ErrorReporter;
-  private popupPicker?: PickerFacade;
-  private clipboardPicker?: PickerFacade;
-  private dropzonePicker?: PickerFacade;
+  private popupPicker?: PickerFacadeType;
+  private clipboardPicker?: PickerFacadeType;
+  private dropzonePicker?: PickerFacadeType;
   private linkRanges: Array<URLInfo>;
   private editorAppearance: EditorAppearance;
 
@@ -194,7 +194,7 @@ export class MediaPluginState {
       const uploadContext = await resolvedMediaProvider.uploadContext;
 
       if (resolvedMediaProvider.uploadParams && uploadContext) {
-        this.initPickers(resolvedMediaProvider.uploadParams, uploadContext);
+        await this.initPickers(resolvedMediaProvider.uploadParams, uploadContext);
       } else {
         this.destroyPickers();
       }
@@ -538,7 +538,7 @@ export class MediaPluginState {
     this.binaryPicker = undefined;
   };
 
-  private initPickers(
+  private async initPickers(
     uploadParams: UploadParams,
     contextConfig: ContextConfig,
   ) {
@@ -547,6 +547,7 @@ export class MediaPluginState {
     }
 
     const { errorReporter, pickers, stateManager } = this;
+    const PickerFacade = (await import(/* webpackChunkName:"@atlaskit/editor-core/picker-facade" */'./picker-facade')).default;
 
     // create pickers if they don't exist, re-use otherwise
     if (!pickers.length) {

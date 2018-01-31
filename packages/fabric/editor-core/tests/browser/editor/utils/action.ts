@@ -37,6 +37,20 @@ const editor = (doc: any, uploadErrorHandler?: () => void) =>
     providerFactory,
   });
 
+const waitForProperty = async (
+  pluginState: MediaPluginState,
+  property: string,
+) => {
+  return new Promise(resolve => {
+    const interval = setInterval(() => {
+      if (typeof pluginState[property] !== 'undefined') {
+        clearInterval(interval);
+        resolve();
+      }
+    }, 10);
+  });
+};
+
 describe(name, () => {
   describe('Utils -> Action', () => {
     describe('#insertFileFromDataUrl', () => {
@@ -47,7 +61,8 @@ describe(name, () => {
           .returns(testCollectionName);
         const provider = await mediaProvider;
         await provider.uploadContext;
-
+        await waitForProperty(pluginState, 'binaryPicker');
+        
         pluginState.binaryPicker!.upload = sinon.spy();
 
         insertFileFromDataUrl(
