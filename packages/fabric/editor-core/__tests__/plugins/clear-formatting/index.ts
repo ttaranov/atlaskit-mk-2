@@ -43,14 +43,28 @@ describe('clear-formatting', () => {
       expect(pluginState.formattingIsPresent).toBe(true);
     });
 
-    it('should be false if a code blocks is present', () => {
+    it('should be true if a code blocks is present', () => {
       const { pluginState } = editor(
         doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')),
       );
-      expect(pluginState.formattingIsPresent).toBe(false);
+      expect(pluginState.formattingIsPresent).toBe(true);
     });
 
-    it('should be false if no marks are present', () => {
+    it('should be true if blockquote is present', () => {
+      const { pluginState } = editor(
+        doc(p('paragraph'), blockquote('block{<>}quote')),
+      );
+      expect(pluginState.formattingIsPresent).toBe(true);
+    });
+
+    it('should be true if panel is present', () => {
+      const { pluginState } = editor(
+        doc(p('paragraph'), panel('panel{<>}node')),
+      );
+      expect(pluginState.formattingIsPresent).toBe(true);
+    });
+
+    it('should be false if no marks or formatted blocks are present', () => {
       const { pluginState } = editor(doc(p('text')));
       expect(pluginState.formattingIsPresent).toBe(false);
     });
@@ -65,19 +79,7 @@ describe('clear-formatting', () => {
 
     it('should be false if all present blocks are cleared', () => {
       const { editorView, pluginState } = editor(
-        doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')),
-      );
-      pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).toBe(false);
-      editorView.destroy();
-    });
-
-    it('should be false if all present marks and blocks are cleared', () => {
-      const { editorView, pluginState } = editor(
-        doc(
-          p('parag{<}raph'),
-          code_block({ language: 'java' })('code{>}Block'),
-        ),
+        doc(code_block({})('code{<>}block')),
       );
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).toBe(false);
@@ -134,6 +136,35 @@ describe('clear-formatting', () => {
       const { editorView, pluginState } = editor(
         doc(p(subsup({ type: 'sup' })('{<}text{>}'))),
       );
+      pluginState.clearFormatting(editorView);
+      expect(editorView.state.doc).toEqualDocument(doc(p('text')));
+      editorView.destroy();
+    });
+
+    it('should remove blockquote if present', () => {
+      const { editorView, pluginState } = editor(
+        doc(blockquote(p('te{<>}xt'))),
+      );
+
+      pluginState.clearFormatting(editorView);
+      expect(editorView.state.doc).toEqualDocument(doc(p('text')));
+
+      editorView.destroy();
+    });
+
+    it('should remove panel if present', () => {
+      const { editorView, pluginState } = editor(doc(panel(p('te{<>}xt'))));
+
+      pluginState.clearFormatting(editorView);
+      expect(editorView.state.doc).toEqualDocument(doc(p('text')));
+
+      editorView.destroy();
+    });
+
+    it('should remove superscript if present', () => {
+      const { editorView, pluginState } = editor(
+        doc(p(subsup({ type: 'sup' })('{<}text{>}'))),
+      );
 
       pluginState.clearFormatting(editorView);
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
@@ -148,26 +179,6 @@ describe('clear-formatting', () => {
 
       pluginState.clearFormatting(editorView);
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
-
-      editorView.destroy();
-    });
-
-    it('should not remove panel block if present', () => {
-      const { editorView, pluginState } = editor(doc(panel(p('te{<>}xt'))));
-
-      pluginState.clearFormatting(editorView);
-      expect(editorView.state.doc).toEqualDocument(doc(panel(p('text'))));
-
-      editorView.destroy();
-    });
-
-    it('should not remove block-quote if present', () => {
-      const { editorView, pluginState } = editor(
-        doc(blockquote(p('te{<>}xt'))),
-      );
-
-      pluginState.clearFormatting(editorView);
-      expect(editorView.state.doc).toEqualDocument(doc(blockquote(p('text'))));
 
       editorView.destroy();
     });

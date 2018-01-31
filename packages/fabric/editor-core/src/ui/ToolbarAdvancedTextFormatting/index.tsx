@@ -237,7 +237,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
       this.addRecordToItems(
         items,
         'Clear Formatting',
-        'clear',
+        'clearFormatting',
         tooltip(clearFormatting),
       );
     }
@@ -315,7 +315,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
       case 'superscript':
         pluginStateTextFormatting!.toggleSuperscript(this.props.editorView);
         break;
-      case 'clear':
+      case 'clearFormatting':
         pluginStateClearFormatting!.clearFormatting(this.props.editorView);
         break;
     }
