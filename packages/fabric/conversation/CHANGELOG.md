@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 5.0.2
+- [patch] Avoid unnecessary re-render of comments [402cc7c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/402cc7c)
+
 ## 5.0.1
 
 ## 5.0.0
