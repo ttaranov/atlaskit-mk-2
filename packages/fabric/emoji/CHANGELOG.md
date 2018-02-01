@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 31.1.0
+- [minor] FS-1649 move emoji to mk-2 [6953ac1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6953ac1)
+
 ## 31.0.8 (2018-01-10)
 
 * bug fix; added nbsp to emoji sprite spans to allow for selection at start of paragraph (issues closed: fs-1622) ([77d6ca0](https://bitbucket.org/atlassian/atlaskit/commits/77d6ca0))
