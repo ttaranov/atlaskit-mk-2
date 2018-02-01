@@ -33,6 +33,7 @@ describe('Renderer - Validator', () => {
       'javascript:alert("Hello World!")',
       ' javascript:alert("Hello World!")',
       '\njavascript:alert("Hello World!")',
+      'smb:',
     ];
 
     it('should return true if URL starts with http://, https://, ftp://, ftps:// etc', () => {
@@ -1188,6 +1189,14 @@ describe('Renderer - Validator', () => {
         expect(unknownInlineNode.marks![0].attrs.href).to.equal(
           'https://www.atlassian.com',
         );
+      });
+
+      it('should not store unsafe textUrl attribute in "href" attribute', () => {
+        const unknownInlineNode = getValidUnknownNode({
+          type: 'foobar',
+          attrs: { textUrl: 'javascript:alert("haxx")' },
+        });
+        expect(unknownInlineNode.marks).to.equal(undefined);
       });
 
       it('should use default text', () => {

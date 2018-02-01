@@ -10,6 +10,7 @@ import {
   MediaViewerConfig,
 } from '../mediaviewer';
 import { MediaViewerItem } from './media-viewer';
+import { generatePreview, isPreviewGenerated } from '../domain/preview';
 
 export interface MediaCollectionViewerProps {
   readonly context: Context;
@@ -52,10 +53,16 @@ export class MediaCollectionViewer extends Component<
     const pageSize =
       this.props.pageSize || MediaCollectionViewer.defaultPageSize;
 
+    const config = {
+      ...mediaViewerConfiguration,
+      isPreviewGenerated: isPreviewGenerated(MediaViewer),
+      generatePreview: generatePreview(MediaViewer)
+    };
+
     this.state = {
       provider: context.getMediaCollectionProvider(collectionName, pageSize),
       mediaViewer: new MediaViewer({
-        ...mediaViewerConfiguration,
+        ...config,
         assets: {
           basePath: basePath,
         },

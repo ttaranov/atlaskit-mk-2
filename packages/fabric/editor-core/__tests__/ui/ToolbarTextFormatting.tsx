@@ -1,24 +1,22 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import textFormattingPlugin, {
+import {
   TextFormattingState,
+  stateKey,
 } from '../../src/plugins/text-formatting';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import AkButton from '@atlaskit/button';
 import ToolbarTextFormatting from '../../src/ui/ToolbarTextFormatting';
-import {
-  doc,
-  p,
-  makeEditor,
-  defaultSchema,
-} from '@atlaskit/editor-test-helpers';
+import { doc, p, createEditor } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../src/analytics';
+import textFormatting from '../../src/editor/plugins/text-formatting';
 
 describe('ToolbarTextFormatting', () => {
   const editor = (doc: any) =>
-    makeEditor<TextFormattingState>({
+    createEditor<TextFormattingState>({
       doc,
-      plugins: textFormattingPlugin(defaultSchema),
+      editorPlugins: [textFormatting()],
+      pluginKey: stateKey,
     });
 
   it('should render disabled ToolbarButtons if disabled property is true', () => {

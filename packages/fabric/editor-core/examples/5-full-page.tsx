@@ -132,15 +132,13 @@ export default class Example extends React.Component<Props, State> {
               allowCodeBlocks={true}
               allowLists={true}
               allowTextColor={true}
-              allowTables={true}
+              allowTables={{ allowColumnResizing: true }}
               allowJiraIssue={true}
               allowUnsupportedContent={true}
               allowPanel={true}
               allowExtension={true}
-              allowPlaceholderCursor={true}
               allowRule={true}
               allowDate={true}
-              allowTableColumnResizing={true}
               {...providers}
               media={{ provider: mediaProvider, allowMediaSingle: true }}
               placeholder="Write something..."

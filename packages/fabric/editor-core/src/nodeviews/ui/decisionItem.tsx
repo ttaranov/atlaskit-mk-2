@@ -5,6 +5,8 @@ import { EditorView, NodeView } from 'prosemirror-view';
 
 import { DecisionItem } from '@atlaskit/task-decision';
 
+import ContentNodeView from '../contentNodeView';
+
 type getPosHandler = () => number;
 
 export interface Props {
@@ -13,21 +15,17 @@ export interface Props {
   node: PMNode;
 }
 
-class Decision implements NodeView {
+class Decision extends ContentNodeView implements NodeView {
   private domRef: HTMLElement | undefined;
-  private contentDOMRef: HTMLElement | undefined;
   private isContentEmpty: boolean = false;
   private node: PMNode;
 
   constructor(node: PMNode, view: EditorView, getPos: getPosHandler) {
+    super(node, view);
     this.isContentEmpty = node.content.childCount === 0;
     this.node = node;
     this.renderReactComponent();
   }
-
-  private handleRef = (node: HTMLElement | undefined) => {
-    this.contentDOMRef = node;
-  };
 
   private renderReactComponent() {
     this.domRef = document.createElement('li');
@@ -47,10 +45,6 @@ class Decision implements NodeView {
     return this.domRef;
   }
 
-  get contentDOM() {
-    return this.contentDOMRef;
-  }
-
   update(node: PMNode) {
     /**
      * Returning false here when the previous content was empty – fixes an error where the editor fails to set selection
@@ -62,7 +56,7 @@ class Decision implements NodeView {
   destroy() {
     ReactDOM.unmountComponentAtNode(this.domRef!);
     this.domRef = undefined;
-    this.contentDOMRef = undefined;
+    super.destroy();
   }
 }
 

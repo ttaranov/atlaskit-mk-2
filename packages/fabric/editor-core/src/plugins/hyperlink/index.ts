@@ -13,9 +13,9 @@ import keymapPlugin from './keymap';
 import { Match, getLinkMatch, normalizeUrl, linkifyContent } from './utils';
 import { EditorProps } from '../../editor/types/editor-props';
 import {
-  addPlaceholderCursor,
-  removePlaceholderCursor,
-} from '../placeholder-cursor/cursor';
+  addFakeTextCursor,
+  removeFakeTextCursor,
+} from '../../editor/plugins/fake-text-cursor/cursor';
 
 import stateKey from './plugin-key';
 export { stateKey };
@@ -180,7 +180,7 @@ export class HyperlinkState {
         this.addLink({ href: '' }, editorView);
         this.update(editorView);
       }
-      addPlaceholderCursor(editorView.state, editorView.dispatch);
+      addFakeTextCursor(editorView.state, editorView.dispatch);
       return true;
     }
     return false;
@@ -189,13 +189,13 @@ export class HyperlinkState {
   hideLinkPanel(state: EditorState, dispatch: (tr: Transaction) => void) {
     this.showToolbarPanel = false;
     this.changeHandlers.forEach(cb => cb(this));
-    removePlaceholderCursor(state, dispatch);
+    removeFakeTextCursor(state, dispatch);
   }
 
   setInactive(state: EditorState, dispatch: (tr: Transaction) => void) {
     this.active = false;
     this.changeHandlers.forEach(cb => cb(this));
-    removePlaceholderCursor(state, dispatch);
+    removeFakeTextCursor(state, dispatch);
   }
 
   getCoordinates(

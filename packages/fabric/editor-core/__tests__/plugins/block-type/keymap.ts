@@ -1,93 +1,52 @@
-import blockTypePlugin from '../../../src/plugins/block-type';
-import { browser, createSchema } from '@atlaskit/editor-common';
 import {
   insertText,
   sendKeyToPm,
+  createEditor,
   blockquote,
   code_block,
   doc,
   h1,
-  makeEditor,
   mention,
   p,
   hr,
   ul,
   li,
-  hardBreak,
   table,
   tr,
   tdEmpty,
   tdCursor,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import blockTypePlugins from '../../../src/plugins/block-type';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 import { analyticsService } from '../../../src/analytics';
 import { setNodeSelection } from '../../../src/utils';
+import mentionsPlugin from '../../../src/editor/plugins/mentions';
+import listPlugin from '../../../src/editor/plugins/lists';
+import tablesPlugin from '../../../src/editor/plugins/table';
+import rulePlugin from '../../../src/editor/plugins/rule';
 
 describe('codeBlock - keymaps', () => {
-  const editor = (doc: any) =>
-    makeEditor({
-      doc,
-      plugins: blockTypePlugin(defaultSchema),
-    });
   let trackEvent;
+  const editor = (doc: any) =>
+    createEditor({
+      doc,
+      editorProps: {
+        analyticsHandler: trackEvent,
+      },
+      editorPlugins: [
+        codeBlockPlugin,
+        mentionsPlugin,
+        listPlugin,
+        tablesPlugin,
+        rulePlugin,
+      ],
+    });
+
   beforeEach(() => {
     trackEvent = jest.fn();
     analyticsService.trackEvent = trackEvent;
   });
 
   describe('keymap', () => {
-    if (browser.mac) {
-      describe('when on a Mac', () => {
-        describe('when hits Cmd-Alt-9', () => {
-          it('inserts blockquote', () => {
-            const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-9');
-
-            expect(editorView.state.doc).toEqualDocument(
-              doc(blockquote(p('text'))),
-            );
-            expect(trackEvent).toHaveBeenCalledWith(
-              'atlassian.editor.format.blockquote.keyboard',
-            );
-            editorView.destroy();
-          });
-        });
-
-        describe('when blockquote nodetype is not in schema', () => {
-          it('corresponding keymaps should not work', () => {
-            const schema = createSchema({
-              nodes: ['doc', 'paragraph', 'text'],
-            });
-            const editor = (doc: any) =>
-              makeEditor({
-                doc,
-                plugins: blockTypePlugins(schema),
-                schema,
-              });
-            const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-7');
-            expect(editorView.state.doc).toEqualDocument(doc(p('text')));
-            editorView.destroy();
-          });
-        });
-
-        describe('when hits Shift-Enter', () => {
-          it('inserts hard-break', () => {
-            const { editorView } = editor(doc(h1('t{<}ex{>}t')));
-            sendKeyToPm(editorView, 'Shift-Enter');
-            expect(editorView.state.doc).toEqualDocument(
-              doc(h1('t', hardBreak(), 't')),
-            );
-            expect(trackEvent).toHaveBeenCalledWith(
-              'atlassian.editor.newline.keyboard',
-            );
-            editorView.destroy();
-          });
-        });
-      });
-    }
-
     describe('when hits cmd-z', () => {
       it('should undo last autoformatting', () => {
         const { editorView, sel } = editor(doc(p('{<>}')));
@@ -173,13 +132,13 @@ describe('codeBlock - keymaps', () => {
 
                 it('does not ignore @mention', () => {
                   const { editorView } = editor(
-                    doc(p(mention({ id: 'foo1', text: '@bar1' }))),
+                    doc(p(mention({ id: 'foo1', text: '@bar1' })())),
                   );
 
                   sendKeyToPm(editorView, 'ArrowUp');
 
                   expect(editorView.state.doc).toEqualDocument(
-                    doc(p(mention({ id: 'foo1', text: '@bar1' }))),
+                    doc(p(mention({ id: 'foo1', text: '@bar1' })())),
                   );
                   editorView.destroy();
                 });
@@ -254,14 +213,14 @@ describe('codeBlock - keymaps', () => {
           describe('when selection is in the middle of the content', () => {
             it('does not create a paragraph', () => {
               const { editorView, sel } = editor(
-                doc(p('text'), hr, code_block()('{<>}text')),
+                doc(p('text'), hr(), code_block()('{<>}text')),
               );
               setNodeSelection(editorView, sel - 1);
 
               sendKeyToPm(editorView, 'ArrowUp');
 
               expect(editorView.state.doc).toEqualDocument(
-                doc(p('text'), hr, code_block()('text')),
+                doc(p('text'), hr(), code_block()('text')),
               );
               editorView.destroy();
             });
@@ -269,13 +228,13 @@ describe('codeBlock - keymaps', () => {
 
           describe('when selection is at the beginning of the content', () => {
             it('creates a new paragraph above', () => {
-              const { editorView } = editor(doc(hr, code_block()('text')));
+              const { editorView } = editor(doc(hr(), code_block()('text')));
               setNodeSelection(editorView, 0);
 
               sendKeyToPm(editorView, 'ArrowUp');
 
               expect(editorView.state.doc).toEqualDocument(
-                doc(p(''), hr, code_block()('text')),
+                doc(p(''), hr(), code_block()('text')),
               );
               expect(trackEvent).toHaveBeenCalledWith(
                 'atlassian.editor.moveup.keyboard',
@@ -289,14 +248,14 @@ describe('codeBlock - keymaps', () => {
           describe('when there is more content before the nested block', () => {
             it('does not create a paragraph', () => {
               const { editorView, sel } = editor(
-                doc(p('text'), blockquote(hr, code_block()('{<>}text'))),
+                doc(p('text'), blockquote(p('text'), p('{<>}more text'))),
               );
               setNodeSelection(editorView, sel - 1);
 
               sendKeyToPm(editorView, 'ArrowUpv');
 
               expect(editorView.state.doc).toEqualDocument(
-                doc(p('text'), blockquote(hr, code_block()('text'))),
+                doc(p('text'), blockquote(p('text'), p('more text'))),
               );
               editorView.destroy();
             });
@@ -305,14 +264,14 @@ describe('codeBlock - keymaps', () => {
           describe('when there is no more content before the nested block', () => {
             it('creates a new paragraph above', () => {
               const { editorView } = editor(
-                doc(blockquote(hr, code_block()('{<>}text'))),
+                doc(blockquote(p('pre text'), p('{<>}text'))),
               );
               setNodeSelection(editorView, 1);
 
               sendKeyToPm(editorView, 'ArrowUp');
 
               expect(editorView.state.doc).toEqualDocument(
-                doc(p(''), blockquote(hr, code_block()('text'))),
+                doc(p(''), blockquote(p('pre text'), p('text'))),
               );
               editorView.destroy();
             });
@@ -449,14 +408,14 @@ describe('codeBlock - keymaps', () => {
         describe('when selection is in the middle of the content', () => {
           it('does not create a paragraph', () => {
             const { editorView, sel } = editor(
-              doc(p('text{<>}'), hr, code_block()('text')),
+              doc(p('text{<>}'), hr(), code_block()('text')),
             );
             setNodeSelection(editorView, sel + 1);
 
             sendKeyToPm(editorView, 'ArrowDown');
 
             expect(editorView.state.doc).toEqualDocument(
-              doc(p('text'), hr, code_block()('text')),
+              doc(p('text'), hr(), code_block()('text')),
             );
             editorView.destroy();
           });
@@ -465,14 +424,14 @@ describe('codeBlock - keymaps', () => {
         describe('when selection is at the end of the content', () => {
           it('creates a new paragraph below', () => {
             const { editorView, sel } = editor(
-              doc(code_block()('text{<>}'), hr),
+              doc(code_block()('text{<>}'), hr()),
             );
             setNodeSelection(editorView, sel + 1);
 
             sendKeyToPm(editorView, 'ArrowDown');
 
             expect(editorView.state.doc).toEqualDocument(
-              doc(code_block()('text'), hr, p('')),
+              doc(code_block()('text'), hr(), p('')),
             );
             editorView.destroy();
           });
@@ -483,14 +442,14 @@ describe('codeBlock - keymaps', () => {
         describe('when there is more content after the nested block', () => {
           it('does not create a paragraph', () => {
             const { editorView, sel } = editor(
-              doc(blockquote(hr, code_block()('{<>}text')), p('text')),
+              doc(blockquote(p(''), p('{<>}text')), p('text')),
             );
             setNodeSelection(editorView, sel - 1);
 
             sendKeyToPm(editorView, 'ArrowDown');
 
             expect(editorView.state.doc).toEqualDocument(
-              doc(blockquote(hr, code_block()('text')), p('text')),
+              doc(blockquote(p(''), p('text')), p('text')),
             );
             editorView.destroy();
           });
@@ -499,14 +458,14 @@ describe('codeBlock - keymaps', () => {
         describe('when there is no more content after the nested block', () => {
           it('creates a new paragraph below', () => {
             const { editorView, sel } = editor(
-              doc(blockquote(code_block()('text{<>}'), hr)),
+              doc(blockquote(p('text{<>}'), p(''))),
             );
             setNodeSelection(editorView, sel + 1);
 
             sendKeyToPm(editorView, 'ArrowDown');
 
             expect(editorView.state.doc).toEqualDocument(
-              doc(blockquote(code_block()('text'), hr), p('')),
+              doc(blockquote(p('text'), p('')), p('')),
             );
             expect(trackEvent).toHaveBeenCalledWith(
               'atlassian.editor.movedown.keyboard',

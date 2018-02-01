@@ -26,7 +26,7 @@ import {
   panelPlugin,
   macroPlugin,
   confluenceInlineComment,
-  placeholderCursorPlugin,
+  fakeTextCursorPlugin,
   extensionPlugin,
   rulePlugin,
   clearMarksOnChangeToEmptyDocumentPlugin,
@@ -142,10 +142,6 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(confluenceInlineComment);
   }
 
-  if (props.allowPlaceholderCursor) {
-    plugins.push(placeholderCursorPlugin);
-  }
-
   if (props.allowDate) {
     plugins.push(datePlugin);
   }
@@ -153,6 +149,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   // UI only plugins
   plugins.push(insertBlockPlugin);
   plugins.push(submitEditorPlugin);
+  plugins.push(fakeTextCursorPlugin);
 
   return plugins;
 }

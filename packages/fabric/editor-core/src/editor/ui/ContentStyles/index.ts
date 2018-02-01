@@ -324,14 +324,14 @@ const ContentStyles = styled.div`
 
   //=============== PLACEHOLDER CURSOR STYLES=========
 
-  & .ProseMirror-placeholder-cursor {
+  & .ProseMirror-fake-text-cursor {
     display: inline;
     pointer-events: none;
     position: relative;
     height: 15px;
   }
 
-  & .ProseMirror-placeholder-cursor:after {
+  & .ProseMirror-fake-text-cursor:after {
     content: '';
     display: inline;
     top: 0;

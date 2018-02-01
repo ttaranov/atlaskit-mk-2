@@ -31,7 +31,7 @@ export { default as datePlugin } from './date';
 export {
   default as confluenceInlineComment,
 } from './confluence-inline-comment';
-export { default as placeholderCursorPlugin } from './placeholder-cursor';
+export { default as fakeTextCursorPlugin } from './fake-text-cursor';
 export {
   default as clearMarksOnChangeToEmptyDocumentPlugin,
 } from './clear-marks-on-change-to-empty-document';
