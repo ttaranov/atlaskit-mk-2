@@ -133,6 +133,10 @@ const ContentStyles = styled.div`
     &::after {
       content: '';
     }
+
+    & p {
+      display: block;
+    }
   }
 
   .ProseMirror pre {
