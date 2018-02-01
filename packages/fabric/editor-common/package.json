@@ -25,7 +25,7 @@
     "@atlaskit/emoji": "^31.0.2",
     "@atlaskit/icon": "^10.8.0",
     "@atlaskit/media-core": "^13.0.0",
-    "@atlaskit/mention": "^9.1.0",
+    "@atlaskit/mention": "^9.1.1",
     "@atlaskit/profilecard": "^3.7.1",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/prosemirror-model": "^1.0.0",

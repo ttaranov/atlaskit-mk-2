@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@atlaskit/emoji": "^31.0.2",
-    "@atlaskit/mention": "^9.0.1",
+    "@atlaskit/mention": "^9.1.1",
     "@atlaskit/single-select": "^3.2.1"
   }
 }
