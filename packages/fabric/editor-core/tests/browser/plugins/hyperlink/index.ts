@@ -1,11 +1,10 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { browser } from '@atlaskit/editor-common';
-import hyperlinkPlugins, {
+import {
   HyperlinkState,
   stateKey as hyperlinkStateKey,
 } from '../../../../src/plugins/hyperlink';
-import pastePlugins from '../../../../src/plugins/paste';
 import {
   img,
   strong,
@@ -13,24 +12,24 @@ import {
   doc,
   insertText,
   a as link,
-  makeEditor,
+  createEditor,
   p as paragraph,
   dispatchPasteEvent,
-  defaultSchema,
   isMobileBrowser,
   sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
+import hyperlinkPlugin from '../../../../src/editor/plugins/hyperlink';
+import imageUpload from '../../../../src/editor/plugins/image-upload';
+import textFormatting from '../../../../src/editor/plugins/text-formatting';
 
 chai.use(chaiPlugin);
 
 describe('hyperlink', () => {
   const editor = (doc: any) =>
-    makeEditor<HyperlinkState>({
+    createEditor<HyperlinkState>({
       doc,
-      plugins: [
-        ...hyperlinkPlugins(defaultSchema),
-        ...pastePlugins(defaultSchema),
-      ],
+      editorPlugins: [hyperlinkPlugin, imageUpload, textFormatting()],
+      pluginKey: hyperlinkStateKey,
     });
 
   if (!browser.ie && !isMobileBrowser()) {
@@ -359,7 +358,7 @@ describe('hyperlink', () => {
                 img({
                   alt: 'Atlassian',
                   src: 'http://atlassian.com/logo.png',
-                }),
+                })(),
               ),
             ),
           );

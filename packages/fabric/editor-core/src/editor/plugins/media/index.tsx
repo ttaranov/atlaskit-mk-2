@@ -9,7 +9,7 @@ import ToolbarMedia from '../../../ui/ToolbarMedia';
 import MediaSingleEdit from '../../../ui/MediaSingleEdit';
 
 export interface MediaOptions {
-  provider: Promise<MediaProvider>;
+  provider?: Promise<MediaProvider>;
   allowMediaSingle?: boolean;
 }
 

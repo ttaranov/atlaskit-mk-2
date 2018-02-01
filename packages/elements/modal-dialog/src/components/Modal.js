@@ -162,6 +162,19 @@ class Modal extends Component<Props, State> {
   //   this.setState(state => !state.dialogNode && ({ dialogNode }));
   // }
 
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleWindowScroll);
+  }
+
+  /* Prevent window from being scrolled programatically so that the modal is positioned correctly
+   * and to prevent scrollIntoView from scrolling the window.
+   */
+  handleWindowScroll = () => {
+    if (getScrollDistance() !== this.state.scrollDistance) {
+      window.scrollTo(window.pageXOffset, this.state.scrollDistance);
+    }
+  };
+
   handleOverlayClick = e => {
     if (this.props.shouldCloseOnOverlayClick) {
       // $FlowFixMe TEMPORARY
@@ -172,6 +185,7 @@ class Modal extends Component<Props, State> {
     event.stopPropagation();
   };
   handleExit = () => {
+    window.removeEventListener('scroll', this.handleWindowScroll);
     // disable FocusLock *before* unmount. animation may end after a new modal
     // has gained focus, breaking focus behaviour.
     this.setState({ isExiting: true });

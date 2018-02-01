@@ -1,7 +1,7 @@
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
 import { DecorationSet } from 'prosemirror-view';
-import tablePlugins, { TableState } from '../../src/plugins/table';
+import { TableState, stateKey } from '../../src/plugins/table';
 import TableFloatingControls from '../../src/ui/TableFloatingControls';
 import CornerControls from '../../src/ui/TableFloatingControls/CornerControls';
 import ColumnControls from '../../src/ui/TableFloatingControls/ColumnControls';
@@ -22,7 +22,7 @@ import {
   createEvent,
   doc,
   p,
-  makeEditor,
+  createEditor,
   table,
   tr,
   tdEmpty,
@@ -39,13 +39,15 @@ import {
   checkIfColumnSelected,
   checkIfTableSelected,
 } from '../../src/editor/plugins/table/utils';
+import tablesPlugin from '../../src/editor/plugins/table';
 
 describe('TableFloatingControls', () => {
   const event = createEvent('event');
   const editor = (doc: any) =>
-    makeEditor<TableState>({
+    createEditor<TableState>({
       doc,
-      plugins: tablePlugins(),
+      editorPlugins: [tablesPlugin],
+      pluginKey: stateKey,
     });
 
   describe('when tableElement is undefined', () => {

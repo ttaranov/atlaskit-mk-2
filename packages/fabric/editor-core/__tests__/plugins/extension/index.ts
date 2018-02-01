@@ -1,8 +1,7 @@
 import { NodeSelection } from 'prosemirror-state';
-import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   doc,
-  makeEditor,
+  createEditor,
   p as paragraph,
   bodiedExtension,
   macroProvider,
@@ -15,20 +14,16 @@ import {
   removeExtension,
   selectExtension,
 } from '../../../src/editor/plugins/extension/actions';
-import createPlugin, {
-  pluginKey,
-  ExtensionState,
-} from '../../../src/editor/plugins/extension/plugin';
+import { pluginKey } from '../../../src/editor/plugins/extension/plugin';
+import extensionPlugin from '../../../src/editor/plugins/extension';
 
 const macroProviderPromise = Promise.resolve(macroProvider);
 
 describe('extension', () => {
   const editor = (doc: any) => {
-    const providerFactory = new ProviderFactory();
-
-    return makeEditor<ExtensionState>({
+    return createEditor({
       doc,
-      plugins: [createPlugin(() => {}, providerFactory)],
+      editorPlugins: [extensionPlugin],
     });
   };
 
@@ -42,17 +37,14 @@ describe('extension', () => {
     it('should create a paragraph above extension node on Enter', () => {
       const { editorView } = editor(
         doc(
-          bodiedExtension(extensionAttrs, [
-            paragraph('{<>}'),
-            paragraph('text'),
-          ]),
+          bodiedExtension(extensionAttrs)(paragraph('{<>}'), paragraph('text')),
         ),
       );
 
       sendKeyToPm(editorView, 'Enter');
 
       expect(editorView.state.doc).toEqualDocument(
-        doc(paragraph(''), bodiedExtension(extensionAttrs, paragraph('text'))),
+        doc(paragraph(''), bodiedExtension(extensionAttrs)(paragraph('text'))),
       );
     });
   });
@@ -61,7 +53,7 @@ describe('extension', () => {
     describe('setExtensionElement', () => {
       it('should set "element" prop in plugin state to a DOM node', () => {
         const { editorView } = editor(
-          doc(bodiedExtension(extensionAttrs, paragraph('te{<>}xt'))),
+          doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
         const element = document.createElement('span');
         document.body.appendChild(element);
@@ -80,7 +72,7 @@ describe('extension', () => {
     describe('editExtension', () => {
       it('should return false if macroProvider is not available', () => {
         const { editorView: { state, dispatch } } = editor(
-          doc(bodiedExtension(extensionAttrs, paragraph('te{<>}xt'))),
+          doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
         expect(editExtension(null)(state, dispatch)).toBe(false);
       });
@@ -93,7 +85,7 @@ describe('extension', () => {
       });
       it('should return true if macroProvider is available and cursor is inside extension node', async () => {
         const { editorView: { state, dispatch } } = editor(
-          doc(bodiedExtension(extensionAttrs, paragraph('te{<>}xt'))),
+          doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
         const provider = await macroProviderPromise;
         expect(editExtension(provider)(state, dispatch)).toBe(true);
@@ -103,7 +95,7 @@ describe('extension', () => {
     describe('removeExtension', () => {
       it('should set "element" prop in plugin state to null and remove the node', () => {
         const { editorView } = editor(
-          doc(bodiedExtension(extensionAttrs, paragraph('te{<>}xt'))),
+          doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
         const element = document.createElement('span');
         document.body.appendChild(element);
@@ -122,7 +114,7 @@ describe('extension', () => {
     describe('selectExtension', () => {
       it('should create a NodeSelection and return true', () => {
         const { editorView } = editor(
-          doc(bodiedExtension(extensionAttrs, paragraph('te{<>}xt'))),
+          doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
         expect(selectExtension(editorView.state, editorView.dispatch)).toBe(
           true,
@@ -137,7 +129,7 @@ describe('extension', () => {
   describe('when pasted bodiedExtension inside another bodiedExtension with empty content', () => {
     it('should not replace the original node', () => {
       const { editorView } = editor(
-        doc(bodiedExtension(extensionAttrs, paragraph('{<>}'))),
+        doc(bodiedExtension(extensionAttrs)(paragraph('{<>}'))),
       );
       const node = editorView.state.schema.nodes.bodiedExtension.create(
         extensionAttrs,
@@ -147,9 +139,8 @@ describe('extension', () => {
 
       expect(editorView.state.doc).toEqualDocument(
         doc(
-          bodiedExtension(
-            extensionAttrs,
-            bodiedExtension(extensionAttrs, paragraph('')),
+          bodiedExtension(extensionAttrs)(
+            bodiedExtension(extensionAttrs)(paragraph('')),
           ),
         ),
       );
