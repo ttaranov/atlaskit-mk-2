@@ -41,15 +41,15 @@ function formatValue([date, time]: [string, string]): [string, string] {
 type Props = {
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
-  /** Dates that are disabled on the calendar. */
+  /** An array of ISO dates that should show as disabled on the calendar. */
   disabled: Array<string>,
-  /** Converts the `value` of the field in to a value to be displayed. */
+  /** A function that returns the formatted values to display as a tuple. The only argument is an tuple of an ISO date and ISO time. */
   formatValue: any => any,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
-  /** Called when a value changes for the fields. */
+  /** Called when the value changes. The first argument is an ISO date and the second is an ISO time. */
   onChange: (date: ?string, time: ?string) => void,
-  /** The width of the fields. */
+  /** The width of the field. */
   width: number,
 };
 

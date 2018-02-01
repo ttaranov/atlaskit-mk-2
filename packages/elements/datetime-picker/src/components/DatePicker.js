@@ -7,11 +7,17 @@ import type { Event, Handler } from '../types';
 import { formatDate, parseDate } from '../util';
 
 type Props = {
+  /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
+  /** An array of ISO dates that should show as disabled on the calendar. */
   disabled: Array<string>,
+  /** A function that returns the formatted value to display. The only argument is an ISO date. */
   formatValue: string => string,
+  /** Whether or not the field is disabled. */
   isDisabled: boolean,
+  /** Called when the value changes. The only argument is an ISO date. */
   onChange: Handler,
+  /** The width of the field. */
   width: number,
 };
 

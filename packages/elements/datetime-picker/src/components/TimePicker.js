@@ -30,11 +30,16 @@ const defaultTimes = [
 ];
 
 type Props = {
+  /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
+  /** A function that returns the formatted value to display. The only argument is an ISO time. */
   formatValue: string => string,
+  /** Whether or not the field is disabled. */
   isDisabled: boolean,
+  /** Called when the value changes. The only argument is an ISO time. */
   onChange: Handler,
-  width: ?number,
+  /** The width of the field. */
+  width: number,
 };
 
 type State = {
