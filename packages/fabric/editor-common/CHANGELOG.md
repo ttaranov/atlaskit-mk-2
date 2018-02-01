@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 6.0.2
+- [patch] Removing SMB from URL-whitelist [dfe77d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfe77d2)
+
 ## 6.0.1
 - [patch] Add additional inline nodes to unknownBlock [f330ca1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f330ca1)
 
