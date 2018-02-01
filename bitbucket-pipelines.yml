@@ -29,18 +29,18 @@ pipelines:
     - step:
         script:
           - source ./build-setup.sh
-          - bolt install --pure-lockfile
-          - yarn build
-          - (node build/ci-scripts/should.run.js eslint) && yarn lint:eslint
-          - (node build/ci-scripts/should.run.js tslint) && yarn lint:tslint
-          - (node build/ci-scripts/should.run.js flow) && yarn typecheck:flow
-          - (node build/ci-scripts/should.run.js tsc) && yarn typecheck:typescript
-          - yarn test:changed
-          - (node build/ci-scripts/should.run.js browserstack) && yarn test:browser:browserstack
-          - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
-          - node build/ci-scripts/update.build.status.with.netlify.link.js
-        caches:
-          - node
+        #   - bolt install --pure-lockfile
+        #   - yarn build
+        #   - (node build/ci-scripts/should.run.js eslint) && yarn lint:eslint
+        #   - (node build/ci-scripts/should.run.js tslint) && yarn lint:tslint
+        #   - (node build/ci-scripts/should.run.js flow) && yarn typecheck:flow
+        #   - (node build/ci-scripts/should.run.js tsc) && yarn typecheck:typescript
+        #   - yarn test:changed
+        #   - (node build/ci-scripts/should.run.js browserstack) && yarn test:browser:browserstack
+        #   - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
+        #   - node build/ci-scripts/update.build.status.with.netlify.link.js
+        # caches:
+        #   - node
 
   custom: # Pipelines that can be scheduled or triggered manually
 
@@ -75,4 +75,9 @@ pipelines:
             - yarn test
             - yarn test:browser:browserstack
             - (cd website && yarn deploy-staging:no-minimize)
+
+    landkid:
+      - step:
+          script:
+            - source ./build-setup.sh
     # We deliberately don't use the cache here as well
