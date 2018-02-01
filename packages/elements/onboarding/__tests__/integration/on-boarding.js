@@ -3,6 +3,7 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 // eslint-disable-next-line
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
+import * as assert from 'assert';
 
 const urlOnBoarding = `${
   global.__baseUrl__
@@ -21,5 +22,14 @@ BrowserTestCase(
     const menuIsVisible = await onBoardingTest.isVisible(OnBoardingMenuTitle);
     // eslint-disable-next-line
     expect(menuIsVisible).toBe(true);
+    if (onBoardingTest.log('browser').value) {
+      onBoardingTest.log('browser').value.forEach(val => {
+        assert.notEqual(
+          val.level,
+          'SEVERE',
+          `Console errors :${val.message} when clicked on the show button`,
+        );
+      });
+    }
   },
 );
