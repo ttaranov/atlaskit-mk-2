@@ -37,7 +37,7 @@ export default class Page {
   getProperty(selector, cssProperty) {
     return this.browser.getCssProperty(selector, cssProperty);
   }
-  eval(selector) {
+  evaluate(selector) {
     return this.browser.getText(selector);
     // For later, this is how we will get the text in Puppeeter:
     // const textContent = await page.evaluate(() => document.querySelector('p').textContent);
