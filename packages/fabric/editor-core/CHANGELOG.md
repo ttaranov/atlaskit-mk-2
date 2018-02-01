@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.7.8
+- [patch] Adding product detail to JIRA collector feedback form. [81a9fd3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/81a9fd3)
+
 ## 61.7.7
 
 ## 61.7.6

@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 6.0.3
+
+- [patch] Remove monospace font-style for code marks. [b92c81e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b92c81e)
+
 ## 6.0.2
 - [patch] Removing SMB from URL-whitelist [dfe77d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfe77d2)
 
