@@ -32,6 +32,7 @@ import {
   DATE,
 } from '../example-helpers/cxhtml-test-data';
 import { ConfluenceTransformer } from '../src';
+import { EmojiProvider } from '@atlaskit/emoji';
 
 // tslint:disable-next-line:variable-name
 export const TitleInput = styled.input`
@@ -84,7 +85,9 @@ const SaveAndCancelButtons = props => (
 );
 
 const providers = {
-  emojiProvider: emojiStoryData.getEmojiResource({ uploadSupported: true }),
+  emojiProvider: emojiStoryData.getEmojiResource({
+    uploadSupported: true,
+  }) as Promise<EmojiProvider>,
   mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
   activityProvider: Promise.resolve(new MockActivityResource()),
   macroProvider: Promise.resolve(macroProvider),

@@ -28,7 +28,7 @@ describe('<ResourcedEmoji />', () => {
   it('should render emoji', () => {
     const component = mount(
       <ResourcedEmoji
-        emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
+        emojiProvider={getEmojiResourcePromise()}
         emojiId={{ shortName: 'shouldnotbeused', id: grinEmoji.id }}
       />,
     );
@@ -43,7 +43,7 @@ describe('<ResourcedEmoji />', () => {
   it('should render emoji with correct data attributes', () => {
     const component = mount(
       <ResourcedEmoji
-        emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
+        emojiProvider={getEmojiResourcePromise()}
         emojiId={{ shortName: 'shouldnotbeused', id: grinEmoji.id }}
       />,
     );
@@ -73,7 +73,7 @@ describe('<ResourcedEmoji />', () => {
   it('should not wrap with a tooltip if there is no showTooltip prop', () => {
     const component = mount(
       <ResourcedEmoji
-        emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
+        emojiProvider={getEmojiResourcePromise()}
         emojiId={{ shortName: 'shouldnotbeused', id: grinEmoji.id }}
       />,
     );
@@ -87,7 +87,7 @@ describe('<ResourcedEmoji />', () => {
   it('should wrap with tooltip if showTooltip is set to true', () => {
     const component = mount(
       <ResourcedEmoji
-        emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
+        emojiProvider={getEmojiResourcePromise()}
         emojiId={{ shortName: 'shouldnotbeused', id: grinEmoji.id }}
         showTooltip={true}
       />,
@@ -102,7 +102,7 @@ describe('<ResourcedEmoji />', () => {
   it('should fallback to shortName if no id', () => {
     const component = mount(
       <ResourcedEmoji
-        emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
+        emojiProvider={getEmojiResourcePromise()}
         emojiId={{ shortName: grinEmoji.shortName }}
       />,
     );
@@ -117,7 +117,7 @@ describe('<ResourcedEmoji />', () => {
   it('should update emoji on shortName change', () => {
     const component = mount(
       <ResourcedEmoji
-        emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
+        emojiProvider={getEmojiResourcePromise()}
         emojiId={{ shortName: grinEmoji.shortName }}
       />,
     );

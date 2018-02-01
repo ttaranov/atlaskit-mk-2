@@ -11,8 +11,8 @@ import {
   newEmojiRepository,
   openMouthEmoji,
   standardBoomEmoji,
+  getMockEmojiResourcePromise,
 } from '../../../src/support/test-data';
-import { MockEmojiResource } from '../../../src/support/MockEmojiResource';
 import {
   hasSelector,
   getEmojiTypeAheadItemById,
@@ -29,7 +29,6 @@ import { OnLifecycle } from '../../../src/components/typeahead/EmojiTypeAheadCom
 import EmojiTypeAheadItem from '../../../src/components/typeahead/EmojiTypeAheadItem';
 import { OptionalEmojiDescription, OnEmojiEvent } from '../../../src/types';
 import { toEmojiId } from '../../../src/type-helpers';
-import { EmojiProvider } from '../../../src/api/EmojiResource';
 import { Props as TypeAheadProps } from '../../../src/components/typeahead/EmojiTypeAhead';
 import { State as TypeAheadState } from '../../../src/components/typeahead/EmojiTypeAheadComponent';
 
@@ -39,7 +38,7 @@ function setupTypeAhead(props?: Props): Promise<ReactWrapper<any, any>> {
       emojiProvider={
         props && props.emojiProvider
           ? props.emojiProvider
-          : (getEmojiResourcePromise() as Promise<EmojiProvider>)
+          : getEmojiResourcePromise()
       }
       query=""
       {...props}
@@ -174,9 +173,7 @@ describe('EmojiTypeAhead', () => {
   });
 
   it('should record selection on EmojiProvider even with no onSelection property', done => {
-    const emojiResourcePromise = getEmojiResourcePromise() as Promise<
-      MockEmojiResource
-    >;
+    const emojiResourcePromise = getMockEmojiResourcePromise();
     return setupTypeAhead({
       emojiProvider: emojiResourcePromise,
     }).then(component =>
@@ -203,9 +200,7 @@ describe('EmojiTypeAhead', () => {
   it('should record selection on EmojiProvider and call onSelection property', done => {
     let choseEmoji: OptionalEmojiDescription;
 
-    const emojiResourcePromise = getEmojiResourcePromise() as Promise<
-      MockEmojiResource
-    >;
+    const emojiResourcePromise = getMockEmojiResourcePromise();
     return setupTypeAhead({
       emojiProvider: emojiResourcePromise,
       onSelection: (emojiId, emoji) => {

@@ -20,8 +20,9 @@ import {
   mockEmojiResourceFactory,
   mockNonUploadingEmojiResourceFactory,
   MockEmojiResource,
-  MockNonUploadingEmojiResource,
+  emojiProviderFactory,
 } from './MockEmojiResource';
+import { EmojiProvider, UploadingEmojiProvider } from '../api/EmojiResource';
 
 export const spriteEmoji: EmojiDescription = {
   id: 'grimacing',
@@ -279,10 +280,15 @@ export const congoFlagEmoji = defaultEmojiRepository.findByShortName(
 
 export const getNonUploadingEmojiResourcePromise = (
   config?: MockEmojiResourceConfig,
-): Promise<MockNonUploadingEmojiResource> =>
+): Promise<EmojiProvider> =>
   mockNonUploadingEmojiResourceFactory(newEmojiRepository(), config);
 
 export const getEmojiResourcePromise = (
+  config?: MockEmojiResourceConfig,
+): Promise<UploadingEmojiProvider> =>
+  emojiProviderFactory(newEmojiRepository(), config);
+
+export const getMockEmojiResourcePromise = (
   config?: MockEmojiResourceConfig,
 ): Promise<MockEmojiResource> =>
   mockEmojiResourceFactory(newEmojiRepository(), config);
@@ -290,7 +296,7 @@ export const getEmojiResourcePromise = (
 export const getEmojiResourcePromiseFromRepository = (
   repo: EmojiRepository,
   config?: MockEmojiResourceConfig,
-): Promise<MockEmojiResource> => mockEmojiResourceFactory(repo, config);
+): Promise<UploadingEmojiProvider> => emojiProviderFactory(repo, config);
 
 export const generateSkinVariation = (
   base: EmojiDescription,

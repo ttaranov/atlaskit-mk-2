@@ -2,15 +2,11 @@ import { denormaliseEmojiServiceResponse } from '../api/EmojiUtils';
 import EmojiRepository from '../api/EmojiRepository';
 import { MockEmojiResourceConfig } from './support-types';
 import {
-  mockEmojiResourceFactory,
-  MockEmojiResource,
   UsageClearEmojiResource,
+  emojiProviderFactory,
 } from './MockEmojiResource';
 import { EmojiDescription, EmojiServiceResponse } from '../types';
-
-declare var require: {
-  <T>(path: string): T;
-};
+import { EmojiProvider } from '../api/EmojiResource';
 
 let emojisSets: Map<string, EmojiDescription[]>;
 
@@ -81,8 +77,8 @@ export const getEmojiRepository = (): EmojiRepository =>
 
 export const getEmojiResource = (
   config?: MockEmojiResourceConfig,
-): Promise<MockEmojiResource> =>
-  mockEmojiResourceFactory(getEmojiRepository(), config);
+): Promise<EmojiProvider> =>
+  emojiProviderFactory(getEmojiRepository(), config) as Promise<EmojiProvider>;
 
 export const getUsageClearEmojiResource = (): UsageClearEmojiResource =>
   new UsageClearEmojiResource(getEmojis());

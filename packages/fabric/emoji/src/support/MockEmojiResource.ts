@@ -301,3 +301,16 @@ export const mockEmojiResourceFactory = (
   }
   return Promise.resolve(mockEmojiResource);
 };
+
+// Wrapper to explicitly return promise as EmojiProvider
+export const emojiProviderFactory = (
+  emojiRepository: EmojiRepository,
+  config?: MockEmojiResourceConfig,
+  promiseBuilder?: PromiseBuilder<UploadingEmojiProvider>,
+): Promise<UploadingEmojiProvider> => {
+  const mockEmojiResource = new MockEmojiResource(emojiRepository, config);
+  if (promiseBuilder) {
+    return promiseBuilder(mockEmojiResource, 'mockEmojiResourceFactory');
+  }
+  return Promise.resolve(mockEmojiResource) as Promise<UploadingEmojiProvider>;
+};

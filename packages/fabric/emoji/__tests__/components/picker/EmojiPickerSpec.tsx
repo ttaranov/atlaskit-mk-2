@@ -9,8 +9,8 @@ import {
   pngDataURL,
   pngFileUploadData,
   standardEmojis,
+  getMockEmojiResourcePromise,
 } from '../../../src/support/test-data';
-import { MockEmojiResource } from '../../../src/support/MockEmojiResource';
 import { Props } from '../../../src/components/picker/EmojiPicker';
 import { MockEmojiResourceConfig } from '../../../src/support/support-types';
 import { mockNonUploadingEmojiResourceFactory } from '../../../src/support/MockEmojiResource';
@@ -61,7 +61,7 @@ describe('<EmojiPicker />', () => {
 
     it('should display all categories', async () => {
       let expectedCategories = defaultCategories;
-      const provider = await getEmojiResourcePromise();
+      const provider = await getMockEmojiResourcePromise();
 
       // the provider is expected to implement calculateDynamicCategories for this test
       expect(provider.calculateDynamicCategories).toBeDefined();
@@ -261,9 +261,7 @@ describe('<EmojiPicker />', () => {
 
     it('selecting emoji should call recordSelection on EmojiProvider', async () => {
       let selection: OptionalEmojiDescription;
-      const emojiResourcePromise = getEmojiResourcePromise() as Promise<
-        MockEmojiResource
-      >;
+      const emojiResourcePromise = getMockEmojiResourcePromise();
       const clickOffset = 10;
       component = await helper.setupPicker({
         onSelection: (emojiId, emoji) => {
@@ -380,7 +378,9 @@ describe('<EmojiPicker />', () => {
     });
 
     it('Upload main flow interaction', async () => {
-      const emojiProvider = getEmojiResourcePromise({ uploadSupported: true });
+      const emojiProvider = getMockEmojiResourcePromise({
+        uploadSupported: true,
+      });
       component = await helper.setupPicker({
         emojiProvider,
         hideToneSelector: true,
@@ -474,7 +474,9 @@ describe('<EmojiPicker />', () => {
     });
 
     it('Upload after searching', async () => {
-      const emojiProvider = getEmojiResourcePromise({ uploadSupported: true });
+      const emojiProvider = getMockEmojiResourcePromise({
+        uploadSupported: true,
+      });
       component = await helper.setupPicker({
         emojiProvider,
         hideToneSelector: true,
@@ -575,7 +577,9 @@ describe('<EmojiPicker />', () => {
     });
 
     it('Upload cancel interaction', async () => {
-      const emojiProvider = getEmojiResourcePromise({ uploadSupported: true });
+      const emojiProvider = getMockEmojiResourcePromise({
+        uploadSupported: true,
+      });
       component = await helper.setupPicker({
         emojiProvider,
         hideToneSelector: true,
@@ -651,7 +655,7 @@ describe('<EmojiPicker />', () => {
     });
 
     it('Upload error interaction', async () => {
-      const emojiProvider = getEmojiResourcePromise({
+      const emojiProvider = getMockEmojiResourcePromise({
         uploadSupported: true,
         uploadError: 'bad times',
       });
