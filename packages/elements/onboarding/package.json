@@ -36,6 +36,7 @@
     "@atlaskit/docs": "^2.4.0",
     "@atlaskit/dropdown-menu": "^3.11.6",
     "@atlaskit/navigation": "^27.0.8",
-    "@atlaskit/tooltip": "^8.1.1"
+    "@atlaskit/tooltip": "^8.1.1",
+    "@atlaskit/webdriver-runner": "^0.0.1"
   }
 }
