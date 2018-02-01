@@ -53,9 +53,9 @@ export interface MediaViewerConfig {
   readonly embedded?: boolean;
   readonly contained?: boolean;
   readonly i18n?: Object;
-  
-  readonly isPreviewGenerated?: (file: BackBoneModel) => any;
-  readonly generatePreview?: (file: BackBoneModel) => any;
+
+  readonly isPreviewGenerated?: (file: BackBoneModel) => JQueryPromise<boolean>;
+  readonly generatePreview?: (file: BackBoneModel) => JQueryPromise<BackBoneModel>;
 }
 
 export type MediaViewerMode = 'BASE' | 'PRESENTATION' | 'CONTAINED';
