@@ -1,5 +1,7 @@
 // @flow
 import React, { Component } from 'react';
+import { Switch, Route } from 'react-router';
+import { HashRouter, Link } from 'react-router-dom';
 import Question from '@atlaskit/icon/glyph/question';
 import Arrow from '@atlaskit/icon/glyph/arrow-right';
 import Avatar from '@atlaskit/avatar';
@@ -18,6 +20,18 @@ import ItemThemeDemo from './00-basic';
 // eslint-disable-next-line react/prop-types
 const Icon = () => <Question label="test question" />;
 
+const RouterLink = class RouterLinkBase extends Component<*> {
+  render() {
+    const { children, className, href } = this.props;
+    return (
+      <Link className={className} to={href}>
+        {children}
+      </Link>
+    );
+  }
+};
+
+// eslint-disable-next-line react/no-multi-comp
 export default class ItemStory extends Component<{}, {}> {
   render() {
     return (
@@ -208,6 +222,37 @@ export default class ItemStory extends Component<{}, {}> {
               </Tooltip>
             </ItemsNarrowContainer>
           </GroupsWrapper>
+        </div>
+        <div>
+          <p>with a custom linkComponent</p>
+          <HashRouter>
+            <div>
+              <GroupsWrapper>
+                <div>
+                  <p>
+                    <strong>Navigation links:</strong>
+                  </p>
+                  <Item href="/" linkComponent={RouterLink}>
+                    Home
+                  </Item>
+                  <Item href="/route1" linkComponent={RouterLink}>
+                    Route 1
+                  </Item>
+                  <Item href="/route2" linkComponent={RouterLink}>
+                    Route 2
+                  </Item>
+                  <p>
+                    <strong>Route:</strong>
+                  </p>
+                  <Switch>
+                    <Route path="/route1">{() => 'This is route 1'}</Route>
+                    <Route path="/route2">{() => 'This is route 2'}</Route>
+                    <Route>{() => 'This is the home route'}</Route>
+                  </Switch>
+                </div>
+              </GroupsWrapper>
+            </div>
+          </HashRouter>
         </div>
       </div>
     );
