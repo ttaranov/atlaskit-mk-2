@@ -12,11 +12,14 @@ import {
   emoji,
 } from '@atlaskit/editor-test-helpers';
 import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
+import { MockEmojiResource } from '@atlaskit/emoji/dist/es5/support/MockEmojiResource';
 import emojiPlugin from '../../../src/editor/plugins/emoji';
 import textFormatting from '../../../src/editor/plugins/text-formatting';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 
-const emojiProvider = emojiTestData.getEmojiResourcePromise();
+const emojiProvider = emojiTestData.getEmojiResourcePromise() as Promise<
+  MockEmojiResource
+>;
 const providerFactory = ProviderFactory.create({ emojiProvider });
 
 describe('ascii emojis - input rules', () => {
