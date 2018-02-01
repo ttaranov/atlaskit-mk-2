@@ -325,8 +325,9 @@ export class UploadService {
           // TODO MSW-396 Replace this check after RFC from ticket has been decided
           // https://product-fabric.atlassian.net/browse/MSW-396
           if (mediaType === 'image') {
-            console.log('uploadService getPreviewFromBlob');
+            console.time('getPreviewFromBlob');
             getPreviewFromBlob(resumableFile.file, mediaType).then(preview => {
+              console.timeEnd('getPreviewFromBlob');
               this.emit('file-preview-update', {
                 file,
                 preview,
