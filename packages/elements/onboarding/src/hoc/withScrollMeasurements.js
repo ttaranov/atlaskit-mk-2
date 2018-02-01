@@ -134,7 +134,7 @@ export default function withScrollMeasurements(
         }
       }
 
-      scrollParent.scrollBy(0, offsetY);
+      scrollParent.scrollTop += offsetY;
       // get adjusted measurements after scrolling
       this.setState({
         clone: node.outerHTML,
