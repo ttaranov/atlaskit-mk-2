@@ -363,11 +363,19 @@ export class MediaPluginState {
     binaryPicker!.upload(url, fileName);
   };
 
+  onPopupPickerClose = () => {
+    if (this.dropzonePicker) {
+      this.dropzonePicker.activate();
+    }
+  };
+
   showMediaPicker = () => {
     if (!this.popupPicker) {
       return;
     }
-
+    if (this.dropzonePicker) {
+      this.dropzonePicker.deactivate();
+    }
     this.popupPicker.show();
   };
 
@@ -596,6 +604,7 @@ export class MediaPluginState {
         picker.onNewMedia(this.trackNewMediaEvent(picker.type));
       });
       this.dropzonePicker.onDrag(this.handleDrag);
+      this.popupPicker.onClose(this.onPopupPickerClose);
     }
 
     if (this.popupPicker) {
