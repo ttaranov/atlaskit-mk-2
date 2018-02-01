@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.7.5
+- [patch] Add ToolbarFeedback export back [8525bb2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8525bb2)
+
 ## 61.7.4
 - [patch] fix cursor pos on table controls hover [76bfa3f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/76bfa3f)
 
