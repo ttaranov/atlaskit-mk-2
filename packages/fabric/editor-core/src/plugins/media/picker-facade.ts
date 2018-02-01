@@ -138,6 +138,27 @@ export default class PickerFacade {
     this.picker.setUploadParams(params);
   }
 
+  onClose(cb) {
+    const { picker } = this;
+    if (picker instanceof Popup) {
+      picker.on('closed', cb);
+    }
+  }
+
+  activate() {
+    const { picker } = this;
+    if (picker instanceof Dropzone || picker instanceof Clipboard) {
+      picker.activate();
+    }
+  }
+
+  deactivate() {
+    const { picker } = this;
+    if (picker instanceof Dropzone || picker instanceof Clipboard) {
+      picker.deactivate();
+    }
+  }
+
   show(): void {
     if (this.picker instanceof Popup) {
       try {
