@@ -69,3 +69,11 @@ export function dateFromTime(time: string): Date {
   const [h, m] = time.match(/(\d\d):(\d\d)/) || [];
   return h && m ? parse(`0000-00-00T${h}:${m}`) : new Date('invalid date');
 }
+
+export function formatDate(date: string): string {
+  return date.replace(/-/g, '/');
+}
+
+export function formatTime(time: string): string {
+  return format(dateFromTime(time), 'h:mma');
+}

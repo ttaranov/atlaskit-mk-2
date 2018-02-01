@@ -4,7 +4,7 @@ import React, { Component, type ElementRef } from 'react';
 import withCtrl from 'react-ctrl';
 import DatePickerStateless from './DatePickerStateless';
 import type { Event, Handler } from '../types';
-import { parseDate } from '../util';
+import { formatDate, parseDate } from '../util';
 
 type Props = {
   autoFocus: boolean,
@@ -31,7 +31,7 @@ class DatePicker extends Component<Props, State> {
   static defaultProps = {
     autoFocus: false,
     disabled: [],
-    formatValue: date => date.replace(/-/g, '/'),
+    formatValue: date => formatDate(date),
     isDisabled: false,
     onChange: () => {},
     width: null,

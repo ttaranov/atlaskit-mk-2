@@ -1,11 +1,11 @@
 // @flow
 
-import { format, isValid } from 'date-fns';
+import { isValid } from 'date-fns';
 import React, { Component, type ElementRef } from 'react';
 import withCtrl from 'react-ctrl';
 import TimePickerStateless from './TimePickerStateless';
 import type { Event, Handler } from '../types';
-import { dateFromTime } from '../util';
+import { dateFromTime, formatTime } from '../util';
 
 const defaultTimes = [
   '09:00',
@@ -49,7 +49,7 @@ class TimePicker extends Component<Props, State> {
 
   static defaultProps = {
     autoFocus: false,
-    formatValue: time => format(dateFromTime(time), 'h:mma'),
+    formatValue: time => formatTime(time),
     isDisabled: false,
     onChange: () => {},
     width: null,
