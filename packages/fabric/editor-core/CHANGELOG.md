@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.7.6
+- [patch] fix table controls on crazy fast resize [ad93c0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad93c0b)
+
 ## 61.7.5
 - [patch] Add ToolbarFeedback export back [8525bb2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8525bb2)
 
