@@ -40,7 +40,7 @@ type State = {
   displayValue: string,
   focused: ?string,
   isOpen: boolean,
-  visibleTimes: Array<string>,
+  times: Array<string>,
 };
 
 export default class DatePicker extends Component<Props, State> {
@@ -59,12 +59,12 @@ export default class DatePicker extends Component<Props, State> {
     displayValue: '',
     focused: null,
     isOpen: false,
-    visibleTimes: this.props.times,
+    times: this.props.times,
   };
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.times !== this.props.times) {
-      this.updateVisibleTimes(this.state.value, nextProps.times);
+      this.updatetimes(this.state.value, nextProps.times);
     }
   }
 
@@ -81,7 +81,7 @@ export default class DatePicker extends Component<Props, State> {
   handleInputChange = (e: Event) => {
     const value = e.target.value;
     this.setState({ displayValue: value });
-    this.updateVisibleTimes(value, this.props.times);
+    this.updatetimes(value, this.props.times);
   };
 
   handleInputKeyDown = (e: KeyboardEvent) => {
@@ -127,49 +127,45 @@ export default class DatePicker extends Component<Props, State> {
         displayValue: '',
         isOpen: false,
       });
-      this.updateVisibleTimes('', this.props.times);
+      this.updatetimes('', this.props.times);
     }
   }
 
-  updateVisibleTimes = (value: ?string, times: Array<string>) => {
+  updatetimes = (value: ?string, times: Array<string>) => {
     const timeShouldBeVisible = (time: string) =>
       value ? time.startsWith(value) : true;
-    const visibleTimes = value ? times.filter(timeShouldBeVisible) : times;
-    this.setState({ visibleTimes });
+    const filteredTimes = value ? times.filter(timeShouldBeVisible) : times;
+    this.setState({ times: filteredTimes });
 
     if (!this.state.focused || !timeShouldBeVisible(this.state.focused)) {
       this.setState({
-        focused: visibleTimes.length > 0 ? visibleTimes[0] : null,
+        focused: filteredTimes.length > 0 ? filteredTimes[0] : null,
       });
     }
   };
 
   openDialog() {
-    const visibleTimes = this.state.visibleTimes;
+    const times = this.state.times;
     this.setState({
-      focused: visibleTimes.length ? visibleTimes[0] : null,
+      focused: times.length ? times[0] : null,
       isOpen: true,
     });
   }
 
   selectNextItem() {
-    const visibleTimes = this.state.visibleTimes;
-    const current = this.state.focused
-      ? visibleTimes.indexOf(this.state.focused)
-      : -1;
+    const times = this.state.times;
+    const current = this.state.focused ? times.indexOf(this.state.focused) : -1;
     let next = current + 1;
-    next = next > visibleTimes.length - 1 ? 0 : next;
-    this.setState({ focused: visibleTimes[next] });
+    next = next > times.length - 1 ? 0 : next;
+    this.setState({ focused: times[next] });
   }
 
   selectPreviousItem() {
-    const visibleTimes = this.state.visibleTimes;
-    const current = this.state.focused
-      ? visibleTimes.indexOf(this.state.focused)
-      : -1;
+    const times = this.state.times;
+    const current = this.state.focused ? times.indexOf(this.state.focused) : -1;
     let previous = current - 1;
-    previous = previous < 0 ? visibleTimes.length - 1 : previous;
-    this.setState({ focused: visibleTimes[previous] });
+    previous = previous < 0 ? times.length - 1 : previous;
+    this.setState({ focused: times[previous] });
   }
 
   render() {
@@ -180,7 +176,7 @@ export default class DatePicker extends Component<Props, State> {
         isOpen={this.state.isOpen}
         displayValue={this.state.displayValue}
         value={this.state.value}
-        times={this.state.visibleTimes}
+        times={this.state.times}
         focused={this.state.focused}
         width={this.props.width}
         onFieldBlur={this.handleInputBlur}
