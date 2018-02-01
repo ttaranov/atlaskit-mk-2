@@ -9561,9 +9561,9 @@ react-beautiful-dnd@^2.0.1:
     redux-thunk "^2.2.0"
     reselect "^3.0.1"
 
-react-ctrl@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/react-ctrl/-/react-ctrl-0.0.1.tgz#fbf14f9ab0a9a027c0b69625114c38a82ddd0d63"
+react-ctrl@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/react-ctrl/-/react-ctrl-0.1.2.tgz#4866eef1f07c73694c70707d35dbd20e4e743b5a"
   dependencies:
     conartist "^0.15.1"
     nodent "^3.1.5"

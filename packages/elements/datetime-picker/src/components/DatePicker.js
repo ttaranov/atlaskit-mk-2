@@ -8,8 +8,6 @@ import { parseDate } from '../util';
 
 type Props = {
   autoFocus: boolean,
-  defaultIsOpen: boolean,
-  defaultValue: string,
   disabled: Array<string>,
   formatValue: string => string,
   isDisabled: boolean,
@@ -32,8 +30,6 @@ class DatePicker extends Component<Props, State> {
 
   static defaultProps = {
     autoFocus: false,
-    defaultIsOpen: false,
-    defaultValue: '',
     disabled: [],
     formatValue: date => date.replace(/-/g, '/'),
     isDisabled: false,
@@ -42,8 +38,8 @@ class DatePicker extends Component<Props, State> {
   };
 
   state = {
-    isOpen: this.props.defaultIsOpen,
-    value: this.props.defaultValue,
+    isOpen: false,
+    value: '',
   };
 
   handleFieldBlur = (e: Event) => {
