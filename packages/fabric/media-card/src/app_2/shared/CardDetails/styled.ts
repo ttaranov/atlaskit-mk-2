@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
 import { ellipsis, borderRadius, size } from '../../../styles';
 import { title, description } from '../../../styles/cardDetails';
-import newCardDetailsHeight from '../../../shared/newCardDetailsHeight';
 
 const thumbnailWidth = 40;
 
@@ -10,7 +9,6 @@ export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: row;
   box-sizing: border-box;
-  height: ${newCardDetailsHeight}px;
   padding: 8px 12px 8px 12px;
 `;
 
@@ -18,15 +16,7 @@ export const BodyWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-
-  /* make ellipsis work */
-  overflow: hidden;
-
-  /* 
-    move the avatars below the alert - I'd like to not use z-index which can have flow-on affects, 
-    but I need to use it because the avatars use z-index 
-  */
-  z-index: 0;
+  min-width: 0;
 `;
 
 export const TopWrapper = styled.div`
@@ -43,9 +33,7 @@ export const LeftWrapper = styled.div`
 
 export const CopyWrapper = styled.div`
   flex-grow: 1;
-
-  /* make ellipsis work */
-  overflow: hidden;
+  min-width: 0;
 `;
 
 export const Title = styled.div`
@@ -54,7 +42,6 @@ export const Title = styled.div`
 
 export const Description = styled.div`
   margin-top: 4px;
-  height: 16px;
   ${description} ${ellipsis('100%')};
 `;
 

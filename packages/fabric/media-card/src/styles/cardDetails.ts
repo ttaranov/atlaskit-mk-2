@@ -5,11 +5,11 @@ export const title = css`
   color: ${akColorN900};
   font-size: 16px;
   font-weight: 500;
-  line-height: 20px;
+  line-height: ${() => 20 / 16};
 `;
 
 export const description = css`
   color: ${akColorN300};
   font-size: 12px;
-  line-height: 16px;
+  line-height: ${() => 16 / 12};
 `;

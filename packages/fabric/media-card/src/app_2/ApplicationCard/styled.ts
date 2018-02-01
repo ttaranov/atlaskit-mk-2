@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 
 export const ActionsStateWrapper = styled.div`
+  align-items: center;
   display: flex;
   justify-content: center;
-  align-items: center;
   margin-left: 8px;
+  position: relative;
 `;
 
 export const AlertWrapper = styled.div`

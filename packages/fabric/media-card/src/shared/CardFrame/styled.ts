@@ -37,45 +37,51 @@ export interface WrapperProps {
 
       => so they'll all be 664px unless someone resizes the window
 
- */
+*/
+
+const getMinWidth = ({ minWidth }: WrapperProps) => {
+  if (minWidth) {
+    return `min-width: ${minWidth}px`;
+  } else {
+    return '';
+  }
+};
+
+const getMaxWidth = ({ maxWidth }: WrapperProps) => {
+  if (maxWidth) {
+    return `max-width: ${maxWidth}px`;
+  } else {
+    return '';
+  }
+};
+
+const getInteractiveStyles = ({ isInteractive }: WrapperProps) => {
+  if (isInteractive) {
+    return `
+      cursor: pointer;
+      &:hover {
+        background-color: ${akColorN30};
+      }
+      &:active {
+        background-color: ${akColorB50};
+      }
+    `;
+  } else {
+    return '';
+  }
+};
 
 const wrapperStyles = css`
+  ${borderRadius} ${getMinWidth} ${getMaxWidth} ${getInteractiveStyles} background-color: ${akColorN20};
+  box-sizing: border-box;
   display: inline-flex;
   flex-direction: column;
-  box-sizing: border-box;
   font-family: ${akFontFamily};
-  padding: 0 ${wrapperPadding}px ${wrapperPadding}px ${wrapperPadding}px;
-  ${borderRadius} width: 100%;
-  ${({ minWidth }: WrapperProps) => {
-    if (minWidth) {
-      return `min-width: ${minWidth}px`;
-    } else {
-      return '';
-    }
-  }} ${({ maxWidth }: WrapperProps) => {
-      if (maxWidth) {
-        return `max-width: ${maxWidth}px`;
-      } else {
-        return '';
-      }
-    }} ${({ isInteractive }: WrapperProps) => {
-      if (isInteractive) {
-        return `
-          cursor: pointer;
-          &:hover {
-            background-color: ${akColorN30};
-          }
-          &:active {
-            background-color: ${akColorB50};
-          }
-        `;
-      } else {
-        return '';
-      }
-    }} user-select: none;
-  background-color: ${akColorN20};
   line-height: initial;
+  padding: 0 ${wrapperPadding}px ${wrapperPadding}px ${wrapperPadding}px;
   transition: background 0.3s;
+  user-select: none;
+  width: 100%;
 `;
 
 export interface ContentProps {
@@ -134,12 +140,11 @@ export const TextWrapper = styled.div`
 `;
 
 export const Content = styled.div`
-  position: relative;
-
   ${borderRadius} ${linkCardShadow} background-color: white;
+  position: relative;
   transition: box-shadow 0.3s;
 
-  .media-card-link:hover & {
+  .media-card-frame:hover & {
     box-shadow: 0 4px 8px -2px rgba(23, 43, 77, 0.32),
       0 0 1px rgba(23, 43, 77, 0.25);
   }
