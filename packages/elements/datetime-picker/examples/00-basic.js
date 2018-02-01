@@ -13,8 +13,11 @@ export default () => {
       <Label label="Date picker (uncontrolled)" />
       <DatePicker defaultValue="2018-01-02" />
 
-      <Label label="Time picker" />
-      <TimePicker />
+      <Label label="Time picker (controlled)" />
+      <TimePicker value="14:30" />
+
+      <Label label="Time picker (uncontrolled)" />
+      <TimePicker defaultValue="14:30" />
 
       <Label label="Date / time picker" />
       <DateTimePicker />

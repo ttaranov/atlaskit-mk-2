@@ -1,87 +1,75 @@
 // @flow
 
+import { format, isValid } from 'date-fns';
 import React, { Component, type ElementRef } from 'react';
+import withCtrl from 'react-ctrl';
 import TimePickerStateless from './TimePickerStateless';
 import type { Event, Handler } from '../types';
-import { parseTime } from '../util';
+import { dateFromTime } from '../util';
 
 const defaultTimes = [
-  '9:00am',
-  '9:30am',
-  '10:00am',
-  '10:30am',
-  '11:00am',
-  '11:30am',
-  '12:00pm',
-  '12:30pm',
-  '1:00pm',
-  '1:30pm',
-  '2:00pm',
-  '2:30pm',
-  '3:00pm',
-  '3:30pm',
-  '4:00pm',
-  '4:30pm',
-  '5:00pm',
-  '5:30pm',
-  '6:00pm',
+  '09:00',
+  '09:30',
+  '10:00',
+  '10:30',
+  '11:00',
+  '11:30',
+  '12:00',
+  '12:30',
+  '13:00',
+  '13:30',
+  '14:00',
+  '14:30',
+  '15:00',
+  '15:30',
+  '16:00',
+  '16:30',
+  '17:00',
+  '17:30',
+  '18:00',
 ];
 
 type Props = {
   autoFocus: boolean,
+  formatValue: string => string,
   isDisabled: boolean,
-  times: Array<string>,
-  width: ?number,
   onChange: Handler,
+  width: ?number,
 };
 
 type State = {
-  value: ?string,
-  displayValue: string,
-  focused: ?string,
+  focused: string,
   isOpen: boolean,
   times: Array<string>,
+  value: string,
 };
 
-export default class DatePicker extends Component<Props, State> {
+class TimePicker extends Component<Props, State> {
   timepicker: ?ElementRef<typeof TimePickerStateless>;
 
   static defaultProps = {
     autoFocus: false,
+    formatValue: time => format(dateFromTime(time), 'h:mma'),
     isDisabled: false,
-    times: defaultTimes,
+    onChange: () => {},
     width: null,
-    onChange() {},
   };
 
   state = {
-    value: null,
-    displayValue: '',
-    focused: null,
+    focused: '',
     isOpen: false,
-    times: this.props.times,
-  };
-
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.times !== this.props.times) {
-      this.updatetimes(this.state.value, nextProps.times);
-    }
-  }
-
-  onChange = (value: ?string) => {
-    if (value !== this.state.value) {
-      this.props.onChange(value);
-    }
+    times: defaultTimes,
+    value: '',
   };
 
   handleInputBlur = () => {
-    this.validate(this.state.displayValue);
+    this.validate(this.state.value);
   };
 
   handleInputChange = (e: Event) => {
     const value = e.target.value;
-    this.setState({ displayValue: value });
-    this.updatetimes(value, this.props.times);
+    this.setState({ value });
+    this.updateTimes(value, this.state.times);
   };
 
   handleInputKeyDown = (e: KeyboardEvent) => {
@@ -90,7 +78,7 @@ export default class DatePicker extends Component<Props, State> {
       if (e.key === 'ArrowDown') {
         this.openDialog();
       } else if (e.key === 'Enter') {
-        this.validate(this.state.displayValue);
+        this.validate(this.state.value);
       }
     } else if (e.key === 'Escape') {
       this.setState({ isOpen: false });
@@ -109,45 +97,16 @@ export default class DatePicker extends Component<Props, State> {
     this.validate(time);
   };
 
-  validate(value: string) {
-    const parsedTime = parseTime(value);
-
-    if (parsedTime) {
-      this.onChange(parsedTime);
-      this.setState({
-        value: parsedTime,
-        displayValue: parsedTime,
-        isOpen: false,
-      });
-    } else {
-      // TODO: Display an error message
-      this.onChange(null);
-      this.setState({
-        value: null,
-        displayValue: '',
-        isOpen: false,
-      });
-      this.updatetimes('', this.props.times);
-    }
-  }
-
-  updatetimes = (value: ?string, times: Array<string>) => {
-    const timeShouldBeVisible = (time: string) =>
-      value ? time.startsWith(value) : true;
-    const filteredTimes = value ? times.filter(timeShouldBeVisible) : times;
-    this.setState({ times: filteredTimes });
-
-    if (!this.state.focused || !timeShouldBeVisible(this.state.focused)) {
-      this.setState({
-        focused: filteredTimes.length > 0 ? filteredTimes[0] : null,
-      });
+  onChange = (value: ?string) => {
+    if (value !== this.state.value) {
+      this.props.onChange(value);
     }
   };
 
   openDialog() {
     const times = this.state.times;
     this.setState({
-      focused: times.length ? times[0] : null,
+      focused: times.length ? times[0] : '',
       isOpen: true,
     });
   }
@@ -168,14 +127,46 @@ export default class DatePicker extends Component<Props, State> {
     this.setState({ focused: times[previous] });
   }
 
+  updateTimes = (value: ?string, times: Array<string>) => {
+    const timeShouldBeVisible = (time: string) =>
+      value ? time.startsWith(value) : true;
+    const filteredTimes = value ? times.filter(timeShouldBeVisible) : times;
+    this.setState({ times: filteredTimes });
+
+    if (!this.state.focused || !timeShouldBeVisible(this.state.focused)) {
+      this.setState({
+        focused: filteredTimes.length > 0 ? filteredTimes[0] : '',
+      });
+    }
+  };
+
+  // TODO: Display an error message.
+  validate(value: string) {
+    if (isValid(dateFromTime(value))) {
+      this.props.onChange(value);
+      this.setState({
+        value,
+        isOpen: false,
+      });
+    } else {
+      this.setState({
+        value: '',
+        isOpen: false,
+      });
+      this.updateTimes('', this.state.times);
+    }
+  }
+
   render() {
+    const { formatValue } = this.props;
+    const { value } = this.state;
     return (
       <TimePickerStateless
         autoFocus={this.props.autoFocus}
         isDisabled={this.props.isDisabled}
         isOpen={this.state.isOpen}
-        displayValue={this.state.displayValue}
-        value={this.state.value}
+        displayValue={formatValue(value)}
+        value={value}
         times={this.state.times}
         focused={this.state.focused}
         width={this.props.width}
@@ -190,3 +181,5 @@ export default class DatePicker extends Component<Props, State> {
     );
   }
 }
+
+export default withCtrl(TimePicker);
