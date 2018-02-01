@@ -376,6 +376,7 @@ export class MediaPluginState {
     binaryPicker!.upload(url, fileName);
   };
 
+  // TODO [MSW-454]: remove this logic from Editor
   onPopupPickerClose = () => {
     if (this.dropzonePicker) {
       this.dropzonePicker.activate();
