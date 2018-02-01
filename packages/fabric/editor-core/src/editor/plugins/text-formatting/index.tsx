@@ -38,6 +38,7 @@ const ButtonsGroup = styled.div`
 export interface TextFormattingOptions {
   disableSuperscriptAndSubscript?: boolean;
   disableUnderline?: boolean;
+  disableCode?: boolean;
 }
 
 const textFormatting = (options: TextFormattingOptions = {}): EditorPlugin => ({
@@ -46,8 +47,10 @@ const textFormatting = (options: TextFormattingOptions = {}): EditorPlugin => ({
       { name: 'em', mark: em, rank: 200 },
       { name: 'strong', mark: strong, rank: 300 },
       { name: 'strike', mark: strike, rank: 400 },
-      { name: 'code', mark: code, rank: 700 },
     ]
+      .concat(
+        options.disableCode ? [] : { name: 'code', mark: code, rank: 700 },
+      )
       .concat(
         options.disableSuperscriptAndSubscript
           ? []
@@ -78,6 +81,7 @@ const textFormatting = (options: TextFormattingOptions = {}): EditorPlugin => ({
   primaryToolbarComponent({
     editorView,
     popupsMountPoint,
+    popupsScrollableElement,
     isToolbarReducedSpacing,
     disabled,
   }) {
@@ -103,6 +107,7 @@ const textFormatting = (options: TextFormattingOptions = {}): EditorPlugin => ({
           pluginStateTextFormatting={textFormattingPluginState}
           pluginStateClearFormatting={clearFormattingPluginState}
           popupsMountPoint={popupsMountPoint}
+          popupsScrollableElement={popupsScrollableElement}
         />
       </ButtonsGroup>
     );

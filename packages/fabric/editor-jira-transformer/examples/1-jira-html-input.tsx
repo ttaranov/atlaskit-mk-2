@@ -59,7 +59,6 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     allowCodeBlocks={true}
                     allowLists={true}
                     allowRule={true}
-                    allowPlaceholderCursor={true}
                     disabled={disabled}
                     mentionProvider={mentionProvider}
                     onChange={onChange}

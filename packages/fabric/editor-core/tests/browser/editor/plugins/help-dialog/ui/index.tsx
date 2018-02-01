@@ -8,7 +8,7 @@ import HelpDialog, {
   getComponentFromKeymap,
   getSupportedFormatting,
 } from '../../../../../../src/editor/plugins/help-dialog/ui';
-import createEditor from '../../../../../helpers/create-editor';
+import { createEditor } from '@atlaskit/editor-test-helpers';
 import helpDialog from '../../../../../../src/editor/plugins/help-dialog';
 import * as keymaps from '../../../../../../src/keymaps';
 import { browser, createSchema, doc } from '@atlaskit/editor-common';
@@ -18,7 +18,7 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
   let editorActions: EditorActions;
   let editorView: EditorView;
   beforeEach(() => {
-    const editor = createEditor([helpDialog]);
+    const editor = createEditor({ editorPlugins: [helpDialog] });
     editorActions = new EditorActions();
     editorActions._privateRegisterEditor(editor.editorView);
     editorView = editor.editorView;

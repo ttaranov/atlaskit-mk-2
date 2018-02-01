@@ -5,21 +5,21 @@ import {
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { Comment, Conversation, User } from '../src/model';
 import { uuid } from '../src/internal/uuid';
-import { mockConversation, mockInlineConversation } from './MockData';
+import { generateMockConversation, mockInlineConversation } from './MockData';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 
 import {
-  FETCH_CONVERSATIONS,
+  FETCH_CONVERSATIONS_REQUEST,
   FETCH_CONVERSATIONS_SUCCESS,
-  ADD_COMMENT,
+  ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
-  UPDATE_COMMENT,
+  UPDATE_COMMENT_REQUEST,
   UPDATE_COMMENT_SUCCESS,
   DELETE_COMMENT_SUCCESS,
-  CREATE_CONVERSATION,
+  CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
-  UPDATE_USER,
+  UPDATE_USER_SUCCESS,
 } from '../src/internal/actions';
 
 const MockDataProviders = {
@@ -39,13 +39,10 @@ export const getDataProviderFactory = () => {
 
 export class MockProvider extends AbstractConversationResource {
   private config: ConversationResourceConfig;
-  private conversations: Map<string, Conversation> = new Map();
 
   constructor(config: ConversationResourceConfig) {
     super();
     this.config = config;
-    this.conversations.set('mock-conversation', mockConversation);
-    this.conversations.set('mock-inline-conversation', mockInlineConversation);
     this.updateUser(config.user);
   }
 
@@ -54,9 +51,9 @@ export class MockProvider extends AbstractConversationResource {
    */
   async getConversations(): Promise<Conversation[]> {
     const { dispatch } = this;
-    dispatch({ type: FETCH_CONVERSATIONS });
+    dispatch({ type: FETCH_CONVERSATIONS_REQUEST });
 
-    const values = [mockConversation, mockInlineConversation];
+    const values = [generateMockConversation(), mockInlineConversation];
     dispatch({ type: FETCH_CONVERSATIONS_SUCCESS, payload: values });
 
     return values;
@@ -83,7 +80,7 @@ export class MockProvider extends AbstractConversationResource {
 
     const { dispatch } = this;
 
-    dispatch({ type: CREATE_CONVERSATION, payload: result });
+    dispatch({ type: CREATE_CONVERSATION_REQUEST, payload: result });
 
     setTimeout(() => {
       dispatch({ type: CREATE_CONVERSATION_SUCCESS, payload: result });
@@ -103,7 +100,7 @@ export class MockProvider extends AbstractConversationResource {
     const result = this.createComment(conversationId, parentId, doc);
     const { dispatch } = this;
 
-    dispatch({ type: ADD_COMMENT, payload: result });
+    dispatch({ type: ADD_COMMENT_REQUEST, payload: result });
 
     setTimeout(() => {
       dispatch({ type: ADD_COMMENT_SUCCESS, payload: result });
@@ -152,7 +149,7 @@ export class MockProvider extends AbstractConversationResource {
     };
 
     const { dispatch } = this;
-    dispatch({ type: UPDATE_COMMENT, payload: result });
+    dispatch({ type: UPDATE_COMMENT_REQUEST, payload: result });
 
     setTimeout(() => {
       dispatch({ type: UPDATE_COMMENT_SUCCESS, payload: result });
@@ -191,7 +188,7 @@ export class MockProvider extends AbstractConversationResource {
    */
   async updateUser(user: User): Promise<User> {
     const { dispatch } = this;
-    dispatch({ type: UPDATE_USER, payload: { user } });
+    dispatch({ type: UPDATE_USER_SUCCESS, payload: { user } });
     this.config.user = user;
 
     return user;

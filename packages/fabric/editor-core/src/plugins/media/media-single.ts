@@ -41,14 +41,14 @@ export const insertMediaSingleNode = (
   view: EditorView,
   mediaState: MediaState,
   collection?: string,
-): void => {
+): boolean => {
   if (!collection || !isMediaSingleState(mediaState)) {
-    return;
+    return false;
   }
 
   const { state, dispatch } = view;
   const node = createMediaSingleNode(state.schema, collection)(mediaState);
-  insertNodesEndWithNewParagraph([node])(state, dispatch);
+  return insertNodesEndWithNewParagraph([node])(state, dispatch);
 };
 
 export const createMediaSingleNode = (schema: Schema, collection: string) => (

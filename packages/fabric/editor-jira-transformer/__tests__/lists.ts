@@ -1,18 +1,8 @@
-import { markFactory, nodeFactory } from '@atlaskit/editor-test-helpers';
+import { doc, p, ul, li, ol, strong } from '@atlaskit/editor-test-helpers';
 import { checkParseEncodeRoundTrips } from './_test-helpers';
 import { createJIRASchema } from '@atlaskit/editor-common';
 
 const schema = createJIRASchema({ allowLists: true });
-
-// Nodes
-const ul = nodeFactory(schema.nodes.bulletList!);
-const doc = nodeFactory(schema.nodes.doc);
-const p = nodeFactory(schema.nodes.paragraph);
-const li = nodeFactory(schema.nodes.listItem!);
-const ol = nodeFactory(schema.nodes.orderedList!);
-
-// Marks
-const strong = markFactory(schema.marks.strong);
 
 describe('JIRATransformer', () => {
   describe('lists', () => {

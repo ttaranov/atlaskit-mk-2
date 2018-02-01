@@ -24,6 +24,7 @@ export interface Props {
   pluginState: BlockTypeState;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
 }
 
 export interface State {
@@ -70,6 +71,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
     const {
       popupsMountPoint,
       popupsBoundariesElement,
+      popupsScrollableElement,
       isSmall,
       isReducedSpacing,
     } = this.props;
@@ -109,6 +111,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
             isOpen={active}
             mountTo={popupsMountPoint}
             boundariesElement={popupsBoundariesElement}
+            scrollableElement={popupsScrollableElement}
             fitHeight={360}
             fitWidth={106}
           >

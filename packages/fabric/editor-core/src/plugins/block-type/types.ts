@@ -33,6 +33,11 @@ export const HEADING_5: BlockType = {
   title: 'Heading 5',
   nodeName: 'heading',
 };
+export const HEADING_6: BlockType = {
+  name: 'heading6',
+  title: 'Heading 6',
+  nodeName: 'heading',
+};
 export const BLOCK_QUOTE: BlockType = {
   name: 'blockquote',
   title: 'Block quote',
@@ -61,6 +66,7 @@ export const ALL_BLOCK_TYPES = [
   HEADING_3,
   HEADING_4,
   HEADING_5,
+  HEADING_6,
   BLOCK_QUOTE,
   CODE_BLOCK,
   PANEL,

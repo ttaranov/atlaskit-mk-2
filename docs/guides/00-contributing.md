@@ -13,10 +13,8 @@ We want to keep this model very simple. At it's core, we make the assumptions th
 
 The process is very simple and consists of:
 
-1. Raise an issue for discussion.
+1. Raise an issue for discussion. This step may not even be necessary as this could all be done in a PR, depending on if the contributor is willing to lose work if the contribution doesn't get accepted.
 2. Submit a PR resolving the raised issue.
-3. Discuss.
-4. Merge when ready.
 
 This is super simple and the PR guidelines can be derived from the rest of our conventions and documentation. It's also compatible with the inter-team model, because, at the very worst, internal teams would still be able to follow this process.
 
@@ -31,16 +29,24 @@ The inter-team model expands on the open source model to make this process more 
 
 Like the open source model, the inter-team contribution model is kept as light as possible and is designed for compatibility with it so that, at worst, we can fallback to the open source model as teams in other timezones may not be able to meet as easily.
 
-The steps for the inter-team model are as follows.
+The different aspects of the inter-team contribution are the following:
+
+* [Introduction](#introduction)
+* [Initial discussion](#initial-discussion)
+* [Regular catch-ups](#regular-catch-ups)
+* [Shepherd involvement](#shepherd-involvement)
+* [Tracking ](#tracking)
+* [Contribution requirements](#contribution-requirements)
+* [Handover and maintenance](#handover-and-maintenance)
 
 ### Introduction
 
 The contribution may be initially sparked by several methods:
 
-- Water-cooler discussion with a colleague.
-- Issue raised by another team.
-- Atlaskit team member noticing similar implementations in products and raising it.
-- Any sync meetings between teams.
+* Water-cooler discussion with a colleague.
+* Issue raised by another team.
+* Atlaskit team member noticing similar implementations in products and raising it.
+* Any sync meetings between teams.
 
 ### Initial discussion
 
@@ -62,9 +68,10 @@ Since these two components can affect one another, everyone involved should keep
 
 Some examples of this are:
 
-- Daily stand-ups
-- Weekly catch-ups
-- Demos every other day
+* Daily stand-ups
+* Weekly catch-ups
+* Demos every other day
+* Creating a Stride room for regular communication
 
 The people involved in these catch-ups will vary, as well. For example, it may simply be the contributor and shepherd. It may have a designer present. Other team members may be involved depending on the complexity.
 
@@ -74,10 +81,25 @@ _The key here is that everyone shares knowledge and can hold each other accounta
 
 Every contribution will have a shepherd, but to the extent at which this shepherd will be involved will vary. For example, a shepherd may not be a developer at all, or might decide that part-time development is a good idea. A shepherd may even take over development at some point. Whatever the case, the shepherd must at the very least be dedicated to:
 
-- Reviewing relevant PRs.
-- Meeting with contributors, or involved parties.
-- Planning any follow ups after the final contribution and handover has been made.
+* Reviewing relevant PRs.
+* Meeting with contributors, or involved parties.
+* Planning any follow ups after the final contribution and handover has been made.
 
 ### Tracking
 
 The shepherd should raise an issue internally to track the overall process and give it a label of "contribution".
+
+### Contribution requirements
+
+To keep the quality bar high, we should do our best to ensure the contribution closely matches our general component design [guidelines](#component-design) as well as the following:
+
+* [Directory structure](./directory-structure)
+* [Naming props](./naming-props)
+* [Using higher-order components vs render props](./hoc-vs-props)
+* [Using `Component` vs `PureComponent`](./component-vs-pure-component)
+
+### Handover and maintenance
+
+In an ideal world, the contributor would be able to support the component for some time after mergin. This isn't always the case, however. Either way, we should ensure that both the shepherd and contributor - in that order - are mentioned as the maintainers of the component in the `package.json`. The first person listed - the shepherd - will be the primary point of contact. The second person listed - the contributor - will be the secondary point of contact, just in case, since they were the ones that contributed it.
+
+Over time, this may evolve and both the contributor and shepherd may be removed in favour of a new maintainer. This is fine and should be considered normal.

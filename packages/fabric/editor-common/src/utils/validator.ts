@@ -2,6 +2,7 @@ import { generateUuid as uuid } from './uuid';
 import { defaultSchema } from '../schema';
 import { Mark as PMMark, Schema } from 'prosemirror-model';
 import { isSafeUrl } from '.';
+import { inlineNodes } from '../schema';
 
 export interface ADDoc {
   version: 1;
@@ -85,7 +86,9 @@ export const getValidDocument = (
 const wrapInlineNodes = (nodes: ADNode[] = []): ADNode[] => {
   return nodes.map(
     node =>
-      node.type === 'text' ? { type: 'paragraph', content: [node] } : node,
+      inlineNodes.has(node.type)
+        ? { type: 'paragraph', content: [node] }
+        : node,
   );
 };
 
@@ -164,12 +167,13 @@ export const getValidUnknownNode = (node: ADNode): ADNode => {
       text: text || attrs.text || `[${type}]`,
     };
 
-    if (attrs.textUrl) {
+    const { textUrl } = attrs;
+    if (textUrl && isSafeUrl(textUrl)) {
       unknownInlineNode.marks = [
         {
           type: 'link',
           attrs: {
-            href: attrs.textUrl,
+            href: textUrl,
           },
         } as ADMark,
       ];

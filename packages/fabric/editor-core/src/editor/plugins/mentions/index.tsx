@@ -33,6 +33,7 @@ const mentionsPlugin: EditorPlugin = {
     providerFactory,
     popupsMountPoint,
     popupsBoundariesElement,
+    popupsScrollableElement,
   }) {
     const renderNode = providers => {
       return (
@@ -43,6 +44,7 @@ const mentionsPlugin: EditorPlugin = {
           presenceProvider={providers.presenceProvider}
           popupsMountPoint={popupsMountPoint}
           popupsBoundariesElement={popupsBoundariesElement}
+          popupsScrollableElement={popupsScrollableElement}
         />
       );
     };

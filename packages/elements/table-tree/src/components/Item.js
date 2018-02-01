@@ -1,10 +1,15 @@
 // @flow
 import React, { PureComponent } from 'react';
 import Items from './Items';
-import { type ItemsProvider, type RenderFunction } from './../types';
+import toItemId from '../utils/toItemId';
+import {
+  type ItemsProvider,
+  type RenderFunction,
+  type RowData,
+} from './../types';
 
 type Props = {
-  data: Object,
+  data: RowData,
   getChildrenData: ItemsProvider,
   depth?: number,
   render: RenderFunction,
@@ -33,25 +38,31 @@ export default class Item extends PureComponent<Props, State> {
     const { depth, data, render, getChildrenData } = this.props;
     const { isExpanded } = this.state;
 
-    let row = render(data);
-    if (!row) {
+    const renderedRow = render(data);
+    if (!renderedRow) {
       return null;
     }
-    row = React.cloneElement(row, {
+    const { hasChildren, itemId } = renderedRow.props;
+    const wrappedRow = React.cloneElement(renderedRow, {
       onExpandToggle: this.handleExpandToggleClick,
       depth,
       isExpanded,
+      data,
     });
     return (
       <div>
-        {row}
-        {isExpanded && (
-          <Items
-            parentData={data}
-            depth={depth}
-            getItemsData={getChildrenData}
-            render={render}
-          />
+        {wrappedRow}
+        {hasChildren && (
+          <div id={toItemId(itemId)}>
+            {isExpanded && (
+              <Items
+                parentData={data}
+                depth={depth}
+                getItemsData={getChildrenData}
+                render={render}
+              />
+            )}
+          </div>
         )}
       </div>
     );

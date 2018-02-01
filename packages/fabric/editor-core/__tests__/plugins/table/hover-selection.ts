@@ -2,7 +2,7 @@ import {
   createEvent,
   doc,
   p,
-  makeEditor,
+  createEditor,
   table,
   tr,
   tdEmpty,
@@ -16,23 +16,26 @@ import {
   hoverTable,
 } from '../../../src/editor/plugins/table/actions';
 import { tableStartPos } from '../../../src/editor/plugins/table/utils';
-import hoverSelectionPlugin, {
-  pluginKey as hoverPluginKey,
-} from '../../../src/editor/plugins/table/hover-selection-plugin';
-import tablePlugins, { TableState } from '../../../src/plugins/table';
+import { pluginKey as hoverPluginKey } from '../../../src/editor/plugins/table/hover-selection-plugin';
+import {
+  TableState,
+  stateKey as tablePluginKey,
+} from '../../../src/plugins/table';
 import {
   getColumnPos,
   getRowPos,
   getTablePos,
 } from '../../../src/editor/plugins/table/utils';
+import tablesPlugin from '../../../src/editor/plugins/table';
 
 describe('table hover selection plugin', () => {
   const event = createEvent('event');
 
   const editor = (doc: any) =>
-    makeEditor<TableState>({
+    createEditor<TableState>({
       doc,
-      plugins: [...tablePlugins(), hoverSelectionPlugin],
+      editorPlugins: [tablesPlugin],
+      pluginKey: tablePluginKey,
     });
 
   describe('hoverColumn(number)', () => {
@@ -53,8 +56,8 @@ describe('table hover selection plugin', () => {
             hoverColumn(column)(editorView.state, editorView.dispatch);
             const offset = tableStartPos(editorView.state);
             const { from, to } = getColumnPos(column, pluginState.tableNode!);
-            const set = hoverPluginKey.getState(editorView.state);
-            const deco = set.find(from + offset, to + offset);
+            const { decorationSet } = hoverPluginKey.getState(editorView.state);
+            const deco = decorationSet.find(from + offset, to + offset);
             // selection spans 2 cells in the selected column (because we have 2 rows in the table)
             expect(deco).toHaveLength(2);
           });
@@ -82,8 +85,8 @@ describe('table hover selection plugin', () => {
             hoverRow(row)(editorView.state, editorView.dispatch);
             const offset = tableStartPos(editorView.state);
             const { from, to } = getRowPos(row, pluginState.tableNode!);
-            const set = hoverPluginKey.getState(editorView.state);
-            const deco = set.find(from + offset, to + offset);
+            const { decorationSet } = hoverPluginKey.getState(editorView.state);
+            const deco = decorationSet.find(from + offset, to + offset);
             // selection spans 2 cells in the selected row
             expect(deco).toHaveLength(2);
           });
@@ -109,14 +112,14 @@ describe('table hover selection plugin', () => {
         hoverTable(editorView.state, editorView.dispatch);
         const offset = tableStartPos(editorView.state);
         const { from, to } = getTablePos(pluginState.tableNode!);
-        const set = hoverPluginKey.getState(editorView.state);
-        const deco = set.find(from + offset, to + offset);
+        const { decorationSet } = hoverPluginKey.getState(editorView.state);
+        const deco = decorationSet.find(from + offset, to + offset);
         // selection spans all 6 cells
         expect(deco).toHaveLength(6);
 
         // reset hover selection plugin to an empty DecorationSet
         resetHoverSelection(editorView.state, editorView.dispatch);
-        expect(hoverPluginKey.getState(editorView.state)).toEqual(
+        expect(hoverPluginKey.getState(editorView.state).decorationSet).toEqual(
           DecorationSet.empty,
         );
       });

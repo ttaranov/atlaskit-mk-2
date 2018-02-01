@@ -1,8 +1,5 @@
-import tasksAndDecisionsPlugins from '../../../src/plugins/tasks-and-decisions';
-import { createPlugin as createSaveOnEnterPlugin } from '../../../src/editor/plugins/save-on-enter';
-import { ProviderFactory } from '@atlaskit/editor-common';
 import {
-  makeEditor,
+  createEditor,
   doc,
   p,
   decisionList,
@@ -11,8 +8,8 @@ import {
   taskList,
   taskItem,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { Plugin } from 'prosemirror-state';
+import saveOnEnterPlugin from '../../../src/editor/plugins/save-on-enter';
+import tasksAndDecisionsPlugin from '../../../src/editor/plugins/tasks-and-decisions';
 
 describe('save on enter', () => {
   const onSaveSpy = jest.fn();
@@ -22,12 +19,12 @@ describe('save on enter', () => {
   });
 
   const editor = (doc: any) =>
-    makeEditor({
+    createEditor({
       doc,
-      plugins: [
-        createSaveOnEnterPlugin(onSaveSpy) as Plugin,
-        ...tasksAndDecisionsPlugins(defaultSchema, {}, new ProviderFactory()),
-      ],
+      editorPlugins: [saveOnEnterPlugin, tasksAndDecisionsPlugin],
+      editorProps: {
+        onSave: onSaveSpy,
+      },
     });
 
   it('should trigger onSubmit when user presses Enter', () => {

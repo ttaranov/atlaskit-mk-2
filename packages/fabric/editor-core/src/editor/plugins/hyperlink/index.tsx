@@ -29,6 +29,7 @@ const hyperlinkPlugin: EditorPlugin = {
     appearance,
     popupsMountPoint,
     popupsBoundariesElement,
+    popupsScrollableElement,
   }) {
     if (appearance === 'message') {
       return null;
@@ -43,6 +44,7 @@ const hyperlinkPlugin: EditorPlugin = {
           activityProvider={providers.activityProvider}
           popupsMountPoint={popupsMountPoint}
           popupsBoundariesElement={popupsBoundariesElement}
+          popupsScrollableElement={popupsScrollableElement}
         />
       );
     };

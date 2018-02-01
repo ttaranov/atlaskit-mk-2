@@ -1,5 +1,34 @@
 # @atlaskit/editor-common
 
+## 6.0.3
+
+- [patch] Remove monospace font-style for code marks. [b92c81e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b92c81e)
+
+## 6.0.2
+- [patch] Removing SMB from URL-whitelist [dfe77d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfe77d2)
+
+## 6.0.1
+- [patch] Add additional inline nodes to unknownBlock [f330ca1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f330ca1)
+
+## 6.0.0
+- [patch] cket-transformer/__tests__/_schema-builder.ts [a6e77ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6e77ff)
+- [major] move MediaItem to renderer, bump icons [5e71725](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e71725)
+
+## 5.10.3
+
+- [patch] Change JSON schema to ensure that first child of list-item is always paragraph [9a36594](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a36594)
+
+## 5.10.2
+
+## 5.10.1
+
+## 5.10.0
+- [minor] FS-1624 Add new popupsScrollableElement props to editor to handle case when mountPoint is different than the scrollable element. [7d669bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d669bc)
+
+## 5.9.4
+
+- [patch] Insert media group instead of single image inside table [5b4aaa0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b4aaa0)
+
 ## 5.9.3
 - [patch] Fix getValidDocument to wrap top level inline nodes [c82a941](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c82a941)
 - [patch] Fix unknown node validator [419f4fc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/419f4fc)

@@ -22,6 +22,7 @@ export interface Props {
   reversePosition?: boolean;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
   emojiProvider: Promise<EmojiProvider>;
 }
 
@@ -98,6 +99,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     const {
       popupsBoundariesElement,
       popupsMountPoint,
+      popupsScrollableElement,
       emojiProvider,
     } = this.props;
 
@@ -117,6 +119,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
         fitHeight={350}
         fitWidth={350}
         boundariesElement={popupsBoundariesElement}
+        scrollableElement={popupsScrollableElement}
         mountTo={popupsMountPoint}
         offset={[0, 3]}
       >

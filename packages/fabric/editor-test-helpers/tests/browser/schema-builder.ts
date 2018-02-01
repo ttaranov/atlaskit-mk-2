@@ -3,6 +3,8 @@ import {
   defaultSchema as schema,
   markFactory,
   nodeFactory,
+  doc,
+  blockquote,
   p,
   RefsTracker,
   sequence,
@@ -111,37 +113,32 @@ describe('@atlaskit/editore-core/test-helper/schema-builder', () => {
 
     it("returns a factory that returns ref'd nodes", () => {
       const p = nodeFactory(schema.nodes.paragraph, {});
-
-      expect(p()).to.have.property('refs');
+      expect(p('')(schema)).to.have.property('refs');
     });
 
     it('correctly calculates flat node ref positions', () => {
-      const p = nodeFactory(schema.nodes.paragraph, {});
-      const node = p('t{a}ex{b}t');
+      const node = p('t{a}ex{b}t')(schema);
       const { a, b } = node.refs;
 
       expect(node.textBetween(a, b)).to.equal('ex');
     });
 
     it('correctly calculates flat node ref positions with refs tracking node', () => {
-      const p = nodeFactory(schema.nodes.paragraph, {});
-      const node = p('{a}', 'text', '{b}');
+      const node = p('{a}', 'text', '{b}')(schema);
       const { a, b } = node.refs;
 
       expect(node.textBetween(a, b)).to.equal('text');
     });
 
     it('correctly calculates single nested node ref positions', () => {
-      const p = nodeFactory(schema.nodes.paragraph, {});
-      const node = p(p('t{a}ex{b}t'));
+      const node = doc(p('t{a}ex{b}t'))(schema);
       const { a, b } = node.refs;
 
       expect(node.textBetween(a, b)).to.equal('ex');
     });
 
     it('correctly calculates twice nested node ref positions', () => {
-      const p = nodeFactory(schema.nodes.paragraph, {});
-      const node = p(p(p('t{a}ex{b}t')));
+      const node = doc(blockquote(p('t{a}ex{b}t')))(schema);
       const { a, b } = node.refs;
 
       expect(node.textBetween(a, b)).to.equal('ex');
@@ -162,25 +159,23 @@ describe('@atlaskit/editore-core/test-helper/schema-builder', () => {
     });
 
     it('returns a builder that returns an array', () => {
-      expect(em()).to.be.an.instanceOf(Array);
+      expect(em()(schema)).to.be.an.instanceOf(Array);
     });
 
     it('correctly calculates refs', () => {
-      const node = p(em('t{a}ex{b}t'));
+      const node = p(em('t{a}ex{b}t'))(schema);
       const { a, b } = node.refs;
       expect(node.textBetween(a, b)).to.equal('ex');
     });
 
     it('supports being composed with text() and maintaining refs', () => {
-      const node = p(em(text('t{a}ex{b}t', schema)));
+      const node = p(em('t{a}ex{b}t'))(schema);
       const { a, b } = node.refs;
       expect(node.textBetween(a, b)).to.equal('ex');
     });
 
     it('supports being composed with multiple text() and maintaining refs', () => {
-      const node = p(
-        em(text('t{a}ex{b}t', schema), text('t{c}ex{d}t', schema)),
-      );
+      const node = p(em('t{a}ex{b}t', 't{c}ex{d}t'))(schema);
       const { a, b, c, d } = node.refs;
       expect(node.textBetween(a, b)).to.equal('ex');
       expect(node.textBetween(c, d)).to.equal('ex');
@@ -251,7 +246,7 @@ describe('@atlaskit/editore-core/test-helper/schema-builder', () => {
 
     it('returns refs with correct positions for mixed nodes', () => {
       const a = text('0{a}', schema);
-      const b = p('0{b}');
+      const b = p('0{b}')(schema);
       const c = text('0{c}', schema);
 
       const { refs } = sequence(a, b, c);
@@ -261,7 +256,7 @@ describe('@atlaskit/editore-core/test-helper/schema-builder', () => {
     });
 
     it('returns refs with correct positions for nested tracking nodes', () => {
-      const a = p(p('{a}'));
+      const a = doc(p('{a}'))(schema);
 
       const { refs } = sequence(a);
       expect(refs['a']).to.equal(2);

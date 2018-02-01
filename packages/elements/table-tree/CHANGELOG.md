@@ -1,5 +1,14 @@
 # @atlaskit/table-tree
 
+## 0.5.0
+
+
+- [minor] Add accessibility features; introduce Row's itemId prop [2e0807f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e0807f)
+
+## 0.4.0
+- [minor] Update header design to conform to ADG3 [6170e98](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6170e98)
+- [minor] Don't display the loader if data is available quickly [93fd2eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/93fd2eb)
+
 ## 0.3.2
 - [patch] Fix: ellipsis was not shown when overflowing text was clipped [05034f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05034f7)
 

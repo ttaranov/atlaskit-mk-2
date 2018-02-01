@@ -161,7 +161,7 @@ export default class Editor extends React.Component<EditorProps, State> {
     );
     this.providerFactory.setProvider(
       'mediaProvider',
-      media ? media.provider : mediaProvider,
+      media && media.provider ? media.provider : mediaProvider,
     );
     this.providerFactory.setProvider(
       'imageUploadProvider',
@@ -201,6 +201,7 @@ export default class Editor extends React.Component<EditorProps, State> {
         onCancel={this.props.onCancel}
         popupsMountPoint={this.props.popupsMountPoint}
         popupsBoundariesElement={this.props.popupsBoundariesElement}
+        popupsScrollableElement={this.props.popupsScrollableElement}
         contentComponents={contentComponents}
         primaryToolbarComponents={primaryToolbarComponents}
         secondaryToolbarComponents={secondaryToolbarComponents}

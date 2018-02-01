@@ -40,6 +40,7 @@ const emojiPlugin: EditorPlugin = {
     providerFactory,
     popupsMountPoint,
     popupsBoundariesElement,
+    popupsScrollableElement,
   }) {
     const renderNode = providers => {
       return (
@@ -69,6 +70,7 @@ const emojiPlugin: EditorPlugin = {
     appearance,
     popupsMountPoint,
     popupsBoundariesElement,
+    popupsScrollableElement,
     disabled,
   }) {
     const renderNode = providers => {
@@ -83,6 +85,7 @@ const emojiPlugin: EditorPlugin = {
           isDisabled={disabled}
           popupsMountPoint={popupsMountPoint}
           popupsBoundariesElement={popupsBoundariesElement}
+          popupsScrollableElement={popupsScrollableElement}
         />
       );
     };

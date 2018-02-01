@@ -1,5 +1,8 @@
 # @atlaskit/tooltip
 
+## 8.2.0
+- [minor] new prop component to open custom tooltip [3f892d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f892d5)
+
 ## 8.1.1
 - [patch] Resolved low hanging flow errors in field-base field-text comment icon item and website, $ [007de27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/007de27)
 
