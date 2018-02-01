@@ -37,12 +37,7 @@ export default class Page {
   getProperty(selector, cssProperty) {
     return this.browser.getCssProperty(selector, cssProperty);
   }
-  evaluate(selector) {
-    return this.browser.getText(selector);
-    // For later, this is how we will get the text in Puppeeter:
-    // const textContent = await page.evaluate(() => document.querySelector('p').textContent);
-    // const innerText = await page.evaluate(() => document.querySelector('p').innerText);
-  }
+
   url() {
     return this.browser.getUrl();
   }
@@ -60,6 +55,12 @@ export default class Page {
   //  keyboard.up('Shift');
 
   //will need to have wrapper for these once moved to puppeteer
+  getText(selector) {
+    // replace with await page.evaluate(() => document.querySelector('p').textContent)
+    // for puppteer
+    return this.browser.getText(selector);
+  }
+
   isEnabled(selector) {
     return this.browser.isEnabled(selector);
   }
