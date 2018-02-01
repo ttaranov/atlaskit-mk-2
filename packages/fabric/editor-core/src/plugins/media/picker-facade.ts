@@ -89,6 +89,7 @@ export default class PickerFacade {
     picker.on('upload-end', this.handleUploadEnd);
 
     if (picker instanceof Dropzone) {
+      picker.id = 'Editor';
       picker.on('drag-enter', this.handleDragEnter);
       picker.on('drag-leave', this.handleDragLeave);
     }
@@ -330,6 +331,7 @@ export default class PickerFacade {
   };
 
   private handleDragEnter = () => {
+    // console.log('PickerFacade handleDragEnter')
     this.onDragListeners.forEach(cb => cb.call(cb, 'enter'));
   };
 

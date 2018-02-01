@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Component } from 'react';
 
 export default class PassContext extends Component<any, any> {
@@ -17,6 +18,10 @@ export default class PassContext extends Component<any, any> {
   render() {
     const { children } = this.props;
 
-    return children;
+    return (
+      // <div className="foo-ba" style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none'}}>
+      children
+      // </div>
+    );
   }
 }

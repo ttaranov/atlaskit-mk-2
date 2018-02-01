@@ -57,6 +57,7 @@ export class Dropzone extends LocalUploadComponent<
   }
 
   public activate(): Promise<void> {
+    console.log('activate', this.id);
     return whenDomReady
       .then(() => {
         this.container = this.container || document.body;
@@ -73,13 +74,15 @@ export class Dropzone extends LocalUploadComponent<
   }
 
   public deactivate(): void {
-    this.container.removeEventListener('dragover', this.onDragOver, false);
+    this.container.removeEventListener('dragover', this.onDragOver, true);
     this.container.removeEventListener('dragleave', this.onDragLeave, false);
     this.uploadService.removeDropzone();
   }
 
   private onDragOver = (e: DragEvent): void => {
+    // console.log('onDragOver')
     e.preventDefault();
+    e.stopPropagation();
 
     if (this.instance && Dropzone.dragContainsFiles(e)) {
       const dataTransfer = e.dataTransfer;
@@ -93,6 +96,7 @@ export class Dropzone extends LocalUploadComponent<
         'move' === allowed || 'linkMove' === allowed ? 'move' : 'copy';
       this.instance.classList.add('active');
       const length = this.getDraggedItemsLength(dataTransfer);
+
       this.emitDragOver({ length });
     }
   };
@@ -149,6 +153,7 @@ export class Dropzone extends LocalUploadComponent<
 
   private emitDragOver(e: DropzoneDragEnterEventPayload): void {
     if (!this.uiActive) {
+      console.log('emit drag-enter', this.id);
       this.uiActive = true;
       this.emit('drag-enter', e);
     }

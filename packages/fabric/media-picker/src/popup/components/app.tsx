@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { Component } from 'react';
 import { Dispatch, Store } from 'redux';
 import { connect, Provider } from 'react-redux';
@@ -111,6 +112,8 @@ export class App extends Component<AppProps, AppState> {
       },
     };
 
+    this.mpConfig = mpConfig;
+
     this.mpBrowser = MediaPicker('browser', mpConfig, { multiple: true });
     this.mpBrowser.on('uploads-start', onUploadsStart);
     this.mpBrowser.on('upload-preview-update', onUploadPreviewUpdate);
@@ -118,17 +121,7 @@ export class App extends Component<AppProps, AppState> {
     this.mpBrowser.on('upload-processing', onUploadProcessing);
     this.mpBrowser.on('upload-end', onUploadEnd);
     this.mpBrowser.on('upload-error', onUploadError);
-
-    this.mpDropzone = MediaPicker('dropzone', mpConfig, { headless: true });
-    this.mpDropzone.on('drag-enter', () => this.setDropzoneActive(true));
-    this.mpDropzone.on('drag-leave', () => this.setDropzoneActive(false));
-    this.mpDropzone.on('uploads-start', onUploadsStart);
-    this.mpDropzone.on('upload-preview-update', onUploadPreviewUpdate);
-    this.mpDropzone.on('upload-status-update', onUploadStatusUpdate);
-    this.mpDropzone.on('upload-processing', onUploadProcessing);
-    this.mpDropzone.on('upload-end', onUploadEnd);
-    this.mpDropzone.on('upload-error', onUploadError);
-    this.mpDropzone.activate();
+    // debugger
 
     this.mpBinary = MediaPicker('binary', mpConfig);
     this.mpBinary.on('uploads-start', onUploadsStart);
@@ -149,6 +142,46 @@ export class App extends Component<AppProps, AppState> {
     });
   }
 
+  createDropzone = element => {
+    console.log('element', element);
+    // debugger
+
+    // const container = ReactDOM.findDOMNode(element);
+    // const container = document.createElement('div');
+    // container.style.position = 'fixed';
+    // container.style.top = '0';
+    // container.style.left = '0';
+    // container.style.width = '100%';
+    // container.style.height = '100%';
+    // container.style.zIndex = '999999';
+    // container.classList.add('drozoneeee')
+    // document.body.appendChild(container);
+
+    const {
+      onUploadsStart,
+      onUploadPreviewUpdate,
+      onUploadStatusUpdate,
+      onUploadProcessing,
+      onUploadEnd,
+      onUploadError,
+    } = this.props;
+
+    this.mpDropzone = MediaPicker('dropzone', this.mpConfig, {
+      headless: true,
+      // container
+    });
+    this.mpDropzone.id = 'Popup';
+    this.mpDropzone.on('drag-enter', () => this.setDropzoneActive(true));
+    this.mpDropzone.on('drag-leave', () => this.setDropzoneActive(false));
+    this.mpDropzone.on('uploads-start', onUploadsStart);
+    this.mpDropzone.on('upload-preview-update', onUploadPreviewUpdate);
+    this.mpDropzone.on('upload-status-update', onUploadStatusUpdate);
+    this.mpDropzone.on('upload-processing', onUploadProcessing);
+    this.mpDropzone.on('upload-end', onUploadEnd);
+    this.mpDropzone.on('upload-error', onUploadError);
+    this.mpDropzone.activate();
+  };
+
   render() {
     const { selectedServiceName, isVisible, onClose, store } = this.props;
     const { isDropzoneActive } = this.state;
@@ -156,10 +189,16 @@ export class App extends Component<AppProps, AppState> {
     if (!isVisible) {
       return null;
     }
-
+    //
     return (
       <Provider store={store}>
-        <ModalDialog onClose={onClose} width="x-large" isChromeless={true}>
+        <ModalDialog
+          className="foo-bar"
+          ref={this.createDropzone}
+          onClose={onClose}
+          width="x-large"
+          isChromeless={true}
+        >
           <PassContext store={store}>
             <MediaPickerPopupWrapper>
               <SidebarWrapper>
