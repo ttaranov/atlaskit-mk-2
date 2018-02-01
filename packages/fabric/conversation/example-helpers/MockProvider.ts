@@ -5,7 +5,7 @@ import {
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { Comment, Conversation, User } from '../src/model';
 import { uuid } from '../src/internal/uuid';
-import { mockConversation, mockInlineConversation } from './MockData';
+import { generateMockConversation, mockInlineConversation } from './MockData';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 
@@ -39,13 +39,10 @@ export const getDataProviderFactory = () => {
 
 export class MockProvider extends AbstractConversationResource {
   private config: ConversationResourceConfig;
-  private conversations: Map<string, Conversation> = new Map();
 
   constructor(config: ConversationResourceConfig) {
     super();
     this.config = config;
-    this.conversations.set('mock-conversation', mockConversation);
-    this.conversations.set('mock-inline-conversation', mockInlineConversation);
     this.updateUser(config.user);
   }
 
@@ -56,7 +53,7 @@ export class MockProvider extends AbstractConversationResource {
     const { dispatch } = this;
     dispatch({ type: FETCH_CONVERSATIONS_REQUEST });
 
-    const values = [mockConversation, mockInlineConversation];
+    const values = [generateMockConversation(), mockInlineConversation];
     dispatch({ type: FETCH_CONVERSATIONS_SUCCESS, payload: values });
 
     return values;
