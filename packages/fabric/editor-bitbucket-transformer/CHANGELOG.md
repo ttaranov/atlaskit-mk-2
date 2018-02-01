@@ -1,5 +1,11 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 2.5.1
+
+## 2.5.0
+- [minor] Fixed issue causing leading ' characters to be escaped [1b2140c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b2140c)
+- [patch] Fix images with underscore in URL [42ed524](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ed524)
+
 ## 2.4.2
 
 ## 2.4.1

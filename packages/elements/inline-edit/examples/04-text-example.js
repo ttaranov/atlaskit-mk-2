@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import SingleLineTextInput from '@atlaskit/input';
-import InlineEditor from '../src';
+import InlineEdit from '../src';
 
 type State = {|
   editValue: string | number,
@@ -44,7 +44,7 @@ export default class TextExample extends Component<void, State> {
     const id = 'inline-edit-single';
     return (
       <div>
-        <InlineEditor
+        <InlineEdit
           isFitContainerWidthReadView
           label="With Text Input"
           labelHtmlFor={id}

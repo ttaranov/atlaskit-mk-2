@@ -12,6 +12,7 @@ import {
   HEADING_3,
   HEADING_4,
   HEADING_5,
+  HEADING_6,
   BLOCK_QUOTE,
 } from './types';
 import { BlockTypeState } from './';
@@ -71,6 +72,7 @@ export function keymapHandler(
     HEADING_3,
     HEADING_4,
     HEADING_5,
+    HEADING_6,
     BLOCK_QUOTE,
   ].forEach(blockType => {
     if (nodes[blockType.nodeName]) {

@@ -5,10 +5,9 @@ import { ImageResizeMode } from '@atlaskit/media-core';
 import {
   EventHandlers,
   ProviderFactory,
-  MediaItem,
   MediaType,
-  Appearance,
 } from '@atlaskit/editor-common';
+import { MediaItem, Appearance } from '../../ui';
 
 export interface MediaProps {
   id: string;

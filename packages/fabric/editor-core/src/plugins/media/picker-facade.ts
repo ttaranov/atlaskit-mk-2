@@ -26,7 +26,8 @@ import {
   MediaStateStatus,
 } from '@atlaskit/media-core';
 
-import { ErrorReportingHandler } from '../../utils';
+import { ErrorReportingHandler, isImage } from '../../utils';
+import { appendTimestamp } from './utils';
 
 export type PickerType = keyof MediaPickerComponents;
 
@@ -81,8 +82,8 @@ export default class PickerFacade {
 
     picker.on('uploads-start', this.handleUploadsStart);
     picker.on('upload-preview-update', this.handleUploadPreviewUpdate);
-    picker.on('upload-status-update', this.handleUploadStatusUpdate);
     picker.on('upload-processing', this.handleUploadProcessing);
+    picker.on('upload-status-update', this.handleUploadStatusUpdate);
     picker.on('upload-finalize-ready', this.handleUploadFinalizeReady);
     picker.on('upload-error', this.handleUploadError);
     picker.on('upload-end', this.handleUploadEnd);
@@ -259,7 +260,7 @@ export default class PickerFacade {
       file,
       currentStatus === 'unknown' ? 'uploading' : currentStatus,
     );
-    state['progress'] = progress ? progress.portion : undefined;
+    state.progress = progress && progress.portion;
     this.stateManager.updateState(state.id, state);
   };
 
@@ -282,7 +283,7 @@ export default class PickerFacade {
     }
 
     const state = this.newState(file, 'unfinalized');
-    state['finalizeCb'] = finalize;
+    state.finalizeCb = finalize;
     this.stateManager.updateState(state.id, state);
   };
 
@@ -301,9 +302,7 @@ export default class PickerFacade {
     this.stateManager.updateState(tempId, {
       id: tempId,
       status: 'error',
-      error: error
-        ? { description: error!.description, name: error!.name }
-        : undefined,
+      error: error && { description: error.description, name: error.name },
     });
   };
 
@@ -322,6 +321,10 @@ export default class PickerFacade {
     if (preview !== undefined) {
       const state = this.newState(file, 'uploading');
       state.thumbnail = preview;
+      // Add timestamp to image file names on paste @see ED-3584
+      if (this.pickerType === 'clipboard' && isImage(file.type)) {
+        state.fileName = appendTimestamp(file.name, file.creationDate);
+      }
       this.stateManager.updateState(state.id, state);
     }
   };

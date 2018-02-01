@@ -6,6 +6,7 @@ import { Popup } from '@atlaskit/editor-common';
 export interface Props {
   mountTo?: HTMLElement;
   boundariesElement?: HTMLElement;
+  scrollableElement?: HTMLElement;
   trigger: React.ReactElement<any>;
   isOpen?: boolean;
   onOpenChange?: (attrs) => void;
@@ -47,6 +48,7 @@ export default class Dropdown extends PureComponent<Props, State> {
       children,
       mountTo,
       boundariesElement,
+      scrollableElement,
       onOpenChange,
       fitHeight,
       fitWidth,
@@ -57,6 +59,7 @@ export default class Dropdown extends PureComponent<Props, State> {
         target={target}
         mountTo={mountTo}
         boundariesElement={boundariesElement}
+        scrollableElement={scrollableElement}
         onPlacementChanged={this.updatePopupPlacement}
         fitHeight={fitHeight}
         fitWidth={fitWidth}

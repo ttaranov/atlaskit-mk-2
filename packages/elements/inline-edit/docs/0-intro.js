@@ -10,7 +10,7 @@ export default md`
   to control an input component
 
   ~~~js
-  import InlineEditor, { InlineEdit } from '@atlaskit/inline-edit';
+  import InlineEdit, { InlineEditStateless } from '@atlaskit/inline-edit';
   ~~~
 
   The stateful inline editor manages the onEditRequested,{' '}

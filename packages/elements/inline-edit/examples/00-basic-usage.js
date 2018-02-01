@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import SingleLineTextInput from '@atlaskit/input';
-import InlineEditor from '../src';
+import InlineEdit from '../src';
 
 type State = {
   onEventResult: string,
@@ -36,7 +36,7 @@ export default class BasicExample extends PureComponent<void, State> {
   render() {
     return (
       <div>
-        <InlineEditor
+        <InlineEdit
           label="Inline Edit Field"
           editView={
             <SingleLineTextInput
@@ -55,14 +55,14 @@ export default class BasicExample extends PureComponent<void, State> {
           onCancel={this.onCancel}
         />
 
-        <InlineEditor
+        <InlineEdit
           label="With read only view"
           readView="Read view with no edit"
           onConfirm={this.onConfirm}
           onCancel={this.onCancel}
         />
 
-        <InlineEditor
+        <InlineEdit
           label="With edit & read views"
           readView="Read view"
           editView={
@@ -77,7 +77,7 @@ export default class BasicExample extends PureComponent<void, State> {
           onConfirm={this.onConfirm}
           onCancel={this.onCancel}
         />
-        <InlineEditor
+        <InlineEdit
           label="With an invalid message shown when in focus"
           isInvalid
           invalidMessage="This error message is shown when the field is focused"
@@ -94,7 +94,7 @@ export default class BasicExample extends PureComponent<void, State> {
           onConfirm={this.onConfirm}
           onCancel={this.onCancel}
         />
-        <InlineEditor
+        <InlineEdit
           label="With confirm on enter enabled "
           shouldConfirmOnEnter
           readView="Click to edit and enter to confirm"

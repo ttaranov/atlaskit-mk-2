@@ -1,5 +1,13 @@
 # @atlaskit/mention
 
+## 9.1.1
+- [patch] fixed mention picker style typos [8bb40f0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8bb40f0)
+
+## 9.1.0
+- [minor] FS-1633 Change the way we use getUsersInContext [86b615c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86b615c)
+
+## 9.0.1
+
 ## 9.0.0
 - [patch] Added eslint-disable to example file [49491a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49491a9)
 - [major] Migrated mentions to new atlaskit-mk2 [dad3ccc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dad3ccc)

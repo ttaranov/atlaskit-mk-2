@@ -28,7 +28,7 @@ import { OLD_WEBSITE_URL } from '../../utils/constants';
 import Groups from './Groups';
 import GroupDrawer from './GroupDrawer';
 import SearchDrawer from './SearchDrawer';
-import { packages, docs, patterns } from '../../site';
+import { externalPackages as packages, docs, patterns } from '../../site';
 import type { Directory } from '../../types';
 
 import atlaskitLogo from '../../assets/atlaskit-logo-inverted.png';

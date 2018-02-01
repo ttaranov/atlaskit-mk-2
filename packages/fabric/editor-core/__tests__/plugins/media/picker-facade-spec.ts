@@ -360,6 +360,42 @@ describe('Media PickerFacade', () => {
         'ready',
       );
     });
+
+    it('should update the filename and append timestamp for clipboard picker', () => {
+      facade = new PickerFacade(
+        'clipboard',
+        uploadParams,
+        contextConfig,
+        stateManager!,
+        errorReporter,
+        mockPickerFactory,
+      );
+
+      const cb = jest.fn();
+      stateManager!.subscribe(testTemporaryFileId, cb);
+
+      const preview = { src: 'https://domain.com/path' };
+      const tmpImageFile = {
+        id: testFileId,
+        name: 'image.png',
+        size: Math.round(Math.random() * 1047552),
+        type: 'image/png',
+        creationDate: Date.UTC(0, 1),
+      };
+      mockPicker.__triggerEvent('upload-preview-update', {
+        file: tmpImageFile,
+        preview,
+      });
+
+      expect(cb).toHaveBeenLastCalledWith({
+        id: testTemporaryFileId,
+        status: 'uploading',
+        fileName: 'image-19000201-000000.png',
+        fileSize: tmpImageFile.size,
+        fileMimeType: tmpImageFile.type,
+        thumbnail: preview,
+      });
+    });
   });
 
   describe('Popup Picker', () => {

@@ -94,7 +94,11 @@ converters.variable = type => {
 };
 
 converters.templateExpression = ({ tag }) => {
-  return `${convert(tag.object)} ${convert(tag.property)}`;
+  return `${convert(tag)}`;
+};
+
+converters.call = ({ callee }) => {
+  return `${convert(callee)}`;
 };
 
 export default function convert(type: { kind: string }) {

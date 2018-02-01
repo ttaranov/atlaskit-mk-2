@@ -37,7 +37,7 @@ pipelines:
           - (node build/ci-scripts/should.run.js tsc) && yarn typecheck:typescript
           - yarn test:changed
           - (node build/ci-scripts/should.run.js browserstack) && yarn test:browser:browserstack
-          - (cd website && yarn deploy-staging:no-minimize) | tee output.txt
+          - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
           - node build/ci-scripts/update.build.status.with.netlify.link.js
         caches:
           - node
@@ -53,6 +53,14 @@ pipelines:
             - (cd website && yarn deploy)
           caches:
             - node
+
+    # This will run with the webdriver tests
+    build-webdriver:
+      - step:
+          script:
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - yarn test:webdriver:browserstack
 
     # This will run essentially the branch builds, but without any optimizations and should be manually
     # run in any potentially risky builds

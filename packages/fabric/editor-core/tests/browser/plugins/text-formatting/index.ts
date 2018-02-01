@@ -4,23 +4,26 @@ import {
   chaiPlugin,
   sendKeyToPm,
   doc,
-  plain,
   code,
   p,
-  makeEditor,
+  code_block,
+  createEditor,
 } from '@atlaskit/editor-test-helpers';
-import textFormattingPlugins, {
+import {
   TextFormattingState,
+  stateKey,
 } from '../../../../src/plugins/text-formatting';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
+import textFormatting from '../../../../src/editor/plugins/text-formatting';
+import codeBlockPlugin from '../../../../src/editor/plugins/code-block';
 
 chai.use(chaiPlugin);
 
 describe('text-formatting', () => {
   const editor = (doc: any) =>
-    makeEditor<TextFormattingState>({
+    createEditor<TextFormattingState>({
       doc,
-      plugins: textFormattingPlugins(defaultSchema),
+      pluginKey: stateKey,
+      editorPlugins: [textFormatting(), codeBlockPlugin],
     });
 
   describe('code', () => {
@@ -238,7 +241,7 @@ describe('text-formatting', () => {
     });
 
     it('exposes code as disabled when the mark cannot be applied', () => {
-      const { pluginState } = editor(doc(plain('te{<>}xt')));
+      const { pluginState } = editor(doc(code_block()('te{<>}xt')));
 
       expect(pluginState.codeDisabled).to.equal(true);
     });

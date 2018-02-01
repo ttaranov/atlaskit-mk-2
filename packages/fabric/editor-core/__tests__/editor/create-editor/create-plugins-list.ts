@@ -4,7 +4,7 @@ import {
   tablePlugin,
   mediaPlugin,
   helpDialogPlugin,
-  placeholderCursorPlugin,
+  fakeTextCursorPlugin,
   submitEditorPlugin,
 } from '../../../src/editor/plugins';
 import createPluginsList from '../../../src/editor/create-editor/create-plugins-list';
@@ -15,9 +15,9 @@ describe('createPluginsList', () => {
     expect(plugins).toContain(helpDialogPlugin);
   });
 
-  it('should add placeholderCursorPlugin if allowPlaceholderCursor is true', () => {
-    const plugins = createPluginsList({ allowPlaceholderCursor: true });
-    expect(plugins).toContain(placeholderCursorPlugin);
+  it('should add fakeTextCursorPlugin by default', () => {
+    const plugins = createPluginsList({});
+    expect(plugins).toContain(fakeTextCursorPlugin);
   });
 
   it('should add tablePlugin if allowTables is true', () => {

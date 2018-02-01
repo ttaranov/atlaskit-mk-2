@@ -59,11 +59,13 @@ export default class extends PureComponent<{}, State> {
             items={getItemsData}
             render={({ title, numbering, page, children }) => (
               <Row
-                key={numbering}
+                itemId={numbering}
                 hasChildren={children.length > 0}
-                onExpand={() => this.triggerEvent(`Node Expanded (${title})`)}
-                onCollapse={() =>
-                  this.triggerEvent(`Node Collapsed (${title})`)
+                onExpand={rowData =>
+                  this.triggerEvent(`Node Expanded (${rowData.title})`)
+                }
+                onCollapse={rowData =>
+                  this.triggerEvent(`Node Collapsed (${rowData.title})`)
                 }
               >
                 <Cell singleLine>{title}</Cell>

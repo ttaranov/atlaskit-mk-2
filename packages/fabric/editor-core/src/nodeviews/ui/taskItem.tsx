@@ -6,6 +6,7 @@ import { EditorView, NodeView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { AnalyticsDelegate, AnalyticsDelegateProps } from '@atlaskit/analytics';
 import TaskItem from '../../ui/Task';
+import ContentNodeView from '../contentNodeView';
 
 type getPosHandler = () => number;
 
@@ -15,9 +16,8 @@ export interface Props {
   node: PMNode;
 }
 
-class Task implements NodeView {
+class Task extends ContentNodeView implements NodeView {
   private domRef: HTMLElement | undefined;
-  private contentDOMRef: HTMLElement | undefined;
   private node: PMNode;
   private view: EditorView;
   private getPos: getPosHandler;
@@ -32,6 +32,7 @@ class Task implements NodeView {
     analyticsDelegateContext: AnalyticsDelegateProps,
     providerFactory: ProviderFactory,
   ) {
+    super(node, view);
     this.node = node;
     this.view = view;
     this.getPos = getPos;
@@ -40,10 +41,6 @@ class Task implements NodeView {
     this.providerFactory = providerFactory;
     this.renderReactComponent();
   }
-
-  private handleRef = (node: HTMLElement | undefined) => {
-    this.contentDOMRef = node;
-  };
 
   private handleOnChange = (taskId: string, isChecked: boolean) => {
     const { view } = this;
@@ -93,10 +90,6 @@ class Task implements NodeView {
     return this.domRef;
   }
 
-  get contentDOM() {
-    return this.contentDOMRef;
-  }
-
   update(node: PMNode) {
     /**
      * Returning false here when the previous content was empty – fixes an error where the editor fails to set selection
@@ -108,7 +101,7 @@ class Task implements NodeView {
   destroy() {
     ReactDOM.unmountComponentAtNode(this.domRef!);
     this.domRef = undefined;
-    this.contentDOMRef = undefined;
+    super.destroy();
   }
 }
 

@@ -21,7 +21,7 @@ export default () => (
     <Rows
       items={getItemsData}
       render={({ id, title, numbering, children }) => (
-        <Row key={id} hasChildren={children.length > 0}>
+        <Row itemId={id} hasChildren={children.length > 0}>
           <Cell>{title}</Cell>
           <Cell>{numbering}</Cell>
         </Row>

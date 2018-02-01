@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-dialog",
-  "version": "5.1.1",
+  "version": "5.1.2",
   "description": "An inline dialog React component for secondary content and controls that are displayed on user request",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -28,7 +28,7 @@
     "@atlaskit/button": "^6.3.1",
     "@atlaskit/docs": "^2.4.0",
     "@atlaskit/icon": "^10.7.1",
-    "@atlaskit/single-select": "^3.2.0",
+    "@atlaskit/single-select": "^3.2.1",
     "enzyme": "^3.3.0"
   },
   "keywords": [

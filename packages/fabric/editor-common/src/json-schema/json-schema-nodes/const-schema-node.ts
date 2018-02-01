@@ -1,11 +1,8 @@
 import SchemaNode from './schema-node';
 
 export default class ConstSchemaNode extends SchemaNode {
-  value: any;
-
-  constructor(value: any) {
+  constructor(protected value: any) {
     super();
-    this.value = value;
   }
 
   toJSON(): object {

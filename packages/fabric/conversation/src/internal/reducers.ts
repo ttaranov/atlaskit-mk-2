@@ -1,46 +1,157 @@
 import {
-  FETCH_CONVERSATIONS,
+  FETCH_CONVERSATIONS_REQUEST,
   FETCH_CONVERSATIONS_SUCCESS,
-  ADD_COMMENT,
+  ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
-  UPDATE_COMMENT,
+  UPDATE_COMMENT_REQUEST,
   UPDATE_COMMENT_SUCCESS,
-  DELETE_COMMENT,
+  DELETE_COMMENT_REQUEST,
   DELETE_COMMENT_SUCCESS,
-  UPDATE_USER,
+  UPDATE_USER_SUCCESS,
+  CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
 } from './actions';
 import { Action, State } from './store';
-import { User, Conversation } from '../model';
+import { User, Conversation, Comment } from '../model';
+
+const updateComment = (
+  comments: Comment[] | undefined,
+  newComment: Comment,
+) => {
+  return (comments || []).map(comment => {
+    if (
+      comment.localId === newComment.localId ||
+      comment.commentId === newComment.commentId
+    ) {
+      return {
+        ...comment,
+        ...newComment,
+      };
+    }
+    return comment;
+  });
+};
+
+const deleteComment = (comments: Comment[] | undefined, commentId: string) => {
+  return (comments || []).map(comment => {
+    if (comment.commentId === commentId) {
+      return {
+        ...comment,
+        deleted: true,
+      };
+    }
+    return comment;
+  });
+};
+
+const updateConversation = (
+  conversations: Conversation[],
+  newConversation: Conversation,
+) => {
+  return conversations.map(conversation => {
+    if (conversation.localId === newConversation.localId) {
+      return newConversation;
+    }
+    return conversation;
+  });
+};
+
+const updateCommentInConversation = (
+  conversations: Conversation[],
+  newComment: Comment,
+) => {
+  return conversations.map(conversation => {
+    if (conversation.conversationId === newComment.conversationId) {
+      const comments = updateComment(conversation.comments, newComment);
+      return {
+        ...conversation,
+        comments,
+      };
+    }
+    return conversation;
+  });
+};
+
+const addCommentToConversation = (
+  conversations: Conversation[],
+  newComment: Comment,
+) => {
+  return conversations.map(conversation => {
+    if (conversation.conversationId === newComment.conversationId) {
+      const { comments = [] } = conversation;
+      return {
+        ...conversation,
+        comments: [...comments, newComment],
+      };
+    }
+    return conversation;
+  });
+};
+
+const deleteCommentInConversation = (
+  conversations: Conversation[],
+  deletedComment: Comment,
+) => {
+  return conversations.map(conversation => {
+    if (conversation.conversationId === deletedComment.conversationId) {
+      const comments = deleteComment(
+        conversation.comments,
+        deletedComment.commentId,
+      );
+      return {
+        ...conversation,
+        comments,
+      };
+    }
+    return conversation;
+  });
+};
 
 export const reducers = {
-  [FETCH_CONVERSATIONS](state: State, action: Action) {
+  [FETCH_CONVERSATIONS_REQUEST](state: State, action: Action) {
     return {
       ...state,
     };
   },
 
   [FETCH_CONVERSATIONS_SUCCESS](state: State, action: Action) {
+    const conversations: Conversation[] = [
+      ...state.conversations,
+      ...action.payload,
+    ];
+
     return {
       ...state,
-      conversations: <Conversation[]>action.payload,
+      conversations,
     };
   },
 
-  [ADD_COMMENT](state: State, action: Action) {
+  [ADD_COMMENT_REQUEST](state: State, action: Action) {
+    const { payload } = action;
+    const conversations = addCommentToConversation(state.conversations, {
+      ...payload,
+      state: 'SAVING',
+    });
+
     return {
       ...state,
+      conversations,
     };
   },
 
   [ADD_COMMENT_SUCCESS](state: State, action: Action) {
-    const { conversations } = state;
-    const conversation = conversations.filter(
-      c => c.conversationId === action.payload.conversationId,
-    )[0];
+    const { payload } = action;
 
-    const { comments = [] } = conversation;
-    conversation.comments = [...comments, action.payload];
+    let conversations: Conversation[];
+
+    if (payload.localId) {
+      conversations = updateCommentInConversation(state.conversations, {
+        ...payload,
+        state: undefined,
+      });
+    } else {
+      conversations = addCommentToConversation(state.conversations, payload);
+    }
 
     return {
       ...state,
@@ -48,24 +159,27 @@ export const reducers = {
     };
   },
 
-  [UPDATE_COMMENT](state: State, action: Action) {
+  [UPDATE_COMMENT_REQUEST](state: State, action: Action) {
+    const { payload } = action;
+
+    const conversations = updateCommentInConversation(state.conversations, {
+      ...payload,
+      state: 'SAVING',
+    });
+
     return {
       ...state,
+      conversations,
     };
   },
 
   [UPDATE_COMMENT_SUCCESS](state: State, action: Action) {
-    const { conversations } = state;
-    const [conversation] = conversations.filter(
-      c => c.conversationId === action.payload.conversationId,
-    );
+    const { payload } = action;
 
-    const { comments = [] } = conversation;
-    const [comment] = comments.filter(
-      c => c.commentId === action.payload.commentId,
-    );
-
-    comment.document = action.payload.document;
+    const conversations = updateCommentInConversation(state.conversations, {
+      ...payload,
+      state: undefined,
+    });
 
     return {
       ...state,
@@ -73,24 +187,18 @@ export const reducers = {
     };
   },
 
-  [DELETE_COMMENT](state: State, action: Action) {
+  [DELETE_COMMENT_REQUEST](state: State, action: Action) {
     return {
       ...state,
     };
   },
 
   [DELETE_COMMENT_SUCCESS](state: State, action: Action) {
-    const { conversations } = state;
-    const [conversation] = conversations.filter(
-      c => c.conversationId === action.payload.conversationId,
+    const { payload } = action;
+    const conversations = deleteCommentInConversation(
+      state.conversations,
+      payload,
     );
-
-    const { comments = [] } = conversation;
-    const [comment] = comments.filter(
-      c => c.commentId === action.payload.commentId,
-    );
-
-    comment.deleted = action.payload.deleted;
 
     return {
       ...state,
@@ -98,16 +206,38 @@ export const reducers = {
     };
   },
 
-  [UPDATE_USER](state: State, action: Action) {
+  [UPDATE_USER_SUCCESS](state: State, action: Action) {
     return {
       ...state,
       user: <User>action.payload.user,
     };
   },
 
+  [CREATE_CONVERSATION_REQUEST](state: State, action: Action) {
+    const { payload } = action;
+    const [comment] = payload.comments!;
+    const conversations = [
+      ...state.conversations,
+      {
+        ...payload,
+        comments: [
+          {
+            ...comment,
+            state: 'SAVING',
+          },
+        ],
+      },
+    ];
+
+    return {
+      ...state,
+      conversations,
+    };
+  },
+
   [CREATE_CONVERSATION_SUCCESS](state: State, action: Action) {
-    const { conversations } = state;
-    conversations.push(<Conversation>action.payload);
+    const { payload } = action;
+    const conversations = updateConversation(state.conversations, payload);
 
     return {
       ...state,

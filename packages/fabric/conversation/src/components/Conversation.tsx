@@ -60,10 +60,19 @@ export default class Conversation extends React.PureComponent<Props> {
   }
 
   private renderEditor() {
-    const { isExpanded, onCancel, meta, dataProviders, user } = this.props;
-    const canReply = !!user;
+    const {
+      isExpanded,
+      onCancel,
+      meta,
+      dataProviders,
+      user,
+      conversation,
+    } = this.props;
+    const isInline = !!meta;
+    const hasConversation = !!conversation;
+    const canReply = !!user && (!isInline || (isExpanded && !hasConversation));
 
-    if (canReply && (isExpanded || !meta)) {
+    if (canReply) {
       return (
         <Editor
           isExpanded={isExpanded}

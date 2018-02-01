@@ -1,5 +1,12 @@
 # @atlaskit/modal-dialog
 
+## 3.3.8
+- [patch] Prevent window from being scrolled programmatically [3e3085c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3e3085c)
+
+## 3.3.7
+
+## 3.3.6
+
 ## 3.3.5
 
 - [patch] Migrate Navigation from Ak repo to ak mk 2 repo, Fixed flow typing inconsistencies in ak mk 2 [bdeef5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdeef5b)

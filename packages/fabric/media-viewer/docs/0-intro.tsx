@@ -9,7 +9,7 @@ export default md`
   yarn add @atlaskit/media-viewer
   ~~~
 
-  ## Using the component
+  ## Using a collection as data source
 
   ~~~js
   import { MediaViewer } from '../src';
@@ -26,7 +26,7 @@ export default md`
     type: 'file',
   };
 
-  // you want to use here the same pagination you use for the CardList component
+  // if you use the CardList component, use the same pagination here
   const pageSize=30;
 
   const dataSource = {
@@ -47,4 +47,57 @@ export default md`
   );
   ~~~
 
+  ## Using a list of media items as data source
+
+  ~~~js
+  import { MediaViewer } from '../src';
+  import {
+    createStorybookContext,
+    defaultCollectionName,
+  } from '@atlaskit/media-test-helpers';
+  import MediaViewerConstructor from '@atlassian/mediaviewer/lib/mediaviewer.all';
+
+  const context = createStorybookContext();
+
+  const items = [
+    {
+      id: 'some-valid-id-1',
+      occurrenceKey: 'key1',
+      type: 'file',
+    },
+    {
+      id: 'some-valid-id-2',
+      occurrenceKey: 'item-1',
+      type: 'file',
+    },
+    {
+      id: 'some-valid-id-2',
+      occurrenceKey: 'item-2',
+      type: 'file',
+    }
+  ];
+
+  const selectedItem = items[1];
+
+  const dataSource = {
+    list: items
+  };
+  const basePath = 'dist/lib/';
+
+  export default () => (
+    <MediaViewer
+      context={context}
+      selectedItem={selectedItem}
+      dataSource={dataSource}
+      collectionName={defaultCollectionName}
+      MediaViewer={MediaViewerConstructor}
+      basePath={basePath}
+    />
+  );
+  ~~~
+
+  ## About the collectionName parameter
+
+  The collection name can be provided as top level prop \`\`collectionName\`\` for authentcation purposes
+  (for collection scoped permissions) and / or as a \`\`dataSource\`\` for collection scoped navigation.
 `;

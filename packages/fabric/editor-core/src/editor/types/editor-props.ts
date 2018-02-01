@@ -19,6 +19,7 @@ import { TextFormattingOptions } from '../plugins/text-formatting';
 import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../plugins/macro/types';
 import { MediaOptions } from '../plugins/media';
+import { PluginConfig as TablesPluginConfig } from '../../plugins/table';
 
 export type EditorAppearance =
   | 'message'
@@ -42,6 +43,7 @@ export interface EditorProps {
   secondaryToolbarComponents?: ReactElement;
   addonToolbarComponents?: ReactElement;
 
+  allowBlockType?: { exclude?: Array<string> };
   allowTextFormatting?: boolean | TextFormattingOptions;
   allowMentions?: boolean;
   allowTasksAndDecisions?: boolean;
@@ -50,7 +52,7 @@ export interface EditorProps {
   allowCodeBlocks?: boolean;
   allowLists?: boolean;
   allowTextColor?: boolean;
-  allowTables?: boolean;
+  allowTables?: boolean | TablesPluginConfig;
   allowHelpDialog?: boolean;
   allowJiraIssue?: boolean;
   allowUnsupportedContent?: boolean;
@@ -89,6 +91,7 @@ export interface EditorProps {
 
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
 
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;

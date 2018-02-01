@@ -20,7 +20,7 @@ export default () => (
     <Rows
       items={getItemsData}
       render={({ title, numbering, page, children }) => (
-        <Row key={numbering} hasChildren={children.length > 0}>
+        <Row itemId={numbering} hasChildren={children.length > 0}>
           <Cell width={300} singleLine>
             {title}
           </Cell>

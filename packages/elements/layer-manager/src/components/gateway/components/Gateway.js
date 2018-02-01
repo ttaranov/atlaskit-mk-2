@@ -6,6 +6,7 @@ import GatewayRegistry from './GatewayRegistry';
 type Props = {
   into: string,
   children?: Node,
+  shouldBlockRender?: boolean,
 };
 type Context = {
   gatewayRegistry: GatewayRegistry,
@@ -31,8 +32,10 @@ export default class Gateway extends Component<Props> {
   }
 
   componentWillReceiveProps(props: Props) {
-    this.gatewayRegistry.clearChild(this.props.into, this.id);
-    this.renderIntoGatewayNode(props);
+    if (!props.shouldBlockRender) {
+      this.gatewayRegistry.clearChild(this.props.into, this.id);
+      this.renderIntoGatewayNode(props);
+    }
   }
 
   componentWillUnmount() {

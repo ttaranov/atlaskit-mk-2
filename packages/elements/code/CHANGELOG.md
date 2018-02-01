@@ -1,5 +1,11 @@
 # @atlaskit/code
 
+## 3.0.4
+- [patch] Minor manual bump for packages desync'd from npm [e988c58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e988c58)
+
+## 3.0.3
+- Manual bump to resolve desync with npm package version.
+
 ## 3.0.2
 - [patch] Enabling syntax highlighter language auto-detect [4831bd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4831bd2)
 

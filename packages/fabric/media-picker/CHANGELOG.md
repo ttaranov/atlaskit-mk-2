@@ -1,5 +1,10 @@
 # @atlaskit/media-picker
 
+## 1.0.2
+- [patch] update link account handling redirect url from custom s3 location to media picker api [bd3e22f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd3e22f)
+
+## 1.0.1
+
 ## 1.0.0
 
 

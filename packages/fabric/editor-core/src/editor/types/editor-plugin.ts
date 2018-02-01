@@ -27,6 +27,7 @@ export type UiComponentFactoryParams = {
   appearance: EditorAppearance;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
   disabled: boolean;
 };
 
@@ -52,12 +53,12 @@ export interface EditorPlugin {
   /*
    * List of Nodes to add to the schema. Needs to specify a rank for each node according to spec in Document Structure.
    */
-  nodes?: () => NodeConfig[];
+  nodes?: (editorProps: EditorProps) => NodeConfig[];
 
   /*
    * List of Marks to add to the schema. Needs to specify a rank for each mark according to spec in Document Structure.
    */
-  marks?: () => MarkConfig[];
+  marks?: (editorProps: EditorProps) => MarkConfig[];
 
   /*
    * Optional UI-component that lives inside the actual content-area (like mention-picker, floating toolbar for links, etc.)

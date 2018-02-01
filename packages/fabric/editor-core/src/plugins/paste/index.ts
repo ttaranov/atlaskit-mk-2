@@ -49,7 +49,7 @@ export function createPlugin(
           return true;
         }
 
-        const { $from } = view.state.selection;
+        const { $to, $from } = view.state.selection;
 
         // In case of SHIFT+CMD+V ("Paste and Match Style") we don't want to run the usual
         // fuzzy matching of content. ProseMirror already handles this scenario and will
@@ -100,11 +100,18 @@ export function createPlugin(
           (text && html && node && node.type === schema.nodes.codeBlock)
         ) {
           analyticsService.trackEvent('atlassian.editor.paste.code');
-          let tr;
+          let tr = view.state.tr;
           if (isSingleLine(text)) {
-            tr = view.state.tr.insertText(text);
+            const currentNode = $to.node($to.depth);
+            const nodeText = currentNode && currentNode.textContent;
+            let from = $from.pos;
+            if (nodeText && nodeText[nodeText.length - 1] === '`') {
+              tr = tr.delete($to.pos - 1, $to.pos);
+              from -= 1;
+            }
+            tr = tr.insertText(text);
             tr = tr.addMark(
-              $from.pos,
+              from,
               $from.pos + text.length,
               schema.marks.code.create(),
             );

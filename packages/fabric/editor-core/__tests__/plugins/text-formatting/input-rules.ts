@@ -6,27 +6,35 @@ import {
   strong,
   insertText,
   doc,
-  makeEditor,
+  createEditor,
   a as link,
   p,
   code_block,
-  plain,
 } from '@atlaskit/editor-test-helpers';
 
-import textFormattingPlugins from '../../../src/plugins/text-formatting';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { analyticsService } from '../../../src/analytics';
+import textFormatting from '../../../src/editor/plugins/text-formatting';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
+import mentionsPlugin from '../../../src/editor/plugins/mentions';
 
 describe('text-formatting input rules', () => {
-  const editor = (doc: any, schema: any = defaultSchema) =>
-    makeEditor({
-      doc,
-      plugins: textFormattingPlugins(schema),
-    });
   let trackEvent;
+  const editor = (doc: any, disableCode = false) =>
+    createEditor({
+      doc,
+      editorPlugins: [
+        textFormatting({ disableCode }),
+        codeBlockPlugin,
+        hyperlinkPlugin,
+        mentionsPlugin,
+      ],
+      editorProps: {
+        analyticsHandler: trackEvent,
+      },
+    });
+
   beforeEach(() => {
     trackEvent = jest.fn();
-    analyticsService.trackEvent = trackEvent;
   });
 
   describe('strong rule', () => {
@@ -191,11 +199,13 @@ describe('text-formatting input rules', () => {
     });
 
     it('should not convert "**text** to strong when node does not support text formatting', () => {
-      const { editorView, sel } = editor(doc(plain('{<>}')));
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
 
       insertText(editorView, '**text**', sel);
 
-      expect(editorView.state.doc).toEqualDocument(doc(plain('**text**')));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(code_block()('**text**')),
+      );
       expect(trackEvent).not.toHaveBeenCalledWith(
         'atlassian.editor.format.strong.autoformatting',
       );
@@ -333,11 +343,11 @@ describe('text-formatting input rules', () => {
     });
 
     it('should not convert "_text_ to em when node does not support text formatting', () => {
-      const { editorView, sel } = editor(doc(plain('{<>}')));
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
 
       insertText(editorView, '_text_', sel);
 
-      expect(editorView.state.doc).toEqualDocument(doc(plain('_text_')));
+      expect(editorView.state.doc).toEqualDocument(doc(code_block()('_text_')));
       expect(trackEvent).not.toHaveBeenCalledWith(
         'atlassian.editor.format.strong.autoformatting',
       );
@@ -416,11 +426,13 @@ describe('text-formatting input rules', () => {
     });
 
     it('should not convert "~~text~~ to strike when node does not support text formatting', () => {
-      const { editorView, sel } = editor(doc(plain('{<>}')));
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
 
       insertText(editorView, '~~text~~', sel);
 
-      expect(editorView.state.doc).toEqualDocument(doc(plain('~~text~~')));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(code_block()('~~text~~')),
+      );
       expect(trackEvent).not.toHaveBeenCalledWith(
         'atlassian.editor.format.strong.autoformatting',
       );
@@ -466,7 +478,7 @@ describe('text-formatting input rules', () => {
     });
 
     it('should convert mention to plaint text', () => {
-      const mentionNode = mention({ id: '1234', text: '@helga' });
+      const mentionNode = mention({ id: '1234', text: '@helga' })();
       const { editorView, sel } = editor(
         doc(p('hey! `hello, ', mentionNode, ' there{<>}?')),
       );
@@ -478,7 +490,7 @@ describe('text-formatting input rules', () => {
     });
 
     it('should cleanup other formatting', () => {
-      const mentionNode = mention({ id: '1234', text: '@helga' });
+      const mentionNode = mention({ id: '1234', text: '@helga' })();
       const { editorView, sel } = editor(
         doc(
           p('`', strong('hello '), mentionNode, em(', '), strike('there?{<>}')),
@@ -517,11 +529,11 @@ describe('text-formatting input rules', () => {
     });
 
     it('should not convert "`text`" to code when node does not support text formatting', () => {
-      const { editorView, sel } = editor(doc(plain('{<>}')));
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
 
       insertText(editorView, '`text`', sel);
 
-      expect(editorView.state.doc).toEqualDocument(doc(plain('`text`')));
+      expect(editorView.state.doc).toEqualDocument(doc(code_block()('`text`')));
       expect(trackEvent).not.toHaveBeenCalledWith(
         'atlassian.editor.format.strong.autoformatting',
       );
@@ -530,14 +542,7 @@ describe('text-formatting input rules', () => {
 
   describe('nested rules', () => {
     it('should work without code-mark in the schema', () => {
-      const simpleSchema = {
-        ...defaultSchema,
-        marks: {
-          strong: defaultSchema.marks.strong,
-        },
-      };
-
-      const { editorView, sel } = editor(doc(p('{<>}')), simpleSchema);
+      const { editorView, sel } = editor(doc(p('{<>}')), true);
 
       insertText(editorView, '**text**', sel);
 

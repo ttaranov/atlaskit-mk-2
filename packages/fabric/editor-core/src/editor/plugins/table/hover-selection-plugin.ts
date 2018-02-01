@@ -3,24 +3,27 @@ import { DecorationSet } from 'prosemirror-view';
 
 export const pluginKey = new PluginKey('tableHoverSelectionPlugin');
 
+export type State = {
+  decorationSet: DecorationSet;
+  isTableHovered: boolean;
+};
+
 const plugin = new Plugin({
   state: {
-    init: () => DecorationSet.empty,
+    init: () => ({ decorationSet: DecorationSet.empty, isTableHovered: false }),
 
-    apply(tr, set): DecorationSet {
-      set = set.map(tr.mapping, tr.doc);
-
+    apply(tr, state: State): State {
       const meta = tr.getMeta(pluginKey);
-      if (meta && meta.set) {
-        return meta.set;
+      if (meta) {
+        return { ...state, ...meta };
       }
 
-      return set;
+      return state;
     },
   },
   key: pluginKey,
   props: {
-    decorations: state => pluginKey.getState(state),
+    decorations: state => pluginKey.getState(state).decorationSet,
   },
 });
 

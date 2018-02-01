@@ -47,13 +47,61 @@ export interface State {
 
 export const DeletedMessage = () => <em>Comment deleted by the author</em>;
 
-export default class Comment extends React.PureComponent<Props, State> {
+const commentChanged = (oldComment: CommentType, newComment: CommentType) => {
+  if (oldComment.state !== newComment.state) {
+    return true;
+  }
+
+  if (oldComment.deleted !== newComment.deleted) {
+    return true;
+  }
+
+  return false;
+};
+
+export default class Comment extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
     this.state = {
       isEditing: false,
     };
+  }
+
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    const { isEditing, isReplying } = this.state;
+
+    if (
+      nextState.isEditing !== isEditing ||
+      nextState.isReplying !== isReplying
+    ) {
+      return true;
+    }
+
+    if (commentChanged(this.props.comment, nextProps.comment)) {
+      return true;
+    }
+
+    const { comments: oldComments = [] } = this.props;
+    const { comments: newComments = [] } = nextProps;
+
+    if (oldComments.length !== newComments.length) {
+      return true;
+    }
+
+    if (
+      newComments.some(comment => {
+        const [oldComment] = oldComments.filter(
+          c =>
+            c.commentId === comment.commentId || c.localId === comment.localId,
+        );
+        return commentChanged(oldComment, comment);
+      })
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
   private onReply = () => {
@@ -209,7 +257,7 @@ export default class Comment extends React.PureComponent<Props, State> {
   render() {
     const { comment, user, onUserClick } = this.props;
     const { isEditing } = this.state;
-    const { createdBy } = comment;
+    const { createdBy, state: commentState } = comment;
     const canReply = !!user && !isEditing && !comment.deleted;
     let actions;
 
@@ -262,6 +310,7 @@ export default class Comment extends React.PureComponent<Props, State> {
         }
         actions={actions}
         content={this.getContent()}
+        isSaving={commentState === 'SAVING'}
       >
         {editor || comments ? (
           <div>
