@@ -37,6 +37,7 @@
     "@atlaskit/modal-dialog": "^3.3.7",
     "@atlaskit/multi-select": "^8.0.4",
     "@atlaskit/single-select": "^3.2.1",
+    "@atlaskit/field-text": "^4.1.6",
     "@atlaskit/tag": "^3.1.1",
     "@atlaskit/tag-group": "^3.5.1",
     "enzyme": "^3.3.0"
