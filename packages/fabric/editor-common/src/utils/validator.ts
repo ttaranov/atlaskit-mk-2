@@ -164,12 +164,13 @@ export const getValidUnknownNode = (node: ADNode): ADNode => {
       text: text || attrs.text || `[${type}]`,
     };
 
-    if (attrs.textUrl) {
+    const { textUrl } = attrs;
+    if (textUrl && isSafeUrl(textUrl)) {
       unknownInlineNode.marks = [
         {
           type: 'link',
           attrs: {
-            href: attrs.textUrl,
+            href: textUrl,
           },
         } as ADMark,
       ];
