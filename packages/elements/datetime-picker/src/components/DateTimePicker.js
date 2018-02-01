@@ -11,25 +11,25 @@ import { parseDate, parseTime } from '../util';
 const noop = () => {};
 
 const defaultTimes = [
-  '9:00am',
-  '9:30am',
-  '10:00am',
-  '10:30am',
-  '11:00am',
-  '11:30am',
-  '12:00pm',
-  '12:30pm',
-  '1:00pm',
-  '1:30pm',
-  '2:00pm',
-  '2:30pm',
-  '3:00pm',
-  '3:30pm',
-  '4:00pm',
-  '4:30pm',
-  '5:00pm',
-  '5:30pm',
-  '6:00pm',
+  '09:00',
+  '09:30',
+  '10:00',
+  '10:30',
+  '11:00',
+  '11:30',
+  '12:00',
+  '12:30',
+  '13:00',
+  '13:30',
+  '14:00',
+  '14:30',
+  '15:00',
+  '15:30',
+  '16:00',
+  '16:30',
+  '17:00',
+  '17:30',
+  '18:00',
 ];
 
 type Value = any; // TODO: Replace with [?string, ?string] when TupleTypeAnnotation is supported by extract-react-types.
@@ -51,7 +51,7 @@ type State = {
   displayValue: [string, string],
   isOpen: boolean,
   focused: ?string,
-  visibleTimes: Array<string>,
+  times: Array<string>,
 };
 
 export default class DateTimePicker extends Component<Props, State> {
@@ -85,7 +85,7 @@ export default class DateTimePicker extends Component<Props, State> {
         : ['', ''],
       isOpen: false,
       focused: null,
-      visibleTimes: this.props.times,
+      times: this.props.times,
     };
   }
 
@@ -230,7 +230,7 @@ export default class DateTimePicker extends Component<Props, State> {
       this.setState(prevState => ({
         displayValue: [prevState.displayValue[0], value],
       }));
-      this.updateVisibleTimes(value, this.props.times);
+      this.updateTimes(value, this.props.times);
     }
   };
 
@@ -275,49 +275,45 @@ export default class DateTimePicker extends Component<Props, State> {
         displayValue: [prevState.displayValue[0], ''],
         isOpen: false,
       }));
-      this.updateVisibleTimes('', this.props.times);
+      this.updateTimes('', this.props.times);
     }
   }
 
-  updateVisibleTimes = (value: ?string, times: Array<string>) => {
+  updateTimes = (value: ?string, times: Array<string>) => {
     const timeShouldBeVisible = (time: string) =>
       value ? time.startsWith(value) : true;
-    const visibleTimes = value ? times.filter(timeShouldBeVisible) : times;
-    this.setState({ visibleTimes });
+    const filteredTimes = value ? times.filter(timeShouldBeVisible) : times;
+    this.setState({ times: filteredTimes });
 
     if (!this.state.focused || !timeShouldBeVisible(this.state.focused)) {
       this.setState({
-        focused: visibleTimes.length > 0 ? visibleTimes[0] : null,
+        focused: filteredTimes.length > 0 ? filteredTimes[0] : null,
       });
     }
   };
 
   openDialog() {
-    const visibleTimes = this.state.visibleTimes;
+    const times = this.state.times;
     this.setState({
-      focused: visibleTimes.length ? visibleTimes[0] : null,
+      focused: times.length ? times[0] : null,
       isOpen: true,
     });
   }
 
   selectNextItem() {
-    const visibleTimes = this.state.visibleTimes;
-    const current = this.state.focused
-      ? visibleTimes.indexOf(this.state.focused)
-      : -1;
+    const times = this.state.times;
+    const current = this.state.focused ? times.indexOf(this.state.focused) : -1;
     let next = current + 1;
-    next = next > visibleTimes.length - 1 ? 0 : next;
-    this.setState({ focused: visibleTimes[next] });
+    next = next > times.length - 1 ? 0 : next;
+    this.setState({ focused: times[next] });
   }
 
   selectPreviousItem() {
-    const visibleTimes = this.state.visibleTimes;
-    const current = this.state.focused
-      ? visibleTimes.indexOf(this.state.focused)
-      : -1;
+    const times = this.state.times;
+    const current = this.state.focused ? times.indexOf(this.state.focused) : -1;
     let previous = current - 1;
-    previous = previous < 0 ? visibleTimes.length - 1 : previous;
-    this.setState({ focused: visibleTimes[previous] });
+    previous = previous < 0 ? times.length - 1 : previous;
+    this.setState({ focused: times[previous] });
   }
 
   selectTimeField() {
@@ -338,7 +334,7 @@ export default class DateTimePicker extends Component<Props, State> {
         value={this.getState().value}
         dialogProps={[
           { dialog: this.props.disabled },
-          { times: this.state.visibleTimes, value: this.state.focused },
+          { times: this.state.times, value: this.state.focused },
         ]}
         width={this.props.width}
         onIconClick={this.handleIconClick}
