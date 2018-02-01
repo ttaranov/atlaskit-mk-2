@@ -17,14 +17,13 @@ BrowserTestCase(
   async client => {
     const sample = await new Page(client);
     await sample.goto(messageEditor);
-    const title = await sample.getTitle();
+    const title = await sample.title();
     // eslint-disable-next-line
     expect(title).toBe('Atlaskit by Atlassian');
 
     const markdown = '[link](https://hello.com)';
     const input = 'link';
-    await sample.setValue(editable, 'text');
-    await sample.addValue(editable, [markdown, enter]);
+    await sample.type(editable, [markdown, enter]);
     // eslint-disable-next-line
     expect(await sample.getText('a')).toContain(input);
   },
@@ -37,12 +36,12 @@ BrowserTestCase(
     const sample = await new Page(client);
     await sample.goto(messageEditor);
     //if bold
-    await sample.setValue(editable, ['__bold__', enter]);
+    await sample.type(editable, ['__bold__', enter]);
     // eslint-disable-next-line
     expect(await sample.getText('strong')).toContain('bold');
 
     //if bold
-    await sample.setValue(editable, ['**starbold**', enter]);
+    await sample.type(editable, ['**starbold**', enter]);
     // eslint-disable-next-line
     expect(await sample.getText('strong')).toContain('starbold');
   },
@@ -55,12 +54,12 @@ BrowserTestCase(
     const sample = await new Page(client);
     await sample.goto(messageEditor);
     //if bold
-    await sample.setValue(editable, ['_italics_', enter]);
+    await sample.type(editable, ['_italics_', enter]);
     // eslint-disable-next-line
     expect(await sample.getText('em')).toContain('italics');
 
     //if bold
-    await sample.setValue(editable, ['*italicsstar*', enter]);
+    await sample.type(editable, ['*italicsstar*', enter]);
     // eslint-disable-next-line
     expect(await sample.getText('em')).toContain('italicsstar');
   },
@@ -73,7 +72,7 @@ BrowserTestCase(
     const sample = await new Page(client);
     await sample.goto(messageEditor);
     //inline code
-    await sample.setValue(editable, ['`this`', space]);
+    await sample.type(editable, ['`this`', space]);
     // eslint-disable-next-line
     expect(await sample.getText('[class="code"]')).toBe('this');
   },
