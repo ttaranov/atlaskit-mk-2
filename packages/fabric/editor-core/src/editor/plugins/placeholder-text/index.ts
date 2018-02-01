@@ -1,7 +1,8 @@
-import { Plugin, NodeSelection, TextSelection } from 'prosemirror-state';
+import { Plugin, NodeSelection } from 'prosemirror-state';
 import { PluginKey } from 'prosemirror-state';
 import { placeholder } from '@atlaskit/editor-common';
-import { EditorPlugin } from '../../types';
+import PlaceholderTextNodeView from '../../../nodeviews/ui/placeholder-text';
+import { EditorPlugin } from '../../types/editor-plugin';
 
 export const pluginKey = new PluginKey('placeholderTextPlugin');
 
@@ -13,18 +14,9 @@ export function createPlugin(): Plugin | undefined {
       apply: (tr, state) => state,
     },
     props: {
-      handleClick(view, pos, event) {
-        const maybeNode = view.state.doc.nodeAt(pos);
-        const { schema } = view.state;
-        if (maybeNode && maybeNode.type === schema.nodes.placeholder) {
-          const maybeSelection = TextSelection.create(view.state.tr.doc, pos);
-          if (maybeSelection) {
-            document.getSelection().empty();
-            view.dispatch(view.state.tr.setSelection(maybeSelection));
-          }
-          return true;
-        }
-        return false;
+      nodeViews: {
+        placeholder: (node, view, getPos) =>
+          new PlaceholderTextNodeView(node, view, getPos),
       },
     },
     appendTransaction(transactions, oldState, newState) {
@@ -32,13 +24,16 @@ export function createPlugin(): Plugin | undefined {
         const didPlaceholderExistBeforeTxn =
           oldState.selection.$head.nodeAfter ===
           newState.selection.$head.nodeAfter;
+        const wasContentAdded =
+          oldState.selection.$head.pos <= newState.selection.$head.pos;
         const adjacentNode = newState.selection.$head.nodeAfter;
         const adjacentNodePos = newState.selection.$head.pos;
         const placeholderNodeType = newState.schema.nodes.placeholder;
         if (
           adjacentNode &&
           adjacentNode.type === placeholderNodeType &&
-          didPlaceholderExistBeforeTxn
+          didPlaceholderExistBeforeTxn &&
+          wasContentAdded
         ) {
           const { $from, $to } = NodeSelection.create(
             newState.doc,

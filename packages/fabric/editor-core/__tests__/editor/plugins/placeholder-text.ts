@@ -1,11 +1,8 @@
 import { name } from '../../../package.json';
-import {
-  createPlugin as createPlaceholderTextPlugin,
-  default as placeholderTextPlugin,
-} from '../../../src/editor/plugins/placeholder-text';
+import placeholderTextPlugin from '../../../src/editor/plugins/placeholder-text';
 import { insertPlaceholderText } from '../../../src/editor/plugins/placeholder-text/actions';
 import {
-  makeEditor,
+  createEditor,
   doc,
   p,
   placeholder,
@@ -14,17 +11,16 @@ import {
 import { Selection } from 'prosemirror-state';
 
 const editor = (doc: any) =>
-  makeEditor({
+  createEditor({
     doc,
-    plugin: createPlaceholderTextPlugin(),
+    editorPlugins: [placeholderTextPlugin],
   });
 
 describe(name, () => {
   describe('Plugins -> PlaceholderText', () => {
     it('should provide the placeholderText node', () => {
-      expect(placeholderTextPlugin.nodes!()).toEqual([
-        expect.objectContaining({ name: 'placeholder' }),
-      ]);
+      const nodes = placeholderTextPlugin.nodes!({});
+      expect(nodes).toEqual([expect.objectContaining({ name: 'placeholder' })]);
     });
 
     it('should not remove a placeholder when cursor is not directly before it', () => {
