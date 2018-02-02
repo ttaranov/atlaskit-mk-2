@@ -1,5 +1,7 @@
 # @atlaskit/inline-edit
 
+## 4.5.14
+
 ## 4.5.13
 - [patch] bump mention to 9.1.1 to fix mention autocomplete bug [c7708c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7708c6)
 
