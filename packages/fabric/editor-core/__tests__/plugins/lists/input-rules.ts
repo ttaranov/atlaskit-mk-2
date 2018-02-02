@@ -1,25 +1,26 @@
-import listsInputRulesPlugin from '../../../src/plugins/lists/input-rule';
 import {
   insertText,
   code_block,
   doc,
   li,
-  makeEditor,
+  createEditor,
   ol,
   p,
   ul,
-  defaultSchema as schema,
   hardBreak,
 } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../src/analytics';
+import listPlugin from '../../../src/editor/plugins/lists';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 
 describe('inputrules', () => {
-  const editor = (doc: any) =>
-    makeEditor({
-      doc,
-      plugin: listsInputRulesPlugin(schema),
-    });
   let trackEvent;
+  const editor = (doc: any) =>
+    createEditor({
+      doc,
+      editorPlugins: [listPlugin, codeBlockPlugin],
+      editorProps: { analyticsHandler: trackEvent },
+    });
   beforeEach(() => {
     trackEvent = jest.fn();
     analyticsService.trackEvent = trackEvent;

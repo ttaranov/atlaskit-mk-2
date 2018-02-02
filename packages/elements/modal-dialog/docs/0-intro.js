@@ -9,25 +9,25 @@ export default md`
 
   ${(
     <Example
-      Component={require('../examples/0-basic').default}
+      Component={require('../examples/00-basic').default}
       title="Basic"
-      source={require('!!raw-loader!../examples/0-basic')}
+      source={require('!!raw-loader!../examples/00-basic')}
     />
   )}
 
   ${(
     <Example
-      Component={require('../examples/1-appearance').default}
+      Component={require('../examples/10-appearance').default}
       title="Appearance"
-      source={require('!!raw-loader!../examples/1-appearance')}
+      source={require('!!raw-loader!../examples/10-appearance')}
     />
   )}
 
   ${(
     <Example
-      Component={require('../examples/2-custom').default}
+      Component={require('../examples/15-custom').default}
       title="Custom"
-      source={require('!!raw-loader!../examples/2-custom')}
+      source={require('!!raw-loader!../examples/15-custom')}
     />
   )}
 

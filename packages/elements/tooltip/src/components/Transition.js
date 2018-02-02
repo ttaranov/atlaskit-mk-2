@@ -1,14 +1,14 @@
 // @flow
 /* eslint-disable react/prefer-stateless-function */
 
-import React, { Component } from 'react';
+import React, { Component, type ComponentType } from 'react';
 import { withRenderTarget } from '@atlaskit/layer-manager';
-import { Tooltip, TruncatedTooltip } from '../styled';
 import { Slide } from './Animation';
 import type { CoordinatesType, PositionType } from '../types';
 
 type Props = {
   children: string,
+  component: ComponentType<*>,
   immediatelyHide: boolean,
   immediatelyShow: boolean,
   position: PositionType,
@@ -21,6 +21,7 @@ class Tip extends Component<Props> {
   render() {
     const {
       children,
+      component,
       coordinates,
       immediatelyHide,
       immediatelyShow,
@@ -33,12 +34,13 @@ class Tip extends Component<Props> {
 
     return (
       <Slide
-        component={truncate ? TruncatedTooltip : Tooltip}
+        component={component}
         immediatelyHide={immediatelyHide}
         immediatelyShow={immediatelyShow}
         in={transitionIn}
         position={position}
         style={coordinates}
+        truncate={truncate}
       >
         {children}
       </Slide>

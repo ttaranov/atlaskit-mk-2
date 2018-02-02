@@ -1,5 +1,18 @@
 # @atlaskit/renderer
 
+## 11.3.11
+
+## 11.3.10
+- [patch] bump mention to 9.1.1 to fix mention autocomplete bug [c7708c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7708c6)
+
+## 11.3.9
+
+## 11.3.8
+
+## 11.3.7
+
+- [patch] move MediaItem to renderer, bump icons [5e71725](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e71725)
+
 ## 11.3.6
 - [patch] Bump editor versions [afa6885](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/afa6885)
 

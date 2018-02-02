@@ -1,23 +1,23 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import emojiPlugins, { EmojiState } from '../../src/plugins/emojis';
-import ToolbarEmojiPicker from '../../src/ui/ToolbarEmojiPicker';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
+import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
+import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
+import { Popup, ProviderFactory } from '@atlaskit/editor-common';
 import {
   doc,
   p,
-  makeEditor,
+  createEditor,
   emoji,
   code_block,
   mentionQuery,
-  defaultSchema,
 } from '@atlaskit/editor-test-helpers';
+import ToolbarEmojiPicker from '../../src/ui/ToolbarEmojiPicker';
 import ToolbarButton from '../../src/ui/ToolbarButton';
-import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
-import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
-import { analyticsService } from '../../src/analytics';
 import pluginKey from '../../src/plugins/emojis/plugin-key';
-import { Popup, ProviderFactory } from '@atlaskit/editor-common';
+import emojiPlugin from '../../src/editor/plugins/emoji';
+import codeBlockPlugin from '../../src/editor/plugins/code-block';
+import mentionsPlugin from '../../src/editor/plugins/mentions';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
 const grinEmoji = emojiTestData.grinEmoji;
@@ -29,10 +29,14 @@ const grinEmojiId = {
 
 describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
   const providerFactory = ProviderFactory.create({ emojiProvider });
-  const editor = (doc: any) =>
-    makeEditor<EmojiState>({
+  const editor = (doc: any, analyticsHandler = () => {}) =>
+    createEditor({
       doc,
-      plugins: emojiPlugins(defaultSchema, providerFactory),
+      editorPlugins: [emojiPlugin, codeBlockPlugin, mentionsPlugin],
+      editorProps: {
+        analyticsHandler,
+      },
+      providerFactory: ProviderFactory.create({ emojiProvider }),
     });
 
   let addSpy: jest.SpyInstance<any>;
@@ -98,7 +102,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
   });
 
   it('should disable the ToolbarEmojiPicker when in an active mention query mark', () => {
-    const { editorView } = editor(doc(mentionQuery()('@')));
+    const { editorView } = editor(doc(p(mentionQuery()('@'))));
     const toolbarEmojiPicker = mount(
       <ToolbarEmojiPicker
         pluginKey={pluginKey}
@@ -221,7 +225,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     onSelection!(grinEmojiId, grinEmoji);
 
     expect(editorView.state.doc).toEqualDocument(
-      doc(p(emoji(grinEmojiId), ' ')),
+      doc(p(emoji(grinEmojiId)(), ' ')),
     );
     toolbarEmojiPicker.unmount();
   });
@@ -297,8 +301,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
   describe('analytics', () => {
     it('should trigger analyticsService.trackEvent when emoji is inserted via picker', () => {
       const trackEvent = jest.fn();
-      analyticsService.trackEvent = trackEvent;
-      const { editorView } = editor(doc(p('')));
+      const { editorView } = editor(doc(p('')), trackEvent);
       const toolbarEmojiPicker = mount(
         <ToolbarEmojiPicker
           pluginKey={pluginKey}

@@ -17,6 +17,7 @@ import {
   akColorN80,
   akColorN20,
   akBorderRadius,
+  akColorN40A,
 } from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
 
@@ -131,6 +132,10 @@ const ContentStyles = styled.div`
 
     &::after {
       content: '';
+    }
+
+    & p {
+      display: block;
     }
   }
 
@@ -286,14 +291,7 @@ const ContentStyles = styled.div`
   .ProseMirror blockquote table:last-child {
     display: inline-table;
   }
-  .ProseMirror
-    table
-    ${tableStyle}
-    .ProseMirror
-    .telepointer
-    ${telepointerStyle}
-    .ProseMirror
-    img {
+  .ProseMirror .telepointer ${telepointerStyle} .ProseMirror img {
     max-width: 100%;
   }
 
@@ -330,20 +328,102 @@ const ContentStyles = styled.div`
 
   //=============== PLACEHOLDER CURSOR STYLES=========
 
-  & .ProseMirror-placeholder-cursor {
+  & .ProseMirror-fake-text-cursor {
     display: inline;
     pointer-events: none;
     position: relative;
     height: 15px;
   }
 
-  & .ProseMirror-placeholder-cursor:after {
+  & .ProseMirror-fake-text-cursor:after {
     content: '';
     display: inline;
     top: 0;
     position: absolute;
     height: 100%;
     border-right: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  //=============== TABLE ==================
+  .ProseMirror {
+    .table-container table ${tableStyle} .table-column-controls {
+      position: relative;
+    }
+    .table-container.with-controls table {
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .table-container.with-controls {
+      margin-left: 8px;
+    }
+  }
+
+  //=============== TABLE COLUMN RESIZING ==================
+  .ProseMirror.table-resizing {
+    .table-container {
+      position: relative;
+    }
+    .table-container.with-controls {
+      margin-left: 0;
+    }
+    .table-shadow {
+      pointer-events: none;
+      display: none;
+      position: absolute;
+      top: 18px;
+      bottom: 20px;
+      width: 0;
+    }
+    .with-controls .table-shadow {
+      display: block;
+    }
+    .table-shadow.-left {
+      left: 0;
+      background: linear-gradient(
+        to left,
+        rgba(99, 114, 130, 0) 0,
+        ${akColorN40A} 100%
+      );
+    }
+    .table-shadow.-right {
+      background: linear-gradient(
+        to right,
+        rgba(99, 114, 130, 0) 0,
+        ${akColorN40A} 100%
+      );
+    }
+    .table-wrapper {
+      overflow-x: auto;
+      padding-top: 8px;
+    }
+    .table-column-controls {
+      top: 20px;
+    }
+    .column-resize-handle {
+      background-color: ${akEditorTableBorderSelected};
+      position: absolute;
+      bottom: 0;
+      top: -1px;
+      right: -2px;
+      width: 2px;
+      height: calc(100% + 2px);
+      pointer-events: none;
+      z-index: 20;
+    }
+    .with-controls .column-resize-handle {
+      top: -11px;
+      height: calc(100% + 11px);
+    }
+  }
+
+  .ProseMirror.resize-cursor {
+    cursor: ew-resize;
+    cursor: col-resize;
+
+    table td,
+    table th {
+      position: relative;
+    }
   }
 `;
 

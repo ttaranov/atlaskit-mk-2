@@ -19,15 +19,16 @@ export const ColumnContainer = styled.div`
   left: 0;
   height: ${akEditorTableToolbarSize}px;
   box-sizing: border-box;
+  display: none;
+
+  .with-controls & {
+    display: block;
+  }
 `;
 // tslint:disable-next-line:variable-name
 export const ColumnInner = styled.div`
   display: flex;
-  & > div button {
-    border-radius: 0;
-  }
-  & > div:last-child button {
-    border-radius: 0;
+  & > div:last-child > button {
     border-top-right-radius: ${akEditorTableBorderRadius};
   }
 `;
@@ -44,6 +45,7 @@ export const ColumnControlsButtonWrap = styled.div`
 export const HeaderButton = styled(HeaderButtonDefault)`
   border-right: 1px solid ${akEditorTableBorder};
   border-bottom: none;
+  border-radius: 0;
   height: ${akEditorTableToolbarSize - 1}px;
   width: 100%;
 

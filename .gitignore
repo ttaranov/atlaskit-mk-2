@@ -31,3 +31,6 @@ packages/**/**/yarn.lock
 # hardcoded
 releases/new-release.md
 website/dist.zip
+
+# A file we use for pushing secrets to micros, just in case
+secrets.json

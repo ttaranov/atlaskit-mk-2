@@ -30,7 +30,26 @@ export default (chai: any) => {
     return function(right: any) {
       const left: any = this._obj;
       const deep = util.flag(this, 'deep');
-      if (deep && isNodeOrFragment(left) && isNodeOrFragment(right)) {
+      if (
+        deep &&
+        isNodeOrFragment(left) &&
+        (typeof right === 'function' || isNodeOrFragment(right))
+      ) {
+        // Because schema is created dynamically, expected value is a function (schema) => PMNode;
+        // That's why this magic is necessary. It simplifies writing assertions, so
+        // instead of expect(doc).to.deep.equal(doc(p())(schema)) we can just do:
+        // expect(doc).to.deep.equal(doc(p())).
+        //
+        // Also it fixes issues that happens sometimes when actual schema and expected schema
+        // are different objects, making this case impossible by always using actual schema to create expected node.
+        if (
+          typeof right === 'function' &&
+          left['type'] &&
+          left['type'].schema
+        ) {
+          right = right(left['type'].schema);
+        }
+
         this.assert(
           (left as any).eq(right),
           `expected ${left.toString()} to equal ${right.toString()}`,

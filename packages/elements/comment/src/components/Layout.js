@@ -21,20 +21,24 @@ type Props = {
 };
 
 export default class Layout extends Component<Props> {
+  renderAvatar() {
+    const { avatar } = this.props;
+    return avatar ? <AvatarSectionDiv>{avatar}</AvatarSectionDiv> : null;
+  }
+
+  renderNestedComments() {
+    const { children } = this.props;
+    return children ? <NestedCommentsDiv>{children}</NestedCommentsDiv> : null;
+  }
+
   render() {
-    const { avatar, children, content, highlighted } = this.props;
-
-    const AvatarSection = () =>
-      avatar ? <AvatarSectionDiv>{avatar}</AvatarSectionDiv> : null;
-
-    const NestedComments = () =>
-      children ? <NestedCommentsDiv>{children}</NestedCommentsDiv> : null;
+    const { content, highlighted } = this.props;
 
     return (
       <Container>
-        <AvatarSection />
+        {this.renderAvatar()}
         <ContentSectionDiv>{content}</ContentSectionDiv>
-        <NestedComments />
+        {this.renderNestedComments()}
         {highlighted && <Highlight />}
       </Container>
     );

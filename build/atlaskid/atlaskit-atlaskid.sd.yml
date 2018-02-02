@@ -1,0 +1,22 @@
+# This file is the config used to expose the service on micros
+
+name: Atlaskid Server
+description: A Landkid server for coordinating builds in the Atlaskit repo
+network:
+  # This allows the service to be hit from outside the Atlassian network
+  ingress: external
+links:
+  binary:
+    # The name and tag of the docker image to use in deployment
+    name: docker.atl-paas.net/atlaskit/atlaskid
+    tag: v1
+    type: docker
+  # Endpoint *must* return a 2xx resonse or Micros will fail
+  healthcheck:
+    uri: /
+  source:
+    url: 'https://bitbucket.org/atlassian/atlaskit-mk-2/'
+notifications:
+  email: lbatchelor@atlassian.com
+# Organization to bill to ;)
+organization: Product Fabric

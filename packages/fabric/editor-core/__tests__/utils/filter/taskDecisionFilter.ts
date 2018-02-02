@@ -25,12 +25,12 @@ describe('@atlaskit/editor-core/utils/filter', () => {
               shortName: ':cheese:',
               id: 'cheese',
               fallback: ':cheese:',
-            }),
+            })(),
             hardBreak(),
             ' and mention ',
-            mention({ id: 'id', text: 'mention name' }),
+            mention({ id: 'id', text: 'mention name' })(),
           ),
-        ),
+        )(defaultSchema),
       );
       const content = taskDecisionDocFilter(jsonDoc);
       expect(content).toEqual([
@@ -56,7 +56,9 @@ describe('@atlaskit/editor-core/utils/filter', () => {
       ]);
     });
     it('filtering multiple paragraphs add breaks', () => {
-      const jsonDoc = toJSON(doc(p('some text'), p('some other text')));
+      const jsonDoc = toJSON(
+        doc(p('some text'), p('some other text'))(defaultSchema),
+      );
       const content = taskDecisionDocFilter(jsonDoc, defaultSchema);
       expect(content).toEqual([
         {
@@ -83,12 +85,12 @@ describe('@atlaskit/editor-core/utils/filter', () => {
               shortName: ':cheese:',
               id: 'cheese',
               fallback: ':cheese:',
-            }),
+            })(),
             hardBreak(),
             ' and mention ',
-            mention({ id: 'id', text: 'mention name' }),
+            mention({ id: 'id', text: 'mention name' })(),
           ),
-        ),
+        )(defaultSchema),
       );
       const content = taskDecisionSliceFilter(
         Slice.fromJSON(defaultSchema, jsonDoc),
@@ -122,7 +124,9 @@ describe('@atlaskit/editor-core/utils/filter', () => {
       ]);
     });
     it('filtering multiple paragraphs add breaks', () => {
-      const jsonDoc = toJSON(doc(p('some text'), p('some other text')));
+      const jsonDoc = toJSON(
+        doc(p('some text'), p('some other text'))(defaultSchema),
+      );
       const content = taskDecisionSliceFilter(
         Slice.fromJSON(defaultSchema, jsonDoc),
         defaultSchema,
