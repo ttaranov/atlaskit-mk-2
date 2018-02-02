@@ -63,7 +63,12 @@ export default function withRenderTarget(
     onBarSelected: PropTypes.func,
   };
 
-  const ContextProvider = withContextFromProps(analyticsContextTypes, null);
+  const portalledContextTypes = {
+    ...analyticsContextTypes,
+    ...jiraContextTypes,
+  };
+
+  const ContextProvider = withContextFromProps(portalledContextTypes, null);
 
   // eslint-disable-next-line react/prefer-stateless-function
   return class extends Component<{}> {
