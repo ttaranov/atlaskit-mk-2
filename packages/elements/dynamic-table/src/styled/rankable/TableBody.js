@@ -1,12 +1,10 @@
 // @flow
 import styled, { css } from 'styled-components';
 
-const rankingStyles = ({ isRanking }) =>
-  isRanking &&
-  css`
-    display: block;
-  `;
+const rankingStyles = css`
+  display: block;
+`;
 
 export const RankableTableBody = styled.tbody`
-  ${rankingStyles} box-sizing: border-box;
+  ${({ isRanking }) => isRanking && rankingStyles} box-sizing: border-box;
 `;

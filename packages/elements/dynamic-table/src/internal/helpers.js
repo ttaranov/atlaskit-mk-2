@@ -53,6 +53,7 @@ export const validateSortKey = (
   return null;
 };
 
+// creates inline styles if flag ranking is true
 export const inlineStylesIfRanking = (
   isRanking: boolean,
   width: number,
@@ -68,6 +69,7 @@ export const inlineStylesIfRanking = (
   return { width };
 };
 
+// computes index of dropped item after ranking
 export const computeIndex = (
   index: number,
   page: number,
@@ -79,6 +81,7 @@ export const computeIndex = (
   return index + itemOnPreviousPages;
 };
 
+// reorder rows in table after ranking
 export const reorderRows = (
   rankEnd: RankEnd,
   rows: RowType[],

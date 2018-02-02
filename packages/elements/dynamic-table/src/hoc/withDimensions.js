@@ -14,6 +14,7 @@ type Props = {
   isRanking: boolean,
 };
 
+// Compute height and width of wrapped component before ranking
 export default function withDimensions<WrappedComponentProps: {}>(
   WrappedComponent: ComponentType<WrappedComponentProps>,
 ): ComponentType<$Diff<WrappedComponentProps, WithDimensionsProps>> {

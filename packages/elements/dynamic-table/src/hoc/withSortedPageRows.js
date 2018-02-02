@@ -4,10 +4,12 @@ import { ASC } from '../internal/constants';
 import { getPageRows, validateSortKey } from '../internal/helpers';
 import type { HeadType, RowType, SortOrderType } from '../types';
 
+// sort all rows based on sort key and order
 const getSortedRows = (head, rows, sortKey, sortOrder) => {
   if (!sortKey || !head) return rows;
   if (!rows) return [];
 
+  // return value which will be used for sorting
   const getSortingCellValue = cells =>
     cells.reduce(
       (result, cell, index) =>
@@ -18,11 +20,14 @@ const getSortedRows = (head, rows, sortKey, sortOrder) => {
       null,
     );
 
+  // reorder rows in table based on sorting cell value
   return rows.slice().sort((a, b) => {
     const valA = getSortingCellValue(a.cells);
     const valB = getSortingCellValue(b.cells);
 
+    // modifier used for sorting type (ascending or descending)
     const modifier = sortOrder === ASC ? 1 : -1;
+
     // $FlowFixMe
     if (!valA || valA < valB) return -modifier;
     // $FlowFixMe
@@ -44,6 +49,7 @@ export type WithSortedPageRowsProps = {
   pageRows: RowType[],
 };
 
+// get one page of data in table, sorting all rows previously
 export default function withSortedPageRows(
   WrappedComponent: ComponentType<any>,
 ) {

@@ -33,10 +33,13 @@ type Props = WithDimensionsProps &
     head: HeadType | void,
   };
 
+// computes destination of ranking
+// - if drag was cancelled returns undefined
+// - if drag was finished, returns new position and after/before key
 const computeRankDestination = (
   result: DropResult,
   pageRows: RowType[],
-): ?RankEndLocation => {
+): RankEndLocation | void => {
   const { source: { index: sourceIndex }, destination } = result;
   if (destination) {
     const { index } = destination;
@@ -81,7 +84,7 @@ export class RankableBody extends Component<Props, {}> {
     const rankEndProps = {
       sourceIndex,
       sourceKey,
-      destination: destination || undefined,
+      destination,
     };
 
     onRankEnd(rankEndProps);

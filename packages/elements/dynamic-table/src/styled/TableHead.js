@@ -8,14 +8,14 @@ import {
 } from './constants';
 import { head } from '../theme';
 
+const rankingStyles = css`
+  display: block;
+`;
+
 export const Head = styled.thead`
   border-bottom: 2px solid ${head.borderColor};
 
-  ${({ isRanking }) =>
-    isRanking &&
-    css`
-      display: block;
-    `};
+  ${({ isRanking }) => isRanking && rankingStyles};
 `;
 
 export const HeadCell = styled.th`

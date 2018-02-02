@@ -36,17 +36,14 @@ export class RankableTableRow extends Component<Props, {}> {
       rowIndex,
       isRankingDisabled,
     } = this.props;
-    const { cells, ...restRowProps } = row;
+    const { cells, key, ...restRowProps } = row;
     const inlineStyles = inlineStylesIfRanking(isRanking, refWidth);
 
     if (!row.key) {
-      // eslint-disable-next-line
-      console.warn(
-        `Ranking may not work properly because key was not pass to table row. Row index (${rowIndex}) will be used instead`,
+      throw new Error(
+        'dynamic-table: ranking is not possible because table row does not have a key. Add the key to the row or disable ranking.',
       );
     }
-
-    const key = row.key ? row.key : rowIndex.toString();
 
     return (
       <Draggable
