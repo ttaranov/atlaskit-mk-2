@@ -117,7 +117,7 @@ export default function withScrollMeasurements(
           offsetY = initialTop - window.innerHeight + height + gutter;
           top = window.innerHeight - (height + gutter);
         }
-        scrollParent.scrollBy(0, offsetY);
+        window.scrollBy(0, offsetY);
       } else {
         const {
           height: parentHeight,
