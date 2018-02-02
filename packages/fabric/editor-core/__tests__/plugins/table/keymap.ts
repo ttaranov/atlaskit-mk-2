@@ -1,4 +1,7 @@
-import tablePlugins, { TableState } from '../../../src/plugins/table';
+import {
+  TableState,
+  stateKey as tablesPluginKey,
+} from '../../../src/plugins/table';
 import { TableMap, CellSelection } from 'prosemirror-tables';
 import {
   selectRow,
@@ -9,7 +12,7 @@ import {
 import {
   doc,
   createEvent,
-  makeEditor,
+  createEditor,
   sendKeyToPm,
   table,
   tr,
@@ -19,20 +22,23 @@ import {
   thEmpty,
   p,
 } from '@atlaskit/editor-test-helpers';
-import { analyticsService } from '../../../src/analytics';
 import { tableStartPos } from '../../../src/editor/plugins/table/utils';
+import tablesPlugin from '../../../src/editor/plugins/table';
 
 describe('table keymap', () => {
   const event = createEvent('event');
-  const editor = (doc: any) =>
-    makeEditor<TableState>({
+  const editor = (doc: any, trackEvent = () => {}) =>
+    createEditor<TableState>({
       doc,
-      plugins: tablePlugins(),
+      editorPlugins: [tablesPlugin],
+      editorProps: {
+        analyticsHandler: trackEvent,
+      },
+      pluginKey: tablesPluginKey,
     });
   let trackEvent;
   beforeEach(() => {
     trackEvent = jest.fn();
-    analyticsService.trackEvent = trackEvent;
   });
 
   describe('Tab keypress', () => {
@@ -42,6 +48,7 @@ describe('table keymap', () => {
           doc(
             table(tr(tdCursor, tdEmpty), tr(td({})(p('{nextPos}')), tdEmpty)),
           ),
+          trackEvent,
         );
         const { nextPos } = refs;
         plugin.props.handleDOMEvents!.focus(editorView, event);
@@ -62,6 +69,7 @@ describe('table keymap', () => {
           doc(
             table(tr(tdCursor, tdEmpty), tr(tdEmpty, td({})(p('{nextPos}')))),
           ),
+          trackEvent,
         );
         const { nextPos } = refs;
         plugin.props.handleDOMEvents!.focus(editorView, event);
@@ -80,6 +88,7 @@ describe('table keymap', () => {
       it('it should select next cell of the current row', () => {
         const { editorView, refs } = editor(
           doc(table(tr(tdCursor, td({})(p('{nextPos}')), tdEmpty))),
+          trackEvent,
         );
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Tab');
@@ -101,6 +110,7 @@ describe('table keymap', () => {
               tr(td({})(p('{nextPos}')), tdEmpty, tdEmpty),
             ),
           ),
+          trackEvent,
         );
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Tab');
@@ -122,6 +132,7 @@ describe('table keymap', () => {
               tr(tdEmpty, tdEmpty, tdCursor),
             ),
           ),
+          trackEvent,
         );
         sendKeyToPm(editorView, 'Tab');
         const map = TableMap.get(pluginState.tableNode!);
@@ -141,6 +152,7 @@ describe('table keymap', () => {
       it('it should select previous cell of the current row', () => {
         const { editorView, refs } = editor(
           doc(table(tr(tdEmpty, td({})(p('{nextPos}')), tdCursor))),
+          trackEvent,
         );
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Shift-Tab');
@@ -162,6 +174,7 @@ describe('table keymap', () => {
               tr(tdCursor, tdEmpty, tdEmpty),
             ),
           ),
+          trackEvent,
         );
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Shift-Tab');
@@ -183,6 +196,7 @@ describe('table keymap', () => {
               tr(tdEmpty, tdEmpty, tdEmpty),
             ),
           ),
+          trackEvent,
         );
         sendKeyToPm(editorView, 'Shift-Tab');
         const map = TableMap.get(pluginState.tableNode!);
@@ -233,6 +247,7 @@ describe('table keymap', () => {
       it('it should empty table cells', () => {
         const { editorView, plugin } = editor(
           doc(table(tr(tdCursor, td({})(p('2')), td({})(p('3'))))),
+          trackEvent,
         );
         plugin.props.handleDOMEvents!.focus(editorView, event);
         selectTable(editorView.state, editorView.dispatch);
@@ -261,6 +276,7 @@ describe('table keymap', () => {
                 tr(tdEmpty, td({})(p('3'))),
               ),
             ),
+            trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
           selectRow(index)(editorView.state, editorView.dispatch);
@@ -276,7 +292,7 @@ describe('table keymap', () => {
           for (let i = 0; i < 3; i++) {
             rows.push(tr(tdEmpty, td({})(p(i === index ? '' : `${i + 1}`))));
           }
-          expect(editorView.state.doc).toEqualDocument(doc(table(rows)));
+          expect(editorView.state.doc).toEqualDocument(doc(table(...rows)));
           expect(cursorPos).toEqual(editorView.state.selection.$from.pos);
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.delete_content.keyboard',
@@ -295,6 +311,7 @@ describe('table keymap', () => {
                 tr(td({})(p('{<>}1')), td({})(p('2')), td({})(p('3'))),
               ),
             ),
+            trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
           selectColumn(index)(editorView.state, editorView.dispatch);
@@ -311,7 +328,7 @@ describe('table keymap', () => {
             columns.push(td({})(p(i === index ? '' : `${i + 1}`)));
           }
           expect(editorView.state.doc).toEqualDocument(
-            doc(table(emptyRow, tr(columns))),
+            doc(table(emptyRow, tr(...columns))),
           );
           expect(cursorPos).toEqual(editorView.state.selection.$from.pos);
           expect(trackEvent).toHaveBeenCalledWith(

@@ -1,5 +1,10 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 2.5.2
+- [patch] bump mention to 9.1.1 to fix mention autocomplete bug [c7708c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7708c6)
+
+## 2.5.1
+
 ## 2.5.0
 - [minor] Fixed issue causing leading ' characters to be escaped [1b2140c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b2140c)
 - [patch] Fix images with underscore in URL [42ed524](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ed524)

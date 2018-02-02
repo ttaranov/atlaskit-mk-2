@@ -583,21 +583,24 @@ export const isEmptyNode = (schema: Schema) => {
       case paragraph:
       case codeBlock:
       case heading:
+      case taskItem:
+      case decisionItem:
         return node.content.size === 0;
       case blockquote:
       case panel:
       case listItem:
-      case taskItem:
-      case decisionItem:
         return (
           node.content.size === 2 && innerIsEmptyNode(node.content.firstChild!)
         );
       case bulletList:
       case orderedList:
+        return (
+          node.content.size === 4 && innerIsEmptyNode(node.content.firstChild!)
+        );
       case taskList:
       case decisionList:
         return (
-          node.content.size === 4 && innerIsEmptyNode(node.content.firstChild!)
+          node.content.size === 2 && innerIsEmptyNode(node.content.firstChild!)
         );
       case doc:
         let isEmpty = true;

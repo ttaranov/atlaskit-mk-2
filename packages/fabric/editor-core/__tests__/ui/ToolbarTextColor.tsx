@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import textColorPlugin, { TextColorState } from '../../src/plugins/text-color';
+import { TextColorState, stateKey } from '../../src/plugins/text-color';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import ToolbarTextColor from '../../src/ui/ToolbarTextColor';
 import Color from '../../src/ui/ToolbarTextColor/Color';
@@ -8,16 +8,18 @@ import {
   doc,
   code_block,
   p,
-  makeEditor,
-  defaultSchema,
+  createEditor,
 } from '@atlaskit/editor-test-helpers';
-import { analyticsService } from '../../src/analytics';
+import textColorPlugin from '../../src/editor/plugins/text-color';
+import codeBlockPlugin from '../../src/editor/plugins/code-block';
 
 describe('ToolbarTextColor', () => {
-  const editor = (doc: any) =>
-    makeEditor<TextColorState>({
+  const editor = (doc: any, analyticsHandler = () => {}) =>
+    createEditor<TextColorState>({
       doc,
-      plugins: textColorPlugin(defaultSchema),
+      editorPlugins: [textColorPlugin, codeBlockPlugin],
+      editorProps: { analyticsHandler },
+      pluginKey: stateKey,
     });
 
   describe('when plugin is enabled', () => {
@@ -101,8 +103,7 @@ describe('ToolbarTextColor', () => {
   describe('analytics', () => {
     it('should trigger analyticsService.trackEvent when a color is clicked', () => {
       let trackEvent = jest.fn();
-      analyticsService.trackEvent = trackEvent;
-      const { editorView, pluginState } = editor(doc(p('text')));
+      const { editorView, pluginState } = editor(doc(p('text')), trackEvent);
       const toolbarOption = mount(
         <ToolbarTextColor pluginState={pluginState} editorView={editorView} />,
       );

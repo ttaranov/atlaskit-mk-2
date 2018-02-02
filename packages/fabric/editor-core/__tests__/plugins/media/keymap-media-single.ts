@@ -1,6 +1,6 @@
+import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import {
-  defaultSchema,
-  makeEditor,
+  createEditor,
   doc,
   p,
   blockquote,
@@ -8,28 +8,36 @@ import {
   mediaSingle,
   code_block,
   sendKeyToPm,
+  storyMediaProviderFactory,
+  randomId,
 } from '@atlaskit/editor-test-helpers';
-import mediaPluginFactory, {
-  MediaPluginState,
-} from '../../../src/plugins/media';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { keymapPlugin } from '../../../src/plugins/media/keymap-media-single';
+import mediaPlugin from '../../../src/editor/plugins/media';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
+
+const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
 describe('mediaSingle - keymap', () => {
   const providerFactory = new ProviderFactory();
 
-  const editor = (doc: any, uploadErrorHandler?: () => void) =>
-    makeEditor<MediaPluginState>({
-      doc,
-      plugins: [
-        ...mediaPluginFactory(defaultSchema, {
-          providerFactory,
-          uploadErrorHandler,
-        }),
-        keymapPlugin(defaultSchema),
-      ],
-      schema: defaultSchema,
+  const editor = (doc: any, uploadErrorHandler?: () => void) => {
+    const stateManager = new DefaultMediaStateManager();
+    const mediaProvider = storyMediaProviderFactory({
+      collectionName: testCollectionName,
+      stateManager,
+      includeUserAuthProvider: true,
     });
+
+    return createEditor({
+      doc,
+      editorPlugins: [
+        hyperlinkPlugin,
+        mediaPlugin({ provider: mediaProvider, allowMediaSingle: true }),
+        codeBlockPlugin,
+      ],
+    });
+  };
 
   afterEach(() => {
     providerFactory.destroy();
@@ -41,7 +49,7 @@ describe('mediaSingle - keymap', () => {
     type: 'file',
     height: 100,
     width: 200,
-  });
+  })();
 
   it('should remove the empty paragraph on backspace', () => {
     const { editorView } = editor(

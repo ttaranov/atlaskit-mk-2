@@ -1,31 +1,30 @@
-import imageUploadPlugins from '../../../src/plugins/image-upload';
 import {
   doc,
   insertText,
-  makeEditor,
+  createEditor,
   p,
   img,
   code_block,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { analyticsService } from '../../../src/analytics';
+import imageUpload from '../../../src/editor/plugins/image-upload';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 
 describe('inputrules', () => {
-  const editor = (doc: any) =>
-    makeEditor({
+  const editor = (doc: any, trackEvent?: () => {}) =>
+    createEditor({
       doc,
-      plugins: imageUploadPlugins(defaultSchema),
+      editorPlugins: [imageUpload, codeBlockPlugin],
+      editorProps: { analyticsHandler: trackEvent },
     });
 
   describe('image rule', () => {
     it('should convert `![text](url)` to image', () => {
       const trackEvent = jest.fn();
-      analyticsService.trackEvent = trackEvent;
-      const { editorView, sel } = editor(doc(p('{<>}')));
+      const { editorView, sel } = editor(doc(p('{<>}')), trackEvent);
 
       insertText(editorView, '![text](url)', sel);
       expect(editorView.state.doc).toEqualDocument(
-        doc(p(img({ src: 'url', alt: 'text', title: 'text' }))),
+        doc(p(img({ src: 'url', alt: 'text', title: 'text' })())),
       );
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.image.autoformatting',

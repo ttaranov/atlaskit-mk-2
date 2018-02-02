@@ -1,5 +1,8 @@
 # @atlaskit/editor-test-helpers
 
+## 1.8.5
+- [patch] cket-transformer/__tests__/_schema-builder.ts [a6e77ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6e77ff)
+
 ## 1.8.4
 
 ## 1.8.3

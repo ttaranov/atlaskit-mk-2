@@ -7,10 +7,13 @@ import {
 } from '@atlaskit/editor-common';
 import { tableEditing, columnResizing } from 'prosemirror-tables';
 import { EditorPlugin } from '../../types';
-import { plugin, stateKey } from '../../../plugins/table';
+import { plugin, stateKey, PluginConfig } from '../../../plugins/table';
 import hoverSelectionPlugin from './hover-selection-plugin';
 import tableColumnResizingPlugin from './table-column-resizing-plugin';
 import TableFloatingToolbar from '../../../ui/TableFloatingToolbar';
+
+const pluginConfig = (tablesConfig?: PluginConfig | boolean) =>
+  !tablesConfig || typeof tablesConfig === 'boolean' ? {} : tablesConfig;
 
 const tablesPlugin: EditorPlugin = {
   nodes() {
@@ -26,24 +29,21 @@ const tablesPlugin: EditorPlugin = {
     return [
       {
         rank: 900,
-        plugin: ({
-          props: { allowTableColumnResizing: allowColumnResizing },
-        }) =>
-          plugin({
-            allowColumnResizing,
-          }),
+        plugin: ({ props: { allowTables } }) => {
+          return plugin(pluginConfig(allowTables));
+        },
       },
       {
         rank: 910,
-        plugin: ({ props }) =>
-          props.allowTableColumnResizing
+        plugin: ({ props: { allowTables } }) =>
+          pluginConfig(allowTables).allowColumnResizing
             ? columnResizing({ handleWidth: 6 })
             : undefined,
       },
       {
         rank: 920,
-        plugin: ({ props }) =>
-          props.allowTableColumnResizing
+        plugin: ({ props: { allowTables } }) =>
+          pluginConfig(allowTables).allowColumnResizing
             ? tableColumnResizingPlugin
             : undefined,
       },

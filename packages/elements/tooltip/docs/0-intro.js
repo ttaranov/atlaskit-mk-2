@@ -3,9 +3,15 @@ import React from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
 
 export default md`
-  This package exports a single \`Tooltip\` component, which you can wrap around
-  any other React component in to display the given \`content\` on when the user
-  hovers their cursor over the wrapped component.
+  This package exports \`Tooltip\` and \`TooltipPrimitive\` components.
+
+  You can wrap \`Tooltip\` around any other React component to display the given 
+  \`content\` when the user hovers over the wrapped component.
+
+  You can extend \`TooltipPrimitive\` to create a custom tooltip. It is
+  a component with basic styles required by the tooltip. You can then pass this 
+  custom tooltip in \`component\` prop to display it when user hovers over wrapper
+  content of \`Tooltip\`.
 
   ${(
     <Example

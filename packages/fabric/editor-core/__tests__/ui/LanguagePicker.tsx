@@ -1,6 +1,9 @@
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
-import codeBlockPlugins, { CodeBlockState } from '../../src/plugins/code-block';
+import {
+  CodeBlockState,
+  stateKey as codeBlockPluginKey,
+} from '../../src/plugins/code-block';
 import Select from '@atlaskit/single-select';
 import { TrashToolbarButton } from '../../src/ui/LanguagePicker/styles';
 import LanguagePicker from '../../src/ui/LanguagePicker';
@@ -9,17 +12,18 @@ import {
   code_block,
   doc,
   p,
-  makeEditor,
+  createEditor,
   createEvent,
-  defaultSchema,
 } from '@atlaskit/editor-test-helpers';
+import codeBlockPlugin from '../../src/editor/plugins/code-block';
 
 describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
   const event = createEvent('event');
   const editor = (doc: any) =>
-    makeEditor<CodeBlockState>({
+    createEditor<CodeBlockState>({
       doc,
-      plugins: codeBlockPlugins(defaultSchema),
+      editorPlugins: [codeBlockPlugin],
+      pluginKey: codeBlockPluginKey,
     });
 
   describe('when toolbarVisible is false', () => {

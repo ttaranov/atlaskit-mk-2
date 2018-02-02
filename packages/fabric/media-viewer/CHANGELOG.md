@@ -1,5 +1,9 @@
 # @atlaskit/media-viewer
 
+## 10.0.1
+
+- [patch] Make MediaListViewer resilient to errors and provide proper view for processing items MSW-25 MSW-348 [1d102d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1d102d1)
+
 ## 10.0.0
 
 ## 9.1.1

@@ -1,23 +1,18 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import mentionsPlugins from '../../src/plugins/mentions';
 import ToolbarMention from '../../src/ui/ToolbarMention';
-import {
-  doc,
-  p,
-  makeEditor,
-  defaultSchema,
-} from '@atlaskit/editor-test-helpers';
+import { doc, p, createEditor } from '@atlaskit/editor-test-helpers';
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
-import { ProviderFactory } from '@atlaskit/editor-common';
 import pluginKey from '../../src/plugins/mentions/plugin-key';
 import { analyticsService } from '../../src/analytics';
+import mentionsPlugin from '../../src/editor/plugins/mentions';
 
 describe('ToolbarMention', () => {
-  const editor = (doc: any) =>
-    makeEditor({
+  const editor = (doc: any, analyticsHandler = () => {}) =>
+    createEditor({
       doc,
-      plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
+      editorPlugins: [mentionsPlugin],
+      editorProps: { analyticsHandler },
     });
 
   it('should create a mentionQuery by clicking on the ToolbarMention icon', () => {
@@ -37,7 +32,7 @@ describe('ToolbarMention', () => {
     it('should trigger analyticsService.trackEvent when mention icon is clicked', () => {
       const trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
-      const { editorView } = editor(doc(p('')));
+      const { editorView } = editor(doc(p('')), trackEvent);
       const toolbarOption = mount(
         <ToolbarMention pluginKey={pluginKey} editorView={editorView} />,
       );

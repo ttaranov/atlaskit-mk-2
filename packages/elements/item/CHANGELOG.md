@@ -1,5 +1,8 @@
 # @atlaskit/item
 
+## 4.2.10
+- [patch] item will now always render a linkComponent when provided. fixes bug whereby it was only rendered if the href prop was also set. [df1a14d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df1a14d)
+
 ## 4.2.9
 
 ## 4.2.8

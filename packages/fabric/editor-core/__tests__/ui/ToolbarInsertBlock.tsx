@@ -1,10 +1,7 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
 import blockTypePlugins from '../../src/plugins/block-type';
-import tablePlugins from '../../src/plugins/table';
 import tableCommands from '../../src/plugins/table/commands';
-import mediaPlugins from '../../src/plugins/media';
-import mentionsPlugins from '../../src/plugins/mentions';
 import DropdownMenu from '../../src/ui/DropdownMenu';
 import ToolbarInsertBlock from '../../src/ui/ToolbarInsertBlock';
 import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
@@ -13,14 +10,16 @@ import Item from '@atlaskit/item';
 import {
   doc,
   p,
-  makeEditor,
+  createEditor,
   code_block,
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import { MediaProvider } from '@atlaskit/media-core';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { analyticsService } from '../../src/analytics';
+import codeBlockPlugin from '../../src/editor/plugins/code-block';
+import panelPlugin from '../../src/editor/plugins/panel';
+import listPlugin from '../../src/editor/plugins/lists';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
 
@@ -32,27 +31,18 @@ const mediaProvider: Promise<MediaProvider> = Promise.resolve({
 const providerFactory = ProviderFactory.create({ mediaProvider });
 
 describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
-  const blockTypePluginsSet = blockTypePlugins(defaultSchema);
-  const tablePluginsSet = tablePlugins();
-  const mediaPluginsSet = mediaPlugins(defaultSchema, { providerFactory });
-  const mentionsPluginsSet = mentionsPlugins(
-    defaultSchema,
-    new ProviderFactory(),
-  );
-  const editor = (doc: any) =>
-    makeEditor({
-      doc,
-      plugins: [
-        ...blockTypePluginsSet,
-        ...tablePluginsSet,
-        ...mediaPluginsSet,
-        ...mentionsPluginsSet,
-      ],
-    });
   let trackEvent;
+  const blockTypePluginsSet = blockTypePlugins(defaultSchema);
+  const editor = (doc: any) =>
+    createEditor({
+      doc,
+      editorPlugins: [codeBlockPlugin, panelPlugin, listPlugin],
+      editorProps: { analyticsHandler: trackEvent },
+      providerFactory,
+    });
+
   beforeEach(() => {
     trackEvent = jest.fn();
-    analyticsService.trackEvent = trackEvent;
   });
 
   it('should render disabled DropdownMenu trigger if isDisabled property is true', () => {

@@ -29,7 +29,7 @@ export default class RowControls extends Component<Props, any> {
   render() {
     const {
       tableElement,
-      editorView: { state, dispatch },
+      editorView: { state },
       isTableHovered,
       checkIfSelected,
       scroll,
@@ -53,9 +53,9 @@ export default class RowControls extends Component<Props, any> {
         >
           {/* tslint:disable:jsx-no-lambda */}
           <HeaderButton
-            onClick={() => this.props.selectRow(i)(state, dispatch)}
-            onMouseOver={() => this.props.hoverRow(i)(state, dispatch)}
-            onMouseOut={() => this.props.resetHoverSelection(state, dispatch)}
+            onClick={() => this.selectRow(i)}
+            onMouseOver={() => this.hoverRow(i)}
+            onMouseOut={this.resetHoverSelection}
           />
           {/* tslint:enable:jsx-no-lambda */}
           <InsertRowButton
@@ -74,4 +74,19 @@ export default class RowControls extends Component<Props, any> {
       </RowContainer>
     );
   }
+
+  private selectRow = (row: number) => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.selectRow(row)(state, dispatch);
+  };
+
+  private hoverRow = (row: number) => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.hoverRow(row)(state, dispatch);
+  };
+
+  private resetHoverSelection = () => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.resetHoverSelection(state, dispatch);
+  };
 }

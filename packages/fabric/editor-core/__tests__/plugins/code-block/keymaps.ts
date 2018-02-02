@@ -1,19 +1,17 @@
-import codeBlockPlugin from '../../../src/plugins/code-block';
-
 import {
-  doc,
-  makeEditor,
-  p,
+  createEditor,
   sendKeyToPm,
+  doc,
+  p,
   code_block,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 
 describe('codeBlock - keymaps', () => {
   const editor = (doc: any) =>
-    makeEditor({
+    createEditor({
       doc,
-      plugins: codeBlockPlugin(defaultSchema),
+      editorPlugins: [codeBlockPlugin],
     });
 
   describe('Enter keypress', () => {

@@ -1,22 +1,17 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import taskDecisionPlugins from '../../src/plugins/tasks-and-decisions';
 import ToolbarDecision from '../../src/ui/ToolbarDecision';
-import {
-  doc,
-  p,
-  makeEditor,
-  defaultSchema,
-} from '@atlaskit/editor-test-helpers';
+import { doc, p, createEditor } from '@atlaskit/editor-test-helpers';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import { ProviderFactory } from '@atlaskit/editor-common';
+import tasksAndDecisionsPlugin from '../../src/editor/plugins/tasks-and-decisions';
 
 describe('@atlaskit/editor-core/ui/ToolbarDecision', () => {
   const providerFactory = new ProviderFactory();
   const editor = (doc: any) =>
-    makeEditor<any>({
+    createEditor({
       doc,
-      plugins: taskDecisionPlugins(defaultSchema, {}, providerFactory),
+      editorPlugins: [tasksAndDecisionsPlugin],
     });
 
   afterAll(() => {
