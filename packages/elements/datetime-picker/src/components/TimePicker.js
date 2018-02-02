@@ -29,15 +29,32 @@ const defaultTimes = [
   '18:00',
 ];
 
+/* eslint-disable react/no-unused-prop-types */
 type Props = {
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
+  /** Default for `focused`. */
+  defaultFocused: string,
+  /** Default for `isOpen`. */
+  defaultIsOpen: boolean,
+  /** Default for `times`. */
+  defaultTimes: Array<string>,
+  /** Default for `value`. */
+  defaultValue: string,
   /** A function that returns the formatted value to display. The only argument is an ISO time. */
   formatValue: string => string,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
+  /** Whether or not the dropdown is open. */
+  isOpen: boolean,
+  /** The time in the dropdown that should be focused. */
+  focused: string,
   /** Called when the value changes. The only argument is an ISO time. */
   onChange: Handler,
+  /** The times to show in the dropdown. */
+  times: Array<string>,
+  /** The ISO time that should be used as the input value. */
+  value: string,
   /** The width of the field. */
   width: number,
 };

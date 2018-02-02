@@ -75,5 +75,6 @@ export function formatDate(date: string): string {
 }
 
 export function formatTime(time: string): string {
-  return format(dateFromTime(time), 'h:mma');
+  const date = dateFromTime(time);
+  return isValid(date) ? format(date, 'h:mma') : '';
 }

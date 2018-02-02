@@ -6,17 +6,24 @@ import DatePickerStateless from './DatePickerStateless';
 import type { Event, Handler } from '../types';
 import { formatDate, parseDate } from '../util';
 
+/* eslint-disable react/no-unused-prop-types */
 type Props = {
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
-  /** An array of ISO dates that should show as disabled on the calendar. */
-  disabled: Array<string>,
-  /** A function that returns the formatted value to display. The only argument is an ISO date. */
+  /** Default for `isOpen`. */
+  defaultIsOpen: boolean,
+  /** Default for `value`. */
+  defaultValue: string,
+  /** A function that returns the formatted value to display. The only argument is an ISO time. */
   formatValue: string => string,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
-  /** Called when the value changes. The only argument is an ISO date. */
+  /** Whether or not the dropdown is open. */
+  isOpen: boolean,
+  /** Called when the value changes. The only argument is an ISO time. */
   onChange: Handler,
+  /** The ISO time that should be used as the input value. */
+  value: string,
   /** The width of the field. */
   width: number,
 };
