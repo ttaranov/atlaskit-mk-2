@@ -7,7 +7,8 @@
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     "Jed W",
-    "Trey S"
+    "Trey S",
+    "Raja B"
   ],
   "scripts": {
     "webpack:dev": "./node_modules/@atlaskit/webpack-config/bin/dev.js ./src/index.js",

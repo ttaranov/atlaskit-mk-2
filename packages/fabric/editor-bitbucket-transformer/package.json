@@ -12,7 +12,7 @@
     "dist"
   ],
   "author": "Atlassian Pty Ltd",
-  "maintainers": [],
+  "maintainers": ["Scott S"],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
     "prosemirror-model": "^1.0.0",

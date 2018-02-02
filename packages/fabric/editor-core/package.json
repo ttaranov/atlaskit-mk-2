@@ -14,8 +14,7 @@
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     "Eduard S",
-    "Artur B",
-    "Oscar W"
+    "Rifat N"
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
