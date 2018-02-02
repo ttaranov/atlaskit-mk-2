@@ -41,8 +41,6 @@ type Props = {
   defaultTimes: Array<string>,
   /** Default for `value`. */
   defaultValue: string,
-  /** A function that returns the formatted value to display. The only argument is an ISO time. */
-  formatValue: string => string,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
@@ -71,7 +69,6 @@ class TimePicker extends Component<Props, State> {
 
   static defaultProps = {
     autoFocus: false,
-    formatValue: time => formatTime(time),
     isDisabled: false,
     onChange: () => {},
     width: null,
@@ -180,14 +177,13 @@ class TimePicker extends Component<Props, State> {
   }
 
   render() {
-    const { formatValue } = this.props;
     const { value } = this.state;
     return (
       <TimePickerStateless
         autoFocus={this.props.autoFocus}
         isDisabled={this.props.isDisabled}
         isOpen={this.state.isOpen}
-        displayValue={formatValue(value)}
+        displayValue={formatTime(value)}
         value={value}
         times={this.state.times}
         focused={this.state.focused}

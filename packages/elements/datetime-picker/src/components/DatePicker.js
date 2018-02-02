@@ -14,8 +14,8 @@ type Props = {
   defaultIsOpen: boolean,
   /** Default for `value`. */
   defaultValue: string,
-  /** A function that returns the formatted value to display. The only argument is an ISO time. */
-  formatValue: string => string,
+  /** An array if ISO dates that should be disabled on the calendar. */
+  disabled: Array<string>,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
@@ -44,7 +44,6 @@ class DatePicker extends Component<Props, State> {
   static defaultProps = {
     autoFocus: false,
     disabled: [],
-    formatValue: date => formatDate(date),
     isDisabled: false,
     onChange: () => {},
     width: null,
@@ -118,7 +117,6 @@ class DatePicker extends Component<Props, State> {
   }
 
   render() {
-    const { formatValue } = this.props;
     const { value } = this.state;
     return (
       <DatePickerStateless
@@ -126,7 +124,7 @@ class DatePicker extends Component<Props, State> {
         isDisabled={this.props.isDisabled}
         isOpen={this.state.isOpen}
         shouldShowIcon
-        displayValue={formatValue(value)}
+        displayValue={formatDate(value)}
         value={value}
         disabled={this.props.disabled}
         width={this.props.width}

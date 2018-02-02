@@ -50,8 +50,8 @@ type Props = {
   defaultTimes: Array<string>,
   /** Default for `value`. */
   defaultValue: string,
-  /** A function that returns the formatted value to display. The only argument is an ISO time. */
-  formatValue: string => string,
+  /** An array if ISO dates that should be disabled on the calendar. */
+  disabled: Array<string>,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
@@ -82,7 +82,6 @@ class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
     autoFocus: false,
     disabled: [],
-    formatValue,
     isDisabled: false,
     onChange() {},
     width: 0,
@@ -323,7 +322,7 @@ class DateTimePicker extends Component<Props, State> {
         isDisabled={this.props.isDisabled}
         isOpen={this.state.isOpen}
         shouldShowIcon
-        displayValue={this.props.formatValue(value)}
+        displayValue={formatValue(value)}
         value={value}
         dialogProps={[
           { dialog: this.props.disabled },
