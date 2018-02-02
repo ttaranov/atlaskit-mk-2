@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.7.12
+- [patch] When adding blockquote from toolbar cursor is not visible. [c7c4780](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7c4780)
+
 ## 61.7.11
 - [patch] fix space after mention [b47f480](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b47f480)
 

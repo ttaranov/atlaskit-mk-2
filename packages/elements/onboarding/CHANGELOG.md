@@ -1,5 +1,7 @@
 # @atlaskit/onboarding
 
+## 2.3.1
+
 ## 2.3.0
 - [minor] Replace scrollBy and add websdriver test [66e7a56](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66e7a56)
 
