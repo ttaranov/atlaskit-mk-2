@@ -6,7 +6,7 @@ import Badge from '@atlaskit/badge';
 import { NotificationCountResponse } from '@atlaskit/notification-log-client';
 import { MockNotificationLogClient } from '@atlaskit/notification-log-client/dist/es5/support';
 
-import NotificationIndicator from '../../src/ui/NotificationIndicator';
+import { NotificationIndicator } from '..';
 
 describe('NotificationIndicator', () => {
   let notificationLogClient;

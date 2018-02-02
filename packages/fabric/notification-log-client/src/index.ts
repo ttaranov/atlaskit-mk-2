@@ -1,4 +1,4 @@
-import NotificationLogClient from './api/NotificationLogClient';
+import NotificationLogClient from './NotificationLogClient';
 
 export * from './types';
 

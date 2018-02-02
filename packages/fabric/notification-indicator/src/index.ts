@@ -1,3 +1,3 @@
-import NotificationIndicator from './ui/NotificationIndicator';
+import NotificationIndicator from './NotificationIndicator';
 
 export { NotificationIndicator };

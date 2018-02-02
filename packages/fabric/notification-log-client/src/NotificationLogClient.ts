@@ -3,7 +3,7 @@ import {
   ServiceConfig,
   utils,
 } from '@atlaskit/util-service-support';
-import { NotificationLogProvider, NotificationCountResponse } from '../types';
+import { NotificationLogProvider, NotificationCountResponse } from './types';
 
 export default class NotificationLogClient implements NotificationLogProvider {
   private serviceConfig: ServiceConfig;

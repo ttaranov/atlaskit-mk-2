@@ -1,7 +1,6 @@
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock/src/client';
-import NotificationLogClient from '../../src/api/NotificationLogClient';
-import { NotificationCountResponse } from '../../src';
+import { NotificationLogClient, NotificationCountResponse } from '..';
 
 const notificationLogUrl = 'http://notification-log';
 
