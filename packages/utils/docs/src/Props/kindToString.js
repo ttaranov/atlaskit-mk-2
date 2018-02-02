@@ -1,3 +1,5 @@
+import { log } from 'util';
+
 // @flow
 
 const converters = {};
@@ -45,10 +47,14 @@ converters.binary = type => {
   return `${left} ${type.operator} ${right}`;
 };
 
+// function () {}
+// someCall()
 converters.function = type => {
-  return `(${type.parameters.map(p => convert(p.value)).join(', ')}) => ${
-    type.returnType
-  }`;
+  return type.id || type.referenceId || 'function';
+  // console.log('function', type);
+  // return `(${type.parameters.map(p => convert(p.value)).join(', ')}) => ${
+  //   type.returnType
+  // }`;
 };
 
 converters.array = type => {
@@ -72,7 +78,8 @@ converters.memberExpression = type => {
       // really assume the value type.
       return convert(mem.value);
     }
-  } else if (type.object.kind === 'call') {
+  } else if (type.object.kind === 'call' || type.object.kind === 'new') {
+    console.log('member object', type.object);
     const convertedObject = convert(type.object);
     if (convertedObject) {
       return `${convertedObject}.${property}`;
@@ -81,11 +88,19 @@ converters.memberExpression = type => {
   return property;
 };
 
+function convertCall(type) {
+  console.log('call', type);
+  return `${convert(type.callee)}(${type.args.map(convert).join(', ')})`;
+}
+
 converters.call = type => {
-  const prefix = type.isConstructor === true ? 'new ' : '';
-  return `${prefix}${convert(type.callee)}(${type.args
-    .map(convert)
-    .join(', ')})`;
+  return convertCall(type);
+};
+
+converters.new = type => {
+  const callString = convertCall(type);
+
+  return `new ${callString}`;
 };
 
 converters.external = type => {

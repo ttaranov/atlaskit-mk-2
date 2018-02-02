@@ -66,6 +66,10 @@ const nowDay = now.getDate();
 const nowMonth = now.getMonth() + 1;
 const nowYear = now.getFullYear();
 
+const dateSomething = (date: Date, { fixMonth } = {}) => {
+  return ``;
+};
+
 export default class CalendarStateless extends Component<Props> {
   calendar: Object;
   props: Props;
@@ -80,7 +84,7 @@ export default class CalendarStateless extends Component<Props> {
     onSelect() {},
     previouslySelected: [],
     selected: [],
-    today: dateToString({ day: nowDay, month: nowMonth, year: nowYear }),
+    today: dateSomething({ day: nowDay, month: nowMonth, year: nowYear }),
     year: nowYear,
   };
 
