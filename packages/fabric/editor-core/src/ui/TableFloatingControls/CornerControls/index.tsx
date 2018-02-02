@@ -7,30 +7,35 @@ import { CornerContainer, CornerButton } from './styles';
 import InsertColumnButton from '../ColumnControls/InsertColumnButton';
 import InsertRowButton from '../RowControls/InsertRowButton';
 import { Command } from '../../../editor';
+import { getLineMarkerWidth } from '../utils';
 
 export interface Props {
   editorView: EditorView;
   tableElement: HTMLElement;
-  isSelected: (state: EditorState) => boolean;
+  checkIfSelected: (state: EditorState) => boolean;
   selectTable: Command;
   insertColumn: (column: number) => void;
   insertRow: (row: number) => void;
-  onMouseOver: () => void;
-  onMouseOut: () => void;
+  hoverTable: Command;
+  resetHoverSelection: Command;
+  scroll: number;
+  updateScroll: () => void;
 }
 
 export default class CornerControls extends Component<Props, any> {
   render() {
-    const { tableElement, editorView: { state, dispatch } } = this.props;
-    const tableWidth = tableElement.offsetWidth;
+    const { tableElement, editorView: { state }, scroll } = this.props;
     const tableHeight = tableElement.offsetHeight;
+    const lineMarkerWidth = getLineMarkerWidth(tableElement, scroll);
 
     return (
-      <CornerContainer className={this.props.isSelected(state) ? 'active' : ''}>
+      <CornerContainer
+        className={this.props.checkIfSelected(state) ? 'active' : ''}
+      >
         <CornerButton
-          onClick={() => this.props.selectTable(state, dispatch)}
-          onMouseOver={this.props.onMouseOver}
-          onMouseOut={this.props.onMouseOut}
+          onClick={this.selectTable}
+          onMouseOver={this.hoverTable}
+          onMouseOut={this.resetHoverSelection}
         />
         <InsertColumnButton
           style={{ right: -toolbarSize, top: -toolbarSize - 8 }}
@@ -42,9 +47,25 @@ export default class CornerControls extends Component<Props, any> {
           style={{ bottom: -toolbarSize, left: -toolbarSize - 8 }}
           index={0}
           insertRow={this.props.insertRow}
-          lineMarkerWidth={tableWidth + toolbarSize}
+          lineMarkerWidth={lineMarkerWidth}
+          onMouseOver={this.props.updateScroll}
         />
       </CornerContainer>
     );
   }
+
+  private selectTable = () => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.selectTable(state, dispatch);
+  };
+
+  private hoverTable = () => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.hoverTable(state, dispatch);
+  };
+
+  private resetHoverSelection = () => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.resetHoverSelection(state, dispatch);
+  };
 }

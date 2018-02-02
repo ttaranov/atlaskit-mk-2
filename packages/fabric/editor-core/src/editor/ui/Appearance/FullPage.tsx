@@ -59,12 +59,7 @@ const ContentArea = styled.div`
       clear: none;
     }
   }
-
-  & .ProseMirror .table-decoration {
-    left: 0;
-  }
-
-  & .ProseMirror table {
+  & .ProseMirror .table-container table {
     margin-left: 0;
     margin-right: 0;
     width: 100%;

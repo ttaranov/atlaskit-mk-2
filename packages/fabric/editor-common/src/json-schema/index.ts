@@ -31,12 +31,16 @@ const jsonSchema = new JSONSchemaNode(
 let ticks = 0;
 program.getSourceFiles().forEach(walk);
 
-waitForTicks().then(() => {
-  /* tslint:disable-next-line:no-console */
-  console.log(JSON.stringify(jsonSchema));
-});
+waitForTicks()
+  .then(() => {
+    /* tslint:disable-next-line:no-console */
+    console.log(JSON.stringify(jsonSchema, null, 2));
+  })
+  .catch(err => {
+    /* tslint:disable-next-line:no-console */
+    console.error(err);
+  });
 
-// Functions
 function waitForTicks() {
   return new Promise(resolve => {
     const waitForTick = () => {
@@ -75,7 +79,6 @@ function getSchemaNodeFromType(type: ts.Type, validators = {}): SchemaNode {
   // TODO: Fix any
   if (typeIdToDefName.has((type as any).id)) {
     return new RefSchemaNode(
-      // TODO: Fix any
       `#/definitions/${typeIdToDefName.get((type as any).id)!}`,
     );
   } else if (isStringType(type)) {
@@ -95,29 +98,42 @@ function getSchemaNodeFromType(type: ts.Type, validators = {}): SchemaNode {
     }
   } else if (isIntersectionType(type)) {
     return new AllOfSchemaNode(
-      type.types.map(
-        // TODO: Fix any
-        t =>
-          getSchemaNodeFromType(
-            t,
-            getTags((t as any).getSymbol().getJsDocTags()),
-          ),
+      type.types.map(t =>
+        getSchemaNodeFromType(t, getTags(t.getSymbol().getJsDocTags())),
       ),
     );
   } else if (isArrayType(type)) {
-    // TODO: Fix any
-    const types =
-      (type as any).typeArguments.length === 1 // Array< X | Y >
-        ? [(type as any).typeArguments[0]]
-        : type.typeArguments;
-    return new ArraySchemaNode(
-      // TODO: Fix any
-      (types as any).length === 1 && isAnyType((types as any)[0]) // Array<any>
-        ? []
-        : // TODO: Fix any
-          (types as any).map(t => getSchemaNodeFromType(t)),
-      validators,
-    );
+    const node = new ArraySchemaNode([], validators);
+    // [X, X | Y]
+    if (!type.typeArguments) {
+      const types = type.getNumberIndexType();
+
+      // Look for all indexed type
+      let i = 0;
+      let prop: ts.Symbol;
+      while ((prop = type.getProperty(`${i}`))) {
+        node.push(getSchemaNodeFromType(getTypeFromSymbol(prop)));
+        i++;
+      }
+
+      /**
+       * This will always be a Union type because it's not possible to write something like
+       * interface X extends Array<X> {
+       *  0: X;
+       * }
+       */
+      if (isUnionType(types)) {
+        node.push(getSchemaNodeFromType(types));
+      }
+    } else {
+      const types = type.typeArguments;
+      node.push(
+        types.length === 1 && isAnyType(types[0]) // Array<any>
+          ? []
+          : types.map(t => getSchemaNodeFromType(t)),
+      );
+    }
+    return node;
   } else if (isObjectType(type)) {
     const obj = new ObjectSchemaNode(
       {},
@@ -131,10 +147,7 @@ function getSchemaNodeFromType(type: ts.Type, validators = {}): SchemaNode {
         const name = prop.getName();
         // Drop private properties __fileName, __fileType, etc
         if ((name[0] !== '_' || name[1] !== '_') && prop.valueDeclaration) {
-          const propType = checker.getTypeOfSymbolAtLocation(
-            prop,
-            prop.valueDeclaration,
-          );
+          const propType = getTypeFromSymbol(prop);
           const isRequired = (prop.getFlags() & ts.SymbolFlags.Optional) === 0;
           const validators = getTags(prop.getJsDocTags());
           obj.addProperty(
@@ -187,13 +200,13 @@ type PrimitiveType = number | boolean | string;
 
 function extractLiteralValue(typ: ts.Type): PrimitiveType {
   if (typ.flags & ts.TypeFlags.EnumLiteral) {
-    let str = String((<ts.LiteralType>typ).value);
+    let str = String((typ as ts.LiteralType).value);
     let num = parseFloat(str);
     return isNaN(num) ? str : num;
   } else if (typ.flags & ts.TypeFlags.StringLiteral) {
-    return (<ts.LiteralType>typ).value;
+    return (typ as ts.LiteralType).value;
   } else if (typ.flags & ts.TypeFlags.NumberLiteral) {
-    return (<ts.LiteralType>typ).value;
+    return (typ as ts.LiteralType).value;
   } else if (typ.flags & ts.TypeFlags.BooleanLiteral) {
     // TODO: Fix any
     return (typ as any).intrinsicName === 'true';
@@ -201,7 +214,10 @@ function extractLiteralValue(typ: ts.Type): PrimitiveType {
   throw new Error(`Couldn't parse in extractLiteralValue`);
 }
 
-// Helpers
+function getTypeFromSymbol(symbol: ts.Symbol) {
+  return checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration);
+}
+
 function isSourceFile(node: ts.Node): node is ts.SourceFile {
   return node.kind === ts.SyntaxKind.SourceFile;
 }
@@ -239,11 +255,15 @@ function isIntersectionType(type: ts.Type): type is ts.IntersectionType {
 }
 
 function isArrayType(type: ts.Type): type is ts.TypeReference {
+  /**
+   * Here instead of checking `type.getSymbol().getName() === 'Array'`
+   * we are checking `length`.
+   * @see https://blogs.msdn.microsoft.com/typescript/2018/01/17/announcing-typescript-2-7-rc/#fixed-length-tuples
+   */
   return (
-    (type.flags & ts.TypeFlags.Object) > 0 &&
-    ((type as ts.ObjectType).objectFlags & ts.ObjectFlags.Reference) > 0 &&
-    // TODO: Fix any
-    (type as any).getSymbol().getName() === 'Array'
+    isObjectType(type) &&
+    (type.objectFlags & ts.ObjectFlags.Reference) > 0 &&
+    !!type.getProperty('length')
   );
 }
 

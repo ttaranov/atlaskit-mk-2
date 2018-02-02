@@ -6,7 +6,7 @@ import WithPluginState from '../../ui/WithPluginState';
 import DatePicker from '../../../ui/DatePicker';
 import { insertDate, selectElement } from '../date/actions';
 
-const extensionPlugin: EditorPlugin = {
+const datePlugin: EditorPlugin = {
   nodes() {
     return [{ rank: 2400, name: 'date', node: date }];
   },
@@ -53,4 +53,4 @@ const extensionPlugin: EditorPlugin = {
   },
 };
 
-export default extensionPlugin;
+export default datePlugin;

@@ -11,6 +11,7 @@ import {
 } from '../mediaviewer';
 import { MediaViewerItem } from './media-viewer';
 import { Observable } from 'rxjs';
+import { generatePreview, isPreviewGenerated } from '../domain/preview';
 
 export interface MediaFileListViewerProps {
   readonly context: Context;
@@ -46,11 +47,18 @@ export class MediaFileListViewer extends Component<
       MediaViewer,
       mediaViewerConfiguration,
     } = props;
+
+    const config = {
+      ...mediaViewerConfiguration,
+      isPreviewGenerated: isPreviewGenerated(MediaViewer),
+      generatePreview: generatePreview(MediaViewer)
+    }
+
     const { config: { authProvider } } = context;
 
     this.state = {
       mediaViewer: new MediaViewer({
-        ...mediaViewerConfiguration,
+        ...config,
         assets: {
           basePath: basePath,
         },
@@ -69,11 +77,27 @@ export class MediaFileListViewer extends Component<
 
     const filesToProcess = list.filter(item => item.type === 'file'); // for now we only support files
 
-    const observableFileItems = filesToProcess
-      .map(file =>
-        context.getMediaItemProvider(file.id, file.type, collectionName),
-      )
-      .map(provider => provider.observable().map(item => item as FileItem));
+    const erroredObservable = (file: MediaViewerItem) => {
+      return Observable.create((observer) => {
+        // a media item with no processingStatus will be treated as error downstream
+        // so we will be able to provide the correct error handling
+        observer.next({
+          details: {
+            id: file.id
+          }
+        });
+        observer.complete();
+      });
+    };
+
+    const errorAwareObservableFromFile = (file: MediaViewerItem) => {
+      const provider = context.getMediaItemProvider(file.id, file.type, collectionName);
+      return provider.observable()
+        .catch((error: Error) => erroredObservable(file))
+        .map(item => item as FileItem);
+    };
+
+    const observableFileItems = filesToProcess.map(errorAwareObservableFromFile);
 
     this.state = {
       subscription: Observable.zip(...observableFileItems).subscribe({

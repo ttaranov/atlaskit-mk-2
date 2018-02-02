@@ -1,18 +1,8 @@
-import { nodeFactory } from '@atlaskit/editor-test-helpers';
-import { checkParseEncodeRoundTrips } from './_test-helpers';
+import { doc, p, table, tr, th, td } from '@atlaskit/editor-test-helpers';
 import { createJIRASchema } from '@atlaskit/editor-common';
+import { checkParseEncodeRoundTrips } from './_test-helpers';
 
 const schema = createJIRASchema({ allowTables: true });
-
-// Nodes
-const doc = nodeFactory(schema.nodes.doc);
-const table = nodeFactory(schema.nodes.table, {});
-const tr = nodeFactory(schema.nodes.tableRow, {});
-const td = (attrs: { colspan?: number; rowspan?: number }) =>
-  nodeFactory(schema.nodes.tableCell, attrs);
-const th = (attrs: { colspan?: number; rowspan?: number }) =>
-  nodeFactory(schema.nodes.tableHeader, attrs);
-const p = nodeFactory(schema.nodes.paragraph);
 
 describe('JIRATransformer', () => {
   describe('table', () => {

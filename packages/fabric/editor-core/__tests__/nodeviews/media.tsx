@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { CardDimensions } from '@atlaskit/media-card';
 import { EditorView } from 'prosemirror-view';
 import { media } from '@atlaskit/editor-test-helpers';
-import { ProviderFactory } from '@atlaskit/editor-common';
+import { ProviderFactory, defaultSchema } from '@atlaskit/editor-common';
 import UIMedia from '../../src/ui/Media';
 import Media from '../../src/nodeviews/ui/media';
 import {
@@ -34,7 +34,7 @@ describe('nodeviews/media', () => {
     const cardDimensions = {} as CardDimensions;
     const wrapper = mount(
       <Media
-        node={mediaNode}
+        node={mediaNode()(defaultSchema)}
         getPos={getPos}
         view={view}
         providerFactory={providerFactory}
@@ -55,7 +55,7 @@ describe('nodeviews/media', () => {
       it('sets delete event handler', () => {
         const wrapper = mount(
           <Media
-            node={mediaNode}
+            node={mediaNode()(defaultSchema)}
             getPos={getPos}
             view={view}
             providerFactory={providerFactory}
@@ -72,7 +72,7 @@ describe('nodeviews/media', () => {
       it('sets delete event handler', () => {
         const wrapper = mount(
           <Media
-            node={mediaNode}
+            node={mediaNode()(defaultSchema)}
             getPos={getPos}
             view={view}
             providerFactory={providerFactory}
@@ -90,7 +90,7 @@ describe('nodeviews/media', () => {
       it('sets delete event handler', () => {
         const wrapper = mount(
           <Media
-            node={mediaNode}
+            node={mediaNode()(defaultSchema)}
             getPos={getPos}
             view={view}
             providerFactory={providerFactory}

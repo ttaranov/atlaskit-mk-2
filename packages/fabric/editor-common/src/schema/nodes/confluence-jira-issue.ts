@@ -7,7 +7,7 @@ export const confluenceJiraIssue = {
   inline: true,
   atom: true,
   attrs: {
-    issueKey: { default: null },
+    issueKey: { default: '' },
     macroId: { default: null },
     schemaVersion: { default: null },
     server: { default: null },
@@ -18,10 +18,10 @@ export const confluenceJiraIssue = {
       tag: `span[data-node-type="${name}"]`,
       getAttrs: (dom: HTMLElement) => ({
         issueKey: dom.textContent,
-        macroId: dom.dataset.macroId,
-        schemaVersion: dom.dataset.schemaVersion,
-        server: dom.dataset.server,
-        serverId: dom.dataset.serverId,
+        macroId: dom.dataset && dom.dataset.macroId,
+        schemaVersion: dom.dataset && dom.dataset.schemaVersion,
+        server: dom.dataset && dom.dataset.server,
+        serverId: dom.dataset && dom.dataset.serverId,
       }),
     },
   ],

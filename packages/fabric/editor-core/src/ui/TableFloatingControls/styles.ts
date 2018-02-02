@@ -11,6 +11,14 @@ export const toolbarSize = 11;
 // tslint:disable-next-line:variable-name
 export const Container = styled.div`
   position: relative;
+
+  .ProseMirror.table-resizing & {
+    top: 28px;
+    display: none;
+  }
+  .ProseMirror.table-resizing .with-controls & {
+    display: block;
+  }
 `;
 // tslint:disable-next-line:variable-name
 export const HeaderButtonDefault = styled.button`

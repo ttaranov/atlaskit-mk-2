@@ -1,5 +1,4 @@
 import { CellSelection } from 'prosemirror-tables';
-import { stateKey as tablePluginKey } from '../../../../plugins/table';
 import { EditorState } from 'prosemirror-state';
 import { TableMap } from 'prosemirror-tables';
 
@@ -12,13 +11,13 @@ export const getCellSelection = (
   }
 };
 
-export const isColumnSelected = (
+export const checkIfColumnSelected = (
   column: number,
   state: EditorState,
 ): boolean => {
   const cellSelection = getCellSelection(state);
-  const { tableNode } = tablePluginKey.getState(state);
-  if (tableNode && cellSelection) {
+  if (cellSelection) {
+    const tableNode = cellSelection.$anchorCell.node(-1);
     const map = TableMap.get(tableNode);
     const start = cellSelection.$anchorCell.start(-1);
     const anchor = map.colCount(cellSelection.$anchorCell.pos - start);
@@ -32,7 +31,10 @@ export const isColumnSelected = (
   return false;
 };
 
-export const isRowSelected = (row: number, state: EditorState): boolean => {
+export const checkIfRowSelected = (
+  row: number,
+  state: EditorState,
+): boolean => {
   const cellSelection = getCellSelection(state);
   if (cellSelection) {
     const anchor = cellSelection.$anchorCell.index(-1);
@@ -61,7 +63,7 @@ export const isHeaderRowSelected = (state: EditorState): boolean => {
   return false;
 };
 
-export const isTableSelected = (state: EditorState): boolean => {
+export const checkIfTableSelected = (state: EditorState): boolean => {
   const cellSelection = getCellSelection(state);
   if (cellSelection) {
     return cellSelection.isColSelection() && cellSelection.isRowSelection();
@@ -73,9 +75,10 @@ export const isTableSelected = (state: EditorState): boolean => {
 export const getSelectedColumn = (
   state: EditorState,
 ): { anchor: number; head: number } => {
-  const { tableNode } = tablePluginKey.getState(state);
+  const cellSelection = getCellSelection(state);
+  const { $anchorCell, $headCell } = cellSelection!;
+  const tableNode = $anchorCell.node(-1);
   const map = TableMap.get(tableNode);
-  const { $anchorCell, $headCell } = (state.selection as any) as CellSelection;
   const start = $anchorCell.start(-1);
   const anchor = map.colCount($anchorCell.pos - start);
   const head = map.colCount($headCell.pos - start);
@@ -86,7 +89,8 @@ export const getSelectedColumn = (
 export const getSelectedRow = (
   state: EditorState,
 ): { anchor: number; head: number } => {
-  const { $anchorCell, $headCell } = (state.selection as any) as CellSelection;
+  const cellSelection = getCellSelection(state);
+  const { $anchorCell, $headCell } = cellSelection!;
   const anchor = $anchorCell.index(-1);
   const head = $headCell.index(-1);
 

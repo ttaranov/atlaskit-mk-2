@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import createEditor from '../../../../helpers/create-editor';
+import { createEditor } from '@atlaskit/editor-test-helpers';
 import helpDialog, {
   pluginKey,
   openHelpCommand,
@@ -14,8 +14,9 @@ import { analyticsService } from '../../../../../src/analytics';
 describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
   let editorActions: EditorActions;
   let editorView: EditorView;
+
   beforeEach(() => {
-    const editor = createEditor([helpDialog]);
+    const editor = createEditor({ editorPlugins: [helpDialog] });
     editorActions = new EditorActions();
     editorActions._privateRegisterEditor(editor.editorView);
     editorView = editor.editorView;
