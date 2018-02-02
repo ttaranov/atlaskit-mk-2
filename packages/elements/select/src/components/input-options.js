@@ -1,11 +1,10 @@
 // @flow
 
 import React, { Component, type Node } from 'react';
+import { components } from 'react-select';
 import RadioIcon from '@atlaskit/icon/glyph/radio';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import { colors, themed } from '@atlaskit/theme';
-
-import Option from './option';
 
 // maintains function shape
 const backgroundColor = themed({ light: colors.N40A, dark: colors.DN10 });
@@ -94,7 +93,7 @@ class ControlOption extends Component<OptionProops, OptionState> {
     if (isActive) bg = colors.B50;
 
     return (
-      <Option
+      <components.Option
         onMouseDown={this.onMouseDown}
         onMouseUp={this.onMouseUp}
         onMouseLeave={this.onMouseLeave}
@@ -111,7 +110,7 @@ class ControlOption extends Component<OptionProops, OptionState> {
           secondaryColor={getSecondaryColor({ ...this.props, ...this.state })}
         />
         {children}
-      </Option>
+      </components.Option>
     );
   }
 }
