@@ -11,7 +11,7 @@ import DropdownItemFocusManager from './context/DropdownItemFocusManager';
 import DropdownItemClickManager from './context/DropdownItemClickManager';
 import DropdownItemSelectionCache from './context/DropdownItemSelectionCache';
 import WidthConstrainer from '../styled/WidthConstrainer';
-import { KEY_DOWN, KEY_SPACE, KEY_ENTER } from '../util/keys';
+import { KEY_DOWN, KEY_SPACE, KEY_ENTER, KEY_TAB } from '../util/keys';
 import type {
   DeprecatedItem,
   DeprecatedItemGroup,
@@ -166,6 +166,24 @@ export default class DropdownMenuStateless extends Component<
 
   handleKeyboardInteractionForClosed = (event: SyntheticKeyboardEvent<any>) => {
     if (this.props.isOpen) {
+      // const itemId = this.state.id;
+      if (event.key === KEY_TAB) {
+        // if( itemId !== this.state.id)
+        // {
+        //   this.close({event})
+        // }
+        const current: Element = (event.target: any);
+        const next: ?Element = current.nextElementSibling;
+        // const children: ?HTMLCollection = current.parentNode;
+        // const group:?Element = current.parentElement;
+        // const thisDom = findDOMNode(this);
+        // const isRoleMenu = current.getAttribute('role') === 'menu';
+
+        if (!next) {
+          // console.log(next,children, this.context, this.props.children);
+          this.close({ event });
+        }
+      }
       return;
     }
 
