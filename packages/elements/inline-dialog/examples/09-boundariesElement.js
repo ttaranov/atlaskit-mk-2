@@ -40,8 +40,8 @@ export default class InlineDialogExample extends Component<{}, State> {
               </div>
             }
             boundariesElement="scrollParent"
+            shouldFlip
             isOpen={this.state.dialogOpen}
-            position="bottom left"
             onContentClick={e => console.log('click happened', e)}
             onContentFocus={e => console.log('focus happened', e)}
             onContentBlur={e => console.log('blur happened', e)}
