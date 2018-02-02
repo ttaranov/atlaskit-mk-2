@@ -1,4 +1,4 @@
-// Usefull Exports
+// Useful Exports
 
 export { name, version } from './version';
 
@@ -34,7 +34,7 @@ export {
 export { EditorPlugin, EditorProps, EditorInstance } from './editor/types';
 export { default as EditorActions } from './editor/actions';
 
-// Useles exports
+// Useless exports
 
 export {
   createJIRASchema,
@@ -54,9 +54,10 @@ export {
 
 export {
   DefaultMediaStateManager,
+  MediaStateManager,
   MediaProvider,
   MediaState,
-} from '@atlaskit/media-core';
+} from './plugins/media';
 
 export {
   AbstractMentionResource,
@@ -67,5 +68,4 @@ export {
   MentionsResult,
 } from '@atlaskit/mention';
 
-export * from './config';
 export * from './analytics'; // ?

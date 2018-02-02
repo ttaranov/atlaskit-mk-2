@@ -1,4 +1,5 @@
-import { ContextConfig, Context } from '../';
+import { ContextConfig, Context } from '@atlaskit/media-core';
+import { UploadParams } from '@atlaskit/media-picker';
 
 export type MediaStateStatus =
   | 'unknown'
@@ -7,7 +8,8 @@ export type MediaStateStatus =
   | 'unfinalized'
   | 'ready'
   | 'error'
-  | 'cancelled';
+  | 'cancelled'
+  | 'preview';
 
 export interface MediaState {
   id: string;
@@ -35,30 +37,9 @@ export interface MediaState {
 export interface MediaStateManager {
   getState(tempId: string): MediaState | undefined;
   updateState(tempId: string, newState: MediaState): void;
-  subscribe(tempId: string, cb: (state: MediaState) => void);
-  unsubscribe(tempId: string, cb: (state: MediaState) => void): void;
-}
-
-export interface UploadParams {
-  /**
-   * (Mandatory) collection name used when creating new Media Files and Links
-   */
-  collection: string;
-
-  /**
-   * Should links and files be implicitly finalized with Media API, returning public ids?
-   * (default: true)
-   */
-  autoFinalize?: boolean;
-  skipConversions?: boolean;
-  fetchMetadata?: boolean;
-  expireAfter?: number;
-
-  /**
-   * Reference to DOM element to be used for files drag and drop
-   * (default: document)
-   */
-  dropzoneContainer?: HTMLElement;
+  on(tempId: string, cb: (state: MediaState) => void);
+  off(tempId: string, cb: (state: MediaState) => void): void;
+  destroy(): void;
 }
 
 export interface MediaProvider {
@@ -87,5 +68,3 @@ export interface MediaProvider {
    */
   linkCreateContext?: Promise<Context | ContextConfig>;
 }
-
-export { default as DefaultMediaStateManager } from './default-state-manager';

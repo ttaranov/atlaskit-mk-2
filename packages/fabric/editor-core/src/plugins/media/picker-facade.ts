@@ -17,19 +17,21 @@ import {
   UploadErrorEventPayload,
   UploadEndEventPayload,
   MediaFile,
-} from '@atlaskit/media-picker';
-import {
-  ContextConfig,
-  MediaStateManager,
-  MediaState,
   UploadParams,
-  MediaStateStatus,
-} from '@atlaskit/media-core';
+} from '@atlaskit/media-picker';
+import { ContextConfig } from '@atlaskit/media-core';
 
 import { ErrorReportingHandler, isImage } from '../../utils';
 import { appendTimestamp } from './utils';
+import { MediaStateManager, MediaState, MediaStateStatus } from './types';
 
 export type PickerType = keyof MediaPickerComponents;
+export type PickerFacadeConfig = {
+  uploadParams: UploadParams;
+  contextConfig: ContextConfig;
+  stateManager: MediaStateManager;
+  errorReporter: ErrorReportingHandler;
+};
 
 export default class PickerFacade {
   private picker: MediaPickerComponent;
@@ -38,46 +40,22 @@ export default class PickerFacade {
   private errorReporter: ErrorReportingHandler;
   private uploadParams: UploadParams;
   private pickerType: PickerType;
+  private stateManager: MediaStateManager;
 
   constructor(
     pickerType: PickerType,
-    uploadParams: UploadParams,
-    contextConfig: ContextConfig,
-    private stateManager: MediaStateManager,
-    errorReporter: ErrorReportingHandler,
-    mediaPickerFactory?: (
-      pickerType: PickerType,
-      moduleConfig: ModuleConfig,
-      componentConfig?: ComponentConfigs[PickerType],
-    ) => MediaPickerComponents[PickerType],
+    config: PickerFacadeConfig,
+    pickerConfig?: ComponentConfigs[PickerType],
   ) {
-    this.errorReporter = errorReporter;
-    this.uploadParams = uploadParams;
     this.pickerType = pickerType;
+    this.errorReporter = config.errorReporter;
+    this.uploadParams = config.uploadParams;
+    this.stateManager = config.stateManager;
 
-    if (!mediaPickerFactory) {
-      mediaPickerFactory = MediaPicker;
-    }
-
-    let componentConfig;
-
-    if (pickerType === 'dropzone') {
-      componentConfig = {
-        container: this.getDropzoneContainer(),
-        headless: true,
-      };
-    } else if (pickerType === 'popup') {
-      if (contextConfig.userAuthProvider) {
-        componentConfig = { userAuthProvider: contextConfig.userAuthProvider };
-      } else {
-        pickerType = 'browser';
-      }
-    }
-
-    const picker = (this.picker = mediaPickerFactory!(
+    const picker = (this.picker = MediaPicker(
       pickerType,
-      this.buildPickerConfigFromContext(contextConfig),
-      componentConfig,
+      this.buildPickerConfigFromContext(config.contextConfig),
+      pickerConfig,
     ));
 
     picker.on('uploads-start', this.handleUploadsStart);
@@ -116,6 +94,11 @@ export default class PickerFacade {
     picker.removeAllListeners('upload-finalize-ready');
     picker.removeAllListeners('upload-error');
     picker.removeAllListeners('upload-end');
+
+    if (picker instanceof Dropzone) {
+      picker.removeAllListeners('drag-enter');
+      picker.removeAllListeners('drag-leave');
+    }
 
     this.onStartListeners = [];
     this.onDragListeners = [];
@@ -225,12 +208,6 @@ export default class PickerFacade {
     };
   }
 
-  private getDropzoneContainer() {
-    const { dropzoneContainer } = this.uploadParams;
-
-    return dropzoneContainer ? dropzoneContainer : document.body;
-  }
-
   private generateTempId(id: string) {
     return `temporary:${id}`;
   }
@@ -318,15 +295,13 @@ export default class PickerFacade {
   ) => {
     const { file, preview } = event;
 
-    if (preview !== undefined) {
-      const state = this.newState(file, 'uploading');
-      state.thumbnail = preview;
-      // Add timestamp to image file names on paste @see ED-3584
-      if (this.pickerType === 'clipboard' && isImage(file.type)) {
-        state.fileName = appendTimestamp(file.name, file.creationDate);
-      }
-      this.stateManager.updateState(state.id, state);
+    const state = this.newState(file, 'preview');
+    state.thumbnail = preview;
+    // Add timestamp to image file names on paste @see ED-3584
+    if (this.pickerType === 'clipboard' && isImage(file.type)) {
+      state.fileName = appendTimestamp(file.name, file.creationDate);
     }
+    this.stateManager.updateState(state.id, state);
   };
 
   private handleDragEnter = () => {
