@@ -17,11 +17,11 @@ import {
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import { MediaProvider } from '@atlaskit/media-core';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { analyticsService } from '../../src/analytics';
-import EditorActions from '../../src/editor/actions';
 import codeBlockPlugin from '../../src/editor/plugins/code-block';
 import panelPlugin from '../../src/editor/plugins/panel';
 import listPlugin from '../../src/editor/plugins/lists';
+
+import EditorActions from '../../src/editor/actions';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
 
@@ -34,6 +34,8 @@ const providerFactory = ProviderFactory.create({ mediaProvider });
 
 describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
   let trackEvent;
+  let editorActions;
+
   const blockTypePluginsSet = blockTypePlugins(defaultSchema);
   const editor = (doc: any) =>
     createEditor({
@@ -42,10 +44,10 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       editorProps: { analyticsHandler: trackEvent },
       providerFactory,
     });
-  const editorActions = new EditorActions();
-  let trackEvent;
+
   beforeEach(() => {
     trackEvent = jest.fn();
+    editorActions = new EditorActions();
   });
 
   it('should render disabled DropdownMenu trigger if isDisabled property is true', () => {
@@ -400,6 +402,64 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       const items = toolbarOption.find(DropdownMenu).prop('items');
       expect((items[0] as any).items.length).toEqual(3);
       toolbarOption.unmount();
+    });
+
+    it('should add custom items passed to the plus menu', () => {
+      const { editorView } = editor(doc(p('text')));
+
+      editorActions.appendText = jest.fn();
+
+      const customItems = [
+        {
+          content: 'Custom A',
+          value: { name: 'custom-a' },
+          tooltipDescription: 'Custom item a',
+          tooltipPosition: 'right',
+          onClick: editorActions => {
+            editorActions.appendText('adding custom-a');
+          },
+        },
+        {
+          content: 'Custom B',
+          value: { name: 'custom-b' },
+          tooltipDescription: 'Custom item b',
+          tooltipPosition: 'right',
+          onClick: editorActions => {
+            editorActions.appendText('adding custom-b');
+          },
+        },
+      ];
+
+      const plusMenu = mount(
+        <ToolbarInsertBlock
+          editorView={editorView}
+          editorActions={editorActions}
+          buttons={0}
+          isReducedSpacing={false}
+          insertMenuItems={customItems}
+        />,
+      );
+
+      const items = plusMenu.find(DropdownMenu).prop('items');
+      expect((items[0] as any).items.length).toEqual(2);
+
+      const onItemActivated = plusMenu
+        .find(DropdownMenu)
+        .prop('onItemActivated');
+
+      if (onItemActivated) {
+        onItemActivated.call(
+          {
+            props: {
+              editorActions: editorActions,
+              insertMenuItems: customItems,
+            },
+          },
+          { item: customItems[0] },
+        );
+      }
+
+      expect(editorActions.appendText).toHaveBeenCalledWith('adding custom-a');
     });
   });
 });

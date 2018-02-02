@@ -9,11 +9,16 @@ import {
   helpDialogPlugin,
   fakeTextCursorPlugin,
   submitEditorPlugin,
+  insertBlockPlugin,
 } from '../../../src/editor/plugins';
 
 import createPluginsList from '../../../src/editor/create-editor/create-plugins-list';
 
 describe('createPluginsList', () => {
+  beforeEach(() => {
+    (insertBlockPlugin as any).mockReset();
+  });
+
   it('should add helpDialogPlugin if allowHelpDialog is true', () => {
     const plugins = createPluginsList({ allowHelpDialog: true });
     expect(plugins).toContain(helpDialogPlugin);
@@ -42,5 +47,30 @@ describe('createPluginsList', () => {
     createPluginsList({ media });
     expect(mediaPlugin).toHaveBeenCalledTimes(1);
     expect(mediaPlugin).toHaveBeenCalledWith(media);
+  });
+
+  it('should always add insertBlockPlugin to the editor with insertMenuItems', () => {
+    const customItems = [
+      {
+        content: 'a',
+        value: { name: 'a' },
+        tooltipDescription: 'item a',
+        tooltipPosition: 'right',
+        onClick: () => {},
+      },
+      {
+        content: 'b',
+        value: { name: 'b' },
+        tooltipDescription: 'item b',
+        tooltipPosition: 'right',
+        onClick: () => {},
+      },
+    ];
+
+    const props = { insertMenuItems: customItems };
+
+    createPluginsList(props);
+    expect(insertBlockPlugin).toHaveBeenCalledTimes(1);
+    expect(insertBlockPlugin).toHaveBeenCalledWith(props);
   });
 });

@@ -499,6 +499,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
           insertMenuItems.find(
             menuItem => menuItem.value.name === item.value.name,
           );
+
         if (match && match.onClick) {
           match.onClick(editorActions);
           break;

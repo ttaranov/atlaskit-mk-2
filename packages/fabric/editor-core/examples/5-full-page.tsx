@@ -4,8 +4,6 @@ import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { akColorN80 } from '@atlaskit/util-shared-styles';
 
-import InfoIcon from '@atlaskit/icon/glyph/editor/info';
-
 import Editor from './../src/editor';
 import EditorContext from './../src/editor/ui/EditorContext';
 import WithEditorActions from './../src/editor/ui/WithEditorActions';
@@ -18,6 +16,7 @@ import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/suppor
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
+import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 
 import {
   akEditorCodeBackground,
@@ -117,88 +116,6 @@ const mediaProvider = storyMediaProviderFactory({
   includeUserAuthProvider: true,
 });
 
-const customItems = [
-  {
-    content: 'Loren ipsun',
-    value: { name: 'loren-ipsun' },
-    tooltipDescription: 'Insert loren ipsun text',
-    tooltipPosition: 'right',
-    elemBefore: <InfoIcon label="Insert loren ipsun text" />,
-    onClick: function(editorActions) {
-      editorActions.appendText(
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mi nisl, venenatis eget auctor vitae, venenatis quis lorem. Suspendisse maximus tortor vel dui tincidunt cursus. Vestibulum magna nibh, auctor non auctor id, finibus vitae orci. Nulla viverra ipsum et nunc fringilla ultricies. Pellentesque vitae felis molestie justo finibus accumsan. Suspendisse potenti. Nulla facilisi. Integer dignissim quis velit quis elementum. Sed sit amet varius ante. Duis vestibulum porta augue eu laoreet. Morbi id risus et augue sollicitudin aliquam. In et ligula dolor. Nam ac aliquet diam.',
-      );
-    },
-  },
-  {
-    content: 'Info macro',
-    value: { name: 'info' },
-    tooltipDescription: 'Insert info macro',
-    tooltipPosition: 'right',
-    elemBefore: <InfoIcon label="Insert info macro" />,
-    onClick: function(editorActions) {
-      editorActions.insertExtension({
-        type: 'inlineExtension',
-        attrs: {
-          extensionType: 'com.atlassian.confluence.macro.core',
-          extensionKey: 'info',
-          parameters: {
-            macroParams: {},
-            macroMetadata: {
-              macroId: { value: new Date().valueOf() },
-              placeholder: [
-                {
-                  data: { url: '' },
-                  type: 'icon',
-                },
-              ],
-            },
-          },
-        },
-      });
-    },
-  },
-  {
-    content: 'Open macro browser',
-    value: { name: 'macro-browser' },
-    tooltipDescription: 'Open macro browser',
-    tooltipPosition: 'right',
-    elemBefore: <InfoIcon label="Open macro browser" />,
-    onClick: function(editorActions) {
-      // tslint:disable-next-line:no-console
-      console.log(
-        'Fake promise that simulates the macro browser opening. Will resolve in 1 sec with a selected macro to be inserted.',
-      );
-
-      const openMacroBrowser = new Promise(resolve => {
-        setTimeout(() => {
-          resolve({
-            type: 'inlineExtension',
-            attrs: {
-              extensionType: 'com.atlassian.confluence.macro.core',
-              extensionKey: 'cheese',
-              parameters: {
-                macroParams: {},
-                macroMetadata: {
-                  macroId: { value: new Date().valueOf() },
-                  placeholder: [
-                    {
-                      data: { url: '' },
-                      type: 'icon',
-                    },
-                  ],
-                },
-              },
-            },
-          });
-        }, 1000);
-      });
-
-      openMacroBrowser.then(macro => editorActions.insertExtension(macro));
-    },
-  },
-];
-
 export default class Example extends React.Component<Props, State> {
   state: State = { disabled: true };
 
@@ -246,7 +163,7 @@ export default class Example extends React.Component<Props, State> {
                 />
               }
               onSave={SAVE_ACTION}
-              insertMenuItems={customItems}
+              insertMenuItems={customInsertMenuItems}
             />
           </EditorContext>
         </Content>
