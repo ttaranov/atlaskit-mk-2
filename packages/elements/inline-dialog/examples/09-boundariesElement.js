@@ -2,11 +2,9 @@
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
 import InlineDialog from '../src';
-import type { PositionType } from '../src/types';
 
 type State = {
   dialogOpen: boolean,
-  dialogPosition: PositionType,
 };
 
 export default class InlineDialogExample extends Component<{}, State> {
