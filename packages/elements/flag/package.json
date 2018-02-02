@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/flag",
-  "version": "6.3.0",
+  "version": "6.3.1",
   "description": "Flags are used for confirmations, alerts, and acknowledgments that require minimal user interaction.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -18,7 +18,7 @@
   "dependencies": {
     "@atlaskit/button": "^6.3.1",
     "@atlaskit/icon": "^10.7.1",
-    "@atlaskit/layer-manager": "^2.6.0",
+    "@atlaskit/layer-manager": "^2.7.2",
     "@atlaskit/theme": "^2.3.1",
     "babel-runtime": "^6.26.0",
     "react-transition-group": "^2.2.1",
