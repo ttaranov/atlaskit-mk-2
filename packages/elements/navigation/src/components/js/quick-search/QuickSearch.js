@@ -95,6 +95,8 @@ type Props = {
   onSearchInput?: (event: SyntheticInputEvent<any>) => mixed,
   /** onKeyDown callback for search input */
   onSearchKeyDown: (event: Event) => mixed,
+  /** Called when the user submits the search form without selecting a result */
+  onSearchSubmit: () => void,
   /** Placeholder text for search input field */
   placeholder: string,
   /** Value of the search input field */
@@ -116,6 +118,7 @@ export class QuickSearch extends Component<Props, State> {
     isLoading: false,
     onSearchBlur: noOp,
     onSearchKeyDown: noOp,
+    onSearchSubmit: noOp,
     placeholder: 'Search',
     value: '',
   };
@@ -125,10 +128,9 @@ export class QuickSearch extends Component<Props, State> {
   hasSearchQueryEventFired: boolean = false;
   hasKeyDownEventFired: boolean = false;
 
-  /** Select first result by default if `selectedResultId` prop is not provider */
+  /** Select first result by default if `selectedResultId` prop is not provided */
   state = {
-    selectedResultId:
-      this.props.selectedResultId || getResultIdByIndex(this.flatResults, 0),
+    selectedResultId: this.props.selectedResultId || null,
   };
 
   componentDidMount() {
@@ -144,8 +146,7 @@ export class QuickSearch extends Component<Props, State> {
     if (nextProps.children) {
       this.flatResults = flattenChildren(nextProps.children);
       this.setState({
-        selectedResultId:
-          nextProps.selectedResultId || getResultIdByIndex(this.flatResults, 0),
+        selectedResultId: nextProps.selectedResultId || null,
       });
     }
 
@@ -252,33 +253,40 @@ export class QuickSearch extends Component<Props, State> {
     } else if (event.key === 'ArrowDown') {
       event.preventDefault(); // Don't move cursor around in search input field
       this.selectNext();
-    } else if (event.key === 'Enter' && this.state.selectedResultId) {
-      event.preventDefault(); // Don't fire submit event from input
-      const result = getResultById(
-        this.flatResults,
-        this.state.selectedResultId,
-      );
+    } else if (event.key === 'Enter') {
+      // If an item is selected
+      if (this.state.selectedResultId) {
+        event.preventDefault(); // Don't fire submit event from input
+        const result = getResultById(
+          this.flatResults,
+          this.state.selectedResultId,
+        );
 
-      // Capture when users are using the keyboard to submit
-      if (typeof firePrivateAnalyticsEvent === 'function' && result) {
-        firePrivateAnalyticsEvent(QS_ANALYTICS_EV_SUBMIT, {
-          index: this.flatResults.indexOf(result),
-          method: 'keyboard',
-          type: result.props.type,
-        });
-      }
+        if (!result || !result.props) {
+          return;
+        }
 
-      if (result && !result.props) {
-        return;
-      }
-      if (result && result.props.onClick) {
-        result.props.onClick({
-          resultId: result.props.resultId,
-          type: result.props.type,
-        });
-      }
-      if (result && result.props.href) {
-        window.location.assign(result.props.href);
+        // Capture when users are using the keyboard to submit
+        if (typeof firePrivateAnalyticsEvent === 'function') {
+          firePrivateAnalyticsEvent(QS_ANALYTICS_EV_SUBMIT, {
+            index: this.flatResults.indexOf(result),
+            method: 'keyboard',
+            type: result.props.type,
+          });
+        }
+
+        if (result.props.onClick) {
+          result.props.onClick({
+            resultId: result.props.resultId,
+            type: result.props.type,
+          });
+        }
+        if (result.props.href) {
+          window.location.assign(result.props.href);
+        }
+        // If nothing is selected
+      } else {
+        this.props.onSearchSubmit();
       }
     }
   };
