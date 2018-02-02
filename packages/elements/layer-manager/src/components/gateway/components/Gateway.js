@@ -1,5 +1,6 @@
 // @flow
 import { Component, type Node } from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import GatewayRegistry from './GatewayRegistry';
 
@@ -11,6 +12,8 @@ type Props = {
 type Context = {
   gatewayRegistry: GatewayRegistry,
 };
+
+const supportsReactPortals = typeofReactDOM.createPortal === 'function';
 
 export default class Gateway extends Component<Props> {
   gatewayRegistry: GatewayRegistry;
@@ -47,6 +50,8 @@ export default class Gateway extends Component<Props> {
   }
 
   render() {
-    return null;
+    return supportsReactPortals
+      ? ReactDOM.createPortal(this.props.children, '')
+      : null;
   }
 }

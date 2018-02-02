@@ -1,5 +1,6 @@
 // @flow
 import React, { cloneElement, type Node } from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import withContextFromProps from '../../withContextFromProps';
 import type GatewayDest from './GatewayDest';
@@ -14,6 +15,8 @@ const contextTypes = {
 };
 
 const ContextProvider = withContextFromProps(contextTypes, null);
+
+const supportsReactPortals = typeof ReactDOM.createPortal === 'function';
 
 export default class GatewayRegistry {
   containers: {} = {};
@@ -37,28 +40,31 @@ export default class GatewayRegistry {
     const stackTotal = childrenKeys.length;
     const addedGatewayIndex = childrenKeys.indexOf(addedGateway);
 
-    this.containers[name].setState({
-      children: childrenKeys.map((key, i) => {
-        const stackIndex = stackTotal - (i + 1);
-        const element = cloneElement(this.children[name][key].child, {
-          stackIndex,
-          stackTotal,
-        });
-        // Do not re-render nested gateways when a gateway is added to prevent an infinite loop
-        // caused by an added gateway triggering a re-render of its parent and then itself.
-        const blockChildGatewayRender =
-          addedGateway != null && i < addedGatewayIndex;
+    if (supportsReactPortals) {
+    } else {
+      this.containers[name].setState({
+        children: childrenKeys.map((key, i) => {
+          const stackIndex = stackTotal - (i + 1);
+          const element = cloneElement(this.children[name][key].child, {
+            stackIndex,
+            stackTotal,
+          });
+          // Do not re-render nested gateways when a gateway is added to prevent an infinite loop
+          // caused by an added gateway triggering a re-render of its parent and then itself.
+          const blockChildGatewayRender =
+            addedGateway != null && i < addedGatewayIndex;
 
-        return (
-          <ContextProvider
-            blockChildGatewayRender={blockChildGatewayRender}
-            key={key}
-          >
-            {element}
-          </ContextProvider>
-        );
-      }),
-    });
+          return (
+            <ContextProvider
+              blockChildGatewayRender={blockChildGatewayRender}
+              key={key}
+            >
+              {element}
+            </ContextProvider>
+          );
+        }),
+      });
+    }
   }
 
   addContainer(name: Name, container: Container) {
