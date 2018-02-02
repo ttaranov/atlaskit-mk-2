@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { Component } from 'react';
 
 import Badge from '@atlaskit/badge';
 import { NotificationLogProvider } from '@atlaskit/notification-log-client';
@@ -25,7 +25,7 @@ export interface State {
   intervalId?: number;
 }
 
-export default class NotificationIndicator extends PureComponent<Props, State> {
+export default class NotificationIndicator extends Component<Props, State> {
   state: State = {
     count: 0,
   };
@@ -61,10 +61,7 @@ export default class NotificationIndicator extends PureComponent<Props, State> {
   }
 
   private shouldRefresh = () => {
-    const isDocumentHidden = document.hidden;
-    return (
-      !isDocumentHidden || (isDocumentHidden && this.props.refreshOnHidden)
-    );
+    return !document.hidden || this.props.refreshOnHidden;
   };
 
   private refresh = async (

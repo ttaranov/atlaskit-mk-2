@@ -1,5 +1,5 @@
 //
-// This file is used in development with lerna to resolve types for the package (because they live
+// This file is used in development with bolt to resolve types for the package (because they live
 // in `src/`) *without* needing to use the `types` `package.json` field.
 //
 // We don't want to use the `types` field, as we want to point it to the declaration file in the

@@ -36,6 +36,9 @@ describe('NotificationIndicator', () => {
 
     try {
       await clientPromise;
+    } catch (e) {}
+
+    try {
       await response;
     } catch (e) {}
 

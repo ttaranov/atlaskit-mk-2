@@ -3,7 +3,7 @@ import * as React from 'react';
 import { NotificationCountResponse } from '@atlaskit/notification-log-client';
 import { MockNotificationLogClient } from '@atlaskit/notification-log-client/dist/es5/support';
 
-import NotificationIndicator from '../src/ui/NotificationIndicator';
+import { NotificationIndicator } from '../src';
 
 function returnCount(count: number): Promise<NotificationCountResponse> {
   return Promise.resolve({ count });
