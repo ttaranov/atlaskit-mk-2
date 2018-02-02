@@ -92,10 +92,7 @@ describe('@atlaskit comments', () => {
         // Extend the class to bind an inspectable componentWillUnmount
         const componentWillUnmount = jest.fn();
         class CommentLayoutTest extends CommentLayout {
-          constructor(props) {
-            super(props);
-            this.componentWillUnmount = componentWillUnmount;
-          }
+          componentWillUnmount = componentWillUnmount;
         }
 
         const child1 = <CommentLayoutTest key="1" content="child1" />;
