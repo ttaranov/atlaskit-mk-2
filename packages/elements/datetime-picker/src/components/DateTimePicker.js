@@ -50,7 +50,7 @@ type Props = {
   defaultTimes: Array<string>,
   /** Default for `value`. */
   defaultValue: string,
-  /** An array if ISO dates that should be disabled on the calendar. */
+  /** An array of ISO dates that should be disabled on the calendar. */
   disabled: Array<string>,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
