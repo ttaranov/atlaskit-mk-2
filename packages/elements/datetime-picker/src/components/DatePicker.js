@@ -9,23 +9,23 @@ import { formatDate, parseDate } from '../util';
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
   /** Whether or not to auto-focus the field. */
-  autoFocus: boolean,
+  autoFocus?: boolean,
   /** Default for `isOpen`. */
-  defaultIsOpen: boolean,
+  defaultIsOpen?: boolean,
   /** Default for `value`. */
-  defaultValue: string,
+  defaultValue?: string,
   /** An array of ISO dates that should be disabled on the calendar. */
-  disabled: Array<string>,
+  disabled?: Array<string>,
   /** Whether or not the field is disabled. */
-  isDisabled: boolean,
+  isDisabled?: boolean,
   /** Whether or not the dropdown is open. */
-  isOpen: boolean,
+  isOpen?: boolean,
   /** Called when the value changes. The only argument is an ISO time. */
-  onChange: Handler,
+  onChange?: Handler,
   /** The ISO time that should be used as the input value. */
-  value: string,
+  value?: string,
   /** The width of the field. */
-  width: number,
+  width?: number,
 };
 
 type State = {

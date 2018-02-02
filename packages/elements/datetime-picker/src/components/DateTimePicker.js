@@ -41,31 +41,31 @@ function formatValue([date, time]: [string, string]): [string, string] {
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
   /** Whether or not to auto-focus the field. */
-  autoFocus: boolean,
+  autoFocus?: boolean,
   /** Default for `focused`. */
-  defaultFocused: string,
+  defaultFocused?: string,
   /** Default for `isOpen`. */
-  defaultIsOpen: boolean,
+  defaultIsOpen?: boolean,
   /** Default for `times`. */
-  defaultTimes: Array<string>,
+  defaultTimes?: Array<string>,
   /** Default for `value`. */
-  defaultValue: string,
+  defaultValue?: string,
   /** An array of ISO dates that should be disabled on the calendar. */
-  disabled: Array<string>,
+  disabled?: Array<string>,
   /** Whether or not the field is disabled. */
-  isDisabled: boolean,
+  isDisabled?: boolean,
   /** Whether or not the dropdown is open. */
-  isOpen: boolean,
+  isOpen?: boolean,
   /** The time in the dropdown that should be focused. */
-  focused: string,
+  focused?: string,
   /** Called when the value changes. The first argument is an ISO date and the second is an ISO time. */
-  onChange: (date: ?string, time: ?string) => void,
+  onChange?: (date: ?string, time: ?string) => void,
   /** The times to show in the dropdown. */
-  times: Array<string>,
+  times?: Array<string>,
   /** The ISO time that should be used as the input value. */
-  value: string,
+  value?: string,
   /** The width of the field. */
-  width: number,
+  width?: number,
 };
 
 type State = {
