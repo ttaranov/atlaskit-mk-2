@@ -47,14 +47,8 @@ converters.binary = type => {
   return `${left} ${type.operator} ${right}`;
 };
 
-// function () {}
-// someCall()
 converters.function = type => {
-  return type.id || type.referenceId || 'function';
-  // console.log('function', type);
-  // return `(${type.parameters.map(p => convert(p.value)).join(', ')}) => ${
-  //   type.returnType
-  // }`;
+  return convert(type.id) || type.referenceIdName || 'function';
 };
 
 converters.array = type => {
@@ -79,7 +73,6 @@ converters.memberExpression = type => {
       return convert(mem.value);
     }
   } else if (type.object.kind === 'call' || type.object.kind === 'new') {
-    console.log('member object', type.object);
     const convertedObject = convert(type.object);
     if (convertedObject) {
       return `${convertedObject}.${property}`;
@@ -89,8 +82,11 @@ converters.memberExpression = type => {
 };
 
 function convertCall(type) {
-  console.log('call', type);
-  return `${convert(type.callee)}(${type.args.map(convert).join(', ')})`;
+  let argsString = `${type.args.map(convert).join(', ')}`;
+  if (argsString.length > 30) {
+    argsString = '...';
+  }
+  return `${convert(type.callee)}(${argsString})`;
 }
 
 converters.call = type => {
@@ -122,14 +118,6 @@ converters.variable = type => {
 
 converters.templateExpression = ({ tag }) => {
   return `${convert(tag)}`;
-};
-
-converters.call = ({ callee }) => {
-  return `${convert(callee)}`;
-};
-
-converters.FunctionDeclaration = type => {
-  return `${convert(type.id)}`;
 };
 
 export default function convert(type: { kind: string }) {
