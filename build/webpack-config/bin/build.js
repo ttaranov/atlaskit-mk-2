@@ -14,6 +14,7 @@ async function runDevServer() {
   const noMinimize = !!process.argv.find(arg =>
     arg.startsWith('--no-minimize'),
   );
+  const report = !!process.argv.find(arg => arg.startsWith('--report'));
 
   print(buildBanner());
 
@@ -21,7 +22,13 @@ async function runDevServer() {
   // Creating webpack instance
   //
 
-  const config = createConfig({ entry, env, includePatterns, noMinimize });
+  const config = createConfig({
+    entry,
+    env,
+    includePatterns,
+    noMinimize,
+    report,
+  });
   const compiler = webpack(config);
 
   //
