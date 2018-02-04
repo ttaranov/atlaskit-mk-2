@@ -1,6 +1,5 @@
 // @flow
 import { type ButtonType } from './Button';
-import { string } from 'prop-types';
 
 const getAppearanceProps = (props, state) => {
   const {
@@ -73,7 +72,7 @@ const getButtonProps = (component: ButtonType) => {
   const { props, state } = component;
 
   const defaultProps = {
-    id: string,
+    id: props.id,
     ...getAppearanceProps(props, state),
     ...getInteractionProps(component),
   };
