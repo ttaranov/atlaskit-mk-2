@@ -9,7 +9,7 @@ import { colors, gridSize, themed } from '@atlaskit/theme';
 // $FlowFixMe
 import '!style-loader!css-loader!prismjs/themes/prism-tomorrow.css';
 import 'prismjs/components/prism-jsx';
-import { replaceImport } from '../utils/CodeSandboxDeployer';
+import { replaceImport } from 'react-codesandboxer';
 
 const Code = styled.pre`
   border-radius: 3px;

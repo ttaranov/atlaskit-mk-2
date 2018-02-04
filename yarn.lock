@@ -9784,6 +9784,12 @@ react-beautiful-dnd@^2.0.1:
     redux-thunk "^2.2.0"
     reselect "^3.0.1"
 
+react-codesandboxer@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/react-codesandboxer/-/react-codesandboxer-0.0.1.tgz#677f43d264d233367fc5cc4d8c253a61f7a353bc"
+  dependencies:
+    codesandbox "^1.1.14"
+
 react-deprecate@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/react-deprecate/-/react-deprecate-0.1.0.tgz#817bdf22b8275fb767e9f49a8053f642600435c3"

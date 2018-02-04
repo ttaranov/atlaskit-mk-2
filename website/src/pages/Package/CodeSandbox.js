@@ -6,12 +6,10 @@ import CodeSandboxLogo from './CodeSandboxLogo';
 import CodeSandboxDeployer, {
   getCSBData,
   getAllImports,
-} from '../../utils/CodeSandboxDeployer';
+} from 'react-codesandboxer';
 
 const codesandboxURL = 'https://codesandbox.io/api/v1/sandboxes/define';
 const { NavButton } = require('../Examples/styled');
-
-const basePath = 'bitbucket.org/atlassian/atlaskit-mk-2/raw/HEAD/packages/';
 
 const getExampleUrl = (groupId, packageId, exampleId) =>
   `https://bitbucket.org/atlassian/atlaskit-mk-2/raw/HEAD/packages/${groupId}/${packageId}/examples/${exampleId}`;
@@ -57,7 +55,7 @@ export default class CodeSandbox extends Component<{}, {}> {
         CSB2Transformer(exampleData, pkgJSON, {
           originLocation: '../src',
           startingDeps: { '@atlaskit/css-reset': 'latest' },
-          providedFiles: baseFiles(groupId, packageId, example.Id),
+          providedFiles: baseFiles(groupId, packageId, example.id),
         }),
       )
       .then(({ params }) => {
@@ -103,6 +101,20 @@ export default class CodeSandbox extends Component<{}, {}> {
           } else if (/^\.\//.test(source)) {
             // This is if it is another file in the examples directory. We want
             // to handle this, but not at first implementation
+
+            // let sourceA = source.replace('./', '')
+            // if (/\.\w/.test(sourceA)) {
+            //   // We have a file-type, may be an image or something
+            // } else {
+            //   // we will also need to handle json...
+            //   sourceA += '.js'
+            // }
+            //
+            // let segments = ['packages', groupId, packageId, 'examples', sourceA]
+            //
+            // let path = `/${segments.join('/')}`
+            // let a = getFileFromBitBucket(base, path)
+
             isDisabled = true;
           } else {
             // We are acting on an external import, this is fine
