@@ -13,9 +13,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
+    "Ali C",
     "Hector Z",
-    "Michael J",
-    "Aleksandr Motsjonov"
+    "Aleksandr M"
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
