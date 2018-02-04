@@ -1,5 +1,6 @@
 // @flow
 import { type ButtonType } from './Button';
+import { string } from 'prop-types';
 
 const getAppearanceProps = (props, state) => {
   const {
@@ -57,14 +58,13 @@ const getLinkElementProps = props => {
 };
 
 const getButtonElementProps = props => {
-  const { ariaHaspopup, ariaExpanded, ariaControls, form, id, type } = props;
+  const { ariaHaspopup, ariaExpanded, ariaControls, form, type } = props;
 
   return {
     'aria-haspopup': ariaHaspopup,
     'aria-expanded': ariaExpanded,
     'aria-controls': ariaControls,
     form,
-    id,
     type,
   };
 };
@@ -73,6 +73,7 @@ const getButtonProps = (component: ButtonType) => {
   const { props, state } = component;
 
   const defaultProps = {
+    id: string,
     ...getAppearanceProps(props, state),
     ...getInteractionProps(component),
   };
