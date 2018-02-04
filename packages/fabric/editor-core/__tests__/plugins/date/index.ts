@@ -1,8 +1,7 @@
 import { NodeSelection } from 'prosemirror-state';
-import { ProviderFactory } from '@atlaskit/editor-common';
 import {
+  createEditor,
   doc,
-  makeEditor,
   p as paragraph,
   date,
 } from '@atlaskit/editor-test-helpers';
@@ -12,18 +11,14 @@ import {
   insertDate,
   openDatePicker,
 } from '../../../src/editor/plugins/date/actions';
-import createPlugin, {
-  pluginKey,
-  DateState,
-} from '../../../src/editor/plugins/date/plugin';
+import { pluginKey } from '../../../src/editor/plugins/date/plugin';
+import datePlugin from '../../../src/editor/plugins/date';
 
 describe('date plugin', () => {
   const editor = (doc: any) => {
-    const providerFactory = new ProviderFactory();
-
-    return makeEditor<DateState>({
+    return createEditor({
       doc,
-      plugin: createPlugin(() => {}, providerFactory),
+      editorPlugins: [datePlugin],
     });
   };
 

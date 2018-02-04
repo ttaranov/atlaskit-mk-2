@@ -13,11 +13,10 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Vadim K",
+    "Jimmy L",
     "Hector Z",
-    "Michael J",
     "James N",
-    "Sasha M"
+    "Aleksandr M"
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {

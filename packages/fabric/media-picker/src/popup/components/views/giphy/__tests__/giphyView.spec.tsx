@@ -19,6 +19,7 @@ import {
   Title,
   ButtonContainer,
   WarningContainer,
+  WarningIconWrapper,
   WarningImage,
   WarningHeading,
   WarningSuggestion,
@@ -217,7 +218,7 @@ describe('<ConnectedGiphyView />', () => {
       );
 
       expect(giphyView.find(WarningContainer)).toHaveLength(1);
-      expect(giphyView.find(WarningImage)).toHaveLength(1);
+      expect(giphyView.find(WarningIconWrapper)).toHaveLength(1);
       expect(giphyView.find(WarningHeading)).toHaveLength(1);
       expect(giphyView.find(WarningSuggestion)).toHaveLength(1);
       expect(giphyView.find(Button)).toHaveLength(1);

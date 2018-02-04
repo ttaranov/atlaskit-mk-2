@@ -1,24 +1,24 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import imageUploadPlugins, {
-  ImageUploadState,
-} from '../../src/plugins/image-upload';
+import { ImageUploadState, stateKey } from '../../src/plugins/image-upload';
 import ToolbarImage from '../../src/ui/ToolbarImage';
 import AkButton from '@atlaskit/button';
 import {
   doc,
   code_block,
   p,
-  makeEditor,
-  defaultSchema,
+  createEditor,
 } from '@atlaskit/editor-test-helpers';
-import { analyticsService } from '../../src/analytics';
+import imageUpload from '../../src/editor/plugins/image-upload';
+import codeBlockPlugin from '../../src/editor/plugins/code-block';
 
 describe('ToolbarImage', () => {
-  const editor = (doc: any) =>
-    makeEditor<ImageUploadState>({
+  const editor = (doc: any, analyticsHandler = () => {}) =>
+    createEditor<ImageUploadState>({
       doc,
-      plugins: imageUploadPlugins(defaultSchema),
+      editorPlugins: [imageUpload, codeBlockPlugin],
+      editorProps: { analyticsHandler },
+      pluginKey: stateKey,
     });
 
   describe('when plugin is enabled', () => {
@@ -47,11 +47,10 @@ describe('ToolbarImage', () => {
 
   describe('analytics', () => {
     it('should trigger analyticsService.trackEvent', () => {
-      const { editorView, pluginState } = editor(doc(p('text')));
+      const trackEvent = jest.fn();
+      const { editorView, pluginState } = editor(doc(p('text')), trackEvent);
       const spy = jest.spyOn(pluginState, 'handleImageUpload');
       spy.mockImplementation(() => true);
-      const trackEvent = jest.fn();
-      analyticsService.trackEvent = trackEvent;
       const toolbarOption = mount(
         <ToolbarImage pluginState={pluginState} editorView={editorView} />,
       );

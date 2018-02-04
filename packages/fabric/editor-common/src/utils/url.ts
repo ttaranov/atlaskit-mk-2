@@ -22,7 +22,6 @@ const whitelistedURLPatterns = [
   /^sftp:\/\//im,
   /^itms:/im,
   /^notes:/im,
-  /^smb:/im,
   /^hipchat:\/\//im,
   /^sourcetree:/im,
   /^urn:/im,

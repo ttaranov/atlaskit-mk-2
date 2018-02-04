@@ -1,5 +1,14 @@
 # @atlaskit/flag
 
+## 6.3.2
+
+## 6.3.1
+
+## 6.3.0
+
+
+- [minor] Update the expand button to medium size [05d8bd5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05d8bd5)
+
 ## 6.2.2
 
 - [patch] Migrate Navigation from Ak repo to ak mk 2 repo, Fixed flow typing inconsistencies in ak mk 2 [bdeef5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdeef5b)

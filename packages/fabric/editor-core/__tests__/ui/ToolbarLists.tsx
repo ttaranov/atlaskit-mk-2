@@ -1,23 +1,20 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import listsPlugins, { ListsState } from '../../src/plugins/lists';
+import { ListsState, stateKey } from '../../src/plugins/lists';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import AkButton from '@atlaskit/button';
 import ToolbarLists from '../../src/ui/ToolbarLists';
 import DropdownMenu from '../../src/ui/DropdownMenu';
-import {
-  doc,
-  p,
-  makeEditor,
-  defaultSchema,
-} from '@atlaskit/editor-test-helpers';
+import { doc, p, createEditor } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../src/analytics';
+import listPlugin from '../../src/editor/plugins/lists';
 
 describe('ToolbarLists', () => {
   const editor = (doc: any) =>
-    makeEditor<ListsState>({
+    createEditor<ListsState>({
       doc,
-      plugins: listsPlugins(defaultSchema),
+      editorPlugins: [listPlugin],
+      pluginKey: stateKey,
     });
 
   it('should render disabled ToolbarButtons if disabled property is true', () => {

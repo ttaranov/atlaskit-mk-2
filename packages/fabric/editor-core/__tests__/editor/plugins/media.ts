@@ -3,7 +3,7 @@ import { mediaPlugin } from '../../../src/editor/plugins';
 import { EditorPlugin } from '../../../src/editor/types';
 
 const getNodeNames = (plugin: EditorPlugin) =>
-  plugin.nodes ? plugin.nodes().map(node => node.name) : [];
+  plugin.nodes ? plugin.nodes({}).map(node => node.name) : [];
 
 describe(name, () => {
   describe('Plugins -> Media', () => {

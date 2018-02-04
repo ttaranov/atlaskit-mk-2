@@ -1,19 +1,20 @@
-import { sendKeyToPm, doc, makeEditor, p } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import blockTypePlugins, {
-  BlockTypeState,
-} from '../../../../src/plugins/block-type';
-import { createPlugin as createSubmitPlugin } from '../../../../src/editor/plugins/submit-editor';
+import {
+  sendKeyToPm,
+  createEditor,
+  doc,
+  p,
+} from '@atlaskit/editor-test-helpers';
+import submitPlugin from '../../../../src/editor/plugins/submit-editor';
 
 describe('submit-editor', () => {
   let onSave;
   const editor = (doc: any) =>
-    makeEditor<BlockTypeState>({
+    createEditor({
       doc,
-      plugins: [
-        ...blockTypePlugins(defaultSchema),
-        createSubmitPlugin(onSave)!,
-      ],
+      editorPlugins: [submitPlugin],
+      editorProps: {
+        onSave,
+      },
     });
 
   beforeEach(() => {
