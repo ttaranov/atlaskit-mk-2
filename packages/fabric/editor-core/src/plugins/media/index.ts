@@ -230,9 +230,10 @@ export class MediaPluginState {
     const { from } = this.view.state.selection;
     if (this.selectedMediaNode()) {
       const { node, offset } = docView.domFromPos(from);
-      const domElement = node.childNodes[offset].querySelector('.wrapper');
-
-      return domElement;
+      if (!node.childNodes.length) {
+        return node.parentNode;
+      }
+      return node.childNodes[offset].querySelector('.wrapper');
     }
   }
 
