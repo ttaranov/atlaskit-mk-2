@@ -18,7 +18,7 @@ describe(name, () => {
       const onChangeMock = jest.fn();
       const wrapper = mount(<DatePicker onChange={onChangeMock} />);
 
-      wrapper.setState({ displayValue: testValue });
+      wrapper.setState({ value: testValue });
       wrapper.find('input').simulate('blur');
 
       expect(onChangeMock.mock.calls).toHaveLength(1);
@@ -29,7 +29,7 @@ describe(name, () => {
       const onChangeMock = jest.fn();
       const wrapper = mount(<DatePicker onChange={onChangeMock} />);
 
-      wrapper.setState({ displayValue: 'invalid value' });
+      wrapper.setState({ value: 'invalid value' });
       wrapper.find('input').simulate('blur');
 
       expect(onChangeMock.mock.calls).toHaveLength(0);
