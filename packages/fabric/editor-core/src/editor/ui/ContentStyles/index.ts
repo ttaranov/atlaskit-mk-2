@@ -110,6 +110,14 @@ const ContentStyles = styled.div`
     }
   }
 
+  .ProseMirror span[data-placeholder] {
+    color: ${akColorN80};
+
+    &::selection {
+      background-color: transparent;
+    }
+  }
+
   .ProseMirror blockquote {
     box-sizing: border-box;
     padding-left: ${akGridSizeUnitless * 2}px;

@@ -52,6 +52,7 @@ import {
   inlineExtension,
   bodiedExtension,
   date,
+  placeholder,
 } from './nodes';
 
 function addItems(
@@ -132,6 +133,7 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'media', spec: media },
   { name: 'mediaGroup', spec: mediaGroup },
   { name: 'mediaSingle', spec: mediaSingle },
+  { name: 'placeholder', spec: placeholder },
   { name: 'hardBreak', spec: hardBreak },
   { name: 'emoji', spec: emoji },
   { name: 'table', spec: table },
@@ -232,9 +234,7 @@ function sanitizedContent(
   const newContent = content
     .replace(
       new RegExp(
-        `(${invalidContent}((\\s)*\\|)+)|((\\|(\\s)*)+${invalidContent})|(${
-          invalidContent
-        }$)`,
+        `(${invalidContent}((\\s)*\\|)+)|((\\|(\\s)*)+${invalidContent})|(${invalidContent}$)`,
         'g',
       ),
       '',

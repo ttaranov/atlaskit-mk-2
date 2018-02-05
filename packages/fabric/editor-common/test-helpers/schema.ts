@@ -47,6 +47,7 @@ export default createSchema({
     'bodiedExtension',
     'date',
     'unknownBlock',
+    'placeholder',
   ],
   marks: [
     'em',

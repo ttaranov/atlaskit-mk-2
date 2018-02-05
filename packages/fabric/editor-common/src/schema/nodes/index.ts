@@ -50,3 +50,4 @@ export { extension } from './extension';
 export { inlineExtension } from './inline-extension';
 export { bodiedExtension } from './bodied-extension';
 export { date } from './date';
+export { placeholder } from './placeholder';
