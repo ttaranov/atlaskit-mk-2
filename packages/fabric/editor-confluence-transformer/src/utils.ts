@@ -311,7 +311,7 @@ export function parseMacro(node: Element): Macro {
     if (nodeName === 'ac:parameter') {
       const key = getAcName(child);
       if (key) {
-        const firstChild = child.childNodes[0];
+        const firstChild = child.childNodes[0] as Element;
         const riMapping = MACRO_PARAM_TO_RI[key];
         if (
           firstChild &&
