@@ -382,3 +382,23 @@ export const MACRO_PARAM_TO_RI: {
     param: 'ri:value',
   },
 };
+
+export const generateMacroParams = (params: {
+  [name: string]: { value: string };
+}) => {
+  const elem = document.createDocumentFragment();
+  Object.keys(params).forEach(name => {
+    const el = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+    el.setAttributeNS(AC_XMLNS, 'ac:name', name);
+    const resourceIdentifier = MACRO_PARAM_TO_RI[name];
+    if (resourceIdentifier) {
+      const ri = doc.createElementNS(AC_XMLNS, resourceIdentifier.name);
+      ri.setAttributeNS(AC_XMLNS, resourceIdentifier.param, params[name].value);
+      el.appendChild(ri);
+    } else {
+      el.textContent = params[name].value;
+    }
+    elem.appendChild(el);
+  });
+  return elem;
+};

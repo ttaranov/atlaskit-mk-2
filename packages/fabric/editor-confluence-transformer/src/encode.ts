@@ -13,6 +13,7 @@ import { AC_XMLNS, FAB_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 import { mapCodeLanguage } from './languageMap';
 import {
   getNodeMarkOfType,
+  generateMacroParams,
   mapPanelTypeToCxhtml,
   MACRO_PARAM_TO_RI,
 } from './utils';
@@ -311,9 +312,11 @@ export default function encode(node: PMNode, schema: Schema) {
     const elem = createMacroElement('code');
 
     if (node.attrs.language) {
-      appendMacroParams(elem, {
-        language: { value: mapCodeLanguage(node.attrs.language) },
-      });
+      elem.appendChild(
+        generateMacroParams(elem, {
+          language: { value: mapCodeLanguage(node.attrs.language) },
+        }),
+      );
     }
 
     const plainTextBody = doc.createElementNS(AC_XMLNS, 'ac:plain-text-body');
@@ -347,9 +350,11 @@ export default function encode(node: PMNode, schema: Schema) {
       if (node.isBlock) {
         // panel title
         if (node.type.name === 'heading' && pos === 0) {
-          appendMacroParams(elem, {
-            title: { value: node.firstChild!.textContent },
-          });
+          elem.appendChild(
+            generateMacroParams(elem, {
+              title: { value: node.firstChild!.textContent },
+            }),
+          );
         } else {
           // panel content
           const domNode = encodeNode(node);
@@ -365,10 +370,12 @@ export default function encode(node: PMNode, schema: Schema) {
     // special treatment for <ac:structured-macro ac:name="panel" />
     // it should be converted to "purple" Confluence panel
     if (panelType === 'panel') {
-      appendMacroParams(elem, {
-        borderColor: { value: '#998DD9' },
-        bgColor: { value: '#EAE6FF' },
-      });
+      elem.appendChild(
+        generateMacroParams(elem, {
+          borderColor: { value: '#998DD9' },
+          bgColor: { value: '#EAE6FF' },
+        }),
+      );
     }
 
     body.appendChild(fragment);
@@ -409,36 +416,15 @@ export default function encode(node: PMNode, schema: Schema) {
     const elem = createMacroElement('jira');
     elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', node.attrs.macroId);
 
-    appendMacroParams(elem, {
-      key: { value: node.attrs.issueKey },
-      server: { value: node.attrs.server },
-      serverId: { value: node.attrs.serverId },
-    });
+    elem.appendChild(
+      generateMacroParams(elem, {
+        key: { value: node.attrs.issueKey },
+        server: { value: node.attrs.server },
+        serverId: { value: node.attrs.serverId },
+      }),
+    );
 
     return elem;
-  }
-
-  function appendMacroParams(
-    elem: Element,
-    params: { [name: string]: { value: string } },
-  ) {
-    Object.keys(params).forEach(name => {
-      const el = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-      el.setAttributeNS(AC_XMLNS, 'ac:name', name);
-      const resourceIdentifier = MACRO_PARAM_TO_RI[name];
-      if (resourceIdentifier) {
-        const ri = doc.createElementNS(AC_XMLNS, resourceIdentifier.name);
-        ri.setAttributeNS(
-          AC_XMLNS,
-          resourceIdentifier.param,
-          params[name].value,
-        );
-        el.appendChild(ri);
-      } else {
-        el.textContent = params[name].value;
-      }
-      elem.appendChild(el);
-    });
   }
 
   function encodeExtension(node: PMNode) {
@@ -453,7 +439,7 @@ export default function encode(node: PMNode, schema: Schema) {
 
       // parameters
       if (macroParams) {
-        appendMacroParams(elem, macroParams);
+        elem.appendChild(generateMacroParams(elem, macroParams));
       }
 
       const placeholderUrl = getPlaceholderUrl({ node, type: 'image' });
