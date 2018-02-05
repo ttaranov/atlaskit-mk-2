@@ -4,9 +4,9 @@ import * as sinon from 'sinon';
 
 import Badge from '@atlaskit/badge';
 import { NotificationCountResponse } from '@atlaskit/notification-log-client';
-import { MockNotificationLogClient } from '@atlaskit/notification-log-client/dist/es5/support';
 
 import { NotificationIndicator } from '../src';
+import MockNotificationLogClient from '../examples/MockNotificationLogClient';
 
 describe('NotificationIndicator', () => {
   let notificationLogClient;

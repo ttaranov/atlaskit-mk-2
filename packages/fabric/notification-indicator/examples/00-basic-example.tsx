@@ -1,8 +1,7 @@
 import * as React from 'react';
 
-import { MockNotificationLogClient } from '@atlaskit/notification-log-client/dist/es5/support';
-
 import { NotificationIndicator } from '../src';
+import MockNotificationLogClient from './MockNotificationLogClient';
 
 export default function Example() {
   const client = new MockNotificationLogClient();

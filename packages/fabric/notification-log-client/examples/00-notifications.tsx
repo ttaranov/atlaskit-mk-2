@@ -3,7 +3,7 @@ import * as React from 'react';
 import { NotificationIndicator } from '@atlaskit/notification-indicator';
 
 import { NotificationCountResponse } from '../src';
-import { MockNotificationLogClient } from '../dist/es5/support';
+import MockNotificationLogClient from './MockNotificationLogClient';
 
 export default function Example() {
   /**

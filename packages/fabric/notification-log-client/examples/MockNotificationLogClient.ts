@@ -1,5 +1,4 @@
-import NotificationLogClient from '../NotificationLogClient';
-import { NotificationCountResponse } from '../types';
+import { NotificationLogClient, NotificationCountResponse } from '../src';
 
 export default class MockNotificationLogClient extends NotificationLogClient {
   private response?: Promise<NotificationCountResponse>;
