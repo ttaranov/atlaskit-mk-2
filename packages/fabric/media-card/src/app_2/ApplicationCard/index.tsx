@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { colors } from '@atlaskit/theme';
+import { akColorY300 } from '@atlaskit/util-shared-styles';
 import Spinner from '@atlaskit/spinner';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import ViewModel from '../shared/ViewModel';
@@ -18,6 +18,16 @@ export interface ApplicationCardState {
   action?: Action;
   actionState?: 'pending' | 'success' | 'failure';
   actionMessage?: string;
+}
+
+function progress(): Pick<
+  ApplicationCardState,
+  'actionState' | 'actionMessage'
+> {
+  return {
+    actionState: 'pending',
+    actionMessage: undefined,
+  };
 }
 
 function success(
@@ -58,21 +68,14 @@ export default class ApplicationCard extends React.Component<
 
   get actionHandlerCallbacks() {
     return {
-      progress: () => {
-        this.setState({
-          actionState: 'pending',
-          actionMessage: undefined,
-        });
-      },
+      progress: () => this.setState(progress()),
       success: (message: string) => {
         this.setState(success(message), () => {
           // hide the alert after 2s
           this.timeout = setTimeout(() => this.setState(dismiss()), 2000);
         });
       },
-      failure: () => {
-        this.setState(failure('Something went wrong.'));
-      },
+      failure: () => this.setState(failure('Something went wrong.')),
     };
   }
 
@@ -80,10 +83,12 @@ export default class ApplicationCard extends React.Component<
     // store the action so we can try it again later if it fails
     this.setState({ action });
 
-    // clear previous success alerts that haven't been cleared
+    // prevent the next alert from being cleared by any previous success alerts that haven't already been cleared
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
+
+    // handle the action
     action.handler(this.actionHandlerCallbacks);
   };
 
@@ -97,6 +102,13 @@ export default class ApplicationCard extends React.Component<
   handleCancel = () => {
     this.setState(dismiss());
   };
+
+  componentWillUnmount() {
+    // prevent the alert from being cleared and unmounted
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+  }
 
   renderActions() {
     const { actions } = this.props;
@@ -113,7 +125,7 @@ export default class ApplicationCard extends React.Component<
     if (actionState === 'failure') {
       return (
         <ActionsStateWrapper>
-          <WarningIcon size="medium" label="" primaryColor={colors.Y300} />
+          <WarningIcon size="medium" label="" primaryColor={akColorY300} />
         </ActionsStateWrapper>
       );
     }

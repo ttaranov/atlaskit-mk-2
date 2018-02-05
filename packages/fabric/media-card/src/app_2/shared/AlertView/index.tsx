@@ -80,7 +80,6 @@ export default class AlertView extends React.Component<
 
     return (
       <span>
-        {' '}
         <a onClick={this.handleTryAgain}>Try again</a> or{' '}
         <a onClick={this.handleCancel}>cancel</a>.
       </span>
@@ -91,8 +90,7 @@ export default class AlertView extends React.Component<
     const { type, style } = this.props;
     return (
       <Wrapper innerRef={this.handleMount} type={type} style={style}>
-        {this.renderContent()}
-        {this.renderRetryAndCancel()}
+        {this.renderContent()} {this.renderRetryAndCancel()}
       </Wrapper>
     );
   }

@@ -31,7 +31,7 @@ describe('ActionsView', () => {
     expect(element.getElement()).toBeNull();
   });
 
-  it('should render a single action as a single buttond', () => {
+  it('should render a single action as a single button', () => {
     const element = shallow(<ActionsView actions={[likeAction]} />);
 
     const buttons = element.find(Button);
