@@ -14,9 +14,7 @@ export const Input = styled.input`
     font-size: 13px;
     line-height: 20px;
     padding: 0;
-
-    /* IE11 fixes */
-    height: 20px;
+    ${props => (props.width ? `width: ${props.width}px` : '')} height: 20px;
     min-width: 145px;
 
     /* Hides IE10+ built-in [x] clear input button */
