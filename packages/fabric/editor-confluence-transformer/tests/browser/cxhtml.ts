@@ -865,12 +865,38 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         macroMetadata,
       },
     };
-    const params = Object.keys(macroParams).map(
+    const paramsAsCXHTML = Object.keys(macroParams).map(
       key =>
         `<ac:parameter ac:name="${key}">${
           macroParams[key].value
         }</ac:parameter>`,
     );
+
+    describe('extensions with resource identifiers', () => {
+      const attrs = {
+        extensionType: 'com.atlassian.confluence.macro.core',
+        extensionKey: 'fake',
+        parameters: {
+          macroParams: {
+            ...macroParams,
+            src: { value: 'www.google.com' },
+            spaces: { value: 'abc' },
+          },
+          macroMetadata,
+        },
+      };
+      check(
+        'basic',
+        `<ac:structured-macro ac:name="${
+          attrs.extensionKey
+        }" ac:schema-version="1" ac:macro-id="${
+          macroMetadata.macroId.value
+        }"><ac:parameter ac:name="src"><ri:url ri:value="www.google.com" /></ac:parameter><ac:parameter ac:name="spaces"><ri:space ri:space-key="abc" /></ac:parameter>${paramsAsCXHTML}<fab:placeholder-url>${
+          macroMetadata.placeholder[0].data.url
+        }</fab:placeholder-url><fab:display-type>BLOCK</fab:display-type></ac:structured-macro>`,
+        doc(extension(attrs)()),
+      );
+    });
 
     describe('inlineExtension', () => {
       check(
@@ -878,8 +904,8 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
         }" ac:schema-version="1" ac:macro-id="${
-          attrs.parameters.macroMetadata.macroId.value
-        }">${params}<fab:placeholder-url>${
+          macroMetadata.macroId.value
+        }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
         }</fab:placeholder-url><fab:display-type>INLINE</fab:display-type></ac:structured-macro>`,
         doc(p(inlineExtension(attrs)())),
@@ -892,8 +918,8 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
         }" ac:schema-version="1" ac:macro-id="${
-          attrs.parameters.macroMetadata.macroId.value
-        }">${params}<fab:placeholder-url>${
+          macroMetadata.macroId.value
+        }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
         }</fab:placeholder-url><fab:display-type>BLOCK</fab:display-type></ac:structured-macro>`,
         doc(extension(attrs)()),
@@ -906,8 +932,8 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
         }" ac:schema-version="1" ac:macro-id="${
-          attrs.parameters.macroMetadata.macroId.value
-        }">${params}<fab:placeholder-url>${
+          macroMetadata.macroId.value
+        }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
         }</fab:placeholder-url>
           <fab:display-type>BLOCK</fab:display-type>

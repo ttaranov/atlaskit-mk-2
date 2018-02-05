@@ -305,17 +305,27 @@ export function parseMacro(node: Element): Macro {
     if (child.nodeType === 3) {
       continue;
     }
-    const value = child.textContent;
 
     // example: <ac:parameter ac:name=\"colour\">Red</ac:parameter>
+    // example: <ac:parameter ac:name=\"colour\"><ri:node ri:param=\"Red\" /></ac:parameter>
     if (nodeName === 'ac:parameter') {
       const key = getAcName(child);
       if (key) {
-        params[key.toLowerCase()] = value;
+        const firstChild = child.childNodes[0];
+        const riMapping = MACRO_PARAM_TO_RI[key];
+        if (
+          firstChild &&
+          riMapping &&
+          getNodeName(firstChild).toLowerCase() === riMapping.name
+        ) {
+          params[key.toLowerCase()] = firstChild.getAttribute(riMapping.param);
+        } else {
+          params[key.toLowerCase()] = child.textContent;
+        }
       }
     } else {
       // example: <fab:placeholder-url>, <fab:display-type>, <ac:rich-text-body>
-      properties[nodeName] = value;
+      properties[nodeName] = child.textContent;
     }
   }
 
@@ -354,4 +364,21 @@ export const mapPanelTypeToCxhtml = (panelType: string) => {
       return 'panel';
   }
   return panelType;
+};
+
+export const MACRO_PARAM_TO_RI: {
+  [name: string]: { name: string; param: string };
+} = {
+  author: {
+    name: 'ri:user',
+    param: 'ri:userkey',
+  },
+  spaces: {
+    name: 'ri:space',
+    param: 'ri:space-key',
+  },
+  src: {
+    name: 'ri:url',
+    param: 'ri:value',
+  },
 };
