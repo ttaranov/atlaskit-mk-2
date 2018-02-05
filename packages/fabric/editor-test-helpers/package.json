@@ -15,7 +15,7 @@
   "maintainers": [],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/editor-common": "^5.9.2",
+    "@atlaskit/editor-common": "^6.0.4",
     "@atlaskit/editor-core": "^61.4.6",
     "@atlaskit/media-core": "^13.0.0",
     "@atlaskit/media-test-helpers": "^9.0.0",

@@ -16,7 +16,7 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/code": "^3.0.0",
-    "@atlaskit/editor-common": "^5.9.3",
+    "@atlaskit/editor-common": "^6.0.4",
     "@atlaskit/editor-json-transformer": "^2.5.1",
     "@atlaskit/icon": "^10.7.0",
     "@atlaskit/media-card": "^24.0.0",

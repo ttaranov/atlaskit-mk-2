@@ -15,7 +15,7 @@
   "maintainers": [],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
-    "@atlaskit/editor-common": "^5.7.1"
+    "@atlaskit/editor-common": "^6.0.4"
   },
   "peerDependencies": {
     "react": "15.6.0 - 16.2.0"
