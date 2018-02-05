@@ -878,7 +878,6 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         extensionKey: 'fake',
         parameters: {
           macroParams: {
-            ...macroParams,
             src: { value: 'www.google.com' },
             spaces: { value: 'abc' },
           },
@@ -891,7 +890,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           attrs.extensionKey
         }" ac:schema-version="1" ac:macro-id="${
           macroMetadata.macroId.value
-        }"><ac:parameter ac:name="src"><ri:url ri:value="www.google.com" /></ac:parameter><ac:parameter ac:name="spaces"><ri:space ri:space-key="abc" /></ac:parameter>${paramsAsCXHTML}<fab:placeholder-url>${
+        }"><ac:parameter ac:name="src"><ri:url ri:value="www.google.com" /></ac:parameter><ac:parameter ac:name="spaces"><ri:space ri:space-key="abc" /></ac:parameter><fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
         }</fab:placeholder-url><fab:display-type>BLOCK</fab:display-type></ac:structured-macro>`,
         doc(extension(attrs)()),

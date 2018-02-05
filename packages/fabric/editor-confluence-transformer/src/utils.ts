@@ -367,7 +367,7 @@ export const mapPanelTypeToCxhtml = (panelType: string) => {
 };
 
 const MACRO_PARAM_TO_RI: {
-  [name: string]: { name: string; param: string };
+  [key: string]: { name: string; param: string };
 } = {
   author: {
     name: 'ri:user',
