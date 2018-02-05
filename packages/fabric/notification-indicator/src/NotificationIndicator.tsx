@@ -22,10 +22,12 @@ export interface Props {
 
 export interface State {
   count: number;
-  intervalId?: number;
 }
 
 export default class NotificationIndicator extends Component<Props, State> {
+  private intervalId?: number;
+  private notificationLogProvider?: NotificationLogProvider;
+
   state: State = {
     count: 0,
   };
@@ -38,35 +40,33 @@ export default class NotificationIndicator extends Component<Props, State> {
   };
 
   async componentDidMount() {
-    const notificationLogProvider = await this.props.notificationLogProvider;
+    const { refreshRate } = this.props;
+    this.notificationLogProvider = await this.props.notificationLogProvider;
+    this.refresh();
 
-    this.refresh(notificationLogProvider);
-
-    if (this.props.refreshRate && this.props.refreshRate > 0) {
-      const intervalId = setInterval(
-        () => this.refresh(notificationLogProvider),
-        this.props.refreshRate,
-      );
-
-      this.setState({
-        intervalId: intervalId,
-      });
+    if (refreshRate && refreshRate > 0) {
+      this.intervalId = setInterval(this.refresh, refreshRate);
     }
+    document.addEventListener('visibilitychange', this.refresh);
   }
 
   componentWillUnmount() {
-    if (this.state.intervalId) {
-      clearInterval(this.state.intervalId);
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
     }
+    document.removeEventListener('visibilitychange', this.refresh);
   }
 
   private shouldRefresh = () => {
     return !document.hidden || this.props.refreshOnHidden;
   };
 
-  private refresh = async (
-    notificationLogProvider: NotificationLogProvider,
-  ) => {
+  private refresh = async () => {
+    // Provider should be available by this point, if not, we exit.
+    if (!this.notificationLogProvider) {
+      return;
+    }
+
     // If user is not viewing the webpage, then skip this refresh to avoid unnecessary request.
     if (!this.shouldRefresh()) {
       return;
@@ -75,7 +75,7 @@ export default class NotificationIndicator extends Component<Props, State> {
     try {
       const {
         count,
-      } = await notificationLogProvider.countUnseenNotifications();
+      } = await this.notificationLogProvider.countUnseenNotifications();
 
       this.setState(state => {
         if (this.props.onCountUpdated && state.count !== count) {

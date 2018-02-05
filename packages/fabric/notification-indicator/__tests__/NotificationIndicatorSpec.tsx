@@ -49,6 +49,12 @@ describe('NotificationIndicator', () => {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  function triggerVisibilityChange() {
+    const visibilityChange = document.createEvent('HTMLEvents');
+    visibilityChange.initEvent('visibilitychange', true, true);
+    document.body.dispatchEvent(visibilityChange);
+  }
+
   beforeEach(() => {
     notificationLogClient = new MockNotificationLogClient();
   });
@@ -103,5 +109,22 @@ describe('NotificationIndicator', () => {
 
     // Ensure setInterval has been cleared
     expect(onCountUpdated.callCount).toEqual(2);
+  });
+
+  it('Should refresh on visibilitychange if document is visible', async () => {
+    const onCountUpdated = sinon.spy();
+    const wrapper = await renderNotificationIndicator(returnCount(1), {
+      refreshRate: 99999,
+      onCountUpdated,
+    });
+
+    expect(wrapper.state('count')).toEqual(1);
+
+    notificationLogClient.setResponse(returnCount(5));
+    triggerVisibilityChange();
+    await timeout(0);
+    wrapper.update();
+
+    expect(wrapper.state('count')).toEqual(5);
   });
 });
