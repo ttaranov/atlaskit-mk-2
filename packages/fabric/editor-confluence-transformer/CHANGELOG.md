@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.7.2
+- [patch] Allow macro provider to handle auto conversion during paste [b2c83f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b2c83f8)
+
 ## 2.7.1
 
 ## 2.7.0

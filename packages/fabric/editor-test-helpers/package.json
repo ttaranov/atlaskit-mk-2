@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-test-helpers",
-  "version": "1.8.5",
+  "version": "1.8.6",
   "description": "Test Helpers for Atlassian Editor components",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -12,11 +12,13 @@
     "dist"
   ],
   "author": "Atlassian Pty Ltd",
-  "maintainers": ["Stanislas S"],
+  "maintainers": [
+    "Stanislas S"
+  ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/editor-common": "^6.0.0",
-    "@atlaskit/editor-core": "^61.7.3",
+    "@atlaskit/editor-core": "^61.7.13",
     "@atlaskit/media-core": "^13.0.0",
     "@atlaskit/media-test-helpers": "^9.0.0",
     "prosemirror-commands": "^1.0.1",
