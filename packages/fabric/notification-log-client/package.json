@@ -21,6 +21,8 @@
     "tslib": "^1.8.0"
   },
   "devDependencies": {
+    "@atlaskit/docs": "^2.4.0",
+    "@atlaskit/notification-indicator": "^1.0.0",
     "whatwg-fetch": "^2.0.3",
     "fetch-mock": "^5.12.1"
   }

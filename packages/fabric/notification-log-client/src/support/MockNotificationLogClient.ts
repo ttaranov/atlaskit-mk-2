@@ -1,4 +1,4 @@
-import NotificationLogClient from '../api/NotificationLogClient';
+import NotificationLogClient from '../NotificationLogClient';
 import { NotificationCountResponse } from '../types';
 
 export default class MockNotificationLogClient extends NotificationLogClient {

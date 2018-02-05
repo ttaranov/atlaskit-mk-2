@@ -21,6 +21,7 @@
     "tslib": "^1.8.0"
   },
   "devDependencies": {
+    "@atlaskit/docs": "^2.4.0",
     "enzyme": "^3.3.0"
   },
   "peerDependencies": {
