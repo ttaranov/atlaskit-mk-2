@@ -11,6 +11,7 @@ import Editor from './Editor';
 import { Comment as CommentType, User } from '../model';
 import CommentContainer from '../containers/Comment';
 import { ProviderFactory } from '@atlaskit/editor-common';
+import { HttpError } from '../api/HttpError';
 
 /**
  * Props which are passed down from the parent Conversation/Comment
@@ -20,13 +21,21 @@ export interface SharedProps {
   comments?: CommentType[];
 
   // Dispatch
-  onAddComment?: (conversationId: string, parentId: string, value: any) => void;
+  onAddComment?: (
+    conversationId: string,
+    parentId: string,
+    value: any,
+    localId?: string,
+  ) => void;
   onUpdateComment?: (
     conversationId: string,
     commentId: string,
     value: any,
   ) => void;
   onDeleteComment?: (conversationId: string, commentId: string) => void;
+  onRevertComment?: (conversationId: string, commentId: string) => void;
+  onCancelComment?: (conversationId: string, commentId: string) => void;
+  onCancel?: () => void;
 
   // Provider
   dataProviders?: ProviderFactory;
@@ -38,11 +47,16 @@ export interface SharedProps {
 export interface Props extends SharedProps {
   conversationId: string;
   comment: CommentType;
+  onRetry?: (localId?: string) => void;
 }
 
 export interface State {
   isEditing?: boolean;
   isReplying?: boolean;
+  lastDispatch?: {
+    handler: any;
+    args: any[];
+  };
 }
 
 export const DeletedMessage = () => <em>Comment deleted by the author</em>;
@@ -104,6 +118,18 @@ export default class Comment extends React.Component<Props, State> {
     return false;
   }
 
+  private dispatch = (dispatch: string, ...args: any[]) => {
+    const handler = this.props[dispatch];
+
+    if (handler) {
+      handler.apply(handler, args);
+
+      this.setState({
+        lastDispatch: { handler: dispatch, args },
+      });
+    }
+  };
+
   private onReply = () => {
     this.setState({
       isReplying: true,
@@ -111,13 +137,9 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onSaveReply = async (value: any) => {
-    const { conversationId, comment, onAddComment } = this.props;
+    const { conversationId, comment } = this.props;
 
-    if (!onAddComment) {
-      return;
-    }
-
-    onAddComment(conversationId, comment.commentId, value);
+    this.dispatch('onAddComment', conversationId, comment.commentId, value);
 
     this.setState({
       isReplying: false,
@@ -131,13 +153,9 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onDelete = () => {
-    const { onDeleteComment, conversationId, comment } = this.props;
+    const { conversationId, comment } = this.props;
 
-    if (!onDeleteComment) {
-      return;
-    }
-
-    onDeleteComment(conversationId, comment.commentId);
+    this.dispatch('onDeleteComment', conversationId, comment.commentId);
   };
 
   private onEdit = () => {
@@ -147,13 +165,9 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onSaveEdit = async (value: any) => {
-    const { conversationId, comment, onUpdateComment } = this.props;
+    const { conversationId, comment } = this.props;
 
-    if (!onUpdateComment) {
-      return;
-    }
-
-    onUpdateComment(conversationId, comment.commentId, value);
+    this.dispatch('onUpdateComment', conversationId, comment.commentId, value);
 
     this.setState({
       isEditing: false,
@@ -164,6 +178,32 @@ export default class Comment extends React.Component<Props, State> {
     this.setState({
       isEditing: false,
     });
+  };
+
+  private onRequestCancel = () => {
+    const { comment, onCancel } = this.props;
+
+    // Invoke optional onCancel hook
+    if (onCancel) {
+      onCancel();
+    }
+
+    this.dispatch('onRevertComment', comment.conversationId, comment.commentId);
+  };
+
+  private onRequestRetry = () => {
+    const { lastDispatch } = this.state;
+    const { onRetry, comment } = this.props;
+
+    if (onRetry && comment.isPlaceholder) {
+      return onRetry(comment.localId);
+    }
+
+    if (!lastDispatch) {
+      return;
+    }
+
+    this.dispatch(lastDispatch.handler, ...lastDispatch.args);
   };
 
   /**
@@ -214,6 +254,12 @@ export default class Comment extends React.Component<Props, State> {
       user,
       onUserClick,
       dataProviders,
+      onAddComment,
+      onUpdateComment,
+      onDeleteComment,
+      onRevertComment,
+      onRetry,
+      onCancel,
     } = this.props;
 
     if (!comments || comments.length === 0) {
@@ -226,9 +272,12 @@ export default class Comment extends React.Component<Props, State> {
         comment={child}
         user={user}
         conversationId={conversationId}
-        onAddComment={this.props.onAddComment}
-        onUpdateComment={this.props.onUpdateComment}
-        onDeleteComment={this.props.onDeleteComment}
+        onAddComment={onAddComment}
+        onUpdateComment={onUpdateComment}
+        onDeleteComment={onDeleteComment}
+        onRevertComment={onRevertComment}
+        onRetry={onRetry}
+        onCancel={onCancel}
         onUserClick={onUserClick}
         dataProviders={dataProviders}
       />
@@ -257,8 +306,12 @@ export default class Comment extends React.Component<Props, State> {
   render() {
     const { comment, user, onUserClick } = this.props;
     const { isEditing } = this.state;
-    const { createdBy, state: commentState } = comment;
+    const { createdBy, state: commentState, error } = comment;
     const canReply = !!user && !isEditing && !comment.deleted;
+    const errorProps: {
+      actions?: any[];
+      message?: string;
+    } = {};
     let actions;
 
     if (canReply) {
@@ -279,6 +332,27 @@ export default class Comment extends React.Component<Props, State> {
           </CommentAction>,
         ];
       }
+    }
+
+    if (error) {
+      errorProps.actions = [];
+
+      if ((error as HttpError).canRetry) {
+        errorProps.actions = [
+          <CommentAction key="retry" onClick={this.onRequestRetry}>
+            Retry
+          </CommentAction>,
+        ];
+      }
+
+      errorProps.actions = [
+        ...errorProps.actions,
+        <CommentAction key="cancel" onClick={this.onRequestCancel}>
+          Cancel
+        </CommentAction>,
+      ];
+
+      errorProps.message = error.message;
     }
 
     const comments = this.renderComments();
@@ -311,6 +385,9 @@ export default class Comment extends React.Component<Props, State> {
         actions={actions}
         content={this.getContent()}
         isSaving={commentState === 'SAVING'}
+        isError={commentState === 'ERROR'}
+        errorActions={errorProps.actions}
+        errorIconLabel={errorProps.message}
       >
         {editor || comments ? (
           <div>

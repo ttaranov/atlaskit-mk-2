@@ -8,17 +8,24 @@ import { uuid } from '../src/internal/uuid';
 import { generateMockConversation, mockInlineConversation } from './MockData';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { HttpError } from '../src/api/HttpError';
 
 import {
   FETCH_CONVERSATIONS_REQUEST,
   FETCH_CONVERSATIONS_SUCCESS,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
+  ADD_COMMENT_ERROR,
   UPDATE_COMMENT_REQUEST,
   UPDATE_COMMENT_SUCCESS,
+  UPDATE_COMMENT_ERROR,
+  DELETE_COMMENT_REQUEST,
   DELETE_COMMENT_SUCCESS,
+  DELETE_COMMENT_ERROR,
+  REVERT_COMMENT,
   CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
+  CREATE_CONVERSATION_ERROR,
   UPDATE_USER_SUCCESS,
 } from '../src/internal/actions';
 
@@ -27,6 +34,18 @@ const MockDataProviders = {
   emojiProvider: Promise.resolve(
     emojiStoryData.getEmojiResource({ uploadSupported: true }),
   ),
+};
+
+const RESPONSE_MESSAGES = {
+  200: 'OK',
+  201: 'OK',
+  204: 'No Content',
+
+  400: 'Bad Request',
+  403: 'Forbidden',
+  404: 'Not Found',
+  500: 'Server error',
+  503: 'Service Unavailable',
 };
 
 export const getDataProviderFactory = () => {
@@ -39,11 +58,13 @@ export const getDataProviderFactory = () => {
 
 export class MockProvider extends AbstractConversationResource {
   private config: ConversationResourceConfig;
+  private responseCode: number;
 
   constructor(config: ConversationResourceConfig) {
     super();
     this.config = config;
     this.updateUser(config.user);
+    this.responseCode = 200;
   }
 
   /**
@@ -78,32 +99,51 @@ export class MockProvider extends AbstractConversationResource {
       meta: meta,
     };
 
-    const { dispatch } = this;
+    const { dispatch, responseCode } = this;
 
     dispatch({ type: CREATE_CONVERSATION_REQUEST, payload: result });
 
     setTimeout(() => {
-      dispatch({ type: CREATE_CONVERSATION_SUCCESS, payload: result });
+      const errResult = {
+        ...result,
+        error: new HttpError(responseCode, RESPONSE_MESSAGES[responseCode]),
+      };
+      const type =
+        responseCode >= 400
+          ? CREATE_CONVERSATION_ERROR
+          : CREATE_CONVERSATION_SUCCESS;
+      const payload = responseCode >= 400 ? errResult : result;
+      dispatch({ type, payload });
     }, 1000);
 
     return result;
   }
 
   /**
-   * Adds a comment to a parent. ParentId can be either a conversation or another comment.
+   * Adds a comment to a parent, or update if existing. ParentId can be either a conversation or another comment.
    */
   async addComment(
     conversationId: string,
     parentId: string,
     doc: any,
+    localId?: string,
   ): Promise<Comment> {
-    const result = this.createComment(conversationId, parentId, doc);
-    const { dispatch } = this;
+    const result = localId
+      ? { conversationId, localId }
+      : this.createComment(conversationId, parentId, doc);
+    const { dispatch, responseCode } = this;
 
     dispatch({ type: ADD_COMMENT_REQUEST, payload: result });
 
     setTimeout(() => {
-      dispatch({ type: ADD_COMMENT_SUCCESS, payload: result });
+      const errResult = {
+        ...result,
+        error: new HttpError(responseCode, RESPONSE_MESSAGES[responseCode]),
+      };
+      const type =
+        responseCode >= 400 ? ADD_COMMENT_ERROR : ADD_COMMENT_SUCCESS;
+      const payload = responseCode >= 400 ? errResult : result;
+      dispatch({ type, payload });
     }, 1000);
 
     return result;
@@ -148,12 +188,21 @@ export class MockProvider extends AbstractConversationResource {
       comments: [],
     };
 
-    const { dispatch } = this;
+    const { dispatch, responseCode } = this;
     dispatch({ type: UPDATE_COMMENT_REQUEST, payload: result });
 
     setTimeout(() => {
-      dispatch({ type: UPDATE_COMMENT_SUCCESS, payload: result });
-    }, 1000);
+      const errResult = {
+        conversationId,
+        commentId,
+        error: new HttpError(responseCode, RESPONSE_MESSAGES[responseCode]),
+      };
+
+      const type =
+        responseCode >= 400 ? UPDATE_COMMENT_ERROR : UPDATE_COMMENT_SUCCESS;
+      const payload = responseCode >= 400 ? errResult : result;
+      dispatch({ type, payload });
+    }, 500);
 
     return result;
   }
@@ -167,20 +216,37 @@ export class MockProvider extends AbstractConversationResource {
   async deleteComment(
     conversationId: string,
     commentId: string,
-  ): Promise<Comment> {
+  ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'error'>> {
+    const { dispatch, responseCode } = this;
     const result = {
-      createdBy: this.config.user,
-      createdAt: Date.now(),
-      document: {},
       conversationId,
       commentId,
-      deleted: true,
+      error: new HttpError(responseCode, RESPONSE_MESSAGES[responseCode]),
     };
+    dispatch({ type: DELETE_COMMENT_REQUEST, payload: result });
 
-    const { dispatch } = this;
-    dispatch({ type: DELETE_COMMENT_SUCCESS, payload: result });
+    setTimeout(() => {
+      const type =
+        responseCode >= 400 ? DELETE_COMMENT_ERROR : DELETE_COMMENT_SUCCESS;
+      dispatch({ type, payload: result });
+    }, 500);
 
     return result;
+  }
+
+  /**
+   * Reverts a comment based on ID. Returns updated comment.
+   */
+  async revertComment(
+    conversationId: string,
+    commentId: string,
+  ): Promise<Pick<Comment, 'conversationId' | 'commentId'>> {
+    const { dispatch } = this;
+    const comment = { conversationId, commentId };
+
+    dispatch({ type: REVERT_COMMENT, payload: comment });
+
+    return comment;
   }
 
   /**
@@ -193,4 +259,8 @@ export class MockProvider extends AbstractConversationResource {
 
     return user;
   }
+
+  updateResponseCode = (code: number): void => {
+    this.responseCode = code;
+  };
 }
