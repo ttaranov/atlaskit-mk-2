@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent, ReactElement } from 'react';
+import { Component, ReactElement } from 'react';
 import { ContextIdentifierProvider } from '@atlaskit/editor-common';
 import {
   ContentRef,
@@ -15,14 +15,14 @@ export interface Props {
   showPlaceholder?: boolean;
   children?: ReactElement<any>;
   taskDecisionProvider?: Promise<TaskDecisionProvider>;
-  contextIdentifierProvider?: Promise<any>;
+  contextIdentifierProvider?: Promise<ContextIdentifierProvider>;
 }
 
 export interface State {
-  resolvedContextProvider?: any;
+  resolvedContextProvider?: ContextIdentifierProvider;
 }
 
-export default class TaskItemWithProviders extends PureComponent<Props, State> {
+export default class TaskItemWithProviders extends Component<Props, State> {
   state: State = { resolvedContextProvider: undefined };
 
   componentWillMount() {
@@ -55,7 +55,7 @@ export default class TaskItemWithProviders extends PureComponent<Props, State> {
     const {
       taskDecisionProvider,
       contextIdentifierProvider,
-      ...otherProps,
+      ...otherProps
     } = this.props;
     const { objectId, containerId } =
       this.state.resolvedContextProvider || ({} as ContextIdentifierProvider);
