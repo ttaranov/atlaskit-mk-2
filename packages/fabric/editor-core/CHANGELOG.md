@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.7.16
+- [patch] Autoformatting should work for single character. [70e44af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70e44af)
+
 ## 61.7.15
 - [patch] Handle Media.getDomElement when node has no child nodes [618b0c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/618b0c1)
 
