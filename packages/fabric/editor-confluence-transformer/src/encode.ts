@@ -15,7 +15,6 @@ import {
   getNodeMarkOfType,
   encodeMacroParams,
   mapPanelTypeToCxhtml,
-  MACRO_PARAM_TO_RI,
 } from './utils';
 
 export default function encode(node: PMNode, schema: Schema) {
@@ -313,7 +312,7 @@ export default function encode(node: PMNode, schema: Schema) {
 
     if (node.attrs.language) {
       elem.appendChild(
-        encodeMacroParams(elem, {
+        encodeMacroParams(doc, {
           language: { value: mapCodeLanguage(node.attrs.language) },
         }),
       );
@@ -351,7 +350,7 @@ export default function encode(node: PMNode, schema: Schema) {
         // panel title
         if (node.type.name === 'heading' && pos === 0) {
           elem.appendChild(
-            encodeMacroParams(elem, {
+            encodeMacroParams(doc, {
               title: { value: node.firstChild!.textContent },
             }),
           );
@@ -371,7 +370,7 @@ export default function encode(node: PMNode, schema: Schema) {
     // it should be converted to "purple" Confluence panel
     if (panelType === 'panel') {
       elem.appendChild(
-        encodeMacroParams(elem, {
+        encodeMacroParams(doc, {
           borderColor: { value: '#998DD9' },
           bgColor: { value: '#EAE6FF' },
         }),
@@ -417,7 +416,7 @@ export default function encode(node: PMNode, schema: Schema) {
     elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', node.attrs.macroId);
 
     elem.appendChild(
-      encodeMacroParams(elem, {
+      encodeMacroParams(doc, {
         key: { value: node.attrs.issueKey },
         server: { value: node.attrs.server },
         serverId: { value: node.attrs.serverId },
@@ -439,7 +438,7 @@ export default function encode(node: PMNode, schema: Schema) {
 
       // parameters
       if (macroParams) {
-        elem.appendChild(encodeMacroParams(elem, macroParams));
+        elem.appendChild(encodeMacroParams(doc, macroParams));
       }
 
       const placeholderUrl = getPlaceholderUrl({ node, type: 'image' });

@@ -366,7 +366,7 @@ export const mapPanelTypeToCxhtml = (panelType: string) => {
   return panelType;
 };
 
-export const MACRO_PARAM_TO_RI: {
+const MACRO_PARAM_TO_RI: {
   [name: string]: { name: string; param: string };
 } = {
   author: {
@@ -383,10 +383,13 @@ export const MACRO_PARAM_TO_RI: {
   },
 };
 
-export const encodeMacroParams = (params: {
-  [name: string]: { value: string };
-}) => {
-  const elem = document.createDocumentFragment();
+export const encodeMacroParams = (
+  doc: Document,
+  params: {
+    [name: string]: { value: string };
+  },
+) => {
+  const elem = doc.createDocumentFragment();
   Object.keys(params).forEach(name => {
     const el = doc.createElementNS(AC_XMLNS, 'ac:parameter');
     el.setAttributeNS(AC_XMLNS, 'ac:name', name);
