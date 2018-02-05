@@ -139,7 +139,7 @@ export const generateMockConversation = (): Conversation => {
     meta: {},
     conversationId,
     containerId: 'abc:abc:abc/demo',
-    comments: Array.from({ length: 30 }).map(() => {
+    comments: Array.from({ length: 2 }).map(() => {
       const commentId = <string>uuid.generate();
 
       return {

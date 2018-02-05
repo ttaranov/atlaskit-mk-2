@@ -893,14 +893,16 @@ describe('Renderer - Validator', () => {
         const validADFChunk = {
           type: 'mediaSingle',
           attrs: { layout: 'full-width' },
-          content: [{
-            type: 'media',
-            attrs: {
-              type: 'file',
-              id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
-              collection: 'MediaServicesSample',
+          content: [
+            {
+              type: 'media',
+              attrs: {
+                type: 'file',
+                id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+                collection: 'MediaServicesSample',
+              },
             },
-          }],
+          ],
         };
 
         expect(getValidNode(validADFChunk)).toEqual(validADFChunk);
@@ -910,24 +912,28 @@ describe('Renderer - Validator', () => {
         const invalidADFChunk = {
           type: 'mediaSingle',
           attrs: { layout: 'full-width' },
-          content: [{
-            type: 'mention',
-            attrs: {
-              id: 'abcd-abcd-abcd',
-              text: '@Oscar',
+          content: [
+            {
+              type: 'mention',
+              attrs: {
+                id: 'abcd-abcd-abcd',
+                text: '@Oscar',
+              },
             },
-          }],
+          ],
         };
 
         expect(getValidNode(invalidADFChunk)).toEqual({
           type: 'unknownBlock',
-          content: [{
-            type: 'mention',
-            attrs: {
-              id: 'abcd-abcd-abcd',
-              text: '@Oscar',
+          content: [
+            {
+              type: 'mention',
+              attrs: {
+                id: 'abcd-abcd-abcd',
+                text: '@Oscar',
+              },
             },
-          }],
+          ],
         });
       });
 

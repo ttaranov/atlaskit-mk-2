@@ -56,7 +56,7 @@ export class MediaCollectionViewer extends Component<
     const config = {
       ...mediaViewerConfiguration,
       isPreviewGenerated: isPreviewGenerated(MediaViewer),
-      generatePreview: generatePreview(MediaViewer)
+      generatePreview: generatePreview(MediaViewer),
     };
 
     this.state = {

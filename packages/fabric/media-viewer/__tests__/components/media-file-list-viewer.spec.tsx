@@ -237,7 +237,7 @@ describe('<MediaFileListViewer />', () => {
     expect((mediaViewer.off as any).mock.calls[0][0]).toBe('fv.close');
   });
 
-  it('should deal with provider errors', (done) => {
+  it('should deal with provider errors', done => {
     const list = [
       {
         id: 'some-id',
@@ -248,7 +248,7 @@ describe('<MediaFileListViewer />', () => {
         id: 'some-id-2',
         occurrenceKey: 'some-custom-occurrence-key-2',
         type: 'file' as MediaItemType,
-      }
+      },
     ];
 
     const subject = new Subject<MediaItem>();
@@ -258,7 +258,7 @@ describe('<MediaFileListViewer />', () => {
       Stubs.mediaItemProvider(subject),
     ) as any;
 
-    const setFiles = (files) => {
+    const setFiles = files => {
       expect(files.length).toEqual(2);
       expect(files[0].id).toEqual('some-id-some-custom-occurrence-key');
       expect(files[0].type).toEqual('error');
@@ -278,7 +278,7 @@ describe('<MediaFileListViewer />', () => {
     });
 
     const additionalConfiguration = {
-      enableMiniMode: true
+      enableMiniMode: true,
     };
 
     mount(
@@ -295,6 +295,5 @@ describe('<MediaFileListViewer />', () => {
 
     // make all underlying observables from MediaItemProviders fail
     subject.error({});
-
   });
 });

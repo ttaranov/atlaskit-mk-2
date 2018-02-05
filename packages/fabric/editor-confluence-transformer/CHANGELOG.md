@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.7.3
+- [patch] remove mention name from encoder [130f15c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/130f15c)
+
 ## 2.7.2
 - [patch] Allow macro provider to handle auto conversion during paste [b2c83f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b2c83f8)
 

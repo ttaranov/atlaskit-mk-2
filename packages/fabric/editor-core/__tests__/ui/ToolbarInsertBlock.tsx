@@ -4,7 +4,7 @@ import blockTypePlugins from '../../src/plugins/block-type';
 import tableCommands from '../../src/plugins/table/commands';
 import DropdownMenu from '../../src/ui/DropdownMenu';
 import ToolbarInsertBlock from '../../src/ui/ToolbarInsertBlock';
-import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
+import { EmojiPicker as AkEmojiPicker, EmojiProvider } from '@atlaskit/emoji';
 import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 import Item from '@atlaskit/item';
 import {
@@ -21,7 +21,9 @@ import codeBlockPlugin from '../../src/editor/plugins/code-block';
 import panelPlugin from '../../src/editor/plugins/panel';
 import listPlugin from '../../src/editor/plugins/lists';
 
-const emojiProvider = emojiTestData.getEmojiResourcePromise();
+const emojiProvider = emojiTestData.getEmojiResourcePromise() as Promise<
+  EmojiProvider
+>;
 
 const mediaProvider: Promise<MediaProvider> = Promise.resolve({
   viewContext: Promise.resolve({} as any),

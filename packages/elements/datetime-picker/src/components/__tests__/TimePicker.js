@@ -14,11 +14,11 @@ describe(name, () => {
     });
 
     it('calls onChange when the input is blurred and the content is valid', () => {
-      const testValue = '1:00pm';
+      const testValue = '13:00';
       const onChangeMock = jest.fn();
       const wrapper = mount(<TimePicker onChange={onChangeMock} />);
 
-      wrapper.setState({ displayValue: testValue });
+      wrapper.setState({ value: testValue });
       wrapper.find('input').simulate('blur');
 
       expect(onChangeMock.mock.calls).toHaveLength(1);
@@ -29,23 +29,22 @@ describe(name, () => {
       const onChangeMock = jest.fn();
       const wrapper = mount(<TimePicker onChange={onChangeMock} />);
 
-      wrapper.setState({ displayValue: 'invalid value' });
+      wrapper.setState({ value: 'invalid value' });
       wrapper.find('input').simulate('blur');
 
       expect(onChangeMock.mock.calls).toHaveLength(0);
     });
 
-    it('updates the displayValue when the input value is changed', () => {
+    it('updates the display value when the input value is changed', () => {
       const testValue = 'new value';
       const wrapper = mount(<TimePicker />);
 
       wrapper
         .find('input')
         .simulate('change', { target: { value: testValue } });
+      wrapper.update();
 
-      expect(wrapper.find(TimePickerStateless).props().displayValue).toBe(
-        testValue,
-      );
+      expect(wrapper.state().value).toBe(testValue);
     });
 
     it('opens the dialog when triggered by the field', () => {
@@ -85,16 +84,12 @@ describe(name, () => {
       const wrapper = shallow(<TimePicker onChange={onChangeMock} />);
 
       wrapper.setState({ isOpen: true });
-      wrapper
-        .find(TimePickerStateless)
-        .props()
-        .onPickerUpdate(testValue);
+      wrapper.props().onPickerUpdate(testValue);
       wrapper.update();
 
       expect(onChangeMock.mock.calls).toHaveLength(1);
       expect(onChangeMock.mock.calls[0][0]).toBe(testValue);
-      expect(wrapper.props()).toMatchObject({
-        displayValue: testValue,
+      expect(wrapper.state()).toMatchObject({
         isOpen: false,
         value: testValue,
       });

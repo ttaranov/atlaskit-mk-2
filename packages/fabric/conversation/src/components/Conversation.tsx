@@ -17,7 +17,6 @@ export interface Props extends SharedProps {
     value: any,
     meta: any,
   ) => void;
-  onCancel?: () => void;
 
   isExpanded?: boolean;
   meta?: {
@@ -33,7 +32,9 @@ export default class Conversation extends React.PureComponent<Props> {
       onAddComment,
       onUpdateComment,
       onDeleteComment,
+      onRevertComment,
       onUserClick,
+      onCancel,
       user,
       dataProviders,
     } = this.props;
@@ -53,6 +54,9 @@ export default class Conversation extends React.PureComponent<Props> {
         onAddComment={onAddComment}
         onUpdateComment={onUpdateComment}
         onDeleteComment={onDeleteComment}
+        onRevertComment={onRevertComment}
+        onRetry={this.onRetry(comment.document)}
+        onCancel={onCancel}
         onUserClick={onUserClick}
         dataProviders={dataProviders}
       />
@@ -85,7 +89,11 @@ export default class Conversation extends React.PureComponent<Props> {
     }
   }
 
-  private onSave = async (value: any) => {
+  private onRetry = (document: any) => (commentLocalId?: string) => {
+    this.onSave(document, commentLocalId);
+  };
+
+  private onSave = async (value: any, commentLocalId?: string) => {
     const {
       containerId,
       id,
@@ -93,15 +101,17 @@ export default class Conversation extends React.PureComponent<Props> {
       meta,
       onAddComment,
       onCreateConversation,
+      conversation,
     } = this.props;
 
-    if (!id) {
+    if (!id && !commentLocalId) {
       if (onCreateConversation) {
         onCreateConversation(localId!, containerId, value, meta);
       }
     } else {
       if (onAddComment) {
-        onAddComment(id, id, value);
+        const conversationId = id || conversation!.conversationId;
+        onAddComment(conversationId, conversationId, value, commentLocalId);
       }
     }
   };

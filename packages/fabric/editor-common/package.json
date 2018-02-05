@@ -22,7 +22,7 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/emoji": "^31.0.2",
+    "@atlaskit/emoji": "^31.1.0",
     "@atlaskit/icon": "^10.8.0",
     "@atlaskit/media-core": "^13.0.0",
     "@atlaskit/mention": "^9.1.1",

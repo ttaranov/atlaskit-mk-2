@@ -1,5 +1,8 @@
 # @atlaskit/multi-select
 
+## 8.0.5
+- [patch] Flatten examples for easier consumer use [145b632](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/145b632)
+
 ## 8.0.4
 
 ## 8.0.3

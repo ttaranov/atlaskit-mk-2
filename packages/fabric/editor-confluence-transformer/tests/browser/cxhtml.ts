@@ -1252,42 +1252,39 @@ describe('ConfluenceTransformer: encode - parse:', () => {
   });
 
   describe('fabric mentions', () => {
-    check(
-      'with atlassian id and name',
-      '<p>This is mention from <fab:link><fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></fab:link></p>',
-      doc(
-        p(
-          'This is mention from ',
-          mention({
-            id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
-            text: 'Artur Bodera',
-          })(),
-        ),
-      ),
-    );
+    it('shoult parse mention with atlassian id and name', () => {
+      const cxhtml =
+        '<p>This is mention from <fab:link><fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></fab:link></p>';
 
-    it('strips @ from mention text', () => {
-      const docBefore = doc(
-        p(
-          '@ is stripped from this mention: ',
-          mention({
-            id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
-            text: '@Artur Bodera',
-          })(),
+      expect(parse(cxhtml)).to.deep.equal(
+        doc(
+          p(
+            'This is mention from ',
+            mention({
+              id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
+              text: 'Artur Bodera',
+            })(),
+          ),
         ),
       );
+    });
 
-      const docAfter = doc(
-        p(
-          '@ is stripped from this mention: ',
-          mention({
-            id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
-            text: 'Artur Bodera',
-          })(),
-        ),
+    // @see ED-3634
+    it('shoult encode mention and preserve only atlassian id', () => {
+      const encodedCxhtml = encode(
+        doc(
+          p(
+            'This is mention from ',
+            mention({
+              id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
+              text: 'Artur Bodera',
+            })(),
+          ),
+        )(schema),
       );
-
-      expect(parse(encode(docBefore(schema)))).to.deep.equal(docAfter);
+      expect(encodedCxhtml).to.equal(
+        '<p>This is mention from <fab:link><fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"/></fab:link></p>',
+      );
     });
   });
 

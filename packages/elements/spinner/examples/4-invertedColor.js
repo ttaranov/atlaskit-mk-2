@@ -1,8 +1,8 @@
 // @flow
 
 import React from 'react';
-import Spinner from '@atlaskit/spinner';
 import { akColorB400 } from '@atlaskit/util-shared-styles';
+import Spinner from '../src';
 
 export default () => (
   <div

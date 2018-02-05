@@ -10,7 +10,9 @@ export interface Props {
   layout: MediaSingleLayout;
 }
 
-export default function MediaSingle(props: { layout: MediaSingleLayout } & React.Props<any>) {
+export default function MediaSingle(
+  props: { layout: MediaSingleLayout } & React.Props<any>,
+) {
   const child = React.Children.only(React.Children.toArray(props.children)[0]);
 
   const media = React.cloneElement(child, {

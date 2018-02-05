@@ -1,8 +1,8 @@
 // @flow
 
 import React, { Component } from 'react';
-import Spinner from '@atlaskit/spinner';
 import Button from '@atlaskit/button';
+import Spinner from '../src';
 
 type State = {
   isCompleting: boolean,

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/conversation",
-  "version": "5.0.6",
+  "version": "5.1.0",
   "config": {
     "access": "public"
   },
@@ -34,7 +34,7 @@
     "tslib": "^1.8.0"
   },
   "devDependencies": {
-    "@atlaskit/emoji": "^31.0.2",
+    "@atlaskit/emoji": "^31.1.0",
     "@atlaskit/mention": "^9.1.1",
     "@atlaskit/single-select": "^3.2.1"
   }

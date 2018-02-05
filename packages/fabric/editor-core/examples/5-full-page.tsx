@@ -16,6 +16,7 @@ import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/suppor
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
+import { EmojiProvider } from '@atlaskit/emoji';
 
 import {
   akEditorCodeBackground,
@@ -102,7 +103,9 @@ export type Props = {};
 export type State = { disabled: boolean };
 
 const providers = {
-  emojiProvider: emojiStoryData.getEmojiResource({ uploadSupported: true }),
+  emojiProvider: emojiStoryData.getEmojiResource({
+    uploadSupported: true,
+  }) as Promise<EmojiProvider>,
   mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
   taskDecisionProvider: Promise.resolve(
     taskDecisionStoryData.getMockTaskDecisionResource(),
