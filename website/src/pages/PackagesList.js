@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Page, { Title, Section } from '../components/Page';
-import { externalPackages as packages, pkgData } from '../site';
+import { externalPackages as packages, pkgData, getConfig } from '../site';
 import Table from '@atlaskit/dynamic-table';
 import styled from 'styled-components';
 import * as fs from '../utils/fs';
@@ -49,10 +49,6 @@ const head = {
       width: 20,
     },
   ],
-};
-
-const getConfig = (groupId, pkgId) => {
-  return pkgData[groupId] && pkgData[groupId].find(a => a.name === pkgId);
 };
 
 const renderRow = (

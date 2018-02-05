@@ -17,6 +17,7 @@ import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
+import { EmojiProvider } from '@atlaskit/emoji';
 
 import {
   akEditorCodeBackground,
@@ -103,7 +104,9 @@ export type Props = {};
 export type State = { disabled: boolean };
 
 const providers = {
-  emojiProvider: emojiStoryData.getEmojiResource({ uploadSupported: true }),
+  emojiProvider: emojiStoryData.getEmojiResource({
+    uploadSupported: true,
+  }) as Promise<EmojiProvider>,
   mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
   taskDecisionProvider: Promise.resolve(
     taskDecisionStoryData.getMockTaskDecisionResource(),
@@ -118,6 +121,15 @@ const mediaProvider = storyMediaProviderFactory({
 
 export default class Example extends React.Component<Props, State> {
   state: State = { disabled: true };
+
+  componentDidMount() {
+    // tslint:disable-next-line:no-console
+    console.log(`To try the macro paste handler, paste one of the following links:
+
+  www.dumbmacro.com?paramA=CFE
+  www.smartmacro.com?paramB=CFE
+    `);
+  }
 
   render() {
     return (

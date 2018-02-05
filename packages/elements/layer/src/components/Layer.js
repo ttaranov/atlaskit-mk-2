@@ -227,7 +227,6 @@ export default class Layer extends Component<Props, State> {
     // we wrap our target in a div so that we can safely get a reference to it, but we pass the
     // actual target to popper
     const actualTarget = this.targetRef.firstChild;
-
     const popperOpts: Object = {
       placement: positionPropToPopperPosition(props.position),
       onCreate: this.extractStyles,
@@ -251,7 +250,9 @@ export default class Layer extends Component<Props, State> {
         },
         preventOverflow: {
           enabled: !!this.props.autoFlip,
-          escapeWithReference: true,
+          escapeWithReference: !(
+            this.props.boundariesElement === 'scrollParent'
+          ),
         },
       },
     };

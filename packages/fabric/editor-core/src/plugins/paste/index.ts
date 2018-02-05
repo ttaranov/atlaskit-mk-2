@@ -6,6 +6,7 @@ import { EditorView } from 'prosemirror-view';
 import * as MarkdownIt from 'markdown-it';
 import { stateKey as tableStateKey } from '../table';
 import { containsTable } from '../../editor/plugins/table/utils';
+import { runMacroAutoConvert } from '../../editor/plugins/macro';
 import { insertMediaAsMediaSingle } from '../media/media-single';
 import { isSingleLine, isCode, escapeLinks } from './util';
 import { analyticsService } from '../../analytics';
@@ -77,6 +78,19 @@ export function createPlugin(
         const text = event.clipboardData.getData('text/plain');
         const html = event.clipboardData.getData('text/html');
         const node = slice.content.firstChild;
+
+        // runs macro autoconvert prior to other conversions
+        if (text && !html) {
+          const macro = runMacroAutoConvert(view.state, text);
+
+          if (macro) {
+            view.dispatch(
+              view.state.tr.replaceSelectionWith(macro).scrollIntoView(),
+            );
+            return true;
+          }
+        }
+
         const { schema } = view.state;
         const selectedNode = $from.node($from.depth);
 

@@ -101,7 +101,6 @@ export type ExtensionContent = Array<
   | DecisionList
   | TaskList
   | Table
-  | InlineExtension
 >;
 
 /**

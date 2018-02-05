@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Target } from './styled';
 import type { Color } from './styled';
-import Tooltip from '../src/';
+import Tooltip from '../src';
 
 const VALID_POSITIONS = ['top', 'right', 'bottom', 'left'];
 

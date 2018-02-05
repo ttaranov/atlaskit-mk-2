@@ -71,6 +71,7 @@ export const Body = styled.div`
     p.shouldScroll
       ? css`
           overflow-y: auto;
+          overflow-x: hidden;
           padding: ${keylineHeight}px ${outerGutter}px;
         `
       : css`

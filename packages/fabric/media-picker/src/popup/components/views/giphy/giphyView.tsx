@@ -21,11 +21,13 @@ import {
   ButtonContainer,
   GridCell,
   WarningContainer,
+  WarningIconWrapper,
   WarningImage,
   WarningHeading,
   WarningSuggestion,
 } from './styles';
-import { britney } from './images';
+
+import { errorIcon } from '../../../../icons';
 
 const NUMBER_OF_COLUMNS = 4;
 const GAP_SIZE = 5;
@@ -109,8 +111,8 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
   private renderError = () => {
     return (
       <WarningContainer>
-        <WarningImage src={britney} />
-        <WarningHeading>Oops! I did it again...</WarningHeading>
+        <WarningIconWrapper>{errorIcon}</WarningIconWrapper>
+        <WarningHeading>Ouch! We could not retrieve any GIFs</WarningHeading>
         <WarningSuggestion>Check your network connection</WarningSuggestion>
         <Button onClick={this.handleRetryButtonClick}>Try again</Button>
       </WarningContainer>

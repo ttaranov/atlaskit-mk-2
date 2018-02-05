@@ -1,5 +1,21 @@
 # @atlaskit/conversation
 
+## 5.1.0
+
+- [minor] Add error state and cancel/retry [0c1bb6e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c1bb6e)
+
+## 5.0.6
+
+## 5.0.5
+
+## 5.0.4
+
+## 5.0.3
+- [patch] bump mention to 9.1.1 to fix mention autocomplete bug [c7708c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7708c6)
+
+## 5.0.2
+- [patch] Avoid unnecessary re-render of comments [402cc7c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/402cc7c)
+
 ## 5.0.1
 
 ## 5.0.0

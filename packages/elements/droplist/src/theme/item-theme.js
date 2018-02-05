@@ -31,8 +31,8 @@ const droplistItemTheme: Object = {
     secondaryText: themed({ light: colors.N200, dark: colors.DN300 }),
   },
   selected: {
-    background: themed({ light: colors.N500, dark: colors.DN10 }),
-    text: themed({ light: colors.N0, dark: colors.DN600 }),
+    background: 'transparent',
+    text: themed({ light: colors.N800, dark: colors.DN600 }),
     secondaryText: themed({ light: colors.N200, dark: colors.DN300 }),
   },
   disabled: {

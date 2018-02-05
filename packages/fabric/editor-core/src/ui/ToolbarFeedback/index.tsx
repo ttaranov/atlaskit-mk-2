@@ -11,9 +11,17 @@ import { Wrapper, ButtonContent } from './styles';
 const JIRA_ISSUE_COLLECTOR_URL =
   'https://product-fabric.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-j519ub/b/c/78bd26fb4be69a8bdb879359a9397e96/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs.js?locale=en-US&collectorId=305d3263';
 
+export type EditorProduct =
+  | 'bitbucket'
+  | 'jira'
+  | 'confluence'
+  | 'stride'
+  | undefined;
+
 export interface Props {
   packageVersion?: string;
   packageName?: string;
+  product?: EditorProduct;
 }
 
 export interface State {
@@ -66,6 +74,8 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
 
     this.setState({ jiraIssueCollectorScriptLoading: true });
 
+    const product = this.props.product || 'n/a';
+
     // triggerFunction is executed as soon as JIRA issue collector script is loaded
     window.ATL_JQ_PAGE_PROPS = {
       triggerFunction: showCollectorDialog => {
@@ -85,7 +95,7 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
           this.props.packageName
         }@${
           this.props.packageVersion
-        } (${coreVersion})\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n\n`,
+        } (${coreVersion})\n product: ${product}\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n\n`,
       },
       environment: {
         'Editor Package': this.props.packageName,

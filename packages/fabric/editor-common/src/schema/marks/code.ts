@@ -30,7 +30,7 @@ export const code: MarkSpec = {
     return [
       'span',
       {
-        style: 'font-family: monospace; white-space: pre-wrap;',
+        style: 'white-space: pre;',
         class: 'code',
       },
     ];
