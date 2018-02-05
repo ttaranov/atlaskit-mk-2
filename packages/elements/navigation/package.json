@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "27.0.9",
+  "version": "28.0.0",
   "description": "A React component that renders a sidebar, for navigation purposes.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -56,7 +56,7 @@
     "@atlaskit/field-text": "^4.1.6",
     "@atlaskit/inline-dialog": "^5.1.2",
     "@atlaskit/logo": "^6.0.9",
-    "@atlaskit/page": "^5.0.10",
+    "@atlaskit/page": "^5.0.11",
     "@atlaskit/single-select": "^3.2.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",

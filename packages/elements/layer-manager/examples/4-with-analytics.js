@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   AnalyticsListener,
   AnalyticsDecorator,
@@ -8,6 +9,7 @@ import {
 import AKButton from '@atlaskit/button';
 import Modal from '@atlaskit/modal-dialog';
 import LayerManager from '../src';
+import withContextFromProps from '../src/components/withContextFromProps';
 
 type State = {
   isModalOpen: boolean,
@@ -15,6 +17,10 @@ type State = {
 
 const Button = withAnalytics(AKButton, {
   onClick: 'click',
+});
+
+const ContextProvider = withContextFromProps({
+  store: PropTypes.object,
 });
 
 export default class extends Component<{}, State> {
@@ -41,38 +47,40 @@ export default class extends Component<{}, State> {
   render() {
     return (
       <LayerManager>
-        <AnalyticsListener onEvent={this.onEvent}>
-          <div style={{ height: '100vh' }}>
-            <p>
-              <b>
-                Open this example up full screen by clicking the monitor icon
-                top right as nested modals don&apos;t work correctly at the
-                moment.
-              </b>
-            </p>
-            <p>
-              Since the Analytics package relies on the context to fire events
-              correctly, we&apos;re passing the analytics context down through
-              the portal so that it continues to work.
-            </p>
-            <AnalyticsDecorator data={{ isDecorated: true }}>
+        <ContextProvider store={{ some: 'value' }}>
+          <AnalyticsListener onEvent={this.onEvent}>
+            <div style={{ height: '100vh' }}>
               <p>
-                <button onClick={this.openModal}>Open modal</button>
-                {this.state.isModalOpen && (
-                  <Modal
-                    actions={[{ text: 'OK', onClick: this.closeModal }]}
-                    onClose={this.closeModal}
-                    heading="Modal"
-                  >
-                    <Button analyticsId="insidePortal">
-                      Click me to fire an event
-                    </Button>
-                  </Modal>
-                )}
+                <b>
+                  Open this example up full screen by clicking the monitor icon
+                  top right as nested modals don&apos;t work correctly at the
+                  moment.
+                </b>
               </p>
-            </AnalyticsDecorator>
-          </div>
-        </AnalyticsListener>
+              <p>
+                Since the Analytics package relies on the context to fire events
+                correctly, we&apos;re passing the analytics context down through
+                the portal so that it continues to work.
+              </p>
+              <AnalyticsDecorator data={{ isDecorated: true }}>
+                <p>
+                  <button onClick={this.openModal}>Open modal</button>
+                  {this.state.isModalOpen && (
+                    <Modal
+                      actions={[{ text: 'OK', onClick: this.closeModal }]}
+                      onClose={this.closeModal}
+                      heading="Modal"
+                    >
+                      <Button analyticsId="insidePortal">
+                        Click me to fire an event
+                      </Button>
+                    </Modal>
+                  )}
+                </p>
+              </AnalyticsDecorator>
+            </div>
+          </AnalyticsListener>
+        </ContextProvider>
       </LayerManager>
     );
   }

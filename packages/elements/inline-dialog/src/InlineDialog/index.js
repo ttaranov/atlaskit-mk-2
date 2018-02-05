@@ -10,6 +10,12 @@ import type { PositionType, FlipPositionsType } from '../types';
 // TODO: expose positions and flipPositions from Layer and pull in here
 
 type Props = {
+  /** Element to act as a boundary for the InlineDialog.
+  The InlineDialog Layer will not sit outside this element if it can help it.
+  If, through it's normal positoning,
+  it would end up outside the boundary
+  the layer will flip positions. */
+  boundariesElement?: 'viewport' | 'window' | 'scrollParent',
   /** The elements that the InlineDialog will be positioned relative to. */
   children?: NodeType,
   /** The elements to be displayed within the InlineDialog. */
@@ -71,6 +77,7 @@ export default class InlineDialog extends Component<Props, {}> {
 
   render() {
     const {
+      boundariesElement,
       children,
       content,
       isOpen,
@@ -102,6 +109,7 @@ export default class InlineDialog extends Component<Props, {}> {
 
     return (
       <Layer
+        boundariesElement={boundariesElement}
         autoFlip={shouldFlip}
         content={layerContent}
         offset={dialogOffset}

@@ -30,6 +30,11 @@ export type MediaViewerAssets = {
 
 export type MediaViewerType = 'image' | 'document' | 'video' | '3d';
 
+// The AnalyticsData type is hard to specify, because its structure in Media Viewer Classic is very complex and dynamic.
+// With Media Viewer Next Gen this will change however, which is when we should revise specifying the type of this object.
+// https://product-fabric.atlassian.net/browse/MSW-452
+export type AnalyticsData = Object;
+
 export interface MediaViewerConfig {
   readonly assets?: MediaViewerAssets;
   readonly fetchToken?: (file: MediaFile) => JQueryPromise<MediaFileAttributes>;
@@ -53,6 +58,7 @@ export interface MediaViewerConfig {
   readonly embedded?: boolean;
   readonly contained?: boolean;
   readonly i18n?: Object;
+  readonly analyticsBackend?: (key: string, data: AnalyticsData) => void;
 
   readonly isPreviewGenerated?: (file: BackBoneModel) => JQueryPromise<boolean>;
   readonly generatePreview?: (

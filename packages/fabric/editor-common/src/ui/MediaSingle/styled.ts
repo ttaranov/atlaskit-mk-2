@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { MediaSingleLayout } from '@atlaskit/editor-common';
+import { MediaSingleLayout } from '../../schema';
 
 function float(layout: MediaSingleLayout): string {
   switch (layout) {
@@ -56,7 +56,7 @@ const MediaSingleDimensionHelper = ({
   }
 `;
 
-export const Wrapper = styled.div`
+const Wrapper = styled.div`
   ${MediaSingleDimensionHelper};
   position: relative;
   & > div {
@@ -65,3 +65,5 @@ export const Wrapper = styled.div`
   }
 `;
 Wrapper.displayName = 'WrapperMediaSingle';
+
+export default Wrapper;

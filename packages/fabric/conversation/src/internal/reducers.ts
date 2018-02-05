@@ -3,13 +3,18 @@ import {
   FETCH_CONVERSATIONS_SUCCESS,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
+  ADD_COMMENT_ERROR,
   UPDATE_COMMENT_REQUEST,
   UPDATE_COMMENT_SUCCESS,
+  UPDATE_COMMENT_ERROR,
   DELETE_COMMENT_REQUEST,
   DELETE_COMMENT_SUCCESS,
+  DELETE_COMMENT_ERROR,
+  REVERT_COMMENT,
   UPDATE_USER_SUCCESS,
   CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
+  CREATE_CONVERSATION_ERROR,
 } from './actions';
 import { Action, State } from './store';
 import { User, Conversation, Comment } from '../model';
@@ -20,11 +25,12 @@ const updateComment = (
 ) => {
   return (comments || []).map(comment => {
     if (
-      comment.localId === newComment.localId ||
+      (newComment.localId && comment.localId === newComment.localId) ||
       comment.commentId === newComment.commentId
     ) {
       return {
         ...comment,
+        oldDocument: comment.oldDocument || comment.document,
         ...newComment,
       };
     }
@@ -32,15 +38,16 @@ const updateComment = (
   });
 };
 
-const deleteComment = (comments: Comment[] | undefined, commentId: string) => {
-  return (comments || []).map(comment => {
-    if (comment.commentId === commentId) {
-      return {
-        ...comment,
-        deleted: true,
-      };
-    }
-    return comment;
+const removeComment = (
+  comments: Comment[] | undefined,
+  commentToRemove: Comment,
+) => {
+  return (comments || []).filter(comment => {
+    return (
+      (commentToRemove.localId &&
+        comment.localId !== commentToRemove.localId) ||
+      comment.commentId !== commentToRemove.commentId
+    );
   });
 };
 
@@ -72,13 +79,26 @@ const updateCommentInConversation = (
   });
 };
 
-const addCommentToConversation = (
+const addOrUpdateCommentInConversation = (
   conversations: Conversation[],
   newComment: Comment,
 ) => {
   return conversations.map(conversation => {
     if (conversation.conversationId === newComment.conversationId) {
       const { comments = [] } = conversation;
+
+      // If the comment already exists, update the existing one
+      if (
+        newComment.localId &&
+        comments.some(comment => newComment.localId === comment.localId)
+      ) {
+        return {
+          ...conversation,
+          comments: updateComment(comments, newComment),
+        };
+      }
+
+      // Otherwise, add it
       return {
         ...conversation,
         comments: [...comments, newComment],
@@ -88,23 +108,58 @@ const addCommentToConversation = (
   });
 };
 
-const deleteCommentInConversation = (
+const removeCommentFromConversation = (
   conversations: Conversation[],
-  deletedComment: Comment,
-) => {
-  return conversations.map(conversation => {
-    if (conversation.conversationId === deletedComment.conversationId) {
-      const comments = deleteComment(
-        conversation.comments,
-        deletedComment.commentId,
-      );
-      return {
-        ...conversation,
-        comments,
-      };
+  commentToRemove: Comment,
+): Conversation[] => {
+  return conversations.reduce((current, conversation) => {
+    if (conversation.conversationId === commentToRemove.conversationId) {
+      const comments = removeComment(conversation.comments, commentToRemove);
+
+      // If there's no comments, don't add the conversation
+      if (comments.length === 0) {
+        return current;
+      }
+
+      return [
+        ...current,
+        {
+          ...conversation,
+          comments,
+        },
+      ];
     }
-    return conversation;
-  });
+    return [...current, conversation];
+  }, []);
+};
+
+const getCommentFromConversation = (
+  conversations: Conversation[],
+  commentToFind: Comment,
+): Comment | null => {
+  const { commentId, conversationId } = commentToFind;
+  if (!conversationId || !commentId) {
+    return null;
+  }
+
+  const [comment = null] = conversations.reduce((acc, conversation) => {
+    if (
+      conversation.conversationId !== conversationId ||
+      !conversation.comments
+    ) {
+      return acc;
+    }
+
+    return conversation.comments.reduce((commentsAcc, comment) => {
+      if (comment.commentId !== commentId) {
+        return commentsAcc;
+      }
+
+      return [...commentsAcc, comment];
+    }, acc);
+  }, []);
+
+  return comment;
 };
 
 export const reducers = {
@@ -128,10 +183,14 @@ export const reducers = {
 
   [ADD_COMMENT_REQUEST](state: State, action: Action) {
     const { payload } = action;
-    const conversations = addCommentToConversation(state.conversations, {
-      ...payload,
-      state: 'SAVING',
-    });
+    const conversations = addOrUpdateCommentInConversation(
+      state.conversations,
+      {
+        ...payload,
+        isPlaceholder: true,
+        state: 'SAVING',
+      },
+    );
 
     return {
       ...state,
@@ -144,14 +203,26 @@ export const reducers = {
 
     let conversations: Conversation[];
 
-    if (payload.localId) {
-      conversations = updateCommentInConversation(state.conversations, {
-        ...payload,
-        state: undefined,
-      });
-    } else {
-      conversations = addCommentToConversation(state.conversations, payload);
-    }
+    conversations = addOrUpdateCommentInConversation(state.conversations, {
+      ...payload,
+      state: undefined,
+      oldDocument: undefined,
+      isPlaceholder: false,
+    });
+
+    return {
+      ...state,
+      conversations,
+    };
+  },
+
+  [ADD_COMMENT_ERROR](state: State, action: Action) {
+    const { payload } = action;
+
+    const conversations = updateCommentInConversation(state.conversations, {
+      ...payload,
+      state: 'ERROR',
+    });
 
     return {
       ...state,
@@ -179,6 +250,21 @@ export const reducers = {
     const conversations = updateCommentInConversation(state.conversations, {
       ...payload,
       state: undefined,
+      oldDocument: undefined,
+    });
+
+    return {
+      ...state,
+      conversations,
+    };
+  },
+
+  [UPDATE_COMMENT_ERROR](state: State, action: Action) {
+    const { payload } = action;
+
+    const conversations = updateCommentInConversation(state.conversations, {
+      ...payload,
+      state: 'ERROR',
     });
 
     return {
@@ -188,17 +274,69 @@ export const reducers = {
   },
 
   [DELETE_COMMENT_REQUEST](state: State, action: Action) {
+    const { payload } = action;
+    const conversations = updateCommentInConversation(state.conversations, {
+      ...payload,
+      state: 'SAVING',
+    });
+
     return {
       ...state,
+      conversations,
     };
   },
 
   [DELETE_COMMENT_SUCCESS](state: State, action: Action) {
     const { payload } = action;
-    const conversations = deleteCommentInConversation(
-      state.conversations,
-      payload,
-    );
+    const conversations = updateCommentInConversation(state.conversations, {
+      ...payload,
+      state: undefined,
+      deleted: true,
+      oldDocument: undefined,
+    });
+
+    return {
+      ...state,
+      conversations,
+    };
+  },
+
+  [DELETE_COMMENT_ERROR](state: State, action: Action) {
+    const { payload } = action;
+
+    const conversations = updateCommentInConversation(state.conversations, {
+      ...payload,
+      state: 'ERROR',
+    });
+
+    return {
+      ...state,
+      conversations,
+    };
+  },
+
+  [REVERT_COMMENT](state: State, action: Action) {
+    const { payload } = action;
+    const comment = getCommentFromConversation(state.conversations, payload);
+    let conversations: Conversation[];
+
+    if (!comment) {
+      return state;
+    }
+
+    if (comment.isPlaceholder) {
+      conversations = removeCommentFromConversation(state.conversations, {
+        ...payload,
+      });
+    } else {
+      conversations = updateCommentInConversation(state.conversations, {
+        ...payload,
+        state: undefined,
+        document: comment.oldDocument,
+        deleted: false,
+        oldDocument: undefined,
+      });
+    }
 
     return {
       ...state,
@@ -224,6 +362,7 @@ export const reducers = {
           {
             ...comment,
             state: 'SAVING',
+            isPlaceholder: true,
           },
         ],
       },
@@ -238,6 +377,21 @@ export const reducers = {
   [CREATE_CONVERSATION_SUCCESS](state: State, action: Action) {
     const { payload } = action;
     const conversations = updateConversation(state.conversations, payload);
+
+    return {
+      ...state,
+      conversations,
+    };
+  },
+
+  [CREATE_CONVERSATION_ERROR](state: State, action: Action) {
+    const { payload: { comments: [comment], error } } = action;
+
+    const conversations = updateCommentInConversation(state.conversations, {
+      ...comment,
+      state: 'ERROR',
+      error,
+    });
 
     return {
       ...state,

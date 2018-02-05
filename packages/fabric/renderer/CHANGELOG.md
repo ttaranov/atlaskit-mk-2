@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 11.4.0
+- [minor] Support mediaSingle [400ff24](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/400ff24)
+
 ## 11.3.11
 
 ## 11.3.10

@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 28.0.0
+
+- [major] add onSearchSubmit prop to QuickSearch which will be called when the user presses enter with no result selected. the first QuickSearch result is no longer selected by default. [b246f6f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b246f6f)
+
 ## 27.0.9
 
 ## 27.0.8

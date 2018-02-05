@@ -1,5 +1,19 @@
 # @atlaskit/editor-core
 
+## 61.7.15
+- [patch] Handle Media.getDomElement when node has no child nodes [618b0c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/618b0c1)
+
+## 61.7.14
+
+## 61.7.13
+- [patch] Allow macro provider to handle auto conversion during paste [b2c83f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b2c83f8)
+
+## 61.7.12
+- [patch] When adding blockquote from toolbar cursor is not visible. [c7c4780](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7c4780)
+
+## 61.7.11
+- [patch] fix space after mention [b47f480](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b47f480)
+
 ## 61.7.10
 
 ## 61.7.9

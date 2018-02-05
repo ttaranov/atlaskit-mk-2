@@ -38,6 +38,10 @@ for (let child of fs.getDirectories(a.children)) {
   publicPackages.children.push(Object.assign({}, child, { children }));
 }
 
+export const getConfig = (groupId: string, pkgId: string) => {
+  return NAV_DATA[groupId] && NAV_DATA[groupId].find(a => a.name === pkgId);
+};
+
 export const docs: Directory = fs.getById(dirs, 'docs');
 export const packages: Directory = fs.getById(dirs, 'packages');
 export const externalPackages: Directory = publicPackages;

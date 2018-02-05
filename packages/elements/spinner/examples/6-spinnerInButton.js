@@ -3,7 +3,7 @@
 import React from 'react';
 
 import Button from '@atlaskit/button';
-import Spinner from '@atlaskit/spinner';
+import Spinner from '../src';
 
 type State = {
   isLoading: boolean,

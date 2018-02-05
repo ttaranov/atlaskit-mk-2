@@ -40,10 +40,16 @@ describe('<QuickSearch />', () => {
 
   let wrapper;
   let searchInput;
+  let onSearchSubmitSpy: Object;
 
   const render = props => {
+    onSearchSubmitSpy = jest.fn();
     wrapper = mountWithRootTheme(
-      <AkQuickSearch {...props} onSearchInput={noOp}>
+      <AkQuickSearch
+        {...props}
+        onSearchInput={noOp}
+        onSearchSubmit={onSearchSubmitSpy}
+      >
         {(props && props.children) || exampleChildren}
       </AkQuickSearch>,
       undefined,
@@ -116,11 +122,13 @@ describe('<QuickSearch />', () => {
       });
     });
     describe('submit/keyboard event', () => {
-      it('should fire event on submit ENTER key stroke', () => {
+      it('should fire event on submit ENTER key stroke when an item is selected', () => {
+        wrapper.setProps({ selectedResultId: '1' });
         searchInput.simulate('keydown', { key: 'Enter' });
         expectEventFiredLastToBe(QS_ANALYTICS_EV_SUBMIT);
       });
-      it('should carry payload of resultCount, queryLength, index and type', () => {
+      it('should carry payload of resultCount, queryLength, index and type when an item is selected', () => {
+        wrapper.setProps({ selectedResultId: '1' });
         searchInput.simulate('keydown', { key: 'Enter' });
         const eventData = getLastEventFired()[1];
         expect(eventData).toMatchObject({
@@ -142,7 +150,8 @@ describe('<QuickSearch />', () => {
         expectEventFiredLastToBe(QS_ANALYTICS_EV_KB_CTRLS_USED);
       });
 
-      it('Enter', () => {
+      it('Enter (when a result is selected)', () => {
+        wrapper.setProps({ selectedResultId: '1' });
         searchInput.simulate('keydown', { key: 'Enter' });
         const calls = onAnalyticsEventSpy.mock.calls;
         // -2 because the MOST recent event should be the submit event
@@ -189,7 +198,13 @@ describe('<QuickSearch />', () => {
   });
 
   describe('Keyboard controls', () => {
-    it('should select the first result by default', () => {
+    it('should select the first result on first DOWN keystroke', () => {
+      wrapper
+        .find(AkSearch)
+        .find('input')
+        .simulate('keydown', { key: 'ArrowDown' });
+
+      wrapper.update();
       expect(
         wrapper
           .find(AkNavigationItem)
@@ -198,10 +213,11 @@ describe('<QuickSearch />', () => {
       ).toBe('one');
       expect(isInputFocused(searchInput)).toBe(true);
     });
-    it('should select the next result on DOWN keystroke', () => {
+    it('should select the next result on a subsequent DOWN keystroke', () => {
       wrapper
         .find(AkSearch)
         .find('input')
+        .simulate('keydown', { key: 'ArrowDown' })
         .simulate('keydown', { key: 'ArrowDown' });
 
       wrapper.update();
@@ -214,6 +230,7 @@ describe('<QuickSearch />', () => {
       expect(isInputFocused(searchInput)).toBe(true);
     });
     it('should select the previous result on UP keystroke', () => {
+      searchInput.simulate('keydown', { key: 'ArrowDown' });
       searchInput.simulate('keydown', { key: 'ArrowDown' });
       searchInput.simulate('keydown', { key: 'ArrowUp' });
       wrapper.update();
@@ -229,6 +246,7 @@ describe('<QuickSearch />', () => {
       searchInput.simulate('keydown', { key: 'ArrowDown' });
       searchInput.simulate('keydown', { key: 'ArrowDown' });
       searchInput.simulate('keydown', { key: 'ArrowDown' });
+      searchInput.simulate('keydown', { key: 'ArrowDown' });
       wrapper.update();
       expect(
         wrapper
@@ -239,6 +257,18 @@ describe('<QuickSearch />', () => {
       expect(isInputFocused(searchInput)).toBe(true);
     });
     it('should wrap around to the end when traversing backward past the first result', () => {
+      searchInput.simulate('keydown', { key: 'ArrowDown' });
+      searchInput.simulate('keydown', { key: 'ArrowUp' });
+      expect(
+        wrapper
+          .find(AkNavigationItem)
+          .filterWhere(n => n.prop('isSelected'))
+          .prop('text'),
+      ).toBe('three');
+      expect(isInputFocused(searchInput)).toBe(true);
+    });
+    it('should select the last result when traversing backward when no result is selected', () => {
+      searchInput.simulate('keydown', { key: 'ArrowDown' });
       searchInput.simulate('keydown', { key: 'ArrowUp' });
       expect(
         wrapper
@@ -258,6 +288,7 @@ describe('<QuickSearch />', () => {
               <PersonResult resultId="b" name="test" href={url} />
             </AkNavigationItemGroup>
           ),
+          selectedResultId: 'b',
         });
         searchInput.simulate('keydown', { key: 'Enter' });
         wrapper.update();
@@ -276,13 +307,20 @@ describe('<QuickSearch />', () => {
         .simulate('click');
       expect(onClickSpy.args).toEqual(paramsKeyboard);
     });
-    it("should run the onClick callback with the result's data on ENTER keystroke", () => {
+    it('should run the onSearchSubmit callback prop on ENTER keystroke (when no item is selected)', () => {
+      searchInput.simulate('keydown', { key: 'Enter' });
+      wrapper.update();
+      expect(onSearchSubmitSpy).toHaveBeenCalledTimes(1);
+      expect(isInputFocused(searchInput)).toBe(true);
+    });
+    it("should run the onClick callback with the result's data on ENTER keystroke (when an item is selected)", () => {
+      wrapper.setProps({ selectedResultId: '1' });
       searchInput.simulate('keydown', { key: 'Enter' });
       wrapper.update();
       expect(onClickSpy).toHaveBeenCalledTimes(1);
       expect(isInputFocused(searchInput)).toBe(true);
     });
-    it('should select the first result when query changes', () => {
+    it('should remove any selection when query changes', () => {
       const newChildren = (
         <AkNavigationItemGroup title="test group 2">
           <PersonResult key={1} resultId="4" name="four" />
@@ -292,11 +330,8 @@ describe('<QuickSearch />', () => {
       wrapper.setProps({ children: newChildren });
       wrapper.update();
       expect(
-        wrapper
-          .find(AkNavigationItem)
-          .filterWhere(n => n.prop('isSelected'))
-          .prop('text'),
-      ).toBe('four');
+        wrapper.find(AkNavigationItem).filterWhere(n => n.prop('isSelected')),
+      ).toHaveLength(0);
       expect(isInputFocused(searchInput)).toBe(true);
     });
     it('should let mouseEnter override keyboard selection', () => {
