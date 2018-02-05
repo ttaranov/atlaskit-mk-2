@@ -1,10 +1,7 @@
 import * as React from 'react';
 import Comment from '../containers/Comment';
 import Editor from './Editor';
-import {
-  Conversation as ConversationType,
-  Comment as CommentType,
-} from '../model';
+import { Conversation as ConversationType } from '../model';
 import { SharedProps } from './Comment';
 
 export interface Props extends SharedProps {
@@ -58,7 +55,7 @@ export default class Conversation extends React.PureComponent<Props> {
         onUpdateComment={onUpdateComment}
         onDeleteComment={onDeleteComment}
         onRevertComment={onRevertComment}
-        onRetry={this.onRetry}
+        onRetry={this.onRetry(comment.document)}
         onCancel={onCancel}
         onUserClick={onUserClick}
         dataProviders={dataProviders}
@@ -92,27 +89,29 @@ export default class Conversation extends React.PureComponent<Props> {
     }
   }
 
-  private onRetry = (comment: CommentType) => {
-    this.onSave(comment.document, comment);
+  private onRetry = (document: any) => (commentLocalId?: string) => {
+    this.onSave(document, commentLocalId);
   };
 
-  private onSave = async (value: any, comment?: CommentType) => {
+  private onSave = async (value: any, commentLocalId?: string) => {
     const {
       containerId,
-      id = '',
+      id,
       localId,
       meta,
       onAddComment,
       onCreateConversation,
+      conversation,
     } = this.props;
 
-    if (!id && !comment) {
+    if (!id && !commentLocalId) {
       if (onCreateConversation) {
         onCreateConversation(localId!, containerId, value, meta);
       }
     } else {
       if (onAddComment) {
-        onAddComment(id, id, value, comment);
+        const conversationId = id || conversation!.conversationId;
+        onAddComment(conversationId, conversationId, value, commentLocalId);
       }
     }
   };

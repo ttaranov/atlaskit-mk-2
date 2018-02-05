@@ -25,7 +25,7 @@ export interface SharedProps {
     conversationId: string,
     parentId: string,
     value: any,
-    comment?: CommentType,
+    localId?: string,
   ) => void;
   onUpdateComment?: (
     conversationId: string,
@@ -33,8 +33,8 @@ export interface SharedProps {
     value: any,
   ) => void;
   onDeleteComment?: (conversationId: string, commentId: string) => void;
-  onRevertComment?: (comment: CommentType) => void;
-  onCancelComment?: (comment: CommentType) => void;
+  onRevertComment?: (conversationId: string, commentId: string) => void;
+  onCancelComment?: (conversationId: string, commentId: string) => void;
   onCancel?: () => void;
 
   // Provider
@@ -47,7 +47,7 @@ export interface SharedProps {
 export interface Props extends SharedProps {
   conversationId: string;
   comment: CommentType;
-  onRetry?: (comment: CommentType) => void;
+  onRetry?: (localId?: string) => void;
 }
 
 export interface State {
@@ -83,7 +83,7 @@ export default class Comment extends React.Component<Props, State> {
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
-    const {isEditing, isReplying} = this.state;
+    const { isEditing, isReplying } = this.state;
 
     if (
       nextState.isEditing !== isEditing ||
@@ -96,8 +96,8 @@ export default class Comment extends React.Component<Props, State> {
       return true;
     }
 
-    const {comments: oldComments = []} = this.props;
-    const {comments: newComments = []} = nextProps;
+    const { comments: oldComments = [] } = this.props;
+    const { comments: newComments = [] } = nextProps;
 
     if (oldComments.length !== newComments.length) {
       return true;
@@ -118,7 +118,7 @@ export default class Comment extends React.Component<Props, State> {
     return false;
   }
 
-  private dispatch = (dispatch: string, ...args) => {
+  private dispatch = (dispatch: string, ...args: any[]) => {
     const handler = this.props[dispatch];
 
     if (handler) {
@@ -188,7 +188,7 @@ export default class Comment extends React.Component<Props, State> {
       onCancel();
     }
 
-    this.dispatch('onRevertComment', comment);
+    this.dispatch('onRevertComment', comment.conversationId, comment.commentId);
   };
 
   private onRequestRetry = () => {
@@ -196,7 +196,7 @@ export default class Comment extends React.Component<Props, State> {
     const { onRetry, comment } = this.props;
 
     if (onRetry && comment.isPlaceholder) {
-      return onRetry(comment);
+      return onRetry(comment.localId);
     }
 
     if (!lastDispatch) {

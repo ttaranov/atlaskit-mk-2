@@ -126,9 +126,11 @@ export class MockProvider extends AbstractConversationResource {
     conversationId: string,
     parentId: string,
     doc: any,
-    comment?: Comment,
+    localId?: string,
   ): Promise<Comment> {
-    const result = comment || this.createComment(conversationId, parentId, doc);
+    const result = localId
+      ? { conversationId, localId }
+      : this.createComment(conversationId, parentId, doc);
     const { dispatch, responseCode } = this;
 
     dispatch({ type: ADD_COMMENT_REQUEST, payload: result });
@@ -235,8 +237,12 @@ export class MockProvider extends AbstractConversationResource {
   /**
    * Reverts a comment based on ID. Returns updated comment.
    */
-  async revertComment(comment: Comment): Promise<Comment> {
+  async revertComment(
+    conversationId: string,
+    commentId: string,
+  ): Promise<Pick<Comment, 'conversationId' | 'commentId'>> {
     const { dispatch } = this;
+    const comment = { conversationId, commentId };
 
     dispatch({ type: REVERT_COMMENT, payload: comment });
 

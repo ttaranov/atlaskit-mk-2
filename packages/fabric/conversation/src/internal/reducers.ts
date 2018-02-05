@@ -79,7 +79,7 @@ const updateCommentInConversation = (
   });
 };
 
-const addCommentToConversation = (
+const addOrUpdateCommentInConversation = (
   conversations: Conversation[],
   newComment: Comment,
 ) => {
@@ -133,6 +133,35 @@ const removeCommentFromConversation = (
   }, []);
 };
 
+const getCommentFromConversation = (
+  conversations: Conversation[],
+  commentToFind: Comment,
+): Comment | null => {
+  const { commentId, conversationId } = commentToFind;
+  if (!conversationId || !commentId) {
+    return null;
+  }
+
+  const [comment = null] = conversations.reduce((acc, conversation) => {
+    if (
+      conversation.conversationId !== conversationId ||
+      !conversation.comments
+    ) {
+      return acc;
+    }
+
+    return conversation.comments.reduce((commentsAcc, comment) => {
+      if (comment.commentId !== commentId) {
+        return commentsAcc;
+      }
+
+      return [...commentsAcc, comment];
+    }, acc);
+  }, []);
+
+  return comment;
+};
+
 export const reducers = {
   [FETCH_CONVERSATIONS_REQUEST](state: State, action: Action) {
     return {
@@ -154,11 +183,14 @@ export const reducers = {
 
   [ADD_COMMENT_REQUEST](state: State, action: Action) {
     const { payload } = action;
-    const conversations = addCommentToConversation(state.conversations, {
-      ...payload,
-      isPlaceholder: true,
-      state: 'SAVING',
-    });
+    const conversations = addOrUpdateCommentInConversation(
+      state.conversations,
+      {
+        ...payload,
+        isPlaceholder: true,
+        state: 'SAVING',
+      },
+    );
 
     return {
       ...state,
@@ -171,7 +203,7 @@ export const reducers = {
 
     let conversations: Conversation[];
 
-    conversations = addCommentToConversation(state.conversations, {
+    conversations = addOrUpdateCommentInConversation(state.conversations, {
       ...payload,
       state: undefined,
       oldDocument: undefined,
@@ -285,10 +317,14 @@ export const reducers = {
 
   [REVERT_COMMENT](state: State, action: Action) {
     const { payload } = action;
-
+    const comment = getCommentFromConversation(state.conversations, payload);
     let conversations: Conversation[];
 
-    if (payload.isPlaceholder) {
+    if (!comment) {
+      return state;
+    }
+
+    if (comment.isPlaceholder) {
       conversations = removeCommentFromConversation(state.conversations, {
         ...payload,
       });
@@ -296,7 +332,7 @@ export const reducers = {
       conversations = updateCommentInConversation(state.conversations, {
         ...payload,
         state: undefined,
-        document: payload.oldDocument,
+        document: comment.oldDocument,
         deleted: false,
         oldDocument: undefined,
       });

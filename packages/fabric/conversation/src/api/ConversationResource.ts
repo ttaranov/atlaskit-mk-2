@@ -39,7 +39,7 @@ export interface ResourceProvider {
     conversationId: string,
     parentId: string,
     document: any,
-    comment?: Comment,
+    localId?: string,
   ): Promise<Comment>;
   updateComment(
     conversationId: string,
@@ -50,7 +50,7 @@ export interface ResourceProvider {
     conversationId: string,
     commentId: string,
   ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'deleted'>>;
-  revertComment(comment: Comment): Promise<Comment>;
+  revertComment(conversationId: string, commentId: string): Promise<Comment>;
   updateUser(user: User): Promise<User>;
 }
 
@@ -95,7 +95,7 @@ export class AbstractConversationResource implements ResourceProvider {
     conversationId: string,
     parentId: string,
     doc: any,
-    comment?: Comment,
+    localId?: string,
   ): Promise<Comment> {
     return Promise.reject('Not implemented');
   }
@@ -122,9 +122,12 @@ export class AbstractConversationResource implements ResourceProvider {
   }
 
   /**
-   * Reverts a comment based on ID. Returns updated comment.
+   * Reverts a comment based on ID.
    */
-  async revertComment(comment: Comment): Promise<Comment> {
+  async revertComment(
+    conversationId: string,
+    commentId: string,
+  ): Promise<Comment> {
     return Promise.reject('Not implemented');
   }
 
@@ -265,12 +268,12 @@ export class ConversationResource extends AbstractConversationResource {
     conversationId: string,
     parentId: string,
     doc: any,
-    comment?: Comment,
+    localId?: string,
   ): Promise<Comment> {
     const { dispatch } = this;
-    const tempComment =
-      comment || this.createComment(conversationId, parentId, doc);
-    const { localId } = tempComment;
+    const tempComment = localId
+      ? { conversationId, localId }
+      : this.createComment(conversationId, parentId, doc);
     let result: Comment;
 
     dispatch({ type: ADD_COMMENT_REQUEST, payload: tempComment });
@@ -298,13 +301,13 @@ export class ConversationResource extends AbstractConversationResource {
       type: ADD_COMMENT_SUCCESS,
       payload: {
         ...result,
-        localId,
+        localId: tempComment.localId,
       },
     });
 
     return {
       ...result,
-      localId,
+      localId: tempComment.localId,
     };
   }
 
@@ -395,10 +398,15 @@ export class ConversationResource extends AbstractConversationResource {
   }
 
   /**
-   * Reverts a comment based on ID. Returns updated comment.
+   * Reverts a comment based on ID.
    */
-  async revertComment(comment: Comment): Promise<Comment> {
+  async revertComment(
+    conversationId: string,
+    commentId: string,
+  ): Promise<Pick<Comment, 'conversationId' | 'commentId'>> {
     const { dispatch } = this;
+
+    const comment = { conversationId, commentId };
 
     dispatch({ type: REVERT_COMMENT, payload: comment });
 

@@ -12,7 +12,7 @@ import {
 import { getComments, getConversation, getUser } from '../internal/selectors';
 import { uuid } from '../internal/uuid';
 import { State } from '../internal/store';
-import { User, Comment } from '../model';
+import { User } from '../model';
 
 export interface Props {
   id?: string;
@@ -39,9 +39,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     conversationId: string,
     parentId: string,
     value: any,
-    comment?: Comment,
+    localId?: string,
   ) {
-    dispatch(addComment(conversationId, parentId, value, comment));
+    dispatch(addComment(conversationId, parentId, value, localId));
   },
 
   onUpdateComment(conversationId: string, commentId: string, value: any) {
@@ -52,8 +52,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(deleteComment(conversationId, commentId));
   },
 
-  onRevertComment(comment: Comment) {
-    dispatch(revertComment(comment));
+  onRevertComment(conversationId: string, commentId: string) {
+    dispatch(revertComment(conversationId, commentId));
   },
 
   onUpdateUser(user: User) {
