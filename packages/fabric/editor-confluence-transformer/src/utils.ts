@@ -305,27 +305,25 @@ export function parseMacro(node: Element): Macro {
     if (child.nodeType === 3) {
       continue;
     }
+    let value = child.textContent;
 
     // example: <ac:parameter ac:name=\"colour\">Red</ac:parameter>
     // example: <ac:parameter ac:name=\"colour\"><ri:node ri:param=\"Red\" /></ac:parameter>
     if (nodeName === 'ac:parameter') {
       const key = getAcName(child);
       if (key) {
-        const firstChild = child.childNodes[0] as Element;
         const riMapping = MACRO_PARAM_TO_RI[key];
-        if (
-          firstChild &&
-          riMapping &&
-          getNodeName(firstChild).toLowerCase() === riMapping.name
-        ) {
-          params[key.toLowerCase()] = firstChild.getAttribute(riMapping.param);
-        } else {
-          params[key.toLowerCase()] = child.textContent;
+        if (riMapping) {
+          const riNode = getAcTagNode(child, riMapping.name);
+          if (riNode) {
+            value = riNode.getAttribute(riMapping.param);
+          }
         }
+        params[key.toLowerCase()] = value;
       }
     } else {
       // example: <fab:placeholder-url>, <fab:display-type>, <ac:rich-text-body>
-      properties[nodeName] = child.textContent;
+      properties[nodeName] = value;
     }
   }
 
