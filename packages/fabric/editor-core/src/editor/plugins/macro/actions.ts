@@ -22,20 +22,8 @@ export const insertMacroFromMacroBrowser = (
     macroNode,
   );
   if (newMacro) {
-    const { schema } = state;
-    const { type, attrs } = getValidNode(newMacro, schema);
-    let node;
+    const node = resolveMacro(newMacro, state);
 
-    if (type === 'extension') {
-      node = schema.nodes.extension.create(attrs);
-    } else if (type === 'bodiedExtension') {
-      node = schema.nodes.bodiedExtension.create(
-        attrs,
-        schema.nodeFromJSON(newMacro).content,
-      );
-    } else if (type === 'inlineExtension') {
-      node = schema.nodes.inlineExtension.create(attrs);
-    }
     if (node) {
       dispatch((tr || state.tr).replaceSelectionWith(node).scrollIntoView());
     }
@@ -43,6 +31,53 @@ export const insertMacroFromMacroBrowser = (
   }
 
   return false;
+};
+
+export const resolveMacro = (
+  macro?: MacroAttributes,
+  state?: EditorState,
+): PmNode | null => {
+  if (!macro || !state) {
+    return null;
+  }
+
+  const { schema } = state;
+  const { type, attrs } = getValidNode(macro, schema);
+  let node;
+
+  if (type === 'extension') {
+    node = schema.nodes.extension.create(attrs);
+  } else if (type === 'bodiedExtension') {
+    node = schema.nodes.bodiedExtension.create(
+      attrs,
+      schema.nodeFromJSON(macro).content,
+    );
+  } else if (type === 'inlineExtension') {
+    node = schema.nodes.inlineExtension.create(attrs);
+  }
+
+  return node;
+};
+
+// gets the macroProvider from the state and tries to autoConvert a given text
+export const runMacroAutoConvert = (
+  state: EditorState,
+  text: String,
+): PmNode | null => {
+  const macroPluginState = pluginKey.getState(state);
+
+  const macroProvider = macroPluginState && macroPluginState.macroProvider;
+  if (!macroProvider || !macroProvider.autoConvert) {
+    return null;
+  }
+
+  const macroAttributes = macroProvider.autoConvert(text);
+  if (!macroAttributes) {
+    return null;
+  }
+
+  // decides which kind of macro to render (inline|bodied|bodyless) - will be just inline atm.
+  return resolveMacro(macroAttributes, state);
 };
 
 export const setMacroProvider = (provider: Promise<MacroProvider>) => async (

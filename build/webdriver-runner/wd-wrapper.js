@@ -60,12 +60,14 @@ export default class Page {
     // for puppteer
     return this.browser.getText(selector);
   }
-
   isEnabled(selector) {
     return this.browser.isEnabled(selector);
   }
   isVisible(selector) {
     return this.browser.isVisible(selector);
+  }
+  log(type) {
+    return this.browser.log(type);
   }
   // Wait
   waitForSelector(selector) {

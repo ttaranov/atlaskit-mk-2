@@ -76,3 +76,15 @@ pipelines:
             - yarn test:browser:browserstack
             - (cd website && yarn deploy-staging:no-minimize)
     # We deliberately don't use the cache here as well
+
+    landkid:
+      - step:
+          script:
+            - source ./build-setup.sh
+            - git rebase master
+            - bolt install --pure-lockfile
+            - yarn build
+            - yarn lint
+            - yarn typecheck
+            - yarn test
+            - yarn test:browser:browserstack
