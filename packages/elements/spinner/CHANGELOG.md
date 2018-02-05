@@ -1,5 +1,8 @@
 # @atlaskit/spinner
 
+## 4.1.3
+- [patch] Flatten examples for easier consumer use [145b632](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/145b632)
+
 ## 4.1.2
 - [patch] Fix spinner performance by statically defining keyframes [6f04599](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6f04599)
 
