@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 28.0.2
+- [patch] remove console.warn statement from Navigation [c803b87](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c803b87)
+
 ## 28.0.1
 - [patch] Added slight delay on the resizer fade-in animation [3aff9b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3aff9b6)
 
