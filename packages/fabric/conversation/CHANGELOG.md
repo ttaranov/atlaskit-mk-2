@@ -1,5 +1,9 @@
 # @atlaskit/conversation
 
+## 5.1.0
+
+- [minor] Add error state and cancel/retry [0c1bb6e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c1bb6e)
+
 ## 5.0.6
 
 ## 5.0.5
