@@ -4,16 +4,23 @@ import {
   FETCH_CONVERSATIONS_SUCCESS,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
+  ADD_COMMENT_ERROR,
   UPDATE_COMMENT_REQUEST,
   UPDATE_COMMENT_SUCCESS,
+  UPDATE_COMMENT_ERROR,
+  DELETE_COMMENT_REQUEST,
   DELETE_COMMENT_SUCCESS,
+  DELETE_COMMENT_ERROR,
+  REVERT_COMMENT,
   UPDATE_USER_SUCCESS,
   CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
+  CREATE_CONVERSATION_ERROR,
 } from '../internal/actions';
 import { reducers } from '../internal/reducers';
 import { Comment, Conversation, User } from '../model';
 import { uuid } from '../internal/uuid';
+import { HttpError } from './HttpError';
 
 export interface ConversationResourceConfig {
   url: string;
@@ -32,6 +39,7 @@ export interface ResourceProvider {
     conversationId: string,
     parentId: string,
     document: any,
+    localId?: string,
   ): Promise<Comment>;
   updateComment(
     conversationId: string,
@@ -42,6 +50,10 @@ export interface ResourceProvider {
     conversationId: string,
     commentId: string,
   ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'deleted'>>;
+  revertComment(
+    conversationId: string,
+    commentId: string,
+  ): Promise<Pick<Comment, 'conversationId' | 'commentId'>>;
   updateUser(user: User): Promise<User>;
 }
 
@@ -80,12 +92,13 @@ export class AbstractConversationResource implements ResourceProvider {
   }
 
   /**
-   * Adds a comment to a parent. ParentId can be either a conversation or another comment.
+   * Adds a comment to a parent, or update if existing. ParentId can be either a conversation or another comment.
    */
   async addComment(
     conversationId: string,
     parentId: string,
     doc: any,
+    localId?: string,
   ): Promise<Comment> {
     return Promise.reject('Not implemented');
   }
@@ -108,6 +121,16 @@ export class AbstractConversationResource implements ResourceProvider {
     conversationId: string,
     commentId: string,
   ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'deleted'>> {
+    return Promise.reject('Not implemented');
+  }
+
+  /**
+   * Reverts a comment based on ID.
+   */
+  async revertComment(
+    conversationId: string,
+    commentId: string,
+  ): Promise<Pick<Comment, 'conversationId' | 'commentId'>> {
     return Promise.reject('Not implemented');
   }
 
@@ -148,7 +171,7 @@ export class ConversationResource extends AbstractConversationResource {
     const response = await fetch(`${url}${path}`, fetchOptions as any);
 
     if (!response.ok) {
-      throw new Error(response.statusText);
+      throw new HttpError(response.status, response.statusText);
     }
 
     // Content deleted
@@ -194,6 +217,7 @@ export class ConversationResource extends AbstractConversationResource {
       value,
       meta,
     );
+    let result: Conversation;
 
     if (tempConversation) {
       dispatch({
@@ -204,21 +228,27 @@ export class ConversationResource extends AbstractConversationResource {
       });
     }
 
-    const result = await this.makeRequest<Conversation>(
-      '/conversation?expand=comments.document.adf',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          containerId,
-          meta,
-          comment: {
-            document: {
-              adf: value,
+    try {
+      result = await this.makeRequest<Conversation>(
+        '/conversation?expand=comments.document.adf',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            containerId,
+            meta,
+            comment: {
+              document: {
+                adf: value,
+              },
             },
-          },
-        }),
-      },
-    );
+          }),
+        },
+      );
+    } catch (error) {
+      result = { ...tempConversation, error };
+      dispatch({ type: CREATE_CONVERSATION_ERROR, payload: result });
+      return result as Conversation;
+    }
 
     dispatch({
       type: CREATE_CONVERSATION_SUCCESS,
@@ -235,43 +265,52 @@ export class ConversationResource extends AbstractConversationResource {
   }
 
   /**
-   * Adds a comment to a parent. ParentId can be either a conversation or another comment.
+   * Adds a comment to a parent, or update if existing. ParentId can be either a conversation or another comment.
    */
   async addComment(
     conversationId: string,
     parentId: string,
     doc: any,
+    localId?: string,
   ): Promise<Comment> {
     const { dispatch } = this;
+    const tempComment = localId
+      ? { conversationId, localId }
+      : this.createComment(conversationId, parentId, doc);
+    let result: Comment;
 
-    const tempComment = this.createComment(conversationId, parentId, doc);
-    const { localId } = tempComment;
     dispatch({ type: ADD_COMMENT_REQUEST, payload: tempComment });
 
-    const result = await this.makeRequest<Comment>(
-      `/conversation/${conversationId}/comment?expand=document.adf`,
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          parentId,
-          document: {
-            adf: doc,
-          },
-        }),
-      },
-    );
+    try {
+      result = await this.makeRequest<Comment>(
+        `/conversation/${conversationId}/comment?expand=document.adf`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            parentId,
+            document: {
+              adf: doc,
+            },
+          }),
+        },
+      );
+    } catch (error) {
+      const result = { conversationId, parentId, document: doc, error };
+      dispatch({ type: ADD_COMMENT_ERROR, payload: result });
+      return result as Comment;
+    }
 
     dispatch({
       type: ADD_COMMENT_SUCCESS,
       payload: {
         ...result,
-        localId,
+        localId: tempComment.localId,
       },
     });
 
     return {
       ...result,
-      localId,
+      localId: tempComment.localId,
     };
   }
 
@@ -285,6 +324,7 @@ export class ConversationResource extends AbstractConversationResource {
   ): Promise<Comment> {
     const { dispatch } = this;
     const tempComment = this.getComment(conversationId, commentId);
+    let result: Comment;
 
     if (tempComment) {
       dispatch({
@@ -298,18 +338,24 @@ export class ConversationResource extends AbstractConversationResource {
       });
     }
 
-    const result = await this.makeRequest<Comment>(
-      `/conversation/${conversationId}/comment/${commentId}?expand=document.adf`,
-      {
-        method: 'PUT',
-        body: JSON.stringify({
-          id: commentId,
-          document: {
-            adf: document,
-          },
-        }),
-      },
-    );
+    try {
+      result = await this.makeRequest<Comment>(
+        `/conversation/${conversationId}/comment/${commentId}?expand=document.adf`,
+        {
+          method: 'PUT',
+          body: JSON.stringify({
+            id: commentId,
+            document: {
+              adf: document,
+            },
+          }),
+        },
+      );
+    } catch (error) {
+      const result = { conversationId, commentId, document, error };
+      dispatch({ type: UPDATE_COMMENT_ERROR, payload: result });
+      return result as Comment;
+    }
 
     dispatch({ type: UPDATE_COMMENT_SUCCESS, payload: result });
 
@@ -323,12 +369,25 @@ export class ConversationResource extends AbstractConversationResource {
     conversationId: string,
     commentId: string,
   ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'deleted'>> {
-    await this.makeRequest<{}>(
-      `/conversation/${conversationId}/comment/${commentId}`,
-      {
-        method: 'DELETE',
-      },
-    );
+    const { dispatch } = this;
+
+    dispatch({
+      type: DELETE_COMMENT_REQUEST,
+      payload: { commentId, conversationId },
+    });
+
+    try {
+      await this.makeRequest<{}>(
+        `/conversation/${conversationId}/comment/${commentId}`,
+        {
+          method: 'DELETE',
+        },
+      );
+    } catch (error) {
+      const result = { conversationId, commentId, error };
+      dispatch({ type: DELETE_COMMENT_ERROR, payload: result });
+      return result;
+    }
 
     const result = {
       conversationId,
@@ -336,10 +395,25 @@ export class ConversationResource extends AbstractConversationResource {
       deleted: true,
     };
 
-    const { dispatch } = this;
     dispatch({ type: DELETE_COMMENT_SUCCESS, payload: result });
 
     return result;
+  }
+
+  /**
+   * Reverts a comment based on ID.
+   */
+  async revertComment(
+    conversationId: string,
+    commentId: string,
+  ): Promise<Pick<Comment, 'conversationId' | 'commentId'>> {
+    const { dispatch } = this;
+
+    const comment = { conversationId, commentId };
+
+    dispatch({ type: REVERT_COMMENT, payload: comment });
+
+    return comment;
   }
 
   /**

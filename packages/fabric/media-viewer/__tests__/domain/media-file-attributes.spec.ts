@@ -153,14 +153,14 @@ class Mocks {
   static basicFileWithoutOcurrenceKey = {
     details: {
       id: 'basic-file',
-      processingStatus: 'succeeded'
+      processingStatus: 'succeeded',
     },
   } as FileItemWithOccurrenceKey;
 
   static basicFile = {
     details: {
       id: 'basic-file',
-      processingStatus: 'succeeded'
+      processingStatus: 'succeeded',
     },
     occurrenceKey: 'some-occurrenceKey',
   } as FileItemWithOccurrenceKey;
@@ -170,7 +170,7 @@ class Mocks {
       id: 'gif-file',
       name: 'Some GIF',
       mimeType: 'image/gif',
-      processingStatus: 'succeeded'
+      processingStatus: 'succeeded',
     },
     occurrenceKey: 'some-occurrenceKey',
   } as FileItemWithOccurrenceKey;
@@ -180,7 +180,7 @@ class Mocks {
       id: 'jpg-file',
       name: 'Some JPG',
       mimeType: 'image/jpeg',
-      processingStatus: 'succeeded'
+      processingStatus: 'succeeded',
     },
     occurrenceKey: 'some-occurrenceKey',
   } as FileItemWithOccurrenceKey;
@@ -190,7 +190,7 @@ class Mocks {
       id: 'jpg-file',
       name: 'Some JPG',
       mimeType: 'image/jpeg',
-      processingStatus: 'pending'
+      processingStatus: 'pending',
     },
     occurrenceKey: 'some-occurrenceKey',
   } as FileItemWithOccurrenceKey;
@@ -209,7 +209,7 @@ class Mocks {
           url: '/file/hd-file/artifact/poster_640.mp4/binary',
         },
       },
-      processingStatus: 'succeeded'
+      processingStatus: 'succeeded',
     },
     occurrenceKey: 'some-occurrenceKey',
   } as FileItemWithOccurrenceKey;
@@ -234,7 +234,7 @@ class Mocks {
           url: '/file/hd-file/artifact/poster_1280.mp4/binary',
         },
       },
-      processingStatus: 'succeeded'
+      processingStatus: 'succeeded',
     },
     occurrenceKey: 'some-occurrenceKey',
   } as FileItemWithOccurrenceKey;
@@ -259,7 +259,7 @@ class Mocks {
           url: '/file/hd-file/artifact/poster_1280.mp4/binary?param=1',
         },
       },
-      processingStatus: 'succeeded'
+      processingStatus: 'succeeded',
     },
     occurrenceKey: 'some-occurrenceKey',
   } as FileItemWithOccurrenceKey;

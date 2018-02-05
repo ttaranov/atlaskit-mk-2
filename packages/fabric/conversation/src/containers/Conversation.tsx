@@ -5,6 +5,7 @@ import {
   addComment,
   updateComment,
   deleteComment,
+  revertComment,
   updateUser,
   createConversation,
 } from '../internal/actions';
@@ -34,8 +35,13 @@ const mapStateToProps = (state: State, ownProps: Props) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onAddComment(conversationId: string, parentId: string, value: any) {
-    dispatch(addComment(conversationId, parentId, value));
+  onAddComment(
+    conversationId: string,
+    parentId: string,
+    value: any,
+    localId?: string,
+  ) {
+    dispatch(addComment(conversationId, parentId, value, localId));
   },
 
   onUpdateComment(conversationId: string, commentId: string, value: any) {
@@ -44,6 +50,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
   onDeleteComment(conversationId: string, commentId: string) {
     dispatch(deleteComment(conversationId, commentId));
+  },
+
+  onRevertComment(conversationId: string, commentId: string) {
+    dispatch(revertComment(conversationId, commentId));
   },
 
   onUpdateUser(user: User) {

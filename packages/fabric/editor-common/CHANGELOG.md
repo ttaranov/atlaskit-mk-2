@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 6.1.1
+
 ## 6.1.0
 - [minor] Fixing content expression of bodiedExtension node. [38b81ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38b81ad)
 

@@ -1,5 +1,8 @@
 # @atlaskit/tooltip
 
+## 8.2.1
+- [patch] Flatten examples for easier consumer use [145b632](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/145b632)
+
 ## 8.2.0
 - [minor] new prop component to open custom tooltip [3f892d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f892d5)
 

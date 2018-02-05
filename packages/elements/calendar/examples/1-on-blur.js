@@ -2,6 +2,5 @@
 
 import React from 'react';
 import { CalendarStateless } from '../src';
-import { action } from './utils/_';
 
-export default () => <CalendarStateless onBlur={action('blur')} />;
+export default () => <CalendarStateless onBlur={e => console.log('blur', e)} />;

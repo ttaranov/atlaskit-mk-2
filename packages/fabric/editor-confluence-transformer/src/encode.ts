@@ -385,10 +385,7 @@ export default function encode(node: PMNode, schema: Schema) {
     const mention = doc.createElementNS(FAB_XMLNS, 'fab:mention');
     mention.setAttribute('atlassian-id', node.attrs['id']);
 
-    // NOTE: (ED-1736) We're stripping @ from beginning of mention text, due to Confluence compatibility issues.
-    const cdata = doc.createCDATASection(node.attrs['text'].replace(/^@/, ''));
-    mention.appendChild(cdata);
-
+    // ED-3634: we're removing cdata completely
     link.appendChild(mention);
 
     return link;

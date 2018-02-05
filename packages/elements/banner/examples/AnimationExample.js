@@ -3,7 +3,16 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
-import WarningBanner from './WarningBanner';
+import WarningIcon from '@atlaskit/icon/glyph/warning';
+import Banner from '../src';
+
+const Icon = <WarningIcon label="Warning icon" secondaryColor="inherit" />;
+
+const WarningBanner = ({ isOpen = true }: { isOpen: boolean }) => (
+  <Banner icon={Icon} isOpen={isOpen} appearance="warning">
+    This is an warning banner
+  </Banner>
+);
 
 const ButtonWrapper = styled.div`
   padding-bottom: ${p => (p.isOpen ? 8 : 0)}px;

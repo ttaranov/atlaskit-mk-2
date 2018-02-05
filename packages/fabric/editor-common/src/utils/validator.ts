@@ -403,13 +403,23 @@ export const getValidNode = (
           mediaCollection = collection;
         }
         if (mediaId && mediaType) {
+          const mediaAttrs: any = {
+            type: mediaType,
+            id: mediaId,
+            collection: mediaCollection,
+          };
+
+          if (attrs.width) {
+            mediaAttrs.width = attrs.width;
+          }
+
+          if (attrs.height) {
+            mediaAttrs.height = attrs.height;
+          }
+
           return {
             type,
-            attrs: {
-              type: mediaType,
-              id: mediaId,
-              collection: mediaCollection,
-            },
+            attrs: mediaAttrs,
           };
         }
         break;
@@ -418,6 +428,20 @@ export const getValidNode = (
         if (Array.isArray(content) && !content.some(e => e.type !== 'media')) {
           return {
             type,
+            content,
+          };
+        }
+        break;
+      }
+      case 'mediaSingle': {
+        if (
+          Array.isArray(content) &&
+          content.length === 1 &&
+          content[0].type === 'media'
+        ) {
+          return {
+            type,
+            attrs,
             content,
           };
         }
