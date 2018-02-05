@@ -2,8 +2,17 @@ import * as React from 'react';
 
 import { NotificationIndicator } from '@atlaskit/notification-indicator';
 
-import { NotificationCountResponse } from '../src';
-import MockNotificationLogClient from './MockNotificationLogClient';
+import { NotificationLogClient } from '../src';
+
+class MockNotificationLogClient extends NotificationLogClient {
+  constructor() {
+    super('', '');
+  }
+
+  public async countUnseenNotifications() {
+    return Promise.resolve({ count: 5 });
+  }
+}
 
 export default function Example() {
   /**
@@ -16,10 +25,6 @@ export default function Example() {
    * );
    */
   const notificationLogClient = new MockNotificationLogClient();
-  const response: NotificationCountResponse = { count: 5 };
-
-  notificationLogClient.setResponse(Promise.resolve(response));
-
   const providerPromise = Promise.resolve(notificationLogClient);
 
   return (
