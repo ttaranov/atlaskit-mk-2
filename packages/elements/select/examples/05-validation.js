@@ -8,7 +8,7 @@ import SelectWrapper from '../src/SelectWrapper';
 const errorMsg = 'This field is required.';
 const successMsg = 'Great job selecting an option!';
 
-export default () => (
+const ValidationExample = () => (
   <div>
     <SelectWrapper
       id="error"
@@ -31,3 +31,5 @@ export default () => (
     </SelectWrapper>
   </div>
 );
+
+export default ValidationExample;
