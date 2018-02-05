@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
-import Tooltip from '../src/index';
+import Tooltip from '../src';
 
 const PER_RUN = 100;
 const TEST_RUNS = 10;

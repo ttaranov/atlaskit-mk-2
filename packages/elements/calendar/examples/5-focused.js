@@ -2,7 +2,9 @@
 
 import React from 'react';
 import { CalendarStateless } from '../src';
-import { notToday, today } from './utils/_';
+
+const today = new Date().getDate();
+const notToday = today === 10 ? 11 : 10;
 
 export default () => (
   <div>
