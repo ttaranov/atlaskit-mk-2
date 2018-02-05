@@ -203,7 +203,7 @@ describe('<NavigationItem />', () => {
       const refSpy = jest.fn();
       const dnd = {
         innerRef: refSpy,
-        draggableStyle: {},
+        draggableProps: { style: {} },
         placeholder: null,
       };
       mountWithRootTheme(<NavigationItem text="test" dnd={dnd} />);
@@ -213,7 +213,7 @@ describe('<NavigationItem />', () => {
       const refSpy = jest.fn();
       const dnd = {
         innerRef: refSpy,
-        draggableStyle: { textDecoration: 'underline' },
+        draggableProps: { style: { textDecoration: 'underline' } },
         placeholder: null,
       };
       mountWithRootTheme(<NavigationItem text="test" dnd={dnd} />);
