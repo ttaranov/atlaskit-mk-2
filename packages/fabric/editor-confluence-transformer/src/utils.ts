@@ -383,7 +383,7 @@ export const MACRO_PARAM_TO_RI: {
   },
 };
 
-export const generateMacroParams = (params: {
+export const encodeMacroParams = (params: {
   [name: string]: { value: string };
 }) => {
   const elem = document.createDocumentFragment();
