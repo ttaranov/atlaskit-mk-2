@@ -50,7 +50,10 @@ export interface ResourceProvider {
     conversationId: string,
     commentId: string,
   ): Promise<Pick<Comment, 'conversationId' | 'commentId' | 'deleted'>>;
-  revertComment(conversationId: string, commentId: string): Promise<Comment>;
+  revertComment(
+    conversationId: string,
+    commentId: string,
+  ): Promise<Pick<Comment, 'conversationId' | 'commentId'>>;
   updateUser(user: User): Promise<User>;
 }
 
@@ -127,7 +130,7 @@ export class AbstractConversationResource implements ResourceProvider {
   async revertComment(
     conversationId: string,
     commentId: string,
-  ): Promise<Comment> {
+  ): Promise<Pick<Comment, 'conversationId' | 'commentId'>> {
     return Promise.reject('Not implemented');
   }
 
