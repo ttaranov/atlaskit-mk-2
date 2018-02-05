@@ -379,6 +379,14 @@ const MACRO_PARAM_TO_RI: {
     name: 'ri:url',
     param: 'ri:value',
   },
+  url: {
+    name: 'ri:url',
+    param: 'ri:value',
+  },
+  user: {
+    name: 'ri:user',
+    param: 'ri:userkey',
+  },
 };
 
 export const encodeMacroParams = (
