@@ -1,5 +1,6 @@
 // @flow
 import { Component, type Node, type ElementType, createElement } from 'react';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import GatewayRegistry from './GatewayRegistry';
 
@@ -16,6 +17,7 @@ type Context = {
 
 export default class GatewayDest extends Component<Props, State> {
   gatewayRegistry: GatewayRegistry;
+  domNode: HTMLElement;
   static contextTypes = {
     gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired,
   };
@@ -37,10 +39,20 @@ export default class GatewayDest extends Component<Props, State> {
     this.gatewayRegistry.removeContainer(this.props.name);
   }
 
+  getRef = (r: Element) => {
+    // eslint-disable-next-line react/no-find-dom-node
+    this.domNode = findDOMNode(r);
+    console.log(this.domNode);
+  };
+
   render() {
     const { component, ...attrs } = this.props;
     delete attrs.name;
 
-    return createElement(component, attrs, this.state.children);
+    return createElement(
+      component,
+      { ...attrs, ref: this.getRef },
+      this.state.children,
+    );
   }
 }

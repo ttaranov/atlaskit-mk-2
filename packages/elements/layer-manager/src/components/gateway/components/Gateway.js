@@ -13,11 +13,12 @@ type Context = {
   gatewayRegistry: GatewayRegistry,
 };
 
-const supportsReactPortals = typeofReactDOM.createPortal === 'function';
+const supportsReactPortals = typeof ReactDOM.createPortal === 'function';
 
 export default class Gateway extends Component<Props> {
   gatewayRegistry: GatewayRegistry;
   id: string = '';
+  portalDomNode: HTMLElement;
   static contextTypes: Context = {
     gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired,
   };
@@ -35,10 +36,10 @@ export default class Gateway extends Component<Props> {
   }
 
   componentWillReceiveProps(props: Props) {
-    if (!props.shouldBlockRender) {
-      this.gatewayRegistry.clearChild(this.props.into, this.id);
-      this.renderIntoGatewayNode(props);
-    }
+    // if (!props.shouldBlockRender) {
+    //   this.gatewayRegistry.clearChild(this.props.into, this.id);
+    //   this.renderIntoGatewayNode(props);
+    // }
   }
 
   componentWillUnmount() {
@@ -46,12 +47,16 @@ export default class Gateway extends Component<Props> {
   }
 
   renderIntoGatewayNode(props: Props) {
-    this.gatewayRegistry.addChild(this.props.into, this.id, props.children);
+    this.portalDomNode = this.gatewayRegistry.addChild(
+      this.props.into,
+      this.id,
+      props.children,
+    );
   }
 
   render() {
     return supportsReactPortals
-      ? ReactDOM.createPortal(this.props.children, '')
+      ? ReactDOM.createPortal(this.props.children, this.portalDomNode)
       : null;
   }
 }

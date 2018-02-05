@@ -41,6 +41,7 @@ export default class GatewayRegistry {
     const addedGatewayIndex = childrenKeys.indexOf(addedGateway);
 
     if (supportsReactPortals) {
+      null;
     } else {
       this.containers[name].setState({
         children: childrenKeys.map((key, i) => {
@@ -81,6 +82,7 @@ export default class GatewayRegistry {
       child,
     };
     this.renderContainer(name, gatewayId);
+    return this.containers[name];
   }
 
   clearChild(name: Name, gatewayId: GatewayID) {

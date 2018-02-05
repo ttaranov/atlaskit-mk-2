@@ -18,6 +18,12 @@ type State = { ariaHiddenNode?: HTMLElement };
 
 export default class LayerManager extends Component<Props, State> {
   state = { ariaHiddenNode: undefined };
+  destRefs = {
+    modal: null,
+    spotlight: null,
+    flag: null,
+    tooltip: null,
+  };
   static childContextTypes: Object = { ariaHiddenNode: PropTypes.object };
 
   getChildContext() {
@@ -32,15 +38,24 @@ export default class LayerManager extends Component<Props, State> {
     this.setState({ ariaHiddenNode: ref });
   };
 
+  getDestRef = (name: string) => (ref: HTMLElement) => {
+    this.destRefs = {
+      ...this.destRefs,
+      [name]: ref,
+    };
+    console.log(this.destRefs);
+  };
+
   render() {
     const { children } = this.props;
 
     return (
-      <GatewayProvider>
+      <GatewayProvider destRefs={this.destRefs}>
         <AppWrapper innerRef={this.getAppRef}>
           {Children.only(children)}
         </AppWrapper>
-        <GatewayDest name="modal" component={TransitionGroup} />
+        <div ref={this.getDestRef('modal')} />
+        {/* <GatewayDest name="modal" innerRef={this.getDestRef('modal')} component={TransitionGroup} /> */}
         <GatewayDest name="spotlight" component={TransitionGroup} />
         <GatewayDest name="flag" />
         <GatewayDest name="tooltip" component={TransitionGroup} />

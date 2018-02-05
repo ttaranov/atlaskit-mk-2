@@ -6,6 +6,7 @@ import GatewayRegistry from './GatewayRegistry';
 type Props = {
   component: ElementType,
   children: Node,
+  destRefs: {},
 };
 type Context = {
   gatewayRegistry: GatewayRegistry,
@@ -23,6 +24,14 @@ export default class GatewayProvider extends Component<Props> {
   constructor(props: Props, context: Context) {
     super(props, context);
     this.gatewayRegistry = new GatewayRegistry();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.destRefs !== nextProps.destRefs) {
+      Object.keys(nextProps.destRefs).forEach(name => {
+        this.gatewayRegistry.addContainer(name, nextProps.destRefs[name]);
+      });
+    }
   }
 
   getChildContext() {
