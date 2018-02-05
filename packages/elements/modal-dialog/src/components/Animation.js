@@ -75,6 +75,7 @@ function Animation({
       unmountOnExit
     >
       {status => {
+        console.log('status', status);
         if (status === 'exited') return null;
 
         const styles = {

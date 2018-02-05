@@ -163,6 +163,7 @@ class Modal extends Component<Props, State> {
   // }
 
   componentDidMount() {
+    console.log('modal mounted');
     window.addEventListener('scroll', this.handleWindowScroll);
   }
 
@@ -214,6 +215,7 @@ class Modal extends Component<Props, State> {
       width,
       scrollBehavior,
     } = this.props;
+    console.log('rendering modal');
 
     const { isExiting, scrollDistance } = this.state;
 
@@ -224,7 +226,6 @@ class Modal extends Component<Props, State> {
     // otherwise allow styled component to consume as named prop
     const widthName = WIDTH_ENUM.values.includes(width) ? width : null;
     const widthValue = widthName ? null : width;
-
     return (
       <FillScreen
         {...transitionProps}

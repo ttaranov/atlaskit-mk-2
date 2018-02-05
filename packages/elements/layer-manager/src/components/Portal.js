@@ -65,7 +65,6 @@ class Portal extends Component<Props> {
   }
   renderChildren = children => {
     const { theme, withTransitionGroup } = this.props;
-
     return (
       <ThemeProvider theme={theme}>
         {withTransitionGroup ? (

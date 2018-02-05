@@ -1,24 +1,28 @@
 // @flow
-import { Component, type Node } from 'react';
-import ReactDOM from 'react-dom';
+import React, { Children, Component, type Node } from 'react';
+import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 import PropTypes from 'prop-types';
+import { TransitionGroup } from 'react-transition-group';
 import GatewayRegistry from './GatewayRegistry';
+import supportsReactPortal from '../../../util/supportsReactPortal';
 
 type Props = {
   into: string,
   children?: Node,
   shouldBlockRender?: boolean,
+  withTransitionGroup?: boolean,
 };
 type Context = {
   gatewayRegistry: GatewayRegistry,
 };
 
-const supportsReactPortals = typeof ReactDOM.createPortal === 'function';
+const FirstChild = ({ children }) => Children.toArray(children)[0] || null;
 
 export default class Gateway extends Component<Props> {
   gatewayRegistry: GatewayRegistry;
   id: string = '';
   portalDomNode: HTMLElement;
+  layerProps = {};
   static contextTypes: Context = {
     gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired,
   };
@@ -27,23 +31,31 @@ export default class Gateway extends Component<Props> {
     super(props, context);
     this.gatewayRegistry = context.gatewayRegistry;
   }
+
   componentWillMount() {
     this.id = this.gatewayRegistry.register(
       this.props.into,
       this.props.children,
+      this.onLayerChange,
     );
     this.renderIntoGatewayNode(this.props);
   }
 
+  componentDidMount() {
+    console.log('mounted', this.portalDomNode);
+  }
+
   componentWillReceiveProps(props: Props) {
-    // if (!props.shouldBlockRender) {
-    //   this.gatewayRegistry.clearChild(this.props.into, this.id);
-    //   this.renderIntoGatewayNode(props);
-    // }
+    if (!props.shouldBlockRender) {
+      this.gatewayRegistry.clearChild(this.props.into, this.id);
+      this.renderIntoGatewayNode(props);
+    }
   }
 
   componentWillUnmount() {
     this.gatewayRegistry.unregister(this.props.into, this.id);
+    // this.render();
+    // setTimeout(() => unmountComponentAtNode(this.portalDomNode), 5000);
   }
 
   renderIntoGatewayNode(props: Props) {
@@ -54,9 +66,23 @@ export default class Gateway extends Component<Props> {
     );
   }
 
+  onLayerChange = (layerProps: {}) => {
+    this.layerProps = layerProps;
+    this.forceUpdate();
+  };
+
   render() {
-    return supportsReactPortals
-      ? ReactDOM.createPortal(this.props.children, this.portalDomNode)
+    const childrenWithLayerProps = React.cloneElement(
+      this.props.children,
+      this.layerProps,
+    );
+    const children = this.props.withTransitionGroup ? (
+      <TransitionGroup>{childrenWithLayerProps}</TransitionGroup>
+    ) : (
+      childrenWithLayerProps
+    );
+    return supportsReactPortal
+      ? ReactDOM.createPortal(children, this.portalDomNode)
       : null;
   }
 }

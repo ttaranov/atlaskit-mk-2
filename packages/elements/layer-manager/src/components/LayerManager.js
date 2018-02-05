@@ -3,6 +3,7 @@ import React, { Children, Component, type Node } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { TransitionGroup } from 'react-transition-group';
+import supportsReactPortal from '../util/supportsReactPortal';
 import { GatewayDest, GatewayProvider } from './gateway';
 
 // NOTE: lock the app wrapper to a 0 z-index. This allows layer manager to
@@ -38,27 +39,22 @@ export default class LayerManager extends Component<Props, State> {
     this.setState({ ariaHiddenNode: ref });
   };
 
-  getDestRef = (name: string) => (ref: HTMLElement) => {
-    this.destRefs = {
-      ...this.destRefs,
-      [name]: ref,
-    };
-    console.log(this.destRefs);
-  };
-
   render() {
     const { children } = this.props;
 
     return (
-      <GatewayProvider destRefs={this.destRefs}>
+      <GatewayProvider>
         <AppWrapper innerRef={this.getAppRef}>
           {Children.only(children)}
         </AppWrapper>
-        <div ref={this.getDestRef('modal')} />
-        {/* <GatewayDest name="modal" innerRef={this.getDestRef('modal')} component={TransitionGroup} /> */}
-        <GatewayDest name="spotlight" component={TransitionGroup} />
-        <GatewayDest name="flag" />
-        <GatewayDest name="tooltip" component={TransitionGroup} />
+        {supportsReactPortal ? null : (
+          <div>
+            <GatewayDest name="modal" component={TransitionGroup} />
+            <GatewayDest name="spotlight" component={TransitionGroup} />
+            <GatewayDest name="flag" />
+            <GatewayDest name="tooltip" component={TransitionGroup} />
+          </div>
+        )}
       </GatewayProvider>
     );
   }

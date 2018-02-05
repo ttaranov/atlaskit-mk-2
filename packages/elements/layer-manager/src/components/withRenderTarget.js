@@ -85,7 +85,6 @@ export default function withRenderTarget(
     render() {
       const { gatewayRegistry, ...portalledContext } = this.context;
       const GatewayOrPortal = gatewayRegistry ? Gateway : Portal;
-
       return (
         <GatewayOrPortal
           id={process.env.NODE_ENV === 'test' ? 'gateway-or-portal' : ''}

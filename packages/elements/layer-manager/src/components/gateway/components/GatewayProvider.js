@@ -2,11 +2,11 @@
 import React, { Component, type ElementType, type Node } from 'react';
 import PropTypes from 'prop-types';
 import GatewayRegistry from './GatewayRegistry';
+import supportsReactPortal from '../../../util/supportsReactPortal';
 
 type Props = {
   component: ElementType,
   children: Node,
-  destRefs: {},
 };
 type Context = {
   gatewayRegistry: GatewayRegistry,
@@ -24,13 +24,10 @@ export default class GatewayProvider extends Component<Props> {
   constructor(props: Props, context: Context) {
     super(props, context);
     this.gatewayRegistry = new GatewayRegistry();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.destRefs !== nextProps.destRefs) {
-      Object.keys(nextProps.destRefs).forEach(name => {
-        this.gatewayRegistry.addContainer(name, nextProps.destRefs[name]);
-      });
+    if (supportsReactPortal) {
+      const modalEl = document.createElement('div');
+      if (document.body) document.body.appendChild(modalEl);
+      this.gatewayRegistry.addContainer('modal', modalEl);
     }
   }
 
