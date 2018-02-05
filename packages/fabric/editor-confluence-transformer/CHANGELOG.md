@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.7.4
+- [patch] Convert specific params to resource identifiers on encode and decode [778e2bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/778e2bf)
+
 ## 2.7.3
 - [patch] remove mention name from encoder [130f15c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/130f15c)
 
