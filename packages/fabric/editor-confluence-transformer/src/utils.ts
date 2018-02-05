@@ -1,7 +1,7 @@
 import { Fragment, Mark, Node as PMNode, Schema } from 'prosemirror-model';
 
 import { normalizeHexColor } from '@atlaskit/editor-common';
-import { AC_XMLNS } from './encode-cxhtml';
+import { AC_XMLNS, RI_XMLNS } from './encode-cxhtml';
 import { Macro } from './types';
 
 /**
@@ -312,11 +312,11 @@ export function parseMacro(node: Element): Macro {
     if (nodeName === 'ac:parameter') {
       const key = getAcName(child);
       if (key) {
-        const riMapping = MACRO_PARAM_TO_RI[key];
-        if (riMapping) {
-          const riNode = getAcTagNode(child, riMapping.name);
+        const resourceIdentifier = MACRO_PARAM_TO_RI[key];
+        if (resourceIdentifier) {
+          const riNode = getAcTagNode(child, resourceIdentifier.name);
           if (riNode) {
-            value = riNode.getAttribute(riMapping.param);
+            value = riNode.getAttribute(resourceIdentifier.param);
           }
         }
         params[key.toLowerCase()] = value;
@@ -393,8 +393,8 @@ export const encodeMacroParams = (
     el.setAttributeNS(AC_XMLNS, 'ac:name', name);
     const resourceIdentifier = MACRO_PARAM_TO_RI[name];
     if (resourceIdentifier) {
-      const ri = doc.createElementNS(AC_XMLNS, resourceIdentifier.name);
-      ri.setAttributeNS(AC_XMLNS, resourceIdentifier.param, params[name].value);
+      const ri = doc.createElementNS(RI_XMLNS, resourceIdentifier.name);
+      ri.setAttributeNS(RI_XMLNS, resourceIdentifier.param, params[name].value);
       el.appendChild(ri);
     } else {
       el.textContent = params[name].value;
