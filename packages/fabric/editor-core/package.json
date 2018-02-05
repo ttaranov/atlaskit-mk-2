@@ -28,7 +28,7 @@
     "@atlaskit/editor-common": "^6.0.4",
     "@atlaskit/editor-json-transformer": "^2.5.2",
     "@atlaskit/editor-markdown-transformer": "^0.1.2",
-    "@atlaskit/emoji": "^31.0.2",
+    "@atlaskit/emoji": "^31.1.0",
     "@atlaskit/icon": "^10.8.0",
     "@atlaskit/item": "^4.2.9",
     "@atlaskit/layer": "^2.6.0",
