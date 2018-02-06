@@ -2,6 +2,7 @@ import * as React from 'react';
 import { heading, blockquote, hardBreak } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from '../../../plugins/block-type';
+import keymapPlugin from '../../../plugins/block-type/keymap';
 import inputRulePlugin from '../../../plugins/block-type/input-rule';
 import ToolbarBlockType from '../../../ui/ToolbarBlockType';
 import { ToolbarSize } from '../../ui/Toolbar';
@@ -26,6 +27,7 @@ const blockType: EditorPlugin = {
     return [
       { rank: 500, plugin: () => plugin },
       { rank: 510, plugin: ({ schema }) => inputRulePlugin(schema) },
+      { rank: 9990, plugin: ({ schema }) => keymapPlugin(schema) },
     ];
   },
 

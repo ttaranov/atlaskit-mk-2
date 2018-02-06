@@ -15,7 +15,6 @@ import {
   isRangeOfType,
   canMoveDown,
   canMoveUp,
-  setTextSelection,
   atTheEndOfDoc,
   atTheBeginningOfBlock,
 } from '../utils';
@@ -380,30 +379,32 @@ export function insertNodesEndWithNewParagraph(nodes: PMNode[]): Command {
   };
 }
 
-export function createNewParagraphAbove(view: EditorView): Command {
-  return function(state, dispatch) {
-    const append = false;
+export function createNewParagraphAbove(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean {
+  const append = false;
 
-    if (!canMoveUp(state) && canCreateParagraphNear(state)) {
-      createParagraphNear(append)(view.state, view.dispatch);
-      return true;
-    }
+  if (!canMoveUp(state) && canCreateParagraphNear(state)) {
+    createParagraphNear(append)(state, dispatch);
+    return true;
+  }
 
-    return false;
-  };
+  return false;
 }
 
-export function createNewParagraphBelow(view: EditorView): Command {
-  return function(state, dispatch) {
-    const append = true;
+export function createNewParagraphBelow(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean {
+  const append = true;
 
-    if (!canMoveDown(state) && canCreateParagraphNear(state)) {
-      createParagraphNear(append)(state, dispatch);
-      return true;
-    }
+  if (!canMoveDown(state) && canCreateParagraphNear(state)) {
+    createParagraphNear(append)(state, dispatch);
+    return true;
+  }
 
-    return false;
-  };
+  return false;
 }
 
 function canCreateParagraphNear(state: EditorState): boolean {
