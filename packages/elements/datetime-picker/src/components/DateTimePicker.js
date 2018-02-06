@@ -88,6 +88,10 @@ function parseDateIntoStateValues(value) {
   };
 }
 
+function formatDateTimeIntoIso(date: string, time: string): string {
+  return `${date}T${time}`;
+}
+
 class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
     autoFocus: false,
@@ -120,8 +124,7 @@ class DateTimePicker extends Component<Props, State> {
   handleValueChange() {
     const { _dateValue, _timeValue } = this.state;
     if (_dateValue && _timeValue) {
-      const value = `${_dateValue}T${_timeValue}`;
-      this.props.onChange(value);
+      this.props.onChange(formatDateTimeIntoIso(_dateValue, _timeValue));
     }
   }
 
@@ -142,7 +145,10 @@ class DateTimePicker extends Component<Props, State> {
   render() {
     const { name } = this.props;
     const { _dateValue, _timeValue } = this.mapValueFromPropsOrState();
-    const value = _dateValue && _timeValue ? `${_dateValue}T${_timeValue}` : '';
+    const value =
+      _dateValue && _timeValue
+        ? formatDateTimeIntoIso(_dateValue, _timeValue)
+        : '';
     return (
       <Flex>
         <input name={name} type="hidden" value={value} />
