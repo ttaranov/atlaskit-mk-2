@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Node, Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import EditorActions from '../actions';
-import { MediaProvider, MediaState } from '@atlaskit/media-core';
+
 import {
   Transformer,
   ContextIdentifierProvider,
@@ -13,14 +13,16 @@ import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { TaskDecisionProvider } from '@atlaskit/task-decision';
 
+import { PluginConfig as TablesPluginConfig } from '../../plugins/table';
+import { MediaProvider, MediaState } from '../../plugins/media';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { AnalyticsHandler } from '../../analytics';
+
 import { ImageUploadHandler } from '../plugins/image-upload';
 import { TextFormattingOptions } from '../plugins/text-formatting';
 import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../plugins/macro/types';
 import { MediaOptions } from '../plugins/media';
-import { PluginConfig as TablesPluginConfig } from '../../plugins/table';
 
 export type EditorAppearance =
   | 'message'
@@ -104,6 +106,7 @@ export interface EditorProps {
   popupsScrollableElement?: HTMLElement;
 
   insertMenuItems?: InsertMenuCustomItem[];
+  editorActions: EditorActions;
 
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;

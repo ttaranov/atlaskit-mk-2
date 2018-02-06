@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import { undo } from 'prosemirror-history';
 import { EditorView } from 'prosemirror-view';
-import { DefaultMediaStateManager, MediaState } from '@atlaskit/media-core';
+
 import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   doc,
@@ -28,6 +28,8 @@ import {
 import {
   stateKey as mediaPluginKey,
   MediaPluginState,
+  DefaultMediaStateManager,
+  MediaState,
 } from '../../../src/plugins/media';
 import { setNodeSelection, setTextSelection } from '../../../src/utils';
 import { AnalyticsHandler, analyticsService } from '../../../src/analytics';
@@ -56,11 +58,19 @@ describe('Media plugin', () => {
 
   const providerFactory = ProviderFactory.create({ mediaProvider });
 
-  const editor = (doc: any, editorProps = {}) =>
+  const editor = (
+    doc: any,
+    editorProps = {},
+    dropzoneContainer: HTMLElement = document.body,
+  ) =>
     createEditor<MediaPluginState>({
       doc,
       editorPlugins: [
-        mediaPlugin({ provider: mediaProvider, allowMediaSingle: true }),
+        mediaPlugin({
+          provider: mediaProvider,
+          allowMediaSingle: true,
+          customDropzoneContainer: dropzoneContainer,
+        }),
         hyperlinkPlugin,
         codeBlockPlugin,
         rulePlugin,
@@ -162,7 +172,7 @@ describe('Media plugin', () => {
 
         stateManager.updateState('foo', {
           id: 'foo',
-          status: 'uploading',
+          status: 'preview',
           fileName: 'foo.jpg',
           fileSize: 100,
           fileMimeType: 'image/jpeg',
@@ -171,7 +181,7 @@ describe('Media plugin', () => {
 
         stateManager.updateState('bar', {
           id: 'bar',
-          status: 'uploading',
+          status: 'preview',
           fileName: 'bar.png',
           fileSize: 200,
           fileMimeType: 'image/png',
@@ -226,7 +236,7 @@ describe('Media plugin', () => {
 
         const eventPayload: MediaState = {
           id: 'foo',
-          status: 'uploading',
+          status: 'preview',
           fileName: 'foo.jpg',
           fileSize: 100,
           fileMimeType: 'image/jpeg',
@@ -235,55 +245,6 @@ describe('Media plugin', () => {
 
         stateManager.updateState('foo', eventPayload);
         stateManager.updateState('foo', eventPayload);
-
-        expect(editorView.state.doc).toEqualDocument(
-          doc(
-            mediaSingle({
-              layout: 'center',
-            })(
-              media({
-                id: 'foo',
-                type: 'file',
-                collection: testCollectionName,
-                __fileName: 'foo.jpg',
-                __fileSize: 100,
-                __fileMimeType: 'image/jpeg',
-                height: 100,
-                width: 100,
-              })(),
-            ),
-            p(),
-          ),
-        );
-      });
-
-      it('should wait for next uploading event if current one is unsuccessful', async () => {
-        const { editorView, pluginState } = editor(doc(p('')));
-        await mediaProvider;
-
-        pluginState.insertFiles([
-          {
-            id: 'foo',
-            fileMimeType: 'image/jpeg',
-          },
-        ]);
-
-        stateManager.updateState('foo', {
-          id: 'foo',
-          status: 'uploading',
-          fileName: 'foo.jpg',
-          fileSize: 100,
-          fileMimeType: 'image/jpeg',
-        });
-
-        stateManager.updateState('foo', {
-          id: 'foo',
-          status: 'uploading',
-          fileName: 'foo.jpg',
-          fileSize: 100,
-          fileMimeType: 'image/jpeg',
-          thumbnail: { dimensions: { width: 100, height: 100 }, src: '' },
-        });
 
         expect(editorView.state.doc).toEqualDocument(
           doc(
@@ -539,9 +500,9 @@ describe('Media plugin', () => {
       status: 'processing',
     });
 
-    stateManager.subscribe(firstTemporaryFileId, spy);
-    stateManager.subscribe(secondTemporaryFileId, spy);
-    stateManager.subscribe(thirdTemporaryFileId, spy);
+    stateManager.on(firstTemporaryFileId, spy);
+    stateManager.on(secondTemporaryFileId, spy);
+    stateManager.on(thirdTemporaryFileId, spy);
 
     let pos: number;
     pos = getNodePos(pluginState, firstTemporaryFileId);
@@ -1310,15 +1271,9 @@ describe('Media plugin', () => {
       (editorView as any).docView.dom.querySelector('.ProseMirror-widget');
 
     let dropzoneContainer;
-    let mediaProvider;
 
     beforeEach(() => {
       dropzoneContainer = document.createElement('div');
-      mediaProvider = storyMediaProviderFactory({
-        stateManager,
-        dropzoneContainer,
-      });
-      providerFactory.setProvider('mediaProvider', mediaProvider);
     });
 
     afterEach(() => {
@@ -1326,40 +1281,46 @@ describe('Media plugin', () => {
     });
 
     it('should show the placeholder at the current position inside paragraph', async () => {
-      const { editorView } = editor(doc(p('hello{<>} world')));
-
-      const provider = await mediaProvider;
-      await provider.uploadContext;
-      // MediaPicker DropZone bind events inside a `whenDomReady`, so we have to wait for the next tick
-      await sleep(0);
-      expect(getWidgetDom(editorView)).toEqual(null);
-
-      dropzoneContainer.dispatchEvent(createDragOverOrLeaveEvent('dragover'));
-      const dragZoneDom = getWidgetDom(editorView);
-      expect(dragZoneDom).not.toBe(null);
-      expect(dragZoneDom!.previousSibling!.textContent).toEqual('hello');
-      expect(dragZoneDom!.nextSibling!.textContent).toEqual(' world');
-
-      dropzoneContainer.dispatchEvent(createDragOverOrLeaveEvent('dragleave'));
-      // MediaPicker DropZone has a 50ms timeout on dragleave event, so we have to wait for at least 50ms
-      await sleep(50);
-      expect(getWidgetDom(editorView)).toEqual(null);
-    });
-
-    it('should show the placeholder for code block', async () => {
       const { editorView } = editor(
-        doc(code_block()('const foo = undefined;{<>}')),
+        doc(p('hello{<>} world')),
+        {},
+        dropzoneContainer,
       );
 
       const provider = await mediaProvider;
       await provider.uploadContext;
       // MediaPicker DropZone bind events inside a `whenDomReady`, so we have to wait for the next tick
       await sleep(0);
-      expect(getWidgetDom(editorView)).toEqual(null);
+      expect(getWidgetDom(editorView)).toBeNull();
 
       dropzoneContainer.dispatchEvent(createDragOverOrLeaveEvent('dragover'));
       const dragZoneDom = getWidgetDom(editorView);
-      expect(dragZoneDom).not.toBe(null);
+      expect(dragZoneDom).toBeDefined();
+      expect(dragZoneDom!.previousSibling!.textContent).toEqual('hello');
+      expect(dragZoneDom!.nextSibling!.textContent).toEqual(' world');
+
+      dropzoneContainer.dispatchEvent(createDragOverOrLeaveEvent('dragleave'));
+      // MediaPicker DropZone has a 50ms timeout on dragleave event, so we have to wait for at least 50ms
+      await sleep(50);
+      expect(getWidgetDom(editorView)).toBeNull();
+    });
+
+    it('should show the placeholder for code block', async () => {
+      const { editorView } = editor(
+        doc(code_block()('const foo = undefined;{<>}')),
+        {},
+        dropzoneContainer,
+      );
+
+      const provider = await mediaProvider;
+      await provider.uploadContext;
+      // MediaPicker DropZone bind events inside a `whenDomReady`, so we have to wait for the next tick
+      await sleep(0);
+      expect(getWidgetDom(editorView)).toBeNull();
+
+      dropzoneContainer.dispatchEvent(createDragOverOrLeaveEvent('dragover'));
+      const dragZoneDom = getWidgetDom(editorView);
+      expect(dragZoneDom).toBeDefined();
       expect(dragZoneDom!.previousSibling!.textContent).toEqual(
         'const foo = undefined;',
       );
@@ -1368,7 +1329,7 @@ describe('Media plugin', () => {
       dropzoneContainer.dispatchEvent(createDragOverOrLeaveEvent('dragleave'));
       // MediaPicker DropZone has a 50ms timeout on dragleave event, so we have to wait for at least 50ms
       await sleep(50);
-      expect(getWidgetDom(editorView)).toEqual(null);
+      expect(getWidgetDom(editorView)).toBeNull();
     });
   });
 

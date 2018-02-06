@@ -1,11 +1,11 @@
 import { mockStore, mockFetcher, mockAuthService } from '../../mocks';
 import { sendUploadEvent } from '../../actions/sendUploadEvent';
 import finalizeUploadMiddleware, { finalizeUpload } from '../finalizeUpload';
+import { UploadParams } from '../../../domain/config';
 import {
   FinalizeUploadAction,
   FINALIZE_UPLOAD,
 } from '../../actions/finalizeUpload';
-import { UploadParams } from '../../domain';
 
 describe('finalizeUploadMiddleware', () => {
   const auth = {

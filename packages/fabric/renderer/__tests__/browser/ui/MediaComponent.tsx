@@ -1,21 +1,20 @@
 import * as React from 'react';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
-import {
-  Context,
-  ContextConfig,
-  ContextFactory,
-  MediaProvider,
-  MediaStateManager,
-  DefaultMediaStateManager,
-} from '@atlaskit/media-core';
-import MediaComponent from '../../../src/ui/MediaItem/MediaComponent';
+import { Context, ContextConfig, ContextFactory } from '@atlaskit/media-core';
 import { MediaType } from '@atlaskit/editor-common';
 import { Card, CardView, CardProps } from '@atlaskit/media-card';
 import {
   storyMediaProviderFactory,
   randomId,
 } from '@atlaskit/editor-test-helpers';
+import {
+  MediaProvider,
+  MediaStateManager,
+  DefaultMediaStateManager,
+} from '@atlaskit/editor-core';
+
+import MediaComponent from '../../../src/ui/MediaItem/MediaComponent';
 
 describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   const file = {
@@ -213,10 +212,11 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     const stateManager = {
       getState: () => undefined,
       updateState: () => {},
-      subscribe: () => {
+      on: () => {
         subscribeCalled = true;
       },
-      unsubscribe: () => {},
+      off: () => {},
+      destroy: () => {},
     };
     const mediaProvider = getFreshResolvedProvider(stateManager);
     let subscribeCalled = false;

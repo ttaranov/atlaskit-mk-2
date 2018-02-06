@@ -1,5 +1,7 @@
 # @atlaskit/renderer
 
+## 11.4.2
+
 ## 11.4.1
 - [patch] bump editor-common to 6.1.2 [bb7802e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7802e)
 

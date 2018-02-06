@@ -13,7 +13,6 @@ import {
   randomId,
   storyMediaProviderFactory,
 } from '@atlaskit/editor-test-helpers';
-import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import { EditorView } from 'prosemirror-view';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import {
@@ -21,16 +20,19 @@ import {
   ProviderFactory,
   defaultSchema,
 } from '@atlaskit/editor-common';
+
 import {
   MediaPluginState,
   stateKey as mediaPluginStateKey,
-} from './../../../../src/plugins/media/index';
+  DefaultMediaStateManager,
+} from './../../../../src/plugins/media';
 import { name } from '../../../../package.json';
 import tasksAndDecisionsPlugin from '../../../../src/editor/plugins/tasks-and-decisions';
 import mediaPlugin from '../../../../src/editor/plugins/media';
 import hyperlinkPlugin from '../../../../src/editor/plugins/hyperlink';
 import EditorActions from '../../../../src/editor/actions';
 import { toJSON } from '../../../../src/utils';
+
 chai.use(chaiPlugin);
 
 const jsonTransformer = new JSONTransformer();

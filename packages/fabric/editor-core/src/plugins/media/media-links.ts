@@ -1,14 +1,15 @@
-import { Context, MediaStateManager, MediaState } from '@atlaskit/media-core';
 import { MarkType } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
 import { Transaction } from 'prosemirror-state';
 import { AddMarkStep, ReplaceStep } from 'prosemirror-transform';
-import { EditorView } from 'prosemirror-view';
-
-import { endPositionOfParent } from '../../utils';
-import { posOfMediaGroupBelow, posOfParentMediaGroup } from './utils';
-import { uuid } from '../utils';
+import { Context } from '@atlaskit/media-core';
 import { unsupportedNodeTypesForMediaCards } from '@atlaskit/editor-common';
+
 import analyticsService from '../../analytics/service';
+import { endPositionOfParent } from '../../utils';
+import { uuid } from '../utils';
+import { posOfMediaGroupBelow, posOfParentMediaGroup } from './utils';
+import { MediaStateManager, MediaState } from './types';
 
 export interface URLInfo {
   href: string;
@@ -49,7 +50,7 @@ export const insertLinks = async (
           type: 'link',
           collection,
         });
-        stateManager.subscribe(id, handleMediaState);
+        stateManager.on(id, handleMediaState);
 
         // If there's multiple replace steps, make sure subsequent transactions are mapped onto new positions
         trQueue.forEach(tr => (pos = tr.mapping.map(pos)));
