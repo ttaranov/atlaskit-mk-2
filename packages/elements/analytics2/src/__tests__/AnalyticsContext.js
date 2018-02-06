@@ -1,9 +1,75 @@
 // @flow
 
+import React from 'react';
+import { mount, shallow } from 'enzyme';
+import PropTypes from 'prop-types';
 import AnalyticsContext from '../AnalyticsContext';
 
-xit('should render', () => {});
+const ContextConsumer = (
+  props: { onClick: (context: {}) => void },
+  context,
+) => {
+  const onClick = () => {
+    const analyticsContext = context.getAnalyticsContext();
+    props.onClick(analyticsContext);
+  };
+  return <button onClick={onClick} />;
+};
+ContextConsumer.contextTypes = {
+  getAnalyticsContext: PropTypes.func,
+};
 
-xit('should add analytics context data to react context callback', () => {});
+it('should render', () => {
+  const wrapper = shallow(
+    <AnalyticsContext data={{}}>
+      <div />
+    </AnalyticsContext>,
+  );
 
-xit('should get analytics context data from ancestor', () => {});
+  expect(wrapper.find('div')).toHaveLength(1);
+});
+
+it('should not create a component with multiple children', () => {
+  expect(() => {
+    shallow(
+      <AnalyticsContext data={{}}>
+        <div />
+        <div />
+      </AnalyticsContext>,
+    );
+  }).toThrow();
+});
+
+it("should add analytics context data to child's getAnalyticsContext context callback", () => {
+  let analyticsContext;
+  const getContext = context => {
+    analyticsContext = context;
+  };
+  const wrapper = mount(
+    <AnalyticsContext data={{ a: 'b' }}>
+      <ContextConsumer onClick={getContext} />
+    </AnalyticsContext>,
+  );
+  wrapper.find(ContextConsumer).simulate('click');
+
+  expect(analyticsContext).toEqual([{ a: 'b' }]);
+});
+
+it("should prepend analytics context data from ancestors to child's getAnalyticsContext context callback", () => {
+  let analyticsContext;
+  const getContext = context => {
+    analyticsContext = context;
+  };
+  const wrapper = mount(
+    <AnalyticsContext data={{ a: 'e' }}>
+      <AnalyticsContext data={{ c: 'd' }}>
+        <AnalyticsContext data={{ a: 'b' }}>
+          <ContextConsumer onClick={getContext} />
+        </AnalyticsContext>
+      </AnalyticsContext>
+    </AnalyticsContext>,
+  );
+  wrapper.find(ContextConsumer).simulate('click');
+
+  expect(analyticsContext).toEqual([{ a: 'e' }, { c: 'd' }, { a: 'b' }]);
+});

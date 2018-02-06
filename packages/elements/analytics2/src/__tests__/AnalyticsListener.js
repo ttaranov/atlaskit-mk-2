@@ -1,7 +1,79 @@
 // @flow
 
+import React from 'react';
+import { mount, shallow } from 'enzyme';
+import PropTypes from 'prop-types';
 import AnalyticsListener from '../AnalyticsListener';
 
-xit('should render', () => {});
+const ContextConsumer = (
+  props: { onClick: (handlers: {}) => void },
+  context,
+) => {
+  const onClick = () => {
+    const eventHandlers = context.getAnalyticsEventHandlers();
+    props.onClick(eventHandlers);
+  };
+  return <button onClick={onClick} />;
+};
+ContextConsumer.contextTypes = {
+  getAnalyticsEventHandlers: PropTypes.func,
+};
 
-xit('should expose analytics event handlers via context', () => {});
+it('should render', () => {
+  const wrapper = shallow(
+    <AnalyticsListener onEvent={() => {}}>
+      <div />
+    </AnalyticsListener>,
+  );
+
+  expect(wrapper.find('div')).toHaveLength(1);
+});
+
+it('should expose onEvent prop callback via getAnalyticsEventHandlers react context callback', () => {
+  let analyticsEventHandlers;
+  const eventHandler = jest.fn();
+  const getHandlers = handlers => {
+    analyticsEventHandlers = handlers;
+  };
+  const wrapper = mount(
+    <AnalyticsListener onEvent={eventHandler}>
+      <ContextConsumer onClick={getHandlers} />
+    </AnalyticsListener>,
+  );
+  wrapper.find(ContextConsumer).simulate('click');
+
+  expect(analyticsEventHandlers).toEqual(expect.anything());
+  if (analyticsEventHandlers) {
+    expect(analyticsEventHandlers.length).toBe(1);
+    analyticsEventHandlers[0]();
+  }
+  expect(eventHandler).toHaveBeenCalled();
+});
+
+it('should add ancestor analytics event handlers to getAnalyticsEventHandlers react context callback', () => {
+  let analyticsEventHandlers;
+  const innerHandler = jest.fn();
+  const outerHandler = jest.fn();
+  const getHandlers = handlers => {
+    analyticsEventHandlers = handlers;
+  };
+  const wrapper = mount(
+    <AnalyticsListener onEvent={outerHandler}>
+      <AnalyticsListener onEvent={innerHandler}>
+        <ContextConsumer onClick={getHandlers} />
+      </AnalyticsListener>
+    </AnalyticsListener>,
+  );
+  wrapper.find(ContextConsumer).simulate('click');
+
+  expect(analyticsEventHandlers).toEqual(expect.anything());
+  if (analyticsEventHandlers) {
+    expect(analyticsEventHandlers.length).toBe(2);
+    analyticsEventHandlers[0]();
+    analyticsEventHandlers[1]();
+  }
+  expect(innerHandler).toHaveBeenCalled();
+  expect(outerHandler).toHaveBeenCalled();
+});
+
+// TODO: Add channel stuff once listener swallow branch has been merged
