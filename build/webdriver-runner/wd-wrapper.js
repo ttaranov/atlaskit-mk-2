@@ -73,8 +73,8 @@ export default class Page {
   waitForSelector(selector) {
     return this.browser.waitForSelector(selector);
   }
-  waitFor(selector, [, ms], [, reverse]) {
-    return this.browser.waitForVisible(selector, [, ms], [, reverse]);
+  waitFor(selector, ms) {
+    return this.browser.waitForVisible(selector, ms);
   }
   // Window
   setViewPort(size, type) {
