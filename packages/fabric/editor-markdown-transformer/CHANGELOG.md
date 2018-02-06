@@ -1,5 +1,7 @@
 # @atlaskit/editor-markdown-transformer
 
+## 0.1.4
+
 ## 0.1.3
 - [patch] bump editor-common to 6.1.2 [bb7802e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7802e)
 

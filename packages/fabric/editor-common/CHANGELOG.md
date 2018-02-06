@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 6.1.3
+- [patch] Move media provider and state manager to editor-core [0601da7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0601da7)
+
 ## 6.1.2
 
 
