@@ -52,7 +52,8 @@ export class WithCollection extends Component<WithCollectionProps, WithCollectio
 
     // NAVIGATION
     // This component can be navigation-aware
-    // If we detect that the current item is almost at the end of the collection we can fetch the following items.
+    // If we detect that the current item is almost at the end of the collection we can fetch the following items automatically.
+
     const items: MediaViewerItem[] = [
       itemReady,
       itemPending,
@@ -60,6 +61,12 @@ export class WithCollection extends Component<WithCollectionProps, WithCollectio
     ];
 
     const selectedItem = items.find((i) => i.identifier.id === selectedItemId.id);
-    return this.props.children(items, selectedItem);
+    if (typeof this.props.children === 'function') {
+      return this.props.children(items, selectedItem);
+    }
+    else {
+      console.log('props', this.props);
+      throw new Error('No child function provided to With-Collection');
+    }
   }
 }

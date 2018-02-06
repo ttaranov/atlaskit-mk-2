@@ -1,15 +1,11 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { Context } from '@atlaskit/media-core';
-
-import { MainWrapper, HeaderWrapper, FooterWrapper } from './styled';
-import { Header } from './components/header/';
-import { Footer } from './components/footer/';
-import { View } from './components/viewer';
-import {MediaViewerDataSource} from '../';
-import {WithCollection} from './components/data/with-collection';
-import {Navigation} from './components/navigation';
+import { MediaViewerDataSource } from '../';
+import { WithCollection } from './components/data/with-collection';
+import { WithList } from './components/data/with-list';
 import { MediaItemIdentifier, MediaViewerItem } from './domain/index';
+import { MediaViewerRenderer } from './components/mediaviewer';
 
 export interface MediaViewerState {
   readonly selectedItem: MediaViewerItem;
@@ -21,51 +17,34 @@ export interface MediaViewerProps {
   readonly dataSource: MediaViewerDataSource;
 }
 
-
 export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
 
-  renderMain(selectedIdentifier: MediaItemIdentifier) {
-    const {context, dataSource} = this.props;
-    
-    return (
-      <WithCollection context={context} selectedItemId={selectedIdentifier} dataSource={dataSource}>
-
-        {/* // this child */}
-
-        {(items: MediaViewerItem[], selectedItem: MediaViewerItem) => (
-          
-          <MainWrapper>
-
-            <HeaderWrapper>
-              <Header item={selectedItem} />
-            </HeaderWrapper>
-
-            <View selectedItem={selectedItem}/>
-            
-            <FooterWrapper>
-              <Footer item={selectedItem} />
-            </FooterWrapper>
-
-            <Navigation 
-              onNavigate={(selectedItem: MediaViewerItem, index: number, total: number) => this.onNavigate(selectedItem, index, total)} 
-              items={items} 
-              selectedItem={selectedItem} 
-            />
-
-          </MainWrapper>      
-        )}
-
-      </WithCollection>
-    );
-  }
-
   render() {
-    const selectedId = (this.state && this.state.selectedItem) ? this.state.selectedItem.identifier : this.props.selectedItemId;
-    return this.renderMain(selectedId);
+    const {selectedItemId} = this.props;
+    return <MediaViewerRenderer 
+      selectedItemId={selectedItemId} 
+      DataComponent={this.getDataComponentComponent()}
+    />;
   }
 
-  private onNavigate(selectedItem: MediaViewerItem, index: number, total: number) {
-    console.log('onNavigate', selectedItem, index, total);    
-    this.setState({selectedItem});
+  private getDataComponentComponent() {
+    const {dataSource, context} = this.props;
+
+    // In the examples folder or for testing we can use a custom Static WithCollection 
+    // or WithList that provides a known state
+
+    if (dataSource.collectionName) {
+      return ({children, selectedItemId}) => (
+        <WithCollection context={context} selectedItemId={selectedItemId} dataSource={dataSource}>
+          {children}
+        </WithCollection>
+      );  
+    } else {
+      return ({children, selectedItemId}) => (
+        <WithList context={context} selectedItemId={selectedItemId} dataSource={dataSource}>
+          {children}
+        </WithList>
+      );
+    }
   }
 }

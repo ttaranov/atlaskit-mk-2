@@ -1,17 +1,17 @@
 import { Component } from 'react';
 import { MediaItemType, Context } from '@atlaskit/media-core';
-import { MediaViewerDataSource } from '../../../';
-import { MediaItemIdentifier, MediaViewerItem, ProcessingStatus, MediaViewerItemType } from '../../domain';
+import { MediaViewerDataSource } from '../src/';
+import { MediaItemIdentifier, MediaViewerItem, ProcessingStatus, MediaViewerItemType } from '../src/newgen/domain';
 
-export interface WithListState {}
+export interface MockWithCollectionState {}
 
-export interface WithListProps {
+export interface MockWithCollectionProps {
   readonly context: Context;
   readonly dataSource: MediaViewerDataSource;  
   readonly selectedItemId: MediaItemIdentifier;
 }
 
-export class WithList extends Component<WithListProps, WithListState> {
+export class MockWithCollection extends Component<MockWithCollectionProps, MockWithCollectionState> {
   
   render() {
     
@@ -55,7 +55,7 @@ export class WithList extends Component<WithListProps, WithListState> {
     }
     else {
       console.log('props', this.props);
-      throw new Error('No child function provided to With-List');
+      throw new Error('No child function provided to With-Collection');
     }
   }
 }

@@ -47,6 +47,10 @@ export class View extends Component<ViewProps, ViewState> {
     const actions: Action[] = getGenericActions(this.state).concat(ImageViewerActions); // will add more actions from other viewers next
     const {selectedItem} = this.props;
 
+    if (selectedItem.processingStatus === ProcessingStatus.Pending) {
+      return this.getLoading();
+    }
+
     if (selectedItem.processingStatus === ProcessingStatus.Error) {
       return this.getViewerError(selectedItem);
     }
@@ -67,6 +71,10 @@ export class View extends Component<ViewProps, ViewState> {
         {toolbar}
       </ViewerWrapper>
     );
+  }
+
+  private getLoading () {
+    return <div>I'm a spinner, just use your imagination</div>
   }
 
   private getViewer(item: MediaViewerItem) {

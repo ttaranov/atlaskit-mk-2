@@ -6,5 +6,6 @@ export const ViewerWrapper = styled.div`
   background-color: white;
   color: ${akColorN900};
   padding: 5px 10px;
-  width: 400px;
+  width: 600px;
+  height: 500px;
 `;
