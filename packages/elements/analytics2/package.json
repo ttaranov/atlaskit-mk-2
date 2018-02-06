@@ -1,0 +1,39 @@
+{
+  "name": "@atlaskit/analytics2",
+  "version": "2.4.1",
+  "description": "The AtlasKit Component Analytics Framework",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "types": "src/index.d.ts",
+  "files": [
+    "dist",
+    "src/index.d.ts"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Jared C",
+    "Michael B",
+    "Jed W"
+  ],
+  "atlaskit": {
+    "name": "Analytics 2",
+    "team": "elements"
+  },
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "dependencies": {
+    "lodash.clonedeep": "^4.5.0",
+    "prop-types": "^15.5.10"
+  },
+  "peerDependencies": {
+    "react": "15.6.0 - 16.2.0"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^2.4.0",
+    "@atlaskit/theme": "^2.3.0",
+    "enzyme": "^3.3.0",
+    "react-redux": "^5.0.0",
+    "redux": "^3.7.2"
+  }
+}
