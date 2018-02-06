@@ -1,11 +1,21 @@
 import * as React from 'react';
 
+import { NotificationLogClient } from '@atlaskit/notification-log-client';
+
 import { NotificationIndicator } from '../src';
-import MockNotificationLogClient from './MockNotificationLogClient';
+
+class MockNotificationLogClient extends NotificationLogClient {
+  constructor() {
+    super('', '');
+  }
+
+  public async countUnseenNotifications() {
+    return Promise.resolve({ count: 5 });
+  }
+}
 
 export default function Example() {
   const client = new MockNotificationLogClient();
-  client.setResponse(Promise.resolve({ count: 5 }));
 
   return (
     <NotificationIndicator notificationLogProvider={Promise.resolve(client)} />
