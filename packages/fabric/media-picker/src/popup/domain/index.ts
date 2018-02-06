@@ -1,5 +1,6 @@
 import { Auth, AuthProvider, MediaType } from '@atlaskit/media-core';
 
+import { UploadParams } from '../../domain/config';
 import { MediaArtifact } from '../../service/mediaApi';
 import { LocalUploads } from './local-upload';
 
@@ -89,12 +90,6 @@ export interface EditorError {
 export interface Tenant {
   readonly auth: Auth;
   readonly uploadParams: UploadParams;
-}
-
-export interface UploadParams {
-  collection?: string;
-  fetchMetadata?: boolean;
-  autoFinalize?: boolean;
 }
 
 export type ServiceName = 'google' | 'dropbox' | 'upload' | 'giphy';

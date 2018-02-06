@@ -68,7 +68,7 @@ export interface MediaPickerComponents {
   popup: Popup;
 }
 
-export { ModuleConfig } from './domain/config';
+export { ModuleConfig, UploadParams } from './domain/config';
 
 export { BrowserConfig, DropzoneConfig, PopupConfig };
 export interface ComponentConfigs {

@@ -1,8 +1,6 @@
 import { name } from '../../../../package.json';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { DefaultMediaStateManager } from '@atlaskit/media-core';
-import { MediaPluginState, stateKey } from '../../../../src/plugins/media';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   doc,
@@ -11,6 +9,12 @@ import {
   createEditor,
   storyMediaProviderFactory,
 } from '@atlaskit/editor-test-helpers';
+
+import {
+  MediaPluginState,
+  stateKey,
+  DefaultMediaStateManager,
+} from '../../../../src/plugins/media';
 import { insertFileFromDataUrl } from '../../../../src/editor/utils/action';
 import mediaPlugin from '../../../../src/editor/plugins/media';
 

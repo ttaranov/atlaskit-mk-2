@@ -1,12 +1,8 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import blockTypePlugins from '../../src/plugins/block-type';
-import tableCommands from '../../src/plugins/table/commands';
-import DropdownMenu from '../../src/ui/DropdownMenu';
-import ToolbarInsertBlock from '../../src/ui/ToolbarInsertBlock';
+import Item from '@atlaskit/item';
 import { EmojiPicker as AkEmojiPicker, EmojiProvider } from '@atlaskit/emoji';
 import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
-import Item from '@atlaskit/item';
 import {
   doc,
   p,
@@ -14,12 +10,17 @@ import {
   code_block,
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
-import ToolbarButton from '../../src/ui/ToolbarButton';
-import { MediaProvider } from '@atlaskit/media-core';
 import { ProviderFactory } from '@atlaskit/editor-common';
+
+import blockTypePlugins from '../../src/plugins/block-type';
+import tableCommands from '../../src/plugins/table/commands';
+import DropdownMenu from '../../src/ui/DropdownMenu';
+import ToolbarInsertBlock from '../../src/ui/ToolbarInsertBlock';
+import ToolbarButton from '../../src/ui/ToolbarButton';
 import codeBlockPlugin from '../../src/editor/plugins/code-block';
 import panelPlugin from '../../src/editor/plugins/panel';
 import listPlugin from '../../src/editor/plugins/lists';
+import { MediaProvider } from '../../src/plugins/media';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise() as Promise<
   EmojiProvider

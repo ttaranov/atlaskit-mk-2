@@ -1,28 +1,532 @@
+jest.mock('@atlaskit/media-picker');
+
 import {
-  DefaultMediaStateManager,
-  MediaStateManager,
-} from '@atlaskit/media-core';
-import {
+  MediaPicker,
   Popup,
   Browser,
   Dropzone,
   Clipboard,
   BinaryUploader,
+  UploadsStartEventPayload,
+  UploadPreviewUpdateEventPayload,
+  UploadStatusUpdateEventPayload,
+  UploadProcessingEventPayload,
+  UploadFinalizeReadyEventPayload,
+  UploadErrorEventPayload,
+  UploadEndEventPayload,
 } from '@atlaskit/media-picker';
 import {
   StoryBookAuthProvider,
   StoryBookUserAuthProvider,
 } from '@atlaskit/media-test-helpers';
+import { randomId } from '@atlaskit/editor-test-helpers';
 
-import PickerFacade from '../../../src/plugins/media/picker-facade';
+import {
+  DefaultMediaStateManager,
+  MediaStateManager,
+} from '../../../src/plugins/media';
+import PickerFacade, {
+  PickerType,
+  PickerFacadeConfig,
+} from '../../../src/plugins/media/picker-facade';
 import { ErrorReportingHandler } from '../../../src/utils';
-import MockMediaPicker from './_mock-media-picker';
 
+describe('Media PickerFacade', () => {
+  const errorReporter: ErrorReportingHandler = {
+    captureException: (err: any) => {},
+    captureMessage: (msg: any) => {},
+  };
+
+  const userAuthProvider = StoryBookUserAuthProvider.create();
+
+  const contextConfig = {
+    serviceHost: 'http://test',
+    authProvider: StoryBookAuthProvider.create(false),
+    userAuthProvider,
+  };
+
+  const getPickerFacadeConfig = (
+    stateManager: MediaStateManager,
+  ): PickerFacadeConfig => ({
+    uploadParams: {},
+    contextConfig,
+    stateManager,
+    errorReporter,
+  });
+
+  const testFileId = randomId();
+  const testTemporaryFileId = `temporary:${testFileId}`;
+  const testFilePublicId = '7899d969-c1b2-4460-ad3e-44d51ac85452';
+  const testFileData = {
+    id: testFileId,
+    name: 'test name',
+    size: Math.round(Math.random() * 1047552),
+    type: 'test/file',
+    creationDate: new Date().getTime(),
+  };
+  const testFileProgress = {
+    absolute: 1,
+    portion: Math.random(),
+    max: 1,
+    overallTime: 1,
+    expectedFinishTime: 1,
+    timeLeft: 1,
+  };
+  const finalizeCb = () => {};
+  const preview = { src: '' };
+
+  // Spies
+  const spies = {
+    on: jest.fn(),
+    removeAllListeners: jest.fn(),
+    teardown: jest.fn(),
+    show: jest.fn(),
+    hide: jest.fn(),
+    deactivate: jest.fn(),
+    upload: jest.fn(),
+    activate: jest.fn(),
+    browse: jest.fn(),
+  };
+
+  // Helpers
+  function triggerStart(payload?: Partial<UploadsStartEventPayload>) {
+    // [ 'uploads-start', [Function] ]
+    const [eventName, cb] = spies.on.mock.calls[0];
+    cb({ files: [testFileData], ...payload });
+    // Just to make sure we are call the correct callback
+    expect(eventName).toBe('uploads-start');
+  }
+
+  function triggerPreviewUpdate(
+    payload?: Partial<UploadPreviewUpdateEventPayload>,
+  ) {
+    const [eventName, cb] = spies.on.mock.calls[1];
+    cb({
+      file: testFileData,
+      preview,
+      ...payload,
+    });
+    expect(eventName).toBe('upload-preview-update');
+  }
+
+  function triggerProcessing(payload?: Partial<UploadProcessingEventPayload>) {
+    const [eventName, cb] = spies.on.mock.calls[2];
+    cb({
+      file: { ...testFileData, publicId: testFilePublicId },
+      ...payload,
+    });
+    expect(eventName).toBe('upload-processing');
+  }
+
+  function triggerStatusUpdate(
+    payload?: Partial<UploadStatusUpdateEventPayload>,
+  ) {
+    const [eventName, cb] = spies.on.mock.calls[3];
+    cb({
+      file: testFileData,
+      progress: testFileProgress,
+      ...payload,
+    });
+    expect(eventName).toBe('upload-status-update');
+  }
+
+  function triggerFinalizeReady(
+    payload?: Partial<UploadFinalizeReadyEventPayload>,
+  ) {
+    const [eventName, cb] = spies.on.mock.calls[4];
+    cb({
+      file: { ...testFileData },
+      finalize: finalizeCb,
+      ...payload,
+    });
+    expect(eventName).toBe('upload-finalize-ready');
+  }
+
+  function triggerError(payload?: Partial<UploadErrorEventPayload>) {
+    const [eventName, cb] = spies.on.mock.calls[5];
+    cb({
+      error: {
+        name: 'some-error',
+        description: 'something went wrong',
+        fileId: testFileData.id,
+      },
+      ...payload,
+    });
+    expect(eventName).toBe('upload-error');
+  }
+
+  function triggerEnd(payload?: Partial<UploadEndEventPayload>) {
+    const [eventName, cb] = spies.on.mock.calls[6];
+    cb({
+      file: { ...testFileData, publicId: testFilePublicId },
+      public: { id: 'test-id' },
+      payload,
+    });
+    expect(eventName).toBe('upload-end');
+  }
+
+  const pickerTypes: Array<PickerType> = [
+    'popup',
+    'binary',
+    'clipboard',
+    'dropzone',
+    'browser',
+  ];
+
+  const pickerConstructors = {
+    popup: Popup,
+    binary: BinaryUploader,
+    clipboard: Clipboard,
+    dropzone: Dropzone,
+    browser: Browser,
+  };
+
+  pickerTypes.forEach(pickerType => {
+    describe(`Picker: ${pickerType}`, () => {
+      let stateManager: MediaStateManager;
+      let facade: PickerFacade;
+
+      beforeEach(() => {
+        Object.keys(spies).forEach(k => spies[k].mockClear());
+
+        function MockPopup() {
+          Object.keys(spies).forEach(k => (this[k] = spies[k]));
+        }
+
+        (MediaPicker as any).mockImplementation((...args) => {
+          MockPopup.prototype = new (pickerConstructors[pickerType] as any)(
+            ...args,
+          );
+          return new MockPopup();
+        });
+
+        stateManager = new DefaultMediaStateManager();
+        facade = new PickerFacade(
+          pickerType,
+          getPickerFacadeConfig(stateManager),
+          {
+            userAuthProvider,
+          },
+        );
+      });
+
+      afterEach(() => {
+        facade.destroy();
+        stateManager.destroy();
+      });
+
+      it(`listens to picker events`, () => {
+        const fn = jasmine.any(Function);
+        expect(spies.on).toHaveBeenCalledTimes(
+          pickerType === 'dropzone' ? 9 : 7,
+        );
+        expect(spies.on).toHaveBeenCalledWith('uploads-start', fn);
+        expect(spies.on).toHaveBeenCalledWith('upload-preview-update', fn);
+        expect(spies.on).toHaveBeenCalledWith('upload-processing', fn);
+        expect(spies.on).toHaveBeenCalledWith('upload-status-update', fn);
+        expect(spies.on).toHaveBeenCalledWith('upload-finalize-ready', fn);
+        expect(spies.on).toHaveBeenCalledWith('upload-error', fn);
+        expect(spies.on).toHaveBeenCalledWith('upload-end', fn);
+
+        if (pickerType === 'dropzone') {
+          expect(spies.on).toHaveBeenCalledWith('drag-enter', fn);
+          expect(spies.on).toHaveBeenCalledWith('drag-leave', fn);
+        }
+      });
+
+      it('removes listeners on destruction', () => {
+        facade.destroy();
+        expect(spies.removeAllListeners).toHaveBeenCalledTimes(
+          pickerType === 'dropzone' ? 9 : 7,
+        );
+        expect(spies.removeAllListeners).toHaveBeenCalledWith('uploads-start');
+        expect(spies.removeAllListeners).toHaveBeenCalledWith(
+          'upload-preview-update',
+        );
+        expect(spies.removeAllListeners).toHaveBeenCalledWith(
+          'upload-processing',
+        );
+        expect(spies.removeAllListeners).toHaveBeenCalledWith(
+          'upload-status-update',
+        );
+        expect(spies.removeAllListeners).toHaveBeenCalledWith(
+          'upload-finalize-ready',
+        );
+        expect(spies.removeAllListeners).toHaveBeenCalledWith('upload-error');
+        expect(spies.removeAllListeners).toHaveBeenCalledWith('upload-end');
+
+        if (pickerType === 'dropzone') {
+          expect(spies.removeAllListeners).toHaveBeenCalledWith('drag-enter');
+          expect(spies.removeAllListeners).toHaveBeenCalledWith('drag-leave');
+        }
+      });
+
+      describe('proxies events to MediaStateManager', () => {
+        const spy = jest.fn();
+
+        beforeEach(() => {
+          spy.mockClear();
+          stateManager.on(testTemporaryFileId, spy);
+        });
+
+        it('should for upload starting', () => {
+          triggerStart();
+          expect(spy).toHaveBeenCalledTimes(1);
+          expect(spy).toHaveBeenCalledWith({
+            id: testTemporaryFileId,
+            status: 'uploading',
+            fileName: testFileData.name,
+            fileSize: testFileData.size,
+            fileMimeType: testFileData.type,
+          });
+        });
+
+        it('for new uploads via onNewMedia()', () => {
+          const spy = jest.fn();
+          facade.onNewMedia(spy);
+
+          triggerStart();
+
+          expect(spy).toHaveBeenCalledTimes(1);
+          expect(spy).toHaveBeenCalledWith([
+            {
+              id: testTemporaryFileId,
+              status: 'uploading',
+              publicId: undefined,
+              fileName: testFileData.name,
+              fileSize: testFileData.size,
+              fileMimeType: testFileData.type,
+            },
+          ]);
+        });
+
+        it('for upload progress', () => {
+          triggerStatusUpdate();
+          expect(spy).toHaveBeenCalledTimes(1);
+          expect(spy).toHaveBeenCalledWith({
+            id: testTemporaryFileId,
+            status: 'uploading',
+            progress: testFileProgress.portion,
+            fileName: testFileData.name,
+            fileSize: testFileData.size,
+            fileMimeType: testFileData.type,
+          });
+        });
+
+        it('for upload preview availability', () => {
+          triggerPreviewUpdate();
+          expect(spy).toHaveBeenCalledTimes(1);
+          expect(spy.mock.calls[0][0]).toMatchObject({
+            id: testTemporaryFileId,
+            thumbnail: preview,
+          });
+        });
+
+        it('for upload processing', () => {
+          triggerProcessing();
+          expect(spy).toHaveBeenCalledTimes(1);
+          expect(spy).toHaveBeenCalledWith({
+            id: testTemporaryFileId,
+            status: 'processing',
+            publicId: testFilePublicId,
+            fileName: testFileData.name,
+            fileSize: testFileData.size,
+            fileMimeType: testFileData.type,
+          });
+        });
+
+        it('for upload ready for finalization', () => {
+          triggerFinalizeReady();
+
+          expect(spy).toHaveBeenCalledTimes(1);
+          expect(spy).toHaveBeenCalledWith({
+            id: testTemporaryFileId,
+            status: 'unfinalized',
+            finalizeCb,
+            fileName: testFileData.name,
+            fileSize: testFileData.size,
+            fileMimeType: testFileData.type,
+          });
+        });
+
+        it('for upload error', () => {
+          triggerError();
+          expect(spy).toHaveBeenCalledTimes(1);
+          expect(spy).toHaveBeenCalledWith({
+            id: testTemporaryFileId,
+            status: 'error',
+            error: {
+              name: 'some-error',
+              description: 'something went wrong',
+            },
+          });
+        });
+
+        it('for upload end', () => {
+          triggerEnd();
+          expect(spy).toHaveBeenCalledTimes(1);
+          expect(spy).toHaveBeenCalledWith({
+            id: testTemporaryFileId,
+            publicId: testFilePublicId,
+            status: 'ready',
+            fileName: testFileData.name,
+            fileSize: testFileData.size,
+            fileMimeType: testFileData.type,
+          });
+        });
+      });
+
+      // @see ED-2062
+      it('After upload has transitioned from "uploading", subsequent "status update" events must not downgrade status', () => {
+        stateManager.updateState(testTemporaryFileId, {
+          id: testTemporaryFileId,
+          status: 'uploading',
+        });
+
+        triggerFinalizeReady();
+        triggerStatusUpdate();
+
+        expect(stateManager.getState(testTemporaryFileId)).toEqual({
+          id: testTemporaryFileId,
+          status: 'unfinalized',
+          progress: testFileProgress.portion,
+          fileName: testFileData.name,
+          fileSize: testFileData.size,
+          fileMimeType: testFileData.type,
+          finalizeCb: finalizeCb,
+        });
+
+        triggerProcessing();
+        triggerStatusUpdate();
+
+        expect(stateManager.getState(testTemporaryFileId)!.status).toBe(
+          'processing',
+        );
+
+        triggerEnd();
+        triggerStatusUpdate();
+
+        expect(stateManager.getState(testTemporaryFileId)!.status).toEqual(
+          'ready',
+        );
+      });
+
+      if (pickerType === 'clipboard' || pickerType === 'dropzone') {
+        it(`should call picker's activate() during initialization`, () => {
+          expect(spies.activate).toHaveBeenCalledTimes(1);
+        });
+      } else {
+        it(`shouldn't call picker's activate() during initialization`, () => {
+          expect(spies.activate).toHaveBeenCalledTimes(0);
+        });
+      }
+
+      if (pickerType === 'popup' || pickerType === 'browser') {
+        it(`should call picker's teardown() on destruction`, () => {
+          facade.destroy();
+          expect(spies.teardown).toHaveBeenCalledTimes(1);
+        });
+      } else if (pickerType === 'clipboard' || pickerType === 'dropzone') {
+        it(`should call picker's deactivate() on destruction`, () => {
+          facade.destroy();
+          expect(spies.deactivate).toHaveBeenCalledTimes(1);
+        });
+      } else {
+        it(`shouldn't call picker's teardown() or deactivate() on destruction`, () => {
+          facade.destroy();
+          expect(spies.teardown).toHaveBeenCalledTimes(0);
+          expect(spies.deactivate).toHaveBeenCalledTimes(0);
+        });
+      }
+
+      if (pickerType === 'popup') {
+        it(`should call picker's show() on destruction`, () => {
+          facade.show();
+          expect(spies.show).toHaveBeenCalledTimes(1);
+        });
+      } else if (pickerType === 'browser') {
+        it(`should call picker's browse() on destruction`, () => {
+          facade.show();
+          expect(spies.browse).toHaveBeenCalledTimes(1);
+        });
+      } else {
+        it(`shouldn't call picker's show() on destruction`, () => {
+          facade.show();
+          expect(spies.show).toHaveBeenCalledTimes(0);
+        });
+      }
+
+      if (pickerType === 'popup') {
+        it(`should call picker's hide() on destruction`, () => {
+          facade.hide();
+          expect(spies.hide).toHaveBeenCalledTimes(1);
+        });
+      } else {
+        it(`shouldn't call picker's hide() on destruction`, () => {
+          facade.hide();
+          expect(spies.hide).toHaveBeenCalledTimes(0);
+        });
+      }
+
+      // Picker Specific Tests
+      if (pickerType === 'popup') {
+        it('should change the status to cancelled on cancel', () => {
+          const spy = jest.fn();
+          stateManager.updateState(testTemporaryFileId, {
+            id: testTemporaryFileId,
+            status: 'uploading',
+          });
+
+          stateManager.on(testTemporaryFileId, spy);
+          facade.cancel(testTemporaryFileId);
+
+          expect(spy).toHaveBeenCalledTimes(1);
+          expect(spy).toHaveBeenCalledWith({
+            id: testTemporaryFileId,
+            status: 'cancelled',
+          });
+        });
+      }
+
+      if (pickerType === 'clipboard') {
+        it('should update the filename and append timestamp', () => {
+          const file = {
+            id: testFileId,
+            name: 'image.png',
+            size: Math.round(Math.random() * 1047552),
+            type: 'image/png',
+            creationDate: Date.UTC(0, 1),
+          };
+
+          triggerPreviewUpdate({ file });
+
+          expect(stateManager.getState(testTemporaryFileId)).toMatchObject({
+            id: testTemporaryFileId,
+            status: 'preview',
+            fileName: 'image-19000201-000000.png',
+          });
+        });
+      }
+
+      if (pickerType === 'binary') {
+        it(`calls picker's upload() on destruction`, () => {
+          const url = 'https://atlassian.com/file.ext';
+          const fileName = 'file.ext';
+          facade.upload(url, fileName);
+          expect(spies.upload).toHaveBeenCalledTimes(1);
+          expect(spies.upload).toHaveBeenCalledWith(url, fileName);
+        });
+      }
+    });
+  });
+});
+
+/*
 describe('Media PickerFacade', () => {
   let stateManager: MediaStateManager | undefined;
   let facade: PickerFacade | undefined;
   let mockPickerFactory: any;
-  let mockPicker: MockMediaPicker;
+  // let mockPicker: MockMediaPicker;
   const dropzoneContainer = document.createElement('div');
   const uploadParams = {
     collection: 'mock',
@@ -43,391 +547,20 @@ describe('Media PickerFacade', () => {
     type: 'test/file',
     creationDate: new Date().getTime(),
   };
-  const testFileProgress = {
-    absolute: 1,
-    portion: Math.random(),
-    max: 1,
-    overallTime: 1,
-    expectedFinishTime: 1,
-    timeLeft: 1,
-  };
-  const errorReporter: ErrorReportingHandler = {
-    captureException: (err: any) => {},
-    captureMessage: (msg: any) => {},
-  };
   const apiUrl = '';
   const authProvider = () => Promise.resolve({ clientId: '', token: '' });
-
-  describe('Generic Picker', () => {
-    beforeEach(() => {
-      mockPicker = new MockMediaPicker();
-      stateManager = new DefaultMediaStateManager();
-      mockPickerFactory = (pickerType, moduleConfig, componentConfig?) => {
-        mockPicker.pickerType = pickerType;
-        mockPicker.moduleConfig = moduleConfig;
-        mockPicker.componentConfig = componentConfig;
-
-        return mockPicker;
-      };
-      facade = new PickerFacade(
-        'popup',
-        uploadParams,
-        contextConfig,
-        stateManager,
-        errorReporter,
-        mockPickerFactory,
-      );
-    });
-
-    afterEach(() => {
-      stateManager = undefined;
-      facade!.destroy();
-      facade = undefined;
-    });
-
-    it('listens to picker events', () => {
-      expect(Object.keys(mockPicker.listeners).length).toEqual(7);
-      expect(mockPicker.listeners).toHaveProperty('uploads-start');
-      expect(mockPicker.listeners).toHaveProperty('upload-preview-update');
-      expect(mockPicker.listeners).toHaveProperty('upload-status-update');
-      expect(mockPicker.listeners).toHaveProperty('upload-processing');
-      expect(mockPicker.listeners).toHaveProperty('upload-finalize-ready');
-      expect(mockPicker.listeners).toHaveProperty('upload-error');
-      expect(mockPicker.listeners).toHaveProperty('upload-end');
-    });
-
-    it('removes listeners on destruction', () => {
-      facade!.destroy();
-      expect(Object.keys(mockPicker.listeners).length).toEqual(0);
-    });
-
-    describe('configures picker', () => {
-      it('with correct upload params and context', () => {
-        expect(mockPicker.pickerType).toEqual('popup');
-        expect(mockPicker.moduleConfig).toHaveProperty(
-          'uploadParams',
-          uploadParams,
-        );
-        expect(mockPicker.moduleConfig).toHaveProperty(
-          'apiUrl',
-          contextConfig.serviceHost,
-        );
-        expect(mockPicker.moduleConfig).toHaveProperty(
-          'authProvider',
-          contextConfig.authProvider,
-        );
-      });
-
-      it('respects dropzone component config', () => {
-        const dropzoneFacade = new PickerFacade(
-          'dropzone',
-          uploadParams,
-          contextConfig,
-          stateManager!,
-          errorReporter,
-          mockPickerFactory,
-        );
-        expect(typeof dropzoneFacade).toBe('object');
-        expect(mockPicker.componentConfig).toHaveProperty(
-          'container',
-          dropzoneContainer,
-        );
-      });
-
-      it('respects popup component config', () => {
-        const popupFacade = new PickerFacade(
-          'popup',
-          uploadParams,
-          contextConfig,
-          stateManager!,
-          errorReporter,
-          mockPickerFactory,
-        );
-        expect(typeof popupFacade).toBe('object');
-        expect(mockPicker.componentConfig).toHaveProperty(
-          'userAuthProvider',
-          contextConfig.userAuthProvider,
-        );
-      });
-
-      it('fallbacks to browser picker if userAuthProvider is not provided', () => {
-        const contextConfigWithoutUserAuthProvider = {
-          serviceHost: 'http://test',
-          authProvider: StoryBookAuthProvider.create(false),
-        };
-        const popupFacade = new PickerFacade(
-          'popup',
-          uploadParams,
-          contextConfigWithoutUserAuthProvider,
-          stateManager!,
-          errorReporter,
-          mockPickerFactory,
-        );
-        expect(typeof popupFacade).toBe('object');
-        expect(mockPicker.pickerType).toEqual('browser');
-      });
-    });
-
-    describe('proxies events to MediaStateManager', () => {
-      it('for upload starting', () => {
-        const cb = jest.fn();
-        stateManager!.subscribe(testTemporaryFileId, cb);
-        mockPicker.__triggerEvent('uploads-start', {
-          files: [testFileData],
-        });
-        expect(cb).toHaveBeenCalledWith({
-          id: testTemporaryFileId,
-          status: 'uploading',
-          fileName: testFileData.name,
-          fileSize: testFileData.size,
-          fileMimeType: testFileData.type,
-        });
-      });
-
-      it('for new uploads via onNewMedia()', () => {
-        const cb = jest.fn();
-        facade!.onNewMedia(cb);
-
-        mockPicker.__triggerEvent('uploads-start', {
-          files: [testFileData],
-        });
-        expect(cb).toHaveBeenCalledWith([
-          {
-            id: testTemporaryFileId,
-            status: 'uploading',
-            publicId: undefined,
-            fileName: testFileData.name,
-            fileSize: testFileData.size,
-            fileMimeType: testFileData.type,
-          },
-        ]);
-      });
-
-      it('for upload progress', () => {
-        const cb = jest.fn();
-        stateManager!.subscribe(testTemporaryFileId, cb);
-        mockPicker.__triggerEvent('upload-status-update', {
-          file: testFileData,
-          progress: testFileProgress,
-        });
-        expect(cb).toHaveBeenCalledWith({
-          id: testTemporaryFileId,
-          status: 'uploading',
-          progress: testFileProgress.portion,
-          fileName: testFileData.name,
-          fileSize: testFileData.size,
-          fileMimeType: testFileData.type,
-        });
-      });
-
-      it('for upload preview availability', () => {
-        const cb = jest.fn();
-        const preview = { src: '' };
-        stateManager!.subscribe(testTemporaryFileId, cb);
-        mockPicker.__triggerEvent('upload-preview-update', {
-          file: testFileData,
-          preview,
-        });
-        expect(cb.mock.calls[0][0]).toMatchObject({
-          id: testTemporaryFileId,
-          thumbnail: preview,
-        });
-      });
-
-      it('for upload processing', () => {
-        const cb = jest.fn();
-        stateManager!.subscribe(testTemporaryFileId, cb);
-        mockPicker.__triggerEvent('upload-processing', {
-          file: { ...testFileData, publicId: testFilePublicId },
-        });
-        expect(cb).toHaveBeenCalledWith({
-          id: testTemporaryFileId,
-          status: 'processing',
-          publicId: testFilePublicId,
-          fileName: testFileData.name,
-          fileSize: testFileData.size,
-          fileMimeType: testFileData.type,
-        });
-      });
-
-      it('for upload ready for finalization', () => {
-        const cb = jest.fn();
-        const finalizeCb = () => {};
-        stateManager!.subscribe(testTemporaryFileId, cb);
-        mockPicker.__triggerEvent('upload-finalize-ready', {
-          file: { ...testFileData },
-          finalize: finalizeCb,
-        });
-        expect(cb).toHaveBeenCalledWith({
-          id: testTemporaryFileId,
-          status: 'unfinalized',
-          finalizeCb: finalizeCb,
-          fileName: testFileData.name,
-          fileSize: testFileData.size,
-          fileMimeType: testFileData.type,
-        });
-      });
-
-      it('for upload error', () => {
-        const cb = jest.fn();
-        stateManager!.subscribe(testTemporaryFileId, cb);
-        mockPicker.__triggerEvent('upload-error', {
-          error: {
-            name: 'some-error',
-            description: 'something went wrong',
-            fileId: testFileData.id,
-          },
-        } as any);
-        expect(cb).toHaveBeenCalledWith({
-          id: testTemporaryFileId,
-          status: 'error',
-          error: {
-            name: 'some-error',
-            description: 'something went wrong',
-          },
-        });
-      });
-
-      it('for upload end', () => {
-        const cb = jest.fn();
-        stateManager!.subscribe(testTemporaryFileId, cb);
-        mockPicker.__triggerEvent('upload-end', {
-          file: { ...testFileData, publicId: testFilePublicId },
-          public: { id: 'test-id' },
-        });
-        expect(cb).toHaveBeenCalledWith({
-          id: testTemporaryFileId,
-          publicId: testFilePublicId,
-          status: 'ready',
-          fileName: testFileData.name,
-          fileSize: testFileData.size,
-          fileMimeType: testFileData.type,
-        });
-      });
-    });
-
-    it('After upload has transitioned from "uploading", subsequent "status update" events must not downgrade status (ED-2062)', () => {
-      const finalizeCb = () => {};
-      stateManager!.updateState(testTemporaryFileId, {
-        id: testTemporaryFileId,
-        status: 'uploading',
-      });
-
-      mockPicker.__triggerEvent('upload-finalize-ready', {
-        file: { ...testFileData },
-        finalize: finalizeCb,
-      });
-
-      mockPicker.__triggerEvent('upload-status-update', {
-        file: { ...testFileData },
-        progress: testFileProgress,
-      });
-
-      expect(stateManager!.getState(testTemporaryFileId)).toEqual({
-        id: testTemporaryFileId,
-        status: 'unfinalized',
-        progress: testFileProgress.portion,
-        fileName: testFileData.name,
-        fileSize: testFileData.size,
-        fileMimeType: testFileData.type,
-        finalizeCb: finalizeCb,
-      });
-
-      mockPicker.__triggerEvent('upload-processing', {
-        file: { ...testFileData, publicId: testFilePublicId },
-      });
-
-      mockPicker.__triggerEvent('upload-status-update', {
-        file: testFileData,
-        progress: testFileProgress,
-      });
-
-      expect(stateManager!.getState(testTemporaryFileId)!.status).toEqual(
-        'processing',
-      );
-
-      mockPicker.__triggerEvent('upload-end', {
-        file: { ...testFileData, publicId: testFilePublicId },
-        public: { id: 'test-id' },
-      });
-
-      mockPicker.__triggerEvent('upload-status-update', {
-        file: testFileData,
-        progress: testFileProgress,
-      });
-
-      expect(stateManager!.getState(testTemporaryFileId)!.status).toEqual(
-        'ready',
-      );
-    });
-
-    it('should update the filename and append timestamp for clipboard picker', () => {
-      facade = new PickerFacade(
-        'clipboard',
-        uploadParams,
-        contextConfig,
-        stateManager!,
-        errorReporter,
-        mockPickerFactory,
-      );
-
-      const cb = jest.fn();
-      stateManager!.subscribe(testTemporaryFileId, cb);
-
-      const preview = { src: 'https://domain.com/path' };
-      const tmpImageFile = {
-        id: testFileId,
-        name: 'image.png',
-        size: Math.round(Math.random() * 1047552),
-        type: 'image/png',
-        creationDate: Date.UTC(0, 1),
-      };
-      mockPicker.__triggerEvent('upload-preview-update', {
-        file: tmpImageFile,
-        preview,
-      });
-
-      expect(cb).toHaveBeenLastCalledWith({
-        id: testTemporaryFileId,
-        status: 'uploading',
-        fileName: 'image-19000201-000000.png',
-        fileSize: tmpImageFile.size,
-        fileMimeType: tmpImageFile.type,
-        thumbnail: preview,
-      });
-    });
+  const getPickerFacadeConfig = (stateManager: MediaStateManager) => ({
+    uploadParams,
+    contextConfig,
+    stateManager,
+    errorReporter,
   });
 
+  describe('Generic Picker', () => {
+
+
+
   describe('Popup Picker', () => {
-    const mockPopupPicker = new Popup(
-      { trackEvent: () => {} },
-      { apiUrl, authProvider },
-      { userAuthProvider: authProvider, container: document.body },
-    );
-
-    beforeEach(() => {
-      stateManager = new DefaultMediaStateManager();
-      mockPickerFactory = (
-        pickerType: string,
-        pickerConfig: any,
-        extraConfig?: any,
-      ) => mockPopupPicker;
-      facade = new PickerFacade(
-        'popup',
-        uploadParams,
-        contextConfig,
-        stateManager,
-        errorReporter,
-        mockPickerFactory,
-      );
-    });
-
-    afterEach(() => {
-      stateManager = undefined;
-      facade!.destroy();
-      facade = undefined;
-    });
-
     it(`calls picker's teardown() on destruction`, () => {
       const spy = (mockPopupPicker.teardown = jest.fn());
       facade!.destroy();
@@ -453,7 +586,7 @@ describe('Media PickerFacade', () => {
         status: 'uploading',
       });
 
-      stateManager!.subscribe(testTemporaryFileId, spy);
+      stateManager!.on(testTemporaryFileId, spy);
       facade!.cancel(testTemporaryFileId);
 
       expect(spy).toHaveBeenCalledTimes(1);
@@ -479,11 +612,7 @@ describe('Media PickerFacade', () => {
       ) => mockBrowserPicker;
       facade = new PickerFacade(
         'browser',
-        uploadParams,
-        contextConfig,
-        stateManager,
-        errorReporter,
-        mockPickerFactory,
+        getPickerFacadeConfig(stateManager!),
       );
     });
 
@@ -506,125 +635,7 @@ describe('Media PickerFacade', () => {
     });
   });
 
-  describe('Clipboard Picker', () => {
-    const mockClipboardPicker = new Clipboard(
-      { trackEvent() {} },
-      { apiUrl, authProvider },
-    );
-    const activateSpy = (mockClipboardPicker.activate = jest.fn());
-
-    beforeEach(() => {
-      stateManager = new DefaultMediaStateManager();
-      mockPickerFactory = (
-        pickerType: string,
-        pickerConfig: any,
-        extraConfig?: any,
-      ) => mockClipboardPicker;
-      facade = new PickerFacade(
-        'clipboard',
-        uploadParams,
-        contextConfig,
-        stateManager,
-        errorReporter,
-        mockPickerFactory,
-      );
-    });
-
-    afterEach(() => {
-      stateManager = undefined;
-      facade!.destroy();
-      facade = undefined;
-    });
-
-    it('activates picker upon construction', () => {
-      expect(activateSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it(`calls picker's deactivate() on destruction`, () => {
-      const spy = jest.fn();
-      mockClipboardPicker.deactivate = spy;
-      facade!.destroy();
-      expect(spy).toHaveBeenCalledTimes(1);
-    });
   });
 
-  describe('Dropzone Picker', () => {
-    const mockDropzonePicker = new Dropzone(
-      { trackEvent() {} },
-      { apiUrl, authProvider },
-    );
-    const activateSpy = (mockDropzonePicker.activate = jest.fn());
-
-    beforeEach(() => {
-      stateManager = new DefaultMediaStateManager();
-      mockPickerFactory = (
-        pickerType: string,
-        pickerConfig: any,
-        extraConfig?: any,
-      ) => mockDropzonePicker;
-      facade = new PickerFacade(
-        'dropzone',
-        uploadParams,
-        contextConfig,
-        stateManager,
-        errorReporter,
-        mockPickerFactory,
-      );
-    });
-
-    afterEach(() => {
-      stateManager = undefined;
-      facade!.destroy();
-      facade = undefined;
-    });
-
-    it('activates picker upon construction', () => {
-      expect(activateSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it(`calls picker's deactivate() on destruction`, () => {
-      const spy = (mockDropzonePicker.deactivate = jest.fn());
-      facade!.destroy();
-      expect(spy).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe('BinaryUploader Picker', () => {
-    const mockBinaryUploaderPicker = new BinaryUploader(
-      { trackEvent() {} },
-      { apiUrl, authProvider },
-    );
-
-    beforeEach(() => {
-      stateManager = new DefaultMediaStateManager();
-      mockPickerFactory = (
-        pickerType: string,
-        pickerConfig: any,
-        extraConfig?: any,
-      ) => mockBinaryUploaderPicker;
-      facade = new PickerFacade(
-        'binary',
-        uploadParams,
-        contextConfig,
-        stateManager,
-        errorReporter,
-        mockPickerFactory,
-      );
-    });
-
-    afterEach(() => {
-      stateManager = undefined;
-      facade!.destroy();
-      facade = undefined;
-    });
-
-    it(`calls picker's upload() on upload`, () => {
-      const spy = (mockBinaryUploaderPicker.upload = jest.fn());
-      const url = 'https://atlassian.com/file.ext';
-      const fileName = 'file.ext';
-      facade!.upload(url, fileName);
-      expect(spy).toHaveBeenCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(url, fileName);
-    });
-  });
 });
+*/

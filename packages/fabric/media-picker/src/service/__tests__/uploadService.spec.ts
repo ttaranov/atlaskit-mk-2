@@ -1,8 +1,8 @@
-import { UploadParams } from '@atlaskit/media-core';
 import { ResumableFile, ResumableChunk } from 'resumablejs';
 import * as Resumable from 'resumablejs';
 import { Hasher } from '../hashing/hasher';
 import * as hasherCreatorModule from '../hashing/hasherCreator';
+import { UploadParams } from '../../domain/config';
 
 // We need this mocking to happen before importing uploadService
 const createHasher = hasherCreatorModule.createHasher;

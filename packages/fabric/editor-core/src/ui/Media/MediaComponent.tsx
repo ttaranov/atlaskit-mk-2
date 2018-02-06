@@ -14,9 +14,6 @@ import {
   CardDelete,
   CardEventHandler,
   FileDetails,
-  MediaProvider,
-  MediaStateManager,
-  MediaState,
   ImageResizeMode,
 } from '@atlaskit/media-core';
 import {
@@ -24,7 +21,13 @@ import {
   CardEventClickHandler,
 } from '@atlaskit/editor-common';
 
+import {
+  MediaProvider,
+  MediaStateManager,
+  MediaState,
+} from '../../plugins/media';
 import { isImage } from '../../utils';
+
 export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
 
 // This is being used by DropPlaceholder now
@@ -60,8 +63,7 @@ function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
       return 'complete';
 
     case 'processing':
-      return 'uploading';
-
+    case 'preview':
     case 'uploading':
       return 'uploading';
 
@@ -113,13 +115,13 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     if (mediaProvider) {
       const { stateManager } = mediaProvider;
       if (stateManager) {
-        stateManager.unsubscribe(id, this.handleMediaStateChange);
+        stateManager.off(id, this.handleMediaStateChange);
       }
     }
 
     const { stateManagerFallback } = this.props;
     if (stateManagerFallback) {
-      stateManagerFallback.unsubscribe(id, this.handleMediaStateChange);
+      stateManagerFallback.off(id, this.handleMediaStateChange);
     }
   }
 
@@ -319,7 +321,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     if (stateManager) {
       const mediaState = stateManager.getState(id);
 
-      stateManager.subscribe(id, this.handleMediaStateChange);
+      stateManager.on(id, this.handleMediaStateChange);
       this.setState({ id, ...mediaState });
     }
 
