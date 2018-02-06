@@ -525,13 +525,14 @@ class MentionResource extends AbstractMentionResource {
   }
 
   private transformServiceResponse(result: MentionsResult): MentionsResult {
-    const mentions = result.mentions.map(mention => {
+    const mentions = result.mentions.map((mention, index) => {
       let lozenge: string | undefined;
+      const weight = mention.weight !== undefined ? mention.weight : index;
       if (isAppMention(mention)) {
         lozenge = mention.userType;
       }
 
-      return { ...mention, lozenge };
+      return { ...mention, lozenge, weight };
     });
 
     return { ...result, mentions };

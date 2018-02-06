@@ -42,7 +42,10 @@
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
-    "Julien H", "Tara T", "Eduardo S", "Paul C"
+    "Julien H",
+    "Tara T",
+    "Eduardo S",
+    "Paul C"
   ],
   "license": "Apache-2.0",
   "peerDependencies": {

@@ -143,7 +143,7 @@ export class Highlighter {
 
 export class SearchIndex {
   private index: Search | null;
-  private mentionCache: Map<string, MentionDescription>;
+  private indexedCount: number;
 
   constructor() {
     this.reset();
@@ -182,31 +182,17 @@ export class SearchIndex {
   }
 
   public hasDocuments() {
-    return this.mentionCache.size > 0;
+    return this.indexedCount > 0;
   }
 
   public reset() {
     this.index = SearchIndex.createIndex();
-    this.mentionCache = new Map();
+    this.indexedCount = 0;
   }
 
   public indexResults(mentions: MentionDescription[]) {
-    this.index.addDocuments(
-      mentions.map((mention, index) =>
-        this.updateCachedMention(mention, index),
-      ),
-    );
-  }
-
-  private updateCachedMention(mention: MentionDescription, index: number) {
-    const indexedMention = this.mentionCache.get(mention.id);
-    let newMention = {
-      ...indexedMention,
-      ...mention,
-      weight: mention.weight !== undefined ? mention.weight : index,
-    };
-    this.mentionCache.set(mention.id, newMention);
-    return newMention;
+    this.index.addDocuments(mentions);
+    this.indexedCount += mentions.length;
   }
 
   private static createIndex(): Search {
