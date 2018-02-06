@@ -26,7 +26,7 @@ const createMediaState = (
   thumbnail: { dimensions: { width, height }, src: '' },
 });
 
-describe('media-single', () => {
+describe.skip('media-single', () => {
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
   const temporaryFileId = `temporary:${randomId()}`;
   const editor = (doc: any, uploadErrorHandler?: () => void) =>

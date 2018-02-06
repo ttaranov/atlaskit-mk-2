@@ -26,8 +26,7 @@ import {
   MediaStateStatus,
 } from '@atlaskit/media-core';
 
-import { ErrorReportingHandler, isImage } from '../../utils';
-import { appendTimestamp } from './utils';
+import { ErrorReportingHandler } from '../../utils';
 
 export type PickerType = keyof MediaPickerComponents;
 
@@ -315,19 +314,7 @@ export default class PickerFacade {
 
   private handleUploadPreviewUpdate = (
     event: UploadPreviewUpdateEventPayload,
-  ) => {
-    const { file, preview } = event;
-
-    if (preview !== undefined) {
-      const state = this.newState(file, 'uploading');
-      state.thumbnail = preview;
-      // Add timestamp to image file names on paste @see ED-3584
-      if (this.pickerType === 'clipboard' && isImage(file.type)) {
-        state.fileName = appendTimestamp(file.name, file.creationDate);
-      }
-      this.stateManager.updateState(state.id, state);
-    }
-  };
+  ) => {};
 
   private handleDragEnter = () => {
     this.onDragListeners.forEach(cb => cb.call(cb, 'enter'));

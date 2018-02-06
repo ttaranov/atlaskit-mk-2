@@ -220,7 +220,7 @@ describe('Media PickerFacade', () => {
         });
       });
 
-      it('for upload preview availability', () => {
+      it.skip('for upload preview availability', () => {
         const cb = jest.fn();
         const preview = { src: '' };
         stateManager!.subscribe(testTemporaryFileId, cb);
@@ -361,7 +361,7 @@ describe('Media PickerFacade', () => {
       );
     });
 
-    it('should update the filename and append timestamp for clipboard picker', () => {
+    it.skip('should update the filename and append timestamp for clipboard picker', () => {
       facade = new PickerFacade(
         'clipboard',
         uploadParams,
