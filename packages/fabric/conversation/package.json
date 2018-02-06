@@ -25,7 +25,7 @@
   "dependencies": {
     "@atlaskit/avatar": "^9.0.0",
     "@atlaskit/comment": "^2.6.12",
-    "@atlaskit/editor-common": "^6.1.1",
+    "@atlaskit/editor-common": "^6.1.2",
     "@atlaskit/editor-core": "^61.7.14",
     "@atlaskit/renderer": "^11.4.0",
     "date-fns": "^1.29.0",
