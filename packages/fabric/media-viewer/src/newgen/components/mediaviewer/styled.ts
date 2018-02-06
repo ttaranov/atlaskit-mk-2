@@ -4,6 +4,10 @@ import { akColorN900 } from '@atlaskit/util-shared-styles';
 export const MainWrapper = styled.div`
   border: 3px solid ${akColorN900};
   padding: 5px;
+  position:absolute;
+  width: 800px;
+  transform: translateX(-220px);
+  transition: transform 400ms ease-in;
 `;
 
 export const HeaderWrapper = styled.div`
