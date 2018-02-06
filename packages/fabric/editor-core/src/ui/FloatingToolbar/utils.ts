@@ -50,7 +50,9 @@ export const handlePositionCalculatedWith = (
   node: Node,
   getCurrentFixedCoordinates: () => any,
 ) => position => {
-  if (!offsetParent) return position;
+  if (!offsetParent) {
+    return position;
+  }
 
   const target = getNearestNonTextNode(node)!;
   const cursorHeight = getCursorHeightFrom(target);
