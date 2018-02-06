@@ -18,7 +18,7 @@ export const customInsertMenuItems = [
     tooltipPosition: 'right',
     elemBefore: '-',
     onClick: function(editorActions) {
-      editorActions.insertExtension({
+      editorActions.replaceSelection({
         type: 'inlineExtension',
         attrs: {
           extensionType: 'com.atlassian.confluence.macro.core',
@@ -75,7 +75,7 @@ export const customInsertMenuItems = [
         }, 1000);
       });
 
-      openMacroBrowser.then(macro => editorActions.insertExtension(macro));
+      openMacroBrowser.then(macro => editorActions.replaceSelection(macro));
     },
   },
 ];

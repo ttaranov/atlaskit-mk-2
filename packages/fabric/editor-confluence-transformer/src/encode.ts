@@ -11,7 +11,11 @@ import { Fragment, Node as PMNode, Mark, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
 import { AC_XMLNS, FAB_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 import { mapCodeLanguage } from './languageMap';
-import { getNodeMarkOfType, mapPanelTypeToCxhtml } from './utils';
+import {
+  getNodeMarkOfType,
+  encodeMacroParams,
+  mapPanelTypeToCxhtml,
+} from './utils';
 
 export default function encode(node: PMNode, schema: Schema) {
   const docType = document.implementation.createDocumentType(
@@ -307,10 +311,11 @@ export default function encode(node: PMNode, schema: Schema) {
     const elem = createMacroElement('code');
 
     if (node.attrs.language) {
-      const langParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-      langParam.setAttributeNS(AC_XMLNS, 'ac:name', 'language');
-      langParam.textContent = mapCodeLanguage(node.attrs.language);
-      elem.appendChild(langParam);
+      elem.appendChild(
+        encodeMacroParams(doc, {
+          language: { value: mapCodeLanguage(node.attrs.language) },
+        }),
+      );
     }
 
     const plainTextBody = doc.createElementNS(AC_XMLNS, 'ac:plain-text-body');
@@ -344,10 +349,11 @@ export default function encode(node: PMNode, schema: Schema) {
       if (node.isBlock) {
         // panel title
         if (node.type.name === 'heading' && pos === 0) {
-          const title = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-          title.setAttributeNS(AC_XMLNS, 'ac:name', 'title');
-          title.textContent = node.firstChild!.textContent;
-          elem.appendChild(title);
+          elem.appendChild(
+            encodeMacroParams(doc, {
+              title: { value: node.firstChild!.textContent },
+            }),
+          );
         } else {
           // panel content
           const domNode = encodeNode(node);
@@ -363,15 +369,12 @@ export default function encode(node: PMNode, schema: Schema) {
     // special treatment for <ac:structured-macro ac:name="panel" />
     // it should be converted to "purple" Confluence panel
     if (panelType === 'panel') {
-      const borderColor = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-      borderColor.setAttributeNS(AC_XMLNS, 'ac:name', 'borderColor');
-      borderColor.textContent = '#998DD9';
-      elem.appendChild(borderColor);
-
-      const bgColor = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-      bgColor.setAttributeNS(AC_XMLNS, 'ac:name', 'bgColor');
-      bgColor.textContent = '#EAE6FF';
-      elem.appendChild(bgColor);
+      elem.appendChild(
+        encodeMacroParams(doc, {
+          borderColor: { value: '#998DD9' },
+          bgColor: { value: '#EAE6FF' },
+        }),
+      );
     }
 
     body.appendChild(fragment);
@@ -409,20 +412,13 @@ export default function encode(node: PMNode, schema: Schema) {
     const elem = createMacroElement('jira');
     elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', node.attrs.macroId);
 
-    const serverParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-    serverParam.setAttributeNS(AC_XMLNS, 'ac:name', 'server');
-    serverParam.textContent = node.attrs.server;
-    elem.appendChild(serverParam);
-
-    const serverIdParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-    serverIdParam.setAttributeNS(AC_XMLNS, 'ac:name', 'serverId');
-    serverIdParam.textContent = node.attrs.serverId;
-    elem.appendChild(serverIdParam);
-
-    const keyParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-    keyParam.setAttributeNS(AC_XMLNS, 'ac:name', 'key');
-    keyParam.textContent = node.attrs.issueKey;
-    elem.appendChild(keyParam);
+    elem.appendChild(
+      encodeMacroParams(doc, {
+        key: { value: node.attrs.issueKey },
+        server: { value: node.attrs.server },
+        serverId: { value: node.attrs.serverId },
+      }),
+    );
 
     return elem;
   }
@@ -439,12 +435,7 @@ export default function encode(node: PMNode, schema: Schema) {
 
       // parameters
       if (macroParams) {
-        Object.keys(macroParams).forEach(paramName => {
-          const el = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-          el.setAttributeNS(AC_XMLNS, 'ac:name', paramName);
-          el.textContent = macroParams[paramName].value;
-          elem.appendChild(el);
-        });
+        elem.appendChild(encodeMacroParams(doc, macroParams));
       }
 
       const placeholderUrl = getPlaceholderUrl({ node, type: 'image' });

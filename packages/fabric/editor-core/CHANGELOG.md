@@ -1,5 +1,17 @@
 # @atlaskit/editor-core
 
+## 61.8.2
+- [patch] Removes @atlaskit/profilecard dependency from editor-core [5a0555e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5a0555e)
+
+## 61.8.1
+
+## 61.8.0
+- [patch] Refactor PlaceholderText to use a NodeView to improve selection behaviour across browsers [47e4b88](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/47e4b88)
+- [minor] Support the `allowTemplatePlaceholders` prop to enable placeholder text elements. [70dbde2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70dbde2)
+
+## 61.7.16
+- [patch] Autoformatting should work for single character. [70e44af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70e44af)
+
 ## 61.7.15
 - [patch] Handle Media.getDomElement when node has no child nodes [618b0c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/618b0c1)
 

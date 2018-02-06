@@ -14,6 +14,7 @@ import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import LinkIcon from '@atlaskit/icon/glyph/editor/link';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import DateIcon from '@atlaskit/icon/glyph/editor/date';
+import PlaceholderTextIcon from '@atlaskit/icon/glyph/media-services/text';
 import {
   EmojiId,
   EmojiPicker as AkEmojiPicker,
@@ -39,6 +40,7 @@ import ToolbarButton from '../ToolbarButton';
 import { MacroProvider } from '../../editor/plugins/macro/types';
 import tableCommands from '../../plugins/table/commands';
 import { insertDate, openDatePicker } from '../../editor/plugins/date/actions';
+import { insertPlaceholderText } from '../../editor/plugins/placeholder-text/actions';
 import { Wrapper, ExpandIconWrapper } from './styles';
 
 import { InsertMenuCustomItem } from '../../editor/types';
@@ -61,6 +63,7 @@ export interface Props {
   imageUploadEnabled?: boolean;
   handleImageUpload?: (editorView: EditorView) => {};
   dateEnabled?: boolean;
+  placeholderTextEnabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   availableWrapperBlockTypes?: BlockType[];
   linkSupported?: boolean;
@@ -295,6 +298,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       emojiProvider,
       insertMenuItems,
       dateEnabled,
+      placeholderTextEnabled,
     } = this.props;
     let items: any[] = [];
 
@@ -380,10 +384,23 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         elemBefore: <DateIcon label="Insert date" />,
       });
     }
+
+    if (placeholderTextEnabled) {
+      items.push({
+        content: 'Placeholder Text',
+        value: { name: 'placeholder text' },
+        tooltipDescription: 'Insert placeholder text',
+        tooltipPosition: 'right',
+        elemBefore: <PlaceholderTextIcon label="Insert placeholder text" />,
+      });
+    }
+
     if (insertMenuItems && insertMenuItems instanceof Array) {
       items = items.concat(insertMenuItems);
-    }
-    if (typeof macroProvider !== 'undefined' && macroProvider) {
+      // keeping this here for backwards compatibility so confluence
+      // has time to implement this button before it disappears.
+      // Should be safe to delete soon. If in doubt ask Leandro Lemos (llemos)
+    } else if (typeof macroProvider !== 'undefined' && macroProvider) {
       items.push({
         content: 'View more',
         value: { name: 'macro' },
@@ -424,6 +441,13 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       editorView.state,
       editorView.dispatch,
     );
+    return true;
+  };
+
+  @analyticsDecorator('atlassian.editor.format.placeholder.button')
+  private createPlaceholderText = (): boolean => {
+    const { editorView } = this.props;
+    insertPlaceholderText()(editorView.state, editorView.dispatch);
     return true;
   };
 
@@ -492,6 +516,9 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         break;
       case 'date':
         this.createDate();
+        break;
+      case 'placeholder text':
+        this.createPlaceholderText();
         break;
       default:
         const match =
