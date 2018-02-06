@@ -106,7 +106,7 @@ export interface EditorProps {
   popupsScrollableElement?: HTMLElement;
 
   insertMenuItems?: InsertMenuCustomItem[];
-  editorActions: EditorActions;
+  editorActions?: EditorActions;
 
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;

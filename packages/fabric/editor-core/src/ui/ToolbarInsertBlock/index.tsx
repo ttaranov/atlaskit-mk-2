@@ -473,7 +473,6 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       onInsertMacroFromMacroBrowser,
       macroProvider,
       handleImageUpload,
-      insertMenuItems,
     } = this.props;
 
     switch (item.value.name) {
@@ -521,14 +520,8 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         this.createPlaceholderText();
         break;
       default:
-        const match =
-          insertMenuItems &&
-          insertMenuItems.find(
-            menuItem => menuItem.value.name === item.value.name,
-          );
-
-        if (match && match.onClick) {
-          match.onClick(editorActions);
+        if (item && item.onClick) {
+          item.onClick(editorActions);
           break;
         }
     }
