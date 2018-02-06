@@ -13,6 +13,7 @@
   "scripts": {
     "webpack:dev": "./node_modules/@atlaskit/webpack-config/bin/dev.js ./src/index.js",
     "webpack:build": "./node_modules/@atlaskit/webpack-config/bin/build.js ./src/index.js",
+    "webpack:examples": "./node_modules/@atlaskit/webpack-config/bin/iframe-dev.js ./src/examples-iframe.js",
     "build": "yarn build:webpack && yarn build:copy && yarn build:zip",
     "build:no-minimize": "yarn build:webpack --no-minimize && yarn build:copy && yarn build:zip",
     "build:webpack": "rm -rf dist && yarn run webpack:build",
