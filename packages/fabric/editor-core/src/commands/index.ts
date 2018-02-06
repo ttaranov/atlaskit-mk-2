@@ -232,27 +232,29 @@ export function liftListItems(): Command {
   };
 }
 
-export function insertBlockType(view: EditorView, name: string): boolean {
-  const { nodes } = view.state.schema;
+export function insertBlockType(name: string): Command {
+  return function(state, dispatch) {
+    const { nodes } = state.schema;
 
-  switch (name) {
-    case blockTypes.BLOCK_QUOTE.name:
-      if (nodes.paragraph && nodes.blockquote) {
-        return wrapSelectionIn(nodes.blockquote)(view.state, view.dispatch);
-      }
-      break;
-    case blockTypes.CODE_BLOCK.name:
-      if (nodes.codeBlock) {
-        return insertCodeBlock()(view.state, view.dispatch);
-      }
-      break;
-    case blockTypes.PANEL.name:
-      if (nodes.panel && nodes.paragraph) {
-        return wrapSelectionIn(nodes.panel)(view.state, view.dispatch);
-      }
-      break;
-  }
-  return false;
+    switch (name) {
+      case blockTypes.BLOCK_QUOTE.name:
+        if (nodes.paragraph && nodes.blockquote) {
+          return wrapSelectionIn(nodes.blockquote)(state, dispatch);
+        }
+        break;
+      case blockTypes.CODE_BLOCK.name:
+        if (nodes.codeBlock) {
+          return insertCodeBlock()(state, dispatch);
+        }
+        break;
+      case blockTypes.PANEL.name:
+        if (nodes.panel && nodes.paragraph) {
+          return wrapSelectionIn(nodes.panel)(state, dispatch);
+        }
+        break;
+    }
+    return false;
+  };
 }
 
 /**

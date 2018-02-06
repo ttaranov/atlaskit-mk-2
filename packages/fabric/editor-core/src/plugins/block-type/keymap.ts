@@ -81,9 +81,7 @@ export function keymapHandler(
         const eventName = analyticsEventName(blockType.name, 'keyboard');
         keymaps.bindKeymapWithCommand(
           shortcut,
-          trackAndInvoke(eventName, () =>
-            pluginState.insertBlockType(blockType.name, view),
-          ),
+          trackAndInvoke(eventName, commands.insertBlockType(blockType.name)),
           list,
         );
       }

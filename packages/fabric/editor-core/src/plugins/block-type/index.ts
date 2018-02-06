@@ -77,7 +77,7 @@ export class BlockTypeState {
   }
 
   insertBlockType(name: string, view: EditorView): boolean {
-    return commands.insertBlockType(view, name);
+    return commands.insertBlockType(name)(view.state, view.dispatch);
   }
 
   update(newEditorState, dirty = false) {
