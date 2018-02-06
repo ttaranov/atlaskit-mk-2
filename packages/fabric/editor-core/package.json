@@ -44,7 +44,7 @@
     "@atlaskit/single-select": "^3.2.2",
     "@atlaskit/size-detector": "^2.1.1",
     "@atlaskit/spinner": "^4.1.0",
-    "@atlaskit/task-decision": "^4.6.0",
+    "@atlaskit/task-decision": "^4.8.0",
     "@atlaskit/tooltip": "^8.1.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/codemirror": "^0.0.40",
