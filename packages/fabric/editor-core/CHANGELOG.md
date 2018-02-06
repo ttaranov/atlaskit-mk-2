@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.9.0
+- [minor] Add replaceSelection method to EditorActions [e0da0dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e0da0dd)
+
 ## 61.8.2
 - [patch] Removes @atlaskit/profilecard dependency from editor-core [5a0555e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5a0555e)
 
