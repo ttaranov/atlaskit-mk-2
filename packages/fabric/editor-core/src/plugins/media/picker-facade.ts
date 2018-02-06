@@ -121,11 +121,15 @@ export default class PickerFacade {
     this.picker.setUploadParams(params);
   }
 
-  onClose(cb) {
+  onClose(cb): () => void {
     const { picker } = this;
     if (picker instanceof Popup) {
       picker.on('closed', cb);
+
+      return () => picker.off('closed', cb);
     }
+
+    return () => {};
   }
 
   activate() {

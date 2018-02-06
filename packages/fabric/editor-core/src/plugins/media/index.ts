@@ -85,6 +85,7 @@ export class MediaPluginState {
   private dropzonePicker?: PickerFacade;
   private linkRanges: Array<URLInfo>;
   private editorAppearance: EditorAppearance;
+  private removeOnCloseListener: () => void;
 
   constructor(
     state: EditorState,
@@ -491,6 +492,7 @@ export class MediaPluginState {
     mediaNodes.splice(0, mediaNodes.length);
 
     this.destroyPickers();
+    this.removeOnCloseListener();
   }
 
   findMediaNode = (id: string): MediaNodeWithPosHandler | null => {
@@ -605,7 +607,9 @@ export class MediaPluginState {
         picker.onNewMedia(this.trackNewMediaEvent(picker.type));
       });
       this.dropzonePicker.onDrag(this.handleDrag);
-      this.popupPicker.onClose(this.onPopupPickerClose);
+      this.removeOnCloseListener = this.popupPicker.onClose(
+        this.onPopupPickerClose,
+      );
     }
 
     if (this.popupPicker) {
