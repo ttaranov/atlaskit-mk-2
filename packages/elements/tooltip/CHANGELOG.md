@@ -1,5 +1,8 @@
 # @atlaskit/tooltip
 
+## 8.3.0
+- [minor] update atlaskit/theme to 2.3.2 [3795197](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3795197)
+
 ## 8.2.1
 - [patch] Flatten examples for easier consumer use [145b632](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/145b632)
 
