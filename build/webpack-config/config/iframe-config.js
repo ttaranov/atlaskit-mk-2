@@ -4,8 +4,6 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
 const { createDefaultGlob } = require('./utils');
 
 module.exports = function createWebpackConfig(
@@ -18,7 +16,6 @@ module.exports = function createWebpackConfig(
     env = 'development',
     cwd = process.cwd(),
     noMinimize = false,
-    report = false,
   } /*: {
     entry: string,
     host?: string,
@@ -27,8 +24,7 @@ module.exports = function createWebpackConfig(
     cwd?: string,
     includePatterns: boolean,
     env: string,
-    noMinimize?: boolean,
-    report?: boolean,
+    noMinimize?: boolean
   }*/,
 ) {
   return {
@@ -39,9 +35,9 @@ module.exports = function createWebpackConfig(
               `${require.resolve(
                 'webpack-dev-server/client',
               )}?http://${host}:${port}/`,
-              path.join(process.cwd(), entry),
+              path.join(process.cwd(), './src/examples-iframe.js'),
             ]
-          : path.join(cwd, entry),
+          : path.join(cwd, './src/examples-iframe.js'),
       vendor: ['react', 'react-dom', 'styled-components', 'highlight.js'],
     },
     output: {
@@ -78,9 +74,6 @@ module.exports = function createWebpackConfig(
               'description',
               'atlaskit',
               'maintainers',
-              'peerDependencies',
-              'devDependencies',
-              'dependencies',
             ],
           },
         },
@@ -156,7 +149,7 @@ module.exports = function createWebpackConfig(
         'node_modules',
       ],
     },
-    plugins: plugins({ cwd, env, noMinimize, report }),
+    plugins: plugins({ cwd, env, noMinimize }),
   };
 };
 
@@ -165,8 +158,7 @@ function plugins(
     cwd,
     env,
     noMinimize,
-    report,
-  } /*: { cwd: string, env: string, noMinimize: boolean, report: boolean } */,
+  } /*: { cwd: string, env: string, noMinimize?: boolean } */,
 ) {
   const plugins = [
     //
@@ -194,22 +186,7 @@ function plugins(
           context &&
           (context.includes('fabric/editor') ||
             context.includes('fabric/renderer') ||
-            context.includes('fabric/conversation') ||
             context.includes('prosemirror'))
-        );
-      },
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      async: 'fabric-elements-packages',
-      minChunks(module, count) {
-        const context = module.context;
-        return (
-          context &&
-          (context.includes('fabric/mention') ||
-            context.includes('fabric/emoji') ||
-            context.includes('fabric/task-decision') ||
-            context.includes('fabric/reactions'))
         );
       },
     }),
@@ -231,7 +208,8 @@ function plugins(
     }),
 
     new HtmlWebpackPlugin({
-      template: path.join(cwd, 'public/index.html.ejs'),
+      filename: 'examples.html',
+      template: path.join(cwd, 'public/examples-iframe.html.ejs'),
       favicon: path.join(cwd, 'public/favicon.ico'),
     }),
 
@@ -239,17 +217,6 @@ function plugins(
       'process.env.NODE_ENV': `"${env}"`,
     }),
   ];
-
-  if (report) {
-    plugins.push(
-      new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-        openAnalyzer: true,
-        generateStatsFile: true,
-        logLevel: 'error',
-      }),
-    );
-  }
 
   if (env === 'production' && !noMinimize) {
     plugins.push(uglify());
