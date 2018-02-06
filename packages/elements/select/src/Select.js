@@ -132,23 +132,30 @@ export default class AtlaskitSelect extends Component<Props> {
         components={this.components}
         styles={{
           control: (styles, { isFocused }) => {
-            let borderColor = isFocused ? colors.B300 : colors.N40;
+            let borderColor = isFocused ? colors.B100 : colors.N20;
             if (validationState === 'error') borderColor = colors.R400;
             if (validationState === 'success') borderColor = colors.G400;
 
-            let borderColorHover = isFocused ? colors.B300 : colors.N50;
+            let borderColorHover = isFocused ? colors.B100 : colors.N20;
             if (validationState === 'error') borderColorHover = colors.R400;
             if (validationState === 'success') borderColorHover = colors.G400;
+
+            const lgBorder = isFocused || validationState !== 'default';
+            const transitionDuration = '200ms';
 
             return {
               ...styles,
               backgroundColor: isFocused ? colors.N0 : colors.N10,
               borderColor,
               borderStyle: 'solid',
-              borderWidth: 2,
+              borderWidth: lgBorder ? 2 : 1,
               boxShadow: 'none',
+              padding: lgBorder ? 0 : 1,
+              transition: `background-color ${transitionDuration} ease-in-out,
+                border-color ${transitionDuration} ease-in-out`,
 
               ':hover': {
+                backgroundColor: isFocused ? colors.N0 : colors.N20,
                 borderColor: borderColorHover,
               },
             };
@@ -156,6 +163,8 @@ export default class AtlaskitSelect extends Component<Props> {
           indicator: (styles, { isFocused }) => ({
             ...styles,
             color: isFocused ? colors.N200 : colors.N80,
+            paddingBottom: 6,
+            paddingTop: 6,
 
             ':hover': {
               color: colors.N200,
@@ -169,6 +178,12 @@ export default class AtlaskitSelect extends Component<Props> {
             else if (isFocused) backgroundColor = colors.N20;
 
             return { ...styles, backgroundColor, color };
+          },
+          placeholder: styles => {
+            return { ...styles, color: colors.N100 };
+          },
+          singleValue: styles => {
+            return { ...styles, color: colors.N900 };
           },
         }}
       />
