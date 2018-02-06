@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 61.8.2
+- [patch] Removes @atlaskit/profilecard dependency from editor-core [5a0555e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5a0555e)
+
 ## 61.8.1
 
 ## 61.8.0
