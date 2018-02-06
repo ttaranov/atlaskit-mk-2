@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example } from '@atlaskit/docs';
 import { colors } from '@atlaskit/theme';
 
 const Warning = p => (
