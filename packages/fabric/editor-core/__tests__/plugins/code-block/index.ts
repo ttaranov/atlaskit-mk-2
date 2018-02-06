@@ -47,7 +47,7 @@ describe('code-block', () => {
         const { pPos } = refs;
 
         pluginState.subscribe(spy);
-        setTextSelection(editorView, pPos);
+        setTextSelection(pPos)(editorView.state, editorView.dispatch);
 
         expect(spy).toHaveBeenCalledTimes(2);
         editorView.destroy();
@@ -63,7 +63,7 @@ describe('code-block', () => {
         const { cbPos } = refs;
 
         pluginState.subscribe(spy);
-        setTextSelection(editorView, cbPos);
+        setTextSelection(cbPos)(editorView.state, editorView.dispatch);
 
         expect(spy).toHaveBeenCalledTimes(2);
         editorView.destroy();
@@ -79,7 +79,7 @@ describe('code-block', () => {
         const { cbPos } = refs;
 
         pluginState.subscribe(spy);
-        setTextSelection(editorView, cbPos);
+        setTextSelection(cbPos)(editorView.state, editorView.dispatch);
 
         expect(spy).toHaveBeenCalledTimes(2);
         editorView.destroy();
@@ -95,7 +95,7 @@ describe('code-block', () => {
         const { cbPos } = refs;
 
         pluginState.subscribe(spy);
-        setTextSelection(editorView, cbPos);
+        setTextSelection(cbPos)(editorView.state, editorView.dispatch);
 
         expect(spy).not.toHaveBeenCalledTimes(2);
         editorView.destroy();
@@ -172,7 +172,7 @@ describe('code-block', () => {
         pluginState.subscribe(spy);
 
         pluginState.unsubscribe(spy);
-        setTextSelection(editorView, cbPos);
+        setTextSelection(cbPos)(editorView.state, editorView.dispatch);
 
         expect(spy).not.toHaveBeenCalledTimes(2);
         editorView.destroy();
@@ -189,7 +189,7 @@ describe('code-block', () => {
         const { cbPos } = refs;
 
         const previousElement = pluginState.element;
-        setTextSelection(editorView, cbPos);
+        setTextSelection(cbPos)(editorView.state, editorView.dispatch);
 
         const currentElement = pluginState.element;
 
@@ -209,7 +209,7 @@ describe('code-block', () => {
         const { cbPos } = refs;
 
         const previousElement = pluginState.element;
-        setTextSelection(editorView, cbPos);
+        setTextSelection(cbPos)(editorView.state, editorView.dispatch);
 
         const currentElement = pluginState.element;
 
@@ -295,7 +295,7 @@ describe('code-block', () => {
         );
         const { cbPos } = refs;
 
-        setTextSelection(editorView, cbPos);
+        setTextSelection(cbPos)(editorView.state, editorView.dispatch);
 
         expect(pluginState.domEvent).toBe(false);
         editorView.destroy();

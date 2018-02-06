@@ -79,7 +79,7 @@ describe('table plugin', () => {
         const { pPos } = refs;
 
         pluginState.subscribe(spy);
-        setTextSelection(editorView, pPos);
+        setTextSelection(pPos)(editorView.state, editorView.dispatch);
 
         expect(spy).toHaveBeenCalledTimes(2);
         editorView.destroy();
@@ -95,7 +95,7 @@ describe('table plugin', () => {
         const { nextPos } = refs;
 
         pluginState.subscribe(spy);
-        setTextSelection(editorView, nextPos);
+        setTextSelection(nextPos)(editorView.state, editorView.dispatch);
 
         expect(spy).toHaveBeenCalledTimes(2);
         editorView.destroy();
@@ -114,7 +114,7 @@ describe('table plugin', () => {
         const { nextPos } = refs;
 
         pluginState.subscribe(spy);
-        setTextSelection(editorView, nextPos);
+        setTextSelection(nextPos)(editorView.state, editorView.dispatch);
 
         expect(spy).toHaveBeenCalledTimes(2);
         editorView.destroy();
@@ -130,7 +130,7 @@ describe('table plugin', () => {
         const { nextPos } = refs;
 
         pluginState.subscribe(spy);
-        setTextSelection(editorView, nextPos);
+        setTextSelection(nextPos)(editorView.state, editorView.dispatch);
 
         expect(spy).not.toHaveBeenCalledTimes(2);
         editorView.destroy();

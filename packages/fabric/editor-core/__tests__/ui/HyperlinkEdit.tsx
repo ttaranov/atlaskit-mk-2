@@ -189,7 +189,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     (input.getDOMNode() as any).value = 'Atlasian';
     input.simulate('change');
     input.simulate('keydown', { keyCode: 13 });
-    setTextSelection(editorView, 10, 10);
+    setTextSelection(10, 10)(editorView.state, editorView.dispatch);
     hyperlinkEdit.setState({ editorFocused: true });
     expect(hyperlinkEdit.find(PanelTextInput).prop('placeholder')).toEqual(
       'Paste link',
@@ -197,7 +197,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     expect(hyperlinkEdit.find(PanelTextInput).prop('defaultValue')).toEqual(
       'http://www.atlassian.com',
     );
-    setTextSelection(editorView, 25, 25);
+    setTextSelection(25, 25)(editorView.state, editorView.dispatch);
     hyperlinkEdit.setState({ editorFocused: true });
     expect(hyperlinkEdit.find(PanelTextInput).prop('placeholder')).toEqual(
       'Text to display',

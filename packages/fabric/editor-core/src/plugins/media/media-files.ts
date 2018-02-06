@@ -160,6 +160,6 @@ const setSelectionAfterMediaInsertion = (
     // if nothing after the media group, fallback to select the newest uploaded media item
     setNodeSelection(view, mediaPos);
   } else {
-    setTextSelection(view, endOfMediaGroup + 1);
+    setTextSelection(endOfMediaGroup + 1)(view.state, view.dispatch);
   }
 };

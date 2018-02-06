@@ -205,17 +205,15 @@ export const setNodeSelection = (view: EditorView, pos: number) => {
   dispatch(tr);
 };
 
-export function setTextSelection(
-  view: EditorView,
-  anchor: number,
-  head?: number,
-) {
-  const { state } = view;
+export const setTextSelection = (anchor: number, head?: number) => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+) => {
   const tr = state.tr.setSelection(
-    TextSelection.create(state.doc, anchor, head),
+    TextSelection.create(state.tr.doc, anchor, head),
   );
-  view.dispatch(tr);
-}
+  dispatch(tr);
+};
 
 export function moveCursorToTheEnd(view: EditorView) {
   const { state } = view;

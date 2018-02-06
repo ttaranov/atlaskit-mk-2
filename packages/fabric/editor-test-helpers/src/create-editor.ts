@@ -67,7 +67,7 @@ export default function createEditorForTests<T = any>({
     if (refs) {
       // Collapsed selection.
       if ('<>' in refs) {
-        setTextSelection(editorView, refs['<>']);
+        setTextSelection(refs['<>'])(editorView.state, editorView.dispatch);
         // Expanded selection
       } else if ('<' in refs || '>' in refs) {
         if ('<' in refs === false) {
@@ -76,7 +76,10 @@ export default function createEditorForTests<T = any>({
         if ('>' in refs === false) {
           throw new Error('A `>` ref must complement a `<` ref.');
         }
-        setTextSelection(editorView, refs['<'], refs['>']);
+        setTextSelection(refs['<'], refs['>'])(
+          editorView.state,
+          editorView.dispatch,
+        );
       }
     }
   }

@@ -80,8 +80,8 @@ describe('image-upload', () => {
     const spy = jest.fn();
     pluginState.subscribe(spy);
 
-    setTextSelection(editorView, a);
-    setTextSelection(editorView, b);
+    setTextSelection(a)(editorView.state, editorView.dispatch);
+    setTextSelection(b)(editorView.state, editorView.dispatch);
 
     expect(spy).toHaveBeenCalledTimes(1);
   });
@@ -104,7 +104,7 @@ describe('image-upload', () => {
     setNodeSelection(editorView, sel);
     pluginState.subscribe(spy);
 
-    setTextSelection(editorView, a);
+    setTextSelection(a)(editorView.state, editorView.dispatch);
 
     expect(spy).toHaveBeenCalledTimes(2);
   });

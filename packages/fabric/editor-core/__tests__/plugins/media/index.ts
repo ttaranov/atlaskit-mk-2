@@ -1580,7 +1580,7 @@ describe('Media plugin', () => {
         pluginState.subscribe(subscriber);
         const { nextPos } = refs;
 
-        setTextSelection(editorView, nextPos);
+        setTextSelection(nextPos)(editorView.state, editorView.dispatch);
 
         expect(subscriber).toHaveBeenCalledTimes(1);
       });

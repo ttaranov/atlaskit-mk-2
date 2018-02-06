@@ -48,7 +48,7 @@ describe('hyperlink', () => {
         );
         const { pos1, pos2 } = refs;
 
-        setTextSelection(editorView, pos1, pos2);
+        setTextSelection(pos1, pos2)(editorView.state, editorView.dispatch);
 
         expect(pluginState.active).toEqual(true);
         editorView.destroy();
@@ -68,7 +68,7 @@ describe('hyperlink', () => {
         );
         const { pos1, pos2 } = refs;
 
-        setTextSelection(editorView, pos2, pos1);
+        setTextSelection(pos2, pos1)(editorView.state, editorView.dispatch);
 
         expect(pluginState.active).toEqual(true);
         editorView.destroy();
@@ -88,7 +88,7 @@ describe('hyperlink', () => {
         );
         const { pos1, pos2 } = refs;
 
-        setTextSelection(editorView, pos2, pos1);
+        setTextSelection(pos2, pos1)(editorView.state, editorView.dispatch);
 
         expect(pluginState.active).toEqual(true);
         editorView.destroy();
@@ -108,7 +108,7 @@ describe('hyperlink', () => {
         );
         const { pos1, pos2 } = refs;
 
-        setTextSelection(editorView, pos1, pos2);
+        setTextSelection(pos1, pos2)(editorView.state, editorView.dispatch);
 
         expect(pluginState.active).toEqual(true);
         editorView.destroy();
@@ -128,7 +128,7 @@ describe('hyperlink', () => {
         );
         const { pos1, pos2 } = refs;
 
-        setTextSelection(editorView, pos1, pos2);
+        setTextSelection(pos1, pos2)(editorView.state, editorView.dispatch);
 
         expect(pluginState.active).toEqual(true);
         editorView.destroy();
@@ -198,7 +198,7 @@ describe('hyperlink', () => {
         );
         const { pos1, pos2 } = refs;
 
-        setTextSelection(editorView, pos1, pos2);
+        setTextSelection(pos1, pos2)(editorView.state, editorView.dispatch);
 
         expect(pluginState.element!.tagName).toEqual('A');
         editorView.destroy();
@@ -218,7 +218,7 @@ describe('hyperlink', () => {
         );
         const { pos1, pos2 } = refs;
 
-        setTextSelection(editorView, pos2, pos1);
+        setTextSelection(pos2, pos1)(editorView.state, editorView.dispatch);
 
         expect(pluginState.element!.tagName).toEqual('A');
         editorView.destroy();
@@ -238,7 +238,7 @@ describe('hyperlink', () => {
         );
         const { pos1, pos2 } = refs;
 
-        setTextSelection(editorView, pos2, pos1);
+        setTextSelection(pos2, pos1)(editorView.state, editorView.dispatch);
 
         expect(pluginState.element!.tagName).toEqual('A');
         editorView.destroy();
@@ -258,7 +258,7 @@ describe('hyperlink', () => {
         );
         const { pos1, pos2 } = refs;
 
-        setTextSelection(editorView, pos1, pos2);
+        setTextSelection(pos1, pos2)(editorView.state, editorView.dispatch);
 
         expect(pluginState.element!.tagName).toEqual('A');
         editorView.destroy();
@@ -278,7 +278,7 @@ describe('hyperlink', () => {
         );
         const { pos1, pos2 } = refs;
 
-        setTextSelection(editorView, pos1, pos2);
+        setTextSelection(pos1, pos2)(editorView.state, editorView.dispatch);
 
         expect(pluginState.element!.tagName).toEqual('A');
         editorView.destroy();
@@ -356,7 +356,7 @@ describe('hyperlink', () => {
       const spy = jest.fn();
       pluginState.subscribe(spy);
 
-      setTextSelection(editorView, refs['pos']);
+      setTextSelection(refs['pos'])(editorView.state, editorView.dispatch);
 
       expect(spy).toHaveBeenCalledTimes(2);
       editorView.destroy();
@@ -391,8 +391,8 @@ describe('hyperlink', () => {
       const { pos1, pos2 } = refs;
       pluginState.subscribe(spy);
 
-      setTextSelection(editorView, pos1);
-      setTextSelection(editorView, pos2);
+      setTextSelection(pos1)(editorView.state, editorView.dispatch);
+      setTextSelection(pos2)(editorView.state, editorView.dispatch);
 
       expect(spy).toHaveBeenCalledTimes(2);
       editorView.destroy();
@@ -408,10 +408,10 @@ describe('hyperlink', () => {
         editorView,
         link({ href: 'http://www.atlassian.com' })('li{linkPos}nk'),
       );
-      setTextSelection(editorView, linkPos);
+      setTextSelection(linkPos)(editorView.state, editorView.dispatch);
 
       pluginState.subscribe(spy);
-      setTextSelection(editorView, textPos);
+      setTextSelection(textPos)(editorView.state, editorView.dispatch);
 
       expect(spy).toHaveBeenCalledTimes(2);
       editorView.destroy();
@@ -990,7 +990,7 @@ describe('hyperlink', () => {
       it('should create a link node', () => {
         const { editorView, pluginState } = editor(doc(paragraph('testing')));
 
-        setTextSelection(editorView, 4, 7);
+        setTextSelection(4, 7)(editorView.state, editorView.dispatch);
         pluginState.showLinkPanel(editorView);
 
         expect(pluginState.activeLinkNode).not.toEqual(undefined);
@@ -1074,7 +1074,7 @@ describe('hyperlink', () => {
       it('should create a link node', () => {
         const { editorView, pluginState } = editor(doc(paragraph('testing')));
 
-        setTextSelection(editorView, 4, 7);
+        setTextSelection(4, 7)(editorView.state, editorView.dispatch);
         sendKeyToPm(editorView, 'Mod-k');
 
         expect(pluginState.activeLinkNode).not.toEqual(undefined);

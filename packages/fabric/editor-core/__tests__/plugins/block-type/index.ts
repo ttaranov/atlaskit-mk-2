@@ -212,10 +212,10 @@ describe('block-type', () => {
     );
     const { h1Pos, pPos } = refs;
 
-    setTextSelection(editorView, h1Pos);
+    setTextSelection(h1Pos)(editorView.state, editorView.dispatch);
     expect(pluginState.currentBlockType.name).toBe('heading1');
 
-    setTextSelection(editorView, pPos);
+    setTextSelection(pPos)(editorView.state, editorView.dispatch);
     expect(pluginState.currentBlockType.name).toBe('normal');
     editorView.destroy();
   });

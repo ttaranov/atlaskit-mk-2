@@ -232,28 +232,31 @@ export function liftListItems(): Command {
   };
 }
 
-export function insertBlockType(view: EditorView, name: string): boolean {
-  const { nodes } = view.state.schema;
+export const insertBlockType = (name: string): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+) => {
+  const { nodes } = state.schema;
 
   switch (name) {
     case blockTypes.BLOCK_QUOTE.name:
       if (nodes.paragraph && nodes.blockquote) {
-        return wrapSelectionIn(nodes.blockquote)(view.state, view.dispatch);
+        return wrapSelectionIn(nodes.blockquote)(state, dispatch);
       }
       break;
     case blockTypes.CODE_BLOCK.name:
       if (nodes.codeBlock) {
-        return insertCodeBlock()(view.state, view.dispatch);
+        return insertCodeBlock()(state, dispatch);
       }
       break;
     case blockTypes.PANEL.name:
       if (nodes.panel && nodes.paragraph) {
-        return wrapSelectionIn(nodes.panel)(view.state, view.dispatch);
+        return wrapSelectionIn(nodes.panel)(state, dispatch);
       }
       break;
   }
   return false;
-}
+};
 
 /**
  * Function will add wraping node.
@@ -378,30 +381,30 @@ export function insertNodesEndWithNewParagraph(nodes: PMNode[]): Command {
   };
 }
 
-export function createNewParagraphAbove(view: EditorView): Command {
-  return function(state, dispatch) {
-    const append = false;
+export function createNewParagraphAbove(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+) {
+  const append = false;
 
-    if (!canMoveUp(state) && canCreateParagraphNear(state)) {
-      createParagraphNear(view, append);
-      return true;
-    }
+  if (!canMoveUp(state) && canCreateParagraphNear(state)) {
+    createParagraphNear(append)(state, dispatch);
+    return true;
+  }
 
-    return false;
-  };
+  return false;
 }
 
-export function createNewParagraphBelow(view: EditorView): Command {
-  return function(state, dispatch) {
-    const append = true;
+export function createNewParagraphBelow(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+) {
+  if (!canMoveDown(state) && canCreateParagraphNear(state)) {
+    createParagraphNear()(state, dispatch);
+    return true;
+  }
 
-    if (!canMoveDown(state) && canCreateParagraphNear(state)) {
-      createParagraphNear(view, append);
-      return true;
-    }
-
-    return false;
-  };
+  return false;
 }
 
 function canCreateParagraphNear(state: EditorState): boolean {
@@ -412,22 +415,21 @@ function canCreateParagraphNear(state: EditorState): boolean {
   return $from.depth > 1 || isNodeSelection || insideCodeBlock;
 }
 
-export function createParagraphNear(
-  view: EditorView,
-  append: boolean = true,
-): void {
-  const { state, dispatch } = view;
+export const createParagraphNear = (append: boolean = true): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+) => {
   const paragraph = state.schema.nodes.paragraph;
 
   if (!paragraph) {
-    return;
+    return false;
   }
 
   let insertPos;
 
   if (state.selection instanceof TextSelection) {
     if (topLevelNodeIsEmptyTextBlock(state)) {
-      return;
+      return false;
     }
     insertPos = getInsertPosFromTextBlock(state, append);
   } else {
@@ -436,8 +438,9 @@ export function createParagraphNear(
 
   dispatch(state.tr.insert(insertPos, paragraph.create()));
 
-  setTextSelection(view, insertPos + 1);
-}
+  setTextSelection(insertPos + 1)(state, dispatch);
+  return true;
+};
 
 function getInsertPosFromTextBlock(state: EditorState, append: boolean): void {
   const { $from, $to } = state.selection;

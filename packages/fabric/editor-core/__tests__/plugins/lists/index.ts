@@ -132,7 +132,7 @@ describe('lists', () => {
       const spy = jest.fn();
       pluginState.subscribe(spy);
 
-      setTextSelection(editorView, end);
+      setTextSelection(end)(editorView.state, editorView.dispatch);
 
       expect(spy).toHaveBeenCalledTimes(1);
     });
@@ -146,7 +146,7 @@ describe('lists', () => {
       const spy = jest.fn();
       pluginState.subscribe(spy);
 
-      setTextSelection(editorView, end);
+      setTextSelection(end)(editorView.state, editorView.dispatch);
 
       expect(spy).toHaveBeenCalledTimes(1);
     });
