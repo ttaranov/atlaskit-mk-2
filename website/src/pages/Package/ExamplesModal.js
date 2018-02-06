@@ -18,6 +18,7 @@ import Flag, { FlagGroup } from '@atlaskit/flag';
 import Tooltip from '@atlaskit/tooltip';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';
 import Modal, {
+  ModalBody as Body,
   ModalHeader as OgModalHeader,
   ModalTitle,
 } from '@atlaskit/modal-dialog';
@@ -27,6 +28,7 @@ import { colors } from '@atlaskit/theme';
 
 import * as fs from '../../utils/fs';
 import type { Directory, RouterMatch } from '../../types';
+import ExampleDisplay from '../../components/Examples/ExampleDisplay';
 import Loading from '../../components/Loading';
 import CodeBlock from '../../components/Code';
 import { packages as packagesData, getConfig } from '../../site';
@@ -70,9 +72,13 @@ const ErrorMessage = styled.div`
 // ==============================
 // MODAL
 // ==============================
-
-const ModalBody = styled.div`
+const ModalBody = styled(Body)`
   display: flex;
+  flex-direction: column;
+`;
+const ContentBody = styled.div`
+  display: flex;
+  flex: 1;
 `;
 const ModalContent = styled.div`
   flex: 1 1 auto;
@@ -162,47 +168,6 @@ function ExampleNavigation({ examples, exampleId, onExampleSelected }) {
         )}
       </NavInner>
     </Nav>
-  );
-}
-
-function ExampleDisplay(props) {
-  const ExampleComponent = Loadable({
-    loader: () => props.example && props.example.exports(),
-    loading: Loading,
-    render(loaded) {
-      if (!loaded.default) {
-        return (
-          <ErrorMessage>
-            Example{props.example ? ` "${props.example.id}"` : ''} doesn't have
-            default export.
-          </ErrorMessage>
-        );
-      }
-
-      return (
-        <ComponentContainer>
-          <loaded.default />
-        </ComponentContainer>
-      );
-    },
-  });
-
-  const ExampleCode = Loadable({
-    loader: () => props.example && props.example.contents(),
-    loading: Loading,
-    render(loaded) {
-      return (
-        <CodeContainer>
-          <CodeBlock grammar="jsx" content={loaded} name={props.name} />
-        </CodeContainer>
-      );
-    },
-  });
-
-  return (
-    <Content>
-      {props.displayCode ? <ExampleCode /> : <ExampleComponent />}
-    </Content>
   );
 }
 
@@ -376,6 +341,9 @@ export default class ExamplesModal extends Component<Props, State> {
     }
 
     const { displayCode } = this.state;
+    const url = `examples.html?groupId=${groupId}&packageId=${packageId}&exampleId=${
+      this.props.match.params.exampleId
+    }`;
     const pkgJSON = getConfig(groupId, packageId).config;
 
     if (hasChanged) {
@@ -383,6 +351,7 @@ export default class ExamplesModal extends Component<Props, State> {
     }
     return (
       <Modal
+        body={ModalBody}
         header={({ showKeyline }) => (
           <ModalHeader showKeyline={showKeyline}>
             <ModalTitle>{fs.titleize(packageId)} Examples</ModalTitle>
@@ -444,7 +413,7 @@ export default class ExamplesModal extends Component<Props, State> {
         onClose={this.close}
         width={1180}
       >
-        <ModalBody>
+        <ContentBody>
           <ExampleNavigation
             groupId={groupId}
             packageId={packageId}
@@ -459,8 +428,22 @@ export default class ExamplesModal extends Component<Props, State> {
             {examples && exampleId ? (
               <ExampleDisplay
                 displayCode={displayCode}
-                example={example}
+                example={fs.getById(fs.getFiles(examples.children), exampleId)}
                 name={pkgJSON.name}
+                src={url}
+                render={(ExampleCode, ExampleComponent, displayCode) => {
+                  if (displayCode) {
+                    return (
+                      <Content>
+                        <CodeContainer>
+                          <ExampleCode />
+                        </CodeContainer>
+                      </Content>
+                    );
+                  }
+
+                  return <ExampleComponent />;
+                }}
               />
             ) : (
               <Content>
@@ -473,7 +456,7 @@ export default class ExamplesModal extends Component<Props, State> {
               {Object.keys(this.state.flags).map(key => this.state.flags[key])}
             </FlagGroup>
           </ModalContent>
-        </ModalBody>
+        </ContentBody>
       </Modal>
     );
   }
