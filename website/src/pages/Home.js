@@ -196,14 +196,14 @@ export default class Home extends React.Component<HomeProps> {
             >
               Documentation and usage guides for the packages in Atlaskit.
             </Card>
-            <Card
+            {/* <Card
               to="/patterns"
               icon={PatternsIcon}
               iconColor={colors.G300}
               title="Patterns"
             >
               Common ways to combine packages together for your application.
-            </Card>
+            </Card> */}
           </Cards>
           <Button
             href="//bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md"
