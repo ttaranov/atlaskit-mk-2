@@ -16,10 +16,14 @@ export const Container = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 `;
 
 export const Content = styled.div`
   position: relative;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
   top: 48px;
 `;
 
@@ -36,6 +40,7 @@ const transitionDistance = {
 
 export const ExampleComponentWrapper = styled.div`
   padding-right: ${p => (p.codeIsVisible ? `${codePaneWidth}px` : 0)};
+  flex: 1;
   transition: padding ${transitionDuration}ms;
 `;
 export const ComponentContainer = styled.div`
