@@ -58,7 +58,7 @@ export const splitMediaGroup = (view: EditorView): boolean => {
   // if selected media node is the last one, no need to insert a new p or split the block, prosemirror handled it.
   if (selection.$to.nodeAfter) {
     splitBlock(view.state, view.dispatch);
-    createParagraphNear(view, false);
+    createParagraphNear(false)(view.state, view.dispatch);
   }
 
   return true;

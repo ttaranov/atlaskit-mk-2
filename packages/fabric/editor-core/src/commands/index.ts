@@ -383,7 +383,7 @@ export function createNewParagraphAbove(view: EditorView): Command {
     const append = false;
 
     if (!canMoveUp(state) && canCreateParagraphNear(state)) {
-      createParagraphNear(view, append);
+      createParagraphNear(append)(view.state, view.dispatch);
       return true;
     }
 
@@ -396,7 +396,7 @@ export function createNewParagraphBelow(view: EditorView): Command {
     const append = true;
 
     if (!canMoveDown(state) && canCreateParagraphNear(state)) {
-      createParagraphNear(view, append);
+      createParagraphNear(append)(state, dispatch);
       return true;
     }
 
@@ -412,31 +412,31 @@ function canCreateParagraphNear(state: EditorState): boolean {
   return $from.depth > 1 || isNodeSelection || insideCodeBlock;
 }
 
-export function createParagraphNear(
-  view: EditorView,
-  append: boolean = true,
-): void {
-  const { state, dispatch } = view;
-  const paragraph = state.schema.nodes.paragraph;
+export function createParagraphNear(append: boolean = true): Command {
+  return function(state, dispatch) {
+    const paragraph = state.schema.nodes.paragraph;
 
-  if (!paragraph) {
-    return;
-  }
-
-  let insertPos;
-
-  if (state.selection instanceof TextSelection) {
-    if (topLevelNodeIsEmptyTextBlock(state)) {
-      return;
+    if (!paragraph) {
+      return false;
     }
-    insertPos = getInsertPosFromTextBlock(state, append);
-  } else {
-    insertPos = getInsertPosFromNonTextBlock(state, append);
-  }
 
-  dispatch(state.tr.insert(insertPos, paragraph.create()));
+    let insertPos;
 
-  setTextSelection(view, insertPos + 1);
+    if (state.selection instanceof TextSelection) {
+      if (topLevelNodeIsEmptyTextBlock(state)) {
+        return false;
+      }
+      insertPos = getInsertPosFromTextBlock(state, append);
+    } else {
+      insertPos = getInsertPosFromNonTextBlock(state, append);
+    }
+
+    const tr = state.tr.insert(insertPos, paragraph.createAndFill()!);
+    tr.setSelection(TextSelection.create(tr.doc, insertPos + 1));
+    dispatch(tr);
+
+    return true;
+  };
 }
 
 function getInsertPosFromTextBlock(state: EditorState, append: boolean): void {
