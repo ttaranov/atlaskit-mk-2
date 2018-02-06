@@ -1,4 +1,3 @@
-import { MediaState, MediaStateStatus } from '@atlaskit/media-core';
 import {
   doc,
   p,
@@ -12,6 +11,7 @@ import {
   insertMediaSingleNode,
   insertMediaAsMediaSingle,
 } from '../../../src/plugins/media/media-single';
+import { MediaState, MediaStateStatus } from '../../../src/plugins/media';
 import mediaPlugin from '../../../src/editor/plugins/media';
 import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 

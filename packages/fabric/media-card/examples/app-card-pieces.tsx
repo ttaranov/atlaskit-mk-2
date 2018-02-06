@@ -481,9 +481,7 @@ export default () => (
           <AppCardView
             model={{
               title: {
-                text: `Super long title, longer than the card max-width: ${
-                  loremIpsum
-                }`,
+                text: `Super long title, longer than the card max-width: ${loremIpsum}`,
               },
             }}
           />
@@ -491,9 +489,7 @@ export default () => (
             newDesign={newDesign}
             model={{
               title: {
-                text: `Super long title, longer than the card max-width: ${
-                  loremIpsum
-                }`,
+                text: `Super long title, longer than the card max-width: ${loremIpsum}`,
               },
             }}
           />

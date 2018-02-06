@@ -13,7 +13,6 @@ import {
   randomId,
   storyMediaProviderFactory,
 } from '@atlaskit/editor-test-helpers';
-import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import { EditorView } from 'prosemirror-view';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import {
@@ -21,16 +20,19 @@ import {
   ProviderFactory,
   defaultSchema,
 } from '@atlaskit/editor-common';
+
 import {
   MediaPluginState,
   stateKey as mediaPluginStateKey,
-} from './../../../../src/plugins/media/index';
+  DefaultMediaStateManager,
+} from './../../../../src/plugins/media';
 import { name } from '../../../../package.json';
 import tasksAndDecisionsPlugin from '../../../../src/editor/plugins/tasks-and-decisions';
 import mediaPlugin from '../../../../src/editor/plugins/media';
 import hyperlinkPlugin from '../../../../src/editor/plugins/hyperlink';
 import EditorActions from '../../../../src/editor/actions';
 import { toJSON } from '../../../../src/utils';
+
 chai.use(chaiPlugin);
 
 const jsonTransformer = new JSONTransformer();
@@ -145,7 +147,7 @@ describe(name, () => {
           p('text'),
         )(defaultSchema);
         const expected = doc(p('text'))(defaultSchema);
-        editorActions.replaceDocument(decisionsAndTasks);
+        editorActions.replaceDocument(decisionsAndTasks.toJSON());
 
         const actual = await editorActions.getValue();
         expect(actual).to.deep.equal({ ...expected.toJSON(), version: 1 });
@@ -337,12 +339,6 @@ describe(name, () => {
         expect(actual).to.deep.equal(expected);
       });
 
-      it('should accept a prosemirror node', async () => {
-        editorActions.replaceDocument(newDoc);
-        const val = await editorActions.getValue();
-        expect(val).to.deep.equal(toJSON(newDoc));
-      });
-
       it('should accept JSON version of a prosemirror node', async () => {
         editorActions.replaceDocument(newDoc.toJSON());
         const val = await editorActions.getValue();
@@ -370,9 +366,40 @@ describe(name, () => {
       });
     });
 
+    describe('#replaceSelection', () => {
+      const newDoc = doc(p('some new {<>} content'));
+      let editorActions;
+      let editorView;
+
+      beforeEach(() => {
+        const editor = createEditor({ doc: newDoc });
+        editorView = editor.editorView;
+        editorActions = new EditorActions();
+        editorActions._privateRegisterEditor(editorView);
+      });
+
+      it('should accept JSON version of a prosemirror node', () => {
+        editorActions.replaceSelection(
+          blockquote(p('text'))(defaultSchema).toJSON(),
+        );
+        expect(editorView.state.doc).to.deep.equal(
+          doc(p('some new '), blockquote(p('text')), p(' content')),
+        );
+      });
+
+      it('should accept stringified JSON version of a prosemirror node', () => {
+        editorActions.replaceSelection(
+          JSON.stringify(blockquote(p('text'))(defaultSchema).toJSON()),
+        );
+        expect(editorView.state.doc).to.deep.equal(
+          doc(p('some new '), blockquote(p('text')), p(' content')),
+        );
+      });
+    });
+
     describe('#appendText', () => {
       it('should append text to a document', async () => {
-        const newDoc = doc(p('some text'))(defaultSchema);
+        const newDoc = doc(p('some text'))(defaultSchema).toJSON();
         const expected = doc(p('some text appended'))(defaultSchema);
         editorActions.replaceDocument(newDoc);
         editorActions.appendText(' appended');
@@ -389,7 +416,7 @@ describe(name, () => {
           blockquote(p('some quote')),
           p(' appended'),
         )(defaultSchema);
-        editorActions.replaceDocument(newDoc);
+        editorActions.replaceDocument(newDoc.toJSON());
         editorActions.appendText(' appended');
         const val = await editorActions.getValue();
         expect(val).to.deep.equal(toJSON(expected));
@@ -401,7 +428,7 @@ describe(name, () => {
           blockquote(p('some quote')),
           decisionList({})(decisionItem({})()),
         )(defaultSchema);
-        editorActions.replaceDocument(newDoc);
+        editorActions.replaceDocument(newDoc.toJSON());
         expect(editorActions.appendText(' appended')).to.equal(false);
       });
     });

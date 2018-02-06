@@ -2,9 +2,9 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 
 import { default as MediaItem, Props as MediaItemProps } from './MediaItem';
-import { MediaStateManager } from '@atlaskit/media-core';
 import {
   MediaPluginState,
+  MediaStateManager,
   stateKey as mediaStateKey,
 } from '../../plugins/media';
 

@@ -1,5 +1,7 @@
 # @atlaskit/media-viewer
 
+## 10.0.3
+
 ## 10.0.2
 - [patch] Expose analyticsBackend in Media Viewer configuration [3984d91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3984d91)
 

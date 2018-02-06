@@ -15,8 +15,9 @@ import {
   AppCardUser as OldUserViewModel,
   OnActionClickCallback,
 } from '../../app/model';
-import StandaloneApplicationCardView from '../StandaloneApplicationCardView';
+import ApplicationCard from '../ApplicationCard';
 import { AppCardView } from '../../app/components/AppCardView';
+import { ActionHandlerCallbacks } from '../shared/ActionsView';
 
 function convertUser(oldUser: OldUserViewModel) {
   return {
@@ -113,17 +114,17 @@ function getActions(
   return oldViewModel.actions.map(oldAction => {
     return {
       text: oldAction.title,
-      handler: () => {
+      handler: (actionCallbackHandlers: ActionHandlerCallbacks) => {
         if (onActionClick) {
           onActionClick(oldAction, {
-            // these are just dummies for now until we implement the action states (still being designed)
-            progress: () => {},
-            success: (message?: string) => {},
+            progress: actionCallbackHandlers.progress,
+            success: (message?: string) =>
+              actionCallbackHandlers.success(message),
             failure: (
               message?: string,
               tryAgain?: boolean,
               tryAgainLinkText?: string,
-            ) => {},
+            ) => actionCallbackHandlers.failure(),
           });
         }
       },
@@ -143,7 +144,7 @@ class AppCardViewV2 extends React.Component<AppCardViewV2Props> {
     const { newDesign, model, onClick, onActionClick } = this.props;
     if (newDesign) {
       return (
-        <StandaloneApplicationCardView
+        <ApplicationCard
           onClick={onClick}
           context={getContext(model)}
           link={getLink(model)}

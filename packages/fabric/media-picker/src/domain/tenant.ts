@@ -1,4 +1,5 @@
-import { Auth, UploadParams } from '@atlaskit/media-core';
+import { Auth } from '@atlaskit/media-core';
+import { UploadParams } from './config';
 
 export interface Tenant {
   readonly auth: Auth;

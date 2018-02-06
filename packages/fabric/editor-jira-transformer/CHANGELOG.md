@@ -1,5 +1,10 @@
 # @atlaskit/editor-jira-transformer
 
+## 2.4.6
+
+## 2.4.5
+- [patch] bump editor-common to 6.1.2 [bb7802e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7802e)
+
 ## 2.4.4
 - [patch] bump mention to 9.1.1 to fix mention autocomplete bug [c7708c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7708c6)
 

@@ -8,62 +8,14 @@ import {
   EmptyViewWithFixedHeight,
 } from '../src/styled/EmptyBody';
 import Body from '../src/components/Body';
+import RankableTableBody from '../src/components/rankable/Body';
 import LoadingContainer from '../src/components/LoadingContainer';
 import LoadingContainerAdvanced from '../src/components/LoadingContainerAdvanced';
 import { Caption } from '../src/styled/DynamicTable';
 import DynamicTable, { DynamicTableStateless } from '../src';
+import { rows, head, rowsWithKeys } from './_data';
 
 import { name } from '../package.json';
-
-const head = {
-  cells: [
-    {
-      key: 'first_name',
-      content: 'First name',
-      isSortable: true,
-    },
-    {
-      key: 'last_name',
-      content: 'Last name',
-    },
-  ],
-};
-
-const rows = [
-  {
-    cells: [
-      {
-        key: 'baob',
-        content: 'Barak',
-      },
-      {
-        content: 'Obama',
-      },
-    ],
-  },
-  {
-    cells: [
-      {
-        key: 'dotr',
-        content: 'Donald',
-      },
-      {
-        content: 'Trump',
-      },
-    ],
-  },
-  {
-    cells: [
-      {
-        key: 'hicl',
-        content: 'Hillary',
-      },
-      {
-        content: 'Clinton',
-      },
-    ],
-  },
-];
 
 describe(name, () => {
   describe('stateless', () => {
@@ -129,6 +81,23 @@ describe(name, () => {
       expect(body.length).toBe(0);
     });
 
+    it('should render RankableTableBody if table is rankable', () => {
+      const wrapper = mount(
+        <DynamicTableStateless
+          rowsPerPage={2}
+          page={2}
+          head={head}
+          rows={rowsWithKeys}
+          isRankable
+        />,
+      );
+
+      const body = wrapper.find(Body);
+      const rankableBody = wrapper.find(RankableTableBody);
+      expect(body.length).toBe(0);
+      expect(rankableBody.length).toBe(1);
+    });
+
     it('should display paginated data', () => {
       const wrapper = mount(
         <DynamicTableStateless
@@ -139,7 +108,7 @@ describe(name, () => {
         />,
       );
       const bodyRows = wrapper.find('tbody tr');
-      expect(bodyRows.length).toBe(1);
+      expect(bodyRows.length).toBe(2);
       expect(
         bodyRows
           .at(0)
@@ -156,7 +125,7 @@ describe(name, () => {
       ).toBe('Clinton');
     });
 
-    it('should display sorted data', () => {
+    const checkSortedData = isRankable => {
       const headCells = head.cells.map(cell => ({
         ...cell,
         isSortable: true,
@@ -166,7 +135,8 @@ describe(name, () => {
           defaultSortKey="last_name"
           defaultSortOrder="DESC"
           head={{ cells: headCells }}
-          rows={rows}
+          rows={rowsWithKeys}
+          isRankable={isRankable}
         />,
       );
       const bodyRows = wrapper.find('tbody tr');
@@ -176,7 +146,7 @@ describe(name, () => {
           .find('td')
           .at(0)
           .text(),
-      ).toBe('Barak');
+      ).toBe('Barack');
       expect(
         bodyRows
           .at(0)
@@ -212,6 +182,14 @@ describe(name, () => {
           .at(1)
           .text(),
       ).toBe('Clinton');
+    };
+
+    it('should display sorted data', () => {
+      checkSortedData(false);
+    });
+
+    it('should display sorted data in rankable table', () => {
+      checkSortedData(true);
     });
 
     it('should pass down extra props', () => {
@@ -415,7 +393,7 @@ describe(name, () => {
           .find('td')
           .at(0)
           .text(),
-      ).toBe('Barak');
+      ).toBe('Barack');
       expect(
         bodyRows
           .at(0)
@@ -453,7 +431,7 @@ describe(name, () => {
           .find('td')
           .at(0)
           .text(),
-      ).toBe('Barak');
+      ).toBe('Barack');
       expect(
         bodyRows
           .at(0)
