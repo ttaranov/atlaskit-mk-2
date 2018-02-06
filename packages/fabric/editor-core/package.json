@@ -26,7 +26,7 @@
     "@atlaskit/calendar": "^3.0.13",
     "@atlaskit/code": "^3.0.0",
     "@atlaskit/droplist": "^4.11.3",
-    "@atlaskit/editor-common": "^5.10.1",
+    "@atlaskit/editor-common": "^6.1.2",
     "@atlaskit/editor-json-transformer": "^2.5.1",
     "@atlaskit/editor-markdown-transformer": "^0.1.0",
     "@atlaskit/emoji": "^31.0.2",
