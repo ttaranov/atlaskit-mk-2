@@ -119,6 +119,18 @@ describe('Media plugin', () => {
     pluginState.destroy();
   });
 
+  it('should add an onClose event listener in popupPicker', async () => {
+    const { pluginState } = editor(doc(p('{<>}')));
+    const provider = await mediaProvider;
+    await provider.uploadContext;
+
+    const onClose = jest.fn();
+    (pluginState as any).popupPicker!.onClose = onClose;
+    expect(onClose).toHaveBeenCalledTimes(1);
+
+    pluginState.destroy();
+  });
+
   describe('when message editor', () => {
     it('inserts media group', async () => {
       const { editorView, pluginState } = editor(doc(p('')), {

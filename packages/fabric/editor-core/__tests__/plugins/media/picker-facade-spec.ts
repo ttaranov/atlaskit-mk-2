@@ -411,6 +411,7 @@ describe('Media PickerFacade', () => {
         );
       });
 
+      // Picker Specific Tests
       if (pickerType === 'clipboard' || pickerType === 'dropzone') {
         it(`should call picker's activate() during initialization`, () => {
           expect(spies.activate).toHaveBeenCalledTimes(1);
@@ -468,7 +469,51 @@ describe('Media PickerFacade', () => {
         });
       }
 
-      // Picker Specific Tests
+      if (pickerType === 'popup') {
+        it(`should call picker on close when onClose is called`, () => {
+          spies.on.mockClear();
+          const closeCb = jest.fn();
+          facade.onClose(closeCb);
+
+          expect(spies.on).toHaveBeenCalledTimes(1);
+          expect(spies.on).toHaveBeenCalledWith('closed', closeCb);
+        });
+      } else {
+        it(`should not call picker on close when onClose is called`, () => {
+          spies.on.mockClear();
+          facade.onClose(() => {});
+          expect(spies.on).toHaveBeenCalledTimes(0);
+        });
+      }
+
+      if (pickerType === 'dropzone' || pickerType === 'clipboard') {
+        it(`should call picker.activate when activate is called`, () => {
+          spies.activate.mockClear();
+          facade.activate();
+          expect(spies.activate).toHaveBeenCalledTimes(1);
+        });
+      } else {
+        it(`should not call picker.activate when activate is called`, () => {
+          spies.activate.mockClear();
+          facade.activate();
+          expect(spies.activate).toHaveBeenCalledTimes(0);
+        });
+      }
+
+      if (pickerType === 'dropzone' || pickerType === 'clipboard') {
+        it(`should call picker.deactivate when deactivate is called`, () => {
+          spies.deactivate.mockClear();
+          facade.deactivate();
+          expect(spies.deactivate).toHaveBeenCalledTimes(1);
+        });
+      } else {
+        it(`should not call picker.deactivate when deactivate is called`, () => {
+          spies.deactivate.mockClear();
+          facade.deactivate();
+          expect(spies.deactivate).toHaveBeenCalledTimes(0);
+        });
+      }
+
       if (pickerType === 'popup') {
         it('should change the status to cancelled on cancel', () => {
           const spy = jest.fn();
