@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 import { akColorN30, akBorderRadius } from '@atlaskit/util-shared-styles';
-import { padding } from '../styles';
+import { Wrapper as WrapperDefault, padding } from '../styles';
+
+export const Wrapper = styled(WrapperDefault)`
+  margin: 12px 0;
+`;
 
 export const Header = styled.div`
   cursor: pointer;

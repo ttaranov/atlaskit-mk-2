@@ -6,7 +6,7 @@ import {
 } from '@atlaskit/editor-test-helpers';
 
 import InlineExtension from '../../src/ui/Extension/InlineExtension';
-import { PlaceholderFallback } from '../../src/ui/Extension/InlineExtension/styles';
+import { PlaceholderFallback } from '../../src/ui/Extension/styles';
 
 describe('@atlaskit/editor-core/ui/Macro/InlineExtension', () => {
   const noop: any = () => {};
