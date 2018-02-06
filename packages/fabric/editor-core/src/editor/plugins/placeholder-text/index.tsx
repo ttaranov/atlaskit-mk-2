@@ -7,6 +7,7 @@ import { EditorPlugin } from '../../types/editor-plugin';
 import WithPluginState from '../../ui/WithPluginState';
 import { Dispatch } from '../../event-dispatcher';
 import PlaceholderFloatingToolbar from '../../../ui/PlaceholderFloatingToolbar';
+import { isEmptyNode } from '../../utils/document';
 import {
   hidePlaceholderFloatingToolbar,
   insertPlaceholderTextAtSelection,
@@ -53,22 +54,25 @@ export function createPlugin(dispatch: Dispatch): Plugin | undefined {
         const didPlaceholderExistBeforeTxn =
           oldState.selection.$head.nodeAfter ===
           newState.selection.$head.nodeAfter;
-        const wasContentAdded =
-          oldState.selection.$head.pos <= newState.selection.$head.pos;
         const adjacentNode = newState.selection.$head.nodeAfter;
         const adjacentNodePos = newState.selection.$head.pos;
         const placeholderNodeType = newState.schema.nodes.placeholder;
         if (
           adjacentNode &&
           adjacentNode.type === placeholderNodeType &&
-          didPlaceholderExistBeforeTxn &&
-          wasContentAdded
+          didPlaceholderExistBeforeTxn
         ) {
-          const { $from, $to } = NodeSelection.create(
-            newState.doc,
-            adjacentNodePos,
-          );
-          return newState.tr.deleteRange($from.pos, $to.pos);
+          // Check that cursor has moved forward in the document **and** that there is content before the cursor
+          const wasContentAdded =
+            oldState.selection.$head.pos < newState.selection.$head.pos &&
+            !isEmptyNode(newState.selection.$head.nodeBefore!);
+          if (wasContentAdded) {
+            const { $from, $to } = NodeSelection.create(
+              newState.doc,
+              adjacentNodePos,
+            );
+            return newState.tr.deleteRange($from.pos, $to.pos);
+          }
         }
       }
     },
