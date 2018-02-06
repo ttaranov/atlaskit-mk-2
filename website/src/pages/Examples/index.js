@@ -16,7 +16,7 @@ import Spinner from '@atlaskit/spinner';
 import Tooltip from '@atlaskit/tooltip';
 import { colors } from '@atlaskit/theme';
 
-import Loading from '../../components/Loading';
+import ExampleDisplay from '../../components/Examples/ExampleDisplay';
 import * as fs from '../../utils/fs';
 import type { Directory, RouterMatch } from '../../types';
 import CodeBlock from '../../components/Code';
@@ -187,47 +187,6 @@ function ExampleNavigation(props) {
         </Tooltip>
       </NavSection>
     </Nav>
-  );
-}
-
-function ExampleDisplay(props) {
-  const ExampleComponent = Loadable({
-    loader: () => props.example.exports(),
-    loading: Loading,
-    render(loaded) {
-      if (!loaded.default) {
-        return (
-          <ErrorMessage>
-            Example "{props.example.id}" doesn't have default export.
-          </ErrorMessage>
-        );
-      }
-
-      return (
-        <ComponentContainer>
-          <loaded.default />
-        </ComponentContainer>
-      );
-    },
-  });
-
-  const ExampleCode = Loadable({
-    loader: () => props.example.contents(),
-    loading: Loading,
-    render(loaded) {
-      return <CodeBlock grammar="jsx" content={loaded} name={props.name} />;
-    },
-  });
-
-  return (
-    <Content>
-      <ExampleComponentWrapper codeIsVisible={props.displayCode}>
-        <ExampleComponent />
-      </ExampleComponentWrapper>
-      <CodeContainer show={props.displayCode}>
-        <ExampleCode />
-      </CodeContainer>
-    </Content>
   );
 }
 
@@ -424,6 +383,9 @@ export default class Examples extends React.Component<Props, State> {
       this.props.match.params.pkgId,
       this.props.match.params.exampleId,
     );
+    const iframeSrc = `examples.html?groupId=${groupId}&packageId=${packageId}&exampleId=${
+      this.props.match.params.exampleId
+    }`;
 
     if (hasChanged) {
       return <Redirect to={this.toUrl(groupId, packageId, exampleId)} />;
@@ -449,7 +411,20 @@ export default class Examples extends React.Component<Props, State> {
           <ExampleDisplay
             displayCode={this.state.displayCode}
             example={fs.getById(fs.getFiles(examples.children), exampleId)}
+            src={iframeSrc}
             name={config.name}
+            render={(ExampleCode, ExampleComponent, displayCode) => {
+              return (
+                <Content>
+                  <ExampleComponentWrapper codeIsVisible={displayCode}>
+                    <ExampleComponent />
+                  </ExampleComponentWrapper>
+                  <CodeContainer show={displayCode}>
+                    <ExampleCode />
+                  </CodeContainer>
+                </Content>
+              );
+            }}
           />
         ) : (
           <Content>
