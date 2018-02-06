@@ -4,6 +4,7 @@ export const placeholder: NodeSpec = {
   inline: true,
   group: 'inline',
   selectable: false,
+  marks: '',
   attrs: {
     text: { default: '' },
   },
