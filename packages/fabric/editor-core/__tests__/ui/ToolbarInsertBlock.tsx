@@ -461,6 +461,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       }
 
       expect(editorActions.appendText).toHaveBeenCalledWith('adding custom-a');
+      plusMenu.unmount();
     });
   });
 });
