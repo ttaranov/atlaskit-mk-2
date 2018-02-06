@@ -7,6 +7,8 @@ import TimePickerStateless from './TimePickerStateless';
 import type { Event, Handler } from '../types';
 import { dateFromTime, formatTime } from '../util';
 
+import Select from '@atlaskit/select';
+
 const defaultTimes = [
   '09:00',
   '09:30',
@@ -29,6 +31,11 @@ const defaultTimes = [
   '18:00',
 ];
 
+type Option = {
+  label: string,
+  value: string,
+};
+
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
   /** Whether or not to auto-focus the field. */
@@ -44,9 +51,11 @@ type Props = {
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
-  isOpen?: boolean,
+  // isOpen?: boolean,
   /** The time in the dropdown that should be focused. */
-  focused?: string,
+  // focused?: string,
+  /** The name of the field. */
+  name: string,
   /** Called when the value changes. The only argument is an ISO time. */
   onChange: Handler,
   /** The times to show in the dropdown. */
@@ -54,148 +63,67 @@ type Props = {
   /** The ISO time that should be used as the input value. */
   value?: string,
   /** The width of the field. */
-  width: number,
+  // width: number,
 };
 
 type State = {
-  focused: string,
-  isOpen: boolean,
+  // focused: string,
+  // isOpen: boolean,
   times: Array<string>,
   value: string,
 };
 
 class TimePicker extends Component<Props, State> {
-  timepicker: ?ElementRef<typeof TimePickerStateless>;
-
   static defaultProps = {
     autoFocus: false,
     isDisabled: false,
+    name: '',
     onChange: () => {},
-    width: null,
+    // width: null,
   };
 
   state = {
-    focused: '',
-    isOpen: false,
+    // focused: '',
+    // isOpen: false,
     times: defaultTimes,
     value: '',
   };
 
-  handleInputBlur = () => {
-    this.validate(this.state.value);
-  };
+  getOptions(): Array<Option> {
+    return this.state.times.reduce((prev: Array<Option>, curr: string): Array<
+      Option,
+    > => {
+      return prev.concat({
+        label: formatTime(curr),
+        value: curr,
+      });
+    }, []);
+  }
 
-  handleInputChange = (e: Event) => {
-    const value = e.target.value;
+  handleChange = ({ value }: Object): void => {
     this.setState({ value });
-    this.updateTimes(value, this.state.times);
+    this.props.onChange(value);
   };
-
-  handleInputKeyDown = (e: KeyboardEvent) => {
-    // Handle opening the dialog, keyboard nav, closing the dialog, enter
-    if (!this.state.isOpen) {
-      if (e.key === 'ArrowDown') {
-        this.openDialog();
-      } else if (e.key === 'Enter') {
-        this.validate(this.state.value);
-      }
-    } else if (e.key === 'Escape') {
-      this.setState({ isOpen: false });
-    } else if (e.key === 'ArrowDown') {
-      this.selectNextItem();
-    } else if (e.key === 'ArrowUp') {
-      this.selectPreviousItem();
-    } else if (e.key === 'Enter') {
-      if (this.state.focused) {
-        this.validate(this.state.focused);
-      }
-    }
-  };
-
-  handleUpdate = (time: string) => {
-    this.validate(time);
-  };
-
-  onChange = (value: ?string) => {
-    if (value !== this.state.value) {
-      this.props.onChange(value);
-    }
-  };
-
-  openDialog() {
-    const times = this.state.times;
-    this.setState({
-      focused: times.length ? times[0] : '',
-      isOpen: true,
-    });
-  }
-
-  selectNextItem() {
-    const times = this.state.times;
-    const current = this.state.focused ? times.indexOf(this.state.focused) : -1;
-    let next = current + 1;
-    next = next > times.length - 1 ? 0 : next;
-    this.setState({ focused: times[next] });
-  }
-
-  selectPreviousItem() {
-    const times = this.state.times;
-    const current = this.state.focused ? times.indexOf(this.state.focused) : -1;
-    let previous = current - 1;
-    previous = previous < 0 ? times.length - 1 : previous;
-    this.setState({ focused: times[previous] });
-  }
-
-  updateTimes = (value: ?string, times: Array<string>) => {
-    const timeShouldBeVisible = (time: string) =>
-      value ? time.startsWith(value) : true;
-    const filteredTimes = value ? times.filter(timeShouldBeVisible) : times;
-    this.setState({ times: filteredTimes });
-
-    if (!this.state.focused || !timeShouldBeVisible(this.state.focused)) {
-      this.setState({
-        focused: filteredTimes.length > 0 ? filteredTimes[0] : '',
-      });
-    }
-  };
-
-  // TODO: Display an error message.
-  validate(value: string) {
-    if (isValid(dateFromTime(value))) {
-      this.props.onChange(value);
-      this.setState({
-        value,
-        isOpen: false,
-      });
-    } else {
-      this.setState({
-        value: '',
-        isOpen: false,
-      });
-      this.updateTimes('', this.state.times);
-    }
-  }
 
   render() {
+    const { autoFocus, isDisabled, name } = this.props;
     const { value } = this.state;
     return (
-      <TimePickerStateless
-        autoFocus={this.props.autoFocus}
-        isDisabled={this.props.isDisabled}
-        isOpen={this.state.isOpen}
-        displayValue={formatTime(value)}
-        value={value}
-        times={this.state.times}
-        focused={this.state.focused}
-        width={this.props.width}
-        onFieldBlur={this.handleInputBlur}
-        onFieldChange={this.handleInputChange}
-        onFieldKeyDown={this.handleInputKeyDown}
-        onPickerUpdate={this.handleUpdate}
-        ref={ref => {
-          this.timepicker = ref;
-        }}
-      />
+      <div>
+        <input name={name} type="hidden" value={value} />
+        {/* $FlowFixMe - complaining about required args that aren't required. */}
+        <Select
+          autoFocus={autoFocus}
+          isDisabled={isDisabled}
+          onChange={this.handleChange}
+          options={this.getOptions()}
+          placeholder="e.g. 9:00am"
+          value={{
+            label: formatTime(value),
+            value,
+          }}
+        />
+      </div>
     );
   }
 }

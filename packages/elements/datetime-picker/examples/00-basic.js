@@ -20,10 +20,10 @@ export default () => {
       <TimePicker defaultValue="14:30" />
 
       <Label label="Date / time picker (controlled)" />
-      <DateTimePicker value={['2018-01-02', '14:30']} />
+      <DateTimePicker value="2018-01-02T14:30" />
 
       <Label label="Date / time picker (uncontrolled)" />
-      <DateTimePicker defaultValue={['2018-01-02', '14:30']} />
+      <DateTimePicker defaultValue="2018-01-02T14:30" />
     </div>
   );
 };
