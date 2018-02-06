@@ -7,7 +7,9 @@ import {
   preprocessDoc,
 } from '../utils';
 import { toJSON } from '../../utils';
+import { processRawValue } from '../utils/document';
 import { Transformer } from '@atlaskit/editor-common';
+
 export default class EditorActions {
   private editorView?: EditorView;
   private contentTransformer?: Transformer<any>;
@@ -91,36 +93,40 @@ export default class EditorActions {
     const { state } = this.editorView;
     const { schema } = state;
 
-    let jsonDocument: any = {};
+    const transformedDoc = this.contentTransformer
+      ? this.contentTransformer.parse(rawValue).toJSON()
+      : rawValue;
 
-    if (this.contentTransformer) {
-      jsonDocument = this.contentTransformer.parse(rawValue).toJSON();
-    } else if (typeof rawValue === 'string') {
-      try {
-        jsonDocument = JSON.parse(rawValue);
-      } catch (e) {
-        return false;
-      }
-    } else if (rawValue instanceof Node) {
-      // If rawValue is instance of Node we convert it to JSON and re-create children,
-      // so we get completely new document instead of changing the one that was passed to us
-      jsonDocument = rawValue.toJSON();
-    } else if (typeof rawValue === 'object') {
-      jsonDocument = rawValue;
-    }
+    const content = processRawValue(schema, transformedDoc);
 
-    const content = (jsonDocument.content || []).map(child =>
-      schema.nodeFromJSON(child),
-    );
-
-    if (!content || content.length === 0) {
+    if (!content) {
       return false;
     }
 
     const tr = state.tr
-      .replaceWith(0, state.doc.nodeSize - 2, content)
+      // In case of replacing a whole document, we only need a content of a top level node e.g. document.
+      .replaceWith(0, state.doc.nodeSize - 2, content.content)
       .scrollIntoView();
 
+    this.editorView.dispatch(tr);
+
+    return true;
+  }
+
+  replaceSelection(rawValue: Node | Object | string): boolean {
+    if (!this.editorView || rawValue === undefined || rawValue === null) {
+      return false;
+    }
+
+    const { state } = this.editorView;
+    const { schema } = state;
+    const content = processRawValue(schema, rawValue);
+
+    if (!content) {
+      return false;
+    }
+
+    const tr = state.tr.replaceSelectionWith(content).scrollIntoView();
     this.editorView.dispatch(tr);
 
     return true;
