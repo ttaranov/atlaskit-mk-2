@@ -1,5 +1,22 @@
 # @atlaskit/renderer
 
+## 11.4.2
+
+## 11.4.1
+- [patch] bump editor-common to 6.1.2 [bb7802e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7802e)
+
+## 11.4.0
+- [minor] Support mediaSingle [400ff24](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/400ff24)
+
+## 11.3.11
+
+## 11.3.10
+- [patch] bump mention to 9.1.1 to fix mention autocomplete bug [c7708c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7708c6)
+
+## 11.3.9
+
+## 11.3.8
+
 ## 11.3.7
 
 - [patch] move MediaItem to renderer, bump icons [5e71725](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e71725)

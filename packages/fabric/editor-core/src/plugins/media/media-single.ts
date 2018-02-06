@@ -1,11 +1,11 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { MediaState } from '@atlaskit/media-core';
 import { ImagePreview } from '@atlaskit/media-picker';
 
 import { isImage } from '../../utils';
 import { insertNodesEndWithNewParagraph } from '../../commands';
 import { copyOptionalAttrsFromMediaState } from './media-common';
+import { MediaState } from './types';
 
 export interface MediaSingleState extends MediaState {
   thumbnail: ImagePreview;

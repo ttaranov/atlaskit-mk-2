@@ -6,24 +6,31 @@ export const FETCH_CONVERSATIONS_SUCCESS = 'fetchConversationsSuccess';
 
 export const ADD_COMMENT_REQUEST = 'addCommentRequest';
 export const ADD_COMMENT_SUCCESS = 'addCommentSuccess';
+export const ADD_COMMENT_ERROR = 'addCommentError';
 
 export const DELETE_COMMENT_REQUEST = 'deleteCommentRequest';
 export const DELETE_COMMENT_SUCCESS = 'deleteCommentSuccess';
+export const DELETE_COMMENT_ERROR = 'deleteCommentError';
 
 export const UPDATE_COMMENT_REQUEST = 'updateCommentRequest';
 export const UPDATE_COMMENT_SUCCESS = 'updateCommentSuccess';
+export const UPDATE_COMMENT_ERROR = 'updateCommentError';
+
+export const REVERT_COMMENT = 'revertComment';
 
 export const UPDATE_USER_SUCCESS = 'updateUserSuccess';
 
 export const CREATE_CONVERSATION_REQUEST = 'createConversationRequest';
 export const CREATE_CONVERSATION_SUCCESS = 'createConversationSuccess';
+export const CREATE_CONVERSATION_ERROR = 'createConversationError';
 
 export const addComment = (
   conversationId: string,
   parentId: string,
   value: any,
+  localId?: string,
 ) => async (provider: ResourceProvider) => {
-  provider.addComment(conversationId, parentId, value);
+  provider.addComment(conversationId, parentId, value, localId);
 };
 
 export const updateComment = (
@@ -39,6 +46,13 @@ export const deleteComment = (
   commentId: string,
 ) => async (provider: ResourceProvider) => {
   provider.deleteComment(conversationId, commentId);
+};
+
+export const revertComment = (
+  conversationId: string,
+  commentId: string,
+) => async (provider: ResourceProvider) => {
+  provider.revertComment(conversationId, commentId);
 };
 
 export const updateUser = (user: User) => async (

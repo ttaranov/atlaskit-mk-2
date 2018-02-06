@@ -1,5 +1,8 @@
 # @atlaskit/droplist
 
+## 4.11.6
+- [patch] transparent background for selected item in droplist [75445a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75445a6)
+
 ## 4.11.5
 - [patch] migrate from ak to mk2 -> droplist [3b0ae0c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b0ae0c)
 

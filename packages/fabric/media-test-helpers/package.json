@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-test-helpers",
-  "version": "9.0.0",
+  "version": "9.0.1",
   "description": "Collection of test helpers used in media component stories and specs",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -12,7 +12,14 @@
     "dist"
   ],
   "author": "Atlassian Pty Ltd",
-  "maintainers": [],
+  "maintainers": [
+    "Jimmy L",
+    "Hector Z",
+    "James N",
+    "Aleksandr M",
+    "Ali C",
+    "Michael J"
+  ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/util-shared-styles": "^2.10.3",
@@ -23,7 +30,7 @@
   },
   "devDependencies": {
     "@atlaskit/field-text": "^4.1.2",
-    "@atlaskit/media-core": "^13.0.0",
-    "@atlaskit/media-test-helpers": "^9.0.0"
+    "@atlaskit/media-core": "^14.0.0",
+    "@atlaskit/media-test-helpers": "^9.0.1"
   }
 }

@@ -128,6 +128,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     onCancel={CANCEL_ACTION}
                     primaryToolbarComponents={[
                       <ToolbarFeedback
+                        product={'bitbucket'}
                         packageVersion={version}
                         packageName={name}
                         key="toolbar-feedback"

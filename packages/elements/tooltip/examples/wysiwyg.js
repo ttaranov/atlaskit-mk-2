@@ -12,7 +12,7 @@ import NumberListIcon from '@atlaskit/icon/glyph/editor/number-list';
 import CodeIcon from '@atlaskit/icon/glyph/editor/code';
 import { borderRadius, colors } from '@atlaskit/theme';
 
-import Tooltip from '../src/';
+import Tooltip from '../src';
 
 const Toolbar = styled.div`
   background-color: ${colors.N20};

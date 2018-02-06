@@ -182,6 +182,18 @@ describe('MentionResource', () => {
   });
 
   describe('#filter', () => {
+    it('should add weight based on response order', done => {
+      const resource = new MentionResource(apiConfig);
+      resource.subscribe('test1', mentions => {
+        for (let i = 0; i < mentions.length; i++) {
+          expect(mentions[i].weight).toBe(i);
+        }
+
+        done();
+      });
+      resource.filter('c');
+    });
+
     it('in order responses', done => {
       const resource = new MentionResource(apiConfig);
       const results: MentionDescription[][] = [];

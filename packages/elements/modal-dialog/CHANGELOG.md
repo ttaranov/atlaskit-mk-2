@@ -1,5 +1,13 @@
 # @atlaskit/modal-dialog
 
+## 3.3.10
+
+## 3.3.9
+- [patch] Updated inline-dialog to include boundaries element prop, updated Layer to have dynamic boolean escapeWithReference property, updated modal-dialog Content component with overflow-x:hidden' [cb72752](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cb72752)
+
+## 3.3.8
+- [patch] Prevent window from being scrolled programmatically [3e3085c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3e3085c)
+
 ## 3.3.7
 
 ## 3.3.6

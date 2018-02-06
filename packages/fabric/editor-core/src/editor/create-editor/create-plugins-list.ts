@@ -31,6 +31,7 @@ import {
   rulePlugin,
   clearMarksOnChangeToEmptyDocumentPlugin,
   datePlugin,
+  placeholderTextPlugin,
 } from '../plugins';
 
 /**
@@ -144,6 +145,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.allowDate) {
     plugins.push(datePlugin);
+  }
+
+  if (props.allowTemplatePlaceholders) {
+    plugins.push(placeholderTextPlugin);
   }
 
   // UI only plugins

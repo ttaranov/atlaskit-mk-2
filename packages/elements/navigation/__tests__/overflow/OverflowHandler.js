@@ -122,9 +122,6 @@ describe('<AkCollapseOverflow />', () => {
       instance.handleAvailableHeightChange(999);
       wrapper.update();
       expect(wrapper.find(OverflowDropdown).length).toBe(0);
-      // TODO: Please see - AK-4242
-      /* eslint-disable no-console */
-      sinon.assert.callCount(console.warn, 2);
     });
   });
 });

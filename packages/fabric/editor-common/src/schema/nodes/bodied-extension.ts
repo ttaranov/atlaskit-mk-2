@@ -24,7 +24,8 @@ export interface Definition {
 export const bodiedExtension: NodeSpec = {
   inline: false,
   group: 'block',
-  content: 'block+',
+  content:
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | mediaSingle | applicationCard | decisionList | taskList | table)+',
   defining: true,
   selectable: true,
   attrs: {

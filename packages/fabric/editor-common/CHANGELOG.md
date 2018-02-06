@@ -1,5 +1,33 @@
 # @atlaskit/editor-common
 
+## 6.1.4
+
+## 6.1.3
+- [patch] Move media provider and state manager to editor-core [0601da7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0601da7)
+
+## 6.1.2
+
+
+- [patch] Add the placeholder text node to the schema [330993f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/330993f)
+
+## 6.1.1
+
+## 6.1.0
+- [minor] Fixing content expression of bodiedExtension node. [38b81ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38b81ad)
+
+## 6.0.4
+- [patch] bump mention to 9.1.1 to fix mention autocomplete bug [c7708c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7708c6)
+
+## 6.0.3
+
+- [patch] Remove monospace font-style for code marks. [b92c81e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b92c81e)
+
+## 6.0.2
+- [patch] Removing SMB from URL-whitelist [dfe77d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfe77d2)
+
+## 6.0.1
+- [patch] Add additional inline nodes to unknownBlock [f330ca1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f330ca1)
+
 ## 6.0.0
 - [patch] cket-transformer/__tests__/_schema-builder.ts [a6e77ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6e77ff)
 - [major] move MediaItem to renderer, bump icons [5e71725](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e71725)

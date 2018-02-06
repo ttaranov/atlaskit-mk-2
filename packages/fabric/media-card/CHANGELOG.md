@@ -1,5 +1,9 @@
 # @atlaskit/media-image
 
+## 24.0.2
+
+- [patch] added missing smart-card action states [3f7536e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f7536e)
+
 ## 24.0.1
 
 ## 24.0.0
