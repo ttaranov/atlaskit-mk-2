@@ -1,5 +1,8 @@
 # @atlaskit/editor-test-helpers
 
+## 1.8.7
+- [patch] bump editor-common to 6.1.2 [bb7802e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7802e)
+
 ## 1.8.6
 - [patch] Allow macro provider to handle auto conversion during paste [b2c83f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b2c83f8)
 

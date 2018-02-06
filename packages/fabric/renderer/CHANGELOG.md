@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 11.4.1
+- [patch] bump editor-common to 6.1.2 [bb7802e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7802e)
+
 ## 11.4.0
 - [minor] Support mediaSingle [400ff24](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/400ff24)
 
