@@ -60,7 +60,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         tableSupported={true}
         tableHidden={false}
         editorView={editorView}
-        editorActions={editorActions}
         availableWrapperBlockTypes={
           blockTypePluginsSet[0].getState(editorView.state)
             .availableWrapperBlockTypes
@@ -79,7 +78,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const toolbarOption = mount(
       <ToolbarInsertBlock
         editorView={editorView}
-        editorActions={editorActions}
         buttons={5}
         isReducedSpacing={false}
       />,
@@ -99,7 +97,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         mentionsSupported={true}
         mentionsEnabled={false}
         editorView={editorView}
-        editorActions={editorActions}
         buttons={0}
         isReducedSpacing={false}
       />,
@@ -119,7 +116,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         emojiDisabled={false}
         emojiProvider={emojiProvider}
         editorView={editorView}
-        editorActions={editorActions}
         buttons={5}
         isReducedSpacing={false}
       />,
@@ -137,7 +133,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         emojiDisabled={false}
         emojiProvider={emojiProvider}
         editorView={editorView}
-        editorActions={editorActions}
         buttons={0}
         isReducedSpacing={false}
       />,
@@ -158,7 +153,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         emojiDisabled={false}
         emojiProvider={emojiProvider}
         editorView={editorView}
-        editorActions={editorActions}
         buttons={0}
         isReducedSpacing={false}
       />,
@@ -175,7 +169,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         mediaSupported={true}
         mediaUploadsEnabled={true}
         editorView={editorView}
-        editorActions={editorActions}
         buttons={5}
         isReducedSpacing={false}
       />,
@@ -193,7 +186,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         mediaUploadsEnabled={true}
         onShowMediaPicker={spy}
         editorView={editorView}
-        editorActions={editorActions}
         buttons={0}
         isReducedSpacing={false}
       />,
@@ -224,7 +216,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         }
         onInsertBlockType={spy}
         editorView={editorView}
-        editorActions={editorActions}
         buttons={0}
         isReducedSpacing={false}
       />,
@@ -258,7 +249,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         }
         onInsertBlockType={spy}
         editorView={editorView}
-        editorActions={editorActions}
         buttons={0}
         isReducedSpacing={false}
       />,
@@ -292,7 +282,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         }
         onInsertBlockType={spy}
         editorView={editorView}
-        editorActions={editorActions}
         buttons={0}
         isReducedSpacing={false}
       />,
@@ -317,7 +306,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         tableSupported={true}
         tableHidden={false}
         editorView={editorView}
-        editorActions={editorActions}
         buttons={0}
         isReducedSpacing={false}
       />,
@@ -346,7 +334,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         macroProvider={macroProvider}
         onInsertMacroFromMacroBrowser={() => insertMacroFromMacroBrowser}
         editorView={editorView}
-        editorActions={editorActions}
         buttons={0}
         isReducedSpacing={false}
       />,
@@ -396,7 +383,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
           tableSupported={true}
           tableHidden={false}
           editorView={editorView}
-          editorActions={editorActions}
           buttons={0}
           isReducedSpacing={false}
         />,
@@ -420,7 +406,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
             pluginStateBlockType.availableWrapperBlockTypes
           }
           editorView={editorView}
-          editorActions={editorActions}
           buttons={0}
           isReducedSpacing={false}
         />,

@@ -50,7 +50,7 @@ export interface Props {
   isReducedSpacing: boolean;
   isDisabled?: boolean;
   editorView: EditorView;
-  editorActions: EditorActions;
+  editorActions?: EditorActions;
   tableActive?: boolean;
   tableHidden?: boolean;
   tableSupported?: boolean;
