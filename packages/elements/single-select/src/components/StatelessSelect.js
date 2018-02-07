@@ -1,4 +1,5 @@
 // @flow
+import '@atlaskit/polyfills/array-prototype-find';
 import React, { PureComponent, type Node } from 'react';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import FieldBase, { Label } from '@atlaskit/field-base';
