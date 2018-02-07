@@ -395,7 +395,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       });
     }
 
-    if (insertMenuItems && insertMenuItems instanceof Array) {
+    if (insertMenuItems) {
       items = items.concat(insertMenuItems);
       // keeping this here for backwards compatibility so confluence
       // has time to implement this button before it disappears.
