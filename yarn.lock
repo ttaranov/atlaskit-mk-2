@@ -10626,9 +10626,9 @@ react-codesandboxer@^0.0.1:
   dependencies:
     codesandbox "^1.1.14"
 
-react-ctrl@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/react-ctrl/-/react-ctrl-0.1.2.tgz#4866eef1f07c73694c70707d35dbd20e4e743b5a"
+react-ctrl@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/react-ctrl/-/react-ctrl-0.2.0.tgz#4f049eff1492da07d0ca061e06652a524abf551d"
   dependencies:
     conartist "^0.15.1"
     nodent "^3.1.5"
