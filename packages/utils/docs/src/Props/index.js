@@ -68,7 +68,7 @@ const PageWrapper = ({
 );
 
 type PropTypeHeadingProps = {
-  name: string,
+  name: any,
   required: boolean,
   type: any,
   // This is probably giving up
