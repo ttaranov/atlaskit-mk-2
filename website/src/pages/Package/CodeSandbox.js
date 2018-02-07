@@ -77,8 +77,6 @@ export default class CodeSandbox extends Component<{}, {}> {
       }) {
         return (
           <CodeSandboxDeployer
-            skipDeploy
-            afterDeploy={all => console.log(all)}
             example={loadedExample}
             pkgJSON={pkgJSON}
             config={config({ extraFiles, extraImports })}

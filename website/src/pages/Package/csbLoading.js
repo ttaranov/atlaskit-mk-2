@@ -1,5 +1,14 @@
 import { parseFile, replaceImport } from 'react-codesandboxer';
 
+const getBBPath = (
+  path,
+  accountName = 'atlassian',
+  repoSlug = 'atlaskit-mk-2',
+  // NB: This can totally be a reference to a branch name, not just git hashes
+  revision = 'HEAD',
+) =>
+  `https://api.bitbucket.org/1.0/repositories/${accountName}/${repoSlug}/raw/${revision}/${path}`;
+
 const getFileFromBitBucket = (
   path,
   accountName = 'atlassian',
@@ -11,6 +20,29 @@ const getFileFromBitBucket = (
 
   return fetch(a);
 };
+
+/*
+This is modified from the canvase answer here: https://stackoverflow.com/questions/6150289/how-to-convert-image-into-base64-string-using-javascript
+*/
+
+function toDataURL2(src) {
+  return new Promise((resolve, reject) => {
+    var img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.src = getBBPath(src);
+
+    img.onload = function() {
+      var canvas = document.createElement('CANVAS');
+      var ctx = canvas.getContext('2d');
+      var dataURL;
+      canvas.height = this.naturalHeight;
+      canvas.width = this.naturalWidth;
+      ctx.drawImage(this, 0, 0);
+      dataURL = canvas.toDataURL();
+      resolve(dataURL);
+    };
+  });
+}
 
 const parseDependencies = (
   loadedExample,
@@ -41,13 +73,12 @@ const parseDependencies = (
           let segments = ['packages', groupId, packageId, 'examples', sourceA];
           let path = `${segments.join('/')}`;
 
-          getFileFromBitBucket(path).then(console.log);
-
-          // nonJSFiles.push(getFileFromBitBucket(path).then(content => ({
-          //   name: sourceA,
-          //   content,
-          // })))
-          // We have a file-type, may be an image or something
+          nonJSFiles.push(
+            toDataURL2(path).then(content => ({ name: sourceA, content })),
+          );
+          // This is a slight stop-gap that won't catch all files. We are assuming
+          // all imports are either .js or images
+          // TODO: Check the file type more carefully
         } else {
           // we will also need to handle json...
           sourceA += '.js';
@@ -66,7 +97,6 @@ const parseDependencies = (
               .then(content => parseFile(content, pkgJSON))
               .then(c => ({ ...c, name: sourceA })),
           );
-
           simpleImports = true;
         }
       }
