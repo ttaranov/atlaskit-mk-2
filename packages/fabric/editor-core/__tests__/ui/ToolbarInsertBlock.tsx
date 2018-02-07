@@ -346,6 +346,30 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     toolbarOption.unmount();
   });
 
+  it('should track placeholder insert event when "Add Placeholder Text" option is clicked', () => {
+    const { editorView } = editor(doc(p('text')));
+
+    const toolbarOption = mount(
+      <ToolbarInsertBlock
+        placeholderTextEnabled={true}
+        editorView={editorView}
+        buttons={0}
+        isReducedSpacing={false}
+      />,
+    );
+
+    toolbarOption.find(ToolbarButton).simulate('click');
+    const button = toolbarOption
+      .find(Item)
+      .filterWhere(n => n.text().indexOf('Placeholder Text') > -1);
+    button.simulate('click');
+
+    expect(trackEvent).toHaveBeenCalledWith(
+      'atlassian.editor.format.placeholder.button',
+    );
+    toolbarOption.unmount();
+  });
+
   describe('Options in insert toolbar', () => {
     it('should have table option if tableSupported is true', () => {
       const { editorView } = editor(doc(p('text')));
