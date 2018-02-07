@@ -32,6 +32,7 @@ type Props = {
 type State = {
   isOpen: boolean,
   value: string,
+  view: { month?: number, year?: number },
 };
 
 /*
@@ -72,6 +73,7 @@ class DatePicker extends Component<Props, State> {
   state = {
     isOpen: false,
     value: '',
+    view: {},
   };
 
   onKeyUp = (e: Event) => {
@@ -82,10 +84,15 @@ class DatePicker extends Component<Props, State> {
         value = format(parsed, 'YYYY-MM-DD');
       }
     }
-    this.onSelect({ iso: value });
+    this.setState({ view: {} });
+    this.onCalendarSelect({ iso: value });
   };
 
-  onSelect = ({ iso: value }: Object) => {
+  onCalendarChange = ({ month, year }: Object) => {
+    this.setState({ view: { month, year } });
+  };
+
+  onCalendarSelect = ({ iso: value }: Object) => {
     this.setState({ value });
     this.props.onChange(value);
   };
@@ -96,28 +103,29 @@ class DatePicker extends Component<Props, State> {
 
   render() {
     const { autoFocus, isDisabled, name } = this.props;
-    const { value } = this.state;
+    const { value, view } = this.state;
     const parsed = parse(value);
+
     let calendarProps = {};
     if (isValid(parsed)) {
-      const day = parsed.getDate();
-      const month = parsed.getMonth() + 1;
-      const year = parsed.getFullYear();
       calendarProps = {
-        day,
-        focused: day,
-        month,
+        focused: parsed.getDate(),
+        month: parsed.getMonth() + 1,
         selected: [value],
-        year,
+        year: parsed.getFullYear(),
       };
     }
+
     const Menu = () => (
       <Calendar
         {...calendarProps}
-        onSelect={this.onSelect}
+        {...view}
+        onChange={this.onCalendarChange}
+        onSelect={this.onCalendarSelect}
         ref={this.refCalendar}
       />
     );
+
     return (
       <div role="presentation" onKeyUp={this.onKeyUp}>
         <input name={name} type="hidden" value={value} />
