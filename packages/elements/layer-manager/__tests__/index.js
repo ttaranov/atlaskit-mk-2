@@ -14,11 +14,11 @@ function assertEqual(actual, expected) {
 }
 
 // NOTE: shim avoids noise in test logs
-// eslint-disable-next-line react/prop-types
 const Shim = ({
-  stackIndex,
-  stackTotal,
-  blockChildGatewayRender,
+  // eslint-disable-next-line react/prop-types
+  stackIndex, // eslint-disable-next-line react/prop-types
+  stackTotal, // eslint-disable-next-line react/prop-types
+  blockChildGatewayRender, // eslint-disable-next-line react/prop-types
   ...props
 }) => <span {...props} />;
 
