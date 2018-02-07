@@ -68,7 +68,7 @@ const PageWrapper = ({
 );
 
 type PropTypeHeadingProps = {
-  name: string,
+  name: any,
   required: boolean,
   type: any,
   // This is probably giving up
@@ -106,7 +106,7 @@ function PropTypeHeading(props: PropTypeHeadingProps) {
   return (
     <Heading>
       <code>
-        <HeadingName>{props.name}</HeadingName>
+        <HeadingName>{convert(props.name)}</HeadingName>
         <HeadingType>{typeName}</HeadingType>
         {defaultValue && <HeadingDefault> = {defaultValue}</HeadingDefault>}
         {props.required ? <HeadingRequired> required</HeadingRequired> : null}
@@ -194,7 +194,7 @@ export default function DynamicProps(props: DynamicPropsProps) {
           return null;
         }
         return (
-          <PropTypeWrapper key={propType.key}>
+          <PropTypeWrapper key={convert(propType.key)}>
             <PropTypeHeading
               name={propType.key}
               required={!propType.optional}
