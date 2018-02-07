@@ -41,7 +41,6 @@
     "prop-types": "^15.5.10",
     "raf-schd": "^2.1.0",
     "react-transition-group": "^2.2.1",
-    "sinon": "^4.2.2",
     "styled-components": "^1.4.6"
   },
   "peerDependencies": {
@@ -66,6 +65,7 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "recompose": "^0.26.0",
+    "sinon": "^2.2.0",
     "source-trace": "^2.0.0"
   }
 }
