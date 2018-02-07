@@ -3,7 +3,9 @@ import React, { PureComponent } from 'react';
 import { mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import ContainerNavigationNested from '../src/components/js/nested/ContainerNavigationNested';
-import { getAnimation } from '../src/components/styled/NestedNavigationPage';
+import NestedNavigationPage, {
+  getAnimation,
+} from '../src/components/styled/NestedNavigationPage';
 
 configure({ adapter: new Adapter() });
 
@@ -51,9 +53,7 @@ describe('Nested Navigation', () => {
       const stack = [page, ...wrapper.state().stack];
       wrapper.setProps({ stack });
       wrapper.update();
-      expect(
-        wrapper.find(ContainerNavigationNestedPage).children().length,
-      ).toBe(2);
+      expect(wrapper.find(NestedNavigationPage).children().length).toBe(2);
     });
 
     it('should not have an animation rule while not transitioning', () => {
