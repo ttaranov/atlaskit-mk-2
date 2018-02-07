@@ -2716,9 +2716,13 @@ boom@5.x.x:
   dependencies:
     hoek "4.x.x"
 
-bowser@^1.0.0, bowser@^1.7.3:
+bowser@^1.0.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/bowser/-/bowser-1.8.0.tgz#889d46ac922ec5db8297672747362ef836781ba7"
+
+bowser@^1.7.3:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/bowser/-/bowser-1.9.1.tgz#f86ef2132e8cb10b3eb6ea5af018758c587020db"
 
 boxen@^0.3.1:
   version "0.3.1"
@@ -10786,9 +10790,9 @@ react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react-select@2.0.0-alpha.2:
-  version "2.0.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.2.tgz#550729892049fa11fbfe828622f50c7504042402"
+react-select@2.0.0-alpha.4:
+  version "2.0.0-alpha.4"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.4.tgz#76b93a5ac3f46a1def719783d47e38b4f7d2b1c3"
   dependencies:
     classnames "^2.2.5"
     glam "^5.0.1"

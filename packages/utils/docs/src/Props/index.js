@@ -85,11 +85,13 @@ function PropTypeHeading(props: PropTypeHeadingProps) {
   if (typeName === 'nullable') {
     typeName = `?${props.type.arguments.kind}`;
   } else if (typeName === 'union') {
-    typeName = 'set options';
+    typeName = 'union';
   } else if (typeName === 'generic') {
     const r = resolveFromGeneric(props.type);
     if (r.kind === 'external') {
       typeName = `${r.moduleSpecifier}.${r.name}`;
+    } else if (r.kind === 'null') {
+      typeName = r.kind;
     } else {
       typeName = r.kind;
     }

@@ -204,7 +204,6 @@ describe(name, () => {
             .catch(() => {});
         });
 
-        // tslint:disable-next-line:no-only-tests
         it('should not resolve when some media operations are pending', async () => {
           stateManager.updateState(testTempFileId, {
             id: testTempFileId,
@@ -260,11 +259,14 @@ describe(name, () => {
             { id: testTempFileId, status: 'uploading' },
           ]);
 
-          stateManager.updateState(testTempFileId, {
-            status: 'ready',
-            id: testTempFileId,
-            publicId: testPubFileId,
-          });
+          // To simulate async behavior, trigger ready on next tick
+          setTimeout(() => {
+            stateManager.updateState(testTempFileId, {
+              status: 'ready',
+              id: testTempFileId,
+              publicId: testPubFileId,
+            });
+          }, 0);
 
           const value = (await editorActions.getValue()) as any;
 

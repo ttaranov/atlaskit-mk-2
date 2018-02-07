@@ -1,25 +1,29 @@
 import { Node } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
+
 import {
   stateKey as mediaStateKey,
   MediaPluginState,
 } from '../../plugins/media';
 
 export async function getEditorValueWithMedia(
-  editorState?: EditorState,
+  editorView?: EditorView,
 ): Promise<Node | undefined> {
-  if (!editorState) {
+  if (!editorView) {
     return;
   }
 
+  const { state } = editorView;
+
   const mediaPluginState =
-    editorState && (mediaStateKey.getState(editorState) as MediaPluginState);
+    state && (mediaStateKey.getState(state) as MediaPluginState);
 
   if (mediaPluginState && mediaPluginState.waitForMediaUpload) {
     await mediaPluginState.waitForPendingTasks();
   }
 
-  return editorState.doc;
+  return editorView.state.doc;
 }
 
 export function insertFileFromDataUrl(
