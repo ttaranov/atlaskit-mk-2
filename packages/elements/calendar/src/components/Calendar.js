@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
+import withCtrl from 'react-ctrl';
 import CalendarStateless from './CalendarStateless';
 
 import type { EventChange, EventSelect } from '../types';
@@ -14,9 +15,7 @@ type State = EventChange & {
   selected: Array<string>,
 };
 
-export default class Calendar extends Component<Props, State> {
-  props: Props;
-  state: State;
+class Calendar extends Component<Props, State> {
   calendar: any;
 
   static defaultProps = {
@@ -81,3 +80,5 @@ export default class Calendar extends Component<Props, State> {
     );
   }
 }
+
+export default withCtrl(Calendar);

@@ -1,10 +1,11 @@
 // @flow
 
-import React, { Component, type ElementRef } from 'react';
+import Calendar from '@atlaskit/calendar';
+import Select from '@atlaskit/select';
+import { format, isValid, parse } from 'date-fns';
+import React, { Component } from 'react';
 import withCtrl from 'react-ctrl';
-import DatePickerStateless from './DatePickerStateless';
 import type { Event, Handler } from '../types';
-import { formatDate, parseDate } from '../util';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
@@ -20,6 +21,8 @@ type Props = {
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
   isOpen?: boolean,
+  /** The name of the field. */
+  name?: string,
   /** Called when the value changes. The only argument is an ISO time. */
   onChange: Handler,
   /** The ISO time that should be used as the input value. */
@@ -33,14 +36,18 @@ type State = {
   value: string,
 };
 
-function parse(date: string): string {
-  const parsed = parseDate(date);
-  return parsed ? parsed.value : '';
-}
+/*
+
+TODO
+
+- Navigate the calendar when keys are pressed while maintaining focus on the input.
+- ReactSelect needs a way to control the open / closed state of the dropdown.
+- ReactSelect needs a way to control the value of the input.
+- ReactSelect's onInputChange fires onKeyDown as opposed to onKeyUp meaning the value that comes back isn't what's in the input.
+
+*/
 
 class DatePicker extends Component<Props, State> {
-  datepicker: ?ElementRef<typeof DatePickerStateless>;
-
   static defaultProps = {
     autoFocus: false,
     disabled: [],
@@ -54,92 +61,57 @@ class DatePicker extends Component<Props, State> {
     value: '',
   };
 
-  handleFieldBlur = (e: Event) => {
-    const parsed = parse(e.target.value);
-    if (parsed) {
-      this.props.onChange(parsed);
+  onKeyUp = (e: Event) => {
+    let value = e.target.value;
+    if (value) {
+      const parsed = parse(value);
+      if (isValid(parsed)) {
+        value = format(parsed, 'YYYY-MM-DD');
+      }
     }
+    this.onUpdate(value);
   };
 
-  handleFieldChange = (e: Event) => {
-    const { value } = e.target;
-    this.props.onChange(value);
+  onUpdate = (value: string) => {
     this.setState({ value });
+    this.props.onChange(value);
   };
-
-  handleFieldTriggerOpen = () => {
-    this.setState({ isOpen: true });
-  };
-
-  handleFieldTriggerValidate = () => {
-    this.validate(this.state.value);
-  };
-
-  handleIconClick = () => {
-    if (this.state.isOpen) {
-      this.setState({ isOpen: false });
-      this.selectField();
-    } else {
-      this.setState({ isOpen: true });
-    }
-  };
-
-  handlePickerBlur = () => {
-    this.setState({ isOpen: false });
-  };
-
-  handlePickerTriggerClose = () => {
-    this.setState({ isOpen: false });
-    this.selectField();
-  };
-
-  handlePickerUpdate = (value: string) => {
-    const parsed = parse(value);
-    if (parsed) {
-      this.setState({ isOpen: false, value: parsed });
-      this.props.onChange(parsed);
-      this.selectField();
-    }
-  };
-
-  selectField() {
-    if (this.datepicker) {
-      this.datepicker.selectField();
-    }
-  }
-
-  // TODO: Check that the date is not disabled.
-  // TODO: Display error message for invalid date.
-  validate(value: string) {
-    const parsed = parse(value);
-    this.setState({ value: parsed });
-    this.props.onChange(parsed);
-  }
 
   render() {
-    const { isOpen, value } = this.state;
+    const { autoFocus, isDisabled, name } = this.props;
+    const { value } = this.state;
+    const parsed = parse(value);
+    let calendarProps = {};
+    if (isValid(parsed)) {
+      const day = parsed.getDate();
+      const month = parsed.getMonth() + 1;
+      const year = parsed.getFullYear();
+      calendarProps = {
+        day,
+        focused: day,
+        month,
+        selected: [value],
+        year,
+      };
+    }
+    const Menu = () => <Calendar {...calendarProps} onUpdate={this.onUpdate} />;
     return (
-      <DatePickerStateless
-        autoFocus={this.props.autoFocus}
-        isDisabled={this.props.isDisabled}
-        isOpen={isOpen}
-        shouldShowIcon
-        displayValue={formatDate(value)}
-        value={value}
-        disabled={this.props.disabled}
-        width={this.props.width}
-        onFieldBlur={this.handleFieldBlur}
-        onFieldChange={this.handleFieldChange}
-        onFieldTriggerOpen={this.handleFieldTriggerOpen}
-        onFieldTriggerValidate={this.handleFieldTriggerValidate}
-        onIconClick={this.handleIconClick}
-        onPickerBlur={this.handlePickerBlur}
-        onPickerTriggerClose={this.handlePickerTriggerClose}
-        onPickerUpdate={this.handlePickerUpdate}
-        ref={ref => {
-          this.datepicker = ref;
-        }}
-      />
+      <div role="presentation" onKeyUp={this.onKeyUp}>
+        <input name={name} type="hidden" value={value} />
+        {/* $FlowFixMe - complaining about required args that aren't required. */}
+        <Select
+          autoFocus={autoFocus}
+          components={{ Menu }}
+          isDisabled={isDisabled}
+          placeholder="e.g. 2018/12/31"
+          value={
+            value && {
+              label: format(parsed, 'YYYY/MM/DD'),
+              value,
+            }
+          }
+        />
+      </div>
     );
   }
 }

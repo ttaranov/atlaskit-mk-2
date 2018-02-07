@@ -51,7 +51,7 @@ type Props = {
   /** The time in the dropdown that should be focused. */
   focused?: string,
   /** The name of the field. */
-  name: string,
+  name?: string,
   /** Called when the value changes. The first argument is an ISO date and the second is an ISO time. */
   onChange: (date: ?string, time: ?string) => void,
   /** The times to show in the dropdown. */

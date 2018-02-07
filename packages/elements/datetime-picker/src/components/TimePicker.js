@@ -52,7 +52,7 @@ type Props = {
   /** The time in the dropdown that should be focused. */
   // focused?: string,
   /** The name of the field. */
-  name: string,
+  name?: string,
   /** Called when the value changes. The only argument is an ISO time. */
   onChange: Handler,
   /** The times to show in the dropdown. */
