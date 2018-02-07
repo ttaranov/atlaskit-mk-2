@@ -88,7 +88,7 @@ describe(name, () => {
         );
         expect(dispatchSpy).toHaveBeenCalled();
         expect(dispatchSpy.mock.calls[0][0].getMeta(pluginKey)).toEqual({
-          showInsertPanelAt: false,
+          showInsertPanelAt: null,
         });
       });
     });
@@ -113,13 +113,13 @@ describe(name, () => {
     });
 
     describe('hidePlaceholderFloatingToolbar', () => {
-      it('should set the `showInsertPanelAt` meta value to false', () => {
+      it('should set the `showInsertPanelAt` meta value to null', () => {
         const { editorView } = editor(doc(p('hello{<>}')));
         const dispatchSpy = jest.spyOn(editorView, 'dispatch');
         hidePlaceholderFloatingToolbar(editorView.state, editorView.dispatch);
         expect(dispatchSpy).toHaveBeenCalled();
         expect(dispatchSpy.mock.calls[0][0].getMeta(pluginKey)).toEqual({
-          showInsertPanelAt: false,
+          showInsertPanelAt: null,
         });
       });
     });

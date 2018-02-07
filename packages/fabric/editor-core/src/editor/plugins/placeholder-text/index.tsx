@@ -16,19 +16,21 @@ import {
 export const pluginKey = new PluginKey('placeholderTextPlugin');
 
 export interface PluginState {
-  showInsertPanelAt: number | false;
+  showInsertPanelAt: number | null;
 }
 
-export function createPlugin(dispatch: Dispatch): Plugin | undefined {
+export function createPlugin(
+  dispatch: Dispatch<PluginState>,
+): Plugin | undefined {
   return new Plugin({
     key: pluginKey,
     state: {
-      init: () => ({ showInsertPanelAt: false } as PluginState),
+      init: () => ({ showInsertPanelAt: null } as PluginState),
       apply: (tr: Transaction, state: PluginState) => {
-        const meta = tr.getMeta(pluginKey) as PluginState;
-        if (meta) {
+        const meta = tr.getMeta(pluginKey) as Partial<PluginState>;
+        if (meta && meta.showInsertPanelAt !== undefined) {
           const newState = {
-            showInsertPanelAt: meta.showInsertPanelAt || false,
+            showInsertPanelAt: meta.showInsertPanelAt,
           };
           dispatch(pluginKey, newState);
           return newState;
