@@ -85,7 +85,8 @@ describe('media - keymaps', () => {
   });
 
   describe('Shift-Enter keypress', () => {
-    it('splits media group', () => {
+    // Wait for ED-3741 to refactor
+    it.skip('splits media group', () => {
       const { editorView, pluginState } = editor(doc(p('{<>}')));
       const splitMediaGroupSpy = jest.spyOn(pluginState, 'splitMediaGroup');
 

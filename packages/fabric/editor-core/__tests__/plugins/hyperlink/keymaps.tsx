@@ -12,6 +12,7 @@ import {
   sendKeyToPm,
   em,
   code,
+  hardBreak,
 } from '@atlaskit/editor-test-helpers';
 import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 import textFormatting from '../../../src/editor/plugins/text-formatting';
@@ -126,6 +127,7 @@ describe('hyperlink - keymap', () => {
           p(
             'hello ',
             link({ href: 'http://www.atlassian.com' })('www.atlassian.com'),
+            hardBreak(),
           ),
         ),
       );

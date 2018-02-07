@@ -27,7 +27,9 @@ const blockType: EditorPlugin = {
     return [
       { rank: 500, plugin: () => plugin },
       { rank: 510, plugin: ({ schema }) => inputRulePlugin(schema) },
-      { rank: 9990, plugin: ({ schema }) => keymapPlugin(schema) },
+      // Needs to be lower priority than prosemirror-tables.tableEditing
+      // plugin as it is currently swallowing right/down arrow events inside tables
+      { rank: 925, plugin: ({ schema }) => keymapPlugin(schema) },
     ];
   },
 
