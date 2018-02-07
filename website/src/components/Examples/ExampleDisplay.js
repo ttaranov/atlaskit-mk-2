@@ -1,10 +1,21 @@
-import React from 'react';
+// @flow
+import React, { type ComponentType } from 'react';
 import styled from 'styled-components';
 import Loadable from 'react-loadable';
 import Loading from '../Loading';
 import CodeBlock from '../Code';
 
-export default props => {
+type Props = {
+  src: string,
+  example: {
+    contents: Function,
+    exports: Function,
+  },
+  displayCode: boolean,
+  render: (ComponentType<any>, ComponentType<any>, boolean) => any,
+};
+
+export default (props: Props) => {
   const ExampleCode = Loadable({
     loader: () => props.example.contents(),
     loading: Loading,
@@ -21,7 +32,7 @@ export default props => {
         border: 'none',
       }}
       scrolling="none"
-      src={`http://localhost:9001/${props.src}`}
+      src={props.src}
     />
   );
 
