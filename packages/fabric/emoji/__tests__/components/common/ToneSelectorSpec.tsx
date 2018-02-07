@@ -1,6 +1,6 @@
 import * as sinon from 'sinon';
 import * as React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import { expect } from 'chai';
 
 import ToneSelector from '../../../src/components/common/ToneSelector';

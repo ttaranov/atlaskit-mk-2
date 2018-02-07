@@ -468,7 +468,7 @@ describe('<EmojiPicker />', () => {
       const fileChooser = component.find(FileChooser);
       const fileOnChange = fileChooser.prop('onChange');
       expect(fileOnChange).toBeDefined();
-      fileOnChange({
+      fileOnChange!({
         target: {
           files: [createPngFile()],
         },
@@ -590,7 +590,7 @@ describe('<EmojiPicker />', () => {
       const fileChooser = component.find(FileChooser);
       const fileOnChange = fileChooser.prop('onChange');
       expect(fileOnChange).toBeDefined();
-      fileOnChange({
+      fileOnChange!({
         target: {
           files: [createPngFile()],
         },
@@ -697,7 +697,7 @@ describe('<EmojiPicker />', () => {
       const fileChooser = component.find(FileChooser);
       const fileOnChange = fileChooser.prop('onChange');
       expect(fileOnChange).toBeDefined();
-      fileOnChange({
+      fileOnChange!({
         target: {
           files: [createPngFile()],
         },
@@ -791,7 +791,7 @@ describe('<EmojiPicker />', () => {
       const fileChooser = component.find(FileChooser);
       const fileOnChange = fileChooser.prop('onChange');
       expect(fileOnChange).toBeDefined();
-      fileOnChange({
+      fileOnChange!({
         target: {
           files: [createPngFile()],
         },
