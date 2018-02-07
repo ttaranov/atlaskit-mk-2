@@ -38,6 +38,8 @@ type State = {
 
 TODO
 
+- Figure out why calendar is clearing the value on escape when the value isn't changing.
+- Calendar needs a way to pass keyboard events to it when not focused (and possibly return if it wasn't handled).
 - DateTime picker should force 50% width of flex children.
 - Navigate the calendar when keys are pressed while maintaining focus on the input.
 - ReactSelect needs a way to control the open / closed state of the dropdown.
@@ -47,7 +49,16 @@ TODO
 
 */
 
+const arrowKeys = {
+  ArrowDown: 'down',
+  ArrowLeft: 'left',
+  ArrowRight: 'right',
+  ArrowUp: 'up',
+};
+
 class DatePicker extends Component<Props, State> {
+  calendar: Calendar;
+
   static defaultProps = {
     autoFocus: false,
     disabled: [],
@@ -69,12 +80,16 @@ class DatePicker extends Component<Props, State> {
         value = format(parsed, 'YYYY-MM-DD');
       }
     }
-    this.onUpdate(value);
+    this.onSelect({ iso: value });
   };
 
-  onUpdate = (value: string) => {
+  onSelect = ({ iso: value }: Object) => {
     this.setState({ value });
     this.props.onChange(value);
+  };
+
+  refCalendar = e => {
+    this.calendar = e;
   };
 
   render() {
@@ -94,7 +109,13 @@ class DatePicker extends Component<Props, State> {
         year,
       };
     }
-    const Menu = () => <Calendar {...calendarProps} onUpdate={this.onUpdate} />;
+    const Menu = () => (
+      <Calendar
+        {...calendarProps}
+        onSelect={this.onSelect}
+        ref={this.refCalendar}
+      />
+    );
     return (
       <div role="presentation" onKeyUp={this.onKeyUp}>
         <input name={name} type="hidden" value={value} />
