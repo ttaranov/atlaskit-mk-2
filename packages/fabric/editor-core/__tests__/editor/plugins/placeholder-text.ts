@@ -7,6 +7,7 @@ import {
   showPlaceholderFloatingToolbar,
   hidePlaceholderFloatingToolbar,
 } from '../../../src/editor/plugins/placeholder-text/actions';
+import { FakeTextCursorSelection } from '../../../src/editor/plugins/fake-text-cursor/cursor';
 import {
   createEditor,
   doc,
@@ -110,6 +111,14 @@ describe(name, () => {
         showPlaceholderFloatingToolbar(editorView.state, editorView.dispatch);
         expect(editorView.state.doc).toEqualDocument(doc(p('hel{<>}')));
       });
+
+      it('should show the Fake Text Cursor when inserting placeholder text ', () => {
+        const { editorView } = editor(doc(p('hello{<>}')));
+        showPlaceholderFloatingToolbar(editorView.state, editorView.dispatch);
+        expect(editorView.state.selection).toBeInstanceOf(
+          FakeTextCursorSelection,
+        );
+      });
     });
 
     describe('hidePlaceholderFloatingToolbar', () => {
@@ -121,6 +130,17 @@ describe(name, () => {
         expect(dispatchSpy.mock.calls[0][0].getMeta(pluginKey)).toEqual({
           showInsertPanelAt: null,
         });
+      });
+
+      it('should remove the show the Fake Text Cursor when inserting placeholder text ', () => {
+        const { editorView } = editor(doc(p('hello{<>}')));
+        showPlaceholderFloatingToolbar(editorView.state, editorView.dispatch);
+        expect(editorView.state.selection).toBeInstanceOf(
+          FakeTextCursorSelection,
+        );
+
+        hidePlaceholderFloatingToolbar(editorView.state, editorView.dispatch);
+        expect(editorView.state.selection).toBeInstanceOf(Selection);
       });
     });
   });

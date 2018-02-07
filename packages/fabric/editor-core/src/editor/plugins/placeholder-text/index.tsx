@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { Plugin, NodeSelection, Transaction } from 'prosemirror-state';
+import {
+  Plugin,
+  NodeSelection,
+  Transaction,
+  TextSelection,
+} from 'prosemirror-state';
 import { PluginKey } from 'prosemirror-state';
 import { placeholder } from '@atlaskit/editor-common';
 import PlaceholderTextNodeView from '../../../nodeviews/ui/placeholder-text';
@@ -12,6 +17,7 @@ import {
   hidePlaceholderFloatingToolbar,
   insertPlaceholderTextAtSelection,
 } from './actions';
+import { FakeTextCursorSelection } from '../fake-text-cursor/cursor';
 
 export const pluginKey = new PluginKey('placeholderTextPlugin');
 
@@ -75,6 +81,26 @@ export function createPlugin(
             );
             return newState.tr.deleteRange($from.pos, $to.pos);
           }
+        }
+      }
+
+      // Handle Fake Text Cursor for Floating Toolbar
+      if (
+        !(pluginKey.getState(oldState) as PluginState).showInsertPanelAt &&
+        (pluginKey.getState(newState) as PluginState).showInsertPanelAt
+      ) {
+        return newState.tr.setSelection(
+          new FakeTextCursorSelection(newState.selection.$from),
+        );
+      }
+      if (
+        (pluginKey.getState(oldState) as PluginState).showInsertPanelAt &&
+        !(pluginKey.getState(newState) as PluginState).showInsertPanelAt
+      ) {
+        if (newState.selection instanceof FakeTextCursorSelection) {
+          return newState.tr.setSelection(
+            new TextSelection(newState.selection.$from),
+          );
         }
       }
     },
