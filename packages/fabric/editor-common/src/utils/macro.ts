@@ -5,7 +5,7 @@ export interface Params {
   type: 'image' | 'icon';
 }
 
-export const getPlaceholderData = ({
+export const getExtensionLozengeData = ({
   node,
   type,
 }: Params): { url: string; width?: number; height?: number } | undefined => {

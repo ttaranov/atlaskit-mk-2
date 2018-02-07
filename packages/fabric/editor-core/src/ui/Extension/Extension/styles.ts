@@ -10,11 +10,6 @@ export const Header = styled.div`
   cursor: pointer;
   padding: ${padding / 2}px ${padding / 2}px ${padding / 4}px;
   vertical-align: middle;
-
-  img {
-    height: 24px;
-    padding: ${padding / 2}px;
-  }
 `;
 
 // tslint:disable-next-line:variable-name

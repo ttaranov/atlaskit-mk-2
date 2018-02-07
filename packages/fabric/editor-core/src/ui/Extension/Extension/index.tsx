@@ -4,7 +4,7 @@ import { Node as PmNode } from 'prosemirror-model';
 import { MacroProvider } from '../../../editor/plugins/macro';
 import { Wrapper, Header, Content, ContentWrapper } from './styles';
 import { Overlay } from '../styles';
-import Placeholder from '../Placeholder';
+import ExtensionLozenge from '../Lozenge';
 
 export interface Props {
   node: PmNode;
@@ -29,7 +29,7 @@ export default class Extension extends Component<Props, any> {
       <Wrapper onClick={onClick} className={hasBody ? '' : 'with-overlay'}>
         <Overlay className="extension-overlay" />
         <Header contentEditable={false} onClick={onSelectExtension}>
-          <Placeholder node={node} />
+          <ExtensionLozenge node={node} />
         </Header>
         {hasBody && (
           <ContentWrapper>

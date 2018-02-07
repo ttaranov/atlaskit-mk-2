@@ -52,6 +52,32 @@ export const inlineExtensionData = [
       },
     },
   },
+  {
+    type: 'inlineExtension' as ExtensionType,
+    attrs: {
+      extensionType: 'com.atlassian.confluence.macro.core',
+      extensionKey: 'status',
+      parameters: {
+        macroParams: {
+          color: { value: 'Grey' },
+          title: { value: 'Medium' },
+          subtle: { value: true },
+        },
+        macroMetadata: {
+          macroId: { value: new Date().valueOf() },
+          placeholder: [
+            {
+              data: {
+                url:
+                  '//pug.jira-dev.com/wiki/download/resources/com.atlassian.confluence.plugins.status-macro/images/status-icon.png',
+              },
+              type: 'icon',
+            },
+          ],
+        },
+      },
+    },
+  },
 ];
 
 export const extensionData = [

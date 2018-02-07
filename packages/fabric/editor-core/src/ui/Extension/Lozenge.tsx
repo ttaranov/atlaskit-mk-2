@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Node as PmNode } from 'prosemirror-model';
 import EditorFileIcon from '@atlaskit/icon/glyph/editor/file';
-import { getPlaceholderData } from '@atlaskit/editor-common';
+import { getExtensionLozengeData } from '@atlaskit/editor-common';
 import { PlaceholderFallback, PlaceholderFallbackParams } from './styles';
 import { capitalizeFirstLetter } from './utils';
 
@@ -10,46 +10,44 @@ export interface Props {
   node: PmNode;
 }
 
-interface PlaceholderData {
+interface LozengeData {
   url: string;
   height?: number;
   width?: number;
 }
 
-const ICON_SIZE = 24;
+export const ICON_SIZE = 24;
 
-export default class Placeholder extends Component<Props, any> {
+export default class ExtensionLozenge extends Component<Props, any> {
   render() {
     const { node } = this.props;
 
-    // TODO: handle other extension types to get "placeholderUrl"
-    const placeholderImageData = getPlaceholderData({ node, type: 'image' });
-    const placeholderIconData = getPlaceholderData({ node, type: 'icon' });
-
-    if (placeholderImageData) {
-      return this.renderPlaceholder(placeholderImageData);
+    const imageData = getExtensionLozengeData({ node, type: 'image' });
+    if (imageData) {
+      return this.renderImage(imageData);
     }
 
-    return this.renderPlaceholderFallback(placeholderIconData);
+    const iconData = getExtensionLozengeData({ node, type: 'icon' });
+    return this.renderFallback(iconData);
   }
 
-  private renderPlaceholder(placeholderData: PlaceholderData) {
+  private renderImage(lozengeData: LozengeData) {
     const { extensionKey } = this.props.node.attrs;
-    const { url, ...rest } = placeholderData;
+    const { url, ...rest } = lozengeData;
     return <img src={url} {...rest} alt={extensionKey} />;
   }
 
-  private renderPlaceholderFallback = (placeholderData?: PlaceholderData) => {
+  private renderFallback(lozengeData?: LozengeData) {
     const { parameters, extensionKey } = this.props.node.attrs;
     const params = parameters && parameters.macroParams;
 
     return (
       <PlaceholderFallback>
-        {placeholderData ? (
-          this.renderPlaceholder({
+        {lozengeData ? (
+          this.renderImage({
             height: ICON_SIZE,
             width: ICON_SIZE,
-            ...placeholderData,
+            ...lozengeData,
           })
         ) : (
           <EditorFileIcon label={extensionKey} />
@@ -62,5 +60,5 @@ export default class Placeholder extends Component<Props, any> {
         )}
       </PlaceholderFallback>
     );
-  };
+  }
 }

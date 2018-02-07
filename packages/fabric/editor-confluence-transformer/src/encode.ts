@@ -2,7 +2,7 @@ import {
   MediaAttributes,
   getEmojiAcName,
   hexToRgb,
-  getPlaceholderData,
+  getExtensionLozengeData,
   getMacroId,
   MediaSingleAttributes,
   timestampToIso,
@@ -438,7 +438,7 @@ export default function encode(node: PMNode, schema: Schema) {
         elem.appendChild(encodeMacroParams(doc, macroParams));
       }
 
-      const placeholderData = getPlaceholderData({ node, type: 'image' });
+      const placeholderData = getExtensionLozengeData({ node, type: 'image' });
       if (placeholderData) {
         const placeholder = doc.createElementNS(
           FAB_XMLNS,
