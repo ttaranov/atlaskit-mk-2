@@ -1,10 +1,10 @@
 // @flow
 
 import Select from '@atlaskit/select';
+import { format, isValid, parse } from 'date-fns';
 import React, { Component } from 'react';
 import withCtrl from 'react-ctrl';
 import type { Handler } from '../types';
-import { formatTime } from '../util';
 
 const defaultTimes = [
   '09:00',
@@ -64,6 +64,16 @@ type State = {
   times: Array<string>,
   value: string,
 };
+
+function dateFromTime(time: string): Date {
+  const [h, m] = time.match(/(\d\d):(\d\d)/) || [];
+  return h && m ? parse(`0000-00-00T${h}:${m}`) : new Date('invalid date');
+}
+
+function formatTime(time: string): string {
+  const date = dateFromTime(time);
+  return isValid(date) ? format(date, 'h:mma') : time;
+}
 
 class TimePicker extends Component<Props, State> {
   static defaultProps = {

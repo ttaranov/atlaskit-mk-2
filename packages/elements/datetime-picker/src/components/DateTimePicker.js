@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import withCtrl from 'react-ctrl';
 import styled from 'styled-components';
 import { format, parse } from 'date-fns';
-
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
 
