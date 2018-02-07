@@ -55,7 +55,7 @@ const errorRecentSearchProvider: RecentSearchProvider = {
 
 const noResultsCrossProductSearchProvider: CrossProductSearchProvider = {
   search(query: string) {
-    return Promise.resolve({ jira: [], confluence: [] });
+    return Promise.resolve({ jiraIssues: [], confluencePages: [] });
   },
 };
 

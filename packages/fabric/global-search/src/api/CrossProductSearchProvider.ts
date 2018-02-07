@@ -1,22 +1,35 @@
 import { Result, ResultType } from '../model/Result';
 import makeRequest from './makeRequest';
 
+export enum Scope {
+  ConfluencePage = 'confluence.page',
+  JiraIssue = 'jira.issue',
+}
+
 export interface CrossProductResults {
   jira: Result[];
   confluence: Result[];
 }
 
-export interface SearchItemsResponse {
-  data: SearchItem[];
+export interface CrossProductSearchResponse {
+  scopes: ScopeResult[];
 }
 
-export interface SearchItem {
-  objectId: string;
-  name: string;
-  iconUrl: string;
-  container: string;
+export type SearchItem = ConfluenceItem;
+
+export interface ConfluenceItem {
+  title: string;
   url: string;
-  provider: string;
+  iconCssClass: string;
+  container: {
+    title: string;
+  };
+}
+
+export interface ScopeResult {
+  id: Scope;
+  error?: string;
+  results: SearchItem[];
 }
 
 export interface CrossProductSearchProvider {
@@ -33,41 +46,65 @@ export default class CrossProductSearchProviderImpl
     this.cloudId = cloudId;
   }
 
-  // TODO replace with real xpsearch backend
   public async search(query: string): Promise<CrossProductResults> {
-    const response: SearchItemsResponse = await makeRequest(
+    const body = {
+      query: query,
+      cloudId: this.cloudId,
+      limit: 5,
+      scopes: [Scope.JiraIssue, Scope.ConfluencePage],
+    };
+
+    const response: CrossProductSearchResponse = await makeRequest(
       this.url,
-      `/api/search?q=${encodeURIComponent(query)}`,
+      '/quicksearch/v1',
+      {
+        method: 'POST',
+        body: JSON.stringify(body),
+      },
     );
 
     const jiraResults: Result[] = [];
     const confResults: Result[] = [];
 
-    response.data.forEach(searchItem => {
-      const result = searchItemToResult(searchItem);
-      if (searchItem.provider === 'jira') {
-        jiraResults.push(result);
-      }
+    response.scopes.forEach(scope => {
+      const results = scope.results.map(searchItemToResult);
 
-      if (searchItem.provider === 'confluence') {
-        confResults.push(result);
+      if (scope.id === Scope.ConfluencePage) {
+        confResults.push(...results);
+      } else if (scope.id === Scope.JiraIssue) {
+        jiraResults.push(...results);
+      } else {
+        throw new Error('Unknown scope id: ' + scope.id);
       }
     });
 
-    return Promise.resolve({
+    return {
       jira: jiraResults,
       confluence: confResults,
-    });
+    };
   }
 }
 
-function searchItemToResult(searchItem: SearchItem): Result {
+// TODO need real icons
+export function getConfluenceAvatarUrl(iconCssClass: string) {
+  if (iconCssClass.indexOf('blogpost') > -1) {
+    return 'https://home.useast.atlassian.io/confluence-blogpost-icon.svg';
+  } else {
+    return 'https://home.useast.atlassian.io/confluence-page-icon.svg';
+  }
+}
+
+export function removeHighlightTags(text: string) {
+  return text.replace(/@@@hl@@@|@@@endhl@@@/g, '');
+}
+
+function searchItemToResult(searchItem: ConfluenceItem): Result {
   return {
     type: ResultType.Object,
-    resultId: 'search-' + searchItem.objectId,
-    avatarUrl: searchItem.iconUrl,
-    name: searchItem.name,
+    resultId: 'search-' + searchItem.url,
+    avatarUrl: getConfluenceAvatarUrl(searchItem.iconCssClass),
+    name: removeHighlightTags(searchItem.title),
     href: searchItem.url,
-    containerName: searchItem.container,
+    containerName: searchItem.container.title,
   };
 }

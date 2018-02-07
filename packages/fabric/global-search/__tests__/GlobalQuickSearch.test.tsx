@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import * as React from 'react';
 import GlobalQuickSearch, { Props } from '../src/components/GlobalQuickSearch';
 import { AkQuickSearch } from '@atlaskit/navigation';
@@ -19,7 +19,7 @@ function render(partialProps: Partial<Props>) {
     ...partialProps,
   };
 
-  return mount<Props>(<GlobalQuickSearch {...props} />);
+  return shallow<Props>(<GlobalQuickSearch {...props} />);
 }
 
 describe('GlobalQuickSearch', () => {

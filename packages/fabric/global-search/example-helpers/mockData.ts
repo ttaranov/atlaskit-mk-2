@@ -4,6 +4,16 @@ import {
   RecentItemsResponse,
   RecentItem,
 } from '../src/api/RecentSearchProvider';
+import {
+  CrossProductSearchResponse,
+  Scope,
+  SearchItem,
+} from '../src/api/CrossProductSearchProvider';
+
+function pickRandom(array: Array<any>) {
+  const index = faker.random.number(array.length - 1);
+  return array[index];
+}
 
 function objectIconUrl() {
   const urls = [
@@ -12,15 +22,21 @@ function objectIconUrl() {
     'https://product-fabric.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype',
   ];
 
-  const index = faker.random.number(urls.length - 1);
-  return urls[index];
+  return pickRandom(urls);
 }
 
 function provider() {
   const providers = ['jira', 'confluence'];
+  return pickRandom(providers);
+}
 
-  const index = faker.random.number(providers.length - 1);
-  return providers[index];
+function iconCssClass() {
+  const classes = [
+    'aui-iconfont-page-default',
+    'aui-iconfont-homepage',
+    'aui-iconfont-page-blogpost',
+  ];
+  return pickRandom(classes);
 }
 
 export function recentData(n = 50): RecentItemsResponse {
@@ -42,11 +58,42 @@ export function recentData(n = 50): RecentItemsResponse {
   };
 }
 
-export function crossProductData() {
-  return recentData(300);
+export function makeCrossProductSearchData(
+  n = 100,
+): (term: string) => CrossProductSearchResponse {
+  const confData: SearchItem[] = [];
+
+  for (let i = 0; i < n; i++) {
+    confData.push({
+      title: faker.company.catchPhrase(),
+      container: {
+        title: faker.company.companyName(),
+      },
+      iconCssClass: iconCssClass(),
+      url: faker.internet.url(),
+    });
+  }
+
+  return (term: string) => {
+    term = term.toLowerCase();
+    const filteredConfResults = confData.filter(
+      result => result.title.toLowerCase().indexOf(term) > -1,
+    );
+
+    return {
+      scopes: [
+        {
+          id: Scope.ConfluencePage,
+          results: filteredConfResults,
+        },
+      ],
+    };
+  };
 }
 
-export function peopleData(n = 300): GraphqlResponse {
+export function makePeopleSearchData(
+  n = 300,
+): (term: string) => GraphqlResponse {
   const items: SearchResult[] = [];
 
   for (let i = 0; i < n; i++) {
@@ -57,9 +104,16 @@ export function peopleData(n = 300): GraphqlResponse {
     });
   }
 
-  return {
-    data: {
-      AccountCentricUserSearch: items,
-    },
+  return (term: string) => {
+    term = term.toLowerCase();
+    const filteredItems = items.filter(
+      item => item.fullName.toLowerCase().indexOf(term) > -1,
+    );
+
+    return {
+      data: {
+        AccountCentricUserSearch: filteredItems,
+      },
+    };
   };
 }

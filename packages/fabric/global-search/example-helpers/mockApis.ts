@@ -1,14 +1,15 @@
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import {
-  peopleData,
+  makePeopleSearchData,
   recentData,
-  crossProductData,
+  makeCrossProductSearchData,
 } from '../example-helpers/mockData';
+import { Scope } from '../src/api/CrossProductSearchProvider';
 
 const recentResponse = recentData();
-const searchResponse = crossProductData();
-const peopleResponse = peopleData();
+const queryMockSearch = makeCrossProductSearchData();
+const queryPeopleSearch = makePeopleSearchData();
 
 function delay<T>(millis: number, value?: T): Promise<T> {
   return new Promise(resolve => setTimeout(() => resolve(value), millis));
@@ -22,44 +23,20 @@ function mockRecentApi() {
 }
 
 function mockCrossProductSearchApi() {
-  function doSearch(term) {
-    term = term.toLowerCase();
-    const items = searchResponse.data.filter(item => {
-      return item.name.toLowerCase().indexOf(term) > -1;
-    });
-
-    return {
-      data: items,
-    };
-  }
-
-  fetchMock.get('begin:http://localhost:8080/api/search', (url: string) => {
-    const parts = url.split('=');
-    let query = parts[1];
-    const results = doSearch(decodeURIComponent(query));
+  fetchMock.post('http://localhost:8080/quicksearch/v1', (url, opts) => {
+    const body = JSON.parse(opts.body);
+    const query = body.query;
+    const results = queryMockSearch(query);
 
     return delay(650, results);
   });
 }
 
 function mockPeopleApi() {
-  function doSearch(term) {
-    term = term.toLowerCase();
-    const items = peopleResponse.data.AccountCentricUserSearch.filter(item => {
-      return item.fullName.toLowerCase().indexOf(term) > -1;
-    });
-
-    return {
-      data: {
-        AccountCentricUserSearch: items,
-      },
-    };
-  }
-
   fetchMock.post('http://localhost:8080/graphql', (url, opts) => {
     const body = JSON.parse(opts.body);
     const query = body.variables.displayName;
-    const results = doSearch(query);
+    const results = queryPeopleSearch(query);
 
     return delay(500, results);
   });

@@ -14,8 +14,15 @@ export interface SearchProviders {
   peopleSearchProvider: PeopleSearchProvider;
 }
 
-// TODO provide real URLs
-const config = {
+interface Config {
+  readonly [key: string]: {
+    recentSearch: string;
+    crossProductSearch: string;
+    peopleSearch: string;
+  };
+}
+
+const config: Config = {
   local: {
     recentSearch: 'http://localhost:8080',
     crossProductSearch: 'http://localhost:8080',
@@ -23,17 +30,17 @@ const config = {
   },
   development: {
     recentSearch: 'https://activity.domain.dev.atlassian.io',
-    crossProductSearch: 'dev.net/search',
+    crossProductSearch: 'https://api-private.dev.atlassian.com',
     peopleSearch: 'https://pf-directory-service.domain.dev.atlassian.io',
   },
   staging: {
     recentSearch: 'https://activity.staging.atlassian.io',
-    crossProductSearch: 'stg.net/search',
+    crossProductSearch: 'https://api-private.stg.atlassian.com',
     peopleSearch: 'https://pf-directory-service.staging.atlassian.io',
   },
   production: {
     recentSearch: 'https://activity.atlassian.io',
-    crossProductSearch: 'prod.net/search',
+    crossProductSearch: 'https://api-private.atlassian.com',
     peopleSearch: 'https://pf-directory-service.atlassian.io',
   },
 };
