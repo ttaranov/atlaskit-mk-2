@@ -11,6 +11,7 @@ import EditIcon from '@atlaskit/icon/glyph/edit';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import CloseIcon from '@atlaskit/icon/glyph/cross';
 import ScreenIcon from '@atlaskit/icon/glyph/screen';
+import LinkIcon from '@atlaskit/icon/glyph/link';
 
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { AkCodeBlock } from '@atlaskit/code';
@@ -27,6 +28,7 @@ import Spinner from '@atlaskit/spinner';
 import { colors } from '@atlaskit/theme';
 
 import * as fs from '../../utils/fs';
+import packageResolver, { getLoaderUrl } from '../../utils/packageResolver';
 import type { Directory, RouterMatch } from '../../types';
 import ExampleDisplay from '../../components/Examples/ExampleDisplay';
 import Loading from '../../components/Loading';
@@ -257,50 +259,9 @@ export default class ExamplesModal extends Component<Props, State> {
   };
 
   updateSelected(groupId?: string, packageId?: string, exampleId?: string) {
-    let resolved = this.resolveProps(groupId, packageId, exampleId);
+    let resolved = packageResolver(groupId, packageId, exampleId);
     let url = toUrl(resolved.groupId, resolved.packageId, resolved.exampleId);
     this.context.router.history.push(url);
-  }
-
-  resolveProps(groupId?: string, packageId?: string, exampleId?: string) {
-    let groups = fs.getDirectories(packagesData.children);
-    let resolvedGroupId = groupId || groups[0].id;
-    let group = fs.getById(groups, resolvedGroupId);
-    let packages = fs.getDirectories(group.children);
-    let resolvedPackageId = packageId || packages[0].id;
-    let pkg = fs.getById(packages, resolvedPackageId);
-
-    let examples = fs.maybeGetById(fs.getDirectories(pkg.children), 'examples');
-    let example;
-
-    if (examples) {
-      example = fs.find(examples, file => {
-        if (exampleId) {
-          return fs.normalize(file.id) === exampleId;
-        } else {
-          return true;
-        }
-      });
-    }
-
-    let resolvedExampleId = example ? example.id : null;
-
-    let hasChanged =
-      groupId !== resolvedGroupId ||
-      packageId !== resolvedPackageId ||
-      (exampleId || null) !==
-        (resolvedExampleId ? fs.normalize(resolvedExampleId) : null);
-
-    return {
-      hasChanged,
-      groups,
-      packages,
-      examples,
-      example,
-      groupId: resolvedGroupId,
-      packageId: resolvedPackageId,
-      exampleId: resolvedExampleId,
-    };
   }
 
   onCodeToggle = () =>
@@ -310,7 +271,7 @@ export default class ExamplesModal extends Component<Props, State> {
     if (event) event.stopPropagation();
 
     const { params } = this.props.match;
-    const { packageId, groupId } = this.resolveProps(
+    const { packageId, groupId } = packageResolver(
       params.groupId,
       params.pkgId,
       params.exampleId,
@@ -329,7 +290,7 @@ export default class ExamplesModal extends Component<Props, State> {
       packageId,
       groupId,
       exampleId,
-    } = this.resolveProps(
+    } = packageResolver(
       this.props.match.params.groupId,
       this.props.match.params.pkgId,
       this.props.match.params.exampleId,
@@ -341,10 +302,12 @@ export default class ExamplesModal extends Component<Props, State> {
     }
 
     const { displayCode } = this.state;
-    const url = `examples.html?groupId=${groupId}&packageId=${packageId}&exampleId=${
-      this.props.match.params.exampleId
-    }`;
     const pkgJSON = getConfig(groupId, packageId).config;
+    const loaderUrl = getLoaderUrl(
+      groupId,
+      packageId,
+      this.props.match.params.exampleId,
+    );
 
     if (hasChanged) {
       return <Redirect to={toUrl(groupId, packageId, exampleId)} />;
@@ -398,6 +361,15 @@ export default class ExamplesModal extends Component<Props, State> {
                     to={toExampleUrl(groupId, packageId, exampleId)}
                   />
                 </Tooltip>
+                <Tooltip content="Isolated View" position="bottom">
+                  <Button
+                    appearance="subtle"
+                    component={'a'}
+                    iconBefore={<LinkIcon label="Link Icon" />}
+                    href={loaderUrl}
+                    target={'_blank'}
+                  />
+                </Tooltip>
                 <Tooltip content="Close" position="bottom">
                   <Button
                     appearance="subtle"
@@ -430,7 +402,7 @@ export default class ExamplesModal extends Component<Props, State> {
                 displayCode={displayCode}
                 example={fs.getById(fs.getFiles(examples.children), exampleId)}
                 name={pkgJSON.name}
-                src={url}
+                src={loaderUrl}
                 render={(ExampleCode, ExampleComponent, displayCode) => {
                   if (displayCode) {
                     return (
@@ -441,7 +413,6 @@ export default class ExamplesModal extends Component<Props, State> {
                       </Content>
                     );
                   }
-
                   return <ExampleComponent />;
                 }}
               />

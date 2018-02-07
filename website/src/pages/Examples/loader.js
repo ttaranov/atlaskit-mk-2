@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import packageResolver from '../../utils/packageResolver';
 import * as fs from '../../utils/fs';
-import { packages as packagesData } from '../../site';
 import styled, { css } from 'styled-components';
 import { colors } from '@atlaskit/theme';
 import Loadable from 'react-loadable';
@@ -37,55 +37,9 @@ export default class ExamplesIFrame extends Component {
       });
     }
   }
-  resolveProps = (groupId?: string, packageId?: string, exampleId?: string) => {
-    let groups = fs.getDirectories(packagesData.children);
-    let resolvedGroupId = groupId || groups[0].id;
-    let group = fs.getById(groups, resolvedGroupId);
-    let packages = fs.getDirectories(group.children);
-    let resolvedPackageId = packageId || packages[0].id;
-    let pkg = fs.getById(packages, resolvedPackageId);
 
-    let examples = fs.maybeGetById(fs.getDirectories(pkg.children), 'examples');
-    let example;
-
-    if (examples) {
-      example = fs.find(examples, file => {
-        if (exampleId) {
-          return fs.normalize(file.id) === exampleId;
-        } else {
-          return true;
-        }
-      });
-    }
-
-    let resolvedExampleId = example ? example.id : null;
-
-    let hasChanged =
-      groupId !== resolvedGroupId ||
-      packageId !== resolvedPackageId ||
-      (exampleId || null) !==
-        (resolvedExampleId ? fs.normalize(resolvedExampleId) : null);
-
-    return {
-      hasChanged,
-      groups,
-      packages,
-      examples,
-      example,
-      groupId: resolvedGroupId,
-      packageId: resolvedPackageId,
-      exampleId: resolvedExampleId,
-    };
-  };
   render() {
-    let {
-      groups,
-      packages,
-      examples,
-      packageId,
-      groupId,
-      exampleId,
-    } = this.resolveProps(
+    let { examples, packageId, exampleId } = packageResolver(
       this.state.groupId,
       this.state.packageId,
       this.state.exampleId,
