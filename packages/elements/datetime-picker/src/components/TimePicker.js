@@ -97,7 +97,8 @@ class TimePicker extends Component<Props, State> {
     }, []);
   }
 
-  handleChange = ({ value }: Object): void => {
+  handleChange = (v: Object | null): void => {
+    const value = v ? v.value : '';
     this.setState({ value });
     this.props.onChange(value);
   };
