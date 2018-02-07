@@ -46,6 +46,7 @@ TODO
 - ReactSelect needs a way to control the value of the input.
 - ReactSelect neesd a way to control the focused item in the dropdown.
 - ReactSelect's onInputChange fires onKeyDown as opposed to onKeyUp meaning the value that comes back isn't what's in the input.
+- Tests!
 
 */
 
