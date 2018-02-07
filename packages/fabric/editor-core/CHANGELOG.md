@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 62.0.3
+
 ## 62.0.2
 - [patch] Fix editor getValue action is giving old doc while using with waitForMediaUpload [14010c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14010c3)
 

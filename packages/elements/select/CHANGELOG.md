@@ -1,5 +1,9 @@
 # @atlaskit/select
 
+## 0.1.4
+
+- [patch] misc updates to select package [bd000c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd000c7)
+
 ## 0.1.3
 - [patch] added temporary SelectWraper to demonstrate validation [0ef5343](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ef5343)
 
