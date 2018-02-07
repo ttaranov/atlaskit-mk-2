@@ -1,7 +1,8 @@
 // @flow
 import React, { PureComponent } from 'react';
+import { Transition } from 'react-transition-group';
 
-import ContainerNavigationNestedPage from './ContainerNavigationNestedPage';
+import NestedNavigationPage from '../../styled/NestedNavigationPage';
 import NestedNavigationWrapper from '../../styled/NestedNavigationWrapper';
 import type {
   Stack,
@@ -36,14 +37,31 @@ export default class ContainerNavigationNested extends PureComponent<
     });
   }
 
+  handleAnimationEnd = () => {
+    if (this.props.onAnimationEnd) {
+      this.props.onAnimationEnd({
+        traversalDirection: this.state.traversalDirection,
+      });
+    }
+  };
+
   renderChildren = () => (
-    <ContainerNavigationNestedPage
+    <Transition
+      addEndListener={(node, done) => {
+        node.addEventListener('animationend', done);
+      }}
       key={this.state.stack.length}
-      onAnimationEnd={this.props.onAnimationEnd}
-      traversalDirection={this.state.traversalDirection}
+      onExited={this.handleAnimationEnd}
     >
-      {this.state.stack[this.state.stack.length - 1]}
-    </ContainerNavigationNestedPage>
+      {transitionState => (
+        <NestedNavigationPage
+          transitionState={transitionState}
+          traversalDirection={this.state.traversalDirection}
+        >
+          {this.state.stack[this.state.stack.length - 1]}
+        </NestedNavigationPage>
+      )}
+    </Transition>
   );
 
   render() {
