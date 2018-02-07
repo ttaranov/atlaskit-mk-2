@@ -40,7 +40,7 @@ import ToolbarButton from '../ToolbarButton';
 import { MacroProvider } from '../../editor/plugins/macro/types';
 import tableCommands from '../../plugins/table/commands';
 import { insertDate, openDatePicker } from '../../editor/plugins/date/actions';
-import { insertPlaceholderText } from '../../editor/plugins/placeholder-text/actions';
+import { showPlaceholderFloatingToolbar } from '../../editor/plugins/placeholder-text/actions';
 import { Wrapper, ExpandIconWrapper } from './styles';
 
 import { InsertMenuCustomItem } from '../../editor/types';
@@ -389,9 +389,9 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       items.push({
         content: 'Placeholder Text',
         value: { name: 'placeholder text' },
-        tooltipDescription: 'Insert placeholder text',
+        tooltipDescription: 'Add placeholder text',
         tooltipPosition: 'right',
-        elemBefore: <PlaceholderTextIcon label="Insert placeholder text" />,
+        elemBefore: <PlaceholderTextIcon label="Add placeholder text" />,
       });
     }
 
@@ -447,7 +447,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
   @analyticsDecorator('atlassian.editor.format.placeholder.button')
   private createPlaceholderText = (): boolean => {
     const { editorView } = this.props;
-    insertPlaceholderText()(editorView.state, editorView.dispatch);
+    showPlaceholderFloatingToolbar(editorView.state, editorView.dispatch);
     return true;
   };
 
