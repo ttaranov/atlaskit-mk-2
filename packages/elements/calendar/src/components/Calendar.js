@@ -45,6 +45,8 @@ type Props = {
   with updates for if the change has been triggered internally by the forward and
   back arrows for months. */
   onChange: Handler,
+  /** Called when the calendar receives focus. This could be from a mouse event on the container by tabbing into it. */
+  onFocus: Handler,
   /** Function called when a day is clicked on. Calls with an object that has
   a day, month and week property as numbers, representing the date just clicked.
   It also has an 'iso' property, which is a string of the selected date in the
@@ -72,16 +74,19 @@ type State = {
   year: number,
 };
 
+function getUniqueId(prefix: string) {
+  return `${prefix}-${uuid()}`;
+}
+
 class Calendar extends Component<Props, State> {
   calendar: Object;
   props: Props;
-  calendarEl: ?HTMLDivElement;
 
   static defaultProps = {
     onBlur() {},
     onChange() {},
+    onFocus() {},
     onSelect() {},
-    previouslySelected: [],
   };
 
   constructor(props: Props) {
@@ -105,7 +110,33 @@ class Calendar extends Component<Props, State> {
     });
   }
 
-  handleKeyDown = (e: KeyboardEvent) => {
+  getNextMonth() {
+    let { month, year } = this.state;
+
+    if (month === monthsPerYear) {
+      month = 1;
+      year += 1;
+    } else {
+      month += 1;
+    }
+
+    return { month, year };
+  }
+
+  getPrevMonth() {
+    let { month, year } = this.state;
+
+    if (month === 1) {
+      month = monthsPerYear;
+      year -= 1;
+    } else {
+      month -= 1;
+    }
+
+    return { month, year };
+  }
+
+  handleContainerKeyDown = (e: KeyboardEvent) => {
     const { focused, month, year } = this.state;
     const key = e.keyCode;
     const isArrowKey = arrowKeys.indexOf(key) > -1;
@@ -140,7 +171,7 @@ class Calendar extends Component<Props, State> {
   handleClickNext = () => {
     const { focused: day, month, year } = {
       ...this.state,
-      ...this.nextMonth(),
+      ...this.getNextMonth(),
     };
     this.triggerOnChange({ day, month, year });
   };
@@ -148,20 +179,25 @@ class Calendar extends Component<Props, State> {
   handleClickPrev = () => {
     const { focused: day, month, year } = {
       ...this.state,
-      ...this.prevMonth(),
+      ...this.getPrevMonth(),
     };
     this.triggerOnChange({ day, month, year });
+  };
+
+  handleContainerBlur = () => {
+    this.setState({ focused: 0 });
+    this.props.onBlur();
+  };
+
+  handleContainerFocus = () => {
+    this.setState({ focused: this.state.focused || 1 });
+    this.props.onFocus();
   };
 
   focus() {
     if (this.calendar) {
       this.calendar.focus();
     }
-  }
-
-  getIsoString() {
-    const { focused, month, year } = this.state;
-    return `${year}-${month}-${focused}`;
   }
 
   navigate(dir) {
@@ -172,7 +208,7 @@ class Calendar extends Component<Props, State> {
       const daysInMonth = CalendarBase.daysInMonth(year, month - 1);
 
       if (next > daysInMonth) {
-        const { month: nextMonth, year: nextYear } = this.nextMonth();
+        const { month: nextMonth, year: nextYear } = this.getNextMonth();
         this.triggerOnChange({
           year: nextYear,
           month: nextMonth,
@@ -185,7 +221,7 @@ class Calendar extends Component<Props, State> {
       const prev = focused - 1;
 
       if (prev < 1) {
-        const { month: prevMonth, year: prevYear } = this.prevMonth();
+        const { month: prevMonth, year: prevYear } = this.getPrevMonth();
         const prevDay = CalendarBase.daysInMonth(prevYear, prevMonth - 1);
         this.triggerOnChange({
           year: prevYear,
@@ -200,7 +236,7 @@ class Calendar extends Component<Props, State> {
       const daysInMonth = CalendarBase.daysInMonth(year, month - 1);
 
       if (next > daysInMonth) {
-        const { month: nextMonth, year: nextYear } = this.nextMonth();
+        const { month: nextMonth, year: nextYear } = this.getNextMonth();
         this.triggerOnChange({ year: nextYear, month: nextMonth, day: 1 });
       } else {
         this.triggerOnChange({ year, month, day: next });
@@ -209,7 +245,7 @@ class Calendar extends Component<Props, State> {
       const prev = focused - daysPerWeek;
 
       if (prev < 1) {
-        const { month: prevMonth, year: prevYear } = this.prevMonth();
+        const { month: prevMonth, year: prevYear } = this.getPrevMonth();
         const prevDay =
           CalendarBase.daysInMonth(prevYear, prevMonth - 1) + prev;
         this.triggerOnChange({
@@ -236,40 +272,9 @@ class Calendar extends Component<Props, State> {
   triggerOnSelect = ({ year, month, day }: EventChange) => {
     const iso = dateToString({ year, month, day });
     this.props.onSelect({ day, month, year, iso });
-  };
-
-  nextMonth() {
-    let { month, year } = this.state;
-
-    if (month === monthsPerYear) {
-      month = 1;
-      year += 1;
-    } else {
-      month += 1;
-    }
-
-    return { month, year };
-  }
-
-  prevMonth() {
-    let { month, year } = this.state;
-
-    if (month === 1) {
-      month = monthsPerYear;
-      year -= 1;
-    } else {
-      month -= 1;
-    }
-
-    return { month, year };
-  }
-
-  handleCalendarRef = (ref: ?HTMLDivElement) => {
-    this.calendarEl = ref;
-  };
-
-  getUniqueId = (prefix: string) => {
-    return `${prefix}-${uuid()}`;
+    this.setState({
+      selected: [iso],
+    });
   };
 
   render() {
@@ -285,7 +290,7 @@ class Calendar extends Component<Props, State> {
     const calendar = this.calendar.getCalendar(year, month - 1);
     const weeks = [];
     const shouldDisplaySixthWeek = calendar.length % 6;
-    const announceId = this.getUniqueId('announce');
+    const announceId = getUniqueId('announce');
 
     if (shouldDisplaySixthWeek) {
       const lastDayIsSibling = calendar[calendar.length - 1].siblingMonth;
@@ -341,7 +346,11 @@ class Calendar extends Component<Props, State> {
       // that we can navigate the keyboard for them. The aria role of "grid" here will hint to
       // screen readers that it can be navigated with the keyboard, but the linter still fails.
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div onBlur={this.props.onBlur} onKeyDown={this.handleKeyDown}>
+      <div
+        onBlur={this.handleContainerBlur}
+        onFocus={this.handleContainerFocus}
+        onKeyDown={this.handleContainerKeyDown}
+      >
         <Announcer id={announceId} aria-live="assertive" aria-relevant="text">
           {new Date(year, month, focused).toString()}
         </Announcer>
@@ -349,7 +358,6 @@ class Calendar extends Component<Props, State> {
           aria-label="calendar"
           role="grid"
           tabIndex={0}
-          innerRef={this.handleCalendarRef}
           aria-describedby={announceId}
         >
           <Heading
