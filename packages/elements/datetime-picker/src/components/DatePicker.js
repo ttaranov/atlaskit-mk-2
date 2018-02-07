@@ -40,6 +40,7 @@ type State = {
 
 TODO
 
+- DateTime picker should force 50% width of flex children.
 - Navigate the calendar when keys are pressed while maintaining focus on the input.
 - ReactSelect needs a way to control the open / closed state of the dropdown.
 - ReactSelect needs a way to control the value of the input.
