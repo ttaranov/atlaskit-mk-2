@@ -638,6 +638,24 @@ System.out.println("There are " + count + " values >= 5");`,
       },
     },
     {
+      type: 'mediaSingle',
+      attrs: {
+        layout: 'full-width',
+      },
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample',
+            height: 200,
+            width: 300,
+          },
+        },
+      ],
+    },
+    {
       type: 'mediaGroup',
       content: [
         {

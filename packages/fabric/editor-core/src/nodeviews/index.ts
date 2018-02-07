@@ -10,6 +10,7 @@ export { default as ReactUnsupportedInlineNode } from './ui/unsupported-inline';
 export { default as ExtensionNodeView } from './ui/extension';
 export { default as DateNodeView } from './ui/date';
 export { default as TableNode } from './ui/table';
+export { default as PlaceholderTextNode } from './ui/placeholder-text';
 
 export { panelNodeView } from './ui/panel';
 export { taskItemNodeViewFactory } from './ui/taskItem';

@@ -1,7 +1,6 @@
 import { Node as PMNode, NodeType } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { MediaState } from '@atlaskit/media-core';
 import { unsupportedNodeTypesForMediaCards } from '@atlaskit/editor-common';
 
 import {
@@ -22,6 +21,7 @@ import {
   isInsidePotentialEmptyParagraph,
 } from './utils';
 import { copyOptionalAttrsFromMediaState } from './media-common';
+import { MediaState } from './types';
 
 export interface Range {
   start: number;

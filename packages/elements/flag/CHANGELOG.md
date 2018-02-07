@@ -1,5 +1,8 @@
 # @atlaskit/flag
 
+## 6.4.0
+- [minor] Update buttonIcon size depending if CrossIcon or ChevronIcon [16bf4e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16bf4e5)
+
 ## 6.3.2
 
 ## 6.3.1

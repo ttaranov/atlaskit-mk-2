@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "28.0.0",
+  "version": "28.0.2",
   "description": "A React component that renders a sidebar, for navigation purposes.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -61,7 +61,6 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "raf-stub": "^2.0.1",
-    "react-beautiful-dnd": "^2.0.1",
     "react-lorem-component": "^0.12.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",

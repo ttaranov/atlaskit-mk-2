@@ -1,5 +1,11 @@
 # @atlaskit/toggle
 
+## 2.8.2
+- [patch] Change incorrect type info [ce915ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce915ea)
+
+## 2.8.1
+- [patch] Flatten examples for easier consumer use [145b632](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/145b632)
+
 ## 2.8.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
 

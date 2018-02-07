@@ -64,3 +64,17 @@ export const parseTime = (time: string) => {
 function pad(num) {
   return num < 10 ? `0${num}` : num;
 }
+
+export function dateFromTime(time: string): Date {
+  const [h, m] = time.match(/(\d\d):(\d\d)/) || [];
+  return h && m ? parse(`0000-00-00T${h}:${m}`) : new Date('invalid date');
+}
+
+export function formatDate(date: string): string {
+  return date.replace(/-/g, '/');
+}
+
+export function formatTime(time: string): string {
+  const date = dateFromTime(time);
+  return isValid(date) ? format(date, 'h:mma') : '';
+}

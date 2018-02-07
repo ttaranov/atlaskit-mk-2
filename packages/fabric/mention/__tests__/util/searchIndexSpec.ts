@@ -113,8 +113,10 @@ describe('SearchIndex', () => {
     expect(result.mentions).toHaveLength(1);
   });
 
-  describe('#indexResults', () => {
-    it('should augment cached data', async () => {
+  describe('#hasDocuments', () => {
+    it('should be true if index contains mention', async () => {
+      expect(searchIndex.hasDocuments()).toBe(false);
+
       searchIndex.indexResults([
         {
           id: 'id',
@@ -124,19 +126,24 @@ describe('SearchIndex', () => {
         },
       ]);
 
+      expect(searchIndex.hasDocuments()).toBe(true);
+    });
+
+    it('should be false after reset()', async () => {
       searchIndex.indexResults([
         {
           id: 'id',
           name: 'Homer Simpson',
           mentionName: 'mentionName',
-          accessLevel: 'CONTAINER',
+          inContext: true,
         },
       ]);
 
-      const result = await searchIndex.search('mentionName');
-      expect(result.mentions).toHaveLength(1);
-      expect(result.mentions[0].inContext).toBe(true);
-      expect(result.mentions[0].accessLevel).toEqual('CONTAINER');
+      expect(searchIndex.hasDocuments()).toBe(true);
+
+      searchIndex.reset();
+
+      expect(searchIndex.hasDocuments()).toBe(false);
     });
   });
 });

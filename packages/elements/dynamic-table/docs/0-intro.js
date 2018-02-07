@@ -7,6 +7,8 @@ export default (
   <div>
     {md`
       The Dynamic Table component is a table component with pagination and sorting functionality.
+      
+      Dynamic table also allows you to reorder rows (available only with react@^16.0.0) thanks to [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd) library.
 
       ## Examples
 

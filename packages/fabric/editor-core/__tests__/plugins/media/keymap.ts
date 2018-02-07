@@ -1,4 +1,3 @@
-import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import {
   doc,
   createEditor,
@@ -8,9 +7,11 @@ import {
   randomId,
 } from '@atlaskit/editor-test-helpers';
 import { ProviderFactory } from '@atlaskit/editor-common';
+
 import {
   stateKey as mediaPluginKey,
   MediaPluginState,
+  DefaultMediaStateManager,
 } from '../../../src/plugins/media';
 import mediaPlugin from '../../../src/editor/plugins/media';
 import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';

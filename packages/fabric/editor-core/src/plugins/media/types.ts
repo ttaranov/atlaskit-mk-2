@@ -1,0 +1,70 @@
+import { ContextConfig, Context } from '@atlaskit/media-core';
+import { UploadParams } from '@atlaskit/media-picker';
+
+export type MediaStateStatus =
+  | 'unknown'
+  | 'uploading'
+  | 'processing'
+  | 'unfinalized'
+  | 'ready'
+  | 'error'
+  | 'cancelled'
+  | 'preview';
+
+export interface MediaState {
+  id: string;
+  status?: MediaStateStatus;
+  publicId?: string;
+  fileName?: string;
+  fileSize?: number;
+  fileType?: string;
+  fileMimeType?: string;
+  progress?: number;
+  thumbnail?: {
+    src: string;
+    dimensions?: {
+      width: number;
+      height: number;
+    };
+  };
+  finalizeCb?: () => void;
+  error?: {
+    name: string;
+    description: string;
+  };
+}
+
+export interface MediaStateManager {
+  getState(tempId: string): MediaState | undefined;
+  updateState(tempId: string, newState: MediaState): void;
+  on(tempId: string, cb: (state: MediaState) => void);
+  off(tempId: string, cb: (state: MediaState) => void): void;
+  destroy(): void;
+}
+
+export interface MediaProvider {
+  uploadParams?: UploadParams;
+
+  /**
+   * A manager notifying subscribers on changes in Media states
+   */
+  stateManager?: MediaStateManager;
+
+  /**
+   * Used for displaying Media Cards and downloading files.
+   * This is context config is required.
+   */
+  viewContext: Promise<Context | ContextConfig>;
+
+  /**
+   * (optional) Used for creating new uploads and finalizing files.
+   * NOTE: We currently don't accept Context instance, because we need config properties
+   *       to initialize
+   */
+  uploadContext?: Promise<ContextConfig>;
+
+  /**
+   * (optional) Used for creation of new Media links.
+   */
+  linkCreateContext?: Promise<Context | ContextConfig>;
+}

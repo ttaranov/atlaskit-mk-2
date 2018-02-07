@@ -1,5 +1,3 @@
-import { DefaultMediaStateManager } from '@atlaskit/media-core';
-import { AnalyticsHandler, analyticsService } from '../../../src';
 import {
   a,
   blockquote,
@@ -15,6 +13,7 @@ import {
   taskItem,
   taskList,
 } from '@atlaskit/editor-test-helpers';
+
 import {
   insertLinks,
   detectLinkRangesInSteps,
@@ -24,6 +23,8 @@ import mediaPlugin from '../../../src/editor/plugins/media';
 import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 import tasksAndDecisionsPlugin from '../../../src/editor/plugins/tasks-and-decisions';
 import textFormatting from '../../../src/editor/plugins/text-formatting';
+import { DefaultMediaStateManager } from '../../../src/plugins/media';
+import { AnalyticsHandler, analyticsService } from '../../../src';
 
 describe('media-links', () => {
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;

@@ -1,4 +1,4 @@
-import { AuthProvider, UploadParams } from '@atlaskit/media-core';
+import { AuthProvider } from '@atlaskit/media-core';
 import { Store } from 'redux';
 import * as React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
@@ -27,7 +27,7 @@ import {
 } from '../outer/analytics/events';
 import { defaultUploadParams } from '../domain/uploadParams';
 import { MediaPickerContext } from '../domain/context';
-import { ModuleConfig } from '../domain/config';
+import { ModuleConfig, UploadParams } from '../domain/config';
 import { UploadEventPayloadMap } from '../domain/uploadEvent';
 
 export interface PopupConfig {

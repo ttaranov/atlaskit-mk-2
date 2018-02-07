@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { Component } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { CardDimensions } from '@atlaskit/media-card';
@@ -24,7 +24,7 @@ export interface MediaNodeProps extends ReactNodeProps {
 
 const getId = (props: MediaNodeProps) => props.node.attrs.id;
 
-export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
+export default class MediaNode extends Component<MediaNodeProps, {}> {
   private pluginState: MediaPluginState;
 
   constructor(props) {

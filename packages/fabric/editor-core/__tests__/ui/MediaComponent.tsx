@@ -1,20 +1,19 @@
 import * as React from 'react';
 import { mount, shallow } from 'enzyme';
-import {
-  Context,
-  ContextConfig,
-  ContextFactory,
-  MediaProvider,
-  MediaStateManager,
-  DefaultMediaStateManager,
-} from '@atlaskit/media-core';
-import MediaComponent from '../../src/ui/Media/MediaComponent';
+import { Context, ContextConfig, ContextFactory } from '@atlaskit/media-core';
 import { MediaType } from '@atlaskit/editor-common';
 import { Card, CardView, CardProps } from '@atlaskit/media-card';
 import {
   storyMediaProviderFactory,
   randomId,
 } from '@atlaskit/editor-test-helpers';
+
+import {
+  MediaProvider,
+  MediaStateManager,
+  DefaultMediaStateManager,
+} from '../../src/plugins/media';
+import MediaComponent from '../../src/ui/Media/MediaComponent';
 
 describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   const file = {
@@ -212,13 +211,11 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     const stateManager = {
       getState: () => undefined,
       updateState: () => {},
-      subscribe: () => {
-        subscribeCalled = true;
-      },
-      unsubscribe: () => {},
+      on: jest.fn(),
+      off: () => {},
+      destroy: () => {},
     };
     const mediaProvider = getFreshResolvedProvider(stateManager);
-    let subscribeCalled = false;
 
     shallow(
       <MediaComponent
@@ -232,7 +229,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     const resolvedMediaProvider = await mediaProvider;
     await resolvedMediaProvider.viewContext;
 
-    expect(subscribeCalled).toBe(true);
+    expect(stateManager.on).toHaveBeenCalled();
   });
 
   it('should not raise exception if there is no linkCreateContext in mediaProvider', async () => {

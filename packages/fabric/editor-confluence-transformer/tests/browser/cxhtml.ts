@@ -865,12 +865,37 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         macroMetadata,
       },
     };
-    const params = Object.keys(macroParams).map(
+    const paramsAsCXHTML = Object.keys(macroParams).map(
       key =>
         `<ac:parameter ac:name="${key}">${
           macroParams[key].value
         }</ac:parameter>`,
     );
+
+    describe('extensions with resource identifiers', () => {
+      const attrs = {
+        extensionType: 'com.atlassian.confluence.macro.core',
+        extensionKey: 'fake',
+        parameters: {
+          macroParams: {
+            src: { value: 'www.google.com' },
+            spaces: { value: 'abc' },
+          },
+          macroMetadata,
+        },
+      };
+      check(
+        'basic',
+        `<ac:structured-macro ac:name="${
+          attrs.extensionKey
+        }" ac:schema-version="1" ac:macro-id="${
+          macroMetadata.macroId.value
+        }"><ac:parameter ac:name="src"><ri:url ri:value="www.google.com" /></ac:parameter><ac:parameter ac:name="spaces"><ri:space ri:space-key="abc" /></ac:parameter><fab:placeholder-url>${
+          macroMetadata.placeholder[0].data.url
+        }</fab:placeholder-url><fab:display-type>BLOCK</fab:display-type></ac:structured-macro>`,
+        doc(extension(attrs)()),
+      );
+    });
 
     describe('inlineExtension', () => {
       check(
@@ -878,8 +903,8 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
         }" ac:schema-version="1" ac:macro-id="${
-          attrs.parameters.macroMetadata.macroId.value
-        }">${params}<fab:placeholder-url>${
+          macroMetadata.macroId.value
+        }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
         }</fab:placeholder-url><fab:display-type>INLINE</fab:display-type></ac:structured-macro>`,
         doc(p(inlineExtension(attrs)())),
@@ -892,8 +917,8 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
         }" ac:schema-version="1" ac:macro-id="${
-          attrs.parameters.macroMetadata.macroId.value
-        }">${params}<fab:placeholder-url>${
+          macroMetadata.macroId.value
+        }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
         }</fab:placeholder-url><fab:display-type>BLOCK</fab:display-type></ac:structured-macro>`,
         doc(extension(attrs)()),
@@ -906,8 +931,8 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
         }" ac:schema-version="1" ac:macro-id="${
-          attrs.parameters.macroMetadata.macroId.value
-        }">${params}<fab:placeholder-url>${
+          macroMetadata.macroId.value
+        }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
         }</fab:placeholder-url>
           <fab:display-type>BLOCK</fab:display-type>
@@ -1227,42 +1252,39 @@ describe('ConfluenceTransformer: encode - parse:', () => {
   });
 
   describe('fabric mentions', () => {
-    check(
-      'with atlassian id and name',
-      '<p>This is mention from <fab:link><fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></fab:link></p>',
-      doc(
-        p(
-          'This is mention from ',
-          mention({
-            id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
-            text: 'Artur Bodera',
-          })(),
-        ),
-      ),
-    );
+    it('shoult parse mention with atlassian id and name', () => {
+      const cxhtml =
+        '<p>This is mention from <fab:link><fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></fab:link></p>';
 
-    it('strips @ from mention text', () => {
-      const docBefore = doc(
-        p(
-          '@ is stripped from this mention: ',
-          mention({
-            id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
-            text: '@Artur Bodera',
-          })(),
+      expect(parse(cxhtml)).to.deep.equal(
+        doc(
+          p(
+            'This is mention from ',
+            mention({
+              id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
+              text: 'Artur Bodera',
+            })(),
+          ),
         ),
       );
+    });
 
-      const docAfter = doc(
-        p(
-          '@ is stripped from this mention: ',
-          mention({
-            id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
-            text: 'Artur Bodera',
-          })(),
-        ),
+    // @see ED-3634
+    it('shoult encode mention and preserve only atlassian id', () => {
+      const encodedCxhtml = encode(
+        doc(
+          p(
+            'This is mention from ',
+            mention({
+              id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
+              text: 'Artur Bodera',
+            })(),
+          ),
+        )(schema),
       );
-
-      expect(parse(encode(docBefore(schema)))).to.deep.equal(docAfter);
+      expect(encodedCxhtml).to.equal(
+        '<p>This is mention from <fab:link><fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"/></fab:link></p>',
+      );
     });
   });
 

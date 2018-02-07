@@ -1,5 +1,8 @@
 # @atlaskit/droplist
 
+## 4.11.7
+- [patch] Change incorrect type info [ce915ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce915ea)
+
 ## 4.11.6
 - [patch] transparent background for selected item in droplist [75445a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75445a6)
 
