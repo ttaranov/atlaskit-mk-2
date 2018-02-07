@@ -6,7 +6,7 @@ import 'regenerator-runtime/runtime';
 
 import repo from './site';
 
-import ExamplesIframe from './pages/Examples/iframe';
+import ExamplesLoader from './pages/Examples/loader';
 
 // $FlowFixMe
-render(<ExamplesIframe />, document.getElementById('app'));
+render(<ExamplesLoader />, document.getElementById('app'));
