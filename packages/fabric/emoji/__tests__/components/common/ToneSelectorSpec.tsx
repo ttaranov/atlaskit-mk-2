@@ -13,6 +13,7 @@ import {
   imageEmoji,
   generateSkinVariation,
 } from '../../../src/support/test-data';
+import { analyticsEmojiPrefix } from '../../../src/constants';
 
 const baseHandEmoji: EmojiDescription = {
   ...imageEmoji,
@@ -34,7 +35,7 @@ const handEmoji: EmojiDescriptionWithVariations = {
 describe('<ToneSelector />', () => {
   it('should display one emoji per skin variations + default', () => {
     const onToneSelectedSpy = sinon.spy();
-    const wrapper = shallow(
+    const wrapper = mount(
       <ToneSelector emoji={handEmoji} onToneSelected={onToneSelectedSpy} />,
     );
 
@@ -43,8 +44,14 @@ describe('<ToneSelector />', () => {
 
   it('should call onToneSelected on click', () => {
     const onToneSelectedSpy = sinon.spy();
+    const firePrivateAnalyticsEvent = sinon.stub();
+
     const wrapper = mount(
-      <ToneSelector emoji={handEmoji} onToneSelected={onToneSelectedSpy} />,
+      <ToneSelector
+        emoji={handEmoji}
+        onToneSelected={onToneSelectedSpy}
+        firePrivateAnalyticsEvent={firePrivateAnalyticsEvent}
+      />,
     );
 
     wrapper
@@ -52,5 +59,11 @@ describe('<ToneSelector />', () => {
       .first()
       .simulate('mousedown', { button: 0 });
     expect(onToneSelectedSpy.calledWith(0)).to.equal(true);
+    expect(
+      firePrivateAnalyticsEvent.calledWith(
+        `${analyticsEmojiPrefix}.skintone.select`,
+        { skinTone: 0 },
+      ),
+    ).to.equal(true);
   });
 });

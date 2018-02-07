@@ -7,10 +7,13 @@ import {
   OnToneSelected,
 } from '../../types';
 import EmojiButton from './EmojiButton';
+import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
+import { analyticsEmojiPrefix } from '../../constants';
 
 export interface Props {
   emoji: EmojiDescriptionWithVariations;
   onToneSelected: OnToneSelected;
+  firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 }
 
 const extractAllTones = (
@@ -22,9 +25,20 @@ const extractAllTones = (
   return [emoji];
 };
 
-export default class ToneSelector extends PureComponent<Props, {}> {
+export class ToneSelectorInternal extends PureComponent<Props, {}> {
+  private onToneSelectedHandler = (skinTone: number) => {
+    const { onToneSelected, firePrivateAnalyticsEvent } = this.props;
+    onToneSelected(skinTone);
+
+    if (firePrivateAnalyticsEvent) {
+      firePrivateAnalyticsEvent(`${analyticsEmojiPrefix}.skintone.select`, {
+        skinTone,
+      });
+    }
+  };
+
   render() {
-    const { emoji, onToneSelected } = this.props;
+    const { emoji } = this.props;
     const toneEmojis: EmojiDescription[] = extractAllTones(emoji);
 
     return (
@@ -33,7 +47,7 @@ export default class ToneSelector extends PureComponent<Props, {}> {
           <EmojiButton
             key={`${tone.id}`}
             // tslint:disable-next-line:jsx-no-lambda
-            onSelected={() => onToneSelected(i)}
+            onSelected={() => this.onToneSelectedHandler(i)}
             emoji={tone}
             selectOnHover={true}
           />
@@ -42,3 +56,13 @@ export default class ToneSelector extends PureComponent<Props, {}> {
     );
   }
 }
+
+// tslint:disable-next-line:variable-name
+const ToneSelector = withAnalytics<typeof ToneSelectorInternal>(
+  ToneSelectorInternal,
+  {},
+  {},
+);
+type ToneSelector = ToneSelectorInternal;
+
+export default ToneSelector;
