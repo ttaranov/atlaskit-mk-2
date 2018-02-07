@@ -157,6 +157,7 @@
     "react-redux": "^5.0.0",
     "react-test-renderer": "^16.2.0",
     "react-value": "^0.2.0",
+    "recompose": "^0.26.0",
     "redux": "^3.7.2",
     "sinon": "^2.2.0",
     "string.prototype.repeat": "^0.2.0",

@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import { toClass } from 'recompose';
+
 import Item, { itemThemeNamespace } from '../src';
 import { name } from '../package.json';
 import { After, Before, Content, Description } from '../src/styled/ItemParts';
@@ -10,7 +12,8 @@ describe(`${name} - Item`, () => {
   describe('root element type', () => {
     describe('if href prop supplied', () => {
       it('should match props.linkComponent if supplied', () => {
-        const MyLinkComponent = () => <span />;
+        const MyLinkComponent = toClass(() => <span />);
+
         const wrapper = mount(
           <Item href="//atlassian.com" linkComponent={MyLinkComponent} />,
         );
