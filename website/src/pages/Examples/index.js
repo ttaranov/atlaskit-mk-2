@@ -21,6 +21,7 @@ import * as fs from '../../utils/fs';
 import type { Directory, RouterMatch } from '../../types';
 import CodeBlock from '../../components/Code';
 import { packages as packagesData, getConfig } from '../../site';
+import packageResolver, { getLoaderUrl } from '../../utils/packageResolver';
 import { packageUrl } from '../../utils/url';
 import CodeSandbox from '../Package/CodeSandbox';
 import CodeSandboxLogo from '../Package/CodeSandboxLogo';
@@ -225,7 +226,7 @@ export default class Examples extends React.Component<Props, State> {
   };
 
   updateSelected(groupId?: string, packageId?: string, exampleId?: string) {
-    let resolved = this.resolveProps(groupId, packageId, exampleId);
+    let resolved = packageResolver(groupId, packageId, exampleId);
     let url = this.toUrl(
       resolved.groupId,
       resolved.packageId,
@@ -233,47 +234,6 @@ export default class Examples extends React.Component<Props, State> {
     );
 
     this.context.router.history.push(url);
-  }
-
-  resolveProps(groupId?: string, packageId?: string, exampleId?: string) {
-    let groups = fs.getDirectories(packagesData.children);
-    let resolvedGroupId = groupId || groups[0].id;
-    let group = fs.getById(groups, resolvedGroupId);
-    let packages = fs.getDirectories(group.children);
-    let resolvedPackageId = packageId || packages[0].id;
-    let pkg = fs.getById(packages, resolvedPackageId);
-
-    let examples = fs.maybeGetById(fs.getDirectories(pkg.children), 'examples');
-    let example;
-
-    if (examples) {
-      example = fs.find(examples, file => {
-        if (exampleId) {
-          return fs.normalize(file.id) === exampleId;
-        } else {
-          return true;
-        }
-      });
-    }
-
-    let resolvedExampleId = example ? example.id : null;
-
-    let hasChanged =
-      groupId !== resolvedGroupId ||
-      packageId !== resolvedPackageId ||
-      (exampleId || null) !==
-        (resolvedExampleId ? fs.normalize(resolvedExampleId) : null);
-
-    return {
-      hasChanged,
-      groups,
-      packages,
-      examples,
-      example,
-      groupId: resolvedGroupId,
-      packageId: resolvedPackageId,
-      exampleId: resolvedExampleId,
-    };
   }
 
   toUrl(groupId?: string, packageId?: string, exampleId?: string | null) {
@@ -336,7 +296,7 @@ export default class Examples extends React.Component<Props, State> {
   };
 
   deploySandbox = async () => {
-    const props = this.resolveProps(
+    const props = packageResolver(
       this.props.match.params.groupId,
       this.props.match.params.pkgId,
       this.props.match.params.exampleId,
@@ -378,14 +338,17 @@ export default class Examples extends React.Component<Props, State> {
       packageId,
       groupId,
       exampleId,
-    } = this.resolveProps(
+    } = packageResolver(
       this.props.match.params.groupId,
       this.props.match.params.pkgId,
       this.props.match.params.exampleId,
     );
-    const iframeSrc = `examples.html?groupId=${groupId}&packageId=${packageId}&exampleId=${
-      this.props.match.params.exampleId
-    }`;
+
+    const loaderUrl = getLoaderUrl(
+      groupId,
+      packageId,
+      this.props.match.params.exampleId,
+    );
 
     if (hasChanged) {
       return <Redirect to={this.toUrl(groupId, packageId, exampleId)} />;
@@ -411,8 +374,8 @@ export default class Examples extends React.Component<Props, State> {
           <ExampleDisplay
             displayCode={this.state.displayCode}
             example={fs.getById(fs.getFiles(examples.children), exampleId)}
-            src={iframeSrc}
             name={config.name}
+            src={loaderUrl}
             render={(ExampleCode, ExampleComponent, displayCode) => {
               return (
                 <Content>
