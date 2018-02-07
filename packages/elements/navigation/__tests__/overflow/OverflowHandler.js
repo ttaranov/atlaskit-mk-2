@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import { mount, configure } from 'enzyme';
-import sinon from 'sinon';
 import Adapter from 'enzyme-adapter-react-16';
 import { replaceRaf } from 'raf-stub';
 import OverflowHandler from '../../src/components/js/overflow/OverflowHandler';

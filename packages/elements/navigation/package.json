@@ -64,7 +64,7 @@
     "react-lorem-component": "^0.12.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "sinon": "^2.2.0",
+    "recompose": "^0.26.0",
     "source-trace": "^2.0.0"
   }
 }
