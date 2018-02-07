@@ -51,15 +51,13 @@ type Props = {
   /** The time in the dropdown that should be focused. */
   focused?: string,
   /** The name of the field. */
-  name?: string,
+  name: string,
   /** Called when the value changes. The first argument is an ISO date and the second is an ISO time. */
   onChange: (date: ?string, time: ?string) => void,
   /** The times to show in the dropdown. */
   times?: Array<string>,
   /** The ISO time that should be used as the input value. */
   value?: string,
-  /** The width of the field. */
-  width: number,
 };
 
 type State = {
@@ -97,8 +95,8 @@ class DateTimePicker extends Component<Props, State> {
     autoFocus: false,
     disabled: [],
     isDisabled: false,
+    name: '',
     onChange() {},
-    width: 0,
   };
 
   state = {

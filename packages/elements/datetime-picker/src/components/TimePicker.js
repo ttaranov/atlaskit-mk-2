@@ -48,24 +48,19 @@ type Props = {
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
-  // isOpen?: boolean,
-  /** The time in the dropdown that should be focused. */
-  // focused?: string,
+  isOpen?: boolean,
   /** The name of the field. */
-  name?: string,
+  name: string,
   /** Called when the value changes. The only argument is an ISO time. */
   onChange: Handler,
   /** The times to show in the dropdown. */
   times?: Array<string>,
   /** The ISO time that should be used as the input value. */
   value?: string,
-  /** The width of the field. */
-  // width: number,
 };
 
 type State = {
-  // focused: string,
-  // isOpen: boolean,
+  isOpen: boolean,
   times: Array<string>,
   value: string,
 };
@@ -76,12 +71,10 @@ class TimePicker extends Component<Props, State> {
     isDisabled: false,
     name: '',
     onChange: () => {},
-    // width: null,
   };
 
   state = {
-    // focused: '',
-    // isOpen: false,
+    isOpen: false,
     times: defaultTimes,
     value: '',
   };

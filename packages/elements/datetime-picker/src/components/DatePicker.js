@@ -22,13 +22,11 @@ type Props = {
   /** Whether or not the dropdown is open. */
   isOpen?: boolean,
   /** The name of the field. */
-  name?: string,
+  name: string,
   /** Called when the value changes. The only argument is an ISO time. */
   onChange: Handler,
   /** The ISO time that should be used as the input value. */
   value?: string,
-  /** The width of the field. */
-  width?: number,
 };
 
 type State = {
@@ -44,6 +42,7 @@ TODO
 - Navigate the calendar when keys are pressed while maintaining focus on the input.
 - ReactSelect needs a way to control the open / closed state of the dropdown.
 - ReactSelect needs a way to control the value of the input.
+- ReactSelect neesd a way to control the focused item in the dropdown.
 - ReactSelect's onInputChange fires onKeyDown as opposed to onKeyUp meaning the value that comes back isn't what's in the input.
 
 */
@@ -52,9 +51,9 @@ class DatePicker extends Component<Props, State> {
   static defaultProps = {
     autoFocus: false,
     disabled: [],
+    name: '',
     isDisabled: false,
     onChange: () => {},
-    width: 0,
   };
 
   state = {
