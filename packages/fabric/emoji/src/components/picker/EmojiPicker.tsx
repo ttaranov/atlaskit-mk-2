@@ -9,14 +9,16 @@ import EmojiPickerComponent, { PickerRefHandler } from './EmojiPickerComponent';
 import { LoadingItem } from './EmojiPickerVirtualItems';
 import { OnEmojiEvent } from '../../types';
 import { EmojiProvider } from '../../api/EmojiResource';
+import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
 
 export interface Props extends LoadingProps {
   onSelection?: OnEmojiEvent;
   onPickerRef?: PickerRefHandler;
   hideToneSelector?: boolean;
+  firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 }
 
-export default class EmojiPicker extends LoadingEmojiComponent<
+export class EmojiPickerInternal extends LoadingEmojiComponent<
   Props,
   LoadingState
 > {
@@ -49,3 +51,13 @@ export default class EmojiPicker extends LoadingEmojiComponent<
     );
   }
 }
+
+// tslint:disable-next-line:variable-name
+const EmojiPicker = withAnalytics<typeof EmojiPickerInternal>(
+  EmojiPickerInternal,
+  {},
+  {},
+);
+type EmojiPicker = EmojiPickerInternal;
+
+export default EmojiPicker;

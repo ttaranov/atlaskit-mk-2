@@ -147,6 +147,9 @@ function print(startType, depth = 1) {
   if (type.kind === 'any') {
     return <Type>{'any'}</Type>;
   }
+  if (type.kind === 'null') {
+    return <Type>{'null'}</Type>;
+  }
 
   if (type.kind === 'number' || type.kind === 'numberLiteral') {
     if (type.value) {

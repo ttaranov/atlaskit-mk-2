@@ -1,12 +1,12 @@
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock/src/client';
+import { SecurityOptions } from '@atlaskit/util-service-support';
 
 import { MentionDescription } from '../../src/types';
 import MentionResource, {
   HttpError,
   MentionResourceConfig,
-  SecurityOptions,
 } from '../../src/api/MentionResource';
 import {
   resultC,

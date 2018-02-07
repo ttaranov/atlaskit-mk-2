@@ -1,5 +1,8 @@
 # @atlaskit/dynamic-table
 
+## 7.1.0
+- [minor] Added possibility to drag and drop rows in dynamic table. [e69e6f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e69e6f4)
+
 ## 7.0.1
 - [patch] package bump to resolve discrepencies with npm [be745da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/be745da)
 

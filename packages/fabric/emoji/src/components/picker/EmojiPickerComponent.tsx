@@ -1,13 +1,18 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { PureComponent } from 'react';
+import { PureComponent, SyntheticEvent } from 'react';
 import * as classNames from 'classnames';
 
 import * as styles from './styles';
 
-import { customCategory, frequentCategory } from '../../constants';
+import {
+  customCategory,
+  frequentCategory,
+  analyticsEmojiPrefix,
+} from '../../constants';
 import {
   EmojiDescription,
+  OptionalEmojiDescription,
   OptionalEmojiDescriptionWithVariations,
   EmojiId,
   EmojiSearchResult,
@@ -33,6 +38,7 @@ import {
   supportsUploadFeature,
 } from '../../api/EmojiResource';
 import { getEmojiVariation } from '../../api/EmojiRepository';
+import { FireAnalyticsEvent } from '@atlaskit/analytics';
 
 const FREQUENTLY_USED_MAX = 16;
 
@@ -45,6 +51,7 @@ export interface Props {
   onSelection?: OnEmojiEvent;
   onPickerRef?: PickerRefHandler;
   hideToneSelector?: boolean;
+  firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 }
 
 export interface State {
@@ -94,7 +101,11 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       uploadSupported: false,
       uploading: false,
     };
+
+    this.openTime = 0;
   }
+
+  openTime: number;
 
   getChildContext(): EmojiContext {
     return {
@@ -102,6 +113,11 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
         emojiProvider: this.props.emojiProvider,
       },
     };
+  }
+
+  componentWillMount() {
+    this.openTime = Date.now();
+    this.fireAnalytics('open');
   }
 
   componentDidMount() {
@@ -124,6 +140,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
   componentWillUnmount() {
     const { emojiProvider } = this.props;
     emojiProvider.unsubscribe(this.onProviderChange);
+    this.fireAnalytics('close');
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -195,8 +212,25 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           activeCategory: categoryId,
           selectedEmoji,
         } as State);
+        this.fireAnalytics('category.select', { categoryName: categoryId });
       }
     });
+  };
+
+  onFileChosen = () => {
+    this.fireAnalytics('upload.file.selected');
+  };
+
+  private fireAnalytics = (eventName: string, data: any = {}): void => {
+    const { firePrivateAnalyticsEvent } = this.props;
+
+    if (firePrivateAnalyticsEvent) {
+      firePrivateAnalyticsEvent(`${analyticsEmojiPrefix}.${eventName}`, data);
+    }
+  };
+
+  private calculateElapsedTime = () => {
+    return Date.now() - this.openTime;
   };
 
   private onUploadSupported = (supported: boolean) => {
@@ -379,6 +413,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       uploadErrorMessage: undefined,
       uploading: true,
     });
+    this.fireAnalytics('upload.trigger');
   };
 
   private onUploadEmoji = (upload: EmojiUpload) => {
@@ -386,6 +421,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     this.setState({
       uploadErrorMessage: undefined, // clear previous errors
     });
+    this.fireAnalytics('upload.start');
     if (supportsUploadFeature(emojiProvider)) {
       emojiProvider
         .uploadCustomEmoji(upload)
@@ -397,6 +433,9 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           });
           // this.loadEmoji(emojiProvider, emojiDescription);
           this.scrollToEndOfList();
+          this.fireAnalytics('upload.successful', {
+            duration: this.calculateElapsedTime(),
+          });
         })
         .catch(err => {
           this.setState({
@@ -404,6 +443,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           });
           // tslint:disable-next-line
           console.error('Unable to upload emoji', err);
+          this.fireAnalytics('upload.failed');
         });
     }
   };
@@ -423,6 +463,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       uploading: false,
       uploadErrorMessage: undefined,
     });
+    this.fireAnalytics('upload.cancel');
   };
 
   private getDynamicCategories(): Promise<string[]> {
@@ -439,8 +480,26 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     }
   };
 
+  private onSelectWrapper = (
+    emojiId: EmojiId,
+    emoji: OptionalEmojiDescription,
+    event?: SyntheticEvent<any>,
+  ): void => {
+    const { onSelection } = this.props;
+    const { query } = this.state;
+    if (onSelection) {
+      onSelection(emojiId, emoji, event);
+      this.fireAnalytics('item.select', {
+        duration: this.calculateElapsedTime(),
+        emojiId: emojiId.id || '',
+        type: (emoji && emoji.type) || '',
+        queryLength: (query && query.length) || 0,
+      });
+    }
+  };
+
   render() {
-    const { emojiProvider, onSelection } = this.props;
+    const { emojiProvider } = this.props;
     const {
       activeCategory,
       disableCategories,
@@ -458,7 +517,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
 
     const recordUsageOnSelection = createRecordSelectionDefault(
       emojiProvider,
-      onSelection,
+      this.onSelectWrapper,
     );
 
     const classes = [styles.emojiPicker];
@@ -495,6 +554,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           uploadErrorMessage={uploadErrorMessage}
           onUploadEmoji={this.onUploadEmoji}
           onUploadCancelled={this.onUploadCancelled}
+          onFileChosen={this.onFileChosen}
         />
       </div>
     );

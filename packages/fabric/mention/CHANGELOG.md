@@ -1,5 +1,8 @@
 # @atlaskit/mention
 
+## 9.1.3
+- [patch] FS-1091 remove direct dependency on url-search-params [e680d67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e680d67)
+
 ## 9.1.2
 - [patch] FS-1699 Fix mention sorting [ff33bef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ff33bef)
 

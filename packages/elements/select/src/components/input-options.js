@@ -64,9 +64,12 @@ const getSecondaryColor = ({
   return color(rest);
 };
 
+type fn = any => any;
 type OptionProops = {
   children: Node,
+  getStyles: fn,
   Icon: CheckboxIcon | RadioIcon,
+  innerProps: {},
   isDisabled?: boolean,
   isFocused?: boolean,
   isSelected: boolean,
@@ -79,31 +82,44 @@ class ControlOption extends Component<OptionProops, OptionState> {
   onMouseLeave = () => this.setState({ isActive: false });
   render() {
     const {
+      getStyles,
       Icon,
       isDisabled,
       isFocused,
       isSelected,
       children,
-      ...props
+      innerProps,
     } = this.props;
     const { isActive } = this.state;
 
+    // styles
     let bg = 'transparent';
     if (isFocused) bg = colors.N20;
     if (isActive) bg = colors.B50;
 
+    const style = {
+      alignItems: 'center',
+      backgroundColor: bg,
+      color: 'inherit',
+      display: 'flex ',
+    };
+
+    // prop assignment
+    const props = {
+      ...innerProps,
+      onMouseDown: this.onMouseDown,
+      onMouseUp: this.onMouseUp,
+      onMouseLeave: this.onMouseLeave,
+      style,
+    };
+
     return (
       <components.Option
-        onMouseDown={this.onMouseDown}
-        onMouseUp={this.onMouseUp}
-        onMouseLeave={this.onMouseLeave}
-        style={{
-          alignItems: 'center',
-          backgroundColor: bg,
-          color: 'inherit',
-          display: 'flex ',
-        }}
-        {...props}
+        isDisabled={isDisabled}
+        isFocused={isFocused}
+        isSelected={isSelected}
+        getStyles={getStyles}
+        innerProps={props}
       >
         <Icon
           primaryColor={getPrimaryColor({ ...this.props, ...this.state })}

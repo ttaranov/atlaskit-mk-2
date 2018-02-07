@@ -1,5 +1,7 @@
 # @atlaskit/editor-jira-transformer
 
+## 2.4.7
+
 ## 2.4.6
 
 ## 2.4.5
