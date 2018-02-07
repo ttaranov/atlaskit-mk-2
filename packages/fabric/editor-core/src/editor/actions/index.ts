@@ -74,9 +74,7 @@ export default class EditorActions {
   }
 
   getValue(): Promise<any | undefined> {
-    return getEditorValueWithMedia(
-      this.editorView && this.editorView.state,
-    ).then(doc => {
+    return getEditorValueWithMedia(this.editorView).then(doc => {
       const processedDoc = preprocessDoc(this.editorView!.state.schema, doc);
       if (this.contentTransformer && processedDoc) {
         return this.contentTransformer.encode(processedDoc);
