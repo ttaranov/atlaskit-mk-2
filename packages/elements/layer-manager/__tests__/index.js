@@ -15,7 +15,12 @@ function assertEqual(actual, expected) {
 
 // NOTE: shim avoids noise in test logs
 // eslint-disable-next-line react/prop-types, no-unused-vars
-const Shim = ({ stackIndex, stackTotal, ...props }) => <span {...props} />;
+const Shim = ({
+  stackIndex,
+  stackTotal,
+  blockChildGatewayRender,
+  ...props
+}) => <span {...props} />;
 
 describe(name, () => {
   it('should render Gateway in GatewayDest', () => {

@@ -101,8 +101,6 @@ describe('<AkCollapseOverflow />', () => {
       );
       instance = wrapper.instance();
       requestAnimationFrame.step(); // needed for SizeDetector
-      // TODO: Please see - AK-4242
-      sinon.stub(console, 'warn');
     });
 
     it('should render dropdown only if break is needed', () => {

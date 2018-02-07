@@ -2,6 +2,7 @@
 import React from 'react';
 import ContainerTitle from '../src/components/js/ContainerTitle';
 import { mountWithRootTheme } from './_theme-util';
+import { toClass } from 'recompose';
 
 describe('<ContainerTitle />', () => {
   describe('props', () => {
@@ -14,23 +15,20 @@ describe('<ContainerTitle />', () => {
     });
 
     it('linkComponent can be used to render an arbitrary link', () => {
-      // TODO: Please see - AK-4242
-      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const MyLinkComponent = toClass(({ href, children }) => (
+        <a href={href} data-foo="foo">
+          {children}
+        </a>
+      ));
       const wrapper = mountWithRootTheme(
         <ContainerTitle
           href="http://google.com"
-          linkComponent={({ href, children }) => (
-            <a href={href} data-foo="foo">
-              {children}
-            </a>
-          )}
+          linkComponent={MyLinkComponent}
         />,
       );
       expect(wrapper.find('[data-foo]').length).toBe(1);
-      expect(wrapper.find('linkComponent').props().href).toBe(
-        'http://google.com',
-      );
-      expect(spy).toHaveBeenCalled();
+      // ToClass renames linkComponent to Component
+      expect(wrapper.find('Component').props().href).toBe('http://google.com');
     });
 
     it('should render its title', () => {
