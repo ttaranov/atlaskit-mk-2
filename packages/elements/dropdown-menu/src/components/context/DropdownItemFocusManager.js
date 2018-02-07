@@ -4,12 +4,16 @@ import React, { Component, type Node } from 'react';
 import PropTypes from 'prop-types';
 import { focusManagerContext } from '../../util/contextNamespace';
 import type { ItemId, FocusItem } from '../../../src/types';
-import { KEY_DOWN, KEY_UP } from '../../util/keys';
+import { KEY_DOWN, KEY_UP, KEY_TAB } from '../../util/keys';
 
 type Props = {
   /** Causes first registered item to receive focus */
   autoFocus?: boolean,
   children?: Node,
+  close?: ({
+    event: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>,
+    source?: 'click' | 'keydown',
+  }) => void,
 };
 
 export default class DropdownItemFocusManager extends Component<Props> {
@@ -81,14 +85,14 @@ export default class DropdownItemFocusManager extends Component<Props> {
     return -1;
   };
 
-  handleKeyboard = (event: KeyboardEvent): void => {
-    const { key } = event;
+  handleKeyboard = (event: SyntheticKeyboardEvent<any>): void => {
+    const { key, shiftKey } = event;
+    const focusedItemIndex = this.focusedItemIndex();
     if (key === KEY_UP || key === KEY_DOWN) {
       // We prevent default here to avoid page scrolling when up/down
       // pressed while dropdown is focused.
       event.preventDefault();
 
-      const focusedItemIndex = this.focusedItemIndex();
       if (focusedItemIndex < 0) {
         return;
       }
@@ -98,6 +102,16 @@ export default class DropdownItemFocusManager extends Component<Props> {
           ? Math.max(0, focusedItemIndex - 1)
           : Math.min(this.registeredItems.length - 1, focusedItemIndex + 1);
       this.registeredItems[nextItemIndex].itemNode.focus();
+    }
+
+    if (key === KEY_TAB) {
+      if (!shiftKey && focusedItemIndex === this.registeredItems.length - 1) {
+        if (this.props.close) this.props.close({ event, source: 'keydown' });
+      }
+
+      if (shiftKey && focusedItemIndex === 0) {
+        if (this.props.close) this.props.close({ event, source: 'keydown' });
+      }
     }
   };
 
