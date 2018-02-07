@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react';
 import { mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import ContainerNavigationNested from '../src/components/js/nested/ContainerNavigationNested';
-import ContainerNavigationNestedPage from '../src/components/js/nested/ContainerNavigationNestedPage';
 import { getAnimation } from '../src/components/styled/NestedNavigationPage';
 
 configure({ adapter: new Adapter() });
