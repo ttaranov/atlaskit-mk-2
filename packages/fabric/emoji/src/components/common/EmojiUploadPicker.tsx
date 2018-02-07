@@ -21,6 +21,7 @@ export interface OnUploadEmoji {
 export interface Props {
   onUploadEmoji: OnUploadEmoji;
   onUploadCancelled: () => void;
+  onFileChosen?: (name: string) => void;
   errorMessage?: string;
   initialUploadName?: string;
 }
@@ -285,6 +286,7 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
     };
 
     if (files.length) {
+      const { onFileChosen } = this.props;
       const reader = new FileReader();
       const file: File = files[0];
       reader.addEventListener('load', () => {
@@ -297,6 +299,9 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
       reader.addEventListener('abort', cancelChooseFile);
       reader.addEventListener('error', cancelChooseFile);
       reader.readAsDataURL(file);
+      if (onFileChosen) {
+        onFileChosen(file.name);
+      }
     } else {
       cancelChooseFile();
     }
