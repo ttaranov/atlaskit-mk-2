@@ -35,14 +35,14 @@ module.exports = function createWebpackConfig(
               `${require.resolve(
                 'webpack-dev-server/client',
               )}?http://${host}:${port}/`,
-              path.join(process.cwd(), './src/examples-iframe.js'),
+              path.join(process.cwd(), './src/examples-entry.js'),
             ]
           : path.join(cwd, './src/examples-iframe.js'),
       vendor: ['react', 'react-dom', 'styled-components', 'highlight.js'],
     },
     output: {
       filename: '[name].js',
-      path: path.resolve(cwd, 'dist'),
+      path: path.resolve(cwd, 'dist/examples'),
       publicPath: '/',
     },
     devtool: env === 'production' ? false : 'cheap-module-source-map',

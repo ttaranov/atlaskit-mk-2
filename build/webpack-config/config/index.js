@@ -46,7 +46,7 @@ module.exports = function createWebpackConfig(
     },
     output: {
       filename: '[name].js',
-      path: path.resolve(cwd, 'dist'),
+      path: path.resolve(cwd, 'dist/website'),
       publicPath: '/',
     },
     devtool: env === 'production' ? false : 'cheap-module-source-map',
