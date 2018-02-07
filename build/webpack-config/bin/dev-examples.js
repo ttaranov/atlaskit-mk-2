@@ -21,7 +21,7 @@ const minimatch = require('minimatch');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const historyApiFallback = require('connect-history-api-fallback');
-const createConfig = require('../config/iframe-config.js');
+const createConfig = require('../config/examples.js');
 const utils = require('../config/utils');
 const { print, devServerBanner, errorMsg } = require('../banner');
 
