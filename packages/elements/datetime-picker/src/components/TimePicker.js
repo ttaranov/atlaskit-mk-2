@@ -115,10 +115,12 @@ class TimePicker extends Component<Props, State> {
           onChange={this.handleChange}
           options={this.getOptions()}
           placeholder="e.g. 9:00am"
-          value={{
-            label: formatTime(value),
-            value,
-          }}
+          value={
+            value && {
+              label: formatTime(value),
+              value,
+            }
+          }
         />
       </div>
     );
