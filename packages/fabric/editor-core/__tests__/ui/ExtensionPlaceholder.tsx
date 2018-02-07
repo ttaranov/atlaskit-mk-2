@@ -6,8 +6,6 @@ import Placeholder from '../../src/ui/Extension/Placeholder';
 import { PlaceholderFallback } from '../../src/ui/Extension/styles';
 
 describe('@atlaskit/editor-core/ui/Extension/Placeholder', () => {
-  const noop: any = () => {};
-
   it('should render image if extension node has placeholder image param', () => {
     const placeholder = shallow(
       <Placeholder node={inlineExtensionData[0] as any} />,
