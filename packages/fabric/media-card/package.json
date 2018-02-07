@@ -42,7 +42,7 @@
     "deep-equal": "^1.0.1",
     "lodash.debounce": "^4.0.8",
     "polished": "1.5.0",
-    "react-lazily-render": "^0.0.8",
+    "react-lazily-render": "^1.0.0",
     "react-render-image": "^1.1.1",
     "react-transition-group": "^2.2.1",
     "styled-components": "^1.4.6",
