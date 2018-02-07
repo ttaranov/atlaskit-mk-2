@@ -15,7 +15,6 @@ import {
   isRangeOfType,
   canMoveDown,
   canMoveUp,
-  setTextSelection,
   atTheEndOfDoc,
   atTheBeginningOfBlock,
 } from '../utils';
@@ -232,27 +231,29 @@ export function liftListItems(): Command {
   };
 }
 
-export function insertBlockType(view: EditorView, name: string): boolean {
-  const { nodes } = view.state.schema;
+export function insertBlockType(name: string): Command {
+  return function(state, dispatch) {
+    const { nodes } = state.schema;
 
-  switch (name) {
-    case blockTypes.BLOCK_QUOTE.name:
-      if (nodes.paragraph && nodes.blockquote) {
-        return wrapSelectionIn(nodes.blockquote)(view.state, view.dispatch);
-      }
-      break;
-    case blockTypes.CODE_BLOCK.name:
-      if (nodes.codeBlock) {
-        return insertCodeBlock()(view.state, view.dispatch);
-      }
-      break;
-    case blockTypes.PANEL.name:
-      if (nodes.panel && nodes.paragraph) {
-        return wrapSelectionIn(nodes.panel)(view.state, view.dispatch);
-      }
-      break;
-  }
-  return false;
+    switch (name) {
+      case blockTypes.BLOCK_QUOTE.name:
+        if (nodes.paragraph && nodes.blockquote) {
+          return wrapSelectionIn(nodes.blockquote)(state, dispatch);
+        }
+        break;
+      case blockTypes.CODE_BLOCK.name:
+        if (nodes.codeBlock) {
+          return insertCodeBlock()(state, dispatch);
+        }
+        break;
+      case blockTypes.PANEL.name:
+        if (nodes.panel && nodes.paragraph) {
+          return wrapSelectionIn(nodes.panel)(state, dispatch);
+        }
+        break;
+    }
+    return false;
+  };
 }
 
 /**
@@ -378,30 +379,32 @@ export function insertNodesEndWithNewParagraph(nodes: PMNode[]): Command {
   };
 }
 
-export function createNewParagraphAbove(view: EditorView): Command {
-  return function(state, dispatch) {
-    const append = false;
+export function createNewParagraphAbove(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean {
+  const append = false;
 
-    if (!canMoveUp(state) && canCreateParagraphNear(state)) {
-      createParagraphNear(view, append);
-      return true;
-    }
+  if (!canMoveUp(state) && canCreateParagraphNear(state)) {
+    createParagraphNear(append)(state, dispatch);
+    return true;
+  }
 
-    return false;
-  };
+  return false;
 }
 
-export function createNewParagraphBelow(view: EditorView): Command {
-  return function(state, dispatch) {
-    const append = true;
+export function createNewParagraphBelow(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean {
+  const append = true;
 
-    if (!canMoveDown(state) && canCreateParagraphNear(state)) {
-      createParagraphNear(view, append);
-      return true;
-    }
+  if (!canMoveDown(state) && canCreateParagraphNear(state)) {
+    createParagraphNear(append)(state, dispatch);
+    return true;
+  }
 
-    return false;
-  };
+  return false;
 }
 
 function canCreateParagraphNear(state: EditorState): boolean {
@@ -412,31 +415,31 @@ function canCreateParagraphNear(state: EditorState): boolean {
   return $from.depth > 1 || isNodeSelection || insideCodeBlock;
 }
 
-export function createParagraphNear(
-  view: EditorView,
-  append: boolean = true,
-): void {
-  const { state, dispatch } = view;
-  const paragraph = state.schema.nodes.paragraph;
+export function createParagraphNear(append: boolean = true): Command {
+  return function(state, dispatch) {
+    const paragraph = state.schema.nodes.paragraph;
 
-  if (!paragraph) {
-    return;
-  }
-
-  let insertPos;
-
-  if (state.selection instanceof TextSelection) {
-    if (topLevelNodeIsEmptyTextBlock(state)) {
-      return;
+    if (!paragraph) {
+      return false;
     }
-    insertPos = getInsertPosFromTextBlock(state, append);
-  } else {
-    insertPos = getInsertPosFromNonTextBlock(state, append);
-  }
 
-  dispatch(state.tr.insert(insertPos, paragraph.create()));
+    let insertPos;
 
-  setTextSelection(view, insertPos + 1);
+    if (state.selection instanceof TextSelection) {
+      if (topLevelNodeIsEmptyTextBlock(state)) {
+        return false;
+      }
+      insertPos = getInsertPosFromTextBlock(state, append);
+    } else {
+      insertPos = getInsertPosFromNonTextBlock(state, append);
+    }
+
+    const tr = state.tr.insert(insertPos, paragraph.createAndFill()!);
+    tr.setSelection(TextSelection.create(tr.doc, insertPos + 1));
+    dispatch(tr);
+
+    return true;
+  };
 }
 
 function getInsertPosFromTextBlock(state: EditorState, append: boolean): void {

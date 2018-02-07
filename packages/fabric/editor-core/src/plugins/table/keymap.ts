@@ -1,9 +1,9 @@
-import { keydownHandler } from 'prosemirror-keymap';
+import { keymap } from 'prosemirror-keymap';
 import tableCommands from './commands';
 import * as keymaps from '../../keymaps';
-import { TableState } from './';
+import { Plugin } from 'prosemirror-state';
 
-export function keymapHandler(pluginState: TableState): Function {
+export function keymapPlugin(): Plugin {
   const list = {};
 
   keymaps.bindKeymapWithCommand(
@@ -32,7 +32,7 @@ export function keymapHandler(pluginState: TableState): Function {
     list,
   );
 
-  return keydownHandler(list);
+  return keymap(list);
 }
 
-export default keymapHandler;
+export default keymapPlugin;
