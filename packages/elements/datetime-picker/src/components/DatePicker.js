@@ -25,7 +25,7 @@ type Props = {
   /** The ISO time that should be used as the input value. */
   value?: string,
   /** The width of the field. */
-  width: number,
+  width?: number,
 };
 
 type State = {
@@ -46,7 +46,7 @@ class DatePicker extends Component<Props, State> {
     disabled: [],
     isDisabled: false,
     onChange: () => {},
-    width: null,
+    width: 0,
   };
 
   state = {
@@ -117,12 +117,12 @@ class DatePicker extends Component<Props, State> {
   }
 
   render() {
-    const { value } = this.state;
+    const { isOpen, value } = this.state;
     return (
       <DatePickerStateless
         autoFocus={this.props.autoFocus}
         isDisabled={this.props.isDisabled}
-        isOpen={this.state.isOpen}
+        isOpen={isOpen}
         shouldShowIcon
         displayValue={formatDate(value)}
         value={value}

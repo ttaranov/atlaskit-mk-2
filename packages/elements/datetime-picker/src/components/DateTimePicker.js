@@ -80,16 +80,16 @@ const FlexItem = styled.div`
   flex-grow: 1;
 `;
 
+function formatDateTimeIntoIso(date: string, time: string): string {
+  return `${date}T${time}`;
+}
+
 function parseDateIntoStateValues(value) {
   const parsed = parse(value);
   return {
     _dateValue: format(parsed, 'YYYY-MM-DD'),
     _timeValue: format(parsed, 'HH:mm'),
   };
-}
-
-function formatDateTimeIntoIso(date: string, time: string): string {
-  return `${date}T${time}`;
 }
 
 class DateTimePicker extends Component<Props, State> {
@@ -111,12 +111,12 @@ class DateTimePicker extends Component<Props, State> {
     value: '',
   };
 
-  handleDateChange = _dateValue => {
+  handleDateChange = (_dateValue: string) => {
     this.setState({ _dateValue });
     this.handleValueChange();
   };
 
-  handleTimeChange = _timeValue => {
+  handleTimeChange = (_timeValue: string) => {
     this.setState({ _timeValue });
     this.handleValueChange();
   };
@@ -128,27 +128,9 @@ class DateTimePicker extends Component<Props, State> {
     }
   }
 
-  // TODO add feature to react-ctrl that allows you to map props / defaultProps
-  // to the state value they correspond to then we can stop using this.
-  mapValueFromPropsOrState() {
-    const { props, state } = this;
-    const { _dateValue, _timeValue } = state;
-    if ('value' in props) {
-      return parseDateIntoStateValues(state.value);
-    }
-    const parsed = parseDateIntoStateValues(props.defaultValue);
-    parsed._dateValue = _dateValue || parsed._dateValue;
-    parsed._timeValue = _timeValue || parsed._timeValue;
-    return parsed;
-  }
-
   render() {
     const { name } = this.props;
-    const { _dateValue, _timeValue } = this.mapValueFromPropsOrState();
-    const value =
-      _dateValue && _timeValue
-        ? formatDateTimeIntoIso(_dateValue, _timeValue)
-        : '';
+    const { _dateValue, _timeValue, value } = this.state;
     return (
       <Flex>
         <input name={name} type="hidden" value={value} />
@@ -163,4 +145,15 @@ class DateTimePicker extends Component<Props, State> {
   }
 }
 
-export default withCtrl(DateTimePicker);
+export default withCtrl(DateTimePicker, {
+  mapPropsToState(props) {
+    const { value } = props;
+    const overridden = {};
+    if (value) {
+      const parsed = parseDateIntoStateValues(value);
+      overridden._dateValue = parsed._dateValue;
+      overridden._timeValue = parsed._timeValue;
+    }
+    return { ...props, ...overridden };
+  },
+});

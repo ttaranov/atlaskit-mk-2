@@ -7,22 +7,28 @@ import { DatePicker, DateTimePicker, TimePicker } from '../src';
 export default () => {
   return (
     <div>
-      <Label label="Date picker (controlled)" />
+      <h3>Date picker</h3>
+      <Label label="default" />
+      <DatePicker />
+      <Label label="controlled (value)" />
       <DatePicker value="2018-01-02" />
-
-      <Label label="Date picker (uncontrolled)" />
+      <Label label="uncontrolled (defaultValue)" />
       <DatePicker defaultValue="2018-01-02" />
 
-      <Label label="Time picker (controlled)" />
+      <h3>Time picker</h3>
+      <Label label="default" />
+      <TimePicker />
+      <Label label="controlled (value)" />
       <TimePicker value="14:30" />
-
-      <Label label="Time picker (uncontrolled)" />
+      <Label label="uncontrolled (defaultValue)" />
       <TimePicker defaultValue="14:30" />
 
-      <Label label="Date / time picker (controlled)" />
+      <h3>Date / time picker</h3>
+      <Label label="default" />
+      <DateTimePicker />
+      <Label label="controlled (value)" />
       <DateTimePicker value="2018-01-02T14:30" />
-
-      <Label label="Date / time picker (uncontrolled)" />
+      <Label label="uncontrolled (defaultValue)" />
       <DateTimePicker defaultValue="2018-01-02T14:30" />
     </div>
   );

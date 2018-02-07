@@ -1,13 +1,10 @@
 // @flow
 
-import { isValid } from 'date-fns';
-import React, { Component, type ElementRef } from 'react';
-import withCtrl from 'react-ctrl';
-import TimePickerStateless from './TimePickerStateless';
-import type { Event, Handler } from '../types';
-import { dateFromTime, formatTime } from '../util';
-
 import Select from '@atlaskit/select';
+import React, { Component } from 'react';
+import withCtrl from 'react-ctrl';
+import type { Handler } from '../types';
+import { formatTime } from '../util';
 
 const defaultTimes = [
   '09:00',
