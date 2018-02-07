@@ -6,13 +6,10 @@ import Navigation, {
   AkNavigationItem,
   AkContainerNavigationNested,
 } from '../src';
+import type { Stack } from '../src/components/js/nested/types';
 
-type StackItem = {
-  title: string,
-  children?: StackItem[],
-};
 type State = {
-  stack: StackItem[][],
+  stack: Stack,
 };
 
 export default class NavigationPanel extends Component<{}, State> {
@@ -35,7 +32,7 @@ export default class NavigationPanel extends Component<{}, State> {
     };
   }
 
-  stackPush = (item: StackItem) => {
+  stackPush = (item: any) => {
     const stack = [...this.state.stack, item];
     this.setState({ stack });
   };
@@ -61,7 +58,7 @@ export default class NavigationPanel extends Component<{}, State> {
     return items;
   };
 
-  renderItem = item => {
+  renderItem = (item: any) => {
     const onClick = item.children && (() => this.stackPush(item.children));
 
     return (
