@@ -113,8 +113,7 @@ describe('hyperlink - keymap', () => {
   });
 
   describe('Shift-Enter keypress', () => {
-    // TODO: ED-3676
-    it.skip('converts possible link text to hyperlink', () => {
+    it('converts possible link text to hyperlink', () => {
       const trackEvent = jest.fn();
       const { editorView } = editor(doc(p('hello www.atlassian.com{<>}')), {
         analyticsHandler: trackEvent,

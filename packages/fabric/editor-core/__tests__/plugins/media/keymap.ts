@@ -84,8 +84,7 @@ describe('media - keymaps', () => {
     });
   });
 
-  // TODO: @see ED-3682
-  describe.skip('Shift-Enter keypress', () => {
+  describe('Shift-Enter keypress', () => {
     it('splits media group', () => {
       const { editorView, pluginState } = editor(doc(p('{<>}')));
       const splitMediaGroupSpy = jest.spyOn(pluginState, 'splitMediaGroup');
