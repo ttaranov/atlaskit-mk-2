@@ -1,6 +1,6 @@
 /* tslint:disable variable-name */
 import * as React from 'react';
-import {ReactNode, WheelEvent, MouseEvent} from 'react';
+import { ReactNode, WheelEvent, MouseEvent } from 'react';
 import ArrowLeft from '@atlaskit/icon/glyph/arrow-left';
 import ArrowRight from '@atlaskit/icon/glyph/arrow-right';
 import {
@@ -11,7 +11,7 @@ import {
   ArrowRightWrapper,
   ShadowLeft,
   ShadowRight,
-  FilmStripListItem
+  FilmStripListItem,
 } from './styled';
 
 const DURATION_MIN = 0.5;
@@ -55,27 +55,29 @@ export interface ArrowProps {
   onClick: (event: MouseEvent<HTMLDivElement>) => void;
 }
 
-export const LeftArrow: React.SFC<ArrowProps> = ({onClick}: ArrowProps) => (
+export const LeftArrow: React.SFC<ArrowProps> = ({ onClick }: ArrowProps) => (
   <ShadowLeft>
     <ArrowLeftWrapper className="arrow" onClick={onClick}>
-      <ArrowLeft label="left"/>
+      <ArrowLeft label="left" />
     </ArrowLeftWrapper>
   </ShadowLeft>
 );
 
-export const RightArrow: React.SFC<ArrowProps> = ({onClick}: ArrowProps) => (
+export const RightArrow: React.SFC<ArrowProps> = ({ onClick }: ArrowProps) => (
   <ShadowRight>
     <ArrowRightWrapper className="arrow" onClick={onClick}>
-      <ArrowRight label="right"/>
+      <ArrowRight label="right" />
     </ArrowRightWrapper>
   </ShadowRight>
 );
 
-export class FilmstripView extends React.Component<FilmstripViewProps, FilmstripViewState> {
-
+export class FilmstripView extends React.Component<
+  FilmstripViewProps,
+  FilmstripViewState
+> {
   static defaultProps: Partial<FilmstripViewProps> = {
     animate: false,
-    offset: 0
+    offset: 0,
   };
 
   bufferElement: HTMLElement;
@@ -86,11 +88,11 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
   state = {
     bufferWidth: 0,
-    windowWidth: 0
+    windowWidth: 0,
   };
 
   get offset() {
-    const {offset} = this.props;
+    const { offset } = this.props;
     if (!offset) {
       return 0;
     }
@@ -105,7 +107,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
    * The furthest we can scroll, where the end of the buffer is just in view
    */
   get maxOffset() {
-    const {bufferWidth, windowWidth} = this.state;
+    const { bufferWidth, windowWidth } = this.state;
     return Math.max(this.minOffset, bufferWidth - windowWidth - 1);
   }
 
@@ -118,12 +120,12 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   }
 
   get transitionDuration() {
-    const {animate} = this.props;
-    const {windowWidth} = this.state;
+    const { animate } = this.props;
+    const { windowWidth } = this.state;
     if (!animate) {
       return 0;
     }
-    if (Math.abs(this.offset - this.previousOffset) < 1E-6) {
+    if (Math.abs(this.offset - this.previousOffset) < 1e-6) {
       return DURATION_MIN;
     } else {
       const diff = Math.abs(this.offset - this.previousOffset);
@@ -145,10 +147,16 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   // find the child that is cut off on the left edge of the window and change the window offset to
   // start to the left of that child
   getClosestForLeft(offset: number): number {
-    const leftWindowEdge = Math.min(this.maxOffset, Math.max(this.minOffset, offset));
+    const leftWindowEdge = Math.min(
+      this.maxOffset,
+      Math.max(this.minOffset, offset),
+    );
     for (let i = 0; i < this.childOffsets.length; ++i) {
       const childBounds = this.childOffsets[i];
-      if (leftWindowEdge >= childBounds.left && leftWindowEdge <= childBounds.right) {
+      if (
+        leftWindowEdge >= childBounds.left &&
+        leftWindowEdge <= childBounds.right
+      ) {
         const newOffset = childBounds.left;
         if (newOffset >= EXTRA_PADDING) {
           return newOffset - EXTRA_PADDING; // show extra padding from the next sibling for aesthetic reasons
@@ -163,11 +171,15 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   // find the child that is cut off on the right edge of the window and change the window offset
   // to finish at start of the next child
   getClosestForRight(offset: number): number {
-    const {windowWidth} = this.state;
-    const rightWindowEdge = Math.min(this.maxOffset, Math.max(this.minOffset, offset)) + windowWidth;
+    const { windowWidth } = this.state;
+    const rightWindowEdge =
+      Math.min(this.maxOffset, Math.max(this.minOffset, offset)) + windowWidth;
     for (let i = 0; i < this.childOffsets.length; ++i) {
       const childBounds = this.childOffsets[i];
-      if (rightWindowEdge >= childBounds.left && rightWindowEdge <= childBounds.right) {
+      if (
+        rightWindowEdge >= childBounds.left &&
+        rightWindowEdge <= childBounds.right
+      ) {
         const newOffset = childBounds.right - windowWidth;
         if (newOffset + EXTRA_PADDING <= this.maxOffset) {
           return newOffset + EXTRA_PADDING; // show extra padding from the next sibling for aesthetic reasons
@@ -180,9 +192,8 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   }
 
   handleSizeChange = () => {
-
     // get the new widths
-    const {windowElement, bufferElement} = this;
+    const { windowElement, bufferElement } = this;
     let bufferWidth = 0;
     let windowWidth = 0;
     let childOffsets = [];
@@ -198,7 +209,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
         const offset = {
           left,
-          right: left + width - 1
+          right: left + width - 1,
         };
         left += width;
         return offset;
@@ -209,7 +220,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     // (otherwise, since this method() is called in componentDidUpdate() we'll recurse until the stack size is exceeded)
     const {
       bufferWidth: prevBufferWidth,
-      windowWidth: prevWindowWidth
+      windowWidth: prevWindowWidth,
     } = this.state;
     if (bufferWidth === prevBufferWidth && windowWidth === prevWindowWidth) {
       // NOTE: we're not checking here if childOffsets has changed... if the children change size but
@@ -221,74 +232,69 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     this.setState(
       {
         bufferWidth,
-        windowWidth
+        windowWidth,
       },
       () => {
-
         this.childOffsets = childOffsets;
 
         // notify the integrator
-        const {onSize} = this.props;
+        const { onSize } = this.props;
         if (onSize) {
           onSize({
             offset: Math.min(this.maxOffset, this.offset),
             offsets: childOffsets,
             width: windowWidth,
             minOffset: this.minOffset,
-            maxOffset: this.maxOffset
+            maxOffset: this.maxOffset,
           });
         }
-
-      }
+      },
     );
-
-  }
+  };
 
   handleWindowElementChange = windowElement => {
     this.windowElement = windowElement;
     this.handleSizeChange();
-  }
+  };
 
   handleBufferElementChange = bufferElement => {
     this.bufferElement = bufferElement;
     this.handleSizeChange();
-  }
+  };
 
   handleLeftClick = event => {
-
     // Stop the click event from bubling up and being handled by other components
     // See https://product-fabric.atlassian.net/browse/MSW-165
     event.stopPropagation();
 
-    const {onScroll} = this.props;
+    const { onScroll } = this.props;
     if (onScroll) {
-      const {windowWidth} = this.state;
+      const { windowWidth } = this.state;
       const newOffset = this.getClosestForLeft(this.offset - windowWidth);
       onScroll({
         direction: 'left',
         offset: newOffset,
-        animate: true
+        animate: true,
       });
     }
-  }
+  };
 
   handleRightClick = event => {
-
     // Stop the click event from bubling up and being handled by other components
     // See https://product-fabric.atlassian.net/browse/MSW-165
     event.stopPropagation();
 
-    const {onScroll} = this.props;
+    const { onScroll } = this.props;
     if (onScroll) {
-      const {windowWidth} = this.state;
+      const { windowWidth } = this.state;
       const newOffset = this.getClosestForRight(this.offset + windowWidth);
       onScroll({
         direction: 'right',
         offset: newOffset,
-        animate: true
+        animate: true,
       });
     }
-  }
+  };
 
   handleScroll = (event: WheelEvent<HTMLDivElement>) => {
     const isHorizontalScroll = Math.abs(event.deltaX) > Math.abs(event.deltaY);
@@ -300,36 +306,34 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     event.preventDefault();
 
     // notify the integrator of the offset change
-    const {onScroll} = this.props;
+    const { onScroll } = this.props;
     if (onScroll && isHorizontalScroll) {
-      const newOffset = Math.max(this.minOffset, Math.min(this.maxOffset, this.offset + event.deltaX));
+      const newOffset = Math.max(
+        this.minOffset,
+        Math.min(this.maxOffset, this.offset + event.deltaX),
+      );
       onScroll({
         direction: event.deltaX < 0 ? 'left' : 'right',
         offset: newOffset,
-        animate: false
+        animate: false,
       });
     }
-
-  }
+  };
 
   renderLeftArrow() {
-    const {canGoLeft} = this;
+    const { canGoLeft } = this;
     if (!canGoLeft) {
       return null;
     }
-    return (
-      <LeftArrow onClick={this.handleLeftClick}/>
-    );
+    return <LeftArrow onClick={this.handleLeftClick} />;
   }
 
   renderRightArrow() {
-    const {canGoRight} = this;
+    const { canGoRight } = this;
     if (!canGoRight) {
       return null;
     }
-    return (
-      <RightArrow onClick={this.handleRightClick}/>
-    );
+    return <RightArrow onClick={this.handleRightClick} />;
   }
 
   componentDidMount() {
@@ -352,14 +356,10 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     // note: we have to wait for the transition to end, otherwise the cards not visible when the scroll
     // event is triggered will be forever stuck in the loading screen (due to the lazy load)
     setTimeout(() => this.triggerScrollEvent(), this.transitionDuration * 1000);
-
   }
 
   render(): JSX.Element {
-    const {
-      animate,
-      children
-    } = this.props;
+    const { animate, children } = this.props;
 
     const transform = `translateX(${-this.offset}px)`;
     const transitionProperty = animate ? 'transform' : 'none';
@@ -374,12 +374,10 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
         >
           <FilmStripList
             innerRef={this.handleBufferElementChange}
-            style={{transform, transitionProperty, transitionDuration}}
+            style={{ transform, transitionProperty, transitionDuration }}
           >
             {React.Children.map(children, (child, index) => (
-              <FilmStripListItem key={index}>
-                {child}
-              </FilmStripListItem>
+              <FilmStripListItem key={index}>{child}</FilmStripListItem>
             ))}
           </FilmStripList>
         </FilmStripListWrapper>
@@ -387,5 +385,4 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
       </FilmStripViewWrapper>
     );
   }
-
 }
