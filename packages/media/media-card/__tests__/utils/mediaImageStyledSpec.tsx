@@ -8,13 +8,13 @@ describe('MediaImage styled', () => {
     expect(element).toMatchSnapshot();
   });
 
-  it('isCropped=true', () => {
-    const element = shallow(<ImageViewWrapper isCropped={true} />);
+  it('shouldCrop=true', () => {
+    const element = shallow(<ImageViewWrapper shouldCrop={true} />);
     expect(element).toMatchSnapshot();
   });
 
-  it('fadeIn=true', () => {
-    const element = shallow(<ImageViewWrapper fadeIn={true} />);
+  it('shouldFadeIn=true', () => {
+    const element = shallow(<ImageViewWrapper shouldFadeIn={true} />);
     expect(element).toMatchSnapshot();
   });
 });

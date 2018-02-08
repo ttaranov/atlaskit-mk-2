@@ -1,21 +1,13 @@
-/**
- * Only used internally ATM
- */
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Component } from 'react';
 
-import { ImageViewWrapper, transparentFallbackBackground } from './styled';
+import { ImageViewWrapper } from './styled';
 
 export interface MediaImageProps {
   dataURI: string;
-  fadeIn?: boolean;
-  crop?: boolean;
-  transparentFallback?: boolean;
-  width?: string;
-  height?: string;
-  className?: string;
-  onError?: (this: HTMLElement, ev: ErrorEvent) => any;
+  shouldFadeIn?: boolean;
+  shouldCrop?: boolean;
 }
 
 export interface MediaImageState {
@@ -27,11 +19,8 @@ export interface MediaImageState {
 
 export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   static defaultProps = {
-    fadeIn: true,
-    crop: true,
-    transparentFallback: false,
-    width: '100%',
-    height: '100%',
+    shouldFadeIn: true,
+    shouldCrop: true,
   };
 
   constructor(props) {
@@ -45,19 +34,11 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     };
   }
 
-  private img;
-
-  // TODO FIL-4060 we need to check whether the dataURI changes in componentWillReceiveProps()
-  // and if it does recalculate the image height and width
+  private img: HTMLImageElement;
 
   componentWillMount() {
-    this.img = new Image();
-
-    this.img.src = this.props.dataURI;
-    this.img.onload = this.onImageLoad(this);
-    if (this.props.onError) {
-      this.img.onerror = this.props.onError;
-    }
+    const { dataURI } = this.props;
+    this.measureImage(dataURI);
   }
 
   componentDidMount() {
@@ -65,73 +46,69 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     if (!parent) {
       return;
     }
-    const { width, height } = parent.getBoundingClientRect();
 
+    const { width, height } = parent.getBoundingClientRect();
     this.setState({
       parentWidth: width,
       parentHeight: height,
     });
   }
 
-  componentWillUnmount() {
-    this.img.onload = null;
+  componentWillReceiveProps(nextProps) {
+    const { dataURI: newDataURI } = nextProps;
+    const { dataURI: oldDataURI } = this.props;
+
+    if (newDataURI !== oldDataURI) {
+      this.measureImage(newDataURI);
+    }
   }
 
-  onImageLoad(component) {
-    return function() {
-      component.setState({
-        imgWidth: this.width,
-        imgHeight: this.height,
-      });
-    };
+  componentWillUnmount() {
+    const { img } = this;
+    img.removeEventListener('load', this.onImageLoad);
   }
+
+  private measureImage = (dataURI: string) => {
+    this.img = new Image();
+    this.img.src = dataURI;
+
+    // No need to handle error as measuring only affects image cropping
+    this.img.addEventListener('load', this.onImageLoad);
+  };
+
+  private onImageLoad = () => {
+    const { naturalWidth: imgWidth, naturalHeight: imgHeight } = this.img;
+    this.setState({ imgWidth, imgHeight });
+  };
 
   render() {
-    const {
-      transparentFallback,
-      crop,
-      dataURI,
-      fadeIn,
-      className,
-    } = this.props;
-    const { implicitNoCrop, backgroundSize } = this;
-    const transparentBg = transparentFallback
-      ? `, ${transparentFallbackBackground}`
-      : '';
+    const { dataURI, shouldCrop, shouldFadeIn } = this.props;
     const style = {
-      backgroundSize,
-      backgroundImage: `url(${dataURI})${transparentBg}`,
+      backgroundSize: this.backgroundSize(),
+      backgroundImage: `url(${dataURI})`,
     };
-    const isCropped = crop && !implicitNoCrop;
-    const classNames = `media-card ${className}`;
+    const isCropped = shouldCrop;
 
     return (
       <ImageViewWrapper
-        fadeIn={fadeIn}
-        isCropped={isCropped}
-        className={classNames}
+        shouldFadeIn={shouldFadeIn}
+        shouldCrop={isCropped}
+        className="media-card"
         style={style}
       />
     );
   }
 
-  private get isSmallerThanWrapper() {
-    const { imgWidth, parentWidth, imgHeight, parentHeight } = this.state;
-
-    return imgWidth < parentWidth && imgHeight < parentHeight;
-  }
-
-  // If users specifies a custom dimensions, we take that as a no-crop and prioritize it over the 'crop' property
-  private get implicitNoCrop() {
-    return this.props.width !== '100%' || this.props.height !== '100%';
-  }
-
-  private get backgroundSize() {
-    const { width, height } = this.props;
+  private backgroundSize = (): string | undefined => {
     const { imgWidth, imgHeight } = this.state;
 
-    return this.implicitNoCrop
-      ? `${width} ${height}, auto`
-      : this.isSmallerThanWrapper ? `${imgWidth}px ${imgHeight}px, auto` : null;
-  }
+    return this.isSmallerThanWrapper()
+      ? `${imgWidth}px ${imgHeight}px, auto`
+      : undefined;
+  };
+
+  private isSmallerThanWrapper = (): boolean => {
+    const { imgWidth, parentWidth, imgHeight, parentHeight } = this.state;
+    return imgWidth < parentWidth && imgHeight < parentHeight;
+  };
 }

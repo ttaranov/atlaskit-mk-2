@@ -1,52 +1,62 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import { MediaImage } from '../../src/utils';
-import { smallImage } from '@atlaskit/media-test-helpers';
+import { ImageViewWrapper } from '../../src/utils/mediaImage/styled';
 
-describe('MediaImage', () => {
-  const validURI = smallImage;
-  const invalidURI = 'fooBar';
+describe('<MediaImage />', () => {
+  it('should render <ImageViewWrapper /> with crop default as "true"', () => {
+    const component = shallow(<MediaImage dataURI="some-data-uri" />, {
+      disableLifecycleMethods: true,
+    });
 
-  // TODO: test fails on pipeline, find way of wait until img is loaded properly
-  it.skip('Fires onError method when URI dont work', done => {
-    const onError = function(ev) {
-      expect(ev).toBeInstanceOf(Event);
-      expect(this).toBeInstanceOf(HTMLElement);
-      done();
-    };
-
-    mount(<MediaImage dataURI={invalidURI} onError={onError} />);
-  });
-
-  it('Implicitly disables cropping the image when dimensions are supplied', () => {
-    const mediaImg = mount(
-      <MediaImage
-        dataURI={validURI}
-        transparentFallback={false}
-        crop
-        width={'50px'}
-        height={'25px'}
-      />,
+    expect(component.find(ImageViewWrapper)).toHaveLength(1);
+    expect(component.props().shouldCrop).toEqual(true);
+    expect(component.props().style.backgroundImage).toEqual(
+      'url(some-data-uri)',
     );
-
-    expect(
-      mediaImg
-        .find('.media-card')
-        .at(0)
-        .prop('className'),
-    ).not.toContain('crop');
   });
 
-  it('Only adds the image to the background when transparentFallback is disabled', () => {
-    const mediaImg = mount(
-      <MediaImage dataURI={validURI} transparentFallback={false} />,
-    ) as any;
+  describe('#isSmallerThanWrapper', () => {
+    it('should pass backgroundSize to "style" prop if image width and height are both smaller than parent container', () => {
+      const component = shallow(<MediaImage dataURI="some-data-uri" />, {
+        disableLifecycleMethods: true,
+      });
 
-    expect(
-      mediaImg
-        .find('.media-card')
-        .at(0)
-        .prop('style').backgroundImage,
-    ).toBe(`url(${validURI})`);
+      component.setState({
+        imgWidth: 5,
+        imgHeight: 10,
+        parentWidth: 20,
+        parentHeight: 20,
+      });
+      expect(component.props().style.backgroundSize).toEqual('5px 10px, auto');
+    });
+
+    it('should pass NOT backgroundSize to "style" prop if image width is greater than parent container width', () => {
+      const component = shallow(<MediaImage dataURI="some-data-uri" />, {
+        disableLifecycleMethods: true,
+      });
+
+      component.setState({
+        imgWidth: 25,
+        imgHeight: 10,
+        parentWidth: 20,
+        parentHeight: 20,
+      });
+      expect(component.props().style.backgroundSize).toEqual(undefined);
+    });
+
+    it('should pass NOT backgroundSize to "style" prop if image height is greater than parent container height', () => {
+      const component = shallow(<MediaImage dataURI="some-data-uri" />, {
+        disableLifecycleMethods: true,
+      });
+
+      component.setState({
+        imgWidth: 5,
+        imgHeight: 25,
+        parentWidth: 20,
+        parentHeight: 20,
+      });
+      expect(component.props().style.backgroundSize).toEqual(undefined);
+    });
   });
 });
