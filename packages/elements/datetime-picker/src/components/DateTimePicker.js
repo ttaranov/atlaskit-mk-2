@@ -62,6 +62,7 @@ type Props = {
 type State = {
   _dateValue: string,
   _timeValue: string,
+  _zoneValue: string,
   active: 0 | 1 | 2,
   focused: string,
   isOpen: boolean,
@@ -78,8 +79,12 @@ const FlexItem = styled.div`
   flex-grow: 1;
 `;
 
-function formatDateTimeIntoIso(date: string, time: string): string {
-  return `${date}T${time}`;
+function formatDateTimeZoneIntoIso(
+  date: string,
+  time: string,
+  zone: string,
+): string {
+  return `${date}T${time}${zone}`;
 }
 
 function parseDateIntoStateValues(value) {
@@ -87,6 +92,7 @@ function parseDateIntoStateValues(value) {
   return {
     _dateValue: format(parsed, 'YYYY-MM-DD'),
     _timeValue: format(parsed, 'HH:mm'),
+    _zoneValue: format(parsed, 'ZZ'),
   };
 }
 
@@ -102,6 +108,7 @@ class DateTimePicker extends Component<Props, State> {
   state = {
     _dateValue: '',
     _timeValue: '',
+    _zoneValue: '',
     active: 0,
     focused: '',
     isOpen: false,
@@ -110,19 +117,23 @@ class DateTimePicker extends Component<Props, State> {
   };
 
   handleDateChange = (_dateValue: string) => {
-    this.setState({ _dateValue });
-    this.handleValueChange();
+    this.setState({ _dateValue }, this.handleValueChange);
   };
 
   handleTimeChange = (_timeValue: string) => {
-    this.setState({ _timeValue });
-    this.handleValueChange();
+    this.setState({ _timeValue }, this.handleValueChange);
   };
 
   handleValueChange() {
-    const { _dateValue, _timeValue } = this.state;
+    const { _dateValue, _timeValue, _zoneValue } = this.state;
     if (_dateValue && _timeValue) {
-      this.props.onChange(formatDateTimeIntoIso(_dateValue, _timeValue));
+      const value = formatDateTimeZoneIntoIso(
+        _dateValue,
+        _timeValue,
+        _zoneValue,
+      );
+      this.setState({ value });
+      this.props.onChange(value);
     }
   }
 
@@ -151,6 +162,7 @@ export default withCtrl(DateTimePicker, {
       const parsed = parseDateIntoStateValues(value);
       overridden._dateValue = parsed._dateValue;
       overridden._timeValue = parsed._timeValue;
+      overridden._zoneValue = parsed._zoneValue;
     }
     return { ...props, ...overridden };
   },
