@@ -39,9 +39,9 @@ type State = {
 
 TODO
 
-- DateTime picker should force 50% width of flex children.
 - ReactSelect needs a way to control the open / closed state of the dropdown.
 - ReactSelect neesd a way to control the focused item in the dropdown.
+- ReactSelect forces input with to match dropdown. This breaks `flex-basis: 0` in DateTimePicker.
 - Tests!
 - Timezones!
 

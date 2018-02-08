@@ -74,6 +74,7 @@ const Flex = styled.div`
 `;
 
 const FlexItem = styled.div`
+  flex-basis: 0;
   flex-grow: 1;
 `;
 
