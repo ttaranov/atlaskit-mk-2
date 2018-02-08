@@ -14,6 +14,10 @@ export type WithAnalyticsEventsProps = {
   createAnalyticsEvent: CreateUIAnalyticsEventSignature,
 };
 
+type WithAnalyticsEventsPropsDiff = {
+  createAnalyticsEvent: CreateUIAnalyticsEventSignature | void,
+};
+
 type EventMap<ProvidedProps> = {
   [string]:
     | ObjectType
@@ -24,12 +28,18 @@ type EventMap<ProvidedProps> = {
 };
 
 export default function withAnalyticsEvents<ProvidedProps: ObjectType>(
-  createEventMap: EventMap<ProvidedProps> = {},
+  createEventMap: EventMap<
+    $Diff<ProvidedProps, WithAnalyticsEventsPropsDiff>,
+  > = {},
 ): (
   WrappedComponent: ComponentType<ProvidedProps>,
-) => ComponentType<ProvidedProps> {
-  return (WrappedComponent: ComponentType<ProvidedProps>) =>
-    class WithAnalyticsEvents extends Component<ProvidedProps> {
+) => ComponentType<$Diff<ProvidedProps, WithAnalyticsEventsPropsDiff>> {
+  return (
+    WrappedComponent: ComponentType<ProvidedProps>,
+  ): ComponentType<$Diff<ProvidedProps, WithAnalyticsEventsPropsDiff>> =>
+    class WithAnalyticsEvents extends Component<
+      $Diff<ProvidedProps, WithAnalyticsEventsPropsDiff>,
+    > {
       static contextTypes = {
         getAtlaskitAnalyticsEventHandlers: PropTypes.func,
         getAtlaskitAnalyticsContext: PropTypes.func,

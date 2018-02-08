@@ -11,8 +11,6 @@ import type {
   UIAnalyticsEventProps,
 } from './types';
 
-const noop = () => {};
-
 const { warn } = console;
 
 export default class UIAnalyticsEvent extends AnalyticsEvent
@@ -24,7 +22,7 @@ export default class UIAnalyticsEvent extends AnalyticsEvent
   constructor(props: UIAnalyticsEventProps) {
     super(props);
     this.context = props.context || [];
-    this.handlers = props.handlers || [noop];
+    this.handlers = props.handlers || [];
     this.hasFired = false;
   }
 
