@@ -40,6 +40,8 @@ type State = {
 TODO
 
 - DateTimePicker's DatePicker should behave like the normal DatePicker (keyboard nav / select is off).
+- Pickers should not open the dropdown until you start typing, so it can autocomplete (requires react-select isOpen).
+- Look and feel should be restored to originals, for now.
 - ReactSelect should have an option to disable the auto-width of the Menu component.
 - ReactSelect needs an event for when the clear button is clicked, when controlling the value.
 - ReactSelect needs a way to control the open / closed state of the dropdown.
