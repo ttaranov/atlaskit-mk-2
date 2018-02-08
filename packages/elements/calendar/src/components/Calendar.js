@@ -1,7 +1,6 @@
 // @flow
 
 import { Calendar as CalendarBase } from 'calendar-base';
-import keycode from 'keycode';
 import React, { Component } from 'react';
 import withCtrl from 'react-ctrl';
 import uuid from 'uuid/v1';
