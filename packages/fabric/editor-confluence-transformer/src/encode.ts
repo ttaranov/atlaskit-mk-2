@@ -308,7 +308,7 @@ export default function encode(node: PMNode, schema: Schema) {
   }
 
   function encodeCodeBlock(node: PMNode) {
-    const elem = createMacroElement('code');
+    const elem = createMacroElement('code', '1');
 
     if (node.attrs.language) {
       elem.appendChild(
@@ -339,7 +339,7 @@ export default function encode(node: PMNode, schema: Schema) {
 
   function encodePanel(node: PMNode) {
     const panelType = mapPanelTypeToCxhtml(node.attrs.panelType);
-    const elem = createMacroElement(panelType);
+    const elem = createMacroElement(panelType, '1');
     const body = doc.createElementNS(AC_XMLNS, 'ac:rich-text-body');
     const fragment = doc.createDocumentFragment();
 
@@ -462,10 +462,10 @@ export default function encode(node: PMNode, schema: Schema) {
     return elem;
   }
 
-  function createMacroElement(name, version) {
+  function createMacroElement(name: string, version: string) {
     const elem = doc.createElementNS(AC_XMLNS, 'ac:structured-macro');
     elem.setAttributeNS(AC_XMLNS, 'ac:name', name);
-    elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', version || '1');
+    elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', version);
     return elem;
   }
 
