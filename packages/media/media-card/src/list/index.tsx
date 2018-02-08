@@ -13,10 +13,7 @@ import {
 } from '@atlaskit/media-core';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
-import {
-  defaultImageCardDimensions,
-  defaultSmallCardDimensions,
-} from '../utils';
+import { defaultSmallCardDimensions } from '../utils';
 import { LazyContent } from '../utils/lazyContent';
 import { CardDimensions, CardListEvent, CardEvent } from '..';
 import { Provider, MediaCard, CardView } from '../root';
