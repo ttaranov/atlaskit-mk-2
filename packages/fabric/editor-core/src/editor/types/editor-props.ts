@@ -21,6 +21,7 @@ import { TextFormattingOptions } from '../plugins/text-formatting';
 import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../plugins/macro/types';
 import { MediaOptions } from '../plugins/media';
+import { SnippetProvider } from '../plugins/snippet/provider';
 
 export type EditorAppearance =
   | 'message'
@@ -77,6 +78,7 @@ export interface EditorProps {
   emojiProvider?: Promise<EmojiProvider>;
   taskDecisionProvider?: Promise<TaskDecisionProvider>;
   contextIdentifierProvider?: Promise<ContextIdentifierProvider>;
+  snippetProvider?: Promise<SnippetProvider>;
 
   legacyImageUploadProvider?: Promise<ImageUploadHandler>;
   mentionProvider?: Promise<MentionProvider>;

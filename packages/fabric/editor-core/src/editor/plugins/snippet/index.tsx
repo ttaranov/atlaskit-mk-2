@@ -7,14 +7,20 @@ import { inputRules } from 'prosemirror-inputrules';
 import { Schema } from 'prosemirror-model';
 import { createInputRule } from '../../../plugins/utils';
 import WithPluginState from '../../ui/WithPluginState/index';
-import FloatingSnippetPanel from './widget';
+import FloatingSnippetPanel from './ui';
 import { Dispatch } from '../../event-dispatcher';
+import { insertSnippet } from './actions';
+import SnippetNodeView from './SnippetNodeView';
+import { getSnippetById } from './ui/data';
+import { SnippetProvider } from './provider';
 
 export const pluginKey = new PluginKey('snippetPlugin');
 
 export interface PluginState {
   showSnippetPanelAt?: number | null;
 }
+
+const PROVIDER = new SnippetProvider();
 
 export function createPlugin(
   dispatch: Dispatch<PluginState>,
@@ -34,7 +40,10 @@ export function createPlugin(
         } else if (state.showSnippetPanelAt) {
           const newState = {
             showSnippetPanelAt: tr.mapping.map(state.showSnippetPanelAt),
-          };
+          } as PluginState;
+          // if (!tr.doc.rangeHasMark(newState.showSnippetPanelAt!-1, newState.showSnippetPanelAt!, tr.doc.type.schema.marks.snippetQuery)) {
+          //   newState.showSnippetPanelAt = null;
+          // }
           dispatch(pluginKey, newState);
           return newState;
         }
@@ -53,6 +62,14 @@ export function createPlugin(
           .removeStoredMark(newState.schema.marks.snippetQuery)
           .setMeta(pluginKey, { showSnippetPanelAt: null });
       }
+    },
+    props: {
+      nodeViews: {
+        snippet: (node, view, getPos) =>
+          new SnippetNodeView(node, view, getPos, (id: string) =>
+            PROVIDER.get(id),
+          ),
+      },
     },
   });
 }
@@ -130,10 +147,11 @@ const snippetPlugin: EditorPlugin = {
         eventDispatcher={eventDispatcher}
         plugins={{ snippetState: pluginKey }}
         render={({ snippetState = {} as PluginState }) => {
-          if (snippetState.showSnippetPanelAt) {
-            const query = editorView.state.doc.nodeAt(
-              snippetState.showSnippetPanelAt,
-            );
+          const queryNode =
+            snippetState.showSnippetPanelAt &&
+            editorView.state.doc.nodeAt(snippetState.showSnippetPanelAt);
+          if (queryNode) {
+            const query = queryNode.textContent.slice(1);
             return (
               <FloatingSnippetPanel
                 editorViewDOM={editorView.dom as HTMLElement}
@@ -141,8 +159,12 @@ const snippetPlugin: EditorPlugin = {
                 popupsBoundariesElement={popupsBoundariesElement}
                 getFixedCoordinatesFromPos={getFixedCoordinatesFromPos}
                 getNodeFromPos={getNodeFromPos}
-                showSnippetPanelAt={snippetState.showSnippetPanelAt}
-                query={query}
+                showSnippetPanelAt={snippetState.showSnippetPanelAt!}
+                searchFilter={query}
+                onSnippetSelected={id =>
+                  insertSnippet(id)(editorView.state, editorView.dispatch)
+                }
+                getListOfSnippets={(arg: string) => PROVIDER.search(arg)}
               />
             );
           }

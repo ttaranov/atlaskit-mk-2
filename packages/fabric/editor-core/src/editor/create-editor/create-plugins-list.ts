@@ -40,7 +40,6 @@ import {
  */
 export function getDefaultPluginsList(): EditorPlugin[] {
   return [
-    snippetPlugin,
     pastePlugin,
     basePlugin,
     blockTypePlugin,
@@ -151,6 +150,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.allowTemplatePlaceholders) {
     plugins.push(placeholderTextPlugin);
+  }
+
+  if (true) {
+    plugins.push(snippetPlugin);
   }
 
   // UI only plugins
