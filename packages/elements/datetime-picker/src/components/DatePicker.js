@@ -39,14 +39,13 @@ type State = {
 
 TODO
 
-- DatePicker layer should be absolute and appear over the content.
 - DateTimePicker's DatePicker should behave like the normal DatePicker (keyboard nav / select is off).
+- ReactSelect should have an option to disable the auto-width of the Menu component.
 - ReactSelect needs an event for when the clear button is clicked, when controlling the value.
 - ReactSelect needs a way to control the open / closed state of the dropdown.
 - ReactSelect neesd a way to control the focused item in the dropdown.
 - ReactSelect forces input with to match dropdown. This breaks `flex-basis: 0` in DateTimePicker.
 - Tests!
-- Timezones!
 
 */
 
