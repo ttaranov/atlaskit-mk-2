@@ -35,7 +35,6 @@ export interface WithDataURI
   extends React.Component<WithDataURIProps, WithDataURIState> {
   componentDidMount(): void;
   componentWillReceiveProps(nextProps: WithDataURIProps): void;
-  updateDataURI(props: WithDataURIProps): void;
 }
 
 // return type is "any" to avoid TS attempting to infer the return type
@@ -48,26 +47,22 @@ export const withDataURI = (Component): any => {
   > implements WithDataURI {
     state: WithDataURIState = {};
 
-    componentDidMount(): void {
-      this.updateDataURI(this.props);
-    }
-
-    componentWillReceiveProps(nextProps: WithDataURIProps): void {
+    private needToFetch(
+      prevProps: WithDataURIProps,
+      nextProps: WithDataURIProps,
+    ) {
       const {
         dataURIService: currentDataURIService,
         metadata: currentMetadata,
-      } = this.props;
+      } = prevProps;
       const {
         dataURIService: nextDataURIService,
         metadata: nextMetadata,
       } = nextProps;
-
-      if (
+      return (
         nextDataURIService !== currentDataURIService ||
         nextMetadata !== currentMetadata
-      ) {
-        this.updateDataURI(nextProps);
-      }
+      );
     }
 
     private isSmall(): boolean {
@@ -76,7 +71,7 @@ export const withDataURI = (Component): any => {
 
     // No mather if the integrator passed pixels or percentages, this will
     // always return a pixels value that the /image endpoint can use
-    dataURIDimension(dimension: ElementDimension): number {
+    private dataURIDimension(dimension: ElementDimension): number {
       const retinaFactor = isRetina() ? 2 : 1;
       const dimensionValue =
         (this.props.dimensions && this.props.dimensions[dimension]) || '';
@@ -100,15 +95,11 @@ export const withDataURI = (Component): any => {
       return defaultImageCardDimensions[dimension] * retinaFactor;
     }
 
-    updateDataURI(props: WithDataURIProps): void {
-      const { dataURIService, metadata, resizeMode, appearance } = props;
+    private async fetch() {
+      const { dataURIService, metadata, resizeMode, appearance } = this.props;
 
-      const setDataURI = dataURI => this.setState({ dataURI });
-      const clearDataURI = () => this.setState({ dataURI: undefined });
-
-      // clear the dataURI if we're updating to undefined metadata or we're updating to a link
+      // we don't need to fetch the dataURI if we don't have any metadata or if we have a link
       if (!dataURIService || !metadata || isLinkDetails(metadata)) {
-        clearDataURI();
         return;
       }
 
@@ -116,8 +107,8 @@ export const withDataURI = (Component): any => {
       const height = this.dataURIDimension('height');
       const allowAnimated = appearance !== 'small';
 
-      dataURIService
-        .fetchImageDataUri(
+      try {
+        const dataURI = await dataURIService.fetchImageDataUri(
           { type: 'file', details: metadata },
           {
             width,
@@ -125,14 +116,32 @@ export const withDataURI = (Component): any => {
             mode: resizeMode,
             allowAnimated,
           },
-        )
-        .then(setDataURI, clearDataURI);
+        );
+        this.setState({ dataURI });
+      } catch (error) {
+        /* we don't do anything atm */
+      }
+    }
+
+    componentDidMount(): void {
+      this.fetch();
+    }
+
+    componentWillReceiveProps(nextProps: WithDataURIProps): void {
+      if (this.needToFetch(this.props, nextProps)) {
+        this.setState({ dataURI: undefined });
+      }
+    }
+
+    componentDidUpdate(prevProps: WithDataURIProps) {
+      if (this.needToFetch(prevProps, this.props)) {
+        this.fetch();
+      }
     }
 
     render(): JSX.Element {
       const { dataURIService, ...otherProps } = this.props;
       const { dataURI } = this.state;
-
       return <Component {...otherProps} dataURI={dataURI} />;
     }
   }

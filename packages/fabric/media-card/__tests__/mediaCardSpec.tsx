@@ -274,11 +274,10 @@ describe('MediaCard', () => {
         observable: () => newObservable,
       };
 
-      const element = shallow(<MediaCard provider={firstProvider as any} />, {
-        disableLifecycleMethods: true,
-      }) as any;
+      const element = shallow(
+        <MediaCard provider={firstProvider as any} />,
+      ) as any;
 
-      (element.instance() as MediaCard).componentDidMount();
       element.setProps({ provider: secondProvider });
 
       expect(oldUnsubscribe).toHaveBeenCalledTimes(1);
@@ -313,7 +312,7 @@ describe('MediaCard', () => {
       const instance = element.instance() as MediaCard;
 
       expect(element.find(CardOverlay).prop('onRetry')).toEqual(
-        instance[/* prettier-ignore */ 'onRetry'],
+        instance[/* prettier-ignore */ 'handleRetry'],
       );
     });
   });

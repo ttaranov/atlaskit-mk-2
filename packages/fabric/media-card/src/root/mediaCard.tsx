@@ -12,12 +12,7 @@ import {
   ImageResizeMode,
 } from '@atlaskit/media-core';
 
-import {
-  SharedCardProps,
-  CardEventProps,
-  OnLoadingChangeState,
-  CardStatus,
-} from '..';
+import { SharedCardProps, CardEventProps, CardStatus } from '..';
 import { Provider } from './card';
 import { CardView } from './cardView';
 import { withDataURI } from './withDataURI';
@@ -32,7 +27,6 @@ export interface MediaCardProps extends SharedCardProps, CardEventProps {
 }
 
 export interface MediaCardState {
-  readonly subscription?: Subscription;
   readonly status: CardStatus;
 
   // can NOT use MediaItemDetails because get the following error: https://github.com/Microsoft/TypeScript/issues/9944
@@ -45,23 +39,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     status: 'loading',
   };
 
-  componentDidMount(): void {
-    this.updateState(this.props);
-  }
-
-  componentWillReceiveProps(nextProps: MediaCardProps, nextContext: any): void {
-    if (this.shouldUpdateState(nextProps)) {
-      this.updateState(nextProps);
-    }
-  }
-
-  componentWillUnmount(): void {
-    this.unsubscribe();
-  }
-
-  private shouldUpdateState(nextProps: MediaCardProps): boolean {
-    return nextProps.provider !== this.props.provider;
-  }
+  private subscription?: Subscription;
 
   private isMediaItem(
     mediaItem: MediaItem | UrlPreview,
@@ -69,10 +47,8 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     return mediaItem && (mediaItem as MediaItem).details !== undefined;
   }
 
-  observable = (
-    props: MediaCardProps,
-  ): Observable<FileDetails | LinkDetails | UrlPreview> => {
-    const { provider } = props;
+  private observable(): Observable<FileDetails | LinkDetails | UrlPreview> {
+    const { provider } = this.props;
     return provider.observable().map((result: MediaItem | UrlPreview) => {
       if (this.isMediaItem(result)) {
         return result.details;
@@ -80,73 +56,77 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
         return result as UrlPreview;
       }
     });
-  };
-
-  private stateToCardProcessingStatus(): OnLoadingChangeState {
-    const { status, error, metadata } = this.state;
-    return {
-      type: status,
-      payload: error || metadata,
-    };
   }
 
-  private updateState(props: MediaCardProps): void {
-    const {
-      onLoadingChange = () => {
-        /* do nothing */
-      },
-    } = this.props;
+  private callStatusChangeCallback() {
+    const { onLoadingChange } = this.props;
+    if (onLoadingChange) {
+      const { status, error, metadata } = this.state;
+      onLoadingChange({
+        type: status,
+        payload: error || metadata,
+      });
+    }
+  }
+
+  private subscribe(): void {
     this.unsubscribe();
 
-    this.setPartialState({ status: 'loading' }, () =>
-      this.setPartialState(
-        {
-          subscription: this.observable(props).subscribe({
-            next: metadata => {
-              this.setPartialState(
-                { metadata, error: undefined, status: 'processing' },
-                () => onLoadingChange(this.stateToCardProcessingStatus()),
-              );
-            },
+    // left this here for backwards compatibility, but since the state is already loading from the start, maybe we shouldn't do it in componentDidMount
+    this.callStatusChangeCallback();
 
-            complete: () => {
-              this.setPartialState(
-                { error: undefined, status: 'complete' },
-                () => onLoadingChange(this.stateToCardProcessingStatus()),
-              );
-            },
+    this.subscription = this.observable().subscribe({
+      next: metadata => {
+        this.setState(
+          { metadata, error: undefined, status: 'processing' },
+          () => this.callStatusChangeCallback(),
+        );
+      },
 
-            error: error => {
-              this.setPartialState({ error, status: 'error' }, () =>
-                onLoadingChange(this.stateToCardProcessingStatus()),
-              );
-            },
-          }),
-        },
-        () => onLoadingChange(this.stateToCardProcessingStatus()),
-      ),
-    );
-  }
+      complete: () => {
+        this.setState({ error: undefined, status: 'complete' }, () =>
+          this.callStatusChangeCallback(),
+        );
+      },
 
-  private setPartialState(
-    partialState: Partial<MediaCardState>,
-    callback?: () => any,
-  ) {
-    this.setState((previousState, props) => {
-      return { ...previousState, ...partialState };
-    }, callback);
+      error: error => {
+        this.setState({ error, status: 'error' }, () =>
+          this.callStatusChangeCallback(),
+        );
+      },
+    });
   }
 
   private unsubscribe(): void {
-    if (this.state && this.state.subscription) {
-      this.state.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 
   // This method is called when card fails and user press 'Retry'
-  private onRetry = () => {
-    this.updateState(this.props);
+  private handleRetry = () => {
+    this.subscribe();
   };
+
+  componentDidMount(): void {
+    this.subscribe();
+  }
+
+  componentWillReceiveProps(nextProps: MediaCardProps): void {
+    if (nextProps.provider !== this.props.provider) {
+      this.setState({ status: 'loading' });
+    }
+  }
+
+  componentDidUpdate(prevProps: MediaCardProps) {
+    if (prevProps.provider !== this.props.provider) {
+      this.subscribe();
+    }
+  }
+
+  componentWillUnmount(): void {
+    this.unsubscribe();
+  }
 
   render() {
     const {
@@ -155,10 +135,9 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
       dataURIService,
       onLoadingChange,
       resizeMode,
-      ...otherProps,
+      ...otherProps
     } = this.props;
     const { metadata, status } = this.state;
-
     return (
       <CardViewWithDataURI
         {...otherProps}
@@ -167,7 +146,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
         status={status}
         metadata={metadata}
         mediaItemType={mediaItemType}
-        onRetry={this.onRetry}
+        onRetry={this.handleRetry}
       />
     );
   }
