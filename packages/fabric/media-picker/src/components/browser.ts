@@ -44,9 +44,16 @@ export class Browser extends LocalUploadComponent {
     // IE11 hack - click will not execute if input has no parent
     // WebDriver hack - click will not execute if input isn't in the document
     document.body.appendChild(this.browseElem);
-
-    this.uploadService.addBrowse(this.browseElem);
+    this.browseElem.addEventListener('change', this.onChange);
+    // this.uploadService.addBrowse(this.browseElem);
     this.context.trackEvent(new MPBrowserLoaded());
+  }
+
+  onChange(e: Event) {
+    const { currentTarget } = e;
+    const files = (currentTarget as HTMLInputElement).files;
+
+    this.uploadService2.addFiles(Array.from(files));
   }
 
   public browse(): void {

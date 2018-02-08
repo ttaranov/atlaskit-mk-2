@@ -9,6 +9,7 @@ import {
   FileUploadingEventPayload,
   UploadService,
 } from '../service/uploadService';
+import { UploadService2 } from '../service/uploadService2';
 import { UploadComponent } from './component';
 import { MediaPickerContext } from '../domain/context';
 import { ModuleConfig, UploadParams } from '../domain/config';
@@ -18,6 +19,7 @@ export class LocalUploadComponent<
   M extends UploadEventPayloadMap = UploadEventPayloadMap
 > extends UploadComponent<M> {
   protected readonly uploadService: UploadService;
+  protected readonly uploadService2: UploadService2;
 
   constructor(
     context: MediaPickerContext,
@@ -25,6 +27,11 @@ export class LocalUploadComponent<
     userAuthProvider?: AuthProvider,
   ) {
     super(context);
+
+    this.uploadService2 = new UploadService2({
+      apiUrl,
+      authProvider,
+    });
 
     this.uploadService = new UploadService(
       apiUrl,
