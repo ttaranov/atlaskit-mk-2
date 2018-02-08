@@ -40,14 +40,6 @@ const RefreshDemo = (): JSX.Element => {
           collectionName={defaultCollectionName}
         />
       </div>
-      <div style={{ width: '25%' }}>
-        <CardList
-          context={context}
-          pageSize={10}
-          collectionName={defaultCollectionName}
-          cardAppearance="small"
-        />
-      </div>
       <div>
         <button onClick={handleAddItem}>Add an item to the collection</button>
         <button onClick={handleRefresh}>Refresh the collection</button>

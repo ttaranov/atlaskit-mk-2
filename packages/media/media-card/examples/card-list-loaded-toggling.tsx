@@ -43,7 +43,6 @@ class CardSwitcher extends Component<CardSwitcherProps, CardSwitcherState> {
             context={context}
             collectionName={collectionName}
             pageSize={30}
-            cardAppearance={'small'}
           />
         </CardSwitcherRow>
         <CardSwitcherRow>
@@ -56,7 +55,6 @@ class CardSwitcher extends Component<CardSwitcherProps, CardSwitcherState> {
             pageSize={20}
             height={320}
             useInfiniteScroll={true}
-            cardAppearance={'small'}
           />
         </CardSwitcherRow>
       </CardSwitcherWrapper>

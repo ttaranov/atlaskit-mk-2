@@ -32,7 +32,6 @@ export interface CardListProps {
   pageSize?: number;
 
   cardDimensions?: CardDimensions;
-  cardAppearance?: 'small' | 'image';
 
   onCardClick?: (result: CardListEvent) => void;
   actions?: Array<CollectionAction>;
@@ -70,7 +69,6 @@ export class CardList extends Component<CardListProps, CardListState> {
   static defaultPageSize = 10;
 
   static defaultProps = {
-    cardAppearance: 'image',
     pageSize: CardList.defaultPageSize,
     actions: [],
     useInfiniteScroll: true,
@@ -246,7 +244,7 @@ export class CardList extends Component<CardListProps, CardListState> {
       handleCardClick,
       placeholder,
     } = this;
-    const { cardAppearance, shouldLazyLoadCards } = this.props;
+    const { shouldLazyLoadCards } = this.props;
     const actions = this.props.actions || [];
     const cardActions = (collectionItem: MediaCollectionItem) =>
       actions.map(action => {
@@ -279,7 +277,7 @@ export class CardList extends Component<CardListProps, CardListState> {
                 <MediaCard
                   provider={providersByMediaItemId[mediaItem.details.id]}
                   dataURIService={dataURIService}
-                  appearance={cardAppearance}
+                  appearance="small"
                   dimensions={dimensions}
                   onClick={handleCardClick.bind(this, mediaItem)}
                   actions={cardActions(mediaItem)}
@@ -334,35 +332,23 @@ export class CardList extends Component<CardListProps, CardListState> {
     in case of small cards we want them to grow up and use the whole parent width
    */
   private get cardWidth(): string | number | undefined {
-    const { cardDimensions, cardAppearance } = this.props;
+    const { cardDimensions } = this.props;
 
     if (cardDimensions) {
       return cardDimensions.width;
     }
 
-    if (cardAppearance === 'image') {
-      return defaultImageCardDimensions.width;
-    }
-
-    if (cardAppearance === 'small') {
-      return '100%';
-    }
-
-    return undefined;
+    return '100%';
   }
 
   private get cardHeight(): string | number | undefined {
-    const { cardDimensions, cardAppearance } = this.props;
+    const { cardDimensions } = this.props;
 
     if (cardDimensions && cardDimensions.height) {
       return cardDimensions.height;
     }
-    if (cardAppearance === 'image') {
-      return defaultImageCardDimensions.height;
-    }
-    if (cardAppearance === 'small') {
-      return defaultSmallCardDimensions.height;
-    }
+
+    return defaultSmallCardDimensions.height;
   }
 
   private get useInfiniteScroll(): boolean {
@@ -389,14 +375,9 @@ export class CardList extends Component<CardListProps, CardListState> {
 
   private get placeholder(): JSX.Element {
     const { cardWidth, dimensions } = this;
-    const { cardAppearance } = this.props;
     return (
       <CardListItemWrapper cardWidth={cardWidth}>
-        <CardView
-          dimensions={dimensions}
-          status="loading"
-          appearance={cardAppearance}
-        />
+        <CardView dimensions={dimensions} status="loading" appearance="small" />
       </CardListItemWrapper>
     );
   }

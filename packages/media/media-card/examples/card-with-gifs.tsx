@@ -30,25 +30,6 @@ export default () => (
         context={context}
         collectionName={onlyAnimatedGifsCollectionName}
         actions={cardsActions}
-        cardAppearance="small"
-        pageSize={20}
-        height={500}
-      />
-    </div>
-    <div
-      style={{
-        display: 'inline-block',
-        width: '300px',
-        background: 'white',
-        border: '1px dotted',
-        padding: 5,
-      }}
-    >
-      <h2>Normal Cards</h2>
-      <CardList
-        context={context}
-        collectionName={onlyAnimatedGifsCollectionName}
-        actions={cardsActions}
         pageSize={20}
         height={500}
       />

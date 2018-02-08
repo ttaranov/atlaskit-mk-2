@@ -29,17 +29,6 @@ describe('LinkCard', () => {
       expect(card.find(CardGenericViewSmall).exists()).toBeTruthy();
     });
 
-    it('should render LinkCardGenericView when appearance="image"', () => {
-      const card = shallow(
-        <LinkCard
-          status="complete"
-          appearance="image"
-          details={genericLinkDetails}
-        />,
-      );
-      expect(card.find(LinkCardGenericView).exists()).toBeTruthy();
-    });
-
     it('should render LinkCardGenericView when appearance="horizontal" and details do not contain a smartCard', () => {
       const element = shallow(
         <LinkCard

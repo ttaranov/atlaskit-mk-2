@@ -12,7 +12,7 @@ export default () => (
   <StoryList>
     {[
       {
-        title: 'Normal card',
+        title: 'Small card',
         content: (
           <CardList
             context={context}
@@ -23,48 +23,6 @@ export default () => (
       },
       {
         title: 'Small card',
-        content: (
-          <CardList
-            context={context}
-            collectionName={defaultCollectionName}
-            pageSize={30}
-            cardAppearance={'small'}
-          />
-        ),
-      },
-      {
-        title: 'Small card',
-        content: (
-          <CardList
-            context={context}
-            collectionName={defaultCollectionName}
-            pageSize={30}
-            cardAppearance={'small'}
-          />
-        ),
-      },
-      {
-        title: 'Normal Card',
-        content: (
-          <CardList
-            context={context}
-            collectionName={defaultCollectionName}
-            pageSize={30}
-          />
-        ),
-      },
-      {
-        title: 'Normal card',
-        content: (
-          <CardList
-            context={context}
-            collectionName={defaultCollectionName}
-            pageSize={30}
-          />
-        ),
-      },
-      {
-        title: 'Normal card',
         content: (
           <CardList
             context={context}
