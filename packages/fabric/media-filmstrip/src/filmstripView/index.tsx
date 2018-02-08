@@ -19,6 +19,12 @@ const DURATION_MAX = 1.0;
 
 const EXTRA_PADDING = 4;
 
+const MUTATION_CONFIG = {
+  attributes: true,
+  childList: true,
+  subtree: true,
+};
+
 export interface ChildOffset {
   left: number;
   right: number;
@@ -82,6 +88,8 @@ export class FilmstripView extends React.Component<
 
   bufferElement: HTMLElement;
   windowElement: HTMLElement;
+
+  mutationObserver: MutationObserver;
 
   childOffsets: ChildOffset[];
   previousOffset: number = 0;
@@ -258,8 +266,27 @@ export class FilmstripView extends React.Component<
   };
 
   handleBufferElementChange = bufferElement => {
+    const { mutationObserver } = this;
+
     this.bufferElement = bufferElement;
     this.handleSizeChange();
+
+    if (mutationObserver) {
+      mutationObserver.disconnect();
+    }
+
+    const observer = new MutationObserver(this.handleMutation);
+    observer.observe(bufferElement, MUTATION_CONFIG);
+    this.mutationObserver = observer;
+  };
+
+  handleMutation = mutationList => {
+    const filteredEvents = mutationList.filter(
+      mutation => Object.keys(MUTATION_CONFIG).indexOf(mutation.type) >= -1,
+    );
+    if (filteredEvents.length > 0) {
+      this.handleSizeChange();
+    }
   };
 
   handleLeftClick = event => {
@@ -342,6 +369,13 @@ export class FilmstripView extends React.Component<
   }
 
   componentWillUnmount() {
+    const { mutationObserver } = this;
+
+    if (mutationObserver) {
+      mutationObserver.disconnect();
+      delete this.mutationObserver;
+    }
+
     window.removeEventListener('resize', this.handleSizeChange);
   }
 
