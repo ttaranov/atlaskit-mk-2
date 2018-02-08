@@ -26,9 +26,9 @@ export default () => {
       <h3>Date / time picker</h3>
       <Label label="default" />
       <DateTimePicker />
-      <Label label="controlled (value=&quot;2018-01-02T14:30-08:00&quot;)" />
+      <Label label="controlled (UTC-08:00)" />
       <DateTimePicker value="2018-01-02T14:30-08:00" />
-      <Label label="uncontrolled (defaultValue=&quot;2018-01-02T14:30+10:00&quot;)" />
+      <Label label="uncontrolled (UTC+10:00)" />
       <DateTimePicker defaultValue="2018-01-02T14:30+10:00" />
     </div>
   );
