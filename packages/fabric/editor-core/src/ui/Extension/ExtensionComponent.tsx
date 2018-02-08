@@ -6,11 +6,13 @@ import { Node as PMNode } from 'prosemirror-model';
 import { MacroProvider } from '../../editor/plugins/macro';
 import InlineExtension from './InlineExtension';
 import Extension from './Extension';
+import { ExtensionHandlers } from '../../editor/types';
 
 export interface Props {
   editorView: EditorView;
   macroProvider?: Promise<MacroProvider>;
   node: PMNode;
+  extensionHandlers?: ExtensionHandlers;
   setExtensionElement: (
     element: HTMLElement | null,
   ) => (state: EditorState, dispatch: (tr: Transaction) => void) => void;
@@ -60,6 +62,18 @@ export default class ExtensionComponent extends Component<Props, State> {
     const { macroProvider } = this.state;
     const { node, handleContentDOMRef } = this.props;
 
+    try {
+      const extensionContent = this.handleExtension();
+      if (extensionContent && React.isValidElement(extensionContent)) {
+        const Tag = node.type.name === 'inlineExtension' ? 'span' : 'div';
+        // Return the extensionContent directly if it's a valid JSX.Element
+        return <Tag>{extensionContent}</Tag>;
+      }
+    } catch (e) {
+      /** We don't want this error to block renderer */
+      /** We keep rendering the default content */
+    }
+
     switch (node.type.name) {
       case 'extension':
       case 'bodiedExtension':
@@ -84,6 +98,20 @@ export default class ExtensionComponent extends Component<Props, State> {
         return null;
     }
   }
+
+  private handleExtension = () => {
+    const { node, extensionHandlers, editorView } = this.props;
+    const { extensionKey, extensionType, parameters } = node.attrs;
+
+    if (!extensionHandlers || !extensionHandlers[extensionType]) {
+      return;
+    }
+
+    return extensionHandlers[extensionType](
+      { extensionKey, parameters, content: node.content },
+      editorView.root,
+    );
+  };
 
   private handleMacroProvider = (macroProvider: MacroProvider) => {
     if (this.mounted) {

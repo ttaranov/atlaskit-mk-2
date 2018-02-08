@@ -7,6 +7,7 @@ import { akColorN80 } from '@atlaskit/util-shared-styles';
 import Editor from './../src/editor';
 import EditorContext from './../src/editor/ui/EditorContext';
 import WithEditorActions from './../src/editor/ui/WithEditorActions';
+import { ExtensionHandlers } from '../src/editor/types';
 import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
@@ -119,6 +120,26 @@ const mediaProvider = storyMediaProviderFactory({
   includeUserAuthProvider: true,
 });
 
+const DumbExtension = props => <div>block type extension</div>;
+const DumbInlineExtension = props => <span>inline type extension</span>;
+
+const extensionHandlers: ExtensionHandlers = {
+  'com.atlassian.confluence.macro.core': (ext, doc) => {
+    const { extensionKey, parameters, content } = ext;
+
+    switch (extensionKey) {
+      case 'info':
+        return (
+          <DumbInlineExtension parameters={parameters} content={content} />
+        );
+      case 'block':
+        return <DumbExtension parameters={parameters} content={content} />;
+    }
+
+    return null;
+  },
+};
+
 export default class Example extends React.Component<Props, State> {
   state: State = { disabled: true };
 
@@ -163,6 +184,7 @@ export default class Example extends React.Component<Props, State> {
               placeholder="Write something..."
               shouldFocus={false}
               disabled={this.state.disabled}
+              extensionHandlers={extensionHandlers}
               contentComponents={
                 <TitleInput
                   placeholder="Give this page a title..."

@@ -171,6 +171,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
               this.props.secondaryToolbarComponents
             }
             addonToolbarComponents={this.props.addonToolbarComponents}
+            extensionHandlers={this.props.extensionHandlers}
           />
         )}
       />

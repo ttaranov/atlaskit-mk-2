@@ -5,6 +5,7 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { Dispatch } from '../../event-dispatcher';
 import { setExtensionElement } from './actions';
 import { getExtensionNode } from './utils';
+import { ExtensionHandlers } from '../../../editor/types';
 
 export const pluginKey = new PluginKey('extensionPlugin');
 
@@ -12,8 +13,12 @@ export type ExtensionState = {
   element: HTMLElement | null;
 };
 
-export default (dispatch: Dispatch, providerFactory: ProviderFactory) =>
-  new Plugin({
+export default (
+  dispatch: Dispatch,
+  providerFactory: ProviderFactory,
+  extensionHandlers: ExtensionHandlers,
+) => {
+  return new Plugin({
     state: {
       init: () => ({ element: null }),
 
@@ -46,9 +51,10 @@ export default (dispatch: Dispatch, providerFactory: ProviderFactory) =>
     key: pluginKey,
     props: {
       nodeViews: {
-        extension: ExtensionNodeView(providerFactory),
-        bodiedExtension: ExtensionNodeView(providerFactory),
-        inlineExtension: ExtensionNodeView(providerFactory),
+        extension: ExtensionNodeView(providerFactory, extensionHandlers),
+        bodiedExtension: ExtensionNodeView(providerFactory, extensionHandlers),
+        inlineExtension: ExtensionNodeView(providerFactory, extensionHandlers),
       },
     },
   });
+};

@@ -11,7 +11,7 @@ import { MacroState, pluginKey as macroPluginKey } from '../macro';
 import ExtensionEditPanel from '../../../ui/ExtensionEditPanel';
 import WithPluginState from '../../ui/WithPluginState';
 
-const extensionPlugin: EditorPlugin = {
+const extensionPlugin = (props): EditorPlugin => ({
   nodes() {
     return [
       { rank: 2300, name: 'extension', node: extension },
@@ -25,7 +25,11 @@ const extensionPlugin: EditorPlugin = {
       {
         rank: 2330,
         plugin: ({ schema, props, dispatch, providerFactory }) =>
-          createPlugin(dispatch, providerFactory),
+          createPlugin(
+            dispatch,
+            providerFactory,
+            props.extensionHandlers || {},
+          ),
       },
     ];
   },
@@ -58,6 +62,6 @@ const extensionPlugin: EditorPlugin = {
       />
     );
   },
-};
+});
 
 export default extensionPlugin;

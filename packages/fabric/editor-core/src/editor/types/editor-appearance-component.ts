@@ -6,6 +6,7 @@ import {
   UIComponentFactory,
   ReactElement,
   InsertMenuCustomItem,
+  ExtensionHandlers,
 } from '../types';
 
 export interface EditorAppearanceComponentProps {
@@ -17,6 +18,7 @@ export interface EditorAppearanceComponentProps {
   editorActions?: EditorActions;
   editorDOMElement: JSX.Element;
   editorView?: EditorView;
+  extensionHandlers?: ExtensionHandlers;
 
   eventDispatcher?: EventDispatcher;
 

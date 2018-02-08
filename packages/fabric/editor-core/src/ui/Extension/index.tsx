@@ -8,12 +8,14 @@ import {
   setExtensionElement,
   selectExtension,
 } from '../../editor/plugins/extension/actions';
+import { ExtensionHandlers } from '../../editor/types';
 
 export interface Props {
   editorView: EditorView;
   node: PMNode;
   providerFactory?: ProviderFactory;
   handleContentDOMRef: (node: HTMLElement) => void;
+  extensionHandlers?: ExtensionHandlers;
 }
 
 export default class Extension extends Component<Props, any> {
@@ -33,7 +35,12 @@ export default class Extension extends Component<Props, any> {
   }
 
   private renderWithProvider = providers => {
-    const { node, editorView, handleContentDOMRef } = this.props;
+    const {
+      node,
+      editorView,
+      extensionHandlers,
+      handleContentDOMRef,
+    } = this.props;
     const { macroProvider } = providers;
 
     return (
@@ -44,6 +51,7 @@ export default class Extension extends Component<Props, any> {
         setExtensionElement={setExtensionElement}
         handleContentDOMRef={handleContentDOMRef}
         selectExtension={selectExtension}
+        extensionHandlers={extensionHandlers}
       />
     );
   };

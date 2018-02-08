@@ -40,6 +40,34 @@ export const customInsertMenuItems = [
     },
   },
   {
+    content: 'Block type macro',
+    value: { name: 'block' },
+    tooltipDescription: 'Insert block macro',
+    tooltipPosition: 'right',
+    elemBefore: '-',
+    onClick: function(editorActions) {
+      editorActions.replaceSelection({
+        type: 'extension',
+        attrs: {
+          extensionType: 'com.atlassian.confluence.macro.core',
+          extensionKey: 'block',
+          parameters: {
+            macroParams: {},
+            macroMetadata: {
+              macroId: { value: new Date().valueOf() },
+              placeholder: [
+                {
+                  data: { url: '' },
+                  type: 'icon',
+                },
+              ],
+            },
+          },
+        },
+      });
+    },
+  },
+  {
     content: 'Open macro browser',
     value: { name: 'macro-browser' },
     tooltipDescription: 'Open macro browser',

@@ -24,6 +24,7 @@ import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../plugins/macro/types';
 import { MediaOptions } from '../plugins/media';
 import { PlaceholderTextOptions } from '../plugins/placeholder-text';
+import { ExtensionHandlers } from '../types';
 
 export type EditorAppearance =
   | 'message'
@@ -72,6 +73,8 @@ export interface EditorProps {
   allowPlaceholderCursor?: boolean;
   allowTemplatePlaceholders?: boolean | PlaceholderTextOptions;
   allowDate?: boolean;
+
+  extensionHandlers?: ExtensionHandlers;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;

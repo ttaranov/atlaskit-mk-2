@@ -125,7 +125,9 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   }
 
   if (props.allowExtension) {
-    plugins.push(extensionPlugin);
+    plugins.push(
+      extensionPlugin({ extensionHandlers: props.extensionHandlers }),
+    );
   }
 
   if (props.macroProvider) {

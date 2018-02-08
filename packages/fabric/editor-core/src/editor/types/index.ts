@@ -5,6 +5,7 @@ export * from './editor-config';
 export * from './editor-plugin';
 export * from './editor-props';
 export * from './editor-appearance-component';
+export * from './extension-handler';
 
 export type Command = (
   state: EditorState,
