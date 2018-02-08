@@ -1,5 +1,8 @@
 # @atlaskit/tag-group
 
+## 3.5.2
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 3.5.1
 
 ## 3.5.0

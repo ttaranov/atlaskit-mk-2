@@ -1,5 +1,8 @@
 # @atlaskit/single-select
 
+## 3.2.3
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 3.2.2
 - [patch] Fixes dependency on @atlaskit/webdriver-runner to be a devDependency [4567857](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4567857)
 
