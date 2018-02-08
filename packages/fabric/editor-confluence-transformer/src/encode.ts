@@ -3,7 +3,7 @@ import {
   getEmojiAcName,
   hexToRgb,
   getPlaceholderUrl,
-  getMacroId,
+  getExtensionMetadata,
   MediaSingleAttributes,
   timestampToIso,
 } from '@atlaskit/editor-common';
@@ -403,13 +403,11 @@ export default function encode(node: PMNode, schema: Schema) {
   }
 
   function encodeJiraIssue(node: PMNode) {
-    // if this is an issue list, parse it as unsupported node
-    // @see https://product-fabric.atlassian.net/browse/ED-1193?focusedCommentId=26672&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-26672
     if (!node.attrs.issueKey) {
-      return encodeUnsupported(node);
+      return encodeExtension(node);
     }
 
-    const elem = createMacroElement('jira');
+    const elem = createMacroElement('jira', node.attrs.schemaVersion);
     elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', node.attrs.macroId);
 
     elem.appendChild(
@@ -424,29 +422,30 @@ export default function encode(node: PMNode, schema: Schema) {
   }
 
   function encodeExtension(node: PMNode) {
-    const elem = createMacroElement(node.attrs.extensionKey);
+    const { parameters, extensionKey } = node.attrs;
 
-    if (node.attrs.parameters) {
-      const { macroParams } = node.attrs.parameters;
-      const macroId = getMacroId(node);
-      if (macroId) {
-        elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', macroId);
-      }
+    const elem = createMacroElement(
+      extensionKey,
+      getExtensionMetadata(node, 'schemaVersion') || '1',
+    );
 
-      // parameters
+    const macroId = getExtensionMetadata(node, 'macroId');
+    if (macroId) {
+      elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', macroId);
+    }
+
+    if (parameters) {
+      const { macroParams } = parameters;
       if (macroParams) {
         elem.appendChild(encodeMacroParams(doc, macroParams));
       }
+    }
 
-      const placeholderUrl = getPlaceholderUrl({ node, type: 'image' });
-      if (placeholderUrl) {
-        const placeholder = doc.createElementNS(
-          FAB_XMLNS,
-          'fab:placeholder-url',
-        );
-        placeholder.textContent = placeholderUrl;
-        elem.appendChild(placeholder);
-      }
+    const placeholderUrl = getPlaceholderUrl({ node, type: 'image' });
+    if (placeholderUrl) {
+      const placeholder = doc.createElementNS(FAB_XMLNS, 'fab:placeholder-url');
+      placeholder.textContent = placeholderUrl;
+      elem.appendChild(placeholder);
     }
 
     const displayType = doc.createElementNS(FAB_XMLNS, 'fab:display-type');
@@ -463,10 +462,10 @@ export default function encode(node: PMNode, schema: Schema) {
     return elem;
   }
 
-  function createMacroElement(name) {
+  function createMacroElement(name, version) {
     const elem = doc.createElementNS(AC_XMLNS, 'ac:structured-macro');
     elem.setAttributeNS(AC_XMLNS, 'ac:name', name);
-    elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', '1');
+    elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', version || '1');
     return elem;
   }
 

@@ -14,6 +14,7 @@ export const inlineExtensionData = [
         },
         macroMetadata: {
           macroId: { value: new Date().valueOf() },
+          schemaVersion: { value: '1' },
           placeholder: [
             {
               data: {
@@ -40,6 +41,7 @@ export const inlineExtensionData = [
         },
         macroMetadata: {
           macroId: { value: new Date().valueOf() },
+          schemaVersion: { value: '1' },
           placeholder: [
             {
               data: { url: '' },
@@ -64,6 +66,7 @@ export const extensionData = [
         },
         macroMetadata: {
           macroId: { value: new Date().valueOf() },
+          schemaVersion: { value: '1' },
           placeholder: [
             {
               data: {
@@ -88,6 +91,7 @@ export const extensionData = [
         },
         macroMetadata: {
           macroId: { value: new Date().valueOf() },
+          schemaVersion: { value: '1' },
           placeholder: [
             {
               data: { url: '' },
@@ -109,6 +113,7 @@ export const bodiedExtensionData = [
       parameters: {
         macroMetadata: {
           macroId: { value: new Date().valueOf() },
+          schemaVersion: { value: '2' },
           placeholder: [
             {
               data: {
@@ -158,6 +163,7 @@ export const bodiedExtensionData = [
       parameters: {
         macroMetadata: {
           macroId: { value: new Date().valueOf() },
+          schemaVersion: { value: '1' },
           placeholder: [
             {
               data: { url: '' },
@@ -205,6 +211,7 @@ export const bodiedExtensionData = [
                 },
                 macroMetadata: {
                   macroId: { value: new Date().valueOf() },
+                  schemaVersion: { value: '1' },
                   placeholder: [
                     {
                       data: {
