@@ -19,31 +19,27 @@ import {
 
 import type { EventChange } from '../types';
 
-const arrowKeys = [
-  keycode('down'),
-  keycode('left'),
-  keycode('right'),
-  keycode('up'),
-];
+const arrowKeys = {
+  ArrowDown: 'down',
+  ArrowLeft: 'left',
+  ArrowRight: 'right',
+  ArrowUp: 'up',
+};
 const daysPerWeek = 7;
 const monthsPerYear = 12;
 
 type Handler = (e: any) => void;
 type Props = {
+  /** The number of the day currently focused. Places border around the date. 0 highlights no date. */
+  day: number,
   /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates provided are greyed out.
    This does not prevent these dates being selected. */
   disabled: Array<string>,
-  /** The number of the date currently focused. Places border around the date. 0 highlights no date. */
-  focused: number,
   /** The number of the month (from 1 to 12) which the calendar should be on. */
   month: number,
   /** Function which is called when the calendar is no longer focused. */
   onBlur: Handler,
-  /** Function which is called when navigation within the calendar is called,
-  such as changing the month or year. Returns an object with day, month and
-  year properties, each as a number. These will be the currently selected values
-  with updates for if the change has been triggered internally by the forward and
-  back arrows for months. */
+  /** Called when the calendar is navigated. This can be triggered imperatively via navigate(), by the keyboard, or by clicking the navigational buttons. If it is triggered by the keyboard, an extra value called `dir` is passed indicating the direction it was navigated. */
   onChange: Handler,
   /** Called when the calendar receives focus. This could be from a mouse event on the container by tabbing into it. */
   onFocus: Handler,
@@ -65,8 +61,8 @@ type Props = {
 };
 
 type State = {
+  day: number,
   disabled: Array<string>,
-  focused: number,
   selected: Array<string>,
   month: number,
   previouslySelected: Array<string>,
@@ -80,6 +76,7 @@ function getUniqueId(prefix: string) {
 
 class Calendar extends Component<Props, State> {
   calendar: Object;
+  container: HTMLElement | null;
   props: Props;
 
   static defaultProps = {
@@ -96,8 +93,8 @@ class Calendar extends Component<Props, State> {
     const thisMonth = now.getMonth() + 1;
     const thisYear = now.getFullYear();
     this.state = {
+      day: 0,
       disabled: [],
-      focused: 0,
       selected: [],
       month: thisMonth,
       previouslySelected: [],
@@ -137,30 +134,24 @@ class Calendar extends Component<Props, State> {
   }
 
   handleContainerKeyDown = (e: KeyboardEvent) => {
-    const { focused, month, year } = this.state;
-    const key = e.keyCode;
-    const isArrowKey = arrowKeys.indexOf(key) > -1;
-    const isInitialArrowKeyPress = !focused && isArrowKey;
+    const { key } = e;
+    const arrowKey = arrowKeys[key];
 
-    e.preventDefault();
-    if (isInitialArrowKeyPress) {
-      this.triggerOnChange({ year, month, day: 1 });
-      return;
-    }
-
-    if (key === keycode('enter') || key === keycode('space')) {
+    if (key === 'Enter' || key === ' ') {
       const {
-        focused: selectFocused,
+        day: selectDay,
         month: selectMonth,
         year: selectYear,
       } = this.state;
+      e.preventDefault();
       this.triggerOnSelect({
+        day: selectDay,
         year: selectYear,
         month: selectMonth,
-        day: selectFocused,
       });
-    } else {
-      this.navigate(keycode(key));
+    } else if (arrowKey) {
+      e.preventDefault();
+      this.navigate(arrowKey);
     }
   };
 
@@ -169,42 +160,42 @@ class Calendar extends Component<Props, State> {
   };
 
   handleClickNext = () => {
-    const { focused: day, month, year } = {
+    const { day, month, year } = {
       ...this.state,
       ...this.getNextMonth(),
     };
-    this.triggerOnChange({ day, month, year });
+    this.triggerOnChange({ day, month, year, type: 'next' });
   };
 
   handleClickPrev = () => {
-    const { focused: day, month, year } = {
+    const { day, month, year } = {
       ...this.state,
       ...this.getPrevMonth(),
     };
-    this.triggerOnChange({ day, month, year });
+    this.triggerOnChange({ day, month, year, type: 'prev' });
   };
 
   handleContainerBlur = () => {
-    this.setState({ focused: 0 });
+    this.setState({ day: 0 });
     this.props.onBlur();
   };
 
   handleContainerFocus = () => {
-    this.setState({ focused: this.state.focused || 1 });
+    this.setState({ day: this.state.day || 1 });
     this.props.onFocus();
   };
 
   focus() {
-    if (this.calendar) {
-      this.calendar.focus();
+    if (this.container) {
+      this.container.focus();
     }
   }
 
-  navigate(dir) {
-    const { focused, month, year } = this.state;
+  navigate(type) {
+    const { day, month, year } = this.state;
 
-    if (dir === 'down') {
-      const next = focused + daysPerWeek;
+    if (type === 'down') {
+      const next = day + daysPerWeek;
       const daysInMonth = CalendarBase.daysInMonth(year, month - 1);
 
       if (next > daysInMonth) {
@@ -213,12 +204,13 @@ class Calendar extends Component<Props, State> {
           year: nextYear,
           month: nextMonth,
           day: next - daysInMonth,
+          type,
         });
       } else {
-        this.triggerOnChange({ year, month, day: next });
+        this.triggerOnChange({ year, month, day: next, type });
       }
-    } else if (dir === 'left') {
-      const prev = focused - 1;
+    } else if (type === 'left') {
+      const prev = day - 1;
 
       if (prev < 1) {
         const { month: prevMonth, year: prevYear } = this.getPrevMonth();
@@ -227,22 +219,28 @@ class Calendar extends Component<Props, State> {
           year: prevYear,
           month: prevMonth,
           day: prevDay,
+          type,
         });
       } else {
-        this.triggerOnChange({ year, month, day: prev });
+        this.triggerOnChange({ year, month, day: prev, type });
       }
-    } else if (dir === 'right') {
-      const next = focused + 1;
+    } else if (type === 'right') {
+      const next = day + 1;
       const daysInMonth = CalendarBase.daysInMonth(year, month - 1);
 
       if (next > daysInMonth) {
         const { month: nextMonth, year: nextYear } = this.getNextMonth();
-        this.triggerOnChange({ year: nextYear, month: nextMonth, day: 1 });
+        this.triggerOnChange({
+          year: nextYear,
+          month: nextMonth,
+          day: 1,
+          type,
+        });
       } else {
-        this.triggerOnChange({ year, month, day: next });
+        this.triggerOnChange({ year, month, day: next, type });
       }
-    } else if (dir === 'up') {
-      const prev = focused - daysPerWeek;
+    } else if (type === 'up') {
+      const prev = day - daysPerWeek;
 
       if (prev < 1) {
         const { month: prevMonth, year: prevYear } = this.getPrevMonth();
@@ -252,18 +250,23 @@ class Calendar extends Component<Props, State> {
           year: prevYear,
           month: prevMonth,
           day: prevDay,
+          type,
         });
       } else {
-        this.triggerOnChange({ year, month, day: prev });
+        this.triggerOnChange({ year, month, day: prev, type });
       }
     }
   }
 
-  triggerOnChange = ({ year, month, day }: EventChange) => {
+  refContainer = e => {
+    this.container = e;
+  };
+
+  triggerOnChange = ({ year, month, day, ...onChangeProps }: EventChange) => {
     const iso = dateToString({ year, month, day });
-    this.props.onChange({ day, month, year, iso });
+    this.props.onChange({ day, month, year, iso, ...onChangeProps });
     this.setState({
-      focused: day,
+      day,
       month,
       year,
     });
@@ -279,8 +282,8 @@ class Calendar extends Component<Props, State> {
 
   render() {
     const {
+      day,
       disabled,
-      focused,
       month,
       previouslySelected,
       selected,
@@ -316,10 +319,10 @@ class Calendar extends Component<Props, State> {
       }
 
       const isDisabled = disabled.indexOf(dateAsString) > -1;
-      const isFocused = focused === date.day && !date.siblingMonth;
+      const isFocused = day === date.day && !date.siblingMonth;
       const isPreviouslySelected =
-        previouslySelected.indexOf(dateAsString) > -1;
-      const isSelected = selected.indexOf(dateAsString) > -1;
+        !isDisabled && previouslySelected.indexOf(dateAsString) > -1;
+      const isSelected = !isDisabled && selected.indexOf(dateAsString) > -1;
       const isSiblingMonth = date.siblingMonth;
       const isToday = today === dateAsString;
 
@@ -342,23 +345,21 @@ class Calendar extends Component<Props, State> {
     });
 
     return (
-      // There's no interactive element to trap keyboard events on so we must trap them here so
-      // that we can navigate the keyboard for them. The aria role of "grid" here will hint to
-      // screen readers that it can be navigated with the keyboard, but the linter still fails.
-      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
         onBlur={this.handleContainerBlur}
         onFocus={this.handleContainerFocus}
         onKeyDown={this.handleContainerKeyDown}
+        role="presentation"
       >
         <Announcer id={announceId} aria-live="assertive" aria-relevant="text">
-          {new Date(year, month, focused).toString()}
+          {new Date(year, month, day).toString()}
         </Announcer>
         <Wrapper
+          aria-describedby={announceId}
           aria-label="calendar"
+          innerRef={this.refContainer}
           role="grid"
           tabIndex={0}
-          aria-describedby={announceId}
         >
           <Heading
             month={month}
