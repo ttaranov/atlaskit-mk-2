@@ -76,7 +76,34 @@ class DatePicker extends Component<Props, State> {
     view: {},
   };
 
-  onKeyUp = (e: Event) => {
+  onCalendarChange = ({ day, iso, month, type, year }: Object) => {
+    if (type === 'next' || type === 'prev') {
+      this.setState({ view: { month, year } });
+    } else {
+      this.setState({ value: iso, view: { day, month, year } });
+    }
+  };
+
+  onCalendarSelect = ({ iso: value }: Object) => {
+    this.setState({ value });
+    this.props.onChange(value);
+  };
+
+  onSelectKeyDown = (e: Event) => {
+    const { key } = e;
+    const dir = arrowKeys[key];
+
+    if (dir) {
+      this.calendar.navigate(dir);
+      return;
+    }
+
+    if (key === 'Enter') {
+      // TODO close the dropdown once it supports controlled isOpen.
+      e.preventDefault();
+      return;
+    }
+
     let value = e.target.value;
     if (value) {
       const parsed = parse(value);
@@ -86,15 +113,6 @@ class DatePicker extends Component<Props, State> {
     }
     this.setState({ view: {} });
     this.onCalendarSelect({ iso: value });
-  };
-
-  onCalendarChange = ({ month, year }: Object) => {
-    this.setState({ view: { month, year } });
-  };
-
-  onCalendarSelect = ({ iso: value }: Object) => {
-    this.setState({ value });
-    this.props.onChange(value);
   };
 
   refCalendar = e => {
@@ -109,7 +127,7 @@ class DatePicker extends Component<Props, State> {
     let calendarProps = {};
     if (isValid(parsed)) {
       calendarProps = {
-        focused: parsed.getDate(),
+        day: parsed.getDate(),
         month: parsed.getMonth() + 1,
         selected: [value],
         year: parsed.getFullYear(),
@@ -127,7 +145,7 @@ class DatePicker extends Component<Props, State> {
     );
 
     return (
-      <div role="presentation" onKeyUp={this.onKeyUp}>
+      <div role="presentation" onKeyDown={this.onSelectKeyDown}>
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select
