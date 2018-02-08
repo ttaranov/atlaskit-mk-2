@@ -143,14 +143,16 @@ class DatePicker extends Component<Props, State> {
       };
     }
 
-    const Menu = () => (
-      <Calendar
-        {...calendarProps}
-        {...view}
-        onChange={this.onCalendarChange}
-        onSelect={this.onCalendarSelect}
-        ref={this.refCalendar}
-      />
+    const MenuList = () => (
+      <div style={{ textAlign: 'center' }}>
+        <Calendar
+          {...calendarProps}
+          {...view}
+          onChange={this.onCalendarChange}
+          onSelect={this.onCalendarSelect}
+          ref={this.refCalendar}
+        />
+      </div>
     );
 
     return (
@@ -163,7 +165,7 @@ class DatePicker extends Component<Props, State> {
         {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select
           autoFocus={autoFocus}
-          components={{ Menu }}
+          components={{ MenuList }}
           isDisabled={isDisabled}
           placeholder="e.g. 2018/12/31"
           value={
