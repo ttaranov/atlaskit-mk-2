@@ -1,5 +1,9 @@
 # @atlaskit/input
 
+## 1.6.4
+
+- [patch] Fixed font-size in Input component [bebf0ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bebf0ab)
+
 ## 1.6.3
 
 

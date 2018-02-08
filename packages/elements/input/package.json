@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/input",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
