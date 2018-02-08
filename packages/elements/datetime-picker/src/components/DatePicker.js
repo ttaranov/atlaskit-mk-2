@@ -39,6 +39,7 @@ type State = {
 
 TODO
 
+- ReactSelect needs an event for when the clear button is clicked, when controlling the value.
 - ReactSelect needs a way to control the open / closed state of the dropdown.
 - ReactSelect neesd a way to control the focused item in the dropdown.
 - ReactSelect forces input with to match dropdown. This breaks `flex-basis: 0` in DateTimePicker.
