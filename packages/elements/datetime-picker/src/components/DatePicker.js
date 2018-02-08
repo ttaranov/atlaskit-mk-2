@@ -103,7 +103,9 @@ class DatePicker extends Component<Props, State> {
 
     if (dir) {
       // Navigates the calendar using the keyboard.
-      this.calendar.navigate(dir);
+      if (this.calendar) {
+        this.calendar.navigate(dir);
+      }
     } else if (key === 'Enter') {
       // TODO close the dropdown once it supports controlled isOpen.
       // This ensures that react-select doesn't do anything with the value and
