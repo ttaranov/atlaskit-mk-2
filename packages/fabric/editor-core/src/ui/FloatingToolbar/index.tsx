@@ -26,6 +26,39 @@ export {
   getNearestNonTextNode,
 } from './utils';
 
+export class StylelessFloatingToolbar extends PureComponent<Props> {
+  render() {
+    const {
+      children,
+      target,
+      offset,
+      fitWidth,
+      fitHeight,
+      onPositionCalculated,
+      popupsMountPoint,
+      popupsBoundariesElement,
+    } = this.props;
+
+    if (!target) {
+      return null;
+    }
+
+    return (
+      <Popup
+        target={target}
+        mountTo={popupsMountPoint}
+        boundariesElement={popupsBoundariesElement}
+        offset={offset}
+        fitWidth={fitWidth}
+        fitHeight={fitHeight}
+        onPositionCalculated={onPositionCalculated}
+      >
+        {children}
+      </Popup>
+    );
+  }
+}
+
 export default class FloatingToolbar extends PureComponent<Props, any> {
   render() {
     const {

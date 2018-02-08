@@ -32,6 +32,7 @@ import {
   clearMarksOnChangeToEmptyDocumentPlugin,
   datePlugin,
   placeholderTextPlugin,
+  snippetPlugin,
 } from '../plugins';
 
 /**
@@ -39,6 +40,7 @@ import {
  */
 export function getDefaultPluginsList(): EditorPlugin[] {
   return [
+    snippetPlugin,
     pastePlugin,
     basePlugin,
     blockTypePlugin,

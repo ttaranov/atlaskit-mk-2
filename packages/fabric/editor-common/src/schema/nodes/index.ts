@@ -51,3 +51,4 @@ export { inlineExtension } from './inline-extension';
 export { bodiedExtension } from './bodied-extension';
 export { date } from './date';
 export { placeholder } from './placeholder';
+export { snippet } from './snippet';

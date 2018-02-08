@@ -14,6 +14,7 @@ import {
   textColor,
   confluenceInlineComment,
   action,
+  snippetQuery,
 } from './marks';
 
 import {
@@ -53,6 +54,7 @@ import {
   bodiedExtension,
   date,
   placeholder,
+  snippet,
 } from './nodes';
 
 function addItems(
@@ -153,6 +155,7 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'inlineExtension', spec: inlineExtension },
   { name: 'bodiedExtension', spec: bodiedExtension },
   { name: 'unknownBlock', spec: unknownBlock },
+  { name: 'snippet', spec: snippet },
 ];
 
 const marksInOrder: SchemaBuiltInItem[] = [
@@ -165,6 +168,7 @@ const marksInOrder: SchemaBuiltInItem[] = [
   { name: 'code', spec: code },
   { name: 'mentionQuery', spec: mentionQuery },
   { name: 'emojiQuery', spec: emojiQuery },
+  { name: 'snippetQuery', spec: snippetQuery },
   { name: 'textColor', spec: textColor },
   { name: 'action', spec: action },
   { name: 'confluenceInlineComment', spec: confluenceInlineComment },
