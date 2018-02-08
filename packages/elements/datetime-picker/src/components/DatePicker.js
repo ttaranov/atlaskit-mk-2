@@ -39,8 +39,6 @@ type State = {
 
 TODO
 
-- Figure out why calendar is clearing the value on escape when the value isn't changing.
-- Calendar needs a way to pass keyboard events to it when not focused (and possibly return if it wasn't handled).
 - DateTime picker should force 50% width of flex children.
 - Navigate the calendar when keys are pressed while maintaining focus on the input.
 - ReactSelect needs a way to control the open / closed state of the dropdown.
@@ -89,21 +87,7 @@ class DatePicker extends Component<Props, State> {
     this.props.onChange(value);
   };
 
-  onSelectKeyDown = (e: Event) => {
-    const { key } = e;
-    const dir = arrowKeys[key];
-
-    if (dir) {
-      this.calendar.navigate(dir);
-      return;
-    }
-
-    if (key === 'Enter') {
-      // TODO close the dropdown once it supports controlled isOpen.
-      e.preventDefault();
-      return;
-    }
-
+  onSelectInput = (e: Event) => {
     let value = e.target.value;
     if (value) {
       const parsed = parse(value);
@@ -113,6 +97,29 @@ class DatePicker extends Component<Props, State> {
     }
     this.setState({ view: {} });
     this.onCalendarSelect({ iso: value });
+  };
+
+  onSelectKeyDown = (e: Event) => {
+    const { key } = e;
+    const dir = arrowKeys[key];
+
+    if (dir) {
+      // Navigates the calendar using the keyboard.
+      this.calendar.navigate(dir);
+    } else if (key === 'Enter') {
+      // TODO close the dropdown once it supports controlled isOpen.
+      // This ensures that react-select doesn't do anything with the value and
+      // we can retain whatever the user has entered.
+      e.preventDefault();
+    } else if (key === 'Escape') {
+      // TODO close the dropdown once it supports controlled isOpen.
+      // Clear the value on escape.
+      this.setState({ value: '' });
+    } else if (key === 'Tab') {
+      // When the tab key is pressed, react-select normally clears the value.
+      // However, we want to retain it and allow the dropdown to close.
+      this.setState({ value: this.state.value });
+    }
   };
 
   refCalendar = e => {
@@ -145,7 +152,11 @@ class DatePicker extends Component<Props, State> {
     );
 
     return (
-      <div role="presentation" onKeyDown={this.onSelectKeyDown}>
+      <div
+        role="presentation"
+        onInput={this.onSelectInput}
+        onKeyDown={this.onSelectKeyDown}
+      >
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select
