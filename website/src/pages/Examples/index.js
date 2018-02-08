@@ -168,7 +168,7 @@ function ExampleNavigation(props) {
                 type="Submit"
                 disabled={isDisabled}
               >
-                {isDisabled ? <CodeSandboxLogo /> : ''}
+                <CodeSandboxLogo />
               </NavButton>
             )}
             useNavButton
