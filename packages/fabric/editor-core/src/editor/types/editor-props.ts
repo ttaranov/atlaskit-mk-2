@@ -30,6 +30,7 @@ export type EditorAppearance =
   | 'comment'
   | 'full-page'
   | 'chromeless'
+  | 'mobile'
   | undefined;
 
 export type ReactElement = React.ReactElement<any> | React.ReactElement<any>[];
