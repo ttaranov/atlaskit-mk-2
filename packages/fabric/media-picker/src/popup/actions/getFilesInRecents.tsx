@@ -13,7 +13,7 @@ export const isGetFilesInRecentsAction = (
   return action.type === GET_FILES_IN_RECENTS;
 };
 
-export const getFilesInRecentsCollection = (): GetFilesInRecentsAction => {
+export const getFilesInRecents = (): GetFilesInRecentsAction => {
   return {
     type: GET_FILES_IN_RECENTS,
   };
