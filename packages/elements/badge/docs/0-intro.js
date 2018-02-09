@@ -17,6 +17,14 @@ export default md`
 
   ${(
     <Example
+      Component={require('../examples/3-style-guide').default}
+      title="Style Guide"
+      source={require('!!raw-loader!../examples/3-style-guide')}
+    />
+  )}
+
+  ${(
+    <Example
       Component={require('../examples/0-basic').default}
       title="Basic"
       source={require('!!raw-loader!../examples/0-basic')}
