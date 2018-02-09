@@ -1,7 +1,6 @@
 import { State } from '../domain';
 import { Store } from 'react-redux';
 import { Observable } from 'rxjs/Observable';
-import { Auth } from '@atlaskit/media-core';
 
 export const mockState: State = {
   apiUrl: 'some-api-url',

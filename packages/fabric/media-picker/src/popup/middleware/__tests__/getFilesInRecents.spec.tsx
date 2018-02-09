@@ -1,6 +1,5 @@
 import { mockStore, mockFetcher, mockAuthProvider } from '../../mocks';
 import {
-  getFilesInRecents as createGetFilesInRecentsAction,
   getFilesInRecentsFullfilled,
   getFilesInRecentsFailed,
 } from '../../actions';
