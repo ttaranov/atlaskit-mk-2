@@ -5,6 +5,7 @@ import WithPluginState from '../WithPluginState';
 import ContentStyles from '../ContentStyles';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
+import mentionPluginKey from '../../../plugins/mentions/plugin-key';
 
 export interface MobileEditorProps {
   isMaxContentSizeReached?: boolean;
@@ -54,25 +55,22 @@ export default class Editor extends React.Component<
     }
   };
 
-  private renderChrome = ({ maxContentSize }) => {
+  private renderMobile = ({ maxContentSize, mentions }) => {
     const {
       editorView,
       eventDispatcher,
       providerFactory,
-      contentComponents,
       customContentComponents,
       maxHeight,
-      popupsMountPoint,
-      popupsBoundariesElement,
-      popupsScrollableElement,
       disabled,
     } = this.props;
     const maxContentSizeReached =
       maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
-
+    console.log('state ' + mentions);
     return (
       <MobileEditor
+        mentionState={mentions}
         className={this.flashToggle ? '-flash' : ''}
         isMaxContentSizeReached={maxContentSizeReached}
         maxHeight={maxHeight}
@@ -84,10 +82,6 @@ export default class Editor extends React.Component<
             eventDispatcher={eventDispatcher}
             providerFactory={providerFactory}
             appearance={this.appearance}
-            items={contentComponents}
-            popupsMountPoint={popupsMountPoint}
-            popupsBoundariesElement={popupsBoundariesElement}
-            popupsScrollableElement={popupsScrollableElement}
             disabled={!!disabled}
           />
         </ContentArea>
@@ -102,8 +96,11 @@ export default class Editor extends React.Component<
       <WithPluginState
         editorView={editorView}
         eventDispatcher={eventDispatcher}
-        plugins={{ maxContentSize: maxContentSizePluginKey }}
-        render={this.renderChrome}
+        plugins={{
+          maxContentSize: maxContentSizePluginKey,
+          mentions: mentionPluginKey,
+        }}
+        render={this.renderMobile}
       />
     );
   }
