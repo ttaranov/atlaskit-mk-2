@@ -52,8 +52,6 @@ export interface CardListState {
   loading: boolean;
   shouldAnimate: boolean;
   firstItemKey?: string;
-  subscription?: Subscription;
-  loadNextPage?: () => void;
   collection?: MediaCollection;
   error?: AxiosError;
 }
@@ -66,6 +64,18 @@ const LoadingComponent = (
 );
 const EmptyComponent = <div>No items</div>;
 const ErrorComponent = <div>ERROR</div>;
+
+function loading(): Pick<
+  CardListState,
+  'loading' | 'error' | 'collection' | 'firstItemKey'
+> {
+  return {
+    loading: true,
+    error: undefined,
+    collection: undefined,
+    firstItemKey: undefined,
+  };
+}
 
 export class CardList extends Component<CardListProps, CardListState> {
   static defaultPageSize = 10;
@@ -86,14 +96,16 @@ export class CardList extends Component<CardListProps, CardListState> {
     shouldAnimate: false,
   };
 
+  private subscription?: Subscription;
+  private loadNextPage?: () => void;
+
   private unsubscribe() {
-    const { subscription } = this.state;
-    if (subscription) {
-      subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 
-  handleNextItems(nextProps: CardListProps) {
+  handleNextItems() {
     return (collection: MediaCollection) => {
       const { firstItemKey } = this.state;
       const newFirstItemKey = collection.items[0]
@@ -110,34 +122,35 @@ export class CardList extends Component<CardListProps, CardListState> {
     };
   }
 
-  private subscribe(nextProps: CardListProps) {
-    const { collectionName, context } = nextProps;
+  private subscribe() {
+    const { collectionName, context } = this.props;
     const pageSize = this.props.pageSize || CardList.defaultPageSize;
     const provider = context.getMediaCollectionProvider(
       collectionName,
       pageSize,
     );
 
-    const subscription = provider.observable().subscribe({
-      next: this.handleNextItems(nextProps),
+    this.subscription = provider.observable().subscribe({
+      next: this.handleNextItems(),
       error: (error: AxiosError): void => {
         this.setState({ collection: undefined, error, loading: false });
       },
     });
-
-    this.setState({ subscription });
   }
 
-  private shouldUpdateState(nextProps: CardListProps): boolean {
+  private shouldUpdateState(
+    prevProps: CardListProps,
+    nextProps: CardListProps,
+  ): boolean {
     return (
-      nextProps.collectionName !== this.props.collectionName ||
-      nextProps.context !== this.props.context ||
-      nextProps.pageSize !== this.props.pageSize
+      nextProps.collectionName !== prevProps.collectionName ||
+      nextProps.context !== prevProps.context ||
+      nextProps.pageSize !== prevProps.pageSize
     );
   }
 
-  private updateState(nextProps: CardListProps): void {
-    const { collectionName, context } = nextProps;
+  private updateState(): void {
+    const { collectionName, context } = this.props;
     const pageSize = this.props.pageSize || CardList.defaultPageSize;
     const provider = context.getMediaCollectionProvider(
       collectionName,
@@ -147,24 +160,23 @@ export class CardList extends Component<CardListProps, CardListState> {
     this.unsubscribe();
 
     // Setting the subscription after the state has been applied
-    this.setState(
-      {
-        loadNextPage: () => provider.loadNextPage(),
-        error: undefined,
-        collection: undefined,
-        firstItemKey: undefined,
-      },
-      () => this.subscribe(nextProps),
-    );
+    this.loadNextPage = () => provider.loadNextPage();
+    this.subscribe();
   }
 
   componentDidMount() {
-    this.updateState(this.props);
+    this.updateState();
   }
 
   componentWillReceiveProps(nextProps: CardListProps): void {
-    if (this.shouldUpdateState(nextProps)) {
-      this.updateState(nextProps);
+    if (this.shouldUpdateState(this.props, nextProps)) {
+      this.setState(loading());
+    }
+  }
+
+  componentDidUpdate(prevProps: CardListProps) {
+    if (this.shouldUpdateState(prevProps, this.props)) {
+      this.updateState();
     }
   }
 
@@ -173,7 +185,9 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private handleInfiniteScrollThresholdReached = () => {
-    this.loadNextPage();
+    if (this.loadNextPage) {
+      this.loadNextPage();
+    }
   };
 
   render(): JSX.Element {
@@ -396,7 +410,4 @@ export class CardList extends Component<CardListProps, CardListState> {
       </CardListItemWrapper>
     );
   }
-
-  loadNextPage = (): void =>
-    this.state.loadNextPage && this.state.loadNextPage();
 }
