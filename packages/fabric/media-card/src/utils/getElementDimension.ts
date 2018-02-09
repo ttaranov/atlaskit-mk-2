@@ -3,10 +3,16 @@ import * as ReactDOM from 'react-dom';
 export type ElementDimension = 'height' | 'width';
 
 export const getElementDimension = (
-  component: React.Component,
+  component: React.Component | HTMLElement,
   dimension: ElementDimension,
 ): number => {
-  const element = ReactDOM.findDOMNode(component);
+  let element;
+  if (component instanceof HTMLElement) {
+    element = component;
+  } else {
+    element = ReactDOM.findDOMNode(component);
+  }
+
   const { [dimension]: dimensionValue } = element.getBoundingClientRect();
 
   return Math.round(dimensionValue);

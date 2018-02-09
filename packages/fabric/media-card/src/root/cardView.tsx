@@ -56,13 +56,15 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
 
   state: CardViewState = {};
 
-  componentDidMount() {
-    this.saveElementWidth();
-  }
+  handleMount = (el?: HTMLDivElement) => {
+    if (el) {
+      this.saveElementWidth(el);
+    }
+  };
 
-  componentWillReceiveProps(nextProps: CardViewProps) {
-    const { selected: currSelected } = this.props;
-    const { selectable: nextSelectable, selected: nextSelected } = nextProps;
+  componentDidUpdate(prevProps: CardViewProps) {
+    const { selected: currSelected } = prevProps;
+    const { selectable: nextSelectable, selected: nextSelected } = this.props;
 
     // need to coerce to booleans as both "undefined" and "false" are considered NOT selected
     const cs: boolean = !!currSelected;
@@ -103,7 +105,7 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
 
   // If the dimensions.width is a percentage, we need to transform it
   // into a pixel value in order to get the right breakpoints applied.
-  saveElementWidth() {
+  saveElementWidth(element: HTMLDivElement) {
     const { dimensions } = this.props;
     if (!dimensions) {
       return;
@@ -112,7 +114,7 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
     const { width } = dimensions;
 
     if (width && isValidPercentageUnit(width)) {
-      const elementWidth = getElementDimension(this, 'width');
+      const elementWidth = getElementDimension(element, 'width');
 
       this.setState({ elementWidth });
     }
@@ -143,6 +145,7 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
 
     return (
       <Wrapper
+        innerRef={this.handleMount}
         mediaItemType={mediaType}
         breakpointSize={breakpointSize(this.width)}
         appearance={appearance}
@@ -164,7 +167,7 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
       onMouseEnter,
       onSelectChange,
       onRetry,
-      ...otherProps,
+      ...otherProps
     } = this.props;
 
     return (
@@ -185,7 +188,7 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
       onClick,
       onMouseEnter,
       onSelectChange,
-      ...otherProps,
+      ...otherProps
     } = this.props;
 
     return (
