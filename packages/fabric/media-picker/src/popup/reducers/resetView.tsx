@@ -22,11 +22,6 @@ export default function resetView(state: State, action: Action): State {
       ...state,
       view: {
         ...state.view,
-        service: {
-          name: 'upload',
-          accountId: '',
-        },
-        path: [],
         hasPopupBeenVisible: true,
       },
       selectedItems,

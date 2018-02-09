@@ -15,7 +15,7 @@ import { fetchNextCloudFilesPageMiddleware } from '../popup/middleware/fetchNext
 import { changeCloudAccountFolderMiddleware } from '../popup/middleware/changeCloudAccountFolder';
 import startAppMiddleware from '../popup/middleware/startApp';
 import { getConnectedRemoteAccounts } from '../popup/middleware/getConnectedRemoteAccounts';
-import { getFilesInRecentsCollection } from '../popup/middleware/getFilesInRecentsCollection';
+import { getFilesInRecentsCollection } from '../popup/middleware/getFilesInRecents';
 import { importFilesMiddleware } from '../popup/middleware/importFiles';
 import { startCloudAccountOAuthFlow } from '../popup/middleware/startAuth';
 import unlinkCloudAccount from '../popup/middleware/unlinkCloudAccount';

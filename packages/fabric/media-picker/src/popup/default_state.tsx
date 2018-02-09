@@ -24,7 +24,7 @@ const state: State = {
       accountId: '',
     },
     hasError: false,
-    isLoading: false,
+    isLoading: true,
     path: [],
     items: [],
     hasPopupBeenVisible: false,
