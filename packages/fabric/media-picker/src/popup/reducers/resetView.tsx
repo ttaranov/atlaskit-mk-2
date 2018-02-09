@@ -20,10 +20,6 @@ export default function resetView(state: State, action: Action): State {
 
     return {
       ...state,
-      view: {
-        ...state.view,
-        hasPopupBeenVisible: true,
-      },
       selectedItems,
       uploads,
     };

@@ -65,7 +65,6 @@ export interface UploadViewStateProps {
   readonly uploads: LocalUploads;
   readonly selectedItems: SelectedItem[];
   readonly apiUrl: string;
-  readonly hasPopupBeenVisible: boolean;
 }
 
 export interface UploadViewDispatchProps {
@@ -111,6 +110,7 @@ export class StatelessUploadView extends Component<
     }
 
     const cards = this.cards();
+
     if (cards.length > 0) {
       return this.recentView(cards);
     } else {
@@ -173,16 +173,8 @@ export class StatelessUploadView extends Component<
   );
 
   private cards() {
-    const { hasPopupBeenVisible } = this.props;
-
-    // Returning an empty array instead of null to keep the same api
-    if (!hasPopupBeenVisible) {
-      return [];
-    }
-
     const recentFilesCards = this.recentFilesCards();
     const uploadingFilesCards = this.uploadingFilesCards();
-
     return uploadingFilesCards.concat(recentFilesCards);
   }
 
@@ -357,7 +349,6 @@ const mapStateToProps = (state: State): UploadViewStateProps => ({
   uploads: state.uploads,
   selectedItems: state.selectedItems,
   apiUrl: state.apiUrl,
-  hasPopupBeenVisible: state.view.hasPopupBeenVisible,
 });
 
 const mapDispatchToProps = (

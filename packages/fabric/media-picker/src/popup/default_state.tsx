@@ -27,7 +27,6 @@ const state: State = {
     isLoading: true,
     path: [],
     items: [],
-    hasPopupBeenVisible: false,
     isUploading: false,
     isCancelling: false,
   },
