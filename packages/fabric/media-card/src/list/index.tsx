@@ -13,13 +13,15 @@ import {
 } from '@atlaskit/media-core';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
+import WithMediaItemDetails from '../WithMediaItemDetails';
+import WithMediaItemURI from '../WithMediaItemURI';
 import {
   defaultImageCardDimensions,
   defaultSmallCardDimensions,
 } from '../utils';
 import { LazyContent } from '../utils/lazyContent';
 import { CardDimensions, CardListEvent, CardEvent } from '..';
-import { Provider, MediaCard, CardView } from '../root';
+import { Provider, CardView } from '../root';
 import { InfiniteScroll } from './infiniteScroll';
 import { CardListItemWrapper, Spinner } from './styled';
 
@@ -84,9 +86,6 @@ export class CardList extends Component<CardListProps, CardListState> {
     shouldAnimate: false,
   };
 
-  providersByMediaItemId: { [id: string]: Provider } = {};
-  private dataURIService: DataUriService;
-
   private unsubscribe() {
     const { subscription } = this.state;
     if (subscription) {
@@ -95,29 +94,12 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   handleNextItems(nextProps: CardListProps) {
-    const { collectionName, context } = nextProps;
-
     return (collection: MediaCollection) => {
       const { firstItemKey } = this.state;
       const newFirstItemKey = collection.items[0]
         ? this.getItemKey(collection.items[0])
         : undefined;
       const shouldAnimate = !!firstItemKey && firstItemKey !== newFirstItemKey;
-      this.providersByMediaItemId = {};
-      collection.items.forEach(mediaItem => {
-        if (!mediaItem.details || !mediaItem.details.id) {
-          return;
-        }
-
-        this.providersByMediaItemId[
-          mediaItem.details.id
-        ] = context.getMediaItemProvider(
-          mediaItem.details.id,
-          mediaItem.type,
-          collectionName,
-          mediaItem,
-        );
-      });
 
       this.setState({
         collection,
@@ -163,8 +145,6 @@ export class CardList extends Component<CardListProps, CardListState> {
     );
 
     this.unsubscribe();
-
-    this.dataURIService = context.getDataUriService(collectionName);
 
     // Setting the subscription after the state has been applied
     this.setState(
@@ -233,15 +213,13 @@ export class CardList extends Component<CardListProps, CardListState> {
 
   private renderList(): JSX.Element {
     const { collection, shouldAnimate } = this.state;
+    const { cardWidth, dimensions, handleCardClick, placeholder } = this;
     const {
-      cardWidth,
-      dimensions,
-      providersByMediaItemId,
-      dataURIService,
-      handleCardClick,
-      placeholder,
-    } = this;
-    const { cardAppearance, shouldLazyLoadCards } = this.props;
+      context,
+      collectionName,
+      cardAppearance,
+      shouldLazyLoadCards,
+    } = this.props;
     const actions = this.props.actions || [];
     const cardActions = (collectionItem: MediaCollectionItem) =>
       actions.map(action => {
@@ -275,14 +253,33 @@ export class CardList extends Component<CardListProps, CardListState> {
                 shouldAnimate={shouldAnimate}
                 cardWidth={cardWidth}
               >
-                <MediaCard
-                  provider={providersByMediaItemId[mediaItem.details.id]}
-                  dataURIService={dataURIService}
-                  appearance={cardAppearance}
-                  dimensions={dimensions}
-                  onClick={handleCardClick.bind(this, mediaItem)}
-                  actions={cardActions(mediaItem)}
-                />
+                <WithMediaItemDetails
+                  context={context}
+                  type={mediaItem.type}
+                  id={mediaItem.details.id}
+                  collection={collectionName}
+                  initialDetails={mediaItem.details}
+                >
+                  {({ status, details }) => (
+                    <WithMediaItemURI
+                      context={context}
+                      type={mediaItem.type}
+                      id={mediaItem.details.id || ''}
+                    >
+                      {dataURI => (
+                        <CardView
+                          status={status}
+                          metadata={details}
+                          dataURI={dataURI}
+                          appearance={cardAppearance}
+                          dimensions={dimensions}
+                          onClick={handleCardClick.bind(this, mediaItem)}
+                          actions={cardActions(mediaItem)}
+                        />
+                      )}
+                    </WithMediaItemURI>
+                  )}
+                </WithMediaItemDetails>
               </CardListItemWrapper>
             </CSSTransition>
           );

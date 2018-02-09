@@ -25,7 +25,7 @@ export interface Context {
     id: string,
     mediaItemType: MediaItemType,
     collectionName?: string,
-    mediaItem?: MediaItem,
+    mediaItem?: MediaItem /* we should deprecate this parameter - it causes cascading updates in react since its synchronous */,
   ): MediaItemProvider;
 
   getMediaCollectionProvider(

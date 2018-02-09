@@ -105,6 +105,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
 
   // This method is called when card fails and user press 'Retry'
   private handleRetry = () => {
+    this.setState({ status: 'loading' });
     this.subscribe();
   };
 
