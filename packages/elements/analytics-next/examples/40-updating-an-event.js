@@ -54,7 +54,7 @@ class Form extends Component<*, { value: string }> {
         originalInteraction: payload.action,
         value: this.state.value,
       }))
-      .fire('atlaskit');
+      .fire('jira');
   };
 
   render() {
@@ -87,7 +87,7 @@ export default class App extends Component<void> {
 
   render() {
     return (
-      <AnalyticsListener channel="atlaskit" onEvent={this.handleEvent}>
+      <AnalyticsListener channel="jira" onEvent={this.handleEvent}>
         <Form />
       </AnalyticsListener>
     );

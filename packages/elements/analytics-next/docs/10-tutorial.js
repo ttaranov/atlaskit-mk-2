@@ -3,7 +3,19 @@ import React from 'react';
 import { code, Example, md } from '@atlaskit/docs';
 
 export default md`
-  ### Creating an analytics event
+  ### Contents
+
+  * [Creating an analytics event](#creating-an-analytics-event)
+  * [Firing an event](#firing-an-event)
+  * [Adding context to an event](#adding-context-to-an-event)
+  * [Passing an event to your consumers](#passing-an-event-to-your-consumers)
+  * [Adding data to an event's payload](#adding-data-to-an-events-payload)
+  * [Cloning an event](#cloning-an-event)
+  * [Asynchronous firing](#asynchronous-firing)
+  * [Tracking events outside the UI](#tracking-events-outside-the-ui)
+
+  <a name="creating-an-analytics-event"></a>
+  ## Creating an analytics event
 
   The \`withAnalyticsEvents\` HOC provides the wrapped component with a function for creating analytics events.
   
@@ -36,7 +48,8 @@ class Button extends Component {
 export default withAnalyticsEvents()(Button);`,
   ])}
 
-  ### Firing an event
+  <a name="firing-an-event"></a>
+  ## Firing an event
 
   We've got an analytics event, but now we need to do something with it. If we simply want to track every time somebody clicks our button we can fire the event right away:
 
@@ -89,13 +102,14 @@ render(<App />, document.getElementById('root'));`,
 
   ${(
     <Example
-      Component={require('../examples/100-tutorial-basic').default}
+      Component={require('../examples/10-basic-create-and-fire').default}
       title="Creating and firing an event"
-      source={require('!!raw-loader!../examples/100-tutorial-basic')}
+      source={require('!!raw-loader!../examples/10-basic-create-and-fire')}
     />
   )}
 
-  ### Adding context to an event
+  <a name="adding-context-to-an-event"></a>
+  ## Adding context to an event
 
   What if this button lives inside a Jira issue, and we want to capture that issue's ID in our analytics event? Our button is a reusable component and doesn't have any idea where or how it's being used. There might also be a number of component boundaries between the part of the app that knows the issue ID and the part of the app that renders the button.
   
@@ -136,13 +150,14 @@ render(<App />, document.getElementById('root'));`,
 
   ${(
     <Example
-      Component={require('../examples/110-tutorial-context').default}
+      Component={require('../examples/20-adding-analytics-context').default}
       title="Adding context to an event"
-      source={require('!!raw-loader!../examples/110-tutorial-context')}
+      source={require('!!raw-loader!../examples/20-adding-analytics-context')}
     />
   )}
 
-  ### Passing an event to your consumers
+  <a name="passing-an-event-to-your-consumers"></a>
+  ## Passing an event to your consumers
 
   Sometimes you don't want to fire an event as soon as it's created - you want to provide it to whoever is using your component so they can fire it when they're ready and track their own analytics.
 
@@ -203,23 +218,22 @@ export default withAnalyticsEvents({
 
   ${(
     <Example
-      Component={
-        require('../examples/120-tutorial-pass-event-to-callback').default
-      }
+      Component={require('../examples/30-passing-events-to-a-callback').default}
       title="Passing events through callbacks"
-      source={require('!!raw-loader!../examples/120-tutorial-pass-event-to-callback')}
+      source={require('!!raw-loader!../examples/30-passing-events-to-a-callback')}
     />
   )}
 
-  ### Adding data to an event's payload
+  <a name="adding-data-to-an-events-payload"></a>
+  ## Adding data to an event's payload
 
   As your event is passed up the tree through callback props you might want to add data to it along the way. Here's an example of how that might look:
 
   ${(
     <Example
-      Component={require('../examples/130-tutorial-updating').default}
+      Component={require('../examples/40-updating-an-event').default}
       title="Adding data to an event"
-      source={require('!!raw-loader!../examples/130-tutorial-updating')}
+      source={require('!!raw-loader!../examples/40-updating-an-event')}
     />
   )}
 
@@ -229,7 +243,8 @@ export default withAnalyticsEvents({
 
   You'll also notice that we've introduced another feature - \`withAnalyticsContext\`. This HOC wraps your component in an \`AnalyticsContext\` and allows you to provide a default value for the context data. We're using analytics context here to capture whether the form submission was originally triggered from a \`keydown\` in the input field or a \`click\` on the button.
 
-  ### Cloning an event
+  <a name="cloning-an-event"></a>
+  ## Cloning an event
 
   There's one final thing you need to know - once an event has been fired it cannot be updated or fired again.
 
@@ -256,7 +271,29 @@ export default withAnalyticsEvents({
 };`,
   ])}
 
-  ### Tracking events outside the UI
+  ${(
+    <Example
+      Component={require('../examples/50-cloning-an-event').default}
+      title="Cloning an event"
+      source={require('!!raw-loader!../examples/50-cloning-an-event')}
+    />
+  )}
+
+  <a name="asynchronous-firing"></a>
+  ## Asynchronous firing
+
+  As soon as an event is created it snapshots all of the listeners and context above it in the tree. This means that once you've created an event you can send it wherever you want and wait for as long as you please before firing it. It's even possible to completely unmount the AnalyticsListeners, AnalyticsContexts, and the component that created it!
+
+  ${(
+    <Example
+      Component={require('../examples/60-async-firing').default}
+      title="Asynchronously firing an event"
+      source={require('!!raw-loader!../examples/60-async-firing')}
+    />
+  )}
+
+  <a name="tracking-events-outside-the-ui"></a>
+  ## Tracking events outside the UI
 
   This library provides tools for tracking interactions with UI components, and makes it really easy to capture the UI context and state when these events occur. But what if the event you're tracking doesn't care about the UI? Can you still use this library to track it?
 

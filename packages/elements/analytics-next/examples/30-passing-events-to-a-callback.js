@@ -45,17 +45,17 @@ const ButtonGroup = () => {
     <div>
       <div>
         <ManualButton onClick={onClick}>
-          Manually passing the event
+          Manually creating and passing up the event
         </ManualButton>
       </div>
       <div>
         <VerboseButton onClick={onClick}>
-          Passing with verbose eventMap option
+          {`Using a function in the 'create event map' option`}
         </VerboseButton>
       </div>
       <div>
         <ShorthandButton onClick={onClick}>
-          Passing with shorthand eventMap option
+          {`Using the payload object shorthand in the 'create event map' option`}
         </ShorthandButton>
       </div>
     </div>
