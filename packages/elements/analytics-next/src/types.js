@@ -43,7 +43,7 @@ export interface UIAnalyticsEventInterface {
   hasFired: boolean;
   payload: AnalyticsEventPayload;
 
-  clone: () => UIAnalyticsEvent | null;
+  clone(): UIAnalyticsEvent | null;
   fire(channel?: ChannelIdentifier): void;
   update(updater: AnalyticsEventUpdater): AnalyticsEvent;
 }

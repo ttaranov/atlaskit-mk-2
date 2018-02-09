@@ -10,8 +10,11 @@ const ContextTypes = {
 };
 
 type Props = {
-  data: ObjectType,
+  /** Children! */
   children: Node,
+  /** Arbitrary data. Any events created below this component in the tree will
+   * have this added as an item in their context array. */
+  data: ObjectType,
 };
 
 export default class AnalyticsContext extends Component<Props> {
