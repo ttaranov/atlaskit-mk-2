@@ -7,6 +7,7 @@ import { MacroProvider } from '../../editor/plugins/macro';
 import InlineExtension from './InlineExtension';
 import Extension from './Extension';
 import { ExtensionHandlers } from '../../editor/types';
+import EditorActions from '../../editor/actions';
 
 export interface Props {
   editorView: EditorView;
@@ -21,6 +22,7 @@ export interface Props {
     state: EditorState,
     dispatch: (tr: Transaction) => void,
   ) => void;
+  isSelected: Boolean;
 }
 
 export interface State {
@@ -30,9 +32,11 @@ export interface State {
 export default class ExtensionComponent extends Component<Props, State> {
   state: State = {};
   mounted = false;
+  editorActions = new EditorActions();
 
   componentWillMount() {
     this.mounted = true;
+    this.editorActions._privateRegisterEditor(this.props.editorView);
   }
 
   componentDidMount() {
@@ -60,16 +64,20 @@ export default class ExtensionComponent extends Component<Props, State> {
 
   render() {
     const { macroProvider } = this.state;
-    const { node, handleContentDOMRef } = this.props;
+    const { node, handleContentDOMRef, isSelected, editorView } = this.props;
 
     try {
       const extensionContent = this.handleExtension();
       if (extensionContent && React.isValidElement(extensionContent)) {
-        const Tag = node.type.name === 'inlineExtension' ? 'span' : 'div';
-        // Return the extensionContent directly if it's a valid JSX.Element
-        return <Tag>{extensionContent}</Tag>;
+        return React.cloneElement(extensionContent as any, {
+          onClick: this.handleSelectExtension,
+          isSelected,
+          editorActions: this.editorActions,
+          editorView,
+        });
       }
     } catch (e) {
+      console.log('error rendering extension', e);
       /** We don't want this error to block renderer */
       /** We keep rendering the default content */
     }
@@ -108,7 +116,12 @@ export default class ExtensionComponent extends Component<Props, State> {
     }
 
     return extensionHandlers[extensionType](
-      { extensionKey, parameters, content: node.content },
+      {
+        extensionKey,
+        type: node.type.name as any,
+        parameters,
+        content: node.content,
+      },
       editorView.root,
     );
   };

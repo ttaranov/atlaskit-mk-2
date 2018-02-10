@@ -16,6 +16,7 @@ export interface Props {
   providerFactory?: ProviderFactory;
   handleContentDOMRef: (node: HTMLElement) => void;
   extensionHandlers?: ExtensionHandlers;
+  isSelected: Boolean;
 }
 
 export default class Extension extends Component<Props, any> {
@@ -40,6 +41,7 @@ export default class Extension extends Component<Props, any> {
       editorView,
       extensionHandlers,
       handleContentDOMRef,
+      isSelected,
     } = this.props;
     const { macroProvider } = providers;
 
@@ -52,6 +54,7 @@ export default class Extension extends Component<Props, any> {
         handleContentDOMRef={handleContentDOMRef}
         selectExtension={selectExtension}
         extensionHandlers={extensionHandlers}
+        isSelected={isSelected}
       />
     );
   };

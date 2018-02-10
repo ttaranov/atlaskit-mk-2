@@ -30,6 +30,10 @@ export const Wrapper = styled.div`
     opacity: 1;
   }
 
+  &.extension-provided {
+    display: inline-block;
+  }
+
   &.with-overlay {
     .extension-overlay {
       background: ${akColorN20A};

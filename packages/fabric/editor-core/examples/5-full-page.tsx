@@ -19,6 +19,7 @@ import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { EmojiProvider } from '@atlaskit/emoji';
+import ProvidedExtensionComponent from '../example-helpers/ProvidedExtensionComponent';
 
 import {
   akEditorCodeBackground,
@@ -120,8 +121,11 @@ const mediaProvider = storyMediaProviderFactory({
   includeUserAuthProvider: true,
 });
 
-const DumbExtension = props => <div>block type extension</div>;
-const DumbInlineExtension = props => <span>inline type extension</span>;
+const DumbInlineExtension = props => (
+  <div onClick={props.onClick}>
+    <span onClick={props.onSelectExtension}>inline type extension</span>
+  </div>
+);
 
 const extensionHandlers: ExtensionHandlers = {
   'com.atlassian.confluence.macro.core': (ext, doc) => {
@@ -133,7 +137,9 @@ const extensionHandlers: ExtensionHandlers = {
           <DumbInlineExtension parameters={parameters} content={content} />
         );
       case 'block':
-        return <DumbExtension parameters={parameters} content={content} />;
+      case 'status':
+        console.log('render block');
+        return <ProvidedExtensionComponent node={ext} />;
     }
 
     return null;

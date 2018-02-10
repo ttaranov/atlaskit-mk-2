@@ -1,3 +1,5 @@
+import { bodiedExtensionData } from './mock-extension-data';
+
 export const customInsertMenuItems = [
   {
     content: 'Loren ipsun',
@@ -40,6 +42,48 @@ export const customInsertMenuItems = [
     },
   },
   {
+    content: 'Status macro',
+    value: { name: 'status' },
+    tooltipDescription: 'Insert status macro',
+    tooltipPosition: 'right',
+    elemBefore: '-',
+    onClick: function(editorActions) {
+      editorActions.replaceSelection({
+        type: 'inlineExtension',
+        attrs: {
+          bodyType: 'none',
+          extensionType: 'com.atlassian.confluence.macro.core',
+          extensionKey: 'status',
+          text: ' | title = Ok | colour = Green | subtle = true',
+          parameters: {
+            macroParams: {
+              subtle: { value: 'true' },
+              colour: { value: 'Red' },
+              title: { value: 'Error' },
+            },
+            macroMetadata: {
+              placeholder: [
+                {
+                  type: 'icon',
+                  data: {
+                    url:
+                      'http://localhost:8080/wiki/download/resources/com.atlassian.confluence.plugins.status-macro/images/status-icon.png',
+                  },
+                },
+              ],
+              title: {
+                key:
+                  'com.atlassian.confluence.plugins.status-macro.status.label',
+                arguments: null,
+              },
+            },
+          },
+        },
+        content: [],
+      });
+    },
+  },
+  {
     content: 'Block type macro',
     value: { name: 'block' },
     tooltipDescription: 'Insert block macro',
@@ -65,6 +109,16 @@ export const customInsertMenuItems = [
           },
         },
       });
+    },
+  },
+  {
+    content: 'Expand macro',
+    value: { name: 'expand' },
+    tooltipDescription: 'Insert expand macro',
+    tooltipPosition: 'right',
+    elemBefore: '-',
+    onClick: function(editorActions) {
+      editorActions.replaceSelection(bodiedExtensionData[0]);
     },
   },
   {

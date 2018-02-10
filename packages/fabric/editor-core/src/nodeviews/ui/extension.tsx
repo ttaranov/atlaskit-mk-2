@@ -16,6 +16,7 @@ export interface Props {
 class ExtensionNode extends ContentNodeView implements NodeView {
   private domRef: HTMLElement | undefined;
   private node: PmNode;
+  private nextNode: PmNode | null;
   private view: EditorView;
   private providerFactory: ProviderFactory;
   private extensionHandlers: ExtensionHandlers;
@@ -47,6 +48,8 @@ class ExtensionNode extends ContentNodeView implements NodeView {
     const isValidUpdate = this.node.type.name === node.type.name;
 
     if (isValidUpdate) {
+      this.nextNode = node;
+      // allow mutation when there is an update
       this.renderReactComponent(node);
     }
 
@@ -59,7 +62,31 @@ class ExtensionNode extends ContentNodeView implements NodeView {
     super.destroy();
   }
 
-  private renderReactComponent(node: PmNode) {
+  ignoreMutation(mutation) {
+    // Extensions can perform async operations that will change the DOM.
+    // To avoid having their tree rebuilt, we need to ignore the mutation.
+    return true;
+  }
+
+  stopEvent() {
+    // have to block events otherwise form fields for extensions won't work
+    return true;
+  }
+
+  selectNode() {
+    this.renderReactComponent(this.node, true);
+  }
+
+  deselectNode() {
+    if (!this.domRef) {
+      return;
+    }
+
+    this.renderReactComponent(this.nextNode || this.node, false);
+  }
+
+  private renderReactComponent(node: PmNode, isSelected: Boolean = false) {
+    console.log('render component', node);
     ReactDOM.render(
       <Extension
         editorView={this.view}
@@ -67,6 +94,7 @@ class ExtensionNode extends ContentNodeView implements NodeView {
         providerFactory={this.providerFactory}
         handleContentDOMRef={this.handleRef}
         extensionHandlers={this.extensionHandlers}
+        isSelected={isSelected}
       />,
       this.domRef,
     );
