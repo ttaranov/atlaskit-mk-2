@@ -65,7 +65,7 @@
     "minimatch": "^3.0.4",
     "prismjs": "^1.6.0",
     "prop-types": "^15.5.10",
-    "react": "15.6.0 - 16.2.0",
+    "react": "16.2.0",
     "react-addons-text-content": "^0.0.4",
     "react-codesandboxer": "^0.2.1",
     "react-dom": "15.6.0 - 16.2.0",
