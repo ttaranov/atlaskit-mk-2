@@ -10,6 +10,7 @@ converters.any = type => type.value.toString();
 converters.void = type => type.value.toString();
 converters.mixed = type => type.value.toString();
 converters.null = () => 'null';
+converters.unary = type => `${type.operator}${convert(type.argument)}`;
 
 converters.id = type => {
   if (type.resolvedVal) {
@@ -52,7 +53,7 @@ converters.function = type => {
 };
 
 converters.array = type => {
-  return `[${type.elements.map(p => p.value).join(', ')}]`;
+  return `[${mapConvertAndJoin(type.elements)}]`;
 };
 
 converters.object = type => {
@@ -73,7 +74,18 @@ converters.memberExpression = type => {
 };
 
 converters.call = type => {
-  return `${convert(type.callee)}(${type.args.map(convert).join(', ')})`;
+  return `${convert(type.callee)}(${mapConvertAndJoin(type.args)})`;
+};
+
+const mapConvertAndJoin = (array, joiner = ',') => {
+  if (!Array.isArray(array)) return '';
+  return array.map(convert).join(joiner);
+};
+
+converters.new = type => {
+  const callee = convert(type.callee);
+  const args = mapConvertAndJoin(type.args);
+  return `new ${callee}(${args})`;
 };
 
 converters.external = type => {
@@ -95,10 +107,6 @@ converters.variable = type => {
 
 converters.templateExpression = ({ tag }) => {
   return `${convert(tag)}`;
-};
-
-converters.call = ({ callee }) => {
-  return `${convert(callee)}`;
 };
 
 export default function convert(type: { kind: string }) {
