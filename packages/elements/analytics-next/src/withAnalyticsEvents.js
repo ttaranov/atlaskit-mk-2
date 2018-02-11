@@ -45,7 +45,7 @@ export default function withAnalyticsEvents<ProvidedProps: ObjectType>(
         getAtlaskitAnalyticsContext: PropTypes.func,
       };
 
-      propsWithEvents: ProvidedProps;
+      propsWithEvents: ObjectType;
 
       constructor(props: ProvidedProps) {
         super(props);
@@ -68,39 +68,34 @@ export default function withAnalyticsEvents<ProvidedProps: ObjectType>(
         return new UIAnalyticsEvent({ context, handlers, payload });
       };
 
-      mapCreateEventsToProps = () => {
-        const propsWithEvents = Object.keys(createEventMap).reduce(
-          (modified, propCallbackName) => {
-            const eventCreator = createEventMap[propCallbackName];
-            const providedCallback = this.props[propCallbackName];
-            if (!['object', 'function'].includes(typeof eventCreator)) {
-              return modified;
+      mapCreateEventsToProps = () =>
+        Object.keys(createEventMap).reduce((modified, propCallbackName) => {
+          const eventCreator = createEventMap[propCallbackName];
+          const providedCallback = this.props[propCallbackName];
+          if (!['object', 'function'].includes(typeof eventCreator)) {
+            return modified;
+          }
+          const modifiedCallback = (...args) => {
+            const analyticsEvent =
+              typeof eventCreator === 'function'
+                ? eventCreator(this.createAnalyticsEvent, this.props)
+                : this.createAnalyticsEvent(eventCreator);
+
+            if (providedCallback) {
+              providedCallback(...args, analyticsEvent);
             }
-            const modifiedCallback = (...args) => {
-              const analyticsEvent =
-                typeof eventCreator === 'function'
-                  ? eventCreator(this.createAnalyticsEvent, this.props)
-                  : this.createAnalyticsEvent(eventCreator);
-
-              if (providedCallback) {
-                providedCallback(...args, analyticsEvent);
-              }
-            };
-            return {
-              ...modified,
-              [propCallbackName]: modifiedCallback,
-            };
-          },
-          {},
-        );
-
-        return { ...this.props, ...propsWithEvents };
-      };
+          };
+          return {
+            ...modified,
+            [propCallbackName]: modifiedCallback,
+          };
+        }, {});
 
       render() {
+        const props = { ...this.props, ...this.propsWithEvents };
         return (
           <WrappedComponent
-            {...this.propsWithEvents}
+            {...props}
             createAnalyticsEvent={this.createAnalyticsEvent}
           />
         );

@@ -17,10 +17,10 @@ export default md`
   <a name="creating-an-analytics-event"></a>
   ## Creating an analytics event
 
-  The \`withAnalyticsEvents\` HOC provides the wrapped component with a function for creating analytics events.
+  The \`withAnalyticsEvents\` HOC provides the wrapped component with a function for creating analytics events. This function takes an optional \`payload\` argument.
   
-  This function takes an optional \`payload\` argument. This object can have any shape you please, but by convention all Atlaskit components will include an \`action\` property in the payload to capture the initial user interaction which triggered the event.
-  
+  **Important:** The payload object can have any shape you please, but by convention all Atlaskit components will include an \`action\` property in the payload to capture the initial user interaction which triggered the event. Other Atlassian teams are encouraged to follow this convention.
+
   Creating an event is as simple as this:
 
   ##### Button.js
@@ -205,7 +205,7 @@ export default withAnalyticsEvents({
 })(Button);`,
   ])}
 
-  \`withAnalyticsEvents\` accepts an optional object mapping callback prop names to functions. These functions will be passed the \`createAnalyticsEvent\` method and the instance's props, and should return an analytics event. This event will be automatically added as a final argument to the prop callback.
+  \`withAnalyticsEvents\` accepts an optional object mapping callback prop names to functions. These functions will be passed the \`createAnalyticsEvent\` method and the instance's props, and should return an analytics event. This event will be automatically added as a final argument to the callback prop.
 
   Since creating and returning an event is such a common pattern we've included an even quicker shorthand:
 
@@ -241,7 +241,11 @@ export default withAnalyticsEvents({
   
   Analytics events have an \`.update\` method. This accepts a function which is called with the event's current payload and should return a new payload. For convenience \`.update\` also accepts an object which is automatically shallow merged into its current payload.
 
-  You'll also notice that we've introduced another feature - \`withAnalyticsContext\`. This HOC wraps your component in an \`AnalyticsContext\` and allows you to provide a default value for the context data. We're using analytics context here to capture whether the form submission was originally triggered from a \`keydown\` in the input field or a \`click\` on the button.
+  You'll also notice that we've introduced another feature - \`withAnalyticsContext\`. This HOC wraps your component in an \`AnalyticsContext\` and allows you to provide a default value for the context data.
+
+  In this example we're using analytics context to capture the component hierarchy where this event came from. The Input and Button components have been wrapped in \`withAnalyticsContext\` by their author, and a default \`component\` property has been provided (\`'text-field'\` and \`'button'\` respectively). The developer who is composing the Form has wrapped their component in an AnalyticsContext to provide another layer of context (\`{ component: 'form' }\`). They have also overwritten the Button's default context to provide a more specific \`component\` value (\`'submit-button'\`) - imagine this form also contained a 'Cancel' button for instance. When an event is created it now contains a trace of the component tree above it, allowing us to drill down to the specific user interaction (a button click) which triggered an action (a form being submitted).
+
+  **Important:** All Atlaskit components will add a \`component\` value to their analytics context where applicable. Other Atlassian teams are encouraged to follow this convention and standardise on the use of \`'component'\` as the key for storing this information in context.
 
   <a name="cloning-an-event"></a>
   ## Cloning an event

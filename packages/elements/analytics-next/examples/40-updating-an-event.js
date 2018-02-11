@@ -8,23 +8,15 @@ import {
   withAnalyticsEvents,
 } from '../src';
 
-// eslint-disable-next-line react/no-multi-comp
-class ButtonBase extends Component<*> {
-  render() {
-    const { analyticsNamespace, createAnalyticsEvent, ...props } = this.props;
-    return <button {...props} />;
-  }
-}
-
-const Button = withAnalyticsContext({ namespace: 'button' })(
-  withAnalyticsEvents({ onClick: { action: 'click' } })(ButtonBase),
+const Button = withAnalyticsContext({ component: 'button' })(
+  withAnalyticsEvents({ onClick: { action: 'click' } })(
+    ({ createAnalyticsEvent, ...props }) => <button {...props} />,
+  ),
 );
 
-const Input = withAnalyticsContext({ namespace: 'text-field' })(
+const Input = withAnalyticsContext({ component: 'text-field' })(
   withAnalyticsEvents({ onKeyDown: { action: 'keydown' } })(
-    ({ analyticsNamespace, createAnalyticsEvent, ...props }) => {
-      return <input {...props} type="text" />;
-    },
+    ({ createAnalyticsEvent, ...props }) => <input {...props} type="text" />,
   ),
 );
 
@@ -59,7 +51,7 @@ class Form extends Component<*, { value: string }> {
 
   render() {
     return (
-      <AnalyticsContext data={{ namespace: 'form' }}>
+      <AnalyticsContext data={{ component: 'form' }}>
         <div>
           <Input
             onChange={this.handleInputChange}
@@ -67,7 +59,7 @@ class Form extends Component<*, { value: string }> {
             value={this.state.value}
           />
           <Button
-            analyticsContext={{ namespace: 'submit-button' }}
+            analyticsContext={{ component: 'submit-button' }}
             onClick={this.handleSubmitButtonClick}
           >
             Submit
