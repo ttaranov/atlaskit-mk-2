@@ -1,5 +1,6 @@
 export { em } from './em';
 export { code } from './code';
+export { codeFormat } from './code-format';
 export { strike } from './strike';
 export { strong } from './strong';
 export { underline } from './underline';

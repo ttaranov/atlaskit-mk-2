@@ -3,6 +3,7 @@ import { Node, Schema } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import keymapPlugin from './keymaps';
+import { getTokenArray } from './utils';
 
 export type CodeMirrorFocusSubscriber = (uniqueId: string | undefined) => any;
 export type CodeBlockStateSubscriber = (state: CodeBlockState) => any;
@@ -129,6 +130,40 @@ export class CodeBlockState {
       return node;
     }
   }
+
+  textInputHandler(
+    view: EditorView,
+    from: number,
+    to: number,
+    text: string,
+  ): boolean {
+    const { state, dispatch } = view;
+    const node = state.selection.$from.node();
+    if (
+      node.type === state.schema.nodes.codeBlock &&
+      state.selection.empty &&
+      text === ' '
+    ) {
+      const nodeContent = node.textContent;
+      const match: any = /(?:\s+)([^\s]+)$|^(?:\s*)([^\s]+)$/.exec(nodeContent);
+      if (match && match[0]) {
+        let newFrom = to - match[0].length;
+        let tr = state.tr;
+        tr.insertText(text);
+        getTokenArray(match[0]).forEach(tk => {
+          tr.addMark(
+            newFrom,
+            newFrom + tk.token.length,
+            state.schema.marks.codeFormat.create({ formatType: tk.tokenType }),
+          );
+          newFrom = newFrom + tk.token.length;
+        });
+        dispatch(tr);
+        return true;
+      }
+    }
+    return false;
+  }
 }
 export const stateKey = new PluginKey('codeBlockPlugin');
 
@@ -164,6 +199,11 @@ export const plugin = new Plugin({
     handleClick(view: EditorView & { docView?: any }, event) {
       stateKey.getState(view.state).update(view.state, view.docView, true);
       return false;
+    },
+    handleTextInput(view: EditorView, from: number, to: number, text: string) {
+      return stateKey
+        .getState(view.state)
+        .textInputHandler(view, from, to, text);
     },
     handleDOMEvents: {
       focus(view, event) {

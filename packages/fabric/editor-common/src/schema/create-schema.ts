@@ -14,6 +14,7 @@ import {
   textColor,
   confluenceInlineComment,
   action,
+  codeFormat,
 } from './marks';
 
 import {
@@ -156,6 +157,7 @@ const nodesInOrder: SchemaBuiltInItem[] = [
 ];
 
 const marksInOrder: SchemaBuiltInItem[] = [
+  { name: 'codeFormat', spec: codeFormat },
   { name: 'link', spec: link },
   { name: 'em', spec: em },
   { name: 'strong', spec: strong },

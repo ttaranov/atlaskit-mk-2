@@ -1,14 +1,13 @@
 import { NodeSpec, Node as PMNode } from 'prosemirror-model';
 import { browser } from '../../utils';
 import { Definition as Text } from './text';
-import { NoMark } from './doc';
 
 /**
  * @name codeBlock_node
  */
 export interface Definition {
   type: 'codeBlock';
-  content?: Array<Text & NoMark>;
+  content?: Array<Text>;
   attrs?: {
     language?:
       | 'abap'
@@ -116,7 +115,6 @@ const removeLastNewLine = (dom: HTMLElement): HTMLElement => {
 export const codeBlock: NodeSpec = {
   attrs: { language: { default: null }, uniqueId: { default: null } },
   content: 'text*',
-  marks: '',
   group: 'block',
   code: true,
   defining: true,

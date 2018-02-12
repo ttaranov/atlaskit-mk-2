@@ -1,11 +1,15 @@
 import * as React from 'react';
-import { codeBlock } from '@atlaskit/editor-common';
+import { codeBlock, codeFormat } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from '../../../plugins/code-block';
 import keymap from '../../../plugins/code-block/keymaps';
 import LanguagePicker from '../../../ui/LanguagePicker';
 
 const codeBlockPlugin: EditorPlugin = {
+  marks() {
+    return [{ name: 'codeFormat', mark: codeFormat, rank: 212 }];
+  },
+
   nodes() {
     return [{ name: 'codeBlock', node: codeBlock, rank: 800 }];
   },
