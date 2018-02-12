@@ -1,5 +1,8 @@
 # @atlaskit/dynamic-table
 
+## 7.1.1
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 7.1.0
 - [minor] Added possibility to drag and drop rows in dynamic table. [e69e6f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e69e6f4)
 

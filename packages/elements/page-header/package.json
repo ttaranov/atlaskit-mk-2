@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/page-header",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "A React component that represents Header of an application page",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -24,14 +24,14 @@
     "react-dom": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/breadcrumbs": "^3.2.0",
-    "@atlaskit/button": "^6.3.0",
+    "@atlaskit/breadcrumbs": "^3.2.1",
+    "@atlaskit/button": "^6.4.1",
     "@atlaskit/inline-edit": "^4.5.14",
     "@atlaskit/input": "^1.6.3",
     "@atlaskit/docs": "^2.4.0",
-    "@atlaskit/field-text": "^4.1.2",
-    "@atlaskit/single-select": "^3.2.0",
-    "@atlaskit/theme": "^2.3.0",
+    "@atlaskit/field-text": "^4.1.7",
+    "@atlaskit/single-select": "^3.2.3",
+    "@atlaskit/theme": "^2.3.3",
     "enzyme": "^3.3.0"
   },
   "keywords": [

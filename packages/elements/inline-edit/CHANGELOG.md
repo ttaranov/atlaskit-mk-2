@@ -1,5 +1,8 @@
 # @atlaskit/inline-edit
 
+## 4.5.15
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 4.5.14
 
 ## 4.5.13

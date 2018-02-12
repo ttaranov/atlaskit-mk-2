@@ -3,10 +3,8 @@ import Button from '@atlaskit/button';
 import Loadable from 'react-loadable';
 
 import CodeSandboxLogo from './CodeSandboxLogo';
-import CodeSandboxDeployer, {
-  getCSBData,
-  getAllImports,
-} from 'react-codesandboxer';
+import csbLoading from './csbLoading';
+import CodeSandboxDeployer from 'react-codesandboxer';
 
 const codesandboxURL = 'https://codesandbox.io/api/v1/sandboxes/define';
 const { NavButton } = require('../Examples/styled');
@@ -45,25 +43,6 @@ document.getElementById('root')
 
 export default class CodeSandbox extends Component<{}, {}> {
   state = { parameters: '' };
-  deployToCSB = e => {
-    e.preventDefault();
-    const { pkgJSON, example, groupId, packageId } = this.props;
-
-    example
-      .contents()
-      .then(exampleData =>
-        CSB2Transformer(exampleData, pkgJSON, {
-          originLocation: '../src',
-          startingDeps: { '@atlaskit/css-reset': 'latest' },
-          providedFiles: baseFiles(groupId, packageId, example.id),
-        }),
-      )
-      .then(({ params }) => {
-        this.setState({ parameters: params });
-      })
-      .then(() => this.form.submit())
-      .catch(e => console.error(e));
-  };
 
   render() {
     const {
@@ -76,58 +55,33 @@ export default class CodeSandbox extends Component<{}, {}> {
       pkgJSON,
     } = this.props;
 
-    const config = {
+    // move config and baseFiles to csbLoading
+    const config = ({ extraImports, extraFiles }) => ({
       originLocation: '../src',
-      startingDeps: { '@atlaskit/css-reset': 'latest' },
-      providedFiles: baseFiles(groupId, packageId, example.Id),
-    };
+      providedDeps: { '@atlaskit/css-reset': 'latest', ...extraImports },
+      providedFiles: {
+        ...baseFiles(groupId, packageId, example.Id),
+        ...extraFiles,
+      },
+    });
 
     const ExampleComponent = Loadable({
-      loader: () => example.contents(),
+      loader: () => csbLoading(example, groupId, packageId, pkgJSON),
       loading: loadingButton,
-      render(loadedExample) {
-        let isDisabled = false;
-
-        const imports = getAllImports(loadedExample);
-        for (let mpt of imports) {
-          let [complete, source] = mpt;
-          if (source === '../src') {
-            // handle the source directory
-          } else if (/^\.\.\//.test(source)) {
-            // If we are trying to deploy things from places other than the source,
-            // we will not be able to reference them. Do not let this example be
-            // deployed to codesandbox
-            isDisabled = true;
-          } else if (/^\.\//.test(source)) {
-            // This is if it is another file in the examples directory. We want
-            // to handle this, but not at first implementation
-
-            // let sourceA = source.replace('./', '')
-            // if (/\.\w/.test(sourceA)) {
-            //   // We have a file-type, may be an image or something
-            // } else {
-            //   // we will also need to handle json...
-            //   sourceA += '.js'
-            // }
-            //
-            // let segments = ['packages', groupId, packageId, 'examples', sourceA]
-            //
-            // let path = `/${segments.join('/')}`
-            // let a = getFileFromBitBucket(base, path)
-
-            isDisabled = true;
-          } else {
-            // We are acting on an external import, this is fine
-          }
-        }
-
+      render({
+        loadedExample,
+        extraFiles,
+        simpleImports,
+        trickyImports,
+        extraImports,
+      }) {
         return (
           <CodeSandboxDeployer
             example={loadedExample}
             pkgJSON={pkgJSON}
-            config={config}
+            config={config({ extraFiles, extraImports })}
           >
-            {deployButton({ isDisabled })}
+            {deployButton({ isDisabled: trickyImports })}
           </CodeSandboxDeployer>
         );
       },
