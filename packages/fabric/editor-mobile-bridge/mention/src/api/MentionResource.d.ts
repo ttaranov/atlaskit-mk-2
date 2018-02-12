@@ -1,25 +1,5 @@
+import { ServiceConfig } from '@atlaskit/util-service-support';
 import { MentionDescription, MentionsResult } from '../types';
-export interface KeyValues {
-  [index: string]: any;
-}
-export interface SecurityOptions {
-  params?: KeyValues;
-  headers?: KeyValues;
-  omitCredentials?: boolean;
-}
-/**
- * Returns the current SecurityOptions for the mentions service.
- */
-export interface SecurityProvider {
-  (): SecurityOptions;
-}
-/**
- * Returns a promise to a SecurityOptions that has just been forcibly refreshed with a
- * new token. Will be used for single retry per request if a 401 is returned.
- */
-export interface RefreshSecurityProvider {
-  (): Promise<SecurityOptions>;
-}
 export interface ResultCallback<T> {
   (result: T, query?: string): void;
 }
@@ -29,13 +9,9 @@ export interface ErrorCallback {
 export interface InfoCallback {
   (info: string): void;
 }
-export interface MentionResourceConfig {
-  /** the base url of the mentions service */
-  url: string;
-  securityProvider?: SecurityProvider;
+export interface MentionResourceConfig extends ServiceConfig {
   containerId?: string;
   productId?: string;
-  refreshedSecurityProvider?: RefreshSecurityProvider;
   shouldHighlightMention?: (mention: MentionDescription) => boolean;
   /**
    * Hook for consumers to provide a list of users in the current context.

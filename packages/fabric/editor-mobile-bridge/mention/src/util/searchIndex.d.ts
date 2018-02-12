@@ -22,12 +22,11 @@ export declare class Highlighter {
 }
 export declare class SearchIndex {
   private index;
-  private mentionCache;
+  private indexedCount;
   constructor();
   search(query?: string): Promise<MentionsResult>;
   hasDocuments(): boolean;
   reset(): void;
   indexResults(mentions: MentionDescription[]): void;
-  private updateCachedMention(mention, index);
   private static createIndex();
 }
