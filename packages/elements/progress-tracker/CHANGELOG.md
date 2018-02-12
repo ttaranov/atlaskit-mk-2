@@ -1,5 +1,8 @@
 # @atlaskit/progress-tracker
 
+## 1.2.1
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 1.2.0
 - [minor] Updated examples to use named import for clarity [541f2fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/541f2fb)
 

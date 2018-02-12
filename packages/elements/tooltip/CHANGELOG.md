@@ -1,5 +1,8 @@
 # @atlaskit/tooltip
 
+## 8.3.1
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 8.3.0
 - [minor] update atlaskit/theme to 2.3.2 [3795197](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3795197)
 

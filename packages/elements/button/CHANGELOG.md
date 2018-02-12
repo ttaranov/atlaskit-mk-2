@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 6.4.1
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 6.4.0
 - [minor] id property on Button component is not propagated if href property is provided [7d46c81](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d46c81)
 
