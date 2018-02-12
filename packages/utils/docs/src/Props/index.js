@@ -164,6 +164,43 @@ const getPropTypes = propTypesObj => {
   return propTypes;
 };
 
+const renderPropType = propType => {
+  if (propType.kind === 'spread') {
+    const furtherProps = reduceToObj(propType.value);
+    return furtherProps.map(renderPropType);
+  }
+
+  let description;
+  if (propType.leadingComments) {
+    description = propType.leadingComments.reduce(
+      (acc, { value }) => acc.concat(`\n${value}`),
+      '',
+    );
+  }
+  if (!propType.value) {
+    // eslint-disable-next-line no-console
+    console.error(
+      `Prop ${
+        propType.key
+      } has no type; this usually indicates invalid propType or defaultProps config`,
+    );
+    return null;
+  }
+
+  return (
+    <PropTypeWrapper key={convert(propType.key)}>
+      <PropTypeHeading
+        name={propType.key}
+        required={!propType.optional}
+        type={propType.value}
+        defaultValue={propType.default}
+      />
+      {description && <Description>{description}</Description>}
+      <PrettyPropType type={propType.value} />
+    </PropTypeWrapper>
+  );
+};
+
 export default function DynamicProps(props: DynamicPropsProps) {
   const classes = props.props && props.props.classes;
   if (!classes) return null;
@@ -176,36 +213,7 @@ export default function DynamicProps(props: DynamicPropsProps) {
 
   return (
     <PageWrapper heading={props.heading}>
-      {propTypes.map(propType => {
-        let description;
-        if (propType.leadingComments) {
-          description = propType.leadingComments.reduce(
-            (acc, { value }) => acc.concat(`\n${value}`),
-            '',
-          );
-        }
-        if (!propType.value) {
-          // eslint-disable-next-line no-console
-          console.error(
-            `Prop ${
-              propType.key
-            } has no type; this usually indicates invalid propType or defaultProps config`,
-          );
-          return null;
-        }
-        return (
-          <PropTypeWrapper key={convert(propType.key)}>
-            <PropTypeHeading
-              name={propType.key}
-              required={!propType.optional}
-              type={propType.value}
-              defaultValue={propType.default}
-            />
-            {description && <Description>{description}</Description>}
-            <PrettyPropType type={propType.value} />
-          </PropTypeWrapper>
-        );
-      })}
+      {propTypes.map(renderPropType)}
     </PageWrapper>
   );
 }
