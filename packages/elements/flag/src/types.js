@@ -2,7 +2,7 @@
 
 /* eslint-disable import/prefer-default-export */
 
-import type { Element, Node } from 'react';
+import type { Node } from 'react';
 
 export type ChildrenType = any;
 export type ElementType = any;

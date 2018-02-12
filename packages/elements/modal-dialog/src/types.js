@@ -1,5 +1,5 @@
 // @flow
-import { Component, type Node, type Element } from 'react';
+import { Component, type Node } from 'react';
 
 export type ChildrenType = Node;
 export type ComponentType = any;
