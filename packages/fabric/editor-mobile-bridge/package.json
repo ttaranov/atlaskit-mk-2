@@ -1,19 +1,23 @@
 {
-  "name": "editor-mobile-bridge",
+  "name": "@atlaskit/editor-mobile-bridge",
   "version": "0.0.1",
   "description": "Mobile destribution of the Editor",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://bitbucket.org/atlaskit/atlaskit-mk-2.git"
-  },
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "keywords": [
     "editor;mobile"
   ],
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
-  "homepage": "https://bitbucket.org/atlaskit/atlaskit-mk-2#readme"
+  "homepage": "https://bitbucket.org/atlaskit/atlaskit-mk-2#readme",
+  "dependencies": {
+    "@atlaskit/editor-core": "^62.0.4",
+    "react": "^15.6.0",
+    "react-dom": "^15.6.0",
+    "webpack": "^3.11.0"
+  }
 }
