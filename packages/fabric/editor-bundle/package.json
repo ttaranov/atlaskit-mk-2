@@ -1,0 +1,19 @@
+{
+  "name": "editor-bundle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "aik index.js --build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@atlaskit/editor-core": "^62.0.5",
+    "aik": "^0.17.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "rxjs": "^5.5.6"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  //"extends": "../../../tsconfig.fabric.json",
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+    "./__tests__/**/*.ts",
+    "./__tests__/**/*.tsx",
+    "./docs/**/*.ts",
+    "./docs/**/*.tsx",
+    "./examples/**/*.ts",
+    "./examples/**/*.tsx"
+  ],
+  "compilerOptions": {
+    "allowJs": false,
+    "experimentalDecorators": true,
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "target": "es5",
+    "lib": [ "dom", "es2015", "es5" ]
+  }
+}

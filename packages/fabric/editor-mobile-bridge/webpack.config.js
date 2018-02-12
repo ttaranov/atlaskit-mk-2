@@ -1,16 +1,11 @@
 const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
-  entry: {
-    'mobile-page.ts': './src',
-  },
+  entry: './src/mobile-page.tsx',
   output: {
-    path: './dist/',
-    filename: '[name]',
-  },
-  resolve: {
-    extensions: ['.webpack.js', '.web.js', '.js', '.jsx', '.ts', '.tsx'],
-    mainFields: ['webpack', 'main'],
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
   },
   module: {
     rules: [
