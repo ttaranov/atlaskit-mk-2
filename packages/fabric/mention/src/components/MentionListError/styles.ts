@@ -1,4 +1,9 @@
-import styled from 'styled-components';
+// StyledComponentClass and React are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+import styled, { StyledComponentClass } from 'styled-components';
+// @ts-ignore: unused variable
+import { HTMLAttributes, ClassAttributes } from 'react';
 import {
   akBorderRadius,
   akColorN500,
@@ -24,8 +29,9 @@ export const GenericErrorVisualStyle = styled.div`
   width: 83px;
 `;
 
+// TODO: Figure out why the themed css function is causing type errors when passed prop children
 export const MentionListErrorHeadlineStyle = styled.div`
-  ${akTypographyMixins.h400};
+  ${akTypographyMixins.h400 as any};
   margin-bottom: 8px;
 `;
 

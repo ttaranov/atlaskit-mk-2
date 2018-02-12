@@ -1,5 +1,17 @@
-/* tslint:disable:variable-name */
-import styled from 'styled-components';
+// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+import styled, { StyledComponentClass } from 'styled-components';
+import {
+  // @ts-ignore: unused variable
+  HTMLAttributes,
+  // @ts-ignore: unused variable
+  ClassAttributes,
+  // @ts-ignore: unused variable
+  CanvasHTMLAttributes,
+  // @ts-ignore: unused variable
+  TextareaHTMLAttributes,
+} from 'react';
 import {
   akColorN40,
   akColorN50A,
@@ -7,6 +19,16 @@ import {
   akColorN200,
   akColorN600A,
 } from '@atlaskit/util-shared-styles';
+import { ButtonProps } from './toolbarButtons';
+
+export interface ToolbarButtonProps {
+  selected: boolean;
+  onClick: () => void;
+}
+
+export interface LineWidthFrontCircleProps {
+  width: number;
+}
 
 export const EditorContainer = styled.div`
   position: relative;
@@ -69,7 +91,8 @@ export const ToolbarButton = styled.div`
   display: inline-block;
   width: 32px;
   height: 32px;
-  background-color: ${props => (props.selected ? akColorN90 : 'transparent')};
+  background-color: ${(props: ButtonProps) =>
+    props.selected ? akColorN90 : 'transparent'};
   border-radius: 4px;
 
   &:hover {
@@ -98,12 +121,14 @@ export const LineWidthBackCircle = styled.div`
 `;
 
 export const LineWidthFrontCircle = styled.div`
-  width: ${props => (props.width ? `${props.width as number}px` : '0')};
-  height: ${props => (props.width ? `${props.width as number}px` : '0')};
+  width: ${(props: LineWidthFrontCircleProps) =>
+    props.width ? `${props.width}px` : '0'};
+  height: ${(props: LineWidthFrontCircleProps) =>
+    props.width ? `${props.width}px` : '0'};
   background-color: ${akColorN40};
   borderradius: 50%;
-  margin: ${props =>
-    props.width ? `${10 - (props.width as number) / 2}px` : '0'};
+  margin: ${(props: LineWidthFrontCircleProps) =>
+    props.width ? `${10 - props.width / 2}px` : '0'};
 `;
 
 export const ToolIcon = styled.div`
