@@ -102,6 +102,9 @@ class DropzoneEditorWrapper extends React.Component<
   }
 }
 
+const mediaProvider1 = storyMediaProviderFactory();
+const mediaProvider2 = storyMediaProviderFactory();
+
 export default function Example() {
   return (
     <div>
@@ -118,9 +121,11 @@ export default function Example() {
               allowLists={true}
               allowTextColor={true}
               allowTables={true}
-              mediaProvider={storyMediaProviderFactory({
-                dropzoneContainer: parentContainer,
-              })}
+              media={{
+                provider: mediaProvider1,
+                allowMediaSingle: true,
+                customDropzoneContainer: parentContainer,
+              }}
               emojiProvider={
                 emojiStoryData.getEmojiResource() as Promise<EmojiProvider>
               }
@@ -164,9 +169,11 @@ export default function Example() {
               allowLists={true}
               allowTextColor={true}
               allowTables={true}
-              mediaProvider={storyMediaProviderFactory({
-                dropzoneContainer: parentContainer,
-              })}
+              media={{
+                provider: mediaProvider2,
+                allowMediaSingle: true,
+                customDropzoneContainer: parentContainer,
+              }}
               emojiProvider={
                 emojiStoryData.getEmojiResource() as Promise<EmojiProvider>
               }
