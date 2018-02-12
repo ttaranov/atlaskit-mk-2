@@ -12978,6 +12978,10 @@ typescript@^2.5.1:
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.3.tgz#df3dcdc38f3beb800d4bc322646b04a3f6ca7f0d"
 
+typescript@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.7.1.tgz#bb3682c2c791ac90e7c6210b26478a8da085c359"
+
 typestyle@^1.3.2, typestyle@^1.3.8:
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/typestyle/-/typestyle-1.4.2.tgz#4fe803b8e63db108583fd5793cc39d3524db6135"
