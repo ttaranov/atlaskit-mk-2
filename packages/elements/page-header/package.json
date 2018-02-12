@@ -21,7 +21,7 @@
   },
   "peerDependencies": {
     "react": "16.2.0",
-    "react-dom": "15.6.0 - 16.2.0"
+    "react-dom": "^16.2.0"
   },
   "devDependencies": {
     "@atlaskit/breadcrumbs": "^3.2.1",

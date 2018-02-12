@@ -39,7 +39,7 @@
     "@atlaskit/docs": "^2.4.0",
     "@atlaskit/field-text": "^4.1.7",
     "enzyme": "^3.3.0",
-    "react-dom": "15.6.0 - 16.2.0",
+    "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0"
   }
 }
