@@ -24,16 +24,15 @@ export const uploadFile = (
     const deferredUploadId = store
       .createUpload()
       .then(response => response.data[0].id);
-    const uploadingFunction = (chunk: Chunk) => {
-      return store.uploadChunk(chunk.hash, chunk.blob);
-    };
-    const probingFunction = (chunks: Chunk[]): Promise<boolean[]> => {
-      return store.probeChunks(hashedChunks(chunks)).then(response => {
-        const results = response.data.results;
-        return (Object as any)
-          .values(results)
-          .map((result: any) => result.exists);
-      });
+    const uploadingFunction = (chunk: Chunk) =>
+      store.uploadChunk(chunk.hash, chunk.blob);
+    const probingFunction = async (chunks: Chunk[]): Promise<boolean[]> => {
+      const response = await store.probeChunks(hashedChunks(chunks));
+      const results = response.data.results;
+
+      return (Object as any)
+        .values(results)
+        .map((result: any) => result.exists);
     };
     let chunkOffset = 0;
 
@@ -50,27 +49,29 @@ export const uploadFile = (
         probingFunction,
       },
       {
-        onComplete() {
-          deferredUploadId.then(id => {
-            store.createFileFromUpload(id, collection).then(response => {
-              const fileId = response.data.id;
-              resolve(fileId);
-            });
-          });
+        async onComplete() {
+          console.log('onComplete');
+
+          const id = await deferredUploadId;
+          const response = await store.createFileFromUpload(id, collection);
+          const fileId = response.data.id;
+
+          resolve(fileId);
         },
         onError(error) {
           console.log('error', error);
           reject(error);
         },
-        onProgress(chunks) {
-          deferredUploadId.then(id => {
-            store.appendChunksToUpload(id, hashedChunks(chunks), chunkOffset);
-            chunkOffset += chunks.length;
+        async onProgress(chunks) {
+          console.log('onProgress', chunks);
+          const id = await deferredUploadId;
 
-            if (callbacks && callbacks.onProgress) {
-              callbacks.onProgress(0); // TODO: pass right percentage
-            }
-          });
+          store.appendChunksToUpload(id, hashedChunks(chunks), chunkOffset);
+          chunkOffset += chunks.length;
+
+          if (callbacks && callbacks.onProgress) {
+            callbacks.onProgress(0); // TODO: pass right percentage
+          }
         },
       },
     );

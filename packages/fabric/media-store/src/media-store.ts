@@ -114,18 +114,17 @@ export class MediaStore {
     const body = JSON.stringify({
       uploadId,
     });
-    const url = new URL('/file/upload');
+    const params = collection ? { collection } : undefined;
+    const url = this.createURL('/file/upload', params);
 
-    collection && url.searchParams.set('collection', collection);
-
-    return this.fetch(url.toString(), {
+    return this.fetch(url, {
       method: 'POST',
       body,
     }).then(mapResponseToJson);
   };
 
   fetchFile = (id: string) => {
-    return fetch(`/file/${id}`).then(mapResponseToJson);
+    return this.fetch(`/file/${id}`).then(mapResponseToJson);
   };
 
   appendChunksToUpload = (
@@ -138,11 +137,23 @@ export class MediaStore {
       offset,
     });
 
-    return fetch(`/upload/${uploadId}/chunks`, {
+    return this.fetch(`/upload/${uploadId}/chunks`, {
       method: 'PUT',
       body,
     });
   };
+
+  private createURL(path: string, params?: { [key: string]: string }): string {
+    const url = new URL(`${this.config.apiUrl}${path}`);
+
+    if (params) {
+      Object.keys(params).forEach(key => {
+        url.searchParams.set(key, params[key]);
+      });
+    }
+
+    return url.toString();
+  }
 
   private fetch(
     path: string,
@@ -151,7 +162,7 @@ export class MediaStore {
     },
   ): Promise<Response> {
     const { method, body, authContext } = fetchOptions;
-    const request = new Request(`${this.config.apiUrl}${path}`, {
+    const request = new Request(this.createURL(path), {
       method,
       body,
       headers: {
