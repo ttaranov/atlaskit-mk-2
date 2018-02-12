@@ -33,8 +33,19 @@ type Props = {
 type State = {
   isOpen: boolean,
   value: string,
-  view: { month?: number, year?: number },
+  view: string,
 };
+
+function isoToObj(iso) {
+  const parsed = parse(iso);
+  return isValid(parsed)
+    ? {
+        day: parsed.getDate(),
+        month: parsed.getMonth() + 1,
+        year: parsed.getFullYear(),
+      }
+    : {};
+}
 
 /*
 
@@ -80,15 +91,11 @@ class DatePicker extends Component<Props, State> {
   state = {
     isOpen: false,
     value: '',
-    view: {},
+    view: '',
   };
 
-  onCalendarChange = ({ day, iso, month, type, year }: Object) => {
-    if (type === 'next' || type === 'prev') {
-      this.setState({ view: { month, year } });
-    } else {
-      this.setState({ value: iso, view: { day, month, year } });
-    }
+  onCalendarChange = ({ iso }: Object) => {
+    this.setState({ view: iso });
   };
 
   onCalendarSelect = ({ iso: value }: Object) => {
@@ -104,7 +111,7 @@ class DatePicker extends Component<Props, State> {
         value = format(parsed, 'YYYY-MM-DD');
       }
     }
-    this.setState({ view: {} });
+    this.setState({ view: '' });
     this.onCalendarSelect({ iso: value });
   };
 
@@ -113,23 +120,15 @@ class DatePicker extends Component<Props, State> {
     const dir = arrowKeys[key];
 
     if (dir) {
-      // Navigates the calendar using the keyboard.
       if (this.calendar) {
         this.calendar.navigate(dir);
       }
-    } else if (key === 'Enter') {
-      // TODO close the dropdown once it supports controlled isOpen.
-      // This ensures that react-select doesn't do anything with the value and
-      // we can retain whatever the user has entered.
-      e.preventDefault();
     } else if (key === 'Escape') {
-      // TODO close the dropdown once it supports controlled isOpen.
-      // Clear the value on escape.
       this.setState({ value: '' });
-    } else if (key === 'Tab') {
-      // When the tab key is pressed, react-select normally clears the value.
-      // However, we want to retain it and allow the dropdown to close.
-      this.setState({ value: this.state.value });
+    } else if (key === 'Enter' || key === 'Tab') {
+      const value = this.state.view;
+      this.setState({ value });
+      this.onCalendarSelect({ iso: value });
     }
   };
 
@@ -140,17 +139,6 @@ class DatePicker extends Component<Props, State> {
   render() {
     const { autoFocus, isDisabled, name } = this.props;
     const { value, view } = this.state;
-    const parsed = parse(value);
-
-    let calendarProps = {};
-    if (isValid(parsed)) {
-      calendarProps = {
-        day: parsed.getDate(),
-        month: parsed.getMonth() + 1,
-        selected: [value],
-        year: parsed.getFullYear(),
-      };
-    }
 
     const Menu = () => (
       <div
@@ -166,11 +154,12 @@ class DatePicker extends Component<Props, State> {
         }}
       >
         <Calendar
-          {...calendarProps}
-          {...view}
+          {...isoToObj(value)}
+          {...isoToObj(view)}
           onChange={this.onCalendarChange}
           onSelect={this.onCalendarSelect}
           ref={this.refCalendar}
+          selected={[value]}
         />
       </div>
     );
@@ -190,7 +179,7 @@ class DatePicker extends Component<Props, State> {
           placeholder="e.g. 2018/12/31"
           value={
             value && {
-              label: format(parsed, 'YYYY/MM/DD'),
+              label: format(parse(value), 'YYYY/MM/DD'),
               value,
             }
           }
