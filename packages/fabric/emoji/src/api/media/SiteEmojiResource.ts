@@ -21,12 +21,7 @@ import {
   isMediaEmoji,
   convertImageToMediaRepresentation,
 } from '../../type-helpers';
-import {
-  MediaApiData,
-  MediaUploadEnd,
-  MediaUploadError,
-  MediaUploadStatusUpdate,
-} from './media-types';
+import { MediaApiData } from './media-types';
 import MediaEmojiCache from './MediaEmojiCache';
 import {
   denormaliseEmojiServiceResponse,
@@ -111,9 +106,6 @@ export default class SiteEmojiResource {
               clientId,
               token: uploadToken.jwt,
             }),
-          uploadParams: {
-            collection: collectionName,
-          },
         };
         const onProgress = progress => {
           debug('upload progress', progress);
@@ -127,6 +119,7 @@ export default class SiteEmojiResource {
           {
             content: upload.dataURL,
             name: upload.filename,
+            collectionName,
           },
           mpConfig,
           { onProgress },

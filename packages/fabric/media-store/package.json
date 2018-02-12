@@ -17,6 +17,6 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
-    "chunkinator": "^0.0.4"
+    "chunkinator": "^0.0.6"
   }
 }

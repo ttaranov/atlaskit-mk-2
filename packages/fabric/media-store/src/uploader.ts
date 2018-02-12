@@ -5,6 +5,7 @@ import { MediaStoreConfig, MediaStore } from './media-store';
 export type UploadableFile = {
   content: string | Blob;
   name?: string;
+  collection?: string;
 };
 
 export type Callbacks = {
@@ -17,7 +18,8 @@ export const uploadFile = (
   callbacks?: Callbacks,
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const blobFile = new Blob([file.content]);
+    const { content, collection } = file;
+    const blobFile = new Blob([content]);
     const store = new MediaStore(config);
     const deferredUploadId = store
       .createUpload()
@@ -25,10 +27,9 @@ export const uploadFile = (
     const uploadingFunction = (chunk: Chunk) => {
       return store.uploadChunk(chunk.hash, chunk.blob);
     };
-    const probingFunction = (chunks: Chunk[]) => {
+    const probingFunction = (chunks: Chunk[]): Promise<boolean[]> => {
       return store.probeChunks(hashedChunks(chunks)).then(response => {
         const results = response.data.results;
-
         return (Object as any)
           .values(results)
           .map((result: any) => result.exists);
@@ -40,18 +41,18 @@ export const uploadFile = (
       blobFile,
       {
         hashingFunction: null as any, // TODO: Remove default hashingFunction from Chunkinator and put it here
-        hashingConcurrency: 3,
-        probingBatchSize: 100,
-        chunkSize: 4000000,
+        hashingConcurrency: 5,
+        probingBatchSize: 3,
+        chunkSize: 10000,
         uploadingConcurrency: 3,
-        progressBatchSize: 100,
+        progressBatchSize: 3,
         uploadingFunction,
         probingFunction,
       },
       {
         onComplete() {
           deferredUploadId.then(id => {
-            store.createFileFromUpload(id).then(response => {
+            store.createFileFromUpload(id, collection).then(response => {
               const fileId = response.data.id;
               resolve(fileId);
             });

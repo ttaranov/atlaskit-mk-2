@@ -82,9 +82,9 @@ export class MediaStore {
   createUpload = (
     createUpTo: number = 1,
   ): Promise<MediaStoreResponse<MediaUpload[]>> => {
-    return this.fetch(`/upload?createUpTo=${createUpTo}`).then(
-      mapResponseToJson,
-    );
+    return this.fetch(`/upload?createUpTo=${createUpTo}`, {
+      method: 'POST',
+    }).then(mapResponseToJson);
   };
 
   uploadChunk = (etag: string, blob: Blob): Promise<void> => {
@@ -109,12 +109,16 @@ export class MediaStore {
 
   createFileFromUpload = (
     uploadId: string,
+    collection?: string,
   ): Promise<MediaStoreResponse<MediaFile>> => {
     const body = JSON.stringify({
       uploadId,
     });
+    const url = new URL('/file/upload');
 
-    return this.fetch(`/file/upload`, {
+    collection && url.searchParams.set('collection', collection);
+
+    return this.fetch(url.toString(), {
       method: 'POST',
       body,
     }).then(mapResponseToJson);
@@ -146,9 +150,10 @@ export class MediaStore {
       method: 'GET',
     },
   ): Promise<Response> {
-    const { method, authContext } = fetchOptions;
+    const { method, body, authContext } = fetchOptions;
     const request = new Request(`${this.config.apiUrl}${path}`, {
       method,
+      body,
       headers: {
         'Content-Type': 'application/json',
       },
