@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SkeletonContainerItem /> renders a skeleton representation of a container header 1`] = `
+<SkeletonDefaultContainerHeaderInner>
+  <Avatar
+    appearance="square"
+    size="large"
+    weight="strong"
+  />
+  <HiddenWhenCollapsed
+    isCollapsed={false}
+  >
+    <SkeletonContainerItemText>
+      <Paragraph
+        weight="strong"
+      />
+    </SkeletonContainerItemText>
+  </HiddenWhenCollapsed>
+</SkeletonDefaultContainerHeaderInner>
+`;
+
+exports[`<SkeletonContainerItem /> shows a compact version when collapsed 1`] = `
+<SkeletonDefaultContainerHeaderInner>
+  <Avatar
+    appearance="square"
+    size="large"
+    weight="strong"
+  />
+  <HiddenWhenCollapsed
+    isCollapsed={true}
+  >
+    <SkeletonContainerItemText>
+      <Paragraph
+        weight="strong"
+      />
+    </SkeletonContainerItemText>
+  </HiddenWhenCollapsed>
+</SkeletonDefaultContainerHeaderInner>
+`;

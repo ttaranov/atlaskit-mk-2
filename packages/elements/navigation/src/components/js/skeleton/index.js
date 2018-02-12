@@ -1,12 +1,13 @@
 // @flow
 import React, { Component, type ComponentType } from 'react';
 
-import NavigationOuter from '../../styled/skeleton/NavigationOuter';
-import NavigationInner from '../../styled/skeleton/NavigationInner';
+import SkeletonNavigationOuter from '../../styled/skeleton/SkeletonNavigationOuter';
+import SkeletonNavigationInner from '../../styled/skeleton/SkeletonNavigationInner';
 
-import GlobalNavigation from './GlobalNavigation';
-import ContainerNavigation from './ContainerNavigation';
-import DefaultContainerHeader from './DefaultContainerHeader';
+import SkeletonGlobalNavigation from './SkeletonGlobalNavigation';
+import SkeletonContainerNavigation from './SkeletonContainerNavigation';
+import SkeletonDefaultContainerHeader from './SkeletonDefaultContainerHeader';
+import { HiddenWhenCollapsed } from './ToggleWhenCollapsed';
 
 import * as presets from '../../../theme/presets';
 import type { Provided } from '../../../theme/types';
@@ -43,7 +44,7 @@ function defaultGlobalTheme(globalTheme, mode) {
 export class SkeletonNavigation extends Component<Props> {
   static defaultProps = {
     isCollapsed: false,
-    containerHeaderComponent: DefaultContainerHeader,
+    containerHeaderComponent: SkeletonDefaultContainerHeader,
   };
 
   render() {
@@ -55,18 +56,18 @@ export class SkeletonNavigation extends Component<Props> {
     } = this.props;
 
     return (
-      <NavigationOuter isCollapsed={isCollapsed}>
-        <NavigationInner>
-          {!this.props.isCollapsed ? (
-            <GlobalNavigation theme={defaultGlobalTheme(globalTheme)} />
-          ) : null}
-          <ContainerNavigation
+      <SkeletonNavigationOuter isCollapsed={isCollapsed}>
+        <SkeletonNavigationInner>
+          <HiddenWhenCollapsed isCollapsed={isCollapsed}>
+            <SkeletonGlobalNavigation theme={defaultGlobalTheme(globalTheme)} />
+          </HiddenWhenCollapsed>
+          <SkeletonContainerNavigation
             theme={defaultContainerTheme(containerTheme)}
             isCollapsed={isCollapsed}
             containerHeaderComponent={containerHeaderComponent}
           />
-        </NavigationInner>
-      </NavigationOuter>
+        </SkeletonNavigationInner>
+      </SkeletonNavigationOuter>
     );
   }
 }

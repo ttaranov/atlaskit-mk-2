@@ -7,7 +7,7 @@ import {
 } from '../../../shared-variables';
 import { getProvided } from '../../../theme/util';
 
-export default styled.div`
+const SkeletonContainerNavigationInner = styled.div`
   height: 100%;
   width: ${({ isCollapsed }) =>
     isCollapsed ? containerClosedWidth() : containerOpenWidth}px;
@@ -17,3 +17,7 @@ export default styled.div`
     return background.secondary || background.primary;
   }};
 `;
+
+SkeletonContainerNavigationInner.displayName =
+  'SkeletonContainerNavigationInner';
+export default SkeletonContainerNavigationInner;

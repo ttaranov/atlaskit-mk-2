@@ -5,28 +5,28 @@ import { Avatar, Paragraph } from '@atlaskit/skeleton';
 
 import { HiddenWhenCollapsed } from './ToggleWhenCollapsed';
 
-import ContainerItemText from '../../styled/skeleton/ContainerItemText';
-import DefaultContainerHeaderInner from '../../styled/skeleton/DefaultContainerHeaderInner';
+import SkeletonContainerItemText from '../../styled/skeleton/SkeletonContainerItemText';
+import SkeletonDefaultContainerHeaderInner from '../../styled/skeleton/SkeletonDefaultContainerHeaderInner';
 
 export type Props = {
   isCollapsed: boolean,
 };
 
-export default class DefaultContainerHeader extends Component<Props> {
+export default class SkeletonDefaultContainerHeader extends Component<Props> {
   static defaultProps = {
     isCollapsed: false,
   };
 
   render() {
     return (
-      <DefaultContainerHeaderInner>
+      <SkeletonDefaultContainerHeaderInner>
         <Avatar appearance="square" size="large" weight="strong" />
         <HiddenWhenCollapsed isCollapsed={this.props.isCollapsed}>
-          <ContainerItemText>
+          <SkeletonContainerItemText>
             <Paragraph weight="strong" />
-          </ContainerItemText>
+          </SkeletonContainerItemText>
         </HiddenWhenCollapsed>
-      </DefaultContainerHeaderInner>
+      </SkeletonDefaultContainerHeaderInner>
     );
   }
 }

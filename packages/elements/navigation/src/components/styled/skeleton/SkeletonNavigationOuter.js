@@ -6,8 +6,11 @@ import {
   containerClosedWidth,
 } from '../../../shared-variables';
 
-export default styled.div`
+const SkeletonNavigationOuter = styled.div`
   width: ${({ isCollapsed }) =>
     isCollapsed ? containerClosedWidth() : standardOpenWidth}px;
   height: 100vh;
 `;
+
+SkeletonNavigationOuter.displayName = 'SkeletonNavigationOuter';
+export default SkeletonNavigationOuter;

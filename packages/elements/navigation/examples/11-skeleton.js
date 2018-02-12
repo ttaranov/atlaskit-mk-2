@@ -8,9 +8,11 @@ import { colors } from '@atlaskit/theme';
 
 import { Skeleton, presetThemes, createGlobalTheme } from '../src';
 
+type AppearanceOptions = 'global' | 'container' | 'settings' | 'custom';
+
 type State = {
   isCollapsed: boolean,
-  theme: 'global' | 'container' | 'settings' | 'custom',
+  theme: AppearanceOptions,
 };
 
 const themeOptions = [
@@ -38,8 +40,14 @@ const themes = {
     containerTheme: presetThemes.settings,
   },
   custom: {
-    globalTheme: createGlobalTheme(colors.T300, colors.P500),
-    containerTheme: createGlobalTheme(colors.T300, colors.P400),
+    globalTheme: {
+      ...presetThemes.global,
+      ...createGlobalTheme(colors.T300, colors.P500),
+    },
+    containerTheme: {
+      ...presetThemes.global,
+      ...createGlobalTheme(colors.T300, colors.P400),
+    },
   },
 };
 
@@ -49,9 +57,8 @@ export default class SkeletonInteractiveStory extends Component<void, State> {
     theme: 'container',
   };
 
-  handleThemeChange = (e: { item: { value: string } }) => {
+  handleThemeChange = (e: { item: { value: AppearanceOptions } }) => {
     this.setState({
-      // $FlowFixMe
       theme: e.item.value,
     });
   };
@@ -60,7 +67,6 @@ export default class SkeletonInteractiveStory extends Component<void, State> {
     return (
       <Page
         navigation={
-          // $FlowFixMe
           <Skeleton
             isCollapsed={this.state.isCollapsed}
             {...themes[this.state.theme]}

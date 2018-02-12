@@ -3,14 +3,14 @@ import React, { Component, type ComponentType } from 'react';
 import { WithRootTheme } from '../../../theme/util';
 import type { Provided } from '../../../theme/types';
 
-import GlobalTopItems from './GlobalTopItems';
-import GlobalBottomItems from './GlobalBottomItems';
-import ContainerItems from './ContainerItems';
+import SkeletonGlobalTopItems from './SkeletonGlobalTopItems';
+import SkeletonGlobalBottomItems from './SkeletonGlobalBottomItems';
+import SkeletonContainerItems from './SkeletonContainerItems';
 import { ShownWhenCollapsed } from './ToggleWhenCollapsed';
 
-import ContainerNavigationInner from '../../styled/skeleton/ContainerNavigationInner';
-import NavigationContentOuter from '../../styled/skeleton/NavigationContentOuter';
-import ContainerHeaderWrapper from '../../styled/skeleton/ContainerHeaderWrapper';
+import SkeletonContainerNavigationInner from '../../styled/skeleton/SkeletonContainerNavigationInner';
+import SkeletonNavigationContentOuter from '../../styled/skeleton/SkeletonNavigationContentOuter';
+import SkeletonContainerHeaderWrapper from '../../styled/skeleton/SkeletonContainerHeaderWrapper';
 
 import type { ContainerHeaderProps } from './';
 
@@ -20,7 +20,7 @@ export type Props = {
   containerHeaderComponent: ComponentType<ContainerHeaderProps>,
 };
 
-export default class Navigation extends Component<Props> {
+export default class SkeletonContainerNavigation extends Component<Props> {
   static defaultProps = {
     isCollapsed: false,
   };
@@ -30,22 +30,22 @@ export default class Navigation extends Component<Props> {
     const { theme, isCollapsed } = this.props;
     return (
       <WithRootTheme provided={theme} isCollapsed={isCollapsed}>
-        <ContainerNavigationInner isCollapsed={isCollapsed}>
-          <NavigationContentOuter>
+        <SkeletonContainerNavigationInner isCollapsed={isCollapsed}>
+          <SkeletonNavigationContentOuter>
             <div>
               <ShownWhenCollapsed isCollapsed={isCollapsed}>
-                <GlobalTopItems />
+                <SkeletonGlobalTopItems />
               </ShownWhenCollapsed>
-              <ContainerHeaderWrapper>
+              <SkeletonContainerHeaderWrapper>
                 <ContainerHeaderComponent isCollapsed={isCollapsed} />
-              </ContainerHeaderWrapper>
-              <ContainerItems isCollapsed={isCollapsed} />
+              </SkeletonContainerHeaderWrapper>
+              <SkeletonContainerItems isCollapsed={isCollapsed} />
             </div>
             <ShownWhenCollapsed isCollapsed={isCollapsed}>
-              <GlobalBottomItems />
+              <SkeletonGlobalBottomItems />
             </ShownWhenCollapsed>
-          </NavigationContentOuter>
-        </ContainerNavigationInner>
+          </SkeletonNavigationContentOuter>
+        </SkeletonContainerNavigationInner>
       </WithRootTheme>
     );
   }
