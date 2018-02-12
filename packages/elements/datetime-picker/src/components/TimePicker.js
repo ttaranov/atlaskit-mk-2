@@ -4,7 +4,8 @@ import Select from '@atlaskit/select';
 import { format, isValid, parse } from 'date-fns';
 import React, { Component } from 'react';
 import withCtrl from 'react-ctrl';
-import type { Handler } from '../types';
+
+import { ClearIndicator, DropdownIndicator } from '../internal';
 
 const defaultTimes = [
   '09:00',
@@ -45,14 +46,20 @@ type Props = {
   defaultTimes?: Array<string>,
   /** Default for `value`. */
   defaultValue?: string,
+  /** The icon to show in the field. */
+  icon: boolean,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
   isOpen?: boolean,
   /** The name of the field. */
   name: string,
+  /** Called when the field is blurred. */
+  onBlur: () => void,
   /** Called when the value changes. The only argument is an ISO time. */
-  onChange: Handler,
+  onChange: string => void,
+  /** Called when the field is focused. */
+  onFocus: () => void,
   /** The times to show in the dropdown. */
   times?: Array<string>,
   /** The ISO time that should be used as the input value. */
@@ -75,15 +82,14 @@ function formatTime(time: string): string {
   return isValid(date) ? format(date, 'h:mma') : time;
 }
 
-const ClearIndicator = null;
-const DropdownIndicator = null;
-
 class TimePicker extends Component<Props, State> {
   static defaultProps = {
     autoFocus: false,
     isDisabled: false,
     name: '',
+    onBlur: () => {},
     onChange: () => {},
+    onFocus: () => {},
   };
 
   state = {
@@ -103,24 +109,26 @@ class TimePicker extends Component<Props, State> {
     }, []);
   }
 
-  handleChange = (v: Object | null): void => {
+  onChange = (v: Object | null): void => {
     const value = v ? v.value : '';
     this.setState({ value });
     this.props.onChange(value);
   };
 
   render() {
-    const { autoFocus, isDisabled, name } = this.props;
+    const { icon, name, ...rest } = this.props;
     const { value } = this.state;
     return (
       <div>
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select
-          autoFocus={autoFocus}
-          components={{ ClearIndicator, DropdownIndicator }}
-          isDisabled={isDisabled}
-          onChange={this.handleChange}
+          {...rest}
+          components={{
+            ClearIndicator,
+            DropdownIndicator: () => <DropdownIndicator icon={icon} />,
+          }}
+          onChange={this.onChange}
           options={this.getOptions()}
           placeholder="e.g. 9:00am"
           value={

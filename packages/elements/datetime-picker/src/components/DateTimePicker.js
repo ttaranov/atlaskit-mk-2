@@ -1,9 +1,11 @@
 // @flow
 
+import CalendarIcon from '@atlaskit/icon/glyph/calendar';
+import { format, parse } from 'date-fns';
 import React, { Component } from 'react';
 import withCtrl from 'react-ctrl';
 import styled from 'styled-components';
-import { format, parse } from 'date-fns';
+
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
 
@@ -51,8 +53,12 @@ type Props = {
   focused?: string,
   /** The name of the field. */
   name: string,
-  /** Called when the value changes. The first argument is an ISO date and the second is an ISO time. */
-  onChange: (date: ?string, time: ?string) => void,
+  /** Called when the field is blurred. */
+  onBlur: () => void,
+  /** Called when the value changes and the date / time is a complete value, or empty. The only value is an ISO string. */
+  onChange: string => void,
+  /** Called when the field is focused. */
+  onFocus: () => void,
   /** The times to show in the dropdown. */
   times?: Array<string>,
   /** The ISO time that should be used as the input value. */
@@ -65,19 +71,48 @@ type State = {
   _zoneValue: string,
   active: 0 | 1 | 2,
   focused: string,
+  isFocused: boolean,
   isOpen: boolean,
   times: Array<string>,
   value: string,
 };
 
 const Flex = styled.div`
+  background-color: #fafbfc;
+  border-radius: 4px;
   display: flex;
+  transition: background-color 200ms ease-in-out, border-color 200ms ease-in-out;
+  ${({ isFocused }) => `
+    border: ${isFocused ? '2px solid #4c9aff' : '1px solid #f4f5f7'};
+    padding: ${isFocused ? '0' : '1px'};
+  `} &:hover {
+    background-color: ${({ isFocused }) => (isFocused ? 'inherit' : '#f4f5f7')};
+  }
 `;
 
 const FlexItem = styled.div`
   flex-basis: 0;
   flex-grow: 1;
 `;
+
+// react-select overrides (via @atlaskit/select).
+const controlStyles = () => ({
+  backgroundColor: 'transparent',
+  border: 0,
+  borderRadius: 0,
+  padding: 4,
+  ':hover': {
+    backgroundColor: 'transparent',
+  },
+});
+const styles = {
+  date: {
+    control: controlStyles,
+  },
+  time: {
+    control: controlStyles,
+  },
+};
 
 function formatDateTimeZoneIntoIso(
   date: string,
@@ -102,7 +137,9 @@ class DateTimePicker extends Component<Props, State> {
     disabled: [],
     isDisabled: false,
     name: '',
-    onChange() {},
+    onBlur: () => {},
+    onChange: () => {},
+    onFocus: () => {},
   };
 
   state = {
@@ -111,20 +148,31 @@ class DateTimePicker extends Component<Props, State> {
     _zoneValue: '',
     active: 0,
     focused: '',
+    isFocused: false,
     isOpen: false,
     times: defaultTimes,
     value: '',
   };
 
-  handleDateChange = (_dateValue: string) => {
-    this.setState({ _dateValue }, this.handleValueChange);
+  onBlur = () => {
+    this.setState({ isFocused: false });
+    this.props.onBlur();
   };
 
-  handleTimeChange = (_timeValue: string) => {
-    this.setState({ _timeValue }, this.handleValueChange);
+  onDateChange = (_dateValue: string) => {
+    this.setState({ _dateValue }, this.onValueChange);
   };
 
-  handleValueChange() {
+  onFocus = () => {
+    this.setState({ isFocused: true });
+    this.props.onFocus();
+  };
+
+  onTimeChange = (_timeValue: string) => {
+    this.setState({ _timeValue }, this.onValueChange);
+  };
+
+  onValueChange() {
     const { _dateValue, _timeValue, _zoneValue } = this.state;
     if (_dateValue && _timeValue) {
       const value = formatDateTimeZoneIntoIso(
@@ -138,16 +186,33 @@ class DateTimePicker extends Component<Props, State> {
   }
 
   render() {
-    const { name } = this.props;
-    const { _dateValue, _timeValue, value } = this.state;
+    const { autoFocus, name } = this.props;
+    const { _dateValue, _timeValue, isFocused, value } = this.state;
+    const bothProps = {
+      onBlur: this.onBlur,
+      onFocus: this.onFocus,
+    };
     return (
-      <Flex>
+      <Flex isFocused={isFocused}>
         <input name={name} type="hidden" value={value} />
-        <FlexItem style={{ marginRight: 10 }}>
-          <DatePicker onChange={this.handleDateChange} value={_dateValue} />
+        <FlexItem>
+          <DatePicker
+            {...bothProps}
+            autoFocus={autoFocus}
+            icon={null}
+            onChange={this.onDateChange}
+            styles={styles.date}
+            value={_dateValue}
+          />
         </FlexItem>
         <FlexItem>
-          <TimePicker onChange={this.handleTimeChange} value={_timeValue} />
+          <TimePicker
+            {...bothProps}
+            icon={CalendarIcon}
+            onChange={this.onTimeChange}
+            styles={styles.time}
+            value={_timeValue}
+          />
         </FlexItem>
       </Flex>
     );

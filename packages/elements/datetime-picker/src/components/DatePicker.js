@@ -6,7 +6,10 @@ import Select from '@atlaskit/select';
 import { format, isValid, parse } from 'date-fns';
 import React, { Component } from 'react';
 import withCtrl from 'react-ctrl';
-import type { Event, Handler } from '../types';
+import styled from 'styled-components';
+
+import { ClearIndicator, DropdownIndicator } from '../internal';
+import type { Event } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
@@ -18,14 +21,20 @@ type Props = {
   defaultValue?: string,
   /** An array of ISO dates that should be disabled on the calendar. */
   disabled: Array<string>,
+  /** The icon to show in the field. */
+  icon?: typeof Component,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
   isOpen?: boolean,
   /** The name of the field. */
   name: string,
+  /** Called when the field is blurred. */
+  onBlur: () => void,
   /** Called when the value changes. The only argument is an ISO time. */
-  onChange: Handler,
+  onChange: string => void,
+  /** Called when the field is focused. */
+  onFocus: () => void,
   /** The ISO time that should be used as the input value. */
   value?: string,
 };
@@ -51,15 +60,20 @@ function isoToObj(iso) {
 
 TODO
 
-- DateTimePicker's DatePicker should behave like the normal DatePicker (keyboard nav / select is off).
-- Pickers should not open the dropdown until you start typing, so it can autocomplete (requires react-select isOpen).
-- Look and feel should be restored to originals, for now.
+Pickers
+
+- Focus does not open the dropdowns.
+- Down arrow or input opens dropdown. Left / right keys navigate the caret.
+- When dropdown is open, keyboard nav navigates the list, but prevents caret movement.
+- DateTimePicker positioning of dropdowns needs slight moving, but requires styling hooks.
+- Tests!
+
+ReactSelect
+
 - ReactSelect should have an option to disable the auto-width of the Menu component.
 - ReactSelect needs an event for when the clear button is clicked, when controlling the value.
 - ReactSelect needs a way to control the open / closed state of the dropdown.
-- ReactSelect neesd a way to control the focused item in the dropdown.
-- ReactSelect forces input with to match dropdown. This breaks `flex-basis: 0` in DateTimePicker.
-- Tests!
+- ReactSelect forces input width to match dropdown. This breaks `flex-basis: 0` in DateTimePicker.
 
 */
 
@@ -70,12 +84,17 @@ const arrowKeys = {
   ArrowUp: 'up',
 };
 
-const ClearIndicator = null;
-const DropdownIndicator = () => (
-  <span role="img">
-    <CalendarIcon />
-  </span>
-);
+const StyledMenu = styled.div`
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 1px 5px 10px #eee;
+  margin-top: 7px;
+  overflow: hidden;
+  position: absolute;
+  text-align: center;
+  z-index: 1000;
+`;
 
 class DatePicker extends Component<Props, State> {
   calendar: Calendar;
@@ -83,9 +102,12 @@ class DatePicker extends Component<Props, State> {
   static defaultProps = {
     autoFocus: false,
     disabled: [],
+    icon: CalendarIcon,
     name: '',
     isDisabled: false,
+    onBlur: () => {},
     onChange: () => {},
+    onFocus: () => {},
   };
 
   state = {
@@ -137,22 +159,11 @@ class DatePicker extends Component<Props, State> {
   };
 
   render() {
-    const { autoFocus, isDisabled, name } = this.props;
+    const { icon, name, ...rest } = this.props;
     const { value, view } = this.state;
 
     const Menu = () => (
-      <div
-        style={{
-          backgroundColor: '#fff',
-          border: '1px solid #ddd',
-          borderRadius: '4px',
-          boxShadow: '1px 5px 10px #eee',
-          overflow: 'hidden',
-          position: 'absolute',
-          textAlign: 'center',
-          zIndex: 1000,
-        }}
-      >
+      <StyledMenu>
         <Calendar
           {...isoToObj(value)}
           {...isoToObj(view)}
@@ -161,7 +172,7 @@ class DatePicker extends Component<Props, State> {
           ref={this.refCalendar}
           selected={[value]}
         />
-      </div>
+      </StyledMenu>
     );
 
     return (
@@ -173,9 +184,12 @@ class DatePicker extends Component<Props, State> {
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select
-          autoFocus={autoFocus}
-          components={{ ClearIndicator, DropdownIndicator, Menu }}
-          isDisabled={isDisabled}
+          {...rest}
+          components={{
+            ClearIndicator,
+            DropdownIndicator: () => <DropdownIndicator icon={icon} />,
+            Menu,
+          }}
           placeholder="e.g. 2018/12/31"
           value={
             value && {

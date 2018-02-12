@@ -6,4 +6,3 @@ export type Event = {
   stopPropagation: Function,
   target: { value: string },
 };
-export type Handler = (e: any) => void;
