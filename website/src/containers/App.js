@@ -45,6 +45,7 @@ const AppContainer = styled.div`
   display: flex;
   height: 100vh;
   width: 100vw;
+  max-width: 100%;
 `;
 
 const AppContent = styled.div`
