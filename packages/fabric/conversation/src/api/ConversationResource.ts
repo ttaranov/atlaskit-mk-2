@@ -1,4 +1,4 @@
-import { createStore, Store, Action } from '../internal/store';
+import { createStore, Store, Action, Handler } from '../internal/store';
 import {
   FETCH_CONVERSATIONS_REQUEST,
   FETCH_CONVERSATIONS_SUCCESS,
@@ -29,6 +29,8 @@ export interface ConversationResourceConfig {
 
 export interface ResourceProvider {
   getConversations(containerId: string): Promise<Conversation[]>;
+  subscribe(handler: Handler): void;
+  unsubscribe(handler: Handler): void;
   create(
     localId: string,
     containerId: string,
@@ -77,6 +79,22 @@ export class AbstractConversationResource implements ResourceProvider {
    */
   getConversations(containerId: string): Promise<Conversation[]> {
     return Promise.reject('Not implemented');
+  }
+
+  /**
+   * Subscribe to the provider's internal store
+   * @param {Handler} handler
+   */
+  subscribe(handler: Handler): void {
+    return this.store.subscribe(handler);
+  }
+
+  /**
+   * Unsubscribe from the provider's internal store
+   * @param {Handler} handler
+   */
+  unsubscribe(handler: Handler): void {
+    return this.store.unsubscribe(handler);
   }
 
   /**
