@@ -26,8 +26,8 @@ describe('CrossProductSearchProvider', () => {
 
   afterEach(fetchMock.restore);
 
-  describe('search', () => {
-    it('should return result items', async () => {
+  describe('Confluence', () => {
+    it('should return confluence result items', async () => {
       apiWillReturn({
         scopes: [
           {
@@ -60,10 +60,6 @@ describe('CrossProductSearchProvider', () => {
       expect(item.containerName).toEqual('containerTitle');
     });
 
-    it('should handle scope errors', () => {});
-
-    it('should concat base url with url', () => {});
-
     it('should parse the highlight tags from the title', () => {
       let text = removeHighlightTags(
         '@@@hl@@@new@@@endhl@@@ @@@hl@@@page@@@endhl@@@',
@@ -82,19 +78,50 @@ describe('CrossProductSearchProvider', () => {
       expect(url).toContain('blogpost-icon.svg');
     });
 
-    it('should send the right body', async () => {
+    it.skip('should concat base url with url', () => {});
+  });
+
+  describe('Jira', () => {
+    it('should return jira result items', async () => {
       apiWillReturn({
-        scopes: [],
+        scopes: [
+          {
+            id: 'jira.issue' as Scope,
+            results: [
+              {
+                key: 'key-1',
+                fields: {
+                  summary: 'summary',
+                },
+              },
+            ],
+          },
+        ],
       });
 
       const result = await searchProvider.search('query');
-      const call = fetchMock.calls('xpsearch')[0];
-      const body = JSON.parse(call[1].body);
+      expect(result.jira).toHaveLength(1);
 
-      expect(body.query).toEqual('query');
-      expect(body.cloudId).toEqual('123');
-      expect(body.limit).toEqual(5);
-      expect(body.scopes).toEqual(['jira.issue', 'confluence.page']);
+      const item = result.jira[0];
+      expect(item.type).toEqual('object');
+      expect(item.name).toEqual('summary');
     });
+  });
+
+  it.skip('should handle scope errors', () => {});
+
+  it('should send the right body', async () => {
+    apiWillReturn({
+      scopes: [],
+    });
+
+    const result = await searchProvider.search('query');
+    const call = fetchMock.calls('xpsearch')[0];
+    const body = JSON.parse(call[1].body);
+
+    expect(body.query).toEqual('query');
+    expect(body.cloudId).toEqual('123');
+    expect(body.limit).toEqual(5);
+    expect(body.scopes).toEqual(['jira.issue', 'confluence.page']);
   });
 });

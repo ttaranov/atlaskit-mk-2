@@ -8,6 +8,8 @@ import {
   CrossProductSearchResponse,
   Scope,
   SearchItem,
+  ConfluenceItem,
+  JiraItem,
 } from '../src/api/CrossProductSearchProvider';
 
 function pickRandom(array: Array<any>) {
@@ -28,6 +30,12 @@ function objectIconUrl() {
 function provider() {
   const providers = ['jira', 'confluence'];
   return pickRandom(providers);
+}
+
+function issueKey() {
+  const keys = ['ETH', 'XRP', 'ADA', 'TRON'];
+
+  return pickRandom(keys) + '-' + faker.random.number(1000);
 }
 
 function iconCssClass() {
@@ -61,7 +69,8 @@ export function recentData(n = 50): RecentItemsResponse {
 export function makeCrossProductSearchData(
   n = 100,
 ): (term: string) => CrossProductSearchResponse {
-  const confData: SearchItem[] = [];
+  const confData: ConfluenceItem[] = [];
+  const jiraData: JiraItem[] = [];
 
   for (let i = 0; i < n; i++) {
     confData.push({
@@ -74,10 +83,24 @@ export function makeCrossProductSearchData(
     });
   }
 
+  for (let i = 0; i < n; i++) {
+    jiraData.push({
+      key: issueKey(),
+      fields: {
+        summary: faker.company.catchPhrase(),
+      },
+    });
+  }
+
   return (term: string) => {
     term = term.toLowerCase();
+
     const filteredConfResults = confData.filter(
       result => result.title.toLowerCase().indexOf(term) > -1,
+    );
+
+    const filteredJiraResults = jiraData.filter(
+      result => result.fields.summary.toLowerCase().indexOf(term) > -1,
     );
 
     return {
@@ -85,6 +108,10 @@ export function makeCrossProductSearchData(
         {
           id: Scope.ConfluencePage,
           results: filteredConfResults,
+        },
+        {
+          id: Scope.JiraIssue,
+          results: filteredJiraResults,
         },
       ],
     };

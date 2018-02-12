@@ -16,7 +16,10 @@ export default class extends React.Component {
         <BasicNavigation
           searchDrawerContent={
             <GlobalQuickSearch
-              cloudId="DUMMY-7c8a2b74-595a-41c7-960c-fd32f8572cea"
+              // SDOG
+              // cloudId="DUMMY-7c8a2b74-595a-41c7-960c-fd32f8572cea"
+              // drichard-feb12
+              cloudId="ac7c9a08-f73d-470e-8e7a-5338887a57f2"
               environment="staging"
             />
           }

@@ -15,7 +15,12 @@ export interface CrossProductSearchResponse {
   scopes: ScopeResult[];
 }
 
-export type SearchItem = ConfluenceItem;
+export interface JiraItem {
+  key: string;
+  fields: {
+    summary: string;
+  };
+}
 
 export interface ConfluenceItem {
   title: string;
@@ -25,6 +30,8 @@ export interface ConfluenceItem {
     title: string;
   };
 }
+
+export type SearchItem = ConfluenceItem | JiraItem;
 
 export interface ScopeResult {
   id: Scope;
@@ -47,6 +54,14 @@ export default class CrossProductSearchProviderImpl
   }
 
   public async search(query: string): Promise<CrossProductResults> {
+    const response = await this.makeRequest(query);
+
+    return this.parseResponse(response);
+  }
+
+  private async makeRequest(
+    query: string,
+  ): Promise<CrossProductSearchResponse> {
     const body = {
       query: query,
       cloudId: this.cloudId,
@@ -54,25 +69,23 @@ export default class CrossProductSearchProviderImpl
       scopes: [Scope.JiraIssue, Scope.ConfluencePage],
     };
 
-    const response: CrossProductSearchResponse = await makeRequest(
-      this.url,
-      '/quicksearch/v1',
-      {
-        method: 'POST',
-        body: JSON.stringify(body),
-      },
-    );
+    return await makeRequest(this.url, '/quicksearch/v1', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    });
+  }
 
-    const jiraResults: Result[] = [];
-    const confResults: Result[] = [];
+  private parseResponse(
+    response: CrossProductSearchResponse,
+  ): CrossProductResults {
+    let jiraResults: Result[] = [];
+    let confResults: Result[] = [];
 
     response.scopes.forEach(scope => {
-      const results = scope.results.map(searchItemToResult);
-
       if (scope.id === Scope.ConfluencePage) {
-        confResults.push(...results);
+        confResults = scope.results.map(confluenceItemToResult);
       } else if (scope.id === Scope.JiraIssue) {
-        jiraResults.push(...results);
+        jiraResults = scope.results.map(jiraItemToResult);
       } else {
         throw new Error('Unknown scope id: ' + scope.id);
       }
@@ -98,13 +111,24 @@ export function removeHighlightTags(text: string) {
   return text.replace(/@@@hl@@@|@@@endhl@@@/g, '');
 }
 
-function searchItemToResult(searchItem: ConfluenceItem): Result {
+function confluenceItemToResult(jiraItem: ConfluenceItem): Result {
   return {
     type: ResultType.Object,
-    resultId: 'search-' + searchItem.url,
-    avatarUrl: getConfluenceAvatarUrl(searchItem.iconCssClass),
-    name: removeHighlightTags(searchItem.title),
-    href: searchItem.url,
-    containerName: searchItem.container.title,
+    resultId: 'search-' + jiraItem.url,
+    avatarUrl: getConfluenceAvatarUrl(jiraItem.iconCssClass),
+    name: removeHighlightTags(jiraItem.title),
+    href: jiraItem.url,
+    containerName: jiraItem.container.title,
+  };
+}
+
+function jiraItemToResult(jiraItem: JiraItem): Result {
+  return {
+    type: ResultType.Object,
+    resultId: 'search-' + jiraItem.key + 'TODO',
+    avatarUrl: 'TODO',
+    name: jiraItem.fields.summary,
+    href: 'TODO',
+    containerName: jiraItem.key,
   };
 }

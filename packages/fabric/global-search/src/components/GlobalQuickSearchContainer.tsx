@@ -30,7 +30,7 @@ export interface State {
 
 export class GlobalQuickSearchContainer extends React.Component<Props, State> {
   static defaultProps: Partial<Props> = {
-    debounceMillis: 150,
+    debounceMillis: 350,
   };
 
   constructor(props: Props) {
