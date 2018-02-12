@@ -1,9 +1,4 @@
 import * as React from 'react';
-import Conversation from '../src/components/Conversation';
-import {
-  Comment as CommentType,
-  Conversation as ConversationType,
-} from '../src/model';
 import {
   MockProvider as ConversationResource,
   getDataProviderFactory,

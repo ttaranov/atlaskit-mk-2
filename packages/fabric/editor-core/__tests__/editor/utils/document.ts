@@ -12,7 +12,7 @@ import {
   defaultSchema as schema,
 } from '@atlaskit/editor-test-helpers';
 import {
-  isEmpty,
+  isEmptyNode,
   isEmptyParagraph,
   isEmptyDocument,
   preprocessDoc,
@@ -31,25 +31,27 @@ describe(name, () => {
       });
     });
 
-    describe('#isEmpty', () => {
+    describe('#isEmptyNode', () => {
       it('should return true if node is empty', () => {
-        expect(isEmpty(p('')(schema))).toBe(true);
+        expect(isEmptyNode(p('')(schema))).toBe(true);
       });
 
       it('should return true if the only child of a node is an empty paragraph', () => {
-        expect(isEmpty(doc(p(''))(schema))).toBe(true);
+        expect(isEmptyNode(doc(p(''))(schema))).toBe(true);
       });
 
       it('should return true if node only contains empty block nodes', () => {
-        expect(isEmpty(doc(p(''), p(''), p(''))(schema))).toBe(true);
+        expect(isEmptyNode(doc(p(''), p(''), p(''))(schema))).toBe(true);
       });
 
       it('should return false if the only child of a node is not an empty paragraph', () => {
-        expect(isEmpty(doc(p('some text'))(schema))).toBe(false);
+        expect(isEmptyNode(doc(p('some text'))(schema))).toBe(false);
       });
 
       it('should return false if node contains non-empty block nodes', () => {
-        expect(isEmpty(doc(p(''), p('some text'), p(''))(schema))).toBe(false);
+        expect(isEmptyNode(doc(p(''), p('some text'), p(''))(schema))).toBe(
+          false,
+        );
       });
     });
 
@@ -75,7 +77,7 @@ describe(name, () => {
       });
 
       it('should return false if node has hr', () => {
-        expect(isEmpty(doc(p(), hr())(schema))).toBe(false);
+        expect(isEmptyDocument(doc(p(), hr())(schema))).toBe(false);
       });
     });
 

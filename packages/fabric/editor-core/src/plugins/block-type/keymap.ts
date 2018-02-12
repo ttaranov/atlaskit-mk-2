@@ -1,26 +1,19 @@
-import { redo, undo } from 'prosemirror-history';
+import { chainCommands } from 'prosemirror-commands';
 import { undoInputRule } from 'prosemirror-inputrules';
-import { keydownHandler } from 'prosemirror-keymap';
-import { EditorView } from 'prosemirror-view';
+import { keymap } from 'prosemirror-keymap';
+import { redo, undo } from 'prosemirror-history';
 import * as keymaps from '../../keymaps';
 import * as commands from '../../commands';
 import { trackAndInvoke } from '../../analytics';
-import {
-  NORMAL_TEXT,
-  HEADING_1,
-  HEADING_2,
-  HEADING_3,
-  HEADING_4,
-  HEADING_5,
-  HEADING_6,
-  BLOCK_QUOTE,
-} from './types';
-import { BlockTypeState } from './';
+import * as blockTypes from './types';
+import { Schema } from 'prosemirror-model';
+import { Plugin } from 'prosemirror-state';
 
-export function keymapHandler(
-  view: EditorView,
-  pluginState: BlockTypeState,
-): Function {
+const analyticsEventName = (blockTypeName: string, eventSource: string) =>
+  `atlassian.editor.format.${blockTypeName}.${eventSource}`;
+const tryUndoInputRuleElseUndoHistory = chainCommands(undoInputRule, undo);
+
+export default function keymapPlugin(schema: Schema): Plugin {
   const list = {};
 
   keymaps.bindKeymapWithCommand(
@@ -35,7 +28,7 @@ export function keymapHandler(
     keymaps.moveUp.common!,
     trackAndInvoke(
       'atlassian.editor.moveup.keyboard',
-      commands.createNewParagraphAbove(view),
+      commands.createNewParagraphAbove,
     ),
     list,
   );
@@ -43,7 +36,7 @@ export function keymapHandler(
     keymaps.moveDown.common!,
     trackAndInvoke(
       'atlassian.editor.movedown.keyboard',
-      commands.createNewParagraphBelow(view),
+      commands.createNewParagraphBelow,
     ),
     list,
   );
@@ -54,7 +47,10 @@ export function keymapHandler(
   );
   keymaps.bindKeymapWithCommand(
     keymaps.undo.common!,
-    trackAndInvoke('atlassian.editor.undo.keyboard', cmdUndo),
+    trackAndInvoke(
+      'atlassian.editor.undo.keyboard',
+      tryUndoInputRuleElseUndoHistory,
+    ),
     list,
   );
   keymaps.bindKeymapWithCommand(
@@ -63,49 +59,28 @@ export function keymapHandler(
     list,
   );
 
-  const nodes = view.state.schema.nodes;
-
   [
-    NORMAL_TEXT,
-    HEADING_1,
-    HEADING_2,
-    HEADING_3,
-    HEADING_4,
-    HEADING_5,
-    HEADING_6,
-    BLOCK_QUOTE,
+    blockTypes.NORMAL_TEXT,
+    blockTypes.HEADING_1,
+    blockTypes.HEADING_2,
+    blockTypes.HEADING_3,
+    blockTypes.HEADING_4,
+    blockTypes.HEADING_5,
+    blockTypes.HEADING_6,
+    blockTypes.BLOCK_QUOTE,
   ].forEach(blockType => {
-    if (nodes[blockType.nodeName]) {
+    if (schema.nodes[blockType.nodeName]) {
       const shortcut = keymaps.findShortcutByDescription(blockType.title);
       if (shortcut) {
         const eventName = analyticsEventName(blockType.name, 'keyboard');
         keymaps.bindKeymapWithCommand(
           shortcut,
-          trackAndInvoke(eventName, () =>
-            pluginState.insertBlockType(blockType.name, view),
-          ),
+          trackAndInvoke(eventName, commands.insertBlockType(blockType.name)),
           list,
         );
       }
     }
   });
 
-  return keydownHandler(list);
+  return keymap(list);
 }
-
-const cmdUndo = (state, dispatch) => {
-  if (undoInputRule(state, dispatch)) {
-    return true;
-  } else {
-    return undo(state, dispatch);
-  }
-};
-
-function analyticsEventName(
-  blockTypeName: string,
-  eventSource: string,
-): string {
-  return `atlassian.editor.format.${blockTypeName}.${eventSource}`;
-}
-
-export default keymapHandler;

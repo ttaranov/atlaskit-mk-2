@@ -5,7 +5,9 @@ import { mount } from 'enzyme';
 
 import { DropdownItem, DropdownItemGroup } from '../src';
 import DropdownItemFocusManager from '../src/components/context/DropdownItemFocusManager';
-import { KEY_UP, KEY_DOWN } from '../src/util/keys';
+import { KEY_UP, KEY_DOWN, KEY_TAB } from '../src/util/keys';
+
+const closeSpy = jest.fn();
 
 // Need this as docuement.activeElement can be null
 function getDocumentActiveElementTextContent() {
@@ -22,7 +24,7 @@ describe('dropdown menu - DropdownItemFocusManager', () => {
 
     beforeEach(() => {
       wrapper = mount(
-        <DropdownItemFocusManager autoFocus>
+        <DropdownItemFocusManager close={closeSpy} autoFocus>
           <DropdownItem isDisabled>Item zero</DropdownItem>
           <DropdownItem isHidden>Item one</DropdownItem>
           <DropdownItem>Item two</DropdownItem>
@@ -34,12 +36,17 @@ describe('dropdown menu - DropdownItemFocusManager', () => {
       );
       items = wrapper.find(DropdownItem);
       getItem = idx => items.at(idx);
-      pressKey = key =>
+      pressKey = (key, opts = {}) =>
         wrapper.instance().handleKeyboard({
           key,
+          ...opts,
           preventDefault: () => {},
         });
       isItemFocused = idx => wrapper.instance().focusedItemIndex() === idx;
+    });
+
+    afterEach(() => {
+      closeSpy.mockReset();
     });
 
     test('should focus on non-disabled first item registered', () => {
@@ -77,6 +84,30 @@ describe('dropdown menu - DropdownItemFocusManager', () => {
       getItem(6).simulate('focus');
       pressKey(KEY_DOWN);
       expect(getDocumentActiveElementTextContent()).toBe('Item six');
+    });
+
+    test('tab out from last item in list should close the dropdown menu', () => {
+      getItem(6).simulate('focus');
+      pressKey(KEY_TAB);
+      expect(closeSpy).toHaveBeenCalled();
+    });
+
+    test('tab from any item but last item in list should not close the dropdown menu', () => {
+      getItem(4).simulate('focus');
+      pressKey(KEY_TAB);
+      expect(closeSpy).not.toHaveBeenCalled();
+    });
+
+    test('shift tab on any element but first element should not close the dropjnbdown', () => {
+      getItem(6).simulate('focus');
+      pressKey(KEY_TAB, { shiftKey: true });
+      expect(closeSpy).not.toHaveBeenCalled();
+    });
+
+    test('shift tab on first element should close the dropdown', () => {
+      getItem(0).simulate('focus');
+      pressKey(KEY_TAB, { shiftKey: true });
+      expect(closeSpy).toHaveBeenCalled();
     });
   });
 
@@ -128,6 +159,10 @@ describe('dropdown menu - DropdownItemFocusManager', () => {
           preventDefault: () => {},
         });
       isItemFocused = idx => wrapper.instance().focusedItemIndex() === idx;
+    });
+
+    afterEach(() => {
+      closeSpy.mockReset();
     });
 
     test('should focus on non-disabled first item registered', () => {

@@ -112,10 +112,6 @@ const ContentStyles = styled.div`
 
   .ProseMirror span[data-placeholder] {
     color: ${akColorN80};
-
-    &::selection {
-      background-color: transparent;
-    }
   }
 
   .ProseMirror blockquote {

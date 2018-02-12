@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import { mount, configure } from 'enzyme';
-import sinon from 'sinon';
 import Adapter from 'enzyme-adapter-react-16';
 import { replaceRaf } from 'raf-stub';
 import OverflowHandler from '../../src/components/js/overflow/OverflowHandler';
@@ -101,8 +100,6 @@ describe('<AkCollapseOverflow />', () => {
       );
       instance = wrapper.instance();
       requestAnimationFrame.step(); // needed for SizeDetector
-      // TODO: Please see - AK-4242
-      sinon.stub(console, 'warn');
     });
 
     it('should render dropdown only if break is needed', () => {

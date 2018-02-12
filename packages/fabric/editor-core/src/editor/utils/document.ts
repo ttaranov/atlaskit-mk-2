@@ -13,7 +13,7 @@ export function isEmptyParagraph(node?: Node | null): boolean {
 /**
  * Checks if a node has any significant content.
  */
-export function isEmpty(node?: Node): boolean {
+export function isEmptyNode(node?: Node): boolean {
   if (node && node.textContent) {
     return false;
   }

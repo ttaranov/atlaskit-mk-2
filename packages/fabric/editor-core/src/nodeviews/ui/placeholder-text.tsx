@@ -12,22 +12,21 @@ export default class PlaceholderTextNode {
     this.getPos = getPos;
     this.dom = DOMSerializer.renderSpec(document, node.type.spec.toDOM!(node))
       .dom as HTMLElement;
-    this.dom.addEventListener('click', this.handleClick);
+    // Using `onclick` rather than `addEventListener` due to ED-3728
+    this.dom.onclick = this.handleClick;
   }
 
   update = (node: PMNode) => {
     if (node.type !== node.type.schema.nodes.placeholder) {
       return false;
     }
-    this.dom!.removeEventListener('click', this.handleClick);
     this.dom = DOMSerializer.renderSpec(document, node.type.spec.toDOM!(node))
       .dom as HTMLElement;
-    this.dom.addEventListener('click', this.handleClick);
+    this.dom.onclick = this.handleClick;
     return true;
   };
 
   destroy = () => {
-    this.dom!.removeEventListener('click', this.handleClick);
     this.dom = undefined;
   };
 

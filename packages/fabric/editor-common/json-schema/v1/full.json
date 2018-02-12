@@ -130,7 +130,8 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/inline_node"
-          }
+          },
+          "minItems": 0
         },
         "attrs": {
           "type": "object",
@@ -1706,9 +1707,6 @@
           },
           {
             "$ref": "#/definitions/taskList_node"
-          },
-          {
-            "$ref": "#/definitions/inlineExtension_node"
           },
           {
             "$ref": "#/definitions/codeBlock_node"

@@ -3,7 +3,8 @@
   "compilerOptions": {
     "declaration": true,
     "outDir": "../../dist/es2015",
-    "target": "es2015"
+    "target": "es5",
+    "module": "es2015"
   },
   "include": [
     "../../src/**/*.ts",

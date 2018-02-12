@@ -1,5 +1,8 @@
 # @atlaskit/item
 
+## 4.2.11
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 4.2.10
 - [patch] item will now always render a linkComponent when provided. fixes bug whereby it was only rendered if the href prop was also set. [df1a14d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df1a14d)
 

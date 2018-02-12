@@ -3,7 +3,7 @@ import React, { Component, type Node } from 'react';
 import Base, { Label } from '@atlaskit/field-base';
 import TextArea from './styled/TextArea';
 
-type Props = {|
+type Props = {
   /** Set whether the fields should expand to fill available horizontal space. */
   compact?: boolean,
   /** Sets the field as uneditable, with a changed hover state. */
@@ -47,12 +47,11 @@ type Props = {|
   enableResize?: boolean,
   /** Type of field */
   type?: string, //eslint-disable-line react/no-unused-prop-types
-|};
+};
 
 // We are using any as FieldTextArea passes props via spread
 // TODO: if there is no impact props should be passed explicitly from FieldTextArea
-export default class FieldTextAreaStateless extends Component<any, void> {
-  props: Props; // eslint-disable-line react/sort-comp
+export default class FieldTextAreaStateless extends Component<Props, void> {
   input: any; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
