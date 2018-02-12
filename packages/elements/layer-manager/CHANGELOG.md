@@ -1,5 +1,8 @@
 # @atlaskit/layer-manager
 
+## 2.7.3
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 2.7.2
 - [patch] Preserve jira context keys through portals for layer manager components [a0705fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a0705fd)
 

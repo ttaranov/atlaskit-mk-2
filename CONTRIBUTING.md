@@ -208,6 +208,12 @@ In order to view these examples within your browser, you can run:
 bolt start
 ```
 
+To run the examples on a different port, set the `ATLASKIT_DEV_PORT` environment variable.
+
+```sh
+ATLASKIT_DEV_PORT=9001 bolt start
+```
+
 ## Browser testing your code
 
 > This is not yet supported
