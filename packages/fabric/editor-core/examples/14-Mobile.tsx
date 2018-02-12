@@ -69,17 +69,23 @@ class MentionProviderImpl implements MentionProvider {
   }
 }
 
+export function mobileEditor() {
+  return (
+    <Editor
+      appearance="mobile"
+      allowHyperlinks={true}
+      allowTextFormatting={true}
+      allowMentions={true}
+      mentionProvider={Promise.resolve(new MentionProviderImpl())}
+    />
+  );
+}
+
 export default function Example() {
   return (
     <div>
       <p>Editor that is used by mobile applications.</p>
-      <Editor
-        appearance="mobile"
-        allowHyperlinks={true}
-        allowTextFormatting={true}
-        allowMentions={true}
-        mentionProvider={Promise.resolve(new MentionProviderImpl())}
-      />
+      {mobileEditor()}
     </div>
   );
 }
