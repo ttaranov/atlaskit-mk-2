@@ -36,7 +36,7 @@ const config: Config = {
   staging: {
     recentSearch: 'https://activity.staging.atlassian.io',
     crossProductSearch: 'https://api-private.stg.atlassian.com',
-    peopleSearch: 'https://pf-directory-service.staging.atlassian.io',
+    peopleSearch: 'https://pf-directory-service.useast.staging.atlassian.io',
   },
   production: {
     recentSearch: 'https://activity.atlassian.io',
