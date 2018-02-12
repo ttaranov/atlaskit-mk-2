@@ -1,0 +1,11 @@
+{
+  "name": "@atlaskit/media-store",
+  "version": "0.0.1",
+  "description": "Media Store API Web Client Library",
+  "license": "Apache-2.0",
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Jimmy Luong"
+  ],
+  "main": "index.js"  
+}
