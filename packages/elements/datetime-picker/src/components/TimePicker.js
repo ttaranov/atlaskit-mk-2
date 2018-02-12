@@ -75,6 +75,9 @@ function formatTime(time: string): string {
   return isValid(date) ? format(date, 'h:mma') : time;
 }
 
+const ClearIndicator = null;
+const DropdownIndicator = null;
+
 class TimePicker extends Component<Props, State> {
   static defaultProps = {
     autoFocus: false,
@@ -115,6 +118,7 @@ class TimePicker extends Component<Props, State> {
         {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select
           autoFocus={autoFocus}
+          components={{ ClearIndicator, DropdownIndicator }}
           isDisabled={isDisabled}
           onChange={this.handleChange}
           options={this.getOptions()}

@@ -1,6 +1,7 @@
 // @flow
 
 import Calendar from '@atlaskit/calendar';
+import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select from '@atlaskit/select';
 import { format, isValid, parse } from 'date-fns';
 import React, { Component } from 'react';
@@ -57,6 +58,13 @@ const arrowKeys = {
   ArrowRight: 'right',
   ArrowUp: 'up',
 };
+
+const ClearIndicator = null;
+const DropdownIndicator = () => (
+  <span role="img">
+    <CalendarIcon />
+  </span>
+);
 
 class DatePicker extends Component<Props, State> {
   calendar: Calendar;
@@ -144,8 +152,19 @@ class DatePicker extends Component<Props, State> {
       };
     }
 
-    const MenuList = () => (
-      <div style={{ textAlign: 'center' }}>
+    const Menu = () => (
+      <div
+        style={{
+          backgroundColor: '#fff',
+          border: '1px solid #ddd',
+          borderRadius: '4px',
+          boxShadow: '1px 5px 10px #eee',
+          overflow: 'hidden',
+          position: 'absolute',
+          textAlign: 'center',
+          zIndex: 1000,
+        }}
+      >
         <Calendar
           {...calendarProps}
           {...view}
@@ -166,7 +185,7 @@ class DatePicker extends Component<Props, State> {
         {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select
           autoFocus={autoFocus}
-          components={{ MenuList }}
+          components={{ ClearIndicator, DropdownIndicator, Menu }}
           isDisabled={isDisabled}
           placeholder="e.g. 2018/12/31"
           value={
