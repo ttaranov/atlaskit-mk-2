@@ -1,9 +1,9 @@
 // @flow
 import type { Component, Element } from 'react';
 
-export type ChildrenType = Array<Element<any>> | Element<any>;
-export type ComponentType = Component<{}, {}>;
-export type ElementType = Element<any>;
+export type ChildrenType = any;
+export type ComponentType = any;
+export type ElementType = any;
 export type FunctionType = (...args: Array<any>) => mixed;
 
 export type AppearanceType = 'circle' | 'square';

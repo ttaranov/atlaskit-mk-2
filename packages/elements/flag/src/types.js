@@ -4,8 +4,8 @@
 
 import type { Element, Node } from 'react';
 
-export type ChildrenType = Array<Element<any>> | Element<any>;
-export type ElementType = Element<any>;
+export type ChildrenType = any;
+export type ElementType = any;
 export type FunctionType = (...args: Array<any>) => mixed;
 export type MouseEventFunctionType = (event: MouseEvent) => any;
 export type GenericEventFunctionType = (event: Event) => any;
