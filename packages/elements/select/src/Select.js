@@ -102,6 +102,12 @@ const defaultProps = {
   validationState: 'default',
 };
 
+function passOnStyles(type: string, props: Object, prevStyles: Object): Object {
+  return (
+    props.styles && props.styles[type] && props.styles[type](prevStyles, props)
+  );
+}
+
 export default class AtlaskitSelect extends Component<Props> {
   components: SelectComponents;
   static defaultProps = defaultProps;
@@ -131,7 +137,8 @@ export default class AtlaskitSelect extends Component<Props> {
         {...props}
         components={this.components}
         styles={{
-          control: (styles, { isFocused }) => {
+          control: (styles, state) => {
+            const { isFocused } = state;
             let borderColor = isFocused ? colors.B100 : colors.N20;
             if (validationState === 'error') borderColor = colors.R400;
             if (validationState === 'success') borderColor = colors.G400;
@@ -158,6 +165,7 @@ export default class AtlaskitSelect extends Component<Props> {
                 backgroundColor: isFocused ? colors.N0 : colors.N20,
                 borderColor: borderColorHover,
               },
+              ...passOnStyles('control', props, styles),
             };
           },
           indicator: (styles, { isFocused }) => ({
@@ -169,6 +177,7 @@ export default class AtlaskitSelect extends Component<Props> {
             ':hover': {
               color: colors.N200,
             },
+            ...passOnStyles('indicator', props, styles),
           }),
           option: (styles, { isFocused, isSelected }) => {
             const color = isSelected ? colors.N0 : null;
@@ -177,13 +186,26 @@ export default class AtlaskitSelect extends Component<Props> {
             if (isSelected) backgroundColor = colors.B200;
             else if (isFocused) backgroundColor = colors.N20;
 
-            return { ...styles, backgroundColor, color };
+            return {
+              ...styles,
+              backgroundColor,
+              color,
+              ...passOnStyles('option', props, styles),
+            };
           },
           placeholder: styles => {
-            return { ...styles, color: colors.N100 };
+            return {
+              ...styles,
+              color: colors.N100,
+              ...passOnStyles('placeholder', props, styles),
+            };
           },
           singleValue: styles => {
-            return { ...styles, color: colors.N900 };
+            return {
+              ...styles,
+              color: colors.N900,
+              ...passOnStyles('singleValue', props, styles),
+            };
           },
         }}
       />
