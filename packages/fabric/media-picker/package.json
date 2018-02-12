@@ -44,7 +44,7 @@
     "redux-devtools-extension": "^2.13.2",
     "resumablejs": "1.0.2",
     "rusha": "^0.8.11",
-    "styled-components": "^1.4.6",
+    "styled-components": "^3.1.6",
     "svg-inline-react": "^3.0.0",
     "url": "^0.11.0",
     "uuid": "^3.1.0"

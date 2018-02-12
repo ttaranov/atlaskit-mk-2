@@ -25,7 +25,7 @@
     "@atlaskit/media-card": "^24.0.2",
     "@atlaskit/modal-dialog": "^3.3.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
-    "styled-components": "^1.4.6",
+    "styled-components": "^3.1.6",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
