@@ -58,6 +58,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/docs": "^2.1.1",
+    "@atlaskit/editor-core": "^62.0.4",
     "@atlaskit/layer": "^2.5.8",
     "@atlaskit/util-common-test": "^2.4.2",
     "@types/chai": "^4.0.4",
