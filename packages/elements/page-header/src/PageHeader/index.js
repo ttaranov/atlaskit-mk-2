@@ -20,11 +20,18 @@ type Props = {
   /** Content of the page title. The text would be trimmed if it doesn't fit the
    header width and end with an ellipsis */
   children?: Node,
+  /** Enable default styled wrapper for page title */
+  useStyledWrapper?: boolean,
 };
-
 export default class PageHeader extends Component<Props> {
   render() {
-    const { breadcrumbs, actions, bottomBar, children } = this.props;
+    const {
+      breadcrumbs,
+      actions,
+      bottomBar,
+      children,
+      useStyledWrapper = true,
+    } = this.props;
 
     return (
       <Outer>
@@ -32,7 +39,7 @@ export default class PageHeader extends Component<Props> {
           <BreadcrumbsContainer> {breadcrumbs} </BreadcrumbsContainer>
         )}
         <TitleWrapper>
-          <Title>{children}</Title>
+          {useStyledWrapper ? <Title>{children}</Title> : children}
           <ActionsWrapper>{actions}</ActionsWrapper>
         </TitleWrapper>
         {bottomBar && <BottomBarWrapper> {bottomBar} </BottomBarWrapper>}
