@@ -14,6 +14,7 @@ import {
 import { PredefinedAvatarView } from '../predefined-avatar-view';
 import { dataURItoFile, fileToDataURI } from '../util';
 import { CONTAINER_SIZE } from '../image-navigator/index';
+import { LoadParameters } from '../image-cropper';
 
 export const DEFAULT_VISIBLE_PREDEFINED_AVATARS = 5;
 
@@ -22,7 +23,8 @@ export interface AvatarPickerDialogProps {
   defaultSelectedAvatar?: Avatar;
   onAvatarPicked: (avatar: Avatar) => void;
   imageSource?: string;
-  onImagePicked: (file: File, crop: CropProperties) => void;
+  onImagePicked?: (file: File, crop: CropProperties) => void;
+  onImagePickedDataURI?: (dataUri: string) => void;
   onCancel: () => void;
   title?: string;
   primaryButtonText?: string;
@@ -61,6 +63,8 @@ export class AvatarPickerDialog extends PureComponent<
     selectedImage: undefined,
   };
 
+  imageNavigatorLoadParams: LoadParameters;
+
   setSelectedImageState = (selectedImage: File, crop: CropProperties) => {
     // this is the main method to update the image state,
     // it is bubbled from the ImageCropper component through ImageNavigator when the image is loaded.
@@ -92,15 +96,34 @@ export class AvatarPickerDialog extends PureComponent<
     this.setState({ crop: { x, y, size } });
   };
 
+  onImageNavigatorLoad = (loadParams: LoadParameters) => {
+    this.imageNavigatorLoadParams = loadParams;
+  };
+
+  getCroppedImageDataURI = () =>
+    this.imageNavigatorLoadParams &&
+    this.imageNavigatorLoadParams.export &&
+    this.imageNavigatorLoadParams.export();
+
   onSaveClick = () => {
-    const { imageSource, onImagePicked, onAvatarPicked } = this.props;
+    const {
+      imageSource,
+      onImagePicked,
+      onImagePickedDataURI,
+      onAvatarPicked,
+    } = this.props;
     const { selectedImage, crop, selectedAvatar } = this.state;
     const image = selectedImage
       ? selectedImage
       : imageSource && dataURItoFile(imageSource);
 
     if (image) {
-      onImagePicked(image, crop);
+      if (onImagePicked) {
+        onImagePicked(image, crop);
+      }
+      if (onImagePickedDataURI) {
+        onImagePickedDataURI(this.getCroppedImageDataURI());
+      }
     } else if (selectedAvatar) {
       onAvatarPicked(selectedAvatar);
     }
@@ -214,6 +237,7 @@ export class AvatarPickerDialog extends PureComponent<
             <ImageNavigator
               imageSource={selectedImageSource}
               onImageChanged={this.setSelectedImageState}
+              onLoad={this.onImageNavigatorLoad}
               onPositionChanged={this.setPositionState}
               onSizeChanged={this.setSizeState}
               onRemoveImage={this.onRemoveImage}

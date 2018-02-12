@@ -15,6 +15,9 @@ export default () => (
     onImagePicked={(selectedImage, crop) => {
       console.log('onImagePicked:', selectedImage, crop);
     }}
+    onImagePickedDataURI={dataURI => {
+      console.log('onImagePickedDataURI:', { dataURI });
+    }}
     onAvatarPicked={selectedAvatar =>
       console.log('onAvatarPicked:', selectedAvatar)
     }
