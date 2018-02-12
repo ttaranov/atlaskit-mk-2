@@ -149,6 +149,7 @@ export default class Example extends React.Component<Props, State> {
               allowJiraIssue={true}
               allowUnsupportedContent={true}
               allowPanel={true}
+              allowConfluenceStatus={true}
               allowExtension={true}
               allowRule={true}
               allowDate={true}

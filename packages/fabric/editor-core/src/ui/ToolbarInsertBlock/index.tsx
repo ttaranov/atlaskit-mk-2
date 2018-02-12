@@ -40,6 +40,7 @@ import ToolbarButton from '../ToolbarButton';
 import { MacroProvider } from '../../editor/plugins/macro/types';
 import tableCommands from '../../plugins/table/commands';
 import { insertDate, openDatePicker } from '../../editor/plugins/date/actions';
+import { insertStatus } from '../../editor/plugins/confluence-status/actions';
 import { showPlaceholderFloatingToolbar } from '../../editor/plugins/placeholder-text/actions';
 import { Wrapper, ExpandIconWrapper } from './styles';
 
@@ -384,6 +385,13 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         elemBefore: <DateIcon label="Insert date" />,
       });
     }
+    items.push({
+      content: 'Status',
+      value: { name: 'status' },
+      tooltipDescription: 'Insert status',
+      tooltipPosition: 'right',
+      elemBefore: <InfoIcon label="Insert status" />,
+    });
 
     if (placeholderTextEnabled) {
       items.push({
@@ -441,6 +449,13 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       editorView.state,
       editorView.dispatch,
     );
+    return true;
+  };
+
+  @analyticsDecorator('atlassian.editor.format.date.button')
+  private createStatus = (): boolean => {
+    const { editorView } = this.props;
+    insertStatus()(editorView.state, editorView.dispatch);
     return true;
   };
 
@@ -515,6 +530,9 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         break;
       case 'date':
         this.createDate();
+        break;
+      case 'status':
+        this.createStatus();
         break;
       case 'placeholder text':
         this.createPlaceholderText();

@@ -429,6 +429,22 @@ const ContentStyles = styled.div`
       position: relative;
     }
   }
+
+  .ProseMirror span[data-status] {
+    background-color: #fffae6;
+    border-radius: 3px;
+    box-sizing: border-box;
+    color: #344563;
+    display: inline-flex;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    max-width: 200px;
+    padding: 2px 4px 3px 4px;
+    text-transform: uppercase;
+    vertical-align: baseline;
+    white-space: nowrap;
+  }
 `;
 
 export default ContentStyles;

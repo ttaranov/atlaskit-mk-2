@@ -28,6 +28,7 @@ export { default as macroPlugin } from './macro';
 export { default as extensionPlugin } from './extension';
 export { default as datePlugin } from './date';
 export { default as placeholderTextPlugin } from './placeholder-text';
+export { default as confluenceStatusPlugin } from './confluence-status';
 
 export {
   default as confluenceInlineComment,

@@ -32,6 +32,7 @@ import {
   clearMarksOnChangeToEmptyDocumentPlugin,
   datePlugin,
   placeholderTextPlugin,
+  confluenceStatusPlugin,
 } from '../plugins';
 
 /**
@@ -149,6 +150,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.allowTemplatePlaceholders) {
     plugins.push(placeholderTextPlugin);
+  }
+
+  if (props.allowConfluenceStatus) {
+    plugins.push(confluenceStatusPlugin);
   }
 
   // UI only plugins
