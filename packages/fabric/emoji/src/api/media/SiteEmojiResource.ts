@@ -2,6 +2,7 @@ import {
   ServiceConfig,
   utils as serviceUtils,
 } from '@atlaskit/util-service-support';
+import { uploadFile } from '@atlaskit/media-store';
 import { MediaPicker } from '@atlaskit/media-picker';
 
 import {
@@ -114,40 +115,41 @@ export default class SiteEmojiResource {
             collection: collectionName,
           },
         };
-
-        const mpBinary = this.createMediaPicker('binary', mpConfig);
-        mpBinary.on('upload-end', (result: MediaUploadEnd) => {
-          const totalUploadTime = Date.now() - startTime;
-          const mediaUploadTime = totalUploadTime - tokenLoadTime;
-          debug(
-            'total upload / media upload times',
-            totalUploadTime,
-            mediaUploadTime,
-          );
-          this.postToEmojiService(upload, result.public)
-            .then(emoji => {
-              resolve(emoji);
-            })
-            .catch(httpError => {
-              reject(httpError.reason || httpError);
+        const onProgress = progress => {
+          debug('upload progress', progress);
+          if (progressCallback) {
+            progressCallback({
+              percent: progress * mediaProportionOfProgress,
             });
-        });
-        mpBinary.on('upload-error', (errorResult: MediaUploadError) => {
-          reject(errorResult.error);
-        });
-        mpBinary.on(
-          'upload-status-update',
-          (statusUpdate: MediaUploadStatusUpdate) => {
-            debug('upload progress', statusUpdate.progress);
-            if (progressCallback) {
-              progressCallback({
-                percent:
-                  statusUpdate.progress.portion * mediaProportionOfProgress,
-              });
-            }
+          }
+        };
+        const file = uploadFile(
+          {
+            content: upload.dataURL,
+            name: upload.filename,
           },
+          mpConfig,
+          { onProgress },
         );
-        mpBinary.upload(upload.dataURL, upload.filename);
+
+        file
+          .then(fileId => {
+            const totalUploadTime = Date.now() - startTime;
+            const mediaUploadTime = totalUploadTime - tokenLoadTime;
+            debug(
+              'total upload / media upload times',
+              totalUploadTime,
+              mediaUploadTime,
+            );
+            this.postToEmojiService(upload, fileId)
+              .then(emoji => {
+                resolve(emoji);
+              })
+              .catch(httpError => {
+                reject(httpError.reason || httpError);
+              });
+          })
+          .catch(reject);
       });
     });
   }
