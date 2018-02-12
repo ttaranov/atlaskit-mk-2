@@ -1,5 +1,8 @@
 # @atlaskit/field-radio-group
 
+## 1.8.3
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 1.8.2
 
 

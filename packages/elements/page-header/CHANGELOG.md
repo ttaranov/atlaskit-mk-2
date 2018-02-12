@@ -1,5 +1,8 @@
 # @atlaskit/page-header
 
+## 2.2.1
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 2.2.0
 - [minor] Update readme and docs [7a53047](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7a53047)
 

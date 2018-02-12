@@ -10,12 +10,8 @@ import { whenCollapsed } from '../../theme/util';
 
 const animationTime = animationTimeUnitless / 1000;
 
-export const getAnimation = ({
-  isEntering,
-  isLeaving,
-  traversalDirection,
-}: Object) =>
-  isEntering || isLeaving
+export const getAnimation = ({ transitionState, traversalDirection }: Object) =>
+  transitionState === 'entering' || transitionState === 'exiting'
     ? `animation: ${animationTime}s ${keyframes`
       from { transform: translateX(${
         traversalDirection === 'down' ? 100 : -100

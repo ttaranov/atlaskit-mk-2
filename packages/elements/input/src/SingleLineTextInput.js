@@ -7,7 +7,7 @@ import styled from 'styled-components';
 const common = `
   appearance: none;
   color: inherit;
-  font-size: ${fontSize()};
+  font-size: ${fontSize()}px;
   font-family: inherit;
   letter-spacing: inherit;
 `;
