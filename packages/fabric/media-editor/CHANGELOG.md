@@ -1,5 +1,7 @@
 # @atlaskit/media-editor
 
+## 4.0.2
+
 ## 4.0.1
 - [patch] Fix eidtorCore binary [add6f5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/add6f5f)
 

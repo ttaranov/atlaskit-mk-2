@@ -2,7 +2,7 @@
 import React from 'react';
 import Button from '@atlaskit/button';
 import { AtlaskitThemeProvider, gridSize } from '@atlaskit/theme';
-import Toggle from '../src/';
+import Toggle from '../src';
 
 type State = {|
   mode: 'light' | 'dark',

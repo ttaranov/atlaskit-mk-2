@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example } from '@atlaskit/docs';
 import { colors } from '@atlaskit/theme';
 
 const Warning = p => (
@@ -16,20 +16,22 @@ const Warning = p => (
 );
 
 export default md`
-${(
-  <Warning>
-    <p>
-      <strong>Note: @atlaskit/select is currently a developer preview.</strong>
-    </p>
-    <p>
-      Please experiment with and test this package, but be aware that the API
-      may change at any time. Use at your own risk, preferrably not in
-      production.
-    </p>
-  </Warning>
-)}
+  ${(
+    <Warning>
+      <p>
+        <strong>
+          Note: @atlaskit/select is currently a developer preview.
+        </strong>
+      </p>
+      <p>
+        Please experiment with and test this package, but be aware that the API
+        may change at any time. Use at your own risk, preferrably not in
+        production.
+      </p>
+    </Warning>
+  )}
 
-React component which allows selection of an item or items from a dropdown list.
+  React component which allows selection of an item or items from a dropdown list.
   Substitute for the native select element.
 
   ${(
@@ -50,9 +52,22 @@ React component which allows selection of an item or items from a dropdown list.
 
   ${(
     <Example
+      Component={require('../examples/05-validation').default}
+      source={require('!!raw-loader!../examples/05-validation')}
+      title="Validation"
+    />
+  )}
+
+  ### Named Exports
+
+  To consolidate patterns and improve developer experience \`@atlaskit/select\`
+  provides some pre-configure components as named exports.
+
+  ${(
+    <Example
       Component={require('../examples/02-radio-select').default}
       source={require('!!raw-loader!../examples/02-radio-select')}
-      title="Radio"
+      title="Radio Select"
     />
   )}
 
@@ -60,30 +75,30 @@ React component which allows selection of an item or items from a dropdown list.
     <Example
       Component={require('../examples/03-checkbox-select').default}
       source={require('!!raw-loader!../examples/03-checkbox-select')}
-      title="Checkbox"
+      title="Checkbox Select"
     />
   )}
 
   ${(
     <Example
-      Component={require('../examples/04-formatters').default}
-      source={require('!!raw-loader!../examples/04-formatters')}
-      title="Formatters"
+      Component={require('../examples/04-country-select').default}
+      source={require('!!raw-loader!../examples/04-country-select')}
+      title="Country Select"
     />
   )}
 
-  ${(
-    <Example
-      Component={require('../examples/05-validation').default}
-      source={require('!!raw-loader!../examples/05-validation')}
-      title="Validation"
-    />
-  )}
+  ### Props
 
-  ${(
-    <Props
-      heading="Select Props"
-      props={require('!!extract-react-types-loader!../src/Select')}
-    />
-  )}
+  Please refer to react-select for [prop documentation](https://github.com/JedWatson/react-select/blob/v2/src/Select.js#L36).
 `;
+
+/*
+re-introduce props when there's a resolution for missing types in extract-react-types
+
+${(
+  <Props
+    heading="Select Props"
+    props={require('!!extract-react-types-loader!../src/Select')}
+  />
+)}
+*/

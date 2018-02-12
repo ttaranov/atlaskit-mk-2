@@ -10,6 +10,7 @@ import { stateKey as hyperlinkStateKey } from '../../../plugins/hyperlink';
 import { stateKey as mentionStateKey } from '../../../plugins/mentions';
 import { stateKey as tablesStateKey } from '../../../plugins/table';
 import { stateKey as imageUploadStateKey } from '../../../plugins/image-upload';
+import { pluginKey as placeholderTextStateKey } from '../../../editor/plugins/placeholder-text';
 import {
   pluginKey as macroStateKey,
   MacroState,
@@ -65,6 +66,7 @@ const insertBlockPlugin: EditorPlugin = {
             emojiState: emojiStateKey,
             dateState: dateStateKey,
             imageUpload: imageUploadStateKey,
+            placeholderTextState: placeholderTextStateKey,
           }}
           render={({
             blockTypeState = {} as BlockTypeState,
@@ -76,6 +78,7 @@ const insertBlockPlugin: EditorPlugin = {
             emojiState,
             dateState,
             imageUpload,
+            placeholderTextState,
           }) => (
             <ToolbarInsertBlock
               buttons={buttons}
@@ -87,6 +90,7 @@ const insertBlockPlugin: EditorPlugin = {
               tableSupported={!!tablesState}
               mentionsEnabled={mentionsState && mentionsState.enabled}
               dateEnabled={!!dateState}
+              placeholderTextEnabled={!!placeholderTextState}
               insertMentionQuery={
                 mentionsState && mentionsState.insertMentionQuery
               }

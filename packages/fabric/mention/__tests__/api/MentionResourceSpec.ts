@@ -1,12 +1,12 @@
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock/src/client';
+import { SecurityOptions } from '@atlaskit/util-service-support';
 
 import { MentionDescription } from '../../src/types';
 import MentionResource, {
   HttpError,
   MentionResourceConfig,
-  SecurityOptions,
 } from '../../src/api/MentionResource';
 import {
   resultC,
@@ -182,6 +182,18 @@ describe('MentionResource', () => {
   });
 
   describe('#filter', () => {
+    it('should add weight based on response order', done => {
+      const resource = new MentionResource(apiConfig);
+      resource.subscribe('test1', mentions => {
+        for (let i = 0; i < mentions.length; i++) {
+          expect(mentions[i].weight).toBe(i);
+        }
+
+        done();
+      });
+      resource.filter('c');
+    });
+
     it('in order responses', done => {
       const resource = new MentionResource(apiConfig);
       const results: MentionDescription[][] = [];

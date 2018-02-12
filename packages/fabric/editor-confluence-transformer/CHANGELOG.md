@@ -1,5 +1,19 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.7.6
+
+## 2.7.5
+- [patch] bump editor-common to 6.1.2 [bb7802e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7802e)
+
+## 2.7.4
+- [patch] Convert specific params to resource identifiers on encode and decode [778e2bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/778e2bf)
+
+## 2.7.3
+- [patch] remove mention name from encoder [130f15c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/130f15c)
+
+## 2.7.2
+- [patch] Allow macro provider to handle auto conversion during paste [b2c83f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b2c83f8)
+
 ## 2.7.1
 
 ## 2.7.0

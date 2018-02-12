@@ -4,6 +4,7 @@
 import React, { type Node } from 'react';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 import styled from 'styled-components';
+import translate from './kindToString';
 
 const Wrapper = styled.code`
   display: inline-block;
@@ -105,10 +106,22 @@ function resolveFromGeneric(type) {
   return type.value;
 }
 
+const ObjectProp = (
+  { prop }, // eslint-disable-line
+) => (
+  <div key={translate(prop.key)}>
+    <TypeMinWidth>
+      <Type>{translate(prop.key)}</Type>
+    </TypeMinWidth>{' '}
+    {prop.value.kind !== 'generic' ? prop.value.kind : ''}
+    {prop.optional ? null : <Required> required</Required>}{' '}
+    {printComplexType(prop.value)}
+  </div>
+);
+
 function print(startType, depth = 1) {
   let type = startType;
   if (type.kind === 'nullable') type = type.arguments;
-
   if (type.kind === 'generic') {
     if (type.value && type.value.name === 'Array') {
       // As Flow does not know what the keyword Array<T> means, we're doing a check here for generic types with a nominal value of 'Array'
@@ -147,6 +160,9 @@ function print(startType, depth = 1) {
   if (type.kind === 'any') {
     return <Type>{'any'}</Type>;
   }
+  if (type.kind === 'null') {
+    return <Type>{'null'}</Type>;
+  }
 
   if (type.kind === 'number' || type.kind === 'numberLiteral') {
     if (type.value) {
@@ -167,16 +183,18 @@ function print(startType, depth = 1) {
           Shape <Outline>{'{'}</Outline>
         </TypeMeta>
         <Indent>
-          {type.members.map(prop => (
-            <div key={prop.key}>
-              <TypeMinWidth>
-                <Type>{prop.key}</Type>
-              </TypeMinWidth>{' '}
-              {prop.value.kind !== 'generic' ? prop.value.kind : ''}
-              {prop.optional ? null : <Required> required</Required>}{' '}
-              {printComplexType(prop.value)}
-            </div>
-          ))}
+          {type.members.map(prop => {
+            // handling this badly. It should be recursive. Shipit work on kindToString
+            // should simplify how we think about PrettyPropType. If this is unchanged
+            // after 2018-02-12, blame Ben Conolly
+            if (prop.kind === 'spread') {
+              const nestedObj = resolveFromGeneric(prop.value);
+              return nestedObj.members.map(newProp => (
+                <ObjectProp prop={newProp} />
+              ));
+            }
+            return <ObjectProp prop={prop} />;
+          })}
         </Indent>
         <TypeMeta>
           <Outline>{'}'}</Outline>
@@ -263,6 +281,5 @@ export default function PrettyPropType(props: PrettyPropTypeProps) {
   ) {
     return null;
   }
-
   return <Wrapper>{print(type)}</Wrapper>;
 }

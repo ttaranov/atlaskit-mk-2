@@ -22,7 +22,7 @@ import {
 import { EditorView, DecorationSet } from 'prosemirror-view';
 import { TableNode } from '../../nodeviews';
 
-import keymapHandler from './keymap';
+import keymapPlugin from './keymap';
 import { analyticsService } from '../../analytics';
 
 import {
@@ -56,7 +56,6 @@ export interface PluginConfig {
 }
 
 export class TableState {
-  keymapHandler: Function;
   cellElement?: HTMLElement;
   tableElement?: HTMLElement;
   editorFocused: boolean = false;
@@ -385,7 +384,6 @@ export const plugin = (pluginConfig?: PluginConfig) =>
     view: (editorView: EditorView) => {
       const pluginState: TableState = stateKey.getState(editorView.state);
       pluginState.setView(editorView);
-      pluginState.keymapHandler = keymapHandler(pluginState);
 
       return {
         update: (view: EditorView, prevState: EditorState) => {
@@ -401,10 +399,6 @@ export const plugin = (pluginConfig?: PluginConfig) =>
           const { allowColumnResizing } = stateKey.getState(view.state);
           return new TableNode({ node, view, allowColumnResizing });
         },
-      },
-
-      handleKeyDown(view: EditorView, event) {
-        return stateKey.getState(view.state).keymapHandler(view, event);
       },
       handleClick(view: EditorView, pos: number, event) {
         resetHoverSelection(view.state, view.dispatch);
@@ -429,9 +423,12 @@ export const plugin = (pluginConfig?: PluginConfig) =>
   });
 
 const plugins = (pluginConfig?: PluginConfig) => {
-  return [plugin(pluginConfig), tableEditing(), hoverSelectionPlugin].filter(
-    plugin => !!plugin,
-  ) as Plugin[];
+  return [
+    plugin(pluginConfig),
+    tableEditing(),
+    hoverSelectionPlugin,
+    keymapPlugin(),
+  ].filter(plugin => !!plugin) as Plugin[];
 };
 
 export default plugins;

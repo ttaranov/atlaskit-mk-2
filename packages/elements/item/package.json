@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/item",
-  "version": "4.2.10",
+  "version": "4.2.11",
   "description": "A generic item component to be used within other components",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -15,7 +15,7 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/theme": "^2.3.1",
+    "@atlaskit/theme": "^2.3.3",
     "prop-types": "^15.5.10",
     "react-addons-text-content": "^0.0.4",
     "styled-components": "^1.4.6",
@@ -26,18 +26,19 @@
     "react-dom": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^9.0.0",
+    "@atlaskit/avatar": "^9.0.1",
     "@atlaskit/docs": "^2.4.0",
-    "@atlaskit/dropdown-menu": "^3.11.6",
-    "@atlaskit/droplist": "^4.11.3",
-    "@atlaskit/icon": "^10.7.1",
-    "@atlaskit/lozenge": "^3.5.0",
-    "@atlaskit/page": "^5.0.10",
-    "@atlaskit/tooltip": "^8.1.1",
+    "@atlaskit/dropdown-menu": "^3.11.8",
+    "@atlaskit/droplist": "^4.11.8",
+    "@atlaskit/icon": "^10.9.1",
+    "@atlaskit/lozenge": "^3.5.1",
+    "@atlaskit/page": "^5.0.12",
+    "@atlaskit/tooltip": "^8.3.1",
     "enzyme": "^3.3.0",
     "polished": "1.5.0",
     "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2"
+    "react-router-dom": "^4.2.2",
+    "recompose": "^0.26.0"
   },
   "atlaskit": {
     "internal": true

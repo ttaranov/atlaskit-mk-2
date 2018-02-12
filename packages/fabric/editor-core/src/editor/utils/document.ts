@@ -13,7 +13,7 @@ export function isEmptyParagraph(node?: Node | null): boolean {
 /**
  * Checks if a node has any significant content.
  */
-export function isEmpty(node?: Node): boolean {
+export function isEmptyNode(node?: Node): boolean {
   if (node && node.textContent) {
     return false;
   }
@@ -83,3 +83,44 @@ export const preprocessDoc = (
 
   return schema.nodes.doc.create({}, Fragment.fromArray(content));
 };
+
+export function processRawValue(
+  schema: Schema,
+  value?: string | Object,
+): Node | undefined {
+  if (!value) {
+    return;
+  }
+
+  let node: Object;
+  if (typeof value === 'string') {
+    try {
+      node = JSON.parse(value);
+    } catch (e) {
+      // tslint:disable-next-line:no-console
+      console.error(`Error processing value: ${value} isn't a valid JSON`);
+      return;
+    }
+  } else {
+    node = value;
+  }
+
+  if (Array.isArray(node)) {
+    // tslint:disable-next-line:no-console
+    console.error(
+      `Error processing value: ${node} is an array, but it must be an object.`,
+    );
+    return;
+  }
+
+  try {
+    const parsedDoc = Node.fromJSON(schema, node);
+    // throws an error if the document is invalid
+    parsedDoc.check();
+    return parsedDoc;
+  } catch (e) {
+    // tslint:disable-next-line:no-console
+    console.error(`Error processing value: ${node} – ${e.message}`);
+    return;
+  }
+}

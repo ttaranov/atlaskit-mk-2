@@ -1,5 +1,17 @@
 # @atlaskit/navigation
 
+## 28.0.4
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
+## 28.0.3
+- [patch] Fix nested navigation not working due to out of date react-transition-group usage [6d8db57](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d8db57)
+
+## 28.0.2
+- [patch] remove console.warn statement from Navigation [c803b87](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c803b87)
+
+## 28.0.1
+- [patch] Added slight delay on the resizer fade-in animation [3aff9b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3aff9b6)
+
 ## 28.0.0
 
 - [major] add onSearchSubmit prop to QuickSearch which will be called when the user presses enter with no result selected. the first QuickSearch result is no longer selected by default. [b246f6f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b246f6f)

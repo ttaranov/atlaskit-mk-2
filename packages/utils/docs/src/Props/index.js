@@ -68,7 +68,7 @@ const PageWrapper = ({
 );
 
 type PropTypeHeadingProps = {
-  name: string,
+  name: any,
   required: boolean,
   type: any,
   // This is probably giving up
@@ -85,11 +85,13 @@ function PropTypeHeading(props: PropTypeHeadingProps) {
   if (typeName === 'nullable') {
     typeName = `?${props.type.arguments.kind}`;
   } else if (typeName === 'union') {
-    typeName = 'set options';
+    typeName = 'union';
   } else if (typeName === 'generic') {
     const r = resolveFromGeneric(props.type);
     if (r.kind === 'external') {
       typeName = `${r.moduleSpecifier}.${r.name}`;
+    } else if (r.kind === 'null') {
+      typeName = r.kind;
     } else {
       typeName = r.kind;
     }
@@ -104,7 +106,7 @@ function PropTypeHeading(props: PropTypeHeadingProps) {
   return (
     <Heading>
       <code>
-        <HeadingName>{props.name}</HeadingName>
+        <HeadingName>{convert(props.name)}</HeadingName>
         <HeadingType>{typeName}</HeadingType>
         {defaultValue && <HeadingDefault> = {defaultValue}</HeadingDefault>}
         {props.required ? <HeadingRequired> required</HeadingRequired> : null}
@@ -192,7 +194,7 @@ export default function DynamicProps(props: DynamicPropsProps) {
           return null;
         }
         return (
-          <PropTypeWrapper key={propType.key}>
+          <PropTypeWrapper key={convert(propType.key)}>
             <PropTypeHeading
               name={propType.key}
               required={!propType.optional}

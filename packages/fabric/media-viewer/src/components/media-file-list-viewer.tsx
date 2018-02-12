@@ -51,8 +51,8 @@ export class MediaFileListViewer extends Component<
     const config = {
       ...mediaViewerConfiguration,
       isPreviewGenerated: isPreviewGenerated(MediaViewer),
-      generatePreview: generatePreview(MediaViewer)
-    }
+      generatePreview: generatePreview(MediaViewer),
+    };
 
     const { config: { authProvider } } = context;
 
@@ -78,26 +78,33 @@ export class MediaFileListViewer extends Component<
     const filesToProcess = list.filter(item => item.type === 'file'); // for now we only support files
 
     const erroredObservable = (file: MediaViewerItem) => {
-      return Observable.create((observer) => {
+      return Observable.create(observer => {
         // a media item with no processingStatus will be treated as error downstream
         // so we will be able to provide the correct error handling
         observer.next({
           details: {
-            id: file.id
-          }
+            id: file.id,
+          },
         });
         observer.complete();
       });
     };
 
     const errorAwareObservableFromFile = (file: MediaViewerItem) => {
-      const provider = context.getMediaItemProvider(file.id, file.type, collectionName);
-      return provider.observable()
+      const provider = context.getMediaItemProvider(
+        file.id,
+        file.type,
+        collectionName,
+      );
+      return provider
+        .observable()
         .catch((error: Error) => erroredObservable(file))
         .map(item => item as FileItem);
     };
 
-    const observableFileItems = filesToProcess.map(errorAwareObservableFromFile);
+    const observableFileItems = filesToProcess.map(
+      errorAwareObservableFromFile,
+    );
 
     this.state = {
       subscription: Observable.zip(...observableFileItems).subscribe({
