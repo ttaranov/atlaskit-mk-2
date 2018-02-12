@@ -4,6 +4,7 @@ export interface Store {
   getState(): undefined | State;
   dispatch(action: Action): void;
   subscribe(handler: Handler): void;
+  unsubscribe(handler: Handler): void;
 }
 
 export interface State {

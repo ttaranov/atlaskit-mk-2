@@ -2,7 +2,7 @@ import {
   MediaAttributes,
   getEmojiAcName,
   hexToRgb,
-  getPlaceholderUrl,
+  getExtensionLozengeData,
   getExtensionMetadata,
   MediaSingleAttributes,
   timestampToIso,
@@ -441,10 +441,10 @@ export default function encode(node: PMNode, schema: Schema) {
       }
     }
 
-    const placeholderUrl = getPlaceholderUrl({ node, type: 'image' });
-    if (placeholderUrl) {
+    const placeholderData = getExtensionLozengeData({ node, type: 'image' });
+    if (placeholderData) {
       const placeholder = doc.createElementNS(FAB_XMLNS, 'fab:placeholder-url');
-      placeholder.textContent = placeholderUrl;
+      placeholder.textContent = placeholderData.url;
       elem.appendChild(placeholder);
     }
 

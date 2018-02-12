@@ -1,5 +1,8 @@
 # @atlaskit/droplist
 
+## 4.11.8
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 4.11.7
 - [patch] Change incorrect type info [ce915ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce915ea)
 

@@ -1,5 +1,8 @@
 # @atlaskit/field-base
 
+## 8.1.10
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 8.1.9
 
 
