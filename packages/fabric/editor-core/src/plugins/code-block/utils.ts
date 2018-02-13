@@ -109,7 +109,7 @@ export const getTokenArray = text => {
           chr + next1 === '//', //  9: single-line comment
           // chr === '#'           // 10: hash-style comment
         ][--tokenType]
-      );
+      ) {}
     }
 
     token += chr;
