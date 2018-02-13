@@ -124,8 +124,8 @@ export class MediaStore {
     }).then(mapResponseToJson);
   };
 
-  fetchFile = (id: string) => {
-    return this.fetch(`/file/${id}`).then(mapResponseToJson);
+  fetchFile = (fileId: string): Promise<MediaStoreResponse<MediaFile>> => {
+    return this.fetch(`/file/${fileId}`).then(mapResponseToJson);
   };
 
   appendChunksToUpload = (
@@ -178,14 +178,7 @@ export class MediaStore {
 
   private withAuth = (auth: Auth) => (request: Request): Request => {
     if (request.method === 'GET') {
-      const url = new URL(request.url);
-      const authParams = mapAuthToQueryParameters(auth);
-
-      Object.keys(authParams).forEach(name =>
-        url.searchParams.set(name, authParams[name]),
-      );
-
-      return new Request(url.toString(), {
+      return new Request(authenticateUrl(request.url, auth), {
         headers: request.headers,
       });
     } else {
@@ -204,3 +197,14 @@ export class MediaStore {
 export type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 const mapResponseToJson = (response: Response): Promise<any> => response.json();
+
+function authenticateUrl(url: string, auth: Auth): string {
+  const result = new URL(url);
+  const authParams = mapAuthToQueryParameters(auth);
+
+  Object.keys(authParams).forEach(name =>
+    result.searchParams.set(name, authParams[name]),
+  );
+
+  return result.toString();
+}
