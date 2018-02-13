@@ -82,7 +82,7 @@ export const uploadFile = (
           console.log('error', error);
           reject(error);
         },
-        async onProgress(chunks) {
+        async onProgress(progress, chunks) {
           console.log('onProgress', chunks);
           const id = await deferredUploadId;
 
@@ -90,7 +90,7 @@ export const uploadFile = (
           chunkOffset += chunks.length;
 
           if (callbacks && callbacks.onProgress) {
-            callbacks.onProgress(0); // TODO: pass right percentage
+            callbacks.onProgress(progress);
           }
         },
       },
