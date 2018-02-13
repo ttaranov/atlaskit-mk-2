@@ -51,8 +51,25 @@ export type FetchOptions = {
   readonly method?: Method;
   readonly authContext?: AuthContext;
   readonly body?: any;
-  readonly params?: { [key: string]: string };
-  // readonly responseType?: 'json' | 'blob';
+  readonly params?: FetchParams;
+};
+
+export type FetchParams = { [key: string]: any };
+
+export type MediaStoreGetFileParams = {
+  readonly version?: number;
+  readonly collection?: string;
+};
+
+export type MediaStoreGetFileImageParams = {
+  readonly version?: number;
+  readonly collection?: number;
+  readonly width?: number;
+  readonly height?: number;
+  readonly mode?: 'fit' | 'full-fit' | 'crop';
+  readonly upscale?: boolean;
+  readonly 'max-age': number;
+  readonly allowAnimated: boolean;
 };
 
 export class MediaStore {
@@ -124,20 +141,19 @@ export class MediaStore {
     }).then(mapResponseToJson);
   };
 
-  fetchFile = (fileId: string): Promise<MediaStoreResponse<MediaFile>> => {
-    return this.fetch(`/file/${fileId}`).then(mapResponseToJson);
+  getFile = (
+    fileId: string,
+    params: MediaStoreGetFileParams = {},
+  ): Promise<MediaStoreResponse<MediaFile>> => {
+    return this.fetch(`/file/${fileId}`, { params }).then(mapResponseToJson);
   };
 
-  getFileImageURL = async (id: string, dimensions?: any): Promise<string> => {
+  getFileImageURL = async (
+    id: string,
+    params?: MediaStoreGetFileImageParams,
+  ): Promise<string> => {
     const auth = await this.config.authProvider();
-    // debugger
-    return this.withAuth(auth)(new Request(this.createURL(`/file/${id}/image`)))
-      .url;
-    // return this.createURL(this.withAuth(auth)(new Request(`/file/${id}/image`)).url);
-
-    // return this.createURL(`
-    //   /file/${id}/image?client=${auth.}&token=${auth.token}&width=600
-    // `);
+    return authenticateUrl(this.createURL(`/file/${id}/image`, params), auth);
   };
 
   appendChunksToUpload = (
@@ -156,14 +172,12 @@ export class MediaStore {
     });
   };
 
-  private createURL(path: string, params?: { [key: string]: string }): string {
+  private createURL(path: string, params: FetchParams = {}): string {
     const url = new URL(`${this.config.apiUrl}${path}`);
 
-    if (params) {
-      Object.keys(params).forEach(key => {
-        url.searchParams.set(key, params[key]);
-      });
-    }
+    Object.keys(params).forEach(key => {
+      url.searchParams.set(key, params[key]);
+    });
 
     return url.toString();
   }
