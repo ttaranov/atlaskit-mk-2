@@ -1,9 +1,8 @@
-import chunkinator, { Chunk } from 'chunkinator';
+import chunkinator, { Chunk, ChunkinatorFile } from 'chunkinator';
 import { MediaStoreConfig, MediaStore } from './media-store';
-// TODO: Extend Chunkinator with file: string | Blob
 // TODO: Allow to pass multiple files
 export type UploadableFile = {
-  content: string | Blob;
+  content: ChunkinatorFile;
   name?: string;
   collection?: string;
 };
@@ -19,7 +18,6 @@ export const uploadFile = (
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
     const { content, collection } = file;
-    const blobFile = new Blob([content]);
     const store = new MediaStore(config);
     const deferredUploadId = store
       .createUpload()
@@ -37,7 +35,7 @@ export const uploadFile = (
     let chunkOffset = 0;
 
     chunkinator(
-      blobFile,
+      content,
       {
         hashingFunction: null as any, // TODO: Remove default hashingFunction from Chunkinator and put it here
         hashingConcurrency: 5,
