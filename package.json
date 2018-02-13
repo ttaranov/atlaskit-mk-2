@@ -236,6 +236,7 @@
     "chalk": "^2.1.0",
     "chromatism": "^2.6.0",
     "classnames": "^2.2.5",
+    "clone-deep": "^3.0.1",
     "codemirror": "^5.26.0",
     "codesandbox": "^1.1.14",
     "collapse-whitespace": "^1.1.6",
