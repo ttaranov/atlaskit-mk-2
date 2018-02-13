@@ -1,5 +1,12 @@
 /* tslint:disable:variable-name */
-import styled, { keyframes } from 'styled-components';
+// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+// prettier-ignore
+import styled, { StyledComponentClass, keyframes } from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, InputHTMLAttributes, ImgHTMLAttributes } from 'react';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 const spin = keyframes`

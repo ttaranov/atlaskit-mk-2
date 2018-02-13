@@ -1,17 +1,11 @@
 // StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
 // from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
 // @ts-ignore: unused variable
+// prettier-ignore
 import styled, { StyledComponentClass } from 'styled-components';
-import {
-  // @ts-ignore: unused variable
-  HTMLAttributes,
-  // @ts-ignore: unused variable
-  ClassAttributes,
-  // @ts-ignore: unused variable
-  CanvasHTMLAttributes,
-  // @ts-ignore: unused variable
-  TextareaHTMLAttributes,
-} from 'react';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, CanvasHTMLAttributes, TextareaHTMLAttributes } from 'react';
 import {
   akColorN40,
   akColorN50A,
