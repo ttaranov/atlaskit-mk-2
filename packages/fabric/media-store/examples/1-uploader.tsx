@@ -1,15 +1,23 @@
 import {
   defaultServiceHost,
   defaultMediaPickerAuthProvider,
+  tallImage,
 } from '@atlaskit/media-test-helpers';
 import { Component, ChangeEvent } from 'react';
 import * as React from 'react';
-
+import {
+  ImagePreview,
+  MetadataWrapper,
+  PreviewWrapper,
+  Wrapper,
+} from '../example-helpers/styled';
 import { uploadFile, MediaStore } from '../src/';
 
 type UploaderExampleProps = {};
 export interface UploaderExampleState {
+  uploadingProgress: number;
   fileURL?: string;
+  fileMetadata?: any;
 }
 
 const store = new MediaStore({
@@ -21,19 +29,24 @@ class UploaderExample extends Component<
   UploaderExampleProps,
   UploaderExampleState
 > {
-  state: UploaderExampleState = {};
+  state: UploaderExampleState = {
+    uploadingProgress: 0,
+  };
 
   fetchFile = (id: string) => {
     store.getFile(id).then(async response => {
-      const { processingStatus } = response.data;
+      const fileMetadata = response.data;
+      const { processingStatus } = fileMetadata;
+
       console.log('processingStatus', id, processingStatus);
 
       if (processingStatus === 'pending') {
         setTimeout(() => this.fetchFile(id), 1000);
       } else {
         const fileURL = await store.getFileImageURL(id);
-        console.log('fileURL', fileURL);
+
         this.setState({
+          fileMetadata,
           fileURL,
         });
       }
@@ -41,23 +54,63 @@ class UploaderExample extends Component<
   };
 
   render() {
-    const { fileURL } = this.state;
+    const { fileURL, uploadingProgress } = this.state;
 
     return (
-      <div>
-        <div>
-          Upload a file <input type="file" onChange={this.onChange} />
-        </div>
-        <div>
-          or
-          <button id="string-upload">Upload a string</button>
-        </div>
-        <div>
-          <img src={fileURL} alt="preview" />
-        </div>
-      </div>
+      <Wrapper>
+        <PreviewWrapper>
+          <div>
+            Upload a file <input type="file" onChange={this.onChange} />
+          </div>
+          <div>
+            or
+            <button onClick={this.onUploadStringClick}>Upload a string</button>
+          </div>
+          <div>
+            <progress value={uploadingProgress} max="1" />
+          </div>
+          <div>
+            {fileURL ? <ImagePreview src={fileURL} alt="preview" /> : null}
+          </div>
+        </PreviewWrapper>
+        {this.renderMetadata()}
+      </Wrapper>
     );
   }
+
+  renderMetadata() {
+    const { fileMetadata } = this.state;
+    if (!fileMetadata) return;
+
+    return (
+      <MetadataWrapper>{JSON.stringify(fileMetadata, null, 2)}</MetadataWrapper>
+    );
+  }
+
+  onProgress = uploadingProgress => {
+    this.setState({
+      uploadingProgress,
+    });
+  };
+
+  onUploadStringClick = () => {
+    uploadFile(
+      { content: tallImage },
+      {
+        apiUrl: defaultServiceHost,
+        authProvider: defaultMediaPickerAuthProvider,
+      },
+      {
+        onProgress: this.onProgress,
+      },
+    )
+      .then(this.fetchFile)
+      .catch(this.onError);
+  };
+
+  onError = err => {
+    console.log('upload error', err);
+  };
 
   private readonly onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { currentTarget: { files } } = e;
@@ -68,14 +121,12 @@ class UploaderExample extends Component<
         apiUrl: defaultServiceHost,
         authProvider: defaultMediaPickerAuthProvider,
       },
+      {
+        onProgress: this.onProgress,
+      },
     )
-      .then(id => {
-        console.log('file uploaded', id);
-        this.fetchFile(id);
-      })
-      .catch(err => {
-        console.log('upload error', err);
-      });
+      .then(this.fetchFile)
+      .catch(this.onError);
   };
 }
 

@@ -21,6 +21,7 @@
     "rusha": "^0.8.11"
   },
   "devDependencies": {
-    "@atlaskit/media-test-helpers": "^9.0.1"
+    "@atlaskit/media-test-helpers": "^9.0.1",
+    "styled-components": "^1.4.6"
   }
 }
