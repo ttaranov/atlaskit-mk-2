@@ -1,4 +1,5 @@
 import chunkinator, { Chunk, ChunkinatorFile } from 'chunkinator';
+import * as Rusha from 'rusha';
 import { MediaStoreConfig, MediaStore } from './media-store';
 // TODO: Allow to pass multiple files
 export type UploadableFile = {
@@ -9,6 +10,27 @@ export type UploadableFile = {
 
 export type Callbacks = {
   onProgress: (progress: number) => void;
+};
+
+// TODO: Replace custom FileReader by Rusha.createHash().update(blob)
+// Currently Rusha can't handle blobs directly so we need to do the conversion
+// https://github.com/srijs/rusha/issues/55
+const hashingFunction = (blob: Blob): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.readAsArrayBuffer(blob);
+
+    reader.onload = (e: Event) => {
+      resolve(
+        Rusha.createHash()
+          .update(reader.result)
+          .digest('hex'),
+      );
+    };
+
+    reader.onerror = reject;
+  });
 };
 
 export const uploadFile = (
@@ -37,7 +59,7 @@ export const uploadFile = (
     chunkinator(
       content,
       {
-        hashingFunction: null as any, // TODO: Remove default hashingFunction from Chunkinator and put it here
+        hashingFunction,
         hashingConcurrency: 5,
         probingBatchSize: 3,
         chunkSize: 10000,
@@ -60,7 +82,7 @@ export const uploadFile = (
           console.log('error', error);
           reject(error);
         },
-        async onProgress(chunks) {
+        async onProgress(progress, chunks) {
           console.log('onProgress', chunks);
           const id = await deferredUploadId;
 
@@ -68,7 +90,7 @@ export const uploadFile = (
           chunkOffset += chunks.length;
 
           if (callbacks && callbacks.onProgress) {
-            callbacks.onProgress(0); // TODO: pass right percentage
+            callbacks.onProgress(progress);
           }
         },
       },
