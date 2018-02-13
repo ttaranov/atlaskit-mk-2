@@ -5,13 +5,17 @@ import React, { Component, type ComponentType } from 'react';
 import AnalyticsContext from './AnalyticsContext';
 import type { ObjectType } from './types';
 
-export default function withAnalyticsContext<ProvidedProps: ObjectType>(
+type WithAnalyticsContextProps = ObjectType & {
+  analyticsContext?: ObjectType,
+};
+
+export default function withAnalyticsContext(
   defaultData?: ObjectType = {},
 ): (
-  WrappedComponent: ComponentType<ProvidedProps>,
-) => ComponentType<ProvidedProps> {
-  return (WrappedComponent: ComponentType<ProvidedProps>) =>
-    class WithAnalyticsContext extends Component<ProvidedProps> {
+  WrappedComponent: ComponentType<ObjectType>,
+) => ComponentType<WithAnalyticsContextProps> {
+  return (WrappedComponent: ComponentType<ObjectType>) =>
+    class WithAnalyticsContext extends Component<WithAnalyticsContextProps> {
       static defaultProps = {
         analyticsContext: {},
       };
