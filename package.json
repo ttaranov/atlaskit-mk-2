@@ -338,7 +338,7 @@
     "sinon-chai": "^2.9.0",
     "snake-case": "^2.1.0",
     "source-trace": "^2.0.0",
-    "styled-components": "^1.4.6",
+    "styled-components": "^3.1.6",
     "svg-inline-react": "^3.0.0",
     "svg-url-loader": "^2.3.0",
     "svgo": "^0.7.0",

@@ -2,7 +2,11 @@
 import styled from 'styled-components';
 import { backgroundColor, textColor } from '../theme';
 
-const BadgeElement = styled.div`
+//data-sketch-symbol={`Badge/${this.props.appearance}`}
+const BadgeElement = styled.div.attrs({
+  // we can define static props
+  'data-sketch-symbol': props => `Badge/${props.appearance}`,
+})`
   background-color: ${backgroundColor};
   border-radius: 2em;
   color: ${textColor};

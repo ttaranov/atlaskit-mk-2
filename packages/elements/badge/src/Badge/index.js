@@ -72,10 +72,7 @@ export default class Badge extends PureComponent<Props> {
     const { appearance, max, value } = this.props;
 
     return (
-      <BadgeElement
-        appearance={validAppearance(appearance)}
-        data-sketch-symbol={`Badge/${this.props.appearance}`}
-      >
+      <BadgeElement appearance={validAppearance(appearance)}>
         <span data-sketch-text="NUM">{getValue(value, max)}</span>
       </BadgeElement>
     );
