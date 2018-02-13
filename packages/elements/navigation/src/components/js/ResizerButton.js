@@ -8,8 +8,8 @@ import {
 import ResizerButtonInner from '../styled/ResizerButtonInner';
 
 type Props = {
-  isPointingRight?: boolean,
-  isVisible?: boolean,
+  isPointingRight: boolean,
+  isVisible: boolean,
   onClick?: (Event, UIAnalyticsEvent) => void,
 };
 
