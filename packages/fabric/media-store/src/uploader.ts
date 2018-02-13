@@ -1,4 +1,5 @@
 import chunkinator, { Chunk, ChunkinatorFile } from 'chunkinator';
+import * as Rusha from 'rusha';
 import { MediaStoreConfig, MediaStore } from './media-store';
 // TODO: Allow to pass multiple files
 export type UploadableFile = {
@@ -10,6 +11,13 @@ export type UploadableFile = {
 export type Callbacks = {
   onProgress: (progress: number) => void;
 };
+
+const hashingFunction = (blob: Blob): Promise<string> =>
+  Promise.resolve(
+    Rusha.createHash()
+      .update(blob)
+      .digest('hex'),
+  );
 
 export const uploadFile = (
   file: UploadableFile,
@@ -37,7 +45,7 @@ export const uploadFile = (
     chunkinator(
       content,
       {
-        hashingFunction: null as any, // TODO: Remove default hashingFunction from Chunkinator and put it here
+        hashingFunction,
         hashingConcurrency: 5,
         probingBatchSize: 3,
         chunkSize: 10000,

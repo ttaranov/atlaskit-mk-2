@@ -130,14 +130,9 @@ export class MediaStore {
 
   getFileImageURL = async (id: string, dimensions?: any): Promise<string> => {
     const auth = await this.config.authProvider();
-    // debugger
+
     return this.withAuth(auth)(new Request(this.createURL(`/file/${id}/image`)))
       .url;
-    // return this.createURL(this.withAuth(auth)(new Request(`/file/${id}/image`)).url);
-
-    // return this.createURL(`
-    //   /file/${id}/image?client=${auth.}&token=${auth.token}&width=600
-    // `);
   };
 
   appendChunksToUpload = (
