@@ -274,6 +274,7 @@ class Navigation extends PureComponent<Props, State> {
     const isOpen = snappedWidth >= standardOpenWidth(this.props.isElectronMac);
 
     if (
+      analyticsEvent &&
       analyticsEvent.payload.action === 'drag' &&
       delta !== 0 &&
       isOpen !== this.props.isOpen
@@ -319,6 +320,7 @@ class Navigation extends PureComponent<Props, State> {
   ) => {
     const { isOpen } = resizeState;
     if (
+      analyticsEvent &&
       analyticsEvent.payload.action === 'click' &&
       isOpen !== this.props.isOpen
     ) {
@@ -491,3 +493,6 @@ class Navigation extends PureComponent<Props, State> {
 }
 
 export default withAnalyticsContext({ component: 'navigation' })(Navigation);
+
+// Used internally for testing purposes - not exported from /src
+export const NavigationBase = Navigation;

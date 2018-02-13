@@ -4,7 +4,7 @@ import { shallow, mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React, { PureComponent } from 'react';
 import sinon from 'sinon';
-import Navigation from '../src/components/js/Navigation';
+import Navigation, { NavigationBase } from '../src/components/js/Navigation';
 import ContainerNavigationChildren from '../src/components/js/ContainerNavigationChildren';
 import Drawer from '../src/components/js/Drawer';
 import GlobalNavigation from '../src/components/js/GlobalNavigation';
@@ -41,12 +41,12 @@ describe('<Navigation />', () => {
   describe('is open', () => {
     it('should render a <ContainerNavigation />', () => {
       expect(
-        shallow(<Navigation isOpen />).find(ContainerNavigation).length,
+        mount(<Navigation isOpen />).find(ContainerNavigation).length,
       ).toBe(1);
     });
 
     it('should render a <GlobalNavigation />', () => {
-      expect(shallow(<Navigation isOpen />).find(GlobalNavigation).length).toBe(
+      expect(mount(<Navigation isOpen />).find(GlobalNavigation).length).toBe(
         1,
       );
     });
@@ -55,13 +55,13 @@ describe('<Navigation />', () => {
       const drawer1 = <Drawer key="d1" />;
       const drawer2 = <Drawer key="d2" />;
       expect(
-        shallow(<Navigation isOpen drawers={[drawer1, drawer2]} />).find(Drawer)
+        mount(<Navigation isOpen drawers={[drawer1, drawer2]} />).find(Drawer)
           .length,
       ).toBe(2);
     });
 
     it('should render a Spacer that has the width of the GlobalNavigation and ContainerNavigation', () => {
-      const wrapper = shallow(<Navigation isOpen />);
+      const wrapper = mount(<Navigation isOpen />);
 
       expect(
         wrapper
@@ -75,13 +75,13 @@ describe('<Navigation />', () => {
   describe('is closed', () => {
     it('should render a <ContainerNavigation />', () => {
       expect(
-        shallow(<Navigation isOpen={false} />).find(ContainerNavigation).length,
+        mount(<Navigation isOpen={false} />).find(ContainerNavigation).length,
       ).toBe(1);
     });
 
     it('should not render a <GlobalNavigation />', () => {
       expect(
-        shallow(<Navigation isOpen={false} />).find(GlobalNavigation).length,
+        mount(<Navigation isOpen={false} />).find(GlobalNavigation).length,
       ).toBe(0);
     });
 
@@ -89,14 +89,14 @@ describe('<Navigation />', () => {
       const drawer1 = <Drawer key="d1" />;
       const drawer2 = <Drawer key="d2" />;
       expect(
-        shallow(
-          <Navigation isOpen={false} drawers={[drawer1, drawer2]} />,
-        ).find(Drawer).length,
+        mount(<Navigation isOpen={false} drawers={[drawer1, drawer2]} />).find(
+          Drawer,
+        ).length,
       ).toBe(2);
     });
 
     it('should render a Spacer that has the width of the GlobalNavigation', () => {
-      const wrapper = shallow(<Navigation isOpen={false} />);
+      const wrapper = mount(<Navigation isOpen={false} />);
 
       expect(
         wrapper
@@ -289,7 +289,7 @@ describe('<Navigation />', () => {
     it('containerHeaderComponent - passes a func for the container header component to <ContainerNavigation />', () => {
       const header = () => [<div>foo</div>];
       expect(
-        shallow(<Navigation containerHeaderComponent={header} />)
+        mount(<Navigation containerHeaderComponent={header} />)
           .find(ContainerNavigation)
           .props().headerComponent,
       ).toBe(header);
@@ -325,7 +325,7 @@ describe('<Navigation />', () => {
     it('should pass containerScrollRef to ContainerNavigation.scrollRef', () => {
       const myRef = () => {};
       expect(
-        shallow(<Navigation containerScrollRef={myRef} />)
+        mount(<Navigation containerScrollRef={myRef} />)
           .find(ContainerNavigation)
           .props().scrollRef,
       ).toBe(myRef);
@@ -367,7 +367,7 @@ describe('<Navigation />', () => {
     });
 
     it('onResize is called after the resizeDelta has been reset to 0 (so that animations are enabled again)', done => {
-      const navigation = mount(<Navigation />);
+      const navigation = mount(<NavigationBase />);
       navigation.setProps({
         onResize: () => {
           expect(navigation.state().resizeDelta).toBe(0);
@@ -419,13 +419,13 @@ describe('<Navigation />', () => {
 
     it('initial width prop is reflected on <Spacer />', () => {
       expect(
-        shallow(<Navigation width={500} />)
+        mount(<Navigation width={500} />)
           .find(Spacer)
           .first()
           .props().width,
       ).toBe(500);
       expect(
-        shallow(<Navigation width={200} />)
+        mount(<Navigation width={200} />)
           .find(Spacer)
           .first()
           .props().width,
@@ -458,7 +458,7 @@ describe('<Navigation />', () => {
     beforeEach(() => {
       warnStub = jest.spyOn(console, 'warn');
       sinon.stub(console, 'warn');
-      wrapper = shallow(<Navigation isCollapsible={false} isOpen={false} />);
+      wrapper = mount(<Navigation isCollapsible={false} isOpen={false} />);
     });
 
     afterEach(() => {
@@ -497,7 +497,7 @@ describe('<Navigation />', () => {
 
     it('should log a warning on update', () => {
       warnStub.mockClear();
-      const customWrapper = shallow(<Navigation isOpen />);
+      const customWrapper = mount(<Navigation isOpen />);
 
       expect(warnStub).toHaveBeenCalledTimes(0);
 
@@ -557,11 +557,11 @@ describe('<Navigation />', () => {
 
   describe('isElectronMac', () => {
     it('should render WithElectronTheme with set to false by default', () => {
-      const wrapper = shallow(<Navigation />);
+      const wrapper = mount(<Navigation />);
       expect(wrapper.find(WithElectronTheme).props().isElectronMac).toBe(false);
     });
     it('should pass isElectronMac prop to WithElectronTheme', () => {
-      const wrapper = shallow(<Navigation isElectronMac />);
+      const wrapper = mount(<Navigation isElectronMac />);
       expect(wrapper.find(WithElectronTheme).props().isElectronMac).toBe(true);
     });
   });
