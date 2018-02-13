@@ -1,8 +1,13 @@
 import { AuthProvider, AuthContext } from './models/auth-provider';
 import { Auth } from './models/auth';
 import { mapAuthToQueryParameters } from './models/auth-query-parameters';
-import { URLSearchParams } from 'url';
 import { mapAuthToAuthHeaders } from './models/auth-headers';
+import {
+  MediaFile,
+  MediaCollection,
+  MediaCollectionItems,
+  MediaUpload,
+} from './models/media';
 
 export interface MediaStoreConfig {
   readonly apiUrl: string;
@@ -12,32 +17,6 @@ export interface MediaStoreConfig {
 export interface MediaStoreResponse<Data> {
   readonly data: Data;
 }
-
-export interface MediaStoreCollection {
-  readonly name: string;
-  readonly createdAt: number;
-}
-
-export interface MediaUpload {
-  readonly id: string;
-  readonly created: number;
-  readonly expires: number;
-}
-
-export type MediaFile = {
-  id: string;
-  mediaType: string;
-  mimeType: string;
-  name: string;
-  processingStatus: string;
-  size: number;
-  artifacts: {
-    [artifactName: string]: {
-      href: string;
-      processingStatus: string;
-    };
-  };
-};
 
 export type ProbeChunks = {
   results: {
@@ -72,12 +51,18 @@ export type MediaStoreGetFileImageParams = {
   readonly allowAnimated: boolean;
 };
 
+export type MediaStoreGetCollectionItemsPrams = {
+  readonly limit: number;
+
+  readonly inclusiveStartKey?: string;
+  readonly sortDirection?: 'asc' | 'desc';
+  readonly details?: 'minimal' | 'full';
+};
+
 export class MediaStore {
   constructor(private readonly config: MediaStoreConfig) {}
 
-  createCollection(
-    name: string,
-  ): Promise<MediaStoreResponse<MediaStoreCollection>> {
+  createCollection(name: string): Promise<MediaStoreResponse<MediaCollection>> {
     const body = {
       name,
     };
@@ -89,8 +74,17 @@ export class MediaStore {
 
   getCollection(
     collectionName: string,
-  ): Promise<MediaStoreResponse<MediaStoreCollection>> {
+  ): Promise<MediaStoreResponse<MediaCollection>> {
     return this.fetch(`/collection/${collectionName}`).then(mapResponseToJson);
+  }
+
+  getCollectionItems(
+    collectionName: string,
+    params: MediaStoreGetCollectionItemsPrams,
+  ): Promise<MediaStoreResponse<MediaCollectionItems>> {
+    return this.fetch(`/collection/${collectionName}/items`, { params }).then(
+      mapResponseToJson,
+    );
   }
 
   deleteCollection(name: string): Promise<void> {
