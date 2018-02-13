@@ -20,6 +20,7 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/analytics": "^2.4.2",
+    "@atlaskit/analytics-next": "^0.0.1",
     "@atlaskit/avatar": "^9.0.1",
     "@atlaskit/blanket": "^4.0.8",
     "@atlaskit/dropdown-menu": "^3.11.8",
