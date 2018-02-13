@@ -116,6 +116,7 @@ export const codeBlock: NodeSpec = {
   attrs: { language: { default: null }, uniqueId: { default: null } },
   content: 'text*',
   group: 'block',
+  marks: 'codeFormat',
   code: true,
   defining: true,
   parseDOM: [

@@ -17,7 +17,7 @@ export const getTokenArray = text => {
     // escaping if needed (with except for comments)
     // pervious character will not be therefore
     // recognized as a token finalize condition
-    (prev1 = tokenType < 7 && prev1 == '\\' ? 1 : chr))
+    (prev1 = tokenType < 7 && prev1 === '\\' ? 1 : chr))
   ) {
     chr = next1;
     next1 = text[++pos];
@@ -28,7 +28,7 @@ export const getTokenArray = text => {
       !chr || // end of content
       // types 9-10 (single-line comments) end with a
       // newline
-      (tokenType > 8 && chr == '\n') ||
+      (tokenType > 8 && chr === '\n') ||
       [
         // finalize conditions for other token types
         // 0: whitespaces
@@ -40,15 +40,15 @@ export const getTokenArray = text => {
         // 3: (key)word
         !/[$\w]/[test](chr),
         // 4: regex
-        (prev1 == '/' || prev1 == '\n') && multichar,
+        (prev1 === '/' || prev1 === '\n') && multichar,
         // 5: string with "
-        prev1 == '"' && multichar,
+        prev1 === '"' && multichar,
         // 6: string with '
-        prev1 == "'" && multichar,
+        prev1 === "'" && multichar,
         // 7: xml comment
-        text[pos - 4] + prev2 + prev1 == '-->',
+        text[pos - 4] + prev2 + prev1 === '-->',
         // 8: multiline comment
-        prev2 + prev1 == '*/',
+        prev2 + prev1 === '*/',
       ][tokenType]
     ) {
       const tkType = tokenType =>
@@ -92,7 +92,7 @@ export const getTokenArray = text => {
           /[\/{}[(\-+*=<>:;|\\.,?!&@~]/[test](chr),
           /[\])]/[test](chr), //  2: closing brace
           /[$\w]/[test](chr), //  3: (key)word
-          chr == '/' && //  4: regex
+          chr === '/' && //  4: regex
             // previous token was an
             // opening brace or an
             // operator (otherwise
@@ -101,13 +101,13 @@ export const getTokenArray = text => {
             // workaround for xml
             // closing tags
             prev1 != '<',
-          chr == '"', //  5: string with "
-          chr == "'", //  6: string with '
+          chr === '"', //  5: string with "
+          chr === "'", //  6: string with '
           //  7: xml comment
-          chr + next1 + text[pos + 1] + text[pos + 2] == '<!--',
-          chr + next1 == '/*', //  8: multiline comment
-          chr + next1 == '//', //  9: single-line comment
-          // chr == '#'           // 10: hash-style comment
+          chr + next1 + text[pos + 1] + text[pos + 2] === '<!--',
+          chr + next1 === '/*', //  8: multiline comment
+          chr + next1 === '//', //  9: single-line comment
+          // chr === '#'           // 10: hash-style comment
         ][--tokenType]
       );
     }

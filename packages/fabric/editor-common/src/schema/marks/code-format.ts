@@ -1,13 +1,15 @@
 import { MarkSpec } from 'prosemirror-model';
 
-const colorArr = [
-  'red',
+const styleArr = [
+  'color:#ea7f51;',
+  // 1: punctuation
+  'color:#c63ed4;',
   // 2: punctuation
-  '#1bc71b',
+  'color:#78af46;',
   // 3: strings and regexps
-  'blue',
+  'color:#3d83c1;',
   // 4: comments
-  'gray',
+  'color:gray;font-style: italic;',
 ];
 
 export const codeFormat: MarkSpec = {
@@ -18,11 +20,10 @@ export const codeFormat: MarkSpec = {
   parseDOM: [{ tag: 'span[data-code-format-type]' }],
   toDOM(mark: any) {
     const formatType = mark.attrs['formatType'];
-    console.log('formatType', formatType);
     return [
       'span',
       {
-        style: `color: ${colorArr[formatType]}`,
+        style: styleArr[formatType],
       },
     ];
   },

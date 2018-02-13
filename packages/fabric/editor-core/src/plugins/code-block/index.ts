@@ -138,33 +138,35 @@ export class CodeBlockState {
     text: string,
   ): boolean {
     const { state, dispatch } = view;
-    const node = state.selection.$from.node();
-    if (
-      node.type === state.schema.nodes.codeBlock &&
-      state.selection.empty &&
-      text === ' '
-    ) {
-      const nodeContent = node.textContent;
-      const match: any = /(?:\s+)([^\s]+)$|^(?:\s*)([^\s]+)$/.exec(nodeContent);
-      if (match && match[0]) {
-        let newFrom = to - match[0].length;
-        let tr = state.tr;
-        tr.insertText(text);
-        getTokenArray(match[0]).forEach(tk => {
-          tr.addMark(
-            newFrom,
-            newFrom + tk.token.length,
-            state.schema.marks.codeFormat.create({ formatType: tk.tokenType }),
-          );
-          newFrom = newFrom + tk.token.length;
-        });
-        dispatch(tr);
-        return true;
-      }
+    const { $from } = state.selection;
+    const depth = $from.depth;
+    const node = $from.node(depth);
+    if (node.type === state.schema.nodes.codeBlock && state.selection.empty) {
+      const nodeStart = $from.start(depth);
+      const nodeEnd = $from.end(depth);
+      const nodeContent =
+        node.textContent.substr(0, to - nodeStart) +
+        text +
+        node.textContent.substr(to - nodeStart);
+      const tr = state.tr;
+      tr.insertText(text).removeMark(nodeStart, nodeEnd);
+      let newFrom = nodeStart;
+      getTokenArray(nodeContent).forEach(tk => {
+        // console.log(JSON.stringify(tk), newFrom);
+        tr.addMark(
+          newFrom,
+          newFrom + tk.token.length,
+          state.schema.marks.codeFormat.create({ formatType: tk.tokenType }),
+        );
+        newFrom = newFrom + tk.token.length;
+      });
+      dispatch(tr);
+      return true;
     }
     return false;
   }
 }
+
 export const stateKey = new PluginKey('codeBlockPlugin');
 
 export const plugin = new Plugin({
