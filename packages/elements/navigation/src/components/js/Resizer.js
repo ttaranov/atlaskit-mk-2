@@ -2,6 +2,12 @@
 import React, { PureComponent, type ElementRef } from 'react';
 import { withTheme } from 'styled-components';
 import rafSchedule from 'raf-schd';
+import {
+  UIAnalyticsEvent,
+  withAnalyticsContext,
+  withAnalyticsEvents,
+  type WithAnalyticsEventsProps,
+} from '@atlaskit/analytics-next';
 import ResizerInner from '../styled/ResizerInner';
 import ResizerButton from './ResizerButton';
 import {
@@ -13,8 +19,11 @@ import { isElectronMac } from '../../theme/util';
 
 type Props = {
   onResizeStart: () => {},
-  onResizeEnd: (resizeDelta: number) => void,
-  onResizeButton: ({ isOpen: boolean, width: number }) => void,
+  onResizeEnd: (resizeDelta: number, UIAnalyticsEvent) => void,
+  onResizeButton: (
+    { isOpen: boolean, width: number },
+    UIAnalyticsEvent,
+  ) => void,
   onResize: (resizeDelta: number) => void,
   navigationWidth: number,
   showResizeButton: boolean,
@@ -27,7 +36,7 @@ type State = {
   isResizing: boolean,
 };
 
-class Resizer extends PureComponent<Props, State> {
+class Resizer extends PureComponent<Props & WithAnalyticsEventsProps, State> {
   static defaultProps = {
     onResizeStart: () => {},
     onResizeEnd: () => {},
@@ -77,6 +86,11 @@ class Resizer extends PureComponent<Props, State> {
     window.removeEventListener('mousemove', this.mouseMoveHandler);
     window.removeEventListener('mouseup', this.mouseUpHandler);
     window.removeEventListener('mouseout', this.handleOutofBounds);
+
+    const analyticsEvent = this.props.createAnalyticsEvent({
+      action: 'drag',
+    });
+
     this.setState({
       isResizing: false,
     });
@@ -89,13 +103,14 @@ class Resizer extends PureComponent<Props, State> {
     const delta = screenX - this.state.startScreenX;
 
     if (delta === 0) {
-      this.resizeButtonHandler();
+      const barClickEvent = analyticsEvent.clone().update({ action: 'click' });
+      this.resizeButtonHandler(e, barClickEvent);
     }
 
     // Perform one final resize before ending
     this.props.onResize(delta);
 
-    this.props.onResizeEnd(delta);
+    this.props.onResizeEnd(delta, analyticsEvent);
   };
 
   mouseMoveHandler = e => {
@@ -137,7 +152,7 @@ class Resizer extends PureComponent<Props, State> {
   isPointingRight = () =>
     this.props.navigationWidth < standardOpenWidth(this.isElectronMac());
 
-  resizeButtonHandler = () => {
+  resizeButtonHandler = (e: Event, analyticsEvent: UIAnalyticsEvent) => {
     const isElectron = this.isElectronMac();
     const { navigationWidth, onResizeButton } = this.props;
     const standardOpenWidthResult = standardOpenWidth(isElectron);
@@ -145,15 +160,21 @@ class Resizer extends PureComponent<Props, State> {
     const isPointingRight = this.isPointingRight();
 
     if (isPointingRight || isExpanded) {
-      onResizeButton({
-        isOpen: true,
-        width: standardOpenWidthResult,
-      });
+      onResizeButton(
+        {
+          isOpen: true,
+          width: standardOpenWidthResult,
+        },
+        analyticsEvent,
+      );
     } else {
-      onResizeButton({
-        isOpen: false,
-        width: globalOpenWidth(isElectron),
-      });
+      onResizeButton(
+        {
+          isOpen: false,
+          width: globalOpenWidth(isElectron),
+        },
+        analyticsEvent,
+      );
     }
   };
 
@@ -184,4 +205,6 @@ class Resizer extends PureComponent<Props, State> {
 // We use the isElectronMac theme value in Resizer's calculation methods, so need access to
 // the theme props which withTheme provides.
 // $FlowFixMe
-export default withTheme(Resizer);
+export default withAnalyticsContext({ component: 'resizer' })(
+  withAnalyticsEvents()(withTheme(Resizer)),
+);

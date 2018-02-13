@@ -280,7 +280,10 @@ export default class BasicNavigation extends Component<{}, State> {
     return (
       <AnalyticsListener
         channel="atlaskit"
-        onEvent={event => console.log(event)}
+        onEvent={analyticsEvent => {
+          const { context, payload } = analyticsEvent;
+          console.log(payload, context);
+        }}
       >
         <div
           style={{
@@ -296,7 +299,7 @@ export default class BasicNavigation extends Component<{}, State> {
             containerHeaderComponent={ContainerHeaderComponent}
             drawers={drawers}
             globalPrimaryActions={globalPrimaryActions}
-            globalPrimaryIcon={globalPrimaryIcon}
+            // globalPrimaryIcon={globalPrimaryIcon}
             globalPrimaryItemHref="//www.atlassian.com"
             globalSecondaryActions={globalSecondaryActions}
             isOpen={this.state.isOpen}

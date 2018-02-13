@@ -1,14 +1,19 @@
 // @flow
 import React, { PureComponent } from 'react';
+import {
+  UIAnalyticsEvent,
+  withAnalyticsContext,
+  withAnalyticsEvents,
+} from '@atlaskit/analytics-next';
 import ResizerButtonInner from '../styled/ResizerButtonInner';
 
 type Props = {
-  isPointingRight: boolean,
-  isVisible: boolean,
-  onClick?: () => void,
+  isPointingRight?: boolean,
+  isVisible?: boolean,
+  onClick?: (Event, UIAnalyticsEvent) => void,
 };
 
-export default class ResizerButton extends PureComponent<Props> {
+class ResizerButton extends PureComponent<Props> {
   static defaultProps = {
     isPointingRight: false,
     isVisible: false,
@@ -27,3 +32,7 @@ export default class ResizerButton extends PureComponent<Props> {
     );
   }
 }
+
+export default withAnalyticsContext({ component: 'resizer-button' })(
+  withAnalyticsEvents({ onClick: { action: 'click' } })(ResizerButton),
+);

@@ -8,6 +8,10 @@ import React, {
   type ElementRef,
 } from 'react';
 import { getTheme } from '@atlaskit/theme';
+import {
+  UIAnalyticsEvent,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
 import NavigationFixedContainer from '../styled/NavigationFixedContainer';
@@ -150,7 +154,7 @@ function defaultGlobalTheme(globalTheme, mode) {
   return globalTheme || presets.global;
 }
 
-export default class Navigation extends PureComponent<Props, State> {
+class Navigation extends PureComponent<Props, State> {
   static defaultProps = {
     drawers: [],
     globalPrimaryIconAppearance: 'round',
@@ -264,12 +268,28 @@ export default class Navigation extends PureComponent<Props, State> {
     });
   };
 
-  onResizeEnd = () => {
+  onResizeEnd = (delta: number, analyticsEvent: UIAnalyticsEvent) => {
     const width = this.getRenderedWidth();
     const snappedWidth = this.getSnappedWidth(width);
+    const isOpen = snappedWidth >= standardOpenWidth(this.props.isElectronMac);
+
+    if (
+      analyticsEvent.payload.action === 'drag' &&
+      delta !== 0 &&
+      isOpen !== this.props.isOpen
+    ) {
+      analyticsEvent
+        .update(payload => ({
+          originalInteraction: 'drag',
+          ...payload,
+          action: 'toggle',
+          isOpen,
+        }))
+        .fire('atlaskit');
+    }
 
     const resizeState = {
-      isOpen: snappedWidth >= standardOpenWidth(this.props.isElectronMac),
+      isOpen,
       width: snappedWidth,
     };
 
@@ -293,7 +313,25 @@ export default class Navigation extends PureComponent<Props, State> {
     return Math.max(minWidth, baselineWidth + this.state.resizeDelta);
   };
 
-  triggerResizeButtonHandler = (resizeState: resizeObj) => {
+  triggerResizeButtonHandler = (
+    resizeState: resizeObj,
+    analyticsEvent: UIAnalyticsEvent,
+  ) => {
+    const { isOpen } = resizeState;
+    if (
+      analyticsEvent.payload.action === 'click' &&
+      isOpen !== this.props.isOpen
+    ) {
+      analyticsEvent
+        .update(payload => ({
+          originalInteraction: 'click',
+          ...payload,
+          action: 'toggle',
+          isOpen,
+        }))
+        .fire('atlaskit');
+    }
+
     if (resizeState) {
       this.props.onResize(resizeState);
     }
@@ -451,3 +489,5 @@ export default class Navigation extends PureComponent<Props, State> {
     );
   }
 }
+
+export default withAnalyticsContext({ component: 'navigation' })(Navigation);
