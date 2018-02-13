@@ -12,12 +12,26 @@ export type Callbacks = {
   onProgress: (progress: number) => void;
 };
 
-const hashingFunction = (blob: Blob): Promise<string> =>
-  Promise.resolve(
-    Rusha.createHash()
-      .update(blob)
-      .digest('hex'),
-  );
+// TODO: Replace custom FileReader by Rusha.createHash().update(blob)
+// Currently Rusha can't handle blobs directly so we need to do the conversion
+// https://github.com/srijs/rusha/issues/55
+const hashingFunction = (blob: Blob): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.readAsArrayBuffer(blob);
+
+    reader.onload = (e: Event) => {
+      resolve(
+        Rusha.createHash()
+          .update(reader.result)
+          .digest('hex'),
+      );
+    };
+
+    reader.onerror = reject;
+  });
+};
 
 export const uploadFile = (
   file: UploadableFile,
