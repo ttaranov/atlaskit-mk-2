@@ -1,11 +1,6 @@
 import * as React from 'react';
-import Editor from '@atlaskit/editor-core/editor';
-import { MentionProvider, MentionDescription } from '../../mention/src';
-import {
-  ErrorCallback,
-  InfoCallback,
-  ResultCallback,
-} from '../../mention/src/api/MentionResource';
+import { Editor } from '@atlaskit/editor-core';
+import { MentionProvider, MentionDescription } from '@atlaskit/mention';
 
 /**
  * In order to enable mentions in Editor we must set both properties: allowMentions and mentionProvider.
@@ -23,10 +18,10 @@ class MentionProviderImpl implements MentionProvider {
   }
   subscribe(
     key: string,
-    callback?: ResultCallback<MentionDescription[]>,
-    errCallback?: ErrorCallback,
-    infoCallback?: InfoCallback,
-    allResultsCallback?: ResultCallback<MentionDescription[]>,
+    callback?,
+    errCallback?,
+    infoCallback?,
+    allResultsCallback?,
   ): void {}
   unsubscribe(key: string): void {}
 }
@@ -37,7 +32,6 @@ export default function mobileEditor() {
       appearance="mobile"
       allowHyperlinks={true}
       allowTextFormatting={true}
-      allowMentions={true}
       mentionProvider={Promise.resolve(new MentionProviderImpl())}
     />
   );

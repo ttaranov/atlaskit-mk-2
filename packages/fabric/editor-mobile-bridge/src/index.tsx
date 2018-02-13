@@ -1,5 +1,4 @@
-//import * as React from "react";
+import * as ReactDOM from 'react-dom';
+import mobileEditor from './mobile-editor-element';
 
-/*export default function Main() {
-    return (<p>Hello World</p>)
-}*/
+ReactDOM.render(mobileEditor(), document.getElementById('editor'));
