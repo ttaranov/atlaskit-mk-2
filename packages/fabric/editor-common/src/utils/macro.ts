@@ -5,23 +5,27 @@ export interface Params {
   type: 'image' | 'icon';
 }
 
-export const getPlaceholderUrl = ({
+export const getExtensionLozengeData = ({
   node,
   type,
-}: Params): string | undefined => {
+}: Params): { url: string; width?: number; height?: number } | undefined => {
   if (!node.attrs.parameters) {
     return;
   }
   const { macroMetadata } = node.attrs.parameters;
   if (macroMetadata && macroMetadata.placeholder) {
-    let placeholderUrl;
+    let placeholderData;
     macroMetadata.placeholder.forEach(placeholder => {
-      if (placeholder.type === type) {
-        placeholderUrl = placeholder.data.url;
+      if (
+        placeholder.type === type &&
+        placeholder.data &&
+        placeholder.data.url
+      ) {
+        placeholderData = placeholder.data;
       }
     });
 
-    return placeholderUrl;
+    return placeholderData;
   }
 };
 
