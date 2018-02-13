@@ -4,5 +4,5 @@ export type Event = {
   key: string,
   preventDefault: Function,
   stopPropagation: Function,
-  target: { value: string },
+  target: { blur: Function, className: string, focus: Function, value: string },
 };
