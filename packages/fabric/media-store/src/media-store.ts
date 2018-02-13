@@ -51,6 +51,7 @@ export type FetchOptions = {
   readonly method?: Method;
   readonly authContext?: AuthContext;
   readonly body?: any;
+  readonly params?: { [key: string]: string };
   // readonly responseType?: 'json' | 'blob';
 };
 
@@ -115,10 +116,10 @@ export class MediaStore {
       uploadId,
     });
     const params = collection ? { collection } : undefined;
-    const url = this.createURL('/file/upload', params);
 
-    return this.fetch(url, {
+    return this.fetch('/file/upload', {
       method: 'POST',
+      params,
       body,
     }).then(mapResponseToJson);
   };
@@ -161,8 +162,8 @@ export class MediaStore {
       method: 'GET',
     },
   ): Promise<Response> {
-    const { method, body, authContext } = fetchOptions;
-    const request = new Request(this.createURL(path), {
+    const { method, body, authContext, params } = fetchOptions;
+    const request = new Request(this.createURL(path, params), {
       method,
       body,
       headers: {

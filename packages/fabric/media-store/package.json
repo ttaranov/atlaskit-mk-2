@@ -17,6 +17,9 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
-    "chunkinator": "^0.0.6"
+    "chunkinator": "^0.0.10"
+  },
+  "devDependencies": {
+    "@atlaskit/media-test-helpers": "^9.0.1"
   }
 }
