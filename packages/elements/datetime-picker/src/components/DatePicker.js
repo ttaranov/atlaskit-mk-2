@@ -62,9 +62,6 @@ TODO
 
 Pickers
 
-- Focus does not open the dropdowns.
-- Down arrow or input opens dropdown. Left / right keys navigate the caret.
-- When dropdown is open, keyboard nav navigates the list, but prevents caret movement.
 - DateTimePicker positioning of dropdowns needs slight moving, but requires styling hooks.
 - Tests!
 
@@ -98,6 +95,7 @@ const StyledMenu = styled.div`
 
 class DatePicker extends Component<Props, State> {
   calendar: Calendar;
+  input: Element | null;
 
   static defaultProps = {
     autoFocus: false,
@@ -121,8 +119,23 @@ class DatePicker extends Component<Props, State> {
   };
 
   onCalendarSelect = ({ iso: value }: Object) => {
-    this.setState({ value });
-    this.props.onChange(value);
+    this.triggerChange(value);
+    this.setState({ isOpen: false });
+  };
+
+  onInputClick = (e: Event) => {
+    // TODO find a different way ASAP.
+    //
+    // Also, for some reason this fails to toggle the menu if you blur and
+    // then refocus. The isOpen state is correctly conveyed, but the calendar
+    // never shows. I think this is due to some internal react-select state.
+    // This will properly propagate once react-select allows a controlled way
+    // of specifying whether or not the dropdown should be shown.
+    if (e.target.className.indexOf('react-select') > -1) {
+      this.setState(state => ({
+        isOpen: !state.isOpen,
+      }));
+    }
   };
 
   onSelectInput = (e: Event) => {
@@ -131,26 +144,49 @@ class DatePicker extends Component<Props, State> {
       const parsed = parse(value);
       if (isValid(parsed)) {
         value = format(parsed, 'YYYY-MM-DD');
+        this.triggerChange(value);
       }
     }
-    this.setState({ view: '' });
-    this.onCalendarSelect({ iso: value });
+    this.setState({ isOpen: true });
   };
 
   onSelectKeyDown = (e: Event) => {
     const { key } = e;
     const dir = arrowKeys[key];
+    const { isOpen, view } = this.state;
 
     if (dir) {
+      // Calendar will not exist if it's not open and this also doubles as a
+      // ref check since it may not exist.
       if (this.calendar) {
+        // We don't want to move the caret if the calendar is open.
+        if (dir === 'left' || dir === 'right') {
+          e.preventDefault();
+        }
         this.calendar.navigate(dir);
+      } else if (dir === 'down' || dir === 'up') {
+        this.setState({ isOpen: true });
       }
     } else if (key === 'Escape') {
-      this.setState({ value: '' });
+      if (isOpen) {
+        this.setState({ isOpen: false });
+      } else {
+        this.triggerChange('');
+      }
     } else if (key === 'Enter' || key === 'Tab') {
-      const value = this.state.view;
-      this.setState({ value });
-      this.onCalendarSelect({ iso: value });
+      this.triggerChange(view);
+
+      // TODO see if there's a different way to control the display value.
+      //
+      // react-select retains the value the user typed in until the field is
+      // blurred. Since we're controlling the open state and value, we need a
+      // way explicitly ensure the value is respected. By blurring and then
+      // immedately refocusing, we ensure the value is formatted and the input
+      // retains focus.
+      if (key === 'Enter') {
+        e.target.blur();
+        e.target.focus();
+      }
     }
   };
 
@@ -158,33 +194,43 @@ class DatePicker extends Component<Props, State> {
     this.calendar = e;
   };
 
-  render() {
-    const { icon, name, ...rest } = this.props;
-    const { value, view } = this.state;
+  triggerChange = value => {
+    this.props.onChange(value);
+    this.setState({ value, view: value });
+  };
 
-    const Menu = () => (
-      <StyledMenu>
-        <Calendar
-          {...isoToObj(value)}
-          {...isoToObj(view)}
-          onChange={this.onCalendarChange}
-          onSelect={this.onCalendarSelect}
-          ref={this.refCalendar}
-          selected={[value]}
-        />
-      </StyledMenu>
-    );
+  render() {
+    const { icon, name } = this.props;
+    const { autoFocus, isDisabled, onBlur, onFocus } = this.props;
+    const { isOpen, value, view } = this.state;
+    const Menu = () =>
+      isOpen ? (
+        <StyledMenu>
+          <Calendar
+            {...isoToObj(value)}
+            {...isoToObj(view)}
+            onChange={this.onCalendarChange}
+            onSelect={this.onCalendarSelect}
+            ref={this.refCalendar}
+            selected={[value]}
+          />
+        </StyledMenu>
+      ) : null;
 
     return (
       <div
         role="presentation"
+        onClick={this.onInputClick}
         onInput={this.onSelectInput}
         onKeyDown={this.onSelectKeyDown}
       >
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select
-          {...rest}
+          autoFocus={autoFocus}
+          isDisabled={isDisabled}
+          onBlur={onBlur}
+          onFocus={onFocus}
           components={{
             ClearIndicator,
             DropdownIndicator: () => <DropdownIndicator icon={icon} />,
