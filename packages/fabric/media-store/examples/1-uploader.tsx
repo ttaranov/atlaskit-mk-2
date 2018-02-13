@@ -24,7 +24,7 @@ class UploaderExample extends Component<
   state: UploaderExampleState = {};
 
   fetchFile = (id: string) => {
-    store.fetchFile(id).then(async response => {
+    store.getFile(id).then(async response => {
       const { processingStatus } = response.data;
       console.log('processingStatus', id, processingStatus);
 
