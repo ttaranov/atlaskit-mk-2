@@ -100,7 +100,7 @@ export const getTokenArray = text => {
             lastTokenType < 2 &&
             // workaround for xml
             // closing tags
-            prev1 != '<',
+            prev1 !== '<',
           chr === '"', //  5: string with "
           chr === "'", //  6: string with '
           //  7: xml comment
