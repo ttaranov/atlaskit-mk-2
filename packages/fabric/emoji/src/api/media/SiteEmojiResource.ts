@@ -119,7 +119,7 @@ export default class SiteEmojiResource {
           {
             content: upload.dataURL,
             name: upload.filename,
-            collectionName,
+            collection: collectionName,
           },
           mpConfig,
           { onProgress },
