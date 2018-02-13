@@ -11,11 +11,11 @@ declare var require: {
 };
 
 export const getServiceDecisionsResponse = (): ServiceDecisionResponse =>
-  require('./sample-decisions.json') as ServiceDecisionResponse;
+  require('./json-data/sample-decisions.json') as ServiceDecisionResponse;
 export const getServiceTasksResponse = (): ServiceTaskResponse =>
-  require('./sample-tasks.json') as ServiceTaskResponse;
+  require('./json-data/sample-tasks.json') as ServiceTaskResponse;
 export const getServiceItemsResponse = (): ServiceItemResponse =>
-  require('./sample-elements.json') as ServiceItemResponse;
+  require('./json-data/sample-elements.json') as ServiceItemResponse;
 
 export const getMockTaskDecisionResource = (
   config?: MockTaskDecisionResourceConfig,

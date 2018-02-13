@@ -6,9 +6,10 @@
   },
   "description": "Tasks and decisions react components",
   "main": "dist/es5/index.js",
-  "jsnext:main": "dist/es2015/index.js",
-  "types": "dist/es5/index.d.ts",
   "atlaskit:src": "src/index.ts",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
   "files": [
     "dist",
     "src"
@@ -42,7 +43,6 @@
     "@atlaskit/editor-common": "^6.1.5",
     "@atlaskit/renderer": "^11.4.2",
     "@atlaskit/util-common-test": "^2.4.2",
-    "@types/fetch-mock": "^5.8.0",
     "fetch-mock": "^5.12.1"
   },
   "repository": "bitbucket:atlaskit/atlaskit-mk-2"
