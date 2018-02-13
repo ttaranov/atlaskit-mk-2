@@ -43,6 +43,7 @@ export const MESSAGES: string[] = [
 ];
 
 export const mockComment: Comment = {
+  commentAri: 'abc:cloud:platform::comment/mock-comment-1',
   localId: 'mock-comment-1-local',
   commentId: 'mock-comment-1',
   conversationId: 'mock-conversation',
@@ -167,6 +168,7 @@ export const generateMockConversation = (): Conversation => {
       const commentId = <string>uuid.generate();
 
       return {
+        commentAri: `abc:cloud:platform::comment/${commentId}`,
         localId: `${commentId}-local`,
         commentId: commentId,
         conversationId,

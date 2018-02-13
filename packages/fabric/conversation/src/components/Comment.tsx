@@ -7,11 +7,13 @@ import AkComment, {
   CommentTime,
 } from '@atlaskit/comment';
 import { Editor as AkEditor, EditorProps } from '@atlaskit/editor-core';
+import { WithProviders, ProviderFactory } from '@atlaskit/editor-common';
+import { ResourcedReactions } from '@atlaskit/reactions';
 import { ReactRenderer } from '@atlaskit/renderer';
+import styled from 'styled-components';
 import Editor from './Editor';
 import { Comment as CommentType, User } from '../model';
 import CommentContainer from '../containers/Comment';
-import { ProviderFactory } from '@atlaskit/editor-common';
 import { HttpError } from '../api/HttpError';
 
 /**
@@ -47,6 +49,8 @@ export interface SharedProps {
 
   // Editor
   renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
+
+  containerId?: string;
 }
 
 export interface Props extends SharedProps {
@@ -76,6 +80,13 @@ const commentChanged = (oldComment: CommentType, newComment: CommentType) => {
 
   return false;
 };
+
+const Reactions = styled.div`
+  height: 20px;
+  & > div {
+    height: 20px;
+  }
+`;
 
 export default class Comment extends React.Component<Props, State> {
   constructor(props) {
@@ -267,6 +278,7 @@ export default class Comment extends React.Component<Props, State> {
       onRetry,
       onCancel,
       renderEditor,
+      containerId,
     } = this.props;
 
     if (!comments || comments.length === 0) {
@@ -289,6 +301,7 @@ export default class Comment extends React.Component<Props, State> {
         dataProviders={dataProviders}
         renderComment={props => <Comment {...props} />}
         renderEditor={renderEditor}
+        containerId={containerId}
       />
     ));
   }
@@ -313,36 +326,71 @@ export default class Comment extends React.Component<Props, State> {
     );
   }
 
-  render() {
-    const { comment, user, onUserClick } = this.props;
+  private getActions() {
+    const { comment, user, dataProviders, containerId } = this.props;
     const { isEditing } = this.state;
-    const { createdBy, state: commentState, error } = comment;
     const canReply = !!user && !isEditing && !comment.deleted;
+
+    if (!canReply) {
+      return undefined;
+    }
+
+    const { createdBy, commentAri } = comment;
+    let actions = [
+      <CommentAction key="reply" onClick={this.onReply}>
+        Reply
+      </CommentAction>,
+    ];
+
+    if (createdBy && user && user.id === createdBy.id) {
+      actions = [
+        ...actions,
+        <CommentAction key="edit" onClick={this.onEdit}>
+          Edit
+        </CommentAction>,
+        <CommentAction key="delete" onClick={this.onDelete}>
+          Delete
+        </CommentAction>,
+      ];
+    }
+
+    if (
+      containerId &&
+      commentAri &&
+      dataProviders &&
+      dataProviders.hasProvider('reactionsProvider') &&
+      dataProviders.hasProvider('emojiProvider')
+    ) {
+      actions = [
+        ...actions,
+        <WithProviders
+          key="reactions"
+          providers={['emojiProvider', 'reactionsProvider']}
+          providerFactory={dataProviders}
+          renderNode={({ emojiProvider, reactionsProvider }) => (
+            <Reactions>
+              <ResourcedReactions
+                containerAri={containerId}
+                ari={commentAri}
+                emojiProvider={emojiProvider}
+                reactionsProvider={reactionsProvider}
+              />
+            </Reactions>
+          )}
+        />,
+      ];
+    }
+
+    return actions;
+  }
+
+  render() {
+    const { comment, onUserClick } = this.props;
+    const { createdBy, state: commentState, error } = comment;
     const errorProps: {
       actions?: any[];
       message?: string;
     } = {};
-    let actions;
-
-    if (canReply) {
-      actions = [
-        <CommentAction key="reply" onClick={this.onReply}>
-          Reply
-        </CommentAction>,
-      ];
-
-      if (createdBy && user && user.id === createdBy.id) {
-        actions = [
-          ...actions,
-          <CommentAction key="edit" onClick={this.onEdit}>
-            Edit
-          </CommentAction>,
-          <CommentAction key="delete" onClick={this.onDelete}>
-            Delete
-          </CommentAction>,
-        ];
-      }
-    }
 
     if (error) {
       errorProps.actions = [];
@@ -392,7 +440,7 @@ export default class Comment extends React.Component<Props, State> {
             })}
           </CommentTime>
         }
-        actions={actions}
+        actions={this.getActions()}
         content={this.getContent()}
         isSaving={commentState === 'SAVING'}
         isError={commentState === 'ERROR'}
