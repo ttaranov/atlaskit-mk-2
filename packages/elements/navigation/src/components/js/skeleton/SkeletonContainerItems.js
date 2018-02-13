@@ -15,13 +15,14 @@ export default class SkeletonContainerItems extends Component<Props> {
   };
 
   render() {
+    const { isCollapsed } = this.props;
     return (
       <SkeletonNavigationItems>
-        <SkeletonContainerItem isCollapsed={this.props.isCollapsed} />
-        <SkeletonContainerItem isCollapsed={this.props.isCollapsed} />
-        <SkeletonContainerItem isCollapsed={this.props.isCollapsed} />
-        <SkeletonContainerItem isCollapsed={this.props.isCollapsed} />
-        <SkeletonContainerItem isCollapsed={this.props.isCollapsed} />
+        <SkeletonContainerItem isCollapsed={isCollapsed} />
+        <SkeletonContainerItem isCollapsed={isCollapsed} />
+        <SkeletonContainerItem isCollapsed={isCollapsed} />
+        <SkeletonContainerItem isCollapsed={isCollapsed} />
+        <SkeletonContainerItem isCollapsed={isCollapsed} />
       </SkeletonNavigationItems>
     );
   }

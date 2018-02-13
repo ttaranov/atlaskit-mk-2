@@ -9,8 +9,8 @@ import SkeletonContainerNavigation from './SkeletonContainerNavigation';
 import SkeletonDefaultContainerHeader from './SkeletonDefaultContainerHeader';
 import { HiddenWhenCollapsed } from './ToggleWhenCollapsed';
 
-import * as presets from '../../../theme/presets';
 import type { Provided } from '../../../theme/types';
+import { defaultContainerTheme, defaultGlobalTheme } from '../../../theme/util';
 
 export type ContainerHeaderProps = {
   isCollapsed: boolean,
@@ -22,24 +22,6 @@ export type Props = {
   containerTheme?: Provided,
   containerHeaderComponent: ComponentType<ContainerHeaderProps>,
 };
-
-// NOTE: Dark mode is a user preference that takes precedence over provided themes
-function defaultContainerTheme(containerTheme, mode) {
-  if (containerTheme && containerTheme.hasDarkmode) {
-    return containerTheme;
-  }
-  if (mode === 'dark') {
-    return presets.dark;
-  }
-  return containerTheme || presets.container;
-}
-function defaultGlobalTheme(globalTheme, mode) {
-  if (globalTheme && globalTheme.hasDarkmode) return globalTheme;
-  if (mode === 'dark') {
-    return presets.dark;
-  }
-  return globalTheme || presets.global;
-}
 
 export class SkeletonNavigation extends Component<Props> {
   static defaultProps = {
