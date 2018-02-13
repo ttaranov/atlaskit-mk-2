@@ -88,9 +88,9 @@ export class MediaStore {
   }
 
   getCollection(
-    name: string,
+    collectionName: string,
   ): Promise<MediaStoreResponse<MediaStoreCollection>> {
-    return Promise.reject('not implemented yet');
+    return this.fetch(`/collection/${collectionName}`).then(mapResponseToJson);
   }
 
   deleteCollection(name: string): Promise<void> {
