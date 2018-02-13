@@ -35,6 +35,11 @@ export type FetchOptions = {
 
 export type FetchParams = { [key: string]: any };
 
+export type MediaStoreCreateFileFromUploadParams = {
+  name?: string;
+  collection?: string;
+};
+
 export type MediaStoreGetFileParams = {
   readonly version?: number;
   readonly collection?: string;
@@ -121,12 +126,11 @@ export class MediaStore {
 
   createFileFromUpload = (
     uploadId: string,
-    collection?: string,
+    params: MediaStoreCreateFileFromUploadParams = {},
   ): Promise<MediaStoreResponse<MediaFile>> => {
     const body = JSON.stringify({
       uploadId,
     });
-    const params = collection ? { collection } : undefined;
 
     return this.fetch('/file/upload', {
       method: 'POST',
