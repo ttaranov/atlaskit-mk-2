@@ -1,5 +1,9 @@
 # @atlaskit/task-decision
 
+## 4.9.0
+- [patch] Fix package [4bf9e49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4bf9e49)
+- [minor] Migrated package to new repo [537be77](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/537be77)
+
 ## 4.8.1 (2018-02-06)
 
 * bug fix; copied updated json to dist for use in mk-2 ([17f61cf](https://bitbucket.org/atlassian/atlaskit/commits/17f61cf))
