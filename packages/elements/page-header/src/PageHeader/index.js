@@ -8,7 +8,7 @@ import {
   ActionsWrapper,
   BottomBarWrapper,
   BreadcrumbsContainer,
-  CustomComponentWrapper,
+  TitleContainer,
 } from './styled';
 
 type Props = {
@@ -43,9 +43,9 @@ export default class PageHeader extends Component<Props> {
           <BreadcrumbsContainer> {breadcrumbs} </BreadcrumbsContainer>
         )}
         <TitleWrapper>
-          <CustomComponentWrapper>
+          <TitleContainer>
             {disableTitleStyles ? children : <Title>{children}</Title>}
-          </CustomComponentWrapper>
+          </TitleContainer>
           <ActionsWrapper>{actions}</ActionsWrapper>
         </TitleWrapper>
         {bottomBar && <BottomBarWrapper> {bottomBar} </BottomBarWrapper>}

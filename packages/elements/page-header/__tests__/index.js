@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { name } from '../package.json';
 import PageHeader from '../src';
-import { Title, CustomComponentWrapper } from '../src/PageHeader/styled';
+import { Title, TitleContainer } from '../src/PageHeader/styled';
 
 describe(name, () => {
   it('should render passed children', () => {
@@ -44,7 +44,7 @@ describe(name, () => {
       wrapper
         .find(CustomTitle)
         .parent()
-        .is(CustomComponentWrapper),
+        .is(TitleContainer),
     ).toEqual(true);
 
     expect(wrapper.find(Title)).toHaveLength(0);

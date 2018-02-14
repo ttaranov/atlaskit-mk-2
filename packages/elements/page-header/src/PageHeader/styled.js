@@ -30,7 +30,7 @@ export const TitleWrapper = styled.div`
   margin-bottom: ${akGridSizeUnitless * 3}px;
 `;
 
-export const CustomComponentWrapper = styled.div`
+export const TitleContainer = styled.div`
   min-width: 0%;
   flex-shrink: 1;
   width: 100%;
