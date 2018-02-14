@@ -7755,9 +7755,9 @@ knot.js@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/knot.js/-/knot.js-1.1.5.tgz#28e72522f703f50fe98812fde224dd72728fef5d"
 
-landkid@^0.0.12:
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/landkid/-/landkid-0.0.12.tgz#6a70d4392d197bc5bd9bfa05bd22bfb571283477"
+landkid@^0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/landkid/-/landkid-0.0.14.tgz#73689f98c625367e889c3f6641deef9cd03f8005"
   dependencies:
     axios "^0.17.1"
     babel-cli "^6.26.0"
