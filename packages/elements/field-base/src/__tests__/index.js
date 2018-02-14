@@ -261,6 +261,7 @@ describe('ak-field-base', () => {
       const spy = jest.fn();
       const wrapper = mount(<FieldBase onBlur={spy} />);
       wrapper.find(Content).simulate('blur');
+      jest.runOnlyPendingTimers();
       expect(spy).toHaveBeenCalledTimes(1);
     });
     it('should close the dialog when focus goes away from both the element and the dialog', () => {

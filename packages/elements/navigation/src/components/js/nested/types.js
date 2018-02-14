@@ -18,17 +18,3 @@ export type ContainerNavigationNestedType = {
    */
   stack: Stack,
 };
-
-export type ContainerNavigationNestedPageState = {
-  isEntering: boolean,
-  isLeaving: boolean,
-};
-
-export type ContainerNavigationNestedPageProps = {
-  /** The items to display in this level of the menu */
-  children?: ReactElement,
-  /** Callback function which will be executed when the transition animation completes. */
-  onAnimationEnd?: OnAnimationEnd,
-  /** The direction in which we're traversing through the nested navigation ('up' or 'down'). */
-  traversalDirection: TraversalDirection,
-};

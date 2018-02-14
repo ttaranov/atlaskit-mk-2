@@ -1,5 +1,11 @@
 # @atlaskit/navigation
 
+## 28.0.4
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
+## 28.0.3
+- [patch] Fix nested navigation not working due to out of date react-transition-group usage [6d8db57](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d8db57)
+
 ## 28.0.2
 - [patch] remove console.warn statement from Navigation [c803b87](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c803b87)
 

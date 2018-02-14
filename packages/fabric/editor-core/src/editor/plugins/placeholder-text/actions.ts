@@ -1,13 +1,39 @@
 import { EditorState, Transaction } from 'prosemirror-state';
+import { pluginKey } from './index';
 
-export const insertPlaceholderText = () => (
+export const showPlaceholderFloatingToolbar = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  const { schema } = state;
-  const placeholderNode = schema.nodes.placeholder.create({
-    text: 'What are you saying',
-  });
-  dispatch(state.tr.replaceSelectionWith(placeholderNode).scrollIntoView());
+  const tr = state.tr;
+
+  if (!state.selection.empty) {
+    tr.deleteSelection();
+  }
+
+  tr.setMeta(pluginKey, { showInsertPanelAt: tr.selection.anchor });
+  tr.scrollIntoView();
+
+  dispatch(tr);
   return true;
 };
+
+export const insertPlaceholderTextAtSelection = value => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  dispatch(
+    state.tr
+      .replaceSelectionWith(
+        state.schema.nodes.placeholder.createChecked({ text: value }),
+      )
+      .setMeta(pluginKey, { showInsertPanelAt: false })
+      .scrollIntoView(),
+  );
+  return true;
+};
+
+export const hidePlaceholderFloatingToolbar = (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+) => dispatch(state.tr.setMeta(pluginKey, { showInsertPanelAt: false }));

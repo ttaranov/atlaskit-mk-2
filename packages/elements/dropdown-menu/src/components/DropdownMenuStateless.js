@@ -431,6 +431,7 @@ export default class DropdownMenuStateless extends Component<
               <DropdownItemClickManager onItemClicked={this.handleItemClicked}>
                 <DropdownItemFocusManager
                   autoFocus={this.sourceOfIsOpen === 'keydown'}
+                  close={this.close}
                 >
                   {children}
                 </DropdownItemFocusManager>

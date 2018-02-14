@@ -23,6 +23,7 @@ import {
 import { Popup } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
 import { EditorState, Transaction } from 'prosemirror-state';
+import EditorActions from '../../editor/actions';
 import {
   analyticsService as analytics,
   analyticsDecorator,
@@ -39,14 +40,17 @@ import ToolbarButton from '../ToolbarButton';
 import { MacroProvider } from '../../editor/plugins/macro/types';
 import tableCommands from '../../plugins/table/commands';
 import { insertDate, openDatePicker } from '../../editor/plugins/date/actions';
-import { insertPlaceholderText } from '../../editor/plugins/placeholder-text/actions';
+import { showPlaceholderFloatingToolbar } from '../../editor/plugins/placeholder-text/actions';
 import { Wrapper, ExpandIconWrapper } from './styles';
+
+import { InsertMenuCustomItem } from '../../editor/types';
 
 export interface Props {
   buttons: number;
   isReducedSpacing: boolean;
   isDisabled?: boolean;
   editorView: EditorView;
+  editorActions?: EditorActions;
   tableActive?: boolean;
   tableHidden?: boolean;
   tableSupported?: boolean;
@@ -71,6 +75,7 @@ export interface Props {
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
   macroProvider?: MacroProvider | null;
+  insertMenuItems?: InsertMenuCustomItem[];
   onShowMediaPicker?: () => void;
   onInsertBlockType?: (name: string, view: EditorView) => void;
   onInsertMacroFromMacroBrowser?: (
@@ -291,6 +296,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       linkDisabled,
       emojiDisabled,
       emojiProvider,
+      insertMenuItems,
       dateEnabled,
       placeholderTextEnabled,
     } = this.props;
@@ -378,16 +384,23 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         elemBefore: <DateIcon label="Insert date" />,
       });
     }
+
     if (placeholderTextEnabled) {
       items.push({
         content: 'Placeholder Text',
         value: { name: 'placeholder text' },
-        tooltipDescription: 'Insert placeholder text',
+        tooltipDescription: 'Add placeholder text',
         tooltipPosition: 'right',
-        elemBefore: <PlaceholderTextIcon label="Insert placeholder text" />,
+        elemBefore: <PlaceholderTextIcon label="Add placeholder text" />,
       });
     }
-    if (typeof macroProvider !== 'undefined' && macroProvider) {
+
+    if (insertMenuItems) {
+      items = items.concat(insertMenuItems);
+      // keeping this here for backwards compatibility so confluence
+      // has time to implement this button before it disappears.
+      // Should be safe to delete soon. If in doubt ask Leandro Lemos (llemos)
+    } else if (typeof macroProvider !== 'undefined' && macroProvider) {
       items.push({
         content: 'View more',
         value: { name: 'macro' },
@@ -434,7 +447,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
   @analyticsDecorator('atlassian.editor.format.placeholder.button')
   private createPlaceholderText = (): boolean => {
     const { editorView } = this.props;
-    insertPlaceholderText()(editorView.state, editorView.dispatch);
+    showPlaceholderFloatingToolbar(editorView.state, editorView.dispatch);
     return true;
   };
 
@@ -455,6 +468,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
   private onItemActivated = ({ item }): void => {
     const {
       editorView,
+      editorActions,
       onInsertBlockType,
       onInsertMacroFromMacroBrowser,
       macroProvider,
@@ -505,6 +519,11 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       case 'placeholder text':
         this.createPlaceholderText();
         break;
+      default:
+        if (item && item.onClick) {
+          item.onClick(editorActions);
+          break;
+        }
     }
     this.setState({ isOpen: false });
   };

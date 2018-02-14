@@ -6,6 +6,9 @@ import { Inline } from './doc';
  */
 export interface Definition {
   type: 'heading';
+  /**
+   * @minItems 0
+   */
   content: Array<Inline>;
   attrs: {
     /**

@@ -1,5 +1,10 @@
 # @atlaskit/emoji
 
+## 31.1.1
+
+- [patch] fixed typescript errors [fe6676e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe6676e)
+- [patch] added analytics to emoji picker [d9d4fb2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9d4fb2)
+
 ## 31.1.0
 - [minor] FS-1649 move emoji to mk-2 [6953ac1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6953ac1)
 
