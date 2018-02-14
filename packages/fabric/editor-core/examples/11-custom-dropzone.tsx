@@ -6,6 +6,8 @@ type State = {
   dropzoneRef?: HTMLElement;
 };
 
+const mediaProvider = storyMediaProviderFactory();
+
 class DemoEditor extends React.PureComponent<any, State> {
   state: State = {};
 
@@ -19,9 +21,10 @@ class DemoEditor extends React.PureComponent<any, State> {
       <Editor
         appearance="comment"
         allowHyperlinks
-        mediaProvider={storyMediaProviderFactory({
-          dropzoneContainer: dropzoneRef,
-        })}
+        media={{
+          provider: mediaProvider,
+          customDropzoneContainer: dropzoneRef,
+        }}
       />
     );
 
