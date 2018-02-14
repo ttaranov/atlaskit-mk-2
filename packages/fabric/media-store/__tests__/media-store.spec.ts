@@ -1,13 +1,14 @@
 import 'whatwg-fetch';
 import fetchMock = require('fetch-mock');
 
-import { defaultServiceHost } from '@atlaskit/media-test-helpers';
-
 import { MediaStore } from '../src/';
 import { MediaUpload } from '../src/models/media';
+import { ChunksProbe } from '../src/media-store';
 
 describe('MediaStore', () => {
-  const apiUrl = defaultServiceHost;
+  const apiUrl = 'http://some-host';
+
+  afterEach(() => fetchMock.restore());
 
   describe('given auth provider resolves', () => {
     const clientId = 'some-client-id';
@@ -73,6 +74,42 @@ describe('MediaStore', () => {
         });
       });
     });
+
+    describe('probeChunks', () => {
+      it('should POST to /chunk/probe endpoint with correct options', () => {
+        const etag = 'some-etag';
+        const chunks = [etag];
+        const data: ChunksProbe = {
+          results: {
+            [etag]: {
+              exists: true,
+            },
+          },
+        };
+
+        fetchMock.mock(`begin:${apiUrl}/chunk/probe`, {
+          body: {
+            data,
+          },
+          status: 200,
+        });
+
+        return mediaStore.probeChunks(chunks).then(response => {
+          expect(response).toEqual({ data });
+          expect(fetchMock.lastUrl()).toEqual(`${apiUrl}/chunk/probe`);
+          expect(fetchMock.lastOptions()).toEqual({
+            method: 'POST',
+            headers: {
+              'X-Client-Id': clientId,
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ chunks }),
+          });
+        });
+      });
+    });
   });
 
   describe('given auth provider rejects', () => {
@@ -82,7 +119,7 @@ describe('MediaStore', () => {
     describe('request', () => {
       it('should reject with some error', () => {
         const mediaStore = new MediaStore({
-          apiUrl: defaultServiceHost,
+          apiUrl,
           authProvider,
         });
 

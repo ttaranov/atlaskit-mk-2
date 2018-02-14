@@ -43,6 +43,10 @@ export function mapResponseToJson(response: Response): Promise<any> {
   return response.json();
 }
 
+export function mapResponseToVoid(response: Response): Promise<void> {
+  return Promise.resolve();
+}
+
 export function createUrl(
   url: string,
   params?: RequestParams,

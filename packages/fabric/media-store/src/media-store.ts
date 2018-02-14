@@ -12,6 +12,7 @@ import {
   RequestMethod,
   RequestParams,
   RequestHeaders,
+  mapResponseToVoid,
 } from './utils/request';
 
 export interface MediaStoreConfig {
@@ -23,9 +24,9 @@ export interface MediaStoreResponse<Data> {
   readonly data: Data;
 }
 
-export type ProbeChunks = {
+export type ChunksProbe = {
   readonly results: {
-    [etag: string]: {
+    readonly [etag: string]: {
       readonly exists: boolean;
     };
   };
@@ -102,9 +103,9 @@ export class MediaStore {
     return Promise.reject('not implemented yet');
   }
 
-  createUpload = (
+  createUpload(
     createUpTo: number = 1,
-  ): Promise<MediaStoreResponse<MediaUpload[]>> => {
+  ): Promise<MediaStoreResponse<MediaUpload[]>> {
     return this.request(`/upload`, {
       method: 'POST',
       params: {
@@ -114,30 +115,27 @@ export class MediaStore {
         Accept: 'application/json',
       },
     }).then(mapResponseToJson);
-  };
+  }
 
-  uploadChunk = (etag: string, blob: Blob): Promise<void> => {
+  uploadChunk(etag: string, blob: Blob): Promise<void> {
     return this.request(`/chunk/${etag}`, {
       method: 'PUT',
       body: blob,
-    }).then(() => {});
-  };
+    }).then(mapResponseToVoid);
+  }
 
-  probeChunks = (
-    chunks: string[],
-  ): Promise<MediaStoreResponse<ProbeChunks>> => {
-    const body = JSON.stringify({
-      chunks,
-    });
-
+  probeChunks(chunks: string[]): Promise<MediaStoreResponse<ChunksProbe>> {
     return this.request(`/chunk/probe`, {
       method: 'POST',
-      body,
+      body: JSON.stringify({
+        chunks,
+      }),
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
     }).then(mapResponseToJson);
-  };
+  }
 
   createFileFromUpload = (
     uploadId: string,
