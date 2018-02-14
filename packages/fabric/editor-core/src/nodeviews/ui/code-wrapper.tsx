@@ -55,12 +55,28 @@ const Wrapper = styled.div`
   padding: ${akGridSizeUnitless}px;
   display: flex;
   background-color: #f1f1f1;
+  overflow: hidden;
+  &::after {
+    content: '1\n2\n3\n4\n5\n6';
+    position: absolute;
+    left: 0;
+  }
 `;
 
 // tslint:disable-next-line:variable-name
 const ContentWrapper = styled.div`
   margin: 1px 0 1px ${akGridSizeUnitless * 4}px;
   display: inline-block;
+`;
+
+// tslint:disable-next-line:variable-name
+const LineNumber = styled.div`
+  width: 20px;
+  height: 0;
+  margin: 12px 0;
+  &::after {
+    content: '1 \ 2 3 4 5 6 7 8 9 10 11 12';
+  }
 `;
 
 // tslint:disable-next-line:variable-name
@@ -98,9 +114,7 @@ class CodeWrapper extends ContentNodeView implements NodeView {
 
     ReactDOM.render(
       <Wrapper>
-        <div style={{ width: 20, overflow: 'hidden' }}>
-          {'1\n2\n3\n4\n5\n6'}
-        </div>
+        <LineNumber />
         <ContentWrapper innerRef={this.handleRef} />
       </Wrapper>,
       this.domRef,

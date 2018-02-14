@@ -148,7 +148,7 @@ const ContentStyles = styled.div`
     white-space: pre-wrap;
     font-family: ${akEditorCodeFontFamily};
     background: ${akEditorCodeBackground};
-    padding: ${akEditorCodeBlockPadding};
+    // padding: ${akEditorCodeBlockPadding};
     border-radius: ${akBorderRadius};
   }
 
