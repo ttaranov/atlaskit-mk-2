@@ -33,7 +33,7 @@ describe(name, () => {
     expect(wrapper.find(Bar).length).toBe(1);
   });
 
-  it('should render custom component instead of a Title when useStyledWrapper is false', () => {
+  it('should render custom component instead of a Title when disableTitleStyles is true', () => {
     const CustomTitle = () => <span>Custom component</span>;
     const wrapper = shallow(
       <PageHeader disableTitleStyles>

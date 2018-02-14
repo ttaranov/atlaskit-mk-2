@@ -29,7 +29,7 @@ const barContent = (
 );
 
 const textStyle = {
-  fontSize: '1.71em',
+  fontSize: '24px',
   fontWeight: '500',
 };
 

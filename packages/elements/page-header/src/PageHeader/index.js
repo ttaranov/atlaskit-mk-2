@@ -25,13 +25,17 @@ type Props = {
   disableTitleStyles?: boolean,
 };
 export default class PageHeader extends Component<Props> {
+  static defaultProps: $Shape<Props> = {
+    disableTitleStyles: false,
+  };
+
   render() {
     const {
       breadcrumbs,
       actions,
       bottomBar,
       children,
-      disableTitleStyles = false,
+      disableTitleStyles,
     } = this.props;
     return (
       <Outer>
