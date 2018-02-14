@@ -143,6 +143,7 @@ describe('<ResourcedEmoji />', () => {
 
   it('unknown emoji', () => {
     let resolver;
+    // @ts-ignore Unused var never read, should this be deleted?
     let resolverResult;
     const config: MockEmojiResourceConfig = {
       promiseBuilder: (result: EmojiDescription) => {
@@ -203,7 +204,9 @@ describe('<ResourcedEmoji />', () => {
   });
 
   it('placeholder should be wrapped with a tooltip if showTooltip is set to true', () => {
+    // @ts-ignore Unused var never read, should this be deleted?
     let resolver;
+    // @ts-ignore Unused var never read, should this be deleted?
     let resolverResult;
     const config: MockEmojiResourceConfig = {
       promiseBuilder: (result: EmojiDescription) => {
