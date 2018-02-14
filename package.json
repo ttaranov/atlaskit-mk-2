@@ -174,7 +174,7 @@
     "tslint": "^5.7.0",
     "tslint-config-prettier": "^1.6.0",
     "tslint-react": "^3.2.0",
-    "typescript": "^2.7.1",
+    "typescript": "^2.6.2",
     "url-loader": "^0.5.9",
     "webdriverio": "^4.10.1",
     "webpack": "^3.10.0",
