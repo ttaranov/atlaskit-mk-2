@@ -11,10 +11,8 @@ interface DefaultExport {
 }
 
 try {
-  // eslint-disable-next-line import/no-unresolved, global-require
   config = (require('../local-config') as DefaultExport).default;
 } catch (e) {
-  // eslint-disable-next-line import/no-unresolved, global-require
   config = (require('../local-config-example') as DefaultExport).default;
 }
 
