@@ -9,18 +9,10 @@ import PeopleIcon from '@atlaskit/icon/glyph/people';
 import { Result, ResultType } from '../model/Result';
 import { ComponentClass } from 'react';
 
-const {
-  PersonResult,
-  ContainerResult,
-  ObjectResult,
-  ResultBase,
-} = quickSearchResultTypes;
+const { PersonResult, ObjectResult, ResultBase } = quickSearchResultTypes;
 
 function getResultComponent(resultType: ResultType): ComponentClass {
   switch (resultType) {
-    case ResultType.Container: {
-      return ContainerResult;
-    }
     case ResultType.Object: {
       return ObjectResult;
     }

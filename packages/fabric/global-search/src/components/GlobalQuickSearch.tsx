@@ -17,6 +17,9 @@ export interface Props {
   peopleResults: Result[];
 }
 
+/**
+ * Presentational component that renders the search input and search results.
+ */
 export default class GlobalQuickSearch extends React.Component<Props> {
   componentDidMount() {
     this.props.getRecentlyViewedItems();

@@ -28,6 +28,9 @@ export interface State {
   peopleResults: Result[];
 }
 
+/**
+ * Container/Stateful Component that handles the data fetching and state handling when the user interacts with Search.
+ */
 export class GlobalQuickSearchContainer extends React.Component<Props, State> {
   static defaultProps: Partial<Props> = {
     debounceMillis: 350,

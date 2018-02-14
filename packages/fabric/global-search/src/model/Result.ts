@@ -11,6 +11,5 @@ export interface Result {
 // Use string enum here because the type prop in quick-search Result is actually a string
 export enum ResultType {
   Person = 'person',
-  Container = 'container',
   Object = 'object',
 }

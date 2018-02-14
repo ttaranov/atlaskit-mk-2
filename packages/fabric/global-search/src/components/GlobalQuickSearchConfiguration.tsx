@@ -11,7 +11,7 @@ export interface Props {
 }
 
 /**
- * Component that exposes the public API for global quick search.
+ * Component that exposes the public API for global quick search. Its only purpose is to offer a simple, user-friendly API to the outside and hide the implementation detail of search clients etc.
  */
 export default class GlobalQuickSearchConfiguration extends React.Component<
   Props

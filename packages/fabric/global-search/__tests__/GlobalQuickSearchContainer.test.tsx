@@ -55,7 +55,7 @@ const errorRecentSearchClient: RecentSearchClient = {
 
 const noResultsCrossProductSearchClient: CrossProductSearchClient = {
   search(query: string) {
-    return Promise.resolve({ jiraIssues: [], confluencePages: [] });
+    return Promise.resolve({ jira: [], confluence: [] });
   },
 };
 

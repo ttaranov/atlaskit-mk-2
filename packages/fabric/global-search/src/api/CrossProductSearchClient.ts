@@ -122,6 +122,7 @@ function confluenceItemToResult(jiraItem: ConfluenceItem): Result {
   };
 }
 
+// TODO populate props once API is ready
 function jiraItemToResult(jiraItem: JiraItem): Result {
   return {
     type: ResultType.Object,
