@@ -283,7 +283,7 @@ export default class extends PureComponent<{}, State> {
           We remove the transform css rule used for animating transitions after
           the enter animation occurs to work around an issue in
           react-beautiful-dnd where ancestor elements with a transform property
-          cause dragging displacement issues. See AK-4328.
+          cause dragging position issues. See AK-4328.
         </p>
         {isOpen && (
           <Modal onClose={this.close}>
