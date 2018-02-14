@@ -8,7 +8,8 @@ import { AkCodeBlock } from '@atlaskit/code';
  * Template expressions aren't yet supported, and likely never will be.
  */
 export default function code(
-  sources: string[] & { raw: string[] },
+  // Tagged Template Literal support is still WIP for flow: https://github.com/facebook/flow/issues/2616
+  sources: any,
   ...substitutions: any[]
 ) {
   let source = String.raw(sources, substitutions);
