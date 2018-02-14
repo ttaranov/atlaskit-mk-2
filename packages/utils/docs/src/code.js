@@ -1,17 +1,26 @@
 // @flow
 import React from 'react';
+import styled from 'styled-components';
 import { AkCodeBlock } from '@atlaskit/code';
 
 /*
  * Tag function to render a code block, e.g. code`console.log("hello world")`
  * Template expressions aren't yet supported, and likely never will be.
  */
-export default function code(sources: string[]) {
+export default function code(
+  sources: string[] & { raw: string[] },
+  ...substitutions: any[]
+) {
+  let source = String.raw(sources, substitutions);
+  source = source.replace(/^(\s*\n)+/g, ''); // Remove leading newlines
+  source = source.replace(/(\n\s*)+$/g, ''); // Remove trailing newlines
   return (
-    <div>
-      {sources
-        .map(source => source.replace(/^(\s*\n)+/g, '')) // Remove leading newlines
-        .map(source => <AkCodeBlock language="javascript" text={source} />)}
-    </div>
+    <CodeWrapper>
+      <AkCodeBlock language="javascript" text={source} />
+    </CodeWrapper>
   );
 }
+
+const CodeWrapper = styled.div`
+  margin-top: 8px;
+`;
