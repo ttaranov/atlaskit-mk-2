@@ -13,6 +13,7 @@ export { default as TableNode } from './ui/table';
 export { default as PlaceholderTextNode } from './ui/placeholder-text';
 
 export { panelNodeView } from './ui/panel';
+export { codeWrapperNodeView } from './ui/code-wrapper';
 export { taskItemNodeViewFactory } from './ui/taskItem';
 export { decisionItemNodeView } from './ui/decisionItem';
 

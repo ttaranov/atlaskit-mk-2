@@ -4,6 +4,7 @@ import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import keymapPlugin from './keymaps';
 import { getTokenArray } from './utils';
+import { codeWrapperNodeView } from '../../nodeviews';
 
 export type CodeMirrorFocusSubscriber = (uniqueId: string | undefined) => any;
 export type CodeBlockStateSubscriber = (state: CodeBlockState) => any;
@@ -119,7 +120,7 @@ export class CodeBlockState {
 
   private nodeStartPos(): number {
     const { $from } = this.state.selection;
-    return $from.start($from.depth);
+    return $from.start($from.depth - 2);
   }
 
   private activeCodeBlockNode(): Node | undefined {
@@ -152,7 +153,6 @@ export class CodeBlockState {
       tr.insertText(text).removeMark(nodeStart, nodeEnd);
       let newFrom = nodeStart;
       getTokenArray(nodeContent).forEach(tk => {
-        // console.log(JSON.stringify(tk), newFrom);
         tr.addMark(
           newFrom,
           newFrom + tk.token.length,
@@ -198,6 +198,9 @@ export const plugin = new Plugin({
     };
   },
   props: {
+    nodeViews: {
+      codeWrapper: codeWrapperNodeView,
+    },
     handleClick(view: EditorView & { docView?: any }, event) {
       stateKey.getState(view.state).update(view.state, view.docView, true);
       return false;

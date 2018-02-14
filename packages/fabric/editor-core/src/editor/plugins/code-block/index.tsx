@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { codeBlock, codeFormat } from '@atlaskit/editor-common';
+import { codeBlock, codeFormat, codeWrapper } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from '../../../plugins/code-block';
 import keymap from '../../../plugins/code-block/keymaps';
@@ -11,7 +11,10 @@ const codeBlockPlugin: EditorPlugin = {
   },
 
   nodes() {
-    return [{ name: 'codeBlock', node: codeBlock, rank: 800 }];
+    return [
+      { name: 'codeBlock', node: codeBlock, rank: 800 },
+      { name: 'codeWrapper', node: codeWrapper, rank: 801 },
+    ];
   },
 
   pmPlugins() {

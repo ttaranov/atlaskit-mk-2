@@ -243,7 +243,7 @@ export function insertBlockType(name: string): Command {
         break;
       case blockTypes.CODE_BLOCK.name:
         if (nodes.codeBlock) {
-          return insertCodeBlock()(state, dispatch);
+          return wrapSelectionIn(nodes.codeWrapper)(state, dispatch);
         }
         break;
       case blockTypes.PANEL.name:
@@ -266,7 +266,7 @@ function wrapSelectionIn(type): Command {
   return function(state: EditorState, dispatch) {
     const { tr } = state;
     const { $from, $to } = state.selection;
-    const { paragraph } = state.schema.nodes;
+    const { paragraph, codeBlock, codeWrapper } = state.schema.nodes;
     const range = $from.blockRange($to) as any;
     const wrapping = range && (findWrapping(range, type) as any);
     if (range && wrapping) {
@@ -275,7 +275,10 @@ function wrapSelectionIn(type): Command {
       tr.replaceRangeWith(
         $to.pos,
         $to.pos,
-        type.createAndFill({}, paragraph.create()),
+        type.createAndFill(
+          {},
+          type === codeWrapper ? codeBlock.create() : paragraph.create(),
+        ),
       );
       tr.setSelection(Selection.near(tr.doc.resolve(state.selection.to + 1)));
     }
