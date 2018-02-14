@@ -57,7 +57,7 @@ export class CloudService {
         });
       })
       .catch(e => {
-        win.close();
+        if (win) win.close();
         throw e;
       });
   }
