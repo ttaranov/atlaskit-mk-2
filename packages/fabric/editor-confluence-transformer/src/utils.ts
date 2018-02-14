@@ -1,7 +1,7 @@
 import { Fragment, Mark, Node as PMNode, Schema } from 'prosemirror-model';
 
 import { normalizeHexColor } from '@atlaskit/editor-common';
-import { AC_XMLNS, RI_XMLNS } from './encode-cxhtml';
+import { AC_XMLNS } from './encode-cxhtml';
 import { Macro } from './types';
 
 /**
