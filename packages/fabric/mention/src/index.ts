@@ -14,6 +14,8 @@ import Mention from './components/Mention';
 import ResourcedMention from './components/Mention/ResourcedMention';
 import { MentionDescription, MentionsResult, isSpecialMention } from './types';
 import { SearchIndex } from './util/searchIndex';
+import { testData, storyData } from './support';
+import * as support from './support';
 
 export {
   // Classes
@@ -36,6 +38,10 @@ export {
   ResourcedMention,
   // Functions
   isSpecialMention,
+  // Support data
+  support,
+  testData,
+  storyData,
 };
 
 export default MentionPicker;

@@ -1,8 +1,10 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
 import Item from '@atlaskit/item';
-import { EmojiPicker as AkEmojiPicker, EmojiProvider } from '@atlaskit/emoji';
-import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
+import {
+  EmojiPicker as AkEmojiPicker,
+  testData as emojiTestData,
+} from '@atlaskit/emoji';
 import {
   doc,
   p,
@@ -23,9 +25,7 @@ import listPlugin from '../../src/editor/plugins/lists';
 import EditorActions from '../../src/editor/actions';
 import { MediaProvider } from '../../src/plugins/media';
 
-const emojiProvider = emojiTestData.getEmojiResourcePromise() as Promise<
-  EmojiProvider
->;
+const emojiProvider = emojiTestData.getEmojiResourcePromise();
 
 const mediaProvider: Promise<MediaProvider> = Promise.resolve({
   viewContext: Promise.resolve({} as any),

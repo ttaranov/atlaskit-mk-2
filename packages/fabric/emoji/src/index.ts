@@ -19,6 +19,8 @@ import {
   emojiPickerWidth,
   emojiPickerHeight,
 } from './constants';
+import { mockEmojiResource, testData, storyData } from './support';
+import * as support from './support';
 
 export {
   // Classes
@@ -44,6 +46,11 @@ export {
   emojiPickerHeight,
   defaultEmojiHeight,
   customCategory,
+  // Support types
+  mockEmojiResource,
+  testData,
+  storyData,
+  support,
 };
 
 export * from './types';

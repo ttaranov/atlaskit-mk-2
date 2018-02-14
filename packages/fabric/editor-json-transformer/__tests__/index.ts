@@ -34,7 +34,7 @@ import {
   underline,
 } from '@atlaskit/editor-test-helpers';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
+import { testData as emojiTestData } from '@atlaskit/emoji';
 
 import { JSONTransformer } from '../src';
 import textFormatting from '../../editor-core/src/editor/plugins/text-formatting';

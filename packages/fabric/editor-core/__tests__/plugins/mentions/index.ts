@@ -21,7 +21,7 @@ import {
   createEvent,
   spyOnReturnValue,
 } from '@atlaskit/editor-test-helpers';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
+import { storyData as mentionStoryData } from '@atlaskit/mention';
 import { analyticsService } from '../../../src/analytics';
 import * as keymaps from '../../../src/keymaps';
 import mentionsPlugin from '../../../src/editor/plugins/mentions';

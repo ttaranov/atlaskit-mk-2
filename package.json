@@ -8,7 +8,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "scripts": {
-    "build": "                               run-p build:pkg build:babel build:flowtypes && run-p build:typescript:es5 build:typescript:es2015 build:editor-common:json-schema --print-label --continue-on-error && yarn build:media-editor:copy-binaries && yarn build:css-reset && yarn build:reduced-ui-pack && yarn build:icon && yarn build:layer && yarn build:mention:json && yarn build:emoji:json && yarn build:taskdecision:json",
+    "build": "                               run-p build:pkg build:babel build:flowtypes && run-p build:typescript:es5 build:typescript:es2015 build:editor-common:json-schema --print-label --continue-on-error && yarn build:media-editor:copy-binaries && yarn build:css-reset && yarn build:reduced-ui-pack && yarn build:icon && yarn build:layer",
     "build:pkg": "                           bolt workspaces exec --only-fs 'packages/**' -- copy-pkg package.json dist/package.json --only name,version",
     "build:babel": "                         run-p build:babel:cjs build:babel:esm",
     "build:babel:cjs": "                     NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --only-fs 'packages/{elements,utils}/**' -- babel src -d dist/cjs",
@@ -49,10 +49,7 @@
     "build:icon": "                          cd packages/elements/icon && yarn build",
     "build:reduced-ui-pack": "               cd packages/css-packs/reduced-ui-pack && yarn build",
     "build:css-reset": "                     cd packages/css-packs/css-reset && yarn build",
-    "build:layer": "                         cd packages/elements/layer && yarn build",
-    "build:mention:json": "                  cd packages/fabric/mention && cp -r src/support/json-data dist/es5/support/json-data && cp -r src/support/json-data dist/es2015/support/json-data",
-    "build:emoji:json": "                    cd packages/fabric/emoji && cp -r src/support/json-data dist/es5/support/json-data && cp -r src/support/json-data dist/es2015/support/json-data",
-    "build:taskdecision:json": "             cd packages/fabric/task-decision && cp -r src/support/json-data dist/es5/support/json-data && cp -r src/support/json-data dist/es2015/support/json-data"
+    "build:layer": "                         cd packages/elements/layer && yarn build"
   },
   "bolt": {
     "version": "^0.18.3 || ^0.19.2",
@@ -71,7 +68,6 @@
   },
   "devDependencies": {
     "@atlaskit/eslint-config-base": "^2.0.7",
-    "@atlaskit/util-data-test": "^7.2.1",
     "@types/chai": "^4.0.4",
     "@types/enzyme": "^3.1.6",
     "@types/fetch-mock": "^5.8.0",

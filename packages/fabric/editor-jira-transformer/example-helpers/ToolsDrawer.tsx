@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
+import { storyData as mentionStoryData } from '@atlaskit/mention';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import { JIRATransformer } from '../src';
 

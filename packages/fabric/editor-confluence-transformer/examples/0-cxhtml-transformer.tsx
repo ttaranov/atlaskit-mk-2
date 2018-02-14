@@ -14,9 +14,9 @@ import {
   storyContextIdentifierProviderFactory,
   macroProvider,
 } from '@atlaskit/editor-test-helpers';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
+import { storyData as mentionStoryData } from '@atlaskit/mention';
+import { storyData as emojiStoryData } from '@atlaskit/emoji';
+import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import Spinner from '@atlaskit/spinner';
 
@@ -32,7 +32,6 @@ import {
   DATE,
 } from '../example-helpers/cxhtml-test-data';
 import { ConfluenceTransformer } from '../src';
-import { EmojiProvider } from '@atlaskit/emoji';
 
 // tslint:disable-next-line:variable-name
 export const TitleInput = styled.input`
@@ -87,7 +86,7 @@ const SaveAndCancelButtons = props => (
 const providers = {
   emojiProvider: emojiStoryData.getEmojiResource({
     uploadSupported: true,
-  }) as Promise<EmojiProvider>,
+  }),
   mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
   activityProvider: Promise.resolve(new MockActivityResource()),
   macroProvider: Promise.resolve(macroProvider),
