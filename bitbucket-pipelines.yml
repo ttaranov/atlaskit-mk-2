@@ -87,6 +87,8 @@ pipelines:
             - echo "We're going to add a short wait to make testing easier"
             - sleep 30
             - echo "Done!"
+            - echo "Now fail!!!"
+            - exit 1
             # - bolt install --pure-lockfile
             # - yarn build
             # - yarn lint
