@@ -12,9 +12,9 @@ import { emoji } from '@atlaskit/util-data-test';
 let emojisSets: Map<string, EmojiDescription[]>;
 
 export const getStandardEmojiData: () => EmojiServiceResponse = () =>
-  emoji.emojiData.getStandardEmojiData;
+  emoji.emojiData.getStandardEmojiData as EmojiServiceResponse;
 export const getAtlassianEmojiData: () => EmojiServiceResponse = () =>
-  emoji.emojiData.getAtlassianEmojiData;
+  emoji.emojiData.getAtlassianEmojiData as EmojiServiceResponse;
 
 export const getAllEmojiData = (): EmojiServiceResponse => {
   const standardEmojis = getStandardEmojiData();

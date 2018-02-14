@@ -8,11 +8,11 @@ import MockTaskDecisionResource from './MockTaskDecisionResource';
 import { taskDecision } from '@atlaskit/util-data-test';
 
 export const getServiceDecisionsResponse: () => ServiceDecisionResponse = () =>
-  taskDecision.getServiceDecisionsResponse;
+  taskDecision.getServiceDecisionsResponse as ServiceDecisionResponse;
 export const getServiceTasksResponse: () => ServiceTaskResponse = () =>
-  taskDecision.getServiceTasksResponse;
+  taskDecision.getServiceTasksResponse as ServiceTaskResponse;
 export const getServiceItemsResponse: () => ServiceItemResponse = () =>
-  taskDecision.getServiceItemsResponse;
+  taskDecision.getServiceItemsResponse as ServiceItemResponse;
 
 export const getMockTaskDecisionResource = (
   config?: MockTaskDecisionResourceConfig,

@@ -3,6 +3,6 @@ import { MentionsResult } from '../types';
 
 const mentionData: MentionsResult = mention.mentionData
   .default as MentionsResult;
-export const mentionDataSize = mention.mentionData.mentionDataSize;
+export const mentionDataSize = mentionData.mentions.length;
 
 export default mentionData;

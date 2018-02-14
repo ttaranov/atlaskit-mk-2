@@ -24,7 +24,6 @@ import {
 
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import { collabEditProvider } from '../example-helpers/mock-collab-provider';
-import { EmojiProvider } from '@atlaskit/emoji';
 
 export const TitleInput = styled.input`
   border: none;
