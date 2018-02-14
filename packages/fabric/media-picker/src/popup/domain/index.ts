@@ -70,7 +70,6 @@ export interface View {
   readonly service: ServiceAccountLink;
   readonly isUploading: boolean;
   readonly isCancelling: boolean;
-  readonly hasPopupBeenVisible: boolean;
 
   readonly currentCursor?: string;
   readonly nextCursor?: string;

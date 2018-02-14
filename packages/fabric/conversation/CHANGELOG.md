@@ -1,5 +1,10 @@
 # @atlaskit/conversation
 
+## 5.2.1
+
+## 5.2.0
+- [minor] Add subscribe/unsubscribe methods to resource provider [5c1e2bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5c1e2bf)
+
 ## 5.1.3
 
 ## 5.1.2

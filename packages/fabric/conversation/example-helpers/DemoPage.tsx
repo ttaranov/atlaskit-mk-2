@@ -3,11 +3,8 @@ import styled from 'styled-components';
 import { ResourceProvider } from '../src/api/ConversationResource';
 import { Conversation } from '../src';
 import SingleSelect from '@atlaskit/single-select';
-import {
-  Comment as CommentType,
-  Conversation as ConversationType,
-  User,
-} from '../src/model';
+import { Conversation as ConversationType, User } from '../src/model';
+import { State } from '../src/internal/store';
 import { MOCK_USERS } from './MockData';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { selectAll } from 'prosemirror-commands';
@@ -177,10 +174,21 @@ export class Demo extends React.Component<
     try {
       const conversations = await provider.getConversations(containerId);
       this.setState({ conversations });
+      provider.subscribe(this.handleDispatch);
     } catch (err) {
       // Handle error
     }
   }
+
+  async componentWillUnmount() {
+    const { provider } = this.props;
+    provider.unsubscribe(this.handleDispatch);
+  }
+
+  handleDispatch = (state: State): void => {
+    const { conversations } = state;
+    this.setState({ conversations });
+  };
 
   private onUserSelect = (selected: any) => {
     const { item } = selected;

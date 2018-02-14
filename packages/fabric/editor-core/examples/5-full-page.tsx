@@ -16,6 +16,7 @@ import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/suppor
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
+import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { EmojiProvider } from '@atlaskit/emoji';
 
 import {
@@ -175,6 +176,7 @@ export default class Example extends React.Component<Props, State> {
                 />
               }
               onSave={SAVE_ACTION}
+              insertMenuItems={customInsertMenuItems}
             />
           </EditorContext>
         </Content>

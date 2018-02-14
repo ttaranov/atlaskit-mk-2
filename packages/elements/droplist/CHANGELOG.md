@@ -1,5 +1,7 @@
 # @atlaskit/droplist
 
+## 4.11.9
+
 ## 4.11.8
 - [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
 
