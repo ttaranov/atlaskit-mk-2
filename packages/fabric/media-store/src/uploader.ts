@@ -55,7 +55,7 @@ export const uploadFile = (
       .then(response => response.data[0].id);
     const uploadingFunction = (chunk: Chunk) =>
       store.uploadChunk(chunk.hash, chunk.blob);
-    let chunkOffset = 0;
+    let offset = 0;
 
     chunkinator(
       content,
@@ -72,22 +72,23 @@ export const uploadFile = (
       {
         async onComplete() {
           const uploadId = await deferredUploadId;
-          const response = await store.createFileFromUpload(
+          const { data: { id: fileId } } = await store.createFileFromUpload(
             { uploadId, name },
             {
               collection,
             },
           );
-          const fileId = response.data.id;
-
           resolve(fileId);
         },
         onError: reject,
         async onProgress(progress, chunks) {
-          const id = await deferredUploadId;
+          const uploadId = await deferredUploadId;
 
-          store.appendChunksToUpload(id, hashedChunks(chunks), chunkOffset);
-          chunkOffset += chunks.length;
+          store.appendChunksToUpload(uploadId, {
+            chunks: hashedChunks(chunks),
+            offset,
+          });
+          offset += chunks.length;
 
           if (callbacks && callbacks.onProgress) {
             callbacks.onProgress(progress);
