@@ -305,21 +305,15 @@ export function parseMacro(node: Element): Macro {
     if (child.nodeType === 3) {
       continue;
     }
-    let value = child.textContent;
+    const value = child.textContent;
 
     // example: <ac:parameter ac:name=\"colour\">Red</ac:parameter>
-    // example: <ac:parameter ac:name=\"colour\"><ri:node ri:param=\"Red\" /></ac:parameter>
+    // example: <ac:parameter ac:name=\"url\"><ri:node ri:param=\"Red\" /></ac:parameter>
     if (nodeName === 'ac:parameter') {
       const key = getAcName(child);
       if (key) {
-        const resourceIdentifier = MACRO_PARAM_TO_RI[key];
-        if (resourceIdentifier) {
-          const riNode = getAcTagNode(child, resourceIdentifier.name);
-          if (riNode) {
-            value = riNode.getAttribute(resourceIdentifier.param);
-          }
-        }
-        params[key.toLowerCase()] = value;
+        const riNodeValue = getResourceIdentifierValue(child);
+        params[key] = riNodeValue || value;
       }
     } else {
       // example: <fab:placeholder-url>, <fab:display-type>, <ac:rich-text-body>
@@ -364,21 +358,9 @@ export const mapPanelTypeToCxhtml = (panelType: string) => {
   return panelType;
 };
 
-const MACRO_PARAM_TO_RI: {
+const MACRO_PARAM_TO_RI_NODE: {
   [key: string]: { name: string; param: string };
 } = {
-  author: {
-    name: 'ri:user',
-    param: 'ri:userkey',
-  },
-  spaces: {
-    name: 'ri:space',
-    param: 'ri:space-key',
-  },
-  src: {
-    name: 'ri:url',
-    param: 'ri:value',
-  },
   url: {
     name: 'ri:url',
     param: 'ri:value',
@@ -389,23 +371,64 @@ const MACRO_PARAM_TO_RI: {
   },
 };
 
+const getResourceIdentifierValue = (node: Element): string | null => {
+  const firstChild = node.firstChild as Element;
+  if (!firstChild || firstChild.nodeType === 3) {
+    return null;
+  }
+  const riKey = Object.keys(MACRO_PARAM_TO_RI_NODE).find(key => {
+    return (
+      MACRO_PARAM_TO_RI_NODE[key].name === getNodeName(firstChild).toLowerCase()
+    );
+  });
+  if (!riKey) {
+    return null;
+  }
+  return firstChild.getAttribute(MACRO_PARAM_TO_RI_NODE[riKey].param);
+};
+
+// This is a hack until we implment CFE-822
+const MACRO_NAMES_WITH_RI_PARAMS = {
+  iframe: {
+    src: MACRO_PARAM_TO_RI_NODE.url,
+  },
+  profile: {
+    url: MACRO_PARAM_TO_RI_NODE.url,
+  },
+  'profile-picture': {
+    user: MACRO_PARAM_TO_RI_NODE.user,
+  },
+  widget: {
+    url: MACRO_PARAM_TO_RI_NODE.url,
+  },
+};
+
+// This is a hack until we implment CFE-822
+const getResourceIdentifier = (macroName: string, paramName: string) => {
+  const riParamsForMacro = MACRO_NAMES_WITH_RI_PARAMS[macroName.toLowerCase()];
+  return riParamsForMacro ? riParamsForMacro[paramName.toLowerCase()] : null;
+};
+
+// TODO: CFE-822 Convert this and other macro conversion to `<fab:adf><![CDATA[{adf-macro}]]></fab:adf>`
 export const encodeMacroParams = (
   doc: Document,
+  macroName: string,
   params: {
     [name: string]: { value: string };
   },
 ) => {
   const elem = doc.createDocumentFragment();
   Object.keys(params).forEach(name => {
+    const value = params[name].value;
     const el = doc.createElementNS(AC_XMLNS, 'ac:parameter');
     el.setAttributeNS(AC_XMLNS, 'ac:name', name);
-    const resourceIdentifier = MACRO_PARAM_TO_RI[name];
+    const resourceIdentifier = getResourceIdentifier(macroName, name);
     if (resourceIdentifier) {
       const ri = doc.createElementNS(RI_XMLNS, resourceIdentifier.name);
-      ri.setAttributeNS(RI_XMLNS, resourceIdentifier.param, params[name].value);
+      ri.setAttributeNS(RI_XMLNS, resourceIdentifier.param, value);
       el.appendChild(ri);
     } else {
-      el.textContent = params[name].value;
+      el.textContent = value;
     }
     elem.appendChild(el);
   });

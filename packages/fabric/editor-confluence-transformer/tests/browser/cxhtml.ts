@@ -858,73 +858,102 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       ],
       schemaVersion: { value: '1' },
     };
-    const attrs = {
-      extensionType: 'com.atlassian.confluence.macro.core',
-      extensionKey: 'status',
-      parameters: {
-        macroParams,
-        macroMetadata,
-      },
-    };
     const paramsAsCXHTML = Object.keys(macroParams).map(
       key =>
         `<ac:parameter ac:name="${key}">${
           macroParams[key].value
         }</ac:parameter>`,
     );
-
-    describe('extensions with resource identifiers', () => {
-      const attrs = {
+    const createMacroAttrs = (
+      extensionKey,
+      macroParams,
+      extraMacroMetadata,
+    ) => {
+      return {
         extensionType: 'com.atlassian.confluence.macro.core',
-        extensionKey: 'fake',
+        extensionKey,
         parameters: {
-          macroParams: {
-            src: { value: 'www.google.com' },
-            spaces: { value: 'abc' },
-          },
+          macroParams,
           macroMetadata: {
             ...macroMetadata,
-            schemaVersion: { value: '2' },
+            ...extraMacroMetadata,
           },
         },
       };
+    };
+    const macroCXHTMLOpenTag = attrs => {
+      return `<ac:structured-macro ac:name="${
+        attrs.extensionKey
+      }" ac:schema-version="${
+        attrs.parameters.macroMetadata.schemaVersion.value
+      }" ac:macro-id="${attrs.parameters.macroMetadata.macroId.value}">`;
+    };
+
+    describe('extensions with resource identifiers', () => {
+      const iframeAttrs = createMacroAttrs(
+        'iframe',
+        {
+          src: { value: 'www.google.com' },
+        },
+        {},
+      );
       check(
-        'basic',
-        `<ac:structured-macro ac:name="${
-          attrs.extensionKey
-        }" ac:schema-version="${
-          attrs.parameters.macroMetadata.schemaVersion.value
-        }" ac:macro-id="${
-          macroMetadata.macroId.value
-        }"><ac:parameter ac:name="src"><ri:url ri:value="www.google.com" /></ac:parameter><ac:parameter ac:name="spaces"><ri:space ri:space-key="abc" /></ac:parameter><fab:placeholder-url>${
+        'iframe',
+        `${macroCXHTMLOpenTag(
+          iframeAttrs,
+        )}<ac:parameter ac:name="src"><ri:url ri:value="www.google.com" /></ac:parameter><fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
         }</fab:placeholder-url><fab:display-type>BLOCK</fab:display-type></ac:structured-macro>`,
-        doc(extension(attrs)()),
+        doc(extension(iframeAttrs)()),
+      );
+
+      const profileAttrs = createMacroAttrs(
+        'profile-picture',
+        {
+          User: { value: 'mynameis' },
+        },
+        {},
+      );
+      check(
+        'upper case param',
+        `${macroCXHTMLOpenTag(
+          profileAttrs,
+        )}<ac:parameter ac:name="User"><ri:user ri:userkey="mynameis" /></ac:parameter><fab:placeholder-url>${
+          macroMetadata.placeholder[0].data.url
+        }</fab:placeholder-url><fab:display-type>BLOCK</fab:display-type></ac:structured-macro>`,
+        doc(extension(profileAttrs)()),
       );
     });
 
     describe('inlineExtension', () => {
+      const attrs = createMacroAttrs('status', macroParams, {});
       check(
         'basic',
-        `<ac:structured-macro ac:name="${
-          attrs.extensionKey
-        }" ac:schema-version="1" ac:macro-id="${
-          macroMetadata.macroId.value
-        }">${paramsAsCXHTML}<fab:placeholder-url>${
+        `${macroCXHTMLOpenTag(attrs)}${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
         }</fab:placeholder-url><fab:display-type>INLINE</fab:display-type></ac:structured-macro>`,
         doc(p(inlineExtension(attrs)())),
       );
+
+      const schemaChangeAttrs = createMacroAttrs('status', macroParams, {
+        schemaVersion: { value: '2' },
+      });
+      check(
+        'with changed schema version',
+        `${macroCXHTMLOpenTag(
+          schemaChangeAttrs,
+        )}${paramsAsCXHTML}<fab:placeholder-url>${
+          macroMetadata.placeholder[0].data.url
+        }</fab:placeholder-url><fab:display-type>INLINE</fab:display-type></ac:structured-macro>`,
+        doc(p(inlineExtension(schemaChangeAttrs)())),
+      );
     });
 
     describe('bodyless', () => {
+      const attrs = createMacroAttrs('status', macroParams, {});
       check(
         'basic',
-        `<ac:structured-macro ac:name="${
-          attrs.extensionKey
-        }" ac:schema-version="1" ac:macro-id="${
-          macroMetadata.macroId.value
-        }">${paramsAsCXHTML}<fab:placeholder-url>${
+        `${macroCXHTMLOpenTag(attrs)}${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
         }</fab:placeholder-url><fab:display-type>BLOCK</fab:display-type></ac:structured-macro>`,
         doc(extension(attrs)()),
@@ -932,13 +961,10 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     });
 
     describe('bodiedExtension', () => {
+      const attrs = createMacroAttrs('expand', macroParams, {});
       check(
         'basic',
-        `<ac:structured-macro ac:name="${
-          attrs.extensionKey
-        }" ac:schema-version="1" ac:macro-id="${
-          macroMetadata.macroId.value
-        }">${paramsAsCXHTML}<fab:placeholder-url>${
+        `${macroCXHTMLOpenTag(attrs)}${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
         }</fab:placeholder-url>
           <fab:display-type>BLOCK</fab:display-type>

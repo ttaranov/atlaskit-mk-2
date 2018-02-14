@@ -312,7 +312,7 @@ export default function encode(node: PMNode, schema: Schema) {
 
     if (node.attrs.language) {
       elem.appendChild(
-        encodeMacroParams(doc, {
+        encodeMacroParams(doc, 'code', {
           language: { value: mapCodeLanguage(node.attrs.language) },
         }),
       );
@@ -350,7 +350,7 @@ export default function encode(node: PMNode, schema: Schema) {
         // panel title
         if (node.type.name === 'heading' && pos === 0) {
           elem.appendChild(
-            encodeMacroParams(doc, {
+            encodeMacroParams(doc, 'panel', {
               title: { value: node.firstChild!.textContent },
             }),
           );
@@ -370,7 +370,7 @@ export default function encode(node: PMNode, schema: Schema) {
     // it should be converted to "purple" Confluence panel
     if (panelType === 'panel') {
       elem.appendChild(
-        encodeMacroParams(doc, {
+        encodeMacroParams(doc, 'panel', {
           borderColor: { value: '#998DD9' },
           bgColor: { value: '#EAE6FF' },
         }),
@@ -411,7 +411,7 @@ export default function encode(node: PMNode, schema: Schema) {
     elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', node.attrs.macroId);
 
     elem.appendChild(
-      encodeMacroParams(doc, {
+      encodeMacroParams(doc, 'jira', {
         key: { value: node.attrs.issueKey },
         server: { value: node.attrs.server },
         serverId: { value: node.attrs.serverId },
@@ -437,7 +437,7 @@ export default function encode(node: PMNode, schema: Schema) {
     if (parameters) {
       const { macroParams } = parameters;
       if (macroParams) {
-        elem.appendChild(encodeMacroParams(doc, macroParams));
+        elem.appendChild(encodeMacroParams(doc, extensionKey, macroParams));
       }
     }
 
