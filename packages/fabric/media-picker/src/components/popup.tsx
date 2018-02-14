@@ -115,6 +115,7 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
 
         this.store.dispatch(resetView());
         this.store.dispatch(getFilesInRecents());
+        // TODO [MSW-466]: Fetch remote accounts only when needed
         this.store.dispatch(getConnectedRemoteAccounts());
 
         this.store.dispatch(showPopup());
