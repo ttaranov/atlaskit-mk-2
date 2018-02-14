@@ -1,5 +1,23 @@
 # @atlaskit/conversation
 
+## 5.2.1
+
+## 5.2.0
+- [minor] Add subscribe/unsubscribe methods to resource provider [5c1e2bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5c1e2bf)
+
+## 5.1.3
+
+## 5.1.2
+
+## 5.1.1
+- [patch] bump editor-common to 6.1.2 [bb7802e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7802e)
+
+## 5.1.0
+
+- [minor] Add error state and cancel/retry [0c1bb6e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c1bb6e)
+
+## 5.0.6
+
 ## 5.0.5
 
 ## 5.0.4

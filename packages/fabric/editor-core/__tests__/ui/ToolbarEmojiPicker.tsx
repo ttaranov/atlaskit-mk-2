@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
-import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
+import { EmojiPicker as AkEmojiPicker, EmojiProvider } from '@atlaskit/emoji';
 import { Popup, ProviderFactory } from '@atlaskit/editor-common';
 import {
   doc,
@@ -19,7 +19,9 @@ import emojiPlugin from '../../src/editor/plugins/emoji';
 import codeBlockPlugin from '../../src/editor/plugins/code-block';
 import mentionsPlugin from '../../src/editor/plugins/mentions';
 
-const emojiProvider = emojiTestData.getEmojiResourcePromise();
+const emojiProvider = emojiTestData.getEmojiResourcePromise() as Promise<
+  EmojiProvider
+>;
 const grinEmoji = emojiTestData.grinEmoji;
 const grinEmojiId = {
   shortName: grinEmoji.shortName,

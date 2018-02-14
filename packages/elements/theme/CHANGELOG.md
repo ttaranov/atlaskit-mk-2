@@ -1,5 +1,8 @@
 # @atlaskit/theme
 
+## 2.3.3
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 2.3.2
 - [patch] added a new layer tooltip [2215bc7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2215bc7)
 

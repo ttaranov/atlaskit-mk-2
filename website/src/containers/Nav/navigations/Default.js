@@ -35,11 +35,11 @@ const defaultNavGroups = [
         title: 'Packages',
         icon: <ComponentIcon label="Packages icon" />,
       },
-      {
-        to: '/patterns',
-        title: 'Patterns',
-        icon: <IssuesIcon label="Patterns icon" />,
-      },
+      // {
+      //   to: '/patterns',
+      //   title: 'Patterns',
+      //   icon: <IssuesIcon label="Patterns icon" />,
+      // },
     ],
   },
   {

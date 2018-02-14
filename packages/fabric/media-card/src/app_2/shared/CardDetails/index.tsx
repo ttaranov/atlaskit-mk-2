@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as debounce from 'lodash.debounce';
 import Avatar from '@atlaskit/avatar';
 import Tooltip from '@atlaskit/tooltip';
 import IconImage from '../../../shared/IconImage';
@@ -7,11 +6,9 @@ import {
   TextWithTooltip,
   IconWithTooltip,
   UserViewModel,
-  ActionViewModel,
   DetailViewModel,
 } from '../../shared/ViewModel';
 import Users from './Users';
-import Actions from './Actions';
 import Widgets from './Widgets';
 import {
   ContentWrapper,
@@ -33,43 +30,16 @@ export interface CardDetailsProps {
   users?: UserViewModel[];
   thumbnail?: string;
   details?: DetailViewModel[];
-  actions?: ActionViewModel[];
+  actions?: React.ReactNode;
 }
 
-export interface CardDetailsState {
-  width?: number;
-}
+export interface CardDetailsState {}
 
 export default class CardDetails extends React.Component<
   CardDetailsProps,
   CardDetailsState
 > {
   el?: HTMLElement;
-
-  state = {
-    width: undefined,
-  };
-
-  handleMount = (el: HTMLElement) => {
-    if (el) {
-      this.el = el;
-    }
-  };
-
-  handleResize = debounce(() => {
-    if (this.el) {
-      this.setState({ width: this.el.clientWidth });
-    }
-  }, 250);
-
-  componentDidMount() {
-    this.handleResize();
-    window.addEventListener('resize', this.handleResize);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize);
-  }
 
   renderIcon() {
     const { icon } = this.props;
@@ -128,9 +98,8 @@ export default class CardDetails extends React.Component<
       details,
       actions,
     } = this.props;
-    const { width } = this.state;
     return (
-      <ContentWrapper innerRef={this.handleMount}>
+      <ContentWrapper>
         <BodyWrapper>
           <TopWrapper>
             {this.renderIcon()}
@@ -146,7 +115,7 @@ export default class CardDetails extends React.Component<
                 </Description>
               </Tooltip>
             </CopyWrapper>
-            <Actions compact={width && width < 384} actions={actions} />
+            {actions}
           </TopWrapper>
           <BottomWrapper padLeft={Boolean(icon || thumbnail || user)}>
             <Widgets details={details} />

@@ -1,5 +1,56 @@
 # @atlaskit/editor-core
 
+## 62.0.7
+
+
+
+
+- [patch] Allow width/height for placeholder and polish rendering [6d9f809](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9f809)
+
+## 62.0.6
+- [patch] fix date when inserting from + menu [8f6bd7c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8f6bd7c)
+
+## 62.0.5
+- [patch] ED-3270: Allow arbitrary items to be added to the plus menu [a88b921](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a88b921)
+
+## 62.0.4
+- [patch] Fix an issue where Shift-Enter shortcuts would not be properly handled by the Editor. Refactored the BlockType and Tables shortcut handlers to better support the updated editor architecture. [a78626e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a78626e)
+- [patch] Minor fixes for the placeholder node to improve experience. We now highlight the node when selected, and fixed a bug where clicking on the span in a list would not trigger a selection change [a9576d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9576d8)
+- [patch] Add support for inserting custom placeholder-text via the Insert Block menu [dfc41ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfc41ea)
+
+## 62.0.3
+
+## 62.0.2
+- [patch] Fix editor getValue action is giving old doc while using with waitForMediaUpload [14010c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14010c3)
+
+## 62.0.1
+
+## 62.0.0
+- [major] Move media provider and state manager to editor-core [0601da7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0601da7)
+
+## 61.9.0
+- [minor] Add replaceSelection method to EditorActions [e0da0dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e0da0dd)
+
+## 61.8.2
+- [patch] Removes @atlaskit/profilecard dependency from editor-core [5a0555e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5a0555e)
+
+## 61.8.1
+
+## 61.8.0
+- [patch] Refactor PlaceholderText to use a NodeView to improve selection behaviour across browsers [47e4b88](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/47e4b88)
+- [minor] Support the `allowTemplatePlaceholders` prop to enable placeholder text elements. [70dbde2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70dbde2)
+
+## 61.7.16
+- [patch] Autoformatting should work for single character. [70e44af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70e44af)
+
+## 61.7.15
+- [patch] Handle Media.getDomElement when node has no child nodes [618b0c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/618b0c1)
+
+## 61.7.14
+
+## 61.7.13
+- [patch] Allow macro provider to handle auto conversion during paste [b2c83f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b2c83f8)
+
 ## 61.7.12
 - [patch] When adding blockquote from toolbar cursor is not visible. [c7c4780](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7c4780)
 

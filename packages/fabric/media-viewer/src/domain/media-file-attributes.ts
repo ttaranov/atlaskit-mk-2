@@ -53,7 +53,7 @@ export class MediaFileAttributesFactory {
     const isError = !details.processingStatus;
     const processed = details.processingStatus === 'succeeded';
     const mediaType = artifactFormat ? artifactFormat.type : details.mediaType;
-    const type = isError ? 'error' : (processed ? mediaType : 'non-supported');
+    const type = isError ? 'error' : processed ? mediaType : 'non-supported';
 
     return {
       id,

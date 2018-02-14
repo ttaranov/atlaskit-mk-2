@@ -2,7 +2,8 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { Popup } from '@atlaskit/editor-common';
 import { Container } from './styles';
-export type Coordniates = {
+
+export type Coordinates = {
   left: number;
   right: number;
   top: number;
@@ -16,8 +17,14 @@ export interface Props {
   offset?: number[];
   fitWidth?: number;
   fitHeight?: number;
-  onPositionCalculated?: (position: any) => any;
+  onPositionCalculated?: (position: Coordinates) => any;
 }
+
+export {
+  handlePositionCalculatedWith,
+  getOffsetParent,
+  getNearestNonTextNode,
+} from './utils';
 
 export default class FloatingToolbar extends PureComponent<Props, any> {
   render() {

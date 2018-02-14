@@ -1,5 +1,12 @@
 # @atlaskit/datetime-picker
 
+## 0.6.1
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
+## 0.6.0
+
+- [minor] Make all internal state able to be controlled or uncontrolled obviating the need for the usage of stateless components. [3d81d42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d81d42)
+
 ## 0.5.1
 
 ## 0.5.0

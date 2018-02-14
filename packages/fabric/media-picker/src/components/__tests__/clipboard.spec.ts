@@ -1,8 +1,8 @@
-import { AuthProvider, UploadParams } from '@atlaskit/media-core';
+import { AuthProvider } from '@atlaskit/media-core';
 import { MediaPickerContext } from '../../domain/context';
 import { UserEvent } from '../../outer/analytics/events';
 
-import { ModuleConfig } from '../../domain/config';
+import { ModuleConfig, UploadParams } from '../../domain/config';
 import { MockClipboardEvent, MockFile } from '../../util/clipboardEventMocks';
 import { Clipboard } from '../clipboard';
 

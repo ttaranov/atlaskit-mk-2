@@ -2,7 +2,7 @@
 import React from 'react';
 import { Select } from './common/components';
 
-export default () => (
+const SingleExample = () => (
   <Select
     options={[
       { label: 'Adelaide', value: 'adelaide' },
@@ -17,3 +17,5 @@ export default () => (
     placeholder="Choose a City"
   />
 );
+
+export default SingleExample;

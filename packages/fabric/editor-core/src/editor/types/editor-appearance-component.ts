@@ -1,7 +1,11 @@
 import { EditorView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { EventDispatcher } from '../event-dispatcher';
-import { UIComponentFactory, ReactElement } from '../types';
+import {
+  UIComponentFactory,
+  ReactElement,
+  InsertMenuCustomItem,
+} from '../types';
 
 export interface EditorAppearanceComponentProps {
   onUiReady?: (ref) => void;
@@ -22,6 +26,7 @@ export interface EditorAppearanceComponentProps {
   customContentComponents?: ReactElement;
   customPrimaryToolbarComponents?: ReactElement;
   customSecondaryToolbarComponents?: ReactElement;
+  insertMenuItems?: InsertMenuCustomItem[];
 
   addonToolbarComponents?: ReactElement;
 

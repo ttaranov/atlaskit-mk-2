@@ -1,11 +1,10 @@
 export * from './schema';
 export * from './utils';
 
-export * from './type';
+export * from './types';
 export * from './contextIdentifier';
 
-import ProviderFactory, { WithProviders } from './providerFactory';
-export { ProviderFactory, WithProviders };
+export { default as ProviderFactory, WithProviders } from './providerFactory';
 
 export * from './styles';
 export * from './ui';

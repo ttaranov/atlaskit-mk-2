@@ -1,5 +1,19 @@
 # @atlaskit/renderer
 
+## 11.4.3
+
+
+
+- [patch] added a prop to enable the new applicationCard designs [3057eb2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3057eb2)
+
+## 11.4.2
+
+## 11.4.1
+- [patch] bump editor-common to 6.1.2 [bb7802e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7802e)
+
+## 11.4.0
+- [minor] Support mediaSingle [400ff24](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/400ff24)
+
 ## 11.3.11
 
 ## 11.3.10

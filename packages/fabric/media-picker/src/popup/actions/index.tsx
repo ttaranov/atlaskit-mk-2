@@ -55,10 +55,12 @@ export {
   RequestUnlinkCloudAccountAction,
 } from './unlinkCloudAccount';
 export {
-  UPDATE_RECENT_FILES,
-  updateRecentFiles,
-  UpdateRecentFilesAction,
-} from './updateRecentFiles';
+  GET_FILES_IN_RECENTS_FULLFILLED,
+  getFilesInRecents,
+  getFilesInRecentsFullfilled,
+  getFilesInRecentsFailed,
+  GetFilesInRecentsFullfilledAction,
+} from './getFilesInRecents';
 export {
   UPDATE_SERVICE_LIST,
   updateServiceList,

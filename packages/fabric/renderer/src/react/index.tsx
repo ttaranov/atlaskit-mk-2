@@ -38,6 +38,7 @@ export interface ConstructorParams {
   extensionHandlers?: ExtensionHandlers;
   portal?: HTMLElement;
   objectContext?: RendererContext;
+  useNewApplicationCard?: boolean;
 }
 
 export default class ReactSerializer implements Serializer<JSX.Element> {
@@ -46,6 +47,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   private extensionHandlers?: ExtensionHandlers;
   private portal?: HTMLElement;
   private rendererContext?: RendererContext;
+  private useNewApplicationCard?: boolean;
 
   constructor({
     providers,
@@ -53,12 +55,14 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     extensionHandlers,
     portal,
     objectContext,
+    useNewApplicationCard,
   }: ConstructorParams) {
     this.providers = providers;
     this.eventHandlers = eventHandlers;
     this.extensionHandlers = extensionHandlers;
     this.portal = portal;
     this.rendererContext = objectContext;
+    this.useNewApplicationCard = useNewApplicationCard;
   }
 
   serializeFragment(
@@ -156,6 +160,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       rendererContext: this.rendererContext,
       serializer: this,
       content: node.content ? node.content.toJSON() : undefined,
+      useNewApplicationCard: this.useNewApplicationCard,
       ...node.attrs,
     };
   }

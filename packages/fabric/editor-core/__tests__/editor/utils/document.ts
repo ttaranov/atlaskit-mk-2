@@ -4,17 +4,20 @@ import {
   doc,
   p,
   hr,
+  text,
+  mention,
+  code_block,
   decisionList,
   decisionItem,
   defaultSchema as schema,
 } from '@atlaskit/editor-test-helpers';
 import {
-  isEmpty,
+  isEmptyNode,
   isEmptyParagraph,
   isEmptyDocument,
   preprocessDoc,
+  processRawValue,
 } from '../../../src/editor/utils/document';
-// import schema from '../../../src/test-helper/schema';
 
 describe(name, () => {
   describe('Utils -> Document', () => {
@@ -28,25 +31,27 @@ describe(name, () => {
       });
     });
 
-    describe('#isEmpty', () => {
+    describe('#isEmptyNode', () => {
       it('should return true if node is empty', () => {
-        expect(isEmpty(p('')(schema))).toBe(true);
+        expect(isEmptyNode(p('')(schema))).toBe(true);
       });
 
       it('should return true if the only child of a node is an empty paragraph', () => {
-        expect(isEmpty(doc(p(''))(schema))).toBe(true);
+        expect(isEmptyNode(doc(p(''))(schema))).toBe(true);
       });
 
       it('should return true if node only contains empty block nodes', () => {
-        expect(isEmpty(doc(p(''), p(''), p(''))(schema))).toBe(true);
+        expect(isEmptyNode(doc(p(''), p(''), p(''))(schema))).toBe(true);
       });
 
       it('should return false if the only child of a node is not an empty paragraph', () => {
-        expect(isEmpty(doc(p('some text'))(schema))).toBe(false);
+        expect(isEmptyNode(doc(p('some text'))(schema))).toBe(false);
       });
 
       it('should return false if node contains non-empty block nodes', () => {
-        expect(isEmpty(doc(p(''), p('some text'), p(''))(schema))).toBe(false);
+        expect(isEmptyNode(doc(p(''), p('some text'), p(''))(schema))).toBe(
+          false,
+        );
       });
     });
 
@@ -72,7 +77,7 @@ describe(name, () => {
       });
 
       it('should return false if node has hr', () => {
-        expect(isEmpty(doc(p(), hr())(schema))).toBe(false);
+        expect(isEmptyDocument(doc(p(), hr())(schema))).toBe(false);
       });
     });
 
@@ -97,6 +102,63 @@ describe(name, () => {
         )(schema);
         const processedContent = preprocessDoc(schema, editorContent);
         expect(processedContent).not.toEqual(editorContent);
+      });
+    });
+  });
+
+  describe('processRawValue', () => {
+    const successCases = [
+      { name: 'doc', node: doc(p('some new content'))(schema) as any },
+      { name: 'text', node: text('text', schema) as any },
+      {
+        name: 'block',
+        node: code_block({ language: 'javascript' })('content')(schema) as any,
+      },
+      {
+        name: 'inline',
+        node: mention({ id: 'id', text: '@mention' })()(schema) as any,
+      },
+    ];
+
+    successCases.forEach(({ name, node }) => {
+      it(`Case: ${name} – should accept JSON version of a prosemirror node`, () => {
+        const result = processRawValue(schema, node.toJSON());
+        expect(result).toEqualDocument(node);
+      });
+
+      it(`Case: ${name} – should accept stringified JSON version of a prosemirror node`, () => {
+        const result = processRawValue(schema, JSON.stringify(node.toJSON()));
+        expect(result).toEqualDocument(node);
+      });
+    });
+
+    describe('failure cases', () => {
+      // Silence console.error
+      const oldConsole = console.error;
+      console.error = jest.fn();
+      afterAll(() => {
+        console.error = oldConsole;
+      });
+
+      it('should return undefined if value is empty', () => {
+        expect(processRawValue(schema, '')).toBeUndefined();
+      });
+
+      it('should return undefined if value is not a valid json', () => {
+        expect(processRawValue(schema, '{ broken }')).toBeUndefined();
+      });
+
+      it('should return undefined if value is an array', () => {
+        expect(processRawValue(schema, [1, 2, 3, 4])).toBeUndefined();
+      });
+
+      it('should return undefined if json represents not valid PM Node', () => {
+        expect(
+          processRawValue(schema, {
+            type: 'blockqoute',
+            content: [{ type: 'text', text: 'text' }],
+          }),
+        ).toBeUndefined();
       });
     });
   });

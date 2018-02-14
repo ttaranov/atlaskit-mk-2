@@ -14,13 +14,19 @@ export interface BackBoneModel {
 //
 // Since we are in the process of rewritting this component and deprecating MediaViewer Classic and this wrapper,
 // we judged there was not much of a point on dramatically refactoring both components.
-export const isPreviewGenerated = (MediaViewer: any) => (file: BackBoneModel): JQueryPromise<boolean> => {
-  const deferred: JQueryDeferred<boolean> = MediaViewer.require('wrappers/jquery').Deferred();
+export const isPreviewGenerated = (MediaViewer: any) => (
+  file: BackBoneModel,
+): JQueryPromise<boolean> => {
+  const deferred: JQueryDeferred<boolean> = MediaViewer.require(
+    'wrappers/jquery',
+  ).Deferred();
   // this function must return a resolved deferred (deferred.resolve)
   return deferred.resolve(false);
 };
 
-export const generatePreview = (MediaViewer: any) => (file: BackBoneModel) : JQueryPromise<BackBoneModel> => {
+export const generatePreview = (MediaViewer: any) => (
+  file: BackBoneModel,
+): JQueryPromise<BackBoneModel> => {
   const deferred = MediaViewer.require('wrappers/jquery').Deferred();
   const isError = file.get('type') === 'error';
   // this function must return a rejected deferred object (deferred.reject) or an unresolved one (deferred.when)

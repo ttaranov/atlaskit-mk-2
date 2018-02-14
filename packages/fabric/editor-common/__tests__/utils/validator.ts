@@ -1,3 +1,5 @@
+declare var global: any;
+
 import { expect } from 'chai';
 import {
   ADDoc,
@@ -883,6 +885,112 @@ describe('Renderer - Validator', () => {
       });
     });
 
+    describe('mediaSingle', () => {
+      // use jest assertions
+      const expect = global.expect;
+
+      it('should return "mediaSingle" with type, attrs and content', () => {
+        const validADFChunk = {
+          type: 'mediaSingle',
+          attrs: { layout: 'full-width' },
+          content: [
+            {
+              type: 'media',
+              attrs: {
+                type: 'file',
+                id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+                collection: 'MediaServicesSample',
+              },
+            },
+          ],
+        };
+
+        expect(getValidNode(validADFChunk)).toEqual(validADFChunk);
+      });
+
+      it('should return "unknownBlock" if some of its content is not media', () => {
+        const invalidADFChunk = {
+          type: 'mediaSingle',
+          attrs: { layout: 'full-width' },
+          content: [
+            {
+              type: 'mention',
+              attrs: {
+                id: 'abcd-abcd-abcd',
+                text: '@Oscar',
+              },
+            },
+          ],
+        };
+
+        expect(getValidNode(invalidADFChunk)).toEqual({
+          type: 'unknownBlock',
+          content: [
+            {
+              type: 'mention',
+              attrs: {
+                id: 'abcd-abcd-abcd',
+                text: '@Oscar',
+              },
+            },
+          ],
+        });
+      });
+
+      it('should return "mediaGroup" if children count is more than 1', () => {
+        const invalidADFChunk = {
+          type: 'mediaSingle',
+          attrs: { layout: 'full-width' },
+          content: [
+            {
+              type: 'media',
+              attrs: {
+                type: 'file',
+                id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+                collection: 'MediaServicesSample',
+              },
+            },
+            {
+              type: 'media',
+              attrs: {
+                type: 'file',
+                id: '5556346b-b081-482b-bc4a-4faca8ecd2df',
+                collection: 'MediaServicesSample',
+              },
+            },
+          ],
+        };
+
+        // actually this is invalid tree even for renderer
+        // in this case pm.check() fails and "Unsupported content" message is rendered
+        expect(getValidNode(invalidADFChunk)).toEqual({
+          type: 'unknownBlock',
+          content: [
+            {
+              type: 'media',
+              attrs: {
+                type: 'file',
+                id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+                collection: 'MediaServicesSample',
+              },
+            },
+            {
+              type: 'text',
+              text: ' ',
+            },
+            {
+              type: 'media',
+              attrs: {
+                type: 'file',
+                id: '5556346b-b081-482b-bc4a-4faca8ecd2df',
+                collection: 'MediaServicesSample',
+              },
+            },
+          ],
+        });
+      });
+    });
+
     describe('media', () => {
       it('should return "media" with attrs and type', () => {
         expect(
@@ -920,6 +1028,30 @@ describe('Renderer - Validator', () => {
             type: 'file',
             id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
             collection: '',
+          },
+        });
+      });
+
+      it('should add width and height attrs if they are present', () => {
+        expect(
+          getValidNode({
+            type: 'media',
+            attrs: {
+              type: 'file',
+              id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+              collection: 'MediaServicesSample',
+              width: 200,
+              height: 100,
+            },
+          }),
+        ).to.deep.equal({
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample',
+            width: 200,
+            height: 100,
           },
         });
       });

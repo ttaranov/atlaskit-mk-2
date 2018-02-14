@@ -15,11 +15,14 @@ import {
   CardDelete,
   CardEventHandler,
   FileDetails,
+  ImageResizeMode,
+} from '@atlaskit/media-core';
+
+import {
   MediaProvider,
   MediaStateManager,
   MediaState,
-  ImageResizeMode,
-} from '@atlaskit/media-core';
+} from '@atlaskit/editor-core';
 
 import {
   CardEventClickHandler,
@@ -113,13 +116,13 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     if (mediaProvider) {
       const { stateManager } = mediaProvider;
       if (stateManager) {
-        stateManager.unsubscribe(id, this.handleMediaStateChange);
+        stateManager.off(id, this.handleMediaStateChange);
       }
     }
 
     const { stateManagerFallback } = this.props;
     if (stateManagerFallback) {
-      stateManagerFallback.unsubscribe(id, this.handleMediaStateChange);
+      stateManagerFallback.off(id, this.handleMediaStateChange);
     }
   }
 
@@ -313,7 +316,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     if (stateManager) {
       const mediaState = stateManager.getState(id);
 
-      stateManager.subscribe(id, this.handleMediaStateChange);
+      stateManager.on(id, this.handleMediaStateChange);
       this.setState({ id, ...mediaState });
     }
 

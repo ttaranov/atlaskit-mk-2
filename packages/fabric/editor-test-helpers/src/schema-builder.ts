@@ -2,6 +2,7 @@ import {
   MediaAttributes,
   MentionAttributes,
   MediaSingleAttributes,
+  ApplicationCardAttributes,
 } from '@atlaskit/editor-common';
 import {
   Fragment,
@@ -355,6 +356,10 @@ export const mediaSingle = (
 export const mediaGroup = nodeFactory(sampleSchema.nodes.mediaGroup);
 export const media = (attrs: MediaAttributes) =>
   nodeFactory(sampleSchema.nodes.media, attrs);
+export const applicationCard = (attrs: ApplicationCardAttributes) =>
+  nodeFactory(sampleSchema.nodes.applicationCard, attrs);
+export const placeholder = (attrs: { text: string }) =>
+  nodeFactory(sampleSchema.nodes.placeholder, attrs)();
 
 //
 // Marks

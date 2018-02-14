@@ -7,7 +7,11 @@ import accountUnlink from './accountUnlink';
 import serviceConnect from './serviceConnect';
 import pathChangeRequest from './pathChangeRequest';
 import fetchNextCloudFilesPage from './fetchNextCloudFilesPage';
-import recentFilesUpdate from './recentFilesUpdate';
+import {
+  getRecentFilesStarted,
+  getRecentFilesFullfilled,
+  getRecentFilesFailed,
+} from './getFilesInRecents';
 import fileUploadsAdd from './fileUploadsAdd';
 import filePreviewUpdate from './filePreviewUpdate';
 import fileUploadProgress from './fileUploadProgress';
@@ -42,7 +46,9 @@ const reducers = combineReducers([
   accountChange,
   serviceConnect,
   accountUnlink,
-  recentFilesUpdate,
+  getRecentFilesStarted,
+  getRecentFilesFullfilled,
+  getRecentFilesFailed,
   updatePopupUrls,
   fileUploadsAdd,
   filePreviewUpdate,

@@ -1,8 +1,8 @@
 // @flow
 
 import React from 'react';
-import Spinner from '@atlaskit/spinner';
 import { colors } from '@atlaskit/theme';
+import Spinner from '../src';
 
 const SpinnerExample = () => (
   <div>

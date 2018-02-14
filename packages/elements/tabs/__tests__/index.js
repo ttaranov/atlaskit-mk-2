@@ -15,6 +15,13 @@ const tabs = [
   { content: 'Tab 3 content', label: 'Tab 3 label' },
 ];
 
+const clickTab = (tabsComponent, tabIndex) => {
+  tabsComponent
+    .find(TabItem)
+    .at(tabIndex)
+    .simulate('click');
+};
+
 describe(name, () => {
   describe('Tabs', () => {
     describe('rendering', () => {
@@ -105,22 +112,36 @@ describe(name, () => {
           expect(wrapper.state().selected).toEqual(tabs[0]);
         });
 
-        it("setting this prop should make the component 'controlled', which means it should not maintain its own internal state", () => {
-          const uncontrolledTabs = mount(
-            <Tabs tabs={tabs} defaultSelected={tabs[1]} />,
-          );
-          uncontrolledTabs
-            .find(TabItem)
-            .at(2)
-            .simulate('click');
-          expect(uncontrolledTabs.state().selected).toEqual(tabs[2]);
+        describe("setting this prop should make the component 'controlled'", () => {
+          it('should not maintain its own internal state', () => {
+            const uncontrolledTabs = mount(
+              <Tabs tabs={tabs} defaultSelected={tabs[1]} />,
+            );
+            clickTab(uncontrolledTabs, 2);
+            expect(uncontrolledTabs.state().selected).toEqual(tabs[2]);
 
-          const controlledTab = mount(<Tabs tabs={tabs} selected={tabs[1]} />);
-          controlledTab
-            .find(TabItem)
-            .at(2)
-            .simulate('click');
-          expect(controlledTab.state().selected).toEqual(tabs[1]);
+            const controlledTabs = mount(
+              <Tabs tabs={tabs} selected={tabs[1]} />,
+            );
+            clickTab(controlledTabs, 2);
+            expect(controlledTabs.state().selected).toEqual(tabs[1]);
+          });
+
+          it('should not maintain its own internal state even if tabs change', () => {
+            const nextGenTabs = [...tabs];
+            const controlledTabs = mount(
+              <Tabs tabs={nextGenTabs} selected={1} />,
+            );
+
+            expect(controlledTabs.state().selected).toEqual(nextGenTabs[1]);
+
+            controlledTabs.setProps({
+              tabs: [...tabs],
+              selected: 2,
+            });
+
+            expect(controlledTabs.state().selected).toEqual(nextGenTabs[2]);
+          });
         });
       });
 
@@ -175,10 +196,7 @@ describe(name, () => {
           const spy = jest.fn();
           const wrapper = mount(<Tabs onSelect={spy} tabs={tabs} />);
 
-          wrapper
-            .find(TabItem)
-            .at(2)
-            .simulate('click');
+          clickTab(wrapper, 2);
           expect(spy).toHaveBeenCalledWith(tabs[2], 2);
         });
         it('is fired with the selected tab and its index when selected by keyboard', () => {
