@@ -2,7 +2,7 @@ import { NodeSpec, Node } from 'prosemirror-model';
 
 export const codeWrapper: NodeSpec = {
   group: 'block',
-  content: 'codeBlock+',
+  content: 'codeBlock',
   attrs: {
     'data-code-wrapper': { default: 'true' },
   },

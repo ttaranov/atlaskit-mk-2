@@ -6,47 +6,8 @@ import { EditorView, NodeView } from 'prosemirror-view';
 import {
   akBorderRadius,
   akGridSizeUnitless,
-  akColorG50,
-  akColorP50,
-  akColorB50,
-  akColorY50,
-  akColorR50,
-  akColorG400,
-  akColorP400,
-  akColorB400,
-  akColorY400,
-  akColorR400,
 } from '@atlaskit/util-shared-styles';
-import InfoIcon from '@atlaskit/icon/glyph/editor/info';
-import SuccessIcon from '@atlaskit/icon/glyph/editor/success';
-import NoteIcon from '@atlaskit/icon/glyph/editor/note';
-import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
-import ErrorIcon from '@atlaskit/icon/glyph/editor/error';
 import ContentNodeView from '../contentNodeView';
-
-const panelColor = {
-  info: akColorB50,
-  note: akColorP50,
-  success: akColorG50,
-  warning: akColorY50,
-  error: akColorR50,
-};
-
-const iconColor = {
-  info: akColorB400,
-  note: akColorP400,
-  success: akColorG400,
-  warning: akColorY400,
-  error: akColorR400,
-};
-
-const panelIcons = {
-  info: InfoIcon,
-  success: SuccessIcon,
-  note: NoteIcon,
-  warning: WarningIcon,
-  error: ErrorIcon,
-};
 
 // tslint:disable-next-line:variable-name
 const Wrapper = styled.div`
@@ -54,7 +15,7 @@ const Wrapper = styled.div`
   margin: ${akGridSizeUnitless / 2}px 0;
   padding: ${akGridSizeUnitless}px;
   display: flex;
-  background-color: #f1f1f1;
+  background-color: #f4f5f7;
   overflow: hidden;
   &::after {
     content: '1\n2\n3\n4\n5\n6';
@@ -65,7 +26,7 @@ const Wrapper = styled.div`
 
 // tslint:disable-next-line:variable-name
 const ContentWrapper = styled.div`
-  margin: 1px 0 1px ${akGridSizeUnitless * 4}px;
+  width: 95%;
   display: inline-block;
 `;
 
@@ -73,17 +34,10 @@ const ContentWrapper = styled.div`
 const LineNumber = styled.div`
   width: 20px;
   height: 0;
-  margin: 12px 0;
+  color: #c3c3c3;
   &::after {
-    content: '1 \ 2 3 4 5 6 7 8 9 10 11 12';
+    content: '1 \ 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20';
   }
-`;
-
-// tslint:disable-next-line:variable-name
-const IconWrapper = styled.span`
-  height: 24px;
-  width: 24px;
-  position: absolute;
 `;
 
 type getPosHandler = () => number;
@@ -96,13 +50,11 @@ export interface Props {
 
 class CodeWrapper extends ContentNodeView implements NodeView {
   private domRef: HTMLElement | undefined;
-  private panelType: string;
   private node: PMNode;
 
   constructor(node: PMNode, view: EditorView, getPos: getPosHandler) {
     super(node, view);
     this.node = node;
-    this.panelType = node.attrs.panelType;
     this.renderReactComponent();
   }
 
@@ -114,7 +66,15 @@ class CodeWrapper extends ContentNodeView implements NodeView {
 
     ReactDOM.render(
       <Wrapper>
-        <LineNumber />
+        <div
+          style={{
+            margin: '12px 0',
+            backgroundColor: '#f4f5f7',
+            overflow: 'hidden',
+          }}
+        >
+          <LineNumber />
+        </div>
         <ContentWrapper innerRef={this.handleRef} />
       </Wrapper>,
       this.domRef,
