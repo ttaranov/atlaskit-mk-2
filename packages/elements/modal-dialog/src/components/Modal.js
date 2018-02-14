@@ -46,6 +46,7 @@ function getInitialState() {
   return {
     dialogNode: null,
     scrollDistance: getScrollDistance(),
+    hasEntered: false,
     isExiting: false,
   };
 }
@@ -184,6 +185,14 @@ class Modal extends Component<Props, State> {
   handleDialogClick = event => {
     event.stopPropagation();
   };
+  handleEntered = (...args) => {
+    this.setState({
+      hasEntered: true,
+    });
+    if (this.props.onOpenComplete) {
+      this.props.onOpenComplete(...args);
+    }
+  };
   handleExit = () => {
     window.removeEventListener('scroll', this.handleWindowScroll);
     // disable FocusLock *before* unmount. animation may end after a new modal
@@ -206,7 +215,6 @@ class Modal extends Component<Props, State> {
       isChromeless,
       onClose,
       onCloseComplete,
-      onOpenComplete,
       onStackChange,
       shouldCloseOnEscapePress,
       stackIndex,
@@ -225,6 +233,13 @@ class Modal extends Component<Props, State> {
     const widthName = WIDTH_ENUM.values.includes(width) ? width : null;
     const widthValue = widthName ? null : width;
 
+    // Pass an afterEnded custom transition to Positioner so we can update styles to remove the transform property
+    // This fixes an issue with react-beautiful-dnd within modals - AK-4328
+    const customTransition =
+      this.state.hasEntered && !this.state.isExiting && !isBackground
+        ? 'afterEntered'
+        : '';
+
     return (
       <FillScreen
         {...transitionProps}
@@ -235,8 +250,9 @@ class Modal extends Component<Props, State> {
         <Blanket isTinted onBlanketClicked={this.handleOverlayClick} />
         <Positioner
           {...transitionProps}
+          customTransition={customTransition}
           onClick={this.handleOverlayClick}
-          onEntered={onOpenComplete}
+          onEntered={this.handleEntered}
           onExited={onCloseComplete}
           scrollBehavior={scrollBehavior}
           widthName={widthName}
