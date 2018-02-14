@@ -20,8 +20,6 @@ describe('MediaStore', () => {
     });
 
     describe('createUpload', () => {
-      afterEach(() => fetchMock.restore());
-
       it('should POST to /upload endpoint with correct options', () => {
         const createUpTo = 1;
         const data: MediaUpload[] = [
@@ -48,6 +46,29 @@ describe('MediaStore', () => {
               Accept: 'application/json',
             },
             body: undefined,
+          });
+        });
+      });
+    });
+
+    describe('uploadChunk', () => {
+      it('should PUT to /chunk/:etag endpoint with correct options', () => {
+        const etag = 'some-etag';
+        const blob = new Blob(['some-blob']);
+
+        fetchMock.mock(`begin:${apiUrl}/chunk`, {
+          status: 201,
+        });
+
+        return mediaStore.uploadChunk(etag, blob).then(() => {
+          expect(fetchMock.lastUrl()).toEqual(`${apiUrl}/chunk/${etag}`);
+          expect(fetchMock.lastOptions()).toEqual({
+            method: 'PUT',
+            headers: {
+              'X-Client-Id': clientId,
+              Authorization: `Bearer ${token}`,
+            },
+            body: blob,
           });
         });
       });

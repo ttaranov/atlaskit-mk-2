@@ -55,8 +55,9 @@ export function createUrl(
     ...params,
     ...authParams,
   });
+  const shouldAppendQueryString = queryString.length > 0;
 
-  return `${baseUrl}${queryString.length > 0 ? `?${queryString}` : ''}`;
+  return `${baseUrl}${shouldAppendQueryString ? `?${queryString}` : ''}`;
 }
 
 function withAuth(auth?: Auth) {
