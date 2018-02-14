@@ -12113,6 +12113,13 @@ space-separated-tokens@^1.0.0:
   dependencies:
     trim "0.0.1"
 
+spawndamnit@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/spawndamnit/-/spawndamnit-1.0.0.tgz#b5d4a1a73016dbcca8f8b1e283eee76a649161b8"
+  dependencies:
+    cross-spawn "^5.1.0"
+    signal-exit "^3.0.2"
+
 spdx-correct@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/spdx-correct/-/spdx-correct-1.0.2.tgz#4b3073d933ff51f3912f03ac5519498a4150db40"
