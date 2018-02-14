@@ -4,7 +4,6 @@ import { stringify } from 'query-string';
 
 import { MediaStore } from '../src/';
 import { MediaUpload, MediaChunksProbe, MediaFile } from '../src/models/media';
-import { AppendChunksToUploadResponseData } from '../src/media-store';
 
 describe('MediaStore', () => {
   const apiUrl = 'http://some-host';
@@ -177,33 +176,26 @@ describe('MediaStore', () => {
           hash: 'sha1:b0edf951dd0c86f80d989e20b9dc3060c53d66a6',
           offset: 0,
         };
-        const data: AppendChunksToUploadResponseData = {
-          nextChunkOffset: 2,
-        };
 
         fetchMock.mock(`begin:${apiUrl}/upload`, {
-          body: data,
           status: 200,
         });
 
-        return mediaStore
-          .appendChunksToUpload(uploadId, body)
-          .then(response => {
-            expect(response).toEqual(data);
-            expect(fetchMock.lastUrl()).toEqual(
-              `${apiUrl}/upload/${uploadId}/chunks`,
-            );
-            expect(fetchMock.lastOptions()).toEqual({
-              method: 'PUT',
-              headers: {
-                'X-Client-Id': clientId,
-                Authorization: `Bearer ${token}`,
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(body),
-            });
+        return mediaStore.appendChunksToUpload(uploadId, body).then(() => {
+          expect(fetchMock.lastUrl()).toEqual(
+            `${apiUrl}/upload/${uploadId}/chunks`,
+          );
+          expect(fetchMock.lastOptions()).toEqual({
+            method: 'PUT',
+            headers: {
+              'X-Client-Id': clientId,
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
           });
+        });
       });
     });
   });

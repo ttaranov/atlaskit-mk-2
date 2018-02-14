@@ -124,7 +124,7 @@ export class MediaStore {
   appendChunksToUpload(
     uploadId: string,
     body: AppendChunksToUploadRequestBody,
-  ): Promise<AppendChunksToUploadResponseData> {
+  ): Promise<void> {
     return this.request(`/upload/${uploadId}/chunks`, {
       method: 'PUT',
       body: JSON.stringify(body),
@@ -132,7 +132,7 @@ export class MediaStore {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-    }).then(mapResponseToJson);
+    }).then(mapResponseToVoid);
   }
 
   async request(
@@ -218,8 +218,4 @@ export type AppendChunksToUploadRequestBody = {
 
   readonly hash?: string;
   readonly offset?: number;
-};
-
-export type AppendChunksToUploadResponseData = {
-  readonly nextChunkOffset: number;
 };

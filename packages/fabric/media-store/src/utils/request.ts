@@ -29,9 +29,9 @@ export function request(
   const { method, auth, params, headers, body } = options;
 
   if (method === 'GET') {
-    return fetch(createUrl(url, params, auth), { method, body, headers });
+    return fetch(createUrl(url, { params, auth }), { method, body, headers });
   } else {
-    return fetch(createUrl(url, params), {
+    return fetch(createUrl(url, { params }), {
       method,
       body,
       headers: withAuth(auth)(headers),
@@ -47,10 +47,14 @@ export function mapResponseToVoid(response: Response): Promise<void> {
   return Promise.resolve();
 }
 
+export type CreateUrlOptions = {
+  readonly params?: RequestParams;
+  readonly auth?: Auth;
+};
+
 export function createUrl(
   url: string,
-  params?: RequestParams,
-  auth?: Auth,
+  { params, auth }: CreateUrlOptions = {},
 ): string {
   const { baseUrl, queryParams } = extract(url);
   const authParams = auth && mapAuthToQueryParameters(auth);
